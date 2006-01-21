@@ -1,0 +1,1 @@
+timestamp,random,name,pos,objectId,quantity,lootInBags,checksum

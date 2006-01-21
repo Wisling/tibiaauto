@@ -1,0 +1,371 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\tibiaauto.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\TA LowFi version.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LOADED_MODULES DIALOG DISCARDABLE  0, 0, 234, 173
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Modules information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,91,152,50,14
+    CONTROL         "List1",IDC_LOADEDMODULES_LIST,"SysListView32",
+                    LVS_REPORT | WS_BORDER | WS_TABSTOP,7,7,220,138
+END
+
+IDD_CONFIGSTATUS DIALOG DISCARDABLE  0, 0, 216, 229
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Config loading status"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,83,208,50,14
+    CONTROL         "List1",IDD_CONFIGSTATUS_LOG,"SysListView32",LVS_REPORT | 
+                    WS_BORDER | WS_TABSTOP,7,7,202,195
+END
+
+IDD_CHAR_DIALOG DIALOG DISCARDABLE  0, 0, 157, 54
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION
+CAPTION "Choose character"
+FONT 8, "MS Sans Serif"
+BEGIN
+    COMBOBOX        IDC_CHAR_LIST,7,7,143,90,CBS_DROPDOWNLIST | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "&OK",IDOK,93,33,50,14
+    PUSHBUTTON      "Exit",IDCANCEL,16,33,50,14
+END
+
+IDD_DONATION DIALOG DISCARDABLE  0, 0, 186, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Donation info!"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,69,66,50,14
+    CTEXT           "If you want to support further development of Tibia Auto, you can donate some money to a neteller (www.neteller.com) account 450523251040. Any penny is welcome! Thanks! -- vanitas",
+                    IDC_STATIC,7,7,172,39,WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_LOADED_MODULES, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 166
+    END
+
+    IDD_CONFIGSTATUS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 209
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 222
+    END
+
+    IDD_CHAR_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 150
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 47
+    END
+
+    IDD_DONATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_LOADED_MODULES_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Module actions"
+    BEGIN
+        MENUITEM "Show config dialog",          ID_MODULEACTIONS_SHOWCONFIGDIALOG
+
+        MENUITEM "Start module",                ID_STOPMODULE_STARTMODULE
+        MENUITEM "Stop module",                 ID_STOPMODULE_STOPMODULE
+        MENUITEM SEPARATOR
+        MENUITEM "Load custom module",          ID_MODULEACTIONS_LOADCUSTOMMODULE
+
+    END
+END
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 389
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Tibia Auto v 1.7.7 for Tibia 7.6"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Auto UH",IDC_TOOL_AUTOUH,13,45,61,14
+    PUSHBUTTON      "Auto aim",IDC_TOOL_AUTOAIM,13,80,61,14
+    PUSHBUTTON      "Rune maker",IDC_TOOL_RUNEMAKER,106,45,61,14
+    PUSHBUTTON      "Spell caster",IDC_TOOL_SPELLCASTER,174,45,61,14
+    PUSHBUTTON      "Auto go/log",IDC_TOOL_AUTOGO,106,80,61,14
+    PUSHBUTTON      "Auto fish",IDC_TOOL_AUTOFISH,174,80,61,14
+    PUSHBUTTON      "Show map",IDC_TOOL_MAPSHOW,13,230,61,14
+    PUSHBUTTON      "Auto attack",IDC_TOOL_AUTOATTACK,13,250,61,14
+    PUSHBUTTON      "Char info",IDC_TOOL_CHARINFO,109,162,59,14
+    PUSHBUTTON      "Monsters",IDC_TOOL_MONSERSHOW,175,162,61,14
+    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,109,182,59,14
+    PUSHBUTTON      "Load config",IDC_LOAD,108,244,50,14
+    PUSHBUTTON      "Save config",IDC_SAVE,167,244,50,14
+    PUSHBUTTON      "EXIT",IDC_EXIT,190,368,50,14
+    LTEXT           "Static",IDC_TOOL_RUNEMAKER_INFO,107,62,60,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Static",IDC_TOOL_AUTOFISH_INFO,173,95,62,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Static",IDC_TOOL_AUTOGO_INFO,107,95,60,14,
+                    SS_CENTERIMAGE
+    CONTROL         "Logged as: unknown",IDC_LOGINNAME,"Static",
+                    SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | WS_BORDER | 
+                    WS_GROUP,21,7,203,14
+    LTEXT           "Static",IDC_TOOL_AUTOUH_INFO,13,61,61,14,SS_CENTERIMAGE
+    LTEXT           "Static",IDC_TOOL_AUTOATTACK_INFO,13,265,67,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Static",IDC_TOOL_SPELLCASTER_INFO,176,62,59,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Static",IDC_TOOL_AUTOAIM_INFO,13,95,61,14,
+                    SS_CENTERIMAGE
+    GROUPBOX        "Information tools",IDC_STATIC,100,151,140,81
+    GROUPBOX        "Cave bot tools",IDC_STATIC,7,212,76,73
+    GROUPBOX        "AFK tools",IDC_STATIC,100,34,140,115
+    GROUPBOX        "Fight tools",IDC_STATIC,7,34,76,177
+    GROUPBOX        "Other tools",IDC_STATIC,7,289,76,93
+    GROUPBOX        "Config",IDC_STATIC,100,233,123,55
+    CTEXT           "http://tibiaauto.prv.pl/",IDC_STATIC,100,293,140,39,
+                    SS_CENTERIMAGE | WS_BORDER
+    PUSHBUTTON      "Fluid drinker",IDC_TOOL_FLUIDDRINKER,13,112,61,14
+    LTEXT           "Static",IDC_TOOL_FLUIDDRINKER_INFO,13,128,61,14,
+                    SS_CENTERIMAGE
+    PUSHBUTTON      "Inject MC support",IDC_TOOL_INJECTMC,13,360,61,14
+    PUSHBUTTON      "Ammo restack",IDC_TOOL_AMMORESTACK,13,143,61,14
+    LTEXT           "Static",IDC_TOOL_AMMORESTACK_INFO,13,161,61,14,
+                    SS_CENTERIMAGE
+    PUSHBUTTON      "Item config",IDC_TOOL_ITEMCONFIG,108,264,50,14
+    CONTROL         "Enable light",IDC_LIGHT,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,302,61,14
+    PUSHBUTTON      "Auto respond",IDC_TOOL_AUTORESPOND,106,112,61,14
+    LTEXT           "Static",IDC_TOOL_AUTORESPOND_INFO,106,128,60,14,
+                    SS_CENTERIMAGE
+    PUSHBUTTON      "Auto looter",IDC_TOOL_AUTOLOOTER,13,178,61,14
+    LTEXT           "Static",IDC_TOOL_AUTOLOOTER_INFO,13,194,61,14,
+                    SS_CENTERIMAGE
+    PUSHBUTTON      "Modules",IDC_LOADED_MODULES,167,264,50,14
+    CONTROL         "Auto grouping",IDC_TOOL_AUTOGROUP,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,330,61,14
+    CONTROL         "Trade monitor",IDC_TOOL_TRADEMON,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,176,182,61,14
+    CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,173,112,61,14
+    PUSHBUTTON      "Donation info!",IDC_DONATION,100,340,140,14
+    CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,109,202,59,14
+    PUSHBUTTON      "Map hacks",IDC_TOOL_MAPHACK,176,202,61,14
+    LTEXT           "Static",IDC_TOOL_MAPHACK_INFO,176,216,64,14,
+                    SS_CENTERIMAGE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TIBIAAUTO_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 240
+        VERTGUIDE, 13
+        VERTGUIDE, 83
+        VERTGUIDE, 100
+        VERTGUIDE, 109
+        VERTGUIDE, 168
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 382
+        HORZGUIDE, 112
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,7,1,0
+ PRODUCTVERSION 1,7,1,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "Comments", "\0"
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "Tibia Auto\0"
+            VALUE "FileVersion", "1, 7, 1, 0\0"
+            VALUE "InternalName", "tibiaauto\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "tibiaauto.EXE\0"
+            VALUE "PrivateBuild", "\0"
+            VALUE "ProductName", "Tibia Auto\0"
+            VALUE "ProductVersion", "1, 7, 1, 0\0"
+            VALUE "SpecialBuild", "\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\tibiaauto.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

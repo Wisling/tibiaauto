@@ -1,0 +1,11 @@
+HKCR
+{
+	NoRemove AppID
+	{
+		{259F108E-F99D-41EF-B8EE-7C231DE43FB8} = s 'Tibiaauto_util'
+		'Tibiaauto_util.EXE'
+		{
+			val AppID = s {259F108E-F99D-41EF-B8EE-7C231DE43FB8}
+		}
+	}
+}

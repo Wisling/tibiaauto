@@ -1,0 +1,20 @@
+<configfile>
+<module moduleName="mod_looter"><config><mode><cont1 value="0"/><cont2 value="0"/><cont3 value="0"/><cont4 value="0"/><cont5 value="0"/><cont6 value="0"/><cont7 value="0"/><cont8 value="0"/><cont9 value="0"/><cont10 value="0"/></mode><loot><worms value="0"/><gp value="0"/><food value="0"/><custom value="0"/></loot><other><autoOpen value="0"/></other></config></module>
+<module moduleName="mod_light"/>
+<module moduleName="mod_playerinfo"/>
+<module moduleName="mod_uh"><config><other><sleepAfter value="2000"/></other><self><fallback value="1"/><hotkey value="0"/><runetype value="0"/><borderline value="1000"/></self><grp><borderline value="75"/><fallback value="1"/><runetype value="0"/></grp></config></module>
+<module moduleName="mod_grouping"/>
+<module moduleName="mod_restack"><config><ammo><type value="0"/><at value="0"/><to value="0"/></ammo><throwable><type value="0"/><at value="0"/><to value="0"/></throwable><pickup><spears value="0"/><place><UL value="0"/><UC value="0"/><UR value="0"/><CL value="0"/><CR value="0"/><BL value="0"/><BC value="0"/><BR value="0"/></place></pickup></config></module>
+<module moduleName="mod_fluid"><config><hotkey><hp value="0"/><mana value="0"/></hotkey><drink><hp value="0"/><mana value="0"/><hpBelow value="0"/><manaBelow value="0"/></drink><other><dropEmpty value="1"/><sleepAfter value="1000"/></other></config></module>
+<module moduleName="mod_aim"><config><onlyCreatures value="1"/></config></module>
+<module moduleName="mod_fisher"><config><other><fishOnlyWhenCap value="1"/></other><move><fromHandToCont value="1"/></move></config></module>
+<module moduleName="mod_spellcaster"><config><hpBelow value="0"/><manaAbove value="0"/><spell value=""/></config></module>
+<module moduleName="mod_trademon"/>
+<module moduleName="mod_memdebug"/>
+<module moduleName="mod_showmap"/>
+<module moduleName="mod_monstershow"/>
+<module moduleName="mod_itemconfig"/>
+<module moduleName="mod_autogo"><config><act><x value="0"/><y value="0"/><z value="0"/></act><runaway><x value="0"/><y value="0"/><z value="0"/></runaway><other><action value="1"/><trigger value="1"/></other></config></module>
+<module moduleName="mod_cavebot"><config><loot><item><gp value="0"/><custom value="0"/><worm value="0"/><food value=""/></item><other><inbag value="1"/><capacityLimit value="50"/></other></loot><walker><other><selectMode value="0"/><mapUsed value="0"/><goUpMethod value="0"/></other></walker><attack><follow value="1"/><mode value="0"/><suspendOnEnemey value="1"/><monster value="asdf"/><monster value="ewqr"/><monster value="ewqr"/><monster value="zxcv"/><suspendOnNoMove value="1"/></attack></config></module>
+
+</configfile>

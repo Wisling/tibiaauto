@@ -1,0 +1,162 @@
+// tibiaautoDlg.h : header file
+//
+
+#if !defined(AFX_TIBIAAUTODLG_H__27D9EDA8_C837_406F_9952_9B3288BD9A18__INCLUDED_)
+#define AFX_TIBIAAUTODLG_H__27D9EDA8_C837_406F_9952_9B3288BD9A18__INCLUDED_
+
+#include "LoadedModules.h"
+
+#include "IModuleInterface.h"
+#include "ConfigDialogStatus.h"
+
+#include <xercesc/util/PlatformUtils.hpp>
+
+#include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMImplementation.hpp>
+#include <xercesc/dom/DOMImplementationLS.hpp>
+#include <xercesc/dom/DOMWriter.hpp>
+
+#include <xercesc/framework/StdOutFormatTarget.hpp>
+#include <xercesc/framework/LocalFileFormatTarget.hpp>
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/util/XMLUni.hpp>
+
+XERCES_CPP_NAMESPACE_USE
+
+#if _MSC_VER > 1000
+#pragma once
+#endif // _MSC_VER > 1000
+
+/////////////////////////////////////////////////////////////////////////////
+// CTibiaautoDlg dialog
+
+class CTibiaautoDlg : public CDialog
+{
+// Construction
+public:	
+	void refreshToolInfo();
+	CTibiaautoDlg(CWnd* pParent = NULL);	// standard constructor
+
+// Dialog Data
+	//{{AFX_DATA(CTibiaautoDlg)
+	enum { IDD = IDD_TIBIAAUTO_DIALOG };
+	CStatic	m_mapHackInfo;
+	CButton	m_mapHack;
+	CButton	m_creatureInfo;
+	CButton	m_save;
+	CButton	m_load;
+	CButton	m_eater;
+	CButton	m_tradeMon;
+	CButton	m_grouping;
+	CStatic	m_infoAutoRespond;
+	CStatic	m_infoModuleLooter;
+	CButton	m_buttonAutoAttack;
+	CStatic	m_infoAmmoRestack;
+	CStatic	m_infoFluidDrinker;
+	CStatic	m_infoAutoAim;
+	CStatic	m_infoSpellCaster;
+	CStatic	m_infoAutoAttack;
+	CStatic	m_infoMapShow;
+	CStatic	m_infoAutoUH;
+	CStatic	m_loginName;
+	CButton	m_light;
+	CStatic	m_infoAutoFish;
+	CStatic	m_infoAutoGo;
+	CStatic	m_infoRuneMaker;
+	//}}AFX_DATA
+
+	// ClassWizard generated virtual function overrides
+	//{{AFX_VIRTUAL(CTibiaautoDlg)
+	public:
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	virtual void OnFinalRelease();
+	protected:
+	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+	//}}AFX_VIRTUAL
+
+// Implementation
+protected:
+	HICON m_hIcon;
+
+	// Generated message map functions
+	//{{AFX_MSG(CTibiaautoDlg)
+	virtual BOOL OnInitDialog();
+	afx_msg void OnPaint();
+	afx_msg HCURSOR OnQueryDragIcon();	
+	afx_msg void OnChangeEditAddress();
+	afx_msg void OnChangeEditValue();	
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnLight();
+	afx_msg void OnToolRunemaker();
+	afx_msg void OnToolCharinfo();
+	afx_msg void OnToolMonsershow();
+	afx_msg void OnToolAutogo();
+	afx_msg void OnToolAutofish();
+	afx_msg void OnSave();
+	afx_msg void OnLoad();
+	afx_msg void OnToolAutogroup();
+	afx_msg void OnToolAutouh();
+	afx_msg void OnToolMapshow();
+	afx_msg void OnToolAutoattack();
+	afx_msg void OnToolSpellcaster();
+	afx_msg void OnExit();
+	afx_msg void OnClose();
+	afx_msg void OnToolAutoaim();
+	afx_msg void OnMemdebug();
+	afx_msg void OnToolFluiddrinker();
+	afx_msg void OnToolTrademon();
+	afx_msg void OnToolInjectmc();
+	afx_msg void OnToolItemconfig();
+	afx_msg void OnToolAmmorestack();
+	afx_msg void OnToolAutorespond();
+	afx_msg void OnLoadedModules();
+	afx_msg void OnToolAutolooter();
+	afx_msg void OnToolEater();
+	afx_msg void OnDonation();
+	afx_msg void OnToolCreatureinfo();
+	afx_msg void OnToolMaphack();
+	//}}AFX_MSG
+	DECLARE_MESSAGE_MAP()
+private:	
+	void InitialiseIPC();
+
+	long m_processId;
+	
+	long int *m_valueTab;
+	long int *m_memory;	
+
+private:
+	XercesDOMParser *parser;
+	int m_lightPower;
+	CLoadedModules *m_loadedModules;
+
+
+	IModuleInterface *m_moduleLooter;
+	IModuleInterface *m_moduleLight;
+	IModuleInterface *m_modulePlayerInfo;
+	IModuleInterface *m_moduleUH;
+	IModuleInterface *m_moduleGrouping;
+	IModuleInterface *m_moduleRestack;
+	IModuleInterface *m_moduleFluid;
+	IModuleInterface *m_moduleAim;
+	IModuleInterface *m_moduleFisher;
+	IModuleInterface *m_moduleSpellCaster;
+	IModuleInterface *m_moduleTradeMon;
+	IModuleInterface *m_moduleMemDebug;
+	IModuleInterface *m_moduleMapShow;
+	IModuleInterface *m_moduleMonsterShow;
+	IModuleInterface *m_moduleItemConfig;
+	IModuleInterface *m_moduleAutoGo;
+	IModuleInterface *m_moduleAutoAttack;
+	IModuleInterface *m_moduleRuneMaker;
+	IModuleInterface *m_moduleEater;
+	IModuleInterface *m_moduleCreatureInfo;
+	IModuleInterface *m_moduleResponder;
+	IModuleInterface *m_moduleMapHack;
+};
+
+//{{AFX_INSERT_LOCATION}}
+// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
+
+#endif // !defined(AFX_TIBIAAUTODLG_H__27D9EDA8_C837_406F_9952_9B3288BD9A18__INCLUDED_)
+
