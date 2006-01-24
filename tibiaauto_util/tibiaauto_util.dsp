@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 xerces.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../mods/tibiaauto_util.dll"
+# ADD LINK32 xerces.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll"
 
 !ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
 
@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 xerces.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../mods/tibiaauto_util.dll" /pdbtype:sept
+# ADD LINK32 xerces.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /pdbtype:sept
 
 !ENDIF 
 
