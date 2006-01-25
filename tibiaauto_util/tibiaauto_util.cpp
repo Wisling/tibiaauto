@@ -78,6 +78,12 @@ void setProcessId(int processId)
 	CMemUtil::setGlobalProcessId(processId);
 }
 
+int getProcessId()
+{
+	return CMemUtil::getGlobalProcessId();
+}
+
+
  
 void setPipeHandle(HANDLE hPipePar)
 {	
@@ -119,6 +125,34 @@ int memReadReadSelfLightColor()
 	CMemReader reader;
 	return reader.readSelfLightColor();
 }
+
+
+
+void memReadWriteCreatureLightPower(int creatureNr,int value)
+{
+	CMemReader reader;
+	reader.writeCreatureLightPower(creatureNr,value);
+}
+
+void memReadWriteCreatureLightColor(int creatureNr,int value)
+{
+	CMemReader reader;
+	reader.writeCreatureLightColor(creatureNr,value);
+}
+
+int memReadReadCreatureLightPower(int creatureNr)
+{
+	CMemReader reader;
+	return reader.readCreatureLightPower(creatureNr);
+}
+
+int memReadReadCreatureLightColor(int creatureNr)
+{
+	CMemReader reader;
+	return reader.readCreatureLightColor(creatureNr);
+}
+
+
 
 void memReadCancelAttackCoords()
 {
@@ -590,4 +624,15 @@ void memReadWriteDisableRevealCName ()
 {
 	CMemReader reader;
 	reader.writeDisableRevealCName();
+}
+
+
+int getKernelMainVersion()
+{
+	return 1;
+}
+
+int getKernelPatchVersion()
+{
+	return 0;
 }

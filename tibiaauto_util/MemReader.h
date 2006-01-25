@@ -31,6 +31,10 @@ public:
 	void writeSelfLightPower(int value);
 	int readSelfLightColor();
 	int readSelfLightPower();
+	int readCreatureLightPower(int creatureNr);
+	int readCreatureLightColor(int creatureNr);
+	void writeCreatureLightPower(int creatureNr,int value);
+	void writeCreatureLightColor(int creatureNr,int value);
 	void cancelAttackCoords();
 	void writeGotoCoords(int x,int y,int z);
 	int getLoggedCharNr();

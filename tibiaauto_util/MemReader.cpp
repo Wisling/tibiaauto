@@ -280,32 +280,58 @@ void CMemReader::cancelAttackCoords()
 	CMemUtil::SetMemIntValue(m_memAddressGoZ,0);	
 }
 
-int CMemReader::readSelfLightPower()
+int CMemReader::readCreatureLightPower(int creatureNr)
 {	
+	CMemReader reader;
+	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+116);
+}
+
+int CMemReader::readCreatureLightColor(int creatureNr)
+{	
+	CMemReader reader;
+	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+116+4);
+}
+
+void CMemReader::writeCreatureLightPower(int creatureNr,int value)
+{	
+	CMemReader reader;
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+116,value);		
+}
+
+void CMemReader::writeCreatureLightColor(int creatureNr,int value)
+{
+	CMemReader reader;
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+116+4,value);		
+}	
+
+
+
+int CMemReader::readSelfLightPower()
+{		
 	CMemReader reader;			
 	int loggedCharNr=reader.getLoggedCharNr();
-	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+loggedCharNr*reader.m_memLengthCreature+116);
+	return readCreatureLightPower(loggedCharNr);	
 }
 
 int CMemReader::readSelfLightColor()
 {
 	CMemReader reader;			
 	int loggedCharNr=reader.getLoggedCharNr();
-	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+loggedCharNr*reader.m_memLengthCreature+116+4);
+	return readCreatureLightColor(loggedCharNr);	
 }
 
 void CMemReader::writeSelfLightPower(int value)
 {	
 	CMemReader reader;			
 	int loggedCharNr=reader.getLoggedCharNr();
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+loggedCharNr*reader.m_memLengthCreature+116,value);		
+	writeCreatureLightPower(loggedCharNr,value);
 }
 
 void CMemReader::writeSelfLightColor(int value)
 {
 	CMemReader reader;			
 	int loggedCharNr=reader.getLoggedCharNr();
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+loggedCharNr*reader.m_memLengthCreature+116+4,value);		
+	writeCreatureLightColor(loggedCharNr,value);
 }	
 
 

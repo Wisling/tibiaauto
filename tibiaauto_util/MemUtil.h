@@ -29,6 +29,7 @@ public:
 
 
 	static void setGlobalProcessId(int procId) {m_globalProcessId=procId;};
+	static int getGlobalProcessId() {return m_globalProcessId;};
 
 	static long m_globalProcessId;
 private:

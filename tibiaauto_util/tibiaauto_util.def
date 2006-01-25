@@ -103,3 +103,10 @@ EXPORTS
 	packSenderSendClearCreatureInfo @97
 	memReadWriteEnableRevealCName @98
 	memReadWriteDisableRevealCName @99
+	getProcessId @100
+	memReadWriteCreatureLightPower @101
+	memReadWriteCreatureLightColor @102
+	memReadReadCreatureLightPower @103
+	memReadReadCreatureLightColor @104
+	getKernelMainVersion @105
+	getKernelPatchVersion @106
