@@ -9,6 +9,7 @@
 #include "winsock.h"
 #include "time.h"
 #include "MemReaderProxy.h"
+#include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
 
 
@@ -238,7 +239,7 @@ void autoAimAttack(int runeId)
 }
 
 int parseMessageForTibiaAction(char *buf,int len)
-{
+{	
 	int code=buf[2];	
 	if (code<0)
 		code+=256;
@@ -248,6 +249,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 	if (buf4<0) buf4+=256;
 	if (autoAimActive&&!autoAimOnlyCreatures&&code==0x84&&buf[0]==13&&buf3==0xff&&buf4==0xff)
 	{
+		CTibiaItemProxy itemProxy;
 		// cast rune against monster
 		int contNr=buf[5];
 		int itemPos=buf[7];
@@ -270,10 +272,10 @@ int parseMessageForTibiaAction(char *buf,int len)
 		{
 			fprintf(debugFile,"### %x, %x\n",objectId,playerId);
 		}
-		if ((objectId==CTibiaItem::m_itemTypeRuneHmm||
-			objectId==CTibiaItem::m_itemTypeRuneGfb||
-			objectId==CTibiaItem::m_itemTypeRuneSd||
-			objectId==CTibiaItem::m_itemTypeRuneExplo)&&
+		if ((objectId==itemProxy.getValueForConst("runeHMM")||
+			objectId==itemProxy.getValueForConst("runeGFB")||
+			objectId==itemProxy.getValueForConst("runeSD")||
+			objectId==itemProxy.getValueForConst("runeExplo"))&&
 			playerId<0x40000000)
 		{
 			CMemReaderProxy reader;
@@ -288,6 +290,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 	}
 	if (code==0x96&&buf[3]==1)
 	{
+		CTibiaItemProxy itemProxy;
 		// "say"
 		char sayBuf[1000];
 		int sayV1=buf[4];
@@ -315,7 +318,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			{			
 				if (reader.getAttackedCreature())
 				{
-					autoAimAttack(CTibiaItem::m_itemTypeRuneHmm);					
+					autoAimAttack(itemProxy.getValueForConst("runeHMM"));					
 				}
 					
 			}
@@ -323,7 +326,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			{			
 				if (reader.getAttackedCreature())
 				{
-					autoAimAttack(CTibiaItem::m_itemTypeRuneGfb);					
+					autoAimAttack(itemProxy.getValueForConst("runeGFB"));					
 				}
 					
 			}
@@ -331,7 +334,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			{			
 				if (reader.getAttackedCreature())
 				{
-					autoAimAttack(CTibiaItem::m_itemTypeRuneSd);					
+					autoAimAttack(itemProxy.getValueForConst("runeSD"));					
 				}
 					
 			}
@@ -339,7 +342,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			{			
 				if (reader.getAttackedCreature())
 				{
-					autoAimAttack(CTibiaItem::m_itemTypeRuneExplo);
+					autoAimAttack(itemProxy.getValueForConst("runeExplo"));
 				}
 					
 			}
@@ -661,7 +664,7 @@ void InitialiseHooks()
 	DetourFunctionWithTrampoline((PBYTE)Real_recv,(PBYTE)Mine_recv);	
 	DetourFunctionWithTrampoline((PBYTE)Real_socket,(PBYTE)Mine_socket);		
 };
-
+ 
 
 void InitialiseDebugFile()
 {
@@ -792,6 +795,8 @@ void myInterceptInfoMessageBox(char *s,int type, char *nick, int v4, int v5, int
 		memcpy(mess.payload+8,&msgLen,sizeof(int));
 		memcpy(mess.payload+12,nick,nickLen+1);
 		memcpy(mess.payload+12+nickLen,s,msgLen);
+		mess.send();
+		mess.messageType=1003;
 		mess.send();
 	}
 

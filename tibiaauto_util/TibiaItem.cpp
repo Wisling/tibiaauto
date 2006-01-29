@@ -50,7 +50,11 @@ int CTibiaItem::itemsCorpsesCount=0;
 char CTibiaItem::itemsLooted[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::itemsLootedId[MAX_ITEMS];
 int CTibiaItem::itemsLootedCount=0;
+char CTibiaItem::constsCode[MAX_ITEMS][MAX_ITEM_LEN];
+int CTibiaItem::constsValue[MAX_ITEMS];
+int CTibiaItem::constsCount;
 
+extern CRITICAL_SECTION ItemsInitCriticalSection;
 
 
 CTibiaItem::CTibiaItem()
@@ -88,8 +92,33 @@ int CTibiaItem::getCorpseIdByCreatureName(char *name)
 		if (!strcmp(itemsCorpses[i],name))
 			return itemsCorpsesId[i];
 	}
+	
+	return 0;
+}
 
-	// 'human' is the default one
+int CTibiaItem::getValueForConst(char *code)
+{		
+	refreshItemLists();	
+
+	int i;
+	int len;	
+	char lookupCode[256];
+	strcpy(lookupCode,code);
+
+	len=strlen(lookupCode);
+	for (i=0;i<len;i++)
+		lookupCode[i]=tolower(lookupCode[i]);
+
+	for (i=0;i<constsCount;i++)
+	{
+		if (!strcmp(constsCode[i],lookupCode))
+			return constsValue[i];
+	}
+
+	char msgBuf[128];
+	sprintf(msgBuf,"ERROR: Unable to find value for const code='%s'!",lookupCode);
+	AfxMessageBox(msgBuf);
+	
 	return 0;
 }
 
@@ -110,7 +139,12 @@ CUIntArray * CTibiaItem::getItemsFood()
 
 void CTibiaItem::refreshItemLists()
 {	
-	if (itemListsFresh) return;
+	EnterCriticalSection(&ItemsInitCriticalSection);
+	if (itemListsFresh) 
+	{
+		LeaveCriticalSection(&ItemsInitCriticalSection);
+		return;
+	}
 	itemListsFresh=1;
 	if (!xmlInitialised)
 	{
@@ -127,6 +161,7 @@ void CTibiaItem::refreshItemLists()
 		itemsLootedCount=0;
 		itemsCorpsesCount=0;
 		itemsFoodCount=0;
+		constsCount=0;
 				
 		parser->parse("mods\\tibiaauto-items.xml");							
 		DOMNode  *doc = parser->getDocument();		
@@ -196,6 +231,7 @@ void CTibiaItem::refreshItemLists()
 						}			 			
 						if (!objectId||!objectName||!strlen(objectName))
 							continue;
+						
 						
 						memcpy(itemsFood[itemsFoodCount],objectName,strlen(objectName)+1);
 						itemsFoodId[itemsFoodCount]=objectId;
@@ -268,6 +304,52 @@ void CTibiaItem::refreshItemLists()
 						itemsLootedCount++;
 					}
 				}
+
+				if (!wcscmp(listNode->getNodeName(),_L("consts"))) {
+					
+					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+					{
+						int attrNr;
+						DOMNode *item = listNode->getChildNodes()->item(itemNr);
+						if (wcscmp(item->getNodeName(),_L("const")))
+							continue;
+						
+						int constValue=0;
+						char *constCode=NULL;						
+						
+						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
+						{
+							DOMNode *attrNode = item->getAttributes()->item(attrNr);
+							if (!wcscmp(attrNode->getNodeName(),_L("code")))							
+								constCode=CUtil::wc2c(attrNode->getNodeValue());																							
+							if (!wcscmp(attrNode->getNodeName(),_L("value")))
+							{
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								if (idTmp[0]=='0'&&idTmp[1]=='x')
+								{
+									// 0xFFFF pattern
+									sscanf(idTmp,"0x%x",&constValue);
+								} else {
+									// 1234 pattern
+									sscanf(idTmp,"%d",&constValue);
+								}
+								free(idTmp);
+							}
+						}			 			
+						if (!constCode||!strlen(constCode))
+							continue;
+
+						int i,len;
+						len=strlen(constCode);
+						for (i=0;i<len;i++)
+							constCode[i]=tolower(constCode[i]);
+						
+						memcpy(constsCode[constsCount],constCode,strlen(constCode)+1);
+						constsValue[constsCount]=constValue;
+						constsCount++;
+						
+					}
+				}
 				
 			}
 		}
@@ -283,5 +365,6 @@ void CTibiaItem::refreshItemLists()
 	// remove cached food list
 	delete foodList;
 	foodList=NULL;
+	LeaveCriticalSection(&ItemsInitCriticalSection);
 }
  

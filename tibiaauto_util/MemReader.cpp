@@ -21,7 +21,7 @@ static char THIS_FILE[]=__FILE__;
 
 CMemReader::CMemReader()
 {
-	setMemConsts();
+	CMemConstData();
 }
 
 CMemReader::~CMemReader()

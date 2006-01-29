@@ -731,6 +731,7 @@ void CTibiaautoDlg::OnToolTrademon()
 
 void CTibiaautoDlg::OnToolInjectmc() 
 {
+	CTibiaItemProxy itemProxy;
 	char szFilters[]=
       "Tibia client (tibia.exe)|tibia.exe|All Files (*.*)|*.*||";
 
@@ -744,7 +745,8 @@ void CTibiaautoDlg::OnToolInjectmc()
 		if (f)
 		{
 			
-			if (!fseek(f,0x4de42+2,SEEK_SET))
+			
+			if (!fseek(f,itemProxy.getValueForConst("addrMCInject")+2,SEEK_SET))
 			{
 				fwrite(&maxNo,1,1,f);
 				AfxMessageBox("Tibia client has been successfully modified to MC mode!");

@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto_util.h"
 #include "MemConstData.h"
+#include "TibiaItemProxy.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -18,39 +19,40 @@ static char THIS_FILE[]=__FILE__;
 
 CMemConstData::CMemConstData()
 {
-	int BASE = 0x00400000+16920;		             
+	CTibiaItemProxy itemProxy;	
 	
-	// addresses
-	m_memAddressFirstContainer      = BASE + 676888;
-	m_memAddressFirstCreature       = BASE + 643216;
-	m_memAddressHP                  = BASE + 643112;
-	m_memAddressMana                = BASE + 643084;
-	m_memAddressLeftHand            = BASE + 676828;
-	m_memAddressRightHand           = BASE + 676816;
-	m_memAddressSlotArrow           = BASE + 676876;
-	m_memAddressSelfPosX            = BASE + 687392;
-	m_memAddressSelfPosY            = BASE + 687388;
-	m_memAddressSelfPosZ            = BASE + 687384;
-	m_memAddressBattleMin           = BASE + 643208;
-	m_memAddressBattleMax           = BASE + 643204;
-	m_memAddressHPMax               = BASE + 643108;
-	m_memAddressManaMax             = BASE + 643080;
-	m_memAddressCap                 = BASE + 643072;
-	m_memAddressExp                 = BASE + 643104;
-	m_memAddressLvl                 = BASE + 643100;
-	m_memAddressMlvl                = BASE + 643096;
-	m_memAddressAttackedCreature    = BASE + 643068; 
-	m_memAddressSoulPoints          = BASE + 643076;
-	m_memAddressTradeCountSelf      = BASE + 684792;
-	m_memAddressTradeCountPartner   = BASE + 686032;
-	m_memAddressTradeFirstItemSelf  = BASE + 684796;
-	m_memAddressTradeFirstItemPartner=BASE + 686036;
-	m_memAddressSelfFlags           = BASE + 643000;
-	m_memAddressGoX                 = BASE + 643184;
-	m_memAddressGoY                 = BASE + 643180;
-	m_memAddressGoZ                 = BASE + 643176;
+	int offset = itemProxy.getValueForConst("addrOffset");		
+	// addresses	
+	m_memAddressFirstContainer      = offset + itemProxy.getValueForConst("addrFirstContainer");
+	m_memAddressFirstCreature       = offset + itemProxy.getValueForConst("addrFirstCreature");
+	m_memAddressHP                  = offset + itemProxy.getValueForConst("addrHP");
+	m_memAddressMana                = offset + itemProxy.getValueForConst("addrMana");
+	m_memAddressLeftHand            = offset + itemProxy.getValueForConst("addrLeftHand");
+	m_memAddressRightHand           = offset + itemProxy.getValueForConst("addrRightHand");
+	m_memAddressSlotArrow           = offset + itemProxy.getValueForConst("addrSlotArrow");
+	m_memAddressSelfPosX            = offset + itemProxy.getValueForConst("addrSelfPosX");
+	m_memAddressSelfPosY            = offset + itemProxy.getValueForConst("addrSelfPosY");
+	m_memAddressSelfPosZ            = offset + itemProxy.getValueForConst("addrSelfPosZ");
+	m_memAddressBattleMin           = offset + itemProxy.getValueForConst("addrBattleMin");
+	m_memAddressBattleMax           = offset + itemProxy.getValueForConst("addrBattleMax");
+	m_memAddressHPMax               = offset + itemProxy.getValueForConst("addrHPMax");
+	m_memAddressManaMax             = offset + itemProxy.getValueForConst("addrManaMax");
+	m_memAddressCap                 = offset + itemProxy.getValueForConst("addrCap");
+	m_memAddressExp                 = offset + itemProxy.getValueForConst("addrExp");
+	m_memAddressLvl                 = offset + itemProxy.getValueForConst("addrLvl");
+	m_memAddressMlvl                = offset + itemProxy.getValueForConst("addrMlvl");
+	m_memAddressAttackedCreature    = offset + itemProxy.getValueForConst("addrAttackedCreature"); 
+	m_memAddressSoulPoints          = offset + itemProxy.getValueForConst("addrSoulPoints");
+	m_memAddressTradeCountSelf      = offset + itemProxy.getValueForConst("addrTradeCountSelf");
+	m_memAddressTradeCountPartner   = offset + itemProxy.getValueForConst("addrTradeCountPartner");
+	m_memAddressTradeFirstItemSelf  = offset + itemProxy.getValueForConst("addrTradeFirstItemSelf");
+	m_memAddressTradeFirstItemPartner=offset + itemProxy.getValueForConst("addrTradeFirstItemPartner");
+	m_memAddressSelfFlags           = offset + itemProxy.getValueForConst("addrSelfFlags");
+	m_memAddressGoX                 = offset + itemProxy.getValueForConst("addrGoX");
+	m_memAddressGoY                 = offset + itemProxy.getValueForConst("addrGoY");
+	m_memAddressGoZ                 = offset + itemProxy.getValueForConst("addrGoZ");
 	
-	m_memAddressSkillFish           = BASE + 643056;
+	m_memAddressSkillFish           = offset + itemProxy.getValueForConst("addrSkillFish");
 	m_memAddressSkillShield         = m_memAddressSkillFish-4;
 	m_memAddressSkillDist           = m_memAddressSkillFish-8;
 	m_memAddressSkillAxe            = m_memAddressSkillFish-12;
@@ -64,13 +66,24 @@ CMemConstData::CMemConstData()
 	m_memAddressSkillSwordPercLeft  = m_memAddressSkillFish-44;
 	m_memAddressSkillClubPercLeft   = m_memAddressSkillFish-48;
 	
+	m_memAddressSelfId              = offset + itemProxy.getValueForConst("addrSelfId");
+	m_memAddressMapStart            = offset + itemProxy.getValueForConst("addrMapStart");
+	m_memAddressCurrentTm           = offset + itemProxy.getValueForConst("addrCurrentTm");
+
+	// functions
+
+	m_memAddressRevealCName1        = offset + itemProxy.getValueForConst("addrFunRevealCName1");
+	m_memAddressRevealCName2        = offset + itemProxy.getValueForConst("addrFunRevealCName2");
+	
 	
 	// lengths
-	m_memLengthContainer=492;		
-	m_memLengthItem=12;
-	m_memLengthCreature=156;
+	m_memLengthContainer=itemProxy.getValueForConst("lengthContainer");
+	m_memLengthItem=itemProxy.getValueForConst("lengthItem");
+	m_memLengthCreature=itemProxy.getValueForConst("lengthCreature");
+	m_memLengthMapTile=itemProxy.getValueForConst("lengthMapTile");
 	
 	// max values
-	m_memMaxContainers=10;
-	m_memMaxCreatures=150;
+	m_memMaxContainers=itemProxy.getValueForConst("maxContainers");
+	m_memMaxCreatures=itemProxy.getValueForConst("maxCreatures");
+	m_memMaxMapTiles=itemProxy.getValueForConst("maxMapTiles");
 }

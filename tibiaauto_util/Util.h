@@ -31,6 +31,9 @@ class CUtil
 {
 public:
 	static char * getNodeAttribute(DOMNode *node,char *attrName);
+	static int getNodeIntAttribute(DOMNode *node,char *attrName);
+	static char * getNodeAttribute(DOMNode *node,unsigned short *attrName);
+	static int getNodeIntAttribute(DOMNode *node,unsigned short *attrName);
 	static void lootItemFromContainer(int conrNr, CUIntArray *acceptedItems);
 	static int waitForOpenContainer(int contNr,int open);
 	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[5000]);

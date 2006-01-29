@@ -110,3 +110,5 @@ EXPORTS
 	memReadReadCreatureLightColor @104
 	getKernelMainVersion @105
 	getKernelPatchVersion @106
+	getTibiaTile @107
+	tibiaItemGetValueForConst @108

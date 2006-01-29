@@ -12,6 +12,8 @@
 #include "TibiaMap.h"
 #include "TibiaItem.h"
 #include "IPCBackPipe.h"
+#include "TibiaTile.h"
+#include "TileReader.h"
 
 
 #include "MemUtil.h"
@@ -52,6 +54,7 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 // The one and only CTibiaauto_utilApp object
 
 CTibiaauto_utilApp theApp;
+CRITICAL_SECTION ItemsInitCriticalSection;
 
 	
 
@@ -59,7 +62,7 @@ CTibiaauto_utilApp theApp;
 
 BOOL CTibiaauto_utilApp::InitInstance()
 {
-	
+	InitializeCriticalSection(&ItemsInitCriticalSection);
 	return CWinApp::InitInstance();
 
 }
@@ -248,7 +251,7 @@ void packSenderUseWithObjectFromContainerOnFloor(int sourceObjectId,int sourceCo
 }
 
 CMemConstData getMemConstData()
-{
+{	
 	return CMemConstData();
 }
 
@@ -468,6 +471,10 @@ int tibiaItemGetItemsLootedCount()
 	return CTibiaItem::itemsLootedCount;
 }
 
+int tibiaItemGetValueForConst(char *code)
+{
+	return CTibiaItem::getValueForConst(code);
+}
 
 void packSenderLogout()
 {
@@ -629,10 +636,16 @@ void memReadWriteDisableRevealCName ()
 
 int getKernelMainVersion()
 {
-	return 1;
+	return 2;
 }
 
 int getKernelPatchVersion()
 {
 	return 0;
+}
+
+CTibiaTile *getTibiaTile(int tileNr)
+{
+	CTileReader tileReader;
+	return tileReader.getTile(tileNr);
 }

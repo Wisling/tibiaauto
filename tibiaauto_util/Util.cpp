@@ -300,7 +300,10 @@ char *CUtil::wc2c(const unsigned short *src)
 char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 {	
 	int attrNr;
-	for (attrNr=0;attrNr<node->getAttributes()->getLength();attrNr++)
+	int attrCount=node->getAttributes()->getLength();
+	
+
+	for (attrNr=0;attrNr<attrCount;attrNr++)
 	{
 		DOMNode *attrNode = node->getAttributes()->item(attrNr);
 		char *attrNameWide=CUtil::wc2c(attrNode->getNodeName());
@@ -314,4 +317,34 @@ char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 	char *emptyRet=(char *)malloc(MAX_STRING_LEN);
 	memset(emptyRet,0,MAX_STRING_LEN);
 	return emptyRet;
+	
+}
+
+char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
+{
+	DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+	if (attrNode)
+	{
+		return CUtil::wc2c(attrNode->getNodeValue());
+	} else {
+		char *emptyRet=(char *)malloc(1);
+		memset(emptyRet,0,1);
+		return emptyRet;
+	}
+}
+
+int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
+{
+	char *attrValue=getNodeAttribute(node,attrName);
+	int ret=atoi(attrValue);
+	free(attrValue);
+	return ret;
+}
+
+int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
+{
+	char *attrValue=getNodeAttribute(node,attrName);
+	int ret=atoi(attrValue);
+	free(attrValue);
+	return ret;
 }

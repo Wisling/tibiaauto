@@ -153,6 +153,10 @@ SOURCE=.\TibiaMap.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\TileReader.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Util.cpp
 # End Source File
 # End Group
@@ -162,10 +166,6 @@ SOURCE=.\Util.cpp
 # Begin Source File
 
 SOURCE=.\IPCBackPipe.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\MemConstData.h
 # End Source File
 # Begin Source File
 
@@ -206,6 +206,10 @@ SOURCE=.\TibiaItem.h
 # Begin Source File
 
 SOURCE=.\TibiaMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\TileReader.h
 # End Source File
 # Begin Source File
 
