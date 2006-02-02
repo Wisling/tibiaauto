@@ -9,6 +9,33 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <map>
+#include "TibiaMapPoint.h"
+
+using namespace std;
+
+struct pointData
+{
+public:
+	int available;
+	int updown;
+	int prevX;
+	int prevY;
+	int prevZ;
+	pointData()
+	{
+		clear();
+	}
+	void clear()
+	{
+		available=0;
+		updown=0;
+		prevX=0;
+		prevY=0;
+		prevZ=0;
+	}
+};
+ 
 class CTibiaMap  
 {
 public:
@@ -35,13 +62,11 @@ public:
 	
 private:
 	void enlarge();
-	int mapCount;
-	int mapSize;
 	int prohCount;	
 	int prohSize;
-	struct point *map;
-	struct point *prevMap;
 	struct point *prohList;
+	
+	map<point, pointData, point> tibiaMap;		
 };
 
 #endif // !defined(AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_)

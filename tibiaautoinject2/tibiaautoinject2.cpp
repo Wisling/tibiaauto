@@ -668,8 +668,8 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	debugFile=fopen("c:\\temp\\tibiaDebug.txt","wb");
-	//debugFile=NULL;
+	//debugFile=fopen("c:\\temp\\tibiaDebug.txt","wb");
+	debugFile=NULL;
 	debugFileStart=time(NULL);
 }
 

@@ -186,27 +186,27 @@ DOMNode * CConfigCreatorUtil::getConfigForModule(DOMElement *root, char *moduleN
 
 void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node, char *paramName)
 {
-	int isLeaf=1;
-	int i;
-	int len;
-	DOMNodeList *childNodes = node->getChildNodes();
-	for (i=0,len=childNodes->getLength();i<len;i++)
+	int isLeaf=1;		
+	//DOMNodeList *childNodes = node->getChildNodes();
+	DOMNode *subNode = node->getFirstChild();
+	if (subNode)
 	{
-		DOMNode *subNode = childNodes->item(i);
-		if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
-		{
-			char *subNodeName=(char *)malloc(MAX_STRING_LEN);
-			char *newParamName=(char *)malloc(MAX_STRING_LEN);
-			char *subNodeNameTmp=CUtil::wc2c(subNode->getNodeName());
-			strcpy(subNodeName,subNodeNameTmp);
-			free(subNodeNameTmp);
-			sprintf(newParamName,"%s/%s",paramName,subNodeName);
-			parseConfigFromNode(module,subNode,newParamName);
-			isLeaf=0;
-			free(newParamName);
-			free(subNodeName);
-		}
-	}
+		do {	
+			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
+			{
+				char *subNodeName=(char *)malloc(MAX_STRING_LEN);
+				char *newParamName=(char *)malloc(MAX_STRING_LEN);
+				char *subNodeNameTmp=CUtil::wc2c(subNode->getNodeName());
+				strcpy(subNodeName,subNodeNameTmp);
+				free(subNodeNameTmp);
+				sprintf(newParamName,"%s/%s",paramName,subNodeName);
+				parseConfigFromNode(module,subNode,newParamName);
+				isLeaf=0;
+				free(newParamName);
+				free(subNodeName);
+			}
+		} while ((subNode=subNode->getNextSibling())!=NULL);
+	};
 	if (isLeaf)
 	{
 		char *nodeValue=CUtil::getNodeAttribute(node,"value");		
