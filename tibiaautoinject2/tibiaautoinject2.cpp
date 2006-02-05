@@ -690,12 +690,19 @@ void InitialiseCreatureInfo()
 
 void myPlayerNameText(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int v9)
 {
+	char convString[128];
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int v9);	
 	Proto_fun fun=(Proto_fun)0x433fb0;			
 
 	char *info1="";
 	char *info2="";
-	int i;
+	int i,len;
+	sprintf(convString,str);
+	for (i=0,len=strlen(str);i<len;i++)
+	{
+		if (convString[i]=='[')
+			convString[i]='\0';
+	}
 
 	for (i=0;i<MAX_CREATUREINFO;i++)
 	{
@@ -718,7 +725,8 @@ void myPlayerNameText(int v1, int x, int y, int v4, int v5, int v6, int v7, char
 		fun(v1,x,y-titleOffset,v4,v5,v6,v7,info1,v9);
 		titleOffset+=14;
 	}
-	fun(v1,x,y-titleOffset,v4,v5,v6,v7,str,v9);	
+	
+	fun(v1,x,y-titleOffset,v4,v5,v6,v7,convString,v9);	
 }
 
 
