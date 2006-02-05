@@ -16,6 +16,7 @@ class CTibiaItem
 {
 public:
 	static char * getName(int objectId);
+	static int getObjectId(char *name);
 	static int getValueForConst(char *code);
 	static void refreshItemLists();
 	CTibiaItem();

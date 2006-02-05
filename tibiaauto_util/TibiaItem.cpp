@@ -81,6 +81,22 @@ char * CTibiaItem::getName(int objectId)
 	return "unknown";
 }
 
+int CTibiaItem::getObjectId(char *name)
+{
+	int i;
+	
+	refreshItemLists();
+
+	for (i=0;i<itemsItemsCount;i++)
+	{
+		if (!strcmp(itemsItems[i],name))
+			return itemsItemsId[i];
+	}		
+	
+	
+	return 0;
+}
+
 
 int CTibiaItem::getCorpseIdByCreatureName(char *name)
 {		

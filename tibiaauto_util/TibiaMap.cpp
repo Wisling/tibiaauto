@@ -43,7 +43,17 @@ CTibiaMap::~CTibiaMap()
 
 int CTibiaMap::isPointAvailable(int x, int y,int z)
 {			
-	return tibiaMap[point(x,y,z)].available;						
+	if (!tibiaMap[point(x,y,z)].available)
+		return 0;
+
+	// do the prohpoint check
+	int prohNr;
+	for (prohNr=0;prohNr<prohCount;prohNr++)
+	{
+		if (prohList[prohNr].x==x&&prohList[prohNr].y==y&&prohList[prohNr].z==z)
+			return 0;
+	}	
+	return 1;
 }
 
 void CTibiaMap::setPointAsAvailable(int x, int y,int z)
@@ -122,7 +132,12 @@ void CTibiaMap::setPointUpDown(int x, int y, int z, int updown)
 
 int CTibiaMap::getPointUpDown(int x, int y, int z)
 {	
-	return tibiaMap[point(x,y,z)].updown;	
+	if (isPointAvailable(x,y,z))
+	{
+		return tibiaMap[point(x,y,z)].updown;	
+	} else {
+		return 0;
+	}
 }
 
 void CTibiaMap::prohPointAdd(int x, int y, int z)

@@ -112,3 +112,4 @@ EXPORTS
 	getKernelPatchVersion @106
 	getTibiaTile @107
 	tibiaItemGetValueForConst @108
+	tibiaItemGetObjectId @109

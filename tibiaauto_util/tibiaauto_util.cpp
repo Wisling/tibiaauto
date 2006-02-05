@@ -405,6 +405,11 @@ char * tibiaItemGetName(int objectId)
 	return CTibiaItem::getName(objectId);
 }
 
+int tibiaItemGetObjectId(char *name)
+{
+	return CTibiaItem::getObjectId(name);
+}
+
 void tibiaItemRefreshItemLists()
 {	
 	CTibiaItem::itemListsFresh=0;
