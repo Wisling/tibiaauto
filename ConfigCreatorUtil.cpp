@@ -193,25 +193,25 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 	{
 		do {	
 			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
-			{
-				char *subNodeName=(char *)malloc(MAX_STRING_LEN);
-				char *newParamName=(char *)malloc(MAX_STRING_LEN);
-				char *subNodeNameTmp=CUtil::wc2c(subNode->getNodeName());
-				strcpy(subNodeName,subNodeNameTmp);
-				free(subNodeNameTmp);
+			{				
+				char newParamName[256];
+				char subNodeName[256];
+				wcstombs(subNodeName,subNode->getNodeName(),100);
 				sprintf(newParamName,"%s/%s",paramName,subNodeName);
-				parseConfigFromNode(module,subNode,newParamName);
 				isLeaf=0;
-				free(newParamName);
-				free(subNodeName);
+
+				parseConfigFromNode(module,subNode,newParamName);
 			}
 		} while ((subNode=subNode->getNextSibling())!=NULL);
 	};
 	if (isLeaf)
-	{
-		char *nodeValue=CUtil::getNodeAttribute(node,"value");		
-		if (strlen(paramName+1))
+	{	
+		DOMNode *attrNode=node->getAttributes()->getNamedItem(_L("value"));
+			
+		if (strlen(paramName+1)&&attrNode)
 		{
+			char nodeValue[256];
+			wcstombs(nodeValue,attrNode->getNodeValue(),100);
 			// +8 to skip /config/
 			if (module->isMultiParam(paramName+8)&&!multiParams->isKnownMultiparam(paramName+8))
 			{
@@ -219,7 +219,6 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 				module->resetMultiParamAccess(paramName+8);
 			}
 			module->loadConfigParam(paramName+8,nodeValue);			
-		}
-		free(nodeValue);
+		}		
 	}
 }

@@ -339,12 +339,19 @@ int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
 	int ret=atoi(attrValue);
 	free(attrValue);
 	return ret;
+	
 }
 
 int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 {
-	char *attrValue=getNodeAttribute(node,attrName);
-	int ret=atoi(attrValue);
-	free(attrValue);
-	return ret;
+	DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+	if (attrNode)
+	{
+		char buf[128];
+		buf[0]=0;
+		wcstombs(buf,attrNode->getNodeValue(),60);
+		return atoi(buf);
+	} else {
+		return 0;
+	};
 }

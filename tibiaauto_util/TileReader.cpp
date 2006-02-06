@@ -87,17 +87,14 @@ void CTileReader::loadTiles()
 			if (item)
 			{
 				do
-				{				
-					
-					//DOMNode *item = root->getChildNodes()->item(tilePos);							
-					
+				{																								
 					if (!wcscmp(item->getNodeName(),_L("tile"))) {
 						
 						
 						int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
 						
-						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,_L("blocking"));
 						
+						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,_L("blocking"));						
 						tiles[tileId]->canWalkThrough=CUtil::getNodeIntAttribute(item,_L("canWalkThrough"));
 						tiles[tileId]->goDown=CUtil::getNodeIntAttribute(item,_L("goDown"));
 						tiles[tileId]->goUp=CUtil::getNodeIntAttribute(item,_L("goUp"));
@@ -107,10 +104,9 @@ void CTileReader::loadTiles()
 						tiles[tileId]->requireRope=CUtil::getNodeIntAttribute(item,_L("requireRope"));
 						tiles[tileId]->requireShovel=CUtil::getNodeIntAttribute(item,_L("requireShovel"));
 						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,_L("requireUse"));
-						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));
+						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));												
 						
-						
-					}				
+					}		
 				} while ((item=item->getNextSibling())!=NULL);
 			}
 		}
