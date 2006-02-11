@@ -6,6 +6,7 @@
 #include "tibiaauto_util.h"
 #include "TileReader.h"
 #include "Util.h"
+#include <time.h>
 
 #include <xercesc/util/PlatformUtils.hpp>
 
@@ -71,26 +72,29 @@ void CTileReader::loadTiles()
 	try
 	{	
 		int rootNr;
+		
 
-			
 		parser->parse("mods\\tibiaauto-tiles.xml");							
+		
 		DOMNode  *doc = parser->getDocument();	
-		int rootCount=doc->getChildNodes()->getLength();
+		int rootCount=doc->getChildNodes()->getLength();		
 		for (rootNr=0;rootNr<rootCount;rootNr++)
 		{			
+			
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
 				
 			if (wcscmp(root->getNodeName(),_L("tiles")))
-				continue;		
-			int tileCount=root->getChildNodes()->getLength();
+				continue;					
 			DOMNode *item = root->getFirstChild();
 			if (item)
 			{
+				
 				do
-				{																								
+				{			
+					
 					if (!wcscmp(item->getNodeName(),_L("tile"))) {
 						
-						
+
 						int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
 						
 						
@@ -107,9 +111,11 @@ void CTileReader::loadTiles()
 						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));												
 						
 					}		
+
 				} while ((item=item->getNextSibling())!=NULL);
 			}
-		}
+			
+		}				
 		
 	} catch (...)
 	{
