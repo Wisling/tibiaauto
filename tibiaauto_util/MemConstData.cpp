@@ -74,6 +74,8 @@ CMemConstData::CMemConstData()
 
 	m_memAddressRevealCName1        = offset + itemProxy.getValueForConst("addrFunRevealCName1");
 	m_memAddressRevealCName2        = offset + itemProxy.getValueForConst("addrFunRevealCName2");
+	m_memAddressRevealCName3        = offset + itemProxy.getValueForConst("addrFunRevealCName3");
+	m_memAddressRevealCName4        = offset + itemProxy.getValueForConst("addrFunRevealCName4");
 	
 	
 	// lengths
