@@ -227,7 +227,7 @@ void autoAimAttack(int runeId)
 					} else {
 						castRuneAgainstHuman(0x40+contNr,runeItem->pos,runeId,ch->x,ch->y,ch->z);							
 					}
-					
+					delete runeItem;
 				}
 				
 			};
