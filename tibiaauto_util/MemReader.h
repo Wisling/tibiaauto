@@ -20,6 +20,7 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	void setRemainingTilesToGo(int val);
 	void writeDisableRevealCName();
 	void writeEnableRevealCName();
 	long getCurrentTm();

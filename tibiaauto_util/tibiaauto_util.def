@@ -113,3 +113,4 @@ EXPORTS
 	getTibiaTile @107
 	tibiaItemGetValueForConst @108
 	tibiaItemGetObjectId @109
+	memReadSetRemainingTilesToGo @110

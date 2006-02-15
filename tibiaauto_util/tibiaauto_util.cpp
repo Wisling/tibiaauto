@@ -654,3 +654,9 @@ CTibiaTile *getTibiaTile(int tileNr)
 	CTileReader tileReader;
 	return tileReader.getTile(tileNr);
 }
+
+void memReadSetRemainingTilesToGo(int val)
+{
+	CMemReader reader;
+	reader.setRemainingTilesToGo(val);
+}

@@ -465,7 +465,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 
 
 int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
-{	
+{		
 	int offset=0;	
 	if (taMessageStart!=taMessageEnd)
 	{
@@ -494,6 +494,7 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 
 
 	int realRecvLen=Real_recv(s,buf+offset,len-offset,flags);
+	
 	
 	if (debugFile)
 	{
@@ -668,8 +669,8 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	//debugFile=fopen("c:\\temp\\tibiaDebug.txt","wb");
-	debugFile=NULL;
+	debugFile=fopen("c:\\temp\\tibiaDebug.txt","wb");
+	//debugFile=NULL;
 	debugFileStart=time(NULL);
 }
 
@@ -688,6 +689,16 @@ void InitialiseCreatureInfo()
 	}
 }
 
+void myPlayerNameText2(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int v9)
+{
+	char buf[128];
+	sprintf(buf,"string -> %d, %d, %d, %d, %d, %d, %d, %d, %d",v1,x,y,v4,v5,v6,v7,str,v9);
+	::MessageBox(0,buf,buf,0);
+
+	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int v9);	
+	Proto_fun fun=(Proto_fun)0x433fb0;			
+	fun(v1,x,y,v4,v5,v6,v7,str,v9);	
+}
 void myPlayerNameText(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int v9)
 {
 	char convString[128];
@@ -919,6 +930,7 @@ void InitialisePlayerInfoHack()
 	int targetFun;
 	unsigned int targetAddr;
 	trapFun(dwHandle,0x449FE7,(unsigned int)myPlayerNameText);
+	//trapFun(dwHandle,0x44A846,(unsigned int)myPlayerNameText2);
 	trapFun(dwHandle,0x4041E7,(unsigned int)myInterceptInfoMiddleScreen);
 	trapFun(dwHandle,0x40421E,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x403D61,(unsigned int)myInterceptInfoMessageBox);	

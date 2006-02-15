@@ -574,3 +574,8 @@ void CMemReader::writeDisableRevealCName()
 	CMemUtil::SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
 	free(buf);	
 }
+
+void CMemReader::setRemainingTilesToGo(int val)
+{
+	CMemUtil::SetMemIntValue(m_memAddressTilesToGo,val);
+}

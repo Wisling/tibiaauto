@@ -70,6 +70,8 @@ CMemConstData::CMemConstData()
 	m_memAddressMapStart            = offset + itemProxy.getValueForConst("addrMapStart");
 	m_memAddressCurrentTm           = offset + itemProxy.getValueForConst("addrCurrentTm");
 
+	m_memAddressTilesToGo		= offset + itemProxy.getValueForConst("addrTilesToGo");
+
 	// functions
 
 	m_memAddressRevealCName1        = offset + itemProxy.getValueForConst("addrFunRevealCName1");
