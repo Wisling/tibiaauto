@@ -817,6 +817,8 @@ void myInterceptInfoMessageBox(char *s,int type, char *nick, int v4, int v5, int
 		mess.send();
 		mess.messageType=1003;
 		mess.send();
+		mess.messageType=1004;
+		mess.send();
 	}
 
 	// special pass detecion code!
