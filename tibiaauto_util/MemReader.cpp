@@ -67,6 +67,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	ch->lvl = CMemUtil::GetMemIntValue(m_memAddressLvl);
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);
+	ch->mlvlPercLeft = CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
 	ch->soulPoints = CMemUtil::GetMemIntValue(m_memAddressSoulPoints);
 
 	ch->skillAxe = CMemUtil::GetMemIntValue(m_memAddressSkillAxe);
@@ -75,12 +76,14 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->skillDist = CMemUtil::GetMemIntValue(m_memAddressSkillDist);
 	ch->skillFish = CMemUtil::GetMemIntValue(m_memAddressSkillFish);
 	ch->skillShield = CMemUtil::GetMemIntValue(m_memAddressSkillShield);
+	ch->skillFist = CMemUtil::GetMemIntValue(m_memAddressSkillFist);	
 	ch->skillAxePercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillAxePercLeft);
 	ch->skillClubPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillClubPercLeft);
 	ch->skillSwordPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillSwordPercLeft);
 	ch->skillDistPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillDistPercLeft);
 	ch->skillFishPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillFishPercLeft);
 	ch->skillShieldPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillShieldPercLeft);			
+	ch->skillFistPercLeft = CMemUtil::GetMemIntValue(m_memAddressSkillFistPercLeft);	
 	
 	ch->visible=1;
 
