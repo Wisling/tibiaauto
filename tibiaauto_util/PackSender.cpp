@@ -697,3 +697,13 @@ void CPackSender::sendClearCreatureInfo()
 	mess.messageType=304;
 	mess.send();
 }
+
+void CPackSender::enableCName(int enable)
+{
+	char sendbuf[2];
+	sendbuf[0]=0;
+	sendbuf[1]=0;
+	if (enable)
+		sendPacket(sendbuf,305); else
+		sendPacket(sendbuf,306);
+}

@@ -106,12 +106,12 @@ END
 
 IDD_DONATION DIALOG DISCARDABLE  0, 0, 186, 87
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Donation info!"
+CAPTION "Premium Area!"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,69,66,50,14
-    CTEXT           "If you want to support further development of Tibia Auto, you can donate some money to a neteller (www.neteller.com) account 450523251040. Any penny is welcome! Thanks! -- vanitas",
-                    IDC_STATIC,7,7,172,39,WS_BORDER
+    CTEXT           "If you want to get access to all pre-releases and new versions of the Tibia Auto immediatelly after they get released, visit our homesite and join the Premium Area NOW for as low as 0.30 EUR/month!",
+                    IDC_STATIC,7,7,172,41,WS_BORDER
 END
 
 
@@ -199,7 +199,7 @@ IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 389
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.8.0 ALPHA2 for Tibia 7.6"
+CAPTION "Tibia Auto v 1.8.0 for Tibia 7.6"
 FONT 8, "MS Sans Serif"
 BEGIN
     PUSHBUTTON      "Auto UH",IDC_TOOL_AUTOUH,13,45,61,14
@@ -212,7 +212,8 @@ BEGIN
     PUSHBUTTON      "Auto attack",IDC_TOOL_AUTOATTACK,13,250,61,14
     PUSHBUTTON      "Char info",IDC_TOOL_CHARINFO,109,162,59,14
     PUSHBUTTON      "Monsters",IDC_TOOL_MONSERSHOW,175,162,61,14
-    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,109,182,59,14
+    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,109,182,59,14,NOT 
+                    WS_VISIBLE
     PUSHBUTTON      "Load config",IDC_LOAD,108,244,50,14
     PUSHBUTTON      "Save config",IDC_SAVE,167,244,50,14
     PUSHBUTTON      "EXIT",IDC_EXIT,190,368,50,14
@@ -263,7 +264,7 @@ BEGIN
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,176,182,61,14
     CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,173,112,61,14
-    PUSHBUTTON      "Donation info!",IDC_DONATION,100,340,140,14
+    PUSHBUTTON      "Premium Area!",IDC_DONATION,100,340,140,14
     CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,109,202,59,14
     PUSHBUTTON      "Map hacks",IDC_TOOL_MAPHACK,176,202,61,14

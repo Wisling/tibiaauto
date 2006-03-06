@@ -333,6 +333,16 @@ int memReadGetMemIntValue(int address)
 	return CMemUtil::GetMemIntValue(address);
 }
 
+void memReadSetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
+{
+	CMemUtil::SetMemRange(memAddressStart,memAddressEnd,data);
+}
+
+void memReadGetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
+{
+	CMemUtil::SetMemRange(memAddressStart,memAddressEnd,data);
+}
+
 void tibiaMapRemovePointAvailable(int x,int y,int z)
 {
 	tibiaMap.removePointAvailable(x,y,z);
@@ -638,7 +648,6 @@ void memReadWriteDisableRevealCName ()
 	reader.writeDisableRevealCName();
 }
 
-
 int getKernelMainVersion()
 {
 	return 2;
@@ -659,4 +668,10 @@ void memReadSetRemainingTilesToGo(int val)
 {
 	CMemReader reader;
 	reader.setRemainingTilesToGo(val);
+}
+
+void packSenderEnableCName(int enable)
+{
+	CPackSender sender;
+	sender.enableCName(enable);
 }

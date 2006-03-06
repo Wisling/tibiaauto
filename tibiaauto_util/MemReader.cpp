@@ -539,6 +539,7 @@ void CMemReader::writeEnableRevealCName()
 	buf[0]=0x90;
 	buf[1]=0x90;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
+	/*
 	// disable main 'z' check
 	buf[0]=0x47;
 	CMemUtil::SetMemRange(m_memAddressRevealCName2,m_memAddressRevealCName2+1,(char *)buf);
@@ -547,6 +548,7 @@ void CMemReader::writeEnableRevealCName()
 	CMemUtil::SetMemRange(m_memAddressRevealCName3,m_memAddressRevealCName3+1,(char *)buf);
 	buf[0]=6;
 	CMemUtil::SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
+	*/
 	
 
 	/*
@@ -568,6 +570,7 @@ void CMemReader::writeDisableRevealCName()
 	buf[0]=0x75;
 	buf[1]=0x49;	
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
+	/*
 	buf[0]=0x46;
 	CMemUtil::SetMemRange(m_memAddressRevealCName2,m_memAddressRevealCName2+1,(char *)buf);
 	// extend reveal horizon
@@ -575,6 +578,7 @@ void CMemReader::writeDisableRevealCName()
 	CMemUtil::SetMemRange(m_memAddressRevealCName3,m_memAddressRevealCName3+1,(char *)buf);
 	buf[0]=5;
 	CMemUtil::SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
+	*/
 	free(buf);	
 }
 

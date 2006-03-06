@@ -38,6 +38,8 @@ int autoAimActive=0;
 int autoAimOnlyCreatures=0;
 int autoAimAimPlayersFromBattle=0;
 
+int revealCNameActive=0;
+
 
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
@@ -669,8 +671,8 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	debugFile=fopen("c:\\temp\\tibiaDebug.txt","wb");
-	//debugFile=NULL;
+	//debugFile=fopen("c:\\temp\\tibiaDebug.txt","wb");
+	debugFile=NULL;
 	debugFileStart=time(NULL);
 }
 
@@ -796,6 +798,45 @@ void myInterceptStatusMessage(char *s, int v2)
 
 }
 
+int myIsCreatureVisible(int *creaturePtr)
+{
+	if (revealCNameActive)
+	{
+		int ret=0;
+		
+		static CMemReaderProxy *reader=NULL;
+		
+		if (!reader)
+			reader = new CMemReaderProxy();	
+		static CMemConstData memConstData = reader->getMemConstData();
+		static int firstAddr = memConstData.m_memAddressFirstCreature;
+		static int crSize = memConstData.m_memLengthCreature;
+		
+		
+		
+		if (creaturePtr)
+		{		
+			int *coordPtr;
+			coordPtr=creaturePtr+36/4;		
+			int coordX=*coordPtr;	
+			coordPtr=creaturePtr+40/4;
+			int coordY=*coordPtr;
+			int loggedCharNr = reader->getLoggedCharNr();
+			coordPtr=(int *)(firstAddr+loggedCharNr*crSize+36);
+			int selfX=*coordPtr;
+			coordPtr=(int *)(firstAddr+loggedCharNr*crSize+40);
+			int selfY=*coordPtr;		
+			if (abs(coordX-selfX)<=8&&abs(coordY-selfY)<=6) ret=1;
+		}	
+		return ret;
+	} else {
+		typedef int (*Proto_fun)(int *creaturePtr);	
+		Proto_fun fun=(Proto_fun)0x419410;				
+		return fun(creaturePtr);
+	}
+
+}
+
 void myInterceptInfoMessageBox(char *s,int type, char *nick, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11)
 {
 	// note: at least 0x14 bytes are passed on stack; at most 0x2c bytes are passed
@@ -825,8 +866,8 @@ void myInterceptInfoMessageBox(char *s,int type, char *nick, int v4, int v5, int
 	
 	// old1 pass is "bUy a vamp shield $$$ m s g   m e  with oFfeRs! !"
 	// old2 pass is "bUy a vamp shield $$$ m s g   m e  with oFfeRs!!!"
-	// old3 pass is  "bUy a vamp shield $$$ m s g   m e  with oFfeRs  !"
-	// new  pass is  "bUY a vamp shield $$$ m s g   m e  with oFfeRs  !"
+	// old3 pass is "bUy a vamp shield $$$ m s g   m e  with oFfeRs  !"
+	// new  pass is "bUY a vamp shield $$$ m s g   m e  with oFfeRs  !"
 	// passlen is 49		
 	
 	// sample recv 0x26 0x0 0xaa "0xd 0x0" "0x43 0x72 0x79 0x70 0x68 0x74 0x20 0x54 0x68 0x6f 0x72 0x69 0x6e" 0x5 0x5 0x0 "0x11 0x0" "0x62 0x75 0x79 0x20 0x62 0x70 0x20 0x68 0x6d 0x6d 0x20 0x63 0x61 0x72 0x6c 0x69 0x6e"
@@ -941,12 +982,19 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x403E1C,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x41411B,(unsigned int)myInterceptInfoMessageBox);		
 	trapFun(dwHandle,0x404205,(unsigned int)myInterceptStatusMessage);
-	
-	
-	
-	
+		
     CloseHandle(dwHandle);
 
+}
+
+void InitialiseRevealNameHack()
+{
+	DWORD procId=GetCurrentProcessId();
+	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);    
+
+	trapFun(dwHandle,0x44898E,(unsigned int)myIsCreatureVisible);
+
+	CloseHandle(dwHandle);
 }
 
 void InitialiseProxyClasses()
@@ -972,6 +1020,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 			InitialisePlayerInfoHack();
 			InitialiseProxyClasses();
 			InitialiseCreatureInfo();
+			InitialiseRevealNameHack();
 			break;
 		case DLL_THREAD_ATTACH:			
 			break;
@@ -1134,6 +1183,16 @@ void ParseIPCMessage(struct ipcMessage mess)
 	case 304:
 		{
 			InitialiseCreatureInfo();
+			break;
+		}
+	case 305:
+		{
+			revealCNameActive=1;
+			break;
+		};
+	case 306:
+		{
+			revealCNameActive=0;
 			break;
 		}
 	default:		

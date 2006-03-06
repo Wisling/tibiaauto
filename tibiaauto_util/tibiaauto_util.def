@@ -114,3 +114,6 @@ EXPORTS
 	tibiaItemGetValueForConst @108
 	tibiaItemGetObjectId @109
 	memReadSetRemainingTilesToGo @110
+	packSenderEnableCName @111
+	memReadSetMemRange @112 
+	memReadGetMemRange @113
