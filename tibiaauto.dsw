@@ -27,6 +27,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_antylogout"="..\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_autogo"="..\tibiaauto-pub\mods\mod_autogo\mod_autogo.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -255,6 +267,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_team"="..\tibiaauto-pub\mods\mod_team\mod_team.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_trademon"="..\tibiaauto-pub\mods\mod_trademon\mod_trademon.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -364,6 +388,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name tre
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_team
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_antylogout
     End Project Dependency
 }}}
 

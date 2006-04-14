@@ -13,7 +13,7 @@
 #include "TibiaItem.h"
 #include "IPCBackPipe.h"
 #include "TibiaTile.h"
-#include "TileReader.h"
+#include "tileReader.h"
 
 
 #include "MemUtil.h"
@@ -28,6 +28,13 @@ static char THIS_FILE[] = __FILE__;
 
 
 CTibiaMap tibiaMap;
+CMemReader *reader=NULL;
+
+void startMemReader()
+{
+	if (reader==NULL)
+		reader=new CMemReader();
+}
 
 extern HANDLE hPipe;
 
@@ -95,8 +102,8 @@ void setPipeHandle(HANDLE hPipePar)
 
 CTibiaContainer *memReadContainer(int containerNr)
 {
-	CMemReader reader;	
-	return reader.readContainer(containerNr);
+	startMemReader();
+	return reader->readContainer(containerNr);
 };
 
 void packSenderMoveObjectBetweenContainers(int objectId,int  sourceContNr,int  sourcePos, int targetContNr, int targetPos,int  qty)
@@ -107,140 +114,142 @@ void packSenderMoveObjectBetweenContainers(int objectId,int  sourceContNr,int  s
 
 void memReadWriteSelfLightPower(int value)
 {
-	CMemReader reader;
-	reader.writeSelfLightPower(value);
+	startMemReader();
+	reader->writeSelfLightPower(value);
 }
 
 void memReadWriteSelfLightColor(int value)
 {
-	CMemReader reader;
-	reader.writeSelfLightColor(value);
+	startMemReader();
+	reader->writeSelfLightColor(value);
 }
 
 int memReadReadSelfLightPower()
 {
-	CMemReader reader;
-	return reader.readSelfLightPower();
+	startMemReader();
+	return reader->readSelfLightPower();
 }
 
 int memReadReadSelfLightColor()
 {
-	CMemReader reader;
-	return reader.readSelfLightColor();
+	startMemReader();
+	return reader->readSelfLightColor();
 }
 
 
 
 void memReadWriteCreatureLightPower(int creatureNr,int value)
 {
-	CMemReader reader;
-	reader.writeCreatureLightPower(creatureNr,value);
+	startMemReader();
+	reader->writeCreatureLightPower(creatureNr,value);
 }
 
 void memReadWriteCreatureLightColor(int creatureNr,int value)
 {
-	CMemReader reader;
-	reader.writeCreatureLightColor(creatureNr,value);
+	startMemReader();
+	reader->writeCreatureLightColor(creatureNr,value);
 }
 
 int memReadReadCreatureLightPower(int creatureNr)
 {
-	CMemReader reader;
-	return reader.readCreatureLightPower(creatureNr);
+	startMemReader();
+	return reader->readCreatureLightPower(creatureNr);
 }
 
 int memReadReadCreatureLightColor(int creatureNr)
 {
-	CMemReader reader;
-	return reader.readCreatureLightColor(creatureNr);
+	startMemReader();
+	return reader->readCreatureLightColor(creatureNr);
 }
 
 
 
 void memReadCancelAttackCoords()
 {
-	CMemReader reader;
-	reader.cancelAttackCoords();
+	startMemReader();
+	reader->cancelAttackCoords();
 }
 void memReadWriteGotoCoords(int x,int y,int z)
 {
-	CMemReader reader;
-	reader.writeGotoCoords(x,y,z);
+	startMemReader();
+	reader->writeGotoCoords(x,y,z);
 }
 int memReadGetLoggedCharNr()
 {
-	CMemReader reader;
-	return reader.getLoggedCharNr();
+	startMemReader();
+	return reader->getLoggedCharNr();
 }
 int memReadGetSelfEventFlags()
 {
-	CMemReader reader;
-	return reader.getSelfEventFlags();
+	startMemReader();
+	return reader->getSelfEventFlags();
 }
 void memReadWriteVisibleCreatureName(int chNr,char *name)
 {
-	CMemReader reader;
-	reader.writeVisibleCreatureName(chNr,name);
+	startMemReader();
+	reader->writeVisibleCreatureName(chNr,name);
 }
 CTibiaItem * memReadGetTradeItemPartner(int nr)
 {
-	CMemReader reader;
-	return reader.getTradeItemPartner(nr);
+	startMemReader();
+	return reader->getTradeItemPartner(nr);
 }
 CTibiaItem * memReadGetTradeItemSelf(int nr)
 {
-	CMemReader reader;
-	return reader.getTradeItemSelf(nr);
+	startMemReader();
+	return reader->getTradeItemSelf(nr);
 }
 int memReadGetTradeCountPartner()
 {
-	CMemReader reader;
-	return reader.getTradeCountPartner();
+	startMemReader();
+	return reader->getTradeCountPartner();
 }
 int memReadGetTradeCountSelf()
 {
-	CMemReader reader;
-	return reader.getTradeCountSelf();
+	startMemReader();
+	return reader->getTradeCountSelf();
 }
 int memReadGetAttackedCreature()
 {
-	CMemReader reader;
-	return reader.getAttackedCreature();
+	startMemReader();
+	return reader->getAttackedCreature();
 }
 char * memReadGetLoggedChar(int processId)
 {
-	CMemReader reader;
-	return reader.GetLoggedChar(processId);
+	startMemReader();
+	return reader->GetLoggedChar(processId);
 }
 int memReadReadBattleListMax()
 {
-	CMemReader reader;
-	return reader.readBattleListMax();
-}
+	startMemReader();
+	return reader->readBattleListMax();
+} 
+
+
 int memReadReadBattleListMin()
-{
-	CMemReader reader;
-	return reader.readBattleListMin();
+{	
+	startMemReader();
+	return reader->readBattleListMin();	
 }
 CTibiaCharacter * memReadReadVisibleCreature(int nr)
 {
-	CMemReader reader;
-	return reader.readVisibleCreature(nr);
+	startMemReader();
+	return reader->readVisibleCreature(nr);
 }
 CTibiaItem * memReadReadItem(int locationAddress)
 {
-	CMemReader reader;
-	return reader.readItem(locationAddress);
+	startMemReader();
+	return reader->readItem(locationAddress);
 }
 CTibiaCharacter *memReadReadSelfCharacter()
 {
-	CMemReader reader;
-	return reader.readSelfCharacter();
+	startMemReader();
+	return reader->readSelfCharacter();
 }
 CTibiaCharacter *memReadGetCharacterByTibiaId(int tibiaId)
 {
-	CMemReader reader;
-	return reader.getCharacterByTibiaId(tibiaId);
+	startMemReader();
+	return reader->getCharacterByTibiaId(tibiaId);
 }
 
 
@@ -400,6 +409,11 @@ int tibiaMapIsPointAvailable(int x,int y,int z)
 	return tibiaMap.isPointAvailable(x,y,z);
 }
 
+int tibiaMapIsPointAvailableNoProh(int x,int y,int z)
+{
+	return tibiaMap.isPointAvailableNoProh(x,y,z);
+}
+
 int tibiaMapSize()
 {
 	return tibiaMap.size();
@@ -523,30 +537,30 @@ void packSenderAttack(int tibiaCharId)
 
 int memReadMapGetPointItemsCount(point p)
 {
-	CMemReader reader;
-	return reader.mapGetPointItemsCount(p);
+	startMemReader();
+	return reader->mapGetPointItemsCount(p);
 }
 int memReadMapGetPointItemId(point p, int stackNr)
 {
-	CMemReader reader;
-	return reader.mapGetPointItemId(p,stackNr);
+	startMemReader();
+	return reader->mapGetPointItemId(p,stackNr);
 }
 
 int memReadMapGetPointItemExtraInfo(point p, int stackNr,int extraPos)
 {
-	CMemReader reader;
-	return reader.mapGetPointItemExtraInfo(p,stackNr,extraPos);
+	startMemReader();
+	return reader->mapGetPointItemExtraInfo(p,stackNr,extraPos);
 }
 
 void memReadMapSetPointItemsCount(point p, int count)
 {
-	CMemReader reader;
-	reader.mapSetPointItemsCount(p,count);
+	startMemReader();
+	reader->mapSetPointItemsCount(p,count);
 }
 void memReadMapSetPointItemId(point p, int stackNr, int tileId)
 {
-	CMemReader reader;
-	reader.mapSetPointItemId(p,stackNr,tileId);
+	startMemReader();
+	reader->mapSetPointItemId(p,stackNr,tileId);
 }
 
 void packSenderTurnLeft()
@@ -582,8 +596,8 @@ void packSenderMoveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int 
 
 long memReadGetCurrentTm()
 {
-	CMemReader reader;
-	return reader.getCurrentTm();
+	startMemReader();
+	return reader->getCurrentTm();
 }
 
 
@@ -619,8 +633,8 @@ void packSenderIgnoreLook(int end)
 
 long memReadGetCurrenTm()
 {
-	CMemReader reader;
-	return reader.getCurrentTm();
+	startMemReader();
+	return reader->getCurrentTm();
 }
 
 void packSenderSendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle)
@@ -638,14 +652,14 @@ void packSenderSendClearCreatureInfo()
 
 void memReadWriteEnableRevealCName ()
 {
-	CMemReader reader;
-	reader.writeEnableRevealCName();
+	startMemReader();
+	reader->writeEnableRevealCName();
 }
 
 void memReadWriteDisableRevealCName ()
 {
-	CMemReader reader;
-	reader.writeDisableRevealCName();
+	startMemReader();
+	reader->writeDisableRevealCName();
 }
 
 int getKernelMainVersion()
@@ -655,7 +669,7 @@ int getKernelMainVersion()
 
 int getKernelPatchVersion()
 {
-	return 0;
+	return 1;
 }
 
 CTibiaTile *getTibiaTile(int tileNr)
@@ -666,8 +680,8 @@ CTibiaTile *getTibiaTile(int tileNr)
 
 void memReadSetRemainingTilesToGo(int val)
 {
-	CMemReader reader;
-	reader.setRemainingTilesToGo(val);
+	startMemReader();
+	reader->setRemainingTilesToGo(val);
 }
 
 void packSenderEnableCName(int enable)

@@ -196,30 +196,10 @@ struct point CTibiaMap::getPointByNr(int nr)
 		// this is patological
 		return point(0,0,0);
 	}
-	/*
-	std::map<point, pointData, point>::iterator itr;
-	
-
-	int pos=0;			
-
-	if (nr<prevPos||prevPos==-1||nr==0)
-	{
-		
-		itr=tibiaMap.begin();
-		prevPos=0;
-	}			
-	nr-=prevPos;	
-	prevPos=nr;	
-	for (;itr != tibiaMap.end(); itr++)
-	{				
-		if (pos==nr)			
-		{					
-			return itr->first;
-		}		
-		pos++;
-	}		
-	prevPos=-1;
-	return point(0,0,0);
-	*/
 }
 
+
+int CTibiaMap::isPointAvailableNoProh(int x, int y, int z)
+{
+	return tibiaMap[point(x,y,z)].available;
+}

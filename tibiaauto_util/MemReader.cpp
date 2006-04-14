@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "MemReader.h"
 #include "MemUtil.h"
+#include "TibiaItemProxy.h"
 
 #include "TibiaItem.h"
 
@@ -67,7 +68,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	ch->lvl = CMemUtil::GetMemIntValue(m_memAddressLvl);
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);
-	ch->mlvlPercLeft = CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
+	ch->mlvlPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
 	ch->soulPoints = CMemUtil::GetMemIntValue(m_memAddressSoulPoints);
 
 	ch->skillAxe = CMemUtil::GetMemIntValue(m_memAddressSkillAxe);
@@ -83,7 +84,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->skillDistPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillDistPercLeft);
 	ch->skillFishPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillFishPercLeft);
 	ch->skillShieldPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillShieldPercLeft);			
-	ch->skillFistPercLeft = CMemUtil::GetMemIntValue(m_memAddressSkillFistPercLeft);	
+	ch->skillFistPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillFistPercLeft);	
 	
 	ch->visible=1;
 
@@ -95,6 +96,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 		ch->x=monCh->x;
 		ch->y=monCh->y;
 		ch->z=monCh->z;
+		strcpy(ch->name,monCh->name);
 
 
 		delete monCh;
@@ -584,5 +586,8 @@ void CMemReader::writeDisableRevealCName()
 
 void CMemReader::setRemainingTilesToGo(int val)
 {
+	CTibiaItemProxy itemProxy;
+	int offset = itemProxy.getValueForConst("addrOffset");		
 	CMemUtil::SetMemIntValue(m_memAddressTilesToGo,val);
+	CMemUtil::SetMemIntValue(offset + itemProxy.getValueForConst("addrCurrentTileToGo"),val);		
 }

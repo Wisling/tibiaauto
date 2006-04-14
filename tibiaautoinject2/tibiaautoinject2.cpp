@@ -23,8 +23,8 @@ char tmp3[256];
 int revealFish=0;
 
 char creatureInfoPlayerName[MAX_CREATUREINFO][32];
-char creatureInfoPlayerInfo1[MAX_CREATUREINFO][50];
-char creatureInfoPlayerInfo2[MAX_CREATUREINFO][50];
+char creatureInfoPlayerInfo1[MAX_CREATUREINFO][500];
+char creatureInfoPlayerInfo2[MAX_CREATUREINFO][500];
 int creatureInfoNext=0;
 
 char taMessage[TA_MESSAGE_QLEN][32000];
@@ -40,7 +40,7 @@ int autoAimAimPlayersFromBattle=0;
 
 int revealCNameActive=0;
 
-
+char lastConnectName[16];
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
 HANDLE hPipeBack=INVALID_HANDLE_VALUE;
@@ -90,7 +90,9 @@ int outFluidLifeAvail=0;
 
 DETOUR_TRAMPOLINE(int WINAPI Real_send(SOCKET s,char* buf,int len,int flags),send);
 DETOUR_TRAMPOLINE(int WINAPI Real_recv(SOCKET s,char* buf,int len,int flags),recv);
+DETOUR_TRAMPOLINE(int WINAPI Real_connect(SOCKET s,const struct sockaddr* name,int namelen),connect);
 DETOUR_TRAMPOLINE(SOCKET WINAPI Real_socket(int af,int type,int protocol),socket);
+DETOUR_TRAMPOLINE(int Real_select(int nfds,fd_set* readfds,fd_set* writefds,fd_set* exceptfds,const struct timeval* timeout),select);
 
 
 
@@ -240,6 +242,64 @@ void autoAimAttack(int runeId)
 	}
 }
 
+void parseMessageSay(char *sayBuf)
+{
+	CTibiaItemProxy itemProxy;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	
+	if (debugFile)
+	{
+		fprintf(debugFile,"$$$ ta command - '%s'\n",sayBuf);
+	}
+	
+	
+	if (!strcmp(sayBuf,"%ta hmm")&&autoAimActive)
+	{			
+		if (reader.getAttackedCreature())
+		{
+			autoAimAttack(itemProxy.getValueForConst("runeHMM"));					
+		}
+		
+	}
+	if (!strcmp(sayBuf,"%ta gfb")&&autoAimActive)
+	{			
+		if (reader.getAttackedCreature())
+		{
+			autoAimAttack(itemProxy.getValueForConst("runeGFB"));					
+		}
+		
+	}
+	if (!strcmp(sayBuf,"%ta sd")&&autoAimActive)
+	{			
+		if (reader.getAttackedCreature())
+		{
+			autoAimAttack(itemProxy.getValueForConst("runeSD"));					
+		}
+		
+	}
+	if (!strcmp(sayBuf,"%ta explo")&&autoAimActive)
+	{			
+		if (reader.getAttackedCreature())
+		{
+			autoAimAttack(itemProxy.getValueForConst("runeExplo"));
+		}
+		
+	}
+	if (!strcmp(sayBuf,"%ta selfuh")&&outSelfUHAvail)
+	{							
+		Mine_send(tibiaSocket,tibiaState.outbufSelfUH,payloadLen(tibiaState.outbufSelfUH)+2,lastSendFlags);
+	}
+	if (!strcmp(sayBuf,"%ta fluidlife")&&outFluidLifeAvail)
+	{
+		Mine_send(tibiaSocket,tibiaState.outbufFluidLife,payloadLen(tibiaState.outbufFluidLife)+2,lastSendFlags);
+	}
+	if (!strcmp(sayBuf,"%ta fluidmana")&&outFluidManaAvail)
+	{
+		Mine_send(tibiaSocket,tibiaState.outbufFluidMana,payloadLen(tibiaState.outbufFluidMana)+2,lastSendFlags);
+	}
+}
+
 int parseMessageForTibiaAction(char *buf,int len)
 {	
 	int code=buf[2];	
@@ -290,9 +350,11 @@ int parseMessageForTibiaAction(char *buf,int len)
 			}
 		}
 	}
+	/**
+	*/
+
 	if (code==0x96&&buf[3]==1)
-	{
-		CTibiaItemProxy itemProxy;
+	{		
 		// "say"
 		char sayBuf[1000];
 		int sayV1=buf[4];
@@ -307,59 +369,62 @@ int parseMessageForTibiaAction(char *buf,int len)
 		memcpy(sayBuf,buf+6,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
-			CMemReaderProxy reader;
-			CMemConstData memConstData = reader.getMemConstData();
+			parseMessageSay(sayBuf);			
+			return 1;
+		}
+	}
 
-			if (debugFile)
-			{
-				fprintf(debugFile,"$$$ ta command - '%s'\n",sayBuf);
-			}
+	if (code==0x96&&buf[3]==5)
+	{		
+		// "channel"
+		char sayBuf[1000];
+		int sayV1=buf[6];
+		int sayV2=buf[7];
+		if (sayV1<0) sayV1+=256;
+		if (sayV2<0) sayV2+=256;
+		int sayLen=sayV1+256*sayV2;
 
+		if (sayLen>500) return 0;
 
-			if (!strcmp(sayBuf,"%ta hmm")&&autoAimActive)
-			{			
-				if (reader.getAttackedCreature())
-				{
-					autoAimAttack(itemProxy.getValueForConst("runeHMM"));					
-				}
-					
-			}
-			if (!strcmp(sayBuf,"%ta gfb")&&autoAimActive)
-			{			
-				if (reader.getAttackedCreature())
-				{
-					autoAimAttack(itemProxy.getValueForConst("runeGFB"));					
-				}
-					
-			}
-			if (!strcmp(sayBuf,"%ta sd")&&autoAimActive)
-			{			
-				if (reader.getAttackedCreature())
-				{
-					autoAimAttack(itemProxy.getValueForConst("runeSD"));					
-				}
-					
-			}
-			if (!strcmp(sayBuf,"%ta explo")&&autoAimActive)
-			{			
-				if (reader.getAttackedCreature())
-				{
-					autoAimAttack(itemProxy.getValueForConst("runeExplo"));
-				}
-					
-			}
-			if (!strcmp(sayBuf,"%ta selfuh")&&outSelfUHAvail)
-			{							
-				Mine_send(tibiaSocket,tibiaState.outbufSelfUH,payloadLen(tibiaState.outbufSelfUH)+2,lastSendFlags);
-			}
-			if (!strcmp(sayBuf,"%ta fluidlife")&&outFluidLifeAvail)
-			{
-				Mine_send(tibiaSocket,tibiaState.outbufFluidLife,payloadLen(tibiaState.outbufFluidLife)+2,lastSendFlags);
-			}
-			if (!strcmp(sayBuf,"%ta fluidmana")&&outFluidManaAvail)
-			{
-				Mine_send(tibiaSocket,tibiaState.outbufFluidMana,payloadLen(tibiaState.outbufFluidMana)+2,lastSendFlags);
-			}
+		memset(sayBuf,0,1000);
+		memcpy(sayBuf,buf+8,sayLen);
+		if (!strncmp(sayBuf,"%ta ",3))
+		{
+			parseMessageSay(sayBuf);			
+			return 1;
+		}
+	}
+
+	if (code==0x96&&buf[3]==4)
+	{
+			CTibiaItemProxy itemProxy;
+		// "tell"
+		char sayBuf[1000];
+		char nickBuf[1000];
+		int nickV1=buf[4];
+		int nickV2=buf[5];
+		if (nickV1<0) nickV1+=256;
+		if (nickV2<0) nickV2+=256;
+		int nickLen=nickV1+256*nickV2;
+
+		if (nickLen>500) return 0;
+
+		memset(nickBuf,0,1000);
+		memcpy(nickBuf,buf+6,nickLen);
+
+		int sayV1=buf[6+nickLen];
+		int sayV2=buf[7+nickLen];
+		if (sayV1<0) sayV1+=256;
+		if (sayV2<0) sayV2+=256;
+		int sayLen=sayV1+256*sayV2;
+
+		if (sayLen>500) return 0;
+		memset(sayBuf,0,1000);
+		memcpy(sayBuf,buf+8+nickLen,sayLen);
+
+		if (!strncmp(sayBuf,"%ta ",3))
+		{
+			parseMessageSay(sayBuf);			
 			return 1;
 		}
 	}
@@ -435,21 +500,25 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	
 };
 
+int nextstop=0;
 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 {	
 	if (debugFile)
-	{
-		char strbuf[STRBUFLEN];	    
-		bufToHexString(buf,len);
-		sprintf(strbuf,"-> [%x] %s\n",socket,bufToHexStringRet);		
-		fprintf(debugFile,strbuf);	
+	{	
+		bufToHexString(buf,len);	
+		fprintf(debugFile,"-> [%x] %s\n",socket,bufToHexStringRet);	
 	}
 
 	parseMessage(buf,len,debugFile,1,1);
 	if (parseMessageForTibiaAction(buf,len))
 		return len;
+
+	if (buf[2]==0x65)
+	{
+		//nextstop=1;
+	}
 	
 
 
@@ -461,13 +530,17 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
     
 	tibiaSocket=s;
 	lastSendFlags=flags;
+		
 
-    return Real_send(s,buf,len,flags);
+    int ret=0;
+	ret=Real_send(s,buf,len,flags);	
+	return ret;
 }
 
 
 int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 {		
+beginRecv:
 	int offset=0;	
 	if (taMessageStart!=taMessageEnd)
 	{
@@ -495,7 +568,11 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 	
 
 
-	int realRecvLen=Real_recv(s,buf+offset,len-offset,flags);
+	int realRecvLen=0;
+	
+	// use "standard" tibia own socket
+	realRecvLen=Real_recv(s,buf+offset,len-offset,flags);	
+	if (nextstop==1) realRecvLen=0,nextstop=0;
 	
 	
 	if (debugFile)
@@ -509,6 +586,50 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 	
 
 	parseMessage(buf,realRecvLen,debugFile,0,1);			
+
+/*
+
+	if (0&&realRecvLen<=0)
+	{
+		// this suggests a disconnection, so try to reconnect
+		fprintf(debugFile,"DEBUG: relogin start!\n");
+		reloginTibiaSocket=socket(2,1,0);
+		int connectRet=Real_connect(reloginTibiaSocket,(struct sockaddr *)lastConnectName,16);
+		int connectErr=WSAGetLastError();
+		char sendbuf[128];
+		char *playerName = "Plan Gorian";
+		char *playerPass = "ci7yjnbj";
+		int playerId = 3213419;
+		int i;
+		int len=6+4+2+strlen(playerName)+2+strlen(playerPass);
+		sendbuf[0]=len;
+		sendbuf[1]=0;
+		sendbuf[2]=0xa;
+		sendbuf[3]=0x2;
+		sendbuf[4]=0x0;
+		sendbuf[5]=0xf8;
+		sendbuf[6]=0x2;
+		sendbuf[7]=0x0;
+		sendbuf[8]=(playerId<<24)>>24;
+		sendbuf[9]=(playerId<<16)>>24;
+		sendbuf[10]=(playerId<<8)>>24;
+		sendbuf[11]=(playerId<<0)>>24;
+		sendbuf[12]=strlen(playerName);
+		sendbuf[13]=0;
+		for (i=0;i<strlen(playerName);i++)
+			sendbuf[14+i]=playerName[i];
+		sendbuf[14+strlen(playerName)]=strlen(playerPass);
+		sendbuf[15+strlen(playerName)]=0;
+		for (i=0;i<strlen(playerPass);i++)
+			sendbuf[16+strlen(playerName)+i]=playerPass[i];
+		send(reloginTibiaSocket,sendbuf,len+2,lastSendFlags);
+
+		
+		fprintf(debugFile,"DEBUG: relogin end (%d, err=%d)!\n",connectRet,connectErr);
+
+		goto beginRecv;
+	}
+	*/
 
 	if (debugFile)
 	{
@@ -525,14 +646,56 @@ SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 {
 	SOCKET s = Real_socket(af,type,protocol);
 
-	char strbuf[128];	
-    sprintf(strbuf,"got socket %x",s);
-	//MessageBox(NULL,strbuf,"socket hook",0);
+	if (debugFile)
+	{
+		fprintf(debugFile,"got socket: %d, %d, %d -> %d\n",af,type,protocol,s);
+		fflush(debugFile);
+	}	
     
 	tibiaSocket=s;
 
     return s;
 }
+
+int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen) 
+{
+	if (debugFile)
+	{
+		fprintf(debugFile,"connect [pre]: %d, %x, %d\n",s,name,namelen);
+		fflush(debugFile);
+	}
+
+
+	int ret = Real_connect(s,name,namelen);	
+
+	if (debugFile)
+	{
+		fprintf(debugFile,"connect: %d, %x, %d\n",s,name,namelen);
+		fflush(debugFile);
+	}
+
+	memcpy(lastConnectName,name,16);
+
+	return ret;
+};
+
+int WINAPI Mine_select(
+  int nfds,
+  fd_set* readfds,
+  fd_set* writefds,
+  fd_set* exceptfds,
+  const struct timeval* timeout
+)
+{
+	if (debugFile)
+	{
+		fprintf(debugFile,"select: %x, %x, %x\n",readfds,writefds,exceptfds);
+		fflush(debugFile);
+	}
+	return Real_select(nfds,readfds,writefds,exceptfds,timeout);
+}
+
+
 
 
 void InitialiseIPC()
@@ -665,7 +828,9 @@ void InitialiseHooks()
 	
 	DetourFunctionWithTrampoline((PBYTE)Real_send,(PBYTE)Mine_send);	
 	DetourFunctionWithTrampoline((PBYTE)Real_recv,(PBYTE)Mine_recv);	
+	DetourFunctionWithTrampoline((PBYTE)Real_connect,(PBYTE)Mine_connect);	
 	DetourFunctionWithTrampoline((PBYTE)Real_socket,(PBYTE)Mine_socket);		
+	//DetourFunctionWithTrampoline((PBYTE)Real_select,(PBYTE)Mine_select);
 };
  
 
@@ -859,6 +1024,8 @@ void myInterceptInfoMessageBox(char *s,int type, char *nick, int v4, int v5, int
 		mess.messageType=1003;
 		mess.send();
 		mess.messageType=1004;
+		mess.send();
+		mess.messageType=1005;
 		mess.send();
 	}
 
@@ -1133,16 +1300,16 @@ void ParseIPCMessage(struct ipcMessage mess)
 				if (!strcmp(creatureInfoPlayerName[i],mess.payload))
 				{
 					found=0;
-					memcpy(creatureInfoPlayerInfo1[i],mess.payload+32,50);
-					memcpy(creatureInfoPlayerInfo2[i],mess.payload+32+50,50);			
+					memcpy(creatureInfoPlayerInfo1[i],mess.payload+32,500);
+					memcpy(creatureInfoPlayerInfo2[i],mess.payload+32+500,500);
 					break;
 				}
 			}
 			if (!found)
 			{
 				memcpy(creatureInfoPlayerName[creatureInfoNext],mess.payload,32);
-				memcpy(creatureInfoPlayerInfo1[creatureInfoNext],mess.payload+32,50);
-				memcpy(creatureInfoPlayerInfo2[creatureInfoNext],mess.payload+32+50,50);			
+				memcpy(creatureInfoPlayerInfo1[creatureInfoNext],mess.payload+32,500);
+				memcpy(creatureInfoPlayerInfo2[creatureInfoNext],mess.payload+32+500,500);			
 				creatureInfoNext++;
 				// roll creatureInfoText if we are out of limit
 				if (creatureInfoNext==MAX_CREATUREINFO)

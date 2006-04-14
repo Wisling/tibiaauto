@@ -117,3 +117,4 @@ EXPORTS
 	packSenderEnableCName @111
 	memReadSetMemRange @112 
 	memReadGetMemRange @113
+	isPointAvailableNoProh @114

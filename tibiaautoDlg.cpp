@@ -74,6 +74,7 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CTibiaautoDlg)
+	DDX_Control(pDX, IDC_TOOL_ANTILOG, m_antilogout);
 	DDX_Control(pDX, IDC_TOOL_MAPHACK_INFO, m_mapHackInfo);
 	DDX_Control(pDX, IDC_TOOL_MAPHACK, m_mapHack);
 	DDX_Control(pDX, IDC_TOOL_CREATUREINFO, m_creatureInfo);
@@ -135,6 +136,8 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_DONATION, OnDonation)
 	ON_BN_CLICKED(IDC_TOOL_CREATUREINFO, OnToolCreatureinfo)
 	ON_BN_CLICKED(IDC_TOOL_MAPHACK, OnToolMaphack)
+	ON_BN_CLICKED(IDC_TOOL_TEAM, OnToolTeam)
+	ON_BN_CLICKED(IDC_TOOL_ANTILOG, OnToolAntilog)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -202,6 +205,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleCreatureInfo = new CModuleProxy("mod_creatureinfo",0);
 	m_moduleResponder = new CModuleProxy("mod_responder",0);
 	m_moduleMapHack = new CModuleProxy("mod_maphack",0);
+	m_moduleTeam = new CModuleProxy("mod_team",0);
+	m_moduleAntylogout = new CModuleProxy("mod_antylogout",0);
 
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);	
@@ -290,12 +295,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 
 void CTibiaautoDlg::OnLight() 
 {	
-	if (m_light.GetCheck())
-	{
-		m_moduleLight->start();
-	} else {
-		m_moduleLight->stop();
-	}	
+	m_moduleLight->showConfigDialog();	
 }
 
 
@@ -455,6 +455,7 @@ void CTibiaautoDlg::refreshToolInfo()
 	m_tradeMon.SetCheck(m_moduleTradeMon->isStarted());
 	m_eater.SetCheck(m_moduleEater->isStarted());
 	m_creatureInfo.SetCheck(m_moduleCreatureInfo->isStarted());
+	m_antilogout.SetCheck(m_moduleAntylogout->isStarted());
 }
 
 void CTibiaautoDlg::OnSave() 
@@ -804,15 +805,25 @@ void CTibiaautoDlg::OnDonation()
 
 void CTibiaautoDlg::OnToolCreatureinfo() 
 {
-	if (m_creatureInfo.GetCheck())
-	{
-		m_moduleCreatureInfo->start();
-	} else {
-		m_moduleCreatureInfo->stop();
-	}
+	m_moduleCreatureInfo->showConfigDialog();	
 }
 
 void CTibiaautoDlg::OnToolMaphack() 
 {
 	m_moduleMapHack->showConfigDialog();	
+}
+
+void CTibiaautoDlg::OnToolTeam() 
+{
+	m_moduleTeam->showConfigDialog();	
+}
+
+void CTibiaautoDlg::OnToolAntilog() 
+{	
+	if (m_antilogout.GetCheck())
+	{
+		m_moduleAntylogout->start();
+	} else {
+		m_moduleAntylogout->stop();
+	}	
 }

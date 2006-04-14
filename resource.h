@@ -46,6 +46,7 @@
 #define IDC_TOOL_MAPSHOW                1015
 #define IDC_TOOL_AUTOATTACK             1016
 #define IDC_TOOL_RUNEMAKER              1017
+#define IDC_TOOL_ANTILOG                1018
 #define IDC_TOOL_SPELLCASTER            1019
 #define IDC_TOOL_RUNEMAKER_TOEXTERNAL   1020
 #define IDC_TOOL_RUNEMAKER_TOSAFE       1021
@@ -74,6 +75,7 @@
 #define IDC_MONSTERSHOW_FREEZE          1042
 #define IDC_TOOL_CREATUREINFO           1042
 #define IDC_TOOL_AUTOGO                 1043
+#define IDC_TOOL_TEAM                   1044
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048

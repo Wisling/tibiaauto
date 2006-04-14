@@ -40,6 +40,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CTibiaautoDlg)
 	enum { IDD = IDD_TIBIAAUTO_DIALOG };
+	CButton	m_antilogout;
 	CStatic	m_mapHackInfo;
 	CButton	m_mapHack;
 	CButton	m_creatureInfo;
@@ -115,6 +116,8 @@ protected:
 	afx_msg void OnDonation();
 	afx_msg void OnToolCreatureinfo();
 	afx_msg void OnToolMaphack();
+	afx_msg void OnToolTeam();
+	afx_msg void OnToolAntilog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	
@@ -153,6 +156,8 @@ private:
 	IModuleInterface *m_moduleCreatureInfo;
 	IModuleInterface *m_moduleResponder;
 	IModuleInterface *m_moduleMapHack;
+	IModuleInterface *m_moduleTeam;
+	IModuleInterface *m_moduleAntylogout;
 };
 
 //{{AFX_INSERT_LOCATION}}

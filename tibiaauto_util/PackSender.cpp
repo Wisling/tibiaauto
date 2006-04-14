@@ -634,11 +634,14 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 	struct ipcMessage mess;		
 	DWORD cbWritten;
 
+	if (strlen(info1)>499) info1[499]='\0';
+	if (strlen(info2)>499) info2[499]='\0';
+
 	mess.messageType=301;
 	memset(mess.payload,0x0,1024);
 	strcpy(mess.payload,name);
 	strcpy(mess.payload+32,info1);
-	strcpy(mess.payload+50+32,info2);
+	strcpy(mess.payload+500+32,info2);
 	
 	mess.send();
 

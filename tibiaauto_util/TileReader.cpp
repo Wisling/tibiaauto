@@ -109,6 +109,7 @@ void CTileReader::loadTiles()
 						tiles[tileId]->requireShovel=CUtil::getNodeIntAttribute(item,_L("requireShovel"));
 						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,_L("requireUse"));
 						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));												
+						tiles[tileId]->notMoveable=CUtil::getNodeIntAttribute(item,_L("notMoveable"));
 						
 					}		
 
