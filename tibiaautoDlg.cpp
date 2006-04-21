@@ -138,6 +138,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_MAPHACK, OnToolMaphack)
 	ON_BN_CLICKED(IDC_TOOL_TEAM, OnToolTeam)
 	ON_BN_CLICKED(IDC_TOOL_ANTILOG, OnToolAntilog)
+	ON_BN_CLICKED(IDC_FPS, OnFps)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -207,6 +208,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleMapHack = new CModuleProxy("mod_maphack",0);
 	m_moduleTeam = new CModuleProxy("mod_team",0);
 	m_moduleAntylogout = new CModuleProxy("mod_antylogout",0);
+	m_moduleFps = new CModuleProxy("mod_fps",0);
 
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);	
@@ -336,7 +338,12 @@ void CTibiaautoDlg::InitialiseIPC()
 		sprintf(buf,"dll injection failed: %d",GetLastError());
 		AfxMessageBox(buf);		
 		ExitProcess(1);
-	}		
+	}	
+	
+	injectDll="tibiaauto_develtest.dll";				
+	
+	DetourContinueProcessWithDll(procHandle, injectDll);
+		
 	
 	
 	
@@ -826,4 +833,9 @@ void CTibiaautoDlg::OnToolAntilog()
 	} else {
 		m_moduleAntylogout->stop();
 	}	
+}
+
+void CTibiaautoDlg::OnFps() 
+{
+	m_moduleFps->showConfigDialog();	
 }

@@ -23,6 +23,7 @@ public:
 	void turnRight();
 	void turnLeft();
 	void tell(char *msg, char *playerName);
+	void sayOnChan(char *msg, int channelId);
 	void useItemOnFloor(int objectId, int x, int y, int z);
 	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x,int y, int z, int quantity);
 	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);

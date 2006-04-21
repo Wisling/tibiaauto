@@ -159,6 +159,10 @@ SOURCE=.\TileReader.cpp
 
 SOURCE=.\Util.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\VariableStore.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -214,6 +218,10 @@ SOURCE=.\TileReader.h
 # Begin Source File
 
 SOURCE=.\Util.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\VariableStore.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

@@ -542,6 +542,24 @@ void CPackSender::tell(char *msg, char *playerName)
 	sendPacket(retbuf);	
 }
 
+void CPackSender::sayOnChan(char *msg, int channelId)
+{
+	char retbuf[65536];
+	int l=strlen(msg)+2+2;
+	
+	retbuf[0]=l%256;
+	retbuf[1]=l/256;
+	retbuf[2]=0x96;
+	retbuf[3]=0x05;
+	retbuf[4]=channelId%256;
+	retbuf[5]=channelId/256;
+	retbuf[6]=strlen(msg)%256;
+	retbuf[7]=strlen(msg)/256;	
+	sprintf(retbuf+8,"%s",msg);			
+
+	sendPacket(retbuf);
+}
+
 void CPackSender::turnLeft()
 {
 	char retbuf[3];

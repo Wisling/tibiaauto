@@ -14,6 +14,7 @@
 #include "IPCBackPipe.h"
 #include "TibiaTile.h"
 #include "tileReader.h"
+#include "VariableStore.h"
 
 
 #include "MemUtil.h"
@@ -330,6 +331,12 @@ void packSenderTell(char *msg, char *playerName)
 {
 	CPackSender sender;
 	sender.tell(msg,playerName);
+}
+
+void packSenderSayOnChan(char *msg, int channelId)
+{
+	CPackSender sender;
+	sender.sayOnChan(msg,channelId);
 }
 
 void memReadSetMemIntValue(int address,int value)
@@ -669,7 +676,7 @@ int getKernelMainVersion()
 
 int getKernelPatchVersion()
 {
-	return 1;
+	return 2;
 }
 
 CTibiaTile *getTibiaTile(int tileNr)
@@ -688,4 +695,14 @@ void packSenderEnableCName(int enable)
 {
 	CPackSender sender;
 	sender.enableCName(enable);
+}
+
+void variableStoreSetVariable(char *name, char *value)
+{
+	CVariableStore::setVariable(name,value);
+}
+
+char *variableStoreGetVariable(char *name)
+{
+	return CVariableStore::getVariable(name);
 }

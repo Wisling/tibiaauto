@@ -117,4 +117,7 @@ EXPORTS
 	packSenderEnableCName @111
 	memReadSetMemRange @112 
 	memReadGetMemRange @113
-	isPointAvailableNoProh @114
+	tibiaMapIsPointAvailableNoProh @114
+	variableStoreSetVariable @115
+	variableStoreGetVariable @116
+	packSenderSayOnChan @117

@@ -135,7 +135,17 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->hpPercLeft=CMemUtil::GetMemIntValue(offset+132);
 	ch->visible=CMemUtil::GetMemIntValue(offset+140);	
 	ch->lastAttackTm=CMemUtil::GetMemIntValue(offset+128);
+	ch->lookDirection=CMemUtil::GetMemIntValue(offset+80);
+	ch->colorHead=CMemUtil::GetMemIntValue(offset+100);
+	ch->colorBody=CMemUtil::GetMemIntValue(offset+104);
+	ch->colorLegs=CMemUtil::GetMemIntValue(offset+108);
+	ch->colorFoot=CMemUtil::GetMemIntValue(offset+112);
+	ch->walkSpeed=CMemUtil::GetMemIntValue(offset+136);
+	ch->skulls=CMemUtil::GetMemIntValue(offset+144);
+	ch->shields=CMemUtil::GetMemIntValue(offset+148);
 	ch->nr=nr;
+	
+
 	
 	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);

@@ -194,9 +194,9 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 		do {	
 			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
 			{				
-				char newParamName[256];
-				char subNodeName[256];
-				wcstombs(subNodeName,subNode->getNodeName(),100);
+				char newParamName[512];
+				char subNodeName[512];
+				wcstombs(subNodeName,subNode->getNodeName(),200);
 				sprintf(newParamName,"%s/%s",paramName,subNodeName);
 				isLeaf=0;
 
@@ -210,8 +210,8 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 			
 		if (strlen(paramName+1)&&attrNode)
 		{
-			char nodeValue[256];
-			wcstombs(nodeValue,attrNode->getNodeValue(),100);
+			char nodeValue[512];
+			wcstombs(nodeValue,attrNode->getNodeValue(),200);
 			// +8 to skip /config/
 			if (module->isMultiParam(paramName+8)&&!multiParams->isKnownMultiparam(paramName+8))
 			{

@@ -111,6 +111,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_fps"="..\tibiaauto-pub\mods\mod_fps\mod_fps.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_grouping"="..\tibiaauto-pub\mods\mod_grouping\mod_grouping.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -394,6 +406,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name mod_antylogout
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_fps
     End Project Dependency
 }}}
 

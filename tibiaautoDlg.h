@@ -118,6 +118,7 @@ protected:
 	afx_msg void OnToolMaphack();
 	afx_msg void OnToolTeam();
 	afx_msg void OnToolAntilog();
+	afx_msg void OnFps();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	
@@ -158,6 +159,7 @@ private:
 	IModuleInterface *m_moduleMapHack;
 	IModuleInterface *m_moduleTeam;
 	IModuleInterface *m_moduleAntylogout;
+	IModuleInterface *m_moduleFps;
 };
 
 //{{AFX_INSERT_LOCATION}}
