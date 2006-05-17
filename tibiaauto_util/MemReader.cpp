@@ -97,6 +97,14 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 		ch->y=monCh->y;
 		ch->z=monCh->z;
 		strcpy(ch->name,monCh->name);
+		ch->lookDirection=monCh->lookDirection;
+		ch->colorHead=monCh->colorHead;
+		ch->colorBody=monCh->colorBody;
+		ch->colorLegs=monCh->colorLegs;
+		ch->colorFoot=monCh->colorFoot;
+		ch->walkSpeed=monCh->walkSpeed;
+		ch->skulls=monCh->skulls;
+		ch->shields=monCh->shields;
 
 
 		delete monCh;

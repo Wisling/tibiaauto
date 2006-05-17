@@ -40,6 +40,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CTibiaautoDlg)
 	enum { IDD = IDD_TIBIAAUTO_DIALOG };
+	CButton	m_fps;
 	CButton	m_antilogout;
 	CStatic	m_mapHackInfo;
 	CButton	m_mapHack;
@@ -129,6 +130,9 @@ private:
 	long int *m_valueTab;
 	long int *m_memory;	
 
+public:
+	void passSecurityInfo(int value);
+		int shutdownCounter;
 private:
 	XercesDOMParser *parser;
 	int m_lightPower;

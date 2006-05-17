@@ -45,6 +45,9 @@ CModuleProxy::CModuleProxy(char *moduleName,int pathIsAbsolute)
 		allModules=(CModuleProxy **)realloc(allModules,sizeof(CModuleProxy *)*allModulesSize);
 	}
 	allModules[allModulesCount++]=this;	
+	init();
+	// 30 is the current kernel version
+	activate(30);
 }
 
 CModuleProxy::~CModuleProxy()
@@ -316,4 +319,30 @@ void CModuleProxy::resetMultiParamAccess(char *paramName)
 			fun(paramName);
 		}
 	}	
+}
+
+void CModuleProxy::init()
+{
+	typedef void(*Proto_fun)();
+	if (dllModule)
+	{
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"init");
+		if (fun)
+		{
+			fun();
+		}
+	}
+}
+
+void CModuleProxy::activate(int kernelVersion)
+{
+	typedef void(*Proto_fun)(int);
+	if (dllModule)
+	{
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"activate");
+		if (fun)
+		{
+			fun(kernelVersion);
+		}
+	}
 }

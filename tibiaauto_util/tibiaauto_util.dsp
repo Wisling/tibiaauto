@@ -96,6 +96,14 @@ SOURCE=.\IPCBackPipe.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\md5c.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\md5class.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MemConstData.cpp
 # End Source File
 # Begin Source File

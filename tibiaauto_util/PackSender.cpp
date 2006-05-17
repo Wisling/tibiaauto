@@ -120,6 +120,36 @@ void CPackSender::say(const char *buf)
 	sendPacket(retbuf);
 }
 
+void CPackSender::sayWhisper(const char *buf)
+{
+	char retbuf[65536];
+
+	retbuf[0]=strlen(buf)+4;
+	retbuf[1]=0;
+	retbuf[2]=0x96;
+	retbuf[3]=0x02;
+	retbuf[4]=strlen(buf);
+	retbuf[5]=0;
+	sprintf(retbuf+6,"%s",buf);
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::sayYell(const char *buf)
+{
+	char retbuf[65536];
+
+	retbuf[0]=strlen(buf)+4;
+	retbuf[1]=0;
+	retbuf[2]=0x96;
+	retbuf[3]=0x03;
+	retbuf[4]=strlen(buf);
+	retbuf[5]=0;
+	sprintf(retbuf+6,"%s",buf);
+
+	sendPacket(retbuf);
+}
+
 void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 {
 	char retbuf[256];
@@ -545,7 +575,7 @@ void CPackSender::tell(char *msg, char *playerName)
 void CPackSender::sayOnChan(char *msg, int channelId)
 {
 	char retbuf[65536];
-	int l=strlen(msg)+2+2;
+	int l=strlen(msg)+2+2+2;
 	
 	retbuf[0]=l%256;
 	retbuf[1]=l/256;

@@ -17,6 +17,8 @@
 #include "DonationDialog.h"
 #include "IPCBackPipeProxy.h"
 #include "TibiaItemProxy.h"
+#include "EnterCode.h"
+#include "md5class.h"
 
 #include "detours.h"
 
@@ -25,7 +27,7 @@ HANDLE hPipe=INVALID_HANDLE_VALUE;
 
 
 extern int toolAutoResponderRunning;
-
+extern volatile char *checksum;
 
 int globalProcessId;
 
@@ -74,6 +76,7 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CTibiaautoDlg)
+	DDX_Control(pDX, IDC_FPS, m_fps);
 	DDX_Control(pDX, IDC_TOOL_ANTILOG, m_antilogout);
 	DDX_Control(pDX, IDC_TOOL_MAPHACK_INFO, m_mapHackInfo);
 	DDX_Control(pDX, IDC_TOOL_MAPHACK, m_mapHack);
@@ -169,16 +172,23 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (m_processId==-1)
 		ExitProcess(0);
 
-	CMemUtil::setGlobalProcessId(m_processId);	
-
+	CMemUtil::setGlobalProcessId(m_processId);
 	
-		
+				
 	InitialiseIPC();
 
 	CMemReaderProxy reader;
 	reader.setProcessId(m_processId);	
 	CPackSenderProxy sender;
 	sender.setPipeHandle(hPipe);
+
+	// shutdownCounter is anti-hack protection
+	shutdownCounter=rand()%100;	
+	CEnterCode *enterCode = new CEnterCode(this);
+	int res=enterCode->DoModal();
+	delete enterCode;
+
+	if (res!=IDOK) ExitProcess(0);	
 
 	m_loadedModules = new CLoadedModules();
 	m_loadedModules->Create(IDD_LOADED_MODULES);
@@ -211,7 +221,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleFps = new CModuleProxy("mod_fps",0);
 
 	refreshToolInfo();
-	SetTimer(1001,100,NULL);	
+	SetTimer(1001,100,NULL);
+	SetTimer(1111,60*1000,NULL);
 
 	CDonationDialog donDialog;
 	donDialog.DoModal();	
@@ -285,8 +296,43 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		sprintf(buf,"Logged as: %s",loggedCharName);
 		free(loggedCharName);
 		m_loginName.SetWindowText(buf);
+		shutdownCounter--;						
+		if (shutdownCounter<-100000) shutdownCounter=-123;
+		if (shutdownCounter==0)
+		{
+			// ups ops some's hacking TA :/
+			shutdownCounter++;
+			delete this;
+		}
 		SetTimer(1001,150,NULL);
-	
+	}
+	if (nIDEvent==1111)
+	{
+		KillTimer(1111);
+
+		char *fileBuf=(char *)malloc(1000000);	
+		int ep=0x1000;
+		int start=0x400000+ep;
+		//int len=253952-ep;
+		int len=0x406EF6-start;
+		unsigned long int lenRead=0;
+		ReadProcessMemory((HANDLE)-1,(void *)start,fileBuf,len,&lenRead);
+		CMD5 md5;	
+		if (strcmpi(md5.getMD5Digest(fileBuf,len),(char *)checksum))
+		{
+			FILE *f1=fopen("checksum.txt","r");
+			if (f1)
+			{
+				fclose(f1);
+				FILE *f=fopen("checksum.txt","w+");
+				fprintf(f,"%s\n",md5.getMD5Digest(fileBuf,len));
+				fclose(f);
+			}		
+			//ExitProcess(0);
+		} 
+		free(fileBuf);
+
+		SetTimer(1111,60*1000,NULL);
 	}
 	
 	
@@ -463,6 +509,7 @@ void CTibiaautoDlg::refreshToolInfo()
 	m_eater.SetCheck(m_moduleEater->isStarted());
 	m_creatureInfo.SetCheck(m_moduleCreatureInfo->isStarted());
 	m_antilogout.SetCheck(m_moduleAntylogout->isStarted());
+	m_fps.SetCheck(m_moduleFps->isStarted());
 }
 
 void CTibiaautoDlg::OnSave() 
@@ -729,12 +776,7 @@ void CTibiaautoDlg::OnToolFluiddrinker()
 
 void CTibiaautoDlg::OnToolTrademon() 
 {
-	if (m_tradeMon.GetCheck())
-	{
-		m_moduleTradeMon->start();
-	} else {
-		m_moduleTradeMon->stop();
-	}	
+	m_moduleTradeMon->showConfigDialog();
 }
 
 void CTibiaautoDlg::OnToolInjectmc() 
@@ -838,4 +880,12 @@ void CTibiaautoDlg::OnToolAntilog()
 void CTibiaautoDlg::OnFps() 
 {
 	m_moduleFps->showConfigDialog();	
+}
+
+void CTibiaautoDlg::passSecurityInfo(int value)
+{
+	if (!value)
+	{
+		delete this;
+	}
 }

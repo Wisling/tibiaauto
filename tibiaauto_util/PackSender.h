@@ -46,6 +46,8 @@ public:
 	void useItemInContainer(int objectId,int contNr,int pos);
 	void openContainerFromFloor(int objectId,int x,int y,int z,int targetBag);
 	void say(const char *buf);	
+	void sayWhisper(const char *buf);	
+	void sayYell(const char *buf);	
 	void moveObjectBetweenContainers(int objectId,int sourceContNr,int sourcePos,int targetContNr,int targetPos, int qty);
 	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ);
 	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method);

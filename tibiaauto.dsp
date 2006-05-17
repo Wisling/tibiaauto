@@ -114,7 +114,19 @@ SOURCE=.\DonationDialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\EnterCode.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\LoadedModules.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\md5c.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\md5class.cpp
 # End Source File
 # Begin Source File
 
@@ -175,7 +187,23 @@ SOURCE=.\DonationDialog.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\EnterCode.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\global.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\LoadedModules.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MD5.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\md5class.h
 # End Source File
 # Begin Source File
 

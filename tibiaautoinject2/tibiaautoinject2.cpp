@@ -1002,6 +1002,26 @@ int myIsCreatureVisible(int *creaturePtr)
 
 }
 
+void myInterceptRefreshContainers(int v1)
+{
+	if (debugFile)
+	{
+		char buf[128];
+		fprintf(debugFile,"v1=%d\n",v1);
+		fflush(debugFile);
+	}
+
+	typedef void (*Proto_fun)(int v1);
+	Proto_fun fun=(Proto_fun)0x45D250;
+	fun(v1);
+					
+	
+	// 1 -> containerNr 
+	// 2 -> objectId
+	// 6 -> size (in items)
+
+}
+
 void myInterceptInfoMessageBox(char *s,int type, char *nick, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11)
 {
 	// note: at least 0x14 bytes are passed on stack; at most 0x2c bytes are passed
@@ -1149,6 +1169,7 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x403E1C,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x41411B,(unsigned int)myInterceptInfoMessageBox);		
 	trapFun(dwHandle,0x404205,(unsigned int)myInterceptStatusMessage);
+	//trapFun(dwHandle,0x43C053,(unsigned int)myInterceptRefreshContainers);
 		
     CloseHandle(dwHandle);
 

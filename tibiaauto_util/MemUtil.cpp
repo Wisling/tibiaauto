@@ -190,7 +190,7 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress)
 };
 
 int CMemUtil::SetMemIntValue(DWORD memAddress, long int value)
-{
+{	
 	return SetMemIntValue(m_globalProcessId,memAddress,value);
 }
 

@@ -15,6 +15,7 @@
 #include "TibiaTile.h"
 #include "tileReader.h"
 #include "VariableStore.h"
+#include "../md5class.h"
 
 
 #include "MemUtil.h"
@@ -55,7 +56,49 @@ END_MESSAGE_MAP()
 
 CTibiaauto_utilApp::CTibiaauto_utilApp()
 {
+	// perform MD5 check on all dlls which are included
+	struct dllEntry {
+		char *md5result;
+		char *dllName;
+	} dllEntryTab[] = {		
+		{"A3DF77831CFECBA1D88D6B14E9AD955F","tibiaauto.exe"}
+	};
+		
 	
+	CMD5 md5;
+	int i;
+	int cont=1;
+	int zeta=100;
+	for (i=0;i<sizeof(dllEntryTab)/sizeof(struct dllEntry);i++)
+	{
+		char buf[128];
+		char *fileBuffer = (char *)malloc(1000000);
+
+		sprintf(buf,"%s",dllEntryTab[i].dllName);
+		FILE *f=fopen(buf,"rb");
+		int len=0;
+		if (f)
+		{
+			len=fread(fileBuffer,1,1000000,f);
+			fclose(f);
+		} else {
+			cont=0;
+		}
+		
+		if (len>0)
+		{			
+			if (strcmpi(md5.getMD5Digest(fileBuffer,len),dllEntryTab[i].md5result))
+			{
+				// Some md5 checksum is incorrect. TA will not continue.
+				cont=0;
+				zeta-=100;
+				break;
+			}
+		}
+
+		free(fileBuffer);		
+	}
+	//if (!cont) ExitProcess(0);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -325,6 +368,18 @@ void packSenderSay(char *msg)
 {
 	CPackSender sender;
 	sender.say(msg);
+}
+
+void packSenderSayWhisper(char *msg)
+{
+	CPackSender sender;
+	sender.sayWhisper(msg);
+}
+
+void packSenderSayYell(char *msg)
+{
+	CPackSender sender;
+	sender.sayYell(msg);
 }
 
 void packSenderTell(char *msg, char *playerName)

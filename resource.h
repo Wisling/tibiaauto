@@ -28,6 +28,7 @@
 #define IDD_CONFIGSTATUS                161
 #define IDR_LOADED_MODULES_MENU         163
 #define IDD_DONATION                    171
+#define IDD_ENTERCODE                   175
 #define IDC_EDIT_ADDRESS                1000
 #define IDC_EDIT_ADDRESS_RES_DEC        1001
 #define IDC_SCAN                        1004
@@ -249,6 +250,8 @@
 #define IDD_CONFIGSTATUS_LOG            1195
 #define IDC_AUTORESPOND_LOCALECHO       1196
 #define IDC_DONATION                    1199
+#define IDC_RUNTIMEID                   1200
+#define IDC_CODE                        1201
 #define IDC_MONSTERSHOW_FIRSTBUTTON     5000
 #define IDC_MAPSHOW_FIRSTBUTTON         6000
 #define ID_STOPMODULE_STARTMODULE       32771
@@ -260,9 +263,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        175
+#define _APS_NEXT_RESOURCE_VALUE        178
 #define _APS_NEXT_COMMAND_VALUE         32779
-#define _APS_NEXT_CONTROL_VALUE         1200
+#define _APS_NEXT_CONTROL_VALUE         1203
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

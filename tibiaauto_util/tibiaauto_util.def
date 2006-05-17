@@ -121,3 +121,5 @@ EXPORTS
 	variableStoreSetVariable @115
 	variableStoreGetVariable @116
 	packSenderSayOnChan @117
+	packSenderSayWhisper @118
+	packSenderSayYell @119
