@@ -631,7 +631,7 @@ void CPackSender::turnDown()
 {
 	char retbuf[3];
 
-	retbuf[0]=1;
+	retbuf[0]=1	;
 	retbuf[1]=0;
 
 	retbuf[2]=0x71;

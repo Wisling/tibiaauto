@@ -789,16 +789,16 @@ void CTibiaautoDlg::OnToolInjectmc()
 	if (fd.DoModal()==IDOK)
 	{
 		CString pathName = fd.GetPathName();         
-				
-		char maxNo=10;
+						
 		FILE *f = fopen(pathName,"r+b");
 		if (f)
 		{
 			
 			
-			if (!fseek(f,itemProxy.getValueForConst("addrMCInject")+2,SEEK_SET))
+			if (!fseek(f,itemProxy.getValueForConst("addrMCInject"),SEEK_SET))
 			{
-				fwrite(&maxNo,1,1,f);
+				unsigned char val=0xeb;
+				fwrite(&val,1,1,f);
 				AfxMessageBox("Tibia client has been successfully modified to MC mode!");
 			} else {
 				AfxMessageBox("Unable to seek correct position in file!");

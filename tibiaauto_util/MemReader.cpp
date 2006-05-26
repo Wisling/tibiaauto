@@ -365,42 +365,42 @@ int CMemReader::mapGetSelfCellNr()
 	static int prevSelfTilePos=0;
 	int wouldReturn=0;
 	CTibiaCharacter *self = readSelfCharacter();
-
+	
 	// check self tile cache
 	int c=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+prevSelfTileNr*m_memLengthMapTile);
 	int tileId=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+prevSelfTileNr*m_memLengthMapTile+prevSelfTilePos*12+4);
 	if (prevSelfTilePos<c&&tileId==99)
 	{				
-		int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+prevSelfTileNr*168+prevSelfTilePos*12+4+4);
+		int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+prevSelfTileNr*m_memLengthMapTile+prevSelfTilePos*12+4+4);
 		if (tileCharId==self->tibiaId)
 		{
 			delete self;
 			return prevSelfTileNr;
 			
 		} 
-	}
+	}	
 
 	int tileNr;
 	for (tileNr=0;tileNr<m_memMaxMapTiles;tileNr++)
 	{
-		int pos;
-		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile);
+		int pos;		
+		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile);		
 		for (pos=0;pos<count;pos++)
 		{
 			int tileId=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile+pos*12+4);
 			if (tileId==99)
-			{				
-				int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*168+pos*12+4+4);
+			{								
+				int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile+pos*12+4+4);
 				if (tileCharId==self->tibiaId)
-				{
+				{					
 					delete self;
 					prevSelfTileNr=tileNr;
 					prevSelfTilePos=pos;					
 					return tileNr;
-				}				
-			}
-		}				
-	}
+				}						
+			}			
+		}					
+	}	
 	delete self;
 	return 0;
 }
@@ -430,7 +430,7 @@ int CMemReader::mapConvertPointToCell(point p)
 }
 
 int CMemReader::mapGetPointItemsCount(point p)
-{	
+{		
 	int selfCell=mapGetSelfCellNr();
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
 	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
@@ -449,7 +449,7 @@ int CMemReader::mapGetPointItemsCount(point p)
 
 	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
 	int itemCell = mapConvertPointToCell(itemPoint);
-
+	
 	int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile);	
 	return count;
 }
