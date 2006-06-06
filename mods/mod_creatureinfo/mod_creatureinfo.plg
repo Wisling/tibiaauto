@@ -1,0 +1,59 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_creatureinfo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP2B.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_creatureinfo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP2B.tmp" 
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP2C.tmp" with contents
+[
+../../xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_creatureinfo.pdb" /machine:I386 /def:".\mod_creatureinfo.def" /out:"../mod_creatureinfo.dll" /implib:"Release/mod_creatureinfo.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\KnownInfo.obj"
+".\Release\mod_creatureinfo.obj"
+".\Release\NameChanger.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\Util.obj"
+".\Release\mod_creatureinfo.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP2C.tmp"
+<h3>Output Window</h3>
+Compiling...
+mod_creatureinfo.cpp
+Linking...
+   Creating library Release/mod_creatureinfo.lib and object Release/mod_creatureinfo.exp
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP30.tmp" with contents
+[
+/nologo /o"Release/mod_creatureinfo.bsc" 
+".\Release\StdAfx.sbr"
+".\Release\ConfigData.sbr"
+".\Release\ConfigDialog.sbr"
+".\Release\exports.sbr"
+".\Release\KnownInfo.sbr"
+".\Release\mod_creatureinfo.sbr"
+".\Release\NameChanger.sbr"
+".\Release\proxy.sbr"
+".\Release\TibiaItem_impl.sbr"
+".\Release\Util.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP30.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+mod_creatureinfo.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

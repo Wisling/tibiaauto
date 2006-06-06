@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 9.aiml - Number  9 related       -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL      -->
+	<!-- Fork of 9/26/2001 ALICE        -->
+	<category>
+		<pattern>9 *</pattern>
+		<template>Is this a math question?
+</template>
+	</category>
+	<category>
+		<pattern>9</pattern>
+		<template>
+			<srai>I am 9 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>9 MONTHS</pattern>
+		<template>9 months is a pretty long time - Its how long a baby is inside its mothers womb.
+</template>
+	</category>
+</aiml>

@@ -1,0 +1,15 @@
+<responder>
+<!-- one thread: respond to 'hello' with 'hi' on 'say' only when player name contains GM -->
+<thread> 
+	<if>
+		<condition>
+			<and>
+				<message match="hello"/>
+				<playername match="GM"/>
+			</and>
+		</condition>
+		<say text="hi"/>
+	</if>
+</thread>
+
+</responder>

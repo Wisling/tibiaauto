@@ -1,0 +1,87 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: tre - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP22.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "../win32" /I "../lib" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRE_EXPORTS" /D "TRE_DEBUG" /D "HAVE_CONFIG_H" /FR"Debug/" /Fp"Debug/tre.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\projects\tibiaauto\tre\lib\regcomp.c"
+"F:\projects\tibiaauto\tre\lib\regerror.c"
+"F:\projects\tibiaauto\tre\lib\regexec.c"
+"F:\projects\tibiaauto\tre\lib\tre-ast.c"
+"F:\projects\tibiaauto\tre\lib\tre-compile.c"
+"F:\projects\tibiaauto\tre\lib\tre-filter.c"
+"F:\projects\tibiaauto\tre\lib\tre-match-approx.c"
+"F:\projects\tibiaauto\tre\lib\tre-match-backtrack.c"
+"F:\projects\tibiaauto\tre\lib\tre-match-parallel.c"
+"F:\projects\tibiaauto\tre\lib\tre-mem.c"
+"F:\projects\tibiaauto\tre\lib\tre-parse.c"
+"F:\projects\tibiaauto\tre\lib\tre-stack.c"
+]
+Creating command line "cl.exe @E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP22.tmp" 
+Creating temporary file "E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP23.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msvcprt.lib /nologo /dll /incremental:yes /pdb:"Debug/tre.pdb" /debug /machine:I386 /def:".\tre.def" /out:"Debug/tre.dll" /implib:"Debug/tre.lib" /pdbtype:sept 
+.\Debug\regcomp.obj
+.\Debug\regerror.obj
+.\Debug\regexec.obj
+".\Debug\tre-ast.obj"
+".\Debug\tre-compile.obj"
+".\Debug\tre-filter.obj"
+".\Debug\tre-match-approx.obj"
+".\Debug\tre-match-backtrack.obj"
+".\Debug\tre-match-parallel.obj"
+".\Debug\tre-mem.obj"
+".\Debug\tre-parse.obj"
+".\Debug\tre-stack.obj"
+]
+Creating command line "link.exe @E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP23.tmp"
+<h3>Output Window</h3>
+Compiling...
+regcomp.c
+regerror.c
+regexec.c
+tre-ast.c
+tre-compile.c
+tre-filter.c
+tre-match-approx.c
+tre-match-backtrack.c
+tre-match-parallel.c
+tre-mem.c
+tre-parse.c
+tre-stack.c
+Linking...
+   Creating library Debug/tre.lib and object Debug/tre.exp
+<h3>
+--------------------Configuration: retest - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP27.tmp" with contents
+[
+/nologo /MLd /W3 /Gm /GX /ZI /Od /I "../lib" /I "../win32" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "HAVE_CONFIG_H" /Fp"Debug/retest.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"F:\projects\tibiaauto\tre\tests\retest.c"
+]
+Creating command line "cl.exe @E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP27.tmp" 
+Creating temporary file "E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP28.tmp" with contents
+[
+Debug/tre.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msvcprt.lib /nologo /subsystem:console /incremental:yes /pdb:"Debug/retest.pdb" /debug /machine:I386 /out:"Debug/retest.exe" /pdbtype:sept 
+.\Debug\retest.obj
+.\Debug\tre.lib
+]
+Creating command line "link.exe @E:\DOCUME~1\ADMINI~2.VAN\USTAWI~1\Temp\RSP28.tmp"
+<h3>Output Window</h3>
+Compiling...
+retest.c
+Linking...
+
+
+
+<h3>Results</h3>
+retest.exe - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

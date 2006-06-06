@@ -1,0 +1,40 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_showmap - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPA6.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_showmap.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\projects\tibiaauto-pub\mods\mod_showmap\ToolMapShow.cpp"
+]
+Creating command line "cl.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPA6.tmp" 
+Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPA7.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_showmap.pdb" /debug /machine:I386 /def:".\mod_showmap.def" /out:"../mod_showmap.dll" /implib:"Debug/mod_showmap.lib" /pdbtype:sept 
+".\Debug\ConfigData.obj"
+".\Debug\exports.obj"
+".\Debug\MapButton.obj"
+".\Debug\mod_showmap.obj"
+".\Debug\proxy.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\ToolMapShow.obj"
+".\Debug\mod_showmap.res"
+]
+Creating command line "link.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPA7.tmp"
+<h3>Output Window</h3>
+Compiling...
+ToolMapShow.cpp
+Linking...
+
+
+
+<h3>Results</h3>
+mod_showmap.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

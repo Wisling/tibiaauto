@@ -1,0 +1,16 @@
+<responder>
+<!-- one thread: respond to 'hello' with sophisticated answer -->
+<thread> 
+	<if>
+		<condition>
+			<and>
+				<message match="hello"/>				
+			</and>
+		</condition>
+		<say text="$p: me? Cause I, $s never answer such questions!"/>
+		<sleep time="5000"/>
+		<say text="$p: cya, i must go"/>
+	</if>
+</thread>
+
+</responder>

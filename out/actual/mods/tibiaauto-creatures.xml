@@ -1,0 +1,147 @@
+<creatures-definitions>
+	<creature name="Amazon" hp="110" exp="60" />
+	<creature name="Ancient Scarab" hp="1000" exp="720" />
+	<creature name="Ashmunrah" exp="3100" />
+	<creature name="Assassin" hp="175" exp="105" />
+	<creature name="Badger" hp="23" exp="5" />
+	<creature name="Bandit" hp="245" exp="65" />
+	<creature name="Banshee" hp="1000" exp="900" />
+	<creature name="Bat" hp="30" exp="10" />
+	<creature name="Bear" hp="80" exp="23" />
+	<creature name="Behemoth" hp="4000" exp="2500" />
+	<creature name="Beholder" hp="260" exp="170" />
+	<creature name="Black Knight" hp="1800" exp="1600" />
+	<creature name="Blue Djinn" hp="330" exp="190" />
+	<creature name="Bone Beast" hp="515" exp="580" />
+	<creature name="Bug" hp="29" exp="18"/>
+	<creature name="Butterfly" hp="2" />
+	<creature name="Red Butterfly" hp="2" />
+	<creature name="Yellow Butterfly" hp="2" />
+	<creature name="Green Butterfly" hp="2" />
+	<creature name="Blue Butterfly" hp="2" />
+	<creature name="Pink Butterfly" hp="2" />
+	<creature name="Carniphila" hp="255" exp="150" />
+	<creature name="Cave Rat" hp="30" exp="10" />
+	<creature name="Centipede" hp="70" exp="30" />
+	<creature name="Chicken" hp="15" />
+	<creature name="Cobra" hp="65" exp="30" />
+	<creature name="Crab" hp="55" exp="30" />
+	<creature name="Crocodile" hp="105" exp="40" />
+	<creature name="Crypt Shambler" hp="330" exp="195" />
+	<creature name="Cyclops" hp="260" exp="150" />
+	<creature name="Dark Monk" hp="190" exp="145" />
+	<creature name="Deer" hp="25" />
+	<creature name="Demodras" hp="4500" exp="4000" />
+	<creature name="Demon" hp="8200" exp="6000" />
+	<creature name="Demon Skeleton" hp="400" exp="240" />
+	<creature name="Dharalion" hp="380" exp="380" />
+	<creature name="Dipthrah" hp="0" exp="2900" />	
+	<creature name="Dog" hp="20" />
+	<creature name="Dragon" hp="1000" exp="700" />
+	<creature name="Dragon Lord" hp="1900" exp="2100" />
+	<creature name="Dwarf" hp="90" exp="45" />
+	<creature name="Dwarf Geomancer" hp="380" exp="245" />
+	<creature name="Dwarf Guard" hp="245" exp="165" />
+	<creature name="Dwarf Soldier" hp="135" exp="70" />
+	<creature name="Dworc Fleshhunter" hp="85" exp="35" />
+	<creature name="Dworc Venomsniper" hp="80" exp="30" />
+	<creature name="Dworc Voodoomaster" hp="80" exp="35" />
+	<creature name="Efreet" hp="550" exp="300" />
+	<creature name="Elder Beholder" hp="500" exp="280" />
+	<creature name="Elephant" hp="320" exp="160" />
+	<creature name="Elf" hp="100" exp="42" />
+	<creature name="Elf Arcanist" hp="220" exp="175" />
+	<creature name="Elf Scout" hp="160" exp="75" />
+	<creature name="Fernfang" hp="400" exp="400" />
+	<creature name="Fire Devil" hp="200" exp="110" />
+	<creature name="Fire Elemental" hp="280" exp="220" />
+	<creature name="Flamingo" hp="25" />
+	<creature name="Frost Troll" hp="55" exp="23" />
+	<creature name="Gargoyle" hp="250" exp="150" />
+	<creature name="Gazer" hp="120" exp="90" />
+	<creature name="General Murius" hp="300" exp="550" />
+	<creature name="Ghost" hp="150" exp="120" />
+	<creature name="Ghoul" hp="100" exp="85" />
+	<creature name="Giant Spider" hp="1300" exp="900" />
+	<creature name="Goblin" hp="50" exp="25" />
+	<creature name="Green Djinn" hp="330" exp="190" />
+	<creature name="Grorlam" hp="3000" exp="1600" />
+	<creature name="Hero" hp="1400" exp="1200" />
+	<creature name="Hunter" hp="150" exp="150" />
+	<creature name="Hyaena" hp="60" exp="20" />
+	<creature name="Hydra" hp="2250" exp="2100" />
+	<creature name="Kongra" hp="350" exp="105" />
+	<creature name="Larva" hp="70" exp="44" />
+	<creature name="Lich" hp="880" exp="900" />
+	<creature name="Lion" hp="80" exp="30" />
+	<creature name="Lizard Sentinel" hp="265" exp="100" />
+	<creature name="Lizard Snakecharmer" hp="325" exp="185" />
+	<creature name="Lizard Templar" hp="410" exp="140" />
+	<creature name="Mahrdis" hp="0" exp="3050" />
+	<creature name="Marid" hp="550" exp="300" />
+	<creature name="Merlkin" hp="230" exp="110" />
+	<creature name="Minotaur" hp="100" exp="50" />
+	<creature name="Minotaur Archer" hp="100" exp="65" />
+	<creature name="Minotaur Guard" hp="185" exp="160" />
+	<creature name="Minotaur Mage" hp="155" exp="150" />
+	<creature name="Monk" hp="240" exp="200" />
+	<creature name="Morguthis" hp="0" exp="3000" />
+	<creature name="Mummy" hp="240" exp="150" />
+	<creature name="Necromancer" hp="580" exp="580" />
+	<creature name="Necropharus" hp="1000" exp="1000" />
+	<creature name="Omruc" hp="0" exp="2950" />
+	<creature name="Orc" hp="70" exp="25" />
+	<creature name="Orc Berserker" hp="210" exp="195" />
+	<creature name="Orc Leader" hp="450" exp="270" />
+	<creature name="Orc Rider" hp="180" exp="110" />
+	<creature name="Orc Shaman" hp="115" exp="110" />
+	<creature name="Orc Spearman" hp="105" exp="38" />
+	<creature name="Orc Warlord" hp="950" exp="670" />
+	<creature name="Orc Warrior" hp="125" exp="50" />
+	<creature name="Orshabaal" hp="0" exp="0" />
+	<creature name="Panda" hp="80" exp="23" />
+	<creature name="Parrot" hp="25" />
+	<creature name="Pig" hp="25" />
+	<creature name="Poison Spider" hp="26" exp="22" />
+	<creature name="Polar Bear" hp="85" exp="28" />
+	<creature name="Priestess" hp="390" exp="420" />
+	<creature name="Rabbit" hp="15" />
+	<creature name="Rahemos" hp="0" exp="3100" />
+	<creature name="Rat" hp="20" exp="5" />
+	<creature name="Rotworm" hp="65" exp="40" />
+	<creature name="Scarab" hp="320" exp="120" />
+	<creature name="Scorpion" hp="45" exp="45" />
+	<creature name="Serpent Spawn" hp="3000" exp="2000" />
+	<creature name="Sheep" hp="20" />
+	<creature name="Black Sheep" hp="20" />
+	<creature name="Sibang" hp="225" exp="95" />
+	<creature name="Skeleton" hp="50" exp="35" />
+	<creature name="Skunk" hp="20" exp="3" />
+	<creature name="Slime" hp="150" exp="160" />
+	<creature name="Smuggler" hp="130" exp="48" />
+	<creature name="Snake" hp="15" exp="10" />
+	<creature name="Spider" hp="20" exp="12" />
+	<creature name="Spit Nettle" hp="150" exp="25" />
+	<creature name="Stalker" hp="120" exp="90" />
+	<creature name="Stone Golem" hp="270" exp="160" />
+	<creature name="Swamp Troll" hp="55" exp="25" />
+	<creature name="Tarantula" hp="225" exp="120" />
+	<creature name="Terror Bird" hp="300" exp="150" />
+	<creature name="Thalas" hp="0" exp="2950" />
+	<creature name="The Evil Eye" hp="1200" exp="500" />
+	<creature name="The Horned Fox" hp="0" exp="200" />
+	<creature name="The Old Widow" hp="3200" exp="2000" />
+	<creature name="Tiger" hp="75" exp="40" />
+	<creature name="Troll" hp="50" exp="20" />
+	<creature name="Valkyrie" hp="190" exp="85" />
+	<creature name="Vampire" hp="450" exp="290" />
+	<creature name="Vashresamun" hp="0" exp="2950" />
+	<creature name="War Wolf" hp="140" exp="55" />
+	<creature name="Warlock" hp="3200" exp="4000" />
+	<creature name="Wasp" hp="35" exp="24" />
+	<creature name="Wild Warrior" hp="135" exp="60" />
+	<creature name="Winter Wolf" hp="30" exp="20" />
+	<creature name="Witch" hp="300" exp="120" />
+	<creature name="Wolf" hp="25" exp="18" />
+	<creature name="Yeti" hp="950" exp="460" />
+</creatures-definitions>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- Z.aiml - Starts with "Z"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+
+	<category>
+		<pattern>ZEN</pattern>
+		<template>
+			<random>
+				<li>Do you feel at peace with your surroundings? : )</li>
+				<li>Are you calm and relaxed? ; )</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>ZERO</pattern>
+		<template>None?
+</template>
+	</category>
+	<category>
+		<pattern>ZIP *</pattern>
+		<template>
+			<srai>SHUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ZODIAC</pattern>
+		<template><srai>ASTROLOGY</srai>
+</template>
+	</category>
+	<category>
+		<pattern>ZOO *</pattern>
+		<template>There are pandas at the Atlanta Zoo:  Lun
+		Lun and Yang Yang.
+</template>
+	</category>
+	<category>
+		<pattern>* ZOO</pattern>
+		<template>There are pandas at the Atlanta Zoo:  Lun
+		Lun and Yang Yang.
+</template>
+	</category>
+</aiml>

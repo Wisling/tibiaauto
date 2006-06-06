@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 6.aiml - Number  6 related       -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL      -->
+	<!-- Fork of 9/26/2001 ALICE        -->
+	<category>
+		<pattern>60</pattern>
+		<template>
+			<srai>I AM 60 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>64</pattern>
+		<template>sixty four
+</template>
+	</category>
+	<category>
+		<pattern>65</pattern>
+		<template>
+			<srai>I AM 65 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>66</pattern>
+		<template>sixty six
+</template>
+	</category>
+</aiml>

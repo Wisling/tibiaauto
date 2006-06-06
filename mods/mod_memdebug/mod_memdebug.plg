@@ -1,0 +1,53 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_memdebug - Win32 Debug--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Debug/mod_memdebug.res" /d "_DEBUG" /d "_AFXDLL" "E:\projects\tibiaauto-pub\mods\mod_memdebug\mod_memdebug.rc"" 
+Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSP34.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_memdebug.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\projects\tibiaauto-pub\mods\mod_memdebug\ConfigDialog.cpp"
+"E:\projects\tibiaauto-pub\mods\mod_memdebug\exports.cpp"
+"E:\projects\tibiaauto-pub\mods\mod_memdebug\mod_memdebug.cpp"
+"E:\projects\tibiaauto-pub\mods\mod_memdebug\proxy.cpp"
+"E:\projects\tibiaauto-pub\mods\mod_memdebug\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSP34.tmp" 
+Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSP35.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_memdebug.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\projects\tibiaauto-pub\mods\mod_memdebug\StdAfx.cpp"
+]
+Creating command line "cl.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSP35.tmp" 
+Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSP36.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_memdebug.pdb" /debug /machine:I386 /def:".\mod_memdebug.def" /out:"../mod_memdebug.dll" /implib:"Debug/mod_memdebug.lib" /pdbtype:sept 
+".\Debug\ConfigDialog.obj"
+".\Debug\exports.obj"
+".\Debug\mod_memdebug.obj"
+".\Debug\proxy.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\mod_memdebug.res"
+]
+Creating command line "link.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSP36.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigDialog.cpp
+exports.cpp
+mod_memdebug.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+cl.exe terminated at user request.
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_playerinfo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSPF1.tmp" with contents
+[
+/nologo /o"Release/mod_playerinfo.bsc" 
+".\Release\StdAfx.sbr"
+".\Release\CharInfoDialog.sbr"
+".\Release\ConfigData.sbr"
+".\Release\exports.sbr"
+".\Release\IPCBackPipeProxy.sbr"
+".\Release\mod_playerinfo.sbr"
+".\Release\playerInfo.sbr"
+".\Release\proxy.sbr"
+".\Release\TibiaItem_impl.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSPF1.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+mod_playerinfo.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

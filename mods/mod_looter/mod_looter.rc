@@ -1,0 +1,327 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_looter.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 186, 317
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Module: auto looter"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,68,296,50,14
+    LTEXT           "Container 1:",IDC_STATIC,7,16,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_1,53,16,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS1,111,16,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 2:",IDC_STATIC,7,36,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_2,53,36,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS2,111,36,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 3:",IDC_STATIC,7,56,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_3,53,56,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS3,111,56,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 4:",IDC_STATIC,7,76,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_4,53,76,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS4,111,76,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 5:",IDC_STATIC,7,96,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_5,53,96,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS5,111,96,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 6:",IDC_STATIC,7,116,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_6,53,117,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS6,111,117,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 7:",IDC_STATIC,7,136,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_7,53,136,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS7,111,136,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 8:",IDC_STATIC,7,156,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_8,53,156,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS8,111,156,68,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Container 9:",IDC_STATIC,7,176,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_9,53,176,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS9,111,176,68,12,
+                    SS_CENTERIMAGE
+    CONTROL         "Enable looting",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,276,172,14
+    CONTROL         "Auto open killed monsters and gather statistics",
+                    IDC_AUTO_OPEN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,
+                    223,161,10
+    CONTROL         "Loot food",IDC_LOOT_FOOD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,239,46,10
+    CONTROL         "Loot gp",IDC_LOOT_GP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,60,239,40,10
+    CONTROL         "Loot custom",IDC_LOOT_CUSTOM,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,111,239,55,10
+    CONTROL         "Loot worms",IDC_LOOT_WORMS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,255,52,10
+    LTEXT           "Container 10:",IDC_STATIC,7,196,43,12,SS_CENTERIMAGE
+    COMBOBOX        IDC_CONTAINER_MODE_10,53,196,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS10,111,196,68,12,
+                    SS_CENTERIMAGE
+END
+
+IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Send loot statistics info!"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
+    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 400k. Please support the Tibia Auto loot statistics by posting it at http://tibiaauto.net/forum/!",
+                    IDC_STATIC,7,7,172,39,WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 310
+    END
+
+    IDD_SENDSTATS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CONFIG DLGINIT
+BEGIN
+    IDC_CONTAINER_MODE_1, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_1, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_1, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_2, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_2, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_2, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_3, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_3, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_3, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_4, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_4, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_4, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_5, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_5, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_5, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_6, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_6, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_6, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_7, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_7, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_7, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_8, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_8, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_8, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_9, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_9, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_9, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    IDC_CONTAINER_MODE_10, 0x403, 7, 0
+0x6769, 0x6f6e, 0x6572, "\000" 
+    IDC_CONTAINER_MODE_10, 0x403, 9, 0
+0x6163, 0x7272, 0x6979, 0x676e, "\000" 
+    IDC_CONTAINER_MODE_10, 0x403, 9, 0
+0x7865, 0x6574, 0x6e72, 0x6c61, "\000" 
+    0
+END
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_looter DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_looter\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_looter.DLL\0"
+            VALUE "ProductName", "mod_looter Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_looter.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

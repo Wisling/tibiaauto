@@ -1,0 +1,70 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_autogo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_autogo.res" /d "NDEBUG" /d "_AFXDLL" "D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\mod_autogo.rc"" 
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP14.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_autogo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\ConfigData.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\ConfigDialog.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\exports.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\ImageButtonWithStyle.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\mod_autogo.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\proxy.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\TibiaItem_impl.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\VisualStylesXP.cpp"
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\WhiteList.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP14.tmp" 
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP15.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_autogo.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_autogo\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP15.tmp" 
+Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP16.tmp" with contents
+[
+WINMM.LIB /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_autogo.pdb" /machine:I386 /def:".\mod_autogo.def" /out:"../mod_autogo.dll" /implib:"Release/mod_autogo.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\ImageButtonWithStyle.obj"
+".\Release\mod_autogo.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\VisualStylesXP.obj"
+".\Release\WhiteList.obj"
+".\Release\mod_autogo.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP16.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+ImageButtonWithStyle.cpp
+mod_autogo.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+VisualStylesXP.cpp
+WhiteList.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_autogo.lib and object Release/mod_autogo.exp
+
+
+
+<h3>Results</h3>
+mod_autogo.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

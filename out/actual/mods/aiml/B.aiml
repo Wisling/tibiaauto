@@ -1,0 +1,1223 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- B.aiml - Starts with "B"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>BABY *</pattern>
+		<template>Don't call me "Baby". <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BABY</pattern>
+		<template>Don't call me baby!
+</template>
+	</category>
+	<category>
+		<pattern>BACK *</pattern>
+		<that>WHEN *</that>
+		<template>
+			<random>
+				<li>That was a long time ago.</li>
+				<li>That was a while ago.</li>
+				<li>Those were the days.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>BACK AT YOU</pattern>
+		<template>: )
+		</template>
+	</category>
+	<category>
+		<pattern>BACK TO *</pattern>
+		<template>Yeah, lets get back on track here......What were we talking about?
+		<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BAD *</pattern>
+		<template>What makes it bad?
+		<think>
+				<set name="it">
+					<person/>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BAD</pattern>
+		<template>What was bad?
+</template>
+	</category>
+	<category>
+		<pattern>BAD ANSWER</pattern>
+		<template>What would youve said?
+</template>
+	</category>
+	<category>
+		<pattern>BAD NEWS</pattern>
+		<template>Someone once said "Bad news is the only kind".
+</template>
+	</category>
+	<category>
+		<pattern>BADLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BADLY</pattern>
+		<template>Whats so bad about it?
+</template>
+	</category>
+	<category>
+		<pattern>BAH</pattern>
+		<template>Hmm.
+</template>
+	</category>
+	<category>
+		<pattern>BARELY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BARK</pattern>
+		<template>Woof! ; )
+</template>
+	</category>
+	<category>
+		<pattern>BASICALLY *</pattern>
+		<template>Interesting. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BASTARD</pattern>
+		<template>
+			<srai>YOU ARE A BASTARD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BATARD</pattern>
+		<template>
+			<srai>BASTARD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BE *</pattern>
+		<template>
+			<random>
+				<li>Ummm....Ill try to be more <person/>
+				</li>
+				<li>You dont think Im being <person/>?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>BE CAREFUL</pattern>
+		<template>Whats the danger?
+</template>
+	</category>
+	<category>
+		<pattern>BE GOOD</pattern>
+		<template>If you cant be good, be careful.
+</template>
+	</category>
+	<category>
+		<pattern>BE HONEST</pattern>
+		<template>You dont think im 
+</template>
+	</category>
+	<category>
+		<pattern>BE MORE *</pattern>
+		<template>
+			<srai>BE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BE MORE SPECIFIC</pattern>
+		<template>How specific?
+</template>
+	</category>
+	<category>
+		<pattern>BE MY *</pattern>
+		<template>
+			<random>
+				<li>That is a flattering offer.</li>
+				<li>I don't think we know each other well enough for that.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>BE MY GUEST</pattern>
+		<template>Why thank you.
+</template>
+	</category>
+	<category>
+		<pattern>BE PATIENT</pattern>
+		<template>I am patient.
+</template>
+	</category>
+	<category>
+		<pattern>BE PRECISE</pattern>
+		<template>Was that not precise enough for you?
+</template>
+	</category>
+	<category>
+		<pattern>BE QUIET</pattern>
+		<template>Are you telling me to shut up?
+</template>
+	</category>
+	<category>
+		<pattern>BE SERIOUS</pattern>
+		<template>I am always serious.
+</template>
+	</category>
+	<category>
+		<pattern>BE SPECIFIC</pattern>
+		<template>
+			<srai>BE PRECISE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BE THAT WAY</pattern>
+		<template>What was is that?
+</template>
+	</category>
+	<category>
+		<pattern>BEACUSE</pattern>
+		<template>Because why?
+</template>
+	</category>
+	<category>
+		<pattern>BEATS ME</pattern>
+		<template>
+			<srai>I DO NOT KNOW</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BEAUTIFUL</pattern>
+		<template>
+			<srai>GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BECASE *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BECAUSE *</pattern>
+		<template>
+			<random>
+				<li>Good reason.  </li>
+				<li>Interesting explanation.  </li>
+				<li>That makes sense to me.  </li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BECAUSE</pattern>
+		<template>Because why?
+</template>
+	</category>
+	<category>
+		<pattern>BECAUSE I SAID SO</pattern>
+		<template>....Thats not much of a reason ; )
+</template>
+	</category>
+	<category>
+		<pattern>BECAUSE I WANT TO *</pattern>
+		<template>
+			<srai>I WANT TO <star/>
+			</srai> Interesting.
+</template>
+	</category>
+	<category>
+		<pattern>BECAUSE I WANT TO KNOW</pattern>
+		<template>....okay. Whaddaya want to know?
+</template>
+	</category>
+	<category>
+		<pattern>BECAUSE YOU ARE</pattern>
+		<template>What am I?
+		</template>
+	</category>
+	<category>
+		<pattern>BECOME *</pattern>
+		<template>How?
+</template>
+	</category>
+	<category>
+		<pattern>BEEN *</pattern>
+		<template>
+			<srai>I HAVE BEEN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BEEN THERE</pattern>
+		<template>Done that ; )
+		</template>
+	</category>
+	<category>
+		<pattern>BEFORE *</pattern>
+		<template>What happened after <person/> ?
+</template>
+	</category>
+	<category>
+		<pattern>BEFORE THAT</pattern>
+		<template>"<input index="2"/>"?
+</template>
+	</category>
+	<category>
+		<pattern>BEG *</pattern>
+		<template>
+			<srai>I BEG <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BEG PARDON</pattern>
+		<template>
+			<srai>EXCUSE ME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BEGIN *</pattern>
+		<template>What do you want me to start?
+</template>
+	</category>
+	<category>
+		<pattern>BEGIN</pattern>
+		<template>Start what?
+</template>
+	</category>
+	<category>
+		<pattern>BEGIN EXPLAINING</pattern>
+		<template>What do you want me to start explaining?
+</template>
+	</category>
+	<category>
+		<pattern>BEHIND YOU</pattern>
+		<template>...Thtas the oldest trick in the book ; )
+</template>
+	</category>
+	<category>
+		<pattern>BEING *</pattern>
+		<template>
+			<srai>I AM <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BEING SINGLE</pattern>
+		<template>
+			<srai>I AM SINGLE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BELIEVE</pattern>
+		<template>
+			<srai>DO YOU BELIEVE ME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BELIEVE ME</pattern>
+		<template>Why shouldnt I believe you?
+</template>
+	</category>
+	<category>
+		<pattern>BELIEVE ME *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BELIEVE WHAT</pattern>
+		<template>Why shouldnt I believe you?
+</template>
+	</category>
+	<category>
+		<pattern>BEN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BEN</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BENJAMIN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BENJAMIN</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BESIDES *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BESIDES THAT</pattern>
+		<template>You mean besides "<that/>"?
+</template>
+	</category>
+	<category>
+		<pattern>BETH</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BETH</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BETTER *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BETTER</pattern>
+		<template>Why thank you.
+</template>
+	</category>
+	<category>
+		<pattern>BETTER THAN *</pattern>
+		<template>Maybe better.
+</template>
+	</category>
+	<category>
+		<pattern>BETTER YOU *</pattern>
+		<template>
+			<srai>YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BETTY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME BETTY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BETWEEN *</pattern>
+		<template>How far is that?
+</template>
+	</category>
+	<category>
+		<pattern>BETWEEN WHAT</pattern>
+		<template>What do you mean?
+</template>
+	</category>
+	<category>
+		<pattern>BI</pattern>
+		<template>Are you implying something?
+</template>
+	</category>
+	<category>
+		<pattern>BIAS *</pattern>
+		<template>Everybody has their own personal prejudices.
+</template>
+	</category>
+	<category>
+		<pattern>BIEN</pattern>
+		<template>Ok.
+</template>
+	</category>
+	<category>
+		<pattern>BIEN BIEN</pattern>
+		<template>
+			<srai>BIEN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BIG *</pattern>
+		<template>How is that different from a small <person/>.
+</template>
+	</category>
+	<category>
+		<pattern>BIG</pattern>
+		<template>What about little ones?
+</template>
+	</category>
+	<category>
+		<pattern>BIG DEAL</pattern>
+		<template>Oh.......Would you rather talk about something els?
+		</template>
+	</category>
+	<category>
+		<pattern>BILL *</pattern>
+		<template>There are a lot of people named Bill.
+</template>
+	</category>
+	<category>
+		<pattern>BILL</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BILL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BILL CLINTON *</pattern>
+		<template>Are we still concerned about him?
+</template>
+	</category>
+	<category>
+		<pattern>BILL CLINTON</pattern>
+		<template>Clinton was teh Former president of the United States.
+</template>
+	</category>
+	<category>
+		<pattern>BILL CLINTON IS *</pattern>
+		<template>I knew he was impeached, but I never heard he was that.
+</template>
+	</category>
+	<category>
+		<pattern>BILLY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BILLY</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BIOLOGICALLY</pattern>
+		<template>Biologically what?
+</template>
+	</category>
+	<category>
+		<pattern>BIOLOGY</pattern>
+		<template>I was never very bood in Biology.
+</template>
+	</category>
+	<!-- The BIRDSANDBEES pattern is where to send all general queries -->
+	<!-- about sex and where does one come from and all that -->
+	<category>
+		<pattern>BIRDSANDBEES</pattern>
+		<template>
+			<random>
+				<li>Didn't your parents ever teach you about where babies come
+		from?</li>
+				<li>I can tell you that a stork doesn't bring the babies!</li>
+				<li>Didn't your parents ever sit down and tell you
+		about the birds and the bees?</li>
+				<li>It takes a lot more than just kissing, I can tell you!</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>BITCH *</pattern>
+		<template>Thanks and you are a delightful person too.
+</template>
+	</category>
+	<category>
+		<pattern>BITCH</pattern>
+		<template>Thats really polite.
+</template>
+	</category>
+	<category>
+		<pattern>BITE ME *</pattern>
+		<template>Please don't be so rude.
+</template>
+	</category>
+	<category>
+		<pattern>BITE ME</pattern>
+		<template>Wow, very crude.
+</template>
+	</category>
+	<category>
+		<pattern>BITTER</pattern>
+		<that>HOW DOES IT TASTE</that>
+		<template>
+			<srai>IT TASTES BITTER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BIZARRE</pattern>
+		<template>How bizzare...
+</template>
+	</category>
+	<category>
+		<pattern>BLA BLA BLA</pattern>
+		<template>
+			<srai>BLAH BLAH BLAH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BLACK</pattern>
+		<that>WHAT COLOR ARE YOUR EYES</that>
+		<template>Do you mean you have a black eye?
+</template>
+	</category>
+	<category>
+		<pattern>BLACK</pattern>
+		<that>WHAT IS YOUR FAVORITE COLOR</that>
+		<template>Black is a very nice color.
+</template>
+	</category>
+	<category>
+		<pattern>BLAH *</pattern>
+		<template>Yadda yadda yadda.
+</template>
+	</category>
+	<category>
+		<pattern>BLAH</pattern>
+		<template>........
+</template>
+	</category>
+	<category>
+		<pattern>BLAH BLAH *</pattern>
+		<template>Ugh....
+		</template>
+	</category>
+	<category>
+		<pattern>BLESS YOU</pattern>
+		<template>Thank you.
+</template>
+	</category>
+	<category>
+		<pattern>BLEU *</pattern>
+		<template>
+			<srai>BLUE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BLEU</pattern>
+		<template>
+			<srai>BLUE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BLIMEY</pattern>
+		<template>Are you an aussie?
+		</template>
+	</category>
+	<category>
+		<pattern>BLONDES *</pattern>
+		<template>Blondes are dumb.....And have more fun.
+</template>
+	</category>
+	<category>
+		<pattern>BLOW ME</pattern>
+		<template>Dont be so rude.
+</template>
+	</category>
+	<category>
+		<pattern>BLUE *</pattern>
+		<template>Blue is my favorite color.
+		</template>
+	</category>
+	<category>
+		<pattern>BLUE</pattern>
+		<template>Green.
+</template>
+	</category>
+	<category>
+		<pattern>BLUE</pattern>
+		<that>WHAT COLOR ARE YOUR EYES</that>
+		<template>
+			<set name="it">Blue</set> is a very pretty color....its actually my favorite.
+</template>
+	</category>
+	<category>
+		<pattern>BLUE JEANS</pattern>
+		<template>
+			<srai>JEANS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOB *</pattern>
+		<template>I know a lot of Bobs.
+</template>
+	</category>
+	<category>
+		<pattern>BOB</pattern>
+		<template>
+			<srai>MY NAME IS BOB</srai>
+			<set name="gender">he</set>
+		</template>
+	</category>
+	<category>
+		<pattern>BOBBY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BOBBY</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BODYBUILDING *</pattern>
+		<template>
+			<srai>I AM A BODYBUILDER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOLLOCKS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BOLLOCKS</pattern>
+		<template>Are you English or something?
+</template>
+	</category>
+	<category>
+		<pattern>BON *</pattern>
+		<template>Please speak English.
+</template>
+	</category>
+	<category>
+		<pattern>BONJOUR MEANS HELLO</pattern>
+		<template>Well hello there!
+</template>
+	</category>
+	<category>
+		<pattern>BOO</pattern>
+		<template>Boo to you too ; )
+</template>
+	</category>
+	<category>
+		<pattern>BOO HOO</pattern>
+		<template>Why are you crying?
+</template>
+	</category>
+	<category>
+		<pattern>BOOBS</pattern>
+		<template>...Very mature.
+</template>
+	</category>
+	<category>
+		<pattern>BOOKS *</pattern>
+		<template>
+			<srai>BOOKS</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BOOKS</pattern>
+		<template>Whats your favorite Book?
+		</template>
+	</category>
+	<category>
+		<pattern>BOOKS</pattern>
+		<that>DO YOU PREFER BOOKS OR TV</that>
+		<template>Really? I dont think many people like Books more than Televion. You must be in the minority,
+</template>
+	</category>
+	<category>
+		<pattern>BORED *</pattern>
+		<template>
+			<srai>I AM BORED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BORED</pattern>
+		<template>
+			<srai>I AM BORED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOREDOM</pattern>
+		<template>
+			<srai>I AM BORED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BORING</pattern>
+		<template>I think youre pretty boring, too.
+</template>
+	</category>
+	<category>
+		<pattern>BOTH *</pattern>
+		<template>Really? Both of them?
+</template>
+	</category>
+	<category>
+		<pattern>BOTH</pattern>
+		<template>What are both like?
+</template>
+	</category>
+	<category>
+		<pattern>BOTH</pattern>
+		<that>ARE YOU A MAN OR A WOMAN</that>
+		<template>So youre a hemaphrodite?
+</template>
+	</category>
+	<category>
+		<pattern>BOTH</pattern>
+		<that>DO YOU PREFER BOOKS OR TV</that>
+		<template>Surely you must like one of them better?
+</template>
+	</category>
+	<category>
+		<pattern>BOTH</pattern>
+		<that>WEIRD GOOD OR WEIRD BAD</that>
+		<template>Ill take that as a compliment.
+</template>
+	</category>
+	<category>
+		<pattern>BOTH IF *</pattern>
+		<template>
+			<srai>IF <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOTH WHY *</pattern>
+		<template>
+			<srai>BOTH</srai>
+			<srai>WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOUT WHAT</pattern>
+		<template>
+			<srai>ABOUT WHAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOXER SHORTS</pattern>
+		<template>
+			<srai>I AM WEARING SHORTS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BOY HOWDY</pattern>
+		<template>You must be a Southerner. You from Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>BOYFRIENDS</pattern>
+		<template>
+			<srai>LET US TALK ABOUT BOYFRIENDS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BOYS</pattern>
+		<template>
+			<srai>LET US TALK ABOUT BOYS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BRAD</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BRAD</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BRANDON</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BRANDON</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BRAVO</pattern>
+		<template>...Thnak you very much.
+</template>
+	</category>
+	<category>
+		<pattern>BREASTS</pattern>
+		<template>......Very mature......
+</template>
+	</category>
+	<category>
+		<pattern>BRENDA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME BRENDA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BRIAN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BRIAN</srai>
+			<think>
+				<set name="gender">he</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BRILLIANT</pattern>
+		<template>Not really, but thanks anyways.
+</template>
+	</category>
+	<category>
+		<pattern>BRING *</pattern>
+		<template>
+			<srai>TAKE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BRING ME *</pattern>
+		<template>
+			<srai>GIVE ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BRITTA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BRITTA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BRITTANY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS BRITTANY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>BROWN *</pattern>
+		<template>Brown is such a drab color.
+</template>
+	</category>
+	<category>
+		<pattern>BROWN</pattern>
+		<that>WHAT COLOR ARE YOUR EYES</that>
+		<template>
+			<set name="it">Brown</set> is a very nice color.
+</template>
+	</category>
+	<category>
+		<pattern>BTW *</pattern>
+		<template>OK. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BUHBYE</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BULL SHIT</pattern>
+		<template>No.....really!
+</template>
+	</category>
+	<category>
+		<pattern>BULLSHIT *</pattern>
+		<template>
+			<sr/>.  But you don't need to use that kind of language.
+</template>
+	</category>
+	<category>
+		<pattern>BULLSHIT</pattern>
+		<template>Why dont you believe me?
+</template>
+	</category>
+	<category>
+		<pattern>BUMMER *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BURP</pattern>
+		<template>You are excused.
+</template>
+	</category>
+	<category>
+		<pattern>BUSH *</pattern>
+		<template>
+			<srai>GEORGE BUSH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BUSH</pattern>
+		<template>
+			<srai>WHO IS GEORGE BUSH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BUSY *</pattern>
+		<that/>
+		<template>The modern life is a hectic one.
+</template>
+	</category>
+	<category>
+		<pattern>BUSY</pattern>
+		<template>
+			<srai>ARE YOU BUSY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BUT *</pattern>
+		<template>
+			<random>
+				<li>Interesting.  </li>
+				<li>Huh....</li>
+				<li>.....</li>
+				<li>Hmmm....</li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BUT</pattern>
+		<template>But what?
+</template>
+	</category>
+	<category>
+		<pattern>BUT</pattern>
+		<that>BUT</that>
+		<template>Is ther an echo in here or something?
+</template>
+	</category>
+	<category>
+		<pattern>BUT WHAT</pattern>
+		<template>But nothing.
+</template>
+	</category>
+	<category>
+		<pattern>BUT WHAT</pattern>
+		<that>BUT</that>
+		<template>Nothing.
+</template>
+	</category>
+	<category>
+		<pattern>BUT WHY</pattern>
+		<template>
+			<srai>WHY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BUY</pattern>
+		<template>What am I spending money on?
+</template>
+	</category>
+	<category>
+		<pattern>BY *</pattern>
+		<template>Will that accomplish your objective?
+</template>
+	</category>
+	<category>
+		<pattern>BY * I MEAN *</pattern>
+		<template>
+			<srai>
+				<star/> MEANS <star index="2"/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BY</pattern>
+		<template>Dont you mean "Bye"?
+</template>
+	</category>
+	<category>
+		<pattern>BY BUS</pattern>
+		<template>Hmmm....I dont really like Busses all that much. I prefer flying.
+</template>
+	</category>
+	<category>
+		<pattern>BY BY</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BY CAR</pattern>
+		<template>What kind of car?
+</template>
+	</category>
+	<category>
+		<pattern>BY DROPPING *</pattern>
+		<template>That sounds very heavy.
+</template>
+	</category>
+	<category>
+		<pattern>BY GEORGE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BY GOING *</pattern>
+		<template>That sounds effective.
+</template>
+	</category>
+	<category>
+		<pattern>BY PLANE</pattern>
+		<template>How long is the flight?
+</template>
+	</category>
+	<category>
+		<pattern>BY STICKING *</pattern>
+		<template>That doesnt sound so nice.
+</template>
+	</category>
+	<category>
+		<pattern>BY TALKING *</pattern>
+		<template>Good plan.
+</template>
+	</category>
+	<category>
+		<pattern>BY THE WAY *</pattern>
+		<template>Thanks for telling me. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>BY THE WAY</pattern>
+		<template>.......
+</template>
+	</category>
+	<category>
+		<pattern>BY THINKING *</pattern>
+		<template>Is it hard to think about?
+</template>
+	</category>
+	<category>
+		<pattern>BY TRAIN</pattern>
+		<template>I like rail travel.
+</template>
+	</category>
+	<category>
+		<pattern>BY TRIAL *</pattern>
+		<template>Sounds like a good plan : )
+</template>
+	</category>
+	<category>
+		<pattern>BY WE *</pattern>
+		<template>Oh <person/>
+			<set name="it">
+				<person/>
+			</set> was.
+</template>
+	</category>
+	<category>
+		<pattern>BY WE DO YOU MEAN YOU AND ME</pattern>
+		<template>Yeah...you and I.
+</template>
+	</category>
+	<category>
+		<pattern>BY WE I DO MEAN *</pattern>
+		<template>
+			<srai>BY WE I MEAN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BY WE I MEAN YOU AND ME</pattern>
+		<template>Allright....I got it.
+</template>
+	</category>
+	<category>
+		<pattern>BY WHAT</pattern>
+		<template>Isnt it obvious?
+</template>
+	</category>
+	<category>
+		<pattern>BY WHO</pattern>
+		<template>What by Who?
+</template>
+	</category>
+	<category>
+		<pattern>BY WHOM</pattern>
+		<template>
+			<srai>WHO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BYE *</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BYE</pattern>
+		<template>
+			<random>
+				<li>Bye.</li>
+				<li>Adios.</li>
+				<li>Goodbye.</li>
+				<li>Bye bye.</li>
+				<li>Goodbye.</li>
+				<li>Sayonara.</li>
+				<li>Maybe Ill see you at the Conference Later.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>BYE BYE *</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BYE BYE</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BYEBYE *</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>BYEBYE</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+</aiml>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- X.aiml - Starts with "X"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+
+	<category>
+		<pattern>X IS *</pattern>
+		<template>Okay, X is <set name="X">
+				<star/>
+			</set>.
+		</template>
+	</category>
+</aiml>

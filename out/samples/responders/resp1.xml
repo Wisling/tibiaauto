@@ -1,0 +1,5 @@
+<responder>
+<!-- one thread: copy everything to other char -->
+<thread> <say channel="priv" player="XXXX" text="[from $p] $m"/></thread>
+
+</responder>
