@@ -1,0 +1,11 @@
+<responder>
+<!-- one thread: use alice for handling all private messages -->
+<thread>
+	<if>
+		<condition>
+			<channel match="priv"/>
+		</condition>
+		<say channel="private" player="$p" alice="yes"/>
+	</if>
+</thread>
+</responder>

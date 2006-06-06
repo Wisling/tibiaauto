@@ -1,0 +1,13 @@
+<responder>
+<!-- one thread: respond to 'hello' with 'hi' on 'say' and dance 3 times -->
+<thread> 
+	<if>
+		<condition>
+			<message match="hello"/>
+		</condition>
+		<say text="hi"/>
+		<dance count="3"/>
+	</if>
+</thread>
+
+</responder>

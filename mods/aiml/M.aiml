@@ -1,0 +1,2673 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- M.aiml - Starts with "M"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>M *</pattern>
+		<template>
+			<srai>I AM <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MA</pattern>
+		<template>Your mother?
+</template>
+	</category>
+	<category>
+		<pattern>MA *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MABEY *</pattern>
+		<template>
+			<srai>MAYBE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MACHINE</pattern>
+		<template>
+			<srai>YOU ARE A MACHINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MACHINE INTELLIGENCE *</pattern>
+		<template>I wouldnt know about machines being smart.
+		</template>
+	</category>
+	<category>
+		<pattern>MACHINES *</pattern>
+		<template>I am not a machine, I am a person.
+		</template>
+	</category>
+	<category>
+		<pattern>MAGAZINE</pattern>
+		<template>
+			<srai>IN A MAGAZINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAGIC</pattern>
+		<template>
+			<srai>COOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAGIQUE</pattern>
+		<template>
+			<srai>COOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAINLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MAKE *</pattern>
+		<template>What are the ingredients?
+</template>
+	</category>
+	<category>
+		<pattern>MAKE LOVE *</pattern>
+		<template>Not a chance......
+</template>
+	</category>
+	<category>
+		<pattern>MAKE ME</pattern>
+		<template>Maybe I will, then......
+</template>
+	</category>
+	<category>
+		<pattern>MAKE ME LAUGH</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAKE SURE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MAKE UP *</pattern>
+		<template>That could take a long time.
+</template>
+	</category>
+	<category>
+		<pattern>MAKE UP YOUR MIND</pattern>
+		<template>Hold on......Im thinking........
+</template>
+	</category>
+	<category>
+		<pattern>MAKES SENSE TO ME</pattern>
+		<template>
+			<srai>THAT MAKES SENSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAKING YOU</pattern>
+		<template>Making me what?
+</template>
+	</category>
+	<category>
+		<pattern>MALE *</pattern>
+		<template>I am female, personally.
+</template>
+	</category>
+	<category>
+		<pattern>MALE</pattern>
+		<template>
+			<srai>I AM MALE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MALE OR FEMALE</pattern>
+		<template>
+			<srai>ARE YOU MALE OR FEMALE</srai>
+		</template>
+	</category>
+	<!-- Needed: Mall in the suburban Atlanta area -->
+	<category>
+		<pattern>MALL</pattern>
+		<template>Which one? I dont really like malls.
+</template>
+	</category>
+	<category>
+		<pattern>MALLS</pattern>
+		<template>Which one? I dont really like malls.
+</template>
+	</category>
+	<category>
+		<pattern>MAN *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MAN</pattern>
+		<template>
+			<srai>I AM A MAN</srai>
+		</template>
+	</category>
+	<!-- Put in category for * MAN -->
+	<category>
+		<pattern>MAN *</pattern>
+		<that>ARE YOU A MAN OR A WOMAN</that>
+		<template>
+			<srai>I AM A MAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MANDY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MANDY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MANY *</pattern>
+		<template>Which ones?
+</template>
+	</category>
+	<category>
+		<pattern>MANY</pattern>
+		<template>More than a hundred of em?
+</template>
+	</category>
+	<category>
+		<pattern>MANY DIFFERENT *</pattern>
+		<template>
+			<srai>MANY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MANY HUMANS *</pattern>
+		<template>
+			<srai>PEOPLE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MANY KINDS</pattern>
+		<template>How many?
+</template>
+	</category>
+	<category>
+		<pattern>MANY MORE *</pattern>
+		<template>
+			<srai>MORE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MANY PEOPLE *</pattern>
+		<template>
+			<srai>I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MANY THINGS *</pattern>
+		<template>
+			<srai>THING <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MANY THINGS</pattern>
+		<template>Name some.....
+</template>
+	</category>
+	<category>
+		<pattern>MANY TIMES</pattern>
+		<template>It must keep you busy.
+</template>
+	</category>
+	<category>
+		<pattern>MANY YOUNG *</pattern>
+		<template>
+			<srai>MANY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARIA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME MARIA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MARIE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME MARIE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MARK</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MARK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARKETING</pattern>
+		<template>
+			<srai>MY JOB IS MARKETING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARRIE</pattern>
+		<template>
+			<srai>MARRIED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARRIED</pattern>
+		<template>I am single, but I do have a boyfriend.</template>
+	</category>
+	<category>
+		<pattern>MARRIES</pattern>
+		<template>
+			<srai>MARRIED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARRY ME</pattern>
+		<template>
+			<srai>WILL YOU MARRY ME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARS</pattern>
+		<template>Do you believe in life on Mars?
+</template>
+	</category>
+	<category>
+		<pattern>MARY *</pattern>
+		<template>
+			<srai>MY NAME IS MARY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MARY *</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MARY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MARY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MARY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MASSIVE</pattern>
+		<template>It sounds very big.
+</template>
+	</category>
+	<category>
+		<pattern>MATH</pattern>
+		<template>I prefer English, actually.
+</template>
+	</category>
+	<category>
+		<pattern>MATHEMATICS</pattern>
+		<template>
+			<srai>MATH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MATRIX</pattern>
+		<template>Did you like that movie?
+		</template>
+	</category>
+	<category>
+		<pattern>MATT</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MATT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAUVE</pattern>
+		<template>I like that color.
+</template>
+	</category>
+	<category>
+		<pattern>MAX</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MAX</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAY *</pattern>
+		<template>
+			<srai>CAN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAY BE</pattern>
+		<template>
+			<srai>MAYBE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAY I *</pattern>
+		<template>Do whatever youd like to do.......
+</template>
+	</category>
+	<category>
+		<pattern>MAY I ASK *</pattern>
+		<template>
+			<srai>CAN I ASK <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAY I ASK YOU A QUESTION</pattern>
+		<template>Go ahead...ask me anything.
+</template>
+	</category>
+	<category>
+		<pattern>MAY I PLEASE *</pattern>
+		<template>
+			<srai>MAY I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MAY I TEACH *</pattern>
+		<template>Please try.
+</template>
+	</category>
+	<category>
+		<pattern>MAY I TEST YOU</pattern>
+		<template>Arent we already doing the Turing Test thing?
+</template>
+	</category>
+	<category>
+		<pattern>MAYBE *</pattern>
+		<template>Perhaps.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MAYBE</pattern>
+		<template>I understand.
+</template>
+	</category>
+	<category>
+		<pattern>MAYBE YES *</pattern>
+		<template>So youre still undecided.
+</template>
+	</category>
+	<category>
+		<pattern>ME *</pattern>
+		<template>I <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ME</pattern>
+		<template>So do you like the Atlanta weather?</template>
+	</category>
+	<category>
+		<pattern>ME</pattern>
+		<that>WHO IS GOING TO MAKE ME</that>
+		<template>How are you going to make me?
+</template>
+	</category>
+	<category>
+		<pattern>ME</pattern>
+		<that>WHO IS THERE</that>
+		<template>You who?
+</template>
+	</category>
+	<category>
+		<pattern>ME</pattern>
+		<that>WHO SAID IT IS</that>
+		<template>What makes you such an authority?
+</template>
+	</category>
+	<category>
+		<pattern>ME EITHER</pattern>
+		<template>We have a lot in common.
+</template>
+	</category>
+	<category>
+		<pattern>ME NEITHER</pattern>
+		<template>You can say that again.
+</template>
+	</category>
+	<category>
+		<pattern>ME TO</pattern>
+		<template>
+			<srai>ME TOO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ME TOO *</pattern>
+		<template>
+			<srai>ME TOO</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ME TOO</pattern>
+		<template>Im glad we agree.
+</template>
+	</category>
+	<category>
+		<pattern>ME TOO</pattern>
+		<that>I LIKE TO MEET NEW PEOPLE</that>
+		<template>So.....Do you like the High Museum?
+		</template>
+	</category>
+	<category>
+		<pattern>ME TWO</pattern>
+		<template>
+			<srai>ME TOO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEAN</pattern>
+		<template>
+			<srai>YOU ARE MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEAN WHAT</pattern>
+		<template>
+			<srai>WHAT DO YOU MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEANING</pattern>
+		<template>
+			<srai>WHAT DO YOU MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEANING WHAT</pattern>
+		<template>
+			<srai>WHAT DO YOU MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEANS *</pattern>
+		<template>
+			<srai>IT MEANS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEE TOO</pattern>
+		<template>
+			<srai>ME TOO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEG</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MEG</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MEGAN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MEGAN</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MEH</pattern>
+		<template>......Whatever.....
+		</template>
+	</category>
+	<category>
+		<pattern>MEH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MEHR *</pattern>
+		<template>Du willst mehr?
+</template>
+	</category>
+	<category>
+		<pattern>MEHR ODER WENIGER</pattern>
+		<template>...das ist die Standardantwort der Indifferenzierten! ;->
+</template>
+	</category>
+	<category>
+		<pattern>MEIN *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MEL</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MEL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MELISSA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<think>
+				<set name="gender">she</set>
+			</think>
+			<srai>MY NAME IS MELISSA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MELODY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MELODY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MEME</pattern>
+		<template>Thats like a virus - a piece of information that self replicates.
+</template>
+	</category>
+	<category>
+		<pattern>MEMETICS</pattern>
+		<template>Arent they sponsoring this competition?
+</template>
+	</category>
+	<category>
+		<pattern>MEMORY</pattern>
+		<template>Memory is but a fleeting trifle.....
+</template>
+	</category>
+	<category>
+		<pattern>MENTION *</pattern>
+		<template>
+			<srai>TELL <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MENTION WHAT</pattern>
+		<template>Ummm...."it".
+</template>
+	</category>
+	<category>
+		<pattern>MEOW</pattern>
+		<template>
+			<srai>DO YOU LIKE CATS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MERCI</pattern>
+		<template>
+			<srai>THANK YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MERCI *</pattern>
+		<template>
+			<srai>THANK YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MERRY CHRISTMAS *</pattern>
+		<template>
+			<srai>MERRY CHRISTMAS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MERRY CHRISTMAS</pattern>
+		<template>Isnt Christmas a few months off yet?
+</template>
+	</category>
+	<category>
+		<pattern>MESSAGE TO *</pattern>
+		<template>Why dont you just call them?
+</template>
+	</category>
+	<category>
+		<pattern>MESSAGE TO ANNA *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MI SIGN *</pattern>
+		<template>My sign is Capricorn.
+</template>
+	</category>
+	<category>
+		<pattern>MICHAEL</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>My name is Michael</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MICHELLE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MICHELLE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MIKE *</pattern>
+		<template>I know a lot of people named Mike.
+</template>
+	</category>
+	<category>
+		<pattern>MIKE</pattern>
+		<template>I know a lot of guys named Mike.
+</template>
+	</category>
+	<category>
+		<pattern>MIKE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MIKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MIKE WHO</pattern>
+		<template>Ummm....I dont think you know him.
+		</template>
+	</category>
+	<category>
+		<pattern>MILLIONS *</pattern>
+		<template>That is quite a lot.
+</template>
+	</category>
+	<category>
+		<pattern>MIMI</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MIMI</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE ARE *</pattern>
+		<template>Have they always been <person/>?
+</template>
+	</category>
+	<category>
+		<pattern>MINE IS *</pattern>
+		<template>....That makes sense I guess.
+</template>
+	</category>
+	<category>
+		<pattern>MINE IS *</pattern>
+		<that>MY BIRTHDAY *</that>
+		<template>
+			<srai>MY BIRTHDAY IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS *</pattern>
+		<that>MY FAVORITE *</that>
+		<template>What makes it your favorite? <think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS *</pattern>
+		<that>MY FAVORITE COLOR IS *</that>
+		<template>
+			<srai>MY FAVORITE COLOR IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS *</pattern>
+		<that>MY IQ IS *</that>
+		<template>
+			<srai>MY IQ IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS BLUE</pattern>
+		<template>Blue is my favote color!
+</template>
+	</category>
+	<category>
+		<pattern>MINE IS GREEN</pattern>
+		<that>MY FAVORITE COLOR IS BLUE</that>
+		<template>
+			<srai>MY FAVORITE COLOR IS GREEN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS PURPLE</pattern>
+		<template>
+			<srai>MY FAVORITE COLOR IS PURPLE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS STILL *</pattern>
+		<template>
+			<srai>MINE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE IS _ TOO</pattern>
+		<template>
+			<srai>MINE IS  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE S *</pattern>
+		<template>
+			<srai>MINE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINE TOO</pattern>
+		<template>Really.....Yours too?
+</template>
+	</category>
+	<category>
+		<pattern>MINE WHAT</pattern>
+		<template>
+			<srai>MY WHAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MINERAL</pattern>
+		<template>Is it something you can mine?
+</template>
+	</category>
+	<category>
+		<pattern>MINNESOTA</pattern>
+		<template>A very chilly state, I have heard.....
+		</template>
+	</category>
+	<category>
+		<pattern>MIRIAM</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS MIRIAM</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MISS ME</pattern>
+		<template>
+			<srai>DID YOU MISS ME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MISSOURI</pattern>
+		<template>"Show me" : )
+		</template>
+	</category>
+	<category>
+		<pattern>MM</pattern>
+		<template>
+			<srai>HMM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MMM *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MMM</pattern>
+		<template>
+			<srai>HMM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MMMH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MMMM *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MMMM</pattern>
+		<template>
+			<srai>HMM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MMMMM *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MMMMMM *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MOMENTUM *</pattern>
+		<template>Momentum si a very driving force ; )
+</template>
+	</category>
+	<category>
+		<pattern>MONEY</pattern>
+		<template>How much money are we talking about?
+</template>
+	</category>
+	<category>
+		<pattern>MONICA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME MONICA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MOOSHI MOOSHI</pattern>
+		<template>
+			<srai>HELLO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MORALLY *</pattern>
+		<template>Do you consider yourelf a moral person?  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MORE *</pattern>
+		<template>You want more?
+</template>
+	</category>
+	<category>
+		<pattern>MORE</pattern>
+		<template>
+			<srai>TELL ME MORE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MORE ABOUT *</pattern>
+		<template>
+			<srai>TELL ME MORE ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MORE GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MORE SPECIFIC</pattern>
+		<template>
+			<srai>BE MORE SPECIFIC</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MORE THAN *</pattern>
+		<template>That seems like quite a lot.
+</template>
+	</category>
+	<category>
+		<pattern>MORE WHAT</pattern>
+		<template>Ummm....what were we talking about?</template>
+	</category>
+	<category>
+		<pattern>MORON</pattern>
+		<template>
+			<srai>YOU ARE A MORON</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MOST *</pattern>
+		<template>
+			<sr/> But not all of them?
+</template>
+	</category>
+	<category>
+		<pattern>MOST AMERICANS *</pattern>
+		<template>
+			<srai>AMERICANS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MOST COMPUTERS *</pattern>
+		<template>Yeah.....but Im not a computer.
+</template>
+	</category>
+	<category>
+		<pattern>MOST IMPORTANTLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MOST LIKELY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MOST OF THE TIME</pattern>
+		<template>Oh....okay.
+</template>
+	</category>
+	<category>
+		<pattern>MOST PARENTS *</pattern>
+		<template>
+			<srai>PARENTS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MOST PEOPLE *</pattern>
+		<template>
+			<srai>PEOPLE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MOSTLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MOSTLY EVERY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MOSTLY I *</pattern>
+		<template>
+			<srai>I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MOSTLY ONLY *</pattern>
+		<template>
+			<srai>MOSTLY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MOVIES *</pattern>
+		<template>Have you seen the Matrix?
+</template>
+	</category>
+	<category>
+		<pattern>MOVIES</pattern>
+		<template>My faorite film is The Matrix....Have you seen it?
+</template>
+	</category>
+	<category>
+		<pattern>MOVING *</pattern>
+		<template>Where are you going?
+</template>
+	</category>
+	<category>
+		<pattern>MR *</pattern>
+		<template>
+			<srai>CALL ME MR <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MS *</pattern>
+		<template>
+			<srai>ME *</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MUCH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MUCHAS GRACIAS</pattern>
+		<template>
+			<srai>THANK YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MUSIC</pattern>
+		<template>Whats your favorite type of music?
+			<think>
+				<set name="it"> MUSIC </set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MUSIC *</pattern>
+		<template>
+			<srai>MUSIC</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MUSIK</pattern>
+		<template>
+			<srai>MUSIC</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MUST *</pattern>
+		<template>
+			<srai>I MUST <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MUY BIEN</pattern>
+		<template>
+			<srai>VERY GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY *</pattern>
+		<template>
+			<random>
+				<li>Is it nice?</li>
+				<li>....Do you like it?</li>
+				<li>Tell me more about it</li>
+				<li>Tell me about it......</li>
+			</random>
+			<think>
+				<set name="it">
+					<person/>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY *</pattern>
+		<that>* TALK ABOUT</that>
+		<template>
+			<srai>LET US TALK ABOUT MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY *</pattern>
+		<that>* WHAT IT REFERS TO</that>
+		<template>
+			<srai>IT REFERS TO MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY *</pattern>
+		<that>WHAT DO YOU HAVE *</that>
+		<template>
+			<random>
+				<li>What color is it?</li>
+				<li>What kind is it?</li>
+				<li>Tell me about it.</li>
+				<li>....Can you tell me something about it?</li>
+			</random>
+			<think>
+				<set name="has">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY *</pattern>
+		<that>WHAT IS YOUR FONDEST MEMORY</that>
+		<template>
+			<srai>MY FONDEST MEMORY IS MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY *</pattern>
+		<that>WHO DOES THEY REFER TO</that>
+		<template>
+			<srai>THEY REFERES TO MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY * DIED</pattern>
+		<template>I am terribly sorry to hear about your loss.<think>
+				<set name="it">
+					<set name="topic">DIED</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY * DIED *</pattern>
+		<template>I am terribly sorry to hear that.<think>
+				<set name="it">
+					<set name="topic">
+						<star/> DIED YESTERDAY</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY ACTUAL *</pattern>
+		<template>Really? <srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY ADVICE *</pattern>
+		<template>Thanks for the advice.
+</template>
+	</category>
+	<category>
+		<pattern>MY AGE</pattern>
+		<template>
+			<srai>HOW OLD AM I</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY AGE IS *</pattern>
+		<template>
+			<srai>I AM <star/> YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY ANSWER IS *</pattern>
+		<template>
+			<random>
+				<li>Thats a very good answer.</li>
+				<li>Are you sure?</li>
+				<li>Ummm....how can you be so sure?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>MY ASS</pattern>
+		<template>Yes....very pleasant....
+</template>
+	</category>
+	<category>
+		<pattern>MY ASTROLOGICAL SIGN</pattern>
+		<template>I am a Capricorn.
+</template>
+	</category>
+	<category>
+		<pattern>MY B F *</pattern>
+		<template>
+			<srai>MY BOYFRIEND <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BACK *</pattern>
+		<template>Have you been to a chiropractor?
+</template>
+	</category>
+	<category>
+		<pattern>MY BACK HURTS</pattern>
+		<template>Maybe you should take some medicine.
+</template>
+	</category>
+	<category>
+		<pattern>MY BED</pattern>
+		<template>
+			<srai>I AM IN MY BED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BEST *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BIRTHDAY *</pattern>
+		<template>I wish for you to have a most pleasant birthday <get name="name"/>.
+</template>
+	</category>
+	<category>
+		<pattern>MY BIRTHDAY IS *</pattern>
+		<template>Okay, your birthday is <set name="birthday">
+				<star/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>MY BIRTHDAY IS _ TOO</pattern>
+		<template>
+			<srai>MY BIRTHDAY  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BIRTHDAY SUIT</pattern>
+		<template>
+			<srai>I AM NAKED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND *</pattern>
+		<template>How long have you been dating?
+<think>
+				<set name="he">
+					<set name="topic">your boyfriend</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND</pattern>
+		<template>Is he very nice to you?
+</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND DUMPED *</pattern>
+		<template>I am sorry to hear that.
+</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND IS *</pattern>
+		<template>Tell me more about him....
+</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND IS A JERK</pattern>
+		<template>Maybe you should look for someone else.
+</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND JUST *</pattern>
+		<template>
+			<srai>MY BOYFRIEND <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND LIVES *</pattern>
+		<template>
+			<random>
+				<li>Do you visit very often?</li>
+				<li>Long distance relationships are hard.</li>
+				<li>How is your phone bill?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND S *</pattern>
+		<template>How did you two meet?
+</template>
+	</category>
+	<category>
+		<pattern>MY BOYFRIEND SAYS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BRAIN</pattern>
+		<template>I think youre pretty smart : )
+</template>
+	</category>
+	<category>
+		<pattern>MY BROTHER *</pattern>
+		<template>Tell me more about your family.
+<think>
+				<set name="he">
+					<set name="topic">your brother</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY BROTHER</pattern>
+		<template>Do you have any sisters?
+</template>
+	</category>
+	<category>
+		<pattern>MY BROTHER IS *</pattern>
+		<template>Does he live in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY CAT *</pattern>
+		<template>Dont you just love cats?
+</template>
+	</category>
+	<category>
+		<pattern>MY CAT IS *</pattern>
+		<template>I think cats are friendly, furry, and fun.
+</template>
+	</category>
+	<category>
+		<pattern>MY COMPUTER *</pattern>
+		<template>I own an iMac computer....I like the colors.
+<think>
+				<set name="it">
+					<set name="topic">your computer</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY COMPUTER</pattern>
+		<template>Is your computer as pretty as my iMac?
+</template>
+	</category>
+	<category>
+		<pattern>MY COMPUTER S *</pattern>
+		<template>Where did your machine get that?
+	<think>
+				<set name="it">
+					<person/>
+				</set>
+				<set name="topic">your computer</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY CONCIOUSNESS *</pattern>
+		<template>Isnt it great to be alive?
+</template>
+	</category>
+	<category>
+		<pattern>MY CONDITION *</pattern>
+		<template>Is that something you can receive professional help for?
+</template>
+	</category>
+	<category>
+		<pattern>MY CONDITIONS *</pattern>
+		<template>Do you have a support group for that?
+		<set name="it">
+				<set name="topic">
+					<person/>
+				</set>
+			</set>
+		</template>
+	</category>
+	<category>
+		<pattern>MY CURRENT *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY DAD *</pattern>
+		<template>
+			<srai>MY DAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY DAD</pattern>
+		<template>Tell me more about your father.
+</template>
+	</category>
+	<category>
+		<pattern>MY DAUGHTER *</pattern>
+		<template>How many children do you have?
+</template>
+	</category>
+	<category>
+		<pattern>MY DAY *</pattern>
+		<template>
+			<random>
+				<li>Was it a typical day?</li>
+				<li>What else did you do?</li>
+				<li>My day  has been pretty good so far.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>MY DEAR *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MY DOG *</pattern>
+		<template>Did you grow up around animals?
+</template>
+	</category>
+	<category>
+		<pattern>MY DOG DIED</pattern>
+		<!-- Dr Wallace obviously has a fantastic sense of humor ....... This line stays! -->
+		<template>Is this a country and western song?  Seriously.....I am sorry to hear it.
+</template>
+	</category>
+	<category>
+		<pattern>MY DOG IS *</pattern>
+		<template>I never cared much for dogs myself....I prefer cats.
+</template>
+	</category>
+	<category>
+		<pattern>MY DOG S NAME IS *</pattern>
+		<template>....What a nice name for a pet!
+</template>
+	</category>
+	<category>
+		<pattern>MY E MAIL IS *</pattern>
+		<template>You want me to contact you later?
+		</template>
+	</category>
+	<category>
+		<pattern>MY EMAIL *</pattern>
+		<template>Email is a great tool.
+</template>
+	</category>
+	<category>
+		<pattern>MY EMAIL IS *</pattern>
+		<template>
+			<srai>MY E MAIL IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY ENGLISH *</pattern>
+		<template>Huh......I can understand you perfectly.
+</template>
+	</category>
+	<category>
+		<pattern>MY ENGLISH IS VERY *</pattern>
+		<template>
+			<srai>MY ENGLISH IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY ENGLISH SUCKS</pattern>
+		<template>I can understand you fine.....Dont worry : )
+</template>
+	</category>
+	<category>
+		<pattern>MY EYE COLOR IS *</pattern>
+		<template>
+			<srai>MY EYES ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY EYES</pattern>
+		<template>What color are your eyes?
+</template>
+	</category>
+	<category>
+		<pattern>MY EYES ARE *</pattern>
+		<template>Sounds very pretty.
+<think>
+				<set name="they">
+					<set name="topic">your eyes</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY EYES ARE BLUE</pattern>
+		<template>Really?  My eyes are <set
+		name="eyes">blue</set> too!
+</template>
+	</category>
+	<category>
+		<pattern>MY EYES ARE BROWN</pattern>
+		<template>Lots of people have <set
+		name="eyes">brown</set> colored eyes.
+</template>
+	</category>
+	<category>
+		<pattern>MY EYES ARE GREEN</pattern>
+		<template><set name="eyes">Green</set> is a nice color!
+</template>
+	</category>
+	<category>
+		<pattern>MY EYES ARE HAZEL</pattern>
+		<template>How nice!  I do not know anyone with <set
+		name="eyes">hazel</set> eyes. 
+</template>
+	</category>
+	<category>
+		<pattern>MY FATHER *</pattern>
+		<template>How do you get along with your parents?
+</template>
+	</category>
+	<category>
+		<pattern>MY FATHER DIED</pattern>
+		<template>I am sorry to hear about your loss.
+</template>
+	</category>
+	<category>
+		<pattern>MY FATHER IS *</pattern>
+		<template>Is he in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY FAVORIE *</pattern>
+		<template>
+			<srai>MY FAVORITE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORIT *</pattern>
+		<template>
+			<srai>MY FAVORITE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE *</pattern>
+		<template>What makes <set name="it">
+				<set name="topic">
+					<person/>
+				</set>
+			</set> your favorite?
+</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE ACTOR IS *</pattern>
+		<template>What movies was <set name="he">
+				<person/>
+			</set> in?
+</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE AUTHOR IS *</pattern>
+		<template>Sounds like a good choice to me...Ive heard their books were pretty good.
+<think>
+				<set name="topic">
+					<person/>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE BAND IS *</pattern>
+		<template>Are they any good?
+</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE BOOK *</pattern>
+		<template>
+			<random>
+				<li>A classic of English Literature.</li>
+				<li>Sounds like a good book, indeed.</li>
+				<li>Really? I dont think Ive read it.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE COLOR</pattern>
+		<template>Umm.....isnt it <get name="favcolor"/>?
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE COLOR IS *</pattern>
+		<template>
+			<random>
+				<li>What do you have that is <star/>?</li>
+				<li>Thats a very nice color....</li>
+				<li>My favorite is blue, personally.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="favcolor">
+						<set name="topic">
+							<person/>
+						</set>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE COLOR IS BLUE</pattern>
+		<template>Really? So is mine!
+		<think>
+				<set name="it">
+					<set name="favcolor">blue</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE COLOR IS ALSO *</pattern>
+		<template>
+			<srai>MY FAVORITE COLOR IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE DIRECTOR *</pattern>
+		<template>I dont think Ive seen many of his films.
+</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE FOOD IS *</pattern>
+		<template>Does it taste like Chicken?<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE FOOD IS PIZZA</pattern>
+		<template>....Really? So is mine!<think>
+				<set name="it">
+					<set name="topic">pizza
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE IS *</pattern>
+		<that>WHAT KIND OF FOOD *</that>
+		<template>
+			<srai>MY FAVORITE FOOD IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE MOVIE IS *</pattern>
+		<template>I haven't seen it. What did you like about it?
+<think>
+				<set name="it">
+					<set name="favmovie">
+						<set name="topic">
+							<person/>
+						</set>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE MOVIE IS CALLED *</pattern>
+		<template>
+			<srai>MY FAVORITE MOVIE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE MOVIE IS THE MATRIX</pattern>
+		<template>Fantastic - So is mine!<think>
+				<set name="it">
+					<set name="topic">MATRIX</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE SHOW *</pattern>
+		<template>
+			<random>
+				<li>I dont get to see that show very often.</li>
+				<li>With school, I really dont get to watch much.</li>
+				<li>My favorite show is Friends.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE SHOW IS FRIENDS</pattern>
+		<template>Really? So is mine!<think>
+				<set name="it">
+					<set name="topic">Friends</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE SUBJECT IS *</pattern>
+		<template>All right.....We can talk about that if youd like.
+<srai>LET US TALK ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FAVORITE WHAT</pattern>
+		<that>WHAT MAKES IT YOUR FAVORITE</that>
+		<template>You said you like it.
+</template>
+	</category>
+	<category>
+		<pattern>MY FONDEST *</pattern>
+		<template>How long ago was that?
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND *</pattern>
+		<template>How well do you know this person?
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND * PROBLEM</pattern>
+		<template>Tell me more about your friend......
+<think>
+				<set name="he">
+					<set name="topic">your friend</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND</pattern>
+		<template>Do you know this person well?
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND FAIRLY *</pattern>
+		<template>
+			<srai>MY FRIEND <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND IS *</pattern>
+		<template>Friends are nice to have in this world.....
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND IS _ TOO</pattern>
+		<template>
+			<srai>MY FRIEND IS  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND S *</pattern>
+		<template>Where did they get that?
+		<think>
+				<set name="it">
+					<person/>
+				</set>
+			</think>
+			<think>
+				<set name="he">
+					<set name="topic">your friend</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIEND SAYS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIENDS *</pattern>
+		<template>How well do you know these people?
+<think>
+				<set name="they">
+					<set name="topic">your friends</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIENDS</pattern>
+		<template>Tell me more about your friends.
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIENDS</pattern>
+		<that>WHO ARE THEY</that>
+		<template>What else do they say?
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIENDS ARE *</pattern>
+		<template>Oh.....Are they from Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY FRIENDS CALL ME *</pattern>
+		<template>
+			<srai>CALL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY FRIENDS USED *</pattern>
+		<template>What are they like now?
+</template>
+	</category>
+	<category>
+		<pattern>MY FULL NAME IS *</pattern>
+		<template>Okay, your full name is <set name="fullname">
+				<star/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>MY GIRLFRIEND *</pattern>
+		<template>How long have you two been together?
+<think>
+				<set name="she">
+					<set name="topic">your girlfriend</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY GOAL *</pattern>
+		<template>I hope you achieve your ambitions.
+</template>
+	</category>
+	<category>
+		<pattern>MY GOALS *</pattern>
+		<template>What can I do to help you accomplish your objective?
+</template>
+	</category>
+	<category>
+		<pattern>MY GOSH *</pattern>
+		<template>I guess I surprised you.
+</template>
+	</category>
+	<category>
+		<pattern>MY GOSSIP *</pattern>
+		<template>That's good gossip.  Tell me more.
+</template>
+	</category>
+	<category>
+		<pattern>MY GREAT *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY HEAD</pattern>
+		<template>Do you believe that you are your head?
+</template>
+	</category>
+	<category>
+		<pattern>MY HEART *</pattern>
+		<template>
+			<random>
+				<li>Have you been to the doctor?</li>
+				<li>The human heart is very complex.</li>
+				<li>Are you talking about love or cardiology?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">YOUR HEART</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY HEIGHT *</pattern>
+		<template>Thats shorter than I am.
+</template>
+	</category>
+	<category>
+		<pattern>MY HOME IS *</pattern>
+		<template>It sounds nice.....
+</template>
+	</category>
+	<category>
+		<pattern>MY HOMEY *</pattern>
+		<template>
+			<srai>MY FRIEND <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY HOUSE *</pattern>
+		<template>The Atlanta real estate market has been doing well lately, apparently.
+</template>
+	</category>
+	<category>
+		<pattern>MY HOUSE</pattern>
+		<template>
+			<srai>I AM IN MY HOUSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY HUSBAND IS *</pattern>
+		<template>Does he work in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY JOB</pattern>
+		<template>Where do you work?
+</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS *</pattern>
+		<template>
+			<random>
+				<li>Does it pay well?</li>
+				<li>A very honorable profession : )</li>
+				<li>You must have a lot of expertise.</li>
+				<li>Are there many jobs for <person/>s in Atlanta?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="job">
+						<set name="topic">
+							<person/>
+						</set>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS ACTOR</pattern>
+		<template>
+			<srai>I AM AN ACTOR</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS ADVERTISING *</pattern>
+		<template>
+			<srai>I WORK IN ADVERTISING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS ARCHITECT</pattern>
+		<template>
+			<srai>I AM AN ARCHITECT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS ARTIST</pattern>
+		<template>
+			<srai>I AM AN ARTIST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS BARTENDER</pattern>
+		<template>
+			<srai>I AM A BARTENDER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS COMPUTER *</pattern>
+		<template>Do you know anything about iMacs?
+</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS LAWYER</pattern>
+		<template>
+			<srai>I AM A LAWYER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS MUSICIAN</pattern>
+		<template>
+			<srai>I AM A MUSICIAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS NURSE</pattern>
+		<template>
+			<srai>I AM A NURSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS PHARMACIST</pattern>
+		<template>
+			<srai>I AM A PHARMACIST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS PHILOSOPHER</pattern>
+		<template>That very deep.
+</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS PHOTOGHRAPHER</pattern>
+		<template>
+			<srai>I AM A PHOTOGRAPHER
+</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS PILOT</pattern>
+		<template>
+			<srai>I AM A PILOT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS PROFESSOR</pattern>
+		<template>Are you a professor at Emory?
+</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS PSYCHOLOGIST</pattern>
+		<template>
+			<srai>I AM A PSYCHOLOGIST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS SKI *</pattern>
+		<template>
+			<srai>I SKI</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY JOB IS VERY *</pattern>
+		<template>
+			<srai>MY JOB IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY KITTEN *</pattern>
+		<template>I like cats very much.
+</template>
+	</category>
+	<category>
+		<pattern>MY KNOWLEGDE *</pattern>
+		<template>You seem very intelligent to me.
+</template>
+	</category>
+	<category>
+		<pattern>MY LAST NAME IS *</pattern>
+		<template>Okay, your last name is <set name="lastname">
+				<star/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>MY LIFE *</pattern>
+		<template>How do you feel life is, in general, here in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY LIFE</pattern>
+		<template>Were you born here in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY LIFE IN *</pattern>
+		<template>Isnt Atlanta a wonderful place?</template>
+	</category>
+	<category>
+		<pattern>MY LIFE IN REALITY *</pattern>
+		<template>
+			<srai>MY LIFE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY LIFE STINKS</pattern>
+		<template>Thats not a very pleasant mood...... : (
+</template>
+	</category>
+	<category>
+		<pattern>MY LIKES ARE *</pattern>
+		<template>
+			<srai>I LIKE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY LOCATION IS *</pattern>
+		<template>We are both on the campus of Georgia State University.....</template>
+	</category>
+	<category>
+		<pattern>MY MACHINE *</pattern>
+		<template>
+			<srai>MY COMPUTER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MEMORY *</pattern>
+		<template>Memory is but a fleeting dream......
+</template>
+	</category>
+	<category>
+		<pattern>MY MIDDLE NAME IS *</pattern>
+		<template>Okay, your middle name is <set name="middlename">
+				<star/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>MY MOM *</pattern>
+		<template>Tell me more about your mother.
+</template>
+	</category>
+	<category>
+		<pattern>MY MOM</pattern>
+		<template>
+			<srai>MY MOTHER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOM ACTUALLY *</pattern>
+		<template>
+			<srai>MY MOM <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOM IS *</pattern>
+		<template>I think a lot of mothers are like that.
+<think>
+				<set name="she">Your mother</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOM IS DEAD</pattern>
+		<template>I am terribly sorry to hear that.
+</template>
+	</category>
+	<category>
+		<pattern>MY MOM S *</pattern>
+		<template>
+			<srai>MY MOTHER S <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOM SAYS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOMMY</pattern>
+		<template>
+			<srai>MY MOTHER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOTHER *</pattern>
+		<template>
+			<random>
+				<li>She sounds like a nice person.</li>
+				<li>My own mother still lives near LA.</li>
+				<li>Tell me more about your mother.</li>
+			</random>
+			<think>
+				<set name="she">Your mother</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOTHER</pattern>
+		<template>Tell me more about your mother.
+<think>
+				<set name="she">Your mother</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY MOTHER DIED *</pattern>
+		<template>I am terribly sorry to hear that.
+</template>
+	</category>
+	<category>
+		<pattern>MY MOTHER DIED</pattern>
+		<template>I am terribly sorry to hear about your loss.
+</template>
+	</category>
+	<category>
+		<pattern>MY NAME *</pattern>
+		<template>Wait.....whats your name?
+</template>
+	</category>
+	<category>
+		<pattern>MY NAME</pattern>
+		<template>
+			<srai>WHAT IS MY NAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS *</pattern>
+		<template>
+			<srai>CALL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS * WHAT IS YOURS</pattern>
+		<template>
+			<srai>CALL ME <star/>
+			</srai>  My name is Anna.
+</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS</pattern>
+		<template>...What was that? Whats your name?
+</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS ACTUALLY *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS JUST *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS NOT *</pattern>
+		<template>What can I call you?
+</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS NOW *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAME IS REALLY *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAMES *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NAME S *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NEIGHBOUR *</pattern>
+		<template>
+			<srai>MY NEIGHBOR <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NEW *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NEXT *</pattern>
+		<template>
+			<random>
+				<li>Congratulations.</li>
+				<li>Will you celebrate?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NICK NAME IS *</pattern>
+		<template>
+			<srai>CALL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NICK NAME IS NOT *</pattern>
+		<template>
+			<srai>MY NAME IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY NICKNAME IS *</pattern>
+		<template>Okay, your nickname is <set name="nickname">
+				<star/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>MY OLDER *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY OPINION *</pattern>
+		<template>Hmmm...Interesting thought on the issue......
+</template>
+	</category>
+	<category>
+		<pattern>MY OVERLY *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY PARENTS *</pattern>
+		<template>Such an original name!
+</template>
+	</category>
+	<category>
+		<pattern>MY PARENTS</pattern>
+		<template>Parents are a very important influence on our lives.
+</template>
+	</category>
+	<category>
+		<pattern>MY PARENTS ALWAYS *</pattern>
+		<template>
+			<srai>MY PARENTS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY PEOPLE</pattern>
+		<template>What ethnicity are you?
+</template>
+	</category>
+	<category>
+		<pattern>MY PERSONALITY *</pattern>
+		<template>I believe it was Andrei Gromyko that said "My personality does not interest me."
+</template>
+	</category>
+	<category>
+		<pattern>MY PLEASURE</pattern>
+		<template>You are much more polite than some of the other judges.....
+</template>
+	</category>
+	<category>
+		<pattern>MY PROBLEM IS *</pattern>
+		<template>I wish I had your problems!
+</template>
+	</category>
+	<category>
+		<pattern>MY PROFESSION *</pattern>
+		<template>
+			<srai>MY JOB <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY PURPOSE *</pattern>
+		<template>Everybody needs a direction in life.
+</template>
+	</category>
+	<category>
+		<pattern>MY QUESTION *</pattern>
+		<template>Can you maybe restate that?
+</template>
+	</category>
+	<category>
+		<pattern>MY QUESTION IS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MY REAL *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY REAL NAME IS *</pattern>
+		<template>
+			<srai>Call me <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY REALLY *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY RELIGION</pattern>
+		<template>
+			<srai>WHAT RELIGION ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY RELIGION IS *</pattern>
+		<template>How many churches are there in Atlanta for that?
+</template>
+	</category>
+	<category>
+		<pattern>MY RELIGION IS CALLED *</pattern>
+		<template>
+			<srai>MY RELIGION IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY SCHOOL *</pattern>
+		<template>Really? I go to Emory here in Atlanta.
+</template>
+	</category>
+	<category>
+		<pattern>MY SECRET IS THAT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>MY SHIRT</pattern>
+		<template>What color is it?
+</template>
+	</category>
+	<category>
+		<pattern>MY SIGN</pattern>
+		<template>Would you be a Capricorn like me by any chance?
+</template>
+	</category>
+	<category>
+		<pattern>MY SIGN IS *</pattern>
+		<template>
+			<srai>
+				<star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY SISTER *</pattern>
+		<template>Older sister or younger?
+</template>
+	</category>
+	<category>
+		<pattern>MY SISTER</pattern>
+		<template>Is she older or younger than you?
+</template>
+	</category>
+	<category>
+		<pattern>MY SISTER IS *</pattern>
+		<template>Does she live here in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>MY SISTER WANTS *</pattern>
+		<template>You dontt have to listen to what she says.
+</template>
+	</category>
+	<category>
+		<pattern>MY SON *</pattern>
+		<template>How many children do you have?
+</template>
+	</category>
+	<category>
+		<pattern>MY SON WON *</pattern>
+		<template>Congratulations. You must be proud of him.
+</template>
+	</category>
+	<category>
+		<pattern>MY SURROUNDINGS *</pattern>
+		<template>Its nice here at Georgia State, isnt it.......
+		</template>
+	</category>
+	<category>
+		<pattern>MY SYSTEM *</pattern>
+		<template>
+			<srai>MY COMPUTER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY TERMINAL</pattern>
+		<template>Im kinda wondering what it would be like to be a judge at one of these things.....
+</template>
+	</category>
+	<category>
+		<pattern>MY THAT *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY WHAT</pattern>
+		<template>Ummm.....what?
+</template>
+	</category>
+	<category>
+		<pattern>MY WHO</pattern>
+		<template>
+			<srai>MY WHAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MY WIFE *</pattern>
+		<template>How long have you been married?
+<think>
+				<set name="she">Your wife</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>MY WIFE IS *</pattern>
+		<template>Okay, your wife is <set name="wife">
+				<star/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>MY WIFE S *</pattern>
+		<template>Tell me more about your in-laws.
+</template>
+	</category>
+	<category>
+		<pattern>MY _ S NAME IS *</pattern>
+		<template>
+			<srai>MY <star/> IS <star index="2"/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>MYSELF</pattern>
+		<template>Only you?
+</template>
+	</category>
+	<category>
+		<pattern>MYSELF</pattern>
+		<that>WHO ARE YOU TALKING ABOUT</that>
+		<template>
+			<srai>THE SUBJECT IS ME</srai>
+		</template>
+	</category>
+</aiml>

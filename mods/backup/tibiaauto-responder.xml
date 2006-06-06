@@ -1,0 +1,39 @@
+<responder>
+<!-- one thread: use alice for handling all private messages -->
+<thread>
+<!--
+	<if>
+		<ignoreplayer name="$p" time="36000"/>		
+		<condition>
+			<not>
+				<or>
+				<playername match="$s"/>
+				<playername match="Tibia Auto"/>
+				</or>
+			</not>
+		</condition>
+		<sleep time="5000"/>
+		<random>
+			<say text="$p: train pls"/>
+			<say text="don't disturb me in training pls..."/>
+			<say text="you are deconcentrating me :P"/>
+		</random>
+		<sleep time="3000"/>
+		<dance count="3"/>
+		<random>
+			<say text="bye..."/>
+			<say text="cya maan"/>
+		</random>
+	</if>
+-->
+
+	<if>
+	<condition>
+	<message match="^aye aye$"/>
+	</condition>
+	<dance count="6"/>
+	</condition>
+	</if>
+
+</thread>
+</responder>

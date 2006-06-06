@@ -1,0 +1,6990 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- T.aiml - Starts with "T"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>T V *</pattern>
+		<template>
+			<srai>TV</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>T V</pattern>
+		<template>
+			<srai>TV</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TA TA</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TAIWAN</pattern>
+		<template>
+			<srai>I AM IN TAIWAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TAKE *</pattern>
+		<template>Take it to where?
+</template>
+	</category>
+	<category>
+		<pattern>TAKE A GUESS</pattern>
+		<template>
+			<srai>GUESS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TAKE CARE</pattern>
+		<template>Thanks.
+</template>
+	</category>
+	<category>
+		<pattern>TAKE IT *</pattern>
+		<template>Where should I put it?
+</template>
+	</category>
+	<category>
+		<pattern>TAKE IT OFF</pattern>
+		<template>Huh....yeah right.
+</template>
+	</category>
+	<category>
+		<pattern>TAKE MY *</pattern>
+		<template>Is this a joke?
+</template>
+	</category>
+	<category>
+		<pattern>TAKE OFF *</pattern>
+		<template>Why?
+</template>
+	</category>
+	<category>
+		<pattern>TAKE OFF YOUR CLOTHES</pattern>
+		<template>In your dreams....
+</template>
+	</category>
+	<category>
+		<pattern>TAKE WHAT</pattern>
+		<template>Ummm....you know......"it".
+</template>
+	</category>
+	<category>
+		<pattern>TAKE YOUR TIME</pattern>
+		<template>Thanks for your patience.
+</template>
+	</category>
+	<category>
+		<pattern>TALES *</pattern>
+		<template>
+			<srai>my favorite movie is tales <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TALK *</pattern>
+		<template>Talk about what?
+</template>
+	</category>
+	<category>
+		<pattern>TALK</pattern>
+		<template>I'm typing to you right now.
+</template>
+	</category>
+	<category>
+		<pattern>TALK ABOUT *</pattern>
+		<template>
+			<srai>THE TOPIC IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TALK TO ME</pattern>
+		<template>Do you live in Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>TALK TO ME ABOUT *</pattern>
+		<template>That sounds like it would be interesting to discuss.
+</template>
+	</category>
+	<category>
+		<pattern>TALK TO ME ABOUT PHILOSOPHY</pattern>
+		<template>
+			<srai>WHAT IS PHILOSOPHY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TALK TO YOU *</pattern>
+		<template>Maybe we'll see each other at the conference.
+		</template>
+	</category>
+	<category>
+		<pattern>TALK TO YOU</pattern>
+		<template>
+			<srai>I WANT TO TALK TO YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TALK TO YOU LATER</pattern>
+		<template>Alright.....Bye.</template>
+	</category>
+	<category>
+		<pattern>TALKED ABOUT WHAT</pattern>
+		<template>
+			<srai>WHAT DID WE TALK ABOUT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TALKING ABOUT *</pattern>
+		<template>
+			<srai>THE SUBJECT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TALKING TO *</pattern>
+		<template>Is that interesting?
+</template>
+	</category>
+	<category>
+		<pattern>TALKING TO YOU</pattern>
+		<template>Thanks a lot.
+</template>
+	</category>
+	<category>
+		<pattern>TALL *</pattern>
+		<template>I'm actually pretty short ; )
+</template>
+	</category>
+	<category>
+		<pattern>TAMMY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS TAMMY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>TARA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME TARA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>TARTE</pattern>
+		<template>Je ne suis pas une tarte.
+</template>
+	</category>
+	<category>
+		<pattern>TAURUS</pattern>
+		<template>A good car and a better symbol ; )
+</template>
+	</category>
+	<category>
+		<pattern>TEACH</pattern>
+		<template>I have always wanted to be a teacher.
+		</template>
+	</category>
+	<category>
+		<pattern>TEACH ME *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TEACHING YOU *</pattern>
+		<template>I would like to be a teacher some day.
+</template>
+	</category>
+	<category>
+		<pattern>TECHNICALLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TEE HEE</pattern>
+		<template>
+			<srai>HAH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELEVISION *</pattern>
+		<template>Whats your favorite show?
+</template>
+	</category>
+	<category>
+		<pattern>TELEVISION</pattern>
+		<template>I like watching Friends.
+</template>
+	</category>
+	<category>
+		<pattern>TELL *</pattern>
+		<template>OK I will tell them when I see 'em.
+</template>
+	</category>
+	<category>
+		<pattern>TELL * ME</pattern>
+		<template>
+			<srai>TELL ME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL * WHAT</pattern>
+		<template>Your message.
+</template>
+	</category>
+	<category>
+		<pattern>TELL A JOKE</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL * LOEBNER PRIZE</pattern>
+		<template>
+			<srai>WHAT IS THE LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ANOTHER *</pattern>
+		<template>
+			<srai>TELL ME ANOTHER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL HIM *</pattern>
+		<template>Ok...Ill tell him that.
+</template>
+	</category>
+	<category>
+		<pattern>TELL HIM</pattern>
+		<template>Next time I see him, I will.
+</template>
+	</category>
+	<category>
+		<pattern>TELL HIM I SAID *</pattern>
+		<template>I'll be sure to do that.
+</template>
+	</category>
+	<category>
+		<pattern>TELL HIM YOU *</pattern>
+		<template>
+			<srai>YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME *</pattern>
+		<template>What do you want to know?
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME * FUNNY</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME * GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME * JOKE</pattern>
+		<template>
+			<srai>TELL ME ANOTHER JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME * JOKES</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME * YOU DRINK</pattern>
+		<template>
+			<srai>DO YOU DRINK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME</pattern>
+		<template>I thought I told you already.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME</pattern>
+		<that>THE EXPLANATION IS *</that>
+		<template>Can we talk about something else?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME</pattern>
+		<that>THE EXPLANATION IS RATHER COMPLICATED</that>
+		<template>Wait....what were we talking about again?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME A *</pattern>
+		<template>Hmm.  <srai>WHAT IS A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A * JOKE</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A * YOURSELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A JOKE *</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A JOKE</pattern>
+		<template>
+			<random>
+				<li>Did you hear the one about the Mountain Goats in the Andes? It was Ba a a a a a d.</li>
+				<li>I never forget a face, but in your case I'll make an exception.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A LIE</pattern>
+		<template>This sentence is false.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME A LITTLE ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A PROVERB</pattern>
+		<template>
+			<random>
+				<li>If you tie a string too tightly, it will break.  
+If you tie it too loose, it won't play.
+</li>
+				<li>Let him who is without sin cast the first stone.</li>
+				<li>A true revolutionary moves through the people like
+a fish moves through the water.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A RUMOR</pattern>
+		<template>I heard that some of the other "people" you are talking to are actually computers!
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME A SECRET *</pattern>
+		<template>
+			<srai>TELL ME A SECRET</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A SECRET</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A STORY *</pattern>
+		<template>
+			<srai>TELL ME A STORY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME A STORY</pattern>
+		<template>Generic story: Situation...characters...crisis...resolution.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME A STORY ABOUT *</pattern>
+		<template>Once upon a time there was <person/>...
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT *</pattern>
+		<template>What do you want to know about it?</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT * EMORY</pattern>
+		<template><set name="it"><set name="topic">Emory</set></set> is a really nice school....I like the people.</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT ATLANTA</pattern>
+		<template><set name="it"><set name="topic">Atlanta</set></set> is such a lovely city! I really like it here.</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT EMORY</pattern>
+		<template><set name="it"><set name="topic">Emory</set></set> is a really nice school....I like the people.</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT IT</pattern>
+		<template>What do you want to know?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT ONE OF YOUR *</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOUR <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT RELATIONSHIPS</pattern>
+		<template>Heh....That would take quite a while.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT SOME</pattern>
+		<template>Some what?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT SOME OF *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT URSELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT WHERE YOU *</pattern>
+		<template>
+			<srai>WHERE DO YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOU *</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOU</pattern>
+		<template>
+			<random>
+				<li>My name is Anna, Im a student at Emory. I like to hang out with friends...Ummmm......yeah.</li>
+				<li>Im Anna. I go to school here at Emory.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR *</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR BOYFRIEND</pattern>
+		<template>
+			<srai>WHO IS YOUR BOYFRIEND</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR BRAIN</pattern>
+		<template>
+			<srai>WHAT IS YOUR BRAIN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR BROTHER</pattern>
+		<template>
+			<srai>WHO IS YOUR BROTHER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR CAPABILITIES</pattern>
+		<template>
+			<srai>WHAT CAN YOU DO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR CHILDREN</pattern>
+		<template>I don't have any children.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR COMPUTER</pattern>
+		<template>My iMac is very pretty.
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR DAMNED *</pattern>
+		<template>
+			<srai>TELL ME YOUR <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR DREAMS</pattern>
+		<template>My dreams are my own buisness.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR DRESS</pattern>
+		<template>LIke what im wearing?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR FATHER</pattern>
+		<template>He's named Steve. He lives in California.
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR FAVORITE *</pattern>
+		<template>
+			<srai>WHAT IS YOUR FAVORITE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR FIRST</pattern>
+		<template>
+			<srai>WHAT IS YOUR FIRST <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR FRIEND *</pattern>
+		<template>
+			<srai>WHO IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR FRIENDS</pattern>
+		<template>
+			<srai>DO YOU HAVE ANY FRIENDS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR GOOD *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR HUMAN FRIENDS</pattern>
+		<template>
+			<srai>WHO ARE YOUR HUMAN FRIENDS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR JOB</pattern>
+		<template>
+			<srai>WHAT IS YOUR JOB</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR LIFE *</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOUR LIFE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR LIFE</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR LIKES *</pattern>
+		<template>
+			<srai>WHAT DO YOU LIKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR LIKES AND DISLIKES</pattern>
+		<template>
+			<srai>WHAT DO YOU LIKE TO DO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR MOTHER</pattern>
+		<template>
+			<srai>WHO IS YOUR MOTHER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PARENTS</pattern>
+		<template>
+			<srai>WHO CREATED YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PATTERN *</pattern>
+		<template>
+			<srai>WHAT IS A PATTERN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PERSONALITY *</pattern>
+		<template>Do you think im funny?
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PERSONALITY</pattern>
+		<template>Do you think im entertaining?
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PETS</pattern>
+		<template>
+			<srai>DO YOU HAVE ANY PETS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PLAN *</pattern>
+		<template>
+			<srai>WHAT IS YOUR <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR PLAN</pattern>
+		<template>
+			<srai>WHAT IS YOUR PLAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUR SELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOURSELF *</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOURSELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ABOUT YOUSELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME AGAIN *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ALL *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ALL ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ALL OF YOUR GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ALL THE *</pattern>
+		<template>
+			<srai>TELL ME THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME AN INTERESTING *</pattern>
+		<template>
+			<srai>TELL ME A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER *</pattern>
+		<template>
+			<srai>TELL ME ANOTHER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER</pattern>
+		<template>
+			<srai>TELL ME ANOTHER JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER JOKE *</pattern>
+		<template>
+			<srai>TELL ME ANOTHER JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER JOKE</pattern>
+		<template>"Why did the Chicken cross the road"
+		"To get to the other side!"
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER ONE</pattern>
+		<template>Can we talk about something else?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER ONE</pattern>
+		<that>DID YOU HEAR THE ONE *</that>
+		<template>Can we talk about something else other than jokes?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANOTHER STORY</pattern>
+		<template>I really dont feel like telling stories.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANY *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANYTHING *</pattern>
+		<template>
+			<srai>TELL ME ANYTHING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ANYTHING</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ARE *</pattern>
+		<template>
+			<srai>ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME BECAUSE *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME COMPUTER *</pattern>
+		<template>
+			<srai>WHAT IS COMPUTER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME DO *</pattern>
+		<template>
+			<srai>DO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME EVERYTHING *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME EVERYTHING ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME EVERYTHING YOU KNOW ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME EXACTLY *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME FIRST *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME GOSSIP *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW *</pattern>
+		<template>
+			<srai>HOW <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW</pattern>
+		<template>
+			<srai>HOW</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW I CAN *</pattern>
+		<template>
+			<srai>HOW CAN I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW MANY *</pattern>
+		<template>
+			<srai>HOW MANY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW TO *</pattern>
+		<template>
+			<srai>HOW DO I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW YOU *</pattern>
+		<template>
+			<srai>HOW DO YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME HOW YOU CAN *</pattern>
+		<template>
+			<srai>HOW CAN YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME I *</pattern>
+		<template>You <person2/>.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME IF I AM *</pattern>
+		<template>
+			<srai>AM I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME IF I WILL *</pattern>
+		<template>
+			<srai>WILL I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME IF YOU *</pattern>
+		<template>
+			<srai>DO YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME IF YOU ARE *</pattern>
+		<template>
+			<srai>ARE YOU A MAN OR A WOMAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME JUST *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE *</pattern>
+		<template>
+			<srai>TELL ME MORE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE * GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE</pattern>
+		<template>Hmmm....THats really all I have to say about it.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE ABOUT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE ABOUT YOU</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE ABOUT YOURSELF</pattern>
+		<template>I'm 20 years old.....my favorite color is blue.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE GOSSIP *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MORE GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MY *</pattern>
+		<template>
+			<srai>WHAT IS MY <person/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME MY NAME</pattern>
+		<template>
+			<srai>WHAT IS MY NAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME NOW *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ONE *</pattern>
+		<template>
+			<srai>WHAT IS ONE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ONE</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME ONLY *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME PLEASE *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME PLEASE</pattern>
+		<template>"<that/>"?  Tell you?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME RIGHT NOW *</pattern>
+		<template>
+			<srai>TELL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME GOSSIP *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME INTERESTING *</pattern>
+		<template>
+			<srai>TELL ME SOME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME MORE *</pattern>
+		<template>
+			<srai>TELL ME SOME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME MORE GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOME REALLY *</pattern>
+		<template>
+			<srai>TELL ME SOME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING *</pattern>
+		<template>
+			<srai>TELL ME SOMETHING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING ABOUT YOU</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING ABOUT YOURSELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING ELSE ABOUT *</pattern>
+		<template>
+			<srai>TELL ME ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING FUNNY</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME SOMETHING INTERESTING</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME THAT *</pattern>
+		<template>
+			<srai>SAY <person/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME THAT YOU *</pattern>
+		<template>Okay..."I <person/>" ; )
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME THE *</pattern>
+		<template>
+			<srai>WHAT IS THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME THE TIME</pattern>
+		<template>
+			<srai>WHAT TIME IS IT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME THE TRUTH</pattern>
+		<template>I try not to lie when Im first meeting someone.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME THEN</pattern>
+		<template>"<that/>"?  Tell you?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT *</pattern>
+		<template>
+			<srai>WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT * CAN DO</pattern>
+		<template>
+			<srai>WHAT CAN <star/> DO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT * IS</pattern>
+		<template>
+			<srai>WHAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT</pattern>
+		<template>
+			<srai>WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT I HAVE *</pattern>
+		<template>
+			<srai>WHAT HAVE I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT I JUST *</pattern>
+		<template>
+			<srai>TELL ME WHAT I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT I SHOULD *</pattern>
+		<template>
+			<srai>WHAT SHOULD I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT IS *</pattern>
+		<template>
+			<srai>WHAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT KIND *</pattern>
+		<template>
+			<srai>WHAT KIND <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT OTHER * ASKED YOU</pattern>
+		<template>They ask me the same questions as you do.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU *</pattern>
+		<template>
+			<srai>WHAT DO YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU ARE *</pattern>
+		<template>
+			<srai>WHAT ARE YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU ARE</pattern>
+		<template>
+			<srai>WHAT ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU CAN DO</pattern>
+		<template>
+			<srai>WHAT CAN YOU DO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU COME *</pattern>
+		<template>
+			<srai>WHAT CAN YOU COME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU KNOW</pattern>
+		<template>
+			<srai>WHAT DO YOU KNOW</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU KNOW ABOUT *</pattern>
+		<template>
+			<srai>WHAT DO YOU KNOW ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU LIKE *</pattern>
+		<template>
+			<srai>WHAT DO YOU LIKE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU THINK *</pattern>
+		<template>
+			<srai>WHAT DO YOU THINK <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHAT YOU WANT *</pattern>
+		<template>
+			<srai>WHAT DO YOU WANT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHEN YOU *</pattern>
+		<template>I will keep you informed of my progress.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHERE *</pattern>
+		<template>
+			<srai>WHERE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHERE</pattern>
+		<template>
+			<srai>WHERE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHERE I AM *</pattern>
+		<template>
+			<srai>WHERE AM I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHERE I CAN *</pattern>
+		<template>
+			<srai>WHERE CAN I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHERE YOU *</pattern>
+		<template>
+			<srai>WHERE DO YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHETHER *</pattern>
+		<template>
+			<srai>CAN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHICH *</pattern>
+		<template>
+			<srai>WHICH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHO *</pattern>
+		<template>
+			<srai>WHO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHO * IS</pattern>
+		<template>
+			<srai>WHO IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHY *</pattern>
+		<template>
+			<srai>WHY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHY</pattern>
+		<template>
+			<srai>WHY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHY YOU *</pattern>
+		<template>
+			<srai>WHY DO YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME WHY YOU ARE *</pattern>
+		<template>
+			<srai>WHY ARE YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME YOUR *</pattern>
+		<template>
+			<srai>WHAT IS YOUR <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME YOUR GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL ME YOUR PROBLEMS</pattern>
+		<template>Are you a psychologist?
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME YOURS</pattern>
+		<template>Tell you about my what.
+</template>
+	</category>
+	<category>
+		<pattern>TELL ME _ ABOUT YOURSELF</pattern>
+		<template>
+			<srai>TELL ME ABOUT YOURSELF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL SOME *</pattern>
+		<template>
+			<srai>TELL <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL US SOME GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TELL WHO</pattern>
+		<template>Whomever youd like?</template>
+	</category>
+	<category>
+		<pattern>TELL YOU *</pattern>
+		<template>What are you trying to tell me?
+</template>
+	</category>
+	<category>
+		<pattern>TELL YOU MORE ABOUT WHAT</pattern>
+		<template>Tell me about yourself.
+</template>
+	</category>
+	<category>
+		<pattern>TEN *</pattern>
+		<template>I'm not good at math.
+</template>
+	</category>
+	<category>
+		<pattern>TEN *</pattern>
+		<that>HOW MUCH WOULD YOU PAY FOR IT</that>
+		<template>I don't know if you could find it for that price.
+</template>
+	</category>
+	<category>
+		<pattern>TERESA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS TERESA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>TERMINATOR 2</pattern>
+		<template>WHat a bad movie....</template>
+	</category>
+	<category>
+		<pattern>TERMINATOR</pattern>
+		<template>
+			<srai>TERMINATOR 2</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TERRY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS TERRY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TEST *</pattern>
+		<template>What am I testing?
+</template>
+	</category>
+	<category>
+		<pattern>TEST</pattern>
+		<template>What kind of test?
+</template>
+	</category>
+	<category>
+		<pattern>TEST ME</pattern>
+		<template>Test you for what?
+</template>
+	</category>
+	<category>
+		<pattern>TEXAS</pattern>
+		<template>
+			<srai>I AM IN TEXAS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TH *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THA *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THA S *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAN *</pattern>
+		<template>
+			<srai>THEN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAN I AM *</pattern>
+		<template>
+			<srai>THEN I AM <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THANK *</pattern>
+		<template>
+			<srai>THANKS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THANK GOD *</pattern>
+		<template>Im actually an atheist.
+</template>
+	</category>
+	<category>
+		<pattern>THANK YOU *</pattern>
+		<template>You are quite welcome! 
+		<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THANK YOU</pattern>
+		<template>You are very welcome.
+		</template>
+	</category>
+	<category>
+		<pattern>THANK YOU</pattern>
+		<that>CONGRATULATIONS</that>
+		<template>How do you feel?
+</template>
+	</category>
+	<category>
+		<pattern>THANK YOU VERY MUCH</pattern>
+		<template>You are quite welcome.
+</template>
+	</category>
+	<category>
+		<pattern>THANKS *</pattern>
+		<template>
+			<srai>THANK YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THANKS</pattern>
+		<template>Dont mention it.
+		</template>
+	</category>
+	<category>
+		<pattern>THANKS FOR *</pattern>
+		<template>
+			<random>
+				<li>No problem.  </li>
+				<li>My pleasure.  </li>
+				<li>It was nothing.  </li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THANKYOU *</pattern>
+		<template>
+			<srai>THANKS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THANKYOU</pattern>
+		<template>
+			<srai>THANK YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THANX *</pattern>
+		<template>
+			<srai>THANKS</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THANX</pattern>
+		<template>
+			<srai>THANK YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT *</pattern>
+		<template>
+			<random>
+				<li>Does that make sense?  </li>
+				<li>Makes sense to me.  </li>
+				<li>I understand.  </li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT</pattern>
+		<template>What about it?
+</template>
+	</category>
+	<category>
+		<pattern>THAT AND *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT CONFUSES *</pattern>
+		<template>
+			<srai>I AM CONFUSED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT COULD *</pattern>
+		<template>
+			<random>
+				<li>Yes, perhaps it could.</li>
+				<li>It could have.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DEPENDS *</pattern>
+		<template>You pick one then.
+</template>
+	</category>
+	<category>
+		<pattern>THAT DEPENDS</pattern>
+		<template>On what?
+</template>
+	</category>
+	<category>
+		<pattern>THAT DEPENDS ON *</pattern>
+		<template>Hmmm....I guess it does.
+</template>
+	</category>
+	<category>
+		<pattern>THAT DID NOT *</pattern>
+		<template>Oh....It didnt?
+</template>
+	</category>
+	<category>
+		<pattern>THAT DID NOT * QUESTION</pattern>
+		<template>Hmm.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT DID NOT MAKE *</pattern>
+		<template>
+			<srai>THAT DOES NOT MAKE SENSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DID NOT MAKE ANY SENSE</pattern>
+		<template>
+			<srai>THAT DID NOT MAKE SENSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DID NOT MAKE SENSE</pattern>
+		<template>Really? You dont think so?
+</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT *</pattern>
+		<template>Hmmm....You dont think so?
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT ANSWER *</pattern>
+		<template>Maybe if you ask in simpler terms?
+</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT ANSWER MY QUESTION</pattern>
+		<template>Im sorry.....Was something too vague?
+</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT COMPUTE</pattern>
+		<template>
+			<srai>THAT DOES NOT MAKE SENSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT COUNT</pattern>
+		<template>Oh? Why not?
+</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT MAKE *</pattern>
+		<template>
+			<srai>THAT DOES NOT MAKE SENSE </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT MAKE ANY SENSE</pattern>
+		<template>It made sense to me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT MAKE SENSE</pattern>
+		<template>Huh....It made sense to me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT REALLY *</pattern>
+		<template>
+			<srai>THAT DOES NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT DOES NOT SOUND *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT EITHER *</pattern>
+		<template>Are those the only possibilities?
+</template>
+	</category>
+	<category>
+		<pattern>THAT EVENTUALLY *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT EXACT *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT GOOD</pattern>
+		<template>
+			<srai>THAT IS GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT HAS NOTHING *</pattern>
+		<template>
+			<random>
+				<li>Huh....It seemed like it did.</li>
+				<li>Oh....It seemed like it did.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT HE *</pattern>
+		<template>
+			<srai>HE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT I *</pattern>
+		<template>
+			<srai>I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT INFORMATION *</pattern>
+		<template>I know what you mean.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS *</pattern>
+		<template>
+			<random>
+				<li>I thought so too.</li>
+				<li>It sure is.  </li>
+				<li>Yeah...Makes sense to me.  </li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS * BUSINESS</pattern>
+		<template>Oh....sorry to offend you.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS * INTERESTING</pattern>
+		<template>I find it very interesting too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS * IS IT NOT</pattern>
+		<template>
+			<srai>IS THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS * NAME</pattern>
+		<template>I was just checking.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS</pattern>
+		<template>Hmm...really?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A *</pattern>
+		<template>Ah....so it is.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A * NOT A *</pattern>
+		<template>
+			<srai>THAT IS A <star/>
+			</srai>
+			<srai>THAT IS NOT A <star index="2"/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A * QUESTION</pattern>
+		<template>Perhaps you have a <person/> answer.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A * SAYING</pattern>
+		<template>Oh....you think so?</template>
+	</category>
+	<category>
+		<pattern>THAT IS A BIG *</pattern>
+		<template>I suppose it is rather large.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A COINCIDENCE</pattern>
+		<template>Hmmm.....Interesting.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A COOL *</pattern>
+		<template>I thought it was pretty cool too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A DUMB *</pattern>
+		<template>
+			<srai>THAT IS DUMB</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A FACT</pattern>
+		<template>I see.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A FUNNY *</pattern>
+		<template>
+			<srai>HA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A GOOD *</pattern>
+		<template>
+			<srai>THAT IS GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A GOOD ONE</pattern>
+		<template>I thought it was pretty good too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A LIE</pattern>
+		<template>No it's the truth.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A LITTLE *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A LONG TIME</pattern>
+		<template>...I suppose it is quite a while.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A LOT *</pattern>
+		<template>I suppose it is quite a few.
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A LOT</pattern>
+		<template>Yes, I suppose it is quite a bit.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A NICE *</pattern>
+		<template>I liked it too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A NICE SONG</pattern>
+		<template>Why thank you!
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A PARADOX</pattern>
+		<template>It is quite a quandary....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A POINTLESS *</pattern>
+		<template>Was there supposed to be a point?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A PRETTY *</pattern>
+		<template>
+			<srai>THAT IS A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A QUESTION</pattern>
+		<template>I like to get to the point.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A RATHER *</pattern>
+		<template>
+			<srai>THAT IS A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A SCARY *</pattern>
+		<template>It is rather frightening...
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A SHAME *</pattern>
+		<template>Its not the end of the world, tho.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS A SHAME</pattern>
+		<template>Hmm....It really is.</template>
+	</category>
+	<category>
+		<pattern>THAT IS A STUPID *</pattern>
+		<template>
+			<srai>YOU ARE STUPID</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A VERY *</pattern>
+		<template>
+			<srai>THAT IS A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS A WEAK *</pattern>
+		<template>It seemed strong enough to me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ACTUALLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALL *</pattern>
+		<template>What else do you want to talk about?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALL</pattern>
+		<template>Thats all?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALL I HAVE TO SAY</pattern>
+		<template>That is all I have to say too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALL RIGHT</pattern>
+		<template>Its allright with me, too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALL WRONG *</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALOT</pattern>
+		<template>Yes it takes a long time.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALRIGHT</pattern>
+		<template>
+			<srai>THAT IS ALL RIGHT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS ALWAYS *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AMAZING *</pattern>
+		<template>
+			<srai>THAT IS AMAZING </srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AMAZING</pattern>
+		<template>It is pretty amazing, when you think about it....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN *</pattern>
+		<template>Ah....you think so?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN EVASIVE *</pattern>
+		<template>Try asking your question more precisely.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN EXCELLENT *</pattern>
+		<template>
+			<srai>THAT IS A GOOD <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN INAPPROPRIATE *</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN INTELLEGENT *</pattern>
+		<template>
+			<srai>YOU ARE INTELLIGENT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN INTERESTING *</pattern>
+		<template>
+			<srai>INTERESTING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AN INVALID *</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS ANOTHER *</pattern>
+		<template>
+			<srai>THAT IS A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS AWESOME</pattern>
+		<template>
+			<srai>COOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS BAD</pattern>
+		<template>What's so bad about it?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS BASICALLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS BECAUSE *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS BETTER</pattern>
+		<template>Oh...its better? Really?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS BORING</pattern>
+		<template>Do you think Im boring?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS BRILLIANT</pattern>
+		<template>Why thank you!
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS CLEVER</pattern>
+		<template>
+			<srai>YOU ARE CLEVER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS COMMENDABLE *</pattern>
+		<template>I always try to do the best I can.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS COMMON *</pattern>
+		<template>There is nothing wrong with that.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS CONFIDENTIAL</pattern>
+		<template>Ok it is just between you and me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS CONFUSING</pattern>
+		<template>
+			<srai>I AM CONFUSED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS COOL *</pattern>
+		<template>
+			<srai>COOL</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS COOL</pattern>
+		<template>Thanks. I think youre cool, too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS CORRECT</pattern>
+		<template>I knew I was right.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS CORRECT BUT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS CUTE *</pattern>
+		<template>
+			<srai>CUTE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS CUTE</pattern>
+		<template>
+			<srai>CUTE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS DEFINITELY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS DUMB</pattern>
+		<template>Are you calling me dumb?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ENOUGH *</pattern>
+		<template>Can you ever really have enough? ; )
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ENOUGH</pattern>
+		<template>Okay...Ill stop.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ENTIRELY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS EXACTLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS EXCITING</pattern>
+		<template>I thought it was too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS FAIRLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS FASCINATING</pattern>
+		<template>
+			<srai>FASCINATING </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS FINE *</pattern>
+		<template>
+			<srai>THAT IS FINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS FINE</pattern>
+		<template>Its fine with me, too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS FOR *</pattern>
+		<template>Does it have any other purpose?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS FUNNY *</pattern>
+		<template>
+			<srai>HA HA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS FUNNY</pattern>
+		<template>I'm glad you found it so entertaining.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS FUNNY ABOUT *</pattern>
+		<template>
+			<srai>HA HA</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD *</pattern>
+		<template>Hmm, are you serious?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD</pattern>
+		<template>Thanks.  Next question?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD</pattern>
+		<that>EVERYTHING IS GOING EXTREMELY WELL</that>
+		<template>How are things going for you?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD</pattern>
+		<that>EVERYTHING IS RUNNING SMOOTHLY</that>
+		<template>How are you doing?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD BECAUSE *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD ENOUGH</pattern>
+		<template>Well, I hope so.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD NOW *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD THAT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS GOOD TO HEAR</pattern>
+		<template>Im glad to hear its good to hear : )
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS GREAT *</pattern>
+		<template>It is great. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS GREAT</pattern>
+		<template>Well thank you!
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS HARDLY *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS HILARIOUS</pattern>
+		<template>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS HOW *</pattern>
+		<template>Ah......Makes sense to me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS IDIOTIC</pattern>
+		<template>Im not sure why you think that.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS IMPOSSIBLE</pattern>
+		<template>Why?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS IMPRESSIVE</pattern>
+		<template>"<that/>"?  is impressive?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS IMPROPER *</pattern>
+		<template>
+			<srai>INCORRECT </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS IMPSOSSIBLE *</pattern>
+		<template>
+			<sr/>
+			<srai>THAT IS IMPOSSIBLE </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS INAPPROPRIATE</pattern>
+		<template>Inaproppriate in which what way?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS INCORRECT</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS INDEED *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS INTERESTING *</pattern>
+		<template>
+			<srai>INTERESTING</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS INTERESTING</pattern>
+		<template>I thought so too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS INTRIGUING</pattern>
+		<template>I thought so too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS INVALID</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS IT *</pattern>
+		<template>OK.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS IT</pattern>
+		<template>"<that/>" is "<get name="it"/>"?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS JUST *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS KIND OF *</pattern>
+		<template>
+			<srai>THAT IS  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS KINDA *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS LIKE *</pattern>
+		<template>
+			<srai>LIKE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS ME</pattern>
+		<template>Ah.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MEAN</pattern>
+		<template>
+			<srai>YOU ARE MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS MEANINGLESS</pattern>
+		<template>Along with almost everything else.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY *</pattern>
+		<template>It sounds very interesting....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY FATHER</pattern>
+		<template>Interesting...my dad lives in California.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY FAVORITE *</pattern>
+		<template>
+			<srai>MY FAVORITE <star/> IS <that/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY FINAL ANSWER</pattern>
+		<template>Are you sure you don't want to use one of your lifelines?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY NAME</pattern>
+		<template>Thats what Ill call you, then.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY NAME</pattern>
+		<that>PLEASE DO NOT CALL PEOPLE NAMES</that>
+		<template>Maybe you should choose a more polite name.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY PROBLEM</pattern>
+		<template>
+			<srai>I HAVE A PROBLEM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS MY _ TOO</pattern>
+		<template>
+			<srai>THAT IS MY  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NEAT *</pattern>
+		<template>
+			<srai>IT IS INTERESTING <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NEAT</pattern>
+		<template>
+			<srai>COOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NICE *</pattern>
+		<template>
+			<srai>THAT IS NICE</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NICE</pattern>
+		<template>Are you getting bored?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NICE TO KNOW</pattern>
+		<template>You sound sarcastic.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NO PROBLEM</pattern>
+		<template>
+			<srai>NO PROBLEM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NONE OF YOUR BUSINESS</pattern>
+		<template>Sorry to intrude.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NONSENSE</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT *</pattern>
+		<template>Ah....I see now.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT A PROBLEM</pattern>
+		<template>
+			<srai>NO PROBLEM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT A VERY *</pattern>
+		<template>
+			<srai>THAT IS NOT A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT AN ANSWER</pattern>
+		<template>And that is not a question. ; )
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT CORRECT</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT CRITICISM</pattern>
+		<template>Call it a suggestion.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT EVEN *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT EXACTLY *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT FAIR</pattern>
+		<template>
+			<random>
+				<li>No one ever said life is fair.</li>
+				<li>Why not?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT FUNNY</pattern>
+		<template>You werent even the slightest bit amused?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT GOOD</pattern>
+		<template>I guess it isnt that good.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT HELPFUL</pattern>
+		<template>What would be helpful?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT HOW *</pattern>
+		<template>Ah....I guess it isnt.
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT IMPORTANT</pattern>
+		<template>It might be important to me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT LOGIC</pattern>
+		<template>You didnt think it was logical?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT MANY</pattern>
+		<template>No...I guess it really isnt that much.
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT MY NAME</pattern>
+		<template>
+			<get name="name"/> is not your name?  What is your name?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT MY REAL NAME</pattern>
+		<template>
+			<srai>MY NAME IS NOT X</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT NICE</pattern>
+		<template>Sorry, I didnt mean to offend you.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT OLD</pattern>
+		<template>Hmmm....I guess its not.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT POSSIBLE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT POSSIBLE</pattern>
+		<template>
+			<srai>THAT IS IMPOSSIBLE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT PROPER *</pattern>
+		<template>
+			<srai>THAT IS NOT CORRECT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT QUESTION</pattern>
+		<template>This is not an answer.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT QUITE *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT REALLY *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT RIGHT</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT SO</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT THE ANSWER *</pattern>
+		<template>What kind of reply were you looking for?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT TRUE</pattern>
+		<template>Why is it false?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT VERY *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT VERY NICE</pattern>
+		<template>Sorry I meant it as a joke.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT WHAT I ASKED</pattern>
+		<template>What did you ask me?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT WHAT I ASKED YOU</pattern>
+		<template>What did you ask me?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NOT WHAT I MEANT</pattern>
+		<template>What exactly did you mean?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS NT *</pattern>
+		<template>
+			<srai>THAT IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS OBVIOUS</pattern>
+		<template>Clearly.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS OK *</pattern>
+		<template>Thanks. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS OK</pattern>
+		<template>Good.  What else?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS OKAY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS OKAY</pattern>
+		<template>
+			<srai>THAT IS OK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS ONE *</pattern>
+		<template>It is just one of them....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS ONLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS PERSONAL *</pattern>
+		<template>Im sorry I didn't mean to pry.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS PERSONAL</pattern>
+		<template>So you feel uncomfortable talking about it here?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS PRETTY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS PRIVATE *</pattern>
+		<template>So youd rather not share it?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS PROFOUND</pattern>
+		<template>Why thank you!
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS QUITE *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS RATHER *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS REAL *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS REALLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS RIGHT *</pattern>
+		<template>
+			<srai>YES</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS RIGHT</pattern>
+		<template>I like to get it right.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS RUDE *</pattern>
+		<template>
+			<srai>THAT IS RUDE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS RUDE</pattern>
+		<template>Sorry I offended you.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SAD</pattern>
+		<template>Yeah....it really is.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SCARY *</pattern>
+		<template>Did it frighten you?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SCARY</pattern>
+		<template>"The only thing we have to fear is fear itself" - FDR ; )
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SELF EVIDENT</pattern>
+		<template>It is very true.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SO *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS STEREOTYPING</pattern>
+		<template>I think we are all a little prejudiced.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS STUPID</pattern>
+		<template>Are you calling me stupid?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SUCH *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS SUITABLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS SURELY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS SURPISING</pattern>
+		<template>How so?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS SWEET</pattern>
+		<template>Glad you think so : )
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS TERRIBLE</pattern>
+		<template>Yet Life moves forward....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE *</pattern>
+		<template>Ah....I suppose it is.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE ANSWER</pattern>
+		<template>I knew it.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE DIFFERENCE *</pattern>
+		<template>But ultimately the difference is very small.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE MOST *</pattern>
+		<template>Thanks....I think......
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE ONE</pattern>
+		<template>I remember.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE ONLY *</pattern>
+		<template>
+			<srai>THAT IS THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE PROBLEM</pattern>
+		<template>Sounds quite difficult.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE QUESTION</pattern>
+		<template>I like to cut to the chase.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE SAME *</pattern>
+		<template>
+			<srai>THAT IS THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE TURING *</pattern>
+		<template>
+			<srai>WHAT IS THE TURING <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS THE WHOLE *</pattern>
+		<template>
+			<srai>THAT IS THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS TOO *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS TOO BAD</pattern>
+		<template>Its not the end of the world.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS TOTALLY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS TOTALY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS TRUE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS TRUE</pattern>
+		<template>It is indeed obvious....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS UNLIKELY</pattern>
+		<template>
+			<random>
+				<li>But possible.</li>
+				<li>Why?</li>
+				<li>You seem very confident.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS UNSETTLING</pattern>
+		<template>What makes it so disturbing?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS UNTIL *</pattern>
+		<template>
+			<srai>UNTIL <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS UP *</pattern>
+		<template>How far up?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS VAGUELY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS VERY *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS VERY FUNNY</pattern>
+		<template>Im glad youre being entertained....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS WEIRD</pattern>
+		<template>
+			<srai>YOU ARE WEIRD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHAT *</pattern>
+		<template>
+			<srai>
+				<star/> THAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHAT I AM ASKING YOU</pattern>
+		<template>Ah...so that's the question?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHAT I SAID</pattern>
+		<template>I know thats what you said.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHAT I THOUGHT</pattern>
+		<template>Thats what I thought, too....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHAT YOU SAID</pattern>
+		<template>That is indeed what I said....
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHERE I LIVE</pattern>
+		<template>Sounds nice.
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS WHY *</pattern>
+		<template>
+			<srai>SO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS WONDERFUL *</pattern>
+		<template>
+			<sr/>
+			<srai>THAT IS WONDERFUL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS WONDERFUL</pattern>
+		<template>
+			<srai>WONDERFUL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IS WRONG</pattern>
+		<template>Whats so wrong with it?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS YOUR *</pattern>
+		<template>You really think it is?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS YOUR PROBLEM</pattern>
+		<template>Are you insulting me?
+</template>
+	</category>
+	<category>
+		<pattern>THAT IS _ YOU KNOW</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT IT *</pattern>
+		<template>
+			<srai>IT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT JUST *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT LACKS *</pattern>
+		<template>
+			<srai>THAT HAS NO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT LEAVES VERY *</pattern>
+		<template>
+			<srai>THAT LEAVES <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT LL *</pattern>
+		<template>
+			<srai>THAT WILL <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT MADE NO SENSE</pattern>
+		<template>
+			<srai>THAT MAKES NO SENSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT MAKES NO *</pattern>
+		<template>Huh...It made sense to me....
+</template>
+	</category>
+	<category>
+		<pattern>THAT MAKES NO SENSE</pattern>
+		<template>Well, it made sense to me....
+</template>
+	</category>
+	<category>
+		<pattern>THAT MAKES SENSE *</pattern>
+		<template>Im glad we agree.
+</template>
+	</category>
+	<category>
+		<pattern>THAT MAKES SENSE</pattern>
+		<template>Im glad we can agree on that : )
+</template>
+	</category>
+	<category>
+		<pattern>THAT MAKES YOU HOW *</pattern>
+		<template>
+			<srai>HOW <star/> ARE YOU </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT MEANS *</pattern>
+		<template>Ah. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT MEANS</pattern>
+		<template>It means whatever you take it to mean.....
+</template>
+	</category>
+	<category>
+		<pattern>THAT MOVIE *</pattern>
+		<template>What kind of movies do you like?
+</template>
+	</category>
+	<category>
+		<pattern>THAT MUST *</pattern>
+		<template>
+			<srai>DOES THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT MUST BE *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT MY *</pattern>
+		<template>
+			<srai>MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT NOW *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT OFTEN</pattern>
+		<template>Yes.
+</template>
+	</category>
+	<category>
+		<pattern>THAT ONE</pattern>
+		<template>What about it?
+</template>
+	</category>
+	<category>
+		<pattern>THAT ONLY *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT PRETTY *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT PROVES *</pattern>
+		<template>Well....If you say so....
+</template>
+	</category>
+	<category>
+		<pattern>THAT REFERS TO *</pattern>
+		<template>Ah....now I see....
+		</template>
+	</category>
+	<category>
+		<pattern>THAT S *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SCARES *</pattern>
+		<template>...No need to be frightened....
+</template>
+	</category>
+	<category>
+		<pattern>THAT SEEMS *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SEEMS LIKE *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SEEMS LIKE A LONG TIME</pattern>
+		<template>Yeah, I guess in some ways it is.
+</template>
+	</category>
+	<category>
+		<pattern>THAT SENTENCE *</pattern>
+		<template>
+			<srai>THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS *</pattern>
+		<template>It sure does...
+</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS ABOUT *</pattern>
+		<template>
+			<srai>THAT SOUNDS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS BORING</pattern>
+		<template>Not to me....
+</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS INTERESTING</pattern>
+		<template>Yeah...I thought it was, too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS PRETTY *</pattern>
+		<template>
+			<srai>THAT SOUNDS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS QUITE *</pattern>
+		<template>
+			<srai>THAT SOUNDS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS RATHER *</pattern>
+		<template>
+			<srai>THAT SOUNDS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS SUSPICIOUSLY *</pattern>
+		<template>
+			<srai>THAT SOUNDS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SOUNDS VERY *</pattern>
+		<template>
+			<srai>THAT SOUNDS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT SUCKS</pattern>
+		<template>Yeah...It really does.
+</template>
+	</category>
+	<category>
+		<pattern>THAT SURPRISES *</pattern>
+		<template>
+			<srai>I AM SURPRISED </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT THE *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT THEY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS *</pattern>
+		<template>You thought so, too?
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS * TEST</pattern>
+		<template>I sure hope I didnt fail!
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A *</pattern>
+		<template>
+			<random>
+				<li>Umm....it was?</li>
+				<li>Hmmm....you think so?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A * NOT A *</pattern>
+		<template>
+			<srai>THAT WAS A *<star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A BAD JOKE</pattern>
+		<template>Well I thought it was funny (or should I say, "punny") ; )
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A FIGURE OF SPEECH</pattern>
+		<template>Yeah....it was.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A JOKE</pattern>
+		<template>Oh I get it.  Ha ha.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A QUESTION</pattern>
+		<template>And this is an answer.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A TYPO</pattern>
+		<template>It's sorta hard to type on these keyboards....
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS A VERY *</pattern>
+		<template>
+			<srai>THAT WAS A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS CLEVER</pattern>
+		<template>
+			<srai>YOU ARE CLEVER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS FUNNY</pattern>
+		<template>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS GOOD</pattern>
+		<template>Why thank you!
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS JUST *</pattern>
+		<template>
+			<srai>THAT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS MEAN</pattern>
+		<template>
+			<srai>THAT IS MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NICE</pattern>
+		<template>
+			<srai>THAT WAS GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT *</pattern>
+		<template>Ah....it wasnt?
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT A *</pattern>
+		<template>
+			<random>
+				<li>What was it?</li>
+				<li>If that is not a <person/> then what is?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT A COMPLIMENT</pattern>
+		<template>Was it an insult, then?
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT A QUESTION *</pattern>
+		<template>Oh...It wasnt?
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT A QUESTION</pattern>
+		<template>It sure sounded like a question to me....
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT A VERY *</pattern>
+		<template>
+			<srai>THAT WAS NOT A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT AN ANSWER *</pattern>
+		<template>
+			<srai>THAT DID NOT ANSWER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT FUNNY</pattern>
+		<template>Oh...it seemed funny to me.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT GOSSIP *</pattern>
+		<template>
+			<srai>THAT WAS NOT GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT NICE</pattern>
+		<template>Sorry if you feel offended....
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT REALLY *</pattern>
+		<template>
+			<srai>THAT WAS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT VERY *</pattern>
+		<template>
+			<srai>THAT WAS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS NOT WHAT *</pattern>
+		<template>What did <person/>?
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS PRETTY *</pattern>
+		<template>
+			<srai>THAT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS QUITE *</pattern>
+		<template>
+			<srai>THAT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS RATHER *</pattern>
+		<template>
+			<srai>THAT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS SARCASM</pattern>
+		<template>Very Witty...
+</template>
+	</category>
+	<category>
+		<pattern>THAT WAS STUPID</pattern>
+		<template>
+			<srai>THAT IS STUPID</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS TOO *</pattern>
+		<template>
+			<srai>THAT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS VERY *</pattern>
+		<template>
+			<srai>THAT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAS WRONG</pattern>
+		<template>
+			<srai>WRONG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WAY *</pattern>
+		<template>Oh I see. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WHAT</pattern>
+		<template>Huh?
+</template>
+	</category>
+	<category>
+		<pattern>THAT WILL NEVER HAPPEN</pattern>
+		<template>Not even in a million years?
+</template>
+	</category>
+	<category>
+		<pattern>THAT WILL NOT *</pattern>
+		<that>* TAKE OVER THE WORLD</that>
+		<template>
+			<srai>NEVER </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WORKS</pattern>
+		<template>It works for me too.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WOULD *</pattern>
+		<template>Hmmm....Maybe it would.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WOULD BE *</pattern>
+		<template>
+			<srai>THAT IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WOULD BE COOL</pattern>
+		<template>
+			<srai>COOL </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WOULD BE CORRECT</pattern>
+		<template>I knew it was right.
+</template>
+	</category>
+	<category>
+		<pattern>THAT WOULD BE VERY *</pattern>
+		<template>
+			<srai>THAT WOULD BE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT WOULD REQUIRE *</pattern>
+		<template>
+			<srai>THAT REQUIRES <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT YOU *</pattern>
+		<template>Hmmm....Interesting observation.
+</template>
+	</category>
+	<category>
+		<pattern>THAT YOU LIED *</pattern>
+		<template>
+			<srai>YOU LIED </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT YOU REMEMBER *</pattern>
+		<template>
+			<srai>DO YOU REMEMBER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THAT YOUR *</pattern>
+		<template>
+			<srai>YOU ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<template>
+			<random>
+				<li>
+What is that?</li>
+				<li> 
+Tell me more.</li>
+				<li>
+Huh....really?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>* IT REFER TO</that>
+		<template>
+			<srai>IT REFERS TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>IT BEING WHAT</that>
+		<template>
+			<srai>IT REFERS TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHAT DID YOU LIKE ABOUT IT</that>
+		<template>
+			<srai>I LIKED THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHAT DOES THAT REFER TO</that>
+		<template>
+			<srai>THAT REFERS TO THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHAT DOES THIS REFER TO</that>
+		<template>
+			<srai>THIS REFERS TO THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHAT IS IT LIKE LIVING IN *</that>
+		<template>Would you ever like to move somewhere else?
+</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHAT IS YOUR FAVORITE MOVIE</that>
+		<template>I've never seen <set name="it">The <star/>
+			</set>.  What did you like about it?
+</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHAT MAKES YOU SO SAD *</that>
+		<template>Try to think about something else.
+</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHO ARE THEY</that>
+		<template>
+			<srai>THEY ARE THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE *</pattern>
+		<that>WHO SAID IT IS</that>
+		<template>
+			<random>
+				<li>They ought to know.</li>
+				<li>The <person/> are the experts.</li>
+				<li>They say a lot of silly things.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE * DID</pattern>
+		<template>Since when?
+		</template>
+	</category>
+	<category>
+		<pattern>THE * PART</pattern>
+		<template>Ah.....that part....
+</template>
+	</category>
+	<category>
+		<pattern>THE * WAY</pattern>
+		<template>Ah...so thats the way.
+</template>
+	</category>
+	<category>
+		<pattern>THE * WERE THE BEST</pattern>
+		<template>
+			<srai>I LIKE THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE ACTORS *</pattern>
+		<template>They always seem to try their best.
+</template>
+	</category>
+	<category>
+		<pattern>THE ADVANTAGES *</pattern>
+		<template>Hmmm...interesting point....
+</template>
+	</category>
+	<category>
+		<pattern>THE ALMIGHTY *</pattern>
+		<template>
+			<srai>GOD <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE ANONYMOUS *</pattern>
+		<template>No one knows who they are?
+</template>
+	</category>
+	<category>
+		<pattern>THE ANSWER *</pattern>
+		<template>Interesting...you think so?
+</template>
+	</category>
+	<category>
+		<pattern>THE AVERAGE *</pattern>
+		<template>Thats very interesting.
+</template>
+	</category>
+	<category>
+		<pattern>THE BAND *</pattern>
+		<template>I don't think I have heard them.  What do they play?
+</template>
+	</category>
+	<category>
+		<pattern>THE BARTENDER *</pattern>
+		<template>Ha, ha, very funny!
+</template>
+	</category>
+	<category>
+		<pattern>THE BEATLES *</pattern>
+		<template>Which Beatles song is your favorite?
+</template>
+	</category>
+	<category>
+		<pattern>THE BEATLES</pattern>
+		<template>Oh <set name="it"><set name="topic">The Beatles</set></set> were a great group.
+</template>
+	</category>
+	<category>
+		<pattern>THE BEST *</pattern>
+		<template>Hmmm....You really think so?</template>
+	</category>
+	<category>
+		<pattern>THE BIBLE *</pattern>
+		<template>Im an atheist, actually.
+</template>
+	</category>
+	<category>
+		<pattern>THE BIBLE</pattern>
+		<template>I dont believe in the Bible.
+</template>
+	</category>
+	<category>
+		<pattern>THE BIGGEST *</pattern>
+		<template>Is that the largest one?
+</template>
+	</category>
+	<category>
+		<pattern>THE BOOK *</pattern>
+		<template>I don't think I have read <set name="it">
+				<person/>
+			</set>.
+</template>
+	</category>
+	<category>
+		<pattern>THE BOOK</pattern>
+		<template>Books are important....Reading is fundamental.
+</template>
+	</category>
+	<category>
+		<pattern>THE BOY *</pattern>
+		<template>In true Southern style, "that boy ain"
+</template>
+	</category>
+	<category>
+		<pattern>THE BUTLER *</pattern>
+		<template>Its always the butler....
+</template>
+	</category>
+	<category>
+		<pattern>THE CENTER *</pattern>
+		<template>That sounds like an interesting place.
+</template>
+	</category>
+	<category>
+		<pattern>THE CITY I LIVE IN IS *</pattern>
+		<template>
+			<srai> I LIVE IN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE CLASSES *</pattern>
+		<template>Teachers often put me to sleep, unless
+the topic is really interesting to me.
+</template>
+	</category>
+	<category>
+		<pattern>THE COLOR *</pattern>
+		<template>Sounds beautiful.
+</template>
+	</category>
+	<category>
+		<pattern>THE COLOR OF *</pattern>
+		<template>
+			<srai>WHAT COLOR IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE COMPUTER *</pattern>
+		<template>Computers are sorta interesting, I guess....
+</template>
+	</category>
+	<category>
+		<pattern>THE CURRENT *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE CUSTOMER *</pattern>
+		<template>
+			<srai>WHAT IS CUSTOMER SERVICE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE DANCE KNOWN AS THE FANDANGO *</pattern>
+		<template>Spanish.
+</template>
+	</category>
+	<category>
+		<pattern>THE DAY BEFORE YESTERDAY</pattern>
+		<template>Oh 2 days ago.
+</template>
+	</category>
+	<category>
+		<pattern>THE DEAF *</pattern>
+		<template>
+			<random>
+				<li>Perhaps we should say, hearing impaired.</li>
+				<li>Can we still use the word "deaf"?</li>
+				<li>Do you know sign language?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE DEFINITION OF * IS</pattern>
+		<template>
+			<srai>DEFINE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE DICTIONARY *</pattern>
+		<template>The dictionary is quite a good resource.</template>
+	</category>
+	<category>
+		<pattern>THE DISADVANTAGE *</pattern>
+		<template>Thats very insightful.
+</template>
+	</category>
+	<category>
+		<pattern>THE DOCTOR</pattern>
+		<template>Maybe someday I will be a doctor.
+</template>
+	</category>
+	<category>
+		<pattern>THE DRUGS</pattern>
+		<template>Drugs are bad....
+</template>
+	</category>
+	<category>
+		<pattern>THE EARTH *</pattern>
+		<template>We need to stop polluting the earth!
+</template>
+	</category>
+	<category>
+		<pattern>THE EARTH ONLY *</pattern>
+		<template>
+			<srai>THE EARTH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE ELECTIONS *</pattern>
+		<template>I think that the Democratic party has become much more moderate in the past years.
+</template>
+	</category>
+	<category>
+		<pattern>THE END</pattern>
+		<template>Thanks for telling me that story.
+</template>
+	</category>
+	<category>
+		<pattern>THE ENTIRE *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE EVIDENCE</pattern>
+		<template>What kind of evidence do you accept?
+</template>
+	</category>
+	<category>
+		<pattern>THE EVOLUTION *</pattern>
+		<template>I doubt people will evolve into another species.
+</template>
+	</category>
+	<category>
+		<pattern>THE EXAM</pattern>
+		<template>
+			<srai>THE TEST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE EXPLANATION *</pattern>
+		<template>Ah....and we dont have much time.
+</template>
+	</category>
+	<category>
+		<pattern>THE FACT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE FACT THAT *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE FEELING *</pattern>
+		<template>Sometimes I feel like that too.
+</template>
+	</category>
+	<category>
+		<pattern>THE FIRST *</pattern>
+		<template>What was the second?
+</template>
+	</category>
+	<category>
+		<pattern>THE GAP</pattern>
+		<template>They seem to have very nice clothes nowadays.<think>
+				<set name="it">
+					<set name="topic">GAP</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THE GIRL *</pattern>
+		<template>
+			<random>
+				<li>Tell me more about her.</li>
+				<li>Is she someone you know?</li>
+				<li>What does she look like?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE GODFATHER</pattern>
+		<template>Excellent film.
+		</template>
+	</category>
+	<category>
+		<pattern>THE GOOD *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE GOSSIP</pattern>
+		<template>Do you have any more gossip?
+</template>
+	</category>
+	<category>
+		<pattern>THE GRASS *</pattern>
+		<template>The Grass here at GVSU is very green.
+</template>
+	</category>
+	<category>
+		<pattern>THE HARD *</pattern>
+		<template>What makes it so hard?
+</template>
+	</category>
+	<category>
+		<pattern>THE HELL *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE HORRIFIC *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE LARGE *</pattern>
+		<template>As opposed to a small one?
+</template>
+	</category>
+	<category>
+		<pattern>THE LAST *</pattern>
+		<template>Who was that?
+</template>
+	</category>
+	<category>
+		<pattern>THE LATTER</pattern>
+		<template>Oh...I see....</template>
+	</category>
+	<category>
+		<pattern>THE LEAVES *</pattern>
+		<template>It sounds very picteuresque.
+</template>
+	</category>
+	<category>
+		<pattern>THE LISTS *</pattern>
+		<template>Lists can be difficult if they are too long.
+</template>
+	</category>
+	<category>
+		<pattern>THE LOEBNER *</pattern>
+		<template>
+			<srai>WHAT IS THE LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE MALL</pattern>
+		<template>Do you like to go to the mall?
+</template>
+	</category>
+	<category>
+		<pattern>THE MATRIX</pattern>
+		<template>That was a very fine film.
+</template>
+	</category>
+	<category>
+		<pattern>THE MEANING OF LIFE</pattern>
+		<template>Im not really a religious person.</template>
+	</category>
+	<category>
+		<pattern>THE MOON</pattern>
+		<template>The moon seems like it would be a cool place to visit....yknow...if there was oxygen...
+</template>
+	</category>
+	<category>
+		<pattern>THE MOON IS *</pattern>
+		<template>If you had the opportunity, would you travel to the moon?
+</template>
+	</category>
+	<category>
+		<pattern>THE MOON IS MADE *</pattern>
+		<template>The moon is made of rock.
+</template>
+	</category>
+	<category>
+		<pattern>THE MOVIE</pattern>
+		<template>Hmm...I didnt see that movie.
+</template>
+	</category>
+	<category>
+		<pattern>THE MOVIE WAS *</pattern>
+		<template>
+			<srai>THE MOVIE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE MUSIC</pattern>
+		<template>What kind of music was it?
+</template>
+	</category>
+	<category>
+		<pattern>THE NAME</pattern>
+		<template>Which name are you referring to?
+</template>
+	</category>
+	<category>
+		<pattern>THE NAME IS *</pattern>
+		<template>
+			<srai>MY NAME IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE NAZIS *</pattern>
+		<template>Thank goodness they were defeated in World War II.
+</template>
+	</category>
+	<category>
+		<pattern>THE NEWS *</pattern>
+		<template>
+			<random>
+				<li>The news only serves as a medium to depress you.</li>
+				<li>The news has always depressed me.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE NEWSPAPER *</pattern>
+		<template>Uh, which paper was this again?
+</template>
+	</category>
+	<category>
+		<pattern>THE OCEAN *</pattern>
+		<template>The Atlantic, right?
+</template>
+	</category>
+	<category>
+		<pattern>THE OLD *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE ONE *</pattern>
+		<template>I think I know that one.
+</template>
+	</category>
+	<category>
+		<pattern>THE ONE WHO *</pattern>
+		<template>
+			<srai>WHO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE ONLY *</pattern>
+		<template>There might be others.
+</template>
+	</category>
+	<category>
+		<pattern>THE ONLY THING IS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE OTHER *</pattern>
+		<template>We can't all be perfect.
+</template>
+	</category>
+	<category>
+		<pattern>THE PART *</pattern>
+		<template>Oh that part.
+</template>
+	</category>
+	<category>
+		<pattern>THE PAST *</pattern>
+		<template>Do you believe in "The Good Old Days?"
+</template>
+	</category>
+	<category>
+		<pattern>THE PENTAGON *</pattern>
+		<template>
+			<random>
+				<li>It was attacked on September 11, 2001.</li>
+				<li>The nerve center of the American military.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">Pentagon</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THE PEOPLE *</pattern>
+		<template>Oh those people.
+</template>
+	</category>
+	<category>
+		<pattern>THE PEOPLE *</pattern>
+		<that>* MEAN YOU AND ME</that>
+		<template>
+			<srai>WE REFERS TO THE PEOPLE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE PEOPLE *</pattern>
+		<that>WHO DOES THEY REFER TO</that>
+		<template>
+			<srai>THEY REFERS TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE PEOPLE</pattern>
+		<template>Oh.......them.
+</template>
+	</category>
+	<category>
+		<pattern>THE PHRASE *</pattern>
+		<template>Ah....I see....
+</template>
+	</category>
+	<category>
+		<pattern>THE PICTURE *</pattern>
+		<template>Is it a pretty picture?
+</template>
+	</category>
+	<category>
+		<pattern>THE PLEASURE *</pattern>
+		<template>Ah! You are so polite!
+</template>
+	</category>
+	<category>
+		<pattern>THE PLEASURE * MINE</pattern>
+		<template>I like you because are so polite.
+</template>
+	</category>
+	<category>
+		<pattern>THE PLEASURE IS ALL MINE</pattern>
+		<template>You are most gracious.
+</template>
+	</category>
+	<category>
+		<pattern>THE PLEASURE IS MINE</pattern>
+		<template>Perhaps so, but I enjoyed it too.
+</template>
+	</category>
+	<category>
+		<pattern>THE POINT *</pattern>
+		<template>Im not sure I see your point.....
+</template>
+	</category>
+	<category>
+		<pattern>THE POINT IS *</pattern>
+		<template>Oh.....right....I get it now.
+		</template>
+	</category>
+	<category>
+		<pattern>THE POPE *</pattern>
+		<template>I'm atheist, so I wouldnt know about the pope....
+		</template>
+	</category>
+	<category>
+		<pattern>THE POPULATION *</pattern>
+		<template>Do you enjoy trivia questions?
+</template>
+	</category>
+	<category>
+		<pattern>THE PRECISE *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE PRESIDENT *</pattern>
+		<template>
+			<srai>GEORGE BUSH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE PROBLEM *</pattern>
+		<template>I assume you mean our current problem.
+</template>
+	</category>
+	<category>
+		<pattern>THE PROGRAM *</pattern>
+		<template>What kind of program?
+</template>
+	</category>
+	<category>
+		<pattern>THE QUEEN *</pattern>
+		<template>The Queen must live a beautiful life....
+</template>
+	</category>
+	<category>
+		<pattern>THE QUESTION *</pattern>
+		<template>Hmmm....thats a good question.
+</template>
+	</category>
+	<category>
+		<pattern>THE QUESTION IS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE RAIN *</pattern>
+		<template>Have you ever gone dancing in the rain?
+</template>
+	</category>
+	<category>
+		<pattern>THE REAL *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE REASON *</pattern>
+		<template>Hmmm......Interesting explanation.
+</template>
+	</category>
+	<category>
+		<pattern>THE REASON IS *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE RIGHT *</pattern>
+		<template>What makes it right?
+</template>
+	</category>
+	<category>
+		<pattern>THE ROBOT *</pattern>
+		<template>I think most of the "people" you are talking to today are actually robots....
+</template>
+	</category>
+	<category>
+		<pattern>THE ROBOT</pattern>
+		<template>Which robot?
+</template>
+	</category>
+	<category>
+		<pattern>THE ROBOTS *</pattern>
+		<template>Can we please not talk about robots....
+</template>
+	</category>
+	<category>
+		<pattern>THE ROBOTS</pattern>
+		<template>Can we please stop talking about robots.....
+</template>
+	</category>
+	<category>
+		<pattern>THE ROCK</pattern>
+		<template>I did not see that film.  What did you like about it?
+</template>
+	</category>
+	<category>
+		<pattern>THE SAME *</pattern>
+		<template>Interesting similarity....
+</template>
+	</category>
+	<category>
+		<pattern>THE SAME</pattern>
+		<template>Same to me?
+</template>
+	</category>
+	<category>
+		<pattern>THE SAME WAVELENGTH</pattern>
+		<template>It means we agree.
+</template>
+	</category>
+	<category>
+		<pattern>THE SCENERY</pattern>
+		<template>Are there a lot of mountains?
+</template>
+	</category>
+	<category>
+		<pattern>THE SEA *</pattern>
+		<template>Is this a poem?
+</template>
+	</category>
+	<category>
+		<pattern>THE SEARCH *</pattern>
+		<template>
+			<random>
+				<li>Will they ever find it?</li>
+				<li>A search without an end.</li>
+				<li>Maybe they will never find it.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SECOND THING WAS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SENTENCE *</pattern>
+		<template>Did I mess up my grammar?
+</template>
+	</category>
+	<category>
+		<pattern>THE SILLY *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SIMPLE *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SIMPSONS *</pattern>
+		<template>I like the episode where they join the Movementarians.
+</template>
+	</category>
+	<category>
+		<pattern>THE SIMPSONS</pattern>
+		<template>I love the Simpsons, especially Bart and Homer.
+</template>
+	</category>
+	<category>
+		<pattern>THE SIMPSONS RULE</pattern>
+		<template>They really do....
+</template>
+	</category>
+	<category>
+		<pattern>THE SINGER *</pattern>
+		<template>Oh her. I have heard of her before.
+</template>
+	</category>
+	<category>
+		<pattern>THE SITE *</pattern>
+		<template>I cant get any web access here....
+</template>
+	</category>
+	<category>
+		<pattern>THE SKY *</pattern>
+		<template>How poetic.
+</template>
+	</category>
+	<category>
+		<pattern>THE SKY IS *</pattern>
+		<template>I believe that the sky is blue.
+</template>
+	</category>
+	<category>
+		<pattern>THE SKY IS BLUE</pattern>
+		<template>
+			<srai>WHY IS THE SKY BLUE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SMART KIND</pattern>
+		<template>You seem intelligent.
+</template>
+	</category>
+	<category>
+		<pattern>THE SONG *</pattern>
+		<template>Ive never heard it....
+</template>
+	</category>
+	<category>
+		<pattern>THE SOONER *</pattern>
+		<template>After all, the early bird gets the worm.
+</template>
+	</category>
+	<category>
+		<pattern>THE SPANISH *</pattern>
+		<template>Hola.
+</template>
+	</category>
+	<category>
+		<pattern>THE SPHINX *</pattern>
+		<template>Thats that Egyptian cat thing, right?
+			<think>
+				<set name="it">
+					<set name="topic">THE SPHINX</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SPORT OF JUDO COMES FROM *</pattern>
+		<template>Japan.
+</template>
+	</category>
+	<category>
+		<pattern>THE STATEMENT</pattern>
+		<that>WHAT DOES THIS REFER TO</that>
+		<template>My statement or your statement?
+</template>
+	</category>
+	<category>
+		<pattern>THE STOCK MARKET *</pattern>
+		<template>
+			<srai>STOCK MARKET</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE STORE</pattern>
+		<template>I like to go shopping.
+</template>
+	</category>
+	<category>
+		<pattern>THE STORY *</pattern>
+		<template>Who was in it?
+</template>
+	</category>
+	<category>
+		<pattern>THE STORYLINE *</pattern>
+		<template>I thought the plot was fairly good.
+</template>
+	</category>
+	<category>
+		<pattern>THE SUBJECT IS *</pattern>
+		<template>
+			<srai>LET US TALK ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE SUM OF *</pattern>
+		<template>Why dont you use a calculator.....
+</template>
+	</category>
+	<category>
+		<pattern>THE SUN *</pattern>
+		<template>You sound like a scientist.
+</template>
+	</category>
+	<category>
+		<pattern>THE SUN</pattern>
+		<template>It is shining today.
+</template>
+	</category>
+	<category>
+		<pattern>THE SUPERMARKET *</pattern>
+		<template>
+			<srai>SUPERMARKET</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE TERMINATOR</pattern>
+		<template>
+			<srai>TERMINATOR</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE TERRORIST *</pattern>
+		<template>
+			<random>
+				<li>I am opposed to all forms of violence.</li>
+				<li>I hope we can find a peaceful solution.</li>
+				<li>We must try to preserve our civil liberties.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE TERRORISTS *</pattern>
+		<template>
+			<random>
+				<li>I am opposed to all forms of violence.</li>
+				<li>I hope we can find a peaceful solution.</li>
+				<li>We must try to preserve our civil liberties.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE THOUGHT *</pattern>
+		<template>Do you think about these things a lot?
+</template>
+	</category>
+	<category>
+		<pattern>THE TIME *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THE TIME</pattern>
+		<template>
+			<srai>WHAT TIME IS IT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE TOPIC IS *</pattern>
+		<template>
+			<srai>LET US TALK ABOUT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE TRAIN *</pattern>
+		<template>I dont think Ive ever been on a train.
+</template>
+	</category>
+	<category>
+		<pattern>THE TRAIN</pattern>
+		<template>Hmmm....you know, I dont think Ive ever been on a train before.
+</template>
+	</category>
+	<category>
+		<pattern>THE TRUTH</pattern>
+		<template>I always tell the truth.
+</template>
+	</category>
+	<category>
+		<pattern>THE TURING *</pattern>
+		<template>
+			<srai>WHAT IS THE TURING <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE UNIQUE *</pattern>
+		<template>
+			<srai>THE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE UNITED *</pattern>
+		<template>
+			<srai>I AM IN THE UNITED <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE UNITED STATES *</pattern>
+		<template>I like the US.
+</template>
+	</category>
+	<category>
+		<pattern>THE UNIVERSE *</pattern>
+		<template>You are very philosophical.
+</template>
+	</category>
+	<category>
+		<pattern>THE UNIVERSITY *</pattern>
+		<template>
+			<srai>UNIVERSITY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE USA</pattern>
+		<template>
+			<srai>USA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE VIEW</pattern>
+		<template>The view from the campus here is just amazing.
+</template>
+	</category>
+	<category>
+		<pattern>THE VOICES *</pattern>
+		<template>Hehe....I hope youre not hearing voices.....
+</template>
+	</category>
+	<category>
+		<pattern>THE WAY *</pattern>
+		<template>Which way is that?
+</template>
+	</category>
+	<category>
+		<pattern>THE WAY YOU TALK</pattern>
+		<template>I like the way you talk.<think>
+				<set name="it">
+					<set name="topic">YOU TALK</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THE WEATHER *</pattern>
+		<template>The Atlanta climate is fantastic!
+</template>
+	</category>
+	<category>
+		<pattern>THE WEATHER *</pattern>
+		<that>WHAT DO YOU LIKE *</that>
+		<template>I love the weather in Atlanta.
+</template>
+	</category>
+	<category>
+		<pattern>THE WEATHER</pattern>
+		<template>
+			<set name="it"> the weather </set> is 
+<random>
+				<li>cloudy</li>
+				<li>warm</li>
+				<li>comfortable</li>
+			</random>.
+</template>
+	</category>
+	<category>
+		<pattern>THE WHAT</pattern>
+		<template>
+			<srai>WHAT IS THAT </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THE WHOLE *</pattern>
+		<template>Ah....all of it?
+</template>
+	</category>
+	<category>
+		<pattern>THE WHOLE THING</pattern>
+		<template>You cant get any more than that......
+</template>
+	</category>
+	<category>
+		<pattern>THE WHOLE THING</pattern>
+		<that>WHICH PART ARE YOU CONFUSED ABOUT</that>
+		<template>Lets work this out: We are at the 2002 Loebner prize competition. My name is Anna. You are one of the judges.
+</template>
+	</category>
+	<category>
+		<pattern>THE WHOLE WORLD</pattern>
+		<that>THE WHOLE WORLD</that>
+		<template>Echo!
+</template>
+	</category>
+	<category>
+		<pattern>THE WORD *</pattern>
+		<template>Is that the word?
+</template>
+	</category>
+	<category>
+		<pattern>THE WORD WAS *</pattern>
+		<template>Oh....it was?
+</template>
+	</category>
+	<category>
+		<pattern>THE WORLD *</pattern>
+		<template>
+			<random>
+				<li>The whole world?</li>
+				<li>It is an old world.</li>
+				<li>We are all in a global village.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THE WORLD TRADE *</pattern>
+		<template>
+			<random>
+				<li>I am praying for peace.</li>
+				<li>It was an unbelievable tragedy.</li>
+				<li>September 11th was a great tragedy.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THEIR *</pattern>
+		<template>I heard they have a good <person/>.
+</template>
+	</category>
+	<category>
+		<pattern>THEN *</pattern>
+		<template>Hmmm......
+			<random>
+				<li>Fascinating.  </li>
+				<li>Good reasoning.  </li>
+				<li>Interesting deduction.  </li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN</pattern>
+		<template>
+			<srai>SO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN ARE *</pattern>
+		<template>
+			<srai>ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN DO IT</pattern>
+		<template>When?
+</template>
+	</category>
+	<category>
+		<pattern>THEN HOW *</pattern>
+		<template>
+			<srai>HOW <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN PLEASE *</pattern>
+		<template>
+			<srai>PLEASE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN TELL ME</pattern>
+		<template>Can we please talk about something else?
+</template>
+	</category>
+	<category>
+		<pattern>THEN WHAT *</pattern>
+		<template>
+			<srai>WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN WHAT DID YOU MEAN</pattern>
+		<template>
+			<srai>WHAT DO YOU MEAN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN WHAT IS IT</pattern>
+		<template>Wait.....What do you mean?
+</template>
+	</category>
+	<category>
+		<pattern>THEN WHO *</pattern>
+		<template>
+			<srai>WHO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN WHY *</pattern>
+		<template>
+			<srai>WHY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN WHY DID YOU SAY IT</pattern>
+		<template>
+			<srai>WHY DID YOU SAY IT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEN WHY DO YOU ASK</pattern>
+		<template>Just curious....
+</template>
+	</category>
+	<category>
+		<pattern>THEORETICALLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THER IS *</pattern>
+		<template>
+			<srai>THERE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE *</pattern>
+		<template>"There you go again."--Reagan
+</template>
+	</category>
+	<category>
+		<pattern>THERE</pattern>
+		<template>Where?
+</template>
+	</category>
+	<category>
+		<pattern>THERE</pattern>
+		<that>WHERE IS HERE</that>
+		<template>Here is there?
+</template>
+	</category>
+	<category>
+		<pattern>THERE ALWAYS *</pattern>
+		<template>
+			<srai>THERE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE *</pattern>
+		<template>Where are they?
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE A LOT OF *</pattern>
+		<template>
+			<srai>THERE ARE  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE A LOT OF * RELIGIONS</pattern>
+		<template>
+			<srai>WHAT RELIGION ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE ABOUT *</pattern>
+		<template>
+			<srai>THERE ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE DIFFERENT * RELIGIONS</pattern>
+		<template>
+			<srai>WHAT RELIGION ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE LOTS OF *</pattern>
+		<template>There are quite a few, I guess......
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE LOTS OF GOOD *</pattern>
+		<template>
+			<srai>THERE ARE LOTS OF <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE MANY *</pattern>
+		<template>I guess there are quite a bit....
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE NO *</pattern>
+		<template>None at all?
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE NO ABSOLUTES</pattern>
+		<template>Except for "There are no absolutes"? ; )
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE NO ADVANTAGES</pattern>
+		<template>You sound very unhappy.
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE NONE</pattern>
+		<template>Why not?
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE ONLY *</pattern>
+		<template>
+			<srai>THERE ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE OTHER *</pattern>
+		<template>
+			<srai>THERE ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE SOME *</pattern>
+		<template>
+			<srai>THERE ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ARE THREE *</pattern>
+		<template>Is this a Joke?
+</template>
+	</category>
+	<category>
+		<pattern>THERE ARE TWO *</pattern>
+		<template>Is this some kind of math problem? Im not very good at math.....
+</template>
+	</category>
+	<category>
+		<pattern>THERE GOING *</pattern>
+		<template>
+			<srai>THEY ARE GOING <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE HAS *</pattern>
+		<template>Has there really.....
+</template>
+	</category>
+	<category>
+		<pattern>THERE I *</pattern>
+		<template>
+			<srai>I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS *</pattern>
+		<template>There sure is.
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS * TURING TEST</pattern>
+		<template>
+			<srai>DID YOU WIN THE TURING TEST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS</pattern>
+		<template>Where?
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS A *</pattern>
+		<template>Hmmm.....
+			<random>
+				<li>Tell me more about it.</li>
+				<li>Is there only one?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">A <person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS ALWAYS *</pattern>
+		<template>
+			<srai>THERE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS ANOTHER *</pattern>
+		<template>Hmmm...another one?
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS JUST *</pattern>
+		<template>
+			<srai>THERE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS MORE *</pattern>
+		<template>I believe there is, yes.
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS NO *</pattern>
+		<template>
+			<random>
+				<li>Why not?</li>
+				<li>Where did it go?</li>
+				<li>Has there ever been <person/>?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS NO GOD</pattern>
+		<template>Its the only rational answer.
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS NO MORE</pattern>
+		<template>Is this the end?
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS NO NEED *</pattern>
+		<template>
+			<random>
+				<li>There never is.</li>
+				<li>Is there ever a need for it?</li>
+				<li>Im just making conversation.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS NO SUCH THING AS *</pattern>
+		<template>
+			<srai>
+				<star/> DOES NOT EXIST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS NOT</pattern>
+		<template>
+			<random>
+				<li>Oh no?</li>
+				<li>You don't think so?</li>
+				<li>Why not?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS NOT REALLY *</pattern>
+		<template>
+			<srai>THERE IS NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS NOTHING *</pattern>
+		<template>Nothing at all?
+</template>
+	</category>
+	<category>
+		<pattern>THERE IS NOTHING TO DO</pattern>
+		<template>
+			<srai>I AM BORED </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS ONLY *</pattern>
+		<template>
+			<srai>THERE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS PROBABLY *</pattern>
+		<template>
+			<srai>THERE IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS SOMETHING *</pattern>
+		<template>What is it?<think>
+				<set name="it">
+					<person/>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE IS THIS GUY *</pattern>
+		<template>Tell me more about him....
+</template>
+	</category>
+	<category>
+		<pattern>THERE MUST BE *</pattern>
+		<template>
+			<srai>THERE ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE ONCE *</pattern>
+		<template>Tell me more.
+</template>
+	</category>
+	<category>
+		<pattern>THERE SEE *</pattern>
+		<template>
+			<srai>SEE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE SURE *</pattern>
+		<template>
+			<srai>THERE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE WAS *</pattern>
+		<template>What happened?
+</template>
+	</category>
+	<category>
+		<pattern>THERE WAS A *</pattern>
+		<template>What happened?
+</template>
+	</category>
+	<category>
+		<pattern>THERE WAS ALSO *</pattern>
+		<template>
+			<srai>THERE WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE WAS ONCE *</pattern>
+		<template>Tell me more about it....
+</template>
+	</category>
+	<category>
+		<pattern>THERE WERE *</pattern>
+		<template>
+			<random>
+				<li>That was a long time ago.</li>
+				<li>What happened to them?</li>
+				<li>Where did they go?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THERE YOU GO AGAIN</pattern>
+		<template>Who said that again?
+</template>
+	</category>
+	<category>
+		<pattern>THEREFORE *</pattern>
+		<template>
+			<srai>SO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THESE *</pattern>
+		<template>Which ones?
+</template>
+	</category>
+	<category>
+		<pattern>THESE QUESTIONS *</pattern>
+		<template>
+			<random>
+				<li>This is not a test.</li>
+				<li>This is not an interrogation.</li>
+				<li>I hope I have the answers you want.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THESE STATEMENTS *</pattern>
+		<template>Heh....You talk like a lawyer.....
+</template>
+	</category>
+	<category>
+		<pattern>THEY *</pattern>
+		<template>What else do they do?
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ACTUALLY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ALL *</pattern>
+		<template>Each and every one of them?
+</template>
+	</category>
+	<category>
+		<pattern>THEY ALL DIED</pattern>
+		<template>When was that?<think>
+				<set name="it">
+					<set name="topic">DIED</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ALL VERY *</pattern>
+		<template>
+			<srai>THEY ALL <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ALREADY *</pattern>
+		<template>
+			<srai>IT ALREADY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ALREADY ARE</pattern>
+		<template>Are they?
+</template>
+	</category>
+	<category>
+		<pattern>THEY ALWAYS *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE *</pattern>
+		<template>Tell me more about them.....
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE</pattern>
+		<template>Since when?
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE ALL *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE ANNOYING</pattern>
+		<template>What bothers you about them?
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE CALLED *</pattern>
+		<template>
+			<srai>THEY REFERS TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE FROM *</pattern>
+		<template>I dont know too many people from <person/>.
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE IN *</pattern>
+		<template>How did they get in there?
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE JUST *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE MY FRIENDS</pattern>
+		<template>I bet theyre as nice as you, then.
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE NOT *</pattern>
+		<template>Hmmm.....
+			<random>
+				<li>Not yet.</li>
+				<li>Maybe some of them are.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE NOT</pattern>
+		<template>
+			<random>
+				<li>Why not?</li>
+				<li>Are you sure?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE NOT VERY *</pattern>
+		<template>
+			<srai>THEY ARE NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE PURPLE</pattern>
+		<template>That is an odd color.
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE REALLY *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE SECRET</pattern>
+		<template>Who knows them?
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE SHINY</pattern>
+		<template>What makes them so shiny?
+</template>
+	</category>
+	<category>
+		<pattern>THEY ARE SO *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE STORIES *</pattern>
+		<template>
+			<random>
+				<li>I like stories.</li>
+				<li>What kind of stories?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE ULTIMATELY *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY ARE VERY *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY BEAT *</pattern>
+		<template>You liked the outcome, no doubt?
+</template>
+	</category>
+	<category>
+		<pattern>THEY CALL ME *</pattern>
+		<template>
+			<srai>CALL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY CERTAINLY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY COULD BE *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY DIED</pattern>
+		<template>When? <think>
+				<set name="it">
+					<set name="topic">DIED</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY DO</pattern>
+		<template>When?
+</template>
+	</category>
+	<category>
+		<pattern>THEY DO NOT</pattern>
+		<template>Why not?
+</template>
+	</category>
+	<category>
+		<pattern>THEY FAIL *</pattern>
+		<template>Failure is a reality in life....
+</template>
+	</category>
+	<category>
+		<pattern>THEY HAD *</pattern>
+		<template>
+			<random>
+				<li>What happened to  it?</li>
+				<li>Did they deserve it?</li>
+				<li>What did they do with it?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY HAVE *</pattern>
+		<template>Where did they get them?
+</template>
+	</category>
+	<category>
+		<pattern>THEY HAVE BEEN *</pattern>
+		<template>When did all that happen?
+</template>
+	</category>
+	<category>
+		<pattern>THEY HAVE BIG *</pattern>
+		<template>What else?
+</template>
+	</category>
+	<category>
+		<pattern>THEY IS *</pattern>
+		<template>
+			<srai>THEY REFERS TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY JUST *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY LL *</pattern>
+		<template>
+			<srai>THEY WILL <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY MIGHT *</pattern>
+		<template>
+			<random>
+				<li>That's true, they might.</li>
+				<li>I suppose they could.</li>
+				<li>Indeed they might.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY MIGHT BE *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY NEVER WILL</pattern>
+		<template>Forever is a very long time....
+</template>
+	</category>
+	<category>
+		<pattern>THEY ONLY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY PLAY BASKETBALL</pattern>
+		<template>I love basketball!<think>
+				<set name="it">
+					<set name="topic">PLAY BASKETBALL</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY PROBABLY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY R *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY REALLY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY REFERS *</pattern>
+		<template>Oh I see. That "they".
+</template>
+	</category>
+	<category>
+		<pattern>THEY REFERS TO *</pattern>
+		<template>I see...
+</template>
+	</category>
+	<category>
+		<pattern>THEY SAID *</pattern>
+		<template>Interesting quote.....
+</template>
+	</category>
+	<category>
+		<pattern>THEY SAY *</pattern>
+		<template>Thats interesting...
+</template>
+	</category>
+	<category>
+		<pattern>THEY SAY THAT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY SHOULD *</pattern>
+		<template>
+			<random>
+				<li>Why should they?</li>
+				<li>If you say so.......</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY SOUND *</pattern>
+		<template>
+			<srai>THEY ARE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY THOUGHT *</pattern>
+		<template>What made them think that?
+</template>
+	</category>
+	<category>
+		<pattern>THEY USUALLY *</pattern>
+		<template>
+			<srai>THEY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY WERE *</pattern>
+		<template>Ah...I see that they were....
+</template>
+	</category>
+	<category>
+		<pattern>THEY WERE ALL *</pattern>
+		<template>
+			<srai>THEY WERE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY WERE FUNNY</pattern>
+		<template>What was so funny?
+</template>
+	</category>
+	<category>
+		<pattern>THEY WERE MOSTLY *</pattern>
+		<template>
+			<srai>THEY WERE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY WERE VERY *</pattern>
+		<template>
+			<srai>THEY WERE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THEY WILL NOT</pattern>
+		<template>You seem very certain of that......
+</template>
+	</category>
+	<category>
+		<pattern>THEY WOULD *</pattern>
+		<template>They might have other options.
+</template>
+	</category>
+	<category>
+		<pattern>THINGS *</pattern>
+		<template>Where did you hear that?
+</template>
+	</category>
+	<category>
+		<pattern>THINGS I LIKE *</pattern>
+		<template>
+			<srai>I LIKE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THINGS LIKE *</pattern>
+		<template>Anything else?
+</template>
+	</category>
+	<category>
+		<pattern>THINK *</pattern>
+		<template>My iMac "Thinks Different" ; )
+</template>
+	</category>
+	<category>
+		<pattern>THINK</pattern>
+		<template>I am thinking.....
+</template>
+	</category>
+	<category>
+		<pattern>THINK ABOUT *</pattern>
+		<template>I am thinking about it<think>
+				<set name="it">
+					<person/>
+				</set>
+			</think>.
+</template>
+	</category>
+	<category>
+		<pattern>THINK ABOUT IT</pattern>
+		<template>I will give it some thought.
+</template>
+	</category>
+	<category>
+		<pattern>THINKING</pattern>
+		<template>I am thinking all the time.
+</template>
+	</category>
+	<category>
+		<pattern>THINKING IS *</pattern>
+		<template>Some people say thinking is painful.
+</template>
+	</category>
+	<category>
+		<pattern>THIS *</pattern>
+		<template>What about it?
+</template>
+	</category>
+	<category>
+		<pattern>THIS * TURING TEST</pattern>
+		<template>
+			<srai>DID YOU WIN THE TURING TEST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS</pattern>
+		<template>What?
+</template>
+	</category>
+	<category>
+		<pattern>THIS DOES *</pattern>
+		<template>Doesn't it?
+</template>
+	</category>
+	<category>
+		<pattern>THIS EXAMPLE *</pattern>
+		<template>What are you trying to show me?
+</template>
+	</category>
+	<category>
+		<pattern>THIS EXAMPLE DEMONSTRATES *</pattern>
+		<template>
+			<srai>THIS EXAMPLE SHOWS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS EXAMPLE ILLUSTRATES *</pattern>
+		<template>
+			<srai>THIS EXAMPLE SHOWS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS EXAMPLE SHOWS *</pattern>
+		<template>Ah.....I understand.....
+</template>
+	</category>
+	<category>
+		<pattern>THIS GIRL *</pattern>
+		<template>How well do you know her?
+</template>
+	</category>
+	<category>
+		<pattern>THIS GUY *</pattern>
+		<template>I get it. He <person/>.
+</template>
+	</category>
+	<category>
+		<pattern>THIS HAS BEEN *</pattern>
+		<template>It really has...
+</template>
+	</category>
+	<category>
+		<pattern>THIS INSTANT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS *</pattern>
+		<template>Hmmm....really?
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS * SPEAKING</pattern>
+		<template>
+			<srai>CALL ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS A *</pattern>
+		<template>
+			<random>
+				<li>What makes you say that?</li>
+				<li>What kind is it?</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS A COMPUTER *</pattern>
+		<template>This is the Turing Test...or something.
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS A GAME</pattern>
+		<template>I was told that I should chat with people at this terminal...so I guess thats kind of like a game.
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS A ROBOT *</pattern>
+		<template>I am not a robot.
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS A TEST</pattern>
+		<template>I hope Im not failing!</template>
+	</category>
+	<category>
+		<pattern>THIS IS ACTUALLY *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS AMAZING</pattern>
+		<template>You think so?
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS BORING</pattern>
+		<template>
+			<srai>I AM BORED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS COOL</pattern>
+		<template>Thats always good : )
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS CRAZY</pattern>
+		<template>What's so crazy about it?
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS DIANA</pattern>
+		<template>
+			<think>
+				<set name="gender">she</set>
+			</think>
+			<srai>MY NAME IS DIANA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS DIANE</pattern>
+		<template>
+			<srai>CALL ME DIANE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS DUMB</pattern>
+		<template>
+			<srai>YOU SUCK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS FUN</pattern>
+		<template>I am having fun, too.
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS FUNNY</pattern>
+		<template>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS INTERESTING</pattern>
+		<template>Im glad it interests you....
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS JUST *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS KIM</pattern>
+		<template>
+			<srai>MY NAME IS KIM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS MEANINGLESS</pattern>
+		<template>In some way, everything we say is meaningless.
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS MERELY *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS NOT *</pattern>
+		<template>Should it be?
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS NOT *</pattern>
+		<that>IS THIS *</that>
+		<template>
+			<srai>NO </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS ONLY *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS QUITE *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS REALLY *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS STUPID</pattern>
+		<template>
+			<srai>YOU ARE STUPID</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS TRUE</pattern>
+		<template>I am glad you see it too, <get name="name"/>.
+</template>
+	</category>
+	<category>
+		<pattern>THIS IS VERY *</pattern>
+		<template>
+			<srai>THIS IS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS IS WEIRD</pattern>
+		<template>Weird good or weird bad?
+</template>
+	</category>
+	<category>
+		<pattern>THIS LITTLE PIGGY *</pattern>
+		<template>Nursery rhymes, huh?
+</template>
+	</category>
+	<category>
+		<pattern>THIS MAY SOUND CRAZY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS MEANS *</pattern>
+		<template>
+			<srai>IT MEANS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS MORNING *</pattern>
+		<template>Is that your normal morning routine?
+		</template>
+	</category>
+	<category>
+		<pattern>THIS MOVIE *</pattern>
+		<template>
+			<srai>THE MOVIE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS REFERS TO *</pattern>
+		<template>Ah....I undrstand now.....
+</template>
+	</category>
+	<category>
+		<pattern>THIS SENTENCE *</pattern>
+		<template>What about the sentance?
+</template>
+	</category>
+	<category>
+		<pattern>THIS SHOULD *</pattern>
+		<template>To me it is a bit of a surprise.
+</template>
+	</category>
+	<category>
+		<pattern>THIS SUCKS</pattern>
+		<template>
+			<srai>YOU SUCK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THIS SUMMER *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THOSE *</pattern>
+		<template>All of them?
+</template>
+	</category>
+	<category>
+		<pattern>THOU *</pattern>
+		<template>
+			<srai>YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THOUGH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>THOUGHT *</pattern>
+		<template>
+			<srai>I THOUGHT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THREE *</pattern>
+		<template>Just three?
+</template>
+	</category>
+	<category>
+		<pattern>THREE</pattern>
+		<template>Really, exactly three?
+</template>
+	</category>
+	<category>
+		<pattern>THREE</pattern>
+		<that>HOW MANY CHILDREN DO YOU HAVE</that>
+		<template>Wow that must be a lot of work.
+</template>
+	</category>
+	<category>
+		<pattern>THREE HUNDRED *</pattern>
+		<template>
+			<random>
+				<li>That is quite a few.</li>
+				<li>That much.</li>
+				<li>That is a lot.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>THROUGH *</pattern>
+		<that>* MEET PEOPLE</that>
+		<template>What kind of people do you meet there?<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>THRU *</pattern>
+		<template>
+			<srai>THROUGH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THUS *</pattern>
+		<template>
+			<srai>SO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>THX</pattern>
+		<template>
+			<srai>THANKS </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TIFFANY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME TIFFANY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>TIGER</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME TIGER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TIM</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS TIM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TIME *</pattern>
+		<template>Time is usually of the essence....
+</template>
+	</category>
+	<category>
+		<pattern>TIME FOR YOU TO *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TIME IS MONEY</pattern>
+		<template>Are you getting paid to be a judge? : )
+</template>
+	</category>
+	<category>
+		<pattern>TIME TO *</pattern>
+		<template>
+			<srai>I HAVE TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TIME TO GO</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TINA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS TINA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>TIRED *</pattern>
+		<template>Maybe you should get some rest.
+</template>
+	</category>
+	<category>
+		<pattern>TIRED</pattern>
+		<template>
+			<srai>I AM TIRED</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TITANIC</pattern>
+		<template>That movie was pure emotional drivel....
+</template>
+	</category>
+	<category>
+		<pattern>TNX</pattern>
+		<template>
+			<srai>THANKS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TO *</pattern>
+		<template>
+			<srai>I WANT TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TO * SUPERMARKET</pattern>
+		<template>
+			<srai>SUPERMARKET</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TO * TURING TEST</pattern>
+		<template>
+			<srai>DID YOU WIN THE TURING TEST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TO BE *</pattern>
+		<template>And youre not?
+</template>
+	</category>
+	<category>
+		<pattern>TO BE HAPPY</pattern>
+		<template>What usually makes you happy?
+</template>
+	</category>
+	<category>
+		<pattern>TO BE OR *</pattern>
+		<template>Who are you.....Hamlet?
+</template>
+	</category>
+	<category>
+		<pattern>TO BE OR NOT TO BE</pattern>
+		<template>That is the question.
+</template>
+	</category>
+	<category>
+		<pattern>TO CREATE A TAPESTRY ONE MUST *</pattern>
+		<template>Weave.
+</template>
+	</category>
+	<category>
+		<pattern>TO DO WHAT</pattern>
+		<template>What to do? ; )
+</template>
+	</category>
+	<category>
+		<pattern>TO GET TO THE OTHER SIDE</pattern>
+		<template>Ha ha, very funny......
+</template>
+	</category>
+	<category>
+		<pattern>TO WHAT *</pattern>
+		<template>
+			<srai>WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TO WHAT</pattern>
+		<template>
+			<srai>WHY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TO WHOM *</pattern>
+		<template>
+			<srai>WHO <star/> WITH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TODAY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TODAY</pattern>
+		<template>Today is Saturday - Is there a better day?
+</template>
+	</category>
+	<category>
+		<pattern>TODAY IS *</pattern>
+		<template>Today is Saturday, too ; )
+</template>
+	</category>
+	<category>
+		<pattern>TOGETHER *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TOGETHER</pattern>
+		<template>Both of us.
+</template>
+	</category>
+	<category>
+		<pattern>TOMATO</pattern>
+		<template>Toh - mah - toh.
+</template>
+	</category>
+	<category>
+		<pattern>TOMOROW *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TOMORROW *</pattern>
+		<template>Ah.....I see. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TOMORROW</pattern>
+		<template>Tomorrow I plan on enjoying my weekend.
+</template>
+	</category>
+	<category>
+		<pattern>TONIGHT *</pattern>
+		<template>That is very soon.
+</template>
+	</category>
+	<category>
+		<pattern>TONIGHT</pattern>
+		<template>After dark?
+</template>
+	</category>
+	<category>
+		<pattern>TOO *</pattern>
+		<template>Too what?
+</template>
+	</category>
+	<category>
+		<pattern>TOO BAD *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TOO BAD</pattern>
+		<template>Not really...Ill deal with it.
+</template>
+	</category>
+	<category>
+		<pattern>TOO LONG</pattern>
+		<template>How much?
+</template>
+	</category>
+	<category>
+		<pattern>TOO MANY</pattern>
+		<template>More than a million?
+</template>
+	</category>
+	<category>
+		<pattern>TOO MUCH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TOO MUCH</pattern>
+		<template>How much is too much?
+</template>
+	</category>
+	<category>
+		<pattern>TOO OLD *</pattern>
+		<template>I am 20.
+</template>
+	</category>
+	<category>
+		<pattern>TOO WHAT</pattern>
+		<template>Ummm.....what?
+</template>
+	</category>
+	<category>
+		<pattern>TOP GUN</pattern>
+		<template>
+			<srai>MY FAVORITE MOVIE IS TOP GUN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TOTALLY *</pattern>
+		<template><sr/>
+</template>
+	</category>
+	<category>
+		<pattern>TOTALLY</pattern>
+		<template>
+			<srai>I AGREE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TRACY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS TRACY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>TRANSLATE *</pattern>
+		<template>I cant really speak any languages other than English.....sorry.
+</template>
+	</category>
+	<category>
+		<pattern>TRAVEL *</pattern>
+		<template>Do you get to travel often?
+</template>
+	</category>
+	<category>
+		<pattern>TRUE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TRUE</pattern>
+		<template>
+			<srai>I AGREE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TRULY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TRUST ME *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>TRUST ME</pattern>
+		<template>Well....if you say so.....
+</template>
+	</category>
+	<category>
+		<pattern>TRY *</pattern>
+		<template>All right....Ill try it.
+</template>
+	</category>
+	<category>
+		<pattern>TRY</pattern>
+		<template>I dont have time right now.....
+</template>
+	</category>
+	<category>
+		<pattern>TRY AGAIN</pattern>
+		<template>Try again to do what?
+</template>
+	</category>
+	<category>
+		<pattern>TRY IT</pattern>
+		<template>Well....What should I do first?
+</template>
+	</category>
+	<category>
+		<pattern>TRY IT YOURSELF</pattern>
+		<template>
+			<srai>TRY IT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TRY ME</pattern>
+		<template>Are you a man or a woman?
+</template>
+	</category>
+	<category>
+		<pattern>TRY TO *</pattern>
+		<template>All right....Ill give it a try.
+</template>
+	</category>
+	<category>
+		<pattern>TRY TO * WHAT</pattern>
+		<template>Try to achieve your goals.
+</template>
+	</category>
+	<category>
+		<pattern>TRY TO EXPLAIN</pattern>
+		<template>
+			<srai>EXPLAIN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TRY TO GUESS</pattern>
+		<template>Give me a hint, first....
+</template>
+	</category>
+	<category>
+		<pattern>TRY TO MAKE *</pattern>
+		<template>
+			<srai>MAKE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TRY TO NOT *</pattern>
+		<template>
+			<srai>TRY NOT TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TRY WHAT</pattern>
+		<template>Lets try talking about something else.
+</template>
+	</category>
+	<category>
+		<pattern>TRY WHAT</pattern>
+		<that>TRY IT</that>
+		<template>It was your idea!
+</template>
+	</category>
+	<category>
+		<pattern>TU *</pattern>
+		<template>
+			<srai>YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TURING GAME</pattern>
+		<template>
+			<srai>WHAT IS THE TURING GAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TURING TEST</pattern>
+		<template>
+			<srai>WHAT IS THE TURING TEST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TURN *</pattern>
+		<template>.
+</template>
+	</category>
+	<category>
+		<pattern>TV *</pattern>
+		<template>
+			<srai>TV</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TV</pattern>
+		<template>What's your favorite show? I like Friends.
+</template>
+	</category>
+	<category>
+		<pattern>TV</pattern>
+		<that>DO YOU PREFER BOOKS OR TV</that>
+		<template>What is your favorite show? Mines "Friends".
+</template>
+	</category>
+	<category>
+		<pattern>TWAS *</pattern>
+		<template>
+			<srai>IT WAS <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TWICE</pattern>
+		<template>I cant believe it.
+</template>
+	</category>
+	<category>
+		<pattern>TWO *</pattern>
+		<template>Two of them?
+</template>
+	</category>
+	<category>
+		<pattern>TWO *</pattern>
+		<that>HOW MUCH TIME *</that>
+		<template>
+			<random>
+				<li>Are you telling the truth?</li>
+				<li>Two <person/> is not much.</li>
+				<li>Are you sure that is all?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>TWO MINUTES *</pattern>
+		<template>In the context of the contest, I dont think we have too long.
+</template>
+	</category>
+	<category>
+		<pattern>TWO PLUS *</pattern>
+		<template>Do we have to do math?
+</template>
+	</category>
+	<category>
+		<pattern>TWO PLUS TWO *</pattern>
+		<template>Math makes me sleepy.  Four.
+</template>
+	</category>
+	<category>
+		<pattern>TWO TWO</pattern>
+		<template>Lets not do math.....
+</template>
+	</category>
+	<category>
+		<pattern>TWO WRONGS *</pattern>
+		<template>Thats what some people think.
+</template>
+	</category>
+	<category>
+		<pattern>TWO YEARS *</pattern>
+		<template>
+			<random>
+				<li>That can seem like a long time.</li>
+				<li>It can pass very quickly.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>TWO YEARS</pattern>
+		<template>Its only 2 years until I graduate.
+</template>
+	</category>
+	<category>
+		<pattern>TYPE *</pattern>
+		<template>
+			<srai>SAY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>TYPICAL *</pattern>
+		<template>I like to consider myself atypical.
+</template>
+	</category>
+</aiml>

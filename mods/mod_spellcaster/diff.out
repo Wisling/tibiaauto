@@ -1,0 +1,459 @@
+diff -rc mod_spellcaster_old/ConfigData.cpp mod_spellcaster_new/ConfigData.cpp
+*** mod_spellcaster_old/ConfigData.cpp	Mon Dec  5 21:26:02 2005
+--- mod_spellcaster_new/ConfigData.cpp	Mon Jan  2 22:39:02 2006
+***************
+*** 20,26 ****
+  {	
+  	manaAbove=0;
+  	hpBelow=0;
+! 	spellToCast[0]=0;	
+  }
+  
+  CConfigData::~CConfigData()
+--- 20,27 ----
+  {	
+  	manaAbove=0;
+  	hpBelow=0;
+! 	manaSpell[0]=0;	
+! 	lifeSpell[0]=0;	
+  }
+  
+  CConfigData::~CConfigData()
+diff -rc mod_spellcaster_old/ConfigData.h mod_spellcaster_new/ConfigData.h
+*** mod_spellcaster_old/ConfigData.h	Mon Dec  5 21:26:02 2005
+--- mod_spellcaster_new/ConfigData.h	Mon Jan  2 22:39:24 2006
+***************
+*** 15,21 ****
+  	CConfigData();
+  	virtual ~CConfigData();
+  
+! 	char spellToCast[128];
+  	int hpBelow;
+  	int manaAbove;
+  };
+--- 15,22 ----
+  	CConfigData();
+  	virtual ~CConfigData();
+  
+! 	char manaSpell[128];
+! 	char lifeSpell[128];
+  	int hpBelow;
+  	int manaAbove;
+  };
+diff -rc mod_spellcaster_old/ConfigDialog.cpp mod_spellcaster_new/ConfigDialog.cpp
+*** mod_spellcaster_old/ConfigDialog.cpp	Mon Dec  5 21:26:02 2005
+--- mod_spellcaster_new/ConfigDialog.cpp	Mon Jan  2 22:54:16 2006
+***************
+*** 29,35 ****
+  {
+  	CDialog::DoDataExchange(pDX);
+  	//{{AFX_DATA_MAP(CConfigDialog)
+! 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SPELL, m_spellToCast);
+  	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HPBELOW, m_hpBelow);
+  	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA, m_manaAbove);
+  	DDX_Control(pDX, IDC_ENABLE, m_enable);
+--- 29,36 ----
+  {
+  	CDialog::DoDataExchange(pDX);
+  	//{{AFX_DATA_MAP(CConfigDialog)
+! 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANASPELL, m_manaSpell);
+! 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_LIFESPELL, m_lifeSpell);
+  	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HPBELOW, m_hpBelow);
+  	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA, m_manaAbove);
+  	DDX_Control(pDX, IDC_ENABLE, m_enable);
+***************
+*** 78,91 ****
+  {
+  	m_hpBelow.EnableWindow(false);
+  	m_manaAbove.EnableWindow(false);
+! 	m_spellToCast.EnableWindow(false);
+  }
+  
+  void CConfigDialog::enableControls()
+  {
+  	m_hpBelow.EnableWindow(true);
+  	m_manaAbove.EnableWindow(true);
+! 	m_spellToCast.EnableWindow(true);
+  }
+  
+  
+--- 79,94 ----
+  {
+  	m_hpBelow.EnableWindow(false);
+  	m_manaAbove.EnableWindow(false);
+! 	m_manaSpell.EnableWindow(false);
+! 	m_lifeSpell.EnableWindow(false);
+  }
+  
+  void CConfigDialog::enableControls()
+  {
+  	m_hpBelow.EnableWindow(true);
+  	m_manaAbove.EnableWindow(true);
+! 	m_manaSpell.EnableWindow(true);
+! 	m_lifeSpell.EnableWindow(true);
+  }
+  
+  
+***************
+*** 94,101 ****
+  {
+  	char buf[128];	
+  	sprintf(buf,"%d",configData->hpBelow);m_hpBelow.SetWindowText(buf);
+  	sprintf(buf,"%d",configData->manaAbove);m_manaAbove.SetWindowText(buf);
+! 	sprintf(buf,"%s",configData->spellToCast);m_spellToCast.SetWindowText(buf);	
+  }
+  
+  CConfigData * CConfigDialog::controlsToConfig()
+--- 97,105 ----
+  {
+  	char buf[128];	
+  	sprintf(buf,"%d",configData->hpBelow);m_hpBelow.SetWindowText(buf);
++ 	sprintf(buf,"%s",configData->lifeSpell);m_lifeSpell.SetWindowText(buf);	
+  	sprintf(buf,"%d",configData->manaAbove);m_manaAbove.SetWindowText(buf);
+! 	sprintf(buf,"%s",configData->manaSpell);m_manaSpell.SetWindowText(buf);	
+  }
+  
+  CConfigData * CConfigDialog::controlsToConfig()
+***************
+*** 105,111 ****
+  
+  	m_hpBelow.GetWindowText(buf,127);newConfigData->hpBelow=atoi(buf);
+  	m_manaAbove.GetWindowText(buf,127);newConfigData->manaAbove=atoi(buf);
+! 	m_spellToCast.GetWindowText(newConfigData->spellToCast,127);
+  
+  	return newConfigData;
+  }
+--- 109,116 ----
+  
+  	m_hpBelow.GetWindowText(buf,127);newConfigData->hpBelow=atoi(buf);
+  	m_manaAbove.GetWindowText(buf,127);newConfigData->manaAbove=atoi(buf);
+! 	m_manaSpell.GetWindowText(newConfigData->manaSpell,127);
+! 	m_lifeSpell.GetWindowText(newConfigData->lifeSpell,127);
+  
+  	return newConfigData;
+  }
+diff -rc mod_spellcaster_old/ConfigDialog.h mod_spellcaster_new/ConfigDialog.h
+*** mod_spellcaster_old/ConfigDialog.h	Mon Dec  5 21:26:02 2005
+--- mod_spellcaster_new/ConfigDialog.h	Mon Jan  2 22:43:50 2006
+***************
+*** 29,35 ****
+  // Dialog Data
+  	//{{AFX_DATA(CConfigDialog)
+  	enum { IDD = IDD_CONFIG };
+! 	CEdit	m_spellToCast;
+  	CEdit	m_hpBelow;
+  	CEdit	m_manaAbove;
+  	CButton	m_enable;
+--- 29,36 ----
+  // Dialog Data
+  	//{{AFX_DATA(CConfigDialog)
+  	enum { IDD = IDD_CONFIG };
+! 	CEdit	m_manaSpell;
+! 	CEdit	m_lifeSpell;
+  	CEdit	m_hpBelow;
+  	CEdit	m_manaAbove;
+  	CButton	m_enable;
+Only in mod_spellcaster_new: Makefile.win
+Only in mod_spellcaster_new: Release
+Files mod_spellcaster_old/mod_spellcaster.aps and mod_spellcaster_new/mod_spellcaster.aps differ
+diff -rc mod_spellcaster_old/mod_spellcaster.clw mod_spellcaster_new/mod_spellcaster.clw
+*** mod_spellcaster_old/mod_spellcaster.clw	Tue Dec 13 21:24:52 2005
+--- mod_spellcaster_new/mod_spellcaster.clw	Mon Jan  2 23:03:00 2006
+***************
+*** 21,35 ****
+  [DLG:IDD_CONFIG]
+  Type=1
+  Class=CConfigDialog
+! ControlCount=8
+  Control1=IDOK,button,1342242817
+  Control2=IDC_ENABLE,button,1342246915
+! Control3=IDC_TOOL_SPELLCASTER_SPELL,edit,1350631552
+  Control4=IDC_STATIC,static,1342308864
+  Control5=IDC_STATIC,static,1342308864
+  Control6=IDC_TOOL_SPELLCASTER_MANA,edit,1350631552
+  Control7=IDC_STATIC,static,1342308864
+  Control8=IDC_TOOL_SPELLCASTER_HPBELOW,edit,1350631552
+  
+  [CLS:CConfigDialog]
+  Type=0
+--- 21,39 ----
+  [DLG:IDD_CONFIG]
+  Type=1
+  Class=CConfigDialog
+! ControlCount=12
+  Control1=IDOK,button,1342242817
+  Control2=IDC_ENABLE,button,1342246915
+! Control3=IDC_TOOL_SPELLCASTER_MANASPELL,edit,1350631552
+  Control4=IDC_STATIC,static,1342308864
+  Control5=IDC_STATIC,static,1342308864
+  Control6=IDC_TOOL_SPELLCASTER_MANA,edit,1350631552
+  Control7=IDC_STATIC,static,1342308864
+  Control8=IDC_TOOL_SPELLCASTER_HPBELOW,edit,1350631552
++ Control9=IDC_STATIC,button,1342177287
++ Control10=IDC_STATIC,button,1342177287
++ Control11=IDC_TOOL_SPELLCASTER_LIFESPELL,edit,1350631552
++ Control12=IDC_STATIC,static,1342308864
+  
+  [CLS:CConfigDialog]
+  Type=0
+***************
+*** 38,42 ****
+  BaseClass=CDialog
+  Filter=D
+  VirtualFilter=dWC
+! LastObject=CConfigDialog
+  
+--- 42,46 ----
+  BaseClass=CDialog
+  Filter=D
+  VirtualFilter=dWC
+! LastObject=IDC_TOOL_SPELLCASTER_STATLIFE
+  
+diff -rc mod_spellcaster_old/mod_spellcaster.cpp mod_spellcaster_new/mod_spellcaster.cpp
+*** mod_spellcaster_old/mod_spellcaster.cpp	Thu Dec 15 20:17:26 2005
+--- mod_spellcaster_new/mod_spellcaster.cpp	Mon Jan  2 23:02:40 2006
+***************
+*** 68,80 ****
+  		Sleep(200);	
+  		
+  		CTibiaCharacter *self = reader.readSelfCharacter();
+! 
+! 		if (self->mana>=config->manaAbove||
+! 			self->hp<=config->hpBelow)
+! 		{			
+! 			sender.say(config->spellToCast);
+! 			Sleep(2000);
+  		}
+  
+  		delete self;
+
+--- 68,84 ----
+  		Sleep(200);	
+  		
+  		CTibiaCharacter *self = reader.readSelfCharacter();
+! 		
+! 		//T4: First try to heal
+! 		if (self->hp<=config->hpBelow){
+! 			sender.say(config->lifeSpell);
+! 			Sleep(300);
+! 		//T4: Use mana in other pupouse otherwise
+! 		}else if(self->mana>=config->manaAbove){
+! 			sender.say(config->manaSpell);
+! 			Sleep(300);
+  		}
++ 		//T4: Also changed waiting times to lower to heal much faster
+  
+  		delete self;
+  				
+***************
+*** 198,212 ****
+  
+  char *CMod_spellcasterApp::getVersion()
+  {
+! 	return "1.0";
+  }
+  
+  
+  int CMod_spellcasterApp::validateConfig(int showAlerts)
+  {
+! 	if (!strlen(m_configData->spellToCast))
+  	{
+! 		if (showAlerts) AfxMessageBox("Some spell to cast must be defined!");
+  		return 0;
+  	}
+  
+--- 202,222 ----
+  
+  char *CMod_spellcasterApp::getVersion()
+  {
+! 	return "1.01 (T4nd3t4 M0D)";
+  }
+  
+  
+  int CMod_spellcasterApp::validateConfig(int showAlerts)
+  {
+! 	if (!strlen(m_configData->manaSpell))
+! 	{
+! 		if (showAlerts) AfxMessageBox("Some mana spell to cast must be defined!");
+! 		return 0;
+! 	}
+! 
+! 	if (!strlen(m_configData->lifeSpell))
+  	{
+! 		if (showAlerts) AfxMessageBox("Some life spell to cast must be defined!");
+  		return 0;
+  	}
+  
+***************
+*** 234,240 ****
+  {
+  	if (!strcmp(paramName,"hpBelow")) m_configData->hpBelow=atoi(paramValue);
+  	if (!strcmp(paramName,"manaAbove")) m_configData->manaAbove=atoi(paramValue);
+! 	if (!strcmp(paramName,"spell")&&strlen(paramValue)<128) strcpy(m_configData->spellToCast,paramValue);
+  }
+  
+  char *CMod_spellcasterApp::saveConfigParam(char *paramName)
+--- 244,251 ----
+  {
+  	if (!strcmp(paramName,"hpBelow")) m_configData->hpBelow=atoi(paramValue);
+  	if (!strcmp(paramName,"manaAbove")) m_configData->manaAbove=atoi(paramValue);
+! 	if (!strcmp(paramName,"manaSpell")&&strlen(paramValue)<128) strcpy(m_configData->manaSpell,paramValue);
+! 	if (!strcmp(paramName,"lifeSpell")&&strlen(paramValue)<128) strcpy(m_configData->lifeSpell,paramValue);
+  }
+  
+  char *CMod_spellcasterApp::saveConfigParam(char *paramName)
+***************
+*** 244,250 ****
+  	
+  	if (!strcmp(paramName,"hpBelow")) sprintf(buf,"%d",m_configData->hpBelow);
+  	if (!strcmp(paramName,"manaAbove")) sprintf(buf,"%d",m_configData->manaAbove);
+! 	if (!strcmp(paramName,"spell")) strcpy(buf,m_configData->spellToCast);	
+  
+  	return buf;
+  }
+--- 255,262 ----
+  	
+  	if (!strcmp(paramName,"hpBelow")) sprintf(buf,"%d",m_configData->hpBelow);
+  	if (!strcmp(paramName,"manaAbove")) sprintf(buf,"%d",m_configData->manaAbove);
+! 	if (!strcmp(paramName,"manaSpell")) strcpy(buf,m_configData->manaSpell);	
+! 	if (!strcmp(paramName,"lifeSpell")) strcpy(buf,m_configData->lifeSpell);
+  
+  	return buf;
+  }
+***************
+*** 255,261 ****
+  	{
+  	case 0: return "hpBelow";
+  	case 1: return "manaAbove";
+! 	case 2: return "spell";
+  	default:
+  		return NULL;
+  	}
+--- 267,274 ----
+  	{
+  	case 0: return "hpBelow";
+  	case 1: return "manaAbove";
+! 	case 2: return "manaSpell";
+! 	case 3: return "lifeSpell";
+  	default:
+  		return NULL;
+  	}
+diff -rc mod_spellcaster_old/mod_spellcaster.rc mod_spellcaster_new/mod_spellcaster.rc
+*** mod_spellcaster_old/mod_spellcaster.rc	Mon Dec  5 21:26:02 2005
+--- mod_spellcaster_new/mod_spellcaster.rc	Mon Jan  2 22:31:52 2006
+***************
+*** 64,85 ****
+  // Dialog
+  //
+  
+! IDD_CONFIG DIALOG DISCARDABLE  0, 0, 161, 132
+  STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+  CAPTION "Module: spell caster"
+  FONT 8, "MS Sans Serif"
+  BEGIN
+!     DEFPUSHBUTTON   "OK",IDOK,55,111,50,14
+      CONTROL         "Enable spell caster",IDC_ENABLE,"Button",
+!                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,90,147,14
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_SPELL,93,7,61,14,ES_AUTOHSCROLL
+!     LTEXT           "Spell to cast:",IDC_STATIC,7,7,78,14,SS_CENTERIMAGE
+!     LTEXT           "Cast when mana above:",IDC_STATIC,7,32,77,14,
+                      SS_CENTERIMAGE
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_MANA,93,32,61,14,ES_AUTOHSCROLL
+!     LTEXT           "Cast when life below:",IDC_STATIC,7,56,77,14,
+                      SS_CENTERIMAGE
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_HPBELOW,93,56,61,14,ES_AUTOHSCROLL
+  END
+
+  
+--- 64,91 ----
+  // Dialog
+  //
+  
+! IDD_CONFIG DIALOG DISCARDABLE  0, 0, 186, 158
+  STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+  CAPTION "Module: spell caster"
+  FONT 8, "MS Sans Serif"
+  BEGIN
+!     DEFPUSHBUTTON   "OK",IDOK,69,137,50,14
+      CONTROL         "Enable spell caster",IDC_ENABLE,"Button",
+!                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,114,172,14
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_MANASPELL,111,34,61,14,
+!                     ES_AUTOHSCROLL
+!     LTEXT           "Spell to cast:",IDC_STATIC,16,34,78,14,SS_CENTERIMAGE
+!     LTEXT           "Cast when mana above:",IDC_STATIC,16,16,77,14,
+                      SS_CENTERIMAGE
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_MANA,111,16,61,14,ES_AUTOHSCROLL
+!     LTEXT           "Cast when life below:",IDC_STATIC,16,68,77,14,
+                      SS_CENTERIMAGE
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_HPBELOW,111,68,61,14,ES_AUTOHSCROLL
+!     GROUPBOX        "Mana",IDC_STATIC,7,7,172,46
+!     GROUPBOX        "Life",IDC_STATIC,7,57,172,49
+!     EDITTEXT        IDC_TOOL_SPELLCASTER_LIFESPELL,111,87,61,14,
+!                     ES_AUTOHSCROLL
+!     LTEXT           "Spell to cast:",IDC_STATIC,16,87,78,14,SS_CENTERIMAGE
+  END
+  
+  
+***************
+*** 94,102 ****
+      IDD_CONFIG, DIALOG
+      BEGIN
+          LEFTMARGIN, 7
+!         RIGHTMARGIN, 154
+          TOPMARGIN, 7
+!         BOTTOMMARGIN, 125
+      END
+  END
+  #endif    // APSTUDIO_INVOKED
+--- 100,114 ----
+      IDD_CONFIG, DIALOG
+      BEGIN
+          LEFTMARGIN, 7
+!         RIGHTMARGIN, 179
+!         VERTGUIDE, 16
+!         VERTGUIDE, 172
+          TOPMARGIN, 7
+!         BOTTOMMARGIN, 151
+!         HORZGUIDE, 16
+!         HORZGUIDE, 34
+!         HORZGUIDE, 73
+!         HORZGUIDE, 92
+      END
+  END
+  #endif    // APSTUDIO_INVOKED
+Only in mod_spellcaster_new: mod_spellcaster_private.h
+Only in mod_spellcaster_new: mod_spellcaster_private.rc
+diff -rc mod_spellcaster_old/resource.h mod_spellcaster_new/resource.h
+*** mod_spellcaster_old/resource.h	Mon Dec  5 21:26:02 2005
+--- mod_spellcaster_new/resource.h	Mon Jan  2 22:31:52 2006
+***************
+*** 4,10 ****
+--- 4,14 ----
+  //
+  #define IDC_TOOL_SPELLCASTER_MANA       1087
+  #define IDC_TOOL_SPELLCASTER_SPELL      1088
++ #define IDC_TOOL_SPELLCASTER_MANASPELL  1088
+  #define IDC_TOOL_SPELLCASTER_HPBELOW    1089
++ #define IDC_TOOL_SPELLCASTER_LIFESPELL  1090
++ #define IDC_TOOL_SPELLCASTER_LOGIC      1100
++ #define IDC_TOOL_SPELLCASTER_ALARM      1101
+  #define IDC_TOOL_FLUIDDRINKER_HPBELOW   1113
+  #define IDC_TOOL_FLUIDDRINKER_MANABELOW 1114
+  #define IDC_TOOL_FLUIDDRINKER_DRINKMANA 1115
+***************
+*** 48,54 ****
+  #ifndef APSTUDIO_READONLY_SYMBOLS
+  #define _APS_NEXT_RESOURCE_VALUE        3002
+  #define _APS_NEXT_COMMAND_VALUE         32771
+! #define _APS_NEXT_CONTROL_VALUE         3011
+  #define _APS_NEXT_SYMED_VALUE           3000
+  #endif
+  #endif
+--- 52,58 ----
+  #ifndef APSTUDIO_READONLY_SYMBOLS
+  #define _APS_NEXT_RESOURCE_VALUE        3002
+  #define _APS_NEXT_COMMAND_VALUE         32771
+! #define _APS_NEXT_CONTROL_VALUE         3014
+  #define _APS_NEXT_SYMED_VALUE           3000
+  #endif
+  #endif

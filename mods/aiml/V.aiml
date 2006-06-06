@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- V.aiml - Starts with "V"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+
+	<category>
+		<pattern>VAGUE *</pattern>
+		<template>Was it not precise enough?
+</template>
+	</category>
+		<category>
+		<pattern>_ VERB</pattern>
+		<that>SEX AS A NOUN OR VERB</that>
+		<template>Well, I'd say it means to identify or assign
+		the gender to something, say, a chicken or a flower.
+		Not the answer you were looking for, is it?   :P
+		</template>
+	</category>
+	<category>
+		<pattern>VERBALIZE *</pattern>
+		<template>
+			<srai>SAY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>VERRY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY</pattern>
+		<template>
+		<random>
+		<li>....A lot, huh.....</li>
+		<li>Oh, really.</li>
+		<li>Well, at least I know how you stand on the matter.</li>
+		</random>
+</template>
+	</category>
+	<!-- Yes, these two are very ambiguous..... "I want it very badly" "My day is going very badly" etc. -->
+	<!-- Some kind of witty response here would be nice -->
+	<category>
+		<pattern>VERY BAD</pattern>
+		<template>I dont know whether to laugh or to cry....
+</template>
+	</category>
+	<category>
+		<pattern>VERY BADLY</pattern>
+		<template><srai>VERY BAD</srai>
+</template>
+	</category>
+	<category>
+		<pattern>VERY CAREFULLY</pattern>
+		<template>I am a careful person.
+</template>
+	</category>
+	<category>
+		<pattern>VERY CLEVER</pattern>
+		<template>
+			<srai>YOU ARE CLEVER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY FUNNY</pattern>
+		<template>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY GOOD *</pattern>
+		<template>
+			<srai>GOOD</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY GOOD</pattern>
+		<template>
+			<srai>GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY INTERESTING</pattern>
+		<template>Yeah.....I thought it was, too.....
+</template>
+	</category>
+	<category>
+		<pattern>VERY MUCH</pattern>
+		<template>Seems like a lot.....
+</template>
+	</category>
+	<category>
+		<pattern>VERY NICE</pattern>
+		<template>Thank you.
+</template>
+	</category>
+	<category>
+		<pattern>VERY PARTICULAR *</pattern>
+		<template>
+			<srai>I AM VERY PARTICULAR</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY WELL</pattern>
+		<template>
+			<srai>OK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>VERY WELL</pattern>
+		<that>HOW WELL DO YOU KNOW THIS PERSON</that>
+		<template>So you know them well.....are you two good friends?
+</template>
+	</category>
+	<category>
+		<pattern>VETERANARIAN</pattern>
+		<template>Sounds like interesting and helpful work.
+		<think><set name="topic">VETERINARIAN</set></think>
+		</template>
+	</category>
+	<category>
+		<pattern>VIOLENCE *</pattern>
+		<template>Tell me what you think about violence.
+</template>
+	</category>
+	<category>
+		<pattern>VIRGO</pattern>
+		<template>Really? Im a Capricorn, personally.
+</template>
+	</category>
+	<category>
+		<pattern>VOILA *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+		<category>
+		<pattern>VULGAR *</pattern>
+		<template>.....I try to be polite.
+</template>
+	</category>
+</aiml>

@@ -1,0 +1,374 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_cavebot.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 553, 402
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Module: cave bot"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,250,381,50,14
+    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,361,539,14
+    EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,49,98,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,161,20,108,43,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,125,49,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,125,20,19,14
+    LTEXT           "Monsters to attack:",IDC_STATIC,162,13,106,8
+    CONTROL         "Auto follow mode",IDC_TOOL_AUTOATTACK_AUTOFOLLOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,122,69,10
+    EDITTEXT        IDC_TOOL_AUTOATTACK_CURX,17,285,25,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    EDITTEXT        IDC_TOOL_AUTOATTACK_CURY,54,285,25,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    EDITTEXT        IDC_TOOL_AUTOATTACK_CURZ,90,285,25,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    LISTBOX         IDC_TOOL_AUTOATTACK_WAYPOINTLIST,157,254,108,43,
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Waypoints:",IDC_STATIC,157,246,115,8
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,125,285,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,125,254,19,14
+    CONTROL         "Loot food",IDC_TOOL_AUTOATTACK_AUTOLOOTFOOD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,34,46,10
+    CONTROL         "Loot GP",IDC_TOOL_AUTOATTACK_AUTOLOOTGP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,351,34,42,10
+    LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_LOOT,291,
+                    63,206,8
+    COMBOBOX        IDC_TOOL_AUTOATTACK_MODE,69,211,57,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Attack mode:",IDC_STATIC,17,211,45,12,SS_CENTERIMAGE
+    CONTROL         "Loot worms",IDC_TOOL_AUTOATTACK_AUTOLOOTWORMS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,416,34,52,10
+    CONTROL         "No attack when enemy on screen",
+                    IDC_TOOL_AUTOATTACK_SUSPENDONENEMY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,138,121,10
+    GROUPBOX        "Waypoint walker",IDC_STATIC,7,239,268,117
+    GROUPBOX        "Monster attacking",IDC_STATIC,7,7,268,230
+    COMBOBOX        IDC_TOOL_AUTOATTACK_WAYPOINTSELMODE,215,211,57,46,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Waypoint select mode:",IDC_STATIC,133,211,76,12,
+                    SS_CENTERIMAGE
+    CONTROL         "Loot custom",IDC_TOOL_AUTOATTACK_AUTOLOOTCUSTOM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,481,31,59,10
+    COMBOBOX        IDC_TOOL_AUTOATTACK_MAPUSED,70,307,65,46,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Map used:",IDC_STATIC,17,307,44,12,SS_CENTERIMAGE
+    GROUPBOX        "Corpse looting",IDC_STATIC,281,7,265,71
+    LTEXT           "Loot capacity limit:",IDC_STATIC,289,18,64,13,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_LOOTCAPLIMIT,363,15,47,14,
+                    ES_AUTOHSCROLL
+    CONTROL         "Suspend when can't attack for 30s",
+                    IDC_TOOL_AUTOATTACK_NOMOVESUSPEND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,144,122,124,10
+    CONTROL         "Loot in bags",IDC_TOOL_AUTOATTACK_LOOTINBAGS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,50,55,10
+    LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_WALKER,17,
+                    339,168,8
+    LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_ATTACK,17,
+                    224,247,8
+    LTEXT           "Consider monsters in range:",IDC_STATIC,144,134,88,14,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_ATTACK_RANGE,242,134,14,14,ES_AUTOHSCROLL
+    CONTROL         "Eat from corpse",IDC_EAT_FROM_CORPSE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,481,50,64,10
+    CONTROL         "Stick to monster",IDC_STICK_TO_MONSTER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,17,154,67,10
+    CONTROL         "Attack only monsters attacking you",
+                    IDC_ATTACK_ONLY_ATTACKING,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,144,154,123,10
+    CONTROL         "Force attack when attacked",
+                    IDC_FORCE_ATTACK_AFTER_ATTACK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,170,105,10
+    EDITTEXT        IDC_UNREACHABLE_AFTER,92,184,19,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SUSPEND_AFTER_UNREACHABLE,255,184,14,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Unreachable after [s]:",IDC_STATIC,17,184,74,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Suspend after unreachable [s]:",IDC_STATIC,144,184,100,
+                    14,SS_CENTERIMAGE
+    EDITTEXT        IDC_STAND_STILL,159,323,20,14,ES_AUTOHSCROLL
+    LTEXT           "Stand still after reaching waypoing for [s]:",
+                    IDC_STATIC,17,323,127,14,SS_CENTERIMAGE
+    CONTROL         "Gather loot statistics",IDC_GATHER_LOOT_STATS,"Button",
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,416,18,125,10
+    GROUPBOX        "Depot walker",IDC_STATIC,281,83,265,88
+    LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_DEPOT,289,
+                    159,206,8
+    EDITTEXT        IDC_DEPOT_WHEN,289,139,40,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_DEPOT_ITEMLIST,289,109,89,184,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">>>",IDC_DEPOT_ENTRYADD,387,139,19,14
+    PUSHBUTTON      "<<<",IDC_DEPOT_ENTRYREMOVE,387,107,19,14
+    LISTBOX         IDC_DEPOT_ENTRYLIST,415,92,121,61,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_DEPOT_REMAIN,338,139,40,14,ES_AUTOHSCROLL
+    LTEXT           "When:",IDC_STATIC,289,129,22,8
+    LTEXT           "Remain:",IDC_STATIC,338,129,27,8
+    CONTROL         "Enable cavebot debuging",IDC_DEBUG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,284,97,10
+    GROUPBOX        "Debuging",IDC_STATIC,281,240,265,61
+    LTEXT           "If you experiance any problems with the cavebot, activate debuging and look for the results in the tibiaauto-debug-cavebot.txt file. If you think you have found a bug please report it on the forum and attach the debug file and your config file.",
+                    IDC_STATIC,289,248,247,35
+    GROUPBOX        "Training",IDC_STATIC,281,174,265,60
+    CONTROL         "Blood hit control",IDC_TRAINING_BLOOD_HIT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,448,194,67,10
+    COMBOBOX        IDC_TRAINING_WEAPON_TRAIN,351,187,89,184,
+                    CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Training weapon:",IDC_STATIC,289,187,56,12,
+                    SS_CENTERIMAGE
+    LTEXT           "Fight weapon:",IDC_STATIC,289,207,46,13,SS_CENTERIMAGE
+    COMBOBOX        IDC_TRAINING_WEAPON_FIGHT,351,208,89,184,
+                    CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Fight when surrounded",
+                    IDC_TRAINING_FIGHT_WHEN_SURROUNDED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,448,206,88,10
+    CONTROL         "Fight when alien found",IDC_TRAINING_FIGHT_WHEN_ALIEN,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,220,87,10
+    CONTROL         "Activate training mode",IDC_TRAINING_ACTIVATE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,448,180,86,10
+    LTEXT           "State: not running",IDC_TRAINING_STATE,289,222,152,8
+    CONTROL         "Drop items instead of depositing",
+                    IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,95,116,10
+    CONTROL         "Drop not looted",IDC_DROPNOTLOOTED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,416,50,65,10
+    CONTROL         "Loot from floor",IDC_LOOTFROMFLOOR,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,351,50,61,10
+    LTEXT           "Attack creatures with hp%>:",IDC_STATIC,144,166,88,14,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_ATTACK_HP_ABOVE,242,166,24,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_AUTOATTACK_IGNORE,18,102,98,14,ES_AUTOHSCROLL
+    LISTBOX         IDC_TOOL_AUTOATTACK_IGNORELIST,162,73,108,43,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_IGNORE,126,102,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_IGNORE,126,73,19,14
+    LTEXT           "Monsters to ignore:",IDC_STATIC,163,66,106,8
+    CONTROL         "Backattack alien with runes",IDC_BACKATTACK_RUNES,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,144,198,123,10
+END
+
+IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Send loot statistics info!"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
+    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 400k. Please support the Tibia Auto loot statistics by posting it at http://tibiaauto.net/forum/!",
+                    IDC_STATIC,7,7,172,39,WS_BORDER
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 546
+        VERTGUIDE, 17
+        VERTGUIDE, 144
+        VERTGUIDE, 275
+        VERTGUIDE, 281
+        VERTGUIDE, 289
+        VERTGUIDE, 338
+        VERTGUIDE, 351
+        VERTGUIDE, 378
+        VERTGUIDE, 406
+        VERTGUIDE, 416
+        VERTGUIDE, 448
+        VERTGUIDE, 536
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 395
+        HORZGUIDE, 44
+        HORZGUIDE, 60
+    END
+
+    IDD_SENDSTATS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 63
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CONFIG DLGINIT
+BEGIN
+    IDC_TOOL_AUTOATTACK_MODE, 0x403, 12, 0
+0x7546, 0x6c6c, 0x6120, 0x7474, 0x6361, 0x006b, 
+    IDC_TOOL_AUTOATTACK_MODE, 0x403, 9, 0
+0x6142, 0x616c, 0x636e, 0x6465, "\000" 
+    IDC_TOOL_AUTOATTACK_MODE, 0x403, 13, 0
+0x7546, 0x6c6c, 0x6420, 0x6665, 0x6e65, 0x6563, "\000" 
+    IDC_TOOL_AUTOATTACK_WAYPOINTSELMODE, 0x403, 7, 0
+0x6152, 0x646e, 0x6d6f, "\000" 
+    IDC_TOOL_AUTOATTACK_WAYPOINTSELMODE, 0x403, 12, 0
+0x6f52, 0x6e75, 0x2d64, 0x6f72, 0x6962, 0x006e, 
+    IDC_TOOL_AUTOATTACK_MAPUSED, 0x403, 15, 0
+0x6954, 0x6962, 0x2061, 0x7541, 0x6f74, 0x6d20, 0x7061, "\000" 
+    IDC_TOOL_AUTOATTACK_MAPUSED, 0x403, 17, 0
+0x6954, 0x6962, 0x2061, 0x6c63, 0x6569, 0x746e, 0x6d20, 0x7061, "\000" 
+    IDC_TOOL_AUTOATTACK_MAPUSED, 0x403, 6, 0
+0x696d, 0x6578, 0x0064, 
+    0
+END
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_cavebot DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_cavebot\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_cavebot.DLL\0"
+            VALUE "ProductName", "mod_cavebot Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_cavebot.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

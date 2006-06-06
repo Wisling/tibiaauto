@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 8.aiml - Number  8 related       -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL      -->
+	<!-- Fork of 9/26/2001 ALICE        -->
+	<category>
+		<pattern>8</pattern>
+		<template>
+			<srai>I AM 8 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>86</pattern>
+		<template>Eighty-six.
+</template>
+	</category>
+</aiml>

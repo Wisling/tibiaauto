@@ -1,0 +1,226 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_showmap.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TOOL_MAPSHOW DIALOG DISCARDABLE  0, 0, 351, 310
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tool: show recorded map"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,236,289,50,14
+    CONTROL         "Research map",IDC_TOOL_MAPSHOW_RESEARCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,293,62,10
+    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,289,50,14
+    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,273,337,11,WS_BORDER
+    CONTROL         "Extended research map",
+                    IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,83,293,91,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TOOL_MAPSHOW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 344
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 303
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_MAP_EMPTY           BITMAP  DISCARDABLE     "res\\map_empty.bmp"
+IDB_MAP_SAMEFLOOR       BITMAP  DISCARDABLE     "res\\map_samefloor.bmp"
+IDB_MAP_SELF            BITMAP  DISCARDABLE     "res\\map_self.bmp"
+IDB_MAP_ROPE            BITMAP  DISCARDABLE     "res\\map_rope.bmp"
+IDB_MAP_LADDER          BITMAP  DISCARDABLE     "res\\map_ladder.bmp"
+IDB_MAP_MAGICROPE       BITMAP  DISCARDABLE     "res\\map_magicrope.bmp"
+IDB_MAP_STAIRS          BITMAP  DISCARDABLE     "res\\map_stairs.bmp"
+IDB_MAP_OPENHOLE        BITMAP  DISCARDABLE     "res\\map_openhole.bmp"
+IDB_MAP_CLOSEDHOLE      BITMAP  DISCARDABLE     "res\\map_closedhole.bmp"
+IDB_MAP_CRATE           BITMAP  DISCARDABLE     "res\\map_crate.bmp"
+IDB_MAP_BLOCKED         BITMAP  DISCARDABLE     "res\\map_blocked.bmp"
+IDB_MAP_DEPOT           BITMAP  DISCARDABLE     "res\\map_depot.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_SHOWMAP_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Showmap options"
+    BEGIN
+        MENUITEM "Clear",                       ID_SHOWMAPOPTIONS_CLEAR
+        MENUITEM "Available",                   ID_SHOWMAPOPTIONS_AVAILABLE
+        MENUITEM SEPARATOR
+        MENUITEM "Rope",                        ID_SHOWMAPOPTIONS_ROPE
+        MENUITEM "Ladder",                      ID_SHOWMAPOPTIONS_LADDER
+        MENUITEM "Stairs",                      ID_SHOWMAPOPTIONS_STAIRS
+        MENUITEM "Magic rope",                  ID_SHOWMAPOPTIONS_MAGICROPE
+        MENUITEM SEPARATOR
+        MENUITEM "Open hole",                   ID_SHOWMAPOPTIONS_OPENHOLE
+        MENUITEM "Closed hole",                 ID_SHOWMAPOPTIONS_CLOSEDHOLE
+        MENUITEM "Crate",                       ID_SHOWMAPOPTIONS_CRATE
+        MENUITEM SEPARATOR
+        MENUITEM "Depot",                       ID_SHOWMAPOPTIONS_DEPOT
+    END
+END
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_showmap DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_showmap\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_showmap.DLL\0"
+            VALUE "ProductName", "mod_showmap Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_showmap.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

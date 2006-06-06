@@ -1,0 +1,232 @@
+<responder>
+
+<thread>
+<if>
+  <condition>
+  <and>
+    <or>
+    <message match="noob" channel="say"/>
+    <message match="noob" channel="private"/>
+    </or>
+    <not>
+      <or>
+      <playername match="GM "/>
+      <playername match="Myname"/>
+      </or>
+    </not>
+  </and>
+  </condition>
+  <sequence>
+    <sleep time="3000"/>
+    <random>
+      <say channel="private" player="$p" text="I know that... my mom said I would be the best one when I grow up"/>
+      <say channel="private" player="$p" text="noob, noob, you don't know other words to talk?"/>
+      <say channel="private" player="$p" text="lol, yeah, noob.. OH NO!! plz help... noob around.. yell HELP! NOOB! lol!!!"/>
+      <say channel="private" player="$p" text="oh, my, god... another one that just learned this word!!"/>
+      <say channel="private" player="$p" text="don't like me killing your monsters?? report me.. it's not against any rules"/>
+      <say channel="private" player="$p" text="BR?? CZE? SPA? ITA? EN? JP? CHI? FU? CK? YOU?"/>
+      <say channel="private" player="$p" text="I just don't give a fuck.."/>
+    </random>
+    <sleep time="2500"/>
+    <random>
+      <say channel="private" player="$p" text="did I mention ignored? oh yeah.. silence.."/>
+      <say channel="private" player="$p" text="I just love to see lame ppl trying to talk when they r ignored"/>
+      <say channel="private" player="$p" text="what?? can't hear you!! you are ignored."/>
+      <say channel="private" player="$p" text="lol, lol, LOL... .....  .... .... nothing happened.. yeah. you are ignored."/>
+    </random>
+    <ignoreplayer name="$p" time="1800"/>
+  </sequence>
+</if>
+</thread>
+
+
+<thread>
+<if>
+  <condition>
+     <and>
+    <or>
+    <message match="hello" channel="say"/>
+    <message match="hi" channel="say"/>
+    <message match="hiho" channel="say"/>
+    <message match="hullo" channel="say"/>
+    <message match="ola" channel="say"/>
+    <message match="hello" channel="private"/>
+    <message match="hi" channel="private"/>
+    <message match="hiho" channel="private"/>
+    <message match="hullo" channel="private"/>
+    <message match="ola" channel="private"/>
+    </or>
+    <not>
+      <or>
+      <playername match="GM "/>
+      <playername match="Myname"/>
+      </or>
+    </not>
+     </and>
+  </condition>
+  <sequence>
+    <sleep time="2000"/>
+    <say channel="private" player="$p" text="don't bother me.."/>
+    <sleep time="2000"/>
+    <random>
+      <say channel="private" player="$p" text="I don't wish to talk to you, I'm off."/>
+      <say channel="private" player="$p" text="I don't like you.. get going..."/>
+      <say channel="private" player="$p" text="don't start.. won't answer you anyway.."/>
+    </random>
+  </sequence>
+</if>
+</thread>
+
+<thread>
+<if>
+  <condition>
+     <and>
+    <or>
+    <message match="no kill" channel="private"/>
+    <message match="mine" channel="private"/>
+    <message match="plz no" channel="private"/>
+    <message match="leave" channel="private"/>
+    <message match="tranin" channel="private"/>
+    <message match="no kill" channel="say"/>
+    <message match="mine" channel="say"/>
+    <message match="plz no" channel="say"/>
+    <message match="leave" channel="say"/>
+    <message match="tranin" channel="say"/>
+    </or>
+    <not>
+      <or>
+      <playername match="GM "/>
+      <playername match="Myname"/>
+      </or>
+    </not>
+     </and>
+  </condition>
+  <sequence>
+    <sleep time="2000"/>
+    <say channel="private" player="$p" text="lmao... that's your problem.."/>
+    <sleep time="2500"/>
+    <random>
+      <say channel="private" player="$p" text="If you don't like, bad for you. I will kill."/>
+      <say channel="private" player="$p" text="I'm hunting anyway..."/>
+      <say channel="private" player="$p" text="I guess you will hate me forever than."/>
+    </random>
+  </sequence>
+</if>
+</thread>
+
+
+<thread>
+<if>
+  <condition>
+  <and>
+    <or>
+    <message match="answer" channel="say"/>
+    <message match="answer" channel="private"/>
+    </or>
+    <not>
+      <or>
+      <playername match="GM "/>
+      <playername match="Myname"/>
+      </or>
+    </not>
+  </and>
+  </condition>
+  <sequence>
+    <sleep time="1000"/>
+    <say text="me? yeah, like I have to.. when you become a GM I will answer"/>
+    <sleep time="2000"/>
+    <say channel="private" player="$p" text="get lost, I'm out.."/>
+  </sequence>
+</if>
+</thread>
+
+
+<thread>
+<if>
+  <condition>
+     <and>
+       <or>
+       <message match="br" channel="say"/>
+       <message match="cze" channel="say"/>
+       <message match="pl" channel="say"/>
+       <message match="spa" channel="say"/>
+       <message match="swe" channel="say"/>
+       <message match="br" channel="private"/>
+       <message match="cze" channel="private"/>
+       <message match="pl" channel="private"/>
+       <message match="spa" channel="private"/>
+       <message match="swe" channel="private"/>
+       </or>
+       <not>
+           <or>
+           <playername match="GM "/>
+           <playername match="Myname"/>
+           </or>
+       </not>
+     </and>
+  </condition>
+  <sequence>
+       <sleep time="2000"/>
+       <say channel="private" player="$p" text="lmao."/>
+       <sleep time="2500"/>
+       <random>
+          <say channel="private" player="$p" text="get lost.."/>
+          <say channel="private" player="$p" text="BR?? CZE? SPA? ITA? EN? JP? CHI? FU? CK? OFF?"/>
+          <say channel="private" player="$p" text="does it really matter? fuck off."/>
+       </random>
+  </sequence>
+</if>
+</thread>
+
+<thread>
+<if>
+  <condition>
+     <or>
+        <message match="hello"/>
+        <message match="hi"/>
+        <message match="ola"/>
+        <message match="hullo"/>
+        <message match="hey"/>
+        <message match="hau"/>
+        <message match="hail"/>
+        <message match="Myn "/>
+        <message match="Mynam "/>
+        <message match="Myname"/>
+     </or>
+     <and>
+        <playername match="GM "/>
+     </and>
+  </condition>
+  <sequence>
+     <sleep time="1500"/>
+     <random>
+          <say channel="say" text="uhuhuhu.. a GM.."/>
+          <say channel="say" text="oh, my, god.. a GM!"/>
+          <say channel="say" text="wow!! someone, tell me, is this real?? a GM!"/>
+          <say channel="say" text="wow!! Hi $p !"/>
+          <say channel="say" text="now I can die happy.. I've seen a GM!!"/>
+          <say channel="say" text="GM? FREE ITEMS PLZ!! :D sorry m8, bad habit!"/>
+          <say channel="say" text="LVL 2 here?? ops.. GM.. lol, my bad"/>
+     </random>
+     <sleep time="2000"/>
+          <say channel="say" text="A GM IS ONLINE! Just next to me!! I'm blushing.."/>
+          <sleep time="2000"/>
+          <say channel="say" text="I feel like dancing to celebrate it.."/>
+     <dance count="8"/>
+     <sleep time="2500"/>
+          <say channel="say" text="I hope you ban "those" that are lying about me."/>
+     <sleep time="3000"/>
+     <random>
+          <say channel="yell" text="btw, I don't answer private cuz I don't like, thus, it's on 'ignore private'. :)"/>
+          <say channel="yell" text="I hate ppl that report others just cuz I'm hunting, it's not against the rules, it's just rude, and I don't really care.. ;)"/>
+          <say channel="yell" text="how can I keep hunting with this guys messing around? bah, don't care about them"/>
+          <say channel="yell" text="GMs are the only ones I've to answer, so, I won't answer private from anyother."/>
+          <say channel="yell" text="ty for comming, and sorry if you lost time.. you are doing your job, but some ppl make it hard for you"/>
+     </random>
+     <sleep time="1000"/>
+          <say channel="say" text="c ya.. off hunting."/>
+  </sequence>
+</if>
+</thread>
+
+</responder>

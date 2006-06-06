@@ -1,0 +1,296 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_creatureinfo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 225, 254
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Module: creature info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Players Info",IDC_STATIC,7,7,211,47
+    GROUPBOX        "Monsters/NPCs Info",IDC_STATIC,7,56,211,55
+    GROUPBOX        "Self Info",IDC_STATIC,7,113,211,47
+    CONTROL         "Players Info",IDC_TOOLCREATURINFO_PLAYER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,6,53,10
+    EDITTEXT        IDC_TOOLCREATURINFO_PLAYER_1LINE,65,17,143,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOLCREATURINFO_PLAYER_2LINE,65,32,143,14,
+                    ES_AUTOHSCROLL
+    CONTROL         "Monster/NPCs Info",IDC_TOOLCREATURINFO_MONSTER,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,56,77,10
+    EDITTEXT        IDC_TOOLCREATURINFO_MONSTER_1LINE,65,67,143,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOLCREATURINFO_MONSTER_2LINE,65,82,143,14,
+                    ES_AUTOHSCROLL
+    CONTROL         "Unique monsters names",
+                    IDC_TOOLCREATURINFO_MONSTER_UNIQUEMONSTERNAMES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,66,98,143,10
+    CONTROL         "Self Info",IDC_TOOLCREATURINFO_SELF,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,113,42,10
+    EDITTEXT        IDC_TOOLCREATURINFO_SELF_1LINE,65,124,143,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOLCREATURINFO_SELF_2LINE,65,139,143,14,
+                    ES_AUTOHSCROLL
+    CONTROL         "Show creatures info on all floors",
+                    IDC_TOOLCREATURINFO_ALLINFO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,162,211,10
+    PUSHBUTTON      "Name Changer",IDC_TOOLCREATURINFO_NAMECHANGER,7,188,104,
+                    14
+    PUSHBUTTON      "Known Creatures Info",IDC_TOOLCREATURINFO_KNOWNINFO,114,
+                    188,104,14,WS_DISABLED
+    CONTROL         "Enable",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,208,211,14
+    DEFPUSHBUTTON   "OK",IDOK,87,233,50,14
+    LTEXT           "First line:",IDC_STATIC,17,21,45,8
+    LTEXT           "Second line:",IDC_STATIC,17,35,45,8
+    LTEXT           "First line:",IDC_STATIC,17,71,45,8
+    LTEXT           "Second line:",IDC_STATIC,17,85,45,8
+    LTEXT           "First line:",IDC_STATIC,17,127,45,8
+    LTEXT           "Second line:",IDC_STATIC,17,142,45,8
+    CONTROL         "Addition info request for fast creatures",
+                    IDC_TOOLCREATURINFO_ADDITIONALREQUEST,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,174,211,10
+END
+
+IDD_NAME DIALOG DISCARDABLE  0, 0, 234, 217
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Name Changer"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "List1",IDC_TOOLCREATURINFO_LIST,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_EDITLABELS | WS_BORDER | 
+                    WS_TABSTOP,7,7,220,164
+    PUSHBUTTON      "Close",IDOK,177,196,50,14
+    CONTROL         "Refresh",IDC_TOOLCREATURINFO_REFRESH,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,177,50,15
+    CONTROL         "Relative Pos",IDC_TOOLCREATURINFO_RELPOS,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,120,178,50,14
+    CONTROL         "Advanced",IDC_TOOLCREATURINFO_ADVANCED,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,177,178,50,14
+    CONTROL         "BattleList Only",IDC_TOOLCREATURINFO_BATTLEONLY,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,64,178,50,14
+END
+
+IDD_INFO DIALOG DISCARDABLE  0, 0, 194, 242
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Known creature info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Monsters/Other",IDC_TOOLCREATURINFO_INFO_MONSTERS,
+                    "Button",BS_AUTORADIOBUTTON | BS_NOTIFY | WS_TABSTOP,93,
+                    10,94,10
+    CONTROL         "Players",IDC_TOOLCREATURINFO_INFO_PLAYERS,"Button",
+                    BS_AUTORADIOBUTTON | BS_NOTIFY | WS_TABSTOP,7,10,84,10
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_NAME,71,49,108,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_TYPE,72,65,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_HP,72,81,107,14,ES_AUTOHSCROLL | 
+                    ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_VOC,72,113,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_LEVEL,72,97,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_LAST,72,129,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_GUILDNAME,72,164,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_GUILDRANK,72,180,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    EDITTEXT        IDC_TOOLCREATURINFO_INFO_GUILDDESCRIPTION,72,196,107,14,
+                    ES_AUTOHSCROLL | ES_READONLY
+    DEFPUSHBUTTON   "OK",IDOK,137,221,50,14
+    GROUPBOX        "General Info",IDC_STATIC,7,39,179,109
+    LTEXT           "Name:",IDC_STATIC,13,51,22,8
+    LTEXT           "Type:",IDC_STATIC,13,67,19,8
+    LTEXT           "HP:",IDC_STATIC,13,83,13,8
+    LTEXT           "Vocation:",IDC_TOOLCREATURINFO_INFO_TXTVOC,14,116,49,8
+    LTEXT           "Level:",IDC_TOOLCREATURINFO_INFO_TXTLEVEL,13,100,44,8
+    LTEXT           "Guild Name:",IDC_STATIC,14,168,40,8
+    LTEXT           "Guild Rank:",IDC_STATIC,13,183,38,8
+    LTEXT           "Guild Description:",IDC_STATIC,13,199,56,8
+    LTEXT           "Last seen:",IDC_STATIC,13,132,34,8
+    GROUPBOX        "Guild Info",IDC_STATIC,7,153,180,64
+    COMBOBOX        IDC_TOOLCREATURINFO_INFO_COMBO,7,25,180,68,
+                    CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 218
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 247
+    END
+
+    IDD_NAME, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 227
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 210
+    END
+
+    IDD_INFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 187
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 235
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_creatureinfo DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_creatureinfo\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_creatureinfo.DLL\0"
+            VALUE "ProductName", "mod_creatureinfo Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_creatureinfo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

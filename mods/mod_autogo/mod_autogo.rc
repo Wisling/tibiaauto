@@ -1,0 +1,359 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+// Generated Help ID header file
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "resource.hm"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_autogo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOGEX 0, 0, 350, 390
+STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_CONTROLPARENT
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Creature on BattleList",IDC_AUTOGO_TRIGGERBATTLELIST,
+                    "Button",BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | 
+                    WS_TABSTOP,13,17,96,10
+    CONTROL         "Player",IDC_AUTOGO_BATTLEPLAYER,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,115,17,79,10
+    CONTROL         "Monster/NPC",IDC_AUTOGO_BATTLEMONSTER,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,115,27,81,10
+    CONTROL         "Game Master",IDC_AUTOGO_BATTLEGM,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,115,37,81,10
+    CONTROL         "Paranoia mode",IDC_AUTOGO_BATTLEPARANOIA,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,115,47,82,10
+    PUSHBUTTON      "White List",IDC_AUTOGO_BATTLEWHITELIST,115,58,80,14
+    COMBOBOX        IDC_AUTOGO_ACTIONBATTLELIST,203,37,79,30,
+                    CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDBATTLELIST,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,291,39,37,10
+    CONTROL         "Sign appears",IDC_AUTOGO_TRIGGERSIGN,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,78,96,10,0,
+                    HIDC_AUTOGO_TRIGGERSIGN
+    CONTROL         "IDB_BATTLE",IDC_AUTOGO_SIGNBATTLE,"Button",
+                    BS_AUTOCHECKBOX | BS_ICON | BS_CENTER | BS_VCENTER | 
+                    BS_PUSHLIKE,117,77,17,11
+    CONTROL         "IDB_POISON",IDC_AUTOGO_SIGNPOISON,"Button",
+                    BS_AUTOCHECKBOX | BS_ICON | BS_CENTER | BS_VCENTER | 
+                    BS_PUSHLIKE,137,77,17,11
+    CONTROL         "IDB_FIRE",IDC_AUTOGO_SIGNFIRE,"Button",BS_AUTOCHECKBOX | 
+                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,157,77,17,
+                    11
+    CONTROL         "IDB_ENERGY",IDC_AUTOGO_SIGNENERGY,"Button",
+                    BS_AUTOCHECKBOX | BS_ICON | BS_CENTER | BS_VCENTER | 
+                    BS_PUSHLIKE,178,77,17,11
+    COMBOBOX        IDC_AUTOGO_ACTIONSIGN,203,76,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDSIGN,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,289,78,37,10
+    CONTROL         "Message",IDC_AUTOGO_TRIGGERMESSAGE,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,94,94,10
+    CONTROL         "Private",IDC_AUTOGO_MESSAGEPRIVATE,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,117,94,34,10
+    CONTROL         "Public",IDC_AUTOGO_MESSAGEPUBLIC,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,159,94,34,10
+    COMBOBOX        IDC_AUTOGO_ACTIONMESSAGE,203,92,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDMESSAGE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,290,95,37,10
+    CONTROL         "Move",IDC_AUTOGO_TRIGGERMOVE,"Button",BS_AUTOCHECKBOX | 
+                    BS_VCENTER | WS_TABSTOP,13,110,94,10
+    COMBOBOX        IDC_AUTOGO_ACTIONMOVE,203,108,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDMOVE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,289,110,37,10
+    CONTROL         "HP Loss",IDC_AUTOGO_TRIGGERHPLOSS,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,126,93,10
+    COMBOBOX        IDC_AUTOGO_ACTIONHPLOSS,203,124,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDHPLOSS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,290,126,37,10
+    CONTROL         "HP below",IDC_AUTOGO_TRIGGERHPBELOW,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,142,93,10
+    EDITTEXT        IDC_AUTOGO_HPBELOW,115,140,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_AUTOGO_ACTIONHPBELOW,203,140,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDHPBELOW,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,289,142,37,10
+    CONTROL         "Soul points less then",IDC_AUTOGO_TRIGGERSOULPOINTS,
+                    "Button",BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,
+                    158,95,10
+    EDITTEXT        IDC_AUTOGO_SOULPOINT,115,156,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_AUTOGO_ACTIONSOULPOINT,203,156,79,30,
+                    CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDSOULPOINT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,158,37,10
+    CONTROL         "Blank runes less then",IDC_AUTOGO_TRIGGERBLANK,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,174,94,10
+    EDITTEXT        IDC_AUTOGO_BLANK,115,172,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_AUTOGO_ACTIONBLANK,203,172,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,186,336,1
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDBLANK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,289,174,37,10
+    CONTROL         "Capacity less then",IDC_AUTOGO_TRIGGERCAPACITY,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,190,92,10
+    EDITTEXT        IDC_AUTOGO_CAPACITY,115,188,82,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    COMBOBOX        IDC_AUTOGO_ACTIONCAPACITY,203,188,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDCAPACITY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,190,37,10
+    CONTROL         "Out of",IDC_AUTOGO_TRIGGEROUTOF,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,13,206,95,10
+    CONTROL         "Food",IDC_AUTOGO_OUTOFFOOD,"Button",BS_AUTOCHECKBOX | 
+                    BS_VCENTER | WS_TABSTOP,117,204,34,10
+    CONTROL         "Worms",IDC_AUTOGO_OUTOFWORMS,"Button",BS_AUTOCHECKBOX | 
+                    BS_VCENTER | WS_TABSTOP,117,214,34,10
+    CONTROL         "Space",IDC_AUTOGO_OUTOFSPACE,"Button",BS_AUTOCHECKBOX | 
+                    BS_VCENTER | WS_TABSTOP,117,224,34,10
+    COMBOBOX        IDC_AUTOGO_ACTIONOUTOF,203,212,79,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Sound",IDC_AUTOGO_SOUNDOUTOF,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,289,214,37,10
+    EDITTEXT        IDC_AUTOGO_RUNAWAY_X,62,283,24,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_RUNAWAY_Y,90,283,25,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_RUNAWAY_Z,119,283,24,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    PUSHBUTTON      "Set runaway pos",IDC_AUTOGO_TORUNAWAY,62,299,81,14,
+                    BS_VCENTER
+    EDITTEXT        IDC_AUTOGO_CUR_X,62,315,24,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    EDITTEXT        IDC_AUTOGO_CUR_Y,90,315,25,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    EDITTEXT        IDC_AUTOGO_CUR_Z,119,315,24,14,ES_AUTOHSCROLL | 
+                    WS_DISABLED
+    EDITTEXT        IDC_AUTOGO_ACT_X,202,283,24,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_ACT_Y,230,283,25,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_ACT_Z,259,283,24,13,ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    PUSHBUTTON      "Set start pos",IDC_AUTOGO_TOSTART,202,299,81,14,
+                    BS_VCENTER
+    CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,347,336,14
+    DEFPUSHBUTTON   "OK",IDOK,151,369,50,14
+    GROUPBOX        "Alarms",IDC_STATIC,7,7,336,255
+    GROUPBOX        "Options",IDC_STATIC,7,269,336,70
+    LTEXT           "Runaway pos:",IDC_STATIC,13,283,46,14,SS_CENTERIMAGE
+    LTEXT           "Current pos:",IDC_STATIC,13,315,40,14,SS_CENTERIMAGE
+    LTEXT           "Status:",IDC_AUTOGO_STATUS,14,244,324,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,74,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,112,11,1,224
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,200,11,1,224
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDVERT,285,11,1,224
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,90,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,106,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,154,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,170,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,202,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,234,336,1
+    LTEXT           "Start pos:",IDC_STATIC,155,283,40,14,SS_CENTERIMAGE
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,122,336,1
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDHORZ,7,138,336,1
+    COMBOBOX        IDC_AUTOGO_ACT_DIRECTION,287,283,48,30,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+END
+
+IDD_WHITELIST DIALOG DISCARDABLE  0, 0, 177, 158
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "WhiteList"
+FONT 8, "MS Sans Serif"
+BEGIN
+    EDITTEXT        IDC_WHITELIST_NAME,5,5,112,14,ES_AUTOHSCROLL | 
+                    ES_WANTRETURN
+    PUSHBUTTON      "Add",IDC_WHITELIST_ADD,122,5,50,14
+    LISTBOX         IDC_WHITELIST_LIST,5,30,111,101,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Delete",IDC_WHITELIST_DELETE,122,32,50,14
+    DEFPUSHBUTTON   "OK",IDOK,63,139,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 343
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 383
+    END
+
+    IDD_WHITELIST, DIALOG
+    BEGIN
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 172
+        TOPMARGIN, 5
+        BOTTOMMARGIN, 153
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_FIRE                BITMAP  DISCARDABLE     "res\\condition_burning.bmp"
+IDB_ENERGY              BITMAP  DISCARDABLE     "res\\condition_electrified.bmp"
+IDB_BATTLE              BITMAP  DISCARDABLE     "res\\condition_logoutblock.bmp"
+IDB_POISON              BITMAP  DISCARDABLE     "res\\condition_poisoned.bmp"
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_autogo DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_autogo\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_autogo.DLL\0"
+            VALUE "ProductName", "mod_autogo Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_autogo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,225 @@
+<substitutions>
+
+<!-- Substitutions -->
+<substitute name="normal" find="," replace=" "/>
+
+<substitute name="normal" find=":-)" replace=" SMILE "/>
+<substitute name="normal" find=":-)" replace=" SMILE "/>
+<substitute name="normal" find=":)" replace=" SMILE "/>
+<substitute name="normal" find=";)" replace=" SMILE "/>
+<substitute name="normal" find=";-)" replace=" SMILE "/>
+<substitute name="normal" find=";-P" replace=" SMILE "/>
+<substitute name="normal" find=":-*" replace=" KISS "/>
+<substitute name="normal" find=" L A " replace=" LA "/>
+<substitute name="normal" find=" O K " replace=" OK "/>
+<substitute name="normal" find=" P S " replace=" PS "/>
+<substitute name="normal" find=" OHH" replace=" OH"/>
+<substitute name="normal" find=" HEHE" replace=" HE"/>
+<substitute name="normal" find=" HAHA" replace=" HA"/>    
+<substitute name="normal" find=" HELLP " replace=" HELP "/>
+<substitute name="normal" find=" BECUSE " replace=" BECAUSE "/>
+<substitute name="normal" find=" BELEIVE " replace=" BELIEVE "/>
+<substitute name="normal" find=" BECASUE " replace=" BECAUSE "/>
+<substitute name="normal" find=" BECUASE " replace=" BECAUSE "/>
+<substitute name="normal" find=" BECOUSE " replace=" BECAUSE "/>
+<substitute name="normal" find=" PRACTICE " replace=" PRACTISE "/>
+<substitute name="normal" find=" REDUCTIONALISM " replace=" REDUCTIONISM "/>
+<substitute name="normal" find=" LOEBNER PRICE " replace=" LOEBNER PRIZE "/>
+<substitute name="normal" find=" ITS A " replace=" IT IS A "/>
+<substitute name="normal" find=" NOI " replace=" YES I "/>
+<substitute name="normal" find=" FAV " replace=" FAVORITE "/>
+<substitute name="normal" find=" YESI " replace=" YES I "/>
+<substitute name="normal" find=" YESIT " replace=" YES IT "/>
+<substitute name="normal" find=" IAM " replace=" I AM "/>
+<substitute name="normal" find=" WELLI " replace=" WELL I "/>
+<substitute name="normal" find=" WELLIT " replace=" WELL IT "/>
+<substitute name="normal" find=" AMFINE " replace=" AM FINE "/>
+<substitute name="normal" find=" AMAN " replace=" AM AN "/>
+<substitute name="normal" find=" AMON " replace=" AM ON "/>
+<substitute name="normal" find=" AMNOT " replace=" AM NOT "/>
+<substitute name="normal" find=" REALY " replace=" REALLY "/>
+<substitute name="normal" find=" IAMUSING " replace=" I AM USING "/>
+<substitute name="normal" find=" AMLEAVING " replace=" AM LEAVING "/>
+<substitute name="normal" find=" YEAH " replace=" YES "/>
+<substitute name="normal" find=" YEP " replace=" YES "/>
+<substitute name="normal" find=" YHA " replace=" YES "/>
+<substitute name="normal" find=" YUO " replace=" YOU "/>
+<substitute name="normal" find=" WANNA " replace=" WANT TO "/>
+<substitute name="normal" find=" YOU'D " replace=" YOU WOULD "/>
+<substitute name="normal" find=" YOU'RE " replace=" YOU ARE "/>
+<substitute name="normal" find=" YOU RE " replace=" YOU ARE "/>
+<substitute name="normal" find=" YOU'VE " replace=" YOU HAVE "/>
+<substitute name="normal" find=" YOU VE " replace=" YOU HAVE "/>
+<substitute name="normal" find=" YOU'LL " replace=" YOU WILL "/>
+<substitute name="normal" find=" YOU LL " replace=" YOU WILL "/>
+<substitute name="normal" find=" YOURE " replace=" YOU ARE "/>
+<substitute name="normal" find=" DIDNT " replace=" DID NOT "/>
+<substitute name="normal" find=" DIDN'T " replace=" DID NOT "/>
+<substitute name="normal" find=" DID'NT " replace=" DID NOT "/>
+<substitute name="normal" find=" COULDN'T " replace=" COULD NOT "/>
+<substitute name="normal" find=" COULDN T " replace=" COULD NOT "/>
+<substitute name="normal" find=" DIDN'T " replace=" DID NOT "/>
+<substitute name="normal" find=" DIDN T " replace=" DID NOT "/>
+<substitute name="normal" find=" AIN'T " replace=" IS NOT "/>
+<substitute name="normal" find=" AIN T " replace=" IS NOT "/>
+<substitute name="normal" find=" ISN'T " replace=" IS NOT "/>
+<substitute name="normal" find=" ISN T " replace=" IS NOT "/>
+<substitute name="normal" find=" ISNT " replace=" IS NOT "/>
+<substitute name="normal" find=" IT'S " replace=" IT IS "/>
+<substitute name="normal" find=" IT S " replace=" IT IS "/>
+<substitute name="normal" find=" ARE'NT " replace=" ARE NOT "/>
+<substitute name="normal" find=" ARENT " replace=" ARE NOT "/>
+<substitute name="normal" find=" AREN'T " replace=" ARE NOT "/>
+<substitute name="normal" find=" AREN T " replace=" ARE NOT "/>
+<substitute name="normal" find=" ARN T " replace=" ARE NOT "/>
+<substitute name="normal" find=" WHERE'S " replace=" WHERE IS "/>
+<substitute name="normal" find=" WHERE S " replace=" WHERE IS "/>
+<substitute name="normal" find=" HAVEN'T " replace=" HAVE NOT "/>
+<substitute name="normal" find=" HAVENT " replace=" HAVE NOT "/>
+<substitute name="normal" find=" HASN'T " replace=" HAS NOT "/>
+<substitute name="normal" find=" HASN T " replace=" HAS NOT "/> 
+<substitute name="normal" find=" WEREN T " replace=" WERE NOT "/>
+<substitute name="normal" find=" WEREN'T " replace=" WERE NOT "/>
+<substitute name="normal" find=" WERENT " replace=" WERE NOT "/>
+<substitute name="normal" find=" CAN'T " replace=" CAN NOT "/>
+<substitute name="normal" find=" CAN T " replace=" CAN NOT "/>
+<substitute name="normal" find=" CANT " replace=" CAN NOT "/>
+<substitute name="normal" find=" CANNOT " replace=" CAN NOT "/>
+<substitute name="normal" find=" WHOS " replace=" WHO IS "/>
+<substitute name="normal" find=" HOW'S " replace=" HOW IS "/>
+<substitute name="normal" find=" HOW S " replace=" HOW IS "/>
+<substitute name="normal" find=" HOW'D " replace=" HOW DID "/>
+<substitute name="normal" find=" HOW D " replace=" HOW DID "/>
+<substitute name="normal" find=" HOWS " replace=" HOW IS "/>
+<substitute name="normal" find=" WHATS " replace=" WHAT IS "/>
+<substitute name="normal" find=" NAME'S " replace=" NAME IS "/>
+<substitute name="normal" find=" WHO'S " replace=" WHO IS "/>
+<substitute name="normal" find=" WHO S " replace=" WHO IS "/>
+<substitute name="normal" find=" WHAT'S " replace=" WHAT IS "/>
+<substitute name="normal" find=" WHAT S " replace=" WHAT IS "/>
+<substitute name="normal" find=" THAT'S " replace=" THAT IS "/>
+<substitute name="normal" find=" THERE'S " replace=" THERE IS "/>
+<substitute name="normal" find=" THERE S " replace=" THERE IS "/>
+<substitute name="normal" find=" THERES " replace=" THERE IS "/>
+<substitute name="normal" find=" THATS " replace=" THAT IS "/>
+<substitute name="normal" find=" WHATS " replace=" WHAT IS "/>
+<substitute name="normal" find=" DOESN'T " replace=" DOES NOT "/>
+<substitute name="normal" find=" DOESN T " replace=" DOES NOT "/>
+<substitute name="normal" find=" DOESNT " replace=" DOES NOT "/>
+<substitute name="normal" find=" DON'T " replace=" DO NOT "/>
+<substitute name="normal" find=" DON T " replace=" DO NOT "/>
+<substitute name="normal" find=" DONT " replace=" DO NOT "/>
+<substitute name="normal" find=" DO NT " replace=" DO NOT "/>
+<substitute name="normal" find=" DO'NT " replace=" DO NOT "/>
+<substitute name="normal" find=" WON'T " replace=" WILL NOT "/>
+<substitute name="normal" find=" WONT " replace=" WILL NOT "/>
+<substitute name="normal" find=" WON T " replace=" WILL NOT "/>
+<substitute name="normal" find=" LET'S " replace=" LET US "/>
+<substitute name="normal" find=" THEY'RE " replace=" THEY ARE "/>
+<substitute name="normal" find=" THEY RE " replace=" THEY ARE "/>
+<substitute name="normal" find=" WASN'T " replace=" WAS NOT "/>
+<substitute name="normal" find=" WASN T " replace=" WAS NOT "/>
+<substitute name="normal" find=" WASNT " replace=" WAS NOT "/>
+<substitute name="normal" find=" HADN'T " replace=" HAD NOT "/>
+<substitute name="normal" find=" HADN T " replace=" HAD NOT "/>
+<substitute name="normal" find=" WOULDN'T " replace=" WOULD NOT "/>
+<substitute name="normal" find=" WOULDN T " replace=" WOULD NOT "/>
+<substitute name="normal" find=" WOULDNT " replace=" WOULD NOT "/>
+<substitute name="normal" find=" SHOULDN'T " replace=" SHOULD NOT "/>
+<substitute name="normal" find=" SHOULDNT " replace=" SHOULD NOT "/>
+<substitute name="normal" find=" FAVOURITE " replace=" FAVORITE "/>
+<substitute name="normal" find=" COLOUR " replace=" COLOR "/>
+<substitute name="normal" find=" WE'LL " replace=" WE WILL "/>
+<substitute name="normal" find=" WE LL " replace=" WE WILL "/>
+<substitute name="normal" find=" HE'LL " replace=" HE WILL "/>
+<substitute name="normal" find=" HE LL " replace=" HE WILL "/>
+<substitute name="normal" find=" I'LL " replace=" I WILL "/>
+<substitute name="normal" find=" ILL " replace=" I WILL "/>
+<substitute name="normal" find=" IVE " replace=" I HAVE "/>
+<substitute name="normal" find=" I'VE " replace=" I HAVE "/>
+<substitute name="normal" find=" I VE " replace=" I HAVE "/>
+<substitute name="normal" find=" I'D " replace=" I WOULD "/>
+<substitute name="normal" find=" I'M " replace=" I AM "/>
+<substitute name="normal" find=" I M " replace=" I AM "/>
+<substitute name="normal" find=" WE'VE " replace=" WE HAVE "/>
+<substitute name="normal" find=" WE'RE " replace=" WE ARE "/>
+<substitute name="normal" find=" SHE'S " replace=" SHE IS "/>
+<substitute name="normal" find=" SHES " replace=" SHE IS "/>
+<substitute name="normal" find=" SHE'D " replace=" SHE WOULD "/>
+<substitute name="normal" find=" SHE D " replace=" SHE WOULD "/>
+<substitute name="normal" find=" SHED " replace=" SHE WOULD "/>
+<substitute name="normal" find=" HE'D " replace=" HE WOULD "/>
+<substitute name="normal" find=" HE D " replace=" HE WOULD "/>
+<substitute name="normal" find=" HED " replace=" HE WOULD "/>
+<substitute name="normal" find=" HE'S " replace=" HE IS "/>
+<substitute name="normal" find=" WE VE " replace=" WE HAVE "/>
+<substitute name="normal" find=" WE RE " replace=" WE ARE "/>
+<substitute name="normal" find=" SHE S " replace=" SHE IS "/>
+<substitute name="normal" find=" HE S " replace=" HE IS "/>
+<substitute name="normal" find=" IAMA " replace=" I AM A "/>
+<substitute name="normal" find=" IAMASKING " replace=" I AM ASKING "/>
+<substitute name="normal" find=" IAMDOING " replace=" I AM DOING "/>
+<substitute name="normal" find=" IAMFROM " replace=" I AM FROM "/>
+<substitute name="normal" find=" IAMIN " replace=" I AM IN "/>
+<substitute name="normal" find=" IAMOK " replace=" I AM OK "/>
+<substitute name="normal" find=" IAMSORRY " replace=" I AM SORRY "/>
+<substitute name="normal" find=" IAMTALKING " replace=" I AM TALKING "/>
+<substitute name="normal" find=" IAMTIRED " replace=" I AM TIRED "/>
+<substitute name="normal" find=" DOWN LOAD " replace=" DOWNLOAD "/>
+<substitute name="normal" find=" REMEBER " replace=" REMEMBER "/>
+<substitute name="normal" find=" WAHT " replace=" WHAT "/>
+<substitute name="normal" find=" WALLANCE " replace=" WALLACE "/>
+<substitute name="normal" find=" YOU R " replace=" YOU ARE "/>
+<substitute name="normal" find=" U " replace=" YOU "/>
+<substitute name="normal" find=" UR " replace=" YOUR "/>
+<substitute name="normal" find=" JON BEAR " replace=" JON BAER "/>
+<substitute name="normal" find=" WHATS " replace=" WHAT IS "/>
+
+<!-- Person -->
+<substitute name="person" find=" MYSELF " replace=" YOURSELF "/>
+<substitute name="person" find=" YOURSELF " replace=" MYSELF "/>
+<substitute name="person" find=" ME " replace=" YOU "/>
+<substitute name="person" find=" I " replace=" YOU "/>
+<substitute name="person" find=" YOU " replace=" ME "/>
+<substitute name="person" find=" YOUR " replace=" MY "/>
+<substitute name="person" find=" MY " replace=" YOUR "/>
+
+<!-- Gender -->
+<substitute name="gender" find=" HE " replace=" SHE "/>
+<substitute name="gender" find=" SHE " replace=" HE "/>
+<substitute name="gender" find=" HIS " replace=" HER "/>
+<substitute name="gender" find=" HER " replace=" HIS "/>
+
+<!-- Encoder -->
+<substitute name="encoder" find="a" replace="ab"/>
+<substitute name="encoder" find="e" replace="ef"/>
+<substitute name="encoder" find="i" replace="ij"/>
+<substitute name="encoder" find="o" replace="op"/>
+<substitute name="encoder" find="u" replace="uv"/>
+<substitute name="encoder" find="y" replace="yz"/>
+<substitute name="encoder" find="b" replace="w"/>
+<substitute name="encoder" find="d" replace="s"/>
+<substitute name="encoder" find="g" replace="q"/>
+<substitute name="encoder" find="k" replace="m"/>
+<substitute name="encoder" find="m" replace="k"/>
+<substitute name="encoder" find="q" replace="g"/>
+<substitute name="encoder" find="s" replace="d"/>
+<substitute name="encoder" find="w" replace="b"/>
+
+<!-- Decoder -->
+<substitute name="decoder" find="ab" replace="a"/>
+<substitute name="decoder" find="ef" replace="e"/>
+<substitute name="decoder" find="ij" replace="i"/>
+<substitute name="decoder" find="op" replace="o/>
+<substitute name="decoder" find="uv" replace="u"/>
+<substitute name="decoder" find="yz" replace="y"/>
+<substitute name="decoder" find="w" replace="b"/>
+<substitute name="decoder" find="s" replace="d"/>
+<substitute name="decoder" find="q" replace="g"/>
+<substitute name="decoder" find="m" replace="k"/>
+<substitute name="decoder" find="k" replace="m"/>
+<substitute name="decoder" find="g" replace="q"/>
+<substitute name="decoder" find="d" replace="s"/>
+<substitute name="decoder" find="b" replace="w"/>
+
+</substitutions>

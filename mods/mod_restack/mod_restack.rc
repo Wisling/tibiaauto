@@ -1,0 +1,246 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_restack.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 179, 274
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Module: auto restack"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,65,253,50,14
+    CONTROL         "Enable restacking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,230,165,14
+    LTEXT           "Ammo to restack:",IDC_STATIC,7,12,58,13,SS_CENTERIMAGE
+    COMBOBOX        IDC_TOOL_AMMORESTACK_AMMO,99,12,73,66,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Throwable to restack:",IDC_STATIC,8,78,82,13,
+                    SS_CENTERIMAGE
+    COMBOBOX        IDC_TOOL_AMMORESTACK_THROWABLE,99,79,73,56,
+                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Restack ammo at:",IDC_STATIC,7,31,58,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_AMMO_AT,99,30,73,14,ES_AUTOHSCROLL
+    LTEXT           "Restack ammo to:",IDC_STATIC,7,49,58,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_AMMO_TO,99,48,73,14,ES_AUTOHSCROLL
+    LTEXT           "Restack throwable at:",IDC_STATIC,7,96,73,13,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_AT,99,95,73,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Restack throwable to:",IDC_STATIC,7,115,72,13,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_TO,99,114,73,14,
+                    ES_AUTOHSCROLL
+    CONTROL         "Pickup throwable",IDC_TOOL_ARMMORESTACK_PICKUP,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,180,71,10
+    LTEXT           "Spears pickup area",IDC_STATIC,99,140,73,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,99,153,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_CL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,99,168,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_BL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,99,182,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_BC,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,182,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_BR,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,135,182,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_CR,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,135,168,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UR,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,135,153,8,8
+    CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UC,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,117,153,8,8
+    CONTROL         "",IDC_RADIO,"Button",BS_AUTORADIOBUTTON | WS_DISABLED,
+                    117,168,10,8
+    CONTROL         "Move items covering throwable",
+                    IDC_TOOL_ARMMORESTACK_PICKUPCOVERED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,194,114,10
+    CONTROL         "Restack to right hand",IDC_TOOL_RESTACKTORIGHT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,208,84,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 172
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 267
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CONFIG DLGINIT
+BEGIN
+    IDC_TOOL_AMMORESTACK_AMMO, 0x403, 16, 0
+0x6f4e, 0x6120, 0x6d6d, 0x206f, 0x6572, 0x7473, 0x6361, 0x006b, 
+    IDC_TOOL_AMMORESTACK_AMMO, 0x403, 6, 0
+0x7241, 0x6f72, 0x0077, 
+    IDC_TOOL_AMMORESTACK_AMMO, 0x403, 5, 0
+0x6f42, 0x746c, "\000" 
+    IDC_TOOL_AMMORESTACK_THROWABLE, 0x403, 21, 0
+0x6f4e, 0x7420, 0x7268, 0x776f, 0x6261, 0x656c, 0x7220, 0x7365, 0x6174, 
+0x6b63, "\000" 
+    IDC_TOOL_AMMORESTACK_THROWABLE, 0x403, 6, 0
+0x7053, 0x6165, 0x0072, 
+    IDC_TOOL_AMMORESTACK_THROWABLE, 0x403, 12, 0
+0x6d53, 0x6c61, 0x206c, 0x7473, 0x6e6f, 0x0065, 
+    0
+END
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_restack DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_restack\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_restack.DLL\0"
+            VALUE "ProductName", "mod_restack Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_restack.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

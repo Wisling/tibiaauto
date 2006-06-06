@@ -1,0 +1,274 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_playerinfo.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CHARINFO DIALOGEX 0, 0, 253, 286
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Module: character information"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,215,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,228,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,241,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,173,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,160,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,147,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,134,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,121,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,108,
+                    239,1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,95,239,
+                    1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,82,239,
+                    1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,69,239,
+                    1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,56,239,
+                    1,WS_EX_STATICEDGE
+    CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,43,239,
+                    1,WS_EX_STATICEDGE
+    DEFPUSHBUTTON   "OK",IDOK,89,265,84,14
+    LTEXT           "Hit points:",IDC_STATIC,15,33,49,8
+    LTEXT           "Mana:",IDC_STATIC,15,46,49,8
+    LTEXT           "0",IDC_CHARINFO_HP,64,33,50,8
+    LTEXT           "0",IDC_CHARINFO_MANA,64,46,50,8
+    LTEXT           "Exp:",IDC_STATIC,15,72,49,8
+    LTEXT           "0",IDC_CHARINFO_EXP,64,72,50,8
+    LTEXT           "Shield:",IDC_STATIC,15,163,42,8
+    LTEXT           "0",IDC_CHARINFO_SHIELD,64,163,50,8
+    LTEXT           "Sword:",IDC_STATIC,15,125,49,8
+    LTEXT           "0",IDC_CHARINFO_SWORD,64,125,50,8
+    LTEXT           "Club:",IDC_STATIC,15,112,49,8
+    LTEXT           "0",IDC_CHARINFO_CLUB,64,112,50,8
+    LTEXT           "Axe:",IDC_STATIC,15,138,49,8
+    LTEXT           "0",IDC_CHARINFO_AXE,64,138,50,8
+    LTEXT           "0",IDC_CHARINFO_EXP_SPEED,114,72,49,8
+    LTEXT           "0",IDC_CHARINFO_SHIELD_SPEED,114,163,49,8
+    LTEXT           "0",IDC_CHARINFO_SWORD_SPEED,114,125,49,8
+    LTEXT           "0",IDC_CHARINFO_CLUB_SPEED,114,112,49,8
+    LTEXT           "0",IDC_CHARINFO_AXE_SPEED,114,138,49,8
+    PUSHBUTTON      "Reset",IDC_RESET_COUNTERS,7,265,50,14
+    LTEXT           "Dist:",IDC_STATIC,15,151,49,8
+    LTEXT           "0",IDC_CHARINFO_DIST,64,151,50,8
+    LTEXT           "0",IDC_CHARINFO_DIST_SPEED,114,151,49,8
+    LTEXT           "Fish:",IDC_STATIC,15,176,49,8
+    LTEXT           "0",IDC_CHARINFO_FISH,64,176,50,8
+    LTEXT           "0",IDC_CHARINFO_FISH_SPEED,114,176,49,8
+    LTEXT           "0",IDC_CHARINFO_LVL_UPIN,163,59,72,8
+    LTEXT           "0",IDC_CHARINFO_SHIELD_UPIN,163,163,72,8
+    LTEXT           "0",IDC_CHARINFO_SWORD_UPIN,163,125,72,8
+    LTEXT           "0",IDC_CHARINFO_CLUB_UPIN,163,112,72,8
+    LTEXT           "0",IDC_CHARINFO_AXE_UPIN,163,138,72,8
+    LTEXT           "0",IDC_CHARINFO_DIST_UPIN,163,151,72,8
+    LTEXT           "0",IDC_CHARINFO_FISH_UPIN,163,176,72,8
+    CTEXT           "Running for",IDC_TIME,14,17,225,12,SS_CENTERIMAGE,
+                    WS_EX_STATICEDGE
+    LTEXT           "Level:",IDC_STATIC,15,59,49,8
+    LTEXT           "0",IDC_CHARINFO_LVL,64,59,50,8
+    LTEXT           "0",IDC_CHARINFO_EXP_UPIN,163,72,72,8
+    LTEXT           "Invisible:",IDC_STATIC,15,205,49,8
+    LTEXT           "0",IDC_CHARINFO_INVIS_REMAINING,114,205,121,8
+    LTEXT           "Haste:",IDC_STATIC,15,218,49,8
+    LTEXT           "0",IDC_CHARINFO_HASTE_REMAINING,114,218,121,8
+    LTEXT           "Stong Haste:",IDC_STATIC,15,232,49,8
+    LTEXT           "0",IDC_CHARINFO_STRONGHASTE_REMAINING,114,232,121,8
+    LTEXT           "Magic Shield:",IDC_STATIC,15,245,49,8
+    LTEXT           "0",IDC_CHARINFO_MAGICSHIELD_REMAINING,114,245,121,8
+    LTEXT           "Soul Points:",IDC_STATIC,114,33,49,8
+    LTEXT           "0",IDC_CHARINFO_SP,163,33,72,8
+    LTEXT           "Capacity:",IDC_STATIC,114,46,49,8
+    LTEXT           "0",IDC_CHARINFO_CAP,163,46,72,8
+    GROUPBOX        "Character statistics",IDC_STATIC,7,7,239,180
+    LTEXT           "Fist:",IDC_STATIC,15,99,49,8
+    LTEXT           "0",IDC_CHARINFO_FIST,64,99,50,8
+    LTEXT           "0",IDC_CHARINFO_FIST_SPEED,114,99,49,8
+    LTEXT           "0",IDC_CHARINFO_FIST_UPIN,163,99,72,8
+    LTEXT           "Magic level:",IDC_STATIC,15,85,49,8
+    LTEXT           "0",IDC_CHARINFO_MLVL,64,85,50,8
+    LTEXT           "0",IDC_CHARINFO_MLVL_SPEED,114,85,49,8
+    LTEXT           "0",IDC_CHARINFO_MLVL_UPIN,163,85,72,8
+    GROUPBOX        "Spells stats",IDC_STATIC,7,193,239,63
+    LTEXT           "0",IDC_CHARINFO_LVL_SPEED,114,59,49,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CHARINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 246
+        VERTGUIDE, 15
+        VERTGUIDE, 64
+        VERTGUIDE, 114
+        VERTGUIDE, 136
+        VERTGUIDE, 163
+        VERTGUIDE, 235
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 279
+        HORZGUIDE, 205
+        HORZGUIDE, 218
+        HORZGUIDE, 232
+        HORZGUIDE, 245
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_playerinfo DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_playerinfo\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_playerinfo.DLL\0"
+            VALUE "ProductName", "mod_playerinfo Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_playerinfo.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

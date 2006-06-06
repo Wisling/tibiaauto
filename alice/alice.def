@@ -1,0 +1,7 @@
+; alice.def : Declares the module parameters for the DLL.
+
+LIBRARY      "alice"
+DESCRIPTION  'alice Windows Dynamic Link Library'
+
+EXPORTS
+	kernelRespond @1
