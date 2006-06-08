@@ -137,17 +137,18 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1000)
 	{
-		CMemReaderProxy reader;		
+		CMemReaderProxy reader;	
+		CTibiaItemProxy itemProxy;
 		//CPackSenderProxy sender;
 		
 		char buf[128];
-		double fpsCur;
 		unsigned long ifpsCur[2];
 
-		ifpsCur[0] = reader.getMemIntValue(addrFpsInd);
-		ifpsCur[1] = reader.getMemIntValue(addrFpsInd+4);
-		memcpy(&fpsCur,ifpsCur,8);
-		sprintf(buf,"Current FPS rate: %f",fpsCur);
+		addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
+
+		ifpsCur[0] = reader.getMemIntValue(addrFps+0x60);
+		ifpsCur[1] = reader.getMemIntValue(addrFps+0x60+4);
+		sprintf(buf,"Current FPS rate: %f",ifpsCur[0],ifpsCur[1]);
 		m_fpsRate.SetWindowText(buf);
 
 		if (hTibiaWnd){
@@ -191,9 +192,7 @@ BOOL CConfigDialog::OnInitDialog()
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 
-	addrFpsInd = itemProxy.getValueForConst("addrFpsInd");
-	addrFpsVal = itemProxy.getValueForConst("addrFpsVal");
-	addrFpsBase= itemProxy.getValueForConst("addrFpsBase");
+	addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
 
 	EnumWindows(EnumWindowsProc,reader.getProcessId());
 

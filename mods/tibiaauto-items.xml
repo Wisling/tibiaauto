@@ -72,9 +72,7 @@
 		<const code="addrMlvlPercLeft" value="0x56C830"/>
 		<const code="addrSkillFist" value="0x56C7F8"/>
 		<const code="addrSkillFistPercLeft" value="0x56C7DC"/>
-		<const code="addrFpsInd" value="0x102F220"/>
-		<const code="addrFpsVal" value="0x102F218"/>
-		<const code="addrFpsBase" value="0x529EE0"/>
+		<const code="addrFps" value="0x71D0CC"/>
 
 <!-- special for 7.7 
 		<const code="addrFunRevealCName1" value="0x49B23B"/>
