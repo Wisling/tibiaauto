@@ -52,63 +52,36 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 HWND hTibiaWnd;
-DWORD addrFpsInd;
-DWORD addrFpsVal;
-DWORD addrFpsBase;
+DWORD addrFps;
 
 void SetFPS(double iFps){
 	CMemReaderProxy reader;
-	double *fpsBase;
-	int ifpsBase[2];
 	double *fpsVal;
 	int ifpsVal[2];
 
-	fpsBase = (double*)ifpsBase;
 	fpsVal = (double*)ifpsVal;
 
-	//reader.getMemRange(addrFpsVal,addrFpsVal+8,(char*)fpsVal);
-	//reader.getMemRange(addrFpsBase,addrFpsBase+8,(char*)fpsBase);
-
-	ifpsVal[0] = reader.getMemIntValue(addrFpsVal);
-	ifpsVal[1] = reader.getMemIntValue(addrFpsVal+4);
-
-	ifpsBase[0] = reader.getMemIntValue(addrFpsBase);
-	ifpsBase[1] = reader.getMemIntValue(addrFpsBase+4);
-
-	(*fpsVal) = (*fpsBase)/iFps;
+	(*fpsVal) = 1000/iFps;
 
 	//T4: Fps value can be set to almost 0 
 
 	//reader.setMemRange(0x5F6DF0,0x5F6DF8,(char*)fpsVal);
-	 reader.setMemIntValue(addrFpsVal,ifpsVal[0]);
-	 reader.setMemIntValue(addrFpsVal+4,ifpsVal[1]);
+	 reader.setMemIntValue(addrFps+88,ifpsVal[0]);
+	 reader.setMemIntValue(addrFps+88+4,ifpsVal[1]);
 }
 
 double GetFPS(){
 	CMemReaderProxy reader;
-	double *fpsBase;
-	int ifpsBase[2];
 	double *fpsVal;
 	int ifpsVal[2];
 
-	fpsBase = (double*)ifpsBase;
 	fpsVal = (double*)ifpsVal;
 
-	/*reader.getMemRange(addrFpsVal,addrFpsVal+8,(char*)fpsVal);
-	reader.getMemRange(addrFpsBase,addrFpsBase+8,(char*)fpsBase);
-
-	char buffer[1024];
-	sprintf(buffer,"%x%x",ifpsVal[0],ifpsVal[1]);
-	AfxMessageBox(buffer);*/
-
-	ifpsVal[0] = reader.getMemIntValue(addrFpsVal);
-	ifpsVal[1] = reader.getMemIntValue(addrFpsVal+4);
-	
-	ifpsBase[0] = reader.getMemIntValue(addrFpsBase);
-	ifpsBase[1] = reader.getMemIntValue(addrFpsBase+4);
+	ifpsVal[0] = reader.getMemIntValue(addrFps+88);
+	ifpsVal[1] = reader.getMemIntValue(addrFps+88+4);
 
 
-	return (*fpsBase)/(*fpsVal);
+	return 1000/(*fpsVal);
 }
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ){		
@@ -173,7 +146,6 @@ int Cmod_fpsApp::isStarted()
 
 void Cmod_fpsApp::start()
 {	
-	superStart();
 	if (m_configDialog)
 	{
 		m_configDialog->disableControls();

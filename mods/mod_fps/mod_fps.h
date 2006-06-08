@@ -2,9 +2,8 @@
 //
 
 extern HWND hTibiaWnd;
-extern DWORD addrFpsInd;
-extern DWORD addrFpsVal;
-extern DWORD addrFpsBase;
+extern DWORD addrFps;
+
 
 #if !defined(AFX_mod_light_H__D1220A19_D7FC_4B51_900D_224C2CAC1CB8__INCLUDED_)
 #define AFX_mod_light_H__D1220A19_D7FC_4B51_900D_224C2CAC1CB8__INCLUDED_
