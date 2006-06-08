@@ -77,11 +77,11 @@
 <!-- special for 7.7 
 		<const code="addrFunRevealCName1" value="0x49B23B"/>
 -->
-		<const code="addrFunRevealCName1" value="0x46C385"/>
+		<const code="addrFunRevealCName1" value="0x46C515"/>
 		<const code="addrFunRevealCName2" value="0x419498"/>
 		<const code="addrFunRevealCName3" value="0x4194B3"/>
 		<const code="addrFunRevealCName4" value="0x4194C3"/>
-		<const code="addrMCInject" value="0xDA555"/>
+		<const code="addrMCInject" value="0xDA6E5"/>
 
 
 		<!-- structure lengths -->
