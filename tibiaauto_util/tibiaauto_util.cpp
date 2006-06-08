@@ -61,7 +61,7 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 		char *md5result;
 		char *dllName;
 	} dllEntryTab[] = {		
-		{"8C588F53E703FD81E3636CDAC8CADA20","tibiaauto.exe"}
+		{"7A610B16D8915C61A1A46BE4DABFBBF3","tibiaauto.exe"}
 	};
 		
 	
@@ -99,7 +99,7 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 		free(fileBuffer);		
 	}
 	// TODO: security part
-	if (!cont) ExitProcess(0);
+	//if (!cont) ExitProcess(0);
 }
 
 /////////////////////////////////////////////////////////////////////////////

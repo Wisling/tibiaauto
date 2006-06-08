@@ -28,3 +28,5 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "Queue.cpp"
 #include "TibiaItem.cpp"
 #include "IPCBackPipeProxy.cpp"
+#include "AliceProxy.cpp"
+#include "RegexpProxy.cpp"

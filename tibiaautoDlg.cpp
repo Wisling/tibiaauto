@@ -21,6 +21,8 @@
 #include "md5class.h"
 
 #include "detours.h"
+#include "PythonEngine.h"
+#include "PythonScriptsDialog.h"
 
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
@@ -56,6 +58,8 @@ XERCES_CPP_NAMESPACE_USE
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg dialog
 
@@ -70,6 +74,8 @@ CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
 	XMLPlatformUtils::Initialize();		
 		 
 	parser = new XercesDOMParser();	
+
+	CPythonEngine pythonEngine;	
 }
 
 void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
@@ -142,6 +148,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_TEAM, OnToolTeam)
 	ON_BN_CLICKED(IDC_TOOL_ANTILOG, OnToolAntilog)
 	ON_BN_CLICKED(IDC_FPS, OnFps)
+	ON_BN_CLICKED(IDC_PYTHON_SCRIPTS, OnPythonScripts)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -154,7 +161,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 {	
 	srand(time(NULL));
 	CDialog::OnInitDialog();
-
+	
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
 	SetIcon(m_hIcon, TRUE);			// Set big icon
@@ -192,6 +199,9 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	m_loadedModules = new CLoadedModules();
 	m_loadedModules->Create(IDD_LOADED_MODULES);
+
+	m_pythonScriptsDialog = new CPythonScriptsDialog();
+	m_pythonScriptsDialog->Create(IDD_PYTHON_SCRIPTS);
 	
 	m_moduleLooter = new CModuleProxy("mod_looter",0);		
 	m_moduleLight = new CModuleProxy("mod_light",0);	
@@ -223,6 +233,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);
 	SetTimer(1111,60*1000,NULL);
+	SetTimer(1002,100,NULL);
 
 	CDonationDialog donDialog;
 	donDialog.DoModal();	
@@ -333,6 +344,15 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		free(fileBuf);
 
 		SetTimer(1111,60*1000,NULL);
+	}
+	if (nIDEvent==1002)
+	{
+		KillTimer(1002);
+
+		CPythonEngine::periodicalTick();
+		CPythonEngine::backpipeMsgTick();
+
+		SetTimer(1002,100,NULL);
 	}
 	
 	
@@ -792,9 +812,7 @@ void CTibiaautoDlg::OnToolInjectmc()
 						
 		FILE *f = fopen(pathName,"r+b");
 		if (f)
-		{
-			
-			
+		{		
 			if (!fseek(f,itemProxy.getValueForConst("addrMCInject"),SEEK_SET))
 			{
 				unsigned char val=0xeb;
@@ -847,9 +865,10 @@ void CTibiaautoDlg::OnToolEater()
 
 void CTibiaautoDlg::OnDonation() 
 {
+	// greg
+
 	CDonationDialog donDialog;
-	donDialog.DoModal();
-	
+	donDialog.DoModal();							
 }
 
 void CTibiaautoDlg::OnToolCreatureinfo() 
@@ -888,4 +907,9 @@ void CTibiaautoDlg::passSecurityInfo(int value)
 	{
 		delete this;
 	}
+}
+
+void CTibiaautoDlg::OnPythonScripts() 
+{
+	m_pythonScriptsDialog->ShowWindow(SW_SHOW);	
 }

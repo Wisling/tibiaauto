@@ -32,7 +32,9 @@ END_MESSAGE_MAP()
 volatile char *checksum="d5d680328fe4da96d6ba7a29e65b04a6";
 
 CTibiaautoApp::CTibiaautoApp()
+
 {	
+	/*
 	char *fileBuf=(char *)malloc(1000000);	
 	int ep=0x1000;
 	int start=0x400000+ep;	
@@ -53,6 +55,7 @@ CTibiaautoApp::CTibiaautoApp()
 		//ExitProcess(0);
 	} 
 	free(fileBuf);	
+	*/
 }
 
 
@@ -97,8 +100,8 @@ BOOL CTibiaautoApp::InitInstance()
 {"5E53D3B4BEA87C561DF3BC3298B47860","mods\\mod_team.dll"},
 {"386CE62DE2B4632B05F812AA6C1341AD","mods\\mod_trademon.dll"},
 {"86569D8FF96531EA427E3E0E0F9AE065","mods\\mod_uh.dll"},
-{"C9DF04E7C5B8666FC44587049AD90303","mods\\tre.dll"}	
-
+{"C9DF04E7C5B8666FC44587049AD90303","mods\\tre.dll"},
+{"E515193D951F5314A9771CC225130B64","tibiaautoinject2.dll"}
 };
 
 	AfxEnableControlContainer();
@@ -157,13 +160,14 @@ BOOL CTibiaautoApp::InitInstance()
 
 	// end of perform MD5 check
 
+	// TODO: security part
 	cont=1;
 	if (cont)
 	{		
 		CTibiaautoDlg dlg;
 		m_pMainWnd = &dlg;
 		// TODO: security part
-		dlg.passSecurityInfo(zeta);
+		//dlg.passSecurityInfo(zeta);
 		dlg.DoModal();
 	}
 	

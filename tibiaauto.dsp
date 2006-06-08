@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W4 /GX /O2 /I "../tibiaauto-pub/sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W4 /GX /O2 /I "E:/Python24/include" /I "../tibiaauto-pub/sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x415 /d "NDEBUG" /d "_AFXDLL"
@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 ws2_32.lib xerces.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib"
+# ADD LINK32 ws2_32.lib xerces.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /libpath:"e:\python24\libs"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "tibiaauto - Win32 Debug"
@@ -70,7 +70,7 @@ LINK32=link.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /Yu"stdafx.h" /FD /GZ /c
-# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "sdk" /I "../tibiaauto-pub/sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /GZ /c
+# ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "E:\Python24\include" /I "../tibiaauto-pub/sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x415 /d "_DEBUG" /d "_AFXDLL"
@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ws2_32.lib xerces.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /out:"Debug/tibiaauto2.exe" /pdbtype:sept
+# ADD LINK32 ws2_32.lib xerces.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /pdbtype:sept /libpath:"e:\python24\libs"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -139,6 +139,18 @@ SOURCE=.\ModuleProxy.cpp
 # Begin Source File
 
 SOURCE=.\proxy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PythonEngine.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PythonScript.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\PythonScriptsDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -212,6 +224,18 @@ SOURCE=.\MemUtil.h
 # Begin Source File
 
 SOURCE=.\ModuleProxy.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PythonEngine.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PythonScript.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PythonScriptsDialog.h
 # End Source File
 # Begin Source File
 

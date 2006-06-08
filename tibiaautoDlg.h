@@ -8,6 +8,7 @@
 
 #include "IModuleInterface.h"
 #include "ConfigDialogStatus.h"
+#include "PythonScriptsDialog.h"
 
 #include <xercesc/util/PlatformUtils.hpp>
 
@@ -120,6 +121,7 @@ protected:
 	afx_msg void OnToolTeam();
 	afx_msg void OnToolAntilog();
 	afx_msg void OnFps();
+	afx_msg void OnPythonScripts();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	
@@ -137,6 +139,7 @@ private:
 	XercesDOMParser *parser;
 	int m_lightPower;
 	CLoadedModules *m_loadedModules;
+	CPythonScriptsDialog *m_pythonScriptsDialog;
 
 
 	IModuleInterface *m_moduleLooter;

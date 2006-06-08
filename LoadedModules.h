@@ -44,8 +44,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
-	CMenu * moduleActionsMenu;
 	void refreshModulesInformation();
+	CMenu * moduleActionsMenu;
 };
 
 //{{AFX_INSERT_LOCATION}}

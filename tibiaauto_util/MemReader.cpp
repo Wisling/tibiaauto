@@ -559,26 +559,8 @@ void CMemReader::writeEnableRevealCName()
 	buf[0]=0x90;
 	buf[1]=0x90;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
-	/*
-	// disable main 'z' check
-	buf[0]=0x47;
-	CMemUtil::SetMemRange(m_memAddressRevealCName2,m_memAddressRevealCName2+1,(char *)buf);
-	// extend reveal horizon
-	buf[0]=8;
-	CMemUtil::SetMemRange(m_memAddressRevealCName3,m_memAddressRevealCName3+1,(char *)buf);
-	buf[0]=6;
-	CMemUtil::SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
-	*/
 	
 
-	/*
-	// replace debug asserts when monster visible but out of range
-	// 0xC3 is 'RET'
-	buf[0]=0xC3;
-	CMemUtil::SetMemRange(0x440260,0x440260+1,(char *)buf);
-	CMemUtil::SetMemRange(0x440287,0x440287+1,(char *)buf);
-	CMemUtil::SetMemRange(0x4402AE,0x4402AE+1,(char *)buf);
-	*/
 	free(buf);
 
 	// INVISIBLE - 0x419450!!!

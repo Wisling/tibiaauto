@@ -40,7 +40,7 @@ public:
 	virtual ~CConfigCreatorUtil();
 
 	CConfigCreatorUtilMultiParams *multiParams;
-private:
+private: 
 	static void addParamFromNode(DOMDocument *doc,DOMNode *modConfig, char *paramName, char *paramValue);	
 };
 
