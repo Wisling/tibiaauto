@@ -42,6 +42,8 @@ int autoAimAimPlayersFromBattle=0;
 
 int revealCNameActive=0;
 
+const int globalOffset=0x0;
+
 char lastConnectName[16];
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
@@ -948,7 +950,7 @@ void myPlayerNameText2(int v1, int x, int y, int v4, int v5, int v6, int v7, cha
 	::MessageBox(0,buf,buf,0);
 
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int v9, int v10);	
-	Proto_fun fun=(Proto_fun)(0x470840+0x22610);
+	Proto_fun fun=(Proto_fun)(0x470840+0x22610-0x20+globalOffset);
 	//Proto_fun fun=(Proto_fun)0x433fb0; // 7.6
 	fun(v1,x,y,v4,v5,v6,v7,str,v9,v10);	
 }
@@ -958,7 +960,7 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 	char convString[128];
 	sprintf(convString,str);
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int len, int v10);	
-	Proto_fun fun=(Proto_fun)(0x470840+0x22610);
+	Proto_fun fun=(Proto_fun)(0x470840+0x22610-0x20+globalOffset);
 	//Proto_fun fun=(Proto_fun)0x433fb0; // 7.6
 
 	if (fontNumber==2)
@@ -1003,7 +1005,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	typedef void (*Proto_fun)(int type,char *s);	
 	//Proto_fun fun=(Proto_fun)0x45BA70; // 7.6
-	Proto_fun fun=(Proto_fun)(0x4D0BF0+0x34D60);
+	Proto_fun fun=(Proto_fun)(0x4D0BF0+0x34D60+0x170+globalOffset);
 	
 				
 	if (type==0x16)
@@ -1030,30 +1032,6 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	}					
 }
 
-void myInterceptStatusMessage(char *s, int v2)
-{
-	typedef void (*Proto_fun)(char *s, int v2);	
-	Proto_fun fun=(Proto_fun)(0x45ABF0);
-	
-	int p=0;		
-	
-	if (strlen(tmp3))
-	{
-		
-		// mask all server messages	for "protector"			
-		if (!strncmp(s+16,tmp3,strlen(tmp3)))
-		{
-			// if msg sent to pass requester, protect them then
-			p=1;				
-		}
-	}
-	if (!p)
-	{
-		
-		fun(s,v2);
-	}
-
-}
 
 int myIsCreatureVisible(int *creaturePtr)
 {
@@ -1089,38 +1067,17 @@ int myIsCreatureVisible(int *creaturePtr)
 	} else {
 		typedef int (*Proto_fun)(int *creaturePtr);	
 		//Proto_fun fun=(Proto_fun)0x419410; // 7.6
-		Proto_fun fun=(Proto_fun)(0x43B590+0x121A0);
+		Proto_fun fun=(Proto_fun)(0x43B590+0x121A0+0x10+globalOffset);
 		return fun(creaturePtr);
 	}
 
 }
 
-void myInterceptRefreshContainers(int v1)
-{
-	/*
-	if (debugFile)
-	{
-		char buf[128];
-		fprintf(debugFile,"v1=%d\n",v1);
-		fflush(debugFile);
-	}
-
-	typedef void (*Proto_fun)(int v1);
-	Proto_fun fun=(Proto_fun)(0x45D250);
-	fun(v1);
-	*/
-					
-	
-	// 1 -> containerNr 
-	// 2 -> objectId
-	// 6 -> size (in items)
-
-}
 
 void myInterceptEncrypt(int v1, int v2)
 {		
 	typedef void (*Proto_fun)(int v1,int v2);
-	Proto_fun fun=(Proto_fun)(0x4D3570+0x355E0);
+	Proto_fun fun=(Proto_fun)(0x4D3570+0x355E0+0x180+globalOffset);
 
 	encryptKeyPtr=v2;
 	if (debugFile)
@@ -1159,7 +1116,7 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	}
 	// note: at least 0x14 bytes are passed on stack; at most 0x2c bytes are passed
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11);
-	Proto_fun fun=(Proto_fun)(0x4D0F80+0x34E20);
+	Proto_fun fun=(Proto_fun)(0x4D0F80+0x34E20+0x170+globalOffset);
 
 	if (type==1)
 	{
@@ -1301,74 +1258,32 @@ void InitialisePlayerInfoHack()
 	int targetFun;
 	unsigned int targetAddr;
 	// all texts (player names, titles, etc.)	
-	trapFun(dwHandle,0x471655+0x227BE,(unsigned int)myPlayerNameText);	
+	trapFun(dwHandle,0x471655+0x227BE-0x20+globalOffset,(unsigned int)myPlayerNameText);	
 	
 
-	//below is: status message
-	//trapFun(dwHandle,0x49D6E9,(unsigned int)myPlayerNameText2);	
-	
-	// info message area
-	//trapFun(dwHandle,0x4184C0,(unsigned int)myPlayerNameText2);
-	
-	// unknown somthing
-	//trapFun(dwHandle,0x471A4E,(unsigned int)myPlayerNameText2);		
-	
-	trapFun(dwHandle,0x40D9A0+0x4720,(unsigned int)myInterceptInfoMiddleScreen);
+	trapFun(dwHandle,0x40D9A0+0x4720+0x10+globalOffset,(unsigned int)myInterceptInfoMiddleScreen);
 
 	
-	trapFun(dwHandle,0x4119A5,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x411B5F,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x411EE6,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4231F9,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x42578E,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4257A2,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x440DA0,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4B349A,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x506318,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x506343,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x506434,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x506642,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x5076CF,(unsigned int)myInterceptInfoMessageBox);	
-	/*
-	// 7.7 traps -> 7.7.1 are trapped directly (no offset calculation)
-	trapFun(dwHandle,0x40D585+funOffset,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x40D67F+funOffset,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x40D886+funOffset,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x419D16+funOffset,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x41BCCE+funOffset,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x41BCE2+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x430316+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x492FC1+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x493029+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x49309F+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x493139+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x4D1445+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x4D146D+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x4D155E+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x4D16B2+funOffset,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x4D239F+funOffset,(unsigned int)myInterceptInfoMessageBox);
-	*/
-
-
-//////////////////
-
-	// not used
-	//trapFun(dwHandle,0x43C053,(unsigned int)myInterceptRefreshContainers);
+	trapFun(dwHandle,0x4119A5+0x10+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x411B5F+0x10+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x411EE6+0x10+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4231F9+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x42578E+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4257A2+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x440DA0+0x30+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4B349A+0xD6+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4B3CA4+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4B3CFF+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x506488+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5064B3+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5065A4+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5067B2+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x50784F+0x0+globalOffset,(unsigned int)myInterceptInfoMessageBox);	
 	
-	trapFun(dwHandle,0x4D380E+0x355E0,(unsigned int)myInterceptEncrypt);
 
-	/*
-	// 7.6 traps
-	trapFun(dwHandle,0x449FE7,(unsigned int)myPlayerNameText);	
-	trapFun(dwHandle,0x4041E7,(unsigned int)myInterceptInfoMiddleScreen);
-	trapFun(dwHandle,0x40421E,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x403D61,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x403DB1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x403DEB,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x403E1C,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x41411B,(unsigned int)myInterceptInfoMessageBox);		
-	trapFun(dwHandle,0x404205,(unsigned int)myInterceptStatusMessage);	
-	*/
+
+	trapFun(dwHandle,0x4D380E+0x355E0+0x180+globalOffset,(unsigned int)myInterceptEncrypt);
+	
 		
     CloseHandle(dwHandle);
 
@@ -1380,7 +1295,7 @@ void InitialiseRevealNameHack()
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);    
 
 	//trapFun(dwHandle,0x44898E,(unsigned int)myIsCreatureVisible); // 7.6
-	trapFun(dwHandle,0x49B215+0x2B14A,(unsigned int)myIsCreatureVisible);
+	trapFun(dwHandle,0x49B215+0x2B14A+0x190+globalOffset,(unsigned int)myIsCreatureVisible);
 
 
 	CloseHandle(dwHandle);
@@ -1549,7 +1464,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			if (autoAimAimPlayersFromBattle)
 			{								
 				unsigned char val=0xEB;
-				unsigned char *addr=(unsigned char *)0x42BBAB+0xF430;
+				unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30+globalOffset;
 				DWORD procId=GetCurrentProcessId();
 				HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 				WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
@@ -1557,7 +1472,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			} else {
 				unsigned char val=0x74;
 				//unsigned char *addr=(unsigned char *)0x411073; // 7.6
-				unsigned char *addr=(unsigned char *)0x42BBAB+0xF430;				
+				unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30+globalOffset;				
 				DWORD procId=GetCurrentProcessId();
 				HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 				WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
