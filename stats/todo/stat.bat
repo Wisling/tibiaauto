@@ -1,0 +1,1 @@
+cat all.txt|cut -d',' -f3|sort|uniq -c |sort

@@ -154,6 +154,10 @@ SOURCE=.\PythonScriptsDialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\ScriptConfigDialg.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -240,6 +244,10 @@ SOURCE=.\PythonScriptsDialog.h
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ScriptConfigDialg.h
 # End Source File
 # Begin Source File
 

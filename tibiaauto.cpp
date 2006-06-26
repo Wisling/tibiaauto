@@ -101,7 +101,7 @@ BOOL CTibiaautoApp::InitInstance()
 {"386CE62DE2B4632B05F812AA6C1341AD","mods\\mod_trademon.dll"},
 {"86569D8FF96531EA427E3E0E0F9AE065","mods\\mod_uh.dll"},
 {"C9DF04E7C5B8666FC44587049AD90303","mods\\tre.dll"},
-{"E515193D951F5314A9771CC225130B64","tibiaautoinject2.dll"}
+{"390DAA4B73786CE029200F4B1EBF824D","tibiaautoinject2.dll"}
 };
 
 	AfxEnableControlContainer();
@@ -160,7 +160,7 @@ BOOL CTibiaautoApp::InitInstance()
 
 	// end of perform MD5 check
 
-	// TODO: security part
+	// TODO: security part	
 	cont=1;
 	if (cont)
 	{		

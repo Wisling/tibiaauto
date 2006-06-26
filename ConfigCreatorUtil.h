@@ -11,6 +11,7 @@
 
 #include "ModuleProxy.h" 
 #include "ConfigCreatorUtilMultiParams.h"
+#include "PythonScript.h"
 
 #include <xercesc/util/PlatformUtils.hpp>
 
@@ -30,6 +31,7 @@ XERCES_CPP_NAMESPACE_USE
 class CConfigCreatorUtil  
 {
 public:
+	void parseConfigFromNode(CPythonScript *pythonScript,DOMNode *node, char *paramName);
 	void parseConfigFromNode(CModuleProxy *module,DOMNode *node, char *paramName);
 	DOMNode * getConfigForModule(DOMElement *root,char *moduleName);
 	void releaseConfig(DOMNode *modConfig);

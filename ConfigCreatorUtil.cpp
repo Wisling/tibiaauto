@@ -222,3 +222,37 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 		}		
 	}
 }
+
+void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNode *node, char *paramName)
+{
+	int isLeaf=1;		
+	
+	DOMNode *subNode = node->getFirstChild();
+	if (subNode)
+	{
+		do {	
+			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
+			{				
+				char newParamName[512];
+				char subNodeName[512];
+				wcstombs(subNodeName,subNode->getNodeName(),200);
+				sprintf(newParamName,"%s/%s",paramName,subNodeName);
+				isLeaf=0;
+
+				parseConfigFromNode(pythonScript,subNode,newParamName);
+			}
+		} while ((subNode=subNode->getNextSibling())!=NULL);
+	};
+	if (isLeaf)
+	{	
+		DOMNode *attrNode=node->getAttributes()->getNamedItem(_L("value"));
+			
+		if (strlen(paramName+1)&&attrNode)
+		{
+			char nodeValue[512];
+			wcstombs(nodeValue,attrNode->getNodeValue(),200);
+			
+			pythonScript->setParamValue(paramName+8,nodeValue);			
+		}		
+	}
+}

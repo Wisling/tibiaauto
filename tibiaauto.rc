@@ -128,18 +128,35 @@ BEGIN
     LTEXT           "Code:",IDC_STATIC,7,42,40,14,SS_CENTERIMAGE
 END
 
-IDD_PYTHON_SCRIPTS DIALOG DISCARDABLE  0, 0, 247, 209
+IDD_PYTHON_SCRIPTS DIALOG DISCARDABLE  0, 0, 247, 254
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Python scripts status"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,94,188,50,14
+    DEFPUSHBUTTON   "OK",IDOK,94,233,50,14
     CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,7,233,59
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,38,233,83
     CONTROL         "List1",IDC_FUNLIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,77,233,50
-    PUSHBUTTON      "IDLE",IDC_RUN_INTERPRETER,7,170,233,14
-    PUSHBUTTON      "Load script",IDC_LOAD_SCRIPT,7,134,50,14
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,131,233,50
+    PUSHBUTTON      "IDLE",IDC_RUN_INTERPRETER,7,212,233,14
+    PUSHBUTTON      "Load script",IDC_LOAD_SCRIPT,7,191,50,14
+    LTEXT           "Loaded python scripts:",IDC_STATIC,7,28,151,8
+    CTEXT           "For help and reference about the scripting framework see the TibiaAuto Wiki site under the term ""Scripting"".",
+                    IDC_STATIC,7,7,233,19
+    LTEXT           "Functions available in the script:",IDC_STATIC,7,123,
+                    190,8
+END
+
+IDD_SCRIPT_CONFIG DIALOG DISCARDABLE  0, 0, 294, 207
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Script configuration"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,123,186,50,14
+    CONTROL         "List1",IDC_SCRIPT_CONFIG_PARAM_LIST,"SysListView32",
+                    LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
+                    WS_BORDER | WS_TABSTOP,7,7,280,102
+    EDITTEXT        IDC_SCRIPT_CONFIG_PARAM_EDIT,7,134,280,14,ES_AUTOHSCROLL
 END
 
 
@@ -198,7 +215,15 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 240
         TOPMARGIN, 7
-        BOTTOMMARGIN, 202
+        BOTTOMMARGIN, 247
+    END
+
+    IDD_SCRIPT_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 287
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 200
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -232,6 +257,18 @@ BEGIN
     END
 END
 
+IDR_PYTHON_SCRIPTS_MENU MENU DISCARDABLE 
+BEGIN
+    POPUP "Menu"
+    BEGIN
+        MENUITEM "Config options",              ID_MENU_CONFIGOPTIONS
+        MENUITEM "Enable",                      ID_MENU_ENABLE
+        MENUITEM SEPARATOR
+        MENUITEM "Reload",                      ID_MENU_RELOAD
+        MENUITEM "Unload",                      ID_MENU_UNLOAD
+    END
+END
+
 #endif    // Polish resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -254,7 +291,7 @@ IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 389
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.9.8 NONPUBLIC for Tibia 7.72"
+CAPTION "Tibia Auto v 1.9.8 for Tibia 7.72"
 FONT 8, "MS Sans Serif"
 BEGIN
     PUSHBUTTON      "Auto UH",IDC_TOOL_AUTOUH,13,45,61,14
@@ -331,8 +368,7 @@ BEGIN
                     BS_PUSHLIKE | WS_TABSTOP,173,130,61,14
     CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,341,61,14
-    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,168,283,50,14,NOT 
-                    WS_VISIBLE
+    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,168,283,50,14
 END
 
 

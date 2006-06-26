@@ -31,6 +31,8 @@
 #define IDD_ENTERCODE                   175
 #define IDD_PYTHON_SCRIPTS              179
 #define IDR_PYTHON_SCRIPTS_FUNLIST_MENU 180
+#define IDR_PYTHON_SCRIPTS_MENU         181
+#define IDD_SCRIPT_CONFIG               182
 #define IDC_EDIT_ADDRESS                1000
 #define IDC_EDIT_ADDRESS_RES_DEC        1001
 #define IDC_SCAN                        1004
@@ -259,6 +261,8 @@
 #define IDC_FUNLIST                     1204
 #define IDC_RUN_INTERPRETER             1205
 #define IDC_LOAD_SCRIPT                 1206
+#define IDC_SCRIPT_CONFIG_PARAM_LIST    1207
+#define IDC_SCRIPT_CONFIG_PARAM_EDIT    1208
 #define IDC_MONSTERSHOW_FIRSTBUTTON     5000
 #define IDC_MAPSHOW_FIRSTBUTTON         6000
 #define ID_STOPMODULE_STARTMODULE       32771
@@ -266,14 +270,18 @@
 #define ID_MODULEACTIONS_LOADCUSTOMMODULE 32773
 #define ID_MODULEACTIONS_SHOWCONFIGDIALOG 32774
 #define ID_PYTHONSCRIPTSFUNLISTMENU_CALL 32779
+#define ID_MENU_RELOAD                  32781
+#define ID_MENU_UNLOAD                  32782
+#define ID_MENU_CONFIGOPTIONS           32783
+#define ID_MENU_ENABLE                  32784
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        181
-#define _APS_NEXT_COMMAND_VALUE         32780
-#define _APS_NEXT_CONTROL_VALUE         1207
+#define _APS_NEXT_RESOURCE_VALUE        183
+#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_CONTROL_VALUE         1209
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
