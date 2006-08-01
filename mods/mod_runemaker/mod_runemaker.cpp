@@ -537,7 +537,7 @@ void CMod_runemakerApp::makeNow(int enable)
 
 char *CMod_runemakerApp::getVersion()
 {
-	return "1.2";
+	return "1.3";
 }
 
 

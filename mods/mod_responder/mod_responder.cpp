@@ -101,7 +101,7 @@ void CMod_responderApp::enableControls()
 
 char *CMod_responderApp::getVersion()
 {
-	return "1.0";
+	return "1.1";
 }
 
 void CMod_responderApp::start()
