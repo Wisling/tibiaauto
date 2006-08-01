@@ -74,34 +74,34 @@ BOOL CTibiaautoApp::InitInstance()
 		char *dllName;
 	} dllEntryTab[] = {
 
-{"14AC68C802E75FA8D3BCA2CCB0DB66CF","mods\\alice.dll"},
-{"F34CE3B83C8C7E93FBF29CC6F9BBEA45","mods\\mod_aim.dll"},
-{"B8F78CD655CFD1A500C3047A27955D94","mods\\mod_antylogout.dll"},
-{"E9DBA7E6D86BD6D71F974958F8F1E4FD","mods\\mod_autogo.dll"},
-{"C97AE7608700567B92D4A0BEFB87CB7C","mods\\mod_cavebot.dll"},
-{"2C0B3B95EADCE644107B25A53ABEF321","mods\\mod_creatureinfo.dll"},
-{"18C0002E7176CA35B8F70972CCE3A826","mods\\mod_eater.dll"},
-{"D0F1AF511F40CE3D41838D340C119042","mods\\mod_fisher.dll"},
-{"7EF19FCA4B02A16EE9392D40A3A70EFE","mods\\mod_fluid.dll"},
-{"0D02F7DC496F12B8B759FA6DEBCB5B52","mods\\mod_fps.dll"},
-{"199F480AE08981C96752175618F0C34F","mods\\mod_grouping.dll"},
-{"D20F5C4E1E50175556342C7EB6F46479","mods\\mod_itemconfig.dll"},
-{"1F003ED91C1834E756EC4EE61137E89A","mods\\mod_light.dll"},
-{"D5461101295D45CC75F6AF4FF3EB642E","mods\\mod_looter.dll"},
-{"10E7A97C2A3C532F5D7E49296455B422","mods\\mod_maphack.dll"},
-{"0B3F6839D7F79A301C446F7EB55059BA","mods\\mod_memdebug.dll"},
-{"93BF6C63758BE166473CEDCE647E7DAB","mods\\mod_monstershow.dll"},
-{"56EF4BA3272025EB58A3BFAC31BB6C17","mods\\mod_playerinfo.dll"},
-{"33CC4942327B33F2E4EF51899538754A","mods\\mod_responder.dll"},
-{"3E9F0BF2CAFCDD12B43E72FD4029A7A9","mods\\mod_restack.dll"},
-{"0F12C7F2572AF7275D7184568A750D26","mods\\mod_runemaker.dll"},
-{"35B0AC344F51B3059CB7A528CF1F9CD3","mods\\mod_showmap.dll"},
-{"1389CF1511EBD1A905A1265CA781C29B","mods\\mod_spellcaster.dll"},
-{"5E53D3B4BEA87C561DF3BC3298B47860","mods\\mod_team.dll"},
-{"386CE62DE2B4632B05F812AA6C1341AD","mods\\mod_trademon.dll"},
-{"86569D8FF96531EA427E3E0E0F9AE065","mods\\mod_uh.dll"},
-{"C9DF04E7C5B8666FC44587049AD90303","mods\\tre.dll"},
-{"390DAA4B73786CE029200F4B1EBF824D","tibiaautoinject2.dll"}
+{"1445BBF043ECD0A8FD7D5619B05BAD33","mods\\alice.dll"},
+{"7F181275CA4F521565B6B693958ABDAC","mods\\mod_aim.dll"},
+{"191205FC904BCBD92BDCAE3B7F7DFE6B","mods\\mod_antylogout.dll"},
+{"FAE988309FFCC9B4C00CFC18798C1421","mods\\mod_autogo.dll"},
+{"C520ED5D0AC959BCD5515D4FC8161D4A","mods\\mod_cavebot.dll"},
+{"7C4A784416D434BB106B87F51B597140","mods\\mod_creatureinfo.dll"},
+{"42C13A2D5842169E63151F2894C6D318","mods\\mod_eater.dll"},
+{"2F78E6B4BE9E6A4410CE331526931883","mods\\mod_fisher.dll"},
+{"7CFC437F97BD26F59F87C02EE7EC5961","mods\\mod_fluid.dll"},
+{"A9CF95A26033ABC0857776BC1E965C10","mods\\mod_fps.dll"},
+{"FDD7D1D578CF328C76EDA5ED8F5A5F40","mods\\mod_grouping.dll"},
+{"8615A55ACB8D19B9D9A93627170A1167","mods\\mod_itemconfig.dll"},
+{"7F378FEE7A59620DE3F58F13CC5D009A","mods\\mod_light.dll"},
+{"3D5FB3AE829BE6447521F4504573C6A3","mods\\mod_looter.dll"},
+{"22CDE8215BA45B02E0FE4CD58B2B169A","mods\\mod_maphack.dll"},
+{"713E28E0A952C885A1923BAFFC332E84","mods\\mod_memdebug.dll"},
+{"04495CFB6EA53E09B135158AE5239D6C","mods\\mod_monstershow.dll"},
+{"A627AE97CDCCF8DC55C38AD630D71832","mods\\mod_playerinfo.dll"},
+{"3947F2ADF35A9D7B49BDE4A566A65260","mods\\mod_responder.dll"},
+{"F453E0B6F94C56ABA7A24CEA1359F475","mods\\mod_restack.dll"},
+{"74C6400FE63A70D766E8B8922B1FFE55","mods\\mod_runemaker.dll"},
+{"58D0690F81A111659A88DAE72BD09607","mods\\mod_showmap.dll"},
+{"DB82B56EAFA2D615AA434B0105213CB6","mods\\mod_spellcaster.dll"},
+{"4288BAF72363322D8C4DCBAA1A4644C4","mods\\mod_team.dll"},
+{"67648A2CC373AD6A0C6B62276D5CD3B7","mods\\mod_trademon.dll"},
+{"DF02E49139A1B6CDD06687A2A240C751","mods\\mod_uh.dll"},
+{"9FDE3AD3BE4C1F14AF47AF61B0C61A1B","mods\\tre.dll"},
+{"56D1AC23005AB9F37FD8A7B1E6422CAE","tibiaautoinject2.dll"},
 };
 
 	AfxEnableControlContainer();
@@ -161,13 +161,13 @@ BOOL CTibiaautoApp::InitInstance()
 	// end of perform MD5 check
 
 	// TODO: security part	
-	cont=1;
+	//cont=1;
 	if (cont)
 	{		
 		CTibiaautoDlg dlg;
 		m_pMainWnd = &dlg;
 		// TODO: security part
-		//dlg.passSecurityInfo(zeta);
+		dlg.passSecurityInfo(zeta);
 		dlg.DoModal();
 	}
 	

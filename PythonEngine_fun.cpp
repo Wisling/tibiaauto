@@ -1364,3 +1364,15 @@ static PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *ar
 	Py_INCREF(ret);
 	return ret;
 }
+
+static PyObject *tibiaauto_kernel_startModule(PyObject *self,PyObject *args)
+{
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+static PyObject *tibiaauto_kernel_stopModule(PyObject *self,PyObject *args)
+{
+	Py_INCREF(Py_None);
+	return Py_None;
+}

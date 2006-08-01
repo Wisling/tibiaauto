@@ -61,7 +61,7 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 		char *md5result;
 		char *dllName;
 	} dllEntryTab[] = {		
-		{"D91F3EC0AB9FADB21380C8A157495671","tibiaauto.exe"}
+		{"C4D1FB0727462DE93895528BE0A536F0","tibiaauto.exe"}
 	};
 		
 	
@@ -99,7 +99,7 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 		free(fileBuffer);		
 	}
 	// TODO: security part
-	//if (!cont) ExitProcess(0);
+	if (!cont) ExitProcess(0);
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -727,12 +727,12 @@ void memReadWriteDisableRevealCName ()
 
 int getKernelMainVersion()
 {
-	return 2;
+	return 3;
 }
 
 int getKernelPatchVersion()
 {
-	return 2;
+	return 0;
 }
 
 CTibiaTile *getTibiaTile(int tileNr)

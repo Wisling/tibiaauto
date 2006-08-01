@@ -16,6 +16,7 @@ class CEnterCode : public CDialog
 {
 // Construction
 public:
+	int auth();
 	CEnterCode(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
@@ -46,6 +47,7 @@ protected:
 private:
 	CTibiaautoDlg * parent;
 	int randTab[8];
+	char buf2[128];
 	
 };
 

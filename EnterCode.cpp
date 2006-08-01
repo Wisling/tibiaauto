@@ -47,22 +47,9 @@ END_MESSAGE_MAP()
 // CEnterCode message handlers
 
 void CEnterCode::OnOK() 
-{	
-	// we calculate good sum
-	int goodSum=randTab[0]*randTab[0]*13+randTab[1]*131+randTab[2]*randTab[1]*57+randTab[3]*21+randTab[4]*14+randTab[5]*randTab[6]*randTab[7]*12-randTab[3]*(randTab[5]+randTab[4]);
-	goodSum%=100000000;
-	// then md5 it
-	char buf[128];
-	char buf2[128];
-	char buf3[128];
-	char buf4[128];
-	sprintf(buf,"%d",goodSum);
-	CMD5 md5;
-	md5.setPlainText(buf);
-	sprintf(buf2,"%s",md5.getMD5Digest());	
-	m_code.GetWindowText(buf3,127);	
-	// TODO: security part	
-	if (0&&strcmp(buf2,buf3))
+{		
+	int ok;
+	if (!auth())
 	{
 		ExitProcess(0);
 		CMemUtil::setGlobalProcessId(GetCurrentProcessId());		
@@ -70,9 +57,16 @@ void CEnterCode::OnOK()
 		reader.setProcessId(GetCurrentProcessId());		
 		ExitProcess(0);
 	} else {
-		parent->shutdownCounter=-rand();				
+		parent->shutdownCounter=-rand();
+		ok=1;
 	}
 	CDialog::OnOK();
+	FILE *f=fopen("tacode.txt","wt");
+	if (ok&&f)
+	{
+		fprintf(f,"%s",buf2);
+		fclose(f);
+	}
 }
 
 /*
@@ -142,6 +136,7 @@ BOOL CEnterCode::OnInitDialog()
 
 	//for (i=0;i<8;i++) randTab[i]=rand()%60000;	
 	for (i=0;i<8;i++) randTab[i]=0;
+	serialNumber+=133;
 	randTab[0]=(serialNumber&0xffff);
 	randTab[1]=((serialNumber>>16)&0xffff);	
 	randTab[2]=(randTab[0]+randTab[1])&0xffff;
@@ -157,11 +152,26 @@ BOOL CEnterCode::OnInitDialog()
 	
 
 	int rSum=1;
-	for (i=0;i<8;i++) rSum=(rSum*randTab[i])%65536;				
+	for (i=0;i<8;i++) rSum=(rSum*randTab[i]+13)%65536;				
 	
 	sprintf(buf,"%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x",randTab[0]+12,randTab[1]+11,randTab[2]+13,randTab[3]+21,randTab[4]+24,randTab[5]+11,randTab[6]+5,randTab[7]+55,rSum);
-	m_runtimeId.SetWindowText(buf);
+	m_runtimeId.SetWindowText(buf);		
 
+	FILE *f=fopen("tacode.txt","rt");
+	if (f)
+	{
+		char buf[128];
+		fscanf(f,"%s",buf);
+		m_code.SetWindowText(buf);
+		fclose(f);
+	}
+
+	if (auth()) 
+	{
+		OnOK();
+	} else {
+		m_code.SetWindowText("");
+	}
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -170,4 +180,25 @@ BOOL CEnterCode::OnInitDialog()
 void CEnterCode::OnClose() 
 {
 	
+}
+
+int CEnterCode::auth()
+{
+	// we calculate good sum
+	int goodSum=randTab[0]*randTab[0]*13+randTab[1]*131+randTab[2]*randTab[1]*57+randTab[3]*21+randTab[4]*14+randTab[5]*randTab[6]*randTab[7]*12-randTab[3]*(randTab[5]+randTab[4]);
+	goodSum%=100000000;
+	// then md5 it
+	char buf[128];	
+	char buf3[128];
+	sprintf(buf,"%d",goodSum);
+	CMD5 md5;
+	md5.setPlainText(buf);
+	sprintf(buf2,"%s",md5.getMD5Digest());	
+	m_code.GetWindowText(buf3,127);		
+	if (strcmp(buf2,buf3))
+	{
+		return 0;
+	} else {
+		return 1;
+	}
 }
