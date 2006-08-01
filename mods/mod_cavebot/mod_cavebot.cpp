@@ -1400,41 +1400,44 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
 					
 					CTibiaCharacter *enemyCh = reader.getCharacterByTibiaId(creatureDistList[dist]);
-					creatureAttackDist = abs(self->x-enemyCh->x);
-					if (abs(self->y-enemyCh->y)>creatureAttackDist)
-						creatureAttackDist=abs(self->y-enemyCh->y);
-
-					// set id of currently attacked creature
-					if (currentlyAttackedCreature!=creatureDistList[dist])
+					if (enemyCh)
 					{
-						if (config->debug) registerDebug("Attacking new creature");
-						// start attacking new creature
-						currentlyAttackedCreature=creatureDistList[dist];
-						firstCreatureAttackTM=time(NULL);	
-						lastAttackedCreatureHpDrop=time(NULL)-30;
-						lastAttackedCreatureHp=enemyCh->hpPercLeft;						
-					} else {
-						if (config->debug) registerDebug("Continously attacking creature");
-						// continously attacking creature												
-						if (config->suspendOnNoMove&&time(NULL)-firstCreatureAttackTM>=config->unreachableAfter)
-						{							
-							if (creatureAttackDist>config->attackRange)
-							{
-								if (config->debug) registerDebug("Attacked monster is unreachable");
-								// reset targetFound to 0 (we don't want to attack an unreachable monster)
-								targetFound=0;
-								globalAutoAttackStateAttack=CToolAutoAttackStateAttack_monsterUnreachable;
-								unreachableSecondsLeft=config->suspendAfterUnreachable;
-							}												
-						}
-						// for the blood hit control
-						if (enemyCh->hpPercLeft!=lastAttackedCreatureHp)
+						creatureAttackDist = abs(self->x-enemyCh->x);
+						if (abs(self->y-enemyCh->y)>creatureAttackDist)
+							creatureAttackDist=abs(self->y-enemyCh->y);
+						
+						// set id of currently attacked creature
+						if (currentlyAttackedCreature!=creatureDistList[dist])
 						{
-							lastAttackedCreatureHpDrop=time(NULL);
-							lastAttackedCreatureHp=enemyCh->hpPercLeft;
-						}						
+							if (config->debug) registerDebug("Attacking new creature");
+							// start attacking new creature
+							currentlyAttackedCreature=creatureDistList[dist];
+							firstCreatureAttackTM=time(NULL);	
+							lastAttackedCreatureHpDrop=time(NULL)-30;
+							lastAttackedCreatureHp=enemyCh->hpPercLeft;						
+						} else {
+							if (config->debug) registerDebug("Continously attacking creature");
+							// continously attacking creature												
+							if (config->suspendOnNoMove&&time(NULL)-firstCreatureAttackTM>=config->unreachableAfter)
+							{							
+								if (creatureAttackDist>config->attackRange)
+								{
+									if (config->debug) registerDebug("Attacked monster is unreachable");
+									// reset targetFound to 0 (we don't want to attack an unreachable monster)
+									targetFound=0;
+									globalAutoAttackStateAttack=CToolAutoAttackStateAttack_monsterUnreachable;
+									unreachableSecondsLeft=config->suspendAfterUnreachable;
+								}												
+							}
+							// for the blood hit control
+							if (enemyCh->hpPercLeft!=lastAttackedCreatureHp)
+							{
+								lastAttackedCreatureHpDrop=time(NULL);
+								lastAttackedCreatureHp=enemyCh->hpPercLeft;
+							}						
+						}
+						delete enemyCh;
 					}
-					delete enemyCh;
 					if (targetFound)
 					{
 						globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingCreature;;
@@ -1756,7 +1759,7 @@ void CMod_cavebotApp::enableControls()
 
 char *CMod_cavebotApp::getVersion()
 {
-	return "2.11";
+	return "2.12";
 }
 
 

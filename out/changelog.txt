@@ -1,3 +1,8 @@
+1.10.0, ???
+ * TA Scripting: introduced TA scripting
+ * General: various small bugfixes
+ * Kernel: improved code entering a little bit
+
 1.9.5, 22.05.2006
  * Kernel: changed runtime id generator to be more deterministic
 

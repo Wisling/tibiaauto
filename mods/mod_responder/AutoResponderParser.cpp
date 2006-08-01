@@ -505,22 +505,22 @@ int CAutoResponderParser::processNodeBoolPlayername(DOMNode *node, CAutoResponde
 int CAutoResponderParser::processNodeBoolTestvariable(DOMNode *node, CAutoResponderParserContext *context)
 {
 	char *buf=(char *)malloc(MAX_STRING_LEN);
-	char *nameText=CUtil::getNodeAttribute(node,"value");	
-	char *valueText=CUtil::getNodeAttribute(node,"name");
+	char *nameText=CUtil::getNodeAttribute(node,"name");	
+	char *valueText=CUtil::getNodeAttribute(node,"value");
 	replaceSpecialStrings(nameText,context);
 	replaceSpecialStrings(valueText,context);
 	
 	
 	if (!strcmp(valueText,context->getVariable(nameText)))
 	{ 
-		sprintf(buf,"DEBUG: textvariable name='%s' value='%s' actualvalue='%s': true",nameText,valueText,context->getVariable(nameText));
+		sprintf(buf,"DEBUG: testvariable name='%s' value='%s' actualvalue='%s': true",nameText,valueText,context->getVariable(nameText));
 		registerDebug(buf,context);
 		free(buf);
 		free(nameText);
 		free(valueText);
 		return 1;
 	} else {
-		sprintf(buf,"DEBUG: textvariable name='%s' value='%s' actualvalue='%s': false",nameText,valueText,context->getVariable(nameText));
+		sprintf(buf,"DEBUG: testvariable name='%s' value='%s' actualvalue='%s': false",nameText,valueText,context->getVariable(nameText));
 		registerDebug(buf,context);
 		free(buf);
 		free(nameText);
