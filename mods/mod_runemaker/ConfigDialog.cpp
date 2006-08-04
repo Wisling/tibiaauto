@@ -303,7 +303,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 			m_soulPoints.GetWindowText(buf,127);
 			int spTime = 0;
-			if (blanksCount)
+			if (blanksCount&&atoi(buf))
 			{
 				spTime = (myself->soulPoints / atoi(buf)) * (blanksTime / blanksCount);
 			}

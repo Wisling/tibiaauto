@@ -2,9 +2,9 @@
 <item-definitions>
 	<consts>
 		<!-- item codes -->
-		<const code="ropespot" value="0x182"/>
-		<const code="ladder" value="0x79c"/>
-		<const code="smallstone" value="0x6f5"/>
+		<const code="ropespot" value="0x182"/> 
+		<const code="ladder" value="0x79c"/> 
+		<const code="smallstone" value="0x6f5"/> 
 		<const code="bagbrown" value="0xb25"/>
 		<const code="rope" value="0xbbb"/>
 		<const code="GP" value="0xbd7"/>
@@ -31,68 +31,69 @@
 		<const code="closedhole" value="0x251"/>
 
 		<!-- addresses -->
-		<const code="addrOffset" value="0x5A000"/>
-		<const code="addrFirstContainer" value="0x574DD8"/>
-		<const code="addrFirstCreature" value="0x56C8B0"/>
-		<const code="addrHP" value="0x56C848"/>
-		<const code="addrMana" value="0x56C82C"/>
-		<const code="addrLeftHand" value="0x574D9C"/>
-		<const code="addrRightHand" value="0x574D90"/>
-		<const code="addrSlotArrow" value="0x574DCC"/>
-		<const code="addrSelfPosX" value="0x577540"/>
-		<const code="addrSelfPosY" value="0x57753C"/>
-		<const code="addrSelfPosZ" value="0x577538"/>
-		<const code="addrBattleMin" value="0x56C8A8"/>
-		<const code="addrBattleMax" value="0x56C8A4"/>
-		<const code="addrHPMax" value="0x56C844"/>
-		<const code="addrManaMax" value="0x56C828"/>
-		<const code="addrCap" value="0x56C820"/>
-		<const code="addrExp" value="0x56C840"/>
-		<const code="addrLvl" value="0x56C83C"/>
-		<const code="addrMlvl" value="0x56C838"/>
-		<const code="addrAttackedCreature" value="0x56C81C"/>
-		<const code="addrSoulPoints" value="0x56C824"/>
-		<const code="addrTradeCountSelf" value="0x576CB8"/>	
-		<const code="addrTradeCountPartner" value="0x577190"/>
-		<const code="addrTradeFirstItemSelf" value="0x576CBC"/>
-		<const code="addrTradeFirstItemPartner" value="0x577194"/>
-		<const code="addrSelfFlags" value="0x56C7D8"/>
-		<const code="addrGoX" value="0x56C890"/>
-		<const code="addrGoY" value="0x56C88C"/>
-		<const code="addrGoZ" value="0x56C888"/>
-		<const code="addrSkillFish" value="0x56C810"/>
-		<const code="addrSelfId" value="0x56C84C"/>
-<!-- special for 7.7 
-		<const code="addrMapStart" value="0x57AC18"/>
--->
-		<const code="addrMapStart" value="0x57AC20"/>
-		<const code="addrCurrentTm" value="0x574518"/>
-		<const code="addrTilesToGo" value="0x56C858"/>
-		<const code="addrCurrentTileToGo" value="0x56C854"/>
-		<const code="addrMlvlPercLeft" value="0x56C830"/>
-		<const code="addrSkillFist" value="0x56C7F8"/>
-		<const code="addrSkillFistPercLeft" value="0x56C7DC"/>
-		<const code="addrFps" value="0x71D0CC"/>
+		<const code="addrOffset" value="0"/>
 
-<!-- special for 7.7 
-		<const code="addrFunRevealCName1" value="0x49B23B"/>
--->
-		<const code="addrFunRevealCName1" value="0x46C515"/>
-		<const code="addrFunRevealCName2" value="0x419498"/>
-		<const code="addrFunRevealCName3" value="0x4194B3"/>
-		<const code="addrFunRevealCName4" value="0x4194C3"/>
-		<const code="addrMCInject" value="0xDA6E5"/>
+		<const code="addrHP" value="0x5F792C"/>
+		<const code="addrMana" value="0x5F7910"/>
+		<const code="addrLeftHand" value="0x006001B4"/>
+		<const code="addrRightHand" value="0x006001A8"/>
+		<const code="addrSlotArrow" value="0x006001E4"/>
+		<const code="addrSelfPosX" value="0"/>
+		<const code="addrSelfPosY" value="0"/>
+		<const code="addrSelfPosZ" value="0"/>
+		<const code="addrBattleMin" value="0x005F7994"/>
+		<const code="addrBattleMax" value="0x005FD754"/>
+		<const code="addrHPMax" value="0x005F7928"/>
+		<const code="addrManaMax" value="0x005F790C"/>
+		<const code="addrCap" value="0x005F7900"/>
+		<const code="addrExp" value="0x005F7924"/>
+		<const code="addrLvl" value="0x005F7920"/>
+		<const code="addrMlvl" value="0x005F791C"/>
+		<const code="addrFirstContainer" value="0x006001F0"/>
+		<const code="addrFirstCreature" value="0x5F7990"/>
+		<const code="addrAttackedCreature" value="0x005F78FC"/>
+		<const code="addrSoulPoints" value="0x005F7908"/>
+		<const code="addrTradeCountSelf" value="0x6020D0"/> 
+		<const code="addrTradeCountPartner" value="0x6025A8"/> 
+		<const code="addrTradeFirstItemSelf" value="0x6020D4"/> 
+		<const code="addrTradeFirstItemPartner" value="0x6025AC"/> 
+		<const code="addrSelfFlags" value="0x005F78B8"/>
+		<const code="addrGoX" value="0x5F7974"/> 
+		<const code="addrGoY" value="0x5F7970"/> 
+		<const code="addrGoZ" value="0x5F796C"/> 
+		<const code="addrSkillFish" value="0x005F78F0"/>
+		<const code="addrSelfId" value="0x005F7930"/>
+
+		<const code="addrMapStart" value="0x00606038"/>
+		<const code="addrCurrentTm" value="0x5FF930"/> 
+		<const code="addrTilesToGo" value="0x5F793C"/> 
+		<const code="addrCurrentTileToGo" value="0x5F7938"/> 
+		<const code="addrMlvlPercLeft" value="0x005F7914"/>
+		<const code="addrSkillFist" value="0x005F78D8"/>
+		<const code="addrSkillFistPercLeft" value="0x5F78BC"/> 
+		<const code="addrFps" value="0x74E6B4"/> <!-- ??? -->
+
+		<const code="addrFunRevealCName1" value="0x4D5A67"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
+		<const code="addrFunRevealCName2" value="0"/>
+		<const code="addrFunRevealCName3" value="0"/>
+		<const code="addrFunRevealCName4" value="0"/>
+		<const code="addrMCInject" value="0xECD31"/> 
 
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
 		<const code="lengthItem" value="12"/>
-		<const code="lengthCreature" value="156"/>
+		<const code="lengthCreature" value="160"/>
 		<const code="lengthMapTile" value="172"/>
 
 		<const code="maxContainers" value="10"/>
 		<const code="maxCreatures" value="150"/>
 		<const code="maxMapTiles" value="2016"/>
+
+
+
+
+
 	</consts>
         <items>
       <item id="0xc7e" name="Rune: Heavy Magic Missile"/>
