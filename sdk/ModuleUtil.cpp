@@ -596,9 +596,9 @@ void CModuleUtil::executeWalk(int path[15])
 							break;
 						}
 						delete item;
-					}					
+					}									
 					if (shovel)
-					{						
+					{												
 						// shovel found, so proceed with opening hole
 						int path[2];												
 						int mode=0;
@@ -613,10 +613,29 @@ void CModuleUtil::executeWalk(int path[15])
 						case 2: path[0]=1;break;
 						case 3: path[0]=3;break;
 						case 4: path[0]=7;break;						
-						}
+						}												
 						sender.stepMulti(path,1);
 						Sleep(1000);
-						sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,itemProxy.getValueForConst("closedhole"),self->x,self->y,self->z,2,0);
+						CTibiaCharacter *self2 = reader.readSelfCharacter();						
+						int count=reader.mapGetPointItemsCount(point(self2->x-self->x,self->x-self2->x,0));
+						
+						int blocked=0;
+						int updown=0;
+						int i;
+						for (i=0;i<count;i++)
+						{						
+							int tileId = reader.mapGetPointItemId(point(self->x-self2->x,self->x-self2->x,0),i);
+							if (tileId!=99)
+							{
+								CTibiaTile *tile = reader.getTibiaTile(tileId);								
+								if (tile->requireShovel)
+								{									
+									sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z,2,0);
+									break;
+								}
+							}
+						}
+						delete self2;
 						Sleep(1000);
 						switch (mode)
 						{

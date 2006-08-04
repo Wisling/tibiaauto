@@ -1,7 +1,13 @@
-1.10.0, ???
+1.10.1, 04.08.2006
+ * General: fixed various bugs introduced by 7.8 release
+ * Cave bot: fixed opening holes bug
+ * Cave bot: fixed tile entry for tile 1960
+
+1.10.0, 03.08.2006
  * TA Scripting: introduced TA scripting
  * General: various small bugfixes
  * Kernel: improved code entering a little bit
+ * All: adaptation to tibia client 7.8
 
 1.9.5, 22.05.2006
  * Kernel: changed runtime id generator to be more deterministic
