@@ -239,6 +239,11 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	CDonationDialog donDialog;
 	donDialog.DoModal();	
 
+	// this is needed to force loading tibiaauto_util.dll	
+	CTibiaCharacter *self=reader.readSelfCharacter();
+	delete self;
+
+
 
 
 
@@ -743,8 +748,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	
 
 void CTibiaautoDlg::OnLoad() 
-{
-	
+{	
 	int someModuleRunning=0;
 	int modNr;		
 	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
@@ -775,14 +779,15 @@ void CTibiaautoDlg::OnLoad()
 	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
 	CFileDialog fd(true,"",fName,OFN_FILEMUSTEXIST, szFilters, NULL);
 	
+	
 	if (fd.DoModal()==IDOK)
-	{
+	{		
 		CString pathName = fd.GetPathName();         						
 		f=fopen(pathName.GetBuffer(200),"rb");	
 		
 		if (f)
 		{
-			fclose(f);
+			fclose(f);			
 			
 			CConfigDialogStatus * configDialogStatus = new CConfigDialogStatus();	
 			configDialogStatus->Create(IDD_CONFIGSTATUS);
@@ -793,8 +798,10 @@ void CTibiaautoDlg::OnLoad()
 			ltp->configDialogStatus=configDialogStatus;
 			DWORD threadId;
 			::CreateThread(NULL,0,loadThread,ltp,0,&threadId);				
-		}
+			
+		}		
 	}	
+	
 	free(loggedCharName);
 }	
 

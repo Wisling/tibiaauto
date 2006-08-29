@@ -61,7 +61,7 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 		char *md5result;
 		char *dllName;
 	} dllEntryTab[] = {		
-		{"C4D1FB0727462DE93895528BE0A536F0","tibiaauto.exe"}
+		{"9BDF4B7ACC433886B16B69AB5861DBC0","tibiaauto.exe"}
 	};
 		
 	

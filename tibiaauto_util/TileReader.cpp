@@ -110,6 +110,9 @@ void CTileReader::loadTiles()
 						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,_L("requireUse"));
 						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));												
 						tiles[tileId]->notMoveable=CUtil::getNodeIntAttribute(item,_L("notMoveable"));
+						tiles[tileId]->stackable=CUtil::getNodeIntAttribute(item,_L("stackable"));
+						tiles[tileId]->alwaysOnTop=CUtil::getNodeIntAttribute(item,_L("alwaysOnTop"));
+						tiles[tileId]->moreAlwaysOnTop=CUtil::getNodeIntAttribute(item,_L("moreAlwaysOnTop"));
 						
 					}		
 
