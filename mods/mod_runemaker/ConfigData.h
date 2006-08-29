@@ -23,6 +23,7 @@ public:
 	int maxUse;
 	int premium;
 	char spell[1024];
+	int useBackpack;
 
 	int makeNow;
 

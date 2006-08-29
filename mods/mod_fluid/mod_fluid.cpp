@@ -85,7 +85,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				if (cont->flagOnOff)
 				{
-					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray,2);
+					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray,11);
 					if (item)
 					{
 						if (config->hotkeyHp)
@@ -120,7 +120,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				if (cont->flagOnOff)
 				{
-					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray,7);
+					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray,10);
 					if (item)
 					{
 						if (self->mana<config->manaBelow&&config->drinkMana)

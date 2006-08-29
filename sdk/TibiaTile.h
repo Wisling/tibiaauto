@@ -27,6 +27,8 @@ public:
 	int isContainer;
 	int notMoveable;
 	int stackable;
+	int alwaysOnTop;
+	int moreAlwaysOnTop;
 };
 
 #endif // !defined(AFX_TIBIATILE_H__39D75BF9_16BF_4794_92F0_27A6875108E8__INCLUDED_)
