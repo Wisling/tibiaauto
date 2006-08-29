@@ -31,6 +31,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_USE_BACKPACK, m_useBackpack);
 	DDX_Control(pDX, IDC_TOOL_MAXMANAUSE, m_maxUse);
 	DDX_Control(pDX, IDC_TOOL_PREMIUM, m_premium);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_MANALIMIT, m_manaLimit);
@@ -42,12 +43,12 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_RUNESPELL, m_spell);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_MAKETWO, m_makeTwo);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_RUNETIME, m_infoRuneTime);
+	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME, m_infoSoulpointsTime);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_FOOD, m_infoFood);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_BLANKS, m_infoBlanks);
-	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME, m_infoSoulpointsTime);
 	DDX_Control(pDX, IDC_ADDSPELLTOLIST, m_addSpell);
-	DDX_Control(pDX, IDC_LOADSPELLFROMLIST, m_loadSpell);
 	DDX_Control(pDX, IDC_DELETEFROMLIST, m_deleteSpell);
+	DDX_Control(pDX, IDC_LOADSPELLFROMLIST, m_loadSpell);
 	DDX_Control(pDX, IDC_MAKENOW, m_makeNow);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
@@ -110,6 +111,7 @@ void CConfigDialog::disableControls()
 	m_addSpell.EnableWindow(false);
 	m_loadSpell.EnableWindow(false);
 	m_deleteSpell.EnableWindow(false);
+	m_useBackpack.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -126,6 +128,7 @@ void CConfigDialog::enableControls()
 	m_addSpell.EnableWindow(true);
 	m_loadSpell.EnableWindow(true);
 	m_deleteSpell.EnableWindow(true);
+	m_useBackpack.EnableWindow(true);
 }
 
 
@@ -139,6 +142,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->soulPoints);m_soulPoints.SetWindowText(buf);
 	m_makeTwo.SetCheck(configData->makeTwo);
 	m_useArrow.SetCheck(configData->useArrow);
+	m_useBackpack.SetCheck(configData->useBackpack);
 	m_premium.SetCheck(configData->premium);
 	m_maxUse.SetCheck(configData->maxUse);
 
@@ -176,6 +180,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_soulPoints.GetWindowText(buf,127);newConfigData->soulPoints=atoi(buf);
 	newConfigData->makeTwo	= m_makeTwo.GetCheck();
 	newConfigData->useArrow	= m_useArrow.GetCheck();
+	newConfigData->useBackpack	= m_useBackpack.GetCheck();
 	newConfigData->premium	= m_premium.GetCheck();
 	newConfigData->maxUse	= m_maxUse.GetCheck();
 	

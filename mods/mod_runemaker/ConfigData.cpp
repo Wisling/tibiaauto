@@ -25,6 +25,7 @@ CConfigData::CConfigData()
 	makeTwo=0;
 	maxUse=0;
 	spell[0]=0;
+	useBackpack=0;
 
 	makeNow=0;
 

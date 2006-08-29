@@ -232,7 +232,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 
 	int leftHandObjectId=0;
-	if (config->useArrow)
+	if (config->useArrow||config->useBackpack)
 	{
 		CTibiaItem *arrowItem = reader.readItem(memConstData.m_memAddressLeftHand);
 		leftHandObjectId=arrowItem->objectId;
@@ -272,7 +272,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}				
 			delete arrowItem;
 			
-		}
+		}		
 		delete handItem;
 		
 		/**
@@ -313,10 +313,36 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);
 				if (handItem->objectId)
 				{
-				/**
-				* So now the situation is: we have empty arrow, and The Item
-				* in left hand. So move it.
-					*/
+					/**
+					 * So now the situation is: we have empty arrow, and The Item
+					 * in left hand. So move it.
+					 */
+					sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
+					delete handItem;				
+					continue;	
+				}
+				delete handItem;
+			}
+			if (config->useBackpack)
+			{
+				// make sure the left hand is save to some backpack
+				CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);
+				if (handItem->objectId)
+				{					
+					int saveContNr;
+					// we must skip container 7,8,9 due to cave bot!
+					for (saveContNr=0;saveContNr<7;saveContNr++)
+					{
+						CTibiaContainer *saveCont=reader.readContainer(saveContNr);
+						if (saveCont->flagOnOff&&saveCont->itemsInside<saveCont->size)
+						{
+							// some open container with some space inside found
+							sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x40+saveContNr,saveCont->size-1,handItem->quantity?handItem->quantity:1);
+							CModuleUtil::waitForItemsInsideChange(saveContNr,saveCont->itemsInside);
+
+						}
+						delete saveCont;
+					}
 					sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
 					delete handItem;				
 					continue;	
@@ -403,8 +429,34 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					delete arrowItem;
 				}
 				
+				delete handItem;				
+			}
+			if (config->useBackpack)
+			{
+				// if we are using 'save to backpack' feature, we need to lookup the item
+				// in some backpack and move it to hand
+				CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);							
+				if (!handItem->objectId||handItem->objectId!=leftHandObjectId)
+				{					
+					int saveContNr;
+					// we must skip container 7,8,9 due to cave bot!
+					for (saveContNr=0;saveContNr<7;saveContNr++)
+					{
+						CUIntArray itemsAccepted;
+						itemsAccepted.Add(leftHandObjectId);
+						CTibiaItem *savedItem = CModuleUtil::lookupItem(saveContNr,&itemsAccepted);
+						if (savedItem)
+						{
+							sender.moveObjectBetweenContainers(leftHandObjectId,0x40+saveContNr,savedItem->pos,0x06,0,savedItem->quantity?savedItem->quantity:1);
+							Sleep(1000);
+							delete savedItem;
+							saveContNr=10;
+						}																		
+					}
+					
+					
+				}
 				delete handItem;
-				
 			}
 		}
 		
@@ -537,7 +589,7 @@ void CMod_runemakerApp::makeNow(int enable)
 
 char *CMod_runemakerApp::getVersion()
 {
-	return "1.3";
+	return "1.4";
 }
 
 
@@ -551,6 +603,11 @@ int CMod_runemakerApp::validateConfig(int showAlerts)
 	if (strlen(m_configData->spell)==0)
 	{
 		if (showAlerts) AfxMessageBox("Please enter rune spell!");
+		return 0;
+	}
+	if (m_configData->useBackpack&&m_configData->useArrow)
+	{
+		if (showAlerts) AfxMessageBox("At most one of 'save backpack' and 'save to arrow slot' can be set at once!");
 		return 0;
 	}
 	
@@ -571,6 +628,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"soulPoints")) m_configData->soulPoints=atoi(paramValue);
 	if (!strcmp(paramName,"makeTwo")) m_configData->makeTwo=atoi(paramValue);
 	if (!strcmp(paramName,"useArrow")) m_configData->useArrow=atoi(paramValue);
+	if (!strcmp(paramName,"useBackpack")) m_configData->useBackpack=atoi(paramValue);
 	if (!strcmp(paramName,"premium")) m_configData->premium=atoi(paramValue);
 	if (!strcmp(paramName,"maxUse")) m_configData->maxUse=atoi(paramValue);
 
@@ -604,6 +662,7 @@ char *CMod_runemakerApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"soulPoints")) sprintf(buf,"%d",m_configData->soulPoints);
 	if (!strcmp(paramName,"makeTwo")) sprintf(buf,"%d",m_configData->makeTwo);
 	if (!strcmp(paramName,"useArrow")) sprintf(buf,"%d",m_configData->useArrow);
+	if (!strcmp(paramName,"useBackpack")) sprintf(buf,"%d",m_configData->useBackpack);
 	if (!strcmp(paramName,"premium")) sprintf(buf,"%d",m_configData->premium);
 	if (!strcmp(paramName,"maxUse")) sprintf(buf,"%d",m_configData->maxUse);
 
@@ -629,6 +688,7 @@ char *CMod_runemakerApp::getConfigParamName(int nr)
 	case 6: return "premium";
 	case 7: return "maxUse";
 	case 8: return "spells/spell";
+	case 9: return "useBackpack";
 	default:
 		return NULL;
 	}

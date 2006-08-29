@@ -56,6 +56,7 @@
 #define IDC_CONTAINER_MODE_9            3020
 #define IDC_CONTAINER_STATUS9           3021
 #define IDC_LOOT_CUSTOM                 3022
+#define IDC_USE_BACKPACK                3022
 #define IDC_LOOT_WORMS                  3023
 #define IDC_CONTAINER_MODE_10           3024
 #define IDC_CONTAINER_STATUS10          3025
@@ -66,7 +67,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3022
+#define _APS_NEXT_CONTROL_VALUE         3023
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

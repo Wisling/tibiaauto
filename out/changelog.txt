@@ -1,3 +1,10 @@
+1.10.2, 27.08.2006
+ * Kernel: generated new tibiaauto-tiles.xml for the 7.8 client
+ * Cave bot/auto looter: fixed looting from dieing creatures
+ * Light: fixed geting/setting light color/power
+ * Fluid drinker: now drinks fluids again
+ * Rune maker: added saving item to backpack
+
 1.10.1, 04.08.2006
  * General: fixed various bugs introduced by 7.8 release
  * Cave bot: fixed opening holes bug

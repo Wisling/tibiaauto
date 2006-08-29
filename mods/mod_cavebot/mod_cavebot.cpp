@@ -1003,6 +1003,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);					
 					sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,9);										
 					
+					
 					if (CModuleUtil::waitForOpenContainer(9,true))
 					{			
 						if (config->debug) registerDebug("Open dead creature corpse (container 9)");

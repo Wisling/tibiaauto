@@ -30,6 +30,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_useBackpack;
 	CButton	m_maxUse;
 	CButton	m_premium;
 	CEdit	m_manaLimit;

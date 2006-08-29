@@ -10,10 +10,10 @@ ResourceCount=4
 NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CDialog
-Resource1=IDD_CONFIG
-Resource2=IDD_TOOL_CONTAINERCONTENT
+Resource1=IDD_TOOL_CONTAINERCONTENT (Polish)
+Resource2=IDD_CONFIG
 Resource3=IDD_CONFIG (Polish)
-Resource4=IDD_TOOL_CONTAINERCONTENT (Polish)
+Resource4=IDD_TOOL_CONTAINERCONTENT
 
 [CLS:CMod_runemakerApp]
 Type=0
@@ -24,7 +24,7 @@ Filter=N
 [DLG:IDD_CONFIG]
 Type=1
 Class=CConfigDialog
-ControlCount=18
+ControlCount=25
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_TOOL_RUNEMAKER_CONT,SysListView32,1350664197
@@ -43,6 +43,13 @@ Control15=IDC_STATIC,static,1342308864
 Control16=IDC_TOOL_RUNEMAKER_MANA,edit,1350631552
 Control17=IDC_TOOL_PREMIUM,button,1342242819
 Control18=IDC_TOOL_MAXMANAUSE,button,1342242819
+Control19=IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME,static,1342308352
+Control20=IDC_ADDSPELLTOLIST,button,1342242816
+Control21=IDC_LOADSPELLFROMLIST,button,1342242816
+Control22=IDC_DELETEFROMLIST,button,1342242816
+Control23=IDC_TOOL_RUNEMAKER_SPELLS,SysListView32,1350664197
+Control24=IDC_MAKENOW,button,1342246915
+Control25=IDC_USE_BACKPACK,button,1342242819
 
 [CLS:CConfigDialog]
 Type=0
@@ -51,7 +58,7 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_TOOL_RUNEMAKER_RUNELIST
+LastObject=CConfigDialog
 
 [DLG:IDD_TOOL_CONTAINERCONTENT]
 Type=1

@@ -30,6 +30,8 @@ CTibiaTile::CTibiaTile()
 	isContainer=0;
 	notMoveable=0;
 	stackable=0;
+	alwaysOnTop=0;
+	moreAlwaysOnTop=0;
 }
 
 CTibiaTile::~CTibiaTile()
