@@ -957,7 +957,7 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 	char convString[128];
 	sprintf(convString,str);
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int len, int v10);	
-	Proto_fun fun=(Proto_fun)(0x49D870); // 7.8
+	Proto_fun fun=(Proto_fun)(0x49DF70); // 7.81
 
 	if (fontNumber==2)
 	{
@@ -1000,7 +1000,7 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	typedef void (*Proto_fun)(int type,char *s);		
-	Proto_fun fun=(Proto_fun)(0x524150); //7.8
+	Proto_fun fun=(Proto_fun)(0x527400); //7.81
 	
 				
 	if (type==0x16)
@@ -1061,7 +1061,7 @@ int myIsCreatureVisible(int *creaturePtr)
 		return ret;
 	} else {
 		typedef int (*Proto_fun)(int *creaturePtr);			
-		Proto_fun fun=(Proto_fun)(0x450EC0); // 7.8
+		Proto_fun fun=(Proto_fun)(0x4514D0); // 7.81
 		return fun(creaturePtr);
 	}
 
@@ -1071,7 +1071,7 @@ int myIsCreatureVisible(int *creaturePtr)
 void myInterceptEncrypt(int v1, int v2)
 {		
 	typedef void (*Proto_fun)(int v1,int v2);
-	Proto_fun fun=(Proto_fun)(0x528590); // 7.8
+	Proto_fun fun=(Proto_fun)(0x52B840); // 7.81
 
 	encryptKeyPtr=v2;
 	if (debugFile)
@@ -1110,7 +1110,7 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	}
 	// note: at least 0x14 bytes are passed on stack; at most 0x2c bytes are passed
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11);
-	Proto_fun fun=(Proto_fun)(0x526000); // 7.8
+	Proto_fun fun=(Proto_fun)(0x5292B0); // 7.81
 
 	if (type==1)
 	{
@@ -1254,38 +1254,39 @@ void InitialisePlayerInfoHack()
 	
 
 	// lookup: LEFT_ALIGN - trzecie (ostatnie) wystapienie; 2 ekrany ponizej
-	trapFun(dwHandle,0x49E9F9,(unsigned int)myPlayerNameText); // 7.8
+	trapFun(dwHandle,0x49F0F9,(unsigned int)myPlayerNameText); // 7.81
 	
 
 	// lookup: TALK_MODE_BEYOND; ekran ponad
-	trapFun(dwHandle,0x4124A4,(unsigned int)myInterceptInfoMiddleScreen); // 7.8
+	trapFun(dwHandle,0x4125A4,(unsigned int)myInterceptInfoMiddleScreen); // 7.81
 
 	
 	// lookup: TargetBuffer!=NULL; pierwsze wywolanie to jest srodek funkcji infomessage;
 	//         zasadniczo trzeba przechwycic wszystkie wywolania
-	// block is 7.8
-	trapFun(dwHandle,0x411D58+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x411F23+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4122B9+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x424464+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x426B88+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x426B9F+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x443C07+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4C1550+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4C1D1C+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4C1D76+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x52661F+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x526652+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x526769+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x526990+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x527776+1,(unsigned int)myInterceptInfoMessageBox);	
+	// block is 7.81
+	trapFun(dwHandle,0x411E58+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x412023+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4123B9+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4247F4+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x426F18+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x426F2F+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x443E27+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4C28F0+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4C30BC+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4C3116+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5298CF+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x529902+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x529A19+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x529C40+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x52AA26+1,(unsigned int)myInterceptInfoMessageBox);	
 		
 	// lookup: string "XOR EBX, EBP"; to jest srodek funkcji encrypt
-	trapFun(dwHandle,0x52882E,(unsigned int)myInterceptEncrypt); // 7.8
+	trapFun(dwHandle,0x52BADE,(unsigned int)myInterceptEncrypt); // 7.81
 
 	// lookup: referencja na "Creature!=NULL" + instrukcja przed MOV ESI, 00000000Fh
+	//         jest to w srodku tej funkcji.
 	//         trap trzeciej (ostatniej referencji na funkcje)
-	trapFun(dwHandle,0x4D5A41,(unsigned int)myIsCreatureVisible); // 7.8
+	trapFun(dwHandle,0x4D7FE1,(unsigned int)myIsCreatureVisible); // 7.81
 	
 		
     CloseHandle(dwHandle);
