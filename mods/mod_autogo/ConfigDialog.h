@@ -16,6 +16,7 @@
 	#define BATTLELIST_MONSTER	0x0002
 	#define BATTLELIST_GM		0x0004
 	#define BATTLELIST_PARANOIA	0x0008
+	#define BATTLELIST_PARANOIAM	0x00010
 #define TRIGGER_SIGN			0x0002
 	#define SIGN_BATTLE			0x0080
 	#define SIGN_POISON			0x0001
@@ -75,6 +76,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_battleParanoiaM;
 	CComboBox	m_actDirection;
 	CButton	m_soundHpBelow;
 	CButton	m_triggerHpBelow;
