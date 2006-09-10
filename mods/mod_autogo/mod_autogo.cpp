@@ -172,13 +172,18 @@ int triggerBattleList(int options, char whiteList[][32]){
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
 		int found = 0;
 		
-		if (ch->visible){
-			if (ch->z == self->z && (ch->x != self->x || ch->y != self->y) && !OnList(whiteList,(char*)ch->name)){
-				if (options&BATTLELIST_PARANOIA){
-					found=1;
-				}else if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0){
+		if (ch->visible){		
+			if ((ch->x != self->x || ch->y != self->y) &&  !OnList(whiteList,(char*)ch->name)){			
+				if ((options&BATTLELIST_PARANOIAM)) {
 					found=1;
 				}
+				if ((options&BATTLELIST_PARANOIA)&&ch->z==self->z){
+					found=1;
+				};
+				if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0){
+					found=1;
+				}
+			
 				if (found){
 					if (ch->name[0]=='G'&&ch->name[1]=='M' && options&BATTLELIST_GM)
 						iRet=iRet|BATTLELIST_GM;
@@ -480,7 +485,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		Sleep(100);	
 		alarm = 0;
 		
-		if (config->trigger&TRIGGER_BATTLELIST){
+		if ((config->trigger&TRIGGER_BATTLELIST)){
 			iAlarm = triggerBattleList(config->optionsBattleList,config->whiteList);
 			if (iAlarm){
 				alarm |= TRIGGER_BATTLELIST;
@@ -719,14 +724,23 @@ void CMod_autogoApp::enableControls()
 
 
 char *CMod_autogoApp::getVersion()
-{
-	return "2.0";
+{	
+	return "2.1";
 }
 
 
 int CMod_autogoApp::validateConfig(int showAlerts)
 {
-
+	if ((m_configData->optionsBattleList&BATTLELIST_PARANOIA)||(m_configData->optionsBattleList&BATTLELIST_PARANOIAM))
+	{
+		if (!(m_configData->optionsBattleList&BATTLELIST_GM)&&
+			!(m_configData->optionsBattleList&BATTLELIST_PLAYER)&&
+			!(m_configData->optionsBattleList&BATTLELIST_MONSTER))
+		{
+			if (showAlerts) AfxMessageBox("When using paranoia modes, one of 'gm', 'player','monster' must always be selected!");
+			return 0;
+		}
+	}
 	return 1;
 }
 

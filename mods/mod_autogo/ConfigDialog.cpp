@@ -31,6 +31,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_AUTOGO_BATTLEPARANOIAM, m_battleParanoiaM);
 	DDX_Control(pDX, IDC_AUTOGO_ACT_DIRECTION, m_actDirection);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDHPBELOW, m_soundHpBelow);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERHPBELOW, m_triggerHpBelow);
@@ -155,6 +156,7 @@ void CConfigDialog::disableControls()
 	m_battleMonster.EnableWindow(false);
 	m_battleGM.EnableWindow(false);
 	m_battleParanoia.EnableWindow(false);
+	m_battleParanoiaM.EnableWindow(false);
 	m_battleWhiteList.EnableWindow(false);
 	m_soundBattleList.EnableWindow(false);
 	m_actionBattleList.EnableWindow(false);
@@ -286,6 +288,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_battleMonster.SetCheck((configData->optionsBattleList&BATTLELIST_MONSTER?1:0));
 	m_battleGM.SetCheck((configData->optionsBattleList&BATTLELIST_GM?1:0));
 	m_battleParanoia.SetCheck((configData->optionsBattleList&BATTLELIST_PARANOIA?1:0));
+	m_battleParanoiaM.SetCheck((configData->optionsBattleList&BATTLELIST_PARANOIAM?1:0));
 	m_actionBattleList.SetCurSel(configData->actionBattleList);
 	m_soundBattleList.SetCheck((configData->sound&TRIGGER_BATTLELIST?1:0));
 	
@@ -383,7 +386,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_battlePlayer.GetCheck()?BATTLELIST_PLAYER:0)|
 		(m_battleMonster.GetCheck()?BATTLELIST_MONSTER:0)|
 		(m_battleGM.GetCheck()?BATTLELIST_GM:0)|
-		(m_battleParanoia.GetCheck()?BATTLELIST_PARANOIA:0)
+		(m_battleParanoia.GetCheck()?BATTLELIST_PARANOIA:0)|
+		(m_battleParanoiaM.GetCheck()?BATTLELIST_PARANOIAM:0)
 		);
 	
 	newConfigData->optionsSign = (
@@ -610,6 +614,7 @@ void CConfigDialog::OnAutogoTriggerbattlelist()
 	m_battleMonster.EnableWindow(lVal);
 	m_battleGM.EnableWindow(lVal);
 	m_battleParanoia.EnableWindow(lVal);
+	m_battleParanoiaM.EnableWindow(lVal);
 	m_battleWhiteList.EnableWindow(lVal);
 	m_soundBattleList.EnableWindow(lVal);
 	m_actionBattleList.EnableWindow(lVal);
