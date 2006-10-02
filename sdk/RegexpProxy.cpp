@@ -12,7 +12,25 @@
 
 CRegexpProxy::CRegexpProxy()
 {
-	dllRegexp=LoadLibrary("mods\\tre.dll");
+	char installPath[1024];
+	unsigned long installPathLen=1023;
+	installPath[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+	
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\mods\\tre.dll",installPath);
+	
+	dllRegexp=LoadLibrary(pathBuf);
 }
 
 CRegexpProxy::~CRegexpProxy()

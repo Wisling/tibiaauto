@@ -44,11 +44,11 @@
 		<const code="addrBattleMin" value="0x005FB994"/>
 		<const code="addrBattleMax" value="0x00601754"/>
 		<const code="addrHPMax" value="0x005FB928"/>
-		<const code="addrManaMax" value="0x005B790C"/>
+		<const code="addrManaMax" value="0x5FB90C"/>
 		<const code="addrCap" value="0x005FB900"/>
 		<const code="addrExp" value="0x005FB924"/>
 		<const code="addrLvl" value="0x005FB920"/>
-		<const code="addrMlvl" value="0x005B791C"/>
+		<const code="addrMlvl" value="0x005FB91C"/>
 		<const code="addrFirstContainer" value="0x006041F0"/>
 		<const code="addrFirstCreature" value="0x5FB990"/>
 		<const code="addrAttackedCreature" value="0x005FB8FC"/>

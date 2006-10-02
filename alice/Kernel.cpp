@@ -186,10 +186,27 @@ void prettyPrintHeader(const string &filename, int size, int totalSize, long tim
 Nodemaster *Kernel::root = new Nodemaster();
 
 Kernel::Kernel() {
+	char installPath[1024];
+	unsigned long installPathLen=1023;
+	installPath[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+
 	new Substituter();
 	Handler::init();
 	Kernel::loadSubstitutions();
-	if (!Kernel::load("mods\\std-startup.xml")) {
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\mods\\std-startup.xml",installPath);
+	if (!Kernel::load(pathBuf)) {
 		getStream("Console")->Write("Shutting down (cannot run without std-startup.xml file)");
 		serverRunning = false;
 	}
@@ -342,9 +359,26 @@ void Kernel::loadTemporaryData() {
 }
 
 void Kernel::loadSubstitutions() {
+	char installPath[1024];
+	unsigned long installPathLen=1023;
+	installPath[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+	
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\mods\\substitutions.xml",installPath);
 	ifstream fin;
 	PElement root;
-	fin.open("mods\\substitutions.xml", ios::in | ios::binary);
+	fin.open(pathBuf, ios::in | ios::binary);
 	
 	if (fin.is_open()) {
 		SaxParser *p = new SaxParser(new Parser());

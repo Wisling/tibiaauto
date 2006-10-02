@@ -306,31 +306,50 @@ int triggerOutOf(int options){
 }
 
 void alarmSound(int alarmId,int alarmSubId){
+	char installPath[1024];
+	unsigned long installPathLen=1023;
+	installPath[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+		
+
 	OFSTRUCT lpOpen;
 	char wavFile[1024];
 
 	switch (alarmId){
-		case TRIGGER_BATTLELIST:strcpy(wavFile,".\\mods\\sound\\battlelist.wav");break;
-		case TRIGGER_SIGN:		strcpy(wavFile,".\\mods\\sound\\sign.wav");break;
-		case TRIGGER_MESSAGE:	strcpy(wavFile,".\\mods\\sound\\message.wav");break;
-		case TRIGGER_MOVE:		strcpy(wavFile,".\\mods\\sound\\move.wav");break;
-		case TRIGGER_HPLOSS:	strcpy(wavFile,".\\mods\\sound\\hploss.wav");break;
-		case TRIGGER_HPBELOW:	strcpy(wavFile,".\\mods\\sound\\hpbelow.wav");break;
-		case TRIGGER_SOULPOINT:	strcpy(wavFile,".\\mods\\sound\\soulpoint.wav");break;
-		case TRIGGER_BLANK:		strcpy(wavFile,".\\mods\\sound\\blank.wav");break;
-		case TRIGGER_CAPACITY:	strcpy(wavFile,".\\mods\\sound\\capacity.wav");break;
-		case TRIGGER_OUTOF:		strcpy(wavFile,".\\mods\\sound\\outof.wav");break;
-		default:				strcpy(wavFile,".\\mods\\sound\\alarm.wav");break;
+		case TRIGGER_BATTLELIST:sprintf(wavFile,"%s\\mods\\sound\\battlelist.wav",installPath);break;
+		case TRIGGER_SIGN:		sprintf(wavFile,"%s\\mods\\sound\\sign.wav",installPath);break;
+		case TRIGGER_MESSAGE:	sprintf(wavFile,"%s\\mods\\sound\\message.wav",installPath);break;
+		case TRIGGER_MOVE:		sprintf(wavFile,"%s\\mods\\sound\\move.wav",installPath);break;
+		case TRIGGER_HPLOSS:	sprintf(wavFile,"%s\\mods\\sound\\hploss.wav",installPath);break;
+		case TRIGGER_HPBELOW:	sprintf(wavFile,"%s\\mods\\sound\\hpbelow.wav",installPath);break;
+		case TRIGGER_SOULPOINT:	sprintf(wavFile,"%s\\mods\\sound\\soulpoint.wav",installPath);break;
+		case TRIGGER_BLANK:		sprintf(wavFile,"%s\\mods\\sound\\blank.wav",installPath);break;
+		case TRIGGER_CAPACITY:	sprintf(wavFile,"%s\\mods\\sound\\capacity.wav",installPath);break;
+		case TRIGGER_OUTOF:		sprintf(wavFile,"%s\\mods\\sound\\outof.wav",installPath);break;
+		default:				sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);break;
 	}
 
 	if (OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
 		PlaySound(wavFile,NULL,SND_FILENAME|SND_ASYNC);
 		// isn't some CloseFile() needed? -- vanitas
-	}else if(OpenFile(".\\mods\\sound\\alarm.wav",&lpOpen,OF_EXIST) != HFILE_ERROR){
-		PlaySound(".\\mods\\sound\\alarm.wav",NULL,SND_FILENAME|SND_ASYNC);
-		// isn't some wait needed? cause multiple async plays will kill CPU --vanitas
-	}else{
-		MessageBeep(MB_OK);
+	} else {
+		sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);
+		if(OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
+			PlaySound(wavFile,NULL,SND_FILENAME|SND_ASYNC);
+			// isn't some wait needed? cause multiple async plays will kill CPU --vanitas
+		} else{
+			MessageBeep(MB_OK);
+		}	
 	}
 }
 char *alarmStatus(int alarmId, int alarmSubId){

@@ -324,11 +324,29 @@ CToolAutoRespond::~CToolAutoRespond()
 
 void CToolAutoRespond::start()
 {
+	char installPath[1024];
+	unsigned long installPathLen=1023;
+	installPath[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+	
+	char pathBuf[2048];
+	
 	m_enable.SetCheck(1);
 	threadCount=0;
 	try
-	{				
-		parser->parse("mods\\tibiaauto-responder.xml");	
+	{		
+		sprintf(pathBuf,"%s\\mods\\tibiaauto-responder.xml",installPath);
+		parser->parse(pathBuf);	
 		doc = parser->getDocument();
 		for (int rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
 		{
@@ -364,7 +382,8 @@ void CToolAutoRespond::start()
 		}
 		char scriptBuf[1024*200];
 		memset(scriptBuf,0,1024*200);
-		FILE *f = fopen("mods\\tibiaauto-responder.xml","rb");
+		sprintf(pathBuf,"%s\\mods\\tibiaauto-responder.xml",installPath);
+		FILE *f = fopen(pathBuf,"rb");
 		fread(scriptBuf,1,1024*200-1,f);
 		fclose(f);
 		m_script.SetWindowText(scriptBuf);						
