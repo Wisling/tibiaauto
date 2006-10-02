@@ -1,5 +1,7 @@
 1.10.5, ???
  * Auto go/log: added multifloor paranoia
+ * General: fixed max mana/max mlvl bug
+ * General: added TA installer
 
 1.10.4, 30.08.2006
  * Kernel: small fix in 'tm' address
