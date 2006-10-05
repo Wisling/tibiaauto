@@ -65,7 +65,7 @@
 		<const code="addrSelfId" value="0x005FB930"/>
 
 		<const code="addrMapStart" value="0x0060A038"/>
-		<const code="addrCurrentTm" value="0x602930"/> 
+		<const code="addrCurrentTm" value="0x603930"/> 
 		<const code="addrTilesToGo" value="0x5FB93C"/> 
 		<const code="addrCurrentTileToGo" value="0x5FB938"/> 
 		<const code="addrMlvlPercLeft" value="0x005FB914"/>

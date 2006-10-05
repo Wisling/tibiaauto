@@ -2,6 +2,8 @@
  * Auto go/log: added multifloor paranoia
  * General: fixed max mana/max mlvl bug
  * General: added TA installer
+ * Cave bot: fixed opening hole bug again
+ * Kernel: improved item lookup in backpacks
 
 1.10.4, 30.08.2006
  * Kernel: small fix in 'tm' address
