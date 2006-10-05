@@ -55,27 +55,28 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	int itemNr;
 	
 	CTibiaContainer *container = reader.readContainer(containerNr);
-	if (container->flagOnOff)
-	{
-	for (itemNr=0;itemNr<container->itemsInside;itemNr++)
-	{
-		CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
-		int pos;
-		for (pos=0;pos<itemsAccepted->GetSize();pos++)
-		{
-			if ((int)item->objectId==(int)itemsAccepted->GetAt(pos))
+	if (container->flagOnOff&&container->itemsInside>0)
+	{		
+        for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)		
+		{			
+			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
+			
+			int pos;
+			for (pos=0;pos<itemsAccepted->GetSize();pos++)
 			{
-				// item found!
-				CTibiaItem *retItem = new CTibiaItem();				
-				retItem->pos=itemNr;
-				retItem->objectId=item->objectId;
-				retItem->quantity=item->quantity;				
-	
-				delete container;
-				return retItem;
-			}
-		};
-	};				
+				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos))
+				{
+					// item found!
+					CTibiaItem *retItem = new CTibiaItem();				
+					retItem->pos=itemNr;
+					retItem->objectId=item->objectId;
+					retItem->quantity=item->quantity;				
+					
+					delete container;
+					return retItem;
+				}
+			};
+		};				
 	}
 	
 	delete container;
@@ -91,25 +92,29 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 	int itemNr;
 	
 	CTibiaContainer *container = reader.readContainer(containerNr);
-	for (itemNr=0;itemNr<container->itemsInside;itemNr++)
-	{
-		CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
-		int pos;
-		for (pos=0;pos<itemsAccepted->GetSize();pos++)
-		{
-			if ((int)item->objectId==(int)itemsAccepted->GetAt(pos)&&item->quantity==qty)
+	if (container->flagOnOff&&container->itemsInside>0)
+	{				
+		for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)		
+		{			
+			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
+			
+			int pos;
+			for (pos=0;pos<itemsAccepted->GetSize();pos++)
 			{
-				// item found!
-				CTibiaItem *retItem = new CTibiaItem();				
-				retItem->pos=itemNr;
-				retItem->objectId=item->objectId;
-				retItem->quantity=item->quantity;				
-	
-				delete container;
-				return retItem;
-			}
-		};
-	};				
+				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos)&&item->quantity==qty)
+				{
+					// item found!
+					CTibiaItem *retItem = new CTibiaItem();				
+					retItem->pos=itemNr;
+					retItem->objectId=item->objectId;
+					retItem->quantity=item->quantity;				
+					
+					delete container;
+					return retItem;
+				}
+			};
+		};	
+	}			
 	
 	delete container;
 	return NULL;
@@ -582,7 +587,7 @@ void CModuleUtil::executeWalk(int path[15])
 				break;
 			case 102:
 				// closed hole - use shovel to open
-				{
+				{					
 					CTibiaItem *shovel = NULL;
 					CUIntArray itemsAccepted;
 					int contNr;
@@ -617,19 +622,23 @@ void CModuleUtil::executeWalk(int path[15])
 						sender.stepMulti(path,1);
 						Sleep(1000);
 						CTibiaCharacter *self2 = reader.readSelfCharacter();						
-						int count=reader.mapGetPointItemsCount(point(self2->x-self->x,self->x-self2->x,0));
+						int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));
 						
 						int blocked=0;
 						int updown=0;
 						int i;
 						for (i=0;i<count;i++)
 						{						
-							int tileId = reader.mapGetPointItemId(point(self->x-self2->x,self->x-self2->x,0),i);
+							int tileId = reader.mapGetPointItemId(point(self->x-self2->x,self->y-self2->y,0),i);
+							//char buf[128];
+							//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
+							//::MessageBox(0,buf,buf,0);
 							if (tileId!=99)
 							{
 								CTibiaTile *tile = reader.getTibiaTile(tileId);								
+								
 								if (tile->requireShovel)
-								{									
+								{										
 									sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z,2,0);
 									break;
 								}
