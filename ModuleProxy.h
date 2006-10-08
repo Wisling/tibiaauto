@@ -45,10 +45,11 @@ public:
 	static CModuleProxy ** allModules;
 	static int allModulesCount;	
 
+	char moduleName[16384];
 private:	
 	HMODULE dllModule;
 	static int allModulesSize;
-	char moduleName[16384];
+	
 };
 
 #endif // !defined(AFX_MODULEPROXY_H__466E0961_7FC2_412F_968C_048EC6D2A8C0__INCLUDED_)

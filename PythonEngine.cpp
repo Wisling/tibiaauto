@@ -356,6 +356,27 @@ static PyMethodDef Methods_taitem[] = {
 };
 
 
+static PyMethodDef Methods_takernel[] = { 
+	{"startModule", tibiaauto_kernel_startModule, METH_VARARGS},
+	{"stopModule", tibiaauto_kernel_stopModule, METH_VARARGS},
+	{"getModuleCount", tibiaauto_kernel_getModuleCount, METH_VARARGS},
+	{"getModuleName", tibiaauto_kernel_getModuleName, METH_VARARGS},
+	{"getModuleDesc", tibiaauto_kernel_getModuleDesc, METH_VARARGS},
+	{"isModuleStarted", tibiaauto_kernel_isModuleStarted, METH_VARARGS},
+	{"getModuleVersion", tibiaauto_kernel_getModuleVersion, METH_VARARGS},
+
+	{"startPythonModule", tibiaauto_kernel_startPythonModule, METH_VARARGS},
+	{"stopPythonModule", tibiaauto_kernel_stopPythonModule, METH_VARARGS},
+	{"getPythonModuleCount", tibiaauto_kernel_getPythonModuleCount, METH_VARARGS},
+	{"getPythonModuleName", tibiaauto_kernel_getPythonModuleName, METH_VARARGS},
+	{"isPythonModuleStarted", tibiaauto_kernel_isPythonModuleStarted, METH_VARARGS},
+	{"getPythonModuleDesc", tibiaauto_kernel_getPythonModuleDesc, METH_VARARGS},
+	{"getPythonModuleVersion", tibiaauto_kernel_getPythonModuleVersion, METH_VARARGS},
+
+		
+    {NULL,      NULL}        /* Sentinel */
+};
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -397,6 +418,7 @@ void CPythonEngine::init()
 		Py_InitModule("taregexp", Methods_taregexp);	
 		Py_InitModule("taalice", Methods_taalice);	
 		Py_InitModule("taitem", Methods_taitem);	
+		Py_InitModule("takernel", Methods_takernel);	
 		PyRun_SimpleString("import tibiaauto");	
 		PyRun_SimpleString("import tareader");
 		PyRun_SimpleString("import tasender");
@@ -404,6 +426,7 @@ void CPythonEngine::init()
 		PyRun_SimpleString("import taregexp");
 		PyRun_SimpleString("import taalice");
 		PyRun_SimpleString("import taitem");
+		PyRun_SimpleString("import takernel");
 		PyRun_SimpleString("import sys");	
 		
 		// load tautil.py
@@ -538,9 +561,7 @@ void CPythonEngine::backpipeMsgTick()
 		int msgLen;
 		char nickBuf[16384];
 		char msgBuf[16384];
-		char chanBuf[16384];
-		char timeBuf[128];
-		int i;
+		char chanBuf[16384];		
 		
 		memset(nickBuf,0,16384);
 		memset(msgBuf,0,16384);
