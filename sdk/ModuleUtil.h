@@ -18,8 +18,7 @@ public:
 	static void waitForItemsInsideChange(int contNr, int origItemsCount);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty);
-	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15]);
-	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15],int useDiagonal);
+	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15]);	
 	static void executeWalk(int path[15]);
 	static void findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
 	static void lootItemFromContainer(int conTNr, CUIntArray *acceptedItems);
@@ -32,6 +31,8 @@ public:
 	static struct point findNearestDepot(int startX, int startY, int startZ);
 	static struct point findNearestDepot(int startX, int startY, int startZ, int useDiagonal);
 	static void prepareProhPointList();
+private:
+	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15],int useDiagonal);
 
 
 	CModuleUtil();

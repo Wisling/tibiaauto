@@ -1,9 +1,12 @@
-1.10.5, ???
+1.10.5, 08.10.2006
  * Auto go/log: added multifloor paranoia
  * General: fixed max mana/max mlvl bug
  * General: added TA installer
  * Cave bot: fixed opening hole bug again
  * Kernel: improved item lookup in backpacks
+ * Cave bot: improved cavebot looting
+ * Cave bot: improved cavebot walking when target tile is busy by other creature
+ * Python scripting: added 'takernel' package
 
 1.10.4, 30.08.2006
  * Kernel: small fix in 'tm' address

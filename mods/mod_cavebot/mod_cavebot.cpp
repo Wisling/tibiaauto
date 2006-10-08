@@ -1575,7 +1575,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						
 						// proceed with path searching						
 						int ticksStart = GetTickCount();
-						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,path);						
+						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,path);
 						int ticksEnd = GetTickCount();
 						sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
 						if (config->debug) registerDebug(buf);

@@ -426,7 +426,7 @@ void alarmAction(int alarmId, int alarmSubId,CConfigData *config){
 		if (self->x!=config->runawayX || self->y!=config->runawayY || self->z!=config->runawayZ){
 		
 			// proceed with path searching									
-			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->runawayX,config->runawayY,config->runawayZ,path);											
+			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->runawayX,config->runawayY,config->runawayZ,path);
 			int pathSize;
 			for (pathSize=0;pathSize<10000&&path[pathSize];pathSize++){}										
 			if (pathSize){
@@ -449,7 +449,7 @@ void alarmAction(int alarmId, int alarmSubId,CConfigData *config){
 			CModuleUtil::sleepWithStop(2000,&toolThreadShouldStop);
 			
 			// proceed with path searching									
-			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->actX,config->actY,config->actZ,path);											
+			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->actX,config->actY,config->actZ,path);
 			int pathSize;
 			for (pathSize=0;pathSize<10000&&path[pathSize];pathSize++){}										
 			if (pathSize){

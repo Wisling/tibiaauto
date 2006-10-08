@@ -259,14 +259,44 @@ struct point CModuleUtil::findNearestDepot(int startX, int startY, int startZ, i
 
 void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15])
 {	
+	int x,y;
+	prepareProhPointList();
+	CTibiaMapProxy tibiaMap;
+
+	// try to go to the point normally
 	findPathOnMap(startX,startY,startZ,endX,endY,endZ,path,0);
+	if (path[0]) return;
+
+	// try to go to the point using also diagonals
+	findPathOnMap(startX,startY,startZ,endX,endY,endZ,path,1);
+	if (path[0]) return;
+
+	// try to go to some point nearby
+	for (x=-1;x<=1;x++)
+	{
+		for (y=-1;y<=1;y++)
+		{	
+			if (x||y)
+			{
+				findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,path,0);if (path[0]) return;	
+				findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,path,1);if (path[0]) return;		
+			}
+		}
+	}
 }
 
 void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15],int useDiagonal)
 {	
-	prepareProhPointList();
-
 	CTibiaMapProxy tibiaMap;
+		
+
+	path[0]=0;
+	memset(path,0x00,sizeof(int)*15);
+
+	// unable to reach point which is not available (e.g. other creature standing on it)
+	if (!tibiaMap.isPointAvailable(endX,endY,endZ)) return;
+	
+	
 	CQueue *queue = new CQueue();
 
 	point p;
@@ -276,9 +306,7 @@ void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, in
 
 	queue->add(p);
 
-	tibiaMap.clearPrevPoint();
-	path[0]=0;
-	memset(path,0x00,sizeof(int)*15);
+	tibiaMap.clearPrevPoint();	
 		
 	while (queue->size())
 	{	
@@ -398,11 +426,7 @@ void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, in
 		}
 	}
 
-	delete queue;	
-
-	if (!useDiagonal)
-		findPathOnMap(startX,startY,startZ,endX,endY,endZ,path,1);
-
+	delete queue;		
 }
 
 
@@ -433,39 +457,54 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 
 	if (item)
 	{
+		CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+
+		CTibiaContainer *lootedCont = reader.readContainer(contNr);
 		// find first free container
 		int openCont;
-		for (openCont=0;openCont<contNr;openCont++)
+		for (openCont=0;openCont<8;openCont++)
 		{
-			CTibiaContainer *targetCont = reader.readContainer(openCont);
-			if (targetCont->flagOnOff&&targetCont->itemsInside<targetCont->size)
+			
+			CTibiaContainer *targetCont = reader.readContainer(openCont);			
+			if (targetCont->flagOnOff)
 			{					
-				//sender.sendTAMessage("[debug] target container found");
-				// good, I can move to openCont
-				sender.moveObjectBetweenContainers(item->objectId,0x40+contNr,item->pos,0x40+openCont,0,item->quantity?item->quantity:1);
-				
-				// wait for sync
-				int t3=0;
-				for (t3=0;t3<20;t3++)
+				int itemNr;
+				// if item is stackable try to attach it to an existing stack
+				if (tile->stackable)
 				{
-					CTibiaCharacter *selfNew = reader.readSelfCharacter();
-					
-					if (selfNew->cap!=self->cap)
+					for (itemNr=0;itemNr<targetCont->itemsInside;itemNr++)
 					{
-						// sync on, stop scanning containers
-						delete selfNew;
-						openCont=10;
-						break;
+						CTibiaItem *itemInside = (CTibiaItem *)targetCont->items.GetAt(itemNr);
+						if (itemInside->objectId==item->objectId&&itemInside->quantity+item->quantity<=100)
+						{
+							sender.moveObjectBetweenContainers(item->objectId,0x40+contNr,item->pos,0x40+openCont,itemNr,item->quantity?item->quantity:1);
+
+							waitForItemsInsideChange(contNr,lootedCont->itemsInside);
+
+							// jump out of all loops as looting is done
+							openCont=1000;	
+							itemNr=1000;
+						}
 					}
+				}
+
+				if (openCont!=1000&&targetCont->itemsInside<targetCont->size)
+				{
+					//sender.sendTAMessage("[debug] target container found");
+					// good, I can move to openCont
+					sender.moveObjectBetweenContainers(item->objectId,0x40+contNr,item->pos,0x40+openCont,targetCont->size-1,item->quantity?item->quantity:1);
 					
-					delete selfNew;
-					Sleep(100);
-				}									
+					waitForItemsInsideChange(contNr,lootedCont->itemsInside);
+					
+					// jump out of all loops as looting is done
+					openCont=1000;					
+				}
 			}
 			
 			
 			delete targetCont;						
 		};
+		delete lootedCont;
 		delete item;
 	}
 	delete self;
