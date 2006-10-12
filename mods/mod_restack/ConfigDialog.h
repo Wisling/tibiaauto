@@ -29,6 +29,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_pickupToHand;
 	CButton	m_restackToRight;
 	CButton	m_moveCovering;
 	CButton	m_enable;		

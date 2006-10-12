@@ -21,7 +21,7 @@ Filter=N
 [DLG:IDD_CONFIG]
 Type=1
 Class=CConfigDialog
-ControlCount=27
+ControlCount=28
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_STATIC,static,1342308864
@@ -49,6 +49,7 @@ Control24=IDC_TOOL_AMMORESTACK_PICKUP_UC,button,1342242819
 Control25=IDC_RADIO,button,1476395017
 Control26=IDC_TOOL_ARMMORESTACK_PICKUPCOVERED,button,1342242819
 Control27=IDC_TOOL_RESTACKTORIGHT,button,1342242819
+Control28=IDC_PICKUP_TO_HAND,button,1342242819
 
 [CLS:CConfigDialog]
 Type=0
@@ -57,5 +58,5 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=CConfigDialog
+LastObject=IDC_PICKUP_TO_HAND
 

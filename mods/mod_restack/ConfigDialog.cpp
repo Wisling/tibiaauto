@@ -29,6 +29,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_PICKUP_TO_HAND, m_pickupToHand);
 	DDX_Control(pDX, IDC_TOOL_RESTACKTORIGHT, m_restackToRight);
 	DDX_Control(pDX, IDC_TOOL_ARMMORESTACK_PICKUPCOVERED, m_moveCovering);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
@@ -107,6 +108,7 @@ void CConfigDialog::disableControls()
 	m_ammoType.EnableWindow(false);
 	m_moveCovering.EnableWindow(false);
 	m_restackToRight.EnableWindow(false);
+	m_pickupToHand.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -128,6 +130,7 @@ void CConfigDialog::enableControls()
 	m_ammoType.EnableWindow(true);
 	m_moveCovering.EnableWindow(true);
 	m_restackToRight.EnableWindow(true);
+	m_pickupToHand.EnableWindow(true);
 }
 
 
@@ -152,6 +155,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_ammoType.SetCurSel(configData->ammoType);
 	m_moveCovering.SetCheck(configData->moveCovering);
 	m_restackToRight.SetCheck(configData->restackToRight);
+	m_pickupToHand.SetCheck(configData->pickupToHand);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -176,6 +180,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->ammoType=m_ammoType.GetCurSel();
 	newConfigData->moveCovering=m_moveCovering.GetCheck();
 	newConfigData->restackToRight=m_restackToRight.GetCheck();
+	newConfigData->pickupToHand=m_pickupToHand.GetCheck();
 	
 
 	return newConfigData;

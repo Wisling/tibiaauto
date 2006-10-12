@@ -1,3 +1,7 @@
+1.10.6, ???
+ * Ammo restack: added picking up throwable directly to hand
+ * Auto log/go: fixed battle list alarm detection
+
 1.10.5, 08.10.2006
  * Auto go/log: added multifloor paranoia
  * General: fixed max mana/max mlvl bug
