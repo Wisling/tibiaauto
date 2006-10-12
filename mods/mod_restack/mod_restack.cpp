@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "MemConstData.h"
 #include "ModuleUtil.h"
+#include "TibiaTile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -168,35 +169,69 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		delete item;
 
-		// pickup spears
-		if (config->pickupSpears)
+		// pickup throwable (spears, small stones)
+		if (config->pickupSpears||config->pickupToHand)
 		{
-			int contNr;						
-			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+			int offsetX=0;
+			int offsetY=0;
+			if (config->pickupUL&&isItemOnTop(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
+			if (config->pickupUC&&isItemOnTop(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
+			if (config->pickupUR&&isItemOnTop(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
+			if (config->pickupCL&&isItemOnTop(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
+			if (config->pickupCR&&isItemOnTop(1,0,throwableItemId)) offsetX=1,offsetY=0;
+			if (config->pickupBL&&isItemOnTop(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
+			if (config->pickupBC&&isItemOnTop(0,1,throwableItemId)) offsetX=0,offsetY=1;
+			if (config->pickupBR&&isItemOnTop(1,1,throwableItemId)) offsetX=1,offsetY=1;
+			
+			
+			if ((offsetX||offsetY)&&config->pickupSpears)
 			{
-				CTibiaContainer *cont = reader.readContainer(contNr);
-				if (cont->flagOnOff&&cont->itemsInside<cont->size)
-				{					
-					int offsetX=0;
-					int offsetY=0;
-					if (config->pickupUL&&isItemOnTop(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
-					if (config->pickupUC&&isItemOnTop(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
-					if (config->pickupUR&&isItemOnTop(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
-					if (config->pickupCL&&isItemOnTop(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
-					if (config->pickupCR&&isItemOnTop(1,0,throwableItemId)) offsetX=1,offsetY=0;
-					if (config->pickupBL&&isItemOnTop(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
-					if (config->pickupBC&&isItemOnTop(0,1,throwableItemId)) offsetX=0,offsetY=1;
-					if (config->pickupBR&&isItemOnTop(1,1,throwableItemId)) offsetX=1,offsetY=1;
-
-					if (offsetX||offsetY)
-					{
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,0,1);
+				int contNr;						
+				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+				{
+					CTibiaContainer *cont = reader.readContainer(contNr);
+					if (cont->flagOnOff&&cont->itemsInside<cont->size)
+					{																	
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,1);
 						Sleep(500);
-					}					
+						// reset offsetXY to avoid pickup up same item to hand
+						offsetX=offsetY=0;
+						
+						delete cont;
+						break;
+					} // if
 					delete cont;
-					break;
+				} // for
+			} // if (offsetX||offsetY)
+
+			if (config->pickupToHand)
+			{				
+				CTibiaItem *itemLeftHand=reader.readItem(memConstData.m_memAddressLeftHand);
+				CTibiaItem *itemRightHand=reader.readItem(memConstData.m_memAddressRightHand);
+				if ((itemLeftHand->objectId==throwableItemId||(itemLeftHand->objectId==0&&itemRightHand->objectId!=throwableItemId))&&(offsetX||offsetY))
+				{
+					CTibiaTile *itemHandTile = reader.getTibiaTile(itemLeftHand->objectId);
+					if (itemLeftHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
+					{
+						// move to left hand
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,1);
+						Sleep(500);
+						offsetX=offsetY=0;
+					}
 				}
-				delete cont;
+				if ((itemRightHand->objectId==throwableItemId||(itemRightHand->objectId==0&&itemLeftHand->objectId!=throwableItemId))&&(offsetX||offsetY))
+				{
+					CTibiaTile *itemHandTile = reader.getTibiaTile(itemRightHand->objectId);
+					if (itemRightHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
+					{
+						// move to left hand
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,1);
+						Sleep(500);
+						offsetX=offsetY=0;
+					}
+				}												
+
+				
 			}
 		}
 
@@ -344,7 +379,7 @@ void CMod_restackApp::enableControls()
 
 char *CMod_restackApp::getVersion()
 {
-	return "2.2";
+	return "2.3";
 }
 
 
@@ -407,6 +442,8 @@ void CMod_restackApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"pickup/place/BR")) m_configData->pickupBR=atoi(paramValue);
 	if (!strcmp(paramName,"throwable/moveCovering")) m_configData->moveCovering=atoi(paramValue);
 	if (!strcmp(paramName,"ammo/restackToRight")) m_configData->restackToRight=atoi(paramValue);
+	if (!strcmp(paramName,"pickup/toHand")) m_configData->pickupToHand=atoi(paramValue);
+
 }
 
 char *CMod_restackApp::saveConfigParam(char *paramName)
@@ -431,6 +468,7 @@ char *CMod_restackApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"pickup/place/BR")) sprintf(buf,"%d",m_configData->pickupBR);
 	if (!strcmp(paramName,"throwable/moveCovering")) sprintf(buf,"%d",m_configData->moveCovering);
 	if (!strcmp(paramName,"ammo/restackToRight")) sprintf(buf,"%d",m_configData->restackToRight);
+	if (!strcmp(paramName,"pickup/toHand")) sprintf(buf,"%d",m_configData->pickupToHand);
 	return buf;
 }
 
@@ -455,6 +493,7 @@ char *CMod_restackApp::getConfigParamName(int nr)
 	case 14: return "pickup/place/BR";	
 	case 15: return "throwable/moveCovering";
 	case 16: return "restackToRight";
+	case 17: return "pickup/toHand";
 	default:
 		return NULL;
 	}

@@ -35,6 +35,7 @@ CConfigData::CConfigData()
 	pickupBR=0;
 	moveCovering=1;
 	restackToRight=0;
+	pickupToHand=0;
 }
 
 CConfigData::~CConfigData()

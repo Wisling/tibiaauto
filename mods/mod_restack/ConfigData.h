@@ -22,6 +22,7 @@ public:
 	int throwableAt;
 	int throwableTo;
 	int pickupSpears;
+	int pickupToHand;
 	int pickupUL,pickupUC,pickupUR;	
 	int pickupCL,pickupCR;
 	int pickupBL,pickupBC,pickupBR;

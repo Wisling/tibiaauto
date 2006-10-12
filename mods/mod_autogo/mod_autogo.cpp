@@ -162,6 +162,7 @@ int OnList(char whiteList[][32],char name[]){
 }
 
 int triggerBattleList(int options, char whiteList[][32]){
+	CPackSenderProxy sender;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -174,17 +175,17 @@ int triggerBattleList(int options, char whiteList[][32]){
 		
 		if (ch->visible){		
 			if ((ch->x != self->x || ch->y != self->y) &&  !OnList(whiteList,(char*)ch->name)){			
-				if ((options&BATTLELIST_PARANOIAM)) {
+				if ((options&BATTLELIST_PARANOIAM)) {					
 					found=1;
 				}
-				if ((options&BATTLELIST_PARANOIA)&&ch->z==self->z){
+				if ((options&BATTLELIST_PARANOIA)&&ch->z==self->z){					
 					found=1;
 				};
-				if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0){
+				if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0){					
 					found=1;
 				}
 			
-				if (found){
+				if (found){					
 					if (ch->name[0]=='G'&&ch->name[1]=='M' && options&BATTLELIST_GM)
 						iRet=iRet|BATTLELIST_GM;
 					else if (options&BATTLELIST_PLAYER && ch->tibiaId < 0x4000000)

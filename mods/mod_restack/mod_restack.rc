@@ -91,9 +91,9 @@ BEGIN
                     SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_TO,99,114,73,14,
                     ES_AUTOHSCROLL
-    CONTROL         "Pickup throwable",IDC_TOOL_ARMMORESTACK_PICKUP,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,180,71,10
-    LTEXT           "Spears pickup area",IDC_STATIC,99,140,73,8
+    CONTROL         "Pickup throwable to bp",IDC_TOOL_ARMMORESTACK_PICKUP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,180,89,10
+    LTEXT           "Throwable pickup area",IDC_STATIC,99,141,73,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UL,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,99,153,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_CL,"Button",
@@ -114,9 +114,11 @@ BEGIN
                     117,168,10,8
     CONTROL         "Move items covering throwable",
                     IDC_TOOL_ARMMORESTACK_PICKUPCOVERED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,194,114,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,204,114,10
     CONTROL         "Restack to right hand",IDC_TOOL_RESTACKTORIGHT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,208,84,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,218,84,10
+    CONTROL         "Pickup throwable to hand",IDC_PICKUP_TO_HAND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,192,97,10
 END
 
 
