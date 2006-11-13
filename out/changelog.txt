@@ -1,6 +1,17 @@
-1.10.6, ???
+1.11.1, ???
+ * Python scripting: added callback handling of %ta messages
+
+1.11.0, 25.10.2006
  * Ammo restack: added picking up throwable directly to hand
  * Auto log/go: fixed battle list alarm detection
+ * Python scripting: fixed bugs in a few functions
+ * Fluid drinker: empty vials are now dropper from all containers
+ * Fluid drinker: fixed crash bug when droping empty vials
+ * Auto fish: added possibility to define minimum fishing capacity
+ * Auto log/go: fixed "move" trigger with "runaway" action
+ * Cave bot: maximum number of waypoints increased from 50 to 500
+ * Cave bot: added loading waypoints from minimap
+ * Auto log/go: rewritten auto log/go to clean detection bugs
 
 1.10.5, 08.10.2006
  * Auto go/log: added multifloor paranoia

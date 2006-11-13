@@ -166,40 +166,64 @@ int triggerBattleList(int options, char whiteList[][32]){
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureNr;
-	int iRet=0;
-			
+	int creatureNr;	
+
+
+	// special handling of battle list auto log/go detection
+	if ((options&BATTLELIST_BATTLELIST))
+	{
+		if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0) {			
+			delete self;
+			return 1;
+		}
+	}
+
 	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-		int found = 0;
 		
 		if (ch->visible){		
-			if ((ch->x != self->x || ch->y != self->y) &&  !OnList(whiteList,(char*)ch->name)){			
-				if ((options&BATTLELIST_PARANOIAM)) {					
-					found=1;
-				}
-				if ((options&BATTLELIST_PARANOIA)&&ch->z==self->z){					
-					found=1;
-				};
-				if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0){					
-					found=1;
-				}
-			
-				if (found){					
-					if (ch->name[0]=='G'&&ch->name[1]=='M' && options&BATTLELIST_GM)
-						iRet=iRet|BATTLELIST_GM;
-					else if (options&BATTLELIST_PLAYER && ch->tibiaId < 0x4000000)
-						iRet=iRet|BATTLELIST_PLAYER;
-					else if (options&BATTLELIST_MONSTER && ch->tibiaId >= 0x4000000)
-						iRet=iRet|BATTLELIST_MONSTER;
+			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+			{				
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				{					
+					if ((options&BATTLELIST_GM)&&ch->name[0]=='G'&&ch->name[1]=='M')
+					{
+						// this is GM						
+						delete ch;
+						delete self;						
+						return 1;
+					}
+					
+					if ((options&BATTLELIST_PLAYER))
+					{
+						// this is other player
+						if (ch->tibiaId < 0x4000000)
+						{
+							delete ch;
+							delete self;							
+							return 1;
+						}
+					}
+					
+					if ((options&BATTLELIST_MONSTER))
+					{
+						// this is monster/npc
+						if (ch->tibiaId >= 0x4000000)
+						{
+							delete ch;
+							delete self;							
+							return 1;
+						}
+					}
 				}
 			}
-		};	
+			
+		}
 		delete ch;
 	};
 	delete self;
 
-	return iRet;
+	return 0;
 }
 
 int triggerMessage(){
@@ -306,7 +330,7 @@ int triggerOutOf(int options){
 	return (ret^options);
 }
 
-void alarmSound(int alarmId,int alarmSubId){
+void alarmSound(int alarmId){
 	char installPath[1024];
 	unsigned long installPathLen=1023;
 	installPath[0]='\0';
@@ -353,8 +377,7 @@ void alarmSound(int alarmId,int alarmSubId){
 		}	
 	}
 }
-char *alarmStatus(int alarmId, int alarmSubId){
-	//TODO: SubId support
+char *alarmStatus(int alarmId){	
 	if (alarmId&TRIGGER_BATTLELIST) return "BattleList alarm";
 	if (alarmId&TRIGGER_SIGN)		return "A sign appeared";
 	if (alarmId&TRIGGER_MESSAGE)	return "New message";
@@ -368,11 +391,11 @@ char *alarmStatus(int alarmId, int alarmSubId){
 	return "";
 }
 
-void alarmAction(int alarmId, int alarmSubId,CConfigData *config){
+void alarmAction(int alarmId, CConfigData *config){
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 
-	strcpy(config->status,alarmStatus(alarmId,alarmSubId));
+	strcpy(config->status,alarmStatus(alarmId));
 
 	//sender.sendTAMessage(statusInfo(alarmId));
 	/*if (config->sound&alarmId){
@@ -489,12 +512,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastX = self->x;
 	int lastY = self->y;
 	int lastZ = self->z;
+	int lastMoved = 0;
 	int lastHp = self->hp;
 
 	int iAlarm;
 	int alarm;
 
-	delete self;
+	delete self;	
 
 	PlaySound(0, 0, 0);
 
@@ -510,7 +534,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (iAlarm){
 				alarm |= TRIGGER_BATTLELIST;
 				if (config->sound&TRIGGER_BATTLELIST)
-					alarmSound(TRIGGER_BATTLELIST,iAlarm);
+					alarmSound(TRIGGER_BATTLELIST);
 			}
 		}
 
@@ -519,7 +543,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (flags){
 				alarm |= TRIGGER_SIGN;
 				if (config->sound&TRIGGER_SIGN)
-					alarmSound(TRIGGER_SIGN,flags);
+					alarmSound(TRIGGER_SIGN);
 			}
 			//0x00000001 - poison;
 			//0x00000002 - fire;
@@ -539,12 +563,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->optionsMessage&MESSAGE_PUBLIC && (iType == 1 || iType == 2) /*|| iType == 3*/){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
-					alarmSound(TRIGGER_MESSAGE,MESSAGE_PUBLIC);
+					alarmSound(TRIGGER_MESSAGE);
 			}
 			if (config->optionsMessage&MESSAGE_PRIVATE && iType == 4){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
-					alarmSound(TRIGGER_MESSAGE,MESSAGE_PRIVATE);
+					alarmSound(TRIGGER_MESSAGE);
 			}
 
 		}
@@ -553,11 +577,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (lastX != self->x || lastY != self->y || lastZ != self->z){
 				alarm |= TRIGGER_MOVE;
 				if (config->sound&TRIGGER_MOVE)
-					alarmSound(TRIGGER_MOVE,0);
+					alarmSound(TRIGGER_MOVE);
+				lastMoved=1;
+			} else {
+				if (lastMoved)
+				{
+					alarm |= TRIGGER_MOVE;
+					if ((config->sound&TRIGGER_MOVE))
+						alarmSound(TRIGGER_MOVE);
+				}
+
 			}
 			lastX = self->x;
 			lastY = self->y;
-			lastZ = self->z;
+			lastZ = self->z;			
 			delete self;
 		}
 		if (config->trigger&TRIGGER_HPLOSS){
@@ -565,7 +598,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (lastHp > self->hp ){
 				alarm |= TRIGGER_HPLOSS;
 				if (config->sound&TRIGGER_HPLOSS)
-					alarmSound(TRIGGER_HPLOSS,lastHp-self->hp);
+					alarmSound(TRIGGER_HPLOSS);
 			}
 			lastHp = self->hp;
 			delete self;
@@ -575,7 +608,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (self->hp < config->optionsHpBelow){
 				alarm |= TRIGGER_HPBELOW;
 				if (config->sound&TRIGGER_HPBELOW)
-					alarmSound(TRIGGER_HPBELOW,config->optionsHpBelow);
+					alarmSound(TRIGGER_HPBELOW);
 			}
 			lastHp = self->hp;
 			delete self;
@@ -585,7 +618,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (self->soulPoints < config->optionsSoulPoint){
 				alarm |= TRIGGER_SOULPOINT;
 				if (config->sound&TRIGGER_SOULPOINT)
-					alarmSound(TRIGGER_SOULPOINT,0);
+					alarmSound(TRIGGER_SOULPOINT);
 			}
 			delete self;
 		}
@@ -593,7 +626,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (triggerBlank() < config->optionsBlank){
 				alarm |= TRIGGER_BLANK;
 				if (config->sound&TRIGGER_BLANK)
-					alarmSound(TRIGGER_BLANK,0);
+					alarmSound(TRIGGER_BLANK);
 			}
 		}
 		if (config->trigger&TRIGGER_CAPACITY){
@@ -601,7 +634,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (self->cap < config->optionsCapacity){
 				alarm |= TRIGGER_CAPACITY;
 				if (config->sound&TRIGGER_CAPACITY)
-					alarmSound(TRIGGER_CAPACITY,0);
+					alarmSound(TRIGGER_CAPACITY);
 			}
 			delete self;
 		}
@@ -610,12 +643,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (iAlarm&config->optionsOutOf){
 				alarm |= TRIGGER_OUTOF;
 				if (config->sound&TRIGGER_OUTOF)
-					alarmSound(TRIGGER_OUTOF,iAlarm);
+					alarmSound(TRIGGER_OUTOF);
 			}
 		}
 
-		alarmAction(alarm,0,config);
+		alarmAction(alarm,config);
 	}
+	// clear current status
+	config->status[0]='\0';
+
 	toolThreadShouldStop=0;
 	return 0;
 }
@@ -745,22 +781,12 @@ void CMod_autogoApp::enableControls()
 
 char *CMod_autogoApp::getVersion()
 {	
-	return "2.1";
+	return "3.0";
 }
 
 
 int CMod_autogoApp::validateConfig(int showAlerts)
-{
-	if ((m_configData->optionsBattleList&BATTLELIST_PARANOIA)||(m_configData->optionsBattleList&BATTLELIST_PARANOIAM))
-	{
-		if (!(m_configData->optionsBattleList&BATTLELIST_GM)&&
-			!(m_configData->optionsBattleList&BATTLELIST_PLAYER)&&
-			!(m_configData->optionsBattleList&BATTLELIST_MONSTER))
-		{
-			if (showAlerts) AfxMessageBox("When using paranoia modes, one of 'gm', 'player','monster' must always be selected!");
-			return 0;
-		}
-	}
+{	
 	return 1;
 }
 

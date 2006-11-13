@@ -11,6 +11,8 @@
 #include "MemConstData.h"
 #include "TibiaMapPoint.h"
 #include "TibiaTile.h"
+#include "TibiaMiniMap.h"
+#include "TibiaMiniMapPoint.h"
 
 #if _MSC_VER > 1000
 #pragma once
@@ -76,6 +78,9 @@ public:
 	// note: if other module changes value of the variable in the meantime, the change
 	//       is visible to all modules immediatelly
 	char *getGlobalVariable(char *name);
+
+	CTibiaMiniMap *readMiniMap(int nr);
+	CTibiaMiniMapPoint *readMiniMapPoint(int mapNr,int pointNr);
 
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();

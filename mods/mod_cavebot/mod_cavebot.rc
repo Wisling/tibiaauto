@@ -210,6 +210,7 @@ BEGIN
     LTEXT           "Monsters to ignore:",IDC_STATIC,163,66,106,8
     CONTROL         "Backattack alien with runes",IDC_BACKATTACK_RUNES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,144,198,123,10
+    PUSHBUTTON      "Load from minimap",IDC_LOAD_FROM_MINIMAP,17,254,92,14
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70

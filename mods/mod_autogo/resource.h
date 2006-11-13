@@ -61,6 +61,7 @@
 #define IDC_CONTAINER_STATUS7           3017
 #define IDC_AUTOGO_PARANOIA             3017
 #define IDC_AUTOGO_BATTLEPARANOIA       3017
+#define IDC_AUTOGO_BATTELIST            3017
 #define IDC_CONTAINER_MODE_8            3018
 #define IDC_AUTOGO_OTHERSIGN            3018
 #define IDC_CONTAINER_STATUS8           3019

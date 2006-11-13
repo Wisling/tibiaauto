@@ -29,11 +29,11 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CEdit	m_fishOnlyWhenCap;
 	CStatic	m_fishyWater;
 	CStatic	m_time;
 	CStatic	m_quantity;
 	CButton	m_moveFromHandToCont;
-	CButton	m_fishOnlyWhenCap;
 	CButton	m_enable;
 	//}}AFX_DATA
 

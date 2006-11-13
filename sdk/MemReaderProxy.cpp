@@ -699,7 +699,7 @@ char *CMemReaderProxy::getGlobalVariable(char *name)
 	typedef char * (*Proto_fun)(char *name);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"valuevariableStoreGetVariable");
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"variableStoreGetVariable");
 		if (fun)
 		{
 			return fun(name);
@@ -713,10 +713,38 @@ void CMemReaderProxy::setGlobalVariable(char *name,char *value)
 	typedef void (*Proto_fun)(char *name,char *value);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"valuevariableStoreSetVariable");
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"variableStoreSetVariable");
 		if (fun)
 		{
 			fun(name,value);
 		}
 	} 	
+}
+
+CTibiaMiniMap *CMemReaderProxy::readMiniMap(int nr)
+{
+	typedef CTibiaMiniMap * (*Proto_fun)(int nr);
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMap");
+		if (fun)
+		{
+			return fun(nr);
+		}
+	} 
+	return NULL;
+}
+
+CTibiaMiniMapPoint *CMemReaderProxy::readMiniMapPoint(int mapNr,int pointNr)
+{
+	typedef CTibiaMiniMapPoint * (*Proto_fun)(int mapNr,int pointNr);
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMapPoint");
+		if (fun)
+		{
+			return fun(mapNr,pointNr);
+		}
+	} 
+	return NULL;
 }

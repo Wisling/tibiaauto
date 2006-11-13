@@ -30,11 +30,11 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_FISH_CAP, m_fishOnlyWhenCap);
 	DDX_Control(pDX, IDC_AUTOFISH_FISHYWATER, m_fishyWater);
 	DDX_Control(pDX, IDC_AUTOFISH_TIME, m_time);
 	DDX_Control(pDX, IDC_AUTOFISH_QTY, m_quantity);
 	DDX_Control(pDX, IDC_AUTOFISH_MOVETOCONT, m_moveFromHandToCont);
-	DDX_Control(pDX, IDC_AUTOFISH_WHENCAP, m_fishOnlyWhenCap);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -95,16 +95,18 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	m_fishOnlyWhenCap.SetCheck(configData->fishOnlyWhenCap);
+	char buf[128];
+	sprintf(buf,"%d",configData->fishOnlyWhenCap);m_fishOnlyWhenCap.SetWindowText(buf);	
 	m_moveFromHandToCont.SetCheck(configData->moveFromHandToCont);	
 	
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
 {	
+	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->fishOnlyWhenCap=m_fishOnlyWhenCap.GetCheck();
+	m_fishOnlyWhenCap.GetWindowText(buf,127);newConfigData->fishOnlyWhenCap=atoi(buf);	
 	newConfigData->moveFromHandToCont=m_moveFromHandToCont.GetCheck();	
 
 	return newConfigData;

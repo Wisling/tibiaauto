@@ -10,3 +10,5 @@
 #include "TibiaItemProxy.cpp"
 #include "Queue.cpp"
 #include "TibiaContainer.cpp"
+#include "TibiaMiniMap.cpp"
+#include "TibiaMiniMapPoint.cpp"

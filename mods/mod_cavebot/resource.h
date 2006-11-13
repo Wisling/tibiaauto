@@ -98,14 +98,15 @@
 #define IDC_LOOTFROMFLOOR               3033
 #define IDC_ATTACK_HP_ABOVE             3034
 #define IDC_BACKATTACK_RUNES            3035
+#define IDC_LOAD_FROM_MINIMAP           3036
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3003
+#define _APS_NEXT_RESOURCE_VALUE        3004
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3034
+#define _APS_NEXT_CONTROL_VALUE         3037
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

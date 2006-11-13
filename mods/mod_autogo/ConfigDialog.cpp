@@ -31,6 +31,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_AUTOGO_BATTELIST, m_battleBattlelist);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEPARANOIAM, m_battleParanoiaM);
 	DDX_Control(pDX, IDC_AUTOGO_ACT_DIRECTION, m_actDirection);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDHPBELOW, m_soundHpBelow);
@@ -72,7 +73,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_BLANK, m_blank);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEWHITELIST, m_battleWhiteList);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEPLAYER, m_battlePlayer);
-	DDX_Control(pDX, IDC_AUTOGO_BATTLEPARANOIA, m_battleParanoia);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEMONSTER, m_battleMonster);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEGM, m_battleGM);
 	DDX_Control(pDX, IDC_AUTOGO_ACTIONSOULPOINT, m_actionSoulPoint);
@@ -155,7 +155,7 @@ void CConfigDialog::disableControls()
 	m_battlePlayer.EnableWindow(false);
 	m_battleMonster.EnableWindow(false);
 	m_battleGM.EnableWindow(false);
-	m_battleParanoia.EnableWindow(false);
+	m_battleBattlelist.EnableWindow(false);
 	m_battleParanoiaM.EnableWindow(false);
 	m_battleWhiteList.EnableWindow(false);
 	m_soundBattleList.EnableWindow(false);
@@ -287,7 +287,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_battlePlayer.SetCheck((configData->optionsBattleList&BATTLELIST_PLAYER?1:0));
 	m_battleMonster.SetCheck((configData->optionsBattleList&BATTLELIST_MONSTER?1:0));
 	m_battleGM.SetCheck((configData->optionsBattleList&BATTLELIST_GM?1:0));
-	m_battleParanoia.SetCheck((configData->optionsBattleList&BATTLELIST_PARANOIA?1:0));
+	m_battleBattlelist.SetCheck((configData->optionsBattleList&BATTLELIST_BATTLELIST?1:0));
 	m_battleParanoiaM.SetCheck((configData->optionsBattleList&BATTLELIST_PARANOIAM?1:0));
 	m_actionBattleList.SetCurSel(configData->actionBattleList);
 	m_soundBattleList.SetCheck((configData->sound&TRIGGER_BATTLELIST?1:0));
@@ -386,7 +386,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_battlePlayer.GetCheck()?BATTLELIST_PLAYER:0)|
 		(m_battleMonster.GetCheck()?BATTLELIST_MONSTER:0)|
 		(m_battleGM.GetCheck()?BATTLELIST_GM:0)|
-		(m_battleParanoia.GetCheck()?BATTLELIST_PARANOIA:0)|
+		(m_battleBattlelist.GetCheck()?BATTLELIST_BATTLELIST:0)|
 		(m_battleParanoiaM.GetCheck()?BATTLELIST_PARANOIAM:0)
 		);
 	
@@ -613,7 +613,7 @@ void CConfigDialog::OnAutogoTriggerbattlelist()
 	m_battlePlayer.EnableWindow(lVal);
 	m_battleMonster.EnableWindow(lVal);
 	m_battleGM.EnableWindow(lVal);
-	m_battleParanoia.EnableWindow(lVal);
+	m_battleBattlelist.EnableWindow(lVal);
 	m_battleParanoiaM.EnableWindow(lVal);
 	m_battleWhiteList.EnableWindow(lVal);
 	m_soundBattleList.EnableWindow(lVal);

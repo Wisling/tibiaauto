@@ -78,6 +78,8 @@
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
 		<const code="addrMCInject" value="0xEFB71"/> 
+  
+                <const code="addrMiniMapStart" value="0x60a058"/>
 
 
 		<!-- structure lengths -->
@@ -85,6 +87,8 @@
 		<const code="lengthItem" value="12"/>
 		<const code="lengthCreature" value="160"/>
 		<const code="lengthMapTile" value="172"/>
+                <const code="lengthMiniMap" value="131240"/>
+                <const code="lengthMiniMapPoint" value="112"/>
 
 		<const code="maxContainers" value="10"/>
 		<const code="maxCreatures" value="150"/>
@@ -229,6 +233,33 @@
       <item id="0xcc0" name="Sword"/>
       <item id="0xd52" name="Plate Shield"/>
 
+<item id="0x1726"  name="Pirate Backpack"/>
+<item id="0x173d"  name="Star backpack"/>
+<item id="0x170e"  name="Honeycomb"/>
+<item id="0x16f8"  name="Iron ore"/>
+<item id="0x1709"  name="Wolf Paw"/>
+<item id="0x1721"  name="Heavens Blossom"/>
+<item id="0x16f7"  name="Giant Spider Silk"/>
+<item id="0x17c7"  name="First verse of the Cult Hymn"/>
+<item id="0x1706"  name="Bat Wing"/>
+<item id="0x1719"  name="Brown Cloth"/>
+<item id="0x170b"  name="Turtle Shell"/>
+<item id="0x16f5"  name="Green Drag Leather"/>
+<item id="0x16f6"  name="Mino Leather"/>
+<item id="0x1649"  name="Pirate Treasure Map"/>
+<item id="0x16a0"  name="Dice"/>
+<item id="0x15b0"  name="Rum Flask"/>
+<item id="0x164e"  name="Light Shovel"/>
+<item id="0x171e"  name="Knee Breeches"/>
+<item id="0x171d"  name="Red Bandana"/>
+<item id="0x17cf"  name="Pirate Shirt"/>
+<item id="0x1727"  name="Pirate bag"/>
+<item id="0x162e"  name="Tortoise Egg"/>
+<item id="0x17f3"  name="Tortoise Shield"/>
+<item id="0x17ee"  name="Peg Leg"/>
+<item id="0x17d1"  name="Hook"/>
+<item id="0x17d2"  name="Eyepatch"/>
+
 
         </items>
         <foods>
@@ -262,5 +293,31 @@
         <looted>
       <item id="0xd76" name="Bolt"/>
       <item id="0xbd7" name="Gold coins"/>
+<item id="0x1726"  name="Pirate Backpack"/>
+<item id="0x173d"  name="Star backpack"/>
+<item id="0x170e"  name="Honeycomb"/>
+<item id="0x16f8"  name="Iron ore"/>
+<item id="0x1709"  name="Wolf Paw"/>
+<item id="0x1721"  name="Heavens Blossom"/>
+<item id="0x16f7"  name="Giant Spider Silk"/>
+<item id="0x17c7"  name="First verse of the Cult Hymn"/>
+<item id="0x1706"  name="Bat Wing"/>
+<item id="0x1719"  name="Brown Cloth"/>
+<item id="0x170b"  name="Turtle Shell"/>
+<item id="0x16f5"  name="Green Drag Leather"/>
+<item id="0x16f6"  name="Mino Leather"/>
+<item id="0x1649"  name="Pirate Treasure Map"/>
+<item id="0x16a0"  name="Dice"/>
+<item id="0x15b0"  name="Rum Flask"/>
+<item id="0x164e"  name="Light Shovel"/>
+<item id="0x171e"  name="Knee Breeches"/>
+<item id="0x171d"  name="Red Bandana"/>
+<item id="0x17cf"  name="Pirate Shirt"/>
+<item id="0x1727"  name="Pirate bag"/>
+<item id="0x162e"  name="Tortoise Egg"/>
+<item id="0x17f3"  name="Tortoise Shield"/>
+<item id="0x17ee"  name="Peg Leg"/>
+<item id="0x17d1"  name="Hook"/>
+<item id="0x17d2"  name="Eyepatch"/>
         </looted>
 </item-definitions>

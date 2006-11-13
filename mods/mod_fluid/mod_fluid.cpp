@@ -159,10 +159,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{						
 						sender.moveObjectFromContainerToFloor(itemProxy.getValueForConst("fluid"),0x40+contNr,item->pos,self->x,self->y,self->z,1);
 						Sleep(config->sleep);
-					}
-						
-					delete item;
-					break;					
+						delete item;
+						break;
+					}											
 				}
 				
 				delete cont;
