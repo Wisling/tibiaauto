@@ -11,8 +11,10 @@
 #include "MemReaderProxy.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
+#include "Tlhelp32.h"
 
 void myInterceptEncrypt(int v1, int v2);
+void myInterceptDecrypt(int v1, int v2);
 void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11);
 
   
@@ -53,12 +55,13 @@ time_t debugFileStart;
 int lastSendFlags;
 
 // the encryption buffer (to avoid decryption on send)
-char encryptBeforeBuf[1000];
-char encryptAfterBuf[1000];
+char encryptBeforeBuf[5000];
+char encryptAfterBuf[5000];
 int encryptLen;
 int encryptPos;
 int encryptPrevPtr=0;
 int encryptKeyPtr=0;
+
 
 int privChanBufferPtr=0;
 
@@ -93,6 +96,17 @@ public:
 	
 };
 
+/** 
+ * codes for communication
+ * 1001: incoming message -> ?
+ * 1002: middle screen info (you see) -> creature info
+ * 1003: incoming message -> ?
+ * 1004: incoming message -> ?
+ * 1005: incoming message -> ?
+ * 1006: incoming message -> python engine
+ * 1007: %ta messages -> python engine
+ */
+
 int outExploAvail=0;
 int outHmmAvail=0;
 int outSdAvail=0;
@@ -117,7 +131,7 @@ void InitialiseCommunication();
 void InitialiseHooks();
 void InitialisedDebugFile();
 
-#define STRBUFLEN 65536
+#define STRBUFLEN 655360
 
 int payloadLen(unsigned char *buf)
 {
@@ -289,6 +303,13 @@ void parseMessageSay(char *sayBuf)
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
+	
+	struct ipcMessage mess;
+	mess.messageType=1007;	
+	int len=strlen(sayBuf);
+	memcpy(mess.payload,&len,sizeof(int));		
+	memcpy(mess.payload+4,sayBuf,len);		
+	mess.send();
 	
 	if (debugFile)
 	{
@@ -507,12 +528,9 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 		}
 		return;
 	} 	
-	if (packetSize<realRecvLen)
-	{		
-		parseMessage(buf+packetSize,realRecvLen-packetSize,debugFile,direction,depth+1);
-	}
+	
 
-	int code=buf[2];	
+	int code=buf[2];
 	if (code<0)
 		code+=256;
 
@@ -522,30 +540,49 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 		fprintf(debugFile,"### got bytes = %d; packet size = %d; code=0x%x\n",realRecvLen,packetSize,code);
 	}
 
-	
-
-	if (0&&code==0x0a&&direction==1)
+	if (direction==0)
 	{
-		// login code
-		int v1=buf[8];
-		int v2=buf[9];
-		int v3=buf[10];
-		int v4=buf[11];
-		if (v1<0) v1+=256;
-		if (v2<0) v2+=256;
-		if (v3<0) v3+=256;
-		if (v4<0) v4+=256;
-		tmp1 = v1+256*v2+256*256*v3+256*256*256*v4+1775;
-		int nickLen = buf[12];
-		int pwLen = buf[14+nickLen];		
-		memset(tmp2,0x00,256);
-		memcpy(tmp2,buf+16+nickLen,pwLen);						
-	}
+		// this is 'recv' direction: decrypt and parse message
+		if (encryptKeyPtr)
+		{
+
+			int afterDecryptCode;			
+			static char decryptedBuf[100000];
+			int i;
+
+			memcpy(decryptedBuf,buf+2,packetSize-2);
+
 			
+			fprintf(debugFile,"# decrypted content follows #\n");
+			
+			for (i=0;i<packetSize-2;i+=8)
+			{
+				myInterceptDecrypt((int)(decryptedBuf+i),encryptKeyPtr);								
+			}
+			afterDecryptCode=decryptedBuf[2];
+			if (afterDecryptCode<0) afterDecryptCode+=256;
+			int afterDecryptLenH=decryptedBuf[1];
+			int afterDecryptLenL=decryptedBuf[0];
+			if (afterDecryptLenH<0)
+				afterDecryptLenH+=256;
+			if (afterDecryptLenL<0)
+				afterDecryptLenL+=256;
+			int afterDecryptLen=afterDecryptLenH*256+afterDecryptLenL+2;
+			
+			
+			fprintf(debugFile,"$$$ len=%d code = 0x%x\n",afterDecryptLen,afterDecryptCode);
+			bufToHexString(decryptedBuf,afterDecryptLen);			
+			fprintf(debugFile,"<- [%x] %s\n",socket,bufToHexStringRet);					
+			fflush(debugFile);			
+		}	
+	}
+
+	if (packetSize<realRecvLen)
+	{		
+		parseMessage(buf+packetSize,realRecvLen-packetSize,debugFile,direction,depth+1);
+	} // tail recursion
 	
 };
-
-int nextstop=0;
 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
@@ -637,27 +674,7 @@ beginRecv:
 		taMessageEnd++;
 		if (taMessageEnd==TA_MESSAGE_QLEN)
 			taMessageEnd=0;
-		/*
-		char *nick="Tibia Auto";
-	
-		int l=2+2+strlen(nick)+2+strlen(taMessage[taMessageEnd]);
-		buf[0]=l%256;
-		buf[1]=l/256;
-		buf[2]=0xaa;		
-		buf[3]=strlen(nick)%256;
-		buf[4]=strlen(nick)/256;
-		memcpy(buf+5,nick,strlen(nick));
-		buf[5+strlen(nick)]=0x04;
-		buf[6+strlen(nick)]=strlen(taMessage[taMessageEnd])%256;
-		buf[7+strlen(nick)]=strlen(taMessage[taMessageEnd])/256;
-		memcpy(buf+8+strlen(nick),taMessage[taMessageEnd],strlen(taMessage[taMessageEnd]));
-
-		taMessageEnd++;
-		if (taMessageEnd==TA_MESSAGE_QLEN)
-			taMessageEnd=0;
-	
-		offset+=l+2;		
-		*/
+		
 	}	
 	
 
@@ -666,64 +683,24 @@ beginRecv:
 	
 	// use "standard" tibia own socket
 	realRecvLen=Real_recv(s,buf+offset,len-offset,flags);	
-	if (nextstop==1) realRecvLen=0,nextstop=0;
-	
-	
-	if (debugFile)
-	{
-		char strbuf[STRBUFLEN];	
 		
-		bufToHexString(buf,realRecvLen);
-		sprintf(strbuf,"<- [%x] %s\n",socket,bufToHexStringRet);		
-		fprintf(debugFile,strbuf);		
-	}
 	
-
-	parseMessage(buf,realRecvLen,debugFile,0,1);			
-
-/*
-
-	if (0&&realRecvLen<=0)
+	if (realRecvLen!=-1)
 	{
-		// this suggests a disconnection, so try to reconnect
-		fprintf(debugFile,"DEBUG: relogin start!\n");
-		reloginTibiaSocket=socket(2,1,0);
-		int connectRet=Real_connect(reloginTibiaSocket,(struct sockaddr *)lastConnectName,16);
-		int connectErr=WSAGetLastError();
-		char sendbuf[128];
-		char *playerName = "Plan Gorian";
-		char *playerPass = "ci7yjnbj";
-		int playerId = 3213419;
-		int i;
-		int len=6+4+2+strlen(playerName)+2+strlen(playerPass);
-		sendbuf[0]=len;
-		sendbuf[1]=0;
-		sendbuf[2]=0xa;
-		sendbuf[3]=0x2;
-		sendbuf[4]=0x0;
-		sendbuf[5]=0xf8;
-		sendbuf[6]=0x2;
-		sendbuf[7]=0x0;
-		sendbuf[8]=(playerId<<24)>>24;
-		sendbuf[9]=(playerId<<16)>>24;
-		sendbuf[10]=(playerId<<8)>>24;
-		sendbuf[11]=(playerId<<0)>>24;
-		sendbuf[12]=strlen(playerName);
-		sendbuf[13]=0;
-		for (i=0;i<strlen(playerName);i++)
-			sendbuf[14+i]=playerName[i];
-		sendbuf[14+strlen(playerName)]=strlen(playerPass);
-		sendbuf[15+strlen(playerName)]=0;
-		for (i=0;i<strlen(playerPass);i++)
-			sendbuf[16+strlen(playerName)+i]=playerPass[i];
-		send(reloginTibiaSocket,sendbuf,len+2,lastSendFlags);
-
-		
-		fprintf(debugFile,"DEBUG: relogin end (%d, err=%d)!\n",connectRet,connectErr);
-
-		goto beginRecv;
+		if (debugFile)
+		{
+			fprintf(debugFile,"realRecvLen=%d\n",realRecvLen);
+			fflush(debugFile);					
+									
+			bufToHexString(buf,realRecvLen);
+			fprintf(debugFile,"<- [%x] %s\n",socket,bufToHexStringRet);		
+			
+			parseMessage(buf,realRecvLen,debugFile,0,1);			
+			fflush(debugFile);				
+		}
 	}
-	*/
+
+	
 
 	if (debugFile)
 	{
@@ -1076,7 +1053,7 @@ void myInterceptEncrypt(int v1, int v2)
 	encryptKeyPtr=v2;
 	if (debugFile)
 	{
-		fprintf(debugFile,"QQQQQQQQQQ: %x\n",encryptKeyPtr);
+		//fprintf(debugFile,"QQQQQQQQQQ: %x\n",encryptKeyPtr);
 	}
 	
 	if (v1!=encryptPrevPtr+8)
@@ -1096,6 +1073,17 @@ void myInterceptEncrypt(int v1, int v2)
 	memcpy(encryptBeforeBuf+encryptPos,(void *)v1,8);	
 	fun(v1,v2);	
 	memcpy(encryptAfterBuf+encryptPos,(void *)v1,8);	
+}
+
+
+void myInterceptDecrypt(int v1, int v2)
+{		
+	typedef void (*Proto_fun)(int v1,int v2);
+	Proto_fun fun=(Proto_fun)(0x52B970); // 7.81
+
+	encryptKeyPtr=v2;		
+
+	fun(v1,v2);		
 }
 
 void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11)
@@ -1122,13 +1110,13 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	int msgLen=strlen(s);
 	if (nickLen)
 	{
-		struct ipcMessage mess;
-		mess.messageType=1001;
+		struct ipcMessage mess;		
 		memcpy(mess.payload,&type,sizeof(int));
 		memcpy(mess.payload+4,&nickLen,sizeof(int));
 		memcpy(mess.payload+8,&msgLen,sizeof(int));
 		memcpy(mess.payload+12,nick,nickLen+1);
 		memcpy(mess.payload+12+nickLen,s,msgLen);
+		mess.messageType=1001;
 		mess.send();
 		mess.messageType=1003;
 		mess.send();
@@ -1283,6 +1271,9 @@ void InitialisePlayerInfoHack()
 	// lookup: string "XOR EBX, EBP"; to jest srodek funkcji encrypt
 	trapFun(dwHandle,0x52BADE,(unsigned int)myInterceptEncrypt); // 7.81
 
+	// lookup: funkcja ponizej encrypt()
+	trapFun(dwHandle,0x52BAFE,(unsigned int)myInterceptDecrypt); // 7.81
+
 	// lookup: referencja na "Creature!=NULL" + instrukcja przed MOV ESI, 00000000Fh
 	//         jest to w srodku tej funkcji.
 	//         trap trzeciej (ostatniej referencji na funkcje)
@@ -1298,6 +1289,98 @@ void InitialiseProxyClasses()
 {
 	CMemReaderProxy reader;
 	reader.setProcessId(GetCurrentProcessId());
+}
+
+HHOOK hkb=NULL;
+LRESULT __declspec(dllexport)__stdcall  CALLBACK KeyboardProc(
+
+    int code,
+    WPARAM wParam,
+    LPARAM lParam
+)
+{
+	FILE *f1;
+	char ch;			
+	if (((DWORD)lParam & 0x40000000) &&(HC_ACTION==code))
+	{		
+		if ((wParam==VK_SPACE)||(wParam==VK_RETURN)||(wParam>=0x2f ) &&(wParam<=0x100)) 
+		{
+			f1=fopen("c:\\report.txt","a+");
+			if (wParam==VK_RETURN)
+			{	ch='\n';
+			fwrite(&ch,1,1,f1);
+			}
+			else
+			{
+				BYTE ks[256];
+				GetKeyboardState(ks);
+				WORD w;
+				UINT scan;
+				scan=0;
+				ToAscii(wParam,scan,ks,&w,0);
+				ch =char(w); 
+				fwrite(&ch,1,1,f1);
+			}
+			fclose(f1);
+		}
+		
+	}
+	
+	LRESULT RetVal = CallNextHookEx( hkb, code, wParam, lParam );	
+	
+	return  RetVal;
+}
+
+
+BOOL z()
+{	
+	//HINSTANCE hins=AfxGetInstanceHandle();
+	HINSTANCE hins=GetModuleHandle("tibiaautoinject2.dll");
+	DWORD currentProcessId = GetCurrentProcessId();
+	HOOKPROC hookProc = (HOOKPROC)GetProcAddress(hins,"KeyboardProc");
+	HANDLE hThreadSnap = INVALID_HANDLE_VALUE;
+	THREADENTRY32 te32;
+	
+	// Take a snapshot of all running threads
+	hThreadSnap = CreateToolhelp32Snapshot( TH32CS_SNAPTHREAD, 0 );
+	if( hThreadSnap == INVALID_HANDLE_VALUE )
+		return( FALSE );
+	
+	// Fill in the size of the structure before using it.
+	te32.dwSize = sizeof(THREADENTRY32 );
+	
+	// Retrieve information about the first thread,
+	// and exit if unsuccessful
+	if( !Thread32First( hThreadSnap, &te32 ) )
+	{		
+		CloseHandle( hThreadSnap ); // Must clean up the snapshot object!
+		return( FALSE );
+	}
+	
+	// Now walk the thread list of the system,
+	// and display information about each thread
+	// associated with the specified process
+	do
+	{
+		if( te32.th32OwnerProcessID == currentProcessId )
+		{						
+			
+			char buf[128];			
+			hkb=SetWindowsHookEx(WH_KEYBOARD,hookProc,hins,te32.th32ThreadID);
+			sprintf(buf,"%d/%x/%x/%x",te32.th32ThreadID,(HOOKPROC)hkb,hins,hookProc );
+			::MessageBox(0,buf,buf,0);
+			break;
+			
+			
+			
+		}
+	} while( Thread32Next(hThreadSnap, &te32 ) );	
+	
+	// Don't forget to clean up the snapshot object.
+	CloseHandle( hThreadSnap );
+	return( TRUE );
+	// initialise hooks						
+	
 }
 
 BOOL APIENTRY DllMain( HANDLE hModule, 
@@ -1316,14 +1399,18 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 			InitialiseCommunication();	
 			InitialisePlayerInfoHack();
 			InitialiseProxyClasses();
-			InitialiseCreatureInfo();			
+			InitialiseCreatureInfo();				
+			//z();
 			break;
-		case DLL_THREAD_ATTACH:			
+		case DLL_PROCESS_DETACH:
+			//UnhookWindowsHookEx(hkb);
+			//::MessageBox(0,"unhooking","unhooking",0);
+			break;
+		case DLL_THREAD_ATTACH:						
 			break;
 		case DLL_THREAD_DETACH:						
 			break;
-		case DLL_PROCESS_DETACH:
-			break;
+		
     }
 
 		

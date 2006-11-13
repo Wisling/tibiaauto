@@ -13,6 +13,8 @@
 #include "TibiaContainer.h"
 #include "TibiaMapPoint.h"
 #include "MemConstData.h"
+#include "TibiaMiniMap.h"
+#include "TibiaMiniMapPoint.h"
 
 class CMemReader  : public CMemConstData
 {
@@ -20,6 +22,8 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	CTibiaMiniMapPoint * readMiniMapPoint(int mapNr,int pointNr);
+	CTibiaMiniMap * readMiniMap(int nr);
 	void setRemainingTilesToGo(int val);
 	void writeDisableRevealCName();
 	void writeEnableRevealCName();

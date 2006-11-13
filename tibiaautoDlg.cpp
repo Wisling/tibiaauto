@@ -232,8 +232,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleFps = new CModuleProxy("mod_fps",0);
 
 	refreshToolInfo();
-	SetTimer(1001,100,NULL);
-	//SetTimer(1111,60*1000,NULL);
+	SetTimer(1001,100,NULL);	
 	SetTimer(1002,100,NULL);
 
 	CDonationDialog donDialog;
@@ -322,41 +321,14 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			delete this;
 		}
 		SetTimer(1001,150,NULL);
-	}
-	if (nIDEvent==1111)
-	{
-		KillTimer(1111);
-
-		char *fileBuf=(char *)malloc(1000000);	
-		int ep=0x1000;
-		int start=0x400000+ep;
-		//int len=253952-ep;
-		int len=0x406EF6-start;
-		unsigned long int lenRead=0;
-		ReadProcessMemory((HANDLE)-1,(void *)start,fileBuf,len,&lenRead);
-		CMD5 md5;	
-		if (strcmpi(md5.getMD5Digest(fileBuf,len),(char *)checksum))
-		{
-			FILE *f1=fopen("checksum.txt","r");
-			if (f1)
-			{
-				fclose(f1);
-				FILE *f=fopen("checksum.txt","w+");
-				fprintf(f,"%s\n",md5.getMD5Digest(fileBuf,len));
-				fclose(f);
-			}		
-			//ExitProcess(0);
-		} 
-		free(fileBuf);
-
-		SetTimer(1111,60*1000,NULL);
-	}
+	}	
 	if (nIDEvent==1002)
 	{
 		KillTimer(1002);
 
 		CPythonEngine::periodicalTick();
 		CPythonEngine::backpipeMsgTick();
+		CPythonEngine::backpipeTamsgTick();
 
 		SetTimer(1002,100,NULL);
 	}

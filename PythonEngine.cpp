@@ -256,6 +256,8 @@ static PyMethodDef Methods_tareader[] = {
 	{"getTibiaTile", tibiaauto_reader_getTibiaTile, METH_VARARGS},
 	{"setGlobalVariable", tibiaauto_reader_setGlobalVariable, METH_VARARGS},
 	{"getGlobalVariable", tibiaauto_reader_getGlobalVariable, METH_VARARGS},
+	{"readMiniMap", tibiaauto_reader_readMiniMap, METH_VARARGS},
+	{"readMiniMapPoint", tibiaauto_reader_readMiniMapPoint, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 
@@ -636,4 +638,53 @@ void CPythonEngine::leaveCriticalSection()
 {
 	init();
 	LeaveCriticalSection(&ScriptEngineCriticalSection);
+}
+
+void CPythonEngine::backpipeTamsgTick()
+{
+	init();
+	enterCriticalSection();
+	long int tm=GetTickCount();
+	CMemReaderProxy reader;
+	CIPCBackPipeProxy backPipe;
+	struct ipcMessage mess;
+
+	if (backPipe.readFromPipe(&mess,1007)){		
+		int msgLen;		
+		char msgBuf[16384];		
+		
+		memset(msgBuf,0,16384);		
+		memcpy(&msgLen,mess.payload,sizeof(int));		
+		memcpy(msgBuf,mess.payload+4,msgLen);					
+						
+		int scriptNr;
+		for (scriptNr=0;;scriptNr++)
+		{
+			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);			
+			if (!pythonScript) break;
+			if (!pythonScript->isEnabled()) continue;
+			int funNr;
+			for (funNr=0;;funNr++)
+			{
+				struct funType *fun=pythonScript->getFunDef(funNr);
+				if (!fun) break;
+				
+				if (fun->type==FUNTYPE_TAMSG)
+				{
+
+					PyGILState_STATE gstate;
+					gstate = PyGILState_Ensure();
+					PyObject *params = pythonScript->getParamsDic();									
+					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(Os)",params,msgBuf);
+					Py_XDECREF(params);
+					Py_XDECREF(result);						
+					fun->call();
+					PyGILState_Release(gstate);
+				}
+				
+			}
+			
+		}
+	}
+	leaveCriticalSection();
 }

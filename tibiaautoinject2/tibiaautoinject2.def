@@ -6,4 +6,4 @@ LIBRARY
 DESCRIPTION "Tibia Auto communication library"
 
 EXPORTS  
-
+	KeyboardProc

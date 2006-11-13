@@ -17,6 +17,7 @@
 class CPythonEngine  
 {
 public:
+	static void backpipeTamsgTick();
 	static void leaveCriticalSection();
 	static void enterCriticalSection();
 	static void unloadScript(int scriptNr);

@@ -235,6 +235,7 @@ void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
 		{
 		case FUNTYPE_PERIODICAL: sprintf(buf,"period");break;
 		case FUNTYPE_MSG: sprintf(buf,"msg");break;
+		case FUNTYPE_TAMSG: sprintf(buf,"%%ta");break;
 		default: sprintf(buf,"unknown");break;
 		}		
 		m_funlist.SetItemText(funNr,0,buf);

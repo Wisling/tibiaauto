@@ -762,3 +762,15 @@ char *variableStoreGetVariable(char *name)
 {
 	return CVariableStore::getVariable(name);
 }
+
+CTibiaMiniMap *memReadReadMiniMap(int nr)
+{
+	startMemReader();
+	return reader->readMiniMap(nr);
+}
+
+CTibiaMiniMapPoint *memReadReadMiniMapPoint(int mapNr,int pointNr)
+{
+	startMemReader();
+	return reader->readMiniMapPoint(mapNr,pointNr);
+}

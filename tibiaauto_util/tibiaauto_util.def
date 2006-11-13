@@ -123,3 +123,5 @@ EXPORTS
 	packSenderSayOnChan @117
 	packSenderSayWhisper @118
 	packSenderSayYell @119
+	memReadReadMiniMap @120
+	memReadReadMiniMapPoint @121

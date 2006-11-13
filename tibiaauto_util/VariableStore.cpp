@@ -56,7 +56,8 @@ void CVariableStore::setVariable(char *name, char *value)
 
 char * CVariableStore::getVariable(char *name)
 {
-	int idx=findVariableIndex(name);
+	
+	int idx=findVariableIndex(name);	
 	if (idx==-1) return NULL; else return variableStoreValues[idx];
 }
 

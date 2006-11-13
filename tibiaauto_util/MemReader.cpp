@@ -591,3 +591,46 @@ void CMemReader::setRemainingTilesToGo(int val)
 	CMemUtil::SetMemIntValue(m_memAddressTilesToGo,val);
 	CMemUtil::SetMemIntValue(offset + itemProxy.getValueForConst("addrCurrentTileToGo"),val);		
 }
+
+CTibiaMiniMap * CMemReader::readMiniMap(int nr)
+{
+	CTibiaItemProxy itemProxy;
+	if (nr<0||nr>9) return NULL;
+	CTibiaMiniMap *retMap = new CTibiaMiniMap();
+
+	int offset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr;
+	
+	retMap->x=CMemUtil::GetMemIntValue(offset+0);
+	retMap->y=CMemUtil::GetMemIntValue(offset+4);
+	retMap->z=CMemUtil::GetMemIntValue(offset+8);
+	retMap->segmentPrev=CMemUtil::GetMemIntValue(offset+12);
+	retMap->segmentNext=CMemUtil::GetMemIntValue(offset+16);
+	retMap->pointsAttached=CMemUtil::GetMemIntValue(offset+131236);
+
+	return retMap;
+}
+
+CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int mapNr, int pointNr)
+{
+	CTibiaItemProxy itemProxy;
+	if (mapNr<0||mapNr>9) return NULL;
+	if (pointNr<0) return NULL;
+	CTibiaMiniMapPoint *retPoint = new CTibiaMiniMapPoint();
+
+	int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*mapNr;
+	if (pointNr>=CMemUtil::GetMemIntValue(mapOffset+131236))
+	{
+		// point out of range exception
+		delete retPoint;
+		return NULL;
+	}
+	int mapPointAddr = CMemUtil::GetMemIntValue(mapOffset+131232);		
+	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapPoint");	
+	retPoint->x=CMemUtil::GetMemIntValue(mapPointOffset+0);
+	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4);	
+	retPoint->type=CMemUtil::GetMemIntValue(mapPointOffset+8);
+	CMemUtil::GetMemRange(mapPointOffset+12,mapPointOffset+12+100,retPoint->desc);	
+
+	return retPoint;
+
+}	

@@ -18,7 +18,8 @@
 enum FUNTYPE
 {
 	FUNTYPE_PERIODICAL = 0,
-	FUNTYPE_MSG = 1
+	FUNTYPE_MSG = 1,
+	FUNTYPE_TAMSG = 2
 };
 
 struct paramType
