@@ -166,6 +166,7 @@ protected:
 	afx_msg void OnDepotEntryremove();
 	afx_msg void OnToolAutoattackAddIgnore();
 	afx_msg void OnToolAutoattackRemoveIgnore();
+	afx_msg void OnLoadFromMinimap();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -6,6 +6,8 @@
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
 #include "TibiaItemProxy.h"
+#include "TibiaMiniMap.h"
+#include "TibiaMiniMapPoint.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -115,6 +117,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_DEPOT_ENTRYREMOVE, OnDepotEntryremove)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_IGNORE, OnToolAutoattackAddIgnore)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, OnToolAutoattackRemoveIgnore)
+	ON_BN_CLICKED(IDC_LOAD_FROM_MINIMAP, OnLoadFromMinimap)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -635,8 +638,8 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 
 {
-	// max 50 waypoints may be defined
-	if (m_waypointList.GetCount()>=49)
+	// max 500 waypoints may be defined
+	if (m_waypointList.GetCount()>=499)
 		return;
 	char buf[256];
 	int curX,curY,curZ;
@@ -790,4 +793,92 @@ void CConfigDialog::OnToolAutoattackRemoveIgnore()
 	m_ignoreList.GetText(sel,currentignore);
 	m_ignoreList.DeleteString(sel);
 	m_ignore.SetWindowText(currentignore);	
+}
+
+/* Compare two points for qsort */
+int pointTabCompare( const void *arg1, const void *arg2 )
+{	
+   CTibiaMiniMapPoint *point1=*(CTibiaMiniMapPoint **)arg1;
+   CTibiaMiniMapPoint *point2=*(CTibiaMiniMapPoint **)arg2;   
+   if (point1==NULL) return 1;
+   if (point2==NULL) return -1;
+   return strcmp(point1->desc,point2->desc);
+}
+
+void CConfigDialog::OnLoadFromMinimap() 
+{
+	int ret=AfxMessageBox("Do you want to clear all waypoints before loading from minimap?",MB_YESNOCANCEL);
+	if (ret==IDCANCEL) return;
+
+
+	CTibiaMiniMapPoint **pointTab = (CTibiaMiniMapPoint **)malloc(sizeof(CTibiaMiniMapPoint *)*500);
+	int i;
+	for (i=0;i<500;i++) pointTab[i]=NULL;
+
+	int totalPointCount=0;
+	int addedPointCount=0;
+	int mapNr,pointCount,pointNr;
+	CMemReaderProxy reader;
+	if (ret==IDYES)
+	{
+		m_waypointList.ResetContent();
+	} else {
+		totalPointCount=m_waypointList.GetCount();
+	}
+	for (mapNr=0;mapNr<10;mapNr++)
+	{
+		CTibiaMiniMap *map = reader.readMiniMap(mapNr);
+		if (map->x!=-1||map->y!=0||map->z!=0)
+		{
+			// this is a really defined map
+			pointCount=map->pointsAttached;
+			for (pointNr=0;pointNr<pointCount;pointNr++)
+			{
+				CTibiaMiniMapPoint *point = reader.readMiniMapPoint(mapNr,pointNr);
+
+				// point->x==0 means the point is deleted
+				if (point->x&&!strncmp(point->desc,"$ta",3)&&totalPointCount<500)
+				{
+					// hack: store on point->type 'z' coord
+					point->type=map->z;
+					pointTab[totalPointCount++]=point;
+					addedPointCount++;
+					// when point is added for further processing
+					// it will be delete'ed lateron
+				} else {
+					// free memory for point only when it is not added
+					// for further processing
+					delete point;
+				}
+			}
+		}
+
+		delete map;
+	}	
+	if (totalPointCount==500)
+	{
+		AfxMessageBox("Warning: maximum (500) supported waypoints amount exceeded!");
+	}
+	// sort all points to be added lexycographically
+	qsort(pointTab,500,sizeof(CTibiaMiniMapPoint *),pointTabCompare);
+	for (i=0;i<500;i++) 
+	{
+		if (pointTab[i]) 
+		{
+			// this is a point to be added
+			char buf[256];
+			int curX=pointTab[i]->x;
+			int curY=pointTab[i]->y;
+			int curZ=pointTab[i]->type; // hack only: store on type 'z' coord on map
+			sprintf(buf,"(%d,%d,%d)",curX,curY,curZ);
+			m_waypointList.AddString(buf);
+			addedPointCount++;
+			delete pointTab[i];
+		}
+	}
+
+	if (addedPointCount==0)
+	{
+		AfxMessageBox("No points added. Hint: did you use $ta prefix for the points description?");
+	}
 }

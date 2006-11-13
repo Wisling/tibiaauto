@@ -119,14 +119,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		
 
-		if (config->fishOnlyWhenCap)
-		{
-			// if cap check enabled, 
-			if (self->cap<6)
-			{
-				delete self;
-				continue;
-			}
+		// refresh self to have correct cap
+		delete self;
+		self = reader.readSelfCharacter();
+		// if cap check enabled, 
+		if (self->cap<config->fishOnlyWhenCap)
+		{			
+			delete self;
+			continue;			
 		}
 
 		// now find "random" water field with a fish
@@ -295,12 +295,18 @@ void CMod_fisherApp::enableControls()
 
 char *CMod_fisherApp::getVersion()
 {
-	return "2.2";
+	return "2.3";
 }
 
 
 int CMod_fisherApp::validateConfig(int showAlerts)
 {	
+	if (m_configData->fishOnlyWhenCap<0)
+	{
+		if (showAlerts) AfxMessageBox("Minimum fishing capacity must be >=0!");
+		return 0;
+	}
+
 	return 1;
 }
 
@@ -331,7 +337,7 @@ char *CMod_fisherApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "other/fishOnlyWhenCap";
+	case 0: return "other/fishCap"; // old: fishOnlyWhenCap
 	case 1: return "move/fromHandToCont";	
 	default:
 		return NULL;

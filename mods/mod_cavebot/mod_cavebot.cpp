@@ -1615,6 +1615,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 	}
 	sender.attack(0);
+	reader.setRemainingTilesToGo(0);
 	if (config->debug) registerDebug("Exiting cavebot");
 	globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
 	globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;

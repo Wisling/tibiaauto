@@ -12,11 +12,11 @@
 #include "ImageButtonWithStyle.h"
 
 #define TRIGGER_BATTLELIST		0x0001
-	#define BATTLELIST_PLAYER	0x0001
-	#define BATTLELIST_MONSTER	0x0002
-	#define BATTLELIST_GM		0x0004
-	#define BATTLELIST_PARANOIA	0x0008
-	#define BATTLELIST_PARANOIAM	0x00010
+	#define BATTLELIST_PLAYER		0x0001
+	#define BATTLELIST_MONSTER		0x0002
+	#define BATTLELIST_GM			0x0004	
+	#define BATTLELIST_PARANOIAM	0x0008
+	#define BATTLELIST_BATTLELIST	0x0010
 #define TRIGGER_SIGN			0x0002
 	#define SIGN_BATTLE			0x0080
 	#define SIGN_POISON			0x0001
@@ -76,6 +76,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_battleBattlelist;
 	CButton	m_battleParanoiaM;
 	CComboBox	m_actDirection;
 	CButton	m_soundHpBelow;
@@ -117,7 +118,6 @@ public:
 	CEdit	m_blank;
 	CButton	m_battleWhiteList;
 	CButton	m_battlePlayer;
-	CButton	m_battleParanoia;
 	CButton	m_battleMonster;
 	CButton	m_battleGM;
 	CComboBox	m_actionSoulPoint;
