@@ -154,7 +154,7 @@ BOOL CEnterCode::OnInitDialog()
 	int rSum=1;
 	for (i=0;i<8;i++) rSum=(rSum*randTab[i]+13)%65536;				
 	
-	sprintf(buf,"%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x",randTab[0]+12,randTab[1]+11,randTab[2]+13,randTab[3]+21,randTab[4]+24,randTab[5]+11,randTab[6]+5,randTab[7]+55,rSum);
+	sprintf(buf,"%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x",randTab[0]+17,randTab[1]+13,randTab[2]+13,randTab[3]+18,randTab[4]+14,randTab[5]+19,randTab[6]+5,randTab[7]+31,rSum);
 	m_runtimeId.SetWindowText(buf);		
 
 	FILE *f=fopen("tacode.txt","rt");
@@ -185,7 +185,7 @@ void CEnterCode::OnClose()
 int CEnterCode::auth()
 {
 	// we calculate good sum
-	int goodSum=randTab[0]*randTab[0]*13+randTab[1]*131+randTab[2]*randTab[1]*57+randTab[3]*21+randTab[4]*14+randTab[5]*randTab[6]*randTab[7]*12-randTab[3]*(randTab[5]+randTab[4]);
+	int goodSum=randTab[0]*randTab[0]*11+randTab[1]*121+randTab[2]*randTab[1]*27+randTab[3]*23+randTab[4]*15+randTab[5]*randTab[6]*randTab[7]*11-randTab[3]*(randTab[5]+randTab[4]);
 	goodSum%=100000000;
 	// then md5 it
 	char buf[128];	
