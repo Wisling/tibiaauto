@@ -1,5 +1,6 @@
-1.11.1, ???
+1.11.1, 12.11.2006
  * Python scripting: added callback handling of %ta messages
+ * General: upgraded to Tibia 7.9
 
 1.11.0, 25.10.2006
  * Ammo restack: added picking up throwable directly to hand
