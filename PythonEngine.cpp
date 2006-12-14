@@ -431,8 +431,26 @@ void CPythonEngine::init()
 		PyRun_SimpleString("import takernel");
 		PyRun_SimpleString("import sys");	
 		
+		char installPath[1024];
+		unsigned long installPathLen=1023;
+		installPath[0]='\0';
+		HKEY hkey=NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+		{
+			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegCloseKey(hkey);
+		}
+		if (!strlen(installPath))
+		{
+			::MessageBox(0,"ERROR! Unable to read TA install directory! Please reinstall!","ERROR",0);
+			exit(1);
+		}
+
+		char pathBuf[2048];
+		sprintf(pathBuf,"%s\\tascripts\\tautil.py",installPath);
+
 		// load tautil.py
-		FILE *f=fopen("tascripts\\tautil.py","r");
+		FILE *f=fopen(pathBuf,"r");
 		if (f)
 		{		
 			fseek(f,0,SEEK_END);
@@ -453,20 +471,21 @@ void CPythonEngine::init()
 		InitializeCriticalSection(&ScriptEngineCriticalSection);		
 		
 		// now load all scripts from 'tascripts' subdirectory
+		sprintf(pathBuf,"%s\\tascripts\\*.py",installPath);
 		WIN32_FIND_DATA findFileData;
-		HANDLE hFind = FindFirstFile("tascripts\\*.py",&findFileData);		
+		HANDLE hFind = FindFirstFile(pathBuf,&findFileData);		
 		if (hFind!=INVALID_HANDLE_VALUE)
 		{
 			char buf[1024];			
 
-			snprintf(buf,1023,"tascripts\\%s",findFileData.cFileName);
+			snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
 			loadScript(buf);
 
 			while (FindNextFile(hFind,&findFileData))
 			{				
-				snprintf(buf,1023,"tascripts\\%s",findFileData.cFileName);
+				snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
 				// tautil.py will be loaded in a special way
-				if (strcmpi(buf,"tascripts\\tautil.py"))
+				if (!strstr(buf,"tascripts\\tautil.py"))
 				{					
 					loadScript(buf);
 				}
