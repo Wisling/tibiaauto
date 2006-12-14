@@ -1,3 +1,6 @@
+1.11.2, ???
+ * General: updated tiles definition to Tibia 7.9
+
 1.11.1, 12.11.2006
  * Python scripting: added callback handling of %ta messages
  * General: upgraded to Tibia 7.9
