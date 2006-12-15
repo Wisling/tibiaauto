@@ -43,7 +43,8 @@ void SocketHandler::runLoop() {
 		fd_set input_sockets;
 
 		FD_ZERO(&input_sockets);
-		for (map<string, Socket *>::iterator s = sockets.begin(); s != sockets.end(); ++s) {
+		map<string, Socket *>::iterator s;
+		for (s = sockets.begin(); s != sockets.end(); ++s) {
 			sock = (*s).second;
 			if (sock != NULL) {
 				socket = sock->getSD();
