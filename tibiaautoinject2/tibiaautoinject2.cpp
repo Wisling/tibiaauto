@@ -12,6 +12,8 @@
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
 #include "Tlhelp32.h"
+#include "MyMenu.h"
+#include "resource.h"
 
 void myInterceptEncrypt(int v1, int v2);
 void myInterceptDecrypt(int v1, int v2);
@@ -1387,6 +1389,67 @@ BOOL z()
 	
 }
 
+BOOL CALLBACK EnumWindowsProc(      
+
+    HWND hwnd,
+    LPARAM lParam
+	)
+{
+		
+	DWORD procId;
+	GetWindowThreadProcessId(hwnd,&procId);
+	if (procId==::GetCurrentProcessId())		
+	{
+						
+		CWnd *wnd = new CWnd();
+		wnd->Attach(hwnd);
+		
+		
+		
+		CMenu *subMenu1 = new CMenu();
+		subMenu1->CreateMenu();
+		subMenu1->AppendMenu(MF_STRING,1,"sub 1");
+		subMenu1->AppendMenu(MF_STRING,2,"sub 2");
+		subMenu1->AppendMenu(MF_STRING|MF_ENABLED,3,"sub 3");
+
+		CMenu *subMenu2 = new CMenu();
+		subMenu2->CreateMenu();
+		subMenu2->AppendMenu(MF_STRING,10,"sub 10");
+		subMenu2->AppendMenu(MF_STRING,11,"sub 11");
+		subMenu2->EnableMenuItem(11,1);
+
+
+		CMyMenu *menu = new CMyMenu();	
+		menu->CreateMenu();		
+		menu->AppendMenu(MF_STRING,13,"test menu 1");		
+		menu->AppendMenu(MF_STRING,15,"test menu 2");
+		menu->AppendMenu(MF_POPUP,(int)subMenu1->GetSafeHmenu(),"test menu 3");		
+		menu->AppendMenu(MF_POPUP,(int)subMenu2->GetSafeHmenu(),"test menu 4");
+		
+		
+		//menu->LoadOwnerDrawMenu(menu);
+		
+		wnd->SetMenu(menu);
+
+		/*
+		char b[128];
+		sprintf(b,"%d///%x/%x/%x|||%d",boo,menu,wnd,hwnd,lastErr);
+		AfxMessageBox(b);
+		*/
+				
+		//wnd->Detach(); 
+		//delete wnd;
+	}
+	return 1;
+}
+
+void InitialiseTibiaMenu()
+{	
+	EnumWindows(&EnumWindowsProc,NULL);
+	
+	
+}
+
 BOOL APIENTRY DllMain( HANDLE hModule, 
                        DWORD  ul_reason_for_call, 
                        LPVOID lpReserved
@@ -1404,6 +1467,7 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 			InitialisePlayerInfoHack();
 			InitialiseProxyClasses();
 			InitialiseCreatureInfo();				
+			//InitialiseTibiaMenu();
 			//z();
 			break;
 		case DLL_PROCESS_DETACH:

@@ -49,6 +49,7 @@ END_MESSAGE_MAP()
 void CEnterCode::OnOK() 
 {		
 	int ok;
+	
 	if (!auth())
 	{
 		ExitProcess(0);
@@ -61,12 +62,7 @@ void CEnterCode::OnOK()
 		ok=1;
 	}
 	CDialog::OnOK();
-	FILE *f=fopen("tacode.txt","wt");
-	if (ok&&f)
-	{
-		fprintf(f,"%s",buf2);
-		fclose(f);
-	}
+	
 }
 
 /*
@@ -144,11 +140,13 @@ BOOL CEnterCode::OnInitDialog()
 	randTab[4]=(randTab[1]/(randTab[2]+1))&0xffff;
 	randTab[5]=(randTab[3]+randTab[1]*randTab[4])&0xffff;
 	randTab[6]=(randTab[5]+randTab[2]+56)&0xffff;
-	randTab[7]=(randTab[0]+randTab[1]+randTab[4]+123)&0xffff;		
+	randTab[7]=(randTab[0]+randTab[1]+randTab[4]+123)&0xffff;			
 
 	// avoid 4-digits overflow
 	for (i=0;i<8;i++)
-		if (randTab[i]>0xff00) randTab[i]-=200;	
+		if (randTab[i]>0xff00) randTab[i]-=200;		
+
+	testsum=randTab[0]*randTab[0]*11+randTab[1]*121+randTab[2]*randTab[1]*27+randTab[3]*23+randTab[4]*15+randTab[5]*randTab[6]*randTab[7]*11-randTab[3]*(randTab[5]+randTab[4]);
 	
 
 	int rSum=1;
@@ -163,9 +161,10 @@ BOOL CEnterCode::OnInitDialog()
 		char buf[128];
 		fscanf(f,"%s",buf);
 		m_code.SetWindowText(buf);
-		fclose(f);
+		fclose(f);		
 	}
 
+	
 	if (auth()) 
 	{
 		OnOK();
@@ -184,21 +183,39 @@ void CEnterCode::OnClose()
 
 int CEnterCode::auth()
 {
+	char buf3[128];
+	m_code.GetWindowText(buf3,127);		
+
+	char buf2[128];
 	// we calculate good sum
 	int goodSum=randTab[0]*randTab[0]*11+randTab[1]*121+randTab[2]*randTab[1]*27+randTab[3]*23+randTab[4]*15+randTab[5]*randTab[6]*randTab[7]*11-randTab[3]*(randTab[5]+randTab[4]);
+	int goodSum2=goodSum;
 	goodSum%=100000000;
 	// then md5 it
 	char buf[128];	
-	char buf3[128];
+	
 	sprintf(buf,"%d",goodSum);
 	CMD5 md5;
 	md5.setPlainText(buf);
 	sprintf(buf2,"%s",md5.getMD5Digest());	
-	m_code.GetWindowText(buf3,127);		
+	
+	FILE *f=fopen("tacode.txt","wt");
+	if (f)
+	{
+		fprintf(f,"%s",buf3);
+		fclose(f);
+	}	
 	if (strcmp(buf2,buf3))
 	{
+		int i,l1=strlen(buf2),l2=strlen(buf3);
+		for (i=0;i<l1;i++) buf2[i]=rand();
+		for (i=0;i<l1;i++) buf3[i]=rand();
 		return 0;
 	} else {
-		return 1;
+		int i,l1=strlen(buf2),l2=strlen(buf3);
+		for (i=0;i<l1;i++) buf2[i]=rand();
+		for (i=0;i<l1;i++) buf3[i]=rand();
+				
+		return (testsum==goodSum2);
 	}
 }

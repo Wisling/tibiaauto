@@ -46,8 +46,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 private:
 	CTibiaautoDlg * parent;
-	int randTab[8];
-	char buf2[128];
+	int randTab[8];	
+	int testsum;
 	
 };
 

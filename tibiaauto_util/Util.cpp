@@ -13,6 +13,8 @@
 
 extern CTibiaMap tibiaMap;
 
+#define _L(c)   L##c
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
