@@ -19,6 +19,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CLoadedModules)
 	enum { IDD = IDD_LOADED_MODULES };
+	CButton	m_ok;
 	CListCtrl	m_list;
 	//}}AFX_DATA
 

@@ -6,3 +6,4 @@
 #include "TibiaItemProxy.cpp"
 #include "TibiaMiniMap.cpp"
 #include "TibiaMiniMapPoint.cpp"
+#include "CreaturesReaderProxy.cpp"

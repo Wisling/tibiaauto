@@ -122,6 +122,7 @@ protected:
 	afx_msg void OnToolAntilog();
 	afx_msg void OnFps();
 	afx_msg void OnPythonScripts();
+	afx_msg void OnOptions();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	

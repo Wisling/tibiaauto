@@ -258,6 +258,8 @@ static PyMethodDef Methods_tareader[] = {
 	{"getGlobalVariable", tibiaauto_reader_getGlobalVariable, METH_VARARGS},
 	{"readMiniMap", tibiaauto_reader_readMiniMap, METH_VARARGS},
 	{"readMiniMapPoint", tibiaauto_reader_readMiniMapPoint, METH_VARARGS},
+	{"setMainWindowText", tibiaauto_reader_setMainWindowText, METH_VARARGS},
+	{"setMainTrayText", tibiaauto_reader_setMainTrayText, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 
@@ -330,6 +332,15 @@ static PyMethodDef Methods_taregexp[] = {
 
 static PyMethodDef Methods_taalice[] = { 
 	{"respond", tibiaauto_alice_respond, METH_VARARGS},
+		
+    {NULL,      NULL}        /* Sentinel */
+};
+
+static PyMethodDef Methods_tacrstat[] = { 
+	{"findCreatureStatForLocationTibiaId", tibiaauto_crstat_tibiaId, METH_VARARGS},
+	{"findCreatureStatForLocationCount", tibiaauto_crstat_count, METH_VARARGS},
+	{"findCreatureStatForLocationName", tibiaauto_crstat_name, METH_VARARGS},
+	{"findCreatureStatInArea", tibiaauto_crstat_inarea,METH_VARARGS},
 		
     {NULL,      NULL}        /* Sentinel */
 };
@@ -420,6 +431,7 @@ void CPythonEngine::init()
 		Py_InitModule("taregexp", Methods_taregexp);	
 		Py_InitModule("taalice", Methods_taalice);	
 		Py_InitModule("taitem", Methods_taitem);	
+		Py_InitModule("tacrstat", Methods_tacrstat);	
 		Py_InitModule("takernel", Methods_takernel);	
 		PyRun_SimpleString("import tibiaauto");	
 		PyRun_SimpleString("import tareader");
@@ -428,7 +440,8 @@ void CPythonEngine::init()
 		PyRun_SimpleString("import taregexp");
 		PyRun_SimpleString("import taalice");
 		PyRun_SimpleString("import taitem");
-		PyRun_SimpleString("import takernel");
+		PyRun_SimpleString("import tacrstat");
+		PyRun_SimpleString("import takernel");		
 		PyRun_SimpleString("import sys");	
 		
 		char installPath[1024];

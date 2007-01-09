@@ -19,6 +19,7 @@
 #include "TibiaItemProxy.h"
 #include "EnterCode.h"
 #include "md5class.h"
+#include "OptionsDialog.h"
 
 #include "detours.h"
 #include "PythonEngine.h" 
@@ -150,6 +151,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_ANTILOG, OnToolAntilog)
 	ON_BN_CLICKED(IDC_FPS, OnFps)
 	ON_BN_CLICKED(IDC_PYTHON_SCRIPTS, OnPythonScripts)
+	ON_BN_CLICKED(IDC_OPTIONS, OnOptions)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -235,8 +237,6 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetTimer(1001,100,NULL);	
 	SetTimer(1002,100,NULL);
 
-	CDonationDialog donDialog;
-	donDialog.DoModal();	
 
 	// this is needed to force loading tibiaauto_util.dll	
 	CTibiaCharacter *self=reader.readSelfCharacter();
@@ -929,9 +929,7 @@ void CTibiaautoDlg::OnToolEater()
 }
 
 void CTibiaautoDlg::OnDonation() 
-{
-	// greg
-
+{	
 	CDonationDialog donDialog;
 	donDialog.DoModal();							
 }
@@ -977,4 +975,10 @@ void CTibiaautoDlg::passSecurityInfo(int value)
 void CTibiaautoDlg::OnPythonScripts() 
 {
 	m_pythonScriptsDialog->ShowWindow(SW_SHOW);	
+}
+
+void CTibiaautoDlg::OnOptions() 
+{
+	COptionsDialog dlg;
+	dlg.DoModal();							
 }

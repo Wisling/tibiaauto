@@ -14,6 +14,7 @@
 #include "IPCBackPipe.h"
 #include "TibiaTile.h"
 #include "tileReader.h"
+#include "CreaturesReader.h"
 #include "VariableStore.h"
 #include "../md5class.h"
 
@@ -774,3 +775,40 @@ CTibiaMiniMapPoint *memReadReadMiniMapPoint(int mapNr,int pointNr)
 	startMemReader();
 	return reader->readMiniMapPoint(mapNr,pointNr);
 }
+
+int crFindCreatureStatForLocationTibiaId(int x, int y, int z, int pos)
+{
+	CCreaturesReader cReader;
+	return cReader.findCreatureStatForLocationTibiaId(x,y,z,pos);
+}
+
+int crFindCreatureStatForLocationCount(int x, int y, int z)
+{
+	CCreaturesReader cReader;
+	return cReader.findCreatureStatForLocationCount(x,y,z);
+}
+
+char *crFindCreatureStatForLocationName(int x, int y, int z, int pos)
+{
+	CCreaturesReader cReader;
+	return cReader.findCreatureStatForLocationName(x,y,z,pos);
+}
+
+
+char ** crFindCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ)
+{
+	CCreaturesReader cReader;
+	return cReader.findCreatureStatInArea(x,y,z,rangeXY,rangeZ);
+}
+
+void memReadSetMainWindowText(char *text)
+{
+	startMemReader();
+	reader->setMainWindowText(text);
+};
+
+void memReadSetMainTrayText(char *text)
+{
+	startMemReader();
+	reader->setMainTrayText(text);
+};

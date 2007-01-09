@@ -32,6 +32,7 @@ void CLoadedModules::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CLoadedModules)
+	DDX_Control(pDX, IDOK, m_ok);
 	DDX_Control(pDX, IDC_LOADEDMODULES_LIST, m_list);
 	//}}AFX_DATA_MAP
 }

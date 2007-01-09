@@ -1056,7 +1056,7 @@ void myInterceptEncrypt(int v1, int v2)
 	encryptKeyPtr=v2;
 	if (debugFile)
 	{
-		//fprintf(debugFile,"QQQQQQQQQQ: %x\n",encryptKeyPtr);
+		fprintf(debugFile,"QQQQQQQQQQ: %x\n",encryptKeyPtr);
 	}
 	
 	if (v1!=encryptPrevPtr+8)

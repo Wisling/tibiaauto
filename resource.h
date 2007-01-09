@@ -33,6 +33,7 @@
 #define IDR_PYTHON_SCRIPTS_FUNLIST_MENU 180
 #define IDR_PYTHON_SCRIPTS_MENU         181
 #define IDD_SCRIPT_CONFIG               182
+#define IDD_OPTIONS                     183
 #define IDC_EDIT_ADDRESS                1000
 #define IDC_EDIT_ADDRESS_RES_DEC        1001
 #define IDC_SCAN                        1004
@@ -263,6 +264,13 @@
 #define IDC_LOAD_SCRIPT                 1206
 #define IDC_SCRIPT_CONFIG_PARAM_LIST    1207
 #define IDC_SCRIPT_CONFIG_PARAM_EDIT    1208
+#define IDC_OPTIONS                     1209
+#define IDC_SEND_LOOTSTATS              1210
+#define IDC_SIZE_LOOTSTATS              1211
+#define IDC_SEND_CREATURESTATS          1212
+#define IDC_SIZE_CREATURESTATS          1213
+#define IDC_PROGRESS                    1214
+#define IDC_SEND_MAPS                   1215
 #define IDC_MONSTERSHOW_FIRSTBUTTON     5000
 #define IDC_MAPSHOW_FIRSTBUTTON         6000
 #define ID_STOPMODULE_STARTMODULE       32771
@@ -279,9 +287,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        183
+#define _APS_NEXT_RESOURCE_VALUE        184
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1209
+#define _APS_NEXT_CONTROL_VALUE         1215
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

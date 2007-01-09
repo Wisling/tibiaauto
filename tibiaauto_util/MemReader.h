@@ -22,6 +22,8 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	void setMainTrayText(char *text);
+	void setMainWindowText(char *text);
 	CTibiaMiniMapPoint * readMiniMapPoint(int mapNr,int pointNr);
 	CTibiaMiniMap * readMiniMap(int nr);
 	void setRemainingTilesToGo(int val);

@@ -2,6 +2,7 @@
 #include "PythonScript.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
+#include "CreaturesReaderProxy.h"
 
 static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
 {
@@ -14,7 +15,7 @@ static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
 	return Py_None;   
 }
 static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
-{
+{ 
 	CMemReaderProxy reader;
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
@@ -1569,4 +1570,93 @@ static PyObject *tibiaauto_reader_readMiniMapPoint(PyObject *self,PyObject *args
 	delete miniMapPoint;
 	Py_INCREF(ret);
 	return ret;
+}
+
+static PyObject *tibiaauto_crstat_count(PyObject *self, PyObject *args)
+{
+	CCreaturesReaderProxy cReader;
+	int arg1,arg2,arg3;
+	if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+	
+	int ret1=cReader.findCreatureStatForLocationCount(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+
+static PyObject *tibiaauto_crstat_tibiaId(PyObject *self, PyObject *args)
+{
+	CCreaturesReaderProxy cReader;
+	int arg1,arg2,arg3,arg4;
+	if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
+	
+	int ret1=cReader.findCreatureStatForLocationTibiaId(arg1,arg2,arg3,arg4);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+
+static PyObject *tibiaauto_crstat_name(PyObject *self, PyObject *args)
+{
+	CCreaturesReaderProxy cReader;
+	int arg1,arg2,arg3,arg4;
+	if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
+	
+	char *ret1=cReader.findCreatureStatForLocationName(arg1,arg2,arg3,arg4);
+	PyObject *ret;
+	if (ret1)
+	{
+		ret = Py_BuildValue("s",ret1);
+		delete ret1;
+	} else {
+		ret=Py_None;
+	}
+	Py_INCREF(ret);
+	return ret;
+}
+
+static PyObject *tibiaauto_crstat_inarea(PyObject *self, PyObject *args)
+{
+	CCreaturesReaderProxy cReader;
+	int arg1,arg2,arg3,arg4,arg5;
+	if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;	
+	
+	char **ret1=cReader.findCreatureStatInArea(arg1,arg2,arg3,arg4,arg5);
+	int len=0;
+	for (len=0;ret1[len];len++) len++;
+	PyObject *ret=PyList_New(len);
+	int i;
+	for (i=0;i<len;i++)
+	{
+		PyObject *retSub=Py_BuildValue("s",ret1[i]);
+		Py_INCREF(retSub);
+		PyList_SetItem(ret,i,retSub);
+		free(ret1[i]);
+	}
+	free(ret1);
+		
+	Py_INCREF(ret);
+	return ret;
+}
+
+static PyObject *tibiaauto_reader_setMainWindowText(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	char *arg1;
+    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
+	reader.setMainWindowText(arg1);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+static PyObject *tibiaauto_reader_setMainTrayText(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	char *arg1;
+    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
+	reader.setMainTrayText(arg1);
+	Py_INCREF(Py_None);
+	return Py_None; 
 }

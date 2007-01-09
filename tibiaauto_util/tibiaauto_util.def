@@ -125,3 +125,9 @@ EXPORTS
 	packSenderSayYell @119
 	memReadReadMiniMap @120
 	memReadReadMiniMapPoint @121
+	crFindCreatureStatForLocationTibiaId @122
+	crFindCreatureStatForLocationCount @123
+	crFindCreatureStatForLocationName @124
+	crFindCreatureStatInArea @125
+	memReadSetMainWindowText @126
+	memReadSetMainTrayText @127

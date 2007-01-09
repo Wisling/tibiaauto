@@ -24,8 +24,7 @@
 #include <Tlhelp32.h>
 
 
-
-
+#include <afxinet.h>
 
 #include "ipcm.h"
 

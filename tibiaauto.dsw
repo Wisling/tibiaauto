@@ -159,6 +159,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_login"="..\tibiaauto-pub\mods\mod_login\mod_login.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_looter"="..\tibiaauto-pub\mods\mod_looter\mod_looter.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -409,6 +421,9 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name mod_fps
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_login
     End Project Dependency
 }}}
 

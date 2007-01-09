@@ -634,3 +634,33 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int mapNr, int pointNr)
 	return retPoint;
 
 }	
+
+BOOL CALLBACK EnumWindowsProc(      
+
+    HWND hwnd,
+    LPARAM lParam
+	)
+{	
+	DWORD procId;
+	GetWindowThreadProcessId(hwnd,&procId);
+	if (procId==CMemUtil::m_globalProcessId)
+	{					
+		CWnd *wnd = new CWnd();
+		wnd->Attach(hwnd);
+		wnd->SetWindowText((char *)lParam);
+		wnd->Detach();
+		delete wnd;
+		return 0;
+	}
+	return 1;
+}
+
+void CMemReader::setMainWindowText(char *text)
+{		
+	EnumWindows(&EnumWindowsProc,(long)text);
+}
+
+void CMemReader::setMainTrayText(char *text)
+{
+
+}

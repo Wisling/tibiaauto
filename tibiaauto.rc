@@ -104,16 +104,6 @@ BEGIN
     PUSHBUTTON      "Exit",IDCANCEL,16,33,50,14
 END
 
-IDD_DONATION DIALOG DISCARDABLE  0, 0, 186, 87
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Premium Area!"
-FONT 8, "MS Sans Serif"
-BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,69,66,50,14
-    CTEXT           "If you want to get access to all pre-releases and new versions of the Tibia Auto immediatelly after they get released, visit our homesite and join the Premium Area NOW for as low as 0.30 EUR/month!",
-                    IDC_STATIC,7,7,172,41,WS_BORDER
-END
-
 IDD_ENTERCODE DIALOG DISCARDABLE  0, 0, 290, 82
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Enter code"
@@ -159,6 +149,41 @@ BEGIN
     EDITTEXT        IDC_SCRIPT_CONFIG_PARAM_EDIT,7,134,280,14,ES_AUTOHSCROLL
 END
 
+IDD_DONATION DIALOG DISCARDABLE  0, 0, 186, 87
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Premium Area!"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,69,66,50,14
+    CTEXT           "If you want to get access to all pre-releases and new versions of the Tibia Auto immediatelly after they get released, visit our homesite and join the Premium Area NOW for as low as 0.30 EUR/month!",
+                    IDC_STATIC,7,7,172,41,WS_BORDER
+END
+
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 185, 167
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tibia Auto: general options"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,65,146,50,14
+    PUSHBUTTON      "Send",IDC_SEND_LOOTSTATS,126,18,40,14
+    GROUPBOX        "Loot statistics",IDC_STATIC,7,7,171,31
+    LTEXT           "Statistics files size: ",IDC_STATIC,16,18,61,14,
+                    SS_CENTERIMAGE
+    LTEXT           "10000000",IDC_SIZE_LOOTSTATS,83,18,37,14,SS_CENTERIMAGE
+    PUSHBUTTON      "Send",IDC_SEND_CREATURESTATS,126,52,40,14
+    GROUPBOX        "Creature statistics",IDC_STATIC,7,41,171,31
+    LTEXT           "Statistics files size: ",IDC_STATIC,16,52,61,14,
+                    SS_CENTERIMAGE
+    LTEXT           "10000000",IDC_SIZE_CREATURESTATS,83,52,37,14,
+                    SS_CENTERIMAGE
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
+                    NOT WS_VISIBLE | WS_BORDER,7,122,171,14
+    GROUPBOX        "Tibia maps",IDC_STATIC,7,76,171,36
+    PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,40,14
+    LTEXT           "Tibia client maps are used to build a Tibia world map.",
+                    IDC_STATIC,16,88,83,22
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -192,14 +217,6 @@ BEGIN
         BOTTOMMARGIN, 47
     END
 
-    IDD_DONATION, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 80
-    END
-
     IDD_ENTERCODE, DIALOG
     BEGIN
         LEFTMARGIN, 7
@@ -224,6 +241,25 @@ BEGIN
         RIGHTMARGIN, 287
         TOPMARGIN, 7
         BOTTOMMARGIN, 200
+    END
+
+    IDD_DONATION, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 80
+    END
+
+    IDD_OPTIONS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        VERTGUIDE, 16
+        VERTGUIDE, 126
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 160
+        HORZGUIDE, 32
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -291,7 +327,7 @@ IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 389
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.11.2 for Tibia 7.9"
+CAPTION "Tibia Auto v 1.12.0 for Tibia 7.9"
 FONT 8, "MS Sans Serif"
 BEGIN
     PUSHBUTTON      "Auto UH",IDC_TOOL_AUTOUH,13,45,61,14
@@ -331,7 +367,7 @@ BEGIN
     GROUPBOX        "Fight tools",IDC_STATIC,7,34,76,177
     GROUPBOX        "Other tools",IDC_STATIC,7,289,76,93
     GROUPBOX        "Config",IDC_STATIC,100,233,123,68
-    CTEXT           "http://TibiaAuto.NET/",IDC_STATIC,100,307,140,25,
+    CTEXT           "http://TibiaAuto.NET/",IDC_STATIC,100,304,140,25,
                     SS_CENTERIMAGE | WS_BORDER
     PUSHBUTTON      "Fluid drinker",IDC_TOOL_FLUIDDRINKER,13,112,61,14
     LTEXT           "Static",IDC_TOOL_FLUIDDRINKER_INFO,13,128,61,14,
@@ -356,19 +392,22 @@ BEGIN
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,176,182,61,14
     CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,173,112,61,14
-    PUSHBUTTON      "Premium Area!",IDC_DONATION,100,340,140,14
+    PUSHBUTTON      "Premium Area!",IDC_DONATION,100,332,140,14
     CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,109,202,59,14
     PUSHBUTTON      "Map hacks",IDC_TOOL_MAPHACK,176,202,61,14
     LTEXT           "Static",IDC_TOOL_MAPHACK_INFO,176,216,64,14,
                     SS_CENTERIMAGE
     CONTROL         "Team",IDC_TOOL_TEAM,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | NOT WS_VISIBLE | WS_TABSTOP,100,368,59,14
+                    BS_PUSHLIKE | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
+                    100,368,59,14
     CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,173,130,61,14
     CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,341,61,14
     PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,168,283,50,14
+    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,100,350,140,
+                    14
 END
 
 
