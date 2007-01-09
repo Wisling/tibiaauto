@@ -1,4 +1,46 @@
-1.11.2, ???
+1.12.0, 08.01.2007
+ * Creature info: added detection of dangerous monsters in the area
+  
+  Ever scared of entering an yet unexplored area? No need to worry further. Participate
+  in building Tibia respawn map. Then use <crstatMostHp> <crstatMostExp> tags in your
+  creature info to have TA warn you about dangerous monsters nearby.
+
+ * Cave bot: attacking alien enemy if any running TA instance is attacked (combo defence)
+ 
+  No more fear of eliminating your afk training party one by one. Now all running Tibia Autos
+  will instantly attack an unknown enemy attacking any of them.
+
+ * Loot stats: automatic sending of statistics after clicking a button
+ 
+  To improve quality of loot statistics we have decided to add a special option to send
+  the statistics automatically by a click of a button. Look it up in the main TA window
+  and share your loot statistics with us.
+
+ * Creature info: customization of tibia window caption
+ 
+  Ever had problem with distinguishing running Tibia windows? This problem is no more!
+ 
+ * General: added possibility to send registered tibia maps that will build tibia world map
+ 
+  As we have launched map.tibiaauto.net, we need a fresh data to build the maps. If you have
+  some new precious area explored do send your maps to us (by a click of a button!).
+
+ * General: added gathering respawn statistics
+ 
+  To enhance map.tibiaauto.net by adding a respawn locations and also to build detection of
+  nearby new monsters, we have added a possibility to collect creature statistics. Sending
+  them to us is of course by a click of a button!
+
+Defects:
+ * General: removed 'buy premium access' dialog on startup
+ * Auto log/go: fixed bug in distinguishing players and monsters
+ * Creature info: fixed rare crash bug
+ * General: tiny fix in tiles.xml after tibia.dat update
+ * Creature info: added tag <name>
+ * Creature info: fixed saving activity status of info sections
+ * Creature info: updated creature list after 7.9 game update
+
+1.11.2, 15.12.2006
  * General: updated tiles definition to Tibia 7.9
  * General: fixed small bug with install path and python scripts
 

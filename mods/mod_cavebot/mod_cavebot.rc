@@ -112,7 +112,7 @@ BEGIN
     LTEXT           "Waypoint select mode:",IDC_STATIC,133,211,76,12,
                     SS_CENTERIMAGE
     CONTROL         "Loot custom",IDC_TOOL_AUTOATTACK_AUTOLOOTCUSTOM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,481,31,59,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,477,34,59,10
     COMBOBOX        IDC_TOOL_AUTOATTACK_MAPUSED,70,307,65,46,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Map used:",IDC_STATIC,17,307,44,12,SS_CENTERIMAGE
@@ -211,6 +211,9 @@ BEGIN
     CONTROL         "Backattack alien with runes",IDC_BACKATTACK_RUNES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,144,198,123,10
     PUSHBUTTON      "Load from minimap",IDC_LOAD_FROM_MINIMAP,17,254,92,14
+    CONTROL         "Share force attack when attacked",
+                    IDC_SHARE_ALIEN_BACKATTACK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,17,199,124,10
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
@@ -219,7 +222,7 @@ CAPTION "Send loot statistics info!"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
-    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 400k. Please support the Tibia Auto loot statistics by posting it at http://tibiaauto.net/forum/!",
+    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 100k. Please support Tibia Auto by going into ""General options and statistics"" and sending the file to us!",
                     IDC_STATIC,7,7,172,39,WS_BORDER
 END
 

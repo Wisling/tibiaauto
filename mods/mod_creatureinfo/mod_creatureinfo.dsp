@@ -128,6 +128,10 @@ SOURCE=.\proxy.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\SendStats.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -166,6 +170,10 @@ SOURCE=.\NameChanger.h
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SendStats.h
 # End Source File
 # Begin Source File
 

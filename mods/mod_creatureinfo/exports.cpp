@@ -5,3 +5,4 @@
 CMod_creatureinfoApp module;
 
 #include <IModuleInterface.cpp>
+#include <CreaturesReaderProxy.cpp>

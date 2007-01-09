@@ -197,7 +197,7 @@ int triggerBattleList(int options, char whiteList[][32]){
 					if ((options&BATTLELIST_PLAYER))
 					{
 						// this is other player
-						if (ch->tibiaId < 0x4000000)
+						if (ch->tibiaId < 0x40000000)
 						{
 							delete ch;
 							delete self;							
@@ -208,7 +208,7 @@ int triggerBattleList(int options, char whiteList[][32]){
 					if ((options&BATTLELIST_MONSTER))
 					{
 						// this is monster/npc
-						if (ch->tibiaId >= 0x4000000)
+						if (ch->tibiaId >= 0x40000000)
 						{
 							delete ch;
 							delete self;							

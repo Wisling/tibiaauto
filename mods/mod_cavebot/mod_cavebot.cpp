@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "SendStats.h"
 #include "TibiaTile.h"
 #include <time.h>
+#include "SharedMemory.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -826,6 +827,18 @@ void fireRunesAgainstCreature(CConfigData *config,int creatureId)
 
 
 /////////////////////////////////////////////////////////////////////////////
+// shared memory initalisation
+void shMemInit(CSharedMemory *pMem)
+{
+	int pid=GetCurrentProcessId();
+	char varName[128];
+	sprintf(varName,"mod_cavebot_%d",pid);
+	// this means shmem initialisation failed
+	if (!pMem||!pMem->IsCreated()) return;
+	pMem->AddDwordValue(varName,0);
+}
+
+/////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
 int toolThreadShouldStop=0;
@@ -838,6 +851,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
+	int pid=GetCurrentProcessId();
+	CSharedMemory sh_mem("TibiaAuto",1024,shMemInit);
+	char varName[128];
+	sprintf(varName,"mod_cavebot_%d",pid);	
 
 	int attackConsiderPeriod=20000;
 	int currentlyAttackedCreature=0;	
@@ -848,6 +865,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	targetX=targetY=targetZ=0;
 	int lastAttackedCreatureHp=0;
 	int lastAttackedCreatureHpDrop=0;	
+	int shareAlienBackattack=0;
 	
 	int waypointsCount=0;
 	int i;
@@ -875,6 +893,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			fclose(f);
 		registerDebug("Cavebot started");
 	}	
+
+	shareAlienBackattack=config->shareAlienBackattack;
+	if (!sh_mem.IsCreated()) 
+	{
+		if (config->debug)
+		{
+			registerDebug("ERROR: shmem initialisation failed");
+		}
+		shareAlienBackattack=0;
+	}
+
 	
 
 	while (!toolThreadShouldStop)
@@ -1020,6 +1049,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							}
 							checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),-1,corpseId,0,config->lootInBags);
 							fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,-1,corpseId,0,config->lootInBags,checksum);
+							fflush(lootStatsFile);
 
 							CTibiaContainer *lootCont = reader.readContainer(9);
 							int itemNr;
@@ -1030,9 +1060,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags);
 								if (checksum<0) checksum*=-1;
 								fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags,checksum);
+								fflush(lootStatsFile);
 							}
 							free(lootCont);
 						}
+						if (config->debug) registerDebug("Container 9 data registered.");
 
 						CUIntArray acceptedItems;
 						if (config->lootFood)
@@ -1242,12 +1274,36 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// protection "lastAttackTmCreatureId[crNr]==ch->tibiaId" is added
 					// because last attack tm is NOT refreshed after monster
 					// slot reusage! (tibia client bug)
-					int isMonsterAttackingMe=(currentTm-attackConsiderPeriod<ch->lastAttackTm&&ch->lastAttackTm&&lastAttackTmCreatureId[crNr]==ch->tibiaId);
+					int isMonsterAttackingMe=(currentTm-attackConsiderPeriod<ch->lastAttackTm&&ch->lastAttackTm&&lastAttackTmCreatureId[crNr]==ch->tibiaId);					
 					if (config->debug)
 					{
 						char buf[128];
 						sprintf(buf,"isMonsterAttackingMe=%d currentTm=%d attackConsiderPeriod=%d currentTm-cons=%d lastAttackTm=%d",isMonsterAttackingMe, currentTm, attackConsiderPeriod, currentTm-attackConsiderPeriod, ch->lastAttackTm);
 						registerDebug(buf);
+					}
+					if (!isMonsterAttackingMe&&shareAlienBackattack)
+					{
+						// if sharing alien backattack is active, then we may attack
+						// creatures which are not directly attacking us
+						int count=sh_mem.GetVariablesCount();
+						int pos;
+						for (pos=0;pos<count;pos++)
+						{
+							ValueHeader valueHeader;
+							sh_mem.GetValueInfo(pos,&valueHeader);
+							if (strcmp(varName,(char *)valueHeader.wszValueName))
+							{
+								int attackTibiaId=0;
+								unsigned long int len=4;
+								// avoid looping with out own attack target
+								sh_mem.GetValue((char *)valueHeader.wszValueName,&attackTibiaId,&len);
+								if (attackTibiaId==ch->tibiaId)
+								{
+									if (config->debug) registerDebug("Setting isMonsterAttackingMe because of shm info");
+									isMonsterAttackingMe=1;
+								}
+							}
+						}
 					}
 					int visibleMonster=(ch->z==self->z&&ch->tibiaId!=self->tibiaId&&ch->tibiaId);
 					
@@ -1317,13 +1373,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			delete ch;
 		};		
+		if (!backAttackAlien&&shareAlienBackattack)
+		{
+			int zero=0;
+			if (config->debug) registerDebug("Resetting back attack shmem info");
+			sh_mem.SetValue(varName,&zero,4);
+		}
+
 		/**
 		  * If alien creature found in the hunting area (e.g. player), then
 		  * do not attack our creature, cause it can anger other players
 		  */
 		char debugBuf[128];
 		sprintf(debugBuf,"Before main attack if: alien=%d, suspend=%d, globalAttackState=%d, backAttack=%d, backAttackAlien=%d",alienCreatureFound,config->suspendOnEnemy,globalAutoAttackStateAttack,backAttack,backAttackAlien);
-		if (config->debug) registerDebug(debugBuf);
+		if (config->debug) registerDebug(debugBuf);		
+
 		if (backAttack||((!alienCreatureFound||!config->suspendOnEnemy)&&globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_monsterUnreachable))
 		{
 			if (config->debug) registerDebug("Entering attack pre-execution area");
@@ -1360,11 +1424,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				 */
 				if (creatureDistList[dist]&&backAttackAlien==creatureBackAttackList[dist])
 				{
+					// if we are backattacking and shareing backattack
+					// with other instances is active - then register it
+					// in the shm
+					if (backAttackAlien&&shareAlienBackattack)
+					{
+						sh_mem.SetValue(varName,&creatureDistList[dist],4);
+					}
 					// if we are backattacking alien then maybe fire runes at them
 					// note: fire runes only if my own hp is over 50%
 					// to avoid uh-exhaust
 					if (backAttackAlien&&config->backattackRunes&&self->hp>self->maxHp/2)
 					{
+						if (config->debug) registerDebug("Firing runes at enemy");
 						fireRunesAgainstCreature(config,creatureDistList[dist]);
 					}
 					if (config->debug) registerDebug("Entering attack execution area");
@@ -1614,6 +1686,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (config->debug) registerDebug("End cavebot loop");
 				
 	}
+	if (shareAlienBackattack)
+	{
+		int zero=0;		
+		sh_mem.SetValue(varName,&zero,4);
+	}
 	sender.attack(0);
 	reader.setRemainingTilesToGo(0);
 	if (config->debug) registerDebug("Exiting cavebot");
@@ -1678,7 +1755,7 @@ void CMod_cavebotApp::start()
 			
 			int flen=ftell(f);
 			fclose(f);		
-			if (flen>1024*400)
+			if (flen>1024*100)
 			{
 				CSendStats info;
 				info.DoModal();				
@@ -1761,7 +1838,7 @@ void CMod_cavebotApp::enableControls()
 
 char *CMod_cavebotApp::getVersion()
 {
-	return "2.12";
+	return "2.13";
 }
 
 
@@ -1822,6 +1899,8 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"attack/forceAttackAfterAttack")) m_configData->forceAttackAfterAttack=atoi(paramValue);	
 	if (!strcmp(paramName,"attack/hpAbove")) m_configData->attackHpAbove=atoi(paramValue);	
 	if (!strcmp(paramName,"attack/backattackRunes")) m_configData->backattackRunes=atoi(paramValue);
+	if (!strcmp(paramName,"attack/shareAlienBackattack")) m_configData->shareAlienBackattack=atoi(paramValue);
+	
 	
 	if (!strcmp(paramName,"loot/item/gp")) m_configData->lootGp=atoi(paramValue);
 	if (!strcmp(paramName,"loot/item/custom")) m_configData->lootCustom=atoi(paramValue);
@@ -1919,6 +1998,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"attack/forceAttackAfterAttack")) sprintf(buf,"%d",m_configData->forceAttackAfterAttack);	
 	if (!strcmp(paramName,"attack/hpAbove")) sprintf(buf,"%d",m_configData->attackHpAbove);	
 	if (!strcmp(paramName,"attack/backattackRunes")) sprintf(buf,"%d",m_configData->backattackRunes);
+	if (!strcmp(paramName,"attack/shareAlienBackattack")) sprintf(buf,"%d",m_configData->shareAlienBackattack);
 
 	if (!strcmp(paramName,"loot/item/gp")) sprintf(buf,"%d",m_configData->lootGp);
 	if (!strcmp(paramName,"loot/item/custom")) sprintf(buf,"%d",m_configData->lootCustom);
@@ -2016,6 +2096,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr)
 	case 34: return "attack/hpAbove";
 	case 35: return "attack/ignore";
 	case 36: return "attack/backattackRunes";
+	case 37: return "attack/shareAlienBackattack";
 	
 
 	default:

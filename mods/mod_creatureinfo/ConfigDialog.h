@@ -29,6 +29,12 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CEdit	m_selfWindow;
+	CEdit	m_selfTray;
+	CEdit	m_rangeZ;
+	CEdit	m_rangeXY;
+	CButton	m_showCreaturesInArea;
+	CButton	m_collectStats;
 	CButton	m_knownInfo;
 	CButton	m_addRequest;
 	CButton	m_self;

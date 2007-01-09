@@ -141,7 +141,7 @@ CAPTION "Send loot statistics info!"
 FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
-    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 400k. Please support the Tibia Auto loot statistics by posting it at http://tibiaauto.net/forum/!",
+    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 100k. Please support Tibia Auto by going into ""General options and statistics"" and sending the file to us!",
                     IDC_STATIC,7,7,172,39,WS_BORDER
 END
 

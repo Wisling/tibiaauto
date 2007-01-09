@@ -27,8 +27,14 @@ public:
 	int self;
 	char self1[MAX_LINE_LEN];
 	char self2[MAX_LINE_LEN];
+	char selfTray[MAX_LINE_LEN];
+	char selfWindow[MAX_LINE_LEN];
 	int allFloorInfo;
 	int addRequest;
+	int collectStats;
+	int showCreaturesInArea;
+	int rangeXY;
+	int rangeZ;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

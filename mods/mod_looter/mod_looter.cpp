@@ -208,7 +208,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 									FILE *lootStatsFile = NULL;
 									// time,rand,creature,name,pos,objectId,count,bagopen,checksum
 									int killNr=rand();
-									lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");														
+									lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
 									if (lootStatsFile)
 									{
 										int i,len;
@@ -413,7 +413,7 @@ void CMod_looterApp::start()
 
 		int flen=ftell(f);
 		fclose(f);		
-		if (flen>1024*400)
+		if (flen>1024*100)
 		{
 			CSendStats info;
 			info.DoModal();				

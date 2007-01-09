@@ -82,6 +82,9 @@ public:
 	CTibiaMiniMap *readMiniMap(int nr);
 	CTibiaMiniMapPoint *readMiniMapPoint(int mapNr,int pointNr);
 
+	void setMainWindowText(char *text);
+	void setMainTrayText(char *text);
+
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();
 

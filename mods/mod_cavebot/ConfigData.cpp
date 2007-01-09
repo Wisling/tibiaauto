@@ -64,6 +64,7 @@ CConfigData::CConfigData()
 	lootFromFloor=0;
 	attackHpAbove=0;
 	backattackRunes=0;
+	shareAlienBackattack=0;
 
 }
 

@@ -2,6 +2,7 @@
 // Microsoft Developer Studio generated include file.
 // Used by mod_creatureinfo.rc
 //
+#define IDD_SENDSTATS                   171
 #define IDD_CONFIG                      3002
 #define IDD_NAME                        3003
 #define IDC_ENABLE                      3004
@@ -38,7 +39,13 @@
 #define IDC_TOOLCREATURINFO_INFO_TXTVOC 3042
 #define IDC_TOOLCREATURINFO_INFO_TXTLEVEL 3043
 #define IDC_TOOLCREATURINFO_INFO_COMBO  3046
+#define IDC_COLLECT_STATS               3047
+#define IDC_SHOW_CREATURES_IN_AREA      3048
+#define IDC_RANGE_XY                    3049
 #define IDC_TOOLCREATURINFO_INFO_LAST   3050
+#define IDC_RANGE_Z                     3050
+#define IDC_TOOLCREATURINFO_SELF_WINDOW 3051
+#define IDC_TOOLCREATURINFO_SELF_TRAY   3052
 
 // Next default values for new objects
 // 
@@ -46,7 +53,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3047
+#define _APS_NEXT_CONTROL_VALUE         3053
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
