@@ -28,8 +28,14 @@ CConfigData::CConfigData()
 	self=1;
 	lstrcpy(self1,"<voc><level> Hp:<hp>{/<maxhp>} Mana:<mana>/<maxmana>");
 	lstrcpy(self2,"Exp:<exp> Mlvl:<magiclevel>(<magiclevel%>)");
+	strcpy(selfWindow,"Tibia");
+	strcpy(selfTray,"<name>");
 	allFloorInfo=0;
 	addRequest=0;
+	collectStats=1;
+	showCreaturesInArea=0;
+	rangeXY=50;
+	rangeZ=0;
 }
 
 CConfigData::~CConfigData()

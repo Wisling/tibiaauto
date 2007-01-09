@@ -104,6 +104,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Helpers.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_cavebot.cpp
 # End Source File
 # Begin Source File
@@ -121,6 +125,10 @@ SOURCE=.\proxy.cpp
 # Begin Source File
 
 SOURCE=.\SendStats.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SharedMemory.cpp
 # End Source File
 # Begin Source File
 

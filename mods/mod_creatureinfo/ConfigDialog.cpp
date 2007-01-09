@@ -31,6 +31,12 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_TOOLCREATURINFO_SELF_WINDOW, m_selfWindow);
+	DDX_Control(pDX, IDC_TOOLCREATURINFO_SELF_TRAY, m_selfTray);
+	DDX_Control(pDX, IDC_RANGE_Z, m_rangeZ);
+	DDX_Control(pDX, IDC_RANGE_XY, m_rangeXY);
+	DDX_Control(pDX, IDC_SHOW_CREATURES_IN_AREA, m_showCreaturesInArea);
+	DDX_Control(pDX, IDC_COLLECT_STATS, m_collectStats);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_KNOWNINFO, m_knownInfo);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_ADDITIONALREQUEST, m_addRequest);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_SELF, m_self);
@@ -104,8 +110,13 @@ void CConfigDialog::disableControls()
 	m_self.EnableWindow(false);
 	m_self1.EnableWindow(false);
 	m_self2.EnableWindow(false);
+	m_selfWindow.EnableWindow(false);
+	m_selfTray.EnableWindow(false);
 	m_allFloorInfo.EnableWindow(false);
-	m_addRequest.EnableWindow(false);
+	m_addRequest.EnableWindow(false);	
+	m_showCreaturesInArea.EnableWindow(false);
+	m_rangeXY.EnableWindow(false);
+	m_rangeZ.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -125,15 +136,22 @@ void CConfigDialog::enableControls()
 	if (m_self.GetCheck()){
 		m_self1.EnableWindow(true);
 		m_self2.EnableWindow(true);
+		m_selfWindow.EnableWindow(true);
+		m_selfTray.EnableWindow(true);
 	}
 	m_allFloorInfo.EnableWindow(true);
-	m_addRequest.EnableWindow(true);
+	m_addRequest.EnableWindow(true);	
+	m_showCreaturesInArea.EnableWindow(true);
+	m_rangeXY.EnableWindow(true);
+	m_rangeZ.EnableWindow(true);
 }
 
 
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
+	char buf[128];
+
 	m_player.SetCheck(configData->player);
 	OnToolcreaturinfoPlayer();
 	m_player1.SetWindowText(configData->player1);
@@ -147,8 +165,15 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	OnToolcreaturinfoSelf();
 	m_self1.SetWindowText(configData->self1);
 	m_self2.SetWindowText(configData->self2);
+	m_selfWindow.SetWindowText(configData->selfWindow);
+	m_selfTray.SetWindowText(configData->selfTray);
 	m_allFloorInfo.SetCheck(configData->allFloorInfo);
 	m_addRequest.SetCheck(configData->allFloorInfo);
+	m_collectStats.SetCheck(configData->collectStats);
+	m_showCreaturesInArea.SetCheck(configData->showCreaturesInArea);
+
+	sprintf(buf,"%d",configData->rangeXY);m_rangeXY.SetWindowText(buf);
+	sprintf(buf,"%d",configData->rangeZ);m_rangeZ.SetWindowText(buf);
 
 	OnToolcreaturinfoPlayer();
 	OnToolcreaturinfoMonster();
@@ -158,6 +183,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 CConfigData * CConfigDialog::controlsToConfig()
 {	
 	CConfigData *newConfigData = new CConfigData();
+	char buf[128];
 
 	newConfigData->player = m_player.GetCheck();
 	m_player1.GetWindowText(newConfigData->player1,260);
@@ -169,8 +195,17 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->self = m_self.GetCheck();
 	m_self1.GetWindowText(newConfigData->self1,260);
 	m_self2.GetWindowText(newConfigData->self2,260);
+	m_selfWindow.GetWindowText(newConfigData->selfWindow,260);
+	m_selfTray.GetWindowText(newConfigData->selfTray,260);
 	newConfigData->allFloorInfo = m_allFloorInfo.GetCheck();
 	newConfigData->addRequest = m_addRequest.GetCheck();
+	//newConfigData->collectStats = m_collectStats.GetCheck();	
+	newConfigData->collectStats = 1;
+	newConfigData->showCreaturesInArea = m_showCreaturesInArea.GetCheck();
+	m_rangeXY.GetWindowText(buf,127);
+	newConfigData->rangeXY=atoi(buf);
+	m_rangeZ.GetWindowText(buf,127);
+	newConfigData->rangeZ=atoi(buf);
 
 	return newConfigData;
 }
@@ -221,6 +256,8 @@ void CConfigDialog::OnToolcreaturinfoSelf()
 
 	m_self1.EnableWindow(val);
 	m_self2.EnableWindow(val);	
+	m_selfWindow.EnableWindow(val);
+	m_selfTray.EnableWindow(val);	
 }
 
 void CConfigDialog::OnToolcreaturinfoKnowninfo() 

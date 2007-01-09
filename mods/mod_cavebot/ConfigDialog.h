@@ -82,6 +82,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_shareAlienBackattack;
 	CEdit	m_ignore;
 	CListBox	m_ignoreList;
 	CButton	m_backattackRunes;

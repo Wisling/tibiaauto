@@ -748,3 +748,29 @@ CTibiaMiniMapPoint *CMemReaderProxy::readMiniMapPoint(int mapNr,int pointNr)
 	} 
 	return NULL;
 }
+
+void CMemReaderProxy::setMainWindowText(char *text)
+{
+	typedef char * (*Proto_fun)(char *text);
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetMainWindowText");
+		if (fun)
+		{
+			fun(text);
+		}
+	} 
+}
+
+void CMemReaderProxy::setMainTrayText(char *text)
+{
+	typedef char * (*Proto_fun)(char *text);
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetMainTrayText");
+		if (fun)
+		{
+			fun(text);
+		}
+	} 
+}

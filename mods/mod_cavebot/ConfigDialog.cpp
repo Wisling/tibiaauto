@@ -47,6 +47,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_SHARE_ALIEN_BACKATTACK, m_shareAlienBackattack);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_IGNORE, m_ignore);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_IGNORELIST, m_ignoreList);
 	DDX_Control(pDX, IDC_BACKATTACK_RUNES, m_backattackRunes);
@@ -196,6 +197,7 @@ void CConfigDialog::disableControls()
 	m_ignoreList.EnableWindow(false);
 	m_ignore.EnableWindow(false);
 	m_backattackRunes.EnableWindow(false);
+	m_shareAlienBackattack.EnableWindow(false);
 
 
 }
@@ -245,6 +247,7 @@ void CConfigDialog::enableControls()
 	m_ignoreList.EnableWindow(true);
 	m_ignore.EnableWindow(true);
 	m_backattackRunes.EnableWindow(true);
+	m_shareAlienBackattack.EnableWindow(true);
 }
 
 
@@ -322,7 +325,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_dropNotLooted.SetCheck(configData->dropNotLooted);
 	m_lootFromFloor.SetCheck(configData->lootFromFloor);
 	m_backattackRunes.SetCheck(configData->backattackRunes);
-
+	m_shareAlienBackattack.SetCheck(configData->shareAlienBackattack);
 		
 
 }
@@ -428,6 +431,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->dropNotLooted=m_dropNotLooted.GetCheck();
 	newConfigData->lootFromFloor=m_lootFromFloor.GetCheck();
 	newConfigData->backattackRunes=m_backattackRunes.GetCheck();
+	newConfigData->shareAlienBackattack=m_shareAlienBackattack.GetCheck();
 
 
 

@@ -33,6 +33,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "regex.h"
 #include "RegexpProxy.h"
 #include "Util.h"
+#include <map>
+#include "CreaturesReaderProxy.h"
+#include "SendStats.h"
 
 #include "modules\playerinfo.h"
 
@@ -44,7 +47,58 @@ static char THIS_FILE[] = __FILE__;
 
 #define MAX_STRING_LEN 65536
 
+using namespace std;
 
+
+class creatureData
+{
+public:
+	int tm;
+	int tibiaId;	
+	creatureData()
+	{
+		clear();
+	}
+	creatureData(int tibiaId)
+	{
+		clear();
+		this->tibiaId=tibiaId;
+	}
+	void clear()
+	{
+		tm=time(NULL);
+		tibiaId=0;
+	}
+	operator=(const creatureData p1) 
+	{
+		tm=p1.tm;
+		tibiaId=p1.tibiaId;
+	}
+};
+
+class creatureKey
+{
+private:
+	int tibiaId;
+public:
+	creatureKey()
+	{
+		tibiaId=0;
+	};
+	
+	creatureKey(int tibiaId)
+	{
+		this->tibiaId=tibiaId;
+	}
+	
+	bool operator()(const creatureKey p1, const creatureKey p2) const
+	{
+		return p1.tibiaId-p2.tibiaId;		
+	}
+};
+
+int Monster_GetHp(char *name);
+int Monster_GetExp(char *name);
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_creatureinfoApp
@@ -232,10 +286,15 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 		}else{
 			lstrcpy(svalue,"");
 		}
+	}else if(!strcmpi(tagName,"name")){
+		if (data){
+			sprintf(svalue,"%s",data->name);
+		}else{
+			lstrcpy(svalue,"");
+		}
 
 	}else if (data && !strcmpi(tagName,"type")){
-		Creature_TypeToText(data->type,svalue);
-
+		Creature_TypeToText(data->type,svalue);	
 	}else if (!strcmpi(tagName,"relz")){
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
@@ -314,7 +373,7 @@ void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCha
 	}
 }
 
-void Expression_Tags_Self(char* tagName, char* svalue){
+void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 	//T4: Char info
 	if (!strcmpi(tagName,"mana")){
 		sprintf(svalue,"%d",playerInfo->mana);
@@ -596,7 +655,83 @@ void Expression_Tags_Self(char* tagName, char* svalue){
 		}else{
 			lstrcpy(svalue,"");
 		}
+	//V: creature statisticsx
+	} else if (!strcmpi(tagName,"crstatMostHp")) {
+		
+		CCreaturesReaderProxy cReader;
+		CMemReaderProxy reader;
+		CTibiaCharacter *self = reader.readSelfCharacter();
+				
+		int x,y;
+		char crStatCreature[128];
+		int crStatMaxValue=0;
+		sprintf(crStatCreature,"<none>");
+		
+		
+		char **crList = cReader.findCreatureStatInArea(self->x,self->y,self->z,config->rangeXY,config->rangeZ);			
+		
+		int pos;
+		for (pos=0;crList[pos];pos++)
+		{
+		
+			int foundValue=Monster_GetHp(crList[pos]);
+			if (foundValue>crStatMaxValue)
+			{
+				crStatMaxValue=foundValue;
+				strcpy(crStatCreature,crList[pos]);
+			}
+		
+			free(crList[pos]);
+		
+		}
+		
+		
+		free(crList);
+		
+		lstrcpy(svalue,crStatCreature);
+		
+		
+		delete self;
+		
+	} else if (!strcmpi(tagName,"crstatMostExp")) {
+		
+		CCreaturesReaderProxy cReader;
+		CMemReaderProxy reader;
+		CTibiaCharacter *self = reader.readSelfCharacter();
+				
+		int x,y;
+		char crStatCreature[128];
+		int crStatMaxValue=0;
+		sprintf(crStatCreature,"<none>");
+		
+		
+		char **crList = cReader.findCreatureStatInArea(self->x,self->y,self->z,config->rangeXY,config->rangeZ);			
+		
+		int pos;
+		for (pos=0;crList[pos];pos++)
+		{
+		
+			int foundValue=Monster_GetExp(crList[pos]);
+			if (foundValue>crStatMaxValue)
+			{
+				crStatMaxValue=foundValue;
+				strcpy(crStatCreature,crList[pos]);
+			}
+		
+			free(crList[pos]);
+		
+		}
+		
+		
+		free(crList);
+		
+		lstrcpy(svalue,crStatCreature);
+		
+		
+		delete self;
+		
 	}
+	
 }
 
 void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
@@ -617,7 +752,7 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 	}
 }
 
-void Expression_GatherData(expressionInfo *expInfo, creature *data,CTibiaCharacter *ch){
+void Expression_GatherData(expressionInfo *expInfo, creature *data,CTibiaCharacter *ch,CConfigData *config){
 	char svalue[128];
 	int i;
 
@@ -631,7 +766,7 @@ void Expression_GatherData(expressionInfo *expInfo, creature *data,CTibiaCharact
 			if (data->type == TYPE_PLAYER || data->type == TYPE_SELF){
 				Expression_Tags_Player(expInfo->tag[i].name,svalue,(player*)data,ch);
 				if (data->type == TYPE_SELF){
-					Expression_Tags_Self(expInfo->tag[i].name,svalue);
+					Expression_Tags_Self(expInfo->tag[i].name,svalue,config);
 				}
 			}else if (data->type == TYPE_MONSTER || data->type == TYPE_NPC){
 				Expression_Tags_Monster(expInfo->tag[i].name,svalue,(monster*)data);
@@ -769,7 +904,16 @@ int Monster_GetHp(char *name){
 			return monstersInfo[i].maxHp;
 		}
 	}
-	return -1;
+	return 0;
+}
+
+int Monster_GetExp(char *name){
+	for(int i=0;i<monstersCount;i++){
+		if(!strcmpi(monstersInfo[i].name,name)){
+			return monstersInfo[i].exp;
+		}
+	}
+	return 0;
 }
 
 void Player_Register(char *name,int vocId,int lvl,char *guildName,char *guildRank,char *guildDescription){
@@ -897,8 +1041,8 @@ void ReadPipeInfo(){
 						//sender.sendTAMessage(resNick);
 					}else{
 						regex_t preg3;
-						if (!regexpProxy.regcomp(&preg,"You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
-							if (!regexpProxy.regexec(&preg,msgBuf,20,pmatch,0)){
+						if (!regexpProxy.regcomp(&preg3,"You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
+							if (!regexpProxy.regexec(&preg3,msgBuf,20,pmatch,0)){
 								//T4: This is self
 								char resVoc[128];
 								char resGuildName[128];
@@ -936,15 +1080,17 @@ void ReadPipeInfo(){
 								delete self;
 								delete selfName;
 							}
+							regexpProxy.regfree(&preg3);
 						}
-						regexpProxy.regfree(&preg3);
+						
 					}
+					regexpProxy.regfree(&preg2);
 				}
-				regexpProxy.regfree(&preg2);
+				
 			}
+			regexpProxy.regfree(&preg);
 		}
-		regexpProxy.regfree(&preg);
-
+		
 	}	
 }
 
@@ -999,6 +1145,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	expressionInfo monsterLine2;
 	expressionInfo selfLine1;
 	expressionInfo selfLine2;
+	expressionInfo selfLineWindow;
+	expressionInfo selfLineTray;
 
 	//T4: Init expression parsing, split expression in to text and tags
 	if (config->player){
@@ -1012,6 +1160,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	if (config->self){
 		Expression_PreParse(config->self1,&selfLine1);
 		Expression_PreParse(config->self2,&selfLine2);
+		Expression_PreParse(config->selfWindow,&selfLineWindow);
+		Expression_PreParse(config->selfTray,&selfLineTray);
 
 		//T4: Init PlayerInfo structure
 		if (!PlayerInfo_Init()){
@@ -1020,24 +1170,70 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			return 0;
 		}
 	}
+
+	// map with creatures seen
+	map<creatureKey,creatureData,creatureKey> crMap;
+	
+	
 	
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(500);
-		
+
 		//T4: Parse info messages
 		ReadPipeInfo();
 	
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
+		int curTime=time(NULL);
+
 		int chNr;
 		for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
 			//T4: Check all chars in BattleList
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+ 			
+			if (config->collectStats)
+			{
+				// collect statistics, but for monsters only				
+
+				                                   				       				
+				if (ch->visible && ch->tibiaId > 0x40000000)
+				{
+					// see if we ever before have seen this creature
+					// if not we refresh data about it every 30 seconds
+					creatureData crData = crMap[creatureKey(ch->tibiaId)];
+					if (!crData.tibiaId || (crData.tibiaId&&curTime-crData.tm>30))
+					{										
+						FILE *f = fopen("tibiaauto-stats-creatures.txt","a+");					
+						if (f) 
+						{	
+							char statChName[128];
+							int i,len;
+							for (i=0,strcpy(statChName,ch->name),len=strlen(statChName);i<len;i++)
+							{
+								if (statChName[i]=='[')
+									statChName[i]='\0';
+							}
+							
+							int tm=time(NULL);
+							int r = rand();
+							int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;
+							fprintf(f,"%d,%d,%d,%d,%d,'%s',%d,%d\n",tm,ch->tibiaId,ch->x,ch->y,ch->z,statChName,r,checksum);
+							fclose(f);
+														
+						}
+						crMap[creatureKey(ch->tibiaId)].tibiaId=ch->tibiaId;
+						crMap[creatureKey(ch->tibiaId)].tm=time(NULL);
+					}
+				}
+			}
 
 			if (ch->visible && (config->allFloorInfo?1:ch->z==self->z)){
 				char line1[MAX_LINE_LEN];
 				char line2[MAX_LINE_LEN];
+				char lineWindow[MAX_LINE_LEN];
+				char lineTray[MAX_LINE_LEN];
+
 				int found=0;
 				//T4: Apply custom text only to creatures on same z
 				if (ch->tibiaId==self->tibiaId){
@@ -1049,21 +1245,28 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						playersInfo[0].type = TYPE_SELF;
 					}
 					if (config->self){
-						Expression_GatherData(&selfLine1,(creature*)&playersInfo[0],self);
-						Expression_GatherData(&selfLine2,(creature*)&playersInfo[0],self);
+						Expression_GatherData(&selfLine1,(creature*)&playersInfo[0],self,config);
+						Expression_GatherData(&selfLine2,(creature*)&playersInfo[0],self,config);
+						Expression_GatherData(&selfLineWindow,(creature*)&playersInfo[0],self,config);
+						Expression_GatherData(&selfLineTray,(creature*)&playersInfo[0],self,config);
 
 						Expression_Exec(&selfLine1,line1);
 						Expression_Exec(&selfLine2,line2);
+						Expression_Exec(&selfLineWindow,lineWindow);
+						Expression_Exec(&selfLineTray,lineTray);
+
 
 						sender.sendCreatureInfo(ch->name,line1,line2);
+						reader.setMainWindowText(lineWindow);
+						reader.setMainTrayText(lineTray);
 					}else{
 						found=1;
 					}
 				}else{
 					//T4: We found a visible monster or player
 					int i;
-
-					if (ch->tibiaId < 0x4000000){
+					  
+					if (ch->tibiaId < 0x40000000){
 						if (config->player){
 							//T4: This is a player
 							for (i=1;i<playersCount;i++){
@@ -1074,11 +1277,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								}
 							}
 							if (found){
-								Expression_GatherData(&playerLine1,(creature*)&playersInfo[i],ch);
-								Expression_GatherData(&playerLine2,(creature*)&playersInfo[i],ch);
+								Expression_GatherData(&playerLine1,(creature*)&playersInfo[i],ch,config);
+								Expression_GatherData(&playerLine2,(creature*)&playersInfo[i],ch,config);
 							}else{
-								Expression_GatherData(&playerLine1,NULL,ch);
-								Expression_GatherData(&playerLine2,NULL,ch);
+								Expression_GatherData(&playerLine1,NULL,ch,config);
+								Expression_GatherData(&playerLine2,NULL,ch,config);
 							}
 
 							//strcpy(line1,config->player1);
@@ -1110,11 +1313,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								}
 							}
 							if (found){
-								Expression_GatherData(&monsterLine1,(creature*)&monstersInfo[i],ch);
-								Expression_GatherData(&monsterLine2,(creature*)&monstersInfo[i],ch);
+								Expression_GatherData(&monsterLine1,(creature*)&monstersInfo[i],ch,config);
+								Expression_GatherData(&monsterLine2,(creature*)&monstersInfo[i],ch,config);
 							}else{
-								Expression_GatherData(&monsterLine1,NULL,ch);
-								Expression_GatherData(&monsterLine2,NULL,ch);
+								Expression_GatherData(&monsterLine1,NULL,ch,config);
+								Expression_GatherData(&monsterLine2,NULL,ch,config);
 							}
 
 							Expression_Exec(&monsterLine1,line1);
@@ -1154,6 +1357,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		delete self;		
 	}	
+
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	reader.setMainWindowText("Tibia");
+	reader.setMainTrayText(self->name);
+	delete self;
 
 	//T4: Tool has been disabled, so clean all mess
 	sender.sendClearCreatureInfo();
@@ -1215,6 +1423,22 @@ void CMod_creatureinfoApp::start()
 	}
 
 	DWORD threadId;
+
+	FILE *f=fopen("tibiaauto-stats-creatures.txt","r");
+		
+	if (f)
+	
+	{
+		fseek(f,0,SEEK_END);
+
+		int flen=ftell(f);
+		fclose(f);		
+		if (flen>1024*500)
+		{
+			CSendStats info;
+			info.DoModal();				
+		}		
+	}
 
 	//T4: Reset counters
 	playersCount	= 1;
@@ -1300,6 +1524,16 @@ void CMod_creatureinfoApp::enableControls()
 
 int CMod_creatureinfoApp::validateConfig(int showAlerts)
 {	
+	if (m_configData->rangeXY<0||m_configData->rangeXY>100)
+	{
+		if (showAlerts) AfxMessageBox("RangeXY must be beween 0 and 100!");
+		return 0;
+	}
+	if (m_configData->rangeZ<0||m_configData->rangeZ>15)
+	{
+		if (showAlerts) AfxMessageBox("RangeZ must be beween 0 and Z!");
+		return 0;
+	}
 	return 1;
 }
 
@@ -1310,18 +1544,26 @@ void CMod_creatureinfoApp::resetConfig()
 
 void CMod_creatureinfoApp::loadConfigParam(char *paramName,char *paramValue)
 {
-	if (!strcmp(paramName,"player"))		m_configData->player = atoi(paramValue);
+	if (!strcmp(paramName,"player/active"))		m_configData->player = atoi(paramValue);
 	if (!strcmp(paramName,"player/first"))	lstrcpyn(m_configData->player1,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"player/second"))	lstrcpyn(m_configData->player2,paramValue,MAX_LINE_LEN);
-	if (!strcmp(paramName,"monster"))		m_configData->monster = atoi(paramValue);
+	if (!strcmp(paramName,"monster/active"))		m_configData->monster = atoi(paramValue);
 	if (!strcmp(paramName,"monster/first"))	lstrcpyn(m_configData->monster1,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"monster/second"))lstrcpyn(m_configData->monster2,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"monster/uniqueMonsterNames"))	m_configData->uniqueMonsterNames = atoi(paramValue);
-	if (!strcmp(paramName,"self"))		m_configData->self = atoi(paramValue);
+	if (!strcmp(paramName,"self/active"))		m_configData->self = atoi(paramValue);
 	if (!strcmp(paramName,"self/first"))	lstrcpyn(m_configData->self1,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"self/second"))	lstrcpyn(m_configData->self2,paramValue,MAX_LINE_LEN);
+	if (!strcmp(paramName,"self/window"))	lstrcpyn(m_configData->selfWindow,paramValue,MAX_LINE_LEN);
+	if (!strcmp(paramName,"self/tray"))	lstrcpyn(m_configData->selfTray,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"allFloorInfo"))		m_configData->allFloorInfo = atoi(paramValue);
-	if (!strcmp(paramName,"addRequest"))		m_configData->addRequest = atoi(paramValue);
+	if (!strcmp(paramName,"addRequest"))		m_configData->addRequest = atoi(paramValue);	
+	if (!strcmp(paramName,"area/collectStats"))		m_configData->collectStats = 1;
+	if (!strcmp(paramName,"area/showCreaturesInArea"))		m_configData->showCreaturesInArea = atoi(paramValue);
+	if (!strcmp(paramName,"area/rangeXY"))		m_configData->rangeXY = atoi(paramValue);
+	if (!strcmp(paramName,"area/rangeZ"))		m_configData->rangeZ = atoi(paramValue);
+
+
 }
 
 char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
@@ -1329,18 +1571,24 @@ char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
 	static char buf[1024];
 	buf[0]=0;
 	
-	if (!strcmp(paramName,"player"))		sprintf(buf,"%d",m_configData->player);
+	if (!strcmp(paramName,"player/active"))		sprintf(buf,"%d",m_configData->player);
 	if (!strcmp(paramName,"player/first"))	lstrcpyn(buf,m_configData->player1,MAX_LINE_LEN);
 	if (!strcmp(paramName,"player/second"))	lstrcpyn(buf,m_configData->player2,MAX_LINE_LEN);
-	if (!strcmp(paramName,"monster"))		sprintf(buf,"%d",m_configData->monster);
+	if (!strcmp(paramName,"monster/active"))		sprintf(buf,"%d",m_configData->monster);
 	if (!strcmp(paramName,"monster/first"))	lstrcpyn(buf,m_configData->monster1,MAX_LINE_LEN);
 	if (!strcmp(paramName,"monster/second"))lstrcpyn(buf,m_configData->monster2,MAX_LINE_LEN);
 	if (!strcmp(paramName,"monster/uniqueMonsterNames"))	sprintf(buf,"%d",m_configData->uniqueMonsterNames);
-	if (!strcmp(paramName,"self"))		sprintf(buf,"%d",m_configData->self);
+	if (!strcmp(paramName,"self/active"))		sprintf(buf,"%d",m_configData->self);
 	if (!strcmp(paramName,"self/first"))	lstrcpyn(buf,m_configData->self1,MAX_LINE_LEN);
 	if (!strcmp(paramName,"self/second"))	lstrcpyn(buf,m_configData->self2,MAX_LINE_LEN);
+	if (!strcmp(paramName,"self/window"))	lstrcpyn(buf,m_configData->selfWindow,MAX_LINE_LEN);
+	if (!strcmp(paramName,"self/tray"))	lstrcpyn(buf,m_configData->selfTray,MAX_LINE_LEN);
 	if (!strcmp(paramName,"allFloorInfo"))	sprintf(buf,"%d",m_configData->allFloorInfo);
 	if (!strcmp(paramName,"addRequest"))	sprintf(buf,"%d",m_configData->addRequest);
+	if (!strcmp(paramName,"area/collectStats")) sprintf(buf,"%d",m_configData->collectStats);
+	if (!strcmp(paramName,"area/showCreaturesInArea")) sprintf(buf,"%d",m_configData->showCreaturesInArea);
+	if (!strcmp(paramName,"area/rangeXY")) sprintf(buf,"%d",m_configData->rangeXY);
+	if (!strcmp(paramName,"area/rangeZ")) sprintf(buf,"%d",m_configData->rangeZ);
 
 	return buf;
 }
@@ -1349,18 +1597,24 @@ char *CMod_creatureinfoApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "player";
+	case 0: return "player/active";
 	case 1: return "player/first";
 	case 2: return "player/second";	
-	case 3: return "monster";
+	case 3: return "monster/active";
 	case 4: return "monster/first";
 	case 5: return "monster/second";	
 	case 6: return "monster/uniqueMonsterNames";
-	case 7: return "self";
+	case 7: return "self/active";
 	case 8: return "self/first";
 	case 9: return "self/second";
 	case 10: return "allFloorInfo";
 	case 11: return "addRequest";
+	case 12: return "area/collectStats";
+	case 13: return "area/showCreaturesInArea";
+	case 14: return "self/window";
+	case 15: return "self/tray";
+	case 16: return "area/rangeXY";
+	case 17: return "area/rangeZ";
 	default:
 		return NULL;
 	}
