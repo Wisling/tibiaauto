@@ -35,7 +35,7 @@ public:
 	int m_value;
 
 private:
-	CMenu * mapActionsMenu;
+	static CMenu * mapActionsMenu;
 	int m_x;
 	int m_y;	
 

@@ -20,7 +20,7 @@ class RandomProcessor : public AimlProcessor
 {
 public:
 	RandomProcessor() {
-		srand(time(NULL));
+		
 	}
 	~RandomProcessor() { }
 	

@@ -143,133 +143,54 @@ void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, i
 {
 	CTibiaMapProxy tibiaMap;
 	if (tibiaMap.isPointAvailable(newX,newY,newZ)&&tibiaMap.getPrevPointX(newX,newY,newZ)==0)
-	{
-		int updown=tibiaMap.getPointUpDown(newX,newY,newZ);				
+	{		
 		queue->add(newX,newY,newZ);
 		tibiaMap.setPrevPoint(newX,newY,newZ,prevX,prevY,prevZ);				
 	}
 }
 
-struct point CModuleUtil::findNearestDepot(int startX, int startY, int startZ)
-{
-	return findNearestDepot(startX,startY,startZ,0);
-}
-
-struct point CModuleUtil::findNearestDepot(int startX, int startY, int startZ, int useDiagonal)
-{
-	CPackSenderProxy sender;
-	prepareProhPointList();
-
-	CTibiaMapProxy tibiaMap;
-	CQueue *queue = new CQueue();
-	point p;
-	p.x=startX;
-	p.y=startY;
-	p.z=startZ;
-	queue->add(p);
-	tibiaMap.clearPrevPoint();
 
 
-	while (queue->size())
-	{
-		point currentPoint = queue->getFirst();
-		int x=currentPoint.x;
-		int y=currentPoint.y;
-		int z=currentPoint.z;
-		
-		/**
-		 * Check whether we are standing next to a depot (updown==301).
-		 */
-		if (tibiaMap.getPointUpDown(x+1,y,z)==301||
-			tibiaMap.getPointUpDown(x-1,y,z)==301||
-			tibiaMap.getPointUpDown(x,y+1,z)==301||
-			tibiaMap.getPointUpDown(x,y-1,z)==301)
-		{			
-
-
-			// yes, we are standing next to a depot
-			delete queue;			
-			return point(x,y,z);
-		}
-
-		/**
-		* 101 - open hole
-		* 102 - closed hole
-		* 103 - crate
-		* 201 - rope
-		* 202 - magic rope
-		* 203 - ladder
-		* 204 - stairs
-		*/
-
-		/**
-		 * For each direction - check whether the next point is available on the map
-		 * and whether it has not been visited before.
-		 */				
-		int updownMode=0;		
-		
-		
-		if (tibiaMap.isPointAvailable(x,y,z+1)&&tibiaMap.getPrevPointX(x,y,z+1)==0&&
-			tibiaMap.getPointUpDown(x,y,z+1)>=200&&tibiaMap.getPointUpDown(x,y,z+1)<300)
-		{
-			// up
-			queue->add(x,y,z+1);
-			tibiaMap.setPrevPoint(x,y,z+1,x,y,z);	
-		}		
-		if (tibiaMap.isPointAvailable(x,y,z-1)&&tibiaMap.getPrevPointX(x,y,z-1)==0&&
-			tibiaMap.getPointUpDown(x,y,z-1)>=100&&tibiaMap.getPointUpDown(x,y,z-1)<200)
-		{
-			// down: crate, closed hole, open hole + rope, open hole + magic rope, open hole + ladder
-			queue->add(x,y,z-1);
-			tibiaMap.setPrevPoint(x,y,z-1,x,y,z);
-		}	
-		if (tibiaMap.getPointUpDown(x,y,z)==101||tibiaMap.getPointUpDown(x,y,z)==204)
-		{
-			if (tibiaMap.getPrevPointZ(x,y,z)==z)
-			{
-				updownMode=1;
-			}
-		}		
-		if (!updownMode)
-		{
-			// if we stand on open hole or stairs we can only change z coordinate
-			findPathOnMapProcessPoint(queue,x,y,z,x+1,y,z);
-			findPathOnMapProcessPoint(queue,x,y,z,x-1,y,z);
-			findPathOnMapProcessPoint(queue,x,y,z,x,y+1,z);
-			findPathOnMapProcessPoint(queue,x,y,z,x,y-1,z);
-			
-			if (useDiagonal)
-			{
-				findPathOnMapProcessPoint(queue,x,y,z,x+1,y+1,z);
-				findPathOnMapProcessPoint(queue,x,y,z,x-1,y+1,z);
-				findPathOnMapProcessPoint(queue,x,y,z,x+1,y-1,z);
-				findPathOnMapProcessPoint(queue,x,y,z,x-1,y-1,z);
-			}
-		}
-	}
-	
-	delete queue;
-	if (!useDiagonal)
-	{
-		return findNearestDepot(startX,startY,startZ,1);
-	} else {
-		return point(0,0,0);
-	}
-}
-
-void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15])
+void mapDebug(char *s)
 {	
+	return;
+	FILE *f=fopen("tibiaauto-debug-map.txt","a+");
+	if (f)
+	{
+		char dateStr [15];
+		char timeStr [15];
+		_strdate( dateStr);
+		_strtime( timeStr );
+		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);		
+		fclose(f);
+	}
+}
+
+struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15])
+{		
+	struct point retPoint(0,0,0);
+
+	char buf[128];
+	path[0]=0;
+	memset(path,0x00,sizeof(int)*15);
+
+	sprintf(buf,"findPathOnMap(startX=%d,startY=%d,startZ=%d,endX=%d,endY=%d,endZ=%d,endSpecialLocation=%d",startX,startY,startZ,endX,endY,endZ,endSpecialLocation);
+	mapDebug(buf);
+
+	// means: we are already on the target location
+	if (startX==endX&&startY==endY&&startZ==endZ) return retPoint;
+
 	int x,y;
 	prepareProhPointList();
 	CTibiaMapProxy tibiaMap;
 
 	// try to go to the point normally
-	findPathOnMap(startX,startY,startZ,endX,endY,endZ,path,0);
-	if (path[0]) return;
+	retPoint=findPathOnMap(startX,startY,startZ,endX,endY,endZ,endSpecialLocation,path,0);
+	if (path[0]) return retPoint;
 
 	// try to go to the point using also diagonals
-	findPathOnMap(startX,startY,startZ,endX,endY,endZ,path,1);
-	if (path[0]) return;
+	retPoint=findPathOnMap(startX,startY,startZ,endX,endY,endZ,endSpecialLocation,path,1);
+	if (path[0]) return retPoint;
 
 	// try to go to some point nearby
 	for (x=-1;x<=1;x++)
@@ -278,15 +199,46 @@ void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, in
 		{	
 			if (x||y)
 			{
-				findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,path,0);if (path[0]) return;	
-				findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,path,1);if (path[0]) return;		
+				sprintf(buf,"trampoline (%d,%d,%d)->(%d,%d,%d)",startX,startY,startZ,endX+x,endY+y,endZ);
+				mapDebug(buf);
+				retPoint=findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,endSpecialLocation,path,0);
+				if (path[0]) return retPoint;	
+				retPoint=findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,endSpecialLocation,path,1);
+				if (path[0]) return retPoint;		
 			}
 		}
 	}
+	return retPoint;
 }
 
-void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15],int useDiagonal)
+
+
+void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode,int useDiagonal)
+{
+
+		// if we stand on open hole or stairs we can only change z coordinate
+		findPathOnMapProcessPoint(queue,x,y,z,x+1,y,z+updownMode);
+		findPathOnMapProcessPoint(queue,x,y,z,x-1,y,z+updownMode);
+		findPathOnMapProcessPoint(queue,x,y,z,x,y+1,z+updownMode);
+		findPathOnMapProcessPoint(queue,x,y,z,x,y-1,z+updownMode);
+			
+		if (useDiagonal)
+		{
+			findPathOnMapProcessPoint(queue,x,y,z,x+1,y+1,z+updownMode);
+			findPathOnMapProcessPoint(queue,x,y,z,x-1,y+1,z+updownMode);
+			findPathOnMapProcessPoint(queue,x,y,z,x+1,y-1,z+updownMode);
+			findPathOnMapProcessPoint(queue,x,y,z,x-1,y-1,z+updownMode);
+		}
+}
+
+#define MAX_PATH_LEN 10000
+point pathTab[MAX_PATH_LEN];
+int pathTabLen;
+int lastEndX=-1,lastEndY=-1,lastEndZ=-1;
+
+struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15],int useDiagonal)
 {	
+	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
 		
 
@@ -294,84 +246,196 @@ void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, in
 	memset(path,0x00,sizeof(int)*15);
 
 	// unable to reach point which is not available (e.g. other creature standing on it)
-	if (!tibiaMap.isPointAvailable(endX,endY,endZ)) return;
+	if (!endSpecialLocation&&!tibiaMap.isPointAvailable(endX,endY,endZ)) return point(0,0,0);
 	
 	
 	CQueue *queue = new CQueue();
 
 	point p;
-	p.x=endX;
-	p.y=endY;
-	p.z=endZ;
+	p.x=startX;
+	p.y=startY;
+	p.z=startZ;
+	
 
 	queue->add(p);
 
-	tibiaMap.clearPrevPoint();	
+	tibiaMap.clearPrevPoint();		
+	tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
+
+	char buf[128];	
 		
+	sprintf(buf,"============== (%d,%d,%d)->(%d,%d,%d) =========",startX,startY,startZ,endX,endY,endZ);
+	mapDebug(buf);
+	
+
+
 	while (queue->size())
 	{	
-		point currentPoint = queue->getFirst();
-		//sprintf(buf,"queue size = %d; cur=(%d,%d,%d)",queue->size(),currentPoint.x,currentPoint.y,currentPoint.z);
-		//AfxMessageBox(buf);
-		if (currentPoint.x==startX&&currentPoint.y==startY&&currentPoint.z==startZ)
-		{						
-			//sprintf(buf,"find path (%d,%d,%d)->(%d,%d,%d)",startX,startY,startZ,endX,endY,endZ);
-			//AfxMessageBox(buf);
-			//AfxMessageBox("got it");
-			int pos=0;
-			while (!(currentPoint.x==endX&&currentPoint.y==endY&&currentPoint.z==endZ)&&pos<10)
-			{
-				int nextX = tibiaMap.getPrevPointX(currentPoint.x,currentPoint.y,currentPoint.z);
-				int nextY = tibiaMap.getPrevPointY(currentPoint.x,currentPoint.y,currentPoint.z);
-				int nextZ = tibiaMap.getPrevPointZ(currentPoint.x,currentPoint.y,currentPoint.z);
-				if (currentPoint.x+1==nextX&&currentPoint.y==nextY&&currentPoint.z==nextZ) path[pos++]=1; // right
-				if (currentPoint.x-1==nextX&&currentPoint.y==nextY&&currentPoint.z==nextZ) path[pos++]=5; // left
-				if (currentPoint.x==nextX&&currentPoint.y+1==nextY&&currentPoint.z==nextZ) path[pos++]=7; // down
-				if (currentPoint.x==nextX&&currentPoint.y-1==nextY&&currentPoint.z==nextZ) path[pos++]=3; // up
+		point currentPoint = queue->getFirst();		
 
-				if (currentPoint.x+1==nextX&&currentPoint.y+1==nextY&&currentPoint.z==nextZ) path[pos++]=8; // down-right
-				if (currentPoint.x-1==nextX&&currentPoint.y+1==nextY&&currentPoint.z==nextZ) path[pos++]=6; // down-left
-				if (currentPoint.x+1==nextX&&currentPoint.y-1==nextY&&currentPoint.z==nextZ) path[pos++]=2; // up-right
-				if (currentPoint.x-1==nextX&&currentPoint.y-1==nextY&&currentPoint.z==nextZ) path[pos++]=4; // up-left
+		int x=currentPoint.x;
+		int y=currentPoint.y;
+		int z=currentPoint.z;
 
-				if (currentPoint.z==nextZ+1)
-				{
-					// go to up point - if we are there return the special 
-					// up code; otherwise just walk there
-					if (pos==0)
-					{
-						path[pos++]=0xD0;
-					}					
-					return;
-				}
-				if (currentPoint.z==nextZ-1)
-				{
-					// go to down point - if we are there return the special 
-					// down code; otherwise just walk there
-					if (pos==0)
-					{
-						path[pos++]=0xD1;
-					} 					
-					return;
-				}
-				currentPoint.x=nextX;
-				currentPoint.y=nextY;
-				currentPoint.z=nextZ;
-			};				
-			
-			return;
+		sprintf(buf,"queue: (%d,%d,%d)",currentPoint.x,currentPoint.y,currentPoint.z);
+		mapDebug(buf);
+
+		int gotToEndPoint=0;
+		// final point reached
+		if (currentPoint.x==endX&&currentPoint.y==endY&&currentPoint.z==endZ) gotToEndPoint=1;
+		// standing by the depot
+		if (endSpecialLocation&&
+			(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
+			tibiaMap.getPointUpDown(x-1,y,z)==endSpecialLocation||
+			tibiaMap.getPointUpDown(x,y+1,z)==endSpecialLocation||
+			tibiaMap.getPointUpDown(x,y-1,z)==endSpecialLocation))
+		{
+			// endSpecialLocation found - where we stand is our "end point"
+			gotToEndPoint=1;
+			endX=x;
+			endY=y;
+			endZ=z;
 		}
+	
+
+
+		if (gotToEndPoint)
+		{				
+			int pathPos=0;
+			while (currentPoint.x!=startX||currentPoint.y!=startY||currentPoint.z!=startZ)
+			{				
+				p.x=currentPoint.x;
+				p.y=currentPoint.y;
+				p.z=currentPoint.z;
+				pathTab[pathPos].x=p.x;
+				pathTab[pathPos].y=p.y;
+				pathTab[pathPos].z=p.z;
+
+				currentPoint.x=tibiaMap.getPrevPointX(p.x,p.y,p.z);
+				currentPoint.y=tibiaMap.getPrevPointY(p.x,p.y,p.z);
+				currentPoint.z=tibiaMap.getPrevPointZ(p.x,p.y,p.z);
+				sprintf(buf,"cur=(%d,%d,%d) new=(%d,%d,%d)",p.x,p.y,p.z,currentPoint.x,currentPoint.y,currentPoint.z);
+				mapDebug(buf);
+
+				pathPos++;
+
+				if (pathPos>MAX_PATH_LEN-5) return point(0,0,0);
+			};
+			pathTab[pathPos].x=startX;
+			pathTab[pathPos].y=startY;
+			pathTab[pathPos].z=startZ;
+			pathPos++;
+					
+			
+			sprintf(buf,"111 pathPos=%d",pathPos);
+			mapDebug(buf);
+			int pos=0;
+			for (pos=0;pos<10&&pos<pathPos-1;pos++)			
+			{
+				int curX = pathTab[pathPos-pos-1].x;
+				int curY = pathTab[pathPos-pos-1].y;
+				int curZ = pathTab[pathPos-pos-1].z;
+				int nextX = pathTab[pathPos-pos-2].x;
+				int nextY = pathTab[pathPos-pos-2].y;
+				int nextZ = pathTab[pathPos-pos-2].z;
+				sprintf(buf,"X cur=(%d,%d,%d) next=(%d,%d,%d)",curX,curY,curZ,nextX,nextY,nextZ);
+				mapDebug(buf);
+				if (curX+1==nextX&&curY==nextY&&curZ==nextZ) path[pos]=1; // right
+				if (curX-1==nextX&&curY==nextY&&curZ==nextZ) path[pos]=5; // left
+				if (curX==nextX&&curY+1==nextY&&curZ==nextZ) path[pos]=7; // down
+				if (curX==nextX&&curY-1==nextY&&curZ==nextZ) path[pos]=3; // up
+
+				if (curX+1==nextX&&curY+1==nextY&&curZ==nextZ) path[pos]=8; // down-right
+				if (curX-1==nextX&&curY+1==nextY&&curZ==nextZ) path[pos]=6; // down-left
+				if (curX+1==nextX&&curY-1==nextY&&curZ==nextZ) path[pos]=2; // up-right
+				if (curX-1==nextX&&curY-1==nextY&&curZ==nextZ) path[pos]=4; // up-left
+
+				if (curZ-1==nextZ)
+				{
+					// up
+					if (pos==0)
+					{		
+						if (curX==nextX+1)
+						{
+							path[pos]=0xE1;
+						}
+						if (curX==nextX-1)
+						{
+							path[pos]=0xE2;
+						}
+						if (curY==nextY+1)
+						{
+							path[pos]=0xE3;
+						}
+						if (curY==nextY-1)
+						{
+							path[pos]=0xE4;
+						}
+						
+						if (curX==nextX&&curY==nextY)
+						{
+							path[pos]=0xD0;
+						}
+					}
+					break;
+				}
+				if (curZ+1==nextZ)
+				{
+					// down
+					if (pos==0)
+					{
+						if (curX==nextX+1)
+						{
+							path[pos]=0xF1;
+						}
+						if (curX==nextX-1)
+						{
+							path[pos]=0xF2;
+						}
+						if (curY==nextY+1)
+						{
+							path[pos]=0xF3;
+						}
+						if (curY==nextY-1)
+						{
+							path[pos]=0xF4;
+						}
+						
+						if (curX==nextX&&curY==nextY)
+						{
+							path[pos]=0xD1;
+						}
+					}
+					break;
+				}
+			}
+			
+			sprintf(buf,"XXX pos=%d pathPos=%d ",pos,pathPos);
+			int i;
+			for (i=0;i<pos;i++)
+			{
+				char buf2[128];				
+				sprintf(buf2," (%d)",path[i]);
+				if (strlen(buf2)<100)
+				{
+					strcat(buf,buf2);
+				}
+			}
+			mapDebug(buf);
+
+			lastEndX=endX;
+			lastEndY=endY;
+			lastEndZ=endZ;
+			pathTabLen=pathPos;
+					
+			return point(endX,endY,endZ);
+		}
+		
 		
 		/**
 		 * For each direction - check whether the next point is available on the map
 		 * and whether it has not been visited before.
 		 */		
-		int x=currentPoint.x;
-		int y=currentPoint.y;
-		int z=currentPoint.z;
-		int updownMode=0;		
-
-
 
 		/**
 		 * 101 - open hole
@@ -382,51 +446,116 @@ void CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, in
 		 * 203 - ladder
 		 * 204 - stairs
 		 */
+		
+		int forcedLevelChange=0; // if set to 1 then going north, south, east, west is forbidden
+		
+		char buf[128];
+		sprintf(buf,"current = %d,%d,%d",x,y,z);
+		mapDebug(buf);
+		//AfxMessageBox(buf);
 
-		             
-		if (tibiaMap.isPointAvailable(x,y,z+1)&&tibiaMap.getPrevPointX(x,y,z+1)==0&&
-			tibiaMap.getPointUpDown(x,y,z+1)>=200&&tibiaMap.getPointUpDown(x,y,z+1)<300)
-		{
-			// up
-			queue->add(x,y,z+1);
-			tibiaMap.setPrevPoint(x,y,z+1,x,y,z);			
-		}		
-		if (tibiaMap.isPointAvailable(x,y,z-1)&&tibiaMap.getPrevPointX(x,y,z-1)==0&&
-			tibiaMap.getPointUpDown(x,y,z-1)>=100&&tibiaMap.getPointUpDown(x,y,z-1)<200)
-		{
-			// down: crate, closed hole, open hole + rope, open hole + magic rope, open hole + ladder
+		// we directly go up using rope, magic rope, ladder, stairs
+		if (tibiaMap.isPointAvailableNoProh(x,y,z-1)&&tibiaMap.getPrevPointX(x,y,z-1)==0&&
+			tibiaMap.getPointUpDown(x,y,z)>=200&&tibiaMap.getPointUpDown(x,y,z)<300)
+		{						
 			queue->add(x,y,z-1);
-			tibiaMap.setPrevPoint(x,y,z-1,x,y,z);			
-		}	
-		
-		
-		
+			tibiaMap.setPrevPoint(x,y,z-1,x,y,z);
+			findPathAllDirection(queue,x,y,z-1,0,useDiagonal);
+			mapDebug("go up");
+		}
+
+		// we go directly down using open hole, closed hole, crate
+		if (tibiaMap.isPointAvailableNoProh(x,y,z+1)&&tibiaMap.getPrevPointX(x,y,z+1)==0&&
+			tibiaMap.getPointUpDown(x,y,z)>=100&&tibiaMap.getPointUpDown(x,y,z)<200)
+		{			
+			queue->add(x,y,z+1);
+			tibiaMap.setPrevPoint(x,y,z+1,x,y,z);
+			findPathAllDirection(queue,x,y,z+1,0,useDiagonal);
+			mapDebug("go down");
+		}
+
 		if (tibiaMap.getPointUpDown(x,y,z)==101||tibiaMap.getPointUpDown(x,y,z)==204)
 		{
-			if (tibiaMap.getPrevPointZ(x,y,z)==z)
-			{
-				updownMode=1;
-			}
-		}		
-		if (!updownMode)
-		{
-			// if we stand on open hole or stairs we can only change z coordinate
-			findPathOnMapProcessPoint(queue,x,y,z,x+1,y,z);
-			findPathOnMapProcessPoint(queue,x,y,z,x-1,y,z);
-			findPathOnMapProcessPoint(queue,x,y,z,x,y+1,z);
-			findPathOnMapProcessPoint(queue,x,y,z,x,y-1,z);
-			
-			if (useDiagonal)
-			{
-				findPathOnMapProcessPoint(queue,x,y,z,x+1,y+1,z);
-				findPathOnMapProcessPoint(queue,x,y,z,x-1,y+1,z);
-				findPathOnMapProcessPoint(queue,x,y,z,x+1,y-1,z);
-				findPathOnMapProcessPoint(queue,x,y,z,x-1,y-1,z);
-			}
+			forcedLevelChange=1;
 		}
+
+		if (!forcedLevelChange)
+		{
+			findPathAllDirection(queue,x,y,z,0,useDiagonal);
+		}
+	
+		
+	
+		// special going up if lader busy
+		if (tibiaMap.isPointAvailableNoProh(x+1,y,z-1)&&tibiaMap.getPrevPointX(x+1,y,z-1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x+1,y,z)==201||tibiaMap.getPointUpDownNoProh(x+1,y,z)==203))
+		{
+			queue->add(x+1,y,z-1);
+			tibiaMap.setPrevPoint(x+1,y,z-1,x,y,z);
+			findPathAllDirection(queue,x+1,y,z,-1,useDiagonal);
+		}
+
+		if (tibiaMap.isPointAvailableNoProh(x-1,y,z-1)&&tibiaMap.getPrevPointX(x-1,y,z-1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x-1,y,z)==201||tibiaMap.getPointUpDownNoProh(x-1,y,z)==203))
+		{
+			queue->add(x-1,y,z-1);
+			tibiaMap.setPrevPoint(x-1,y,z-1,x,y,z);
+			findPathAllDirection(queue,x-1,y,z,-1,useDiagonal);
+		}
+
+		if (tibiaMap.isPointAvailableNoProh(x,y+1,z-1)&&tibiaMap.getPrevPointX(x,y+1,z-1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x,y+1,z)==201||tibiaMap.getPointUpDownNoProh(x,y+1,z)==203))
+		{
+			queue->add(x,y+1,z-1);
+			tibiaMap.setPrevPoint(x,y+1,z-1,x,y,z);
+			findPathAllDirection(queue,x,y+1,z,-1,useDiagonal);
+		}
+
+		if (tibiaMap.isPointAvailableNoProh(x,y-1,z-1)&&tibiaMap.getPrevPointX(x,y-1,z-1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x,y-1,z)==201||tibiaMap.getPointUpDownNoProh(x,y-1,z)==203))
+		{
+			queue->add(x,y-1,z-1);
+			tibiaMap.setPrevPoint(x,y-1,z-1,x,y,z);
+			findPathAllDirection(queue,x,y-1,z,-1,useDiagonal);
+		}
+
+		// special going down if crate busy
+		if (tibiaMap.isPointAvailableNoProh(x+1,y,z+1)&&tibiaMap.getPrevPointX(x+1,y,z+1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x+1,y,z)==103))
+		{
+			queue->add(x+1,y,z+1);
+			tibiaMap.setPrevPoint(x+1,y,z+1,x,y,z);
+			findPathAllDirection(queue,x+1,y,z,1,useDiagonal);
+		}
+
+		if (tibiaMap.isPointAvailableNoProh(x-1,y,z+1)&&tibiaMap.getPrevPointX(x-1,y,z+1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x-1,y,z)==103))
+		{
+			queue->add(x-1,y,z+1);
+			tibiaMap.setPrevPoint(x-1,y,z+1,x,y,z);
+			findPathAllDirection(queue,x-1,y,z,1,useDiagonal);
+		}
+
+		if (tibiaMap.isPointAvailableNoProh(x,y+1,z+1)&&tibiaMap.getPrevPointX(x,y+1,z+1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x,y+1,z)==103))
+		{
+			queue->add(x,y+1,z+1);
+			tibiaMap.setPrevPoint(x,y+1,z+1,x,y,z);
+			findPathAllDirection(queue,x,y+1,z,1,useDiagonal);
+		}
+
+		if (tibiaMap.isPointAvailableNoProh(x,y-1,z+1)&&tibiaMap.getPrevPointX(x,y-1,z+1)==0&&
+			(tibiaMap.getPointUpDownNoProh(x,y-1,z)==103))
+		{
+			queue->add(x,y-1,z+1);
+			tibiaMap.setPrevPoint(x,y-1,z+1,x,y,z);
+			findPathAllDirection(queue,x,y-1,z,1,useDiagonal);
+		}
+	
 	}
 
 	delete queue;		
+	return point(0,0,0);
 }
 
 
@@ -570,7 +699,7 @@ int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, i
 	return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71;
 }
 
-void CModuleUtil::executeWalk(int path[15])
+void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 {
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
@@ -580,136 +709,217 @@ void CModuleUtil::executeWalk(int path[15])
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int pathSize;
 	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}										
-	if (pathSize==1&&(path[0]==0xD0||path[0]==0xD1))
+	char buf[128];
+	sprintf(buf,"pathsize=%d assumed=(%d,%d,%d) now=(%d,%d,%d) delta=(%d,%d,%d)=%d",pathSize,startX,startY,startZ,self->x,self->y,self->z,self->x-startX,self->y-startY,self->z-startZ,abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ));	
+	mapDebug(buf);
+	// refuse executeWalk() if path calculated from a different point that we are
+	// now standing on
+	if (abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ)!=0) 
 	{
-		if (path[0]==0xD0)
-								{
-			// // go up (201-299 slots)
-			switch (tibiaMap.getPointUpDown(self->x,self->y,self->z))
-			{		
-			case 201:
-				// rope
-				{
-					CUIntArray itemsAccepted;
-					int contNr;
-					itemsAccepted.Add(itemProxy.getValueForConst("rope"));
-					for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+		return;
+	}
+	if (pathSize==1&&path[0]>=0xD0)
+	{
+		switch (path[0])
+		{
+		case 0xD0:		
+			{
+				// // go up standard (201-299 slots)
+				switch (tibiaMap.getPointUpDown(self->x,self->y,self->z))
+				{		
+				case 201:
+					// rope
 					{
-						CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-						if (item)
+						CUIntArray itemsAccepted;
+						int contNr;
+						itemsAccepted.Add(itemProxy.getValueForConst("rope"));
+						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
-							sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),self->x,self->y,self->z,2,1);
-							delete item;
-							break;
-						}
-					}
-				}
-				break;
-			case 202:
-				// go up using 'magic rope' [for pacc only]
-				sender.say("exani tera");
-				break;								
-			case 203:
-				sender.useItemOnFloor(itemProxy.getValueForConst("ladder"),self->x,self->y,self->z);
-				// ladder
-				break;
-			case 204:
-				// stairs [do nothing]
-				break;
-			}		
-		} else {
-			// go down (101-199 slots)
-			switch (tibiaMap.getPointUpDown(self->x,self->y,self->z))
-			{		
-			case 101:
-				// open hole [do nothing]
-				break;
-			case 102:
-				// closed hole - use shovel to open
-				{					
-					CTibiaItem *shovel = NULL;
-					CUIntArray itemsAccepted;
-					int contNr;
-					itemsAccepted.Add(itemProxy.getValueForConst("shovel"));
-					for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
-					{
-						CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-						if (item)
-						{
-							shovel=item;							
-							break;
-						}
-						delete item;
-					}									
-					if (shovel)
-					{												
-						// shovel found, so proceed with opening hole
-						int path[2];												
-						int mode=0;
-						if (tibiaMap.isPointAvailable(self->x-1,self->y,self->z)) mode=1;
-						if (tibiaMap.isPointAvailable(self->x+1,self->y,self->z)) mode=2;
-						if (tibiaMap.isPointAvailable(self->x,self->y-1,self->z)) mode=3;
-						if (tibiaMap.isPointAvailable(self->x,self->y+1,self->z)) mode=4;
-						path[1]=0;						
-						switch (mode)
-						{
-						case 1: path[0]=5;break;
-						case 2: path[0]=1;break;
-						case 3: path[0]=3;break;
-						case 4: path[0]=7;break;						
-						}												
-						sender.stepMulti(path,1);
-						Sleep(1000);
-						CTibiaCharacter *self2 = reader.readSelfCharacter();						
-						int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));
-						
-						int blocked=0;
-						int updown=0;
-						int i;
-						for (i=0;i<count;i++)
-						{						
-							int tileId = reader.mapGetPointItemId(point(self->x-self2->x,self->y-self2->y,0),i);
-							//char buf[128];
-							//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
-							//::MessageBox(0,buf,buf,0);
-							if (tileId!=99)
+							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
+							if (item)
 							{
-								CTibiaTile *tile = reader.getTibiaTile(tileId);								
-								
-								if (tile->requireShovel)
-								{										
-									sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z,2,0);
-									break;
-								}
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),self->x,self->y,self->z,2,1);
+								delete item;
+								break;
 							}
 						}
-						delete self2;
-						Sleep(1000);
-						switch (mode)
-						{
-						case 2: path[0]=5;break;
-						case 1: path[0]=1;break;
-						case 4: path[0]=3;break;
-						case 3: path[0]=7;break;						
-						}
-						sender.stepMulti(path,1);
-						Sleep(1000);
-						delete shovel;
 					}
-				}
+					break;
+				case 202:
+					// go up using 'magic rope' [for pacc only]
+					sender.say("exani tera");
+					break;								
+				case 203:
+					sender.useItemOnFloor(itemProxy.getValueForConst("ladder"),self->x,self->y,self->z);
+					// ladder
+					break;
+				case 204:
+					// stairs [do nothing]
+					break;
+				}		
 				break;
-			case 103:
-				// crate - use to go down
-				sender.useItemOnFloor(itemProxy.getValueForConst("crate"),self->x,self->y,self->z);
+			} // case 0xD0
+		case 0xD1:
+			{
+				// go down (101-199 slots)
+				switch (tibiaMap.getPointUpDown(self->x,self->y,self->z))
+				{		
+				case 101:
+					// open hole [do nothing]
+					break;
+				case 102:
+					// closed hole - use shovel to open
+					{					
+						CTibiaItem *shovel = NULL;
+						CUIntArray itemsAccepted;
+						int contNr;
+						itemsAccepted.Add(itemProxy.getValueForConst("shovel"));
+						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+						{
+							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
+							if (item)
+							{
+								shovel=item;							
+								break;
+							}
+							delete item;
+						}									
+						if (shovel)
+						{												
+							// shovel found, so proceed with opening hole
+							int path[2];												
+							int mode=0;
+							if (tibiaMap.isPointAvailable(self->x-1,self->y,self->z)) mode=1;
+							if (tibiaMap.isPointAvailable(self->x+1,self->y,self->z)) mode=2;
+							if (tibiaMap.isPointAvailable(self->x,self->y-1,self->z)) mode=3;
+							if (tibiaMap.isPointAvailable(self->x,self->y+1,self->z)) mode=4;
+							path[1]=0;						
+							switch (mode)
+							{
+							case 1: path[0]=5;break;
+							case 2: path[0]=1;break;
+							case 3: path[0]=3;break;
+							case 4: path[0]=7;break;						
+							}												
+							sender.stepMulti(path,1);
+							Sleep(1000);
+							CTibiaCharacter *self2 = reader.readSelfCharacter();						
+							int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));
+							
+							int blocked=0;
+							int updown=0;
+							int i;
+							for (i=0;i<count;i++)
+							{						
+								int tileId = reader.mapGetPointItemId(point(self->x-self2->x,self->y-self2->y,0),i);
+								//char buf[128];
+								//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
+								//::MessageBox(0,buf,buf,0);
+								if (tileId!=99)
+								{
+									CTibiaTile *tile = reader.getTibiaTile(tileId);								
+									
+									if (tile->requireShovel)
+									{										
+										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z,2,0);
+										break;
+									}
+								}
+							}
+							delete self2;
+							Sleep(1000);
+							switch (mode)
+							{
+							case 2: path[0]=5;break;
+							case 1: path[0]=1;break;
+							case 4: path[0]=3;break;
+							case 3: path[0]=7;break;						
+							}
+							sender.stepMulti(path,1);
+							Sleep(1000);
+							delete shovel;
+						}
+					}
+					break;
+				case 103:
+					// crate - use to go down
+					sender.useItemOnFloor(itemProxy.getValueForConst("crate"),self->x,self->y,self->z);
+					break;
+				} // switch updown
+			} // case 0xD1	
+		case 0xE1:
+		case 0xE2:
+		case 0xE3:
+		case 0xE4:
+			{
+				// go up - but one left/right/up/down
+				int modX = self->x;
+				int modY = self->y;
+				if (path[0]==0xE1) modX--;
+				if (path[0]==0xE2) modX++;
+				if (path[0]==0xE3) modY--;
+				if (path[0]==0xE4) modY++;
+				switch (tibiaMap.getPointUpDownNoProh(modX,modY,self->z))
+				{		
+				case 201:
+					// rope
+					{
+						CUIntArray itemsAccepted;
+						int contNr;
+						itemsAccepted.Add(itemProxy.getValueForConst("rope"));
+						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+						{
+							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
+							if (item)
+							{
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),modX,modY,self->z,2,1);
+								delete item;
+								break;
+							}
+						}
+					}
+					break;									
+				case 203:
+					sender.useItemOnFloor(itemProxy.getValueForConst("ladder"),modX,modY,self->z);
+					// ladder
+					break;				
+				}		
 				break;
-			}
+			} // case 0xE1-E4
+		case 0xF1:
+		case 0xF2:
+		case 0xF3:
+		case 0xF4:
+			{
+				// go down - but one left/right/up/down
+				int modX = self->x;
+				int modY = self->y;
+				if (path[0]==0xF1) modX--;
+				if (path[0]==0xF2) modX++;
+				if (path[0]==0xF3) modY--;
+				if (path[0]==0xF4) modY++;
+
+				switch (tibiaMap.getPointUpDownNoProh(modX,modY,self->z))
+				{		
+				case 103:
+					// crate
+					{
+						sender.useItemOnFloor(itemProxy.getValueForConst("crate"),modX,modY,self->z);
+					}
+					break;													
+				}		
+				break;
+			} // case 0xF1-F4
 			
-		}
+		} // switc path[0]
 		// after going up wait 3 seconds to have sync with server
 		Sleep(3000);
 	} else {
-		// 'normal' stepping
-		sender.stepMulti(path,pathSize);												
+		if (pathSize>0)
+		{
+			// 'normal' stepping
+			sender.stepMulti(path,pathSize);												
+		}
 	}
 	delete self;
 }

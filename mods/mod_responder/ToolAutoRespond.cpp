@@ -44,13 +44,17 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 			config->queue.pop();
 
 			LeaveCriticalSection(&QueueCriticalSection); 
-
-			CAutoResponderParser parser(config);
-			memcpy(config->context->channel,msg->chan,16384);
-			memcpy(config->context->playerName,msg->nick,16384);
-			memcpy(config->context->message,msg->mess,16384);
-			config->status=CToolAutoResponderThreadStatus_generalParse;
-			parser.parseThread(config->threadNode,config->context);
+			if (!config->context->isPlayerIgnored(msg->nick))
+			{
+				// double check for player ignore (to not overload the queue
+				// but also to avoid answering when there is message flood)
+				CAutoResponderParser parser(config);
+				memcpy(config->context->channel,msg->chan,16384);
+				memcpy(config->context->playerName,msg->nick,16384);
+				memcpy(config->context->message,msg->mess,16384);
+				config->status=CToolAutoResponderThreadStatus_generalParse;
+				parser.parseThread(config->threadNode,config->context);
+			}
 			delete msg;
 		}
 	}

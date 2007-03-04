@@ -1,0 +1,1504 @@
+03/04/07 19:12:59: Cavebot started
+03/04/07 19:13:00: Next loop. States: 0, 0, 0, 0
+03/04/07 19:13:00: Depot check
+03/04/07 19:13:00: Entering 'loot from floor' area
+03/04/07 19:13:00: findPathOnMap: loot from floor
+03/04/07 19:13:00: Floor loot: item (0,-1,1)
+03/04/07 19:13:00: findPathOnMap: loot from floor
+03/04/07 19:13:00: findPathOnMap: loot from floor
+03/04/07 19:13:00: findPathOnMap: loot from floor
+03/04/07 19:13:00: findPathOnMap: loot from floor
+03/04/07 19:13:00: Loot from floor: before anything to loot check
+03/04/07 19:13:00: Loot from floor: found something to loot -> walking
+03/04/07 19:13:00: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:00: isMonsterAttackingMe=0 currentTm=596544 attackConsiderPeriod=20000 currentTm-cons=576544 lastAttackTm=0
+03/04/07 19:13:00: isMonsterAttackingMe=0 currentTm=596544 attackConsiderPeriod=20000 currentTm-cons=576544 lastAttackTm=0
+03/04/07 19:13:00: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:00: Entering attack pre-execution area
+03/04/07 19:13:00: Before dist loop
+03/04/07 19:13:00: No attack target found
+03/04/07 19:13:00: Looking for a new waypoint
+03/04/07 19:13:00: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:00: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:00: timing: findPathOnMap() = 0ms
+03/04/07 19:13:00: Walking: no path found
+03/04/07 19:13:00: End cavebot loop
+03/04/07 19:13:01: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:01: Depot check
+03/04/07 19:13:01: Entering 'loot from floor' area
+03/04/07 19:13:01: findPathOnMap: loot from floor
+03/04/07 19:13:01: Floor loot: item (0,-1,1)
+03/04/07 19:13:01: findPathOnMap: loot from floor
+03/04/07 19:13:01: findPathOnMap: loot from floor
+03/04/07 19:13:01: findPathOnMap: loot from floor
+03/04/07 19:13:01: findPathOnMap: loot from floor
+03/04/07 19:13:01: Loot from floor: before anything to loot check
+03/04/07 19:13:01: Loot from floor: found something to loot -> walking
+03/04/07 19:13:01: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:01: isMonsterAttackingMe=0 currentTm=597600 attackConsiderPeriod=20000 currentTm-cons=577600 lastAttackTm=0
+03/04/07 19:13:01: isMonsterAttackingMe=0 currentTm=597600 attackConsiderPeriod=20000 currentTm-cons=577600 lastAttackTm=0
+03/04/07 19:13:01: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:01: Entering attack pre-execution area
+03/04/07 19:13:01: Before dist loop
+03/04/07 19:13:01: No attack target found
+03/04/07 19:13:01: Looking for a new waypoint
+03/04/07 19:13:01: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:01: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:01: timing: findPathOnMap() = 0ms
+03/04/07 19:13:01: Walking: no path found
+03/04/07 19:13:01: End cavebot loop
+03/04/07 19:13:02: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:02: Depot check
+03/04/07 19:13:02: Entering 'loot from floor' area
+03/04/07 19:13:02: findPathOnMap: loot from floor
+03/04/07 19:13:02: Floor loot: item (0,-1,1)
+03/04/07 19:13:02: findPathOnMap: loot from floor
+03/04/07 19:13:02: findPathOnMap: loot from floor
+03/04/07 19:13:02: findPathOnMap: loot from floor
+03/04/07 19:13:02: findPathOnMap: loot from floor
+03/04/07 19:13:02: Loot from floor: before anything to loot check
+03/04/07 19:13:02: Loot from floor: found something to loot -> walking
+03/04/07 19:13:02: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:02: isMonsterAttackingMe=0 currentTm=598759 attackConsiderPeriod=20000 currentTm-cons=578759 lastAttackTm=0
+03/04/07 19:13:02: isMonsterAttackingMe=0 currentTm=598759 attackConsiderPeriod=20000 currentTm-cons=578759 lastAttackTm=0
+03/04/07 19:13:02: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:02: Entering attack pre-execution area
+03/04/07 19:13:02: Before dist loop
+03/04/07 19:13:02: No attack target found
+03/04/07 19:13:02: Looking for a new waypoint
+03/04/07 19:13:02: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:02: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:02: timing: findPathOnMap() = 0ms
+03/04/07 19:13:02: Walking: no path found
+03/04/07 19:13:02: End cavebot loop
+03/04/07 19:13:03: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:03: Depot check
+03/04/07 19:13:03: Entering 'loot from floor' area
+03/04/07 19:13:03: findPathOnMap: loot from floor
+03/04/07 19:13:03: Floor loot: item (0,-1,1)
+03/04/07 19:13:03: findPathOnMap: loot from floor
+03/04/07 19:13:03: findPathOnMap: loot from floor
+03/04/07 19:13:03: findPathOnMap: loot from floor
+03/04/07 19:13:03: findPathOnMap: loot from floor
+03/04/07 19:13:03: Loot from floor: before anything to loot check
+03/04/07 19:13:03: Loot from floor: found something to loot -> walking
+03/04/07 19:13:03: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:03: isMonsterAttackingMe=0 currentTm=600048 attackConsiderPeriod=20000 currentTm-cons=580048 lastAttackTm=0
+03/04/07 19:13:03: isMonsterAttackingMe=0 currentTm=600048 attackConsiderPeriod=20000 currentTm-cons=580048 lastAttackTm=0
+03/04/07 19:13:03: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:03: Entering attack pre-execution area
+03/04/07 19:13:03: Before dist loop
+03/04/07 19:13:03: No attack target found
+03/04/07 19:13:03: Looking for a new waypoint
+03/04/07 19:13:03: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:03: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:03: timing: findPathOnMap() = 0ms
+03/04/07 19:13:03: Walking: no path found
+03/04/07 19:13:03: End cavebot loop
+03/04/07 19:13:04: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:04: Depot check
+03/04/07 19:13:04: Entering 'loot from floor' area
+03/04/07 19:13:05: findPathOnMap: loot from floor
+03/04/07 19:13:05: Floor loot: item (0,-1,1)
+03/04/07 19:13:05: findPathOnMap: loot from floor
+03/04/07 19:13:05: findPathOnMap: loot from floor
+03/04/07 19:13:05: findPathOnMap: loot from floor
+03/04/07 19:13:05: findPathOnMap: loot from floor
+03/04/07 19:13:05: Loot from floor: before anything to loot check
+03/04/07 19:13:05: Loot from floor: found something to loot -> walking
+03/04/07 19:13:05: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:05: isMonsterAttackingMe=0 currentTm=601296 attackConsiderPeriod=20000 currentTm-cons=581296 lastAttackTm=0
+03/04/07 19:13:05: isMonsterAttackingMe=0 currentTm=601296 attackConsiderPeriod=20000 currentTm-cons=581296 lastAttackTm=0
+03/04/07 19:13:05: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:05: Entering attack pre-execution area
+03/04/07 19:13:05: Before dist loop
+03/04/07 19:13:05: No attack target found
+03/04/07 19:13:05: Looking for a new waypoint
+03/04/07 19:13:05: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:05: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:05: timing: findPathOnMap() = 0ms
+03/04/07 19:13:05: Walking: no path found
+03/04/07 19:13:05: End cavebot loop
+03/04/07 19:13:06: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:06: Depot check
+03/04/07 19:13:06: Entering 'loot from floor' area
+03/04/07 19:13:06: findPathOnMap: loot from floor
+03/04/07 19:13:06: Floor loot: item (0,-1,1)
+03/04/07 19:13:06: findPathOnMap: loot from floor
+03/04/07 19:13:06: findPathOnMap: loot from floor
+03/04/07 19:13:06: findPathOnMap: loot from floor
+03/04/07 19:13:06: findPathOnMap: loot from floor
+03/04/07 19:13:06: Loot from floor: before anything to loot check
+03/04/07 19:13:06: Loot from floor: found something to loot -> walking
+03/04/07 19:13:06: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:06: isMonsterAttackingMe=0 currentTm=602256 attackConsiderPeriod=20000 currentTm-cons=582256 lastAttackTm=0
+03/04/07 19:13:06: isMonsterAttackingMe=0 currentTm=602256 attackConsiderPeriod=20000 currentTm-cons=582256 lastAttackTm=0
+03/04/07 19:13:06: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:06: Entering attack pre-execution area
+03/04/07 19:13:06: Before dist loop
+03/04/07 19:13:06: No attack target found
+03/04/07 19:13:06: Looking for a new waypoint
+03/04/07 19:13:06: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:06: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:06: timing: findPathOnMap() = 0ms
+03/04/07 19:13:06: Walking: no path found
+03/04/07 19:13:06: End cavebot loop
+03/04/07 19:13:07: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:07: Depot check
+03/04/07 19:13:07: Entering 'loot from floor' area
+03/04/07 19:13:07: findPathOnMap: loot from floor
+03/04/07 19:13:07: Floor loot: item (0,-1,1)
+03/04/07 19:13:07: findPathOnMap: loot from floor
+03/04/07 19:13:07: findPathOnMap: loot from floor
+03/04/07 19:13:07: findPathOnMap: loot from floor
+03/04/07 19:13:07: findPathOnMap: loot from floor
+03/04/07 19:13:07: Loot from floor: before anything to loot check
+03/04/07 19:13:07: Loot from floor: found something to loot -> walking
+03/04/07 19:13:07: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:07: isMonsterAttackingMe=0 currentTm=603392 attackConsiderPeriod=20000 currentTm-cons=583392 lastAttackTm=0
+03/04/07 19:13:07: isMonsterAttackingMe=0 currentTm=603392 attackConsiderPeriod=20000 currentTm-cons=583392 lastAttackTm=0
+03/04/07 19:13:07: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:07: Entering attack pre-execution area
+03/04/07 19:13:07: Before dist loop
+03/04/07 19:13:07: No attack target found
+03/04/07 19:13:07: Looking for a new waypoint
+03/04/07 19:13:07: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:07: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:07: timing: findPathOnMap() = 0ms
+03/04/07 19:13:07: Walking: no path found
+03/04/07 19:13:07: End cavebot loop
+03/04/07 19:13:08: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:08: Depot check
+03/04/07 19:13:08: Entering 'loot from floor' area
+03/04/07 19:13:08: findPathOnMap: loot from floor
+03/04/07 19:13:08: Floor loot: item (0,-1,1)
+03/04/07 19:13:08: findPathOnMap: loot from floor
+03/04/07 19:13:08: findPathOnMap: loot from floor
+03/04/07 19:13:08: findPathOnMap: loot from floor
+03/04/07 19:13:08: findPathOnMap: loot from floor
+03/04/07 19:13:08: Loot from floor: before anything to loot check
+03/04/07 19:13:08: Loot from floor: found something to loot -> walking
+03/04/07 19:13:08: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:08: isMonsterAttackingMe=0 currentTm=604416 attackConsiderPeriod=20000 currentTm-cons=584416 lastAttackTm=0
+03/04/07 19:13:08: isMonsterAttackingMe=0 currentTm=604416 attackConsiderPeriod=20000 currentTm-cons=584416 lastAttackTm=0
+03/04/07 19:13:08: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:08: Entering attack pre-execution area
+03/04/07 19:13:08: Before dist loop
+03/04/07 19:13:08: No attack target found
+03/04/07 19:13:08: Looking for a new waypoint
+03/04/07 19:13:08: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:08: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:08: timing: findPathOnMap() = 0ms
+03/04/07 19:13:08: Walking: no path found
+03/04/07 19:13:08: End cavebot loop
+03/04/07 19:13:09: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:09: Depot check
+03/04/07 19:13:09: Entering 'loot from floor' area
+03/04/07 19:13:09: findPathOnMap: loot from floor
+03/04/07 19:13:09: Floor loot: item (0,-1,1)
+03/04/07 19:13:09: findPathOnMap: loot from floor
+03/04/07 19:13:09: findPathOnMap: loot from floor
+03/04/07 19:13:09: findPathOnMap: loot from floor
+03/04/07 19:13:09: findPathOnMap: loot from floor
+03/04/07 19:13:09: Loot from floor: before anything to loot check
+03/04/07 19:13:09: Loot from floor: found something to loot -> walking
+03/04/07 19:13:09: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:09: isMonsterAttackingMe=0 currentTm=605520 attackConsiderPeriod=20000 currentTm-cons=585520 lastAttackTm=0
+03/04/07 19:13:09: isMonsterAttackingMe=0 currentTm=605520 attackConsiderPeriod=20000 currentTm-cons=585520 lastAttackTm=0
+03/04/07 19:13:09: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:09: Entering attack pre-execution area
+03/04/07 19:13:09: Before dist loop
+03/04/07 19:13:09: No attack target found
+03/04/07 19:13:09: Looking for a new waypoint
+03/04/07 19:13:09: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:09: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:09: timing: findPathOnMap() = 0ms
+03/04/07 19:13:09: Walking: no path found
+03/04/07 19:13:09: End cavebot loop
+03/04/07 19:13:10: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:10: Depot check
+03/04/07 19:13:10: Entering 'loot from floor' area
+03/04/07 19:13:10: findPathOnMap: loot from floor
+03/04/07 19:13:10: Floor loot: item (0,-1,1)
+03/04/07 19:13:10: findPathOnMap: loot from floor
+03/04/07 19:13:10: findPathOnMap: loot from floor
+03/04/07 19:13:10: findPathOnMap: loot from floor
+03/04/07 19:13:10: findPathOnMap: loot from floor
+03/04/07 19:13:10: Loot from floor: before anything to loot check
+03/04/07 19:13:10: Loot from floor: found something to loot -> walking
+03/04/07 19:13:10: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:10: isMonsterAttackingMe=0 currentTm=606640 attackConsiderPeriod=20000 currentTm-cons=586640 lastAttackTm=0
+03/04/07 19:13:10: isMonsterAttackingMe=0 currentTm=606640 attackConsiderPeriod=20000 currentTm-cons=586640 lastAttackTm=0
+03/04/07 19:13:10: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:10: Entering attack pre-execution area
+03/04/07 19:13:10: Before dist loop
+03/04/07 19:13:10: No attack target found
+03/04/07 19:13:10: Looking for a new waypoint
+03/04/07 19:13:10: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:10: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:10: timing: findPathOnMap() = 0ms
+03/04/07 19:13:10: Walking: no path found
+03/04/07 19:13:10: End cavebot loop
+03/04/07 19:13:11: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:11: Depot check
+03/04/07 19:13:11: Entering 'loot from floor' area
+03/04/07 19:13:11: findPathOnMap: loot from floor
+03/04/07 19:13:11: Floor loot: item (0,-1,1)
+03/04/07 19:13:11: findPathOnMap: loot from floor
+03/04/07 19:13:11: findPathOnMap: loot from floor
+03/04/07 19:13:11: findPathOnMap: loot from floor
+03/04/07 19:13:11: findPathOnMap: loot from floor
+03/04/07 19:13:11: Loot from floor: before anything to loot check
+03/04/07 19:13:11: Loot from floor: found something to loot -> walking
+03/04/07 19:13:11: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:11: isMonsterAttackingMe=0 currentTm=607755 attackConsiderPeriod=20000 currentTm-cons=587755 lastAttackTm=0
+03/04/07 19:13:11: isMonsterAttackingMe=0 currentTm=607755 attackConsiderPeriod=20000 currentTm-cons=587755 lastAttackTm=0
+03/04/07 19:13:11: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:11: Entering attack pre-execution area
+03/04/07 19:13:11: Before dist loop
+03/04/07 19:13:11: No attack target found
+03/04/07 19:13:11: Looking for a new waypoint
+03/04/07 19:13:11: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:11: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:11: timing: findPathOnMap() = 0ms
+03/04/07 19:13:11: Walking: no path found
+03/04/07 19:13:11: End cavebot loop
+03/04/07 19:13:12: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:12: Depot check
+03/04/07 19:13:12: Entering 'loot from floor' area
+03/04/07 19:13:12: findPathOnMap: loot from floor
+03/04/07 19:13:12: Floor loot: item (0,-1,1)
+03/04/07 19:13:12: findPathOnMap: loot from floor
+03/04/07 19:13:12: findPathOnMap: loot from floor
+03/04/07 19:13:12: findPathOnMap: loot from floor
+03/04/07 19:13:12: findPathOnMap: loot from floor
+03/04/07 19:13:12: Loot from floor: before anything to loot check
+03/04/07 19:13:12: Loot from floor: found something to loot -> walking
+03/04/07 19:13:12: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:12: isMonsterAttackingMe=0 currentTm=608778 attackConsiderPeriod=20000 currentTm-cons=588778 lastAttackTm=0
+03/04/07 19:13:12: isMonsterAttackingMe=0 currentTm=608778 attackConsiderPeriod=20000 currentTm-cons=588778 lastAttackTm=0
+03/04/07 19:13:12: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:12: Entering attack pre-execution area
+03/04/07 19:13:12: Before dist loop
+03/04/07 19:13:12: No attack target found
+03/04/07 19:13:12: Looking for a new waypoint
+03/04/07 19:13:12: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:12: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:12: timing: findPathOnMap() = 0ms
+03/04/07 19:13:12: Walking: no path found
+03/04/07 19:13:12: End cavebot loop
+03/04/07 19:13:13: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:13: Depot check
+03/04/07 19:13:13: Entering 'loot from floor' area
+03/04/07 19:13:13: findPathOnMap: loot from floor
+03/04/07 19:13:13: Floor loot: item (0,-1,1)
+03/04/07 19:13:13: findPathOnMap: loot from floor
+03/04/07 19:13:13: findPathOnMap: loot from floor
+03/04/07 19:13:13: findPathOnMap: loot from floor
+03/04/07 19:13:13: findPathOnMap: loot from floor
+03/04/07 19:13:13: Loot from floor: before anything to loot check
+03/04/07 19:13:13: Loot from floor: found something to loot -> walking
+03/04/07 19:13:13: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:13: isMonsterAttackingMe=0 currentTm=610076 attackConsiderPeriod=20000 currentTm-cons=590076 lastAttackTm=0
+03/04/07 19:13:13: isMonsterAttackingMe=0 currentTm=610076 attackConsiderPeriod=20000 currentTm-cons=590076 lastAttackTm=0
+03/04/07 19:13:13: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:13: Entering attack pre-execution area
+03/04/07 19:13:13: Before dist loop
+03/04/07 19:13:13: No attack target found
+03/04/07 19:13:13: Looking for a new waypoint
+03/04/07 19:13:13: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:13: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:13: timing: findPathOnMap() = 0ms
+03/04/07 19:13:13: Walking: no path found
+03/04/07 19:13:13: End cavebot loop
+03/04/07 19:13:14: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:14: Depot check
+03/04/07 19:13:14: Entering 'loot from floor' area
+03/04/07 19:13:15: findPathOnMap: loot from floor
+03/04/07 19:13:15: Floor loot: item (0,-1,1)
+03/04/07 19:13:15: findPathOnMap: loot from floor
+03/04/07 19:13:15: findPathOnMap: loot from floor
+03/04/07 19:13:15: findPathOnMap: loot from floor
+03/04/07 19:13:15: findPathOnMap: loot from floor
+03/04/07 19:13:15: Loot from floor: before anything to loot check
+03/04/07 19:13:15: Loot from floor: found something to loot -> walking
+03/04/07 19:13:15: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:15: isMonsterAttackingMe=0 currentTm=611290 attackConsiderPeriod=20000 currentTm-cons=591290 lastAttackTm=0
+03/04/07 19:13:15: isMonsterAttackingMe=0 currentTm=611290 attackConsiderPeriod=20000 currentTm-cons=591290 lastAttackTm=0
+03/04/07 19:13:15: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:15: Entering attack pre-execution area
+03/04/07 19:13:15: Before dist loop
+03/04/07 19:13:15: No attack target found
+03/04/07 19:13:15: Looking for a new waypoint
+03/04/07 19:13:15: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:15: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:15: timing: findPathOnMap() = 0ms
+03/04/07 19:13:15: Walking: no path found
+03/04/07 19:13:15: End cavebot loop
+03/04/07 19:13:16: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:16: Depot check
+03/04/07 19:13:16: Entering 'loot from floor' area
+03/04/07 19:13:16: findPathOnMap: loot from floor
+03/04/07 19:13:16: Floor loot: item (0,-1,1)
+03/04/07 19:13:16: findPathOnMap: loot from floor
+03/04/07 19:13:16: findPathOnMap: loot from floor
+03/04/07 19:13:16: findPathOnMap: loot from floor
+03/04/07 19:13:16: findPathOnMap: loot from floor
+03/04/07 19:13:16: Loot from floor: before anything to loot check
+03/04/07 19:13:16: Loot from floor: found something to loot -> walking
+03/04/07 19:13:16: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:16: isMonsterAttackingMe=0 currentTm=612354 attackConsiderPeriod=20000 currentTm-cons=592354 lastAttackTm=0
+03/04/07 19:13:16: isMonsterAttackingMe=0 currentTm=612354 attackConsiderPeriod=20000 currentTm-cons=592354 lastAttackTm=0
+03/04/07 19:13:16: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:16: Entering attack pre-execution area
+03/04/07 19:13:16: Before dist loop
+03/04/07 19:13:16: No attack target found
+03/04/07 19:13:16: Looking for a new waypoint
+03/04/07 19:13:16: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:16: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:16: timing: findPathOnMap() = 0ms
+03/04/07 19:13:16: Walking: no path found
+03/04/07 19:13:16: End cavebot loop
+03/04/07 19:13:17: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:17: Depot check
+03/04/07 19:13:17: Entering 'loot from floor' area
+03/04/07 19:13:17: findPathOnMap: loot from floor
+03/04/07 19:13:17: Floor loot: item (0,-1,1)
+03/04/07 19:13:17: findPathOnMap: loot from floor
+03/04/07 19:13:17: findPathOnMap: loot from floor
+03/04/07 19:13:17: findPathOnMap: loot from floor
+03/04/07 19:13:17: findPathOnMap: loot from floor
+03/04/07 19:13:17: Loot from floor: before anything to loot check
+03/04/07 19:13:17: Loot from floor: found something to loot -> walking
+03/04/07 19:13:17: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:17: isMonsterAttackingMe=0 currentTm=613307 attackConsiderPeriod=20000 currentTm-cons=593307 lastAttackTm=0
+03/04/07 19:13:17: isMonsterAttackingMe=0 currentTm=613307 attackConsiderPeriod=20000 currentTm-cons=593307 lastAttackTm=0
+03/04/07 19:13:17: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:17: Entering attack pre-execution area
+03/04/07 19:13:17: Before dist loop
+03/04/07 19:13:17: No attack target found
+03/04/07 19:13:17: Looking for a new waypoint
+03/04/07 19:13:17: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:17: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:17: timing: findPathOnMap() = 0ms
+03/04/07 19:13:17: Walking: no path found
+03/04/07 19:13:17: End cavebot loop
+03/04/07 19:13:18: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:18: Depot check
+03/04/07 19:13:18: Entering 'loot from floor' area
+03/04/07 19:13:18: findPathOnMap: loot from floor
+03/04/07 19:13:18: Floor loot: item (0,-1,1)
+03/04/07 19:13:18: findPathOnMap: loot from floor
+03/04/07 19:13:18: findPathOnMap: loot from floor
+03/04/07 19:13:18: findPathOnMap: loot from floor
+03/04/07 19:13:18: findPathOnMap: loot from floor
+03/04/07 19:13:18: Loot from floor: before anything to loot check
+03/04/07 19:13:18: Loot from floor: found something to loot -> walking
+03/04/07 19:13:18: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:18: isMonsterAttackingMe=0 currentTm=614624 attackConsiderPeriod=20000 currentTm-cons=594624 lastAttackTm=0
+03/04/07 19:13:18: isMonsterAttackingMe=0 currentTm=614624 attackConsiderPeriod=20000 currentTm-cons=594624 lastAttackTm=0
+03/04/07 19:13:18: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:18: Entering attack pre-execution area
+03/04/07 19:13:18: Before dist loop
+03/04/07 19:13:18: No attack target found
+03/04/07 19:13:18: Looking for a new waypoint
+03/04/07 19:13:18: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:18: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:18: timing: findPathOnMap() = 0ms
+03/04/07 19:13:18: Walking: no path found
+03/04/07 19:13:18: End cavebot loop
+03/04/07 19:13:19: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:19: Depot check
+03/04/07 19:13:19: Entering 'loot from floor' area
+03/04/07 19:13:19: findPathOnMap: loot from floor
+03/04/07 19:13:19: Floor loot: item (0,-1,1)
+03/04/07 19:13:19: findPathOnMap: loot from floor
+03/04/07 19:13:19: findPathOnMap: loot from floor
+03/04/07 19:13:19: findPathOnMap: loot from floor
+03/04/07 19:13:19: findPathOnMap: loot from floor
+03/04/07 19:13:19: Loot from floor: before anything to loot check
+03/04/07 19:13:19: Loot from floor: found something to loot -> walking
+03/04/07 19:13:19: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:19: isMonsterAttackingMe=0 currentTm=615968 attackConsiderPeriod=20000 currentTm-cons=595968 lastAttackTm=0
+03/04/07 19:13:19: isMonsterAttackingMe=0 currentTm=615968 attackConsiderPeriod=20000 currentTm-cons=595968 lastAttackTm=0
+03/04/07 19:13:19: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:19: Entering attack pre-execution area
+03/04/07 19:13:19: Before dist loop
+03/04/07 19:13:19: No attack target found
+03/04/07 19:13:19: Looking for a new waypoint
+03/04/07 19:13:19: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:19: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:19: timing: findPathOnMap() = 0ms
+03/04/07 19:13:19: Walking: no path found
+03/04/07 19:13:19: End cavebot loop
+03/04/07 19:13:20: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:20: Depot check
+03/04/07 19:13:20: Entering 'loot from floor' area
+03/04/07 19:13:20: findPathOnMap: loot from floor
+03/04/07 19:13:20: Floor loot: item (0,-1,1)
+03/04/07 19:13:20: findPathOnMap: loot from floor
+03/04/07 19:13:20: findPathOnMap: loot from floor
+03/04/07 19:13:20: findPathOnMap: loot from floor
+03/04/07 19:13:20: findPathOnMap: loot from floor
+03/04/07 19:13:21: Loot from floor: before anything to loot check
+03/04/07 19:13:21: Loot from floor: found something to loot -> walking
+03/04/07 19:13:21: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:21: isMonsterAttackingMe=0 currentTm=617045 attackConsiderPeriod=20000 currentTm-cons=597045 lastAttackTm=0
+03/04/07 19:13:21: isMonsterAttackingMe=0 currentTm=617045 attackConsiderPeriod=20000 currentTm-cons=597045 lastAttackTm=0
+03/04/07 19:13:21: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:21: Entering attack pre-execution area
+03/04/07 19:13:21: Before dist loop
+03/04/07 19:13:21: No attack target found
+03/04/07 19:13:21: Looking for a new waypoint
+03/04/07 19:13:21: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:21: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:21: timing: findPathOnMap() = 0ms
+03/04/07 19:13:21: Walking: no path found
+03/04/07 19:13:21: End cavebot loop
+03/04/07 19:13:22: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:22: Depot check
+03/04/07 19:13:22: Entering 'loot from floor' area
+03/04/07 19:13:22: findPathOnMap: loot from floor
+03/04/07 19:13:22: Floor loot: item (0,-1,1)
+03/04/07 19:13:22: findPathOnMap: loot from floor
+03/04/07 19:13:22: findPathOnMap: loot from floor
+03/04/07 19:13:22: findPathOnMap: loot from floor
+03/04/07 19:13:22: findPathOnMap: loot from floor
+03/04/07 19:13:22: Loot from floor: before anything to loot check
+03/04/07 19:13:22: Loot from floor: found something to loot -> walking
+03/04/07 19:13:22: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:22: isMonsterAttackingMe=0 currentTm=618307 attackConsiderPeriod=20000 currentTm-cons=598307 lastAttackTm=0
+03/04/07 19:13:22: isMonsterAttackingMe=0 currentTm=618307 attackConsiderPeriod=20000 currentTm-cons=598307 lastAttackTm=0
+03/04/07 19:13:22: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:22: Entering attack pre-execution area
+03/04/07 19:13:22: Before dist loop
+03/04/07 19:13:22: No attack target found
+03/04/07 19:13:22: Looking for a new waypoint
+03/04/07 19:13:22: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:22: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:22: timing: findPathOnMap() = 0ms
+03/04/07 19:13:22: Walking: no path found
+03/04/07 19:13:22: End cavebot loop
+03/04/07 19:13:23: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:23: Depot check
+03/04/07 19:13:23: Entering 'loot from floor' area
+03/04/07 19:13:23: findPathOnMap: loot from floor
+03/04/07 19:13:23: Floor loot: item (0,-1,1)
+03/04/07 19:13:23: findPathOnMap: loot from floor
+03/04/07 19:13:23: findPathOnMap: loot from floor
+03/04/07 19:13:23: findPathOnMap: loot from floor
+03/04/07 19:13:23: findPathOnMap: loot from floor
+03/04/07 19:13:23: Loot from floor: before anything to loot check
+03/04/07 19:13:23: Loot from floor: found something to loot -> walking
+03/04/07 19:13:23: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:23: isMonsterAttackingMe=0 currentTm=619282 attackConsiderPeriod=20000 currentTm-cons=599282 lastAttackTm=0
+03/04/07 19:13:23: isMonsterAttackingMe=0 currentTm=619282 attackConsiderPeriod=20000 currentTm-cons=599282 lastAttackTm=0
+03/04/07 19:13:23: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:23: Entering attack pre-execution area
+03/04/07 19:13:23: Before dist loop
+03/04/07 19:13:23: No attack target found
+03/04/07 19:13:23: Looking for a new waypoint
+03/04/07 19:13:23: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:23: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:23: timing: findPathOnMap() = 0ms
+03/04/07 19:13:23: Walking: no path found
+03/04/07 19:13:23: End cavebot loop
+03/04/07 19:13:24: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:24: Depot check
+03/04/07 19:13:24: Entering 'loot from floor' area
+03/04/07 19:13:24: findPathOnMap: loot from floor
+03/04/07 19:13:24: Floor loot: item (0,-1,1)
+03/04/07 19:13:24: findPathOnMap: loot from floor
+03/04/07 19:13:24: findPathOnMap: loot from floor
+03/04/07 19:13:24: findPathOnMap: loot from floor
+03/04/07 19:13:24: findPathOnMap: loot from floor
+03/04/07 19:13:24: Loot from floor: before anything to loot check
+03/04/07 19:13:24: Loot from floor: found something to loot -> walking
+03/04/07 19:13:24: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:24: isMonsterAttackingMe=0 currentTm=620481 attackConsiderPeriod=20000 currentTm-cons=600481 lastAttackTm=0
+03/04/07 19:13:24: isMonsterAttackingMe=0 currentTm=620481 attackConsiderPeriod=20000 currentTm-cons=600481 lastAttackTm=0
+03/04/07 19:13:24: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:24: Entering attack pre-execution area
+03/04/07 19:13:24: Before dist loop
+03/04/07 19:13:24: No attack target found
+03/04/07 19:13:24: Looking for a new waypoint
+03/04/07 19:13:24: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:24: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:24: timing: findPathOnMap() = 0ms
+03/04/07 19:13:24: Walking: no path found
+03/04/07 19:13:24: End cavebot loop
+03/04/07 19:13:25: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:25: Depot check
+03/04/07 19:13:25: Entering 'loot from floor' area
+03/04/07 19:13:25: findPathOnMap: loot from floor
+03/04/07 19:13:25: Floor loot: item (0,-1,1)
+03/04/07 19:13:25: findPathOnMap: loot from floor
+03/04/07 19:13:25: findPathOnMap: loot from floor
+03/04/07 19:13:25: findPathOnMap: loot from floor
+03/04/07 19:13:25: findPathOnMap: loot from floor
+03/04/07 19:13:25: Loot from floor: before anything to loot check
+03/04/07 19:13:25: Loot from floor: found something to loot -> walking
+03/04/07 19:13:25: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:25: isMonsterAttackingMe=0 currentTm=621651 attackConsiderPeriod=20000 currentTm-cons=601651 lastAttackTm=0
+03/04/07 19:13:25: isMonsterAttackingMe=0 currentTm=621651 attackConsiderPeriod=20000 currentTm-cons=601651 lastAttackTm=0
+03/04/07 19:13:25: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:25: Entering attack pre-execution area
+03/04/07 19:13:25: Before dist loop
+03/04/07 19:13:25: No attack target found
+03/04/07 19:13:25: Looking for a new waypoint
+03/04/07 19:13:25: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:25: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:25: timing: findPathOnMap() = 0ms
+03/04/07 19:13:25: Walking: no path found
+03/04/07 19:13:25: End cavebot loop
+03/04/07 19:13:26: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:26: Depot check
+03/04/07 19:13:26: Entering 'loot from floor' area
+03/04/07 19:13:26: findPathOnMap: loot from floor
+03/04/07 19:13:26: Floor loot: item (0,-1,1)
+03/04/07 19:13:26: findPathOnMap: loot from floor
+03/04/07 19:13:26: findPathOnMap: loot from floor
+03/04/07 19:13:26: findPathOnMap: loot from floor
+03/04/07 19:13:26: findPathOnMap: loot from floor
+03/04/07 19:13:26: Loot from floor: before anything to loot check
+03/04/07 19:13:26: Loot from floor: found something to loot -> walking
+03/04/07 19:13:26: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:26: isMonsterAttackingMe=0 currentTm=622760 attackConsiderPeriod=20000 currentTm-cons=602760 lastAttackTm=0
+03/04/07 19:13:26: isMonsterAttackingMe=0 currentTm=622760 attackConsiderPeriod=20000 currentTm-cons=602760 lastAttackTm=0
+03/04/07 19:13:26: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:26: Entering attack pre-execution area
+03/04/07 19:13:26: Before dist loop
+03/04/07 19:13:26: No attack target found
+03/04/07 19:13:26: Looking for a new waypoint
+03/04/07 19:13:26: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:26: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:26: timing: findPathOnMap() = 0ms
+03/04/07 19:13:26: Walking: no path found
+03/04/07 19:13:26: End cavebot loop
+03/04/07 19:13:27: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:27: Depot check
+03/04/07 19:13:27: Entering 'loot from floor' area
+03/04/07 19:13:27: findPathOnMap: loot from floor
+03/04/07 19:13:27: Floor loot: item (0,-1,1)
+03/04/07 19:13:27: findPathOnMap: loot from floor
+03/04/07 19:13:27: findPathOnMap: loot from floor
+03/04/07 19:13:28: findPathOnMap: loot from floor
+03/04/07 19:13:28: findPathOnMap: loot from floor
+03/04/07 19:13:28: Loot from floor: before anything to loot check
+03/04/07 19:13:28: Loot from floor: found something to loot -> walking
+03/04/07 19:13:28: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:28: isMonsterAttackingMe=0 currentTm=624456 attackConsiderPeriod=20000 currentTm-cons=604456 lastAttackTm=0
+03/04/07 19:13:28: isMonsterAttackingMe=0 currentTm=624456 attackConsiderPeriod=20000 currentTm-cons=604456 lastAttackTm=0
+03/04/07 19:13:28: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:28: Entering attack pre-execution area
+03/04/07 19:13:28: Before dist loop
+03/04/07 19:13:28: No attack target found
+03/04/07 19:13:28: Looking for a new waypoint
+03/04/07 19:13:28: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:28: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:28: timing: findPathOnMap() = 0ms
+03/04/07 19:13:28: Walking: no path found
+03/04/07 19:13:28: End cavebot loop
+03/04/07 19:13:29: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:29: Depot check
+03/04/07 19:13:29: Entering 'loot from floor' area
+03/04/07 19:13:29: findPathOnMap: loot from floor
+03/04/07 19:13:29: Floor loot: item (0,-1,1)
+03/04/07 19:13:29: findPathOnMap: loot from floor
+03/04/07 19:13:29: findPathOnMap: loot from floor
+03/04/07 19:13:29: findPathOnMap: loot from floor
+03/04/07 19:13:29: findPathOnMap: loot from floor
+03/04/07 19:13:29: Loot from floor: before anything to loot check
+03/04/07 19:13:29: Loot from floor: found something to loot -> walking
+03/04/07 19:13:29: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:29: isMonsterAttackingMe=0 currentTm=625509 attackConsiderPeriod=20000 currentTm-cons=605509 lastAttackTm=0
+03/04/07 19:13:29: isMonsterAttackingMe=0 currentTm=625509 attackConsiderPeriod=20000 currentTm-cons=605509 lastAttackTm=0
+03/04/07 19:13:29: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:29: Entering attack pre-execution area
+03/04/07 19:13:29: Before dist loop
+03/04/07 19:13:29: No attack target found
+03/04/07 19:13:29: Looking for a new waypoint
+03/04/07 19:13:29: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:29: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:29: timing: findPathOnMap() = 0ms
+03/04/07 19:13:29: Walking: no path found
+03/04/07 19:13:29: End cavebot loop
+03/04/07 19:13:30: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:30: Depot check
+03/04/07 19:13:30: Entering 'loot from floor' area
+03/04/07 19:13:30: findPathOnMap: loot from floor
+03/04/07 19:13:30: Floor loot: item (0,-1,1)
+03/04/07 19:13:30: findPathOnMap: loot from floor
+03/04/07 19:13:30: findPathOnMap: loot from floor
+03/04/07 19:13:30: findPathOnMap: loot from floor
+03/04/07 19:13:30: findPathOnMap: loot from floor
+03/04/07 19:13:30: Loot from floor: before anything to loot check
+03/04/07 19:13:30: Loot from floor: found something to loot -> walking
+03/04/07 19:13:30: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:30: isMonsterAttackingMe=0 currentTm=626592 attackConsiderPeriod=20000 currentTm-cons=606592 lastAttackTm=0
+03/04/07 19:13:30: isMonsterAttackingMe=0 currentTm=626592 attackConsiderPeriod=20000 currentTm-cons=606592 lastAttackTm=0
+03/04/07 19:13:30: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:30: Entering attack pre-execution area
+03/04/07 19:13:30: Before dist loop
+03/04/07 19:13:30: No attack target found
+03/04/07 19:13:30: Looking for a new waypoint
+03/04/07 19:13:30: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:30: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:30: timing: findPathOnMap() = 0ms
+03/04/07 19:13:30: Walking: no path found
+03/04/07 19:13:30: End cavebot loop
+03/04/07 19:13:31: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:31: Depot check
+03/04/07 19:13:31: Entering 'loot from floor' area
+03/04/07 19:13:31: findPathOnMap: loot from floor
+03/04/07 19:13:31: Floor loot: item (0,-1,1)
+03/04/07 19:13:31: findPathOnMap: loot from floor
+03/04/07 19:13:31: findPathOnMap: loot from floor
+03/04/07 19:13:31: findPathOnMap: loot from floor
+03/04/07 19:13:31: findPathOnMap: loot from floor
+03/04/07 19:13:31: Loot from floor: before anything to loot check
+03/04/07 19:13:31: Loot from floor: found something to loot -> walking
+03/04/07 19:13:31: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:31: isMonsterAttackingMe=0 currentTm=627957 attackConsiderPeriod=20000 currentTm-cons=607957 lastAttackTm=0
+03/04/07 19:13:31: isMonsterAttackingMe=0 currentTm=627957 attackConsiderPeriod=20000 currentTm-cons=607957 lastAttackTm=0
+03/04/07 19:13:31: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:31: Entering attack pre-execution area
+03/04/07 19:13:31: Before dist loop
+03/04/07 19:13:31: No attack target found
+03/04/07 19:13:31: Looking for a new waypoint
+03/04/07 19:13:31: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:31: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:31: timing: findPathOnMap() = 0ms
+03/04/07 19:13:31: Walking: no path found
+03/04/07 19:13:31: End cavebot loop
+03/04/07 19:13:32: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:32: Depot check
+03/04/07 19:13:32: Entering 'loot from floor' area
+03/04/07 19:13:32: findPathOnMap: loot from floor
+03/04/07 19:13:32: Floor loot: item (0,-1,1)
+03/04/07 19:13:32: findPathOnMap: loot from floor
+03/04/07 19:13:32: findPathOnMap: loot from floor
+03/04/07 19:13:32: findPathOnMap: loot from floor
+03/04/07 19:13:33: findPathOnMap: loot from floor
+03/04/07 19:13:33: Loot from floor: before anything to loot check
+03/04/07 19:13:33: Loot from floor: found something to loot -> walking
+03/04/07 19:13:33: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:33: isMonsterAttackingMe=0 currentTm=629281 attackConsiderPeriod=20000 currentTm-cons=609281 lastAttackTm=0
+03/04/07 19:13:33: isMonsterAttackingMe=0 currentTm=629281 attackConsiderPeriod=20000 currentTm-cons=609281 lastAttackTm=0
+03/04/07 19:13:33: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:33: Entering attack pre-execution area
+03/04/07 19:13:33: Before dist loop
+03/04/07 19:13:33: No attack target found
+03/04/07 19:13:33: Looking for a new waypoint
+03/04/07 19:13:33: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:33: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:33: timing: findPathOnMap() = 0ms
+03/04/07 19:13:33: Walking: no path found
+03/04/07 19:13:33: End cavebot loop
+03/04/07 19:13:34: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:34: Depot check
+03/04/07 19:13:34: Entering 'loot from floor' area
+03/04/07 19:13:34: findPathOnMap: loot from floor
+03/04/07 19:13:34: Floor loot: item (0,-1,1)
+03/04/07 19:13:34: findPathOnMap: loot from floor
+03/04/07 19:13:34: findPathOnMap: loot from floor
+03/04/07 19:13:34: findPathOnMap: loot from floor
+03/04/07 19:13:34: findPathOnMap: loot from floor
+03/04/07 19:13:34: Loot from floor: before anything to loot check
+03/04/07 19:13:34: Loot from floor: found something to loot -> walking
+03/04/07 19:13:34: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:34: isMonsterAttackingMe=0 currentTm=630445 attackConsiderPeriod=20000 currentTm-cons=610445 lastAttackTm=0
+03/04/07 19:13:34: isMonsterAttackingMe=0 currentTm=630445 attackConsiderPeriod=20000 currentTm-cons=610445 lastAttackTm=0
+03/04/07 19:13:34: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:34: Entering attack pre-execution area
+03/04/07 19:13:34: Before dist loop
+03/04/07 19:13:34: No attack target found
+03/04/07 19:13:34: Looking for a new waypoint
+03/04/07 19:13:34: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:34: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:34: timing: findPathOnMap() = 0ms
+03/04/07 19:13:34: Walking: no path found
+03/04/07 19:13:34: End cavebot loop
+03/04/07 19:13:35: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:35: Depot check
+03/04/07 19:13:35: Entering 'loot from floor' area
+03/04/07 19:13:35: findPathOnMap: loot from floor
+03/04/07 19:13:35: Floor loot: item (0,-1,1)
+03/04/07 19:13:35: findPathOnMap: loot from floor
+03/04/07 19:13:35: findPathOnMap: loot from floor
+03/04/07 19:13:35: findPathOnMap: loot from floor
+03/04/07 19:13:35: findPathOnMap: loot from floor
+03/04/07 19:13:35: Loot from floor: before anything to loot check
+03/04/07 19:13:35: Loot from floor: found something to loot -> walking
+03/04/07 19:13:35: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:35: isMonsterAttackingMe=0 currentTm=631538 attackConsiderPeriod=20000 currentTm-cons=611538 lastAttackTm=0
+03/04/07 19:13:35: isMonsterAttackingMe=0 currentTm=631538 attackConsiderPeriod=20000 currentTm-cons=611538 lastAttackTm=0
+03/04/07 19:13:35: isMonsterAttackingMe=0 currentTm=631538 attackConsiderPeriod=20000 currentTm-cons=611538 lastAttackTm=0
+03/04/07 19:13:35: Alien creature for training found
+03/04/07 19:13:35: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:35: Before main attack if: alien=1, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:35: Entered cancel attack
+03/04/07 19:13:35: Cancel attack: alien found
+03/04/07 19:13:35: Looking for a new waypoint
+03/04/07 19:13:35: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:35: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:35: timing: findPathOnMap() = 0ms
+03/04/07 19:13:35: Walking: no path found
+03/04/07 19:13:35: End cavebot loop
+03/04/07 19:13:36: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:36: Depot check
+03/04/07 19:13:36: Entering 'loot from floor' area
+03/04/07 19:13:36: findPathOnMap: loot from floor
+03/04/07 19:13:36: Floor loot: item (0,-1,1)
+03/04/07 19:13:36: findPathOnMap: loot from floor
+03/04/07 19:13:36: findPathOnMap: loot from floor
+03/04/07 19:13:36: findPathOnMap: loot from floor
+03/04/07 19:13:36: findPathOnMap: loot from floor
+03/04/07 19:13:36: Loot from floor: before anything to loot check
+03/04/07 19:13:36: Loot from floor: found something to loot -> walking
+03/04/07 19:13:36: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:36: isMonsterAttackingMe=0 currentTm=632688 attackConsiderPeriod=20000 currentTm-cons=612688 lastAttackTm=0
+03/04/07 19:13:36: isMonsterAttackingMe=0 currentTm=632688 attackConsiderPeriod=20000 currentTm-cons=612688 lastAttackTm=0
+03/04/07 19:13:36: isMonsterAttackingMe=0 currentTm=632688 attackConsiderPeriod=20000 currentTm-cons=612688 lastAttackTm=0
+03/04/07 19:13:36: Alien creature for training found
+03/04/07 19:13:36: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:36: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:36: Entered cancel attack
+03/04/07 19:13:36: Cancel attack: alien found
+03/04/07 19:13:36: Looking for a new waypoint
+03/04/07 19:13:36: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:36: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:36: timing: findPathOnMap() = 0ms
+03/04/07 19:13:36: Walking: no path found
+03/04/07 19:13:36: End cavebot loop
+03/04/07 19:13:37: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:37: Depot check
+03/04/07 19:13:37: Entering 'loot from floor' area
+03/04/07 19:13:37: findPathOnMap: loot from floor
+03/04/07 19:13:37: Floor loot: item (0,-1,1)
+03/04/07 19:13:37: findPathOnMap: loot from floor
+03/04/07 19:13:37: findPathOnMap: loot from floor
+03/04/07 19:13:37: findPathOnMap: loot from floor
+03/04/07 19:13:37: findPathOnMap: loot from floor
+03/04/07 19:13:37: Loot from floor: before anything to loot check
+03/04/07 19:13:37: Loot from floor: found something to loot -> walking
+03/04/07 19:13:37: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:37: isMonsterAttackingMe=0 currentTm=634004 attackConsiderPeriod=20000 currentTm-cons=614004 lastAttackTm=0
+03/04/07 19:13:37: isMonsterAttackingMe=0 currentTm=634004 attackConsiderPeriod=20000 currentTm-cons=614004 lastAttackTm=0
+03/04/07 19:13:37: Alien creature for training found
+03/04/07 19:13:37: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:37: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:37: Entered cancel attack
+03/04/07 19:13:37: Cancel attack: alien found
+03/04/07 19:13:37: Looking for a new waypoint
+03/04/07 19:13:37: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:37: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:37: timing: findPathOnMap() = 0ms
+03/04/07 19:13:37: Walking: no path found
+03/04/07 19:13:37: End cavebot loop
+03/04/07 19:13:38: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:38: Depot check
+03/04/07 19:13:38: Entering 'loot from floor' area
+03/04/07 19:13:38: findPathOnMap: loot from floor
+03/04/07 19:13:38: Floor loot: item (0,-1,1)
+03/04/07 19:13:38: findPathOnMap: loot from floor
+03/04/07 19:13:38: findPathOnMap: loot from floor
+03/04/07 19:13:38: findPathOnMap: loot from floor
+03/04/07 19:13:38: findPathOnMap: loot from floor
+03/04/07 19:13:39: Loot from floor: before anything to loot check
+03/04/07 19:13:39: Loot from floor: found something to loot -> walking
+03/04/07 19:13:39: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:39: isMonsterAttackingMe=0 currentTm=635248 attackConsiderPeriod=20000 currentTm-cons=615248 lastAttackTm=0
+03/04/07 19:13:39: isMonsterAttackingMe=0 currentTm=635248 attackConsiderPeriod=20000 currentTm-cons=615248 lastAttackTm=0
+03/04/07 19:13:39: isMonsterAttackingMe=0 currentTm=635248 attackConsiderPeriod=20000 currentTm-cons=615248 lastAttackTm=0
+03/04/07 19:13:39: Alien creature for training found
+03/04/07 19:13:39: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:39: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:39: Entered cancel attack
+03/04/07 19:13:39: Cancel attack: alien found
+03/04/07 19:13:39: Looking for a new waypoint
+03/04/07 19:13:39: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:39: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:39: timing: findPathOnMap() = 0ms
+03/04/07 19:13:39: Walking: no path found
+03/04/07 19:13:39: End cavebot loop
+03/04/07 19:13:40: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:40: Depot check
+03/04/07 19:13:40: Entering 'loot from floor' area
+03/04/07 19:13:40: findPathOnMap: loot from floor
+03/04/07 19:13:40: Floor loot: item (0,-1,1)
+03/04/07 19:13:40: findPathOnMap: loot from floor
+03/04/07 19:13:40: findPathOnMap: loot from floor
+03/04/07 19:13:40: findPathOnMap: loot from floor
+03/04/07 19:13:40: findPathOnMap: loot from floor
+03/04/07 19:13:40: Loot from floor: before anything to loot check
+03/04/07 19:13:40: Loot from floor: found something to loot -> walking
+03/04/07 19:13:40: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:40: isMonsterAttackingMe=0 currentTm=636497 attackConsiderPeriod=20000 currentTm-cons=616497 lastAttackTm=0
+03/04/07 19:13:40: isMonsterAttackingMe=0 currentTm=636497 attackConsiderPeriod=20000 currentTm-cons=616497 lastAttackTm=0
+03/04/07 19:13:40: isMonsterAttackingMe=0 currentTm=636497 attackConsiderPeriod=20000 currentTm-cons=616497 lastAttackTm=0
+03/04/07 19:13:40: Alien creature for training found
+03/04/07 19:13:40: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:40: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:40: Entered cancel attack
+03/04/07 19:13:40: Cancel attack: alien found
+03/04/07 19:13:40: Looking for a new waypoint
+03/04/07 19:13:40: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:40: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:40: timing: findPathOnMap() = 0ms
+03/04/07 19:13:40: Walking: no path found
+03/04/07 19:13:40: End cavebot loop
+03/04/07 19:13:41: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:41: Depot check
+03/04/07 19:13:41: Entering 'loot from floor' area
+03/04/07 19:13:41: findPathOnMap: loot from floor
+03/04/07 19:13:41: Floor loot: item (0,-1,1)
+03/04/07 19:13:41: findPathOnMap: loot from floor
+03/04/07 19:13:41: findPathOnMap: loot from floor
+03/04/07 19:13:41: findPathOnMap: loot from floor
+03/04/07 19:13:41: findPathOnMap: loot from floor
+03/04/07 19:13:41: Loot from floor: before anything to loot check
+03/04/07 19:13:41: Loot from floor: found something to loot -> walking
+03/04/07 19:13:41: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:41: isMonsterAttackingMe=0 currentTm=637604 attackConsiderPeriod=20000 currentTm-cons=617604 lastAttackTm=0
+03/04/07 19:13:41: isMonsterAttackingMe=0 currentTm=637604 attackConsiderPeriod=20000 currentTm-cons=617604 lastAttackTm=0
+03/04/07 19:13:41: isMonsterAttackingMe=0 currentTm=637604 attackConsiderPeriod=20000 currentTm-cons=617604 lastAttackTm=0
+03/04/07 19:13:41: Alien creature for training found
+03/04/07 19:13:41: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:41: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:41: Entered cancel attack
+03/04/07 19:13:41: Cancel attack: alien found
+03/04/07 19:13:41: Looking for a new waypoint
+03/04/07 19:13:41: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:41: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:41: timing: findPathOnMap() = 0ms
+03/04/07 19:13:41: Walking: no path found
+03/04/07 19:13:41: End cavebot loop
+03/04/07 19:13:42: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:42: Depot check
+03/04/07 19:13:42: Entering 'loot from floor' area
+03/04/07 19:13:42: findPathOnMap: loot from floor
+03/04/07 19:13:42: Floor loot: item (0,-1,1)
+03/04/07 19:13:42: findPathOnMap: loot from floor
+03/04/07 19:13:42: findPathOnMap: loot from floor
+03/04/07 19:13:42: findPathOnMap: loot from floor
+03/04/07 19:13:42: findPathOnMap: loot from floor
+03/04/07 19:13:42: Loot from floor: before anything to loot check
+03/04/07 19:13:42: Loot from floor: found something to loot -> walking
+03/04/07 19:13:42: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:42: isMonsterAttackingMe=0 currentTm=638640 attackConsiderPeriod=20000 currentTm-cons=618640 lastAttackTm=0
+03/04/07 19:13:42: isMonsterAttackingMe=0 currentTm=638640 attackConsiderPeriod=20000 currentTm-cons=618640 lastAttackTm=0
+03/04/07 19:13:42: isMonsterAttackingMe=0 currentTm=638640 attackConsiderPeriod=20000 currentTm-cons=618640 lastAttackTm=0
+03/04/07 19:13:42: Alien creature for training found
+03/04/07 19:13:42: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:42: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:42: Entered cancel attack
+03/04/07 19:13:42: Cancel attack: alien found
+03/04/07 19:13:42: Looking for a new waypoint
+03/04/07 19:13:42: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:42: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:42: timing: findPathOnMap() = 0ms
+03/04/07 19:13:42: Walking: no path found
+03/04/07 19:13:42: End cavebot loop
+03/04/07 19:13:43: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:43: Depot check
+03/04/07 19:13:43: Entering 'loot from floor' area
+03/04/07 19:13:43: findPathOnMap: loot from floor
+03/04/07 19:13:43: Floor loot: item (0,-1,1)
+03/04/07 19:13:43: findPathOnMap: loot from floor
+03/04/07 19:13:43: findPathOnMap: loot from floor
+03/04/07 19:13:43: findPathOnMap: loot from floor
+03/04/07 19:13:43: findPathOnMap: loot from floor
+03/04/07 19:13:43: Loot from floor: before anything to loot check
+03/04/07 19:13:44: Loot from floor: found something to loot -> walking
+03/04/07 19:13:44: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:44: isMonsterAttackingMe=0 currentTm=640205 attackConsiderPeriod=20000 currentTm-cons=620205 lastAttackTm=0
+03/04/07 19:13:44: isMonsterAttackingMe=0 currentTm=640205 attackConsiderPeriod=20000 currentTm-cons=620205 lastAttackTm=0
+03/04/07 19:13:44: isMonsterAttackingMe=0 currentTm=640205 attackConsiderPeriod=20000 currentTm-cons=620205 lastAttackTm=0
+03/04/07 19:13:44: Alien creature for training found
+03/04/07 19:13:44: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:44: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:44: Entered cancel attack
+03/04/07 19:13:44: Cancel attack: alien found
+03/04/07 19:13:44: Looking for a new waypoint
+03/04/07 19:13:44: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:44: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:44: timing: findPathOnMap() = 0ms
+03/04/07 19:13:44: Walking: no path found
+03/04/07 19:13:44: End cavebot loop
+03/04/07 19:13:45: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:45: Depot check
+03/04/07 19:13:45: Entering 'loot from floor' area
+03/04/07 19:13:45: findPathOnMap: loot from floor
+03/04/07 19:13:45: Floor loot: item (0,-1,1)
+03/04/07 19:13:45: findPathOnMap: loot from floor
+03/04/07 19:13:45: findPathOnMap: loot from floor
+03/04/07 19:13:45: findPathOnMap: loot from floor
+03/04/07 19:13:45: findPathOnMap: loot from floor
+03/04/07 19:13:45: Loot from floor: before anything to loot check
+03/04/07 19:13:45: Loot from floor: found something to loot -> walking
+03/04/07 19:13:45: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:45: isMonsterAttackingMe=0 currentTm=641379 attackConsiderPeriod=20000 currentTm-cons=621379 lastAttackTm=0
+03/04/07 19:13:45: isMonsterAttackingMe=0 currentTm=641379 attackConsiderPeriod=20000 currentTm-cons=621379 lastAttackTm=0
+03/04/07 19:13:45: isMonsterAttackingMe=0 currentTm=641379 attackConsiderPeriod=20000 currentTm-cons=621379 lastAttackTm=0
+03/04/07 19:13:45: Alien creature for training found
+03/04/07 19:13:45: Alien creature found: Lincoln The Sorcerer
+03/04/07 19:13:45: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:45: Entered cancel attack
+03/04/07 19:13:45: Cancel attack: alien found
+03/04/07 19:13:45: Looking for a new waypoint
+03/04/07 19:13:45: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:45: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:45: timing: findPathOnMap() = 0ms
+03/04/07 19:13:45: Walking: no path found
+03/04/07 19:13:45: End cavebot loop
+03/04/07 19:13:46: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:46: Depot check
+03/04/07 19:13:46: Entering 'loot from floor' area
+03/04/07 19:13:46: findPathOnMap: loot from floor
+03/04/07 19:13:46: Floor loot: item (0,-1,1)
+03/04/07 19:13:46: findPathOnMap: loot from floor
+03/04/07 19:13:46: findPathOnMap: loot from floor
+03/04/07 19:13:46: findPathOnMap: loot from floor
+03/04/07 19:13:46: findPathOnMap: loot from floor
+03/04/07 19:13:46: Loot from floor: before anything to loot check
+03/04/07 19:13:46: Loot from floor: found something to loot -> walking
+03/04/07 19:13:46: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:46: isMonsterAttackingMe=0 currentTm=642541 attackConsiderPeriod=20000 currentTm-cons=622541 lastAttackTm=0
+03/04/07 19:13:46: isMonsterAttackingMe=0 currentTm=642541 attackConsiderPeriod=20000 currentTm-cons=622541 lastAttackTm=0
+03/04/07 19:13:46: Before main attack if: alien=0, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:46: Entering attack pre-execution area
+03/04/07 19:13:46: Before dist loop
+03/04/07 19:13:46: No attack target found
+03/04/07 19:13:46: Looking for a new waypoint
+03/04/07 19:13:46: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:46: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:46: timing: findPathOnMap() = 0ms
+03/04/07 19:13:46: Walking: no path found
+03/04/07 19:13:46: End cavebot loop
+03/04/07 19:13:47: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:47: Depot check
+03/04/07 19:13:47: Entering 'loot from floor' area
+03/04/07 19:13:47: findPathOnMap: loot from floor
+03/04/07 19:13:47: Floor loot: item (0,-1,1)
+03/04/07 19:13:47: findPathOnMap: loot from floor
+03/04/07 19:13:47: findPathOnMap: loot from floor
+03/04/07 19:13:47: findPathOnMap: loot from floor
+03/04/07 19:13:47: findPathOnMap: loot from floor
+03/04/07 19:13:47: Loot from floor: before anything to loot check
+03/04/07 19:13:47: Loot from floor: found something to loot -> walking
+03/04/07 19:13:47: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:47: isMonsterAttackingMe=0 currentTm=643601 attackConsiderPeriod=20000 currentTm-cons=623601 lastAttackTm=0
+03/04/07 19:13:47: isMonsterAttackingMe=0 currentTm=643601 attackConsiderPeriod=20000 currentTm-cons=623601 lastAttackTm=0
+03/04/07 19:13:47: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:47: Entering attack pre-execution area
+03/04/07 19:13:47: Before dist loop
+03/04/07 19:13:47: No attack target found
+03/04/07 19:13:47: Looking for a new waypoint
+03/04/07 19:13:47: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:47: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:47: timing: findPathOnMap() = 0ms
+03/04/07 19:13:47: Walking: no path found
+03/04/07 19:13:47: End cavebot loop
+03/04/07 19:13:48: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:48: Depot check
+03/04/07 19:13:48: Entering 'loot from floor' area
+03/04/07 19:13:48: findPathOnMap: loot from floor
+03/04/07 19:13:48: Floor loot: item (0,-1,1)
+03/04/07 19:13:48: findPathOnMap: loot from floor
+03/04/07 19:13:48: findPathOnMap: loot from floor
+03/04/07 19:13:48: findPathOnMap: loot from floor
+03/04/07 19:13:48: findPathOnMap: loot from floor
+03/04/07 19:13:48: Loot from floor: before anything to loot check
+03/04/07 19:13:48: Loot from floor: found something to loot -> walking
+03/04/07 19:13:48: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:48: isMonsterAttackingMe=0 currentTm=644753 attackConsiderPeriod=20000 currentTm-cons=624753 lastAttackTm=0
+03/04/07 19:13:48: isMonsterAttackingMe=0 currentTm=644753 attackConsiderPeriod=20000 currentTm-cons=624753 lastAttackTm=0
+03/04/07 19:13:48: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:48: Entering attack pre-execution area
+03/04/07 19:13:48: Before dist loop
+03/04/07 19:13:48: No attack target found
+03/04/07 19:13:48: Looking for a new waypoint
+03/04/07 19:13:48: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:48: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:48: timing: findPathOnMap() = 0ms
+03/04/07 19:13:48: Walking: no path found
+03/04/07 19:13:48: End cavebot loop
+03/04/07 19:13:49: Next loop. States: 0, 0, 4, 0
+03/04/07 19:13:49: Depot check
+03/04/07 19:13:49: Entering 'loot from floor' area
+03/04/07 19:13:49: findPathOnMap: loot from floor
+03/04/07 19:13:49: Floor loot: item (0,-1,1)
+03/04/07 19:13:49: findPathOnMap: loot from floor
+03/04/07 19:13:49: findPathOnMap: loot from floor
+03/04/07 19:13:49: findPathOnMap: loot from floor
+03/04/07 19:13:49: findPathOnMap: loot from floor
+03/04/07 19:13:49: Loot from floor: before anything to loot check
+03/04/07 19:13:49: Loot from floor: found something to loot -> walking
+03/04/07 19:13:49: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:49: isMonsterAttackingMe=0 currentTm=646107 attackConsiderPeriod=20000 currentTm-cons=626107 lastAttackTm=0
+03/04/07 19:13:49: isMonsterAttackingMe=0 currentTm=646107 attackConsiderPeriod=20000 currentTm-cons=626107 lastAttackTm=0
+03/04/07 19:13:49: isMonsterAttackingMe=0 currentTm=646107 attackConsiderPeriod=20000 currentTm-cons=626107 lastAttackTm=0
+03/04/07 19:13:49: Alien creature for training found
+03/04/07 19:13:49: Alien creature found: Bart Tuhuran
+03/04/07 19:13:49: Before main attack if: alien=1, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:13:49: Entered cancel attack
+03/04/07 19:13:49: Cancel attack: alien found
+03/04/07 19:13:49: Looking for a new waypoint
+03/04/07 19:13:49: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:49: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:49: timing: findPathOnMap() = 0ms
+03/04/07 19:13:49: Walking: no path found
+03/04/07 19:13:49: End cavebot loop
+03/04/07 19:13:50: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:50: Depot check
+03/04/07 19:13:50: Entering 'loot from floor' area
+03/04/07 19:13:50: findPathOnMap: loot from floor
+03/04/07 19:13:50: Floor loot: item (0,-1,1)
+03/04/07 19:13:50: findPathOnMap: loot from floor
+03/04/07 19:13:50: findPathOnMap: loot from floor
+03/04/07 19:13:50: findPathOnMap: loot from floor
+03/04/07 19:13:50: findPathOnMap: loot from floor
+03/04/07 19:13:51: Loot from floor: before anything to loot check
+03/04/07 19:13:51: Loot from floor: found something to loot -> walking
+03/04/07 19:13:51: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:51: isMonsterAttackingMe=0 currentTm=647247 attackConsiderPeriod=20000 currentTm-cons=627247 lastAttackTm=0
+03/04/07 19:13:51: isMonsterAttackingMe=0 currentTm=647247 attackConsiderPeriod=20000 currentTm-cons=627247 lastAttackTm=0
+03/04/07 19:13:51: isMonsterAttackingMe=0 currentTm=647247 attackConsiderPeriod=20000 currentTm-cons=627247 lastAttackTm=0
+03/04/07 19:13:51: Alien creature for training found
+03/04/07 19:13:51: Alien creature found: Bart Tuhuran
+03/04/07 19:13:51: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:51: Entered cancel attack
+03/04/07 19:13:51: Cancel attack: alien found
+03/04/07 19:13:51: Looking for a new waypoint
+03/04/07 19:13:51: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:51: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:51: timing: findPathOnMap() = 0ms
+03/04/07 19:13:51: Walking: no path found
+03/04/07 19:13:51: End cavebot loop
+03/04/07 19:13:52: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:52: Depot check
+03/04/07 19:13:52: Entering 'loot from floor' area
+03/04/07 19:13:52: findPathOnMap: loot from floor
+03/04/07 19:13:52: Floor loot: item (0,-1,1)
+03/04/07 19:13:52: findPathOnMap: loot from floor
+03/04/07 19:13:52: findPathOnMap: loot from floor
+03/04/07 19:13:52: findPathOnMap: loot from floor
+03/04/07 19:13:52: findPathOnMap: loot from floor
+03/04/07 19:13:52: Loot from floor: before anything to loot check
+03/04/07 19:13:52: Loot from floor: found something to loot -> walking
+03/04/07 19:13:52: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:52: isMonsterAttackingMe=0 currentTm=648258 attackConsiderPeriod=20000 currentTm-cons=628258 lastAttackTm=0
+03/04/07 19:13:52: isMonsterAttackingMe=0 currentTm=648258 attackConsiderPeriod=20000 currentTm-cons=628258 lastAttackTm=0
+03/04/07 19:13:52: Alien creature for training found
+03/04/07 19:13:52: Alien creature found: Bart Tuhuran
+03/04/07 19:13:52: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:52: Entered cancel attack
+03/04/07 19:13:52: Cancel attack: alien found
+03/04/07 19:13:52: Looking for a new waypoint
+03/04/07 19:13:52: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:52: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:52: timing: findPathOnMap() = 0ms
+03/04/07 19:13:52: Walking: no path found
+03/04/07 19:13:52: End cavebot loop
+03/04/07 19:13:53: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:53: Depot check
+03/04/07 19:13:53: Entering 'loot from floor' area
+03/04/07 19:13:53: findPathOnMap: loot from floor
+03/04/07 19:13:53: Floor loot: item (0,-1,1)
+03/04/07 19:13:53: findPathOnMap: loot from floor
+03/04/07 19:13:53: findPathOnMap: loot from floor
+03/04/07 19:13:53: findPathOnMap: loot from floor
+03/04/07 19:13:53: findPathOnMap: loot from floor
+03/04/07 19:13:53: Loot from floor: before anything to loot check
+03/04/07 19:13:53: Loot from floor: found something to loot -> walking
+03/04/07 19:13:53: Loot from floor: location me(32574,31958,7)->item(32574,31957,7)
+03/04/07 19:13:53: isMonsterAttackingMe=0 currentTm=649473 attackConsiderPeriod=20000 currentTm-cons=629473 lastAttackTm=0
+03/04/07 19:13:53: isMonsterAttackingMe=0 currentTm=649473 attackConsiderPeriod=20000 currentTm-cons=629473 lastAttackTm=0
+03/04/07 19:13:53: Alien creature for training found
+03/04/07 19:13:53: Alien creature found: Bart Tuhuran
+03/04/07 19:13:53: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:53: Entered cancel attack
+03/04/07 19:13:53: Cancel attack: alien found
+03/04/07 19:13:53: Looking for a new waypoint
+03/04/07 19:13:53: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:53: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:13:53: timing: findPathOnMap() = 0ms
+03/04/07 19:13:53: Walking: no path found
+03/04/07 19:13:53: End cavebot loop
+03/04/07 19:13:54: Next loop. States: 2, 0, 4, 0
+03/04/07 19:13:54: Depot check
+03/04/07 19:13:54: Entering 'loot from floor' area
+03/04/07 19:13:54: findPathOnMap: loot from floor
+03/04/07 19:13:54: Floor loot: item (0,0,0)
+03/04/07 19:13:54: findPathOnMap: loot from floor
+03/04/07 19:13:54: findPathOnMap: loot from floor
+03/04/07 19:13:54: findPathOnMap: loot from floor
+03/04/07 19:13:54: findPathOnMap: loot from floor
+03/04/07 19:13:54: Loot from floor: before anything to loot check
+03/04/07 19:13:54: Loot from floor: found something to loot -> walking
+03/04/07 19:13:54: Loot from floor: location me(32574,31957,7)->item(32574,31957,7)
+03/04/07 19:13:54: Loot from floor: standing over item
+03/04/07 19:13:54: Loot from floor: using (-1,0) as dropout offset
+03/04/07 19:13:54: Loot from floor: picking up item
+03/04/07 19:13:56: isMonsterAttackingMe=0 currentTm=653040 attackConsiderPeriod=20000 currentTm-cons=633040 lastAttackTm=0
+03/04/07 19:13:56: isMonsterAttackingMe=0 currentTm=653040 attackConsiderPeriod=20000 currentTm-cons=633040 lastAttackTm=0
+03/04/07 19:13:56: Alien creature for training found
+03/04/07 19:13:56: Alien creature found: Bart Tuhuran
+03/04/07 19:13:56: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:56: Entered cancel attack
+03/04/07 19:13:56: Cancel attack: alien found
+03/04/07 19:13:56: Looking for a new waypoint
+03/04/07 19:13:56: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:13:56: findPathOnMap: standard walk (32574,31957,7)->(32574,31958,7)
+03/04/07 19:13:56: timing: findPathOnMap() = 16ms
+03/04/07 19:13:56: Walking: execute walk
+03/04/07 19:13:56: End cavebot loop
+03/04/07 19:13:57: Next loop. States: 2, 0, 3, 0
+03/04/07 19:13:57: Depot check
+03/04/07 19:13:57: Entering 'loot from floor' area
+03/04/07 19:13:58: findPathOnMap: loot from floor
+03/04/07 19:13:58: Floor loot: item (0,0,0)
+03/04/07 19:13:58: findPathOnMap: loot from floor
+03/04/07 19:13:58: findPathOnMap: loot from floor
+03/04/07 19:13:58: findPathOnMap: loot from floor
+03/04/07 19:13:58: findPathOnMap: loot from floor
+03/04/07 19:13:58: Loot from floor: before anything to loot check
+03/04/07 19:13:58: Loot from floor: found something to loot -> walking
+03/04/07 19:13:58: Loot from floor: location me(32574,31957,7)->item(32574,31957,7)
+03/04/07 19:13:58: Loot from floor: standing over item
+03/04/07 19:13:58: Loot from floor: using (-1,0) as dropout offset
+03/04/07 19:13:58: Loot from floor: picking up item
+03/04/07 19:13:58: isMonsterAttackingMe=0 currentTm=655184 attackConsiderPeriod=20000 currentTm-cons=635184 lastAttackTm=0
+03/04/07 19:13:58: isMonsterAttackingMe=0 currentTm=655184 attackConsiderPeriod=20000 currentTm-cons=635184 lastAttackTm=0
+03/04/07 19:13:58: Alien creature for training found
+03/04/07 19:13:58: Alien creature found: Bart Tuhuran
+03/04/07 19:13:58: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:13:58: Entered cancel attack
+03/04/07 19:13:58: Cancel attack: alien found
+03/04/07 19:13:58: findPathOnMap: standard walk (32574,31957,7)->(32574,31958,7)
+03/04/07 19:13:58: timing: findPathOnMap() = 0ms
+03/04/07 19:13:58: Walking: execute walk
+03/04/07 19:13:59: End cavebot loop
+03/04/07 19:14:00: Next loop. States: 2, 0, 3, 0
+03/04/07 19:14:00: Depot check
+03/04/07 19:14:00: Entering 'loot from floor' area
+03/04/07 19:14:00: findPathOnMap: loot from floor
+03/04/07 19:14:00: Floor loot: item (1,-2,3)
+03/04/07 19:14:00: findPathOnMap: loot from floor
+03/04/07 19:14:00: Floor loot: item (1,-1,2)
+03/04/07 19:14:00: findPathOnMap: loot from floor
+03/04/07 19:14:00: findPathOnMap: loot from floor
+03/04/07 19:14:00: Loot from floor: before anything to loot check
+03/04/07 19:14:00: Loot from floor: found something to loot -> walking
+03/04/07 19:14:00: findPathOnMap: loot from floor 2
+03/04/07 19:14:00: Loot from floor: path size=2 between (32574,31958,7) and (32575,31957,7)
+03/04/07 19:14:01: findPathOnMap: loot from floor 2
+03/04/07 19:14:01: Loot from floor: path size=0 between (32575,31957,7) and (32575,31957,7)
+03/04/07 19:14:01: Loot from floor: aiks, no path found (32575,31957,7)->(32575,31957,7)!
+03/04/07 19:14:01: Loot from floor: location me(32575,31957,7)->item(32575,31957,7)
+03/04/07 19:14:01: Loot from floor: standing over item
+03/04/07 19:14:01: Loot from floor: using (-1,-1) as dropout offset
+03/04/07 19:14:01: Loot from floor: picking up item
+03/04/07 19:14:01: isMonsterAttackingMe=0 currentTm=657778 attackConsiderPeriod=20000 currentTm-cons=637778 lastAttackTm=0
+03/04/07 19:14:01: isMonsterAttackingMe=0 currentTm=657778 attackConsiderPeriod=20000 currentTm-cons=637778 lastAttackTm=0
+03/04/07 19:14:01: Alien creature for training found
+03/04/07 19:14:01: Alien creature found: Bart Tuhuran
+03/04/07 19:14:01: Before main attack if: alien=1, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:14:01: Entered cancel attack
+03/04/07 19:14:01: Cancel attack: alien found
+03/04/07 19:14:01: Waypoint reached
+03/04/07 19:14:01: Standing
+03/04/07 19:14:02: Next loop. States: 2, 0, 5, 0
+03/04/07 19:14:02: Depot check
+03/04/07 19:14:02: Entering 'loot from floor' area
+03/04/07 19:14:02: findPathOnMap: loot from floor
+03/04/07 19:14:02: Floor loot: item (0,-1,1)
+03/04/07 19:14:02: findPathOnMap: loot from floor
+03/04/07 19:14:02: findPathOnMap: loot from floor
+03/04/07 19:14:02: Loot from floor: before anything to loot check
+03/04/07 19:14:02: Loot from floor: found something to loot -> walking
+03/04/07 19:14:02: Loot from floor: location me(32575,31957,7)->item(32575,31956,7)
+03/04/07 19:14:02: isMonsterAttackingMe=0 currentTm=659024 attackConsiderPeriod=20000 currentTm-cons=639024 lastAttackTm=0
+03/04/07 19:14:02: Before main attack if: alien=0, suspend=1, globalAttackState=2, backAttack=0, backAttackAlien=0
+03/04/07 19:14:02: Entering attack pre-execution area
+03/04/07 19:14:02: Before dist loop
+03/04/07 19:14:02: No attack target found
+03/04/07 19:14:02: Standing
+03/04/07 19:14:03: Next loop. States: 0, 0, 5, 0
+03/04/07 19:14:03: Depot check
+03/04/07 19:14:03: Entering 'loot from floor' area
+03/04/07 19:14:03: findPathOnMap: loot from floor
+03/04/07 19:14:03: Floor loot: item (0,-1,1)
+03/04/07 19:14:04: findPathOnMap: loot from floor
+03/04/07 19:14:04: findPathOnMap: loot from floor
+03/04/07 19:14:04: Loot from floor: before anything to loot check
+03/04/07 19:14:04: Loot from floor: found something to loot -> walking
+03/04/07 19:14:04: Loot from floor: location me(32575,31957,7)->item(32575,31956,7)
+03/04/07 19:14:04: isMonsterAttackingMe=0 currentTm=660272 attackConsiderPeriod=20000 currentTm-cons=640272 lastAttackTm=0
+03/04/07 19:14:04: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:04: Entering attack pre-execution area
+03/04/07 19:14:04: Before dist loop
+03/04/07 19:14:04: No attack target found
+03/04/07 19:14:04: Looking for a new waypoint
+03/04/07 19:14:04: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:14:04: findPathOnMap: standard walk (32575,31957,7)->(32574,31958,7)
+03/04/07 19:14:04: timing: findPathOnMap() = 0ms
+03/04/07 19:14:04: Walking: execute walk
+03/04/07 19:14:04: End cavebot loop
+03/04/07 19:14:05: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:05: Depot check
+03/04/07 19:14:05: Entering 'loot from floor' area
+03/04/07 19:14:05: findPathOnMap: loot from floor
+03/04/07 19:14:05: Floor loot: item (1,-1,2)
+03/04/07 19:14:05: findPathOnMap: loot from floor
+03/04/07 19:14:05: findPathOnMap: loot from floor
+03/04/07 19:14:05: Loot from floor: before anything to loot check
+03/04/07 19:14:05: Loot from floor: found something to loot -> walking
+03/04/07 19:14:05: findPathOnMap: loot from floor 2
+03/04/07 19:14:05: Loot from floor: path size=2 between (32574,31957,7) and (32575,31956,7)
+03/04/07 19:14:07: Loot from floor: location me(32575,31957,7)->item(32575,31956,7)
+03/04/07 19:14:07: isMonsterAttackingMe=0 currentTm=664083 attackConsiderPeriod=20000 currentTm-cons=644083 lastAttackTm=0
+03/04/07 19:14:07: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:07: Entering attack pre-execution area
+03/04/07 19:14:07: Before dist loop
+03/04/07 19:14:07: No attack target found
+03/04/07 19:14:07: findPathOnMap: standard walk (32575,31957,7)->(32574,31958,7)
+03/04/07 19:14:07: timing: findPathOnMap() = 0ms
+03/04/07 19:14:07: Walking: execute walk
+03/04/07 19:14:07: End cavebot loop
+03/04/07 19:14:08: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:08: Depot check
+03/04/07 19:14:08: Entering 'loot from floor' area
+03/04/07 19:14:09: findPathOnMap: loot from floor
+03/04/07 19:14:09: Floor loot: item (1,-1,2)
+03/04/07 19:14:09: findPathOnMap: loot from floor
+03/04/07 19:14:09: findPathOnMap: loot from floor
+03/04/07 19:14:09: Loot from floor: before anything to loot check
+03/04/07 19:14:09: Loot from floor: found something to loot -> walking
+03/04/07 19:14:09: findPathOnMap: loot from floor 2
+03/04/07 19:14:09: Loot from floor: path size=3 between (32574,31957,7) and (32576,31956,7)
+03/04/07 19:14:12: findPathOnMap: loot from floor 2
+03/04/07 19:14:12: Loot from floor: path size=4 between (32574,31958,7) and (32576,31956,7)
+03/04/07 19:14:14: Loot from floor: location me(32576,31957,7)->item(32576,31956,7)
+03/04/07 19:14:14: isMonsterAttackingMe=0 currentTm=670960 attackConsiderPeriod=20000 currentTm-cons=650960 lastAttackTm=0
+03/04/07 19:14:14: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:14: Entering attack pre-execution area
+03/04/07 19:14:14: Before dist loop
+03/04/07 19:14:14: No attack target found
+03/04/07 19:14:14: findPathOnMap: standard walk (32576,31957,7)->(32574,31958,7)
+03/04/07 19:14:14: timing: findPathOnMap() = 0ms
+03/04/07 19:14:14: Walking: execute walk
+03/04/07 19:14:14: End cavebot loop
+03/04/07 19:14:15: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:15: Depot check
+03/04/07 19:14:15: Entering 'loot from floor' area
+03/04/07 19:14:15: findPathOnMap: loot from floor
+03/04/07 19:14:15: Floor loot: item (-1,0,1)
+03/04/07 19:14:15: findPathOnMap: loot from floor
+03/04/07 19:14:15: findPathOnMap: loot from floor
+03/04/07 19:14:16: Loot from floor: before anything to loot check
+03/04/07 19:14:16: Loot from floor: found something to loot -> walking
+03/04/07 19:14:16: findPathOnMap: loot from floor 2
+03/04/07 19:14:16: Loot from floor: path size=1 between (32576,31956,7) and (32575,31956,7)
+03/04/07 19:14:16: Loot from floor: location me(32575,31956,7)->item(32575,31956,7)
+03/04/07 19:14:16: Loot from floor: standing over item
+03/04/07 19:14:16: Loot from floor: using (-1,0) as dropout offset
+03/04/07 19:14:16: Loot from floor: picking up item
+03/04/07 19:14:17: isMonsterAttackingMe=0 currentTm=673649 attackConsiderPeriod=20000 currentTm-cons=653649 lastAttackTm=0
+03/04/07 19:14:17: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:17: Entering attack pre-execution area
+03/04/07 19:14:17: Before dist loop
+03/04/07 19:14:17: No attack target found
+03/04/07 19:14:17: findPathOnMap: standard walk (32574,31956,7)->(32574,31958,7)
+03/04/07 19:14:17: timing: findPathOnMap() = 15ms
+03/04/07 19:14:17: Walking: execute walk
+03/04/07 19:14:17: End cavebot loop
+03/04/07 19:14:18: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:18: Depot check
+03/04/07 19:14:18: Entering 'loot from floor' area
+03/04/07 19:14:18: findPathOnMap: loot from floor
+03/04/07 19:14:18: Floor loot: item (3,1,4)
+03/04/07 19:14:18: findPathOnMap: loot from floor
+03/04/07 19:14:18: Loot from floor: before anything to loot check
+03/04/07 19:14:18: Loot from floor: found something to loot -> walking
+03/04/07 19:14:18: findPathOnMap: loot from floor 2
+03/04/07 19:14:18: Loot from floor: path size=4 between (32574,31956,7) and (32577,31957,7)
+03/04/07 19:14:21: findPathOnMap: loot from floor 2
+03/04/07 19:14:21: Loot from floor: path size=2 between (32577,31959,7) and (32577,31957,7)
+03/04/07 19:14:22: findPathOnMap: loot from floor 2
+03/04/07 19:14:22: Loot from floor: path size=0 between (32577,31957,7) and (32577,31957,7)
+03/04/07 19:14:22: Loot from floor: aiks, no path found (32577,31957,7)->(32577,31957,7)!
+03/04/07 19:14:22: Loot from floor: location me(32577,31957,7)->item(32577,31957,7)
+03/04/07 19:14:22: Loot from floor: standing over item
+03/04/07 19:14:22: Loot from floor: using (-1,-1) as dropout offset
+03/04/07 19:14:22: Loot from floor: picking up item
+03/04/07 19:14:23: isMonsterAttackingMe=0 currentTm=679569 attackConsiderPeriod=20000 currentTm-cons=659569 lastAttackTm=0
+03/04/07 19:14:23: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:23: Entering attack pre-execution area
+03/04/07 19:14:23: Before dist loop
+03/04/07 19:14:23: No attack target found
+03/04/07 19:14:23: findPathOnMap: standard walk (32577,31957,7)->(32574,31958,7)
+03/04/07 19:14:23: timing: findPathOnMap() = 15ms
+03/04/07 19:14:23: Walking: execute walk
+03/04/07 19:14:23: End cavebot loop
+03/04/07 19:14:24: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:24: Depot check
+03/04/07 19:14:24: Entering 'loot from floor' area
+03/04/07 19:14:24: findPathOnMap: loot from floor
+03/04/07 19:14:24: Floor loot: item (0,1,1)
+03/04/07 19:14:24: Loot from floor: before anything to loot check
+03/04/07 19:14:24: Loot from floor: found something to loot -> walking
+03/04/07 19:14:24: Loot from floor: location me(32577,31957,7)->item(32577,31958,7)
+03/04/07 19:14:24: isMonsterAttackingMe=0 currentTm=680720 attackConsiderPeriod=20000 currentTm-cons=660720 lastAttackTm=0
+03/04/07 19:14:24: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:24: Entering attack pre-execution area
+03/04/07 19:14:24: Before dist loop
+03/04/07 19:14:24: No attack target found
+03/04/07 19:14:24: findPathOnMap: standard walk (32577,31957,7)->(32574,31958,7)
+03/04/07 19:14:24: timing: findPathOnMap() = 0ms
+03/04/07 19:14:24: Walking: execute walk
+03/04/07 19:14:24: End cavebot loop
+03/04/07 19:14:25: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:25: Depot check
+03/04/07 19:14:25: Entering 'loot from floor' area
+03/04/07 19:14:25: findPathOnMap: loot from floor
+03/04/07 19:14:25: Floor loot: item (0,1,1)
+03/04/07 19:14:25: Loot from floor: before anything to loot check
+03/04/07 19:14:25: Loot from floor: found something to loot -> walking
+03/04/07 19:14:25: Loot from floor: location me(32577,31957,7)->item(32577,31958,7)
+03/04/07 19:14:25: isMonsterAttackingMe=0 currentTm=681983 attackConsiderPeriod=20000 currentTm-cons=661983 lastAttackTm=0
+03/04/07 19:14:25: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:25: Entering attack pre-execution area
+03/04/07 19:14:25: Before dist loop
+03/04/07 19:14:25: No attack target found
+03/04/07 19:14:25: findPathOnMap: standard walk (32577,31957,7)->(32574,31958,7)
+03/04/07 19:14:25: timing: findPathOnMap() = 0ms
+03/04/07 19:14:25: Walking: execute walk
+03/04/07 19:14:25: End cavebot loop
+03/04/07 19:14:26: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:26: Depot check
+03/04/07 19:14:26: Entering 'loot from floor' area
+03/04/07 19:14:26: findPathOnMap: loot from floor
+03/04/07 19:14:26: Floor loot: item (1,1,2)
+03/04/07 19:14:27: Loot from floor: before anything to loot check
+03/04/07 19:14:27: Loot from floor: found something to loot -> walking
+03/04/07 19:14:27: findPathOnMap: loot from floor 2
+03/04/07 19:14:27: Loot from floor: path size=2 between (32576,31957,7) and (32577,31958,7)
+03/04/07 19:14:29: findPathOnMap: loot from floor 2
+03/04/07 19:14:29: Loot from floor: path size=5 between (32573,31957,7) and (32577,31958,7)
+03/04/07 19:14:32: findPathOnMap: loot from floor 2
+03/04/07 19:14:32: Loot from floor: path size=0 between (32577,31958,7) and (32577,31958,7)
+03/04/07 19:14:32: Loot from floor: aiks, no path found (32577,31958,7)->(32577,31958,7)!
+03/04/07 19:14:32: Loot from floor: location me(32577,31958,7)->item(32577,31958,7)
+03/04/07 19:14:32: Loot from floor: standing over item
+03/04/07 19:14:32: Loot from floor: using (-1,-1) as dropout offset
+03/04/07 19:14:32: Loot from floor: picking up item
+03/04/07 19:14:33: isMonsterAttackingMe=0 currentTm=690185 attackConsiderPeriod=20000 currentTm-cons=670185 lastAttackTm=0
+03/04/07 19:14:33: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:33: Entering attack pre-execution area
+03/04/07 19:14:33: Before dist loop
+03/04/07 19:14:33: No attack target found
+03/04/07 19:14:33: findPathOnMap: standard walk (32577,31958,7)->(32574,31958,7)
+03/04/07 19:14:34: timing: findPathOnMap() = 110ms
+03/04/07 19:14:34: Walking: execute walk
+03/04/07 19:14:34: End cavebot loop
+03/04/07 19:14:35: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:35: Depot check
+03/04/07 19:14:35: Entering 'loot from floor' area
+03/04/07 19:14:35: Loot from floor: before anything to loot check
+03/04/07 19:14:35: isMonsterAttackingMe=0 currentTm=691441 attackConsiderPeriod=20000 currentTm-cons=671441 lastAttackTm=0
+03/04/07 19:14:35: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:35: Entering attack pre-execution area
+03/04/07 19:14:35: Before dist loop
+03/04/07 19:14:35: No attack target found
+03/04/07 19:14:35: findPathOnMap: standard walk (32576,31958,7)->(32574,31958,7)
+03/04/07 19:14:35: timing: findPathOnMap() = 15ms
+03/04/07 19:14:35: Walking: execute walk
+03/04/07 19:14:35: End cavebot loop
+03/04/07 19:14:36: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:36: Depot check
+03/04/07 19:14:36: Entering 'loot from floor' area
+03/04/07 19:14:36: Loot from floor: before anything to loot check
+03/04/07 19:14:36: isMonsterAttackingMe=0 currentTm=692449 attackConsiderPeriod=20000 currentTm-cons=672449 lastAttackTm=0
+03/04/07 19:14:36: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:36: Entering attack pre-execution area
+03/04/07 19:14:36: Before dist loop
+03/04/07 19:14:36: No attack target found
+03/04/07 19:14:36: findPathOnMap: standard walk (32576,31958,7)->(32574,31958,7)
+03/04/07 19:14:36: timing: findPathOnMap() = 0ms
+03/04/07 19:14:36: Walking: execute walk
+03/04/07 19:14:36: End cavebot loop
+03/04/07 19:14:37: Next loop. States: 0, 0, 3, 0
+03/04/07 19:14:37: Depot check
+03/04/07 19:14:37: Entering 'loot from floor' area
+03/04/07 19:14:37: Loot from floor: before anything to loot check
+03/04/07 19:14:37: isMonsterAttackingMe=0 currentTm=693539 attackConsiderPeriod=20000 currentTm-cons=673539 lastAttackTm=0
+03/04/07 19:14:37: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:37: Entering attack pre-execution area
+03/04/07 19:14:37: Before dist loop
+03/04/07 19:14:37: No attack target found
+03/04/07 19:14:37: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:14:37: timing: findPathOnMap() = 0ms
+03/04/07 19:14:37: Walking: no path found
+03/04/07 19:14:37: End cavebot loop
+03/04/07 19:14:38: Next loop. States: 0, 0, 4, 0
+03/04/07 19:14:38: Depot check
+03/04/07 19:14:38: Entering 'loot from floor' area
+03/04/07 19:14:38: Loot from floor: before anything to loot check
+03/04/07 19:14:38: isMonsterAttackingMe=0 currentTm=694688 attackConsiderPeriod=20000 currentTm-cons=674688 lastAttackTm=0
+03/04/07 19:14:38: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:38: Entering attack pre-execution area
+03/04/07 19:14:38: Before dist loop
+03/04/07 19:14:38: No attack target found
+03/04/07 19:14:38: Looking for a new waypoint
+03/04/07 19:14:38: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:14:38: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:14:38: timing: findPathOnMap() = 0ms
+03/04/07 19:14:38: Walking: no path found
+03/04/07 19:14:38: End cavebot loop
+03/04/07 19:14:39: Next loop. States: 0, 0, 4, 0
+03/04/07 19:14:39: Depot check
+03/04/07 19:14:39: Entering 'loot from floor' area
+03/04/07 19:14:39: Loot from floor: before anything to loot check
+03/04/07 19:14:39: isMonsterAttackingMe=0 currentTm=695745 attackConsiderPeriod=20000 currentTm-cons=675745 lastAttackTm=0
+03/04/07 19:14:39: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:39: Entering attack pre-execution area
+03/04/07 19:14:39: Before dist loop
+03/04/07 19:14:39: No attack target found
+03/04/07 19:14:39: Looking for a new waypoint
+03/04/07 19:14:39: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:14:39: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:14:39: timing: findPathOnMap() = 0ms
+03/04/07 19:14:39: Walking: no path found
+03/04/07 19:14:39: End cavebot loop
+03/04/07 19:14:40: Next loop. States: 0, 0, 4, 0
+03/04/07 19:14:40: Depot check
+03/04/07 19:14:40: Entering 'loot from floor' area
+03/04/07 19:14:40: Loot from floor: before anything to loot check
+03/04/07 19:14:40: isMonsterAttackingMe=0 currentTm=696912 attackConsiderPeriod=20000 currentTm-cons=676912 lastAttackTm=0
+03/04/07 19:14:40: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:40: Entering attack pre-execution area
+03/04/07 19:14:40: Before dist loop
+03/04/07 19:14:40: No attack target found
+03/04/07 19:14:40: Looking for a new waypoint
+03/04/07 19:14:40: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:14:40: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:14:40: timing: findPathOnMap() = 0ms
+03/04/07 19:14:40: Walking: no path found
+03/04/07 19:14:40: End cavebot loop
+03/04/07 19:14:41: Next loop. States: 0, 0, 4, 0
+03/04/07 19:14:41: Depot check
+03/04/07 19:14:41: Entering 'loot from floor' area
+03/04/07 19:14:41: Loot from floor: before anything to loot check
+03/04/07 19:14:41: isMonsterAttackingMe=0 currentTm=697761 attackConsiderPeriod=20000 currentTm-cons=677761 lastAttackTm=0
+03/04/07 19:14:41: Before main attack if: alien=0, suspend=1, globalAttackState=0, backAttack=0, backAttackAlien=0
+03/04/07 19:14:41: Entering attack pre-execution area
+03/04/07 19:14:41: Before dist loop
+03/04/07 19:14:41: No attack target found
+03/04/07 19:14:41: Looking for a new waypoint
+03/04/07 19:14:41: Walking to a new waypoint (32574,31958,7)
+03/04/07 19:14:41: findPathOnMap: standard walk (32574,31958,7)->(32574,31958,7)
+03/04/07 19:14:41: timing: findPathOnMap() = 0ms
+03/04/07 19:14:41: Walking: no path found
+03/04/07 19:14:41: End cavebot loop
