@@ -18,21 +18,19 @@ public:
 	static void waitForItemsInsideChange(int contNr, int origItemsCount);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty);
-	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15]);	
-	static void executeWalk(int path[15]);
-	static void findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
+	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15]);	
+	static void executeWalk(int startX, int startY, int startZ, int path[15]);
 	static void lootItemFromContainer(int conTNr, CUIntArray *acceptedItems);
 	static void eatItemFromContainer(int contNr);
 	static int waitForOpenContainer(int contNr,int open);
 	static void sleepWithStop(int ms,int *stopFlag);
-	static char *wc2c(const unsigned short *src);
 	static void waitForCreatureDisappear(int x,int y, int tibiaId);
 	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags);
-	static struct point findNearestDepot(int startX, int startY, int startZ);
-	static struct point findNearestDepot(int startX, int startY, int startZ, int useDiagonal);
 	static void prepareProhPointList();
+	static void findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode,int useDiagonal);
 private:
-	static void findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int path[15],int useDiagonal);
+	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ,int endSpecialLocation, int path[15],int useDiagonal);
+	static void findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
 
 
 	CModuleUtil();

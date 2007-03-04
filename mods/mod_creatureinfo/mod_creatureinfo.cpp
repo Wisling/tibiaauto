@@ -662,7 +662,6 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 				
-		int x,y;
 		char crStatCreature[128];
 		int crStatMaxValue=0;
 		sprintf(crStatCreature,"<none>");

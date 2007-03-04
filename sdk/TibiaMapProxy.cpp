@@ -115,6 +115,19 @@ int CTibiaMapProxy::getPointUpDown(int x,int y,int z)
 	} 
 	return 0;
 }
+int CTibiaMapProxy::getPointUpDownNoProh(int x,int y,int z)
+{
+	typedef int (*Proto_fun)(int x,int y,int z);
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointUpDownNoProh");
+		if (fun)
+		{
+			return fun(x,y,z);
+		}
+	} 
+	return 0;
+}
 void CTibiaMapProxy::setPointUpDown(int x,int y,int z,int updown)
 {
 	typedef void (*Proto_fun)(int x,int y,int z, int updown);

@@ -21,6 +21,7 @@ public:
 	void prohPointClear();
 	void prohPointAdd(int x, int y, int z);
 	int getPointUpDown(int x,int y,int z);
+	int getPointUpDownNoProh(int x,int y,int z);
 	void setPointUpDown(int x,int y,int z,int updown);
 	int getPrevPointZ(int x,int y, int z);
 	int getPrevPointY(int x,int y, int z);
