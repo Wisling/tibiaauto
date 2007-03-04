@@ -203,3 +203,13 @@ int CTibiaMap::isPointAvailableNoProh(int x, int y, int z)
 {
 	return tibiaMap[point(x,y,z)].available;
 }
+
+int CTibiaMap::getPointUpDownNoProh(int x, int y, int z)
+{
+	if (isPointAvailableNoProh(x,y,z))
+	{
+		return tibiaMap[point(x,y,z)].updown;	
+	} else {
+		return 0;
+	}
+}

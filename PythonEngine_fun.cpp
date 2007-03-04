@@ -877,11 +877,11 @@ static PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();	
 	
 	
-	CModuleUtil::findPathOnMap(selfCh->x,selfCh->y,selfCh->z,arg1,arg2,arg3,path);											
+	CModuleUtil::findPathOnMap(selfCh->x,selfCh->y,selfCh->z,arg1,arg2,arg3,0,path);											
 	int pathSize;
 	for (pathSize=0;pathSize<10000&&path[pathSize];pathSize++){}										
 	if (pathSize){
-		CModuleUtil::executeWalk(path);		
+		CModuleUtil::executeWalk(selfCh->x,selfCh->y,selfCh->z,path);		
 	}
 	
 	delete selfCh;
@@ -1042,7 +1042,7 @@ static PyObject *tibiaauto_map_prohPointAdd(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+    	if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	tibiaMap.prohPointAdd(arg1,arg2,arg3);
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -1052,8 +1052,19 @@ static PyObject *tibiaauto_map_getPointUpDown(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPointUpDown(arg1,arg2,arg3);	
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+static PyObject *tibiaauto_map_getPointUpDownNoProh(PyObject *self, PyObject *args)
+{
+	CTibiaMapProxy tibiaMap;
+
+	int arg1,arg2,arg3;
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+	int ret1=tibiaMap.getPointUpDownNoProh(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
 	return ret;
@@ -1063,7 +1074,7 @@ static PyObject *tibiaauto_map_setPointUpDown(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3,arg4;
-    if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
+   	 if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
 	tibiaMap.setPointUpDown(arg1,arg2,arg3,arg4);
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -1073,7 +1084,7 @@ static PyObject *tibiaauto_map_getPrevPointZ(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+    	if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPrevPointZ(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
@@ -1084,7 +1095,7 @@ static PyObject *tibiaauto_map_getPrevPointY(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPrevPointY(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
@@ -1095,7 +1106,7 @@ static PyObject *tibiaauto_map_getPrevPointX(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPrevPointX(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
@@ -1114,7 +1125,7 @@ static PyObject *tibiaauto_map_setPrevPoint(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
+  	  if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
 	tibiaMap.setPrevPoint(arg1,arg2,arg3,arg4,arg5,arg6);	
 	Py_INCREF(Py_None);
 	return Py_None; 
@@ -1133,7 +1144,7 @@ static PyObject *tibiaauto_map_setPointAsAvailable(PyObject *self, PyObject *arg
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	tibiaMap.setPointAsAvailable(arg1,arg2,arg3);
 	Py_INCREF(Py_None);
 	return Py_None;
@@ -1143,7 +1154,7 @@ static PyObject *tibiaauto_map_isPointAvailable(PyObject *self, PyObject *args)
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.isPointAvailable(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
@@ -1154,7 +1165,7 @@ static PyObject *tibiaauto_map_isPointAvailableNoProh(PyObject *self, PyObject *
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+  	  if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.isPointAvailableNoProh(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
@@ -1174,7 +1185,7 @@ static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
 	CRegexpProxy regexpProxy;
 
 	char *arg1,*arg2;
-    if (!PyArg_ParseTuple(args, "ss", &arg1,&arg2)) return NULL;	
+  	  if (!PyArg_ParseTuple(args, "ss", &arg1,&arg2)) return NULL;	
 	int ret1=regexpProxy.match(arg1,arg2);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
@@ -1185,7 +1196,7 @@ static PyObject *tibiaauto_alice_respond(PyObject *self, PyObject *args)
 	CAliceProxy alice;
 
 	char *arg1,*arg2;
-    if (!PyArg_ParseTuple(args, "ss", &arg1,&arg2)) return NULL;	
+ 	   if (!PyArg_ParseTuple(args, "ss", &arg1,&arg2)) return NULL;	
 	char *ret1=alice.respond(arg1,arg2);	
 	PyObject *ret = Py_BuildValue("s",ret1);
 	Py_INCREF(ret);
@@ -1196,7 +1207,7 @@ static PyObject *tibiaauto_item_getName(PyObject *self, PyObject *args)
 	CTibiaItemProxy itemProxy;
 
 	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+  	  if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	char *ret1=itemProxy.getName(arg1);	
 	PyObject *ret = Py_BuildValue("s",ret1);
 	Py_INCREF(ret);
@@ -1623,7 +1634,8 @@ static PyObject *tibiaauto_crstat_inarea(PyObject *self, PyObject *args)
 	
 	char **ret1=cReader.findCreatureStatInArea(arg1,arg2,arg3,arg4,arg5);
 	int len=0;
-	for (len=0;ret1[len];len++) len++;
+	for (len=0;ret1[len];) len++;
+
 	PyObject *ret=PyList_New(len);
 	int i;
 	for (i=0;i<len;i++)
@@ -1659,4 +1671,32 @@ static PyObject *tibiaauto_reader_setMainTrayText(PyObject *self, PyObject *args
 	reader.setMainTrayText(arg1);
 	Py_INCREF(Py_None);
 	return Py_None; 
+}
+
+static PyObject *tibiaauto_reader_getPlayerModeAttackPlayers(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getPlayerModeAttackPlayers();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+static PyObject *tibiaauto_reader_getPlayerModeAttackType(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getPlayerModeAttackType();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getPlayerModeFollow();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
 }

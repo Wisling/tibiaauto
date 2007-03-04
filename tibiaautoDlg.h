@@ -1,5 +1,8 @@
 // tibiaautoDlg.h : header file
 //
+//{{AFX_INCLUDES()
+#include "webbrowser2.h"
+//}}AFX_INCLUDES
 
 #if !defined(AFX_TIBIAAUTODLG_H__27D9EDA8_C837_406F_9952_9B3288BD9A18__INCLUDED_)
 #define AFX_TIBIAAUTODLG_H__27D9EDA8_C837_406F_9952_9B3288BD9A18__INCLUDED_
@@ -66,6 +69,7 @@ public:
 	CStatic	m_infoAutoFish;
 	CStatic	m_infoAutoGo;
 	CStatic	m_infoRuneMaker;
+	CWebBrowser2	m_browserAds;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -115,7 +119,6 @@ protected:
 	afx_msg void OnLoadedModules();
 	afx_msg void OnToolAutolooter();
 	afx_msg void OnToolEater();
-	afx_msg void OnDonation();
 	afx_msg void OnToolCreatureinfo();
 	afx_msg void OnToolMaphack();
 	afx_msg void OnToolTeam();
@@ -130,13 +133,12 @@ private:
 
 	long m_processId;
 	
-	long int *m_valueTab;
-	long int *m_memory;	
 
 public:
 	void passSecurityInfo(int value);
 		int shutdownCounter;
 private:
+	void refreshAds();
 	XercesDOMParser *parser;
 	int m_lightPower;
 	CLoadedModules *m_loadedModules;

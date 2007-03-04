@@ -4,8 +4,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "tibiaautoDlg.h"
-#include "MemUtil.h"
-  
+#include "MemUtil.h" 
 #include "CharDialog.h"
 #include "MemReaderProxy.h"
 #include "TibiaMapProxy.h"
@@ -20,11 +19,11 @@
 #include "EnterCode.h"
 #include "md5class.h"
 #include "OptionsDialog.h"
-
 #include "detours.h"
 #include "PythonEngine.h" 
 #include "PythonScriptsDialog.h"
 #include "PythonScript.h"
+#include "url.h"
 
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
@@ -77,7 +76,7 @@ CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
 		 
 	parser = new XercesDOMParser();	
 
-	CPythonEngine pythonEngine;	
+	
 }
 
 void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
@@ -108,6 +107,7 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOFISH_INFO, m_infoAutoFish);
 	DDX_Control(pDX, IDC_TOOL_AUTOGO_INFO, m_infoAutoGo);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO, m_infoRuneMaker);	
+	DDX_Control(pDX, IDC_BROWSER_ADS, m_browserAds);
 	//}}AFX_DATA_MAP
 }
 
@@ -144,7 +144,6 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_LOADED_MODULES, OnLoadedModules)
 	ON_BN_CLICKED(IDC_TOOL_AUTOLOOTER, OnToolAutolooter)
 	ON_BN_CLICKED(IDC_TOOL_EATER, OnToolEater)
-	ON_BN_CLICKED(IDC_DONATION, OnDonation)
 	ON_BN_CLICKED(IDC_TOOL_CREATUREINFO, OnToolCreatureinfo)
 	ON_BN_CLICKED(IDC_TOOL_MAPHACK, OnToolMaphack)
 	ON_BN_CLICKED(IDC_TOOL_TEAM, OnToolTeam)
@@ -159,7 +158,7 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg message handlers
-
+ 
 BOOL CTibiaautoDlg::OnInitDialog()
 {	
 	srand(time(NULL));
@@ -171,8 +170,6 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 		
 
-	m_valueTab=(long int *)malloc(sizeof(long int)*1024*1024);
-	m_memory=(long int *)malloc(sizeof(long int)*1024*1024);
 
 
 	CCharDialog *charDialog = new CCharDialog();
@@ -235,7 +232,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);	
-	SetTimer(1002,100,NULL);
+	SetTimer(1002,100,NULL);	
 
 
 	// this is needed to force loading tibiaauto_util.dll	
@@ -243,9 +240,64 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	delete self;
 
 
+	
+	CPythonEngine pythonEngine;	
+	pythonEngine.init();
 
+	int ffBoxDisplay=1;
 
+	char ffCheckString[1024];
+	unsigned long ffCheckLen=1023;
+	ffCheckString[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("FFcheck"),NULL,NULL,(unsigned char *)ffCheckString,&ffCheckLen);
+		
+		if (strlen(ffCheckString))
+		{
+			// found
+			if (time(NULL)-atoi(ffCheckString)<60*60*24)
+			{
+				ffBoxDisplay=0;
+			}
+		}	
+		char buf[128];
+		sprintf(buf,"%d",time(NULL));
+		RegSetValueEx(hkey,TEXT("FFcheck"),0,REG_SZ,(const unsigned char *)buf,strlen(buf)+1);
+		RegCloseKey(hkey);	
+	}
 
+	if (ffBoxDisplay)
+	{
+		// now check for firefox	
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_ALL_ACCESS,&hkey))
+		{
+			RegCloseKey(hkey);
+			ffBoxDisplay=0;
+		}
+	}
+	if (ffBoxDisplay)
+	{
+		// now check for firefox	
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_ALL_ACCESS,&hkey))
+		{
+			RegCloseKey(hkey);
+			ffBoxDisplay=0;
+		}
+	}
+	
+	if (ffBoxDisplay)
+	{
+		if (AfxMessageBox("Tibia Auto has detected that you are not using Mozilla Firefox. It is recommend that you install it. Do you want to proceed with installation?",MB_YESNO)==IDYES)
+		{
+			::ShellExecute(NULL, NULL, "http://tibiaauto.net/firefox.html", NULL, NULL, SW_SHOWNORMAL);			
+		}		
+	}
+	
+
+	refreshAds();
+	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads
 		
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -331,6 +383,10 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		CPythonEngine::backpipeTamsgTick();
 
 		SetTimer(1002,100,NULL);
+	}
+	if (nIDEvent==1003)
+	{
+		refreshAds();
 	}
 	
 	
@@ -928,11 +984,11 @@ void CTibiaautoDlg::OnToolEater()
 	}	
 }
 
-void CTibiaautoDlg::OnDonation() 
-{	
-	CDonationDialog donDialog;
-	donDialog.DoModal();							
-}
+//void CTibiaautoDlg::OnDonation() 
+//{	
+//	CDonationDialog donDialog;
+//	donDialog.DoModal();							
+//}
 
 void CTibiaautoDlg::OnToolCreatureinfo() 
 {
@@ -981,4 +1037,9 @@ void CTibiaautoDlg::OnOptions()
 {
 	COptionsDialog dlg;
 	dlg.DoModal();							
+}
+
+void CTibiaautoDlg::refreshAds()
+{		
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.12.6",NULL,NULL,NULL,NULL);
 }

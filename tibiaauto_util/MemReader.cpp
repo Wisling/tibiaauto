@@ -664,3 +664,21 @@ void CMemReader::setMainTrayText(char *text)
 {
 
 }
+
+int CMemReader::getPlayerModeAttackType()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackType"));
+}
+
+int CMemReader::getPlayerModeFollow()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeFollow"));
+}
+
+int CMemReader::getPlayerModeAttackPlayers()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackPlayers"));
+}

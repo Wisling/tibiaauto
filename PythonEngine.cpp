@@ -14,8 +14,8 @@
 #include "AliceProxy.h"
 #include "RegexpProxy.h"
 #include "ModuleUtil.h"
-
-
+  
+  
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -36,7 +36,8 @@ int registerPluginCount=0;
 
  
 static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *args)    
-{				
+{					
+	
 	registerPluginCount++;
 
 	CPythonScript *pythonScript = new CPythonScript();
@@ -45,29 +46,26 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	
 	PyObject *pluginClass=NULL;
 	if (!PyArg_ParseTuple(args,"O",&pluginClass)) return NULL;
-	
+		
 	Py_XINCREF(pluginClass);	
 	pythonScript->setPluginClass(pluginClass);
 	
 	PyObject *pluginObject = PyInstance_New(pluginClass,NULL,NULL);			
 	if (pluginObject==NULL)
-	{
+	{ 
 		AfxMessageBox("registerObject() takes class as an argument");
 		Py_XDECREF(pluginClass);
 		return NULL;
 	}
-	Py_XINCREF(pluginObject);	
-	pythonScript->setPluginObject(pluginObject);	
+	Py_XINCREF(pluginObject);	 
+	pythonScript->setPluginObject(pluginObject);		
 	
-	
-	// getName		
+	// getName			
     PyObject *result = PyObject_CallMethod(pluginObject, "getName","()");
 	pythonScript->setName(PyString_AsString(result));	
 	Py_XDECREF(result);	
 
-	// getVersion
-	
-		
+	// getVersion		
     result = PyObject_CallMethod(pluginObject, "getVersion","()");
 	pythonScript->setVersion(PyString_AsString(result));		
 	Py_XDECREF(result);		
@@ -76,7 +74,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	// getFunDef			
 	int nr;
 	for (nr=0;;nr++)
-	{				
+	{						
 		int type,interval; 
 		PyObject *periodicalFun;				
 		
@@ -103,7 +101,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 		
 		
 		Py_XDECREF(result);		
-	}	
+	}
 	// getConfigParam
 	for (nr=0;;nr++)
 	{
@@ -134,7 +132,6 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	Py_XDECREF(pluginObject);
 	Py_XDECREF(pluginClass);
 		
-
 	Py_INCREF(Py_None);		
 	
 	return Py_None;
@@ -260,6 +257,9 @@ static PyMethodDef Methods_tareader[] = {
 	{"readMiniMapPoint", tibiaauto_reader_readMiniMapPoint, METH_VARARGS},
 	{"setMainWindowText", tibiaauto_reader_setMainWindowText, METH_VARARGS},
 	{"setMainTrayText", tibiaauto_reader_setMainTrayText, METH_VARARGS},
+	{"getPlayerModeAttackPlayers", tibiaauto_reader_getPlayerModeAttackPlayers, METH_VARARGS},
+	{"getPlayerModeAttackType", tibiaauto_reader_getPlayerModeAttackType, METH_VARARGS},
+	{"getPlayerModeFollow", tibiaauto_reader_getPlayerModeFollow, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 
@@ -307,6 +307,7 @@ static PyMethodDef Methods_tamap[] = {
 	{"prohPointClear", tibiaauto_map_prohPointClear, METH_VARARGS},
 	{"prohPointAdd", tibiaauto_map_prohPointAdd, METH_VARARGS},
 	{"getPointUpDown", tibiaauto_map_getPointUpDown, METH_VARARGS},
+	{"getPointUpDownNoProh", tibiaauto_map_getPointUpDownNoProh, METH_VARARGS},
 	{"setPointUpDown", tibiaauto_map_setPointUpDown, METH_VARARGS},
 	{"getPrevPointZ", tibiaauto_map_getPrevPointZ, METH_VARARGS},
 	{"getPrevPointY", tibiaauto_map_getPrevPointY, METH_VARARGS},
@@ -410,16 +411,16 @@ CPythonEngine::~CPythonEngine()
 
 
 void CPythonEngine::init()
-{	
+{
 	if (!initialised)
 	{
 		initialised=1;
 		
 		/* Initialize the Python interpreter.*/
-		Py_Initialize();
+ 		Py_Initialize();
 		PyEval_InitThreads();
-
-				
+  
+				 
 		PyGILState_STATE gstate;
 		gstate = PyGILState_Ensure();
 		
@@ -443,6 +444,8 @@ void CPythonEngine::init()
 		PyRun_SimpleString("import tacrstat");
 		PyRun_SimpleString("import takernel");		
 		PyRun_SimpleString("import sys");	
+
+		
 		
 		char installPath[1024];
 		unsigned long installPathLen=1023;
@@ -469,8 +472,9 @@ void CPythonEngine::init()
 			fseek(f,0,SEEK_END);
 			int fileSize = ftell(f);
 			fseek(f,0,SEEK_SET);
-			char *fileBuf = (char *)malloc(fileSize);
-			fread(fileBuf,fileSize,1,f);
+			char *fileBuf = (char *)malloc(fileSize+1);
+			memset(fileBuf,0,fileSize+1);
+			fread(fileBuf,1,fileSize,f);
 									
 			int ret=PyRun_SimpleString(fileBuf);	
 			if (ret==-1) AfxMessageBox("Loading tautil.py script failed!");
@@ -482,6 +486,8 @@ void CPythonEngine::init()
 		PyGILState_Release(gstate);		
 
 		InitializeCriticalSection(&ScriptEngineCriticalSection);		
+						
+
 		
 		// now load all scripts from 'tascripts' subdirectory
 		sprintf(pathBuf,"%s\\tascripts\\*.py",installPath);
@@ -504,7 +510,7 @@ void CPythonEngine::init()
 				}
 			}
 			FindClose(hFind);
-		}	
+		}					
 	}
 }
 
@@ -514,26 +520,55 @@ void CPythonEngine::loadScript(char *path)
 	PyGILState_STATE gstate;
 	gstate = PyGILState_Ensure();
 	
-	FILE *f=fopen(path,"r");
+	FILE *f=fopen(path,"rb");
 	if (f)
-	{		
+	{			
+		int oldRegisterPluginCount=registerPluginCount;				
+		char buf[1024];
+		sprintf(buf,"execfile('%s')",path);		
+		int pos,len;
+		len=strlen(buf);
+		for (pos=0;pos<len;pos++) if (buf[pos]=='\\') buf[pos]='/';		
+		//AfxMessageBox(buf);
+		PyRun_SimpleString(buf);		
+		//AfxMessageBox("2");
+		/*
+		AfxMessageBox("1");
 		fseek(f,0,SEEK_END);
-		int fileSize = ftell(f);
+		int fileSize = ftell(f);		
 		fseek(f,0,SEEK_SET);
-		char *fileBuf = (char *)malloc(fileSize);
-		fread(fileBuf,fileSize,1,f);
+		char *fileBuf = (char *)malloc(fileSize+1);
+		memset(fileBuf,0,fileSize+1);
+		AfxMessageBox("2");
+		int l=fread(fileBuf,1,fileSize,f);		
+		char bbb[128];
+		sprintf(bbb,"len=%d/fileSize=%d/delta=%d",l,fileSize,fileSize-l);
+		AfxMessageBox(bbb);		
+		FILE *ff=fopen("a.txt","a+");
+		fwrite(fileBuf,1,fileSize,ff);
+		fclose(ff);
 
-		int oldRegisterPluginCount=registerPluginCount;
+		AfxMessageBox("3");
 		
-		int ret=PyRun_SimpleString(fileBuf);		
-		if (ret==-1) AfxMessageBox("Loading script failed: python error!");		
+		
+		int ret=PyRun_SimpleString(fileBuf);				
+		AfxMessageBox("4");
+		if (ret==-1) 
+		{
+			char buf[1024];
+			sprintf(buf,"Loading script failed: python error (%s)!",path);
+			AfxMessageBox(buf);		
+		}
 		
 		free(fileBuf);
 		fclose(f);
+		*/
 
 		if (registerPluginCount==oldRegisterPluginCount)
 		{
-			AfxMessageBox("Loading script failed: there must be a call to tibiaauto.registerPlugin()!");
+			char buf[1024];
+			sprintf(buf,"Loading script failed: there must be a call to tibiaauto.registerPlugin() (%d/%d)!",registerPluginCount,oldRegisterPluginCount);
+			AfxMessageBox(buf);
 		} else {
 			// set the just loaded script file name
 			CPythonScript::getScriptByNr(CPythonScript::getScriptCount()-1)->setFileName(path);

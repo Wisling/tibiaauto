@@ -131,3 +131,7 @@ EXPORTS
 	crFindCreatureStatInArea @125
 	memReadSetMainWindowText @126
 	memReadSetMainTrayText @127
+	memReadGetPlayerModeAttackPlayers @128
+	memReadGetPlayerModeFollow @129
+	memReadGetPlayerModeAttackType @130
+	tibiaMapGetPointUpDownNoProh @131

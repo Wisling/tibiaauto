@@ -235,10 +235,14 @@ void CTibiaItem::refreshItemLists()
 							}
 						}			 			
 						if (!objectId||!objectName||!strlen(objectName))
-							continue;												
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
 						memcpy(itemsItems[itemsItemsCount],objectName,strlen(objectName)+1);
 						itemsItemsId[itemsItemsCount]=objectId;
 						itemsItemsCount++;
+						if (objectName) free(objectName);
 					}
 				}
 				if (!wcscmp(listNode->getNodeName(),_L("foods"))) {
@@ -266,12 +270,16 @@ void CTibiaItem::refreshItemLists()
 							}
 						}			 			
 						if (!objectId||!objectName||!strlen(objectName))
-							continue;
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
 						
 						
 						memcpy(itemsFood[itemsFoodCount],objectName,strlen(objectName)+1);
 						itemsFoodId[itemsFoodCount]=objectId;
 						itemsFoodCount++;
+						if (objectName) free(objectName);
 					}
 				}
 
@@ -300,11 +308,15 @@ void CTibiaItem::refreshItemLists()
 							}
 						}			 			
 						if (!objectId||!objectName||!strlen(objectName))
-							continue;
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
 						
 						memcpy(itemsCorpses[itemsCorpsesCount],objectName,strlen(objectName)+1);
 						itemsCorpsesId[itemsCorpsesCount]=objectId;
 						itemsCorpsesCount++;
+						if (objectName) free(objectName);
 					}
 				}
 
@@ -333,11 +345,15 @@ void CTibiaItem::refreshItemLists()
 							}
 						}			 			
 						if (!objectId||!objectName||!strlen(objectName))
-							continue;
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
 						
 						memcpy(itemsLooted[itemsLootedCount],objectName,strlen(objectName)+1);
 						itemsLootedId[itemsLootedCount]=objectId;
 						itemsLootedCount++;
+						if (objectName) free(objectName);
 					}
 				}
 
@@ -373,7 +389,10 @@ void CTibiaItem::refreshItemLists()
 							}
 						}			 			
 						if (!constCode||!strlen(constCode))
+						{
+							if (constCode) free(constCode);
 							continue;
+						}
 
 						int i,len;
 						len=strlen(constCode);
@@ -383,7 +402,8 @@ void CTibiaItem::refreshItemLists()
 						memcpy(constsCode[constsCount],constCode,strlen(constCode)+1);
 						constsValue[constsCount]=constValue;
 						constsCount++;
-						
+
+						if (constCode) free(constCode);						
 					}
 				}
 				

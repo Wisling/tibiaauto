@@ -271,6 +271,7 @@
 #define IDC_SIZE_CREATURESTATS          1213
 #define IDC_PROGRESS                    1214
 #define IDC_SEND_MAPS                   1215
+#define IDC_BROWSER_ADS                 1216
 #define IDC_MONSTERSHOW_FIRSTBUTTON     5000
 #define IDC_MAPSHOW_FIRSTBUTTON         6000
 #define ID_STOPMODULE_STARTMODULE       32771
@@ -287,9 +288,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        184
+#define _APS_NEXT_RESOURCE_VALUE        185
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1215
+#define _APS_NEXT_CONTROL_VALUE         1217
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

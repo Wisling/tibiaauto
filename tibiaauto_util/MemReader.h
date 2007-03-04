@@ -22,6 +22,9 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	int getPlayerModeAttackPlayers();
+	int getPlayerModeFollow();
+	int getPlayerModeAttackType();
 	void setMainTrayText(char *text);
 	void setMainWindowText(char *text);
 	CTibiaMiniMapPoint * readMiniMapPoint(int mapNr,int pointNr);

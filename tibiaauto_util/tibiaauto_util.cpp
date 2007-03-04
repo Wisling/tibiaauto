@@ -57,50 +57,7 @@ END_MESSAGE_MAP()
 
 CTibiaauto_utilApp::CTibiaauto_utilApp()
 {
-	// perform MD5 check on all dlls which are included
-	struct dllEntry {
-		char *md5result;
-		char *dllName;
-	} dllEntryTab[] = {		
-		{"A6B15F1640E2B22211E432978E279AEF","tibiaauto.exe"}
-	};
-		
-	
-	CMD5 md5;
-	int i;
-	int cont=1;
-	int zeta=100;
-	for (i=0;i<sizeof(dllEntryTab)/sizeof(struct dllEntry);i++)
-	{
-		char buf[128];
-		char *fileBuffer = (char *)malloc(1000000);
-
-		sprintf(buf,"%s",dllEntryTab[i].dllName);
-		FILE *f=fopen(buf,"rb");
-		int len=0;
-		if (f)
-		{
-			len=fread(fileBuffer,1,1000000,f);
-			fclose(f);
-		} else {
-			cont=0;
-		}
-		
-		if (len>0)
-		{			
-			if (strcmpi(md5.getMD5Digest(fileBuffer,len),dllEntryTab[i].md5result))
-			{
-				// Some md5 checksum is incorrect. TA will not continue.
-				cont=0;
-				zeta-=100;
-				break;
-			}
-		}
-
-		free(fileBuffer);		
-	}
-	// TODO: security part
-	//if (!cont) ExitProcess(0);
+	;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -431,6 +388,10 @@ void tibiaMapProhPointAdd(int x, int y, int z)
 int tibiaMapGetPointUpDown(int x,int y,int z)
 {
 	return tibiaMap.getPointUpDown(x,y,z);
+}
+int tibiaMapGetPointUpDownNoProh(int x,int y,int z)
+{
+	return tibiaMap.getPointUpDownNoProh(x,y,z);
 }
 void tibiaMapSetPointUpDown(int x,int y,int z,int updown)
 {
@@ -812,3 +773,21 @@ void memReadSetMainTrayText(char *text)
 	startMemReader();
 	reader->setMainTrayText(text);
 };
+
+
+int memReadGetPlayerModeAttackPlayers()
+{
+	startMemReader();
+	return reader->getPlayerModeAttackPlayers();
+}
+int memReadGetPlayerModeFollow()
+{
+	startMemReader();
+	return reader->getPlayerModeFollow();
+}
+
+int memReadGetPlayerModeAttackType()
+{
+	startMemReader();
+	return reader->getPlayerModeAttackType();
+}

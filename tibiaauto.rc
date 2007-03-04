@@ -179,7 +179,7 @@ BEGIN
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
                     NOT WS_VISIBLE | WS_BORDER,7,122,171,14
     GROUPBOX        "Tibia maps",IDC_STATIC,7,76,171,36
-    PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,40,14
+    PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,40,14,WS_DISABLED
     LTEXT           "Tibia client maps are used to build a Tibia world map.",
                     IDC_STATIC,16,88,83,22
 END
@@ -323,11 +323,11 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 389
+IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 391
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.12.0 for Tibia 7.9"
+CAPTION "Tibia Auto v 1.12.6 for Tibia 7.92"
 FONT 8, "MS Sans Serif"
 BEGIN
     PUSHBUTTON      "Auto UH",IDC_TOOL_AUTOUH,13,45,61,14
@@ -344,7 +344,7 @@ BEGIN
                     WS_VISIBLE
     PUSHBUTTON      "Load config",IDC_LOAD,108,244,50,14
     PUSHBUTTON      "Save config",IDC_SAVE,167,244,50,14
-    PUSHBUTTON      "EXIT",IDC_EXIT,190,368,50,14
+    PUSHBUTTON      "EXIT",IDC_EXIT,190,370,50,14
     LTEXT           "Static",IDC_TOOL_RUNEMAKER_INFO,107,62,60,14,
                     SS_CENTERIMAGE
     LTEXT           "Static",IDC_TOOL_AUTOFISH_INFO,173,95,62,14,
@@ -365,10 +365,8 @@ BEGIN
     GROUPBOX        "Cave bot tools",IDC_STATIC,7,212,76,73
     GROUPBOX        "AFK tools",IDC_STATIC,100,34,140,115
     GROUPBOX        "Fight tools",IDC_STATIC,7,34,76,177
-    GROUPBOX        "Other tools",IDC_STATIC,7,289,76,93
+    GROUPBOX        "Other tools",IDC_STATIC,7,291,76,93
     GROUPBOX        "Config",IDC_STATIC,100,233,123,68
-    CTEXT           "http://TibiaAuto.NET/",IDC_STATIC,100,304,140,25,
-                    SS_CENTERIMAGE | WS_BORDER
     PUSHBUTTON      "Fluid drinker",IDC_TOOL_FLUIDDRINKER,13,112,61,14
     LTEXT           "Static",IDC_TOOL_FLUIDDRINKER_INFO,13,128,61,14,
                     SS_CENTERIMAGE
@@ -392,7 +390,6 @@ BEGIN
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,176,182,61,14
     CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,173,112,61,14
-    PUSHBUTTON      "Premium Area!",IDC_DONATION,100,332,140,14
     CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,109,202,59,14
     PUSHBUTTON      "Map hacks",IDC_TOOL_MAPHACK,176,202,61,14
@@ -400,14 +397,17 @@ BEGIN
                     SS_CENTERIMAGE
     CONTROL         "Team",IDC_TOOL_TEAM,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
-                    100,368,59,14
+                    100,370,59,14
     CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,173,130,61,14
     CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,341,61,14
-    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,168,283,50,14
-    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,100,350,140,
+    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,168,281,50,14
+    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,100,353,140,
                     14
+    CONTROL         "",IDC_BROWSER_ADS,
+                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",WS_TABSTOP,100,
+                    308,140,40
 END
 
 
@@ -430,7 +430,7 @@ BEGIN
         VERTGUIDE, 168
         VERTGUIDE, 234
         TOPMARGIN, 7
-        BOTTOMMARGIN, 382
+        BOTTOMMARGIN, 384
         HORZGUIDE, 112
     END
 END
@@ -481,6 +481,27 @@ BEGIN
 END
 
 #endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_TIBIAAUTO_DIALOG DLGINIT
+BEGIN
+    IDC_BROWSER_ADS, 0x376, 160, 0
+0x0000, 0x0000, 0x004c, 0x0000, 0x15b4, 0x0000, 0x06b8, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
+0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
+0x0008, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
+0x0000, 0x00c0, 0x0000, 0x0000, 0x4600, 0x0080, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 
+0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
+    0
+END
 
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////

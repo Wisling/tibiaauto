@@ -39,6 +39,7 @@ public:
 class CTibiaMap  
 {
 public:
+	int getPointUpDownNoProh(int x,int y, int z);
 	int isPointAvailableNoProh(int x, int y,int z);
 	struct point getPointByNr(int nr);
 	int size();
