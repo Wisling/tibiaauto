@@ -67,10 +67,10 @@ int lastAttackTmTm[150];
 
 int targetX=0,targetY=0,targetZ=0;
 int depotX=0,depotY=0,depotZ=0;
-int firstCreatureAttackTM;
-int currentPosTM;
-int creatureAttackDist;
-int unreachableSecondsLeft;
+int firstCreatureAttackTM=0;
+int currentPosTM=0;
+int creatureAttackDist=0;
+int unreachableSecondsLeft=0;
 
 CTibiaMapProxy tibiaMap;
 
@@ -170,7 +170,8 @@ void depotCheck(CConfigData *config)
 				 * Ok then - we should do the depositing.
 				 */
 
-				struct point nearestDepot = CModuleUtil::findNearestDepot(self->x,self->y,self->z);
+				int path[15];
+				struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
 				depotX=nearestDepot.x;
 				depotY=nearestDepot.y;
 				depotZ=nearestDepot.z;
@@ -203,12 +204,13 @@ void depotCheck(CConfigData *config)
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		// check whether the depot is reachable
 		int path[15];
-		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,path);
+		if (config->debug) registerDebug("findPathOnMap: depot walker");
+		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,0,path);
 		if (!path[0]||!tibiaMap.isPointAvailable(depotX,depotY,depotZ))
 		{
 			if (config->debug) registerDebug("Path to the current depot not found: must find a new one");
 			// path to the current depot not found, must find a new depot
-			struct point nearestDepot = CModuleUtil::findNearestDepot(self->x,self->y,self->z);
+			struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
 			depotX=nearestDepot.x;
 			depotY=nearestDepot.y;
 			depotZ=nearestDepot.z;
@@ -237,7 +239,8 @@ void depotCheck(CConfigData *config)
 	{
 		// not depot found - but try finding another one
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		struct point nearestDepot = CModuleUtil::findNearestDepot(self->x,self->y,self->z);
+		int path[15];
+		struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
 		depotX=nearestDepot.x;
 		depotY=nearestDepot.y;
 		depotZ=nearestDepot.z;
@@ -684,7 +687,8 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 					int path[15];
 					int pathSize=0;
 					memset(path,0x00,sizeof(int)*15);					
-					CModuleUtil::findPathOnMap(self->x, self->y, self->z, self->x+x, self->y+y, self->z, path);
+					if (config->debug) registerDebug("findPathOnMap: loot from floor");
+					CModuleUtil::findPathOnMap(self->x, self->y, self->z, self->x+x, self->y+y, self->z, 0,path);
 					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){};					
 
 					// if item is on our place then this is the best situation
@@ -718,22 +722,45 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 			{
 				delete self2;
 				self2 = reader.readSelfCharacter();				
+				if (self2->x==self->x+bestX&&self2->y==self->y&&self2->z==self->z)
+				{
+					// no need to walk as we are on position already
+					break;
+				}
+
 				int path[15];
 				int pathSize=0;
 				memset(path,0x00,sizeof(int)*15);					
-				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+bestX, self->y+bestY, self->z, path);
+				if (config->debug) registerDebug("findPathOnMap: loot from floor 2");
+				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+bestX, self->y+bestY, self->z, 0,path);
 				for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){};					
 				
+				sprintf(buf,"Loot from floor: path size=%d between (%d,%d,%d) and (%d,%d,%d)",pathSize,self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
+				if (config->debug) registerDebug(buf);
 				if (pathSize) 
 				{
-					CModuleUtil::executeWalk(path);	
-					Sleep(1000);
+					int i;
+					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);	
+					// wait up to 2000ms for reaching final point
+					for (i=0;i<20;i++)
+					{
+						CTibiaCharacter *self3 = reader.readSelfCharacter();
+						if (self->x+bestX==self3->x&&self->y+bestY==self3->y&&self->z==self3->z)
+						{
+							// this means: we reached final point
+							break;
+						}
+						delete self3;
+						Sleep(100);
+					}
 				} else {
 					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
 					if (config->debug) registerDebug(buf);
 					break;
 				}
 			}
+			sprintf(buf,"Loot from floor: location me(%d,%d,%d)->item(%d,%d,%d)",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
+			if (config->debug) registerDebug(buf);
 
 			if (self->x+bestX==self2->x&&self->y+bestY==self2->y&&self->z==self2->z)
 			{
@@ -747,7 +774,7 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 					for (offsetY=-1;offsetY<=1;offsetY++)
 					{
 						// double loop break!
-						if ((offsetX||offsetY)&&tibiaMap.isPointAvailable(self->x+offsetX,self->y+offsetY,self->z)) goto extBreak;
+						if ((offsetX||offsetY)&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)) goto extBreak;
 					}					
 				}
 extBreak:
@@ -867,6 +894,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastAttackedCreatureHpDrop=0;	
 	int shareAlienBackattack=0;
 	
+
+	// reset globals
+	targetX=targetY=targetZ=0;
+	depotX=depotY=depotZ=0;
+	firstCreatureAttackTM=0;
+	currentPosTM=0;
+	creatureAttackDist=0;
+	unreachableSecondsLeft=0;
+
+
 	int waypointsCount=0;
 	int i;
 	for (i=0;i<100;i++)
@@ -904,6 +941,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		shareAlienBackattack=0;
 	}
 
+	
 	
 
 	while (!toolThreadShouldStop)
@@ -1626,7 +1664,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					targetX=config->waypointList[newWaypoint].x;
 					targetY=config->waypointList[newWaypoint].y;
 					targetZ=config->waypointList[newWaypoint].z;
-					if (config->debug) registerDebug("Walking to a new waypoint");
+					char buf[128];
+					sprintf(buf,"Walking to a new waypoint (%d,%d,%d)",targetX,targetY,targetZ);
+					if (config->debug) registerDebug(buf);
 				}
 				
 			};
@@ -1645,9 +1685,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						self = reader.readSelfCharacter();
 						
 						
-						// proceed with path searching						
+						// proceed with path searching	
+						sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
+						if (config->debug) registerDebug(buf);
 						int ticksStart = GetTickCount();
-						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,path);
+						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
 						int ticksEnd = GetTickCount();
 						sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
 						if (config->debug) registerDebug(buf);
@@ -1655,7 +1697,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}										
 						if (pathSize)
 						{
-							CModuleUtil::executeWalk(path);														
+							CModuleUtil::executeWalk(self->x,self->y,self->z,path);														
 							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 							if (config->debug) registerDebug("Walking: execute walk");
 						} else {							
@@ -1691,7 +1733,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int zero=0;		
 		sh_mem.SetValue(varName,&zero,4);
 	}
+	// cancel attacks
 	sender.attack(0);
+	// restore attack mode
+	sender.attackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
+	
 	reader.setRemainingTilesToGo(0);
 	if (config->debug) registerDebug("Exiting cavebot");
 	globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;

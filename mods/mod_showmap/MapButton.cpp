@@ -15,12 +15,18 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CMapButton
 
+CMenu *CMapButton::mapActionsMenu=NULL;
+
 CMapButton::CMapButton(int x,int y)
 {
 	m_x=x;
 	m_y=y;	
-	mapActionsMenu = new CMenu();	
-	mapActionsMenu->LoadMenu(IDR_SHOWMAP_MENU);	
+	if (mapActionsMenu==NULL)
+	{
+		// if menu object is not yet created then just create it
+		mapActionsMenu = new CMenu();	
+		mapActionsMenu->LoadMenu(IDR_SHOWMAP_MENU);	
+	}
 }
 
 CMapButton::~CMapButton()

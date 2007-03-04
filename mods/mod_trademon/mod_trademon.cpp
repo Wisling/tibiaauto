@@ -297,7 +297,7 @@ void CMod_trademonApp::resetConfig()
 void CMod_trademonApp::loadConfigParam(char *paramName,char *paramValue)
 {	
 	if (!strcmp(paramName,"tradeTalker")) m_configData->tradeTalk=atoi(paramValue);
-	if (!strcmp(paramName,"message")) lstrcpyn(m_configData->message,paramValue,256);
+	if (!strcmp(paramName,"message")) lstrcpyn(m_configData->message,paramValue,255);
 	if (!strcmp(paramName,"channel")) m_configData->channel=atoi(paramValue);
 	if (!strcmp(paramName,"channelInterval")) m_configData->channelInterval=atoi(paramValue);
 	if (!strcmp(paramName,"yell")) m_configData->yell=atoi(paramValue);

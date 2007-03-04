@@ -85,6 +85,11 @@ public:
 	void setMainWindowText(char *text);
 	void setMainTrayText(char *text);
 
+	int getPlayerModeAttackPlayers();
+	int getPlayerModeFollow();
+	int getPlayerModeAttackType();
+
+
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();
 

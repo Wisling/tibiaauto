@@ -78,7 +78,9 @@ BOOL CToolMapShow::OnInitDialog()
 		for (y=0;y<2*10+1;y++)
 		{
 
-			CMapButton *but = new CMapButton(x,y);
+			
+			CMapButton *but = new CMapButton(x,y);			
+			
 			RECT rect;
 			rect.top=20+y*20;
 			rect.left=20+x*20;
@@ -90,13 +92,15 @@ BOOL CToolMapShow::OnInitDialog()
 			but->m_value=-1;
 			m_mapButtonImage[x][y]=IDB_MAP_EMPTY;						
 			m_mapButtons[x][y]=but;			
+			
+			
 		}
 	}
 
 	refreshVisibleMap();
 
 	SetTimer(1001,250,NULL);
-	SetTimer(1001,25,NULL);
+	
 		
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

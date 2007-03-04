@@ -774,3 +774,49 @@ void CMemReaderProxy::setMainTrayText(char *text)
 		}
 	} 
 }
+
+
+
+int CMemReaderProxy::getPlayerModeAttackPlayers()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModeAttackPlayers");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+}
+
+int CMemReaderProxy::getPlayerModeAttackType()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModeAttackType");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+}
+
+
+int CMemReaderProxy::getPlayerModeFollow()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModeFollow");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+}
+

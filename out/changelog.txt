@@ -1,3 +1,35 @@
+1.12.6: 03.03.2007
+Defects:
+ * Show map: fixed problem preventing more than 3 TA instances to run at once
+ * Tile database: small fixed for venore stairs in tile database
+
+Small enhancements:
+ * Cave bot: walking algorithm has been rewritten from scratch
+ * Kernel: introduced 200ms delay into the packet sending routine (bypass of a tibia server bug)
+
+1.12.5: 24.02.2007
+Defects:
+ * Cave bot: attack and follow mode is not restored after cave bot stop
+ * Cave bot: fixed loot from floor logic so that it loots correctly now
+ * Cave bot: fixed avoiding blocked ladders, rope spots and sewer entries
+ * General: lowered memory consumption (cut by over a half)
+
+1.12.4, 04.02.2007:
+Small enhancements:
+ * General: introduced area for ads
+
+1.12.3, 21.01.2007
+Small enhancements:
+ * Creature info: updated creature statistics database
+ * Temporarily disabled upload of maps
+
+Defects:
+ * Python Scripting: fixed rare crash bug during startup
+ * Auto responder: ignore player might have not ignored sometimes immediatelly
+
+1.12.1, 09.01.2007
+ * General: updated to tibia client 7.92
+
 1.12.0, 08.01.2007
  * Creature info: added detection of dangerous monsters in the area
   
