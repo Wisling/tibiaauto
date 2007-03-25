@@ -75,6 +75,7 @@
                 <const code="addrCurrentTm" value="0x60DA54"/>
 		<const code="addrRightHand" value="0x60E2C8"/>
 
+		<const code="addrBackpack" value="0x60E2B0"/>
 		<const code="addrLeftHand" value="0x60E2D4"/>
                 <const code="addrSlotArrow" value="0x60E304"/>
                 <const code="addrFirstContainer" value="0x60E310"/>
@@ -83,6 +84,7 @@
                 <const code="addrTradeFirstItemSelf" value="0x6101F4"/>
                 <const code="addrTradeCountPartner" value="0x6106C8"/>
                 <const code="addrTradeFirstItemPartner" value="0x6106CC"/>
+		<const code="addrCurrentWindow" value="0x610BE4"/>
 
                 <const code="addrMapStart" value="0x615738"/>
                 <const code="addrMiniMapStart" value="0x615758"/>
@@ -90,7 +92,9 @@
                 <const code="addrModeAttackPlayers" value="0x75A9B4"/>
                 <const code="addrModeFollow" value="0x75A9B8"/>
                 <const code="addrModeAttackType" value="0x75A9BC"/>
+		<const code="addrConnectionState" value="0x75d3e0"/>
 		<const code="addrFps" value="0x75DF24"/> <!-- lookup: Surface.cpp -->
+
 
 
 		<!-- structure lengths -->

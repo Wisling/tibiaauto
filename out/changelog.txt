@@ -1,3 +1,17 @@
+1.13.0: 25.03.2007
+Defects:
+ * General: fixed rare crash/spin bug
+
+Small enhancements:
+ * General: optimized size of the main TA window
+
+Enhancements:
+ * Auto login: added auto login module for continous cavebotting
+
+1.12.7: 17.03.2007:
+Small enhancements:
+ * Auto go/log: detect CM as GM
+
 1.12.6: 03.03.2007
 Defects:
  * Show map: fixed problem preventing more than 3 TA instances to run at once
@@ -5,7 +19,6 @@ Defects:
 
 Small enhancements:
  * Cave bot: walking algorithm has been rewritten from scratch
- * Kernel: introduced 200ms delay into the packet sending routine (bypass of a tibia server bug)
 
 1.12.5: 24.02.2007
 Defects:

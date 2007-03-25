@@ -28,17 +28,21 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
-	enum { IDD = IDD_CONFIG };	
-
-	CButton	m_dropEmpty;
-	CButton	m_hotkeyMana;
-	CButton	m_hotkeyLife;
-	CEdit	m_sleep;
-	CEdit	m_manaBelow;
-	CEdit	m_hpBelow;
-	CButton	m_drinkMana;
-	CButton	m_drinkHp;
-
+	enum { IDD = IDD_CONFIG };
+	CButton	m_openCont8;
+	CButton	m_openCont7;
+	CButton	m_openCont6;
+	CButton	m_openCont5;
+	CButton	m_openCont4;
+	CButton	m_openCont3;
+	CButton	m_openCont2;
+	CButton	m_openCont1;
+	CButton	m_openMain;
+	CEdit	m_charPos;
+	CStatic	m_status;
+	CEdit	m_password;
+	CListCtrl	m_debug;
+	CEdit	m_accountNumber;
 	CButton	m_enable;
 	//}}AFX_DATA
 

@@ -11,6 +11,7 @@
 #include "ToolAutoResponderThreadConfig.h"
 #include "ToolAutoResponderMessage.h"
 #include "IPCBackPipeProxy.h"
+#include "MemReaderProxy.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,11 +31,13 @@ int toolThreadAutoResponderShouldStop=0;
 
 DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 {
+	CMemReaderProxy reader;
 	CToolAutoResponderThreadConfig *config = (CToolAutoResponderThreadConfig *)lpParam;
 	while (!toolThreadAutoResponderShouldStop)
 	{
 		config->status=CToolAutoResponderThreadStatus_waitingForMatch;
 		Sleep(50);
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		if (config->queue.size()>0)
 		{

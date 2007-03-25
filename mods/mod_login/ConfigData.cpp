@@ -18,14 +18,11 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	manaBelow=0;
-	hpBelow=0;
-	drinkMana=0;
-	drinkHp=0;
-	sleep=1000;
-	hotkeyHp=0;
-	hotkeyMana=0;
-	dropEmpty=1;
+	accountNumber[0]=password[0]='\0';
+	charPos=1;
+	openMain=0;
+	openCont1=openCont2=openCont3=openCont4=0;
+	openCont5=openCont6=openCont7=openCont8=0;
 }
 
 CConfigData::~CConfigData()

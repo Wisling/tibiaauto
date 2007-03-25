@@ -15,14 +15,18 @@ public:
 	CConfigData();
 	virtual ~CConfigData();
 
-	int manaBelow;
-	int hpBelow;
-	int drinkMana;
-	int drinkHp;
-	int sleep;
-	int hotkeyHp;
-	int hotkeyMana;
-	int dropEmpty;
+	char accountNumber[64];
+	char password[64];
+	int charPos;
+	int openMain;
+	int openCont1;
+	int openCont2;
+	int openCont3;
+	int openCont4;
+	int openCont5;
+	int openCont6;
+	int openCont7;
+	int openCont8;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)
