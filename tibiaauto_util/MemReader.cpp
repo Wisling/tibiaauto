@@ -682,3 +682,23 @@ int CMemReader::getPlayerModeAttackPlayers()
 	CTibiaItemProxy itemProxy;
 	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackPlayers"));
 }
+
+char * CMemReader::getOpenWindowName()
+{
+	CTibiaItemProxy itemProxy;	
+	int ptr2=0;
+	static char nameBuf[128];
+	memset(nameBuf,0,128);		
+	ptr2=CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrCurrentWindow"));
+	if (ptr2)
+	{
+		CMemUtil::GetMemRange(ptr2+80,ptr2+80+128,nameBuf);		
+	}	
+	return nameBuf;
+}
+
+int CMemReader::getConnectionState()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrConnectionState"));
+}

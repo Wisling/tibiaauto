@@ -135,3 +135,5 @@ EXPORTS
 	memReadGetPlayerModeFollow @129
 	memReadGetPlayerModeAttackType @130
 	tibiaMapGetPointUpDownNoProh @131
+	memReadGetOpenWindowName @132
+	memReadGetConnectionState @133

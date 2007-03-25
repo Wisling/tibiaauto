@@ -791,3 +791,15 @@ int memReadGetPlayerModeAttackType()
 	startMemReader();
 	return reader->getPlayerModeAttackType();
 }
+
+char *memReadGetOpenWindowName()
+{
+	startMemReader();
+	return reader->getOpenWindowName();
+}
+
+int memReadGetConnectionState()
+{
+	startMemReader();
+	return reader->getConnectionState();
+}

@@ -55,6 +55,7 @@
 #define IDC_TOOL_ANTILOG                1018
 #define IDC_TOOL_SPELLCASTER            1019
 #define IDC_TOOL_RUNEMAKER_TOEXTERNAL   1020
+#define IDC_TOOL_LOGIN                  1020
 #define IDC_TOOL_RUNEMAKER_TOSAFE       1021
 #define IDC_FPS                         1021
 #define IDC_TOOL_RUNEMAKER_ENABLE       1022
@@ -290,7 +291,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        185
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1217
+#define _APS_NEXT_CONTROL_VALUE         1218
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

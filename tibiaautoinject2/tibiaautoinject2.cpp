@@ -596,6 +596,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 {		
+	
 	int i;
 	int identical=1;
 	if (len!=encryptPos+8+2)
@@ -634,7 +635,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 			bufToHexString(encryptBeforeBuf,encryptLen);	
 			fprintf(debugFile,"-> [%x] %s\n",socket,bufToHexStringRet);	
 			fflush(debugFile);
-		}
+		}		
 		if (parseMessageForTibiaAction(encryptBeforeBuf,encryptLen))
 			return len;
 		
@@ -655,6 +656,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 
     int ret=0;
 	ret=Real_send(s,buf,len,flags);	
+	
 	return ret;
 }
 
@@ -1233,12 +1235,78 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	}	
 }
 
+int myInterceptFun1(int v1)
+{	
+	typedef int (*Proto_fun)(int v1);
+	Proto_fun fun=(Proto_fun)(0x48DC30); // 7.92
+
+	int ret=fun(v1);	
+	char buf[128];
+	sprintf(buf,"fun1(%d,%x,%s)=%d",v1,v1,v1,ret);
+	::MessageBox(0,buf,buf,0);
+	return ret;
+}
+
+void myInterceptFun2()
+{
+	typedef void (*Proto_fun)();
+	Proto_fun fun=(Proto_fun)(0x4BFD20); // 7.92
+
+	char buf[128];
+	sprintf(buf,"fun2()");
+	::MessageBox(0,buf,buf,0);
+	fun();	
+}
+
+void myInterceptFun3(int v1)
+{
+	typedef int (*Proto_fun)(int v1);
+	Proto_fun fun=(Proto_fun)(0x54CB37); // 7.92
+
+	int ret=0;
+
+	char buf[128];
+	sprintf(buf,"fun1(%d,%x,%s)=%d",v1,v1,v1,ret);
+	::MessageBox(0,buf,buf,0);
+	fun(v1);			
+}
+
+void myInterceptFun4(int v1, int v2)
+{
+	typedef void (*Proto_fun)(int v1,int v2);
+	Proto_fun fun=(Proto_fun)(0x487EA0); // 7.92
+
+	char buf[128];
+	sprintf(buf,"fun4(%d/%x/%s,%d/%x/%s)",v1,v1,v1,v2,v2,v2);
+	::MessageBox(0,buf,buf,0);
+	//fun(v1,v2);	
+	//__asm("JMP 487EA0");
+
+}
 
 void trapFun(HANDLE dwHandle,int addr,unsigned int targetFun)
 {				
 	int targetAddr=targetFun - addr - 4;
 	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr,   sizeof(long int), NULL);	
 }
+
+void testFun1(int p1, int p2, int p3, int p4, int p5)
+{
+	//typedef void (*Proto_fun)(int v1,int v2,int v3, int v4, int v5, int v6, int v7);
+	//Proto_fun fun=(Proto_fun)(0x4b8550); // 7.92
+
+	char buf[128];
+	sprintf(buf,"testFun1(%d,%d,%d,%d,%d)",p1,p2,p3,p4,p5);
+	::MessageBox(0,buf,buf,0);	
+	//fun(p1,p2,p3,p4,p5,p6,p7);
+
+}
+
+void funnyFun(int p1)
+{
+}
+
+
 
 void InitialisePlayerInfoHack()
 {		
@@ -1248,7 +1316,14 @@ void InitialisePlayerInfoHack()
 	int addr;
 	int targetFun;
 	unsigned int targetAddr;
+
+	// test
+	//trapFun(dwHandle,0x4314FB+1,(unsigned int)testFun1); // 7.92
+	//trapFun(dwHandle,0x447353+1,(unsigned int)testFun1); // 7.92
+	//trapFun(dwHandle,0x4bf122+1,(unsigned int)testFun1); // 7.92	
+
 	
+
 
 	// lookup: LEFT_ALIGN - trzecie (ostatnie) wystapienie; 2 ekrany ponizej
 	//trapFun(dwHandle,0x49F0F9,(unsigned int)myPlayerNameText); // OLD
@@ -1290,7 +1365,12 @@ void InitialisePlayerInfoHack()
 	//         jest to w srodku tej funkcji.
 	//         trap trzeciej (ostatniej referencji na funkcje)
 	trapFun(dwHandle,0x4DC0A0+1,(unsigned int)myIsCreatureVisible); // 7.92
-	
+
+	// TEST TEST TEST
+	//trapFun(dwHandle,0x44DF05+1,(unsigned int)myInterceptFun1); // 7.92
+	//trapFun(dwHandle,0x4C24A9+1,(unsigned int)myInterceptFun2); // 7.92
+	//trapFun(dwHandle,0x48DC90+1,(unsigned int)myInterceptFun3); // 7.92
+	//trapFun(dwHandle,0x48DCAB+1,(unsigned int)myInterceptFun4); // 7.92
 		
     CloseHandle(dwHandle);
 
@@ -1472,7 +1552,8 @@ BOOL APIENTRY DllMain( HANDLE hModule,
 			InitialiseCommunication();	
 			InitialisePlayerInfoHack();
 			InitialiseProxyClasses();
-			InitialiseCreatureInfo();				
+			InitialiseCreatureInfo();	
+			//myInterceptFun1(0x4bab80);
 			//InitialiseTibiaMenu();
 			//z();
 			break;
@@ -1693,7 +1774,8 @@ int ReadFromPipe()
 		ParseIPCMessage(inBuf);
 
 		// 200ms sleep to flush buffer
-		Sleep(200);
+		// DISABLED 06.03.2007
+		//Sleep(200);
 		// err = 234, 231, 231, 231, 2, 2, 2
 	} while (! fSuccess);  // repeat loop if ERROR_MORE_DATA 	
 	return 1;

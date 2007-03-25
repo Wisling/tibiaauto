@@ -44,9 +44,20 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CTibiaautoDlg)
 	enum { IDD = IDD_TIBIAAUTO_DIALOG };
+	CButton	m_autoAttack;
+	CButton	m_login;
+	CButton	m_ammoRestack;
+	CButton	m_autoAim;
+	CButton	m_autoFish;
+	CButton	m_autoGo;
+	CButton	m_autoLooter;
+	CButton	m_autoRespond;
+	CButton	m_autoUh;
+	CButton	m_fluidDrinker;
+	CButton	m_runeMaker;
+	CButton	m_spellCaster;
 	CButton	m_fps;
 	CButton	m_antilogout;
-	CStatic	m_mapHackInfo;
 	CButton	m_mapHack;
 	CButton	m_creatureInfo;
 	CButton	m_save;
@@ -54,21 +65,9 @@ public:
 	CButton	m_eater;
 	CButton	m_tradeMon;
 	CButton	m_grouping;
-	CStatic	m_infoAutoRespond;
-	CStatic	m_infoModuleLooter;
-	CButton	m_buttonAutoAttack;
-	CStatic	m_infoAmmoRestack;
-	CStatic	m_infoFluidDrinker;
-	CStatic	m_infoAutoAim;
-	CStatic	m_infoSpellCaster;
-	CStatic	m_infoAutoAttack;
 	CStatic	m_infoMapShow;
-	CStatic	m_infoAutoUH;
 	CStatic	m_loginName;
 	CButton	m_light;
-	CStatic	m_infoAutoFish;
-	CStatic	m_infoAutoGo;
-	CStatic	m_infoRuneMaker;
 	CWebBrowser2	m_browserAds;
 	//}}AFX_DATA
 
@@ -126,6 +125,7 @@ protected:
 	afx_msg void OnFps();
 	afx_msg void OnPythonScripts();
 	afx_msg void OnOptions();
+	afx_msg void OnToolLogin();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	
@@ -170,6 +170,7 @@ private:
 	IModuleInterface *m_moduleTeam;
 	IModuleInterface *m_moduleAntylogout;
 	IModuleInterface *m_moduleFps;
+	IModuleInterface *m_moduleLogin;
 };
 
 //{{AFX_INSERT_LOCATION}}

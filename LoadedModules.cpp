@@ -169,7 +169,7 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 			case ID_STOPMODULE_STARTMODULE:
 				module->controlsToConfig();
 				if (module->validateConfig(0))
-				{
+				{					
 					module->disableControls();
 					module->start();
 				} else {

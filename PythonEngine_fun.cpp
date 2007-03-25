@@ -1700,3 +1700,23 @@ static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *
 	Py_INCREF(ret);
 	return ret;
 }
+
+static PyObject *tibiaauto_reader_getConnectionState(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getConnectionState();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+
+static PyObject *tibiaauto_reader_getOpenWindowName(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	char *ret1=reader.getOpenWindowName();
+	PyObject *ret = Py_BuildValue("s",ret1);
+	Py_INCREF(ret);
+	return ret;
+}

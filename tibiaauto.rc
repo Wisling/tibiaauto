@@ -323,91 +323,79 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 247, 391
+IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 239, 306
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_VISIBLE | WS_CAPTION | 
     WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.12.6 for Tibia 7.92"
+CAPTION "Tibia Auto v 1.13.0 for Tibia 7.92"
 FONT 8, "MS Sans Serif"
 BEGIN
-    PUSHBUTTON      "Auto UH",IDC_TOOL_AUTOUH,13,45,61,14
-    PUSHBUTTON      "Auto aim",IDC_TOOL_AUTOAIM,13,80,61,14
-    PUSHBUTTON      "Rune maker",IDC_TOOL_RUNEMAKER,106,45,61,14
-    PUSHBUTTON      "Spell caster",IDC_TOOL_SPELLCASTER,174,45,61,14
-    PUSHBUTTON      "Auto go/log",IDC_TOOL_AUTOGO,106,80,61,14
-    PUSHBUTTON      "Auto fish",IDC_TOOL_AUTOFISH,174,80,61,14
-    PUSHBUTTON      "Show map",IDC_TOOL_MAPSHOW,13,230,61,14
-    PUSHBUTTON      "Auto attack",IDC_TOOL_AUTOATTACK,13,250,61,14
-    PUSHBUTTON      "Char info",IDC_TOOL_CHARINFO,109,162,59,14
-    PUSHBUTTON      "Monsters",IDC_TOOL_MONSERSHOW,175,162,61,14
-    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,109,182,59,14,NOT 
+    CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,39,61,14
+    CONTROL         "Auto aim",IDC_TOOL_AUTOAIM,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,57,61,14
+    CONTROL         "Fluid drinker",IDC_TOOL_FLUIDDRINKER,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,73,61,14
+    CONTROL         "Ammo restack",IDC_TOOL_AMMORESTACK,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,89,61,14
+    CONTROL         "Auto looter",IDC_TOOL_AUTOLOOTER,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,106,61,14
+    CONTROL         "Rune maker",IDC_TOOL_RUNEMAKER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,39,61,14
+    CONTROL         "Spell caster",IDC_TOOL_SPELLCASTER,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,39,61,14
+    CONTROL         "Auto go/log",IDC_TOOL_AUTOGO,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,55,61,14
+    CONTROL         "Auto fish",IDC_TOOL_AUTOFISH,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,55,61,14
+    CONTROL         "Auto respond",IDC_TOOL_AUTORESPOND,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,96,73,61,14
+    CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,73,61,14
+    CONTROL         "Auto login",IDC_TOOL_LOGIN,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,89,61,14
+    CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,89,61,14
+    PUSHBUTTON      "Show map",IDC_TOOL_MAPSHOW,13,140,61,14
+    CONTROL         "Auto attack",IDC_TOOL_AUTOATTACK,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,156,61,14
+    PUSHBUTTON      "Char info",IDC_TOOL_CHARINFO,96,119,61,14
+    PUSHBUTTON      "Monsters",IDC_TOOL_MONSERSHOW,161,119,61,14
+    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,96,135,61,14,NOT 
                     WS_VISIBLE
-    PUSHBUTTON      "Load config",IDC_LOAD,108,244,50,14
-    PUSHBUTTON      "Save config",IDC_SAVE,167,244,50,14
-    PUSHBUTTON      "EXIT",IDC_EXIT,190,370,50,14
-    LTEXT           "Static",IDC_TOOL_RUNEMAKER_INFO,107,62,60,14,
-                    SS_CENTERIMAGE
-    LTEXT           "Static",IDC_TOOL_AUTOFISH_INFO,173,95,62,14,
-                    SS_CENTERIMAGE
-    LTEXT           "Static",IDC_TOOL_AUTOGO_INFO,107,95,60,14,
-                    SS_CENTERIMAGE
+    CONTROL         "Trade monitor",IDC_TOOL_TRADEMON,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,135,61,14
+    CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,96,151,61,14
+    CONTROL         "Map hacks",IDC_TOOL_MAPHACK,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,151,61,14
+    CONTROL         "Enable light",IDC_LIGHT,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,188,61,14
+    CONTROL         "Auto grouping",IDC_TOOL_AUTOGROUP,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,204,61,14
+    CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,220,61,14
+    PUSHBUTTON      "Inject MC support",IDC_TOOL_INJECTMC,13,236,61,14
+    PUSHBUTTON      "Load config",IDC_LOAD,96,185,61,14
+    PUSHBUTTON      "Save config",IDC_SAVE,161,185,61,14
+    PUSHBUTTON      "Item config",IDC_TOOL_ITEMCONFIG,96,201,61,14
+    PUSHBUTTON      "Modules",IDC_LOADED_MODULES,161,201,61,14
+    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,161,217,61,14
+    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,90,241,142,
+                    14
+    PUSHBUTTON      "EXIT",IDC_EXIT,7,288,61,14
     CONTROL         "Logged as: unknown",IDC_LOGINNAME,"Static",
                     SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | WS_BORDER | 
-                    WS_GROUP,21,7,203,14
-    LTEXT           "Static",IDC_TOOL_AUTOUH_INFO,13,61,61,14,SS_CENTERIMAGE
-    LTEXT           "Static",IDC_TOOL_AUTOATTACK_INFO,13,265,67,14,
-                    SS_CENTERIMAGE
-    LTEXT           "Static",IDC_TOOL_SPELLCASTER_INFO,176,62,59,14,
-                    SS_CENTERIMAGE
-    LTEXT           "Static",IDC_TOOL_AUTOAIM_INFO,13,95,61,14,
-                    SS_CENTERIMAGE
-    GROUPBOX        "Information tools",IDC_STATIC,100,151,140,81
-    GROUPBOX        "Cave bot tools",IDC_STATIC,7,212,76,73
-    GROUPBOX        "AFK tools",IDC_STATIC,100,34,140,115
-    GROUPBOX        "Fight tools",IDC_STATIC,7,34,76,177
-    GROUPBOX        "Other tools",IDC_STATIC,7,291,76,93
-    GROUPBOX        "Config",IDC_STATIC,100,233,123,68
-    PUSHBUTTON      "Fluid drinker",IDC_TOOL_FLUIDDRINKER,13,112,61,14
-    LTEXT           "Static",IDC_TOOL_FLUIDDRINKER_INFO,13,128,61,14,
-                    SS_CENTERIMAGE
-    PUSHBUTTON      "Inject MC support",IDC_TOOL_INJECTMC,13,362,61,14
-    PUSHBUTTON      "Ammo restack",IDC_TOOL_AMMORESTACK,13,143,61,14
-    LTEXT           "Static",IDC_TOOL_AMMORESTACK_INFO,13,161,61,14,
-                    SS_CENTERIMAGE
-    PUSHBUTTON      "Item config",IDC_TOOL_ITEMCONFIG,108,264,50,14
-    CONTROL         "Enable light",IDC_LIGHT,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,302,61,14
-    PUSHBUTTON      "Auto respond",IDC_TOOL_AUTORESPOND,106,112,61,14
-    LTEXT           "Static",IDC_TOOL_AUTORESPOND_INFO,106,128,60,14,
-                    SS_CENTERIMAGE
-    PUSHBUTTON      "Auto looter",IDC_TOOL_AUTOLOOTER,13,178,61,14
-    LTEXT           "Static",IDC_TOOL_AUTOLOOTER_INFO,13,194,61,14,
-                    SS_CENTERIMAGE
-    PUSHBUTTON      "Modules",IDC_LOADED_MODULES,167,264,50,14
-    CONTROL         "Auto grouping",IDC_TOOL_AUTOGROUP,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,321,61,14
-    CONTROL         "Trade monitor",IDC_TOOL_TRADEMON,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,176,182,61,14
-    CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,173,112,61,14
-    CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,109,202,59,14
-    PUSHBUTTON      "Map hacks",IDC_TOOL_MAPHACK,176,202,61,14
-    LTEXT           "Static",IDC_TOOL_MAPHACK_INFO,176,216,64,14,
-                    SS_CENTERIMAGE
-    CONTROL         "Team",IDC_TOOL_TEAM,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | NOT WS_VISIBLE | WS_DISABLED | WS_TABSTOP,
-                    100,370,59,14
-    CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,173,130,61,14
-    CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,341,61,14
-    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,168,281,50,14
-    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,100,353,140,
-                    14
+                    WS_GROUP,7,7,225,14
+    GROUPBOX        "AFK tools",IDC_STATIC,90,28,142,79
+    GROUPBOX        "Information tools",IDC_STATIC,90,108,142,62
+    GROUPBOX        "Cave bot tools",IDC_STATIC,7,129,76,47
+    GROUPBOX        "Fight tools",IDC_STATIC,7,28,76,97
+    GROUPBOX        "Other tools",IDC_STATIC,7,177,76,77
+    GROUPBOX        "Config",IDC_STATIC,90,175,142,61
     CONTROL         "",IDC_BROWSER_ADS,
-                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",WS_TABSTOP,100,
-                    308,140,40
+                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",0x0,73,262,159,
+                    40
 END
 
 
@@ -422,16 +410,12 @@ BEGIN
     IDD_TIBIAAUTO_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 240
+        RIGHTMARGIN, 232
         VERTGUIDE, 13
-        VERTGUIDE, 83
-        VERTGUIDE, 100
-        VERTGUIDE, 109
-        VERTGUIDE, 168
-        VERTGUIDE, 234
+        VERTGUIDE, 96
         TOPMARGIN, 7
-        BOTTOMMARGIN, 384
-        HORZGUIDE, 112
+        BOTTOMMARGIN, 302
+        HORZGUIDE, 28
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -491,11 +475,11 @@ END
 IDD_TIBIAAUTO_DIALOG DLGINIT
 BEGIN
     IDC_BROWSER_ADS, 0x376, 160, 0
-0x0000, 0x0000, 0x004c, 0x0000, 0x15b4, 0x0000, 0x06b8, 0x0000, 0x0000, 
+0x0000, 0x0000, 0x004c, 0x0000, 0x18b4, 0x0000, 0x06b8, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x004c, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 
 0x0000, 0xd0e0, 0x0057, 0x3573, 0x11cf, 0x69ae, 0x0008, 0x2e2b, 0x6212, 
-0x0008, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
+0x0002, 0x0000, 0x0000, 0x0000, 0x004c, 0x0000, 0x1401, 0x0002, 0x0000, 
 0x0000, 0x00c0, 0x0000, 0x0000, 0x4600, 0x0080, 0x0000, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 
 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0000, 0x0001, 0x0000, 

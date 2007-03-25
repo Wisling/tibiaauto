@@ -58,6 +58,7 @@ void CPackSender::sendPacket(char *buf)
 
 void CPackSender::sendPacket(char *buf,int method)
 {	
+	// check if we are connected
 	int lowB=buf[0];
 	int hiB=buf[1];
 	if (lowB<0) lowB+=256;

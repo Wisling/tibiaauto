@@ -83,9 +83,20 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CTibiaautoDlg)
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK, m_autoAttack);
+	DDX_Control(pDX, IDC_TOOL_LOGIN, m_login);
+	DDX_Control(pDX, IDC_TOOL_AMMORESTACK, m_ammoRestack);
+	DDX_Control(pDX, IDC_TOOL_AUTOAIM, m_autoAim);
+	DDX_Control(pDX, IDC_TOOL_AUTOFISH, m_autoFish);
+	DDX_Control(pDX, IDC_TOOL_AUTOGO, m_autoGo);
+	DDX_Control(pDX, IDC_TOOL_AUTOLOOTER, m_autoLooter);
+	DDX_Control(pDX, IDC_TOOL_AUTORESPOND, m_autoRespond);
+	DDX_Control(pDX, IDC_TOOL_AUTOUH, m_autoUh);
+	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER, m_fluidDrinker);
+	DDX_Control(pDX, IDC_TOOL_RUNEMAKER, m_runeMaker);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER, m_spellCaster);
 	DDX_Control(pDX, IDC_FPS, m_fps);
 	DDX_Control(pDX, IDC_TOOL_ANTILOG, m_antilogout);
-	DDX_Control(pDX, IDC_TOOL_MAPHACK_INFO, m_mapHackInfo);
 	DDX_Control(pDX, IDC_TOOL_MAPHACK, m_mapHack);
 	DDX_Control(pDX, IDC_TOOL_CREATUREINFO, m_creatureInfo);
 	DDX_Control(pDX, IDC_SAVE, m_save);
@@ -93,20 +104,8 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_EATER, m_eater);
 	DDX_Control(pDX, IDC_TOOL_TRADEMON, m_tradeMon);
 	DDX_Control(pDX, IDC_TOOL_AUTOGROUP, m_grouping);
-	DDX_Control(pDX, IDC_TOOL_AUTORESPOND_INFO, m_infoAutoRespond);
-	DDX_Control(pDX, IDC_TOOL_AUTOLOOTER_INFO, m_infoModuleLooter);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK, m_buttonAutoAttack);
-	DDX_Control(pDX, IDC_TOOL_AMMORESTACK_INFO, m_infoAmmoRestack);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_INFO, m_infoFluidDrinker);
-	DDX_Control(pDX, IDC_TOOL_AUTOAIM_INFO, m_infoAutoAim);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_INFO, m_infoSpellCaster);	
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_INFO, m_infoAutoAttack);
-	DDX_Control(pDX, IDC_TOOL_AUTOUH_INFO, m_infoAutoUH);
 	DDX_Control(pDX, IDC_LOGINNAME, m_loginName);
 	DDX_Control(pDX, IDC_LIGHT, m_light);
-	DDX_Control(pDX, IDC_TOOL_AUTOFISH_INFO, m_infoAutoFish);
-	DDX_Control(pDX, IDC_TOOL_AUTOGO_INFO, m_infoAutoGo);
-	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO, m_infoRuneMaker);	
 	DDX_Control(pDX, IDC_BROWSER_ADS, m_browserAds);
 	//}}AFX_DATA_MAP
 }
@@ -151,6 +150,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_FPS, OnFps)
 	ON_BN_CLICKED(IDC_PYTHON_SCRIPTS, OnPythonScripts)
 	ON_BN_CLICKED(IDC_OPTIONS, OnOptions)
+	ON_BN_CLICKED(IDC_TOOL_LOGIN, OnToolLogin)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -229,6 +229,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleTeam = new CModuleProxy("mod_team",0);
 	m_moduleAntylogout = new CModuleProxy("mod_antylogout",0);
 	m_moduleFps = new CModuleProxy("mod_fps",0);
+	m_moduleLogin = new CModuleProxy("mod_login",0);
 
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);	
@@ -508,55 +509,18 @@ void CTibiaautoDlg::refreshToolInfo()
 {
 	char buf[1000];
 
-	sprintf(buf,"%s",
-		m_moduleRuneMaker->isStarted()?"active":"-");
-	m_infoRuneMaker.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleAutoGo->isStarted()?"active":"-");
-	m_infoAutoGo.SetWindowText(buf);
-	
-	sprintf(buf,"%s",
-		m_moduleFisher->isStarted()?"active":"-");
-	m_infoAutoFish.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleAutoAttack->isStarted()?"active":"-");
-	m_infoAutoAttack.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleUH->isStarted()?"active":"-");
-	m_infoAutoUH.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleSpellCaster->isStarted()?"active":"-");
-	m_infoSpellCaster.SetWindowText(buf);	
-
-	sprintf(buf,"%s",
-	m_moduleAim->isStarted()?"active":"-");
-	m_infoAutoAim.SetWindowText(buf);		
-
-	sprintf(buf,"%s",
-		m_moduleFluid->isStarted()?"active":"-");
-	m_infoFluidDrinker.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleRestack->isStarted()?"active":"-");
-	m_infoAmmoRestack.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleLooter->isStarted()?"active":"-");
-	m_infoModuleLooter.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleResponder->isStarted()?"active":"-");
-	m_infoAutoRespond.SetWindowText(buf);
-
-	sprintf(buf,"%s",
-		m_moduleMapHack->isStarted()?"active":"-");
-	m_mapHackInfo.SetWindowText(buf);
-
-	// refresh push-like modules
+	m_runeMaker.SetCheck(m_moduleRuneMaker->isStarted());
+	m_autoGo.SetCheck(m_moduleAutoGo->isStarted());
+	m_autoFish.SetCheck(m_moduleFisher->isStarted());
+	m_autoAttack.SetCheck(m_moduleAutoAttack->isStarted());
+	m_autoUh.SetCheck(m_moduleUH->isStarted());
+	m_spellCaster.SetCheck(m_moduleSpellCaster->isStarted());
+	m_autoAim.SetCheck(m_moduleAim->isStarted());
+	m_fluidDrinker.SetCheck(m_moduleFluid->isStarted());
+	m_ammoRestack.SetCheck(m_moduleRestack->isStarted());
+	m_autoLooter.SetCheck(m_moduleLooter->isStarted());
+	m_autoRespond.SetCheck(m_moduleResponder->isStarted());
+	m_mapHack.SetCheck(m_moduleMapHack->isStarted());
 	m_light.SetCheck(m_moduleLight->isStarted());
 	m_grouping.SetCheck(m_moduleGrouping->isStarted());
 	m_tradeMon.SetCheck(m_moduleTradeMon->isStarted());
@@ -564,6 +528,7 @@ void CTibiaautoDlg::refreshToolInfo()
 	m_creatureInfo.SetCheck(m_moduleCreatureInfo->isStarted());
 	m_antilogout.SetCheck(m_moduleAntylogout->isStarted());
 	m_fps.SetCheck(m_moduleFps->isStarted());
+	m_login.SetCheck(m_moduleLogin->isStarted());
 }
 
 void CTibiaautoDlg::OnSave() 
@@ -898,6 +863,7 @@ BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
 	{
 		eventStop=1;
 	} 
+	if (pMsg->message==WM_CHAR) eventStop=1;
 	if (!eventStop) {
 		return CDialog::PreTranslateMessage(pMsg);
 	} else {
@@ -1041,5 +1007,10 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.12.6",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.13.0",NULL,NULL,NULL,NULL);
+}
+
+void CTibiaautoDlg::OnToolLogin() 
+{
+	m_moduleLogin->showConfigDialog();		
 }

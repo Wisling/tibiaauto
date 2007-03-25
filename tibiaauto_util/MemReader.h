@@ -22,6 +22,8 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	int getConnectionState();
+	char * getOpenWindowName();
 	int getPlayerModeAttackPlayers();
 	int getPlayerModeFollow();
 	int getPlayerModeAttackType();
