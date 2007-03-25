@@ -716,7 +716,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	// now standing on
 	if (abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ)!=0) 
 	{
-		return;
+		//return;
 	}
 	if (pathSize==1&&path[0]>=0xD0)
 	{

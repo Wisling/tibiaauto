@@ -68,7 +68,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	sender.enableCName(1);
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(1000);			
+		Sleep(1000);	
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		if (config->revealNoFish)
 		{			

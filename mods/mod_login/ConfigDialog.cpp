@@ -5,6 +5,7 @@
 #include "mod_login.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
+#include <queue>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,6 +16,8 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
+CRITICAL_SECTION QueueCriticalSection;
+std::queue<char *> queue;
 
 CConfigDialog::CConfigDialog(CMod_loginApp *app,CWnd* pParent /*=NULL*/)
 	: CDialog(CConfigDialog::IDD, pParent)
@@ -29,16 +32,21 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_OPEN_CONTAINER8, m_openCont8);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER7, m_openCont7);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER6, m_openCont6);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER5, m_openCont5);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER4, m_openCont4);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER3, m_openCont3);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER2, m_openCont2);
+	DDX_Control(pDX, IDC_OPEN_CONTAINER1, m_openCont1);
+	DDX_Control(pDX, IDC_OPEN_BACKPACK, m_openMain);
+	DDX_Control(pDX, IDC_CHAR_POS, m_charPos);
+	DDX_Control(pDX, IDC_STATUS, m_status);
+	DDX_Control(pDX, IDC_PASSWORD, m_password);
+	DDX_Control(pDX, IDC_DEBUG, m_debug);
+	DDX_Control(pDX, IDC_ACCOUNT_NUMBER, m_accountNumber);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DROPEMPTY, m_dropEmpty);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HOTKEY_MANA, m_hotkeyMana);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HOTKEY_LIFE, m_hotkeyLife);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_SLEEP, m_sleep);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW, m_manaBelow);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);	
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA, m_drinkMana);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP, m_drinkHp);
-
 	//}}AFX_DATA_MAP
 }
 
@@ -82,27 +90,34 @@ void CConfigDialog::OnEnable()
 
 void CConfigDialog::disableControls()
 {
-	m_dropEmpty.EnableWindow(false);
-	m_hotkeyMana.EnableWindow(false);
-	m_hotkeyLife.EnableWindow(false);
-	m_sleep.EnableWindow(false);
-	m_manaBelow.EnableWindow(false);
-	m_hpBelow.EnableWindow(false);	
-	m_drinkMana.EnableWindow(false);
-	m_drinkHp.EnableWindow(false);
-
+	m_accountNumber.EnableWindow(false);
+	m_password.EnableWindow(false);	
+	m_charPos.EnableWindow(false);	
+	m_openMain.EnableWindow(false);
+	m_openCont1.EnableWindow(false);
+	m_openCont2.EnableWindow(false);
+	m_openCont3.EnableWindow(false);
+	m_openCont4.EnableWindow(false);
+	m_openCont5.EnableWindow(false);
+	m_openCont6.EnableWindow(false);
+	m_openCont7.EnableWindow(false);
+	m_openCont8.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
 {
-	m_dropEmpty.EnableWindow(true);
-	m_hotkeyMana.EnableWindow(true);
-	m_hotkeyLife.EnableWindow(true);
-	m_sleep.EnableWindow(true);
-	m_manaBelow.EnableWindow(true);
-	m_hpBelow.EnableWindow(true);	
-	m_drinkMana.EnableWindow(true);
-	m_drinkHp.EnableWindow(true);
+	m_accountNumber.EnableWindow(true);
+	m_password.EnableWindow(true);
+	m_charPos.EnableWindow(true);	
+	m_openMain.EnableWindow(true);
+	m_openCont1.EnableWindow(true);
+	m_openCont2.EnableWindow(true);
+	m_openCont3.EnableWindow(true);
+	m_openCont4.EnableWindow(true);
+	m_openCont5.EnableWindow(true);
+	m_openCont6.EnableWindow(true);
+	m_openCont7.EnableWindow(true);
+	m_openCont8.EnableWindow(true);
 }
 
 
@@ -110,14 +125,20 @@ void CConfigDialog::enableControls()
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	m_dropEmpty.SetCheck(configData->dropEmpty);
-	m_hotkeyMana.SetCheck(configData->hotkeyMana);
-	m_hotkeyLife.SetCheck(configData->hotkeyHp);
-	sprintf(buf,"%d",configData->sleep);m_sleep.SetWindowText(buf);
-	sprintf(buf,"%d",configData->manaBelow);m_manaBelow.SetWindowText(buf);
-	sprintf(buf,"%d",configData->hpBelow);m_hpBelow.SetWindowText(buf);
-	m_drinkMana.SetCheck(configData->drinkMana);
-	m_drinkHp.SetCheck(configData->drinkHp);
+
+	sprintf(buf,"%s",configData->accountNumber);m_accountNumber.SetWindowText(buf);	
+	sprintf(buf,"%s",configData->password);m_password.SetWindowText(buf);	
+	sprintf(buf,"%d",configData->charPos);m_charPos.SetWindowText(buf);	
+	m_openMain.SetCheck(configData->openMain);
+	m_openCont1.SetCheck(configData->openCont1);
+	m_openCont2.SetCheck(configData->openCont2);
+	m_openCont3.SetCheck(configData->openCont3);
+	m_openCont4.SetCheck(configData->openCont4);
+	m_openCont5.SetCheck(configData->openCont5);
+	m_openCont6.SetCheck(configData->openCont6);
+	m_openCont7.SetCheck(configData->openCont7);
+	m_openCont8.SetCheck(configData->openCont8);
+	
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -125,21 +146,63 @@ CConfigData * CConfigDialog::controlsToConfig()
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->dropEmpty=m_dropEmpty.GetCheck();
-	newConfigData->hotkeyMana=m_hotkeyMana.GetCheck();
-	newConfigData->hotkeyHp=m_hotkeyLife.GetCheck();
-	m_sleep.GetWindowText(buf,127);newConfigData->sleep=atoi(buf);
-	m_manaBelow.GetWindowText(buf,127);newConfigData->manaBelow=atoi(buf);
-	m_hpBelow.GetWindowText(buf,127);newConfigData->hpBelow=atoi(buf);
-	newConfigData->drinkMana=m_drinkMana.GetCheck();
-	newConfigData->drinkHp=m_drinkHp.GetCheck();
+	m_accountNumber.GetWindowText(newConfigData->accountNumber,63);
+	m_password.GetWindowText(newConfigData->password,63);
+	m_charPos.GetWindowText(buf,63);newConfigData->charPos=atoi(buf);
+	newConfigData->openMain=m_openMain.GetCheck();
+	newConfigData->openCont1=m_openCont1.GetCheck();
+	newConfigData->openCont2=m_openCont2.GetCheck();
+	newConfigData->openCont3=m_openCont3.GetCheck();
+	newConfigData->openCont4=m_openCont4.GetCheck();
+	newConfigData->openCont5=m_openCont5.GetCheck();
+	newConfigData->openCont6=m_openCont6.GetCheck();
+	newConfigData->openCont7=m_openCont7.GetCheck();
+	newConfigData->openCont8=m_openCont8.GetCheck();
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent) 
 {
+	if (nIDEvent==1001)
+	{
+		KillTimer(1001);
+		CMemReaderProxy reader;
+		switch (reader.getConnectionState())
+		{
+		case 0: m_status.SetWindowText("Connection status: not connected");break;
+		case 1: m_status.SetWindowText("Connection status: opening to login server");break;
+		case 2: m_status.SetWindowText("Connection status: connecting to login server");break;
+		case 3: m_status.SetWindowText("Connection status: disconnecting from login server");break;
+		case 4: m_status.SetWindowText("Connection status: connected to login server");break;
+		case 5: m_status.SetWindowText("Connection status: opening");break;
+		case 6: m_status.SetWindowText("Connection status: connecting");break;
+		case 7: m_status.SetWindowText("Connection status: disconnecting");break;
+		case 8: m_status.SetWindowText("Connection status: connected");break;
+		default: m_status.SetWindowText("Connection status: unknown");break;
+		};
 
+		EnterCriticalSection(&QueueCriticalSection);
+		while (!queue.empty())
+		{
+			char timeBuf[256];
+			char *msg = queue.front();
+			queue.pop();
+			m_debug.InsertItem(0,"");
+			time_t nowSec = time(NULL);
+			struct tm *now = localtime(&nowSec);
+			sprintf(timeBuf,"%d:%d:%d",now->tm_hour,now->tm_min,now->tm_sec);
+			m_debug.SetItemText(0,0,timeBuf);
+			m_debug.SetItemText(0,1,msg);			
+			if (m_debug.GetItemCount()>100)
+			{
+				m_debug.DeleteItem(m_debug.GetItemCount());
+			}
+			delete msg;
+		}
+		LeaveCriticalSection(&QueueCriticalSection);
+		SetTimer(1001,500,NULL);
+	}
 	
 	CDialog::OnTimer(nIDEvent);
 }
@@ -147,6 +210,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	
+	m_debug.InsertColumn(0,"time",LVCFMT_LEFT,65);
+	m_debug.InsertColumn(1,"message",LVCFMT_LEFT,240);
+
+	InitializeCriticalSection(&QueueCriticalSection);
+	SetTimer(1001,500,NULL);
 	
 	
 	return TRUE;  // return TRUE unless you set the focus to a control

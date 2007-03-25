@@ -820,3 +820,33 @@ int CMemReaderProxy::getPlayerModeFollow()
 	return 0;
 }
 
+
+char * CMemReaderProxy::getOpenWindowName()
+{
+	typedef char *(*Proto_fun)();
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetOpenWindowName");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return "";
+}
+
+
+int CMemReaderProxy::getConnectionState()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetConnectionState");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+}
+

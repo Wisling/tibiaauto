@@ -125,6 +125,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(100);
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		/*** killed monster opening part ***/
 		if (config->m_autoOpen&&lastAttackedMonster&&reader.getAttackedCreature()==0)

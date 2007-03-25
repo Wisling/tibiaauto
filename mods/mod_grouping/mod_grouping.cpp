@@ -93,6 +93,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(500);		
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
 		int contNr;
 		int movedSomething=0;

@@ -10,8 +10,8 @@ ResourceCount=2
 NewFileInclude1=#include "stdafx.h"
 Class2=CCharInfoDialog
 LastTemplate=CDialog
-Resource1=IDD_TOOL_AUTORESPOND
-Resource2=IDR_SHOWMAP_MENU
+Resource1=IDR_SHOWMAP_MENU
+Resource2=IDD_TOOL_AUTORESPOND
 
 [CLS:CMod_responderApp]
 Type=0

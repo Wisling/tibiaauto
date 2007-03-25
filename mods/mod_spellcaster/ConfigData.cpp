@@ -24,7 +24,7 @@ CConfigData::CConfigData()
 	life=0;
 	lifeHp=0;
 	lifeSpell[0]=0;
-	lifeSpellMana;
+	lifeSpellMana=0;
 	summon=0;
 	summonLessThan=0;
 	summonName[0]=0;
