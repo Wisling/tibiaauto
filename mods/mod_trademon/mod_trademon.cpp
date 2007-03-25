@@ -71,6 +71,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop){			
 
 		Sleep(300);	
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
 		if (config->tradeTalk){
 			if (config->channel){

@@ -89,6 +89,9 @@ public:
 	int getPlayerModeFollow();
 	int getPlayerModeAttackType();
 
+	char *getOpenWindowName();
+	int getConnectionState();
+
 
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();

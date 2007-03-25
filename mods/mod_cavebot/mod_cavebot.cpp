@@ -947,6 +947,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{						
 		Sleep(1000);
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (config->debug) 
 		{
 			char buf[256];

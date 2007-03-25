@@ -66,6 +66,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(200);	
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		

@@ -244,6 +244,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		CTibiaCharacter *myself = reader.readSelfCharacter();
 		
 		Sleep(900);
+		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 				
 		
 		CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);

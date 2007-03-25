@@ -193,6 +193,13 @@ int triggerBattleList(int options, char whiteList[][32]){
 						delete self;						
 						return 1;
 					}
+					if ((options&BATTLELIST_GM)&&ch->name[0]=='C'&&ch->name[1]=='M')
+					{
+						// this is CM						
+						delete ch;
+						delete self;						
+						return 1;
+					}
 					
 					if ((options&BATTLELIST_PLAYER))
 					{
