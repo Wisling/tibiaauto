@@ -29,8 +29,6 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButton	m_aimPlayersFromBattle;
-	CButton	m_onlyCreatures;
 	CButton	m_enable;
 	CComboBox m_RuneType;
 	//}}AFX_DATA

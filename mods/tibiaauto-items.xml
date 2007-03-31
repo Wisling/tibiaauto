@@ -4,7 +4,6 @@
 		<!-- item codes -->
 		<const code="ropespot" value="0x182"/> 
 		<const code="ladder" value="0x79c"/> 
-		<const code="smallstone" value="0x6f5"/> 
 		<const code="bagbrown" value="0xb25"/>
 		<const code="rope" value="0xbbb"/>
 		<const code="GP" value="0xbd7"/>
@@ -21,9 +20,7 @@
 		<const code="fishingRod" value="0xd9b"/>
 		<const code="fluid" value="0xb3a"/>
 		<const code="worms" value="0xda4"/>
-		<const code="arrow" value="0xd77"/>
-		<const code="bolt" value="0xd76"/>
-		<const code="spear" value="0xccd"/>
+
 		<const code="waterWithFishStart" value="0x11F5"/>
 		<const code="waterWithFishEnd" value="0x11FA"/>
 		<const code="crate" value="0x1B3"/>

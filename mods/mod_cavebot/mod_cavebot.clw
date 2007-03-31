@@ -23,7 +23,7 @@ Filter=N
 [DLG:IDD_CONFIG]
 Type=1
 Class=CConfigDialog
-ControlCount=85
+ControlCount=87
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_TOOL_AUTOATTACK_MONSTER,edit,1350631552
@@ -109,6 +109,8 @@ Control82=IDC_STATIC,static,1342308352
 Control83=IDC_BACKATTACK_RUNES,button,1342242819
 Control84=IDC_LOAD_FROM_MINIMAP,button,1342242816
 Control85=IDC_SHARE_ALIEN_BACKATTACK,button,1342242819
+Control86=IDC_STATIC,static,1342308864
+Control87=IDC_DEPOT_CAP,edit,1350631552
 
 [CLS:CConfigDialog]
 Type=0
@@ -117,7 +119,7 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_SHARE_ALIEN_BACKATTACK
+LastObject=IDC_TOOL_AUTOATTACK_STATE_LOOT
 
 [DLG:IDD_SENDSTATS]
 Type=1

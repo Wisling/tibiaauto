@@ -64,29 +64,22 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 149, 237
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 149, 153
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: auto aiming"
 FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Enable aiming",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,193,135,14
+                    BS_PUSHLIKE | WS_TABSTOP,7,111,135,14
     LTEXT           "To use it, say either of: ""%ta hmm"" , ""%ta gfb"", ""%ta sd"", ""%ta explo"". After you do this, a creature which is being attacked by you, will automatically be shot by a rune. ",
                     IDC_STATIC,7,7,135,35
     LTEXT           "NOTE: you must have rune with which you want to attack in some of your open containers.",
                     IDC_STATIC,7,45,135,29
-    CONTROL         "Aim only against creatures",IDC_AUTOAIM_CREATURES,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,116,98,10
-    LTEXT           "NOTE: aiming only against creatures is much more accurate (100% hit ratio) in comparison to aiming against anything (95% hit ratio)",
-                    IDC_STATIC,7,75,135,34
-    CONTROL         "Aim players directly from the battle list",
-                    IDC_AIMPLAYERSFROMBATTLE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,129,132,10
-    COMBOBOX        IDC_AUTOAIM_RUNELIST,7,169,135,48,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_AUTOAIM_RUNELIST,7,92,135,48,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Default rune type to cast when attacking creature:",
-                    IDC_AUTOAIM_RUNE,7,145,135,16
-    PUSHBUTTON      "OK",IDOK,49,214,50,14
+                    IDC_AUTOAIM_RUNE,7,74,135,16
+    PUSHBUTTON      "OK",IDOK,47,135,50,14
 END
 
 
