@@ -79,14 +79,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		CUIntArray itemsAccepted;		
 
 		// check ammo to restack
-		int ammoItemId=0;
-		switch (config->ammoType)
-		{
-		case 0:ammoItemId=0;break; 
-		case 1:ammoItemId=itemProxy.getValueForConst("arrow");break;
-		case 2:ammoItemId=itemProxy.getValueForConst("bolt");break;
-		default: ammoItemId=0;break;
-		}
+		int ammoItemId=config->ammoType;		
 		item=reader.readItem(memConstData.m_memAddressSlotArrow);
 
 		if (ammoItemId&&(item->objectId==0||item->objectId==ammoItemId))
@@ -108,6 +101,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							if (itemAccepted->quantity<qtyToRestack)
 								qtyToRestack=itemAccepted->quantity;
 							sender.moveObjectBetweenContainers(ammoItemId,0x40+contNr,itemAccepted->pos,0xa,0,qtyToRestack);
+							Sleep(300);
 							delete itemAccepted;
 							delete cont;
 							break;
@@ -120,14 +114,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		delete item;
 
 		// check throwable to restack
-		int throwableItemId=0;
-		switch (config->throwableType)
-		{
-		case 0:throwableItemId=0;break; 
-		case 1:throwableItemId=itemProxy.getValueForConst("spear");break;		
-		case 2:throwableItemId=itemProxy.getValueForConst("smallstone");break;		
-		default: throwableItemId=0;break;
-		}
+		int throwableItemId=config->throwableType;		
 		if (!config->restackToRight)
 		{
 			item=reader.readItem(memConstData.m_memAddressLeftHand);
@@ -159,6 +146,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							} else {
 								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x5,0,qtyToRestack);
 							}
+							Sleep(300);
 							delete itemAccepted;
 							delete cont;
 							break;
@@ -380,7 +368,7 @@ void CMod_restackApp::enableControls()
 
 char *CMod_restackApp::getVersion()
 {
-	return "2.3";
+	return "2.4";
 }
 
 

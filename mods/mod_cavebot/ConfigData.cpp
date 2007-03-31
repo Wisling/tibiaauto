@@ -66,7 +66,7 @@ CConfigData::CConfigData()
 	backattackRunes=0;
 	shareAlienBackattack=0;
 	depotDropInsteadOfDepositon=0;
-
+	depotCap=0;
 }
 
 CConfigData::~CConfigData()

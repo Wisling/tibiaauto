@@ -30,8 +30,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDC_AIMPLAYERSFROMBATTLE, m_aimPlayersFromBattle);
-	DDX_Control(pDX, IDC_AUTOAIM_CREATURES, m_onlyCreatures);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_AUTOAIM_RUNELIST, m_RuneType);
 	//}}AFX_DATA_MAP
@@ -77,15 +75,13 @@ void CConfigDialog::OnEnable()
 
 void CConfigDialog::disableControls()
 {
-	m_onlyCreatures.EnableWindow(false);
-	m_aimPlayersFromBattle.EnableWindow(false);
+
 	m_RuneType.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
 {
-	m_onlyCreatures.EnableWindow(true);
-	m_aimPlayersFromBattle.EnableWindow(true);
+
 	m_RuneType.EnableWindow(true);
 }
 
@@ -93,8 +89,6 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	m_onlyCreatures.SetCheck(configData->onlyCreatures);	
-	m_aimPlayersFromBattle.SetCheck(configData->aimPlayersFromBattle);	
 
 	for (int i=0;i<m_RuneType.GetCount();i++){
 		if (int(m_RuneType.GetItemData(i)) == int(configData->RuneType)){
@@ -107,8 +101,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 {
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->onlyCreatures=m_onlyCreatures.GetCheck();	
-	newConfigData->aimPlayersFromBattle=m_aimPlayersFromBattle.GetCheck();
 	newConfigData->RuneType=m_RuneType.GetItemData(m_RuneType.GetCurSel());
 
 	return newConfigData;

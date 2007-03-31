@@ -62,7 +62,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	
-	sender.sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
+	//sender.sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
 
 	while (!toolThreadShouldStop)
 	{	
@@ -100,27 +100,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						//T4: If default rune has been choosen then cast it every time creature is attaced
 
 						if (config->RuneType!=0){
-							if (config->onlyCreatures)
+							
+							acceptedItems.RemoveAll();
+							acceptedItems.Add(config->RuneType);
+							runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
+							
+							if (runeItem!=NULL)
 							{
-								acceptedItems.RemoveAll();
-								acceptedItems.Add(config->RuneType);
-								runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
-
-								if (runeItem!=NULL)
-								{
-									sender.castRuneAgainstCreature(0x40+contNr,runeItem->pos,
-										config->RuneType,attackedCreature);
-								}		
-							} else {
-								acceptedItems.RemoveAll();
-								acceptedItems.Add(config->RuneType);
-								runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);		
-								if (runeItem!=NULL)
-								{								
-									sender.castRuneAgainstHuman(0x40+contNr,runeItem->pos,
-										config->RuneType,ch->x,ch->y,ch->z);
-								}
-							}					
+								sender.castRuneAgainstCreature(0x40+contNr,runeItem->pos,
+									config->RuneType,attackedCreature);
+							}		
+							
 						}
 					};
 					
@@ -272,8 +262,6 @@ void CMod_aimApp::resetConfig()
 
 void CMod_aimApp::loadConfigParam(char *paramName,char *paramValue)
 {
-	if (!strcmp(paramName,"onlyCreatures")) m_configData->onlyCreatures=atoi(paramValue);	
-	if (!strcmp(paramName,"aimPlayersFromBattle")) m_configData->aimPlayersFromBattle=atoi(paramValue);	
 	if (!strcmp(paramName,"RuneType")) m_configData->RuneType=atoi(paramValue);
 }
 
@@ -281,9 +269,6 @@ char *CMod_aimApp::saveConfigParam(char *paramName)
 {
 	static char buf[1024];
 	buf[0]=0;
-	
-	if (!strcmp(paramName,"onlyCreatures")) sprintf(buf,"%d",m_configData->onlyCreatures);	
-	if (!strcmp(paramName,"aimPlayersFromBattle")) sprintf(buf,"%d",m_configData->aimPlayersFromBattle);	
 	if (!strcmp(paramName,"RuneType")) sprintf(buf,"%d",m_configData->RuneType);	
 
 	return buf;
@@ -293,9 +278,7 @@ char *CMod_aimApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "onlyCreatures";	
-	case 1: return "aimPlayersFromBattle";
-	case 2: return "RuneType";
+	case 0: return "RuneType";
 	default:
 		return NULL;
 	}

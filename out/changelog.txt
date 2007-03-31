@@ -1,3 +1,14 @@
+1.13.1: 31.03.2007
+Enhancements:
+ * Auto attack: extended depot walker by capacity check
+ * Auto attack: extended depot walker by refitting items from depot
+ * Ammo restack: added possibility to restack any stackable item
+
+Defects:
+ * Auto login: fixed problems when multiple TA instances trying to login simultanously
+ * Auto login: fixed backpack opening
+ * Auto aim: cleaned up obsolete features
+
 1.13.0: 25.03.2007
 Defects:
  * General: fixed rare crash/spin bug

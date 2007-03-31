@@ -47,6 +47,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_DEPOT_CAP, m_depotCap);
 	DDX_Control(pDX, IDC_SHARE_ALIEN_BACKATTACK, m_shareAlienBackattack);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_IGNORE, m_ignore);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_IGNORELIST, m_ignoreList);
@@ -198,7 +199,7 @@ void CConfigDialog::disableControls()
 	m_ignore.EnableWindow(false);
 	m_backattackRunes.EnableWindow(false);
 	m_shareAlienBackattack.EnableWindow(false);
-
+	m_depotCap.EnableWindow(false);
 
 }
 
@@ -248,6 +249,7 @@ void CConfigDialog::enableControls()
 	m_ignore.EnableWindow(true);
 	m_backattackRunes.EnableWindow(true);
 	m_shareAlienBackattack.EnableWindow(true);
+	m_depotCap.EnableWindow(true);
 }
 
 
@@ -282,6 +284,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_gatherLootStats.SetCheck(configData->gatherLootStats);
 	m_debug.SetCheck(configData->debug);
 	sprintf(buf,"%d",configData->capacityLimit);m_lootCapLimit.SetWindowText(buf);
+	sprintf(buf,"%d",configData->depotCap);m_depotCap.SetWindowText(buf);
 	while (m_waypointList.GetCount()) m_waypointList.DeleteString(0);
 	for (i=0;i<100;i++)
 	{
@@ -397,6 +400,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->mapUsed=m_mapUsed.GetCurSel();	
 	m_lootCapLimit.GetWindowText(buf,127);
 	newConfigData->capacityLimit=atoi(buf);	
+	m_depotCap.GetWindowText(buf,127);
+	newConfigData->depotCap=atoi(buf);	
 	newConfigData->lootCustom=m_lootCustom.GetCheck();
 	newConfigData->lootInBags=m_lootinBags.GetCheck();	
 
@@ -696,7 +701,7 @@ void CConfigDialog::OnDepotEntryadd()
 	if (sel==-1) return;
 	if (depotWhen<=0) return;
 	if (depotRemain<0) return;
-	if (depotWhen<=depotRemain) return;	
+	if (depotWhen==depotRemain) return;	
 		
 	sprintf(buf,"%s %d->%d",itemName,depotWhen,depotRemain);
 	m_depotEntryList.AddString(buf);

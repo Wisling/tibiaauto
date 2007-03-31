@@ -15,8 +15,6 @@ public:
 	CConfigData();
 	virtual ~CConfigData();
 
-	int onlyCreatures;
-	int aimPlayersFromBattle;
 	int RuneType;
 };
 
