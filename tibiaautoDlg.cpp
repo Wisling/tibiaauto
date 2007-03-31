@@ -1007,7 +1007,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.13.0",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.13.1",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
