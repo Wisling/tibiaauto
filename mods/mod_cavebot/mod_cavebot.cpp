@@ -135,6 +135,44 @@ void dumpCreatureInfo(char *info,int tibiaId)
 }
 
 /**
+ * Checks whethre we should go back to depot or not.
+ */
+int depotCheckShouldGo(CConfigData *config)
+{
+	int ret=0;
+	CMemReaderProxy reader;	
+	CTibiaItemProxy itemProxy;	
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	if (self->cap<=config->depotCap) ret++;
+	
+	int i;
+	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++)
+	{
+		int objectId = itemProxy.getObjectId(config->depotTrigger[i].itemName);
+		int contNr;
+		int totalQty=0;
+		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+		{
+			CTibiaContainer *cont = reader.readContainer(contNr);
+			
+			if (cont->flagOnOff)				
+				totalQty+=cont->countItemsOfType(objectId);
+			
+			delete cont;
+		}
+		// check whether we should deposit something
+		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
+			totalQty>=config->depotTrigger[i].when) ret++;
+		// check whether we should restack something
+		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
+			totalQty<=config->depotTrigger[i].when) ret++;
+	}
+	delete self;
+	return ret;
+}
+
+/**
  * Do checks concerning 'go to depot' functionality.
  */
 void depotCheck(CConfigData *config)
@@ -147,55 +185,38 @@ void depotCheck(CConfigData *config)
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notRunning)
 	{
 		CTibiaCharacter *self=reader.readSelfCharacter();
-		// check whether we should start walking to depot
-		int i;
-		for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++)
+		if (depotCheckShouldGo(config))
 		{
-			int objectId = itemProxy.getObjectId(config->depotTrigger[i].itemName);
-			int contNr;
-			int totalQty=0;
-			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+			if (config->debug) registerDebug("We should go to a depot");
+			/**
+			* Ok then - we should do the depositing.
+			*/
+			
+			int path[15];
+			struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+			depotX=nearestDepot.x;
+			depotY=nearestDepot.y;
+			depotZ=nearestDepot.z;
+			if (depotX&&depotY&&depotZ)
 			{
-				CTibiaContainer *cont = reader.readContainer(contNr);
-
-				if (cont->flagOnOff)				
-					totalQty+=cont->countItemsOfType(objectId);
-
-				delete cont;
+				// depot found - go to it
+				globalAutoAttackStateDepot=CToolAutoAttackStateDepot_walking;
+				// reset goto target
+				targetX=depotX;
+				targetY=depotY;
+				targetZ=depotZ;
+				if (config->debug) registerDebug("Depot found - going to it");
+			} else {
+				// depot not found - argh
+				globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
+				depotX=depotY=depotZ=0;
+				if (config->debug) registerDebug("Depot not found - depot state: not found");
 			}
-			if (totalQty>=config->depotTrigger[i].when)
-			{
-				if (config->debug) registerDebug("We should go to a depot");
-				/**
-				 * Ok then - we should do the depositing.
-				 */
-
-				int path[15];
-				struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-				depotX=nearestDepot.x;
-				depotY=nearestDepot.y;
-				depotZ=nearestDepot.z;
-				if (depotX&&depotY&&depotZ)
-				{
-					// depot found - go to it
-					globalAutoAttackStateDepot=CToolAutoAttackStateDepot_walking;
-					// reset goto target
-					targetX=depotX;
-					targetY=depotY;
-					targetZ=depotZ;
-					if (config->debug) registerDebug("Depot found - going to it");
-				} else {
-					// depot not found - argh
-					globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
-					depotX=depotY=depotZ=0;
-					if (config->debug) registerDebug("Depot not found - depot state: not found");
-				}
-				
-				delete self;
-				return;
-			}
-		}
-		delete self;
+			
+			delete self;
+			return;
+		}	
+	
 	}
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_walking)
 	{
@@ -379,6 +400,109 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_noSpace;
 }
 
+// take items from depot chest and move to my backpacks (contnr,pos)
+int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup)
+{			
+	CMemReaderProxy reader;	
+	CPackSenderProxy sender;
+	CTibiaContainer *depotChest = reader.readContainer(9);
+	int itemNr;
+	
+	if (!depotChest->flagOnOff)
+	{
+		// shouldn't happen...
+		delete depotChest;
+		return 0;
+	}
+
+	/**
+	 * If container number 8 is open than we can try to take our item from it (to avoid 
+	 * massive close/open of containers.
+	 */
+	CTibiaContainer *cont8 = reader.readContainer(8);
+	if (cont8->flagOnOff)
+	{
+		for (itemNr=0;itemNr<cont8->itemsInside;itemNr++)
+		{
+			CTibiaItem *item=((CTibiaItem *)cont8->items.GetAt(itemNr));
+			if (item->objectId==objectId)
+			{
+				// that's this item - pick it up
+				if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
+				sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
+				CModuleUtil::waitForItemsInsideChange(contNr,pos);
+
+				delete cont8;
+				delete depotChest;
+				return qtyToPickup;
+
+			}
+		}				
+	}
+	delete cont8;
+
+	/**
+	 * Scan through all containers in the depot chest to look for some matching one
+	 */	
+	int count=depotChest->itemsInside;
+	for (itemNr=0;itemNr<count;itemNr++)
+	{
+		CTibiaItem *item = (CTibiaItem *)depotChest->items.GetAt(itemNr);				
+		if (reader.getTibiaTile(item->objectId)->isContainer)
+		{
+			// that object is a container, so open it
+			sender.closeContainer(8);
+			CModuleUtil::waitForOpenContainer(8,0);
+			sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,8);
+			CModuleUtil::waitForOpenContainer(8,1);
+			CTibiaContainer *newContainer = reader.readContainer(8);
+			if (newContainer->flagOnOff)
+			{
+				for (itemNr=0;itemNr<newContainer->itemsInside;itemNr++)
+				{
+					CTibiaItem *item=((CTibiaItem *)newContainer->items.GetAt(itemNr));
+					if (item->objectId==objectId)
+					{
+						// that's this item - pick it up
+						if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
+						sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
+						CModuleUtil::waitForItemsInsideChange(contNr,pos);
+						
+						delete newContainer;
+						delete depotChest;
+						
+						return qtyToPickup;
+					}
+				}		
+				
+			}
+			delete newContainer;			
+		}
+	}
+
+	delete depotChest;
+
+	// our item to move not found;
+	return 0;	
+}
+
+int countAllItemsOfType(int objectId)
+{
+	CMemReaderProxy reader;
+	int contNr;
+	int ret=0;
+	for (contNr=0;contNr<8;contNr++)
+	{
+		CTibiaContainer *cont = reader.readContainer(contNr);
+		
+		if (cont->flagOnOff)
+			ret+=cont->countItemsOfType(objectId);
+		
+		delete cont;
+	}
+	return ret;
+}
+
 /**
  * We are nearby a depot, so do the depositing.
  */
@@ -425,53 +549,72 @@ void depotDeposit(CConfigData *config)
 	{
 		int objectToMove = itemProxy.getObjectId(config->depotTrigger[i].itemName);
 		int contNr;
-		int totalQty=0;
-		for (contNr=0;contNr<9;contNr++)
+		int totalQty=countAllItemsOfType(objectToMove);
+		
+		if (config->depotTrigger[i].when>config->depotTrigger[i].remain)
 		{
-			CTibiaContainer *cont = reader.readContainer(contNr);
+			// deposit to depot
+		
 			
-			if (cont->flagOnOff)
-				totalQty+=cont->countItemsOfType(objectToMove);
-			
-			delete cont;
-		}
-
-		int qtyToMove=totalQty-config->depotTrigger[i].remain;
-		for (contNr=0;contNr<8;contNr++)
-		{
-			CTibiaContainer *cont = reader.readContainer(contNr);
-			
-			if (cont->flagOnOff)
+			int qtyToMove=totalQty-config->depotTrigger[i].remain;
+			for (contNr=0;contNr<8;contNr++)
 			{
-				int itemNr;
-				for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)				
+				CTibiaContainer *cont = reader.readContainer(contNr);
+				
+				if (cont->flagOnOff)
 				{
-					CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
-					if (item->objectId==objectToMove)
+					int itemNr;
+					for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)				
 					{
-						int itemQty = item->quantity?item->quantity:1;
-						if (totalQty-itemQty<config->depotTrigger[i].remain) 
+						CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
+						if (item->objectId==objectToMove)
 						{
-							itemQty=totalQty-config->depotTrigger[i].remain;
-						}
-						if (itemQty>0)
-						{		
-							if (!config->depotDropInsteadOfDepositon)
+							int itemQty = item->quantity?item->quantity:1;
+							if (totalQty-itemQty<config->depotTrigger[i].remain) 
 							{
-								// move to the depot chest
-								depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty);
-							} else {
-								// move onto the floor									
-								sender.moveObjectFromContainerToFloor(objectToMove,0x40+contNr,item->pos,self->x,self->y,self->z,itemQty);
+								itemQty=totalQty-config->depotTrigger[i].remain;
 							}
+							if (itemQty>0)
+							{		
+								if (!config->depotDropInsteadOfDepositon)
+								{
+									// move to the depot chest
+									depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty);
+								} else {
+									// move onto the floor									
+									sender.moveObjectFromContainerToFloor(objectToMove,0x40+contNr,item->pos,self->x,self->y,self->z,itemQty);
+								}
+							}
+							totalQty-=itemQty;
 						}
-						totalQty-=itemQty;
 					}
 				}
+				
+				delete cont;
 			}
-			
-			delete cont;
 		}
+		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon)
+		{
+			// pickup from depot
+			int qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove);
+			int movesInIteration=1;
+			while (qtyToPickup>0&&movesInIteration>0)
+			{			
+				movesInIteration=0;
+				for (contNr=0;contNr<8;contNr++)
+				{
+					CTibiaContainer *cont = reader.readContainer(contNr);
+					if (cont->flagOnOff&&cont->itemsInside<cont->size)
+					{
+						int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup);						
+						if (movedQty) movesInIteration++;
+						
+					}
+					delete cont;
+				}
+				qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove);
+			} // while picking up 			
+		} // if pickup from depot
 	}
 		
 	
@@ -1885,7 +2028,7 @@ void CMod_cavebotApp::enableControls()
 
 char *CMod_cavebotApp::getVersion()
 {
-	return "2.13";
+	return "2.14";
 }
 
 
@@ -1919,6 +2062,11 @@ int CMod_cavebotApp::validateConfig(int showAlerts)
 	if (m_configData->attackHpAbove<0||m_configData->attackHpAbove>100)
 	{
 		if (showAlerts) AfxMessageBox("Attack hp above % must be between 0 and 100!");
+		return 0;
+	}
+	if (m_configData->depotCap<0) 
+	{
+		if (showAlerts) AfxMessageBox("Depot capacity must be >= 0!");
 		return 0;
 	}
 
@@ -1966,6 +2114,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"training/bloodHit")) m_configData->bloodHit=atoi(paramValue);
 	if (!strcmp(paramName,"training/activate")) m_configData->trainingActivate=atoi(paramValue);
 	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) m_configData->depotDropInsteadOfDepositon=atoi(paramValue);
+	if (!strcmp(paramName,"depot/depotCap")) m_configData->depotCap=atoi(paramValue);
 
 
 	if (!strcmp(paramName,"general/debug")) m_configData->debug=atoi(paramValue);
@@ -2096,6 +2245,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"training/bloodHit")) sprintf(buf,"%d",m_configData->bloodHit);
 	if (!strcmp(paramName,"training/activate")) sprintf(buf,"%d",m_configData->trainingActivate);
 	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) sprintf(buf,"%d",m_configData->depotDropInsteadOfDepositon);
+	if (!strcmp(paramName,"depot/depotCap")) sprintf(buf,"%d",m_configData->depotCap);
 	
 	
 	return buf;
@@ -2144,6 +2294,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr)
 	case 35: return "attack/ignore";
 	case 36: return "attack/backattackRunes";
 	case 37: return "attack/shareAlienBackattack";
+	case 38: return "depot/depotCap";
 	
 
 	default:

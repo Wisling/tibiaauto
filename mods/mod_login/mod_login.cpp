@@ -169,6 +169,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	int origExp=getSelfExp();
+	long prevCount;
 
 	int shouldBeOpenedContainers=0;
 	if (config->openMain) shouldBeOpenedContainers++;
@@ -181,6 +182,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	if (config->openCont7) shouldBeOpenedContainers++;
 	if (config->openCont8) shouldBeOpenedContainers++;
 
+	HANDLE hSemaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS,true,"TibiaAuto_modLogin_semaphore");
+	if (hSemaphore==NULL)
+	{
+		hSemaphore = CreateSemaphore(NULL,1,1,"TibiaAuto_modLogin_semaphore");
+	}
+
 	while (!toolThreadShouldStop)
 	{					
 		Sleep(100);			
@@ -189,13 +196,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		if (connectionState!=8)
 		{			
-			registerDebug("No connection: entering relogin mode");			
+			registerDebug("No connection: entering relogin mode");						
 
 			if (origExp>getSelfExp()) 
 			{
 				registerDebug("ERROR: exp dropped? was I killed?");
 				Sleep(1000);
 				continue;
+			}
+			if (hSemaphore)
+			{
+				registerDebug("Waiting on global login semaphore");
+			
+				WaitForSingleObject(hSemaphore,INFINITE);
+				registerDebug("Got on semaphore");
 			}
 
 			CRect wndRect;
@@ -221,23 +235,38 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (::IsIconic(hwnd)) 
 				{				
 					registerDebug("ERROR: tibia window is still iconic but it should not be");					
+					ReleaseSemaphore(hSemaphore,1,&prevCount);
 					continue;
 				}
 			}
-			if (toolThreadShouldStop) continue;			
+			if (toolThreadShouldStop) 
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;			
+			}
+
 						
 			
 			POINT prevCursorPos;
 			GetCursorPos(&prevCursorPos);
 						
-			if (ensureForeground(hwnd)) continue;
-			if (toolThreadShouldStop) continue;			
+			if (ensureForeground(hwnd)) 
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;
+			}
+			if (toolThreadShouldStop) 
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;			
+			}
 			
 			if (i>=100) 
 			{
 				// something went wrong :/
 								
 				registerDebug("ERROR: tibia window does not have focus");				
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
 				continue;
 			}
 			
@@ -249,7 +278,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			waitForWindow("",1);
 			
 			// STEP1: show login window
-			if (ensureForeground(hwnd)) continue;
+			if (ensureForeground(hwnd)) 
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;
+			}
 			SetCursorPos(wndRect.left+125,wndRect.bottom-223);
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);				
@@ -257,7 +290,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			waitForWindow("Enter Game");
 			
 			// STEP2: enter user and pass
-			if (ensureForeground(hwnd)) continue;
+			if (ensureForeground(hwnd)) 
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;
+			}
 			sk.SendKeys(config->accountNumber,true);		
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
@@ -270,7 +307,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			waitForWindow("Select Character");
 			
 			// STEP3: select char
-			if (ensureForeground(hwnd)) continue;
+			if (ensureForeground(hwnd)) 
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;
+			}
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+15*(config->charPos-1));
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
@@ -299,6 +340,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					Sleep(100);
 				}
 			}
+			ReleaseSemaphore(hSemaphore,1,&prevCount);
 			registerDebug("Relogin procedure completed.");
 			
 			
@@ -308,7 +350,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// open the main backpack flow
 
 			int openContainersCount=0;
-			for (i=0;i<memConstData.m_memMaxContainers;i++)
+			for (i=0;i<7;i++)
 			{
 				CTibiaContainer *cont = reader.readContainer(i);
 				if (cont->flagOnOff) openContainersCount++;
@@ -375,6 +417,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 		}
 				
+	}
+	if (hSemaphore)
+	{
+		CloseHandle(hSemaphore);
 	}
 	toolThreadShouldStop=0;
 	return 0;

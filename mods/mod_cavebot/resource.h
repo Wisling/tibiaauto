@@ -100,6 +100,8 @@
 #define IDC_BACKATTACK_RUNES            3035
 #define IDC_LOAD_FROM_MINIMAP           3036
 #define IDC_SHARE_ALIEN_BACKATTACK      3037
+#define IDC_DEPOT_CAP                   3038
+#define IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT2 3039
 
 // Next default values for new objects
 // 
@@ -107,7 +109,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3004
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3038
+#define _APS_NEXT_CONTROL_VALUE         3039
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

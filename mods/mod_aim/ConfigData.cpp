@@ -18,8 +18,6 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	onlyCreatures=1;
-	aimPlayersFromBattle=0;
 	RuneType=0;
 }
 
