@@ -1,3 +1,17 @@
+1.13.4: 15.04.2007:
+Defects:
+ Auto attack: fixed rare "TA attacking players" bug
+ Auto login: fixed login sequence when extra popups appear
+
+1.13.3: 08.04.2007:
+Defects:
+ * General: fixed a small code checking bug
+
+1.13.2: 05.04.2007
+Enhancements:
+ * Auto attack: added creature killing priority
+ * General: TA now minimizes to tray
+
 1.13.1: 31.03.2007
 Enhancements:
  * Auto attack: extended depot walker by capacity check

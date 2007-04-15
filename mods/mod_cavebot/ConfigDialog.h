@@ -169,6 +169,8 @@ protected:
 	afx_msg void OnToolAutoattackAddIgnore();
 	afx_msg void OnToolAutoattackRemoveIgnore();
 	afx_msg void OnLoadFromMinimap();
+	afx_msg void OnMonsterAttackUp();
+	afx_msg void OnMonsterAttackDown();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

@@ -120,6 +120,8 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_IGNORE, OnToolAutoattackAddIgnore)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, OnToolAutoattackRemoveIgnore)
 	ON_BN_CLICKED(IDC_LOAD_FROM_MINIMAP, OnLoadFromMinimap)
+	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
+	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -890,4 +892,27 @@ void CConfigDialog::OnLoadFromMinimap()
 	{
 		AfxMessageBox("No points added. Hint: did you use $ta prefix for the points description?");
 	}
+}
+
+void CConfigDialog::OnMonsterAttackUp() 
+{
+	char monsterName[256];
+	int curSel = m_monsterList.GetCurSel();
+	if (curSel<=0) return;
+	m_monsterList.GetText(curSel,monsterName);
+	m_monsterList.DeleteString(curSel);
+	m_monsterList.InsertString(curSel-1,monsterName);
+	m_monsterList.SetCurSel(curSel-1);
+}
+
+void CConfigDialog::OnMonsterAttackDown() 
+{
+	char monsterName[256];
+	int curSel = m_monsterList.GetCurSel();
+	if (curSel==-1) return;
+	if (curSel==m_monsterList.GetCount()-1) return;
+	m_monsterList.GetText(curSel,monsterName);
+	m_monsterList.DeleteString(curSel);
+	m_monsterList.InsertString(curSel+1,monsterName);
+	m_monsterList.SetCurSel(curSel+1);
 }

@@ -1008,6 +1008,22 @@ void shMemInit(CSharedMemory *pMem)
 	pMem->AddDwordValue(varName,0);
 }
 
+
+// return monster priority (order on the monster list)
+// monsters out of the list have top priority (-1)
+int getAttackPriority(CConfigData *config,char *monsterName)
+{
+	int monstListNr;
+	for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++)
+	{									
+		if (!strcmpi(config->monsterList[monstListNr],monsterName))
+		{
+			return monstListNr;
+		}
+	}				
+
+	return -1;
+}
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -1060,10 +1076,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	}
 	firstCreatureAttackTM=0;
 	currentPosTM=0;
-	for (i=0;i<150;i++)
+	for (int crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++)
 	{
-		lastAttackTmCreatureId[i]=lastAttackTmTm[i]=0;
-	}
+		CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
+		lastAttackTmCreatureId[i]=0;
+		lastAttackTmTm[i]=ch->lastAttackTm;		
+		delete ch;
+	}	
 
 	if (config->debug) 
 	{
@@ -1410,6 +1429,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					 *    consumes same slot in less than < 2 seconds.
 					 *    This shouldn't happen, but if it does...
 					 */
+					if (config->debug)
+					{
+						char buf[1024];
+						sprintf(buf,"lastAttackTm change for %d: was %d/%d is %d/%d",lastAttackTmCreatureId[crNr],lastAttackTmTm[crNr],ch->tibiaId,ch->lastAttackTm);
+						registerDebug(buf);
+					}
 					lastAttackTmCreatureId[crNr]=ch->tibiaId;
 					lastAttackTmTm[crNr]=ch->lastAttackTm;
 				}
@@ -1519,9 +1544,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (config->debug) registerDebug("Alien creature for training found");
 						alienCreatureForTrainingFound=1;
 					}									
-					
-					if (shouldAttack&&(!creatureDistList[maxDist]||backAttackThisMonster))
-					{		
+					int attackPrioExisting=1000;
+					int attackPrioNew=getAttackPriority(config,ch->name);
+					if (creatureDistList[maxDist]) {
+						CTibiaCharacter *mon=reader.getCharacterByTibiaId(creatureDistList[maxDist]);
+						if (mon)
+						{
+							attackPrioExisting=getAttackPriority(config,mon->name);
+							delete mon;
+						}
+					}
+					if (config->debug)
+					{
+						char buf[128];
+						sprintf(buf,"shouldAttack=%d, old prio=%d, new prio=%d",shouldAttack,attackPrioExisting,attackPrioNew);
+						registerDebug(buf);
+					}
+					if (shouldAttack&&attackPrioNew<attackPrioExisting)
+					{					
 						char buf[128];
 						sprintf(buf,"should attack creature %s/%d",ch->name,backAttackThisMonster);
 						if (config->debug) registerDebug(buf);
@@ -1536,7 +1576,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							creatureAttackNewDist=maxDist;		
 						
 					} else {	
-						// I'm here means: don't have to attack OR dist slot already busy
+						// I'm here means: don't have to attack OR dist slot for attack 
+						// already busy
 						if (!shouldAttack)
 						{
 							if (!creatureFoundOnList&&self->tibiaId!=ch->tibiaId&&self->z==ch->z)
