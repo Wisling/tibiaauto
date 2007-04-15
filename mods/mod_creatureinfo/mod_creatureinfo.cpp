@@ -1359,7 +1359,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	reader.setMainWindowText("Tibia");
-	reader.setMainTrayText(self->name);
+	reader.setMainTrayText("<Running Tibia Auto>"); // back to the default setting
 	delete self;
 
 	//T4: Tool has been disabled, so clean all mess

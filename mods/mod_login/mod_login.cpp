@@ -261,14 +261,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				continue;			
 			}
 			
-			if (i>=100) 
-			{
-				// something went wrong :/
-								
-				registerDebug("ERROR: tibia window does not have focus");				
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
-				continue;
-			}
+		
 			
 			::GetWindowRect(hwnd,&wndRect);		
 			
