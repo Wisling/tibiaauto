@@ -73,11 +73,11 @@ BEGIN
     CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,7,361,539,14
     EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,49,98,14,ES_AUTOHSCROLL
-    LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,161,20,108,43,LBS_SORT | 
+    LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,161,20,81,43,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,125,49,19,14
     PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,125,20,19,14
-    LTEXT           "Monsters to attack:",IDC_STATIC,162,13,106,8
+    LTEXT           "Monsters to attack:",IDC_STATIC,162,13,80,8
     CONTROL         "Auto follow mode",IDC_TOOL_AUTOATTACK_AUTOFOLLOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,17,122,69,10
     EDITTEXT        IDC_TOOL_AUTOATTACK_CURX,17,285,25,14,ES_AUTOHSCROLL | 
@@ -217,6 +217,10 @@ BEGIN
     LTEXT           "Go to depot when cap below:",IDC_STATIC,416,94,94,11,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_DEPOT_CAP,513,91,23,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Down",IDC_MONSTER_ATTACK_DOWN,248,49,22,14
+    PUSHBUTTON      "Up",IDC_MONSTER_ATTACK_UP,248,20,22,14
+    LTEXT           "New monsters for attack are selected in the order top-first. Creatures out of the list always have priority.",
+                    IDC_STATIC,17,15,106,32
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
@@ -243,7 +247,8 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 546
         VERTGUIDE, 17
-        VERTGUIDE, 144
+        VERTGUIDE, 242
+        VERTGUIDE, 270
         VERTGUIDE, 275
         VERTGUIDE, 281
         VERTGUIDE, 289
@@ -256,8 +261,6 @@ BEGIN
         VERTGUIDE, 536
         TOPMARGIN, 7
         BOTTOMMARGIN, 395
-        HORZGUIDE, 44
-        HORZGUIDE, 60
         HORZGUIDE, 94
         HORZGUIDE, 105
         HORZGUIDE, 109
