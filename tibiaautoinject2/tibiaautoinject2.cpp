@@ -1299,13 +1299,7 @@ void testFun1(int p1, int p2, int p3, int p4, int p5)
 	sprintf(buf,"testFun1(%d,%d,%d,%d,%d)",p1,p2,p3,p4,p5);
 	::MessageBox(0,buf,buf,0);	
 	//fun(p1,p2,p3,p4,p5,p6,p7);
-
 }
-
-void funnyFun(int p1)
-{
-}
-
 
 
 void InitialisePlayerInfoHack()
@@ -1317,7 +1311,14 @@ void InitialisePlayerInfoHack()
 	int targetFun;
 	unsigned int targetAddr;
 
-	// test
+	// test	
+	/*
+	unsigned char instr=0xE8;
+	int addr2=0x496c30;
+	WriteProcessMemory(dwHandle, (void *)addr2, &instr,   sizeof(char), NULL);		
+
+	trapFun(dwHandle,0x496c30+1,(unsigned int)testFun1);
+	*/
 	//trapFun(dwHandle,0x4314FB+1,(unsigned int)testFun1); // 7.92
 	//trapFun(dwHandle,0x447353+1,(unsigned int)testFun1); // 7.92
 	//trapFun(dwHandle,0x4bf122+1,(unsigned int)testFun1); // 7.92	

@@ -149,10 +149,18 @@ BOOL CEnterCode::OnInitDialog()
 	testsum=randTab[0]*randTab[0]*11+randTab[1]*121+randTab[2]*randTab[1]*27+randTab[3]*23+randTab[4]*15+randTab[5]*randTab[6]*randTab[7]*11-randTab[3]*(randTab[5]+randTab[4]);
 	
 
-	int rSum=1;
-	for (i=0;i<8;i++) rSum=(rSum*randTab[i]+13)%65536;				
 	
-	sprintf(buf,"%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x",randTab[0]+17,randTab[1]+13,randTab[2]+13,randTab[3]+18,randTab[4]+14,randTab[5]+19,randTab[6]+5,randTab[7]+31,rSum);
+	int rSum=1;
+	for (i=0;i<8;i++) 
+	{		
+		rSum=(rSum*randTab[i]+13)%65536;				
+		if (rSum<0) rSum+=65536;
+	}
+	
+
+	
+	
+	sprintf(buf,"%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x",randTab[0]+17,randTab[1]+13,randTab[2]+13,randTab[3]+18,randTab[4]+14,randTab[5]+19,randTab[6]+5,randTab[7]+31,rSum);	
 	m_runtimeId.SetWindowText(buf);		
 
 	FILE *f=fopen("tacode.txt","rt");
@@ -208,11 +216,13 @@ int CEnterCode::auth()
 	if (strcmp(buf2,buf3))
 	{
 		int i,l1=strlen(buf2),l2=strlen(buf3);
+		//AfxMessageBox(buf2);
+		//AfxMessageBox(buf3);
 		for (i=0;i<l1;i++) buf2[i]=rand();
 		for (i=0;i<l1;i++) buf3[i]=rand();
 		return 0;
 	} else {
-		int i,l1=strlen(buf2),l2=strlen(buf3);
+		int i,l1=strlen(buf2),l2=strlen(buf3);		
 		for (i=0;i<l1;i++) buf2[i]=rand();
 		for (i=0;i<l1;i++) buf3[i]=rand();
 				

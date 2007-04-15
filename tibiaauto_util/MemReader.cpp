@@ -662,7 +662,14 @@ void CMemReader::setMainWindowText(char *text)
 
 void CMemReader::setMainTrayText(char *text)
 {
-
+	NOTIFYICONDATA data;
+	data.cbSize=sizeof(NOTIFYICONDATA);
+	
+	data.hWnd=AfxGetMainWnd()->GetSafeHwnd();
+	data.uID=1;			
+	sprintf(data.szTip,"%s",text);
+	data.uFlags=NIF_TIP;
+	Shell_NotifyIcon(NIM_MODIFY,&data);
 }
 
 int CMemReader::getPlayerModeAttackType()

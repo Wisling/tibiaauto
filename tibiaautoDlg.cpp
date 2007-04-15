@@ -151,6 +151,8 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_PYTHON_SCRIPTS, OnPythonScripts)
 	ON_BN_CLICKED(IDC_OPTIONS, OnOptions)
 	ON_BN_CLICKED(IDC_TOOL_LOGIN, OnToolLogin)
+	ON_WM_SHOWWINDOW()
+	ON_WM_SIZE()	
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -298,7 +300,20 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 
 	refreshAds();
-	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads
+
+	// set shell tray
+	NOTIFYICONDATA data;
+	data.cbSize=sizeof(NOTIFYICONDATA);
+	data.hWnd=GetSafeHwnd();
+	data.uID=1;		
+	data.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+	snprintf(data.szTip,60,"%s","<Running Tibia Auto>");
+	data.uCallbackMessage=WM_APP+1;
+	data.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
+	Shell_NotifyIcon(NIM_ADD,&data);
+	
+	
+	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
 		
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -389,6 +404,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	{
 		refreshAds();
 	}
+
 	
 	
 	CDialog::OnTimer(nIDEvent);
@@ -833,12 +849,18 @@ void CTibiaautoDlg::OnToolSpellcaster()
 void CTibiaautoDlg::OnExit() 
 {
 	DisconnectNamedPipe(hPipe);
+	NOTIFYICONDATA data;
+	data.cbSize=sizeof(NOTIFYICONDATA);
+	data.hWnd=GetSafeHwnd();
+	data.uID=1;				
+	data.uFlags=0;
+	Shell_NotifyIcon(NIM_DELETE,&data);
 	ExitProcess(0);	
 }
 
 void CTibiaautoDlg::OnClose() 
 {
-	ShowWindow(SW_MINIMIZE);
+	ShowWindow(SW_HIDE);
 }
 
 void CTibiaautoDlg::OnToolAutoaim() 
@@ -856,7 +878,7 @@ BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
 	int eventStop=0;
 	if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_ESCAPE)
 	{
-		ShowWindow(SW_MINIMIZE);
+		ShowWindow(SW_HIDE);
 		eventStop=1;
 	} 
 	if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_RETURN)
@@ -1007,10 +1029,41 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.13.1",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.13.4",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
 {
 	m_moduleLogin->showConfigDialog();		
+}
+
+void CTibiaautoDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
+{
+	CDialog::OnShowWindow(bShow, nStatus);		
+}
+
+BOOL CTibiaautoDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
+{		
+	return CDialog::OnCommand(wParam, lParam);
+}
+
+void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy) 
+{
+	CDialog::OnSize(nType, cx, cy);
+}
+
+LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+{
+	if (message==WM_APP+1&&lParam==WM_LBUTTONDOWN)
+	{
+		if (IsWindowVisible())
+		{
+			ShowWindow(SW_HIDE);
+		} else {
+			ShowWindow(SW_SHOW);
+			SetForegroundWindow();			
+		}
+		
+	}
+	return CDialog::WindowProc(message, wParam, lParam);	
 }

@@ -1,20 +1,31 @@
 <configfile>
 <module moduleName="mod_looter"><config><mode><cont1 value="0"/><cont2 value="0"/><cont3 value="0"/><cont4 value="0"/><cont5 value="0"/><cont6 value="0"/><cont7 value="0"/><cont8 value="0"/><cont9 value="0"/><cont10 value="0"/></mode><loot><worms value="0"/><gp value="0"/><food value="0"/><custom value="0"/></loot><other><autoOpen value="0"/></other></config></module>
-<module moduleName="mod_light"/>
+<module moduleName="mod_light"><config><lightPower value="100"/><lightColor value="209"/></config></module>
 <module moduleName="mod_playerinfo"/>
-<module moduleName="mod_uh"><config><other><sleepAfter value="2000"/></other><self><fallback value="1"/><hotkey value="0"/><runetype value="0"/><borderline value="1000"/></self><grp><borderline value="75"/><fallback value="1"/><runetype value="0"/></grp></config></module>
+<module moduleName="mod_uh"><config><other><sleepAfter value="2000"/></other><self><fallback value="1"/><hotkey value="0"/><runetype value="0"/><borderline value="0"/></self><grp><borderline value="0"/><fallback value="1"/><runetype value="0"/></grp></config></module>
 <module moduleName="mod_grouping"/>
-<module moduleName="mod_restack"><config><ammo><type value="0"/><at value="0"/><to value="0"/></ammo><throwable><type value="0"/><at value="0"/><to value="0"/></throwable><pickup><spears value="0"/><place><UL value="0"/><UC value="0"/><UR value="0"/><CL value="0"/><CR value="0"/><BL value="0"/><BC value="0"/><BR value="0"/></place></pickup></config></module>
+<module moduleName="mod_restack"><config><ammo><type value="0"/><at value="0"/><to value="0"/></ammo><throwable><type value="0"/><at value="0"/><to value="0"/><moveCovering value="1"/></throwable><restackToRight value=""/><pickup><spears value="0"/><place><UL value="0"/><UC value="0"/><UR value="0"/><CL value="0"/><CR value="0"/><BL value="0"/><BC value="0"/><BR value="0"/></place><toHand value="0"/></pickup></config></module>
 <module moduleName="mod_fluid"><config><hotkey><hp value="0"/><mana value="0"/></hotkey><drink><hp value="0"/><mana value="0"/><hpBelow value="0"/><manaBelow value="0"/></drink><other><dropEmpty value="1"/><sleepAfter value="1000"/></other></config></module>
-<module moduleName="mod_aim"><config><onlyCreatures value="1"/></config></module>
-<module moduleName="mod_fisher"><config><other><fishOnlyWhenCap value="1"/></other><move><fromHandToCont value="1"/></move></config></module>
-<module moduleName="mod_spellcaster"><config><hpBelow value="0"/><manaAbove value="0"/><spell value=""/></config></module>
-<module moduleName="mod_trademon"/>
+<module moduleName="mod_aim"><config><RuneType value="0"/></config></module>
+<module moduleName="mod_fisher"><config><other><fishCap value=""/></other><move><fromHandToCont value="1"/></move></config></module>
+<module moduleName="mod_spellcaster"><config><mana value="0"/><manaMana value="0"/><manaSpell value=""/><life value="0"/><lifeHp value="0"/><lifeSpell value=""/><lifeSpellMana value="0"/><summon value="0"/><summonLessThan value="0"/><summonName value=""/><summonMana value="0"/></config></module>
+<module moduleName="mod_trademon"><config><tradeTalker value="0"/><message value=""/><channel value="1"/><channelInterval value="123"/><yell value="0"/><yellInterval value="33"/><say value="0"/><sayInterval value="2"/><tradeMon value="1"/></config></module>
 <module moduleName="mod_memdebug"/>
 <module moduleName="mod_showmap"/>
 <module moduleName="mod_monstershow"/>
 <module moduleName="mod_itemconfig"/>
-<module moduleName="mod_autogo"><config><act><x value="0"/><y value="0"/><z value="0"/></act><runaway><x value="0"/><y value="0"/><z value="0"/></runaway><other><action value="1"/><trigger value="1"/></other></config></module>
-<module moduleName="mod_cavebot"><config><loot><item><gp value="0"/><custom value="0"/><worm value="0"/><food value=""/></item><other><inbag value="1"/><capacityLimit value="50"/></other></loot><walker><other><selectMode value="0"/><mapUsed value="0"/><goUpMethod value="0"/></other></walker><attack><follow value="1"/><mode value="0"/><suspendOnEnemey value="1"/><monster value="asdf"/><monster value="ewqr"/><monster value="ewqr"/><monster value="zxcv"/><suspendOnNoMove value="1"/></attack></config></module>
+<module moduleName="mod_autogo"><config><act><x value="0"/><y value="0"/><z value="0"/><direction value="0"/></act><runaway><x value="0"/><y value="0"/><z value="0"/></runaway><trigger value="0"/><action><BattleList value="0"/><Sign value="0"/><Message value="0"/><HpLoss value="0"/><HpBelow value="0"/><Move value="0"/><SoulPoint value="0"/><Blank value="0"/><Capacity value="0"/><NoSpace value=""/><OutOf value="0"/></action><options><BattleList value="0"/><Sign value="0"/><Message value="0"/><HpBelow value="50"/><SoulPoint value="1"/><Blank value="1"/><Capacity value="1"/><OutOf value="0"/></options><sound value="0"/></config></module>
+<module moduleName="mod_cavebot"><config><walker><other><selectMode value="0"/><mapUsed value="0"/><standAfterWaypointReached value="2"/></other></walker><general><debug value="1"/></general><training><weaponTrain value="3057"/><weaponFight value="3057"/><fightWhenSurrounded value="1"/><fightWhenAlien value="1"/><bloodHit value="1"/><activate value="0"/></training><loot><item><gp value="0"/><custom value="0"/><worm value="0"/><food value="0"/></item><stats><gather value="1"/></stats><other><inbag value="1"/><capacityLimit value="50"/><eatFromCorpse value="0"/><dropNotLooted value="0"/><lootFromFloor value="0"/></other></loot><attack><follow value="1"/><mode value="0"/><suspendOnEnemey value="1"/><monster value="asdf1"/><monster value="asdf2"/><monster value="asdf5"/><monster value="asdf3"/><monster value="asdf4"/><suspendOnNoMove value="1"/><range value="5"/><stick value="0"/><unreachableAfter value="30"/><suspendAfterUnreachable value="15"/><attackOnlyAttacking value="1"/><forceAttackAfterAttack value="1"/><hpAbove value="0"/><backattackRunes value="0"/><shareAlienBackattack value="0"/></attack><depot><depotDropInsteadOfDepositon value="0"/><depotCap value="0"/></depot></config></module>
+<module moduleName="mod_runemaker"><config><spell value=""/><mana value="0"/><manaLimit value="500"/><soulPoints value="100"/><makeTwo value="0"/><useArrow value="0"/><premium value="0"/><maxUse value="0"/><useBackpack value="0"/></config></module>
+<module moduleName="mod_eater"/>
+<module moduleName="mod_creatureinfo"><config><player><active value="1"/><first value="&lt;voc>&lt;level> &lt;hp>{/&lt;maxhp>}"/><second value="{&lt;guildrank> of }{&lt;guildname>}{ (&lt;guilddescription>)}"/></player><monster><active value="1"/><first value="&lt;type> &lt;hp>{/&lt;maxhp>}"/><second value="{Exp &lt;exp>}"/><uniqueMonsterNames value="1"/></monster><allFloorInfo value="0"/><addRequest value="0"/><self><active value="1"/><first value="&lt;voc>&lt;level> Hp:&lt;hp>{/&lt;maxhp>} Mana:&lt;mana>/&lt;maxmana>"/><second value="Exp:&lt;exp> Mlvl:&lt;magiclevel>(&lt;magiclevel%>)"/><window value="Tibia"/><tray value="&lt;name>"/></self><area><collectStats value="1"/><showCreaturesInArea value="0"/><rangeXY value="50"/><rangeZ value="0"/></area></config></module>
+<module moduleName="mod_responder"/>
+<module moduleName="mod_maphack"><config><reveal><noFish value="1"/><cName value="1"/></reveal></config></module>
+<module moduleName="mod_team"/>
+<module moduleName="mod_antylogout"/>
+<module moduleName="mod_fps"><config><activeVal value="40.00"/><inactive value="0"/><inactiveVal value="10.00"/><minimized value="0"/><minimizedVal value="1.00"/></config></module>
+<module moduleName="mod_login"><config><open><main value="0"/><cont1 value="0"/><cont2 value="0"/><cont3 value="0"/><cont4 value="0"/><cont5 value="0"/><cont6 value="0"/><cont7 value="0"/><cont8 value="0"/></open></config></module>
+<module moduleName="Script: Anty logout"/>
+<module moduleName="Script: Auto fisher"><config><fishOnlyWhenCap value=""/><moveFromHand value=""/></config></module>
 
 </configfile>
