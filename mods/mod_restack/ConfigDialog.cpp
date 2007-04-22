@@ -30,6 +30,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_TOOL_AMMORESTACK_PICKUP_CC, m_pickupCC);
+	DDX_Control(pDX, IDC_PERIOD_TO, m_periodTo);
+	DDX_Control(pDX, IDC_PERIOD_FROM, m_periodFrom);
 	DDX_Control(pDX, IDC_PICKUP_TO_HAND, m_pickupToHand);
 	DDX_Control(pDX, IDC_TOOL_RESTACKTORIGHT, m_restackToRight);
 	DDX_Control(pDX, IDC_TOOL_ARMMORESTACK_PICKUPCOVERED, m_moveCovering);
@@ -96,6 +99,7 @@ void CConfigDialog::disableControls()
 	m_pickupUL.EnableWindow(false);
 	m_pickupUC.EnableWindow(false);
 	m_pickupCR.EnableWindow(false);
+	m_pickupCC.EnableWindow(false);
 	m_pickupCL.EnableWindow(false);
 	m_pickupBR.EnableWindow(false);
 	m_pickupBL.EnableWindow(false);
@@ -110,6 +114,8 @@ void CConfigDialog::disableControls()
 	m_moveCovering.EnableWindow(false);
 	m_restackToRight.EnableWindow(false);
 	m_pickupToHand.EnableWindow(false);
+	m_periodFrom.EnableWindow(false);
+	m_periodTo.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -118,6 +124,7 @@ void CConfigDialog::enableControls()
 	m_pickupUL.EnableWindow(true);
 	m_pickupUC.EnableWindow(true);
 	m_pickupCR.EnableWindow(true);
+	m_pickupCC.EnableWindow(true);
 	m_pickupCL.EnableWindow(true);
 	m_pickupBR.EnableWindow(true);
 	m_pickupBL.EnableWindow(true);
@@ -132,6 +139,8 @@ void CConfigDialog::enableControls()
 	m_moveCovering.EnableWindow(true);
 	m_restackToRight.EnableWindow(true);
 	m_pickupToHand.EnableWindow(true);
+	m_periodFrom.EnableWindow(true);
+	m_periodTo.EnableWindow(true);
 }
 
 
@@ -144,6 +153,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_pickupUL.SetCheck(configData->pickupUL);
 	m_pickupUC.SetCheck(configData->pickupUC);
 	m_pickupCR.SetCheck(configData->pickupCR);
+	m_pickupCC.SetCheck(configData->pickupCC);
 	m_pickupCL.SetCheck(configData->pickupCL);
 	m_pickupBR.SetCheck(configData->pickupBR);
 	m_pickupBL.SetCheck(configData->pickupBL);
@@ -158,6 +168,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_moveCovering.SetCheck(configData->moveCovering);
 	m_restackToRight.SetCheck(configData->restackToRight);
 	m_pickupToHand.SetCheck(configData->pickupToHand);
+	sprintf(buf,"%d",configData->periodFrom);m_periodFrom.SetWindowText(buf);
+	sprintf(buf,"%d",configData->periodTo);m_periodTo.SetWindowText(buf);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -170,6 +182,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->pickupUL=m_pickupUL.GetCheck();
 	newConfigData->pickupUC=m_pickupUC.GetCheck();
 	newConfigData->pickupCR=m_pickupCR.GetCheck();
+	newConfigData->pickupCC=m_pickupCC.GetCheck();
 	newConfigData->pickupCL=m_pickupCL.GetCheck();
 	newConfigData->pickupBR=m_pickupBR.GetCheck();
 	newConfigData->pickupBL=m_pickupBL.GetCheck();
@@ -192,6 +205,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->moveCovering=m_moveCovering.GetCheck();
 	newConfigData->restackToRight=m_restackToRight.GetCheck();
 	newConfigData->pickupToHand=m_pickupToHand.GetCheck();
+	m_periodFrom.GetWindowText(buf,127);newConfigData->periodFrom=atoi(buf);
+	m_periodTo.GetWindowText(buf,127);newConfigData->periodTo=atoi(buf);
 	
 
 	return newConfigData;

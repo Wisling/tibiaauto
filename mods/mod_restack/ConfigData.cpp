@@ -29,6 +29,7 @@ CConfigData::CConfigData()
 	pickupUC=0;
 	pickupUR=0;	
 	pickupCL=0;
+	pickupCC=0;
 	pickupCR=0;
 	pickupBL=0;
 	pickupBC=0;
@@ -36,6 +37,7 @@ CConfigData::CConfigData()
 	moveCovering=1;
 	restackToRight=0;
 	pickupToHand=0;
+	periodFrom=periodTo=1;
 }
 
 CConfigData::~CConfigData()

@@ -23,23 +23,38 @@ public:
 	int optionsBattleList;
 	int optionsSign;
 	int optionsMessage;
+	int optionsHpAbove;
 	int optionsHpBelow;
-	int optionsSoulPoint;
+	int optionsManaAbove;
+	int optionsManaBelow;
+	int optionsSoulPointBelow;
+	int optionsSoulPointAbove;
 	int optionsBlank;
 	int optionsCapacity;
-	int optionsOutOf;
+	int optionsOutOfCustomItem;
+	int optionsRunawayReached;
 
 	int action;
-	int actionBattleList;
+	int actionBattleListGM;
+	int actionBattleListList;
+	int actionBattleListPlayer;
+	int actionBattleListMonster;
 	int actionSign;
 	int actionMessage;
 	int actionMove;
 	int actionHpLoss;
+	int actionHpAbove;
 	int actionHpBelow;
-	int actionSoulPoint;
+	int actionManaAbove;
+	int actionManaBelow;
+	int actionSoulPointBelow;
+	int actionSoulPointAbove;
 	int actionBlank;
 	int actionCapacity;
-	int actionOutOf;
+	int actionOutOfFood;
+	int actionOutOfCustom;
+	int actionOutOfSpace;
+	int actionRunawayReached;
 
 	int sound;
 
