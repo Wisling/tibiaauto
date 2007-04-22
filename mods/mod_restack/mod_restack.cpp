@@ -57,6 +57,11 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
+int getNewPeriod(CConfigData *config)
+{
+	return ((rand()%(config->periodTo-config->periodFrom+1))+config->periodFrom)*2;	
+}
+
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
@@ -67,16 +72,26 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
+	int periodRemaining=getNewPeriod(config);
+
+	
 
 	while (!toolThreadShouldStop)
 	{					
-		Sleep(100);	
+		Sleep(500);	
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		CTibiaCharacter *self = reader.readSelfCharacter();
 				
 		CTibiaItem *item;
 		CUIntArray itemsAccepted;		
+
+		if (periodRemaining)
+		{			
+			periodRemaining--;
+		} else {
+			periodRemaining=getNewPeriod(config);
+		}
 
 		// check ammo to restack
 		int ammoItemId=config->ammoType;		
@@ -157,34 +172,35 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 		delete item;
-
+		
 		// pickup throwable (spears, small stones)
-		if (config->pickupSpears||config->pickupToHand)
+		if ((config->pickupSpears||config->pickupToHand)&&!periodRemaining)
 		{
-			int offsetX=0;
-			int offsetY=0;
+			int offsetX=-2;
+			int offsetY=-2;
 			if (config->pickupUL&&isItemOnTop(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
 			if (config->pickupUC&&isItemOnTop(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
 			if (config->pickupUR&&isItemOnTop(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
 			if (config->pickupCL&&isItemOnTop(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
+			if (config->pickupCC&&isItemOnTop(0,0,throwableItemId)) offsetX=0,offsetY=0;
 			if (config->pickupCR&&isItemOnTop(1,0,throwableItemId)) offsetX=1,offsetY=0;
 			if (config->pickupBL&&isItemOnTop(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
 			if (config->pickupBC&&isItemOnTop(0,1,throwableItemId)) offsetX=0,offsetY=1;
 			if (config->pickupBR&&isItemOnTop(1,1,throwableItemId)) offsetX=1,offsetY=1;
 			
 			
-			if ((offsetX||offsetY)&&config->pickupSpears)
+			if ((offsetX!=-2||offsetY!=-2)&&config->pickupSpears)
 			{
 				int contNr;						
 				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size)
-					{																	
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,1);
+					{							
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,100);
 						Sleep(500);
 						// reset offsetXY to avoid pickup up same item to hand
-						offsetX=offsetY=0;
+						offsetX=offsetY=-2;
 						
 						delete cont;
 						break;
@@ -197,52 +213,71 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{				
 				CTibiaItem *itemLeftHand=reader.readItem(memConstData.m_memAddressLeftHand);
 				CTibiaItem *itemRightHand=reader.readItem(memConstData.m_memAddressRightHand);
-				if ((itemLeftHand->objectId==throwableItemId||(itemLeftHand->objectId==0&&itemRightHand->objectId!=throwableItemId))&&(offsetX||offsetY))
+				if ((itemLeftHand->objectId==throwableItemId||(itemLeftHand->objectId==0&&itemRightHand->objectId!=throwableItemId))&&(offsetX!=-2||offsetY!=-2))
 				{
 					CTibiaTile *itemHandTile = reader.getTibiaTile(itemLeftHand->objectId);
 					if (itemLeftHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to left hand
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,1);
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,100);
 						Sleep(500);
-						offsetX=offsetY=0;
+						offsetX=offsetY=-2;
 					}
 				}
-				if ((itemRightHand->objectId==throwableItemId||(itemRightHand->objectId==0&&itemLeftHand->objectId!=throwableItemId))&&(offsetX||offsetY))
+				if ((itemRightHand->objectId==throwableItemId||(itemRightHand->objectId==0&&itemLeftHand->objectId!=throwableItemId))&&(offsetX!=-2||offsetY!=-2))
 				{
 					CTibiaTile *itemHandTile = reader.getTibiaTile(itemRightHand->objectId);
 					if (itemRightHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to left hand
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,1);
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,100);
 						Sleep(500);
-						offsetX=offsetY=0;
+						offsetX=offsetY=-2;
 					}
 				}												
 
 				
 			}
-		}
+		} // if ((config->pickupSpears||config->pickupToHand)&&!periodRemaining)
 
 		// if throwable is covered by other items - try to take it out
-		if (config->moveCovering)
+		if (config->moveCovering&&!periodRemaining)
 		{
-			int offsetX=0,offsetY=0;
+			int offsetX=-2,offsetY=-2;
 
 			if (config->pickupUL&&isItemCovered(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
 			if (config->pickupUC&&isItemCovered(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
 			if (config->pickupUR&&isItemCovered(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
 			if (config->pickupCL&&isItemCovered(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
+			if (config->pickupCC&&isItemCovered(0,0,throwableItemId)) offsetX=0,offsetY=0;
 			if (config->pickupCR&&isItemCovered(1,0,throwableItemId)) offsetX=1,offsetY=0;
 			if (config->pickupBL&&isItemCovered(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
 			if (config->pickupBC&&isItemCovered(0,1,throwableItemId)) offsetX=0,offsetY=1;
 			if (config->pickupBR&&isItemCovered(1,1,throwableItemId)) offsetX=1,offsetY=1;			
 
-			if (offsetX||offsetY)
+			if (offsetX!=-2||offsetY!=-2)
 			{
 				int objectId=itemOnTopCode(offsetX,offsetY);
 				int qty=itemOnTopQty(offsetX,offsetY);
-				sender.moveObjectFromFloorToFloor(objectId,self->x+offsetX,self->y+offsetY,self->z,self->x,self->y,self->z,qty);
+				if (offsetX||offsetY)
+				{
+					sender.moveObjectFromFloorToFloor(objectId,self->x+offsetX,self->y+offsetY,self->z,self->x,self->y,self->z,qty);
+				} else {
+					// special handling of moving covered items under you
+					int moveToX=-2,moveToY=-2;
+					if (config->pickupUL) moveToX=-1,moveToY=-1;
+					if (config->pickupUC) moveToX=0,moveToY=-1;
+					if (config->pickupUR) moveToX=1,moveToY=-1;
+					if (config->pickupCL) moveToX=-1,moveToY=0;					
+					if (config->pickupCR) moveToX=1,moveToY=0;
+					if (config->pickupBL) moveToX=-1,moveToY=1;
+					if (config->pickupBC) moveToX=0,moveToY=1;
+					if (config->pickupBR) moveToX=1,moveToY=1;
+					if (moveToX!=-2||moveToY!=-2)
+					{
+						sender.moveObjectFromFloorToFloor(objectId,self->x,self->y,self->z,self->x+moveToX,self->y+moveToY,self->z,qty);
+					}
+				}
 				Sleep(500);
 			}
 		}
@@ -368,7 +403,7 @@ void CMod_restackApp::enableControls()
 
 char *CMod_restackApp::getVersion()
 {
-	return "2.4";
+	return "2.5";
 }
 
 
@@ -404,6 +439,11 @@ int CMod_restackApp::validateConfig(int showAlerts)
 		if (showAlerts) AfxMessageBox("throwable to must be >= throwable at!");
 		return 0;
 	}
+	if (m_configData->periodTo<m_configData->periodFrom)
+	{
+		if (showAlerts) AfxMessageBox("period from must be <= period to!");
+		return 0;
+	}
 	return 1;
 }
 
@@ -425,6 +465,7 @@ void CMod_restackApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"pickup/place/UC")) m_configData->pickupUC=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/place/UR")) m_configData->pickupUR=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/place/CL")) m_configData->pickupCL=atoi(paramValue);
+	if (!strcmp(paramName,"pickup/place/CC")) m_configData->pickupCC=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/place/CR")) m_configData->pickupCR=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/place/BL")) m_configData->pickupBL=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/place/BC")) m_configData->pickupBC=atoi(paramValue);
@@ -432,6 +473,8 @@ void CMod_restackApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"throwable/moveCovering")) m_configData->moveCovering=atoi(paramValue);
 	if (!strcmp(paramName,"ammo/restackToRight")) m_configData->restackToRight=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/toHand")) m_configData->pickupToHand=atoi(paramValue);
+	if (!strcmp(paramName,"pickup/periodFrom")) m_configData->periodFrom=atoi(paramValue);
+	if (!strcmp(paramName,"pickup/periodTo")) m_configData->periodTo=atoi(paramValue);
 
 }
 
@@ -451,6 +494,7 @@ char *CMod_restackApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"pickup/place/UC")) sprintf(buf,"%d",m_configData->pickupUC);
 	if (!strcmp(paramName,"pickup/place/UR")) sprintf(buf,"%d",m_configData->pickupUR);
 	if (!strcmp(paramName,"pickup/place/CL")) sprintf(buf,"%d",m_configData->pickupCL);
+	if (!strcmp(paramName,"pickup/place/CC")) sprintf(buf,"%d",m_configData->pickupCC);
 	if (!strcmp(paramName,"pickup/place/CR")) sprintf(buf,"%d",m_configData->pickupCR);
 	if (!strcmp(paramName,"pickup/place/BL")) sprintf(buf,"%d",m_configData->pickupBL);
 	if (!strcmp(paramName,"pickup/place/BC")) sprintf(buf,"%d",m_configData->pickupBC);
@@ -458,6 +502,8 @@ char *CMod_restackApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"throwable/moveCovering")) sprintf(buf,"%d",m_configData->moveCovering);
 	if (!strcmp(paramName,"ammo/restackToRight")) sprintf(buf,"%d",m_configData->restackToRight);
 	if (!strcmp(paramName,"pickup/toHand")) sprintf(buf,"%d",m_configData->pickupToHand);
+	if (!strcmp(paramName,"pickup/periodFrom")) sprintf(buf,"%d",m_configData->periodFrom);
+	if (!strcmp(paramName,"pickup/periodTo")) sprintf(buf,"%d",m_configData->periodTo);
 	return buf;
 }
 
@@ -483,6 +529,9 @@ char *CMod_restackApp::getConfigParamName(int nr)
 	case 15: return "throwable/moveCovering";
 	case 16: return "restackToRight";
 	case 17: return "pickup/toHand";
+	case 18: return "pickup/place/CC";
+	case 19: return "pickup/periodFrom";
+	case 20: return "pickup/periodTo";
 	default:
 		return NULL;
 	}

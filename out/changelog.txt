@@ -1,3 +1,12 @@
+1.13.5, ???
+Defects:
+ Auto attack: fixed depot walker to take < cap instead of <=
+
+Small enhancements:
+ * Ammo restack: pickup throwable takes all objects instead of only one
+ * Ammo restack: pickup throwable picks up also from under the player
+ * Ammo restack: pickup throwable can now pickup every X seconds instead of immediately
+
 1.13.4: 15.04.2007:
 Defects:
  Auto attack: fixed rare "TA attacking players" bug

@@ -319,13 +319,7 @@ int triggerOutOf(int options){
 					delete Item;
 				}
 			}
-			if (options&OUTOF_WORMS && !(ret&OUTOF_WORMS)){
-				Item = CModuleUtil::lookupItem(pos,&itemArray);
-				if (Item != NULL){
-					ret = ret|OUTOF_WORMS;
-					delete Item;
-				}
-			}
+		
 			if (options&OUTOF_SPACE && !(ret&OUTOF_SPACE)){
 				if (container->itemsInside < container->size)
 					ret = ret|OUTOF_SPACE;
@@ -364,7 +358,7 @@ void alarmSound(int alarmId){
 		case TRIGGER_MOVE:		sprintf(wavFile,"%s\\mods\\sound\\move.wav",installPath);break;
 		case TRIGGER_HPLOSS:	sprintf(wavFile,"%s\\mods\\sound\\hploss.wav",installPath);break;
 		case TRIGGER_HPBELOW:	sprintf(wavFile,"%s\\mods\\sound\\hpbelow.wav",installPath);break;
-		case TRIGGER_SOULPOINT:	sprintf(wavFile,"%s\\mods\\sound\\soulpoint.wav",installPath);break;
+		case TRIGGER_SOULPOINT_BELOW:	sprintf(wavFile,"%s\\mods\\sound\\soulpointbelow.wav",installPath);break;
 		case TRIGGER_BLANK:		sprintf(wavFile,"%s\\mods\\sound\\blank.wav",installPath);break;
 		case TRIGGER_CAPACITY:	sprintf(wavFile,"%s\\mods\\sound\\capacity.wav",installPath);break;
 		case TRIGGER_OUTOF:		sprintf(wavFile,"%s\\mods\\sound\\outof.wav",installPath);break;
@@ -391,7 +385,7 @@ char *alarmStatus(int alarmId){
 	if (alarmId&TRIGGER_MOVE)		return "Your moving";
 	if (alarmId&TRIGGER_HPLOSS)		return "You have lost HP";
 	if (alarmId&TRIGGER_HPBELOW)	return "Your HP is below certain value";
-	if (alarmId&TRIGGER_SOULPOINT)	return "Too few soul points";
+	if (alarmId&TRIGGER_SOULPOINT_BELOW)	return "Too few soul points";
 	if (alarmId&TRIGGER_BLANK)		return "Too few blank runes";
 	if (alarmId&TRIGGER_CAPACITY)	return "Capacity is too small";
 	if (alarmId&TRIGGER_OUTOF)		return "You run out of food/worms/space";
@@ -410,17 +404,16 @@ void alarmAction(int alarmId, CConfigData *config){
 	}*/
 
 	int iAction=0;
-
-	if (alarmId&TRIGGER_BATTLELIST)	{iAction|=actionPos2ID(config->actionBattleList);}
+	
 	if (alarmId&TRIGGER_SIGN)		{iAction|=actionPos2ID(config->actionSign);}
 	if (alarmId&TRIGGER_MESSAGE)	{iAction|=actionPos2ID(config->actionMessage);}
 	if (alarmId&TRIGGER_MOVE)		{iAction|=actionPos2ID(config->actionMove);}
 	if (alarmId&TRIGGER_HPLOSS)		{iAction|=actionPos2ID(config->actionHpLoss);}
 	if (alarmId&TRIGGER_HPBELOW)	{iAction|=actionPos2ID(config->actionHpBelow);}
-	if (alarmId&TRIGGER_SOULPOINT)	{iAction|=actionPos2ID(config->actionSoulPoint);}
+	if (alarmId&TRIGGER_SOULPOINT_BELOW)	{iAction|=actionPos2ID(config->actionSoulPointBelow);}
 	if (alarmId&TRIGGER_BLANK)		{iAction|=actionPos2ID(config->actionBlank);}
 	if (alarmId&TRIGGER_CAPACITY)	{iAction|=actionPos2ID(config->actionCapacity);}
-	if (alarmId&TRIGGER_OUTOF)		{iAction|=actionPos2ID(config->actionOutOf);}
+	
 
 	//if (iAction&ACTION_SUSPEND){
 		actionSuspend(iAction&ACTION_SUSPEND);
@@ -620,12 +613,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			lastHp = self->hp;
 			delete self;
 		}
-		if (config->trigger&TRIGGER_SOULPOINT){
+		if (config->trigger&TRIGGER_SOULPOINT_BELOW){
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->soulPoints < config->optionsSoulPoint){
-				alarm |= TRIGGER_SOULPOINT;
-				if (config->sound&TRIGGER_SOULPOINT)
-					alarmSound(TRIGGER_SOULPOINT);
+			if (self->soulPoints < config->optionsSoulPointBelow){
+				alarm |= TRIGGER_SOULPOINT_BELOW;
+				if (config->sound&TRIGGER_SOULPOINT_BELOW)
+					alarmSound(TRIGGER_SOULPOINT_BELOW);
 			}
 			delete self;
 		}
@@ -645,14 +638,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			delete self;
 		}
-		if (config->trigger&TRIGGER_OUTOF){
-			iAlarm = triggerOutOf(config->optionsOutOf);
-			if (iAlarm&config->optionsOutOf){
-				alarm |= TRIGGER_OUTOF;
-				if (config->sound&TRIGGER_OUTOF)
-					alarmSound(TRIGGER_OUTOF);
-			}
-		}
+	
 
 		alarmAction(alarm,config);
 	}
@@ -788,7 +774,7 @@ void CMod_autogoApp::enableControls()
 
 char *CMod_autogoApp::getVersion()
 {	
-	return "3.0";
+	return "3.1";
 }
 
 
@@ -804,33 +790,48 @@ void CMod_autogoApp::resetConfig()
 
 void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 {
-	if (!strcmp(paramName,"act/x"))				m_configData->actX				= atoi(paramValue);
-	if (!strcmp(paramName,"act/y"))				m_configData->actY				= atoi(paramValue);
-	if (!strcmp(paramName,"act/z"))				m_configData->actZ				= atoi(paramValue);
-	if (!strcmp(paramName,"act/direction"))		m_configData->actDirection		= atoi(paramValue);
-	if (!strcmp(paramName,"runaway/x"))			m_configData->runawayX			= atoi(paramValue);
-	if (!strcmp(paramName,"runaway/y"))			m_configData->runawayY			= atoi(paramValue);
-	if (!strcmp(paramName,"runaway/z"))			m_configData->runawayZ			= atoi(paramValue);
-	if (!strcmp(paramName,"trigger"))			m_configData->trigger			= atoi(paramValue);
-	if (!strcmp(paramName,"action/BattleList"))	m_configData->actionBattleList	= atoi(paramValue);
-	if (!strcmp(paramName,"action/Sign"))		m_configData->actionSign		= atoi(paramValue);
-	if (!strcmp(paramName,"action/Message"))	m_configData->actionMessage		= atoi(paramValue);
-	if (!strcmp(paramName,"action/HpLoss"))		m_configData->actionHpLoss		= atoi(paramValue);
-	if (!strcmp(paramName,"action/HpBelow"))	m_configData->actionHpBelow		= atoi(paramValue);
-	if (!strcmp(paramName,"action/Move"))		m_configData->actionMove		= atoi(paramValue);
-	if (!strcmp(paramName,"action/SoulPoint"))	m_configData->actionSoulPoint	= atoi(paramValue);
-	if (!strcmp(paramName,"action/Blank"))		m_configData->actionBlank		= atoi(paramValue);
-	if (!strcmp(paramName,"action/Capacity"))	m_configData->actionCapacity	= atoi(paramValue);
-	if (!strcmp(paramName,"action/OutOf"))		m_configData->actionOutOf		= atoi(paramValue);
-	if (!strcmp(paramName,"options/BattleList"))m_configData->optionsBattleList	= atoi(paramValue);
-	if (!strcmp(paramName,"options/Sign"))		m_configData->optionsSign		= atoi(paramValue);
-	if (!strcmp(paramName,"options/Message"))	m_configData->optionsMessage	= atoi(paramValue);
-	if (!strcmp(paramName,"options/HpBelow"))	m_configData->optionsHpBelow	= atoi(paramValue);
-	if (!strcmp(paramName,"options/SoulPoint"))	m_configData->optionsSoulPoint	= atoi(paramValue);
-	if (!strcmp(paramName,"options/Blank"))		m_configData->optionsBlank		= atoi(paramValue);
-	if (!strcmp(paramName,"options/Capacity"))	m_configData->optionsCapacity	= atoi(paramValue);
-	if (!strcmp(paramName,"options/OutOf"))		m_configData->optionsOutOf		= atoi(paramValue);
-	if (!strcmp(paramName,"sound"))				m_configData->sound				= atoi(paramValue);
+	if (!strcmp(paramName,"act/x"))						m_configData->actX					= atoi(paramValue);
+	if (!strcmp(paramName,"act/y"))						m_configData->actY					= atoi(paramValue);
+	if (!strcmp(paramName,"act/z"))						m_configData->actZ					= atoi(paramValue);
+	if (!strcmp(paramName,"act/direction"))				m_configData->actDirection			= atoi(paramValue);
+	if (!strcmp(paramName,"runaway/x"))					m_configData->runawayX				= atoi(paramValue);
+	if (!strcmp(paramName,"runaway/y"))					m_configData->runawayY				= atoi(paramValue);
+	if (!strcmp(paramName,"runaway/z"))					m_configData->runawayZ				= atoi(paramValue);
+	if (!strcmp(paramName,"trigger"))					m_configData->trigger				= atoi(paramValue);
+	if (!strcmp(paramName,"action/BattleListGM"))		m_configData->actionBattleListGM	= atoi(paramValue);
+	if (!strcmp(paramName,"action/BattleListPlayer"))	m_configData->actionBattleListPlayer	= atoi(paramValue);
+	if (!strcmp(paramName,"action/BattleListList"))		m_configData->actionBattleListList	= atoi(paramValue);
+	if (!strcmp(paramName,"action/BattleListMonster"))	m_configData->actionBattleListMonster	= atoi(paramValue);
+	if (!strcmp(paramName,"action/Sign"))				m_configData->actionSign			= atoi(paramValue);
+	if (!strcmp(paramName,"action/Message"))			m_configData->actionMessage			= atoi(paramValue);
+	if (!strcmp(paramName,"action/HpLoss"))				m_configData->actionHpLoss			= atoi(paramValue);
+	if (!strcmp(paramName,"action/HpBelow"))			m_configData->actionHpBelow			= atoi(paramValue);
+	if (!strcmp(paramName,"action/HpAbove"))			m_configData->actionHpAbove			= atoi(paramValue);
+	if (!strcmp(paramName,"action/ManaBelow"))			m_configData->actionManaBelow		= atoi(paramValue);
+	if (!strcmp(paramName,"action/ManaAbove"))			m_configData->actionManaAbove		= atoi(paramValue);
+	if (!strcmp(paramName,"action/Move"))				m_configData->actionMove			= atoi(paramValue);
+	if (!strcmp(paramName,"action/SoulPointBelow"))		m_configData->actionSoulPointBelow	= atoi(paramValue);
+	if (!strcmp(paramName,"action/SoulPointAbove"))		m_configData->actionSoulPointAbove	= atoi(paramValue);
+	if (!strcmp(paramName,"action/Blank"))				m_configData->actionBlank			= atoi(paramValue);
+	if (!strcmp(paramName,"action/Capacity"))			m_configData->actionCapacity		= atoi(paramValue);
+	if (!strcmp(paramName,"action/OutOfFood"))			m_configData->actionOutOfFood		= atoi(paramValue);
+	if (!strcmp(paramName,"action/OutOfCustom"))		m_configData->actionOutOfCustom		= atoi(paramValue);
+	if (!strcmp(paramName,"action/OutOfSpace"))			m_configData->actionOutOfSpace		= atoi(paramValue);
+	if (!strcmp(paramName,"action/RunawayReached"))		m_configData->actionRunawayReached		= atoi(paramValue);
+	if (!strcmp(paramName,"options/BattleList"))		m_configData->optionsBattleList		= atoi(paramValue);
+	if (!strcmp(paramName,"options/Sign"))				m_configData->optionsSign			= atoi(paramValue);
+	if (!strcmp(paramName,"options/Message"))			m_configData->optionsMessage		= atoi(paramValue);
+	if (!strcmp(paramName,"options/HpBelow"))			m_configData->optionsHpBelow		= atoi(paramValue);
+	if (!strcmp(paramName,"options/HpAbove"))			m_configData->optionsHpAbove		= atoi(paramValue);
+	if (!strcmp(paramName,"options/ManaBelow"))			m_configData->optionsManaBelow		= atoi(paramValue);
+	if (!strcmp(paramName,"options/ManaAbove"))			m_configData->optionsManaAbove		= atoi(paramValue);
+	if (!strcmp(paramName,"options/SoulPointBelow"))	m_configData->optionsSoulPointBelow	= atoi(paramValue);
+	if (!strcmp(paramName,"options/SoulPointAbove"))	m_configData->optionsSoulPointAbove	= atoi(paramValue);
+	if (!strcmp(paramName,"options/Blank"))				m_configData->optionsBlank			= atoi(paramValue);
+	if (!strcmp(paramName,"options/Capacity"))			m_configData->optionsCapacity		= atoi(paramValue);
+	if (!strcmp(paramName,"options/OutOfCustomItem"))	m_configData->optionsOutOfCustomItem= atoi(paramValue);
+	if (!strcmp(paramName,"options/RunawayReached"))	m_configData->optionsRunawayReached= atoi(paramValue);
+	if (!strcmp(paramName,"sound"))						m_configData->sound					= atoi(paramValue);
 	if (!strcmp(paramName,"whiteList")){
 		if (currentPos>99)
 			return;
@@ -843,33 +844,48 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	static char buf[1024];
 	buf[0]=0;
 	
-	if (!strcmp(paramName,"act/x"))				sprintf(buf,"%d",m_configData->actX);
-	if (!strcmp(paramName,"act/y"))				sprintf(buf,"%d",m_configData->actY);
-	if (!strcmp(paramName,"act/z"))				sprintf(buf,"%d",m_configData->actZ);
-	if (!strcmp(paramName,"act/direction"))		sprintf(buf,"%d",m_configData->actDirection);
-	if (!strcmp(paramName,"runaway/x"))			sprintf(buf,"%d",m_configData->runawayX);
-	if (!strcmp(paramName,"runaway/y"))			sprintf(buf,"%d",m_configData->runawayY);
-	if (!strcmp(paramName,"runaway/z"))			sprintf(buf,"%d",m_configData->runawayZ);
-	if (!strcmp(paramName,"trigger"))			sprintf(buf,"%d",m_configData->trigger);
-	if (!strcmp(paramName,"action/BattleList"))	sprintf(buf,"%d",m_configData->actionBattleList);
-	if (!strcmp(paramName,"action/Sign"))		sprintf(buf,"%d",m_configData->actionSign);
-	if (!strcmp(paramName,"action/Message"))	sprintf(buf,"%d",m_configData->actionMessage);
-	if (!strcmp(paramName,"action/HpLoss"))		sprintf(buf,"%d",m_configData->actionHpLoss);
-	if (!strcmp(paramName,"action/HpBelow"))	sprintf(buf,"%d",m_configData->actionHpBelow);
-	if (!strcmp(paramName,"action/Move"))		sprintf(buf,"%d",m_configData->actionMove);
-	if (!strcmp(paramName,"action/SoulPoint"))	sprintf(buf,"%d",m_configData->actionSoulPoint);
-	if (!strcmp(paramName,"action/Blank"))		sprintf(buf,"%d",m_configData->actionBlank);
-	if (!strcmp(paramName,"action/Capacity"))	sprintf(buf,"%d",m_configData->actionCapacity);
-	if (!strcmp(paramName,"action/OutOf"))		sprintf(buf,"%d",m_configData->actionOutOf);
-	if (!strcmp(paramName,"options/BattleList"))sprintf(buf,"%d",m_configData->optionsBattleList);
-	if (!strcmp(paramName,"options/Sign"))		sprintf(buf,"%d",m_configData->optionsSign);
-	if (!strcmp(paramName,"options/Message"))	sprintf(buf,"%d",m_configData->optionsMessage);
-	if (!strcmp(paramName,"options/HpBelow"))	sprintf(buf,"%d",m_configData->optionsHpBelow);
-	if (!strcmp(paramName,"options/SoulPoint"))	sprintf(buf,"%d",m_configData->optionsSoulPoint);
-	if (!strcmp(paramName,"options/Blank"))		sprintf(buf,"%d",m_configData->optionsBlank);
-	if (!strcmp(paramName,"options/Capacity"))	sprintf(buf,"%d",m_configData->optionsCapacity);
-	if (!strcmp(paramName,"options/OutOf"))		sprintf(buf,"%d",m_configData->optionsOutOf);
-	if (!strcmp(paramName,"sound"))				sprintf(buf,"%d",m_configData->sound);
+	if (!strcmp(paramName,"act/x"))						sprintf(buf,"%d",m_configData->actX);
+	if (!strcmp(paramName,"act/y"))						sprintf(buf,"%d",m_configData->actY);
+	if (!strcmp(paramName,"act/z"))						sprintf(buf,"%d",m_configData->actZ);
+	if (!strcmp(paramName,"act/direction"))				sprintf(buf,"%d",m_configData->actDirection);
+	if (!strcmp(paramName,"runaway/x"))					sprintf(buf,"%d",m_configData->runawayX);
+	if (!strcmp(paramName,"runaway/y"))					sprintf(buf,"%d",m_configData->runawayY);
+	if (!strcmp(paramName,"runaway/z"))					sprintf(buf,"%d",m_configData->runawayZ);
+	if (!strcmp(paramName,"trigger"))					sprintf(buf,"%d",m_configData->trigger);
+	if (!strcmp(paramName,"action/BattleListGM"))		sprintf(buf,"%d",m_configData->actionBattleListGM);
+	if (!strcmp(paramName,"action/BattleListList"))		sprintf(buf,"%d",m_configData->actionBattleListList);
+	if (!strcmp(paramName,"action/BattleListPlayer"))	sprintf(buf,"%d",m_configData->actionBattleListPlayer);
+	if (!strcmp(paramName,"action/BattleListMonster"))	sprintf(buf,"%d",m_configData->actionBattleListMonster);
+	if (!strcmp(paramName,"action/Sign"))				sprintf(buf,"%d",m_configData->actionSign);
+	if (!strcmp(paramName,"action/Message"))			sprintf(buf,"%d",m_configData->actionMessage);
+	if (!strcmp(paramName,"action/HpLoss"))				sprintf(buf,"%d",m_configData->actionHpLoss);
+	if (!strcmp(paramName,"action/HpBelow"))			sprintf(buf,"%d",m_configData->actionHpBelow);
+	if (!strcmp(paramName,"action/HpAbove"))			sprintf(buf,"%d",m_configData->actionHpAbove);
+	if (!strcmp(paramName,"action/ManaBelow"))			sprintf(buf,"%d",m_configData->actionManaBelow);
+	if (!strcmp(paramName,"action/ManaAbove"))			sprintf(buf,"%d",m_configData->actionManaAbove);
+	if (!strcmp(paramName,"action/Move"))				sprintf(buf,"%d",m_configData->actionMove);
+	if (!strcmp(paramName,"action/SoulPointBelow"))		sprintf(buf,"%d",m_configData->actionSoulPointBelow);
+	if (!strcmp(paramName,"action/SoulPointAbove"))		sprintf(buf,"%d",m_configData->actionSoulPointAbove);
+	if (!strcmp(paramName,"action/Blank"))				sprintf(buf,"%d",m_configData->actionBlank);
+	if (!strcmp(paramName,"action/Capacity"))			sprintf(buf,"%d",m_configData->actionCapacity);
+	if (!strcmp(paramName,"action/OutOfFood"))			sprintf(buf,"%d",m_configData->actionOutOfFood);
+	if (!strcmp(paramName,"action/OutOfCustom"))		sprintf(buf,"%d",m_configData->actionOutOfCustom);
+	if (!strcmp(paramName,"action/OutOfSpace"))			sprintf(buf,"%d",m_configData->actionOutOfSpace);
+	if (!strcmp(paramName,"action/RunawayReached"))		sprintf(buf,"%d",m_configData->actionRunawayReached);
+	if (!strcmp(paramName,"options/BattleList"))		sprintf(buf,"%d",m_configData->optionsBattleList);
+	if (!strcmp(paramName,"options/Sign"))				sprintf(buf,"%d",m_configData->optionsSign);
+	if (!strcmp(paramName,"options/Message"))			sprintf(buf,"%d",m_configData->optionsMessage);
+	if (!strcmp(paramName,"options/HpAbove"))			sprintf(buf,"%d",m_configData->optionsHpAbove);
+	if (!strcmp(paramName,"options/HpBelow"))			sprintf(buf,"%d",m_configData->optionsHpBelow);
+	if (!strcmp(paramName,"options/ManaAbove"))			sprintf(buf,"%d",m_configData->optionsManaAbove);
+	if (!strcmp(paramName,"options/ManaBelow"))			sprintf(buf,"%d",m_configData->optionsManaBelow);
+	if (!strcmp(paramName,"options/SoulPointBelow"))	sprintf(buf,"%d",m_configData->optionsSoulPointBelow);
+	if (!strcmp(paramName,"options/SoulPointAbove"))	sprintf(buf,"%d",m_configData->optionsSoulPointAbove);
+	if (!strcmp(paramName,"options/Blank"))				sprintf(buf,"%d",m_configData->optionsBlank);
+	if (!strcmp(paramName,"options/Capacity"))			sprintf(buf,"%d",m_configData->optionsCapacity);
+	if (!strcmp(paramName,"options/OutOfCustomItem"))	sprintf(buf,"%d",m_configData->optionsOutOfCustomItem);
+	if (!strcmp(paramName,"options/RunawayReached"))	sprintf(buf,"%d",m_configData->optionsRunawayReached);
+	if (!strcmp(paramName,"sound"))						sprintf(buf,"%d",m_configData->sound);
 	if (!strcmp(paramName,"whiteList")){		
 		if (currentPos<100){				
 			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
@@ -894,27 +910,41 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 5: return "runaway/y";
 	case 6: return "runaway/z";
 	case 7: return "trigger";
-	case 8: return "action/BattleList";
-	case 9: return "action/Sign";
-	case 10: return "action/Message";
-	case 11: return "action/HpLoss";
-	case 12: return "action/HpBelow";
-	case 13: return "action/Move";
-	case 14: return "action/SoulPoint";
-	case 15: return "action/Blank";
-	case 16: return "action/Capacity";
-	case 17: return "action/NoSpace";
-	case 18: return "action/OutOf";
-	case 19: return "options/BattleList";
-	case 20: return "options/Sign";
-	case 21: return "options/Message";
-	case 22: return "options/HpBelow";
-	case 23: return "options/SoulPoint";
-	case 24: return "options/Blank";
-	case 25: return "options/Capacity";
-	case 26: return "options/OutOf";;
-	case 27: return "sound";
-	case 28: return "whiteList";
+	case 8: return "action/BattleListGM";
+	case 9: return "action/BattleListPlayer";
+	case 10: return "action/BattleListMonster";
+	case 11: return "action/BattleListList";
+	case 12: return "action/Sign";
+	case 13: return "action/Message";
+	case 14: return "action/HpLoss";
+	case 15: return "action/HpAbove";
+	case 16: return "action/HpBelow";	
+	case 17: return "action/ManaAbove";
+	case 18: return "action/ManaBelow";
+	case 19: return "action/Move";
+	case 20: return "action/SoulPointBelow";
+	case 21: return "action/SoulPointAbove";
+	case 22: return "action/Blank";
+	case 23: return "action/Capacity";	
+	case 24: return "action/OutOfCustom";
+	case 25: return "action/OutOfFood";
+	case 26: return "action/OutOfSpace";
+	case 27: return "action/RunawayReached";
+	case 28: return "options/BattleList";
+	case 29: return "options/Sign";
+	case 30: return "options/Message";
+	case 31: return "options/HpAbove";
+	case 32: return "options/HpBelow";
+	case 33: return "options/ManaAbove";
+	case 34: return "options/ManaBelow";
+	case 35: return "options/SoulPointBelow";
+	case 36: return "options/SoulPointAbove";
+	case 37: return "options/RunawayReached";
+	case 38: return "options/Blank";
+	case 39: return "options/Capacity";
+	case 40: return "options/OutOfCustomItem";
+	case 41: return "sound";
+	case 42: return "whiteList";
 	default:
 		return NULL;
 	}

@@ -144,7 +144,11 @@ int depotCheckShouldGo(CConfigData *config)
 	CTibiaItemProxy itemProxy;	
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (self->cap<=config->depotCap) ret++;
+	if (self->cap<config->depotCap&&strlen(config->depotTrigger[0].itemName)) 
+	{
+		// capacity limit check only when some depot items defined
+		ret++;
+	}
 	
 	int i;
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++)
