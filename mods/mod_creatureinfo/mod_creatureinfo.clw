@@ -11,16 +11,16 @@ NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CDialog
 <<<<<<< mod_creatureinfo.clw
-Resource1=IDD_NAME (English (U.S.))
+Resource1=IDD_CONFIG (English (U.S.))
 =======
-Resource1=IDD_NAME (English (U.S.))
+Resource1=IDD_CONFIG (English (U.S.))
 >>>>>>> 1.7
 Class3=CNameChanger
-Resource2=IDD_SENDSTATS
+Resource2=IDD_INFO (English (U.S.))
 Class4=CKnownInfo
-Resource3=IDD_INFO (English (U.S.))
+Resource3=IDD_NAME (English (U.S.))
 Class5=CSendStats
-Resource4=IDD_CONFIG (English (U.S.))
+Resource4=IDD_SENDSTATS
 
 [CLS:CMod_creatureinfoApp]
 Type=0

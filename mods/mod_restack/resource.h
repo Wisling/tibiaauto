@@ -18,6 +18,7 @@
 #define IDC_TOOL_AMMORESTACK_PICKUP_CR  1167
 #define IDC_TOOL_AMMORESTACK_PICKUP_UR  1168
 #define IDC_TOOL_AMMORESTACK_PICKUP_UC  1169
+#define IDC_TOOL_AMMORESTACK_PICKUP_CC  1170
 #define IDD_CONFIG                      3000
 #define IDC_CONTAINER_MODE_1            3000
 #define IDC_CONTAINER_STATUS            3001
@@ -39,7 +40,9 @@
 #define IDC_PICKUP_TO_HAND              3013
 #define IDC_CONTAINER_MODE_6            3014
 #define IDC_CONTAINER_STATUS6           3015
+#define IDC_PERIOD_FROM                 3015
 #define IDC_CONTAINER_MODE_7            3016
+#define IDC_PERIOD_TO                   3016
 #define IDC_CONTAINER_STATUS7           3017
 #define IDC_CONTAINER_MODE_8            3018
 #define IDC_CONTAINER_STATUS8           3019
@@ -56,7 +59,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3014
+#define _APS_NEXT_CONTROL_VALUE         3017
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

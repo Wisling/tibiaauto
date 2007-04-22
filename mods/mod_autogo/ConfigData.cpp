@@ -27,22 +27,37 @@ CConfigData::CConfigData()
 	optionsSign = 0;
 	optionsMessage = 0;
 	optionsHpBelow = 50;
-	optionsSoulPoint = 1;
+	optionsHpAbove = 5000;
+	optionsManaBelow = 50;
+	optionsManaAbove = 5000;
+	optionsSoulPointBelow = 1;
+	optionsSoulPointAbove = 100;
 	optionsBlank = 1;
 	optionsCapacity = 1;
-	optionsOutOf = 0;
+	optionsOutOfCustomItem = 0;
+	optionsRunawayReached = 3;
 
 	action = 0;
-	actionBattleList = 0;
+	actionBattleListGM = 0;
+	actionBattleListList = 0;
+	actionBattleListPlayer = 0;
+	actionBattleListMonster = 0;
 	actionSign = 0;
 	actionMessage = 0;
 	actionMove = 0;
 	actionHpLoss = 0;
 	actionHpBelow = 0;
-	actionSoulPoint = 0;
+	actionHpAbove = 0;
+	actionManaBelow = 0;
+	actionManaAbove = 0;
+	actionSoulPointBelow = 0;
+	actionSoulPointAbove = 0;
 	actionBlank = 0;
 	actionCapacity = 0;
-	actionOutOf = 0;
+	actionOutOfFood = 0;
+	actionOutOfSpace = 0;
+	actionOutOfCustom = 0;
+	actionRunawayReached = 0;
 
 	sound = 0;
 

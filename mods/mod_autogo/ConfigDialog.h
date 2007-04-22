@@ -28,13 +28,17 @@
 #define TRIGGER_MOVE			0x0008
 #define TRIGGER_HPLOSS			0x0010
 #define TRIGGER_HPBELOW			0x0020
-#define TRIGGER_SOULPOINT		0x0040
+#define TRIGGER_SOULPOINT_BELOW		0x0040
 #define TRIGGER_BLANK			0x0080
 #define TRIGGER_CAPACITY		0x0100
 #define TRIGGER_OUTOF			0x0200
 	#define OUTOF_FOOD			0x0001
-	#define OUTOF_WORMS			0x0002
-	#define OUTOF_SPACE			0x0004
+	#define OUTOF_SPACE			0x0002
+#define TRIGGER_HPABOVE			0x0400
+#define TRIGGER_MANABELOW		0x0800
+#define TRIGGER_MANAABOVE		0x1000
+#define TRIGGER_SOULPOINT_ABOVE		0x2000
+#define TRIGGER_RUNAWAY_REACHED		0x4000
 
 
 #define ACTION_NONE				0x00
@@ -76,6 +80,44 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_triggerOutOf;
+	CButton	m_triggerSoulPointAbove;
+	CButton	m_triggerManaBelow;
+	CButton	m_triggerManaAbove;
+	CButton	m_triggerHpAbove;
+	CButton	m_soundSoulPointAbove;
+	CButton	m_soundRunawayReached;
+	CButton	m_soundOutOfSpace;
+	CButton	m_soundOutOfFood;
+	CButton	m_soundOutOfCustom;
+	CButton	m_soundManaBelow;
+	CButton	m_soundManaAbove;
+	CButton	m_soundHpAbove;
+	CEdit	m_soulPointAbove;
+	CEdit	m_runawayReachedRadius;
+	CButton	m_runawayReached;
+	CButton	m_outOfCustom;
+	CButton	m_messageIgnoreSpells;
+	CEdit	m_manaBelow;
+	CEdit	m_manaAbove;
+	CEdit	m_hpAbove;
+	CComboBox	m_actionSoulpointAbove;
+	CComboBox	m_actionRunawayReached;
+	CComboBox	m_actionOutOfSpace;
+	CComboBox	m_actionOutOfFood;
+	CComboBox	m_actionOutOfCustomItem;
+	CComboBox	m_actionOutOfCustom;
+	CComboBox	m_actionManaBelow;
+	CComboBox	m_actionManaAbove;
+	CComboBox	m_actionHpAbove;
+	CButton	m_soundBattleListPlayer;
+	CButton	m_soundBattleListMonster;
+	CButton	m_soundBattleListList;
+	CButton	m_soundBattleListGm;
+	CComboBox	m_actionBattleListPlayer;
+	CComboBox	m_actionBattleListMonster;
+	CComboBox	m_actionBattleListList;
+	CComboBox	m_actionBattleListGm;
 	CButton	m_battleBattlelist;
 	CButton	m_battleParanoiaM;
 	CComboBox	m_actDirection;
@@ -91,7 +133,6 @@ public:
 	CButton	m_soundSign;
 	CButton	m_triggerSoulPoint;
 	CButton	m_triggerSign;
-	CButton	m_triggerOutOf;
 	CButton	m_triggerMessage;
 	CButton	m_triggerMove;
 	CButton	m_triggerHpLoss;
@@ -99,18 +140,15 @@ public:
 	CButton	m_triggerBlank;
 	CButton	m_triggerBattleList;
 	CButton	m_soundSoulPoint;
-	CButton	m_soundOutOf;
 	CButton	m_soundMove;
 	CButton	m_soundMessage;
 	CButton	m_soundHpLoss;
 	CButton	m_soundCapacity;
 	CButton	m_soundBlank;
-	CButton	m_soundBattleList;
 	CImageButtonWithStyle	m_signPoison;
 	CImageButtonWithStyle	m_signFire;
 	CImageButtonWithStyle	m_signEnergy;
 	CImageButtonWithStyle	m_signBattle;
-	CButton	m_outOfWorms;
 	CButton	m_messagePublic;
 	CButton	m_outOfFood;
 	CButton	m_messagePrivate;
@@ -122,13 +160,11 @@ public:
 	CButton	m_battleGM;
 	CComboBox	m_actionSoulPoint;
 	CComboBox	m_actionSign;
-	CComboBox	m_actionOutOf;
 	CComboBox	m_actionMove;
 	CComboBox	m_actionMessage;
 	CComboBox	m_actionHpLoss;
 	CComboBox	m_actionCapacity;
 	CComboBox	m_actionBlank;
-	CComboBox	m_actionBattleList;
 	CStatic	m_status;
 	CEdit	m_curZ;
 	CEdit	m_curY;
@@ -172,6 +208,18 @@ protected:
 	afx_msg void OnAutogoTriggercapacity();
 	afx_msg void OnAutogoTriggeroutof();
 	afx_msg void OnAutogoTriggerhpbelow();
+	afx_msg void OnAutogoTriggerhpabove();
+	afx_msg void OnAutogoTriggermanabelow();
+	afx_msg void OnAutogoTriggermanaabove();
+	afx_msg void OnAutogoTriggersoulpointsAbove();
+	afx_msg void OnAutogoOutoffood();
+	afx_msg void OnAutogoOutofspace();
+	afx_msg void OnAutogoOutofcustom();
+	afx_msg void OnAutogoRunawayReached();
+	afx_msg void OnAutogoBattleplayer();
+	afx_msg void OnAutogoBattlemonster();
+	afx_msg void OnAutogoBattlegm();
+	afx_msg void OnAutogoBattelist();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
