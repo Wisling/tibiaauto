@@ -12,11 +12,7 @@
 #include "ImageButtonWithStyle.h"
 
 #define TRIGGER_BATTLELIST		0x0001
-	#define BATTLELIST_PLAYER		0x0001
-	#define BATTLELIST_MONSTER		0x0002
-	#define BATTLELIST_GM			0x0004	
 	#define BATTLELIST_PARANOIAM	0x0008
-	#define BATTLELIST_BATTLELIST	0x0010
 #define TRIGGER_SIGN			0x0002
 	#define SIGN_BATTLE			0x0080
 	#define SIGN_POISON			0x0001
@@ -25,6 +21,7 @@
 #define TRIGGER_MESSAGE			0x0004
 	#define MESSAGE_PRIVATE		0x0001
 	#define MESSAGE_PUBLIC		0x0002
+	#define MESSAGE_IGNORE_SPELLS	0x0004
 #define TRIGGER_MOVE			0x0008
 #define TRIGGER_HPLOSS			0x0010
 #define TRIGGER_HPBELOW			0x0020
@@ -32,13 +29,18 @@
 #define TRIGGER_BLANK			0x0080
 #define TRIGGER_CAPACITY		0x0100
 #define TRIGGER_OUTOF			0x0200
-	#define OUTOF_FOOD			0x0001
-	#define OUTOF_SPACE			0x0002
 #define TRIGGER_HPABOVE			0x0400
 #define TRIGGER_MANABELOW		0x0800
 #define TRIGGER_MANAABOVE		0x1000
 #define TRIGGER_SOULPOINT_ABOVE		0x2000
 #define TRIGGER_RUNAWAY_REACHED		0x4000
+#define TRIGGER_BATTLELIST_MONSTER      0x08000
+#define TRIGGER_BATTLELIST_GM           0x10000
+#define TRIGGER_BATTLELIST_PLAYER       0x20000
+#define TRIGGER_BATTLELIST_LIST         0x40000
+#define TRIGGER_OUTOF_FOOD		0x080000
+#define TRIGGER_OUTOF_SPACE		0x100000
+#define TRIGGER_OUTOF_CUSTOM		0x200000
 
 
 #define ACTION_NONE				0x00
@@ -105,7 +107,7 @@ public:
 	CComboBox	m_actionRunawayReached;
 	CComboBox	m_actionOutOfSpace;
 	CComboBox	m_actionOutOfFood;
-	CComboBox	m_actionOutOfCustomItem;
+	CComboBox	m_outOfCustomItem;
 	CComboBox	m_actionOutOfCustom;
 	CComboBox	m_actionManaBelow;
 	CComboBox	m_actionManaAbove;
