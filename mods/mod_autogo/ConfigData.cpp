@@ -36,9 +36,8 @@ CConfigData::CConfigData()
 	optionsCapacity = 1;
 	optionsOutOfCustomItem = 0;
 	optionsRunawayReached = 3;
-
-	action = 0;
-	actionBattleListGM = 0;
+	
+	actionBattleListGm = 0;
 	actionBattleListList = 0;
 	actionBattleListPlayer = 0;
 	actionBattleListMonster = 0;

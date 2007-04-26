@@ -161,79 +161,7 @@ int OnList(char whiteList[][32],char name[]){
 	return 0;
 }
 
-int triggerBattleList(int options, char whiteList[][32]){
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureNr;	
-
-
-	// special handling of battle list auto log/go detection
-	if ((options&BATTLELIST_BATTLELIST))
-	{
-		if(reader.readBattleListMax()>=0||reader.readBattleListMin()>=0) {			
-			delete self;
-			return 1;
-		}
-	}
-
-	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
-		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-		
-		if (ch->visible){		
-			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
-			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
-				{					
-					if ((options&BATTLELIST_GM)&&ch->name[0]=='G'&&ch->name[1]=='M')
-					{
-						// this is GM						
-						delete ch;
-						delete self;						
-						return 1;
-					}
-					if ((options&BATTLELIST_GM)&&ch->name[0]=='C'&&ch->name[1]=='M')
-					{
-						// this is CM						
-						delete ch;
-						delete self;						
-						return 1;
-					}
-					
-					if ((options&BATTLELIST_PLAYER))
-					{
-						// this is other player
-						if (ch->tibiaId < 0x40000000)
-						{
-							delete ch;
-							delete self;							
-							return 1;
-						}
-					}
-					
-					if ((options&BATTLELIST_MONSTER))
-					{
-						// this is monster/npc
-						if (ch->tibiaId >= 0x40000000)
-						{
-							delete ch;
-							delete self;							
-							return 1;
-						}
-					}
-				}
-			}
-			
-		}
-		delete ch;
-	};
-	delete self;
-
-	return 0;
-}
-
-int triggerMessage(){
+struct tibiaMessage *triggerMessage(){
 	CMemReaderProxy reader;
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
@@ -241,12 +169,17 @@ int triggerMessage(){
 	if (backPipe.readFromPipe(&mess,1003)){
 		int infoType;
 		int nickLen;
-		char nickBuf[32];
-
-		memset(nickBuf,0,32);
+		int msgLen;
+		char nickBuf[16384];
+		char msgBuf[16384];
+		
+		memset(nickBuf,0,16384);
+		memset(msgBuf,0,16384);
 		memcpy(&infoType,mess.payload,sizeof(int));
 		memcpy(&nickLen,mess.payload+4,sizeof(int));
+		memcpy(&msgLen,mess.payload+8,sizeof(int));
 		memcpy(nickBuf,mess.payload+12,nickLen);
+		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
 		
 		CTibiaCharacter *temp = reader.readSelfCharacter();
 		//T4: Name in temp structure is empty, bug?
@@ -255,11 +188,14 @@ int triggerMessage(){
 
 		if (strcmpi(nickBuf,self->name)!=0 && strcmpi(nickBuf,"Tibia Auto")!=0){
 			delete self;
-			return infoType;
+			struct tibiaMessage *newMsg = new tibiaMessage();
+			newMsg->type=infoType;
+			strcpy(newMsg->msg,msgBuf);
+			return newMsg;
 		}
 		delete self;
 	}
-	return -1;
+	return NULL;
 }
 
 int triggerBlank(){
@@ -298,39 +234,6 @@ int triggerNoSpace(){
 	return ret;
 }
 
-int triggerOutOf(int options){
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
-	CTibiaItem *Item = NULL;
-	CUIntArray itemArray;
-			
-	itemArray.Add(itemProxy.getValueForConst("worms"));
-	int pos;
-	int ret=0;	//Bitfield
-	
-	for (pos=0;pos<10&&!ret;pos++){
-		//T4: Missing check if container is opened
-		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff){
-			if (options&OUTOF_FOOD && !(ret&OUTOF_FOOD)){
-				Item = CModuleUtil::lookupItem(pos,itemProxy.getItemsFoodArray());
-				if (Item != NULL){
-					ret = ret|OUTOF_FOOD;
-					delete Item;
-				}
-			}
-		
-			if (options&OUTOF_SPACE && !(ret&OUTOF_SPACE)){
-				if (container->itemsInside < container->size)
-					ret = ret|OUTOF_SPACE;
-			}
-		}
-		delete container;
-	}
-	//T4: As in code ret saves is certain thing in backpack, at the end I revers bits
-	return (ret^options);
-}
-
 void alarmSound(int alarmId){
 	char installPath[1024];
 	unsigned long installPathLen=1023;
@@ -352,16 +255,26 @@ void alarmSound(int alarmId){
 	char wavFile[1024];
 
 	switch (alarmId){
-		case TRIGGER_BATTLELIST:sprintf(wavFile,"%s\\mods\\sound\\battlelist.wav",installPath);break;
+		case TRIGGER_BATTLELIST_LIST:sprintf(wavFile,"%s\\mods\\sound\\battlelistlist.wav",installPath);break;
+		case TRIGGER_BATTLELIST_GM:sprintf(wavFile,"%s\\mods\\sound\\battlelistgm.wav",installPath);break;
+		case TRIGGER_BATTLELIST_PLAYER:sprintf(wavFile,"%s\\mods\\sound\\battlelistplayer.wav",installPath);break;
+		case TRIGGER_BATTLELIST_MONSTER:sprintf(wavFile,"%s\\mods\\sound\\battlelistmonster.wav",installPath);break;
 		case TRIGGER_SIGN:		sprintf(wavFile,"%s\\mods\\sound\\sign.wav",installPath);break;
 		case TRIGGER_MESSAGE:	sprintf(wavFile,"%s\\mods\\sound\\message.wav",installPath);break;
 		case TRIGGER_MOVE:		sprintf(wavFile,"%s\\mods\\sound\\move.wav",installPath);break;
 		case TRIGGER_HPLOSS:	sprintf(wavFile,"%s\\mods\\sound\\hploss.wav",installPath);break;
 		case TRIGGER_HPBELOW:	sprintf(wavFile,"%s\\mods\\sound\\hpbelow.wav",installPath);break;
+		case TRIGGER_HPABOVE:	sprintf(wavFile,"%s\\mods\\sound\\hpabove.wav",installPath);break;
+		case TRIGGER_MANABELOW:	sprintf(wavFile,"%s\\mods\\sound\\manabelow.wav",installPath);break;
+		case TRIGGER_MANAABOVE:	sprintf(wavFile,"%s\\mods\\sound\\manaabove.wav",installPath);break;
 		case TRIGGER_SOULPOINT_BELOW:	sprintf(wavFile,"%s\\mods\\sound\\soulpointbelow.wav",installPath);break;
+		case TRIGGER_SOULPOINT_ABOVE:	sprintf(wavFile,"%s\\mods\\sound\\soulpointabove.wav",installPath);break;
 		case TRIGGER_BLANK:		sprintf(wavFile,"%s\\mods\\sound\\blank.wav",installPath);break;
 		case TRIGGER_CAPACITY:	sprintf(wavFile,"%s\\mods\\sound\\capacity.wav",installPath);break;
-		case TRIGGER_OUTOF:		sprintf(wavFile,"%s\\mods\\sound\\outof.wav",installPath);break;
+		case TRIGGER_OUTOF_FOOD:		sprintf(wavFile,"%s\\mods\\sound\\outoffood.wav",installPath);break;
+		case TRIGGER_OUTOF_CUSTOM:		sprintf(wavFile,"%s\\mods\\sound\\outofcustom.wav",installPath);break;
+		case TRIGGER_OUTOF_SPACE:		sprintf(wavFile,"%s\\mods\\sound\\outofspace.wav",installPath);break;
+		case TRIGGER_RUNAWAY_REACHED:		sprintf(wavFile,"%s\\mods\\sound\\runawayreached.wav",installPath);break;
 		default:				sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);break;
 	}
 
@@ -379,16 +292,26 @@ void alarmSound(int alarmId){
 	}
 }
 char *alarmStatus(int alarmId){	
-	if (alarmId&TRIGGER_BATTLELIST) return "BattleList alarm";
+	if (alarmId&TRIGGER_BATTLELIST_LIST) return "BattleList list alarm";	
+	if (alarmId&TRIGGER_BATTLELIST_GM) return "BattleList GM alarm";	
+	if (alarmId&TRIGGER_BATTLELIST_PLAYER) return "BattleList player alarm";	
+	if (alarmId&TRIGGER_BATTLELIST_MONSTER) return "BattleList monster alarm";	
 	if (alarmId&TRIGGER_SIGN)		return "A sign appeared";
 	if (alarmId&TRIGGER_MESSAGE)	return "New message";
 	if (alarmId&TRIGGER_MOVE)		return "Your moving";
 	if (alarmId&TRIGGER_HPLOSS)		return "You have lost HP";
-	if (alarmId&TRIGGER_HPBELOW)	return "Your HP is below certain value";
+	if (alarmId&TRIGGER_HPBELOW)	return "Your HP is below a certain value";
+	if (alarmId&TRIGGER_HPABOVE)	return "Your HP is above a certain value";
+	if (alarmId&TRIGGER_MANABELOW)	return "Your mana is below a certain value";
+	if (alarmId&TRIGGER_MANAABOVE)	return "Your mana is above a certain value";
 	if (alarmId&TRIGGER_SOULPOINT_BELOW)	return "Too few soul points";
+	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	return "Too many soul points";
 	if (alarmId&TRIGGER_BLANK)		return "Too few blank runes";
 	if (alarmId&TRIGGER_CAPACITY)	return "Capacity is too small";
-	if (alarmId&TRIGGER_OUTOF)		return "You run out of food/worms/space";
+	if (alarmId&TRIGGER_OUTOF_SPACE)		return "You run out of space";
+	if (alarmId&TRIGGER_OUTOF_FOOD)		return "You run out of food";
+	if (alarmId&TRIGGER_OUTOF_CUSTOM)		return "You run out of an item";
+	if (alarmId&TRIGGER_RUNAWAY_REACHED)		return "You reached the run away point";
 	return "";
 }
 
@@ -410,9 +333,21 @@ void alarmAction(int alarmId, CConfigData *config){
 	if (alarmId&TRIGGER_MOVE)		{iAction|=actionPos2ID(config->actionMove);}
 	if (alarmId&TRIGGER_HPLOSS)		{iAction|=actionPos2ID(config->actionHpLoss);}
 	if (alarmId&TRIGGER_HPBELOW)	{iAction|=actionPos2ID(config->actionHpBelow);}
+	if (alarmId&TRIGGER_HPABOVE)	{iAction|=actionPos2ID(config->actionHpAbove);}
+	if (alarmId&TRIGGER_MANABELOW)	{iAction|=actionPos2ID(config->actionManaBelow);}
+	if (alarmId&TRIGGER_MANAABOVE)	{iAction|=actionPos2ID(config->actionManaAbove);}
 	if (alarmId&TRIGGER_SOULPOINT_BELOW)	{iAction|=actionPos2ID(config->actionSoulPointBelow);}
+	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	{iAction|=actionPos2ID(config->actionSoulPointAbove);}
 	if (alarmId&TRIGGER_BLANK)		{iAction|=actionPos2ID(config->actionBlank);}
 	if (alarmId&TRIGGER_CAPACITY)	{iAction|=actionPos2ID(config->actionCapacity);}
+	if (alarmId&TRIGGER_RUNAWAY_REACHED)	{iAction|=actionPos2ID(config->actionRunawayReached);}
+	if (alarmId&TRIGGER_BATTLELIST_LIST)	{iAction|=actionPos2ID(config->actionBattleListList);}
+	if (alarmId&TRIGGER_BATTLELIST_GM)	{iAction|=actionPos2ID(config->actionBattleListGm);}
+	if (alarmId&TRIGGER_BATTLELIST_PLAYER)	{iAction|=actionPos2ID(config->actionBattleListPlayer);}
+	if (alarmId&TRIGGER_BATTLELIST_MONSTER)	{iAction|=actionPos2ID(config->actionBattleListMonster);}
+	if (alarmId&TRIGGER_OUTOF_FOOD)	{iAction|=actionPos2ID(config->actionOutOfFood);}
+	if (alarmId&TRIGGER_OUTOF_SPACE)	{iAction|=actionPos2ID(config->actionOutOfSpace);}
+	if (alarmId&TRIGGER_OUTOF_CUSTOM)	{iAction|=actionPos2ID(config->actionOutOfCustom);}
 	
 
 	//if (iAction&ACTION_SUSPEND){
@@ -459,7 +394,7 @@ void alarmAction(int alarmId, CConfigData *config){
 			}
 		}
 		delete self;
-	}else if (config->action&ACTION_RUNAWAY){
+	}else if (iAction&ACTION_RUNAWAY){
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CMemConstData memConstData = reader.getMemConstData();
 		CTibiaMapProxy tibiaMap;
@@ -497,6 +432,278 @@ void alarmAction(int alarmId, CConfigData *config){
 	}
 }
 
+int triggerRunawayReached(CConfigData *config)
+{
+	
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int maxDistance=config->optionsRunawayReached;
+	int ret=1;
+	char buf[128];
+	
+
+	if (self->z!=config->runawayZ) ret=0;
+	if (abs(self->x-config->runawayX)+abs(self->y-config->runawayY)>maxDistance) ret=0;
+
+	delete self;		
+	return ret;
+}
+
+int isSpellMessage(char *msg)
+{
+	int pos;
+	const char *spells[] = 
+	{
+		"exana pox",
+		"exori",
+		"exana ina",
+		"exeta res",
+		"exevo con",
+		"exevo con",
+		"utevo res",
+		"exeta vis",
+		"exevo vis",
+		"exori vis",
+		"exevo mort",
+		"exevo con",
+		"exiva",
+		"exevo flam",
+		"exori flam",
+		"exevo pan",
+		"exori mort",
+		"exevo gran",
+		"utevo gran",
+		"utani hur",
+		"exura sio",
+		"exura gran",
+		"utana vid",
+		"exani hur",
+		"utevo lux",
+		"exura",
+		"exani tera",
+		"utamo vita",
+		"exura gran",
+		"exevo gran",
+		"exevo con",
+		"exevo con",
+		"utani gran",
+		"utevo res",
+		"exevo gran",
+		"exura vita",
+		"utevo vis",
+		"exana mas",
+		"exevo grav",
+		NULL
+	};
+	for (pos=0;spells[pos];pos++)
+	{
+		char msgBuf[100];
+		memset(msgBuf,0,100);
+		strncpy(msgBuf,msg,strlen(spells[pos]));
+		if (!strcmpi(msgBuf,spells[pos])) return 1;
+	}
+	return 0;
+}
+
+int triggerOutOfFood()
+{
+	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;	
+	CUIntArray itemArray;
+			
+	itemArray.Add(itemProxy.getValueForConst("worms"));
+	int pos;	
+	
+	
+	for (pos=0;pos<10;pos++){		
+		CTibiaContainer *container = reader.readContainer(pos);
+		if (container->flagOnOff){			
+			CTibiaItem *item = CModuleUtil::lookupItem(pos,itemProxy.getItemsFoodArray());
+			if (item != NULL)
+			{					
+				delete item;
+				delete container;
+				return 0;
+			}
+		}
+		delete container;
+	}
+	
+	return 1;
+}
+
+int triggerOutOfSpace()
+{
+	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;	
+	
+	int pos;	
+	
+	
+	for (pos=0;pos<10;pos++){		
+		
+		CTibiaContainer *container = reader.readContainer(pos);
+		if (container->flagOnOff){
+			if (container->itemsInside<container->size) 
+			{
+				delete container;
+				return 0;
+			}			
+		}
+		delete container;
+	}
+	
+	return 1;
+}
+
+int triggerOutOfCustom(int customItemId)
+{
+	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;	
+	CUIntArray itemArray;
+			
+	itemArray.Add(customItemId);
+	int pos;	
+	
+	
+	for (pos=0;pos<10;pos++){		
+		CTibiaContainer *container = reader.readContainer(pos);
+		if (container->flagOnOff){			
+			CTibiaItem *item = CModuleUtil::lookupItem(pos,&itemArray);
+			if (item != NULL){					
+				delete item;
+				delete container;
+				return 0;
+			}
+		}			
+		
+		delete container;
+	}
+		
+	return 1;
+}
+
+int triggerBattleListList(char whiteList[100][32],int options)
+{
+	CMemReaderProxy reader;
+
+	return (reader.readBattleListMax()>=0||reader.readBattleListMin()>=0);	
+}
+
+int triggerBattleListGm(char whiteList[100][32],int options)
+{
+	CPackSenderProxy sender;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int creatureNr;
+	
+	
+	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
+		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
+		
+		if (ch->visible){		
+			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+			{				
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				{					
+					if (ch->name[0]=='G'&&ch->name[1]=='M')
+					{
+						// this is GM						
+						delete ch;
+						delete self;						
+						return 1;
+					}
+					if (ch->name[0]=='C'&&ch->name[1]=='M')
+					{
+						// this is CM						
+						delete ch;
+						delete self;						
+						return 1;
+					}
+					
+					
+				}
+			}
+			
+		}
+		delete ch;
+	};
+	delete self;
+	return 0;
+}
+int triggerBattleListMonster(char whiteList[100][32],int options)
+{
+	CPackSenderProxy sender;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int creatureNr;
+	
+	
+	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
+		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
+		
+		if (ch->visible){		
+			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+			{				
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				{					
+					
+					// this is monster/npc
+					if (ch->tibiaId >= 0x40000000)
+					{
+						delete ch;
+						delete self;							
+						return 1;
+					}
+					
+				}
+			}
+			
+		}
+		delete ch;
+	};
+	delete self;
+	return 0;
+}
+int triggerBattleListPlayer(char whiteList[100][32],int options)
+{
+	CPackSenderProxy sender;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int creatureNr;
+	
+	
+	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
+		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
+		
+		if (ch->visible){		
+			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+			{				
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				{					
+					
+					// this is other player
+					if (ch->tibiaId < 0x40000000)
+					{
+						delete ch;
+						delete self;							
+						return 1;
+					}
+					
+				}
+			}
+			
+		}
+		delete ch;
+	};
+	delete self;
+	return 0;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -514,29 +721,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastZ = self->z;
 	int lastMoved = 0;
 	int lastHp = self->hp;
-
-	int iAlarm;
+	int lastMana = self->mana;
+	
 	int alarm;
 
 	delete self;	
 
 	PlaySound(0, 0, 0);
-
-	//while (triggerMessage()>0){};//Remove all msg in queue
+	
 	
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(100);	
 		alarm = 0;
 		
-		if ((config->trigger&TRIGGER_BATTLELIST)){
-			iAlarm = triggerBattleList(config->optionsBattleList,config->whiteList);
-			if (iAlarm){
-				alarm |= TRIGGER_BATTLELIST;
-				if (config->sound&TRIGGER_BATTLELIST)
-					alarmSound(TRIGGER_BATTLELIST);
-			}
-		}
+	
 
 		if (config->trigger&TRIGGER_SIGN){
 			int flags = reader.getSelfEventFlags()&config->optionsSign;
@@ -559,17 +758,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			Sleep(1000);*/
 		}
 		if (config->trigger&TRIGGER_MESSAGE){
-			int iType = triggerMessage();
-			if (config->optionsMessage&MESSAGE_PUBLIC && (iType == 1 || iType == 2) /*|| iType == 3*/){
+			struct tibiaMessage *msg = triggerMessage();
+			int isSpell = msg && (config->optionsMessage&MESSAGE_IGNORE_SPELLS) && isSpellMessage(msg->msg);
+			
+			if (config->optionsMessage&MESSAGE_PUBLIC && msg && (msg->type == 1 || msg->type == 2) /*|| iType == 3*/){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
 					alarmSound(TRIGGER_MESSAGE);
 			}
-			if (config->optionsMessage&MESSAGE_PRIVATE && iType == 4){
+			if (config->optionsMessage&MESSAGE_PRIVATE && msg && msg->type == 4){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
 					alarmSound(TRIGGER_MESSAGE);
 			}
+			if (msg) delete msg;
 
 		}
 		if (config->trigger&TRIGGER_MOVE){
@@ -613,12 +815,51 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			lastHp = self->hp;
 			delete self;
 		}
+		if (config->trigger&TRIGGER_HPABOVE){
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->hp > config->optionsHpAbove){
+				alarm |= TRIGGER_HPABOVE;
+				if (config->sound&TRIGGER_HPABOVE)
+					alarmSound(TRIGGER_HPABOVE);
+			}
+			lastHp = self->hp;
+			delete self;
+		}
+		if (config->trigger&TRIGGER_MANABELOW){
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->mana < config->optionsManaBelow){
+				alarm |= TRIGGER_MANABELOW;
+				if (config->sound&TRIGGER_MANABELOW)
+					alarmSound(TRIGGER_MANABELOW);
+			}
+			lastMana = self->mana;
+			delete self;
+		}
+		if (config->trigger&TRIGGER_MANAABOVE){
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->mana > config->optionsManaAbove){
+				alarm |= TRIGGER_MANAABOVE;
+				if (config->sound&TRIGGER_MANAABOVE)
+					alarmSound(TRIGGER_MANAABOVE);
+			}
+			lastMana = self->mana;
+			delete self;
+		}
 		if (config->trigger&TRIGGER_SOULPOINT_BELOW){
 			CTibiaCharacter *self = reader.readSelfCharacter();
 			if (self->soulPoints < config->optionsSoulPointBelow){
 				alarm |= TRIGGER_SOULPOINT_BELOW;
 				if (config->sound&TRIGGER_SOULPOINT_BELOW)
 					alarmSound(TRIGGER_SOULPOINT_BELOW);
+			}
+			delete self;
+		}
+		if (config->trigger&TRIGGER_SOULPOINT_ABOVE){
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->soulPoints > config->optionsSoulPointAbove){
+				alarm |= TRIGGER_SOULPOINT_ABOVE;
+				if (config->sound&TRIGGER_SOULPOINT_ABOVE)
+					alarmSound(TRIGGER_SOULPOINT_ABOVE);
 			}
 			delete self;
 		}
@@ -629,6 +870,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					alarmSound(TRIGGER_BLANK);
 			}
 		}
+		if (config->trigger&TRIGGER_RUNAWAY_REACHED){
+			if (triggerRunawayReached(config)){
+				alarm |= TRIGGER_RUNAWAY_REACHED;
+				if (config->sound&TRIGGER_RUNAWAY_REACHED)
+					alarmSound(TRIGGER_RUNAWAY_REACHED);
+			}
+		}
 		if (config->trigger&TRIGGER_CAPACITY){
 			CTibiaCharacter *self = reader.readSelfCharacter();
 			if (self->cap < config->optionsCapacity){
@@ -637,6 +885,55 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					alarmSound(TRIGGER_CAPACITY);
 			}
 			delete self;
+		}
+		if (config->trigger&TRIGGER_OUTOF_FOOD){
+			if (triggerOutOfFood()){
+				alarm |= TRIGGER_OUTOF_FOOD;
+				if (config->sound&TRIGGER_OUTOF_FOOD)
+					alarmSound(TRIGGER_OUTOF_FOOD);
+			}
+		}
+		if (config->trigger&TRIGGER_OUTOF_SPACE){
+			if (triggerOutOfSpace()){
+				alarm |= TRIGGER_OUTOF_SPACE;
+				if (config->sound&TRIGGER_OUTOF_SPACE)
+					alarmSound(TRIGGER_OUTOF_SPACE);
+			}
+		}
+		if (config->trigger&TRIGGER_OUTOF_CUSTOM){
+			if (triggerOutOfCustom(config->optionsOutOfCustomItem)){
+				alarm |= TRIGGER_OUTOF_CUSTOM;
+				if (config->sound&TRIGGER_OUTOF_CUSTOM)
+					alarmSound(TRIGGER_OUTOF_CUSTOM);
+			}
+		}
+		if (config->trigger&TRIGGER_BATTLELIST_LIST){
+			if (triggerBattleListList(config->whiteList,config->optionsBattleList)){
+				alarm |= TRIGGER_BATTLELIST_LIST;
+				if (config->sound&TRIGGER_BATTLELIST_LIST)
+					alarmSound(TRIGGER_BATTLELIST_LIST);
+			}
+		}
+		if (config->trigger&TRIGGER_BATTLELIST_GM){
+			if (triggerBattleListGm(config->whiteList,config->optionsBattleList)){
+				alarm |= TRIGGER_BATTLELIST_GM;
+				if (config->sound&TRIGGER_BATTLELIST_GM)
+					alarmSound(TRIGGER_BATTLELIST_GM);
+			}
+		}
+		if (config->trigger&TRIGGER_BATTLELIST_MONSTER){
+			if (triggerBattleListMonster(config->whiteList,config->optionsBattleList)){
+				alarm |= TRIGGER_BATTLELIST_MONSTER;
+				if (config->sound&TRIGGER_BATTLELIST_MONSTER)
+					alarmSound(TRIGGER_BATTLELIST_MONSTER);
+			}
+		}
+		if (config->trigger&TRIGGER_BATTLELIST_PLAYER){
+			if (triggerBattleListPlayer(config->whiteList,config->optionsBattleList)){
+				alarm |= TRIGGER_BATTLELIST_PLAYER;
+				if (config->sound&TRIGGER_BATTLELIST_PLAYER)
+					alarmSound(TRIGGER_BATTLELIST_PLAYER);
+			}
 		}
 	
 
@@ -798,7 +1095,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"runaway/y"))					m_configData->runawayY				= atoi(paramValue);
 	if (!strcmp(paramName,"runaway/z"))					m_configData->runawayZ				= atoi(paramValue);
 	if (!strcmp(paramName,"trigger"))					m_configData->trigger				= atoi(paramValue);
-	if (!strcmp(paramName,"action/BattleListGM"))		m_configData->actionBattleListGM	= atoi(paramValue);
+	if (!strcmp(paramName,"action/BattleListGm"))		m_configData->actionBattleListGm	= atoi(paramValue);
 	if (!strcmp(paramName,"action/BattleListPlayer"))	m_configData->actionBattleListPlayer	= atoi(paramValue);
 	if (!strcmp(paramName,"action/BattleListList"))		m_configData->actionBattleListList	= atoi(paramValue);
 	if (!strcmp(paramName,"action/BattleListMonster"))	m_configData->actionBattleListMonster	= atoi(paramValue);
@@ -852,7 +1149,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"runaway/y"))					sprintf(buf,"%d",m_configData->runawayY);
 	if (!strcmp(paramName,"runaway/z"))					sprintf(buf,"%d",m_configData->runawayZ);
 	if (!strcmp(paramName,"trigger"))					sprintf(buf,"%d",m_configData->trigger);
-	if (!strcmp(paramName,"action/BattleListGM"))		sprintf(buf,"%d",m_configData->actionBattleListGM);
+	if (!strcmp(paramName,"action/BattleListGm"))		sprintf(buf,"%d",m_configData->actionBattleListGm);
 	if (!strcmp(paramName,"action/BattleListList"))		sprintf(buf,"%d",m_configData->actionBattleListList);
 	if (!strcmp(paramName,"action/BattleListPlayer"))	sprintf(buf,"%d",m_configData->actionBattleListPlayer);
 	if (!strcmp(paramName,"action/BattleListMonster"))	sprintf(buf,"%d",m_configData->actionBattleListMonster);
@@ -910,7 +1207,7 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 5: return "runaway/y";
 	case 6: return "runaway/z";
 	case 7: return "trigger";
-	case 8: return "action/BattleListGM";
+	case 8: return "action/BattleListGm";
 	case 9: return "action/BattleListPlayer";
 	case 10: return "action/BattleListMonster";
 	case 11: return "action/BattleListList";
