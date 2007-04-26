@@ -38,6 +38,7 @@ CConfigData::CConfigData()
 	restackToRight=0;
 	pickupToHand=0;
 	periodFrom=periodTo=1;
+	capLimit=5;
 }
 
 CConfigData::~CConfigData()

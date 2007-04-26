@@ -21,7 +21,7 @@ Filter=N
 [DLG:IDD_CONFIG]
 Type=1
 Class=CConfigDialog
-ControlCount=32
+ControlCount=34
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_STATIC,static,1342308864
@@ -54,6 +54,8 @@ Control29=IDC_STATIC,static,1342308864
 Control30=IDC_PERIOD_FROM,edit,1350631552
 Control31=IDC_PERIOD_TO,edit,1350631552
 Control32=IDC_STATIC,static,1342308864
+Control33=IDC_STATIC,static,1342308864
+Control34=IDC_CAP_LIMIT,edit,1350631552
 
 [CLS:CConfigDialog]
 Type=0
@@ -62,5 +64,5 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_PERIOD_FROM
+LastObject=CConfigDialog
 

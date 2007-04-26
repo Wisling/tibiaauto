@@ -57,6 +57,7 @@ public:
 	int actionRunawayReached;
 
 	int sound;
+	int allActions;
 
 	char whiteList[100][32];
 	char* status;
