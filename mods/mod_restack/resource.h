@@ -44,6 +44,7 @@
 #define IDC_CONTAINER_MODE_7            3016
 #define IDC_PERIOD_TO                   3016
 #define IDC_CONTAINER_STATUS7           3017
+#define IDC_CAP_LIMIT                   3017
 #define IDC_CONTAINER_MODE_8            3018
 #define IDC_CONTAINER_STATUS8           3019
 #define IDC_CONTAINER_MODE_9            3020

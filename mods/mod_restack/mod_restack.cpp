@@ -172,9 +172,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 		delete item;
-		
+				
 		// pickup throwable (spears, small stones)
-		if ((config->pickupSpears||config->pickupToHand)&&!periodRemaining)
+		if ((config->pickupSpears||config->pickupToHand)&&!periodRemaining&&self->cap>config->capLimit)
 		{
 			int offsetX=-2;
 			int offsetY=-2;
@@ -403,7 +403,7 @@ void CMod_restackApp::enableControls()
 
 char *CMod_restackApp::getVersion()
 {
-	return "2.5";
+	return "2.6";
 }
 
 
@@ -444,6 +444,11 @@ int CMod_restackApp::validateConfig(int showAlerts)
 		if (showAlerts) AfxMessageBox("period from must be <= period to!");
 		return 0;
 	}
+	if (m_configData->capLimit<0)
+	{
+		if (showAlerts) AfxMessageBox("capacity limit must be >= 0!");
+		return 0;
+	}
 	return 1;
 }
 
@@ -475,6 +480,7 @@ void CMod_restackApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"pickup/toHand")) m_configData->pickupToHand=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/periodFrom")) m_configData->periodFrom=atoi(paramValue);
 	if (!strcmp(paramName,"pickup/periodTo")) m_configData->periodTo=atoi(paramValue);
+	if (!strcmp(paramName,"pickup/capLimit")) m_configData->capLimit=atoi(paramValue);
 
 }
 
@@ -504,6 +510,7 @@ char *CMod_restackApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"pickup/toHand")) sprintf(buf,"%d",m_configData->pickupToHand);
 	if (!strcmp(paramName,"pickup/periodFrom")) sprintf(buf,"%d",m_configData->periodFrom);
 	if (!strcmp(paramName,"pickup/periodTo")) sprintf(buf,"%d",m_configData->periodTo);
+	if (!strcmp(paramName,"pickup/capLimit")) sprintf(buf,"%d",m_configData->capLimit);
 	return buf;
 }
 
@@ -532,6 +539,7 @@ char *CMod_restackApp::getConfigParamName(int nr)
 	case 18: return "pickup/place/CC";
 	case 19: return "pickup/periodFrom";
 	case 20: return "pickup/periodTo";
+	case 21: return "pickup/capLimit";
 	default:
 		return NULL;
 	}

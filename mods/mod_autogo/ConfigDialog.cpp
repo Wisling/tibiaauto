@@ -609,7 +609,9 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_soundRunawayReached.GetCheck()?TRIGGER_RUNAWAY_REACHED:0)
 		);
 
+	
 	newConfigData->actionSign		= m_actionSign.GetCurSel();
+	
 	newConfigData->actionMessage	= m_actionMessage.GetCurSel();
 	newConfigData->actionHpLoss		= m_actionHpLoss.GetCurSel();
 	newConfigData->actionHpBelow	= m_actionHpBelow.GetCurSel();
@@ -629,6 +631,26 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->actionBattleListList= m_actionBattleListList.GetCurSel();	
 	newConfigData->actionBattleListMonster= m_actionBattleListMonster.GetCurSel();	
 	newConfigData->actionBattleListPlayer= m_actionBattleListPlayer.GetCurSel();	
+	newConfigData->allActions=0;
+	newConfigData->allActions|=newConfigData->actionMessage;
+	newConfigData->allActions|=newConfigData->actionHpLoss;
+	newConfigData->allActions|=newConfigData->actionHpBelow;
+	newConfigData->allActions|=newConfigData->actionHpAbove;
+	newConfigData->allActions|=newConfigData->actionManaBelow;
+	newConfigData->allActions|=newConfigData->actionManaAbove;
+	newConfigData->allActions|=newConfigData->actionMove;
+	newConfigData->allActions|=newConfigData->actionSoulPointBelow;
+	newConfigData->allActions|=newConfigData->actionSoulPointAbove;
+	newConfigData->allActions|=newConfigData->actionBlank;
+	newConfigData->allActions|=newConfigData->actionCapacity;
+	newConfigData->allActions|=newConfigData->actionRunawayReached;
+	newConfigData->allActions|=newConfigData->actionOutOfFood;
+	newConfigData->allActions|=newConfigData->actionOutOfSpace;
+	newConfigData->allActions|=newConfigData->actionOutOfCustom;
+	newConfigData->allActions|=newConfigData->actionBattleListGm;
+	newConfigData->allActions|=newConfigData->actionBattleListList;
+	newConfigData->allActions|=newConfigData->actionBattleListMonster;
+	newConfigData->allActions|=newConfigData->actionBattleListPlayer;
 
 
 	m_hpBelow.GetWindowText(buf,127);	newConfigData->optionsHpBelow=atoi(buf);
@@ -715,18 +737,15 @@ BOOL CConfigDialog::OnInitDialog()
 	CRect lpRect;
 
 	for (int i=0;list[i]!=NULL;i++){
-		list[i]->InsertString(ACTION_NONE_POS,"(none)");
-		//list[i]->SetItemData(ACTION_NONE_POS,ACTION_NONE);
-		list[i]->InsertString(ACTION_SUSPEND_POS,"Suspend macro");
-		//list[i]->SetItemData(ACTION_SUSPEND_POS,ACTION_SUSPEND);
-		list[i]->InsertString(ACTION_LOGOUT_POS,"Logout");
-		//list[i]->SetItemData(ACTION_LOGOUT_POS,ACTION_LOGOUT);
-		list[i]->InsertString(ACTION_KILL_POS,"Logout+Kill");
-		//list[i]->SetItemData(ACTION_KILL_POS,ACTION_KILL);
-		list[i]->InsertString(ACTION_SHUTDOWN_POS,"Logout+Shutdown");
-		//list[i]->SetItemData(ACTION_SHUTDOWN_POS,ACTION_SHUTDOWN);
-		list[i]->InsertString(ACTION_RUNAWAY_POS,"Go to runaway");
-		//list[i]->SetItemData(ACTION_RUNAWAY_POS,ACTION_RUNAWAY);
+		list[i]->InsertString(ACTION_NONE_POS,"(none)");		
+		list[i]->InsertString(ACTION_SUSPEND_POS,"Suspend macro");		
+		list[i]->InsertString(ACTION_LOGOUT_POS,"Logout");		
+		list[i]->InsertString(ACTION_KILL_POS,"Logout+Kill");		
+		list[i]->InsertString(ACTION_SHUTDOWN_POS,"Logout+Shutdown");		
+		list[i]->InsertString(ACTION_RUNAWAY_POS,"Runaway");
+		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS,"Runaway+half attack");
+		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS,"Runaway+no attack");
+		
 		
 		//T4: Corrects problem with dropdown list height problem
 		list[i]->GetWindowRect( &lpRect );

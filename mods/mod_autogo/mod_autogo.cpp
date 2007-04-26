@@ -71,6 +71,8 @@ int actionPos2ID(int pos){
 		case ACTION_KILL_POS:		return ACTION_KILL;
 		case ACTION_SHUTDOWN_POS:	return ACTION_SHUTDOWN;
 		case ACTION_RUNAWAY_POS:	return ACTION_RUNAWAY;
+		case ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP;
+		case ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP;
 		default:					return 0;
 	}
 
@@ -381,9 +383,9 @@ void alarmAction(int alarmId, CConfigData *config){
 		int path[10000];
 		delete self;
 		self = reader.readSelfCharacter();
-
-		if (self->x!=config->runawayX || self->y!=config->runawayY || self->z!=config->runawayZ){
 		
+		if (self->x!=config->runawayX || self->y!=config->runawayY || self->z!=config->runawayZ){
+			
 			// proceed with path searching									
 			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->runawayX,config->runawayY,config->runawayZ,0,path);
 			int pathSize;
@@ -394,17 +396,18 @@ void alarmAction(int alarmId, CConfigData *config){
 			}
 		}
 		delete self;
-	}else if (iAction&ACTION_RUNAWAY){
+	}else if (config->allActions&ACTION_RUNAWAY){
+		// support for 'go back to act'
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CMemConstData memConstData = reader.getMemConstData();
 		CTibiaMapProxy tibiaMap;
-
+		
 		int path[10000];
 		delete self;
 		self = reader.readSelfCharacter();
-
+		
 		if (self->x!=config->actX || self->y!=config->actY || self->z!=config->actZ){
-
+			
 			CModuleUtil::sleepWithStop(2000,&toolThreadShouldStop);
 			
 			// proceed with path searching									
@@ -440,8 +443,7 @@ int triggerRunawayReached(CConfigData *config)
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int maxDistance=config->optionsRunawayReached;
 	int ret=1;
-	char buf[128];
-	
+
 
 	if (self->z!=config->runawayZ) ret=0;
 	if (abs(self->x-config->runawayX)+abs(self->y-config->runawayY)>maxDistance) ret=0;

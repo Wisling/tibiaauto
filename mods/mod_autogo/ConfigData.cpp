@@ -57,6 +57,7 @@ CConfigData::CConfigData()
 	actionOutOfSpace = 0;
 	actionOutOfCustom = 0;
 	actionRunawayReached = 0;
+	allActions=0;
 
 	sound = 0;
 
