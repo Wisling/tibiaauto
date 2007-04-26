@@ -34,8 +34,8 @@ public:
 	int optionsOutOfCustomItem;
 	int optionsRunawayReached;
 
-	int action;
-	int actionBattleListGM;
+	//int action;
+	int actionBattleListGm;
 	int actionBattleListList;
 	int actionBattleListPlayer;
 	int actionBattleListMonster;

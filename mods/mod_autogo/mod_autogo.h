@@ -21,8 +21,14 @@
 // See mod_autogo.cpp for the implementation of this class
 //
 
-int triggerMessage(void);
+struct tibiaMessage
+{
+	int type;
+	char msg[1000];
+};
+
 int actionPos2ID(int);
+struct tibiaMessage *triggerMessage();
 
 class CMod_autogoApp : public CWinApp, public IModuleInterface
 {
