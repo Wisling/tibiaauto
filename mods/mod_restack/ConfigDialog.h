@@ -29,6 +29,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CEdit	m_capLimit;
 	CButton	m_pickupCC;
 	CEdit	m_periodTo;
 	CEdit	m_periodFrom;

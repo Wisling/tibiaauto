@@ -30,6 +30,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_CAP_LIMIT, m_capLimit);
 	DDX_Control(pDX, IDC_TOOL_AMMORESTACK_PICKUP_CC, m_pickupCC);
 	DDX_Control(pDX, IDC_PERIOD_TO, m_periodTo);
 	DDX_Control(pDX, IDC_PERIOD_FROM, m_periodFrom);
@@ -170,6 +171,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_pickupToHand.SetCheck(configData->pickupToHand);
 	sprintf(buf,"%d",configData->periodFrom);m_periodFrom.SetWindowText(buf);
 	sprintf(buf,"%d",configData->periodTo);m_periodTo.SetWindowText(buf);
+	sprintf(buf,"%d",configData->capLimit);m_capLimit.SetWindowText(buf);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -207,6 +209,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->pickupToHand=m_pickupToHand.GetCheck();
 	m_periodFrom.GetWindowText(buf,127);newConfigData->periodFrom=atoi(buf);
 	m_periodTo.GetWindowText(buf,127);newConfigData->periodTo=atoi(buf);
+	m_capLimit.GetWindowText(buf,127);newConfigData->capLimit=atoi(buf);
 	
 
 	return newConfigData;
