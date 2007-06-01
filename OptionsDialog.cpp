@@ -32,6 +32,8 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDialog)
+	DDX_Control(pDX, IDC_SIZE_USAGESTATS, m_sizeUsagestats);
+	DDX_Control(pDX, IDC_SEND_USAGESTATS, m_send4);
 	DDX_Control(pDX, IDC_SEND_MAPS, m_send3);
 	DDX_Control(pDX, IDC_SEND_LOOTSTATS, m_send2);
 	DDX_Control(pDX, IDC_SEND_CREATURESTATS, m_send1);
@@ -50,6 +52,7 @@ BEGIN_MESSAGE_MAP(COptionsDialog, CDialog)
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_SEND_MAPS, OnSendMaps)
+	ON_BN_CLICKED(IDC_SEND_USAGESTATS, OnSendUsagestats)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -166,13 +169,19 @@ void COptionsDialog::refreshStatFiles()
 	sprintf(buf,"%dk",flen/1024);
 	m_sizeCreatureStats.SetWindowText(buf);	
 
+	f = fopen("tibiaauto-stats-usage.txt","a+");
+	fseek(f,0,SEEK_END);
+	flen=ftell(f);
+	fclose(f);		
+	sprintf(buf,"%dk",flen/1024);
+	m_sizeUsagestats.SetWindowText(buf);	
+
 }
 
 void COptionsDialog::OnSendCreaturestats() 
 {
 	sendFile("tibiaauto-stats-creatures.txt");	
 }
-
 
 
 
@@ -264,6 +273,7 @@ void COptionsDialog::sendFile(char *fname)
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
 		//m_send3.EnableWindow(false);
+		m_send4.EnableWindow(false);
 		m_progress.SetPos(0);
 		m_progress.SetRange(0,100);
 		m_progress.ShowWindow(SW_SHOW);
@@ -294,6 +304,7 @@ void COptionsDialog::OnTimer(UINT nIDEvent)
 			m_send1.EnableWindow(true);
 			m_send2.EnableWindow(true);
 			//m_send3.EnableWindow(true);
+			m_send4.EnableWindow(true);
 			refreshStatFiles();
 		} else {
 			SetTimer(10001,100,NULL);
@@ -342,9 +353,15 @@ void COptionsDialog::sendMaps(char *path)
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
 		//m_send3.EnableWindow(false);
+		m_send4.EnableWindow(false);
 		m_progress.SetPos(0);
 		m_progress.SetRange(0,100);
 		m_progress.ShowWindow(SW_SHOW);
 		SetTimer(10001,100,NULL);
 	}
+}
+
+void COptionsDialog::OnSendUsagestats() 
+{
+	sendFile("tibiaauto-stats-usage.txt");	
 }

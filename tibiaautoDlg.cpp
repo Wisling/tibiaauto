@@ -299,7 +299,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	}
 	
 
-	refreshAds();
+	refreshAds();	
 
 	// set shell tray
 	NOTIFYICONDATA data;
@@ -314,6 +314,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 	
 	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
+	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
 		
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -402,8 +403,13 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1003)
 	{
-		refreshAds();
+		refreshAds();		
 	}
+	if (nIDEvent==1004)
+	{		
+		reportUsage();
+	}
+
 
 	
 	
@@ -1029,7 +1035,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.14.0",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.14.1",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
@@ -1066,4 +1072,25 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		
 	}
 	return CDialog::WindowProc(message, wParam, lParam);	
+}
+
+void CTibiaautoDlg::reportUsage()
+{
+	FILE *f = fopen("tibiaauto-stats-usage.txt","a+");
+	if (f)
+	{
+		int tm=time(NULL);
+		int count=CModuleProxy::allModulesCount;
+		int pos;
+		int checksum=tm%177;
+		fprintf(f,"version=1.14.1,tm=%d,",tm);
+		for (pos=0;pos<count;pos++)
+		{
+			CModuleProxy *mod=CModuleProxy::allModules[pos];
+			fprintf(f,"%s=%d,",mod->getName(),mod->isStarted());
+			checksum=checksum*3+strlen(mod->getName())*9+mod->isStarted()*13;
+		}
+		fprintf(f,"checksum=%d\n",checksum%1000000);
+		fclose(f);
+	}
 }

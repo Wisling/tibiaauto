@@ -159,12 +159,12 @@ BEGIN
                     IDC_STATIC,7,7,172,41,WS_BORDER
 END
 
-IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 185, 167
+IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 185, 199
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tibia Auto: general options"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,65,146,50,14
+    DEFPUSHBUTTON   "OK",IDOK,65,178,50,14
     PUSHBUTTON      "Send",IDC_SEND_LOOTSTATS,126,18,40,14
     GROUPBOX        "Loot statistics",IDC_STATIC,7,7,171,31
     LTEXT           "Statistics files size: ",IDC_STATIC,16,18,61,14,
@@ -177,11 +177,17 @@ BEGIN
     LTEXT           "10000000",IDC_SIZE_CREATURESTATS,83,52,37,14,
                     SS_CENTERIMAGE
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
-                    NOT WS_VISIBLE | WS_BORDER,7,122,171,14
+                    NOT WS_VISIBLE | WS_BORDER,7,156,171,14
     GROUPBOX        "Tibia maps",IDC_STATIC,7,76,171,36
     PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,40,14,WS_DISABLED
     LTEXT           "Tibia client maps are used to build a Tibia world map.",
                     IDC_STATIC,16,88,83,22
+    PUSHBUTTON      "Send",IDC_SEND_USAGESTATS,126,129,40,14
+    GROUPBOX        "Usage statistics",IDC_STATIC,7,118,171,31
+    LTEXT           "Statistics files size: ",IDC_STATIC,16,129,61,14,
+                    SS_CENTERIMAGE
+    LTEXT           "10000000",IDC_SIZE_USAGESTATS,83,129,37,14,
+                    SS_CENTERIMAGE
 END
 
 
@@ -258,7 +264,7 @@ BEGIN
         VERTGUIDE, 16
         VERTGUIDE, 126
         TOPMARGIN, 7
-        BOTTOMMARGIN, 160
+        BOTTOMMARGIN, 192
         HORZGUIDE, 32
     END
 END
@@ -326,8 +332,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 239, 306
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.14.0 for Tibia 7.92"
-FONT 8, "MS Sans Serif"
+CAPTION "Tibia Auto v 1.14.1 for Tibia 7.92"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,39,61,14

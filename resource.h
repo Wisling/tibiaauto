@@ -273,6 +273,8 @@
 #define IDC_PROGRESS                    1214
 #define IDC_SEND_MAPS                   1215
 #define IDC_BROWSER_ADS                 1216
+#define IDC_SEND_USAGESTATS             1216
+#define IDC_SIZE_USAGESTATS             1217
 #define IDC_MONSTERSHOW_FIRSTBUTTON     5000
 #define IDC_MAPSHOW_FIRSTBUTTON         6000
 #define ID_STOPMODULE_STARTMODULE       32771

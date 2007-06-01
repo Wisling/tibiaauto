@@ -6,6 +6,8 @@
 #include "MemReader.h"
 #include "MemUtil.h"
 #include "TibiaItemProxy.h"
+#include "TibiaTile.h"
+#include "TileReader.h"
 
 #include "TibiaItem.h"
 
@@ -34,6 +36,8 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 {	
 	int i;
 
+	
+	
 	CTibiaContainer *container = new CTibiaContainer();
 	long containerOffset=m_memAddressFirstContainer+containerNr*m_memLengthContainer;		
 	container->flagOnOff=CMemUtil::GetMemIntValue(containerOffset+0);	
@@ -43,10 +47,13 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 	container->itemsInside=CMemUtil::GetMemIntValue(containerOffset+56);
 
 	for (i=0;i<container->itemsInside;i++)
-	{
-		CTibiaItem *item = new CTibiaItem();
+	{		
+		CTibiaItem *item = new CTibiaItem();		
 		item->objectId = CMemUtil::GetMemIntValue(containerOffset+60+i*m_memLengthItem+0);
 		item->quantity = CMemUtil::GetMemIntValue(containerOffset+60+i*m_memLengthItem+4);		
+		CTileReader tileReader;
+		CTibiaTile *tile=tileReader.getTile(item->objectId);
+		if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;
 		item->pos = i;
 		container->items.Add(item);
 	};
@@ -56,8 +63,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 
 
 CTibiaCharacter *CMemReader::readSelfCharacter()
-{
-	
+{	
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
 	ch->hp = CMemUtil::GetMemIntValue(m_memAddressHP);
@@ -119,6 +125,9 @@ CTibiaItem * CMemReader::readItem(int locationAddress)
 
 	item->objectId = CMemUtil::GetMemIntValue(locationAddress + 0);
 	item->quantity = CMemUtil::GetMemIntValue(locationAddress + 4);
+	CTileReader tileReader;
+	CTibiaTile *tile=tileReader.getTile(item->objectId);
+	if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;
 
 	if (item->objectId==0)
 		item->quantity=0;
@@ -233,6 +242,9 @@ CTibiaItem * CMemReader::getTradeItemSelf(int nr)
 	CTibiaItem *item = new CTibiaItem();
 	item->objectId=CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemSelf+nr*m_memLengthItem);
 	item->quantity=CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemSelf+nr*m_memLengthItem+4);
+	CTileReader tileReader;
+	CTibiaTile *tile=tileReader.getTile(item->objectId);
+	if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;
 	item->pos=nr;
 	return item;
 }
@@ -242,6 +254,9 @@ CTibiaItem * CMemReader::getTradeItemPartner(int nr)
 	CTibiaItem *item = new CTibiaItem();
 	item->objectId=CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemPartner+nr*m_memLengthItem);
 	item->quantity=CMemUtil::GetMemIntValue(m_memAddressTradeFirstItemPartner+nr*m_memLengthItem+4);
+	CTileReader tileReader;
+	CTibiaTile *tile=tileReader.getTile(item->objectId);
+	if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;
 	item->pos=nr;
 	return item;
 }

@@ -19,6 +19,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDialog)
 	enum { IDD = IDD_OPTIONS };
+	CStatic	m_sizeUsagestats;
+	CButton	m_send4;
 	CButton	m_send3;
 	CButton	m_send2;
 	CButton	m_send1;
@@ -47,6 +49,7 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnClose();
 	afx_msg void OnSendMaps();
+	afx_msg void OnSendUsagestats();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

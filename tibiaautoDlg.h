@@ -142,6 +142,7 @@ public:
 	void passSecurityInfo(int value);
 		int shutdownCounter;
 private:
+	void reportUsage();
 	void refreshAds();
 	XercesDOMParser *parser;
 	int m_lightPower;
