@@ -33,6 +33,8 @@ public:
 	int optionsCapacity;
 	int optionsOutOfCustomItem;
 	int optionsRunawayReached;
+	int optionsHpBelowUntilRecovery;
+	int optionsManaBelowUntilRecovery;
 
 	//int action;
 	int actionBattleListGm;

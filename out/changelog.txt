@@ -1,13 +1,31 @@
-1.14.0, ???
+1.14.1, ???
+Defects:
+ Cave bot: fixed creature selection algorithm (bug since 1.13.2)
+ Cave bot: fixed creature killing priority
+ Cave bot: fixed stick to monster
+ Cave bot: improved loot from floor performance
+ Auto go/log: fixed ignore spells
+ Auto go/log: fixed white list support
+ General: fixed memory leak in kernel
+ General: fixed calculating of quantity of runes
+
+Small enhancements: 
+ Cave bot: looter will not open corpse if no looting needed at all
+ 
+
+1.14.0, 29.04.2007
 Defects:
  Auto attack: fixed depot walker to take < cap instead of <=
 
 Enhancements:
  * Auto go/log: added many many new alarms
+ * Auto go/log: added actions for runaway + half/full cavebot suspend and runaway + back
+ * Auto go/log: added force full recovery after hp/mana fall below boundary
  * Ammo restack: pickup throwable takes all objects instead of only one
  * Ammo restack: pickup throwable picks up also from under the player
  * Ammo restack: pickup throwable can now pickup every X seconds instead of immediately 
  * Ammo restack: when capacity below limit then pickup throwable is distabled
+ * General: added usage statistics
 
 1.13.4: 15.04.2007:
 Defects:

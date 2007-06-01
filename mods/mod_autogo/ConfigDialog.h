@@ -49,8 +49,9 @@
 #define ACTION_KILL				0x04
 #define ACTION_SHUTDOWN			0x08
 #define ACTION_RUNAWAY			0x10
-#define ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP			0x20
-#define ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP			0x20
+#define ACTION_RUNAWAY_BACK			0x20
+#define ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP			0x40
+#define ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP			0x80
 
 #define ACTION_NONE_POS			0
 #define ACTION_SUSPEND_POS		1
@@ -58,13 +59,18 @@
 #define ACTION_KILL_POS			3
 #define ACTION_SHUTDOWN_POS		4
 #define ACTION_RUNAWAY_POS		5
-#define ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS		6
-#define ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS		7
+#define ACTION_RUNAWAY_BACK_POS		6
+#define ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS		7
+#define ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS		8
 
 #define DIR_LEFT	1
 #define DIR_RIGHT	2
 #define DIR_UP		3
 #define DIR_DOWN	4
+
+
+
+
 
 class CMod_autogoApp;
 
@@ -82,10 +88,13 @@ public:
 	void enableControls();
 	void disableControls();
 	CConfigDialog(CMod_autogoApp *app,CWnd* pParent = NULL);   // standard constructor
+	static int actionPos2ID(int pos);
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_manaBelowUntilRecovery;
+	CButton	m_hpBelowUntilRecovery;
 	CButton	m_triggerOutOf;
 	CButton	m_triggerSoulPointAbove;
 	CButton	m_triggerManaBelow;
@@ -231,7 +240,7 @@ protected:
 
 private:
 	CMod_autogoApp * m_app;
-	char memWhiteList[100][64];
+	char memWhiteList[100][32];
 };
 
 //{{AFX_INSERT_LOCATION}}

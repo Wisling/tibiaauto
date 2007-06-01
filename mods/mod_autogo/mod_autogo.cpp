@@ -63,20 +63,6 @@ char suspendedModules[20][64];
 int suspendedCount = 0;
 
 
-int actionPos2ID(int pos){
-	switch (pos){
-		case ACTION_NONE_POS:		return ACTION_NONE;
-		case ACTION_SUSPEND_POS:	return ACTION_SUSPEND;
-		case ACTION_LOGOUT_POS:		return ACTION_LOGOUT;
-		case ACTION_KILL_POS:		return ACTION_KILL;
-		case ACTION_SHUTDOWN_POS:	return ACTION_SHUTDOWN;
-		case ACTION_RUNAWAY_POS:	return ACTION_RUNAWAY;
-		case ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP;
-		case ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP;
-		default:					return 0;
-	}
-
-}
 
 void actionTerminate(){
 	CMemReaderProxy reader;
@@ -151,7 +137,7 @@ int actionSuspend(int lSuspend){
 	return 0;
 }
 
-int OnList(char whiteList[][32],char name[]){
+int OnList(char whiteList[100][32],char name[]){
 	int i=0;
 	while (IsCharAlphaNumeric(whiteList[i][0])){
 		if (!strcmpi(whiteList[i],name)){
@@ -330,26 +316,31 @@ void alarmAction(int alarmId, CConfigData *config){
 
 	int iAction=0;
 	
-	if (alarmId&TRIGGER_SIGN)		{iAction|=actionPos2ID(config->actionSign);}
-	if (alarmId&TRIGGER_MESSAGE)	{iAction|=actionPos2ID(config->actionMessage);}
-	if (alarmId&TRIGGER_MOVE)		{iAction|=actionPos2ID(config->actionMove);}
-	if (alarmId&TRIGGER_HPLOSS)		{iAction|=actionPos2ID(config->actionHpLoss);}
-	if (alarmId&TRIGGER_HPBELOW)	{iAction|=actionPos2ID(config->actionHpBelow);}
-	if (alarmId&TRIGGER_HPABOVE)	{iAction|=actionPos2ID(config->actionHpAbove);}
-	if (alarmId&TRIGGER_MANABELOW)	{iAction|=actionPos2ID(config->actionManaBelow);}
-	if (alarmId&TRIGGER_MANAABOVE)	{iAction|=actionPos2ID(config->actionManaAbove);}
-	if (alarmId&TRIGGER_SOULPOINT_BELOW)	{iAction|=actionPos2ID(config->actionSoulPointBelow);}
-	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	{iAction|=actionPos2ID(config->actionSoulPointAbove);}
-	if (alarmId&TRIGGER_BLANK)		{iAction|=actionPos2ID(config->actionBlank);}
-	if (alarmId&TRIGGER_CAPACITY)	{iAction|=actionPos2ID(config->actionCapacity);}
-	if (alarmId&TRIGGER_RUNAWAY_REACHED)	{iAction|=actionPos2ID(config->actionRunawayReached);}
-	if (alarmId&TRIGGER_BATTLELIST_LIST)	{iAction|=actionPos2ID(config->actionBattleListList);}
-	if (alarmId&TRIGGER_BATTLELIST_GM)	{iAction|=actionPos2ID(config->actionBattleListGm);}
-	if (alarmId&TRIGGER_BATTLELIST_PLAYER)	{iAction|=actionPos2ID(config->actionBattleListPlayer);}
-	if (alarmId&TRIGGER_BATTLELIST_MONSTER)	{iAction|=actionPos2ID(config->actionBattleListMonster);}
-	if (alarmId&TRIGGER_OUTOF_FOOD)	{iAction|=actionPos2ID(config->actionOutOfFood);}
-	if (alarmId&TRIGGER_OUTOF_SPACE)	{iAction|=actionPos2ID(config->actionOutOfSpace);}
-	if (alarmId&TRIGGER_OUTOF_CUSTOM)	{iAction|=actionPos2ID(config->actionOutOfCustom);}
+	if (alarmId&TRIGGER_SIGN)		{iAction|=CConfigDialog::actionPos2ID(config->actionSign);}
+	if (alarmId&TRIGGER_MESSAGE)	{iAction|=CConfigDialog::actionPos2ID(config->actionMessage);}
+	if (alarmId&TRIGGER_MOVE)		{iAction|=CConfigDialog::actionPos2ID(config->actionMove);}
+	if (alarmId&TRIGGER_HPLOSS)		{iAction|=CConfigDialog::actionPos2ID(config->actionHpLoss);}
+	if (alarmId&TRIGGER_HPBELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionHpBelow);}
+	if (alarmId&TRIGGER_HPABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionHpAbove);}
+	if (alarmId&TRIGGER_MANABELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionManaBelow);}
+	if (alarmId&TRIGGER_MANAABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionManaAbove);}
+	if (alarmId&TRIGGER_SOULPOINT_BELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionSoulPointBelow);}
+	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionSoulPointAbove);}
+	if (alarmId&TRIGGER_BLANK)		{iAction|=CConfigDialog::actionPos2ID(config->actionBlank);}
+	if (alarmId&TRIGGER_CAPACITY)	{iAction|=CConfigDialog::actionPos2ID(config->actionCapacity);}
+	if (alarmId&TRIGGER_RUNAWAY_REACHED)	{iAction|=CConfigDialog::actionPos2ID(config->actionRunawayReached);}
+	if (alarmId&TRIGGER_BATTLELIST_LIST)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListList);}
+	if (alarmId&TRIGGER_BATTLELIST_GM)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListGm);}
+	if (alarmId&TRIGGER_BATTLELIST_PLAYER)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListPlayer);}
+	if (alarmId&TRIGGER_BATTLELIST_MONSTER)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListMonster);}
+	if (alarmId&TRIGGER_OUTOF_FOOD)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfFood);}
+	if (alarmId&TRIGGER_OUTOF_SPACE)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfSpace);}
+	if (alarmId&TRIGGER_OUTOF_CUSTOM)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfCustom);}
+
+	// now expand composed actions
+	if (iAction&ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP) iAction|=ACTION_RUNAWAY;
+	if (iAction&ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP) iAction|=ACTION_RUNAWAY;
+	if (iAction&ACTION_RUNAWAY_BACK) iAction|=ACTION_RUNAWAY;
 	
 
 	//if (iAction&ACTION_SUSPEND){
@@ -375,6 +366,22 @@ void alarmAction(int alarmId, CConfigData *config){
 		Sleep(2000);
 			
 	}
+	if (iAction&ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP)
+	{
+		reader.setGlobalVariable("caveboot_halfsleep","true");
+	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP)
+	{
+		// support for 'cancel of caveboot halfsleep'
+		reader.setGlobalVariable("caveboot_halfsleep","false");
+	}
+	if (iAction&ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP)
+	{
+		reader.setGlobalVariable("caveboot_fullsleep","true");
+	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP)
+	{
+		// support for 'cancel of caveboot fullsleep'
+		reader.setGlobalVariable("caveboot_fullsleep","false");
+	}
 	if (iAction&ACTION_RUNAWAY){
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CMemConstData memConstData = reader.getMemConstData();
@@ -396,7 +403,7 @@ void alarmAction(int alarmId, CConfigData *config){
 			}
 		}
 		delete self;
-	}else if (config->allActions&ACTION_RUNAWAY){
+	}else if (config->allActions&ACTION_RUNAWAY_BACK){
 		// support for 'go back to act'
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CMemConstData memConstData = reader.getMemConstData();
@@ -724,19 +731,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastMoved = 0;
 	int lastHp = self->hp;
 	int lastMana = self->mana;
+	int recoveryAlarmHp=0;
+	int recoveryAlarmMana=0;
 	
 	int alarm;
 
 	delete self;	
 
 	PlaySound(0, 0, 0);
-	
-	
+		
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(100);	
 		alarm = 0;
-		
+	
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		if (recoveryAlarmMana&&self->mana==self->maxMana) recoveryAlarmMana=0;
+		if (recoveryAlarmHp&&self->hp==self->maxMana) recoveryAlarmHp=0;
+		delete self;	
 	
 
 		if (config->trigger&TRIGGER_SIGN){
@@ -761,14 +773,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		if (config->trigger&TRIGGER_MESSAGE){
 			struct tibiaMessage *msg = triggerMessage();
+
+			
 			int isSpell = msg && (config->optionsMessage&MESSAGE_IGNORE_SPELLS) && isSpellMessage(msg->msg);
 			
-			if (config->optionsMessage&MESSAGE_PUBLIC && msg && (msg->type == 1 || msg->type == 2) /*|| iType == 3*/){
+			if (config->optionsMessage&MESSAGE_PUBLIC && !isSpell && msg && (msg->type == 1 || msg->type == 2) /*|| iType == 3*/){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
 					alarmSound(TRIGGER_MESSAGE);
 			}
-			if (config->optionsMessage&MESSAGE_PRIVATE && msg && msg->type == 4){
+			if (config->optionsMessage&MESSAGE_PRIVATE && !isSpell && msg && msg->type == 4){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
 					alarmSound(TRIGGER_MESSAGE);
@@ -809,10 +823,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		if (config->trigger&TRIGGER_HPBELOW){
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->hp < config->optionsHpBelow){
+			if (self->hp < config->optionsHpBelow||recoveryAlarmHp){
 				alarm |= TRIGGER_HPBELOW;
 				if (config->sound&TRIGGER_HPBELOW)
 					alarmSound(TRIGGER_HPBELOW);
+				if (config->optionsHpBelowUntilRecovery) recoveryAlarmHp=1;
 			}
 			lastHp = self->hp;
 			delete self;
@@ -829,10 +844,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		if (config->trigger&TRIGGER_MANABELOW){
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->mana < config->optionsManaBelow){
+			if (self->mana < config->optionsManaBelow||recoveryAlarmMana){
 				alarm |= TRIGGER_MANABELOW;
 				if (config->sound&TRIGGER_MANABELOW)
 					alarmSound(TRIGGER_MANABELOW);
+				if (config->optionsManaBelowUntilRecovery) recoveryAlarmMana=1;
 			}
 			lastMana = self->mana;
 			delete self;
@@ -943,6 +959,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	}
 	// clear current status
 	config->status[0]='\0';
+
+	// clear cavebot half/full sleep vars
+	reader.setGlobalVariable("caveboot_halfsleep","false");
+	reader.setGlobalVariable("caveboot_fullsleep","false");
 
 	toolThreadShouldStop=0;
 	return 0;
@@ -1130,6 +1150,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"options/Capacity"))			m_configData->optionsCapacity		= atoi(paramValue);
 	if (!strcmp(paramName,"options/OutOfCustomItem"))	m_configData->optionsOutOfCustomItem= atoi(paramValue);
 	if (!strcmp(paramName,"options/RunawayReached"))	m_configData->optionsRunawayReached= atoi(paramValue);
+	if (!strcmp(paramName,"options/HpBelowUntilRecovery"))	m_configData->optionsHpBelowUntilRecovery=atoi(paramValue);
+	if (!strcmp(paramName,"options/ManaBelowUntilRecovery"))	m_configData->optionsManaBelowUntilRecovery=atoi(paramValue);
 	if (!strcmp(paramName,"sound"))						m_configData->sound					= atoi(paramValue);
 	if (!strcmp(paramName,"whiteList")){
 		if (currentPos>99)
@@ -1184,6 +1206,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"options/Capacity"))			sprintf(buf,"%d",m_configData->optionsCapacity);
 	if (!strcmp(paramName,"options/OutOfCustomItem"))	sprintf(buf,"%d",m_configData->optionsOutOfCustomItem);
 	if (!strcmp(paramName,"options/RunawayReached"))	sprintf(buf,"%d",m_configData->optionsRunawayReached);
+	if (!strcmp(paramName,"options/HpBelowUntilRecovery"))	sprintf(buf,"%d",m_configData->optionsHpBelowUntilRecovery);	
+	if (!strcmp(paramName,"options/ManaBelowUntilRecovery"))	sprintf(buf,"%d",m_configData->optionsManaBelowUntilRecovery);	
 	if (!strcmp(paramName,"sound"))						sprintf(buf,"%d",m_configData->sound);
 	if (!strcmp(paramName,"whiteList")){		
 		if (currentPos<100){				
@@ -1244,6 +1268,8 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 40: return "options/OutOfCustomItem";
 	case 41: return "sound";
 	case 42: return "whiteList";
+	case 43: return "options/ManaBelowUntilRecovery";
+	case 44: return "options/HpBelowUntilRecovery";
 	default:
 		return NULL;
 	}
