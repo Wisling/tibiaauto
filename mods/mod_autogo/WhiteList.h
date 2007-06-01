@@ -15,7 +15,7 @@ class CWhiteList : public CDialog
 // Construction
 public:
 	char* whiteList;
-	CWhiteList(char whiteListParam[][64], CWnd* pParent = NULL);   // standard constructor
+	CWhiteList(char whiteListParam[100][32], CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CWhiteList)

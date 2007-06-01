@@ -781,7 +781,7 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z)
 }
 
 /////////////////////////////////////////////////////////////////////////////
-void droppedLootCheck(CConfigData *config, int lootedItemId)
+void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize)
 {		
 	char buf[128];
 	CMemReaderProxy reader;
@@ -823,13 +823,18 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 			return;
 		}
 
-
+		int foundLootedObjectId=0;
+		
 		for (x=-7;x<=7;x++)
 		{
 			for (y=-5;y<=5;y++)
-			{				
-				if (isItemCovered(x,y,lootedItemId)||isItemOnTop(x,y,lootedItemId)) 
-				{
+			{						
+				int f1=isItemCovered(x,y,lootedArr,lootedArrSize);
+				int f2=isItemOnTop(x,y,lootedArr,lootedArrSize);
+				if (f1) foundLootedObjectId=f1;
+				if (f2) foundLootedObjectId=f2;
+			
+				if (f1||f2) {								
 					// there is the lootedItem (on top or covered)
 					int path[15];
 					int pathSize=0;
@@ -848,11 +853,17 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 						bestX=x;
 						bestY=y;
 						bestPath=pathSize;
-						sprintf(buf,"Floor loot: item (%d,%d,%d)",x,y,pathSize);
+						sprintf(buf,"Loot from floor: item (%d,%d,%d)",x,y,pathSize);
 						if (config->debug) registerDebug(buf);						
 					}					
 				}
-			}
+				if (foundLootedObjectId) break;
+			} // for y
+		} // for x
+		if (foundLootedObjectId)
+		{			
+			sprintf(buf,"Loot from floor: found looted object id=%d",foundLootedObjectId);
+			if (config->debug) registerDebug(buf);
 		}
 
 		if (config->debug) registerDebug("Loot from floor: before anything to loot check");
@@ -865,11 +876,11 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 			int walkIter;				
 			CTibiaCharacter *self2 = reader.readSelfCharacter();				
 			
-			for (walkIter=0;walkIter<5||(self->x+x==self2->x&&self->y+y==self2->y&&self->z==self2->z);walkIter++)
+			for (walkIter=0;walkIter<5;walkIter++)
 			{
 				delete self2;
 				self2 = reader.readSelfCharacter();				
-				if (self2->x==self->x+bestX&&self2->y==self->y&&self2->z==self->z)
+				if (self2->x==self->x+bestX&&self2->y==self->y+bestY&&self2->z==self->z)
 				{
 					// no need to walk as we are on position already
 					break;
@@ -925,13 +936,13 @@ void droppedLootCheck(CConfigData *config, int lootedItemId)
 					}					
 				}
 extBreak:
-				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset",offsetX,offsetY);
+				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
 				if (config->debug) registerDebug(buf);
 				if (offsetX!=2&&offsetY!=2)
 				{
 					int uncoverIter=0;
 					// do it only when drop place if found
-					while (uncoverIter++<10&&isItemCovered(0,0,lootedItemId)&&!isItemOnTop(0,0,lootedItemId))
+					while (uncoverIter++<10&&isItemCovered(0,0,foundLootedObjectId)&&!isItemOnTop(0,0,foundLootedObjectId))
 					{
 						if (config->debug) registerDebug("Loot from floor: uncovering item");
 						int objectId=itemOnTopCode(0,0);
@@ -939,12 +950,14 @@ extBreak:
 						sender.moveObjectFromFloorToFloor(objectId,self2->x,self2->y,self2->z,self2->x+offsetX,self2->y+offsetY,self2->z,qty);
 						Sleep(250);
 					}
-					if (isItemOnTop(0,0,lootedItemId))
+					if (isItemOnTop(0,0,foundLootedObjectId))
 					{
 						if (config->debug) registerDebug("Loot from floor: picking up item");
 						int qty=itemOnTopQty(0,0);
-						sender.moveObjectFromFloorToContainer(lootedItemId,self2->x,self2->y,self->z,0x40+freeContNr,freeContPos,qty);
+						sender.moveObjectFromFloorToContainer(foundLootedObjectId,self2->x,self2->y,self->z,0x40+freeContNr,freeContPos,qty);
 						CModuleUtil::waitForItemsInsideChange(freeContNr,freeContInside);
+					} else {
+						if (config->debug) registerDebug("Loot from floor: bad luck - item is not on top");
 					}
 					
 				}
@@ -1028,6 +1041,21 @@ int getAttackPriority(CConfigData *config,char *monsterName)
 
 	return -1;
 }
+
+int isInHalfSleep()
+{
+	CMemReaderProxy reader;
+	char *var=reader.getGlobalVariable("caveboot_halfsleep");
+	if (var==NULL||strcmp(var,"true"))  return 0; else return 1;
+}
+
+int isInFullSleep()
+{
+	CMemReaderProxy reader;
+	char *var=reader.getGlobalVariable("caveboot_fullsleep");
+	if (var==NULL||strcmp(var,"true"))  return 0; else return 1;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -1117,9 +1145,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (config->debug) 
 		{
 			char buf[256];
-			sprintf(buf,"Next loop. States: %d, %d, %d, %d",globalAutoAttackStateAttack,globalAutoAttackStateLoot,globalAutoAttackStateWalker,globalAutoAttackStateDepot);
+			sprintf(buf,"Next loop. States: %d, %d, %d, %d, sleep=%d/%d",globalAutoAttackStateAttack,globalAutoAttackStateLoot,globalAutoAttackStateWalker,globalAutoAttackStateDepot,isInHalfSleep(),isInFullSleep());
 			registerDebug(buf);
-		}					
+		}	
+		
+		if (isInHalfSleep())
+		{
+			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_halfSleep;
+		}
+		if (isInFullSleep())
+		{
+			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_fullSleep;
+		}
+
+		// if in a full sleep mode then just do nothing
+		if (isInFullSleep()) continue;
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();		
 		
@@ -1138,33 +1178,49 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		/**
 		 * Check whether we should collected dropped loot.
+		 * Conditions: 
+		 *  1. we are not attacking anything
+		 *  2. we are not in a half sleep (no walking) mode
+		 *  3. there is something to loot
 		 */
-		if (!currentlyAttackedCreature)
+		int droppedLootArray[128];
+		int droppedLootArrayCount=0;
+		if (!currentlyAttackedCreature&&!isInHalfSleep())
 		{
 			if (config->lootFood)
 			{
 				int p;
 				for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
 				{
-					droppedLootCheck(config,itemProxy.getItemsFoodArray()->GetAt(p));					
+					droppedLootArray[droppedLootArrayCount++]=itemProxy.getItemsFoodArray()->GetAt(p);
+					if (droppedLootArrayCount>=127) droppedLootArrayCount=127;					
 				}
 			}
 			if (config->lootGp)
 			{
-				droppedLootCheck(config,itemProxy.getValueForConst("GP"));
+				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("GP");
+				if (droppedLootArrayCount>=127) droppedLootArrayCount=127;					
+				
 			}
 			if (config->lootWorms)
 			{
-				droppedLootCheck(config,itemProxy.getValueForConst("worms"));
+				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("worms");
+				if (droppedLootArrayCount>=127) droppedLootArrayCount=127;					
+				
 			}
 			if (config->lootCustom)
 			{
 				int i;
 				for (i=0;i<itemProxy.getItemsLootedCount();i++)
-				{															
-					droppedLootCheck(config,itemProxy.getItemsLootedId(i));
+				{																				
+					droppedLootArray[droppedLootArrayCount++]=itemProxy.getItemsLootedId(i);
+					if (droppedLootArrayCount>=127) droppedLootArrayCount=127;					
 				}
-			}			
+			}	
+			if (droppedLootArrayCount)
+			{
+				droppedLootCheck(config,droppedLootArray,droppedLootArrayCount);
+			}
 		}
 
 		int attackingCreatureCount=0;
@@ -1206,8 +1262,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		*/
 		
 		
-		//if (currentlyAttackedCreature&&(self->cap>config->capacityLimit||config->eatFromCorpse)&&(config->lootFood||config->lootGp||config->lootWorms||config->lootCustom||config->eatFromCorpse))
-		if (currentlyAttackedCreature)
+		if (currentlyAttackedCreature&&(self->cap>config->capacityLimit||config->eatFromCorpse)&&(config->lootFood||config->lootGp||config->lootWorms||config->lootCustom||config->eatFromCorpse))
+		//if (currentlyAttackedCreature) -- changed 19.05.2007 - see thread 1003328
 		{						
 			if (config->debug) registerDebug("Checking whether attacked creature is alive");
 			// now let's see whether creature is still alive or not
@@ -1215,7 +1271,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (attackedCh)
 			{				
 				if (!attackedCh->hpPercLeft&&
-					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<4&&
+					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=4&&
 					attackedCh->z==self->z)
 				{
 					if (config->debug) registerDebug("Attacked creature is dead");
@@ -1523,6 +1579,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (isMonsterAttackingMe&&config->forceAttackAfterAttack&&visibleMonster) backAttack=1,backAttackThisMonster=1;
 					// set backAttackAlien
 					if (backAttackThisMonster&&!creatureFoundOnList) backAttackAlien=1;
+					int thisIsBackAttackAlien=(backAttackThisMonster&&!creatureFoundOnList);
 					
 					int shouldAttack=1;					
 					// don't attack creatures outside of the list except when backAttacking
@@ -1548,8 +1605,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (config->debug) registerDebug("Alien creature for training found");
 						alienCreatureForTrainingFound=1;
 					}									
-					int attackPrioExisting=1000;
+					int attackPrioExisting=1000;					
 					int attackPrioNew=getAttackPriority(config,ch->name);
+					if (ch->tibiaId==currentlyAttackedCreature) attackPrioNew=-1;
 					if (creatureDistList[maxDist]) {
 						CTibiaCharacter *mon=reader.getCharacterByTibiaId(creatureDistList[maxDist]);
 						if (mon)
@@ -1561,23 +1619,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (config->debug)
 					{
 						char buf[128];
-						sprintf(buf,"shouldAttack=%d, old prio=%d, new prio=%d",shouldAttack,attackPrioExisting,attackPrioNew);
+						sprintf(buf,"shouldAttack=%d, dist=%d, old prio=%d, new prio=%d, name=%s",shouldAttack,maxDist,attackPrioExisting,attackPrioNew,ch->name);
 						registerDebug(buf);
-					}
-					if (shouldAttack&&attackPrioNew<attackPrioExisting)
+					}	
+					// put down new dist of currently attacked creature for further use						
+					if (shouldAttack&&currentlyAttackedCreature==ch->tibiaId) creatureAttackNewDist=maxDist;	
+					
+					if (shouldAttack&&(attackPrioNew<attackPrioExisting||thisIsBackAttackAlien)&&!creatureBackAttackList[maxDist])
+					//1.14.0 bad: if (shouldAttack&&attackPrioNew<attackPrioExisting)					
+					//oldgood : if (shouldAttack&&(!creatureDistList[maxDist]||backAttackThisMonster))					
 					{					
+						// we say that this creature is more important to attack when:
+						// a) it should be attacked and
+						// b) it has higher priority or it is alient back attack and
+						// c) there is no other back attacked alien on this distance slot
+
 						char buf[128];
-						sprintf(buf,"should attack creature %s/%d",ch->name,backAttackThisMonster);
+						sprintf(buf,"should attack creature %s/%d/%d",ch->name,backAttackThisMonster,thisIsBackAttackAlien);
 						if (config->debug) registerDebug(buf);
 						
 						creatureDistList[maxDist]=ch->tibiaId;
 						// this means we are backattacking alien
-						creatureBackAttackList[maxDist]=(backAttackThisMonster&&!creatureFoundOnList);
-						creatureFoundOnList=1;
-						// put down new dist of currently attacked
-						// creature for further use
-						if (currentlyAttackedCreature==ch->tibiaId)
-							creatureAttackNewDist=maxDist;		
+						creatureBackAttackList[maxDist]=thisIsBackAttackAlien;
+						creatureFoundOnList=1;							
 						
 					} else {	
 						// I'm here means: don't have to attack OR dist slot for attack 
@@ -1859,7 +1923,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 				
 			};
-			if (targetX&&targetY)
+			
+			if (targetX&&targetY&&!isInHalfSleep())
 			{	
 				int mapUsed=config->mapUsed;
 				if (targetZ!=self->z&&config->mapUsed==2)

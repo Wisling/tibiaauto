@@ -42,7 +42,9 @@ enum CToolAutoAttackStateWalker
 	CToolAutoAttackStateWalker_noWaypoints,
 	CToolAutoAttackStateWalker_ok,
 	CToolAutoAttackStateWalker_noPathFound,
-	CToolAutoAttackStateWalker_standing
+	CToolAutoAttackStateWalker_standing,
+	CToolAutoAttackStateWalker_halfSleep,
+	CToolAutoAttackStateWalker_fullSleep
 };
 
 enum CToolAutoAttackStateDepot
