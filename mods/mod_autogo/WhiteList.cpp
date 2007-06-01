@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 // CWhiteList dialog
 
 
-CWhiteList::CWhiteList(char whiteListParam[][64], CWnd* pParent /*=NULL*/)
+CWhiteList::CWhiteList(char whiteListParam[100][32], CWnd* pParent /*=NULL*/)
 	: CDialog(CWhiteList::IDD, pParent)
 {
 	whiteList = (char*)whiteListParam;

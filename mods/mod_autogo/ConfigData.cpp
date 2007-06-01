@@ -36,6 +36,8 @@ CConfigData::CConfigData()
 	optionsCapacity = 1;
 	optionsOutOfCustomItem = 0;
 	optionsRunawayReached = 3;
+	optionsHpBelowUntilRecovery=0;
+	optionsManaBelowUntilRecovery=0;
 	
 	actionBattleListGm = 0;
 	actionBattleListList = 0;

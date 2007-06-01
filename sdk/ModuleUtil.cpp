@@ -485,6 +485,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		}
 	
 		
+		 
 	
 		// special going up if lader busy
 		if (tibiaMap.isPointAvailableNoProh(x+1,y,z-1)&&tibiaMap.getPrevPointX(x+1,y,z-1)==0&&

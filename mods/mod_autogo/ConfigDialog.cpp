@@ -25,6 +25,7 @@ CConfigDialog::CConfigDialog(CMod_autogoApp *app,CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
+	memset(memWhiteList,0,3200);
 }
 
 
@@ -32,6 +33,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_MANABELOW_UNTIL_RECOVERY, m_manaBelowUntilRecovery);
+	DDX_Control(pDX, IDC_HPBELOW_UNTIL_RECOVERY, m_hpBelowUntilRecovery);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGEROUTOF, m_triggerOutOf);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSOULPOINTS_ABOVE, m_triggerSoulPointAbove);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERMANABELOW, m_triggerManaBelow);
@@ -632,25 +635,25 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->actionBattleListMonster= m_actionBattleListMonster.GetCurSel();	
 	newConfigData->actionBattleListPlayer= m_actionBattleListPlayer.GetCurSel();	
 	newConfigData->allActions=0;
-	newConfigData->allActions|=newConfigData->actionMessage;
-	newConfigData->allActions|=newConfigData->actionHpLoss;
-	newConfigData->allActions|=newConfigData->actionHpBelow;
-	newConfigData->allActions|=newConfigData->actionHpAbove;
-	newConfigData->allActions|=newConfigData->actionManaBelow;
-	newConfigData->allActions|=newConfigData->actionManaAbove;
-	newConfigData->allActions|=newConfigData->actionMove;
-	newConfigData->allActions|=newConfigData->actionSoulPointBelow;
-	newConfigData->allActions|=newConfigData->actionSoulPointAbove;
-	newConfigData->allActions|=newConfigData->actionBlank;
-	newConfigData->allActions|=newConfigData->actionCapacity;
-	newConfigData->allActions|=newConfigData->actionRunawayReached;
-	newConfigData->allActions|=newConfigData->actionOutOfFood;
-	newConfigData->allActions|=newConfigData->actionOutOfSpace;
-	newConfigData->allActions|=newConfigData->actionOutOfCustom;
-	newConfigData->allActions|=newConfigData->actionBattleListGm;
-	newConfigData->allActions|=newConfigData->actionBattleListList;
-	newConfigData->allActions|=newConfigData->actionBattleListMonster;
-	newConfigData->allActions|=newConfigData->actionBattleListPlayer;
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionMessage);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionHpLoss);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionHpBelow);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionHpAbove);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionManaBelow);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionManaAbove);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionMove);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionSoulPointBelow);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionSoulPointAbove);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionBlank);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionCapacity);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionRunawayReached);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionOutOfFood);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionOutOfSpace);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionOutOfCustom);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionBattleListGm);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionBattleListList);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionBattleListMonster);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionBattleListPlayer);
 
 
 	m_hpBelow.GetWindowText(buf,127);	newConfigData->optionsHpBelow=atoi(buf);
@@ -662,6 +665,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_blank.GetWindowText(buf,127);		newConfigData->optionsBlank=atoi(buf);
 	m_capacity.GetWindowText(buf,127);	newConfigData->optionsCapacity=atoi(buf);
 	m_runawayReachedRadius.GetWindowText(buf,127);	newConfigData->optionsRunawayReached=atoi(buf);
+	newConfigData->optionsHpBelowUntilRecovery=m_hpBelowUntilRecovery.GetCheck();
+	newConfigData->optionsManaBelowUntilRecovery=m_manaBelowUntilRecovery.GetCheck();
 	buf[0]='\0';
 	m_outOfCustomItem.GetLBText(m_outOfCustomItem.GetCurSel(),buf);
 	newConfigData->optionsOutOfCustomItem=itemProxy.getObjectId(buf);
@@ -743,6 +748,7 @@ BOOL CConfigDialog::OnInitDialog()
 		list[i]->InsertString(ACTION_KILL_POS,"Logout+Kill");		
 		list[i]->InsertString(ACTION_SHUTDOWN_POS,"Logout+Shutdown");		
 		list[i]->InsertString(ACTION_RUNAWAY_POS,"Runaway");
+		list[i]->InsertString(ACTION_RUNAWAY_BACK_POS,"Runaway+back");
 		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS,"Runaway+half attack");
 		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS,"Runaway+no attack");
 		
@@ -965,6 +971,7 @@ void CConfigDialog::OnAutogoTriggerhpbelow()
 	m_hpBelow.EnableWindow(lVal);
 	m_actionHpBelow.EnableWindow(lVal);
 	m_soundHpBelow.EnableWindow(lVal);
+	m_hpBelowUntilRecovery.EnableWindow(lVal);
 }
 
 
@@ -985,6 +992,7 @@ void CConfigDialog::OnAutogoTriggermanabelow()
 	m_manaBelow.EnableWindow(lVal);
 	m_actionManaBelow.EnableWindow(lVal);
 	m_soundManaBelow.EnableWindow(lVal);
+	m_manaBelowUntilRecovery.EnableWindow(lVal);
 	
 }
 
@@ -1078,3 +1086,19 @@ void CConfigDialog::OnAutogoBattelist()
 	m_soundBattleListList.EnableWindow(lVal&&lVal2);			
 	
 }
+
+int CConfigDialog::actionPos2ID(int pos) {
+	switch (pos){
+		case ACTION_NONE_POS:		return ACTION_NONE;
+		case ACTION_SUSPEND_POS:	return ACTION_SUSPEND;
+		case ACTION_LOGOUT_POS:		return ACTION_LOGOUT;
+		case ACTION_KILL_POS:		return ACTION_KILL;
+		case ACTION_SHUTDOWN_POS:	return ACTION_SHUTDOWN;
+		case ACTION_RUNAWAY_POS:	return ACTION_RUNAWAY;
+		case ACTION_RUNAWAY_BACK_POS:	return ACTION_RUNAWAY_BACK;
+		case ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP;
+		case ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP;
+		default:					return 0;
+	}
+
+};

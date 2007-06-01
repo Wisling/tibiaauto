@@ -163,7 +163,7 @@ void CCharInfoDialog::OnResetCounters()
 	resetCounters();	
 }
 
-void CCharInfoDialog::dataCalc(){
+void CCharInfoDialog::dataCalc(){	
 	CMemReaderProxy reader;	
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
@@ -307,6 +307,7 @@ void CCharInfoDialog::dataCalc(){
 				playerInfo.spell[i].warning |= 0x02;
 		}
 	}
+	delete ch;
 }
 
 void CCharInfoDialog::dataShow(){

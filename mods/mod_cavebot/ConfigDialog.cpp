@@ -545,6 +545,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		case CToolAutoAttackStateWalker_standing:
 			m_stateWalker.SetWindowText("State: standing");
 			break;
+		case CToolAutoAttackStateWalker_halfSleep:
+			m_stateWalker.SetWindowText("State: half module sleep");
+			break;
+		case CToolAutoAttackStateWalker_fullSleep:
+			m_stateWalker.SetWindowText("State: full module sleep");
+			break;
 		default:
 			m_stateWalker.SetWindowText("State: unknown");
 		}
@@ -701,7 +707,7 @@ void CConfigDialog::OnDepotEntryadd()
 	m_depotItemList.GetLBText(sel,itemName);
 
 	if (sel==-1) return;
-	if (depotWhen<=0) return;
+	if (depotWhen<0) return;
 	if (depotRemain<0) return;
 	if (depotWhen==depotRemain) return;	
 		
