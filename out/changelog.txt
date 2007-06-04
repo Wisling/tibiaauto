@@ -1,4 +1,4 @@
-1.14.1, ???
+1.14.1, 04.06.2007
 Defects:
  Cave bot: fixed creature selection algorithm (bug since 1.13.2)
  Cave bot: fixed creature killing priority
