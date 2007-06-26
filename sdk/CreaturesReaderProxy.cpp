@@ -44,7 +44,7 @@ int CCreaturesReaderProxy::findCreatureStatForLocationTibiaId(int x,int y,int z,
 	if (dllUtil)
 	{
 		typedef int(*Proto_fun)(int x,int y, int z, int pos);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatForLocationTibiaId");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatForLocationTibiaId");
 		if (fun)
 		{
 			return fun(x,y,z,pos);
@@ -61,7 +61,7 @@ char *CCreaturesReaderProxy::findCreatureStatForLocationName(int x,int y,int z,i
 	if (dllUtil)
 	{
 		typedef char *(*Proto_fun)(int x,int y, int z, int pos);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatForLocationName");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatForLocationName");
 		if (fun)
 		{
 			return fun(x,y,z,pos);
@@ -78,7 +78,7 @@ int CCreaturesReaderProxy::findCreatureStatForLocationCount(int x,int y,int z)
 	if (dllUtil)
 	{
 		typedef int(*Proto_fun)(int x,int y, int z);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatForLocationCount");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatForLocationCount");
 		if (fun)
 		{
 			return fun(x,y,z);
@@ -95,7 +95,7 @@ char ** CCreaturesReaderProxy::findCreatureStatInArea(int x, int y, int z, int r
 	if (dllUtil)
 	{
 		typedef char **(*Proto_fun)(int x,int y, int z,int rangeXY,int rangeZ);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatInArea");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllUtil,"crFindCreatureStatInArea");
 		if (fun)
 		{
 			return fun(x,y,z,rangeXY,rangeZ);

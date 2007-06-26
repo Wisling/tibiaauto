@@ -63,7 +63,7 @@ int CIPCBackPipeProxy::readFromPipe(struct ipcMessage *mess,int expectedType)
 	typedef int (*Proto_fun)(struct ipcMessage *mess,int expectedType);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeReadFromPipe");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeReadFromPipe");
 		if (fun)
 		{
 			return fun(mess,expectedType);
@@ -78,7 +78,7 @@ void CIPCBackPipeProxy::InitialiseIPC()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeInitialiseIPC");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeInitialiseIPC");
 		if (fun)
 		{
 			fun();

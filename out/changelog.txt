@@ -1,3 +1,12 @@
+1.15.0, 26.06.2007
+Enhancements:
+ General: updated to Tibia client 8.00
+ Cave bot: improved performance of walking and looting
+ General: improved performance of all kernel functions
+
+Defects:
+ Cave bot: fixed incompatibility between killing priority and creature info
+
 1.14.1, 04.06.2007
 Defects:
  Cave bot: fixed creature selection algorithm (bug since 1.13.2)
