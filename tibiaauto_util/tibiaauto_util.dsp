@@ -165,6 +165,10 @@ SOURCE=.\TibiaMap.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\TibiaMapHash.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\TileReader.cpp
 # End Source File
 # Begin Source File
@@ -226,6 +230,10 @@ SOURCE=.\TibiaItem.h
 # Begin Source File
 
 SOURCE=.\TibiaMap.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\TibiaMapHash.h
 # End Source File
 # Begin Source File
 

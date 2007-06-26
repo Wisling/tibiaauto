@@ -14,6 +14,8 @@
 
 using namespace std;
 
+
+
 struct pointData
 {
 public:
@@ -22,6 +24,7 @@ public:
 	int prevX;
 	int prevY;
 	int prevZ;
+
 	pointData()
 	{
 		clear();
@@ -33,7 +36,7 @@ public:
 		prevX=0;
 		prevY=0;
 		prevZ=0;
-	}
+	}	
 };
  
 class CTibiaMap  
@@ -68,7 +71,8 @@ private:
 	int prohSize;
 	struct point *prohList;
 	
-	map<point, pointData, point> tibiaMap;		
+	//map<point, pointData, point> tibiaMap;				
+	CMap<point *,point *,pointData *,pointData *> tibiaMap2;
 };
 
 #endif // !defined(AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_)
