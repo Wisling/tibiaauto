@@ -47,7 +47,7 @@ char * CAliceProxy::respond(char *text, char *id)
 	if (dllAlice)
 	{
 		typedef char *(*Proto_fun)(char *text, char *id);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllAlice,"kernelRespond");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllAlice,"kernelRespond");
 		if (fun)
 		{
 			return fun(text,id);

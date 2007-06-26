@@ -10,9 +10,9 @@ ResourceCount=2
 NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CDialog
-Resource1=IDD_SENDSTATS
+Resource1=IDD_CONFIG
 Class3=CSendStats
-Resource2=IDD_CONFIG
+Resource2=IDD_SENDSTATS
 
 [CLS:CMod_cavebotApp]
 Type=0

@@ -130,6 +130,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}			
 				sender.sendTAMessage(strbuf);			
 				free(strbuf);
+				free(itemsCount);
 			}
 		}		
 	}

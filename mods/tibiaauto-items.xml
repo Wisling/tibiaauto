@@ -31,11 +31,9 @@
 		<const code="addrOffset" value="0"/>
 
 
-<!-- in progress -->
+                <const code="addrMCInject" value="0xF6241"/>
 
-                <const code="addrMCInject" value="0xF3C15"/>
-
-		<const code="addrFunRevealCName1" value="0x4DC0C7"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
+		<const code="addrFunRevealCName1" value="0x4DD2E1"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -43,54 +41,55 @@
                 <const code="addrSelfPosY" value="0"/>
                 <const code="addrSelfPosZ" value="0"/>
 
-	        <const code="addrSelfFlags" value="0x605958"/>
-                <const code="addrSkillFistPercLeft" value="0x60595C"/>
-                <const code="addrSkillFist" value="0x605978"/>
-                <const code="addrSkillFish" value="0x605990"/>
-                <const code="addrAttackedCreature" value="0x60599C"/>
-                <const code="addrCap" value="0x6059A0"/>
-                <const code="addrSoulPoints" value="0x6059A8"/>
-                <const code="addrManaMax" value="0x6059AC"/>
-                <const code="addrMana" value="0x6059B0"/>
-                <const code="addrMlvlPercLeft" value="0x6059B4"/>
-                <const code="addrMlvl" value="0x6059BC"/>
+	        <const code="addrSelfFlags" value="0x60EA58"/> <!-- +9100 -->
+                <const code="addrSkillFistPercLeft" value="0x60EA5C"/>
+                <const code="addrSkillFist" value="0x60EA78"/>
+                <const code="addrSkillFish" value="0x60EA90"/>
+                <const code="addrAttackedCreature" value="0x60EA9C"/>
+                <const code="addrCap" value="0x60EAA0"/>
+                <const code="addrSoulPoints" value="0x60EAA8"/>
+                <const code="addrManaMax" value="0x60EAAC"/>
+                <const code="addrMana" value="0x60EAB0"/>
+                <const code="addrMlvlPercLeft" value="0x60EAB4"/>
+                <const code="addrMlvl" value="0x60EABC"/>
 
-                <const code="addrLvl" value="0x6059C0"/>
-                <const code="addrExp" value="0x6059C4"/>
-                <const code="addrHPMax" value="0x6059C8"/>
-                <const code="addrHP" value="0x6059CC"/>
-                <const code="addrSelfId" value="0x6059D0"/>
-                <const code="addrCurrentTileToGo" value="0x6059D8"/>
-                <const code="addrTilesToGo" value="0x6059DC"/>
-                <const code="addrGoZ" value="0x605A0C"/>
-                <const code="addrGoY" value="0x605A10"/>
-                <const code="addrGoX" value="0x605A14"/>
-                <const code="addrBattleMax" value="0x605A28"/>
-                <const code="addrBattleMin" value="0x605A2C"/>
-                <const code="addrFirstCreature" value="0x605A30"/>
+                <const code="addrLvl" value="0x60EAC0"/>
+                <const code="addrExp" value="0x60EAC4"/>
+                <const code="addrHPMax" value="0x60EAC8"/>
+                <const code="addrHP" value="0x60EACC"/>  <!-- +9100 -->
+                <const code="addrSelfId" value="0x60EAD0"/>
+                <const code="addrCurrentTileToGo" value="0x60EAD8"/>
+                <const code="addrTilesToGo" value="0x60EADC"/>
+                <const code="addrGoZ" value="0x60EB0C"/>
+                <const code="addrGoY" value="0x60EB10"/>
+                <const code="addrGoX" value="0x60EB14"/>
+                <const code="addrBattleMax" value="0x60EB28"/>
+                <const code="addrBattleMin" value="0x60EB2C"/>
+                <const code="addrFirstCreature" value="0x60EB30"/>   <!-- +9100 -->
 
-                <const code="addrCurrentTm" value="0x60DA54"/>
-		<const code="addrRightHand" value="0x60E2C8"/>
+                <const code="addrCurrentTm" value="0x61653C"/> <!-- +8AE8 -->
 
-		<const code="addrBackpack" value="0x60E2B0"/>
-		<const code="addrLeftHand" value="0x60E2D4"/>
-                <const code="addrSlotArrow" value="0x60E304"/>
-                <const code="addrFirstContainer" value="0x60E310"/>
 
-                <const code="addrTradeCountSelf" value="0x6101F0"/>
-                <const code="addrTradeFirstItemSelf" value="0x6101F4"/>
-                <const code="addrTradeCountPartner" value="0x6106C8"/>
-                <const code="addrTradeFirstItemPartner" value="0x6106CC"/>
-		<const code="addrCurrentWindow" value="0x610BE4"/>
+		<const code="addrBackpack" value="0x616FA0"/>  <!-- +8CF0 -->
+                <const code="addrRightHand" value="0x616FB8"/>
+		<const code="addrLeftHand" value="0x616FC4"/>
+                <const code="addrSlotArrow" value="0x616FF4"/>
+                <const code="addrFirstContainer" value="0x617000"/>
 
-                <const code="addrMapStart" value="0x615738"/>
-                <const code="addrMiniMapStart" value="0x615758"/>
+                <const code="addrTradeCountSelf" value="0x618EE0"/>
+                <const code="addrTradeFirstItemSelf" value="0x618EE4"/>
+                <const code="addrTradeCountPartner" value="0x6193B8"/>
+                <const code="addrTradeFirstItemPartner" value="0x6193BC"/> <!-- +8CF0 -->
+		<const code="addrCurrentWindow" value="0x6198B4"/>
 
-                <const code="addrModeAttackPlayers" value="0x75A9B4"/>
-                <const code="addrModeFollow" value="0x75A9B8"/>
-                <const code="addrModeAttackType" value="0x75A9BC"/>
-		<const code="addrConnectionState" value="0x75d3e0"/>
-		<const code="addrFps" value="0x75DF24"/> <!-- lookup: Surface.cpp -->
+                <const code="addrMapStart" value="0x61E408"/>
+                <const code="addrMiniMapStart" value="0x61E428"/>  <!-- +8CD0 -->
+
+                <const code="addrModeAttackPlayers" value="0x763BCC"/>
+                <const code="addrModeFollow" value="0x763BD0"/>
+                <const code="addrModeAttackType" value="0x763BD4"/>
+		<const code="addrConnectionState" value="0x766DF8"/>
+		<const code="addrFps" value="0x76793C"/> <!-- lookup: Surface.cpp --> <!-- +9A18 -->
 
 
 

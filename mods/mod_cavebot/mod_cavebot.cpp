@@ -321,7 +321,7 @@ int depotDepositOpenChest(int x,int y,int z)
 			}
 			// this is the depot chest so open it			
 			sender.openContainerFromFloor(tileId,x,y,z,9);
-			CModuleUtil::waitForOpenContainer(9,1);
+			CModuleUtil::waitForOpenContainer(9,true);
 			CTibiaContainer *cont = reader.readContainer(9);
 			int isOpen=cont->flagOnOff;
 			delete cont;
@@ -381,9 +381,9 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 		{
 			// that object is a container, so open it
 			sender.closeContainer(8);
-			CModuleUtil::waitForOpenContainer(8,0);
+			CModuleUtil::waitForOpenContainer(8,false);
 			sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,8);
-			CModuleUtil::waitForOpenContainer(8,1);
+			CModuleUtil::waitForOpenContainer(8,true);
 			CTibiaContainer *newContainer = reader.readContainer(8);
 			if (newContainer->flagOnOff&&newContainer->itemsInside<newContainer->size)
 			{
@@ -456,9 +456,9 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup)
 		{
 			// that object is a container, so open it
 			sender.closeContainer(8);
-			CModuleUtil::waitForOpenContainer(8,0);
+			CModuleUtil::waitForOpenContainer(8,false);
 			sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,8);
-			CModuleUtil::waitForOpenContainer(8,1);
+			CModuleUtil::waitForOpenContainer(8,true);
 			CTibiaContainer *newContainer = reader.readContainer(8);
 			if (newContainer->flagOnOff)
 			{
@@ -547,7 +547,7 @@ void depotDeposit(CConfigData *config)
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_depositing;
 
 	sender.closeContainer(8);
-	CModuleUtil::waitForOpenContainer(8,0);
+	CModuleUtil::waitForOpenContainer(8,false);
 	
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++)
 	{
@@ -1030,10 +1030,22 @@ void shMemInit(CSharedMemory *pMem)
 // monsters out of the list have top priority (-1)
 int getAttackPriority(CConfigData *config,char *monsterName)
 {
+	char buf[64];
 	int monstListNr;
+	int i,len;
+	strcpy(buf,monsterName);
+	// first filter out [] created by creature info
+	for (i=0,len=strlen(buf);i<len;i++)
+	{
+		if (buf[i]=='[') 
+		{
+			buf[i]='\0';
+			break;
+		}
+	}
 	for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++)
 	{									
-		if (!strcmpi(config->monsterList[monstListNr],monsterName))
+		if (!strcmpi(config->monsterList[monstListNr],buf))
 		{
 			return monstListNr;
 		}
@@ -1072,7 +1084,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int pid=GetCurrentProcessId();
 	CSharedMemory sh_mem("TibiaAuto",1024,shMemInit);
 	char varName[128];
-	sprintf(varName,"mod_cavebot_%d",pid);	
+	sprintf(varName,"mod_cavebot_%d",pid);
+	int iter=0;
 
 	int attackConsiderPeriod=20000;
 	int currentlyAttackedCreature=0;	
@@ -1134,13 +1147,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		shareAlienBackattack=0;
 	}
-
-	
 	
 
 	while (!toolThreadShouldStop)
-	{						
-		Sleep(1000);
+	{							
+		Sleep(250);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (config->debug) 
 		{
@@ -1283,7 +1294,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");						
 					}
 					
-					
+					// first make sure all needed containers are closed					
+					sender.closeContainer(8);
+					CModuleUtil::waitForOpenContainer(8,false);
+					sender.closeContainer(9);
+					CModuleUtil::waitForOpenContainer(9,false);
 
 					currentlyAttackedCreature=0;
 					// attacked creature dead, near me, same floor
@@ -1428,8 +1443,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closingBag;
 										//sender.sendTAMessage("[debug] closing bag");
-										sender.closeContainer(8);
-										CModuleUtil::waitForOpenContainer(8,false);
+										sender.closeContainer(8);										
 									}
 								}
 							}
@@ -1445,8 +1459,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closing;
 						// close container 9 and wait for sync
 						
-						sender.closeContainer(9);
-						CModuleUtil::waitForOpenContainer(9,false);					
+						sender.closeContainer(9);						
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 						if (config->debug) registerDebug("End of looting");
 					} // if waitForContainer(9)						
@@ -1813,14 +1826,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (!targetFound&&globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_monsterUnreachable)
 			{				
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
-				sender.attack(0);
+				if (currentlyAttackedCreature)
+				{
+					// cancel the attack if some creature is being attacked
+					sender.attack(0);
+				}
 				currentlyAttackedCreature=0;
 				if (config->debug) registerDebug("No attack target found");
 			}
 		} else {			
 			// send 'cancel attack'
 			if (config->debug) registerDebug("Entered cancel attack");
-			sender.attack(0);
+			if (currentlyAttackedCreature)
+			{
+				// cancel the attack if some creature is being attacked
+				sender.attack(0);
+			} 
 			currentlyAttackedCreature=0;
 			if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_monsterUnreachable)
 			{

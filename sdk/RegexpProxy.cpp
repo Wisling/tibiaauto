@@ -64,7 +64,7 @@ int CRegexpProxy::regexec(const regex_t *preg, const char *string, size_t nmatch
 	if (dllRegexp)
 	{
 		typedef int(*Proto_fun)(const regex_t *preg, const char *string, size_t nmatch, regmatch_t pmatch[], int eflags);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regexec");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regexec");
 		if (fun)
 		{
 			return fun(preg,string,nmatch,pmatch,eflags);
@@ -81,7 +81,7 @@ int CRegexpProxy::regcomp(regex_t *preg, const char *regex, int cflags)
 	if (dllRegexp)
 	{
 		typedef int(*Proto_fun)(regex_t *preg, const char *regex, int cflags);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regcomp");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regcomp");
 		if (fun)
 		{
 			return fun(preg,regex,cflags);
@@ -98,7 +98,7 @@ void CRegexpProxy::regfree(regex_t *preg)
 	if (dllRegexp)
 	{
 		typedef int(*Proto_fun)(regex_t *preg);	
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regfree");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regfree");
 		if (fun)
 		{
 			fun(preg);

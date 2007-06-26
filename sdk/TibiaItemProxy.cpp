@@ -65,7 +65,7 @@ char * CTibiaItemProxy::getName(int objectId)
 	typedef char * (*Proto_fun)(int objectId);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetName");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetName");
 		if (fun)
 		{
 			return fun(objectId);
@@ -78,7 +78,7 @@ void CTibiaItemProxy::refreshItemLists()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemRefreshItemLists");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemRefreshItemLists");
 		if (fun)
 		{
 			fun();
@@ -91,7 +91,7 @@ int CTibiaItemProxy::getCorpseIdByCreatureName(char *name)
 	typedef int (*Proto_fun)(char *name);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetCorpseIdByCreatureName");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetCorpseIdByCreatureName");
 		if (fun)
 		{
 			return fun(name);
@@ -105,7 +105,7 @@ CUIntArray * CTibiaItemProxy::getItemsFoodArray()
 	typedef CUIntArray * (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFoodArray");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFoodArray");
 		if (fun)
 		{
 			return fun();
@@ -119,7 +119,7 @@ char *CTibiaItemProxy::getItemsItems(int nr)
 	typedef char * (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsItems");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsItems");
 		if (fun)
 		{
 			return fun(nr);
@@ -133,7 +133,7 @@ int CTibiaItemProxy::getItemsItemsId(int nr)
 	typedef int (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsItemsId");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsItemsId");
 		if (fun)
 		{
 			return fun(nr);
@@ -146,7 +146,7 @@ int CTibiaItemProxy::getItemsItemsCount()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsItemsCount");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsItemsCount");
 		if (fun)
 		{
 			return fun();
@@ -159,7 +159,7 @@ char *CTibiaItemProxy::getItemsFood(int nr)
 	typedef char * (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFood");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFood");
 		if (fun)
 		{
 			return fun(nr);
@@ -173,7 +173,7 @@ int CTibiaItemProxy::getItemsFoodId(int nr)
 	typedef int (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFoodId");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFoodId");
 		if (fun)
 		{
 			return fun(nr);
@@ -186,7 +186,7 @@ int CTibiaItemProxy::getItemsFoodCount()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFoodCount");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsFoodCount");
 		if (fun)
 		{
 			return fun();
@@ -199,7 +199,7 @@ char *CTibiaItemProxy::getItemsCorpses(int nr)
 	typedef char * (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsCorpses");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsCorpses");
 		if (fun)
 		{
 			return fun(nr);
@@ -213,7 +213,7 @@ int CTibiaItemProxy::getItemsCorpsesId(int nr)
 	typedef int (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsCorpsesId");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsCorpsesId");
 		if (fun)
 		{
 			return fun(nr);
@@ -226,7 +226,7 @@ int CTibiaItemProxy::getItemsCorpsesCount()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsCorpsesCount");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsCorpsesCount");
 		if (fun)
 		{
 			return fun();
@@ -239,7 +239,7 @@ char *CTibiaItemProxy::getItemsLooted(int nr)
 	typedef char * (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsLooted");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsLooted");
 		if (fun)
 		{
 			return fun(nr);
@@ -254,7 +254,7 @@ int CTibiaItemProxy::getItemsLootedId(int nr)
 	typedef int (*Proto_fun)(int nr);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsLootedId");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsLootedId");
 		if (fun)
 		{
 			return fun(nr);
@@ -268,7 +268,7 @@ int CTibiaItemProxy::getItemsLootedCount()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsLootedCount");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemsLootedCount");
 		if (fun)
 		{
 			return fun();
@@ -282,7 +282,7 @@ int CTibiaItemProxy::getValueForConst(char *code)
 	typedef int (*Proto_fun)(char *code);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetValueForConst");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetValueForConst");
 		if (fun)
 		{
 			return fun(code);
@@ -296,7 +296,7 @@ int CTibiaItemProxy::getObjectId(char *name)
 	typedef int (*Proto_fun)(char *name);
 	if (dllModule)
 	{			
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetObjectId");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetObjectId");
 		if (fun)
 		{
 			return fun(name);
