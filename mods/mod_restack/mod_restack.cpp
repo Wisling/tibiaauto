@@ -138,7 +138,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 
 		if (throwableItemId&&(item->objectId==0||item->objectId==throwableItemId))
-		{
+		{ 
 			if (item->quantity<=config->throwableAt)
 			{
 				int contNr;
@@ -149,7 +149,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
-					{
+					{ 
 						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);					
 						if (itemAccepted)
 						{
