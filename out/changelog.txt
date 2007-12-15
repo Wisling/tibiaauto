@@ -1,3 +1,12 @@
+1.15.2, 15.12.2007
+Defects:
+ Fluid drinker: added support for the new fluids
+ Tiles: fixed tile 7522
+
+1.15.1, 12.12.2007
+Enhancements:
+ General: updated to Tibia Client 8.1
+
 1.15.0, 26.06.2007
 Enhancements:
  General: updated to Tibia client 8.00

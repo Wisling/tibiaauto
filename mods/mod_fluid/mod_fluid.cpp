@@ -73,6 +73,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		
+		// handle "old" potions
 		if ((self->hp<config->hpBelow&&config->drinkHp)||config->hotkeyHp)
 		{
 			int contNr;
@@ -143,11 +144,83 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 
+		// handle "new" potions
+		if ((self->hp<config->hpBelow&&config->drinkHp)||config->hotkeyHp)
+		{
+			int contNr;
+			CUIntArray itemArray;
+			
+			itemArray.Add(itemProxy.getValueForConst("fluidLife"));
+			
+			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+			{
+				CTibiaContainer *cont = reader.readContainer(contNr);
+				
+				if (cont->flagOnOff)
+				{
+					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray);
+					if (item)
+					{
+						if (config->hotkeyHp)
+						{
+							sender.castRuneAgainstHuman(0x40+contNr,item->pos,itemProxy.getValueForConst("fluidLife"),self->x,self->y,self->z,107);
+						}
+						if (self->hp<config->hpBelow&&config->drinkHp)
+						{
+							sender.castRuneAgainstHuman(0x40+contNr,item->pos,itemProxy.getValueForConst("fluidLife"),self->x,self->y,self->z);
+							Sleep(config->sleep);
+						}
+						
+						delete item;
+						break;
+					};
+				}
+				
+				delete cont;
+			}
+		}
+			
+		if ((self->mana<config->manaBelow&&config->drinkMana)||config->hotkeyMana)
+		{
+			int contNr;
+			CUIntArray itemArray;
+			
+			itemArray.Add(itemProxy.getValueForConst("fluidMana"));
+			
+			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+			{
+				CTibiaContainer *cont = reader.readContainer(contNr);
+				
+				if (cont->flagOnOff)
+				{
+					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray);
+					if (item)
+					{
+						if (self->mana<config->manaBelow&&config->drinkMana)
+						{
+							sender.castRuneAgainstHuman(0x40+contNr,item->pos,itemProxy.getValueForConst("fluidMana"),self->x,self->y,self->z);
+							Sleep(config->sleep);
+						}
+						if (config->hotkeyMana)
+						{
+							sender.castRuneAgainstHuman(0x40+contNr,item->pos,itemProxy.getValueForConst("fluidMana"),self->x,self->y,self->z,106);
+						}
+						
+						delete item;
+						break;
+					};
+				}
+				
+				delete cont;
+			}
+		}
+
 		if (config->dropEmpty)
 		{
 			CUIntArray itemArray;
 			
 			itemArray.Add(itemProxy.getValueForConst("fluid"));
+			itemArray.Add(itemProxy.getValueForConst("fluidEmpty"));
 			int contNr;
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 			{
@@ -158,7 +231,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray,0);
 					if (item)
 					{						
-						sender.moveObjectFromContainerToFloor(itemProxy.getValueForConst("fluid"),0x40+contNr,item->pos,self->x,self->y,self->z,1);
+						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,self->x,self->y,self->z,1);
 						Sleep(config->sleep);
 						delete item;
 						break;
