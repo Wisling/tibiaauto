@@ -1,3 +1,10 @@
+1.15.3, ???
+Defects:
+ General: fixed potential crash bug when spammed with many big messages
+ Cave bot: fixed going up with a ladder in new areas
+ Show map: at least one ground=1 required now on a tile for it to be avaialble
+ Fluid drinker: fluid drinker drinks also strong and great potions now
+
 1.15.2, 15.12.2007
 Defects:
  Fluid drinker: added support for the new fluids

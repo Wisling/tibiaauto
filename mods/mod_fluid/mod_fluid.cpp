@@ -151,6 +151,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			CUIntArray itemArray;
 			
 			itemArray.Add(itemProxy.getValueForConst("fluidLife"));
+			itemArray.Add(itemProxy.getValueForConst("fluidLifeS"));
+			itemArray.Add(itemProxy.getValueForConst("fluidLifeG"));
 			
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 			{
@@ -186,6 +188,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			CUIntArray itemArray;
 			
 			itemArray.Add(itemProxy.getValueForConst("fluidMana"));
+			itemArray.Add(itemProxy.getValueForConst("fluidManaS"));
+			itemArray.Add(itemProxy.getValueForConst("fluidManaG"));
 			
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 			{
@@ -221,6 +225,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			itemArray.Add(itemProxy.getValueForConst("fluid"));
 			itemArray.Add(itemProxy.getValueForConst("fluidEmpty"));
+			itemArray.Add(itemProxy.getValueForConst("fluidEmptyS"));
 			int contNr;
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 			{

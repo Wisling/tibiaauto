@@ -64,36 +64,38 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 173, 247
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 173, 229
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: fluid drinker"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,62,226,50,14
+    DEFPUSHBUTTON   "OK",IDOK,62,208,50,14
     CONTROL         "Enable fluid drinker",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,205,159,14
-    LTEXT           "Drink when HP below",IDC_STATIC,7,19,79,11,
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,186,159,14
+    LTEXT           "Drink when HP below",IDC_STATIC,7,31,79,11,
                     SS_CENTERIMAGE
-    LTEXT           "Drink when mana below",IDC_STATIC,7,41,76,14,
+    LTEXT           "Drink when mana below",IDC_STATIC,7,54,76,14,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW,100,16,40,14,
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW,100,28,40,14,
                     ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW,100,41,40,14,
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW,100,54,40,14,
                     ES_AUTOHSCROLL
     CONTROL         "Drink mana potions",IDC_TOOL_FLUIDDRINKER_DRINKMANA,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,121,77,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,134,77,10
     CONTROL         "Drink life potions",IDC_TOOL_FLUIDDRINKER_DRINKHP,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,91,68,10
-    LTEXT           "Sleep after drink",IDC_STATIC,7,63,76,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_SLEEP,100,63,40,14,ES_AUTOHSCROLL
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,103,68,10
+    LTEXT           "Sleep after drink",IDC_STATIC,7,75,76,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_SLEEP,100,75,40,14,ES_AUTOHSCROLL
     CONTROL         "Activate hotkey for life fluid [%ta fluidlife]",
                     IDC_TOOL_FLUIDDRINKER_HOTKEY_LIFE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,106,141,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,118,141,10
     CONTROL         "Activate hotkey for mana fluid [%ta fluidmana]",
                     IDC_TOOL_FLUIDDRINKER_HOTKEY_MANA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,137,159,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,7,150,159,10
     CONTROL         "Drop empty flasks",IDC_TOOL_FLUIDDRINKER_DROPEMPTY,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,153,72,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,166,72,10
+    LTEXT           "Fluid drinker will drink either of normal fluid, strong fluid or great fluid (whatever is first in a backpack).",
+                    IDC_STATIC,7,7,159,18
 END
 
 
@@ -110,7 +112,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 166
         TOPMARGIN, 7
-        BOTTOMMARGIN, 240
+        BOTTOMMARGIN, 222
     END
 END
 #endif    // APSTUDIO_INVOKED
