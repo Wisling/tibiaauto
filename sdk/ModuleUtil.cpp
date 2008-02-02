@@ -798,8 +798,28 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 					sender.say("exani tera");
 					break;								
 				case 203:
-					sender.useItemOnFloor(itemProxy.getValueForConst("ladder"),self->x,self->y,self->z);
-					// ladder
+					{
+						// ladder
+						// fix 02.02.2008: ladder code needs to be evaluated on the fly					
+						int count=reader.mapGetPointItemsCount(point(0,0,0));
+						int ladderCode=0;
+						int i;
+						
+						for (i=0;i<count;i++)
+						{						
+							int tileId = reader.mapGetPointItemId(point(0,0,0),i);
+							CTibiaTile *tileData = reader.getTibiaTile(tileId);
+							if (tileId!=99&&tileData->goUp&&tileData->requireUse)
+							{
+								ladderCode=tileId;
+								break;
+							}
+						} // for i
+						if (ladderCode)
+						{
+							sender.useItemOnFloor(ladderCode,self->x,self->y,self->z);
+						}
+					}
 					break;
 				case 204:
 					// stairs [do nothing]
@@ -927,8 +947,30 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						}
 					}
 					break;									
-				case 203:
-					sender.useItemOnFloor(itemProxy.getValueForConst("ladder"),modX,modY,self->z);
+				case 203:					
+					{
+						// ladder
+						// fix 02.02.2008: ladder code needs to be evaluated on the fly					
+						int count=reader.mapGetPointItemsCount(point(modX-self->x,modY-self->y,0));
+						int ladderCode=0;
+						int i;
+						
+						for (i=0;i<count;i++)
+						{						
+							int tileId = reader.mapGetPointItemId(point(modX-self->x,modY-self->y,0),i);
+							CTibiaTile *tileData = reader.getTibiaTile(tileId);
+							if (tileId!=99&&tileData->goUp&&tileData->requireUse)
+							{
+								ladderCode=tileId;
+								break;
+							}
+						} // for i
+						if (ladderCode)
+						{
+							sender.useItemOnFloor(ladderCode,modX,modY,self->z);
+						}
+					}
+
 					// ladder
 					break;				
 				}		
@@ -970,7 +1012,6 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		 * 3. last startX change was > 3s ago (means: we are stuck) OR
 		 * 4. last walk was over 15s ago (means: walk restart, lag, etc.)
 		 */
-		char buf[128];
 		
 		int lastEndEqStart=(lastEndX==startX&&lastEndY==startY&&lastEndZ==startZ);
 		if (pathSize>0&&(lastEndEqStart||currentTm-lastStartChangeTm>=2||currentTm-lastExecuteWalkTm>15))

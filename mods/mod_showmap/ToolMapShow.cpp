@@ -297,6 +297,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 					int blocked=0;
 					int updown=0;
+					int ground=0;
 					for (i=0;i<count;i++)
 					{						
 						int tileId = reader.mapGetPointItemId(point(x,y,0),i);
@@ -306,6 +307,10 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							if (tileData->blocking)
 							{								
 								blocked=1;								
+							}
+							if (tileData->ground)
+							{
+								ground=1;
 							}
 							if (tileData->goDown)
 							{
@@ -344,6 +349,11 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 					// if tile is depot chest than treat it in a special way
 					if (updown==301) blocked=0;
+					// if there is not a single ground tile than one cannot pass
+					if (ground==0&&!updown) 
+					{
+						blocked=1;						
+					}
 
 					// if count==0 then override "blocked" and "no updown"
 					if (count==0)

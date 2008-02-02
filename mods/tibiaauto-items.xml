@@ -1,9 +1,8 @@
-<!-- Tibia Items for Tibia 7.55 -->
+<!-- Tibia Items for Tibia 8.10 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
 		<const code="ropespot" value="0x182"/> 
-		<const code="ladder" value="0x79c"/> 
 		<const code="bagbrown" value="0xb25"/>
 		<const code="rope" value="0xbbb"/>
 		<const code="GP" value="0xbd7"/>
@@ -20,8 +19,13 @@
 		<const code="fishingRod" value="0xd9b"/>
 		<const code="fluid" value="0xb3a"/>
 		<const code="fluidLife" value="0x10a"/>
+		<const code="fluidLifeS" value="0xec"/>
+		<const code="fluidLifeG" value="0xef"/>
 		<const code="fluidMana" value="0x10c"/>
+		<const code="fluidManaS" value="0xed"/>
+		<const code="fluidManaG" value="0xee"/>
 		<const code="fluidEmpty" value="0x11d"/>
+		<const code="fluidEmptyS" value="0x11b"/>
 
 		<const code="worms" value="0xda4"/>
 
@@ -186,8 +190,14 @@
       <item id="0xd9b" name="Fishing Rod"/>
       <item id="0xb3a" name="Fluids"/>
       <item id="0x10a" name="Life potion"/>
+      <item id="0xec" name="Life potion strong"/>
+      <item id="0xef" name="Life potion great"/>
       <item id="0x10c" name="Mana potion"/>
+      <item id="0xed" name="Mana potion strong"/>
+      <item id="0xee" name="Mana potion great"/>
       <item id="0x11d" name="Empty vial"/>
+      <item id="0x11b" name="Empty vial strong"/>
+
 
 
       <item id="0xcf1" name="Dragon Lance"/>
