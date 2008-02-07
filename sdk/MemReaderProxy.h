@@ -55,6 +55,9 @@ public:
 	void setRemainingTilesToGo(int val);
 	void setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data);
 	void getMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data);
+	void setXRayValues(int v1,int v2);
+	int getXRayValue1();
+	int getXRayValue2();
 
 
 	void setMemIntValue(int address,int value);

@@ -15,32 +15,8 @@ public:
 	CConfigData();
 	virtual ~CConfigData();
 
-	int manaBelow;
-	int manaBelowN;
-	int manaBelowS;
-	int manaBelowG;
-	int hpBelow;
-	int hpBelowN;
-	int hpBelowS;
-	int hpBelowG;
-	int drinkMana;
-	int drinkManaN;
-	int drinkManaS;
-	int drinkManaG;
-	int drinkHp;
-	int drinkHpN;
-	int drinkHpS;
-	int drinkHpG;
-	int sleep;
-	int hotkeyHp;
-	int hotkeyMana;
-	int dropEmpty;
-	int customItem1Below;
-	int customItem1Item;
-	int customItem1Use;
-	int customItem2Below;
-	int customItem2Item;
-	int customItem2Use;
+	int extrahotkeys;
+	int autoreset;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

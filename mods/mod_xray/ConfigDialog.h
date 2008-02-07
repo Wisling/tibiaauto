@@ -7,10 +7,10 @@
 // ConfigDialog.h : header file
 //
 
-#include "mod_fluid.h"
+#include "mod_xray.h"
 #include "ConfigData.h"
 
-class CMod_fluidApp;
+class CMod_xrayApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
@@ -19,43 +19,18 @@ class CConfigDialog : public CDialog
 {
 // Construction
 public:
-	void reloadCustomItems();
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
-	CConfigDialog(CMod_fluidApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_xrayApp *app,CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CEdit	m_manaBelowS;
-	CEdit	m_manaBelowN;
-	CEdit	m_manaBelowG;
-	CEdit	m_hpBelowS;
-	CEdit	m_hpBelowN;
-	CEdit	m_hpBelowG;
-	CButton	m_drinkManaS;
-	CButton	m_drinkManaN;
-	CButton	m_drinkManaG;
-	CButton	m_drinkHpS;
-	CButton	m_drinkHpN;
-	CButton	m_drinkHpG;
-	CButton	m_customItem2Use;
-	CEdit	m_customItem2Below;
-	CComboBox	m_customItem2List;
-	CButton	m_customItem1Use;
-	CEdit	m_customItem1Below;
-	CComboBox	m_customItem1List;
-	CButton	m_dropEmpty;
-	CButton	m_hotkeyMana;
-	CButton	m_hotkeyLife;
-	CEdit	m_sleep;
-	CEdit	m_manaBelow;
-	CEdit	m_hpBelow;
-	CButton	m_drinkMana;
-	CButton	m_drinkHp;
+	CButton	m_extrahotkeys;
+	CButton	m_autoreset;
 	CButton	m_enable;
 	//}}AFX_DATA
 
@@ -83,7 +58,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
-	CMod_fluidApp * m_app;
+	void refreshFishStatus();
+	CMod_xrayApp * m_app;
 };
 
 //{{AFX_INSERT_LOCATION}}

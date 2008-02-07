@@ -40,6 +40,8 @@
 
 
                 <const code="addrMCInject" value="0xF8961"/>
+		<const code="addrXRay1" value="0x4C4FBC"/>
+		<const code="addrXRay2" value="0x4C4FC4"/>
 		<const code="addrFunRevealCName1" value="0x4DF473"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
