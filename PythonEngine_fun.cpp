@@ -1720,3 +1720,37 @@ static PyObject *tibiaauto_reader_getOpenWindowName(PyObject *self, PyObject *ar
 	Py_INCREF(ret);
 	return ret;
 }
+
+static PyObject *tibiaauto_reader_setXRayValues(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1,arg2;
+    if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
+
+	reader.setXRayValues(arg1,arg2);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+
+static PyObject *tibiaauto_reader_getXRayValue1(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getXRayValue1();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+
+
+static PyObject *tibiaauto_reader_getXRayValue2(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getXRayValue2();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}

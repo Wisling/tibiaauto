@@ -262,6 +262,9 @@ static PyMethodDef Methods_tareader[] = {
 	{"getPlayerModeFollow", tibiaauto_reader_getPlayerModeFollow, METH_VARARGS},
 	{"getOpenWindowName", tibiaauto_reader_getOpenWindowName, METH_VARARGS},
 	{"getConnectionState", tibiaauto_reader_getConnectionState, METH_VARARGS},
+	{"setXRayValues", tibiaauto_reader_setXRayValues, METH_VARARGS},
+	{"getXRayValue1", tibiaauto_reader_getXRayValue1, METH_VARARGS},
+	{"getXRayValue2", tibiaauto_reader_getXRayValue2, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 

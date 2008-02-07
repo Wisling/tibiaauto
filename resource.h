@@ -80,6 +80,7 @@
 #define IDC_MONSTERSHOW_MONSTERNIFO     1039
 #define IDC_TOOL_TRADEMON               1039
 #define IDC_TOOL_MAPHACK                1040
+#define IDC_TOOL_XRAY                   1041
 #define IDC_MONSTERSHOW_FREEZE          1042
 #define IDC_TOOL_CREATUREINFO           1042
 #define IDC_TOOL_AUTOGO                 1043

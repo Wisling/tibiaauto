@@ -137,3 +137,6 @@ EXPORTS
 	tibiaMapGetPointUpDownNoProh @131
 	memReadGetOpenWindowName @132
 	memReadGetConnectionState @133
+	memReadSetXRayValues @134
+	memReadGetXRayValue1 @135
+	memReadGetXRayValue2 @136

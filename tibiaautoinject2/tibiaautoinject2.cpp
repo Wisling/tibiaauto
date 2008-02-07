@@ -51,6 +51,8 @@ char lastConnectName[16];
 HANDLE hPipe=INVALID_HANDLE_VALUE;
 HANDLE hPipeBack=INVALID_HANDLE_VALUE;
 
+HHOOK hook;
+
 SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 time_t debugFileStart;
@@ -85,6 +87,10 @@ struct ipcMessage
 	int messageType;
 	char payload[1024];
 public:
+	ipcMessage()
+	{
+		memset(payload,0,1024);
+	}
 	void send()
 	{
 		DWORD cbWritten;
@@ -107,6 +113,8 @@ public:
  * 1005: incoming message -> ?
  * 1006: incoming message -> python engine
  * 1007: %ta messages -> python engine
+ * 1008: %ta lu/%ta ld -> xray
+ * 2001: hooks -> xray
  */
 
 int outExploAvail=0;
@@ -314,11 +322,18 @@ void parseMessageSay(char *sayBuf)
 	CMemConstData memConstData = reader.getMemConstData();
 	
 	struct ipcMessage mess;
-	mess.messageType=1007;	
+	
 	int len=strlen(sayBuf);
-	memcpy(mess.payload,&len,sizeof(int));		
-	memcpy(mess.payload+4,sayBuf,len);		
-	mess.send();
+	if (len<512)
+	{
+		mess.messageType=1007;	
+		memcpy(mess.payload,&len,sizeof(int));		
+		memcpy(mess.payload+4,sayBuf,len);		
+		mess.send();
+		mess.messageType=1008;
+		mess.send();
+	}
+	
 	
 	if (debugFile)
 	{
@@ -592,6 +607,73 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	} // tail recursion
 	
 };
+
+
+void hookCallback(int value)
+{
+	struct ipcMessage mess;	
+	char *message=NULL;
+	mess.messageType=2001;			
+	if (value==0x21)
+	{
+		message="%ta lu";				
+	}
+	if (value==0x22)
+	{
+		message="%ta ld";
+	}
+	if (message)
+	{
+		int len=strlen(message);
+		memcpy(mess.payload,&len,sizeof(int));		
+		memcpy(mess.payload+4,message,len);				
+		mess.send();
+	}
+	
+}
+typedef void (*Proto_callback)(int value);
+volatile Proto_callback hookCallbackFun=hookCallback;
+
+void ActivateHookCallback()
+{
+	int size;
+	char mapFileBuf[128];
+	HANDLE hMapFile;
+	LPCTSTR pBuf;
+	
+	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());
+	
+	hMapFile = CreateFileMapping(
+		INVALID_HANDLE_VALUE,    // use paging file
+		NULL,                    // default security 
+		PAGE_READWRITE,          // read/write access
+		0,                       // max. object size 
+		size,                // buffer size  
+		mapFileBuf);                 // name of mapping object
+	
+	if (hMapFile == NULL) 
+	{       
+		return;
+	}
+	pBuf = (LPTSTR) MapViewOfFile(hMapFile,   // handle to map object
+		FILE_MAP_ALL_ACCESS, // read/write permission
+		0,                   
+		0,                   
+		size);           
+	
+	if (pBuf == NULL) 
+	{       
+		return;
+	}
+		
+	CopyMemory((PVOID)pBuf, (PVOID)&hookCallbackFun, sizeof(void *));   
+	
+	UnmapViewOfFile(pBuf);
+		
+		
+
+}
+
 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
@@ -914,7 +996,10 @@ void InitialiseHooks()
 	DetourFunctionWithTrampoline((PBYTE)Real_socket,(PBYTE)Mine_socket);		
 	//DetourFunctionWithTrampoline((PBYTE)Real_select,(PBYTE)Mine_select);
 };
- 
+
+
+
+
 
 void InitialiseDebugFile()
 {
@@ -1004,9 +1089,12 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 		struct ipcMessage mess;
 		mess.messageType=1002;	
 		int len=strlen(s);
-		memcpy(mess.payload,&len,sizeof(int));		
-		memcpy(mess.payload+4,s,len);		
-		mess.send();
+		if (len<512)
+		{
+			memcpy(mess.payload,&len,sizeof(int));		
+			memcpy(mess.payload+4,s,len);		
+			mess.send();
+		}
 	}
 
 
@@ -1125,7 +1213,7 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	
 	int nickLen=nick?strlen(nick):0;
 	int msgLen=strlen(s);
-	if (nickLen)
+	if (nickLen&&msgLen<512)
 	{
 		struct ipcMessage mess;		
 		memcpy(mess.payload,&type,sizeof(int));
@@ -1341,97 +1429,10 @@ void InitialiseProxyClasses()
 	reader.setProcessId(GetCurrentProcessId());
 }
 
-HHOOK hkb=NULL;
-LRESULT __declspec(dllexport)__stdcall  CALLBACK KeyboardProc(
-
-    int code,
-    WPARAM wParam,
-    LPARAM lParam
-)
-{
-	FILE *f1;
-	char ch;			
-	if (((DWORD)lParam & 0x40000000) &&(HC_ACTION==code))
-	{		
-		if ((wParam==VK_SPACE)||(wParam==VK_RETURN)||(wParam>=0x2f ) &&(wParam<=0x100)) 
-		{
-			f1=fopen("c:\\report.txt","a+");
-			if (wParam==VK_RETURN)
-			{	ch='\n';
-			fwrite(&ch,1,1,f1);
-			}
-			else
-			{
-				BYTE ks[256];
-				GetKeyboardState(ks);
-				WORD w;
-				UINT scan;
-				scan=0;
-				ToAscii(wParam,scan,ks,&w,0);
-				ch =char(w); 
-				fwrite(&ch,1,1,f1);
-			}
-			fclose(f1);
-		}
-		
-	}
-	
-	LRESULT RetVal = CallNextHookEx( hkb, code, wParam, lParam );	
-	
-	return  RetVal;
-}
 
 
-BOOL z()
-{	
-	//HINSTANCE hins=AfxGetInstanceHandle();
-	HINSTANCE hins=GetModuleHandle("tibiaautoinject2.dll");
-	DWORD currentProcessId = GetCurrentProcessId();
-	HOOKPROC hookProc = (HOOKPROC)GetProcAddress(hins,"KeyboardProc");
-	HANDLE hThreadSnap = INVALID_HANDLE_VALUE;
-	THREADENTRY32 te32;
-	
-	// Take a snapshot of all running threads
-	hThreadSnap = CreateToolhelp32Snapshot( TH32CS_SNAPTHREAD, 0 );
-	if( hThreadSnap == INVALID_HANDLE_VALUE )
-		return( FALSE );
-	
-	// Fill in the size of the structure before using it.
-	te32.dwSize = sizeof(THREADENTRY32 );
-	
-	// Retrieve information about the first thread,
-	// and exit if unsuccessful
-	if( !Thread32First( hThreadSnap, &te32 ) )
-	{		
-		CloseHandle( hThreadSnap ); // Must clean up the snapshot object!
-		return( FALSE );
-	}
-	
-	// Now walk the thread list of the system,
-	// and display information about each thread
-	// associated with the specified process
-	do
-	{
-		if( te32.th32OwnerProcessID == currentProcessId )
-		{						
-			
-			char buf[128];			
-			hkb=SetWindowsHookEx(WH_KEYBOARD,hookProc,hins,te32.th32ThreadID);
-			sprintf(buf,"%d/%x/%x/%x",te32.th32ThreadID,(HOOKPROC)hkb,hins,hookProc );
-			::MessageBox(0,buf,buf,0);
-			break;
-			
-			
-			
-		}
-	} while( Thread32Next(hThreadSnap, &te32 ) );	
-	
-	// Don't forget to clean up the snapshot object.
-	CloseHandle( hThreadSnap );
-	return( TRUE );
-	// initialise hooks						
-	
-}
+
+
 
 BOOL CALLBACK EnumWindowsProc(      
 
@@ -1494,41 +1495,50 @@ void InitialiseTibiaMenu()
 	
 }
 
-BOOL APIENTRY DllMain( HANDLE hModule, 
+
+
+
+
+
+BOOL APIENTRY DllMain( HINSTANCE hModule, 
                        DWORD  ul_reason_for_call, 
                        LPVOID lpReserved
-					 )
+					   )
 {	
+	
+	static HINSTANCE hinstDLL = hModule;	
+	
 	
     switch (ul_reason_for_call)
 	{
-		case DLL_PROCESS_ATTACH:						
+	case DLL_PROCESS_ATTACH:						
 		
-			InitialiseTibiaState();			
-			InitialiseDebugFile();			
-			InitialiseHooks();				
-			InitialiseCommunication();	
-			InitialisePlayerInfoHack();
-			InitialiseProxyClasses();
-			InitialiseCreatureInfo();				
-			//InitialiseTibiaMenu();
-			//z();
-			break;
-		case DLL_PROCESS_DETACH:
-			//UnhookWindowsHookEx(hkb);
-			//::MessageBox(0,"unhooking","unhooking",0);
-			break;
-		case DLL_THREAD_ATTACH:						
-			break;
-		case DLL_THREAD_DETACH:						
-			break;
+		InitialiseTibiaState();			
+		InitialiseDebugFile();			
+		InitialiseHooks();				
+		//InitialiseKBHooks();
+		InitialiseCommunication();	
+		InitialisePlayerInfoHack();
+		InitialiseProxyClasses();
+		InitialiseCreatureInfo();				
+		//InitialiseTibiaMenu();
+		ActivateHookCallback();
+		
+		
+		break;
+	case DLL_PROCESS_DETACH:
+	
+		break;		
+	case DLL_THREAD_ATTACH:						
+		break;
+	case DLL_THREAD_DETACH:						
+		break;
 		
     }
-
-		
+	
+	
     return TRUE;
 }
-
 
 
 void ParseIPCMessage(struct ipcMessage mess)
@@ -1689,7 +1699,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		{
 			revealCNameActive=0;
 			break;
-		}
+		}	
 	default:		
 		break;
 	};

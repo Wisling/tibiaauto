@@ -83,6 +83,7 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CTibiaautoDlg)
+	DDX_Control(pDX, IDC_TOOL_XRAY, m_xray);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK, m_autoAttack);
 	DDX_Control(pDX, IDC_TOOL_LOGIN, m_login);
 	DDX_Control(pDX, IDC_TOOL_AMMORESTACK, m_ammoRestack);
@@ -153,9 +154,9 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_LOGIN, OnToolLogin)
 	ON_WM_SHOWWINDOW()
 	ON_WM_SIZE()	
+	ON_BN_CLICKED(IDC_TOOL_XRAY, OnToolXray)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -232,6 +233,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleAntylogout = new CModuleProxy("mod_antylogout",0);
 	m_moduleFps = new CModuleProxy("mod_fps",0);
 	m_moduleLogin = new CModuleProxy("mod_login",0);
+	m_moduleXRay = new CModuleProxy("mod_xray",0);
 
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);	
@@ -315,6 +317,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
 	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
+
+
 		
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -466,8 +470,6 @@ void CTibiaautoDlg::InitialiseIPC()
 	injectDll="tibiaauto_develtest.dll";				
 	
 	DetourContinueProcessWithDll(procHandle, injectDll);
-		
-	
 	
 	
 	CloseHandle(procHandle);
@@ -551,6 +553,7 @@ void CTibiaautoDlg::refreshToolInfo()
 	m_antilogout.SetCheck(m_moduleAntylogout->isStarted());
 	m_fps.SetCheck(m_moduleFps->isStarted());
 	m_login.SetCheck(m_moduleLogin->isStarted());
+	m_xray.SetCheck(m_moduleXRay->isStarted());
 }
 
 void CTibiaautoDlg::OnSave() 
@@ -861,6 +864,7 @@ void CTibiaautoDlg::OnExit()
 	data.uID=1;				
 	data.uFlags=0;
 	Shell_NotifyIcon(NIM_DELETE,&data);
+	
 	ExitProcess(0);	
 }
 
@@ -1035,7 +1039,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.15.2",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.16.0",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
@@ -1083,7 +1087,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=1.15.2,tm=%d,",tm);
+		fprintf(f,"version=1.16.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
@@ -1093,4 +1097,9 @@ void CTibiaautoDlg::reportUsage()
 		fprintf(f,"checksum=%d\n",checksum%1000000);
 		fclose(f);
 	}
+}
+
+void CTibiaautoDlg::OnToolXray() 
+{
+	m_moduleXRay->showConfigDialog();	
 }

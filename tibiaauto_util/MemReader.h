@@ -22,6 +22,9 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	int getXRayValue2();
+	int getXRayValue1();
+	void setXRayValues(int v1, int v2);
 	int getConnectionState();
 	char * getOpenWindowName();
 	int getPlayerModeAttackPlayers();

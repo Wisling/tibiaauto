@@ -803,3 +803,21 @@ int memReadGetConnectionState()
 	startMemReader();
 	return reader->getConnectionState();
 }
+
+void memReadSetXRayValues(int v1,int v2)
+{
+	startMemReader();
+	reader->setXRayValues(v1,v2);
+}
+
+int memReadGetXRayValue1()
+{
+	startMemReader();
+	return reader->getXRayValue1();
+}
+
+int memReadGetXRayValue2()
+{
+	startMemReader();
+	return reader->getXRayValue2();
+}

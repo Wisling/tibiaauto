@@ -44,6 +44,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CTibiaautoDlg)
 	enum { IDD = IDD_TIBIAAUTO_DIALOG };
+	CButton	m_xray;
 	CButton	m_autoAttack;
 	CButton	m_login;
 	CButton	m_ammoRestack;
@@ -130,6 +131,7 @@ protected:
 	afx_msg void OnToolLogin();
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnToolXray();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	
@@ -176,6 +178,7 @@ private:
 	IModuleInterface *m_moduleAntylogout;
 	IModuleInterface *m_moduleFps;
 	IModuleInterface *m_moduleLogin;
+	IModuleInterface *m_moduleXRay;
 };
 
 //{{AFX_INSERT_LOCATION}}

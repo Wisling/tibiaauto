@@ -327,6 +327,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_xray"="..\tibiaauto-pub\mods\mod_xray\mod_xray.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "tibiaauto"=".\tibiaauto.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -425,6 +437,12 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name mod_login
     End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_xray
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tibiaautoinject3
+    End Project Dependency
 }}}
 
 ###############################################################################
@@ -442,6 +460,18 @@ Package=<4>
 ###############################################################################
 
 Project: "tibiaautoinject2"=".\tibiaautoinject2\tibiaautoinject2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaautoinject3"=".\tibiaautoinject3\tibiaautoinject3.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

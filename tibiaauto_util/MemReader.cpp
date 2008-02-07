@@ -724,3 +724,22 @@ int CMemReader::getConnectionState()
 	CTibiaItemProxy itemProxy;
 	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrConnectionState"));
 }
+
+void CMemReader::setXRayValues(int v1, int v2)
+{
+	CTibiaItemProxy itemProxy;
+	CMemUtil::SetMemIntValue(itemProxy.getValueForConst("addrXRay1"),v1);
+	CMemUtil::SetMemIntValue(itemProxy.getValueForConst("addrXRay2"),v2);
+}
+
+int CMemReader::getXRayValue1()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrXRay1"));
+}
+
+int CMemReader::getXRayValue2()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrXRay2"));
+}
