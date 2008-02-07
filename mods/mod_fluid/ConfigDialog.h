@@ -19,6 +19,7 @@ class CConfigDialog : public CDialog
 {
 // Construction
 public:
+	void reloadCustomItems();
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
@@ -28,8 +29,25 @@ public:
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
-	enum { IDD = IDD_CONFIG };	
-
+	enum { IDD = IDD_CONFIG };
+	CEdit	m_manaBelowS;
+	CEdit	m_manaBelowN;
+	CEdit	m_manaBelowG;
+	CEdit	m_hpBelowS;
+	CEdit	m_hpBelowN;
+	CEdit	m_hpBelowG;
+	CButton	m_drinkManaS;
+	CButton	m_drinkManaN;
+	CButton	m_drinkManaG;
+	CButton	m_drinkHpS;
+	CButton	m_drinkHpN;
+	CButton	m_drinkHpG;
+	CButton	m_customItem2Use;
+	CEdit	m_customItem2Below;
+	CComboBox	m_customItem2List;
+	CButton	m_customItem1Use;
+	CEdit	m_customItem1Below;
+	CComboBox	m_customItem1List;
 	CButton	m_dropEmpty;
 	CButton	m_hotkeyMana;
 	CButton	m_hotkeyLife;
@@ -38,7 +56,6 @@ public:
 	CEdit	m_hpBelow;
 	CButton	m_drinkMana;
 	CButton	m_drinkHp;
-
 	CButton	m_enable;
 	//}}AFX_DATA
 
