@@ -21,11 +21,12 @@ Filter=N
 [DLG:IDD_CONFIG]
 Type=1
 Class=CConfigDialog
-ControlCount=4
+ControlCount=5
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_REVEAL_NOFISH,button,1342242819
 Control4=IDC_REVEALCNAME,button,1342242819
+Control5=IDC_REVEALINVISIBLE,button,1073807363
 
 [CLS:CConfigDialog]
 Type=0

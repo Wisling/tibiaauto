@@ -892,3 +892,58 @@ int CMemReaderProxy::getXRayValue2()
 	}
 	return 0;
 }
+
+
+void CMemReaderProxy::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
+{
+	typedef void (*Proto_fun)(int v1, int v2, int v3);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteCreatureDeltaXY");
+		if (fun)
+		{
+			fun(creatureNr,deltaX,deltaY);
+		}
+	}
+}
+
+void CMemReaderProxy::setAttackedCreature(int tibiaId)
+{
+	typedef void (*Proto_fun)(int v1);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetAttackedCreature");
+		if (fun)
+		{
+			fun(tibiaId);
+		}
+	}
+}
+
+int CMemReaderProxy::getCreatureDeltaX(int creatureNr)
+{
+	typedef int (*Proto_fun)(int creatureNr);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetCreatureDeltaX");
+		if (fun)
+		{
+			return fun(creatureNr);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::getCreatureDeltaY(int creatureNr)
+{
+	typedef int (*Proto_fun)(int creatureNr);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetCreatureDeltaY");
+		if (fun)
+		{
+			return fun(creatureNr);
+		}
+	}
+	return 0;
+}

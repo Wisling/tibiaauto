@@ -126,7 +126,7 @@ void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
 {
 	CMemReaderProxy reader;
 	int t;
-	for (t=0;t<20;t++)
+	for (t=0;t<70;t++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->itemsInside!=origItemsCount)
@@ -135,7 +135,7 @@ void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
 			return;
 		}
 		delete cont;
-		Sleep(100);
+		Sleep(30);
 	}
 	return;
 }
@@ -613,66 +613,108 @@ int CModuleUtil::waitForOpenContainer(int contNr, int open)
 	return 0;
 }
 
+
+int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying)
+{
+	
+	/*
+	CMemReaderProxy reader;
+	int ret=0;
+	CTibiaContainer *cont = reader.readContainer(containerNr);
+	CTibiaItem *item = CModuleUtil::lookupItem(containerNr,acceptedItems);
+	if (item)
+	{
+		CTibiaContainer *contCarry = reader.readContainer(containerCarrying);
+		CPackSenderProxy sender;
+		sender.moveObjectBetweenContainers(item->objectId, 0x40+containerNr, item->pos, 0x40+containerCarrying, 0, item->quantity?item->quantity:1);
+		CModuleUtil::waitForItemsInsideChange(containerNr,cont->itemsInside);
+		delete contCarry;
+	}
+	delete cont;
+	return ret;
+	*/
+	
+	
+	
+		
+	int tm1=GetTickCount();
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaContainer *cont = reader.readContainer(containerNr);
+	CTibiaContainer *contCarrying = reader.readContainer(containerCarrying);
+	int ret;
+	if (cont->flagOnOff)
+	{
+		int itemNr;
+		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)		
+		{			
+			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
+			int pos;
+			for (pos=0;pos<acceptedItems->GetSize();pos++)
+			{
+				if ((int)item->objectId==(int)acceptedItems->GetAt(pos))
+				{
+					// item needs to be looted
+					int targetPos=cont->itemsInside;
+					CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+					if (tile->stackable)
+					{						
+						// if item is stackable then try to find a suitable stack for it
+						int stackedItemPos=0;
+						for (stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
+						{
+							CTibiaItem *stackedItem=(CTibiaItem *)contCarrying->items.GetAt(stackedItemPos);
+							if (stackedItem->objectId==item->objectId&&stackedItem->quantity<100)
+							{
+								// we have found a suitable stack! :)
+								targetPos=stackedItemPos;
+								// add try to add predicted quantity to the stack (for the next loop iteration)
+								stackedItem->quantity+=item->quantity;
+							}
+						}
+						
+					}
+					
+					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,item->quantity?item->quantity:1);
+					ret=1;
+					break;
+				}
+			}
+		}
+	}	
+	int tm2=GetTickCount();
+	//sprintf(buf,"tm required=%d",tm2-tm1);
+	//AfxMessageBox(buf);
+
+	delete cont;
+	delete contCarrying;
+	return ret;
+	
+	
+}
+
+
 void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 {	
 	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItem *item = CModuleUtil::lookupItem(contNr,acceptedItems);
-	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	if (item)
+	
+	// find first free container
+	int openCont;
+	for (openCont=0;openCont<8;openCont++)
 	{
-		CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+		
+		CTibiaContainer *targetCont = reader.readContainer(openCont);			
+		if (targetCont->flagOnOff)
+		{			
+			CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont);
+			break;								
+		}
+		
+		
+		delete targetCont;						
+	};		
 
-		CTibiaContainer *lootedCont = reader.readContainer(contNr);
-		// find first free container
-		int openCont;
-		for (openCont=0;openCont<8;openCont++)
-		{
-			
-			CTibiaContainer *targetCont = reader.readContainer(openCont);			
-			if (targetCont->flagOnOff)
-			{					
-				int itemNr;
-				// if item is stackable try to attach it to an existing stack
-				if (tile->stackable)
-				{
-					for (itemNr=0;itemNr<targetCont->itemsInside;itemNr++)
-					{
-						CTibiaItem *itemInside = (CTibiaItem *)targetCont->items.GetAt(itemNr);
-						if (itemInside->objectId==item->objectId&&itemInside->quantity+item->quantity<=100)
-						{
-							sender.moveObjectBetweenContainers(item->objectId,0x40+contNr,item->pos,0x40+openCont,itemNr,item->quantity?item->quantity:1);
-
-							waitForItemsInsideChange(contNr,lootedCont->itemsInside);
-
-							// jump out of all loops as looting is done
-							openCont=1000;	
-							itemNr=1000;
-						}
-					}
-				}
-
-				if (openCont!=1000&&targetCont->itemsInside<targetCont->size)
-				{
-					//sender.sendTAMessage("[debug] target container found");
-					// good, I can move to openCont
-					sender.moveObjectBetweenContainers(item->objectId,0x40+contNr,item->pos,0x40+openCont,targetCont->size-1,item->quantity?item->quantity:1);
-					
-					waitForItemsInsideChange(contNr,lootedCont->itemsInside);
-					
-					// jump out of all loops as looting is done
-					openCont=1000;					
-				}
-			}
-			
-			
-			delete targetCont;						
-		};
-		delete lootedCont;
-		delete item;
-	}
-	delete self;
 }
 
 void CModuleUtil::sleepWithStop(int ms,int *stopFlag)

@@ -20,6 +20,7 @@ CConfigData::CConfigData()
 {
 	revealCName=1;
 	revealNoFish=1;
+	revealInvisible=1;
 }
 
 CConfigData::~CConfigData()
