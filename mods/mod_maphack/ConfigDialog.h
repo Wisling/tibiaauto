@@ -31,6 +31,7 @@ public:
 	enum { IDD = IDD_CONFIG };
 	CButton	m_revealCName;
 	CButton	m_revealNoFish;
+	CButton	m_revealInvisible;
 	CButton	m_enable;
 	//}}AFX_DATA
 

@@ -47,6 +47,7 @@ public:
 	void turnRight();
 	void turnUp();
 	void turnDown();
+	void stopAll();
 	void sendCreatureInfo(char *name, char *info1, char *info2);
 	void look(int x,int y, int z,int objectId);
 	void ignoreLook(int ignoreLookEnd);

@@ -198,7 +198,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 				if(self->z <= 7)
 				{					
-					groundlevel = max(groundlevel,self->z);
+					groundlevel = max(groundlevel,self->z+1);
+					groundlevel = min(groundlevel,14-7+self->z);
 					reader.setXRayValues(groundlevel,2);
 				}
 
@@ -208,6 +209,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					undergroundlevel = min(undergroundlevel,7);
 					reader.setXRayValues(7,undergroundlevel);					
 				}
+
 			}
 
 		}
@@ -268,11 +270,12 @@ int CMod_xrayApp::isStarted()
 {
 	if (!m_started)
 	{
-		// if not started then regularry consume 1008 messages from the queue
+		// if not started then regularry consume 1008 and 2001 messages from the queue
 		CIPCBackPipeProxy backPipe;
 		struct ipcMessage mess;	
 
 		backPipe.readFromPipe(&mess,1008);
+		backPipe.readFromPipe(&mess,2001);
 	}
 	return m_started;
 }
