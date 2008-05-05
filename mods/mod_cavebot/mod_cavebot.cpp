@@ -434,7 +434,7 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup)
 				// that's this item - pick it up
 				if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
 				sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
-				CModuleUtil::waitForItemsInsideChange(contNr,pos);
+				CModuleUtil::waitForItemsInsideChange(8,cont8->itemsInside);
 
 				delete cont8;
 				delete depotChest;
@@ -470,7 +470,7 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup)
 						// that's this item - pick it up
 						if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
 						sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
-						CModuleUtil::waitForItemsInsideChange(contNr,pos);
+						CModuleUtil::waitForItemsInsideChange(8,newContainer->itemsInside);
 						
 						delete newContainer;
 						delete depotChest;
@@ -1153,6 +1153,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{							
 		Sleep(250);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		
 		if (config->debug) 
 		{
 			char buf[256];
@@ -1176,9 +1177,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		// if client thinks we are attacking something different, then
 		// send "attack new target" to it
+		
 		if (reader.getAttackedCreature()!=currentlyAttackedCreature)
 		{
-			sender.attack(currentlyAttackedCreature);
+			if (config->debug) 
+			{
+				char buf[128];
+				sprintf(buf,"Resetting attacked creature (%d!=%d) [1]",reader.getAttackedCreature(),currentlyAttackedCreature);
+				registerDebug(buf);
+			}
+			//sender.stopAll();			
+			sender.attack(currentlyAttackedCreature);			
+
+			reader.cancelAttackCoords();
+			reader.setAttackedCreature(currentlyAttackedCreature);			
+			reader.setRemainingTilesToGo(0);
+			reader.writeCreatureDeltaXY(self->nr,0,0);
+			
 		}
 
 
@@ -1750,19 +1765,38 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					int attackMode=config->mode;					
 					trainingCheck(config,alienCreatureForTrainingFound,attackingCreatureCount,lastAttackedCreatureHpDrop,&attackMode);
 					// proceed with attacking
-					reader.cancelAttackCoords();
-					/**
-					* Reset remaining tiles to go
-					* for the client (to avoid interferences).
-					*/
-					reader.setRemainingTilesToGo(0);
-					sender.attackMode(attackMode+1,config->autoFollow);
-
-					if (config->debug)
-					{
-						dumpCreatureInfo("Creature to attack",creatureDistList[dist]);
+					
+					if (reader.getAttackedCreature()!=creatureDistList[dist])
+					{						
+						/**
+						* Reset remaining tiles to go
+						* for the client (to avoid interferences).
+						*/
+						if (config->debug)
+						{
+							char buf[128];
+							sprintf(buf,"Resetting attacked creature (%d!=%d) [2]",reader.getAttackedCreature(),creatureDistList[dist]);
+							registerDebug(buf);
+							dumpCreatureInfo("Creature to attack",creatureDistList[dist]);
+						}
+				
+						//sender.stopAll();			
+						sender.attack(creatureDistList[dist]);			
+						
+						reader.cancelAttackCoords();
+						reader.setAttackedCreature(creatureDistList[dist]);			
+						reader.setRemainingTilesToGo(0);
+						reader.writeCreatureDeltaXY(self->nr,0,0);
+						
+						
+					} else {
+						if (config->debug)
+						{
+							char buf[128];
+							sprintf(buf,"Continously attacking creature %d",reader.getAttackedCreature());
+							registerDebug(buf);
+						}
 					}
-					sender.attack(creatureDistList[dist]);										
 					targetFound=1;
 					// decrement lastWaypPointNr for round-robin waypoint chooser
 					if (targetX||targetY||targetZ)
@@ -1775,6 +1809,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// reset goto target
 					targetX=targetY=targetZ=0;
 					globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
+					
 					
 					CTibiaCharacter *enemyCh = reader.getCharacterByTibiaId(creatureDistList[dist]);
 					if (enemyCh)
@@ -1820,6 +1855,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingCreature;;
 						if (config->debug) registerDebug("Attack state: attacking");
 					}
+					
 					break;
 				}
 			} // for (dist)
@@ -1829,18 +1865,32 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (currentlyAttackedCreature)
 				{
 					// cancel the attack if some creature is being attacked
+					//sender.stopAll();
 					sender.attack(0);
+					reader.setAttackedCreature(0);
+					if (config->debug)
+					{
+						registerDebug("Resetting attack to 0 [3]");
+					}
+
 				}
 				currentlyAttackedCreature=0;
 				if (config->debug) registerDebug("No attack target found");
 			}
+			
 		} else {			
 			// send 'cancel attack'
 			if (config->debug) registerDebug("Entered cancel attack");
 			if (currentlyAttackedCreature)
 			{
 				// cancel the attack if some creature is being attacked
+				//sender.stopAll();
 				sender.attack(0);
+				reader.setAttackedCreature(0);
+				if (config->debug)
+				{
+					registerDebug("Resetting attack to 0 [4]");
+				}
 			} 
 			currentlyAttackedCreature=0;
 			if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_monsterUnreachable)
@@ -1858,6 +1908,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// reset "current Pos TM" - attacked creature is next to us
 			currentPosTM=time(NULL);
 		}
+		
 		if (lastStandingX==self->x&&lastStandingY==self->y&&lastStandingZ==self->z)
 		{			
 			if (config->suspendOnNoMove&&time(NULL)-currentPosTM>=config->unreachableAfter&&creatureAttackDist>1&&globalAutoAttackStateAttack==CToolAutoAttackStateAttack_attackingCreature)
@@ -1893,6 +1944,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				walkerStandingEndTm=time(NULL)+config->standStill;
 			}
 		}
+		
 		if (!targetFound)
 		{
 			// check whether we should not stand in place?
@@ -1944,6 +1996,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 				
 			};
+			
 			
 			if (targetX&&targetY&&!isInHalfSleep())
 			{	
@@ -1999,6 +2052,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		} // if (!targetFound)
 
+		
 		delete self;
 		if (config->debug) registerDebug("End cavebot loop");
 				
@@ -2009,11 +2063,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		sh_mem.SetValue(varName,&zero,4);
 	}
 	// cancel attacks
+	//sender.stopAll();
 	sender.attack(0);
+	reader.setAttackedCreature(0);
 	// restore attack mode
 	sender.attackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
 	
-	reader.setRemainingTilesToGo(0);
+	//reader.setRemainingTilesToGo(0);
 	if (config->debug) registerDebug("Exiting cavebot");
 	globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
 	globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;

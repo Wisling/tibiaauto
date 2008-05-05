@@ -89,25 +89,6 @@ int containerNotFull(int containerNr)
 	return ret;
 }
 
-int containerContains(int containerNr,CUIntArray *acceptedItems, int containerCarrying)
-{
-	CMemReaderProxy reader;
-	int ret=0;
-	CTibiaContainer *cont = reader.readContainer(containerNr);
-	CTibiaItem *item = CModuleUtil::lookupItem(containerNr,acceptedItems);
-	if (item)
-	{
-		CTibiaContainer *contCarry = reader.readContainer(containerCarrying);
-		CPackSenderProxy sender;
-		sender.moveObjectBetweenContainers(item->objectId, 0x40+containerNr, item->pos, 0x40+containerCarrying, 0, item->quantity?item->quantity:1);
-		CModuleUtil::waitForItemsInsideChange(containerCarrying,contCarry->itemsInside);					
-		delete contCarry;
-	}
-	delete cont;
-	return ret;
-}
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -346,16 +327,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			
 			
-			if (config->m_mode1==2&&containerContains(0,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode2==2&&containerContains(1,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode3==2&&containerContains(2,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode4==2&&containerContains(3,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode5==2&&containerContains(4,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode6==2&&containerContains(5,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode7==2&&containerContains(6,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode8==2&&containerContains(7,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode9==2&&containerContains(8,&acceptedItems,containerCarrying)) continue;
-			if (config->m_mode10==2&&containerContains(9,&acceptedItems,containerCarrying)) continue;
+			int extraSleep=0;
+			if (config->m_mode1==2&&CModuleUtil::loopItemFromSpecifiedContainer(0,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode2==2&&CModuleUtil::loopItemFromSpecifiedContainer(1,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode3==2&&CModuleUtil::loopItemFromSpecifiedContainer(2,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode4==2&&CModuleUtil::loopItemFromSpecifiedContainer(3,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode5==2&&CModuleUtil::loopItemFromSpecifiedContainer(4,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode6==2&&CModuleUtil::loopItemFromSpecifiedContainer(5,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode7==2&&CModuleUtil::loopItemFromSpecifiedContainer(6,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode8==2&&CModuleUtil::loopItemFromSpecifiedContainer(7,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode9==2&&CModuleUtil::loopItemFromSpecifiedContainer(8,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode10==2&&CModuleUtil::loopItemFromSpecifiedContainer(9,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (extraSleep) Sleep(1000);
 		}
 				
 	}
@@ -528,7 +511,7 @@ void CMod_looterApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"loot/worms")) m_configData->m_lootWorms=atoi(paramValue);
 	if (!strcmp(paramName,"loot/gp")) m_configData->m_lootGp=atoi(paramValue);
 	if (!strcmp(paramName,"loot/food")) m_configData->m_lootFood=atoi(paramValue);
-	if (!strcmp(paramName,"loot/custom")) m_configData->m_lootFood=atoi(paramValue);	
+	if (!strcmp(paramName,"loot/custom")) m_configData->m_lootCustom=atoi(paramValue);	
 	if (!strcmp(paramName,"other/autoOpen")) m_configData->m_autoOpen=atoi(paramValue);	
 }
 

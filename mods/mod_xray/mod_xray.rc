@@ -73,7 +73,8 @@ BEGIN
     CONTROL         "Enable XRay",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,7,123,189,14
     CONTROL         "Reset XRay automatically when walking",IDC_AUTORESET,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,87,142,10
+                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,
+                    87,142,10
     LTEXT           "NOTE: to see creature names on different levels, use the ""map hacks"" tool",
                     IDC_STATIC,7,7,189,19
     CONTROL         "Additionally intercept PgUp and PgDown for hotkeys",

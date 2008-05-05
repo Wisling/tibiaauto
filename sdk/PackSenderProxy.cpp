@@ -430,6 +430,19 @@ void CPackSenderProxy::turnDown()
 	} 
 }
 
+void CPackSenderProxy::stopAll()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStopAll");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
 void CPackSenderProxy::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
 {
 	typedef void (*Proto_fun)(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity);

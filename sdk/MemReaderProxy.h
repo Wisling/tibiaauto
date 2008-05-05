@@ -95,6 +95,11 @@ public:
 	char *getOpenWindowName();
 	int getConnectionState();
 
+	void writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY);
+	int getCreatureDeltaX(int creatureNr);
+	int getCreatureDeltaY(int creatureNr);
+
+	void setAttackedCreature(int tibiaId);	
 
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();

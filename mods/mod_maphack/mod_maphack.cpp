@@ -64,14 +64,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
+	int count=0;
 
 	sender.enableCName(1);
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(1000);	
+		count++;
+		Sleep(200);	
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
-
-		if (config->revealNoFish)
+		
+		if (config->revealNoFish&&count%5==0)
 		{			
 			int x,y;
 			for (x=-7;x<=7;x++)
@@ -87,9 +89,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 
-		if (config->revealCName)
+		if (config->revealCName&&count%5==0)
 		{
 			reader.writeEnableRevealCName();
+		}
+		if (config->revealInvisible)
+		{
+			/*
+			int creatureNr=0;
+			for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
+			{
+				CTibiaCharacter *cr=reader.readVisibleCreature(creatureNr);
+				if (cr->monsterType==
+				delete cr;
+			}
+			*/
+
 		}
 				
 	}
@@ -215,7 +230,7 @@ void CMod_maphackApp::enableControls()
 
 char *CMod_maphackApp::getVersion()
 {
-	return "1.3";
+	return "1.4";
 }
 
 
@@ -234,6 +249,7 @@ void CMod_maphackApp::loadConfigParam(char *paramName,char *paramValue)
 {
 	if (!strcmp(paramName,"reveal/noFish")) m_configData->revealNoFish=atoi(paramValue);
 	if (!strcmp(paramName,"reveal/cName")) m_configData->revealCName=atoi(paramValue);	
+	if (!strcmp(paramName,"reveal/invisible")) m_configData->revealInvisible=atoi(paramValue);
 }
 
 char *CMod_maphackApp::saveConfigParam(char *paramName)
@@ -243,6 +259,7 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 	
 	if (!strcmp(paramName,"reveal/noFish")) sprintf(buf,"%d",m_configData->revealNoFish);
 	if (!strcmp(paramName,"reveal/cName")) sprintf(buf,"%d",m_configData->revealCName);	
+	if (!strcmp(paramName,"reveal/invisible")) sprintf(buf,"%d",m_configData->revealInvisible);
 
 	return buf;
 }
@@ -253,6 +270,7 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 	{
 	case 0: return "reveal/noFish";
 	case 1: return "reveal/cName";
+	case 2: return "reveal/invisible";
 	default:
 		return NULL;
 	}

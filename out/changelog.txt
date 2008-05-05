@@ -1,9 +1,28 @@
-1.16.0, ???
+1.16.3, ??
+Defects:
+ Cave bot: reduced the old "graphical glitch"
+ cave bot: reduced server spamming by 'attack' command
+
+Enhancements:
+ Auto loot: improved speed of looting
+ Cave boot: improved speed of looting
+
+1.16.2, 10.04.2008
+Defects:
+ General: removed crash bug which appeared after upgrading to tibia client 8.11
+
+1.16.1, 09.04.2008
+Enhancements:
+ General: updated to Tibia Client 8.11
+
+1.16.0, 08.02.2008
 Defects:
  General: fixed potential crash bug when spammed with many big messages
  Cave bot: fixed going up with a ladder in new areas
  Show map: at least one ground=1 required now on a tile for it to be avaialble
  Tiles: fixed some Darashian tiles
+ Auto loot: small fix in speed of looter
+ Cave bot: small fix in speed of looter
 
 Enhancements:
  Fluid drinker: redesigned fluid drinker to fully work with the new potions

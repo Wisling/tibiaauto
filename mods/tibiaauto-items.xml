@@ -1,4 +1,4 @@
-<!-- Tibia Items for Tibia 8.10 -->
+<!-- Tibia Items for Tibia 8.11 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
@@ -94,7 +94,7 @@
 
 		<const code="addrFps" value="0x76CE0C"/> <!-- lookup: Surface.cpp --> <!-- +54D0 -->
 
-
+   
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
