@@ -111,6 +111,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 		ch->walkSpeed=monCh->walkSpeed;
 		ch->skulls=monCh->skulls;
 		ch->shields=monCh->shields;
+		ch->nr=loggedCharNr;
 
 
 		delete monCh;
@@ -742,4 +743,25 @@ int CMemReader::getXRayValue2()
 {
 	CTibiaItemProxy itemProxy;
 	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrXRay2"));
+}
+
+void CMemReader::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
+{	
+	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+48,deltaX);
+	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+52,deltaY);
+}
+
+void CMemReader::setAttackedCreature(int tibiaId)
+{	
+	CMemUtil::SetMemIntValue(m_memAddressAttackedCreature,tibiaId);
+}
+
+int CMemReader::getCreatureDeltaX(int creatureNr)
+{
+	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+48);
+}
+
+int CMemReader::getCreatureDeltaY(int creatureNr)
+{
+	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+52);
 }

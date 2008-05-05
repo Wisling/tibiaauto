@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 /////////////////////////////////////////////////////////////////////////////
-int fileSendingProgress=1;
+int fileSendingProgress=1 ;
 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDialog dialog
@@ -27,7 +27,7 @@ COptionsDialog::COptionsDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
+ 
 void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);

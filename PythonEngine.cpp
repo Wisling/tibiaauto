@@ -265,6 +265,10 @@ static PyMethodDef Methods_tareader[] = {
 	{"setXRayValues", tibiaauto_reader_setXRayValues, METH_VARARGS},
 	{"getXRayValue1", tibiaauto_reader_getXRayValue1, METH_VARARGS},
 	{"getXRayValue2", tibiaauto_reader_getXRayValue2, METH_VARARGS},
+	{"writeCreatureDeltaXY", tibiaauto_reader_writeCreatureDeltaXY, METH_VARARGS},
+	{"setAttackedCreature", tibiaauto_reader_setAttackedCreature, METH_VARARGS},
+	{"getCreatureDeltaX", tibiaauto_reader_getCreatureDeltaX, METH_VARARGS},
+	{"getCreatureDeltaY", tibiaauto_reader_getCreatureDeltaY, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 
@@ -302,6 +306,8 @@ static PyMethodDef Methods_tasender[] = {
 	{"sendClearCreatureInfo", tibiaauto_sender_sendClearCreatureInfo, METH_VARARGS},
 	{"enableCName", tibiaauto_sender_enableCName, METH_VARARGS},
 	{"sendAttackedCreatureToAutoAim", tibiaauto_sender_sendAttackedCreatureToAutoAim, METH_VARARGS},
+	{"stopAll", tibiaauto_sender_stopAll, METH_VARARGS},
+
 	
     {NULL,      NULL}        /* Sentinel */
 };

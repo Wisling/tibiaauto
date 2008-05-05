@@ -759,3 +759,15 @@ void CPackSender::enableCName(int enable)
 		sendPacket(sendbuf,305); else
 		sendPacket(sendbuf,306);
 }
+
+void CPackSender::stopAll()
+{
+	char retbuf[3];
+
+	retbuf[0]=1	;
+	retbuf[1]=0;
+
+	retbuf[2]=0xbe;
+
+	sendPacket(retbuf);
+}

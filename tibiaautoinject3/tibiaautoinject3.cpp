@@ -84,9 +84,7 @@ void setCallbackFun()
 
 
 extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
-{
-	char tab[255];
-
+{	
 	if (nCode < 0)  
     return CallNextHookEx(hhookKeyb, nCode, 
         wParam, lParam);
@@ -99,35 +97,14 @@ extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 	{				
 		if (wParam==0x21)
 		{
-			if (!hookCallbackFun)
-			{
-				setCallbackFun();
-			}
-			if (hookCallbackFun)
-			{
-				//::MessageBox(0,"callback fireing","",0);
-				hookCallbackFun(0x21);
-			}
-			
+			if (!hookCallbackFun) setCallbackFun();
+			if (hookCallbackFun) hookCallbackFun(0x21);
 		}
 		if (wParam==0x22)
 		{
-			if (!hookCallbackFun)
-			{
-				setCallbackFun();
-			}
+			if (!hookCallbackFun) setCallbackFun();
 			if (hookCallbackFun) hookCallbackFun(0x22);			
-		}
-		
-
-		
-		int threadId=::GetCurrentThreadId();
-		int procId=::GetCurrentProcessId();
-	
-		wsprintf(tab, "wparam=%c wparam=%x lparam=%x p=%d t=%d fun=%x", wParam, wParam,lParam,procId,threadId,hookCallbackFun);
-		
-		//MessageBox(NULL, tab, "Wirtualny kod wciœniêtego klawisza",MB_OK);	
-		
+		}			
 
 		
 	}

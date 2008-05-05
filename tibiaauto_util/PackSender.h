@@ -12,6 +12,7 @@
 class CPackSender  
 {
 public:		
+	void stopAll();
 	void enableCName(int enable);
 	void ignoreLook(int end);
 	void look(int x,int y,int z,int objectId);

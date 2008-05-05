@@ -159,6 +159,7 @@ int payloadLen(char buf[])
 	return len;
 };
 
+int lastAction=0;
 void sendBufferViaSocket(char *buffer)
 {	
 	// if we don't yet have key pointer then don't do anything
@@ -183,6 +184,17 @@ void sendBufferViaSocket(char *buffer)
 		myInterceptEncrypt((int)(outbuf+i+2),encryptKeyPtr);		
 	}	
 
+	
+	// make sure that packets go at most once every minDistance ms
+	int minDistance=175;
+	int nowAction=GetTickCount();
+	if (nowAction-lastAction<minDistance) Sleep(minDistance-(nowAction-lastAction));
+	if (debugFile)
+	{				
+		fprintf(debugFile,"sending; waited %dms delta=%dms [%d]\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
+	}	
+	lastAction=GetTickCount();
+	
 	
 	
 	int ret=send(tibiaSocket,outbuf,outbuflen+2,0);	
@@ -1003,7 +1015,7 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	//debugFile=fopen("e:\\temp\\tibiaDebug.txt","wb");
+	//debugFile=fopen("d:\\temp\\tibiaDebug.txt","wb");
 	debugFile=NULL;
 	debugFileStart=time(NULL);
 }
@@ -1029,9 +1041,9 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 	int titleOffset=0;	
 	char convString[128];
 	sprintf(convString,str);
-	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int len, int v10);			
-	//Proto_fun fun=(Proto_fun)(0x4A22B0); // OLD
-	Proto_fun fun=(Proto_fun)(0x4A2DC0); // 8.1
+	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int len, int v10);				
+	//Proto_fun fun=(Proto_fun)(0x4A2DC0); // OLD
+	Proto_fun fun=(Proto_fun)(0x4A2DC0); // 8.11
 
 	if (fontNumber==2)
 	{
@@ -1074,8 +1086,8 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	typedef void (*Proto_fun)(int type,char *s);			
-	//Proto_fun fun=(Proto_fun)(0x531EF0); //OLD
-	Proto_fun fun=(Proto_fun)(0x534AD0); //8.1
+	//Proto_fun fun=(Proto_fun)(0x534AD0); //OLD
+	Proto_fun fun=(Proto_fun)(0x5349C0); //8.11
 	
 				
 	if (type==0x16)
@@ -1139,8 +1151,8 @@ int myIsCreatureVisible(int *creaturePtr)
 		return ret;
 	} else {
 		typedef int (*Proto_fun)(int *creaturePtr);					
-		//Proto_fun fun=(Proto_fun)(0x452EB0); // OLD
-		Proto_fun fun=(Proto_fun)(0x453990); // 8.1
+		//Proto_fun fun=(Proto_fun)(0x453990); // OLD
+		Proto_fun fun=(Proto_fun)(0x453990); // 8.11
 		return fun(creaturePtr);
 	}
 
@@ -1150,8 +1162,8 @@ int myIsCreatureVisible(int *creaturePtr)
 void myInterceptEncrypt(int v1, int v2)
 {		
 	typedef void (*Proto_fun)(int v1,int v2);	
-	//Proto_fun fun=(Proto_fun)(0x536C40); // OLD
-	Proto_fun fun=(Proto_fun)(0x53A170); // 8.1
+	//Proto_fun fun=(Proto_fun)(0x53A170); // OLD
+	Proto_fun fun=(Proto_fun)(0x53A060); // 8.11
 
 	encryptKeyPtr=v2;
 	if (debugFile)
@@ -1182,8 +1194,8 @@ void myInterceptEncrypt(int v1, int v2)
 void myInterceptDecrypt(int v1, int v2)
 {		
 	typedef void (*Proto_fun)(int v1,int v2);	
-	//Proto_fun fun=(Proto_fun)(0x536D70); // OLD
-	Proto_fun fun=(Proto_fun)(0x53A2A0); // 8.1
+	//Proto_fun fun=(Proto_fun)(0x53A2A0); // OLD
+	Proto_fun fun=(Proto_fun)(0x53A190); // 8.11
 
 	encryptKeyPtr=v2;		
 
@@ -1202,8 +1214,8 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	}
 	// note: at least 0x14 bytes are passed on stack; at most 0x2c bytes are passed
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11);	
-	//Proto_fun fun=(Proto_fun)(0x5349A0); // OLD
-	Proto_fun fun=(Proto_fun)(0x537ED0); // 8.1
+	//Proto_fun fun=(Proto_fun)(0x537ED0); // OLD
+	Proto_fun fun=(Proto_fun)(0x537DC0); // 8.11
 
 	if (type==1)
 	{
@@ -1233,95 +1245,6 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 		mess.send();
 	}
 
-	// special pass detecion code!
-	
-	// old1 pass is "bUy a vamp shield $$$ m s g   m e  with oFfeRs! !"
-	// old2 pass is "bUy a vamp shield $$$ m s g   m e  with oFfeRs!!!"
-	// old3 pass is "bUy a vamp shield $$$ m s g   m e  with oFfeRs  !"
-	// new  pass is "bUY a vamp shield $$$ m s g   m e  with oFfeRs  !"
-	// passlen is 49		
-	
-	// sample recv 0x26 0x0 0xaa "0xd 0x0" "0x43 0x72 0x79 0x70 0x68 0x74 0x20 0x54 0x68 0x6f 0x72 0x69 0x6e" 0x5 0x5 0x0 "0x11 0x0" "0x62 0x75 0x79 0x20 0x62 0x70 0x20 0x68 0x6d 0x6d 0x20 0x63 0x61 0x72 0x6c 0x69 0x6e"
-	// sample send 0x35 0x0 0x96 0x4 "0xa 0x0" "0x4b 0x69 0x6e 0x6f 0x72 0x20 0x41 0x76 0x65 0x72" "0x25 0x0" "0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61 0x61"
-	
-	
-	if (0&&type==5&&msgLen==49&&nickLen)
-	{
-		int pos=0;
-		if (
-			s[pos++]=='b'&&
-			s[pos++]=='U'&&
-			s[pos++]=='Y'&&
-			s[pos++]==' '&&
-			s[pos++]=='a'&&
-			s[pos++]==' '&&
-			s[pos++]=='v'&&
-			s[pos++]=='a'&&
-			s[pos++]=='m'&&
-			s[pos++]=='p'&&
-			s[pos++]==' '&&
-			s[pos++]=='s'&&
-			s[pos++]=='h'&&
-			s[pos++]=='i'&&
-			s[pos++]=='e'&&
-			s[pos++]=='l'&&
-			s[pos++]=='d'&&
-			s[pos++]==' '&&
-			s[pos++]=='$'&&
-			s[pos++]=='$'&&
-			s[pos++]=='$'&&
-			s[pos++]==' '&&
-			s[pos++]=='m'&&
-			s[pos++]==' '&&
-			s[pos++]=='s'&&
-			s[pos++]==' '&&
-			s[pos++]=='g'&&
-			s[pos++]==' '&&
-			s[pos++]==' '&&
-			s[pos++]==' '&&
-			s[pos++]=='m'&&
-			s[pos++]==' '&&
-			s[pos++]=='e'&&
-			s[pos++]==' '&&
-			s[pos++]==' '&&
-			s[pos++]=='w'&&
-			s[pos++]=='i'&&
-			s[pos++]=='t'&&
-			s[pos++]=='h'&&
-			s[pos++]==' '&&
-			s[pos++]=='o'&&
-			s[pos++]=='F'&&
-			s[pos++]=='f'&&
-			s[pos++]=='e'&&
-			s[pos++]=='R'&&
-			s[pos++]=='s'&&
-			s[pos++]==' '&&
-			s[pos++]==' '&&
-			s[pos++]=='!')
-		{
-			// pass ok - reaction needed
-			char sndbuf[1024];
-			char strbuf[256];
-			sprintf(strbuf,"%d/%s",tmp1,(tmp1==-1)?"-":tmp2);
-			int i;
-			int sendlen=2+2+nickLen+2+strlen(strbuf);
-			sndbuf[0]=sendlen%256;
-			sndbuf[1]=sendlen/256;
-			sndbuf[2]=0x96;
-			sndbuf[3]=0x04;
-			sndbuf[4]=nickLen%256;
-			sndbuf[5]=nickLen/256;
-			for (i=0;i<nickLen;i++)
-				sndbuf[6+i]=nick[i];
-			sndbuf[6+nickLen]=strlen(strbuf)%256;
-			sndbuf[7+nickLen]=strlen(strbuf)/256;
-			for (i=0;i<strlen(strbuf);i++)
-				sndbuf[8+nickLen+i]=strbuf[i];
-			strcpy(tmp3,nick);			
-			Mine_send(tibiaSocket,sndbuf,sendlen+2,lastSendFlags);
-			
-		}
-	}
 	
 	if (type!=0x16||time(NULL)>ignoreLookEnd) 
 	{ 		
@@ -1353,13 +1276,13 @@ void InitialisePlayerInfoHack()
 	
 		
 	// lookup: LEFT_ALIGN - trzecie (ostatnie) wystapienie; 2 ekrany ponizej		
-	//trapFun(dwHandle,0x4A3438+1,(unsigned int)myPlayerNameText); // OLD
-	trapFun(dwHandle,0x4A3F48+1,(unsigned int)myPlayerNameText); // 8.1
+	//trapFun(dwHandle,0x4A3F48+1,(unsigned int)myPlayerNameText); // OLD
+	trapFun(dwHandle,0x4A3F48+1,(unsigned int)myPlayerNameText); // 8.11
 	
 
 	// lookup: TALK_MODE_BEYOND; ekran ponad	
-	//trapFun(dwHandle,0x412D13+1,(unsigned int)myInterceptInfoMiddleScreen); // OLD
-	trapFun(dwHandle,0x412EA3+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.1
+	//trapFun(dwHandle,0x412EA3+1,(unsigned int)myInterceptInfoMiddleScreen); // OLD
+	trapFun(dwHandle,0x412EA3+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.11
 
 	
 	// lookup: TargetBuffer!=NULL; pierwsze wywolanie to jest srodek funkcji infomessage;
@@ -1367,23 +1290,7 @@ void InitialisePlayerInfoHack()
 	
 	// block is OLD
 	/*
-	trapFun(dwHandle,0x4125C8+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x412793+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x412B29+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4257D4+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x427FC8+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x427FDF+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x445097+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4C7BE0+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4C83AD+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4C8413+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x534FBF+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x534FF2+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x535109+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x535330+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x535A36+1,(unsigned int)myInterceptInfoMessageBox);	
-	*/
-	// BLOCK is 8.1
+	// BLOCK is OLD
 	trapFun(dwHandle,0x412758+1,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x412923+1,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x412CB9+1,(unsigned int)myInterceptInfoMessageBox);	
@@ -1399,24 +1306,43 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x538639+1,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x538860+1,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x538F66+1,(unsigned int)myInterceptInfoMessageBox);	
+	*/
+	// BLOCK is 8.11
+	
+	trapFun(dwHandle,0x412758+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x412923+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x412CB9+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x425944+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x428138+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x42814F+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4453C8+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4C9390+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4C9B5D+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4C9BC3+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5383DF+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x538412+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x538529+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x538750+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x538E56+1,(unsigned int)myInterceptInfoMessageBox);	
+	
 	
 		
 	// lookup: string "XOR EBX, EBP"; to jest srodek funkcji encrypt
-	//trapFun(dwHandle,0x536EDD+1,(unsigned int)myInterceptEncrypt); // OLD
-	trapFun(dwHandle,0x53A40D+1,(unsigned int)myInterceptEncrypt); // 8.1
+	//trapFun(dwHandle,0x53A40D+1,(unsigned int)myInterceptEncrypt); // OLD
+	trapFun(dwHandle,0x53A2FD+1,(unsigned int)myInterceptEncrypt); // 8.11
 
 	// lookup: funkcja ponizej encrypt()
-	//trapFun(dwHandle,0x536EFD+1,(unsigned int)myInterceptDecrypt); // OLD
-	trapFun(dwHandle,0x53A42D+1,(unsigned int)myInterceptDecrypt); // 8.1
+	//trapFun(dwHandle,0x53A42D+1,(unsigned int)myInterceptDecrypt); // OLD
+	trapFun(dwHandle,0x53A31D+1,(unsigned int)myInterceptDecrypt); // 8.11
 
 	// lookup: referencja na string "Creature!=NULL" 
 	//         [trzeba poszukac PUSH stringa z tym debugiem] + 
 	//         instrukcja przed PUSH XXX musi byc MOV ESI, 00000000Fh
 	//         jest to w srodku tej funkcji.
 	//         trap trzeciej (ostatniej referencji na funkcje)
-	//trapFun(dwHandle,0x4DD2BA+1,(unsigned int)myIsCreatureVisible); // OLD
-	trapFun(dwHandle,0x4DF44C+1,(unsigned int)myIsCreatureVisible); // 8.1
-
+	//trapFun(dwHandle,0x4DF44C+1,(unsigned int)myIsCreatureVisible); // OLD
+	trapFun(dwHandle,0x4DF44C+1,(unsigned int)myIsCreatureVisible); // 8.11
+	
 		
     CloseHandle(dwHandle);
 
@@ -1540,7 +1466,6 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
     return TRUE;
 }
 
-
 void ParseIPCMessage(struct ipcMessage mess)
 {
 	
@@ -1549,17 +1474,21 @@ void ParseIPCMessage(struct ipcMessage mess)
 	case 1:
 		if (tibiaSocket!=NULL)
 		{
+			
+
 			char buf[3];
 			buf[0]=0x1;
 			buf[1]=0x0;
 			buf[2]=0x67;
 			send(tibiaSocket,buf,3,0);
+			
 			break;
 		};
 	case 2:
 		if (tibiaSocket!=NULL)
-		{
+		{			
 			sendBufferViaSocket(mess.payload);
+			
 		};
 		break;
 	case 3:

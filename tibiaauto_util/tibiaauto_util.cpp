@@ -612,6 +612,12 @@ void packSenderTurnDown()
 	sender.turnDown();
 }
 
+void packSenderStopAll()
+{
+	CPackSender sender;
+	sender.stopAll();
+}
+
 void packSenderMoveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
 {
 	CPackSender sender;
@@ -820,4 +826,28 @@ int memReadGetXRayValue2()
 {
 	startMemReader();
 	return reader->getXRayValue2();
+}
+
+void memReadWriteCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
+{	
+	startMemReader();
+	reader->writeCreatureDeltaXY(creatureNr,deltaX,deltaY);	
+}
+
+void memReadSetAttackedCreature(int tibiaId)
+{	
+	startMemReader();
+	reader->setAttackedCreature(tibiaId);	
+}
+
+int memReadGetCreatureDeltaX(int creatureNr)
+{
+	startMemReader();
+	return reader->getCreatureDeltaX(creatureNr);
+}
+
+int memReadGetCreatureDeltaY(int creatureNr)
+{
+	startMemReader();
+	return reader->getCreatureDeltaY(creatureNr);
 }

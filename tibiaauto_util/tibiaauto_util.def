@@ -140,3 +140,8 @@ EXPORTS
 	memReadSetXRayValues @134
 	memReadGetXRayValue1 @135
 	memReadGetXRayValue2 @136
+	memReadWriteCreatureDeltaXY @137
+	memReadSetAttackedCreature @138
+	memReadGetCreatureDeltaX @139
+	memReadGetCreatureDeltaY @140
+	packSenderStopAll @141

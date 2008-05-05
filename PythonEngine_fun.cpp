@@ -951,6 +951,14 @@ static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
+static PyObject *tibiaauto_sender_stopAll(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stopAll();
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
 static PyObject *tibiaauto_sender_sendCreatureInfo(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1750,6 +1758,55 @@ static PyObject *tibiaauto_reader_getXRayValue2(PyObject *self, PyObject *args)
 	CMemReaderProxy reader;
 
 	int ret1=reader.getXRayValue2();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+
+
+static PyObject *tibiaauto_reader_writeCreatureDeltaXY(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1,arg2,int arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+
+	reader.writeCreatureDeltaXY(arg1,arg2,arg3);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+
+static PyObject *tibiaauto_reader_setAttackedCreature(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+
+	reader.setAttackedCreature(arg1);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+static PyObject *tibiaauto_reader_getCreatureDeltaX(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+	int ret1=reader.getCreatureDeltaX(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	Py_INCREF(ret);
+	return ret;
+}
+
+static PyObject *tibiaauto_reader_getCreatureDeltaY(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+	int ret1=reader.getCreatureDeltaY(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
 	Py_INCREF(ret);
 	return ret;

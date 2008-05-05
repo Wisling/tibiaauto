@@ -1039,7 +1039,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.16.0",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.16.3",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
@@ -1087,7 +1087,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=1.16.0,tm=%d,",tm);
+		fprintf(f,"version=1.16.3,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

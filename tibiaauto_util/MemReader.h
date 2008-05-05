@@ -22,6 +22,10 @@ public:
 	CMemReader(); 
 	virtual ~CMemReader();		
 public:
+	int getCreatureDeltaY(int creatureNr);
+	int getCreatureDeltaX(int creatureNr);
+	void setAttackedCreature(int tibiaId);
+	void writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY);
 	int getXRayValue2();
 	int getXRayValue1();
 	void setXRayValues(int v1, int v2);
