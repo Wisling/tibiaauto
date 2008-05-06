@@ -64,14 +64,14 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 186, 221
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 358, 262
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: spell caster"
+CAPTION "Module: Spell Caster"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,69,200,50,14
+    DEFPUSHBUTTON   "OK",IDOK,150,245,50,14
     CONTROL         "Enable spell caster",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,179,172,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,225,344,14
     EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_SPELL,111,31,61,14,
                     ES_AUTOHSCROLL
     LTEXT           "Spell to cast:",IDC_STATIC,16,31,78,14,SS_CENTERIMAGE
@@ -79,36 +79,91 @@ BEGIN
                     SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_MANA,111,15,61,14,
                     ES_AUTOHSCROLL
-    LTEXT           "Cast when life below:",IDC_STATIC,16,60,77,14,
-                    SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_HP,111,60,61,14,ES_AUTOHSCROLL
-    GROUPBOX        "Mana",IDC_STATIC,7,7,172,43
-    GROUPBOX        "Life",IDC_STATIC,7,52,172,59
-    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL,111,76,61,14,
+    EDITTEXT        IDC_TOOL_SPELLCASTER_EXURA_MANA,126,74,46,14,
                     ES_AUTOHSCROLL
-    LTEXT           "Spell to cast:",IDC_STATIC,16,76,78,14,SS_CENTERIMAGE
-    LTEXT           "Summon when less than:",IDC_STATIC,16,122,92,14,
-                    SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN,111,122,61,14,
+    GROUPBOX        "Mana",IDC_STATIC,5,7,172,43
+    GROUPBOX        "Life",IDC_STATIC,5,52,172,170
+    EDITTEXT        IDC_TOOL_SPELLCASTER_GRAN_MANA,126,90,46,14,
                     ES_AUTOHSCROLL
-    GROUPBOX        "Summon control",IDC_STATIC,7,114,172,59
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_NAME,111,154,61,14,
+    LTEXT           "Summon when less than:",IDC_STATIC,189,18,92,14,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN,285,15,61,14,
                     ES_AUTOHSCROLL
-    LTEXT           "Creature to summon:",IDC_STATIC,16,154,78,14,
+    GROUPBOX        "Summon control",IDC_STATIC,179,7,172,59
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_NAME,285,47,61,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Creature to summon:",IDC_STATIC,189,47,78,14,
                     SS_CENTERIMAGE
-    LTEXT           "Mana needed for summon:",IDC_STATIC,16,138,92,14,
+    LTEXT           "Mana needed for summon:",IDC_STATIC,189,33,92,14,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_MANA,111,138,61,14,
+    EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_MANA,285,31,61,14,
                     ES_AUTOHSCROLL
     CONTROL         "Mana",IDC_TOOL_SPELLCASTER_MANA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,7,34,10
-    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL_MANA,111,92,61,14,
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,7,34,10
+    EDITTEXT        IDC_TOOL_SPELLCASTER_VITA_MANA,126,106,46,14,
                     ES_AUTOHSCROLL
-    LTEXT           "Spell mana:",IDC_STATIC,16,92,78,14,SS_CENTERIMAGE
     CONTROL         "Life",IDC_TOOL_SPELLCASTER_LIFE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,52,27,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,10,52,27,10
     CONTROL         "Summon control",IDC_TOOL_SPELLCASTER_SUMMON,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,113,67,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,184,7,67,10
+    GROUPBOX        "Strike Spells",IDC_STATIC,179,68,172,107
+    CONTROL         "Strike Spells",IDC_TOOL_SPELLCASTER_STRIKE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,184,67,55,10
+    CONTROL         "Exori Flam",IDC_TOOL_SPELLCASTER_FLAM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,80,50,14
+    CONTROL         "Exori Frigo",IDC_TOOL_SPELLCASTER_FRIGO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,95,50,14
+    CONTROL         "Exori Mort",IDC_TOOL_SPELLCASTER_MORT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,109,50,14
+    CONTROL         "Exori Tera",IDC_TOOL_SPELLCASTER_TERA,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,125,50,14
+    CONTROL         "Exori Vis",IDC_TOOL_SPELLCASTER_VIS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,140,50,14
+    LTEXT           "Use when mana above:",IDC_STATIC,271,80,75,14,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_MANA,285,95,61,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Mana Above",IDC_STATIC,126,60,46,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_EXURA_LIFE,79,74,46,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_GRAN_LIFE,79,90,46,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_VITA_LIFE,79,106,46,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Life Below",IDC_STATIC,79,60,46,14
+    LTEXT           "Spell To Cast:",IDC_STATIC,35,137,70,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL,111,137,61,14,
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_HP,111,169,61,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Cast when life below:",IDC_STATIC,35,169,70,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Spell Mana:",IDC_STATIC,35,153,70,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_SPELLCASTER_LIFE_SPELL_MANA,111,153,61,14,
+                    ES_AUTOHSCROLL
+    CONTROL         "Custom Spell",IDC_TOOL_SPELLCASTER_CUSTOM,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,122,57,14
+    CONTROL         "Exura",IDC_TOOL_SPELLCASTER_EXURA,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,74,46,14
+    CONTROL         "Exura Gran",IDC_TOOL_SPELLCASTER_GRAN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,90,58,14
+    CONTROL         "Exura Vita",IDC_TOOL_SPELLCASTER_VITA,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,106,58,14
+    LTEXT           "Default Spell",IDC_STATIC,271,109,75,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT,285,125,61,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Target's HP above:",IDC_STATIC,271,140,75,14,
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN,285,157,
+                    61,14,ES_AUTOHSCROLL
+    CONTROL         "Heal Paralasys",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,186,79,14
+    CONTROL         "Cure poison greater than:",
+                    IDC_TOOL_SPELLCASTER_HEAL_POISON,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,202,100,14
+    EDITTEXT        IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE,125,200,46,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "damage/turn",IDC_STATIC,125,186,46,14
 END
 
 
@@ -123,9 +178,9 @@ BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 179
+        RIGHTMARGIN, 351
         TOPMARGIN, 7
-        BOTTOMMARGIN, 214
+        BOTTOMMARGIN, 255
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -164,8 +219,9 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
+            VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "mod_spellcaster DLL\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
@@ -173,8 +229,10 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2005\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "mod_spellcaster.DLL\0"
+            VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "mod_spellcaster Dynamic Link Library\0"
             VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"

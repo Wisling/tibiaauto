@@ -16,5 +16,3 @@ EXPORTS
 	resetMultiParamAccess @15
 	isMultiParam @16
 	validateConfig @17
-	init @18
-	activate @19

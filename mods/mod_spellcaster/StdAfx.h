@@ -1,8 +1,3 @@
-// stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
-
 #if !defined(AFX_STDAFX_H__9DE80E11_FAFD_45E9_B2AE_45D8B5D9DB17__INCLUDED_)
 #define AFX_STDAFX_H__9DE80E11_FAFD_45E9_B2AE_45D8B5D9DB17__INCLUDED_
 
@@ -40,3 +35,4 @@
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_STDAFX_H__9DE80E11_FAFD_45E9_B2AE_45D8B5D9DB17__INCLUDED_)
+

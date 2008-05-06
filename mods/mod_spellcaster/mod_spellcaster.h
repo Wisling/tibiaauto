@@ -13,13 +13,23 @@
 #endif
 
 #include "resource.h"		// main symbols
-#include <IModuleInterface.h>
+#include "IModuleInterface.h"
 #include "ConfigDialog.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_spellcasterApp
 // See mod_spellcaster.cpp for the implementation of this class
 //
+
+struct monster{
+	char name[40];
+	int weakFire;
+	int weakIce;
+	int weakDeath;
+	int weakEarth;
+	int weakEnergy;
+	int hp;
+};
 
 class CMod_spellcasterApp : public CWinApp, public IModuleInterface
 {

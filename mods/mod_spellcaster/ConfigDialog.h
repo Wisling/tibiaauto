@@ -34,12 +34,34 @@ public:
 	CEdit	m_manaMana;
 	CEdit	m_manaSpell;
 	CButton	m_life;
+	CButton	m_customSpell;
 	CEdit	m_lifeHp;
 	CEdit	m_lifeSpell;
 	CEdit	m_lifeSpellMana;
+	CButton	m_exuraSpell;
+	CEdit	m_exuraHp;
+	CEdit	m_exuraSpellMana;
+	CButton	m_granSpell;
+	CEdit	m_granHp;
+	CEdit	m_granSpellMana;
+	CButton	m_vitaSpell;
+	CEdit	m_vitaHp;
+	CEdit	m_vitaSpellMana;
+	CButton	m_paralysisSpell;
+	CButton	m_poisonSpell;
+	CEdit	m_minPoisonDmg;
 	CButton	m_summon;
 	CEdit	m_summonMana;
 	CEdit	m_summonName;
+	CButton	m_strike;
+	CButton	m_flam;
+	CButton	m_frigo;
+	CButton	m_mort;
+	CButton	m_tera;
+	CButton	m_vis;
+	CEdit	m_manaStrike;
+	CEdit	m_defaultStrikeSpell;
+	CEdit	m_strikeSpellHpMin;
 	CButton	m_enable;
 	//}}AFX_DATA
 
@@ -65,7 +87,13 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnToolSpellcasterMana();
 	afx_msg void OnToolSpellcasterLife();
+	afx_msg void OnToolSpellcasterExura();
+	afx_msg void OnToolSpellcasterGran();
+	afx_msg void OnToolSpellcasterVita();
+	afx_msg void OnToolSpellcasterPoison();
+	afx_msg void OnToolSpellcasterCustom();
 	afx_msg void OnToolSpellcasterSummon();
+	afx_msg void OnToolSpellcasterStrike();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
