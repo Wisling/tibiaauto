@@ -579,8 +579,8 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 }
 
 int initalizeCreatures() {
-	ifstream creatureFile ("creatures.csv", ios::in);
-	if (!creatureFile.is_open()) {	AfxMessageBox("File creatures.csv Not found!"); creatureFile.close(); return 0;}
+	ifstream creatureFile ("tibiaauto-creatureWeakness.csv", ios::in);
+	if (!creatureFile.is_open()) {	AfxMessageBox("File tibiaauto-creatureWeakness.csv Not found!"); creatureFile.close(); return 0;}
 	char buf[128] = {0};
 	int crNum = 0;
 
