@@ -91,15 +91,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				self = reader.readSelfCharacter();
 			}
 			else if(config->vitaSpell && self->hp<=config->vitaHp && self->mana >= config->vitaSpellMana){
-				sender.say("Exura Vita");
+				sender.say("exura vita");
 				Sleep(600);
 			}
 			else if(config->granSpell && self->hp<=config->granHp && self->mana >= config->granSpellMana){
-				sender.say("Exura Gran");
+				sender.say("exura gran");
 				Sleep(600);
 			}
 			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && reader.getSelfEventFlags() & 32 == 32)) {
-				sender.say("Exura");
+				sender.say("exura");
 				Sleep(600);
 			}
 			else {
@@ -146,23 +146,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (maxDist <= 3) {
 							
 							if (config->flam && monstersInfo[currentMonsterNumber].weakFire) {
-								sender.say("Exori Flam");
+								sender.say("exori flam");
 								Sleep(600);
 							}
 							else if (config->frigo && monstersInfo[currentMonsterNumber].weakIce) {
-								sender.say("Exori Frigo");
+								sender.say("exori frigo");
 								Sleep(600);
 							}
 							else if (config->tera && monstersInfo[currentMonsterNumber].weakEarth) {
-								sender.say("Exori Tera");
+								sender.say("exori tera");
 								Sleep(600);
 							}
 							else if (config->vis && monstersInfo[currentMonsterNumber].weakEnergy) {
-								sender.say("Exori Vis");
+								sender.say("exori vis");
 								Sleep(600);
 							}
 							else if (config->mort && monstersInfo[currentMonsterNumber].weakDeath) {
-								sender.say("Exori Mort");
+								sender.say("exori mort");
 								Sleep(600);
 							}
 							else if (config->defaultStrikeSpell) {
