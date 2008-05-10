@@ -3,11 +3,13 @@ Defects:
  Auto Loot: fixed config loading error
  Cave bot: reduced the old "graphical glitch"
  cave bot: reduced server spamming by 'attack' command
+ XRay: Removed excessive limitations on viewing levels
 
 Enhancements:
  Spellcaster: added additionnal healing options and strike spell casting for mages
  Auto loot: improved speed of looting
- Cave boot: improved speed of looting
+ Cave bot: improved speed of looting
+ Grouping: Improved algorithm for grouping
 
 1.16.2, 10.04.2008
 Defects:
