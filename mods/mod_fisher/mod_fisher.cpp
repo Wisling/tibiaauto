@@ -337,7 +337,7 @@ char *CMod_fisherApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "other/fishCap"; // old: fishOnlyWhenCap
+	case 0: return "other/fishOnlyWhenCap"; // old: fishCap
 	case 1: return "move/fromHandToCont";	
 	default:
 		return NULL;
