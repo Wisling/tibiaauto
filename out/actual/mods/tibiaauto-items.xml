@@ -90,7 +90,7 @@
 		<const code="lengthCreature" value="156"/>
 		<const code="lengthMapTile" value="172"/>
 
-		<const code="maxContainers" value="10"/>
+		<const code="maxContainers" value="15"/>
 		<const code="maxCreatures" value="150"/>
 		<const code="maxMapTiles" value="2016"/>
 	</consts>
