@@ -97,48 +97,52 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		int contNr;
 		int movedSomething=0;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers-2&&!movedSomething;contNr++)
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && !movedSomething;contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
 			int itemNr;
-			for (itemNr=0;itemNr<cont->itemsInside&&!movedSomething;itemNr++)
+			for (itemNr=cont->itemsInside-1;itemNr>=0&&!movedSomething;itemNr--)//Search backwards for a stackable item
 			{
 				CTibiaItem *item = (CTibiaItem *)cont->items[itemNr];
-				int itemNrMoved;
-				for (itemNrMoved=itemNr+1;itemNrMoved<cont->itemsInside&&!movedSomething;itemNrMoved++)
+
+				int nonGroupable=0;
+				if (item->objectId==itemProxy.getValueForConst("fluid"))
+					nonGroupable=1;
+				CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+				if (!tile->stackable)
+					nonGroupable=1;
+
+				if (item->quantity&&item->quantity<100&&!nonGroupable)//If items should be stacked
 				{
-					CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
-					int nonGroupable=0;
-					if (item->objectId==itemProxy.getValueForConst("fluid"))
-						nonGroupable=1;
-					CTibiaTile *tile = reader.getTibiaTile(item->objectId);
-					if (!tile->stackable)
-						nonGroupable=1;
-					
-					if (item->objectId==itemMoved->objectId&&
-						item->quantity&&itemMoved->quantity&&
-						item->quantity<100&&itemMoved->quantity<100&&
-						!nonGroupable)
+					int itemNrMoved;
+					for (itemNrMoved=0;itemNrMoved<itemNr&&!movedSomething;itemNrMoved++)//Look for match in rest of container
 					{
-					/**
-					* items matches, are groupable, and not in a full group
-						*/
-						int qtyToMove=0;
-						if (item->quantity+itemMoved->quantity<100)
+						CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
+
+						if (item->objectId==itemMoved->objectId&&
+							itemMoved->quantity&&
+							&&itemMoved->quantity<100)
 						{
-							qtyToMove=itemMoved->quantity; 
-						} else {
-							qtyToMove=100-item->quantity;
+						/**
+						* items matches, are groupable, and not in a full group
+							*/
+							int qtyToMove=0;
+							if (item->quantity+itemMoved->quantity<=100)
+							{
+								qtyToMove=itemMoved->quantity;
+							} else {
+								qtyToMove=100-item->quantity;
+							}
+							// do the moving
+							sender.moveObjectBetweenContainers(
+								item->objectId,0x40+contNr,itemNrMoved,
+								0x40+contNr,itemNr,
+								qtyToMove);
+							movedSomething=1;
+							
 						}
-						// do the moving
-						sender.moveObjectBetweenContainers(
-							item->objectId,0x40+contNr,itemNrMoved,
-							0x40+contNr,itemNr,
-							qtyToMove);
-						movedSomething=1;
-						
-					}
+					};
 				};
 			};
 			
