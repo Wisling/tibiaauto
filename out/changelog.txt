@@ -1,5 +1,6 @@
 1.16.3, ??
 Defects:
+ Auto fish: fixed config loading error
  Auto Loot: fixed config loading error
  Cave bot: reduced the old "graphical glitch"
  cave bot: reduced server spamming by 'attack' command
