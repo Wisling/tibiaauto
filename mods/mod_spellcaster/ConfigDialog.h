@@ -59,6 +59,8 @@ public:
 	CButton	m_mort;
 	CButton	m_tera;
 	CButton	m_vis;
+	CButton	m_con;
+	CButton	m_san;
 	CEdit	m_manaStrike;
 	CEdit	m_defaultStrikeSpell;
 	CEdit	m_strikeSpellHpMin;
@@ -94,6 +96,8 @@ protected:
 	afx_msg void OnToolSpellcasterCustom();
 	afx_msg void OnToolSpellcasterSummon();
 	afx_msg void OnToolSpellcasterStrike();
+	afx_msg void OnToolSpellcasterMageStrike();
+	afx_msg void OnToolSpellcasterPaladinStrike();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

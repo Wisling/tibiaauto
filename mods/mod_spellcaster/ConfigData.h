@@ -44,6 +44,8 @@ public:
 	int mort;
 	int tera;
 	int vis;
+	int con;
+	int san;
 	int manaStrike;
 	char defaultStrikeSpell[128];
 	int strikeSpellHpMin;

@@ -71,7 +71,7 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,150,245,50,14
     CONTROL         "Enable spell caster",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,225,344,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,5,225,347,14
     EDITTEXT        IDC_TOOL_SPELLCASTER_MANA_SPELL,111,31,61,14,
                     ES_AUTOHSCROLL
     LTEXT           "Spell to cast:",IDC_STATIC,16,31,78,14,SS_CENTERIMAGE
@@ -89,7 +89,7 @@ BEGIN
                     SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN,285,15,61,14,
                     ES_AUTOHSCROLL
-    GROUPBOX        "Summon control",IDC_STATIC,179,7,172,59
+    GROUPBOX        "Summon control",IDC_STATIC,180,7,172,59
     EDITTEXT        IDC_TOOL_SPELLCASTER_SUMMON_NAME,285,47,61,14,
                     ES_AUTOHSCROLL
     LTEXT           "Creature to summon:",IDC_STATIC,189,47,78,14,
@@ -106,19 +106,19 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,52,27,10
     CONTROL         "Summon control",IDC_TOOL_SPELLCASTER_SUMMON,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,184,7,67,10
-    GROUPBOX        "Strike Spells",IDC_STATIC,179,68,172,107
+    GROUPBOX        "Strike Spells",IDC_STATIC,180,68,172,154
     CONTROL         "Strike Spells",IDC_TOOL_SPELLCASTER_STRIKE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,184,67,55,10
     CONTROL         "Exori Flam",IDC_TOOL_SPELLCASTER_FLAM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,189,80,50,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,90,50,14
     CONTROL         "Exori Frigo",IDC_TOOL_SPELLCASTER_FRIGO,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,189,95,50,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,106,50,14
     CONTROL         "Exori Mort",IDC_TOOL_SPELLCASTER_MORT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,189,109,50,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,122,50,14
     CONTROL         "Exori Tera",IDC_TOOL_SPELLCASTER_TERA,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,189,125,50,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,138,50,14
     CONTROL         "Exori Vis",IDC_TOOL_SPELLCASTER_VIS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,189,140,50,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,154,50,14
     LTEXT           "Use when mana above:",IDC_STATIC,271,80,75,14,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_SPELLCASTER_STRIKE_MANA,285,95,61,14,
@@ -164,6 +164,12 @@ BEGIN
     EDITTEXT        IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE,125,200,46,14,
                     ES_AUTOHSCROLL
     LTEXT           "damage/turn",IDC_STATIC,125,186,46,14
+    CONTROL         "Exori Con",IDC_TOOL_SPELLCASTER_CON,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,186,50,14
+    CONTROL         "Exori San",IDC_TOOL_SPELLCASTER_SAN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,189,201,50,14
+    GROUPBOX        "Mage",IDC_STATIC,183,80,75,90
+    GROUPBOX        "Paladin",IDC_STATIC,183,175,76,43
 END
 
 
@@ -177,8 +183,8 @@ GUIDELINES DESIGNINFO DISCARDABLE
 BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 351
+        LEFTMARGIN, 5
+        RIGHTMARGIN, 352
         TOPMARGIN, 7
         BOTTOMMARGIN, 255
     END
