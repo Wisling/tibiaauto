@@ -58,11 +58,11 @@ END_MESSAGE_MAP()
 
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
-monster monstersInfo[5000];
+monster monstersInfo[500];
 
 int initalizeCreatures();
 int isInitializedCreatures();
-int getMonsterNumberFromName(char *);
+int getcurrentMonsterNumberFromName(char *);
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {		
@@ -72,7 +72,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	int currentMonsterNumber = 0;
 	char text[128] = {0};
-
+	int best = 0;
+	
 	if (isInitializedCreatures() == 0)
 		initalizeCreatures();
 	
@@ -87,24 +88,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.say(config->lifeSpell);
-				Sleep(600);
+				Sleep(700);
 				self = reader.readSelfCharacter();
 			}
 			else if(config->vitaSpell && self->hp<=config->vitaHp && self->mana >= config->vitaSpellMana){
 				sender.say("exura vita");
-				Sleep(600);
+				Sleep(700);
 			}
 			else if(config->granSpell && self->hp<=config->granHp && self->mana >= config->granSpellMana){
 				sender.say("exura gran");
-				Sleep(600);
+				Sleep(700);
 			}
 			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && reader.getSelfEventFlags() & 32 == 32)) {
 				sender.say("exura");
-				Sleep(600);
+				Sleep(700);
 			}
 			else {
 				sender.sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
-				Sleep(600);
+				Sleep(700);
 			}
 		}	
 		else if(config->poisonSpell && reader.getSelfEventFlags() & 1 == 1) {
@@ -123,14 +124,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 		
-			//Akilez: Use mana for strike spells
+		//Akilez: Use mana for strike spells
 		if(config->strike && self->mana>=config->manaStrike && attackedCreature){
 			attackedCreature = reader.getAttackedCreature();
 			//T4: If any creature is attacked
 			if (attackedCreature) {			
 				//T4: Get attacked creature stucture
 				CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
-				currentMonsterNumber = getMonsterNumberFromName(ch->name);
+				currentMonsterNumber = getcurrentMonsterNumberFromName(ch->name);
 				if (ch->name && ch->hpPercLeft && currentMonsterNumber > -1) {
 					if ((monstersInfo[currentMonsterNumber].hp * ch->hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
 					{
@@ -143,35 +144,66 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						int yDist = abs(self->y-chY);
 						int maxDist = xDist;
 						if (yDist>maxDist) maxDist=yDist;
-						if (maxDist <= 3) {
-							
-							if (config->flam && monstersInfo[currentMonsterNumber].weakFire) {
-								sender.say("exori flam");
-								Sleep(600);
+						int test = config->flam+config->frigo+config->mort+config->tera+config->vis;
+						if (maxDist <= 3 && test) {
+							int check = 0;
+							if (monstersInfo[currentMonsterNumber].weakFire && config->flam) {
+								best = 1;
+								check = monstersInfo[currentMonsterNumber].weakFire;
 							}
-							else if (config->frigo && monstersInfo[currentMonsterNumber].weakIce) {
-								sender.say("exori frigo");
-								Sleep(600);
+							if (monstersInfo[currentMonsterNumber].weakIce && monstersInfo[currentMonsterNumber].weakIce > check && config->frigo) {
+								best = 2;
+								check = monstersInfo[currentMonsterNumber].weakIce;
 							}
-							else if (config->tera && monstersInfo[currentMonsterNumber].weakEarth) {
-								sender.say("exori tera");
-								Sleep(600);
+							if (monstersInfo[currentMonsterNumber].weakEarth && monstersInfo[currentMonsterNumber].weakEarth > check && config->tera) {
+								best = 3;
+								check = monstersInfo[currentMonsterNumber].weakEarth;
 							}
-							else if (config->vis && monstersInfo[currentMonsterNumber].weakEnergy) {
-								sender.say("exori vis");
-								Sleep(600);
+							if (monstersInfo[currentMonsterNumber].weakEnergy && monstersInfo[currentMonsterNumber].weakEnergy > check && config->vis) {
+								best = 4;
+								check = monstersInfo[currentMonsterNumber].weakEnergy;
 							}
-							else if (config->mort && monstersInfo[currentMonsterNumber].weakDeath) {
-								sender.say("exori mort");
-								Sleep(600);
+							if (monstersInfo[currentMonsterNumber].weakDeath && monstersInfo[currentMonsterNumber].weakDeath > check && config->mort) {
+								best = 5;
+								check = monstersInfo[currentMonsterNumber].weakDeath;
 							}
-							else if (config->defaultStrikeSpell) {
-								sender.say(config->defaultStrikeSpell);
-								Sleep(600);
+
+							switch (best) {
+							case 1:
+								sender.sayWhisper("exori flam");
+								break;
+							case 2:
+								sender.sayWhisper("exori frigo");
+								break;
+							case 3:
+								sender.sayWhisper("exori tera");
+								break;
+							case 4:
+								sender.sayWhisper("exori vis");
+								break;
+							case 5:
+								sender.sayWhisper("exori mort");
+								break;
+							default:
+								break;
 							}
-							else {
-								sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
-							}
+							Sleep(700);
+							best = 0;
+						}
+						else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {							
+							sender.say("Exori San");
+							Sleep(700);
+						}
+						else if (config->con) {
+							sender.say("Exori Con");
+							Sleep(700);
+						}
+						else if (config->defaultStrikeSpell) {
+							sender.say(config->defaultStrikeSpell);
+							Sleep(700);
+						}
+						else {
+							sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
 						}
 					}
 				}
@@ -179,10 +211,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				attackedCreature = 0;
 			}			
 		}	
-			//T4: Use mana in other pupouse otherwise
+		//T4: Use mana in other pupouse otherwise
 		else if(config->mana && self->mana>=config->manaMana){
 			sender.say(config->manaSpell);
-			Sleep(600);
+			Sleep(700);
 		}	
 		else{
 			// now try to summon creatures
@@ -191,7 +223,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 				
-				if (ch->z==self->z&&ch->visible&&!strcmpi(config->summonName,ch->name))
+				if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
 					summonCount++;
 				
 				delete ch;
@@ -199,9 +231,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->summon && summonCount<config->summonLessThan && self->mana>=config->summonMana) {				
 				// we should summon something
 				char buf[256];
-				sprintf(buf,"utevo res %s",config->summonName);
+				sprintf(buf,"utevo res \"%s\"",config->summonName);
 				sender.say(buf);
-				Sleep(600);
+				Sleep(700);
 			}
 		}
 		
@@ -355,9 +387,9 @@ int CMod_spellcasterApp::validateConfig(int showAlerts)
 		}
 		if (m_configData->customSpell) {
 			if (!strlen(m_configData->lifeSpell)) {
-					if (showAlerts) AfxMessageBox("Some life spell to cast must be defined!");
-					return 0;
-				}
+				if (showAlerts) AfxMessageBox("Some life spell to cast must be defined!");
+				return 0;
+			}
 			if (m_configData->lifeHp<0)	{
 				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
 				return 0;
@@ -473,7 +505,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"poisonSpell")) m_configData->poisonSpell=atoi(paramValue);
 	if (!strcmp(paramName,"paralysisSpell")) m_configData->paralysisSpell=atoi(paramValue);
 	if (!strcmp(paramName,"minPoisonDmg")) m_configData->minPoisonDmg=atoi(paramValue);
-
+	
 	if (!strcmp(paramName,"summon")) m_configData->summon=atoi(paramValue);
 	if (!strcmp(paramName,"summonLessThan")) m_configData->summonLessThan=atoi(paramValue);
 	if (!strcmp(paramName,"summonMana")) m_configData->summonMana=atoi(paramValue);
@@ -485,6 +517,8 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"ExoriMort")) m_configData->mort=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriTera")) m_configData->tera=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriVis")) m_configData->vis=atoi(paramValue);
+	if (!strcmp(paramName,"ExoriCon")) m_configData->con=atoi(paramValue);
+	if (!strcmp(paramName,"ExoriSan")) m_configData->san=atoi(paramValue);
 	if (!strcmp(paramName,"manaStrike")) m_configData->manaStrike=atoi(paramValue);
 	if (!strcmp(paramName,"defaultStrikeSpell")) lstrcpyn(m_configData->defaultStrikeSpell,paramValue,128);
 	if (!strcmp(paramName,"strikeSpellHpMin")) m_configData->strikeSpellHpMin=atoi(paramValue);
@@ -528,6 +562,8 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"ExoriMort")) sprintf(buf,"%d",m_configData->mort);
 	if (!strcmp(paramName,"ExoriTera")) sprintf(buf,"%d",m_configData->tera);
 	if (!strcmp(paramName,"ExoriVis")) sprintf(buf,"%d",m_configData->vis);
+	if (!strcmp(paramName,"ExoriCon")) sprintf(buf,"%d",m_configData->con);
+	if (!strcmp(paramName,"ExoriSan")) sprintf(buf,"%d",m_configData->san);
 	if (!strcmp(paramName,"manaStrike")) sprintf(buf,"%d",m_configData->manaStrike);
 	if (!strcmp(paramName,"defaultStrikeSpell")) sprintf(buf,"%s",m_configData->defaultStrikeSpell);
 	if (!strcmp(paramName,"strikeSpellHpMin")) sprintf(buf,"%d",m_configData->strikeSpellHpMin);
@@ -572,6 +608,8 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 30: return "poisonSpell";
 	case 31: return "paralysisSpell";
 	case 32: return "minPoisonDmg";
+	case 33: return "ExoriCon";
+	case 34: return "ExoriSan";
 		
 	default:
 		return NULL;
@@ -583,31 +621,52 @@ int initalizeCreatures() {
 	if (!creatureFile.is_open()) {	AfxMessageBox("File tibiaauto-creatureWeakness.csv Not found!"); creatureFile.close(); return 0;}
 	char buf[128] = {0};
 	int crNum = 0;
-
+	
 	while (!creatureFile.eof()) {
 		creatureFile.getline(monstersInfo[crNum].name, 128, ',');
 		//AfxMessageBox(monstersInfo[crNum].name);
 		creatureFile.getline(buf, 128, ',');
-		monstersInfo[crNum].weakEarth = strcmpi(buf, "Earth")==0?1:0;
+		if (strcmpi(buf, "Earth")==0) monstersInfo[crNum].weakEarth = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakEarth = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakEarth = 0;
+		else  monstersInfo[crNum].weakEarth = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		monstersInfo[crNum].weakFire = strcmpi(buf, "Fire")==0?1:0;
+		if (strcmpi(buf, "Fire")==0) monstersInfo[crNum].weakFire = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakFire = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakFire = 0;
+		else  monstersInfo[crNum].weakFire = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		monstersInfo[crNum].weakEnergy = strcmpi(buf, "Energy")==0?1:0;
+		if (strcmpi(buf, "Energy")==0) monstersInfo[crNum].weakEnergy = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakEnergy = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakEnergy = 0;
+		else  monstersInfo[crNum].weakEnergy = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		monstersInfo[crNum].weakIce = strcmpi(buf, "Ice")==0?1:0;
+		if (strcmpi(buf, "Ice")==0) monstersInfo[crNum].weakIce = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakIce = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakIce = 0;
+		else  monstersInfo[crNum].weakIce = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		monstersInfo[crNum].weakDeath = strcmpi(buf, "Death")==0?1:0;
+		if (strcmpi(buf, "Death")==0) monstersInfo[crNum].weakDeath = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakDeath = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakDeath = 0;
+		else  monstersInfo[crNum].weakDeath = 2;
+		//AfxMessageBox(buf);
+		creatureFile.getline(buf, 128, ',');
+		if (strcmpi(buf, "Holy")==0) monstersInfo[crNum].weakHoly = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakHoly = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakHoly = 0;
+		else  monstersInfo[crNum].weakHoly = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, '\n');
 		monstersInfo[crNum++].hp = atoi(buf);
 		//AfxMessageBox(monstersInfo[max].name);
 	}
 	creatureFile.close();
-
+	
 	return 1;
 }
 
@@ -616,7 +675,7 @@ int isInitializedCreatures() {
 	return 0;
 }
 
-int getMonsterNumberFromName(char *match) {
+int getcurrentMonsterNumberFromName(char *match) {
 	int foundNone = -1, max = 0;
 	while (true) {
 		if (strcmpi(monstersInfo[max].name, match)==0) {			
@@ -626,6 +685,7 @@ int getMonsterNumberFromName(char *match) {
 	}
 	
 }
+
 
 
 

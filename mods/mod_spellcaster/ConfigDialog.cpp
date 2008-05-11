@@ -56,6 +56,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MORT, m_mort);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_TERA, m_tera);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VIS, m_vis);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_CON, m_con);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SAN, m_san);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_MANA, m_manaStrike);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT, m_defaultStrikeSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN, m_strikeSpellHpMin);
@@ -78,6 +80,13 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VITA, OnToolSpellcasterVita)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_STRIKE, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterMageStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FRIGO, OnToolSpellcasterMageStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MORT, OnToolSpellcasterMageStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_TERA, OnToolSpellcasterMageStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VIS, OnToolSpellcasterMageStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CON, OnToolSpellcasterPaladinStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterPaladinStrike)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_POISON, OnToolSpellcasterPoison)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -144,6 +153,8 @@ void CConfigDialog::disableControls()
 	m_mort.EnableWindow(false);
 	m_tera.EnableWindow(false);
 	m_vis.EnableWindow(false);
+	m_con.EnableWindow(false);
+	m_san.EnableWindow(false);
 	m_manaStrike.EnableWindow(false);
 	m_defaultStrikeSpell.EnableWindow(false);
 	m_strikeSpellHpMin.EnableWindow(false);
@@ -179,11 +190,8 @@ void CConfigDialog::enableControls()
 	}
 	m_strike.EnableWindow(true);
 		if (m_strike.GetCheck()){
-			m_flam.EnableWindow(true);
-			m_frigo.EnableWindow(true);
-			m_mort.EnableWindow(true);
-			m_tera.EnableWindow(true);
-			m_vis.EnableWindow(true);
+			OnToolSpellcasterMageStrike();
+			OnToolSpellcasterPaladinStrike();
 			m_manaStrike.EnableWindow(true);
 			m_defaultStrikeSpell.EnableWindow(true);
 			m_strikeSpellHpMin.EnableWindow(true);
@@ -225,6 +233,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_mort.SetCheck(configData->mort);
 	m_tera.SetCheck(configData->tera);
 	m_vis.SetCheck(configData->vis);
+	m_con.SetCheck(configData->con);
+	m_san.SetCheck(configData->san);
 	sprintf(buf,"%d",configData->manaStrike);		m_manaStrike.SetWindowText(buf);
 	sprintf(buf,"%s",configData->defaultStrikeSpell);		m_defaultStrikeSpell.SetWindowText(buf);
 	sprintf(buf,"%d",configData->strikeSpellHpMin);		m_strikeSpellHpMin.SetWindowText(buf);
@@ -273,6 +283,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->mort = m_mort.GetCheck();
 	newConfigData->tera = m_tera.GetCheck();
 	newConfigData->vis = m_vis.GetCheck();
+	newConfigData->con = m_con.GetCheck();
+	newConfigData->san = m_san.GetCheck();
 	m_manaStrike.GetWindowText(buf,127);newConfigData->manaStrike=atoi(buf);
 	m_defaultStrikeSpell.GetWindowText(newConfigData->defaultStrikeSpell,127);
 	m_strikeSpellHpMin.GetWindowText(buf,127);newConfigData->strikeSpellHpMin=atoi(buf);
@@ -356,11 +368,8 @@ void CConfigDialog::OnToolSpellcasterSummon()
 void CConfigDialog::OnToolSpellcasterStrike() 
 {
 	int val = m_strike.GetCheck();
-		m_flam.EnableWindow(val);
-		m_frigo.EnableWindow(val);
-		m_mort.EnableWindow(val);
-		m_tera.EnableWindow(val);
-		m_vis.EnableWindow(val);
+		OnToolSpellcasterMageStrike();
+		OnToolSpellcasterPaladinStrike();
 		m_manaStrike.EnableWindow(val);
 		m_defaultStrikeSpell.EnableWindow(val);
 		m_strikeSpellHpMin.EnableWindow(val);
@@ -401,3 +410,32 @@ void CConfigDialog::OnToolSpellcasterPoison()
 		m_minPoisonDmg.EnableWindow(val);
 }
 
+void CConfigDialog::OnToolSpellcasterMageStrike() 
+{
+	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || !m_strike.GetCheck()) {
+		m_con.EnableWindow(false);
+		m_san.EnableWindow(false);
+	}
+	else {
+		m_con.EnableWindow(true);
+		m_san.EnableWindow(true);
+	}
+}
+
+void CConfigDialog::OnToolSpellcasterPaladinStrike() 
+{
+	if (m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck()){
+		m_flam.EnableWindow(false);
+		m_frigo.EnableWindow(false);
+		m_mort.EnableWindow(false);
+		m_tera.EnableWindow(false);
+		m_vis.EnableWindow(false);
+	}
+	else {
+		m_flam.EnableWindow(true);
+		m_frigo.EnableWindow(true);
+		m_mort.EnableWindow(true);
+		m_tera.EnableWindow(true);
+		m_vis.EnableWindow(true);
+	}
+}
