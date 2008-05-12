@@ -61,6 +61,7 @@ public:
 	CButton	m_vis;
 	CButton	m_con;
 	CButton	m_san;
+	CButton	m_hur;
 	CEdit	m_manaStrike;
 	CEdit	m_defaultStrikeSpell;
 	CEdit	m_strikeSpellHpMin;
@@ -98,6 +99,7 @@ protected:
 	afx_msg void OnToolSpellcasterStrike();
 	afx_msg void OnToolSpellcasterMageStrike();
 	afx_msg void OnToolSpellcasterPaladinStrike();
+	afx_msg void OnToolSpellcasterKnightStrike();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

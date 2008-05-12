@@ -170,6 +170,9 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,189,201,50,14
     GROUPBOX        "Mage",IDC_STATIC,183,80,75,90
     GROUPBOX        "Paladin",IDC_STATIC,183,175,76,43
+    GROUPBOX        "Knight",IDC_STATIC,271,175,76,43
+    CONTROL         "Exori Hur",IDC_TOOL_SPELLCASTER_HUR,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,277,186,50,14
 END
 
 
