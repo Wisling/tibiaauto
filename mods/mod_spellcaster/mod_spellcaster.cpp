@@ -194,6 +194,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							sender.say("Exori San");
 							Sleep(700);
 						}
+						else if (maxDist <= 5 && config->hur && monstersInfo[currentMonsterNumber].weakPhysical) {
+							sender.say("Exori Hur");
+							Sleep(700);
+						}
 						else if (config->con) {
 							sender.say("Exori Con");
 							Sleep(700);
@@ -360,7 +364,7 @@ void CMod_spellcasterApp::enableControls()
 
 char *CMod_spellcasterApp::getVersion()
 {
-	return "2.4";
+	return "2.5";
 }
 
 
@@ -466,7 +470,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts)
 			if (showAlerts) AfxMessageBox("'Strike mana above' must be >=20!");
 			return 0;
 		}
-		int test = m_configData->flam+m_configData->frigo+m_configData->mort+m_configData->tera+m_configData->vis;
+		int test = m_configData->flam+m_configData->frigo+m_configData->mort+m_configData->tera+m_configData->vis+m_configData->hur+m_configData->con+m_configData->san;
 		if (!test) {
 			if (showAlerts) AfxMessageBox("You must choose one strike spell!!");
 			return 0;
@@ -519,6 +523,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"ExoriVis")) m_configData->vis=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriCon")) m_configData->con=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriSan")) m_configData->san=atoi(paramValue);
+	if (!strcmp(paramName,"ExoriHur")) m_configData->hur=atoi(paramValue);
 	if (!strcmp(paramName,"manaStrike")) m_configData->manaStrike=atoi(paramValue);
 	if (!strcmp(paramName,"defaultStrikeSpell")) lstrcpyn(m_configData->defaultStrikeSpell,paramValue,128);
 	if (!strcmp(paramName,"strikeSpellHpMin")) m_configData->strikeSpellHpMin=atoi(paramValue);
@@ -564,6 +569,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"ExoriVis")) sprintf(buf,"%d",m_configData->vis);
 	if (!strcmp(paramName,"ExoriCon")) sprintf(buf,"%d",m_configData->con);
 	if (!strcmp(paramName,"ExoriSan")) sprintf(buf,"%d",m_configData->san);
+	if (!strcmp(paramName,"ExoriHur")) sprintf(buf,"%d",m_configData->hur);
 	if (!strcmp(paramName,"manaStrike")) sprintf(buf,"%d",m_configData->manaStrike);
 	if (!strcmp(paramName,"defaultStrikeSpell")) sprintf(buf,"%s",m_configData->defaultStrikeSpell);
 	if (!strcmp(paramName,"strikeSpellHpMin")) sprintf(buf,"%d",m_configData->strikeSpellHpMin);
@@ -610,6 +616,7 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 32: return "minPoisonDmg";
 	case 33: return "ExoriCon";
 	case 34: return "ExoriSan";
+	case 35: return "ExoriHur";
 		
 	default:
 		return NULL;
@@ -660,6 +667,12 @@ int initalizeCreatures() {
 		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakHoly = 1;
 		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakHoly = 0;
 		else  monstersInfo[crNum].weakHoly = 2;
+		//AfxMessageBox(buf);
+		creatureFile.getline(buf, 128, ',');
+		if (strcmpi(buf, "Physical")==0) monstersInfo[crNum].weakPhysical = 5;
+		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakPhysical = 1;
+		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakPhysical = 0;
+		else  monstersInfo[crNum].weakPhysical = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, '\n');
 		monstersInfo[crNum++].hp = atoi(buf);

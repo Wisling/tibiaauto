@@ -8,7 +8,7 @@ Defects:
 
 Enhancements:
  Spellcaster: added additionnal healing options and strike spell casting for mages
- Spellcaster: strike spell casting for paladins
+ Spellcaster: strike spell casting for paladins and Knights
  Auto loot: improved speed of looting
  Cave bot: improved speed of looting
  Grouping: Improved algorithm for grouping

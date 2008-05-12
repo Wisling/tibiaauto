@@ -51,6 +51,7 @@ CConfigData::CConfigData()
 	vis=0;
 	con=0;
 	san=0;
+	hur=0;
 	manaStrike=0;
 	defaultStrikeSpell[0]=0;
 	strikeSpellHpMin=0;

@@ -29,6 +29,7 @@ struct monster{
 	int weakEarth;
 	int weakEnergy;
 	int weakHoly;
+	int weakPhysical;
 	int hp;
 };
 
