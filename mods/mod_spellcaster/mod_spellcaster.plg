@@ -6,13 +6,13 @@
 --------------------Configuration: mod_spellcaster - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP104.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP138.tmp" with contents
 [
 /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_spellcaster.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP104.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP105.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP138.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP139.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_spellcaster.pdb" /debug /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Debug/mod_spellcaster.lib" /pdbtype:sept 
 ".\Debug\ConfigData.obj"
@@ -24,7 +24,7 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP105.tmp" with conten
 ".\Debug\TibiaItem_impl.obj"
 ".\Debug\mod_spellcaster.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP105.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP139.tmp"
 <h3>Output Window</h3>
 Compiling...
 mod_spellcaster.cpp

@@ -10,8 +10,8 @@ ResourceCount=2
 NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CDialog
-Resource1=IDD_CONFIG (Polish)
-Resource2=IDD_CONFIG
+Resource1=IDD_CONFIG
+Resource2=IDD_CONFIG (Polish)
 
 [CLS:CMod_spellcasterApp]
 Type=0
@@ -91,7 +91,7 @@ LastObject=CConfigDialog
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=?
-ControlCount=57
+ControlCount=59
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_TOOL_SPELLCASTER_MANA_SPELL,edit,1350631552
@@ -149,4 +149,6 @@ Control54=IDC_TOOL_SPELLCASTER_CON,button,1342242819
 Control55=IDC_TOOL_SPELLCASTER_SAN,button,1342242819
 Control56=IDC_STATIC,button,1342177287
 Control57=IDC_STATIC,button,1342177287
+Control58=IDC_STATIC,button,1342177287
+Control59=IDC_TOOL_SPELLCASTER_HUR,button,1342242819
 
