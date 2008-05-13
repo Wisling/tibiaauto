@@ -121,8 +121,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
 
 						if (item->objectId==itemMoved->objectId&&
-							itemMoved->quantity&&
-							&&itemMoved->quantity<100)
+							itemMoved->quantity&&itemMoved->quantity<100)
 						{
 						/**
 						* items matches, are groupable, and not in a full group
