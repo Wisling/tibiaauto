@@ -453,7 +453,7 @@ void CConfigDialog::OnToolSpellcasterPaladinStrike()
 
 void CConfigDialog::OnToolSpellcasterKnightStrike() 
 {
-	if (m_hur.GetCheck() && !m_strike.GetCheck()){
+	if (m_hur.GetCheck() || !m_strike.GetCheck()){
 		m_flam.EnableWindow(false);
 		m_frigo.EnableWindow(false);
 		m_mort.EnableWindow(false);
