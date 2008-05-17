@@ -5,6 +5,7 @@ Defects:
  Cave bot: reduced the old "graphical glitch"
  cave bot: reduced server spamming by 'attack' command
  XRay: Removed excessive limitations on viewing levels
+ Spellcaster: fixed a GUI error
 
 Enhancements:
  Spellcaster: added additionnal healing options and strike spell casting for mages
