@@ -82,9 +82,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		Sleep(200);	
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int attackedCreature = reader.getAttackedCreature();
-		
-		//T4: First try to heal
-		if (config->life && (self->hp<=config->lifeHp || self->hp<=config->vitaHp || self->hp<=config->granHp || self->hp<=config->exuraHp)) {
+		int flags = reader.getSelfEventFlags();
+
+		//T4: First try to heal/also uses paralysis cure here
+		if (config->life && (self->hp<=config->lifeHp || self->hp<=config->vitaHp || self->hp<=config->granHp || self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.say(config->lifeSpell);
@@ -99,7 +100,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				sender.say("exura gran");
 				Sleep(700);
 			}
-			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && reader.getSelfEventFlags() & 32 == 32)) {
+			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && flags & 32 == 32)) {
 				sender.say("exura");
 				Sleep(700);
 			}
@@ -108,18 +109,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(700);
 			}
 		}	
-		else if(config->poisonSpell && reader.getSelfEventFlags() & 1 == 1) {
+		else if(config->poisonSpell && flags & 1 == 1) {
 			for (int i = 0; i<6; i++) {
 				for (int j = 0; j<10; j++) {
-					char word = reader.getMemIntValue(0x76D928+i*10+j); 
+					char word = reader.getMemIntValue(0x76D928+i*10+j);//Wis: NEEDS TO BE UPDATED WITH EVERY NEW TIBIA VERSION, or assigned to a constant in items.xml 
 					if (word % 0x100 == 0) text[i*10+j] = ' '; 
 					text[i*10+j] = word%0x100;
 				}				
 			}
 			if ((strstr(text,"hitpoints.") != 0) || (strstr(text,"hitpoint.") != 0)) {
-				char pointLossText[3] = {0};
-				pointLossText[0] = text[9];
-				if (text[10] != ' ') pointLossText[1] = text[10];
+				char pointLossText[10] = {0};
+				for (int i = 0; i<10;i++) {
+					if (!isdigit(text[strlen("You lose ")+i])) break;
+					pointLossText[i] = text[strlen("You lose ")+i];
+				}
 				if (atoi(pointLossText) >= config->minPoisonDmg && atoi(pointLossText) != 5) sender.sayWhisper("exana pox");
 			}
 		}
@@ -191,15 +194,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							best = 0;
 						}
 						else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {							
-							sender.say("Exori San");
+							sender.say("exori san");
 							Sleep(700);
 						}
 						else if (maxDist <= 5 && config->hur && monstersInfo[currentMonsterNumber].weakPhysical) {
-							sender.say("Exori Hur");
+							sender.say("exori hur");
 							Sleep(700);
 						}
 						else if (config->con) {
-							sender.say("Exori Con");
+							sender.say("exori con");
 							Sleep(700);
 						}
 						else if (config->defaultStrikeSpell) {
@@ -215,29 +218,31 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				attackedCreature = 0;
 			}			
 		}	
-		//T4: Use mana in other pupouse otherwise
+		//T4: Use mana in other purpose otherwise
 		else if(config->mana && self->mana>=config->manaMana){
 			sender.say(config->manaSpell);
 			Sleep(700);
 		}	
 		else{
-			// now try to summon creatures
-			int chNr;
-			int summonCount=0;
-			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
-				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-				
-				if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
-					summonCount++;
-				
-				delete ch;
-			}
-			if (config->summon && summonCount<config->summonLessThan && self->mana>=config->summonMana) {				
-				// we should summon something
-				char buf[256];
-				sprintf(buf,"utevo res \"%s\"",config->summonName);
-				sender.say(buf);
-				Sleep(700);
+			if (config->summon) {
+				// now try to summon creatures
+				int chNr;
+				int summonCount=0;
+				for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
+					CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+					
+					if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
+						summonCount++;
+					
+					delete ch;
+				}
+				if (summonCount<config->summonLessThan && self->mana>=config->summonMana) {				
+					// we should summon something
+					char buf[256];
+					sprintf(buf,"utevo res \"%s\"",config->summonName);
+					sender.say(buf);
+					Sleep(700);
+				}
 			}
 		}
 		
