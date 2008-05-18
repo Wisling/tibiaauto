@@ -62,7 +62,8 @@ CMemReaderProxy::CMemReaderProxy()
 		if (!dllModule)
 		{
 			char buf[256];
-			sprintf(buf,"Loading tibiaauto_util.dll failed! (%d)",GetLastError());
+			sprintf(buf,"Loading tibiaauto_util.dll failed [1]! (%d)",GetLastError());
+			sprintf(buf,"%s",pathBuf);
 			MessageBox(0,buf,"ERROR",0);
 			exit(0);
 		}
@@ -305,7 +306,7 @@ char * CMemReaderProxy::GetLoggedChar(int processId)
 			exit(0);
 		}
 	} else {
-		MessageBox(0,"Loading tibiaauto_util.dll failed!","ERROR",0);
+		MessageBox(0,"Loading tibiaauto_util.dll failed [2]!","ERROR",0);
 		exit(0);
 	}
 	return NULL;
