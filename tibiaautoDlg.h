@@ -77,10 +77,12 @@ public:
 	public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnFinalRelease();
+	virtual BOOL DestroyWindow();
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+	virtual void PostNcDestroy();
 	//}}AFX_VIRTUAL
 
 // Implementation
@@ -132,6 +134,7 @@ protected:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnToolXray();
+	afx_msg void OnButton1();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:	
@@ -141,6 +144,7 @@ private:
 	
 
 public:
+	~CTibiaautoDlg();
 	void passSecurityInfo(int value);
 		int shutdownCounter;
 private:

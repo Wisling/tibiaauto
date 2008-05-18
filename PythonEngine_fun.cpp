@@ -63,9 +63,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 		"colorFoot",selfCh->colorFoot,
 		"walkSpeed",selfCh->walkSpeed,
 		"skulls",selfCh->skulls,
-		"shields",selfCh->shields);
-
-	Py_XINCREF(ret);
+		"shields",selfCh->shields);	
 
 	delete selfCh;
 	return ret;
@@ -86,7 +84,6 @@ static PyObject *tibiaauto_reader_readContainer(PyObject *self, PyObject *args)
 		"itemsInside",cont->itemsInside);
 
 	
-	Py_XINCREF(ret);
 
 	delete cont;
 	return ret;
@@ -112,8 +109,7 @@ static PyObject *tibiaauto_reader_readContainerItem(PyObject *self, PyObject *ar
 		"quantity",item->quantity,
 		"pos",item->pos);
 
-	
-	Py_XINCREF(ret);
+		
  
 	delete cont; 
 	return ret;
@@ -144,7 +140,7 @@ static PyObject *tibiaauto_reader_readSelfLightPower(PyObject *self, PyObject *a
 	
 	int arg1=reader.readSelfLightPower();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_readSelfLightColor(PyObject *self, PyObject *args)
@@ -153,7 +149,7 @@ static PyObject *tibiaauto_reader_readSelfLightColor(PyObject *self, PyObject *a
 	
 	int arg1=reader.readSelfLightColor();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_cancelAttackCoords(PyObject *self, PyObject *args)
@@ -180,7 +176,7 @@ static PyObject *tibiaauto_reader_getLoggedCharNr(PyObject *self, PyObject *args
 	
 	int arg1=reader.getLoggedCharNr();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getSelfEventFlags(PyObject *self, PyObject *args)
@@ -189,7 +185,7 @@ static PyObject *tibiaauto_reader_getSelfEventFlags(PyObject *self, PyObject *ar
 	
 	int arg1=reader.getSelfEventFlags();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_writeVisibleCreatureName(PyObject *self, PyObject *args)
@@ -216,7 +212,7 @@ static PyObject *tibiaauto_reader_getTradeItemPartner(PyObject *self, PyObject *
 		"quantity",item->quantity,
 		"pos",item->pos);
 	
-	Py_XINCREF(ret);
+	
 
 	delete item;
 	return ret;
@@ -235,7 +231,7 @@ static PyObject *tibiaauto_reader_getTradeItemSelf(PyObject *self, PyObject *arg
 		"pos",item->pos);
 
 	
-	Py_XINCREF(ret);
+	
 
 	delete item;
 	return ret;
@@ -246,7 +242,7 @@ static PyObject *tibiaauto_reader_getTradeCountPartner(PyObject *self, PyObject 
 	
 	int arg1=reader.getTradeCountPartner();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getTradeCountSelf(PyObject *self, PyObject *args)
@@ -255,7 +251,7 @@ static PyObject *tibiaauto_reader_getTradeCountSelf(PyObject *self, PyObject *ar
 	
 	int arg1=reader.getTradeCountSelf();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getAttackedCreature(PyObject *self, PyObject *args)
@@ -264,7 +260,7 @@ static PyObject *tibiaauto_reader_getAttackedCreature(PyObject *self, PyObject *
 	
 	int arg1=reader.getAttackedCreature();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_GetLoggedChar(PyObject *self, PyObject *args)
@@ -274,7 +270,7 @@ static PyObject *tibiaauto_reader_GetLoggedChar(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	char *name=reader.GetLoggedChar(arg1);
 	PyObject *ret = Py_BuildValue("s",name);	
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_readBattleListMax(PyObject *self, PyObject *args)
@@ -283,7 +279,7 @@ static PyObject *tibiaauto_reader_readBattleListMax(PyObject *self, PyObject *ar
 	
 	int arg1=reader.readBattleListMax();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_readBattleListMin(PyObject *self, PyObject *args)
@@ -292,7 +288,7 @@ static PyObject *tibiaauto_reader_readBattleListMin(PyObject *self, PyObject *ar
 	
 	int arg1=reader.readBattleListMin();
 	PyObject *ret = Py_BuildValue("i",arg1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *args)
@@ -348,7 +344,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 		"skulls",ch->skulls,
 		"shields",ch->shields);
 
-	Py_XINCREF(ret);
+	
 
 	delete ch;
 	return ret; 
@@ -367,7 +363,7 @@ static PyObject *tibiaauto_reader_readItem(PyObject *self, PyObject *args)
 		"pos",item->pos);
 
 	
-	Py_XINCREF(ret);
+	
 
 	delete item;
 	return ret;
@@ -426,7 +422,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 		"skulls",ch->skulls,
 		"shields",ch->shields);
 
-	Py_XINCREF(ret);
+	
 
 	delete ch;
 	return ret; 
@@ -445,7 +441,7 @@ static PyObject *tibiaauto_reader_mapGetPointItemsCount(PyObject *self, PyObject
 
 	int ret1=reader.mapGetPointItemsCount(p);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_mapGetPointItemId(PyObject *self, PyObject *args)
@@ -461,7 +457,7 @@ static PyObject *tibiaauto_reader_mapGetPointItemId(PyObject *self, PyObject *ar
 
 	int ret1=reader.mapGetPointItemId(p,arg4);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_mapSetPointItemsCount(PyObject *self, PyObject *args)
@@ -509,7 +505,7 @@ static PyObject *tibiaauto_reader_mapGetPointItemExtraInfo(PyObject *self, PyObj
 
 	int ret1=reader.mapGetPointItemExtraInfo(p,arg4,arg5);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getCurrentTm(PyObject *self, PyObject *args)
@@ -518,7 +514,7 @@ static PyObject *tibiaauto_reader_getCurrentTm(PyObject *self, PyObject *args)
 
 	int ret1=reader.getCurrentTm();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_setRemainingTilesToGo(PyObject *self, PyObject *args)
@@ -552,7 +548,7 @@ static PyObject *tibiaauto_reader_getMemIntValue(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	int ret1=reader.getMemIntValue(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_writeEnableRevealCName(PyObject *self, PyObject *args)
@@ -577,7 +573,7 @@ static PyObject *tibiaauto_reader_getProcessId(PyObject *self, PyObject *args)
 
 	int ret1=reader.getProcessId();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getKernelMainVersion(PyObject *self, PyObject *args)
@@ -586,7 +582,7 @@ static PyObject *tibiaauto_reader_getKernelMainVersion(PyObject *self, PyObject 
 
 	int ret1=reader.getKernelMainVersion();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getKernelPatchVersion(PyObject *self, PyObject *args)
@@ -595,7 +591,7 @@ static PyObject *tibiaauto_reader_getKernelPatchVersion(PyObject *self, PyObject
 
 	int ret1=reader.getKernelPatchVersion();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_writeCreatureLightPower(PyObject *self, PyObject *args)
@@ -626,7 +622,7 @@ static PyObject *tibiaauto_reader_readCreatureLightPower(PyObject *self, PyObjec
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	int ret1=reader.readCreatureLightPower(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_readCreatureLightColor(PyObject *self, PyObject *args)
@@ -637,7 +633,7 @@ static PyObject *tibiaauto_reader_readCreatureLightColor(PyObject *self, PyObjec
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	int ret1=reader.readCreatureLightColor(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
@@ -660,7 +656,7 @@ static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 		"isDepot",tile->isDepot,
 		"isContainer",tile->isContainer,
 		"notMoveable",tile->notMoveable);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_setGlobalVariable(PyObject *self, PyObject *args)
@@ -681,7 +677,7 @@ static PyObject *tibiaauto_reader_getGlobalVariable(PyObject *self, PyObject *ar
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
 	char *ret1=reader.getGlobalVariable(arg1);	
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);	
+		
 	return ret; 
 }
 static PyObject *tibiaauto_sender_moveObjectBetweenContainers(PyObject *self, PyObject *args)
@@ -1063,7 +1059,7 @@ static PyObject *tibiaauto_map_getPointUpDown(PyObject *self, PyObject *args)
    	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPointUpDown(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_map_getPointUpDownNoProh(PyObject *self, PyObject *args)
@@ -1074,7 +1070,7 @@ static PyObject *tibiaauto_map_getPointUpDownNoProh(PyObject *self, PyObject *ar
    	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPointUpDownNoProh(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_map_setPointUpDown(PyObject *self, PyObject *args)
@@ -1095,7 +1091,7 @@ static PyObject *tibiaauto_map_getPrevPointZ(PyObject *self, PyObject *args)
     	if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPrevPointZ(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_map_getPrevPointY(PyObject *self, PyObject *args)
@@ -1106,7 +1102,7 @@ static PyObject *tibiaauto_map_getPrevPointY(PyObject *self, PyObject *args)
    	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPrevPointY(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret; 
 }
 static PyObject *tibiaauto_map_getPrevPointX(PyObject *self, PyObject *args)
@@ -1117,7 +1113,7 @@ static PyObject *tibiaauto_map_getPrevPointX(PyObject *self, PyObject *args)
    	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.getPrevPointX(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_map_clearPrevPoint(PyObject *self, PyObject *args)
@@ -1165,7 +1161,7 @@ static PyObject *tibiaauto_map_isPointAvailable(PyObject *self, PyObject *args)
    	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.isPointAvailable(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_map_isPointAvailableNoProh(PyObject *self, PyObject *args)
@@ -1176,7 +1172,7 @@ static PyObject *tibiaauto_map_isPointAvailableNoProh(PyObject *self, PyObject *
   	  if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.isPointAvailableNoProh(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_map_size(PyObject *self, PyObject *args)
@@ -1185,7 +1181,7 @@ static PyObject *tibiaauto_map_size(PyObject *self, PyObject *args)
 	
 	int ret1=tibiaMap.size();	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
@@ -1196,7 +1192,7 @@ static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
   	  if (!PyArg_ParseTuple(args, "ss", &arg1,&arg2)) return NULL;	
 	int ret1=regexpProxy.match(arg1,arg2);	
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_alice_respond(PyObject *self, PyObject *args)
@@ -1207,7 +1203,7 @@ static PyObject *tibiaauto_alice_respond(PyObject *self, PyObject *args)
  	   if (!PyArg_ParseTuple(args, "ss", &arg1,&arg2)) return NULL;	
 	char *ret1=alice.respond(arg1,arg2);	
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getName(PyObject *self, PyObject *args)
@@ -1218,7 +1214,7 @@ static PyObject *tibiaauto_item_getName(PyObject *self, PyObject *args)
   	  if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	char *ret1=itemProxy.getName(arg1);	
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getObjectId(PyObject *self, PyObject *args)
@@ -1229,7 +1225,7 @@ static PyObject *tibiaauto_item_getObjectId(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
 	int ret1=itemProxy.getObjectId(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getValueForConst(PyObject *self, PyObject *args)
@@ -1240,7 +1236,7 @@ static PyObject *tibiaauto_item_getValueForConst(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
 	int ret1=itemProxy.getValueForConst(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_refreshItemLists(PyObject *self, PyObject *args)
@@ -1259,7 +1255,7 @@ static PyObject *tibiaauto_item_getCorpseIdByCreatureName(PyObject *self, PyObje
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
 	int ret1=itemProxy.getCorpseIdByCreatureName(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1271,7 +1267,7 @@ static PyObject *tibiaauto_item_getItemsItems(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	char *ret1=itemProxy.getItemsItems(arg1);
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsItemsId(PyObject *self, PyObject *args)
@@ -1282,7 +1278,7 @@ static PyObject *tibiaauto_item_getItemsItemsId(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	int ret1=itemProxy.getItemsItemsId(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsItemsCount(PyObject *self, PyObject *args)
@@ -1291,7 +1287,7 @@ static PyObject *tibiaauto_item_getItemsItemsCount(PyObject *self, PyObject *arg
 	
 	int ret1=itemProxy.getItemsItemsCount();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsFood(PyObject *self, PyObject *args)
@@ -1302,7 +1298,7 @@ static PyObject *tibiaauto_item_getItemsFood(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	char *ret1=itemProxy.getItemsFood(arg1);
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsFoodId(PyObject *self, PyObject *args)
@@ -1313,7 +1309,7 @@ static PyObject *tibiaauto_item_getItemsFoodId(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	int ret1=itemProxy.getItemsFoodId(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret; 
 }
 static PyObject *tibiaauto_item_getItemsFoodCount(PyObject *self, PyObject *args)
@@ -1322,7 +1318,7 @@ static PyObject *tibiaauto_item_getItemsFoodCount(PyObject *self, PyObject *args
 	
 	int ret1=itemProxy.getItemsFoodCount();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsCorpses(PyObject *self, PyObject *args)
@@ -1333,7 +1329,7 @@ static PyObject *tibiaauto_item_getItemsCorpses(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	char *ret1=itemProxy.getItemsCorpses(arg1);
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsCorpsesId(PyObject *self, PyObject *args)
@@ -1344,7 +1340,7 @@ static PyObject *tibiaauto_item_getItemsCorpsesId(PyObject *self, PyObject *args
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	int ret1=itemProxy.getItemsCorpsesId(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsCorpsesCount(PyObject *self, PyObject *args)
@@ -1353,7 +1349,7 @@ static PyObject *tibiaauto_item_getItemsCorpsesCount(PyObject *self, PyObject *a
 	
 	int ret1=itemProxy.getItemsCorpsesCount();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsLooted(PyObject *self, PyObject *args)
@@ -1364,7 +1360,7 @@ static PyObject *tibiaauto_item_getItemsLooted(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	char *ret1=itemProxy.getItemsLooted(arg1);
 	PyObject *ret = Py_BuildValue("",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_item_getItemsLootedId(PyObject *self, PyObject *args)
@@ -1375,7 +1371,7 @@ static PyObject *tibiaauto_item_getItemsLootedId(PyObject *self, PyObject *args)
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	int ret1=itemProxy.getItemsLootedId(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret; 
 }
 static PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *args)
@@ -1384,7 +1380,7 @@ static PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *ar
 	
 	int ret1=itemProxy.getItemsLootedCount();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1414,7 +1410,7 @@ static PyObject *tibiaauto_kernel_getModuleCount(PyObject *self,PyObject *args)
 {
 	int ret1=CModuleProxy::allModulesCount;
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1426,7 +1422,7 @@ static PyObject *tibiaauto_kernel_getModuleName(PyObject *self,PyObject *args)
 
 	char *ret1=CModuleProxy::allModules[arg1]->moduleName;
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1438,7 +1434,7 @@ static PyObject *tibiaauto_kernel_getModuleDesc(PyObject *self,PyObject *args)
 
 	char *ret1=CModuleProxy::allModules[arg1]->getName();
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1450,7 +1446,7 @@ static PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self,PyObject *args
 
 	char *ret1=CModuleProxy::allModules[arg1]->getVersion();
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1462,7 +1458,7 @@ static PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self,PyObject *args)
 
 	int ret1=CModuleProxy::allModules[arg1]->isStarted();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1495,7 +1491,7 @@ static PyObject *tibiaauto_kernel_getPythonModuleCount(PyObject *self,PyObject *
 {
 	int ret1=CPythonScript::getScriptCount();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1507,7 +1503,7 @@ static PyObject *tibiaauto_kernel_getPythonModuleName(PyObject *self,PyObject *a
 
 	char *ret1=CPythonScript::getScriptByNr(arg1)->getFileName();
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1519,7 +1515,7 @@ static PyObject *tibiaauto_kernel_getPythonModuleDesc(PyObject *self,PyObject *a
 
 	char *ret1=CPythonScript::getScriptByNr(arg1)->getName();
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1531,7 +1527,7 @@ static PyObject *tibiaauto_kernel_getPythonModuleVersion(PyObject *self,PyObject
 
 	char *ret1=CPythonScript::getScriptByNr(arg1)->getVersion();
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1545,7 +1541,7 @@ static PyObject *tibiaauto_kernel_isPythonModuleStarted(PyObject *self,PyObject 
 
 	int ret1=CPythonScript::getScriptByNr(arg1)->isEnabled();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1567,7 +1563,7 @@ static PyObject *tibiaauto_reader_readMiniMap(PyObject *self,PyObject *args)
 		"segmentPrev",miniMap->segmentPrev,
 		"segmentNext",miniMap->segmentNext);
 	delete miniMap;
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1587,7 +1583,7 @@ static PyObject *tibiaauto_reader_readMiniMapPoint(PyObject *self,PyObject *args
 		"type",miniMapPoint->type,
 		"desc",miniMapPoint->desc);
 	delete miniMapPoint;
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1599,7 +1595,7 @@ static PyObject *tibiaauto_crstat_count(PyObject *self, PyObject *args)
 	
 	int ret1=cReader.findCreatureStatForLocationCount(arg1,arg2,arg3);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1611,7 +1607,7 @@ static PyObject *tibiaauto_crstat_tibiaId(PyObject *self, PyObject *args)
 	
 	int ret1=cReader.findCreatureStatForLocationTibiaId(arg1,arg2,arg3,arg4);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1630,7 +1626,7 @@ static PyObject *tibiaauto_crstat_name(PyObject *self, PyObject *args)
 	} else {
 		ret=Py_None;
 	}
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1655,7 +1651,7 @@ static PyObject *tibiaauto_crstat_inarea(PyObject *self, PyObject *args)
 	}
 	free(ret1);
 		
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1687,7 +1683,7 @@ static PyObject *tibiaauto_reader_getPlayerModeAttackPlayers(PyObject *self, PyO
 
 	int ret1=reader.getPlayerModeAttackPlayers();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getPlayerModeAttackType(PyObject *self, PyObject *args)
@@ -1696,7 +1692,7 @@ static PyObject *tibiaauto_reader_getPlayerModeAttackType(PyObject *self, PyObje
 
 	int ret1=reader.getPlayerModeAttackType();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *args)
@@ -1705,7 +1701,7 @@ static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *
 
 	int ret1=reader.getPlayerModeFollow();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1715,7 +1711,7 @@ static PyObject *tibiaauto_reader_getConnectionState(PyObject *self, PyObject *a
 
 	int ret1=reader.getConnectionState();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1725,7 +1721,7 @@ static PyObject *tibiaauto_reader_getOpenWindowName(PyObject *self, PyObject *ar
 
 	char *ret1=reader.getOpenWindowName();
 	PyObject *ret = Py_BuildValue("s",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1748,7 +1744,7 @@ static PyObject *tibiaauto_reader_getXRayValue1(PyObject *self, PyObject *args)
 
 	int ret1=reader.getXRayValue1();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1759,7 +1755,7 @@ static PyObject *tibiaauto_reader_getXRayValue2(PyObject *self, PyObject *args)
 
 	int ret1=reader.getXRayValue2();
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1797,7 +1793,7 @@ static PyObject *tibiaauto_reader_getCreatureDeltaX(PyObject *self, PyObject *ar
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	int ret1=reader.getCreatureDeltaX(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }
 
@@ -1808,6 +1804,6 @@ static PyObject *tibiaauto_reader_getCreatureDeltaY(PyObject *self, PyObject *ar
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	int ret1=reader.getCreatureDeltaY(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
-	Py_INCREF(ret);
+	
 	return ret;
 }

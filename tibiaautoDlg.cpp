@@ -2,6 +2,7 @@
 //
 
 #include "stdafx.h"
+#include "vld.h"
 #include "tibiaauto.h"
 #include "tibiaautoDlg.h"
 #include "MemUtil.h" 
@@ -155,6 +156,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_WM_SHOWWINDOW()
 	ON_WM_SIZE()	
 	ON_BN_CLICKED(IDC_TOOL_XRAY, OnToolXray)
+	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -530,9 +532,7 @@ void CTibiaautoDlg::OnToolAutofish()
 }
 
 void CTibiaautoDlg::refreshToolInfo()
-{
-	char buf[1000];
-
+{	
 	m_runeMaker.SetCheck(m_moduleRuneMaker->isStarted());
 	m_autoGo.SetCheck(m_moduleAutoGo->isStarted());
 	m_autoFish.SetCheck(m_moduleFisher->isStarted());
@@ -906,6 +906,7 @@ BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
 void CTibiaautoDlg::OnFinalRelease() 
 {
 	CDialog::OnFinalRelease();
+
 }
 
 void CTibiaautoDlg::OnToolFluiddrinker() 
@@ -1102,4 +1103,35 @@ void CTibiaautoDlg::reportUsage()
 void CTibiaautoDlg::OnToolXray() 
 {
 	m_moduleXRay->showConfigDialog();	
+}
+
+void CTibiaautoDlg::OnButton1() 
+{
+	CMemReaderProxy reader;	
+
+	int i;
+	for (i=0;i<100000;i++)
+	{
+		CTibiaCharacter *self=reader.readSelfCharacter();
+		delete self;
+	}
+}
+
+BOOL CTibiaautoDlg::DestroyWindow() 
+{
+
+	
+	return CDialog::DestroyWindow();
+}
+
+void CTibiaautoDlg::PostNcDestroy() 
+{
+	
+	CDialog::PostNcDestroy();
+}
+
+CTibiaautoDlg::~CTibiaautoDlg()
+{
+
+	CDialog::~CDialog();
 }

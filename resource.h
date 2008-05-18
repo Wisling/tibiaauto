@@ -276,6 +276,7 @@
 #define IDC_BROWSER_ADS                 1216
 #define IDC_SEND_USAGESTATS             1216
 #define IDC_SIZE_USAGESTATS             1217
+#define IDC_BUTTON1                     1218
 #define IDC_MONSTERSHOW_FIRSTBUTTON     5000
 #define IDC_MAPSHOW_FIRSTBUTTON         6000
 #define ID_STOPMODULE_STARTMODULE       32771
@@ -294,7 +295,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        185
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1218
+#define _APS_NEXT_CONTROL_VALUE         1219
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif
