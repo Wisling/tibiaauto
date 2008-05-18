@@ -201,6 +201,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// Can only go down as many times as you are away from the 7th-1 floor
 					// Crashes when looking at ground floor and you go down 1 floor
 					groundlevel = max(groundlevel,7-(self->z==7?7:6 - self->z));
+					if (self->z == 7 && groundlevel == 6) groundlevel = 7; // for some reason not taken care of in line above.
 					// Can only go up as many times as you are away from the 0th floor
 					groundlevel = min(groundlevel,7-(0-self->z));
 					reader.setXRayValues(groundlevel,2);
