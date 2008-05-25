@@ -101,33 +101,33 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
-			int itemNr;
-			for (itemNr=cont->itemsInside-1;itemNr>=0&&!movedSomething;itemNr--)//Search backwards for a stackable item
+			int itemNrMoved;
+			for (itemNrMoved=cont->itemsInside-1;itemNrMoved>=0&&!movedSomething;itemNrMoved--)//Search backwards for a stackable item to move
 			{
-				CTibiaItem *item = (CTibiaItem *)cont->items[itemNr];
+				CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
 
 				int nonGroupable=0;
-				if (item->objectId==itemProxy.getValueForConst("fluid"))
+				if (itemMoved->objectId==itemProxy.getValueForConst("fluid"))
 					nonGroupable=1;
-				CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+				CTibiaTile *tile = reader.getTibiaTile(itemMoved->objectId);
 				if (!tile->stackable)
 					nonGroupable=1;
 
-				if (item->quantity&&item->quantity<100&&!nonGroupable)//If items should be stacked
+				if (itemMoved->quantity&&itemMoved->quantity<100&&!nonGroupable)//If items should be stacked
 				{
-					int itemNrMoved;
-					for (itemNrMoved=0;itemNrMoved<itemNr&&!movedSomething;itemNrMoved++)//Look for match in rest of container
+					int itemNr;
+					for (itemNr=0;itemNr<itemNrMoved&&!movedSomething;itemNr++)//Look for match in rest of container
 					{
-						CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
+						CTibiaItem *item = (CTibiaItem *)cont->items[itemNr];
 
-						if (item->objectId==itemMoved->objectId&&
-							itemMoved->quantity&&itemMoved->quantity<100)
+						if (itemMoved->objectId==item->objectId&&
+							item->quantity&&item->quantity<100)
 						{
 						/**
-						* items matches, are groupable, and not in a full group
-							*/
+						* items match, are groupable, and not in a full group
+						**/
 							int qtyToMove=0;
-							if (item->quantity+itemMoved->quantity<=100)
+							if (itemMoved->quantity+item->quantity<=100)
 							{
 								qtyToMove=itemMoved->quantity;
 							} else {
