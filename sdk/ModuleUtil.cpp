@@ -671,9 +671,8 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 								// add try to add predicted quantity to the stack (for the next loop iteration)
 								stackedItem->quantity+=item->quantity;
 							}
-						}
-						
-					}
+						}	
+					} else cont->itemsInside += 1;
 					
 					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,item->quantity?item->quantity:1);
 					ret=1;
@@ -702,13 +701,12 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 	// find first free container
 	int openCont;
 	for (openCont=0;openCont<8;openCont++)
-	{
-		
-		CTibiaContainer *targetCont = reader.readContainer(openCont);			
+	{	
+		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
 		{			
 			CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont);
-			break;								
+			if (targetCont->itemsInside<targetCont->size) break;//itemsInside gets updated in loopItemFromSpecifiedContainer
 		}
 		
 		
