@@ -1,5 +1,6 @@
 1.16.3, ??
 Defects:
+ Cave bot: Fixed 'loots only into first backpack' bug
  Auto fish: fixed config loading error
  Auto Loot: fixed config loading error
  Cave bot: reduced the old "graphical glitch"
