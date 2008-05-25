@@ -10,6 +10,7 @@ Defects:
  Python scripting: fixed a major memory leak
 
 Enhancements:
+ Fisher: Option to stop fishing when no worms(Only half way done... need checkbox in GUI for "other/fishOnlyWhenWorms" config)
  Spellcaster: added additionnal healing options and strike spell casting for mages
  Spellcaster: strike spell casting for paladins and Knights
  Auto loot: improved speed of looting
