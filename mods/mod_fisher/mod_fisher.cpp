@@ -63,7 +63,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	CConfigData *config = (CConfigData *)lpParam;	
+	CConfigData *config = (CConfigData *)lpParam;
 
 	while (!toolThreadShouldStop)
 	{			
@@ -128,6 +128,30 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			delete self;
 			continue;			
 		}
+
+		//New only fish when worms available
+		if (config->fishOnlyWhenWorms)
+		{
+			CUIntArray itemsAccepted;
+			itemsAccepted.Add(itemProxy.getValueForConst("worms"));
+			for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+			{
+				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
+				if (!item)
+				{
+					break;
+				}
+				delete item;
+			}
+			if (!item)
+			{
+				delete item;
+				delete self;
+				continue;
+			}
+			
+		}
+
 
 		// now find "random" water field with a fish
 		int offsetX,offsetY=0;
@@ -319,6 +343,7 @@ void CMod_fisherApp::loadConfigParam(char *paramName,char *paramValue)
 {
 	if (!strcmp(paramName,"other/fishOnlyWhenCap")) m_configData->fishOnlyWhenCap=atoi(paramValue);
 	if (!strcmp(paramName,"move/fromHandToCont")) m_configData->moveFromHandToCont=atoi(paramValue);		
+	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) m_configData->fishOnlyWhenWorms=atoi(paramValue);		
 }
 
 char *CMod_fisherApp::saveConfigParam(char *paramName)
@@ -328,6 +353,7 @@ char *CMod_fisherApp::saveConfigParam(char *paramName)
 	
 	if (!strcmp(paramName,"other/fishOnlyWhenCap")) sprintf(buf,"%d",m_configData->fishOnlyWhenCap);
 	if (!strcmp(paramName,"move/fromHandToCont")) sprintf(buf,"%d",m_configData->moveFromHandToCont);	
+	if (!strcmp(paramName,"other/f	ishOnlyWhenWorms")) sprintf(buf,"%d",m_configData->fishOnlyWhenWorms);
 	
 
 	return buf;
@@ -339,6 +365,7 @@ char *CMod_fisherApp::getConfigParamName(int nr)
 	{
 	case 0: return "other/fishOnlyWhenCap"; // old: fishCap
 	case 1: return "move/fromHandToCont";	
+	case 2: return "other/fishOnlyWhenWorms";
 	default:
 		return NULL;
 	}
