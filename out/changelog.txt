@@ -14,6 +14,7 @@ Enhancements:
  Spellcaster: added additionnal healing options "exura sio..."
  Spellcaster: added AoE spell support
  Fisher: Option to stop fishing when no worms(Only half way done... need checkbox in GUI for "other/fishOnlyWhenWorms" config)
+ Fisher: Option to stop fishing when no worms(Now complete)
  Spellcaster: added additionnal healing options and strike spell casting for mages
  Spellcaster: strike spell casting for paladins and Knights
  Auto loot: improved speed of looting

@@ -18,6 +18,7 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
+	fishOnlyWhenWorms=1;
 	fishOnlyWhenCap=6;
 	moveFromHandToCont=1;
 }
