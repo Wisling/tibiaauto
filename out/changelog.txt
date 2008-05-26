@@ -7,9 +7,12 @@ Defects:
  cave bot: reduced server spamming by 'attack' command
  XRay: Removed excessive limitations on viewing levels
  Spellcaster: fixed a GUI error
+ Spellcaster: No support, yet, for look direction of "wave type" spells.
  Python scripting: fixed a major memory leak
 
 Enhancements:
+ Spellcaster: added additionnal healing options "exura sio..."
+ Spellcaster: added AoE spell support
  Fisher: Option to stop fishing when no worms(Only half way done... need checkbox in GUI for "other/fishOnlyWhenWorms" config)
  Spellcaster: added additionnal healing options and strike spell casting for mages
  Spellcaster: strike spell casting for paladins and Knights

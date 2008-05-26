@@ -29,9 +29,14 @@ public:
 	int vitaSpell;
 	int vitaHp;
 	int vitaSpellMana;
+	int sioSpell;
+	int sioHp;
+	int sioSpellMana;
 	int poisonSpell;
 	int paralysisSpell;
 	int minPoisonDmg;
+
+	char healList[100][32];
 
 	int summon;
 	int summonLessThan;
@@ -50,6 +55,22 @@ public:
 	int manaStrike;
 	char defaultStrikeSpell[128];
 	int strikeSpellHpMin;
+
+	int aoe;
+	int exori;
+	int exoriGran;
+	int exoriMas;
+	int exevoMasSan;
+	int exevoFlamHur;
+	int exevoFrigoHur;
+	int exevoTeraHur;
+	int exevoVisHur;
+	int exevoVisLux;
+	int exevoGranVisLux;
+	int exevoGranMasVis;
+	int exevoGranMasFlam;
+	int exevoGranMasTera;
+	int exevoGranMasFrigo;
 
 };
 
