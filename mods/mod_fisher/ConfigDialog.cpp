@@ -35,6 +35,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOFISH_TIME, m_time);
 	DDX_Control(pDX, IDC_AUTOFISH_QTY, m_quantity);
 	DDX_Control(pDX, IDC_AUTOFISH_MOVETOCONT, m_moveFromHandToCont);
+	DDX_Control(pDX, IDC_AUTOFISH_FISH_WHEN_WORMS, m_fishOnlyWhenWorms);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -81,14 +82,14 @@ void CConfigDialog::disableControls()
 {
 	m_fishOnlyWhenCap.EnableWindow(false);
 	m_moveFromHandToCont.EnableWindow(false);
-
+	m_fishOnlyWhenWorms.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
 {
 	m_fishOnlyWhenCap.EnableWindow(true);
 	m_moveFromHandToCont.EnableWindow(true);
-
+	m_fishOnlyWhenWorms.EnableWindow(true);
 }
 
 
@@ -98,6 +99,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	char buf[128];
 	sprintf(buf,"%d",configData->fishOnlyWhenCap);m_fishOnlyWhenCap.SetWindowText(buf);	
 	m_moveFromHandToCont.SetCheck(configData->moveFromHandToCont);	
+	m_fishOnlyWhenWorms.SetCheck(configData->fishOnlyWhenWorms);	
 	
 }
 
@@ -108,6 +110,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	m_fishOnlyWhenCap.GetWindowText(buf,127);newConfigData->fishOnlyWhenCap=atoi(buf);	
 	newConfigData->moveFromHandToCont=m_moveFromHandToCont.GetCheck();	
+	newConfigData->fishOnlyWhenWorms=m_fishOnlyWhenWorms.GetCheck();	
 
 	return newConfigData;
 }

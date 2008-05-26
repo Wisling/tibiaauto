@@ -16,6 +16,7 @@ public:
 	virtual ~CConfigData();
 
 	int fishOnlyWhenCap;
+	int fishOnlyWhenWorms;
 	int moveFromHandToCont;
 };
 

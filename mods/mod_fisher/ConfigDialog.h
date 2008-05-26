@@ -33,6 +33,7 @@ public:
 	CStatic	m_fishyWater;
 	CStatic	m_time;
 	CStatic	m_quantity;
+	CButton	m_fishOnlyWhenWorms;
 	CButton	m_moveFromHandToCont;
 	CButton	m_enable;
 	//}}AFX_DATA
