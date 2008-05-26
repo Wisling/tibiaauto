@@ -34,9 +34,15 @@ CConfigData::CConfigData()
 	vitaSpell=0;
 	vitaHp=0;
 	vitaSpellMana=0;
+	sioSpell=0;
+	sioHp=0;
+	sioSpellMana=0;
 	paralysisSpell=0;
 	poisonSpell=0;
 	minPoisonDmg=0;
+
+	memset(healList,0,3200);
+
 
 	summon=0;
 	summonLessThan=0;
@@ -56,6 +62,21 @@ CConfigData::CConfigData()
 	defaultStrikeSpell[0]=0;
 	strikeSpellHpMin=0;
 
+	aoe=0;
+	exori=0;
+	exoriGran=0;
+	exoriMas=0;
+	exevoMasSan=0;
+	exevoFlamHur=0;
+	exevoFrigoHur=0;
+	exevoTeraHur=0;
+	exevoVisHur=0;
+	exevoVisLux=0;
+	exevoGranVisLux=0;
+	exevoGranMasVis=0;
+	exevoGranMasFlam=0;
+	exevoGranMasTera=0;
+	exevoGranMasFrigo=0;
 }
 
 CConfigData::~CConfigData()

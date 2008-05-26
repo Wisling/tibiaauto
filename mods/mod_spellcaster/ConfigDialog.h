@@ -47,6 +47,9 @@ public:
 	CButton	m_vitaSpell;
 	CEdit	m_vitaHp;
 	CEdit	m_vitaSpellMana;
+	CButton	m_sioSpell;
+	CEdit	m_sioHp;
+	CEdit	m_sioSpellMana;
 	CButton	m_paralysisSpell;
 	CButton	m_poisonSpell;
 	CEdit	m_minPoisonDmg;
@@ -66,6 +69,22 @@ public:
 	CEdit	m_defaultStrikeSpell;
 	CEdit	m_strikeSpellHpMin;
 	CButton	m_enable;
+	CButton m_aoe;
+	CButton m_exori;
+	CButton m_exoriGran;
+	CButton m_exoriMas;
+	CButton m_exevoMasSan;
+	CButton m_exevoFlamHur;
+	CButton m_exevoFrigoHur;
+	CButton m_exevoTeraHur;
+	CButton m_exevoVisHur;
+	CButton m_exevoVisLux;
+	CButton m_exevoGranVisLux;
+	CButton m_exevoGranMasVis;
+	CButton m_exevoGranMasFlam;
+	CButton m_exevoGranMasTera;
+	CButton m_exevoGranMasFrigo;
+	CButton	m_healList;
 	//}}AFX_DATA
 
 
@@ -93,6 +112,7 @@ protected:
 	afx_msg void OnToolSpellcasterExura();
 	afx_msg void OnToolSpellcasterGran();
 	afx_msg void OnToolSpellcasterVita();
+	afx_msg void OnToolSpellcasterSio();
 	afx_msg void OnToolSpellcasterPoison();
 	afx_msg void OnToolSpellcasterCustom();
 	afx_msg void OnToolSpellcasterSummon();
@@ -100,11 +120,14 @@ protected:
 	afx_msg void OnToolSpellcasterMageStrike();
 	afx_msg void OnToolSpellcasterPaladinStrike();
 	afx_msg void OnToolSpellcasterKnightStrike();
+	afx_msg void OnToolSpellcasterAOE();
+	afx_msg void OnToolSpellcasterHealList();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 private:
 	CMod_spellcasterApp * m_app;
+	char memWhiteList[100][32];
 };
 
 //{{AFX_INSERT_LOCATION}}
