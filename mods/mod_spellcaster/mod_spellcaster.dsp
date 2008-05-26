@@ -127,6 +127,10 @@ SOURCE=.\StdAfx.cpp
 
 SOURCE=.\TibiaItem_impl.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=.\WhiteList.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
@@ -150,6 +154,10 @@ SOURCE=.\Resource.h
 # Begin Source File
 
 SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\WhiteList.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

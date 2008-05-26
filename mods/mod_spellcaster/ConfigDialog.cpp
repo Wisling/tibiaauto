@@ -2,6 +2,7 @@
 #include "mod_spellcaster.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
+#include "Whitelist.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,11 +15,11 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
-{
+	: CDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
+	memset(memWhiteList,0,3200);
 }
 
 
@@ -44,6 +45,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VITA, m_vitaSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VITA_LIFE, m_vitaHp);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VITA_MANA, m_vitaSpellMana);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO, m_sioSpell);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO_LIFE, m_sioHp);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO_MANA, m_sioSpellMana);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_POISON, m_poisonSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS, m_paralysisSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE, m_minPoisonDmg);
@@ -62,7 +66,22 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_MANA, m_manaStrike);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT, m_defaultStrikeSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN, m_strikeSpellHpMin);
-
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI, m_exori);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_GRAN, m_exoriGran);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_MAS, m_exoriMas);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN, m_exevoMasSan);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, m_exevoFlamHur);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, m_exevoFrigoHur);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR, m_exevoTeraHur);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR, m_exevoVisHur);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX, m_exevoVisLux);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX, m_exevoGranVisLux);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS, m_exevoGranMasVis);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM, m_exevoGranMasFlam);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, m_exevoGranMasTera);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, m_exevoGranMasFrigo);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_LIST, m_healList);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -79,6 +98,8 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXURA, OnToolSpellcasterExura)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_GRAN, OnToolSpellcasterGran)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VITA, OnToolSpellcasterVita)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SIO, OnToolSpellcasterSio)	
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_LIST, OnToolSpellcasterHealList)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_STRIKE, OnToolSpellcasterStrike)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterMageStrike)
@@ -90,6 +111,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterPaladinStrike)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HUR, OnToolSpellcasterKnightStrike)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_POISON, OnToolSpellcasterPoison)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_AOE, OnToolSpellcasterAOE)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -138,6 +160,10 @@ void CConfigDialog::disableControls()
 	m_vitaSpell.EnableWindow(false);
 	m_vitaHp.EnableWindow(false);
 	m_vitaSpellMana.EnableWindow(false);
+	m_sioSpell.EnableWindow(false);
+	m_sioHp.EnableWindow(false);
+	m_sioSpellMana.EnableWindow(false);
+	m_healList.EnableWindow(false);
 	m_lifeSpell.EnableWindow(false);
 	m_lifeHp.EnableWindow(false);
 	m_lifeSpell.EnableWindow(false);
@@ -161,6 +187,21 @@ void CConfigDialog::disableControls()
 	m_manaStrike.EnableWindow(false);
 	m_defaultStrikeSpell.EnableWindow(false);
 	m_strikeSpellHpMin.EnableWindow(false);
+	m_aoe.EnableWindow(false);
+	m_exori.EnableWindow(false);
+	m_exoriGran.EnableWindow(false);
+	m_exoriMas.EnableWindow(false);
+	m_exevoMasSan.EnableWindow(false);
+	m_exevoFlamHur.EnableWindow(false);
+	m_exevoFrigoHur.EnableWindow(false);
+	m_exevoTeraHur.EnableWindow(false);
+	m_exevoVisHur.EnableWindow(false);
+	m_exevoVisLux.EnableWindow(false);
+	m_exevoGranVisLux.EnableWindow(false);
+	m_exevoGranMasVis.EnableWindow(false);
+	m_exevoGranMasFlam.EnableWindow(false);
+	m_exevoGranMasTera.EnableWindow(false);
+	m_exevoGranMasFrigo.EnableWindow(false);
 
 }
 
@@ -181,6 +222,8 @@ void CConfigDialog::enableControls()
 		OnToolSpellcasterGran();
 		m_vitaSpell.EnableWindow(true);
 		OnToolSpellcasterVita();
+		m_sioSpell.EnableWindow(true);
+		OnToolSpellcasterSio();
 		m_paralysisSpell.EnableWindow(true);
 		m_poisonSpell.EnableWindow(true);
 		OnToolSpellcasterPoison();
@@ -200,6 +243,24 @@ void CConfigDialog::enableControls()
 			m_defaultStrikeSpell.EnableWindow(true);
 			m_strikeSpellHpMin.EnableWindow(true);
 	}
+	m_aoe.EnableWindow(true);
+		if (m_aoe.GetCheck()) {
+			m_exori.EnableWindow(true);
+			m_exoriGran.EnableWindow(true);
+			m_exoriMas.EnableWindow(true);
+			m_exevoMasSan.EnableWindow(true);
+			m_exevoFlamHur.EnableWindow(true);
+			m_exevoFrigoHur.EnableWindow(true);
+			m_exevoTeraHur.EnableWindow(true);
+			m_exevoVisHur.EnableWindow(true);
+			m_exevoVisLux.EnableWindow(true);
+			m_exevoGranVisLux.EnableWindow(true);
+			m_exevoGranMasVis.EnableWindow(true);
+			m_exevoGranMasFlam.EnableWindow(true);
+			m_exevoGranMasTera.EnableWindow(true);
+			m_exevoGranMasFrigo.EnableWindow(true);
+		}
+
 }
 
 
@@ -224,6 +285,9 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_vitaSpell.SetCheck(configData->vitaSpell);
 	sprintf(buf,"%d",configData->vitaHp);			m_vitaHp.SetWindowText(buf);
 	sprintf(buf,"%d",configData->vitaSpellMana);	m_vitaSpellMana.SetWindowText(buf);
+	m_sioSpell.SetCheck(configData->vitaSpell);
+	sprintf(buf,"%d",configData->sioHp);			m_sioHp.SetWindowText(buf);
+	sprintf(buf,"%d",configData->sioSpellMana);		m_sioSpellMana.SetWindowText(buf);
 	m_paralysisSpell.SetCheck(configData->paralysisSpell);
 	m_poisonSpell.SetCheck(configData->poisonSpell);
 	sprintf(buf,"%d",configData->minPoisonDmg);		m_minPoisonDmg.SetWindowText(buf);
@@ -243,11 +307,29 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->manaStrike);		m_manaStrike.SetWindowText(buf);
 	sprintf(buf,"%s",configData->defaultStrikeSpell);		m_defaultStrikeSpell.SetWindowText(buf);
 	sprintf(buf,"%d",configData->strikeSpellHpMin);		m_strikeSpellHpMin.SetWindowText(buf);
+	m_aoe.SetCheck(configData->aoe);
+	m_exori.SetCheck(configData->exori);
+	m_exoriGran.SetCheck(configData->exoriGran);
+	m_exoriMas.SetCheck(configData->exoriGran);
+	m_exevoMasSan.SetCheck(configData->exevoMasSan);
+	m_exevoFlamHur.SetCheck(configData->exevoFlamHur);
+	m_exevoFrigoHur.SetCheck(configData->exevoFrigoHur);
+	m_exevoTeraHur.SetCheck(configData->exevoTeraHur);
+	m_exevoVisHur.SetCheck(configData->exevoVisHur);
+	m_exevoVisLux.SetCheck(configData->exevoVisLux);
+	m_exevoGranVisLux.SetCheck(configData->exevoGranVisLux);
+	m_exevoGranMasVis.SetCheck(configData->exevoGranMasVis);
+	m_exevoGranMasFlam.SetCheck(configData->exevoGranMasFlam);
+	m_exevoGranMasTera.SetCheck(configData->exevoGranMasTera);
+	m_exevoGranMasFrigo.SetCheck(configData->exevoGranMasFrigo);
+	
+	memcpy(memWhiteList,configData->healList,3200);
 
 	OnToolSpellcasterMana();
 	OnToolSpellcasterLife();
 	OnToolSpellcasterSummon();
 	OnToolSpellcasterStrike();
+	OnToolSpellcasterAOE();
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -273,6 +355,9 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->vitaSpell = m_vitaSpell.GetCheck();
 	m_vitaHp.GetWindowText(buf,127);newConfigData->vitaHp=atoi(buf);
 	m_vitaSpellMana.GetWindowText(buf,127); newConfigData->vitaSpellMana=atoi(buf);
+	newConfigData->sioSpell = m_sioSpell.GetCheck();
+	m_sioHp.GetWindowText(buf,127);newConfigData->sioHp=atoi(buf);
+	m_sioSpellMana.GetWindowText(buf,127); newConfigData->sioSpellMana=atoi(buf);
 	newConfigData->paralysisSpell = m_paralysisSpell.GetCheck();
 	newConfigData->poisonSpell = m_poisonSpell.GetCheck();
 	m_minPoisonDmg.GetWindowText(buf,127);newConfigData->minPoisonDmg=atoi(buf);
@@ -295,6 +380,24 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_defaultStrikeSpell.GetWindowText(newConfigData->defaultStrikeSpell,127);
 	m_strikeSpellHpMin.GetWindowText(buf,127);newConfigData->strikeSpellHpMin=atoi(buf);
 
+	newConfigData->aoe = m_aoe.GetCheck();
+	newConfigData->exori = m_exori.GetCheck();
+	newConfigData->exoriGran = m_exoriGran.GetCheck();
+	newConfigData->exoriMas = m_exoriMas.GetCheck();
+	newConfigData->exevoMasSan = m_exevoMasSan.GetCheck();
+	newConfigData->exevoFlamHur = m_exevoFlamHur.GetCheck();
+	newConfigData->exevoFrigoHur = m_exevoFrigoHur.GetCheck();
+	newConfigData->exevoTeraHur = m_exevoTeraHur.GetCheck();
+	newConfigData->exevoVisHur = m_exevoVisHur.GetCheck();
+	newConfigData->exevoVisLux = m_exevoVisLux.GetCheck();
+	newConfigData->exevoGranVisLux = m_exevoGranVisLux.GetCheck();
+	newConfigData->exevoGranMasVis = m_exevoGranMasVis.GetCheck();
+	newConfigData->exevoGranMasFlam = m_exevoGranMasFlam.GetCheck();
+	newConfigData->exevoGranMasTera = m_exevoGranMasTera.GetCheck();
+	newConfigData->exevoGranMasTera = m_exevoGranMasFrigo.GetCheck();
+
+	memcpy(newConfigData->healList,memWhiteList,3200);
+
 	return newConfigData;
 }
 
@@ -313,6 +416,7 @@ BOOL CConfigDialog::OnInitDialog()
 	OnToolSpellcasterLife();
 	OnToolSpellcasterSummon();
 	OnToolSpellcasterStrike();
+	OnToolSpellcasterAOE();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -342,6 +446,7 @@ void CConfigDialog::OnToolSpellcasterLife()
 		int exuraVal = m_exuraSpell.GetCheck();
 		int granVal = m_granSpell.GetCheck();
 		int vitaVal = m_vitaSpell.GetCheck();
+		int sioVal = m_sioSpell.GetCheck();
 		int customVal = m_customSpell.GetCheck();
 		int poisonVal = m_poisonSpell.GetCheck();
 			m_exuraSpell.EnableWindow(val);
@@ -353,6 +458,10 @@ void CConfigDialog::OnToolSpellcasterLife()
 			m_vitaSpell.EnableWindow(val);
 				m_vitaHp.EnableWindow(val && vitaVal?true:false);
 				m_vitaSpellMana.EnableWindow(val && vitaVal?true:false);
+			m_sioSpell.EnableWindow(val);
+				m_sioHp.EnableWindow(val && sioVal?true:false);
+				m_sioSpellMana.EnableWindow(val && sioVal?true:false);
+				m_healList.EnableWindow(val && sioVal?true:false);
 			m_customSpell.EnableWindow(val);
 				m_lifeHp.EnableWindow(val && customVal?true:false);
 				m_lifeSpell.EnableWindow(val && customVal?true:false);
@@ -363,16 +472,14 @@ void CConfigDialog::OnToolSpellcasterLife()
 
 }
 
-void CConfigDialog::OnToolSpellcasterSummon() 
-{
+void CConfigDialog::OnToolSpellcasterSummon() {
 	int val = m_summon.GetCheck();
 	m_summonLessThan.EnableWindow(val);
 	m_summonMana.EnableWindow(val);
 	m_summonName.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolSpellcasterStrike() 
-{
+void CConfigDialog::OnToolSpellcasterStrike() {
 	int val = m_strike.GetCheck();
 		OnToolSpellcasterMageStrike();
 		OnToolSpellcasterPaladinStrike();
@@ -382,43 +489,50 @@ void CConfigDialog::OnToolSpellcasterStrike()
 		m_strikeSpellHpMin.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolSpellcasterExura() 
-{
+void CConfigDialog::OnToolSpellcasterExura() {
 	int val = m_exuraSpell.GetCheck();
 		m_exuraHp.EnableWindow(val);
 		m_exuraSpellMana.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolSpellcasterGran() 
-{
+void CConfigDialog::OnToolSpellcasterGran() {
 	int val = m_granSpell.GetCheck();
 		m_granHp.EnableWindow(val);
 		m_granSpellMana.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolSpellcasterVita() 
-{
+void CConfigDialog::OnToolSpellcasterVita() {
 	int val = m_vitaSpell.GetCheck();
 		m_vitaHp.EnableWindow(val);
 		m_vitaSpellMana.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolSpellcasterCustom() 
-{
+void CConfigDialog::OnToolSpellcasterSio() {
+	int val = m_sioSpell.GetCheck();
+		m_sioHp.EnableWindow(val);
+		m_sioSpellMana.EnableWindow(val);
+		m_healList.EnableWindow(val);
+}
+
+void CConfigDialog::OnToolSpellcasterHealList() {
+	CWhiteList *dialog = new CWhiteList(memWhiteList);
+	dialog->DoModal();
+	delete dialog;
+}
+
+void CConfigDialog::OnToolSpellcasterCustom() {
 	int val = m_customSpell.GetCheck();
 		m_lifeHp.EnableWindow(val);
 		m_lifeSpell.EnableWindow(val);
 		m_lifeSpellMana.EnableWindow(val);
 
 }
-void CConfigDialog::OnToolSpellcasterPoison() 
-{
+void CConfigDialog::OnToolSpellcasterPoison() {
 	int val = m_poisonSpell.GetCheck();
 		m_minPoisonDmg.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolSpellcasterMageStrike() 
-{
+void CConfigDialog::OnToolSpellcasterMageStrike() {
 	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || !m_strike.GetCheck()) {
 		m_con.EnableWindow(false);
 		m_san.EnableWindow(false);
@@ -431,8 +545,7 @@ void CConfigDialog::OnToolSpellcasterMageStrike()
 	}
 }
 
-void CConfigDialog::OnToolSpellcasterPaladinStrike() 
-{
+void CConfigDialog::OnToolSpellcasterPaladinStrike() {
 	if (m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck()){
 		m_flam.EnableWindow(false);
 		m_frigo.EnableWindow(false);
@@ -451,8 +564,7 @@ void CConfigDialog::OnToolSpellcasterPaladinStrike()
 	}
 }
 
-void CConfigDialog::OnToolSpellcasterKnightStrike() 
-{
+void CConfigDialog::OnToolSpellcasterKnightStrike() {
 	if (m_hur.GetCheck() || !m_strike.GetCheck()){
 		m_flam.EnableWindow(false);
 		m_frigo.EnableWindow(false);
@@ -471,4 +583,23 @@ void CConfigDialog::OnToolSpellcasterKnightStrike()
 		m_san.EnableWindow(true);
 		m_con.EnableWindow(true);
 	}
+}
+
+void CConfigDialog::OnToolSpellcasterAOE() 
+{
+	int val = m_aoe.GetCheck();
+	m_exori.EnableWindow(val);
+	m_exoriGran.EnableWindow(val);
+	m_exoriMas.EnableWindow(val);
+	m_exevoMasSan.EnableWindow(val);
+	m_exevoFlamHur.EnableWindow(val);
+	m_exevoFrigoHur.EnableWindow(val);
+	m_exevoTeraHur.EnableWindow(val);
+	m_exevoVisHur.EnableWindow(val);
+	m_exevoVisLux.EnableWindow(val);
+	m_exevoGranVisLux.EnableWindow(val);
+	m_exevoGranMasVis.EnableWindow(val);
+	m_exevoGranMasFlam.EnableWindow(val);
+	m_exevoGranMasTera.EnableWindow(val);
+	m_exevoGranMasFrigo.EnableWindow(val);
 }

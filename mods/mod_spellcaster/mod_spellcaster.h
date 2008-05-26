@@ -51,6 +51,8 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 public:		
+	void resetMultiParamAccess(char *paramName);
+	int isMultiParam(char *paramName);
 	int validateConfig(int showAlerts);
 	// functions from IModuleInterface
 	char * getName();
@@ -69,6 +71,7 @@ public:
 	char *getConfigParamName(int nr);
 private:	
 	int m_started;
+	int currentPos;
 	CConfigDialog * m_configDialog;
 	CConfigData *m_configData;
 };
