@@ -115,8 +115,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			delete item;
-		}
-		
+		}	
 		
 
 		// refresh self to have correct cap
@@ -134,24 +133,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		{
 			CUIntArray itemsAccepted;
 			itemsAccepted.Add(itemProxy.getValueForConst("worms"));
-			for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
-			{
+			for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (!item)
-				{
+				if (!item) {
 					break;
 				}
 				delete item;
 			}
-			if (!item)
-			{
-				delete item;
-				delete self;
-				continue;
-			}
-			
 		}
-
 
 		// now find "random" water field with a fish
 		int offsetX,offsetY=0;
@@ -319,7 +308,7 @@ void CMod_fisherApp::enableControls()
 
 char *CMod_fisherApp::getVersion()
 {
-	return "2.3";
+	return "2.4";
 }
 
 
@@ -353,7 +342,7 @@ char *CMod_fisherApp::saveConfigParam(char *paramName)
 	
 	if (!strcmp(paramName,"other/fishOnlyWhenCap")) sprintf(buf,"%d",m_configData->fishOnlyWhenCap);
 	if (!strcmp(paramName,"move/fromHandToCont")) sprintf(buf,"%d",m_configData->moveFromHandToCont);	
-	if (!strcmp(paramName,"other/f	ishOnlyWhenWorms")) sprintf(buf,"%d",m_configData->fishOnlyWhenWorms);
+	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) sprintf(buf,"%d",m_configData->fishOnlyWhenWorms);
 	
 
 	return buf;
