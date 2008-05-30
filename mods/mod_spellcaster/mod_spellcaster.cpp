@@ -151,67 +151,69 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 		}
-		int spell = aoeShouldFire(config);
-		if (spell && config->aoe) {
-			switch (spell) {
-			case 1:
-				if (self->mana > 115) 
-					sender.sayWhisper("Exori");
-				else if (self->mana > 340)
-					sender.sayWhisper("Exori Gran");
-				break;
-			case 2:
-				if (self->mana > 160) 
-					sender.sayWhisper("Exori Mas");
-				break;
-			case 3:
-				if (self->mana > 180) 
-					sender.sayWhisper("Exevo Mas San");
-				break;
-			case 4:
-				if (self->mana > 25) 
-					sender.sayWhisper("Exevo Flam Hur");
-				break;
-			case 5:
-				if (self->mana > 25) 
-					sender.sayWhisper("Exevo Frigo Hur");
-				break;
-			case 6:
-				if (self->mana > 210) 
-					sender.sayWhisper("Exevo Tera Hur");
-				break;
-			case 7:
-				if (self->mana > 170) 
-					sender.sayWhisper("Exevo Vis Hur");
-				break;
-			case 8:
-				if (self->mana > 40) 
-					sender.sayWhisper("Exevo Vis Lux");
-				break;
-			case 9:
-				if (self->mana > 110) 
-					sender.sayWhisper("Exevo Gran Vis Lux");
-				break;
-			case 10:
-				if (self->mana > 650) 
-					sender.sayWhisper("Exevo Gran Mas Vis");
-				break;
-			case 11:
-				if (self->mana > 1200) 
-					sender.sayWhisper("Exevo Gran Mas Flam");
-				break;
-			case 12:
-				if (self->mana > 770) 
-					sender.sayWhisper("Exevo Gran Mas Tera");
-				break;
-			case 13:
-				if (self->mana > 1200) 
-					sender.sayWhisper("Exevo Gran Mas Frigo");
-				break;
-			default:
-				break;
+		if (config->aoe) {
+			int spell = aoeShouldFire(config);
+			if (spell) {
+				switch (spell) {
+				case 1:
+					if (self->mana > 115) 
+						sender.sayWhisper("exori");
+					else if (self->mana > 340)
+						sender.sayWhisper("exori gran");
+					break;
+				case 2:
+					if (self->mana > 160) 
+						sender.sayWhisper("exori mas");
+					break;
+				case 3:
+					if (self->mana > 180) 
+						sender.sayWhisper("exevo mas san");
+					break;
+				case 4:
+					if (self->mana > 25) 
+						sender.sayWhisper("exevo flam hur");
+					break;
+				case 5:
+					if (self->mana > 25) 
+						sender.sayWhisper("exevo frigo hur");
+					break;
+				case 6:
+					if (self->mana > 210) 
+						sender.sayWhisper("exevo tera hur");
+					break;
+				case 7:
+					if (self->mana > 170) 
+						sender.sayWhisper("exevo vis hur");
+					break;
+				case 8:
+					if (self->mana > 40) 
+						sender.sayWhisper("exevo vis lux");
+					break;
+				case 9:
+					if (self->mana > 110) 
+						sender.sayWhisper("exevo gran vis lux");
+					break;
+				case 10:
+					if (self->mana > 650) 
+						sender.sayWhisper("exevo gran mas vis");
+					break;
+				case 11:
+					if (self->mana > 1200) 
+						sender.sayWhisper("exevo gran mas flam");
+					break;
+				case 12:
+					if (self->mana > 770) 
+						sender.sayWhisper("exevo gran mas tera");
+					break;
+				case 13:
+					if (self->mana > 1200) 
+						sender.sayWhisper("exevo gran mas frigo");
+					break;
+				default:
+					break;
+				}
+				Sleep(700);
 			}
-			Sleep(700);
 		}
 		//Akilez: Use mana for strike spells
 		else if(config->strike && self->mana>=config->manaStrike && attackedCreature){
