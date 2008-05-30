@@ -533,55 +533,39 @@ void CConfigDialog::OnToolSpellcasterPoison() {
 }
 
 void CConfigDialog::OnToolSpellcasterMageStrike() {
-	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || !m_strike.GetCheck()) {
-		m_con.EnableWindow(false);
-		m_san.EnableWindow(false);
-		m_hur.EnableWindow(false);
+	if (m_con.GetCheck() || m_san.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck()) {
+		m_flam.EnableWindow(false);
+		m_frigo.EnableWindow(false);
+		m_mort.EnableWindow(false);
+		m_tera.EnableWindow(false);
+		m_vis.EnableWindow(false);
 	}
 	else {
-		m_con.EnableWindow(true);
-		m_san.EnableWindow(true);
-		m_hur.EnableWindow(true);
+		m_flam.EnableWindow(true);
+		m_frigo.EnableWindow(true);
+		m_mort.EnableWindow(true);
+		m_tera.EnableWindow(true);
+		m_vis.EnableWindow(true);
 	}
 }
 
 void CConfigDialog::OnToolSpellcasterPaladinStrike() {
-	if (m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck()){
-		m_flam.EnableWindow(false);
-		m_frigo.EnableWindow(false);
-		m_mort.EnableWindow(false);
-		m_tera.EnableWindow(false);
-		m_vis.EnableWindow(false);
-		m_hur.EnableWindow(false);
-	}
-	else {
-		m_flam.EnableWindow(true);
-		m_frigo.EnableWindow(true);
-		m_mort.EnableWindow(true);
-		m_tera.EnableWindow(true);
-		m_vis.EnableWindow(true);
-		m_hur.EnableWindow(true);
-	}
-}
-
-void CConfigDialog::OnToolSpellcasterKnightStrike() {
-	if (m_hur.GetCheck() || !m_strike.GetCheck()){
-		m_flam.EnableWindow(false);
-		m_frigo.EnableWindow(false);
-		m_mort.EnableWindow(false);
-		m_tera.EnableWindow(false);
-		m_vis.EnableWindow(false);
+	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck()){
 		m_san.EnableWindow(false);
 		m_con.EnableWindow(false);
 	}
 	else {
-		m_flam.EnableWindow(true);
-		m_frigo.EnableWindow(true);
-		m_mort.EnableWindow(true);
-		m_tera.EnableWindow(true);
-		m_vis.EnableWindow(true);
 		m_san.EnableWindow(true);
 		m_con.EnableWindow(true);
+	}
+}
+
+void CConfigDialog::OnToolSpellcasterKnightStrike() {
+	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck()){
+		m_hur.EnableWindow(false);
+	}
+	else {
+		m_hur.EnableWindow(true);
 	}
 }
 
