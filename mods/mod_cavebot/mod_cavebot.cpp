@@ -1772,6 +1772,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						* Reset remaining tiles to go
 						* for the client (to avoid interferences).
 						*/
+						sender.attackMode(attackMode+1,config->autoFollow);
+
 						if (config->debug)
 						{
 							char buf[128];
