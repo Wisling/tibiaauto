@@ -69,7 +69,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{			
 		Sleep(500);	
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
-		int continueFishing = 0;
+		int continueFishing = 1;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		
 		if (config->moveFromHandToCont) {
@@ -107,8 +107,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		// refresh self to have correct cap
 		self = reader.readSelfCharacter();
 		// if cap check enabled, 
-		if (self->cap > config->fishOnlyWhenCap)			
-			continueFishing = 1;			
+		if (self->cap <= config->fishOnlyWhenCap)			
+			continueFishing = 0;
 		
 		//New only fish when worms available
 		if (config->fishOnlyWhenWorms) {
@@ -117,16 +117,32 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 				if (item) {
-					continueFishing = 1;
 					delete item;
 					break;
 				}
-				else
-					continueFishing = 0;
+				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
 				delete item;
 			}
 		}
-		
+
+		int fishingRodCont=0xa;
+		int fishingRodPos=0;
+		if (reader.readItem(memConstData.m_memAddressSlotArrow)->objectId != itemProxy.getValueForConst("fishingRod")) {
+			CUIntArray itemsAccepted;
+			int contNr;
+			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
+			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
+				if (item) {
+					fishingRodCont=0x40+contNr;
+					fishingRodPos=item->pos;
+					delete item;
+					break;
+				}
+				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
+				delete item;
+			}
+		}
 		// now find "random" water field with a fish
 		if (continueFishing){
 			int offsetX,offsetY=0;
@@ -141,23 +157,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					break;
 				}
 			}
-			if (randLoopCount>0) {							
-				int fishingRodCont=0xa;
-				int fishingRodPos=0;
+			if (randLoopCount>0) {
 				
-				CUIntArray itemsAccepted;
-				int contNr;
-				itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-					if (item) {
-						fishingRodCont=0x40+contNr;
-						fishingRodPos=item->pos;
-						delete item;
-						break;
-					}
-					delete item;
-				}												
 				
 				int tileId = reader.mapGetPointItemId(point(offsetX,offsetY,0),0);			
 				sender.useWithObjectFromContainerOnFloor(
