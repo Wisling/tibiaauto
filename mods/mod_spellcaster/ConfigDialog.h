@@ -121,6 +121,10 @@ protected:
 	afx_msg void OnToolSpellcasterPaladinStrike();
 	afx_msg void OnToolSpellcasterKnightStrike();
 	afx_msg void OnToolSpellcasterAOE();
+	afx_msg void OnToolSpellcasterSorcererAOE();
+	afx_msg void OnToolSpellcasterDruidAOE();
+	afx_msg void OnToolSpellcasterPaladinAOE();
+	afx_msg void OnToolSpellcasterKnightAOE();
 	afx_msg void OnToolSpellcasterHealList();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

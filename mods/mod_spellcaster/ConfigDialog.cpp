@@ -102,16 +102,30 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_LIST, OnToolSpellcasterHealList)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_STRIKE, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterMageStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FRIGO, OnToolSpellcasterMageStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MORT, OnToolSpellcasterMageStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_TERA, OnToolSpellcasterMageStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VIS, OnToolSpellcasterMageStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CON, OnToolSpellcasterPaladinStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterPaladinStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HUR, OnToolSpellcasterKnightStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FRIGO, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MORT, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_TERA, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VIS, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CON, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterStrike)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HUR, OnToolSpellcasterStrike)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_POISON, OnToolSpellcasterPoison)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_AOE, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_GRAN, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_MAS, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, OnToolSpellcasterAOE)
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, OnToolSpellcasterAOE)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -394,7 +408,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->exevoGranMasVis = m_exevoGranMasVis.GetCheck();
 	newConfigData->exevoGranMasFlam = m_exevoGranMasFlam.GetCheck();
 	newConfigData->exevoGranMasTera = m_exevoGranMasTera.GetCheck();
-	newConfigData->exevoGranMasTera = m_exevoGranMasFrigo.GetCheck();
+	newConfigData->exevoGranMasFrigo = m_exevoGranMasFrigo.GetCheck();
 
 	memcpy(newConfigData->healList,memWhiteList,3200);
 
@@ -616,21 +630,44 @@ void CConfigDialog::OnToolSpellcasterKnightStrike() {
 	}
 }
 
-void CConfigDialog::OnToolSpellcasterAOE() 
+void CConfigDialog::OnToolSpellcasterAOE()
 {
-	int val = m_aoe.GetCheck();
-		m_exori.EnableWindow(val);
-		m_exoriGran.EnableWindow(val);
-		m_exoriMas.EnableWindow(val);
-		m_exevoMasSan.EnableWindow(val);
-		m_exevoFlamHur.EnableWindow(val);
-		m_exevoFrigoHur.EnableWindow(val);
-		m_exevoTeraHur.EnableWindow(val);
-		m_exevoVisHur.EnableWindow(val);
-		m_exevoVisLux.EnableWindow(val);
-		m_exevoGranVisLux.EnableWindow(val);
-		m_exevoGranMasVis.EnableWindow(val);
-		m_exevoGranMasFlam.EnableWindow(val);
-		m_exevoGranMasTera.EnableWindow(val);
-		m_exevoGranMasFrigo.EnableWindow(val);
+	OnToolSpellcasterSorcererAOE();
+	OnToolSpellcasterDruidAOE();
+	OnToolSpellcasterPaladinAOE();
+	OnToolSpellcasterKnightAOE();
+
+}
+void CConfigDialog::OnToolSpellcasterSorcererAOE()
+{
+	int val = !m_exori.GetCheck() && !m_exoriGran.GetCheck() && !m_exoriMas.GetCheck() && !m_exevoMasSan.GetCheck() && !m_exevoFrigoHur.GetCheck() && !m_exevoTeraHur.GetCheck() && !m_exevoGranMasTera.GetCheck() && !m_exevoGranMasFrigo.GetCheck() && m_aoe.GetCheck();
+	m_exevoFlamHur.EnableWindow(val);
+	m_exevoVisHur.EnableWindow(val);
+	m_exevoVisLux.EnableWindow(val);
+	m_exevoGranVisLux.EnableWindow(val);
+	m_exevoGranMasVis.EnableWindow(val);
+	m_exevoGranMasFlam.EnableWindow(val);
+}
+
+void CConfigDialog::OnToolSpellcasterDruidAOE()
+{
+	int val = !m_exori.GetCheck() && !m_exoriGran.GetCheck() && !m_exoriMas.GetCheck() && !m_exevoMasSan.GetCheck() && !m_exevoFlamHur.GetCheck() && !m_exevoVisHur.GetCheck() && !m_exevoVisLux.GetCheck() && !m_exevoGranVisLux.GetCheck() && !m_exevoGranMasVis.GetCheck() && !m_exevoGranMasFlam.GetCheck() && m_aoe.GetCheck();
+	m_exevoFrigoHur.EnableWindow(val);
+	m_exevoTeraHur.EnableWindow(val);
+	m_exevoGranMasTera.EnableWindow(val);
+	m_exevoGranMasFrigo.EnableWindow(val);
+}
+
+void CConfigDialog::OnToolSpellcasterPaladinAOE()
+{
+	int val = !m_exori.GetCheck() && !m_exoriGran.GetCheck() && !m_exoriMas.GetCheck() && !m_exevoFlamHur.GetCheck() && !m_exevoFrigoHur.GetCheck() && !m_exevoTeraHur.GetCheck() && !m_exevoVisHur.GetCheck() && !m_exevoVisLux.GetCheck() && !m_exevoGranVisLux.GetCheck() && !m_exevoGranMasVis.GetCheck() && !m_exevoGranMasFlam.GetCheck() && !m_exevoGranMasTera.GetCheck() && !m_exevoGranMasFrigo.GetCheck() && m_aoe.GetCheck();
+	m_exevoMasSan.EnableWindow(val);
+}
+
+void CConfigDialog::OnToolSpellcasterKnightAOE()
+{
+	int val = !m_exevoMasSan.GetCheck() && !m_exevoFlamHur.GetCheck() && !m_exevoFrigoHur.GetCheck() && !m_exevoTeraHur.GetCheck() && !m_exevoVisHur.GetCheck() && !m_exevoVisLux.GetCheck() && !m_exevoGranVisLux.GetCheck() && !m_exevoGranMasVis.GetCheck() && !m_exevoGranMasFlam.GetCheck() && !m_exevoGranMasTera.GetCheck() && !m_exevoGranMasFrigo.GetCheck() && m_aoe.GetCheck();
+	m_exori.EnableWindow(val);
+	m_exoriGran.EnableWindow(val);
+	m_exoriMas.EnableWindow(val);
 }
