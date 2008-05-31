@@ -1,4 +1,4 @@
-1.16.3, ??
+1.17.0, ??
 Defects:
  Cave bot: Fixed 'loots only into first backpack' bug
  Cave bot: Fixed 'no auto-follow" bug
@@ -13,6 +13,7 @@ Defects:
  Spellcaster: No support, yet, for look direction of "wave type" spells.
  Spellcaster: fixed a major memory leak / potential memory leak
  Python scripting: fixed a major memory leak
+ General: fixed several tile information
 
 Enhancements:
  Spellcaster: added additionnal healing option "exura sio..."
@@ -24,6 +25,7 @@ Enhancements:
  Auto loot: improved speed of looting
  Cave bot: improved speed of looting
  Grouping: Improved algorithm for grouping
+ General: improved uninstallation procedure
 
 1.16.2, 10.04.2008
 Defects:
