@@ -199,18 +199,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if(self->z <= 7)
 				{					
 					// Can only go down as many times as you are away from the 7th-1 floor
-					// Crashes when looking at ground floor and you go down 1 floor
-					groundlevel = max(groundlevel,7-(self->z==7?7:6 - self->z));
-					if (self->z == 7 && groundlevel == 6) groundlevel = 7; // for some reason not taken care of in line above.
+					// prevents possible crash when looking at ground floor and you go down 1 floor
+					groundlevel = max(groundlevel,7-((self->z==7?7:6)-self->z));
 					// Can only go up as many times as you are away from the 0th floor
-					groundlevel = min(groundlevel,7-(0-self->z));
+					// prevents possible crash when looking at top floor and you go up 1 floor
+					groundlevel = min(groundlevel,7-((self->z==0?0:1)-self->z));
 					reader.setXRayValues(groundlevel,2);
 				}
 
 				if(self->z >7)
 				{
-					// Can only go down as many times as you are away from the 14th floor, but not below 0
-					undergroundlevel = max(undergroundlevel,max(0,2-(14-self->z)));
+					// Can only go down as many times as you are away from the 15th floor, but not below 0
+					undergroundlevel = max(undergroundlevel,max(0,2-(15-self->z)));
 					// Can only go up to 7 only up to 4 is useful though
 					undergroundlevel = min(undergroundlevel,7);
 					reader.setXRayValues(7,undergroundlevel);					
