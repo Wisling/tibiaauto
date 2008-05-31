@@ -149,6 +149,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					sender.sendTAMessage(buf);
 					Sleep(700);	
 				}
+				delete ch;
 			}
 		}
 		if (config->aoe) {
@@ -219,20 +220,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		else if(config->strike && self->mana>=config->manaStrike && attackedCreature){
 			attackedCreature = reader.getAttackedCreature();
 			//T4: If any creature is attacked
-			if (attackedCreature) {			
+			if (attackedCreature > 0) {			
 				//T4: Get attacked creature stucture
 				CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
 				currentMonsterNumber = getcurrentMonsterNumberFromName(ch->name);
 				if (ch->name && ch->hpPercLeft && currentMonsterNumber > -1) {
 					if ((monstersInfo[currentMonsterNumber].hp * ch->hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
 					{
-						//T4: cords
-						int chX=ch->x;
-						int chY=ch->y;
-						int chZ=ch->z;
-						
-						int xDist = abs(self->x-chX);
-						int yDist = abs(self->y-chY);
+						int xDist = abs(self->x-ch->x);
+						int yDist = abs(self->y-ch->y);
 						int maxDist = xDist;
 						if (yDist>maxDist) maxDist=yDist;
 						int test = config->flam+config->frigo+config->mort+config->tera+config->vis;
@@ -1020,11 +1016,11 @@ int aoeShouldFire(CConfigData *config) {
 							exoriMasCount++;
 					}  // end if
 				}  // end if
-				delete ch;
 			} // end if			
 		} // end if
+		delete ch;
 	} // end for
-	
+	delete self;
 	if (config->exori || config->exoriGran && exoriCount > 2)
 		returnSpell = 1;
 	if (config->exoriMas && exoriMasCount > 2 && exoriMasCount > exoriCount)
