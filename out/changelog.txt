@@ -1,17 +1,21 @@
 1.16.3, ??
 Defects:
  Cave bot: Fixed 'loots only into first backpack' bug
+ Cave bot: Fixed 'no auto-follow" bug
  Auto fish: fixed config loading error
  Auto Loot: fixed config loading error
  Cave bot: reduced the old "graphical glitch"
  cave bot: reduced server spamming by 'attack' command
  XRay: Removed excessive limitations on viewing levels
  Spellcaster: fixed a GUI error
+ Spellcaster: fixed a GUI logic error
+ Spellcaster: fixed a GUI display error
  Spellcaster: No support, yet, for look direction of "wave type" spells.
+ Spellcaster: fixed a major memory leak / potential memory leak
  Python scripting: fixed a major memory leak
 
 Enhancements:
- Spellcaster: added additionnal healing options "exura sio..."
+ Spellcaster: added additionnal healing option "exura sio..."
  Spellcaster: added AoE spell support
  Fisher: Option to stop fishing when no worms(Only half way done... need checkbox in GUI for "other/fishOnlyWhenWorms" config)
  Fisher: Option to stop fishing when no worms(Now complete)
