@@ -3,58 +3,14 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_cavebot - Win32 Debug--------------------
+--------------------Configuration: mod_cavebot - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Debug/mod_cavebot.res" /d "_DEBUG" /d "_AFXDLL" "E:\projects\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.rc"" 
-Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPE54.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_cavebot.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\ConfigData.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\ConfigDialog.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\exports.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\Helpers.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\proxy.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\SendStats.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\SharedMemory.cpp"
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\TibiaItem_impl.cpp"
-]
-Creating command line "cl.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPE54.tmp" 
-Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPE55.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_cavebot.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\projects\tibiaauto-pub\mods\mod_cavebot\StdAfx.cpp"
-]
-Creating command line "cl.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPE55.tmp" 
-Creating temporary file "E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPE56.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_cavebot.pdb" /debug /machine:I386 /def:".\mod_cavebot.def" /out:"../mod_cavebot.dll" /implib:"Debug/mod_cavebot.lib" /pdbtype:sept 
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\Helpers.obj"
-".\Debug\mod_cavebot.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\SharedMemory.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_cavebot.res"
-]
-Creating command line "link.exe @E:\DOCUME~1\ADMINI~1\USTAWI~1\Temp\RSPE56.tmp"
-<h3>Output Window</h3>
-Compiling resources...
-Compiling...
-StdAfx.cpp
-Compiling...
-ConfigData.cpp
-ConfigDialog.cpp
-E:\projects\tibiaauto-pub\mods\mod_cavebot\ConfigDialog.cpp(902) : error C2039: 'GetLBText' : is not a member of 'CListBox'
-        d:\program files\microsoft visual studio\vc98\mfc\include\afxwin.h(2741) : see declaration of 'CListBox'
-E:\projects\tibiaauto-pub\mods\mod_cavebot\ConfigDialog.cpp(902) : error C2065: 'buf' : undeclared identifier
-cl.exe terminated at user request.
 
+
+
+<h3>Results</h3>
+mod_cavebot.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>
