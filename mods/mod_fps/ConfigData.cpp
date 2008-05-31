@@ -18,10 +18,10 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	activeVal	= 40.0;
-	inactive	= 0;
-	inactiveVal = 10.0;
-	minimized	= 0;
+	activeVal	= 10.0;
+	inactive	= 1;
+	inactiveVal = 5.0;
+	minimized	= 1;
 	minimizedVal= 1.0;
 }
 
