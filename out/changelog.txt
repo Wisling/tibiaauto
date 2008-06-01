@@ -14,6 +14,7 @@ Defects:
  Spellcaster: fixed a major memory leak / potential memory leak
  Python scripting: fixed a major memory leak
  General: fixed several tile information
+ Cave bot: waypoint is assumed to be reached when standing 1 tile from it
 
 Enhancements:
  Spellcaster: added additionnal healing option "exura sio..."
