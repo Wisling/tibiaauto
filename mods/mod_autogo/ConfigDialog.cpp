@@ -302,6 +302,8 @@ void CConfigDialog::disableControls()
 	m_actionBattleListPlayer.EnableWindow(false);
 	m_actionBattleListMonster.EnableWindow(false);
 	m_actionBattleListList.EnableWindow(false);
+	m_manaBelowUntilRecovery.EnableWindow(false);
+	m_hpBelowUntilRecovery.EnableWindow(false);
 	m_actionBattleListGm.EnableWindow(false);
 }
 
