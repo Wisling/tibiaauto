@@ -299,7 +299,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_vitaSpell.SetCheck(configData->vitaSpell);
 	sprintf(buf,"%d",configData->vitaHp);			m_vitaHp.SetWindowText(buf);
 	sprintf(buf,"%d",configData->vitaSpellMana);	m_vitaSpellMana.SetWindowText(buf);
-	m_sioSpell.SetCheck(configData->vitaSpell);
+	m_sioSpell.SetCheck(configData->sioSpell);
 	sprintf(buf,"%d",configData->sioHp);			m_sioHp.SetWindowText(buf);
 	sprintf(buf,"%d",configData->sioSpellMana);		m_sioSpellMana.SetWindowText(buf);
 	m_paralysisSpell.SetCheck(configData->paralysisSpell);

@@ -223,11 +223,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (attackedCreature > 0) {			
 				//T4: Get attacked creature stucture
 				CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
-				currentMonsterNumber = getcurrentMonsterNumberFromName(ch->name);
-				// 'attackedCreature' should be != NULL however rarely it can be NULL
-				if (ch)
-				{
-					if (ch->visible && ch->name && ch->hpPercLeft && currentMonsterNumber > -1) {
+				if (ch) {
+					currentMonsterNumber = getcurrentMonsterNumberFromName(ch->name);
+					if (ch->name && ch->hpPercLeft && currentMonsterNumber > -1) {
 						if ((monstersInfo[currentMonsterNumber].hp * ch->hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
 						{
 							int xDist = abs(self->x-ch->x);
