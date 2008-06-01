@@ -224,81 +224,85 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				//T4: Get attacked creature stucture
 				CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
 				currentMonsterNumber = getcurrentMonsterNumberFromName(ch->name);
-				if (ch->name && ch->hpPercLeft && currentMonsterNumber > -1) {
-					if ((monstersInfo[currentMonsterNumber].hp * ch->hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
-					{
-						int xDist = abs(self->x-ch->x);
-						int yDist = abs(self->y-ch->y);
-						int maxDist = xDist;
-						if (yDist>maxDist) maxDist=yDist;
-						int test = config->flam+config->frigo+config->mort+config->tera+config->vis;
-						if (maxDist <= 3 && test) {
-							int check = 0;
-							if (monstersInfo[currentMonsterNumber].weakFire && config->flam) {
-								best = 1;
-								check = monstersInfo[currentMonsterNumber].weakFire;
+				// 'attackedCreature' should be != NULL however rarely it can be NULL
+				if (ch)
+				{
+					if (ch->visible && ch->name && ch->hpPercLeft && currentMonsterNumber > -1) {
+						if ((monstersInfo[currentMonsterNumber].hp * ch->hpPercLeft * .01 > config->strikeSpellHpMin) || (currentMonsterNumber == -1))
+						{
+							int xDist = abs(self->x-ch->x);
+							int yDist = abs(self->y-ch->y);
+							int maxDist = xDist;
+							if (yDist>maxDist) maxDist=yDist;
+							int test = config->flam+config->frigo+config->mort+config->tera+config->vis;
+							if (maxDist <= 3 && test) {
+								int check = 0;
+								if (monstersInfo[currentMonsterNumber].weakFire && config->flam) {
+									best = 1;
+									check = monstersInfo[currentMonsterNumber].weakFire;
+								}
+								if (monstersInfo[currentMonsterNumber].weakIce && monstersInfo[currentMonsterNumber].weakIce > check && config->frigo) {
+									best = 2;
+									check = monstersInfo[currentMonsterNumber].weakIce;
+								}
+								if (monstersInfo[currentMonsterNumber].weakEarth && monstersInfo[currentMonsterNumber].weakEarth > check && config->tera) {
+									best = 3;
+									check = monstersInfo[currentMonsterNumber].weakEarth;
+								}
+								if (monstersInfo[currentMonsterNumber].weakEnergy && monstersInfo[currentMonsterNumber].weakEnergy > check && config->vis) {
+									best = 4;
+									check = monstersInfo[currentMonsterNumber].weakEnergy;
+								}
+								if (monstersInfo[currentMonsterNumber].weakDeath && monstersInfo[currentMonsterNumber].weakDeath > check && config->mort) {
+									best = 5;
+									check = monstersInfo[currentMonsterNumber].weakDeath;
+								}
+								
+								switch (best) {
+								case 1:
+									sender.sayWhisper("exori flam");
+									break;
+								case 2:
+									sender.sayWhisper("exori frigo");
+									break;
+								case 3:
+									sender.sayWhisper("exori tera");
+									break;
+								case 4:
+									sender.sayWhisper("exori vis");
+									break;
+								case 5:
+									sender.sayWhisper("exori mort");
+									break;
+								default:
+									break;
+								}
+								Sleep(700);
+								best = 0;
 							}
-							if (monstersInfo[currentMonsterNumber].weakIce && monstersInfo[currentMonsterNumber].weakIce > check && config->frigo) {
-								best = 2;
-								check = monstersInfo[currentMonsterNumber].weakIce;
+							else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {							
+								sender.sayWhisper("exori san");
+								Sleep(700);
 							}
-							if (monstersInfo[currentMonsterNumber].weakEarth && monstersInfo[currentMonsterNumber].weakEarth > check && config->tera) {
-								best = 3;
-								check = monstersInfo[currentMonsterNumber].weakEarth;
+							else if (maxDist <= 5 && config->hur && monstersInfo[currentMonsterNumber].weakPhysical) {
+								sender.sayWhisper("exori hur");
+								Sleep(700);
 							}
-							if (monstersInfo[currentMonsterNumber].weakEnergy && monstersInfo[currentMonsterNumber].weakEnergy > check && config->vis) {
-								best = 4;
-								check = monstersInfo[currentMonsterNumber].weakEnergy;
+							else if (config->con && monstersInfo[currentMonsterNumber].weakPhysical) {
+								sender.sayWhisper("exori con");
+								Sleep(700);
 							}
-							if (monstersInfo[currentMonsterNumber].weakDeath && monstersInfo[currentMonsterNumber].weakDeath > check && config->mort) {
-								best = 5;
-								check = monstersInfo[currentMonsterNumber].weakDeath;
+							else if (config->defaultStrikeSpell) {
+								sender.sayWhisper(config->defaultStrikeSpell);
+								Sleep(700);
 							}
-							
-							switch (best) {
-							case 1:
-								sender.sayWhisper("exori flam");
-								break;
-							case 2:
-								sender.sayWhisper("exori frigo");
-								break;
-							case 3:
-								sender.sayWhisper("exori tera");
-								break;
-							case 4:
-								sender.sayWhisper("exori vis");
-								break;
-							case 5:
-								sender.sayWhisper("exori mort");
-								break;
-							default:
-								break;
+							else {
+								sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
 							}
-							Sleep(700);
-							best = 0;
-						}
-						else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {							
-							sender.sayWhisper("exori san");
-							Sleep(700);
-						}
-						else if (maxDist <= 5 && config->hur && monstersInfo[currentMonsterNumber].weakPhysical) {
-							sender.sayWhisper("exori hur");
-							Sleep(700);
-						}
-						else if (config->con && monstersInfo[currentMonsterNumber].weakPhysical) {
-							sender.sayWhisper("exori con");
-							Sleep(700);
-						}
-						else if (config->defaultStrikeSpell) {
-							sender.sayWhisper(config->defaultStrikeSpell);
-							Sleep(700);
-						}
-						else {
-							sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
 						}
 					}
+					delete ch;
 				}
-				delete ch;
 				attackedCreature = 0;
 			}			
 		}	
@@ -862,10 +866,11 @@ int aoeShouldFire(CConfigData *config) {
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	int exoriCount, exoriMasCount, exevoMasSanCount, egmTeraCount, egmFlamCount, egmFrigoCount, egmVisCount = 0;
-	int exevoTeraHurCount, exevoVisHurCount, exevoGranVisLuxCount, exevoVisLuxCount, exevoFlamHurCount, exevoFrigoHurCount = 0;
-	int deltaX, deltaY = 0;
-	int chNr, returnSpell, faceDir = 0;
+	// note that each of the int vars here must be = 0 as otherwise only the last one will be = 0
+	int exoriCount=0, exoriMasCount=0, exevoMasSanCount=0, egmTeraCount=0, egmFlamCount=0, egmFrigoCount=0, egmVisCount = 0;
+	int exevoTeraHurCount=0, exevoVisHurCount=0, exevoGranVisLuxCount=0, exevoVisLuxCount=0, exevoFlamHurCount=0, exevoFrigoHurCount = 0;
+	int deltaX=0, deltaY = 0;
+	int chNr=0, returnSpell=0, faceDir = 0;
 	for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 		int monster = getcurrentMonsterNumberFromName(ch->name);

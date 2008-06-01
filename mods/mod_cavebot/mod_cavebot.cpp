@@ -1068,6 +1068,27 @@ int isInFullSleep()
 	if (var==NULL||strcmp(var,"true"))  return 0; else return 1;
 }
 
+int creatureStandingOnPosition(int x, int y, int z)
+{
+	int ret=0;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();	
+
+	for (int crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++)
+	{
+		CTibiaCharacter *cr = reader.readVisibleCreature(crNr);
+		if (cr->visible&&cr->tibiaId!=self->tibiaId&&cr->x==x&&cr->y==y&&cr->z==z)
+		{
+			ret=1;
+		}
+		delete cr;
+	}
+
+	delete self;
+	return ret;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -1934,18 +1955,28 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (targetX==self->x&&targetY==self->y&&targetZ==self->z)
 		{		
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ)
-			{		
-				if (config->debug) registerDebug("Depot reached");
+			{						
 				// depot waypoint reached!
 				// then do the depot stuff
+				if (config->debug) registerDebug("Depot reached");
 				depotDeposit(config);
-			} else {		
-				if (config->debug) registerDebug("Waypoint reached");
+			} else {						
 				// normal waypoint reached
+				if (config->debug) registerDebug("Waypoint reached");
+				targetX=targetY=targetZ=0;
+				walkerStandingEndTm=time(NULL)+config->standStill;
+			}
+		} else {
+			if (abs(targetX-self->x)+abs(targetY-self->y)<=1&&targetZ==self->z&&creatureStandingOnPosition(targetX,targetY,targetZ))
+			{
+				// normal waypoint almost reached but some creature standing on the exact waypoint
+				if (config->debug) registerDebug("Waypoint reached (+/-1)");
 				targetX=targetY=targetZ=0;
 				walkerStandingEndTm=time(NULL)+config->standStill;
 			}
 		}
+
+		
 		
 		if (!targetFound)
 		{
