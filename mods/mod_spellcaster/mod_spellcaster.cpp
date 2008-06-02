@@ -442,7 +442,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		}
 	}
 	if (m_configData->life) {
-		int test = m_configData->customSpell+m_configData->vitaSpell+m_configData->granSpell+m_configData->exuraSpell+m_configData->paralysisSpell+m_configData->poisonSpell;
+		int test = m_configData->customSpell+m_configData->vitaSpell+m_configData->granSpell+m_configData->exuraSpell+m_configData->paralysisSpell+m_configData->poisonSpell+m_configData->sioSpell;
 		if (!test) {
 			AfxMessageBox("At least one healing spell must be defined!");
 			return 0;
@@ -468,7 +468,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 				return 0;
 			}
 			if (m_configData->vitaSpellMana<160) {
-				if (showAlerts) AfxMessageBox("'Spell mana' must be >=160!");
+				if (showAlerts) AfxMessageBox("'Exura vita mana' must be >=160!");
 				return 0;
 			}
 		}
@@ -478,8 +478,8 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
 				return 0;
 			}
-			if (m_configData->sioSpellMana<160) {
-				if (showAlerts) AfxMessageBox("'Spell mana' must be >=160!");
+			if (m_configData->sioSpellMana<140) {
+				if (showAlerts) AfxMessageBox("'Exura sio mana' must be >=140!");
 				return 0;
 			}
 		}
@@ -489,23 +489,23 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 				return 0;
 			}
 			if (m_configData->granSpellMana<70) {
-				if (showAlerts) AfxMessageBox("'Spell mana' must be >=70!");
+				if (showAlerts) AfxMessageBox("'Exura gran mana' must be >=70!");
 				return 0;
 			}
 		}
 		if (m_configData->exuraSpell) {
 			if (m_configData->exuraHp<0) {
-				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=20!");
+				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
 				return 0;
 			}
 			if (m_configData->exuraSpellMana<20) {
-				if (showAlerts) AfxMessageBox("'Spell mana' must be >=1!");
+				if (showAlerts) AfxMessageBox("'Exura mana' must be >=20!");
 				return 0;
 			}
 		}
 		if (m_configData->poisonSpell) {
-			if (m_configData->minPoisonDmg<1) {
-				if (showAlerts) AfxMessageBox("'Cure poison when damage greater than' must be >=1!");
+			if (m_configData->minPoisonDmg<0) {
+				if (showAlerts) AfxMessageBox("'Cure poison when damage greater than' must be >=0!");
 				return 0;
 			}
 		}
