@@ -27,16 +27,16 @@ CConfigData::CConfigData()
 	lifeSpellMana=0;
 	exuraSpell=0;
 	exuraHp=0;
-	exuraSpellMana=0;
+	exuraSpellMana=20;
 	granSpell=0;
 	granHp=0;
-	granSpellMana=0;
+	granSpellMana=70;
 	vitaSpell=0;
 	vitaHp=0;
-	vitaSpellMana=0;
+	vitaSpellMana=160;
 	sioSpell=0;
 	sioHp=0;
-	sioSpellMana=0;
+	sioSpellMana=140;
 	paralysisSpell=0;
 	poisonSpell=0;
 	minPoisonDmg=0;
@@ -58,7 +58,7 @@ CConfigData::CConfigData()
 	con=0;
 	san=0;
 	hur=0;
-	manaStrike=0;
+	manaStrike=20;
 	defaultStrikeSpell[0]=0;
 	strikeSpellHpMin=0;
 
