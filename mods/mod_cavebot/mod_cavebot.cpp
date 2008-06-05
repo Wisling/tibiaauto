@@ -2011,7 +2011,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					switch (config->waypointSelectMode)
 					{
 					case 0: // random
-						newWaypoint=waypointsCount?(rand()%waypointsCount):0;
+						// if reached last wayoint, find a new one, otherwise continue to last waypoint.
+						if (abs(config->waypointList[lastWaypointNr].x-self->x)<=1&&abs(config->waypointList[lastWaypointNr].y-self->y)<=1&&config->waypointList[lastWaypointNr].z==self->z){
+							newWaypoint=waypointsCount?(rand()%waypointsCount):0;
+						} else {
+							newWaypoint = lastWaypointNr;
+						}
 						break;
 					case 1: // round-robin
 						newWaypoint=lastWaypointNr++;
