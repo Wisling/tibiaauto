@@ -1341,9 +1341,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// attacked creature dead, near me, same floor
 					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 					// open container 9 and wait for sync									
-					CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
+					if (config->debug)
+					{
+						CTibiaCharacter *selfCurrent = reader.readSelfCharacter();
+						char buf[256];
+						sprintf(buf,"Going to open body at (%d,%d,%d) corpseId=%d [self delta=(%d,%d,%d)]",attackedCh->x,attackedCh->y,attackedCh->z,attackedCh->tibiaId,self->x-selfCurrent->x,self->y-selfCurrent->y,self->z-selfCurrent->z);
+
+						registerDebug(buf);
+						delete selfCurrent;
+					}
+					int creatureDisappear=CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
 					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);					
 					sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,9);										
+					if (config->debug) 
+					{
+						char buf[128];
+						sprintf(buf,"creature disappear=%d corpseId=%d",creatureDisappear,corpseId);
+						registerDebug(buf);
+					}
+
 					
 					
 					if (CModuleUtil::waitForOpenContainer(9,true))
@@ -1410,7 +1426,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						int lootTakeIter;
 						
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-						for (lootTakeIter=0;lootTakeIter<5;lootTakeIter++)
+						for (lootTakeIter=0;lootTakeIter<1;lootTakeIter++)
 						{				
 							if (self->cap>config->capacityLimit)
 							{
@@ -1500,6 +1516,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 						if (config->debug) registerDebug("End of looting");
 					} // if waitForContainer(9)						
+					else {
+						if (config->debug) registerDebug("Opening creature corpse failed");
+					}
 					if (lootStatsFile) 
 					{
 						fclose(lootStatsFile);

@@ -752,7 +752,7 @@ void CModuleUtil::eatItemFromContainer(int contNr)
 	}
 }
 
-void CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
+int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
 {
 	CMemReaderProxy reader;
 	int iterCount=20;
@@ -769,9 +769,10 @@ void CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
 				found=1;
 		}
 		if (!found)
-			return;
+			return 1;
 		Sleep(100);
 	}
+	return 0;
 }
 
 int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags)
