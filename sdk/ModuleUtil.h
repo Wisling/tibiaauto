@@ -25,7 +25,7 @@ public:
 	static void eatItemFromContainer(int contNr);
 	static int waitForOpenContainer(int contNr,int open);
 	static void sleepWithStop(int ms,int *stopFlag);
-	static void waitForCreatureDisappear(int x,int y, int tibiaId);
+	static int waitForCreatureDisappear(int x,int y, int tibiaId);
 	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags);
 	static void prepareProhPointList();
 	static void findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode,int useDiagonal);
