@@ -87,6 +87,7 @@ void registerDebug(char *s)
 		_strdate( dateStr);
 		_strtime( timeStr );
 		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);		
+		fflush(f);
 		fclose(f);
 	}
 }
