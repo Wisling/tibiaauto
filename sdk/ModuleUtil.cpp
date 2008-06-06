@@ -706,7 +706,11 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 		if (targetCont->flagOnOff)
 		{			
 			CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont);
-			if (targetCont->itemsInside<targetCont->size) break;//itemsInside gets updated in loopItemFromSpecifiedContainer
+			if (targetCont->itemsInside<targetCont->size) 
+			{
+				delete targetCont;
+				break;//itemsInside gets updated in loopItemFromSpecifiedContainer
+			}
 		}
 		
 		
@@ -889,8 +893,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							{
 								shovel=item;							
 								break;
-							}
-							delete item;
+							}							
 						}									
 						if (shovel)
 						{												
