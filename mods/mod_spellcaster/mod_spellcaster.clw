@@ -12,8 +12,8 @@ Class2=CConfigDialog
 LastTemplate=CDialog
 Resource1=IDD_WHITELIST (Polish)
 Resource2=IDD_CONFIG (Polish)
-Resource3=IDD_CONFIG
-Resource4=IDD_WHITELIST
+Resource3=IDD_WHITELIST
+Resource4=IDD_CONFIG
 
 [CLS:CMod_spellcasterApp]
 Type=0
