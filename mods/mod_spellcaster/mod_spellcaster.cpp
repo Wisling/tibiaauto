@@ -98,7 +98,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int flags = reader.getSelfEventFlags();
 		
 		//T4: First try to heal/also uses paralysis cure here
-		if (config->life && (self->hp<=config->lifeHp || self->hp<=config->vitaHp || self->hp<=config->granHp || self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
+		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.sayWhisper(config->lifeSpell);
@@ -146,7 +146,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (OnList(config->healList,ch->name) && ch->hp <= config->sioHp && ch->visible == 1) {
 					char buf[256];
 					sprintf(buf,"exura sio \"%s\"",ch->name);
-					sender.sendTAMessage(buf);
+					sender.sayWhisper(buf);
 					Sleep(700);	
 				}
 				delete ch;
@@ -288,7 +288,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								sender.sayWhisper("exori con");
 								Sleep(700);
 							}
-							else if (config->defaultStrikeSpell) {
+							else if (strlen(config->defaultStrikeSpell)) {
 								sender.sayWhisper(config->defaultStrikeSpell);
 								Sleep(700);
 							}
@@ -538,7 +538,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		}
 	}
 	if (m_configData->aoe) {
-		int test = m_configData->exori + m_configData->exoriGran + m_configData->exoriMas + m_configData->exevoFlamHur + m_configData->exevoFrigoHur + m_configData->exevoTeraHur + m_configData->exevoVisHur + m_configData->exevoVisLux + m_configData->exevoGranVisLux + m_configData->exevoGranMasFlam + m_configData->exevoGranMasFrigo + m_configData->exevoGranMasTera + m_configData->exevoGranMasVis;
+		int test = m_configData->exori + m_configData->exoriGran + m_configData->exoriMas + m_configData->exevoFlamHur + m_configData->exevoFrigoHur + m_configData->exevoTeraHur + m_configData->exevoVisHur + m_configData->exevoVisLux + m_configData->exevoGranVisLux + m_configData->exevoGranMasFlam + m_configData->exevoGranMasFrigo + m_configData->exevoGranMasTera + m_configData->exevoGranMasVis + m_configData->exevoMasSan;
 		if (!test) {
 			if (showAlerts) AfxMessageBox("You must choose one Area of Effect spell!!");
 			return 0;
