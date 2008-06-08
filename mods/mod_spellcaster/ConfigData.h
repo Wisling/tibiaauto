@@ -57,6 +57,7 @@ public:
 	int strikeSpellHpMin;
 
 	int aoe;
+	int aoeAffect;
 	int exori;
 	int exoriGran;
 	int exoriMas;
