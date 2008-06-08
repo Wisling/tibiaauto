@@ -23,8 +23,7 @@ CConfigDialog::CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent /*=NULL*/)
 }
 
 
-void CConfigDialog::DoDataExchange(CDataExchange* pDX)
-{
+void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN, m_summonLessThan);
@@ -67,6 +66,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT, m_defaultStrikeSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN, m_strikeSpellHpMin);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE_AFFECT, m_aoeAffect);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI, m_exori);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_GRAN, m_exoriGran);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_MAS, m_exoriMas);
@@ -132,34 +132,30 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
-{
+void CConfigDialog::OnOK() {
+		ShowWindow(SW_HIDE);
+}
+
+void CConfigDialog::OnClose() {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
-{
-	ShowWindow(SW_HIDE);
-}
-
-void CConfigDialog::OnEnable() 
-{
-	if (m_enable.GetCheck())
-	{
+void CConfigDialog::OnEnable() {
+	if (m_enable.GetCheck()) {
 		m_app->controlsToConfig();
-		if (m_app->validateConfig(1))
-		{			
+		if (m_app->validateConfig(1)) {			
 			m_app->start();
-		} else {
+		} 
+		else {
 			m_enable.SetCheck(0);
 		}
-	} else {
+	} 
+	else {
 		m_app->stop(); 
 	}
 }
 
-void CConfigDialog::disableControls()
-{
+void CConfigDialog::disableControls() {
 	m_mana.EnableWindow(false);
 	m_manaMana.EnableWindow(false);
 	m_manaSpell.EnableWindow(false);
@@ -202,6 +198,7 @@ void CConfigDialog::disableControls()
 	m_defaultStrikeSpell.EnableWindow(false);
 	m_strikeSpellHpMin.EnableWindow(false);
 	m_aoe.EnableWindow(false);
+	m_aoeAffect.EnableWindow(false);
 	m_exori.EnableWindow(false);
 	m_exoriGran.EnableWindow(false);
 	m_exoriMas.EnableWindow(false);
@@ -259,6 +256,7 @@ void CConfigDialog::enableControls()
 	}
 	m_aoe.EnableWindow(true);
 		if (m_aoe.GetCheck()) {
+			m_aoeAffect.EnableWindow(true);
 			m_exori.EnableWindow(true);
 			m_exoriGran.EnableWindow(true);
 			m_exoriMas.EnableWindow(true);
@@ -322,6 +320,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%s",configData->defaultStrikeSpell);		m_defaultStrikeSpell.SetWindowText(buf);
 	sprintf(buf,"%d",configData->strikeSpellHpMin);		m_strikeSpellHpMin.SetWindowText(buf);
 	m_aoe.SetCheck(configData->aoe);
+	sprintf(buf,"%d",configData->aoeAffect);		m_aoeAffect.SetWindowText(buf);
 	m_exori.SetCheck(configData->exori);
 	m_exoriGran.SetCheck(configData->exoriGran);
 	m_exoriMas.SetCheck(configData->exoriGran);
@@ -395,6 +394,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_strikeSpellHpMin.GetWindowText(buf,127);newConfigData->strikeSpellHpMin=atoi(buf);
 
 	newConfigData->aoe = m_aoe.GetCheck();
+	m_aoeAffect.GetWindowText(buf,127);newConfigData->aoeAffect=atoi(buf);
 	newConfigData->exori = m_exori.GetCheck();
 	newConfigData->exoriGran = m_exoriGran.GetCheck();
 	newConfigData->exoriMas = m_exoriMas.GetCheck();

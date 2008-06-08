@@ -10,10 +10,17 @@ ResourceCount=4
 NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CDialog
-Resource1=IDD_WHITELIST (Polish)
-Resource2=IDD_CONFIG (Polish)
+<<<<<<< mod_spellcaster.clw
+Resource1=IDD_CONFIG (Polish)
+Resource2=IDD_CONFIG
 Resource3=IDD_WHITELIST
-Resource4=IDD_CONFIG
+=======
+Resource1=IDD_CONFIG (Polish)
+Resource2=IDD_CONFIG
+Resource3=IDD_WHITELIST
+Resource4=IDD_WHITELIST (Polish)
+Resource4=IDD_WHITELIST (Polish)
+>>>>>>> 1.10
 
 [CLS:CMod_spellcasterApp]
 Type=0
@@ -123,7 +130,7 @@ LastObject=CConfigDialog
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=?
-ControlCount=83
+ControlCount=85
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_TOOL_SPELLCASTER_MANA_SPELL,edit,1350631552
@@ -207,6 +214,8 @@ Control80=IDC_TOOL_SPELLCASTER_SIO_MANA,edit,1350631552
 Control81=IDC_TOOL_SPELLCASTER_SIO_LIFE,edit,1350631552
 Control82=IDC_TOOL_SPELLCASTER_SIO,button,1342242819
 Control83=IDC_TOOL_SPELLCASTER_HEAL_LIST,button,1342242816
+Control84=IDC_STATIC,static,1342308864
+Control85=IDC_TOOL_SPELLCASTER_AOE_AFFECT,edit,1350631552
 
 [DLG:IDD_WHITELIST (Polish)]
 Type=1
