@@ -12,6 +12,8 @@ Defects:
  Spellcaster: fixed a GUI display error
  Spellcaster: No support, yet, for look direction of "wave type" spells.
  Spellcaster: fixed a major memory leak / potential memory leak
+ Spellcaster: fixed target acquisiton and sepell selection logic (AOE spells)
+ Spellcaster: added facing logic (AOE wave spells)
  Python scripting: fixed a major memory leak
  General: fixed several tile information
  Cave bot: waypoint is assumed to be reached when standing 1 tile from it

@@ -73,7 +73,7 @@ int OnList(char whiteList[100][32],char name[]){
 		}
 		i++;
 	}
-
+	
 	return 0;
 }
 
@@ -152,69 +152,67 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				delete ch;
 			}
 		}
-		if (config->aoe) {
-			int spell = aoeShouldFire(config);
-			if (spell) {
-				switch (spell) {
-				case 1:
-					if (self->mana > 115) 
-						sender.sayWhisper("exori");
-					else if (self->mana > 340)
-						sender.sayWhisper("exori gran");
-					break;
-				case 2:
-					if (self->mana > 160) 
-						sender.sayWhisper("exori mas");
-					break;
-				case 3:
-					if (self->mana > 180) 
-						sender.sayWhisper("exevo mas san");
-					break;
-				case 4:
-					if (self->mana > 25) 
-						sender.sayWhisper("exevo flam hur");
-					break;
-				case 5:
-					if (self->mana > 25) 
-						sender.sayWhisper("exevo frigo hur");
-					break;
-				case 6:
-					if (self->mana > 210) 
-						sender.sayWhisper("exevo tera hur");
-					break;
-				case 7:
-					if (self->mana > 170) 
-						sender.sayWhisper("exevo vis hur");
-					break;
-				case 8:
-					if (self->mana > 40) 
-						sender.sayWhisper("exevo vis lux");
-					break;
-				case 9:
-					if (self->mana > 110) 
-						sender.sayWhisper("exevo gran vis lux");
-					break;
-				case 10:
-					if (self->mana > 650) 
-						sender.sayWhisper("exevo gran mas vis");
-					break;
-				case 11:
-					if (self->mana > 1200) 
-						sender.sayWhisper("exevo gran mas flam");
-					break;
-				case 12:
-					if (self->mana > 770) 
-						sender.sayWhisper("exevo gran mas tera");
-					break;
-				case 13:
-					if (self->mana > 1200) 
-						sender.sayWhisper("exevo gran mas frigo");
-					break;
-				default:
-					break;
-				}
-				Sleep(700);
+		int spell = aoeShouldFire(config);
+		if (config->aoe && spell) {
+			switch (spell) {
+			case 1:
+				if (self->mana > 115) 
+					sender.sayWhisper("exori");
+				else if (self->mana > 340)
+					sender.sayWhisper("exori gran");
+				break;
+			case 2:
+				if (self->mana > 160) 
+					sender.sayWhisper("exori mas");
+				break;
+			case 3:
+				if (self->mana > 180) 
+					sender.sayWhisper("exevo mas san");
+				break;
+			case 4:
+				if (self->mana > 25) 
+					sender.sayWhisper("exevo flam hur");
+				break;
+			case 5:
+				if (self->mana > 25) 
+					sender.sayWhisper("exevo frigo hur");
+				break;
+			case 6:
+				if (self->mana > 210) 
+					sender.sayWhisper("exevo tera hur");
+				break;
+			case 7:
+				if (self->mana > 170) 
+					sender.sayWhisper("exevo vis hur");
+				break;
+			case 8:
+				if (self->mana > 40) 
+					sender.sayWhisper("exevo vis lux");
+				break;
+			case 9:
+				if (self->mana > 110) 
+					sender.sayWhisper("exevo gran vis lux");
+				break;
+			case 10:
+				if (self->mana > 650) 
+					sender.sayWhisper("exevo gran mas vis");
+				break;
+			case 11:
+				if (self->mana > 1200) 
+					sender.sayWhisper("exevo gran mas flam");
+				break;
+			case 12:
+				if (self->mana > 770) 
+					sender.sayWhisper("exevo gran mas tera");
+				break;
+			case 13:
+				if (self->mana > 1200) 
+					sender.sayWhisper("exevo gran mas frigo");
+				break;
+			default:
+				break;
 			}
+			Sleep(700);
 		}
 		//Akilez: Use mana for strike spells
 		else if(config->strike && self->mana>=config->manaStrike && attackedCreature){
@@ -598,6 +596,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"strikeSpellHpMin")) m_configData->strikeSpellHpMin=atoi(paramValue);
 	
 	if (!strcmp(paramName,"aoe")) m_configData->aoe=atoi(paramValue);
+	if (!strcmp(paramName,"aoeAffect")) m_configData->aoeAffect=atoi(paramValue);
 	if (!strcmp(paramName,"Exori")) m_configData->exori=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriGran")) m_configData->exoriGran=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriMas")) m_configData->exoriMas=atoi(paramValue);
@@ -667,6 +666,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"strikeSpellHpMin")) sprintf(buf,"%d",m_configData->strikeSpellHpMin);
 	
 	if (!strcmp(paramName,"aoe")) sprintf(buf,"%d",m_configData->aoe);
+	if (!strcmp(paramName,"aoeAffect")) sprintf(buf,"%d",m_configData->aoeAffect);
 	if (!strcmp(paramName,"Exori")) sprintf(buf,"%d",m_configData->exori);
 	if (!strcmp(paramName,"ExoriGran")) sprintf(buf,"%d",m_configData->exoriGran);
 	if (!strcmp(paramName,"ExoriMas")) sprintf(buf,"%d",m_configData->exoriMas);
@@ -751,6 +751,7 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 52: return "sioHp";
 	case 53: return "sioSpellMana";
 	case 54: return "healList";
+	case 55: return "aoeAffect";
 	default:
 		return NULL;
 	}
@@ -858,47 +859,78 @@ int getcurrentMonsterNumberFromName(char *match) {
 	}
 	
 }
+void turnForAOEFiring(int face[4]){
+	CPackSenderProxy sender;
+	int turn = 0;
+	if (face[0] > turn)
+		turn = 0;
+	if (face[1] > turn)
+		turn = 1;
+	if (face[2] > turn)
+		turn = 2;
+	if (face[3] > turn)
+		turn = 3;
+
+	switch (turn) {
+		case 0:
+			sender.turnDown();
+			break;
+		case 1:
+			sender.turnRight();
+			break;
+		case 2:
+			sender.turnUp();
+			break;
+		case 3:
+			sender.turnLeft();
+			break;
+		default:
+			break;
+	}
+}
 
 int aoeShouldFire(CConfigData *config) {
+	char buf[128];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	// note that each of the int vars here must be = 0 as otherwise only the last one will be = 0
 	int exoriCount=0, exoriMasCount=0, exevoMasSanCount=0, egmTeraCount=0, egmFlamCount=0, egmFrigoCount=0, egmVisCount = 0;
-	int exevoTeraHurCount=0, exevoVisHurCount=0, exevoGranVisLuxCount=0, exevoVisLuxCount=0, exevoFlamHurCount=0, exevoFrigoHurCount = 0;
 	int deltaX=0, deltaY = 0;
 	int chNr=0, returnSpell=0, faceDir = 0;
+	int facing[6][4] = {0};
 	for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 		int monster = getcurrentMonsterNumberFromName(ch->name);
 		if (strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1) {
 			deltaX = ch->x - self->x;
 			deltaY = ch->y - self->y;
+			
 			if (deltaX >= 0) {
-				if (deltaY > 0) {
+				if (deltaY >= 0) {
 					if (deltaX > deltaY)
-						faceDir = 4;
+						faceDir = 1;
 					else 
 						faceDir = 0;
 				}
-				else if (deltaY <= 0) {
+				else if (deltaY < 0) {
 					if (deltaX > abs(deltaY))
-						faceDir = 4;
+						faceDir = 1;
 					else 
 						faceDir = 2;
 				}
 			}
 			else {
-				if (deltaY > 0) {
+				if (deltaY >= 0) {
 					if (abs(deltaX) > deltaY)
-						faceDir = 1;
+						faceDir = 3;
 					else 
 						faceDir = 0;
 				}
-				else if (deltaY <= 0) {
+				else if (deltaY < 0) {
 					if (abs(deltaX) > abs(deltaY))
-						faceDir = 1;
+						faceDir = 3;
 					else 
 						faceDir = 2;
 				}
@@ -911,145 +943,236 @@ int aoeShouldFire(CConfigData *config) {
 			}
 			if (monster > -1) {
 				if (deltaX == 0) {
-					if (deltaY <= 8 && monstersInfo[monster].weakEnergy)
-						exevoGranVisLuxCount++;
-					else if (deltaY <= 6) {
-						if (monstersInfo[monster].weakEarth)
-							egmTeraCount++;
-						if (monstersInfo[monster].weakEnergy) {
-							exevoVisLuxCount++;
-							egmVisCount++;
+					if (deltaY <= 8 && monstersInfo[monster].weakEnergy) {
+						facing[0][faceDir]++;
+						if (deltaY <= 6) {
+							if (monstersInfo[monster].weakEarth)
+								egmTeraCount++;
+							if (monstersInfo[monster].weakEnergy) {
+								facing[1][faceDir]++;
+								egmVisCount++;
+							}  // end if
+							if (deltaY <= 5) {
+								if (monstersInfo[monster].weakEnergy)
+									facing[2][faceDir]++;
+								if (monstersInfo[monster].weakEarth)
+									facing[3][faceDir]++;
+								if (monstersInfo[monster].weakFire)
+									egmFlamCount++;						
+								if (monstersInfo[monster].weakIce)
+									egmFrigoCount++;						
+								if (deltaY <= 4) {
+									if (monstersInfo[monster].weakFire && deltaY > 0)
+										facing[4][faceDir]++;
+									if (monstersInfo[monster].weakIce && deltaY > 0)
+										facing[5][faceDir]++;
+										if (deltaY <= 3) {
+											if (monstersInfo[monster].weakHoly)
+												exevoMasSanCount++;
+											if (monstersInfo[monster].weakPhysical)
+												exoriMasCount++;
+											if (deltaY <= 1 && monstersInfo[monster].weakPhysical)
+												exoriCount++;
+									}  // end if
+								}  // end if
+							}  // end if
 						}  // end if
-					}  // end if
-					else if (deltaY <= 5) {
-						if (monstersInfo[monster].weakEnergy)
-							exevoVisHurCount++;
-						if (monstersInfo[monster].weakEarth)
-							exevoTeraHurCount++;
-						if (monstersInfo[monster].weakFire)
-							egmFlamCount++;						
-						if (monstersInfo[monster].weakIce)
-							egmFrigoCount++;						
-					}  // end if
-					else if (deltaY <= 3) {
-						if (monstersInfo[monster].weakHoly)
-							exevoMasSanCount++;
-						if (monstersInfo[monster].weakPhysical)
-							exoriMasCount++;
-						if (monstersInfo[monster].weakFire && deltaY > 0)
-							exevoFlamHurCount++;						
-						if (monstersInfo[monster].weakIce && deltaY > 0)
-							exevoFrigoHurCount++;						
-					}  // end if
-					else if (deltaY <= 1 && monstersInfo[monster].weakPhysical)
-						exoriCount++;
+					}
 				}  // end if
 				else if (deltaX == 1) {
 					if (deltaY <= 5) {
 						if (monstersInfo[monster].weakEarth) {
-							if (deltaY > 2)
-								exevoTeraHurCount++;
+							if (deltaY > 2) {
+								facing[3][faceDir]++;
+							}
 							egmTeraCount++;
 						}  // end if
 						if (monstersInfo[monster].weakEnergy) {
-							if (deltaY > 2) 
-								exevoVisHurCount++;
+							if (deltaY > 2) {
+								facing[2][faceDir]++;
+							}
 							egmVisCount++;
 						}  // end if
+						if (deltaY <= 4) {
+							if (monstersInfo[monster].weakFire)
+								egmFlamCount++;						
+							if (monstersInfo[monster].weakIce)
+								egmFrigoCount++;						
+							if (monstersInfo[monster].weakFire && deltaY > 1)
+								facing[4][faceDir]++;
+							if (monstersInfo[monster].weakIce && deltaY > 1)
+								facing[5][faceDir]++;
+							if (deltaY <= 3) {
+								if (monstersInfo[monster].weakHoly)
+									exevoMasSanCount++;
+								if (monstersInfo[monster].weakPhysical)
+									exoriMasCount++;
+								if (deltaY <= 1 && monstersInfo[monster].weakPhysical)
+									exoriCount++;
+							}  // end if
+						}  // end if
 					}  // end if
-					else if (deltaY <= 4) {
-						if (monstersInfo[monster].weakFire)
-							egmFlamCount++;						
-						if (monstersInfo[monster].weakIce)
-							egmFrigoCount++;						
-					}  // end if
-					else if (deltaY <= 3) {
-						if (monstersInfo[monster].weakHoly)
-							exevoMasSanCount++;
-						if (monstersInfo[monster].weakPhysical)
-							exoriMasCount++;
-						if (monstersInfo[monster].weakFire && deltaY > 1)
-							exevoFlamHurCount++;						
-						if (monstersInfo[monster].weakIce && deltaY > 1)
-							exevoFrigoHurCount++;						
-					}  // end if
-					else if (deltaY <= 1 && monstersInfo[monster].weakPhysical)
-						exoriCount++;
 				}  // end if
 				else if (deltaX == 2) {
-					if (deltaY <= 5 && monstersInfo[monster].weakEarth)
+					if (deltaY <= 5 && monstersInfo[monster].weakEarth) {
 						egmTeraCount++;
-					else if (deltaY <= 4) {
-						if (monstersInfo[monster].weakEnergy)
-							egmVisCount++;
-						if (monstersInfo[monster].weakFire)
-							egmFlamCount++;						
-					}  // end if
-					else if (deltaY <= 3) {
-						if (monstersInfo[monster].weakFire && deltaY > 2)
-							exevoFlamHurCount++;						
-						if (monstersInfo[monster].weakIce) {
-							if (deltaY > 2)
-								exevoFrigoHurCount++;						
-							egmFrigoCount++;
+						if (deltaY <= 4) {
+							if (monstersInfo[monster].weakEnergy)
+								egmVisCount++;
+							if (monstersInfo[monster].weakFire)
+								egmFlamCount++;						
+							if (monstersInfo[monster].weakFire && deltaY > 3)
+								facing[4][faceDir]++;
+							if (monstersInfo[monster].weakIce && deltaY > 3)
+								facing[5][faceDir]++;
+							if (deltaY <= 3 && monstersInfo[monster].weakIce) {
+								egmFrigoCount++;
+								if (deltaY <= 2) {
+									if (monstersInfo[monster].weakHoly)
+										exevoMasSanCount++;
+									if (monstersInfo[monster].weakPhysical)
+										exoriMasCount++;
+								}
+							}  // end if
 						}  // end if
-					}  // end if
-					else if (deltaY <= 2) {
-						if (monstersInfo[monster].weakHoly)
-							exevoMasSanCount++;
-						if (monstersInfo[monster].weakPhysical)
-							exoriMasCount++;
 					}  // end if
 				}  // end if
 				else if (deltaX == 3) {
-					if (deltaY <= 4 && monstersInfo[monster].weakEarth)
+					if (deltaY <= 4 && monstersInfo[monster].weakEarth) {
 						egmTeraCount++;
-					else if (deltaY <= 3) {
-						if (monstersInfo[monster].weakEnergy)
-							egmVisCount++;
-						if (monstersInfo[monster].weakFire)
-							egmFlamCount++;
-					}  // end if
-					else if (deltaY <= 2 && monstersInfo[monster].weakIce)
-						egmFrigoCount++;
-					else if (deltaY <= 1) {
-						if (monstersInfo[monster].weakHoly)
-							exevoMasSanCount++;
-						if (monstersInfo[monster].weakPhysical)
-							exoriMasCount++;
-					}  // end if
+						if (deltaY <= 3) {
+							if (monstersInfo[monster].weakEnergy)
+								egmVisCount++;
+							if (monstersInfo[monster].weakFire)
+								egmFlamCount++;
+							if (deltaY <= 2 && monstersInfo[monster].weakIce) {
+								egmFrigoCount++;
+								if (deltaY <= 1) {
+									if (monstersInfo[monster].weakHoly)
+										exevoMasSanCount++;
+									if (monstersInfo[monster].weakPhysical)
+										exoriMasCount++;
+								}
+							}  // end if
+						}  // end if
+					}
 				}  // end if
 			} // end if			
 		} // end if
 		delete ch;
 	} // end for
 	delete self;
-	if (config->exori || config->exoriGran && exoriCount > 2)
+	
+	// Akilez: now determine the best spell to cast
+	if ((config->exori || config->exoriGran) && exoriCount > config->aoeAffect)
 		returnSpell = 1;
-	if (config->exoriMas && exoriMasCount > 2 && exoriMasCount > exoriCount)
+	if (config->exoriMas && exoriMasCount > exoriCount)
 		returnSpell = 2;
-	if (config->exevoMasSan && exevoMasSanCount > 2 && exevoMasSanCount > exoriMasCount)	
+	
+	if (config->exevoMasSan && exevoMasSanCount > config->aoeAffect)	
 		returnSpell = 3;
-	if (config->exevoFlamHur && exevoFlamHurCount > 2 && exevoMasSanCount > exevoFlamHurCount)
+	
+	if (config->exevoFlamHur && (facing[4][0] > config->aoeAffect || facing[4][1] > config->aoeAffect || facing[4][2] > config->aoeAffect || facing[4][3] > config->aoeAffect))
 		returnSpell = 4;
-	if (config->exevoFrigoHur && exevoFrigoHurCount > 2 && exevoFrigoHurCount > exevoFlamHurCount)
+	if (config->exevoFrigoHur && (facing[5][0] > config->aoeAffect || facing[5][1] > config->aoeAffect || facing[5][2] > config->aoeAffect || facing[5][3] > config->aoeAffect))
 		returnSpell = 5;
-	if (config->exevoTeraHur && exevoTeraHurCount > 2 && exevoTeraHurCount > exevoFrigoHurCount)
-		returnSpell = 6;
-	if (config->exevoVisHur && exevoVisHurCount > 2 && exevoVisHurCount > exevoTeraHurCount)
-		returnSpell = 7;
-	if (config->exevoVisLux && exevoVisLuxCount > 2 && exevoVisLuxCount > exevoVisHurCount)	
-		returnSpell = 8;
-	if (config->exevoGranVisLux && exevoGranVisLuxCount > 2 && exevoGranVisLuxCount > exevoVisLuxCount)
-		returnSpell = 9;
-	if (config->exevoGranMasVis && egmVisCount > 2 && egmVisCount > exevoGranVisLuxCount)	
-		returnSpell = 10;
-	if (config->exevoGranMasFlam && egmFlamCount > 2 && egmFlamCount > egmVisCount)
-		returnSpell = 11;
-	if (config->exevoGranMasTera && egmTeraCount > 2 && egmTeraCount > egmFlamCount)
-		returnSpell = 12;
-	if (config->exevoGranMasFrigo && egmFrigoCount > 2 && egmFrigoCount > egmTeraCount)
-		returnSpell = 13;
-			
+	if (config->exevoTeraHur) {
+		if (returnSpell == 0 && (facing[3][0] > config->aoeAffect || facing[3][1] > config->aoeAffect || facing[3][2] > config->aoeAffect || facing[3][3] > config->aoeAffect))
+			returnSpell = 6;
+		if (returnSpell == 5 && (facing[3][0] > facing[5][0] || facing[3][1] > facing[5][1] || facing[3][2] > facing[5][2] || facing[3][3] > facing[5][3]))
+			returnSpell = 6;
+	}
+	if (config->exevoVisLux) {
+		if (returnSpell == 0 && (facing[1][0] > config->aoeAffect || facing[1][1] > config->aoeAffect || facing[1][2] > config->aoeAffect || facing[1][3] > config->aoeAffect))
+			returnSpell = 8;
+		if (returnSpell == 4 && (facing[1][0] > facing[4][0] || facing[1][1] > facing[4][1] || facing[1][2] > facing[4][2] || facing[1][3] > facing[4][3]))	
+			returnSpell = 8;
+	}
+	if (config->exevoGranVisLux) {
+		if (returnSpell == 0 && (facing[0][0] > config->aoeAffect || facing[0][1] > config->aoeAffect || facing[0][2] > config->aoeAffect || facing[0][3] > config->aoeAffect))
+			returnSpell = 9;
+		if (returnSpell == 8 && (facing[0][0] > facing[1][0] || facing[0][1] > facing[1][1] || facing[0][2] > facing[1][2] || facing[0][3] > facing[1][3]))
+			returnSpell = 9;
+		if(returnSpell == 4 && (facing[0][0] > facing[4][0] || facing[0][1] > facing[4][1] || facing[0][2] > facing[4][2] || facing[0][3] > facing[4][3]))		
+			returnSpell = 9;
+	}
+	if (config->exevoVisHur) {
+		if (returnSpell == 0 && (facing[2][0] > config->aoeAffect || facing[2][1] > config->aoeAffect || facing[2][2] > config->aoeAffect || facing[2][3] > config->aoeAffect))
+			returnSpell = 7;
+		if (returnSpell == 8 && (facing[2][0] > facing[1][0] || facing[2][1] > facing[1][1] || facing[2][2] > facing[1][2] || facing[2][3] > facing[1][3]))
+			returnSpell = 7;
+		if (returnSpell == 4 && (facing[2][0] > facing[4][0] || facing[2][1] > facing[4][1] || facing[2][2] > facing[4][2] || facing[2][3] > facing[4][3]))		
+			returnSpell = 7;
+		if (returnSpell == 9 && (facing[2][0] > facing[0][0] || facing[2][1] > facing[0][1] || facing[2][2] > facing[0][2] || facing[2][3] > facing[0][3]))		
+			returnSpell = 7;
+	}
+	if (config->exevoGranMasVis) {
+		if (returnSpell == 0 && egmVisCount > config->aoeAffect)
+			returnSpell = 10;
+		if (returnSpell == 8 && (egmVisCount > facing[1][0] || egmVisCount > facing[1][1] || egmVisCount > facing[1][2] || egmVisCount > facing[1][3]))
+			returnSpell = 10;
+		if (returnSpell == 4 && (egmVisCount > facing[4][0] || egmVisCount > facing[4][1] || egmVisCount > facing[4][2] || egmVisCount > facing[4][3]))		
+			returnSpell = 10;
+		if (returnSpell == 9 && (egmVisCount > facing[0][0] || egmVisCount > facing[0][1] || egmVisCount > facing[0][2] || egmVisCount > facing[0][3]))		
+			returnSpell = 10;
+		if (returnSpell == 7 && (egmVisCount > facing[2][0] || egmVisCount > facing[2][1] || egmVisCount > facing[2][2] || egmVisCount > facing[2][3]))		
+			returnSpell = 10;
+	}
+	if (config->exevoGranMasFlam) {
+		if (returnSpell == 0 && egmFlamCount > config->aoeAffect)
+			returnSpell = 11;
+		if (returnSpell == 8 && (egmFlamCount > facing[1][0] || egmFlamCount > facing[1][1] || egmFlamCount > facing[1][2] || egmFlamCount > facing[1][3]))
+			returnSpell = 11;
+		if (returnSpell == 4 && (egmFlamCount > facing[4][0] || egmFlamCount > facing[4][1] || egmFlamCount > facing[4][2] || egmFlamCount > facing[4][3]))		
+			returnSpell = 11;
+		if (returnSpell == 9 && (egmFlamCount > facing[0][0] || egmFlamCount > facing[0][1] || egmFlamCount > facing[0][2] || egmFlamCount > facing[0][3]))		
+			returnSpell = 11;
+		if (returnSpell == 7 && (egmFlamCount > facing[2][0] || egmFlamCount > facing[2][1] || egmFlamCount > facing[2][2] || egmFlamCount > facing[2][3]))		
+			returnSpell = 11;
+		if (returnSpell == 10 && egmFlamCount > egmVisCount)		
+			returnSpell = 11;
+	}
+	if (config->exevoGranMasTera) {
+		if (returnSpell == 0 && egmTeraCount > config->aoeAffect)
+			returnSpell = 12;
+		if (returnSpell == 5 && (egmTeraCount > facing[5][0] || egmTeraCount > facing[5][1] || egmTeraCount > facing[5][2] || egmTeraCount > facing[5][3]))
+			returnSpell = 12;
+		if (returnSpell == 6 && (egmTeraCount > facing[3][0] || egmTeraCount > facing[3][1] || egmTeraCount > facing[3][2] || egmTeraCount > facing[3][3]))
+			returnSpell = 12;
+	}
+	if (config->exevoGranMasFrigo) {
+		if (returnSpell == 0 && egmFrigoCount > config->aoeAffect)
+			returnSpell = 13;
+		if (returnSpell == 5 && (egmFrigoCount > facing[5][0] || egmFrigoCount > facing[5][1] || egmFrigoCount > facing[5][2] || egmFrigoCount > facing[5][3]))
+			returnSpell = 13;
+		if (returnSpell == 6 && (egmFrigoCount > facing[3][0] || egmFrigoCount > facing[3][1] || egmFrigoCount > facing[3][2] || egmFrigoCount > facing[3][3]))
+			returnSpell = 13;
+		if (returnSpell == 12 && egmFrigoCount > egmTeraCount)
+			returnSpell = 13;
+	}
+
+	switch (returnSpell) {
+		case 4:
+			turnForAOEFiring(facing[4]);			
+			break;
+		case 5:
+			turnForAOEFiring(facing[5]);			
+			break;
+		case 6:
+			turnForAOEFiring(facing[3]);			
+			break;
+		case 7:
+			turnForAOEFiring(facing[2]);			
+			break;
+		case 8:
+			turnForAOEFiring(facing[1]);			
+			break;
+		case 9:
+			turnForAOEFiring(facing[0]);			
+			break;
+		default:
+			break;
+	}
+
 	return returnSpell;
 }
