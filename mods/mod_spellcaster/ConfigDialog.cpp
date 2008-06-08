@@ -257,20 +257,7 @@ void CConfigDialog::enableControls()
 	m_aoe.EnableWindow(true);
 		if (m_aoe.GetCheck()) {
 			m_aoeAffect.EnableWindow(true);
-			m_exori.EnableWindow(true);
-			m_exoriGran.EnableWindow(true);
-			m_exoriMas.EnableWindow(true);
-			m_exevoMasSan.EnableWindow(true);
-			m_exevoFlamHur.EnableWindow(true);
-			m_exevoFrigoHur.EnableWindow(true);
-			m_exevoTeraHur.EnableWindow(true);
-			m_exevoVisHur.EnableWindow(true);
-			m_exevoVisLux.EnableWindow(true);
-			m_exevoGranVisLux.EnableWindow(true);
-			m_exevoGranMasVis.EnableWindow(true);
-			m_exevoGranMasFlam.EnableWindow(true);
-			m_exevoGranMasTera.EnableWindow(true);
-			m_exevoGranMasFrigo.EnableWindow(true);
+			OnToolSpellcasterAOE();
 		}
 
 }
