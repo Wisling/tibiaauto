@@ -256,7 +256,6 @@ void CConfigDialog::enableControls()
 	}
 	m_aoe.EnableWindow(true);
 		if (m_aoe.GetCheck()) {
-			m_aoeAffect.EnableWindow(true);
 			OnToolSpellcasterAOE();
 		}
 
@@ -619,6 +618,7 @@ void CConfigDialog::OnToolSpellcasterKnightStrike() {
 
 void CConfigDialog::OnToolSpellcasterAOE()
 {
+	m_aoeAffect.EnableWindow(true);
 	OnToolSpellcasterSorcererAOE();
 	OnToolSpellcasterDruidAOE();
 	OnToolSpellcasterPaladinAOE();
