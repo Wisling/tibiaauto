@@ -66,7 +66,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT, m_defaultStrikeSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN, m_strikeSpellHpMin);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE_AFFECT, m_aoeAffect);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE_AFFECT, m_aoeEffect);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI, m_exori);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_GRAN, m_exoriGran);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_MAS, m_exoriMas);
@@ -198,7 +198,7 @@ void CConfigDialog::disableControls() {
 	m_defaultStrikeSpell.EnableWindow(false);
 	m_strikeSpellHpMin.EnableWindow(false);
 	m_aoe.EnableWindow(false);
-	m_aoeAffect.EnableWindow(false);
+	m_aoeEffect.EnableWindow(false);
 	m_exori.EnableWindow(false);
 	m_exoriGran.EnableWindow(false);
 	m_exoriMas.EnableWindow(false);
@@ -306,7 +306,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%s",configData->defaultStrikeSpell);		m_defaultStrikeSpell.SetWindowText(buf);
 	sprintf(buf,"%d",configData->strikeSpellHpMin);		m_strikeSpellHpMin.SetWindowText(buf);
 	m_aoe.SetCheck(configData->aoe);
-	sprintf(buf,"%d",configData->aoeAffect);		m_aoeAffect.SetWindowText(buf);
+	sprintf(buf,"%d",configData->aoeEffect);		m_aoeEffect.SetWindowText(buf);
 	m_exori.SetCheck(configData->exori);
 	m_exoriGran.SetCheck(configData->exoriGran);
 	m_exoriMas.SetCheck(configData->exoriGran);
@@ -380,7 +380,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_strikeSpellHpMin.GetWindowText(buf,127);newConfigData->strikeSpellHpMin=atoi(buf);
 
 	newConfigData->aoe = m_aoe.GetCheck();
-	m_aoeAffect.GetWindowText(buf,127);newConfigData->aoeAffect=atoi(buf);
+	m_aoeEffect.GetWindowText(buf,127);newConfigData->aoeEffect=atoi(buf);
 	newConfigData->exori = m_exori.GetCheck();
 	newConfigData->exoriGran = m_exoriGran.GetCheck();
 	newConfigData->exoriMas = m_exoriMas.GetCheck();
@@ -618,7 +618,8 @@ void CConfigDialog::OnToolSpellcasterKnightStrike() {
 
 void CConfigDialog::OnToolSpellcasterAOE()
 {
-	m_aoeAffect.EnableWindow(true);
+	m_aoeEffect.EnableWindow(m_aoe.GetCheck());
+
 	OnToolSpellcasterSorcererAOE();
 	OnToolSpellcasterDruidAOE();
 	OnToolSpellcasterPaladinAOE();
