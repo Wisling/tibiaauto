@@ -840,6 +840,15 @@ void CreatureList_Init(){
                 int creatureHp=0;
 				int creatureExp=0;
 				int creatureType=0;
+				int creaturePhysical=2;
+				int creatureEarth=2;
+				int creatureFire=2;
+				int creatureEnergy=2;
+				int creatureIce=2;
+				int creatureHoly=2;
+				int creatureDeath=2;
+				int creatureSeeInvisible=0;
+				int creatureParalysisImmune=0;
                 char *objectName=NULL;
 				char *objectDescription=NULL;
                
@@ -850,7 +859,8 @@ void CreatureList_Init(){
 						objectName=CUtil::wc2c(attrNode->getNodeValue());
 
 					}else if (!wcscmp(attrNode->getNodeName(),_L("hp"))){
-                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+
+						char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureHp = atoi(idTmp);
                         free(idTmp);
 
@@ -863,7 +873,42 @@ void CreatureList_Init(){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureType = atoi(idTmp);
                         free(idTmp);
-
+					}else if (!wcscmp(attrNode->getNodeName(),_L("physical"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creaturePhysical = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("earth"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureEarth = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("fire"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureFire = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("energy"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureEnergy = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("ice"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureIce = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("holy"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureHoly = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("death"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureDeath = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("see_invisible"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureSeeInvisible = atoi(idTmp);
+                        free(idTmp);
+                    }else if (!wcscmp(attrNode->getNodeName(),_L("paralysis_immune"))){
+                        char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+                        creatureParalysisImmune = atoi(idTmp);
+                        free(idTmp);
                     }else if (!wcscmp(attrNode->getNodeName(),_L("description"))){
 						objectDescription=CUtil::wc2c(attrNode->getNodeValue());
 
@@ -878,9 +923,18 @@ void CreatureList_Init(){
 				}
    
 				lstrcpyn(monstersInfo[monstersCount].name,objectName,31);
-				monstersInfo[monstersCount].type	= (creatureType==TYPE_UNKNOWN?TYPE_MONSTER:creatureType);
-                monstersInfo[monstersCount].maxHp	= creatureHp;
-				monstersInfo[monstersCount].exp		= creatureExp;
+				monstersInfo[monstersCount].type		= (creatureType==TYPE_UNKNOWN?TYPE_MONSTER:creatureType);
+                monstersInfo[monstersCount].maxHp		= creatureHp;
+				monstersInfo[monstersCount].exp			= creatureExp;
+				monstersInfo[monstersCount].physical	= creaturePhysical;
+				monstersInfo[monstersCount].earth		= creatureEarth;
+				monstersInfo[monstersCount].fire		= creatureFire;
+				monstersInfo[monstersCount].energy		= creatureEnergy;
+				monstersInfo[monstersCount].ice			= creatureIce;
+				monstersInfo[monstersCount].holy		= creatureHoly;
+				monstersInfo[monstersCount].death		= creatureDeath;
+				monstersInfo[monstersCount].seeInvisible	= creatureSeeInvisible;
+				monstersInfo[monstersCount].paralysisImmune	= creatureParalysisImmune;
 				if (objectDescription){
 					lstrcpyn(monstersInfo[monstersCount].description,objectDescription,MAX_LINE_LEN);
 				}
@@ -943,7 +997,7 @@ void Player_Register(char *name,int vocId,int lvl,char *guildName,char *guildRan
 	}
 }
 
-void Monster_Register(char *name,int type,int maxHp, int exp, char* description){
+void Monster_Register(char *name,int type,int maxHp, int exp, int physical, int earth, int fire, int energy, int ice, int holy, int death, int seeInvisible, int paralysisImmune, char* description){
 	//T4 This is called monster but lot of other objects info will be added here
 	int i;
 	for (i=0;i<monstersCount;i++){
@@ -955,9 +1009,18 @@ void Monster_Register(char *name,int type,int maxHp, int exp, char* description)
 	//T4: Monster not found - this should happen always
 	if (monstersCount<MAX_MONSTERS){
 		lstrcpyn(monstersInfo[monstersCount].name,name,32);
-		monstersInfo[monstersCount].type	= type;
-		monstersInfo[monstersCount].maxHp	= maxHp;
-		monstersInfo[monstersCount].exp		= exp;
+		monstersInfo[monstersCount].type		= type;
+		monstersInfo[monstersCount].maxHp		= maxHp;
+		monstersInfo[monstersCount].exp			= exp;
+		monstersInfo[monstersCount].physical	= physical;
+		monstersInfo[monstersCount].earth		= earth;
+		monstersInfo[monstersCount].fire		= fire;
+		monstersInfo[monstersCount].energy		= energy;
+		monstersInfo[monstersCount].ice			= ice;
+		monstersInfo[monstersCount].holy		= holy;
+		monstersInfo[monstersCount].death		= death;
+		monstersInfo[monstersCount].seeInvisible	= seeInvisible;
+		monstersInfo[monstersCount].paralysisImmune	= paralysisImmune;
 		lstrcpyn(monstersInfo[monstersCount].description,(description?description:""),MAX_LINE_LEN);
 		monstersCount++;
 	}
@@ -1032,9 +1095,9 @@ void ReadPipeInfo(){
 						char resNick[128];
 						lstrcpyn(resNick,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
 						if (pmatch[1].rm_eo!=pmatch[1].rm_so){
-							Monster_Register(resNick,TYPE_MONSTER,0,0,"Auto Added");
+							Monster_Register(resNick,TYPE_MONSTER,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
 						}else{
-							Monster_Register(resNick,TYPE_NPC,0,0,"Auto Added");
+							Monster_Register(resNick,TYPE_NPC,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
 						}
 						//sprintf(resNick,"Registered Monsters: %d",monstersCount);
 						//sender.sendTAMessage(resNick);

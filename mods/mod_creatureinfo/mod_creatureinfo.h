@@ -20,7 +20,7 @@
 //T4
 #define MAX_PLAYERS			5000
 #define MAX_MONSTERS		500
-#define MAX_LINE_TOKENS		10
+#define MAX_LINE_TOKENS		15
 #define MAX_LINE_LEN		256
 
 #define VOCID_NONE		0x0000
@@ -36,6 +36,10 @@
 #define TYPE_NPC		3
 #define TYPE_SELF		4
 
+#define MON_IMMUNE		0
+#define MON_STRONG		1
+#define MON_NORMAL		2
+#define MON_WEAK		5
 
 struct creature{
 	char name[40];
@@ -52,9 +56,19 @@ struct monster{
 	int type;
 	int maxHp;
 	int exp;
+	int physical;
+	int earth;
+	int fire;
+	int energy;
+	int ice;
+	int holy;
+	int death;
+	int seeInvisible;
+	int paralysisImmune;
 	char description[MAX_LINE_LEN];
 	monster() {
-		type=maxHp=exp=0;
+		type=maxHp=exp=seeInvisible=paralysisImmune=0;
+		physical=earth=fire=energy=ice=holy=death=MON_NORMAL;
 		memset(description,0,MAX_LINE_LEN);
 		memset(name,0,40);
 	}
