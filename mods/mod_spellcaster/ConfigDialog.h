@@ -70,7 +70,7 @@ public:
 	CEdit	m_strikeSpellHpMin;
 	CButton	m_enable;
 	CButton m_aoe;
-	CEdit	m_aoeAffect;
+	CEdit	m_aoeEffect;
 	CButton m_exori;
 	CButton m_exoriGran;
 	CButton m_exoriMas;
