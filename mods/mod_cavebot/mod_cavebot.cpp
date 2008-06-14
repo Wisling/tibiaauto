@@ -70,7 +70,7 @@ int depotX=0,depotY=0,depotZ=0;
 int firstCreatureAttackTM=0;
 int currentPosTM=0;
 int creatureAttackDist=0;
-int unreachableSecondsLeft=0;
+int unreachableTmStart=time(NULL);
 
 CTibiaMapProxy tibiaMap;
 
@@ -1114,7 +1114,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastWaypointNr=0;
 	int lastStandingX=0,lastStandingY=0,lastStandingZ=0;
 	int walkerStandingEndTm=0;
-	unreachableSecondsLeft=0;
+	unreachableTmStart=time(NULL);
 	targetX=targetY=targetZ=0;
 	int lastAttackedCreatureHp=0;
 	int lastAttackedCreatureHpDrop=0;	
@@ -1127,7 +1127,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	firstCreatureAttackTM=0;
 	currentPosTM=0;
 	creatureAttackDist=0;
-	unreachableSecondsLeft=0;
+	unreachableTmStart=time(NULL);
 
 
 	int waypointsCount=0;
@@ -1282,11 +1282,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_monsterUnreachable)
 		{
-			unreachableSecondsLeft--;
-			if (unreachableSecondsLeft<=0)
+			if (time(NULL)-unreachableTmStart>=config->suspendAfterUnreachable)
 			{
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
-				unreachableSecondsLeft=0;
+				unreachableTmStart=time(NULL);
 				// reset found target
 				targetFound=0;
 				if (config->debug) registerDebug("Monster unreachable period end");
@@ -1881,7 +1880,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 									// reset targetFound to 0 (we don't want to attack an unreachable monster)
 									targetFound=0;
 									globalAutoAttackStateAttack=CToolAutoAttackStateAttack_monsterUnreachable;
-									unreachableSecondsLeft=config->suspendAfterUnreachable;
+									unreachableTmStart=time(NULL);
 								}												
 							}
 							// for the blood hit control
@@ -1960,7 +1959,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				// and monster is > 1 cell from us
 				// reset targetFound to 0 (we don't want to attack an unreachable monster)								
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_monsterUnreachable;
-				unreachableSecondsLeft=config->suspendAfterUnreachable;
+				unreachableTmStart=time(NULL);
 				targetFound=0;
 				if (config->debug) registerDebug("Entering unreachable mode");
 			}
@@ -2035,7 +2034,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (abs(config->waypointList[lastWaypointNr].x-self->x)<=1&&abs(config->waypointList[lastWaypointNr].y-self->y)<=1&&config->waypointList[lastWaypointNr].z==self->z){
 							newWaypoint=waypointsCount?(rand()%waypointsCount):0;
 						} else {
-							newWaypoint = lastWaypointNr;
+							newWaypoint=lastWaypointNr++;
+							if (lastWaypointNr==waypointsCount)
+								lastWaypointNr=0;
 						}
 						break;
 					case 1: // round-robin
