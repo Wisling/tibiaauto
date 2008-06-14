@@ -29,6 +29,7 @@ of the License, or (at your option) any later version.
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
 #include "ModuleUtil.h"
+#include "time.h"
 #include <fstream>
 
 using namespace std;
@@ -84,6 +85,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	int currentMonsterNumber = 0;
+	int lastCastTime = 0;
+	float minCastTime = .7;
 	char text[128] = {0};
 	int best = 0;
 	
@@ -92,7 +95,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(200);	
+		Sleep(200);
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int attackedCreature = reader.getAttackedCreature();
 		int flags = reader.getSelfEventFlags();
@@ -152,74 +155,80 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				delete ch;
 			}
 		}
-		if (config->aoe) {
+
+		if (config->aoe && time(NULL)-lastCastTime >= minCastTime) {
 			int spell = aoeShouldFire(config);//Wis:Performs calculation only if needed
 			if (spell) {
+				char spellname[25];
 				switch (spell) {
 				case 1:
 					if (self->mana > 115)
-						sender.sayWhisper("exori");
+						sprintf(spellname,"exori");
 					break;
 				case 14:
 					if (self->mana > 340)
-						sender.sayWhisper("exori gran");
+						sprintf(spellname,"exori gran");
 					break;
 				case 2:
 					if (self->mana > 160) 
-						sender.sayWhisper("exori mas");
+						sprintf(spellname,"exori mas");
 					break;
 				case 3:
 					if (self->mana > 180) 
-						sender.sayWhisper("exevo mas san");
+						sprintf(spellname,"exevo mas san");
 					break;
 				case 4:
 					if (self->mana > 25) 
-						sender.sayWhisper("exevo flam hur");
+						sprintf(spellname,"exevo flam hur");
 					break;
 				case 5:
 					if (self->mana > 25) 
-						sender.sayWhisper("exevo frigo hur");
+						sprintf(spellname,"exevo frigo hur");
 					break;
 				case 6:
 					if (self->mana > 210) 
-						sender.sayWhisper("exevo tera hur");
+						sprintf(spellname,"exevo tera hur");
 					break;
 				case 7:
 					if (self->mana > 170) 
-						sender.sayWhisper("exevo vis hur");
+						sprintf(spellname,"exevo vis hur");
 					break;
 				case 8:
 					if (self->mana > 40) 
-						sender.sayWhisper("exevo vis lux");
+						sprintf(spellname,"exevo vis lux");
 					break;
 				case 9:
 					if (self->mana > 110) 
-						sender.sayWhisper("exevo gran vis lux");
+						sprintf(spellname,"exevo gran vis lux");
 					break;
 				case 10:
 					if (self->mana > 650) 
-						sender.sayWhisper("exevo gran mas vis");
+						sprintf(spellname,"exevo gran mas vis");
 					break;
 				case 11:
 					if (self->mana > 1200) 
-						sender.sayWhisper("exevo gran mas flam");
+						sprintf(spellname,"exevo gran mas flam");
 					break;
 				case 12:
 					if (self->mana > 770) 
-						sender.sayWhisper("exevo gran mas tera");
+						sprintf(spellname,"exevo gran mas tera");
 					break;
 				case 13:
 					if (self->mana > 1200) 
-						sender.sayWhisper("exevo gran mas frigo");
+						sprintf(spellname,"exevo gran mas frigo");
 					break;
 				default:
 					break;
 				}
-				Sleep(700);
+				if (strlen(spellname)>0) {
+					sender.sayWhisper(spellname);
+					lastCastTime = time(NULL);
+					Sleep(500);
+				}
 			}
 		}
 		//Akilez: Use mana for strike spells
-		else if(config->strike && self->mana>=config->manaStrike && attackedCreature){
+		else if(config->strike && time(NULL)-lastCastTime >= minCastTime && self->mana>=config->manaStrike && attackedCreature){
 			attackedCreature = reader.getAttackedCreature();
 			//T4: If any creature is attacked
 			if (attackedCreature > 0) {			
@@ -234,6 +243,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							int yDist = abs(self->y-ch->y);
 							int maxDist = max(xDist,yDist);
 							int test = config->flam+config->frigo+config->mort+config->tera+config->vis;
+							
+							char spellname[25];
 							if (maxDist <= 3 && test) {
 
 								int check = 0;
@@ -260,44 +271,44 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								
 								switch (best) {
 								case 1:
-									sender.sayWhisper("exori flam");
+									sprintf(spellname,"exori flam");
 									break;
 								case 2:
-									sender.sayWhisper("exori frigo");
+									sprintf(spellname,"exori frigo");
 									break;
 								case 3:
-									sender.sayWhisper("exori tera");
+									sprintf(spellname,"exori tera");
 									break;
 								case 4:
-									sender.sayWhisper("exori vis");
+									sprintf(spellname,"exori vis");
 									break;
 								case 5:
-									sender.sayWhisper("exori mort");
+									sprintf(spellname,"exori mort");
 									break;
 								default:
 									break;
 								}
-								Sleep(700);
 								best = 0;
 							}
 							else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {							
-								sender.sayWhisper("exori san");
-								Sleep(700);
+								sprintf(spellname,"exori san");
 							}
 							else if (maxDist <= 5 && config->hur && monstersInfo[currentMonsterNumber].weakPhysical) {
-								sender.sayWhisper("exori hur");
-								Sleep(700);
+								sprintf(spellname,"exori hur");
 							}
 							else if (config->con && monstersInfo[currentMonsterNumber].weakPhysical) {
-								sender.sayWhisper("exori con");
-								Sleep(700);
+								sprintf(spellname,"exori con");
 							}
 							else if (strlen(config->defaultStrikeSpell)) {
-								sender.sayWhisper(config->defaultStrikeSpell);
-								Sleep(700);
+								sprintf(spellname,config->defaultStrikeSpell);
 							}
 							else {
 								sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
+							}
+							if (strlen(spellname)>0) {
+								sender.sayWhisper(spellname);
+								lastCastTime = time(NULL);
+								Sleep(500);
 							}
 						}
 					}
@@ -899,6 +910,14 @@ int aoeShouldFire(CConfigData *config) {
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	int G_ENERGY_BEAM = 0;
+	int ENERGY_BEAM = 1;
+	int ENERGY_WAVE = 2;
+	int EARTH_WAVE = 3;
+	int FIRE_WAVE = 4;
+	int ICE_WAVE = 5;
+
 	// note that each of the int vars here must be = 0 as otherwise only the last one will be = 0
 	int exoriCount=0, exoriMasCount=0, exevoMasSanCount=0, egmTeraCount=0, egmFlamCount=0, egmFrigoCount=0, egmVisCount = 0;
 	int deltaX=0, deltaY = 0;
@@ -910,224 +929,87 @@ int aoeShouldFire(CConfigData *config) {
 		if (strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1) {
 			deltaX = ch->x - self->x;
 			deltaY = ch->y - self->y;
-			if (deltaY+abs(deltaX)>=0) faceDir = 0;
+			if (deltaY-abs(deltaX)>=0) faceDir = 0;
 			else if (deltaX-abs(deltaY)>0) faceDir = 1;
-			else if (deltaY-abs(deltaX)>=0) faceDir = 2;
+			else if (deltaY+abs(deltaX)<=0) faceDir = 2;
 			else faceDir = 3;
-			
-			int deltaX = min(abs(deltaX),abs(deltaY))
-			int deltaY = max(abs(deltaX),abs(deltaY))
 
-			if (monster > -1) {
-				if (deltaX == 0) {
-					if (deltaY <= 8 && monstersInfo[monster].weakEnergy) {
-						facing[0][faceDir]++;
-						if (deltaY <= 6) {
-							if (monstersInfo[monster].weakEarth)
-								egmTeraCount++;
-							if (monstersInfo[monster].weakEnergy) {
-								facing[1][faceDir]++;
-								egmVisCount++;
-							}  // end if
-							if (deltaY <= 5) {
-								if (monstersInfo[monster].weakEnergy)
-									facing[2][faceDir]++;
-								if (monstersInfo[monster].weakEarth)
-									facing[3][faceDir]++;
-								if (monstersInfo[monster].weakFire)
-									egmFlamCount++;						
-								if (monstersInfo[monster].weakIce)
-									egmFrigoCount++;						
-								if (deltaY <= 4) {
-									if (monstersInfo[monster].weakFire && deltaY > 0)
-										facing[4][faceDir]++;
-									if (monstersInfo[monster].weakIce && deltaY > 0)
-										facing[5][faceDir]++;
-										if (deltaY <= 3) {
-											if (monstersInfo[monster].weakHoly)
-												exevoMasSanCount++;
-											if (monstersInfo[monster].weakPhysical)
-												exoriMasCount++;
-											if (deltaY <= 1 && monstersInfo[monster].weakPhysical)
-												exoriCount++;
-									}  // end if
-								}  // end if
-							}  // end if
-						}  // end if
-					}
-				}  // end if
-				else if (deltaX == 1) {
-					if (deltaY <= 5) {
-						if (monstersInfo[monster].weakEarth) {
-							if (deltaY > 2) {
-								facing[3][faceDir]++;
-							}
-							egmTeraCount++;
-						}  // end if
-						if (monstersInfo[monster].weakEnergy) {
-							if (deltaY > 2) {
-								facing[2][faceDir]++;
-							}
-							egmVisCount++;
-						}  // end if
-						if (deltaY <= 4) {
-							if (monstersInfo[monster].weakFire)
-								egmFlamCount++;						
-							if (monstersInfo[monster].weakIce)
-								egmFrigoCount++;						
-							if (monstersInfo[monster].weakFire && deltaY > 1)
-								facing[4][faceDir]++;
-							if (monstersInfo[monster].weakIce && deltaY > 1)
-								facing[5][faceDir]++;
-							if (deltaY <= 3) {
-								if (monstersInfo[monster].weakHoly)
-									exevoMasSanCount++;
-								if (monstersInfo[monster].weakPhysical)
-									exoriMasCount++;
-								if (deltaY <= 1 && monstersInfo[monster].weakPhysical)
-									exoriCount++;
-							}  // end if
-						}  // end if
-					}  // end if
-				}  // end if
-				else if (deltaX == 2) {
-					if (deltaY <= 5 && monstersInfo[monster].weakEarth) {
-						egmTeraCount++;
-						if (deltaY <= 4) {
-							if (monstersInfo[monster].weakEnergy)
-								egmVisCount++;
-							if (monstersInfo[monster].weakFire)
-								egmFlamCount++;						
-							if (monstersInfo[monster].weakFire && deltaY > 3)
-								facing[4][faceDir]++;
-							if (monstersInfo[monster].weakIce && deltaY > 3)
-								facing[5][faceDir]++;
-							if (deltaY <= 3 && monstersInfo[monster].weakIce) {
-								egmFrigoCount++;
-								if (deltaY <= 2) {
-									if (monstersInfo[monster].weakHoly)
-										exevoMasSanCount++;
-									if (monstersInfo[monster].weakPhysical)
-										exoriMasCount++;
-								}
-							}  // end if
-						}  // end if
-					}  // end if
-				}  // end if
-				else if (deltaX == 3) {
-					if (deltaY <= 4 && monstersInfo[monster].weakEarth) {
-						egmTeraCount++;
-						if (deltaY <= 3) {
-							if (monstersInfo[monster].weakEnergy)
-								egmVisCount++;
-							if (monstersInfo[monster].weakFire)
-								egmFlamCount++;
-							if (deltaY <= 2 && monstersInfo[monster].weakIce) {
-								egmFrigoCount++;
-								if (deltaY <= 1) {
-									if (monstersInfo[monster].weakHoly)
-										exevoMasSanCount++;
-									if (monstersInfo[monster].weakPhysical)
-										exoriMasCount++;
-								}
-							}  // end if
-						}  // end if
-					}
-				}  // end if
-			} // end if			
-			else {//Do exact same calculation for a monster not in the list
-				if (deltaX == 0) {
-					if (deltaY <= 8) {
-						facing[0][faceDir]++;
-						if (deltaY <= 6) {
-							egmTeraCount++;
-							facing[1][faceDir]++;
-							egmVisCount++;
-							if (deltaY <= 5) {
-								facing[2][faceDir]++;
-								facing[3][faceDir]++;
-								egmFlamCount++;						
-								egmFrigoCount++;						
-								if (deltaY <= 4) {
-									if (deltaY > 0)
-										facing[4][faceDir]++;
-									if (deltaY > 0)
-										facing[5][faceDir]++;
-									if (deltaY <= 3) {
-										exevoMasSanCount++;
-										exoriMasCount++;
-										if (deltaY <= 1)
-											exoriCount++;
-									}  // end if
-								}  // end if
-							}  // end if
-						}  // end if
-					}
-				}  // end if
-				else if (deltaX == 1) {
-					if (deltaY <= 5) {
-						if (deltaY > 2) {
-							facing[3][faceDir]++;
-						}
-						egmTeraCount++;
-						if (deltaY > 2) {
-							facing[2][faceDir]++;
-						}
-						egmVisCount++;
-						if (deltaY <= 4) {
-							egmFlamCount++;						
-							egmFrigoCount++;						
-							if (deltaY > 1)
-								facing[4][faceDir]++;
-							if (deltaY > 1)
-								facing[5][faceDir]++;
-							if (deltaY <= 3) {
-								exevoMasSanCount++;
-								exoriMasCount++;
-								if (deltaY <= 1)
-									exoriCount++;
-							}  // end if
-						}  // end if
-					}  // end if
-				}  // end if
-				else if (deltaX == 2) {
-					if (deltaY <= 5) {
-						egmTeraCount++;
-						if (deltaY <= 4) {
-							egmVisCount++;
-							egmFlamCount++;						
-							if (deltaY > 3)
-								facing[4][faceDir]++;
-							if (deltaY > 3)
-								facing[5][faceDir]++;
-							if (deltaY <= 3) {
-								egmFrigoCount++;
-								if (deltaY <= 2) {
-										exevoMasSanCount++;
-										exoriMasCount++;
-								}
-							}  // end if
-						}  // end if
-					}  // end if
-				}  // end if
-				else if (deltaX == 3) {
+			int tmp = deltaX;
+			deltaX = min(abs(tmp),abs(deltaY));
+			deltaY = max(abs(tmp),abs(deltaY));
+			if (deltaX == 0) {
+				if (deltaY <= 8) {
+					facing[G_ENERGY_BEAM][faceDir] += monster<0?1:monstersInfo[monster].weakEnergy>0 && deltaY>0;
+					if (deltaY <= 6) {
+						egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
+						egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
+						if (deltaY <= 5) {
+							facing[ENERGY_BEAM][faceDir]+=monster<0?1:monstersInfo[monster].weakEnergy>0 && deltaY>0;
+							facing[EARTH_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakEarth>0 && deltaY>0;
+							egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;						
+							egmFrigoCount+=monster<0?1:monstersInfo[monster].weakIce>0;						
+							if (deltaY <= 4) {
+								facing[FIRE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY > 0;
+								facing[ICE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY > 0;
+								if (deltaY <= 3) {
+									exevoMasSanCount+=monster<0?1:monstersInfo[monster].weakHoly>0;
+									exoriMasCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+									if (deltaY <= 1)
+										exoriCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+								}  // end if 3
+							}  // end if 4
+						}  // end if 5
+					}  // end if 6
+				}  // end if 8
+			}  // end if X
+			else if (deltaX == 1) {
+				if (deltaY <= 5) {
+					facing[EARTH_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakEarth>0 && deltaY>2;
+					egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
+					facing[ENERGY_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakEnergy>0 && deltaY>2;
+					egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
 					if (deltaY <= 4) {
-						egmTeraCount++;
+						egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;
+						egmFrigoCount+=monster<0?1:monstersInfo[monster].weakIce>0;
+						facing[FIRE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakFire>0 && deltaY>1;
+						facing[ICE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY>1;
 						if (deltaY <= 3) {
-							egmVisCount++;
-							egmFlamCount++;
+							exevoMasSanCount+=monster<0?1:monstersInfo[monster].weakHoly>0;
+							exoriMasCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+							if (deltaY <= 1)
+								exoriCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+						}  // end if 3
+					}  // end if 4
+				}  // end if 5
+			}  // end if X
+			else if (deltaX == 2) {
+				if (deltaY <= 5) {
+					egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
+					if (deltaY <= 4) {
+							egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
+							egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;						
+							facing[FIRE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakFire>0 && deltaY>3;
+							facing[ICE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY>3;
+						if (deltaY <= 3) {
+							egmFrigoCount+=monster<0?1:monstersInfo[monster].weakIce>0;
 							if (deltaY <= 2) {
-								egmFrigoCount++;
-								if (deltaY <= 1) {
-									exevoMasSanCount++;
-									exoriMasCount++;
-								}
-							}  // end if
-						}  // end if
+									exevoMasSanCount+=monster<0?1:monstersInfo[monster].weakHoly>0;
+									exoriMasCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+							}
+						}  // end if 3
+					}  // end if 4
+				}  // end if 5
+			}  // end if X
+			else if (deltaX == 3) {
+				if (deltaY <= 4) {
+					egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
+					if (deltaY <= 3) {
+						egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
+						egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;
 					}
-				}  // end if
-			} // end if			
-		} // end if
+				}  // end if 4
+			}  // end if X
+		} // end if Entire
 		delete ch;
 	} // end for
 	delete self;
@@ -1143,62 +1025,62 @@ int aoeShouldFire(CConfigData *config) {
 	if (config->exevoMasSan && exevoMasSanCount > config->aoeEffect)	
 		returnSpell = 3;
 	
-	if (config->exevoFlamHur && (facing[4][0] > config->aoeEffect || facing[4][1] > config->aoeEffect || facing[4][2] > config->aoeEffect || facing[4][3] > config->aoeEffect))
+	if (config->exevoFlamHur && (facing[FIRE_WAVE][0] > config->aoeEffect || facing[FIRE_WAVE][1] > config->aoeEffect || facing[FIRE_WAVE][2] > config->aoeEffect || facing[FIRE_WAVE][3] > config->aoeEffect))
 		returnSpell = 4;
-	if (config->exevoFrigoHur && (facing[5][0] > config->aoeEffect || facing[5][1] > config->aoeEffect || facing[5][2] > config->aoeEffect || facing[5][3] > config->aoeEffect))
+	if (config->exevoFrigoHur && (facing[ICE_WAVE][0] > config->aoeEffect || facing[ICE_WAVE][1] > config->aoeEffect || facing[ICE_WAVE][2] > config->aoeEffect || facing[ICE_WAVE][3] > config->aoeEffect))
 		returnSpell = 5;
 	if (config->exevoTeraHur) {
-		if (returnSpell == 0 && (facing[3][0] > config->aoeEffect || facing[3][1] > config->aoeEffect || facing[3][2] > config->aoeEffect || facing[3][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[EARTH_WAVE][0] > config->aoeEffect || facing[EARTH_WAVE][1] > config->aoeEffect || facing[EARTH_WAVE][2] > config->aoeEffect || facing[EARTH_WAVE][3] > config->aoeEffect))
 			returnSpell = 6;
-		if (returnSpell == 5 && (facing[3][0] > facing[5][0] || facing[3][1] > facing[5][1] || facing[3][2] > facing[5][2] || facing[3][3] > facing[5][3]))
+		if (returnSpell == 5 && (facing[EARTH_WAVE][0] > facing[ICE_WAVE][0] || facing[EARTH_WAVE][1] > facing[ICE_WAVE][1] || facing[EARTH_WAVE][2] > facing[ICE_WAVE][2] || facing[EARTH_WAVE][3] > facing[ICE_WAVE][3]))
 			returnSpell = 6;
 	}
 	if (config->exevoVisLux) {
-		if (returnSpell == 0 && (facing[1][0] > config->aoeEffect || facing[1][1] > config->aoeEffect || facing[1][2] > config->aoeEffect || facing[1][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[ENERGY_BEAM][0] > config->aoeEffect || facing[ENERGY_BEAM][1] > config->aoeEffect || facing[ENERGY_BEAM][2] > config->aoeEffect || facing[ENERGY_BEAM][3] > config->aoeEffect))
 			returnSpell = 8;
-		if (returnSpell == 4 && (facing[1][0] > facing[4][0] || facing[1][1] > facing[4][1] || facing[1][2] > facing[4][2] || facing[1][3] > facing[4][3]))	
+		if (returnSpell == 4 && (facing[ENERGY_BEAM][0] > facing[FIRE_WAVE][0] || facing[ENERGY_BEAM][1] > facing[FIRE_WAVE][1] || facing[ENERGY_BEAM][2] > facing[FIRE_WAVE][2] || facing[ENERGY_BEAM][3] > facing[FIRE_WAVE][3]))	
 			returnSpell = 8;
 	}
 	if (config->exevoGranVisLux) {
-		if (returnSpell == 0 && (facing[0][0] > config->aoeEffect || facing[0][1] > config->aoeEffect || facing[0][2] > config->aoeEffect || facing[0][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[G_ENERGY_BEAM][0] > config->aoeEffect || facing[G_ENERGY_BEAM][1] > config->aoeEffect || facing[G_ENERGY_BEAM][2] > config->aoeEffect || facing[G_ENERGY_BEAM][3] > config->aoeEffect))
 			returnSpell = 9;
-		if (returnSpell == 8 && (facing[0][0] > facing[1][0] || facing[0][1] > facing[1][1] || facing[0][2] > facing[1][2] || facing[0][3] > facing[1][3]))
+		if (returnSpell == 8 && (facing[G_ENERGY_BEAM][0] > facing[ENERGY_BEAM][0] || facing[G_ENERGY_BEAM][1] > facing[ENERGY_BEAM][1] || facing[G_ENERGY_BEAM][2] > facing[ENERGY_BEAM][2] || facing[G_ENERGY_BEAM][3] > facing[ENERGY_BEAM][3]))
 			returnSpell = 9;
-		if(returnSpell == 4 && (facing[0][0] > facing[4][0] || facing[0][1] > facing[4][1] || facing[0][2] > facing[4][2] || facing[0][3] > facing[4][3]))		
+		if(returnSpell == 4 && (facing[G_ENERGY_BEAM][0] > facing[FIRE_WAVE][0] || facing[G_ENERGY_BEAM][1] > facing[FIRE_WAVE][1] || facing[G_ENERGY_BEAM][2] > facing[FIRE_WAVE][2] || facing[G_ENERGY_BEAM][3] > facing[FIRE_WAVE][3]))		
 			returnSpell = 9;
 	}
 	if (config->exevoVisHur) {
-		if (returnSpell == 0 && (facing[2][0] > config->aoeEffect || facing[2][1] > config->aoeEffect || facing[2][2] > config->aoeEffect || facing[2][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[ENERGY_WAVE][0] > config->aoeEffect || facing[ENERGY_WAVE][1] > config->aoeEffect || facing[ENERGY_WAVE][2] > config->aoeEffect || facing[ENERGY_WAVE][3] > config->aoeEffect))
 			returnSpell = 7;
-		if (returnSpell == 8 && (facing[2][0] > facing[1][0] || facing[2][1] > facing[1][1] || facing[2][2] > facing[1][2] || facing[2][3] > facing[1][3]))
+		if (returnSpell == 8 && (facing[ENERGY_WAVE][0] > facing[ENERGY_BEAM][0] || facing[ENERGY_WAVE][1] > facing[ENERGY_BEAM][1] || facing[ENERGY_WAVE][2] > facing[ENERGY_BEAM][2] || facing[ENERGY_WAVE][3] > facing[ENERGY_BEAM][3]))
 			returnSpell = 7;
-		if (returnSpell == 4 && (facing[2][0] > facing[4][0] || facing[2][1] > facing[4][1] || facing[2][2] > facing[4][2] || facing[2][3] > facing[4][3]))		
+		if (returnSpell == 4 && (facing[ENERGY_WAVE][0] > facing[FIRE_WAVE][0] || facing[ENERGY_WAVE][1] > facing[FIRE_WAVE][1] || facing[ENERGY_WAVE][2] > facing[FIRE_WAVE][2] || facing[ENERGY_WAVE][3] > facing[FIRE_WAVE][3]))		
 			returnSpell = 7;
-		if (returnSpell == 9 && (facing[2][0] > facing[0][0] || facing[2][1] > facing[0][1] || facing[2][2] > facing[0][2] || facing[2][3] > facing[0][3]))		
+		if (returnSpell == 9 && (facing[ENERGY_WAVE][0] > facing[G_ENERGY_BEAM][0] || facing[ENERGY_WAVE][1] > facing[G_ENERGY_BEAM][1] || facing[ENERGY_WAVE][2] > facing[G_ENERGY_BEAM][2] || facing[ENERGY_WAVE][3] > facing[G_ENERGY_BEAM][3]))		
 			returnSpell = 7;
 	}
 	if (config->exevoGranMasVis) {
 		if (returnSpell == 0 && egmVisCount > config->aoeEffect)
 			returnSpell = 10;
-		if (returnSpell == 8 && (egmVisCount > facing[1][0] || egmVisCount > facing[1][1] || egmVisCount > facing[1][2] || egmVisCount > facing[1][3]))
+		if (returnSpell == 8 && (egmVisCount > facing[ENERGY_BEAM][0] || egmVisCount > facing[ENERGY_BEAM][1] || egmVisCount > facing[ENERGY_BEAM][2] || egmVisCount > facing[ENERGY_BEAM][3]))
 			returnSpell = 10;
-		if (returnSpell == 4 && (egmVisCount > facing[4][0] || egmVisCount > facing[4][1] || egmVisCount > facing[4][2] || egmVisCount > facing[4][3]))		
+		if (returnSpell == 4 && (egmVisCount > facing[FIRE_WAVE][0] || egmVisCount > facing[FIRE_WAVE][1] || egmVisCount > facing[FIRE_WAVE][2] || egmVisCount > facing[FIRE_WAVE][3]))		
 			returnSpell = 10;
-		if (returnSpell == 9 && (egmVisCount > facing[0][0] || egmVisCount > facing[0][1] || egmVisCount > facing[0][2] || egmVisCount > facing[0][3]))		
+		if (returnSpell == 9 && (egmVisCount > facing[G_ENERGY_BEAM][0] || egmVisCount > facing[G_ENERGY_BEAM][1] || egmVisCount > facing[G_ENERGY_BEAM][2] || egmVisCount > facing[G_ENERGY_BEAM][3]))		
 			returnSpell = 10;
-		if (returnSpell == 7 && (egmVisCount > facing[2][0] || egmVisCount > facing[2][1] || egmVisCount > facing[2][2] || egmVisCount > facing[2][3]))		
+		if (returnSpell == 7 && (egmVisCount > facing[ENERGY_WAVE][0] || egmVisCount > facing[ENERGY_WAVE][1] || egmVisCount > facing[ENERGY_WAVE][2] || egmVisCount > facing[ENERGY_WAVE][3]))		
 			returnSpell = 10;
 	}
 	if (config->exevoGranMasFlam) {
 		if (returnSpell == 0 && egmFlamCount > config->aoeEffect)
 			returnSpell = 11;
-		if (returnSpell == 8 && (egmFlamCount > facing[1][0] || egmFlamCount > facing[1][1] || egmFlamCount > facing[1][2] || egmFlamCount > facing[1][3]))
+		if (returnSpell == 8 && (egmFlamCount > facing[ENERGY_BEAM][0] || egmFlamCount > facing[ENERGY_BEAM][1] || egmFlamCount > facing[ENERGY_BEAM][2] || egmFlamCount > facing[ENERGY_BEAM][3]))
 			returnSpell = 11;
-		if (returnSpell == 4 && (egmFlamCount > facing[4][0] || egmFlamCount > facing[4][1] || egmFlamCount > facing[4][2] || egmFlamCount > facing[4][3]))		
+		if (returnSpell == 4 && (egmFlamCount > facing[FIRE_WAVE][0] || egmFlamCount > facing[FIRE_WAVE][1] || egmFlamCount > facing[FIRE_WAVE][2] || egmFlamCount > facing[FIRE_WAVE][3]))		
 			returnSpell = 11;
-		if (returnSpell == 9 && (egmFlamCount > facing[0][0] || egmFlamCount > facing[0][1] || egmFlamCount > facing[0][2] || egmFlamCount > facing[0][3]))		
+		if (returnSpell == 9 && (egmFlamCount > facing[G_ENERGY_BEAM][0] || egmFlamCount > facing[G_ENERGY_BEAM][1] || egmFlamCount > facing[G_ENERGY_BEAM][2] || egmFlamCount > facing[G_ENERGY_BEAM][3]))		
 			returnSpell = 11;
-		if (returnSpell == 7 && (egmFlamCount > facing[2][0] || egmFlamCount > facing[2][1] || egmFlamCount > facing[2][2] || egmFlamCount > facing[2][3]))		
+		if (returnSpell == 7 && (egmFlamCount > facing[ENERGY_WAVE][0] || egmFlamCount > facing[ENERGY_WAVE][1] || egmFlamCount > facing[ENERGY_WAVE][2] || egmFlamCount > facing[ENERGY_WAVE][3]))		
 			returnSpell = 11;
 		if (returnSpell == 10 && egmFlamCount > egmVisCount)		
 			returnSpell = 11;
@@ -1206,17 +1088,17 @@ int aoeShouldFire(CConfigData *config) {
 	if (config->exevoGranMasTera) {
 		if (returnSpell == 0 && egmTeraCount > config->aoeEffect)
 			returnSpell = 12;
-		if (returnSpell == 5 && (egmTeraCount > facing[5][0] || egmTeraCount > facing[5][1] || egmTeraCount > facing[5][2] || egmTeraCount > facing[5][3]))
+		if (returnSpell == 5 && (egmTeraCount > facing[ICE_WAVE][0] || egmTeraCount > facing[ICE_WAVE][1] || egmTeraCount > facing[ICE_WAVE][2] || egmTeraCount > facing[ICE_WAVE][3]))
 			returnSpell = 12;
-		if (returnSpell == 6 && (egmTeraCount > facing[3][0] || egmTeraCount > facing[3][1] || egmTeraCount > facing[3][2] || egmTeraCount > facing[3][3]))
+		if (returnSpell == 6 && (egmTeraCount > facing[EARTH_WAVE][0] || egmTeraCount > facing[EARTH_WAVE][1] || egmTeraCount > facing[EARTH_WAVE][2] || egmTeraCount > facing[EARTH_WAVE][3]))
 			returnSpell = 12;
 	}
 	if (config->exevoGranMasFrigo) {
 		if (returnSpell == 0 && egmFrigoCount > config->aoeEffect)
 			returnSpell = 13;
-		if (returnSpell == 5 && (egmFrigoCount > facing[5][0] || egmFrigoCount > facing[5][1] || egmFrigoCount > facing[5][2] || egmFrigoCount > facing[5][3]))
+		if (returnSpell == 5 && (egmFrigoCount > facing[ICE_WAVE][0] || egmFrigoCount > facing[ICE_WAVE][1] || egmFrigoCount > facing[ICE_WAVE][2] || egmFrigoCount > facing[ICE_WAVE][3]))
 			returnSpell = 13;
-		if (returnSpell == 6 && (egmFrigoCount > facing[3][0] || egmFrigoCount > facing[3][1] || egmFrigoCount > facing[3][2] || egmFrigoCount > facing[3][3]))
+		if (returnSpell == 6 && (egmFrigoCount > facing[EARTH_WAVE][0] || egmFrigoCount > facing[EARTH_WAVE][1] || egmFrigoCount > facing[EARTH_WAVE][2] || egmFrigoCount > facing[EARTH_WAVE][3]))
 			returnSpell = 13;
 		if (returnSpell == 12 && egmFrigoCount > egmTeraCount)
 			returnSpell = 13;
@@ -1224,22 +1106,22 @@ int aoeShouldFire(CConfigData *config) {
 
 	switch (returnSpell) {
 		case 4:
-			turnForAOEFiring(facing[4]);			
+			turnForAOEFiring(facing[FIRE_WAVE]);			
 			break;
 		case 5:
-			turnForAOEFiring(facing[5]);			
+			turnForAOEFiring(facing[ICE_WAVE]);			
 			break;
 		case 6:
-			turnForAOEFiring(facing[3]);			
+			turnForAOEFiring(facing[EARTH_WAVE]);
 			break;
 		case 7:
-			turnForAOEFiring(facing[2]);			
+			turnForAOEFiring(facing[ENERGY_WAVE]);
 			break;
 		case 8:
-			turnForAOEFiring(facing[1]);			
+			turnForAOEFiring(facing[ENERGY_BEAM]);
 			break;
 		case 9:
-			turnForAOEFiring(facing[0]);			
+			turnForAOEFiring(facing[G_ENERGY_BEAM]);
 			break;
 		default:
 			break;
