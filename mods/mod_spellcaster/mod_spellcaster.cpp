@@ -101,7 +101,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int flags = reader.getSelfEventFlags();
 		
 		//T4: First try to heal/also uses paralysis cure here
-		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
+		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && (flags & 32) == 32))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.sayWhisper(config->lifeSpell);
@@ -116,7 +116,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				sender.sayWhisper("exura gran");
 				Sleep(700);
 			}
-			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && flags & 32 == 32)) {
+			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
 				sender.sayWhisper("exura");
 				Sleep(700);
 			}
@@ -155,9 +155,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				delete ch;
 			}
 		}
-
-		if (config->aoe && time(NULL)-lastCastTime >= minCastTime) {
-			int spell = aoeShouldFire(config);//Wis:Performs calculation only if needed
+		int spell;
+		if (config->aoe && time(NULL)-lastCastTime >= minCastTime && (spell = aoeShouldFire(config))) { //Wis:Performs calculation only if needed
 			if (spell) {
 				char spellname[25];
 				switch (spell) {
@@ -829,7 +828,8 @@ int initalizeCreatures() {
 		creatureFile.getline(buf, 128, ',');
 		if (strcmpi(buf, "Ice")==0) monstersInfo[crNum].weakIce = 5;
 		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakIce = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakIce = 0;
+		else if (strcmpi(buf,
+			"Immune")==0) monstersInfo[crNum].weakIce = 0;
 		else  monstersInfo[crNum].weakIce = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
@@ -926,7 +926,7 @@ int aoeShouldFire(CConfigData *config) {
 	for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 		int monster = getcurrentMonsterNumberFromName(ch->name);
-		if (strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1) {
+		if (monster>-1 && strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1 && ch->tibiaId > 0x40000000) {
 			deltaX = ch->x - self->x;
 			deltaY = ch->y - self->y;
 			if (deltaY-abs(deltaX)>=0) faceDir = 0;
@@ -939,23 +939,24 @@ int aoeShouldFire(CConfigData *config) {
 			deltaY = max(abs(tmp),abs(deltaY));
 			if (deltaX == 0) {
 				if (deltaY <= 8) {
-					facing[G_ENERGY_BEAM][faceDir] += monster<0?1:monstersInfo[monster].weakEnergy>0 && deltaY>0;
+					facing[G_ENERGY_BEAM][faceDir] += monstersInfo[monster].weakEnergy>0 && deltaY>0;
 					if (deltaY <= 6) {
-						egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
-						egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
+						egmTeraCount+=monstersInfo[monster].weakEarth>0;
+						egmVisCount+=monstersInfo[monster].weakEnergy>0;
 						if (deltaY <= 5) {
-							facing[ENERGY_BEAM][faceDir]+=monster<0?1:monstersInfo[monster].weakEnergy>0 && deltaY>0;
-							facing[EARTH_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakEarth>0 && deltaY>0;
-							egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;						
-							egmFrigoCount+=monster<0?1:monstersInfo[monster].weakIce>0;						
+							facing[ENERGY_BEAM][faceDir]+=monstersInfo[monster].weakEnergy>0 && deltaY>0;
+							facing[ENERGY_WAVE][faceDir]+=monstersInfo[monster].weakEnergy>0 && deltaY>0;
+							facing[EARTH_WAVE][faceDir]+=monstersInfo[monster].weakEarth>0 && deltaY>0;
+							egmFlamCount+=monstersInfo[monster].weakFire>0;						
+							egmFrigoCount+=monstersInfo[monster].weakIce>0;						
 							if (deltaY <= 4) {
-								facing[FIRE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY > 0;
-								facing[ICE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY > 0;
+								facing[FIRE_WAVE][faceDir]+=monstersInfo[monster].weakFire>0 && deltaY > 0;
+								facing[ICE_WAVE][faceDir]+=monstersInfo[monster].weakIce>0 && deltaY > 0;
 								if (deltaY <= 3) {
-									exevoMasSanCount+=monster<0?1:monstersInfo[monster].weakHoly>0;
-									exoriMasCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+									exevoMasSanCount+=monstersInfo[monster].weakHoly>0;
+									exoriMasCount+=monstersInfo[monster].weakPhysical>0;
 									if (deltaY <= 1)
-										exoriCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+										exoriCount+=monstersInfo[monster].weakPhysical>0;
 								}  // end if 3
 							}  // end if 4
 						}  // end if 5
@@ -964,37 +965,37 @@ int aoeShouldFire(CConfigData *config) {
 			}  // end if X
 			else if (deltaX == 1) {
 				if (deltaY <= 5) {
-					facing[EARTH_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakEarth>0 && deltaY>2;
-					egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
-					facing[ENERGY_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakEnergy>0 && deltaY>2;
-					egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
+					facing[EARTH_WAVE][faceDir]+=monstersInfo[monster].weakEarth>0 && deltaY>2;
+					egmTeraCount+=monstersInfo[monster].weakEarth>0;
+					facing[ENERGY_WAVE][faceDir]+=monstersInfo[monster].weakEnergy>0 && deltaY>2;
+					egmVisCount+=monstersInfo[monster].weakEnergy>0;
 					if (deltaY <= 4) {
-						egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;
-						egmFrigoCount+=monster<0?1:monstersInfo[monster].weakIce>0;
-						facing[FIRE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakFire>0 && deltaY>1;
-						facing[ICE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY>1;
+						egmFlamCount+=monstersInfo[monster].weakFire>0;
+						egmFrigoCount+=monstersInfo[monster].weakIce>0;
+						facing[FIRE_WAVE][faceDir]+=monstersInfo[monster].weakFire>0 && deltaY>1;
+						facing[ICE_WAVE][faceDir]+=monstersInfo[monster].weakIce>0 && deltaY>1;
 						if (deltaY <= 3) {
-							exevoMasSanCount+=monster<0?1:monstersInfo[monster].weakHoly>0;
-							exoriMasCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+							exevoMasSanCount+=monstersInfo[monster].weakHoly>0;
+							exoriMasCount+=monstersInfo[monster].weakPhysical>0;
 							if (deltaY <= 1)
-								exoriCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+								exoriCount+=monstersInfo[monster].weakPhysical>0;
 						}  // end if 3
 					}  // end if 4
 				}  // end if 5
 			}  // end if X
 			else if (deltaX == 2) {
 				if (deltaY <= 5) {
-					egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
+					egmTeraCount+=monstersInfo[monster].weakEarth>0;
 					if (deltaY <= 4) {
-							egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
-							egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;						
-							facing[FIRE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakFire>0 && deltaY>3;
-							facing[ICE_WAVE][faceDir]+=monster<0?1:monstersInfo[monster].weakIce>0 && deltaY>3;
+							egmVisCount+=monstersInfo[monster].weakEnergy>0;
+							egmFlamCount+=monstersInfo[monster].weakFire>0;						
+							facing[FIRE_WAVE][faceDir]+=monstersInfo[monster].weakFire>0 && deltaY>3;
+							facing[ICE_WAVE][faceDir]+=monstersInfo[monster].weakIce>0 && deltaY>3;
 						if (deltaY <= 3) {
-							egmFrigoCount+=monster<0?1:monstersInfo[monster].weakIce>0;
+							egmFrigoCount+=monstersInfo[monster].weakIce>0;
 							if (deltaY <= 2) {
-									exevoMasSanCount+=monster<0?1:monstersInfo[monster].weakHoly>0;
-									exoriMasCount+=monster<0?1:monstersInfo[monster].weakPhysical>0;
+									exevoMasSanCount+=monstersInfo[monster].weakHoly>0;
+									exoriMasCount+=monstersInfo[monster].weakPhysical>0;
 							}
 						}  // end if 3
 					}  // end if 4
@@ -1002,10 +1003,10 @@ int aoeShouldFire(CConfigData *config) {
 			}  // end if X
 			else if (deltaX == 3) {
 				if (deltaY <= 4) {
-					egmTeraCount+=monster<0?1:monstersInfo[monster].weakEarth>0;
+					egmTeraCount+=monstersInfo[monster].weakEarth>0;
 					if (deltaY <= 3) {
-						egmVisCount+=monster<0?1:monstersInfo[monster].weakEnergy>0;
-						egmFlamCount+=monster<0?1:monstersInfo[monster].weakFire>0;
+						egmVisCount+=monstersInfo[monster].weakEnergy>0;
+						egmFlamCount+=monstersInfo[monster].weakFire>0;
 					}
 				}  // end if 4
 			}  // end if X
