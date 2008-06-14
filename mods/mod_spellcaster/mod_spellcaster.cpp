@@ -41,6 +41,19 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
+#define G_ENERGY_BEAM 0
+#define ENERGY_BEAM 1
+#define ENERGY_WAVE 2
+#define EARTH_WAVE 3
+#define FIRE_WAVE 4
+#define ICE_WAVE 5
+
+#define DOWN 0
+#define RIGHT 1
+#define UP 2
+#define LEFT 3
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CMod_spellcasterApp
 
@@ -86,7 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	int currentMonsterNumber = 0;
 	int lastCastTime = 0;
-	float minCastTime = .7;
+	double minCastTime = 0.7;
 	char text[128] = {0};
 	int best = 0;
 	
@@ -101,7 +114,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int flags = reader.getSelfEventFlags();
 		
 		//T4: First try to heal/also uses paralysis cure here
-		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && (flags & 32) == 32))) {
+		if (config->life && (self->hp<=config->lifeHp || self->hp<=config->vitaHp || self->hp<=config->granHp || self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.sayWhisper(config->lifeSpell);
@@ -155,8 +168,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				delete ch;
 			}
 		}
-		int spell;
-		if (config->aoe && time(NULL)-lastCastTime >= minCastTime && (spell = aoeShouldFire(config))) { //Wis:Performs calculation only if needed
+		int spell = 0;
+		if (config->aoe)//Akilez: allow other spell to cast if AOE doesn't want to
+			spell = aoeShouldFire(config);//Wis:Performs calculation only if needed
+		
+		if (spell && config->aoe && time(NULL)-lastCastTime >= minCastTime) {
 			if (spell) {
 				char spellname[25] = "";
 				switch (spell) {
@@ -610,7 +626,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"strikeSpellHpMin")) m_configData->strikeSpellHpMin=atoi(paramValue);
 	
 	if (!strcmp(paramName,"aoe")) m_configData->aoe=atoi(paramValue);
-	if (!strcmp(paramName,"aoeEffect")) m_configData->aoeEffect=atoi(paramValue);
+	if (!strcmp(paramName,"aoeAffect")) m_configData->aoeAffect=atoi(paramValue);
 	if (!strcmp(paramName,"Exori")) m_configData->exori=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriGran")) m_configData->exoriGran=atoi(paramValue);
 	if (!strcmp(paramName,"ExoriMas")) m_configData->exoriMas=atoi(paramValue);
@@ -680,7 +696,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"strikeSpellHpMin")) sprintf(buf,"%d",m_configData->strikeSpellHpMin);
 	
 	if (!strcmp(paramName,"aoe")) sprintf(buf,"%d",m_configData->aoe);
-	if (!strcmp(paramName,"aoeEffect")) sprintf(buf,"%d",m_configData->aoeEffect);
+	if (!strcmp(paramName,"aoeAffect")) sprintf(buf,"%d",m_configData->aoeAffect);
 	if (!strcmp(paramName,"Exori")) sprintf(buf,"%d",m_configData->exori);
 	if (!strcmp(paramName,"ExoriGran")) sprintf(buf,"%d",m_configData->exoriGran);
 	if (!strcmp(paramName,"ExoriMas")) sprintf(buf,"%d",m_configData->exoriMas);
@@ -765,7 +781,7 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 52: return "sioHp";
 	case 53: return "sioSpellMana";
 	case 54: return "healList";
-	case 55: return "aoeEffect";
+	case 55: return "aoeAffect";
 	default:
 		return NULL;
 	}
@@ -876,27 +892,25 @@ int getcurrentMonsterNumberFromName(char *match) {
 }
 void turnForAOEFiring(int face[4]){
 	CPackSenderProxy sender;
-	int turn = 0;
-	if (face[0] > turn)
-		turn = 0;
-	if (face[1] > turn)
-		turn = 1;
-	if (face[2] > turn)
-		turn = 2;
-	if (face[3] > turn)
-		turn = 3;
+	int turn = DOWN;
+	if (face[RIGHT] > turn)
+		turn = RIGHT;
+	if (face[UP] > turn)
+		turn = UP;
+	if (face[LEFT] > turn)
+		turn = LEFT;
 
 	switch (turn) {
-		case 0:
+		case DOWN:
 			sender.turnDown();
 			break;
-		case 1:
+		case RIGHT:
 			sender.turnRight();
 			break;
-		case 2:
+		case UP:
 			sender.turnUp();
 			break;
-		case 3:
+		case LEFT:
 			sender.turnLeft();
 			break;
 		default:
@@ -905,22 +919,14 @@ void turnForAOEFiring(int face[4]){
 }
 
 int aoeShouldFire(CConfigData *config) {
-	char buf[128];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	int G_ENERGY_BEAM = 0;
-	int ENERGY_BEAM = 1;
-	int ENERGY_WAVE = 2;
-	int EARTH_WAVE = 3;
-	int FIRE_WAVE = 4;
-	int ICE_WAVE = 5;
-
 	// note that each of the int vars here must be = 0 as otherwise only the last one will be = 0
-	int exoriCount=0, exoriMasCount=0, exevoMasSanCount=0, egmTeraCount=0, egmFlamCount=0, egmFrigoCount=0, egmVisCount = 0;
-	int deltaX=0, deltaY = 0;
+	int exoriCount = 0, exoriMasCount = 0, exevoMasSanCount = 0, egmTeraCount = 0, egmFlamCount = 0, egmFrigoCount = 0, egmVisCount = 0;
+	int deltaX = 0, deltaY = 0;
 	int chNr=0, returnSpell=0, faceDir = 0;
 	int facing[6][4] = {0};
 	for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
@@ -929,10 +935,11 @@ int aoeShouldFire(CConfigData *config) {
 		if (monster>-1 && strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1 && ch->tibiaId > 0x40000000) {
 			deltaX = ch->x - self->x;
 			deltaY = ch->y - self->y;
-			if (deltaY-abs(deltaX)>=0) faceDir = 0;
-			else if (deltaX-abs(deltaY)>0) faceDir = 1;
-			else if (deltaY+abs(deltaX)<=0) faceDir = 2;
-			else faceDir = 3;
+			
+			if (deltaY-abs(deltaX)>=0) faceDir = DOWN;
+			else if (deltaX-abs(deltaY)>0) faceDir = RIGHT;
+			else if (deltaY+abs(deltaX)<=0) faceDir = UP;
+			else faceDir = LEFT;
 
 			int tmp = deltaX;
 			deltaX = min(abs(tmp),abs(deltaY));
@@ -1016,90 +1023,90 @@ int aoeShouldFire(CConfigData *config) {
 	delete self;
 	
 	// Akilez: now determine the best spell to cast
-	if ((config->exori) && exoriCount > config->aoeEffect)
+	if (config->exori && exoriCount >= config->aoeAffect)
 		returnSpell = 1;
-	if ((config->exoriGran) && exoriCount > config->aoeEffect)
+	if (config->exoriGran && exoriCount >= config->aoeAffect)
 		returnSpell = 14;
 	if (config->exoriMas && exoriMasCount > exoriCount)
 		returnSpell = 2;
 	
-	if (config->exevoMasSan && exevoMasSanCount > config->aoeEffect)	
+	if (config->exevoMasSan && exevoMasSanCount >= config->aoeAffect)	
 		returnSpell = 3;
 	
-	if (config->exevoFlamHur && (facing[FIRE_WAVE][0] > config->aoeEffect || facing[FIRE_WAVE][1] > config->aoeEffect || facing[FIRE_WAVE][2] > config->aoeEffect || facing[FIRE_WAVE][3] > config->aoeEffect))
+	if (config->exevoFlamHur && (facing[FIRE_WAVE][DOWN] >= config->aoeAffect || facing[FIRE_WAVE][RIGHT] >= config->aoeAffect || facing[FIRE_WAVE][UP] >= config->aoeAffect || facing[FIRE_WAVE][LEFT] >= config->aoeAffect))
 		returnSpell = 4;
-	if (config->exevoFrigoHur && (facing[ICE_WAVE][0] > config->aoeEffect || facing[ICE_WAVE][1] > config->aoeEffect || facing[ICE_WAVE][2] > config->aoeEffect || facing[ICE_WAVE][3] > config->aoeEffect))
+	if (config->exevoFrigoHur && (facing[ICE_WAVE][DOWN] >= config->aoeAffect || facing[ICE_WAVE][RIGHT] >= config->aoeAffect || facing[ICE_WAVE][UP] >= config->aoeAffect || facing[ICE_WAVE][LEFT] >= config->aoeAffect))
 		returnSpell = 5;
 	if (config->exevoTeraHur) {
-		if (returnSpell == 0 && (facing[EARTH_WAVE][0] > config->aoeEffect || facing[EARTH_WAVE][1] > config->aoeEffect || facing[EARTH_WAVE][2] > config->aoeEffect || facing[EARTH_WAVE][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[EARTH_WAVE][DOWN] >= config->aoeAffect || facing[EARTH_WAVE][RIGHT] >= config->aoeAffect || facing[EARTH_WAVE][UP] >= config->aoeAffect || facing[EARTH_WAVE][LEFT] >= config->aoeAffect))
 			returnSpell = 6;
-		if (returnSpell == 5 && (facing[EARTH_WAVE][0] > facing[ICE_WAVE][0] || facing[EARTH_WAVE][1] > facing[ICE_WAVE][1] || facing[EARTH_WAVE][2] > facing[ICE_WAVE][2] || facing[EARTH_WAVE][3] > facing[ICE_WAVE][3]))
+		if (returnSpell == 5 && (facing[EARTH_WAVE][DOWN] > facing[ICE_WAVE][DOWN] || facing[EARTH_WAVE][RIGHT] > facing[ICE_WAVE][RIGHT] || facing[EARTH_WAVE][UP] > facing[ICE_WAVE][UP] || facing[EARTH_WAVE][LEFT] > facing[ICE_WAVE][LEFT]))
 			returnSpell = 6;
 	}
 	if (config->exevoVisLux) {
-		if (returnSpell == 0 && (facing[ENERGY_BEAM][0] > config->aoeEffect || facing[ENERGY_BEAM][1] > config->aoeEffect || facing[ENERGY_BEAM][2] > config->aoeEffect || facing[ENERGY_BEAM][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[ENERGY_BEAM][DOWN] >= config->aoeAffect || facing[ENERGY_BEAM][RIGHT] >= config->aoeAffect || facing[ENERGY_BEAM][UP] >= config->aoeAffect || facing[ENERGY_BEAM][LEFT] >= config->aoeAffect))
 			returnSpell = 8;
-		if (returnSpell == 4 && (facing[ENERGY_BEAM][0] > facing[FIRE_WAVE][0] || facing[ENERGY_BEAM][1] > facing[FIRE_WAVE][1] || facing[ENERGY_BEAM][2] > facing[FIRE_WAVE][2] || facing[ENERGY_BEAM][3] > facing[FIRE_WAVE][3]))	
+		if (returnSpell == 4 && (facing[ENERGY_BEAM][DOWN] > facing[FIRE_WAVE][DOWN] || facing[ENERGY_BEAM][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[ENERGY_BEAM][UP] > facing[FIRE_WAVE][UP] || facing[ENERGY_BEAM][LEFT] > facing[FIRE_WAVE][LEFT]))	
 			returnSpell = 8;
 	}
 	if (config->exevoGranVisLux) {
-		if (returnSpell == 0 && (facing[G_ENERGY_BEAM][0] > config->aoeEffect || facing[G_ENERGY_BEAM][1] > config->aoeEffect || facing[G_ENERGY_BEAM][2] > config->aoeEffect || facing[G_ENERGY_BEAM][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[G_ENERGY_BEAM][DOWN] >= config->aoeAffect || facing[G_ENERGY_BEAM][RIGHT] >= config->aoeAffect || facing[G_ENERGY_BEAM][UP] >= config->aoeAffect || facing[G_ENERGY_BEAM][LEFT] >= config->aoeAffect))
 			returnSpell = 9;
-		if (returnSpell == 8 && (facing[G_ENERGY_BEAM][0] > facing[ENERGY_BEAM][0] || facing[G_ENERGY_BEAM][1] > facing[ENERGY_BEAM][1] || facing[G_ENERGY_BEAM][2] > facing[ENERGY_BEAM][2] || facing[G_ENERGY_BEAM][3] > facing[ENERGY_BEAM][3]))
+		if (returnSpell == 8 && (facing[G_ENERGY_BEAM][DOWN] > facing[ENERGY_BEAM][DOWN] || facing[G_ENERGY_BEAM][RIGHT] > facing[ENERGY_BEAM][RIGHT] || facing[G_ENERGY_BEAM][UP] > facing[ENERGY_BEAM][UP] || facing[G_ENERGY_BEAM][LEFT] > facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 9;
-		if(returnSpell == 4 && (facing[G_ENERGY_BEAM][0] > facing[FIRE_WAVE][0] || facing[G_ENERGY_BEAM][1] > facing[FIRE_WAVE][1] || facing[G_ENERGY_BEAM][2] > facing[FIRE_WAVE][2] || facing[G_ENERGY_BEAM][3] > facing[FIRE_WAVE][3]))		
+		if (returnSpell == 4 && (facing[G_ENERGY_BEAM][DOWN] > facing[FIRE_WAVE][DOWN] || facing[G_ENERGY_BEAM][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[G_ENERGY_BEAM][UP] > facing[FIRE_WAVE][UP] || facing[G_ENERGY_BEAM][LEFT] > facing[FIRE_WAVE][LEFT]))		
 			returnSpell = 9;
 	}
 	if (config->exevoVisHur) {
-		if (returnSpell == 0 && (facing[ENERGY_WAVE][0] > config->aoeEffect || facing[ENERGY_WAVE][1] > config->aoeEffect || facing[ENERGY_WAVE][2] > config->aoeEffect || facing[ENERGY_WAVE][3] > config->aoeEffect))
+		if (returnSpell == 0 && (facing[ENERGY_WAVE][DOWN] >= config->aoeAffect || facing[ENERGY_WAVE][RIGHT] >= config->aoeAffect || facing[ENERGY_WAVE][UP] >= config->aoeAffect || facing[ENERGY_WAVE][LEFT] >= config->aoeAffect))
 			returnSpell = 7;
-		if (returnSpell == 8 && (facing[ENERGY_WAVE][0] > facing[ENERGY_BEAM][0] || facing[ENERGY_WAVE][1] > facing[ENERGY_BEAM][1] || facing[ENERGY_WAVE][2] > facing[ENERGY_BEAM][2] || facing[ENERGY_WAVE][3] > facing[ENERGY_BEAM][3]))
+		if (returnSpell == 8 && (facing[ENERGY_WAVE][DOWN] > facing[ENERGY_BEAM][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[ENERGY_BEAM][RIGHT] || facing[ENERGY_WAVE][UP] > facing[ENERGY_BEAM][UP] || facing[ENERGY_WAVE][LEFT] > facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 7;
-		if (returnSpell == 4 && (facing[ENERGY_WAVE][0] > facing[FIRE_WAVE][0] || facing[ENERGY_WAVE][1] > facing[FIRE_WAVE][1] || facing[ENERGY_WAVE][2] > facing[FIRE_WAVE][2] || facing[ENERGY_WAVE][3] > facing[FIRE_WAVE][3]))		
+		if (returnSpell == 4 && (facing[ENERGY_WAVE][DOWN] > facing[FIRE_WAVE][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[ENERGY_WAVE][UP] > facing[FIRE_WAVE][UP] || facing[ENERGY_WAVE][LEFT] > facing[FIRE_WAVE][LEFT]))		
 			returnSpell = 7;
-		if (returnSpell == 9 && (facing[ENERGY_WAVE][0] > facing[G_ENERGY_BEAM][0] || facing[ENERGY_WAVE][1] > facing[G_ENERGY_BEAM][1] || facing[ENERGY_WAVE][2] > facing[G_ENERGY_BEAM][2] || facing[ENERGY_WAVE][3] > facing[G_ENERGY_BEAM][3]))		
+		if (returnSpell == 9 && (facing[ENERGY_WAVE][DOWN] > facing[G_ENERGY_BEAM][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[G_ENERGY_BEAM][RIGHT] || facing[ENERGY_WAVE][UP] > facing[G_ENERGY_BEAM][UP] || facing[ENERGY_WAVE][LEFT] > facing[G_ENERGY_BEAM][LEFT]))		
 			returnSpell = 7;
 	}
 	if (config->exevoGranMasVis) {
-		if (returnSpell == 0 && egmVisCount > config->aoeEffect)
+		if (returnSpell == 0 && egmVisCount >= config->aoeAffect)
 			returnSpell = 10;
-		if (returnSpell == 8 && (egmVisCount > facing[ENERGY_BEAM][0] || egmVisCount > facing[ENERGY_BEAM][1] || egmVisCount > facing[ENERGY_BEAM][2] || egmVisCount > facing[ENERGY_BEAM][3]))
+		if (returnSpell == 8 && (egmVisCount > facing[ENERGY_BEAM][DOWN] + facing[ENERGY_BEAM][RIGHT] + facing[ENERGY_BEAM][UP] + facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 10;
-		if (returnSpell == 4 && (egmVisCount > facing[FIRE_WAVE][0] || egmVisCount > facing[FIRE_WAVE][1] || egmVisCount > facing[FIRE_WAVE][2] || egmVisCount > facing[FIRE_WAVE][3]))		
+		if (returnSpell == 4 && (egmVisCount > facing[FIRE_WAVE][DOWN] + facing[FIRE_WAVE][RIGHT] + facing[FIRE_WAVE][UP] + facing[FIRE_WAVE][LEFT]))		
 			returnSpell = 10;
-		if (returnSpell == 9 && (egmVisCount > facing[G_ENERGY_BEAM][0] || egmVisCount > facing[G_ENERGY_BEAM][1] || egmVisCount > facing[G_ENERGY_BEAM][2] || egmVisCount > facing[G_ENERGY_BEAM][3]))		
+		if (returnSpell == 9 && (egmVisCount > facing[G_ENERGY_BEAM][DOWN] + facing[G_ENERGY_BEAM][RIGHT] + facing[G_ENERGY_BEAM][UP] + facing[G_ENERGY_BEAM][LEFT]))		
 			returnSpell = 10;
-		if (returnSpell == 7 && (egmVisCount > facing[ENERGY_WAVE][0] || egmVisCount > facing[ENERGY_WAVE][1] || egmVisCount > facing[ENERGY_WAVE][2] || egmVisCount > facing[ENERGY_WAVE][3]))		
+		if (returnSpell == 7 && (egmVisCount > facing[ENERGY_WAVE][DOWN] + facing[ENERGY_WAVE][RIGHT] + facing[ENERGY_WAVE][UP] + facing[ENERGY_WAVE][LEFT]))		
 			returnSpell = 10;
 	}
 	if (config->exevoGranMasFlam) {
-		if (returnSpell == 0 && egmFlamCount > config->aoeEffect)
+		if (returnSpell == 0 && egmFlamCount >= config->aoeAffect)
 			returnSpell = 11;
-		if (returnSpell == 8 && (egmFlamCount > facing[ENERGY_BEAM][0] || egmFlamCount > facing[ENERGY_BEAM][1] || egmFlamCount > facing[ENERGY_BEAM][2] || egmFlamCount > facing[ENERGY_BEAM][3]))
+		if (returnSpell == 8 && (egmFlamCount > facing[ENERGY_BEAM][DOWN] + facing[ENERGY_BEAM][RIGHT] + facing[ENERGY_BEAM][UP] + facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 11;
-		if (returnSpell == 4 && (egmFlamCount > facing[FIRE_WAVE][0] || egmFlamCount > facing[FIRE_WAVE][1] || egmFlamCount > facing[FIRE_WAVE][2] || egmFlamCount > facing[FIRE_WAVE][3]))		
+		if (returnSpell == 4 && (egmFlamCount > facing[FIRE_WAVE][DOWN] + facing[FIRE_WAVE][RIGHT] + facing[FIRE_WAVE][UP] + facing[FIRE_WAVE][LEFT]))		
 			returnSpell = 11;
-		if (returnSpell == 9 && (egmFlamCount > facing[G_ENERGY_BEAM][0] || egmFlamCount > facing[G_ENERGY_BEAM][1] || egmFlamCount > facing[G_ENERGY_BEAM][2] || egmFlamCount > facing[G_ENERGY_BEAM][3]))		
+		if (returnSpell == 9 && (egmFlamCount > facing[G_ENERGY_BEAM][DOWN] + facing[G_ENERGY_BEAM][RIGHT] + facing[G_ENERGY_BEAM][UP] + facing[G_ENERGY_BEAM][LEFT]))		
 			returnSpell = 11;
-		if (returnSpell == 7 && (egmFlamCount > facing[ENERGY_WAVE][0] || egmFlamCount > facing[ENERGY_WAVE][1] || egmFlamCount > facing[ENERGY_WAVE][2] || egmFlamCount > facing[ENERGY_WAVE][3]))		
+		if (returnSpell == 7 && (egmFlamCount > facing[ENERGY_WAVE][DOWN] + facing[ENERGY_WAVE][RIGHT] + facing[ENERGY_WAVE][UP] + facing[ENERGY_WAVE][LEFT]))		
 			returnSpell = 11;
 		if (returnSpell == 10 && egmFlamCount > egmVisCount)		
 			returnSpell = 11;
 	}
 	if (config->exevoGranMasTera) {
-		if (returnSpell == 0 && egmTeraCount > config->aoeEffect)
+		if (returnSpell == 0 && egmTeraCount >= config->aoeAffect)
 			returnSpell = 12;
-		if (returnSpell == 5 && (egmTeraCount > facing[ICE_WAVE][0] || egmTeraCount > facing[ICE_WAVE][1] || egmTeraCount > facing[ICE_WAVE][2] || egmTeraCount > facing[ICE_WAVE][3]))
+		if (returnSpell == 5 && (egmTeraCount > facing[ICE_WAVE][DOWN] + facing[ICE_WAVE][RIGHT] + facing[ICE_WAVE][UP] + facing[ICE_WAVE][LEFT]))
 			returnSpell = 12;
-		if (returnSpell == 6 && (egmTeraCount > facing[EARTH_WAVE][0] || egmTeraCount > facing[EARTH_WAVE][1] || egmTeraCount > facing[EARTH_WAVE][2] || egmTeraCount > facing[EARTH_WAVE][3]))
+		if (returnSpell == 6 && (egmTeraCount > facing[EARTH_WAVE][DOWN] + facing[EARTH_WAVE][RIGHT] + facing[EARTH_WAVE][UP] + facing[EARTH_WAVE][LEFT]))
 			returnSpell = 12;
 	}
 	if (config->exevoGranMasFrigo) {
-		if (returnSpell == 0 && egmFrigoCount > config->aoeEffect)
+		if (returnSpell == 0 && egmFrigoCount >= config->aoeAffect)
 			returnSpell = 13;
-		if (returnSpell == 5 && (egmFrigoCount > facing[ICE_WAVE][0] || egmFrigoCount > facing[ICE_WAVE][1] || egmFrigoCount > facing[ICE_WAVE][2] || egmFrigoCount > facing[ICE_WAVE][3]))
+		if (returnSpell == 5 && (egmFrigoCount > facing[ICE_WAVE][DOWN] + facing[ICE_WAVE][RIGHT] + facing[ICE_WAVE][UP] + facing[ICE_WAVE][LEFT]))
 			returnSpell = 13;
-		if (returnSpell == 6 && (egmFrigoCount > facing[EARTH_WAVE][0] || egmFrigoCount > facing[EARTH_WAVE][1] || egmFrigoCount > facing[EARTH_WAVE][2] || egmFrigoCount > facing[EARTH_WAVE][3]))
+		if (returnSpell == 6 && (egmFrigoCount > facing[EARTH_WAVE][DOWN] + facing[EARTH_WAVE][RIGHT] + facing[EARTH_WAVE][UP] + facing[EARTH_WAVE][LEFT]))
 			returnSpell = 13;
 		if (returnSpell == 12 && egmFrigoCount > egmTeraCount)
 			returnSpell = 13;
