@@ -141,7 +141,7 @@ Pirate Marauder,Strong,Fire,Energy,,Death,Strong,,210
 Pirate Skeleton,,,,,Immune,Holy,,190
 Plaguesmith,Immune,Strong,Energy,Strong,Strong,Holy,,8250
 Poacher,,,,,,,,90
-Poison Spider,,Fire,,,Immune,,,26
+Poison Spider,Immune,Fire,,,,,,26
 Polar Bear,,Strong,Energy,Strong,Death,,,85
 Priestess,Strong,Strong,,,Strong,Holy,Physical,390
 Quara Constrictor,Earth,Immune,Energy,Immune,,,,450
