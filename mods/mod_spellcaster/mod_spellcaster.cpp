@@ -158,7 +158,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int spell;
 		if (config->aoe && time(NULL)-lastCastTime >= minCastTime && (spell = aoeShouldFire(config))) { //Wis:Performs calculation only if needed
 			if (spell) {
-				char spellname[25];
+				char spellname[25] = "";
 				switch (spell) {
 				case 1:
 					if (self->mana > 115)
@@ -243,7 +243,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							int maxDist = max(xDist,yDist);
 							int test = config->flam+config->frigo+config->mort+config->tera+config->vis;
 							
-							char spellname[25];
+							char spellname[25] = "";
 							if (maxDist <= 3 && test) {
 
 								int check = 0;
