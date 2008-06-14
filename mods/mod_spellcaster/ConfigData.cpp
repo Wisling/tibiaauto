@@ -63,7 +63,7 @@ CConfigData::CConfigData()
 	strikeSpellHpMin=0;
 
 	aoe=0;
-	aoeEffect=0;
+	aoeAffect=0;
 	exori=0;
 	exoriGran=0;
 	exoriMas=0;

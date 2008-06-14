@@ -351,7 +351,7 @@ CMod_spellcasterApp::~CMod_spellcasterApp()
 	if (m_configDialog)	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_spellcasterApp::getName() {
@@ -364,7 +364,7 @@ int CMod_spellcasterApp::isStarted() {
 }
 
 
-void CMod_spellcasterApp::start() {	
+void CMod_spellcasterApp::start() {
 	if (m_configDialog)	{
 		m_configDialog->disableControls();
 		m_configDialog->activateEnableButton(true);
@@ -910,40 +910,14 @@ int aoeShouldFire(CConfigData *config) {
 		if (strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1) {
 			deltaX = ch->x - self->x;
 			deltaY = ch->y - self->y;
-			if (deltaX >= 0) {
-				if (deltaY >= 0) {
-					if (deltaX > deltaY)
-						faceDir = 1;
-					else 
-						faceDir = 0;
-				}
-				else if (deltaY < 0) {
-					if (deltaX > abs(deltaY))
-						faceDir = 1;
-					else 
-						faceDir = 2;
-				}
-			}
-			else {
-				if (deltaY >= 0) {
-					if (abs(deltaX) > deltaY)
-						faceDir = 3;
-					else 
-						faceDir = 0;
-				}
-				else if (deltaY < 0) {
-					if (abs(deltaX) > abs(deltaY))
-						faceDir = 3;
-					else 
-						faceDir = 2;
-				}
-			}
-			deltaX = abs(deltaX);
-			deltaY = abs(deltaY);
-			if (deltaX > deltaY) {
-				deltaX = deltaY;
-				deltaY = abs(ch->x - self->x);
-			}
+			if (deltaY+abs(deltaX)>=0) faceDir = 0;
+			else if (deltaX-abs(deltaY)>0) faceDir = 1;
+			else if (deltaY-abs(deltaX)>=0) faceDir = 2;
+			else faceDir = 3;
+			
+			int deltaX = min(abs(deltaX),abs(deltaY))
+			int deltaY = max(abs(deltaX),abs(deltaY))
+
 			if (monster > -1) {
 				if (deltaX == 0) {
 					if (deltaY <= 8 && monstersInfo[monster].weakEnergy) {
