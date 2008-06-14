@@ -23,10 +23,10 @@ extern CToolAutoAttackStateDepot globalAutoAttackStateDepot;
 extern CToolAutoAttackStateTraining globalAutoAttackStateTraining;
 extern int targetX,targetY,targetZ;
 extern int depotX,depotY,depotZ;
-extern int firstCreatureAttackTM;
+extern int firstCreastureAttackTM;
 extern int currentPosTM;
 extern int creatureAttackDist;
-extern int unreachableSecondsLeft;
+extern int unreachableTmStart;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -484,7 +484,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			}
 			break;
 		case CToolAutoAttackStateAttack_monsterUnreachable:
-			sprintf(buf,"State: monster unreachable [yet %ds]",unreachableSecondsLeft);
+			sprintf(buf,"State: monster unreachable [yet %ds]",unreachableTmStart);
 			m_stateAttack.SetWindowText(buf);
 			break;
 		default:
