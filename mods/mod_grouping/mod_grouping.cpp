@@ -99,6 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int movedSomething=0;
 		for (contNr=0;contNr<memConstData.m_memMaxContainers && !movedSomething;contNr++)
 		{
+			if (contNr == 8 || contNr == 9) continue; // Wis: Will not group auto-opened corpse containers. Temporary fix.
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
 			int itemNrMoved;
