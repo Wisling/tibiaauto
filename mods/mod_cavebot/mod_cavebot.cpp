@@ -204,6 +204,7 @@ void depotCheck(CConfigData *config) {
 			delete self;
 			return;
 		}
+		delete self;
 	}
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_walking) {
 		CTibiaMapProxy tibiaMap;
@@ -731,6 +732,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 		if (freeContNr==-1) {
 			if (config->debug) registerDebug("Loot from floor: no free container found");
 			// no free place in container found - exit
+			delete self;
 			return;
 		}
 		
@@ -807,6 +809,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 						CTibiaCharacter *self3 = reader.readSelfCharacter();
 						if (self->x+bestX==self3->x&&self->y+bestY==self3->y&&self->z==self3->z) {
 							// this means: we reached final point
+							delete self3;
 							break;
 						}
 						delete self3;
@@ -861,8 +864,8 @@ extBreak:
 			
 			delete self2;
 		}
-} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-delete self;
+	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
+	delete self;
 }
 
 void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
@@ -1762,6 +1765,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						char buf[128];
 						int path[15];
 						
+						delete self;
 						self = reader.readSelfCharacter();
 						
 						// proceed with path searching
