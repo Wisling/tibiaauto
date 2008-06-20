@@ -187,8 +187,10 @@ void inline testDebug(char *s)
 
 
 struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15])
-{		
+{			
 	struct point retPoint(0,0,0);
+
+	
 
 	path[0]=0;
 	memset(path,0x00,sizeof(int)*15);
@@ -204,6 +206,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	int x,y;
 	prepareProhPointList();
 	CTibiaMapProxy tibiaMap;
+
+	
 
 	// try to go to the point normally
 	retPoint=findPathOnMap(startX,startY,startZ,endX,endY,endZ,endSpecialLocation,path,0);
@@ -260,7 +264,7 @@ int pathTabLen;
 int lastEndX=-1,lastEndY=-1,lastEndZ=-1;
 
 struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15],int useDiagonal)
-{	
+{		
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
 		
@@ -291,8 +295,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	mapDebug(buf);
 #endif
 	
-
-
+	
 	while (queue->size())
 	{	
 		point currentPoint = queue->getFirst();		
@@ -322,8 +325,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			endY=y;
 			endZ=z;
 		}
-	
-
+			
 
 		if (gotToEndPoint)
 		{				
@@ -346,8 +348,12 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif
 
 				pathPos++;
-
-				if (pathPos>MAX_PATH_LEN-5) return point(0,0,0);
+				
+				if (pathPos>MAX_PATH_LEN-5) 
+				{
+					delete queue;
+					return point(0,0,0);
+				}
 			};
 			pathTab[pathPos].x=startX;
 			pathTab[pathPos].y=startY;
@@ -460,7 +466,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			lastEndY=endY;
 			lastEndZ=endZ;
 			pathTabLen=pathPos;
-					
+			
+			delete queue;
 			return point(endX,endY,endZ);
 		}
 		
