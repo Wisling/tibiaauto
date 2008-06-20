@@ -1044,6 +1044,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		// if in a full sleep mode then just do nothing
 		if (isInFullSleep()) continue;
 		
+		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		
 		// if client thinks we are attacking something different, then
@@ -1308,6 +1309,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				delete attackedCh;
 			} // if attackedCh
 		}
+
+		
 		
 		int creatureAttackNewDist=100;
 		int currentTm=reader.getCurrentTm();
@@ -1499,6 +1502,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		char debugBuf[128];
 		sprintf(debugBuf,"Before main attack if: alien=%d, suspend=%d, globalAttackState=%d, backAttack=%d, backAttackAlien=%d",alienCreatureFound,config->suspendOnEnemy,globalAutoAttackStateAttack,backAttack,backAttackAlien);
 		if (config->debug) registerDebug(debugBuf);
+
+		
 
 		if (backAttack||((!alienCreatureFound||!config->suspendOnEnemy)&&globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_monsterUnreachable)) {
 			if (config->debug) registerDebug("Entering attack pre-execution area");
@@ -1715,6 +1720,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (time(NULL)<walkerStandingEndTm) {
 					globalAutoAttackStateWalker=CToolAutoAttackStateWalker_standing;
 					if (config->debug) registerDebug("Standing");
+					delete self;
 					continue;
 				}
 				
@@ -1732,6 +1738,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// find a new goto target from waypoint list
 						if (!waypointsCount) {
 							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noWaypoints;
+							delete self;
 							continue;
 						}
 						int newWaypoint = 0;
@@ -1763,7 +1770,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// Tibia Auto map chosen
 					case 0: {
 						char buf[128];
-						int path[15];
+						int path[15];					
 						
 						delete self;
 						self = reader.readSelfCharacter();
@@ -1771,14 +1778,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// proceed with path searching
 						sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
 						if (config->debug) registerDebug(buf);
-						int ticksStart = GetTickCount();
-						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+						int ticksStart = GetTickCount();						
+						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);						
+						
 						int ticksEnd = GetTickCount();
 						sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
 						if (config->debug) registerDebug(buf);
 						int pathSize;
 						for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-						if (pathSize) {
+						if (pathSize) {							
 							CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 							if (config->debug) registerDebug("Walking: execute walk");
