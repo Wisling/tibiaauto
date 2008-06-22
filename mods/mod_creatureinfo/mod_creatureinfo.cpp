@@ -740,7 +740,42 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 		}else{
 			strcpy(svalue,"");
 		}
-
+	}else if (!strcmpi(tagName,"maxHp")){
+		if (data->maxHp>0){
+			sprintf(svalue,"%d",data->maxHp);
+		}else{
+			strcpy(svalue,"");
+		}
+	}else if (!strcmpi(tagName,"weakness") || !strcmpi(tagName,"strength") || !strcmpi(tagName,"immunity") || !strcmpi(tagName,"noneffect")){
+		int amt;
+		if (!strcmpi(tagName,"weakness")){
+			int amt = 5;
+			sprintf(svalue,"W:");
+		}else if (!strcmpi(tagName,"strength")){
+			int amt = 1;
+			sprintf(svalue,"S:");
+		}else if (!strcmpi(tagName,"immunity")){
+			int amt = 0;
+			sprintf(svalue,"I:");
+		}else if (!strcmpi(tagName,"noneffect")){
+			int amt = 2;
+			sprintf(svalue,"N:");
+		}
+		if (data->physical==amt)
+			sprintf(svalue,"Phys,");
+		if (data->fire==amt)
+			sprintf(svalue,"Fire,");
+		if (data->ice==amt)
+			sprintf(svalue,"Ice,");
+		if (data->earth==amt)
+			sprintf(svalue,"Erth,");
+		if (data->energy==amt)
+			sprintf(svalue,"Engy,");
+		if (data->holy==amt)
+			sprintf(svalue,"Hly,");
+		if (data->death==amt)
+			sprintf(svalue,"Dth,");
+		svalue[strlen(svalue)-1] = '.';
 	}else if (!strcmpi(tagName,"description")){
 		if (lstrlen(data->description)){
 			sprintf(svalue,"%s",data->description);
@@ -1095,7 +1130,8 @@ void ReadPipeInfo(){
 						char resNick[128];
 						lstrcpyn(resNick,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
 						if (pmatch[1].rm_eo!=pmatch[1].rm_so){
-							Monster_Register(resNick,TYPE_MONSTER,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
+							Monster_Register
+								(resNick,TYPE_MONSTER,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
 						}else{
 							Monster_Register(resNick,TYPE_NPC,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
 						}
