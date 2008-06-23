@@ -104,6 +104,7 @@
 #define IDC_LOAD_FROM_MINIMAP           3036
 #define IDC_SHARE_ALIEN_BACKATTACK      3037
 #define IDC_DEPOT_CAP                   3038
+#define IDC_ENSURE_LOOTING              3039
 
 // Next default values for new objects
 // 

@@ -1148,7 +1148,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(currentlyAttackedCreature);
 			if (attackedCh) {
 				if (!attackedCh->hpPercLeft&&
-					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=4&&
+					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=5&&
 					attackedCh->z==self->z) {
 					if (config->debug) registerDebug("Attacked creature is dead");
 					FILE *lootStatsFile = NULL;
@@ -1168,11 +1168,55 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					// attacked creature dead, near me, same floor
 					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 					// open container 9 and wait for sync
-					CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
+					if (config->ensureLoot) {
+						int xOffset = 0;
+						int yOffset = 0;
+						CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId, xOffset, yOffset);
+						attackedCh->x += xOffset;
+						attackedCh->y += yOffset;
+						char buf[64];
+						sprintf(buf,"xOffset: %d, yOffset: %d", xOffset, yOffset);
+						sender.sendTAMessage(buf);
+/*			CUIntArray itemArray;
+			
+			itemArray.Add(itemProxy.getValueForConst("GP"));
+			int contNr;
+			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+				CTibiaContainer *cont = reader.readContainer(contNr);				
+				if (cont->flagOnOff) {
+					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray);
+					if (item) {						
+						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,attackedCh->x,attackedCh->y,attackedCh->z,1);
+						delete item;
+						break;
+					}											
+				}				
+				delete cont;
+			}
+*/					}
+					else 
+						CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
 					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
-					sender.moveObjectFromContainerToFloor(0xbd7, 1, 1, attackedCh->x, attackedCh->y, attackedCh->z, 1);
+
 					sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,9);
-					
+
+					if (config->ensureLoot) {
+						int lootX = abs(attackedCh->x-self->x);
+						int lootY = abs(attackedCh->y-self->y);
+						int failsafe = 0;
+						while (lootX > 1 && lootY > 1 && failsafe < 5) {
+							Sleep(100);
+							int tempX = self->x;
+							int tempY = self->y;
+							delete self;
+							self = reader.readSelfCharacter();
+							if (tempX == self->x && tempY == self->y) 
+								failsafe++;
+							lootX = abs(attackedCh->x-self->x);
+							lootY = abs(attackedCh->y-self->y);							
+						}
+					}
+
 					if (CModuleUtil::waitForOpenContainer(9,true)) {
 						if (config->debug) registerDebug("Open dead creature corpse (container 9)");
 						int tm=time(NULL);
@@ -2008,6 +2052,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"loot/other/eatFromCorpse")) m_configData->eatFromCorpse=atoi(paramValue);
 	if (!strcmp(paramName,"loot/other/dropNotLooted")) m_configData->dropNotLooted=atoi(paramValue);
 	if (!strcmp(paramName,"loot/other/lootFromFloor")) m_configData->lootFromFloor=atoi(paramValue);
+	if (!strcmp(paramName,"loot/ensureLooting")) m_configData->ensureLoot=atoi(paramValue);
 	
 	if (!strcmp(paramName,"training/weaponTrain")) m_configData->weaponTrain=atoi(paramValue);
 	if (!strcmp(paramName,"training/weaponFight")) m_configData->weaponFight=atoi(paramValue);
@@ -2095,6 +2140,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"loot/stats/gather")) sprintf(buf,"%d",m_configData->gatherLootStats);
 	if (!strcmp(paramName,"loot/other/dropNotLooted")) sprintf(buf,"%d",m_configData->dropNotLooted);
 	if (!strcmp(paramName,"loot/other/lootFromFloor")) sprintf(buf,"%d",m_configData->lootFromFloor);
+	if (!strcmp(paramName,"loot/ensureLooting")) sprintf(buf,"%d",m_configData->ensureLoot);
 	
 	if (!strcmp(paramName,"walker/other/selectMode")) sprintf(buf,"%d",m_configData->waypointSelectMode);
 	if (!strcmp(paramName,"walker/other/mapUsed")) sprintf(buf,"%d",m_configData->mapUsed);
@@ -2172,6 +2218,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 36: return "attack/backattackRunes";
 	case 37: return "attack/shareAlienBackattack";
 	case 38: return "depot/depotCap";
+	case 39: return "loot/ensureLooting";
 		
 	default:
 		return NULL;
