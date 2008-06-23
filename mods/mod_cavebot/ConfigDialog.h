@@ -140,6 +140,7 @@ public:
 	CListBox	m_monsterList;
 	CEdit	m_monster;
 	CButton	m_enable;
+	CButton	m_ensureLoot;
 	//}}AFX_DATA
 
 	void reloadDepotItems();
@@ -173,6 +174,7 @@ protected:
 	afx_msg void OnLoadFromMinimap();
 	afx_msg void OnMonsterAttackUp();
 	afx_msg void OnMonsterAttackDown();
+	afx_msg void OnEnsureLoot();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

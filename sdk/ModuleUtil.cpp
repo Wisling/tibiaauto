@@ -596,7 +596,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		
 	
 	}
-
 	delete queue;		
 	return point(0,0,0);
 }
@@ -774,6 +773,33 @@ int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
 			int extraData = reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1);
 			if (tileId==99&&extraData==tibiaId) 
 				found=1;
+		}
+		if (!found)
+			return 1;
+		Sleep(100);
+	}
+	return 0;
+}
+
+int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId, int &xReturn, int &yReturn) {
+	CMemReaderProxy reader;
+	int iterCount=20;
+	while (iterCount-->0) {
+		int found=0;
+		int pos;
+		for (int xOffset = -1; xOffset < 1; xOffset++) {
+			for (int yOffset = -1; yOffset < 1; yOffset++) {
+				int stackCount=reader.mapGetPointItemsCount(point(x + xOffset,y +yOffset,0));
+				for (pos=0;pos<stackCount;pos++) {
+					int tileId = reader.mapGetPointItemId(point(x + xOffset,y +yOffset,0),pos);
+					int extraData = reader.mapGetPointItemExtraInfo(point(x + xOffset,y +yOffset,0),pos,1);
+					if (tileId==99&&extraData==tibiaId) {
+						found=1;
+						xReturn = xOffset;
+						yReturn = yOffset;
+					}
+				}
+			}
 		}
 		if (!found)
 			return 1;

@@ -12,9 +12,9 @@ Class2=CConfigDialog
 LastTemplate=CDialog
 Resource1=IDD_CONFIG
 Class3=CSendStats
-Resource2=IDD_SENDSTATS (Polish)
-Resource3=IDD_CONFIG (Polish)
-Resource4=IDD_SENDSTATS
+Resource2=IDD_CONFIG (Polish)
+Resource3=IDD_SENDSTATS
+Resource4=IDD_SENDSTATS (Polish)
 
 [CLS:CMod_cavebotApp]
 Type=0
@@ -143,7 +143,7 @@ Filter=D
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=?
-ControlCount=90
+ControlCount=91
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
 Control3=IDC_TOOL_AUTOATTACK_MONSTER,edit,1350631552
@@ -234,6 +234,7 @@ Control87=IDC_DEPOT_CAP,edit,1350631552
 Control88=IDC_MONSTER_ATTACK_DOWN,button,1342242816
 Control89=IDC_MONSTER_ATTACK_UP,button,1342242816
 Control90=IDC_STATIC,static,1342308352
+Control91=IDC_ENSURE_LOOTING,button,1342242819
 
 [DLG:IDD_SENDSTATS (Polish)]
 Type=1
