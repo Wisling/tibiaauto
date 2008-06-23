@@ -101,6 +101,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_AUTOFOLLOW, m_autoFollow);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTERLIST, m_monsterList);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTER, m_monster);
+	DDX_Control(pDX, IDC_ENSURE_LOOTING, m_ensureLoot);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -122,6 +123,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_LOAD_FROM_MINIMAP, OnLoadFromMinimap)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
+	ON_BN_CLICKED(IDC_ENSURE_LOOTING, OnEnsureLoot)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -202,6 +204,7 @@ void CConfigDialog::disableControls()
 	m_backattackRunes.EnableWindow(false);
 	m_shareAlienBackattack.EnableWindow(false);
 	m_depotCap.EnableWindow(false);
+	m_ensureLoot.EnableWindow(false);
 
 }
 
@@ -252,6 +255,7 @@ void CConfigDialog::enableControls()
 	m_backattackRunes.EnableWindow(true);
 	m_shareAlienBackattack.EnableWindow(true);
 	m_depotCap.EnableWindow(true);
+	m_ensureLoot.EnableWindow(true);
 }
 
 
@@ -331,6 +335,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_lootFromFloor.SetCheck(configData->lootFromFloor);
 	m_backattackRunes.SetCheck(configData->backattackRunes);
 	m_shareAlienBackattack.SetCheck(configData->shareAlienBackattack);
+	m_ensureLoot.SetCheck(configData->ensureLoot);
 		
 
 }
@@ -439,7 +444,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->lootFromFloor=m_lootFromFloor.GetCheck();
 	newConfigData->backattackRunes=m_backattackRunes.GetCheck();
 	newConfigData->shareAlienBackattack=m_shareAlienBackattack.GetCheck();
-
+	newConfigData->ensureLoot=m_ensureLoot.GetCheck();
 
 
 
@@ -651,6 +656,14 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 	char currentMonster[128];
 	m_waypointList.GetText(sel,currentMonster);
 	m_waypointList.DeleteString(sel);	
+}
+
+void CConfigDialog::OnEnsureLoot() 
+{
+	if(m_ensureLoot.GetCheck())
+		AfxMessageBox("WARNING!! May cause a slower execution in cavebot!");
+	else
+		AfxMessageBox("WARNING!! May cause a some creatures to be NOT looted!");
 }
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 
