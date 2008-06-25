@@ -643,13 +643,13 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 	
 	
 		
-	int tm1=GetTickCount();
+	//int tm1=GetTickCount();//Akilez: time testing only do not compile if not needed
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaContainer *cont = reader.readContainer(containerNr);
 	CTibiaContainer *contCarrying = reader.readContainer(containerCarrying);
-	int ret;
-	if (cont->flagOnOff)
+	int looted = 0;
+	if (cont->flagOnOff)//Akilez: viewed as unnecessary but left for potentially unseen reason
 	{
 		int itemNr;
 		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)		
@@ -666,8 +666,8 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 					if (tile->stackable)
 					{						
 						// if item is stackable then try to find a suitable stack for it
-						int stackedItemPos=0;
-						for (stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
+						;
+						for (int stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
 						{
 							CTibiaItem *stackedItem=(CTibiaItem *)contCarrying->items.GetAt(stackedItemPos);
 							if (stackedItem->objectId==item->objectId&&stackedItem->quantity<100)
@@ -675,27 +675,30 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 								// we have found a suitable stack! :)
 								targetPos=stackedItemPos;
 								// add try to add predicted quantity to the stack (for the next loop iteration)
-								stackedItem->quantity+=item->quantity;
+								//stackedItem->quantity+=item->quantity;//Akilez: stackedIitem qty refreshed each iteration (delete line)
+								
+								//Akilez: Stackable item overflow goes back into container at the same position
+								if ((stackedItem->quantity + item->quantity) > 100) itemNr++;//Akilez: recheck this space in the container for lootables
+								break;//Akilez: break loop once targetPos found! No need/variable to find alternates!
 							}
 						}	
-					} else cont->itemsInside += 1;
-					
+					}
 					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,item->quantity?item->quantity:1);
-					ret=1;
+					looted++;
 					break;
 				}
 			}
 		}
 	}	
-	int tm2=GetTickCount();
+	//int tm2=GetTickCount();//Akilez: time testing only do not compile if not needed
 	//sprintf(buf,"tm required=%d",tm2-tm1);
 	//AfxMessageBox(buf);
 
 	delete cont;
 	delete contCarrying;
-	return ret;
+	return looted;//Akilez: return value now reflects items looted
 	
-	
+
 }
 
 
@@ -706,22 +709,24 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 	
 	// find first free container
 	int openCont;
+	int qtyLooted;
 	for (openCont=0;openCont<8;openCont++)
 	{	
 		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
 		{			
-			CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont);
+			qtyLooted = CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont);//Akilez: loot items and get # of items returned
+			targetCont->itemsInside += qtyLooted;//Akilez: itemsInside does NOT get updated in loopItemFromSpecifiedContainer
 			if (targetCont->itemsInside<targetCont->size) 
 			{
 				delete targetCont;
-				break;//itemsInside gets updated in loopItemFromSpecifiedContainer
+				break;
 			}
 		}
 		
 		
 		delete targetCont;						
-	};		
+	}		
 
 }
 
