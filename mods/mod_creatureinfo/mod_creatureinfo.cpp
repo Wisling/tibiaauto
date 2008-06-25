@@ -749,17 +749,13 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 	}else if (!strcmpi(tagName,"weakness") || !strcmpi(tagName,"strength") || !strcmpi(tagName,"immunity") || !strcmpi(tagName,"noneffect")){
 		int amt;
 		if (!strcmpi(tagName,"weakness")){
-			int amt = 5;
-			sprintf(svalue,"W:");
+			amt = 5;
 		}else if (!strcmpi(tagName,"strength")){
-			int amt = 1;
-			sprintf(svalue,"S:");
+			amt = 1;
 		}else if (!strcmpi(tagName,"immunity")){
-			int amt = 0;
-			sprintf(svalue,"I:");
+			amt = 0;
 		}else if (!strcmpi(tagName,"noneffect")){
-			int amt = 2;
-			sprintf(svalue,"N:");
+			amt = 2;
 		}
 		if (data->physical==amt)
 			sprintf(svalue,"Phys,");
