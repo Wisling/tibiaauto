@@ -662,6 +662,7 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 				{
 					// item needs to be looted
 					int targetPos=cont->itemsInside;
+					int moved = item->quantity?item->quantity:1;
 					CTibiaTile *tile = reader.getTibiaTile(item->objectId);
 					if (tile->stackable)
 					{						
@@ -674,12 +675,9 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 							{
 								// we have found a suitable stack! :)
 								targetPos=stackedItemPos;
-								// add try to add predicted quantity to the stack (for the next loop iteration)
-								//stackedItem->quantity+=item->quantity;//Akilez: stackedIitem qty refreshed each iteration (delete line)
-								
 								//Akilez: Stackable item overflow goes back into container at the same position
 								if ((stackedItem->quantity + item->quantity) > 100) itemNr++;//Akilez: recheck this space in the container for lootables
-								break;//Akilez: break loop once targetPos found! No need/variable to find alternates!
+								break;
 							}
 						}	
 					}
