@@ -50,22 +50,22 @@
                 <const code="addrSelfPosY" value="0"/>
                 <const code="addrSelfPosZ" value="0"/>
 
-	        <const code="addrSelfFlags" value="0x613AF8"/> <!-- +50A0 -->
-                <const code="addrSkillFistPercLeft" value="0x613AFC"/>
-                <const code="addrSkillFist" value="0x613B18"/>
-                <const code="addrSkillFish" value="0x613B30"/>
-                <const code="addrAttackedCreature" value="0x613B3C"/>
-                <const code="addrCap" value="0x613B40"/>
-                <const code="addrSoulPoints" value="0x613B48"/>
-                <const code="addrManaMax" value="0x613B4C"/>
-                <const code="addrMana" value="0x613B50"/>
-                <const code="addrMlvlPercLeft" value="0x613B54"/>
-                <const code="addrMlvl" value="0x613B5C"/>
-                <const code="addrLvl" value="0x613B60"/>
-                <const code="addrExp" value="0x613B64"/> <!-- +50A0 -->
-                <const code="addrHPMax" value="0x613B68"/>
-                <const code="addrHP" value="0x613B6C"/>  <!-- -->
-                <const code="addrSelfId" value="0x613B70"/>
+	        <const code="addrSelfFlags" value="0x621BF8"/> <!-- +50A0 -->
+                <const code="addrSkillFistPercLeft" value="0x621BFC"/>
+                <const code="addrSkillFist" value="0x621C18"/>
+                <const code="addrSkillFish" value="0x621C30"/>
+                <const code="addrAttackedCreature" value="0x621C3C"/>
+                <const code="addrCap" value="0x621C40"/>
+                <const code="addrSoulPoints" value="0x621C48"/>
+                <const code="addrManaMax" value="0x621C4C"/>
+                <const code="addrMana" value="0x621C50"/>
+                <const code="addrMlvlPercLeft" value="0x621C54"/>
+                <const code="addrMlvl" value="0x621C5C"/>
+                <const code="addrLvl" value="0x621c60"/>
+                <const code="addrExp" value="0x621C64"/> <!-- +50A0 -->
+                <const code="addrHPMax" value="0x621C68"/>
+                <const code="addrHP" value="0x621C6C"/>  <!-- -->
+                <const code="addrSelfId" value="0x621C70"/>
                 <const code="addrCurrentTileToGo" value="0x613B78"/>
                 <const code="addrTilesToGo" value="0x613B7C"/>
                 <const code="addrGoZ" value="0x613BAC"/>
@@ -79,7 +79,7 @@
                 <const code="addrRightHand" value="0x61C088"/>
 		<const code="addrLeftHand" value="0x61C094"/>
                 <const code="addrSlotArrow" value="0x61C0C4"/>
-                <const code="addrFirstContainer" value="0x61C0D0"/>
+                <const code="addrFirstContainer" value="0x62a218"/>
                 <const code="addrTradeCountSelf" value="0x61DFB0"/>
                 <const code="addrTradeFirstItemSelf" value="0x61DFB4"/>
                 <const code="addrTradeCountPartner" value="0x61E488"/>
