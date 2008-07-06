@@ -56,7 +56,7 @@ CTibiaMap::CTibiaMap()
 
 CTibiaMap::~CTibiaMap()
 {
-
+	free(prohList);	
 }
 
 
@@ -70,7 +70,7 @@ int CTibiaMap::isPointAvailable(int x, int y,int z)
 		if (!pd->available) return false;	
 	
 
-		// do the prohpoint check
+		// do the prohpoint checkf
 		int prohNr;
 		for (prohNr=0;prohNr<prohCount;prohNr++)
 		{

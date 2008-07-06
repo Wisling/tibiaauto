@@ -864,6 +864,37 @@ void CTibiaautoDlg::OnExit()
 	data.uID=1;				
 	data.uFlags=0;
 	Shell_NotifyIcon(NIM_DELETE,&data);
+
+	delete m_loadedModules;	
+	delete m_pythonScriptsDialog;		
+	delete m_moduleLooter;
+	delete m_moduleLight;
+	delete m_modulePlayerInfo;
+	delete m_moduleUH;
+	delete m_moduleGrouping;
+	delete m_moduleRestack;
+	delete m_moduleFluid;
+	delete m_moduleAim;
+	delete m_moduleFisher;
+	delete m_moduleSpellCaster;
+	delete m_moduleTradeMon;
+	delete m_moduleMemDebug;
+	delete m_moduleMapShow;
+	delete m_moduleMonsterShow;
+	delete m_moduleItemConfig;
+	delete m_moduleAutoGo;
+	delete m_moduleAutoAttack;
+	delete m_moduleRuneMaker;
+	delete m_moduleEater;
+	delete m_moduleCreatureInfo;
+	delete m_moduleResponder;
+	delete m_moduleMapHack;
+	delete m_moduleTeam;
+	delete m_moduleAntylogout;
+	delete m_moduleFps;
+	delete m_moduleLogin;
+	delete m_moduleXRay;
+
 	
 	ExitProcess(0);	
 }
@@ -1040,7 +1071,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.16.3",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.17.1",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
@@ -1088,7 +1119,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=1.16.3,tm=%d,",tm);
+		fprintf(f,"version=1.17.1,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
