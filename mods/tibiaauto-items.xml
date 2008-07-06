@@ -1,4 +1,4 @@
-<!-- Tibia Items for Tibia 8.11 -->
+<!-- Tibia Items for Tibia 8.20 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
@@ -38,11 +38,11 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-
-                <const code="addrMCInject" value="0xF8961"/>
-		<const code="addrXRay1" value="0x4C4FBC"/>
-		<const code="addrXRay2" value="0x4C4FC4"/>
-		<const code="addrFunRevealCName1" value="0x4DF473"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
+ 
+                <const code="addrMCInject" value="0x100D01"/> 
+		<const code="addrXRay1" value="0x4CD5FC"/> 
+		<const code="addrXRay2" value="0x4CD604"/> 
+		<const code="addrFunRevealCName1" value="0x4E7A13"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -50,49 +50,51 @@
                 <const code="addrSelfPosY" value="0"/>
                 <const code="addrSelfPosZ" value="0"/>
 
-	        <const code="addrSelfFlags" value="0x613AF8"/> <!-- +50A0 -->
-                <const code="addrSkillFistPercLeft" value="0x613AFC"/>
-                <const code="addrSkillFist" value="0x613B18"/>
-                <const code="addrSkillFish" value="0x613B30"/>
-                <const code="addrAttackedCreature" value="0x613B3C"/>
-                <const code="addrCap" value="0x613B40"/>
-                <const code="addrSoulPoints" value="0x613B48"/>
-                <const code="addrManaMax" value="0x613B4C"/>
-                <const code="addrMana" value="0x613B50"/>
-                <const code="addrMlvlPercLeft" value="0x613B54"/>
-                <const code="addrMlvl" value="0x613B5C"/>
-                <const code="addrLvl" value="0x613B60"/>
-                <const code="addrExp" value="0x613B64"/> <!-- +50A0 -->
-                <const code="addrHPMax" value="0x613B68"/>
-                <const code="addrHP" value="0x613B6C"/>  <!-- -->
-                <const code="addrSelfId" value="0x613B70"/>
-                <const code="addrCurrentTileToGo" value="0x613B78"/>
-                <const code="addrTilesToGo" value="0x613B7C"/>
-                <const code="addrGoZ" value="0x613BAC"/>
-                <const code="addrGoY" value="0x613BB0"/>
-                <const code="addrGoX" value="0x613BB4"/>
-                <const code="addrBattleMax" value="0x613BC8"/>
-                <const code="addrBattleMin" value="0x613BCC"/>
-                <const code="addrFirstCreature" value="0x613BD0"/>   <!-- +50A0 -->
-                <const code="addrCurrentTm" value="0x61B60C"/> <!-- +50D0 -->
-		<const code="addrBackpack" value="0x61C070"/>  <!-- -->
-                <const code="addrRightHand" value="0x61C088"/>
-		<const code="addrLeftHand" value="0x61C094"/>
-                <const code="addrSlotArrow" value="0x61C0C4"/>
-                <const code="addrFirstContainer" value="0x61C0D0"/>
-                <const code="addrTradeCountSelf" value="0x61DFB0"/>
-                <const code="addrTradeFirstItemSelf" value="0x61DFB4"/>
-                <const code="addrTradeCountPartner" value="0x61E488"/>
-                <const code="addrTradeFirstItemPartner" value="0x61E48C"/> <!-- -->
-		<const code="addrCurrentWindow" value="0x61E984"/> <!-- +50D0 -->
-                <const code="addrMapStart" value="0x6234D8"/> <!-- ? -->
-                <const code="addrMiniMapStart" value="0x6234F8"/>  <!-- ? -->
-                <const code="addrModeAttackPlayers" value="0x76909C"/> <!-- ? -->
-                <const code="addrModeFollow" value="0x7690A0"/> <!-- ? -->
-                <const code="addrModeAttackType" value="0x7690A4"/>  <!-- ? -->
-		<const code="addrConnectionState" value="0x76C2C8"/> <!-- +54D0 -->
+	        <const code="addrSelfFlags" value="0x621BF8"/>  <!-- !0xE100 -->
+                <const code="addrSkillFistPercLeft" value="0x621BFC"/>
+                <const code="addrSkillFist" value="0x621C18"/>
+                <const code="addrSkillFish" value="0x621C30"/>
+                <const code="addrAttackedCreature" value="0x621C30"/>
+                <const code="addrCap" value="0x621C40"/>
+                <const code="addrSoulPoints" value="0x621C48"/>
+                <const code="addrManaMax" value="0x621C4C"/>
+                <const code="addrMana" value="0x62FD4C"/>
+                <const code="addrMlvlPercLeft" value="0x621C54"/>
+                <const code="addrMlvl" value="0x621C5C"/>
+                <const code="addrLvl" value="0x621C60"/>
+                <const code="addrExp" value="0x621C64"/> <!-- !0xE100 -->
+                <const code="addrHPMax" value="0x621C68"/>
+                <const code="addrHP" value="0x621C6C"/>  <!-- -->
+                <const code="addrSelfId" value="0x621C70"/>
+                <const code="addrCurrentTileToGo" value="0x621C78"/>
+                <const code="addrTilesToGo" value="0x621C7C"/>
+                <const code="addrGoZ" value="0x621CAC"/>
+                <const code="addrGoY" value="0x621CB0"/>
+                <const code="addrGoX" value="0x621CB4"/>
+                <const code="addrBattleMax" value="0x621CC8"/>
+                <const code="addrBattleMin" value="0x621CCC"/>
+                <const code="addrFirstCreature" value="0x621CD0"/>   <!-- !0xE100 -->
+                <const code="addrCurrentTm" value="0x629758"/> <!-- !0xE14C -->
+		<const code="addrBackpack" value="0x62A1A8"/>  <!-- -->
+                <const code="addrRightHand" value="0x62A1C0"/>
+		<const code="addrLeftHand" value="0x62A1CC"/> 
+                <const code="addrSlotArrow" value="0x62A1FC"/> <!-- !0xE138 -->
 
-		<const code="addrFps" value="0x76CE0C"/> <!-- lookup: Surface.cpp --> <!-- +54D0 -->
+                <const code="addrFirstContainer" value="0x62A208"/>
+		<const code="addrTradeCountSelf" value="0x62C0E8"/>
+                <const code="addrTradeFirstItemSelf" value="0x62C0EC"/>
+                <const code="addrTradeCountPartner" value="0x62C5C0"/>
+                <const code="addrTradeFirstItemPartner" value="0x62C5C4"/> <!-- -->
+
+		<const code="addrCurrentWindow" value="0x62CABC"/> <!-- !0xE138 -->
+                <const code="addrMapStart" value="0x631610"/> <!-- ? -->
+                <const code="addrMiniMapStart" value="0x631630"/>  
+                <const code="addrModeAttackPlayers" value="0x7771D0"/> <!-- !0xE134 -->
+                <const code="addrModeFollow" value="0x7771D4"/> <!-- ? -->
+                <const code="addrModeAttackType" value="0x7771D8"/>  <!-- !0xE134 -->
+		<const code="addrConnectionState" value="0x77A3F8"/> <!-- !0xE130 -->
+
+		<const code="addrFps" value="0x77AF3C"/> <!-- lookup: Surface.cpp --> <!-- ?0xE130  -->
 
    
 
