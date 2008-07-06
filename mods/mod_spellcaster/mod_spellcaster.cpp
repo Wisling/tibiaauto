@@ -114,7 +114,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int flags = reader.getSelfEventFlags();
 		
 		//T4: First try to heal/also uses paralysis cure here
-		if (config->life && (self->hp<=config->lifeHp || self->hp<=config->vitaHp || self->hp<=config->granHp || self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
+		//Lets not change this if statement again for a while plz
+		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.sayWhisper(config->lifeSpell);
@@ -129,7 +130,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				sender.sayWhisper("exura gran");
 				Sleep(700);
 			}
-			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
+			else if(self->mana >= config->exuraSpellMana && (config->exuraSpell && self->hp<=config->exuraHp || config->paralysisSpell && (flags & 32) == 32)) {
 				sender.sayWhisper("exura");
 				Sleep(700);
 			}
