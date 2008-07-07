@@ -54,7 +54,7 @@
                 <const code="addrSkillFistPercLeft" value="0x621BFC"/>
                 <const code="addrSkillFist" value="0x621C18"/>
                 <const code="addrSkillFish" value="0x621C30"/>
-                <const code="addrAttackedCreature" value="0x621C30"/>
+                <const code="addrAttackedCreature" value="0x621C3c"/>
                 <const code="addrCap" value="0x621C40"/>
                 <const code="addrSoulPoints" value="0x621C48"/>
                 <const code="addrManaMax" value="0x621C4C"/>
