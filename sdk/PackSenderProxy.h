@@ -35,10 +35,13 @@ public:
 	void say(const char *buf);	
 	void sayWhisper(const char *buf);
 	void sayYell(const char *buf);
+	void sayNPC(const char *msg);
 	void tell(char *msg, char *playerName);
-	void sayOnChan(char *msg, int channelId);
+	void sayOnChan(char *msg, int channelId1,int channelId2);
 	void logout();
 	void stepMulti(int *direction,int size);
+	void npcSell(int objectId,int qty);
+	void npcBuy(int objectId,int qty);
 
 	void closeContainer(int contNr);
 	void attackMode(int mode,int follow);
