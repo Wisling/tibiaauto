@@ -562,7 +562,7 @@ void CPackSender::tell(char *msg, char *playerName)
 	retbuf[0]=l%256;
 	retbuf[1]=l/256;
 	retbuf[2]=0x96;
-	retbuf[3]=0x04;
+	retbuf[3]=0x06;
 	retbuf[4]=strlen(playerName)%256;
 	retbuf[5]=strlen(playerName)/256;	
 	sprintf(retbuf+6,"%s",playerName);	
@@ -573,7 +573,22 @@ void CPackSender::tell(char *msg, char *playerName)
 	sendPacket(retbuf);	
 }
 
-void CPackSender::sayOnChan(char *msg, int channelId)
+void CPackSender::sayNPC(char *buf)
+{
+	char retbuf[65536];
+
+	retbuf[0]=strlen(buf)+4;
+	retbuf[1]=0;
+	retbuf[2]=0x96;
+	retbuf[3]=0x04;
+	retbuf[4]=strlen(buf);
+	retbuf[5]=0;
+	sprintf(retbuf+6,"%s",buf);
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::sayOnChan(char *msg, int channelId1,int channelId2)
 {
 	char retbuf[65536];
 	int l=strlen(msg)+2+2+2;
@@ -581,12 +596,44 @@ void CPackSender::sayOnChan(char *msg, int channelId)
 	retbuf[0]=l%256;
 	retbuf[1]=l/256;
 	retbuf[2]=0x96;
-	retbuf[3]=0x05;
-	retbuf[4]=channelId%256;
-	retbuf[5]=channelId/256;
+	retbuf[3]=channelId1%256;
+	retbuf[4]=channelId2%256;
+	retbuf[5]=0;
 	retbuf[6]=strlen(msg)%256;
 	retbuf[7]=strlen(msg)/256;	
 	sprintf(retbuf+8,"%s",msg);			
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::npcBuy(int objectId,int qty)
+{
+	char retbuf[256];
+
+	retbuf[0]=0x5;
+	retbuf[1]=0x0;
+
+	retbuf[2]=0x7a;
+	retbuf[3]=objectId&0xff;
+	retbuf[4]=(objectId>>8)&0xff;
+	retbuf[5]=(qty>>8)&0xff;	
+	retbuf[6]=0;	
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::npcSell(int objectId,int qty)
+{
+	char retbuf[256];
+
+	retbuf[0]=0x5;
+	retbuf[1]=0x0;
+
+	retbuf[2]=0x7b;
+	retbuf[3]=objectId&0xff;
+	retbuf[4]=(objectId>>8)&0xff;	
+	retbuf[5]=(qty>>8)&0xff;	
+	retbuf[6]=0;
 
 	sendPacket(retbuf);
 }

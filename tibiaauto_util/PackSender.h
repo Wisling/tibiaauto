@@ -24,7 +24,8 @@ public:
 	void turnRight();
 	void turnLeft();
 	void tell(char *msg, char *playerName);
-	void sayOnChan(char *msg, int channelId);
+	void sayOnChan(char *msg, int channelId1,int channelId2);
+	void sayNPC(char *msg);
 	void useItemOnFloor(int objectId, int x, int y, int z);
 	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x,int y, int z, int quantity);
 	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
@@ -55,6 +56,8 @@ public:
 	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extrainfo);
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
+	void npcBuy(int objectId,int qty);
+	void npcSell(int objectId,int qty);
 	CPackSender();
 	virtual ~CPackSender();
 private:

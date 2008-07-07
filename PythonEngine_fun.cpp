@@ -833,6 +833,16 @@ static PyObject *tibiaauto_sender_sayYell(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+static PyObject *tibiaauto_sender_sayNPC(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	char *arg1;
+    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
+	sender.sayNPC(arg1);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 static PyObject *tibiaauto_sender_tell(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -849,8 +859,31 @@ static PyObject *tibiaauto_sender_sayOnChan(PyObject *self, PyObject *args)
 
 	char *arg1;
 	int arg2;
-    if (!PyArg_ParseTuple(args, "si", &arg1,&arg2)) return NULL;	
-	sender.sayOnChan(arg1,arg2);
+	int arg3;
+    if (!PyArg_ParseTuple(args, "sii", &arg1,&arg2,&arg3)) return NULL;	
+	sender.sayOnChan(arg1,arg2,arg3);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_npcBuy(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	int arg1;
+	int arg2;
+    if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
+	sender.npcBuy(arg1,arg2);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_npcSell(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	int arg1;
+	int arg2;
+    if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
+	sender.npcSell(arg1,arg2);
 	Py_INCREF(Py_None);
 	return Py_None;
 }

@@ -145,3 +145,6 @@ EXPORTS
 	memReadGetCreatureDeltaX @139
 	memReadGetCreatureDeltaY @140
 	packSenderStopAll @141
+	packSenderSayNPC @142
+	packSenderNpcSell @143
+	packSenderNpcBuy @144

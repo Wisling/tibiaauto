@@ -1036,16 +1036,22 @@ void InitialiseCreatureInfo()
 }
 
 
-void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, int colB, char *str, int origLen, int v10)
+
+void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, int colB, char *str, int origLen, int v10, int v11, int v12, int v13, int v14, int v15)
 {
 	int titleOffset=0;	
 	char convString[128];
-	sprintf(convString,str);
-	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int len, int v10);				
+	sprintf(convString,"%s",str);	
+	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, char *str, int len, int v10, int v11, int v12, int v13, int v14, int v15);
 	//Proto_fun fun=(Proto_fun)(0x4A2DC0); // OLD
-	Proto_fun fun=(Proto_fun)(0x4A94A0); // 8.20
+	Proto_fun fun=(Proto_fun)(0x4AAF50); // 8.20
 
-	if (fontNumber==2)
+	if (debugFile)
+	{
+		fprintf(debugFile,"myPlayerNameText(%d,%d,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d,%d)\n",v1,x,y,fontNumber,colR,colG,colB,convString,strlen(convString), v10, v11, v12, v13, v14, v15);
+		fflush(debugFile);
+	}
+	if (origLen>0&&str!=NULL&&fontNumber==2&&0)
 	{
 		char info1[128];
 		char info2[128];
@@ -1066,20 +1072,20 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 				break;
 			}
 		}				
-				
+						
 		if (strlen(info2)) 
 		{
-			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,info2,strlen(info2),v10);			
+			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,info2,strlen(info2),v10, v11, v12, v13, v14, v15);			
 			titleOffset+=14;
-		}
+		}		
 		if (strlen(info1)) 
 		{
-			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,info1,strlen(info1), v10);			
+			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,info1,strlen(info1), v10, v11, v12, v13, v14, v15);			
 			titleOffset+=14;
 		}
 	}
-		
-	fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,convString,strlen(convString), v10);	
+			
+	fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,str?convString:NULL,str?strlen(convString):origLen, v10, v11, v12, v13, v14, v15);	
 }
 
 
@@ -1087,10 +1093,14 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	typedef void (*Proto_fun)(int type,char *s);			
 	//Proto_fun fun=(Proto_fun)(0x5349C0); //OLD
-	Proto_fun fun=(Proto_fun)(0x537A30); //8.20
+	Proto_fun fun=(Proto_fun)(0x53DBE0); //8.20
 	
+	if (debugFile)
+	{
+		fprintf(debugFile,"got middle screen %d/%s\n",type,s);
+	}
 				
-	if (type==0x16)
+	if (type==0x18)
 	{
 		if (debugFile)
 		{
@@ -1111,7 +1121,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 
 
 
-	if (type!=0x16||time(NULL)>ignoreLookEnd) 
+	if (type!=0x18||time(NULL)>ignoreLookEnd) 
 	{ 
 		fun(type,s);
 	}					
@@ -1277,12 +1287,19 @@ void InitialisePlayerInfoHack()
 		
 	// lookup: szukac Text!=NULL az sie tresc funkcji wywolywanej zmatchuje
 	//trapFun(dwHandle,0x4A3F48+1,(unsigned int)myPlayerNameText); // OLD
-	//trapFun(dwHandle,0x4AC905+1,(unsigned int)myPlayerNameText); // 8.20
+	/*
+	trapFun(dwHandle,0x4AB761+1,(unsigned int)myPlayerNameText); // 8.20
+	trapFun(dwHandle,0x4AB95C+1,(unsigned int)myPlayerNameText); // 8.20
+	trapFun(dwHandle,0x4ABB52+1,(unsigned int)myPlayerNameText); // 8.20
+	trapFun(dwHandle,0x4ABD52+1,(unsigned int)myPlayerNameText); // 8.20
+	trapFun(dwHandle,0x4ABF4C+1,(unsigned int)myPlayerNameText); // 8.20
+	trapFun(dwHandle,0x4AC141+1,(unsigned int)myPlayerNameText); // 8.20
+	*/
 	
 
-	// lookup: TALK_MODE_BEYOND; ekran ponad	
+	// lookup: TALK_INFO_MESSAGE; this is inside of the function
 	//trapFun(dwHandle,0x412EA3+1,(unsigned int)myInterceptInfoMiddleScreen); // OLD
-	//trapFun(dwHandle,0x413B62+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.20
+	trapFun(dwHandle,0x413B43+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.20
 
 	
 	// lookup: TargetBuffer!=NULL; pierwsze wywolanie to jest srodek funkcji infomessage;

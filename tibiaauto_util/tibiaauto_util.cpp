@@ -347,10 +347,28 @@ void packSenderTell(char *msg, char *playerName)
 	sender.tell(msg,playerName);
 }
 
-void packSenderSayOnChan(char *msg, int channelId)
+void packSenderSayOnChan(char *msg, int channelId1,int channelId2)
 {
 	CPackSender sender;
-	sender.sayOnChan(msg,channelId);
+	sender.sayOnChan(msg,channelId1,channelId2);
+}
+
+void packSenderSayNPC(char *msg)
+{
+	CPackSender sender;
+	sender.sayNPC(msg);
+}
+
+void packSenderNpcSell(int objectId,int qty)
+{
+	CPackSender sender;
+	sender.npcSell(objectId,qty);
+}
+
+void packSenderNpcBuy(int objectId,int qty)
+{
+	CPackSender sender;
+	sender.npcBuy(objectId,qty);
 }
 
 void memReadSetMemIntValue(int address,int value)
