@@ -77,7 +77,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->channel){
 				if (channelTime+config->channelInterval < time(NULL)){
 					channelTime = time(NULL);
-					sender.sayOnChan(config->message,5);	//T4: 5 - Trade
+					sender.sayOnChan(config->message,7,5);	//T4: 7/5 - Trade
 				}
 			}
 			if (config->yell){

@@ -86,10 +86,7 @@ void CConfigDialog::OnTest()
 
 void CConfigDialog::OnTest2() 
 {	
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	sender.sayOnChan("aaaaaaaa",5);
-	sender.say("xxxx");
+	
 }
 
 void CConfigDialog::OnScan() 
