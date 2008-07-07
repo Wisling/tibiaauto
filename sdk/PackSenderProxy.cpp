@@ -288,6 +288,18 @@ void CPackSenderProxy::sayYell(const char *buf)
 		}
 	} 
 }
+void CPackSenderProxy::sayNPC(const char *buf)
+{
+	typedef void (*Proto_fun)(const char *buf);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderSayNPC");
+		if (fun)
+		{
+			fun(buf);
+		}
+	} 
+}
 void CPackSenderProxy::tell(char *msg, char *playerName)
 {
 	typedef void (*Proto_fun)(char *msg, char *playerName);
@@ -301,15 +313,41 @@ void CPackSenderProxy::tell(char *msg, char *playerName)
 	} 
 }
 
-void CPackSenderProxy::sayOnChan(char *msg, int channelId)
+void CPackSenderProxy::sayOnChan(char *msg, int channelId1,int channelId2)
 {
-	typedef void (*Proto_fun)(char *msg, int channelId);
+	typedef void (*Proto_fun)(char *msg, int channelId1,int channelId2);
 	if (dllModule)
 	{		
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderSayOnChan");
 		if (fun)
 		{
-			fun(msg,channelId);
+			fun(msg,channelId1,channelId2);
+		}
+	} 
+}
+
+void CPackSenderProxy::npcBuy(int objectId, int qty)
+{
+	typedef void (*Proto_fun)(int objectId, int qty);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderNpcBuy");
+		if (fun)
+		{
+			fun(objectId,qty);
+		}
+	} 
+}
+
+void CPackSenderProxy::npcSell(int objectId, int qty)
+{
+	typedef void (*Proto_fun)(int objectId, int qty);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderNpcSell");
+		if (fun)
+		{
+			fun(objectId,qty);
 		}
 	} 
 }

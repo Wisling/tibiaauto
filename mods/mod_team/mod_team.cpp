@@ -139,9 +139,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			int nickLen;
 			int msgLen;
 			char nickBuf[16384];
-			char msgBuf[16384];
-			char chanBuf[16384];
-			char timeBuf[128];
+			char msgBuf[16384];						
 			
 			memset(nickBuf,0,16384);
 			memset(msgBuf,0,16384);
@@ -353,9 +351,5 @@ char *CMod_teamApp::saveConfigParam(char *paramName)
 
 char *CMod_teamApp::getConfigParamName(int nr)
 {
-	switch (nr)
-	{
-	default:
-		return NULL;
-	}
+	return NULL;	
 }
