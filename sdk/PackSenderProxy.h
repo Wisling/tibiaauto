@@ -30,7 +30,7 @@ public:
 	void sendTAMessage(char *msg);
 	void useItemOnFloor(int objectId, int x, int y, int z);
 	void useItemInContainer(int objectId, int contNr, int pos);
-	void openContainerFromFloor(int objectId,int x,int y,int z,int targetBag);
+	void openContainerFromFloor(int objectId,int x,int y,int z,int pos,int targetBag);
 	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
 	void say(const char *buf);	
 	void sayWhisper(const char *buf);
