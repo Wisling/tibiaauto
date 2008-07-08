@@ -211,7 +211,7 @@ void CPackSenderProxy::useItemInContainer(int objectId, int contNr, int pos)
 	} 
 
 }
-void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z,int targetBag)
+void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
 {
 	typedef void (*Proto_fun)(int objectId,int x,int y,int z,int targetBag);
 	if (dllModule)

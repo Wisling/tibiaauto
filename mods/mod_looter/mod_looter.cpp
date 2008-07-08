@@ -149,7 +149,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						{
 							CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
 							int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);							
-							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,9);
+							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x,attackedCh->y),9);
 							CModuleUtil::waitForOpenContainer(9,1);
 							
 							delete cont9;
