@@ -296,7 +296,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 				Sleep(200);
 			}
 			// this is the depot chest so open it
-			sender.openContainerFromFloor(tileId,x,y,z,itemOnTopIndex(x,y),9);
+			sender.openContainerFromFloor(tileId,x,y,z,itemOnTopIndex(x-self->x,y-self->y),9);
 			CModuleUtil::waitForOpenContainer(9,true);
 			CTibiaContainer *cont = reader.readContainer(9);
 			int isOpen=cont->flagOnOff;
@@ -1171,7 +1171,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
 					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 					sender.moveObjectFromContainerToFloor(0xbd7, 1, 1, attackedCh->x, attackedCh->y, attackedCh->z, 1);
-					sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x,attackedCh->y),9);
+					sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),9);
 					
 					if (CModuleUtil::waitForOpenContainer(9,true)) {
 						if (config->debug) registerDebug("Open dead creature corpse (container 9)");
