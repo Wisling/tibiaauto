@@ -296,7 +296,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 				Sleep(200);
 			}
 			// this is the depot chest so open it
-			sender.openContainerFromFloor(tileId,x,y,z,itemOnTopIndex(attackedCh->x,attackedCh->y),9);
+			sender.openContainerFromFloor(tileId,x,y,z,itemOnTopIndex(x,y),9);
 			CModuleUtil::waitForOpenContainer(9,true);
 			CTibiaContainer *cont = reader.readContainer(9);
 			int isOpen=cont->flagOnOff;
