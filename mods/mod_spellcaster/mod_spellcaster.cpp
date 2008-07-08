@@ -114,7 +114,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int flags = reader.getSelfEventFlags();
 		
 		//T4: First try to heal/also uses paralysis cure here
-		if (config->life && (self->hp<=config->lifeHp || self->hp<=config->vitaHp || self->hp<=config->granHp || self->hp<=config->exuraHp || (config->paralysisSpell && flags & 32 == 32))) {
+		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
 				sender.sayWhisper(config->lifeSpell);
