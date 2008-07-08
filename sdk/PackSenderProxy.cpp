@@ -213,13 +213,13 @@ void CPackSenderProxy::useItemInContainer(int objectId, int contNr, int pos)
 }
 void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
 {
-	typedef void (*Proto_fun)(int objectId,int x,int y,int z,int targetBag);
+	typedef void (*Proto_fun)(int objectId,int x,int y,int z,int pos,int targetBag);
 	if (dllModule)
 	{		
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderOpenContainerFromFloor");
 		if (fun)
 		{
-			fun(objectId,x,y,z,targetBag);
+			fun(objectId,x,y,z,pos,targetBag);
 		}
 	} 
 
