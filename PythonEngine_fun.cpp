@@ -789,7 +789,7 @@ static PyObject *tibiaauto_sender_openContainerFromFloor(PyObject *self, PyObjec
 
 	int arg1,arg2,arg3,arg4,arg5;
     if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;	
-	sender.openContainerFromFloor(arg1,arg2,arg3,arg4,arg5);
+	sender.openContainerFromFloor(arg1,arg2,arg3,arg4,arg5,arg6);
 	Py_INCREF(Py_None);
 	return Py_None;
 }

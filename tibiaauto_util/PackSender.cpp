@@ -178,7 +178,7 @@ void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 	sendPacket(retbuf);
 }
 
-void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z,int targetBag)
+void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
 {
 	char retbuf[256];
 
@@ -194,7 +194,7 @@ void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z,int targ
 	retbuf[7]=z;	
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=2;	
+	retbuf[10]=pos;	
 	retbuf[11]=targetBag;	
 
 	sendPacket(retbuf);

@@ -46,7 +46,7 @@ public:
 	void stepUp();
 	void logout();
 	void useItemInContainer(int objectId,int contNr,int pos);
-	void openContainerFromFloor(int objectId,int x,int y,int z,int targetBag);
+	void openContainerFromFloor(int objectId,int x,int y,int z,int pos, int targetBag);
 	void say(const char *buf);	
 	void sayWhisper(const char *buf);	
 	void sayYell(const char *buf);	

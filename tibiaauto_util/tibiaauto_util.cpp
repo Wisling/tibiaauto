@@ -306,10 +306,10 @@ void packSenderUseItemInContainer(int objectId, int contNr, int pos)
 	CPackSender sender;
 	sender.useItemInContainer(objectId,contNr,pos);
 }
-void packSenderOpenContainerFromFloor(int objectId,int x,int y,int z,int targetBag)
+void packSenderOpenContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
 {
 	CPackSender sender;
-	sender.openContainerFromFloor(objectId,x,y,z,targetBag);
+	sender.openContainerFromFloor(objectId,x,y,z,pos,targetBag);
 }
 void packSenderOpenContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
 {
