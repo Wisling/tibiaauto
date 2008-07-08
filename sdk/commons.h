@@ -101,7 +101,7 @@ int isItemCovered(int x,int y,int *itemArr,int itemArrSize)
 }
 
 
-int itemOnTopCode(int x,int y)
+int itemOnTopIndex(int x,int y)
 {
 	CMemReaderProxy reader;
 	int pos;	
@@ -114,7 +114,19 @@ int itemOnTopCode(int x,int y)
 		{
 			continue;
 		}		
-		return tileId;
+		return pos;
+	}
+	return 0;
+}
+
+int itemOnTopCode(int x,int y)
+{
+
+	CMemReaderProxy reader;
+	int pos=itemOnTopIndex(x,y);
+	if (pos!=0)
+	{
+		return reader.mapGetPointItemId(point(x,y,0),pos);
 	}
 	return 0;
 }
