@@ -1,3 +1,7 @@
+1.17.5, 09.07.2008
+Enhancemens:
+ General: update to Tibia 8.21
+
 1.17.3, 08.07.2008
 Defects:
  General: various fixes to Tibia 8.20
