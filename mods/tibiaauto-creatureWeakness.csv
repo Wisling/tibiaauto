@@ -1,11 +1,11 @@
-Initialized,Immune,Immune,Immune,Immune,Immune,Immune,Immune,99999999
+Initialized,,,,,,,,
 Acolyte Of The Cult,Strong,,Energy,Strong,Death,Strong,Physical,390
 Adept Of The Cult,Strong,,Energy,Strong,Death,Strong,,430
 Amazon,,,,,Death,,Physical,110
-Ancient Scarab,,Fire,,Ice,,,Strong,1000
-Assassin,,,,,Death,,Strong,175
+Ancient Scarab,Immune,Fire,Strong,Ice,,,Strong,1000
+Assassin,,,,,Death,,Physical,175
 Azure Frog,,Fire,,Strong,,,,60
-Badger,Earth,Fire,Energy,Ice,Death,,,23
+Badger,,,,,,,,23
 Bandit,,,,,Death,,Physical,245
 Banshee,Immune,Immune,,,Immune,Holy,,1000
 Barbarian Bloodwalker,Earth,,Strong,Strong,Death,Strong,Strong,305
@@ -13,27 +13,28 @@ Barbarian Brutetamer,,,Strong,Strong,Death,Strong,Physical,145
 Barbarian Headsplitter,Earth,,Strong,Strong,Death,Strong,,100
 Barbarian Skullhunter,Earth,,Strong,Strong,Death,Strong,Strong,135
 Bat,Earth,,,,,,,30
-Bear,Strong,,,Ice,Death,Strong,,80
+Bear,,,,Ice,Death,Strong,,80
 Behemoth,Strong,Strong,Strong,Ice,Death,Strong,Strong,4000
 Beholder,Immune,Fire,,Strong,,,,260
-Betrayed Wraith,Immune,Immune,Immune,,Immune,Holy,,4200
+Betrayed Wraith,Immune,Immune,Immune,Strong,Immune,Holy,,4200
 Black Knight,Immune,Strong,Strong,Immune,Strong,Holy,Strong,1800
 Blightwalker,Immune,Strong,Strong,Strong,Immune,Holy,Physical,8900
 Blood Crab,Immune,Fire,Energy,Immune,,,Strong,290
 Blue Djinn,,Strong,Strong,Ice,Death,Strong,,330
+Bog Raider,Strong,Strong,Energy,Ice,Strong,Holy,Physical,1300
 Bonebeast,Immune,Fire,,,Immune,Holy,,515
 Braindeath,Immune,Fire,Strong,Strong,Immune,Holy,Strong,1225
-Bug,,Fire,,,,,,20
-Butterfly,Earth,Fire,Energy,Ice,Death,,,2
+Bug,,Fire,,,,,,29
+Butterfly,,,,,,,,2
 Carniphila,Immune,Fire,Strong,Strong,,,,255
 Carrion Worm,Strong,Fire,Strong,Ice,,,,145
-Cat,Earth,Fire,Energy,Ice,Death,,,20
+Cat,,,,,,,,20
 Cave Rat,,Fire,,,,,,30
 Centipede,Immune,Fire,Strong,Strong,,,,70
 Chakoya Toolshaper,,Strong,Energy,Immune,Death,Strong,,80
 Chakoya Tribewarden,,Strong,Energy,Immune,Death,Strong,,68
 Chakoya Windcaller,,Strong,Energy,Immune,Death,Strong,,84
-Chicken,Earth,Fire,Energy,Ice,Death,,,15
+Chicken,,,,,,,,15
 Cobra,Immune,Fire,,,,,,65
 Crab,Immune,Fire,Energy,Strong,,,,55
 Crocodile,Strong,Fire,Energy,Strong,,,Physical,105
@@ -46,13 +47,13 @@ Dark Apprentice,,,,,Death,,,225
 Dark Magician,Strong,Strong,Strong,Strong,Death,Strong,,325
 Dark Monk,,,,,Strong,Holy,Physical,190
 Dark Torturer,Strong,Immune,Strong,Ice,Strong,Holy,,7350
-Deer,Earth,Fire,Energy,Ice,Death,,,25
+Deer,,,,,,,,25
 Defiler,Immune,Fire,Strong,Strong,,,,3650
 Demon,Strong,Immune,Strong,Ice,Strong,Holy,Strong,8200
-Demon Skeleton,Immune,Immune,,,Immune,Holy,,400
+Demon Skeleton,Strong,Immune,Strong,Ice,Strong,Holy,Strong,8200
 Destroyer,Strong,Strong,Immune,Ice,Strong,Holy,Strong,3700
 Diabolic Imp,Strong,Immune,,Ice,Strong,Holy,,1950
-Dog,Earth,Fire,Energy,Ice,Death,,,20
+Dog,,,,,,,,20
 Dragon,Strong,Immune,Strong,Ice,,,,1000
 Dragon Hatchling,Strong,Immune,Energy,Ice,,,,380
 Dragon Lord,Strong,Immune,Strong,Ice,,,,1900
@@ -60,21 +61,24 @@ Dragon Lord Hatchling,Strong,Immune,Energy,Ice,,,,750
 Dwarf,Strong,Fire,,,Death,,,90
 Dwarf Geomancer,Strong,Strong,Strong,Ice,Death,Strong,,380
 Dwarf Guard,Strong,Fire,,,Death,,Strong,245
+Dwarf Miner,Strong,Fire,,,Death,,,120
 Dwarf Soldier,Strong,Fire,,,Death,,,135
 Dworc Fleshhunter,Immune,Fire,,Ice,Death,,,85
 Dworc Venomsniper,Immune,Fire,,Ice,Death,Strong,,80
 Dworc Voodoomaster,Immune,Fire,,Ice,Death,Strong,,80
+Earth Elemental,Immune,Fire,Immune,Strong,Strong,Strong,Strong,650
 Efreet,Strong,Strong,Strong,Ice,Strong,Holy,,550
 Elder Beholder,Immune,Fire,Strong,Strong,Strong,,,500
 Elephant,,,Energy,Strong,,,Strong,320
 Elf,,,,,Death,Strong,,100
 Elf Arcanist,,Strong,Strong,,Strong,Holy,,220
 Elf Scout,,,,,Death,Strong,,160
+Energy Elemental,Earth,Immune,Immune,Immune,Strong,Strong,Strong,500
 Enlightened Of The Cult,,,Energy,Strong,Death,Strong,Physical,700
 Fire Devil,Strong,Immune,Strong,Ice,Strong,Holy,Strong,200
 Fire Elemental,,Immune,,Ice,Immune,,,280
-Flamingo,Earth,Fire,Energy,Ice,Death,,,25
-Frost Dragon,Immune,Immune,Energy,Immune,Death,,Strong,1800
+Flamingo,,,,,,,,25
+Frost Dragon,Immune,Immune,,Immune,,,Strong,1800
 Frost Dragon Hatchling,Immune,Immune,Energy,Immune,,,,800
 Frost Giant,,,,Immune,,,,270
 Frost Giantess,,Strong,Energy,Immune,Death,Strong,,275
@@ -83,10 +87,13 @@ Fury,Earth,Immune,Energy,Strong,Death,Strong,Physical,4100
 Gargoyle,Immune,Fire,,,Strong,,Strong,250
 Gazer,Immune,Fire,Strong,Strong,,,,120
 Ghost,Immune,,,,Immune,,Immune,150
-Ghoul,Strong,,Strong,Strong,Immune,,,100
+Ghoul,Strong,,Strong,Strong,Immune,Holy,,100
 Giant Spider,Immune,Fire,Strong,Strong,,,,1300
 Goblin,Earth,,Strong,,Death,Strong,,50
+Goblin Assassin,Earth,,Strong,,Death,Strong,,75
+Goblin Scavenger,Earth,,Strong,,Death,Strong,,60
 Green Djinn,,Strong,Strong,Ice,Strong,Holy,Strong,330
+Grim Reaper,Strong,Fire,Energy,Strong,Strong,Holy,Strong,4100
 Hand of Cursed Fate,Immune,Immune,Immune,Ice,Immune,Holy,,10500
 Hellfire Fighter,,Immune,Strong,Ice,Strong,,Strong,3800
 Hellhound,Strong,Immune,Strong,Ice,,Holy,,7500
@@ -94,7 +101,7 @@ Hero,Strong,Strong,Strong,Strong,Death,Strong,Strong,1400
 Hunter,,,,,,Strong,Physical,150
 Husky,,,,,,,,140
 Hyaena,,,,,,,,60
-Hydra,Immune,,Energy,Strong,,Strong,Strong,2350
+Hydra,Immune,,Energy,Strong,,Strong,Physical,2350
 Ice Golem,,Immune,Energy,Immune,Immune,Immune,Strong,385
 Ice Witch,Strong,Strong,Energy,Immune,Death,Strong,,540
 Island Troll,,,,,,,,50
@@ -104,12 +111,15 @@ Larva,Immune,Fire,Strong,Ice,,,,70
 Lich,Immune,,Strong,,Immune,Holy,,880
 Lion,Strong,,,Ice,Death,Strong,,80
 Lizard Sentinel,Immune,Fire,Strong,Strong,,,,265
-Lizard Snakecharmer,Immune,Fire,Strong,Strong,,,,325
+Lizard Snakecharmer,Immune,Fire,Strong,Strong,,,Physical,325
 Lizard Templar,Immune,Fire,Strong,Strong,,,,410
 Lost Soul,Immune,Immune,Strong,Strong,Immune,Holy,,8500
 Mammoth,Strong,Fire,,Strong,,,Strong,320
 Marid,Strong,Strong,Strong,Ice,Death,Strong,,550
-Merlkin,,Strong,Strong,Ice,Death,Strong,,230
+Massive Earth Elemental,Immune,Fire,Strong,Immune,Strong,Strong,Strong,1330
+Massive Energy Elemental,Earth,Immune,Immune,Immune,Strong,Strong,Strong,1100
+Massive Water Elemental,Immune,Immune,Energy,Immune,Strong,Strong,Strong,1250
+Merlkin,,Strong,Strong,Ice,Death,Strong,,235
 Minotaur,,Strong,,Ice,Death,Strong,,100
 Minotaur Archer,,Strong,,Ice,Death,Strong,,100
 Minotaur Guard,,Strong,,Ice,Death,Strong,,185
@@ -154,17 +164,19 @@ Rat,Strong,,,Ice,Death,Strong,,20
 Rotworm,,,,,,,,65
 Scarab,Immune,Fire,Strong,Strong,,,Strong,320
 Scorpion,Immune,Fire,Strong,Ice,,,,45
+Sea Serpent,,Strong,Energy,Immune,Death,,Physical,3200
 Seagull,,,,,,,,25
 Serpent Spawn,Immune,Fire,Energy,Strong,,,,3000
 Sheep,,Fire,,,,,,20
 Sibang,,Strong,,Ice,Death,Strong,,225
 Silver Rabbit,,,,,,,,15
 Skeleton,,,,,Immune,Holy,,50
+Skeleton Warrior,,,,,Immune,Holy,,65
 Skunk,,,,,,,,20
 Slime,Immune,Fire,Energy,Strong,,,,150
 Smuggler,,,,,Death,,Physical,130
 Snake,Immune,Fire,Strong,Ice,,,,15
-Son of Verminor,Immune,Strong,Strong,Ice,,,,8500
+Son of Verminor,Immune,Strong,Strong,,,,,8500
 Spectre,Immune,Fire,Energy,Strong,Immune,,Strong,1350
 Spider,,Fire,,,,,,20
 Spit Nettle,Immune,Fire,Immune,Strong,,,,150
@@ -180,16 +192,17 @@ Toad,Strong,Fire,,Strong,,,,135
 Tortoise,Strong,Fire,,Strong,,,Strong,185
 Troll,Earth,,Strong,,Death,Strong,,50
 Troll Champion,Earth,,Strong,,Death,Strong,,75
-Undead Jester,,,Energy,,,,,375
 Undead Dragon,Immune,Immune,,Strong,Immune,Holy,Strong,8350
-Valkyrie,,Strong,,Strong,Death,Strong,Strong,190
-Vampire,Immune,Fire,,,Immune,,Strong,450
+Valkyrie,,Strong,,Strong,Death,Strong,Physical,190
+Vampire,Immune,Fire,,,Immune,Holy,Strong,475
 War Wolf,Strong,,,Ice,Death,Strong,,140
-Warlock,Strong,Immune,Immune,Immune,,Holy,Physical,3200
+Warlock,Strong,Immune,Immune,Immune,,Holy,Physical,3500
 Wasp,Immune,Fire,,,,,,35
 Water Elemental,Immune,Immune,Energy,Immune,Strong,Strong,Strong,550
 Wild Warrior,,,,,Death,Strong,Physical,135
 Winter Wolf,,Strong,Energy,Strong,Death,Strong,,30
+Wisp,Strong,,Strong,,Immune,,Strong,115
 Witch,Strong,,Immune,,Death,,Physical,300
-Wolf,Strong,,,Ice,Death,Strong,,25
+Wolf,,,,Ice,Death,Strong,,25
+Wyrm,Strong,Strong,Immune,Ice,Death,,,1825
 Wyvern,Immune,,Strong,Strong,,,,795
