@@ -649,7 +649,7 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 	CTibiaContainer *cont = reader.readContainer(containerNr);
 	CTibiaContainer *contCarrying = reader.readContainer(containerCarrying);
 	int looted = 0;
-	if (cont->flagOnOff)//Akilez: viewed as unnecessary but left for potentially unseen reason
+	if (cont->flagOnOff)
 	{
 		int itemNr;
 		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)		
@@ -667,7 +667,6 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 					if (tile->stackable)
 					{						
 						// if item is stackable then try to find a suitable stack for it
-						;
 						for (int stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
 						{
 							CTibiaItem *stackedItem=(CTibiaItem *)contCarrying->items.GetAt(stackedItemPos);
@@ -677,11 +676,14 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 								targetPos=stackedItemPos;
 								//Akilez: Stackable item overflow goes back into container at the same position
 								if ((stackedItem->quantity + item->quantity) > 100) itemNr++;//Akilez: recheck this space in the container for lootables
+								moved = min(item->quantity,100-stackedItem->quantity);
+								stackedItem->quantity += moved;
+								item->quantity -= moved;
 								break;
 							}
 						}	
 					}
-					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,item->quantity?item->quantity:1);
+					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
 					looted++;
 					break;
 				}
