@@ -1,3 +1,11 @@
+1.17.6, ??.07.2008
+Defects:
+ Cavebot: Freezing after random period of time fixed.
+ Autolooter: Fixed bug causing "Sorry Not Possible" when opening corpses
+Enhancemens:
+ Creature Info: Updated creature database to Tibia 8.2
+ Creature Info: Added availability of <weakness>,<strength>,<immunity>,<noeffect> tags to display for creatures.
+
 1.17.5, 09.07.2008
 Enhancemens:
  General: update to Tibia 8.21
