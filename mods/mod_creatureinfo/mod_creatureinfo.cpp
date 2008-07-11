@@ -771,7 +771,7 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 			sprintf(svalue,"Hly,");
 		if (data->death==amt)
 			sprintf(svalue,"Dth,");
-		svalue[strlen(svalue)-1] = '.';
+		svalue[strlen(svalue)-1] = '/0';
 	}else if (!strcmpi(tagName,"description")){
 		if (lstrlen(data->description)){
 			sprintf(svalue,"%s",data->description);
