@@ -141,7 +141,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		else if(config->poisonSpell && flags & 1 == 1) {
 			for (int i = 0; i<6; i++) {
 				for (int j = 0; j<10; j++) {
-					char word = reader.getMemIntValue(0x77BA58+i*10+j);//Wis: updated to 8.20 NEEDS TO BE UPDATED WITH EVERY NEW TIBIA VERSION, or assigned to a constant in items.xml 
+					char word = reader.getMemIntValue(0x77EA58+i*10+j);//Wis: updated to 8.20 NEEDS TO BE UPDATED WITH EVERY NEW TIBIA VERSION, or assigned to a constant in items.xml 
 					if (word % 0x100 == 0) text[i*10+j] = ' '; 
 					text[i*10+j] = word%0x100;
 				}				
