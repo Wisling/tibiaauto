@@ -4,7 +4,7 @@
 Version=1
 ClassCount=2
 Class1=CMod_maphackApp
-LastClass=CConfigDialog
+LastClass=CMod_maphackApp
 NewFileInclude2=#include "mod_maphack.h"
 ResourceCount=1
 NewFileInclude1=#include "stdafx.h"
@@ -17,6 +17,7 @@ Type=0
 HeaderFile=mod_maphack.h
 ImplementationFile=mod_maphack.cpp
 Filter=N
+LastObject=CMod_maphackApp
 
 [DLG:IDD_CONFIG]
 Type=1
