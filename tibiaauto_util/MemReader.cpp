@@ -586,7 +586,7 @@ void CMemReader::writeDisableRevealCName()
 {
 	unsigned char *buf=(unsigned char *)malloc(2);	
 	buf[0]=0x75;
-	buf[1]=0x49;	
+	buf[1]=0x40;	
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
 	/*
 	buf[0]=0x46;

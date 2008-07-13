@@ -184,6 +184,21 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (m_processId==-1)
 		ExitProcess(0);
 
+	unsigned char buf[5];
+	int versionOk=0;
+	CTibiaItemProxy itemProxy;
+	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
+	buf[0]=buf[1]=0;
+	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
+	if (buf[0]==0x90&&buf[1]==0x90) versionOk=1;
+	if (buf[0]==0x75&&buf[1]==0x40) versionOk=1;
+	
+	if (!versionOk)
+	{		
+		AfxMessageBox("tibia.exe version mismatch! Terminating Tibia Auto!");
+		ExitProcess(0);
+	}
+
 	CMemUtil::setGlobalProcessId(m_processId);
 	
 				
@@ -1071,7 +1086,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {		
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.17.5",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.17.6",NULL,NULL,NULL,NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin() 
@@ -1119,7 +1134,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=1.17.5,tm=%d,",tm);
+		fprintf(f,"version=1.17.6,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
