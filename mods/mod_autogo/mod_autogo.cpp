@@ -782,7 +782,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (config->sound&TRIGGER_MESSAGE)
 					alarmSound(TRIGGER_MESSAGE);
 			}
-			if (config->optionsMessage&MESSAGE_PRIVATE && !isSpell && msg && msg->type == 4){
+			if (config->optionsMessage&MESSAGE_PRIVATE && !isSpell && msg && msg->type == 6){
 				alarm |= TRIGGER_MESSAGE;
 				if (config->sound&TRIGGER_MESSAGE)
 					alarmSound(TRIGGER_MESSAGE);
