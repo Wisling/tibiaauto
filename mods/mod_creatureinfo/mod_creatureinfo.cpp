@@ -758,20 +758,20 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 			amt = 2;
 		}
 		if (data->physical==amt)
-			sprintf(svalue,"Phys,");
+			sprintf(svalue,"Ph,");
 		if (data->fire==amt)
-			sprintf(svalue,"Fire,");
+			sprintf(svalue,"Fr,");
 		if (data->ice==amt)
-			sprintf(svalue,"Ice,");
+			sprintf(svalue,"Ic,");
 		if (data->earth==amt)
-			sprintf(svalue,"Erth,");
+			sprintf(svalue,"Ea,");
 		if (data->energy==amt)
-			sprintf(svalue,"Engy,");
+			sprintf(svalue,"En,");
 		if (data->holy==amt)
-			sprintf(svalue,"Hly,");
+			sprintf(svalue,"Hl,");
 		if (data->death==amt)
-			sprintf(svalue,"Dth,");
-		svalue[strlen(svalue)-1] = '/0';
+			sprintf(svalue,"Dt,");
+		svalue[strlen(svalue)-1] = '\0';
 	}else if (!strcmpi(tagName,"description")){
 		if (lstrlen(data->description)){
 			sprintf(svalue,"%s",data->description);
