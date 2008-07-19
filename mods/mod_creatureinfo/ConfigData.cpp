@@ -22,8 +22,8 @@ CConfigData::CConfigData()
 	lstrcpy(player1,"<voc><level> <hp>{/<maxhp>}");
 	lstrcpy(player2,"{<guildrank> of }{<guildname>}{ (<guilddescription>)}");
 	monster=1;
-	lstrcpy(monster1,"<type> <hp>{/<maxhp>}");
-	lstrcpy(monster2,"{Exp <exp>} W:(<weakness>)");
+	lstrcpy(monster1,"<type> <hp>{/<maxhp>}W(<weakness>)");
+	lstrcpy(monster2,"{Exp <exp>}");
 	uniqueMonsterNames=1;
 	self=1;
 	lstrcpy(self1,"<voc><level> Hp:<hp>{/<maxhp>} Mana:<mana>/<maxmana>");
