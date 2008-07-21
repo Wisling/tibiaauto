@@ -1,0 +1,307 @@
+/*
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either version 2
+of the License, or (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  
+	You should have received a copy of the GNU General Public License
+	along with this program; if not, write to the Free Software
+	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+*/
+
+
+// mod_sorter.cpp : Defines the initialization routines for the DLL.
+//
+
+#include "stdafx.h"
+#include "mod_sorter.h"
+
+#include "ConfigDialog.h"
+#include "ConfigData.h"
+#include "TibiaContainer.h"
+#include "MemConstData.h"
+
+#include "MemReaderProxy.h"
+#include "PackSenderProxy.h"
+#include "TibiaItemProxy.h"
+#include "ModuleUtil.h"
+
+#ifdef _DEBUG
+#define new DEBUG_NEW
+#undef THIS_FILE
+static char THIS_FILE[] = __FILE__;
+#endif
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CMod_sorterApp
+
+BEGIN_MESSAGE_MAP(CMod_sorterApp, CWinApp)
+//{{AFX_MSG_MAP(CMod_sorterApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
+END_MESSAGE_MAP()
+
+//int initializeLootBags();
+int isStackable(int, int);
+
+/////////////////////////////////////////////////////////////////////////////
+// Tool thread function
+
+int toolThreadShouldStop=0;
+HANDLE toolThreadHandle;
+
+DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaItemProxy itemProxy;
+	CConfigData *config = (CConfigData *)lpParam;
+	char buf[32];
+	while (!toolThreadShouldStop) {			
+		int sorted=0;
+		int j=0;
+		for (int i = 0; i < 8; i++) {
+			if (!strlen(config->sortBags[i].slotNr[j].itemName))
+				break;
+			for (j = 0; j < 32; j++) {
+				//sprintf(buf, "Sort slotNr (i loop): %d\nSort item (j loop): %d", i + 1, j + 1);
+				//AfxMessageBox(buf);
+				if (!strlen(config->sortBags[i].slotNr[j].itemName))
+					break;
+				int sortItem = itemProxy.getObjectId(config->sortBags[i].slotNr[j].itemName);
+				//sprintf(buf, "ObjectID: %d",  sortItem);
+				//AfxMessageBox(buf);
+				for (int contNr = 0;contNr < 16;contNr++) {
+					if (contNr == i) contNr += 1;					 
+					CTibiaContainer *sortCont = reader.readContainer(contNr);
+					CTibiaContainer *destCont = reader.readContainer(i);
+					if (sortCont->flagOnOff) {
+						int count=sortCont->itemsInside;
+						//sprintf(buf, "Items inside slotNr %d: %d", contNr, count);
+						//AfxMessageBox(buf);
+						for (int itemNr = count - 1; itemNr >= 0; itemNr--) {
+							sortCont = reader.readContainer(contNr);
+							destCont = reader.readContainer(i);
+							CTibiaItem *item = (CTibiaItem *)sortCont->items.GetAt(itemNr);
+							if (item->objectId == sortItem) {
+								//sprintf(buf, "Object ID to sort: %d\nObject ID of currently read item: %d", sortItem, item->objectId);
+								//AfxMessageBox(buf);
+								if (destCont->flagOnOff && destCont->itemsInside < destCont->size || isStackable(sortItem, i)){
+									//sprintf(buf, "Bag #%d is %sopen and %sfull.", i + 1, destCont->flagOnOff?"":"not ", destCont->itemsInside<destCont->size?"not ":"");
+									//AfxMessageBox(buf);
+									int targetPos = destCont->size-1;
+									int moved = item->quantity?item->quantity:1;
+									CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+									if (tile->stackable) {						
+										for (int stackedItemPos = 0; stackedItemPos < destCont->itemsInside; stackedItemPos++) {
+											CTibiaItem *stackedItem = (CTibiaItem *)destCont->items.GetAt(stackedItemPos);
+											if (stackedItem->objectId == item->objectId && stackedItem->quantity < 100) {
+												targetPos = stackedItemPos;
+												if ((stackedItem->quantity + item->quantity) > 100) itemNr++;
+												moved = min(item->quantity,100-stackedItem->quantity);
+												break;
+											}
+										}	
+									}
+									sender.moveObjectBetweenContainers(sortItem, 0x40+contNr, itemNr,0x40+i, targetPos, moved);
+									if (moved == item->quantity  || moved == 1)
+										CModuleUtil::waitForItemsInsideChange(contNr, sortCont->itemsInside);
+								}
+								else {
+									int found = 0;
+									int findItem;
+									for (int k = i; k < 8; k++) {
+										for (int l = 0; l < 32; l++) {
+											findItem = itemProxy.getObjectId(config->sortBags[k].slotNr[l].itemName);
+											if (findItem == sortItem) 
+												found = 1;
+										}
+									}
+									if (!found) {
+										CTibiaItemProxy orphanedItem;
+										sprintf(buf, "No more bags configured for %s sorting!!!", orphanedItem.getName(findItem));
+										AfxMessageBox(buf);
+									}
+								}
+							}
+						}
+					}
+					delete sortCont;
+					delete destCont;
+				}
+				
+			}
+			j = 0;
+		}
+	}
+	toolThreadShouldStop=0;
+	return 0;
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+// CMod_sorterApp construction
+
+CMod_sorterApp::CMod_sorterApp() {
+	m_configDialog =NULL;
+	m_started=0;
+	m_configData = new CConfigData();	
+}
+
+CMod_sorterApp::~CMod_sorterApp() {
+	if (m_configDialog)
+		delete m_configDialog;
+	delete m_configData;	
+}
+
+char * CMod_sorterApp::getName() {
+	return "Auto Sorter";
+}
+
+int CMod_sorterApp::isStarted() {
+	return m_started;
+}
+
+void CMod_sorterApp::start() {	
+	superStart();
+	if (m_configDialog) 	{
+		m_configDialog->disableControls();
+		m_configDialog->activateEnableButton(true);
+	}
+	
+	DWORD threadId;
+	
+	toolThreadShouldStop=0;
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	m_started=1;
+}
+
+void CMod_sorterApp::stop() {
+	toolThreadShouldStop=1;
+	while (toolThreadShouldStop) {
+		Sleep(50);
+	};
+	m_started=0;
+	
+	if (m_configDialog)	{
+		m_configDialog->enableControls();
+		m_configDialog->activateEnableButton(false);
+	}
+} 
+
+void CMod_sorterApp::showConfigDialog() {
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	if (!m_configDialog) {
+		m_configDialog = new CConfigDialog(this);
+		m_configDialog->Create(IDD_CONFIG);
+		configToControls();
+	}
+	m_configDialog->ShowWindow(SW_SHOW);
+}
+
+void CMod_sorterApp::configToControls() {
+	if (m_configDialog) {		
+		m_configDialog->configToControls(m_configData);
+	}
+}
+
+void CMod_sorterApp::controlsToConfig() {
+	if (m_configDialog)	{
+		delete m_configData;
+		m_configData = m_configDialog->controlsToConfig();
+	}
+}
+
+void CMod_sorterApp::disableControls() {
+	if (m_configDialog)
+		m_configDialog->disableControls();
+}
+
+void CMod_sorterApp::enableControls() {
+	if (m_configDialog)
+		m_configDialog->enableControls();
+}
+
+
+char *CMod_sorterApp::getVersion() {
+	return "1.0";
+}
+
+int CMod_sorterApp::validateConfig(int showAlerts) {
+	if (initializeLootBags() == 0) {
+		AfxMessageBox("Not all bags are open!!\nPlease open all configured bags and restart!");
+		return 0;
+	}
+	if (initializeLootBags() == -1) {
+		AfxMessageBox("No sortable items configured!!\nPlease configure bags and restart!");
+		return 0;
+	}
+	return 1;
+}
+
+void CMod_sorterApp::resetConfig()
+{
+	m_configData = new CConfigData();
+}
+
+void CMod_sorterApp::loadConfigParam(char *paramName,char *paramValue) {
+}
+
+char *CMod_sorterApp::saveConfigParam(char *paramName) {
+	static char buf[1024];
+	buf[0]=0;
+	
+	return buf;
+}
+
+char *CMod_sorterApp::getConfigParamName(int nr)
+{
+	switch (nr)
+	{
+	default:
+		return NULL;
+	}
+}
+
+int CMod_sorterApp::initializeLootBags() {
+	for (int i = 0; i < 8; i++) {
+		if (m_configData->sortBags[i].slotNr[0].itemName[0] != '\0') {
+			//AfxMessageBox("At least one sortable item found");
+			if (CModuleUtil::waitForOpenContainer(i, true))
+				continue;
+			else 
+				return 0;
+		}
+		else if (i == 0)
+			return -1;
+		else 
+			break;
+	}
+	return 1;
+}
+
+int isStackable(int sortItem, int contNr) {
+	CMemReaderProxy reader;
+	CTibiaContainer *cont = reader.readContainer(contNr);
+	CTibiaTile *tile = reader.getTibiaTile(sortItem);
+	if (tile->stackable) {						
+		for (int stackedItemPos = 0; stackedItemPos < cont->itemsInside; stackedItemPos++) {
+			CTibiaItem *stackedItem = (CTibiaItem *)cont->items.GetAt(stackedItemPos);
+			if (stackedItem->objectId == sortItem && stackedItem->quantity < 100) {
+				delete cont;
+				delete tile;
+				return 1;
+			}
+		}	
+	}
+	delete cont;
+	delete tile;
+	return 0;
+}
+	
