@@ -1,0 +1,64 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_sorter - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_sorter.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\mod_sorter.rc"" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP216.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_sorter.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\ConfigData.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\ConfigDialog.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\exports.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\mod_sorter.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\proxy.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\TibiaContainer_impl.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP216.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP217.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_sorter.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP217.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP21A.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_sorter.pdb" /machine:I386 /def:".\mod_sorter.def" /out:"../mod_sorter.dll" /implib:"Release/mod_sorter.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_sorter.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_sorter.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP21A.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_sorter.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_sorter.lib and object Release/mod_sorter.exp
+
+
+
+<h3>Results</h3>
+mod_sorter.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>
