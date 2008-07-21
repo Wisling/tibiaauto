@@ -140,6 +140,25 @@ void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
 	return;
 }
 
+void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount)
+{
+	CMemReaderProxy reader;
+	int t;
+	for (t=0;t<70;t++)
+	{
+		CTibiaContainer *cont = reader.readContainer(contNr);
+		CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(origItemSlot);
+		if (cont->itemsInside!=origItemsCount || item->quantity != origItemQuantity)
+		{
+			delete cont;
+			return;
+		}
+		delete cont;
+		Sleep(30);
+	}
+	return;
+}
+
 void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
 {
 	CTibiaMapProxy tibiaMap;		
