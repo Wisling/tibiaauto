@@ -4,6 +4,12 @@ Enhancments:
  Added banker module.
  Updated Tibia client with buttons for new modules.
  Added new functions to detect change in items inside a bag if there was a item added to a stack.
+ Cavebot: Improved training weapon switcher to always have a weapon in hand.
+Defects:
+ Cavebot: Fixed timing of Suspend After Unreachable.
+ Items: Fixed Femur Hill walls and some ramps and ladders in the tiles.xml
+ Creature Info: Fixed bug with weakness,strength,immunity,noeffect tags to display for creatures
+
 1.17.6, 13.07.2008
 Defects:
  Cavebot: Freezing after random period of time fixed.
