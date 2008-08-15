@@ -43,7 +43,7 @@ RSC=rc.exe
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /MD /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /Yu"stdafx.h" /FD /c
-# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Yu"stdafx.h" /FD /c
+# ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x415 /d "NDEBUG" /d "_AFXDLL"
@@ -73,7 +73,7 @@ LINK32=link.exe
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD BASE RSC /l 0x415 /d "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x415 /fo"Debug/mod_sorter.res" /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x415 /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -109,11 +109,11 @@ SOURCE=.\mod_sorter.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\mod_sorter.rc
+SOURCE=.\mod_sorter.def
 # End Source File
 # Begin Source File
 
-SOURCE=.\mod_sorter.def
+SOURCE=.\mod_sorter.rc
 # End Source File
 # Begin Source File
 
