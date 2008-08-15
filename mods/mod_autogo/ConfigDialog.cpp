@@ -818,7 +818,7 @@ BOOL CConfigDialog::OnInitDialog()
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	int count = itemProxy.getItemsItemsCount();
-	for (int i=0;i<count;i++)
+	for (i=0;i<count;i++)
 	{
 		int objectId=itemProxy.getObjectId(itemProxy.getItemsItems(i));
 		CTibiaTile *tile = reader.getTibiaTile(objectId);

@@ -40,7 +40,7 @@
 		<const code="addrMCInject" value="0x102BB1"/>
 		<const code="addrXRay1" value="0x4CE26C"/>
 		<const code="addrXRay2" value="0x4CE274"/>
-		<const code="addrFunRevealCName1" value="???"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
+		<const code="addrFunRevealCName1" value="0x4E9603"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -78,13 +78,13 @@
 		<const code="addrLeftHand" value="0x62F1CC"/>
 		<const code="addrSlotArrow" value="0x62F1FC"/>
 
-		<const code="addrfirstcontainer" value="0x62F218"/>
+		<const code="addrfirstcontainer" value="0x62F208"/>
 		<const code="addrtradecountself" value="0x6310C8"/>
 		<const code="addrtradefirstitemself" value="0x6310EC"/>
 		<const code="addrtradecountpartner" value="0x6315A0"/>
 		<const code="addrtradefirstitempartner" value="0x6315C4"/> <!-- -->
 
-		<const code="addrcurrentwindow" value="0x???"/> <!-- +50D0 -->
+		<const code="addrcurrentwindow" value="0x631ABC"/> <!-- +50D0 -->
 		<const code="addrmapstart" value="0x636610"/> <!-- ? -->
 		<const code="addrminimapstart" value="0x636630"/>  <!-- ? -->
 		<const code="addrmodeattackplayers" value="0x77C1D0"/> <!-- ? -->
@@ -92,7 +92,7 @@
 		<const code="addrmodeattacktype" value="0x77C1D8"/>  <!-- ? -->
 		<const code="addrconnectionstate" value="0x77F3F8"/> <!-- +54D0 -->
 
-		<const code="addrfps" value="0x???"/> <!-- lookup: Surface.cpp --> <!-- +54D0 -->
+		<const code="addrfps" value="0x77FF3C"/> <!-- lookup: Surface.cpp --> <!-- +54D0 -->
 
    
 
