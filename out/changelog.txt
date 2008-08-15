@@ -1,10 +1,12 @@
-1.17.7, Anticipated
+1.18.0, 15.08.2008
 Enhancments:
+ General: updated to tibia client 8.22
  Added sorter module.
  Added banker module.
  Updated Tibia client with buttons for new modules.
  Added new functions to detect change in items inside a bag if there was a item added to a stack.
  Cavebot: Improved training weapon switcher to always have a weapon in hand.
+
 Defects:
  Cavebot: Fixed timing of Suspend After Unreachable.
  Items: Fixed Femur Hill walls and some ramps and ladders in the tiles.xml
