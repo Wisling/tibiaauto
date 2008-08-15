@@ -15,8 +15,8 @@
 class CModuleUtil  
 {
 public:
-	static void waitForItemsInsideChange(int contNr, int origItemsCount);
-	static void waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
+	static int waitForItemsInsideChange(int contNr, int origItemsCount);
+	static int waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty);
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15]);	
