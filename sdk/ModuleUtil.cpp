@@ -122,7 +122,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 }
 
 
-void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
+int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
 {
 	CMemReaderProxy reader;
 	int t;
@@ -132,15 +132,15 @@ void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
 		if (cont->itemsInside!=origItemsCount)
 		{
 			delete cont;
-			return;
+			return 1;
 		}
 		delete cont;
 		Sleep(30);
 	}
-	return;
+	return 0;
 }
 
-void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount)
+int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount)
 {
 	CMemReaderProxy reader;
 	int t;
@@ -151,12 +151,12 @@ void CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int ori
 		if (cont->itemsInside!=origItemsCount || item->quantity != origItemQuantity)
 		{
 			delete cont;
-			return;
+			return 1;
 		}
 		delete cont;
 		Sleep(30);
 	}
-	return;
+	return 0;
 }
 
 void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
