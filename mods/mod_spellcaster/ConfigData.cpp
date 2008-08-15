@@ -78,6 +78,8 @@ CConfigData::CConfigData()
 	exevoGranMasFlam=0;
 	exevoGranMasTera=0;
 	exevoGranMasFrigo=0;
+
+	disableWarning=0;
 }
 
 CConfigData::~CConfigData()
