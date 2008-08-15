@@ -68,7 +68,10 @@ int depotX=0,depotY=0,depotZ=0;
 int firstCreatureAttackTM=0;
 int currentPosTM=0;
 int creatureAttackDist=0;
-int unreachableSecondsLeft=0;
+int pauseAfterUnreachableTm=0;
+
+int lastTAMessageTm=0;
+int taMessageDelay=4;
 
 CTibiaMapProxy tibiaMap;
 
@@ -568,74 +571,77 @@ void depotDeposit(CConfigData *config) {
 /**
 * Make sure that some item of type objectId is in the location (e.g. hand).
 */
-void ensureItemInPlace(int outputDebug,int location, int locationAddress, int objectId) {
+int ensureItemInPlace(int outputDebug,int location, int locationAddress, int objectId) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaItem *item = reader.readItem(locationAddress);
-	int canProceed=0;
-	if (item->objectId==objectId) {
+	CTibiaItem *itemSlot = reader.readItem(locationAddress);
+
+	int hasNeededItem=0;
+	if (itemSlot->objectId==objectId) {
 		// everything's ok - no changes
-		delete item;
-		return;
+		return 1;
 	}
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_switchingWeapon;
-	while (item->objectId!=0) {
-		if (outputDebug) registerDebug("Next emptying ensureItemInPlace");
-		int contNr;
-		// location not empty so we must put away the item from it
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-			CTibiaContainer *cont = reader.readContainer(contNr);
-			if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-				// container has some free places
-				sender.moveObjectBetweenContainers(item->objectId,location,0,0x40+contNr,cont->size-1,item->quantity?item->quantity:1);
-				CModuleUtil::waitForItemsInsideChange(contNr,cont->itemsInside);
-				contNr=10000; // stop the loop
-				canProceed=1;
-			}
-			
-			delete cont;
-		}
-		delete item;
-		if (!canProceed) {
-			// means: we have no place in any container
-			sender.sendTAMessage("I've an invalid weapon in hand, and I can't move it anywhere!");
-			return;
-		}
-		item = reader.readItem(locationAddress);
-	}
-	
-	canProceed=0;
-	
-	while (item->objectId!=objectId) {
+
+	while (itemSlot->objectId!=objectId) {
 		if (outputDebug) registerDebug("Next moving item in ensureItemInPlace");
 		
-		// now the location is free, so we just need to find the good item and put it there
+		// Search for the item that should occupy the slot
 		CUIntArray itemsAccepted;
 		int contNr;
 		itemsAccepted.Add(objectId);
 		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-			CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-			if (item) {
+			CTibiaItem *itemWear = CModuleUtil::lookupItem(contNr,&itemsAccepted);
+			if (itemWear) {
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				if (cont->flagOnOff) {
-					sender.moveObjectBetweenContainers(item->objectId,0x40+contNr,item->pos,location,0,item->quantity?item->quantity:1);
-					CModuleUtil::waitForItemsInsideChange(contNr,cont->itemsInside);
-					contNr=10000; // stop the loot
-					canProceed=1;
+					if (cont->itemsInside>=cont->size && itemSlot->objectId!=0) {
+						// container with desired item is full and we need a place to put the item occupying the slot
+						int hasSpace=0;
+						for (int contNrSpace=0;contNrSpace<memConstData.m_memMaxContainers;contNrSpace++) {
+							CTibiaContainer *contSpace = reader.readContainer(contNrSpace);
+							if (contSpace->flagOnOff&&contSpace->itemsInside<contSpace->size) {
+								// container has some free places
+								sender.moveObjectBetweenContainers(itemSlot->objectId,location,0,0x40+contNrSpace,contSpace->size-1,itemSlot->quantity?itemSlot->quantity:1);
+								CModuleUtil::waitForItemsInsideChange(contNrSpace,contSpace->itemsInside);
+								hasSpace=1;
+								contNrSpace=10000; // stop the loop
+							}
+							delete contSpace;
+						}
+						if (!hasSpace) {
+							// means: we have no place in any container
+							if (time(NULL)-lastTAMessageTm>taMessageDelay){
+								lastTAMessageTm=time(NULL);
+								sender.sendTAMessage("I've an invalid weapon in hand, and I can't move it anywhere!");
+							}
+							return 0;
+						}
+
+					}
+					//Assert: we can simply switch the item to wear and the item in the slot OR the slot is empty
+					sender.moveObjectBetweenContainers(itemWear->objectId,0x40+contNr,itemWear->pos,location,0,itemWear->quantity?itemWear->quantity:1);
+					CModuleUtil::waitForItemChange(locationAddress,itemSlot->objectId);
+					contNr=10000; // stop the loop
+					hasNeededItem=1;
 				}
 				delete cont;
 			}
+			delete itemWear;
 		}
-		delete item;
-		if (!canProceed) {
-			// means: we have no place in any container
-			sender.sendTAMessage("I can't find the training/fight weapon in any container!");
-			return;
+		if (!hasNeededItem) {
+			//means: we cannot find the needed item
+			if (time(NULL)-lastTAMessageTm>taMessageDelay){
+				lastTAMessageTm=time(NULL);
+				sender.sendTAMessage("I can't find the training/fight weapon in any container!");
+			}
+			return 0;
 		}
-		item = reader.readItem(locationAddress);
+		itemSlot = reader.readItem(locationAddress);
 	}
-	delete item;
+	//delete itemSlot;// wis: causes heap debug error :S ,test before uncommenting
+	return 1;
 }
 
 /**
@@ -659,7 +665,10 @@ void trainingCheck(CConfigData *config, int alienFound, int attackingCreatures, 
 		if (config->fightWhenSurrounded&&attackingCreatures>2) canTrain=0;
 		if (canTrain) {
 			if (config->debug) registerDebug("Training: training mode");
-			ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
+			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain)){
+				registerDebug("traning check");
+				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight);
+			}
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_training;
 			if (config->bloodHit) {
 				sprintf(buf,"Training: inside blood hit control (%d-%d=%d)",time(NULL),lastAttackedCreatureHpDrop,time(NULL)-lastAttackedCreatureHpDrop);
@@ -674,7 +683,10 @@ void trainingCheck(CConfigData *config, int alienFound, int attackingCreatures, 
 		}
 		else {
 			if (config->debug) registerDebug("Training: fight mode");
-			ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight);
+			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
+				registerDebug("ATTACK!");
+				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
+			}
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_fighting;
 		}
 	}
@@ -975,7 +987,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int lastWaypointNr=0;
 	int lastStandingX=0,lastStandingY=0,lastStandingZ=0;
 	int walkerStandingEndTm=0;
-	unreachableSecondsLeft=0;
+	pauseAfterUnreachableTm=0;
 	targetX=targetY=targetZ=0;
 	int lastAttackedCreatureHp=0;
 	int lastAttackedCreatureHpDrop=0;
@@ -987,7 +999,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	firstCreatureAttackTM=0;
 	currentPosTM=0;
 	creatureAttackDist=0;
-	unreachableSecondsLeft=0;
+	pauseAfterUnreachableTm=0;
 	
 	int waypointsCount=0;
 	int i;
@@ -1117,10 +1129,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		memset(creatureBackAttackList,0x00,sizeof(int)*100);
 		
 		if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_monsterUnreachable) {
-			unreachableSecondsLeft--;
-			if (unreachableSecondsLeft<=0) {
+			if (time(NULL)<=pauseAfterUnreachableTm) {
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
-				unreachableSecondsLeft=0;
 				// reset found target
 				targetFound=0;
 				if (config->debug) registerDebug("Monster unreachable period end");
@@ -1133,7 +1143,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		if (config->trainingActivate&&!currentlyAttackedCreature) {
 			if (config->debug) registerDebug("Training: non training mode");
-			ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight);
+			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
+				registerDebug("Nobody");
+				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
+			}
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 		}
 		
@@ -1621,7 +1634,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									// reset targetFound to 0 (we don't want to attack an unreachable monster)
 									targetFound=0;
 									globalAutoAttackStateAttack=CToolAutoAttackStateAttack_monsterUnreachable;
-									unreachableSecondsLeft=config->suspendAfterUnreachable;
+									pauseAfterUnreachableTm=time(NULL)+config->suspendAfterUnreachable;
 								}
 							}
 							// for the blood hit control
@@ -1688,7 +1701,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					// and monster is > 1 cell from us
 					// reset targetFound to 0 (we don't want to attack an unreachable monster)
 					globalAutoAttackStateAttack=CToolAutoAttackStateAttack_monsterUnreachable;
-					unreachableSecondsLeft=config->suspendAfterUnreachable;
+					pauseAfterUnreachableTm=time(NULL)+config->suspendAfterUnreachable;
 					targetFound=0;
 					if (config->debug) registerDebug("Entering unreachable mode");
 				}
@@ -1818,10 +1831,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			delete self;
 			if (config->debug) registerDebug("End cavebot loop");
 		}
-	if (shareAlienBackattack) {
+	/*if (shareAlienBackattack) {
 		int zero=0;
 		sh_mem.SetValue(varName,&zero,4);
-	}
+	}*/
 	// cancel attacks
 	//sender.stopAll();
 	sender.attack(0);
