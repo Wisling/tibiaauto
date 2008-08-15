@@ -59,8 +59,11 @@
 #define IDC_TOOL_RUNEMAKER_TOSAFE       1021
 #define IDC_FPS                         1021
 #define IDC_TOOL_RUNEMAKER_ENABLE       1022
+#define IDC_TOOL_SORTER                 1022
 #define IDC_TOOL_RUNEMAKER_RUNESPELL    1023
+#define IDC_TOOL_BANKER                 1023
 #define IDC_TOOL_RUNEMAKER_MANA         1024
+#define IDC_TOOL_SELLER                 1024
 #define IDC_TOOL_RUNEMAKER_MANA_INFO    1025
 #define IDC_TOOL_RUNEMAKER_EXTERNAL     1026
 #define IDC_TOOL_RUNEMAKER_SAFE         1027

@@ -329,11 +329,11 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 239, 306
+IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 239, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.17.6 for Tibia 8.21"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+CAPTION "Tibia Auto v 1.17.7 for Tibia 8.21"
+FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,39,61,14
@@ -361,12 +361,12 @@ BEGIN
                     BS_PUSHLIKE | WS_TABSTOP,96,89,61,14
     CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,161,89,61,14
-    PUSHBUTTON      "Show map",IDC_TOOL_MAPSHOW,13,140,61,14
+    PUSHBUTTON      "Show map",IDC_TOOL_MAPSHOW,96,182,61,14
     CONTROL         "Auto attack",IDC_TOOL_AUTOATTACK,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,156,61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,182,61,14
     PUSHBUTTON      "Char info",IDC_TOOL_CHARINFO,96,119,61,14
     PUSHBUTTON      "Monsters",IDC_TOOL_MONSERSHOW,161,119,61,14
-    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,96,217,61,14,NOT 
+    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,96,243,61,14,NOT 
                     WS_VISIBLE
     CONTROL         "Trade monitor",IDC_TOOL_TRADEMON,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,135,61,14
@@ -375,35 +375,39 @@ BEGIN
     CONTROL         "Map hacks",IDC_TOOL_MAPHACK,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,161,151,61,14
     CONTROL         "Enable light",IDC_LIGHT,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,188,61,14
+                    BS_PUSHLIKE | WS_TABSTOP,13,140,61,14
     CONTROL         "Auto grouping",IDC_TOOL_AUTOGROUP,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,204,61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,156,61,14
     CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,220,61,14
     PUSHBUTTON      "Inject MC support",IDC_TOOL_INJECTMC,13,236,61,14
-    PUSHBUTTON      "Load config",IDC_LOAD,96,185,61,14
-    PUSHBUTTON      "Save config",IDC_SAVE,161,185,61,14
-    PUSHBUTTON      "Item config",IDC_TOOL_ITEMCONFIG,96,201,61,14
-    PUSHBUTTON      "Modules",IDC_LOADED_MODULES,161,201,61,14
-    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,161,217,61,14
-    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,90,241,142,
+    PUSHBUTTON      "Load config",IDC_LOAD,96,211,61,14
+    PUSHBUTTON      "Save config",IDC_SAVE,161,211,61,14
+    PUSHBUTTON      "Item config",IDC_TOOL_ITEMCONFIG,96,227,61,14
+    PUSHBUTTON      "Modules",IDC_LOADED_MODULES,161,227,61,14
+    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,161,243,61,14
+    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,90,264,142,
                     14
-    PUSHBUTTON      "EXIT",IDC_EXIT,7,288,61,14
+    PUSHBUTTON      "EXIT",IDC_EXIT,7,306,61,14
     CONTROL         "Logged as: unknown",IDC_LOGINNAME,"Static",
                     SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | WS_BORDER | 
                     WS_GROUP,7,7,225,14
     GROUPBOX        "AFK tools",IDC_STATIC,90,28,142,79
     GROUPBOX        "Information tools",IDC_STATIC,90,108,142,62
-    GROUPBOX        "Cave bot tools",IDC_STATIC,7,129,76,47
+    GROUPBOX        "Cave bot tools",IDC_STATIC,90,171,142,28
     GROUPBOX        "Fight tools",IDC_STATIC,7,28,76,97
-    GROUPBOX        "Other tools",IDC_STATIC,7,177,76,77
-    GROUPBOX        "Config",IDC_STATIC,90,175,142,61
+    GROUPBOX        "Other tools",IDC_STATIC,7,129,76,124
+    GROUPBOX        "Config",IDC_STATIC,90,200,142,61
     CONTROL         "",IDC_BROWSER_ADS,
-                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",0x0,73,262,159,
+                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",0x0,73,281,159,
                     40
     CONTROL         "XRay",IDC_TOOL_XRAY,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,96,135,61,14
-    PUSHBUTTON      "Button1",IDC_BUTTON1,13,258,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Button1",IDC_BUTTON1,13,288,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "Sort Loot",IDC_TOOL_SORTER,13,172,61,14
+    CONTROL         "Auto Banker",IDC_TOOL_BANKER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,188,61,14
+    PUSHBUTTON      "Auto Seller",IDC_TOOL_SELLER,13,204,61,14
 END
 
 
@@ -422,7 +426,7 @@ BEGIN
         VERTGUIDE, 13
         VERTGUIDE, 96
         TOPMARGIN, 7
-        BOTTOMMARGIN, 302
+        BOTTOMMARGIN, 322
         HORZGUIDE, 28
     END
 END

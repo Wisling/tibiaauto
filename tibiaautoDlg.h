@@ -69,6 +69,9 @@ public:
 	CStatic	m_infoMapShow;
 	CStatic	m_loginName;
 	CButton	m_light;
+	CButton	m_banker;
+	CButton	m_sorter;
+	CButton	m_seller;
 	CWebBrowser2	m_browserAds;
 	//}}AFX_DATA
 
@@ -134,6 +137,9 @@ protected:
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnToolXray();
+	afx_msg void OnToolSorter();
+	afx_msg void OnToolBanker();
+//	afx_msg void OnToolSeller();
 	afx_msg void OnButton1();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
@@ -183,6 +189,9 @@ private:
 	IModuleInterface *m_moduleFps;
 	IModuleInterface *m_moduleLogin;
 	IModuleInterface *m_moduleXRay;
+	IModuleInterface *m_moduleSorter;
+	IModuleInterface *m_moduleBanker;
+//	IModuleInterface *m_moduleSeller;
 };
 
 //{{AFX_INSERT_LOCATION}}
