@@ -1,4 +1,4 @@
-<!-- Tibia Items for Tibia 8.21 -->
+<!-- Tibia Items for Tibia 8.22 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
@@ -37,64 +37,62 @@
 
 		<!-- addresses -->
 		<const code="addrOffset" value="0x0"/>
-
- 
-                <const code="addrMCInject" value="0x102B91"/> 
-		<const code="addrXRay1" value="0x4CE02C"/> 
-		<const code="addrXRay2" value="0x4CE034"/> 
-		<const code="addrFunRevealCName1" value="0x4E9543"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
+		<const code="addrMCInject" value="0x102BB1"/>
+		<const code="addrXRay1" value="0x4CE26C"/>
+		<const code="addrXRay2" value="0x4CE274"/>
+		<const code="addrFunRevealCName1" value="???"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
-	        <const code="addrSelfPosX" value="0"/>
-                <const code="addrSelfPosY" value="0"/>
-                <const code="addrSelfPosZ" value="0"/>
+		<const code="addrSelfPosX" value="0"/>
+		<const code="addrSelfPosY" value="0"/>
+		<const code="addrSelfPosZ" value="0"/>
 
-	        <const code="addrSelfFlags" value="0x624BF8"/>  <!-- +0x3000  -->
-                <const code="addrSkillFistPercLeft" value="0x624BFC"/>
-                <const code="addrSkillFist" value="0x624C18"/>
-                <const code="addrSkillFish" value="0x624C30"/>
-                <const code="addrAttackedCreature" value="0x624C3c"/>
-                <const code="addrCap" value="0x624C40"/>
-                <const code="addrSoulPoints" value="0x624C48"/>
-                <const code="addrManaMax" value="0x624C4C"/>
-                <const code="addrMana" value="0x624c50"/>
-                <const code="addrMlvlPercLeft" value="0x624C54"/>
-                <const code="addrMlvl" value="0x624C5C"/>
-                <const code="addrLvl" value="0x624C60"/>
-                <const code="addrExp" value="0x624C64"/> <!-- +0x3000 -->
-                <const code="addrHPMax" value="0x624C68"/>
-                <const code="addrHP" value="0x624C6C"/>  <!-- -->
-                <const code="addrSelfId" value="0x624C70"/>
-                <const code="addrCurrentTileToGo" value="0x624C78"/>
-                <const code="addrTilesToGo" value="0x624C7C"/>
-                <const code="addrGoZ" value="0x624CAC"/>
-                <const code="addrGoY" value="0x624CB0"/>
-                <const code="addrGoX" value="0x624CB4"/>
-                <const code="addrBattleMax" value="0x624CC8"/>
-                <const code="addrBattleMin" value="0x624CCC"/>
-                <const code="addrFirstCreature" value="0x624CD0"/>   <!-- -->
-                <const code="addrCurrentTm" value="0x62C758"/> <!-- -->
-		<const code="addrBackpack" value="0x62D1A8"/>  <!-- -->
-                <const code="addrRightHand" value="0x62D1C0"/>
-		<const code="addrLeftHand" value="0x62D1CC"/> 
-                <const code="addrSlotArrow" value="0x62D1FC"/> <!-- -->
+		<const code="addrSelfFlags" value="0x626BF8"/> <!-- +50A0 -->
+		<const code="addrSkillFistPercLeft" value="0x626BFC"/>
+		<const code="addrSkillFist" value="0x626C18"/>
+		<const code="addrSkillFish" value="0x626C30"/>
+		<const code="addrAttackedCreature" value="0x626C3C"/>
+		<const code="addrCap" value="0x626C40"/>
+		<const code="addrSoulPoints" value="0x626C48"/>
+		<const code="addrManaMax" value="0x626C4C"/>
+		<const code="addrMana" value="0x626C50"/>
+		<const code="addrMlvlPercLeft" value="0x626C54"/>
+		<const code="addrMlvl" value="0x626C5C"/>
+		<const code="addrLvl" value="0x626C60"/>
+		<const code="addrExp" value="0x626C64"/> <!-- +50A0 -->
+		<const code="addrHPMax" value="0x626C68"/>
+		<const code="addrHP" value="0x626C6C"/>  <!-- -->
+		<const code="addrSelfId" value="0x626C70"/>
+		<const code="addrCurrentTileToGo" value="0x626C78"/>
+		<const code="addrTilesToGo" value="0x626C7C"/>
+		<const code="addrGoZ" value="0x626CAC"/>
+		<const code="addrGoY" value="0x626CB0"/>
+		<const code="addrGoX" value="0x626CB4"/>
+		<const code="addrBattleMax" value="0x626CC8"/>
+		<const code="addrBattleMin" value="0x626CCC"/>
+		<const code="addrFirstCreature" value="0x626CD0"/>   <!-- +50A0 -->
+		<const code="addrCurrentTm" value="0x62E758"/> <!-- +50D0 -->
+		<const code="addrBackpack" value="0x62F208"/>  <!-- -->
+		<const code="addrRightHand" value="0x62F1C0"/>
+		<const code="addrLeftHand" value="0x62F1CC"/>
+		<const code="addrSlotArrow" value="0x62F1FC"/>
 
-                <const code="addrFirstContainer" value="0x62D208"/>
-		<const code="addrTradeCountSelf" value="0x62F0E8"/>
-                <const code="addrTradeFirstItemSelf" value="0x62F0EC"/>
-                <const code="addrTradeCountPartner" value="0x62F5C0"/>
-                <const code="addrTradeFirstItemPartner" value="0x62F5C4"/> <!-- +0x3000 --> 
+		<const code="addrfirstcontainer" value="0x62F218"/>
+		<const code="addrtradecountself" value="0x6310C8"/>
+		<const code="addrtradefirstitemself" value="0x6310EC"/>
+		<const code="addrtradecountpartner" value="0x6315A0"/>
+		<const code="addrtradefirstitempartner" value="0x6315C4"/> <!-- -->
 
-		<const code="addrCurrentWindow" value="0x62FABC"/> <!-- -->
-                <const code="addrMapStart" value="0x634610"/> <!-- ? -->
-                <const code="addrMiniMapStart" value="0x634630"/>  
-                <const code="addrModeAttackPlayers" value="0x77A1D0"/> <!-- -->
-                <const code="addrModeFollow" value="0x77A1D4"/> <!-- ? -->
-                <const code="addrModeAttackType" value="0x77A1D8"/>  <!-- +0x3000  -->
-		<const code="addrConnectionState" value="0x77D3F8"/> <!-- -->
+		<const code="addrcurrentwindow" value="0x???"/> <!-- +50D0 -->
+		<const code="addrmapstart" value="0x636610"/> <!-- ? -->
+		<const code="addrminimapstart" value="0x636630"/>  <!-- ? -->
+		<const code="addrmodeattackplayers" value="0x77C1D0"/> <!-- ? -->
+		<const code="addrmodefollow" value="0x77C1D4"/> <!-- ? -->
+		<const code="addrmodeattacktype" value="0x77C1D8"/>  <!-- ? -->
+		<const code="addrconnectionstate" value="0x77F3F8"/> <!-- +54D0 -->
 
-		<const code="addrFps" value="0x77DF3C"/> <!-- lookup: Surface.cpp --> <!-- +0x3000 -->
+		<const code="addrfps" value="0x???"/> <!-- lookup: Surface.cpp --> <!-- +54D0 -->
 
    
 
@@ -106,7 +104,7 @@
                 <const code="lengthMiniMap" value="131240"/>
                 <const code="lengthMiniMapPoint" value="112"/>
 
-		<const code="maxContainers" value="10"/>
+		<const code="maxContainers" value="9"/>
 		<const code="maxCreatures" value="150"/>
 		<const code="maxMapTiles" value="2016"/>
 
@@ -241,6 +239,7 @@
       <item id="0xb35" name="Blue Backpack"/>
       <item id="0xb35" name="Blue Backpack"/>
 
+    <item id="0xccd" name="Spear"/>
       <item id="0xe8b" name="White Mushroom"/>
       <item id="0xe10" name="Bread"/>
       <item id="0xe11" name="Roll"/>
@@ -317,6 +316,12 @@
         </foods> 
         
         <looted>
+<item id="0x1cd5" name="Mammoth Whopper"/> 
+<item id="0x1d11" name="Ice Cube"/> 
+<item id="0xc00" name="Wand Of Decay"/> 
+<item id="0x1c7a" name="Shard"/> 
+      <item id="0x6f5" name="Small Stone"/>
+    <item id="0xccd" name="Spear"/>
       <item id="0xd76" name="Bolt"/>
       <item id="0xbd7" name="Gold coins"/>
 <item id="0x1726"  name="Pirate Backpack"/>
