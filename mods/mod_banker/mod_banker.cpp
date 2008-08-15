@@ -72,12 +72,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CConfigData *config = (CConfigData *)lpParam;
 	reader.setGlobalVariable("cavebot_depositing", "false");
 	while (!toolThreadShouldStop) {
+		Sleep(200);
 		int attackedCreature = reader.getAttackedCreature();
 		//if (isDepositing() || !isCavebotOn() || shouldBank(config) && !attackedCreature) {
 		if (shouldBank(config) && !attackedCreature) {
 			if (findBanker(config)) {
 				reader.setGlobalVariable("caveboot_halfsleep","true");
 				if (moveToBanker(config)) {
+					//AfxMessageBox("Yup, found the banker!");
 					if (depositGold())
 						reader.setGlobalVariable("caveboot_halfsleep","false");
 				}
@@ -86,6 +88,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		else 
 			reader.setGlobalVariable("caveboot_halfsleep","false");
 	}
+	reader.setGlobalVariable("caveboot_halfsleep","false");
 	toolThreadShouldStop=0;
 	return 0;
 }
@@ -207,6 +210,7 @@ char *CMod_bankerApp::getConfigParamName(int nr) {
 int findBanker(CConfigData *config) {
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
+	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z) return 1; 
 	for (int x = 0; x < 10; x++) {
 		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->bankerX[x], config->bankerY[x], config->bankerZ[x], 0, config->path);
 		if (nearestBank.x && nearestBank.y && nearestBank.z) {
@@ -248,8 +252,6 @@ int depositGold() {
 	CTibiaContainer *cont;
 	int objectId = itemProxy.getValueForConst("GP");
 	int foundInBag = 0;
-	char buf[128];
-
 	for (int contNr = 0; contNr < 16; contNr++) {
 		cont = reader.readContainer(contNr);
 		int count = cont->itemsInside;
