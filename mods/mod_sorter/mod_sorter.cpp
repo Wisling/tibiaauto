@@ -86,8 +86,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						//sprintf(buf, "Items inside bag %d: %d", contNr, count);
 						//AfxMessageBox(buf);
 						for (int itemNr = count - 1; itemNr >= 0; itemNr--) {
-							sortCont = reader.readContainer(contNr);
-							destCont = reader.readContainer(i);
 							CTibiaItem *item = (CTibiaItem *)sortCont->items.GetAt(itemNr);
 							if (item->objectId == sortItem) {
 								//sprintf(buf, "Object ID to sort: %d\nObject ID of currently read item: %d", sortItem, item->objectId);
@@ -160,6 +158,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										itemNr = 0;
 									}
 								}
+							sortCont = reader.readContainer(contNr);
+							destCont = reader.readContainer(i);
+							int slotsChecked = count - itemNr;
+							itemNr = (sortCont->itemsInside < count - slotsChecked)?sortCont->itemsInside:itemNr;
 							}
 						}
 					}
