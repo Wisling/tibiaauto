@@ -72,7 +72,7 @@ BEGIN
     DEFPUSHBUTTON   "OK",IDOK,28,76,50,14
     CONTROL         "Enable Banking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,6,59,95,14
-    COMBOBOX        IDC_BANKER_BANKER,6,18,95,65,CBS_DROPDOWN | CBS_SORT | 
+    COMBOBOX        IDC_BANKER_BANKER,6,18,95,65,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
     LTEXT           "Banker:",IDC_STATIC,6,7,95,8
     LTEXT           "Minimum gold to bank:",IDC_STATIC,6,33,95,8
