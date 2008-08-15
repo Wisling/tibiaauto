@@ -1,6 +1,9 @@
 1.17.7, Anticipated
 Enhancments:
  Added sorter module.
+ Added banker module.
+ Updated Tibia client with buttons for new modules.
+ Added new functions to detect change in items inside a bag if there was a item added to a stack.
 1.17.6, 13.07.2008
 Defects:
  Cavebot: Freezing after random period of time fixed.
