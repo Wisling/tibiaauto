@@ -9,6 +9,7 @@ Defects:
  Cavebot: Fixed timing of Suspend After Unreachable.
  Items: Fixed Femur Hill walls and some ramps and ladders in the tiles.xml
  Creature Info: Fixed bug with weakness,strength,immunity,noeffect tags to display for creatures
+ Auto Go: Fixed ring for private messages.
 
 1.17.6, 13.07.2008
 Defects:
