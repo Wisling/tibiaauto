@@ -159,6 +159,24 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int orig
 	return 0;
 }
 
+void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)
+{
+	CMemReaderProxy reader;
+	int t;
+	for (t=0;t<70;t++)
+	{
+		CTibiaItem *item = reader.readItem(locationAddress);
+		if (item->objectId!=origItemId)
+		{
+			delete item;
+			return;
+		}
+		delete item;
+		Sleep(30);
+	}
+	return;
+}
+
 void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
 {
 	CTibiaMapProxy tibiaMap;		
