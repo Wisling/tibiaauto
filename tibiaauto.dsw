@@ -51,6 +51,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_banker"="..\tibiaauto-pub\mods\mod_banker\mod_banker.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_cavebot"="..\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -279,6 +291,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_sorter"="..\tibiaauto-pub\mods\mod_sorter\mod_sorter.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_spellcaster"="..\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -442,6 +466,12 @@ Package=<4>
     End Project Dependency
     Begin Project Dependency
     Project_Dep_Name tibiaautoinject3
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_banker
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_sorter
     End Project Dependency
 }}}
 
