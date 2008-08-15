@@ -86,6 +86,7 @@ public:
 	CButton m_exevoGranMasTera;
 	CButton m_exevoGranMasFrigo;
 	CButton	m_healList;
+	CButton	m_disableWarning;
 	//}}AFX_DATA
 
 
