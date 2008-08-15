@@ -99,6 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	int currentMonsterNumber = 0;
 	int lastCastTime = 0;
+	int lastWarning = 0;
 	double minCastTime = 0.7;
 	char text[128] = {0};
 	int best = 0;
@@ -133,9 +134,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				sender.sayWhisper("exura");
 				Sleep(700);
 			}
-			else {
-				sender.sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
-				Sleep(700);
+			else if (!config->disableWarning) {
+				//sprintf(text, "Time since warning: %dseconds\nLast Warning: %d\nCurrent Time: %d", time(NULL) - lastWarning/1000, lastWarning, time(NULL));
+				//AfxMessageBox(text);
+				if (time(NULL) - lastWarning >= 15 || !lastWarning) {
+					lastWarning = time(NULL);
+					sender.sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
+				}
 			}
 		}	
 		else if(config->poisonSpell && flags & 1 == 1) {
@@ -641,6 +646,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"ExevoGranMasFlam")) m_configData->exevoGranMasFlam=atoi(paramValue);
 	if (!strcmp(paramName,"ExevoGranMasTera")) m_configData->exevoGranMasTera=atoi(paramValue);
 	if (!strcmp(paramName,"ExevoGranMasFrigo")) m_configData->exevoGranMasFrigo=atoi(paramValue);
+	if (!strcmp(paramName,"DisableWarning")) m_configData->disableWarning=atoi(paramValue);
 	if (!strcmp(paramName,"whiteList")){
 		if (currentPos>99)
 			return;
@@ -711,6 +717,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"ExevoGranMasFlam")) sprintf(buf,"%d",m_configData->exevoGranMasFlam);
 	if (!strcmp(paramName,"ExevoGranMasTera")) sprintf(buf,"%d",m_configData->exevoGranMasTera);
 	if (!strcmp(paramName,"ExevoGranMasFrigo")) sprintf(buf,"%d",m_configData->exevoGranMasFrigo);
+	if (!strcmp(paramName,"DisableWarning")) sprintf(buf,"%d",m_configData->disableWarning);
 	if (!strcmp(paramName,"healList")){		
 		if (currentPos<100){				
 			if (IsCharAlphaNumeric(m_configData->healList[currentPos][0])){				
@@ -782,6 +789,7 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 53: return "sioSpellMana";
 	case 54: return "healList";
 	case 55: return "aoeAffect";
+	case 56: return "DisableWarning";
 	default:
 		return NULL;
 	}

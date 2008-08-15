@@ -82,6 +82,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, m_exevoGranMasTera);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, m_exevoGranMasFrigo);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_LIST, m_healList);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_DISABLE_WARNING, m_disableWarning);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -213,7 +214,7 @@ void CConfigDialog::disableControls() {
 	m_exevoGranMasFlam.EnableWindow(false);
 	m_exevoGranMasTera.EnableWindow(false);
 	m_exevoGranMasFrigo.EnableWindow(false);
-
+	m_disableWarning.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -258,7 +259,7 @@ void CConfigDialog::enableControls()
 		if (m_aoe.GetCheck()) {
 			OnToolSpellcasterAOE();
 		}
-
+	m_disableWarning.EnableWindow(true);
 }
 
 
@@ -321,6 +322,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_exevoGranMasFlam.SetCheck(configData->exevoGranMasFlam);
 	m_exevoGranMasTera.SetCheck(configData->exevoGranMasTera);
 	m_exevoGranMasFrigo.SetCheck(configData->exevoGranMasFrigo);
+	m_disableWarning.SetCheck(configData->disableWarning);
 	
 	memcpy(memWhiteList,configData->healList,3200);
 
@@ -395,6 +397,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->exevoGranMasFlam = m_exevoGranMasFlam.GetCheck();
 	newConfigData->exevoGranMasTera = m_exevoGranMasTera.GetCheck();
 	newConfigData->exevoGranMasFrigo = m_exevoGranMasFrigo.GetCheck();
+	newConfigData->disableWarning = m_disableWarning.GetCheck();
 
 	memcpy(newConfigData->healList,memWhiteList,3200);
 
