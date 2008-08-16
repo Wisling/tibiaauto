@@ -28,6 +28,7 @@ of the License, or (at your option) any later version.
 
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
+#include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
 #include "time.h"
 #include <fstream>
@@ -103,6 +104,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	double minCastTime = 0.7;
 	char text[128] = {0};
 	int best = 0;
+	CTibiaItemProxy itemProxy;
 	
 	if (isInitializedCreatures() == 0)
 		initalizeCreatures();
@@ -142,11 +144,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					sender.sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
 				}
 			}
-		}	
-		else if(config->poisonSpell && flags & 1 == 1) {
+		}			
+		else if(config->poisonSpell && (flags & 1 == 1)) {
 			for (int i = 0; i<6; i++) {
 				for (int j = 0; j<10; j++) {
-					char word = reader.getMemIntValue(0x77EA58+i*10+j);//Wis: updated to 8.20 NEEDS TO BE UPDATED WITH EVERY NEW TIBIA VERSION, or assigned to a constant in items.xml 
+					char word = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+i*10+j);//Wis: updated to 8.20 NEEDS TO BE UPDATED WITH EVERY NEW TIBIA VERSION, or assigned to a constant in items.xml 
 					if (word % 0x100 == 0) text[i*10+j] = ' '; 
 					text[i*10+j] = word%0x100;
 				}				
