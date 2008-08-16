@@ -48,7 +48,7 @@
 		<const code="addrSelfPosY" value="0"/>
 		<const code="addrSelfPosZ" value="0"/>
 
-		<const code="addrSelfFlags" value="0x626BF8"/> <!-- +50A0 -->
+		<const code="addrSelfFlags" value="0x626BF8"/> <!--  -->
 		<const code="addrSkillFistPercLeft" value="0x626BFC"/>
 		<const code="addrSkillFist" value="0x626C18"/>
 		<const code="addrSkillFish" value="0x626C30"/>
@@ -60,7 +60,7 @@
 		<const code="addrMlvlPercLeft" value="0x626C54"/>
 		<const code="addrMlvl" value="0x626C5C"/>
 		<const code="addrLvl" value="0x626C60"/>
-		<const code="addrExp" value="0x626C64"/> <!-- +50A0 -->
+		<const code="addrExp" value="0x626C64"/> <!--  -->
 		<const code="addrHPMax" value="0x626C68"/>
 		<const code="addrHP" value="0x626C6C"/>  <!-- -->
 		<const code="addrSelfId" value="0x626C70"/>
@@ -71,8 +71,8 @@
 		<const code="addrGoX" value="0x626CB4"/>
 		<const code="addrBattleMax" value="0x626CC8"/>
 		<const code="addrBattleMin" value="0x626CCC"/>
-		<const code="addrFirstCreature" value="0x626CD0"/>   <!-- +50A0 -->
-		<const code="addrCurrentTm" value="0x62E758"/> <!-- +50D0 -->
+		<const code="addrFirstCreature" value="0x626CD0"/>   <!-- 0 -->
+		<const code="addrCurrentTm" value="0x62E758"/> <!--  -->
 		<const code="addrBackpack" value="0x62F208"/>  <!-- -->
 		<const code="addrRightHand" value="0x62F1C0"/>
 		<const code="addrLeftHand" value="0x62F1CC"/>
@@ -84,15 +84,17 @@
 		<const code="addrtradecountpartner" value="0x6315A0"/>
 		<const code="addrtradefirstitempartner" value="0x6315C4"/> <!-- -->
 
-		<const code="addrcurrentwindow" value="0x631ABC"/> <!-- +50D0 -->
+		<const code="addrcurrentwindow" value="0x631ABC"/> <!--  -->
 		<const code="addrmapstart" value="0x636610"/> <!-- ? -->
 		<const code="addrminimapstart" value="0x636630"/>  <!-- ? -->
 		<const code="addrmodeattackplayers" value="0x77C1D0"/> <!-- ? -->
 		<const code="addrmodefollow" value="0x77C1D4"/> <!-- ? -->
 		<const code="addrmodeattacktype" value="0x77C1D8"/>  <!-- ? -->
-		<const code="addrconnectionstate" value="0x77F3F8"/> <!-- +54D0 -->
+		<const code="addrconnectionstate" value="0x77F3F8"/> <!--  -->
 
-		<const code="addrfps" value="0x77FF3C"/> <!-- lookup: Surface.cpp --> <!-- +54D0 -->
+
+		<const code="addrfps" value="0x77FF3C"/> <!-- lookup: Surface.cpp --> <!--  -->
+		<const code="addrWhiteMessage" value="0x0x780A58"/> <!--  -->
 
    
 
