@@ -1,0 +1,48 @@
+//{{NO_DEPENDENCIES}}
+// Microsoft Developer Studio generated include file.
+// Used by mod_seller.rc
+//
+#define IDD_CONFIG                      3000
+#define IDC_ENABLE                      3004
+#define IDC_SELLER_SELLER1              3016
+#define IDC_SELLER_SELLER2              3017
+#define IDC_SELLER_SELL1                3018
+#define IDC_SELLER_BUY1                 3019
+#define IDC_SELLER_SELL2                3020
+#define IDC_SELLER_BUY2                 3021
+#define IDC_SELLER_SELL2_ADD            3022
+#define IDC_SELLER_SELL2_REMOVE         3023
+#define IDC_SELLER_BUY2_ADD             3024
+#define IDC_SELLER_BUY2_REMOVE          3025
+#define IDC_SELLER_SELL1_ADD            3026
+#define IDC_SELLER_SELL1_REMOVE         3027
+#define IDC_SELLER_BUY1_ADD             3028
+#define IDC_SELLER_BUY1_REMOVE          3029
+#define IDC_SELLER_SELLER3              3030
+#define IDC_SELLER_SELL3                3031
+#define IDC_SELLER_BUY3                 3032
+#define IDC_SELLER_SELL3_ADD            3033
+#define IDC_SELLER_SELL3_REMOVE         3034
+#define IDC_SELLER_BUY3_ADD             3035
+#define IDC_SELLER_BUY3_REMOVE          3036
+#define IDC_SELLER_SELLER4              3037
+#define IDC_SELLER_SELL4                3038
+#define IDC_SELLER_BUY4                 3039
+#define IDC_SELLER_SELL4_ADD            3040
+#define IDC_SELLER_SELL4_REMOVE         3041
+#define IDC_SELLER_BUY4_ADD             3042
+#define IDC_SELLER_BUY4_REMOVE          3043
+#define IDC_SELLER_ITEM_LIST            3045
+#define IDC_SELLER_QUANTITY             3046
+#define IDC_SELLER_PRICE                3048
+
+// Next default values for new objects
+// 
+#ifdef APSTUDIO_INVOKED
+#ifndef APSTUDIO_READONLY_SYMBOLS
+#define _APS_NEXT_RESOURCE_VALUE        3002
+#define _APS_NEXT_COMMAND_VALUE         32771
+#define _APS_NEXT_CONTROL_VALUE         3048
+#define _APS_NEXT_SYMED_VALUE           3000
+#endif
+#endif
