@@ -68,6 +68,9 @@ CConfigData::CConfigData()
 	depotDropInsteadOfDepositon=0;
 	depotCap=0;
 	ensureLoot=0;
+
+	pauseAll=0;
+	pauseWalker=0;
 }
 
 CConfigData::~CConfigData()
