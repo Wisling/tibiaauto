@@ -73,7 +73,7 @@
 		<const code="addrBattleMin" value="0x626CCC"/>
 		<const code="addrFirstCreature" value="0x626CD0"/>   <!-- 0 -->
 		<const code="addrCurrentTm" value="0x62E758"/> <!--  -->
-		<const code="addrBackpack" value="0x62F208"/>  <!-- -->
+		<const code="addrBackpack" value="0x62F1a8"/>  <!-- -->
 		<const code="addrRightHand" value="0x62F1C0"/>
 		<const code="addrLeftHand" value="0x62F1CC"/>
 		<const code="addrSlotArrow" value="0x62F1FC"/>
@@ -94,7 +94,7 @@
 
 
 		<const code="addrfps" value="0x77FF3C"/> <!-- lookup: Surface.cpp --> <!--  -->
-		<const code="addrWhiteMessage" value="0x0x780A58"/> <!--  -->
+		<const code="addrWhiteMessage" value="0x0x781270"/> <!--  -->
 
    
 
