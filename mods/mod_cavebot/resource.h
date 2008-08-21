@@ -105,6 +105,8 @@
 #define IDC_SHARE_ALIEN_BACKATTACK      3037
 #define IDC_DEPOT_CAP                   3038
 #define IDC_ENSURE_LOOTING              3039
+#define IDC_CAVEBOT_PAUSE_ALL           3040
+#define IDC_CAVEBOT_PAUSE_WALKER        3041
 
 // Next default values for new objects
 // 
