@@ -75,6 +75,20 @@ int taMessageDelay=4;
 
 CTibiaMapProxy tibiaMap;
 
+int getWaypointsCount(CConfigData *config) {
+	int count=0;
+	int i;
+	for (i=0;i<100;i++) {
+		if (config->waypointList[i].x) {
+			count++; 
+		}
+		else {
+			break;
+		}
+	}
+	return count;
+}
+
 /**
 * Register cavebot debug.
 */
@@ -1001,22 +1015,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	creatureAttackDist=0;
 	pauseAfterUnreachableTm=0;
 	
-	int waypointsCount=0;
-	int i;
-	for (i=0;i<100;i++) {
-		if (config->waypointList[i].x) {
-			waypointsCount++; 
-		}
-		else {
-			break;
-		}
-	}
 	firstCreatureAttackTM=0;
 	currentPosTM=0;
 	for (int crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-		lastAttackTmCreatureId[i]=0;
-		lastAttackTmTm[i]=ch->lastAttackTm;
+		lastAttackTmCreatureId[crNr]=0;
+		lastAttackTmTm[crNr]=ch->lastAttackTm;
 		delete ch;
 	}
 	
@@ -1077,6 +1081,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			reader.writeCreatureDeltaXY(self->nr,0,0);
 		}
 		
+		int waypointsCount = getWaypointsCount(config);
+
 		/**
 		* Check whether we should go to a depot
 		*/
