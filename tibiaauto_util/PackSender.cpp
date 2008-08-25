@@ -616,8 +616,8 @@ void CPackSender::npcBuy(int objectId,int qty)
 	retbuf[2]=0x7a;
 	retbuf[3]=objectId&0xff;
 	retbuf[4]=(objectId>>8)&0xff;
-	retbuf[5]=(qty>>8)&0xff;	
-	retbuf[6]=0;	
+	retbuf[5]=0;	
+	retbuf[6]=qty;	
 
 	sendPacket(retbuf);
 }
@@ -632,8 +632,8 @@ void CPackSender::npcSell(int objectId,int qty)
 	retbuf[2]=0x7b;
 	retbuf[3]=objectId&0xff;
 	retbuf[4]=(objectId>>8)&0xff;	
-	retbuf[5]=(qty>>8)&0xff;	
-	retbuf[6]=0;
+	retbuf[5]=0;
+	retbuf[6]=qty;
 
 	sendPacket(retbuf);
 }
