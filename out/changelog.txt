@@ -5,6 +5,7 @@ Enhancments:
 
 Defects:
  Kernel: Fixed addrBackpack and addrWhiteMessage.
+ Kernel: Fixed packet for npcBuy and npcSell functions.
  Sellel: Completed Seller half of module.
 
 1.18.0, 15.08.2008
