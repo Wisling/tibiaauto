@@ -54,7 +54,6 @@ END_MESSAGE_MAP()
 // Tool thread function
 
 int toolThreadShouldStop=0;
-bool globalShouldGo = false;
 HANDLE toolThreadHandle;
 
 int findSeller(CConfigData *, int);
@@ -69,26 +68,55 @@ int individualShouldGo(CConfigData *, int);
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
+	int allAtOnce = 0;
 	while (!toolThreadShouldStop) {
-		Sleep(200);
+/*		for (int i=0;i<MAX_SELLERS;i++) {
+			char buf[2048];
+				sprintf(buf, "Seller: %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d", i, 
+					config->sellerList[i].position[0].sellerX, config->sellerList[i].position[0].sellerY, config->sellerList[i].position[0].sellerZ,
+					config->sellerList[i].position[1].sellerX, config->sellerList[i].position[1].sellerY, config->sellerList[i].position[1].sellerZ,
+					config->sellerList[i].position[2].sellerX, config->sellerList[i].position[2].sellerY, config->sellerList[i].position[2].sellerZ,
+					config->sellerList[i].position[3].sellerX, config->sellerList[i].position[3].sellerY, config->sellerList[i].position[3].sellerZ,
+					config->sellerList[i].position[4].sellerX, config->sellerList[i].position[4].sellerY, config->sellerList[i].position[4].sellerZ,
+					config->sellerList[i].position[5].sellerX, config->sellerList[i].position[5].sellerY, config->sellerList[i].position[5].sellerZ,
+					config->sellerList[i].position[6].sellerX, config->sellerList[i].position[6].sellerY, config->sellerList[i].position[6].sellerZ,
+					config->sellerList[i].position[7].sellerX, config->sellerList[i].position[7].sellerY, config->sellerList[i].position[7].sellerZ,
+					config->sellerList[i].position[8].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[8].sellerZ,
+					config->sellerList[i].position[9].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[9].sellerZ);
+				AfxMessageBox(buf);
+				sprintf(buf, "Seller: %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d", i, 
+					config->sellItem[i].tradeItem[0].itemName, config->sellItem[i].tradeItem[0].quantityBuySell, config->sellItem[i].tradeItem[0].salePrice,
+					config->sellItem[i].tradeItem[1].itemName, config->sellItem[i].tradeItem[1].quantityBuySell, config->sellItem[i].tradeItem[1].salePrice,
+					config->sellItem[i].tradeItem[2].itemName, config->sellItem[i].tradeItem[2].quantityBuySell, config->sellItem[i].tradeItem[2].salePrice,
+					config->sellItem[i].tradeItem[3].itemName, config->sellItem[i].tradeItem[3].quantityBuySell, config->sellItem[i].tradeItem[3].salePrice,
+					config->sellItem[i].tradeItem[4].itemName, config->sellItem[i].tradeItem[4].quantityBuySell, config->sellItem[i].tradeItem[4].salePrice,
+					config->sellItem[i].tradeItem[5].itemName, config->sellItem[i].tradeItem[5].quantityBuySell, config->sellItem[i].tradeItem[5].salePrice,
+					config->sellItem[i].tradeItem[6].itemName, config->sellItem[i].tradeItem[6].quantityBuySell, config->sellItem[i].tradeItem[6].salePrice,
+					config->sellItem[i].tradeItem[7].itemName, config->sellItem[i].tradeItem[7].quantityBuySell, config->sellItem[i].tradeItem[7].salePrice,
+					config->sellItem[i].tradeItem[8].itemName, config->sellItem[i].tradeItem[8].quantityBuySell, config->sellItem[i].tradeItem[8].salePrice,
+					config->sellItem[i].tradeItem[9].itemName, config->sellItem[i].tradeItem[9].quantityBuySell, config->sellItem[i].tradeItem[9].salePrice);
+				AfxMessageBox(buf);
+		}
+*/		Sleep(200);
 		int attackedCreature = reader.getAttackedCreature();
-		if (!globalShouldGo)
-			globalShouldGo = shouldGo(config);
-		if (globalShouldGo && !attackedCreature) {
+		if (allAtOnce || shouldGo(config) && !attackedCreature) {
+			allAtOnce = 1;
 			for (int i = 0; i < MAX_SELLERS; i++) {
-				if (individualShouldGo(config, i)) {
-					if (findSeller(config, i)) {
-						reader.setGlobalVariable("caveboot_halfsleep","true");
-						if (moveToSeller(config)) {
-							if (sellItems(config, i))
+				if (individualShouldGo(config, i) && findSeller(config, i)) {
+					reader.setGlobalVariable("caveboot_halfsleep","true");
+					if (moveToSeller(config)) {
+						config->targetX = config->targetY = config->targetZ = 0; 
+						if (sellItems(config, i)) {
+//							if (buyItems(config, i))
 								reader.setGlobalVariable("caveboot_halfsleep","false");
 						}
 					}
+				if (findSeller(config, i)) break;	
 				}
+				else if (i == MAX_SELLERS) allAtOnce = 0;
 			}
 		}
 		else
-			globalShouldGo = false;
 			reader.setGlobalVariable("caveboot_halfsleep","false");
 	}
 	reader.setGlobalVariable("caveboot_halfsleep","false");
@@ -211,7 +239,6 @@ char *CMod_SellerApp::getConfigParamName(int nr) {
 }
 
 int findSeller(CConfigData *config, int traderNum) {
-	//char buf[64];
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z) return 1; 
@@ -226,8 +253,6 @@ int findSeller(CConfigData *config, int traderNum) {
 		}
 		else if (x == 9) {
 			config->targetX = config->targetY = config->targetZ = 0;
-			//sprintf(buf, "Target Location: %d, %d, %d", config->targetX, config->targetY, config->targetZ);
-			//AfxMessageBox(buf);
 			delete self;
 			return 0;
 		}
@@ -258,6 +283,10 @@ int sellItems(CConfigData *config, int traderNum) {
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = 0;
+	sender.say("Hi");
+	Sleep (500);
+	sender.sayNPC("trade");
+	Sleep (500);
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
 		for (int contNr = 0; contNr < 16; contNr++) {
@@ -267,19 +296,12 @@ int sellItems(CConfigData *config, int traderNum) {
 				CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
 				if (item->objectId == objectId) {
 					itemCount = countAllItemsOfType(objectId);
-					sender.say("Hi");
-					Sleep (500);
-					sender.sayNPC("trade");
-					Sleep (500);
-					//char buf[64];
-					//sprintf(buf, "ObjectID: %d\nQuantity: 1", objectId);
-					//AfxMessageBox(buf);
 					sender.npcSell(objectId, itemCount);
-					Sleep (500);
-					sender.sayNPC("Yes");
+					Sleep(1000);
 					if (CModuleUtil::waitForItemsInsideChange(contNr, cont->itemsInside)) {
 						delete cont;
 						done = 1;
+						break;
 					}
 					delete cont;	
 					done = 0;
@@ -347,6 +369,7 @@ bool shouldGo(CConfigData *config) {
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	int count = 0;
+	bool should = false;
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		for (int j = 0; j < 32; j++) {
 			int objectId = itemProxy.getObjectId(config->sellItem[i].tradeItem[j].itemName);
@@ -354,12 +377,10 @@ bool shouldGo(CConfigData *config) {
 			//AfxMessageBox(buf);
 			count = countAllItemsOfType(objectId);
 			if (count && count >= config->sellItem[i].tradeItem[j].quantityBuySell)
-				return true;
-			else 
-				return false;
+				should = true;
 		}
 	}
-	return false;
+	return should;
 }
 
 int individualShouldGo(CConfigData *config, int traderNum) {
@@ -370,11 +391,9 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		if (countAllItemsOfType(objectId) >= 1)
+		if (objectId && countAllItemsOfType(objectId) >= 1)
 			return true;
-		else 
-			return false;
 	}
-	return 0;
+	return false;
 }
 

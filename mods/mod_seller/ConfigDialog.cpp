@@ -190,14 +190,16 @@ CConfigData * CConfigDialog::controlsToConfig() {
 			m_SellBox[i].GetText(j,newConfigData->sellItem[i].tradeItem[j].itemName);
 			for (int k = strlen(newConfigData->sellItem[i].tradeItem[j].itemName)-1;k>0;k--) {
 				if (newConfigData->sellItem[i].tradeItem[j].itemName[k]=='-' && newConfigData->sellItem[i].tradeItem[j].itemName[k + 1]=='>') {
-					memcpy(paramString,newConfigData->sellItem[i].tradeItem[j].itemName+j+2,strlen(newConfigData->sellItem[i].tradeItem[j].itemName)-j);
+					memcpy(paramString,newConfigData->sellItem[i].tradeItem[j].itemName+k+2,strlen(newConfigData->sellItem[i].tradeItem[j].itemName)-k);
 					newConfigData->sellItem[i].tradeItem[j].itemName[k]='\0';
 					break;
 				}
 			}
-			sprintf(paramString,"%d",newConfigData->sellItem[i].tradeItem[j].quantityBuySell);
+			newConfigData->sellItem[i].tradeItem[j].quantityBuySell = atoi(paramString);
+		}
+		for (j = 0; j < m_BuyBox[i].GetCount(); j++) {
 			m_BuyBox[i].GetText(j,newConfigData->buyItem[i].tradeItem[j].itemName);
-			for (k = strlen(newConfigData->buyItem[i].tradeItem[j].itemName)-1;k>0;k--)	{
+			for (int k = strlen(newConfigData->buyItem[i].tradeItem[j].itemName)-1;k>0;k--)	{
 				if (newConfigData->buyItem[i].tradeItem[j].itemName[k]==' ') {
 					memcpy(paramString,newConfigData->buyItem[i].tradeItem[j].itemName+j+1,strlen(newConfigData->buyItem[i].tradeItem[j].itemName)-j);
 					newConfigData->buyItem[i].tradeItem[j].itemName[k]='\0';
@@ -305,8 +307,7 @@ int initalizeSellers() {
 		sellerFile.getline(buf, 128, ',');
 		sellersInfo[sellerNum].yPos[9] = atoi(buf);
 		sellerFile.getline(buf, 128, '\n');
-		sellersInfo[sellerNum++].zPos[9] = atoi(buf);
-		
+		sellersInfo[sellerNum++].zPos[9] = atoi(buf);		
 	}
 	sellerFile.close();
 	
