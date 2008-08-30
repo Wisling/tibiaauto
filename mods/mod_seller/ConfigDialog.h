@@ -46,7 +46,8 @@ public:
 	CButton m_SellBoxAdd[MAX_SELLERS];
 	CButton m_SellBoxRemove[MAX_SELLERS];
 	CEdit m_quantityBuySell;
-	CEdit m_sellPrice;
+	CEdit m_buyPrice;
+	CEdit m_buyTriggerQuantity;
 	CButton	m_enable;
 	//}}AFX_DATA
 
