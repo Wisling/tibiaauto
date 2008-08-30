@@ -59,6 +59,7 @@ HANDLE toolThreadHandle;
 int findSeller(CConfigData *, int);
 int moveToSeller(CConfigData *);
 int sellItems(CConfigData *, int);
+int buyItems(CConfigData *, int);
 int isDepositing();
 int isCavebotOn();
 int countAllItemsOfType(int);
@@ -69,57 +70,96 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 	int allAtOnce = 0;
+	int buyOrSell = 0;
+	char *var;
+	int alreadySleeping = 0;
+	int sellerInvoked = 0;
 	while (!toolThreadShouldStop) {
 /*		for (int i=0;i<MAX_SELLERS;i++) {
 			char buf[2048];
-				sprintf(buf, "Seller: %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d", i, 
-					config->sellerList[i].position[0].sellerX, config->sellerList[i].position[0].sellerY, config->sellerList[i].position[0].sellerZ,
-					config->sellerList[i].position[1].sellerX, config->sellerList[i].position[1].sellerY, config->sellerList[i].position[1].sellerZ,
-					config->sellerList[i].position[2].sellerX, config->sellerList[i].position[2].sellerY, config->sellerList[i].position[2].sellerZ,
-					config->sellerList[i].position[3].sellerX, config->sellerList[i].position[3].sellerY, config->sellerList[i].position[3].sellerZ,
-					config->sellerList[i].position[4].sellerX, config->sellerList[i].position[4].sellerY, config->sellerList[i].position[4].sellerZ,
-					config->sellerList[i].position[5].sellerX, config->sellerList[i].position[5].sellerY, config->sellerList[i].position[5].sellerZ,
-					config->sellerList[i].position[6].sellerX, config->sellerList[i].position[6].sellerY, config->sellerList[i].position[6].sellerZ,
-					config->sellerList[i].position[7].sellerX, config->sellerList[i].position[7].sellerY, config->sellerList[i].position[7].sellerZ,
-					config->sellerList[i].position[8].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[8].sellerZ,
-					config->sellerList[i].position[9].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[9].sellerZ);
-				AfxMessageBox(buf);
-				sprintf(buf, "Seller: %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d", i, 
-					config->sellItem[i].tradeItem[0].itemName, config->sellItem[i].tradeItem[0].quantityBuySell, config->sellItem[i].tradeItem[0].salePrice,
-					config->sellItem[i].tradeItem[1].itemName, config->sellItem[i].tradeItem[1].quantityBuySell, config->sellItem[i].tradeItem[1].salePrice,
-					config->sellItem[i].tradeItem[2].itemName, config->sellItem[i].tradeItem[2].quantityBuySell, config->sellItem[i].tradeItem[2].salePrice,
-					config->sellItem[i].tradeItem[3].itemName, config->sellItem[i].tradeItem[3].quantityBuySell, config->sellItem[i].tradeItem[3].salePrice,
-					config->sellItem[i].tradeItem[4].itemName, config->sellItem[i].tradeItem[4].quantityBuySell, config->sellItem[i].tradeItem[4].salePrice,
-					config->sellItem[i].tradeItem[5].itemName, config->sellItem[i].tradeItem[5].quantityBuySell, config->sellItem[i].tradeItem[5].salePrice,
-					config->sellItem[i].tradeItem[6].itemName, config->sellItem[i].tradeItem[6].quantityBuySell, config->sellItem[i].tradeItem[6].salePrice,
-					config->sellItem[i].tradeItem[7].itemName, config->sellItem[i].tradeItem[7].quantityBuySell, config->sellItem[i].tradeItem[7].salePrice,
-					config->sellItem[i].tradeItem[8].itemName, config->sellItem[i].tradeItem[8].quantityBuySell, config->sellItem[i].tradeItem[8].salePrice,
-					config->sellItem[i].tradeItem[9].itemName, config->sellItem[i].tradeItem[9].quantityBuySell, config->sellItem[i].tradeItem[9].salePrice);
-				AfxMessageBox(buf);
+			sprintf(buf, "Seller: %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d", i, 
+				config->sellerList[i].position[0].sellerX, config->sellerList[i].position[0].sellerY, config->sellerList[i].position[0].sellerZ,
+				config->sellerList[i].position[1].sellerX, config->sellerList[i].position[1].sellerY, config->sellerList[i].position[1].sellerZ,
+				config->sellerList[i].position[2].sellerX, config->sellerList[i].position[2].sellerY, config->sellerList[i].position[2].sellerZ,
+				config->sellerList[i].position[3].sellerX, config->sellerList[i].position[3].sellerY, config->sellerList[i].position[3].sellerZ,
+				config->sellerList[i].position[4].sellerX, config->sellerList[i].position[4].sellerY, config->sellerList[i].position[4].sellerZ,
+				config->sellerList[i].position[5].sellerX, config->sellerList[i].position[5].sellerY, config->sellerList[i].position[5].sellerZ,
+				config->sellerList[i].position[6].sellerX, config->sellerList[i].position[6].sellerY, config->sellerList[i].position[6].sellerZ,
+				config->sellerList[i].position[7].sellerX, config->sellerList[i].position[7].sellerY, config->sellerList[i].position[7].sellerZ,
+				config->sellerList[i].position[8].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[8].sellerZ,
+				config->sellerList[i].position[9].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[9].sellerZ);
+			AfxMessageBox(buf);
+			sprintf(buf, "Seller: %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d", i, 
+				config->sellItem[i].tradeItem[0].itemName, config->sellItem[i].tradeItem[0].quantityBuySell, config->sellItem[i].tradeItem[0].salePrice,
+				config->sellItem[i].tradeItem[1].itemName, config->sellItem[i].tradeItem[1].quantityBuySell, config->sellItem[i].tradeItem[1].salePrice,
+				config->sellItem[i].tradeItem[2].itemName, config->sellItem[i].tradeItem[2].quantityBuySell, config->sellItem[i].tradeItem[2].salePrice,
+				config->sellItem[i].tradeItem[3].itemName, config->sellItem[i].tradeItem[3].quantityBuySell, config->sellItem[i].tradeItem[3].salePrice,
+				config->sellItem[i].tradeItem[4].itemName, config->sellItem[i].tradeItem[4].quantityBuySell, config->sellItem[i].tradeItem[4].salePrice,
+				config->sellItem[i].tradeItem[5].itemName, config->sellItem[i].tradeItem[5].quantityBuySell, config->sellItem[i].tradeItem[5].salePrice,
+				config->sellItem[i].tradeItem[6].itemName, config->sellItem[i].tradeItem[6].quantityBuySell, config->sellItem[i].tradeItem[6].salePrice,
+				config->sellItem[i].tradeItem[7].itemName, config->sellItem[i].tradeItem[7].quantityBuySell, config->sellItem[i].tradeItem[7].salePrice,
+				config->sellItem[i].tradeItem[8].itemName, config->sellItem[i].tradeItem[8].quantityBuySell, config->sellItem[i].tradeItem[8].salePrice,
+				config->sellItem[i].tradeItem[9].itemName, config->sellItem[i].tradeItem[9].quantityBuySell, config->sellItem[i].tradeItem[9].salePrice);
+			AfxMessageBox(buf);
 		}
-*/		Sleep(200);
+
+			sprintf(buf, "Buyer: %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\n", i, 
+				config->buyItem[i].tradeItem[0].itemName, config->buyItem[i].tradeItem[0].quantityBuySell, config->buyItem[i].tradeItem[0].salePrice, config->buyItem[i].tradeItem[0].triggerQuantity,
+				config->buyItem[i].tradeItem[1].itemName, config->buyItem[i].tradeItem[1].quantityBuySell, config->buyItem[i].tradeItem[1].salePrice, config->buyItem[i].tradeItem[1].triggerQuantity,
+				config->buyItem[i].tradeItem[2].itemName, config->buyItem[i].tradeItem[2].quantityBuySell, config->buyItem[i].tradeItem[2].salePrice, config->buyItem[i].tradeItem[2].triggerQuantity,
+				config->buyItem[i].tradeItem[3].itemName, config->buyItem[i].tradeItem[3].quantityBuySell, config->buyItem[i].tradeItem[3].salePrice, config->buyItem[i].tradeItem[3].triggerQuantity,
+				config->buyItem[i].tradeItem[4].itemName, config->buyItem[i].tradeItem[4].quantityBuySell, config->buyItem[i].tradeItem[4].salePrice, config->buyItem[i].tradeItem[4].triggerQuantity,
+				config->buyItem[i].tradeItem[5].itemName, config->buyItem[i].tradeItem[5].quantityBuySell, config->buyItem[i].tradeItem[5].salePrice, config->buyItem[i].tradeItem[5].triggerQuantity,
+				config->buyItem[i].tradeItem[6].itemName, config->buyItem[i].tradeItem[6].quantityBuySell, config->buyItem[i].tradeItem[6].salePrice, config->buyItem[i].tradeItem[6].triggerQuantity,
+				config->buyItem[i].tradeItem[7].itemName, config->buyItem[i].tradeItem[7].quantityBuySell, config->buyItem[i].tradeItem[7].salePrice, config->buyItem[i].tradeItem[7].triggerQuantity,
+				config->buyItem[i].tradeItem[8].itemName, config->buyItem[i].tradeItem[8].quantityBuySell, config->buyItem[i].tradeItem[8].salePrice, config->buyItem[i].tradeItem[8].triggerQuantity,
+				config->buyItem[i].tradeItem[9].itemName, config->buyItem[i].tradeItem[9].quantityBuySell, config->buyItem[i].tradeItem[9].salePrice, config->buyItem[i].tradeItem[9].triggerQuantity);
+			AfxMessageBox(buf);
+		}
+*/
+		Sleep(200);
+		var=reader.getGlobalVariable("caveboot_halfsleep");
+		if (var==NULL||strcmp(var,"true")) 
+			alreadySleeping = 0; 
+		else 
+			alreadySleeping = 1;
+		if (alreadySleeping && !sellerInvoked) continue;
+
 		int attackedCreature = reader.getAttackedCreature();
 		if (allAtOnce || shouldGo(config) && !attackedCreature) {
 			allAtOnce = 1;
 			for (int i = 0; i < MAX_SELLERS; i++) {
-				if (individualShouldGo(config, i) && findSeller(config, i)) {
+				buyOrSell = individualShouldGo(config, i); 
+				if (buyOrSell && findSeller(config, i)) {
 					reader.setGlobalVariable("caveboot_halfsleep","true");
+					sellerInvoked = 1;
 					if (moveToSeller(config)) {
 						config->targetX = config->targetY = config->targetZ = 0; 
-						if (sellItems(config, i)) {
-//							if (buyItems(config, i))
+						if (buyOrSell == 1) {
+							if (sellItems(config, i)) {
 								reader.setGlobalVariable("caveboot_halfsleep","false");
+								sellerInvoked = 0;
+							}
+						}
+						if(buyOrSell == 2) {
+							if (buyItems(config, i)) {
+								reader.setGlobalVariable("caveboot_halfsleep","false");
+								sellerInvoked = 0;
+							}
 						}
 					}
 				if (findSeller(config, i)) break;	
 				}
-				else if (i == MAX_SELLERS) allAtOnce = 0;
+				else if (!buyOrSell) allAtOnce = 0;
 			}
 		}
-		else
+		else {
 			reader.setGlobalVariable("caveboot_halfsleep","false");
+			sellerInvoked = 0;
+		}
 	}
 	reader.setGlobalVariable("caveboot_halfsleep","false");
+	sellerInvoked = 0;
 	toolThreadShouldStop=0;
 	return 0;
 }
@@ -291,23 +331,58 @@ int sellItems(CConfigData *config, int traderNum) {
 		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
 		for (int contNr = 0; contNr < 16; contNr++) {
 			cont = reader.readContainer(contNr);
-			int count = cont->itemsInside;
-			for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
-				CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
-				if (item->objectId == objectId) {
-					itemCount = countAllItemsOfType(objectId);
-					sender.npcSell(objectId, itemCount);
-					Sleep(1000);
-					if (CModuleUtil::waitForItemsInsideChange(contNr, cont->itemsInside)) {
-						delete cont;
-						done = 1;
-						break;
+			if (cont->flagOnOff) {
+				int count = cont->itemsInside;
+				for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
+					CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
+					if (item->objectId == objectId) {
+						itemCount = countAllItemsOfType(objectId);
+						sender.npcSell(objectId, itemCount);
+						Sleep(1000);
+						if (CModuleUtil::waitForItemsInsideChange(contNr, cont->itemsInside)) {
+							done = 1;
+							break;
+						}
+						done = 0;
 					}
-					delete cont;	
-					done = 0;
 				}
 			}
 		}		
+	}
+	delete cont;	
+	return done;
+}
+
+int buyItems(CConfigData *config, int traderNum) {
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaItemProxy itemProxy;
+	int itemCount, goldCount;
+	int done = 0;
+	int objectId;
+	//char buf[64];
+	sender.say("Hi");
+	Sleep (500);
+	sender.sayNPC("trade");
+	Sleep (500);
+	for (int j = 0; j < 32; j++) {
+			objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
+			//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
+			//AfxMessageBox(buf);
+			if (objectId)
+				itemCount = countAllItemsOfType(objectId);
+			else 
+				break;			;
+			goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"));
+			itemCount = config->buyItem[traderNum].tradeItem[j].quantityBuySell - itemCount;
+			itemCount = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount?itemCount:goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
+			//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
+			//AfxMessageBox(buf);
+			if (itemCount > 0) {
+				sender.npcBuy(objectId, itemCount);
+				Sleep(1000);
+				done = 1;
+			}
 	}
 	return done;
 }
@@ -379,6 +454,14 @@ bool shouldGo(CConfigData *config) {
 			if (count && count >= config->sellItem[i].tradeItem[j].quantityBuySell)
 				should = true;
 		}
+		for (j = 0; j < 32; j++) {
+			int objectId = itemProxy.getObjectId(config->buyItem[i].tradeItem[j].itemName);
+			//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
+			//AfxMessageBox(buf);
+			count = countAllItemsOfType(objectId);
+			if (count < config->buyItem[i].tradeItem[j].triggerQuantity && countAllItemsOfType(itemProxy.getValueForConst("GP")) >= config->buyItem[i].tradeItem[j].salePrice)
+				should = true;
+		}
 	}
 	return should;
 }
@@ -392,8 +475,15 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		if (objectId && countAllItemsOfType(objectId) >= 1)
-			return true;
+			return 1;
 	}
-	return false;
+	for (j = 0; j < 32; j++) {
+		int objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
+		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
+		//AfxMessageBox(buf);
+		if (objectId && countAllItemsOfType(objectId) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && countAllItemsOfType(itemProxy.getValueForConst("GP")) >= config->buyItem[traderNum].tradeItem[j].salePrice)
+			return 2;
+	}
+	return 0;
 }
 

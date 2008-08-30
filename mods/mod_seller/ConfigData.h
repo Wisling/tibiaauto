@@ -13,6 +13,7 @@ struct Item {
 	char itemName[64];
 	int salePrice;
 	int quantityBuySell;
+	int triggerQuantity;
 };
 
 struct ItemList {
