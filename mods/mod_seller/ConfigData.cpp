@@ -34,9 +34,11 @@ CConfigData::CConfigData() {
 			sellItem[i].tradeItem[j].itemName[0] = 0;
 			sellItem[i].tradeItem[j].salePrice = 0;
 			sellItem[i].tradeItem[j].quantityBuySell = 0;
+			sellItem[i].tradeItem[j].triggerQuantity = 0;
 			buyItem[i].tradeItem[j].itemName[0] = 0;
 			buyItem[i].tradeItem[j].salePrice = 0;
 			buyItem[i].tradeItem[j].quantityBuySell = 0;
+			buyItem[i].tradeItem[j].triggerQuantity = 0;
 		}
 	}
 }
