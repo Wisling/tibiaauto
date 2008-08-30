@@ -64,31 +64,44 @@ int isCavebotOn();
 int countAllItemsOfType(int);
 int shouldBank(CConfigData *);
 
+
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
+	int alreadySleeping = 0;
+	int bankerInvoked = 0;
+	char *var;
 	CMemReaderProxy reader;
-//	CPackSenderProxy sender;
-//	CTibiaItemProxy itemProxy;
-//	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
-	reader.setGlobalVariable("cavebot_depositing", "false");
 	while (!toolThreadShouldStop) {
 		Sleep(200);
 		int attackedCreature = reader.getAttackedCreature();
+		var=reader.getGlobalVariable("caveboot_halfsleep");
+		if (var==NULL||strcmp(var,"true")) 
+			alreadySleeping = 0; 
+		else 
+			alreadySleeping = 1;
+		if (attackedCreature && alreadySleeping && !bankerInvoked) continue;
+		
 		//if (isDepositing() || !isCavebotOn() || shouldBank(config) && !attackedCreature) {
-		if (shouldBank(config) && !attackedCreature) {
+		if (shouldBank(config)) {
 			if (findBanker(config)) {
-				reader.setGlobalVariable("caveboot_halfsleep","true");
+				reader.setGlobalVariable("caveboot_halfsleep", "true");
+				bankerInvoked = 1;
 				if (moveToBanker(config)) {
 					//AfxMessageBox("Yup, found the banker!");
-					if (depositGold())
+					if (depositGold()) {
 						reader.setGlobalVariable("caveboot_halfsleep","false");
+						bankerInvoked = 0;
+					}
 				}
 			}
 		}
-		else 
+		else {
 			reader.setGlobalVariable("caveboot_halfsleep","false");
+			bankerInvoked = 0;
+		}
 	}
 	reader.setGlobalVariable("caveboot_halfsleep","false");
+	bankerInvoked = 0;
 	toolThreadShouldStop=0;
 	return 0;
 }
