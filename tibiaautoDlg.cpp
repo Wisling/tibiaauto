@@ -161,7 +161,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_XRAY, OnToolXray)
 	ON_BN_CLICKED(IDC_TOOL_SORTER, OnToolSorter)
 	ON_BN_CLICKED(IDC_TOOL_BANKER, OnToolBanker)
-//	ON_BN_CLICKED(IDC_TOOL_SELLER, OnToolSeller)
+	ON_BN_CLICKED(IDC_TOOL_SELLER, OnToolSeller)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -259,8 +259,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleXRay = new CModuleProxy("mod_xray",0);
 	m_moduleSorter = new CModuleProxy("mod_sorter",0);
 	m_moduleBanker = new CModuleProxy("mod_banker",0);
-	//m_moduleSeller = new CModuleProxy("mod_seller",0);
-	m_seller.EnableWindow(false);
+	m_moduleSeller = new CModuleProxy("mod_seller",0);
 	refreshToolInfo();
 	SetTimer(1001,100,NULL);	
 	SetTimer(1002,100,NULL);	
@@ -580,7 +579,7 @@ void CTibiaautoDlg::refreshToolInfo()
 	m_xray.SetCheck(m_moduleXRay->isStarted());
 	m_sorter.SetCheck(m_moduleSorter->isStarted());
 	m_banker.SetCheck(m_moduleBanker->isStarted());
-//	m_seller.SetCheck(m_moduleSeller->isStarted());
+	m_seller.SetCheck(m_moduleSeller->isStarted());
 }
 
 void CTibiaautoDlg::OnSave() 
@@ -923,7 +922,7 @@ void CTibiaautoDlg::OnExit()
 	delete m_moduleXRay;
 	delete m_moduleBanker;
 	delete m_moduleSorter;
-//	delete m_moduleSeller;
+	delete m_moduleSeller;
 
 	
 	ExitProcess(0);	
@@ -1119,10 +1118,10 @@ void CTibiaautoDlg::OnToolBanker()
 	m_moduleBanker->showConfigDialog();		
 }
 
-/*void CTibiaautoDlg::OnToolSeller() 
+void CTibiaautoDlg::OnToolSeller() 
 {
-	m_moduleLogin->showConfigDialog();		
-}*/
+	m_moduleSeller->showConfigDialog();		
+}
 
 void CTibiaautoDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
 {

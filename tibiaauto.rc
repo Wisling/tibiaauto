@@ -404,11 +404,12 @@ BEGIN
     CONTROL         "XRay",IDC_TOOL_XRAY,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,96,135,61,14
     PUSHBUTTON      "Button1",IDC_BUTTON1,13,288,50,14,NOT WS_VISIBLE
-    PUSHBUTTON      "Sort Loot",IDC_TOOL_SORTER,13,172,61,14
+    CONTROL         "Sort Loot",IDC_TOOL_SORTER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,172,61,14
     CONTROL         "Auto Banker",IDC_TOOL_BANKER,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,188,61,14
-    PUSHBUTTON      "Auto Seller",IDC_TOOL_SELLER,13,204,61,14,NOT 
-                    WS_VISIBLE
+    CONTROL         "Auto Seller",IDC_TOOL_SELLER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,204,61,14
 END
 
 
