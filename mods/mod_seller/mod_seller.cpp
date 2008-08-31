@@ -413,7 +413,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	buf[0]='\0';
 	if (!strcmp(paramName, "SellOnCap")) sprintf(buf, "%d", m_configData->sellOnCap);
 	if (!strcmp(paramName, "SellOnSpace")) sprintf(buf, "%d", m_configData->sellOnSpace);
-	if (!strcmp(paramName, "SellWhen")) sprintf(buf,"%s",m_configData->sellWhen);
+	if (!strcmp(paramName, "SellWhen")) sprintf(buf,"%d",m_configData->sellWhen);
 // Seller 1
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(buf,"%s",m_configData->sellerList[0].sellerName);
 	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {		
