@@ -26,6 +26,7 @@ struct ValidPosition {
 	int sellerZ;
 };
 struct Seller {
+	char sellerName[64];
 	ValidPosition position[10];
 };
 
@@ -39,10 +40,11 @@ public:
 	int targetY;
 	int targetZ;
 	Seller sellerList[MAX_SELLERS];
-	int quantity;
-	int price;
 	ItemList sellItem[MAX_SELLERS];
 	ItemList buyItem[MAX_SELLERS];
+	int sellOnCap;
+	int sellWhen;
+	int sellOnSpace;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

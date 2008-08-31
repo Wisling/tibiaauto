@@ -12,7 +12,7 @@
 
 
 struct seller{
-	char name[40];
+	char name[64];
 	int xPos[10];
 	int yPos[10];
 	int zPos[10];
@@ -45,6 +45,9 @@ public:
 	CButton m_BuyBoxRemove[MAX_SELLERS];
 	CButton m_SellBoxAdd[MAX_SELLERS];
 	CButton m_SellBoxRemove[MAX_SELLERS];
+	CButton m_sellOnCap;
+	CButton m_sellOnSpace;
+	CEdit m_sellWhen;
 	CEdit m_quantityBuySell;
 	CEdit m_buyPrice;
 	CEdit m_buyTriggerQuantity;
@@ -84,6 +87,7 @@ protected:
 	afx_msg void buyBoxRemove1();
 	afx_msg void buyBoxRemove2();
 	afx_msg void buyBoxRemove3();
+	afx_msg void onSellOnCap();
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();

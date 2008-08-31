@@ -42,6 +42,8 @@ public:
 
 public:		
 	int validateConfig(int showAlerts);
+	void resetMultiParamAccess(char *paramName);
+	int isMultiParam(char *paramName);
 	// functions from IModuleInterface
 	char * getName();
 	int isStarted();
@@ -59,6 +61,7 @@ public:
 	char *getConfigParamName(int nr);
 private:	
 	int m_started;
+	int currentPos;
 	CConfigDialog * m_configDialog;
 	CConfigData *m_configData;
 };
