@@ -22,9 +22,8 @@ CConfigData::CConfigData() {
 	targetX = 0;
 	targetY = 0;
 	targetZ = 0;
-	quantity=0;
-	price=0;
 	for (int i = 0; i < MAX_SELLERS; i++) {
+		sellerList[i].sellerName[0] = 0;
 		for (x = 0; x < 10; x++) {
 			sellerList[i].position[x].sellerX = 0;
 			sellerList[i].position[x].sellerY = 0;
@@ -41,6 +40,9 @@ CConfigData::CConfigData() {
 			buyItem[i].tradeItem[j].triggerQuantity = 0;
 		}
 	}
+	sellOnCap = 1;
+	sellOnSpace = 1;
+	sellWhen = 50;
 }
 
 CConfigData::~CConfigData() {

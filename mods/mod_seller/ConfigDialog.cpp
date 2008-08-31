@@ -69,32 +69,35 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_QUANTITY, m_quantityBuySell);
 	DDX_Control(pDX, IDC_SELLER_TRIGGER_QUANTITY, m_buyTriggerQuantity);
 	DDX_Control(pDX, IDC_SELLER_PRICE, m_buyPrice);
+	DDX_Control(pDX, IDC_SELLER_RETURN_ON_CAP, m_sellOnCap);
+	DDX_Control(pDX, IDC_SELLER_RETURN_ON_NO_SPACE, m_sellOnSpace);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-//{{AFX_MSG_MAP(CConfigDialog)
-ON_WM_CLOSE()
-ON_BN_CLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
-ON_BN_CLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
-ON_BN_CLICKED(IDC_SELLER_SELL3_ADD, sellBoxAdd2)
-ON_BN_CLICKED(IDC_SELLER_SELL4_ADD, sellBoxAdd3)
-ON_BN_CLICKED(IDC_SELLER_BUY1_ADD, buyBoxAdd0)
-ON_BN_CLICKED(IDC_SELLER_BUY2_ADD, buyBoxAdd1)
-ON_BN_CLICKED(IDC_SELLER_BUY3_ADD, buyBoxAdd2)
-ON_BN_CLICKED(IDC_SELLER_BUY4_ADD, buyBoxAdd3)
-ON_BN_CLICKED(IDC_SELLER_SELL1_REMOVE, sellBoxRemove0)
-ON_BN_CLICKED(IDC_SELLER_SELL2_REMOVE, sellBoxRemove1)
-ON_BN_CLICKED(IDC_SELLER_SELL3_REMOVE, sellBoxRemove2)
-ON_BN_CLICKED(IDC_SELLER_SELL4_REMOVE, sellBoxRemove3)
-ON_BN_CLICKED(IDC_SELLER_BUY1_REMOVE, buyBoxRemove0)
-ON_BN_CLICKED(IDC_SELLER_BUY2_REMOVE, buyBoxRemove1)
-ON_BN_CLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
-ON_BN_CLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
-ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-ON_WM_TIMER()
-//}}AFX_MSG_MAP
+	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
+	ON_BN_CLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
+	ON_BN_CLICKED(IDC_SELLER_SELL3_ADD, sellBoxAdd2)
+	ON_BN_CLICKED(IDC_SELLER_SELL4_ADD, sellBoxAdd3)
+	ON_BN_CLICKED(IDC_SELLER_BUY1_ADD, buyBoxAdd0)
+	ON_BN_CLICKED(IDC_SELLER_BUY2_ADD, buyBoxAdd1)
+	ON_BN_CLICKED(IDC_SELLER_BUY3_ADD, buyBoxAdd2)
+	ON_BN_CLICKED(IDC_SELLER_BUY4_ADD, buyBoxAdd3)
+	ON_BN_CLICKED(IDC_SELLER_SELL1_REMOVE, sellBoxRemove0)
+	ON_BN_CLICKED(IDC_SELLER_SELL2_REMOVE, sellBoxRemove1)
+	ON_BN_CLICKED(IDC_SELLER_SELL3_REMOVE, sellBoxRemove2)
+	ON_BN_CLICKED(IDC_SELLER_SELL4_REMOVE, sellBoxRemove3)
+	ON_BN_CLICKED(IDC_SELLER_BUY1_REMOVE, buyBoxRemove0)
+	ON_BN_CLICKED(IDC_SELLER_BUY2_REMOVE, buyBoxRemove1)
+	ON_BN_CLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
+	ON_BN_CLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
+	ON_BN_CLICKED(IDC_SELLER_RETURN_ON_CAP, onSellOnCap)
+	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+	ON_WM_TIMER()
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -134,6 +137,8 @@ void CConfigDialog::disableControls() {
 	m_quantityBuySell.EnableWindow(false);
 	m_tradeItemList.EnableWindow(false);
 	m_buyTriggerQuantity.EnableWindow(false);
+	m_sellOnSpace.EnableWindow(false);
+	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
 }
 
 void CConfigDialog::enableControls() {
@@ -150,32 +155,43 @@ void CConfigDialog::enableControls() {
 	m_quantityBuySell.EnableWindow(true);
 	m_tradeItemList.EnableWindow(true);
 	m_buyTriggerQuantity.EnableWindow(true);
+	m_sellOnSpace.EnableWindow(false);
+	m_sellOnCap.EnableWindow(false);
+	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
 }
 
 void CConfigDialog::configToControls(CConfigData *configData) {
 	char buf[128];
+	reloadSaleItems();
+	reloadSellers();
 	for (int x = 0; x < MAX_SELLERS; x++) {
 		while (m_SellBox[x].GetCount()) m_SellBox[x].DeleteString(0);
 		while (m_BuyBox[x].GetCount()) m_BuyBox[x].DeleteString(0);
 	}
 	for (int i = 0;i < MAX_SELLERS; i++) {
+		m_Seller[i].SelectString(0, configData->sellerList[i].sellerName);
 		for (int j = 0; j < 32; j++) {
 			if (strlen(configData->sellItem[i].tradeItem[j].itemName)) {
-				sprintf(buf, "%s->%s", configData->sellItem[i].tradeItem[j].itemName, configData->sellItem[i].tradeItem[j].quantityBuySell);
+				sprintf(buf, "%s->%d", configData->sellItem[i].tradeItem[j].itemName, configData->sellItem[i].tradeItem[j].quantityBuySell);
 				m_SellBox[i].AddString(buf);
+				m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,configData->sellItem[i].tradeItem[j].itemName));
 			}
 			if (strlen(configData->buyItem[i].tradeItem[j].itemName)) {
-				sprintf(buf, "%s %s@%sgp", configData->buyItem[i].tradeItem[j].itemName, configData->sellItem[i].tradeItem[j].quantityBuySell, configData->sellItem[i].tradeItem[j].salePrice);
-				sprintf(buf,"%s",configData->buyItem[i].tradeItem[j].itemName);
+				sprintf(buf, "%s->%d:%d@%dgp", configData->buyItem[i].tradeItem[j].itemName, configData->buyItem[i].tradeItem[j].triggerQuantity, configData->buyItem[i].tradeItem[j].quantityBuySell, configData->buyItem[i].tradeItem[j].salePrice);
 				m_BuyBox[i].AddString(buf);
+				m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,configData->buyItem[i].tradeItem[j].itemName));
 			}
 		}
 	}
-	sprintf(buf,"%d",configData->quantity);			m_quantityBuySell.SetWindowText(buf);
-	sprintf(buf,"%d",configData->price);			m_buyPrice.SetWindowText(buf);
+	sprintf(buf,"%s",configData->sellWhen);		m_sellWhen.SetWindowText(buf);
+	m_sellOnCap.SetCheck(configData->sellWhen);
+	m_sellOnSpace.SetCheck(configData->sellOnSpace);
 
-	reloadSaleItems();
-	reloadSellers();
+	sprintf(buf, "%d", 0);
+	m_buyPrice.SetWindowText(buf);
+	m_quantityBuySell.SetWindowText(buf);
+	m_buyTriggerQuantity.SetWindowText(buf);
+	m_tradeItemList.SetCurSel(0);
 }
 
 CConfigData * CConfigDialog::controlsToConfig() {
@@ -183,6 +199,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 	char paramString[128];
 	for (int i = 0; i < MAX_SELLERS;i++) {
+
 		for (int j = 0; j < 32; j++) {
 			newConfigData->sellItem[i].tradeItem[j].itemName[0] = '\0';
 			newConfigData->sellItem[i].tradeItem[j].quantityBuySell = 0;
@@ -214,14 +231,16 @@ CConfigData * CConfigDialog::controlsToConfig() {
 			sscanf(paramString, "%d:%d@%dgp", &newConfigData->buyItem[i].tradeItem[j].triggerQuantity, &newConfigData->buyItem[i].tradeItem[j].quantityBuySell, &newConfigData->buyItem[i].tradeItem[j].salePrice);
 		}
 		int index = m_Seller[i].GetCurSel();
+		strcpy(newConfigData->sellerList[i].sellerName, sellersInfo[index].name);
 		for (int loop = 0; loop < 10; loop++) {
 			newConfigData->sellerList[i].position[loop].sellerX = sellersInfo[index].xPos[loop];
 			newConfigData->sellerList[i].position[loop].sellerY = sellersInfo[index].yPos[loop];
 			newConfigData->sellerList[i].position[loop].sellerZ = sellersInfo[index].zPos[loop];
 		}
 	}
-	m_quantityBuySell.GetWindowText(buf,127);newConfigData->quantity=atoi(buf);
-	m_buyPrice.GetWindowText(buf,127);newConfigData->price=atoi(buf);
+	newConfigData->sellOnCap = m_sellOnCap.GetCheck();
+	newConfigData->sellOnSpace = m_sellOnSpace.GetCheck();
+	m_sellWhen.GetWindowText(buf,127);newConfigData->sellWhen=atoi(buf);
 	
 	return newConfigData;
 }
@@ -339,6 +358,9 @@ void CConfigDialog::sellBoxAdd0() {
 	sprintf(itemSaleTag, "%s->%s", itemName, amount);
 	m_SellBox[0].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::sellBoxAdd1() {	
@@ -352,6 +374,9 @@ void CConfigDialog::sellBoxAdd1() {
 	sprintf(itemSaleTag, "%s->%s", itemName, amount);
 	m_SellBox[1].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::sellBoxAdd2() {	
@@ -365,6 +390,9 @@ void CConfigDialog::sellBoxAdd2() {
 	sprintf(itemSaleTag, "%s->%s", itemName, amount);
 	m_SellBox[2].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::sellBoxAdd3() {	
@@ -378,6 +406,9 @@ void CConfigDialog::sellBoxAdd3() {
 	sprintf(itemSaleTag, "%s->%s", itemName, amount);
 	m_SellBox[3].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::buyBoxAdd0() {	
@@ -395,6 +426,9 @@ void CConfigDialog::buyBoxAdd0() {
 	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
 	m_BuyBox[0].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::buyBoxAdd1() {	
@@ -412,6 +446,9 @@ void CConfigDialog::buyBoxAdd1() {
 	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
 	m_BuyBox[1].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::buyBoxAdd2() {	
@@ -429,6 +466,9 @@ void CConfigDialog::buyBoxAdd2() {
 	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
 	m_BuyBox[2].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::buyBoxAdd3() {	
@@ -446,6 +486,9 @@ void CConfigDialog::buyBoxAdd3() {
 	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
 	m_BuyBox[3].AddString(itemSaleTag);
 	m_tradeItemList.DeleteString(m_tradeItemList.FindString(0,itemName));
+	m_buyPrice.SetWindowText("0");
+	m_quantityBuySell.SetWindowText("0");
+	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::sellBoxRemove0() {
@@ -455,10 +498,8 @@ void CConfigDialog::sellBoxRemove0() {
 	if (sel==-1) return;	
 	m_SellBox[0].GetText(sel,itemName);
 	int j;
-	for (j=strlen(itemName)-1;j>0;j--)
-	{
-		if (itemName[j]=='-' && itemName[j + 1]=='>')
-		{
+	for (j=strlen(itemName)-1;j>0;j--) {
+		if (itemName[j]=='-' && itemName[j + 1]=='>') {
 			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
 			itemName[j]='\0';
 			break;
@@ -477,10 +518,8 @@ void CConfigDialog::sellBoxRemove1() {
 	if (sel==-1) return;	
 	m_SellBox[1].GetText(sel,itemName);
 	int j;
-	for (j=strlen(itemName)-1;j>0;j--)
-	{
-		if (itemName[j]=='-' && itemName[j + 1]=='>')
-		{
+	for (j=strlen(itemName)-1;j>0;j--) {
+		if (itemName[j]=='-' && itemName[j + 1]=='>') {
 			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
 			itemName[j]='\0';
 			break;
@@ -499,10 +538,8 @@ void CConfigDialog::sellBoxRemove2() {
 	if (sel==-1) return;	
 	m_SellBox[2].GetText(sel,itemName);
 	int j;
-	for (j=strlen(itemName)-1;j>0;j--)
-	{
-		if (itemName[j]=='-' && itemName[j + 1]=='>')
-		{
+	for (j=strlen(itemName)-1;j>0;j--) {
+		if (itemName[j]=='-' && itemName[j + 1]=='>') {
 			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
 			itemName[j]='\0';
 			break;
@@ -521,10 +558,8 @@ void CConfigDialog::sellBoxRemove3() {
 	if (sel==-1) return;	
 	m_SellBox[3].GetText(sel,itemName);
 	int j;
-	for (j=strlen(itemName)-1;j>0;j--)
-	{
-		if (itemName[j]=='-' && itemName[j + 1]=='>')
-		{
+	for (j=strlen(itemName)-1;j>0;j--) {
+		if (itemName[j]=='-' && itemName[j + 1]=='>') {
 			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
 			itemName[j]='\0';
 			break;
@@ -552,7 +587,7 @@ void CConfigDialog::buyBoxRemove0() {
 			break;
 		}
 	}
-	sscanf(paramString, "%d:%d@%dgps", &trigger, &quantity, &price);
+	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
 	m_tradeItemList.AddString(itemName);
 	sprintf(buf, "%d", quantity);
 	m_quantityBuySell.SetWindowText(buf);
@@ -579,7 +614,7 @@ void CConfigDialog::buyBoxRemove1() {
 			break;
 		}
 	}
-	sscanf(paramString, "%d:%d@%dgps", &trigger, &quantity, &price);
+	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
 	m_tradeItemList.AddString(itemName);
 	sprintf(buf, "%d", quantity);
 	m_quantityBuySell.SetWindowText(buf);
@@ -600,13 +635,13 @@ void CConfigDialog::buyBoxRemove2() {
 	m_BuyBox[2].GetText(sel,itemName);
 	int j;
 	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j]=='>') {
+		if (itemName[j]=='-' && itemName[j + 1]=='>') {
 			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
 			itemName[j]='\0';
 			break;
 		}
 	}
-	sscanf(paramString, "%d:%d@%dgps", &trigger, &quantity, &price);
+	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
 	m_tradeItemList.AddString(itemName);
 	sprintf(buf, "%d", quantity);
 	m_quantityBuySell.SetWindowText(buf);
@@ -633,7 +668,7 @@ void CConfigDialog::buyBoxRemove3() {
 			break;
 		}
 	}
-	sscanf(paramString, "%d:%d@%dgps", & trigger, &quantity, &price);
+	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
 	m_tradeItemList.AddString(itemName);
 	sprintf(buf, "%d", quantity);
 	m_quantityBuySell.SetWindowText(buf);
@@ -643,6 +678,10 @@ void CConfigDialog::buyBoxRemove3() {
 	m_buyTriggerQuantity.SetWindowText(buf);
 	m_tradeItemList.SetCurSel(m_tradeItemList.FindString(0,itemName));
 	m_BuyBox[3].DeleteString(sel);	
+}
+
+void CConfigDialog::onSellOnCap() {
+	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
 }
 
 

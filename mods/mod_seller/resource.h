@@ -34,8 +34,11 @@
 #define IDC_SELLER_BUY4_REMOVE          3043
 #define IDC_SELLER_ITEM_LIST            3045
 #define IDC_SELLER_QUANTITY             3046
+#define IDC_SELLER_QUANTITY2            3047
 #define IDC_SELLER_PRICE                3048
 #define IDC_SELLER_TRIGGER_QUANTITY     3049
+#define IDC_SELLER_RETURN_ON_CAP        3050
+#define IDC_SELLER_RETURN_ON_NO_SPACE   3051
 
 // Next default values for new objects
 // 
@@ -43,7 +46,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3048
+#define _APS_NEXT_CONTROL_VALUE         3051
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
