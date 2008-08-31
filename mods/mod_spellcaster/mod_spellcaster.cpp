@@ -649,7 +649,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"ExevoGranMasTera")) m_configData->exevoGranMasTera=atoi(paramValue);
 	if (!strcmp(paramName,"ExevoGranMasFrigo")) m_configData->exevoGranMasFrigo=atoi(paramValue);
 	if (!strcmp(paramName,"DisableWarning")) m_configData->disableWarning=atoi(paramValue);
-	if (!strcmp(paramName,"whiteList")){
+	if (!strcmp(paramName,"healList")){
 		if (currentPos>99)
 			return;
 		lstrcpyn(m_configData->healList[currentPos++],paramValue,32);
