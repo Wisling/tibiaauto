@@ -34,7 +34,7 @@
 #define IDC_SELLER_BUY4_REMOVE          3043
 #define IDC_SELLER_ITEM_LIST            3045
 #define IDC_SELLER_QUANTITY             3046
-#define IDC_SELLER_QUANTITY2            3047
+#define IDC_SELLER_CAP_LIMIT            3047
 #define IDC_SELLER_PRICE                3048
 #define IDC_SELLER_TRIGGER_QUANTITY     3049
 #define IDC_SELLER_RETURN_ON_CAP        3050

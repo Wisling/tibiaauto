@@ -218,9 +218,9 @@ void CMod_SellerApp::stop() {
 
 void CMod_SellerApp::showConfigDialog() {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
-	
 	if (!m_configDialog) {
 		m_configDialog = new CConfigDialog(this);
+		
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
 	}
