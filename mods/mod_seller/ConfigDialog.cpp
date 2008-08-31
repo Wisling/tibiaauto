@@ -71,6 +71,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_PRICE, m_buyPrice);
 	DDX_Control(pDX, IDC_SELLER_RETURN_ON_CAP, m_sellOnCap);
 	DDX_Control(pDX, IDC_SELLER_RETURN_ON_NO_SPACE, m_sellOnSpace);
+	DDX_Control(pDX, IDC_SELLER_CAP_LIMIT, m_sellWhen);
 	//}}AFX_DATA_MAP
 }
 
@@ -157,7 +158,7 @@ void CConfigDialog::enableControls() {
 	m_buyTriggerQuantity.EnableWindow(true);
 	m_sellOnSpace.EnableWindow(false);
 	m_sellOnCap.EnableWindow(false);
-	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
+//	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
 }
 
 void CConfigDialog::configToControls(CConfigData *configData) {
@@ -183,8 +184,8 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 			}
 		}
 	}
-	sprintf(buf,"%s",configData->sellWhen);		m_sellWhen.SetWindowText(buf);
-	m_sellOnCap.SetCheck(configData->sellWhen);
+	sprintf(buf,"%d",configData->sellWhen);		m_sellWhen.SetWindowText(buf);
+	m_sellOnCap.SetCheck(configData->sellOnCap);
 	m_sellOnSpace.SetCheck(configData->sellOnSpace);
 
 	sprintf(buf, "%d", 0);
