@@ -1,12 +1,12 @@
 1.18.3, 15.08.2008
 Enhancments:
- Added: Seller module (half Complete).
+ Added: Seller module.
  Cavebot: Added pause functions.
 
 Defects:
  Kernel: Fixed addrBackpack and addrWhiteMessage.
  Kernel: Fixed packet for npcBuy and npcSell functions.
- Sellel: Completed Seller half of module.
+ Seller: Completed Seller module.
 
 1.18.0, 15.08.2008
 Enhancments:
