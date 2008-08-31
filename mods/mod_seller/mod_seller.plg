@@ -6,13 +6,13 @@
 --------------------Configuration: mod_seller - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1C5.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D5.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_seller.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_seller\mod_seller.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1C5.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1C6.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D5.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D6.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_seller.pdb" /machine:I386 /def:".\mod_seller.def" /out:"../mod_seller.dll" /implib:"Release/mod_seller.lib" 
 ".\Release\ConfigData.obj"
@@ -25,7 +25,7 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1C6.tmp" with conten
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_seller.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1C6.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D6.tmp"
 <h3>Output Window</h3>
 Compiling...
 mod_seller.cpp
