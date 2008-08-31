@@ -6,28 +6,15 @@
 --------------------Configuration: mod_spellcaster - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_spellcaster.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA98.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP158.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\ConfigData.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\ConfigDialog.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\exports.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\proxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\TibiaItem_impl.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\WhiteList.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA98.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA99.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP158.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP159.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\StdAfx.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA99.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA9A.tmp" with contents
-[
-xerces-c_2.lib xerces-depdom_2.lib xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_spellcaster.pdb" /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Release/mod_spellcaster.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" 
+xerces.lib detours.lib zdll.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_spellcaster.pdb" /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Release/mod_spellcaster.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
 ".\Release\ConfigData.obj"
 ".\Release\ConfigDialog.obj"
 ".\Release\exports.obj"
@@ -38,23 +25,13 @@ xerces-c_2.lib xerces-depdom_2.lib xerces.lib /nologo /subsystem:windows /dll /i
 ".\Release\WhiteList.obj"
 ".\Release\mod_spellcaster.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA9A.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP159.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-StdAfx.cpp
-Compiling...
-ConfigData.cpp
-ConfigDialog.cpp
-exports.cpp
 mod_spellcaster.cpp
-proxy.cpp
-TibiaItem_impl.cpp
-WhiteList.cpp
-Generating Code...
 Linking...
    Creating library Release/mod_spellcaster.lib and object Release/mod_spellcaster.exp
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA9E.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP15D.tmp" with contents
 [
 /nologo /o"Release/mod_spellcaster.bsc" 
 ".\Release\StdAfx.sbr"
@@ -65,7 +42,7 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA9E.tmp" with conten
 ".\Release\proxy.sbr"
 ".\Release\TibiaItem_impl.sbr"
 ".\Release\WhiteList.sbr"]
-Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPA9E.tmp"
+Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP15D.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 
