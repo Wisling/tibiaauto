@@ -267,22 +267,22 @@ int CMod_SellerApp::validateConfig(int showAlerts) {
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
-			if (m_configData->sellItem[i].tradeItem[j].quantityBuySell < 1) {
+			if (m_configData->sellItem[i].tradeItem[j].itemName[0] && m_configData->sellItem[i].tradeItem[j].quantityBuySell < 1) {
 				sprintf(buf, "You must sell at least 1 item!!\nPlease correct: Item entry: %s under Seller %d", m_configData->sellItem[i].tradeItem[j].itemName, i);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
-			if (m_configData->buyItem[i].tradeItem[j].quantityBuySell < 1) {
+			if (m_configData->buyItem[i].tradeItem[j].itemName[0] && m_configData->buyItem[i].tradeItem[j].quantityBuySell < 1) {
 				sprintf(buf, "You must buy at least 1 item!!\nPlease correct: Item entry: %s under Seller %d", m_configData->buyItem[i].tradeItem[j].itemName, i);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
-			if (m_configData->buyItem[i].tradeItem[j].triggerQuantity < 1) {
+			if (m_configData->buyItem[i].tradeItem[j].itemName[0] && m_configData->buyItem[i].tradeItem[j].triggerQuantity < 1) {
 				sprintf(buf, "\'Buy When <\" must not be 0 (zero)!!\nPlease correct: Item entry: %s under Seller %d", m_configData->buyItem[i].tradeItem[j].itemName, i);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
-			if (m_configData->buyItem[i].tradeItem[j].salePrice < 1) {
+			if (m_configData->buyItem[i].tradeItem[j].itemName[0] && m_configData->buyItem[i].tradeItem[j].salePrice < 1) {
 				sprintf(buf, "\"Sale Price\" must not be 0 (zero)!!\nPlease correct: Item entry: %s under Seller %d", m_configData->buyItem[i].tradeItem[j].itemName, i);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
