@@ -82,7 +82,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		if (attackedCreature && alreadySleeping && !bankerInvoked) continue;
 		
 		//if (isDepositing() || !isCavebotOn() || shouldBank(config) && !attackedCreature) {
-		if (shouldBank(config)) {
+		if (shouldBank(config) && !attackedCreature) {
 			if (findBanker(config)) {
 				reader.setGlobalVariable("caveboot_halfsleep", "true");
 				bankerInvoked = 1;
