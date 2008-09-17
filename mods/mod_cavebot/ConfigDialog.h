@@ -140,7 +140,6 @@ public:
 	CListBox	m_monsterList;
 	CEdit	m_monster;
 	CButton	m_enable;
-	CButton	m_ensureLoot;
 	CButton	m_pauseAll;	
 	CButton	m_pauseWalker;
 	//}}AFX_DATA
@@ -176,7 +175,6 @@ protected:
 	afx_msg void OnLoadFromMinimap();
 	afx_msg void OnMonsterAttackUp();
 	afx_msg void OnMonsterAttackDown();
-	afx_msg void OnEnsureLoot();
 	afx_msg void OnPauseAll();
 	afx_msg void OnPauseWalker();
 	//}}AFX_MSG
@@ -185,6 +183,7 @@ protected:
 private:
 
 	CMod_cavebotApp * m_app;
+	int cavebotInvokedPause;
 };
 
 //{{AFX_INSERT_LOCATION}}

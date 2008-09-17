@@ -221,8 +221,6 @@ BEGIN
     PUSHBUTTON      "Up",IDC_MONSTER_ATTACK_UP,248,20,22,14
     LTEXT           "New monsters for attack are selected in the order top-first. Creatures out of the list always have priority.",
                     IDC_STATIC,17,15,106,32
-    CONTROL         "Ensure Looting",IDC_ENSURE_LOOTING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,481,63,63,10
     GROUPBOX        "Pausing",IDC_STATIC,281,310,265,46
     CONTROL         "Pause All",IDC_CAVEBOT_PAUSE_ALL,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,289,322,62,14

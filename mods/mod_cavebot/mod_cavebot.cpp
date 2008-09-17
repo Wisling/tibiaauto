@@ -1086,7 +1086,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		/**
 		* Check whether we should go to a depot
 		*/
-		depotCheck(config);
+		if (!isInHalfSleep()) depotCheck(config);
 		
 		/**
 		* Check whether we should collected dropped loot.
@@ -1238,16 +1238,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 						
 						int lootTakeItem;
-						
-						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-						for (lootTakeItem=0;lootTakeItem<5;lootTakeItem++) {
-							if (self->cap>config->capacityLimit)
-								CModuleUtil::lootItemFromContainer(9,&acceptedItems);
-							if (config->eatFromCorpse) {
-								CModuleUtil::eatItemFromContainer(9);
-								Sleep(250);
-							}
-						}
+
 						if (config->lootInBags) {
 							if (config->debug) registerDebug("Looting in bags");
 							CTibiaContainer *cont = reader.readContainer(9);
@@ -1302,6 +1293,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							delete cont;
 						} // if (lootInBags)
 						
+						
+						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
+						for (lootTakeItem=0;lootTakeItem<5;lootTakeItem++) {
+							if (self->cap>config->capacityLimit)
+								CModuleUtil::lootItemFromContainer(9,&acceptedItems);
+							if (config->eatFromCorpse) {
+								CModuleUtil::eatItemFromContainer(9);
+								Sleep(250);
+							}
+						}
 						if (config->dropNotLooted) {
 							dropAllItemsFromContainer(9,attackedCh->x,attackedCh->y,attackedCh->z);
 						}

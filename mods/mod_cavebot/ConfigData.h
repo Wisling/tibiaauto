@@ -68,7 +68,6 @@ public:
 
 	int shareAlienBackattack;
 	int depotCap;
-	int ensureLoot;
 
 	int pauseAll;
 	int pauseWalker;
