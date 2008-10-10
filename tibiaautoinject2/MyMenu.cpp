@@ -46,7 +46,7 @@ void CMyMenu::LoadOwnerDrawMenu(CMenu *baseMenu)
 	*/
 	
 	CMenu *pMyMenu = baseMenu;
-CString str;	//use to hold the caption temporarily
+	CString str;	//use to hold the caption temporarily
 	CMyMenu* pMenu;	//use to hold the sub menu
 	CMyMenuData* pMenuData;	//use to hold the menu data
 	//get the number of the menu items of the parent menu

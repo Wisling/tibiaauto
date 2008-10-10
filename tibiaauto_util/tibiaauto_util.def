@@ -148,3 +148,4 @@ EXPORTS
 	packSenderSayNPC @142
 	packSenderNpcSell @143
 	packSenderNpcBuy @144
+	setTibiaTile @145

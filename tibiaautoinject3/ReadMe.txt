@@ -1,22 +1,22 @@
 ========================================================================
-       DYNAMIC LINK LIBRARY : tibiaautoinject3
+       DYNAMIC LINK LIBRARY : tibiaautoinject2
 ========================================================================
 
 
-AppWizard has created this tibiaautoinject3 DLL for you.  
+AppWizard has created this tibiaautoinject2 DLL for you.  
 
 This file contains a summary of what you will find in each of the files that
-make up your tibiaautoinject3 application.
+make up your tibiaautoinject2 application.
 
-tibiaautoinject3.dsp
+tibiaautoinject2.dsp
     This file (the project file) contains information at the project level and
     is used to build a single project or subproject. Other users can share the
     project (.dsp) file, but they should export the makefiles locally.
 
-tibiaautoinject3.cpp
+tibiaautoinject2.cpp
     This is the main DLL source file.
 
-tibiaautoinject3.h
+tibiaautoinject2.h
     This file contains your DLL exports.
 
 /////////////////////////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ Other standard files:
 
 StdAfx.h, StdAfx.cpp
     These files are used to build a precompiled header (PCH) file
-    named tibiaautoinject3.pch and a precompiled types file named StdAfx.obj.
+    named tibiaautoinject2.pch and a precompiled types file named StdAfx.obj.
 
 
 /////////////////////////////////////////////////////////////////////////////

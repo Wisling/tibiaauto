@@ -5,11 +5,12 @@
 #include "stdafx.h"
 #include "Util.h"
 #include "Queue.h"
-
+#include <xercesc/util/XMLString.hpp>
 #include "TibiaContainer.h"
 #include "TibiaMap.h"
 #include "PackSender.h"
 #include "MemReader.h"
+#include <string>
 
 extern CTibiaMap tibiaMap;
 
@@ -20,6 +21,7 @@ extern CTibiaMap tibiaMap;
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
+
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -103,5 +105,33 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 		return atoi(buf);
 	} else {
 		return 0;
-	};
+	}
+}
+
+void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
+	try {
+		char buf[32];
+		sprintf(buf, "%d", attr);
+		XMLCh xmlStr[100];
+		DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+		XMLString::transcode(buf, xmlStr, 99);
+		attrNode->setNodeValue(xmlStr);
+	}
+	catch(...) {
+		AfxMessageBox("Failed in setNodeIntAttribute");
+	}
+}
+
+void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr) {
+	try {
+		char buf[32];
+		sprintf(buf, "%d", attr);
+		XMLCh xmlStr[100];
+		DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+		XMLString::transcode(buf, xmlStr, 99);
+		attrNode->setNodeValue(xmlStr);
+	}
+	catch(...) {
+		AfxMessageBox("Failed in setNodeIntAttribute");
+	}
 }

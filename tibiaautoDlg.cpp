@@ -201,9 +201,12 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 	if (!versionOk)
 	{		
-		AfxMessageBox("tibia.exe version mismatch! Terminating Tibia Auto!");
+		char outBuf[32];
+		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%d  %d)", buf[0], buf[1]);
+		AfxMessageBox(outBuf);
 		ExitProcess(0);
 	}
+	
 
 	CMemUtil::setGlobalProcessId(m_processId);
 	
@@ -483,7 +486,6 @@ void CTibiaautoDlg::InitialiseIPC()
 	
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS,true,m_processId);
 	
-
 	char *injectDll="tibiaautoinject2.dll";				
 	
 	if (!DetourContinueProcessWithDll(procHandle, injectDll)) {
@@ -492,7 +494,7 @@ void CTibiaautoDlg::InitialiseIPC()
 		ExitProcess(1);
 	}	
 	
-	injectDll="tibiaauto_develtest.dll";				
+	//injectDll="tibiaauto_develtest.dll";				
 	
 	DetourContinueProcessWithDll(procHandle, injectDll);
 	

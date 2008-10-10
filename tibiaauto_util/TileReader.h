@@ -19,8 +19,10 @@ public:
 	CTileReader();
 	virtual ~CTileReader();
 	CTibiaTile *getTile(int tileNr);
+	void setTile(int, CTibiaTile *);
 private:
 	void loadTiles();
+	void saveTiles();
 	static int xmlInitialised;
 	static CTibiaTile *tiles[MAX_TILES];
 

@@ -727,6 +727,12 @@ CTibiaTile *getTibiaTile(int tileNr)
 	return tileReader.getTile(tileNr);
 }
 
+void setTibiaTile(int tileNr, CTibiaTile *newTile)
+{
+	CTileReader tileReader;
+	tileReader.setTile(tileNr, newTile);
+}
+
 void memReadSetRemainingTilesToGo(int val)
 {
 	startMemReader();
