@@ -156,9 +156,9 @@ void CConfigDialog::enableControls() {
 	m_quantityBuySell.EnableWindow(true);
 	m_tradeItemList.EnableWindow(true);
 	m_buyTriggerQuantity.EnableWindow(true);
-	m_sellOnSpace.EnableWindow(false);
-	m_sellOnCap.EnableWindow(false);
-//	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
+	m_sellOnSpace.EnableWindow(true);
+	m_sellOnCap.EnableWindow(true);
+	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
 }
 
 void CConfigDialog::configToControls(CConfigData *configData) {
