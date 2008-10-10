@@ -654,6 +654,19 @@ CTibiaTile *CMemReaderProxy::getTibiaTile(int tileNr)
 	return NULL;
 }
 
+void CMemReaderProxy::setTibiaTile(int tileNr, CTibiaTile *newTile)
+{
+	typedef void (*Proto_fun)(int tileNr, CTibiaTile *newTile);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"setTibiaTile");
+		if (fun)
+		{
+			fun(tileNr, newTile);
+		}
+	} 
+}
+
 void CMemReaderProxy::setRemainingTilesToGo(int val)
 {
 	typedef void (*Proto_fun)(int);

@@ -74,6 +74,7 @@ public:
 	int readCreatureLightColor(int creatureNr);
 
 	CTibiaTile *getTibiaTile(int tileNr);
+	void setTibiaTile(int tileNr, CTibiaTile *newTile);
 
 	// sets a global variable of 'name' to 'value'
 	void setGlobalVariable(char *name,char *value);
