@@ -19,10 +19,31 @@
 #define IDB_MAP_OPENHOLE                3007
 #define IDB_MAP_CLOSEDHOLE              3008
 #define IDB_MAP_CRATE                   3009
+#define IDD_TOOL_MAPSHOW_CONFIG         3009
 #define IDB_MAP_BLOCKED                 3010
 #define IDC_TILE_INFO                   3011
 #define IDB_MAP_DEPOT                   3011
 #define IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH 3012
+#define IDC_GROUND                      3013
+#define IDC_STACKABLE                   3014
+#define IDB_BACKGROUND                  3016
+#define IDC_CONTAINER                   3017
+#define IDC_DEPOT                       3018
+#define IDC_SHOVEL                      3020
+#define IDC_ROPE                        3021
+#define IDC_USE_TILE                    3022
+#define IDC_MOVABLE                     3023
+#define IDC_GO_UP                       3025
+#define IDC_GO_DOWN                     3026
+#define IDC_BLOCKING                    3029
+#define IDC_WALKABLE                    3030
+#define IDC_ALWAYS_ON_TOP               3031
+#define IDC_MORE_ALWAYS_ON_TOP          3032
+#define IDC_TILE_ID                     3033
+#define IDC_SPEED                       3034
+#define IDC_PREVIOUS_CONFIG_TILE        3046
+#define IDC_NEXT_CONFIG_TILE            3047
+#define IDC_COMMIT                      3048
 #define ID_SHOWMAPOPTIONS_AVAILABLE     32770
 #define ID_SHOWMAPOPTIONS_STAIRS        32771
 #define ID_SHOWMAPOPTIONS_MAGICROPE     32772
@@ -36,14 +57,15 @@
 #define ID_SHOWMAPOPTIONS_CRATE         32779
 #define ID_SHOWMAPOPTIONS_WALKABLE      32780
 #define ID_SHOWMAPOPTIONS_DEPOT         32781
+#define ID_SHOWMAPOPTIONS_SET_AS_GROUND 32783
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3009
-#define _APS_NEXT_COMMAND_VALUE         32782
-#define _APS_NEXT_CONTROL_VALUE         3013
+#define _APS_NEXT_RESOURCE_VALUE        3017
+#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_CONTROL_VALUE         3049
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

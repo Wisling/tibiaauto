@@ -124,22 +124,34 @@ IDB_MAP_DEPOT           BITMAP  DISCARDABLE     "res\\map_depot.bmp"
 
 IDR_SHOWMAP_MENU MENU DISCARDABLE 
 BEGIN
-    POPUP "Showmap options"
+    POPUP "Show Map Options"
     BEGIN
         MENUITEM "Clear",                       ID_SHOWMAPOPTIONS_CLEAR
         MENUITEM "Available",                   ID_SHOWMAPOPTIONS_AVAILABLE
         MENUITEM SEPARATOR
-        MENUITEM "Rope",                        ID_SHOWMAPOPTIONS_ROPE
-        MENUITEM "Ladder",                      ID_SHOWMAPOPTIONS_LADDER
-        MENUITEM "Stairs",                      ID_SHOWMAPOPTIONS_STAIRS
-        MENUITEM "Magic rope",                  ID_SHOWMAPOPTIONS_MAGICROPE
-        MENUITEM SEPARATOR
-        MENUITEM "Open hole",                   ID_SHOWMAPOPTIONS_OPENHOLE
-        MENUITEM "Closed hole",                 ID_SHOWMAPOPTIONS_CLOSEDHOLE
-        MENUITEM "Crate",                       ID_SHOWMAPOPTIONS_CRATE
-        MENUITEM SEPARATOR
         MENUITEM "Depot",                       ID_SHOWMAPOPTIONS_DEPOT
+        MENUITEM SEPARATOR
+        POPUP "Go Up One Level"
+        BEGIN
+            MENUITEM "Rope",                        ID_SHOWMAPOPTIONS_ROPE
+            MENUITEM "Ladder",                      ID_SHOWMAPOPTIONS_LADDER
+            MENUITEM "Stairs",                      ID_SHOWMAPOPTIONS_STAIRS
+            MENUITEM "Magic rope",                  ID_SHOWMAPOPTIONS_MAGICROPE
+
+        END
+        MENUITEM SEPARATOR
+        POPUP "Go Down One Level"
+        BEGIN
+            MENUITEM "Open hole",                   ID_SHOWMAPOPTIONS_OPENHOLE
+
+            MENUITEM "Closed hole",                 ID_SHOWMAPOPTIONS_CLOSEDHOLE
+
+            MENUITEM "Grate",                       ID_SHOWMAPOPTIONS_CRATE
+        END
+        MENUITEM SEPARATOR
+        MENUITEM "Edit Tile Configuration(s)",  IDD_TOOL_MAPSHOW_CONFIG
     END
+    MENUITEM "",                            65535
 END
 
 #endif    // Polish resources
@@ -154,6 +166,90 @@ END
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_TOOL_MAPSHOW_CONFIG DIALOG DISCARDABLE  0, 0, 224, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Tile Configuration Tool"
+FONT 8, "MS Sans Serif"
+BEGIN
+    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,136,132,50,14
+    CONTROL         "Ground",IDC_GROUND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,18,39,10
+    CONTROL         "Container",IDC_CONTAINER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,12,29,46,10
+    CONTROL         "Depot",IDC_DEPOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    12,40,35,10
+    CONTROL         "Use Shovel",IDC_SHOVEL,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,18,94,53,10
+    CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTORADIOBUTTON,18,104,
+                    48,10
+    CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",
+                    BS_AUTORADIOBUTTON,18,114,86,10
+    CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    WS_TABSTOP,119,67,93,10
+    GROUPBOX        "Tile Type",IDC_STATIC,6,7,104,44
+    GROUPBOX        "Movement",IDC_STATIC,6,53,104,76
+    GROUPBOX        "Use",IDC_STATIC,12,85,93,42
+    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,12,65,51,10
+    CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTORADIOBUTTON,12,
+                    75,64,10
+    GROUPBOX        "Characteristics",IDC_STATIC,112,32,104,97
+    CONTROL         "Blocks distance attacks",IDC_BLOCKING,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
+                    119,43,93,10
+    CONTROL         "Blocks auto walking path",IDC_WALKABLE,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
+                    119,55,93,10
+    CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
+                    119,79,93,10
+    CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFT | WS_TABSTOP,119,103,93,10
+    CONTROL         "More always on top",IDC_MORE_ALWAYS_ON_TOP,"Button",
+                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
+                    119,91,93,10
+    EDITTEXT        IDC_TILE_ID,149,7,24,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_NUMBER
+    LTEXT           "Tile ID:",IDC_STATIC,113,7,22,12,SS_NOTIFY | 
+                    SS_CENTERIMAGE
+    EDITTEXT        IDC_SPEED,149,114,24,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Speed:",IDC_STATIC,119,116,24,10,SS_CENTERIMAGE
+    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,6,132,50,14
+    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,59,132,50,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_TOOL_MAPSHOW_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 216
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 146
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_BACKGROUND          BITMAP  DISCARDABLE     "thumbnailCARAJ88G.bmp"
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////

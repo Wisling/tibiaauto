@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(CToolMapShow, CDialog)
 	//{{AFX_MSG_MAP(CToolMapShow)
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
+	ON_WM_ERASEBKGND()
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW_CLEAR, OnToolMapshowClear)
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW_RESEARCH, OnToolMapshowResearch)
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH, OnToolMapshowExtendedResearch)
@@ -69,23 +70,24 @@ void CToolMapShow::OnOK()
 BOOL CToolMapShow::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+	alt  = flicker = back= 0;
 	int x;
 	int y;
-
-	for (x=0;x<2*10+1;x++)
+	RECT rect;
+	GetClientRect(&rect);
+	
+	for (x=0;x<21;x++)
 	{
-		for (y=0;y<2*10+1;y++)
+		for (y =0 ;y<21;y++)
 		{
 
 			
 			CMapButton *but = new CMapButton(x,y);			
 			
-			RECT rect;
 			rect.top=20+y*20;
-			rect.left=20+x*20;
-			rect.right=rect.left+14;
-			rect.bottom=rect.top+14;
+			rect.left=((rect.right - rect.left) / 2) - (20 * (10 - x)) - 10;
+			rect.right=rect.left+20;
+			rect.bottom=rect.top+20;
 			
 			but->Create("test",WS_CHILD|WS_VISIBLE|BS_FLAT|BS_PUSHLIKE|BS_OWNERDRAW,rect,this,IDC_MAPSHOW_FIRSTBUTTON);
 			but->LoadBitmaps(IDB_MAP_EMPTY);
@@ -93,6 +95,7 @@ BOOL CToolMapShow::OnInitDialog()
 			m_mapButtonImage[x][y]=IDB_MAP_EMPTY;						
 			m_mapButtons[x][y]=but;			
 			
+	GetClientRect(&rect);
 			
 		}
 	}
@@ -100,10 +103,45 @@ BOOL CToolMapShow::OnInitDialog()
 	refreshVisibleMap();
 
 	SetTimer(1001,250,NULL);
+	SetTimer(1004,(rand() % 360000) + 1,NULL);
 	
 		
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
+}
+
+BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC) 
+{
+	if(!alt) {
+		CDialog::OnEraseBkgnd(pDC);	
+	}
+	else {
+		CRect rect;
+		GetClientRect(&rect);
+		CDC dc;
+		CDC dcBuffer;
+		dc.CreateCompatibleDC(pDC);
+		dcBuffer.CreateCompatibleDC(&dc);
+		int bmw, bmh ;
+		BITMAP bmap;
+		CBitmap m_bitmap;
+		m_bitmap.LoadBitmap(IDB_BACKGROUND);
+		CBitmap* pOldBitmap = dcBuffer.SelectObject(&m_bitmap);
+		m_bitmap.GetBitmap(&bmap);
+		bmw = bmap.bmHeight;
+		bmh = bmap.bmHeight;
+		int xo=0, yo=0;
+		
+		for (yo = 0; yo < rect.Height(); yo += bmh)
+		{
+			for (xo = 0; xo < rect.Width(); xo += bmw)
+			{
+				pDC->BitBlt (xo, yo, rect.Width(), rect.Height(), &dcBuffer, 0, 0, SRCCOPY);
+			}
+		}
+		BitBlt(dc, 0, 0, rect.Width(), rect.Height(), dcBuffer, 0, 0, SRCCOPY);
+	}
+	return true;
 }
 
 void CToolMapShow::refreshVisibleMap()
@@ -118,6 +156,7 @@ void CToolMapShow::refreshVisibleMap()
 	if (m_mapButtonImage[10][10]!=IDB_MAP_SELF)
 	{
 		m_mapButtons[10][10]->LoadBitmaps(IDB_MAP_SELF,IDB_MAP_SELF,IDB_MAP_SELF,IDB_MAP_SELF);
+		m_mapButtons[10][10]->RedrawWindow();
 		m_mapButtonImage[10][10]=IDB_MAP_SELF;
 		m_mapButtons[10][10]->m_value=-2;
 	}
@@ -246,7 +285,6 @@ void CToolMapShow::refreshVisibleMap()
 			}
 		}
 	}
-	
 	delete self;
 }
 
@@ -256,8 +294,8 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	{
 		KillTimer(1001);
 		refreshVisibleMap();		
-		SetTimer(1001,250,NULL);
-	};
+		SetTimer(1001,1000,NULL);
+	}
 	if (nIDEvent==1002)
 	{
 		
@@ -401,6 +439,29 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 		delete self;
 		SetTimer(1003,1000,NULL);
 	}
+	if (nIDEvent==1004)
+	{
+		KillTimer(1004);
+		if (!flicker) {
+			flicker = (rand() % 7) + 1;
+			back = flicker;
+			SetTimer(1004,(rand() % 120000) + 1,NULL);
+			alt = 0;
+		}
+		else {
+			SetTimer(1004,(rand() % 80) + 1,NULL);
+			if (flicker < back) {
+				back--;
+				alt = 0;
+			}
+			else {
+				flicker--;
+				alt = 1;
+			}
+		}
+		RedrawWindow();
+		
+	};
 	
 	CDialog::OnTimer(nIDEvent);
 }
@@ -457,8 +518,6 @@ void CToolMapShow::mapPointClicked(int posX, int posY, int pos)
 	refreshVisibleMap();
 }
 
-
-
 BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam) 
 {
 
@@ -498,3 +557,18 @@ void CToolMapShow::showTileDetails(int x, int y)
 	}
 	
 }
+
+void CToolMapShow::setTileDetails(int x, int y, int setOption) {		
+	try {	
+	}
+	catch (...) {
+		AfxMessageBox("Failed During setTileDetails");
+	}
+}
+
+void CToolMapShow::ShowMapConfig(int x, int y) {
+	CMapConfig *dialog = new CMapConfig(memTilesForConfig, x, y);
+	dialog->DoModal();
+	delete dialog;
+}
+
