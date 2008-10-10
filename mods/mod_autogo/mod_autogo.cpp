@@ -461,56 +461,55 @@ int triggerRunawayReached(CConfigData *config)
 
 int isSpellMessage(char *msg)
 {
+	CPackSenderProxy sender;
 	int pos;
-	const char *spells[] = 
+	const char *spellPre[] = 
 	{
-		"exana pox",
-		"exori",
-		"exana ina",
-		"exeta res",
-		"exevo con",
-		"exevo con",
-		"utevo res",
-		"exeta vis",
-		"exevo vis",
-		"exori vis",
-		"exevo mort",
-		"exevo con",
-		"exiva",
-		"exevo flam",
-		"exori flam",
-		"exevo pan",
-		"exori mort",
-		"exevo gran",
-		"utevo gran",
-		"utani hur",
-		"exura sio",
-		"exura gran",
-		"utana vid",
-		"exani hur",
-		"utevo lux",
-		"exura",
-		"exani tera",
-		"utamo vita",
-		"exura gran",
-		"exevo gran",
-		"exevo con",
-		"exevo con",
-		"utani gran",
-		"utevo res",
-		"exevo gran",
-		"exura vita",
-		"utevo vis",
-		"exana mas",
-		"exevo grav",
+		"ex",
+		"ad",
+		"ut",
+		"al",
 		NULL
 	};
-	for (pos=0;spells[pos];pos++)
+	const char *spellSuf[] = 
 	{
-		char msgBuf[100];
-		memset(msgBuf,0,100);
-		strncpy(msgBuf,msg,strlen(spells[pos]));
-		if (!strcmpi(msgBuf,spells[pos])) return 1;
+		"ana",
+		"eta",
+		"evo",
+		"ito",
+		"ori",
+		"ura",
+		"ani",
+		"iva",
+		"amo",
+		NULL
+	};
+	char newmsg[128];
+	newmsg[0]=0;
+	//get 5 characters from msg discarding all spaces
+	int count=0;
+	for (int i=0;count<5&&msg[i];i++){
+		if (msg[i]!=' '){
+			newmsg[count]=msg[i];
+			count++;
+		}
+	}
+	newmsg[count]='\0';
+	if (strlen(newmsg)!=5) return 0;
+	//if string starts with prefix and is = prefix+suffix, return 1
+	for (pos=0;spellPre[pos];pos++){
+		if (strnicmp(newmsg,spellPre[pos],2)==0){
+			for (int pos2=0;spellSuf[pos2];pos2++){
+				char tmp[10];
+				tmp[0]=0;
+				strcat(tmp,spellPre[pos]);
+				strcat(tmp,spellSuf[pos2]);
+				tmp[5]='\0';
+				if (strnicmp(newmsg,tmp,5)==0){
+					return 1;
+				}
+			}
+		}
 	}
 	return 0;
 }
