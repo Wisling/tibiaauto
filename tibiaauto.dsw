@@ -279,6 +279,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_seller"="..\tibiaauto-pub\mods\mod_seller\mod_seller.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_showmap"="..\tibiaauto-pub\mods\mod_showmap\mod_showmap.dsp" - Package Owner=<4>
 
 Package=<5>

@@ -17,6 +17,7 @@ HANDLE CIPCBackPipe::hPipeBack=INVALID_HANDLE_VALUE;
 struct ipcMessage *CIPCBackPipe::pipeBackCache=NULL;
 int CIPCBackPipe::pipeBackCacheSize=0;
 int CIPCBackPipe::pipeBackCacheCount=0;
+FILE *debugFile=NULL;
 
 CRITICAL_SECTION BackPipeQueueCriticalSection;
 
@@ -40,7 +41,7 @@ void CIPCBackPipe::InitialiseIPC()
 	char lpszPipename[128];
 	int pid = ::GetCurrentProcessId();
 	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",pid);	
-		
+
 	while (1)
 	{		
 		
@@ -92,6 +93,10 @@ void CIPCBackPipe::InitialiseIPC()
 		InitialiseIPC();
 	} else {
 		initialised=1;
+		if (debugFile) {
+			fprintf(debugFile,"[debug] straight IPC initialised ok\n");
+		}
+
 	}
 
 }
