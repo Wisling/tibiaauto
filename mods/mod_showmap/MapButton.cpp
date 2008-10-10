@@ -3,8 +3,9 @@
 
 #include "stdafx.h"
 #include "MapButton.h"
-
+#include "TibiaMapPoint.h"
 #include "ToolMapShow.h"
+#include "MemReaderProxy.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -83,6 +84,7 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 
 BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam) 
 {	
+	CMemReaderProxy reader;
 	if (wParam==ID_SHOWMAPOPTIONS_CLEAR)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();		
@@ -133,6 +135,18 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 		CToolMapShow *parent = (CToolMapShow *)GetParent();		
 		parent->mapPointClicked(m_x,m_y,301);
 	}	
+	if (wParam==IDD_TOOL_MAPSHOW_CONFIG)
+	{
+		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		if (parent->m_extendedResearch.GetCheck()) {
+			if (m_value!=-1 || reader.mapGetPointItemId(point(m_x, m_y, 0),0))
+				parent->ShowMapConfig(m_x,m_y);
+			else
+				AfxMessageBox("You can only configure tiles that have been researched!");
+		}
+		else
+			AfxMessageBox("You must enable Extended Research first!");
+	}		
 	return CButton::OnCommand(wParam, lParam);
 }
 

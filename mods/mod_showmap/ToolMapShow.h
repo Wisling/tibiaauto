@@ -8,6 +8,8 @@
 //
 #include "resource.h"
 #include "MapButton.h"
+#include "Whitelist.h"
+#include "tibiatile.h"
 /////////////////////////////////////////////////////////////////////////////
 // CToolMapShow dialog
 
@@ -15,9 +17,11 @@ class CToolMapShow : public CDialog
 {
 // Construction
 public:
+	void setTileDetails(int, int, int);
 	void showTileDetails(int x,int y);
 	void mapPointClicked(int posX, int posY, int pos);
 	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
+	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
 
 // Dialog Data
@@ -45,6 +49,7 @@ protected:
 	afx_msg void OnClose();
 	virtual void OnOK();
 	virtual BOOL OnInitDialog();
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnToolMapshowClear();
 	afx_msg void OnToolMapshowResearch();
@@ -55,6 +60,8 @@ private:
 	
 	CMapButton * m_mapButtons[21][21];
 	int m_mapButtonImage[21][21];
+	CTibiaTile *memTilesForConfig[10];
+	int alt, flicker, back;
 };
 
 //{{AFX_INSERT_LOCATION}}
