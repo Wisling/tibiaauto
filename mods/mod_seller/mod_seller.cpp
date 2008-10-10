@@ -39,6 +39,10 @@ of the License, or (at your option) any later version.
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define NOGO 0
+#define SELLONLY 1
+#define BUYONLY 2
+#define DOBOTH 3 
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_SellerApp
@@ -61,7 +65,7 @@ int moveToSeller(CConfigData *);
 int sellItems(CConfigData *, int);
 int buyItems(CConfigData *, int);
 int isDepositing();
-int noSpace();
+int spaceAvailable();
 int isCavebotOn();
 int countAllItemsOfType(int);
 bool shouldGo(CConfigData *);
@@ -710,7 +714,7 @@ int sellItems(CConfigData *config, int traderNum) {
 	int itemCount;
 	int done = 0;
 	sender.say("Hi");
-	Sleep (500);
+	Sleep (1500);
 	sender.sayNPC("trade");
 	Sleep (500);
 	for (int j = 0; j < 32; j++) {
@@ -838,7 +842,7 @@ bool shouldGo(CConfigData *config) {
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i)) 
 			return true;
-		if (config->sellOnSpace && noSpace() && individualShouldGo(config, i))
+		if (config->sellOnSpace && spaceAvailable() && individualShouldGo(config, i))
 			return true;
 		for (int j = 0; j < 32; j++) {
 			int objectId = itemProxy.getObjectId(config->sellItem[i].tradeItem[j].itemName);
@@ -864,37 +868,41 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 	//char buf[64];
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
+	int ret = NOGO;
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		if (objectId && countAllItemsOfType(objectId) >= 1)
-			return 1;
+		if (objectId && countAllItemsOfType(objectId) > 0)
+			ret = SELLONLY;
 	}
 	for (j = 0; j < 32; j++) {
 		int objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		if (objectId && countAllItemsOfType(objectId) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && countAllItemsOfType(itemProxy.getValueForConst("GP")) >= config->buyItem[traderNum].tradeItem[j].salePrice)
-			return 2;
+		if (objectId && countAllItemsOfType(objectId) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && countAllItemsOfType(itemProxy.getValueForConst("GP")) >= config->buyItem[traderNum].tradeItem[j].salePrice) {
+			if (ret == SELLONLY)
+				ret = DOBOTH;
+			else
+				ret = BUYONLY;
+		}
 	}
-	return 0;
+	return ret;
 }
 
-int noSpace() {
+int spaceAvailable() {
 	CMemReaderProxy reader;
 	int contNr;
 	int hasSpace=0;
 	for (contNr = 0; contNr < 16; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
-		if (cont->flagOnOff && cont->itemsInside < cont->size) {
-			delete cont;
-			return 0;
-		}
+		if (cont->flagOnOff && cont->itemsInside < cont->size)
+			hasSpace = 1;
 		delete cont;		
 	}
-	return 1;
+	if (hasSpace) return 1;
+	else return 0;
 }
 
 
