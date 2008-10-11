@@ -19,7 +19,7 @@ void myInterceptEncrypt(int v1, int v2);
 void myInterceptDecrypt(int v1, int v2);
 void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11);
 
-  
+
 #define TA_MESSAGE_QLEN 10
 #define MAX_CREATUREINFO 1000
 
@@ -105,17 +105,17 @@ public:
 };
 
 /** 
- * codes for communication
- * 1001: incoming message -> ?
- * 1002: middle screen info (you see) -> creature info
- * 1003: incoming message -> ?
- * 1004: incoming message -> ?
- * 1005: incoming message -> ?
- * 1006: incoming message -> python engine
- * 1007: %ta messages -> python engine
- * 1008: %ta lu/%ta ld -> xray
- * 2001: hooks -> xray
- */
+* codes for communication
+* 1001: incoming message -> ?
+* 1002: middle screen info (you see) -> creature info
+* 1003: incoming message -> ?
+* 1004: incoming message -> ?
+* 1005: incoming message -> ?
+* 1006: incoming message -> python engine
+* 1007: %ta messages -> python engine
+* 1008: %ta lu/%ta ld -> xray
+* 2001: hooks -> xray
+*/
 
 int outExploAvail=0;
 int outHmmAvail=0;
@@ -135,13 +135,14 @@ DETOUR_TRAMPOLINE(int Real_select(int nfds,fd_set* readfds,fd_set* writefds,fd_s
 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags);
-
+char*  adler(char *data, size_t len);
 
 void InitialiseCommunication();
 void InitialiseHooks();
 void InitialisedDebugFile();
 
 #define STRBUFLEN 655360
+char bufToHexStringRet[STRBUFLEN];
 
 int payloadLen(unsigned char *buf)
 {
@@ -149,7 +150,7 @@ int payloadLen(unsigned char *buf)
 	int lenH=buf[1];
 	int len=buf[0]+buf[1]*256;
 	return len;
-};
+}
 
 int payloadLen(char buf[])
 {
@@ -157,7 +158,61 @@ int payloadLen(char buf[])
 	int lenH=buf[1];
 	int len=buf[0]+buf[1]*256;
 	return len;
-};
+}
+
+void bufToHexString(char *buf,int len)
+{	
+	if (len>STRBUFLEN/8)
+	{
+		sprintf(bufToHexStringRet,"[buffer length to big: %d]",len);
+		return;
+	}
+	memset(bufToHexStringRet,0x00,STRBUFLEN);
+	for (int pos=0;pos<len;pos++)
+	{
+		char localBuf[256];
+		int val=buf[pos];
+		if (val<0) val+=256;
+		sprintf(localBuf," 0x%x",val);
+		strcat(bufToHexStringRet,localBuf);
+	};
+}
+
+#define MOD_ADLER 65521
+char outCheck[5]; 
+char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; len is in bytes */
+{
+	/*
+	The is the CRC algorithim. I could not nor would I try to find the actual one Tibia 
+	uses. So I have copied this of and modified it to fit the datat we use.
+	*/
+	int count = 0;
+    int a = 1;
+	int b = 0;
+	
+    while (len > 0) 
+    {
+        size_t tlen = len > 5552 ? 5552 : len;
+        len -= tlen;
+        do 
+        {
+            a += (int)data[count]>=0?(int)data[count]:256+(int)data[count];
+            b += a;
+			count++;
+        } while (--tlen);
+		
+        a %= MOD_ADLER;
+        b %= MOD_ADLER;
+    }
+	outCheck[0] = a&0xff;
+	outCheck[1] = (a>>8)&0xff;
+	outCheck[2] = b&0xff;
+	outCheck[3] = (b>>8)&0xff;
+	outCheck[4] = '\0';
+	
+	return outCheck;
+	
+}
 
 int lastAction=0;
 void sendBufferViaSocket(char *buffer)
@@ -165,7 +220,7 @@ void sendBufferViaSocket(char *buffer)
 	// if we don't yet have key pointer then don't do anything
 	if (!encryptKeyPtr)
 		return;
-
+	
 	int i;
 	char outbuf[1000];
 	int lowB=buffer[0];
@@ -175,15 +230,19 @@ void sendBufferViaSocket(char *buffer)
 	int len=lowB+hiB*256+2;	
 	
 	int outbuflen=len;			
-	if (len%8!=0) outbuflen+=8-(len%8);
+	if (len%8!=4) outbuflen+=12-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
 	outbuf[0]=outbuflen%256;
 	outbuf[1]=outbuflen/256;	
 	for (i=0;i<outbuflen;i+=8)
 	{		
-		memcpy(outbuf+i+2,buffer+i,8);		
-		myInterceptEncrypt((int)(outbuf+i+2),encryptKeyPtr);		
+		memcpy(outbuf+i+6,buffer+i,8); 		
+		myInterceptEncrypt((int)(outbuf+i+6),encryptKeyPtr);		
 	}	
-
+	char *check = adler(outbuf+6, outbuflen-4);
+	outbuf[2] = outCheck[0];
+	outbuf[3] = outCheck[1];
+	outbuf[4] = outCheck[2];
+	outbuf[5] = outCheck[3];
 	
 	// make sure that packets go at most once every minDistance ms
 	int minDistance=175;
@@ -205,35 +264,17 @@ void sendBufferViaSocket(char *buffer)
 	}	
 }
 
-char bufToHexStringRet[STRBUFLEN];
-void bufToHexString(char *buf,int len)
-{	
-	if (len>STRBUFLEN/8)
-	{
-		sprintf(bufToHexStringRet,"[buffer length to big: %d]",len);
-		return;
-	}
-	memset(bufToHexStringRet,0x00,STRBUFLEN);
-	for (int pos=0;pos<len;pos++)
-	{
-		char localBuf[256];
-		int val=buf[pos];
-		if (val<0) val+=256;
-		sprintf(localBuf," 0x%x",val);
-		strcat(bufToHexStringRet,localBuf);
-	};
-}
 
 void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ)
 {
 	char sendbuf[19];
 	//int targetObjectId=CTibiaItem::m_itemTypeRopespot;
 	int targetObjectId=0x63;
-
+	
 	sendbuf[0]=17;
 	sendbuf[1]=0;
 	sendbuf[2]=0x83;
-
+	
 	sendbuf[3]=0xff;
 	sendbuf[4]=0xff;
 	sendbuf[5]=contNr&0xff;
@@ -242,7 +283,7 @@ void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX
 	sendbuf[8]=runeObjectId&0xff;;
 	sendbuf[9]=(runeObjectId>>8)&0xff;
 	sendbuf[10]=itemPos;
-
+	
 	sendbuf[11]=targetX&0xff;
 	sendbuf[12]=(targetX>>8)&0xff;
 	sendbuf[13]=targetY&0xff;
@@ -251,7 +292,7 @@ void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX
 	sendbuf[16]=targetObjectId&0xff;
 	sendbuf[17]=(targetObjectId>>8)&0xff;
 	sendbuf[18]=0x01;
-
+	
 	//Mine_send(tibiaSocket,sendbuf,19,lastSendFlags);
 	sendBufferViaSocket(sendbuf);
 	
@@ -262,7 +303,7 @@ void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int crea
 	sendbuf[0]=13;
 	sendbuf[1]=0;
 	sendbuf[2]=0x84;
-
+	
 	sendbuf[3]=0xff;
 	sendbuf[4]=0xff;
 	sendbuf[5]=contNr&0xff;
@@ -271,16 +312,16 @@ void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int crea
 	sendbuf[8]=runeObjectId&0xff;;
 	sendbuf[9]=(runeObjectId>>8)&0xff;
 	sendbuf[10]=itemPos;
-
+	
 	sendbuf[11]=creatureId&0xff;
 	sendbuf[12]=(creatureId>>8)&0xff;
 	sendbuf[13]=(creatureId>>16)&0xff;
 	sendbuf[14]=(creatureId>>24)&0xff;
-
+	
 	//Mine_send(tibiaSocket,sendbuf,17,lastSendFlags);
 	sendBufferViaSocket(sendbuf);
-
-
+	
+	
 }
 
 void autoAimAttack(int runeId)
@@ -454,7 +495,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 	}
 	/**
 	*/
-
+	
 	if (code==0x96&&buf[3]==1)
 	{		
 		// "say"
@@ -464,9 +505,9 @@ int parseMessageForTibiaAction(char *buf,int len)
 		if (sayV1<0) sayV1+=256;
 		if (sayV2<0) sayV2+=256;
 		int sayLen=sayV1+256*sayV2;
-
+		
 		if (sayLen>500) return 0;
-
+		
 		memset(sayBuf,0,1000);
 		memcpy(sayBuf,buf+6,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
@@ -475,7 +516,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			return 1;
 		}
 	}
-
+	
 	if (code==0x96&&buf[3]==5)
 	{		
 		// "channel"
@@ -485,9 +526,9 @@ int parseMessageForTibiaAction(char *buf,int len)
 		if (sayV1<0) sayV1+=256;
 		if (sayV2<0) sayV2+=256;
 		int sayLen=sayV1+256*sayV2;
-
+		
 		if (sayLen>500) return 0;
-
+		
 		memset(sayBuf,0,1000);
 		memcpy(sayBuf,buf+8,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
@@ -496,10 +537,10 @@ int parseMessageForTibiaAction(char *buf,int len)
 			return 1;
 		}
 	}
-
+	
 	if (code==0x96&&buf[3]==4)
 	{
-			CTibiaItemProxy itemProxy;
+		CTibiaItemProxy itemProxy;
 		// "tell"
 		char sayBuf[1000];
 		char nickBuf[1000];
@@ -508,22 +549,22 @@ int parseMessageForTibiaAction(char *buf,int len)
 		if (nickV1<0) nickV1+=256;
 		if (nickV2<0) nickV2+=256;
 		int nickLen=nickV1+256*nickV2;
-
+		
 		if (nickLen>500) return 0;
-
+		
 		memset(nickBuf,0,1000);
 		memcpy(nickBuf,buf+6,nickLen);
-
+		
 		int sayV1=buf[6+nickLen];
 		int sayV2=buf[7+nickLen];
 		if (sayV1<0) sayV1+=256;
 		if (sayV2<0) sayV2+=256;
 		int sayLen=sayV1+256*sayV2;
-
+		
 		if (sayLen>500) return 0;
 		memset(sayBuf,0,1000);
 		memcpy(sayBuf,buf+8+nickLen,sayLen);
-
+		
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
 			parseMessageSay(sayBuf);			
@@ -546,7 +587,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 		}
 		return;
 	}
-
+	
 	int packetSizeH=buf[1];
 	int packetSizeL=buf[0];
 	if (packetSizeH<0)
@@ -565,33 +606,31 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 		return;
 	} 	
 	
-
+	
 	int code=buf[2];
 	if (code<0)
 		code+=256;
-
+	
 	
 	if (debugFile)
 	{
 		fprintf(debugFile,"### got bytes = %d; packet size = %d; code=0x%x\n",realRecvLen,packetSize,code);
 	}
-
+	
 	if (direction==0)
 	{
 		// this is 'recv' direction: decrypt and parse message
 		if (encryptKeyPtr)
 		{
-
+			
 			int afterDecryptCode;			
 			static char decryptedBuf[100000];
 			int i;
-
-			memcpy(decryptedBuf,buf+2,packetSize-2);
-
 			
+			memcpy(decryptedBuf,buf+6,packetSize-6); // Remember CRC bytes are NOT encrypted either sending or recieving.
 			fprintf(debugFile,"# decrypted content follows #\n");
 			
-			for (i=0;i<packetSize-2;i+=8)
+			for (i=0;i<packetSize-6;i+=8)
 			{
 				myInterceptDecrypt((int)(decryptedBuf+i),encryptKeyPtr);								
 			}
@@ -612,7 +651,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 			fflush(debugFile);			
 		}	
 	}
-
+	
 	if (packetSize<realRecvLen)
 	{		
 		parseMessage(buf+packetSize,realRecvLen-packetSize,debugFile,direction,depth+1);
@@ -648,7 +687,7 @@ volatile Proto_callback hookCallbackFun=hookCallback;
 
 void ActivateHookCallback()
 {
-	int size;
+	int size = 0;
 	char mapFileBuf[128];
 	HANDLE hMapFile;
 	LPCTSTR pBuf;
@@ -677,52 +716,52 @@ void ActivateHookCallback()
 	{       
 		return;
 	}
-		
+	
 	CopyMemory((PVOID)pBuf, (PVOID)&hookCallbackFun, sizeof(void *));   
 	
 	UnmapViewOfFile(pBuf);
-		
-		
-
+	
+	
+	
 }
 
 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 {		
-	
 	int i;
 	int identical=1;
-	if (len!=encryptPos+8+2)
+	if (len!=encryptPos+8+6)
 	{
 		identical=0;
 	} else {
 		for (i=0;i<encryptPos+8;i++)
 		{
-			if (buf[2+i]!=encryptAfterBuf[i])
+			if (buf[6+i]!=encryptAfterBuf[i]) {
 				identical=0;
+			}
 		}
 	}
-
+	
 	if (debugFile)
 	{
 		fprintf(debugFile,"!!! send !!! [identical=%d]\n",identical);
 		fflush(debugFile);
 	}
-
+	
 	if (debugFile)
 	{	
 		bufToHexString(buf,len);	
-		fprintf(debugFile,"E> [%x] %s\n",socket,bufToHexStringRet);	
+		fprintf(debugFile,"E> [%x] %s\n",socket,bufToHexStringRet);
 		fflush(debugFile);
 	}
 	
-
-
+	
+	
 	if (identical)
 	{
 		// pass for further processing only when we know content before encryption
-
+		
 		parseMessage(encryptBeforeBuf,encryptLen,debugFile,1,1);
 		if (debugFile)
 		{	
@@ -734,10 +773,10 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 			return len;
 		
 	}
-
 	
-
-
+	
+	
+	
 	if (debugFile)
 	{
 		fflush(debugFile);
@@ -746,8 +785,8 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
     
 	tibiaSocket=s;
 	lastSendFlags=flags;
-		
-
+	
+	
     int ret=0;
 	ret=Real_send(s,buf,len,flags);	
 	
@@ -762,7 +801,6 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 		fprintf(debugFile,"!!! recv !!!\n");
 		fflush(debugFile);
 	}
-beginRecv:
 	int offset=0;	
 	if (taMessageStart!=taMessageEnd)
 	{
@@ -782,25 +820,20 @@ beginRecv:
 		
 	}	
 	
-
-
+	
+	
 	int realRecvLen=0;
 	
 	// use "standard" tibia own socket
 	realRecvLen=Real_recv(s,buf+offset,len-offset,flags);	
-		
-	if (debugFile)
-	{
-		fprintf(debugFile,"!!! recv !!!\n");
-		fflush(debugFile);
-	}
+	
 	if (realRecvLen!=-1)
 	{
 		if (debugFile)
 		{
 			fprintf(debugFile,"realRecvLen=%d\n",realRecvLen);
 			fflush(debugFile);					
-									
+			
 			bufToHexString(buf,realRecvLen);
 			fprintf(debugFile,"<- [%x] %s\n",socket,bufToHexStringRet);		
 			
@@ -808,9 +841,9 @@ beginRecv:
 			fflush(debugFile);				
 		}
 	}
-
 	
-
+	
+	
 	if (debugFile)
 	{
 		fflush(debugFile);
@@ -818,14 +851,14 @@ beginRecv:
     
 	tibiaSocket=s;	
 	
-
+	
     return realRecvLen+offset;
 }
 
 SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 {
 	SOCKET s = Real_socket(af,type,protocol);
-
+	
 	if (debugFile)
 	{
 		fprintf(debugFile,"got socket: %d, %d, %d -> %d\n",af,type,protocol,s);
@@ -833,7 +866,7 @@ SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 	}	
     
 	tibiaSocket=s;
-
+	
     return s;
 }
 
@@ -844,28 +877,28 @@ int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 		fprintf(debugFile,"connect [pre]: %d, %x, %d\n",s,name,namelen);
 		fflush(debugFile);
 	}
-
-
+	
+	
 	int ret = Real_connect(s,name,namelen);	
-
+	
 	if (debugFile)
 	{
 		fprintf(debugFile,"connect: %d, %x, %d\n",s,name,namelen);
 		fflush(debugFile);
 	}
-
+	
 	memcpy(lastConnectName,name,16);
-
+	
 	return ret;
 };
 
 int WINAPI Mine_select(
-  int nfds,
-  fd_set* readfds,
-  fd_set* writefds,
-  fd_set* exceptfds,
-  const struct timeval* timeout
-)
+					   int nfds,
+					   fd_set* readfds,
+					   fd_set* writefds,
+					   fd_set* exceptfds,
+					   const struct timeval* timeout
+					   )
 {
 	if (debugFile)
 	{
@@ -884,6 +917,8 @@ void InitialiseIPC()
 	char lpszPipename[128];
 	int pid = ::GetCurrentProcessId();
 	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-%d",pid);	
+	
+	
 	while (1)
 	{		
 		
@@ -896,6 +931,7 @@ void InitialiseIPC()
 			OPEN_EXISTING,  // opens existing pipe 
 			0,              // default attributes 
 			NULL);          // no template file 
+		
 		
 		// pipe handle is invalid - proceed
 		if (hPipe != INVALID_HANDLE_VALUE) 	
@@ -951,20 +987,20 @@ void InitialiseIPCback()
 		fprintf(debugFile,"[debug] IPC queue is %s\n",lpszPipename);
 	}
 	
-
-	 hPipeBack = CreateNamedPipe(
-          lpszPipename,             // pipe name 
-          PIPE_ACCESS_DUPLEX,       // read/write access 
-          PIPE_TYPE_MESSAGE |       // message type pipe 
-          PIPE_READMODE_MESSAGE |   // message-read mode 
-          PIPE_WAIT,                // blocking mode 
-          PIPE_UNLIMITED_INSTANCES, // max. instances  
-          163840,                  // output buffer size 
-          163840,                  // input buffer size 
-          1000,                        // client time-out 
-          NULL);                    // no security attribute 
-
-
+	
+	hPipeBack = CreateNamedPipe(
+		lpszPipename,             // pipe name 
+		PIPE_ACCESS_DUPLEX,       // read/write access 
+		PIPE_TYPE_MESSAGE |       // message type pipe 
+		PIPE_READMODE_MESSAGE |   // message-read mode 
+		PIPE_WAIT,                // blocking mode 
+		PIPE_UNLIMITED_INSTANCES, // max. instances  
+		163840,                  // output buffer size 
+		163840,                  // input buffer size 
+		1000,                        // client time-out 
+		NULL);                    // no security attribute 
+	
+	
 	if (hPipeBack == INVALID_HANDLE_VALUE) 
 	{		
 		if (debugFile)
@@ -977,7 +1013,7 @@ void InitialiseIPCback()
 	
 	BOOL fConnected = ConnectNamedPipe(hPipeBack, NULL) ?  true : (GetLastError() == ERROR_PIPE_CONNECTED); 
 	
-
+	
 	if (!fConnected)
 	{
 		sprintf(buf,"client not connected via pipe: %d",GetLastError());
@@ -987,8 +1023,8 @@ void InitialiseIPCback()
 			return;
         }
 	}
-
-
+	
+	
 	if (debugFile)
 	{
 		fprintf(debugFile,"[debug] back IPC initialised ok\n");
@@ -1008,7 +1044,7 @@ void InitialiseHooks()
 	DetourFunctionWithTrampoline((PBYTE)Real_connect,(PBYTE)Mine_connect);	
 	DetourFunctionWithTrampoline((PBYTE)Real_socket,(PBYTE)Mine_socket);		
 	//DetourFunctionWithTrampoline((PBYTE)Real_select,(PBYTE)Mine_select);
-}
+};
 
 
 
@@ -1016,7 +1052,7 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	debugFile=fopen("c:\temp\tibiaDebug.txt","wb");
+	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
 	//debugFile=NULL;
 	debugFileStart=time(NULL);
 }
@@ -1045,11 +1081,11 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 	sprintf(convString,"%s",str);	
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15);
 	//Proto_fun fun=(Proto_fun)(0x4AB980); // OLD
-	Proto_fun fun=(Proto_fun)(0x4AB910); // 8.22
-
+	//Proto_fun fun=(Proto_fun)(0x4AB910); // 8.22
+	Proto_fun fun=(Proto_fun)(0x4AE010); // 8.31
+	
 	/*
-	if (debugFile)
-	{		
+	if (debugFile) {		
 		fprintf(debugFile,"myPlayerNameText(%d,%d,%d,%d,%d,%d,%d,%d,%s,%d,%d,%d,%d,%d,%d)\n",v1,x,y,fontNumber,colR,colG,colB,v8,str, v10, v11, v12, v13, v14, v15);
 		fflush(debugFile);
 	}
@@ -1075,7 +1111,7 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 				break;
 			}
 		}				
-						
+		
 		if (strlen(info2)) 
 		{
 			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,info2,10, v11, v12, v13, v14, v15);			
@@ -1087,7 +1123,7 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 			titleOffset+=14;
 		}
 	}
-			
+	
 	fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,str?convString:NULL, v10, v11, v12, v13, v14, v15);	
 }
 
@@ -1096,7 +1132,8 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	typedef void (*Proto_fun)(int type,char *s);			
 	//Proto_fun fun=(Proto_fun)(0x53FA70); //OLD
-	Proto_fun fun=(Proto_fun)(0x53FFE0); //8.22
+	//Proto_fun fun=(Proto_fun)(0x53FFE0); //8.22
+	Proto_fun fun=(Proto_fun)(0x5432A0); //8.31
 	
 	if (debugFile)
 	{
@@ -1110,7 +1147,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 			fprintf(debugFile,"got see '%s'\n",s);
 		}
 		unsigned long bytesWritten=0;						
-	
+		
 		struct ipcMessage mess;
 		mess.messageType=1002;	
 		int len=strlen(s);
@@ -1121,9 +1158,9 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 			mess.send();
 		}
 	}
-
-
-
+	
+	
+	
 	if (type!=0x18||time(NULL)>ignoreLookEnd) 
 	{ 
 		fun(type,s);
@@ -1146,7 +1183,7 @@ int myIsCreatureVisible(int *creaturePtr)
 		static int crSize = memConstData.m_memLengthCreature;
 		
 		
-			
+		
 		if (creaturePtr)
 		{		
 			int *coordPtr;
@@ -1165,10 +1202,11 @@ int myIsCreatureVisible(int *creaturePtr)
 	} else {
 		typedef int (*Proto_fun)(int *creaturePtr);					
 		//Proto_fun fun=(Proto_fun)(0x45BEA0); // OLD
-		Proto_fun fun=(Proto_fun)(0x45BE00); // 8.22
+		//Proto_fun fun=(Proto_fun)(0x45BE00); // 8.22
+		Proto_fun fun=(Proto_fun)(0x45E120); // 8.31
 		return fun(creaturePtr);
 	}
-
+	
 }
 
 
@@ -1176,8 +1214,9 @@ void myInterceptEncrypt(int v1, int v2)
 {		
 	typedef void (*Proto_fun)(int v1,int v2);	
 	//Proto_fun fun=(Proto_fun)(0x545370); // OLD
-	Proto_fun fun=(Proto_fun)(0x546520); // 8.22
-
+	//Proto_fun fun=(Proto_fun)(0x546520); // 8.22
+	Proto_fun fun=(Proto_fun)(0x5497E0); // 8.31
+	
 	encryptKeyPtr=v2;
 	if (debugFile)
 	{
@@ -1198,7 +1237,8 @@ void myInterceptEncrypt(int v1, int v2)
 	} else {
 		encryptPos+=8;
 		encryptPrevPtr+=8;
-	}	
+	}
+	
 	memcpy(encryptBeforeBuf+encryptPos,(void *)v1,8);	
 	fun(v1,v2);	
 	memcpy(encryptAfterBuf+encryptPos,(void *)v1,8);	
@@ -1209,10 +1249,11 @@ void myInterceptDecrypt(int v1, int v2)
 {		
 	typedef void (*Proto_fun)(int v1,int v2);	
 	//Proto_fun fun=(Proto_fun)(0x5454A0); // OLD
-	Proto_fun fun=(Proto_fun)(0x546650); // 8.22
-
+	//Proto_fun fun=(Proto_fun)(0x546650); // 8.22
+	Proto_fun fun=(Proto_fun)(0x549910); // 8.31
+	
 	encryptKeyPtr=v2;		
-
+	
 	fun(v1,v2);		
 }
 
@@ -1229,8 +1270,9 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	// note: at least 0x14 bytes are passed on stack; at most 0x2c bytes are passed
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9, int v10, int v11);	
 	//Proto_fun fun=(Proto_fun)(0x542F50); // OLD
-	Proto_fun fun=(Proto_fun)(0x5434B0); // 8.22
-
+	//Proto_fun fun=(Proto_fun)(0x5434B0); // 8.22
+	Proto_fun fun=(Proto_fun)(0x546770); // 8.31
+	
 	if (type==1)
 	{
 		privChanBufferPtr=v1;
@@ -1258,7 +1300,7 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 		mess.messageType=1006;
 		mess.send();
 	}
-
+	
 	
 	if (type!=0x16||time(NULL)>ignoreLookEnd) 
 	{ 		
@@ -1282,39 +1324,41 @@ void InitialisePlayerInfoHack()
 {		
 	DWORD procId=GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);    
-
-	int addr;
-	int targetFun;
-	unsigned int targetAddr;
-
 	
-		
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
-
+	
 	//trapFun(dwHandle,0x4AC191+1,(unsigned int)myPlayerNameText); // OLD
 	//trapFun(dwHandle,0x4AC38C+1,(unsigned int)myPlayerNameText); // OLD
 	//trapFun(dwHandle,0x4AC582+1,(unsigned int)myPlayerNameText); // OLD
 	//trapFun(dwHandle,0x4AC782+1,(unsigned int)myPlayerNameText); // OLD
 	//trapFun(dwHandle,0x4AC97C+1,(unsigned int)myPlayerNameText); // OLD
 	//trapFun(dwHandle,0x4ACB71+1,(unsigned int)myPlayerNameText); // OLD
-		
-	trapFun(dwHandle,0x4AC121+1,(unsigned int)myPlayerNameText); // 8.22
-	trapFun(dwHandle,0x4AC31C+1,(unsigned int)myPlayerNameText); // 8.22
-	trapFun(dwHandle,0x4AC512+1,(unsigned int)myPlayerNameText); // 8.22
-	trapFun(dwHandle,0x4AC712+1,(unsigned int)myPlayerNameText); // 8.22
-	trapFun(dwHandle,0x4AC90C+1,(unsigned int)myPlayerNameText); // 8.22
-	trapFun(dwHandle,0x4ACB01+1,(unsigned int)myPlayerNameText); // 8.22
+	
+	//trapFun(dwHandle,0x4AC121+1,(unsigned int)myPlayerNameText); // 8.22
+	//trapFun(dwHandle,0x4AC31C+1,(unsigned int)myPlayerNameText); // 8.22
+	//trapFun(dwHandle,0x4AC512+1,(unsigned int)myPlayerNameText); // 8.22
+	//trapFun(dwHandle,0x4AC712+1,(unsigned int)myPlayerNameText); // 8.22
+	//trapFun(dwHandle,0x4AC90C+1,(unsigned int)myPlayerNameText); // 8.22
+	//trapFun(dwHandle,0x4ACB01+1,(unsigned int)myPlayerNameText); // 8.22
+	
+	trapFun(dwHandle,0x4AE821+1,(unsigned int)myPlayerNameText); // 8.31
+	trapFun(dwHandle,0x4AEA1C+1,(unsigned int)myPlayerNameText); // 8.31
+	trapFun(dwHandle,0x4AEC12+1,(unsigned int)myPlayerNameText); // 8.31
+	trapFun(dwHandle,0x4AEE12+1,(unsigned int)myPlayerNameText); // 8.31
+	trapFun(dwHandle,0x4AF00C+1,(unsigned int)myPlayerNameText); // 8.31
+	trapFun(dwHandle,0x4AF201+1,(unsigned int)myPlayerNameText); // 8.31
 	
 	
-
+	
 	// lookup: TALK_INFO_MESSAGE; this is inside of the function
 	//trapFun(dwHandle,0x413B43+1,(unsigned int)myInterceptInfoMiddleScreen); // OLD
-	trapFun(dwHandle,0x413B43+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.22
-
+	//trapFun(dwHandle,0x413c63+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.22
+	trapFun(dwHandle,0x413C63+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.31
+	
 	
 	// lookup: TargetBuffer!=NULL; first call is in the middle of the infomessage function
 	//         in fact you need to increcept all calls
-		
+	
 	/*
 	// BLOCK is OLD
 	trapFun(dwHandle,0x4133F8+1,(unsigned int)myInterceptInfoMessageBox);	
@@ -1334,49 +1378,70 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x543A60+1,(unsigned int)myInterceptInfoMessageBox);	
 	trapFun(dwHandle,0x544166+1,(unsigned int)myInterceptInfoMessageBox);
 	*/
+	/*
 	// BLOCK is 8.22
 	
-	trapFun(dwHandle,0x4133F8+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4135C3+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x413959+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x426DB7+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x42A1F8+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x42A20F+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x44D038+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x491A1E+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4D2680+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4D2E4D+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x4D2EB3+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x543C38+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x543C6B+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x543D82+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x543FB0+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x5446B6+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x4133F8+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x4135C3+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x413959+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x426DB7+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x42A1F8+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x42A20F+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x44D038+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x491A1E+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x4D2680+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x4D2E4D+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x4D2EB3+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x543C38+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x543C6B+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x543D82+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x543FB0+1,(unsigned int)myInterceptInfoMessageBox);	
+	  trapFun(dwHandle,0x5446B6+1,(unsigned int)myInterceptInfoMessageBox);	
+	*/
+	// BLOCK is 8.31
+	
+	trapFun(dwHandle,0x413518+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4136E3+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x413A79+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x427307+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x42A748+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x42A75F+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x44EC38+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x49402E+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4D5190+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4D595D+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4D59C3+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x546EF8+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x546F2B+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x547042+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x547270+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x547976+1,(unsigned int)myInterceptInfoMessageBox);	
 	
 	
-		
 	// lookup: manually match around previous address by assembly similarity
 	//trapFun(dwHandle,0x54560D+1,(unsigned int)myInterceptEncrypt); // OLD
-	trapFun(dwHandle,0x5467BD+1,(unsigned int)myInterceptEncrypt); // 8.22
-
+	//trapFun(dwHandle,0x5467BD+1,(unsigned int)myInterceptEncrypt); // 8.22
+	trapFun(dwHandle,0x549A7D+1,(unsigned int)myInterceptEncrypt); // 8.31
+	
 	// lookup: function below encrypt is the decrypt function
 	//trapFun(dwHandle,0x54562D+1,(unsigned int)myInterceptDecrypt); // OLD
-	trapFun(dwHandle,0x5467DD+1,(unsigned int)myInterceptDecrypt); // 8.22
-
+	//trapFun(dwHandle,0x5467DD+1,(unsigned int)myInterceptDecrypt); // 8.22
+	trapFun(dwHandle,0x549A9D+1,(unsigned int)myInterceptDecrypt); // 8.31
+	
 	// WARNING: decrypt function is not trapped since 8.22 as I did not track it down in the soureccode
-
+	
 	// lookup: reference to  string "Creature!=NULL" 
 	//         [you need to look for PUSH string with this debug] + 
 	//         instruction before PUSH XXX must be MOV ESI, 00000000Fh
 	//         it's in the middle of the function
 	//         trap of the second (last one) reference to the function	
 	//trapFun(dwHandle,0x4E951C+1,(unsigned int)myIsCreatureVisible); // OLD
+	//trapFun(dwHandle,0x4E95DC+1,(unsigned int)myIsCreatureVisible); // 8.22
+	trapFun(dwHandle,0x4EC0EC+1,(unsigned int)myIsCreatureVisible); // 8.31
 	
-	trapFun(dwHandle,0x4E95DC+1,(unsigned int)myIsCreatureVisible); // 8.22
 	
-		
     CloseHandle(dwHandle);
-
+	
 }
 
 
@@ -1392,17 +1457,17 @@ void InitialiseProxyClasses()
 
 
 BOOL CALLBACK EnumWindowsProc(      
-
-    HWND hwnd,
-    LPARAM lParam
-	)
+							  
+							  HWND hwnd,
+							  LPARAM lParam
+							  )
 {
-		
+	
 	DWORD procId;
 	GetWindowThreadProcessId(hwnd,&procId);
 	if (procId==::GetCurrentProcessId())		
 	{
-						
+		
 		CWnd *wnd = new CWnd();
 		wnd->Attach(hwnd);
 		
@@ -1413,14 +1478,14 @@ BOOL CALLBACK EnumWindowsProc(
 		subMenu1->AppendMenu(MF_STRING,1,"sub 1");
 		subMenu1->AppendMenu(MF_STRING,2,"sub 2");
 		subMenu1->AppendMenu(MF_STRING|MF_ENABLED,3,"sub 3");
-
+		
 		CMenu *subMenu2 = new CMenu();
 		subMenu2->CreateMenu();
 		subMenu2->AppendMenu(MF_STRING,10,"sub 10");
 		subMenu2->AppendMenu(MF_STRING,11,"sub 11");
 		subMenu2->EnableMenuItem(11,1);
-
-
+		
+		
 		CMyMenu *menu = new CMyMenu();	
 		menu->CreateMenu();		
 		menu->AppendMenu(MF_STRING,13,"test menu 1");		
@@ -1432,13 +1497,13 @@ BOOL CALLBACK EnumWindowsProc(
 		//menu->LoadOwnerDrawMenu(menu);
 		
 		wnd->SetMenu(menu);
-
+		
 		/*
 		char b[128];
 		sprintf(b,"%d///%x/%x/%x|||%d",boo,menu,wnd,hwnd,lastErr);
 		AfxMessageBox(b);
 		*/
-				
+		
 		//wnd->Detach(); 
 		//delete wnd;
 	}
@@ -1458,9 +1523,9 @@ void InitialiseTibiaMenu()
 
 
 BOOL APIENTRY DllMain( HINSTANCE hModule, 
-                       DWORD  ul_reason_for_call, 
-                       LPVOID lpReserved
-					   )
+					  DWORD  ul_reason_for_call, 
+					  LPVOID lpReserved
+					  )
 {	
 	
 	static HINSTANCE hinstDLL = hModule;	
@@ -1478,13 +1543,13 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
 		InitialisePlayerInfoHack();
 		InitialiseProxyClasses();
 		InitialiseCreatureInfo();				
-		InitialiseTibiaMenu();
+		//InitialiseTibiaMenu();
 		ActivateHookCallback();
 		
 		
 		break;
 	case DLL_PROCESS_DETACH:
-	
+		
 		break;		
 	case DLL_THREAD_ATTACH:						
 		break;
@@ -1506,7 +1571,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		if (tibiaSocket!=NULL)
 		{
 			
-
+			
 			char buf[3];
 			buf[0]=0x1;
 			buf[1]=0x0;
@@ -1623,25 +1688,25 @@ void ParseIPCMessage(struct ipcMessage mess)
 			memcpy(&autoAimOnlyCreatures,mess.payload+4,4);
 			memcpy(&autoAimAimPlayersFromBattle,mess.payload+8,4);
 			/*
-			 * as of tibia 7.8 this is obsolete (handled by the client itself
-			 
-			if (autoAimAimPlayersFromBattle)
-			{								
-				unsigned char val=0xEB;
-				unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
-				DWORD procId=GetCurrentProcessId();
-				HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-				WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
-				CloseHandle(dwHandle);
-			} else {
-				unsigned char val=0x74;
-				//unsigned char *addr=(unsigned char *)0x411073; // 7.6
-				unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
-				DWORD procId=GetCurrentProcessId();
-				HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-				WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
-				CloseHandle(dwHandle);
-			}
+			* as of tibia 7.8 this is obsolete (handled by the client itself
+			
+			  if (autoAimAimPlayersFromBattle)
+			  {								
+			  unsigned char val=0xEB;
+			  unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
+			  DWORD procId=GetCurrentProcessId();
+			  HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
+			  WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
+			  CloseHandle(dwHandle);
+			  } else {
+			  unsigned char val=0x74;
+			  //unsigned char *addr=(unsigned char *)0x411073; // 7.6
+			  unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
+			  DWORD procId=GetCurrentProcessId();
+			  HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
+			  WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
+			  CloseHandle(dwHandle);
+			  }
 			*/
 			break;
 		}
@@ -1677,10 +1742,10 @@ int ReadFromPipe()
 		LPTSTR lpNamedPipeName = "\\\\.\\pipe\\tibiaAutoPipe"; 
 		outBuf.messageType=0;
 		inBuf.messageType=0;
-
+		
 		
 		//fSuccess=CallNamedPipe(lpNamedPipeName,&outBuf,sizeof(struct ipcMessage),&inBuf,sizeof(struct  ipcMessage),&lpBytesRead,1000);
-
+		
 		fSuccess = ReadFile(  
 			hPipe,    // pipe handle  
 			&inBuf,    // buffer to receive reply  
@@ -1699,7 +1764,7 @@ int ReadFromPipe()
 		//MessageBox(NULL,buf,"DEBUG",0);
 		
 		ParseIPCMessage(inBuf);
-
+		
 		// 200ms sleep to flush buffer
 		// DISABLED 06.03.2007
 		//Sleep(200);
@@ -1727,7 +1792,7 @@ DWORD WINAPI CommunicationThread( LPVOID lpParam )
 void InitialiseCommunication()
 {
 	DWORD dwThread;
-
+	
 	HANDLE hThread = CreateThread( 
 		NULL,              // default security attributes
 		0,                 // use default stack size  
@@ -1736,4 +1801,143 @@ void InitialiseCommunication()
 		0,                 // use default creation flags 
 		&dwThread);   // returns the thread identifier 
 }; 
- 
+
+/*
+
+  
+	
+	  #define INCLUDE_PROXY_CLASSES
+	  #include "ddraw.h"
+	  #include "NewIDirectDrawSurface4.cpp"
+	  #include "NewIDirectDraw4.cpp"
+	  #include "NewIDirectDraw.cpp"
+	  
+		
+		  extern "C" 
+		  {
+		  
+			typedef HRESULT (WINAPI *RealDirectDrawCreate)(GUID FAR *lpGUID, LPDIRECTDRAW FAR *lplpDD, IUnknown FAR *pUnkOuter);
+			
+			  
+				HRESULT WINAPI DirectDrawCreate(
+				GUID FAR *lpGUID, 
+				LPDIRECTDRAW FAR *lplpDD, 
+				IUnknown FAR *pUnkOuter)
+				{
+				
+				  
+					RealDirectDrawCreate pDirectDrawCreate;
+					
+					  HMODULE hddraw=NULL;
+					  char szFileName[512];
+					  UINT ret;
+					  
+						ret = GetSystemDirectory(szFileName, 256);
+						if(ret <= 0)
+						{
+						return FALSE;
+						}
+						
+						  strcat(szFileName, "\\ddraw.dll");
+						  hddraw = LoadLibrary(szFileName);
+						  if(hddraw == NULL)
+						  {
+						  return FALSE;
+						  }
+						  
+							pDirectDrawCreate = (RealDirectDrawCreate)GetProcAddress(hddraw, "DirectDrawCreate");
+							
+							  if(pDirectDrawCreate == NULL)
+							  {
+							  return FALSE;
+							  } 
+							  IDirectDraw *realIDirectDraw;
+							  pDirectDrawCreate(lpGUID,&realIDirectDraw,pUnkOuter);		
+							  *lplpDD = new NewIDirectDraw(realIDirectDraw,"IDirectDraw");		
+							  
+								return FALSE;
+								
+								  }
+								  } // extern "C"
+								  
+									
+									  
+										extern "C" 
+										{
+										
+										  typedef PVOID (WINAPI *RealAllocMemEx)(DWORD dwSize, HANDLE hProcess);
+										  typedef BOOL (WINAPI *RealFreeMemEx)(PVOID  pMem, HANDLE hProcess);
+										  typedef BOOL (WINAPI *RealHookAPI)(LPCSTR pszModule,LPCSTR pszFuncName,PVOID  pCallbackFunc,PVOID  *pNextHook,DWORD  dwFlags);
+										  typedef HANDLE (WINAPI *RealCreateRemoteThreadEx)(HANDLE hProcess,LPSECURITY_ATTRIBUTES  lpThreadAttributes,DWORD dwStackSize,LPTHREAD_START_ROUTINE lpStartAddress,LPVOID lpParameter,DWORD dwCreationFlags,LPDWORD lpThreadId);
+										  
+											HANDLE WINAPI CreateRemoteThreadEx(
+											HANDLE                 hProcess,
+											LPSECURITY_ATTRIBUTES  lpThreadAttributes,
+											DWORD                  dwStackSize,
+											LPTHREAD_START_ROUTINE lpStartAddress,
+											LPVOID                 lpParameter,
+											DWORD                  dwCreationFlags,
+											LPDWORD                lpThreadId
+											)
+											{
+											MessageBox(NULL,"CreateRemoteThreadEx","",0);
+											RealCreateRemoteThreadEx fun;
+											fun = (RealCreateRemoteThreadEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "CreateRemoteThreadEx");		
+											return fun(hProcess,lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter,dwCreationFlags,lpThreadId);				
+											}
+											
+											  
+												BOOL WINAPI HookAPI(
+												LPCSTR pszModule,
+												LPCSTR pszFuncName,
+												PVOID  pCallbackFunc,
+												PVOID  *pNextHook,  
+												DWORD  dwFlags  
+												)
+												{
+												char b[1024];
+												sprintf(b,"HookApi: %s/%s",pszModule,pszFuncName);
+												MessageBox(NULL,b,"",0);
+												RealHookAPI fun;
+												fun = (RealHookAPI)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "HookAPI");		
+												return fun(pszModule,pszFuncName,pCallbackFunc,pNextHook,dwFlags);
+												}
+												
+												  
+													
+													  PVOID WINAPI AllocMemEx(
+													  DWORD  dwSize,  
+													  HANDLE hProcess  
+													  )
+													  {
+													  MessageBox(NULL,"AllocMemEx","",0);
+													  RealAllocMemEx fun;
+													  fun = (RealAllocMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "AllocMemEx");		
+													  return fun(dwSize,hProcess);				
+													  }
+													  BOOL WINAPI FreeMemEx(
+													  PVOID  pMem,  
+													  HANDLE hProcess
+													  
+														)
+														{
+														MessageBox(NULL,"FreeMemEx","",0);
+														RealFreeMemEx fun;
+														fun = (RealFreeMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "FreeMemEx");		
+														return fun(pMem,hProcess);				
+														}
+														
+														  BOOL WINAPI HookCode(
+														  PVOID  pCode,
+														  PVOID  pCallbackFunc,
+														  PVOID  *pNextHook,
+														  DWORD  dwFlags
+														  )
+														  {
+														  MessageBox(NULL,"HookCode","",0);
+														  return 0;
+														  }
+														  
+															
+															  } // extern "C"
+*/
