@@ -1,12 +1,25 @@
 1.18.3, 15.08.2008
 Enhancments:
- Added: Seller module.
- Cavebot: Added pause functions.
+ Seller: added module
+ Cavebot: Added pause functions
 
 Defects:
- Kernel: Fixed addrBackpack and addrWhiteMessage.
- Kernel: Fixed packet for npcBuy and npcSell functions.
+ Kernel: Fixed addrBackpack and addrWhiteMessage
+ Kernel: Fixed packet for npcBuy and npcSell functions
+
+
+1.18.2, 16.08.2008:
+Defects:
+ General: fixed crash bug when too long line (128 chars) appeared, hotkeys defined, quests viewed
+ Banker: fixed minor bugs in banker and spellcaster
+
+1.18.1, 16.08.2008:
+Defects:
+ General: fixed packaging issue with the tibiaauto_util.dll
+
+=======
  Seller: Completed Seller module.
+>>>>>>> 1.58
 
 1.18.0, 15.08.2008
 Enhancments:
