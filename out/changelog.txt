@@ -17,10 +17,6 @@ Defects:
 Defects:
  General: fixed packaging issue with the tibiaauto_util.dll
 
-=======
- Seller: Completed Seller module.
->>>>>>> 1.58
-
 1.18.0, 15.08.2008
 Enhancments:
  General: updated to tibia client 8.22
