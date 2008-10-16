@@ -8,7 +8,7 @@
 //
 #include "resource.h"
 #include "MapButton.h"
-#include "Whitelist.h"
+#include "ConfigWindow.h"
 #include "tibiatile.h"
 /////////////////////////////////////////////////////////////////////////////
 // CToolMapShow dialog
