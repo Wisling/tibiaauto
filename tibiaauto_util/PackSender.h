@@ -56,7 +56,7 @@ public:
 	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extrainfo);
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
-	void npcBuy(int objectId,int qty);
+	void npcBuy(int objectId,int qty, int ignoreCap, int withBackpack);
 	void npcSell(int objectId,int qty);
 	CPackSender();
 	virtual ~CPackSender();

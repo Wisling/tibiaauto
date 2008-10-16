@@ -362,13 +362,13 @@ void packSenderSayNPC(char *msg)
 void packSenderNpcSell(int objectId,int qty)
 {
 	CPackSender sender;
-	sender.npcSell(objectId,qty);
+	sender.npcSell(objectId, qty);
 }
 
-void packSenderNpcBuy(int objectId,int qty)
+void packSenderNpcBuy(int objectId,int qty, int ignoreCap, int withBackpack)
 {
 	CPackSender sender;
-	sender.npcBuy(objectId,qty);
+	sender.npcBuy(objectId,qty, ignoreCap, withBackpack);
 }
 
 void memReadSetMemIntValue(int address,int value)
