@@ -199,7 +199,7 @@ BEGIN
                     WS_GROUP,12,65,51,10
     CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTORADIOBUTTON,12,
                     75,64,10
-    GROUPBOX        "Characteristics",IDC_STATIC,112,32,104,97
+    GROUPBOX        "Characteristics",IDC_STATIC,111,32,104,97
     CONTROL         "Blocks distance attacks",IDC_BLOCKING,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
                     119,43,93,10
@@ -236,7 +236,7 @@ BEGIN
     IDD_TOOL_MAPSHOW_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 6
-        RIGHTMARGIN, 216
+        RIGHTMARGIN, 215
         TOPMARGIN, 7
         BOTTOMMARGIN, 146
     END
