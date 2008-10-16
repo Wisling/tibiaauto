@@ -5,6 +5,7 @@
 static HHOOK hhookKeyb;
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
+/*
 BOOL WINAPI DllMain(  HINSTANCE hModule, 
 							DWORD  ul_reason_for_call, 
 							LPVOID lpReserved
@@ -30,6 +31,7 @@ BOOL WINAPI DllMain(  HINSTANCE hModule,
 	}
     return TRUE;
 }
+*/
 
 //keyboard hook functions
 

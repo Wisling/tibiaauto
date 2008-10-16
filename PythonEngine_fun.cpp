@@ -871,8 +871,10 @@ static PyObject *tibiaauto_sender_npcBuy(PyObject *self, PyObject *args)
 	
 	int arg1;
 	int arg2;
-    if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
-	sender.npcBuy(arg1,arg2);
+	int arg3;
+	int arg4;
+    if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
+	sender.npcBuy(arg1,arg2,arg3,arg4);
 	Py_INCREF(Py_None);
 	return Py_None;
 }

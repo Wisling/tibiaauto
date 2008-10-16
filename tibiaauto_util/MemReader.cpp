@@ -70,7 +70,8 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->mana = CMemUtil::GetMemIntValue(m_memAddressMana);	
 	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax);
 	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax);
-	ch->cap = CMemUtil::GetMemIntValue(m_memAddressCap);
+	// note: since 8.31 capacity is multiplied by 100 in memory
+	ch->cap = CMemUtil::GetMemIntValue(m_memAddressCap)/100;
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	ch->lvl = CMemUtil::GetMemIntValue(m_memAddressLvl);
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);

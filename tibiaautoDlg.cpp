@@ -198,7 +198,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
 	if (buf[0]==0x90&&buf[1]==0x90) versionOk=1;
 	if (buf[0]==0x75&&buf[1]==0x40) versionOk=1;
-	
+		
 	if (!versionOk)
 	{		
 		char outBuf[32];
