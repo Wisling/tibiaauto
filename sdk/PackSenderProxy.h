@@ -41,7 +41,7 @@ public:
 	void logout();
 	void stepMulti(int *direction,int size);
 	void npcSell(int objectId,int qty);
-	void npcBuy(int objectId,int qty);
+	void npcBuy(int objectId,int qty, int ignoreCap, int withBackpack);
 
 	void closeContainer(int contNr);
 	void attackMode(int mode,int follow);
