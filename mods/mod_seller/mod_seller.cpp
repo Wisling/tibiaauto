@@ -769,7 +769,7 @@ int buyItems(CConfigData *config, int traderNum) {
 			//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
 			//AfxMessageBox(buf);
 			if (itemCount > 0) {
-				sender.npcBuy(objectId, itemCount);
+				sender.npcBuy(objectId, itemCount, 0, 0);
 				Sleep(1000);
 				done = 1;
 			}
