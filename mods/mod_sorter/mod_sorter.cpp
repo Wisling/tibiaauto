@@ -63,7 +63,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CTibiaItemProxy itemProxy;
 	CConfigData *config = (CConfigData *)lpParam;
 	char buf[128];
-	while (!toolThreadShouldStop) {			
+	while (!toolThreadShouldStop) {	
+		Sleep(200);
 		int sorted=0;
 		int j=0;
 		for (int i = 0; i < 8; i++) {
