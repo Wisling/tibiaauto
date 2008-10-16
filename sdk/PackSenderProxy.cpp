@@ -326,15 +326,15 @@ void CPackSenderProxy::sayOnChan(char *msg, int channelId1,int channelId2)
 	} 
 }
 
-void CPackSenderProxy::npcBuy(int objectId, int qty)
+void CPackSenderProxy::npcBuy(int objectId, int qty, int ignoreCap, int withBackpack)
 {
-	typedef void (*Proto_fun)(int objectId, int qty);
+	typedef void (*Proto_fun)(int objectId, int qty, int ignoreCap, int withBackpack);
 	if (dllModule)
 	{		
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderNpcBuy");
 		if (fun)
 		{
-			fun(objectId,qty);
+			fun(objectId,qty,ignoreCap,withBackpack);
 		}
 	} 
 }
