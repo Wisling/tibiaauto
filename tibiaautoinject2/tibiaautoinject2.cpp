@@ -214,6 +214,90 @@ char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; 
 	
 }
 
+// direction 0 - incoming (recv); 1 outgoing (send)
+void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int depth)
+{
+	// stack overflow protecion
+	if (depth>20)
+	{
+		if (debugFile)
+		{
+			fprintf(debugFile,"!!! stack overflow protection run\n");
+		}
+		return;
+	}
+	
+	int packetSizeH=buf[1];
+	int packetSizeL=buf[0];
+	if (packetSizeH<0)
+		packetSizeH+=256;
+	if (packetSizeL<0)
+		packetSizeL+=256;
+	int packetSize=packetSizeH*256+packetSizeL+2;
+	
+	
+	if (packetSize>realRecvLen)
+	{	
+		if (debugFile)
+		{
+			fprintf(debugFile,"!!! underrun\n");
+		}
+		return;
+	} 	
+	
+	
+	int code=buf[2];
+	if (code<0)
+		code+=256;
+	
+	
+	if (debugFile)
+	{
+		fprintf(debugFile,"### got bytes = %d; packet size = %d; code=0x%x\n",realRecvLen,packetSize,code);
+	}
+	
+	if (direction==0)
+	{
+		// this is 'recv' direction: decrypt and parse message
+		if (encryptKeyPtr)
+		{
+			
+			int afterDecryptCode;			
+			static char decryptedBuf[100000];
+			int i;
+			
+			memcpy(decryptedBuf,buf+6,packetSize-6); // Remember CRC bytes are NOT encrypted either sending or recieving.
+			fprintf(debugFile,"# decrypted content follows #\n");
+			
+			for (i=0;i<packetSize-6;i+=8)
+			{
+				myInterceptDecrypt((int)(decryptedBuf+i),encryptKeyPtr);								
+			}
+			afterDecryptCode=decryptedBuf[2];
+			if (afterDecryptCode<0) afterDecryptCode+=256;
+			int afterDecryptLenH=decryptedBuf[1];
+			int afterDecryptLenL=decryptedBuf[0];
+			if (afterDecryptLenH<0)
+				afterDecryptLenH+=256;
+			if (afterDecryptLenL<0)
+				afterDecryptLenL+=256;
+			int afterDecryptLen=afterDecryptLenH*256+afterDecryptLenL+2;
+			
+			
+			fprintf(debugFile,"$$$ len=%d code = 0x%x\n",afterDecryptLen,afterDecryptCode);
+			bufToHexString(decryptedBuf,afterDecryptLen);			
+			fprintf(debugFile,"<- [%x] %s\n",socket,bufToHexStringRet);					
+			fflush(debugFile);			
+		}	
+	}
+	
+	if (packetSize<realRecvLen)
+	{		
+		parseMessage(buf+packetSize,realRecvLen-packetSize,debugFile,direction,depth+1);
+	} // tail recursion
+	
+};
+
 int lastAction=0;
 void sendBufferViaSocket(char *buffer)
 {	
@@ -230,20 +314,21 @@ void sendBufferViaSocket(char *buffer)
 	int len=lowB+hiB*256+2;	
 	
 	int outbuflen=len;			
-	if (len%8!=4) outbuflen+=12-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
-	outbuf[0]=outbuflen%256;
-	outbuf[1]=outbuflen/256;	
+	if (len%8!=0) outbuflen+=8-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
+	char outbufHeader[7];
+	outbufHeader[0]=outbuflen%256;
+	outbufHeader[1]=outbuflen/256;	
 	for (i=0;i<outbuflen;i+=8)
 	{		
-		memcpy(outbuf+i+6,buffer+i,8); 		
-		myInterceptEncrypt((int)(outbuf+i+6),encryptKeyPtr);		
+		memcpy(outbuf+i,buffer+i,8); 		
+		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);		
 	}	
-	char *check = adler(outbuf+6, outbuflen-4);
-	outbuf[2] = outCheck[0];
-	outbuf[3] = outCheck[1];
-	outbuf[4] = outCheck[2];
-	outbuf[5] = outCheck[3];
-	
+	char *check = adler(outbuf, outbuflen);
+	memcpy(outbufHeader + 2 , check, 4);
+	outbufHeader[0] += 4;
+	memcpy(outbufHeader + 6, outbuf, outbuflen);
+	outbuflen += 4;
+
 	// make sure that packets go at most once every minDistance ms
 	int minDistance=175;
 	int nowAction=GetTickCount();
@@ -256,12 +341,13 @@ void sendBufferViaSocket(char *buffer)
 	
 	
 	
-	int ret=send(tibiaSocket,outbuf,outbuflen+2,0);	
+	int ret=send(tibiaSocket, outbufHeader,outbuflen+2,0);	
 	
 	if (debugFile)
 	{		
 		fprintf(debugFile,"sent %d bytes, ret=%d, lastSendFlags=%d\n",outbuflen+2,ret,lastSendFlags);
-	}	
+	}
+	delete check;
 }
 
 
@@ -575,90 +661,6 @@ int parseMessageForTibiaAction(char *buf,int len)
 }
 
 
-// direction 0 - incoming (recv); 1 outgoing (send)
-void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int depth)
-{
-	// stack overflow protecion
-	if (depth>20)
-	{
-		if (debugFile)
-		{
-			fprintf(debugFile,"!!! stack overflow protection run\n");
-		}
-		return;
-	}
-	
-	int packetSizeH=buf[1];
-	int packetSizeL=buf[0];
-	if (packetSizeH<0)
-		packetSizeH+=256;
-	if (packetSizeL<0)
-		packetSizeL+=256;
-	int packetSize=packetSizeH*256+packetSizeL+2;
-	
-	
-	if (packetSize>realRecvLen)
-	{	
-		if (debugFile)
-		{
-			fprintf(debugFile,"!!! underrun\n");
-		}
-		return;
-	} 	
-	
-	
-	int code=buf[2];
-	if (code<0)
-		code+=256;
-	
-	
-	if (debugFile)
-	{
-		fprintf(debugFile,"### got bytes = %d; packet size = %d; code=0x%x\n",realRecvLen,packetSize,code);
-	}
-	
-	if (direction==0)
-	{
-		// this is 'recv' direction: decrypt and parse message
-		if (encryptKeyPtr)
-		{
-			
-			int afterDecryptCode;			
-			static char decryptedBuf[100000];
-			int i;
-			
-			memcpy(decryptedBuf,buf+6,packetSize-6); // Remember CRC bytes are NOT encrypted either sending or recieving.
-			fprintf(debugFile,"# decrypted content follows #\n");
-			
-			for (i=0;i<packetSize-6;i+=8)
-			{
-				myInterceptDecrypt((int)(decryptedBuf+i),encryptKeyPtr);								
-			}
-			afterDecryptCode=decryptedBuf[2];
-			if (afterDecryptCode<0) afterDecryptCode+=256;
-			int afterDecryptLenH=decryptedBuf[1];
-			int afterDecryptLenL=decryptedBuf[0];
-			if (afterDecryptLenH<0)
-				afterDecryptLenH+=256;
-			if (afterDecryptLenL<0)
-				afterDecryptLenL+=256;
-			int afterDecryptLen=afterDecryptLenH*256+afterDecryptLenL+2;
-			
-			
-			fprintf(debugFile,"$$$ len=%d code = 0x%x\n",afterDecryptLen,afterDecryptCode);
-			bufToHexString(decryptedBuf,afterDecryptLen);			
-			fprintf(debugFile,"<- [%x] %s\n",socket,bufToHexStringRet);					
-			fflush(debugFile);			
-		}	
-	}
-	
-	if (packetSize<realRecvLen)
-	{		
-		parseMessage(buf+packetSize,realRecvLen-packetSize,debugFile,direction,depth+1);
-	} // tail recursion
-	
-};
-
 
 void hookCallback(int value)
 {
@@ -773,9 +775,6 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 			return len;
 		
 	}
-	
-	
-	
 	
 	if (debugFile)
 	{
@@ -1052,8 +1051,8 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
-	//debugFile=NULL;
+	//debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+	debugFile=NULL;
 	debugFileStart=time(NULL);
 }
 
@@ -1077,9 +1076,9 @@ void InitialiseCreatureInfo()
 void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, int colB, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15)
 {
 	int titleOffset=0;	
-	
+	char convString[128];
+	sprintf(convString,"%s",str);	
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15);
-
 	//Proto_fun fun=(Proto_fun)(0x4AB980); // OLD
 	//Proto_fun fun=(Proto_fun)(0x4AB910); // 8.22
 	Proto_fun fun=(Proto_fun)(0x4AE010); // 8.31
@@ -1090,15 +1089,12 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 		fflush(debugFile);
 	}
 	*/
-	if (str!=NULL&&fontNumber==2&&strlen(str)<1000)
+	if (str!=NULL&&fontNumber==2)
 	{
 		char info1[128];
 		char info2[128];
 		info1[0]=info2[0]=0;
 		int i,len;		
-		char convString[1024];	
-
-		sprintf(convString,"%s",str);	
 		for (i=0,len=strlen(str);i<len;i++)
 		{
 			if (convString[i]=='[')
@@ -1125,11 +1121,9 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,info1,v10, v11, v12, v13, v14, v15);			
 			titleOffset+=14;
 		}
-		fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,convString, v10, v11, v12, v13, v14, v15);		
-	} else {
-		fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,str, v10, v11, v12, v13, v14, v15);		
 	}
-
+	
+	fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,str?convString:NULL, v10, v11, v12, v13, v14, v15);	
 }
 
 
