@@ -9,6 +9,17 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+struct ValidPosition {
+	int bankerX;
+	int bankerY;
+	int bankerZ;
+};
+
+struct Banker {
+	char bankerName[64];
+	ValidPosition position[10];
+};
+
 class CConfigData {
 public:
 	CConfigData();
@@ -18,10 +29,9 @@ public:
 	int targetX;
 	int targetY;
 	int targetZ;
-	int bankerX[10];
-	int bankerY[10];
-	int bankerZ[10];
+	Banker banker;
 	int minimumGoldToBank;
+	int cashOnHand;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)
