@@ -92,6 +92,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					//AfxMessageBox("Yup, found the banker!");
 					if (depositGold()) {
 						if (withdrawGold(config)) {
+							getBalance();
 							reader.setGlobalVariable("caveboot_halfsleep","false");
 							bankerInvoked = 0;
 						}
@@ -334,7 +335,7 @@ int withdrawGold(CConfigData *config) {
 		int count = cont->itemsInside;
 		for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
 			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
-			if (item->objectId == goldId || item->objectId == platId || item->objectId == crystalId) {
+			if (cont->itemsInside < cont->size) {
 				foundInBag = contNr;
 				contNr = 16;
 				slotNr = 0;
@@ -342,8 +343,12 @@ int withdrawGold(CConfigData *config) {
 		}
 	}
 
-	delete cont;
-	return foundInBag ? 1 : 0;
+	if (CModuleUtil::waitForItemsInsideChange(foundInBag, cont->itemsInside)) {
+		delete cont;
+		return 1;
+	}
+	delete cont;	
+	return 0;
 }
 
 int isCavebotOn() {
