@@ -334,7 +334,7 @@ void CPackSenderProxy::npcBuy(int objectId, int qty, int ignoreCap, int withBack
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderNpcBuy");
 		if (fun)
 		{
-			fun(objectId,qty,ignoreCap,withBackpack);
+			fun(objectId,qty, ignoreCap, withBackpack);
 		}
 	} 
 }
