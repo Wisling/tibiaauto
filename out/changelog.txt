@@ -1,3 +1,13 @@
+1.18.3.1, 16.10.2008
+Enhancments:
+ Banker: Adding a feature to retrieve cash to remain onhand.
+ Banker: Added capability to save and load configurations.
+ Kernel: Added const codes to work with new banker mod.
+ Kernal: Included an updated tibiaauto-tiles.xml
+
+Defects: 
+ Seller: Included Seller module files in installer.
+
 1.18.3, 15.08.2008
 Enhancments:
  Seller: added module
