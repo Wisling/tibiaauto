@@ -6,6 +6,7 @@
 #define IDC_ENABLE                      3004
 #define IDC_BANKER_BANKER               3016
 #define IDC_BANKER_MIN_GOLD             3017
+#define IDC_BANKER_ON_HAND              3018
 
 // Next default values for new objects
 // 

@@ -37,6 +37,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_BANKER_BANKER, m_Banker);
 	DDX_Control(pDX, IDC_BANKER_MIN_GOLD, m_MinGold);
+	DDX_Control(pDX, IDC_BANKER_ON_HAND, m_OnHand);
 	//}}AFX_DATA_MAP
 }
 
@@ -74,10 +75,12 @@ void CConfigDialog::OnEnable() {
 
 void CConfigDialog::disableControls() {
 	m_MinGold.EnableWindow(false);
+	m_OnHand.EnableWindow(false);
 	m_Banker.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls() {
+	m_OnHand.EnableWindow(true);
 	m_MinGold.EnableWindow(true);
 	m_Banker.EnableWindow(true);
 
@@ -86,19 +89,26 @@ void CConfigDialog::enableControls() {
 void CConfigDialog::configToControls(CConfigData *configData) {
 	char buf[128];
 	sprintf(buf, "%d", configData->minimumGoldToBank); m_MinGold.SetWindowText(buf);
+	sprintf(buf, "%d", configData->cashOnHand); m_OnHand.SetWindowText(buf);
 	reloadBankers();
+	m_Banker.SetCurSel(m_Banker.FindString(-1,configData->banker.bankerName));
+	if (m_Banker.GetCurSel()==-1) m_Banker.SetCurSel(0);
 }
 
 CConfigData * CConfigDialog::controlsToConfig() {	
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 	m_MinGold.GetWindowText(buf,127);newConfigData->minimumGoldToBank=atoi(buf);
+	m_OnHand.GetWindowText(buf,127);newConfigData->cashOnHand=atoi(buf);
 	int index = m_Banker.GetCurSel();
-	for (int loop = 0; loop < 10; loop++) {
-		newConfigData->bankerX[loop] = bankersInfo[index].xPos[loop];
-		newConfigData->bankerY[loop] = bankersInfo[index].yPos[loop];
-		newConfigData->bankerZ[loop] = bankersInfo[index].zPos[loop];
+	strcpy(newConfigData->banker.bankerName, bankersInfo[index].name);
+	for (int loopPos = 0; loopPos < 10; loopPos++) {
+		newConfigData->banker.position[loopPos].bankerX = bankersInfo[index].xPos[loopPos];
+		newConfigData->banker.position[loopPos].bankerY = bankersInfo[index].yPos[loopPos];
+		newConfigData->banker.position[loopPos].bankerZ = bankersInfo[index].zPos[loopPos];
+		
 	}
+
 
 	return newConfigData;
 }

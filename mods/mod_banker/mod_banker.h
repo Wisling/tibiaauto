@@ -12,9 +12,12 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
+#define MAX_BANKERS 16
+
 #include "resource.h"		// main symbols
 #include <IModuleInterface.h>
 #include "ConfigDialog.h"
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_bankerApp

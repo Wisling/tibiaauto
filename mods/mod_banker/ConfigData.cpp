@@ -22,12 +22,13 @@ CConfigData::CConfigData() {
 	targetX = 0;
 	targetY = 0;
 	targetZ = 0;
-	for (x = 0; x < 10; x++) {
-		bankerX[x] = 0;
-		bankerY[x] = 0;
-		bankerZ[x] = 0;
+	for (int y = 0; y < 10; y++) {
+		banker.position[y].bankerX = 0;
+		banker.position[y].bankerY = 0;
+		banker.position[y].bankerZ = 0;
 	}
 	minimumGoldToBank = 1000;
+	cashOnHand = 0;
 }
 
 CConfigData::~CConfigData() {
