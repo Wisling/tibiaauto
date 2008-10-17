@@ -88,11 +88,11 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 			{
 				if (hotkey)
 				{
-					sender.castRuneAgainstHuman(0x40+contNr,item->pos,itemId,self->x,self->y,self->z,hotkey);
+					sender.castRuneAgainstCreature(0x40+contNr,item->pos,itemId,self->tibiaId,hotkey);
 				}				
 				if ((self->hp<hpBelow||hpBelow==-1)&&(self->mana<manaBelow||manaBelow==-1)&&drink)
 				{
-					sender.castRuneAgainstHuman(0x40+contNr,item->pos,itemId,self->x,self->y,self->z);
+					sender.castRuneAgainstCreature(0x40+contNr,item->pos,itemId,self->tibiaId);
 					drank=1;
 				}
 				
