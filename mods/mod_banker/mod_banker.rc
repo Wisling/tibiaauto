@@ -74,7 +74,7 @@ BEGIN
                     BS_PUSHLIKE | WS_TABSTOP,6,59,126,14
     COMBOBOX        IDC_BANKER_BANKER,33,7,99,65,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Banker:",IDC_STATIC,6,11,29,8
+    LTEXT           "Banker:",IDC_STATIC,6,11,24,8
     LTEXT           "Deposit when:",IDC_STATIC,6,23,57,8
     EDITTEXT        IDC_BANKER_MIN_GOLD,6,34,57,12,ES_AUTOHSCROLL
     LTEXT           "Keep on hand:",IDC_STATIC,75,23,57,8

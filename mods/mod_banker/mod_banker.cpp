@@ -209,27 +209,26 @@ void CMod_bankerApp::resetConfig() {
 }
 
 void CMod_bankerApp::loadConfigParam(char *paramName,char *paramValue) {
-	if (!strcmp(paramName, "Banker/Name")) sprintf(m_configData->banker.bankerName, "%s", paramValue);
-	if (!strcmp(paramName, "Deposit Trigger")) m_configData->minimumGoldToBank = atoi(paramValue);
-	if (!strcmp(paramName, "Cash On Hand")) m_configData->cashOnHand = atoi(paramValue);
+	if (!strcmp(paramName, "BankerName")) sprintf(m_configData->banker.bankerName, "%s", paramValue);
+	if (!strcmp(paramName, "DepositTrigger")) m_configData->minimumGoldToBank = atoi(paramValue);
+	if (!strcmp(paramName, "CashOnHand")) m_configData->cashOnHand = atoi(paramValue);
 
 }
 
 char *CMod_bankerApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
-	buf[0]=0;
-	if (!strcmp(paramName, "Banker/Name")) sprintf(buf,"%s",m_configData->banker.bankerName);
-	if (!strcmp(paramName, "Deposit Amount")) sprintf(buf,"%d",m_configData->minimumGoldToBank);
-	if (!strcmp(paramName, "Cash On Hand")) sprintf(buf,"%d",m_configData->cashOnHand);
-	
+	buf[0]='\0';
+	if (!strcmp(paramName, "BankerName")) sprintf(buf,"%s",m_configData->banker.bankerName);
+	if (!strcmp(paramName, "DepositTrigger")) sprintf(buf,"%d",m_configData->minimumGoldToBank);
+
 	return buf;
 }
 
 char *CMod_bankerApp::getConfigParamName(int nr) {
 	switch (nr) {
-	case 1: return "Banker/Name";
-	case 2: return "Deposit Trigger";
-	case 3: return "Cash On Hand";
+	case 0: return "BankerName";
+	case 1: return "DepositTrigger";
+	case 2: return "CashOnHand";
 	default:
 		return NULL;
 	}
