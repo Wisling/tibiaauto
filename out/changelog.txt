@@ -1,4 +1,4 @@
-1.18.3.1, 16.10.2008
+1.18.4, 16.10.2008
 Enhancments:
  Banker: Adding a feature to retrieve cash to remain onhand.
  Banker: Added capability to save and load configurations.
