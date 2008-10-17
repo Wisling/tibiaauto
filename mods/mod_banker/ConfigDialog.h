@@ -38,6 +38,7 @@ public:
 	enum { IDD = IDD_CONFIG };
 	CComboBox m_Banker;
 	CEdit m_MinGold;
+	CEdit m_OnHand;
 	CButton	m_enable;
 	//}}AFX_DATA
 

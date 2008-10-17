@@ -58,7 +58,9 @@ HANDLE toolThreadHandle;
 
 int findBanker(CConfigData *);
 int moveToBanker(CConfigData *);
+void getBalance();
 int depositGold();
+int withdrawGold(CConfigData *config);
 int isDepositing();
 int isCavebotOn();
 int countAllItemsOfType(int);
@@ -89,8 +91,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (moveToBanker(config)) {
 					//AfxMessageBox("Yup, found the banker!");
 					if (depositGold()) {
-						reader.setGlobalVariable("caveboot_halfsleep","false");
-						bankerInvoked = 0;
+						if (withdrawGold(config)) {
+							reader.setGlobalVariable("caveboot_halfsleep","false");
+							bankerInvoked = 0;
+						}
 					}
 				}
 			}
@@ -192,7 +196,7 @@ void CMod_bankerApp::enableControls() {
 
 
 char *CMod_bankerApp::getVersion() {
-	return "1.0";
+	return "2.0";
 }
 
 int CMod_bankerApp::validateConfig(int showAlerts) {	
@@ -204,17 +208,27 @@ void CMod_bankerApp::resetConfig() {
 }
 
 void CMod_bankerApp::loadConfigParam(char *paramName,char *paramValue) {
+	if (!strcmp(paramName, "Banker/Name")) sprintf(m_configData->banker.bankerName, "%s", paramValue);
+	if (!strcmp(paramName, "Deposit Trigger")) m_configData->minimumGoldToBank = atoi(paramValue);
+	if (!strcmp(paramName, "Cash On Hand")) m_configData->cashOnHand = atoi(paramValue);
+
 }
 
 char *CMod_bankerApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
 	buf[0]=0;
+	if (!strcmp(paramName, "Banker/Name")) sprintf(buf,"%s",m_configData->banker.bankerName);
+	if (!strcmp(paramName, "Deposit Amount")) sprintf(buf,"%d",m_configData->minimumGoldToBank);
+	if (!strcmp(paramName, "Cash On Hand")) sprintf(buf,"%d",m_configData->cashOnHand);
 	
 	return buf;
 }
 
 char *CMod_bankerApp::getConfigParamName(int nr) {
 	switch (nr) {
+	case 1: return "Banker/Name";
+	case 2: return "Deposit Trigger";
+	case 3: return "Cash On Hand";
 	default:
 		return NULL;
 	}
@@ -225,7 +239,7 @@ int findBanker(CConfigData *config) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z) return 1; 
 	for (int x = 0; x < 10; x++) {
-		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->bankerX[x], config->bankerY[x], config->bankerZ[x], 0, config->path);
+		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.position[x].bankerX, config->banker.position[x].bankerY, config->banker.position[x].bankerZ, 0, config->path);
 		if (nearestBank.x && nearestBank.y && nearestBank.z) {
 			config->targetX = nearestBank.x;
 			config->targetY = nearestBank.y;
@@ -258,19 +272,27 @@ int moveToBanker(CConfigData *config) {
 	}
 }
 
+void getBalance() {
+	CPackSenderProxy sender;
+	Sleep (500);
+	sender.sayNPC("balance");
+}
+
 int depositGold() {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CTibiaContainer *cont;
-	int objectId = itemProxy.getValueForConst("GP");
+	int goldId = itemProxy.getValueForConst("GP");
+	int platId = itemProxy.getValueForConst("PlatinumCoin");
+	int crystalId = itemProxy.getValueForConst("CrystalCoin");
 	int foundInBag = 0;
 	for (int contNr = 0; contNr < 16; contNr++) {
 		cont = reader.readContainer(contNr);
 		int count = cont->itemsInside;
 		for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
 			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
-			if (item->objectId == objectId) {
+			if (item->objectId == goldId || item->objectId == platId || item->objectId == crystalId) {
 				foundInBag = contNr;
 				contNr = 16;
 				slotNr = 0;
@@ -284,12 +306,44 @@ int depositGold() {
 	Sleep (500);
 	sender.sayNPC("yes");
 	if (CModuleUtil::waitForItemsInsideChange(foundInBag, cont->itemsInside)) {
-		sender.sayNPC("balance");
 		delete cont;
 		return 1;
 	}
 	delete cont;	
 	return 0;
+}
+
+int withdrawGold(CConfigData *config) {
+	CTibiaItemProxy itemProxy;
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaContainer *cont;
+	char withdrawBuf[32];
+	int goldId = itemProxy.getValueForConst("GP");
+	int platId = itemProxy.getValueForConst("PlatinumCoin");
+	int crystalId = itemProxy.getValueForConst("CrystalCoin");
+
+	sprintf(withdrawBuf, "withdraw %d", config->cashOnHand);
+	Sleep (500);
+	sender.sayNPC(withdrawBuf);
+	Sleep (500);
+	sender.sayNPC("yes");
+	int foundInBag = 0;
+	for (int contNr = 0; contNr < 16; contNr++) {
+		cont = reader.readContainer(contNr);
+		int count = cont->itemsInside;
+		for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
+			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
+			if (item->objectId == goldId || item->objectId == platId || item->objectId == crystalId) {
+				foundInBag = contNr;
+				contNr = 16;
+				slotNr = 0;
+			}
+		}
+	}
+
+	delete cont;
+	return foundInBag ? 1 : 0;
 }
 
 int isCavebotOn() {
@@ -334,7 +388,7 @@ int countAllItemsOfType(int objectId) {
 	CMemReaderProxy reader;
 	int contNr;
 	int ret=0;
-	for (contNr = 0; contNr < 8; contNr++) {
+	for (contNr = 0; contNr < 16; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
 		if (cont->flagOnOff)
@@ -347,7 +401,12 @@ int countAllItemsOfType(int objectId) {
 int shouldBank(CConfigData *config) {
 	CTibiaItemProxy itemProxy;
 	int objectId = itemProxy.getValueForConst("GP");
-	if (countAllItemsOfType(objectId) >= config->minimumGoldToBank)
+	int count = countAllItemsOfType(objectId);
+	objectId = itemProxy.getValueForConst("PlatinumCoin");
+	count += countAllItemsOfType(objectId) * 100;
+	objectId = itemProxy.getValueForConst("CrystalCoin");
+	count += countAllItemsOfType(objectId) * 10000;
+	if (count >= config->minimumGoldToBank)
 		return 1;
 	else 
 		return 0;
