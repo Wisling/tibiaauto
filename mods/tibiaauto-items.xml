@@ -6,6 +6,8 @@
 	<const code="bagbrown" value="0xb25"/>
 	<const code="rope" value="0xbbb"/>
 	<const code="GP" value="0xbd7"/>
+	<const code="PlatinumCoin" value="0xbdb"/>
+	<const code="CrystalCoin" value="0xbe3"/>
 	<const code="runeUH" value="0xc58"/>
 	<const code="runeIH" value="0xc50"/>
 	<const code="runeLMM" value="0xc66"/>
