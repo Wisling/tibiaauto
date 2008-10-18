@@ -51,7 +51,7 @@ CModuleUtil::~CModuleUtil()
 CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 {
 	CMemReaderProxy reader;
-	int foodContNr=-1;	
+	int foodContNr=-1;
 	 
 	int itemNr;
 	
@@ -122,11 +122,11 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 }
 
 
-int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
+int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)//takes about a max of .6 secs
 {
 	CMemReaderProxy reader;
 	int t;
-	for (t=0;t<70;t++)
+	for (t=0;t<30;t++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->itemsInside!=origItemsCount)
@@ -135,16 +135,16 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)
 			return 1;
 		}
 		delete cont;
-		Sleep(30);
+		Sleep(50);
 	}
 	return 0;
 }
 
-int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount)
+int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount)//takes about a max of .5 secs
 {
 	CMemReaderProxy reader;
 	int t;
-	for (t=0;t<70;t++)
+	for (t=0;t<30;t++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(origItemSlot);
@@ -154,16 +154,16 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int orig
 			return 1;
 		}
 		delete cont;
-		Sleep(30);
+		Sleep(50);
 	}
 	return 0;
 }
 
-void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)
+void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes about a max of .6 secs
 {
 	CMemReaderProxy reader;
 	int t;
-	for (t=0;t<70;t++)
+	for (t=0;t<30;t++)
 	{
 		CTibiaItem *item = reader.readItem(locationAddress);
 		if (item->objectId!=origItemId)
@@ -172,7 +172,7 @@ void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)
 			return;
 		}
 		delete item;
-		Sleep(30);
+		Sleep(50);
 	}
 	return;
 }
@@ -638,11 +638,11 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 }
 
 
-int CModuleUtil::waitForOpenContainer(int contNr, int open)
+int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 {
 	CMemReaderProxy reader;
 	int t;
-	for (t=0;t<20;t++)
+	for (t=0;t<30;t++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->flagOnOff==open)
@@ -651,7 +651,7 @@ int CModuleUtil::waitForOpenContainer(int contNr, int open)
 			return 1;
 		}
 		delete cont;
-		Sleep(100);
+		Sleep(50);
 	}
 	return 0;
 }
@@ -692,13 +692,13 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)		
 		{			
 			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
-			int pos;
-			for (pos=0;pos<acceptedItems->GetSize();pos++)
+			int i;
+			for (i=0;i<acceptedItems->GetSize();i++)
 			{
-				if ((int)item->objectId==(int)acceptedItems->GetAt(pos))
+				if ((int)item->objectId==(int)acceptedItems->GetAt(i))
 				{
 					// item needs to be looted
-					int targetPos=cont->itemsInside;
+					int targetPos=contCarrying->size;
 					int moved = item->quantity?item->quantity:1;
 					CTibiaTile *tile = reader.getTibiaTile(item->objectId);
 					if (tile->stackable)
@@ -710,9 +710,11 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 							if (stackedItem->objectId==item->objectId&&stackedItem->quantity<100)
 							{
 								// we have found a suitable stack! :)
-								targetPos=stackedItemPos;
+								targetPos=stackedItemPos+looted;//since contCarrying is never updated add looted
 								//Akilez: Stackable item overflow goes back into container at the same position
-								if ((stackedItem->quantity + item->quantity) > 100) itemNr++;//Akilez: recheck this space in the container for lootables
+								if ((stackedItem->quantity + item->quantity) > 100){
+									itemNr++;//Akilez: recheck this space in the container for lootables
+									looted--;}//number of items in container will stay the same, undo increment
 								moved = min(item->quantity,100-stackedItem->quantity);
 								stackedItem->quantity += moved;
 								item->quantity -= moved;
@@ -721,6 +723,7 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 						}	
 					}
 					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
+					Sleep(200);
 					looted++;
 					break;
 				}
@@ -733,9 +736,10 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 
 	delete cont;
 	delete contCarrying;
+	//char buf[128];
+	//sprintf(buf,"2Looted=%d",looted);
+	//AfxMessageBox(buf); 
 	return looted;//Akilez: return value now reflects items looted
-	
-
 }
 
 
@@ -745,15 +749,13 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 
 	
 	// find first free container
-	int openCont;
-	int qtyLooted;
-	for (openCont=0;openCont<8;openCont++)
+	int qtyLooted=0;
+	for (int openCont=0;openCont<8;openCont++)
 	{	
 		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
 		{			
-			qtyLooted = CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont);//Akilez: loot items and get # of items returned
-			targetCont->itemsInside += qtyLooted;//Akilez: itemsInside does NOT get updated in loopItemFromSpecifiedContainer
+			qtyLooted += (int)(CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont));//Akilez: loot items and get # of items returned
 			if (targetCont->itemsInside<targetCont->size) 
 			{
 				delete targetCont;
@@ -763,7 +765,10 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 		
 		
 		delete targetCont;						
-	}		
+	}
+	//char buf[128];
+	//sprintf(buf,"Looted=%d",qtyLooted);
+	//AfxMessageBox(buf);
 
 }
 
@@ -800,25 +805,29 @@ void CModuleUtil::eatItemFromContainer(int contNr)
 	}
 }
 
-int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
+int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of character
 {
 	CMemReaderProxy reader;
-	int iterCount=20;
-	while (iterCount-->0)
-	{
-		int found=0;
-		int pos;
-		int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
-		for (pos=0;pos<stackCount;pos++)
-		{
-			int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
-			int extraData = reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1);
-			if (tileId==99&&extraData==tibiaId) 
-				found=1;
-		}
-		if (!found)
+	int iterCount=50;
+	while (iterCount-->0) {
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		if (max(abs(self->x-x),abs(self->y-y))<=1)
+			delete self;
 			return 1;
-		Sleep(100);
+		delete self;
+		Sleep(50);
+	}
+	return 0;
+}
+
+int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near instantaneous to 1.0 secs
+{
+	CMemReaderProxy reader;
+	int iterCount=25;
+	while (iterCount-->0) {
+		if (!reader.readVisibleCreature(creatureNr)->visible)
+			return 1;
+		Sleep(50);
 	}
 	return 0;
 }
@@ -903,6 +912,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						itemsAccepted.Add(itemProxy.getValueForConst("rope"));
 						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
+//stug
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item)
 							{
@@ -916,7 +926,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 				case 202:
 					// go up using 'magic rope' [for pacc only]
 					sender.say("exani tera");
-					break;								
+					break;
 				case 203:
 					{
 						// ladder
@@ -1122,7 +1132,16 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 			
 		} // switc path[0]
 		// after going up wait 3 seconds to have sync with server
-		Sleep(3000);
+		//Sleep(3000);
+
+		//wait for change of level
+		int iterCount=60;
+		while (iterCount-->0)
+		{
+			if (reader.readSelfCharacter()->z!=self->z)
+				break;
+			Sleep(50);
+		}
 	} else {
 		/**
 		 * Walk if :
