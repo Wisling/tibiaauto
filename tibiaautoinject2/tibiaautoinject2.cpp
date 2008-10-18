@@ -114,7 +114,9 @@ public:
 * 1006: incoming message -> python engine
 * 1007: %ta messages -> python engine
 * 1008: %ta lu/%ta ld -> xray
+* 1009: % pause -> cavebot pausing
 * 2001: hooks -> xray
+* 2002: hooks -> cavebot pausing
 */
 
 int outExploAvail=0;
@@ -465,11 +467,13 @@ void parseMessageSay(char *sayBuf)
 	int len=strlen(sayBuf);
 	if (len<512)
 	{
-		mess.messageType=1007;	
+		mess.messageType=1007;
 		memcpy(mess.payload,&len,sizeof(int));		
 		memcpy(mess.payload+4,sayBuf,len);		
 		mess.send();
 		mess.messageType=1008;
+		mess.send();
+		mess.messageType=1009;
 		mess.send();
 	}
 	
@@ -666,21 +670,23 @@ void hookCallback(int value)
 {
 	struct ipcMessage mess;	
 	char *message=NULL;
-	mess.messageType=2001;			
-	if (value==0x21)
+	if (value==0x65)
 	{
-		message="%ta lu";				
-	}
-	if (value==0x22)
-	{
-		message="%ta ld";
+		message="%ta pause";
 	}
 	if (message)
 	{
 		int len=strlen(message);
 		memcpy(mess.payload,&len,sizeof(int));		
-		memcpy(mess.payload+4,message,len);				
-		mess.send();
+		memcpy(mess.payload+4,message,len);	
+		if (value==0x21||value==0x22){
+			mess.messageType=2001;			
+			mess.send();
+		}
+		if (value==0x65){
+			mess.messageType=2002;
+			mess.send();
+		}
 	}
 	
 }
