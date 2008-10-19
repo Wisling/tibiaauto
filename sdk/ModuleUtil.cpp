@@ -832,6 +832,12 @@ int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near inst
 	return 0;
 }
 
+int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
+{
+	int xReturn,yReturn;
+	return waitForCreatureDisappear(x,y,tibiaId,xReturn,yReturn);
+}
+
 int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId, int &xReturn, int &yReturn) {
 	CMemReaderProxy reader;
 	int iterCount=20;
