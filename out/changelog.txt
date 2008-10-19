@@ -1,4 +1,4 @@
-1.18.5, ???
+1.19.0, ???
 Enhancments:
  Cavebot: Cavebot starts from the selected waypoint OR begins from previous waypoint if none selected.
  Cavebot: Improved looting speed and accuracy.
@@ -14,7 +14,7 @@ Defects:
  Cavebot: Fixed backattack alien with runes
 
 1.18.4, 16.10.2008
-Enhancments:
+Enhancements:
  Banker: Adding a feature to retrieve cash to remain onhand.
  Banker: Added capability to save and load configurations.
  Kernel: Added const codes to work with new banker mod.

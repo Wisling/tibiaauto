@@ -27,6 +27,7 @@ public:
 	static void eatItemFromContainer(int contNr);
 	static int waitForOpenContainer(int contNr,int open);
 	static void sleepWithStop(int ms,int *stopFlag);
+	static int waitForCreatureDisappear(int x, int y, int tibiaId);
 	static int waitForCreatureDisappear(int creatureNr);
 	static int waitToApproachSquare(int x, int y);
 	static int waitForCreatureDisappear(int x,int y, int tibiaId, int &, int &);
