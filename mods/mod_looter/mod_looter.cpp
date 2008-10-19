@@ -89,6 +89,14 @@ int containerNotFull(int containerNr)
 	return ret;
 }
 
+//returns the smallest radius of a square centred at x1,y1 and covers x2,y2
+//same equation as finding distance for rods or wands
+int maxDist(int x1,int y1,int x2,int y2){ return max(abs(x2-x1),abs(y2-y1));}
+
+//returns the smallest number of steps needed to stand beside x2,y2 starting from x1,y1
+//same distance ideally travelled by "Auto Follow"
+int taxiDist(int x1,int	y1,int x2,int y2){ return abs(x2-x1)+abs(y2-y1)-2+(x1==x2)+(y1==y2);}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -102,18 +110,169 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CConfigData *config = (CConfigData *)lpParam;
 	int lastAttackedMonster = 0;
+	Corpse *corpseQueue;
+	corpseQueue = new Corpse();
+
+	int lootCorpseTime = 1;
 
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(100);
+		Sleep(200);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
+		if (reader.getGlobalVariable("autolooterTm")&&reader.getGlobalVariable("autolooterTm")!=""){//cavebot is enabled Not applicable yet
+			sender.sendTAMessage("Gotten");
+			if (lastAttackedMonster){
+				CTibiaCharacter *self = reader.readSelfCharacter();
+				CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
+				if (attackedCh && !attackedCh->hpPercLeft &&
+					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=4&&
+					attackedCh->z==self->z){
 
+					int iterCount=25;
+					while (iterCount-->0) {
+						if (!reader.readVisibleCreature(attackedCh->nr)->visible)
+							break;
+						Sleep(50);
+					}
+
+					//get all information about corpse
+					Corpse newCorpse= Corpse();
+					int i,len;
+					char statChName[128];
+					for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
+						if (statChName[i]=='[')
+							statChName[i]='\0';
+					}
+					strncpy(newCorpse.name,statChName,40);
+					newCorpse.x=attackedCh->x;
+					newCorpse.y=attackedCh->y;
+					newCorpse.z=attackedCh->z;
+					newCorpse.timeOfDeath=time(NULL);
+					newCorpse.itemId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+					//wis Fix up
+					newCorpse.pos = reader.mapGetPointItemsCount(point(attackedCh->x-self->x,attackedCh->y-self->y,0))-itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y)-1;
+
+					newCorpse.push(corpseQueue);
+				}
+			}//check attacked monster
+			if (corpseQueue->nxt!=corpseQueue && reader.getGlobalVariable("autolooterTm") && reader.getGlobalVariable("autolooterTm")!=""){
+				Corpse *currentCorpse=corpseQueue->nxt;
+				while (currentCorpse!=corpseQueue){
+					if (currentCorpse->distance(self->x,self->y)>=5 || (time(NULL)-currentCorpse->timeOfDeath)>4) break;
+					currentCorpse=currentCorpse->nxt;
+				}
+				if(currentCorpse!=corpseQueue){
+					FILE *lootStatsFile = NULL;
+					int killNr=rand();
+					if (config->m_autoOpen) {
+						lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
+					}
+					int autolooterTm = atoi(reader.getGlobalVariable("autolooterTm"));
+					while (autolooterTm>time(NULL) && abs(autolooterTm-time(NULL))<30){
+						self = reader.readSelfCharacter();
+						sender.openContainerFromFloor(currentCorpse->itemId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),9);
+						int iterCount=50;
+						while (iterCount-->0) {
+							if (maxDist(self->x,self->y,attackedCh->x,attackedCh->y)<=1)
+								break;
+							Sleep(50);
+						}
+						if (CModuleUtil::waitForOpenContainer(9,true)) {
+							autolooterTm=time(NULL)+lootCorpseTime;
+							char buf[32];
+							sprintf(buf,"%d",autolooterTm);
+							reader.setGlobalVariable("autolooterTm",buf);
+							sender.sendTAMessage("[debug] opened container");
+							CTibiaContainer *cont = reader.readContainer(9);
+							int itemNr;
+							for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
+								CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
+								if (insideItem->objectId==itemProxy.getValueForConst("bagbrown")) {
+									sender.sendTAMessage("[debug] opening bag");
+									sender.openContainerFromContainer(insideItem->objectId,0x40+9,insideItem->pos,8);
+									if (!CModuleUtil::waitForOpenContainer(8,true))
+										sender.sendTAMessage("Failed opening bag");
+									break;
+								}
+							}
+							delete cont;
+							if (config->m_autoOpen) {
+								int checksum;
+								int tm=time(NULL);
+								for (int contNr=9; contNr >=8;contNr--){// get stats from 9, then 8 if bag exists
+									CTibiaContainer *lootCont = reader.readContainer(contNr);
+									if(lootCont->flagOnOff){
+										int itemNr;
+										for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
+											int i,len;
+											char statChName[128];
+											for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
+												if (statChName[i]=='[')
+													statChName[i]='\0';
+											}
+											
+											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),contNr==8);
+											if (checksum<0) checksum*=-1;
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,contNr==8,checksum);
+										}
+									}
+									delete lootCont;
+								}
+								//free(lootCont);
+							}
+							
+							CUIntArray acceptedItems;
+							if (config->m_lootGp)
+								acceptedItems.Add(itemProxy.getValueForConst("GP"));
+							if (config->m_lootWorms)
+								acceptedItems.Add(itemProxy.getValueForConst("worms"));
+							if (config->m_lootCustom) {
+								int i;
+								for (i=0;i<itemProxy.getItemsLootedCount();i++)
+									acceptedItems.Add(itemProxy.getItemsLootedId(i));
+							}
+							if (config->m_lootFood) {
+								int p;
+								for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
+									acceptedItems.Add(itemProxy.getItemsFoodArray()->GetAt(p));
+							}
+							
+							int lootTakeItem;
+							
+							
+							for (int contNr=9; contNr >=8;contNr--){// loot from 9, then 8 if lootInBags
+								CTibiaContainer *lootCont = reader.readContainer(contNr);
+								if(lootCont->flagOnOff){
+									for (lootTakeItem=0;lootTakeItem<3;lootTakeItem++) {
+										if (self->cap>1) {
+											CModuleUtil::lootItemFromContainer(contNr,&acceptedItems);
+										}
+										if (config->m_lootFood) {
+											CModuleUtil::eatItemFromContainer(contNr);
+										}
+									}
+									
+									//sender.sendTAMessage("[debug] closing bag");
+									sender.closeContainer(contNr);
+								}
+								delete lootCont;
+							}
+						} // if waitForContainer(9)
+						reader.setGlobalVariable("autolooterTm","");
+					}//while
+				}//if
+
+			}
+
+		}
 		/*** killed monster opening part ***/
-		if (config->m_autoOpen&&lastAttackedMonster&&reader.getAttackedCreature()==0)
+		else if (config->m_autoOpen&&lastAttackedMonster&&reader.getAttackedCreature()==0)
 		{		
 			//::MessageBox(NULL,"x 1","x",0);			
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 			
 			if (attackedCh)
 			{
@@ -147,7 +306,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 						if (attackedCh)
 						{
-							CModuleUtil::waitForCreatureDisappear(attackedCh->x-self->x,attackedCh->y-self->y,attackedCh->tibiaId);
+							CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
 							int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);							
 							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),9);
 							CModuleUtil::waitForOpenContainer(9,1);
