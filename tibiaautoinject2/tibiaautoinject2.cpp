@@ -1082,9 +1082,9 @@ void InitialiseCreatureInfo()
 void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, int colB, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15)
 {
 	int titleOffset=0;	
-	char convString[1024];
-	sprintf(convString,"%s",str);	
+
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15);
+
 	//Proto_fun fun=(Proto_fun)(0x4AB980); // OLD
 	//Proto_fun fun=(Proto_fun)(0x4AB910); // 8.22
 	Proto_fun fun=(Proto_fun)(0x4AE010); // 8.31
@@ -1095,12 +1095,15 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 		fflush(debugFile);
 	}
 	*/
-	if (str!=NULL&&fontNumber==2)
+	if (str!=NULL&&fontNumber==2&&strlen(str)<1000)
 	{
 		char info1[1024];
 		char info2[1024];
 		info1[0]=info2[0]=0;
 		int i,len;		
+		char convString[1024];	
+
+		sprintf(convString,"%s",str);	
 		for (i=0,len=strlen(str);i<len;i++)
 		{
 			if (convString[i]=='[')
@@ -1127,9 +1130,11 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 			fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,info1,v10, v11, v12, v13, v14, v15);			
 			titleOffset+=14;
 		}
+		fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,convString, v10, v11, v12, v13, v14, v15);		
+	} else {
+		fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,str, v10, v11, v12, v13, v14, v15);		
 	}
-	
-	fun(v1,x,y-titleOffset,fontNumber,colR,colG,colB,v8,str?convString:NULL, v10, v11, v12, v13, v14, v15);	
+
 }
 
 
