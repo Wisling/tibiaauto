@@ -81,7 +81,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			alreadySleeping = 0; 
 		else 
 			alreadySleeping = 1;
-		if (attackedCreature && alreadySleeping && !bankerInvoked) continue;
+		if (attackedCreature || alreadySleeping && !bankerInvoked) continue;
 		
 		//if (isDepositing() || !isCavebotOn() || shouldBank(config) && !attackedCreature) {
 		if (shouldBank(config) && !attackedCreature) {
