@@ -696,7 +696,7 @@ volatile Proto_callback hookCallbackFun=hookCallback;
 void ActivateHookCallback()
 {
 	int size = 0;
-	char mapFileBuf[128];
+	char mapFileBuf[1024];
 	HANDLE hMapFile;
 	LPCTSTR pBuf;
 	
@@ -919,7 +919,7 @@ int WINAPI Mine_select(
 void InitialiseIPC()
 {	
 	char buf[128];	
-	char lpszPipename[128];
+	char lpszPipename[1024];
 	int pid = ::GetCurrentProcessId();
 	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-%d",pid);	
 	
@@ -984,8 +984,8 @@ void InitialiseIPC()
 
 void InitialiseIPCback()
 {
-	char buf[128];
-	char lpszPipename[128];
+	char buf[1024];
+	char lpszPipename[1024];
 	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",partnerProcessId);
 	if (debugFile)
 	{
@@ -1082,7 +1082,7 @@ void InitialiseCreatureInfo()
 void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, int colB, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15)
 {
 	int titleOffset=0;	
-	char convString[128];
+	char convString[1024];
 	sprintf(convString,"%s",str);	
 	typedef int (*Proto_fun)(int v1, int x, int y, int v4, int v5, int v6, int v7, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15);
 	//Proto_fun fun=(Proto_fun)(0x4AB980); // OLD
@@ -1097,8 +1097,8 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 	*/
 	if (str!=NULL&&fontNumber==2)
 	{
-		char info1[128];
-		char info2[128];
+		char info1[1024];
+		char info2[1024];
 		info1[0]=info2[0]=0;
 		int i,len;		
 		for (i=0,len=strlen(str);i<len;i++)

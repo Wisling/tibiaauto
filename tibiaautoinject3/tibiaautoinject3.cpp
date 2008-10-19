@@ -48,7 +48,7 @@ void setCallbackFun()
 	
 	HANDLE hMapFile;
 	LPCTSTR pBuf;
-	char mapFileBuf[128];
+	char mapFileBuf[1024];
 	
 	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());
 	
