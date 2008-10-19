@@ -128,34 +128,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			alreadySleeping = 0; 
 		else 
 			alreadySleeping = 1;
-		if (alreadySleeping && !sellerInvoked) continue;
-
+		if (buyOrSell == MAX_SELLERS)
+			buyOrSell = allAtOnce = 0;
 		int attackedCreature = reader.getAttackedCreature();
-		if (allAtOnce || shouldGo(config) && !attackedCreature) {
+		if (attackedCreature || alreadySleeping && !sellerInvoked) continue;
+
+		if (allAtOnce || shouldGo(config)) {
 			allAtOnce = 1;
-			for (int i = 0; i < MAX_SELLERS; i++) {
-				buyOrSell = individualShouldGo(config, i); 
-				if (buyOrSell && findSeller(config, i)) {
+			for (int i = buyOrSell; i < MAX_SELLERS; i++) {
+				if (individualShouldGo(config, i) && findSeller(config, i)) {
 					reader.setGlobalVariable("caveboot_halfsleep","true");
 					sellerInvoked = 1;
 					if (moveToSeller(config)) {
-						config->targetX = config->targetY = config->targetZ = 0; 
-						if (buyOrSell == 1) {
-							if (sellItems(config, i)) {
-								reader.setGlobalVariable("caveboot_halfsleep","false");
-								sellerInvoked = 0;
-							}
-						}
-						if(buyOrSell == 2) {
-							if (buyItems(config, i)) {
-								reader.setGlobalVariable("caveboot_halfsleep","false");
-								sellerInvoked = 0;
-							}
-						}
+						config->targetX = config->targetY = config->targetZ = 0;
+						sellItems(config, i);
+						buyItems(config, i);
+						reader.setGlobalVariable("caveboot_halfsleep","false");
+						sellerInvoked = 0;
+						
+						buyOrSell++;
 					}
-				if (findSeller(config, i)) break;	
+					else break;
 				}
-				else if (!buyOrSell) allAtOnce = 0;
+				else buyOrSell++;
 			}
 		}
 		else {
