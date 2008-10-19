@@ -1,3 +1,18 @@
+1.18.5, ???
+Enhancments:
+ Cavebot: Cavebot starts from the selected waypoint OR begins from previous waypoint if none selected.
+ Cavebot: Improved looting speed and accuracy.
+ Show map: Couple added bitmaps for your viewing pleasure.
+ Cavebot: Added Don't Attack Players option that will guarantee the bot won't attack a person
+ Cavebot: Added keyboard hotkey for pausing cavebot (can also use %ta pause if you like).
+ Training: Can select a different fighting mode to use with training weapon.
+ AutoGo: Ignores all spells no matter how obscurely made
+
+Defects: 
+ Cavebot: Fixed bug with selecting waypoints at random.
+ X-Ray: Fixed incorrect xray addresses.
+ Cavebot: Fixed backattack alien with runes
+
 1.18.4, 16.10.2008
 Enhancments:
  Banker: Adding a feature to retrieve cash to remain onhand.
