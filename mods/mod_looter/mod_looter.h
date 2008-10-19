@@ -21,6 +21,43 @@
 // See mod_looter.cpp for the implementation of this class
 //
 
+struct Item{
+	Item(){
+	}
+};
+
+struct Corpse
+{
+	char name[40];
+	int x,y,z;
+	int timeOfDeath;
+	int itemId;
+	int pos;//position from end of array as this is usually static
+	Corpse *prev;
+	Corpse *nxt;
+	void push(Corpse *pred){
+		pred->insertNodeAfter(prev);
+	}
+	void insertNodeAfter(Corpse *pred){
+		//remove node
+		prev->nxt = nxt;
+		nxt->prev = prev;
+		//insert node
+		nxt = pred->nxt;
+		prev = pred;
+		pred->nxt = this;
+		if (pred->nxt != NULL) pred->nxt->prev = this;
+	}
+	int distance(int x,int y){
+		return max(abs(this->x-x),abs(this->y-y));
+	}
+	Corpse() {
+		timeOfDeath=itemId=x=y=z=pos=0;
+		memset(name,0,40);
+		nxt=prev=this;
+	}
+};
+
 class CMod_looterApp : public CWinApp, public IModuleInterface
 {
 public:
@@ -37,6 +74,7 @@ public:
 		//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+
 
 public:		
 	int validateConfig(int showAlerts);
