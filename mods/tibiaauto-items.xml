@@ -41,8 +41,8 @@
 	<const code="addrOffset" value="0"/>
 
 	<const code="addrMCInject" value="0x1058B1"/> 
-	<const code="addrXRay1" value="0x4D0D84"/> 
-	<const code="addrXRay2" value="0x4D0D8C"/> 
+	<const code="addrXRay1" value="0x4D0D7C"/> 
+	<const code="addrXRay2" value="0x4D0D84"/> 
 	<const code="addrFunRevealCName1" value="0x4EC113"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
 	<const code="addrFunRevealCName2" value="0"/>
 	<const code="addrFunRevealCName3" value="0"/>
@@ -206,6 +206,7 @@
     <item id="0xce9" name="Battle Hammer"/>
     <item id="0xcc6" name="Club"/>
 
+    <item id="0xcca" name="Axe"/>
     <item id="0xcc5" name="Halberd"/>
     <item id="0xcf8" name="Fire Axe"/>
     <item id="0xcdd" name="Sickle"/>
@@ -270,6 +271,8 @@
     <item id="0xce1" name="Serpent Sword"/>
     <item id="0xce4" name="Katana"/>
 
+    <item id="0xdfa" name="Fish"/>
+    <item id="0xdfe" name="Ham"/>
         </items>
         <foods>
     <item id="0xa9" name="Scarab Cheese"/>
