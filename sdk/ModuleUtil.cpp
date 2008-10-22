@@ -829,7 +829,7 @@ int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near inst
 			return 1;
 		Sleep(50);
 	}
-	return 0;
+	return 0;  
 }
 
 int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
