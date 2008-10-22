@@ -844,6 +844,7 @@ bool shouldGo(CConfigData *config) {
 			//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 			//AfxMessageBox(buf);
 			count = countAllItemsOfType(objectId);
+
 			if (count && count >= config->sellItem[i].tradeItem[j].quantityBuySell)
 				should = true;
 		}
@@ -851,8 +852,11 @@ bool shouldGo(CConfigData *config) {
 			int objectId = itemProxy.getObjectId(config->buyItem[i].tradeItem[j].itemName);
 			//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 			//AfxMessageBox(buf);
-			count = countAllItemsOfType(objectId);
-			if (count < config->buyItem[i].tradeItem[j].triggerQuantity && countAllItemsOfType(itemProxy.getValueForConst("GP")) >= config->buyItem[i].tradeItem[j].salePrice)
+			count = countAllItemsOfType(itemProxy.getValueForConst("GP"));
+			count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
+			count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
+			
+			if (countAllItemsOfType(objectId) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
 				should = true;
 		}
 	}
@@ -875,7 +879,11 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		int objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		if (objectId && countAllItemsOfType(objectId) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && countAllItemsOfType(itemProxy.getValueForConst("GP")) >= config->buyItem[traderNum].tradeItem[j].salePrice) {
+		int count = countAllItemsOfType(itemProxy.getValueForConst("GP"));
+		count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
+		count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
+
+		if (objectId && countAllItemsOfType(objectId) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice) {
 			if (ret == SELLONLY)
 				ret = DOBOTH;
 			else
