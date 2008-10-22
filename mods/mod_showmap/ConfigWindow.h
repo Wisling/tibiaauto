@@ -61,6 +61,11 @@ protected:
 	//{{AFX_MSG(CMapConfig)
 	afx_msg void OnPreviousTile();
 	afx_msg void OnNextTile();
+	afx_msg void OnGoDown();
+	afx_msg void OnGoUp();
+	afx_msg void OnRope();
+	afx_msg void OnClick();
+	afx_msg void OnShovel();
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

@@ -61,6 +61,11 @@ BEGIN_MESSAGE_MAP(CMapConfig, CDialog)
 	ON_BN_CLICKED(IDC_COMMIT, OnCommit)
 	ON_BN_CLICKED(IDC_PREVIOUS_CONFIG_TILE, OnPreviousTile)
 	ON_BN_CLICKED(IDC_NEXT_CONFIG_TILE, OnNextTile)
+	ON_BN_CLICKED(IDC_GO_DOWN, OnGoDown)
+	ON_BN_CLICKED(IDC_GO_UP, OnGoUp)
+	ON_BN_CLICKED(IDC_ROPE, OnRope)
+	ON_BN_CLICKED(IDC_USE_TILE, OnClick)
+	ON_BN_CLICKED(IDC_SHOVEL, OnShovel)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -197,4 +202,45 @@ void CMapConfig::OnNextTile() {
 		m_Next.EnableWindow(false);
 	else
 		m_Next.EnableWindow(true);
+}
+
+
+void CMapConfig::OnRope() {
+	if (m_RequireRope.GetCheck()) {
+			m_GoUp.SetCheck(true);
+			m_RequireShovel.SetCheck(false);
+			m_RequireUse.SetCheck(false);
+	}
+}
+
+void CMapConfig::OnClick() {
+	if (m_GoDown.GetCheck()) {
+			m_GoUp.SetCheck(true);
+			m_RequireRope.SetCheck(false);
+			m_RequireShovel.SetCheck(false);
+	}
+}
+
+void CMapConfig::OnShovel() {
+	if (m_GoDown.GetCheck()) {
+			m_GoDown.SetCheck(true);
+			m_RequireRope.SetCheck(false);
+			m_RequireUse.SetCheck(false);
+	}
+}
+
+void CMapConfig::OnGoDown() {
+	if (m_GoDown.GetCheck()) {
+			m_GoUp.SetCheck(false);
+			m_RequireRope.SetCheck(false);
+			m_RequireUse.SetCheck(false);
+	}
+}
+
+
+void CMapConfig::OnGoUp() {
+	if (m_GoUp.GetCheck()) {
+			m_GoDown.SetCheck(false);
+			m_RequireShovel.SetCheck(false);
+	}
 }
