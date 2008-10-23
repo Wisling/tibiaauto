@@ -57,6 +57,7 @@ public:
 	int weaponFight;	
 	int fightWhenSurrounded;
 	int fightWhenAlien;
+	int trainingMode;
 	int bloodHit;
 	int trainingActivate;
 
@@ -68,9 +69,9 @@ public:
 
 	int shareAlienBackattack;
 	int depotCap;
-
-	int pauseAll;
-	int pauseWalker;
+	int dontAttackPlayers;
+	int pausingEnable;
+	int selectedWaypoint;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

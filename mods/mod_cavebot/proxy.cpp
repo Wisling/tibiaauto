@@ -1,7 +1,6 @@
 #include "stdafx.h"
 
 
-
 #include "MemReaderProxy.cpp"
 #include "PackSenderProxy.cpp"
 #include "MemConstData.cpp"
@@ -13,3 +12,4 @@
 #include "TibiaContainer.cpp"
 #include "TibiaMiniMap.cpp"
 #include "TibiaMiniMapPoint.cpp"
+#include "IPCBackPipeProxy.cpp"

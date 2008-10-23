@@ -105,8 +105,11 @@
 #define IDC_SHARE_ALIEN_BACKATTACK      3037
 #define IDC_DEPOT_CAP                   3038
 #define IDC_ENSURE_LOOTING              3039
-#define IDC_CAVEBOT_PAUSE_ALL           3040
-#define IDC_CAVEBOT_PAUSE_WALKER        3041
+#define IDC_TRAINING_ATTACK_MODE        3039
+#define IDC_DONT_ATTACK_PLAYERS         3040
+#define IDC_TRAINING_WEAPON_FIGHT3      3041
+#define IDC_PAUSING_ENABLE              3042
+#define IDC_TOOL_AUTOATTACK_SCROLL_WAYPOINTS 3043
 
 // Next default values for new objects
 // 
@@ -114,7 +117,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3005
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3041
+#define _APS_NEXT_CONTROL_VALUE         3044
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
