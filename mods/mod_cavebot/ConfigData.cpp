@@ -37,7 +37,7 @@ CConfigData::CConfigData()
 	lootGp=0;
 	lootWorms=0;
 	mode=0;
-	suspendOnEnemy=1;	
+	suspendOnEnemy=1;
 	suspendOnNoMove=1;
 	waypointSelectMode=0;
 	mapUsed=0;
@@ -47,8 +47,8 @@ CConfigData::CConfigData()
 	attackRange=5;
 	stickToMonster=0;
 	eatFromCorpse=0;
-	unreachableAfter=30;
-	suspendAfterUnreachable=15;
+	unreachableAfter=15;
+	suspendAfterUnreachable=10;
 	attackOnlyAttacking=1;
 	standStill=2;
 	forceAttackAfterAttack=1;
@@ -58,6 +58,7 @@ CConfigData::CConfigData()
 	weaponFight=0;
 	fightWhenSurrounded=1;
 	fightWhenAlien=1;
+	trainingMode=0;
 	bloodHit=1;
 	trainingActivate=0;
 	dropNotLooted=0;
@@ -67,9 +68,8 @@ CConfigData::CConfigData()
 	shareAlienBackattack=0;
 	depotDropInsteadOfDepositon=0;
 	depotCap=0;
-
-	pauseAll=0;
-	pauseWalker=0;
+	dontAttackPlayers=1;
+	pausingEnable=1;
 }
 
 CConfigData::~CConfigData()

@@ -19,7 +19,7 @@ enum CToolAutoAttackStateAttack
 	CToolAutoAttackStateAttack_macroPause,
 	CToolAutoAttackStateAttack_attackingAlienFound,
 	CToolAutoAttackStateAttack_attackingCreature,
-	CToolAutoAttackStateAttack_monsterUnreachable
+	CToolAutoAttackStateAttack_attackSuspended
 };
 
 enum CToolAutoAttackStateLoot
@@ -98,6 +98,7 @@ public:
 	CStatic	m_trainingState;
 	CButton	m_fightWhenSurrounded;
 	CButton	m_fightWhenAlien;
+	CComboBox	m_trainingMode;
 	CButton	m_bloodHit;
 	CButton	m_activate;
 	CButton	m_debug;
@@ -139,9 +140,9 @@ public:
 	CButton	m_autoFollow;
 	CListBox	m_monsterList;
 	CEdit	m_monster;
+	CButton m_dontAttackPlayers;
+	CButton m_pausingEnable;
 	CButton	m_enable;
-	CButton	m_pauseAll;	
-	CButton	m_pauseWalker;
 	//}}AFX_DATA
 
 	void reloadDepotItems();
@@ -175,15 +176,12 @@ protected:
 	afx_msg void OnLoadFromMinimap();
 	afx_msg void OnMonsterAttackUp();
 	afx_msg void OnMonsterAttackDown();
-	afx_msg void OnPauseAll();
-	afx_msg void OnPauseWalker();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 private:
 
 	CMod_cavebotApp * m_app;
-	int cavebotInvokedPause;
 };
 
 //{{AFX_INSERT_LOCATION}}

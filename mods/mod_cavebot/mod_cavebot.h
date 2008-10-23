@@ -21,6 +21,56 @@
 // See mod_cavebot.cpp for the implementation of this class
 //
 
+struct Item{
+	char name[40];
+	int x,y,z;
+	Item *prev;
+	Item *nxt;
+	int distance(int x,int y){
+		return max(abs(this->x-x),abs(this->y-y));
+	}
+	void InsertNodeAfter(Item *pred){
+		//remove node
+		if (prev != NULL) prev->nxt = nxt;
+		if (nxt != NULL) nxt->prev = prev;
+		//insert node
+		nxt = pred->nxt;
+		prev = pred;
+		pred->nxt = this;
+		if (pred->nxt != NULL) pred->nxt->prev = this;
+	}
+};
+
+struct Creature: public Item
+{
+	int failedAttacks;
+	int isIgnoredUntil;
+	int listPriority;//1 is lowest, 0 means not in attack list
+	int hpPercLeft;
+	int isAttacking;
+	int isOnscreen;
+	int isInvisible;
+	int isDead;
+	int number;
+	int tibiaId;
+	int lastAttackTm;
+	Creature() {
+		failedAttacks=isIgnoredUntil=isInvisible=isOnscreen=isAttacking=lastAttackTm=listPriority=isDead=number=tibiaId=x=y=z=0;
+		hpPercLeft=100;
+		memset(name,0,40);
+	}
+};
+
+struct Corpse: public Item
+{
+	int timeOfDeath;
+	int itemId;
+	Corpse() {
+		timeOfDeath=itemId=x=y=z=0;
+		memset(name,0,40);
+	}
+};
+
 class CMod_cavebotApp : public CWinApp, public IModuleInterface
 {
 public:
