@@ -82,18 +82,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	while (!toolThreadShouldStop) {
 /*		for (int i=0;i<MAX_SELLERS;i++) {
 			char buf[2048];
-			sprintf(buf, "Seller: %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d\nWaypoint: %d %d %d", i, 
-				config->sellerList[i].position[0].sellerX, config->sellerList[i].position[0].sellerY, config->sellerList[i].position[0].sellerZ,
-				config->sellerList[i].position[1].sellerX, config->sellerList[i].position[1].sellerY, config->sellerList[i].position[1].sellerZ,
-				config->sellerList[i].position[2].sellerX, config->sellerList[i].position[2].sellerY, config->sellerList[i].position[2].sellerZ,
-				config->sellerList[i].position[3].sellerX, config->sellerList[i].position[3].sellerY, config->sellerList[i].position[3].sellerZ,
-				config->sellerList[i].position[4].sellerX, config->sellerList[i].position[4].sellerY, config->sellerList[i].position[4].sellerZ,
-				config->sellerList[i].position[5].sellerX, config->sellerList[i].position[5].sellerY, config->sellerList[i].position[5].sellerZ,
-				config->sellerList[i].position[6].sellerX, config->sellerList[i].position[6].sellerY, config->sellerList[i].position[6].sellerZ,
-				config->sellerList[i].position[7].sellerX, config->sellerList[i].position[7].sellerY, config->sellerList[i].position[7].sellerZ,
-				config->sellerList[i].position[8].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[8].sellerZ,
-				config->sellerList[i].position[9].sellerX, config->sellerList[i].position[8].sellerY, config->sellerList[i].position[9].sellerZ);
-			AfxMessageBox(buf);
 			sprintf(buf, "Seller: %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d", i, 
 				config->sellItem[i].tradeItem[0].itemName, config->sellItem[i].tradeItem[0].quantityBuySell, config->sellItem[i].tradeItem[0].salePrice,
 				config->sellItem[i].tradeItem[1].itemName, config->sellItem[i].tradeItem[1].quantityBuySell, config->sellItem[i].tradeItem[1].salePrice,
@@ -106,7 +94,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				config->sellItem[i].tradeItem[8].itemName, config->sellItem[i].tradeItem[8].quantityBuySell, config->sellItem[i].tradeItem[8].salePrice,
 				config->sellItem[i].tradeItem[9].itemName, config->sellItem[i].tradeItem[9].quantityBuySell, config->sellItem[i].tradeItem[9].salePrice);
 			AfxMessageBox(buf);
-		}
 
 			sprintf(buf, "Buyer: %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\n", i, 
 				config->buyItem[i].tradeItem[0].itemName, config->buyItem[i].tradeItem[0].quantityBuySell, config->buyItem[i].tradeItem[0].salePrice, config->buyItem[i].tradeItem[0].triggerQuantity,
@@ -837,27 +824,31 @@ bool shouldGo(CConfigData *config) {
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i)) 
 			return true;
-		if (config->sellOnSpace && spaceAvailable() && individualShouldGo(config, i))
+		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 			return true;
 		for (int j = 0; j < 32; j++) {
 			int objectId = itemProxy.getObjectId(config->sellItem[i].tradeItem[j].itemName);
-			//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
-			//AfxMessageBox(buf);
-			count = countAllItemsOfType(objectId);
+			if (objectId) {
+				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
+				//AfxMessageBox(buf);
+				count = countAllItemsOfType(objectId);
+				if (count && count >= config->sellItem[i].tradeItem[j].quantityBuySell)
+					should = true;
+			}
 
-			if (count && count >= config->sellItem[i].tradeItem[j].quantityBuySell)
-				should = true;
 		}
 		for (j = 0; j < 32; j++) {
 			int objectId = itemProxy.getObjectId(config->buyItem[i].tradeItem[j].itemName);
-			//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
-			//AfxMessageBox(buf);
-			count = countAllItemsOfType(itemProxy.getValueForConst("GP"));
-			count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
-			count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
+			if (objectId) {
+				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
+				//AfxMessageBox(buf);
+				count = countAllItemsOfType(itemProxy.getValueForConst("GP"));
+				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
+				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
 			
 			if (countAllItemsOfType(objectId) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
 				should = true;
+			}
 		}
 	}
 	return should;
@@ -904,8 +895,7 @@ int spaceAvailable() {
 			hasSpace = 1;
 		delete cont;		
 	}
-	if (hasSpace) return 1;
-	else return 0;
+	return hasSpace;
 }
 
 
