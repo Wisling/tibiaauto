@@ -5,10 +5,10 @@
 #include "mod_cavebot.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
+#include "IPCBackPipeProxy.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -24,11 +24,10 @@ extern CToolAutoAttackStateDepot globalAutoAttackStateDepot;
 extern CToolAutoAttackStateTraining globalAutoAttackStateTraining;
 extern int targetX,targetY,targetZ;
 extern int depotX,depotY,depotZ;
-extern int firstCreatureAttackTM;
 extern int currentPosTM;
 extern int creatureAttackDist;
-extern int pauseAfterUnreachableTm;
-
+extern int attackSuspendedUntil;
+extern int firstCreatureAttackTM;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -41,7 +40,6 @@ CConfigDialog::CConfigDialog(CMod_cavebotApp *app,CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
-	cavebotInvokedPause = 0;
 }
 
 
@@ -62,6 +60,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_TRAIN, m_weaponTrain);
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_FIGHT, m_weaponFight);
 	DDX_Control(pDX, IDC_TRAINING_STATE, m_trainingState);
+	DDX_Control(pDX, IDC_TRAINING_ATTACK_MODE, m_trainingMode);
 	DDX_Control(pDX, IDC_TRAINING_FIGHT_WHEN_SURROUNDED, m_fightWhenSurrounded);
 	DDX_Control(pDX, IDC_TRAINING_FIGHT_WHEN_ALIEN, m_fightWhenAlien);
 	DDX_Control(pDX, IDC_TRAINING_BLOOD_HIT, m_bloodHit);
@@ -104,8 +103,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_AUTOFOLLOW, m_autoFollow);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTERLIST, m_monsterList);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTER, m_monster);
-	DDX_Control(pDX, IDC_CAVEBOT_PAUSE_ALL, m_pauseAll);
-	DDX_Control(pDX, IDC_CAVEBOT_PAUSE_WALKER, m_pauseWalker);
+	DDX_Control(pDX, IDC_DONT_ATTACK_PLAYERS, m_dontAttackPlayers);
+	DDX_Control(pDX, IDC_PAUSING_ENABLE, m_pausingEnable);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -127,8 +126,6 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_LOAD_FROM_MINIMAP, OnLoadFromMinimap)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
-	ON_BN_CLICKED(IDC_CAVEBOT_PAUSE_ALL, OnPauseAll)
-	ON_BN_CLICKED(IDC_CAVEBOT_PAUSE_WALKER, OnPauseWalker)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -198,6 +195,7 @@ void CConfigDialog::disableControls()
 	m_weaponFight.EnableWindow(false);	
 	m_fightWhenSurrounded.EnableWindow(false);
 	m_fightWhenAlien.EnableWindow(false);
+	m_trainingMode.EnableWindow(false);
 	m_bloodHit.EnableWindow(false);
 	m_activate.EnableWindow(false);
 	m_depotDropInsteadOfDepositon.EnableWindow(false);
@@ -209,7 +207,8 @@ void CConfigDialog::disableControls()
 	m_backattackRunes.EnableWindow(false);
 	m_shareAlienBackattack.EnableWindow(false);
 	m_depotCap.EnableWindow(false);
-
+	m_dontAttackPlayers.EnableWindow(false);
+	m_pausingEnable.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -248,6 +247,7 @@ void CConfigDialog::enableControls()
 	m_weaponFight.EnableWindow(true);	
 	m_fightWhenSurrounded.EnableWindow(true);
 	m_fightWhenAlien.EnableWindow(true);
+	m_trainingMode.EnableWindow(true);
 	m_bloodHit.EnableWindow(true);
 	m_activate.EnableWindow(true);
 	m_depotDropInsteadOfDepositon.EnableWindow(true);
@@ -259,6 +259,8 @@ void CConfigDialog::enableControls()
 	m_backattackRunes.EnableWindow(true);
 	m_shareAlienBackattack.EnableWindow(true);
 	m_depotCap.EnableWindow(true);
+	m_dontAttackPlayers.EnableWindow(true);
+	m_pausingEnable.EnableWindow(true);
 }
 
 
@@ -327,6 +329,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	}
 	m_fightWhenSurrounded.SetCheck(configData->fightWhenSurrounded);
 	m_fightWhenAlien.SetCheck(configData->fightWhenAlien);
+	m_trainingMode.SetCurSel(configData->trainingMode);
 	m_bloodHit.SetCheck(configData->bloodHit);
 	m_activate.SetCheck(configData->trainingActivate);
 	m_weaponTrain.SetCurSel(m_weaponTrain.FindString(-1,itemProxy.getName(configData->weaponTrain)));
@@ -338,6 +341,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_lootFromFloor.SetCheck(configData->lootFromFloor);
 	m_backattackRunes.SetCheck(configData->backattackRunes);
 	m_shareAlienBackattack.SetCheck(configData->shareAlienBackattack);
+	m_dontAttackPlayers.SetCheck(configData->dontAttackPlayers);
+	m_pausingEnable.SetCheck(configData->pausingEnable);
 		
 
 }
@@ -437,6 +442,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	newConfigData->fightWhenSurrounded=m_fightWhenSurrounded.GetCheck();
 	newConfigData->fightWhenAlien=m_fightWhenAlien.GetCheck();
+	newConfigData->trainingMode=m_trainingMode.GetCurSel();
 	newConfigData->bloodHit=m_bloodHit.GetCheck();
 	newConfigData->trainingActivate=m_activate.GetCheck();
 	newConfigData->weaponTrain=m_weaponTrain.GetItemData(m_weaponTrain.GetCurSel());
@@ -446,6 +452,10 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->lootFromFloor=m_lootFromFloor.GetCheck();
 	newConfigData->backattackRunes=m_backattackRunes.GetCheck();
 	newConfigData->shareAlienBackattack=m_shareAlienBackattack.GetCheck();
+	newConfigData->dontAttackPlayers=m_dontAttackPlayers.GetCheck();
+	newConfigData->pausingEnable=m_pausingEnable.GetCheck();
+	newConfigData->selectedWaypoint=m_waypointList.GetCurSel();
+
 
 
 
@@ -485,12 +495,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			{
 				int t1=time(NULL)-firstCreatureAttackTM;
 				int t2=time(NULL)-currentPosTM;
-				sprintf(buf,"State: attacking [since %ds; distance %d; standing since %ds]",t1,creatureAttackDist,t2);
+				sprintf(buf,"State: attacking [since %d, distance %d; standing since %ds]",t1,creatureAttackDist,t2);
 				m_stateAttack.SetWindowText(buf);
 			}
 			break;
-		case CToolAutoAttackStateAttack_monsterUnreachable:
-			sprintf(buf,"State: monster unreachable [yet %ds]",pauseAfterUnreachableTm);
+		case CToolAutoAttackStateAttack_attackSuspended:
+			sprintf(buf,"State: attackSuspended [yet %ds]",attackSuspendedUntil-time(NULL));
 			m_stateAttack.SetWindowText(buf);
 			break;
 		default:
@@ -654,9 +664,8 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 	int sel=m_waypointList.GetCurSel();
 	if (sel==-1)
 		return;
-	char currentMonster[128];
-	m_waypointList.GetText(sel,currentMonster);
-	m_waypointList.DeleteString(sel);	
+	m_waypointList.DeleteString(sel);
+	m_waypointList.SetCurSel(min(sel,m_waypointList.GetCount()));
 }
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 
@@ -674,6 +683,7 @@ void CConfigDialog::OnToolAutoattackAddWaypoint()
 	curZ=atoi(buf);
 	sprintf(buf,"(%d,%d,%d)",curX,curY,curZ);
 	m_waypointList.AddString(buf);
+	m_waypointList.SetCurSel(-1);
 }
 
 void CConfigDialog::OnToolAutoattackRemoveMonster() 
@@ -685,6 +695,7 @@ void CConfigDialog::OnToolAutoattackRemoveMonster()
 	m_monsterList.GetText(sel,currentMonster);
 	m_monsterList.DeleteString(sel);
 	m_monster.SetWindowText(currentMonster);
+	m_monsterList.SetCurSel(min(sel,m_monsterList.GetCount()));
 }
 
 void CConfigDialog::OnToolAutoattackAddMonster() 
@@ -696,6 +707,7 @@ void CConfigDialog::OnToolAutoattackAddMonster()
 		m_monsterList.AddString(buf);
 	}
 	m_monster.SetWindowText("");
+	m_monsterList.SetCurSel(m_monsterList.GetCount()-1);
 }
 
 void CConfigDialog::OnDepotEntryadd() 
@@ -805,6 +817,7 @@ void CConfigDialog::OnToolAutoattackAddIgnore()
 		m_ignoreList.AddString(buf);
 	}
 	m_ignore.SetWindowText("");	
+	m_ignoreList.SetCurSel(m_ignoreList.GetCount()-1);
 }
 
 void CConfigDialog::OnToolAutoattackRemoveIgnore() 
@@ -816,6 +829,7 @@ void CConfigDialog::OnToolAutoattackRemoveIgnore()
 	m_ignoreList.GetText(sel,currentignore);
 	m_ignoreList.DeleteString(sel);
 	m_ignore.SetWindowText(currentignore);	
+	m_ignoreList.SetCurSel(min(sel,m_ignoreList.GetCount()));
 }
 
 /* Compare two points for qsort */
@@ -927,66 +941,4 @@ void CConfigDialog::OnMonsterAttackDown()
 	m_monsterList.DeleteString(curSel);
 	m_monsterList.InsertString(curSel+1,monsterName);
 	m_monsterList.SetCurSel(curSel+1);
-}
-
-void CConfigDialog::OnPauseAll() {
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	char *var;
-	int alreadySleeping;
-	
-	var=reader.getGlobalVariable("caveboot_halfsleep");
-	if (var==NULL||strcmp(var,"true")) 
-		alreadySleeping = 0; 
-	else 
-		alreadySleeping = 1;
-	if (alreadySleeping && !cavebotInvokedPause) return;
-
-	if (m_pauseAll.GetCheck()) {
-		m_app->enableControls();
-		reader.setGlobalVariable("caveboot_fullsleep","true");
-		sender.stopAll();
-		cavebotInvokedPause = 1;
-	}
-	else { 
-		m_app->controlsToConfig();
-		if (m_app->validateConfig(1)) {			
-			reader.setGlobalVariable("caveboot_fullsleep","false");
-			m_app->disableControls();
-			cavebotInvokedPause = 0;
-		}
-		else 
-			m_pauseWalker.SetCheck(1);
-	}
-}
-
-void CConfigDialog::OnPauseWalker() {
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	char *var;
-	int alreadySleeping;
-	
-	var=reader.getGlobalVariable("caveboot_halfsleep");
-	if (var==NULL||strcmp(var,"true")) 
-		alreadySleeping = 0; 
-	else 
-		alreadySleeping = 1;
-	if (alreadySleeping && !cavebotInvokedPause) return;
-
-	if (m_pauseWalker.GetCheck()) {
-		m_app->enableControls();
-		reader.setGlobalVariable("caveboot_halfsleep","true");
-		sender.stopAll();
-		cavebotInvokedPause = 1;
-	}
-	else {
-		m_app->controlsToConfig();
-		if (m_app->validateConfig(1)) {			
-			reader.setGlobalVariable("caveboot_halfsleep","false");
-			m_app->disableControls();
-			cavebotInvokedPause = 0;
-		}
-		else 
-			m_pauseWalker.SetCheck(1);
-	}
 }
