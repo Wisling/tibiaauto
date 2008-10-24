@@ -231,6 +231,8 @@ BEGIN
     CONTROL         "Enable PauseBreak key as pause hotkey(or %ta pause)",
                     IDC_PAUSING_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     289,310,191,10
+    LTEXT           "Cavebot will start from selected waypoint or continue to next if none selected.",
+                    IDC_STATIC,164,297,106,26
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
@@ -310,8 +312,9 @@ BEGIN
 0x6954, 0x6962, 0x2061, 0x6c63, 0x6569, 0x746e, 0x6d20, 0x7061, "\000" 
     IDC_TOOL_AUTOATTACK_MAPUSED, 0x403, 6, 0
 0x696d, 0x6578, 0x0064, 
-    IDC_TRAINING_ATTACK_MODE, 0x403, 2, 0
-0x002d, 
+    IDC_TRAINING_ATTACK_MODE, 0x403, 20, 0
+0x6544, 0x6166, 0x6c75, 0x2074, 0x7461, 0x6174, 0x6b63, 0x6d20, 0x646f, 
+0x0065, 
     IDC_TRAINING_ATTACK_MODE, 0x403, 12, 0
 0x7546, 0x6c6c, 0x6120, 0x7474, 0x6361, 0x006b, 
     IDC_TRAINING_ATTACK_MODE, 0x403, 9, 0

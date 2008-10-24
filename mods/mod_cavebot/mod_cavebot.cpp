@@ -652,26 +652,36 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 * 2. Check whether we should be full attack/def/dont touch (if blood control is active).
 * 3. Switch weapon if needed.
 */
-void trainingCheck(CConfigData *config, int alienFound, int attackingCreatures, int lastAttackedCreatureBloodHit,int *attackMode) {
+void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, int lastAttackedCreatureBloodHit,int *attackMode) {
 	CMemReaderProxy reader;
-	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	
 	if (config->trainingActivate) {
 		char buf[128];
-		int canTrain=1;
-		
-		sprintf(buf,"Training check: alien=%d, attacking=%d, lastHpDrop=%d, attackMode=%d",alienFound,attackingCreatures,time(NULL)-lastAttackedCreatureBloodHit,*attackMode);
+		sprintf(buf,"Training check: attackedCr=%d, alien=%d, #attacking=%d, lastHpDrop=%d, attackMode=%d",currentlyAttackedCreatureNr,alienFound,attackingCreatures,time(NULL)-lastAttackedCreatureBloodHit,*attackMode);
 		if (config->debug) registerDebug(buf);
+
+		if (config->fightWhenAlien&&!alienFound&&!attackingCreatures&&currentlyAttackedCreatureNr==-1){
+			//if (config->debug) registerDebug("Training: non-training mode.");
+			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
+				if (config->debug) registerDebug("Training: Failed to equip fight weapon for non-training mode.");
+				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
+			}
+			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
+			return;
+		}
+			
+		int canTrain=1;
 		if (config->fightWhenAlien&&alienFound) canTrain=0;
 		if (config->fightWhenSurrounded&&attackingCreatures>2) canTrain=0;
+
 		if (canTrain) {
-			if (config->debug) registerDebug("Training: training mode");
+			//if (config->debug) registerDebug("Training: Training mode.");
 			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain)){
-				registerDebug("traning check");
+				registerDebug("Training: Failed to switch to training weapon.");
 				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight);
 			}
-			if (config->trainingMode) *attackMode=config->trainingMode;//0-blank,1-fight,3-full def
+			if (config->trainingMode) *attackMode=config->trainingMode;//0-blank, 1-full atk, 3-full def
 
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_training;
 			if (config->bloodHit) {
@@ -686,9 +696,9 @@ void trainingCheck(CConfigData *config, int alienFound, int attackingCreatures, 
 			}
 		}
 		else {
-			if (config->debug) registerDebug("Training: fight mode");
+			//if (config->debug) registerDebug("Training: Fight mode.");
 			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
-				registerDebug("ATTACK!");
+				if (config->debug) registerDebug("Training: Failed to equip fight for fight mode.");
 				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
 			}
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_fighting;
@@ -708,7 +718,6 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 			CModuleUtil::waitForItemsInsideChange(contNr,itemNr+1);
 		}
 	}
-	
 	delete dropCont;
 }
 
@@ -1028,13 +1037,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int walkerStandingEndTm=0;
 	targetX=targetY=targetZ=0;
 
-	int attackSuspendedUntil=0;
 	int lastAttackedCreatureBloodHit=0;
 	int reachedAttackedCreature=0;//true if 1 sqm away or hp dropped while attacking
 	int shareAlienBackattack=0;
 	int alienCreatureForTrainerFound=0;
 	
 	int pauseInvoked=0;
+
+	int modRuns=0;//for performing actions once every 10 iterations
 	
 	// reset globals
 	targetX=targetY=targetZ=0;
@@ -1156,15 +1166,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (backPipe.readFromPipe(&mess,1009)||backPipe.readFromPipe(&mess,2002)){
 				int msgLen;
 				char msgBuf[512];		
-				sender.sendTAMessage("Woekrs");
 				memset(msgBuf,0,512);		
 				memcpy(&msgLen,mess.payload,sizeof(int));		
 				memcpy(msgBuf,mess.payload+4,msgLen);		
 				
 				if (!strncmp("%ta pause",msgBuf,9))
 				{				
-					sender.sendTAMessage("changed");
 					pauseInvoked=!pauseInvoked;
+					if (pauseInvoked) sender.sendTAMessage("Paused Cavebot");
+					else sender.sendTAMessage("Cavebot Unpaused");
 					if (pauseInvoked){
 						sender.attack(0);
 						reader.setAttackedCreature(0);
@@ -1173,7 +1183,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						sender.attackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
 
 						//reader.setRemainingTilesToGo(0);
-						if (config->debug) registerDebug("Pausing cavebot");
+						if (config->debug) registerDebug("Paused cavebot");
 					}
 				}
 			}
@@ -1196,6 +1206,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		// if in a full sleep mode then just do nothing
 		if (isInFullSleep()) continue;
 		
+		modRuns++;//for performing actions once every 10 iterations
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -1247,8 +1258,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		/*notes:
 		going to depot ignore creatures that aren't attacking
 		training changes weapon and mode also
-
 		*/
+
 		if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_attackSuspended) {
 			if (time(NULL)>=attackSuspendedUntil) {
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
@@ -1289,13 +1300,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				currentPosTM=time(NULL);
 			}
 			if (currentlyAttackedCreatureNr!=-1&&(self->cap>config->capacityLimit||config->eatFromCorpse)&&(config->lootFood||config->lootGp||config->lootWorms||config->lootCustom||config->eatFromCorpse)) {
-				if (config->debug) registerDebug("Checking whether attacked creature is alive");
 				// now let's see whether creature is still alive or not
 				if (attackedCh) {
 					if (!attackedCh->hpPercLeft&&
 						abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=4&&
 						attackedCh->z==self->z) {
-						if (config->debug) registerDebug("Attacked creature is dead");
+						if (config->debug) registerDebug("Looter: Creature it dead.");
 						FILE *lootStatsFile = NULL;
 						// time,rand,creature,name,pos,objectId,count,bagopen,checksum
 						int killNr=rand();
@@ -1332,9 +1342,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						//Normal looting if autolooter not enabled
 						if (CModuleUtil::waitForOpenContainer(9,true)) {
 							//sender.sendTAMessage("[debug] opened container");
-							if (config->debug) registerDebug("Open dead creature corpse (container 9)");
+							if (config->debug) registerDebug("Looter: Opening dead creature corpse (container 9)");
 							if (config->lootInBags) {
-								if (config->debug) registerDebug("Opening bag (container 8)");
+								if (config->debug) registerDebug("Looter: Opening bag (container 8)");
 								CTibiaContainer *cont = reader.readContainer(9);
 								int itemNr;
 								for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
@@ -1343,7 +1353,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
 										sender.openContainerFromContainer(insideItem->objectId,0x40+9,insideItem->pos,8);
 										if (!CModuleUtil::waitForOpenContainer(8,true))
-											registerDebug("Failed opening bag");
+											if (config->debug) registerDebug("Failed opening bag");
 										break;
 									}
 								}
@@ -1435,7 +1445,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 					}
 					else {// if creatureIsDead
-						if (config->debug) registerDebug("The creature is still alive");
 						char debugBuf[256];
 						sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
 						if (config->debug) registerDebug(debugBuf);
@@ -1470,17 +1479,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 
 			delete attackedCh;
-			/**
-			* If we are not attacking anyone and we are in the training mode,
-			* then make sure that we have the 'fight' in hand
-			*/
-			if (config->trainingActivate&&currentlyAttackedCreatureNr!=-1) {
-				if (config->debug) registerDebug("Training: non training mode");
-				if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
-					ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
-				}
-				globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
-			}
 
 			// refresh information
 			int currentTm=reader.getCurrentTm();
@@ -1523,7 +1521,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// scan ignore list
 						for (monstListNr=0;monstListNr<config->ignoreCount;monstListNr++) {
 							if (!strcmpi(config->ignoreList[monstListNr],creatureList[crNr].name)) {
-								if (config->debug) registerDebug("Creature found on ignore list");
+								if (config->debug&&creatureList[crNr].isIgnoredUntil<9999) registerDebug("Creature found on ignore list");
 								creatureList[crNr].isIgnoredUntil=1555555555;//ignore forever
 							}
 						}
@@ -1596,7 +1594,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 				}// if visible
 				delete ch;
-				if (config->debug && creatureList[crNr].isOnscreen) {
+				if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
 					char buf[128];
 					sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d",creatureList[crNr].name,crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x);
 					registerDebug(buf);
@@ -1611,25 +1609,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr==self->nr) continue;
 				//If shouldn't attack, don't
 				if (creatureList[crNr].hpPercLeft < config->attackHpAbove) {
-					if (config->debug) registerDebug("Quit Case:hp above value"); 
+					if (config->debug && modRuns%10==0) registerDebug("Quit Case:hp above value");
 					continue;}
 				if (config->dontAttackPlayers && creatureList[crNr].tibiaId<0x40000000) {
-					if (config->debug) registerDebug("Quit Case:No attack player"); 
+					if (config->debug && modRuns%10==0) registerDebug("Quit Case:No attack player");
 					continue;}
 				if (config->attackOnlyAttacking && !creatureList[crNr].isAttacking){ 
-					if (config->debug) registerDebug("Quit Case:only attack attacking"); 
+					if (config->debug && modRuns%10==0) registerDebug("Quit Case:only attack attacking"); 
 					continue;}
 				if (!creatureList[crNr].isAttacking && maxDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>config->attackRange){	
-					if (config->debug) registerDebug("Quit Case:out of range");
+					if (config->debug && modRuns%10==0) registerDebug("Quit Case:out of range");
 					continue;}
 				if (creatureList[crNr].isIgnoredUntil){
-					if (config->debug) registerDebug("Quit Case:is ignored");
+					if (config->debug && modRuns%10==0) registerDebug("Quit Case:is ignored");
 					continue;}
 				if (config->suspendOnEnemy && playersOnScreen && !creatureList[crNr].isAttacking){
 					if (config->debug) registerDebug("Quit Case:Suspend on enemy");
 					continue;}//only attack creatures attacking me if suspendOnEnemy and player on screen
 				if (!(creatureList[crNr].listPriority || config->forceAttackAfterAttack && creatureList[crNr].isAttacking)){
-					if (config->debug) registerDebug("Quit Case:Options do not allow attack");
+					if (config->debug && modRuns%10==0) registerDebug("Quit Case:Options do not allow attack");
 					continue;}
 
 				//if shareBackatackAlien, add possible attack option to list if not on priority list
@@ -1645,18 +1643,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 				int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 				if(isCloser&&1){
-					if (config->debug) registerDebug("Better:Closer");
+					if (config->debug) registerDebug("Attacker: Better because closer.");
 					bestCreatureNr=crNr;
 				}else if (!isFarther){
 					//If force attack prioritize creature not on list with lowest health
 					if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
 						(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
-						if (config->debug) registerDebug("Better:alien creature");
+						if (config->debug) registerDebug("Attacker: Better because alien creature.");
 						bestCreatureNr=crNr;}
 					//If attack only if attacked prioritize creature not on list or creatures attacking us with highest priority
 					if ((!config->attackOnlyAttacking || creatureList[crNr].isAttacking) && creatureList[crNr].listPriority!=0  &&
 						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
-						if (config->debug) registerDebug("Better:Higher Priority");
+						if (config->debug) registerDebug("Attacker: Better because higher priority");
 						bestCreatureNr=crNr;}
 				}
 				else{}
@@ -1692,7 +1690,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					||!creatureList[currentlyAttackedCreatureNr].isOnscreen
 					|| creatureList[currentlyAttackedCreatureNr].isInvisible
 					|| creatureList[currentlyAttackedCreatureNr].isDead
-					|| creatureList[currentlyAttackedCreatureNr].hpPercLeft < config->attackHpAbove
+					|| creatureList[currentlyAttackedCreatureNr].hpPercLeft<config->attackHpAbove
 					|| config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
 					|| config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
 					||!creatureList[crNr].isAttacking && maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange
@@ -1706,24 +1704,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					currentlyAttackedCreatureNr=bestCreatureNr;
 					if (config->debug)  {
 						char buf[256];
-						sprintf(buf,"Attacking2 Nr=%d name=%s point=%d,%d,%d id=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId);
+						sprintf(buf,"Switching to Nr=%d name=%s point=%d,%d,%d id=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId);
 						registerDebug(buf);
 					}
-				}
-				if (config->debug) {
-					char buf[128];
-					sprintf(buf,"Target: Nr=%d, dist=%d, prio=%d, name=%s",currentlyAttackedCreatureNr,creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y),creatureList[currentlyAttackedCreatureNr].listPriority,creatureList[currentlyAttackedCreatureNr].name);
-					registerDebug(buf);
 				}
 			}
 			else currentlyAttackedCreatureNr=-1;
 
 			if (config->debug) registerDebug("Entering attack execution area");
+
 			/**
 			* Do the training control things.
 			*/
 			int attackMode=config->mode+1;
-			trainingCheck(config,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
+			trainingCheck(config,currentlyAttackedCreatureNr,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
 			sender.attackMode(attackMode,config->autoFollow);
 
 			//perform server visible tasks if we have something to attack
@@ -1737,12 +1731,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// note: fire runes only if my own hp is over 50%
 				// to avoid uh-exhaust
 				if (!creatureList[currentlyAttackedCreatureNr].listPriority&&config->backattackRunes&&self->hp>self->maxHp/2) {
-					if (config->debug) registerDebug("Firing runes at enemy");
+					if (config->debug) registerDebug("Firing SD at enemy");
 					fireRunesAgainstCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId);
 				}
 				globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingCreature;
-				if (config->debug) registerDebug("Attack state: attacking");
 				if (config->debug)  {
 					char buf[256];
 					sprintf(buf,"Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId,creatureList[bestCreatureNr].isIgnoredUntil);
