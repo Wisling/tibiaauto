@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 xerces.lib xerces-c_2.lib detours.lib zdll.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../mod_runemaker.dll" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel"
+# ADD LINK32 xerces.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../mod_runemaker.dll" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "mod_runemaker - Win32 Debug"
