@@ -34,7 +34,7 @@ CMemReader::~CMemReader()
 
 CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 {	
-	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
+	CTibiaVIPEntry *vip;
 
 	int offset = nr*m_memLengthVIP + m_memAddressVIP;
 

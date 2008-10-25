@@ -47,7 +47,7 @@ char *CUtil::wc2c(const unsigned short *src)
 char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 {	
 	
-	int attrNr;
+	unsigned int attrNr;
 	for (attrNr=0;attrNr<node->getAttributes()->getLength();attrNr++)
 	{
 		DOMNode *attrNode = node->getAttributes()->item(attrNr);
