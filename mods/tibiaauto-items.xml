@@ -51,6 +51,7 @@
 	<const code="addrSelfPosY" value="0"/>
 	<const code="addrSelfPosZ" value="0"/>
 
+	<const code="addrVIP" value="0x628A10"/> <!-- cat0 -->
 	<const code="addrSelfFlags" value="0x62AC78"/> <!-- cat1 -->
 	<const code="addrSkillFistPercLeft" value="0x62AC7C"/>
 	<const code="addrSkillFist" value="0x62AC98"/>
@@ -106,6 +107,7 @@
 	<const code="lengthMapTile" value="172"/>
                 <const code="lengthMiniMap" value="131240"/>
                 <const code="lengthMiniMapPoint" value="112"/>
+	<const code="lengthVIP" value="44"/>
 
 	<const code="maxContainers" value="9"/>
 	<const code="maxCreatures" value="150"/>
