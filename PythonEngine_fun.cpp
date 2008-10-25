@@ -1842,3 +1842,22 @@ static PyObject *tibiaauto_reader_getCreatureDeltaY(PyObject *self, PyObject *ar
 	
 	return ret;
 }
+
+static PyObject *tibiaauto_reader_readVIPEntry(PyObject *self, PyObject *args)
+{ 
+	CMemReaderProxy reader;
+	
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	CTibiaCharacter *vip = reader.readVIPEntry(arg1);
+
+	PyObject *ret = 
+		Py_BuildValue("{s:i,s:i,s:i,s:i}",
+		"id",vip->id,
+		"name",vip->name,
+		"status",vip->status,
+		"icon",vip->icon);
+
+	delete vip;
+	return ret;
+}

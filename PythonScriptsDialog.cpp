@@ -264,7 +264,7 @@ void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
 	int funNr;
 	for (funNr=0;;funNr++)
 	{		
-		char buf[128];
+		char buf[512];
 
 		struct funType *fun = pythonScript->getFunDef(funNr);
 		if (!fun) break;

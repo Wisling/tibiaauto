@@ -32,6 +32,19 @@ CMemReader::~CMemReader()
 
 }
 
+CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
+{	
+	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
+
+	int offset = nr*m_memLengthVIP + m_memAddressVIP;
+
+	vip->id = CMemUtil::GetMemIntValue(offset);
+	vip->status = CMemUtil::GetMemIntValue(offset+34);
+	vip->icon = CMemUtil::GetMemIntValue(offset+40);
+	CMemUtil::GetMemRange(offset+4,offset+4+31,vip->name);
+	return vip;
+}
+
 CTibiaContainer *CMemReader::readContainer(int containerNr)
 {	
 	int i;
@@ -62,6 +75,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 }
 
 
+
 CTibiaCharacter *CMemReader::readSelfCharacter()
 {	
 	CTibiaCharacter *ch = new CTibiaCharacter();
@@ -70,8 +84,8 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->mana = CMemUtil::GetMemIntValue(m_memAddressMana);	
 	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax);
 	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax);
-	// note: since 8.31 capacity is multiplied by 100 in memory
-	ch->cap = CMemUtil::GetMemIntValue(m_memAddressCap)/100;
+	// note: since 8.31 capacity has accuracy to 2 decimal places
+	ch->cap = CMemUtil::GetMemIntValue(m_memAddressCap)/100.0;
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	ch->lvl = CMemUtil::GetMemIntValue(m_memAddressLvl);
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);
@@ -766,3 +780,4 @@ int CMemReader::getCreatureDeltaY(int creatureNr)
 {
 	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+52);
 }
+

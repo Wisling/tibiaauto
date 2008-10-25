@@ -269,6 +269,8 @@ static PyMethodDef Methods_tareader[] = {
 	{"setAttackedCreature", tibiaauto_reader_setAttackedCreature, METH_VARARGS},
 	{"getCreatureDeltaX", tibiaauto_reader_getCreatureDeltaX, METH_VARARGS},
 	{"getCreatureDeltaY", tibiaauto_reader_getCreatureDeltaY, METH_VARARGS},
+	{"readVIPEntry", tibiaauto_reader_readVIPEntry, METH_VARARGS},
+
     {NULL,      NULL}        /* Sentinel */
 };
 

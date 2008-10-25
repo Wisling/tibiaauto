@@ -15,6 +15,7 @@
 #include "MemConstData.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
+#include "TibiaVIPEntry.h"
 
 class CMemReader  : public CMemConstData
 {
@@ -73,7 +74,7 @@ public:
 	CTibiaItem * readItem(int locationAddress);
 	CTibiaCharacter *readSelfCharacter();
 	CTibiaCharacter *getCharacterByTibiaId(int tibiaId);
-
+	CTibiaVIPEntry *readVIPEntry(int nr);
 
 private:
 	int dereference(int addr);

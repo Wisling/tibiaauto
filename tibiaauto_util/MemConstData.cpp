@@ -23,6 +23,7 @@ CMemConstData::CMemConstData()
 	
 	int offset = itemProxy.getValueForConst("addrOffset");		
 	// addresses	
+	m_memAddressVIP					= offset + itemProxy.getValueForConst("addrVIP");	
 	m_memAddressFirstContainer      = offset + itemProxy.getValueForConst("addrFirstContainer");
 	m_memAddressFirstCreature       = offset + itemProxy.getValueForConst("addrFirstCreature");
 	m_memAddressHP                  = offset + itemProxy.getValueForConst("addrHP");
@@ -88,6 +89,7 @@ CMemConstData::CMemConstData()
 	m_memLengthItem=itemProxy.getValueForConst("lengthItem");
 	m_memLengthCreature=itemProxy.getValueForConst("lengthCreature");
 	m_memLengthMapTile=itemProxy.getValueForConst("lengthMapTile");
+	m_memLengthVIP=itemProxy.getValueForConst("lengthVIP");
 	
 	// max values
 	m_memMaxContainers=itemProxy.getValueForConst("maxContainers");
