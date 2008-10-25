@@ -441,15 +441,18 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1004)
 	{
+		int fail = 0;
 		KillTimer(1004);
 		if (!flicker) {
 			flicker = (rand() % 7) + 1;
+			if (flicker == 6)
+				fail = 1;
 			back = flicker;
-			SetTimer(1004,(rand() % 120000) + 1,NULL);
+			SetTimer(1004,(rand() % 100000) + 1,NULL);
 			alt = 0;
 		}
 		else {
-			SetTimer(1004,(rand() % 80) + 1,NULL);
+			SetTimer(1004,(rand() % 200) + 1,NULL);
 			if (flicker < back) {
 				back--;
 				alt = 0;
@@ -459,9 +462,12 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 				alt = 1;
 			}
 		}
+		if (fail == 1) {
+			KillTimer(1004);
+			alt = 1;
+		}
 		RedrawWindow();
-		
-	};
+};
 	
 	CDialog::OnTimer(nIDEvent);
 }
