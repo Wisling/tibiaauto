@@ -6,26 +6,26 @@
 --------------------Configuration: mod_runemaker - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_runemaker.res" /d "NDEBUG" /d "_AFXDLL" "C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.rc"" 
-Creating temporary file "C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP92.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_runemaker.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.rc"" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1EB.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_runemaker.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\ConfigData.cpp"
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\ConfigDialog.cpp"
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\exports.cpp"
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp"
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\proxy.cpp"
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\TibiaItem_impl.cpp"
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\ToolContainerContent.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\ConfigData.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\ConfigDialog.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\exports.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\proxy.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\TibiaItem_impl.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\ToolContainerContent.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP92.tmp" 
-Creating temporary file "C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP93.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1EB.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1EC.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_runemaker.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\StdAfx.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\StdAfx.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP93.tmp" 
-Creating temporary file "C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP94.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1EC.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1ED.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_runemaker.pdb" /machine:I386 /def:".\mod_runemaker.def" /out:"../mod_runemaker.dll" /implib:"Release/mod_runemaker.lib" 
 ".\Release\ConfigData.obj"
@@ -38,7 +38,7 @@ Creating temporary file "C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP94.tmp" with cont
 ".\Release\ToolContainerContent.obj"
 ".\Release\mod_runemaker.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP94.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1ED.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...
@@ -48,28 +48,14 @@ ConfigData.cpp
 ConfigDialog.cpp
 exports.cpp
 mod_runemaker.cpp
-C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp(586) : warning C4129: ',' : unrecognized character escape sequence
-C:\Source\TA\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp(586) : warning C4129: '-' : unrecognized character escape sequence
+C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp(646) : warning C4129: ',' : unrecognized character escape sequence
+C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp(646) : warning C4129: '-' : unrecognized character escape sequence
 proxy.cpp
 TibiaItem_impl.cpp
 ToolContainerContent.cpp
 Generating Code...
 Linking...
    Creating library Release/mod_runemaker.lib and object Release/mod_runemaker.exp
-Creating temporary file "C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP98.tmp" with contents
-[
-/nologo /o"Release/mod_runemaker.bsc" 
-".\Release\StdAfx.sbr"
-".\Release\ConfigData.sbr"
-".\Release\ConfigDialog.sbr"
-".\Release\exports.sbr"
-".\Release\mod_runemaker.sbr"
-".\Release\proxy.sbr"
-".\Release\TibiaItem_impl.sbr"
-".\Release\ToolContainerContent.sbr"]
-Creating command line "bscmake.exe @C:\DOCUME~1\DELANC~1\LOCALS~1\Temp\RSP98.tmp"
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 

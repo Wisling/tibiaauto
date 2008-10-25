@@ -6,13 +6,24 @@
 --------------------Configuration: mod_antylogout - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP3D.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_antylogout.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.rc"" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP154.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_antylogout.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"D:\TibiaAuto\Development\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\ConfigData.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\exports.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\proxy.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\TibiaItem_impl.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP3D.tmp" 
-Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP3E.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP154.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP155.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_antylogout.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_antylogout\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP155.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP158.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_antylogout.pdb" /machine:I386 /def:".\mod_antylogout.def" /out:"../mod_antylogout.dll" /implib:"Release/mod_antylogout.lib" 
 ".\Release\ConfigData.obj"
@@ -23,15 +34,20 @@ Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP3E.tmp" with conten
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_antylogout.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSP3E.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP158.tmp"
 <h3>Output Window</h3>
+Compiling resources...
 Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+exports.cpp
 mod_antylogout.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
 Linking...
    Creating library Release/mod_antylogout.lib and object Release/mod_antylogout.exp
-Creating command line "bscmake.exe /nologo /o"Release/mod_antylogout.bsc"  ".\Release\StdAfx.sbr" ".\Release\ConfigData.sbr" ".\Release\exports.sbr" ".\Release\mod_antylogout.sbr" ".\Release\proxy.sbr" ".\Release\TibiaItem_impl.sbr""
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 

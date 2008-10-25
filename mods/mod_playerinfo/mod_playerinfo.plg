@@ -6,21 +6,57 @@
 --------------------Configuration: mod_playerinfo - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSPF1.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_playerinfo.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.rc"" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D7.tmp" with contents
 [
-/nologo /o"Release/mod_playerinfo.bsc" 
-".\Release\StdAfx.sbr"
-".\Release\CharInfoDialog.sbr"
-".\Release\ConfigData.sbr"
-".\Release\exports.sbr"
-".\Release\IPCBackPipeProxy.sbr"
-".\Release\mod_playerinfo.sbr"
-".\Release\playerInfo.sbr"
-".\Release\proxy.sbr"
-".\Release\TibiaItem_impl.sbr"]
-Creating command line "bscmake.exe @C:\DOCUME~1\Wiktor\USTAWI~1\Temp\RSPF1.tmp"
-Creating browse info file...
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_playerinfo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\CharInfoDialog.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\ConfigData.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\exports.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\IPCBackPipeProxy.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\playerInfo.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\proxy.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D7.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D8.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_playerinfo.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D8.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D9.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_playerinfo.pdb" /machine:I386 /def:".\mod_playerinfo.def" /out:"../mod_playerinfo.dll" /implib:"Release/mod_playerinfo.lib" 
+".\Release\CharInfoDialog.obj"
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\IPCBackPipeProxy.obj"
+".\Release\mod_playerinfo.obj"
+".\Release\playerInfo.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_playerinfo.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D9.tmp"
 <h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+CharInfoDialog.cpp
+ConfigData.cpp
+exports.cpp
+IPCBackPipeProxy.cpp
+mod_playerinfo.cpp
+playerInfo.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_playerinfo.lib and object Release/mod_playerinfo.exp
 
 
 
