@@ -13,7 +13,8 @@ class CMemConstData
 {
 public:
 	CMemConstData();
-
+	
+	int m_memAddressVIP;
 	int m_memAddressFirstContainer;
 	int m_memAddressFirstCreature;
 	int m_memAddressHP;
@@ -72,6 +73,7 @@ public:
 	int m_memLengthItem;
 	int m_memLengthCreature;
 	int m_memLengthMapTile;
+	int m_memLengthVIP;
 
 
 	int m_memMaxContainers;
