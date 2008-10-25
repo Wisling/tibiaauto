@@ -7,8 +7,10 @@ Enhancments:
  Cavebot: Added keyboard hotkey for pausing cavebot (can also use %ta pause if you like).
  Training: Can select a different fighting mode to use with training weapon.
  AutoGo: Ignores all spells no matter how obscurely made
+ Python: Able to read in VIP list through reader.readVIPEntry(int nr)
 
-Defects: 
+Defects:
+ In Tibia: Fixed Crash when Pasting text into window.
  Cavebot: Fixed bug with selecting waypoints at random.
  X-Ray: Fixed incorrect xray addresses.
  Cavebot: Fixed backattack alien with runes
