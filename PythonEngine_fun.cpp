@@ -656,7 +656,10 @@ static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 		"canWalkThrough",tile->canWalkThrough,
 		"isDepot",tile->isDepot,
 		"isContainer",tile->isContainer,
-		"notMoveable",tile->notMoveable);
+		"notMoveable",tile->notMoveable,
+		"stackable",tile->stackable,
+		"alwaysOnTop",tile->alwaysOnTop,
+		"moreAlwaysOnTop",tile->moreAlwaysOnTop);
 	
 	return ret;
 }
