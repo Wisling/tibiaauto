@@ -13,6 +13,7 @@
 #include "TibiaTile.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
+#include "TibiaVIPEntry.h"
 
 #if _MSC_VER > 1000
 #pragma once
@@ -101,7 +102,7 @@ public:
 	int getCreatureDeltaY(int creatureNr);
 
 	void setAttackedCreature(int tibiaId);	
-
+	CTibiaVIPEntry *readVIPEntry(int vipNr);
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();
 
