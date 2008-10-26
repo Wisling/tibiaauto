@@ -39,10 +39,9 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 	int offset = nr*m_memLengthVIP + m_memAddressVIP;
 
 	vip->id = CMemUtil::GetMemIntValue(offset);
-	vip->status = CMemUtil::GetMemIntValue(offset+34);
+	vip->status = CMemUtil::GetMemIntValue(offset+34)&1;
 	vip->icon = CMemUtil::GetMemIntValue(offset+40);
-	CMemUtil::GetMemRange(offset+4,offset+4+31,vip->name);
-	delete vip;
+	CMemUtil::GetMemRange(offset+4,offset+4+30,vip->name);
 	return vip;
 }
 
