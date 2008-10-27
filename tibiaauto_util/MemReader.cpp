@@ -35,13 +35,13 @@ CMemReader::~CMemReader()
 CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 {	
 	CTibiaVIPEntry *vip;
-
+	if (nr<0||nr>=100) return NULL;
 	int offset = nr*m_memLengthVIP + m_memAddressVIP;
 
 	vip->id = CMemUtil::GetMemIntValue(offset);
 	vip->status = CMemUtil::GetMemIntValue(offset+34)&1;
 	vip->icon = CMemUtil::GetMemIntValue(offset+40);
-	CMemUtil::GetMemRange(offset+4,offset+4+30,vip->name);
+	CMemUtil::GetMemRange(offset+4,offset+4+29,vip->name);
 	return vip;
 }
 
@@ -655,8 +655,8 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int mapNr, int pointNr)
 		delete retPoint;
 		return NULL;
 	}
-	int mapPointAddr = CMemUtil::GetMemIntValue(mapOffset+131232);		
-	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapPoint");	
+	int mapPointAddr = CMemUtil::GetMemIntValue(mapOffset+131232);
+	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapPoint");
 	retPoint->x=CMemUtil::GetMemIntValue(mapPointOffset+0);
 	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4);	
 	retPoint->type=CMemUtil::GetMemIntValue(mapPointOffset+8);

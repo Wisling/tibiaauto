@@ -56,7 +56,7 @@ static PyObject *tibiaauto_reader_readVIPEntry(PyObject *self, PyObject *args)
 	
 	int arg1;
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	CTibiaCharacter *vip = reader.readVIPEntry(arg1);
+	CTibiaVIPEntry *vip = reader.readVIPEntry(arg1);
 
 	PyObject *ret = 
 		Py_BuildValue("{s:i,s:i,s:i,s:i}",

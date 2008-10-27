@@ -875,3 +875,8 @@ int memReadGetCreatureDeltaY(int creatureNr)
 	startMemReader();
 	return reader->getCreatureDeltaY(creatureNr);
 }
+CTibiaVIPEntry *memReadReadVIPEntry(int nr)
+{
+	startMemReader();
+	return reader->readVIPEntry(nr);
+}
