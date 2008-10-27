@@ -122,6 +122,24 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 }
 
 
+int CModuleUtil::waitForCapsChange(double origCaps)//takes about a max of .6 secs for NPC purchases and up to .9 for dropping an object
+{
+	CMemReaderProxy reader;
+	int t;
+	for (t=0;t<30;t++)
+	{
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		if (self->cap!=origCaps)
+		{
+			delete self;
+			return 1;
+		}
+		delete self;
+		Sleep(50);
+	}
+	return 0;
+}
+
 int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemsCount)//takes about a max of .6 secs
 {
 	CMemReaderProxy reader;
@@ -884,7 +902,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int pathSize;
-	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}										
+	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 #ifdef MAPDEBUG
 	char buf[128];
 	sprintf(buf,"pathsize=%d assumed=(%d,%d,%d) now=(%d,%d,%d) delta=(%d,%d,%d)=%d",pathSize,startX,startY,startZ,self->x,self->y,self->z,self->x-startX,self->y-startY,self->z-startZ,abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ));	
@@ -918,7 +936,6 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						itemsAccepted.Add(itemProxy.getValueForConst("rope"));
 						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
-//stug
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item)
 							{
@@ -1158,6 +1175,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		 */
 		
 		int lastEndEqStart=(lastEndX==startX&&lastEndY==startY&&lastEndZ==startZ);
+		//&&reader.getMemIntValue(itemProxy.getValueForConst("addrTilesToGo"))==0
 		if (pathSize>0&&(lastEndEqStart||currentTm-lastStartChangeTm>=2||currentTm-lastExecuteWalkTm>15))
 		{
 			// 'normal' stepping limited to 10 steps
