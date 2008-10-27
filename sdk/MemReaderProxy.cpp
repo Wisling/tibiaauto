@@ -78,7 +78,7 @@ CMemReaderProxy::~CMemReaderProxy()
 CTibiaVIPEntry * CMemReaderProxy::readVIPEntry(int vipNr)
 {
 
-	typedef CTibiaVIPEntry * (*Proto_fun)(int vipNr);
+	typedef CTibiaVIPEntry * (*Proto_fun)(int);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadVIPEntry");
@@ -89,8 +89,6 @@ CTibiaVIPEntry * CMemReaderProxy::readVIPEntry(int vipNr)
 	} 
 	return NULL;
 }
-
-
 
 CTibiaContainer * CMemReaderProxy::readContainer(int containerNr)
 {
