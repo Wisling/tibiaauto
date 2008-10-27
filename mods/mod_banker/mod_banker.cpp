@@ -300,7 +300,7 @@ int depositGold() {
 		}
 	}
 
-	sender.say("Hi");
+	sender.say("hi");
 	Sleep (500);
 	sender.sayNPC("deposit all");
 	Sleep (500);
