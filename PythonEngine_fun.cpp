@@ -644,7 +644,7 @@ static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 	int arg1;
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	CTibiaTile *tile=reader.getTibiaTile(arg1);
-	PyObject *ret = Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+	PyObject *ret = Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"ground",tile->ground,
 		"goUp",tile->goUp,
 		"goDown",tile->goDown,
