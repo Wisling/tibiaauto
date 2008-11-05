@@ -6,6 +6,34 @@
 --------------------Configuration: mod_showmap - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_showmap.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\mod_showmap.rc"" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP955.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_showmap.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\proxy.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP955.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP956.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_showmap.pdb" /machine:I386 /def:".\mod_showmap.def" /out:"../mod_showmap.dll" /implib:"Release/mod_showmap.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigWindow.obj"
+".\Release\exports.obj"
+".\Release\MapButton.obj"
+".\Release\mod_showmap.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolMapShow.obj"
+".\Release\mod_showmap.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP956.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+proxy.cpp
+Linking...
+   Creating library Release/mod_showmap.lib and object Release/mod_showmap.exp
 
 
 

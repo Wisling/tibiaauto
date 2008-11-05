@@ -13,8 +13,8 @@ Class1=CConfigDialog
 Class2=CMod_sorterApp
 
 ResourceCount=2
-Resource1=IDD_CONFIG (Polish)
-Resource2=IDD_CONFIG
+Resource1=IDD_CONFIG
+Resource2=IDD_CONFIG (Polish)
 
 [CLS:CConfigDialog]
 Type=0
@@ -109,6 +109,6 @@ Control31=IDC_STATIC,static,1342308352
 Control32=IDC_SORTER_BAG8,listbox,1352728835
 Control33=IDC_SORTER_BAG8_IN,button,1342242816
 Control34=IDC_SORTER_BAG8_OUT,button,1342242816
-Control35=IDC_SORTER_ITEM_LIST,combobox,1344340226
+Control35=IDC_SORTER_ITEM_LIST,combobox,1344340227
 Control36=IDC_STATIC,static,1342308352
 

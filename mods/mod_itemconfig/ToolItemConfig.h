@@ -7,6 +7,8 @@
 // ToolItemConfig.h : header file
 //
 
+#include "ItemConfig.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CToolItemConfig dialog
 
@@ -23,6 +25,8 @@ public:
 	CListBox	m_itemsList;
 	CListBox	m_foodList;
 	CListBox	m_corpsesList;
+	CButton		m_addItem;
+	CButton		m_editItem;
 	//}}AFX_DATA
 
 
@@ -35,13 +39,23 @@ public:
 
 // Implementation
 protected:
-
+	char outbuf[64];
 	// Generated message map functions
 	//{{AFX_MSG(CToolItemConfig)
 	virtual void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnToolItemconfigRefresh();
 	virtual BOOL OnInitDialog();
+	virtual void OnItemAdd();
+	virtual void OnItemEdit();
+	virtual void OnItemDelete();
+	virtual void OnFoodAdd();
+	virtual void OnFoodEdit();
+	virtual void OnFoodDelete();
+	virtual void OnLootAdd();
+	virtual void OnLootEdit();
+	virtual void OnLootDelete();
+	char *parseNameFromItemSelected(int type);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
