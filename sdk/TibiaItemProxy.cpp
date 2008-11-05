@@ -60,6 +60,17 @@ CTibiaItemProxy::~CTibiaItemProxy()
 
 
 
+int CTibiaItemProxy::getIndex(int objectId, int type) {
+	typedef int (*Proto_fun)(int objectId, int type);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetIndex");
+		if (fun) {
+			return fun(objectId, type);
+		}
+	} 
+	return -1;
+}
+
 char * CTibiaItemProxy::getName(int objectId)
 {
 	typedef char * (*Proto_fun)(int objectId);
@@ -73,6 +84,33 @@ char * CTibiaItemProxy::getName(int objectId)
 	} 
 	return "not implemented";
 }
+void CTibiaItemProxy::setItemName(int index, char *name) {
+	typedef void (*Proto_fun)(int index, char *name);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetItemName");
+		if (fun) {
+			fun(index, name);
+		}
+	} 
+}
+void CTibiaItemProxy::setFoodName(int index, char *name) {
+	typedef void (*Proto_fun)(int index, char *name);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetFoodName");
+		if (fun) {
+			fun(index, name);
+		}
+	} 
+}
+void CTibiaItemProxy::setLootItemName(int index, char *name) {
+	typedef void (*Proto_fun)(int index, char *name);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetLootName");
+		if (fun) {
+			fun(index, name);
+		}
+	} 
+}
 void CTibiaItemProxy::refreshItemLists()
 {
 	typedef void (*Proto_fun)();
@@ -85,6 +123,42 @@ void CTibiaItemProxy::refreshItemLists()
 		}
 	} 
 
+}
+void CTibiaItemProxy::saveItemLists() {
+	typedef void (*Proto_fun)();
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSaveItemLists");
+		if (fun) {
+			fun();
+		}
+	}
+}
+void CTibiaItemProxy::addItemItem(char *name, int objectId) {
+	typedef void (*Proto_fun)(char *name, int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemAddItem");
+		if (fun) {
+			fun(name, objectId);
+		}
+	}
+}
+void CTibiaItemProxy::addItemFood(char *name, int objectId) {
+	typedef void (*Proto_fun)(char *name, int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemAddFood");
+		if (fun) {
+			fun(name, objectId);
+		}
+	}
+}
+void CTibiaItemProxy::addItemLoot(char *name, int objectId) {
+	typedef void (*Proto_fun)(char *name, int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemAddLoot");
+		if (fun) {
+			fun(name, objectId);
+		}
+	}
 }
 int CTibiaItemProxy::getCorpseIdByCreatureName(char *name)
 {
@@ -153,6 +227,33 @@ int CTibiaItemProxy::getItemsItemsCount()
 		}
 	} 
 	return 0;
+}
+void CTibiaItemProxy::setItemsItemsCount(int newCount) {
+	typedef void (*Proto_fun)(int newCount);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetItemsItemsCount");
+		if (fun) {
+			fun(newCount);
+		}
+	} 
+}
+void CTibiaItemProxy::setItemsFoodCount(int newCount) {
+	typedef void (*Proto_fun)(int newCount);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetItemsFoodCount");
+		if (fun) {
+			fun(newCount);
+		}
+	} 
+}
+void CTibiaItemProxy::setItemsLootCount(int newCount) {
+	typedef void (*Proto_fun)(int newCount);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetItemsLootCount");
+		if (fun) {
+			fun(newCount);
+		}
+	} 
 }
 char *CTibiaItemProxy::getItemsFood(int nr)
 {
@@ -303,4 +404,57 @@ int CTibiaItemProxy::getObjectId(char *name)
 		}
 	} 
 	return 0;
+}
+int CTibiaItemProxy::getFoodId(char *name)
+{
+	typedef int (*Proto_fun)(char *name);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetFoodId");
+		if (fun)
+		{
+			return fun(name);
+		}
+	} 
+	return 0;
+}
+int CTibiaItemProxy::getLootItemId(char *name)
+{
+	typedef int (*Proto_fun)(char *name);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetLootItemId");
+		if (fun)
+		{
+			return fun(name);
+		}
+	} 
+	return 0;
+}
+void CTibiaItemProxy::setItemId(int index, int objectId) {
+	typedef void (*Proto_fun)(int index, int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetItemObjectId");
+		if (fun) {
+			fun(index, objectId);
+		}
+	} 
+}
+void CTibiaItemProxy::setFoodId(int index, int objectId) {
+	typedef void (*Proto_fun)(int index, int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetFoodObjectId");
+		if (fun) {
+			fun(index, objectId);
+		}
+	} 
+}
+void CTibiaItemProxy::setLootItemId(int index, int objectId) {
+	typedef void (*Proto_fun)(int index, int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetLootObjectId");
+		if (fun) {
+			fun(index, objectId);
+		}
+	} 
 }

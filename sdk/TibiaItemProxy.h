@@ -8,12 +8,25 @@
 class CTibiaItemProxy
 {
 public:
-	char * getName(int objectId);
+	int getIndex(int objectId, int type);
+	char *getName(int objectId);
+	void setItemName(int index, char *name);
+	void setFoodName(int index, char *name);
+	void setLootItemName(int index, char *name);
 	int getObjectId(char *name);
+	void setItemId(int index, int objectId);
+	int getFoodId(char *name);
+	void setFoodId(int index, int objectId);
+	int getLootItemId(char *name);
+	void setLootItemId(int index, int objectId);
 	int getValueForConst(char *code);
 	void refreshItemLists();
+	void saveItemLists();
+	void addItemItem(char *name, int objectId);
+	void addItemFood(char *name, int objectId);
+	void addItemLoot(char *name, int objectId);
 	int getCorpseIdByCreatureName(char *name);
-	CUIntArray * getItemsFoodArray();
+	CUIntArray *getItemsFoodArray();
 
 	char *getItemsItems(int nr);
 	int getItemsItemsId(int nr);
@@ -27,6 +40,9 @@ public:
 	char *getItemsLooted(int nr);
 	int getItemsLootedId(int nr);
 	int getItemsLootedCount();
+	void setItemsItemsCount(int newCount);
+	void setItemsFoodCount(int newCount);
+	void setItemsLootCount(int newCount);
 
 
 	CTibiaItemProxy();
