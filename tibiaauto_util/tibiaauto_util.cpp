@@ -467,6 +467,11 @@ struct point tibiaMapGetPointByNr(int nr)
 	return tibiaMap.getPointByNr(nr);
 }
 
+int tibiaItemGetIndex(int objectId, int type)
+{
+	return CTibiaItem::getIndex(objectId, type);
+}
+
 char * tibiaItemGetName(int objectId)
 {
 	return CTibiaItem::getName(objectId);
@@ -476,11 +481,53 @@ int tibiaItemGetObjectId(char *name)
 {
 	return CTibiaItem::getObjectId(name);
 }
+int tibiaItemGetFoodId(char *name)
+{
+	return CTibiaItem::getFoodId(name);
+}
+int tibiaItemGetLootItemId(char *name)
+{
+	return CTibiaItem::getLootItemId(name);
+}
+
+void tibiaItemSetItemName(int index, char *name) {
+	CTibiaItem::setName(index, name, 1);
+}
+void tibiaItemSetFoodName(int index, char *name) {
+	CTibiaItem::setName(index, name, 2);
+}
+void tibiaItemSetLootName(int index, char *name) {
+	CTibiaItem::setName(index, name, 3);
+}
+
+void tibiaItemSetItemObjectId(int index, int objectId) {
+	CTibiaItem::setObjectId(index, objectId, 1);
+}
+void tibiaItemSetFoodObjectId(int index, int objectId) {
+	CTibiaItem::setObjectId(index, objectId, 2);
+}
+void tibiaItemSetLootObjectId(int index, int objectId) {
+	CTibiaItem::setObjectId(index, objectId, 3);
+}
 
 void tibiaItemRefreshItemLists()
 {	
 	CTibiaItem::itemListsFresh=0;
 	CTibiaItem::refreshItemLists();
+}
+
+void tibiaItemSaveItemLists() {	
+	CTibiaItem::saveItemLists();
+}
+
+void tibiaItemAddItem(char *name, int objectId) {	
+	CTibiaItem::addItem(name, objectId, 1);
+}
+void tibiaItemAddFood(char *name, int objectId) {	
+	CTibiaItem::addItem(name, objectId, 2);
+}
+void tibiaItemAddLoot(char *name, int objectId) {	
+	CTibiaItem::addItem(name, objectId, 3);
 }
 
 int tibiaItemGetCorpseIdByCreatureName(char *name)
@@ -505,6 +552,15 @@ int tibiaItemGetItemsItemsId(int nr)
 int tibiaItemGetItemsItemsCount()
 {
 	return CTibiaItem::itemsItemsCount;
+}
+void tibiaItemSetItemsItemsCount(int newCount) {
+	CTibiaItem::setCount(1, newCount);
+}
+void tibiaItemSetItemsFoodCount(int newCount) {
+	CTibiaItem::setCount(2, newCount);
+}
+void tibiaItemSetItemsLootCount(int newCount) {
+	CTibiaItem::setCount(3, newCount);
 }
 char *tibiaItemGetItemsFood(int nr)
 {

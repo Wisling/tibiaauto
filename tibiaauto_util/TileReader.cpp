@@ -64,61 +64,41 @@ void CTileReader::setTile(int tileNr, CTibiaTile *newTile) {
 	saveTiles();
 }
 
-void CTileReader::loadTiles()
-{
+void CTileReader::loadTiles() {
 	int i;
-	for (i=0;i<MAX_TILES;i++)
-	{
+	for (i=0;i<MAX_TILES;i++) {
 		tiles[i]=new CTibiaTile();
 	}
 	
 	XercesDOMParser *parser = new XercesDOMParser();
-	try
-	{	
+	try {	
 		char installPath[1024];
 		unsigned long installPathLen=1023;
 		installPath[0]='\0';
 		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
-		{
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey)) {
 			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
 			RegCloseKey(hkey);
 		}
-		if (!strlen(installPath))
-		{
+		if (!strlen(installPath)) {
 			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
 			exit(1);
 		}
-		
-		
 		int rootNr;
-		
-		
 		char pathBuf[2048];
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-tiles.xml",installPath);
 		parser->parse(pathBuf);
-		
 		DOMNode  *doc = parser->getDocument();	
 		int rootCount=doc->getChildNodes()->getLength();		
-		for (rootNr=0;rootNr<rootCount;rootNr++)
-		{			
-			
+		for (rootNr=0;rootNr<rootCount;rootNr++) {			
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
-			
 			if (wcscmp(root->getNodeName(),_L("tiles")))
 				continue;					
 			DOMNode *item = root->getFirstChild();
-			if (item)
-			{
-				
-				do
-				{			
-					
-					if (!wcscmp(item->getNodeName(),_L("tile"))) {
-						
-						
+			if (item) {
+				do 	{			
+					if (!wcscmp(item->getNodeName(),_L("tile"))) {	
 						int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
-						
 						
 						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,_L("blocking"));						
 						tiles[tileId]->canWalkThrough=CUtil::getNodeIntAttribute(item,_L("canWalkThrough"));
@@ -135,21 +115,16 @@ void CTileReader::loadTiles()
 						tiles[tileId]->stackable=CUtil::getNodeIntAttribute(item,_L("stackable"));
 						tiles[tileId]->alwaysOnTop=CUtil::getNodeIntAttribute(item,_L("alwaysOnTop"));
 						tiles[tileId]->moreAlwaysOnTop=CUtil::getNodeIntAttribute(item,_L("moreAlwaysOnTop"));
-						
 					}		
-					
 				} while ((item=item->getNextSibling())!=NULL);
 			}
-			
 		}				
-		
-	} catch (...)
-	{
+	} 
+	catch (...) {
 		AfxMessageBox("Unable to load tile definitions!");
 	}
 	
 	delete parser;		
-	
 }
 
 void CTileReader::saveTiles() {

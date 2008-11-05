@@ -149,3 +149,19 @@ EXPORTS
 	packSenderNpcSell @143
 	packSenderNpcBuy @144
 	setTibiaTile @145
+	tibiaItemSaveItemLists @146
+	tibiaItemAddItem @147
+	tibiaItemSetItemName @148
+	tibiaItemSetItemObjectId @149
+	tibiaItemGetIndex @150
+	tibiaItemSetItemsItemsCount @151
+	tibiaItemAddFood @152
+	tibiaItemAddLoot @153
+	tibiaItemSetLootName @154
+	tibiaItemSetFoodName @155
+	tibiaItemSetFoodObjectId @156
+	tibiaItemSetLootObjectId @157
+	tibiaItemSetItemsFoodCount @158
+	tibiaItemSetItemsLootCount @159
+	tibiaItemGetFoodId @160
+	tibiaItemGetLootItemId @161

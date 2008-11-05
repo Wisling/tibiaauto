@@ -15,10 +15,20 @@
 class CTibiaItem  
 {
 public:
+	static int getIndex(int objectId, int type);
 	static char * getName(int objectId);
+	static void setName(int index, char *name, int type);
+	static void addName(char *name, int type);
 	static int getObjectId(char *name);
+	static int getFoodId(char *name);
+	static int getLootItemId(char *name);
+	static void setObjectId(int index, int objectId, int type);
+	static void addObjectId(int objectId, int type);
+	static void addItem(char *name, int objectId, int type);
 	static int getValueForConst(char *code);
 	static void refreshItemLists();
+	static void saveItemLists();
+	static void setCount(int type, int newCount);
 	CTibiaItem();
 
 	int objectId;

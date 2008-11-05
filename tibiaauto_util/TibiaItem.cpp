@@ -27,6 +27,10 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+#define ITEM	1
+#define FOOD	2
+#define LOOT	3	
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -65,6 +69,30 @@ CTibiaItem::CTibiaItem()
 }
 
 
+int CTibiaItem::getIndex(int objectId, int type) {	
+	int i;	
+	refreshItemLists();
+	if (type == ITEM) {
+		for (i=0;i<itemsItemsCount;i++) 	{
+			if (itemsItemsId[i] == objectId)
+				return i;
+		}
+	}
+	if (type == FOOD) {
+		for (i=0;i<itemsItemsCount;i++) 	{
+			if (itemsFoodId[i] == objectId)
+				return i;
+		}
+	}
+	if (type == LOOT) {
+		for (i=0;i<itemsItemsCount;i++) 	{
+			if (itemsLootedId[i] == objectId)
+				return i;
+		}
+	}
+	return -1;
+}
+
 char * CTibiaItem::getName(int objectId)
 {	
 	int i;
@@ -79,6 +107,60 @@ char * CTibiaItem::getName(int objectId)
 	
 	
 	return "unknown";
+}
+
+void CTibiaItem::setName(int index, char *name, int type) {	
+	if (type == ITEM) {
+		memcpy(itemsItems[index], name, 59);
+	}
+	if (type == FOOD) {
+		memcpy(itemsFood[index], name, 59);
+	}
+	if (type == LOOT) {
+		memcpy(itemsLooted[index], name, 59);
+	}
+}
+
+void CTibiaItem::addName(char *name, int type) {	
+	if (type == ITEM) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setName(itemsItemsCount, name, type);
+	}
+	if (type == FOOD) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setName(itemsFoodCount, name, type);
+	}
+	if (type == LOOT) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setName(itemsLootedCount, name, type);
+	}
+}
+
+void CTibiaItem::setObjectId(int index, int objectId, int type) {
+	if (type == ITEM) {
+		itemsItemsId[index] = objectId;
+	}
+	if (type == FOOD) {
+		itemsFoodId[index] = objectId;
+	}
+	if (type == LOOT) {
+		itemsLootedId[index] = objectId;
+	}
+}
+
+void CTibiaItem::addObjectId(int objectId, int type) {	
+	if (type == ITEM) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setObjectId(itemsItemsCount, objectId, type);
+	}
+	if (type == FOOD) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setObjectId(itemsFoodCount, objectId, type);
+	}
+	if (type == LOOT) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setObjectId(itemsLootedCount, objectId, type);
+	}
 }
 
 int CTibiaItem::getObjectId(char *name)
@@ -97,6 +179,57 @@ int CTibiaItem::getObjectId(char *name)
 	return 0;
 }
 
+int CTibiaItem::getFoodId(char *name)
+{
+	int i;
+	
+	refreshItemLists();
+
+	for (i=0;i<itemsFoodCount;i++)
+	{
+		if (!strcmp(itemsFood[i],name))
+			return itemsFoodId[i];
+	}		
+	
+	
+	return 0;
+}
+
+int CTibiaItem::getLootItemId(char *name)
+{
+	int i;
+	
+	refreshItemLists();
+
+	for (i=0;i<itemsLootedCount;i++)
+	{
+		if (!strcmp(itemsLooted[i],name))
+			return itemsLootedId[i];
+	}		
+	
+	
+	return 0;
+}
+
+void CTibiaItem::addItem(char *name, int objectId, int type) {
+	if (type == ITEM) {
+		addName(name, ITEM);
+		addObjectId(objectId, ITEM);
+		itemsItemsCount++;
+	}
+	if (type == FOOD) {
+		addName(name, FOOD);
+		addObjectId(objectId, FOOD);
+		itemsFoodCount++;
+	}
+	if (type == LOOT) {
+		addName(name, LOOT);
+		addObjectId(objectId, LOOT);
+		itemsLootedCount++;
+	}
+	
+	//AfxMessageBox("Item Added");
+}
 
 int CTibiaItem::getCorpseIdByCreatureName(char *name)
 {		
@@ -152,6 +285,16 @@ CUIntArray * CTibiaItem::getItemsFood()
 	}
 	return foodList;
 }
+void CTibiaItem::setCount(int type, int newCount) {
+	if (type == ITEM)
+		itemsItemsCount = newCount;
+	if (type == LOOT)
+		itemsLootedCount = newCount;
+	if (type == FOOD)
+		itemsFoodCount = newCount;
+}
+	
+
 
 void CTibiaItem::refreshItemLists()
 {	
@@ -422,5 +565,108 @@ void CTibiaItem::refreshItemLists()
 	delete foodList;
 	foodList=NULL;
 	LeaveCriticalSection(&ItemsInitCriticalSection);
+}
+ 
+void CTibiaItem::saveItemLists() {
+	if (!xmlInitialised) {
+		XMLPlatformUtils::Initialize();
+		xmlInitialised=1;
+	}
+
+	char buf[64];
+	char installPath[1024] = {'\0'};
+	unsigned long installPathLen=1023;
+	HKEY hkey = NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_ALL_ACCESS, &hkey)) {
+		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath)) {
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+	XercesDOMParser *parser = new XercesDOMParser();
+	try {	
+		int itemNr;		
+		char pathBuf[2048];
+		sprintf(pathBuf,"%s\\mods\\tibiaauto-items.xml", installPath);
+
+		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(XMLString::transcode("Core"));
+
+		DOMDocument  *doc = impl->createDocument (0, XMLString::transcode("item-definitions"), 0);
+		
+		DOMElement *root = doc->getDocumentElement();	
+		
+		DOMNode *itemsNode = doc->createElement(XMLString::transcode("items"));
+		root->appendChild(itemsNode);
+		for (itemNr = 0; itemNr < itemsItemsCount; itemNr++) {
+			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
+			itemsNode->appendChild(itemElem);
+			sprintf(buf, "0x%x", itemsItemsId[itemNr]);
+			itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
+			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(itemsItems[itemNr]));
+		}
+		
+		DOMNode *foodNode = doc->createElement(XMLString::transcode("foods"));
+		root->appendChild(foodNode);
+		for (itemNr = 0;itemNr < itemsFoodCount; itemNr++) {
+			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
+			foodNode->appendChild(itemElem);
+			sprintf(buf, "0x%x", itemsFoodId[itemNr]);
+			itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
+			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(itemsFood[itemNr]));
+		}
+		
+		DOMNode *corpsesNode = doc->createElement(XMLString::transcode("corpses"));
+		root->appendChild(corpsesNode);
+		for (itemNr = 0; itemNr < itemsCorpsesCount; itemNr++) {
+			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
+			corpsesNode->appendChild(itemElem);
+			sprintf(buf, "0x%x", itemsCorpsesId[itemNr]);
+			itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
+			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(itemsCorpses[itemNr]));
+		}
+		
+		DOMNode *lootNode = doc->createElement(XMLString::transcode("looted"));
+		root->appendChild(lootNode);
+		for (itemNr = 0; itemNr < itemsLootedCount; itemNr++) {
+			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
+			lootNode->appendChild(itemElem);
+			sprintf(buf, "0x%x", itemsLootedId[itemNr]);
+			itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
+			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(itemsLooted[itemNr]));
+		}
+		
+		DOMNode *constsNode = doc->createElement(XMLString::transcode("consts"));
+		root->appendChild(constsNode);
+		for (itemNr = 0; itemNr < constsCount; itemNr++) {
+			DOMElement*  itemElem = doc->createElement(XMLString::transcode("const"));
+			constsNode->appendChild(itemElem);
+			sprintf(buf, "0x%x", constsValue[itemNr]);
+			itemElem->setAttribute(XMLString::transcode("value"), XMLString::transcode(buf));
+			itemElem->setAttribute(XMLString::transcode("code"), XMLString::transcode(constsCode[itemNr]));
+		}
+
+
+		XMLCh tempStr[100];
+		XMLString::transcode("LS", tempStr, 99);
+		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
+		DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
+		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
+			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
+		}
+		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
+		theSerializer->writeNode(outfile, *doc);			
+		theSerializer->release();
+		doc->release();
+		delete outfile;
+		delete theSerializer;
+		
+	}
+	catch (...) {
+		AfxMessageBox("Unable to save item definitions!");
+	}
+
+	delete parser;		
 }
  
