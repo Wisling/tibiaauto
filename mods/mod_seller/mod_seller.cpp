@@ -661,11 +661,13 @@ int findSeller(CConfigData *config, int traderNum) {
 			config->targetY = nearestSell.y;
 			config->targetZ = nearestSell.z;
 			delete self;
+//			AfxMessageBox("Seller Found moving");
 			return 1;
 		}
 		else if (x == 9) {
 			config->targetX = config->targetY = config->targetZ = 0;
 			delete self;
+//			AfxMessageBox("Seller Not Found");
 			return 0;
 		}
 	}
@@ -680,10 +682,12 @@ int moveToSeller(CConfigData *config) {
 	self = reader.readSelfCharacter();
 	if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
 		delete self;
+//		AfxMessageBox("Arrived at Seller");
 		return 1;
 	}
 	else {
 		delete self;
+//		AfxMessageBox("Still more to go...");
 		return 0;
 	}
 }
@@ -851,6 +855,7 @@ bool shouldGo(CConfigData *config) {
 			}
 		}
 	}
+//	should?AfxMessageBox("Should go"):AfxMessageBox("Should not go");
 	return should;
 }
 
@@ -881,6 +886,10 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 				ret = BUYONLY;
 		}
 	}
+//	if (ret == NOGO) AfxMessageBox("No business for this seller.");
+//	if (ret == BUYONLY) AfxMessageBox("No SELL business for this seller.");
+//	if (ret == SELLONLY) AfxMessageBox("No BUY business for this seller.");
+//	if (ret == DOBOTH) AfxMessageBox("We have business for this seller.");
 	return ret;
 }
 

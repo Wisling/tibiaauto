@@ -1,5 +1,6 @@
 1.19.0, ???
 Enhancments:
+ ItemConfig: Added features to Add, edit or delete items without directly editing the .xml file
  Cavebot: Cavebot starts from the selected waypoint OR begins from previous waypoint if none selected.
  Cavebot: Improved looting speed and accuracy.
  Show map: Couple added bitmaps for your viewing pleasure.

@@ -186,9 +186,8 @@ BEGIN
                     12,40,35,10
     CONTROL         "Use Shovel",IDC_SHOVEL,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,18,94,53,10
-    CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,18,104,
-                    48,10
+    CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    WS_TABSTOP,18,104,48,10
     CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,114,86,10
     CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
@@ -196,11 +195,10 @@ BEGIN
     GROUPBOX        "Tile Type",IDC_STATIC,6,7,104,44
     GROUPBOX        "Movement",IDC_STATIC,6,53,104,76
     GROUPBOX        "Use",IDC_STATIC,12,85,93,42
-    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,12,65,51,10
+    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    WS_TABSTOP,12,65,51,10
     CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP ,12,
-                    75,64,10
+                    BS_LEFT | WS_TABSTOP,12,75,64,10
     GROUPBOX        "Characteristics",IDC_STATIC,111,32,104,97
     CONTROL         "Blocks distance attacks",IDC_BLOCKING,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
