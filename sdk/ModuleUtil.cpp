@@ -677,28 +677,7 @@ int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 
 int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying)
 {
-	
-	/*
-	CMemReaderProxy reader;
-	int ret=0;
-	CTibiaContainer *cont = reader.readContainer(containerNr);
-	CTibiaItem *item = CModuleUtil::lookupItem(containerNr,acceptedItems);
-	if (item)
-	{
-		CTibiaContainer *contCarry = reader.readContainer(containerCarrying);
-		CPackSenderProxy sender;
-		sender.moveObjectBetweenContainers(item->objectId, 0x40+containerNr, item->pos, 0x40+containerCarrying, 0, item->quantity?item->quantity:1);
-		CModuleUtil::waitForItemsInsideChange(containerNr,cont->itemsInside);
-		delete contCarry;
-	}
-	delete cont;
-	return ret;
-	*/
-	
-	
-	
-		
-	//int tm1=GetTickCount();//Akilez: time testing only do not compile if not needed
+
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaContainer *cont = reader.readContainer(containerNr);
@@ -732,7 +711,11 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 								//Akilez: Stackable item overflow goes back into container at the same position
 								if ((stackedItem->quantity + item->quantity) > 100){
 									itemNr++;//Akilez: recheck this space in the container for lootables
-									looted--;}//number of items in container will stay the same, undo increment
+								}
+								else {
+									looted--;//number of items in container will stay the same, undo increment
+								}
+
 								moved = min(item->quantity,100-stackedItem->quantity);
 								stackedItem->quantity += moved;
 								item->quantity -= moved;
@@ -748,18 +731,11 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 			}
 		}
 	}	
-	//int tm2=GetTickCount();//Akilez: time testing only do not compile if not needed
-	//sprintf(buf,"tm required=%d",tm2-tm1);
-	//AfxMessageBox(buf);
 
 	delete cont;
 	delete contCarrying;
-	//char buf[128];
-	//sprintf(buf,"2Looted=%d",looted);
-	//AfxMessageBox(buf); 
 	return looted;//Akilez: return value now reflects items looted
 }
-
 
 void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 {	
