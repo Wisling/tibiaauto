@@ -13,12 +13,12 @@ LastTemplate=CDialog
 Resource1=IDD_TOOL_ITEMCONFIG
 Resource2=IDR_SHOWMAP_MENU (Polish)
 Resource3=IDD_ITEM_EDIT (H)
-Resource4=IDD_LOOT_ADD
-Resource5=IDD_FOOD_EDIT
+Resource4=IDD_FOOD_ADD
+Resource5=IDD_LOOT_ADD
 Resource6=IDD_ITEM_EDIT
-Resource7=IDD_FOOD_ADD
-Resource8=IDD_TOOL_ITEMCONFIG (Polish)
-Resource9=IDD_ITEM_ADD
+Resource7=IDD_TOOL_ITEMCONFIG (Polish)
+Resource8=IDD_ITEM_ADD
+Resource9=IDD_FOOD_EDIT
 Resource10=IDD_LOOT_EDIT
 
 [CLS:CMod_itemconfigApp]
@@ -120,24 +120,28 @@ Control6=IDC_ITEM_EDIT_ID,edit,1350631552
 [DLG:IDD_FOOD_ADD]
 Type=1
 Class=?
-ControlCount=6
+ControlCount=8
 Control1=IDOK,button,1342242817
 Control2=IDCANCEL,button,1342242816
 Control3=IDC_STATIC,static,1342308864
 Control4=IDC_STATIC,static,1342308864
 Control5=IDC_FOOD_ADD_NAME,edit,1350631552
 Control6=IDC_FOOD_ADD_ID,edit,1350631552
+Control7=IDC_STATIC,static,1342308864
+Control8=IDC_FOOD_ADD_TIME,edit,1350631552
 
 [DLG:IDD_FOOD_EDIT]
 Type=1
 Class=?
-ControlCount=6
+ControlCount=8
 Control1=IDOK,button,1342242817
 Control2=IDCANCEL,button,1342242816
 Control3=IDC_STATIC,static,1342308864
 Control4=IDC_STATIC,static,1342308864
 Control5=IDC_FOOD_EDIT_NAME,edit,1350631552
 Control6=IDC_FOOD_EDIT_ID,edit,1350631552
+Control7=IDC_STATIC,static,1342308864
+Control8=IDC_FOOD_EDIT_TIME,edit,1350631552
 
 [DLG:IDD_LOOT_ADD]
 Type=1
