@@ -1,5 +1,7 @@
 1.19.0, ???
 Enhancments:
+ FoodEater: Uses new "digest" time to determine time between meals.
+ ItemConfig: Added an additional parameter to the items in the food Item list, "digest" time.
  ItemConfig: Added features to Add, edit or delete items without directly editing the .xml file
  Cavebot: Cavebot starts from the selected waypoint OR begins from previous waypoint if none selected.
  Cavebot: Improved looting speed and accuracy.

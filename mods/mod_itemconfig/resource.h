@@ -18,7 +18,9 @@
 #define IDC_EDIT_ITEM                   3019
 #define IDC_DELETE_ITEM                 3021
 #define IDD_FOOD_ADD                    3022
+#define IDC_FOOD_ADD_TIME               3022
 #define IDC_FOOD_ADD_NAME               3023
+#define IDC_FOOD_EDIT_TIME              3023
 #define IDC_FOOD_ADD_ID                 3024
 #define IDC_ADD_FOOD                    3025
 #define IDD_FOOD_EDIT                   3026
@@ -42,7 +44,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3005
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3022
+#define _APS_NEXT_CONTROL_VALUE         3024
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

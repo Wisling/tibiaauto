@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
-	: CDialog(CToolItemConfig::IDD, pParent)
+: CDialog(CToolItemConfig::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CToolItemConfig)
 	//}}AFX_DATA_INIT
@@ -44,19 +44,19 @@ void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CToolItemConfig, CDialog)
-	//{{AFX_MSG_MAP(CToolItemConfig)
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG_REFRESH, OnToolItemconfigRefresh)
-	ON_BN_CLICKED(IDC_ADD_ITEM, OnItemAdd)
-	ON_BN_CLICKED(IDC_EDIT_ITEM, OnItemEdit)
-	ON_BN_CLICKED(IDC_DELETE_ITEM, OnItemDelete)
-	ON_BN_CLICKED(IDC_ADD_FOOD, OnFoodAdd)
-	ON_BN_CLICKED(IDC_EDIT_FOOD, OnFoodEdit)
-	ON_BN_CLICKED(IDC_DELETE_FOOD, OnFoodDelete)
-	ON_BN_CLICKED(IDC_ADD_LOOT, OnLootAdd)
-	ON_BN_CLICKED(IDC_EDIT_LOOT, OnLootEdit)
-	ON_BN_CLICKED(IDC_DELETE_LOOT, OnLootDelete)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CToolItemConfig)
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG_REFRESH, OnToolItemconfigRefresh)
+ON_BN_CLICKED(IDC_ADD_ITEM, OnItemAdd)
+ON_BN_CLICKED(IDC_EDIT_ITEM, OnItemEdit)
+ON_BN_CLICKED(IDC_DELETE_ITEM, OnItemDelete)
+ON_BN_CLICKED(IDC_ADD_FOOD, OnFoodAdd)
+ON_BN_CLICKED(IDC_EDIT_FOOD, OnFoodEdit)
+ON_BN_CLICKED(IDC_DELETE_FOOD, OnFoodDelete)
+ON_BN_CLICKED(IDC_ADD_LOOT, OnLootAdd)
+ON_BN_CLICKED(IDC_EDIT_LOOT, OnLootEdit)
+ON_BN_CLICKED(IDC_DELETE_LOOT, OnLootDelete)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,36 +79,36 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 	CTibiaItemProxy itemProxy;
 	itemProxy.refreshItemLists();
 	
-
+	
 	while (m_itemsList.GetCount()) m_itemsList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsItemsCount();i++)
 	{
 		sprintf(buf,"(0x%x) %s",itemProxy.getItemsItemsId(i),itemProxy.getItemsItems(i));
 		m_itemsList.AddString(buf);
 	}
-
+	
 	while (m_foodList.GetCount()) m_foodList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsFoodCount();i++)
 	{
 		sprintf(buf,"(0x%x) %s",itemProxy.getItemsFoodId(i),itemProxy.getItemsFood(i));
 		m_foodList.AddString(buf);
 	}
-
+	
 	while (m_corpsesList.GetCount()) m_corpsesList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsCorpsesCount();i++)
 	{
 		sprintf(buf,"(0x%x) %s",itemProxy.getItemsCorpsesId(i),itemProxy.getItemsCorpses(i));
 		m_corpsesList.AddString(buf);
 	}
-
+	
 	while (m_lootedList.GetCount()) m_lootedList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsLootedCount();i++)
 	{
 		sprintf(buf,"(0x%x) %s",itemProxy.getItemsLootedId(i),itemProxy.getItemsLooted(i));
 		m_lootedList.AddString(buf);
 	}
-
-
+	
+	
 }
 
 BOOL CToolItemConfig::OnInitDialog() 
@@ -118,18 +118,18 @@ BOOL CToolItemConfig::OnInitDialog()
 	OnToolItemconfigRefresh();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
-	              // EXCEPTION: OCX Property Pages should return FALSE
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CToolItemConfig::OnItemAdd() {
 	CItemAdd *dialog = new CItemAdd();
-	dialog->DoModal();
+	if (dialog->DoModal() == IDOK) OnToolItemconfigRefresh();
 	delete dialog;
 }
 void CToolItemConfig::OnItemEdit() {
 	CTibiaItemProxy item;
 	CItemEdit *dialog = new CItemEdit(item.getObjectId(parseNameFromItemSelected(ITEM)), parseNameFromItemSelected(ITEM));
-	dialog->DoModal();
+	if (dialog->DoModal() == IDOK) OnToolItemconfigRefresh();
 	delete dialog;
 }
 void CToolItemConfig::OnItemDelete() {
@@ -143,18 +143,21 @@ void CToolItemConfig::OnItemDelete() {
 	}
 	itemProxy.setItemsItemsCount(itemProxy.getItemsItemsCount() - 1);
 	itemProxy.saveItemLists();
-	itemProxy.refreshItemLists();
+	OnToolItemconfigRefresh();
 }
 
 void CToolItemConfig::OnFoodAdd() {
 	CFoodAdd *dialog = new CFoodAdd();
-	dialog->DoModal();
+	if (dialog->DoModal() == IDOK) OnToolItemconfigRefresh();
 	delete dialog;
 }
 void CToolItemConfig::OnFoodEdit() {
 	CTibiaItemProxy item;
-	CFoodEdit *dialog = new CFoodEdit(item.getFoodId(parseNameFromItemSelected(FOOD)), parseNameFromItemSelected(FOOD));
-	dialog->DoModal();
+	int idOut = item.getFoodId(parseNameFromItemSelected(FOOD));
+	char *nameOut = parseNameFromItemSelected(FOOD);
+	int timeOut = item.getExtraInfo(item.getIndex(idOut, FOOD), FOOD);
+	CFoodEdit *dialog = new CFoodEdit(idOut, nameOut, timeOut);
+	if (dialog->DoModal() == IDOK) OnToolItemconfigRefresh();
 	delete dialog;
 }
 void CToolItemConfig::OnFoodDelete() {
@@ -164,22 +167,23 @@ void CToolItemConfig::OnFoodDelete() {
 		if (loop < itemProxy.getItemsFoodCount()) {
 			itemProxy.setFoodId(loop, itemProxy.getItemsFoodId(loop + 1));
 			itemProxy.setFoodName(loop, itemProxy.getItemsFood(loop + 1));
+			itemProxy.setExtraInfo(loop, itemProxy.getExtraInfo(loop + 1, FOOD), FOOD);
 		}
 	}
 	itemProxy.setItemsFoodCount(itemProxy.getItemsFoodCount() - 1);
 	itemProxy.saveItemLists();
-	itemProxy.refreshItemLists();
+	OnToolItemconfigRefresh();
 }
 
 void CToolItemConfig::OnLootAdd() {
 	CLootAdd *dialog = new CLootAdd();
-	dialog->DoModal();
+	if (dialog->DoModal() == IDOK) OnToolItemconfigRefresh();
 	delete dialog;
 }
 void CToolItemConfig::OnLootEdit() {
 	CTibiaItemProxy item;
 	CLootEdit *dialog = new CLootEdit(item.getLootItemId(parseNameFromItemSelected(LOOT)), parseNameFromItemSelected(LOOT));
-	dialog->DoModal();
+	if (dialog->DoModal() == IDOK) OnToolItemconfigRefresh();
 	delete dialog;
 }
 void CToolItemConfig::OnLootDelete() {
@@ -193,7 +197,7 @@ void CToolItemConfig::OnLootDelete() {
 	}
 	itemProxy.setItemsLootCount(itemProxy.getItemsLootedCount() - 1);
 	itemProxy.saveItemLists();
-	itemProxy.refreshItemLists();
+	OnToolItemconfigRefresh();
 }
 
 char *CToolItemConfig::parseNameFromItemSelected(int type) {

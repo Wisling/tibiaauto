@@ -92,13 +92,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaItemProxy itemProxy;
 	CConfigData *config = (CConfigData *)lpParam;
+	int digestTime = 0;
 	
 	while (!toolThreadShouldStop)
 	{			
 		int pos;
-
 		
-		CModuleUtil::sleepWithStop(10000,&toolThreadShouldStop);
+		CModuleUtil::sleepWithStop(digestTime ? digestTime * 1000 : 10000, &toolThreadShouldStop);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (toolThreadShouldStop) continue;
 				
@@ -121,11 +121,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (foodItem!=NULL)
 		{
 			sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
+			digestTime = itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
 			delete foodItem;
-			foodItem=NULL;		
+			foodItem = NULL;
 		}
-		
-		
 	}	
 
 	toolThreadShouldStop=0;

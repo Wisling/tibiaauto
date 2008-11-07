@@ -93,6 +93,15 @@ void CTibiaItemProxy::setItemName(int index, char *name) {
 		}
 	} 
 }
+void CTibiaItemProxy::setExtraInfo(int index, int info, int type) {
+	typedef void (*Proto_fun)(int index, int info, int type);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetExtraInfo");
+		if (fun) {
+			fun(index, info, type);
+		}
+	} 
+}
 void CTibiaItemProxy::setFoodName(int index, char *name) {
 	typedef void (*Proto_fun)(int index, char *name);
 	if (dllModule) {			
@@ -142,12 +151,12 @@ void CTibiaItemProxy::addItemItem(char *name, int objectId) {
 		}
 	}
 }
-void CTibiaItemProxy::addItemFood(char *name, int objectId) {
-	typedef void (*Proto_fun)(char *name, int objectId);
+void CTibiaItemProxy::addItemFood(char *name, int objectId, int time) {
+	typedef void (*Proto_fun)(char *name, int objectId, int time);
 	if (dllModule) {			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemAddFood");
 		if (fun) {
-			fun(name, objectId);
+			fun(name, objectId, time);
 		}
 	}
 }
@@ -169,6 +178,17 @@ int CTibiaItemProxy::getCorpseIdByCreatureName(char *name)
 		if (fun)
 		{
 			return fun(name);
+		}
+	} 
+	return 0;
+
+}
+int CTibiaItemProxy::getExtraInfo(int index, int type) {
+	typedef int (*Proto_fun)(int index, int type);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetExtraInfo");
+		if (fun) {
+			return fun(index, type);
 		}
 	} 
 	return 0;

@@ -23,9 +23,11 @@ public:
 	void refreshItemLists();
 	void saveItemLists();
 	void addItemItem(char *name, int objectId);
-	void addItemFood(char *name, int objectId);
+	void addItemFood(char *name, int objectId, int time);
 	void addItemLoot(char *name, int objectId);
 	int getCorpseIdByCreatureName(char *name);
+	void setExtraInfo(int index, int info, int type);
+	int getExtraInfo(int index, int type);
 	CUIntArray *getItemsFoodArray();
 
 	char *getItemsItems(int nr);
