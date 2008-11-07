@@ -485,9 +485,20 @@ int tibiaItemGetFoodId(char *name)
 {
 	return CTibiaItem::getFoodId(name);
 }
-int tibiaItemGetLootItemId(char *name)
-{
+int tibiaItemGetLootItemId(char *name) {
 	return CTibiaItem::getLootItemId(name);
+}
+int tibiaItemGetExtraInfo(int index, int type) {
+	if (type == 1) {
+		return CTibiaItem::itemsItemsExtra[index];
+	}
+	if (type == 2) {
+		return CTibiaItem::itemsFoodTime[index];
+	}
+	if (type == 3) {
+		return CTibiaItem::itemsLootedExtra[index];
+	}
+	return 0;
 }
 
 void tibiaItemSetItemName(int index, char *name) {
@@ -498,6 +509,9 @@ void tibiaItemSetFoodName(int index, char *name) {
 }
 void tibiaItemSetLootName(int index, char *name) {
 	CTibiaItem::setName(index, name, 3);
+}
+void tibiaItemSetExtraInfo(int index, int info, int type) {
+	CTibiaItem::setExtraInfo(index, info, type);
 }
 
 void tibiaItemSetItemObjectId(int index, int objectId) {
@@ -521,13 +535,13 @@ void tibiaItemSaveItemLists() {
 }
 
 void tibiaItemAddItem(char *name, int objectId) {	
-	CTibiaItem::addItem(name, objectId, 1);
+	CTibiaItem::addItem(name, objectId, NULL, 1);
 }
-void tibiaItemAddFood(char *name, int objectId) {	
-	CTibiaItem::addItem(name, objectId, 2);
+void tibiaItemAddFood(char *name, int objectId, int time) {	
+	CTibiaItem::addItem(name, objectId, time, 2);
 }
 void tibiaItemAddLoot(char *name, int objectId) {	
-	CTibiaItem::addItem(name, objectId, 3);
+	CTibiaItem::addItem(name, objectId, NULL, 3);
 }
 
 int tibiaItemGetCorpseIdByCreatureName(char *name)

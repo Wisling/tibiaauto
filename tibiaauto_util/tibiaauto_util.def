@@ -165,3 +165,5 @@ EXPORTS
 	tibiaItemSetItemsLootCount @159
 	tibiaItemGetFoodId @160
 	tibiaItemGetLootItemId @161
+	tibiaItemGetExtraInfo @162
+	tibiaItemSetExtraInfo @163

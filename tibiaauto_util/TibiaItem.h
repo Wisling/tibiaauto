@@ -24,11 +24,13 @@ public:
 	static int getLootItemId(char *name);
 	static void setObjectId(int index, int objectId, int type);
 	static void addObjectId(int objectId, int type);
-	static void addItem(char *name, int objectId, int type);
+	static void addExtraInfo(int extraInfo, int type);
+	static void addItem(char *name, int objectId, int extraInfo, int type);
 	static int getValueForConst(char *code);
 	static void refreshItemLists();
 	static void saveItemLists();
 	static void setCount(int type, int newCount);
+	static void setExtraInfo(int index, int info, int type);
 	CTibiaItem();
 
 	int objectId;
@@ -47,15 +49,18 @@ public:
 	static int itemListsFresh;
 	static char itemsItems[MAX_ITEMS][MAX_ITEM_LEN];
 	static int itemsItemsId[MAX_ITEMS];
+	static int itemsItemsExtra[MAX_ITEMS];
 	static int itemsItemsCount;
 	static char itemsFood[MAX_ITEMS][MAX_ITEM_LEN];
 	static int itemsFoodId[MAX_ITEMS];
+	static int itemsFoodTime[MAX_ITEMS];
 	static int itemsFoodCount;
 	static char itemsCorpses[MAX_ITEMS][MAX_ITEM_LEN];
 	static int itemsCorpsesId[MAX_ITEMS];
 	static int itemsCorpsesCount;
 	static char itemsLooted[MAX_ITEMS][MAX_ITEM_LEN];
 	static int itemsLootedId[MAX_ITEMS];
+	static int itemsLootedExtra[MAX_ITEMS];
 	static int itemsLootedCount;
 	static char constsCode[MAX_ITEMS][MAX_ITEM_LEN];
 	static int constsValue[MAX_ITEMS];

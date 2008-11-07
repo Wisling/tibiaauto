@@ -44,15 +44,18 @@ int CTibiaItem::xmlInitialised=0;
 
 char CTibiaItem::itemsItems[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::itemsItemsId[MAX_ITEMS];
+int CTibiaItem::itemsItemsExtra[MAX_ITEMS];
 int CTibiaItem::itemsItemsCount=0;
 char CTibiaItem::itemsFood[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::itemsFoodId[MAX_ITEMS];
+int CTibiaItem::itemsFoodTime[MAX_ITEMS];
 int CTibiaItem::itemsFoodCount=0;
 char CTibiaItem::itemsCorpses[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::itemsCorpsesId[MAX_ITEMS];
 int CTibiaItem::itemsCorpsesCount=0;
 char CTibiaItem::itemsLooted[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::itemsLootedId[MAX_ITEMS];
+int CTibiaItem::itemsLootedExtra[MAX_ITEMS];
 int CTibiaItem::itemsLootedCount=0;
 char CTibiaItem::constsCode[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::constsValue[MAX_ITEMS];
@@ -91,6 +94,18 @@ int CTibiaItem::getIndex(int objectId, int type) {
 		}
 	}
 	return -1;
+}
+
+void CTibiaItem::setExtraInfo(int index, int info, int type) {
+	if (type == ITEM) {
+		itemsItemsExtra[index] = info;
+	}
+	if (type == FOOD) {
+		itemsFoodTime[index] = info;
+	}
+	if (type == LOOT) {
+		itemsLootedExtra[index] = info;
+	}
 }
 
 char * CTibiaItem::getName(int objectId)
@@ -163,6 +178,21 @@ void CTibiaItem::addObjectId(int objectId, int type) {
 	}
 }
 
+void CTibiaItem::addExtraInfo(int extraInfo, int type) {	
+	if (type == ITEM) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setExtraInfo(itemsItemsCount, extraInfo, type);
+	}
+	if (type == FOOD) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setExtraInfo(itemsFoodCount, extraInfo, type);
+	}
+	if (type == LOOT) {
+		if (itemsItemsCount < MAX_ITEMS)
+			setExtraInfo(itemsLootedCount, extraInfo, type);
+	}
+}
+
 int CTibiaItem::getObjectId(char *name)
 {
 	int i;
@@ -211,20 +241,23 @@ int CTibiaItem::getLootItemId(char *name)
 	return 0;
 }
 
-void CTibiaItem::addItem(char *name, int objectId, int type) {
+void CTibiaItem::addItem(char *name, int objectId, int extraInfo, int type) {
 	if (type == ITEM) {
 		addName(name, ITEM);
 		addObjectId(objectId, ITEM);
+		addExtraInfo(extraInfo, ITEM);
 		itemsItemsCount++;
 	}
 	if (type == FOOD) {
 		addName(name, FOOD);
 		addObjectId(objectId, FOOD);
+		addExtraInfo(extraInfo, FOOD);
 		itemsFoodCount++;
 	}
 	if (type == LOOT) {
 		addName(name, LOOT);
 		addObjectId(objectId, LOOT);
+		addExtraInfo(extraInfo, LOOT);
 		itemsLootedCount++;
 	}
 	
@@ -398,6 +431,7 @@ void CTibiaItem::refreshItemLists()
 							continue;
 						
 						int objectId=0;
+						int eatTime = 0;
 						char *objectName=NULL;						
 						
 						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
@@ -411,6 +445,11 @@ void CTibiaItem::refreshItemLists()
 								sscanf(idTmp,"0x%x",&objectId);
 								free(idTmp);
 							}
+							if (!wcscmp(attrNode->getNodeName(),_L("time"))) {
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								sscanf(idTmp,"%d",&eatTime);
+								free(idTmp);
+							}
 						}			 			
 						if (!objectId||!objectName||!strlen(objectName))
 						{
@@ -421,6 +460,7 @@ void CTibiaItem::refreshItemLists()
 						
 						memcpy(itemsFood[itemsFoodCount],objectName,strlen(objectName)+1);
 						itemsFoodId[itemsFoodCount]=objectId;
+						itemsFoodTime[itemsFoodCount] = eatTime;
 						itemsFoodCount++;
 						if (objectName) free(objectName);
 					}
@@ -615,6 +655,8 @@ void CTibiaItem::saveItemLists() {
 			sprintf(buf, "0x%x", itemsFoodId[itemNr]);
 			itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
 			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(itemsFood[itemNr]));
+			sprintf(buf, "%d", itemsFoodTime[itemNr]);
+			itemElem->setAttribute(XMLString::transcode("time"), XMLString::transcode(buf));
 		}
 		
 		DOMNode *corpsesNode = doc->createElement(XMLString::transcode("corpses"));
