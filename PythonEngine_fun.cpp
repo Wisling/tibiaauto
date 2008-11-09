@@ -1858,7 +1858,7 @@ static PyObject *tibiaauto_reader_readVIPEntry(PyObject *self, PyObject *args)
 	if (!vip) return NULL;
 
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:s,s:i,s:i}",
 		"id",vip->id,
 		"name",vip->name,
 		"status",vip->status,
