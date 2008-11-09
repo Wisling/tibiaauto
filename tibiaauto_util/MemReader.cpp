@@ -34,10 +34,9 @@ CMemReader::~CMemReader()
 
 CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 {	
-	CTibiaVIPEntry *vip;
+	CTibiaVIPEntry *vip = new CTibiaVIPEntry();;
 	if (nr<0||nr>=100) return NULL;
 	int offset = nr*m_memLengthVIP + m_memAddressVIP;
-
 	vip->id = CMemUtil::GetMemIntValue(offset);
 	vip->status = CMemUtil::GetMemIntValue(offset+34)&1;
 	vip->icon = CMemUtil::GetMemIntValue(offset+40);
