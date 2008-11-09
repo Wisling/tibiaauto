@@ -99,7 +99,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int pos;
 		if (digestTime==-1) digestTime=0;
 		else {
-    		CModuleUtil::sleepWithStop(digestTime ? digestTime * 1000 : 10000, &toolThreadShouldStop);
+			//digestTime should not be set to 0 here. (This would nullify the ability to set customizable times for foods)
+    		CModuleUtil::sleepWithStop(digestTime ? digestTime * 1000 : 12000, &toolThreadShouldStop);
+			//the default time was reset to 12 seconds. (changing to 24 second made the defalut time longer than the smallest timeframe for several foods that currently exist)
         }
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (toolThreadShouldStop) continue;
