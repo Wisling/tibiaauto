@@ -167,3 +167,4 @@ EXPORTS
 	tibiaItemGetLootItemId @161
 	tibiaItemGetExtraInfo @162
 	tibiaItemSetExtraInfo @163
+	memReadReadVIPEntry @164
