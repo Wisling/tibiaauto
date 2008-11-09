@@ -99,8 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int pos;
 		if (digestTime==-1) digestTime=0;
 		else {
-            digestTime=0;
-    		CModuleUtil::sleepWithStop(digestTime ? digestTime * 1000 : 24000, &toolThreadShouldStop);
+    		CModuleUtil::sleepWithStop(digestTime ? digestTime * 1000 : 10000, &toolThreadShouldStop);
         }
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (toolThreadShouldStop) continue;
