@@ -65,7 +65,7 @@ BOOL CToolContainerContent::OnInitDialog()
 	for (i=0;i<container->itemsInside;i++)
 	{
 		CTibiaItem *item=(CTibiaItem *)container->items.GetAt(i);
-		sprintf(buf,"0x%x",item->objectId);
+		sprintf(buf,"%d",item->objectId);
 		m_list.InsertItem(i,buf);
 		sprintf(buf,"%s",itemProxy.getName(item->objectId));
 		m_list.SetItemText(i,1,buf);
