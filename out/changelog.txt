@@ -5,6 +5,7 @@ Enhancments:
  ItemConfig: Added features to Add, edit or delete items without directly editing the .xml file
  Cavebot: Cavebot starts from the selected waypoint OR begins from previous waypoint if none selected.
  Cavebot: Improved looting speed and accuracy.
+ Cavebot: Fixed loot from floor algorithim.
  Show map: Couple added bitmaps for your viewing pleasure.
  Cavebot: Added Don't Attack Players option that will guarantee the bot won't attack a person
  Cavebot: Added keyboard hotkey for pausing cavebot (can also use %ta pause if you like).
