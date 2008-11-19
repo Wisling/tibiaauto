@@ -142,6 +142,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			if (uhItem!=NULL)
 			{
+				reader.setGlobalVariable("UH_needed","true");
 				if (self->hp<=config->m_uhBorderline)
 				{
 					sender.useWithObjectFromContainerOnFloor(
@@ -163,7 +164,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					uhFallbackNeeded=1;
 				}
 			}			
-		}		
+		}
+		else 
+			reader.setGlobalVariable("UH_needed","false");
+
 		
 		// grp heal
 
@@ -243,7 +247,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		delete self;		
 				
 	}
-	
+	reader.setGlobalVariable("UH_needed","false");
 	toolThreadShouldStop=0;
 	return 0;
 }

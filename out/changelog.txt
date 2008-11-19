@@ -13,6 +13,8 @@ Enhancments:
  Python: Able to read in VIP list through reader.readVIPEntry(int nr)
 
 Defects:
+ UH Cast: Improved Communication with AutoAim module
+ AutoAim: Fixed rune spam bug, so UH will still fire.
  Banker: Fixed 'Cash on Hand' not saving to config files.
  Cavebot: Fixed loot from floor algorithim.
  In Tibia: Fixed Crash when Pasting text into window.
