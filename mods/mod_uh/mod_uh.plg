@@ -6,51 +6,6 @@
 --------------------Configuration: mod_uh - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_uh.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\mod_uh.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP20E.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_uh.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\ConfigData.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\ConfigDialog.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\exports.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\mod_uh.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\proxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\TibiaItem_impl.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP20E.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP20F.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_uh.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_uh\StdAfx.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP20F.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP210.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_uh.pdb" /machine:I386 /def:".\mod_uh.def" /out:"../mod_uh.dll" /implib:"Release/mod_uh.lib" 
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\mod_uh.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_uh.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP210.tmp"
-<h3>Output Window</h3>
-Compiling resources...
-Compiling...
-StdAfx.cpp
-Compiling...
-ConfigData.cpp
-ConfigDialog.cpp
-exports.cpp
-mod_uh.cpp
-proxy.cpp
-TibiaItem_impl.cpp
-Generating Code...
-Linking...
-   Creating library Release/mod_uh.lib and object Release/mod_uh.exp
 
 
 
