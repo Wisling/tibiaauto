@@ -220,6 +220,7 @@ char *CMod_bankerApp::saveConfigParam(char *paramName) {
 	buf[0]='\0';
 	if (!strcmp(paramName, "BankerName")) sprintf(buf,"%s",m_configData->banker.bankerName);
 	if (!strcmp(paramName, "DepositTrigger")) sprintf(buf,"%d",m_configData->minimumGoldToBank);
+	if (!strcmp(paramName, "CashOnHand")) sprintf(buf,"%d",m_configData->cashOnHand);
 
 	return buf;
 }
