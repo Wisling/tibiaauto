@@ -69,6 +69,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		Sleep(100);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		char *var = reader.getGlobalVariable("UH_needed");
+		if (var == NULL || strcmp(var, "false")) continue;
 
 		int attackedCreature = reader.getAttackedCreature();
 
