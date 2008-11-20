@@ -9,6 +9,8 @@ Enhancments:
  Cavebot: Added Don't Attack Players option that will guarantee the bot won't attack a person
  Cavebot: Added keyboard hotkey for pausing cavebot (can also use %ta pause if you like).
  Training: Can select a different fighting mode to use with training weapon.
+ Training: Added train with right hand option for better interraction with RuneMaker module.
+ Training: Reorganized GUI for more intuitive grouping.
  AutoGo: Ignores all spells no matter how obscurely made
  Python: Able to read in VIP list through reader.readVIPEntry(int nr)
 
