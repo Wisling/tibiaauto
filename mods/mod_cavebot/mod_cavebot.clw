@@ -12,9 +12,9 @@ Class2=CConfigDialog
 LastTemplate=CDialog
 Resource1=IDD_CONFIG
 Class3=CSendStats
-Resource2=IDD_CONFIG (Polish)
+Resource2=IDD_SENDSTATS (Polish)
 Resource3=IDD_SENDSTATS
-Resource4=IDD_SENDSTATS (Polish)
+Resource4=IDD_CONFIG (Polish)
 
 [CLS:CMod_cavebotApp]
 Type=0
@@ -142,7 +142,7 @@ Filter=D
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1
-Class=?
+Class=CConfigDialog
 ControlCount=95
 Control1=IDOK,button,1342242817
 Control2=IDC_ENABLE,button,1342246915
@@ -237,8 +237,8 @@ Control90=IDC_STATIC,static,1342308352
 Control91=IDC_DONT_ATTACK_PLAYERS,button,1342242819
 Control92=IDC_STATIC,static,1342308864
 Control93=IDC_TRAINING_ATTACK_MODE,combobox,1344339971
-Control94=IDC_TRAINING_WEAPON_FIGHT3,combobox,1344340227
-Control95=IDC_PAUSING_ENABLE,button,1342242819
+Control94=IDC_PAUSING_ENABLE,button,1342242819
+Control95=IDC_TRAINING_WEAPON_HAND,button,1342242819
 
 [DLG:IDD_SENDSTATS (Polish)]
 Type=1
