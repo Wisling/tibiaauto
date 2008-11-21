@@ -71,6 +71,7 @@ int creatureAttackDist=0;
 int attackSuspendedUntil=0;
 int firstCreatureAttackTM=0;
 int currentWaypointNr=0;
+int wantFloorLoot = 0;
 
 int lastTAMessageTm=0;
 int taMessageDelay=4;
@@ -655,6 +656,8 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, int lastAttackedCreatureBloodHit,int *attackMode) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
+	int weaponHandAddress = config->weaponHand ? memConstData.m_memAddressRightHand : memConstData.m_memAddressLeftHand;
+	int weaponHand = config->weaponHand ? 5 : 6;
 	
 	if (config->trainingActivate) {
 		char buf[128];
@@ -663,9 +666,9 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 
 		if (config->fightWhenAlien&&!alienFound&&!attackingCreatures&&currentlyAttackedCreatureNr==-1){
 			//if (config->debug) registerDebug("Training: non-training mode.");
-			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
+			if (!ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponFight)){
 				if (config->debug) registerDebug("Training: Failed to equip fight weapon for non-training mode.");
-				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
+				ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponTrain);
 			}
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 			return;
@@ -677,9 +680,9 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 
 		if (canTrain) {
 			//if (config->debug) registerDebug("Training: Training mode.");
-			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain)){
+			if (!ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponTrain)){
 				registerDebug("Training: Failed to switch to training weapon.");
-				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight);
+				ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponFight);
 			}
 			if (config->trainingMode) *attackMode=config->trainingMode;//0-blank, 1-full atk, 3-full def
 
@@ -697,9 +700,9 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 		}
 		else {
 			//if (config->debug) registerDebug("Training: Fight mode.");
-			if (!ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponFight)){
+			if (!ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponFight)){
 				if (config->debug) registerDebug("Training: Failed to equip fight for fight mode.");
-				ensureItemInPlace(config->debug,6,memConstData.m_memAddressLeftHand,config->weaponTrain);
+				ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponTrain);
 			}
 			globalAutoAttackStateTraining=CToolAutoAttackStateTraining_fighting;
 		}
@@ -728,9 +731,10 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CTibiaMapProxy tibiaMap;
+	CTibiaTile *lootTile;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	
+
 	if (config->lootFromFloor&&self->cap>config->capacityLimit) {
 		if (config->debug) registerDebug("Entering 'loot from floor' area");
 		
@@ -758,6 +762,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			if (config->debug) registerDebug("Loot from floor: no free container found");
 			// no free place in container found - exit
 			delete self;
+			wantFloorLoot = 0;
 			return;
 		}
 		
@@ -783,6 +788,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 					if (x==0&&y==0) pathSize=0;
 					
 					if (bestPath>pathSize) {
+						
 						// there is a path to the point AND the path
 						// is the closest (the best)
 						bestX=x;
@@ -792,13 +798,33 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 						if (config->debug) registerDebug(buf);
 					}
 				}
-				if (foundLootedObjectId) break;
+				if (f2 && abs(x) <= 1 && abs(y) <= 1) {
+					if (isItemOnTop(0,0,foundLootedObjectId)) {
+						if (config->debug) registerDebug("Loot from floor: picking up item (adjacent square)");
+						int qty=itemOnTopQty(x, y);
+						sender.moveObjectFromFloorToContainer(foundLootedObjectId, self->x + x, self->y + y, self->z, 0x40+freeContNr, freeContPos,qty);
+						CModuleUtil::waitForItemsInsideChange(freeContNr, freeContInside);
+						//y--; // Recheck the square.
+					}
+				}
 			} // for y
 		} // for x
 		if (foundLootedObjectId) {
 			sprintf(buf,"Loot from floor: found looted object id=%d",foundLootedObjectId);
 			if (config->debug) registerDebug(buf);
+			wantFloorLoot = 1;
 		}
+		else
+			wantFloorLoot = 0;
+			
+		lootTile = reader.getTibiaTile(itemOnTopCode(bestX, bestY));
+		if (lootTile->notMoveable) {
+			sprintf(buf,"Loot from floor: Loot object %d currently not lootable",foundLootedObjectId);
+			if (config->debug) registerDebug(buf);
+			wantFloorLoot = 0;
+			return;
+		}
+		//delete lootTile;
 		
 		if (config->debug) registerDebug("Loot from floor: before anything to loot check");
 		
@@ -828,6 +854,9 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 				if (config->debug) registerDebug(buf);
 				if (pathSize)  {
 					int i;
+					//sender.stopAll();
+					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
+					//AfxMessageBox(buf);
 					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
 					// wait up to 2000ms for reaching final point
 					for (i=0;i<20;i++) {
@@ -844,6 +873,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 				else {
 					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
 					if (config->debug) registerDebug(buf);
+					wantFloorLoot = 0;
 					break;
 				}
 			}
@@ -883,6 +913,7 @@ extBreak:
 					}
 					else {
 						if (config->debug) registerDebug("Loot from floor: bad luck - item is not on top");
+						wantFloorLoot = 0;
 					}
 				}
 			}
@@ -892,7 +923,6 @@ extBreak:
 	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
 	delete self;
 }
-
 void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -1224,7 +1254,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		int droppedLootArray[128];
 		int droppedLootArrayCount=0;
-		if (currentlyAttackedCreatureNr!=-1&&!isInHalfSleep()) {
+		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
+		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
 			if (config->lootFood) {
 				int p;
 				for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++) {
@@ -1758,7 +1789,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		/* Notes
 		maybe look into staying in 1 spot for long time
 		*/
-		if (currentlyAttackedCreatureNr==-1){//wis:make sure doesn;t start while looting last monster
+		moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
+		if (currentlyAttackedCreatureNr==-1 && !moving && !wantFloorLoot){//wis:make sure doesn;t start while looting last monster
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ) {
 				if (config->debug) registerDebug("Depot reached");
 				// depot waypoint reached!
@@ -2087,6 +2119,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	
 	if (!strcmp(paramName,"training/weaponTrain")) m_configData->weaponTrain=atoi(paramValue);
 	if (!strcmp(paramName,"training/weaponFight")) m_configData->weaponFight=atoi(paramValue);
+	if (!strcmp(paramName,"training/weaponHand")) m_configData->weaponHand=atoi(paramValue);
 	if (!strcmp(paramName,"training/fightWhenSurrounded")) m_configData->fightWhenSurrounded=atoi(paramValue);
 	if (!strcmp(paramName,"training/fightWhenAlien")) m_configData->fightWhenAlien=atoi(paramValue);
 	if (!strcmp(paramName,"training/bloodHit")) m_configData->bloodHit=atoi(paramValue);
@@ -2197,6 +2230,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	
 	if (!strcmp(paramName,"training/weaponTrain")) sprintf(buf,"%d",m_configData->weaponTrain);
 	if (!strcmp(paramName,"training/weaponFight")) sprintf(buf,"%d",m_configData->weaponFight);
+	if (!strcmp(paramName,"training/weaponHand")) sprintf(buf,"%d",m_configData->weaponHand);
 	if (!strcmp(paramName,"training/fightWhenSurrounded")) sprintf(buf,"%d",m_configData->fightWhenSurrounded);
 	if (!strcmp(paramName,"training/fightWhenAlien")) sprintf(buf,"%d",m_configData->fightWhenAlien);
 	if (!strcmp(paramName,"training/bloodHit")) sprintf(buf,"%d",m_configData->bloodHit);
@@ -2248,6 +2282,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 36: return "attack/backattackRunes";
 	case 37: return "attack/shareAlienBackattack";
 	case 38: return "depot/depotCap";
+	case 39: return "training/weaponHand";
 		
 	default:
 		return NULL;

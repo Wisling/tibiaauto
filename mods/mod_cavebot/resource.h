@@ -110,6 +110,7 @@
 #define IDC_TRAINING_WEAPON_FIGHT3      3041
 #define IDC_PAUSING_ENABLE              3042
 #define IDC_TOOL_AUTOATTACK_SCROLL_WAYPOINTS 3043
+#define IDC_TRAINING_WEAPON_HAND        3043
 
 // Next default values for new objects
 // 

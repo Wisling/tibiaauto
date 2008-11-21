@@ -56,6 +56,7 @@ CConfigData::CConfigData()
 	debug=1;
 	weaponTrain=0;
 	weaponFight=0;
+	weaponHand = 0;
 	fightWhenSurrounded=1;
 	fightWhenAlien=1;
 	trainingMode=0;

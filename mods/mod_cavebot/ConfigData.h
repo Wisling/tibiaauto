@@ -55,6 +55,7 @@ public:
 
 	int weaponTrain;
 	int weaponFight;	
+	int weaponHand;	
 	int fightWhenSurrounded;
 	int fightWhenAlien;
 	int trainingMode;
