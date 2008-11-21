@@ -621,7 +621,6 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 							}
 							return 0;
 						}
-
 					}
 					//Assert: we can simply switch the item to wear and the item in the slot OR the slot is empty
 					sender.moveObjectBetweenContainers(itemWear->objectId,0x40+contNr,itemWear->pos,location,0,itemWear->quantity?itemWear->quantity:1);
@@ -1075,7 +1074,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int pauseInvoked=0;
 
 	int modRuns=0;//for performing actions once every 10 iterations
-	
 	// reset globals
 	targetX=targetY=targetZ=0;
 	depotX=depotY=depotZ=0;
@@ -1129,6 +1127,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	struct ipcMessage mess;
 	
 	
+
+
+
 	HHOOK hhookKeyb=NULL;
 	HINSTANCE hinstDLL=NULL;
 	if (config->debug)
@@ -1192,7 +1193,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
-		if (config->debug){
+		if (config->pausingEnable){
 			if (backPipe.readFromPipe(&mess,1009)||backPipe.readFromPipe(&mess,2002)){
 				int msgLen;
 				char msgBuf[512];		
@@ -1724,14 +1725,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					|| creatureList[currentlyAttackedCreatureNr].hpPercLeft<config->attackHpAbove
 					|| config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
 					|| config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
-					||!creatureList[crNr].isAttacking && maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange
+					|| maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft<15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
 					|| creatureList[currentlyAttackedCreatureNr].isIgnoredUntil
 					|| config->suspendOnEnemy && playersOnScreen && creatureList[currentlyAttackedCreatureNr].isAttacking==0
 					||!(creatureList[currentlyAttackedCreatureNr].listPriority || config->forceAttackAfterAttack && creatureList[currentlyAttackedCreatureNr].isAttacking)){
 					currentlyAttackedCreatureNr=bestCreatureNr;
 				}
 				//if no harm in switching and monsetr is not already in low health and running, switch
-				else if ((!reachedAttackedCreature || !config->stickToMonster)&&(!config->autoFollow || creatureList[currentlyAttackedCreatureNr].hpPercLeft>15)&&creatureList[bestCreatureNr].listPriority!=creatureList[currentlyAttackedCreatureNr].listPriority){
+				else if ((!reachedAttackedCreature || !config->stickToMonster)
+                     &&(!config->autoFollow || creatureList[currentlyAttackedCreatureNr].hpPercLeft>15)
+                     &&creatureList[bestCreatureNr].listPriority!=creatureList[currentlyAttackedCreatureNr].listPriority){
 					currentlyAttackedCreatureNr=bestCreatureNr;
 					if (config->debug)  {
 						char buf[256];
