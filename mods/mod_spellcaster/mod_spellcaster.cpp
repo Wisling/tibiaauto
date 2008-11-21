@@ -105,7 +105,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	char text[128] = {0};
 	int best = 0;
 	CTibiaItemProxy itemProxy;
-	
+
 	if (isInitializedCreatures() == 0)
 		initalizeCreatures();
 	

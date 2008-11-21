@@ -12,9 +12,9 @@ Class2=CConfigDialog
 LastTemplate=CDialog
 Resource1=IDD_CONFIG
 Class3=CSendStats
-Resource2=IDD_SENDSTATS (Polish)
+Resource2=IDD_CONFIG (Polish)
 Resource3=IDD_SENDSTATS
-Resource4=IDD_CONFIG (Polish)
+Resource4=IDD_SENDSTATS (Polish)
 
 [CLS:CMod_cavebotApp]
 Type=0

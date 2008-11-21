@@ -14,11 +14,11 @@ Resource1=IDD_TOOL_ITEMCONFIG
 Resource2=IDR_SHOWMAP_MENU (Polish)
 Resource3=IDD_ITEM_EDIT (H)
 Resource4=IDD_FOOD_ADD
-Resource5=IDD_LOOT_ADD
-Resource6=IDD_ITEM_EDIT
-Resource7=IDD_TOOL_ITEMCONFIG (Polish)
-Resource8=IDD_ITEM_ADD
-Resource9=IDD_FOOD_EDIT
+Resource5=IDD_ITEM_ADD
+Resource6=IDD_LOOT_ADD
+Resource7=IDD_ITEM_EDIT
+Resource8=IDD_FOOD_EDIT
+Resource9=IDD_TOOL_ITEMCONFIG (Polish)
 Resource10=IDD_LOOT_EDIT
 
 [CLS:CMod_itemconfigApp]
