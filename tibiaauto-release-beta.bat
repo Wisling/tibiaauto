@@ -1,8 +1,8 @@
 e:
 cd \projects\tibiaauto-pub
-cvs update
+cvs update -d -A
 cd \projects\tibiaauto-kernel
-cvs update
+cvs update -d -A
 d:
 cd d:\Program Files\Microsoft Visual Studio\Common\msdev98\Bin\
 msdev e:\projects\tibiaauto-kernel\tibiaauto.dsw /MAKE "tibiaauto - Win32 Release" /REBUILD
