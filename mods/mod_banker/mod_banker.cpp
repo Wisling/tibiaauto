@@ -91,11 +91,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (moveToBanker(config)) {
 					//AfxMessageBox("Yup, found the banker!");
 					if (depositGold()) {
-						if (withdrawGold(config)) {
-							getBalance();
+						if (config->cashOnHand && withdrawGold(config)) {							
 							reader.setGlobalVariable("caveboot_halfsleep","false");
 							bankerInvoked = 0;
 						}
+						getBalance();
 					}
 				}
 			}
