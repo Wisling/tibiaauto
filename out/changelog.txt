@@ -1,28 +1,29 @@
-1.19.0, ???
+1.19.0, 01.12.2008
 Enhancments:
- FoodEater: Uses new "digest" time to determine time between meals.
- ItemConfig: Added an additional parameter to the items in the food Item list, "digest" time.
- ItemConfig: Added features to Add, edit or delete items without directly editing the .xml file
+ Food Eater: Uses new "digest" time to determine time between meals.
+ Item Config: Added an additional parameter to the items in the food Item list, "digest" time.
+ Item Config: Added features to Add, edit or delete items without directly editing the .xml file
+ Show map: Couple added bitmaps for your viewing pleasure.
  Cavebot: Cavebot starts from the selected waypoint OR begins from previous waypoint if none selected.
  Cavebot: Improved looting speed and accuracy.
- Show map: Couple added bitmaps for your viewing pleasure.
  Cavebot: Added Don't Attack Players option that will guarantee the bot won't attack a person
  Cavebot: Added keyboard hotkey for pausing cavebot (can also use %ta pause if you like).
- Training: Can select a different fighting mode to use with training weapon.
- Training: Added train with right hand option for better interraction with RuneMaker module.
- Training: Reorganized GUI for more intuitive grouping.
+ Cavebot: Training - Can select a different fighting mode to use with training weapon.
+ Cavebot: Training - Added train with right hand option for better interraction with RuneMaker module.
+ Cavebot: Training - Reorganized GUI for more intuitive grouping.
  AutoGo: Ignores all spells no matter how obscurely made
  Python: Able to read in VIP list through reader.readVIPEntry(int nr)
 
 Defects:
+ Kernel: Fixed Crash when Pasting text into window.
  UH Cast: Improved Communication with AutoAim module
- AutoAim: Fixed rune spam bug, so UH will still fire.
+ Auto Aim: Fixed rune spam bug, so UH will still fire.
  Banker: Fixed 'Cash on Hand' not saving to config files.
  Cavebot: Fixed loot from floor algorithim.
- In Tibia: Fixed Crash when Pasting text into window.
  Cavebot: Fixed bug with selecting waypoints at random.
- X-Ray: Fixed incorrect xray addresses.
  Cavebot: Fixed backattack alien with runes
+ X-Ray: Fixed incorrect xray addresses.
+
 
 1.18.4, 16.10.2008
 Enhancements:

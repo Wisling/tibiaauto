@@ -13,8 +13,8 @@ Class1=CConfigDialog
 Class2=CMod_sorterApp
 
 ResourceCount=2
-Resource1=IDD_CONFIG
-Resource2=IDD_CONFIG (Polish)
+Resource1=IDD_CONFIG (Polish)
+Resource2=IDD_CONFIG
 
 [CLS:CConfigDialog]
 Type=0
