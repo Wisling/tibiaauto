@@ -7,7 +7,7 @@
 </h3>
 <h3>Command Lines</h3>
 Creating command line "rc.exe /l 0x415 /fo"Release/alice.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\alice\alice.rc"" 
-Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9C.tmp" with contents
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP163.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/alice.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "e:\projects\tibiaauto-pub\alice\AimlWriter.cpp"
@@ -41,16 +41,16 @@ Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9C.tmp" with conte
 "e:\projects\tibiaauto-pub\alice\wxwindows.cpp"
 "e:\projects\tibiaauto-pub\alice\XmlSocketResponder.cpp"
 ]
-Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9C.tmp" 
-Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9D.tmp" with contents
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP163.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP164.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/alice.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "e:\projects\tibiaauto-pub\alice\StdAfx.cpp"
 ]
-Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9D.tmp" 
-Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9E.tmp" with contents
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP164.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP165.tmp" with contents
 [
-xerces.lib xerces-c_2.lib detours.lib zdll.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/alice.pdb" /machine:I386 /def:".\alice.def" /out:"../../tibiaauto-pub/mods/alice.dll" /implib:"Release/alice.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" 
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/alice.pdb" /machine:I386 /def:".\alice.def" /out:"../../tibiaauto-pub/mods/alice.dll" /implib:"Release/alice.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\AimlWriter.obj"
 ".\Release\alice.obj"
 ".\Release\Element.obj"
@@ -84,7 +84,7 @@ xerces.lib xerces-c_2.lib detours.lib zdll.lib /nologo /subsystem:windows /dll /
 ".\Release\XmlSocketResponder.obj"
 ".\Release\alice.res"
 ]
-Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP9E.tmp"
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP165.tmp"
 <h3>Output Window</h3>
 Compiling resources...
 Compiling...
@@ -126,13 +126,2374 @@ wxwindows.cpp
 XmlSocketResponder.cpp
 Generating Code...
 Linking...
-LINK : fatal error LNK1181: cannot open input file "xerces.lib"
-Error executing link.exe.
+   Creating library Release/alice.lib and object Release/alice.exp
+<h3>
+--------------------Configuration: mod_aim - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_aim.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_aim\mod_aim.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP169.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_aim.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_aim\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_aim\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_aim\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_aim\mod_aim.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_aim\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_aim\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP169.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP16A.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_aim.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_aim\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP16A.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP16B.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_aim.pdb" /machine:I386 /def:".\mod_aim.def" /out:"../mod_aim.dll" /implib:"Release/mod_aim.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_aim.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_aim.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP16B.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_aim.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_aim.lib and object Release/mod_aim.exp
+<h3>
+--------------------Configuration: mod_autogo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_autogo.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_autogo\mod_autogo.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP16F.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_autogo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_autogo\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\ImageButtonWithStyle.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\mod_autogo.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\VisualStylesXP.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_autogo\WhiteList.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP16F.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP170.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_autogo.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_autogo\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP170.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP171.tmp" with contents
+[
+WINMM.LIB xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_autogo.pdb" /machine:I386 /def:".\mod_autogo.def" /out:"../mod_autogo.dll" /implib:"Release/mod_autogo.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\ImageButtonWithStyle.obj"
+".\Release\mod_autogo.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\VisualStylesXP.obj"
+".\Release\WhiteList.obj"
+".\Release\mod_autogo.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP171.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+ImageButtonWithStyle.cpp
+mod_autogo.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+VisualStylesXP.cpp
+WhiteList.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_autogo.lib and object Release/mod_autogo.exp
+<h3>
+--------------------Configuration: mod_cavebot - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_cavebot.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP175.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_cavebot.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\Helpers.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\SendStats.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\SharedMemory.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP175.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP176.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_cavebot.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_cavebot\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP176.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP177.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_cavebot.pdb" /machine:I386 /def:".\mod_cavebot.def" /out:"../mod_cavebot.dll" /implib:"Release/mod_cavebot.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\Helpers.obj"
+".\Release\mod_cavebot.obj"
+".\Release\proxy.obj"
+".\Release\SendStats.obj"
+".\Release\SharedMemory.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_cavebot.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP177.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+Helpers.cpp
+mod_cavebot.cpp
+proxy.cpp
+SendStats.cpp
+SharedMemory.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_cavebot.lib and object Release/mod_cavebot.exp
+<h3>
+--------------------Configuration: mod_creatureinfo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_creatureinfo.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP17B.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_creatureinfo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\KnownInfo.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\NameChanger.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\SendStats.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\Util.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP17B.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP17C.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_creatureinfo.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_creatureinfo\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP17C.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP17D.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_creatureinfo.pdb" /machine:I386 /def:".\mod_creatureinfo.def" /out:"../mod_creatureinfo.dll" /implib:"Release/mod_creatureinfo.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\KnownInfo.obj"
+".\Release\mod_creatureinfo.obj"
+".\Release\NameChanger.obj"
+".\Release\proxy.obj"
+".\Release\SendStats.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\Util.obj"
+".\Release\mod_creatureinfo.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP17D.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+KnownInfo.cpp
+mod_creatureinfo.cpp
+e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(96) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(701) : warning C4101: 'x' : unreferenced local variable
+e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(701) : warning C4101: 'y' : unreferenced local variable
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(48) : warning C4786: '?_Value@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@KAAAU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@PAU_Node@12@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(72) : warning C4786: '??Dconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QBEABU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@XZ' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(74) : warning C4786: '??Cconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QBEPBU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@XZ' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(149) : warning C4786: '?$reverse_bidirectional_iterator@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@AAU43@PAU43@H' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(152) : warning C4786: '?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@ABU43@PBU43@H' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(168) : warning C4786: '??0?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QAE@PBU?$pair@$$CBVcreatureKey@@VcreatureData@@@1@0ABVcreatureKey@@_NABV?$allocator@VcreatureData@@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(201) : warning C4786: '?rbegin@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QAE?AV?$reverse_bidirectional_iterator@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@AAU43@PAU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(203) : warning C4786: '?rbegin@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(205) : warning C4786: '?rend@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QAE?AV?$reverse_bidirectional_iterator@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@AAU43@PAU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(207) : warning C4786: '?rend@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(236) : warning C4786: '?insert@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QAE?AU?$pair@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@_N@2@ABU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(254) : warning C4786: '?insert@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QAE?AViterator@12@V312@ABU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(406) : warning C4786: '?equal_range@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QAE?AU?$pair@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@V123@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(409) : warning C4786: '?equal_range@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@QBE?AU?$pair@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@V123@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(508) : warning C4786: '?_Insert@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@IAE?AViterator@12@PAU_Node@12@0ABU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(583) : warning C4786: '?_Consval@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@IAEXPAU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@ABU32@@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >' being compiled
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(71) : warning C4786: '?begin@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(73) : warning C4786: '?begin@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AVconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(75) : warning C4786: '?end@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(77) : warning C4786: '?end@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AVconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(79) : warning C4786: '?rbegin@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AV?$reverse_bidirectional_iterator@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@AAU43@PAU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(81) : warning C4786: '?rbegin@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(83) : warning C4786: '?rend@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AV?$reverse_bidirectional_iterator@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@AAU43@PAU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(85) : warning C4786: '?rend@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(98) : warning C4786: '?insert@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AU?$pair@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@_N@2@ABU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(100) : warning C4786: '?insert@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@V342@ABU?$pair@$$CBVcreatureKey@@VcreatureData@@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(105) : warning C4786: '?erase@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@V342@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(108) : warning C4786: '?erase@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@V342@0@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(122) : warning C4786: '?find@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(124) : warning C4786: '?find@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AVconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(128) : warning C4786: '?lower_bound@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(130) : warning C4786: '?lower_bound@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AVconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(132) : warning C4786: '?upper_bound@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(134) : warning C4786: '?upper_bound@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AVconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(136) : warning C4786: '?equal_range@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QAE?AU?$pair@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@V123@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(139) : warning C4786: '?equal_range@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@std@@QBE?AU?$pair@Vconst_iterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@V123@@2@ABVcreatureKey@@@Z' : identifier was truncated to '255' characters in the browser information
+        e:\projects\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.cpp(1269) : see reference to class template instantiation 'std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >' being compiled
+d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@std@@_N@std@@QAE@ABViterator@?$_Tree@VcreatureKey@@U?$pair@$$CBVcreatureKey@@VcreatureData@@@std@@U_Kfn@?$map@VcreatureKey@@VcreatureData@@V1@V?$allocator@VcreatureData@@@std@@@3@V1@V?$allocator@VcreatureData@@@3@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<class creatureKey,struct std::pair<class creatureKey const ,class creatureData>,struct std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::_Kfn,class creatureKey,class std::allocator<class creatureData> >::iterator,bool>' being compiled
+        d:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class creatureData &__thiscall std::map<class creatureKey,class creatureData,class creatureKey,class std::allocator<class creatureData> >::operator [](const class creatureKey &)'
+NameChanger.cpp
+proxy.cpp
+SendStats.cpp
+TibiaItem_impl.cpp
+Util.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_creatureinfo.lib and object Release/mod_creatureinfo.exp
+<h3>
+--------------------Configuration: mod_eater - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_eater.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_eater\mod_eater.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP188.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_eater.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_eater\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_eater\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_eater\mod_eater.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_eater\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_eater\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP188.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP189.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_eater.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_eater\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP189.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP18A.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_eater.pdb" /machine:I386 /def:".\mod_eater.def" /out:"../mod_eater.dll" /implib:"Release/mod_eater.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\mod_eater.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_eater.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP18A.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+exports.cpp
+mod_eater.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_eater.lib and object Release/mod_eater.exp
+<h3>
+--------------------Configuration: mod_fisher - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_fisher.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_fisher\mod_fisher.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP18E.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fisher.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_fisher\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fisher\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fisher\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fisher\mod_fisher.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fisher\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fisher\TibiaContainer_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fisher\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP18E.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP18F.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fisher.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_fisher\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP18F.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP190.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fisher.pdb" /machine:I386 /def:".\mod_fisher.def" /out:"../mod_fisher.dll" /implib:"Release/mod_fisher.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_fisher.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_fisher.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP190.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_fisher.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_fisher.lib and object Release/mod_fisher.exp
+<h3>
+--------------------Configuration: mod_fluid - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_fluid.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_fluid\mod_fluid.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP194.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fluid.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_fluid\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fluid\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fluid\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fluid\mod_fluid.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fluid\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fluid\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP194.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP195.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fluid.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_fluid\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP195.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP196.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fluid.pdb" /machine:I386 /def:".\mod_fluid.def" /out:"../mod_fluid.dll" /implib:"Release/mod_fluid.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_fluid.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_fluid.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP196.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_fluid.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_fluid.lib and object Release/mod_fluid.exp
+<h3>
+--------------------Configuration: mod_grouping - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_grouping.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_grouping\mod_grouping.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP19A.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_grouping.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_grouping\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_grouping\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_grouping\mod_grouping.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_grouping\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_grouping\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP19A.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP19B.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_grouping.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_grouping\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP19B.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP19C.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_grouping.pdb" /machine:I386 /def:".\mod_grouping.def" /out:"../mod_grouping.dll" /implib:"Release/mod_grouping.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\mod_grouping.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_grouping.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP19C.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+exports.cpp
+mod_grouping.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_grouping.lib and object Release/mod_grouping.exp
+<h3>
+--------------------Configuration: mod_itemconfig - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_itemconfig.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_itemconfig\mod_itemconfig.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A0.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_itemconfig.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\ItemConfig.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\mod_itemconfig.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\ToolItemConfig.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A0.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A1.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_itemconfig.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_itemconfig\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A1.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A2.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_itemconfig.pdb" /machine:I386 /def:".\mod_itemconfig.def" /out:"../mod_itemconfig.dll" /implib:"Release/mod_itemconfig.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\ItemConfig.obj"
+".\Release\mod_itemconfig.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolItemConfig.obj"
+".\Release\mod_itemconfig.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A2.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+exports.cpp
+ItemConfig.cpp
+mod_itemconfig.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+ToolItemConfig.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_itemconfig.lib and object Release/mod_itemconfig.exp
+<h3>
+--------------------Configuration: mod_light - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_light.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_light\mod_light.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A6.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_light.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_light\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_light\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_light\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_light\mod_light.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_light\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_light\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A6.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A7.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_light.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_light\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A7.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A8.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_light.pdb" /machine:I386 /def:".\mod_light.def" /out:"../mod_light.dll" /implib:"Release/mod_light.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_light.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_light.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1A8.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_light.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_light.lib and object Release/mod_light.exp
+<h3>
+--------------------Configuration: mod_looter - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_looter.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_looter\mod_looter.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1AC.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_looter.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_looter\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_looter\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_looter\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_looter\mod_looter.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_looter\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_looter\SendStats.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_looter\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1AC.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1AD.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_looter.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_looter\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1AD.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1AE.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_looter.pdb" /machine:I386 /def:".\mod_looter.def" /out:"../mod_looter.dll" /implib:"Release/mod_looter.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_looter.obj"
+".\Release\proxy.obj"
+".\Release\SendStats.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_looter.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1AE.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_looter.cpp
+proxy.cpp
+SendStats.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_looter.lib and object Release/mod_looter.exp
+<h3>
+--------------------Configuration: mod_maphack - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_maphack.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_maphack\mod_maphack.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B2.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_maphack.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_maphack\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_maphack\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_maphack\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_maphack\mod_maphack.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_maphack\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_maphack\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B2.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B3.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_maphack.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_maphack\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B3.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B4.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_maphack.pdb" /machine:I386 /def:".\mod_maphack.def" /out:"../mod_maphack.dll" /implib:"Release/mod_maphack.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_maphack.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_maphack.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B4.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_maphack.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_maphack.lib and object Release/mod_maphack.exp
+<h3>
+--------------------Configuration: mod_memdebug - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_memdebug.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_memdebug\mod_memdebug.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B8.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_memdebug.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_memdebug\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_memdebug\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_memdebug\mod_memdebug.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_memdebug\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_memdebug\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B8.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B9.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_memdebug.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_memdebug\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1B9.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1BA.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_memdebug.pdb" /machine:I386 /def:".\mod_memdebug.def" /out:"../mod_memdebug.dll" /implib:"Release/mod_memdebug.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_memdebug.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_memdebug.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1BA.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigDialog.cpp
+exports.cpp
+mod_memdebug.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_memdebug.lib and object Release/mod_memdebug.exp
+<h3>
+--------------------Configuration: mod_monstershow - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_monstershow.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_monstershow\mod_monstershow.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1BE.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_monstershow.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\mod_monstershow.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\MonsterButton.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\ToolMonsterShow.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1BE.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1BF.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_monstershow.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_monstershow\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1BF.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C0.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_monstershow.pdb" /machine:I386 /def:".\mod_monstershow.def" /out:"../mod_monstershow.dll" /implib:"Release/mod_monstershow.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\mod_monstershow.obj"
+".\Release\MonsterButton.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolMonsterShow.obj"
+".\Release\mod_monstershow.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C0.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+exports.cpp
+mod_monstershow.cpp
+MonsterButton.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+ToolMonsterShow.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_monstershow.lib and object Release/mod_monstershow.exp
+<h3>
+--------------------Configuration: mod_playerinfo - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_playerinfo.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C4.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_playerinfo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\CharInfoDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\exports.cpp"
+"e:\projects\tibiaauto-pub\sdk\IPCBackPipeProxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\playerInfo.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C4.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C5.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_playerinfo.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_playerinfo\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C5.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C6.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_playerinfo.pdb" /machine:I386 /def:".\mod_playerinfo.def" /out:"../mod_playerinfo.dll" /implib:"Release/mod_playerinfo.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\CharInfoDialog.obj"
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\IPCBackPipeProxy.obj"
+".\Release\mod_playerinfo.obj"
+".\Release\playerInfo.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_playerinfo.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1C6.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+CharInfoDialog.cpp
+ConfigData.cpp
+exports.cpp
+IPCBackPipeProxy.cpp
+mod_playerinfo.cpp
+playerInfo.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_playerinfo.lib and object Release/mod_playerinfo.exp
+<h3>
+--------------------Configuration: mod_responder - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_responder.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_responder\mod_responder.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1CA.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_responder.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_responder\AutoResponderParser.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\AutoResponderParserContext.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\mod_responder.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\ToolAutoRespond.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\ToolAutoResponderMessage.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\ToolAutoResponderThreadConfig.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_responder\Util.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1CA.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1CB.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_responder.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_responder\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1CB.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1CC.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_responder.pdb" /machine:I386 /def:".\mod_responder.def" /out:"../mod_responder.dll" /implib:"Release/mod_responder.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\AutoResponderParser.obj"
+".\Release\AutoResponderParserContext.obj"
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\mod_responder.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolAutoRespond.obj"
+".\Release\ToolAutoResponderMessage.obj"
+".\Release\ToolAutoResponderThreadConfig.obj"
+".\Release\Util.obj"
+".\Release\mod_responder.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1CC.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+AutoResponderParser.cpp
+AutoResponderParserContext.cpp
+ConfigData.cpp
+exports.cpp
+mod_responder.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+ToolAutoRespond.cpp
+ToolAutoResponderMessage.cpp
+ToolAutoResponderThreadConfig.cpp
+Util.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_responder.lib and object Release/mod_responder.exp
+<h3>
+--------------------Configuration: mod_restack - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_restack.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_restack\mod_restack.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1D3.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_restack.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_restack\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_restack\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_restack\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_restack\mod_restack.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_restack\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_restack\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1D3.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1D4.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_restack.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_restack\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1D4.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1D5.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_restack.pdb" /machine:I386 /def:".\mod_restack.def" /out:"../mod_restack.dll" /implib:"Release/mod_restack.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_restack.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_restack.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1D5.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_restack.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_restack.lib and object Release/mod_restack.exp
+<h3>
+--------------------Configuration: mod_runemaker - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_runemaker.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1DC.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_runemaker.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\ToolContainerContent.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1DC.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1DD.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_runemaker.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_runemaker\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1DD.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1DE.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_runemaker.pdb" /machine:I386 /def:".\mod_runemaker.def" /out:"../mod_runemaker.dll" /implib:"Release/mod_runemaker.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_runemaker.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolContainerContent.obj"
+".\Release\mod_runemaker.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1DE.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_runemaker.cpp
+e:\projects\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp(646) : warning C4129: ',' : unrecognized character escape sequence
+e:\projects\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.cpp(646) : warning C4129: '-' : unrecognized character escape sequence
+proxy.cpp
+TibiaItem_impl.cpp
+ToolContainerContent.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_runemaker.lib and object Release/mod_runemaker.exp
+<h3>
+--------------------Configuration: mod_showmap - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_showmap.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_showmap\mod_showmap.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E2.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_showmap.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_showmap\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\ConfigWindow.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\MapButton.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\mod_showmap.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_showmap\ToolMapShow.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E2.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E3.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_showmap.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_showmap\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E3.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E4.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_showmap.pdb" /machine:I386 /def:".\mod_showmap.def" /out:"../mod_showmap.dll" /implib:"Release/mod_showmap.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigWindow.obj"
+".\Release\exports.obj"
+".\Release\MapButton.obj"
+".\Release\mod_showmap.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolMapShow.obj"
+".\Release\mod_showmap.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E4.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigWindow.cpp
+exports.cpp
+MapButton.cpp
+mod_showmap.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+ToolMapShow.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_showmap.lib and object Release/mod_showmap.exp
+<h3>
+--------------------Configuration: mod_spellcaster - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_spellcaster.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E8.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\TibiaItem_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\WhiteList.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E8.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E9.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_spellcaster\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1E9.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1EA.tmp" with contents
+[
+xerces.lib detours.lib zdll.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_spellcaster.pdb" /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Release/mod_spellcaster.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_spellcaster.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\WhiteList.obj"
+".\Release\mod_spellcaster.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1EA.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_spellcaster.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+WhiteList.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_spellcaster.lib and object Release/mod_spellcaster.exp
+<h3>
+--------------------Configuration: mod_trademon - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_trademon.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_trademon\mod_trademon.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1EE.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_trademon.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_trademon\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_trademon\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_trademon\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_trademon\mod_trademon.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_trademon\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_trademon\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1EE.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1EF.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_trademon.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_trademon\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1EF.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F0.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_trademon.pdb" /machine:I386 /def:".\mod_trademon.def" /out:"../mod_trademon.dll" /implib:"Release/mod_trademon.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_trademon.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_trademon.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F0.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_trademon.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_trademon.lib and object Release/mod_trademon.exp
+<h3>
+--------------------Configuration: mod_uh - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_uh.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_uh\mod_uh.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F4.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_uh.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_uh\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_uh\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_uh\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_uh\mod_uh.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_uh\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_uh\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F4.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F5.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_uh.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_uh\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F5.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F6.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_uh.pdb" /machine:I386 /def:".\mod_uh.def" /out:"../mod_uh.dll" /implib:"Release/mod_uh.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_uh.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_uh.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1F6.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_uh.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_uh.lib and object Release/mod_uh.exp
+<h3>
+--------------------Configuration: tibiaauto_util - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/tibiaauto_util.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1FA.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/tibiaauto_util.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\tibiaauto_util\CreaturesReader.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\IPCBackPipe.cpp"
+"e:\projects\tibiaauto-kernel\md5c.cpp"
+"e:\projects\tibiaauto-kernel\md5class.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\MemConstData.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\MemReader.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\MemUtil.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\proxy.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\Queue.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\TibiaCharacter.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\TibiaContainer.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\TibiaItem.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\TibiaMap.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\TibiaVIPEntry.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\TileReader.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\Util.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto_util\VariableStore.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1FA.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1FB.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/tibiaauto_util.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\tibiaauto_util\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1FB.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1FC.tmp" with contents
+[
+libdb45.lib xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/tibiaauto_util.pdb" /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /implib:"Release/tibiaauto_util.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" 
+".\Release\CreaturesReader.obj"
+".\Release\IPCBackPipe.obj"
+".\Release\md5c.obj"
+".\Release\md5class.obj"
+".\Release\MemConstData.obj"
+".\Release\MemReader.obj"
+".\Release\MemUtil.obj"
+".\Release\PackSender.obj"
+".\Release\proxy.obj"
+".\Release\Queue.obj"
+".\Release\StdAfx.obj"
+".\Release\tibiaauto_util.obj"
+".\Release\TibiaCharacter.obj"
+".\Release\TibiaContainer.obj"
+".\Release\TibiaItem.obj"
+".\Release\TibiaMap.obj"
+".\Release\TibiaVIPEntry.obj"
+".\Release\TileReader.obj"
+".\Release\Util.obj"
+".\Release\VariableStore.obj"
+".\Release\tibiaauto_util.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP1FC.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+CreaturesReader.cpp
+IPCBackPipe.cpp
+md5c.cpp
+md5class.cpp
+MemConstData.cpp
+MemReader.cpp
+e:\projects\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(87) : warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+e:\projects\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(676) : warning C4018: '==' : signed/unsigned mismatch
+MemUtil.cpp
+PackSender.cpp
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(69) : warning C4101: 'cbWritten' : unreferenced local variable
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(88) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(88) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(89) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(89) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(97) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(97) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(98) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(98) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(115) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(115) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(130) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(130) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(145) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(145) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(161) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(161) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(163) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(163) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(164) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(164) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(188) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(188) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(231) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(231) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(233) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(233) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(234) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(234) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(318) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(318) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(346) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(346) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(362) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(362) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(364) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(364) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(365) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(365) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(394) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(394) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(396) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(396) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(397) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(397) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(423) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(423) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(445) : warning C4101: 'cbWritten' : unreferenced local variable
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(472) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(472) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(473) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(473) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(490) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(490) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(492) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(492) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(493) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(493) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(514) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(514) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(515) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(515) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(541) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(541) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(564) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(564) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(582) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(582) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(598) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(598) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(734) : warning C4101: 'cbWritten' : unreferenced local variable
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(756) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(756) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(772) : warning C4101: 'cbWritten' : unreferenced local variable
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(785) : warning C4101: 'cbWritten' : unreferenced local variable
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(798) : warning C4101: 'cbWritten' : unreferenced local variable
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(820) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(820) : warning C4309: '=' : truncation of constant value
+proxy.cpp
+Queue.cpp
+tibiaauto_util.cpp
+TibiaCharacter.cpp
+TibiaContainer.cpp
+TibiaItem.cpp
+TibiaMap.cpp
+TibiaVIPEntry.cpp
+TileReader.cpp
+Util.cpp
+VariableStore.cpp
+Generating Code...
+Linking...
+   Creating library Release/tibiaauto_util.lib and object Release/tibiaauto_util.exp
+<h3>
+--------------------Configuration: tibiaautoinject2 - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/tibiaautoinject2.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP200.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "TIBIAAUTOINJECT2_EXPORTS" /D "_WINDLL" /D "_AFXDLL" /Fp"Release/tibiaautoinject2.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\tibiaautoinject2\MyMenu.cpp"
+"e:\projects\tibiaauto-kernel\tibiaautoinject2\MyMenuData.cpp"
+"e:\projects\tibiaauto-kernel\tibiaautoinject2\proxy.cpp"
+"e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP200.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP201.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "TIBIAAUTOINJECT2_EXPORTS" /D "_WINDLL" /D "_AFXDLL" /Fp"Release/tibiaautoinject2.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\tibiaautoinject2\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP201.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP202.tmp" with contents
+[
+ws2_32.lib xerces.lib detours.lib zdll.lib /nologo /dll /incremental:no /pdb:"Release/tibiaautoinject2.pdb" /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"../../tibiaauto-pub/tibiaautoinject2.dll" /implib:"Release/tibiaautoinject2.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
+".\Release\MyMenu.obj"
+".\Release\MyMenuData.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\tibiaautoinject2.obj"
+".\Release\tibiaautoinject2.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP202.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+MyMenu.cpp
+MyMenuData.cpp
+proxy.cpp
+tibiaautoinject2.cpp
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(364) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(364) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(366) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(366) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(367) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(367) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(393) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(393) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(395) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(395) : warning C4309: '=' : truncation of constant value
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(396) : warning C4305: '=' : truncation from 'const int' to 'char'
+e:\projects\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(396) : warning C4309: '=' : truncation of constant value
+Generating Code...
+Linking...
+LINK : warning LNK4075: ignoring /EDITANDCONTINUE due to /INCREMENTAL:NO specification
+   Creating library Release/tibiaautoinject2.lib and object Release/tibiaautoinject2.exp
+<h3>
+--------------------Configuration: tre - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP206.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "../win32" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRE_EXPORTS" /D "HAVE_CONFIG_H" /FR"Release/" /Fp"Release/tre.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\tre\lib\regcomp.c"
+"e:\projects\tibiaauto-pub\tre\lib\regerror.c"
+"e:\projects\tibiaauto-pub\tre\lib\regexec.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-ast.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-compile.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-filter.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-match-approx.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-match-backtrack.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-match-parallel.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-mem.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-parse.c"
+"e:\projects\tibiaauto-pub\tre\lib\tre-stack.c"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP206.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP207.tmp" with contents
+[
+msvcrt.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msvcprt.lib xerces.lib /nologo /dll /incremental:no /pdb:"Release/tre.pdb" /machine:I386 /def:".\tre.def" /out:"../../tibiaauto-pub/../mods/tre.dll" /implib:"Release/tre.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\regcomp.obj"
+".\Release\regerror.obj"
+".\Release\regexec.obj"
+".\Release\tre-ast.obj"
+".\Release\tre-compile.obj"
+".\Release\tre-filter.obj"
+".\Release\tre-match-approx.obj"
+".\Release\tre-match-backtrack.obj"
+".\Release\tre-match-parallel.obj"
+".\Release\tre-mem.obj"
+".\Release\tre-parse.obj"
+".\Release\tre-stack.obj"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP207.tmp"
+<h3>Output Window</h3>
+Compiling...
+regcomp.c
+regerror.c
+regexec.c
+tre-ast.c
+tre-compile.c
+tre-filter.c
+tre-match-approx.c
+tre-match-backtrack.c
+tre-match-parallel.c
+tre-mem.c
+tre-parse.c
+tre-stack.c
+Linking...
+   Creating library Release/tre.lib and object Release/tre.exp
+<h3>
+--------------------Configuration: mod_team - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_team.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_team\mod_team.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP20B.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_team.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_team\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\ConnectedNode.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\ConnectedNodes.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\mod_team.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_team\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP20B.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP20C.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_team.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_team\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP20C.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP20D.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_team.pdb" /machine:I386 /def:".\mod_team.def" /out:"../mod_team.dll" /implib:"Release/mod_team.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\ConnectedNode.obj"
+".\Release\ConnectedNodes.obj"
+".\Release\exports.obj"
+".\Release\mod_team.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_team.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP20D.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+e:\projects\tibiaauto-pub\mods\mod_team\ConfigDialog.cpp(99) : warning C4101: 'buf' : unreferenced local variable
+ConnectedNode.cpp
+ConnectedNodes.cpp
+exports.cpp
+mod_team.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+e:\projects\tibiaauto-pub\mods\mod_team\ConnectedNodes.cpp(136) : warning C4715: 'CConnectedNodes::findNodeForChar' : not all control paths return a value
+Linking...
+   Creating library Release/mod_team.lib and object Release/mod_team.exp
+<h3>
+--------------------Configuration: mod_antylogout - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_antylogout.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP211.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_antylogout.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_antylogout\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_antylogout\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_antylogout\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_antylogout\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP211.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP212.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_antylogout.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_antylogout\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP212.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP213.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_antylogout.pdb" /machine:I386 /def:".\mod_antylogout.def" /out:"../mod_antylogout.dll" /implib:"Release/mod_antylogout.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\mod_antylogout.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_antylogout.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP213.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+exports.cpp
+mod_antylogout.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_antylogout.lib and object Release/mod_antylogout.exp
+<h3>
+--------------------Configuration: mod_fps - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_fps.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_fps\mod_fps.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP217.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_fps.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_fps\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fps\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fps\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fps\mod_fps.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fps\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_fps\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP217.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP218.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_fps.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_fps\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP218.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP219.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fps.pdb" /machine:I386 /def:".\mod_fps.def" /out:"../mod_fps.dll" /implib:"Release/mod_fps.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_fps.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_fps.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP219.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_fps.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_fps.lib and object Release/mod_fps.exp
+<h3>
+--------------------Configuration: mod_login - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_login.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_login\mod_login.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP21D.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /Fp"Release/mod_login.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_login\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_login\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_login\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_login\mod_login.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_login\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_login\SendKeys.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_login\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP21D.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP21E.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /Fp"Release/mod_login.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_login\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP21E.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP21F.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_login.pdb" /machine:I386 /def:".\mod_login.def" /out:"../mod_login.dll" /implib:"Release/mod_login.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_login.obj"
+".\Release\proxy.obj"
+".\Release\SendKeys.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_login.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP21F.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_login.cpp
+proxy.cpp
+SendKeys.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_login.lib and object Release/mod_login.exp
+<h3>
+--------------------Configuration: mod_xray - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_xray.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_xray\mod_xray.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP223.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_xray.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_xray\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_xray\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_xray\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_xray\mod_xray.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_xray\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_xray\TibiaContainer_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_xray\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP223.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP224.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_xray.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_xray\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP224.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP225.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_xray.pdb" /machine:I386 /def:".\mod_xray.def" /out:"../mod_xray.dll" /implib:"Release/mod_xray.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_xray.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_xray.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP225.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+e:\projects\tibiaauto-pub\mods\mod_xray\ConfigDialog.cpp(96) : warning C4101: 'buf' : unreferenced local variable
+e:\projects\tibiaauto-pub\mods\mod_xray\ConfigDialog.cpp(104) : warning C4101: 'buf' : unreferenced local variable
+exports.cpp
+mod_xray.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_xray.lib and object Release/mod_xray.exp
+<h3>
+--------------------Configuration: tibiaautoinject3 - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP229.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TIBIAAUTOINJECT3_EXPORTS" /Fp"Release/tibiaautoinject3.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\tibiaautoinject3\tibiaautoinject3.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP229.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP22A.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TIBIAAUTOINJECT3_EXPORTS" /Fp"Release/tibiaautoinject3.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\tibiaautoinject3\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP22A.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP22B.tmp" with contents
+[
+ws2_32.lib xerces.lib detours.lib zdll.lib /nologo /dll /incremental:no /pdb:"Release/tibiaautoinject3.pdb" /machine:I386 /def:".\tibiaautoinject3.def" /out:"../../tibiaauto-pub/tibiaautoinject3.dll" /implib:"Release/tibiaautoinject3.lib" /libpath:"Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
+".\Release\StdAfx.obj"
+".\Release\tibiaautoinject3.obj"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP22B.tmp"
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+tibiaautoinject3.cpp
+Linking...
+   Creating library Release/tibiaautoinject3.lib and object Release/tibiaautoinject3.exp
+LINK : warning LNK4089: all references to "ADVAPI32.dll" discarded by /OPT:REF
+LINK : warning LNK4089: all references to "SHELL32.dll" discarded by /OPT:REF
+LINK : warning LNK4089: all references to "comdlg32.dll" discarded by /OPT:REF
+<h3>
+--------------------Configuration: mod_banker - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_banker.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_banker\mod_banker.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP22F.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_banker.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_banker\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_banker\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_banker\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_banker\mod_banker.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_banker\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_banker\TibiaContainer_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_banker\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP22F.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP230.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_banker.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_banker\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP230.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP231.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_banker.pdb" /machine:I386 /def:".\mod_banker.def" /out:"../mod_banker.dll" /implib:"Release/mod_banker.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_banker.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_banker.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP231.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_banker.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_banker.lib and object Release/mod_banker.exp
+<h3>
+--------------------Configuration: mod_sorter - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_sorter.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_sorter\mod_sorter.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP235.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_sorter.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_sorter\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_sorter\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_sorter\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_sorter\mod_sorter.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_sorter\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_sorter\TibiaContainer_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_sorter\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP235.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP236.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_sorter.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_sorter\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP236.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP237.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_sorter.pdb" /machine:I386 /def:".\mod_sorter.def" /out:"../mod_sorter.dll" /implib:"Release/mod_sorter.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_sorter.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_sorter.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP237.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_sorter.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_sorter.lib and object Release/mod_sorter.exp
+<h3>
+--------------------Configuration: mod_seller - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_seller.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-pub\mods\mod_seller\mod_seller.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP23B.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_seller.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_seller\ConfigData.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_seller\ConfigDialog.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_seller\exports.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_seller\mod_seller.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_seller\proxy.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_seller\TibiaContainer_impl.cpp"
+"e:\projects\tibiaauto-pub\mods\mod_seller\TibiaItem_impl.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP23B.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP23C.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_seller.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-pub\mods\mod_seller\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP23C.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP23D.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_seller.pdb" /machine:I386 /def:".\mod_seller.def" /out:"../mod_seller.dll" /implib:"Release/mod_seller.lib" 
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\mod_seller.obj"
+".\Release\proxy.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_seller.res"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP23D.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
+mod_seller.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
+Linking...
+   Creating library Release/mod_seller.lib and object Release/mod_seller.exp
+<h3>
+--------------------Configuration: tibiaauto - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating command line "rc.exe /l 0x415 /fo"Release/tibiaauto.res" /d "NDEBUG" /d "_AFXDLL" "e:\projects\tibiaauto-kernel\tibiaauto.rc"" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP241.tmp" with contents
+[
+/nologo /MD /W4 /GX /O2 /I "E:/Python24/include" /I "../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/tibiaauto.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\CharDialog.cpp"
+"e:\projects\tibiaauto-kernel\ConfigCreatorUtil.cpp"
+"e:\projects\tibiaauto-kernel\ConfigCreatorUtilMultiParams.cpp"
+"e:\projects\tibiaauto-kernel\ConfigDialogStatus.cpp"
+"e:\projects\tibiaauto-kernel\DonationDialog.cpp"
+"e:\projects\tibiaauto-kernel\EnterCode.cpp"
+"e:\projects\tibiaauto-kernel\LoadedModules.cpp"
+"e:\projects\tibiaauto-kernel\md5c.cpp"
+"e:\projects\tibiaauto-kernel\md5class.cpp"
+"e:\projects\tibiaauto-kernel\MemUtil.cpp"
+"e:\projects\tibiaauto-kernel\ModuleProxy.cpp"
+"e:\projects\tibiaauto-kernel\OptionsDialog.cpp"
+"e:\projects\tibiaauto-kernel\proxy.cpp"
+"e:\projects\tibiaauto-kernel\PythonEngine.cpp"
+"e:\projects\tibiaauto-kernel\PythonScript.cpp"
+"e:\projects\tibiaauto-kernel\PythonScriptsDialog.cpp"
+"e:\projects\tibiaauto-kernel\ScriptConfigDialg.cpp"
+"e:\projects\tibiaauto-kernel\tibiaauto.cpp"
+"e:\projects\tibiaauto-kernel\tibiaautoDlg.cpp"
+"e:\projects\tibiaauto-kernel\Util.cpp"
+"e:\projects\tibiaauto-kernel\webbrowser2.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP241.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP242.tmp" with contents
+[
+/nologo /MD /W4 /GX /O2 /I "E:/Python24/include" /I "../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/tibiaauto.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"e:\projects\tibiaauto-kernel\StdAfx.cpp"
+]
+Creating command line "cl.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP242.tmp" 
+Creating temporary file "D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP243.tmp" with contents
+[
+zlib.lib ws2_32.lib zdll.lib xerces.lib detours.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/tibiaauto.pdb" /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
+".\Release\CharDialog.obj"
+".\Release\ConfigCreatorUtil.obj"
+".\Release\ConfigCreatorUtilMultiParams.obj"
+".\Release\ConfigDialogStatus.obj"
+".\Release\DonationDialog.obj"
+".\Release\EnterCode.obj"
+".\Release\LoadedModules.obj"
+".\Release\md5c.obj"
+".\Release\md5class.obj"
+".\Release\MemUtil.obj"
+".\Release\ModuleProxy.obj"
+".\Release\OptionsDialog.obj"
+".\Release\proxy.obj"
+".\Release\PythonEngine.obj"
+".\Release\PythonScript.obj"
+".\Release\PythonScriptsDialog.obj"
+".\Release\ScriptConfigDialg.obj"
+".\Release\StdAfx.obj"
+".\Release\tibiaauto.obj"
+".\Release\tibiaautoDlg.obj"
+".\Release\Util.obj"
+".\Release\webbrowser2.obj"
+".\Release\tibiaauto.res"
+"\projects\tibiaauto-pub\alice\Release\alice.lib"
+"\projects\tibiaauto-pub\mods\mod_aim\Release\mod_aim.lib"
+"\projects\tibiaauto-pub\mods\mod_autogo\Release\mod_autogo.lib"
+"\projects\tibiaauto-pub\mods\mod_cavebot\Release\mod_cavebot.lib"
+"\projects\tibiaauto-pub\mods\mod_creatureinfo\Release\mod_creatureinfo.lib"
+"\projects\tibiaauto-pub\mods\mod_eater\Release\mod_eater.lib"
+"\projects\tibiaauto-pub\mods\mod_fisher\Release\mod_fisher.lib"
+"\projects\tibiaauto-pub\mods\mod_fluid\Release\mod_fluid.lib"
+"\projects\tibiaauto-pub\mods\mod_grouping\Release\mod_grouping.lib"
+"\projects\tibiaauto-pub\mods\mod_itemconfig\Release\mod_itemconfig.lib"
+"\projects\tibiaauto-pub\mods\mod_light\Release\mod_light.lib"
+"\projects\tibiaauto-pub\mods\mod_looter\Release\mod_looter.lib"
+"\projects\tibiaauto-pub\mods\mod_maphack\Release\mod_maphack.lib"
+"\projects\tibiaauto-pub\mods\mod_memdebug\Release\mod_memdebug.lib"
+"\projects\tibiaauto-pub\mods\mod_monstershow\Release\mod_monstershow.lib"
+"\projects\tibiaauto-pub\mods\mod_playerinfo\Release\mod_playerinfo.lib"
+"\projects\tibiaauto-pub\mods\mod_responder\Release\mod_responder.lib"
+"\projects\tibiaauto-pub\mods\mod_restack\Release\mod_restack.lib"
+"\projects\tibiaauto-pub\mods\mod_runemaker\Release\mod_runemaker.lib"
+"\projects\tibiaauto-pub\mods\mod_showmap\Release\mod_showmap.lib"
+"\projects\tibiaauto-pub\mods\mod_spellcaster\Release\mod_spellcaster.lib"
+"\projects\tibiaauto-pub\mods\mod_trademon\Release\mod_trademon.lib"
+"\projects\tibiaauto-pub\mods\mod_uh\Release\mod_uh.lib"
+".\tibiaauto_util\Release\tibiaauto_util.lib"
+".\tibiaautoinject2\Release\tibiaautoinject2.lib"
+"\projects\tibiaauto-pub\tre\win32\Release\tre.lib"
+"\projects\tibiaauto-pub\mods\mod_team\Release\mod_team.lib"
+"\projects\tibiaauto-pub\mods\mod_antylogout\Release\mod_antylogout.lib"
+"\projects\tibiaauto-pub\mods\mod_fps\Release\mod_fps.lib"
+"\projects\tibiaauto-pub\mods\mod_login\Release\mod_login.lib"
+"\projects\tibiaauto-pub\mods\mod_xray\Release\mod_xray.lib"
+".\tibiaautoinject3\Release\tibiaautoinject3.lib"
+"\projects\tibiaauto-pub\mods\mod_banker\Release\mod_banker.lib"
+"\projects\tibiaauto-pub\mods\mod_sorter\Release\mod_sorter.lib"
+"\projects\tibiaauto-pub\mods\mod_seller\Release\mod_seller.lib"
+]
+Creating command line "link.exe @D:\DOCUME~1\Noadmin\USTAWI~1\Temp\RSP243.tmp"
+<h3>Output Window</h3>
+Compiling resources...
+Compiling...
+StdAfx.cpp
+Compiling...
+CharDialog.cpp
+ConfigCreatorUtil.cpp
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+ConfigCreatorUtilMultiParams.cpp
+ConfigDialogStatus.cpp
+e:\projects\tibiaauto-kernel\ConfigDialogStatus.cpp(88) : warning C4100: 'lParam' : unreferenced formal parameter
+DonationDialog.cpp
+EnterCode.cpp
+e:\projects\tibiaauto-kernel\webbrowser2.h(30) : warning C4100: 'pContext' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\webbrowser2.h(26) : warning C4100: 'lpszClassName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\EnterCode.cpp(221) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+e:\projects\tibiaauto-kernel\EnterCode.cpp(222) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+e:\projects\tibiaauto-kernel\EnterCode.cpp(226) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+e:\projects\tibiaauto-kernel\EnterCode.cpp(227) : warning C4244: '=' : conversion from 'int' to 'char', possible loss of data
+LoadedModules.cpp
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\LoadedModules.cpp(140) : warning C4100: 'pNMHDR' : unreferenced formal parameter
+md5c.cpp
+md5class.cpp
+MemUtil.cpp
+ModuleProxy.cpp
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+OptionsDialog.cpp
+e:\projects\tibiaauto-kernel\OptionsDialog.cpp(211) : warning C4101: 'e' : unreferenced local variable
+e:\projects\tibiaauto-kernel\OptionsDialog.cpp(255) : warning C4101: 'e' : unreferenced local variable
+proxy.cpp
+PythonEngine.cpp
+e:\projects\tibiaauto-kernel\PythonEngine.cpp(38) : warning C4100: 'self' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(8) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(18) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(18) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(72) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(93) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(118) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(128) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(138) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(138) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(147) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(147) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(156) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(156) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(164) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(174) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(174) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(183) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(183) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(192) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(203) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(221) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(240) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(240) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(249) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(249) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(258) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(258) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(267) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(277) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(277) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(286) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(286) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(295) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(353) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(372) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(432) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(448) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(464) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(480) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(496) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(512) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(512) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(521) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(533) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(544) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(555) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(555) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(563) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(563) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(571) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(571) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(580) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(580) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(589) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(589) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(598) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(608) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(618) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(629) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(640) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(666) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(676) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(687) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(697) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(708) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(718) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(728) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(738) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(749) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(760) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(770) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(780) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(790) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(800) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(810) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(820) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(830) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(840) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(850) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(860) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(872) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(885) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(896) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(896) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(904) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(927) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(937) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(947) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(957) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(957) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(965) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(965) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(973) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(973) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(981) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(981) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(989) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(989) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(997) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1007) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1017) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1027) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1037) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1037) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1045) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1055) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1065) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1075) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1075) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1083) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1093) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1104) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1115) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1125) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1136) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1147) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1158) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1158) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1166) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1177) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1177) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1185) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1195) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1206) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1217) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1217) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1226) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1237) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1248) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1259) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1270) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1281) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1281) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1289) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1301) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1312) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1323) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1323) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1332) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1343) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1354) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1354) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1363) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1374) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1385) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1385) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1394) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1405) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1416) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1416) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1426) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1437) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1448) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1448) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1456) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1468) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1480) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1492) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1505) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1517) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1529) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1529) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1537) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1549) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1561) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1575) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1587) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1609) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1629) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1641) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1653) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1672) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1697) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1708) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1719) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1719) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1728) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1728) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1737) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1737) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1747) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1747) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1757) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1757) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1767) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1780) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1780) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1791) : warning C4100: 'args' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1791) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1806) : warning C4518: 'int ' : storage-class or type specifier(s) unexpected here; ignored
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1806) : warning C4228: nonstandard extension used : qualifiers after comma in declarator list are ignored
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1802) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1815) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1827) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1839) : warning C4100: 'self' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonEngine_fun.cpp(1850) : warning C4100: 'self' : unreferenced formal parameter
+PythonScript.cpp
+PythonScriptsDialog.cpp
+e:\projects\tibiaauto-kernel\PythonScriptsDialog.cpp(234) : warning C4100: 'pNMHDR' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonScriptsDialog.cpp(312) : warning C4100: 'pNMHDR' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\PythonScriptsDialog.cpp(445) : warning C4100: 'pNMHDR' : unreferenced formal parameter
+ScriptConfigDialg.cpp
+e:\projects\tibiaauto-kernel\ScriptConfigDialg.cpp(79) : warning C4100: 'pNMHDR' : unreferenced formal parameter
+tibiaauto.cpp
+e:\projects\tibiaauto-kernel\webbrowser2.h(30) : warning C4100: 'pContext' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\webbrowser2.h(26) : warning C4100: 'lpszClassName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+tibiaautoDlg.cpp
+e:\projects\tibiaauto-kernel\webbrowser2.h(30) : warning C4100: 'pContext' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\webbrowser2.h(26) : warning C4100: 'lpszClassName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(49) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(56) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(59) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(68) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(73) : warning C4100: 'paramName' : unreferenced formal parameter
+Util.cpp
+Generating Code...
+Compiling...
+webbrowser2.cpp
+e:\projects\tibiaauto-kernel\webbrowser2.h(30) : warning C4100: 'pContext' : unreferenced formal parameter
+e:\projects\tibiaauto-kernel\webbrowser2.h(26) : warning C4100: 'lpszClassName' : unreferenced formal parameter
+Generating Code...
+Linking...
+LINK : warning LNK4098: defaultlib "LIBC" conflicts with use of other libs; use /NODEFAULTLIB:library
 
 
 
 <h3>Results</h3>
-tibiaauto.exe - 1 error(s), 2 warning(s)
+tibiaauto.exe - 0 error(s), 411 warning(s)
 </pre>
 </body>
 </html>
