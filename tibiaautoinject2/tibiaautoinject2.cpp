@@ -674,6 +674,14 @@ void hookCallback(int value)
 	{
 		message="%ta pause";
 	}
+	if (value==0x21)
+	{		
+		message="%ta lu";				
+	}
+	if (value==0x22)
+	{
+		message="%ta ld";
+	}
 	if (message)
 	{
 		int len=strlen(message);
@@ -693,41 +701,45 @@ void hookCallback(int value)
 typedef void (*Proto_callback)(int value);
 volatile Proto_callback hookCallbackFun=hookCallback;
 
+LPCTSTR hooksFile=NULL;
+
 void ActivateHookCallback()
 {
-	int size = 0;
+	int size = 128;
 	char mapFileBuf[1024];
 	HANDLE hMapFile;
-	LPCTSTR pBuf;
 	
-	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());
 	
+	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());	
+		
 	hMapFile = CreateFileMapping(
 		INVALID_HANDLE_VALUE,    // use paging file
 		NULL,                    // default security 
 		PAGE_READWRITE,          // read/write access
 		0,                       // max. object size 
 		size,                // buffer size  
-		mapFileBuf);                 // name of mapping object
-	
+		mapFileBuf);                 // name of mapping object	
+		
 	if (hMapFile == NULL) 
 	{       
 		return;
-	}
-	pBuf = (LPTSTR) MapViewOfFile(hMapFile,   // handle to map object
+	}	
+	
+	hooksFile = (LPTSTR) MapViewOfFile(hMapFile,   // handle to map object
 		FILE_MAP_ALL_ACCESS, // read/write permission
 		0,                   
 		0,                   
 		size);           
-	
-	if (pBuf == NULL) 
+		
+	if (hooksFile == NULL) 
 	{       
 		return;
-	}
+	}	
+		
+	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));   	
 	
-	CopyMemory((PVOID)pBuf, (PVOID)&hookCallbackFun, sizeof(void *));   
 	
-	UnmapViewOfFile(pBuf);
+	
 	
 	
 	
@@ -1559,6 +1571,9 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
 		
 		break;
 	case DLL_PROCESS_DETACH:
+		{			
+			if (hooksFile) UnmapViewOfFile(hooksFile);
+		}
 		
 		break;		
 	case DLL_THREAD_ATTACH:						

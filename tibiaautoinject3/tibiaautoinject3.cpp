@@ -50,36 +50,36 @@ void setCallbackFun()
 	LPCTSTR pBuf;
 	char mapFileBuf[1024];
 	
-	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());
+	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());	
 	
 	hMapFile = OpenFileMapping(
 		FILE_MAP_ALL_ACCESS,   // read/write access
 		FALSE,                 // do not inherit the name
 		mapFileBuf);               // name of mapping object 
-	
+		
 	if (hMapFile == NULL) 
 	{ 
 	
 		return;
-	} 
+	} 	
 
 	
 	pBuf = (LPTSTR) MapViewOfFile(hMapFile, // handle to map object
 		FILE_MAP_ALL_ACCESS,  // read/write permission
 		0,                    
 		0,                    
-		size);                   
+		size);                 	
 	
 	if (pBuf == NULL) 
 	{       
 		return;
-	}	
+	}		
 	
-	CopyMemory((PVOID)&hookCallbackFun,(PVOID)pBuf, sizeof(void *));      
+	CopyMemory((PVOID)&hookCallbackFun,(PVOID)pBuf, sizeof(void *));      	
 	
-	UnmapViewOfFile(pBuf);
+	UnmapViewOfFile(pBuf);	
 	
-	CloseHandle(hMapFile);
+	CloseHandle(hMapFile);	
 	
 }
 
@@ -100,7 +100,11 @@ extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		if (wParam==0x21)
 		{
 			if (!hookCallbackFun) setCallbackFun();
-			if (hookCallbackFun) hookCallbackFun(0x21);
+			if (hookCallbackFun) 
+			{				
+				hookCallbackFun(0x21);
+			}
+			
 		}
 		if (wParam==0x22)
 		{
@@ -120,3 +124,4 @@ extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
         wParam, lParam);
 	
 }
+
