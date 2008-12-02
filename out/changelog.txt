@@ -1,3 +1,7 @@
+1.19.1, ???
+Defects:
+ X-Ray: fixed pgup/pgdown hotkeys
+
 1.19.0, 01.12.2008
 Enhancments:
  Food Eater: Uses new "digest" time to determine time between meals.
