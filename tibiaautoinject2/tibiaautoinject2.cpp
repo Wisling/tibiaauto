@@ -696,7 +696,6 @@ void hookCallback(int value)
 			mess.send();
 		}
 	}
-	
 }
 typedef void (*Proto_callback)(int value);
 volatile Proto_callback hookCallbackFun=hookCallback;

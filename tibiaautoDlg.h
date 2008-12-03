@@ -192,6 +192,8 @@ private:
 	IModuleInterface *m_moduleSorter;
 	IModuleInterface *m_moduleBanker;
 	IModuleInterface *m_moduleSeller;
+
+	HHOOK hhookKeyb;
 };
 
 //{{AFX_INSERT_LOCATION}}
