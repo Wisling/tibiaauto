@@ -1,6 +1,7 @@
-1.19.1, ???
+1.19.1, 03.12.2008
 Defects:
  X-Ray: fixed pgup/pgdown hotkeys
+ General: fixed rare crash bug connected to hotkeys
 
 1.19.0, 01.12.2008
 Enhancments:
