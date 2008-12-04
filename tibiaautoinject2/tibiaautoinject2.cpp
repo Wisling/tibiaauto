@@ -670,7 +670,7 @@ void hookCallback(int value)
 {
 	struct ipcMessage mess;	
 	char *message=NULL;
-	if (value==0x65)
+	if (value==0x13)
 	{
 		message="%ta pause";
 	}
@@ -691,7 +691,7 @@ void hookCallback(int value)
 			mess.messageType=2001;			
 			mess.send();
 		}
-		if (value==0x65){
+		if (value==0x13){
 			mess.messageType=2002;
 			mess.send();
 		}
@@ -1068,8 +1068,8 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	//debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
-	debugFile=NULL;
+	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+	//debugFile=NULL;
 	debugFileStart=time(NULL);
 }
 

@@ -111,10 +111,10 @@ extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 			if (!hookCallbackFun) setCallbackFun();
 			if (hookCallbackFun) hookCallbackFun(0x22);			
 		}			
-		if (wParam==0x65)
+		if (wParam==0x13)
 		{
 			if (!hookCallbackFun) setCallbackFun();
-			if (hookCallbackFun) hookCallbackFun(0x65);			
+			if (hookCallbackFun) hookCallbackFun(0x13);			
 		}			
 
 		
