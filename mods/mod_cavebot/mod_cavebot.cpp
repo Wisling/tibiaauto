@@ -71,7 +71,6 @@ int creatureAttackDist=0;
 int attackSuspendedUntil=0;
 int firstCreatureAttackTM=0;
 int currentWaypointNr=0;
-int wantFloorLoot = 0;
 
 int lastTAMessageTm=0;
 int taMessageDelay=4;
@@ -761,7 +760,6 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			if (config->debug) registerDebug("Loot from floor: no free container found");
 			// no free place in container found - exit
 			delete self;
-			wantFloorLoot = 0;
 			return;
 		}
 		
@@ -775,52 +773,60 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 				if (f2) foundLootedObjectId=f2;
 				
 				if (f1||f2) {
-					// there is the lootedItem (on top or covered)
-					int path[15];
-					int pathSize=0;
-					memset(path,0x00,sizeof(int)*15);
-					if (config->debug) registerDebug("findPathOnMap: loot from floor");
-					CModuleUtil::findPathOnMap(self->x, self->y, self->z, self->x+x, self->y+y, self->z, 0,path);
-					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-					
-					// if item is on our place then this is the best situation
-					if (x==0&&y==0) pathSize=0;
-					
-					if (bestPath>pathSize) {
-						
-						// there is a path to the point AND the path
-						// is the closest (the best)
-						bestX=x;
-						bestY=y;
-						bestPath=pathSize;
-						sprintf(buf,"Loot from floor: item (%d,%d,%d)",x,y,pathSize);
+					if (f2 && abs(x) <= 1 && abs(y) <= 1) {
+						sprintf(buf, "Loot from floor: picking up item (adjacent/same square) [0x%x]", f2);
 						if (config->debug) registerDebug(buf);
-					}
-				}
-				if (f2 && abs(x) <= 1 && abs(y) <= 1) {
-					if (isItemOnTop(0,0,foundLootedObjectId)) {
-						if (config->debug) registerDebug("Loot from floor: picking up item (adjacent square)");
 						int qty=itemOnTopQty(x, y);
 						sender.moveObjectFromFloorToContainer(foundLootedObjectId, self->x + x, self->y + y, self->z, 0x40+freeContNr, freeContPos,qty);
 						CModuleUtil::waitForItemsInsideChange(freeContNr, freeContInside);
 						//y--; // Recheck the square.
 					}
+					else {
+						// there is the lootedItem (on top or covered)
+						int path[15];
+						int pathSize=0;
+						memset(path,0x00,sizeof(int)*15);
+						if (config->debug){
+							sprintf(buf, "findPathOnMap: loot from floor (%d, %d)", x, y);
+							registerDebug(buf);
+						}
+						CModuleUtil::findPathOnMap(self->x, self->y, self->z, self->x+x, self->y+y, self->z, 0,path);
+						for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
+						
+						// if item is on our place then this is the best situation
+						if (x==0&&y==0) pathSize=0;
+						
+						if (path[0] && bestPath>=pathSize) {
+							
+							// there is a path to the point AND the path
+							// is the closest (the best)
+							bestX=x;
+							bestY=y;
+							bestPath=pathSize;
+							sprintf(buf,"Loot from floor: item (%d,%d,%d)",x,y,pathSize);
+							if (config->debug) registerDebug(buf);
+						}
+						if (x == 0 && y == 0) {
+							bestX=x;
+							bestY=y;
+							bestPath=pathSize;
+						}
+					} //end else
+					sprintf(buf, "Covered: %s\tOn Top: %s\tCode: 0x%x", f1?"Yes":"No", f2?"Yes":"No", foundLootedObjectId);
+					if (config->debug) registerDebug(buf);
 				}
 			} // for y
 		} // for x
 		if (foundLootedObjectId) {
-			sprintf(buf,"Loot from floor: found looted object id=%d",foundLootedObjectId);
+			sprintf(buf,"Loot from floor: found looted object id=0x%x",foundLootedObjectId);
 			if (config->debug) registerDebug(buf);
-			wantFloorLoot = 1;
 		}
 		else
-			wantFloorLoot = 0;
 			
 		lootTile = reader.getTibiaTile(itemOnTopCode(bestX, bestY));
 		if (lootTile->notMoveable) {
 			sprintf(buf,"Loot from floor: Loot object %d currently not lootable",foundLootedObjectId);
 			if (config->debug) registerDebug(buf);
-			wantFloorLoot = 0;
 			return;
 		}
 		//delete lootTile;
@@ -831,15 +837,12 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			if (config->debug) registerDebug("Loot from floor: found something to loot -> walking");
 			// anything to loot found
 			
-			int walkItem;
 			CTibiaCharacter *self2 = reader.readSelfCharacter();
 			
-			for (walkItem=0;walkItem<5;walkItem++) {
 				delete self2;
 				self2 = reader.readSelfCharacter();
 				if (self2->x==self->x+bestX&&self2->y==self->y+bestY&&self2->z==self->z) {
 					// no need to walk as we are on position already
-					break;
 				}
 				
 				int path[15];
@@ -872,13 +875,11 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 				else {
 					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
 					if (config->debug) registerDebug(buf);
-					wantFloorLoot = 0;
-					break;
 				}
-			}
 			sprintf(buf,"Loot from floor: location me(%d,%d,%d)->item(%d,%d,%d)",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
 			if (config->debug) registerDebug(buf);
-			
+
+			self2 = reader.readSelfCharacter();
 			if (self->x+bestX==self2->x&&self->y+bestY==self2->y&&self->z==self2->z) {
 				if (config->debug) registerDebug("Loot from floor: standing over item");
 				// we are standing over the item
@@ -912,7 +913,6 @@ extBreak:
 					}
 					else {
 						if (config->debug) registerDebug("Loot from floor: bad luck - item is not on top");
-						wantFloorLoot = 0;
 					}
 				}
 			}
@@ -1285,7 +1285,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// now let's see whether creature is still alive or not
 				if (attackedCh) {
 					if (!attackedCh->hpPercLeft&&
-						abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=4&&
+						abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=5&&
 						attackedCh->z==self->z) {
 						if (config->debug) registerDebug("Looter: Creature it dead.");
 						FILE *lootStatsFile = NULL;
@@ -1743,7 +1743,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		maybe look into staying in 1 spot for long time
 		*/
 		moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
-		if (currentlyAttackedCreatureNr==-1 && !moving && !wantFloorLoot){//wis:make sure doesn;t start while looting last monster
+		if (currentlyAttackedCreatureNr==-1 && !moving){//wis:make sure doesn;t start while looting last monster
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ) {
 				if (config->debug) registerDebug("Depot reached");
 				// depot waypoint reached!
