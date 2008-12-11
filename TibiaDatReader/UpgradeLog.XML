@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="TibiaDatReader">
+</Property><Property Name="Solution File" Value="E:\projects\tibiaDatReader\TibiaDatReader\TibiaDatReader.sln">
+</Property><Property Name="User Options File" Value="E:\projects\tibiaDatReader\TibiaDatReader\TibiaDatReader.suo">
+</Property><Property Name="Date" Value="7 lipca 2008">
+</Property><Property Name="Time" Value="19:50">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="TibiaDatReader.sln" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader.sln">
+</Event><Event ErrorLevel="0" Project="" Source="TibiaDatReader.suo" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader.suo">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDatReader.csproj" Description="Project file successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\TibiaDatReader.csproj">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDataMainDialog.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\TibiaDataMainDialog.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDataMainDialog.Designer.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\TibiaDataMainDialog.Designer.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\Program.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\Program.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\Properties\AssemblyInfo.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\Properties\Resources.Designer.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\Properties\Resources.Designer.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\Properties\Settings.Designer.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TileData.cs" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\TileData.cs">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\Properties\Settings.settings" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDataMainDialog.resx" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\TibiaDataMainDialog.resx">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\Properties\Resources.resx" Description="File successfully backed up as E:\projects\tibiaDatReader\TibiaDatReader\Backup\TibiaDatReader\Properties\Resources.resx">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDatReader.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDatReader.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="TibiaDatReader.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="TibiaDatReader.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TibiaDatReader" Source="TibiaDatReader\TibiaDatReader.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
