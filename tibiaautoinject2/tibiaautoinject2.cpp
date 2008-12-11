@@ -1068,8 +1068,8 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
-	//debugFile=NULL;
+	//debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+	debugFile=NULL;
 	debugFileStart=time(NULL);
 }
 
@@ -1163,7 +1163,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 		fprintf(debugFile,"got middle screen %d/%s\n",type,s);
 	}
 				
-	if (type==0x18)
+	if (type==0x19)
 	{
 		if (debugFile)
 		{
@@ -1184,10 +1184,15 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	
 	
 	
-	if (type!=0x18||time(NULL)>ignoreLookEnd) 
+	if (type!=0x19||time(NULL)>ignoreLookEnd) 
 	{ 
 		fun(type,s);
-	}					
+	} else {
+		if (debugFile)
+		{
+			fprintf(debugFile,"ignoring look");
+		}
+	}
 }
 
 
