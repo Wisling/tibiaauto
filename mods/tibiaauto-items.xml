@@ -38,7 +38,7 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x105941"/> 
+		<const code="addrMCInject" value="0x105941"/> <!--D7 3D B7 -->
 		<const code="addrXRay1" value="0x4D0DEC"/> 
 		<const code="addrXRay2" value="0x4D0DF4"/> 
 		<const code="addrFunRevealCName1" value="0x4EC183"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
@@ -49,7 +49,7 @@
 		<const code="addrSelfPosY" value="0"/>
 		<const code="addrSelfPosZ" value="0"/>
 
-		<const code="addrVIP"value="0x629A50"/> <!-- cat0 -->
+		<const code="addrVIP" value="0x629A50"/> <!-- cat0 -->
 		<const code="addrSelfFlags" value="0x62BCB8"/> <!-- cat1 -->
 		<const code="addrSkillFistPercLeft" value="0x62BCBC"/>
 		<const code="addrSkillFist" value="0x62BCD8"/>
