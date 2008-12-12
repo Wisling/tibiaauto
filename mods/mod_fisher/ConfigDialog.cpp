@@ -173,9 +173,9 @@ void CConfigDialog::refreshFishStatus()
 		delete container;
 	}
 	
-	int fishTimeH = totalFishQty*120/3600;
-	int fishTimeMin = (totalFishQty*120/60)%60;
-	int fishTimeSec = totalFishQty*120%60;
+	int fishTimeH = totalFishQty*144/3600;
+	int fishTimeMin = (totalFishQty*144/60)%60;
+	int fishTimeSec = totalFishQty*144%60;
 	
 	char buf[256];
 	sprintf(buf,"%d",totalFishQty);
