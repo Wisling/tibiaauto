@@ -1,4 +1,4 @@
-<!-- Tibia Items for Tibia 8.31 -->
+<!-- Tibia Items for Tibia 8.40 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
@@ -38,10 +38,10 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x105941"/>
-		<const code="addrXRay1" value="0x4d0dEc"/>
-		<const code="addrXRay2" value="0x4d0dF4"/>
-		<const code="addrFunRevealCName1" value="0x4ec183"/><!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
+		<const code="addrMCInject" value="0x105941"/> 
+		<const code="addrXRay1" value="0x4D0DEC"/> 
+		<const code="addrXRay2" value="0x4D0DF4"/> 
+		<const code="addrFunRevealCName1" value="0x4EC183"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -49,55 +49,54 @@
 		<const code="addrSelfPosY" value="0"/>
 		<const code="addrSelfPosZ" value="0"/>
 
-		<const code="addrVIP" value="0x629a50"/><!-- cat0 -->
-		<const code="addrselfflags" value="0x62bcb8" /><!-- cat1 -->
-		<const code="addrskillfistpercleft" value="0x62bcbc" />
-		<const code="addrskillfist" value="0x62bcd8" />
-		<const code="addrskillfish" value="0x62bcf0" />
-		<const code="addrattackedcreature" value="0x62bcfc" />
-		<const code="addrcap" value="0x62bd00" />
-		<const code="addrsoulpoints" value="0x62bd08" />
-		<const code="addrmanamax" value="0x62bd0c" />
-		<const code="addrmana" value="0x62bd10" />
-		<const code="addrmlvlpercleft" value="0x62bd14" />
-		<const code="addrmlvl" value="0x62bd1c" />
-		<const code="addrlvl" value="0x62bd20" />
-		<const code="addrexp" value="0x62bd24" />
-		<const code="addrhpmax" value="0x62bd28" />
-		<const code="addrhp" value="0x62bd2c" />
-		<const code="addrselfid" value="0x62bd30" />
-		<const code="addrcurrenttiletogo" value="0x62bd38" />
-		<const code="addrtilestogo" value="0x62bd3c" />
-		<const code="addrgoz" value="0x62bd6c" />
-		<const code="addrgoy" value="0x62bd70" />
-		<const code="addrgox" value="0x62bd74" />
-		<const code="addrbattlemax" value="0x62bd88" />
-		<const code="addrbattlemin" value="0x62bd8c" />
-		<const code="addrfirstcreature" value="0x62bd90" /><!-- cat1 -->
+		<const code="addrVIP"value="0x629A50"/> <!-- cat0 -->
+		<const code="addrSelfFlags" value="0x62BCB8"/> <!-- cat1 -->
+		<const code="addrSkillFistPercLeft" value="0x62BCBC"/>
+		<const code="addrSkillFist" value="0x62BCD8"/>
+		<const code="addrSkillFish" value="0x62BCF0"/>
+		<const code="addrAttackedCreature" value="0x62BCFC"/>
+		<const code="addrCap" value="0x62BD00"/>
+		<const code="addrSoulPoints" value="0x62BD08"/>
+		<const code="addrManaMax" value="0x62BD0C"/>
+		<const code="addrMana" value="0x62BD10"/>
+		<const code="addrMlvlPercLeft" value="0x62BD14"/>
+		<const code="addrMlvl" value="0x62BD1C"/>
+		<const code="addrLvl" value="0x62BD20"/>
+		<const code="addrExp" value="0x62BD24"/> 
+		<const code="addrHPMax" value="0x62BD28"/>
+		<const code="addrHP" value="0x62BD2C"/>
+		<const code="addrSelfId" value="0x62BD30"/>
+		<const code="addrCurrentTileToGo" value="0x62BD38"/>
+		<const code="addrTilesToGo" value="0x62BD3C"/>
+		<const code="addrGoZ" value="0x62BD6C"/>
+		<const code="addrGoY" value="0x62BD70"/>
+		<const code="addrGoX" value="0x62BD74"/>
+		<const code="addrBattleMax" value="0x62BD88"/>
+		<const code="addrBattleMin" value="0x62BD8C"/>
+		<const code="addrFirstCreature" value="0x62BD90"/> <!-- cat1 -->
 
-		<const code="addrcurrenttm" value="0x6327ec" /><!-- cat2 -->
-		<const code="addrbackpack" value="0x638100" />
-		<const code="addrrighthand" value="0x638118" />
-		<const code="addrlefthand" value="0x638124" />
-		<const code="addrslotarrow" value="0x638154" /><!-- cat2 -->
+		<const code="addrCurrentTm" value="0x6376AA"/> <!-- cat2 -->
+		<const code="addrBackpack" value="0x638100"/> 
+		<const code="addrRightHand" value="0x638118"/> 
+		<const code="addrLeftHand" value="0x638124"/> 
+		<const code="addrSlotArrow" value="0x638154"/> <!-- cat2 -->
+		<const code="addrFirstContainer" value="0x638160"/> <!-- cat2 -->
+		<const code="addrTradeCountSelf" value="0x63A020"/>
+		<const code="addrTradeFirstItemSelf" value="0x63A044"/>
+		<const code="addrTradeCountPartner" value="0x63A4F8"/>
+		<const code="addrTradeFirstItemPartner" value="0x63A51C"/> <!-- cat2 -->
 
-		<const code="addrfirstcontainer" value="0x638160" /><!-- cat2 -->
-		<const code="addrtradecountself" value="0x63A020" />
-		<const code="addrtradefirstitemself" value="0x63A044" />
-		<const code="addrtradecountpartner" value="0x63A4F8" />
-		<const code="addrtradefirstitempartner" value="0x63A51C" /><!-- cat2 -->
+		<const code="addrCurrentWindow" value="0x63AA14"/> <!-- cat2 -->
+		<const code="addrMapStart" value="0x63F568"/>
+		<const code="addrMiniMapStart" value="0x63F588"/> <!-- cat2 -->
 
-		<const code="addrcurrentwindow" value="0x63AA14" /><!-- cat2 -->
-		<const code="addrmapstart" value="0x63F568" />
-		<const code="addrminimapstart" value="0x63F588" /><!-- cat2 -->
+		<const code="addrModeAttackPlayers" value="0x785134"/> <!-- cat3 -->
+		<const code="addrModeFollow" value="0x785138"/>
+		<const code="addrModeAttackType" value="0x78513C"/> <!-- cat3 -->
 
-		<const code="addrmodeattackplayers" value="0x785134" /><!-- cat3 -->
-		<const code="addrmodefollow" value="0x785138" />
-		<const code="addrmodeattacktype" value="0x78513c" /><!-- cat3 -->
-
-		<const code="addrconnectionstate" value="0x788370" /><!-- cat4 -->
-		<const code="addrfps" value="0x788eb4" /><!-- lookup: Surface.cpp -->
-		<const code="addrwhitemessage" value="0x78A1E8" /><!-- cat4  -->
+		<const code="addrConnectionState" value="0x788370"/> <!-- cat4 -->
+		<const code="addrFps" value="0x788EB4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->
+		<const code="addrWhiteMessage" value="0x78A1E8"/>
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
@@ -269,64 +268,67 @@
 	</items>
 
 	<foods>
-		<item id="0xa9" name="Scarab Cheese" time="0" />
-		<item id="0x344" name="Walnut" time="0" />
-		<item id="0x349" name="Peanut" time="0" />
-		<item id="0xdf9" name="Meat" time="0" />
-		<item id="0xdfa" name="Fish" time="0" />
-		<item id="0xdfb" name="Salmon" time="0" />
-		<item id="0xdfc" name="Northern Pike" time="0" />
-		<item id="0xdfd" name="Shrimp" time="0" />
-		<item id="0xdfe" name="Ham" time="0" />
-		<item id="0xdff" name="Dragon Ham" time="0" />
-		<item id="0xe00" name="Pear" time="0" />
-		<item id="0xe01" name="Red Apple" time="0" />
-		<item id="0xe02" name="Orange" time="0" />
-		<item id="0xe03" name="Banana" time="0" />
-		<item id="0xe04" name="Blueberry" time="0" />
-		<item id="0xe05" name="Coconut" time="0" />
-		<item id="0xe06" name="Cherry" time="0" />
-		<item id="0xe07" name="Strawberry" time="0" />
-		<item id="0xe08" name="Grapes" time="0" />
-		<item id="0xe09" name="Melon" time="0" />
-		<item id="0xe0a" name="Pumpkin" time="0" />
-		<item id="0xe0b" name="Carrot" time="0" />
-		<item id="0xe0c" name="Tomato" time="0" />
-		<item id="0xe0d" name="Corncob" time="0" />
-		<item id="0xe0e" name="Cookie" time="0" />
-		<item id="0xe0f" name="Candy Cane" time="0" />
-		<item id="0xe10" name="Bread" time="0" />
-		<item id="0xe11" name="Roll" time="0" />
-		<item id="0xe12" name="Brown Bread" time="0" />
-		<item id="0xe16" name="Egg" time="0" />
-		<item id="0xe17" name="Cheese" time="0" />
-		<item id="0xe8b" name="White Mushroom" time="0" />
-		<item id="0xe8c" name="Red Mushroom" time="0" />
-		<item id="0xe8d" name="Brown Mushroom" time="0" />
-		<item id="0xe8e" name="Orange Mushroom" time="0" />
-		<item id="0xe8f" name="Wood Mushroom" time="0" />
-		<item id="0xe90" name="Dark Mushroom" time="0" />
-		<item id="0xe91" name="Some Mushrooms(Orange)" time="0" />
-		<item id="0xe92" name="Some Mushrooms(Wood)" time="0" />
-		<item id="0xe93" name="Fire Mushroom" time="0" />
-		<item id="0xe94" name="Green Mushroom" time="0" />
-		<item id="0x13e8" name="Mango" time="0" />
-		<item id="0x1885" name="Cake" time="0" />
-		<item id="0x1886" name="Decorated Cake" time="0" />
-		<item id="0x18f8" name="Valentine's Cake" time="0" />
-		<item id="0x18f9" name="Cream Cake" time="0" />
-		<item id="0x1964" name="Gingerbread Man" time="0" />
-		<item id="0x1bf6" name="Rainbow Trout" time="0" />
-		<item id="0x1bf7" name="Green Perch" time="0" />
-		<item id="0x1f4a" name="Potato" time="0" />
-		<item id="0x1f4b" name="Plum" time="0" />
-		<item id="0x1f4c" name="Raspberry" time="0" />
-		<item id="0x1f4d" name="Lemon" time="0" />
-		<item id="0x1f4e" name="Cucumber" time="0" />
-		<item id="0x1f4f" name="Onion" time="0" />
-		<item id="0x1f50" name="Jalapeno Pepper" time="0" />
-		<item id="0x1f51" name="Beetroot" time="0" />
-		<item id="0x1f53" name="Chocolate Cake" time="0" />
+		<item id="0x344" name="Walnut" time="48" />
+		<item id="0x349" name="Peanut" time="48" />
+		<item id="0xdf9" name="Meat" time="180" />
+		<item id="0xdfa" name="Fish" time="144" />
+		<item id="0xdfb" name="Salmon" time="120" />
+		<item id="0xdfc" name="Northern Pike" time="204" />
+		<item id="0xdfd" name="Shrimp" time="48" />
+		<item id="0xdfe" name="Ham" time="360" />
+		<item id="0xdff" name="Dragon Ham" time="720" />
+		<item id="0xe00" name="Pear" time="60" />
+		<item id="0xe01" name="Red Apple" time="72" />
+		<item id="0xe02" name="Orange" time="156" />
+		<item id="0xe03" name="Banana" time="96" />
+		<item id="0xe04" name="Blueberry" time="12" />
+		<item id="0xe05" name="Coconut" time="216" />
+		<item id="0xe06" name="Cherry" time="12" />
+		<item id="0xe07" name="Strawberry" time="24" />
+		<item id="0xe08" name="Grapes" time="108" />
+		<item id="0xe09" name="Melon" time="240" />
+		<item id="0xe0a" name="Pumpkin" time="204" />
+		<item id="0xe0b" name="Carrot" time="60" />
+		<item id="0xe0c" name="Tomato" time="72" />
+		<item id="0xe0d" name="Corncob" time="108" />
+		<item id="0xe0e" name="Cookie" time="24" />
+		<item id="0xe0f" name="Candy Cane" time="24" />
+		<item id="0xe10" name="Bread" time="120" />
+		<item id="0xe11" name="Roll" time="36" />
+		<item id="0xe12" name="Brown Bread" time="96" />
+		<item id="0xe16" name="Egg" time="72" />
+		<item id="0xe17" name="Cheese" time="108" />
+		<item id="0xe8b" name="White Mushroom" time="108" />
+		<item id="0xe8d" name="Brown Mushroom" time="264" />
+		<item id="0xe8e" name="Orange Mushroom" time="360" />
+		<item id="0xe8f" name="Wood Mushroom" time="108" />
+		<item id="0xe90" name="Dark Mushroom" time="72" />
+		<item id="0xe91" name="Some Mushrooms(Orange)" time="144" />
+		<item id="0xe94" name="Green Mushroom" time="60" />
+		<item id="0x13e8" name="Mango" time="48" />
+		<item id="0x1885" name="Cake" time="120" />
+		<item id="0x1886" name="Decorated Cake" time="180" />
+		<item id="0x18f8" name="Valentine's Cake" time="144" />
+		<item id="0x18f9" name="Cream Cake" time="180" />
+		<item id="0x1964" name="Gingerbreadman" time="240" />
+		<item id="0x1bf6" name="Rainbow Trout" time="300" />
+		<item id="0x1bf7" name="Green Perch" time="180" />
+		<item id="0x1f4a" name="Potato" time="120" />
+		<item id="0x1f4b" name="Plum" time="60" />
+		<item id="0x1f4c" name="Raspberry" time="12" />
+		<item id="0x1f4d" name="Lemon" time="12" />
+		<item id="0x1f4e" name="Cucumber" time="84" />
+		<item id="0x1f4f" name="Onion" time="60" />
+		<item id="0x1f50" name="Jalapeno Pepper" time="12" />
+		<item id="0x1f51" name="Beetroot" time="60" />
+		<item id="0x1f53" name="Chocolate Cake" time="132" />
+
+		<!-- Food not to eat
+		<item id="0xa9" name="Scarab Cheese" time="108" />
+		<item id="0xe8c" name="Red Mushroom" time="48" />
+		<item id="0xe92" name="Some Mushrooms(Wood)" time="36" />
+		<item id="0xe93" name="Fire Mushroom" time="432" />
+		-->
 	</foods>
 
 	<looted>
