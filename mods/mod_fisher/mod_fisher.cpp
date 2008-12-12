@@ -107,7 +107,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		// refresh self to have correct cap
 		self = reader.readSelfCharacter();
 		// if cap check enabled, 
-		if (self->cap <= config->fishOnlyWhenCap)			
+		if (self->cap < config->fishOnlyWhenCap)			
 			continueFishing = 0;
 		
 		//New only fish when worms available
