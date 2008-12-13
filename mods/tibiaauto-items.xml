@@ -75,7 +75,7 @@
 		<const code="addrBattleMin" value="0x62BD8C"/>
 		<const code="addrFirstCreature" value="0x62BD90"/> <!-- cat1 -->
 
-		<const code="addrCurrentTm" value="0x6376AA"/> <!-- cat2 -->
+		<const code="addrCurrentTm" value="0x6376AC"/> <!-- cat2 -->
 		<const code="addrBackpack" value="0x638100"/> 
 		<const code="addrRightHand" value="0x638118"/> 
 		<const code="addrLeftHand" value="0x638124"/> 
