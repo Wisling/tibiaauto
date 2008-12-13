@@ -56,6 +56,42 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 
+// NOTE: those delete trampolines are used to ensure 'secure' delete operation 
+//       and force revealing any memory issues faster
+
+void deleteAndNull(CTibiaContainer *&ptr)
+{
+	delete ptr;
+	ptr=NULL;
+}
+
+void deleteAndNull(CTibiaCharacter *&ptr)
+{
+	delete ptr;
+	ptr=NULL;
+}
+
+
+void deleteAndNull(CConfigDialog *&ptr)
+{
+	delete ptr;
+	ptr=NULL;
+}
+
+
+void deleteAndNull(CConfigData *&ptr)
+{
+	delete ptr;
+	ptr=NULL;
+}
+
+void deleteAndNull(CTibiaItem *&ptr)
+{
+	delete ptr;
+	ptr=NULL;
+}
+
+
 CToolAutoAttackStateAttack globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
 CToolAutoAttackStateLoot globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 CToolAutoAttackStateWalker globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
@@ -106,11 +142,11 @@ void dumpCreatureInfo(char *info,int tibiaId) {
 		
 		if (ch->tibiaId==tibiaId) {
 			nr=i;
-			delete ch;
+			deleteAndNull(ch);
 			break;
 		}
 		
-		delete ch;
+		deleteAndNull(ch);
 	}
 	
 	int offset = memConstData.m_memAddressFirstCreature+nr*memConstData.m_memLengthCreature;
@@ -155,7 +191,7 @@ int depotCheckShouldGo(CConfigData *config) {
 			if (cont->flagOnOff)
 				totalQty+=cont->countItemsOfType(objectId);
 			
-			delete cont;
+			deleteAndNull(cont);
 		}
 		// check whether we should deposit something
 		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
@@ -164,7 +200,7 @@ int depotCheckShouldGo(CConfigData *config) {
 		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
 			totalQty<=config->depotTrigger[i].when) ret++;
 	}
-	delete self;
+	deleteAndNull(self);
 	return ret;
 }
 
@@ -206,10 +242,10 @@ void depotCheck(CConfigData *config) {
 				if (config->debug) registerDebug("Depot not found - depot state: not found");
 			}
 			
-			delete self;
+			deleteAndNull(self);
 			return;
 		}
-		delete self;
+		deleteAndNull(self);
 	}
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_walking) {
 		CTibiaMapProxy tibiaMap;
@@ -246,7 +282,7 @@ void depotCheck(CConfigData *config) {
 			if (config->debug) registerDebug("Currently selected depot is reachable");
 		}
 		
-		delete self;
+		deleteAndNull(self);
 	}
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notFound) {
 		// not depot found - but try finding another one
@@ -272,7 +308,7 @@ void depotCheck(CConfigData *config) {
 			if (config->debug) registerDebug("Depot not found - depot state: not found (again)");
 		}
 		
-		delete self;
+		deleteAndNull(self);
 	}
 }
 
@@ -305,12 +341,12 @@ int depotDepositOpenChest(int x,int y,int z) {
 			CModuleUtil::waitForOpenContainer(9,true);
 			CTibiaContainer *cont = reader.readContainer(9);
 			int isOpen=cont->flagOnOff;
-			delete cont;
-			delete self;
+			deleteAndNull(cont);
+			deleteAndNull(self);
 			return isOpen;
 		}
 	}
-	delete self;
+	deleteAndNull(self);
 	return 0;
 }
 
@@ -327,7 +363,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	
 	if (!depotChest->flagOnOff) {
 		// shouldn't happen...
-		delete depotChest;
+		deleteAndNull(depotChest);
 		return;
 	}
 	
@@ -340,11 +376,11 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 		// found container in which we can do deposit!
 		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+8,cont8->size,qty);
 		CModuleUtil::waitForItemsInsideChange(8,cont8->itemsInside);
-		delete cont8;
-		delete depotChest;
+		deleteAndNull(cont8);
+		deleteAndNull(depotChest);
 		return;
 	}
-	delete cont8;
+	deleteAndNull(cont8);
 	
 	/**
 	* Scan through all containers in the depot chest to look for an empty one
@@ -364,15 +400,15 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 				// found container in which we can do deposit!
 				sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+8,newContainer->size-1,qty);
 				CModuleUtil::waitForItemsInsideChange(8,newContainer->itemsInside);
-				delete newContainer;
-				delete depotChest;
+				deleteAndNull(newContainer);
+				deleteAndNull(depotChest);
 				return;
 			}
-			delete newContainer;
+			deleteAndNull(newContainer);
 		}
 	}
 	
-	delete depotChest;
+	deleteAndNull(depotChest);
 	
 	// if we are here this means that the depot is full
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_noSpace;
@@ -387,7 +423,7 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup) {
 	
 	if (!depotChest->flagOnOff) {
 		// shouldn't happen...
-		delete depotChest;
+		deleteAndNull(depotChest);
 		return 0;
 	}
 	
@@ -405,13 +441,13 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup) {
 				sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
 				CModuleUtil::waitForItemsInsideChange(8,cont8->itemsInside);
 				
-				delete cont8;
-				delete depotChest;
+				deleteAndNull(cont8);
+				deleteAndNull(depotChest);
 				return qtyToPickup;
 			}
 		}
 	}
-	delete cont8;
+	deleteAndNull(cont8);
 	
 	/**
 	* Scan through all containers in the depot chest to look for some matching one
@@ -435,18 +471,18 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup) {
 						sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
 						CModuleUtil::waitForItemsInsideChange(8,newContainer->itemsInside);
 						
-						delete newContainer;
-						delete depotChest;
+						deleteAndNull(newContainer);
+						deleteAndNull(depotChest);
 						
 						return qtyToPickup;
 					}
 				}
 			}
-			delete newContainer;
+			deleteAndNull(newContainer);
 		}
 	}
 	
-	delete depotChest;
+	deleteAndNull(depotChest);
 	
 	// our item to move not found;
 	return 0;
@@ -462,7 +498,7 @@ int countAllItemsOfType(int objectId) {
 		if (cont->flagOnOff)
 			ret+=cont->countItemsOfType(objectId);
 		
-		delete cont;
+		deleteAndNull(cont);
 	}
 	return ret;
 }
@@ -494,7 +530,7 @@ void depotDeposit(CConfigData *config) {
 		if (!depotChestOpen) {
 			// can't open depot chest ?!?!?
 			// so cancel depositing and proceed to walking
-			delete self;
+			deleteAndNull(self);
 			globalAutoAttackStateDepot=CToolAutoAttackStateDepot_walking;
 			return;
 		}
@@ -542,7 +578,7 @@ void depotDeposit(CConfigData *config) {
 					}
 				}
 				
-				delete cont;
+				deleteAndNull(cont);
 			}
 		}
 		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon) {
@@ -557,7 +593,7 @@ void depotDeposit(CConfigData *config) {
 						int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup);
 						if (movedQty) movesInItemation++;
 					}
-					delete cont;
+					deleteAndNull(cont);
 				}
 				qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove);
 			} // while picking up 
@@ -567,7 +603,7 @@ void depotDeposit(CConfigData *config) {
 	// all is finished :) - we can go back to the hunting area
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	depotX=depotY=depotZ=0;
-	delete self;
+	deleteAndNull(self);
 }
 
 /**
@@ -582,6 +618,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 	int hasNeededItem=0;
 	if (itemSlot->objectId==objectId) {
 		// everything's ok - no changes
+		deleteAndNull(itemSlot);
 		return 1;
 	}
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_switchingWeapon;
@@ -610,7 +647,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 								hasSpace=1;
 								contNrSpace=10000; // stop the loop
 							}
-							delete contSpace;
+							deleteAndNull(contSpace);
 						}
 						if (!hasSpace) {
 							// means: we have no place in any container
@@ -618,6 +655,9 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 								lastTAMessageTm=time(NULL);
 								sender.sendTAMessage("I've an invalid weapon in hand, and I can't move it anywhere!");
 							}
+							deleteAndNull(itemSlot);
+							deleteAndNull(itemWear);
+							deleteAndNull(cont);
 							return 0;
 						}
 					}
@@ -627,9 +667,10 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 					contNr=10000; // stop the loop
 					hasNeededItem=1;
 				}
-				delete cont;
+				deleteAndNull(cont);
+				deleteAndNull(itemWear);
 			}
-			delete itemWear;
+			
 		}
 		if (!hasNeededItem) {
 			//means: we cannot find the needed item
@@ -637,11 +678,14 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 				lastTAMessageTm=time(NULL);
 				sender.sendTAMessage("I can't find the training/fight weapon in any container!");
 			}
+			deleteAndNull(itemSlot);
 			return 0;
 		}
+		deleteAndNull(itemSlot);
 		itemSlot = reader.readItem(locationAddress);
-	}
-	//delete itemSlot;// wis: causes heap debug error :S ,test before uncommenting
+	}	
+	// wis gave the following remark here: wis: causes heap debug error :S ,test before uncommenting
+	deleteAndNull(itemSlot); 
 	return 1;
 }
 
@@ -719,8 +763,9 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 			CModuleUtil::waitForItemsInsideChange(contNr,itemNr+1);
 		}
 	}
-	delete dropCont;
+	deleteAndNull(dropCont);
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
@@ -750,16 +795,16 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 				freeContNr=contNr;
 				freeContPos=cont->size-1;
 				freeContInside=cont->itemsInside;
-				delete cont;
+				deleteAndNull(cont);
 				break;
 			}
-			delete cont;
+			deleteAndNull(cont);
 		}
 		
 		if (freeContNr==-1) {
 			if (config->debug) registerDebug("Loot from floor: no free container found");
 			// no free place in container found - exit
-			delete self;
+			deleteAndNull(self);
 			return;
 		}
 		
@@ -828,8 +873,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			sprintf(buf,"Loot from floor: Loot object %d currently not lootable",foundLootedObjectId);
 			if (config->debug) registerDebug(buf);
 			return;
-		}
-		//delete lootTile;
+		}		
 		
 		if (config->debug) registerDebug("Loot from floor: before anything to loot check");
 		
@@ -838,9 +882,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			// anything to loot found
 			
 			CTibiaCharacter *self2 = reader.readSelfCharacter();
-			
-				delete self2;
-				self2 = reader.readSelfCharacter();
+							
 				if (self2->x==self->x+bestX&&self2->y==self->y+bestY&&self2->z==self->z) {
 					// no need to walk as we are on position already
 				}
@@ -865,10 +907,10 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 						CTibiaCharacter *self3 = reader.readSelfCharacter();
 						if (self->x+bestX==self3->x&&self->y+bestY==self3->y&&self->z==self3->z) {
 							// this means: we reached final point
-							delete self3;
+							deleteAndNull(self3);
 							break;
 						}
-						delete self3;
+						deleteAndNull(self3);
 						Sleep(100);
 					}
 				}
@@ -889,10 +931,15 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 				for (offsetX=-1;offsetX<=1;offsetX++) {
 					for (offsetY=-1;offsetY<=1;offsetY++) {
 						// double loop break!
-						if ((offsetX||offsetY)&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)) goto extBreak;
+						if ((offsetX||offsetY)&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)) 
+						{
+							// force loop break;
+							offsetX=offsetY=2;
+							break;	
+						}
 					}
 				}
-extBreak:
+
 				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
 				if (config->debug) registerDebug(buf);
 				if (offsetX!=2&&offsetY!=2) {
@@ -917,11 +964,12 @@ extBreak:
 				}
 			}
 			
-			delete self2;
+			deleteAndNull(self2);
 		}
 	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-	delete self;
+	deleteAndNull(self);
 }
+
 void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -1026,10 +1074,10 @@ int AttackCreature(CConfigData *config,int id){
 			sprintf(buf,"used to be=%d, set to=%d, now attacking=%d,hp=%d",old,id,reader.getAttackedCreature(),attackedCh->hpPercLeft);
 			registerDebug(buf);
 		}
-		delete self;
+		deleteAndNull(self);
 		return 1;
 	}
-	delete self;
+	deleteAndNull(self);
 	return 0;
 }
 //returns the smallest radius of a square centred at x1,y1 and covers x2,y2
@@ -1102,7 +1150,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
 		lastAttackTmCreatureId[i]=0;
 		lastAttackTmTm[i]=ch->lastAttackTm;
-		delete ch;
+		deleteAndNull(ch);
 	}
 	
 	if (config->debug) {
@@ -1133,7 +1181,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	
 	
 	while (!toolThreadShouldStop) {
-		Sleep(250);
+		Sleep(250);	
+		
 		if (reader.getConnectionState()!=8||!config->pausingEnable)
 		{
 			// flush IPC communication if not logged
@@ -1339,7 +1388,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										break;
 									}
 								}
-								delete cont;
+								deleteAndNull(cont);
 							}
 							if (lootStatsFile) {
 								int checksum;
@@ -1363,7 +1412,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==8,checksum);
 										}
 									}
-									delete lootCont;
+									deleteAndNull(lootCont);
 								}
 								//free(lootCont);
 								if (config->debug) registerDebug("Container data registered.");
@@ -1410,7 +1459,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									//sender.sendTAMessage("[debug] closing bag");
 									sender.closeContainer(contNr);
 								}
-								delete lootCont;
+								deleteAndNull(lootCont);
 							}
 							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 							if (config->debug) registerDebug("End of looting");
@@ -1460,7 +1509,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);}
 			}
 
-			delete attackedCh;
+			deleteAndNull(attackedCh);
 
 			// refresh information
 			int currentTm=reader.getCurrentTm();
@@ -1575,7 +1624,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 					}
 				}// if visible
-				delete ch;
+				deleteAndNull(ch);
 				if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
 					char buf[128];
 					sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d",creatureList[crNr].name,crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x);
@@ -1760,8 +1809,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			//if Standing time not ended yet
 			if (time(NULL)<walkerStandingEndTm) {
 				globalAutoAttackStateWalker=CToolAutoAttackStateWalker_standing;
-				if (config->debug) registerDebug("Standing");
-				delete self;//wis:ERROR
+				if (config->debug) registerDebug("Standing");				
+				deleteAndNull(self); // wis: ERROR // vanitas: WHY???
 				continue;
 			}
 
@@ -1782,7 +1831,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					// find a new goto target from waypoint list
 					if (!waypointsCount) {
 						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noWaypoints;
-						delete self;
+						deleteAndNull(self);
 						continue;
 					}
 					int nextWaypoint = 0;
@@ -1820,7 +1869,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					char buf[128];
 					int path[15];					
 					
-					delete self;
+					deleteAndNull(self);
 					self = reader.readSelfCharacter();
 					
 					// proceed with path searching
@@ -1903,9 +1952,9 @@ CMod_cavebotApp::CMod_cavebotApp() {
 
 CMod_cavebotApp::~CMod_cavebotApp() {
 	if (m_configDialog) {
-		delete m_configDialog;
+		deleteAndNull(m_configDialog);
 	}
-	delete m_configData;
+	deleteAndNull(m_configData);
 }
 
 char * CMod_cavebotApp::getName() {
@@ -1978,7 +2027,7 @@ void CMod_cavebotApp::configToControls() {
 
 void CMod_cavebotApp::controlsToConfig() {
 	if (m_configDialog) {
-		delete m_configData;
+		deleteAndNull(m_configData);
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
