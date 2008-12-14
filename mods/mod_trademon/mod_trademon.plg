@@ -6,7 +6,13 @@
 --------------------Configuration: mod_trademon - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4A.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPD5.tmp" with contents
+[
+/nologo /MD /W3 /GX /Ox /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_trademon.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_trademon\mod_trademon.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPD5.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPD6.tmp" with contents
 [
 xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_trademon.pdb" /machine:I386 /def:".\mod_trademon.def" /out:"../mod_trademon.dll" /implib:"Release/mod_trademon.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\ConfigData.obj"
@@ -18,8 +24,10 @@ xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_tra
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_trademon.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4A.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPD6.tmp"
 <h3>Output Window</h3>
+Compiling...
+mod_trademon.cpp
 Linking...
    Creating library Release/mod_trademon.lib and object Release/mod_trademon.exp
 
