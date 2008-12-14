@@ -77,21 +77,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		if (config->tradeTalk){
 			if (config->channel){
-				randAdd = rand()*(.1*config->channelInterval)+1;
+				randAdd = rand()%(int)(.1*config->channelInterval)+1;
 				if (channelTime+config->channelInterval+randAdd < time(NULL)){
 					channelTime = time(NULL);
 					sender.sayOnChan(config->message,7,5);	//T4: 7/5 - Trade
 				}
 			}
 			if (config->yell){
-				randAdd = rand()*(.1*config->yellInterval)+1;
+				randAdd = rand()%(int)(.1*config->yellInterval)+1;
 				if (yellTime+config->yellInterval+randAdd < time(NULL)){
 					yellTime = time(NULL);
 					sender.sayYell(config->message);
 				}
 			}
 			if (config->say){
-				randAdd = rand()*(.1*config->sayInterval)+1;
+				randAdd = rand()%(int)(.1*config->sayInterval)+1;
 				if (sayTime+config->sayInterval+randAdd < time(NULL)){
 					sayTime = time(NULL);
 					sender.say(config->message);
