@@ -856,6 +856,8 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 							bestY=y;
 							bestPath=pathSize;
 						}
+						sprintf(buf, "Path[0]: %d\tpathSize: %d", path[0], pathSize);
+						if (config->debug) registerDebug(buf);
 					} //end else
 					sprintf(buf, "Covered: %s\tOn Top: %s\tCode: 0x%x", f1?"Yes":"No", f2?"Yes":"No", foundLootedObjectId);
 					if (config->debug) registerDebug(buf);
@@ -868,12 +870,13 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 		}
 		else
 			
-		lootTile = reader.getTibiaTile(itemOnTopCode(bestX, bestY));
-		if (lootTile->notMoveable) {
-			sprintf(buf,"Loot from floor: Loot object %d currently not lootable",foundLootedObjectId);
-			if (config->debug) registerDebug(buf);
-			return;
-		}		
+
+		//lootTile = reader.getTibiaTile(itemOnTopCode(bestX, bestY));
+		//if (lootTile->notMoveable) {
+		//	sprintf(buf,"Loot from floor: Loot object %d currently not lootable (Loot Tile: %d)",foundLootedObjectId, lootTile);
+		//	if (config->debug) registerDebug(buf);
+		//	return;
+		//}
 		
 		if (config->debug) registerDebug("Loot from floor: before anything to loot check");
 		
@@ -934,12 +937,11 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 						if ((offsetX||offsetY)&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)) 
 						{
 							// force loop break;
-							offsetX=offsetY=2;
-							break;	
+							goto exitLoop;	
 						}
 					}
 				}
-
+				exitLoop:
 				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
 				if (config->debug) registerDebug(buf);
 				if (offsetX!=2&&offsetY!=2) {
@@ -1336,7 +1338,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (!attackedCh->hpPercLeft&&
 						abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=5&&
 						attackedCh->z==self->z) {
-						if (config->debug) registerDebug("Looter: Creature it dead.");
+						if (config->debug) registerDebug("Looter: Creature is dead.");
 						FILE *lootStatsFile = NULL;
 						// time,rand,creature,name,pos,objectId,count,bagopen,checksum
 						int killNr=rand();
@@ -1578,7 +1580,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						creatureList[crNr].isAttacking=1;
 						char buf[1024];
 						sprintf(buf,"lastAttackTm change for %d: was %d/%d is %d/%d",creatureList[crNr].tibiaId,creatureList[crNr].lastAttackTm,ch->tibiaId,ch->lastAttackTm);
-						//if (config->debug) registerDebug(buf);
+						if (config->debug) registerDebug(buf);
 					}
 					creatureList[crNr].lastAttackTm= ch->lastAttackTm;
 					creatureList[crNr].x=ch->x;
