@@ -819,8 +819,13 @@ int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near inst
 	CMemReaderProxy reader;
 	int iterCount=25;
 	while (iterCount-->0) {
-		if (!reader.readVisibleCreature(creatureNr)->visible)
+		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
+		if (!ch->visible)
+		{
+			delete ch;
 			return 1;
+		} 
+		delete ch;
 		Sleep(50);
 	}
 	return 0;  

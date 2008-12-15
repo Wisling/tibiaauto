@@ -773,8 +773,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
-	CTibiaMapProxy tibiaMap;
-	CTibiaTile *lootTile;
+	CTibiaMapProxy tibiaMap;	
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -885,45 +884,46 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			// anything to loot found
 			
 			CTibiaCharacter *self2 = reader.readSelfCharacter();
-							
-				if (self2->x==self->x+bestX&&self2->y==self->y+bestY&&self2->z==self->z) {
-					// no need to walk as we are on position already
-				}
-				
-				int path[15];
-				int pathSize=0;
-				memset(path,0x00,sizeof(int)*15);
-				if (config->debug) registerDebug("findPathOnMap: loot from floor 2");
-				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+bestX, self->y+bestY, self->z, 0,path);
-				for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-				
-				sprintf(buf,"Loot from floor: path size=%d between (%d,%d,%d) and (%d,%d,%d)",pathSize,self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
-				if (config->debug) registerDebug(buf);
-				if (pathSize)  {
-					int i;
-					//sender.stopAll();
-					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
-					//AfxMessageBox(buf);
-					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
-					// wait up to 2000ms for reaching final point
-					for (i=0;i<20;i++) {
-						CTibiaCharacter *self3 = reader.readSelfCharacter();
-						if (self->x+bestX==self3->x&&self->y+bestY==self3->y&&self->z==self3->z) {
-							// this means: we reached final point
-							deleteAndNull(self3);
-							break;
-						}
+			
+			if (self2->x==self->x+bestX&&self2->y==self->y+bestY&&self2->z==self->z) {
+				// no need to walk as we are on position already
+			}
+			
+			int path[15];
+			int pathSize=0;
+			memset(path,0x00,sizeof(int)*15);
+			if (config->debug) registerDebug("findPathOnMap: loot from floor 2");
+			CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+bestX, self->y+bestY, self->z, 0,path);
+			for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
+			
+			sprintf(buf,"Loot from floor: path size=%d between (%d,%d,%d) and (%d,%d,%d)",pathSize,self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
+			if (config->debug) registerDebug(buf);
+			if (pathSize)  {
+				int i;
+				//sender.stopAll();
+				//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
+				//AfxMessageBox(buf);
+				CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
+				// wait up to 2000ms for reaching final point
+				for (i=0;i<20;i++) {
+					CTibiaCharacter *self3 = reader.readSelfCharacter();
+					if (self->x+bestX==self3->x&&self->y+bestY==self3->y&&self->z==self3->z) {
+						// this means: we reached final point
 						deleteAndNull(self3);
-						Sleep(100);
+						break;
 					}
+					deleteAndNull(self3);
+					Sleep(100);
 				}
-				else {
-					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
-					if (config->debug) registerDebug(buf);
-				}
+			}
+			else {
+				sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
+				if (config->debug) registerDebug(buf);
+			}
 			sprintf(buf,"Loot from floor: location me(%d,%d,%d)->item(%d,%d,%d)",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
 			if (config->debug) registerDebug(buf);
-
+			
+			deleteAndNull(self2);
 			self2 = reader.readSelfCharacter();
 			if (self->x+bestX==self2->x&&self->y+bestY==self2->y&&self->z==self2->z) {
 				if (config->debug) registerDebug("Loot from floor: standing over item");
@@ -941,7 +941,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 						}
 					}
 				}
-				exitLoop:
+exitLoop:
 				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
 				if (config->debug) registerDebug(buf);
 				if (offsetX!=2&&offsetY!=2) {
@@ -1361,6 +1361,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 
 						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
+						deleteAndNull(self);
 						self = reader.readSelfCharacter();
 						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 						// Open corpse to container 9, wait to get to corpse on ground and wait for open
@@ -1916,7 +1917,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 		} // if (no currentlyAttackedCreatureNr)
 
-	}
+		deleteAndNull(self);
+
+	} // while
 	
 
 	if (shareAlienBackattack) {
@@ -1928,7 +1931,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	sender.attack(0);
 	reader.setAttackedCreature(0);
 	reader.cancelAttackCoords();
-	reader.writeCreatureDeltaXY(reader.readSelfCharacter()->nr,0,0);
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	reader.writeCreatureDeltaXY(self->nr,0,0);
+	deleteAndNull(self);
 	// restore attack mode
 	sender.attackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
 
