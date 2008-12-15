@@ -1,110 +1,911 @@
-12/13/08 22:09:45: Cavebot started
-12/13/08 22:09:46: Next loop. States: 0, 0, 0, 0, sleep=0/0
-12/13/08 22:09:46: Depot check
-12/13/08 22:09:46: Entering attack execution area
-12/13/08 22:09:46: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202586, attackMode=1
-12/13/08 22:09:46: Next moving item in ensureItemInPlace
-12/13/08 22:09:46: No attack target found
-12/13/08 22:09:46: Getting location for walker.
-12/13/08 22:09:46: Walking to waypoint (32368,32237,7)
-12/13/08 22:09:46: findPathOnMap: standard walk (32368,32236,7)->(32368,32237,7)
-12/13/08 22:09:46: timing: findPathOnMap() = 16ms
-12/13/08 22:09:46: Walking: execute walk
-12/13/08 22:09:46: Next loop. States: 0, 0, 3, 0, sleep=0/0
-12/13/08 22:09:46: Depot check
-12/13/08 22:09:46: Entering attack execution area
-12/13/08 22:09:46: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202586, attackMode=1
-12/13/08 22:09:46: No attack target found
-12/13/08 22:09:46: Waypoint reached
-12/13/08 22:09:46: Standing
-12/13/08 22:09:47: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:47: Depot check
-12/13/08 22:09:47: Entering attack execution area
-12/13/08 22:09:47: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202587, attackMode=1
-12/13/08 22:09:47: No attack target found
-12/13/08 22:09:47: Standing
-12/13/08 22:09:47: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:47: Depot check
-12/13/08 22:09:47: Entering attack execution area
-12/13/08 22:09:47: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202587, attackMode=1
-12/13/08 22:09:47: No attack target found
-12/13/08 22:09:47: Standing
-12/13/08 22:09:47: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:47: Depot check
-12/13/08 22:09:47: Entering attack execution area
-12/13/08 22:09:47: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202587, attackMode=1
-12/13/08 22:09:47: No attack target found
-12/13/08 22:09:47: Standing
-12/13/08 22:09:48: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:48: Depot check
-12/13/08 22:09:48: Entering attack execution area
-12/13/08 22:09:48: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202588, attackMode=1
-12/13/08 22:09:48: No attack target found
-12/13/08 22:09:48: Getting location for walker.
-12/13/08 22:09:48: Walking to waypoint (32367,32233,7)
-12/13/08 22:09:48: findPathOnMap: standard walk (32368,32236,7)->(32367,32233,7)
-12/13/08 22:09:48: timing: findPathOnMap() = 0ms
-12/13/08 22:09:48: Walking: execute walk
-12/13/08 22:09:48: Next loop. States: 0, 0, 3, 0, sleep=0/0
-12/13/08 22:09:48: Depot check
-12/13/08 22:09:48: Entering attack execution area
-12/13/08 22:09:48: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202588, attackMode=1
-12/13/08 22:09:48: No attack target found
-12/13/08 22:09:48: findPathOnMap: standard walk (32368,32236,7)->(32367,32233,7)
-12/13/08 22:09:48: timing: findPathOnMap() = 0ms
-12/13/08 22:09:48: Walking: execute walk
-12/13/08 22:09:48: Next loop. States: 0, 0, 3, 0, sleep=0/0
-12/13/08 22:09:48: Depot check
-12/13/08 22:09:48: Entering attack execution area
-12/13/08 22:09:48: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202588, attackMode=1
-12/13/08 22:09:48: No attack target found
-12/13/08 22:09:48: findPathOnMap: standard walk (32367,32236,7)->(32367,32233,7)
-12/13/08 22:09:48: timing: findPathOnMap() = 0ms
-12/13/08 22:09:48: Walking: execute walk
-12/13/08 22:09:48: Next loop. States: 0, 0, 3, 0, sleep=0/0
-12/13/08 22:09:48: Depot check
-12/13/08 22:09:48: Entering attack execution area
-12/13/08 22:09:48: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202588, attackMode=1
-12/13/08 22:09:48: No attack target found
-12/13/08 22:09:48: findPathOnMap: standard walk (32367,32236,7)->(32367,32233,7)
-12/13/08 22:09:48: timing: findPathOnMap() = 16ms
-12/13/08 22:09:48: Walking: execute walk
-12/13/08 22:09:49: Next loop. States: 0, 0, 3, 0, sleep=0/0
-12/13/08 22:09:49: Depot check
-12/13/08 22:09:49: Ovi one, nr=0, isatta=0, isonscreen=1, atktm=0 ID=28773777 ignore=0,x=32365
-12/13/08 22:09:49: Quentin, nr=1, isatta=0, isonscreen=1, atktm=0 ID=1073742231 ignore=0,x=32368
-12/13/08 22:09:49: Porus Porusiowski, nr=2, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326352966,x=32367
-12/13/08 22:09:49: Quit Case:No attack player
-12/13/08 22:09:49: Quit Case:only attack attacking
-12/13/08 22:09:49: Entering attack execution area
-12/13/08 22:09:49: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202589, attackMode=1
-12/13/08 22:09:49: No attack target found
-12/13/08 22:09:49: findPathOnMap: standard walk (32367,32235,7)->(32367,32233,7)
-12/13/08 22:09:49: timing: findPathOnMap() = 0ms
-12/13/08 22:09:49: Walking: execute walk
-12/13/08 22:09:49: Next loop. States: 0, 0, 3, 0, sleep=0/0
-12/13/08 22:09:49: Depot check
-12/13/08 22:09:49: Entering attack execution area
-12/13/08 22:09:49: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202589, attackMode=1
-12/13/08 22:09:49: No attack target found
-12/13/08 22:09:49: Waypoint reached
-12/13/08 22:09:49: Standing
-12/13/08 22:09:49: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:49: Depot check
-12/13/08 22:09:49: Entering attack execution area
-12/13/08 22:09:49: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202589, attackMode=1
-12/13/08 22:09:49: No attack target found
-12/13/08 22:09:49: Standing
-12/13/08 22:09:49: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:49: Depot check
-12/13/08 22:09:49: Entering attack execution area
-12/13/08 22:09:49: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202589, attackMode=1
-12/13/08 22:09:49: No attack target found
-12/13/08 22:09:49: Standing
-12/13/08 22:09:50: Next loop. States: 0, 0, 5, 0, sleep=0/0
-12/13/08 22:09:50: Depot check
-12/13/08 22:09:50: Entering attack execution area
-12/13/08 22:09:50: Training check: attackedCr=-1, alien=1, #attacking=0, lastHpDrop=1229202590, attackMode=1
-12/13/08 22:09:50: No attack target found
-12/13/08 22:09:50: Standing
-12/13/08 22:09:50: Exiting cavebot
+12/15/08 18:29:01: Cavebot started
+12/15/08 18:29:01: Next loop. States: 0, 0, 0, 0, sleep=0/0
+12/15/08 18:29:01: Depot check
+12/15/08 18:29:01: Entering attack execution area
+12/15/08 18:29:01: No attack target found
+12/15/08 18:29:01: Getting location for walker.
+12/15/08 18:29:01: Walking to waypoint (32369,32232,7)
+12/15/08 18:29:01: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:01: timing: findPathOnMap() = 0ms
+12/15/08 18:29:01: Walking: execute walk
+12/15/08 18:29:02: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:02: Depot check
+12/15/08 18:29:02: Entering attack execution area
+12/15/08 18:29:02: No attack target found
+12/15/08 18:29:02: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:02: timing: findPathOnMap() = 0ms
+12/15/08 18:29:02: Walking: execute walk
+12/15/08 18:29:02: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:02: Depot check
+12/15/08 18:29:02: Entering attack execution area
+12/15/08 18:29:02: No attack target found
+12/15/08 18:29:02: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:02: timing: findPathOnMap() = 0ms
+12/15/08 18:29:02: Walking: execute walk
+12/15/08 18:29:02: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:02: Depot check
+12/15/08 18:29:02: Entering attack execution area
+12/15/08 18:29:02: No attack target found
+12/15/08 18:29:02: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:02: timing: findPathOnMap() = 16ms
+12/15/08 18:29:02: Walking: execute walk
+12/15/08 18:29:02: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:02: Depot check
+12/15/08 18:29:02: Entering attack execution area
+12/15/08 18:29:02: No attack target found
+12/15/08 18:29:02: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:02: timing: findPathOnMap() = 62ms
+12/15/08 18:29:02: Walking: execute walk
+12/15/08 18:29:03: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:03: Depot check
+12/15/08 18:29:03: Entering attack execution area
+12/15/08 18:29:03: No attack target found
+12/15/08 18:29:03: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:03: timing: findPathOnMap() = 0ms
+12/15/08 18:29:03: Walking: execute walk
+12/15/08 18:29:03: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:03: Depot check
+12/15/08 18:29:03: Entering attack execution area
+12/15/08 18:29:03: No attack target found
+12/15/08 18:29:03: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:03: timing: findPathOnMap() = 0ms
+12/15/08 18:29:03: Walking: execute walk
+12/15/08 18:29:03: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:03: Depot check
+12/15/08 18:29:03: Entering attack execution area
+12/15/08 18:29:03: No attack target found
+12/15/08 18:29:03: findPathOnMap: standard walk (32369,32236,7)->(32369,32232,7)
+12/15/08 18:29:03: timing: findPathOnMap() = 0ms
+12/15/08 18:29:03: Walking: execute walk
+12/15/08 18:29:03: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:03: Depot check
+12/15/08 18:29:03: Entering attack execution area
+12/15/08 18:29:03: No attack target found
+12/15/08 18:29:03: findPathOnMap: standard walk (32369,32236,7)->(32369,32232,7)
+12/15/08 18:29:03: timing: findPathOnMap() = 16ms
+12/15/08 18:29:03: Walking: execute walk
+12/15/08 18:29:04: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:04: Depot check
+12/15/08 18:29:04: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:04: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193411,x=32369
+12/15/08 18:29:04: Quentin, nr=2, isatta=0, isonscreen=1, atktm=0 ID=1073742230 ignore=0,x=32368
+12/15/08 18:29:04: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:04: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:04: Rozeen Lu, nr=15, isatta=0, isonscreen=1, atktm=0 ID=27328053 ignore=0,x=32374
+12/15/08 18:29:04: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32369
+12/15/08 18:29:04: Quit Case:No attack player
+12/15/08 18:29:04: Quit Case:only attack attacking
+12/15/08 18:29:04: Quit Case:No attack player
+12/15/08 18:29:04: Quit Case:No attack player
+12/15/08 18:29:04: Quit Case:No attack player
+12/15/08 18:29:04: Quit Case:No attack player
+12/15/08 18:29:04: Entering attack execution area
+12/15/08 18:29:04: No attack target found
+12/15/08 18:29:04: findPathOnMap: standard walk (32369,32235,7)->(32369,32232,7)
+12/15/08 18:29:04: timing: findPathOnMap() = 15ms
+12/15/08 18:29:04: Walking: execute walk
+12/15/08 18:29:04: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:04: Depot check
+12/15/08 18:29:04: Entering attack execution area
+12/15/08 18:29:04: No attack target found
+12/15/08 18:29:04: findPathOnMap: standard walk (32369,32234,7)->(32369,32232,7)
+12/15/08 18:29:04: timing: findPathOnMap() = 16ms
+12/15/08 18:29:04: Walking: execute walk
+12/15/08 18:29:04: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:04: Depot check
+12/15/08 18:29:04: Entering attack execution area
+12/15/08 18:29:04: No attack target found
+12/15/08 18:29:04: Waypoint reached
+12/15/08 18:29:04: Standing
+12/15/08 18:29:04: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:04: Depot check
+12/15/08 18:29:04: Entering attack execution area
+12/15/08 18:29:04: No attack target found
+12/15/08 18:29:04: Standing
+12/15/08 18:29:05: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:05: Depot check
+12/15/08 18:29:05: Entering attack execution area
+12/15/08 18:29:05: No attack target found
+12/15/08 18:29:05: Standing
+12/15/08 18:29:05: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:05: Depot check
+12/15/08 18:29:05: Entering attack execution area
+12/15/08 18:29:05: No attack target found
+12/15/08 18:29:05: Standing
+12/15/08 18:29:05: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:05: Depot check
+12/15/08 18:29:05: Entering attack execution area
+12/15/08 18:29:05: No attack target found
+12/15/08 18:29:05: Standing
+12/15/08 18:29:06: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:06: Depot check
+12/15/08 18:29:06: Entering attack execution area
+12/15/08 18:29:06: No attack target found
+12/15/08 18:29:06: Getting location for walker.
+12/15/08 18:29:06: Walking to waypoint (32365,32237,7)
+12/15/08 18:29:06: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:06: timing: findPathOnMap() = 16ms
+12/15/08 18:29:06: Walking: execute walk
+12/15/08 18:29:06: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:06: Depot check
+12/15/08 18:29:06: Entering attack execution area
+12/15/08 18:29:06: No attack target found
+12/15/08 18:29:06: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:06: timing: findPathOnMap() = 16ms
+12/15/08 18:29:06: Walking: execute walk
+12/15/08 18:29:06: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:06: Depot check
+12/15/08 18:29:06: Entering attack execution area
+12/15/08 18:29:06: No attack target found
+12/15/08 18:29:06: findPathOnMap: standard walk (32368,32232,7)->(32365,32237,7)
+12/15/08 18:29:06: timing: findPathOnMap() = 0ms
+12/15/08 18:29:06: Walking: execute walk
+12/15/08 18:29:06: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:06: Depot check
+12/15/08 18:29:06: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:06: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193409,x=32367
+12/15/08 18:29:06: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:06: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:06: Quit Case:No attack player
+12/15/08 18:29:06: Quit Case:No attack player
+12/15/08 18:29:06: Quit Case:No attack player
+12/15/08 18:29:06: Entering attack execution area
+12/15/08 18:29:06: No attack target found
+12/15/08 18:29:06: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:06: timing: findPathOnMap() = 16ms
+12/15/08 18:29:06: Walking: execute walk
+12/15/08 18:29:07: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:07: Depot check
+12/15/08 18:29:07: Entering attack execution area
+12/15/08 18:29:07: No attack target found
+12/15/08 18:29:07: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:07: timing: findPathOnMap() = 15ms
+12/15/08 18:29:07: Walking: execute walk
+12/15/08 18:29:07: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:07: Depot check
+12/15/08 18:29:07: Entering attack execution area
+12/15/08 18:29:07: No attack target found
+12/15/08 18:29:07: findPathOnMap: standard walk (32367,32233,7)->(32365,32237,7)
+12/15/08 18:29:07: timing: findPathOnMap() = 16ms
+12/15/08 18:29:07: Walking: execute walk
+12/15/08 18:29:07: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:07: Depot check
+12/15/08 18:29:07: Entering attack execution area
+12/15/08 18:29:07: No attack target found
+12/15/08 18:29:07: findPathOnMap: standard walk (32367,32234,7)->(32365,32237,7)
+12/15/08 18:29:07: timing: findPathOnMap() = 16ms
+12/15/08 18:29:07: Walking: execute walk
+12/15/08 18:29:07: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:07: Depot check
+12/15/08 18:29:07: Entering attack execution area
+12/15/08 18:29:07: No attack target found
+12/15/08 18:29:07: findPathOnMap: standard walk (32367,32234,7)->(32365,32237,7)
+12/15/08 18:29:07: timing: findPathOnMap() = 0ms
+12/15/08 18:29:07: Walking: execute walk
+12/15/08 18:29:08: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:08: Depot check
+12/15/08 18:29:08: Entering attack execution area
+12/15/08 18:29:08: No attack target found
+12/15/08 18:29:08: findPathOnMap: standard walk (32366,32234,7)->(32365,32237,7)
+12/15/08 18:29:08: timing: findPathOnMap() = 0ms
+12/15/08 18:29:08: Walking: execute walk
+12/15/08 18:29:08: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:08: Depot check
+12/15/08 18:29:08: Entering attack execution area
+12/15/08 18:29:08: No attack target found
+12/15/08 18:29:08: findPathOnMap: standard walk (32366,32235,7)->(32365,32237,7)
+12/15/08 18:29:08: timing: findPathOnMap() = 15ms
+12/15/08 18:29:08: Walking: execute walk
+12/15/08 18:29:08: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:08: Depot check
+12/15/08 18:29:08: Entering attack execution area
+12/15/08 18:29:08: No attack target found
+12/15/08 18:29:08: Waypoint reached
+12/15/08 18:29:08: Standing
+12/15/08 18:29:08: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:08: Depot check
+12/15/08 18:29:08: Entering attack execution area
+12/15/08 18:29:08: No attack target found
+12/15/08 18:29:08: Standing
+12/15/08 18:29:09: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:09: Depot check
+12/15/08 18:29:09: Entering attack execution area
+12/15/08 18:29:09: No attack target found
+12/15/08 18:29:09: Standing
+12/15/08 18:29:09: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:09: Depot check
+12/15/08 18:29:09: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:09: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193406,x=32365
+12/15/08 18:29:09: Quentin, nr=2, isatta=0, isonscreen=1, atktm=0 ID=1073742230 ignore=0,x=32368
+12/15/08 18:29:09: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:09: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:09: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:09: Quit Case:No attack player
+12/15/08 18:29:09: Quit Case:only attack attacking
+12/15/08 18:29:09: Quit Case:No attack player
+12/15/08 18:29:09: Quit Case:No attack player
+12/15/08 18:29:09: Quit Case:No attack player
+12/15/08 18:29:09: Entering attack execution area
+12/15/08 18:29:09: No attack target found
+12/15/08 18:29:09: Standing
+12/15/08 18:29:09: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:09: Depot check
+12/15/08 18:29:09: Entering attack execution area
+12/15/08 18:29:09: No attack target found
+12/15/08 18:29:09: Standing
+12/15/08 18:29:09: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:09: Depot check
+12/15/08 18:29:09: Entering attack execution area
+12/15/08 18:29:09: No attack target found
+12/15/08 18:29:09: Standing
+12/15/08 18:29:10: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:10: Depot check
+12/15/08 18:29:10: Entering attack execution area
+12/15/08 18:29:10: No attack target found
+12/15/08 18:29:10: Getting location for walker.
+12/15/08 18:29:10: Walking to waypoint (32369,32232,7)
+12/15/08 18:29:10: findPathOnMap: standard walk (32365,32237,7)->(32369,32232,7)
+12/15/08 18:29:10: timing: findPathOnMap() = 0ms
+12/15/08 18:29:10: Walking: execute walk
+12/15/08 18:29:10: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:10: Depot check
+12/15/08 18:29:10: Entering attack execution area
+12/15/08 18:29:10: No attack target found
+12/15/08 18:29:10: findPathOnMap: standard walk (32365,32237,7)->(32369,32232,7)
+12/15/08 18:29:10: timing: findPathOnMap() = 0ms
+12/15/08 18:29:10: Walking: execute walk
+12/15/08 18:29:10: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:10: Depot check
+12/15/08 18:29:10: Entering attack execution area
+12/15/08 18:29:10: No attack target found
+12/15/08 18:29:10: findPathOnMap: standard walk (32365,32237,7)->(32369,32232,7)
+12/15/08 18:29:10: timing: findPathOnMap() = 0ms
+12/15/08 18:29:10: Walking: execute walk
+12/15/08 18:29:11: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:11: Depot check
+12/15/08 18:29:11: Entering attack execution area
+12/15/08 18:29:11: No attack target found
+12/15/08 18:29:11: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:11: timing: findPathOnMap() = 0ms
+12/15/08 18:29:11: Walking: execute walk
+12/15/08 18:29:11: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:11: Depot check
+12/15/08 18:29:11: Entering attack execution area
+12/15/08 18:29:11: No attack target found
+12/15/08 18:29:11: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:11: timing: findPathOnMap() = 0ms
+12/15/08 18:29:11: Walking: execute walk
+12/15/08 18:29:11: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:11: Depot check
+12/15/08 18:29:11: Entering attack execution area
+12/15/08 18:29:11: No attack target found
+12/15/08 18:29:11: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:11: timing: findPathOnMap() = 0ms
+12/15/08 18:29:11: Walking: execute walk
+12/15/08 18:29:11: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:11: Depot check
+12/15/08 18:29:11: Entering attack execution area
+12/15/08 18:29:11: No attack target found
+12/15/08 18:29:11: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:11: timing: findPathOnMap() = 0ms
+12/15/08 18:29:11: Walking: execute walk
+12/15/08 18:29:12: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:12: Depot check
+12/15/08 18:29:12: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:12: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193403,x=32367
+12/15/08 18:29:12: Quentin, nr=2, isatta=0, isonscreen=1, atktm=0 ID=1073742230 ignore=0,x=32368
+12/15/08 18:29:12: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:12: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:12: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:12: Quit Case:No attack player
+12/15/08 18:29:12: Quit Case:only attack attacking
+12/15/08 18:29:12: Quit Case:No attack player
+12/15/08 18:29:12: Quit Case:No attack player
+12/15/08 18:29:12: Quit Case:No attack player
+12/15/08 18:29:12: Entering attack execution area
+12/15/08 18:29:12: No attack target found
+12/15/08 18:29:12: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:12: timing: findPathOnMap() = 0ms
+12/15/08 18:29:12: Walking: execute walk
+12/15/08 18:29:12: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:12: Depot check
+12/15/08 18:29:12: Entering attack execution area
+12/15/08 18:29:12: No attack target found
+12/15/08 18:29:12: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:12: timing: findPathOnMap() = 16ms
+12/15/08 18:29:12: Walking: execute walk
+12/15/08 18:29:12: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:12: Depot check
+12/15/08 18:29:12: Entering attack execution area
+12/15/08 18:29:12: No attack target found
+12/15/08 18:29:12: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:12: timing: findPathOnMap() = 16ms
+12/15/08 18:29:12: Walking: execute walk
+12/15/08 18:29:12: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:12: Depot check
+12/15/08 18:29:12: Entering attack execution area
+12/15/08 18:29:12: No attack target found
+12/15/08 18:29:12: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:12: timing: findPathOnMap() = 15ms
+12/15/08 18:29:12: Walking: execute walk
+12/15/08 18:29:13: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:13: Depot check
+12/15/08 18:29:13: Entering attack execution area
+12/15/08 18:29:13: No attack target found
+12/15/08 18:29:13: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:13: timing: findPathOnMap() = 16ms
+12/15/08 18:29:13: Walking: execute walk
+12/15/08 18:29:13: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:13: Depot check
+12/15/08 18:29:13: Entering attack execution area
+12/15/08 18:29:13: No attack target found
+12/15/08 18:29:13: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:13: timing: findPathOnMap() = 16ms
+12/15/08 18:29:13: Walking: execute walk
+12/15/08 18:29:13: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:13: Depot check
+12/15/08 18:29:13: Entering attack execution area
+12/15/08 18:29:13: No attack target found
+12/15/08 18:29:13: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:13: timing: findPathOnMap() = 15ms
+12/15/08 18:29:13: Walking: execute walk
+12/15/08 18:29:13: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:13: Depot check
+12/15/08 18:29:13: Entering attack execution area
+12/15/08 18:29:13: No attack target found
+12/15/08 18:29:13: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:13: timing: findPathOnMap() = 16ms
+12/15/08 18:29:13: Walking: execute walk
+12/15/08 18:29:14: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:14: Depot check
+12/15/08 18:29:14: Entering attack execution area
+12/15/08 18:29:14: No attack target found
+12/15/08 18:29:14: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:14: timing: findPathOnMap() = 15ms
+12/15/08 18:29:14: Walking: execute walk
+12/15/08 18:29:14: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:14: Depot check
+12/15/08 18:29:14: Entering attack execution area
+12/15/08 18:29:14: No attack target found
+12/15/08 18:29:14: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:14: timing: findPathOnMap() = 16ms
+12/15/08 18:29:14: Walking: execute walk
+12/15/08 18:29:14: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:14: Depot check
+12/15/08 18:29:14: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:14: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193401,x=32367
+12/15/08 18:29:14: Quentin, nr=2, isatta=0, isonscreen=1, atktm=0 ID=1073742230 ignore=0,x=32368
+12/15/08 18:29:14: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:14: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:14: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:14: Quit Case:No attack player
+12/15/08 18:29:14: Quit Case:only attack attacking
+12/15/08 18:29:14: Quit Case:No attack player
+12/15/08 18:29:14: Quit Case:No attack player
+12/15/08 18:29:14: Quit Case:No attack player
+12/15/08 18:29:14: Entering attack execution area
+12/15/08 18:29:14: No attack target found
+12/15/08 18:29:14: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:14: timing: findPathOnMap() = 16ms
+12/15/08 18:29:14: Walking: execute walk
+12/15/08 18:29:15: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:15: Depot check
+12/15/08 18:29:15: Entering attack execution area
+12/15/08 18:29:15: No attack target found
+12/15/08 18:29:15: findPathOnMap: standard walk (32368,32237,7)->(32369,32232,7)
+12/15/08 18:29:15: timing: findPathOnMap() = 0ms
+12/15/08 18:29:15: Walking: execute walk
+12/15/08 18:29:15: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:15: Depot check
+12/15/08 18:29:15: Entering attack execution area
+12/15/08 18:29:15: No attack target found
+12/15/08 18:29:15: findPathOnMap: standard walk (32371,32232,7)->(32369,32232,7)
+12/15/08 18:29:15: timing: findPathOnMap() = 16ms
+12/15/08 18:29:15: Walking: execute walk
+12/15/08 18:29:15: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:15: Depot check
+12/15/08 18:29:15: Entering attack execution area
+12/15/08 18:29:15: No attack target found
+12/15/08 18:29:15: findPathOnMap: standard walk (32371,32231,7)->(32369,32232,7)
+12/15/08 18:29:15: timing: findPathOnMap() = 16ms
+12/15/08 18:29:15: Walking: execute walk
+12/15/08 18:29:15: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:15: Depot check
+12/15/08 18:29:15: Entering attack execution area
+12/15/08 18:29:15: No attack target found
+12/15/08 18:29:15: findPathOnMap: standard walk (32371,32230,7)->(32369,32232,7)
+12/15/08 18:29:15: timing: findPathOnMap() = 0ms
+12/15/08 18:29:15: Walking: execute walk
+12/15/08 18:29:16: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:16: Depot check
+12/15/08 18:29:16: Entering attack execution area
+12/15/08 18:29:16: No attack target found
+12/15/08 18:29:16: findPathOnMap: standard walk (32371,32230,7)->(32369,32232,7)
+12/15/08 18:29:16: timing: findPathOnMap() = 0ms
+12/15/08 18:29:16: Walking: execute walk
+12/15/08 18:29:16: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:16: Depot check
+12/15/08 18:29:16: Entering attack execution area
+12/15/08 18:29:16: No attack target found
+12/15/08 18:29:16: findPathOnMap: standard walk (32371,32229,7)->(32369,32232,7)
+12/15/08 18:29:16: timing: findPathOnMap() = 15ms
+12/15/08 18:29:16: Walking: execute walk
+12/15/08 18:29:16: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:16: Depot check
+12/15/08 18:29:16: Entering attack execution area
+12/15/08 18:29:16: No attack target found
+12/15/08 18:29:16: findPathOnMap: standard walk (32371,32229,7)->(32369,32232,7)
+12/15/08 18:29:16: timing: findPathOnMap() = 0ms
+12/15/08 18:29:16: Walking: execute walk
+12/15/08 18:29:16: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:16: Depot check
+12/15/08 18:29:16: Entering attack execution area
+12/15/08 18:29:16: No attack target found
+12/15/08 18:29:16: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:16: timing: findPathOnMap() = 0ms
+12/15/08 18:29:16: Walking: execute walk
+12/15/08 18:29:17: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:17: Depot check
+12/15/08 18:29:17: Entering attack execution area
+12/15/08 18:29:17: No attack target found
+12/15/08 18:29:17: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:17: timing: findPathOnMap() = 0ms
+12/15/08 18:29:17: Walking: execute walk
+12/15/08 18:29:17: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:17: Depot check
+12/15/08 18:29:17: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:17: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193398,x=32371
+12/15/08 18:29:17: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:17: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:17: Quit Case:No attack player
+12/15/08 18:29:17: Quit Case:No attack player
+12/15/08 18:29:17: Quit Case:No attack player
+12/15/08 18:29:17: Entering attack execution area
+12/15/08 18:29:17: No attack target found
+12/15/08 18:29:17: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:17: timing: findPathOnMap() = 16ms
+12/15/08 18:29:17: Walking: execute walk
+12/15/08 18:29:17: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:17: Depot check
+12/15/08 18:29:17: Entering attack execution area
+12/15/08 18:29:17: No attack target found
+12/15/08 18:29:17: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:17: timing: findPathOnMap() = 15ms
+12/15/08 18:29:17: Walking: execute walk
+12/15/08 18:29:17: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:17: Depot check
+12/15/08 18:29:17: Entering attack execution area
+12/15/08 18:29:17: No attack target found
+12/15/08 18:29:17: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:17: timing: findPathOnMap() = 16ms
+12/15/08 18:29:17: Walking: execute walk
+12/15/08 18:29:18: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:18: Depot check
+12/15/08 18:29:18: Entering attack execution area
+12/15/08 18:29:18: No attack target found
+12/15/08 18:29:18: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:18: timing: findPathOnMap() = 15ms
+12/15/08 18:29:18: Walking: execute walk
+12/15/08 18:29:18: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:18: Depot check
+12/15/08 18:29:18: Entering attack execution area
+12/15/08 18:29:18: No attack target found
+12/15/08 18:29:18: findPathOnMap: standard walk (32371,32228,7)->(32369,32232,7)
+12/15/08 18:29:18: timing: findPathOnMap() = 16ms
+12/15/08 18:29:18: Walking: execute walk
+12/15/08 18:29:18: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:18: Depot check
+12/15/08 18:29:18: Entering attack execution area
+12/15/08 18:29:18: No attack target found
+12/15/08 18:29:18: findPathOnMap: standard walk (32370,32228,7)->(32369,32232,7)
+12/15/08 18:29:18: timing: findPathOnMap() = 16ms
+12/15/08 18:29:18: Walking: execute walk
+12/15/08 18:29:19: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:19: Depot check
+12/15/08 18:29:19: Entering attack execution area
+12/15/08 18:29:19: No attack target found
+12/15/08 18:29:19: findPathOnMap: standard walk (32370,32228,7)->(32369,32232,7)
+12/15/08 18:29:19: timing: findPathOnMap() = 0ms
+12/15/08 18:29:19: Walking: execute walk
+12/15/08 18:29:19: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:19: Depot check
+12/15/08 18:29:19: Entering attack execution area
+12/15/08 18:29:19: No attack target found
+12/15/08 18:29:19: findPathOnMap: standard walk (32369,32228,7)->(32369,32232,7)
+12/15/08 18:29:19: timing: findPathOnMap() = 0ms
+12/15/08 18:29:19: Walking: execute walk
+12/15/08 18:29:19: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:19: Depot check
+12/15/08 18:29:19: Entering attack execution area
+12/15/08 18:29:19: No attack target found
+12/15/08 18:29:19: findPathOnMap: standard walk (32369,32229,7)->(32369,32232,7)
+12/15/08 18:29:19: timing: findPathOnMap() = 16ms
+12/15/08 18:29:19: Walking: execute walk
+12/15/08 18:29:19: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:19: Depot check
+12/15/08 18:29:19: Entering attack execution area
+12/15/08 18:29:19: No attack target found
+12/15/08 18:29:19: findPathOnMap: standard walk (32369,32230,7)->(32369,32232,7)
+12/15/08 18:29:19: timing: findPathOnMap() = 15ms
+12/15/08 18:29:19: Walking: execute walk
+12/15/08 18:29:20: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:20: Depot check
+12/15/08 18:29:20: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:20: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193395,x=32369
+12/15/08 18:29:20: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:20: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:20: Quit Case:No attack player
+12/15/08 18:29:20: Quit Case:No attack player
+12/15/08 18:29:20: Quit Case:No attack player
+12/15/08 18:29:20: Entering attack execution area
+12/15/08 18:29:20: No attack target found
+12/15/08 18:29:20: Waypoint reached
+12/15/08 18:29:20: Standing
+12/15/08 18:29:20: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:20: Depot check
+12/15/08 18:29:20: Entering attack execution area
+12/15/08 18:29:20: No attack target found
+12/15/08 18:29:20: Standing
+12/15/08 18:29:20: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:20: Depot check
+12/15/08 18:29:20: Entering attack execution area
+12/15/08 18:29:20: No attack target found
+12/15/08 18:29:20: Standing
+12/15/08 18:29:20: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:20: Depot check
+12/15/08 18:29:20: Entering attack execution area
+12/15/08 18:29:20: No attack target found
+12/15/08 18:29:20: Standing
+12/15/08 18:29:21: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:21: Depot check
+12/15/08 18:29:21: Entering attack execution area
+12/15/08 18:29:21: No attack target found
+12/15/08 18:29:21: Standing
+12/15/08 18:29:21: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:21: Depot check
+12/15/08 18:29:21: Entering attack execution area
+12/15/08 18:29:21: No attack target found
+12/15/08 18:29:21: Standing
+12/15/08 18:29:21: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:21: Depot check
+12/15/08 18:29:21: Entering attack execution area
+12/15/08 18:29:21: No attack target found
+12/15/08 18:29:21: Standing
+12/15/08 18:29:21: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:21: Depot check
+12/15/08 18:29:21: Entering attack execution area
+12/15/08 18:29:21: No attack target found
+12/15/08 18:29:21: Standing
+12/15/08 18:29:22: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:22: Depot check
+12/15/08 18:29:22: Entering attack execution area
+12/15/08 18:29:22: No attack target found
+12/15/08 18:29:22: Getting location for walker.
+12/15/08 18:29:22: Walking to waypoint (32365,32237,7)
+12/15/08 18:29:22: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:22: timing: findPathOnMap() = 15ms
+12/15/08 18:29:22: Walking: execute walk
+12/15/08 18:29:22: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:22: Depot check
+12/15/08 18:29:22: Entering attack execution area
+12/15/08 18:29:22: No attack target found
+12/15/08 18:29:22: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:22: timing: findPathOnMap() = 16ms
+12/15/08 18:29:22: Walking: execute walk
+12/15/08 18:29:22: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:22: Depot check
+12/15/08 18:29:22: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:22: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193393,x=32368
+12/15/08 18:29:22: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:22: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:22: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:22: Quit Case:No attack player
+12/15/08 18:29:22: Quit Case:No attack player
+12/15/08 18:29:22: Quit Case:No attack player
+12/15/08 18:29:22: Quit Case:No attack player
+12/15/08 18:29:22: Entering attack execution area
+12/15/08 18:29:22: No attack target found
+12/15/08 18:29:22: findPathOnMap: standard walk (32368,32232,7)->(32365,32237,7)
+12/15/08 18:29:22: timing: findPathOnMap() = 16ms
+12/15/08 18:29:22: Walking: execute walk
+12/15/08 18:29:22: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:22: Depot check
+12/15/08 18:29:22: Entering attack execution area
+12/15/08 18:29:22: No attack target found
+12/15/08 18:29:22: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:22: timing: findPathOnMap() = 0ms
+12/15/08 18:29:22: Walking: execute walk
+12/15/08 18:29:23: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:23: Depot check
+12/15/08 18:29:23: Entering attack execution area
+12/15/08 18:29:23: No attack target found
+12/15/08 18:29:23: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:23: timing: findPathOnMap() = 16ms
+12/15/08 18:29:23: Walking: execute walk
+12/15/08 18:29:23: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:23: Depot check
+12/15/08 18:29:23: Entering attack execution area
+12/15/08 18:29:23: No attack target found
+12/15/08 18:29:23: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:23: timing: findPathOnMap() = 15ms
+12/15/08 18:29:23: Walking: execute walk
+12/15/08 18:29:23: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:23: Depot check
+12/15/08 18:29:23: Entering attack execution area
+12/15/08 18:29:23: No attack target found
+12/15/08 18:29:23: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:23: timing: findPathOnMap() = 0ms
+12/15/08 18:29:23: Walking: execute walk
+12/15/08 18:29:23: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:23: Depot check
+12/15/08 18:29:24: Entering attack execution area
+12/15/08 18:29:24: No attack target found
+12/15/08 18:29:24: findPathOnMap: standard walk (32367,32234,7)->(32365,32237,7)
+12/15/08 18:29:24: timing: findPathOnMap() = 0ms
+12/15/08 18:29:24: Walking: execute walk
+12/15/08 18:29:24: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:24: Depot check
+12/15/08 18:29:24: Entering attack execution area
+12/15/08 18:29:24: No attack target found
+12/15/08 18:29:24: findPathOnMap: standard walk (32366,32234,7)->(32365,32237,7)
+12/15/08 18:29:24: timing: findPathOnMap() = 0ms
+12/15/08 18:29:24: Walking: execute walk
+12/15/08 18:29:24: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:24: Depot check
+12/15/08 18:29:24: Entering attack execution area
+12/15/08 18:29:24: No attack target found
+12/15/08 18:29:24: findPathOnMap: standard walk (32366,32235,7)->(32365,32237,7)
+12/15/08 18:29:24: timing: findPathOnMap() = 0ms
+12/15/08 18:29:24: Walking: execute walk
+12/15/08 18:29:24: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:24: Depot check
+12/15/08 18:29:24: Entering attack execution area
+12/15/08 18:29:24: No attack target found
+12/15/08 18:29:24: Waypoint reached
+12/15/08 18:29:24: Standing
+12/15/08 18:29:25: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:25: Depot check
+12/15/08 18:29:25: Entering attack execution area
+12/15/08 18:29:25: No attack target found
+12/15/08 18:29:25: Standing
+12/15/08 18:29:25: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:25: Depot check
+12/15/08 18:29:25: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:25: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193390,x=32365
+12/15/08 18:29:25: Quentin, nr=2, isatta=0, isonscreen=1, atktm=0 ID=1073742230 ignore=0,x=32368
+12/15/08 18:29:25: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:25: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:25: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:25: Quit Case:No attack player
+12/15/08 18:29:25: Quit Case:only attack attacking
+12/15/08 18:29:25: Quit Case:No attack player
+12/15/08 18:29:25: Quit Case:No attack player
+12/15/08 18:29:25: Quit Case:No attack player
+12/15/08 18:29:25: Entering attack execution area
+12/15/08 18:29:25: No attack target found
+12/15/08 18:29:25: Standing
+12/15/08 18:29:25: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:25: Depot check
+12/15/08 18:29:25: Entering attack execution area
+12/15/08 18:29:25: No attack target found
+12/15/08 18:29:25: Standing
+12/15/08 18:29:25: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:25: Depot check
+12/15/08 18:29:25: Entering attack execution area
+12/15/08 18:29:25: No attack target found
+12/15/08 18:29:25: Standing
+12/15/08 18:29:26: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:26: Depot check
+12/15/08 18:29:26: Entering attack execution area
+12/15/08 18:29:26: No attack target found
+12/15/08 18:29:26: Getting location for walker.
+12/15/08 18:29:26: Walking to waypoint (32369,32232,7)
+12/15/08 18:29:26: findPathOnMap: standard walk (32365,32237,7)->(32369,32232,7)
+12/15/08 18:29:26: timing: findPathOnMap() = 0ms
+12/15/08 18:29:26: Walking: execute walk
+12/15/08 18:29:26: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:26: Depot check
+12/15/08 18:29:26: Entering attack execution area
+12/15/08 18:29:26: No attack target found
+12/15/08 18:29:26: findPathOnMap: standard walk (32365,32237,7)->(32369,32232,7)
+12/15/08 18:29:26: timing: findPathOnMap() = 0ms
+12/15/08 18:29:26: Walking: execute walk
+12/15/08 18:29:26: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:26: Depot check
+12/15/08 18:29:26: Entering attack execution area
+12/15/08 18:29:26: No attack target found
+12/15/08 18:29:26: findPathOnMap: standard walk (32366,32237,7)->(32369,32232,7)
+12/15/08 18:29:26: timing: findPathOnMap() = 0ms
+12/15/08 18:29:26: Walking: execute walk
+12/15/08 18:29:26: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:26: Depot check
+12/15/08 18:29:26: Entering attack execution area
+12/15/08 18:29:26: No attack target found
+12/15/08 18:29:26: findPathOnMap: standard walk (32366,32237,7)->(32369,32232,7)
+12/15/08 18:29:26: timing: findPathOnMap() = 15ms
+12/15/08 18:29:26: Walking: execute walk
+12/15/08 18:29:27: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:27: Depot check
+12/15/08 18:29:27: Entering attack execution area
+12/15/08 18:29:27: No attack target found
+12/15/08 18:29:27: findPathOnMap: standard walk (32367,32237,7)->(32369,32232,7)
+12/15/08 18:29:27: timing: findPathOnMap() = 0ms
+12/15/08 18:29:27: Walking: execute walk
+12/15/08 18:29:27: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:27: Depot check
+12/15/08 18:29:27: Entering attack execution area
+12/15/08 18:29:27: No attack target found
+12/15/08 18:29:27: findPathOnMap: standard walk (32368,32237,7)->(32369,32232,7)
+12/15/08 18:29:27: timing: findPathOnMap() = 0ms
+12/15/08 18:29:27: Walking: execute walk
+12/15/08 18:29:27: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:27: Depot check
+12/15/08 18:29:27: Entering attack execution area
+12/15/08 18:29:27: No attack target found
+12/15/08 18:29:27: findPathOnMap: standard walk (32369,32237,7)->(32369,32232,7)
+12/15/08 18:29:27: timing: findPathOnMap() = 15ms
+12/15/08 18:29:27: Walking: execute walk
+12/15/08 18:29:27: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:27: Depot check
+12/15/08 18:29:27: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:27: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193388,x=32369
+12/15/08 18:29:27: Quentin, nr=2, isatta=0, isonscreen=1, atktm=0 ID=1073742230 ignore=0,x=32367
+12/15/08 18:29:27: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:27: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:27: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:27: Quit Case:No attack player
+12/15/08 18:29:27: Quit Case:only attack attacking
+12/15/08 18:29:27: Quit Case:No attack player
+12/15/08 18:29:27: Quit Case:No attack player
+12/15/08 18:29:27: Quit Case:No attack player
+12/15/08 18:29:27: Entering attack execution area
+12/15/08 18:29:27: No attack target found
+12/15/08 18:29:27: findPathOnMap: standard walk (32369,32236,7)->(32369,32232,7)
+12/15/08 18:29:27: timing: findPathOnMap() = 0ms
+12/15/08 18:29:27: Walking: execute walk
+12/15/08 18:29:28: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:28: Depot check
+12/15/08 18:29:28: Entering attack execution area
+12/15/08 18:29:28: No attack target found
+12/15/08 18:29:28: findPathOnMap: standard walk (32369,32236,7)->(32369,32232,7)
+12/15/08 18:29:28: timing: findPathOnMap() = 0ms
+12/15/08 18:29:28: Walking: execute walk
+12/15/08 18:29:28: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:28: Depot check
+12/15/08 18:29:28: Entering attack execution area
+12/15/08 18:29:28: No attack target found
+12/15/08 18:29:28: findPathOnMap: standard walk (32369,32235,7)->(32369,32232,7)
+12/15/08 18:29:28: timing: findPathOnMap() = 0ms
+12/15/08 18:29:28: Walking: execute walk
+12/15/08 18:29:28: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:28: Depot check
+12/15/08 18:29:28: Entering attack execution area
+12/15/08 18:29:28: No attack target found
+12/15/08 18:29:28: findPathOnMap: standard walk (32369,32235,7)->(32369,32232,7)
+12/15/08 18:29:28: timing: findPathOnMap() = 16ms
+12/15/08 18:29:28: Walking: execute walk
+12/15/08 18:29:29: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:29: Depot check
+12/15/08 18:29:29: Entering attack execution area
+12/15/08 18:29:29: No attack target found
+12/15/08 18:29:29: Waypoint reached
+12/15/08 18:29:29: Standing
+12/15/08 18:29:29: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:29: Depot check
+12/15/08 18:29:29: Entering attack execution area
+12/15/08 18:29:29: No attack target found
+12/15/08 18:29:29: Standing
+12/15/08 18:29:29: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:29: Depot check
+12/15/08 18:29:29: Entering attack execution area
+12/15/08 18:29:29: No attack target found
+12/15/08 18:29:29: Standing
+12/15/08 18:29:29: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:29: Depot check
+12/15/08 18:29:29: Entering attack execution area
+12/15/08 18:29:29: No attack target found
+12/15/08 18:29:29: Standing
+12/15/08 18:29:30: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:30: Depot check
+12/15/08 18:29:30: Entering attack execution area
+12/15/08 18:29:30: No attack target found
+12/15/08 18:29:30: Standing
+12/15/08 18:29:30: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:30: Depot check
+12/15/08 18:29:30: Entering attack execution area
+12/15/08 18:29:30: No attack target found
+12/15/08 18:29:30: Standing
+12/15/08 18:29:30: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:30: Depot check
+12/15/08 18:29:30: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:30: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193385,x=32369
+12/15/08 18:29:30: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:30: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:30: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:30: Quit Case:No attack player
+12/15/08 18:29:30: Quit Case:No attack player
+12/15/08 18:29:30: Quit Case:No attack player
+12/15/08 18:29:30: Quit Case:No attack player
+12/15/08 18:29:30: Entering attack execution area
+12/15/08 18:29:30: No attack target found
+12/15/08 18:29:30: Standing
+12/15/08 18:29:30: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:30: Depot check
+12/15/08 18:29:30: Entering attack execution area
+12/15/08 18:29:30: No attack target found
+12/15/08 18:29:30: Standing
+12/15/08 18:29:31: Next loop. States: 0, 0, 5, 0, sleep=0/0
+12/15/08 18:29:31: Depot check
+12/15/08 18:29:31: Entering attack execution area
+12/15/08 18:29:31: No attack target found
+12/15/08 18:29:31: Getting location for walker.
+12/15/08 18:29:31: Walking to waypoint (32365,32237,7)
+12/15/08 18:29:31: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:31: timing: findPathOnMap() = 16ms
+12/15/08 18:29:31: Walking: execute walk
+12/15/08 18:29:31: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:31: Depot check
+12/15/08 18:29:31: Entering attack execution area
+12/15/08 18:29:31: No attack target found
+12/15/08 18:29:31: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:31: timing: findPathOnMap() = 15ms
+12/15/08 18:29:31: Walking: execute walk
+12/15/08 18:29:31: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:31: Depot check
+12/15/08 18:29:31: Entering attack execution area
+12/15/08 18:29:31: No attack target found
+12/15/08 18:29:31: findPathOnMap: standard walk (32369,32232,7)->(32365,32237,7)
+12/15/08 18:29:31: timing: findPathOnMap() = 0ms
+12/15/08 18:29:31: Walking: execute walk
+12/15/08 18:29:31: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:31: Depot check
+12/15/08 18:29:31: Entering attack execution area
+12/15/08 18:29:31: No attack target found
+12/15/08 18:29:31: findPathOnMap: standard walk (32368,32232,7)->(32365,32237,7)
+12/15/08 18:29:31: timing: findPathOnMap() = 0ms
+12/15/08 18:29:31: Walking: execute walk
+12/15/08 18:29:32: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:32: Depot check
+12/15/08 18:29:32: Entering attack execution area
+12/15/08 18:29:32: No attack target found
+12/15/08 18:29:32: findPathOnMap: standard walk (32368,32232,7)->(32365,32237,7)
+12/15/08 18:29:32: timing: findPathOnMap() = 0ms
+12/15/08 18:29:32: Walking: execute walk
+12/15/08 18:29:32: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:32: Depot check
+12/15/08 18:29:32: Entering attack execution area
+12/15/08 18:29:32: No attack target found
+12/15/08 18:29:32: findPathOnMap: standard walk (32367,32232,7)->(32365,32237,7)
+12/15/08 18:29:32: timing: findPathOnMap() = 0ms
+12/15/08 18:29:32: Walking: execute walk
+12/15/08 18:29:32: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:32: Depot check
+12/15/08 18:29:32: Entering attack execution area
+12/15/08 18:29:32: No attack target found
+12/15/08 18:29:32: findPathOnMap: standard walk (32367,32233,7)->(32365,32237,7)
+12/15/08 18:29:32: timing: findPathOnMap() = 0ms
+12/15/08 18:29:32: Walking: execute walk
+12/15/08 18:29:32: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:32: Depot check
+12/15/08 18:29:32: Entering attack execution area
+12/15/08 18:29:32: No attack target found
+12/15/08 18:29:32: findPathOnMap: standard walk (32367,32234,7)->(32365,32237,7)
+12/15/08 18:29:32: timing: findPathOnMap() = 0ms
+12/15/08 18:29:32: Walking: execute walk
+12/15/08 18:29:33: Next loop. States: 0, 0, 3, 0, sleep=0/0
+12/15/08 18:29:33: Depot check
+12/15/08 18:29:33: Blinck The Demonic, nr=0, isatta=0, isonscreen=1, atktm=0 ID=30907076 ignore=0,x=32366
+12/15/08 18:29:33: Porus Porusiowski, nr=1, isatta=0, isonscreen=1, atktm=0 ID=7934562 ignore=326193382,x=32367
+12/15/08 18:29:33: Pincesita Zami, nr=10, isatta=0, isonscreen=1, atktm=0 ID=24469448 ignore=0,x=32373
+12/15/08 18:29:33: Amable, nr=14, isatta=0, isonscreen=1, atktm=0 ID=28401863 ignore=0,x=32369
+12/15/08 18:29:33: Manaudd, nr=16, isatta=0, isonscreen=1, atktm=0 ID=12759465 ignore=0,x=32370
+12/15/08 18:29:33: Quit Case:No attack player
+12/15/08 18:29:33: Quit Case:No attack player
+12/15/08 18:29:33: Quit Case:No attack player
+12/15/08 18:29:33: Quit Case:No attack player
+12/15/08 18:29:33: Entering attack execution area
+12/15/08 18:29:33: No attack target found
+12/15/08 18:29:33: findPathOnMap: standard walk (32367,32234,7)->(32365,32237,7)
+12/15/08 18:29:33: timing: findPathOnMap() = 0ms
+12/15/08 18:29:33: Walking: execute walk
+12/15/08 18:29:33: Exiting cavebot

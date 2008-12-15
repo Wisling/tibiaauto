@@ -133,8 +133,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 					int iterCount=25;
 					while (iterCount-->0) {
-						if (!reader.readVisibleCreature(attackedCh->nr)->visible)
+						CTibiaCharacter *ch2 = reader.readVisibleCreature(attackedCh->nr);
+						if (!ch2->visible)
+						{
+							delete ch2;
 							break;
+						}
+						delete ch2;
 						Sleep(50);
 					}
 

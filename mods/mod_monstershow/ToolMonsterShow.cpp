@@ -193,6 +193,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 			if (x<0||y<0||x>20||y>16)
 			{
 				// monster out of range - it might happen sometimes				
+				delete ch;
 				continue;
 			};
 			if (self->z==z&&m_monsterButtons[x][y]->GetCheck()==0)
