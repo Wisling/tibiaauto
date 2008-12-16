@@ -107,7 +107,7 @@
 		<const code="lengthMiniMapPoint" value="112"/>
 		<const code="lengthVIP" value="44"/>
 		<const code="maxContainers" value="15"/>
-		<const code="maxCreatures" value="150"/>
+		<const code="maxCreatures" value="250"/>
 		<const code="maxMapTiles" value="2016"/>
 	</consts>
 

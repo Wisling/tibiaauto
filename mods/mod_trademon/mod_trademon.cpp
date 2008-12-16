@@ -77,21 +77,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		if (config->tradeTalk){
 			if (config->channel){
-				randAdd = rand()%(int)(.1*config->channelInterval)+1;
+				randAdd = rand()%(int)((.1*config->channelInterval)+1);
 				if (channelTime+config->channelInterval+randAdd < time(NULL)){
 					channelTime = time(NULL);
-					sender.sayOnChan(config->message,7,5);	//T4: 7/5 - Trade
+					sender.sayOnChan(config->message,7,6);	
 				}
 			}
 			if (config->yell){
-				randAdd = rand()%(int)(.1*config->yellInterval)+1;
+				randAdd = rand()%(int)((.1*config->yellInterval)+1);
 				if (yellTime+config->yellInterval+randAdd < time(NULL)){
 					yellTime = time(NULL);
 					sender.sayYell(config->message);
 				}
 			}
+
 			if (config->say){
-				randAdd = rand()%(int)(.1*config->sayInterval)+1;
+				randAdd = rand()%(int)((.1*config->sayInterval)+1);
 				if (sayTime+config->sayInterval+randAdd < time(NULL)){
 					sayTime = time(NULL);
 					sender.say(config->message);
@@ -283,12 +284,12 @@ int CMod_trademonApp::validateConfig(int showAlerts)
 			}
 			if (m_configData->yell && m_configData->yellInterval<1) 
 			{
-				if (showAlerts) AfxMessageBox("UH borderline for group must be >= 0!");
+				if (showAlerts) AfxMessageBox("Yell interaval must be >= 1!");
 				return 0;
 			}
 			if (m_configData->say && m_configData->sayInterval<1) 
 			{
-				if (showAlerts) AfxMessageBox("UH borderline for group must be <= 100!");
+				if (showAlerts) AfxMessageBox("Say interval must be >= 1!");
 				return 0;
 			}
 		}
