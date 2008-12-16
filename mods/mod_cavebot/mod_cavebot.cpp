@@ -98,8 +98,8 @@ CToolAutoAttackStateWalker globalAutoAttackStateWalker=CToolAutoAttackStateWalke
 CToolAutoAttackStateDepot globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 
-int lastAttackTmCreatureId[150];
-int lastAttackTmTm[150];
+int lastAttackTmCreatureId[250];
+int lastAttackTmTm[250];
 int targetX=0,targetY=0,targetZ=0;
 int depotX=0,depotY=0,depotZ=0;
 int currentPosTM=0;
@@ -1171,7 +1171,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		shareAlienBackattack=0;
 	}
 	
-	Creature creatureList[150];
+	Creature creatureList[250];
 
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
