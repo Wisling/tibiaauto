@@ -114,7 +114,6 @@ Lizard Sentinel,Immune,Fire,Strong,Strong,,,,265
 Lizard Snakecharmer,Immune,Fire,Strong,Strong,,,Physical,325
 Lizard Templar,Immune,Fire,Strong,Strong,,,,410
 Lost Soul,Immune,Immune,Strong,Strong,Immune,Holy,,8500
-Mad Scientist,Strong,Strong,Strong,Strong,Death,Strong,,325
 Mammoth,Strong,Fire,,Strong,,,Strong,320
 Marid,Strong,Strong,Strong,Ice,Death,Strong,,550
 Massive Earth Elemental,Immune,Fire,Strong,Immune,Strong,Strong,Strong,1330
@@ -207,3 +206,27 @@ Witch,Strong,,Immune,,Death,,Physical,300
 Wolf,,,,Ice,Death,Strong,,25
 Wyrm,Strong,Strong,Immune,Ice,Death,,,1825
 Wyvern,Immune,,Strong,Strong,,,,795
+Crazed Beggar ,Earth,,Strong,,Death,Strong,Strong,100
+Death Blob ,Immune,Fire,Energy,Strong,Immune,Holy,Strong,320
+Gang Member ,,,,,Death,,,295
+Gladiator ,,,,,Death,Strong,Strong,185
+Gozzler ,,,,,Strong,Strong,Physical,240
+Haunted Treeling ,Immune,Fire,,Strong,Strong,Strong,,450
+Hellspawn ,Strong,Strong,Strong,Ice,Death,Strong,Strong,3500
+Infernalist ,Strong,Immune,Immune,Ice,Strong,Strong,Physical,3650
+Mad Scientist ,Strong,Strong,Strong,Strong,Death,Strong,,325
+Mercury Blob ,Strong,Strong,,Strong,Immune,Strong,Strong,150
+Mutated Bat ,Immune,,,,Immune,,,900
+Mutated Human ,Immune,,,Strong,Immune,Holy,,240
+Mutated Rat ,Immune,Fire,,,Immune,Strong,,550
+Mutated Tiger ,Strong,Strong,Strong,Strong,Death,,,1100
+Nightmare Scion ,Immune,Strong,Strong,Strong,Immune,Holy,,1400
+Nightstalker ,,,Energy,Strong,Death,Strong,Physical,700
+Undead Gladiator ,Earth,Strong,Strong,,Death,Strong,,1000
+Vampire Bride ,Strong,Fire,Strong,Strong,Immune,Holy,,1200
+War Golem ,Strong,Strong,Strong,Strong,Strong,Strong,Strong,4300
+Werewolf ,Strong,Fire,Strong,Ice,Strong,Holy,Strong,1955
+Worker Golem ,Strong,,Energy,Strong,Strong,Strong,Strong,1400
+Young Sea Serpent,Immune,Strong,Energy,Immune,Death,,Physical,1050
+Zombie ,Immune,Strong,Immune,Immune,Immune,,,500
+Acid Blob ,Immune,Fire,Energy,Strong,Immune,,,250
