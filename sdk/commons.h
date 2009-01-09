@@ -8,7 +8,7 @@ int isItemOnTop(int x,int y,int itemId)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
 		CTibiaTile *tileData = reader.getTibiaTile(tileId);
-		if (tileId==99||tileData->ground||tileData->alwaysOnTop||tileData->moreAlwaysOnTop)
+		if (tileId==99||tileData->ground||tileData->alwaysOnTop)
 		{
 			continue;
 		}		
@@ -28,7 +28,7 @@ int isItemCovered(int x,int y,int itemId)
 		CTibiaTile *tileData = reader.getTibiaTile(tileId);
 
 
-		if (tileId==99||tileData->ground||tileData->alwaysOnTop||tileData->moreAlwaysOnTop)
+		if (tileId==99||tileData->ground||tileData->alwaysOnTop)
 		{
 			continue;
 		}		
@@ -53,7 +53,7 @@ int isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
 		CTibiaTile *tileData = reader.getTibiaTile(tileId);
-		if (tileId==99||tileData->ground||tileData->alwaysOnTop||tileData->moreAlwaysOnTop)
+		if (tileId==99||tileData->ground||tileData->alwaysOnTop)
 		{
 			continue;
 		}		
@@ -78,7 +78,7 @@ int isItemCovered(int x,int y,int *itemArr,int itemArrSize)
 		CTibiaTile *tileData = reader.getTibiaTile(tileId);
 
 
-		if (tileId==99||tileData->ground||tileData->alwaysOnTop||tileData->moreAlwaysOnTop)
+		if (tileId==99||tileData->ground||tileData->alwaysOnTop)
 		{
 			continue;
 		}	
@@ -111,7 +111,7 @@ int itemOnTopIndex(int x,int y)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
 		CTibiaTile *tileData = reader.getTibiaTile(tileId);
-		if (tileId==99||tileData->ground||tileData->alwaysOnTop||tileData->moreAlwaysOnTop)
+		if (tileId==99||tileData->ground||tileData->alwaysOnTop)
 		{
 			continue;
 		}		
@@ -141,7 +141,7 @@ int itemOnTopQty(int x,int y)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
 		CTibiaTile *tileData = reader.getTibiaTile(tileId);
-		if (tileId==99||tileData->ground||tileData->alwaysOnTop||tileData->moreAlwaysOnTop)
+		if (tileId==99||tileData->ground||tileData->alwaysOnTop)
 		{
 			continue;
 		}		
