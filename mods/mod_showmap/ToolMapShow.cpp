@@ -18,7 +18,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CTibiaMapProxy tibiaMap;
+static int prevX=0,prevY=0,prevZ=0,iter=0;
 
+/////////////////////////////////////////////////////////////////////////////
+// CONSTANTS
+int MINX=-8,MAXX=9,MINY=-6,MAXY=7;
 
 /////////////////////////////////////////////////////////////////////////////
 // CToolMapShow dialog
@@ -311,17 +315,16 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1003)
 	{
-		static int prevX=0,prevY=0,prevZ=0,iter=0;
 		KillTimer(1003);
 		CMemReaderProxy reader;
 		// get tile 0 to make sure that the framework is initialised
 		reader.getTibiaTile(0);
-		CTibiaCharacter *self = reader.readSelfCharacter();		
+		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		if (self->x!=prevX||self->y!=prevY||self->z!=prevZ||iter%20==0)
+		iter++;//increases every 0.5 secs
+		if (self->x!=prevX||self->y!=prevY||self->z!=prevZ||iter%3==0)
 		{			
-			iter++;
-			int x,y;			
+			int x,y;
 			int tileArrAvail[18][14];
 			int tileArrUpDown[18][14];
 
@@ -329,7 +332,6 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 			{				
 				for (y=-6;y<=7;y++)
 				{					
-					
 					int i;
 					int count=reader.mapGetPointItemsCount(point(x,y,0));
 
@@ -343,8 +345,8 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 						{
 							CTibiaTile *tileData = reader.getTibiaTile(tileId);
 							if (tileData->blocking)
-							{								
-								blocked=1;								
+							{
+								blocked=1;
 							}
 							if (tileData->ground)
 							{
@@ -382,15 +384,17 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							{
 								updown=301;
 							}
+						} else if (x!=0 || y!=0) {
+							tibiaMap.prohPointAdd(self->x+x,self->y+y,self->z);
 						}
 					} // for i
 
 					// if tile is depot chest than treat it in a special way
 					if (updown==301) blocked=0;
-					// if there is not a single ground tile than one cannot pass
+					// if there is not a single walkable tile than one cannot pass
 					if (ground==0&&!updown) 
 					{
-						blocked=1;						
+						blocked=1;
 					}
 
 					// if count==0 then override "blocked" and "no updown"
@@ -403,37 +407,28 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					if (!blocked)
 					{				
 						tileArrAvail[x+8][y+6]=1;
-						tileArrUpDown[x+8][y+6]=updown;						
+						tileArrUpDown[x+8][y+6]=updown;
 					} else {
 						tileArrAvail[x+8][y+6]=0;
-						tileArrUpDown[x+8][y+6]=0;						
+						tileArrUpDown[x+8][y+6]=0;
 					}
 				} // for y
 			} // for x
 			CTibiaCharacter *newSelf = reader.readSelfCharacter();
-			if (newSelf->x==self->x&&newSelf->y==self->y&&newSelf->z==self->z)
-			{
-				prevX=self->x;
-				prevY=self->y;
-				prevZ=self->z;
-				// write results on the map only if we are standing on the same place
-				// in the beginning and in the end of read cycle
-				for (x=-8;x<=9;x++)
-				{				
-					for (y=-6;y<=7;y++)
-					{	
-						if (tileArrAvail[x+8][y+6])
-						{
-							tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);					
-							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
-						} else {
-							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
-							tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
-						}
+			for (x=-8;x<=9;x++)
+			{				
+				for (y=-6;y<=7;y++)
+				{	
+					if (tileArrAvail[x+8][y+6])
+					{
+						tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
+						tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
+					} else {
+						tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
+						tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
 					}
 				}
 			}
-			delete newSelf;
 		}
 		
 		delete self;

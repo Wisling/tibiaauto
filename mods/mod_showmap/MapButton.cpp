@@ -137,7 +137,7 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 	}	
 	if (wParam==IDD_TOOL_MAPSHOW_CONFIG)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		if (parent->m_extendedResearch.GetCheck()) {
 			if (m_value!=-1 || reader.mapGetPointItemId(point(m_x, m_y, 0),0))
 				parent->ShowMapConfig(m_x,m_y);

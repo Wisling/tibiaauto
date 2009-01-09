@@ -28,7 +28,6 @@ public:
 	CEdit m_TileId;
 	CEdit m_Speed;\
 	CButton m_AlwaysOnTop;
-	CButton m_MoreAlwayOnTop;
 	CButton m_Blocking;
 	CButton m_Walkable;
 	CButton m_GoDown;

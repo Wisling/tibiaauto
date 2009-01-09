@@ -36,7 +36,6 @@ void CMapConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TILE_ID, m_TileId);
 	DDX_Control(pDX, IDC_SPEED, m_Speed);
 	DDX_Control(pDX, IDC_ALWAYS_ON_TOP, m_AlwaysOnTop);
-	DDX_Control(pDX, IDC_MORE_ALWAYS_ON_TOP, m_MoreAlwayOnTop);
 	DDX_Control(pDX, IDC_BLOCKING, m_Blocking);
 	DDX_Control(pDX, IDC_WALKABLE, m_Walkable);
 	DDX_Control(pDX, IDC_GO_DOWN, m_GoDown);
@@ -123,7 +122,6 @@ void CMapConfig::loadTile(int tileId, int pos) {
 	sprintf(buf, "%d", memTilesForConfig[pos]->speed);
 	m_Speed.SetWindowText(buf);
 	m_AlwaysOnTop.SetCheck(memTilesForConfig[pos]->alwaysOnTop);
-	m_MoreAlwayOnTop.SetCheck(memTilesForConfig[pos]->moreAlwaysOnTop);
 	m_Blocking.SetCheck(memTilesForConfig[pos]->blocking);
 	m_Walkable.SetCheck(memTilesForConfig[pos]->canWalkThrough);
 	m_GoDown.SetCheck(memTilesForConfig[pos]->goDown);
@@ -145,7 +143,6 @@ void CMapConfig::saveTile() {
 	
 
 	memTilesForConfig[currentStackPos]->alwaysOnTop = m_AlwaysOnTop.GetCheck();
-	memTilesForConfig[currentStackPos]->moreAlwaysOnTop = m_MoreAlwayOnTop.GetCheck();
 	memTilesForConfig[currentStackPos]->blocking = m_Blocking.GetCheck();
 	memTilesForConfig[currentStackPos]->canWalkThrough = m_Walkable.GetCheck();
 	memTilesForConfig[currentStackPos]->goDown = m_GoDown.GetCheck();

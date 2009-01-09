@@ -38,7 +38,6 @@
 #define IDC_BLOCKING                    3029
 #define IDC_WALKABLE                    3030
 #define IDC_ALWAYS_ON_TOP               3031
-#define IDC_MORE_ALWAYS_ON_TOP          3032
 #define IDC_TILE_ID                     3033
 #define IDC_SPEED                       3034
 #define IDC_PREVIOUS_CONFIG_TILE        3046
