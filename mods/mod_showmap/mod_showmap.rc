@@ -200,20 +200,16 @@ BEGIN
     CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,12,75,64,10
     GROUPBOX        "Characteristics",IDC_STATIC,111,32,104,97
-    CONTROL         "Blocks distance attacks",IDC_BLOCKING,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    119,43,93,10
-    CONTROL         "Blocks auto walking path",IDC_WALKABLE,"Button",
+    CONTROL         "Blocks walking",IDC_BLOCKING,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFT | BS_MULTILINE | WS_TABSTOP,119,43,93,10
+    CONTROL         "Walkable ground tile",IDC_WALKABLE,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
                     119,55,93,10
     CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
                     119,79,93,10
     CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,119,103,93,10
-    CONTROL         "More always on top",IDC_MORE_ALWAYS_ON_TOP,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    119,91,93,10
+                    BS_LEFT | WS_TABSTOP,119,91,93,10
     EDITTEXT        IDC_TILE_ID,149,7,24,12,ES_AUTOHSCROLL | ES_READONLY | 
                     ES_NUMBER
     LTEXT           "Tile ID:",IDC_STATIC,113,7,22,12,SS_NOTIFY | 
