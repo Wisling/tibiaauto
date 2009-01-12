@@ -18,7 +18,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CTibiaMapProxy tibiaMap;
-static int prevX=0,prevY=0,prevZ=0,iter=0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
@@ -315,6 +314,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1003)
 	{
+		static int prevX=0,prevY=0,prevZ=0,iter=0;
 		KillTimer(1003);
 		CMemReaderProxy reader;
 		// get tile 0 to make sure that the framework is initialised
@@ -415,20 +415,29 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 				} // for y
 			} // for x
 			CTibiaCharacter *newSelf = reader.readSelfCharacter();
-			for (x=-8;x<=9;x++)
-			{				
-				for (y=-6;y<=7;y++)
-				{	
-					if (tileArrAvail[x+8][y+6])
-					{
-						tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
-						tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
-					} else {
-						tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
-						tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+			if (newSelf->x==self->x&&newSelf->y==self->y&&newSelf->z==self->z)
+			{
+				prevX=self->x;
+				prevY=self->y;
+				prevZ=self->z;
+				// write results on the map only if we are standing on the same place
+				// in the beginning and in the end of read cycle
+				for (x=-8;x<=9;x++)
+				{				
+					for (y=-6;y<=7;y++)
+					{	
+						if (tileArrAvail[x+8][y+6])
+						{
+							tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
+							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
+						} else {
+							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
+							tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+						}
 					}
 				}
 			}
+			delete newSelf;
 		}
 		
 		delete self;
