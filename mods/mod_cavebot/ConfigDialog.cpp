@@ -28,6 +28,7 @@ extern int currentPosTM;
 extern int creatureAttackDist;
 extern int attackSuspendedUntil;
 extern int firstCreatureAttackTM;
+extern int currentWaypointNr;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -558,6 +559,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				int tilesAway=abs(self->x-targetX)+abs(self->y-targetY)+abs(self->z-targetZ);
 				sprintf(buf,"State: walking to (%d,%d,%d) %d tiles away",targetX,targetY,targetZ,tilesAway);
 				m_stateWalker.SetWindowText(buf);
+				if (currentWaypointNr!=m_waypointList.GetCurSel())
+					m_waypointList.SetCurSel(currentWaypointNr);
 			}
 			break;
 		case CToolAutoAttackStateWalker_noPathFound:
@@ -625,6 +628,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_trainingState.SetWindowText("State: unknown");
 		}
 
+
 		delete self;
 		
 		
@@ -670,7 +674,7 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 	if (sel==-1)
 		return;
 	m_waypointList.DeleteString(sel);
-	m_waypointList.SetCurSel(min(sel,m_waypointList.GetCount()));
+	m_waypointList.SetCurSel(min(sel,m_waypointList.GetCount()-1));
 }
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 
@@ -687,8 +691,13 @@ void CConfigDialog::OnToolAutoattackAddWaypoint()
 	m_curZ.GetWindowText(buf,255);
 	curZ=atoi(buf);
 	sprintf(buf,"(%d,%d,%d)",curX,curY,curZ);
-	m_waypointList.AddString(buf);
-	m_waypointList.SetCurSel(-1);
+	if (m_waypointList.GetCount()!=1&&m_waypointList.GetCurSel()==0){
+		m_waypointList.InsertString(0,buf);
+		m_waypointList.SetCurSel(0);
+	} else {
+		m_waypointList.InsertString(m_waypointList.GetCurSel()+1,buf);
+		m_waypointList.SetCurSel(m_waypointList.GetCurSel()+1);
+	}
 }
 
 void CConfigDialog::OnToolAutoattackRemoveMonster() 
