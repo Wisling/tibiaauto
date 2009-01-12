@@ -684,7 +684,6 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 		deleteAndNull(itemSlot);
 		itemSlot = reader.readItem(locationAddress);
 	}	
-	// wis gave the following remark here: wis: causes heap debug error :S ,test before uncommenting
 	deleteAndNull(itemSlot); 
 	return 1;
 }
@@ -1287,8 +1286,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	
 		
 
-//wisling new
-		/*notes:
+		/*wis notes:
 		going to depot ignore creatures that aren't attacking
 		training changes weapon and mode also
 		*/
@@ -1791,9 +1789,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		Start Walking Process
 		******/
 
-		/* Notes
-		maybe look into staying in 1 spot for long time
-		*/
 		moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
 		if (currentlyAttackedCreatureNr==-1 && !moving){//wis:make sure doesn;t start while looting last monster
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ) {
@@ -1813,7 +1808,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (time(NULL)<walkerStandingEndTm) {
 				globalAutoAttackStateWalker=CToolAutoAttackStateWalker_standing;
 				if (config->debug) registerDebug("Standing");				
-				deleteAndNull(self); // wis: ERROR // vanitas: WHY???
+				deleteAndNull(self);
 				continue;
 			}
 
@@ -1829,7 +1824,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					targetZ=depotZ;
 					if (config->debug) registerDebug("Continuing to a depot");
 				}
-				else if (walkerStandingEndTm) {//if waypoint recently reached find new one
+				//if waypoint recently reached OR no path found for 4 secs OR stuck for 10 secs find new waypoint
+				else if (walkerStandingEndTm||globalAutoAttackStateWalker==CToolAutoAttackStateWalker_noPathFound&&time(NULL)-currentPosTM>4||time(NULL)-currentPosTM>10) {
 					walkerStandingEndTm=0;
 					// find a new goto target from waypoint list
 					if (!waypointsCount) {
@@ -1878,11 +1874,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					// proceed with path searching
 					sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
 					if (config->debug) registerDebug(buf);
+
 					int ticksStart = GetTickCount();						
 					CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);						
 					int ticksEnd = GetTickCount();
+
 					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
 					if (config->debug) registerDebug(buf);
+
 					int pathSize;
 					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 					if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
