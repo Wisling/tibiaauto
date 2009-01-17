@@ -227,7 +227,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 		HANDLE hFind = FindFirstFile(fullMask,&data);		
 		if (hFind!=INVALID_HANDLE_VALUE)
 		{		
-			CInternetSession session;	
+			CInternetSession session;
 			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
 			int t=time(NULL);
 			int r=rand();
