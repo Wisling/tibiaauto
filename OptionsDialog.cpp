@@ -272,7 +272,7 @@ void COptionsDialog::sendFile(char *fname)
 		m_ok.EnableWindow(false);
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
-		//m_send3.EnableWindow(false);
+		m_send3.EnableWindow(false);
 		m_send4.EnableWindow(false);
 		m_progress.SetPos(0);
 		m_progress.SetRange(0,100);
@@ -303,7 +303,7 @@ void COptionsDialog::OnTimer(UINT nIDEvent)
 			m_progress.ShowWindow(SW_HIDE);
 			m_send1.EnableWindow(true);
 			m_send2.EnableWindow(true);
-			//m_send3.EnableWindow(true);
+			m_send3.EnableWindow(true);
 			m_send4.EnableWindow(true);
 			refreshStatFiles();
 		} else {
@@ -352,7 +352,7 @@ void COptionsDialog::sendMaps(char *path)
 		m_ok.EnableWindow(false);
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
-		//m_send3.EnableWindow(false);
+		m_send3.EnableWindow(false);
 		m_send4.EnableWindow(false);
 		m_progress.SetPos(0);
 		m_progress.SetRange(0,100);

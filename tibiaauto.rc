@@ -179,7 +179,7 @@ BEGIN
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
                     NOT WS_VISIBLE | WS_BORDER,7,156,171,14
     GROUPBOX        "Tibia maps",IDC_STATIC,7,76,171,36
-    PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,40,14,WS_DISABLED
+    PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,40,14
     LTEXT           "Tibia client maps are used to build a Tibia world map.",
                     IDC_STATIC,16,88,83,22
     PUSHBUTTON      "Send",IDC_SEND_USAGESTATS,126,129,40,14
@@ -333,7 +333,7 @@ IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 239, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Tibia Auto v 1.19.5 for Tibia 8.40"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,39,61,14
