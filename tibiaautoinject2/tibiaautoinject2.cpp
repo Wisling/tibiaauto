@@ -55,6 +55,7 @@ HHOOK hook;
 
 SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
+int COMPLEX=0;
 time_t debugFileStart;
 int lastSendFlags;
 
@@ -222,7 +223,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	// stack overflow protecion
 	if (depth>20)
 	{
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"!!! stack overflow protection run\n");
 		}
@@ -240,7 +241,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	
 	if (packetSize>realRecvLen)
 	{	
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"!!! underrun\n");
 		}
@@ -253,7 +254,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 		code+=256;
 	
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"### got bytes = %d; packet size = %d; code=0x%x\n",realRecvLen,packetSize,code);
 	}
@@ -269,7 +270,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 			int i;
 			
 			memcpy(decryptedBuf,buf+6,packetSize-6); // Remember CRC bytes are NOT encrypted either sending or recieving.
-			fprintf(debugFile,"# decrypted content follows #\n");
+			//fprintf(debugFile,"# decrypted content follows #\n");
 			
 			for (i=0;i<packetSize-6;i+=8)
 			{
@@ -335,7 +336,7 @@ void sendBufferViaSocket(char *buffer)
 	int minDistance=175;
 	int nowAction=GetTickCount();
 	if (nowAction-lastAction<minDistance) Sleep(minDistance-(nowAction-lastAction));
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{				
 		fprintf(debugFile,"sending; waited %dms delta=%dms [%d]\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
 	}	
@@ -345,11 +346,11 @@ void sendBufferViaSocket(char *buffer)
 	
 	int ret=send(tibiaSocket, outbufHeader,outbuflen+2,0);	
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{		
 		fprintf(debugFile,"sent %d bytes, ret=%d, lastSendFlags=%d\n",outbuflen+2,ret,lastSendFlags);
 	}
-	delete check;
+	//delete check;
 }
 
 
@@ -478,7 +479,7 @@ void parseMessageSay(char *sayBuf)
 	}
 	
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"$$$ ta command - '%s'\n",sayBuf);
 	}
@@ -578,7 +579,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			if (ch)
 			{
 				castRuneAgainstHuman(contNr,itemPos,objectId,ch->x,ch->y,ch->z);
-				delete ch;
+				//delete ch;
 				return 1;
 			}
 		}
@@ -607,7 +608,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 		}
 	}
 	
-	if (code==0x96&&buf[3]==5)
+	if (code==0x96&&buf[3]==7)
 	{		
 		// "channel"
 		char sayBuf[1000];
@@ -628,10 +629,10 @@ int parseMessageForTibiaAction(char *buf,int len)
 		}
 	}
 	
-	if (code==0x96&&buf[3]==4)
+	if (code==0x96&&buf[3]==27)
 	{
 		CTibiaItemProxy itemProxy;
-		// "tell"
+		// "private/NPC outgoing"
 		char sayBuf[1000];
 		char nickBuf[1000];
 		int nickV1=buf[4];
@@ -762,7 +763,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 		}
 	}
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"!!! send !!! [identical=%d]\n",identical);
 		fflush(debugFile);
@@ -812,7 +813,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 
 int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 {		
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"!!! recv !!!\n");
 		fflush(debugFile);
@@ -821,7 +822,7 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 	if (taMessageStart!=taMessageEnd)
 	{
 		// TODO: something's wrong here
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"privChanBufferPtr=%x\n",privChanBufferPtr);
 			fflush(debugFile);
@@ -847,8 +848,10 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 	{
 		if (debugFile)
 		{
+			if (COMPLEX){
 			fprintf(debugFile,"realRecvLen=%d\n",realRecvLen);
 			fflush(debugFile);					
+			}
 			
 			bufToHexString(buf,realRecvLen);
 			fprintf(debugFile,"<- [%x] %s\n",socket,bufToHexStringRet);		
@@ -875,7 +878,7 @@ SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 {
 	SOCKET s = Real_socket(af,type,protocol);
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"got socket: %d, %d, %d -> %d\n",af,type,protocol,s);
 		fflush(debugFile);
@@ -888,7 +891,7 @@ SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 
 int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen) 
 {
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"connect [pre]: %d, %x, %d\n",s,name,namelen);
 		fflush(debugFile);
@@ -897,7 +900,7 @@ int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 	
 	int ret = Real_connect(s,name,namelen);	
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"connect: %d, %x, %d\n",s,name,namelen);
 		fflush(debugFile);
@@ -916,7 +919,7 @@ int WINAPI Mine_select(
 					   const struct timeval* timeout
 					   )
 {
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"select: %x, %x, %x\n",readfds,writefds,exceptfds);
 		fflush(debugFile);
@@ -986,7 +989,7 @@ void InitialiseIPC()
 	{	
 		InitialiseIPC();
 	} else {
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"[debug] straight IPC initialised ok\n");
 		}
@@ -998,7 +1001,7 @@ void InitialiseIPCback()
 	char buf[1024];
 	char lpszPipename[1024];
 	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",partnerProcessId);
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"[debug] IPC queue is %s\n",lpszPipename);
 	}
@@ -1019,7 +1022,7 @@ void InitialiseIPCback()
 	
 	if (hPipeBack == INVALID_HANDLE_VALUE) 
 	{		
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"[ipcback] Invalid pipe handle: %d\n",GetLastError());
 			return;
@@ -1033,7 +1036,7 @@ void InitialiseIPCback()
 	if (!fConnected)
 	{
 		sprintf(buf,"client not connected via pipe: %d",GetLastError());
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"[ipcback] client not connected via pipe: %d\n",GetLastError());
 			return;
@@ -1041,7 +1044,7 @@ void InitialiseIPCback()
 	}
 	
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"[debug] back IPC initialised ok\n");
 		fflush(debugFile);
@@ -1068,7 +1071,7 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	//debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
 	debugFile=NULL;
 	debugFileStart=time(NULL);
 }
@@ -1158,14 +1161,14 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	//Proto_fun fun=(Proto_fun)(0x5432A0); //8.31
 	Proto_fun fun=(Proto_fun)(0x543360); //8.40
 	
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"got middle screen %d/%s\n",type,s);
 	}
 				
 	if (type==0x19)
 	{
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"got see '%s'\n",s);
 		}
@@ -1188,7 +1191,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	{ 
 		fun(type,s);
 	} else {
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"ignoring look");
 		}
@@ -1248,7 +1251,7 @@ void myInterceptEncrypt(int v1, int v2)
 	Proto_fun fun=(Proto_fun)(0x549950); // 8.40
 	
 	encryptKeyPtr=v2;
-	if (debugFile)
+	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"QQQQQQQQQQ: %x,%x,%x\n",encryptKeyPtr,v1,v2);
 		fflush(debugFile);
@@ -1568,7 +1571,7 @@ BOOL CALLBACK EnumWindowsProc(
 		*/
 		
 		//wnd->Detach(); 
-		//delete wnd;
+		delete wnd;
 	}
 	return 1;
 }
@@ -1665,7 +1668,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		}
 		break;
 	case 4:
-		if (debugFile)
+		if (debugFile&&COMPLEX)
 		{
 			fprintf(debugFile,"[debug] will try to connect back IPC pipe\n");
 		}
