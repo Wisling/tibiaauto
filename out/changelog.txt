@@ -1,11 +1,13 @@
 1.19.6, ????
 Defects:
  Cavebot: fixed diagonal walking issue
- Cavebot: fixed movement shift bug
+ Cavebot: fixed walking shift by 1 square bug
  Cavebot: skips to next if no path found or stuck
  Cavebot: fixed waypoint GUI selection
  Cavebot: fixed long pause when changing floors
  TA Map: Added newer tiles and updated older ones for exteded map research
+ AutoGo: Added a blacklist to allow for alarming only when certain creatures come into view
+ AutoGo: Added alarm for +/- 1 floor only
 
 ps Van:  I changed the meaning of AlwaysOnTop and moreAlwaysOnTop. new(AlwaysOnTop==1) = old(AlwaysOnTop || moreAlwaysOnTop) 
 and moreAlwaysOnTop is 1,2 or 3 depending on the optbyte for the tile
