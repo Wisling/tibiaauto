@@ -15,13 +15,15 @@ class CWhiteList : public CDialog
 // Construction
 public:
 	char* whiteList;
-	CWhiteList(char whiteListParam[100][32], CWnd* pParent = NULL);   // standard constructor
+	int * mkBlack;
+	CWhiteList(char whiteListParam[100][32], int * mkBlackParam, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CWhiteList)
 	enum { IDD = IDD_WHITELIST };
 	CEdit	m_name;
 	CListBox	m_list;
+	CButton	m_mkblack;
 	CButton	m_delete;
 	CButton	m_add;
 	//}}AFX_DATA
@@ -41,6 +43,7 @@ protected:
 	//{{AFX_MSG(CWhiteList)
 	afx_msg void OnWhitelistAdd();
 	afx_msg void OnWhitelistDelete();
+	afx_msg void OnWhitelistMkBlack();
 	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
