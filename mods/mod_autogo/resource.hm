@@ -1,4 +1,5 @@
 // Microsoft Developer Studio generated Help ID include file.
 // Used by mod_autogo.rc
 //
-#define HIDC_AUTOGO_TRIGGERSIGN         0x8bb80bc4    // IDD_CONFIG
+#define HIDC_AUTOGO_TRIGGERSIGN         0x8bb80bc4    // IDD_CONFIG [Polish]
+#define HIDC_WHITELIST_MKBLACK          0x8bbb0c18    // IDD_WHITELIST [Polish]

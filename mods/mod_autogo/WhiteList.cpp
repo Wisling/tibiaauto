@@ -15,10 +15,11 @@ static char THIS_FILE[] = __FILE__;
 // CWhiteList dialog
 
 
-CWhiteList::CWhiteList(char whiteListParam[100][32], CWnd* pParent /*=NULL*/)
+CWhiteList::CWhiteList(char whiteListParam[100][32],int * mkBlackParam, CWnd* pParent /*=NULL*/)
 	: CDialog(CWhiteList::IDD, pParent)
 {
 	whiteList = (char*)whiteListParam;
+	mkBlack = mkBlackParam;
 	//{{AFX_DATA_INIT(CWhiteList)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
@@ -31,6 +32,7 @@ void CWhiteList::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(CWhiteList)
 	DDX_Control(pDX, IDC_WHITELIST_NAME, m_name);
 	DDX_Control(pDX, IDC_WHITELIST_LIST, m_list);
+	DDX_Control(pDX, IDC_WHITELIST_MKBLACK, m_mkblack);
 	DDX_Control(pDX, IDC_WHITELIST_DELETE, m_delete);
 	DDX_Control(pDX, IDC_WHITELIST_ADD, m_add);
 	//}}AFX_DATA_MAP
@@ -41,11 +43,20 @@ BEGIN_MESSAGE_MAP(CWhiteList, CDialog)
 	//{{AFX_MSG_MAP(CWhiteList)
 	ON_BN_CLICKED(IDC_WHITELIST_ADD, OnWhitelistAdd)
 	ON_BN_CLICKED(IDC_WHITELIST_DELETE, OnWhitelistDelete)
+	ON_BN_CLICKED(IDC_WHITELIST_MKBLACK, OnWhitelistMkBlack)
+
+	
+	
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CWhiteList message handlers
+
+void CWhiteList::OnWhitelistMkBlack()
+{
+	*mkBlack=(m_mkblack.GetCheck()?1:0);
+}
 
 void CWhiteList::OnWhitelistAdd() 
 {
@@ -97,7 +108,7 @@ void CWhiteList::Mem2List()
 BOOL CWhiteList::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+	m_mkblack.SetCheck(*mkBlack);
 	Mem2List();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
