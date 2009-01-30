@@ -75,6 +75,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_GM, m_actionBattleListGm);
 	DDX_Control(pDX, IDC_AUTOGO_BATTELIST, m_battleBattlelist);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEPARANOIAM, m_battleParanoiaM);
+	DDX_Control(pDX, IDC_AUTOGO_BATTLEANXIETY, m_battleAnxiety);
 	DDX_Control(pDX, IDC_AUTOGO_ACT_DIRECTION, m_actDirection);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDHPBELOW, m_soundHpBelow);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERHPBELOW, m_triggerHpBelow);
@@ -128,6 +129,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Y, m_runawayY);
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_X, m_runawayX);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
+
 	//}}AFX_DATA_MAP
 }
 
@@ -205,6 +207,7 @@ void CConfigDialog::disableControls()
 	m_battleGM.EnableWindow(false);
 	m_battleBattlelist.EnableWindow(false);
 	m_battleParanoiaM.EnableWindow(false);
+	m_battleAnxiety.EnableWindow(false);
 	m_battleWhiteList.EnableWindow(false);	
 	
 	m_triggerSign.EnableWindow(false);
@@ -411,6 +414,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_battleGM.SetCheck((configData->trigger&TRIGGER_BATTLELIST_GM?1:0));	
 	m_battleBattlelist.SetCheck((configData->trigger&TRIGGER_BATTLELIST_LIST?1:0));		
 	m_battleParanoiaM.SetCheck((configData->optionsBattleList&BATTLELIST_PARANOIAM?1:0));	
+	m_battleAnxiety.SetCheck((configData->optionsBattleList&BATTLELIST_ANXIETY?1:0));	
 	m_actionBattleListGm.SetCurSel(configData->actionBattleListGm);
 	m_actionBattleListPlayer.SetCurSel(configData->actionBattleListPlayer);
 	m_actionBattleListMonster.SetCurSel(configData->actionBattleListMonster);
@@ -508,6 +512,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 
 	memcpy(memWhiteList,configData->whiteList,3200);
+	memMkBlack = configData->mkBlack?1:0;
+
 
 	OnAutogoTriggerbattlelist();
 	OnAutogoTriggersign();
@@ -574,7 +580,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 		);
 
 	newConfigData->optionsBattleList = (		
-		(m_battleParanoiaM.GetCheck()?BATTLELIST_PARANOIAM:0)
+		(m_battleParanoiaM.GetCheck()?BATTLELIST_PARANOIAM:0)|
+		(m_battleAnxiety.GetCheck()?BATTLELIST_ANXIETY:0)
 		);
 	
 	newConfigData->optionsSign = (
@@ -674,6 +681,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->optionsOutOfCustomItem=itemProxy.getObjectId(buf);
 
 	memcpy(newConfigData->whiteList,memWhiteList,3200);
+	newConfigData->mkBlack	=	memMkBlack;
 	newConfigData->status			= status;
 	
 	
@@ -872,7 +880,7 @@ void CConfigDialog::OnAutogoTostart()
 
 void CConfigDialog::OnAutogoWhitelist() 
 {
-	CWhiteList *dialog = new CWhiteList(memWhiteList);
+	CWhiteList *dialog = new CWhiteList(memWhiteList,&memMkBlack);
 	dialog->DoModal();
 	delete dialog;
 }
@@ -881,7 +889,12 @@ void CConfigDialog::OnAutogoTriggerbattlelist()
 {
 	int lVal = (m_triggerBattleList.IsWindowEnabled()?m_triggerBattleList.GetCheck():0);
 	
-	m_battleParanoiaM.EnableWindow(lVal);
+	m_battleParanoiaM
+		
+		
+		
+		.EnableWindow(lVal);
+	m_battleAnxiety.EnableWindow(lVal);
 	m_battleWhiteList.EnableWindow(lVal);
 	m_battleBattlelist.EnableWindow(lVal);
 	m_battleMonster.EnableWindow(lVal);

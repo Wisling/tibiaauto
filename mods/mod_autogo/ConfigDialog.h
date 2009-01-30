@@ -12,6 +12,7 @@
 #include "ImageButtonWithStyle.h"
 
 #define TRIGGER_BATTLELIST		0x0001
+	#define BATTLELIST_ANXIETY	0x0001
 	#define BATTLELIST_PARANOIAM	0x0008
 #define TRIGGER_SIGN			0x0002
 	#define SIGN_BATTLE			0x0080
@@ -135,6 +136,7 @@ public:
 	CComboBox	m_actionBattleListGm;
 	CButton	m_battleBattlelist;
 	CButton	m_battleParanoiaM;
+	CButton	m_battleAnxiety;
 	CComboBox	m_actDirection;
 	CButton	m_soundHpBelow;
 	CButton	m_triggerHpBelow;
@@ -241,6 +243,7 @@ protected:
 private:
 	CMod_autogoApp * m_app;
 	char memWhiteList[100][32];
+	int memMkBlack;
 };
 
 //{{AFX_INSERT_LOCATION}}

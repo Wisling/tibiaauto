@@ -15,7 +15,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 
-// mod_autogo.cpp : Defines the initialization routines for the DLL.
+// mod_autogo.cpp : Defines the initialization routines
+ for the DLL.
 //
 
 #include "stdafx.h"
@@ -592,14 +593,14 @@ int triggerOutOfCustom(int customItemId)
 	return 1;
 }
 
-int triggerBattleListList(char whiteList[100][32],int options)
+int triggerBattleListList(char whiteList[100][32],int options,int makeBlackList)
 {
 	CMemReaderProxy reader;
 
 	return (reader.readBattleListMax()>=0||reader.readBattleListMin()>=0);	
 }
 
-int triggerBattleListGm(char whiteList[100][32],int options)
+int triggerBattleListGm(char whiteList[100][32],int options,int makeBlackList)
 {
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
@@ -614,7 +615,7 @@ int triggerBattleListGm(char whiteList[100][32],int options)
 		if (ch->visible){		
 			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
 			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
 				{					
 					if (ch->name[0]=='G'&&ch->name[1]=='M')
 					{
@@ -641,7 +642,7 @@ int triggerBattleListGm(char whiteList[100][32],int options)
 	delete self;
 	return 0;
 }
-int triggerBattleListMonster(char whiteList[100][32],int options)
+int triggerBattleListMonster(char whiteList[100][32],int options,int makeBlackList)
 {
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
@@ -656,7 +657,7 @@ int triggerBattleListMonster(char whiteList[100][32],int options)
 		if (ch->visible){		
 			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
 			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
 				{					
 					
 					// this is monster/npc
@@ -676,7 +677,7 @@ int triggerBattleListMonster(char whiteList[100][32],int options)
 	delete self;
 	return 0;
 }
-int triggerBattleListPlayer(char whiteList[100][32],int options)
+int triggerBattleListPlayer(char whiteList[100][32],int options,int makeBlacklist)
 {
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
@@ -689,9 +690,9 @@ int triggerBattleListPlayer(char whiteList[100][32],int options)
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
 		
 		if (ch->visible){		
-			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+			if (ch->tibiaId!=self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ makeBlacklist))
 			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM))
+				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
 				{					
 					
 					// this is other player
@@ -925,28 +926,28 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 		if (config->trigger&TRIGGER_BATTLELIST_LIST){
-			if (triggerBattleListList(config->whiteList,config->optionsBattleList)){
+			if (triggerBattleListList(config->whiteList,config->optionsBattleList,config->mkBlack)){
 				alarm |= TRIGGER_BATTLELIST_LIST;
 				if (config->sound&TRIGGER_BATTLELIST_LIST)
 					alarmSound(TRIGGER_BATTLELIST_LIST);
 			}
 		}
 		if (config->trigger&TRIGGER_BATTLELIST_GM){
-			if (triggerBattleListGm(config->whiteList,config->optionsBattleList)){
+			if (triggerBattleListGm(config->whiteList,config->optionsBattleList,config->mkBlack)){
 				alarm |= TRIGGER_BATTLELIST_GM;
 				if (config->sound&TRIGGER_BATTLELIST_GM)
 					alarmSound(TRIGGER_BATTLELIST_GM);
 			}
 		}
 		if (config->trigger&TRIGGER_BATTLELIST_MONSTER){
-			if (triggerBattleListMonster(config->whiteList,config->optionsBattleList)){
+			if (triggerBattleListMonster(config->whiteList,config->optionsBattleList,config->mkBlack)){
 				alarm |= TRIGGER_BATTLELIST_MONSTER;
 				if (config->sound&TRIGGER_BATTLELIST_MONSTER)
 					alarmSound(TRIGGER_BATTLELIST_MONSTER);
 			}
 		}
 		if (config->trigger&TRIGGER_BATTLELIST_PLAYER){
-			if (triggerBattleListPlayer(config->whiteList,config->optionsBattleList)){
+			if (triggerBattleListPlayer(config->whiteList,config->optionsBattleList,config->mkBlack)){
 				alarm |= TRIGGER_BATTLELIST_PLAYER;
 				if (config->sound&TRIGGER_BATTLELIST_PLAYER)
 					alarmSound(TRIGGER_BATTLELIST_PLAYER);
@@ -1157,6 +1158,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 			return;
 		lstrcpyn(m_configData->whiteList[currentPos++],paramValue,32);
 	}
+	if (!strcmp(paramName,"whiteList/mkBlack"))			m_configData->mkBlack	= atoi(paramValue);
+
 }
 
 char *CMod_autogoApp::saveConfigParam(char *paramName)
@@ -1215,7 +1218,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 			}
 		}		
 	}
-
+	if (!strcmp(paramName,"whiteList/mkBlack"))						sprintf(buf,"%d",m_configData->mkBlack);
 	return buf;
 }
 
@@ -1269,6 +1272,7 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 42: return "whiteList";
 	case 43: return "options/ManaBelowUntilRecovery";
 	case 44: return "options/HpBelowUntilRecovery";
+	case 45: return "whiteList/mkBlack";
 	default:
 		return NULL;
 	}
