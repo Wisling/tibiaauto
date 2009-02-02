@@ -220,9 +220,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 											}
 											
 											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),contNr==8);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),contNr==8,attackedCh->x,attackedCh->y,attackedCh->z);
 											if (checksum<0) checksum*=-1;
-											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,contNr==8,checksum);
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,contNr==8,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										}
 									}
 									delete lootCont;
@@ -368,8 +368,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 										int killNr=rand();
 										int checksum;
 										
-										checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),-1,corpseId,0,2);
-										fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,-1,corpseId,0,2,checksum);
+										checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),-1,corpseId,0,2,attackedCh->x,attackedCh->y,attackedCh->z);
+										if (checksum<0) checksum*=-1;
+										fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,-1,corpseId,0,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										
 										CTibiaContainer *lootCont = cont9;
 										int itemNr;
@@ -377,9 +378,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 										{												
 											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 											
-											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
 											if (checksum<0) checksum*=-1;
-											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,checksum);
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										}
 										
 										
@@ -391,9 +392,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 											{												
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 												
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2);
+												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
 												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,checksum);
+												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 											}								
 										}
 										if (cont7->flagOnOff)
@@ -404,9 +405,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 											{												
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 												
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(attackedCh->name),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2);
+												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(attackedCh->name),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
 												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,attackedCh->name,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,checksum);
+												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,attackedCh->name,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 											}
 										}
 										
@@ -492,16 +493,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			
 			int extraSleep=0;
-			if (config->m_mode1==2&&CModuleUtil::loopItemFromSpecifiedContainer(0,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode2==2&&CModuleUtil::loopItemFromSpecifiedContainer(1,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode3==2&&CModuleUtil::loopItemFromSpecifiedContainer(2,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode4==2&&CModuleUtil::loopItemFromSpecifiedContainer(3,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode5==2&&CModuleUtil::loopItemFromSpecifiedContainer(4,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode6==2&&CModuleUtil::loopItemFromSpecifiedContainer(5,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode7==2&&CModuleUtil::loopItemFromSpecifiedContainer(6,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode8==2&&CModuleUtil::loopItemFromSpecifiedContainer(7,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode9==2&&CModuleUtil::loopItemFromSpecifiedContainer(8,&acceptedItems,containerCarrying)) extraSleep=1;
-			if (config->m_mode10==2&&CModuleUtil::loopItemFromSpecifiedContainer(9,&acceptedItems,containerCarrying)) extraSleep=1;
+			if (config->m_mode1==2&&CModuleUtil::loopItemFromSpecifiedContainer(0,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode2==2&&CModuleUtil::loopItemFromSpecifiedContainer(1,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode3==2&&CModuleUtil::loopItemFromSpecifiedContainer(2,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode4==2&&CModuleUtil::loopItemFromSpecifiedContainer(3,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode5==2&&CModuleUtil::loopItemFromSpecifiedContainer(4,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode6==2&&CModuleUtil::loopItemFromSpecifiedContainer(5,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode7==2&&CModuleUtil::loopItemFromSpecifiedContainer(6,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode8==2&&CModuleUtil::loopItemFromSpecifiedContainer(7,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode9==2&&CModuleUtil::loopItemFromSpecifiedContainer(8,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode10==2&&CModuleUtil::loopItemFromSpecifiedContainer(9,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
 			if (extraSleep) Sleep(1000);
 		}
 				
