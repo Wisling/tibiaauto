@@ -69,6 +69,7 @@ public:
 private:	
 	int m_started;
 	int currentPos;
+	int getWavFileLength(char * wavFile);
 	CConfigDialog * m_configDialog;
 	CConfigData *m_configData;
 };
