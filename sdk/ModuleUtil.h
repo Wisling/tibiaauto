@@ -32,7 +32,7 @@ public:
 	static int waitForCreatureDisappear(int creatureNr);
 	static int waitToApproachSquare(int x, int y);
 	static int waitForCreatureDisappear(int x,int y, int tibiaId, int &, int &);
-	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags);
+	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ);
 	static void prepareProhPointList();
 	static void findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode,int useDiagonal);
 private:
