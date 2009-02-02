@@ -34,6 +34,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "ModuleUtil.h"
 #include <MMSystem.h>
 #include <Tlhelp32.h>
+#include <iostream>
+#include <fstream>
+#include <time.h>
+using namespace std;
+
 
 #include "IPCBackPipeProxy.h"
 
@@ -223,7 +228,20 @@ int triggerNoSpace(){
 	return ret;
 }
 
+//returns seconds of play for wav file
+int getWavFileLength(char* wavFile){
+	return .3;
+	ifstream myfile (wavFile);
+	int begin = myfile.tellg();
+	myfile.seekg (0, ios::end);
+	int end = myfile.tellg();
+	myfile.close();
+	return (int)((end-begin)/11000);
+}
+
 void alarmSound(int alarmId){
+	static int playsUntilTm=0;
+	static char* lastFilename="";
 	char installPath[1024];
 	unsigned long installPathLen=1023;
 	installPath[0]='\0';
@@ -266,20 +284,29 @@ void alarmSound(int alarmId){
 		case TRIGGER_RUNAWAY_REACHED:		sprintf(wavFile,"%s\\mods\\sound\\runawayreached.wav",installPath);break;
 		default:				sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);break;
 	}
-
-	if (OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
-		PlaySound(wavFile,NULL,SND_FILENAME|SND_ASYNC);
-		// isn't some CloseFile() needed? -- vanitas
-	} else {
+	if (OpenFile(wavFile,&lpOpen,OF_EXIST) == HFILE_ERROR){
 		sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);
-		if(OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
-			PlaySound(wavFile,NULL,SND_FILENAME|SND_ASYNC);
-			// isn't some wait needed? cause multiple async plays will kill CPU --vanitas
-		} else{
-			MessageBeep(MB_OK);
-		}	
-	}
+	} 
+	if(OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
+		if (strcmp(lastFilename,wavFile)!=0 || clock()>playsUntilTm){
+			playsUntilTm = clock()+getWavFileLength(wavFile);
+			lastFilename = wavFile;
+			char buf[122];
+			sprintf(buf,"%d,%d,%d",playsUntilTm,time(NULL),getWavFileLength(wavFile));
+			//#AfxMessageBox(buf);
+			PlaySound(wavFile,NULL,SND_FILENAME | SND_ASYNC);
+			
+		}
+		// isn't some wait needed? cause multiple async plays will kill CPU --vanitas(fixed--wis)
+		// isn't some CloseFile() needed? -- vanitas(OF_EXIST closes file after use automatically--wis)
+	} else{
+		MessageBeep(MB_OK);
+		//PlaySound(TEXT((LPCWSTR)SND_ALIAS_SYSTEMASTERISK), NULL, SND_ALIAS_ID | SND_ASYNC);
+	}	
 }
+
+
+
 char *alarmStatus(int alarmId){	
 	if (alarmId&TRIGGER_BATTLELIST_LIST) return "BattleList list alarm";	
 	if (alarmId&TRIGGER_BATTLELIST_GM) return "BattleList GM alarm";	
@@ -613,7 +640,7 @@ int triggerBattleListGm(char whiteList[100][32],int options,int makeBlackList)
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
 		
 		if (ch->visible){		
-			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+			if (ch->tibiaId!=self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ makeBlackList))
 			{				
 				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
 				{					
@@ -642,6 +669,7 @@ int triggerBattleListGm(char whiteList[100][32],int options,int makeBlackList)
 	delete self;
 	return 0;
 }
+
 int triggerBattleListMonster(char whiteList[100][32],int options,int makeBlackList)
 {
 	CPackSenderProxy sender;
@@ -654,8 +682,8 @@ int triggerBattleListMonster(char whiteList[100][32],int options,int makeBlackLi
 	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
 		
-		if (ch->visible){		
-			if (ch->tibiaId!=self->tibiaId &&  !OnList(whiteList,(char*)ch->name))
+		if (ch->visible){
+			if (ch->tibiaId!=self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ makeBlackList))
 			{				
 				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
 				{					
