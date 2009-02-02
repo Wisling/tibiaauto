@@ -303,14 +303,18 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode,int useDiagonal)
 {
-
+		int randDir = rand()%4;
 		//First piority points(sides)
 		// if we stand on open hole or stairs we can only change z coordinate
-		findPathOnMapProcessPoint(queue,x,y,z,x+1,y,z+updownMode);
-		findPathOnMapProcessPoint(queue,x,y,z,x-1,y,z+updownMode);
-		findPathOnMapProcessPoint(queue,x,y,z,x,y+1,z+updownMode);
-		findPathOnMapProcessPoint(queue,x,y,z,x,y-1,z+updownMode);
-			
+		for (int i=randDir;i<randDir+4;i++){
+			switch(i%4){
+			case 0:	findPathOnMapProcessPoint(queue,x,y,z,x+1,y,z+updownMode); break;
+			case 1:	findPathOnMapProcessPoint(queue,x,y,z,x-1,y,z+updownMode); break;
+			case 2:	findPathOnMapProcessPoint(queue,x,y,z,x,y+1,z+updownMode); break;
+			case 3:	findPathOnMapProcessPoint(queue,x,y,z,x,y-1,z+updownMode); break;
+			}
+		}
+
 		//Second piority points(diagonals)
 		findPathOnMapProcessPoint(queue,x,y,z,x+1,y+1,z+updownMode);
 		findPathOnMapProcessPoint(queue,x,y,z,x-1,y+1,z+updownMode);
@@ -688,6 +692,7 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 	CTibiaContainer *cont = reader.readContainer(containerNr);
 	CTibiaContainer *contCarrying = reader.readContainer(containerCarrying);
 	int looted = 0;
+	int numberItemsLooted=0;
 	if (cont->flagOnOff)
 	{
 		int itemNr;
@@ -729,8 +734,8 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 						}	
 					}
 					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
-					Sleep(200);
-					looted++;
+					looted++;//needed for positioning of next loot item
+					numberItemsLooted++;// return velue
 					break;
 				}
 			}
@@ -739,7 +744,7 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 
 	delete cont;
 	delete contCarrying;
-	return looted;//Akilez: return value now reflects items looted
+	return numberItemsLooted;//Akilez: return value now reflects items looted
 }
 
 void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
@@ -763,7 +768,7 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
 		}
 		
 		
-		delete targetCont;						
+		delete targetCont;
 	}
 	//char buf[128];
 	//sprintf(buf,"Looted=%d",qtyLooted);
@@ -869,9 +874,10 @@ int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId, int &xReturn
 	return 0;
 }
 
-int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags)
+int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ)
 {
-	return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71;
+	return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71+creatX*23+creatY*31+creatZ*59;
+	//Old checksum return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71;
 }
 
 void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
