@@ -1407,8 +1407,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 													statChName[i]='\0';
 											}
 											
-											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);											
-											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==8);
+											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==8,attackedCh->x,attackedCh->y,attackedCh->z);
 											if (checksum<0) checksum*=-1;
 											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==8,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										}
