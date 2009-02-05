@@ -3,8 +3,9 @@ Defects:
  Cavebot: fixed diagonal walking issue
  Cavebot: fixed walking shift by 1 square bug
  Cavebot: skips to next if no path found or stuck
- Cavebot: fixed waypoint GUI selection
+ Cavebot: fixed waypoint GUI selection(if no point highlighted starts at beginning instead of stalls)
  Cavebot: fixed long pause when changing floors
+ Cavebot: improved attack priority for distant creatures if they have a higher priority
  TA Map: Added newer tiles and updated older ones for exteded map research
  AutoGo: Added a blacklist to allow for alarming only when certain creatures come into view
  AutoGo: Added alarm for +/- 1 floor only
