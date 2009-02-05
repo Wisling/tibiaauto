@@ -98,8 +98,6 @@ CToolAutoAttackStateWalker globalAutoAttackStateWalker=CToolAutoAttackStateWalke
 CToolAutoAttackStateDepot globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 
-int lastAttackTmCreatureId[250];
-int lastAttackTmTm[250];
 int targetX=0,targetY=0,targetZ=0;
 int depotX=0,depotY=0,depotZ=0;
 int currentPosTM=0;
@@ -1076,9 +1074,11 @@ int AttackCreature(CConfigData *config,int id){
 			registerDebug(buf);
 		}
 		deleteAndNull(self);
+		deleteAndNull(attackedCh);
 		return 1;
 	}
 	deleteAndNull(self);
+	deleteAndNull(attackedCh);
 	return 0;
 }
 //returns the smallest radius of a square centred at x1,y1 and covers x2,y2
@@ -1088,6 +1088,22 @@ int maxDist(int x1,int y1,int x2,int y2){ return max(abs(x2-x1),abs(y2-y1));}
 //returns the smallest number of steps needed to stand beside x2,y2 starting from x1,y1
 //same distance ideally travelled by "Auto Follow"
 int taxiDist(int x1,int	y1,int x2,int y2){ return abs(x2-x1)+abs(y2-y1)-2+(x1==x2)+(y1==y2);}
+
+// will eventually use the minimap to determine if path is ok
+int canGetToPoint(int targetX,int targetY,int targetZ){
+	/*
+	CMemReaderProxy reader;
+	int path[15];
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+	deleteAndNull(self);
+	CPackSenderProxy sender;
+	char buf[111];
+	sprintf(buf,"%d,%d,%d,%d",path&&path[0]&&!path[8],path,path[0],path[8]);
+	sender.sendTAMessage(buf);
+	return path&&path[0]&&!path[14];*/
+	return 1;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
@@ -1147,13 +1163,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		currentWaypointNr = min(currentWaypointNr,waypointsCount-1);
 	}
 
-	for (int crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
-		CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-		lastAttackTmCreatureId[i]=0;
-		lastAttackTmTm[i]=ch->lastAttackTm;
-		deleteAndNull(ch);
-	}
-	
 	if (config->debug) {
 		// remove the debug file
 		FILE *f=fopen("tibiaauto-debug-cavebot.txt","w");
@@ -1223,7 +1232,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		if (config->debug)  {
 			char buf[256];
-			sprintf(buf,"Next loop. States: %d, %d, %d, %d, sleep=%d/%d",globalAutoAttackStateAttack,globalAutoAttackStateLoot,globalAutoAttackStateWalker,globalAutoAttackStateDepot,isInHalfSleep(),isInFullSleep());
+			sprintf(buf,"Next loop. States: %d, %d, %d, %d, paused=%d, sleep=%d/%d",globalAutoAttackStateAttack,globalAutoAttackStateLoot,globalAutoAttackStateWalker,globalAutoAttackStateDepot,pauseInvoked,isInHalfSleep(),isInFullSleep());
 			registerDebug(buf);
 		}
 		
@@ -1324,7 +1333,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 			*/
 			// keep track of how long standing in same place for info to user
-			if (lastStandingX==self->x&&lastStandingY==self->y&&lastStandingZ==self->z){
+			if (lastStandingX!=self->x||lastStandingY!=self->y||lastStandingZ!=self->z){
 				lastStandingX=self->x;
 				lastStandingY=self->y;
 				lastStandingZ=self->z;
@@ -1443,7 +1452,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								CTibiaContainer *lootCont = reader.readContainer(contNr);
 								//sender.sendTAMessage("[debug] looting");
 								if(lootCont->flagOnOff){
-									for (lootTakeItem=0;lootTakeItem<3;lootTakeItem++) {
+									for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
 										if (self->cap>config->capacityLimit) {
 											CModuleUtil::lootItemFromContainer(contNr,&acceptedItems);
 										}
@@ -1451,7 +1460,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											CModuleUtil::eatItemFromContainer(contNr);
 										}
 									}
-									
 									if (config->dropNotLooted) {
 										dropAllItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
 									}
@@ -1474,9 +1482,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							fclose(lootStatsFile);
 						}
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-
+						deleteAndNull(attackedCh);
+						currentlyAttackedCreatureNr=-1;
+						CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
 					}
-					else {// if creatureIsDead
+					else {// if creatureIsNotDead
 						char debugBuf[256];
 						sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
 						if (config->debug) registerDebug(debugBuf);
@@ -1499,14 +1509,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 			}
 			else if (reader.getAttackedCreature()&&reader.getAttackedCreature()!=attackedCh->tibiaId){
+				//wis: keep player-chosen creature as attackee
 				currentlyAttackedCreatureNr=reader.getCharacterByTibiaId(reader.getAttackedCreature())->nr;
 				char buf[128];
 				sprintf(buf,"Setting attacked creature to %d [1]",currentlyAttackedCreatureNr);
 				if (config->debug) registerDebug(buf);
 			}
-			//if autofollow on, still not <=1 from creature and standing for > 2s refresh attack
-			else if (currentlyAttackedCreatureNr!=-1&&config->autoFollow&&creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y)>1&&time(NULL)-currentPosTM>2.5){
+			//if autofollow on, still not <=1 from creature and standing for > 2s refresh attack and add fail attack
+			//wait .5 secs between failed attacks
+			else if (currentlyAttackedCreatureNr!=-1&&config->autoFollow&&creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y)>1&&time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks)){
 				if (creatureList[currentlyAttackedCreatureNr].tibiaId){
+					creatureList[currentlyAttackedCreatureNr].failedAttacks++;
 					sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);}
 			}
 
@@ -1528,7 +1541,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					* creature ID for creature number has changed,
 					* so new creature is occupying the slot already
 					*/
-					if (creatureList[crNr].tibiaId!=ch->tibiaId) {
+					if (creatureList[crNr].tibiaId!=ch->tibiaId&&currentlyAttackedCreatureNr!=crNr) {
 						int keepAttackTm =creatureList[crNr].lastAttackTm;
 						creatureList[crNr]= Creature();
 						creatureList[crNr].lastAttackTm= keepAttackTm;
@@ -1553,7 +1566,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// scan ignore list
 						for (monstListNr=0;monstListNr<config->ignoreCount;monstListNr++) {
 							if (!strcmpi(config->ignoreList[monstListNr],creatureList[crNr].name)) {
-								if (config->debug&&creatureList[crNr].isIgnoredUntil<9999) registerDebug("Creature found on ignore list");
+								if (config->debug&&creatureList[crNr].isIgnoredUntil-time(NULL)<9999) registerDebug("Creature found on ignore list");
 								creatureList[crNr].isIgnoredUntil=1555555555;//ignore forever
 							}
 						}
@@ -1586,16 +1599,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					creatureList[crNr].y=ch->y;
 					creatureList[crNr].z=ch->z;
 					creatureList[crNr].isOnscreen=1;
-					creatureList[crNr].isDead=ch->hpPercLeft==0;
+					creatureList[crNr].isDead=(ch->hpPercLeft==0);
 					creatureList[crNr].hpPercLeft=ch->hpPercLeft;
 					creatureList[crNr].isIgnoredUntil=(creatureList[crNr].isIgnoredUntil<time(NULL))?0:creatureList[crNr].isIgnoredUntil;
-					//outfit type==0 <=> creature is invisible unless they transformed into an item(players might, but don't know if creatures do)
-					creatureList[crNr].isInvisible = ch->monsterType==0;
+					//outfit type&& head color==0 <=> creature is invisible
+					creatureList[crNr].isInvisible = (ch->monsterType==0&&ch->colorHead==0);
 
 					//ignore creatures with >=5 failed attacks for 30 secs
 					if (creatureList[crNr].failedAttacks>=5){
 						creatureList[crNr].isIgnoredUntil=time(NULL)+30;
 						creatureList[crNr].failedAttacks=0;
+					} //else if creature attacking us from 1 away but ignored for <5 mins, unignore 
+					else if (time(NULL)-creatureList[crNr].isIgnoredUntil<9999&&!creatureList[crNr].isInvisible&&(creatureList[crNr].distance(self->x,self->y)<=1||currentlyAttackedCreatureNr==-1)){
+						creatureList[crNr].isIgnoredUntil=0;
 					}
 					
 					//update environmental variables
@@ -1626,9 +1642,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 				}// if visible
 				deleteAndNull(ch);
-				if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
+				if (crNr!=self->nr&&config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
 					char buf[128];
-					sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d",creatureList[crNr].name,crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x);
+					sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d",creatureList[crNr].name,crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z);
 					registerDebug(buf);
 				}
 
@@ -1662,7 +1678,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (config->debug && modRuns%10==0) registerDebug("Quit Case:Options do not allow attack");
 					continue;}
 
-				//if shareBackatackAlien, add possible attack option to list if not on priority list
+				//if shareBackattackAlien, add possible attack option to list if not on priority list
 				if (!creatureList[crNr].listPriority && shareAlienBackattack){
 					// if we are backattacking and shareing backattack
 					// with other instances is active - then register it
@@ -1674,9 +1690,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if(bestCreatureNr==-1) bestCreatureNr=crNr;
 				int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 				int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
-				if(isCloser&&1){
-					if (config->debug) registerDebug("Attacker: Better because closer.");
-					bestCreatureNr=crNr;
+				if(isCloser){
+					if (creatureList[bestCreatureNr].isAttacking &&
+						(creatureList[bestCreatureNr].listPriority>creatureList[crNr].listPriority ||
+						creatureList[bestCreatureNr].listPriority==0 && creatureList[crNr].listPriority!=0)&&
+						canGetToPoint(creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z)){
+						//distance creature has higher priority and can be reached
+					} else{
+						if (config->debug) registerDebug("Attacker: Better because closer.");
+						bestCreatureNr=crNr;}
 				}else if (!isFarther){
 					//If force attack prioritize creature not on list with lowest health
 					if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
@@ -1688,11 +1710,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
 						if (config->debug) registerDebug("Attacker: Better because higher priority");
 						bestCreatureNr=crNr;}
+				} else if (isFarther){
+					if (creatureList[crNr].isAttacking &&
+						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority ||
+						creatureList[crNr].listPriority==0 && creatureList[bestCreatureNr].listPriority!=0)&&
+						canGetToPoint(creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z)) {
+						if (config->debug) registerDebug("Attacker: Better because attacking and higher priority.");
+						bestCreatureNr=crNr;
+					}	
 				}
-				else{}
 
 /*
-				if (monstersSurrounding>2){
+				if (monstersSurrounding<=2){
 					if (!isFarther&&creatureList[crNr].listPriority>=creatureList[bestCreatureNr].listPriority){
 						if (config->debug) registerDebug("Better:Closer");
 						bestCreatureNr=crNr;
@@ -1725,13 +1754,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					|| creatureList[currentlyAttackedCreatureNr].hpPercLeft<config->attackHpAbove
 					|| config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
 					|| config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
-					|| maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft<15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
+					|| maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft>15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
 					|| creatureList[currentlyAttackedCreatureNr].isIgnoredUntil
 					|| config->suspendOnEnemy && playersOnScreen && creatureList[currentlyAttackedCreatureNr].isAttacking==0
 					||!(creatureList[currentlyAttackedCreatureNr].listPriority || config->forceAttackAfterAttack && creatureList[currentlyAttackedCreatureNr].isAttacking)){
 					currentlyAttackedCreatureNr=bestCreatureNr;
 				}
-				//if no harm in switching and monsetr is not already in low health and running, switch
+				//if no harm in switching and monster is not already in low health and running, switch
 				else if ((!reachedAttackedCreature || !config->stickToMonster)
                      &&(!config->autoFollow || creatureList[currentlyAttackedCreatureNr].hpPercLeft>15)
                      &&creatureList[bestCreatureNr].listPriority!=creatureList[currentlyAttackedCreatureNr].listPriority){
@@ -1875,8 +1904,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
 					if (config->debug) registerDebug(buf);
 
-					int ticksStart = GetTickCount();						
-					CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);						
+					int ticksStart = GetTickCount();
+					CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
 					int ticksEnd = GetTickCount();
 
 					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
