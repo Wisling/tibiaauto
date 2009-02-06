@@ -552,8 +552,7 @@ int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos)
 {
 	int selfCell=mapGetSelfCellNr();
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	struct point selfRelPoint = mapConvertPointToRelP
-		oint(selfPoint);
+	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
 
 	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
 	{
