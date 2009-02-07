@@ -326,12 +326,14 @@ void COptionsDialog::OnSendMaps()
 	char *tibiaPath=(char *)malloc(1024);
 	unsigned long tibiaPathLen=1023;
 	tibiaPath[0]='\0';
+	/* Maps now stored in absolute directory
 	HKEY hkey=NULL;
 	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
 	{
 		RegQueryValueEx(hkey,TEXT("TibiaClientHome"),NULL,NULL,(unsigned char *)tibiaPath,&tibiaPathLen);
 		RegCloseKey(hkey);
-	}
+	}*/
+	tibiaPath = "%USERPROFILE%/Application Data/Tibia/Automap/";
 	if (!strlen(tibiaPath))
 	{
 		AfxMessageBox("ERROR! Unable to read Tibia client directory! Please reinstall!");
