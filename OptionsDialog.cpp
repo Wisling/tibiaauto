@@ -333,7 +333,7 @@ void COptionsDialog::OnSendMaps()
 		RegQueryValueEx(hkey,TEXT("TibiaClientHome"),NULL,NULL,(unsigned char *)tibiaPath,&tibiaPathLen);
 		RegCloseKey(hkey);
 	}*/
-	tibiaPath = "%USERPROFILE%/Application Data/Tibia/Automap/";
+	sprintf(tibiaPath,"%s%s",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/");
 	if (!strlen(tibiaPath))
 	{
 		AfxMessageBox("ERROR! Unable to read Tibia client directory! Please reinstall!");
