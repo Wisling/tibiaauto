@@ -98,7 +98,7 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 	if (strlen(channelText)==0||!strcmp(channelText,"say"))
 	{
 		chanHit=1;
-		sender.say(sayText);	
+		sender.say(sayText);
 		if (context->localEcho)
 		{
 			char *senderBuf=(char *)malloc(MAX_STRING_LEN);
@@ -677,7 +677,7 @@ void CAutoResponderParser::registerWarn(char *msg, CAutoResponderParserContext *
 {
 	if (context->actionLog)
 	{
-		context->actionLog->InsertItem(0,msg);		
+		context->actionLog->InsertItem(0,msg);
 		if (context->actionLog->GetItemCount()>500)
 			context->actionLog->DeleteItem(500);
 	}

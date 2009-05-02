@@ -67,7 +67,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(500);	
+		Sleep(CModuleUtil::randomFormula(500,200));
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		int continueFishing = 1;
 		CTibiaCharacter *self = reader.readSelfCharacter();
@@ -147,15 +147,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (continueFishing){
 			int offsetX,offsetY=0;
 			int randLoopCount=20;
+			int randomMiss = rand()%100<20;// 20% chance it looks for a tile without fish
 			while (randLoopCount--)
 			{
 				offsetX=rand()%15-7;
 				offsetY=rand()%11-5;
 				int tileId = reader.mapGetPointItemId(point(offsetX,offsetY,0),0);
-				if (tileId>=itemProxy.getValueForConst("waterWithFishStart")&&tileId<=itemProxy.getValueForConst("waterWithFishEnd"))
-				{
+
+				if (randomMiss && tileId>=itemProxy.getValueForConst("waterWithFishStart")+12&&tileId<=itemProxy.getValueForConst("waterWithFishEnd")+12)
 					break;
-				}
+				else if (!randomMiss && tileId>=itemProxy.getValueForConst("waterWithFishStart")&&tileId<=itemProxy.getValueForConst("waterWithFishEnd"))
+					break;
+
 			}
 			if (randLoopCount>0) {
 				
@@ -242,7 +245,7 @@ void CMod_fisherApp::stop()
 
 void CMod_fisherApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
 	if (!m_configDialog)
 	{

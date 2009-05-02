@@ -6,14 +6,13 @@
 --------------------Configuration: mod_autogo - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_autogo.res" /d "NDEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_autogo\mod_autogo.rc"" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPB23.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP9894.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_autogo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_autogo\WhiteList.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_autogo\mod_autogo.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPB23.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPB24.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP9894.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP9895.tmp" with contents
 [
 WINMM.LIB xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_autogo.pdb" /machine:I386 /def:".\mod_autogo.def" /out:"../mod_autogo.dll" /implib:"Release/mod_autogo.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\ConfigData.obj"
@@ -28,11 +27,10 @@ WINMM.LIB xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Relea
 ".\Release\WhiteList.obj"
 ".\Release\mod_autogo.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPB24.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP9895.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-WhiteList.cpp
+mod_autogo.cpp
 Linking...
    Creating library Release/mod_autogo.lib and object Release/mod_autogo.exp
 

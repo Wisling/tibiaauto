@@ -6,14 +6,13 @@
 --------------------Configuration: mod_eater - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPEA2.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3273.tmp" with contents
 [
 /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_eater.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_eater\mod_eater.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_eater\proxy.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_eater\mod_eater.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPEA2.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPEA3.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3273.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3274.tmp" with contents
 [
 xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_eater.pdb" /machine:I386 /def:".\mod_eater.def" /out:"../mod_eater.dll" /implib:"Release/mod_eater.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\ConfigData.obj"
@@ -24,19 +23,18 @@ xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_eat
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_eater.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPEA3.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3274.tmp"
 <h3>Output Window</h3>
 Compiling...
 mod_eater.cpp
-proxy.cpp
-Generating Code...
+E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_eater\mod_eater.cpp(142) : warning C4101: 'buf' : unreferenced local variable
 Linking...
    Creating library Release/mod_eater.lib and object Release/mod_eater.exp
 
 
 
 <h3>Results</h3>
-mod_eater.dll - 0 error(s), 0 warning(s)
+mod_eater.dll - 0 error(s), 1 warning(s)
 </pre>
 </body>
 </html>

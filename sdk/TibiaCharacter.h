@@ -25,7 +25,7 @@ public:
 	int outfitId;
 	int monsterType;
 	int hpPercLeft;
-	int cap;
+	float cap;
 	int maxHp;
 	int maxMana;
 	int exp;

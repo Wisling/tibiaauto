@@ -14,3 +14,5 @@ Type=0
 HeaderFile=alice.h
 ImplementationFile=alice.cpp
 Filter=N
+LastObject=CAliceApp
+

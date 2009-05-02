@@ -24,6 +24,7 @@ public:
 	int premium;
 	char spell[1024];
 	int useBackpack;
+	int randomCast;
 
 	int makeNow;
 

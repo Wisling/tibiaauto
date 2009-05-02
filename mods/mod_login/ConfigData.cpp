@@ -20,9 +20,10 @@ CConfigData::CConfigData()
 {
 	accountNumber[0]=password[0]='\0';
 	charPos=1;
-	openMain=0;
+	openMain=1;
 	openCont1=openCont2=openCont3=openCont4=0;
 	openCont5=openCont6=openCont7=openCont8=0;
+	loginDelay=600;
 }
 
 CConfigData::~CConfigData()

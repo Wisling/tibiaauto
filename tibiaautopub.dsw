@@ -15,93 +15,6 @@ Package=<4>
 
 ###############################################################################
 
-Project: "dummy"=".\dummy\dummy.dsp" - Package Owner=<4>
-
-Package=<5>
-{{{
-}}}
-
-Package=<4>
-{{{
-    Begin Project Dependency
-    Project_Dep_Name mod_aim
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_alarm
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_autogo
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_cavebot
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_creatureinfo
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_eater
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_fisher
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_fluid
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_grouping
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_itemconfig
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_light
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_looter
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_maphack
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_memdebug
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_monstershow
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_playerinfo
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_responder
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_restack
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_runemaker
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_showmap
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_spellcaster
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_trademon
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_uh
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_antylogout
-    End Project Dependency
-    Begin Project Dependency
-    Project_Dep_Name mod_fps
-    End Project Dependency
-}}}
-
-###############################################################################
-
 Project: "mod_aim"=".\mods\mod_aim\mod_aim.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -127,6 +40,18 @@ Package=<4>
 ###############################################################################
 
 Project: "mod_autogo"=".\mods\mod_autogo\mod_autogo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_banker"=".\mods\mod_banker\mod_banker.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -246,6 +171,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_login"=".\mods\mod_login\mod_login.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_looter"=".\mods\mod_looter\mod_looter.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -342,6 +279,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_seller"=".\mods\mod_seller\mod_seller.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_showmap"=".\mods\mod_showmap\mod_showmap.dsp" - Package Owner=<4>
 
 Package=<5>
@@ -354,7 +303,31 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_sorter"=".\mods\mod_sorter\mod_sorter.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_spellcaster"=".\mods\mod_spellcaster\mod_spellcaster.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_team"=".\mods\mod_team\mod_team.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{
@@ -379,6 +352,66 @@ Package=<4>
 ###############################################################################
 
 Project: "mod_uh"=".\mods\mod_uh\mod_uh.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_xray"=".\mods\mod_xray\mod_xray.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaauto"="..\tibiaauto-kernel\tibiaauto.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaauto_util"="..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaautoinject2"="..\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaautoinject3"="..\tibiaauto-kernel\tibiaautoinject3\tibiaautoinject3.dsp" - Package Owner=<4>
 
 Package=<5>
 {{{

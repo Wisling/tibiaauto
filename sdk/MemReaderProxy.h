@@ -52,6 +52,7 @@ public:
 	void mapSetPointItemsCount(point p,int count);
 	void mapSetPointItemId(point p, int stackNr, int tileId);
 	int mapGetPointItemExtraInfo(point p, int stackNr,int extraPos);
+	int mapGetPointStackIndex(point p, int stackNr);
 	long getCurrentTm();
 	void setRemainingTilesToGo(int val);
 	void setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data);

@@ -496,6 +496,21 @@ int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos
 
 }
 
+int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr)
+{
+	typedef int (*Proto_fun)(point p,int stackNr);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointStackIndex");
+		if (fun)
+		{
+			return fun(p,stackNr);
+		}
+	} 
+	return 0;
+
+}
+
 void  CMemReaderProxy::mapSetPointItemsCount(point p, int count)
 {
 	typedef int (*Proto_fun)(point p, int count);

@@ -51,6 +51,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOADSPELLFROMLIST, m_loadSpell);
 	DDX_Control(pDX, IDC_MAKENOW, m_makeNow);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_TOOL_RANDOMCAST,m_randomCast);
 	//}}AFX_DATA_MAP
 }
 
@@ -145,6 +146,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_useBackpack.SetCheck(configData->useBackpack);
 	m_premium.SetCheck(configData->premium);
 	m_maxUse.SetCheck(configData->maxUse);
+	m_randomCast.SetCheck(configData->randomCast);
 
 	m_spells.DeleteAllItems();
 	for (int i=0; i<15; i++) {
@@ -183,7 +185,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->useBackpack	= m_useBackpack.GetCheck();
 	newConfigData->premium	= m_premium.GetCheck();
 	newConfigData->maxUse	= m_maxUse.GetCheck();
-	
+	newConfigData->randomCast	= m_randomCast.GetCheck();
+
 	for (int i=0; i < 15; i++) {
 		if (i >= m_spells.GetItemCount()) {
 			newConfigData->listSpells[i].mana = 0;

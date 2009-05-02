@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
 #include "MemConstData.h"
+#include <time.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -89,19 +90,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
-	
+
+	int groupTime[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};//max containers = 16
+	int minOpenTime = 5;
+
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(500);		
+		Sleep(CModuleUtil::randomFormula(500,200));
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
 		int contNr;
 		int movedSomething=0;
 		for (contNr=0;contNr<memConstData.m_memMaxContainers && !movedSomething;contNr++)
 		{
-			if (contNr == 8 || contNr == 9) continue; // Wis: Will not group auto-opened corpse containers. Temporary fix.
 			CTibiaContainer *cont = reader.readContainer(contNr);
-			
+			if (cont->flagOnOff && !groupTime[contNr]) groupTime[contNr]=time(NULL)+minOpenTime;
+			else if (!cont->flagOnOff) groupTime[contNr] = 0;
+
+			if (!groupTime[contNr] || time(NULL)<=groupTime[contNr]) continue;
 			int itemNrMoved;
 			for (itemNrMoved=cont->itemsInside-1;itemNrMoved>=0&&!movedSomething;itemNrMoved--)//Search backwards for a stackable item to move
 			{

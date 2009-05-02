@@ -33,15 +33,19 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW_S, m_manaBelowS);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW_N, m_manaBelowN);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW_G, m_manaBelowG);
+	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW_H, m_hpBelowH);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW_S, m_hpBelowS);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW_N, m_hpBelowN);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW_G, m_hpBelowG);
+	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW_U, m_hpBelowU);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA_S, m_drinkManaS);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA_N, m_drinkManaN);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA_G, m_drinkManaG);
+	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP_H, m_drinkHpH);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP_S, m_drinkHpS);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP_N, m_drinkHpN);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP_G, m_drinkHpG);
+	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP_U, m_drinkHpU);
 	DDX_Control(pDX, IDC_CUSTOM_ITEM_2_USE, m_customItem2Use);
 	DDX_Control(pDX, IDC_CUSTOM_ITEM_2_BELOW, m_customItem2Below);
 	DDX_Control(pDX, IDC_CUSTOM_ITEM_2, m_customItem2List);
@@ -56,6 +60,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);	
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA, m_drinkMana);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP, m_drinkHp);
+	DDX_Control(pDX, IDC_TOOL_RANDOMCAST,m_randomCast);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -108,24 +113,29 @@ void CConfigDialog::disableControls()
 	m_manaBelowN.EnableWindow(false);
 	m_manaBelowS.EnableWindow(false);
 	m_manaBelowG.EnableWindow(false);
+	m_hpBelowH.EnableWindow(false);	
 	m_hpBelow.EnableWindow(false);	
 	m_hpBelowN.EnableWindow(false);	
 	m_hpBelowS.EnableWindow(false);	
 	m_hpBelowG.EnableWindow(false);	
+	m_hpBelowU.EnableWindow(false);	
 	m_drinkMana.EnableWindow(false);
 	m_drinkManaN.EnableWindow(false);
 	m_drinkManaS.EnableWindow(false);
 	m_drinkManaG.EnableWindow(false);
+	m_drinkHpH.EnableWindow(false);
 	m_drinkHp.EnableWindow(false);
 	m_drinkHpN.EnableWindow(false);
 	m_drinkHpS.EnableWindow(false);
 	m_drinkHpG.EnableWindow(false);
+	m_drinkHpU.EnableWindow(false);
 	m_customItem1Below.EnableWindow(false);
 	m_customItem1List.EnableWindow(false);
 	m_customItem1Use.EnableWindow(false);
 	m_customItem2Below.EnableWindow(false);
 	m_customItem2List.EnableWindow(false);
 	m_customItem2Use.EnableWindow(false);
+	m_randomCast.EnableWindow(false);
 
 }
 
@@ -139,24 +149,29 @@ void CConfigDialog::enableControls()
 	m_manaBelowN.EnableWindow(true);
 	m_manaBelowS.EnableWindow(true);
 	m_manaBelowG.EnableWindow(true);
+	m_hpBelowH.EnableWindow(true);	
 	m_hpBelow.EnableWindow(true);	
 	m_hpBelowN.EnableWindow(true);	
 	m_hpBelowS.EnableWindow(true);	
 	m_hpBelowG.EnableWindow(true);	
+	m_hpBelowU.EnableWindow(true);	
 	m_drinkMana.EnableWindow(true);
 	m_drinkManaN.EnableWindow(true);
 	m_drinkManaS.EnableWindow(true);
 	m_drinkManaG.EnableWindow(true);
+	m_drinkHpH.EnableWindow(true);
 	m_drinkHp.EnableWindow(true);
 	m_drinkHpN.EnableWindow(true);
 	m_drinkHpS.EnableWindow(true);
 	m_drinkHpG.EnableWindow(true);
+	m_drinkHpU.EnableWindow(true);
 	m_customItem1Below.EnableWindow(true);
 	m_customItem1List.EnableWindow(true);
 	m_customItem1Use.EnableWindow(true);
 	m_customItem2Below.EnableWindow(true);
 	m_customItem2List.EnableWindow(true);
 	m_customItem2Use.EnableWindow(true);
+	m_randomCast.EnableWindow(true);
 }
 
 
@@ -174,18 +189,22 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->manaBelowN);m_manaBelowN.SetWindowText(buf);
 	sprintf(buf,"%d",configData->manaBelowS);m_manaBelowS.SetWindowText(buf);
 	sprintf(buf,"%d",configData->manaBelowG);m_manaBelowG.SetWindowText(buf);
+	sprintf(buf,"%d",configData->hpBelowH);m_hpBelowH.SetWindowText(buf);
 	sprintf(buf,"%d",configData->hpBelow);m_hpBelow.SetWindowText(buf);
 	sprintf(buf,"%d",configData->hpBelowN);m_hpBelowN.SetWindowText(buf);
 	sprintf(buf,"%d",configData->hpBelowS);m_hpBelowS.SetWindowText(buf);
 	sprintf(buf,"%d",configData->hpBelowG);m_hpBelowG.SetWindowText(buf);
+	sprintf(buf,"%d",configData->hpBelowU);m_hpBelowU.SetWindowText(buf);
 	m_drinkMana.SetCheck(configData->drinkMana);
 	m_drinkManaN.SetCheck(configData->drinkManaN);
 	m_drinkManaS.SetCheck(configData->drinkManaS);
 	m_drinkManaG.SetCheck(configData->drinkManaG);
+	m_drinkHpH.SetCheck(configData->drinkHpH);
 	m_drinkHp.SetCheck(configData->drinkHp);
 	m_drinkHpN.SetCheck(configData->drinkHpN);
 	m_drinkHpS.SetCheck(configData->drinkHpS);
 	m_drinkHpG.SetCheck(configData->drinkHpG);
+	m_drinkHpU.SetCheck(configData->drinkHpU);
 
 	m_customItem1Use.SetCheck(configData->customItem1Use);
 	sprintf(buf,"%d",configData->customItem1Below);m_customItem1Below.SetWindowText(buf);
@@ -196,7 +215,9 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->customItem2Below);m_customItem2Below.SetWindowText(buf);
 	m_customItem2List.SetCurSel(m_customItem2List.FindString(-1,itemProxy.getName(configData->customItem2Item)));
 	if (m_customItem2List.GetCurSel()==-1) m_customItem2List.SetCurSel(0);
-	
+
+	m_randomCast.SetCheck(configData->randomCast);
+
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -213,18 +234,22 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_manaBelowN.GetWindowText(buf,127);newConfigData->manaBelowN=atoi(buf);
 	m_manaBelowS.GetWindowText(buf,127);newConfigData->manaBelowS=atoi(buf);
 	m_manaBelowG.GetWindowText(buf,127);newConfigData->manaBelowG=atoi(buf);
+	m_hpBelowH.GetWindowText(buf,127);newConfigData->hpBelowH=atoi(buf);
 	m_hpBelow.GetWindowText(buf,127);newConfigData->hpBelow=atoi(buf);
 	m_hpBelowN.GetWindowText(buf,127);newConfigData->hpBelowN=atoi(buf);
 	m_hpBelowS.GetWindowText(buf,127);newConfigData->hpBelowS=atoi(buf);
 	m_hpBelowG.GetWindowText(buf,127);newConfigData->hpBelowG=atoi(buf);
+	m_hpBelowU.GetWindowText(buf,127);newConfigData->hpBelowU=atoi(buf);
 	newConfigData->drinkMana=m_drinkMana.GetCheck();
 	newConfigData->drinkManaN=m_drinkManaN.GetCheck();
 	newConfigData->drinkManaS=m_drinkManaS.GetCheck();
 	newConfigData->drinkManaG=m_drinkManaG.GetCheck();
+	newConfigData->drinkHpH=m_drinkHpH.GetCheck();
 	newConfigData->drinkHp=m_drinkHp.GetCheck();
 	newConfigData->drinkHpN=m_drinkHpN.GetCheck();
 	newConfigData->drinkHpS=m_drinkHpS.GetCheck();
 	newConfigData->drinkHpG=m_drinkHpG.GetCheck();
+	newConfigData->drinkHpU=m_drinkHpU.GetCheck();
 
 	newConfigData->customItem1Use=m_customItem1Use.GetCheck();
 	m_customItem1Below.GetWindowText(buf,127);newConfigData->customItem1Below=atoi(buf);
@@ -234,12 +259,13 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_customItem2Below.GetWindowText(buf,127);newConfigData->customItem2Below=atoi(buf);
 	newConfigData->customItem2Item=m_customItem2List.GetItemData(m_customItem2List.GetCurSel());
 
+	newConfigData->randomCast=m_randomCast.GetCheck();
+
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent) 
 {
-
 	
 	CDialog::OnTimer(nIDEvent);
 }

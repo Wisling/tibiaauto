@@ -30,6 +30,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "MemConstData.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
+#include <time.h>
+
+#include "commons.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -77,6 +80,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
+int RandomTimeAntylogout(){
+	return CModuleUtil::randomFormula(300,200);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -91,6 +98,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CConfigData *config = (CConfigData *)lpParam;
 	int iter=0;
+	int randomSeconds=RandomTimeAntylogout();
 	
 	while (!toolThreadShouldStop)
 	{					
@@ -99,26 +107,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		iter++;
 
-		if (iter%180==1){
+		if (iter%(randomSeconds)==1){
+			randomSeconds=RandomTimeAntylogout();
+
 			CTibiaCharacter *self = reader.readSelfCharacter();
+//			sender.ignoreLook(time(NULL)+1);
+//			sender.look(self->x+rand()%15-7,self->y+rand()%11-5,self->z,0);
+
 			
 			if (self->lookDirection==0){
-				sender.turnDown();
 				sender.turnUp();
-
 			}else if(self->lookDirection==1){
-				sender.turnLeft();
 				sender.turnRight();
-				
-
 			}else if(self->lookDirection==2){				
-				sender.turnUp();
 				sender.turnDown();
-				
 			}else if(self->lookDirection==3){
-				sender.turnRight();
 				sender.turnLeft();
-				
 			}
 			delete self;
 		}

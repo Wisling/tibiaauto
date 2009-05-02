@@ -3,34 +3,57 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_seller - Win32 Release--------------------
+--------------------Configuration: mod_seller - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP518.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Debug/mod_seller.res" /d "_DEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\mod_seller.rc"" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3F84.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_seller.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_seller\mod_seller.cpp"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_seller.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\ConfigData.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\ConfigDialog.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\exports.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\mod_seller.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\proxy.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\TibiaContainer_impl.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\TibiaItem_impl.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP518.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP519.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3F84.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3F85.tmp" with contents
 [
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_seller.pdb" /machine:I386 /def:".\mod_seller.def" /out:"../mod_seller.dll" /implib:"Release/mod_seller.lib" 
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\mod_seller.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaContainer_impl.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_seller.res"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_seller.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_seller\StdAfx.cpp"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP519.tmp"
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3F85.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3F86.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_seller.pdb" /debug /machine:I386 /def:".\mod_seller.def" /out:"../mod_seller.dll" /implib:"Debug/mod_seller.lib" /pdbtype:sept 
+".\Debug\ConfigData.obj"
+".\Debug\ConfigDialog.obj"
+".\Debug\exports.obj"
+".\Debug\mod_seller.obj"
+".\Debug\proxy.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaContainer_impl.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\mod_seller.res"
+]
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3F86.tmp"
 <h3>Output Window</h3>
+Compiling resources...
 Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigDialog.cpp
+exports.cpp
 mod_seller.cpp
+proxy.cpp
+TibiaContainer_impl.cpp
+TibiaItem_impl.cpp
+Generating Code...
 Linking...
-   Creating library Release/mod_seller.lib and object Release/mod_seller.exp
+   Creating library Debug/mod_seller.lib and object Debug/mod_seller.exp
 
 
 

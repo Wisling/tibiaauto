@@ -3,60 +3,34 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_playerinfo - Win32 Release--------------------
+--------------------Configuration: mod_playerinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_playerinfo.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D7.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF119.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_playerinfo.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\CharInfoDialog.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\ConfigData.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\exports.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\IPCBackPipeProxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\playerInfo.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\proxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\TibiaItem_impl.cpp"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_playerinfo.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_playerinfo\CharInfoDialog.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D7.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D8.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF119.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF12A.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/mod_playerinfo.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_playerinfo\StdAfx.cpp"
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_playerinfo.pdb" /debug /machine:I386 /def:".\mod_playerinfo.def" /out:"../mod_playerinfo.dll" /implib:"Debug/mod_playerinfo.lib" /pdbtype:sept 
+".\Debug\CharInfoDialog.obj"
+".\Debug\ConfigData.obj"
+".\Debug\exports.obj"
+".\Debug\IPCBackPipeProxy.obj"
+".\Debug\mod_playerinfo.obj"
+".\Debug\playerInfo.obj"
+".\Debug\proxy.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\mod_playerinfo.res"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D8.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D9.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_playerinfo.pdb" /machine:I386 /def:".\mod_playerinfo.def" /out:"../mod_playerinfo.dll" /implib:"Release/mod_playerinfo.lib" 
-".\Release\CharInfoDialog.obj"
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\IPCBackPipeProxy.obj"
-".\Release\mod_playerinfo.obj"
-".\Release\playerInfo.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_playerinfo.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1D9.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF12A.tmp"
 <h3>Output Window</h3>
-Compiling resources...
-Compiling...
-StdAfx.cpp
 Compiling...
 CharInfoDialog.cpp
-ConfigData.cpp
-exports.cpp
-IPCBackPipeProxy.cpp
-mod_playerinfo.cpp
-playerInfo.cpp
-proxy.cpp
-TibiaItem_impl.cpp
-Generating Code...
 Linking...
-   Creating library Release/mod_playerinfo.lib and object Release/mod_playerinfo.exp
 
 
 

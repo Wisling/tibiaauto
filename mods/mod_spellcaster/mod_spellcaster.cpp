@@ -32,6 +32,7 @@ of the License, or (at your option) any later version.
 #include "ModuleUtil.h"
 #include "time.h"
 #include <fstream>
+#include <map>
 
 using namespace std;
 
@@ -54,6 +55,8 @@ static char THIS_FILE[] = __FILE__;
 #define UP 2
 #define LEFT 3
 
+#define GET 0
+#define MAKE 1
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_spellcasterApp
@@ -65,6 +68,38 @@ BEGIN_MESSAGE_MAP(CMod_spellcasterApp, CWinApp)
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+/////////////////////////////////////////////////////////////////////////////
+// Tool functions
+
+//Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
+int RandomVariableMana(int pt,int command,CConfigData *config){
+	if (!config->randomCast) return *(int*)pt;
+	CMemReaderProxy reader;
+	static map<int,int> setMana;
+	//if (!setMana[pt]) command=MAKE;
+	if (command==MAKE){
+		// within 10% of number with a cutoff at maxMana
+		setMana[pt]=CModuleUtil::randomFormula(*(int*)pt,(int)(*(int*)pt*.1),reader.readSelfCharacter()->maxMana+1);
+	}
+	return setMana[pt];
+}
+
+//Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
+int RandomVariableHp(int pt,int command,CConfigData *config){
+	if (!config->randomCast) return *(int*)pt;
+
+	CMemReaderProxy reader;
+	static map<int,int> setHp;
+	if (!setHp[pt]) command=MAKE;
+	if (command==MAKE){
+		// within 10% of number with a min of pt and a max of maxHp
+		setHp[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),reader.readSelfCharacter()->maxHp+1);
+	}
+	char buf[111];
+	sprintf(buf,"%d,%d,%d,%d",(int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),reader.readSelfCharacter()->maxHp+1);
+//	AfxMessageBox(buf);
+	return setHp[pt];
+}
 
 
 
@@ -115,25 +150,33 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int attackedCreature = reader.getAttackedCreature();
 		int flags = reader.getSelfEventFlags();
-		
 		//T4: First try to heal/also uses paralysis cure here
-		if (config->life && (config->customSpell && self->hp<=config->lifeHp || config->vitaSpell && self->hp<=config->vitaHp || config->granSpell && self->hp<=config->granHp || config->exuraSpell && self->hp<=config->exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
+		int exuraHp = RandomVariableHp((int)&config->exuraHp,GET,config);
+		int granHp = RandomVariableHp((int)&config->granHp,GET,config);
+		int vitaHp = RandomVariableHp((int)&config->vitaHp,GET,config);
+		int lifeHp = RandomVariableHp((int)&config->lifeHp,GET,config);
+		int manaMana = RandomVariableMana((int)&config->manaMana,GET,config);
+		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
-			if (config->customSpell && self->hp<=config->lifeHp && self->mana >= config->lifeSpellMana){
-				sender.sayWhisper(config->lifeSpell);
+			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
+				RandomVariableHp((int)&config->lifeHp,MAKE,config);
+				sender.say(config->lifeSpell);
 				Sleep(700);
 				self = reader.readSelfCharacter();
 			}
-			else if(config->vitaSpell && self->hp<=config->vitaHp && self->mana >= config->vitaSpellMana){
-				sender.sayWhisper("exura vita");
+			else if(config->vitaSpell && self->hp<vitaHp && self->mana >= config->vitaSpellMana){
+				RandomVariableHp((int)&config->vitaHp,MAKE,config);
+				sender.say("exura vita");
 				Sleep(700);
 			}
-			else if(config->granSpell && self->hp<=config->granHp && self->mana >= config->granSpellMana){
-				sender.sayWhisper("exura gran");
+			else if(config->granSpell && self->hp<=granHp && self->mana >= config->granSpellMana){
+				RandomVariableHp((int)&config->granHp,MAKE,config);
+				sender.say("exura gran");
 				Sleep(700);
 			}
-			else if((config->exuraSpell && self->hp<=config->exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
-				sender.sayWhisper("exura");
+			else if((config->exuraSpell && self->hp<=exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
+				RandomVariableHp((int)&config->exuraHp,MAKE,config);
+				sender.say("exura");
 				Sleep(700);
 			}
 			else if (!config->disableWarning) {
@@ -159,17 +202,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (!isdigit(text[strlen("You lose ")+i])) break;
 					pointLossText[i] = text[strlen("You lose ")+i];
 				}
-				if (atoi(pointLossText) >= config->minPoisonDmg && atoi(pointLossText) != 5) sender.sayWhisper("exana pox");
+				if (atoi(pointLossText) >= config->minPoisonDmg && atoi(pointLossText) != 5) sender.say("exana pox");
 			}
 		}
 		else if (config->sioSpell && self->mana >= config->sioSpellMana) {
 			int chNr;
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-				if (OnList(config->healList,ch->name) && ch->hp <= config->sioHp && ch->visible == 1) {
+				int sioHp = RandomVariableHp((int)&config->sioHp,GET,config);
+				if (OnList(config->healList,ch->name) && ch->hpPercLeft <= sioHp && ch->visible == 1 && ch->z == self->z) {
+					RandomVariableHp((int)&config->sioHp,MAKE,config);
 					char buf[256];
 					sprintf(buf,"exura sio \"%s\"",ch->name);
-					sender.sayWhisper(buf);
+					sender.say(buf);
 					Sleep(700);	
 				}
 				delete ch;
@@ -358,8 +403,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 		//T4: Use mana in other purpose otherwise
-		else if(config->mana && self->mana>=config->manaMana){
-			sender.sayWhisper(config->manaSpell);
+		else if(config->mana && self->mana>=manaMana){
+			RandomVariableMana((int)&config->manaMana,MAKE,config);
+			sender.say(config->manaSpell);
 			Sleep(700);
 		}	
 		delete self;
@@ -649,6 +695,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"ExevoGranMasTera")) m_configData->exevoGranMasTera=atoi(paramValue);
 	if (!strcmp(paramName,"ExevoGranMasFrigo")) m_configData->exevoGranMasFrigo=atoi(paramValue);
 	if (!strcmp(paramName,"DisableWarning")) m_configData->disableWarning=atoi(paramValue);
+	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
 	if (!strcmp(paramName,"healList")){
 		if (currentPos>99)
 			return;
@@ -720,6 +767,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"ExevoGranMasTera")) sprintf(buf,"%d",m_configData->exevoGranMasTera);
 	if (!strcmp(paramName,"ExevoGranMasFrigo")) sprintf(buf,"%d",m_configData->exevoGranMasFrigo);
 	if (!strcmp(paramName,"DisableWarning")) sprintf(buf,"%d",m_configData->disableWarning);
+	if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
 	if (!strcmp(paramName,"healList")){		
 		if (currentPos<100){				
 			if (IsCharAlphaNumeric(m_configData->healList[currentPos][0])){				
@@ -792,6 +840,7 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 54: return "healList";
 	case 55: return "aoeAffect";
 	case 56: return "DisableWarning";
+	case 57: return "randomCast";
 	default:
 		return NULL;
 	}

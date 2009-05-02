@@ -13,6 +13,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+extern int loginTime;
+
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
@@ -47,6 +49,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DEBUG, m_debug);
 	DDX_Control(pDX, IDC_ACCOUNT_NUMBER, m_accountNumber);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_LOGIN_DELAY, m_loginDelay);
+
 	//}}AFX_DATA_MAP
 }
 
@@ -102,6 +106,7 @@ void CConfigDialog::disableControls()
 	m_openCont6.EnableWindow(false);
 	m_openCont7.EnableWindow(false);
 	m_openCont8.EnableWindow(false);
+	m_loginDelay.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -118,6 +123,7 @@ void CConfigDialog::enableControls()
 	m_openCont6.EnableWindow(true);
 	m_openCont7.EnableWindow(true);
 	m_openCont8.EnableWindow(true);
+	m_loginDelay.EnableWindow(true);
 }
 
 
@@ -138,6 +144,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_openCont6.SetCheck(configData->openCont6);
 	m_openCont7.SetCheck(configData->openCont7);
 	m_openCont8.SetCheck(configData->openCont8);
+	sprintf(buf,"%d",configData->loginDelay);m_loginDelay.SetWindowText(buf);	
 	
 }
 
@@ -158,6 +165,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->openCont6=m_openCont6.GetCheck();
 	newConfigData->openCont7=m_openCont7.GetCheck();
 	newConfigData->openCont8=m_openCont8.GetCheck();
+	m_loginDelay.GetWindowText(buf,63);newConfigData->loginDelay=atoi(buf);
 
 	return newConfigData;
 }
@@ -170,7 +178,14 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		CMemReaderProxy reader;
 		switch (reader.getConnectionState())
 		{
-		case 0: m_status.SetWindowText("Connection status: not connected");break;
+		case 0: 
+				if (loginTime){
+					char buf[128];
+					if (loginTime-time(NULL)>=0) sprintf(buf,"Connection status: waiting to log in %d seconds.",loginTime-time(NULL));
+					else sprintf(buf,"Connection status: trying to log in for %d seconds.",time(NULL)-loginTime);
+					m_status.SetWindowText(buf);break;
+				}
+				m_status.SetWindowText("Connection status: not connected");break;
 		case 1: m_status.SetWindowText("Connection status: opening to login server");break;
 		case 2: m_status.SetWindowText("Connection status: connecting to login server");break;
 		case 3: m_status.SetWindowText("Connection status: disconnecting from login server");break;
@@ -207,7 +222,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	

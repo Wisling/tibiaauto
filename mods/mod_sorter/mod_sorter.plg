@@ -6,14 +6,8 @@
 --------------------Configuration: mod_sorter - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP53B.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_sorter.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\mod_sorter.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_sorter\proxy.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP53B.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP53C.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Release/mod_sorter.res" /d "NDEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_sorter\mod_sorter.rc"" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1804.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_sorter.pdb" /machine:I386 /def:".\mod_sorter.def" /out:"../mod_sorter.dll" /implib:"Release/mod_sorter.lib" 
 ".\Release\ConfigData.obj"
@@ -26,14 +20,25 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP53C.tmp" with conten
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_sorter.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP53C.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1804.tmp"
 <h3>Output Window</h3>
-Compiling...
-mod_sorter.cpp
-proxy.cpp
-Generating Code...
+Compiling resources...
 Linking...
    Creating library Release/mod_sorter.lib and object Release/mod_sorter.exp
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1AA4.tmp" with contents
+[
+/nologo /o"Release/mod_sorter.bsc" 
+".\Release\StdAfx.sbr"
+".\Release\ConfigData.sbr"
+".\Release\ConfigDialog.sbr"
+".\Release\exports.sbr"
+".\Release\mod_sorter.sbr"
+".\Release\proxy.sbr"
+".\Release\TibiaContainer_impl.sbr"
+".\Release\TibiaItem_impl.sbr"]
+Creating command line "bscmake.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1AA4.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 
