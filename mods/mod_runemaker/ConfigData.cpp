@@ -26,6 +26,7 @@ CConfigData::CConfigData()
 	maxUse=0;
 	spell[0]=0;
 	useBackpack=0;
+	randomCast=1;
 
 	makeNow=0;
 

@@ -192,12 +192,36 @@ void CTibiaMapProxy::clearPrevPoint()
 		}
 	} 
 }
+void CTibiaMapProxy::clearLocalPrevPoint(int x,int y,int z,int radius)
+{
+	typedef void (*Proto_fun)(int x,int y,int z,int radius);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapClearLocalPrevPoint");
+		if (fun)
+		{
+			fun(x,y,z,radius);
+		}
+	} 
+}
 void CTibiaMapProxy::setPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
 {
 	typedef void (*Proto_fun)(int x,int y,int z, int prevX, int prevY, int prevZ);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPrevPoint");
+		if (fun)
+		{
+			fun(x,y,z,prevX,prevY,prevZ);
+		}
+	} 
+}
+void CTibiaMapProxy::setBestPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
+{
+	typedef void (*Proto_fun)(int x,int y,int z, int prevX, int prevY, int prevZ);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetBestPrevPoint");
 		if (fun)
 		{
 			fun(x,y,z,prevX,prevY,prevZ);

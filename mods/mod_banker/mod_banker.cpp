@@ -51,10 +51,11 @@ BEGIN_MESSAGE_MAP(CMod_bankerApp, CWinApp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// Tool thread function
+// Tool functions
 
-int toolThreadShouldStop=0;
-HANDLE toolThreadHandle;
+int RandomTimeBankerSay(int length){
+	return CModuleUtil::randomFormula(300+min(length*100,1200),200);//ranges from 300 to 1700
+}
 
 int findBanker(CConfigData *);
 int moveToBanker(CConfigData *);
@@ -66,6 +67,11 @@ int isCavebotOn();
 int countAllItemsOfType(int);
 int shouldBank(CConfigData *);
 
+/////////////////////////////////////////////////////////////////////////////
+// Tool thread function
+
+int toolThreadShouldStop=0;
+HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
 	int alreadySleeping = 0;
@@ -275,7 +281,7 @@ int moveToBanker(CConfigData *config) {
 
 void getBalance() {
 	CPackSenderProxy sender;
-	Sleep (500);
+	Sleep (RandomTimeBankerSay(strlen("balance")));
 	sender.sayNPC("balance");
 }
 
@@ -301,16 +307,18 @@ int depositGold() {
 		}
 	}
 
+	Sleep (RandomTimeBankerSay(strlen("hi")));
 	sender.say("hi");
-	Sleep (500);
+	Sleep(500);//Give time for NPC window to open
+	Sleep (RandomTimeBankerSay(strlen("deposit all")));
 	sender.sayNPC("deposit all");
-	Sleep (500);
+	Sleep (RandomTimeBankerSay(strlen("yes")));
 	sender.sayNPC("yes");
 	if (CModuleUtil::waitForItemsInsideChange(foundInBag, cont->itemsInside)) {
 		delete cont;
 		return 1;
 	}
-	delete cont;	
+	delete cont;
 	return 0;
 }
 
@@ -318,36 +326,20 @@ int withdrawGold(CConfigData *config) {
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
-	CTibiaContainer *cont;
+	CTibiaCharacter *self = reader.readSelfCharacter();
 	char withdrawBuf[32];
-	int goldId = itemProxy.getValueForConst("GP");
-	int platId = itemProxy.getValueForConst("PlatinumCoin");
-	int crystalId = itemProxy.getValueForConst("CrystalCoin");
 
 	sprintf(withdrawBuf, "withdraw %d", config->cashOnHand);
-	Sleep (500);
+	Sleep (RandomTimeBankerSay(strlen(withdrawBuf)));
 	sender.sayNPC(withdrawBuf);
-	Sleep (500);
+	Sleep (RandomTimeBankerSay(strlen("yes")));
 	sender.sayNPC("yes");
-	int foundInBag = 0;
-	for (int contNr = 0; contNr < 16; contNr++) {
-		cont = reader.readContainer(contNr);
-		int count = cont->itemsInside;
-		for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
-			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
-			if (cont->itemsInside < cont->size) {
-				foundInBag = contNr;
-				contNr = 16;
-				slotNr = 0;
-			}
-		}
-	}
 
-	if (CModuleUtil::waitForItemsInsideChange(foundInBag, cont->itemsInside)) {
-		delete cont;
+	if (CModuleUtil::waitForCapsChange(self->cap)) {
+		delete self;
 		return 1;
 	}
-	delete cont;	
+	delete self;	
 	return 0;
 }
 

@@ -382,7 +382,7 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		sprintf(svalue,"%d",playerInfo->maxMana);
 
 	}else if (!strcmpi(tagName,"capacity")){
-		sprintf(svalue,"%d",playerInfo->capacity);
+		sprintf(svalue,"%d.%d",(int)playerInfo->capacity,(int)((playerInfo->capacity-(int)playerInfo->capacity)*100));
 
 	}else if (!strcmpi(tagName,"maxcapacity")){
 		sprintf(svalue,"%d",playerInfo->maxCapacity);
@@ -781,6 +781,8 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 
 	}
 }
+
+
 
 void Expression_GatherData(expressionInfo *expInfo, creature *data,CTibiaCharacter *ch,CConfigData *config){
 	char svalue[128];
@@ -1223,6 +1225,12 @@ void Monster_SetNameNumber(char *sCreature,int nr, char *out){
 	out[32]=0;
 }
 
+int RandomTimeCreatureInfo(CTibiaCharacter *self,CTibiaCharacter *ch){
+	int dist = self->x-ch->x + self->y-ch->y;
+	return CModuleUtil::randomFormula(300,dist*10);//ranges from 220-380
+}
+
+
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
@@ -1288,7 +1296,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
  			
 			if (config->collectStats)
 			{
-				// collect statistics, but for monsters only				
+				// collect statistics, but for monsters only
 
 				                                   				       				
 				if (ch->visible && ch->tibiaId > 0x40000000)
@@ -1298,7 +1306,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					creatureData crData = crMap[creatureKey(ch->tibiaId)];
 					if (!crData.tibiaId || (crData.tibiaId&&curTime-crData.tm>30))
 					{										
-						FILE *f = fopen("tibiaauto-stats-creatures.txt","a+");					
+						FILE *f = fopen("tibiaauto-stats-creatures.txt","a+");
 						if (f) 
 						{	
 							char statChName[128];
@@ -1311,8 +1319,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							
 							int tm=time(NULL);
 							int r = rand();
-							int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;
-							fprintf(f,"%d,%d,%d,%d,%d,'%s',%d,%d\n",tm,ch->tibiaId,ch->x,ch->y,ch->z,statChName,r,checksum);
+							int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13+ch->walkSpeed*17;
+							//int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;
+							fprintf(f,"%d,%d,%d,%d,%d,'%s',%d,%d,%d\n",tm,ch->tibiaId,ch->x,ch->y,ch->z,statChName,ch->walkSpeed,r,checksum);
 							fclose(f);
 														
 						}
@@ -1439,24 +1448,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 						}else if(ch->lookDirection==3){
 							sender.look(ch->x-1,ch->y,ch->z,99);
-
 						}
 					}
-					Sleep(100);									
+					Sleep(RandomTimeCreatureInfo(self,ch));
 				}
 			}
-
 			delete ch;
 		}
-
-		delete self;		
-	}	
-
+		delete self;
+	}
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	reader.setMainWindowText("Tibia");
 	reader.setMainTrayText("<Running Tibia Auto>"); // back to the default setting
 	delete self;
-
 	//T4: Tool has been disabled, so clean all mess
 	sender.sendClearCreatureInfo();
 	if (config->uniqueMonsterNames){

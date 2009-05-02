@@ -33,15 +33,19 @@ public:
 	CEdit	m_manaBelowS;
 	CEdit	m_manaBelowN;
 	CEdit	m_manaBelowG;
+	CEdit	m_hpBelowH;
 	CEdit	m_hpBelowS;
 	CEdit	m_hpBelowN;
 	CEdit	m_hpBelowG;
+	CEdit	m_hpBelowU;
 	CButton	m_drinkManaS;
 	CButton	m_drinkManaN;
 	CButton	m_drinkManaG;
+	CButton	m_drinkHpH;
 	CButton	m_drinkHpS;
 	CButton	m_drinkHpN;
 	CButton	m_drinkHpG;
+	CButton	m_drinkHpU;
 	CButton	m_customItem2Use;
 	CEdit	m_customItem2Below;
 	CComboBox	m_customItem2List;
@@ -56,6 +60,7 @@ public:
 	CEdit	m_hpBelow;
 	CButton	m_drinkMana;
 	CButton	m_drinkHp;
+	CButton	m_randomCast;
 	CButton	m_enable;
 	//}}AFX_DATA
 

@@ -163,7 +163,7 @@ void CCharInfoDialog::OnResetCounters()
 	resetCounters();	
 }
 
-void CCharInfoDialog::dataCalc(){	
+void CCharInfoDialog::dataCalc(){
 	CMemReaderProxy reader;	
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
@@ -328,7 +328,7 @@ void CCharInfoDialog::dataShow(){
 	sprintf(buffer,"%d/%d",playerInfo.hp,playerInfo.maxHp);				m_hp.SetWindowText(buffer);
 	sprintf(buffer,"%d/%d",playerInfo.mana,playerInfo.maxMana);			m_mana.SetWindowText(buffer);
 	sprintf(buffer,"%d",playerInfo.soulPoints);							m_sp.SetWindowText(buffer);
-	sprintf(buffer,"%d/%d",playerInfo.capacity,playerInfo.maxCapacity);	m_cap.SetWindowText(buffer);
+	sprintf(buffer,"%d.%d/%d",(int)playerInfo.capacity,(int)((playerInfo.capacity-(int)playerInfo.capacity)*100),playerInfo.maxCapacity);	m_cap.SetWindowText(buffer);
 
 	sprintf(buffer,"%d",playerInfo.expCurrent);		m_exp.SetWindowText(buffer);
 	sprintf(buffer,"%d/h",playerInfo.expPerHour);	m_expSpeed.SetWindowText(buffer);

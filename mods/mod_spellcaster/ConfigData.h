@@ -74,6 +74,7 @@ public:
 	int exevoGranMasFrigo;
 
 	int disableWarning;
+	int randomCast;//new
 
 };
 

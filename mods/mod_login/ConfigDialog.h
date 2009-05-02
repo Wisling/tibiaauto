@@ -44,6 +44,7 @@ public:
 	CListCtrl	m_debug;
 	CEdit	m_accountNumber;
 	CButton	m_enable;
+	CEdit m_loginDelay;
 	//}}AFX_DATA
 
 

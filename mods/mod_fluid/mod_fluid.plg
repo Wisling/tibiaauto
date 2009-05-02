@@ -6,27 +6,15 @@
 --------------------Configuration: mod_fluid - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_fluid.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\mod_fluid.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP197.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP5655.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fluid.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\ConfigData.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\ConfigDialog.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\exports.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\mod_fluid.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\proxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\TibiaItem_impl.cpp"
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fluid.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_fluid\mod_fluid.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP197.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP19D.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP5655.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP5656.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_fluid.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_fluid\StdAfx.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP19D.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP19E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fluid.pdb" /machine:I386 /def:".\mod_fluid.def" /out:"../mod_fluid.dll" /implib:"Release/mod_fluid.lib" 
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fluid.pdb" /machine:I386 /def:".\mod_fluid.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fluid.dll" /implib:"Release/mod_fluid.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\ConfigData.obj"
 ".\Release\ConfigDialog.obj"
 ".\Release\exports.obj"
@@ -36,19 +24,10 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP19E.tmp" with conten
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_fluid.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP19E.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP5656.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-StdAfx.cpp
-Compiling...
-ConfigData.cpp
-ConfigDialog.cpp
-exports.cpp
 mod_fluid.cpp
-proxy.cpp
-TibiaItem_impl.cpp
-Generating Code...
 Linking...
    Creating library Release/mod_fluid.lib and object Release/mod_fluid.exp
 

@@ -116,7 +116,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							if (itemAccepted->quantity<qtyToRestack)
 								qtyToRestack=itemAccepted->quantity;
 							sender.moveObjectBetweenContainers(ammoItemId,0x40+contNr,itemAccepted->pos,0xa,0,qtyToRestack);
-							Sleep(300);
+							Sleep(CModuleUtil::randomFormula(500,200));
 							delete itemAccepted;
 							delete cont;
 							break;
@@ -161,7 +161,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							} else {
 								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x5,0,qtyToRestack);
 							}
-							Sleep(300);
+							Sleep(CModuleUtil::randomFormula(400,150));
 							delete itemAccepted;
 							delete cont;
 							break;
@@ -198,7 +198,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (cont->flagOnOff&&cont->itemsInside<cont->size)
 					{							
 						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,100);
-						Sleep(500);
+						Sleep(CModuleUtil::randomFormula(600,200));
 						// reset offsetXY to avoid pickup up same item to hand
 						offsetX=offsetY=-2;
 						
@@ -220,7 +220,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{
 						// move to left hand
 						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,100);
-						Sleep(500);
+						Sleep(CModuleUtil::randomFormula(600,200));
 						offsetX=offsetY=-2;
 					}
 				}
@@ -231,7 +231,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{
 						// move to left hand
 						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,100);
-						Sleep(500);
+						Sleep(CModuleUtil::randomFormula(600,200));
 						offsetX=offsetY=-2;
 					}
 				}												
@@ -278,7 +278,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						sender.moveObjectFromFloorToFloor(objectId,self->x,self->y,self->z,self->x+moveToX,self->y+moveToY,self->z,qty);
 					}
 				}
-				Sleep(500);
+				Sleep(CModuleUtil::randomFormula(400,200));
 			}
 		}
 		delete self;

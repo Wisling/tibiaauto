@@ -87,6 +87,7 @@ public:
 	CButton m_exevoGranMasFrigo;
 	CButton	m_healList;
 	CButton	m_disableWarning;
+	CButton m_randomCast;//new
 	//}}AFX_DATA
 
 

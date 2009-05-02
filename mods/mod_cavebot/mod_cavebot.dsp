@@ -153,6 +153,10 @@ SOURCE=.\ConfigDialog.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\Helpers.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_cavebot.h
 # End Source File
 # Begin Source File
@@ -162,6 +166,10 @@ SOURCE=.\Resource.h
 # Begin Source File
 
 SOURCE=.\SendStats.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\SharedMemory.h
 # End Source File
 # Begin Source File
 

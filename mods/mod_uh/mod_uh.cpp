@@ -97,7 +97,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(200);			
+		Sleep(200);		
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 			
 		CTibiaCharacter *self = reader.readSelfCharacter();
@@ -147,8 +147,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					sender.useWithObjectFromContainerOnFloor(
 						uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
-						self->x,self->y,self->z);					
-					Sleep(config->m_sleepAfter);					
+						self->x,self->y,self->z);
+					Sleep(config->m_sleepAfter);
 				}
 				if (config->m_hotkeySelf)
 				{

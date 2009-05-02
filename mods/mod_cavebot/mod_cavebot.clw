@@ -124,7 +124,7 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=CConfigDialog
+LastObject=IDC_ATTACK_HP_ABOVE
 
 [DLG:IDD_SENDSTATS]
 Type=1

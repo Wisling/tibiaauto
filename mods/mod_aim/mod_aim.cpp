@@ -99,7 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 						CUIntArray acceptedItems;
 						CTibiaItem *runeItem;
-						//T4: If default rune has been choosen then cast it every time creature is attaced
+						//T4: If default rune has been choosen then cast it every time creature is attacked
 
 						if (config->RuneType!=0){
 							

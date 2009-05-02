@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "ModuleUtil.h"
 #include "SendKeys.h"
 #include <queue>
+#include <time.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,6 +41,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
+int loginTime=0;
 /////////////////////////////////////////////////////////////////////////////
 // CMod_loginApp
 
@@ -190,18 +192,42 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 	while (!toolThreadShouldStop)
 	{					
-		Sleep(100);			
+		Sleep(100);
 		
 		int connectionState = reader.getConnectionState();
 		
 		if (connectionState!=8)
-		{			
-			registerDebug("No connection: entering relogin mode");						
+		{	
+			char buf[128];
+			sprintf(buf,"Connection Status Changed to:%d",connectionState);
+			registerDebug(buf);
+
+			registerDebug("No connection: entering wait area");
+			if (!loginTime) loginTime = time(NULL)+config->loginDelay;
+			while (loginTime>time(NULL) && reader.getConnectionState()!=8){
+				if (toolThreadShouldStop){
+					registerDebug("Forced Exit. Module stopped.");
+					goto exitFunction;
+				}
+				Sleep(500);
+			}
+		}
+
+		connectionState = reader.getConnectionState();
+		if (connectionState!=8)
+		{	
+			registerDebug("No connection: entering relogin mode");
 
 			if (origExp>getSelfExp()) 
 			{
 				registerDebug("ERROR: exp dropped? was I killed?");
 				Sleep(1000);
+				while (reader.getConnectionState()!=8){
+					if (toolThreadShouldStop){
+						goto exitFunction;
+					}
+					Sleep(1000);
+				}
 				continue;
 			}
 			if (hSemaphore)
@@ -305,9 +331,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				ReleaseSemaphore(hSemaphore,1,&prevCount);
 				continue;
 			}
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+15*(config->charPos-1));
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			sk.SendKeys("a");// goes to beginning of list
+			for (int i=1;i<config->charPos;i++){
+				sk.SendKeys("{DOWN}");
+			}
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
@@ -319,9 +346,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (toolThreadShouldStop) break;
 				Sleep(100);
 			}
-			
+			//SetCursorPos(prevCursorPos.x,prevCursorPos.y);
+
+			//Click on the X of Possibly open skills/battle windows
+			for (i=0;i<4;i++){
+				SetCursorPos(wndRect.right-15,wndRect.top+387);//inventory maximized
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				SetCursorPos(wndRect.right-15,wndRect.top+382);//inventory minimized
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+			}
 			// finalize
-			//SetCursorPos(prevCursorPos.x,prevCursorPos.y);			
 			if (wndIconic)
 			{
 				::ShowWindow(hwnd,SW_MINIMIZE);
@@ -335,87 +371,115 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			ReleaseSemaphore(hSemaphore,1,&prevCount);
 			registerDebug("Relogin procedure completed.");
-			
-			
-		} // if (connectionState!=8)	
+			loginTime=0;
+			if (reader.getConnectionState()==8&&config->openMain) {	
+				
+				// open the main backpack flow
 
-		if (connectionState==8&&config->openMain) {			
-			// open the main backpack flow
-
-			int openContainersCount=0;
-			for (i=0;i<7;i++)
-			{
-				CTibiaContainer *cont = reader.readContainer(i);
-				if (cont->flagOnOff) openContainersCount++;
-				delete cont;
-			}
-			if (openContainersCount!=shouldBeOpenedContainers)
-			{
-				int pos;
-				// no open containers found; proceed.
-				// first: close existing containers
-				for (pos=0;pos<memConstData.m_memMaxContainers;pos++)
+				int openContainersCount=0;
+				for (i=0;i<7;i++)
 				{
-					CTibiaContainer *cont = reader.readContainer(pos);
-					if (cont->flagOnOff)
-					{
-						sender.closeContainer(pos);
-						CModuleUtil::waitForOpenContainer(pos,0);
-					}
-
+					CTibiaContainer *cont = reader.readContainer(i);
+					if (cont->flagOnOff) openContainersCount++;
 					delete cont;
 				}
-				// now open containers
-				
-				CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
-				sender.openContainerFromContainer(item->objectId,0x03,0,0);
-				CModuleUtil::waitForOpenContainer(0,1);
-				CTibiaContainer *cont = reader.readContainer(0);
-				if (cont->flagOnOff)
+				if (openContainersCount!=shouldBeOpenedContainers)
 				{
-					int foundContNr=1;
-					int foundContOpenNr=1;
-					for (pos=0;pos<cont->itemsInside;pos++)
+					int pos;
+					// no open containers found; proceed.
+					// first: close existing containers
+					for (pos=0;pos<memConstData.m_memMaxContainers;pos++)
 					{
-						CTibiaItem *itemInside = (CTibiaItem *)cont->items.GetAt(pos);
-						CTibiaTile *itemTile = reader.getTibiaTile(itemInside->objectId);
-						if (itemTile->isContainer)
+						CTibiaContainer *cont = reader.readContainer(pos);
+						if (cont->flagOnOff)
 						{
-							int doOpen=0;
-							if (foundContNr==1&&config->openCont1) doOpen=1;
-							if (foundContNr==2&&config->openCont2) doOpen=1;
-							if (foundContNr==3&&config->openCont3) doOpen=1;
-							if (foundContNr==4&&config->openCont4) doOpen=1;
-							if (foundContNr==5&&config->openCont5) doOpen=1;
-							if (foundContNr==6&&config->openCont6) doOpen=1;
-							if (foundContNr==7&&config->openCont7) doOpen=1;
-							if (foundContNr==8&&config->openCont8) doOpen=1;
-							if (doOpen)
-							{
-								sender.openContainerFromContainer(itemInside->objectId,0x40,pos,foundContOpenNr);
-								CModuleUtil::waitForOpenContainer(foundContOpenNr,1);
-								foundContOpenNr++;
-							}
-							foundContNr++;
+							sender.closeContainer(pos);
+							CModuleUtil::waitForOpenContainer(pos,0);
 						}
+
+						delete cont;
 					}
-				} else {
-					// something went wrong
-					sender.closeContainer(0);
-				}				
-				delete cont;
+					// now open containers
+					
+					CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
+					sender.openContainerFromContainer(item->objectId,0x03,0,0);
+					CModuleUtil::waitForOpenContainer(0,1);
+
+					//Double click on the main bar of the container
+					SetCursorPos(wndRect.right-100,wndRect.top+387);
+					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+					SetCursorPos(wndRect.right-100,wndRect.top+282);
+					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+
+					CTibiaContainer *cont = reader.readContainer(0);
+					if (cont->flagOnOff)
+					{
+						int foundContNr=1;
+						int foundContOpenNr=1;
+						for (pos=0;pos<cont->itemsInside;pos++)
+						{
+							CTibiaItem *itemInside = (CTibiaItem *)cont->items.GetAt(pos);
+							CTibiaTile *itemTile = reader.getTibiaTile(itemInside->objectId);
+							if (itemTile->isContainer)
+							{
+								int doOpen=0;
+								if (foundContNr==1&&config->openCont1) doOpen=1;
+								if (foundContNr==2&&config->openCont2) doOpen=1;
+								if (foundContNr==3&&config->openCont3) doOpen=1;
+								if (foundContNr==4&&config->openCont4) doOpen=1;
+								if (foundContNr==5&&config->openCont5) doOpen=1;
+								if (foundContNr==6&&config->openCont6) doOpen=1;
+								if (foundContNr==7&&config->openCont7) doOpen=1;
+								if (foundContNr==8&&config->openCont8) doOpen=1;
+								if (doOpen)
+								{
+									sender.openContainerFromContainer(itemInside->objectId,0x40,pos,foundContOpenNr);
+									CModuleUtil::waitForOpenContainer(foundContOpenNr,1);
+
+									//Double click on main bar of open container(each container heign =19
+									SetCursorPos(wndRect.right-100,wndRect.top+387+19*foundContOpenNr);
+									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+									SetCursorPos(wndRect.right-100,wndRect.top+282+19*foundContOpenNr);
+									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+									
+									foundContOpenNr++;
+								}
+								foundContNr++;
+							}
+						}
+					} else {
+						// something went wrong
+						sender.closeContainer(0);
+					}				
+					delete cont;
+					
+					delete item;
+				}
 				
-				delete item;
 			}
-			
-		}
-				
+			//SetCursorPos(prevCursorPos.x,prevCursorPos.y);			
+		} // if (connectionState!=8)
+		else loginTime=0;
 	}
+exitFunction:
 	if (hSemaphore)
 	{
 		CloseHandle(hSemaphore);
 	}
 	toolThreadShouldStop=0;
+	loginTime=0;
 	return 0;
 }
 
@@ -551,9 +615,9 @@ int CMod_loginApp::validateConfig(int showAlerts)
 		if (showAlerts) AfxMessageBox("Password must be filled in!");
 		return 0;
 	}
-	if (m_configData->charPos<0||m_configData->charPos>10)
+	if (m_configData->charPos<=0||m_configData->charPos>20)
 	{
-		if (showAlerts) AfxMessageBox("Character position must be between 0 and 10.");
+		if (showAlerts) AfxMessageBox("Character position must be between 1 and 20.");
 		return 0;
 	}
 	if (m_configData->openCont1||m_configData->openCont2||m_configData->openCont3||m_configData->openCont4
@@ -564,6 +628,11 @@ int CMod_loginApp::validateConfig(int showAlerts)
 			if (showAlerts) AfxMessageBox("If you choose to open container, you must also choose to open the main backpack!");
 			return 0;
 		}
+	}
+	if (m_configData->loginDelay<0)
+	{
+		if (showAlerts) AfxMessageBox("Login delay must not be less than 0.");
+		return 0;
 	}
 	
 	
@@ -586,6 +655,7 @@ void CMod_loginApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"open/cont6")) m_configData->openCont6=atoi(paramValue);
 	if (!strcmp(paramName,"open/cont7")) m_configData->openCont7=atoi(paramValue);
 	if (!strcmp(paramName,"open/cont8")) m_configData->openCont8=atoi(paramValue);
+	if (!strcmp(paramName,"loginDelay")) m_configData->loginDelay=atoi(paramValue);
 }
 
 char *CMod_loginApp::saveConfigParam(char *paramName)
@@ -602,6 +672,7 @@ char *CMod_loginApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"open/cont6")) sprintf(buf,"%d",m_configData->openCont6);
 	if (!strcmp(paramName,"open/cont7")) sprintf(buf,"%d",m_configData->openCont7);
 	if (!strcmp(paramName,"open/cont8")) sprintf(buf,"%d",m_configData->openCont8);
+	if (!strcmp(paramName,"loginDelay")) sprintf(buf,"%d",m_configData->loginDelay);
 
 	return buf;
 }
@@ -619,6 +690,7 @@ char *CMod_loginApp::getConfigParamName(int nr)
 	case 6: return "open/cont6";
 	case 7: return "open/cont7";
 	case 8: return "open/cont8";
+	case 9: return "loginDelay";
 	default:
 		return NULL;
 	}

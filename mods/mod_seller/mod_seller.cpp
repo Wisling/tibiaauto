@@ -55,10 +55,15 @@ BEGIN_MESSAGE_MAP(CMod_SellerApp, CWinApp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
-// Tool thread function
+// Tool functions
 
-int toolThreadShouldStop=0;
-HANDLE toolThreadHandle;
+int RandomTimeSellerSay(int length){
+	return CModuleUtil::randomFormula(300+min(length*100,1200),200);//ranges from 300 to 1700
+}
+
+int RandomTimeSeller(){
+	return CModuleUtil::randomFormula(1500,400);
+}
 
 int findSeller(CConfigData *, int);
 int moveToSeller(CConfigData *);
@@ -70,6 +75,13 @@ int isCavebotOn();
 int countAllItemsOfType(int);
 bool shouldGo(CConfigData *);
 int individualShouldGo(CConfigData *, int);
+
+/////////////////////////////////////////////////////////////////////////////
+// Tool thread function
+
+int toolThreadShouldStop=0;
+HANDLE toolThreadHandle;
+
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
 	CMemReaderProxy reader;
@@ -699,10 +711,12 @@ int sellItems(CConfigData *config, int traderNum) {
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = 0;
-	sender.say("Hi");
-	Sleep (1500);
+	Sleep (RandomTimeSellerSay(strlen("hi")));
+	sender.say("hi");
+	Sleep (800);//Give time for NPC window to open
+	Sleep (RandomTimeSellerSay(strlen("trade")));
 	sender.sayNPC("trade");
-	Sleep (500);
+	Sleep (RandomTimeSeller());
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
 		for (int contNr = 0; contNr < 16; contNr++) {
@@ -713,19 +727,22 @@ int sellItems(CConfigData *config, int traderNum) {
 					CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
 					if (item->objectId == objectId) {
 						itemCount = countAllItemsOfType(objectId);
+						CTibiaCharacter *self = reader.readSelfCharacter();
 						sender.npcSell(objectId, itemCount);
-						Sleep(1000);
-						if (CModuleUtil::waitForItemsInsideChange(contNr, cont->itemsInside)) {
+						Sleep(RandomTimeSeller());
+						if (CModuleUtil::waitForCapsChange(self->cap)) {
 							done = 1;
+							delete self;
 							break;
 						}
+						delete self;
 						done = 0;
 					}
 				}
 			}
 		}		
 	}
-	delete cont;	
+	delete cont;
 	return done;
 }
 
@@ -734,33 +751,41 @@ int buyItems(CConfigData *config, int traderNum) {
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	int itemCount, goldCount;
-	int done = 0;
+	int done = -1;
 	int objectId;
 	//char buf[64];
-	sender.say("Hi");
-	Sleep (500);
+	Sleep (RandomTimeSellerSay(strlen("hi")));
+	sender.say("hi");
+	Sleep (800);//Give time for NPC window to open
+	Sleep (RandomTimeSellerSay(strlen("trade")));
 	sender.sayNPC("trade");
-	Sleep (500);
+	Sleep (RandomTimeSeller());
 	for (int j = 0; j < 32; j++) {
-			objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
-			//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
-			//AfxMessageBox(buf);
-			if (objectId)
-				itemCount = countAllItemsOfType(objectId);
-			else 
-				break;			;
-			goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"));
-			itemCount = config->buyItem[traderNum].tradeItem[j].quantityBuySell - itemCount;
-			itemCount = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount?itemCount:goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
-			//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
-			//AfxMessageBox(buf);
-			if (itemCount > 0) {
-				sender.npcBuy(objectId, itemCount, 0, 0);
-				Sleep(1000);
-				done = 1;
+		objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
+		//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
+		//AfxMessageBox(buf);
+		if (objectId)
+			itemCount = countAllItemsOfType(objectId);
+		else 
+			break;		;
+		goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"));
+		itemCount = config->buyItem[traderNum].tradeItem[j].quantityBuySell - itemCount;
+		itemCount = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount?itemCount:goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
+		//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
+		//AfxMessageBox(buf);
+		if (itemCount > 0) {
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			sender.npcBuy(objectId, itemCount, 0, 0);
+			Sleep (RandomTimeSeller());
+			if (CModuleUtil::waitForCapsChange(self->cap)) {
+				if (done!=0) done = 1;
 			}
+			else
+				done =0;
+			delete self;
+		}
 	}
-	return done;
+	return done==1?1:0;
 }
 
 int isCavebotOn() {

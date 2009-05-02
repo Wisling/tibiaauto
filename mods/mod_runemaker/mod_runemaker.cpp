@@ -30,6 +30,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
+#include <map>
+
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -37,6 +40,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 static char THIS_FILE[] = __FILE__;
 #endif
 
+#define GET 0
+#define MAKE 1
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_runemakerApp
@@ -44,12 +49,24 @@ static char THIS_FILE[] = __FILE__;
 BEGIN_MESSAGE_MAP(CMod_runemakerApp, CWinApp)
 	//{{AFX_MSG_MAP(CMod_runemakerApp)
 		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
+		// DO NOT EDIT what you see in these blocks of generated code!
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 
 /////////////////////////////////////////////////////////////////////////////
+int RandomVariableMana(int pt,int command,CConfigData *config){
+	if (!config->randomCast) return *(int*)pt;
+
+	CMemReaderProxy reader;
+	static map<int,int> setMana;
+	if (!setMana[pt]) command=MAKE;
+	if (command==MAKE){
+		// within 10% of number with a min of pt and a max of maxMana
+		setMana[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),reader.readSelfCharacter()->maxMana+1);
+	}
+	return setMana[pt];
+}
 
 /**
  * Return >=0: ok; <0: error
@@ -92,7 +109,7 @@ int moveBlankRuneToHand(CConfigData *config,int handAddress,int locId)
 		
 	// send the blank rune to a hand
 	sender.moveObjectBetweenContainers(itemProxy.getValueForConst("runeBlank"),0x40+blankRuneContNr,blankRuneContPos,locId,0,1);
-	
+	Sleep(CModuleUtil::randomFormula(500,200));
 	
 	// wait for the blank rune to appear in the a hand
 	int runeInHand=0;
@@ -145,6 +162,7 @@ void moveRuneBankToContainer(int handAddress,int locId,int targetContNr)
 		// send the blank rune to the blank rune's container 
 		CTibiaItem *item = reader.readItem(handAddress);			
 		sender.moveObjectBetweenContainers(item->objectId,locId,0,0x40+targetContNr,0,1);
+		Sleep(CModuleUtil::randomFormula(500,200));
 		delete item;
 		runeInHand=0;
 		iters=0;
@@ -179,6 +197,7 @@ void moveLeftHandToContainer()
 		if (cont->flagOnOff&&cont->itemsInside<cont->size)
 		{
 			sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
+			Sleep(CModuleUtil::randomFormula(500,200));
 			delete cont;
 			delete item;
 			return;
@@ -204,6 +223,7 @@ void moveArrowItemToContainer()
 		if (cont->flagOnOff&&cont->itemsInside<cont->size)
 		{
 			sender.moveObjectBetweenContainers(item->objectId,0x0a,0,0x40+contNr,0,item->quantity?item->quantity:1);
+			Sleep(CModuleUtil::randomFormula(500,200));
 			delete cont;
 			delete item;
 			return;
@@ -293,13 +313,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			delete container;
 		}
 
-		int manaLimit = config->manaLimit;
+		int manaLimit = RandomVariableMana(config->makeNow?((int)&config->mana):((int)&config->manaLimit),GET,config);
 		
-		if (config->makeNow==1) {
-			manaLimit = config->mana;
-		}
 
 		if (myself->mana>=manaLimit){
+			RandomVariableMana(config->makeNow?((int)&config->mana):((int)&config->manaLimit),MAKE,config);
 			bMakeRune = 1;
 			//config->makeNow = 0;
 		}else if(myself->mana < config->mana){
@@ -319,6 +337,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					 * in left hand. So move it.
 					 */
 					sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
+					Sleep(CModuleUtil::randomFormula(500,200));
 					delete handItem;				
 					continue;	
 				}
@@ -345,6 +364,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						delete saveCont;
 					}
 					sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
+					Sleep(CModuleUtil::randomFormula(500,200));
 					delete handItem;				
 					continue;	
 				}
@@ -422,6 +442,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{
 						// The Item is in arrow slot and left hand is empty
 						sender.moveObjectBetweenContainers(arrowItem->objectId,0x0a,0,0x06,0,arrowItem->quantity?arrowItem->quantity:1);
+						Sleep(CModuleUtil::randomFormula(500,200));
 					} else {
 						// AAAAAAAAAAAA: we lost The Item !!!
 						// AAAAAAAAAAAA
@@ -449,9 +470,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (savedItem)
 						{
 							sender.moveObjectBetweenContainers(leftHandObjectId,0x40+saveContNr,savedItem->pos,0x06,0,savedItem->quantity?savedItem->quantity:1);
-							Sleep(1000);
+							Sleep(CModuleUtil::randomFormula(1000,300));
 							delete savedItem;
-							saveContNr=10;
+							saveContNr=999;
 						}																		
 					}
 					
@@ -632,6 +653,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"useBackpack")) m_configData->useBackpack=atoi(paramValue);
 	if (!strcmp(paramName,"premium")) m_configData->premium=atoi(paramValue);
 	if (!strcmp(paramName,"maxUse")) m_configData->maxUse=atoi(paramValue);
+	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
 
 	if (!strcmp(paramName,"spells/spell")) 
 	{
@@ -666,6 +688,7 @@ char *CMod_runemakerApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"useBackpack")) sprintf(buf,"%d",m_configData->useBackpack);
 	if (!strcmp(paramName,"premium")) sprintf(buf,"%d",m_configData->premium);
 	if (!strcmp(paramName,"maxUse")) sprintf(buf,"%d",m_configData->maxUse);
+	if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
 
 	if (!strcmp(paramName,"spells/spell")&&m_configData->listSpells[m_currentSpellNr].words[0] != '0')
 	{
@@ -690,6 +713,7 @@ char *CMod_runemakerApp::getConfigParamName(int nr)
 	case 7: return "maxUse";
 	case 8: return "spells/spell";
 	case 9: return "useBackpack";
+	case 10: return "randomCast";
 	default:
 		return NULL;
 	}
