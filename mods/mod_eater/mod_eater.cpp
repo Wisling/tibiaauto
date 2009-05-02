@@ -77,6 +77,16 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
+int RandomTimeEaterWait(int digestTime){
+	return CModuleUtil::randomFormula(digestTime,(int)(digestTime*.1),1000000);
+}
+
+int RandomTimeEaterAmount(){//returns how much food to eat
+	int ans =1;
+	while (rand()%100<60) ans++;
+	return ans;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -93,41 +103,49 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CConfigData *config = (CConfigData *)lpParam;
 	int digestTime = -1;
-	
+	int digestAmount = 0;
+
 	while (!toolThreadShouldStop)
 	{			
 		int pos;
 		if (digestTime==-1) digestTime=0;
 		else {
-			//digestTime should not be set to 0 here. (This would nullify the ability to set customizable times for foods)
-    		CModuleUtil::sleepWithStop(digestTime ? digestTime * 1000 : 12000, &toolThreadShouldStop);
-			//the default time was reset to 12 seconds. (changing to 24 second made the defalut time longer than the smallest timeframe for several foods that currently exist)
+    		CModuleUtil::sleepWithStop(RandomTimeEaterWait(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
         }
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (toolThreadShouldStop) continue;
-				
 
-		CTibiaItem *foodItem;
-		int foodContainer;
-
-		foodItem=NULL;
-		foodContainer=-1;
-					
+		digestTime=0;
 		
-			for (pos=0;pos<10&&foodItem==NULL;pos++)		
-			{
-				foodItem = CModuleUtil::lookupItem(pos,itemProxy.getItemsFoodArray());
-				foodContainer = pos;
+		for (int i=RandomTimeEaterAmount();i>0;i--){
+			CTibiaItem *foodItem;
+			int foodContainer;
 
+			foodItem=NULL;
+			foodContainer=-1;
+						
+			
+				for (pos=0;pos<10&&foodItem==NULL;pos++)		
+				{
+					foodItem = CModuleUtil::lookupItem(pos,itemProxy.getItemsFoodArray());
+					foodContainer = pos;
+
+				}
+
+			
+			if (foodItem!=NULL)
+			{
+				sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
+				
+				if (CModuleUtil::waitForCapsChange(reader.readSelfCharacter()->cap))
+					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
+				char buf[111];
+				if (i!=1)
+					Sleep(CModuleUtil::randomFormula(400,100));
+				delete foodItem;
+				foodItem = NULL;
 			}
 
-		
-		if (foodItem!=NULL)
-		{
-			sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
-			digestTime = itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
-			delete foodItem;
-			foodItem = NULL;
 		}
 	}	
 

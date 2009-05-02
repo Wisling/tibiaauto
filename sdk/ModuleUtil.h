@@ -12,10 +12,16 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <sstream>
+#include <string>
+
 class CModuleUtil  
 {
 public:
-	static int waitForCapsChange(double origCaps);
+	static int randomFormula(int average, int halfrange);
+	static int randomFormula(int average, int halfrange, int cutoff);
+	static int randomFormula(int average, int halfrange, int minR, int maxR);
+	static int waitForCapsChange(float origCaps);
 	static void waitForItemChange(int locationAddress, int origItemId);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);
 	static int waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
@@ -34,7 +40,7 @@ public:
 	static int waitForCreatureDisappear(int x,int y, int tibiaId, int &, int &);
 	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ);
 	static void prepareProhPointList();
-	static void findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode,int useDiagonal);
+	static void findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode);
 private:
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ,int endSpecialLocation, int path[15],int useDiagonal);
 	static void findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);

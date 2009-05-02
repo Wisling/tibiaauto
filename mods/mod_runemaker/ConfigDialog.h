@@ -50,6 +50,7 @@ public:
 	CButton m_loadSpell;
 	CButton m_makeNow;
 	CButton	m_enable;
+	CButton	m_randomCast;
 	//}}AFX_DATA
 
 

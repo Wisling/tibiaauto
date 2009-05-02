@@ -45,6 +45,7 @@
 #define IDC_OPEN_CONTAINER7             3024
 #define IDC_CONTAINER_STATUS10          3025
 #define IDC_OPEN_CONTAINER8             3025
+#define IDC_LOGIN_DELAY                 3026
 
 // Next default values for new objects
 // 

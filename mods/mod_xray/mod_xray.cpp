@@ -70,7 +70,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	CConfigData *config = (CConfigData *)lpParam;	
+	CConfigData *config = (CConfigData *)lpParam;
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 	
@@ -80,8 +80,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{			
 		int offset=0;
 		Sleep(100);	
-				
-			
+
+
 		unsigned long bRead=0;
 		
 		if (reader.getConnectionState()!=8)

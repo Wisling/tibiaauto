@@ -27,7 +27,9 @@ public:
 	int getPrevPointY(int x,int y, int z);
 	int getPrevPointX(int x,int y, int z);
 	void clearPrevPoint();
+	void clearLocalPrevPoint(int x,int y, int z,int radius);
 	void setPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ);
+	void setBestPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ);
 	struct point getRandomPoint();
 	void clear();
 	void setPointAsAvailable(int x,int y,int z);

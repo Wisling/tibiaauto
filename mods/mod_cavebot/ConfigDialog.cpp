@@ -144,7 +144,7 @@ void CConfigDialog::OnClose()
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{

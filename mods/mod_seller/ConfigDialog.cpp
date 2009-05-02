@@ -115,7 +115,7 @@ void CConfigDialog::OnClose() {
 void CConfigDialog::OnEnable() {
 	if (m_enable.GetCheck()) {
 		m_app->controlsToConfig();
-		if (m_app->validateConfig(1))			
+		if (m_app->validateConfig(1))
 			m_app->start();
 		else
 			m_enable.SetCheck(0);

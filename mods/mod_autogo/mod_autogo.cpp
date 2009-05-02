@@ -1,3 +1,4 @@
+
 /*
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -68,9 +69,27 @@ HANDLE toolThreadHandle;
 char suspendedModules[20][64];
 int suspendedCount = 0;
 
+void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6=""){
 
+		char dateStr [15];
+		char timeStr [15];
+		_strdate( dateStr);
+		_strtime( timeStr );
+		FILE *f=fopen("tibiaauto-debug-autogo.txt","a+");
+		if (f)
+		{
+			fprintf(f,"%s\t%s\tAutogo\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6);
+			fclose(f);
+		}
+}
+std::string intstr(int value){
+	std::stringstream ss;// from ModuleUtil.h import
+	ss << value;
+	return ss.str();
+}
 
 void actionTerminate(){
+	masterDebug("ActionTerminate");
 	CMemReaderProxy reader;
 	HANDLE hTibiaProc;
 
@@ -82,6 +101,7 @@ void actionTerminate(){
 }
 
 int actionShutdownSystem(){
+	masterDebug("actionShutdownSystem");
 	HANDLE hToken; 
 	TOKEN_PRIVILEGES tkp; 
  
@@ -101,7 +121,9 @@ int actionShutdownSystem(){
 }
 
 int actionSuspend(int lSuspend){
+	masterDebug("actionSuspend");
 	if (lSuspend){
+		masterDebug("actionSuspend","Time to stop module");
 		HANDLE hSnap;
 		hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
 		if (hSnap){
@@ -144,6 +166,7 @@ int actionSuspend(int lSuspend){
 }
 
 int OnList(char whiteList[100][32],char name[]){
+	masterDebug("OnList");
 	int i=0;
 	while (IsCharAlphaNumeric(whiteList[i][0])){
 		if (!strcmpi(whiteList[i],name)){
@@ -156,6 +179,7 @@ int OnList(char whiteList[100][32],char name[]){
 }
 
 struct tibiaMessage *triggerMessage(){
+	masterDebug("triggerMessage");
 	CMemReaderProxy reader;
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
@@ -185,14 +209,17 @@ struct tibiaMessage *triggerMessage(){
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type=infoType;
 			strcpy(newMsg->msg,msgBuf);
+			masterDebug("triggerMessage Exit");
 			return newMsg;
 		}
 		delete self;
 	}
+	masterDebug("triggerMessage Exit");
 	return NULL;
 }
 
 int triggerBlank(){
+	masterDebug("triggerBlank");
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	int ret=0;
@@ -214,6 +241,7 @@ int triggerBlank(){
 }
 
 int triggerNoSpace(){
+	masterDebug("triggerNoSpace");
 	CMemReaderProxy reader;
 	int ret=1;
 	int pos;
@@ -228,18 +256,39 @@ int triggerNoSpace(){
 	return ret;
 }
 
+
+
 //returns seconds of play for wav file
 int getWavFileLength(char* wavFile){
-	return .3;
-	ifstream myfile (wavFile);
-	int begin = myfile.tellg();
-	myfile.seekg (0, ios::end);
-	int end = myfile.tellg();
-	myfile.close();
-	return (int)((end-begin)/11000);
+	masterDebug("getWavFileLength");
+	//return .3;
+	//wavFile="E:/Tibia/Tibia/Tibia Auto/mods/sound/hploss.wav";
+	FILE *f=fopen(wavFile,"r");
+
+	if (!f) return 0;
+	char buf[101];
+
+	if(fread( buf, sizeof( char ), 100, f )!=100) return 0;
+	int numChan=0;
+	int samplesPerSec=0;
+	int bytesPerSample=0;
+	int playSize=0;
+	for (int i =0;i<96;i++){
+		if (buf[i]==(int)'f' && buf[i+1]==(int)'m' && buf[i+2]==(int)'t' && buf[i+3]==(int)' '){
+			numChan = (UCHAR)buf[i+10] + (UCHAR)buf[i+11]*256;
+			samplesPerSec = (UCHAR)buf[i+12] + (UCHAR)buf[i+13]*256 + (UCHAR)buf[i+14]*256*256 + (UCHAR)buf[i+15]*256*256*256;
+			bytesPerSample=max((int)(((UCHAR)buf[i+22] + (UCHAR)buf[i+11]*23)/8),1);
+		}
+		if (buf[i]==(int)'d' && buf[i+1]==(int)'a' && buf[i+2]==(int)'t' && buf[i+3]==(int)'a'){
+			playSize = (UCHAR)buf[i+4] + (UCHAR)buf[i+5]*256 + (UCHAR)buf[i+6]*256*256 + (UCHAR)buf[i+7]*256*256*256;
+		}
+	}
+	fclose(f);
+	return (int)(playSize*1000/(numChan*samplesPerSec*bytesPerSample));
 }
 
 void alarmSound(int alarmId){
+	masterDebug("alarmSound");
 	static int playsUntilTm=0;
 	static char* lastFilename="";
 	char installPath[1024];
@@ -256,7 +305,7 @@ void alarmSound(int alarmId){
 		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
 		exit(1);
 	}
-		
+	masterDebug("alarmSound","directory read");
 
 	OFSTRUCT lpOpen;
 	char wavFile[1024];
@@ -284,22 +333,28 @@ void alarmSound(int alarmId){
 		case TRIGGER_RUNAWAY_REACHED:		sprintf(wavFile,"%s\\mods\\sound\\runawayreached.wav",installPath);break;
 		default:				sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);break;
 	}
+	masterDebug("alarmSound","Wavfile parsed");
 	if (OpenFile(wavFile,&lpOpen,OF_EXIST) == HFILE_ERROR){
+		masterDebug("alarmSound","File not found. Switching to default.");
 		sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);
 	} 
 	if(OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
+		masterDebug("alarmSound","Soundfile exists.");
 		if (strcmp(lastFilename,wavFile)!=0 || clock()>playsUntilTm){
+			masterDebug("alarmSound","Time to play.");
 			playsUntilTm = clock()+getWavFileLength(wavFile);
 			lastFilename = wavFile;
-			char buf[122];
-			sprintf(buf,"%d,%d,%d",playsUntilTm,time(NULL),getWavFileLength(wavFile));
-			//#AfxMessageBox(buf);
+			//char buf[122];
+			//sprintf(buf,"%d,%d,%d",(int)playsUntilTm,clock(),getWavFileLength(wavFile));
+			//AfxMessageBox(buf);
+			masterDebug("alarmSound","Sound length:",intstr(getWavFileLength(wavFile)).c_str());
 			PlaySound(wavFile,NULL,SND_FILENAME | SND_ASYNC);
 			
 		}
 		// isn't some wait needed? cause multiple async plays will kill CPU --vanitas(fixed--wis)
 		// isn't some CloseFile() needed? -- vanitas(OF_EXIST closes file after use automatically--wis)
 	} else{
+		masterDebug("alarmSound","Defualt file not found. Using System Beep");
 		MessageBeep(MB_OK);
 		//PlaySound(TEXT((LPCWSTR)SND_ALIAS_SYSTEMASTERISK), NULL, SND_ALIAS_ID | SND_ASYNC);
 	}	
@@ -308,6 +363,7 @@ void alarmSound(int alarmId){
 
 
 char *alarmStatus(int alarmId){	
+	masterDebug("alarmStatus");
 	if (alarmId&TRIGGER_BATTLELIST_LIST) return "BattleList list alarm";	
 	if (alarmId&TRIGGER_BATTLELIST_GM) return "BattleList GM alarm";	
 	if (alarmId&TRIGGER_BATTLELIST_PLAYER) return "BattleList player alarm";	
@@ -332,6 +388,7 @@ char *alarmStatus(int alarmId){
 }
 
 void alarmAction(int alarmId, CConfigData *config){
+	masterDebug("alarmAction");
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 
@@ -472,6 +529,7 @@ void alarmAction(int alarmId, CConfigData *config){
 
 int triggerRunawayReached(CConfigData *config)
 {
+	masterDebug("triggerRunawayReached");
 	
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -489,6 +547,7 @@ int triggerRunawayReached(CConfigData *config)
 
 int isSpellMessage(char *msg)
 {
+	masterDebug("isSpellMessage");
 	CPackSenderProxy sender;
 	int pos;
 	const char *spellPre[] = 
@@ -544,6 +603,7 @@ int isSpellMessage(char *msg)
 
 int triggerOutOfFood()
 {
+	masterDebug("triggerOutOfFood");
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;	
 	CUIntArray itemArray;
@@ -571,6 +631,7 @@ int triggerOutOfFood()
 
 int triggerOutOfSpace()
 {
+	masterDebug("triggerOutOfSpace");
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;	
 	
@@ -595,6 +656,7 @@ int triggerOutOfSpace()
 
 int triggerOutOfCustom(int customItemId)
 {
+	masterDebug("triggerOutOfCustom");
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;	
 	CUIntArray itemArray;
@@ -622,6 +684,7 @@ int triggerOutOfCustom(int customItemId)
 
 int triggerBattleListList(char whiteList[100][32],int options,int makeBlackList)
 {
+	masterDebug("triggerBattleListList");
 	CMemReaderProxy reader;
 
 	return (reader.readBattleListMax()>=0||reader.readBattleListMin()>=0);	
@@ -629,6 +692,7 @@ int triggerBattleListList(char whiteList[100][32],int options,int makeBlackList)
 
 int triggerBattleListGm(char whiteList[100][32],int options,int makeBlackList)
 {
+	masterDebug("triggerBattleListGm");
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -672,6 +736,7 @@ int triggerBattleListGm(char whiteList[100][32],int options,int makeBlackList)
 
 int triggerBattleListMonster(char whiteList[100][32],int options,int makeBlackList)
 {
+	masterDebug("triggerBattleListMonster");
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -707,6 +772,7 @@ int triggerBattleListMonster(char whiteList[100][32],int options,int makeBlackLi
 }
 int triggerBattleListPlayer(char whiteList[100][32],int options,int makeBlacklist)
 {
+	masterDebug("triggerBattleListPlayer");
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -746,6 +812,7 @@ int triggerBattleListPlayer(char whiteList[100][32],int options,int makeBlacklis
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {		
+	masterDebug("toolThreadProc");
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -770,13 +837,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(100);	
+		Sleep(100);
 		alarm = 0;
 	
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (recoveryAlarmMana&&self->mana==self->maxMana) recoveryAlarmMana=0;
 		if (recoveryAlarmHp&&self->hp==self->maxMana) recoveryAlarmHp=0;
-		delete self;	
+		delete self;
 	
 
 		if (config->trigger&TRIGGER_SIGN){

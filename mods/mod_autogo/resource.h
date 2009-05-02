@@ -58,6 +58,7 @@
 #define IDC_AUTOGO_TRIGGERMESSAGE       3015
 #define IDC_CONTAINER_MODE_7            3016
 #define IDC_AUTOGO_PUBMSG               3016
+#define IDC_AUTOGO_TRIGGERSKULL         3016
 #define IDC_CONTAINER_STATUS7           3017
 #define IDC_AUTOGO_PARANOIA             3017
 #define IDC_AUTOGO_BATTLEPARANOIA       3017
@@ -170,6 +171,12 @@
 #define IDC_WHITELIST_MKBLACK           3096
 #define IDC_AUTOGO_ACTIONOUTOF_CUSTOM_ITEM 3097
 #define IDC_AUTOGO_BATTLEANXIETY        3098
+#define IDC_AUTOGO_ACTIONSKULL          3099
+#define IDC_AUTOGO_SOUNDSKULL           3100
+#define IDC_AUTOGO_SKULLWHITE           3101
+#define IDC_AUTOGO_SKULLRED             3102
+#define IDC_AUTOGO_SKULLYELLOW          3103
+#define IDC_AUTOGO_SKULLGREEN           3104
 
 // Next default values for new objects
 // 

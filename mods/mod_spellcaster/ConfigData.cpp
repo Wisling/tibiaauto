@@ -80,6 +80,7 @@ CConfigData::CConfigData()
 	exevoGranMasFrigo=0;
 
 	disableWarning=0;
+	randomCast=1;//new
 }
 
 CConfigData::~CConfigData()

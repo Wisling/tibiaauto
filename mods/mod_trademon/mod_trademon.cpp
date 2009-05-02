@@ -49,6 +49,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
+int RandomTimeTrademon(int interval){
+	return interval+rand()%max((int)(.1*interval),5);
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -67,33 +71,35 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int channelTime=0;
 	int yellTime=0;
 	int sayTime=0;
-	int randAdd = 0;
 	srand(time(NULL));
 
-	while (!toolThreadShouldStop){			
+	while (!toolThreadShouldStop){
 
-		Sleep(300);	
+		Sleep(1000);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
 		if (config->tradeTalk){
 			if (config->channel){
-				randAdd = rand()%(int)((.1*config->channelInterval)+1);
-				if (channelTime+config->channelInterval+randAdd < time(NULL)){
+				static int randTimeTrade = RandomTimeTrademon(config->channelInterval);
+				if (channelTime+randTimeTrade < time(NULL)){
+					randTimeTrade = RandomTimeTrademon(config->channelInterval);
 					channelTime = time(NULL);
-					sender.sayOnChan(config->message,7,6);	
+					sender.sayOnChan(config->message,7,6);
 				}
 			}
 			if (config->yell){
-				randAdd = rand()%(int)((.1*config->yellInterval)+1);
-				if (yellTime+config->yellInterval+randAdd < time(NULL)){
+				static int randTimeYell = RandomTimeTrademon(config->yellInterval);
+				if (yellTime+randTimeYell < time(NULL)){
+					randTimeYell = RandomTimeTrademon(config->yellInterval);
 					yellTime = time(NULL);
 					sender.sayYell(config->message);
 				}
 			}
 
 			if (config->say){
-				randAdd = rand()%(int)((.1*config->sayInterval)+1);
-				if (sayTime+config->sayInterval+randAdd < time(NULL)){
+				static int randTimeSay = RandomTimeTrademon(config->sayInterval);
+				if (sayTime+randTimeSay < time(NULL)){
+					randTimeSay = RandomTimeTrademon(config->sayInterval);
 					sayTime = time(NULL);
 					sender.say(config->message);
 				}

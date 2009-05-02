@@ -20,17 +20,14 @@
 	<const code="fish" value="0xdfa"/>
 	<const code="fishingRod" value="0xd9b"/>
 	<const code="fluid" value="0xb3a"/>
-	<const code="fluidLifeH" value="0x1ec4"/>
 	<const code="fluidLife" value="0x10a"/>
 	<const code="fluidLifeS" value="0xec"/>
 	<const code="fluidLifeG" value="0xef"/>
-	<const code="fluidLifeU" value="0x1ddb"/>
 	<const code="fluidMana" value="0x10c"/>
 	<const code="fluidManaS" value="0xed"/>
 	<const code="fluidManaG" value="0xee"/>
 	<const code="fluidEmpty" value="0x11d"/>
 	<const code="fluidEmptyS" value="0x11b"/>
-	<const code="fluidEmptyG" value="0x11c"/>
 	<const code="worms" value="0xda4"/>
 	<const code="waterWithFishStart" value="0x11F5"/>
 	<const code="waterWithFishEnd" value="0x11FA"/>

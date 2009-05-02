@@ -119,6 +119,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											CModuleUtil::waitForItemsInsideChange(i, targetPos, stackedItem->quantity, destCont->itemsInside);
 										else
 											CModuleUtil::waitForItemsInsideChange(i, destCont->itemsInside);
+										Sleep(CModuleUtil::randomFormula(300,100));
 									}
 									else if(item->quantity == 0) {
 										CModuleUtil::waitForItemsInsideChange(contNr, sortCont->itemsInside);
