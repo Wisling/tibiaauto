@@ -4,6 +4,7 @@
 #include "TibiaMiniMapPoint.h"
 #include "CreaturesReaderProxy.h"
 #include "TibiaVIPEntry.h"
+#include <commons.h>
 
 static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
 {
@@ -21,7 +22,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",selfCh->hp,
 		"mana",selfCh->mana,
 		"x",selfCh->x,
@@ -300,7 +301,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.readVisibleCreature(arg1);
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -378,7 +379,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
 	if (!ch) return NULL;
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -505,6 +506,22 @@ static PyObject *tibiaauto_reader_mapGetPointItemExtraInfo(PyObject *self, PyObj
 	p.z=arg3;
 
 	int ret1=reader.mapGetPointItemExtraInfo(p,arg4,arg5);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_reader_mapGetPointStackIndex(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	struct point p;	
+	int arg1,arg2,arg3,arg4;
+    if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;
+	p.x=arg1;
+	p.y=arg2;
+	p.z=arg3;
+
+	int ret1=reader.mapGetPointStackIndex(p,arg4);
 	PyObject *ret = Py_BuildValue("i",ret1);
 	
 	return ret;
@@ -1803,7 +1820,7 @@ static PyObject *tibiaauto_reader_writeCreatureDeltaXY(PyObject *self, PyObject 
 {
 	CMemReaderProxy reader;
 
-	int arg1,arg2,int arg3;
+	int arg1,arg2,arg3;
     if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 
 	reader.writeCreatureDeltaXY(arg1,arg2,arg3);
@@ -1865,5 +1882,17 @@ static PyObject *tibiaauto_reader_readVIPEntry(PyObject *self, PyObject *args)
 		"icon",vip->icon);
 
 	delete vip;
+	return ret;
+}
+static PyObject *tibiaauto_reader_mapGetPointTopPos(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1,arg2,arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;
+
+	int ret1=itemOnTopIndex(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
 	return ret;
 }

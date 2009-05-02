@@ -573,6 +573,31 @@ int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos)
 	return data;
 }
 
+int CMemReader::mapGetPointStackIndex(point p, int stackNr)// returns the index of an item in a stack on a tibia tile
+{
+	int selfCell=mapGetSelfCellNr();
+	struct point selfPoint = mapConvertCellToPoint(selfCell);
+	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
+
+	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
+	{
+		p.x=p.y=p.z=0;
+	}
+	selfRelPoint.x+=p.x;
+	selfRelPoint.y+=p.y;
+	selfRelPoint.z+=p.z;
+	if (selfRelPoint.x<-8) selfRelPoint.x+=18;
+	if (selfRelPoint.x>9) selfRelPoint.x-=18;
+	if (selfRelPoint.y<-6) selfRelPoint.y+=14;
+	if (selfRelPoint.y>7) selfRelPoint.y-=14;
+
+	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
+	int itemCell = mapConvertPointToCell(itemPoint);
+
+	int data=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile+4+10*12+stackNr*4);
+	return data;
+}
+
 long CMemReader::getCurrentTm()
 {
 	return CMemUtil::GetMemIntValue(m_memAddressCurrentTm);

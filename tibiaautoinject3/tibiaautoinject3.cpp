@@ -3,7 +3,6 @@
 #include <stdafx.h>
 
 static HHOOK hhookKeyb;
-LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 /*
 BOOL WINAPI DllMain(  HINSTANCE hModule, 
@@ -35,7 +34,7 @@ BOOL WINAPI DllMain(  HINSTANCE hModule,
 
 //keyboard hook functions
 
-LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
+extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam);
 
 
 int count=0;
@@ -113,6 +112,7 @@ extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		}			
 		if (wParam==0x13)
 		{
+			AfxMessageBox("hire1");
 			if (!hookCallbackFun) setCallbackFun();
 			if (hookCallbackFun) hookCallbackFun(0x13);			
 		}			

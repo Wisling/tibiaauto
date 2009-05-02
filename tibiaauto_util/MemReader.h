@@ -44,6 +44,7 @@ public:
 	void writeEnableRevealCName();
 	long getCurrentTm();
 	int mapGetPointItemExtraInfo(point p,int stackNr,int extraPos);
+	int mapGetPointStackIndex(point p,int stackNr);
 	void mapSetPointItemsCount(point p,int count);
 	void mapSetPointItemId(point p, int stackNr, int tileId);
 	int mapGetPointItemId(struct point p,int stackNr);

@@ -57,7 +57,9 @@ public:
 	int getPrevPointY(int x,int y, int z);
 	int getPrevPointX(int x,int y, int z);
 	void clearPrevPoint();
+	void clearLocalPrevPoint(int x,int y,int z,int radius);
 	void setPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ);
+	void setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ);
 	struct point getRandomPoint();
 	void clear();
 	void setPointAsAvailable(int x,int y,int z);
@@ -70,8 +72,12 @@ private:
 	int prohCount;	
 	int prohSize;
 	struct point *prohList;
-	
-	//map<point, pointData, point> tibiaMap;				
+	int CTibiaMap::intPoint(point p);
+	int isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ);
+	int isPointLonger(int x,int y,int z,int prevX, int prevY, int prevZ);
+	int getDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
+
+	//map<point, pointData, point> tibiaMap;
 	CMap<point *,point *,pointData *,pointData *> tibiaMap2;
 };
 

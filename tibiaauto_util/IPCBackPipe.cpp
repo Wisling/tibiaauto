@@ -139,7 +139,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 				memcpy(&pipeBackCache[i],&pipeBackCache[i+1],sizeof(struct ipcMessage));
 			}
 			pipeBackCacheCount--;
-			LeaveCriticalSection(&BackPipeQueueCriticalSection); 
+			LeaveCriticalSection(&BackPipeQueueCriticalSection);
 			return 1;
 		}
 	}	
@@ -168,7 +168,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 					continue;
 				}
 			} else {
-				LeaveCriticalSection(&BackPipeQueueCriticalSection); 
+				LeaveCriticalSection(&BackPipeQueueCriticalSection);
 				return 0;
 			}
 		} else {

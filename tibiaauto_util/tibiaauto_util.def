@@ -168,3 +168,6 @@ EXPORTS
 	tibiaItemGetExtraInfo @162
 	tibiaItemSetExtraInfo @163
 	memReadReadVIPEntry @164
+	tibiaMapSetBestPrevPoint @165
+	tibiaMapClearLocalPrevPoint @166
+	memReadMapGetPointStackIndex @167

@@ -72,7 +72,7 @@ void CPackSender::sendPacket(char *buf,int method)
 	memcpy(mess.payload,buf,len);
 
 	
-	mess.send();	
+	mess.send();
 }
 
 
@@ -195,7 +195,7 @@ void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int pos
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
 	retbuf[10]=pos;	
-	retbuf[11]=targetBag;	
+	retbuf[11]=targetBag;
 
 	sendPacket(retbuf);
 }
@@ -248,7 +248,7 @@ void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourc
 	sendbuf[17]=(targetObjectId>>8)&0xff;
 	sendbuf[18]=extraInfo;
 
-	sendPacket(sendbuf,method);	
+	sendPacket(sendbuf,method);
 }
 
 void CPackSender::stepUp()
@@ -546,7 +546,7 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 	retbuf[6]=(y>>8)&0xff;
 	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=1;	
 	retbuf[11]=1;	
 
@@ -564,11 +564,11 @@ void CPackSender::tell(char *msg, char *playerName)
 	retbuf[2]=0x96;
 	retbuf[3]=0x06;
 	retbuf[4]=strlen(playerName)%256;
-	retbuf[5]=strlen(playerName)/256;	
-	sprintf(retbuf+6,"%s",playerName);	
+	retbuf[5]=strlen(playerName)/256;
+	sprintf(retbuf+6,"%s",playerName);
 	retbuf[6+strlen(playerName)]=strlen(msg)%256;
 	retbuf[7+strlen(playerName)]=strlen(msg)/256;
-	memcpy(retbuf+8+strlen(playerName),msg,strlen(msg));		
+	memcpy(retbuf+8+strlen(playerName),msg,strlen(msg));
 	
 	sendPacket(retbuf);	
 }
@@ -773,7 +773,7 @@ void CPackSender::ignoreLook(int end)
 
 	mess.messageType=302;
 	memset(mess.payload,0x0,1024);
-	memcpy(mess.payload,&end,4);	
+	memcpy(mess.payload,&end,4);
 	
 	mess.send();
 }

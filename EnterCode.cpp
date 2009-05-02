@@ -143,6 +143,8 @@ BOOL CEnterCode::OnInitDialog()
 	randTab[7]=(randTab[0]+randTab[1]+randTab[4]+123)&0xffff;			
 
 	// avoid 4-digits overflow
+
+
 	for (i=0;i<8;i++)
 		if (randTab[i]>0xff00) randTab[i]-=200;		
 
@@ -161,7 +163,7 @@ BOOL CEnterCode::OnInitDialog()
 	
 	
 	sprintf(buf,"%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x%.4x",randTab[0]+17,randTab[1]+13,randTab[2]+13,randTab[3]+18,randTab[4]+14,randTab[5]+19,randTab[6]+5,randTab[7]+31,rSum);	
-	m_runtimeId.SetWindowText(buf);		
+	m_runtimeId.SetWindowText(buf);
 
 	FILE *f=fopen("tacode.txt","rt");
 	if (f)

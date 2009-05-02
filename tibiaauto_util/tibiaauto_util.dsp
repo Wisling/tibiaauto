@@ -53,8 +53,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 libdb45.lib xerces.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel"
-# SUBTRACT LINK32 /nodefaultlib
+# ADD LINK32 libdb45.lib xerces.lib /nologo /subsystem:windows /dll /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /libpath:"E:\Tibia\Sourse Code\tibiaauto-kernel"
+# SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
 
@@ -143,6 +143,15 @@ SOURCE=.\tibiaauto_util.cpp
 # Begin Source File
 
 SOURCE=.\tibiaauto_util.def
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+# PROP Exclude_From_Build 1
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 

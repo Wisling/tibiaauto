@@ -7,6 +7,9 @@
 #include "TibiaMapPoint.h"
 #include "HashMap.h"
 
+#include <iostream>
+#include <fstream>
+
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -51,7 +54,14 @@ CTibiaMap::CTibiaMap()
 	prohCount=0;
 	prohSize=500;
 	prohList=(struct point *)malloc(sizeof(struct point)*prohSize);
-	tibiaMap2.InitHashTable(7919*17+1);	
+
+			ofstream myfile;
+			myfile.open ("C:/example.txt",ios::out);
+
+			myfile <<"\n";
+			myfile.close();
+	//mar/03/08 pointData size=36, point size=12
+	tibiaMap2.InitHashTable(7919*17+1);
 }
 
 CTibiaMap::~CTibiaMap()
@@ -67,7 +77,7 @@ int CTibiaMap::isPointAvailable(int x, int y,int z)
 	struct pointData *pd=NULL;	
 	if (tibiaMap2.Lookup(&p,pd))
 	{
-		if (!pd->available) return false;	
+		if (!pd->available) return false;
 	
 
 		// do the prohpoint checkf
@@ -89,14 +99,14 @@ void CTibiaMap::setPointAsAvailable(int x, int y,int z)
 		struct point *p=new point(x,y,z);
 		struct pointData *pd=new pointData();
 		pd->available=1;	
-		tibiaMap2.SetAt(p,pd);		
+		tibiaMap2.SetAt(p,pd);
 	}
 }
 
 void CTibiaMap::clear()
 {	
 	pointCacheSize=-1;	
-	tibiaMap2.RemoveAll();	
+	tibiaMap2.RemoveAll();
 }
 
 void CTibiaMap::enlarge()
@@ -104,30 +114,156 @@ void CTibiaMap::enlarge()
 	
 }
 
+int CTibiaMap::isPointLonger(int x,int y,int z,int prevX, int prevY, int prevZ){
+	return x!=prevX && y!=prevY && z==prevZ;
+}
+
 struct point CTibiaMap::getRandomPoint()
 {
 	int s=size();
 	if (!s) s=1;
 	int nr = rand()%s;
-	return getPointByNr(nr);	
+	return getPointByNr(nr);
 }
 
 void CTibiaMap::setPrevPoint(int x, int y, int z,int prevX, int prevY,int prevZ)
 {
+//	ofstream myfile;
+//	myfile.open ("C:/example.txt",ios::app);
+//	myfile <<"NormSETTING---"<<"("<<x<<","<<y<<","<<z<<") to "<<"("<<prevX<<","<<prevY<<","<<prevZ<<")"<<"\n";
+//	myfile.close();
+
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
+
 	if (tibiaMap2.Lookup(&p,pd))
 	{
 		pd->prevX=prevX;
 		pd->prevY=prevY;
 		pd->prevZ=prevZ;
-	}			
+	}
+}
+
+void CTibiaMap::setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
+{
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+
+	if (tibiaMap2.Lookup(&p,pd))
+	{
+		if (pd->prevX==0) {
+			setPrevPoint(x, y, z, prevX, prevY, prevZ);
+//			ofstream myfile;
+//			myfile.open ("C:/example.txt",ios::app);
+//			myfile <<"skip"<<pd->prevX<<"\n";
+//			myfile.close();
+		}
+		else if(!(x==pd->prevX&&y==pd->prevY&&z==pd->prevZ)){
+
+			//return;
+//			ofstream myfile;
+//			myfile.open ("C:/example.txt",ios::app);
+//			myfile <<"BEFORE---"<<"("<<p.x<<","<<p.y<<","<<p.z<<") to "<<"("<<pd->prevX<<","<<pd->prevY<<","<<pd->prevZ<<")"<<"("<<pPrev.x<<","<<pPrev.y<<","<<pPrev.z<<") to "<<"("<<pdPrev->prevX<<","<<pdPrev->prevY<<","<<pdPrev->prevZ<<")"<<"\n";
+//			myfile.close();
+			if(isBetterPrevPoint(x, y, z, prevX, prevY, prevZ))
+				setPrevPoint(x,y,z,prevX, prevY, prevZ);
+		}
+	}
+}
+
+int CTibiaMap::intPoint(point p) {return p.x*1000000+p.y*10+p.z;}
+
+//returns -1 if loops onto itself, 0 if nothing should change, 1 if should change
+int CTibiaMap::isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ)
+{	
+//	ofstream myfile;
+//	myfile.open ("C:/example.txt",ios::app);
+//	myfile <<"Start\n";
+//	myfile.close();
+
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+	tibiaMap2.Lookup(&p,pd);
+
+	//keep track of which points have been seen
+	map<int,int> track;
+
+	//start with original prior point and pending prior point
+	struct point p1=point(pd->prevX, pd->prevY, pd->prevZ);
+	struct point p2=point(prevX, prevY, prevZ);
+
+//		myfile.open ("C:/example.txt",ios::app);
+//		myfile <<"Starts with ("<<x<<","<<y<<","<<z<<")"<<"\n";
+//		myfile.close();
+
+	int isFinished = 0;
+	int dist1=getDistance(x,y,z,p1.x,p1.y,p1.z);
+	int dist2=getDistance(x,y,x,p2.x,p2.y,p2.z);
+
+	while(!isFinished){
+//			myfile.open ("C:/example.txt",ios::app);
+//			myfile <<"("<<p1.x<<","<<p1.y<<","<<p1.z<<")"<<dist1<<" to "<<"("<<p2.x<<","<<p2.y<<","<<p2.z<<")"<<dist2<<"\n";
+//			myfile.close();
+		isFinished=1;
+		if(p1.x==x && p1.y==y && p1.z==z || p2.x==x && p2.y==y && p2.z==z) return 0;
+		struct pointData *pd1=NULL;
+		struct pointData *pd2=NULL;
+		if (tibiaMap2.Lookup(&p1,pd1))
+		{
+			// return if p1 point has been added by p2 already
+			if (track[intPoint(p1)]){
+//					myfile.open ("C:/example.txt",ios::app);
+//					myfile <<"1"<<dist1<<track[intPoint(p1)]<<"\n";
+//					myfile.close();
+
+				if (dist1<=track[intPoint(p1)]) return 0;
+				else return 1;
+			}
+			// stop if loops infinitely(start point is set to itself)
+			else if (p1.x==pd1->prevX && p1.y==pd1->prevY && p1.z==pd1->prevZ){
+				p1=point(0,0,0);
+			}
+			// add to list with distance so far
+			else{
+				track[intPoint(p1)]=dist1;
+				dist1+=getDistance(p1.x,p1.y,p1.z,pd1->prevX,pd1->prevY,pd1->prevZ);
+				isFinished=0;
+				p1=point(pd1->prevX,pd1->prevY,pd1->prevZ);
+			}
+		}
+		if (tibiaMap2.Lookup(&p2,pd2))
+		{
+			if (track[intPoint(p2)]){
+//					myfile.open ("C:/example.txt",ios::app);
+///					myfile <<"2"<<dist2<<track[intPoint(p2)]<<"\n";
+//					myfile.close();
+
+				if (dist2<track[intPoint(p2)]) return 1;
+				else return 0;
+			}
+			else if (p2.x==pd2->prevX && p2.y==pd2->prevY && p2.z==pd2->prevZ){
+				p2=point(0,0,0);
+			}
+			else{
+				track[intPoint(p2)]=dist2;
+				dist2+=getDistance(p2.x,p2.y,p2.z,pd2->prevX,pd2->prevY,pd2->prevZ);
+				isFinished=0;
+				p2=point(pd2->prevX,pd2->prevY,pd2->prevZ);
+			}
+		}
+	}
+	return 0;// if reached here then points are not connected(impossible)
+}
+
+int CTibiaMap::getDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
+{
+	return 2+isPointLonger(x, y, z, prevX, prevY, prevZ)*3;
 }
 
 typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
 
 void CTibiaMap::clearPrevPoint()
-{		
+{
 	POSITION pos = tibiaMap2.GetStartPosition();	
 	while (pos != NULL)
 	{
@@ -137,10 +273,24 @@ void CTibiaMap::clearPrevPoint()
 		pd->prevX=0;
 		pd->prevY=0;
 		pd->prevZ=0;
-	}		
+	}
 }
 
-
+void CTibiaMap::clearLocalPrevPoint(int x,int y,int z,int radius)
+{
+	POSITION pos = tibiaMap2.GetStartPosition();
+	while (pos != NULL)
+	{
+		point *p=NULL;
+		pointData *pd=NULL;
+		tibiaMap2.GetNextAssoc( pos, p, pd );
+		if (abs(x-pd->prevX)<=radius && abs(y-pd->prevY)<=radius && z==pd->prevZ){
+			pd->prevX=0;
+			pd->prevY=0;
+			pd->prevZ=0;
+		}
+	}
+}
 
 int CTibiaMap::getPrevPointX(int x, int y, int z)
 {	
@@ -148,7 +298,7 @@ int CTibiaMap::getPrevPointX(int x, int y, int z)
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
 	{
-		return pd->prevX;		
+		return pd->prevX;
 	}
 	return 0;
 }
@@ -191,7 +341,7 @@ void CTibiaMap::setPointUpDown(int x, int y, int z, int updown)
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
 	{
-		pd->updown=updown;		
+		pd->updown=updown;
 	}
 }
 
@@ -201,7 +351,7 @@ int CTibiaMap::getPointUpDown(int x, int y, int z)
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
 	{
-		if (isPointAvailable(x,y,z)) return pd->updown;		
+		if (isPointAvailable(x,y,z)) return pd->updown;
 	}
 	return 0;
 }
@@ -251,7 +401,7 @@ struct point CTibiaMap::getPointByNr(int nr)
 		pointCache=new point[tibiaMap2.GetCount()];
 		pointCacheSize=tibiaMap2.GetCount();
 		
-		POSITION pos = tibiaMap2.GetStartPosition();	
+		POSITION pos = tibiaMap2.GetStartPosition();
 		while (pos != NULL)
 		{
 			point *p=NULL;

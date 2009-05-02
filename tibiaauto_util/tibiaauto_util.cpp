@@ -431,9 +431,17 @@ void tibiaMapClearPrevPoint()
 {
 	tibiaMap.clearPrevPoint();
 }
+void tibiaMapClearLocalPrevPoint(int x,int y,int z,int radius)
+{
+	tibiaMap.clearLocalPrevPoint(x,y,z,radius);
+}
 void tibiaMapSetPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
 {
 	tibiaMap.setPrevPoint(x,y,z,prevX,prevY,prevZ);
+}
+void tibiaMapSetBestPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
+{
+	tibiaMap.setBestPrevPoint(x,y,z,prevX,prevY,prevZ);
 }
 struct point tibiaMapGetRandomPoint()
 {
@@ -663,6 +671,12 @@ int memReadMapGetPointItemExtraInfo(point p, int stackNr,int extraPos)
 {
 	startMemReader();
 	return reader->mapGetPointItemExtraInfo(p,stackNr,extraPos);
+}
+
+int memReadMapGetPointStackIndex(point p, int stackNr)
+{
+	startMemReader();
+	return reader->mapGetPointStackIndex(p,stackNr);
 }
 
 void memReadMapSetPointItemsCount(point p, int count)

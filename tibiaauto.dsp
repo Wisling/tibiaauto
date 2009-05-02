@@ -54,7 +54,7 @@ BSC32=bscmake.exe
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
 # ADD LINK32 zlib.lib ws2_32.lib zdll.lib xerces.lib detours.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel"
-# SUBTRACT LINK32 /pdb:none /nodefaultlib
+# SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "tibiaauto - Win32 Debug"
 

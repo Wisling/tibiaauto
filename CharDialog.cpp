@@ -73,6 +73,7 @@ void CCharDialog::OnCharRefresh()
 			{		
 				m_charList.AddString(buf);				
 				m_charList.SetItemData(m_charList.FindString(0,buf),procEntry.th32ProcessID);
+				m_charList.SetCurSel(0);
 			}
 
 			procFound[procEntry.th32ProcessID]=1;

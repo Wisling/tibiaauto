@@ -237,6 +237,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"mapSetPointItemsCount", tibiaauto_reader_mapSetPointItemsCount, METH_VARARGS},
 	{"mapSetPointItemId", tibiaauto_reader_mapSetPointItemId, METH_VARARGS},
 	{"mapGetPointItemExtraInfo", tibiaauto_reader_mapGetPointItemExtraInfo, METH_VARARGS},
+	{"mapGetPointStackIndex", tibiaauto_reader_mapGetPointStackIndex, METH_VARARGS},
 	{"getCurrentTm", tibiaauto_reader_getCurrentTm, METH_VARARGS},
 	{"setRemainingTilesToGo", tibiaauto_reader_setRemainingTilesToGo, METH_VARARGS},	
 	{"setMemIntValue", tibiaauto_reader_setMemIntValue, METH_VARARGS},
@@ -270,7 +271,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"getCreatureDeltaX", tibiaauto_reader_getCreatureDeltaX, METH_VARARGS},
 	{"getCreatureDeltaY", tibiaauto_reader_getCreatureDeltaY, METH_VARARGS},
 	{"readVIPEntry", tibiaauto_reader_readVIPEntry, METH_VARARGS},
-
+	{"mapGetPointTopPos", tibiaauto_reader_mapGetPointTopPos, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 

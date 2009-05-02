@@ -214,12 +214,12 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	InitialiseIPC();
 
 	CMemReaderProxy reader;
-	reader.setProcessId(m_processId);	
+	reader.setProcessId(m_processId);
 	CPackSenderProxy sender;
 	sender.setPipeHandle(hPipe);
 
 	// shutdownCounter is anti-hack protection
-	shutdownCounter=rand()%100;	
+	shutdownCounter=rand()%100;
 	CEnterCode *enterCode = new CEnterCode(this);
 	int res=enterCode->DoModal();
 	delete enterCode;
@@ -264,8 +264,15 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleBanker = new CModuleProxy("mod_banker",0);
 	m_moduleSeller = new CModuleProxy("mod_seller",0);
 	refreshToolInfo();
-	SetTimer(1001,100,NULL);	
-	SetTimer(1002,100,NULL);	
+	FILE* f =fopen("./SubmitMaps","r");
+	if (!f){
+		FILE* f =fopen("./SubmitMaps","w");
+		fclose(f);
+		AfxMessageBox("Please consider submitting your map files to TibiaAuto.net to help us with the new system in place to create a complete Tibia map. \n\nYou will only receive this reminder once. Thank you for any contribution you make.");
+		OnOptions();
+	}
+	SetTimer(1001,100,NULL);
+	SetTimer(1002,100,NULL);
 
 
 	// this is needed to force loading tibiaauto_util.dll	
@@ -274,7 +281,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 
 	
-	CPythonEngine pythonEngine;	
+	CPythonEngine pythonEngine;
 	pythonEngine.init();
 
 	int ffBoxDisplay=1;
@@ -435,7 +442,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1003)
 	{
-		refreshAds();		
+		refreshAds();
 	}
 	if (nIDEvent==1004)
 	{		
@@ -638,11 +645,11 @@ void CTibiaautoDlg::refreshToolInfo()
 	m_seller.SetCheck(m_moduleSeller->isStarted());
 }
 
-void CTibiaautoDlg::OnSave() 
+void CTibiaautoDlg::OnSave()
 {
 	CMemReaderProxy reader;		
 	char fName[128];
-	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);		
+	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 	FILE *f=NULL;
 
 	char szFilters[]=
@@ -653,7 +660,7 @@ void CTibiaautoDlg::OnSave()
 	
 	if (fd.DoModal()==IDOK)
 	{
-		CString pathName = fd.GetPathName();         						
+		CString pathName = fd.GetPathName();
 		f=fopen(pathName.GetBuffer(200),"wb");
 	}	
 		
@@ -1122,7 +1129,7 @@ void CTibiaautoDlg::OnToolMaphack()
 
 void CTibiaautoDlg::OnToolTeam() 
 {
-	m_moduleTeam->showConfigDialog();	
+	m_moduleTeam->showConfigDialog();
 }
 
 void CTibiaautoDlg::OnToolAntilog() 
@@ -1224,7 +1231,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=1.19.1,tm=%d,",tm);
+		fprintf(f,"version=1.19.7,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
