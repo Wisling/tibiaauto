@@ -39,6 +39,12 @@ of the License, or (at your option) any later version.
 #include "IPCBackPipeProxy.h"
 #include <Tlhelp32.h>
 
+#include <iostream>
+#include <fstream>
+#include <time.h>
+#include <sstream>
+#include <string>
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -115,16 +121,14 @@ CTibiaMapProxy tibiaMap;
 /**
 * Register cavebot debug.
 */
-void registerDebug(char *s) {
-	FILE *f=fopen("tibiaauto-debug-cavebot.txt","a+");
-	if (f) {
-		char dateStr [15];
-		char timeStr [15];
-		_strdate( dateStr);
-		_strtime( timeStr );
-		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);
-		fclose(f);
-	}
+void registerDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6=""){
+	CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt",buf1,buf2,buf3,buf4,buf5,buf6);
+}
+
+std::string intstr(DWORD value){
+	std::stringstream ss;
+	ss << value;
+	return ss.str();
 }
 
 /**
@@ -232,7 +236,7 @@ void depotCheck(CConfigData *config) {
 				targetX=depotX;
 				targetY=depotY;
 				targetZ=depotZ;
-				if (config->debug) registerDebug("Depot found - going to it");
+				if (config->debug) registerDebug("Depot found - going to it (x,y,z)=",intstr(targetX).c_str(),intstr(targetY).c_str(),intstr(targetZ).c_str());
 			}
 			else {
 				// depot not found - argh
@@ -298,7 +302,7 @@ void depotCheck(CConfigData *config) {
 			targetX=depotX;
 			targetY=depotY;
 			targetZ=depotZ;
-			if (config->debug) registerDebug("Depot found - going to it");
+			if (config->debug) registerDebug("Depot found - going to it (x,y,z)=",intstr(targetX).c_str(),intstr(targetY).c_str(),intstr(targetZ).c_str());
 		}
 		else {
 			// depot not found - argh
@@ -315,6 +319,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
+	int depotContNr=-1;
 	int count=reader.mapGetPointItemsCount(point(x-self->x,y-self->y,0));
 	int pos=0;
 	if (count>10) count=10;
@@ -335,31 +340,33 @@ int depotDepositOpenChest(int x,int y,int z) {
 				sender.moveObjectFromFloorToFloor(lastNonDepotObject,x,y,z,self->x,self->y,self->z,100);
 				Sleep(CModuleUtil::randomFormula(400,200));
 			}
+
 			// this is the depot chest so open it
-			sender.openContainerFromFloor(tileId,x,y,z,itemOnTopIndex(x-self->x,y-self->y),9);
-			CModuleUtil::waitForOpenContainer(9,true);
-			CTibiaContainer *cont = reader.readContainer(9);
+			depotContNr= CModuleUtil::findNextClosedContainer();
+			sender.openContainerFromFloor(tileId,x,y,z,depotContNr);
+			CModuleUtil::waitForOpenContainer(depotContNr,true);
+			CTibiaContainer *cont = reader.readContainer(depotContNr);
 			int isOpen=cont->flagOnOff;
 			deleteAndNull(cont);
 			deleteAndNull(self);
-			return isOpen;
+			return 1;
 		}
 	}
 	deleteAndNull(self);
-	return 0;
+	return -1;
 }
 
 /**
 * Move the item to some container in the chest.
 */
-void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int qty) {
+void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int qty, int depotContNr,int depotContNr2) {
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_noSpace)
 		return;
 	
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
-	CTibiaContainer *depotChest = reader.readContainer(9);
-	
+	CTibiaContainer *depotChest = reader.readContainer(depotContNr);
+
 	if (!depotChest->flagOnOff) {
 		// shouldn't happen...
 		deleteAndNull(depotChest);
@@ -370,11 +377,11 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	* If container number 8 is open than we can try to deposit to it (to avoid 
 	* massive close/open of containers.
 	*/
-	CTibiaContainer *cont8 = reader.readContainer(8);
+	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
 	if (cont8->flagOnOff&&cont8->itemsInside<cont8->size) {
 		// found container in which we can do deposit!
-		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+8,cont8->size,qty);
-		CModuleUtil::waitForItemsInsideChange(8,cont8->itemsInside);
+		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr2,cont8->size,qty);
+		CModuleUtil::waitForItemsInsideChange(depotContNr2,cont8->itemsInside);
 		Sleep(CModuleUtil::randomFormula(300,100));
 		deleteAndNull(cont8);
 		deleteAndNull(depotChest);
@@ -404,11 +411,11 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 
 		if (reader.getTibiaTile(item->objectId)->isContainer) {
 			// that object is a container, so open it
-			sender.closeContainer(8);
-			CModuleUtil::waitForOpenContainer(8,false);
-			sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,8);
-			CModuleUtil::waitForOpenContainer(8,true);
-			CTibiaContainer *newContainer = reader.readContainer(8);
+			sender.closeContainer(depotContNr2);
+			CModuleUtil::waitForOpenContainer(depotContNr2,false);
+			sender.openContainerFromContainer(item->objectId,0x40+depotContNr,itemNr,depotContNr2);
+			CModuleUtil::waitForOpenContainer(depotContNr2,true);
+			CTibiaContainer *newContainer = reader.readContainer(depotContNr2);
 			if (newContainer->flagOnOff) {
 				int targetPos=-1;
 				if (tile->stackable)
@@ -430,8 +437,8 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 				}
 				if (targetPos!=-1){
 					// found container in which we can do deposit!
-					sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+8,targetPos,qty);
-					CModuleUtil::waitForItemsInsideChange(8,newContainer->itemsInside);
+					sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr2,targetPos,qty);
+					CModuleUtil::waitForItemsInsideChange(depotContNr2,newContainer->itemsInside);
 					Sleep(CModuleUtil::randomFormula(300,100));
 					deleteAndNull(newContainer);
 					deleteAndNull(depotChest);
@@ -445,8 +452,8 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 		targetPosDirect=depotChest->size-1;
 	}
 	if (targetPosDirect!=-1){
-		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+9,targetPosDirect,qty);
-		CModuleUtil::waitForItemsInsideChange(9,depotChest->itemsInside);
+		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr,targetPosDirect,qty);
+		CModuleUtil::waitForItemsInsideChange(depotContNr,depotChest->itemsInside);
 		Sleep(CModuleUtil::randomFormula(300,100));
 		deleteAndNull(depotChest);
 		return;
@@ -460,10 +467,10 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 }
 
 // take items from depot chest and move to my backpacks (contnr,pos)
-int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup) {
+int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup,int depotContNr,int depotContNr2) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
-	CTibiaContainer *depotChest = reader.readContainer(9);
+	CTibiaContainer *depotChest = reader.readContainer(depotContNr);
 	int itemNr;
 	
 	if (!depotChest->flagOnOff) {
@@ -476,15 +483,15 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup) {
 	* If container number 8 is open than we can try to take our item from it (to avoid 
 	* massive close/open of containers.
 	*/
-	CTibiaContainer *cont8 = reader.readContainer(8);
+	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
 	if (cont8->flagOnOff) {
 		for (itemNr=0;itemNr<cont8->itemsInside;itemNr++) {
 			CTibiaItem *item=((CTibiaItem *)cont8->items.GetAt(itemNr));
 			if (item->objectId==objectId) {
 				// that's this item - pick it up
 				if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
-				sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
-				CModuleUtil::waitForItemsInsideChange(8,cont8->itemsInside);
+				sender.moveObjectBetweenContainers(objectId,0x40+depotContNr2,itemNr,0x40+contNr,pos,qtyToPickup);
+				CModuleUtil::waitForItemsInsideChange(depotContNr2,cont8->itemsInside);
 				Sleep(CModuleUtil::randomFormula(300,100));
 				deleteAndNull(cont8);
 				deleteAndNull(depotChest);
@@ -502,19 +509,19 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup) {
 		CTibiaItem *item = (CTibiaItem *)depotChest->items.GetAt(itemNr);
 		if (reader.getTibiaTile(item->objectId)->isContainer) {
 			// that object is a container, so open it
-			sender.closeContainer(8);
-			CModuleUtil::waitForOpenContainer(8,false);
-			sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,8);
-			CModuleUtil::waitForOpenContainer(8,true);
-			CTibiaContainer *newContainer = reader.readContainer(8);
+			sender.closeContainer(depotContNr2);
+			CModuleUtil::waitForOpenContainer(depotContNr2,false);
+			sender.openContainerFromContainer(item->objectId,0x40+depotContNr,itemNr,depotContNr2);
+			CModuleUtil::waitForOpenContainer(depotContNr2,true);
+			CTibiaContainer *newContainer = reader.readContainer(depotContNr2);
 			if (newContainer->flagOnOff) {
 				for (itemNr=0;itemNr<newContainer->itemsInside;itemNr++) {
 					CTibiaItem *item=((CTibiaItem *)newContainer->items.GetAt(itemNr));
 					if (item->objectId==objectId) {
 						// that's this item - pick it up
 						if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
-						sender.moveObjectBetweenContainers(objectId,0x40+8,itemNr,0x40+contNr,pos,qtyToPickup);
-						CModuleUtil::waitForItemsInsideChange(8,newContainer->itemsInside);
+						sender.moveObjectBetweenContainers(objectId,0x40+depotContNr2,itemNr,0x40+contNr,pos,qtyToPickup);
+						CModuleUtil::waitForItemsInsideChange(depotContNr2,newContainer->itemsInside);
 						Sleep(CModuleUtil::randomFormula(300,100));
 						deleteAndNull(newContainer);
 						deleteAndNull(depotChest);
@@ -558,6 +565,8 @@ void depotDeposit(CConfigData *config) {
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
+	int depotContNr=-1;
+	int depotContNr2=-1;
 	/*
 	* Now we must do:
 	* 1. locate depot chest (optional)
@@ -567,12 +576,15 @@ void depotDeposit(CConfigData *config) {
 	
 	if (!config->depotDropInsteadOfDepositon) {
 		globalAutoAttackStateDepot=CToolAutoAttackStateDepot_opening;
-		int depotChestOpen=0;
-		depotChestOpen|=depotDepositOpenChest(self->x-1,self->y,self->z);
-		depotChestOpen|=depotDepositOpenChest(self->x+1,self->y,self->z);
-		depotChestOpen|=depotDepositOpenChest(self->x,self->y-1,self->z);
-		depotChestOpen|=depotDepositOpenChest(self->x,self->y+1,self->z);
-		if (!depotChestOpen) {
+		for (int x=-1;x<=1;x++){
+			for (int y=-1;y<=1;y++){
+				if ((x!=0)!=(y!=0)){
+					depotContNr=depotDepositOpenChest(self->x+x,self->y+y,self->z);
+					if (depotContNr!=-1){ x=999;y=999;} // exit loop
+				}
+			}
+		}
+		if (depotContNr==-1) {
 			// can't open depot chest ?!?!?
 			// so cancel depositing and proceed to walking
 			deleteAndNull(self);
@@ -583,9 +595,7 @@ void depotDeposit(CConfigData *config) {
 	
 	// do the depositing
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_depositing;
-	
-	sender.closeContainer(8);
-	CModuleUtil::waitForOpenContainer(8,false);
+	depotContNr2 = CModuleUtil::findNextClosedContainer(depotContNr);
 	
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
 		int objectToMove = itemProxy.getObjectId(config->depotTrigger[i].itemName);
@@ -596,7 +606,8 @@ void depotDeposit(CConfigData *config) {
 			// deposit to depot
 			
 			int qtyToMove=totalQty-config->depotTrigger[i].remain;
-			for (contNr=0;contNr<8;contNr++) {
+			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+				if (contNr==depotContNr) continue;
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				
 				if (cont->flagOnOff) {
@@ -611,7 +622,7 @@ void depotDeposit(CConfigData *config) {
 							if (itemQty>0) {
 								if (!config->depotDropInsteadOfDepositon) {
 									// move to the depot chest
-									depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty);
+									depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty,depotContNr,depotContNr2);
 								}
 								else {
 									// move onto the floor
@@ -626,7 +637,6 @@ void depotDeposit(CConfigData *config) {
 						}
 					}
 				}
-				
 				deleteAndNull(cont);
 			}
 		}
@@ -636,10 +646,12 @@ void depotDeposit(CConfigData *config) {
 			int movesInItemation=1;
 			while (qtyToPickup>0&&movesInItemation>0) {
 				movesInItemation=0;
-				for (contNr=0;contNr<8;contNr++) {
+				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+					if (contNr==depotContNr) continue;
+
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-						int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup);
+						int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup,depotContNr,depotContNr2);
 						if (movedQty) movesInItemation++;
 					}
 					deleteAndNull(cont);
@@ -648,11 +660,19 @@ void depotDeposit(CConfigData *config) {
 			} // while picking up 
 		} // if pickup from depot
 	}
+
 	
 	// all is finished :) - we can go back to the hunting area
+	sender.closeContainer(depotContNr2);
+	CModuleUtil::waitForOpenContainer(depotContNr2,false);
+	Sleep(CModuleUtil::randomFormula(300,100));
+	sender.closeContainer(depotContNr);
+	CModuleUtil::waitForOpenContainer(depotContNr,false);
+
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	depotX=depotY=depotZ=0;
 	deleteAndNull(self);
+
 }
 
 /**
@@ -671,8 +691,8 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 		return 1;
 	}
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_switchingWeapon;
-
-	while (itemSlot->objectId!=objectId) {
+	for (int i=0;i<2 && itemSlot->objectId!=objectId;i++)
+	{
 		if (outputDebug) registerDebug("Next moving item in ensureItemInPlace");
 		
 		// Search for the item that should occupy the slot
@@ -732,9 +752,10 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 			deleteAndNull(itemSlot);
 			return 0;
 		}
+		CModuleUtil::waitForItemChange(locationAddress,itemSlot->objectId);
 		deleteAndNull(itemSlot);
 		itemSlot = reader.readItem(locationAddress);
-	}	
+	}
 	deleteAndNull(itemSlot); 
 	return 1;
 }
@@ -1399,16 +1420,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	if(config->selectedWaypoint!=-1){
 		currentWaypointNr=config->selectedWaypoint;
 	} else {
-		currentWaypointNr = min(currentWaypointNr,waypointsCount-1);
+		currentWaypointNr = min(0,waypointsCount-1);
 	}
 
-	if (config->debug) {
-		// remove the debug file
-		FILE *f=fopen("tibiaauto-debug-cavebot.txt","w");
-		if (f)
-			fclose(f);
-		registerDebug("Cavebot started");
-	}
+	// remove the debug file
+	if (config->debug) CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt");
 	
 	shareAlienBackattack=config->shareAlienBackattack;
 	if (!sh_mem.IsCreated()) {
@@ -1584,23 +1600,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (!attackedCh->hpPercLeft&&
 						abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=10&&
 						attackedCh->z==self->z) {
+
 						if (config->debug) registerDebug("Looter: Creature is dead.");
 						FILE *lootStatsFile = NULL;
 						// time,rand,creature,name,pos,objectId,count,bagopen,checksum
 						int killNr=rand();
+
+						int lootContNr[2];
+						lootContNr[0] = CModuleUtil::findNextClosedContainer();
+						if (config->lootInBags)
+							lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
+
 						if (config->gatherLootStats) {
 							lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
 						}
 						
 						// first make sure all needed containers are closed
-						if (reader.readContainer(9)->flagOnOff){
-							sender.closeContainer(9);
-							CModuleUtil::waitForOpenContainer(9,false);
-						}
-						if (reader.readContainer(8)->flagOnOff){
-							sender.closeContainer(8);
-							CModuleUtil::waitForOpenContainer(8,false);
-						}
 						
 						currentlyAttackedCreatureNr=-1;
 						// attacked creature dead, near me, same floor
@@ -1611,29 +1626,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						self = reader.readSelfCharacter();
 						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 						if (1){
-							// Open corpse to container 9, wait to get to corpse on ground and wait for open
-							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),8);
+							// Open corpse to container, wait to get to corpse on ground and wait for open
+							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
 
 							if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
 								//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
-								sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),8);
+								sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
 								CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
 							}
 
 							//Normal looting if autolooter not enabled
-							if (CModuleUtil::waitForOpenContainer(8,true)) {
+							if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
 								//sender.sendTAMessage("[debug] opened container");
-								if (config->debug) registerDebug("Looter: Opening dead creature corpse (container 8)");
+								if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
 								if (config->lootInBags) {
-									if (config->debug) registerDebug("Looter: Opening bag (container 9)");
-									CTibiaContainer *cont = reader.readContainer(8);
+									if (config->debug) registerDebug("Looter: Opening bag (second container)");
+									CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
 									int itemNr;
 									for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
 										CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
 										if (insideItem->objectId==itemProxy.getValueForConst("bagbrown")) {
 											globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
-											sender.openContainerFromContainer(insideItem->objectId,0x40+8,insideItem->pos,9);
-											if (!CModuleUtil::waitForOpenContainer(9,true))
+											sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
+											if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
 												if (config->debug) registerDebug("Failed opening bag");
 											break;
 										}
@@ -1643,10 +1658,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								if (lootStatsFile) {
 									int checksum;
 									int tm=time(NULL);
-									for (int contNr=8; contNr <=8+config->lootInBags;contNr++){// get stats from 9, then 8 if lootInBags
+									for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
+										int contNr=lootContNr[contNrInd];
 										//sender.sendTAMessage("[debug] stats from conts");
 										CTibiaContainer *lootCont = reader.readContainer(contNr);
 										if(lootCont->flagOnOff){
+											if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
 											int itemNr;
 											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
 												int i,len;
@@ -1657,9 +1674,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 												}
 												
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==8,attackedCh->x,attackedCh->y,attackedCh->z);
+												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
 												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==8,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 											}
 										}
 										deleteAndNull(lootCont);
@@ -1685,13 +1702,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								}
 								
 								int lootTakeItem;
-								for (int contNr=8; contNr <=8+config->lootInBags;contNr++){// loot from 9, then 8 if lootInBags
+								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
+									int contNr=lootContNr[contNrInd];
 
-									if (contNr==8) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-									else if (contNr==9) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveingBag;
+									if (contNrInd==0) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
+									else if (contNrInd==1) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveingBag;
 									CTibiaContainer *lootCont = reader.readContainer(contNr);
 									//sender.sendTAMessage("[debug] looting");
 									if(lootCont->flagOnOff){
+										if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
 										for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
 											if (self->cap>config->capacityLimit) {
 												CModuleUtil::lootItemFromContainer(contNr,&acceptedItems);
@@ -1742,7 +1761,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 			// if client thinks we are not attacking anything, then
 			// send "attack new target" to it and increment failed attack for creatureNr by 1
-			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&attackedCh->hpPercLeft) {
+			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(!attackedCh||attackedCh->hpPercLeft)) {
 				char buf[128];
 				sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
 				if (config->debug) registerDebug(buf);
@@ -1754,7 +1773,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				//AfxMessageBox(debugBuf);
 
 			}
-			else if (reader.getAttackedCreature()&&reader.getAttackedCreature()!=attackedCh->tibiaId){
+			else if (reader.getAttackedCreature()&&attackedCh&&reader.getAttackedCreature()!=attackedCh->tibiaId){
 				//wis: keep player-chosen creature as attackee
 				currentlyAttackedCreatureNr=reader.getCharacterByTibiaId(reader.getAttackedCreature())->nr;
 				char buf[128];
