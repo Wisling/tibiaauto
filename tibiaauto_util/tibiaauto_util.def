@@ -171,3 +171,10 @@ EXPORTS
 	tibiaMapSetBestPrevPoint @165
 	tibiaMapClearLocalPrevPoint @166
 	memReadMapGetPointStackIndex @167
+	packSenderUseWithObjectFromFloorOnFloor @168
+	packSenderUseWithObjectFromContainerInContainer @169
+	packSenderUseWithObjectFromFloorInContainer @170
+	packSenderFollow @171
+	packSenderOpenAutoContainerFromContainer @172
+	packSenderOpenAutoContainerFromFloor @173
+

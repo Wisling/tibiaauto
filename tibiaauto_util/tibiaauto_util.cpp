@@ -109,12 +109,6 @@ CTibiaContainer *memReadContainer(int containerNr)
 	return reader->readContainer(containerNr);
 };
 
-void packSenderMoveObjectBetweenContainers(int objectId,int  sourceContNr,int  sourcePos, int targetContNr, int targetPos,int  qty)
-{	
-	CPackSender sender;
-	sender.moveObjectBetweenContainers(objectId, sourceContNr, sourcePos, targetContNr, targetPos, qty);
-}
-
 void memReadWriteSelfLightPower(int value)
 {
 	startMemReader();
@@ -256,15 +250,39 @@ CTibiaCharacter *memReadGetCharacterByTibiaId(int tibiaId)
 }
 
 
-void packSenderUseWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extraInfo)
+void packSenderUseWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method=2)
 {
 	CPackSender sender;
-	sender.useWithObjectFromContainerOnFloor(sourceObjectId,sourceContNr,sourcePos,targetObjectId,targetX,targetY,targetZ,method,extraInfo);	
+	sender.useWithObjectFromFloorOnFloor(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetX, targetY, targetZ,  method);
+}
+
+void packSenderUseWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2)
+{
+	CPackSender sender;
+	sender.useWithObjectFromFloorInContainer(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetContNr, targetPos,  method);
+}
+
+void packSenderUseWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method=2)
+{
+	CPackSender sender;
+	sender.useWithObjectFromContainerInContainer(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetContNr, targetPos,  method);
+}
+
+void packSenderUseWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2)
+{
+	CPackSender sender;
+	sender.useWithObjectFromContainerOnFloor(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetX, targetY, targetZ,  method);
 }
 
 CMemConstData getMemConstData()
 {	
 	return CMemConstData();
+}
+
+void packSenderMoveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
+{
+	CPackSender sender;
+	sender.moveObjectFromFloorToFloor(objectId, srcX, srcY, srcZ, destX, destY, destZ,quantity);
 }
 
 void packSenderMoveObjectFromFloorToContainer(int objectId,int sourceX,int sourceY,int sourceZ,int targetContNr,int targetPos,int quantity)
@@ -273,8 +291,11 @@ void packSenderMoveObjectFromFloorToContainer(int objectId,int sourceX,int sourc
 	sender.moveObjectFromFloorToContainer(objectId,sourceX,sourceY,sourceZ,targetContNr,targetPos,quantity);
 }
 
-
-///
+void packSenderMoveObjectBetweenContainers(int objectId,int  sourceContNr,int  sourcePos, int targetContNr, int targetPos,int  qty)
+{	
+	CPackSender sender;
+	sender.moveObjectBetweenContainers(objectId, sourceContNr, sourcePos, targetContNr, targetPos, qty);
+}
 
 void packSenderMoveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x, int y, int z,int quantity)
 {
@@ -306,15 +327,26 @@ void packSenderUseItemInContainer(int objectId, int contNr, int pos)
 	CPackSender sender;
 	sender.useItemInContainer(objectId,contNr,pos);
 }
-void packSenderOpenContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
+void packSenderOpenContainerFromFloor(int objectId,int x,int y,int z,int targetBag)
 {
 	CPackSender sender;
-	sender.openContainerFromFloor(objectId,x,y,z,pos,targetBag);
+	sender.openContainerFromFloor(objectId,x,y,z,targetBag);
+}
+int packSenderOpenAutoContainerFromFloor(int objectId,int x,int y,int z)
+{
+	CPackSender sender;
+	return sender.openAutoContainerFromFloor(objectId,x,y,z);
 }
 void packSenderOpenContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
 {
 	CPackSender sender;
 	sender.openContainerFromContainer(objectId,contNrFrom,contPosFrom,targetBag);
+}
+
+int packSenderOpenAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
+{
+	CPackSender sender;
+	return sender.openAutoContainerFromContainer(objectId,contNrFrom,contPosFrom);
 }
 
 void packSenderSendAttackedCreatureToAutoAim(int attackedCreature)
@@ -656,6 +688,12 @@ void packSenderAttack(int tibiaCharId)
 	sender.attack(tibiaCharId);
 }
 
+void packSenderFollow(int tibiaCharId)
+{
+	CPackSender sender;
+	sender.follow(tibiaCharId);
+}
+
 int memReadMapGetPointItemsCount(point p)
 {
 	startMemReader();
@@ -719,13 +757,6 @@ void packSenderStopAll()
 	CPackSender sender;
 	sender.stopAll();
 }
-
-void packSenderMoveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
-{
-	CPackSender sender;
-	sender.moveObjectFromFloorToFloor(objectId, srcX, srcY, srcZ, destX, destY, destZ,quantity);
-}
-
 
 long memReadGetCurrentTm()
 {

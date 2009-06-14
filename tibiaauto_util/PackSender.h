@@ -18,6 +18,9 @@ public:
 	void look(int x,int y,int z,int objectId);
 	void sendCreatureInfo(char *name,char *info1,char *info2);
 	void moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity);
+	void moveObjectFromFloorToContainer(int objectId,int sourceX,int sourceY,int sourceZ,int targetContNr,int targetPos,int quantity);
+	void moveObjectBetweenContainers(int objectId,int sourceContNr,int sourcePos,int targetContNr,int targetPos, int qty);
+	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x,int y, int z, int quantity);
 	void sendAttackedCreatureToAutoAim(int attackedCreature);
 	void turnDown();
 	void turnUp();
@@ -27,18 +30,18 @@ public:
 	void sayOnChan(char *msg, int channelId1,int channelId2);
 	void sayNPC(char *msg);
 	void useItemOnFloor(int objectId, int x, int y, int z);
-	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x,int y, int z, int quantity);
+	int openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom);
 	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
-	void moveObjectFromFloorToContainer(int objectId,int sourceX,int sourceY,int sourceZ,int targetContNr,int targetPos,int quantity);
 	void sendTAMessage(char *msg);
 	void revealFish(int enable);
 	void attackMode(int mode,int follow);
 	void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method);
 	void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ);
 	void castRuneAgainstCreature(int contNr,int itemPos,int runeObjectId,int creatureId);
-	void CPackSender::castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method);
+	void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method);
 	void closeContainer(int contNr);
 	void attack(int tibiaCharId);
+	void follow(int tibiaCharId);
 	void stepMulti(int *direction,int size);
 	void stepRight();
 	void stepLeft();
@@ -46,14 +49,15 @@ public:
 	void stepUp();
 	void logout();
 	void useItemInContainer(int objectId,int contNr,int pos);
-	void openContainerFromFloor(int objectId,int x,int y,int z,int pos, int targetBag);
+	int openAutoContainerFromFloor(int objectId,int x,int y,int z);
+	void openContainerFromFloor(int objectId,int x,int y,int z, int targetBag);
 	void say(const char *buf);	
 	void sayWhisper(const char *buf);	
 	void sayYell(const char *buf);	
-	void moveObjectBetweenContainers(int objectId,int sourceContNr,int sourcePos,int targetContNr,int targetPos, int qty);
-	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ);
-	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method);
-	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extrainfo);
+	void useWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	void useWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2);
+	void useWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method=2);
+	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
 	void npcBuy(int objectId,int qty, int ignoreCap, int withBackpack);
@@ -66,3 +70,4 @@ private:
 };
 
 #endif // !defined(AFX_PACKSENDER_H__A8C435EC_72BC_417E_9C2E_AF2A3F40133F__INCLUDED_)
+

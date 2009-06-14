@@ -6,6 +6,7 @@
 #include "PackSender.h"
 #include "MemReader.h"
 #include "Util.h"
+#include "commons2.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -25,7 +26,7 @@ public:
 
 		
 		DWORD cbWritten;
-		BOOL fSuccess = WriteFile( 
+		BOOL fSuccess = WriteFile(
 			hPipe,
 			this,
 			sizeof(struct ipcMessage), 
@@ -73,36 +74,6 @@ void CPackSender::sendPacket(char *buf,int method)
 
 	
 	mess.send();
-}
-
-
-void CPackSender::moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty)
-{
-	char retbuf[256];
-
-	retbuf[0]=15;
-	retbuf[1]=0;
-
-	retbuf[2]=0x78;
-
-	retbuf[3]=0xff;
-	retbuf[4]=0xff;
-	retbuf[5]=sourceContNr;
-	retbuf[6]=0;
-	retbuf[7]=sourcePos;
-	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=sourcePos;
-
-	retbuf[11]=0xff;
-	retbuf[12]=0xff;
-	retbuf[13]=targetContNr;
-	retbuf[14]=0;
-	retbuf[15]=targetPos;
-
-	retbuf[16]=qty;
-
-	sendPacket(retbuf);
 }
 
 
@@ -168,19 +139,21 @@ void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
 	retbuf[10]=pos;
-	if (contNr>=0x40)
-	{
-		retbuf[11]=contNr-0x40;
-	} else {
-		retbuf[11]=0;
-	}	
+	retbuf[11]=findNextClosedContainer();
 
 	sendPacket(retbuf);
 }
+int CPackSender::openAutoContainerFromFloor(int objectId,int x,int y,int z)
+{
+	int targetBag=findNextClosedContainer();
+	openContainerFromFloor(objectId,x,y,z,targetBag);
+	return targetBag;
 
-void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
+}
+void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int targetBag)
 {
 	char retbuf[256];
+	int targetInd=itemOnTopIndex(x,y,z);
 
 	retbuf[0]=10;
 	retbuf[1]=0;
@@ -194,14 +167,11 @@ void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int pos
 	retbuf[7]=z;	
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=pos;	
-	retbuf[11]=targetBag;
+	retbuf[10]=targetInd;	
+	retbuf[11]=targetBag;	
 
 	sendPacket(retbuf);
 }
-
-
-
 
 void CPackSender::logout()
 {
@@ -212,17 +182,94 @@ void CPackSender::logout()
 	sendPacket(sendbuf);
 }
 
-void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ)
+void CPackSender::useWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method/*=2*/)
 {
-	useWithObjectFromContainerOnFloor(sourceObjectId,sourceContNr,sourcePos,targetObjectId,targetX,targetY,targetZ,2);
+	char sendbuf[19];
+
+	sendbuf[0]=17;
+	sendbuf[1]=0;
+	sendbuf[2]=0x83;
+
+	sendbuf[3]=sourceX&0xff;
+	sendbuf[4]=(sourceX>>8)&0xff;
+	sendbuf[5]=sourceY&0xff;
+	sendbuf[6]=(sourceY>>8)&0xff;
+	sendbuf[7]=sourceZ;
+	sendbuf[8]=sourceObjectId&0xff;;
+	sendbuf[9]=(sourceObjectId>>8)&0xff;
+	sendbuf[10]=itemOnTopIndex(sourceX,sourceY,sourceZ);
+
+	sendbuf[11]=targetX&0xff;
+	sendbuf[12]=(targetX>>8)&0xff;
+	sendbuf[13]=targetY&0xff;
+	sendbuf[14]=(targetY>>8)&0xff;
+	sendbuf[15]=targetZ;
+	sendbuf[16]=targetObjectId&0xff;
+	sendbuf[17]=(targetObjectId>>8)&0xff;
+	sendbuf[18]=itemOnTopIndex(targetX,targetY,targetZ);
+
+	sendPacket(sendbuf,method);	
 }
 
-void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method)
+void CPackSender::useWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method/*=2*/)
 {
-	useWithObjectFromContainerOnFloor(sourceObjectId,sourceContNr,sourcePos,targetObjectId,targetX,targetY,targetZ,method,0);
+	char sendbuf[19];
+
+	sendbuf[0]=17;
+	sendbuf[1]=0;
+	sendbuf[2]=0x83;
+
+	sendbuf[3]=sourceX&0xff;
+	sendbuf[4]=(sourceX>>8)&0xff;
+	sendbuf[5]=sourceY&0xff;
+	sendbuf[6]=(sourceY>>8)&0xff;
+	sendbuf[7]=sourceZ;
+	sendbuf[8]=sourceObjectId&0xff;;
+	sendbuf[9]=(sourceObjectId>>8)&0xff;
+	sendbuf[10]=itemOnTopIndex(sourceX,sourceY,sourceZ);
+
+	sendbuf[11]=0xff;
+	sendbuf[12]=0xff;
+	sendbuf[13]=targetContNr&0xff;
+	sendbuf[14]=(targetContNr>>8)&0xff;
+	sendbuf[15]=targetPos;
+	sendbuf[16]=targetObjectId&0xff;
+	sendbuf[17]=(targetObjectId>>8)&0xff;
+	sendbuf[18]=targetPos;
+
+	sendPacket(sendbuf,method);	
 }
 
-void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extraInfo)
+void CPackSender::useWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method/*=2*/)
+{
+	char sendbuf[19];
+
+	sendbuf[0]=17;
+	sendbuf[1]=0;
+	sendbuf[2]=0x83;
+
+	sendbuf[3]=0xff;
+	sendbuf[4]=0xff;
+	sendbuf[5]=sourceContNr&0xff;
+	sendbuf[6]=(sourceContNr>>8)&0xff;
+	sendbuf[7]=sourcePos;
+	sendbuf[8]=sourceObjectId&0xff;
+	sendbuf[9]=(sourceObjectId>>8)&0xff;
+	sendbuf[10]=sourcePos;
+
+	sendbuf[11]=0xff;
+	sendbuf[12]=0xff;
+	sendbuf[13]=targetContNr&0xff;
+	sendbuf[14]=(targetContNr>>8)&0xff;
+	sendbuf[15]=targetPos;
+	sendbuf[16]=targetObjectId&0xff;
+	sendbuf[17]=(targetObjectId>>8)&0xff;
+	sendbuf[18]=targetPos;
+
+	sendPacket(sendbuf,method);	
+}
+
+void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method/*=2*/)
 {
 	char sendbuf[19];
 
@@ -246,9 +293,9 @@ void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourc
 	sendbuf[15]=targetZ;
 	sendbuf[16]=targetObjectId&0xff;
 	sendbuf[17]=(targetObjectId>>8)&0xff;
-	sendbuf[18]=extraInfo;
+	sendbuf[18]=itemOnTopIndex(targetX,targetY,targetZ);
 
-	sendPacket(sendbuf,method);
+	sendPacket(sendbuf,method);	
 }
 
 void CPackSender::stepUp()
@@ -324,18 +371,19 @@ void CPackSender::attack(int tibiaCharId)
 	sendPacket(sendbuf);
 }
 
-//DEL void CPackSender::attackModeFollow()
-//DEL {
-//DEL 	char sendbuf[6];
-//DEL 	sendbuf[0]=4;
-//DEL 	sendbuf[1]=0;
-//DEL 	sendbuf[2]=0xa0;
-//DEL 	sendbuf[3]=1;
-//DEL 	sendbuf[4]=1;
-//DEL 	sendbuf[5]=1;
-//DEL 
-//DEL 	sendPacket(sendbuf);
-//DEL }
+void CPackSender::follow(int tibiaCharId)
+{
+	char sendbuf[7];
+	sendbuf[0]=5;
+	sendbuf[1]=0;
+	sendbuf[2]=0xa2;
+	sendbuf[3]=tibiaCharId&0xff;
+	sendbuf[4]=(tibiaCharId>>8)&0xff;
+	sendbuf[5]=(tibiaCharId>>16)&0xff;
+	sendbuf[6]=(tibiaCharId>>24)&0xff;
+
+	sendPacket(sendbuf);
+}
 
 
 void CPackSender::closeContainer(int contNr)
@@ -445,10 +493,39 @@ void CPackSender::sendTAMessage(char *msg)
 	DWORD cbWritten;
 
 	mess.messageType=3;
-	strcpy(mess.payload,msg);	
+	strcpy(mess.payload,msg);
 
 	
 	mess.send();
+}
+
+void CPackSender::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ, int quantity)
+{
+	char retbuf[256];
+
+	retbuf[0]=15;
+	retbuf[1]=0;
+
+	retbuf[2]=0x78;
+
+	retbuf[3]=srcX&0xff;
+	retbuf[4]=(srcX>>8)&0xff;
+	retbuf[5]=srcY&0xff;
+	retbuf[6]=(srcY>>8)&0xff;
+	retbuf[7]=srcZ;
+	retbuf[8]=objectId&0xff;
+	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[10]=itemOnTopIndex(srcX,srcY,srcZ);
+
+	retbuf[11]=destX&0xff;
+	retbuf[12]=(destX>>8)&0xff;
+	retbuf[13]=destY&0xff;
+	retbuf[14]=(destY>>8)&0xff;
+	retbuf[15]=destZ;
+
+	retbuf[16]=quantity;
+
+	sendPacket(retbuf);
 }
 
 void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int sourceY, int sourceZ, int targetContNr, int targetPos, int quantity)
@@ -467,7 +544,7 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 	retbuf[7]=sourceZ;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=0x01;
+	retbuf[10]=itemOnTopIndex(sourceX,sourceY,sourceZ);
 
 	retbuf[11]=0xff;
 	retbuf[12]=0xff;
@@ -480,24 +557,31 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 	sendPacket(retbuf);
 }
 
-void CPackSender::openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
+void CPackSender::moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty)
 {
 	char retbuf[256];
 
-	retbuf[0]=10;
+	retbuf[0]=15;
 	retbuf[1]=0;
 
-	retbuf[2]=0x82;
+	retbuf[2]=0x78;
 
 	retbuf[3]=0xff;
 	retbuf[4]=0xff;
-	retbuf[5]=contNrFrom;
+	retbuf[5]=sourceContNr;
 	retbuf[6]=0;
-	retbuf[7]=contPosFrom;	
+	retbuf[7]=sourcePos;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=contPosFrom;	
-	retbuf[11]=targetBag;	
+	retbuf[10]=sourcePos;
+
+	retbuf[11]=0xff;
+	retbuf[12]=0xff;
+	retbuf[13]=targetContNr;
+	retbuf[14]=0;
+	retbuf[15]=targetPos;
+
+	retbuf[16]=qty;
 
 	sendPacket(retbuf);
 }
@@ -530,6 +614,35 @@ void CPackSender::moveObjectFromContainerToFloor(int objectId, int contNr, int p
 
 	sendPacket(retbuf);
 }
+int CPackSender::openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
+{
+	int targetBag=findNextClosedContainer();
+	openContainerFromContainer(objectId, contNrFrom, contPosFrom,targetBag);
+	return targetBag;
+
+}
+
+void CPackSender::openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
+{
+	char retbuf[256];
+
+	retbuf[0]=10;
+	retbuf[1]=0;
+
+	retbuf[2]=0x82;
+
+	retbuf[3]=0xff;
+	retbuf[4]=0xff;
+	retbuf[5]=contNrFrom;
+	retbuf[6]=0;
+	retbuf[7]=contPosFrom;	
+	retbuf[8]=objectId&0xff;
+	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[10]=contPosFrom;	
+	retbuf[11]=targetBag;	
+
+	sendPacket(retbuf);
+}
 
 void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 {
@@ -547,8 +660,8 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;
-	retbuf[10]=1;	
-	retbuf[11]=1;	
+	retbuf[10]=itemOnTopIndex(x,y,z);
+	retbuf[11]=findNextClosedContainer();
 
 	sendPacket(retbuf);
 }
@@ -699,35 +812,6 @@ void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 	mess.send();	
 }
 
-void CPackSender::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ, int quantity)
-{
-	char retbuf[256];
-
-	retbuf[0]=15;
-	retbuf[1]=0;
-
-	retbuf[2]=0x78;
-
-	retbuf[3]=srcX&0xff;
-	retbuf[4]=(srcX>>8)&0xff;
-	retbuf[5]=srcY&0xff;
-	retbuf[6]=(srcY>>8)&0xff;
-	retbuf[7]=srcZ;
-	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=0x01;
-
-	retbuf[11]=destX&0xff;
-	retbuf[12]=(destX>>8)&0xff;
-	retbuf[13]=destY&0xff;
-	retbuf[14]=(destY>>8)&0xff;
-	retbuf[15]=destZ;
-
-	retbuf[16]=quantity;
-
-	sendPacket(retbuf);
-}
-
 void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 {
 	struct ipcMessage mess;		
@@ -760,7 +844,7 @@ void CPackSender::look(int x, int y, int z, int objectId)
 	retbuf[6]=(y>>8)&0xff;
 	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=0x01;
 
 	sendPacket(retbuf);
