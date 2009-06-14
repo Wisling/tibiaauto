@@ -57,7 +57,7 @@ SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
 int COMPLEX=0;
-int SENTONLY=0;
+int SENTONLY=1;
 
 time_t debugFileStart;
 int lastSendFlags;
@@ -1075,9 +1075,14 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-	//debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+#ifdef _DEBUG
+	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+#endif
+#ifndef _DEBUG
 	debugFile=NULL;
+#endif
 	if (debugFile) fprintf(debugFile,"Start\r\n");
+	fflush(debugFile);
 	debugFileStart=time(NULL);
 }
 
