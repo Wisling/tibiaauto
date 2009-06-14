@@ -13,14 +13,15 @@ class CPackSenderProxy
 {
 public:
 	void setPipeHandle(HANDLE hPipe);
-	void moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty);
 
-	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ);
-	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method);
-	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extraInfo);
-	void moveObjectFromFloorToContainer(int objectId,int sourceX,int sourceY,int sourceZ,int targetContNr,int targetPos,int quantity);
-	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x, int y, int z,int quantity);
+	void useWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	void useWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2);
+	void useWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method=2);
+	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
 	void moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity);
+	void moveObjectFromFloorToContainer(int objectId,int sourceX,int sourceY,int sourceZ,int targetContNr,int targetPos,int quantity);
+	void moveObjectBetweenContainers(int objectId,int sourceContNr,int sourcePos,int targetContNr,int targetPos, int qty);
+	void moveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x,int y, int z, int quantity);
 
 
 	void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method);
@@ -30,9 +31,11 @@ public:
 	void sendTAMessage(char *msg);
 	void useItemOnFloor(int objectId, int x, int y, int z);
 	void useItemInContainer(int objectId, int contNr, int pos);
-	void openContainerFromFloor(int objectId,int x,int y,int z,int pos,int targetBag);
+	int openAutoContainerFromFloor(int objectId,int x,int y,int z);
+	void openContainerFromFloor(int objectId,int x,int y,int z, int targetBag);
+	int openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom);
 	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
-	void say(const char *buf);	
+	void say(const char *buf);
 	void sayWhisper(const char *buf);
 	void sayYell(const char *buf);
 	void sayNPC(const char *msg);
@@ -46,6 +49,7 @@ public:
 	void closeContainer(int contNr);
 	void attackMode(int mode,int follow);
 	void attack(int tibiaCharId);
+	void follow(int tibiaCharId);
 	void turnLeft();
 	void turnRight();
 	void turnUp();

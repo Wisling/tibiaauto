@@ -12,9 +12,6 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include <sstream>
-#include <string>
-
 class CModuleUtil  
 {
 public:
@@ -41,6 +38,8 @@ public:
 	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ);
 	static void prepareProhPointList();
 	static void findPathAllDirection(CQueue *queue,int x,int y,int z,int updownMode);
+	static int findNextClosedContainer(int afterCont=-1);
+	static void masterDebug(const char* fname,const char* buf1="",const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="");
 private:
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ,int endSpecialLocation, int path[15],int useDiagonal);
 	static void findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
