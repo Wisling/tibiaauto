@@ -110,7 +110,7 @@
                 <const code="lengthMiniMap" value="131240"/>
                 <const code="lengthMiniMapPoint" value="112"/>
 
-	<const code="maxContainers" value="9"/>
+	<const code="maxContainers" value="16"/>
 	<const code="maxCreatures" value="250"/>
 	<const code="maxMapTiles" value="2016"/>
 
