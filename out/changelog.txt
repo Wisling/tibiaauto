@@ -1,4 +1,28 @@
-1.19.7, 24.04.2009
+1.20.0, 11.06.2009
+Enhancments
+ Python: Added new function 'follow' to methods and added more 'Use With' functions for carving ice cubes
+ Python: Updated some packet sender functions
+ Creatures: Updated the creature list with new HP/weaknesses
+ 
+Defects
+ Autogo: Fixed constant crash bug, it should do so 100 times less often now :P
+ Autogo: no large debug file anymore
+ Tiles.xml: fixed lexical error within file
+
+1.19.8, 24.04.2009
+Enhancments
+ AutoGo: Sounds no longer play on top of eachother, they wait for one to finish.
+ Runemaker: Added random mana option when runemaking
+ Fluid Drinker: Added randomized option
+ Fluid Drinker: Added extra potions
+ Trade monitor: lists a summary of all unknown items in a trade window as well...http://www.tibiaauto.net/wiki/index.php/Trade_Monitor
+Defects
+ Spellcaster: Fixed not healing with 10% variance checked
+ Cavebot: Fixed killing ignored creatures
+ Fluid Drinker: fixed bug in fluid drinker
+ Cavebot: fixed walking shift by 1 square bug
+
+1.19.7, 24.03.2009
 Enhancments:
  Auto Login: Added a time delay before logging in again
  Auto Login: Minimizes all backpacks upon opening
