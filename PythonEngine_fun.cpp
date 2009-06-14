@@ -701,27 +701,57 @@ static PyObject *tibiaauto_reader_getGlobalVariable(PyObject *self, PyObject *ar
 		
 	return ret; 
 }
-static PyObject *tibiaauto_sender_moveObjectBetweenContainers(PyObject *self, PyObject *args)
-{
-	CPackSenderProxy sender;
-
-	int arg1,arg2,arg3,arg4,arg5,arg6;
-    if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
-	sender.moveObjectBetweenContainers(arg1,arg2,arg3,arg4,arg5,arg6);
-	Py_INCREF(Py_None);
-	return Py_None; 
-}
-static PyObject *tibiaauto_sender_useWithObjectFromContainerOnFloor(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_sender_useWithObjectFromFloorOnFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9;
     if (!PyArg_ParseTuple(args, "iiiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8,&arg9)) return NULL;	
-	sender.useWithObjectFromContainerOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+	sender.useWithObjectFromFloorOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useWithObjectFromFloorInContainer(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
+    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
+	sender.useWithObjectFromFloorInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useWithObjectFromContainerInContainer(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6,arg7;
+    if (!PyArg_ParseTuple(args, "iiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7)) return NULL;	
+	sender.useWithObjectFromContainerInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useWithObjectFromContainerOnFloor(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
+    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
+	sender.useWithObjectFromContainerOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
+static PyObject *tibiaauto_sender_moveObjectFromFloorToFloor(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
+    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
+	sender.moveObjectFromFloorToFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 static PyObject *tibiaauto_sender_moveObjectFromFloorToContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -732,6 +762,17 @@ static PyObject *tibiaauto_sender_moveObjectFromFloorToContainer(PyObject *self,
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+static PyObject *tibiaauto_sender_moveObjectBetweenContainers(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6;
+    if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
+	sender.moveObjectBetweenContainers(arg1,arg2,arg3,arg4,arg5,arg6);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
 static PyObject *tibiaauto_sender_moveObjectFromContainerToFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -739,16 +780,6 @@ static PyObject *tibiaauto_sender_moveObjectFromContainerToFloor(PyObject *self,
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7;
     if (!PyArg_ParseTuple(args, "iiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7)) return NULL;	
 	sender.moveObjectFromContainerToFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-static PyObject *tibiaauto_sender_moveObjectFromFloorToFloor(PyObject *self, PyObject *args)
-{
-	CPackSenderProxy sender;
-
-	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
-    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
-	sender.moveObjectFromFloorToFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -804,19 +835,39 @@ static PyObject *tibiaauto_sender_useItemInContainer(PyObject *self, PyObject *a
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+static PyObject *tibiaauto_sender_openAutoContainerFromFloor(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4;
+    if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;
+	int ret1 = sender.openAutoContainerFromFloor(arg1,arg2,arg3,arg4);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	return ret;
+}
 static PyObject *tibiaauto_sender_openContainerFromFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
 
-	int arg1,arg2,arg3,arg4,arg5,arg6;
-    if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
-	sender.openContainerFromFloor(arg1,arg2,arg3,arg4,arg5,arg6);
+	int arg1,arg2,arg3,arg4,arg5;
+    if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;	
+	sender.openContainerFromFloor(arg1,arg2,arg3,arg4,arg5);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+static PyObject *tibiaauto_sender_openAutoContainerFromContainer(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+	int ret1 = sender.openAutoContainerFromContainer(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	return ret;
+}
 static PyObject *tibiaauto_sender_openContainerFromContainer(PyObject *self, PyObject *args)
 {
-CPackSenderProxy sender;
+	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4;
     if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
@@ -968,6 +1019,16 @@ static PyObject *tibiaauto_sender_attack(PyObject *self, PyObject *args)
 	int arg1;
     if (!PyArg_ParseTuple(args, "i",&arg1)) return NULL;	
 	sender.attack(arg1);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+static PyObject *tibiaauto_sender_follow(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i",&arg1)) return NULL;	
+	sender.follow(arg1);
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
