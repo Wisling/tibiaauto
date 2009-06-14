@@ -1,11 +1,10 @@
 /////////////////////////////////////////////////////////////////////////////
-#include "PackSenderProxy.h"
-#include "MemReaderProxy.h"
-#include "ModuleUtil.h"
+#include "PackSender.h"
+#include "MemReader.h"
 
 int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
 {
-	CMemReaderProxy reader;
+	CMemReader reader;
 	int pos;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
@@ -28,7 +27,7 @@ int itemOnTopIndex(int x,int y)
 
 int isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
 {
-	CMemReaderProxy reader;
+	CMemReader reader;
 	int topPos=itemOnTopIndex(x,y);
 	int tileId = reader.mapGetPointItemId(point(x,y,0),topPos);
 	for (int i=0;i<itemArrSize;i++)
@@ -40,7 +39,7 @@ int isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
 
 int isItemCovered(int x,int y,int *itemArr,int itemArrSize)
 {
-	CMemReaderProxy reader;
+	CMemReader reader;
 
 	int topPos=itemOnTopIndex(x,y);
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
@@ -70,7 +69,7 @@ int isItemCovered(int x,int y,int itemId)
 int itemOnTopCode(int x,int y)
 {
 
-	CMemReaderProxy reader;
+	CMemReader reader;
 	int pos=itemOnTopIndex(x,y);
 	if (pos!=-1)
 	{
@@ -81,7 +80,7 @@ int itemOnTopCode(int x,int y)
 
 int itemSeenOnTopIndex(int x,int y)
 {
-	CMemReaderProxy reader;
+	CMemReader reader;
 	int pos;	
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
 	for (pos=0;pos<stackCount;pos++)
@@ -96,7 +95,7 @@ int itemSeenOnTopIndex(int x,int y)
 
 int itemSeenOnTopCode(int x,int y)
 {
-	CMemReaderProxy reader;
+	CMemReader reader;
 	int pos=itemSeenOnTopIndex(x,y);
 	if (pos!=-1)
 	{
@@ -107,7 +106,7 @@ int itemSeenOnTopCode(int x,int y)
 
 int itemOnTopQty(int x,int y)
 {
-	CMemReaderProxy reader;
+	CMemReader reader;
 	int qty=reader.mapGetPointItemExtraInfo(point(x,y,0),itemOnTopIndex(x,y),1);
 	return qty?qty:1;
 }
@@ -115,20 +114,18 @@ int itemOnTopQty(int x,int y)
 int findNextClosedContainer(int afterCont=-1)
 {
 
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
+	CMemReader reader;
+	CPackSender sender;
 	CTibiaContainer *container;
-	CMemConstData memConstData = reader.getMemConstData();
 	int targetBag;
-	for (targetBag=afterCont+1;targetBag<memConstData.m_memMaxContainers;targetBag++){
+	for (targetBag=afterCont+1;targetBag<reader.m_memMaxContainers;targetBag++){
 		container = reader.readContainer(targetBag);
 		if (!container->flagOnOff) break;
 	}
 	
-	if (targetBag == memConstData.m_memMaxContainers){
-		targetBag=memConstData.m_memMaxContainers-1;
+	if (targetBag == reader.m_memMaxContainers){
+		targetBag=reader.m_memMaxContainers-1;
 		sender.closeContainer(targetBag);
-		CModuleUtil::waitForOpenContainer(targetBag,true);
 
 	}
 	return targetBag;
