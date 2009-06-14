@@ -101,10 +101,12 @@ int taxiDist(int x1,int	y1,int x2,int y2){ return abs(x2-x1)+abs(y2-y1)-2+(x1==x
 // Tool thread function
 
 int toolThreadShouldStop=0;
+int lastLootContNr[3]={-1,-1,-1};
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {		
+
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	CPackSenderProxy sender;
@@ -119,11 +121,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{			
 		Sleep(200);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
-		
+
+		if(config->m_autoOpen){
+			for (int i=0;i<3;i++){
+				if(lastLootContNr[i]!=-1 && !reader.readContainer(lastLootContNr[i])->flagOnOff) lastLootContNr[i]=-1;
+			}
+		}
+
+
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 		if (reader.getGlobalVariable("autolooterTm")&&reader.getGlobalVariable("autolooterTm")!=""){//cavebot is enabled Not applicable yet
-			sender.sendTAMessage("Gotten");
 			if (lastAttackedMonster){
 				CTibiaCharacter *self = reader.readSelfCharacter();
 				CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
@@ -178,7 +186,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					int autolooterTm = atoi(reader.getGlobalVariable("autolooterTm"));
 					while (autolooterTm>time(NULL) && abs(autolooterTm-time(NULL))<30){
 						self = reader.readSelfCharacter();
-						sender.openContainerFromFloor(currentCorpse->itemId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),9);
+						sender.openContainerFromFloor(currentCorpse->itemId,attackedCh->x,attackedCh->y,attackedCh->z,9);
 						int iterCount=50;
 						while (iterCount-->0) {
 							if (maxDist(self->x,self->y,attackedCh->x,attackedCh->y)<=1)
@@ -278,7 +286,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		else if (config->m_autoOpen&&lastAttackedMonster&&reader.getAttackedCreature()==0)
 		{		
 			//::MessageBox(NULL,"x 1","x",0);			
-			
+
 			if (attackedCh)
 			{
 												
@@ -290,142 +298,124 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					
 				
 					// now close containers 7-9 which we use for auto-opening purposes
-					sender.closeContainer(7);
-					CModuleUtil::waitForOpenContainer(7,0);
-					sender.closeContainer(8);
-					CModuleUtil::waitForOpenContainer(8,0);
-					sender.closeContainer(9);
-					CModuleUtil::waitForOpenContainer(9,0);
-					CTibiaContainer *cont7 = reader.readContainer(7);
-					CTibiaContainer *cont8 = reader.readContainer(8);
-					CTibiaContainer *cont9 = reader.readContainer(9);
-					
-					if (!cont7->flagOnOff&&!cont8->flagOnOff&&!cont9->flagOnOff)
-					{
-						// now open corpse and all its containers 
-						// but only when 7-9 are closed (to avoid mixing corpses)
+					int i;
+					for (i=0;i<3;i++){
+						if (lastLootContNr[i]!=-1){
+							sender.closeContainer(lastLootContNr[i]);
+							CModuleUtil::waitForOpenContainer(lastLootContNr[i],0);
+						}
+					}
 
-						delete self;
-						self = reader.readSelfCharacter();
-						delete attackedCh;
-						attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
-						if (attackedCh)
+					lastLootContNr[0]=CModuleUtil::findNextClosedContainer();
+					lastLootContNr[1]=CModuleUtil::findNextClosedContainer(lastLootContNr[0]);
+					lastLootContNr[2]=CModuleUtil::findNextClosedContainer(lastLootContNr[1]);
+
+					CTibiaContainer *cont[3]={NULL,NULL,NULL};
+					
+					// now open corpse and all its containers 
+
+					delete self;
+					self = reader.readSelfCharacter();
+					delete attackedCh;
+					attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
+					if (attackedCh)
+					{
+						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
+						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);							
+						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lastLootContNr[0]);
+						CModuleUtil::waitForOpenContainer(lastLootContNr[0],1);
+						cont[0] = reader.readContainer(lastLootContNr[0]);
+						if (corpseId&&cont[0]->flagOnOff)
 						{
-							CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-							int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);							
-							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,itemOnTopIndex(attackedCh->x-self->x,attackedCh->y-self->y),9);
-							CModuleUtil::waitForOpenContainer(9,1);
 							
-							delete cont9;
-							cont9 = reader.readContainer(9);						
-							if (corpseId&&cont9->flagOnOff)
+							int currentExtraContainerNr = 1;
+							int itemNr;
+							for (itemNr=0;itemNr<cont[0]->itemsInside&&currentExtraContainerNr<3;itemNr++)
 							{
-								
-								int currentExtraContainerNr = 8;
-								int itemNr;
-								for (itemNr=0;itemNr<cont9->itemsInside&&currentExtraContainerNr>=7;itemNr++)
+								CTibiaItem *item = (CTibiaItem *)cont[0]->items.GetAt(itemNr);
+								if (item->objectId==itemProxy.getValueForConst("bagbrown"))
 								{
-									CTibiaItem *item = (CTibiaItem *)cont9->items.GetAt(itemNr);
-									if (item->objectId==itemProxy.getValueForConst("bagbrown"))
+									sender.openContainerFromContainer(item->objectId,0x40+lastLootContNr[0],itemNr,lastLootContNr[currentExtraContainerNr]);
+									CModuleUtil::waitForOpenContainer(lastLootContNr[currentExtraContainerNr],1);
+									cont[currentExtraContainerNr]=reader.readContainer(lastLootContNr[currentExtraContainerNr]);										
+									currentExtraContainerNr++;
+									
+								} 
+							} // for itemNr (open extra containers)
+							
+							if (corpseId&&cont[0]->flagOnOff)
+							{
+								FILE *lootStatsFile = NULL;
+								// time,rand,creature,name,pos,objectId,count,bagopen,checksum
+								int killNr=rand();
+								lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
+								if (lootStatsFile)
+								{
+									int i,len;
+									char statChName[128];
+									for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++)
 									{
-										if (currentExtraContainerNr==7)
-										{
-											sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,currentExtraContainerNr);
-											CModuleUtil::waitForOpenContainer(7,1);										
-											delete cont8;
-											cont8=reader.readContainer(7);										
-											currentExtraContainerNr--;
-										}
-										if (currentExtraContainerNr==8)
-										{
-											sender.openContainerFromContainer(item->objectId,0x40+9,itemNr,currentExtraContainerNr);
-											CModuleUtil::waitForOpenContainer(8,1);										
-											delete cont8;
-											cont8=reader.readContainer(8);		
-											currentExtraContainerNr--;
-										}
-										
-										
-									} 
-								} // for itemNr (open extra containers)
-								
-								if (corpseId&&cont9->flagOnOff)
-								{
-									FILE *lootStatsFile = NULL;
-									// time,rand,creature,name,pos,objectId,count,bagopen,checksum
+										if (statChName[i]=='[')
+											statChName[i]='\0';
+									}
+									int tm=time(NULL);
 									int killNr=rand();
-									lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
-									if (lootStatsFile)
+									int checksum;
+									
+									checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),-1,corpseId,0,2,attackedCh->x,attackedCh->y,attackedCh->z);
+									if (checksum<0) checksum*=-1;
+									fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,-1,corpseId,0,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+									
+									CTibiaContainer *lootCont = cont[0];
+									int itemNr;
+									for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++)
 									{
-										int i,len;
-										char statChName[128];
-										for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++)
-										{
-											if (statChName[i]=='[')
-												statChName[i]='\0';
-										}
-										int tm=time(NULL);
-										int killNr=rand();
-										int checksum;
+										CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 										
-										checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),-1,corpseId,0,2,attackedCh->x,attackedCh->y,attackedCh->z);
+										checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),0,attackedCh->x,attackedCh->y,attackedCh->z);
 										if (checksum<0) checksum*=-1;
-										fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,-1,corpseId,0,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
-										
-										CTibiaContainer *lootCont = cont9;
+										fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,0,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+									}
+									
+									
+									if (cont[1])
+									{
+										lootCont = cont[1];
+										int itemNr;
+										for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++)
+										{
+											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
+											
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),1,attackedCh->x,attackedCh->y,attackedCh->z);
+											if (checksum<0) checksum*=-1;
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,1,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+										}
+									}
+									if (cont[2])
+									{
+										lootCont = cont[2];
 										int itemNr;
 										for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++)
 										{												
 											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 											
-											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(attackedCh->name),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
 											if (checksum<0) checksum*=-1;
-											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,attackedCh->name,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										}
-										
-										
-										if (cont8->flagOnOff)
-										{
-											lootCont = cont8;
-											int itemNr;
-											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++)
-											{												
-												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-												
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
-												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
-											}								
-										}
-										if (cont7->flagOnOff)
-										{
-											lootCont = cont7;
-											int itemNr;
-											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++)
-											{												
-												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-												
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(attackedCh->name),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
-												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d\n",tm,killNr,attackedCh->name,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,2,attackedCh->x,attackedCh->y,attackedCh->z,checksum);
-											}
-										}
-										
-										fclose(lootStatsFile);
-									}												
-								}
-								
-								
-								
-							} // if corpseId && cont9 open
-						} // if (attackedCh)
-						
-						
-					} // if (7-9 containers closed)
+									}
+									
+									fclose(lootStatsFile);
+								}												
+							}
+							
+							
+							
+						} // if corpseId && cont9 open
+					} // if (attackedCh)
 					
-					delete cont7;
-					delete cont8;
-					delete cont9;
+					
+					for(i=0;i<3;i++) delete cont[i];
 					
 					
 					
