@@ -985,7 +985,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item)
 							{
-								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),self->x,self->y,self->z,2,1);
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),self->x,self->y,self->z);
 								delete item;
 								break;
 							}
@@ -1087,7 +1087,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 									
 									if (tile->requireShovel)
 									{										
-										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z,2,0);
+										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z);
 										break;
 									}
 								}
@@ -1146,7 +1146,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item)
 							{
-								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),modX,modY,self->z,2,1);
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),modX,modY,self->z);
 								delete item;
 								break;
 							}
@@ -1244,7 +1244,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 									
 									if (tile->requireShovel)
 									{										
-										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,modX,modY,self->z,2,0);
+										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,modX,modY,self->z);
 										break;
 									}
 								}
@@ -1378,4 +1378,47 @@ void CModuleUtil::prepareProhPointList()
 		delete ch;
 	}
 	delete self;
+}
+
+int CModuleUtil::findNextClosedContainer(int afterCont/*=-1*/)
+{
+
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaContainer *container;
+	CMemConstData memConstData = reader.getMemConstData();
+	int targetBag;
+	for (targetBag=afterCont+1;targetBag<memConstData.m_memMaxContainers;targetBag++){
+		container = reader.readContainer(targetBag);
+		if (!container->flagOnOff) break;
+	}
+	
+	if (targetBag == memConstData.m_memMaxContainers){
+		targetBag=memConstData.m_memMaxContainers-1;
+		sender.closeContainer(targetBag);
+		waitForOpenContainer(targetBag,false);
+	}
+	return targetBag;
+}
+
+void CModuleUtil::masterDebug(const char* fname, const char* buf1,const char* buf2,const char* buf3,const char* buf4,const char* buf5,const char* buf6){
+	//replace old file
+	if (strlen(buf1)==0){
+		FILE *f=fopen(fname,"w");
+		if (f)
+		{
+			fclose(f);
+		}
+		return;
+	}
+	char dateStr [15];
+	char timeStr [15];
+	_strdate( dateStr);
+	_strtime( timeStr );
+	FILE *f=fopen(fname,"a+");
+	if (f)
+	{
+		fprintf(f,"%s\t%s\tTibiaAuto\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6);
+		fclose(f);
+	}
 }

@@ -76,6 +76,55 @@ void CPackSenderProxy::setPipeHandle(HANDLE hPipe)
 	} 	
 }
 
+void CPackSenderProxy::useWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method)
+{
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromFloorOnFloor");
+		if (fun)
+		{
+			fun(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetX, targetY, targetZ, method);
+		}
+	} 	
+}
+void CPackSenderProxy::useWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method)
+{
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromFloorInContainer");
+		if (fun)
+		{
+			fun(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetContNr, targetPos,  method);
+		}
+	} 	
+}
+void CPackSenderProxy::useWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method)
+{
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromContainerInContainer");
+		if (fun)
+		{
+			fun(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetContNr, targetPos, method);
+		}
+	} 	
+}
+void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method)
+{
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromContainerOnFloor");
+		if (fun)
+		{
+			fun(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetX, targetY, targetZ,  method);
+		}
+	} 	
+}
+
 void CPackSenderProxy::moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty)
 {
 	typedef void (*Proto_fun)(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty);
@@ -85,29 +134,6 @@ void CPackSenderProxy::moveObjectBetweenContainers(int objectId, int sourceContN
 		if (fun)
 		{
 			fun(objectId,sourceContNr,sourcePos,targetContNr,targetPos,qty);
-		}
-	} 	
-}
-
-void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ)
-{
-	useWithObjectFromContainerOnFloor(sourceObjectId,sourceContNr,sourcePos,targetObjectId,targetX,targetY,targetZ,2);
-}
-
-void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method)
-{
-	useWithObjectFromContainerOnFloor(sourceObjectId,sourceContNr,sourcePos,targetObjectId,targetX,targetY,targetZ,method,0);
-}
-
-void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extraInfo)
-{
-	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method, int extraInfo);
-	if (dllModule)
-	{		
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromContainerOnFloor");
-		if (fun)
-		{
-			fun(sourceObjectId,sourceContNr,sourcePos,targetObjectId,targetX,targetY,targetZ,method,extraInfo);
 		}
 	} 	
 }
@@ -138,6 +164,21 @@ void CPackSenderProxy::moveObjectFromContainerToFloor(int objectId, int contNr, 
 	} 
 
 }
+
+void CPackSenderProxy::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
+{
+	typedef void (*Proto_fun)(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderMoveObjectFromFloorToFloor");
+		if (fun)
+		{
+			fun(objectId, srcX, srcY, srcZ, destX, destY, destZ,quantity);
+		}
+	} 
+
+}
+
 void CPackSenderProxy::castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method)
 {
 	typedef void (*Proto_fun)(int contNr, int itemPos, int runeObjectId, int creatureId, int method);
@@ -211,15 +252,41 @@ void CPackSenderProxy::useItemInContainer(int objectId, int contNr, int pos)
 	} 
 
 }
-void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z, int pos, int targetBag)
+int CPackSenderProxy::openAutoContainerFromFloor(int objectId,int x,int y,int z)
 {
-	typedef void (*Proto_fun)(int objectId,int x,int y,int z,int pos,int targetBag);
+	typedef int (*Proto_fun)(int objectId,int x,int y,int z);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderOpenAutoContainerFromFloor");
+		if (fun)
+		{
+			return fun(objectId,x,y,z);
+		}
+	} 
+
+}
+void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z, int targetBag)
+{
+	typedef void (*Proto_fun)(int objectId,int x,int y,int z,int targetBag);
 	if (dllModule)
 	{		
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderOpenContainerFromFloor");
 		if (fun)
 		{
-			fun(objectId,x,y,z,pos,targetBag);
+			fun(objectId,x,y,z,targetBag);
+		}
+	} 
+
+}
+int CPackSenderProxy::openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
+{
+	typedef int (*Proto_fun)(int objectId, int contNrFrom, int contPosFrom);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderOpenAutoContainerFromContainer");
+		if (fun)
+		{
+			return fun(objectId, contNrFrom, contPosFrom);
 		}
 	} 
 
@@ -415,6 +482,18 @@ void CPackSenderProxy::attack(int tibiaCharId)
 		}
 	} 
 }
+void CPackSenderProxy::follow(int tibiaCharId)
+{
+	typedef void (*Proto_fun)(int tibiaCharId);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderFollow");
+		if (fun)
+		{
+			fun(tibiaCharId);
+		}
+	} 
+}
 
 void CPackSenderProxy::turnLeft()
 {
@@ -480,20 +559,6 @@ void CPackSenderProxy::stopAll()
 		}
 	} 
 }
-
-void CPackSenderProxy::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
-{
-	typedef void (*Proto_fun)(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity);
-	if (dllModule)
-	{		
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderMoveObjectFromFloorToFloor");
-		if (fun)
-		{
-			fun(objectId, srcX, srcY, srcZ, destX, destY, destZ,quantity);
-		}
-	} 
-}
-
 
 void CPackSenderProxy::sendCreatureInfo(char *name, char *info1, char *info2)
 {
