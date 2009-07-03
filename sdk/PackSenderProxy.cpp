@@ -263,7 +263,7 @@ int CPackSenderProxy::openAutoContainerFromFloor(int objectId,int x,int y,int z)
 			return fun(objectId,x,y,z);
 		}
 	} 
-
+	return -1;
 }
 void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z, int targetBag)
 {
@@ -276,7 +276,7 @@ void CPackSenderProxy::openContainerFromFloor(int objectId,int x,int y,int z, in
 			fun(objectId,x,y,z,targetBag);
 		}
 	} 
-
+	
 }
 int CPackSenderProxy::openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
 {
@@ -289,7 +289,7 @@ int CPackSenderProxy::openAutoContainerFromContainer(int objectId, int contNrFro
 			return fun(objectId, contNrFrom, contPosFrom);
 		}
 	} 
-
+	return -1;
 }
 void CPackSenderProxy::openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
 {
