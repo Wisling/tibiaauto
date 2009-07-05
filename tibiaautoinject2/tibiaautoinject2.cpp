@@ -190,7 +190,7 @@ char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; 
 {
 	/*
 	The is the CRC algorithim. I could not nor would I try to find the actual one Tibia 
-	uses. So I have copied this of and modified it to fit the datat we use.
+	uses. So I have copied this of and modified it to fit the data we use.
 	*/
 	int count = 0;
     int a = 1;
@@ -319,22 +319,41 @@ void sendBufferViaSocket(char *buffer)
 	if (lowB<0) lowB+=256;
 	if (hiB<0) hiB+=256;
 	int len=lowB+hiB*256+2;	
-	
+
 	int outbuflen=len;			
 	if (len%8!=0) outbuflen+=8-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
-	char outbufHeader[7];
+	char outbufHeader[7] = {0};
 	outbufHeader[0]=outbuflen%256;
-	outbufHeader[1]=outbuflen/256;	
+	outbufHeader[1]=outbuflen/256;
+
+	//before encryption
+	if (debugFile && COMPLEX) {
+		fprintf(debugFile,"Before Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
+		bufToHexString(buffer,len);	
+		fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);
+		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
+		fflush(debugFile);	
+	}
+
 	for (i=0;i<outbuflen;i+=8)
 	{		
 		memcpy(outbuf+i,buffer+i,8); 		
 		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);		
 	}	
+	//before encryption
+	if (debugFile && COMPLEX) {
+		fprintf(debugFile,"After Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
+		bufToHexString(outbuf, outbuflen);	
+		fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
+		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
+		fflush(debugFile);	
+	}
+	int test = outbuflen;
 	char *check = adler(outbuf, outbuflen);
 	memcpy(outbufHeader + 2 , check, 4);
 	outbufHeader[0] += 4;
 	memcpy(outbufHeader + 6, outbuf, outbuflen);
-	outbuflen += 4;
+	test += 4;
 
 	// make sure that packets go at most once every minDistance ms
 	int minDistance=175;
@@ -343,16 +362,18 @@ void sendBufferViaSocket(char *buffer)
 	if (debugFile&&COMPLEX)
 	{				
 		fprintf(debugFile,"sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
+		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
 	}	
 	lastAction=GetTickCount();
 	
 	
 	
-	int ret=send(tibiaSocket, outbufHeader,outbuflen+2,0);
+	int ret=send(tibiaSocket, outbufHeader,test+2,0);
 	
 	if (debugFile&&COMPLEX)
 	{		
 		fprintf(debugFile,"sent %d bytes, ret=%d, lastSendFlags=%d\r\n",outbuflen+2,ret,lastSendFlags);
+		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
 	}
 	//delete check;
 }
@@ -817,7 +838,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 
 int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 {		
-	if (debugFile&&COMPLEX)
+	if (debugFile && COMPLEX && !SENTONLY)
 	{
 		fprintf(debugFile,"!!! recv !!!\r\n");
 		fflush(debugFile);
@@ -1433,12 +1454,12 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4AFD4C+1,(unsigned int)myPlayerNameText); // 8.42
 	//trapFun(dwHandle,0x4AFF41+1,(unsigned int)myPlayerNameText); // 8.42
 	
-	trapFun(dwHandle,0x004AFC91+1,(unsigned int)myPlayerNameText); // 8.50
-	trapFun(dwHandle,0x004AFE8C+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x004B0082+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x004B0282+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x004B047C+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x004B0671+1,(unsigned int)myPlayerNameText); // 8.42
+	trapFun(dwHandle,0x4AFC91+1,(unsigned int)myPlayerNameText); // 8.50
+	trapFun(dwHandle,0x4AFE8C+1,(unsigned int)myPlayerNameText); // 8.42
+	trapFun(dwHandle,0x4B0082+1,(unsigned int)myPlayerNameText); // 8.42
+	trapFun(dwHandle,0x4B0282+1,(unsigned int)myPlayerNameText); // 8.42
+	trapFun(dwHandle,0x4B047C+1,(unsigned int)myPlayerNameText); // 8.42
+	trapFun(dwHandle,0x4B0671+1,(unsigned int)myPlayerNameText); // 8.42
 	
 	// lookup: TALK_INFO_MESSAGE; this is inside of the function
 	//trapFun(dwHandle,0x413B43+1,(unsigned int)myInterceptInfoMiddleScreen); // OLD
@@ -1447,7 +1468,7 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x413C43+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.40
 	//trapFun(dwHandle,0x413FD3+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.41
 	//trapFun(dwHandle,0x413543+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.42
-	trapFun(dwHandle,0x00413503+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.50
+	trapFun(dwHandle,0x413503+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.50
 	
 	// lookup: TargetBuffer!=NULL; first call is in the middle of the infomessage function
 	//         in fact you need to increcept all calls
@@ -1574,22 +1595,22 @@ void InitialisePlayerInfoHack()
 
 	// BLOCK is 8.50
 	
-	trapFun(dwHandle,0x00412DB8+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x00412F83+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x00413319+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x00427DD7+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x0042B238+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x0042B24F+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x0044F978+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x004954A0+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x004D6632+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x004D6E00+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x004D6E69+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x005484A2+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x005484D5+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x005485EC+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x00548820+1,(unsigned int)myInterceptInfoMessageBox);	
-	trapFun(dwHandle,0x00548F36+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x412DB8+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x412F83+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x413319+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x427DD7+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x42B238+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x42B24F+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x44F978+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4954A0+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4D6632+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4D6E00+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4D6E69+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5484A2+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5484D5+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x5485EC+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x548820+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x548F36+1,(unsigned int)myInterceptInfoMessageBox);	
 
 	// lookup: manually match around previous address by assembly similarity
 	//trapFun(dwHandle,0x54560D+1,(unsigned int)myInterceptEncrypt); // OLD
@@ -1598,7 +1619,7 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x549BED+1,(unsigned int)myInterceptEncrypt); // 8.40
 	//trapFun(dwHandle,0x54A50D+1,(unsigned int)myInterceptEncrypt); // 8.41
 	//trapFun(dwHandle,0x54DC4D+1,(unsigned int)myInterceptEncrypt); // 8.42
-	trapFun(dwHandle,0x0054EA3D+1,(unsigned int)myInterceptEncrypt); // 8.50
+	trapFun(dwHandle,0x54EA3D+1,(unsigned int)myInterceptEncrypt); // 8.50
 	
 	// lookup: function below encrypt is the decrypt function
 	//trapFun(dwHandle,0x54562D+1,(unsigned int)myInterceptDecrypt); // OLD
@@ -1622,7 +1643,7 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4EC15C+1,(unsigned int)myIsCreatureVisible); // 8.40
 	//trapFun(dwHandle,0x4EC9EC+1,(unsigned int)myIsCreatureVisible); // 8.41
 	//trapFun(dwHandle,0x4ECA6C+1,(unsigned int)myIsCreatureVisible); // 8.42
-	trapFun(dwHandle,0x004ED21C+1,(unsigned int)myIsCreatureVisible); // 8.42
+	trapFun(dwHandle,0x4ED21C+1,(unsigned int)myIsCreatureVisible); // 8.42
 	
 	
     CloseHandle(dwHandle);
@@ -1720,8 +1741,8 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
 	{
 	case DLL_PROCESS_ATTACH:						
 		
-		InitialiseTibiaState();
 		InitialiseDebugFile();
+		InitialiseTibiaState();
 		InitialiseHooks();
 		//InitialiseKBHooks();
 		InitialiseCommunication();
