@@ -143,8 +143,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							// do the moving
 							sender.moveObjectBetweenContainers(
 								item->objectId,0x40+contNr,itemNrMoved,
-								0x40+contNr,itemNr,
-								qtyToMove);
+								0x40+contNr,itemNr,	qtyToMove);
 							movedSomething=1;
 							
 						}
