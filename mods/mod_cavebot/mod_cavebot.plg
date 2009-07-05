@@ -3,36 +3,25 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_cavebot - Win32 Release--------------------
+--------------------Configuration: mod_cavebot - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPA683.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP563.tmp" with contents
 [
-/nologo /MD /W3 /GX /Ox /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_cavebot.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPA683.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPA684.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_cavebot.pdb" /machine:I386 /def:".\mod_cavebot.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll" /implib:"Release/mod_cavebot.lib" 
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\Helpers.obj"
-".\Release\mod_cavebot.obj"
-".\Release\proxy.obj"
-".\Release\SendStats.obj"
-".\Release\SharedMemory.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_cavebot.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPA684.tmp"
+/nologo /o"Debug/mod_cavebot.bsc" 
+".\Debug\StdAfx.sbr"
+".\Debug\ConfigData.sbr"
+".\Debug\ConfigDialog.sbr"
+".\Debug\exports.sbr"
+".\Debug\Helpers.sbr"
+".\Debug\mod_cavebot.sbr"
+".\Debug\proxy.sbr"
+".\Debug\SendStats.sbr"
+".\Debug\SharedMemory.sbr"
+".\Debug\TibiaItem_impl.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP563.tmp"
+Creating browse info file...
 <h3>Output Window</h3>
-Compiling...
-mod_cavebot.cpp
-Linking...
-   Creating library Release/mod_cavebot.lib and object Release/mod_cavebot.exp
 
 
 
