@@ -53,14 +53,13 @@ public:
 	CEdit	m_customItem1Below;
 	CComboBox	m_customItem1List;
 	CButton	m_dropEmpty;
-	CButton	m_hotkeyMana;
-	CButton	m_hotkeyLife;
 	CEdit	m_sleep;
 	CEdit	m_manaBelow;
 	CEdit	m_hpBelow;
 	CButton	m_drinkMana;
 	CButton	m_drinkHp;
 	CButton	m_randomCast;
+	CButton	m_useHotkey;
 	CButton	m_enable;
 	//}}AFX_DATA
 

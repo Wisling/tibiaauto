@@ -31,6 +31,7 @@
 #define IDC_TOOL_FLUIDDRINKER_HOTKEY_MANA 1144
 #define IDC_TOOL_FLUIDDRINKER_DROPEMPTY 1176
 #define IDC_TOOL_RANDOMCAST             1177
+#define IDC_TOOL_USEHOTKEY              1178
 #define IDD_CONFIG                      3000
 #define IDC_CONTAINER_MODE_1            3000
 #define IDC_CONTAINER_STATUS            3001

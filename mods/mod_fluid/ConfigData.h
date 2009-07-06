@@ -36,8 +36,6 @@ public:
 	int drinkHpG;
 	int drinkHpU;
 	int sleep;
-	int hotkeyHp;
-	int hotkeyMana;
 	int dropEmpty;
 	int customItem1Below;
 	int customItem1Item;
@@ -46,6 +44,7 @@ public:
 	int customItem2Item;
 	int customItem2Use;
 	int randomCast;
+	int useHotkey;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)
