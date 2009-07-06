@@ -1688,6 +1688,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								CUIntArray acceptedItems;
 								if (config->lootGp)
 									acceptedItems.Add(itemProxy.getValueForConst("GP"));
+									acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
+									acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
 								if (config->lootWorms)
 									acceptedItems.Add(itemProxy.getValueForConst("worms"));
 								if (config->lootCustom) {
