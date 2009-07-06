@@ -382,7 +382,10 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		sprintf(svalue,"%d",playerInfo->maxMana);
 
 	}else if (!strcmpi(tagName,"capacity")){
-		sprintf(svalue,"%d.%d",(int)playerInfo->capacity,(int)((playerInfo->capacity-(int)playerInfo->capacity)*100));
+		sprintf(svalue,"%d.%02d",(int)playerInfo->capacity,(int)((playerInfo->capacity-(int)playerInfo->capacity)*100));
+
+	}else if (!strcmpi(tagName,"stamina")){
+		sprintf(svalue,"%d:%02d",(int)(playerInfo->stamina/60),(int)(playerInfo->stamina%60));
 
 	}else if (!strcmpi(tagName,"maxcapacity")){
 		sprintf(svalue,"%d",playerInfo->maxCapacity);
