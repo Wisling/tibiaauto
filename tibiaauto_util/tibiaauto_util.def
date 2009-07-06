@@ -177,4 +177,10 @@ EXPORTS
 	packSenderFollow @171
 	packSenderOpenAutoContainerFromContainer @172
 	packSenderOpenAutoContainerFromFloor @173
+	packSenderUseWithObjectOnFloor @174
+	packSenderUseWithObjectInContainer @175
+	packSenderUseItem @176
+	packSenderUseItemOnCreature @177
+	packSenderUseItemFromContainerOnCreature @178
+	packSenderUseItemFromFloorOnCreature @179
 

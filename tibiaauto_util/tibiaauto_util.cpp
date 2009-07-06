@@ -274,6 +274,18 @@ void packSenderUseWithObjectFromContainerOnFloor(int sourceObjectId,int sourceCo
 	sender.useWithObjectFromContainerOnFloor(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetX, targetY, targetZ,  method);
 }
 
+void packSenderUseWithObjectOnFloor(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method=2)
+{
+	CPackSender sender;
+	sender.useWithObjectOnFloor(sourceObjectId,targetObjectId,targetX,targetY,targetZ, method);
+}
+
+void packSenderUseWithObjectInContainer(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method=2)
+{
+	CPackSender sender;
+	sender.useWithObjectInContainer(sourceObjectId,targetObjectId,contNr,itemPos, method);
+}
+
 CMemConstData getMemConstData()
 {	
 	return CMemConstData();
@@ -312,10 +324,33 @@ void packSenderCastRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, i
 	CPackSender sender;
 	sender.castRuneAgainstHuman(contNr,itemPos,runeObjectId,targetX,targetY,targetZ, method);
 }
+
+void packSenderUseItemOnCreature(int objectId, int creatureId)
+{
+	CPackSender sender;
+	sender.useItemOnCreature(objectId, creatureId);
+}
+void packSenderUseItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId)
+{
+	CPackSender sender;
+	sender.useItemFromContainerOnCreature(objectId, contNr, itemPos, creatureId);
+}
+void packSenderUseItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId)
+{
+	CPackSender sender;
+	sender.useItemFromFloorOnCreature(objectId, x, y, z, creatureId);
+}
+
 void packSenderSendTAMessage(char *msg)
 {
 	CPackSender sender;
 	sender.sendTAMessage(msg);
+}
+
+void packSenderUseItem(int objectId)
+{
+	CPackSender sender;
+	sender.useItem(objectId);
 }
 void packSenderUseItemOnFloor(int objectId, int x, int y, int z)
 {

@@ -39,6 +39,7 @@ CMemConstData::CMemConstData()
 	m_memAddressHPMax               = offset + itemProxy.getValueForConst("addrHPMax");
 	m_memAddressManaMax             = offset + itemProxy.getValueForConst("addrManaMax");
 	m_memAddressCap                 = offset + itemProxy.getValueForConst("addrCap");
+	m_memAddressStamina             = offset + itemProxy.getValueForConst("addrStamina");
 	m_memAddressExp                 = offset + itemProxy.getValueForConst("addrExp");
 	m_memAddressLvl                 = offset + itemProxy.getValueForConst("addrLvl");
 	m_memAddressMlvl                = offset + itemProxy.getValueForConst("addrMlvl");

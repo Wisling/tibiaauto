@@ -85,6 +85,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter()
 	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax);
 	// note: since 8.31 capacity has accuracy to 2 decimal places
 	ch->cap = CMemUtil::GetMemIntValue(m_memAddressCap)/100.0;
+	ch->stamina = CMemUtil::GetMemIntValue(m_memAddressStamina);
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	ch->lvl = CMemUtil::GetMemIntValue(m_memAddressLvl);
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);
@@ -486,7 +487,7 @@ int CMemReader::mapGetPointItemsCount(point p)
 
 int CMemReader::mapGetPointItemId(point p, int stackNr)
 {
-	return mapGetPointItemExtraInfo(p,stackNr,0);	
+	return mapGetPointItemExtraInfo(p,stackNr,0);
 }
 
 void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId)

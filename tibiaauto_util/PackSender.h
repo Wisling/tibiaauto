@@ -60,6 +60,17 @@ public:
 	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
+
+	void useItem(int objectId);
+	void useWithObjectOnFloor(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	void useWithObjectInContainer(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method=2);
+	void useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_Cont,int sourceZ_Pos,int targetObjectId,int targetX,int targetY_Cont,int targetZ_Pos, int method=2);
+
+	void useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos, int creatureId);
+	void useItemOnCreature(int objectId, int creatureId);
+	void useItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId);
+	void useItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId);
+
 	void npcBuy(int objectId,int qty, int ignoreCap, int withBackpack);
 	void npcSell(int objectId,int qty);
 	CPackSender();
