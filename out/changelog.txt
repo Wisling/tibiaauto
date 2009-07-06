@@ -1,11 +1,15 @@
-1.20.0, 11.06.2009
+1.20.0, 06.07.2009
 Enhancments
  Python: Added new function 'follow' to methods and added more 'Use With' functions for carving ice cubes
+ Python: Added more new functions
  Python: Updated some packet sender functions
  Creatures: Updated the creature list with new HP/weaknesses
+ Tiles.xml: updated new tiles for 8.5
+ Autogo: VIP alarm, skull alarm and stamina alarm
+ Fluid Drinker: Allow use without open backpacks(will keep trying to heal if run out of items)
  
 Defects
- Autogo: Fixed constant crash bug, it should do so 100 times less often now :P
+ Autogo: Fixed constant crash bug, this should not crash anymore
  Autogo: no large debug file anymore
  Tiles.xml: fixed lexical error within file
 
