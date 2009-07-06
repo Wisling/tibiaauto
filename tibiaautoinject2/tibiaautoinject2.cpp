@@ -56,7 +56,7 @@ HHOOK hook;
 SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
-int COMPLEX=1;
+int COMPLEX=0;
 int SENTONLY=1;
 
 time_t debugFileStart;
@@ -1355,8 +1355,8 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	//Proto_fun fun=(Proto_fun)(0x546770); // 8.31
 	//Proto_fun fun=(Proto_fun)(0x5468C0); // 8.40
 	//Proto_fun fun=(Proto_fun)(0x5471E0); // 8.41
-	//Proto_fun fun=(Proto_fun)(0x546F20); // 8.50
-	Proto_fun fun=(Proto_fun)(0x547C90); // 8.42
+	//Proto_fun fun=(Proto_fun)(0x546F20); // 8.42
+	Proto_fun fun=(Proto_fun)(0x547C90); // 8.50
 	
 	if (type==1)
 	{
@@ -1455,11 +1455,11 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4AFF41+1,(unsigned int)myPlayerNameText); // 8.42
 	
 	trapFun(dwHandle,0x4AFC91+1,(unsigned int)myPlayerNameText); // 8.50
-	trapFun(dwHandle,0x4AFE8C+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x4B0082+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x4B0282+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x4B047C+1,(unsigned int)myPlayerNameText); // 8.42
-	trapFun(dwHandle,0x4B0671+1,(unsigned int)myPlayerNameText); // 8.42
+	trapFun(dwHandle,0x4AFE8C+1,(unsigned int)myPlayerNameText); // 8.50
+	trapFun(dwHandle,0x4B0082+1,(unsigned int)myPlayerNameText); // 8.50
+	trapFun(dwHandle,0x4B0282+1,(unsigned int)myPlayerNameText); // 8.50
+	trapFun(dwHandle,0x4B047C+1,(unsigned int)myPlayerNameText); // 8.50
+	trapFun(dwHandle,0x4B0671+1,(unsigned int)myPlayerNameText); // 8.50
 	
 	// lookup: TALK_INFO_MESSAGE; this is inside of the function
 	//trapFun(dwHandle,0x413B43+1,(unsigned int)myInterceptInfoMiddleScreen); // OLD
@@ -1643,8 +1643,7 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4EC15C+1,(unsigned int)myIsCreatureVisible); // 8.40
 	//trapFun(dwHandle,0x4EC9EC+1,(unsigned int)myIsCreatureVisible); // 8.41
 	//trapFun(dwHandle,0x4ECA6C+1,(unsigned int)myIsCreatureVisible); // 8.42
-	trapFun(dwHandle,0x4ED21C+1,(unsigned int)myIsCreatureVisible); // 8.42
-	
+	trapFun(dwHandle,0x4ED21C+1,(unsigned int)myIsCreatureVisible); // 8.50
 	
     CloseHandle(dwHandle);
 	
