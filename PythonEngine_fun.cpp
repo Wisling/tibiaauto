@@ -22,7 +22,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",selfCh->hp,
 		"mana",selfCh->mana,
 		"x",selfCh->x,
@@ -34,6 +34,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 		"monsterType",selfCh->monsterType,
 		"hpPercLeft",selfCh->hpPercLeft,
 		"cap",selfCh->cap,
+		"stamina",selfCh->stamina,
 		"maxHp",selfCh->maxHp,
 		"maxMana",selfCh->maxMana,
 		"exp",selfCh->exp,
@@ -301,7 +302,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.readVisibleCreature(arg1);
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -313,6 +314,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 		"monsterType",ch->monsterType,
 		"hpPercLeft",ch->hpPercLeft,
 		"cap",ch->cap,
+		"stamina",ch->stamina,
 		"maxHp",ch->maxHp,
 		"maxMana",ch->maxMana,
 		"exp",ch->exp,
@@ -379,7 +381,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
 	if (!ch) return NULL;
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -391,6 +393,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 		"monsterType",ch->monsterType,
 		"hpPercLeft",ch->hpPercLeft,
 		"cap",ch->cap,
+		"stamina",ch->stamina,
 		"maxHp",ch->maxHp,
 		"maxMana",ch->maxMana,
 		"exp",ch->exp,
@@ -741,6 +744,26 @@ static PyObject *tibiaauto_sender_useWithObjectFromContainerOnFloor(PyObject *se
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+static PyObject *tibiaauto_sender_useWithObjectOnFloor(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6;
+    if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
+	sender.useWithObjectOnFloor(arg1,arg2,arg3,arg4,arg5,arg6);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useWithObjectInContainer(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5;
+    if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;	
+	sender.useWithObjectInContainer(arg1,arg2,arg3,arg4,arg5);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 
 static PyObject *tibiaauto_sender_moveObjectFromFloorToFloor(PyObject *self, PyObject *args)
 {
@@ -804,6 +827,36 @@ static PyObject *tibiaauto_sender_castRuneAgainstHuman(PyObject *self, PyObject 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+static PyObject *tibiaauto_sender_useItemOnCreature(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2;
+    if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
+	sender.useItemOnCreature(arg1,arg2);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useItemFromContainerOnCreature(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4;
+    if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;	
+	sender.useItemFromContainerOnCreature(arg1,arg2,arg3,arg4);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useItemFromFloorOnCreature(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5;
+    if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;	
+	sender.useItemFromFloorOnCreature(arg1,arg2,arg3,arg4,arg5);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
 
 static PyObject *tibiaauto_sender_sendTAMessage(PyObject *self, PyObject *args)
 {
@@ -812,6 +865,16 @@ static PyObject *tibiaauto_sender_sendTAMessage(PyObject *self, PyObject *args)
 	char *arg1;
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
 	sender.sendTAMessage(arg1);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_useItem(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+	sender.useItem(arg1);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
