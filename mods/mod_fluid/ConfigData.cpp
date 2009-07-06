@@ -39,8 +39,6 @@ CConfigData::CConfigData()
 	drinkHpG=0;
 	drinkHpU=0;
 	sleep=1000;
-	hotkeyHp=0;
-	hotkeyMana=0;
 	dropEmpty=1;
 	customItem1Below=0;
 	customItem1Item=0;
@@ -49,6 +47,7 @@ CConfigData::CConfigData()
 	customItem2Item=0;
 	customItem2Use=0;
 	randomCast=1;
+	useHotkey=1;
 }
 
 CConfigData::~CConfigData()

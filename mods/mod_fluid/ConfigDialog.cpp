@@ -53,14 +53,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CUSTOM_ITEM_1_BELOW, m_customItem1Below);
 	DDX_Control(pDX, IDC_CUSTOM_ITEM_1, m_customItem1List);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DROPEMPTY, m_dropEmpty);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HOTKEY_MANA, m_hotkeyMana);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HOTKEY_LIFE, m_hotkeyLife);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_SLEEP, m_sleep);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW, m_manaBelow);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);	
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA, m_drinkMana);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP, m_drinkHp);
 	DDX_Control(pDX, IDC_TOOL_RANDOMCAST,m_randomCast);
+	DDX_Control(pDX, IDC_TOOL_USEHOTKEY,m_useHotkey);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -106,8 +105,6 @@ void CConfigDialog::OnEnable()
 void CConfigDialog::disableControls()
 {
 	m_dropEmpty.EnableWindow(false);
-	m_hotkeyMana.EnableWindow(false);
-	m_hotkeyLife.EnableWindow(false);
 	m_sleep.EnableWindow(false);
 	m_manaBelow.EnableWindow(false);
 	m_manaBelowN.EnableWindow(false);
@@ -136,14 +133,13 @@ void CConfigDialog::disableControls()
 	m_customItem2List.EnableWindow(false);
 	m_customItem2Use.EnableWindow(false);
 	m_randomCast.EnableWindow(false);
+	m_useHotkey.EnableWindow(false);
 
 }
 
 void CConfigDialog::enableControls()
 {
 	m_dropEmpty.EnableWindow(true);
-	m_hotkeyMana.EnableWindow(true);
-	m_hotkeyLife.EnableWindow(true);
 	m_sleep.EnableWindow(true);
 	m_manaBelow.EnableWindow(true);
 	m_manaBelowN.EnableWindow(true);
@@ -172,6 +168,7 @@ void CConfigDialog::enableControls()
 	m_customItem2List.EnableWindow(true);
 	m_customItem2Use.EnableWindow(true);
 	m_randomCast.EnableWindow(true);
+	m_useHotkey.EnableWindow(true);
 }
 
 
@@ -182,8 +179,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	char buf[128];
 
 	m_dropEmpty.SetCheck(configData->dropEmpty);
-	m_hotkeyMana.SetCheck(configData->hotkeyMana);
-	m_hotkeyLife.SetCheck(configData->hotkeyHp);
 	sprintf(buf,"%d",configData->sleep);m_sleep.SetWindowText(buf);
 	sprintf(buf,"%d",configData->manaBelow);m_manaBelow.SetWindowText(buf);
 	sprintf(buf,"%d",configData->manaBelowN);m_manaBelowN.SetWindowText(buf);
@@ -217,6 +212,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	if (m_customItem2List.GetCurSel()==-1) m_customItem2List.SetCurSel(0);
 
 	m_randomCast.SetCheck(configData->randomCast);
+	m_useHotkey.SetCheck(configData->useHotkey);
 
 }
 
@@ -227,8 +223,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	newConfigData->dropEmpty=m_dropEmpty.GetCheck();
-	newConfigData->hotkeyMana=m_hotkeyMana.GetCheck();
-	newConfigData->hotkeyHp=m_hotkeyLife.GetCheck();
 	m_sleep.GetWindowText(buf,127);newConfigData->sleep=atoi(buf);
 	m_manaBelow.GetWindowText(buf,127);newConfigData->manaBelow=atoi(buf);
 	m_manaBelowN.GetWindowText(buf,127);newConfigData->manaBelowN=atoi(buf);
@@ -260,6 +254,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->customItem2Item=m_customItem2List.GetItemData(m_customItem2List.GetCurSel());
 
 	newConfigData->randomCast=m_randomCast.GetCheck();
+	newConfigData->useHotkey=m_useHotkey.GetCheck();
 
 	return newConfigData;
 }

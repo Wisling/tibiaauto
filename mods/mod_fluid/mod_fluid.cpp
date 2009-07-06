@@ -42,6 +42,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define GET 0
 #define MAKE 1
+#define MAX_DRINK_FAILS 10
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_fluidApp
@@ -55,6 +56,8 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
+
+int drinkFails=0;
 
 int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
@@ -98,40 +101,52 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 	CUIntArray itemArray;
 	int drank=0;
 	
-	itemArray.Add(itemId);			
+	itemArray.Add(itemId);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	
-	for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+	if (hotkey)
 	{
-		CTibiaContainer *cont = reader.readContainer(contNr);
-		
-		if (cont->flagOnOff)
+		int oldHp=self->hp;
+		int oldMana=self->mana;
+
+		sender.useItemOnCreature(itemId,self->tibiaId);
+		if(CModuleUtil::waitForHpManaChange(oldHp,oldMana)){//item used successfully
+			drank=1;
+			drinkFails=0;
+		}else{
+			drinkFails +=1;
+			drinkFails=(drinkFails>MAX_DRINK_FAILS)?MAX_DRINK_FAILS:drinkFails;
+		}
+	} else {
+		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 		{
-			CTibiaItem *item=NULL;
-			if (itemType)
-			{
-				item=CModuleUtil::lookupItem(contNr,&itemArray,itemType);
-			} else {
-				item=CModuleUtil::lookupItem(contNr,&itemArray);
-			}
+			CTibiaContainer *cont = reader.readContainer(contNr);
 			
-			if (item)
+			if (cont->flagOnOff)
 			{
-				if (hotkey)
+				CTibiaItem *item=NULL;
+				if (itemType)
 				{
-					sender.castRuneAgainstCreature(0x40+contNr,item->pos,itemId,self->tibiaId,hotkey);
-				}				
-				if ((self->hp<hpBelow||hpBelow==-1)&&(self->mana<manaBelow||manaBelow==-1)&&drink)
-				{
-					sender.castRuneAgainstCreature(0x40+contNr,item->pos,itemId,self->tibiaId);
-					drank=1;
+					item=CModuleUtil::lookupItem(contNr,&itemArray,itemType);
+				} else {
+					item=CModuleUtil::lookupItem(contNr,&itemArray);
 				}
 				
-				delete item;
-				break;
-			};
+				if (item)
+				{
+					if ((self->hp<hpBelow||hpBelow==-1)&&(self->mana<manaBelow||manaBelow==-1)&&drink)
+					{
+						sender.useItemFromContainerOnCreature(itemId,0x40+contNr,item->pos,self->tibiaId);
+						drank=1;
+						drinkFails=0;
+					}
+					
+					delete item;
+					break;
+				};
+			}
+			delete cont;
 		}
-		delete cont;
 	}
 	delete self;
 	return drank;
@@ -146,7 +161,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(100);	
+
+		Sleep(100);
+		//sleep longer if failed already
+		if(drinkFails) Sleep(CModuleUtil::randomFormula(100+(drinkFails-1)*800,(drinkFails-1)*800,100+(drinkFails-1)*800+1));
+		//Send message if at 10 fails
+		if(drinkFails==MAX_DRINK_FAILS) sender.sendTAMessage("Health or Mana failed to change when using healing item.");
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		int drank=0;
@@ -170,55 +190,55 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		// handle  potions
 		if (!drank&&(self->hp<hpBelowU&&config->drinkHpU)&&self->lvl>=130){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeU"),0,config->drinkHpU,config->hotkeyHp?107:0, hpBelowU,-1);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeU"),0,config->drinkHpU,config->useHotkey, hpBelowU,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelowU,MAKE,config);
 		}
 		if (!drank&&(self->hp<hpBelowG&&config->drinkHpG)&&self->lvl>=80){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeG"),0,config->drinkHpG,config->hotkeyHp?107:0, hpBelowG,-1);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeG"),0,config->drinkHpG,config->useHotkey, hpBelowG,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelowG,MAKE,config);
 		}
 		if (!drank&&(self->hp<hpBelowS&&config->drinkHpS)&&self->lvl>=50){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeS"),0,config->drinkHpS,config->hotkeyHp?107:0, hpBelowS,-1);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeS"),0,config->drinkHpS,config->useHotkey, hpBelowS,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelowS,MAKE,config);
 		}
 		if (!drank&&(self->hp<hpBelowN&&config->drinkHpN)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLife"),0,config->drinkHpN,config->hotkeyHp?107:0, hpBelowN,-1);			
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLife"),0,config->drinkHpN,config->useHotkey, hpBelowN,-1);			
 			if (drank) RandomVariableHp((int)&config->hpBelowN,MAKE,config);
 		}
 		if (!drank&&(self->hp<hpBelowH&&config->drinkHpH)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeH"),0,config->drinkHpH,config->hotkeyHp?107:0, hpBelowH,-1);			
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeH"),0,config->drinkHpH,config->useHotkey, hpBelowH,-1);			
 			if (drank) RandomVariableHp((int)&config->hpBelowH,MAKE,config);
 		}
 		if (!drank&&(self->hp<hpBelow&&config->drinkHp)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluid"),11,config->drinkHp,config->hotkeyHp?107:0, hpBelow,-1);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluid"),11,config->drinkHp,config->useHotkey, hpBelow,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelow,MAKE,config);
 		}
 
 		if (!drank&&(self->hp<customItem1Below&&config->customItem1Use)){
-			drank|=tryDrinking(config->customItem1Item,0,config->customItem1Use,0, customItem1Below,-1);
+			drank|=tryDrinking(config->customItem1Item,0,config->customItem1Use,config->useHotkey, customItem1Below,-1);
 			if (drank) RandomVariableHp((int)&config->customItem1Below,MAKE,config);
 		}
 
 
 		if (!drank&&(self->mana<manaBelowG&&config->drinkManaG)&&self->lvl>=80){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidManaG"),0,config->drinkManaG,config->hotkeyMana?106:0, -1, manaBelowG);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidManaG"),0,config->drinkManaG,config->useHotkey, -1, manaBelowG);
 			if (drank) RandomVariableMana((int)&config->manaBelowG,MAKE,config);
 		}
 		if (!drank&&(self->mana<manaBelowS&&config->drinkManaS)&&self->lvl>=50){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidManaS"),0,config->drinkManaS,config->hotkeyMana?106:0, -1, manaBelowS);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidManaS"),0,config->drinkManaS,config->useHotkey, -1, manaBelowS);
 			if (drank) RandomVariableMana((int)&config->manaBelowS,MAKE,config);
 		}
 		if (!drank&&(self->mana<manaBelowN&&config->drinkManaN)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidMana"),0,config->drinkManaN,config->hotkeyMana?106:0, -1, manaBelowN);			
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidMana"),0,config->drinkManaN,config->useHotkey, -1, manaBelowN);			
 			if (drank) RandomVariableMana((int)&config->manaBelowN,MAKE,config);
 		}
 		if (!drank&&(self->mana<manaBelow&&config->drinkMana)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluid"),10,config->drinkMana,config->hotkeyMana?106:0, -1, manaBelow);
+			drank|=tryDrinking(itemProxy.getValueForConst("fluid"),10,config->drinkMana,config->useHotkey, -1, manaBelow);
 			if (drank) RandomVariableMana((int)&config->manaBelow,MAKE,config);
 		}
 
 		if (!drank&&(self->mana<customItem2Below&&config->customItem2Use)){
-			drank|=tryDrinking(config->customItem2Item,0,config->customItem2Use,0, -1, customItem2Below);
+			drank|=tryDrinking(config->customItem2Item,0,config->customItem2Use,config->useHotkey, -1, customItem2Below);
 			if (drank) RandomVariableMana((int)&config->customItem2Below,MAKE,config);
 		}
 	
@@ -262,6 +282,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 	}
 	toolThreadShouldStop=0;
+	drinkFails=0;
 	return 0;
 }
 
@@ -481,8 +502,6 @@ void CMod_fluidApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"drink/manaS")) m_configData->drinkManaS=atoi(paramValue);
 	if (!strcmp(paramName,"drink/manaG")) m_configData->drinkManaG=atoi(paramValue);
 	if (!strcmp(paramName,"other/dropEmpty")) m_configData->dropEmpty=atoi(paramValue);
-	if (!strcmp(paramName,"hotkey/hp")) m_configData->hotkeyHp=atoi(paramValue);
-	if (!strcmp(paramName,"hotkey/mana")) m_configData->hotkeyMana=atoi(paramValue);
 	if (!strcmp(paramName,"drink/hpBelowH")) m_configData->hpBelowH=atoi(paramValue);
 	if (!strcmp(paramName,"drink/hpBelow")) m_configData->hpBelow=atoi(paramValue);
 	if (!strcmp(paramName,"drink/hpBelowN")) m_configData->hpBelowN=atoi(paramValue);
@@ -501,6 +520,7 @@ void CMod_fluidApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"custom/item2Use")) m_configData->customItem2Use=atoi(paramValue);
 	if (!strcmp(paramName,"other/sleepAfter")) m_configData->sleep=atoi(paramValue);
 	if (!strcmp(paramName,"other/randomCast")) m_configData->randomCast=atoi(paramValue);
+	if (!strcmp(paramName,"other/useHotkey")) m_configData->useHotkey=atoi(paramValue);
 }
 
 char *CMod_fluidApp::saveConfigParam(char *paramName)
@@ -519,8 +539,6 @@ char *CMod_fluidApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"drink/manaS")) sprintf(buf,"%d",m_configData->drinkManaS);
 	if (!strcmp(paramName,"drink/manaG")) sprintf(buf,"%d",m_configData->drinkManaG);
 	if (!strcmp(paramName,"other/dropEmpty")) sprintf(buf,"%d",m_configData->dropEmpty);
-	if (!strcmp(paramName,"hotkey/hp")) sprintf(buf,"%d",m_configData->hotkeyHp);
-	if (!strcmp(paramName,"hotkey/mana")) sprintf(buf,"%d",m_configData->hotkeyMana);
 	if (!strcmp(paramName,"drink/hpBelowH")) sprintf(buf,"%d",m_configData->hpBelowH);
 	if (!strcmp(paramName,"drink/hpBelow")) sprintf(buf,"%d",m_configData->hpBelow);
 	if (!strcmp(paramName,"drink/hpBelowN")) sprintf(buf,"%d",m_configData->hpBelowN);
@@ -539,6 +557,7 @@ char *CMod_fluidApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"custom/item2Item")) sprintf(buf,"%d",m_configData->customItem2Item);
 	if (!strcmp(paramName,"custom/item2Use")) sprintf(buf,"%d",m_configData->customItem2Use);
 	if (!strcmp(paramName,"other/randomCast")) sprintf(buf,"%d",m_configData->randomCast);
+	if (!strcmp(paramName,"other/useHotkey")) sprintf(buf,"%d",m_configData->useHotkey);
 
 	return buf;
 }
@@ -550,34 +569,33 @@ char *CMod_fluidApp::getConfigParamName(int nr)
 	case 0: return "drink/hp";
 	case 1: return "drink/mana";
 	case 2: return "other/dropEmpty";
-	case 3: return "hotkey/hp";
-	case 4: return "hotkey/mana";
-	case 5: return "drink/hpBelow";
-	case 6: return "drink/manaBelow";
-	case 7: return "other/sleepAfter";	
-	case 8: return "drink/hpN";
-	case 9: return "drink/hpS";
-	case 10: return "drink/hpG";
-	case 11: return "drink/manaN";
-	case 12: return "drink/manaS";
-	case 13: return "drink/manaG";
-	case 14: return "drink/hpBelowN";
-	case 15: return "drink/hpBelowS";
-	case 16: return "drink/hpBelowG";
-	case 17: return "drink/manaBelowN";
-	case 18: return "drink/manaBelowS";
-	case 19: return "drink/manaBelowG";
-	case 20: return "custom/item1Below";
-	case 21: return "custom/item1Item";
-	case 22: return "custom/item1Use";
-	case 23: return "custom/item2Below";
-	case 24: return "custom/item2Item";
-	case 25: return "custom/item2Use";
-	case 26: return "drink/hpH";
-	case 27: return "drink/hpU";
-	case 28: return "drink/hpBelowH";
-	case 29: return "drink/hpBelowU";
-	case 30: return "other/randomCast";
+	case 3: return "drink/hpBelow";
+	case 4: return "drink/manaBelow";
+	case 5: return "other/sleepAfter";	
+	case 6: return "drink/hpN";
+	case 7: return "drink/hpS";
+	case 8: return "drink/hpG";
+	case 9: return "drink/manaN";
+	case 10: return "drink/manaS";
+	case 11: return "drink/manaG";
+	case 12: return "drink/hpBelowN";
+	case 13: return "drink/hpBelowS";
+	case 14: return "drink/hpBelowG";
+	case 15: return "drink/manaBelowN";
+	case 16: return "drink/manaBelowS";
+	case 17: return "drink/manaBelowG";
+	case 18: return "custom/item1Below";
+	case 19: return "custom/item1Item";
+	case 20: return "custom/item1Use";
+	case 21: return "custom/item2Below";
+	case 22: return "custom/item2Item";
+	case 23: return "custom/item2Use";
+	case 24: return "drink/hpH";
+	case 25: return "drink/hpU";
+	case 26: return "drink/hpBelowH";
+	case 27: return "drink/hpBelowU";
+	case 28: return "other/randomCast";
+	case 29: return "other/useHotkey";
 	default:
 		return NULL;
 	}
