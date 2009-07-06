@@ -22,6 +22,8 @@ public:
 
 	int optionsBattleList;
 	int optionsSign;
+	int optionsSkull;
+	int optionsVIP;
 	int optionsMessage;
 	int optionsHpAbove;
 	int optionsHpBelow;
@@ -29,6 +31,8 @@ public:
 	int optionsManaBelow;
 	int optionsSoulPointBelow;
 	int optionsSoulPointAbove;
+	int optionsStaminaBelow;
+	int optionsStaminaAbove;
 	int optionsBlank;
 	int optionsCapacity;
 	int optionsOutOfCustomItem;
@@ -42,6 +46,8 @@ public:
 	int actionBattleListPlayer;
 	int actionBattleListMonster;
 	int actionSign;
+	int actionSkull;
+	int actionVIP;
 	int actionMessage;
 	int actionMove;
 	int actionHpLoss;
@@ -51,6 +57,8 @@ public:
 	int actionManaBelow;
 	int actionSoulPointBelow;
 	int actionSoulPointAbove;
+	int actionStaminaBelow;
+	int actionStaminaAbove;
 	int actionBlank;
 	int actionCapacity;
 	int actionOutOfFood;

@@ -47,24 +47,30 @@
 #define IDC_CONTAINER_MODE_5            3012
 #define IDC_AUTOGO_ATTACKSIGN           3012
 #define IDC_AUTOGO_TRIGGERSIGN          3012
+#define IDB_BLACK                       3012
 #define IDC_CONTAINER_STATUS5           3013
 #define IDC_AUTOGO_PLAYER               3013
 #define IDC_AUTOGO_BATTLEPLAYER         3013
+#define IDB_GREEN                       3013
 #define IDC_CONTAINER_MODE_6            3014
 #define IDC_AUTOGO_MONSTER              3014
 #define IDC_AUTOGO_BATTLEMONSTER        3014
 #define IDC_CONTAINER_STATUS6           3015
 #define IDC_AUTOGO_PRVMSG               3015
 #define IDC_AUTOGO_TRIGGERMESSAGE       3015
+#define IDB_RED                         3015
 #define IDC_CONTAINER_MODE_7            3016
 #define IDC_AUTOGO_PUBMSG               3016
 #define IDC_AUTOGO_TRIGGERSKULL         3016
+#define IDB_WHITE                       3016
 #define IDC_CONTAINER_STATUS7           3017
 #define IDC_AUTOGO_PARANOIA             3017
 #define IDC_AUTOGO_BATTLEPARANOIA       3017
 #define IDC_AUTOGO_BATTELIST            3017
+#define IDB_YELLOW                      3017
 #define IDC_CONTAINER_MODE_8            3018
 #define IDC_AUTOGO_OTHERSIGN            3018
+#define IDC_AUTOGO_TRIGGERVIP           3018
 #define IDC_CONTAINER_STATUS8           3019
 #define IDC_AUTOGO_WHITELIST            3019
 #define IDC_AUTOGO_BATTLEWHITELIST      3019
@@ -177,12 +183,24 @@
 #define IDC_AUTOGO_SKULLRED             3102
 #define IDC_AUTOGO_SKULLYELLOW          3103
 #define IDC_AUTOGO_SKULLGREEN           3104
+#define IDC_AUTOGO_SKULLBLACK           3105
+#define IDC_AUTOGO_TRIGGERSTAMINA       3106
+#define IDC_AUTOGO_STAMINA              3107
+#define IDC_AUTOGO_ACTIONSTAMINA        3108
+#define IDC_AUTOGO_SOUNDSTAMINA         3109
+#define IDC_AUTOGO_TRIGGERSTAMINA_ABOVE2 3110
+#define IDC_AUTOGO_TRIGGERSTAMINA_ABOVE 3110
+#define IDC_AUTOGO_STAMINA_ABOVE        3111
+#define IDC_AUTOGO_ACTIONSTAMINA_ABOVE  3112
+#define IDC_AUTOGO_SOUNDSTAMINA_ABOVE   3113
+#define IDC_AUTOGO_ACTIONVIP            3114
+#define IDC_AUTOGO_SOUNDVIP             3115
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3010
+#define _APS_NEXT_RESOURCE_VALUE        3018
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         3097
 #define _APS_NEXT_SYMED_VALUE           3000

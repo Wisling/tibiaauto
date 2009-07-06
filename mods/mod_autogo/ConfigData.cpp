@@ -25,6 +25,7 @@ CConfigData::CConfigData()
 
 	optionsBattleList = 0;
 	optionsSign = 0;
+	optionsSkull = 0;
 	optionsMessage = 0;
 	optionsHpBelow = 50;
 	optionsHpAbove = 5000;
@@ -32,6 +33,8 @@ CConfigData::CConfigData()
 	optionsManaAbove = 5000;
 	optionsSoulPointBelow = 1;
 	optionsSoulPointAbove = 100;
+	optionsStaminaBelow = 420;
+	optionsStaminaAbove = 2500;
 	optionsBlank = 1;
 	optionsCapacity = 1;
 	optionsOutOfCustomItem = 0;
@@ -44,6 +47,8 @@ CConfigData::CConfigData()
 	actionBattleListPlayer = 0;
 	actionBattleListMonster = 0;
 	actionSign = 0;
+	actionSkull = 0;
+	actionVIP = 0;
 	actionMessage = 0;
 	actionMove = 0;
 	actionHpLoss = 0;
@@ -53,6 +58,8 @@ CConfigData::CConfigData()
 	actionManaAbove = 0;
 	actionSoulPointBelow = 0;
 	actionSoulPointAbove = 0;
+	actionStaminaBelow = 0;
+	actionStaminaAbove = 0;
 	actionBlank = 0;
 	actionCapacity = 0;
 	actionOutOfFood = 0;
