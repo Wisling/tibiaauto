@@ -42,6 +42,17 @@
 #define TRIGGER_OUTOF_FOOD		0x080000
 #define TRIGGER_OUTOF_SPACE		0x100000
 #define TRIGGER_OUTOF_CUSTOM		0x200000
+#define TRIGGER_SKULL			0x400000
+	#define SKULL_NONE			0x0001
+	#define SKULL_YELLOW		0x0002
+	#define SKULL_GREEN			0x0004
+	#define SKULL_WHITE			0x0008
+	#define SKULL_RED			0x0010
+	#define SKULL_BLACK			0x0020
+#define TRIGGER_VIP			0x800000
+#define TRIGGER_STAMINA_BELOW			0x1000000
+#define TRIGGER_STAMINA_ABOVE			0x2000000
+
 
 
 #define ACTION_NONE				0x00
@@ -98,10 +109,14 @@ public:
 	CButton	m_hpBelowUntilRecovery;
 	CButton	m_triggerOutOf;
 	CButton	m_triggerSoulPointAbove;
+	CButton	m_triggerStamina;
+	CButton	m_triggerStaminaAbove;
 	CButton	m_triggerManaBelow;
 	CButton	m_triggerManaAbove;
 	CButton	m_triggerHpAbove;
 	CButton	m_soundSoulPointAbove;
+	CButton	m_soundStamina;
+	CButton	m_soundStaminaAbove;
 	CButton	m_soundRunawayReached;
 	CButton	m_soundOutOfSpace;
 	CButton	m_soundOutOfFood;
@@ -110,6 +125,8 @@ public:
 	CButton	m_soundManaAbove;
 	CButton	m_soundHpAbove;
 	CEdit	m_soulPointAbove;
+	CEdit	m_stamina;
+	CEdit	m_staminaAbove;
 	CEdit	m_runawayReachedRadius;
 	CButton	m_runawayReached;
 	CButton	m_outOfCustom;
@@ -118,6 +135,8 @@ public:
 	CEdit	m_manaAbove;
 	CEdit	m_hpAbove;
 	CComboBox	m_actionSoulpointAbove;
+	CComboBox	m_actionStamina;
+	CComboBox	m_actionStaminaAbove;
 	CComboBox	m_actionRunawayReached;
 	CComboBox	m_actionOutOfSpace;
 	CComboBox	m_actionOutOfFood;
@@ -148,8 +167,12 @@ public:
 	CEdit	m_actY;
 	CEdit	m_soulPoint;
 	CButton	m_soundSign;
+	CButton	m_soundSkull;
+	CButton	m_soundVIP;
 	CButton	m_triggerSoulPoint;
 	CButton	m_triggerSign;
+	CButton	m_triggerSkull;
+	CButton	m_triggerVIP;
 	CButton	m_triggerMessage;
 	CButton	m_triggerMove;
 	CButton	m_triggerHpLoss;
@@ -166,6 +189,11 @@ public:
 	CImageButtonWithStyle	m_signFire;
 	CImageButtonWithStyle	m_signEnergy;
 	CImageButtonWithStyle	m_signBattle;
+	CImageButtonWithStyle	m_skullWhite;
+	CImageButtonWithStyle	m_skullRed;
+	CImageButtonWithStyle	m_skullYellow;
+	CImageButtonWithStyle	m_skullGreen;
+	CImageButtonWithStyle	m_skullBlack;
 	CButton	m_messagePublic;
 	CButton	m_outOfFood;
 	CButton	m_messagePrivate;
@@ -177,6 +205,8 @@ public:
 	CButton	m_battleGM;
 	CComboBox	m_actionSoulPoint;
 	CComboBox	m_actionSign;
+	CComboBox	m_actionSkull;
+	CComboBox	m_actionVIP;
 	CComboBox	m_actionMove;
 	CComboBox	m_actionMessage;
 	CComboBox	m_actionHpLoss;
@@ -217,6 +247,8 @@ protected:
 	afx_msg void OnAutogoWhitelist();
 	afx_msg void OnAutogoTriggerbattlelist();
 	afx_msg void OnAutogoTriggersign();
+	afx_msg void OnAutogoTriggerskull();
+	afx_msg void OnAutogoTriggervip();
 	afx_msg void OnAutogoTriggermessage();
 	afx_msg void OnAutogoTriggerhploss();
 	afx_msg void OnAutogoTriggermove();
@@ -229,6 +261,8 @@ protected:
 	afx_msg void OnAutogoTriggermanabelow();
 	afx_msg void OnAutogoTriggermanaabove();
 	afx_msg void OnAutogoTriggersoulpointsAbove();
+	afx_msg void OnAutogoTriggerstamina();
+	afx_msg void OnAutogoTriggerstaminaAbove();
 	afx_msg void OnAutogoOutoffood();
 	afx_msg void OnAutogoOutofspace();
 	afx_msg void OnAutogoOutofcustom();

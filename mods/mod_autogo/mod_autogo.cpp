@@ -37,7 +37,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <Tlhelp32.h>
 #include <iostream>
 #include <fstream>
+#include <sstream>
+#include <string>
 #include <time.h>
+#include <math.h>
+
 using namespace std;
 
 
@@ -49,6 +53,7 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+//#define MASTER_DEBUG
 #define EWX_FORCEIFHUNG      0x00000010
 
 
@@ -68,9 +73,11 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 char suspendedModules[20][64];
 int suspendedCount = 0;
+char* lastFilename="";
 
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6=""){
 
+#ifdef MASTER_DEBUG
 		char dateStr [15];
 		char timeStr [15];
 		_strdate( dateStr);
@@ -81,6 +88,7 @@ void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const 
 			fprintf(f,"%s\t%s\tAutogo\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6);
 			fclose(f);
 		}
+#endif
 }
 std::string intstr(int value){
 	stringstream ss;// from ModuleUtil.h import
@@ -290,7 +298,7 @@ int getWavFileLength(char* wavFile){
 void alarmSound(int alarmId){
 	masterDebug("alarmSound");
 	static int playsUntilTm=0;
-	static char* lastFilename="";
+	static int lastAlarmId=0;
 	char installPath[1024];
 	unsigned long installPathLen=1023;
 	installPath[0]='\0';
@@ -316,6 +324,8 @@ void alarmSound(int alarmId){
 		case TRIGGER_BATTLELIST_PLAYER:sprintf(wavFile,"%s\\mods\\sound\\battlelistplayer.wav",installPath);break;
 		case TRIGGER_BATTLELIST_MONSTER:sprintf(wavFile,"%s\\mods\\sound\\battlelistmonster.wav",installPath);break;
 		case TRIGGER_SIGN:		sprintf(wavFile,"%s\\mods\\sound\\sign.wav",installPath);break;
+		case TRIGGER_SKULL:		sprintf(wavFile,"%s\\mods\\sound\\skull.wav",installPath);break;
+		case TRIGGER_VIP:		sprintf(wavFile,"%s\\mods\\sound\\vip.wav",installPath);break;
 		case TRIGGER_MESSAGE:	sprintf(wavFile,"%s\\mods\\sound\\message.wav",installPath);break;
 		case TRIGGER_MOVE:		sprintf(wavFile,"%s\\mods\\sound\\move.wav",installPath);break;
 		case TRIGGER_HPLOSS:	sprintf(wavFile,"%s\\mods\\sound\\hploss.wav",installPath);break;
@@ -325,6 +335,8 @@ void alarmSound(int alarmId){
 		case TRIGGER_MANAABOVE:	sprintf(wavFile,"%s\\mods\\sound\\manaabove.wav",installPath);break;
 		case TRIGGER_SOULPOINT_BELOW:	sprintf(wavFile,"%s\\mods\\sound\\soulpointbelow.wav",installPath);break;
 		case TRIGGER_SOULPOINT_ABOVE:	sprintf(wavFile,"%s\\mods\\sound\\soulpointabove.wav",installPath);break;
+		case TRIGGER_STAMINA_BELOW:	sprintf(wavFile,"%s\\mods\\sound\\staminabelow.wav",installPath);break;
+		case TRIGGER_STAMINA_ABOVE:	sprintf(wavFile,"%s\\mods\\sound\\staminaabove.wav",installPath);break;
 		case TRIGGER_BLANK:		sprintf(wavFile,"%s\\mods\\sound\\blank.wav",installPath);break;
 		case TRIGGER_CAPACITY:	sprintf(wavFile,"%s\\mods\\sound\\capacity.wav",installPath);break;
 		case TRIGGER_OUTOF_FOOD:		sprintf(wavFile,"%s\\mods\\sound\\outoffood.wav",installPath);break;
@@ -340,10 +352,11 @@ void alarmSound(int alarmId){
 	} 
 	if(OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
 		masterDebug("alarmSound","Soundfile exists.");
-		if (strcmp(lastFilename,wavFile)!=0 || clock()>playsUntilTm){
+		//if (!lastFilename) strcpy(lastFilename,wavFile);
+		if (lastAlarmId != alarmId || clock()>playsUntilTm){// removed :strcmp(lastFilename,wavFile)!=0
 			masterDebug("alarmSound","Time to play.");
 			playsUntilTm = clock()+getWavFileLength(wavFile);
-			lastFilename = wavFile;
+			lastAlarmId = alarmId;
 			//char buf[122];
 			//sprintf(buf,"%d,%d,%d",(int)playsUntilTm,clock(),getWavFileLength(wavFile));
 			//AfxMessageBox(buf);
@@ -369,8 +382,10 @@ char *alarmStatus(int alarmId){
 	if (alarmId&TRIGGER_BATTLELIST_PLAYER) return "BattleList player alarm";	
 	if (alarmId&TRIGGER_BATTLELIST_MONSTER) return "BattleList monster alarm";	
 	if (alarmId&TRIGGER_SIGN)		return "A sign appeared";
+	if (alarmId&TRIGGER_SKULL)		return "A skulled player appeared";
+	if (alarmId&TRIGGER_VIP)		return "A vip with crossbones is logged in";
 	if (alarmId&TRIGGER_MESSAGE)	return "New message";
-	if (alarmId&TRIGGER_MOVE)		return "Your moving";
+	if (alarmId&TRIGGER_MOVE)		return "You're moving";
 	if (alarmId&TRIGGER_HPLOSS)		return "You have lost HP";
 	if (alarmId&TRIGGER_HPBELOW)	return "Your HP is below a certain value";
 	if (alarmId&TRIGGER_HPABOVE)	return "Your HP is above a certain value";
@@ -378,6 +393,8 @@ char *alarmStatus(int alarmId){
 	if (alarmId&TRIGGER_MANAABOVE)	return "Your mana is above a certain value";
 	if (alarmId&TRIGGER_SOULPOINT_BELOW)	return "Too few soul points";
 	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	return "Too many soul points";
+	if (alarmId&TRIGGER_STAMINA_BELOW)	return "Stamina is below a certain value";
+	if (alarmId&TRIGGER_STAMINA_ABOVE)	return "Stamina is above a certain value";
 	if (alarmId&TRIGGER_BLANK)		return "Too few blank runes";
 	if (alarmId&TRIGGER_CAPACITY)	return "Capacity is too small";
 	if (alarmId&TRIGGER_OUTOF_SPACE)		return "You run out of space";
@@ -402,6 +419,8 @@ void alarmAction(int alarmId, CConfigData *config){
 	int iAction=0;
 	
 	if (alarmId&TRIGGER_SIGN)		{iAction|=CConfigDialog::actionPos2ID(config->actionSign);}
+	if (alarmId&TRIGGER_SKULL)		{iAction|=CConfigDialog::actionPos2ID(config->actionSkull);}
+	if (alarmId&TRIGGER_VIP)		{iAction|=CConfigDialog::actionPos2ID(config->actionVIP);}
 	if (alarmId&TRIGGER_MESSAGE)	{iAction|=CConfigDialog::actionPos2ID(config->actionMessage);}
 	if (alarmId&TRIGGER_MOVE)		{iAction|=CConfigDialog::actionPos2ID(config->actionMove);}
 	if (alarmId&TRIGGER_HPLOSS)		{iAction|=CConfigDialog::actionPos2ID(config->actionHpLoss);}
@@ -411,6 +430,8 @@ void alarmAction(int alarmId, CConfigData *config){
 	if (alarmId&TRIGGER_MANAABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionManaAbove);}
 	if (alarmId&TRIGGER_SOULPOINT_BELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionSoulPointBelow);}
 	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionSoulPointAbove);}
+	if (alarmId&TRIGGER_STAMINA_BELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionStaminaBelow);}
+	if (alarmId&TRIGGER_STAMINA_ABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionStaminaAbove);}
 	if (alarmId&TRIGGER_BLANK)		{iAction|=CConfigDialog::actionPos2ID(config->actionBlank);}
 	if (alarmId&TRIGGER_CAPACITY)	{iAction|=CConfigDialog::actionPos2ID(config->actionCapacity);}
 	if (alarmId&TRIGGER_RUNAWAY_REACHED)	{iAction|=CConfigDialog::actionPos2ID(config->actionRunawayReached);}
@@ -682,6 +703,59 @@ int triggerOutOfCustom(int customItemId)
 	return 1;
 }
 
+int triggerSkulls(int options)
+{
+	masterDebug("triggerSkulls");
+	CPackSenderProxy sender;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int creatureNr;
+	
+	
+	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
+		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
+		
+		if (ch->visible){
+			if (ch->tibiaId!=self->tibiaId)
+			{				
+				if (ch->z==self->z)
+				{					
+					if ((int)pow(2,ch->skulls) & options)
+					{
+						delete ch;
+						delete self;						
+						return 1;
+					}
+				}
+			}
+			
+		}
+		delete ch;
+	};
+	delete self;
+	return 0;
+}
+
+int triggerVIP()
+{
+	masterDebug("triggerVIP");
+	CPackSenderProxy sender;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaVIPEntry *vip;
+
+	int vipNr;
+	for (vipNr=0;strcmp((vip=reader.readVIPEntry(vipNr))->name,"");vipNr++){
+		if (vip->icon==2 && vip->status==1){
+			delete vip;
+			return 1;
+		}
+		delete vip;
+	};
+	return 0;
+}
+
 int triggerBattleListList(char whiteList[100][32],int options,int makeBlackList)
 {
 	masterDebug("triggerBattleListList");
@@ -866,6 +940,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			sender.sendTAMessage(buffer);
 			Sleep(1000);*/
 		}
+		if (config->trigger&TRIGGER_SKULL){
+			if (triggerSkulls(config->optionsSkull)){
+				alarm |= TRIGGER_SKULL;
+				if (config->sound&TRIGGER_SKULL)
+					alarmSound(TRIGGER_SKULL);
+			}
+			//1 - yellow;
+			//2 - green;
+			//3 - white;
+			//4 - red;
+			//5 - black;
+		}
+		if (config->trigger&TRIGGER_VIP){
+			if (triggerVIP()){
+				alarm |= TRIGGER_VIP;
+				if (config->sound&TRIGGER_VIP)
+					alarmSound(TRIGGER_VIP);
+			}
+		}
 		if (config->trigger&TRIGGER_MESSAGE){
 			struct tibiaMessage *msg = triggerMessage();
 
@@ -973,6 +1066,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				alarm |= TRIGGER_SOULPOINT_ABOVE;
 				if (config->sound&TRIGGER_SOULPOINT_ABOVE)
 					alarmSound(TRIGGER_SOULPOINT_ABOVE);
+			}
+			delete self;
+		}
+		if (config->trigger&TRIGGER_STAMINA_BELOW){
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->stamina < config->optionsStaminaBelow){
+				alarm |= TRIGGER_STAMINA_BELOW;
+				if (config->sound&TRIGGER_STAMINA_BELOW)
+					alarmSound(TRIGGER_STAMINA_BELOW);
+			}
+			delete self;
+		}
+		if (config->trigger&TRIGGER_STAMINA_ABOVE){
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->stamina > config->optionsStaminaAbove){
+				alarm |= TRIGGER_STAMINA_ABOVE;
+				if (config->sound&TRIGGER_STAMINA_ABOVE)
+					alarmSound(TRIGGER_STAMINA_ABOVE);
 			}
 			delete self;
 		}
@@ -1217,6 +1328,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"action/BattleListList"))		m_configData->actionBattleListList	= atoi(paramValue);
 	if (!strcmp(paramName,"action/BattleListMonster"))	m_configData->actionBattleListMonster	= atoi(paramValue);
 	if (!strcmp(paramName,"action/Sign"))				m_configData->actionSign			= atoi(paramValue);
+	if (!strcmp(paramName,"action/Skull"))				m_configData->actionSkull			= atoi(paramValue);
+	if (!strcmp(paramName,"action/VIP"))				m_configData->actionVIP				= atoi(paramValue);
 	if (!strcmp(paramName,"action/Message"))			m_configData->actionMessage			= atoi(paramValue);
 	if (!strcmp(paramName,"action/HpLoss"))				m_configData->actionHpLoss			= atoi(paramValue);
 	if (!strcmp(paramName,"action/HpBelow"))			m_configData->actionHpBelow			= atoi(paramValue);
@@ -1226,6 +1339,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"action/Move"))				m_configData->actionMove			= atoi(paramValue);
 	if (!strcmp(paramName,"action/SoulPointBelow"))		m_configData->actionSoulPointBelow	= atoi(paramValue);
 	if (!strcmp(paramName,"action/SoulPointAbove"))		m_configData->actionSoulPointAbove	= atoi(paramValue);
+	if (!strcmp(paramName,"action/StaminaBelow"))		m_configData->actionStaminaBelow	= atoi(paramValue);
+	if (!strcmp(paramName,"action/StaminaAbove"))		m_configData->actionStaminaAbove	= atoi(paramValue);
 	if (!strcmp(paramName,"action/Blank"))				m_configData->actionBlank			= atoi(paramValue);
 	if (!strcmp(paramName,"action/Capacity"))			m_configData->actionCapacity		= atoi(paramValue);
 	if (!strcmp(paramName,"action/OutOfFood"))			m_configData->actionOutOfFood		= atoi(paramValue);
@@ -1234,6 +1349,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"action/RunawayReached"))		m_configData->actionRunawayReached		= atoi(paramValue);
 	if (!strcmp(paramName,"options/BattleList"))		m_configData->optionsBattleList		= atoi(paramValue);
 	if (!strcmp(paramName,"options/Sign"))				m_configData->optionsSign			= atoi(paramValue);
+	if (!strcmp(paramName,"options/Skull"))				m_configData->optionsSkull			= atoi(paramValue);
 	if (!strcmp(paramName,"options/Message"))			m_configData->optionsMessage		= atoi(paramValue);
 	if (!strcmp(paramName,"options/HpBelow"))			m_configData->optionsHpBelow		= atoi(paramValue);
 	if (!strcmp(paramName,"options/HpAbove"))			m_configData->optionsHpAbove		= atoi(paramValue);
@@ -1241,6 +1357,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"options/ManaAbove"))			m_configData->optionsManaAbove		= atoi(paramValue);
 	if (!strcmp(paramName,"options/SoulPointBelow"))	m_configData->optionsSoulPointBelow	= atoi(paramValue);
 	if (!strcmp(paramName,"options/SoulPointAbove"))	m_configData->optionsSoulPointAbove	= atoi(paramValue);
+	if (!strcmp(paramName,"options/StaminaBelow"))		m_configData->optionsStaminaBelow	= atoi(paramValue);
+	if (!strcmp(paramName,"options/StaminaAbove"))		m_configData->optionsStaminaAbove	= atoi(paramValue);
 	if (!strcmp(paramName,"options/Blank"))				m_configData->optionsBlank			= atoi(paramValue);
 	if (!strcmp(paramName,"options/Capacity"))			m_configData->optionsCapacity		= atoi(paramValue);
 	if (!strcmp(paramName,"options/OutOfCustomItem"))	m_configData->optionsOutOfCustomItem= atoi(paramValue);
@@ -1275,6 +1393,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"action/BattleListPlayer"))	sprintf(buf,"%d",m_configData->actionBattleListPlayer);
 	if (!strcmp(paramName,"action/BattleListMonster"))	sprintf(buf,"%d",m_configData->actionBattleListMonster);
 	if (!strcmp(paramName,"action/Sign"))				sprintf(buf,"%d",m_configData->actionSign);
+	if (!strcmp(paramName,"action/Skull"))				sprintf(buf,"%d",m_configData->actionSkull);
+	if (!strcmp(paramName,"action/VIP"))				sprintf(buf,"%d",m_configData->actionVIP);
 	if (!strcmp(paramName,"action/Message"))			sprintf(buf,"%d",m_configData->actionMessage);
 	if (!strcmp(paramName,"action/HpLoss"))				sprintf(buf,"%d",m_configData->actionHpLoss);
 	if (!strcmp(paramName,"action/HpBelow"))			sprintf(buf,"%d",m_configData->actionHpBelow);
@@ -1284,6 +1404,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"action/Move"))				sprintf(buf,"%d",m_configData->actionMove);
 	if (!strcmp(paramName,"action/SoulPointBelow"))		sprintf(buf,"%d",m_configData->actionSoulPointBelow);
 	if (!strcmp(paramName,"action/SoulPointAbove"))		sprintf(buf,"%d",m_configData->actionSoulPointAbove);
+	if (!strcmp(paramName,"action/StaminaBelow"))		sprintf(buf,"%d",m_configData->actionStaminaBelow);
+	if (!strcmp(paramName,"action/StaminaAbove"))		sprintf(buf,"%d",m_configData->actionStaminaAbove);
 	if (!strcmp(paramName,"action/Blank"))				sprintf(buf,"%d",m_configData->actionBlank);
 	if (!strcmp(paramName,"action/Capacity"))			sprintf(buf,"%d",m_configData->actionCapacity);
 	if (!strcmp(paramName,"action/OutOfFood"))			sprintf(buf,"%d",m_configData->actionOutOfFood);
@@ -1292,6 +1414,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"action/RunawayReached"))		sprintf(buf,"%d",m_configData->actionRunawayReached);
 	if (!strcmp(paramName,"options/BattleList"))		sprintf(buf,"%d",m_configData->optionsBattleList);
 	if (!strcmp(paramName,"options/Sign"))				sprintf(buf,"%d",m_configData->optionsSign);
+	if (!strcmp(paramName,"options/Skull"))				sprintf(buf,"%d",m_configData->optionsSkull);
 	if (!strcmp(paramName,"options/Message"))			sprintf(buf,"%d",m_configData->optionsMessage);
 	if (!strcmp(paramName,"options/HpAbove"))			sprintf(buf,"%d",m_configData->optionsHpAbove);
 	if (!strcmp(paramName,"options/HpBelow"))			sprintf(buf,"%d",m_configData->optionsHpBelow);
@@ -1299,6 +1422,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"options/ManaBelow"))			sprintf(buf,"%d",m_configData->optionsManaBelow);
 	if (!strcmp(paramName,"options/SoulPointBelow"))	sprintf(buf,"%d",m_configData->optionsSoulPointBelow);
 	if (!strcmp(paramName,"options/SoulPointAbove"))	sprintf(buf,"%d",m_configData->optionsSoulPointAbove);
+	if (!strcmp(paramName,"options/StaminaBelow"))		sprintf(buf,"%d",m_configData->optionsStaminaBelow);
+	if (!strcmp(paramName,"options/StaminaAbove"))		sprintf(buf,"%d",m_configData->optionsStaminaAbove);
 	if (!strcmp(paramName,"options/Blank"))				sprintf(buf,"%d",m_configData->optionsBlank);
 	if (!strcmp(paramName,"options/Capacity"))			sprintf(buf,"%d",m_configData->optionsCapacity);
 	if (!strcmp(paramName,"options/OutOfCustomItem"))	sprintf(buf,"%d",m_configData->optionsOutOfCustomItem);
@@ -1368,6 +1493,14 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 43: return "options/ManaBelowUntilRecovery";
 	case 44: return "options/HpBelowUntilRecovery";
 	case 45: return "whiteList/mkBlack";
+	case 46: return "action/Skull";
+	case 47: return "options/Skull";
+	case 48: return "action/VIP";
+	case 49: return "action/StaminaBelow";
+	case 50: return "action/StaminaAbove";
+	case 51: return "options/StaminaBelow";
+	case 52: return "options/StaminaAbove";
+
 	default:
 		return NULL;
 	}

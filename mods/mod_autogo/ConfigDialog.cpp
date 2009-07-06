@@ -37,10 +37,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_HPBELOW_UNTIL_RECOVERY, m_hpBelowUntilRecovery);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGEROUTOF, m_triggerOutOf);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSOULPOINTS_ABOVE, m_triggerSoulPointAbove);
+	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSTAMINA, m_triggerStamina);
+	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSTAMINA_ABOVE, m_triggerStaminaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERMANABELOW, m_triggerManaBelow);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERMANAABOVE, m_triggerManaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERHPABOVE, m_triggerHpAbove);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDSOULPOINT_ABOVE, m_soundSoulPointAbove);
+	DDX_Control(pDX, IDC_AUTOGO_SOUNDSTAMINA, m_soundStamina);
+	DDX_Control(pDX, IDC_AUTOGO_SOUNDSTAMINA_ABOVE, m_soundStaminaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDRUNAWAY_REACHED, m_soundRunawayReached);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDOUTOF_SPACE, m_soundOutOfSpace);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDOUTOF_FOOD, m_soundOutOfFood);
@@ -49,6 +53,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDMANAABOVE, m_soundManaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDHPABOVE, m_soundHpAbove);
 	DDX_Control(pDX, IDC_AUTOGO_SOULPOINT_ABOVE, m_soulPointAbove);
+	DDX_Control(pDX, IDC_AUTOGO_STAMINA, m_stamina);
+	DDX_Control(pDX, IDC_AUTOGO_STAMINA_ABOVE, m_staminaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_REACHED_RADIUS, m_runawayReachedRadius);
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_REACHED, m_runawayReached);
 	DDX_Control(pDX, IDC_AUTOGO_OUTOFCUSTOM, m_outOfCustom);
@@ -57,6 +63,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_MANAABOVE, m_manaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_HPABOVE, m_hpAbove);
 	DDX_Control(pDX, IDC_AUTOGO_ACTIONSOULPOINT_ABOVE, m_actionSoulpointAbove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSTAMINA, m_actionStamina);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSTAMINA_ABOVE, m_actionStaminaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_ACTIONRUNAWAY_REACHED, m_actionRunawayReached);
 	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_SPACE, m_actionOutOfSpace);
 	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_FOOD, m_actionOutOfFood);
@@ -128,6 +136,17 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Z, m_runawayZ);
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Y, m_runawayY);
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_X, m_runawayX);
+	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSKULL, m_triggerSkull);
+	DDX_Control(pDX, IDC_AUTOGO_SKULLWHITE, m_skullWhite);
+	DDX_Control(pDX, IDC_AUTOGO_SKULLRED, m_skullRed);
+	DDX_Control(pDX, IDC_AUTOGO_SKULLYELLOW, m_skullYellow);
+	DDX_Control(pDX, IDC_AUTOGO_SKULLGREEN, m_skullGreen);
+	DDX_Control(pDX, IDC_AUTOGO_SKULLBLACK, m_skullBlack);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSKULL, m_actionSkull);
+	DDX_Control(pDX, IDC_AUTOGO_SOUNDSKULL, m_soundSkull);
+	DDX_Control(pDX, IDC_AUTOGO_TRIGGERVIP, m_triggerVIP);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONVIP, m_actionVIP);
+	DDX_Control(pDX, IDC_AUTOGO_SOUNDVIP, m_soundVIP);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 
 	//}}AFX_DATA_MAP
@@ -144,6 +163,8 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_AUTOGO_WHITELIST, OnAutogoWhitelist)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERBATTLELIST, OnAutogoTriggerbattlelist)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERSIGN, OnAutogoTriggersign)
+	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERSKULL, OnAutogoTriggerskull)
+	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERVIP, OnAutogoTriggervip)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERMESSAGE, OnAutogoTriggermessage)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERHPLOSS, OnAutogoTriggerhploss)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERMOVE, OnAutogoTriggermove)
@@ -156,6 +177,8 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERMANABELOW, OnAutogoTriggermanabelow)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERMANAABOVE, OnAutogoTriggermanaabove)
 	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERSOULPOINTS_ABOVE, OnAutogoTriggersoulpointsAbove)
+	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERSTAMINA, OnAutogoTriggerstamina)
+	ON_BN_CLICKED(IDC_AUTOGO_TRIGGERSTAMINA_ABOVE, OnAutogoTriggerstaminaAbove)
 	ON_BN_CLICKED(IDC_AUTOGO_OUTOFFOOD, OnAutogoOutoffood)
 	ON_BN_CLICKED(IDC_AUTOGO_OUTOFSPACE, OnAutogoOutofspace)
 	ON_BN_CLICKED(IDC_AUTOGO_OUTOFCUSTOM, OnAutogoOutofcustom)
@@ -218,6 +241,19 @@ void CConfigDialog::disableControls()
 	m_actionSign.EnableWindow(false);
 	m_soundSign.EnableWindow(false);
 	
+	m_triggerSkull.EnableWindow(false);
+	m_skullWhite.EnableWindow(false);
+	m_skullRed.EnableWindow(false);
+	m_skullYellow.EnableWindow(false);
+	m_skullGreen.EnableWindow(false);
+	m_skullBlack.EnableWindow(false);
+	m_actionSkull.EnableWindow(false);
+	m_soundSkull.EnableWindow(false);
+
+	m_triggerVIP.EnableWindow(false);
+	m_actionVIP.EnableWindow(false);
+	m_soundVIP.EnableWindow(false);
+
 	m_triggerMessage.EnableWindow(false);
 	m_messagePrivate.EnableWindow(false);
 	m_messagePublic.EnableWindow(false);
@@ -242,6 +278,16 @@ void CConfigDialog::disableControls()
 	m_actionSoulPoint.EnableWindow(false);
 	m_soundSoulPoint.EnableWindow(false);
 	
+	m_triggerStamina.EnableWindow(false);
+	m_stamina.EnableWindow(false);
+	m_actionStamina.EnableWindow(false);
+	m_soundStamina.EnableWindow(false);
+
+	m_triggerStaminaAbove.EnableWindow(false);
+	m_staminaAbove.EnableWindow(false);
+	m_actionStaminaAbove.EnableWindow(false);
+	m_soundStaminaAbove.EnableWindow(false);
+
 	m_triggerBlank.EnableWindow(false);
 	m_blank.EnableWindow(false);
 	m_actionBlank.EnableWindow(false);
@@ -327,6 +373,12 @@ void CConfigDialog::enableControls()
 	m_triggerSign.EnableWindow(true);
 	OnAutogoTriggersign();
 	
+	m_triggerSkull.EnableWindow(true);
+	OnAutogoTriggerskull();
+
+	m_triggerVIP.EnableWindow(true);
+	OnAutogoTriggervip();
+
 	m_triggerMessage.EnableWindow(true);
 	OnAutogoTriggermessage();
 	
@@ -362,6 +414,12 @@ void CConfigDialog::enableControls()
 
 	m_triggerSoulPointAbove.EnableWindow(true);
 	OnAutogoTriggersoulpointsAbove();
+
+	m_triggerStamina.EnableWindow(true);
+	OnAutogoTriggerstamina();
+
+	m_triggerStaminaAbove.EnableWindow(true);
+	OnAutogoTriggerstaminaAbove();
 
 	m_triggerOutOf.EnableWindow(true);
 	
@@ -448,6 +506,19 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_actionSign.SetCurSel(configData->actionSign);
 	m_soundSign.SetCheck((configData->sound&TRIGGER_SIGN?1:0));	
 	
+	m_triggerSkull.SetCheck((configData->trigger&TRIGGER_SKULL?1:0));
+	m_skullWhite.SetCheck((configData->optionsSkull&SKULL_WHITE?1:0));
+	m_skullRed.SetCheck((configData->optionsSkull&SKULL_RED?1:0));
+	m_skullYellow.SetCheck((configData->optionsSkull&SKULL_YELLOW?1:0));
+	m_skullGreen.SetCheck((configData->optionsSkull&SKULL_GREEN?1:0));
+	m_skullBlack.SetCheck((configData->optionsSkull&SKULL_BLACK?1:0));
+	m_actionSkull.SetCurSel(configData->actionSkull);
+	m_soundSkull.SetCheck((configData->sound&TRIGGER_SKULL?1:0));	
+
+	m_triggerVIP.SetCheck((configData->trigger&TRIGGER_VIP?1:0));
+	m_actionVIP.SetCurSel(configData->actionVIP);
+	m_soundVIP.SetCheck((configData->sound&TRIGGER_VIP?1:0));	
+
 	m_triggerMessage.SetCheck((configData->trigger&TRIGGER_MESSAGE?1:0));
 	m_messagePrivate.SetCheck((configData->optionsMessage&MESSAGE_PRIVATE?1:0));
 	m_messagePublic.SetCheck((configData->optionsMessage&MESSAGE_PUBLIC?1:0));
@@ -493,6 +564,16 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_actionSoulpointAbove.SetCurSel(configData->actionSoulPointAbove);
 	m_soundSoulPointAbove.SetCheck((configData->sound&TRIGGER_SOULPOINT_ABOVE?1:0));
 	
+	m_triggerStamina.SetCheck((configData->trigger&TRIGGER_STAMINA_BELOW?1:0));
+	sprintf(buf,"%d",configData->optionsStaminaBelow);m_stamina.SetWindowText(buf);
+	m_actionStamina.SetCurSel(configData->actionStaminaBelow);
+	m_soundStamina.SetCheck((configData->sound&TRIGGER_STAMINA_BELOW?1:0));
+
+	m_triggerStaminaAbove.SetCheck((configData->trigger&TRIGGER_STAMINA_ABOVE?1:0));
+	sprintf(buf,"%d",configData->optionsStaminaAbove);m_staminaAbove.SetWindowText(buf);
+	m_actionStaminaAbove.SetCurSel(configData->actionStaminaAbove);
+	m_soundStaminaAbove.SetCheck((configData->sound&TRIGGER_STAMINA_ABOVE?1:0));
+
 	m_triggerBlank.SetCheck((configData->trigger&TRIGGER_BLANK?1:0));
 	sprintf(buf,"%d",configData->optionsBlank);m_blank.SetWindowText(buf);
 	m_actionBlank.SetCurSel(configData->actionBlank);
@@ -517,6 +598,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 	OnAutogoTriggerbattlelist();
 	OnAutogoTriggersign();
+	OnAutogoTriggerskull();
+	OnAutogoTriggervip();
 	OnAutogoTriggermessage();
 	OnAutogoTriggermove();
 	OnAutogoTriggerhploss();
@@ -529,6 +612,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	OnAutogoTriggermanabelow();
 	OnAutogoTriggermanaabove();
 	OnAutogoTriggersoulpointsAbove();
+	OnAutogoTriggerstamina();
+	OnAutogoTriggerstaminaAbove();
 	OnAutogoOutoffood();
 	OnAutogoOutofspace();
 	OnAutogoOutofcustom();
@@ -561,6 +646,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 		((m_triggerBattleList.GetCheck()&&m_battleMonster.GetCheck())?TRIGGER_BATTLELIST_MONSTER:0)|
 		((m_triggerBattleList.GetCheck()&&m_battleGM.GetCheck())?TRIGGER_BATTLELIST_GM:0)|
 		(m_triggerSign.GetCheck()?TRIGGER_SIGN:0)|
+		(m_triggerSkull.GetCheck()?TRIGGER_SKULL:0)|
+		(m_triggerVIP.GetCheck()?TRIGGER_VIP:0)|
 		(m_triggerMessage.GetCheck()?TRIGGER_MESSAGE:0)|
 		(m_triggerMove.GetCheck()?TRIGGER_MOVE:0)|
 		(m_triggerHpLoss.GetCheck()?TRIGGER_HPLOSS:0)|
@@ -570,6 +657,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_triggerManaAbove.GetCheck()?TRIGGER_MANAABOVE:0)|
 		(m_triggerSoulPoint.GetCheck()?TRIGGER_SOULPOINT_BELOW:0)|
 		(m_triggerSoulPointAbove.GetCheck()?TRIGGER_SOULPOINT_ABOVE:0)|
+		(m_triggerStamina.GetCheck()?TRIGGER_STAMINA_BELOW:0)|
+		(m_triggerStaminaAbove.GetCheck()?TRIGGER_STAMINA_ABOVE:0)|
 		(m_triggerBlank.GetCheck()?TRIGGER_BLANK:0)|
 		(m_triggerCapacity.GetCheck()?TRIGGER_CAPACITY:0)|
 		(m_triggerOutOf.GetCheck()?TRIGGER_OUTOF:0)|		
@@ -590,6 +679,14 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_signFire.GetCheck()?SIGN_FIRE:0)|
 		(m_signEnergy.GetCheck()?SIGN_ENERGY:0)
 		);
+
+	newConfigData->optionsSkull = (
+		(m_skullWhite.GetCheck()?SKULL_WHITE:0)|
+		(m_skullRed.GetCheck()?SKULL_RED:0)|
+		(m_skullYellow.GetCheck()?SKULL_YELLOW:0)|
+		(m_skullGreen.GetCheck()?SKULL_GREEN:0)|
+		(m_skullBlack.GetCheck()?SKULL_BLACK:0)
+		);
 	
 	newConfigData->optionsMessage = (
 		(m_messagePrivate.GetCheck()?MESSAGE_PRIVATE:0)|
@@ -597,7 +694,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_messageIgnoreSpells.GetCheck()?MESSAGE_IGNORE_SPELLS:0)
 		);
 	
-
 	newConfigData->sound = (		
 		(m_soundBattleListGm.GetCheck()?TRIGGER_BATTLELIST_GM:0)|
 		(m_soundBattleListMonster.GetCheck()?TRIGGER_BATTLELIST_MONSTER:0)|
@@ -607,6 +703,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_soundOutOfFood.GetCheck()?TRIGGER_OUTOF_FOOD:0)|
 		(m_soundOutOfSpace.GetCheck()?TRIGGER_OUTOF_SPACE:0)|
 		(m_soundSign.GetCheck()?TRIGGER_SIGN:0)|
+		(m_soundSkull.GetCheck()?TRIGGER_SKULL:0)|
+		(m_soundVIP.GetCheck()?TRIGGER_VIP:0)|
 		(m_soundMessage.GetCheck()?TRIGGER_MESSAGE:0)|
 		(m_soundHpLoss.GetCheck()?TRIGGER_HPLOSS:0)|
 		(m_soundHpBelow.GetCheck()?TRIGGER_HPBELOW:0)|
@@ -616,6 +714,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 		(m_soundMove.GetCheck()?TRIGGER_MOVE:0)|
 		(m_soundSoulPoint.GetCheck()?TRIGGER_SOULPOINT_BELOW:0)|
 		(m_soundSoulPointAbove.GetCheck()?TRIGGER_SOULPOINT_ABOVE:0)|
+		(m_soundStamina.GetCheck()?TRIGGER_STAMINA_BELOW:0)|
+		(m_soundStaminaAbove.GetCheck()?TRIGGER_STAMINA_ABOVE:0)|
 		(m_soundBlank.GetCheck()?TRIGGER_BLANK:0)|
 		(m_soundCapacity.GetCheck()?TRIGGER_CAPACITY:0)|
 		(m_soundRunawayReached.GetCheck()?TRIGGER_RUNAWAY_REACHED:0)
@@ -623,6 +723,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	
 	newConfigData->actionSign		= m_actionSign.GetCurSel();
+	newConfigData->actionSkull		= m_actionSkull.GetCurSel();
+	newConfigData->actionVIP		= m_actionVIP.GetCurSel();
 	
 	newConfigData->actionMessage	= m_actionMessage.GetCurSel();
 	newConfigData->actionHpLoss		= m_actionHpLoss.GetCurSel();
@@ -633,6 +735,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->actionMove		= m_actionMove.GetCurSel();
 	newConfigData->actionSoulPointBelow	= m_actionSoulPoint.GetCurSel();
 	newConfigData->actionSoulPointAbove	= m_actionSoulpointAbove.GetCurSel();
+	newConfigData->actionStaminaBelow	= m_actionStamina.GetCurSel();
+	newConfigData->actionStaminaAbove	= m_actionStaminaAbove.GetCurSel();
 	newConfigData->actionBlank		= m_actionBlank.GetCurSel();
 	newConfigData->actionCapacity	= m_actionCapacity.GetCurSel();	
 	newConfigData->actionRunawayReached	= m_actionRunawayReached.GetCurSel();	
@@ -653,6 +757,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->allActions|=actionPos2ID(newConfigData->actionMove);
 	newConfigData->allActions|=actionPos2ID(newConfigData->actionSoulPointBelow);
 	newConfigData->allActions|=actionPos2ID(newConfigData->actionSoulPointAbove);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionStaminaBelow);
+	newConfigData->allActions|=actionPos2ID(newConfigData->actionStaminaAbove);
 	newConfigData->allActions|=actionPos2ID(newConfigData->actionBlank);
 	newConfigData->allActions|=actionPos2ID(newConfigData->actionCapacity);
 	newConfigData->allActions|=actionPos2ID(newConfigData->actionRunawayReached);
@@ -671,6 +777,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_manaAbove.GetWindowText(buf,127);	newConfigData->optionsManaAbove=atoi(buf);
 	m_soulPoint.GetWindowText(buf,127);	newConfigData->optionsSoulPointBelow=atoi(buf);
 	m_soulPointAbove.GetWindowText(buf,127);	newConfigData->optionsSoulPointAbove=atoi(buf);
+	m_stamina.GetWindowText(buf,127);	newConfigData->optionsStaminaBelow=atoi(buf);
+	m_staminaAbove.GetWindowText(buf,127);	newConfigData->optionsStaminaAbove=atoi(buf);
 	m_blank.GetWindowText(buf,127);		newConfigData->optionsBlank=atoi(buf);
 	m_capacity.GetWindowText(buf,127);	newConfigData->optionsCapacity=atoi(buf);
 	m_runawayReachedRadius.GetWindowText(buf,127);	newConfigData->optionsRunawayReached=atoi(buf);
@@ -731,6 +839,8 @@ BOOL CConfigDialog::OnInitDialog()
 		&m_actionBattleListPlayer,
 		&m_actionBattleListList,
 		&m_actionSign,
+		&m_actionSkull,
+		&m_actionVIP,
 		&m_actionMessage,
 		&m_actionMove,
 		&m_actionHpLoss,
@@ -740,6 +850,8 @@ BOOL CConfigDialog::OnInitDialog()
 		&m_actionManaBelow,
 		&m_actionSoulPoint,
 		&m_actionSoulpointAbove,
+		&m_actionStamina,
+		&m_actionStaminaAbove,
 		&m_actionBlank,
 		&m_actionCapacity,
 		&m_actionOutOfFood,
@@ -752,7 +864,7 @@ BOOL CConfigDialog::OnInitDialog()
 	CRect lpRect;
 
 	for (int i=0;list[i]!=NULL;i++){
-		list[i]->InsertString(ACTION_NONE_POS,"(none)");		
+		list[i]->InsertString(ACTION_NONE_POS,"(none)");
 		list[i]->InsertString(ACTION_SUSPEND_POS,"Suspend macro");		
 		list[i]->InsertString(ACTION_LOGOUT_POS,"Logout");		
 		list[i]->InsertString(ACTION_KILL_POS,"Logout+Kill");		
@@ -771,6 +883,8 @@ BOOL CConfigDialog::OnInitDialog()
 
 	OnAutogoTriggerbattlelist();
 	OnAutogoTriggersign();
+	OnAutogoTriggerskull();
+	OnAutogoTriggervip();
 	OnAutogoTriggermessage();
 	OnAutogoTriggermove();
 	OnAutogoTriggerhploss();
@@ -783,6 +897,8 @@ BOOL CConfigDialog::OnInitDialog()
 	OnAutogoTriggermanabelow();
 	OnAutogoTriggermanaabove();
 	OnAutogoTriggersoulpointsAbove();
+	OnAutogoTriggerstamina();
+	OnAutogoTriggerstaminaAbove();
 	OnAutogoOutoffood();
 	OnAutogoOutofspace();
 	OnAutogoOutofcustom();
@@ -822,6 +938,35 @@ BOOL CConfigDialog::OnInitDialog()
 	m_signPoison.SetIcon(imgList.ExtractIcon(1));
 	m_signFire.SetIcon(imgList.ExtractIcon(2));
 	m_signEnergy.SetIcon(imgList.ExtractIcon(3));
+
+	CImageList imgList2;
+	imgList2.Create(9,9,ILC_COLOR8|ILC_MASK,5,0);
+
+	CBitmap bitmap5;
+	bitmap5.LoadBitmap(IDB_WHITE);
+	imgList2.Add(&bitmap5,RGB(0,0,255));
+
+	CBitmap bitmap6;
+	bitmap6.LoadBitmap(IDB_RED);
+	imgList2.Add(&bitmap6,RGB(0,0,255));
+
+	CBitmap bitmap7;
+	bitmap7.LoadBitmap(IDB_YELLOW);
+	imgList2.Add(&bitmap7,RGB(0,0,255));
+
+	CBitmap bitmap8;
+	bitmap8.LoadBitmap(IDB_GREEN);
+	imgList2.Add(&bitmap8,RGB(0,0,255));
+
+	CBitmap bitmap9;
+	bitmap9.LoadBitmap(IDB_BLACK);
+	imgList2.Add(&bitmap9,RGB(0,0,255));
+
+	m_skullWhite.SetIcon(imgList2.ExtractIcon(0));
+	m_skullRed.SetIcon(imgList2.ExtractIcon(1));
+	m_skullYellow.SetIcon(imgList2.ExtractIcon(2));
+	m_skullGreen.SetIcon(imgList2.ExtractIcon(3));
+	m_skullBlack.SetIcon(imgList2.ExtractIcon(4));
 
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
@@ -916,6 +1061,25 @@ void CConfigDialog::OnAutogoTriggersign()
 	m_signEnergy.EnableWindow(lVal);
 	m_actionSign.EnableWindow(lVal);
 	m_soundSign.EnableWindow(lVal);
+}
+
+void CConfigDialog::OnAutogoTriggerskull() 
+{
+	int lVal = (m_triggerSkull.IsWindowEnabled()?m_triggerSkull.GetCheck():0);
+	m_skullWhite.EnableWindow(lVal);
+	m_skullRed.EnableWindow(lVal);
+	m_skullGreen.EnableWindow(lVal);
+	m_skullYellow.EnableWindow(lVal);
+	m_skullBlack.EnableWindow(lVal);
+	m_actionSkull.EnableWindow(lVal);
+	m_soundSkull.EnableWindow(lVal);
+}
+
+void CConfigDialog::OnAutogoTriggervip() 
+{
+	int lVal = (m_triggerVIP.IsWindowEnabled()?m_triggerVIP.GetCheck():0);
+	m_actionVIP.EnableWindow(lVal);
+	m_soundVIP.EnableWindow(lVal);
 }
 
 void CConfigDialog::OnAutogoTriggermessage() 
@@ -1029,6 +1193,22 @@ void CConfigDialog::OnAutogoTriggersoulpointsAbove()
 	
 }
 
+void CConfigDialog::OnAutogoTriggerstamina() 
+{
+	int lVal = (m_triggerStamina.IsWindowEnabled()?m_triggerStamina.GetCheck():0);
+	m_stamina.EnableWindow(lVal);
+	m_actionStamina.EnableWindow(lVal);
+	m_soundStamina.EnableWindow(lVal);
+	
+}
+void CConfigDialog::OnAutogoTriggerstaminaAbove() 
+{
+	int lVal = (m_triggerStaminaAbove.IsWindowEnabled()?m_triggerStaminaAbove.GetCheck():0);
+	m_staminaAbove.EnableWindow(lVal);
+	m_actionStaminaAbove.EnableWindow(lVal);
+	m_soundStaminaAbove.EnableWindow(lVal);
+	
+}
 
 void CConfigDialog::OnAutogoOutoffood() 
 {
