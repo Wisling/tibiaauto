@@ -137,7 +137,11 @@ HWND getTibiaWindow(int procId)
 
 int ensureForeground(HWND hwnd)
 {
-	int i;
+	CRect rect;
+	GetWindowRect(hwnd,rect);
+	SetWindowPos((HWND__ *)&CWnd::wndTop,hwnd, rect.left, rect.top, rect.Width(),  rect.Height(), SWP_SHOWWINDOW);
+
+		int i;
 	if (::IsIconic(hwnd)) return 1;
 	if (::GetForegroundWindow()==hwnd) return 0;
 	::SetForegroundWindow(hwnd);
@@ -465,7 +469,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					}				
 					delete cont;
 					
-					delete item;
+					//delete item;
 				}
 				
 			}
