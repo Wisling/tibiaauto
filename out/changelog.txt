@@ -1,3 +1,14 @@
+1.20.1, 07.07.2009
+Enhancments
+None
+
+Defects
+Cavebot: Fixed fatal crash bug when using "loot from floor"
+Cavebot: Fixed looting creatures when carried bag is container 2
+Cavebot: Fixed depot walker depositing when more than 1 bag open
+Cavebot: Fixed depot walker freeze when only 1 square away
+Python: Fixed itemOnTopIndex(x,y,z) function;
+
 1.20.0, 06.07.2009
 Enhancments
  Python: Added new function 'follow' to methods and added more 'Use With' functions for carving ice cubes
