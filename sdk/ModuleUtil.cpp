@@ -147,6 +147,23 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 }
 
 
+int CModuleUtil::waitForHpManaChange(int oldHp,int oldMana){//max about 0.45s
+	CMemReaderProxy reader;
+	int t;
+	for (t=0;t<15;t++)
+	{
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		if (self->hp!=oldHp || self->mana!=oldMana)
+		{
+			delete self;
+			return 1;
+		}
+		delete self;
+		Sleep(50);
+	}
+	return 0;
+}
+
 int CModuleUtil::waitForCapsChange(float origCaps)//takes about a max of .6 secs for NPC purchases and up to .9 for dropping an object
 {
 	CMemReaderProxy reader;
@@ -675,7 +692,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	return point(0,0,0);
 }
 
-
 int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 {
 	CMemReaderProxy reader;
@@ -759,15 +775,17 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 	return numberItemsLooted;//Akilez: return value now reflects items looted
 }
 
-void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems)
+void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems,int ignoreCont1/*=-1*/,int ignoreCont2/*=-1*/)
 {	
 	CMemReaderProxy reader;
-
+	CMemConstData memConstData = reader.getMemConstData();
 	
 	// find first free container
 	int qtyLooted=0;
-	for (int openCont=0;openCont<8;openCont++)
+	for (int openCont=0;openCont<memConstData.m_memMaxContainers;openCont++)
 	{	
+		if (openCont==contNr || openCont==ignoreCont1 || openCont==ignoreCont2) continue;
+
 		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
 		{			

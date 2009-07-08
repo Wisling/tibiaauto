@@ -18,6 +18,7 @@ public:
 	static int randomFormula(int average, int halfrange);
 	static int randomFormula(int average, int halfrange, int cutoff);
 	static int randomFormula(int average, int halfrange, int minR, int maxR);
+	static int waitForHpManaChange(int oldHp,int oldMana);
 	static int waitForCapsChange(float origCaps);
 	static void waitForItemChange(int locationAddress, int origItemId);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);
@@ -26,7 +27,7 @@ public:
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty);
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15]);	
 	static void executeWalk(int startX, int startY, int startZ, int path[15]);
-	static void lootItemFromContainer(int conTNr, CUIntArray *acceptedItems);
+	static void lootItemFromContainer(int conTNr, CUIntArray *acceptedItems,int ignoreCont1=-1,int ignoreCont2=-1);
 	static int loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying);
 	static void eatItemFromContainer(int contNr);
 	static int waitForOpenContainer(int contNr,int open);
