@@ -349,7 +349,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 			int isOpen=cont->flagOnOff;
 			deleteAndNull(cont);
 			deleteAndNull(self);
-			return 1;
+			return depotContNr;
 		}
 	}
 	deleteAndNull(self);
@@ -607,7 +607,7 @@ void depotDeposit(CConfigData *config) {
 			
 			int qtyToMove=totalQty-config->depotTrigger[i].remain;
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-				if (contNr==depotContNr) continue;
+				if (contNr==depotContNr || contNr==depotContNr2) continue;
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				
 				if (cont->flagOnOff) {
@@ -892,6 +892,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			else {x+=xSwitch;y+=ySwitch;}
 			
 			if (abs(x)>7 || abs(y)>5) continue;
+			if (reader.mapGetPointItemsCount(point(x,y,0))==0) continue;
 
 			int f1=isItemCovered(x,y,lootedArr,lootedArrSize);
 			int f2=isItemOnTop(x,y,lootedArr,lootedArrSize);
@@ -1715,7 +1716,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
 										for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
 											if (self->cap>config->capacityLimit) {
-												CModuleUtil::lootItemFromContainer(contNr,&acceptedItems);
+												CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
 											}
 											if (config->eatFromCorpse) {
 												CModuleUtil::eatItemFromContainer(contNr);
@@ -2092,7 +2093,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// then do the depot stuff
 				depotDeposit(config);
 			}
-			else if (abs(targetX-self->x)<=1&&abs(targetY-self->y)<=1&&targetZ==self->z) {
+			else if (abs(targetX-self->x)<=1&&abs(targetY-self->y)<=1&&targetZ==self->z&&depotX==0) {
 				if (config->debug) registerDebug("Waypoint reached");
 				// normal waypoint reached
 				targetX=targetY=targetZ=0;
