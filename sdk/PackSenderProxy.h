@@ -46,6 +46,14 @@ public:
 	void npcSell(int objectId,int qty);
 	void npcBuy(int objectId,int qty, int ignoreCap, int withBackpack);
 
+	void useItem(int objectId);
+	void useWithObjectOnFloor(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	void useWithObjectInContainer(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method=2);
+
+	void useItemOnCreature(int objectId, int creatureId);
+	void useItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId);
+	void useItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId);
+
 	void closeContainer(int contNr);
 	void attackMode(int mode,int follow);
 	void attack(int tibiaCharId);

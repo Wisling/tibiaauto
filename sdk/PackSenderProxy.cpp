@@ -124,6 +124,31 @@ void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int 
 		}
 	} 	
 }
+void CPackSenderProxy::useWithObjectOnFloor(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method)
+{
+	typedef void (*Proto_fun)(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectOnFloor");
+		if (fun)
+		{
+			fun(sourceObjectId,targetObjectId,targetX,targetY,targetZ, method);
+		}
+	} 	
+}
+void CPackSenderProxy::useWithObjectInContainer(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method)
+{
+	typedef void (*Proto_fun)(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectInContainer");
+		if (fun)
+		{
+			fun(sourceObjectId,targetObjectId,contNr,itemPos, method);
+		}
+	} 	
+}
+
 
 void CPackSenderProxy::moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty)
 {
@@ -213,6 +238,47 @@ void CPackSenderProxy::castRuneAgainstHuman(int contNr, int itemPos, int runeObj
 {
 	castRuneAgainstHuman(contNr,itemPos,runeObjectId,targetX,targetY,targetZ,2);
 }
+void CPackSenderProxy::useItemOnCreature(int objectId, int creatureId)
+{
+	typedef void (*Proto_fun)(int objectId, int creatureId);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseItemOnCreature");
+		if (fun)
+		{
+			fun(objectId, creatureId);
+		}
+	} 
+
+}
+void CPackSenderProxy::useItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId)
+{
+	typedef void (*Proto_fun)(int objectId, int contNr, int itemPos, int creatureId);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseItemFromContainerOnCreature");
+		if (fun)
+		{
+			fun(objectId, contNr, itemPos, creatureId);
+		}
+	} 
+
+}
+
+void CPackSenderProxy::useItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId)
+{
+	typedef void (*Proto_fun)(int objectId, int x, int y, int z, int creatureId);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseItemFromFloorOnCreature");
+		if (fun)
+		{
+			fun(objectId, x, y, z, creatureId);
+		}
+	} 
+
+}
+
 void CPackSenderProxy::sendTAMessage(char *msg)
 {
 	typedef void (*Proto_fun)(char *msg);
@@ -222,6 +288,20 @@ void CPackSenderProxy::sendTAMessage(char *msg)
 		if (fun)
 		{
 			fun(msg);
+		}
+	} 
+
+}
+
+void CPackSenderProxy::useItem(int objectId)
+{
+	typedef void (*Proto_fun)(int objectId);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseItem");
+		if (fun)
+		{
+			fun(objectId);
 		}
 	} 
 

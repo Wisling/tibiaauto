@@ -26,6 +26,7 @@ public:
 	int monsterType;
 	int hpPercLeft;
 	float cap;
+	int stamina;
 	int maxHp;
 	int maxMana;
 	int exp;

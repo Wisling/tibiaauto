@@ -22,6 +22,7 @@ public:
 	int m_memAddressHPMax;
 	int m_memAddressManaMax;
 	int m_memAddressCap;
+	int m_memAddressStamina;
 	int m_memAddressExp;
 	int m_memAddressLvl;
 	int m_memAddressMlvl;
