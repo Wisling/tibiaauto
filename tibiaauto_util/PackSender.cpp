@@ -190,7 +190,7 @@ void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int tar
 	retbuf[7]=z;	
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=targetInd;	
+	retbuf[10]=max(0,targetInd);	
 	retbuf[11]=targetBag;	
 
 	sendPacket(retbuf);
@@ -232,7 +232,7 @@ void CPackSender::useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_C
 	sendbuf[7]=sourceZ_Pos;
 	sendbuf[8]=sourceObjectId&0xff;;
 	sendbuf[9]=(sourceObjectId>>8)&0xff;
-	sendbuf[10]=sourceInd_Pos;
+	sendbuf[10]=max(0,sourceInd_Pos);
 
 	sendbuf[11]=targetX&0xff;
 	sendbuf[12]=(targetX>>8)&0xff;
@@ -241,7 +241,7 @@ void CPackSender::useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_C
 	sendbuf[15]=targetZ_Pos;
 	sendbuf[16]=targetObjectId&0xff;
 	sendbuf[17]=(targetObjectId>>8)&0xff;
-	sendbuf[18]=targetInd_Pos;
+	sendbuf[18]=max(0,targetInd_Pos);
 
 	sendPacket(sendbuf,method);	
 }
@@ -266,7 +266,7 @@ void CPackSender::useWithObjectFromFloorInContainer(int sourceObjectId,int sourc
 	sendbuf[7]=sourceZ;
 	sendbuf[8]=sourceObjectId&0xff;;
 	sendbuf[9]=(sourceObjectId>>8)&0xff;
-	sendbuf[10]=itemOnTopIndex(sourceX,sourceY,sourceZ);
+	sendbuf[10]=max(0,itemOnTopIndex(sourceX,sourceY,sourceZ));
 
 	sendbuf[11]=0xff;
 	sendbuf[12]=0xff;
@@ -333,7 +333,7 @@ void CPackSender::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourc
 	sendbuf[15]=targetZ;
 	sendbuf[16]=targetObjectId&0xff;
 	sendbuf[17]=(targetObjectId>>8)&0xff;
-	sendbuf[18]=itemOnTopIndex(targetX,targetY,targetZ);
+	sendbuf[18]=max(0,itemOnTopIndex(targetX,targetY,targetZ));
 
 	sendPacket(sendbuf,method);	
 }
@@ -534,7 +534,7 @@ void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos,
 	retbuf[7]=z_Pos;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=targetInd_Pos;	
+	retbuf[10]=max(0,targetInd_Pos);	
 	retbuf[11]=creatureId&0xff;
 	retbuf[12]=(creatureId>>8)&0xff;
 	retbuf[13]=(creatureId>>16)&0xff;
@@ -597,7 +597,7 @@ void CPackSender::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, i
 	retbuf[7]=srcZ;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=itemOnTopIndex(srcX,srcY,srcZ);
+	retbuf[10]=max(0,itemOnTopIndex(srcX,srcY,srcZ));
 
 	retbuf[11]=destX&0xff;
 	retbuf[12]=(destX>>8)&0xff;
@@ -626,7 +626,7 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 	retbuf[7]=sourceZ;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=itemOnTopIndex(sourceX,sourceY,sourceZ);
+	retbuf[10]=max(0,itemOnTopIndex(sourceX,sourceY,sourceZ));
 
 	retbuf[11]=0xff;
 	retbuf[12]=0xff;
@@ -743,7 +743,7 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;
-	retbuf[10]=itemOnTopIndex(x,y,z);
+	retbuf[10]=max(0,itemOnTopIndex(x,y,z));
 	retbuf[11]=findNextClosedContainer();
 
 	sendPacket(retbuf);
