@@ -24,6 +24,7 @@ struct mod_playerinfo{
 	unsigned short maxSoulPoints;
 	float capacity;
 	unsigned short maxCapacity;
+	unsigned short stamina;
 	unsigned long expStart;
 	unsigned long expCurrent;
 	unsigned long expLvl;
