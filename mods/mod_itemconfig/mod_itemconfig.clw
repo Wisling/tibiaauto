@@ -13,12 +13,12 @@ LastTemplate=CDialog
 Resource1=IDD_TOOL_ITEMCONFIG
 Resource2=IDR_SHOWMAP_MENU (Polish)
 Resource3=IDD_ITEM_EDIT (H)
-Resource4=IDD_FOOD_ADD
-Resource5=IDD_ITEM_ADD
-Resource6=IDD_LOOT_ADD
-Resource7=IDD_ITEM_EDIT
-Resource8=IDD_FOOD_EDIT
-Resource9=IDD_TOOL_ITEMCONFIG (Polish)
+Resource4=IDD_LOOT_ADD
+Resource5=IDD_FOOD_ADD
+Resource6=IDD_ITEM_ADD
+Resource7=IDD_FOOD_EDIT
+Resource8=IDD_TOOL_ITEMCONFIG (Polish)
+Resource9=IDD_ITEM_EDIT
 Resource10=IDD_LOOT_EDIT
 
 [CLS:CMod_itemconfigApp]

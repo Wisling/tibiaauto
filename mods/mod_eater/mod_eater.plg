@@ -3,38 +3,154 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_eater - Win32 Release--------------------
+--------------------Configuration: mod_eater - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3273.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP5D90.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_eater.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_eater.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
 "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_eater\mod_eater.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_eater\proxy.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3273.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP3274.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP5D90.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP5D91.tmp" with contents
 [
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_eater.pdb" /machine:I386 /def:".\mod_eater.def" /out:"../mod_eater.dll" /implib:"Release/mod_eater.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\mod_eater.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_eater.res"
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_eater.pdb" /debug /machine:I386 /def:".\mod_eater.def" /out:"../mod_eater.dll" /implib:"Debug/mod_eater.lib" /pdbtype:sept 
+".\Debug\ConfigData.obj"
+".\Debug\exports.obj"
+".\Debug\mod_eater.obj"
+".\Debug\proxy.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\mod_eater.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP3274.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP5D91.tmp"
 <h3>Output Window</h3>
 Compiling...
 mod_eater.cpp
 E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_eater\mod_eater.cpp(142) : warning C4101: 'buf' : unreferenced local variable
-Linking...
-   Creating library Release/mod_eater.lib and object Release/mod_eater.exp
+Generating Code...
+Compiling...
+proxy.cpp
+c:\program files\microsoft visual studio\vc98\include\new(35) : error C2061: syntax error : identifier 'THIS_FILE'
+c:\program files\microsoft visual studio\vc98\include\new(35) : error C2091: function returns function
+c:\program files\microsoft visual studio\vc98\include\new(35) : error C2809: 'operator new' has no formal parameters
+c:\program files\microsoft visual studio\vc98\include\new(36) : error C2061: syntax error : identifier 'THIS_FILE'
+c:\program files\microsoft visual studio\vc98\include\new(37) : error C2091: function returns function
+c:\program files\microsoft visual studio\vc98\include\new(37) : error C2556: 'void *(__cdecl *__cdecl operator new(void))(unsigned int,const struct std::nothrow_t &)' : overloaded function differs only by return type from 'void *(__cdecl *__cdecl operator new(void))(unsigned int)'
+        c:\program files\microsoft visual studio\vc98\include\new(35) : see declaration of 'new'
+c:\program files\microsoft visual studio\vc98\include\new(41) : error C2061: syntax error : identifier 'THIS_FILE'
+c:\program files\microsoft visual studio\vc98\include\new(42) : error C2091: function returns function
+c:\program files\microsoft visual studio\vc98\include\new(42) : error C2556: 'void *(__cdecl *__cdecl operator new(void))(unsigned int,void *)' : overloaded function differs only by return type from 'void *(__cdecl *__cdecl operator new(void))(unsigned int)'
+        c:\program files\microsoft visual studio\vc98\include\new(35) : see declaration of 'new'
+c:\program files\microsoft visual studio\vc98\include\new(42) : error C2809: 'operator new' has no formal parameters
+c:\program files\microsoft visual studio\vc98\include\new(42) : error C2065: '_P' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(29) : error C2655: 'dllModule' : definition or redeclaration illegal in current scope
+        e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.h(46) : see declaration of 'dllModule'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(36) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(38) : error C2065: 'dllModule' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(58) : error C2440: '=' : cannot convert from 'struct HINSTANCE__ *' to 'int'
+        This conversion requires a reinterpret_cast, a C-style cast or function-style cast
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(62) : error C2352: 'CTibiaMapProxy::CTibiaMapProxy::~CTibiaMapProxy' : illegal call of non-static member function
+        e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.h(42) : see declaration of 'CTibiaMapProxy::~CTibiaMapProxy'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(63) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(70) : error C2601: 'removePointAvailable' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(82) : error C2601: 'prohPointClear' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(94) : error C2601: 'prohPointAdd' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(106) : error C2601: 'getPointUpDown' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(119) : error C2601: 'getPointUpDownNoProh' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(132) : error C2601: 'setPointUpDown' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(145) : error C2601: 'getPrevPointZ' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(158) : error C2601: 'getPrevPointY' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(171) : error C2601: 'getPrevPointX' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(184) : error C2601: 'clearPrevPoint' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(196) : error C2601: 'clearLocalPrevPoint' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(208) : error C2601: 'setPrevPoint' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(220) : error C2601: 'setBestPrevPoint' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(232) : error C2601: 'getRandomPoint' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(245) : error C2601: 'clear' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(257) : error C2601: 'setPointAsAvailable' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(269) : error C2601: 'isPointAvailable' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(283) : error C2601: 'isPointAvailableNoProh' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(298) : error C2601: 'size' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamapproxy.cpp(311) : error C2601: 'getPointByNr' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(21) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(22) : error C2065: 'x' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(23) : error C2065: 'y' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(24) : error C2065: 'z' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(27) : error C2144: syntax error : missing ')' before type 'int'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(27) : error C2059: syntax error : ')'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(28) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(29) : error C2671: 'findNextClosedContainer' : static member functions do not have 'this' pointers
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(29) : error C2227: left of '->x' must point to class/struct/union
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(30) : error C2671: 'findNextClosedContainer' : static member functions do not have 'this' pointers
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(30) : error C2227: left of '->y' must point to class/struct/union
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(31) : error C2671: 'findNextClosedContainer' : static member functions do not have 'this' pointers
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(31) : error C2227: left of '->z' must point to class/struct/union
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiamappoint.cpp(35) : error C2601: '()' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(23) : error C2655: 'dllModule' : definition or redeclaration illegal in current scope
+        e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.h(54) : see declaration of 'dllModule'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(30) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(52) : error C2440: '=' : cannot convert from 'struct HINSTANCE__ *' to 'int'
+        This conversion requires a reinterpret_cast, a C-style cast or function-style cast
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(56) : error C2352: 'CTibiaItemProxy::CTibiaItemProxy::~CTibiaItemProxy' : illegal call of non-static member function
+        e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.h(51) : see declaration of 'CTibiaItemProxy::~CTibiaItemProxy'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(57) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(63) : error C2601: 'getIndex' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(75) : error C2601: 'getName' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(87) : error C2601: 'setItemName' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(96) : error C2601: 'setExtraInfo' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(105) : error C2601: 'setFoodName' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(114) : error C2601: 'setLootItemName' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(124) : error C2601: 'refreshItemLists' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(136) : error C2601: 'saveItemLists' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(145) : error C2601: 'addItemItem' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(154) : error C2601: 'addItemFood' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(163) : error C2601: 'addItemLoot' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(173) : error C2601: 'getCorpseIdByCreatureName' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(186) : error C2601: 'getExtraInfo' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(198) : error C2601: 'getItemsFoodArray' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(212) : error C2601: 'getItemsItems' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(226) : error C2601: 'getItemsItemsId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(239) : error C2601: 'getItemsItemsCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(251) : error C2601: 'setItemsItemsCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(260) : error C2601: 'setItemsFoodCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(269) : error C2601: 'setItemsLootCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(279) : error C2601: 'getItemsFood' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(293) : error C2601: 'getItemsFoodId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(306) : error C2601: 'getItemsFoodCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(319) : error C2601: 'getItemsCorpses' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(333) : error C2601: 'getItemsCorpsesId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(346) : error C2601: 'getItemsCorpsesCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(359) : error C2601: 'getItemsLooted' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(374) : error C2601: 'getItemsLootedId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(388) : error C2601: 'getItemsLootedCount' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(402) : error C2601: 'getValueForConst' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(416) : error C2601: 'getObjectId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(429) : error C2601: 'getFoodId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(442) : error C2601: 'getLootItemId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(454) : error C2601: 'setItemId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(463) : error C2601: 'setFoodId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\tibiaitemproxy.cpp(472) : error C2601: 'setLootItemId' : local function definitions are illegal
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(32) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(33) : error C2065: 'tabSize' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(34) : error C2065: 'count' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(35) : error C2065: 'tab' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(35) : error C2440: '=' : cannot convert from 'struct point *' to 'int'
+        This conversion requires a reinterpret_cast, a C-style cast or function-style cast
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(36) : error C2065: 'start' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(37) : error C2065: 'end' : undeclared identifier
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(40) : error C2352: 'CQueue::CQueue::~CQueue' : illegal call of non-static member function
+        e:\tibia\sourse code\tibiaauto-pub\sdk\queue.h(22) : see declaration of 'CQueue::~CQueue'
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(41) : error C2143: syntax error : missing ';' before '{'
+e:\tibia\sourse code\tibiaauto-pub\sdk\queue.cpp(41) : fatal error C1003: error count exceeds 100; stopping compilation
+Generating Code...
+Error executing cl.exe.
 
 
 
 <h3>Results</h3>
-mod_eater.dll - 0 error(s), 1 warning(s)
+mod_eater.dll - 102 error(s), 1 warning(s)
 </pre>
 </body>
 </html>
