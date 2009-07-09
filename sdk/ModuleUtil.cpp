@@ -882,6 +882,48 @@ int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of charac
 	return 1;
 }
 
+int CModuleUtil::waitToStandOnSquare(int x, int y)// depends on speed of character (1.4 seconds for lvl 1 doing diagonal)
+{
+	CMemReaderProxy reader;
+
+	int spaceCount=15;
+	//wait until square reached and return if more than 15 steps
+	while(spaceCount-->0){
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		static int newX = self->x;
+		static int newY = self->y;
+		if (max(abs(self->x-x),abs(self->y-y))==0){
+			delete self;
+			break;
+		}
+		delete self;
+
+		//wait until square changes and return if took too long
+		int iterCount=28;
+		while (iterCount-->0) {
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			if (self->x!=newX || self->y!=newY){
+				newX=self->x;
+				newY=self->y;
+				delete self;
+				break;
+			}
+			delete self;
+			Sleep(50);
+		}
+		if (iterCount==-1){
+			//AfxMessageBox("return 0,(1)");
+			return 0;
+		}
+	}
+	if (spaceCount==-1){
+		//AfxMessageBox("return 0,(2)");
+		return 0;
+	}
+	//AfxMessageBox("return 1");
+	return 1;
+}
+
 int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near instantaneous to 1.0 secs
 {
 	CMemReaderProxy reader;

@@ -894,13 +894,16 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			if (abs(x)>7 || abs(y)>5) continue;
 			if (reader.mapGetPointItemsCount(point(x,y,0))==0) continue;
 
+			foundLootedObjectId=0;
 			int f1=isItemCovered(x,y,lootedArr,lootedArrSize);
 			int f2=isItemOnTop(x,y,lootedArr,lootedArrSize);
 			if (f1) foundLootedObjectId=f1;
 			if (f2) foundLootedObjectId=f2;
 			if(!foundLootedObjectId) continue;
+			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,getItemIndex(x,y,f1),getItemIndex(x,y,f2),x,y);
+			//AfxMessageBox(buf);
 
-			int shouldStandOn=reader.mapGetPointItemsCount(point(x,y,0))>=10;
+			int shouldStandOn=0;//reader.mapGetPointItemsCount(point(x,y,0))>=10;
 
 			//Walk To Square
 			if (abs(x) > 1 || abs(y) > 1 || shouldStandOn&&!(x==0&&y==0)) {
@@ -927,11 +930,18 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 					//sender.stopAll();
 					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
 					//AfxMessageBox(buf);
-					if (!shouldStandOn)
-						path[--pathSize]=0;
+					if (!shouldStandOn){
+					    if(path[pathSize-1]==path[pathSize-2]){//means we will be 1 square away 1 space before path end
+                            path[--pathSize]=0;
+                        }else{//means we will be 1 square away 2 spaces before path end
+						    path[--pathSize]=0;
+						    path[--pathSize]=0;
+                        }
+					}
 					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
 					// wait for reaching final point
-					CModuleUtil::waitToApproachSquare(self->x+x,self->y+y);
+					if (!shouldStandOn) CModuleUtil::waitToApproachSquare(self->x+x,self->y+y);
+					else CModuleUtil::waitToStandOnSquare(self->x+x,self->y+y);
 				}
 				else {
 					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+x,self->y+y,self->z);
@@ -978,12 +988,20 @@ exitLoop:
 				if (config->debug) registerDebug(buf);
 				// do it only when drop place is found
 				if (foundSpace){
-					int uncoverItem=reader.mapGetPointItemsCount(point(itemX,itemY,0))-itemOnTopIndex(itemX,itemY);
-					while (uncoverItem-->0&&isItemCovered(itemX,itemY,foundLootedObjectId)&&!isItemOnTop(0,0,foundLootedObjectId)) {
-						if (config->debug) registerDebug("Loot from floor: uncovering item");
-						int objectId=itemOnTopCode(itemX,itemY);
-						int qty=itemOnTopQty(itemX,itemY);
-						sender.moveObjectFromFloorToFloor(objectId,self->x+x,self->y+y,self->z,self2->x+offsetX,self2->y+offsetY,self2->z,qty);
+
+					int itemInd=getItemIndex(itemX,itemY,foundLootedObjectId);
+					int topInd=itemOnTopIndex(itemX,itemY);
+					int count=reader.mapGetPointItemsCount(point(itemX,itemY,0));
+					int itemIds[10];
+					int itemQtys[10];
+					int numItems=0;
+					for (int ind=topInd;ind<itemInd;ind++){
+						itemIds[numItems]=reader.mapGetPointItemId(point(itemX,itemY,0),ind);
+						itemQtys[numItems]=reader.mapGetPointItemExtraInfo(point(itemX,itemY,0),ind,1);
+						numItems++;
+					}
+					for (int i=0;i<numItems;i++){
+						sender.moveObjectFromFloorToFloor(itemIds[i],self->x+x,self->y+y,self->z,self2->x+offsetX,self2->y+offsetY,self2->z,itemQtys[i]);
 						Sleep(CModuleUtil::randomFormula(400,200));
 					}
 				}
