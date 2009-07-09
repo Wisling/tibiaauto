@@ -927,7 +927,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 					//sender.stopAll();
 					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
 					//AfxMessageBox(buf);
-					if (shouldStandOn)
+					if (!shouldStandOn)
 						path[--pathSize]=0;
 					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
 					// wait for reaching final point

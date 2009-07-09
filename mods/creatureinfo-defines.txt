@@ -35,6 +35,7 @@ SelfOnly:
 <mana>	d
 <maxmana>	d
 <capacity>	d
+<stamina>	d
 <maxcapacity>	d
 <soulpoints>	d
 <exp>	d
