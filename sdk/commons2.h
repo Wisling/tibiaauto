@@ -52,7 +52,7 @@ int isItemCovered(int x,int y,int *itemArr,int itemArrSize)
 	if (topPos==-1) return 0;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
-	for (int pos=topPos+1;pos!=topPos;pos=(pos+1)%stackCount)
+	for (int pos=(topPos+1)%stackCount;pos!=topPos;pos=(pos+1)%stackCount)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
 		for (int i=0;i<itemArrSize;i++)
@@ -73,6 +73,21 @@ int isItemCovered(int x,int y,int itemId)
 {
 	int itemArr[1]={itemId};
 	return isItemCovered(x,y,itemArr,1);
+}
+
+int getItemIndex(int x,int y,int itemInd)
+{
+	CMemReader reader;
+
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+	for (int pos=(topPos+1)%stackCount;pos!=topPos;pos=(pos+1)%stackCount)
+	{
+		if (itemInd = reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
+	}
+	return -1;
 }
 
 int itemOnTopCode(int x,int y)
