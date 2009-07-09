@@ -35,6 +35,7 @@ public:
 	static int waitForCreatureDisappear(int x, int y, int tibiaId);
 	static int waitForCreatureDisappear(int creatureNr);
 	static int waitToApproachSquare(int x, int y);
+	static int waitToStandOnSquare(int x, int y);
 	static int waitForCreatureDisappear(int x,int y, int tibiaId, int &, int &);
 	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ);
 	static void prepareProhPointList();
