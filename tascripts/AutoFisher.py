@@ -66,7 +66,7 @@ class ModuleAutoFisher:
 
 
              tileId=tareader.mapGetPointItemId(offsetX,offsetY,0,0);
-             tasender.useWithObjectFromContainerOnFloor(rodObjectId,fishingRodCont,fishingRodPos,tileId,selfCh['x']+offsetX,selfCh['y']+offsetY,selfCh['z'],2,0);
+             tasender.useWithObjectFromContainerOnFloor(rodObjectId,fishingRodCont,fishingRodPos,tileId,selfCh['x']+offsetX,selfCh['y']+offsetY,selfCh['z']);
 
 
 

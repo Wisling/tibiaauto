@@ -1438,6 +1438,6 @@ void CModuleUtil::masterDebug(const char* fname, const char* buf1,const char* bu
 	{
 		fprintf(f,"%s\t%s\tTibiaAuto\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6);
 		fclose(f);
+		//delete f;
 	}
-	delete f;
 }
