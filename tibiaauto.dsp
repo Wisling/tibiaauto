@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 zlib.lib ws2_32.lib xerces.lib zdll.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs"
+# ADD LINK32 zlib.lib ws2_32.lib xerces.lib zdll.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
