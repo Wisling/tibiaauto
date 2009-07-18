@@ -8,19 +8,30 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 	int pos;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
-	if (stackCount==0){
-		return -1;//return value instead of error(most internal cases handle a return value of -1
-		char buf[111];
-		sprintf (buf,"Fatal Error: Tile does not exist:%d,%d,%d",x,y,z);
-		AfxMessageBox(buf);
+	int immoveableItems=0;//count the number of items Tibia is using for decorations and made immovable
+	for (pos=0;pos<stackCount;pos++)
+	{
+		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
+		CTibiaTile *tile=reader.getTibiaTile(tileId);
+		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop)
+			immoveableItems++;
 	}
+	int newCount=stackCount;
 	for (pos=0;pos<stackCount;pos++)
 	{
 		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
-		if(stackInd==stackCount-1){
-			return pos;
-			break;
+		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
+		CTibiaTile *tile=reader.getTibiaTile(tileId);
+		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
+		//If a movable tile is never found, then keep things the way they are
+		if (immoveableItems && (tileId==99 || !tile->notMoveable)) {
+			stackCount-=immoveableItems;
+			newCount-=immoveableItems;
+			immoveableItems=0;
 		}
+		newCount-=tileId==99?1:0;
+		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
+			return pos;
 	}
 	return -1;
 }
@@ -103,16 +114,15 @@ int itemOnTopCode(int x,int y)
 	return 0;
 }
 
-int itemSeenOnTopIndex(int x,int y)
+int itemSeenOnTopIndex(int x,int y,int z=0)
 {
 	CMemReader reader;
 	int pos;	
-	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
 	for (pos=0;pos<stackCount;pos++)
 	{
-		int stackInd=reader.mapGetPointStackIndex(point(x,y,0),pos);
-		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
-		if (stackInd==stackCount-1 || tileId==99)
+		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
+		if (stackInd==stackCount-1)
 			return pos;
 	}
 	return stackCount-1;
