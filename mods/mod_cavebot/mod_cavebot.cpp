@@ -105,6 +105,8 @@ CToolAutoAttackStateWalker globalAutoAttackStateWalker=CToolAutoAttackStateWalke
 CToolAutoAttackStateDepot globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 
+#define MAX_LOOT_ARRAY 250
+
 int targetX=0,targetY=0,targetZ=0;
 int depotX=0,depotY=0,depotZ=0;
 int currentPosTM=0;
@@ -1536,7 +1538,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		* 2. we are not in a half sleep (no walking) mode
 		* 3. there is something to loot
 		*/
-		int droppedLootArray[128];
+		int droppedLootArray[MAX_LOOT_ARRAY];
 		int droppedLootArrayCount=0;
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
 		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
@@ -1544,22 +1546,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				int p;
 				for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++) {
 					droppedLootArray[droppedLootArrayCount++]=itemProxy.getItemsFoodArray()->GetAt(p);
-					if (droppedLootArrayCount>=127) droppedLootArrayCount=127;
+					if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
 				}
 			}
 			if (config->lootGp) {
 				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("GP");
-				if (droppedLootArrayCount>=127) droppedLootArrayCount=127;
+				if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
 			}
 			if (config->lootWorms) {
 				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("worms");
-				if (droppedLootArrayCount>=127) droppedLootArrayCount=127;
+				if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
 			}
 			if (config->lootCustom) {
 				int i;
 				for (i=0;i<itemProxy.getItemsLootedCount();i++) {
 					droppedLootArray[droppedLootArrayCount++]=itemProxy.getItemsLootedId(i);
-					if (droppedLootArrayCount>=127) droppedLootArrayCount=127;
+					if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
 				}
 			}
 			if (droppedLootArrayCount) {
