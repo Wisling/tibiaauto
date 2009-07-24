@@ -5,6 +5,7 @@ Enhancments
 
 Defects
  Cavebot: Removed popup when pausing and unpausing cavebot
+ Food Eater: Added back eating times to the items.xml file
  Auto Go/Log:Fixed the saving of the whitelist to a config file(all new saved whitelists will load correctly)
  (Unfortunately the way it saved before created an unreadable structure, if you are set on keeping an older script with a whitelist, delete text within the file between "<  >" braces with "whiteList" and "mkBlack" in them while keeping the braces balanced)
 
