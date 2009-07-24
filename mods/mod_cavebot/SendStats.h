@@ -4,7 +4,7 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
-// SendStats.h : header file
+// OptionsDialog.h : header file
 //
 
 /////////////////////////////////////////////////////////////////////////////
@@ -19,7 +19,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CSendStats)
 	enum { IDD = IDD_SENDSTATS };
-		// NOTE: the ClassWizard will add data members here
+	CButton	m_send2;
+	CButton	m_send1;
+	CButton	m_ok;
 	//}}AFX_DATA
 
 
@@ -35,9 +37,15 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CSendStats)
-		// NOTE: the ClassWizard will add member functions here
+	afx_msg void OnSendLootstats();
+	virtual BOOL OnInitDialog();
+	afx_msg void OnSendCreaturestats();
+	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnClose();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
+private:
+	void sendFile(char *fname);
 };
 
 //{{AFX_INSERT_LOCATION}}

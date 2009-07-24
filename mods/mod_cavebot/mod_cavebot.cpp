@@ -593,11 +593,12 @@ void depotDeposit(CConfigData *config) {
 			globalAutoAttackStateDepot=CToolAutoAttackStateDepot_walking;
 			return;
 		}
+
+		depotContNr2 = CModuleUtil::findNextClosedContainer(depotContNr);
 	}
 	
 	// do the depositing
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_depositing;
-	depotContNr2 = CModuleUtil::findNextClosedContainer(depotContNr);
 	
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
 		int objectToMove = itemProxy.getObjectId(config->depotTrigger[i].itemName);
@@ -665,12 +666,17 @@ void depotDeposit(CConfigData *config) {
 
 	
 	// all is finished :) - we can go back to the hunting area
-	sender.closeContainer(depotContNr2);
-	CModuleUtil::waitForOpenContainer(depotContNr2,false);
-	Sleep(CModuleUtil::randomFormula(300,100));
-	sender.closeContainer(depotContNr);
-	CModuleUtil::waitForOpenContainer(depotContNr,false);
-
+	if (!config->depotDropInsteadOfDepositon) {
+		if (reader.readContainer(depotContNr2)->flagOnOff){
+			sender.closeContainer(depotContNr2);
+			CModuleUtil::waitForOpenContainer(depotContNr2,false);
+			Sleep(CModuleUtil::randomFormula(300,100));
+		}
+		if (reader.readContainer(depotContNr)->flagOnOff){
+			sender.closeContainer(depotContNr);
+			CModuleUtil::waitForOpenContainer(depotContNr,false);
+		}
+	}
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	depotX=depotY=depotZ=0;
 	deleteAndNull(self);
@@ -994,6 +1000,9 @@ exitLoop:
 					int itemInd=getItemIndex(itemX,itemY,foundLootedObjectId);
 					int topInd=itemOnTopIndex(itemX,itemY);
 					int count=reader.mapGetPointItemsCount(point(itemX,itemY,0));
+					sprintf(buf,"Loot from floor vars: itemInd %d,topInd %d,count %d,(%d,%d)=%d",itemInd,topInd,count,itemX,itemY,foundLootedObjectId);
+					if (config->debug) registerDebug(buf);
+					
 					int itemIds[10];
 					int itemQtys[10];
 					int numItems=0;
@@ -2133,7 +2142,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 				if (config->debug) registerDebug("Getting location for walker.");
 
-				if (depotX&&depotY&&depotZ) {
+				if (depotX&&depotY&&depotZ || globalAutoAttackStateDepot==CToolAutoAttackStateDepot_walking) {
 					// if we are walking to a depot - then just go there
 					targetX=depotX;
 					targetY=depotY;
@@ -2303,7 +2312,7 @@ void CMod_cavebotApp::start() {
 			
 			int flen=ftell(f);
 			fclose(f);
-			if (flen>1024*100) {
+			if (flen>1024*800) {
 				CSendStats info;
 				info.DoModal();
 			}
