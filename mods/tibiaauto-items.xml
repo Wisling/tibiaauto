@@ -39,7 +39,7 @@
 	<const code="closedhole" value="0x251"/>
 
 	<!-- addresses -->
-	<const code="addrOffset" 				value="0"/>
+	<const code="addrOffset" value="0"/>
 
 	<const code="addrMCInject" value="0x1067B1"/> <!--D7 3D B7 -->
 	<const code="addrXRay1" value="0x4D222C"/> 
@@ -91,17 +91,17 @@
 
 	<const code="addrTradeFirstItemPartner" value="0x641744"/> <!-- cat2 -->
 
-	<const code="addrCurrentWindow"			value="0x641C3C"/> <!-- cat2 -->
-	<const code="addrMapStart"				value="0x646790"/>
-	<const code="addrMiniMapStart"			value="0x6467B0"/> <!-- cat2 -->
+	<const code="addrCurrentWindow" value="0x641C3C"/> <!-- cat2 -->
+	<const code="addrMapStart" value="0x646790"/>
+	<const code="addrMiniMapStart" value="0x6467B0"/> <!-- cat2 -->
 
-	<const code="addrModeAttackPlayers"		value="0x78C35C"/> <!-- cat3 -->
-	<const code="addrModeFollow"			value="0x78C360"/>
-	<const code="addrModeAttackType"		value="0x78C364"/> <!-- cat3 -->
+	<const code="addrModeAttackPlayers" value="0x78C35C"/> <!-- cat3 -->
+	<const code="addrModeFollow" value="0x78C360"/>
+	<const code="addrModeAttackType" value="0x78C364"/> <!-- cat3 -->
 
-	<const code="addrConnectionState"		value="0x78F598"/> <!-- cat4 -->
-	<const code="addrFps"					value="0x7900DC"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->
-	<const code="addrWhiteMessage"			value="0x791418"/>
+	<const code="addrConnectionState" value="0x78F598"/> <!-- cat4 -->
+	<const code="addrFps" value="0x7900DC"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->
+	<const code="addrWhiteMessage" value="0x791418"/>
 
 
 	<!-- structure lengths -->
@@ -168,6 +168,8 @@
     <item id="0xed" name="Strong Mana Potion"/>
     <item id="0xee" name="Great Mana Potion"/>
     <item id="0xef" name="Great Health Potion"/>
+    <item id="0x10a" name="Health Potion"/>
+    <item id="0x10c" name="Mana Potion"/>
     <item id="0x11b" name="Empty Strong Potion Flask"/>
     <item id="0x11c" name="Empty Great Potion Flask"/>
     <item id="0x11d" name="Empty Potion Flask"/>
@@ -262,9 +264,6 @@
     <item id="0x1f9d" name="Wand of Draconia"/>
     <item id="0x1f9e" name="Wand of Voodoo"/>
 
-    <item id="0xd79" name="Burst Arrow"/>
-    <item id="0xd78" name="Poison Arrow"/>
-
     <item id="0xcc1" name="Two Handed Sword"/>
     <item id="0xcc3" name="Dagger"/>
     <item id="0xcd1" name="Giant Sword"/>
@@ -276,66 +275,69 @@
     <item id="0xce4" name="Katana"/>
 
         </items>
-        <foods>
-    <item id="0xa9" name="Scarab Cheese"/>
-    <item id="0x344" name="Walnut"/>
-    <item id="0x349" name="Peanut"/>
-    <item id="0xdf9" name="Meat"/>
-    <item id="0xdfa" name="Fish"/>
-    <item id="0xdfb" name="Salmon"/>
-    <item id="0xdfc" name="Northern Pike"/>
-    <item id="0xdfd" name="Shrimp"/>
-    <item id="0xdfe" name="Ham"/>
-    <item id="0xdff" name="Dragon Ham"/>
-    <item id="0xe00" name="Pear"/>
-    <item id="0xe01" name="Red Apple"/>
-    <item id="0xe02" name="Orange"/>
-    <item id="0xe03" name="Banana"/>
-    <item id="0xe04" name="Blueberry"/>
-    <item id="0xe05" name="Coconut"/>
-    <item id="0xe06" name="Cherry"/>
-    <item id="0xe07" name="Strawberry"/>
-    <item id="0xe08" name="Grapes"/>
-    <item id="0xe09" name="Melon"/>
-    <item id="0xe0a" name="Pumpkin"/>
-    <item id="0xe0b" name="Carrot"/>
-    <item id="0xe0c" name="Tomato"/>
-    <item id="0xe0d" name="Corncob"/>
-    <item id="0xe0e" name="Cookie"/>
-    <item id="0xe0f" name="Candy Cane"/>
-    <item id="0xe10" name="Bread"/>
-    <item id="0xe11" name="Roll"/>
-    <item id="0xe12" name="Brown Bread"/>
-    <item id="0xe16" name="Egg"/>
-    <item id="0xe17" name="Cheese"/>
-    <item id="0xe8b" name="White Mushroom"/>
-    <item id="0xe8c" name="Red Mushroom"/>
-    <item id="0xe8d" name="Brown Mushroom"/>
-    <item id="0xe8e" name="Orange Mushroom"/>
-    <item id="0xe8f" name="Wood Mushroom"/>
-    <item id="0xe90" name="Dark Mushroom"/>
-    <item id="0xe91" name="Some Mushrooms(Orange)"/>
-    <item id="0xe92" name="Some Mushrooms(Wood)"/>
-    <item id="0xe93" name="Fire Mushroom"/>
-    <item id="0xe94" name="Green Mushroom"/>
-    <item id="0x13e8" name="Mango"/>
-    <item id="0x1885" name="Cake"/>
-    <item id="0x1886" name="Decorated Cake"/>
-    <item id="0x18f8" name="Valentine's Cake"/>
-    <item id="0x18f9" name="Cream Cake"/>
-    <item id="0x1964" name="Gingerbread Man"/>
-    <item id="0x1bf6" name="Rainbow Trout"/>
-    <item id="0x1bf7" name="Green Perch"/>
-    <item id="0x1f4a" name="Potato"/>
-    <item id="0x1f4b" name="Plum"/>
-    <item id="0x1f4c" name="Raspberry"/>
-    <item id="0x1f4d" name="Lemon"/>
-    <item id="0x1f4e" name="Cucumber"/>
-    <item id="0x1f4f" name="Onion"/>
-    <item id="0x1f50" name="Jalapeno Pepper"/>
-    <item id="0x1f51" name="Beetroot"/>
-    <item id="0x1f53" name="Chocolate Cake"/>
-        </foods> 
+	<foods>
+	<item id="0x344" name="Walnut" time="48" />
+	<item id="0x349" name="Peanut" time="48" />
+	<item id="0xdf9" name="Meat" time="180" />
+	<item id="0xdfa" name="Fish" time="144" />
+	<item id="0xdfb" name="Salmon" time="120" />
+	<item id="0xdfc" name="Northern Pike" time="204" />
+	<item id="0xdfd" name="Shrimp" time="48" />
+	<item id="0xdfe" name="Ham" time="360" />
+	<item id="0xdff" name="Dragon Ham" time="720" />
+	<item id="0xe00" name="Pear" time="60" />
+	<item id="0xe01" name="Red Apple" time="72" />
+	<item id="0xe02" name="Orange" time="156" />
+	<item id="0xe03" name="Banana" time="96" />
+	<item id="0xe04" name="Blueberry" time="12" />
+	<item id="0xe05" name="Coconut" time="216" />
+	<item id="0xe06" name="Cherry" time="12" />
+	<item id="0xe07" name="Strawberry" time="24" />
+	<item id="0xe08" name="Grapes" time="108" />
+	<item id="0xe09" name="Melon" time="240" />
+	<item id="0xe0a" name="Pumpkin" time="204" />
+	<item id="0xe0b" name="Carrot" time="60" />
+	<item id="0xe0c" name="Tomato" time="72" />
+	<item id="0xe0d" name="Corncob" time="108" />
+	<item id="0xe0e" name="Cookie" time="24" />
+	<item id="0xe0f" name="Candy Cane" time="24" />
+	<item id="0xe10" name="Bread" time="120" />
+	<item id="0xe11" name="Roll" time="36" />
+	<item id="0xe12" name="Brown Bread" time="96" />
+	<item id="0xe16" name="Egg" time="72" />
+	<item id="0xe17" name="Cheese" time="108" />
+	<item id="0xe8b" name="White Mushroom" time="108" />
+	<item id="0xe8d" name="Brown Mushroom" time="264" />
+	<item id="0xe8e" name="Orange Mushroom" time="360" />
+	<item id="0xe8f" name="Wood Mushroom" time="108" />
+	<item id="0xe90" name="Dark Mushroom" time="72" />
+	<item id="0xe91" name="Some Mushrooms(Orange)" time="144" />
+	<item id="0xe94" name="Green Mushroom" time="60" />
+	<item id="0x13e8" name="Mango" time="48" />
+	<item id="0x1885" name="Cake" time="120" />
+	<item id="0x1886" name="Decorated Cake" time="180" />
+	<item id="0x18f8" name="Valentine's Cake" time="144" />
+	<item id="0x18f9" name="Cream Cake" time="180" />
+	<item id="0x1964" name="Gingerbreadman" time="240" />
+	<item id="0x1bf6" name="Rainbow Trout" time="300" />
+	<item id="0x1bf7" name="Green Perch" time="180" />
+	<item id="0x1f4a" name="Potato" time="120" />
+	<item id="0x1f4b" name="Plum" time="60" />
+	<item id="0x1f4c" name="Raspberry" time="12" />
+	<item id="0x1f4d" name="Lemon" time="12" />
+	<item id="0x1f4e" name="Cucumber" time="84" />
+	<item id="0x1f4f" name="Onion" time="60" />
+	<item id="0x1f50" name="Jalapeno Pepper" time="12" />
+	<item id="0x1f51" name="Beetroot" time="60" />
+	<item id="0x1f53" name="Chocolate Cake" time="132" />
+
+	<!-- Food not to eat
+	<item id="0xa9" name="Scarab Cheese" time="108" />
+	<item id="0xe8c" name="Red Mushroom" time="48" />
+	<item id="0xe92" name="Some Mushrooms(Wood)" time="36" />
+	<item id="0xe93" name="Fire Mushroom" time="432" />
+	-->
+	</foods>
         
         <looted>
     <item id="0xbe4" name="Elephant Tusk"/>
