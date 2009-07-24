@@ -1,13 +1,23 @@
-1.20.1, 07.07.2009
+1.20.2, 24.07.2009
 Enhancments
-None
+ Cavebot: Allowed for quick upload of statistics files from cavebot dialog(also increased size for prompt)
+ Character Info: Significant memory leak fixed :)
 
 Defects
-Cavebot: Fixed fatal crash bug when using "loot from floor"
-Cavebot: Fixed looting creatures when carried bag is container 2
-Cavebot: Fixed depot walker depositing when more than 1 bag open
-Cavebot: Fixed depot walker freeze when only 1 square away
-Python: Fixed itemOnTopIndex(x,y,z) function;
+ Cavebot: Removed popup when pausing and unpausing cavebot
+ Auto Go/Log:Fixed the saving of the whitelist to a config file(all new saved whitelists will load correctly)
+ (Unfortunately the way it saved before created an unreadable structure, if you are set on keeping an older script with a whitelist, delete text within the file between "<  >" braces with "whiteList" and "mkBlack" in them while keeping the braces balanced)
+
+1.20.1, 07.07.2009
+Enhancments
+ None
+
+Defects
+ Cavebot: Fixed fatal crash bug when using "loot from floor"
+ Cavebot: Fixed looting creatures when carried bag is container 2
+ Cavebot: Fixed depot walker depositing when more than 1 bag open
+ Cavebot: Fixed depot walker freeze when only 1 square away
+ Python: Fixed itemOnTopIndex(x,y,z) function;
 
 1.20.0, 06.07.2009
 Enhancments
