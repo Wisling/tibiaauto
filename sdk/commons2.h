@@ -1,10 +1,12 @@
 /////////////////////////////////////////////////////////////////////////////
 #include "PackSender.h"
 #include "MemReader.h"
+#include "tileReader.h"
 
 int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
 {
 	CMemReader reader;
+	CTileReader tileReader;
 	int pos;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
@@ -12,7 +14,7 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 	for (pos=0;pos<stackCount;pos++)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
-		CTibiaTile *tile=reader.getTibiaTile(tileId);
+		CTibiaTile *tile=tileReader.getTile(tileId);
 		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop)
 			immoveableItems++;
 	}
@@ -21,7 +23,7 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 	{
 		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
 		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
-		CTibiaTile *tile=reader.getTibiaTile(tileId);
+		CTibiaTile *tile=tileReader.getTile(tileId);
 		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
 		//If a movable tile is never found, then keep things the way they are
 		if (immoveableItems && (tileId==99 || !tile->notMoveable)) {
