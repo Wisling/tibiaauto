@@ -36,6 +36,7 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxmt.h>
+#include <afxinet.h>
 
 
 //{{AFX_INSERT_LOCATION}}
