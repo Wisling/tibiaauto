@@ -554,7 +554,7 @@ void CMod_looterApp::start()
 
 		int flen=ftell(f);
 		fclose(f);		
-		if (flen>1024*100)
+		if (flen>1024*800)
 		{
 			CSendStats info;
 			info.DoModal();				
