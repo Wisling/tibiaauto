@@ -930,7 +930,6 @@ int initalizeCreatures() {
 		//AfxMessageBox(monstersInfo[max].name);
 	}
 	creatureFile.close();
-	
 	return 1;
 }
 
