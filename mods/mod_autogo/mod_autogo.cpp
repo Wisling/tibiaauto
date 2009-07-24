@@ -1366,7 +1366,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"options/HpBelowUntilRecovery"))	m_configData->optionsHpBelowUntilRecovery=atoi(paramValue);
 	if (!strcmp(paramName,"options/ManaBelowUntilRecovery"))	m_configData->optionsManaBelowUntilRecovery=atoi(paramValue);
 	if (!strcmp(paramName,"sound"))						m_configData->sound					= atoi(paramValue);
-	if (!strcmp(paramName,"whiteList")){
+	if (!strcmp(paramName,"whiteList/List")){
 		if (currentPos>99)
 			return;
 		lstrcpyn(m_configData->whiteList[currentPos++],paramValue,32);
@@ -1431,8 +1431,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"options/HpBelowUntilRecovery"))	sprintf(buf,"%d",m_configData->optionsHpBelowUntilRecovery);	
 	if (!strcmp(paramName,"options/ManaBelowUntilRecovery"))	sprintf(buf,"%d",m_configData->optionsManaBelowUntilRecovery);	
 	if (!strcmp(paramName,"sound"))						sprintf(buf,"%d",m_configData->sound);
-	if (!strcmp(paramName,"whiteList")){		
-		if (currentPos<100){				
+	if (!strcmp(paramName,"whiteList/List")){		
+		if (currentPos<100){
 			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
 				lstrcpyn(buf,m_configData->whiteList[currentPos++],32);
 			}
@@ -1489,7 +1489,7 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 39: return "options/Capacity";
 	case 40: return "options/OutOfCustomItem";
 	case 41: return "sound";
-	case 42: return "whiteList";
+	case 42: return "whiteList/List";
 	case 43: return "options/ManaBelowUntilRecovery";
 	case 44: return "options/HpBelowUntilRecovery";
 	case 45: return "whiteList/mkBlack";
@@ -1507,11 +1507,11 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 }
 int CMod_autogoApp::isMultiParam(char *paramName)
 {
-	if (!strcmp(paramName,"whiteList")) return 1;
+	if (!strcmp(paramName,"whiteList/List")) return 1;
 	return 0;
 }
 
 void CMod_autogoApp::resetMultiParamAccess(char *paramName)
 {
-	if (!strcmp(paramName,"whiteList")) currentPos=0;
+	if (!strcmp(paramName,"whiteList/List")) currentPos=0;
 }
