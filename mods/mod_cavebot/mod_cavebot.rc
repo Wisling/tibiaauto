@@ -232,14 +232,17 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,220,67,10
 END
 
-IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
+IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 94
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Send loot statistics info!"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
-    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 100k. Please support Tibia Auto by going into ""General options and statistics"" and sending the file to us!",
-                    IDC_STATIC,7,7,172,39,WS_BORDER
+    DEFPUSHBUTTON   "OK",IDOK,69,73,50,14
+    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 800k. Please support Tibia Auto by going into ""General options and statistics"" and sending the file to us! \n Sending time varies with file size.",
+                    IDC_STATIC,7,7,172,46,WS_BORDER
+    PUSHBUTTON      "Send loot.txt",IDC_SEND_LOOTSTATS_CAVEBOT,107,56,64,14
+    PUSHBUTTON      "Send creature.txt",IDC_SEND_CREATURESTATS_CAVEBOT,15,56,
+                    63,14
 END
 
 
@@ -280,7 +283,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 179
         TOPMARGIN, 7
-        BOTTOMMARGIN, 63
+        BOTTOMMARGIN, 87
     END
 END
 #endif    // APSTUDIO_INVOKED
