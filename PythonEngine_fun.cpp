@@ -2020,3 +2020,15 @@ static PyObject *tibiaauto_reader_mapGetPointTopPos(PyObject *self, PyObject *ar
 	
 	return ret;
 }
+static PyObject *tibiaauto_reader_mapGetPointSeenOnTopPos(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1,arg2,arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;
+
+	int ret1=itemSeenOnTopIndex(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
