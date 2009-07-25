@@ -272,6 +272,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"getCreatureDeltaY", tibiaauto_reader_getCreatureDeltaY, METH_VARARGS},
 	{"readVIPEntry", tibiaauto_reader_readVIPEntry, METH_VARARGS},
 	{"mapGetPointTopPos", tibiaauto_reader_mapGetPointTopPos, METH_VARARGS},
+	{"mapGetPointSeenOnTopPos", tibiaauto_reader_mapGetPointSeenOnTopPos, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 
@@ -512,7 +513,7 @@ void CPythonEngine::init()
 			AfxMessageBox("Unable to find tascripts\\tautil.py!");
 		}
 		
-		PyGILState_Release(gstate);		
+		PyGILState_Release(gstate);
 
 		InitializeCriticalSection(&ScriptEngineCriticalSection);		
 						
@@ -526,10 +527,7 @@ void CPythonEngine::init()
 		{
 			char buf[1024];			
 
-			snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
-			loadScript(buf);
-
-			while (FindNextFile(hFind,&findFileData))
+			do
 			{				
 				snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
 				// tautil.py will be loaded in a special way
@@ -537,7 +535,7 @@ void CPythonEngine::init()
 				{					
 					loadScript(buf);
 				}
-			}
+			} while (FindNextFile(hFind,&findFileData));
 			FindClose(hFind);
 		}					
 	}
