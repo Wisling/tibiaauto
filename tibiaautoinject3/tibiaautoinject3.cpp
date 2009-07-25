@@ -112,7 +112,6 @@ extern LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 		}			
 		if (wParam==0x13)
 		{
-			AfxMessageBox("hire1");
 			if (!hookCallbackFun) setCallbackFun();
 			if (hookCallbackFun) hookCallbackFun(0x13);			
 		}			
