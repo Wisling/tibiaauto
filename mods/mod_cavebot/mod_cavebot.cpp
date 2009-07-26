@@ -1577,7 +1577,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				droppedLootCheck(config,droppedLootArray,droppedLootArrayCount);
 			}
 		}
-	
 		
 
 		/*wis notes:
@@ -1716,6 +1715,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								}
 								
 								CUIntArray acceptedItems;
+
 								if (config->lootGp)
 									acceptedItems.Add(itemProxy.getValueForConst("GP"));
 									acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
@@ -1732,7 +1732,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
 										acceptedItems.Add(itemProxy.getItemsFoodArray()->GetAt(p));
 								}
-								
 								int lootTakeItem;
 								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
 									int contNr=lootContNr[contNrInd];

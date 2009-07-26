@@ -137,8 +137,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
-				if (CModuleUtil::waitForCapsChange(reader.readSelfCharacter()->cap))
+				CTibiaCharacter* self=reader.readSelfCharacter();
+				if (CModuleUtil::waitForCapsChange(self->cap))
 					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
+				delete self;
 				char buf[111];
 				if (i!=1)
 					Sleep(CModuleUtil::randomFormula(400,100));
