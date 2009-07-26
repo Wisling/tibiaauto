@@ -79,7 +79,9 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 	//if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
-		setMana[pt]=CModuleUtil::randomFormula(*(int*)pt,(int)(*(int*)pt*.1),reader.readSelfCharacter()->maxMana+1);
+		CTibiaCharacter* self=reader.readSelfCharacter();
+		setMana[pt]=CModuleUtil::randomFormula(*(int*)pt,(int)(*(int*)pt*.1),self->maxMana+1);
+		delete self;
 	}
 	return setMana[pt];
 }
@@ -93,11 +95,10 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),reader.readSelfCharacter()->maxHp+1);
+		CTibiaCharacter* self=reader.readSelfCharacter();
+		setHp[pt]=CModuleUtil::randomFormula(*(int*)pt,(int)(*(int*)pt*.1),*(int*)pt,self->maxHp+1);
+		delete self;
 	}
-	char buf[111];
-	sprintf(buf,"%d,%d,%d,%d",(int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),reader.readSelfCharacter()->maxHp+1);
-//	AfxMessageBox(buf);
 	return setHp[pt];
 }
 
