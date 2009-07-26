@@ -63,7 +63,9 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxMana
-		setMana[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),reader.readSelfCharacter()->maxMana+1);
+		CTibiaCharacter* self=reader.readSelfCharacter();
+		setMana[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),self->maxMana+1);
+		delete self;
 	}
 	return setMana[pt];
 }
