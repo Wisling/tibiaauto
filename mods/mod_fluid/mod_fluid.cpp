@@ -63,12 +63,14 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
 	static map<int,int> setHp;
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.05),reader.readSelfCharacter()->maxHp+1);
+		setHp[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.05),self->maxHp+1);
 	}
+	delete self;
 	return setHp[pt];
 }
 
@@ -76,12 +78,14 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
 	static map<int,int> setMana;
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxMana
-		setMana[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.05),reader.readSelfCharacter()->maxMana+1);
+		setMana[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.05),self->maxMana+1);
 	}
+	delete self;
 	return setMana[pt];
 }
 
