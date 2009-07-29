@@ -58,6 +58,8 @@ static char THIS_FILE[] = __FILE__;
 #define GET 0
 #define MAKE 1
 
+int numSpellcasterCreatures=0;
+
 /////////////////////////////////////////////////////////////////////////////
 // CMod_spellcasterApp
 
@@ -930,6 +932,7 @@ int initalizeCreatures() {
 		monstersInfo[crNum++].hp = atoi(buf);
 		//AfxMessageBox(monstersInfo[max].name);
 	}
+	numSpellcasterCreatures=crNum;
 	creatureFile.close();
 	return 1;
 }
@@ -945,7 +948,7 @@ int getcurrentMonsterNumberFromName(char *match) {
 		if (strcmpi(monstersInfo[max].name, match)==0) {			
 			return max;
 		}
-		if (max++ == 300) return foundNone;;		
+		if (max++ == numSpellcasterCreatures) return foundNone;;		
 	}
 	
 }
