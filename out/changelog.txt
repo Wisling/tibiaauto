@@ -2,6 +2,7 @@
 Enhancments
  Cavebot: Allowed for quick upload of statistics files from cavebot dialog(also increased size for prompt)
  Character Info: Significant memory leak fixed :)
+ Spellcaster: Fixed not casting against certain creatures after letter 'S'
 
 Defects
  Cavebot: Removed popup when pausing and unpausing cavebot
