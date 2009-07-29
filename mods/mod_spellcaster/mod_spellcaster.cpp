@@ -945,7 +945,7 @@ int getcurrentMonsterNumberFromName(char *match) {
 		if (strcmpi(monstersInfo[max].name, match)==0) {			
 			return max;
 		}
-		if (max++ == 250) return foundNone;;		
+		if (max++ == 300) return foundNone;;		
 	}
 	
 }
