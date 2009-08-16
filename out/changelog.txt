@@ -1,3 +1,9 @@
+1.20.3, ??.08.2009
+Enhancments
+ Fluid Drinker: improved drinking speed when backpacks closed
+
+Defects
+
 1.20.2, 24.07.2009
 Enhancments
  Cavebot: Allowed for quick upload of statistics files from cavebot dialog(also increased size for prompt)
