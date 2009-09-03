@@ -230,6 +230,9 @@ BEGIN
                     289,320,191,10
     CONTROL         "Use Right Hand",IDC_TRAINING_WEAPON_HAND,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,220,67,10
+    CONTROL         "Auto Research Map (Test Version)",IDC_AUTORESEARCH,
+                    "Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | BS_MULTILINE | 
+                    WS_TABSTOP,181,319,80,23
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 94

@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 /nologo /subsystem:windows /dll /machine:I386 /out:"../mod_cavebot.dll"
+# ADD LINK32 zdll.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../mod_cavebot.dll"
 
 !ELSEIF  "$(CFG)" == "mod_cavebot - Win32 Debug"
 
@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll" /pdbtype:sept
+# ADD LINK32 zdll.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll" /pdbtype:sept
 
 !ENDIF 
 

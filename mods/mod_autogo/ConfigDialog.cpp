@@ -665,7 +665,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 		((m_triggerOutOf.GetCheck()&&m_outOfFood.GetCheck())?TRIGGER_OUTOF_FOOD:0)|
 		((m_triggerOutOf.GetCheck()&&m_outOfCustom.GetCheck())?TRIGGER_OUTOF_CUSTOM:0)|
 		((m_triggerOutOf.GetCheck()&&m_outOfSpace.GetCheck())?TRIGGER_OUTOF_SPACE:0)|
-		((m_triggerOutOf.GetCheck()&&m_runawayReached.GetCheck())?TRIGGER_RUNAWAY_REACHED:0)
+		(m_runawayReached.GetCheck()?TRIGGER_RUNAWAY_REACHED:0)
 		);
 
 	newConfigData->optionsBattleList = (		

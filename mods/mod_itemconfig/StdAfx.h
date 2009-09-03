@@ -13,6 +13,7 @@
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
 #include <afxwin.h>         // MFC core and standard components
+#include <afxcmn.h>         // MFC common components
 #include <afxext.h>         // MFC extensions
 
 #ifndef _AFX_NO_OLE_SUPPORT

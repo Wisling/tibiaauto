@@ -1,8 +1,16 @@
 1.20.3, ??.08.2009
 Enhancments
  Fluid Drinker: improved drinking speed when backpacks closed
+ Cavebot: decreased walking pause after eating/casting
+ Python: added 3 minimap reading functions
 
 Defects
+ Cavebot: Fixed one of the crash bugs in the cavebot(when not looting creature and going back to hunt)
+ Spellcaster: Fixed the saving of the Exori Mas setting
+ Auto Go/Log:Fixed "Reached Runaway" option
+ Fluid Drinker: Added safety to not drink when at max hp or mana
+ Spellcaster: Fixed saving Exori Mas option
+ Ammo Restacker: Fixed saving Restack to Right Hand option
 
 1.20.2, 24.07.2009
 Enhancments

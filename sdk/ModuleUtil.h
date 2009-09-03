@@ -18,7 +18,7 @@ public:
 	static int randomFormula(int average, int halfrange);
 	static int randomFormula(int average, int halfrange, int cutoff);
 	static int randomFormula(int average, int halfrange, int minR, int maxR);
-	static int waitForHpManaChange(int oldHp,int oldMana);
+	static int waitForHpManaIncrease(int oldHp,int oldMana);
 	static int waitForCapsChange(float origCaps);
 	static void waitForItemChange(int locationAddress, int origItemId);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);

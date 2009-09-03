@@ -204,6 +204,26 @@ SOURCE=.\res\condition_poisoned.bmp
 
 SOURCE=.\res\mod_autogo.rc2
 # End Source File
+# Begin Source File
+
+SOURCE=.\res\skull_black.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\skull_green.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\skull_red.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\skull_white.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\skull_yellow.bmp
+# End Source File
 # End Group
 # Begin Source File
 
