@@ -75,7 +75,7 @@ char suspendedModules[20][64];
 int suspendedCount = 0;
 char* lastFilename="";
 
-void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6=""){
+void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
 
 #ifdef MASTER_DEBUG
 		char dateStr [15];
@@ -85,7 +85,7 @@ void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const 
 		FILE *f=fopen("tibiaauto-debug-autogo.txt","a+");
 		if (f)
 		{
-			fprintf(f,"%s\t%s\tAutogo\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6);
+			fprintf(f,"%s\t%s\tAutogo\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6,buf7);
 			fclose(f);
 		}
 #endif
@@ -367,7 +367,7 @@ void alarmSound(int alarmId){
 		// isn't some wait needed? cause multiple async plays will kill CPU --vanitas(fixed--wis)
 		// isn't some CloseFile() needed? -- vanitas(OF_EXIST closes file after use automatically--wis)
 	} else{
-		masterDebug("alarmSound","Defualt file not found. Using System Beep");
+		masterDebug("alarmSound","Default file not found. Using System Beep");
 		MessageBeep(MB_OK);
 		//PlaySound(TEXT((LPCWSTR)SND_ALIAS_SYSTEMASTERISK), NULL, SND_ALIAS_ID | SND_ASYNC);
 	}	
@@ -560,7 +560,9 @@ int triggerRunawayReached(CConfigData *config)
 
 
 	if (self->z!=config->runawayZ) ret=0;
-	if (abs(self->x-config->runawayX)+abs(self->y-config->runawayY)>maxDistance) ret=0;
+	if (max(abs(self->x-config->runawayX),abs(self->y-config->runawayY))>maxDistance) ret=0;
+	masterDebug("triggerRunawayReached-Values",intstr(self->x).c_str(),intstr(self->y).c_str(),intstr(self->z).c_str(),intstr(config->runawayX).c_str(),intstr(config->runawayY).c_str(),intstr(config->runawayZ).c_str());
+	masterDebug("triggerRunawayReached-Values2",intstr(abs(self->x-config->runawayX)+abs(self->y-config->runawayY)).c_str(),intstr(maxDistance).c_str(),intstr(self->z-config->runawayZ).c_str());
 
 	delete self;		
 	return ret;

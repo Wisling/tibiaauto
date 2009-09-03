@@ -313,7 +313,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->aoeAffect);		m_aoeAffect.SetWindowText(buf);
 	m_exori.SetCheck(configData->exori);
 	m_exoriGran.SetCheck(configData->exoriGran);
-	m_exoriMas.SetCheck(configData->exoriGran);
+	m_exoriMas.SetCheck(configData->exoriMas);
 	m_exevoMasSan.SetCheck(configData->exevoMasSan);
 	m_exevoFlamHur.SetCheck(configData->exevoFlamHur);
 	m_exevoFrigoHur.SetCheck(configData->exevoFrigoHur);

@@ -9,6 +9,8 @@
 #define IDC_TOOL_ITEMCONFIG_CORPSES_LIST 1166
 #define IDC_TOOL_ITEMCONFIG_REFRESH     1170
 #define IDD_ITEM_ADD                    3003
+#define IDB_UNCHECK                     3006
+#define IDB_CHECK                       3007
 #define IDC_ITEM_ADD_NAME               3013
 #define IDC_ITEM_ADD_ID                 3014
 #define IDC_ADD_ITEM                    3015
@@ -24,6 +26,7 @@
 #define IDC_FOOD_ADD_ID                 3024
 #define IDC_ADD_FOOD                    3025
 #define IDD_FOOD_EDIT                   3026
+#define IDC_TREE1                       3026
 #define IDC_FOOD_EDIT_NAME              3027
 #define IDC_FOOD_EDIT_ID                3028
 #define IDC_EDIT_FOOD                   3029
@@ -42,9 +45,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3005
+#define _APS_NEXT_RESOURCE_VALUE        3007
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3024
+#define _APS_NEXT_CONTROL_VALUE         3027
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

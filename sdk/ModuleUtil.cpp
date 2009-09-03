@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItem.h"
 #include "Queue.h"
 #include "TibiaMapProxy.h"
+#include "TibiaMiniMapPoint.h"
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
@@ -147,13 +148,13 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 }
 
 
-int CModuleUtil::waitForHpManaChange(int oldHp,int oldMana){//max about 0.45s
+int CModuleUtil::waitForHpManaIncrease(int oldHp,int oldMana){//max about 0.45s
 	CMemReaderProxy reader;
 	int t;
 	for (t=0;t<15;t++)
 	{
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		if (self->hp!=oldHp || self->mana!=oldMana)
+		if (self->hp-oldHp>10 || self->mana-oldMana>10)
 		{
 			delete self;
 			return 1;
@@ -231,7 +232,8 @@ void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes 
 			delete item;
 			return;
 		}
-		delete item;
+		if (item)
+			delete item;
 		Sleep(50);
 	}
 	return;
@@ -618,8 +620,9 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		 * 202 - magic rope
 		 * 203 - ladder--
 		 * 204 - stairs
-		 * 301 - teleporter
-		 * 302 - tortoise
+		 * 301 - depot
+		 * 302 - teleporter
+		 * 303 - tortoise
 		 */
 		
 		int forcedLevelChange=0; // if set to 1 then going north, south, east, west is forbidden
@@ -665,7 +668,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 
 			int xShift=-2,yShift=-2;
-			while (!(xShift==1 && yShift==1)){
+			while (!(xShift==1 && yShift==1)){//simply goes in a 3x3 square 
 				if (xShift==-2 && yShift==-2) {xShift=-1;yShift=-1;}
 				else xShift++;
 				if (xShift>1) {xShift=-1;yShift++;}
@@ -673,7 +676,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				
 				int updown=tibiaMap.getPointUpDownNoProh(x+xShift,y+yShift,z);
 			
-				// special going up if lader busy
+				// special going up if ladder busy
 				if ((updown==201||updown==203)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z-1))
 				{
 					tibiaMap.setBestPrevPoint(x+xShift,y+yShift,z-1,x,y,z);
@@ -982,11 +985,11 @@ int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, i
 
 void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 {
-	static unsigned int lastExecuteWalkTm=0; // indicates when last a "real" walk was executed
-	static unsigned int lastStartChangeTm=0; // indicates when start point was changed for the last time
+	static int lastExecuteWalkTm=0; // indicates when last a "real" walk was executed
+	static int lastStartChangeTm=0; // indicates when start point was changed for the last time
+	static int movedDiagonally=0; // will make delay to resend walk 3x longer
 	static int lastEndX=0,lastEndY=0,lastEndZ=0; 
 	static int lastStartX=0,lastStartY=0,lastStartZ=0;
-	int currentTm=time(NULL);
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
 	CMemReaderProxy reader;
@@ -994,6 +997,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
+	int currentTm=reader.getCurrentTm();
 	int pathSize;
 	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 #ifdef MAPDEBUG
@@ -1010,6 +1014,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		lastStartChangeTm=999;
 	}else if (lastStartX!=startX||lastStartY!=startY||lastStartZ!=startZ) 
 	{
+		movedDiagonally=(lastStartX!=startX) && (lastStartY!=startY);
 		lastStartX=startX;
 		lastStartY=startY;
 		lastStartZ=startZ;
@@ -1361,9 +1366,11 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		int iterCount=60;
 		while (iterCount-->0)
 		{
-			if (reader.readSelfCharacter()->z!=self->z)
+			CTibiaCharacter* selfTmp=reader.readSelfCharacter();
+			if (selfTmp->z!=self->z)
 				break;
 			Sleep(50);
+			delete selfTmp;
 		}
 	} else {
 		/**
@@ -1375,15 +1382,20 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		 */
 		
 		int lastEndEqStart=(lastEndX==startX&&lastEndY==startY&&lastEndZ==startZ);
+		CTibiaMiniMapPoint* mp=reader.readMiniMapPoint(self->x+1,self->y,self->z);//take sample from 1 square away
+		int tileSpeed=(mp->speed==255)?200:mp->speed;
+		delete mp;
 		//&&reader.getMemIntValue(itemProxy.getValueForConst("addrTilesToGo"))==0
-		if (pathSize>0&&(lastEndEqStart||currentTm-lastStartChangeTm>=2.5||currentTm-lastExecuteWalkTm>15))
+		//time to walk 1 sqm is inverse to the speed, double speed== half the time
+		int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3.5:1.5)*1000/self->walkSpeed);
+		bool stoppedWalking=currentTm-lastStartChangeTm>=maxTileDelay;
+		if (pathSize>0&&(lastEndEqStart||stoppedWalking||currentTm-lastExecuteWalkTm>15000))
 		{
 			// 'normal' stepping limited to 10 steps
 			int i;
 			if (pathSize>10) pathSize=10;
-
 #ifdef MAPDEBUG
-			sprintf(buf,"Send walk to server. size=%d,lastEndEqStart=%d,lastStartChangeTm_diff=%d,lastExecuteWalkTm=%d",pathSize,lastEndEqStart,currentTm-lastStartChangeTm,currentTm-lastExecuteWalkTm);
+			sprintf(buf,"Send walk to server. size=%d,lastEndEqStart=%d,lastStartChangeTm_diff=%d,lastExecuteWalkTm=%d,tileDelay=%d,stoppedWalking=%d",pathSize,lastEndEqStart,currentTm-lastStartChangeTm,currentTm-lastExecuteWalkTm,maxTileDelay,stoppedWalking);
 			mapDebug(buf);
 #endif
 			sender.stepMulti(path,pathSize);
@@ -1409,10 +1421,10 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 			//sprintf(buf,"walk: (%d,%d,%d)->(%d,%d,%d) [%d,%d,%d] %d,%d p=%d",startX,startY,startZ,lastEndX,lastEndY,lastEndZ,lastStartX,lastStartY,lastStartZ,currentTm-lastStartChangeTm,currentTm-lastExecuteWalkTm,pathSize);
 			//testDebug(buf);
 
-			if (currentTm-lastStartChangeTm>=2.5)
+			if (stoppedWalking)
 			{
 				// adjust lastStartChangeTm to not flood tibia server with walks
-				lastStartChangeTm=currentTm-1;;
+				lastStartChangeTm=currentTm+1000;
 			}
 		}
 	}

@@ -45,6 +45,8 @@ of the License, or (at your option) any later version.
 #include <sstream>
 #include <string>
 
+#include "TAMiniMapProxy.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -853,7 +855,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
-	CTibiaMapProxy tibiaMap;	
+	CTibiaMapProxy tibiaMap;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -1329,8 +1331,8 @@ int AttackCreature(CConfigData *config,int id){
 		Sleep(200);
 		reader.setRemainingTilesToGo(0);
 		reader.writeCreatureDeltaXY(self->nr,0,0);
-		sender.attack(id);
 		reader.setAttackedCreature(id);
+		sender.attack(id);
 		if (config->debug&&id){
 			char buf[128];
 			sprintf(buf,"used to be=%d, set to=%d, now attacking=%d,hp=%d",old,id,reader.getAttackedCreature(),attackedCh->hpPercLeft);
@@ -1594,8 +1596,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			/*****
 			Start attack process
 			******/
-
-			CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+			
+			CTibiaCharacter *attackedCh = NULL;
+			if (currentlyAttackedCreatureNr!=-1)
+				attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
 			
 			/**
 			* Check if currently attacked creature is alive still
@@ -1775,8 +1779,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 						deleteAndNull(attackedCh);
+						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & attackedCh=NULL");
 						currentlyAttackedCreatureNr=-1;
-						CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+						attackedCh = NULL;
 					}
 					else {// if creatureIsNotDead
 						char debugBuf[256];
@@ -1792,6 +1797,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 			// if client thinks we are not attacking anything, then
 			// send "attack new target" to it and increment failed attack for creatureNr by 1
+			if (config->debug) {
+				char buf[111];
+				sprintf(buf,"Tmp:currentlyAttackedCreatureNr=%d",currentlyAttackedCreatureNr);
+				registerDebug(buf);
+			}
 			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(!attackedCh||attackedCh->hpPercLeft)) {
 				char buf[128];
 				sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
@@ -1901,7 +1911,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					creatureList[crNr].isInvisible = (ch->monsterType==0&&ch->colorHead==0);
 
 					//ignore creatures with >=3 failed attacks for 30 secs
-					if (creatureList[crNr].failedAttacks>=3){
+					if (creatureList[crNr].failedAttacks>=3 && !creatureList[crNr].isInvisible && strcmp(creatureList[crNr].name,"Warlock") && strcmp(creatureList[crNr].name,"Infernalist")){
 						creatureList[crNr].isIgnoredUntil=time(NULL)+30;
 						creatureList[crNr].failedAttacks=0;
 					} //else if creature attacking us from 1 away but ignored for <5 mins, unignore
@@ -2068,7 +2078,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 			}
 			else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft!=0) currentlyAttackedCreatureNr=-1;
-
 			if (config->debug) registerDebug("Entering attack execution area");
 
 			/**
@@ -2077,9 +2086,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			int attackMode=config->mode+1;
 			trainingCheck(config,currentlyAttackedCreatureNr,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
 			SendAttackMode(attackMode,config->autoFollow);
- 
+
+			CTibiaCharacter *attackCh=reader.readVisibleCreature(currentlyAttackedCreatureNr);
 			//perform server visible tasks if we have something to attack
-			if (currentlyAttackedCreatureNr!=-1&&creatureList[currentlyAttackedCreatureNr].hpPercLeft){
+			if (currentlyAttackedCreatureNr!=-1&&attackCh->hpPercLeft){//uses most recent hpPercLeft to prevent crash??
 				if (AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId)){
 					firstCreatureAttackTM=time(NULL);
 					reachedAttackedCreature=0;
@@ -2096,7 +2106,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingCreature;
 				if (config->debug)  {
 					char buf[256];
-					sprintf(buf,"Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId,creatureList[bestCreatureNr].isIgnoredUntil);
+					sprintf(buf,"Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d hp%%=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId,creatureList[bestCreatureNr].isIgnoredUntil,attackCh->hpPercLeft);
 					registerDebug(buf);
 				}
 			}else{
@@ -2104,6 +2114,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
 				if (config->debug) registerDebug("No attack target found");
 			}
+			deleteAndNull(attackCh);
 			/*****
 			End attack process
 			******/
@@ -2190,7 +2201,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					// Tibia Auto map chosen
 				case 0: {
 					char buf[128];
-					int path[15];					
+					int path[15];
 					
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();

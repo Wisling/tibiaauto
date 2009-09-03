@@ -34,6 +34,7 @@ void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CToolItemConfig)
+	DDX_Control(pDX, IDC_TREE1, m_testTree);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_LOOTED_LIST, m_lootedList);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_ITEMS_LIST, m_itemsList);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_FOODLIST, m_foodList);
@@ -106,6 +107,14 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 	{
 		sprintf(buf,"(0x%x) %s",itemProxy.getItemsLootedId(i),itemProxy.getItemsLooted(i));
 		m_lootedList.AddString(buf);
+	}
+
+	HTREEITEM item1=m_testTree.InsertItem("hi");;
+	while (m_lootedList.GetCount()) m_lootedList.DeleteString(0);
+	for (i=0;i<itemProxy.getItemsLootedCount();i++)
+	{
+		sprintf(buf,"(0x%x) %s",itemProxy.getItemsLootedId(i),itemProxy.getItemsLooted(i));
+		m_testTree.InsertItem(buf,item1);
 	}
 	
 	

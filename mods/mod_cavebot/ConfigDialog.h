@@ -9,6 +9,8 @@
 
 #include "mod_cavebot.h"
 #include "ConfigData.h"
+#include <queue>
+using namespace std;
 
 class CMod_cavebotApp;
 
@@ -64,6 +66,18 @@ enum CToolAutoAttackStateTraining
 	CToolAutoAttackStateTraining_trainingFullDef,
 	CToolAutoAttackStateTraining_fighting,
 	CToolAutoAttackStateTraining_switchingWeapon
+};
+
+struct PathfindParams{
+	int x, y, z, x2, y2, z2;
+	PathfindParams(int x,int y,int z,int x2,int y2,int z2){
+		this->x=x;
+		this->y=y;
+		this->z=z;
+		this->x2=x2;
+		this->y2=y2;
+		this->z2=z2;
+	}
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -143,6 +157,7 @@ public:
 	CEdit	m_monster;
 	CButton m_dontAttackPlayers;
 	CButton m_pausingEnable;
+	CButton	m_autoResearch;
 	CButton	m_enable;
 	//}}AFX_DATA
 
@@ -177,11 +192,13 @@ protected:
 	afx_msg void OnLoadFromMinimap();
 	afx_msg void OnMonsterAttackUp();
 	afx_msg void OnMonsterAttackDown();
+	afx_msg void OnAutoResearch();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 private:
-
+	int cavebotFindpathStartedWaypoint;
+	queue <PathfindParams*> pathfindPoints;
 	CMod_cavebotApp * m_app;
 };
 
