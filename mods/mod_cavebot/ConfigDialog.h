@@ -9,6 +9,8 @@
 
 #include "mod_cavebot.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
 #include <queue>
 using namespace std;
 
@@ -83,7 +85,7 @@ struct PathfindParams{
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -98,6 +100,12 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_WaypointWalker;
+	CGroupBoxEx	m_Training;
+	CGroupBoxEx	m_MonsterAttacking;
+	CGroupBoxEx	m_DepotWalker;
+	CGroupBoxEx	m_Debugging;
+	CGroupBoxEx	m_CorpseLooting;
 	CEdit	m_depotCap;
 	CButton	m_shareAlienBackattack;
 	CEdit	m_ignore;

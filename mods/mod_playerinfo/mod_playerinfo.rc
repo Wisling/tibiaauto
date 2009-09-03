@@ -65,10 +65,11 @@ END
 //
 
 IDD_CHARINFO DIALOGEX 0, 0, 253, 286
-STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: character information"
+STYLE DS_MODALFRAME | WS_POPUP | WS_CLIPSIBLINGS | WS_CAPTION
 FONT 8, "MS Sans Serif"
 BEGIN
+    GROUPBOX        "Character Statistics",IDC_CHARACTER_STATS,7,7,239,180
+    GROUPBOX        "Spell Timers",IDC_SPELL_STATS,7,193,239,63
     CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,215,
                     239,1,WS_EX_STATICEDGE
     CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,228,
@@ -97,8 +98,9 @@ BEGIN
                     1,WS_EX_STATICEDGE
     CONTROL         "",IDC_STATIC,"Static",SS_GRAYFRAME | SS_SUNKEN,7,43,239,
                     1,WS_EX_STATICEDGE
-    DEFPUSHBUTTON   "OK",IDOK,89,265,84,14
-    LTEXT           "Hit points:",IDC_STATIC,15,33,49,8
+    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,89,265,84,
+                    14
+    LTEXT           "Hit Points:",IDC_STATIC,15,33,49,8
     LTEXT           "Mana:",IDC_STATIC,15,46,49,8
     LTEXT           "0",IDC_CHARINFO_HP,64,33,50,8
     LTEXT           "0",IDC_CHARINFO_MANA,64,46,50,8
@@ -117,7 +119,8 @@ BEGIN
     LTEXT           "0",IDC_CHARINFO_SWORD_SPEED,114,125,49,8
     LTEXT           "0",IDC_CHARINFO_CLUB_SPEED,114,112,49,8
     LTEXT           "0",IDC_CHARINFO_AXE_SPEED,114,138,49,8
-    PUSHBUTTON      "Reset",IDC_RESET_COUNTERS,7,265,50,14
+    CONTROL         "Reset",IDC_RESET_COUNTERS,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,7,265,50,14
     LTEXT           "Dist:",IDC_STATIC,15,151,49,8
     LTEXT           "0",IDC_CHARINFO_DIST,64,151,50,8
     LTEXT           "0",IDC_CHARINFO_DIST_SPEED,114,151,49,8
@@ -132,7 +135,7 @@ BEGIN
     LTEXT           "0",IDC_CHARINFO_DIST_UPIN,163,151,72,8
     LTEXT           "0",IDC_CHARINFO_FISH_UPIN,163,176,72,8
     CTEXT           "Running for",IDC_TIME,14,17,225,12,SS_CENTERIMAGE,
-                    WS_EX_STATICEDGE
+                    WS_EX_TRANSPARENT | WS_EX_STATICEDGE
     LTEXT           "Level:",IDC_STATIC,15,59,49,8
     LTEXT           "0",IDC_CHARINFO_LVL,64,59,50,8
     LTEXT           "0",IDC_CHARINFO_EXP_UPIN,163,72,72,8
@@ -148,16 +151,14 @@ BEGIN
     LTEXT           "0",IDC_CHARINFO_SP,163,33,72,8
     LTEXT           "Capacity:",IDC_STATIC,114,46,49,8
     LTEXT           "0",IDC_CHARINFO_CAP,163,46,72,8
-    GROUPBOX        "Character statistics",IDC_STATIC,7,7,239,180
     LTEXT           "Fist:",IDC_STATIC,15,99,49,8
     LTEXT           "0",IDC_CHARINFO_FIST,64,99,50,8
     LTEXT           "0",IDC_CHARINFO_FIST_SPEED,114,99,49,8
     LTEXT           "0",IDC_CHARINFO_FIST_UPIN,163,99,72,8
-    LTEXT           "Magic level:",IDC_STATIC,15,85,49,8
+    LTEXT           "Magic Level:",IDC_STATIC,15,85,49,8
     LTEXT           "0",IDC_CHARINFO_MLVL,64,85,50,8
     LTEXT           "0",IDC_CHARINFO_MLVL_SPEED,114,85,49,8
     LTEXT           "0",IDC_CHARINFO_MLVL_UPIN,163,85,72,8
-    GROUPBOX        "Spells stats",IDC_STATIC,7,193,239,63
     LTEXT           "0",IDC_CHARINFO_LVL_SPEED,114,59,49,8
 END
 

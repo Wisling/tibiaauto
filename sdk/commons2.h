@@ -1,7 +1,8 @@
 /////////////////////////////////////////////////////////////////////////////
 #include "PackSender.h"
 #include "MemReader.h"
-#include "tileReader.h"
+#include "TibiaTile.h"
+#include "TileReader.h"
 
 int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
 {

@@ -28,7 +28,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CCharInfoDialog::CCharInfoDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(CCharInfoDialog::IDD, pParent)
+	: MyDialog(CCharInfoDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCharInfoDialog)
 	//}}AFX_DATA_INIT
@@ -39,6 +39,8 @@ void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCharInfoDialog)
+	DDX_Control(pDX, IDC_SPELL_STATS, m_SpellStats);
+	DDX_Control(pDX, IDC_CHARACTER_STATS, m_CharStats);
 	DDX_Control(pDX, IDC_CHARINFO_EXP_UPIN, m_expUpin);
 	DDX_Control(pDX, IDC_CHARINFO_LVL_UPIN, m_lvlUpin);
 	DDX_Control(pDX, IDC_CHARINFO_LVL_SPEED, m_lvlSpeed);
@@ -82,10 +84,13 @@ void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 
-BEGIN_MESSAGE_MAP(CCharInfoDialog, CDialog)
+BEGIN_MESSAGE_MAP(CCharInfoDialog, MyDialog)
 	//{{AFX_MSG_MAP(CCharInfoDialog)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_RESET_COUNTERS, OnResetCounters)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -153,9 +158,9 @@ void CCharInfoDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent==1001){
 		dataCalc();
 		dataShow();
-	};
+	}
+	//CDialog::OnTimer(nIDEvent);
 	
-	CDialog::OnTimer(nIDEvent);
 }
 
 void CCharInfoDialog::OnResetCounters() 
@@ -323,7 +328,6 @@ void CCharInfoDialog::dataShow(){
 	unsigned long min	= (timeDiff%3600)/60;
 	timeDiff -= min*60;
 	unsigned long hour	= timeDiff/3600;
-	
 	sprintf(buffer,"Running for %dh%dm%ds",hour,min,sec);				m_time.SetWindowText(buffer);
 
 	sprintf(buffer,"%d/%d",playerInfo.hp,playerInfo.maxHp);				m_hp.SetWindowText(buffer);
@@ -365,3 +369,4 @@ void CCharInfoDialog::dataShow(){
 		spellCtrl[i]->SetWindowText(buffer);
 	}
 }
+

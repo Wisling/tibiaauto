@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 zdll.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll" /pdbtype:sept
+# ADD LINK32 zdll.lib  zdll.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_cavebot.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -104,6 +104,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Helpers.cpp
 # End Source File
 # Begin Source File
@@ -120,6 +124,10 @@ SOURCE=.\mod_cavebot.rc
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\MyDialog.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\proxy.cpp
 # End Source File
 # Begin Source File
@@ -129,6 +137,10 @@ SOURCE=.\SendStats.cpp
 # Begin Source File
 
 SOURCE=.\SharedMemory.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\Skin.cpp
 # End Source File
 # Begin Source File
 

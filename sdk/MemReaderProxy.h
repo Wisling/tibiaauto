@@ -15,6 +15,7 @@
 #include "TibiaMiniMapLabel.h"
 #include "TibiaMiniMapPoint.h"
 #include "TibiaVIPEntry.h"
+#include "Skin.h"
 
 #if _MSC_VER > 1000
 #pragma once
@@ -78,6 +79,10 @@ public:
 
 	CTibiaTile *getTibiaTile(int tileNr);
 	void setTibiaTile(int tileNr, CTibiaTile *newTile);
+
+	CSkin loadSkin(CString);
+	CSkin loadCurrentSkin(CString);
+	bool saveSkin(CString, CSkin, bool);
 
 	// sets a global variable of 'name' to 'value'
 	void setGlobalVariable(char *name,char *value);

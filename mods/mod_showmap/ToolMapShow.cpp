@@ -73,7 +73,6 @@ void CToolMapShow::OnOK()
 BOOL CToolMapShow::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	alt  = flicker = back= 0;
 	int x;
 	int y;
 	RECT rect;
@@ -106,7 +105,6 @@ BOOL CToolMapShow::OnInitDialog()
 	refreshVisibleMap();
 
 	SetTimer(1001,250,NULL);
-	SetTimer(1004,(rand() % 360000) + 1,NULL);
 	
 		
 	return TRUE;  // return TRUE unless you set the focus to a control
@@ -115,35 +113,31 @@ BOOL CToolMapShow::OnInitDialog()
 
 BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC) 
 {
-	if(!alt) {
-		CDialog::OnEraseBkgnd(pDC);	
-	}
-	else {
-		CRect rect;
-		GetClientRect(&rect);
-		CDC dc;
-		CDC dcBuffer;
-		dc.CreateCompatibleDC(pDC);
-		dcBuffer.CreateCompatibleDC(&dc);
-		int bmw, bmh ;
-		BITMAP bmap;
-		CBitmap m_bitmap;
-		m_bitmap.LoadBitmap(IDB_BACKGROUND);
-		CBitmap* pOldBitmap = dcBuffer.SelectObject(&m_bitmap);
-		m_bitmap.GetBitmap(&bmap);
-		bmw = bmap.bmHeight;
-		bmh = bmap.bmHeight;
-		int xo=0, yo=0;
-		
-		for (yo = 0; yo < rect.Height(); yo += bmh)
+	CRect rect;
+	GetClientRect(&rect);
+	CDC dc;
+	CDC dcBuffer;
+	dc.CreateCompatibleDC(pDC);
+	dcBuffer.CreateCompatibleDC(&dc);
+	int bmw, bmh ;
+	BITMAP bmap;
+	CBitmap m_bitmap;
+	m_bitmap.LoadBitmap(IDB_BACKGROUND);
+	CBitmap* pOldBitmap = dcBuffer.SelectObject(&m_bitmap);
+	m_bitmap.GetBitmap(&bmap);
+	bmw = bmap.bmHeight;
+	bmh = bmap.bmHeight;
+	int xo=0, yo=0;
+	
+	for (yo = 0; yo < rect.Height(); yo += bmh)
+	{
+		for (xo = 0; xo < rect.Width(); xo += bmw)
 		{
-			for (xo = 0; xo < rect.Width(); xo += bmw)
-			{
-				pDC->BitBlt (xo, yo, rect.Width(), rect.Height(), &dcBuffer, 0, 0, SRCCOPY);
-			}
+			pDC->BitBlt (xo, yo, rect.Width(), rect.Height(), &dcBuffer, 0, 0, SRCCOPY);
 		}
-		BitBlt(dc, 0, 0, rect.Width(), rect.Height(), dcBuffer, 0, 0, SRCCOPY);
 	}
+	BitBlt(dc, 0, 0, rect.Width(), rect.Height(), dcBuffer, 0, 0, SRCCOPY);
+	
 	return true;
 }
 
@@ -443,35 +437,6 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 		delete self;
 		SetTimer(1003,1000,NULL);
 	}
-	if (nIDEvent==1004)
-	{
-		int fail = 0;
-		KillTimer(1004);
-		if (!flicker) {
-			flicker = (rand() % 7) + 1;
-			if (flicker == 6)
-				fail = 1;
-			back = flicker;
-			SetTimer(1004,(rand() % 100000) + 1,NULL);
-			alt = 0;
-		}
-		else {
-			SetTimer(1004,(rand() % 200) + 1,NULL);
-			if (flicker < back) {
-				back--;
-				alt = 0;
-			}
-			else {
-				flicker--;
-				alt = 1;
-			}
-		}
-		if (fail == 1) {
-			KillTimer(1004);
-			alt = 1;
-		}
-		RedrawWindow();
-};
 	
 	CDialog::OnTimer(nIDEvent);
 }

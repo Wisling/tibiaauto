@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../mod_playerinfo.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_playerinfo.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -105,6 +105,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\sdk\IPCBackPipeProxy.cpp
 # End Source File
 # Begin Source File
@@ -121,11 +125,19 @@ SOURCE=.\mod_playerinfo.rc
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\MyDialog.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\playerInfo.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\proxy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\Skin.cpp
 # End Source File
 # Begin Source File
 
@@ -162,11 +174,19 @@ SOURCE=.\mod_playerinfo.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\MyDialog.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\playerInfo.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\Skin.h
 # End Source File
 # Begin Source File
 

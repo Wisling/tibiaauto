@@ -112,8 +112,14 @@
 #define IDC_TOOL_AUTOATTACK_SCROLL_WAYPOINTS 3043
 #define IDC_TRAINING_WEAPON_HAND        3043
 #define IDC_AUTORESEARCH                3047
+#define IDC_FRAME_CORPSE_LOOTING        3048
+#define IDC_FRAME_DEPOT_WALKER          3049
 #define IDC_SEND_LOOTSTATS_CAVEBOT      3050
+#define IDC_FRAME_TRAINING              3050
 #define IDC_SEND_CREATURESTATS_CAVEBOT  3051
+#define IDC_FRAME_DEBUGGING             3051
+#define IDC_FRAME_WAYPOINT_WALKER       3052
+#define IDC_FRAME_MONSTER_ATTACKING     3053
 
 // Next default values for new objects
 // 
@@ -121,7 +127,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3005
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3048
+#define _APS_NEXT_CONTROL_VALUE         3054
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

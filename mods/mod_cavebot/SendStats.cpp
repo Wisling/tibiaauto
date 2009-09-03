@@ -21,7 +21,7 @@ int fileSendingProgress=1 ;
 
 
 CSendStats::CSendStats(CWnd* pParent /*=NULL*/)
-	: CDialog(CSendStats::IDD, pParent)
+	: MyDialog(CSendStats::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CSendStats)
 	//}}AFX_DATA_INIT
@@ -45,6 +45,9 @@ BEGIN_MESSAGE_MAP(CSendStats, CDialog)
 	ON_BN_CLICKED(IDC_SEND_CREATURESTATS_CAVEBOT, OnSendCreaturestats)
 	ON_WM_TIMER()
 	ON_WM_CLOSE()
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

@@ -44,6 +44,8 @@
 #define IDC_CHARINFO_MLVL_UPIN          1070
 #define IDC_RESET_COUNTERS              1097
 #define IDC_TIME                        1098
+#define IDC_CHARACTER_STATS             1099
+#define IDC_SPELL_STATS                 1100
 
 // Next default values for new objects
 // 
@@ -51,7 +53,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3011
+#define _APS_NEXT_CONTROL_VALUE         3015
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

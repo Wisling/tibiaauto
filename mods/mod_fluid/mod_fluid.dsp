@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../mod_fluid.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_fluid.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -118,6 +118,10 @@ SOURCE=.\mod_fluid.rc
 # Begin Source File
 
 SOURCE=.\proxy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\Skin.cpp
 # End Source File
 # Begin Source File
 
