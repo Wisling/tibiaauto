@@ -28,19 +28,16 @@ static int pointCacheSize=0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-template<> 
-UINT AFXAPI HashKey<point*> (point* key)
+AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
 {	
 	return key->x*191+key->y*257+key->z*317;
 }
 
 
 typedef point* LPpoint;
-template<>
-BOOL AFXAPI CompareElements<LPpoint, LPpoint> 
+AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint> 
      (const LPpoint *v1, const LPpoint *v2)
 {	
-	
 	if (!v1||!v2) return false;
 	point *v1d=*v1;
 	point *v2d=*v2;
@@ -49,19 +46,21 @@ BOOL AFXAPI CompareElements<LPpoint, LPpoint>
 	return false;    	
 }
 
+typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
+
 CTibiaMap::CTibiaMap()
 {		
 	prohCount=0;
 	prohSize=500;
 	prohList=(struct point *)malloc(sizeof(struct point)*prohSize);
 
-			ofstream myfile;
-			myfile.open ("C:/example.txt",ios::out);
-
-			myfile <<"\n";
-			myfile.close();
+	//		ofstream myfile;
+	//		myfile.open ("C:/example.txt",ios::out);
+	//
+	//		myfile <<"\n";
+	//		myfile.close();
 	//mar/03/08 pointData size=36, point size=12
-	tibiaMap2.InitHashTable(7919*17+1);
+	tibiaMap2.InitHashTable(11213);//56115 map points in a mapping of travel between all cities 
 }
 
 CTibiaMap::~CTibiaMap()
@@ -420,7 +419,6 @@ struct point CTibiaMap::getPointByNr(int nr)
 		return point(0,0,0);
 	}
 }
-
 
 int CTibiaMap::isPointAvailableNoProh(int x, int y, int z)
 {

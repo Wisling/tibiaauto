@@ -15,6 +15,7 @@
 #include "MemConstData.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
+#include "TibiaMiniMapLabel.h"
 #include "TibiaVIPEntry.h"
 
 class CMemReader  : public CMemConstData
@@ -37,7 +38,8 @@ public:
 	int getPlayerModeAttackType();
 	void setMainTrayText(char *text);
 	void setMainWindowText(char *text);
-	CTibiaMiniMapPoint * readMiniMapPoint(int mapNr,int pointNr);
+	CTibiaMiniMapLabel * readMiniMapLabel(int mapNr,int pointNr);
+	CTibiaMiniMapPoint * readMiniMapPoint(int x,int y,int z);
 	CTibiaMiniMap * readMiniMap(int nr);
 	void setRemainingTilesToGo(int val);
 	void writeDisableRevealCName();

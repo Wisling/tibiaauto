@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "PackSenderProxy.cpp"
 #include "MemConstData.cpp"
 #include "ModuleUtil.cpp"
+#include "TAMiniMapProxy.cpp"
 #include "TibiaMapProxy.cpp"
 #include "TibiaMapPoint.cpp"
 #include "TibiaItemProxy.cpp"

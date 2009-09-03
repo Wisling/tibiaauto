@@ -9,7 +9,9 @@
 #include "PackSender.h"
 #include "MemConstData.h"
 #include "TibiaMapPoint.h"
+#include "TibiaMiniMapPoint.h"
 #include "TibiaMap.h"
+#include "TAMiniMap.h"
 #include "TibiaItem.h"
 #include "IPCBackPipe.h"
 #include "TibiaTile.h"
@@ -25,12 +27,11 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+static char THIS_FILE[] = "C:/temp/testfdkls.txt";
 #endif
 
-
-
 CTibiaMap tibiaMap;
+CTAMiniMap taMiniMap;
 CMemReader *reader=NULL;
 
 void startMemReader()
@@ -542,6 +543,36 @@ struct point tibiaMapGetPointByNr(int nr)
 	return tibiaMap.getPointByNr(nr);
 }
 
+int tibiaMapIsPointInMiniMap(int x,int y,int z)
+{
+	return taMiniMap.isPointInMiniMap(x,y,z);
+}
+
+CTibiaMiniMapPoint* tibiaMapGetMiniMapPoint(int x,int y,int z)
+{
+	return taMiniMap.getMiniMapPoint(x,y,z);
+}
+
+CUIntArray * tibiaMapFindPathOnMiniMap(int x,int y,int z,int x2,int y2,int z2)
+{
+	return taMiniMap.findPathOnMiniMap(x, y, z, x2, y2, z2);
+}
+
+void tibiaMapFindPathStop()
+{
+	taMiniMap.findPathStop();
+}
+
+bool tibiaMapIsFindPathStopped()
+{
+	return taMiniMap.isFindPathStopped();
+}
+
+int tibiaMapGetCurrentDistance()
+{
+	return taMiniMap.getCurrentDistance();
+}
+
 int tibiaItemGetIndex(int objectId, int type)
 {
 	return CTibiaItem::getIndex(objectId, type);
@@ -911,10 +942,16 @@ CTibiaMiniMap *memReadReadMiniMap(int nr)
 	return reader->readMiniMap(nr);
 }
 
-CTibiaMiniMapPoint *memReadReadMiniMapPoint(int mapNr,int pointNr)
+CTibiaMiniMapLabel *memReadReadMiniMapLabel(int mapNr,int pointNr)
 {
 	startMemReader();
-	return reader->readMiniMapPoint(mapNr,pointNr);
+	return reader->readMiniMapLabel(mapNr,pointNr);
+}
+
+CTibiaMiniMapPoint *memReadReadMiniMapPoint(int x,int y,int z)
+{
+	startMemReader();
+	return reader->readMiniMapPoint(x,y,z);
 }
 
 int crFindCreatureStatForLocationTibiaId(int x, int y, int z, int pos)

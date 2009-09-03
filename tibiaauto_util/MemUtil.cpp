@@ -159,7 +159,7 @@ int CMemUtil::GetMemRange(long processId, DWORD memAddressStart, DWORD memAddres
 	};
     
     ptr = (void *)memAddressStart;
-    if (ReadProcessMemory(dwHandle, ptr, result,   memAddressEnd-memAddressStart, NULL)) {		
+    if (ReadProcessMemory(dwHandle, ptr, result,   memAddressEnd-memAddressStart, NULL)) {
         return 0;
     }
     else {	

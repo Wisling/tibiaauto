@@ -10,6 +10,8 @@
 #include "PythonScript.h"
 #include "IPCBackPipeProxy.h"
 #include "TibiaMapProxy.h"
+#include "TibiaMiniMapPoint.h"
+#include "TAMiniMapProxy.h"
 #include "TibiaItemProxy.h"
 #include "AliceProxy.h"
 #include "RegexpProxy.h"
@@ -256,6 +258,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"getGlobalVariable", tibiaauto_reader_getGlobalVariable, METH_VARARGS},
 	{"readMiniMap", tibiaauto_reader_readMiniMap, METH_VARARGS},
 	{"readMiniMapPoint", tibiaauto_reader_readMiniMapPoint, METH_VARARGS},
+	{"readMiniMapLabel", tibiaauto_reader_readMiniMapLabel, METH_VARARGS},
 	{"setMainWindowText", tibiaauto_reader_setMainWindowText, METH_VARARGS},
 	{"setMainTrayText", tibiaauto_reader_setMainTrayText, METH_VARARGS},
 	{"getPlayerModeAttackPlayers", tibiaauto_reader_getPlayerModeAttackPlayers, METH_VARARGS},
@@ -326,6 +329,7 @@ static PyMethodDef Methods_tasender[] = {
 	{"enableCName", tibiaauto_sender_enableCName, METH_VARARGS},
 	{"sendAttackedCreatureToAutoAim", tibiaauto_sender_sendAttackedCreatureToAutoAim, METH_VARARGS},
 	{"stopAll", tibiaauto_sender_stopAll, METH_VARARGS},
+	{"stepMulti", tibiaauto_sender_stepMulti, METH_VARARGS},
 
 	
     {NULL,      NULL}        /* Sentinel */
@@ -349,6 +353,8 @@ static PyMethodDef Methods_tamap[] = {
 	{"isPointAvailable", tibiaauto_map_isPointAvailable, METH_VARARGS},
 	{"isPointAvailableNoProh", tibiaauto_map_isPointAvailableNoProh, METH_VARARGS},
 	{"size", tibiaauto_map_size, METH_VARARGS},
+	{"isPointInMiniMap", tibiaauto_map_isPointInMiniMap, METH_VARARGS},
+	{"getMiniMapPoint", tibiaauto_map_getMiniMapPoint, METH_VARARGS},
 	
 	
     {NULL,      NULL}        /* Sentinel */

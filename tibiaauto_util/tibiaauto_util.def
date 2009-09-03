@@ -124,7 +124,7 @@ EXPORTS
 	packSenderSayWhisper @118
 	packSenderSayYell @119
 	memReadReadMiniMap @120
-	memReadReadMiniMapPoint @121
+	memReadReadMiniMapLabel @121
 	crFindCreatureStatForLocationTibiaId @122
 	crFindCreatureStatForLocationCount @123
 	crFindCreatureStatForLocationName @124
@@ -183,4 +183,11 @@ EXPORTS
 	packSenderUseItemOnCreature @177
 	packSenderUseItemFromContainerOnCreature @178
 	packSenderUseItemFromFloorOnCreature @179
+	memReadReadMiniMapPoint @180
+	tibiaMapIsPointInMiniMap @181
+	tibiaMapGetMiniMapPoint @182
+	tibiaMapFindPathOnMiniMap @183
+	tibiaMapFindPathStop @184
+	tibiaMapIsFindPathStopped @185
+	tibiaMapGetCurrentDistance @186
 

@@ -375,7 +375,7 @@ void CTibiaItem::refreshItemLists()
 				
 		char pathBuf[2048];
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-items.xml",installPath);
-		parser->parse(pathBuf);							
+		parser->parse(pathBuf);
 		DOMNode  *doc = parser->getDocument();		
 		for (rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
 		{			

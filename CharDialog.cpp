@@ -57,7 +57,7 @@ void CCharDialog::OnCharRefresh()
 	
 		
 	
-	Process32First(procSnapshortHandle,&procEntry);	
+	Process32First(procSnapshortHandle,&procEntry);
 	
 	do
 	{

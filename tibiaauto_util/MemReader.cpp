@@ -10,6 +10,9 @@
 #include "TileReader.h"
 
 #include "TibiaItem.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 
 #ifdef _DEBUG
@@ -666,12 +669,12 @@ CTibiaMiniMap * CMemReader::readMiniMap(int nr)
 	return retMap;
 }
 
-CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int mapNr, int pointNr)
+CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 {
 	CTibiaItemProxy itemProxy;
 	if (mapNr<0||mapNr>9) return NULL;
 	if (pointNr<0) return NULL;
-	CTibiaMiniMapPoint *retPoint = new CTibiaMiniMapPoint();
+	CTibiaMiniMapLabel *retPoint = new CTibiaMiniMapLabel();
 
 	int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*mapNr;
 	if (pointNr>=CMemUtil::GetMemIntValue(mapOffset+131236))
@@ -681,7 +684,7 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int mapNr, int pointNr)
 		return NULL;
 	}
 	int mapPointAddr = CMemUtil::GetMemIntValue(mapOffset+131232);
-	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapPoint");
+	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapLabel");
 	retPoint->x=CMemUtil::GetMemIntValue(mapPointOffset+0);
 	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4);	
 	retPoint->type=CMemUtil::GetMemIntValue(mapPointOffset+8);
@@ -689,6 +692,54 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int mapNr, int pointNr)
 
 	return retPoint;
 
+}	
+
+CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
+{
+	CTibiaItemProxy itemProxy;
+	CTibiaMiniMapPoint* bogusPoint=new CTibiaMiniMapPoint(x,y,z,0,250);
+	for (int nr = 0; nr<10;nr++){
+		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
+		CTibiaMiniMap *map = readMiniMap(nr);
+		if (map->z==z && map->x==(int)(x/256) && map->y==(int)(y/256)){
+			CTibiaMiniMapPoint *miniMapPoint=new CTibiaMiniMapPoint(x,y,z,(unsigned char)CMemUtil::GetMemIntValue(mapOffset+(y-map->y*256)+(x-map->x*256)*256)%256,(unsigned char)CMemUtil::GetMemIntValue(mapOffset+(y-map->y*256)+(x-map->x*256)*256+256*256)%256);
+			delete map;
+			delete bogusPoint;
+			return miniMapPoint;
+		}
+		delete map;
+	}
+	char filename[1024+20];
+	sprintf(filename,"%s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)(x/256),(int)(y/256),z);
+	ifstream f;
+	f.open(filename,ifstream::in);
+	//AfxMessageBox(filename);
+	if (f.good())
+	{
+		unsigned char colour[65536],speed[65536];
+		f.read((char*)colour,65536);
+		if (f.bad()){ 
+			f.close(); 
+			sprintf(filename,"Fileread Failed: %s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)(x/256),(int)(y/256),z);
+			AfxMessageBox(filename);
+			return bogusPoint;
+		}//read failed
+		f.read((char*)speed,65536);
+		if (f.bad()){ 
+			f.close(); 
+			sprintf(filename,"Fileread Failed: %s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)(x/256),(int)(y/256),z);
+			AfxMessageBox(filename);
+			return bogusPoint;
+		}//read failed
+		f.close();
+
+		CTibiaMiniMapPoint *miniMapPoint=new CTibiaMiniMapPoint(x,y,z,colour[(x%256)*256+y%256],speed[(x%256)*256+y%256]);
+		delete bogusPoint;
+		return miniMapPoint;			
+	}
+
+	//point does not exist on minimaps in memory nor in files
+	return bogusPoint;
 }	
 
 BOOL CALLBACK EnumWindowsProc(      

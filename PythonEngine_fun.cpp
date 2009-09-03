@@ -1,9 +1,6 @@
 #include "ModuleProxy.h"
 #include "PythonScript.h"
-#include "TibiaMiniMap.h"
-#include "TibiaMiniMapPoint.h"
 #include "CreaturesReaderProxy.h"
-#include "TibiaVIPEntry.h"
 #include <commons.h>
 
 static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
@@ -1135,6 +1132,50 @@ static PyObject *tibiaauto_sender_stopAll(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
+static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9,arg10,arg11,arg12,arg13,arg14,arg15;
+    if (!PyArg_ParseTuple(args, "iiiiiiiiiiiiiii",&arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8,&arg9,&arg10,&arg11,&arg12,&arg13,&arg14,&arg15)) return NULL;	
+	int size=15;
+	if(arg15==0) size=14;
+	if(arg14==0) size=13;
+	if(arg13==0) size=12;
+	if(arg12==0) size=11;
+	if(arg11==0) size=10;
+	if(arg10==0) size=9;
+	if(arg9==0) size=8;
+	if(arg8==0) size=7;
+	if(arg7==0) size=6;
+	if(arg6==0) size=5;
+	if(arg5==0) size=4;
+	if(arg4==0) size=3;
+	if(arg3==0) size=2;
+	if(arg2==0) size=1;
+	if(arg1==0) size=0;
+
+	int *path=new int[size];
+	if(arg1!=0) path[0]=arg1;
+	if(arg2!=0) path[1]=arg2;
+	if(arg3!=0) path[2]=arg3;
+	if(arg4!=0) path[3]=arg4;
+	if(arg5!=0) path[4]=arg5;
+	if(arg6!=0) path[5]=arg6;
+	if(arg7!=0) path[6]=arg7;
+	if(arg8!=0) path[7]=arg8;
+	if(arg9!=0) path[8]=arg9;
+	if(arg10!=0) path[9]=arg10;
+	if(arg11!=0) path[10]=arg11;
+	if(arg12!=0) path[11]=arg12;
+	if(arg13!=0) path[12]=arg13;
+	if(arg14!=0) path[13]=arg14;
+	if(arg15!=0) path[14]=arg15;
+
+	sender.stepMulti(path,size);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
 static PyObject *tibiaauto_sender_sendCreatureInfo(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1349,7 +1390,7 @@ static PyObject *tibiaauto_map_isPointAvailableNoProh(PyObject *self, PyObject *
 	CTibiaMapProxy tibiaMap;
 
 	int arg1,arg2,arg3;
-  	  if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+  	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
 	int ret1=tibiaMap.isPointAvailableNoProh(arg1,arg2,arg3);	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	
@@ -1362,6 +1403,35 @@ static PyObject *tibiaauto_map_size(PyObject *self, PyObject *args)
 	int ret1=tibiaMap.size();	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	
+	return ret;
+}
+static PyObject *tibiaauto_map_isPointInMiniMap(PyObject *self, PyObject *args)
+{
+	CTAMiniMapProxy taMiniMap;
+	
+	int arg1,arg2,arg3;
+  	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;	
+	int ret1=taMiniMap.isPointInMiniMap(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_map_getMiniMapPoint(PyObject *self, PyObject *args)
+{
+	CTAMiniMapProxy taMiniMap;
+	
+	int arg1,arg2,arg3;
+  	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;
+	CTibiaMiniMapPoint *retPoint = taMiniMap.getMiniMapPoint(arg1,arg2,arg3);
+	PyObject *ret = 
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
+		"x",retPoint->x,
+		"y",retPoint->y,
+		"z",retPoint->z,
+		"colour",retPoint->colour,
+		"speed",retPoint->speed);	
+
+	delete retPoint;
 	return ret;
 }
 static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
@@ -1747,22 +1817,43 @@ static PyObject *tibiaauto_reader_readMiniMap(PyObject *self,PyObject *args)
 	return ret;
 }
 
-static PyObject *tibiaauto_reader_readMiniMapPoint(PyObject *self,PyObject *args)
+static PyObject *tibiaauto_reader_readMiniMapLabel(PyObject *self,PyObject *args)
 {
 	CMemReaderProxy reader;
 	int arg1,arg2;
     if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
 
-	CTibiaMiniMapPoint *miniMapPoint = reader.readMiniMapPoint(arg1,arg2);
+	CTibiaMiniMapLabel *MiniMapLabel = reader.readMiniMapLabel(arg1,arg2);
 
-	if (!miniMapPoint) return NULL;
+	if (!MiniMapLabel) return NULL;
 	
 	PyObject *ret = Py_BuildValue("{s:i,s:i,s:i,s:s}",
-		"x",miniMapPoint->x,
-		"y",miniMapPoint->y,
-		"type",miniMapPoint->type,
-		"desc",miniMapPoint->desc);
-	delete miniMapPoint;
+		"x",MiniMapLabel->x,
+		"y",MiniMapLabel->y,
+		"type",MiniMapLabel->type,
+		"desc",MiniMapLabel->desc);
+	delete MiniMapLabel;
+	
+	return ret;
+}
+
+static PyObject *tibiaauto_reader_readMiniMapPoint(PyObject *self,PyObject *args)
+{
+	CMemReaderProxy reader;
+	int arg1,arg2,arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;
+
+	CTibiaMiniMapPoint *MiniMapPoint = reader.readMiniMapPoint(arg1,arg2,arg3);
+
+	if (!MiniMapPoint) return NULL;
+	
+	PyObject *ret = Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
+		"x",MiniMapPoint->x,
+		"y",MiniMapPoint->y,
+		"z",MiniMapPoint->z,
+		"colour",MiniMapPoint->colour,
+		"speed",MiniMapPoint->speed);
+	delete MiniMapPoint;
 	
 	return ret;
 }

@@ -9,12 +9,17 @@
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
+//#undef THIS_FILE
+//static char THIS_FILE[] = __FILE__;
 #endif
 
 int tprogrammingEdition=0;
-
+/*
+#include "c:\temp\HookAlloc\MemoryTracking.h"
+USE_MEMORYTRACKING("c:\\temp\\Tibia_Tibia.log",true)
+#pragma warning(disable:4073)
+#pragma init_seg(lib)
+*/
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoApp
 
