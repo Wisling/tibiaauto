@@ -16,3 +16,4 @@ EXPORTS
 	resetMultiParamAccess @15
 	isMultiParam @16
 	validateConfig @17
+	getNewSkin @18

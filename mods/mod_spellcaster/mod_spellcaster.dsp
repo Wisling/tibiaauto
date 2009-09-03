@@ -120,6 +120,10 @@ SOURCE=.\proxy.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\Skin.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
 # End Source File
@@ -150,6 +154,10 @@ SOURCE=.\mod_spellcaster.h
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\Skin.h
 # End Source File
 # Begin Source File
 

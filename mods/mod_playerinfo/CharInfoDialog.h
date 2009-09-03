@@ -7,10 +7,13 @@
 // CharInfoDialog.h : header file
 //
 
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CCharInfoDialog dialog
 
-class CCharInfoDialog : public CDialog
+class CCharInfoDialog : public MyDialog
 {
 // Construction
 public:
@@ -19,6 +22,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CCharInfoDialog)
 	enum { IDD = IDD_CHARINFO };
+	CGroupBoxEx	m_SpellStats;
+	CGroupBoxEx	m_CharStats;
 	CStatic	m_expUpin;
 	CStatic	m_lvlUpin;
 	CStatic	m_lvlSpeed;

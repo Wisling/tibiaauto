@@ -19,3 +19,4 @@ EXPORTS
 	GetPlayerInfo @18
 	init @19
 	activate @20
+	getNewSkin @21

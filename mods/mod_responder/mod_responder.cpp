@@ -111,12 +111,9 @@ void CMod_responderApp::start()
 	{
 		if (!m_infoDialog)
 		{
-			if (!m_infoDialog)
-			{ 
-				AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-				m_infoDialog=new CToolAutoRespond();
-				m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
-			}
+			AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+			m_infoDialog=new CToolAutoRespond();
+			m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 		}
 		m_infoDialog->start();
 	}

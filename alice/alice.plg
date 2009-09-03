@@ -3,13 +3,12 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: alice - Win32 Debug--------------------
+--------------------Configuration: alice - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Debug/alice.res" /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\alice.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D7.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB9.tmp" with contents
 [
-/nologo /MDd /w /W0 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/alice.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+/nologo /MD /w /W0 /GX /O2 /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/alice.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\AimlWriter.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\alice.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\Element.cpp"
@@ -25,11 +24,6 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D7.tmp" with conten
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\NodeWalker.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\Parser.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\PredicateEngine.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\PreParser.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\SaxParser.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\ServerSocket.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\Socket.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\SocketHandler.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\Stream.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\StringTokenizer.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\Substituter.cpp"
@@ -41,56 +35,81 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D7.tmp" with conten
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\wxwindows.cpp"
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\XmlSocketResponder.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D7.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D8.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB9.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPBA.tmp" with contents
 [
-/nologo /MDd /w /W0 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/alice.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\alice\StdAfx.cpp"
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/alice.pdb" /machine:I386 /def:".\alice.def" /out:"../../tibiaauto-pub/mods/alice.dll" /implib:"Release/alice.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\AimlWriter.obj"
+".\Release\alice.obj"
+".\Release\Element.obj"
+".\Release\FlashResponder.obj"
+".\Release\Handler.obj"
+".\Release\HTTPProcessor.obj"
+".\Release\IrcResponder.obj"
+".\Release\Kernel.obj"
+".\Release\Logger.obj"
+".\Release\Main.obj"
+".\Release\Match.obj"
+".\Release\Nodemaster.obj"
+".\Release\NodeWalker.obj"
+".\Release\Parser.obj"
+".\Release\PredicateEngine.obj"
+".\Release\PreParser.obj"
+".\Release\SaxParser.obj"
+".\Release\ServerSocket.obj"
+".\Release\Socket.obj"
+".\Release\SocketHandler.obj"
+".\Release\StdAfx.obj"
+".\Release\Stream.obj"
+".\Release\StringTokenizer.obj"
+".\Release\Substituter.obj"
+".\Release\Template.obj"
+".\Release\TemplateProcessor.obj"
+".\Release\TimeKeeper.obj"
+".\Release\TokenProxyListener.obj"
+".\Release\Utils.obj"
+".\Release\wxwindows.obj"
+".\Release\XmlSocketResponder.obj"
+".\Release\alice.res"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D8.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D9.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/alice.pdb" /debug /machine:I386 /def:".\alice.def" /out:"../../tibiaauto-pub/mods/alice.dll" /implib:"Debug/alice.lib" /pdbtype:sept 
-".\Debug\AimlWriter.obj"
-".\Debug\alice.obj"
-".\Debug\Element.obj"
-".\Debug\FlashResponder.obj"
-".\Debug\Handler.obj"
-".\Debug\HTTPProcessor.obj"
-".\Debug\IrcResponder.obj"
-".\Debug\Kernel.obj"
-".\Debug\Logger.obj"
-".\Debug\Main.obj"
-".\Debug\Match.obj"
-".\Debug\Nodemaster.obj"
-".\Debug\NodeWalker.obj"
-".\Debug\Parser.obj"
-".\Debug\PredicateEngine.obj"
-".\Debug\PreParser.obj"
-".\Debug\SaxParser.obj"
-".\Debug\ServerSocket.obj"
-".\Debug\Socket.obj"
-".\Debug\SocketHandler.obj"
-".\Debug\StdAfx.obj"
-".\Debug\Stream.obj"
-".\Debug\StringTokenizer.obj"
-".\Debug\Substituter.obj"
-".\Debug\Template.obj"
-".\Debug\TemplateProcessor.obj"
-".\Debug\TimeKeeper.obj"
-".\Debug\TokenProxyListener.obj"
-".\Debug\Utils.obj"
-".\Debug\wxwindows.obj"
-".\Debug\XmlSocketResponder.obj"
-".\Debug\alice.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP4D9.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPBA.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-StdAfx.cpp
-cl.exe terminated at user request.
+AimlWriter.cpp
+alice.cpp
+Element.cpp
+FlashResponder.cpp
+Handler.cpp
+HTTPProcessor.cpp
+IrcResponder.cpp
+Kernel.cpp
+Logger.cpp
+Main.cpp
+Match.cpp
+Nodemaster.cpp
+NodeWalker.cpp
+Parser.cpp
+PredicateEngine.cpp
+Stream.cpp
+StringTokenizer.cpp
+Substituter.cpp
+Template.cpp
+TemplateProcessor.cpp
+Generating Code...
+Compiling...
+TimeKeeper.cpp
+TokenProxyListener.cpp
+Utils.cpp
+wxwindows.cpp
+XmlSocketResponder.cpp
+Generating Code...
+Linking...
+   Creating library Release/alice.lib and object Release/alice.exp
 
+
+
+<h3>Results</h3>
+alice.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

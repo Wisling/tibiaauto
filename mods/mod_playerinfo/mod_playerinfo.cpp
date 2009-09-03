@@ -123,7 +123,6 @@ void CMod_playerinfoApp::start()
 
 void CMod_playerinfoApp::stop()
 {
-		
 } 
 
 void CMod_playerinfoApp::showConfigDialog()
@@ -195,4 +194,13 @@ char *CMod_playerinfoApp::getConfigParamName(int nr)
 void* CMod_playerinfoApp::GetPlayerInfo()
 {
 	return &playerInfo;	
+}
+
+
+void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
+{
+	skin = newSkin;
+	char buf[33];
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	m_infoDialog->Invalidate();
 }

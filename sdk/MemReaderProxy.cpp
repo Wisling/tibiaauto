@@ -697,6 +697,46 @@ void CMemReaderProxy::setTibiaTile(int tileNr, CTibiaTile *newTile)
 	} 
 }
 
+CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
+	typedef CSkin (__stdcall *Proto_fun)(CString);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"loadSkin");
+		if (fun)
+		{
+			return fun(pathBuf);
+		}
+	} 
+	return skin;
+}
+CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf) {
+	typedef CSkin (__stdcall *Proto_fun)(CString);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"loadCurrentSkin");
+		if (fun)
+		{
+			return fun(pathBuf);
+		}
+	} 
+	return skin;
+}
+bool CMemReaderProxy::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
+	typedef bool (__stdcall *Proto_fun)(CString, CSkin, bool);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"saveSkin");
+		if (fun)
+		{
+			if (fun(pathBuf, saveSkin, saveSeperate))
+				return true;
+			else 
+				return false;
+		}
+	}
+	return false;
+}
+
 void CMemReaderProxy::setRemainingTilesToGo(int val)
 {
 	typedef void (*Proto_fun)(int);

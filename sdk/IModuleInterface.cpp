@@ -37,7 +37,6 @@ static char THIS_FILE[]=__FILE__;
 extern "C" char * EXPORT getName()
 {
 	return module.getName();
-
 }
 
 extern "C" void EXPORT start()
@@ -64,14 +63,17 @@ extern "C"  void EXPORT configToControls()
 {
 	module.configToControls();
 }
+
 extern "C"  void EXPORT controlsToConfig() 
 {
 	module.controlsToConfig();
 }
+
 extern "C"  void EXPORT disableControls() 
 {
 	module.disableControls();
 }
+
 extern "C"  void EXPORT enableControls() 
 {
 	module.enableControls();
@@ -126,4 +128,9 @@ extern "C" void EXPORT init()
 extern "C" void EXPORT activate(int kernelVersion)
 {
 	module.activate(kernelVersion);
+}
+
+extern "C" void EXPORT getNewSkin(CSkin newSkin)
+{
+	module.getNewSkin(newSkin);
 }

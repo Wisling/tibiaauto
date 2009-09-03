@@ -12,8 +12,8 @@ Class2=CCharInfoDialog
 LastTemplate=CDialog
 Resource1=IDD_TOOL_MAPSHOW
 Resource2=IDR_SHOWMAP_MENU
-Resource3=IDD_TOOL_MAPSHOW (Polish)
-Resource4=IDD_TOOL_MAPSHOW_CONFIG
+Resource3=IDD_TOOL_MAPSHOW_CONFIG
+Resource4=IDD_TOOL_MAPSHOW (Polish)
 Resource5=IDR_SHOWMAP_MENU (Polish)
 
 [CLS:CMod_showmapApp]

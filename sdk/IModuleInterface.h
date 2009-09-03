@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "Skin.h"
 
 class IModuleInterface  
 {
@@ -25,6 +26,9 @@ public:
 	{
 	}
 	virtual void stop()
+	{
+	}
+	virtual void getNewSkin(CSkin newSkin)
 	{
 	}
 	virtual void showConfigDialog() 
