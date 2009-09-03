@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CCharDialog::CCharDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(CCharDialog::IDD, pParent)
+	: MyDialog(CCharDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCharDialog)
 		// NOTE: the ClassWizard will add member initialization here
@@ -38,6 +38,9 @@ void CCharDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CCharDialog, CDialog)
 	//{{AFX_MSG_MAP(CCharDialog)
 	ON_WM_TIMER()
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

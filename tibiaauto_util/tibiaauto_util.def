@@ -190,4 +190,6 @@ EXPORTS
 	tibiaMapFindPathStop @184
 	tibiaMapIsFindPathStopped @185
 	tibiaMapGetCurrentDistance @186
-
+	loadSkin @187
+	loadCurrentSkin @188
+	saveSkin @189

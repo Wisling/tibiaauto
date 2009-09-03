@@ -67,13 +67,11 @@ CModuleProxy::CModuleProxy(char *moduleName,int pathIsAbsolute)
 
 CModuleProxy::~CModuleProxy()
 {
-
 }
 
 //////////////////////////////////////////////////////////////////////
 // Functions
 //////////////////////////////////////////////////////////////////////
-
 
 char * CModuleProxy::getName()
 {
@@ -124,6 +122,7 @@ void CModuleProxy::start()
 		}
 	}
 }
+
 void CModuleProxy::stop()
 {
 	if (isStarted())
@@ -139,6 +138,20 @@ void CModuleProxy::stop()
 		}
 	}
 }
+
+void CModuleProxy::getNewSkin(CSkin newSkin)
+{
+	typedef void ( *Proto_fun)(CSkin);
+	if (dllModule)
+	{
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getNewSkin");
+		if (fun)
+		{
+			fun(newSkin);
+		}
+	}
+}
+
 void CModuleProxy::showConfigDialog()
 {
 	typedef void (*Proto_fun)();
@@ -151,6 +164,7 @@ void CModuleProxy::showConfigDialog()
 		}
 	}
 }
+
 void CModuleProxy::configToControls()
 {
 	typedef void (*Proto_fun)();
@@ -163,6 +177,7 @@ void CModuleProxy::configToControls()
 		}
 	}
 }
+
 void CModuleProxy::controlsToConfig()
 {
 	typedef void (*Proto_fun)();
@@ -187,6 +202,7 @@ void CModuleProxy::disableControls()
 		}
 	}
 }
+
 void CModuleProxy::enableControls()
 {
 	typedef void (*Proto_fun)();
@@ -216,9 +232,6 @@ char *CModuleProxy::getVersion()
 		return "not loaded";
 	}
 }
-
-
-
 
 int CModuleProxy::isLoaded()
 {

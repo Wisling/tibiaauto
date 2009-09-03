@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 zlib.lib ws2_32.lib xerces.lib zdll.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs"
+# ADD LINK32 zlib.lib ws2_32.lib xerces.lib zdll.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"C:\Program Files\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -95,6 +95,10 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=.\CharDialog.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ColorChooser.cpp
 # End Source File
 # Begin Source File
 
@@ -118,6 +122,10 @@ SOURCE=.\EnterCode.cpp
 # End Source File
 # Begin Source File
 
+SOURCE="..\tibiaauto-pub\sdk\GroupBoxEx.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE=.\LoadedModules.cpp
 # End Source File
 # Begin Source File
@@ -135,6 +143,10 @@ SOURCE=.\MemUtil.cpp
 # Begin Source File
 
 SOURCE=.\ModuleProxy.cpp
+# End Source File
+# Begin Source File
+
+SOURCE="..\tibiaauto-pub\sdk\MyDialog.cpp"
 # End Source File
 # Begin Source File
 
@@ -158,7 +170,19 @@ SOURCE=.\PythonScriptsDialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE="..\tibiaauto-pub\sdk\RepeatButton.cpp"
+# End Source File
+# Begin Source File
+
 SOURCE=.\ScriptConfigDialg.cpp
+# End Source File
+# Begin Source File
+
+SOURCE="..\tibiaauto-pub\sdk\Skin.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE="..\tibiaauto-pub\sdk\SliderCtrlEx.cpp"
 # End Source File
 # Begin Source File
 
@@ -195,6 +219,10 @@ SOURCE=.\CharDialog.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\ColorChooser.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\ConfigCreatorUtil.h
 # End Source File
 # Begin Source File
@@ -219,6 +247,10 @@ SOURCE=.\global.h
 # End Source File
 # Begin Source File
 
+SOURCE="..\tibiaauto-pub\sdk\GroupBoxEx.h"
+# End Source File
+# Begin Source File
+
 SOURCE=.\LoadedModules.h
 # End Source File
 # Begin Source File
@@ -239,6 +271,10 @@ SOURCE=.\ModuleProxy.h
 # End Source File
 # Begin Source File
 
+SOURCE="..\tibiaauto-pub\sdk\MyDialog.h"
+# End Source File
+# Begin Source File
+
 SOURCE=.\OptionsDialog.h
 # End Source File
 # Begin Source File
@@ -255,11 +291,23 @@ SOURCE=.\PythonScriptsDialog.h
 # End Source File
 # Begin Source File
 
+SOURCE="..\tibiaauto-pub\sdk\RepeatButton.h"
+# End Source File
+# Begin Source File
+
 SOURCE=.\Resource.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\ScriptConfigDialg.h
+# End Source File
+# Begin Source File
+
+SOURCE="..\tibiaauto-pub\sdk\Skin.h"
+# End Source File
+# Begin Source File
+
+SOURCE="..\tibiaauto-pub\sdk\SliderCtrlEx.h"
 # End Source File
 # Begin Source File
 

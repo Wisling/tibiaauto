@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "OptionsDialog.h"
+#include "ColorChooser.h"
 #include "zlib.h"
 
 #ifdef _DEBUG
@@ -12,7 +13,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
+#define CUSTOM_SELCHANGE 1
 /////////////////////////////////////////////////////////////////////////////
 int fileSendingProgress=1 ;
 
@@ -21,7 +22,7 @@ int fileSendingProgress=1 ;
 
 
 COptionsDialog::COptionsDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(COptionsDialog::IDD, pParent)
+	: MyDialog(COptionsDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(COptionsDialog)
 	//}}AFX_DATA_INIT
@@ -32,6 +33,10 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDialog)
+	DDX_Control(pDX, IDC_USAGE_STATISTICS, m_UsageStatistics);
+	DDX_Control(pDX, IDC_TIBIA_MAPS, m_TibiaMaps);
+	DDX_Control(pDX, IDC_LOOT_STATISTICS, m_LootStatistics);
+	DDX_Control(pDX, IDC_CREATURE_STATISTICS, m_CreatureStatistics);
 	DDX_Control(pDX, IDC_SIZE_USAGESTATS, m_sizeUsagestats);
 	DDX_Control(pDX, IDC_SEND_USAGESTATS, m_send4);
 	DDX_Control(pDX, IDC_SEND_MAPS, m_send3);
@@ -53,6 +58,10 @@ BEGIN_MESSAGE_MAP(COptionsDialog, CDialog)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_SEND_MAPS, OnSendMaps)
 	ON_BN_CLICKED(IDC_SEND_USAGESTATS, OnSendUsagestats)
+	ON_BN_CLICKED(IDC_SKIN, OnSkin)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -95,10 +104,6 @@ void gz_compress(FILE *in, gzFile out)
 	}
 }
 
-
-
-
-
 /* ===========================================================================
  * Compress the given file: create a corresponding .gz file and remove the
  * original.
@@ -127,9 +132,6 @@ void file_compress(char *file, char *mode)
     
 }
 
-
-
- 
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDialog message handlers
 
@@ -366,4 +368,21 @@ void COptionsDialog::sendMaps(char *path)
 void COptionsDialog::OnSendUsagestats() 
 {
 	sendFile("tibiaauto-stats-usage.txt");	
+}
+
+void COptionsDialog::OnSkin() 
+{
+	// TODO: Add your control notification handler code here
+	CColorChooser *dlg = new CColorChooser();
+	if (dlg->DoModal() == IDOK) {
+		this->RedrawWindow();
+NMHDR nmh;
+nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
+nmh.idFrom = this->GetDlgCtrlID();
+nmh.hwndFrom = this->GetSafeHwnd();
+GetParent()->SendMessage(WM_NOTIFY, 
+    (WPARAM)this->GetSafeHwnd(), 
+    (LPARAM)&nmh);	}
+
+	//delete dlg;
 }

@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CScriptConfigDialg::CScriptConfigDialg(int scriptNr,CWnd* pParent /*=NULL*/)
-	: CDialog(CScriptConfigDialg::IDD, pParent)
+	: MyDialog(CScriptConfigDialg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CScriptConfigDialg)
 		// NOTE: the ClassWizard will add member initialization here

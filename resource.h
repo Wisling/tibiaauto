@@ -3,6 +3,7 @@
 // Used by tibiaauto.rc
 //
 #define IDD_TIBIAAUTO_DIALOG            102
+#define IDD_COLORCHOOSER_DIALOG         109
 #define IDR_MAINFRAME                   128
 #define IDD_CHAR_DIALOG                 130
 #define IDD_TOOL_RUNEMAKER              131
@@ -255,6 +256,7 @@
 #define IDC_AUTORESPOND_ENABLE          1184
 #define IDC_AUTORESPOND_SCRIPT          1186
 #define IDC_AUTORESPOND_CLEAR           1187
+#define IDC_BUTTON1                     1191
 #define IDC_AUTORESPOND_THREADSTATUS    1192
 #define IDC_AUTORESPOND_ENABLEDEBUG     1193
 #define IDC_LOADEDMODULES_LIST          1194
@@ -279,9 +281,39 @@
 #define IDC_BROWSER_ADS                 1216
 #define IDC_SEND_USAGESTATS             1216
 #define IDC_SIZE_USAGESTATS             1217
-#define IDC_BUTTON1                     1218
-#define IDC_MONSTERSHOW_FIRSTBUTTON     5000
-#define IDC_MAPSHOW_FIRSTBUTTON         6000
+#define IDC_EXAMPLE_BUTTON              1218
+#define IDC_SKIN                        1219
+#define IDC_DETAIL_PICKER               1229
+#define IDC_EXAMPLE_CHECK               1231
+#define IDC_EXAMPLE_EDIT                1232
+#define IDC_EXAMPLE_STATIC              1234
+#define IDSAVE                          1239
+#define IDC_AFK_TOOLS                   1244
+#define IDC_INFORMATION_TOOLS           1245
+#define IDC_CAVEBOT_TOOLS               1246
+#define IDC_CONFIG                      1247
+#define IDC_OTHER_TOOLS                 1248
+#define IDC_FIGHT_TOOLS                 1249
+#define IDC_USAGE_STATISTICS            1250
+#define IDC_TIBIA_MAPS                  1251
+#define IDC_CREATURE_STATISTICS         1252
+#define IDC_RED_SLIDER_DOWN             3000
+#define IDC_GREEN_SLIDER_DOWN           3001
+#define IDC_BLUE_SLIDER_DOWN            3002
+#define IDC_RED_SLIDER_UP               4000
+#define IDC_GREEN_SLIDER_UP             4001
+#define IDC_BLUE_SLIDER_UP              4002
+#define IDC_RED_SLIDER                  5000
+#define IDC_MONSTERSHOW_FIRST           5000
+#define IDC_GREEN_SLIDER                5001
+#define IDC_BLUE_SLIDER                 5002
+#define IDC_RED_VALUE                   6000
+#define IDC_MAPSHOW_FIRST               6000
+#define IDC_GREEN_VALUE                 6001
+#define IDC_BLUE_VALUE                  6002
+#define IDC_FRAME                       9000
+#define IDC_LOOT_STATISTICS             9000
+#define IDC_SECONDARY_BACKGROUND        9999
 #define ID_STOPMODULE_STARTMODULE       32771
 #define ID_STOPMODULE_STOPMODULE        32772
 #define ID_MODULEACTIONS_LOADCUSTOMMODULE 32773
@@ -296,9 +328,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        185
+#define _APS_NEXT_RESOURCE_VALUE        186
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1219
-#define _APS_NEXT_SYMED_VALUE           101
+#define _APS_NEXT_CONTROL_VALUE         1253
+#define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

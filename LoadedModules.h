@@ -6,11 +6,11 @@
 #endif // _MSC_VER > 1000
 // LoadedModules.h : header file
 //
-
+#include "MyDialog.h"
 /////////////////////////////////////////////////////////////////////////////
 // CLoadedModules dialog
 
-class CLoadedModules : public CDialog
+class CLoadedModules : public MyDialog
 {
 // Construction
 public:

@@ -12,6 +12,8 @@
 #include "IModuleInterface.h"
 #include "ConfigDialogStatus.h"
 #include "PythonScriptsDialog.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
 
 #include <xercesc/util/PlatformUtils.hpp>
 
@@ -34,7 +36,7 @@ XERCES_CPP_NAMESPACE_USE
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg dialog
 
-class CTibiaautoDlg : public CDialog
+class CTibiaautoDlg : public MyDialog
 {
 // Construction
 public:	
@@ -44,6 +46,12 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CTibiaautoDlg)
 	enum { IDD = IDD_TIBIAAUTO_DIALOG };
+	CGroupBoxEx	m_OtherTools;
+	CGroupBoxEx	m_InformationTools;
+	CGroupBoxEx	m_FightTools;
+	CGroupBoxEx	m_Config;
+	CGroupBoxEx	m_CavebotTools;
+	CGroupBoxEx	m_AFKTools;
 	CButton	m_xray;
 	CButton	m_autoAttack;
 	CButton	m_login;
@@ -86,6 +94,7 @@ public:
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	virtual void PostNcDestroy();
+	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 	//}}AFX_VIRTUAL
 
 // Implementation

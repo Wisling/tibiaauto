@@ -66,7 +66,7 @@ static char THIS_FILE[] = __FILE__;
 // CTibiaautoDlg dialog
 
 CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CTibiaautoDlg::IDD, pParent)
+	: MyDialog(CTibiaautoDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CTibiaautoDlg)	
 	//}}AFX_DATA_INIT
@@ -84,6 +84,12 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CTibiaautoDlg)
+	DDX_Control(pDX, IDC_OTHER_TOOLS, m_OtherTools);
+	DDX_Control(pDX, IDC_INFORMATION_TOOLS, m_InformationTools);
+	DDX_Control(pDX, IDC_FIGHT_TOOLS, m_FightTools);
+	DDX_Control(pDX, IDC_CONFIG, m_Config);
+	DDX_Control(pDX, IDC_CAVEBOT_TOOLS, m_CavebotTools);
+	DDX_Control(pDX, IDC_AFK_TOOLS, m_AFKTools);
 	DDX_Control(pDX, IDC_TOOL_XRAY, m_xray);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK, m_autoAttack);
 	DDX_Control(pDX, IDC_TOOL_LOGIN, m_login);
@@ -108,10 +114,10 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOGROUP, m_grouping);
 	DDX_Control(pDX, IDC_LOGINNAME, m_loginName);
 	DDX_Control(pDX, IDC_LIGHT, m_light);
-	DDX_Control(pDX, IDC_BROWSER_ADS, m_browserAds);
-	DDX_Control(pDX, IDC_TOOL_SORTER, m_sorter);
 	DDX_Control(pDX, IDC_TOOL_BANKER, m_banker);
+	DDX_Control(pDX, IDC_TOOL_SORTER, m_sorter);
 	DDX_Control(pDX, IDC_TOOL_SELLER, m_seller);
+	DDX_Control(pDX, IDC_BROWSER_ADS, m_browserAds);
 	//}}AFX_DATA_MAP
 }
 
@@ -163,6 +169,9 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_BANKER, OnToolBanker)
 	ON_BN_CLICKED(IDC_TOOL_SELLER, OnToolSeller)
 	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -503,7 +512,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	
 	//injectDll="tibiaauto_develtest.dll";				
 	
-	DetourContinueProcessWithDll(procHandle, injectDll);
+	//DetourContinueProcessWithDll(procHandle, injectDll);
 	
 	
 	CloseHandle(procHandle);
@@ -955,7 +964,8 @@ void CTibiaautoDlg::OnExit()
 	Shell_NotifyIcon(NIM_DELETE,&data);
 
 	delete m_loadedModules;	
-	delete m_pythonScriptsDialog;		
+	delete m_pythonScriptsDialog;
+	m_moduleLooter->stop();
 	delete m_moduleLooter;
 	delete m_moduleLight;
 	delete m_modulePlayerInfo;
@@ -1277,4 +1287,16 @@ CTibiaautoDlg::~CTibiaautoDlg()
 {
 
 	CDialog::~CDialog();
+}
+
+
+
+
+BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+{
+	// TODO: Add your specialized code here and/or call the base class
+	Invalidate();
+	m_pythonScriptsDialog->Invalidate();
+	m_modulePlayerInfo->getNewSkin(skin);
+	return CDialog::OnNotify(wParam, lParam, pResult);
 }

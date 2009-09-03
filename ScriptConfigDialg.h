@@ -6,11 +6,11 @@
 #endif // _MSC_VER > 1000
 // ScriptConfigDialg.h : header file
 //
-
+#include "MyDialog.h"
 /////////////////////////////////////////////////////////////////////////////
 // CScriptConfigDialg dialog
 
-class CScriptConfigDialg : public CDialog
+class CScriptConfigDialg : public MyDialog
 {
 // Construction
 public:

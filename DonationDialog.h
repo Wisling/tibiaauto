@@ -6,11 +6,11 @@
 #endif // _MSC_VER > 1000
 // DonationDialog.h : header file
 //
-
+#include "MyDialog.h"
 /////////////////////////////////////////////////////////////////////////////
 // CDonationDialog dialog
 
-class CDonationDialog : public CDialog
+class CDonationDialog : public MyDialog
 {
 // Construction
 public:

@@ -19,6 +19,7 @@ public:
 	virtual ~CModuleProxy();
 
 	char * getName();
+	void getNewSkin(CSkin);
 	int isStarted();
 	void start();
 	void stop();

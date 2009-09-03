@@ -21,7 +21,7 @@ int pythonInterpreterRunning=0;
 
 
 CPythonScriptsDialog::CPythonScriptsDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(CPythonScriptsDialog::IDD, pParent)
+	: MyDialog(CPythonScriptsDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CPythonScriptsDialog)
 		// NOTE: the ClassWizard will add member initialization here
@@ -48,6 +48,9 @@ BEGIN_MESSAGE_MAP(CPythonScriptsDialog, CDialog)
 	ON_BN_CLICKED(IDC_RUN_INTERPRETER, OnRunInterpreter)
 	ON_BN_CLICKED(IDC_LOAD_SCRIPT, OnLoadScript)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnRclickList)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

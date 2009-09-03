@@ -14,6 +14,7 @@
 #include "Tlhelp32.h"
 #include "MyMenu.h"
 #include "resource.h"
+#include "Windows.h"
 
 void myInterceptEncrypt(int v1, int v2);
 void myInterceptDecrypt(int v1, int v2);
@@ -1656,10 +1657,47 @@ void InitialiseProxyClasses()
 	reader.setProcessId(GetCurrentProcessId());
 }
 
+WNDPROC wndProcOriginal = NULL;
 
+LRESULT APIENTRY FilterProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+{
+				AfxMessageBox("I did it!");
+if (uMsg == WM_COMMAND)
+	{
+		if (LOWORD(wParam) == 4001)
+		{
+			AfxMessageBox("I did it!");
+		}
+	}
 
+	return CallWindowProc(wndProcOriginal, hwnd, uMsg, wParam, lParam);
+}
 
+void GetDebugPrivs()
+{
+	HANDLE hToken;
+	LUID sedebugnameValue;
+	TOKEN_PRIVILEGES tp;
 
+	if (::OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
+	{
+		if ( !::LookupPrivilegeValue( NULL, SE_DEBUG_NAME, &sedebugnameValue ) )
+		{
+			::CloseHandle( hToken );
+		}
+
+		tp.PrivilegeCount = 1;
+		tp.Privileges[0].Luid = sedebugnameValue;
+		tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+
+		if ( !::AdjustTokenPrivileges( hToken, FALSE, &tp, sizeof(tp), NULL, NULL ) )
+		{
+			::CloseHandle( hToken );
+		}
+
+		::CloseHandle( hToken );
+	}
+}
 
 BOOL CALLBACK EnumWindowsProc(      
 							  
@@ -1679,30 +1717,32 @@ BOOL CALLBACK EnumWindowsProc(
 		
 		
 		CMenu *subMenu1 = new CMenu();
-		subMenu1->CreateMenu();
-		subMenu1->AppendMenu(MF_STRING,1,"sub 1");
-		subMenu1->AppendMenu(MF_STRING,2,"sub 2");
-		subMenu1->AppendMenu(MF_STRING|MF_ENABLED,3,"sub 3");
+		subMenu1->CreatePopupMenu();
+		subMenu1->AppendMenu(MF_STRING,4001,"sub 1");
+		subMenu1->AppendMenu(MF_STRING,4002,"sub 2");
+		subMenu1->AppendMenu(MF_STRING|MF_ENABLED,4003,"Sub 3");
 		
 		CMenu *subMenu2 = new CMenu();
-		subMenu2->CreateMenu();
-		subMenu2->AppendMenu(MF_STRING,10,"sub 10");
-		subMenu2->AppendMenu(MF_STRING,11,"sub 11");
-		subMenu2->EnableMenuItem(11,1);
+		subMenu2->CreatePopupMenu();
+		subMenu2->AppendMenu(MF_STRING,4010,"sub 10");
+		subMenu2->AppendMenu(MF_STRING,4011,"sub 11");
+		subMenu2->EnableMenuItem(4011,1);
 		
 		
 		CMyMenu *menu = new CMyMenu();	
 		menu->CreateMenu();		
-		menu->AppendMenu(MF_STRING,13,"test menu 1");		
-		menu->AppendMenu(MF_STRING,15,"test menu 2");
-		menu->AppendMenu(MF_POPUP,(int)subMenu1->GetSafeHmenu(),"test menu 3");		
+		menu->AppendMenu(MF_STRING,4013,"test menu 1");		
+		menu->AppendMenu(MF_STRING,4015,"test menu 2");
+		menu->AppendMenu(MF_POPUP|MF_DISABLED,(int)subMenu1->GetSafeHmenu(),"test menu 3");		
 		menu->AppendMenu(MF_POPUP,(int)subMenu2->GetSafeHmenu(),"test menu 4");
-		
-		
 		//menu->LoadOwnerDrawMenu(menu);
 		
+
 		wnd->SetMenu(menu);
-		
+		wndProcOriginal = (WNDPROC)SetWindowLong(hwnd, GWL_WNDPROC, (LONG)(WNDPROC)FilterProc);
+		if(wndProcOriginal)
+			AfxMessageBox("Window Procedure hijacked!");
+		//GetDebugPrivs();
 		/*
 		char b[128];
 		sprintf(b,"%d///%x/%x/%x|||%d",boo,menu,wnd,hwnd,lastErr);

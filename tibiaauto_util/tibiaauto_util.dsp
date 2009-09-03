@@ -80,7 +80,11 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
+<<<<<<< tibiaauto_util.dsp
+# ADD LINK32 xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto/mods/tibiaauto_util.dll" /pdbtype:sept
+=======
 # ADD LINK32 xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/tibiaauto_util.dll" /pdbtype:sept
+>>>>>>> 1.15
 
 !ENDIF 
 
@@ -130,6 +134,14 @@ SOURCE=.\proxy.cpp
 # Begin Source File
 
 SOURCE=.\Queue.cpp
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\tibiaauto-pub\sdk\Skin.cpp"
+# End Source File
+# Begin Source File
+
+SOURCE=.\SkinLoader.cpp
 # End Source File
 # Begin Source File
 
@@ -224,6 +236,14 @@ SOURCE=.\Queue.h
 # Begin Source File
 
 SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE="..\..\tibiaauto-pub\sdk\Skin.h"
+# End Source File
+# Begin Source File
+
+SOURCE=.\SkinLoader.h
 # End Source File
 # Begin Source File
 

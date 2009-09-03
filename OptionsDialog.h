@@ -7,10 +7,13 @@
 // OptionsDialog.h : header file
 //
 
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDialog dialog
 
-class COptionsDialog : public CDialog
+class COptionsDialog : public MyDialog
 {
 // Construction
 public:
@@ -19,6 +22,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDialog)
 	enum { IDD = IDD_OPTIONS };
+	CGroupBoxEx	m_UsageStatistics;
+	CGroupBoxEx	m_TibiaMaps;
+	CGroupBoxEx	m_LootStatistics;
+	CGroupBoxEx	m_CreatureStatistics;
 	CStatic	m_sizeUsagestats;
 	CButton	m_send4;
 	CButton	m_send3;
@@ -50,6 +57,7 @@ protected:
 	afx_msg void OnClose();
 	afx_msg void OnSendMaps();
 	afx_msg void OnSendUsagestats();
+	afx_msg void OnSkin();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

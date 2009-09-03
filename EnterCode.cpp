@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CEnterCode::CEnterCode(CWnd* pParent /*=NULL*/)
-	: CDialog(CEnterCode::IDD, pParent)
+	: MyDialog(CEnterCode::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CEnterCode)
 	//}}AFX_DATA_INIT
@@ -40,6 +40,9 @@ void CEnterCode::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CEnterCode, CDialog)
 	//{{AFX_MSG_MAP(CEnterCode)
 	ON_WM_CLOSE()
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

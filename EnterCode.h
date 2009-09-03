@@ -8,11 +8,11 @@
 //
 
 #include "TibiaautoDlg.h"
-
+#include "MyDialog.h"
 /////////////////////////////////////////////////////////////////////////////
 // CEnterCode dialog
 
-class CEnterCode : public CDialog
+class CEnterCode : public MyDialog
 {
 // Construction
 public:

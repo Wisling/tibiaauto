@@ -8,7 +8,7 @@
 #include "TibiaItemProxy.h"
 #include "TibiaTile.h"
 #include "TileReader.h"
-
+#include "SkinLoader.h"
 #include "TibiaItem.h"
 #include <iostream>
 #include <fstream>
@@ -25,18 +25,15 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CMemReader::CMemReader()
-{	
+CMemReader::CMemReader() {	
 	CMemConstData();
 }
 
-CMemReader::~CMemReader()
-{
+CMemReader::~CMemReader() {
 
 }
 
-CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
-{	
+CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {	
 	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
 	if (nr<0||nr>=100) return NULL;
 	int offset = nr*m_memLengthVIP + m_memAddressVIP;
@@ -47,11 +44,8 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
 	return vip;
 }
 
-CTibiaContainer *CMemReader::readContainer(int containerNr)
-{	
+CTibiaContainer *CMemReader::readContainer(int containerNr) {	
 	int i;
-
-	
 	
 	CTibiaContainer *container = new CTibiaContainer();
 	long containerOffset=m_memAddressFirstContainer+containerNr*m_memLengthContainer;		
@@ -76,10 +70,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 	return container;
 }
 
-
-
-CTibiaCharacter *CMemReader::readSelfCharacter()
-{	
+CTibiaCharacter *CMemReader::readSelfCharacter() {	
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
 	ch->hp = CMemUtil::GetMemIntValue(m_memAddressHP);
@@ -742,11 +733,7 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 	return bogusPoint;
 }	
 
-BOOL CALLBACK EnumWindowsProc(      
-
-    HWND hwnd,
-    LPARAM lParam
-	)
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {	
 	DWORD procId;
 	GetWindowThreadProcessId(hwnd,&procId);

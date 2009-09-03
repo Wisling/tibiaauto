@@ -6,11 +6,11 @@
 #endif // _MSC_VER > 1000
 // PythonScriptsDialog.h : header file
 //
-
+#include "MyDialog.h"
 /////////////////////////////////////////////////////////////////////////////
 // CPythonScriptsDialog dialog
 
-class CPythonScriptsDialog : public CDialog
+class CPythonScriptsDialog : public MyDialog
 {
 // Construction
 public:	

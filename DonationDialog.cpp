@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CDonationDialog::CDonationDialog(CWnd* pParent /*=NULL*/)
-	: CDialog(CDonationDialog::IDD, pParent)
+	: MyDialog(CDonationDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CDonationDialog)
 		// NOTE: the ClassWizard will add member initialization here
@@ -36,6 +36,9 @@ void CDonationDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CDonationDialog, CDialog)
 	//{{AFX_MSG_MAP(CDonationDialog)
 		// NOTE: the ClassWizard will add message map macros here
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

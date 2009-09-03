@@ -99,6 +99,7 @@ void CTibiaMap::setPointAsAvailable(int x, int y,int z)
 		struct pointData *pd=new pointData();
 		pd->available=1;	
 		tibiaMap2.SetAt(p,pd);
+		//delete [] p;
 	}
 }
 

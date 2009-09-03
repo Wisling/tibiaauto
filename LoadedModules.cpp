@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CLoadedModules::CLoadedModules(CWnd* pParent /*=NULL*/)
-	: CDialog(CLoadedModules::IDD, pParent)
+	: MyDialog(CLoadedModules::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CLoadedModules)
 		// NOTE: the ClassWizard will add member initialization here
@@ -43,6 +43,9 @@ BEGIN_MESSAGE_MAP(CLoadedModules, CDialog)
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
 	ON_NOTIFY(NM_RCLICK, IDC_LOADEDMODULES_LIST, OnRclickLoadedmodulesList)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
