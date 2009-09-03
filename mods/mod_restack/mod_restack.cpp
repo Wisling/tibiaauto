@@ -534,7 +534,7 @@ char *CMod_restackApp::getConfigParamName(int nr)
 	case 13: return "pickup/place/BC";
 	case 14: return "pickup/place/BR";	
 	case 15: return "throwable/moveCovering";
-	case 16: return "restackToRight";
+	case 16: return "ammo/restackToRight";
 	case 17: return "pickup/toHand";
 	case 18: return "pickup/place/CC";
 	case 19: return "pickup/periodFrom";

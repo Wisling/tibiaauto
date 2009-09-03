@@ -21,6 +21,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolItemConfig)
 	enum { IDD = IDD_TOOL_ITEMCONFIG };
+	CTreeCtrl	m_testTree;
 	CListBox	m_lootedList;
 	CListBox	m_itemsList;
 	CListBox	m_foodList;

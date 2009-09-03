@@ -30,6 +30,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
+#include "math.h"
 #include <map>
 
 using namespace std;
@@ -42,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define GET 0
 #define MAKE 1
-#define MAX_DRINK_FAILS 10
+#define MAX_DRINK_FAILS 1000
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_fluidApp
@@ -110,16 +111,13 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 	
 	if (hotkey)
 	{
-		int oldHp=self->hp;
-		int oldMana=self->mana;
-
 		sender.useItemOnCreature(itemId,self->tibiaId);
-		if(CModuleUtil::waitForHpManaChange(oldHp,oldMana)){//item used successfully
+		if (CModuleUtil::waitForHpManaIncrease(self->hp,self->mana)){//most likely using item succeeded
 			drank=1;
 			drinkFails=0;
 		}else{
 			drinkFails +=1;
-			drinkFails=(drinkFails>MAX_DRINK_FAILS)?MAX_DRINK_FAILS:drinkFails;
+			drinkFails=(drinkFails>MAX_DRINK_FAILS)?1:drinkFails;
 		}
 	} else {
 		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
@@ -167,15 +165,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{			
 
 		Sleep(100);
-		//sleep longer if failed already
-		if(drinkFails) Sleep(CModuleUtil::randomFormula(100+(drinkFails-1)*800,(drinkFails-1)*800,100+(drinkFails-1)*800+1));
 		//Send message if at 10 fails
-		if(drinkFails==MAX_DRINK_FAILS) sender.sendTAMessage("Health or Mana failed to change when using healing item.");
+		if((drinkFails+1)%10==0) {
+			sender.sendTAMessage("Health or Mana failed to change when using healing item.");
+		}
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		int drank=0;
 		
-		
+		int stopSleepTime=reader.getCurrentTm()+CModuleUtil::randomFormula(config->sleep,200,config->sleep);
+
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
 		int hpBelowU=RandomVariableHp((int)&config->hpBelowU,GET,config);
@@ -193,55 +192,55 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int customItem2Below=RandomVariableMana((int)&config->customItem2Below,GET,config);
 
 		// handle  potions
-		if (!drank&&(self->hp<hpBelowU&&config->drinkHpU)&&self->lvl>=130){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowU&&config->drinkHpU)&&self->lvl>=130){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeU"),0,config->drinkHpU,config->useHotkey, hpBelowU,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelowU,MAKE,config);
 		}
-		if (!drank&&(self->hp<hpBelowG&&config->drinkHpG)&&self->lvl>=80){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowG&&config->drinkHpG)&&self->lvl>=80){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeG"),0,config->drinkHpG,config->useHotkey, hpBelowG,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelowG,MAKE,config);
 		}
-		if (!drank&&(self->hp<hpBelowS&&config->drinkHpS)&&self->lvl>=50){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowS&&config->drinkHpS)&&self->lvl>=50){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeS"),0,config->drinkHpS,config->useHotkey, hpBelowS,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelowS,MAKE,config);
 		}
-		if (!drank&&(self->hp<hpBelowN&&config->drinkHpN)){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowN&&config->drinkHpN)){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidLife"),0,config->drinkHpN,config->useHotkey, hpBelowN,-1);			
 			if (drank) RandomVariableHp((int)&config->hpBelowN,MAKE,config);
 		}
-		if (!drank&&(self->hp<hpBelowH&&config->drinkHpH)){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowH&&config->drinkHpH)){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeH"),0,config->drinkHpH,config->useHotkey, hpBelowH,-1);			
 			if (drank) RandomVariableHp((int)&config->hpBelowH,MAKE,config);
 		}
-		if (!drank&&(self->hp<hpBelow&&config->drinkHp)){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelow&&config->drinkHp)){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluid"),11,config->drinkHp,config->useHotkey, hpBelow,-1);
 			if (drank) RandomVariableHp((int)&config->hpBelow,MAKE,config);
 		}
 
-		if (!drank&&(self->hp<customItem1Below&&config->customItem1Use)){
+		if (!drank&&(self->hp<self->maxHp&&self->hp<customItem1Below&&config->customItem1Use)){
 			drank|=tryDrinking(config->customItem1Item,0,config->customItem1Use,config->useHotkey, customItem1Below,-1);
 			if (drank) RandomVariableHp((int)&config->customItem1Below,MAKE,config);
 		}
 
 
-		if (!drank&&(self->mana<manaBelowG&&config->drinkManaG)&&self->lvl>=80){
+		if (!drank&&(self->mana<self->maxMana&&self->mana<manaBelowG&&config->drinkManaG)&&self->lvl>=80){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidManaG"),0,config->drinkManaG,config->useHotkey, -1, manaBelowG);
 			if (drank) RandomVariableMana((int)&config->manaBelowG,MAKE,config);
 		}
-		if (!drank&&(self->mana<manaBelowS&&config->drinkManaS)&&self->lvl>=50){
+		if (!drank&&(self->mana<self->maxMana&&self->mana<manaBelowS&&config->drinkManaS)&&self->lvl>=50){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidManaS"),0,config->drinkManaS,config->useHotkey, -1, manaBelowS);
 			if (drank) RandomVariableMana((int)&config->manaBelowS,MAKE,config);
 		}
-		if (!drank&&(self->mana<manaBelowN&&config->drinkManaN)){
+		if (!drank&&(self->mana<self->maxMana&&self->mana<manaBelowN&&config->drinkManaN)){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluidMana"),0,config->drinkManaN,config->useHotkey, -1, manaBelowN);			
 			if (drank) RandomVariableMana((int)&config->manaBelowN,MAKE,config);
 		}
-		if (!drank&&(self->mana<manaBelow&&config->drinkMana)){
+		if (!drank&&(self->mana<self->maxMana&&self->mana<manaBelow&&config->drinkMana)){
 			drank|=tryDrinking(itemProxy.getValueForConst("fluid"),10,config->drinkMana,config->useHotkey, -1, manaBelow);
 			if (drank) RandomVariableMana((int)&config->manaBelow,MAKE,config);
 		}
 
-		if (!drank&&(self->mana<customItem2Below&&config->customItem2Use)){
+		if (!drank&&(self->mana<self->maxMana&&self->mana<customItem2Below&&config->customItem2Use)){
 			drank|=tryDrinking(config->customItem2Item,0,config->customItem2Use,config->useHotkey, -1, customItem2Below);
 			if (drank) RandomVariableMana((int)&config->customItem2Below,MAKE,config);
 		}
@@ -250,7 +249,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (drank)
 		{
-			Sleep(CModuleUtil::randomFormula(config->sleep,200,config->sleep));
+			while(reader.getCurrentTm()<stopSleepTime){
+				Sleep(50);
+			}
 		}
 
 		if (config->dropEmpty)
@@ -298,7 +299,7 @@ CMod_fluidApp::CMod_fluidApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_fluidApp::~CMod_fluidApp()
@@ -307,7 +308,7 @@ CMod_fluidApp::~CMod_fluidApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_fluidApp::getName()

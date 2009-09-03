@@ -779,15 +779,29 @@ CTibiaMiniMap *CMemReaderProxy::readMiniMap(int nr)
 	return NULL;
 }
 
-CTibiaMiniMapPoint *CMemReaderProxy::readMiniMapPoint(int mapNr,int pointNr)
+CTibiaMiniMapLabel *CMemReaderProxy::readMiniMapLabel(int mapNr,int pointNr)
 {
-	typedef CTibiaMiniMapPoint * (*Proto_fun)(int mapNr,int pointNr);
+	typedef CTibiaMiniMapLabel * (*Proto_fun)(int mapNr,int pointNr);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMapLabel");
+		if (fun)
+		{
+			return fun(mapNr,pointNr);
+		}
+	} 
+	return NULL;
+}
+
+CTibiaMiniMapPoint *CMemReaderProxy::readMiniMapPoint(int x, int y, int z)
+{
+	typedef CTibiaMiniMapPoint * (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMapPoint");
 		if (fun)
 		{
-			return fun(mapNr,pointNr);
+			return fun(x,y,z);
 		}
 	} 
 	return NULL;

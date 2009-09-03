@@ -12,6 +12,7 @@
 #include "TibiaMapPoint.h"
 #include "TibiaTile.h"
 #include "TibiaMiniMap.h"
+#include "TibiaMiniMapLabel.h"
 #include "TibiaMiniMapPoint.h"
 #include "TibiaVIPEntry.h"
 
@@ -86,7 +87,8 @@ public:
 	char *getGlobalVariable(char *name);
 
 	CTibiaMiniMap *readMiniMap(int nr);
-	CTibiaMiniMapPoint *readMiniMapPoint(int mapNr,int pointNr);
+	CTibiaMiniMapLabel *readMiniMapLabel(int mapNr,int pointNr);
+	CTibiaMiniMapPoint *readMiniMapPoint(int x, int y, int z);
 
 	void setMainWindowText(char *text);
 	void setMainTrayText(char *text);

@@ -6,7 +6,10 @@
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
 #include "TibiaItemProxy.h"
+#include "TAMiniMapProxy.h"
+#include "TibiaMapProxy.h"
 #include "TibiaMiniMap.h"
+#include "TibiaMiniMapLabel.h"
 #include "TibiaMiniMapPoint.h"
 #include "IPCBackPipeProxy.h"
 
@@ -29,11 +32,13 @@ extern int creatureAttackDist;
 extern int attackSuspendedUntil;
 extern int firstCreatureAttackTM;
 extern int currentWaypointNr;
+extern int pathfindDistance;
 
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
+void PathfindThread(LPVOID lpParam);
 
 CConfigDialog::CConfigDialog(CMod_cavebotApp *app,CWnd* pParent /*=NULL*/)
 	: CDialog(CConfigDialog::IDD, pParent)
@@ -41,6 +46,7 @@ CConfigDialog::CConfigDialog(CMod_cavebotApp *app,CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
+	cavebotFindpathStartedWaypoint=0;
 }
 
 
@@ -107,6 +113,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTER, m_monster);
 	DDX_Control(pDX, IDC_DONT_ATTACK_PLAYERS, m_dontAttackPlayers);
 	DDX_Control(pDX, IDC_PAUSING_ENABLE, m_pausingEnable);
+	DDX_Control(pDX, IDC_AUTORESEARCH, m_autoResearch);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -126,6 +133,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_IGNORE, OnToolAutoattackAddIgnore)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, OnToolAutoattackRemoveIgnore)
 	ON_BN_CLICKED(IDC_LOAD_FROM_MINIMAP, OnLoadFromMinimap)
+	ON_BN_CLICKED(IDC_AUTORESEARCH, OnAutoResearch)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
 	//}}AFX_MSG_MAP
@@ -467,6 +475,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	return newConfigData;
 }
+HANDLE hThread=0;
 
 void CConfigDialog::OnTimer(UINT nIDEvent) 
 {
@@ -628,6 +637,72 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_trainingState.SetWindowText("State: unknown");
 		}
 
+		CTAMiniMapProxy taMiniMap;
+		if(!taMiniMap.isFindPathStopped()){
+			char buf[128];
+			sprintf(buf,"Auto Research Map Dist to %d:%d",cavebotFindpathStartedWaypoint,taMiniMap.getCurrentDistance());
+			m_autoResearch.SetWindowText(buf);
+		}else{
+			char buf[128];
+			sprintf(buf,"Auto Research Map (Test Version)");
+			m_autoResearch.SetWindowText(buf);
+		}
+
+		DWORD exitCode=0;
+		static int failedOnce=0;
+		static int startTime=0;
+		if (hThread) GetExitCodeThread(hThread,&exitCode);
+		if (exitCode==1){//errors finding path
+			failedOnce=1;
+			hThread=0;
+			char buf[128];
+			sprintf(buf,"Failed to find path to waypoint %d. Either the travelling distance is much larger than distance between the points or it may be blocked via the minimap.",cavebotFindpathStartedWaypoint);
+			SetTimer(1001,100,NULL);
+			CDialog::OnTimer(nIDEvent);
+			AfxMessageBox(buf);
+			return;
+		}
+		
+		if (m_autoResearch.GetCheck() && (!hThread || exitCode!=STILL_ACTIVE)){// STILL_ACTIVE = 0x00000103 = 259
+			if (!pathfindPoints.empty()){
+				if (!cavebotFindpathStartedWaypoint)startTime=time(NULL);
+				cavebotFindpathStartedWaypoint+=1;
+				PathfindParams* myData =pathfindPoints.front();
+				pathfindPoints.pop();
+				DWORD dwThread;
+				hThread = CreateThread( 
+					NULL,              // default security attributes
+					0,                 // use default stack size  
+					(LPTHREAD_START_ROUTINE)PathfindThread,        // thread function
+					(LPVOID)myData,             // argument to thread function 
+					0,                 // use default creation flags 
+					&dwThread);   // returns the thread identifier 
+			}else{
+				m_autoResearch.SetCheck(0);
+				if (!failedOnce){
+					SetTimer(1001,100,NULL);
+					CDialog::OnTimer(nIDEvent);
+					char buf[256];
+					sprintf(buf,"Successfully completed researching map in %d seconds.\nRemember to enable extended map reseach to changing levels and avoid new obstacles.",time(NULL)-startTime+1);
+					AfxMessageBox(buf);
+					return;
+				}
+			}
+			
+		}else if(!m_autoResearch.GetCheck() && cavebotFindpathStartedWaypoint){
+			hThread=0;
+			startTime=0;
+			failedOnce=0;
+			cavebotFindpathStartedWaypoint=0;
+			if(!taMiniMap.isFindPathStopped()){
+				taMiniMap.findPathStop();
+			}
+			while (!pathfindPoints.empty()){
+				PathfindParams*& myData = pathfindPoints.front();
+				delete myData;
+				pathfindPoints.pop();
+			}
+		}
 
 		delete self;
 		
@@ -849,8 +924,8 @@ void CConfigDialog::OnToolAutoattackRemoveIgnore()
 /* Compare two points for qsort */
 int pointTabCompare( const void *arg1, const void *arg2 )
 {	
-   CTibiaMiniMapPoint *point1=*(CTibiaMiniMapPoint **)arg1;
-   CTibiaMiniMapPoint *point2=*(CTibiaMiniMapPoint **)arg2;   
+   CTibiaMiniMapLabel *point1=*(CTibiaMiniMapLabel **)arg1;
+   CTibiaMiniMapLabel *point2=*(CTibiaMiniMapLabel **)arg2;   
    if (point1==NULL) return 1;
    if (point2==NULL) return -1;
    return strcmp(point1->desc,point2->desc);
@@ -862,7 +937,7 @@ void CConfigDialog::OnLoadFromMinimap()
 	if (ret==IDCANCEL) return;
 
 
-	CTibiaMiniMapPoint **pointTab = (CTibiaMiniMapPoint **)malloc(sizeof(CTibiaMiniMapPoint *)*500);
+	CTibiaMiniMapLabel **pointTab = (CTibiaMiniMapLabel **)malloc(sizeof(CTibiaMiniMapLabel *)*500);
 	int i;
 	for (i=0;i<500;i++) pointTab[i]=NULL;
 
@@ -885,7 +960,7 @@ void CConfigDialog::OnLoadFromMinimap()
 			pointCount=map->pointsAttached;
 			for (pointNr=0;pointNr<pointCount;pointNr++)
 			{
-				CTibiaMiniMapPoint *point = reader.readMiniMapPoint(mapNr,pointNr);
+				CTibiaMiniMapLabel *point = reader.readMiniMapLabel(mapNr,pointNr);
 
 				// point->x==0 means the point is deleted
 				if (point->x&&!strncmp(point->desc,"$ta",3)&&totalPointCount<500)
@@ -911,7 +986,7 @@ void CConfigDialog::OnLoadFromMinimap()
 		AfxMessageBox("Warning: maximum (500) supported waypoints amount exceeded!");
 	}
 	// sort all points to be added lexycographically
-	qsort(pointTab,500,sizeof(CTibiaMiniMapPoint *),pointTabCompare);
+	qsort(pointTab,500,sizeof(CTibiaMiniMapLabel *),pointTabCompare);
 	for (i=0;i<500;i++) 
 	{
 		if (pointTab[i]) 
@@ -955,4 +1030,121 @@ void CConfigDialog::OnMonsterAttackDown()
 	m_monsterList.DeleteString(curSel);
 	m_monsterList.InsertString(curSel+1,monsterName);
 	m_monsterList.SetCurSel(curSel+1);
+}
+
+void PathfindThread(LPVOID lpParam){
+	CTAMiniMapProxy taMiniMap;
+	CTibiaMapProxy tibiaMap;
+
+	PathfindParams* myData=(PathfindParams*)lpParam;
+	int startX=myData->x;
+	int startY=myData->y;
+	int startZ=myData->z;
+	int endX=myData->x2;
+	int endY=myData->y2;
+	int endZ=myData->z2;
+	int direction[10][3]= {{0,0,1},{1,0,0},{1,-1,0},{0,-1,0},{-1,-1,0},{-1,0,0},{-1,1,0},{0,1,0},{1,1,0},{0,0,-1}};
+
+	//char buf[111111];
+	CUIntArray* a=taMiniMap.findPathOnMiniMap(myData->x,myData->y,myData->z,myData->x2,myData->y2,myData->z2);
+
+	int i;
+	int radius=2;//0 means 1x1, 2 means 5x5
+	int x,y;
+	int sz=a->GetSize();
+	/*
+	sprintf(buf,"%d - ",sz);
+	for (i=0;i<sz;i++){
+
+		sprintf(buf,"%s %d",buf,a->GetAt(i));
+	}
+	AfxMessageBox(buf);
+	*/
+	//map all squares around currrent point
+	for(x=startX-radius;x<=startX+radius;x++){
+		for (y=startY-radius;y<=startY+radius;y++){
+			if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
+				CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x,y,startZ);
+				if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+				delete mp;
+			}
+		}
+	}
+	//Add data to TA's Cavebotting Map
+	for (i=0;i<sz;i++){
+		int dir=a->GetAt(i);
+		if (dir ==0xD0) dir=9;
+		else if (dir ==0xD1) dir=0;
+		startX+=direction[dir][0];
+		startY+=direction[dir][1];
+		startZ+=direction[dir][2];
+		if (dir==0 || dir==9){//floor change
+			//map all new squares around currrent point
+			for(x=startX-radius;x<=startX+radius;x++){
+				for (y=startY-radius;y<=startY+radius;y++){
+					if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
+						CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x,y,startZ);
+						if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+						delete mp;
+					}
+				}
+			}
+			int setPrev=(dir==0)?101:204;//hole if went down; stairs if went up
+			int setCur=(dir==9)?101:204;//hole if went up; stairs if went down
+			//add level change point
+			tibiaMap.setPointAsAvailable(startX,startY,startZ-direction[dir][2]);
+			tibiaMap.setPointAsAvailable(startX,startY,startZ);
+			tibiaMap.setPointUpDown(startX,startY,startZ-direction[dir][2],setPrev);
+			tibiaMap.setPointUpDown(startX,startY,startZ,setCur);
+		}else{
+			y=startY+radius*direction[dir][1];
+			//explore one row of map in direction of travel
+			for (x=startX-radius;x<=startX+radius && direction[dir][1];x++){
+				if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
+					CTibiaMiniMapPoint* mp = taMiniMap.getMiniMapPoint(x,y,startZ);
+					if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+					delete mp;
+				}
+			}
+
+			x=startX+radius*direction[dir][0];
+			//explore one column of map in direction of travel
+			for (y=startY-radius;y<=startY+radius && direction[dir][0];y++){
+				if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
+					CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x,y,startZ);
+					if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+					delete mp;
+				}
+			}
+		}
+	}
+	delete myData;
+	if (sz==0) ExitThread(1);//1=did not find path
+	else ExitThread(NULL);
+}
+
+void CConfigDialog::OnAutoResearch(){
+	CMemReaderProxy reader;
+	CTibiaCharacter* ch=reader.readSelfCharacter();
+	int curX=ch->x,curY=ch->y,curZ=ch->z;
+	delete ch;
+	int nextX=0,nextY=0,nextZ=0;
+	if (reader.getConnectionState()!=8){
+		curX=32333;curY=31782;curZ=7;
+		nextX=32333;nextY=32222;nextZ=6;
+		PathfindParams* myData =new PathfindParams(curX,curY,curZ,nextX,nextY,nextZ);
+		pathfindPoints.push(myData);
+	}
+
+	char buf[111];
+	if (!m_waypointList.GetCount()) return;
+	for (int i=0;i<m_waypointList.GetCount()+(m_waypointList.GetCount()>2);i++){//goes around waypoints in a circle+1 path from current point(no circle if only 2 points)
+		m_waypointList.GetText(i%m_waypointList.GetCount(),buf);
+		sscanf(buf,"(%d,%d,%d)",&nextX,&nextY,&nextZ);
+		PathfindParams* myData =new PathfindParams(curX,curY,curZ,nextX,nextY,nextZ);
+		if (!(curX==nextX&&nextY==curY&&curZ==nextZ)) pathfindPoints.push(myData);
+		curX=nextX;
+		curY=nextY;
+		curZ=nextZ;
+	}
 }

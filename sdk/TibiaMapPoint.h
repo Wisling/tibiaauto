@@ -1,6 +1,7 @@
 #ifndef _TIBIA_MAP_POINT_H
 #define _TIBIA_MAP_POINT_H
 
+
 struct point
 {
 public:
