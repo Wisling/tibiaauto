@@ -14,6 +14,7 @@
 #include "stdafx.h"
 #include "helpers.h"
 #include "SharedMemory.h"
+#include <new>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

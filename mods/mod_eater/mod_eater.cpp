@@ -119,6 +119,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		for (int i=RandomTimeEaterAmount();i>0;i--){
 			CTibiaItem *foodItem;
+			CTibiaCharacter *self = reader.readSelfCharacter();
 			int foodContainer;
 
 			foodItem=NULL;
@@ -147,7 +148,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				delete foodItem;
 				foodItem = NULL;
 			}
-
+			delete self;
 		}
 	}	
 

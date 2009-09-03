@@ -6,11 +6,11 @@
 #endif // _MSC_VER > 1000
 // OptionsDialog.h : header file
 //
-
+#include "MyDialog.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSendStats dialog
 
-class CSendStats : public CDialog
+class CSendStats : public MyDialog
 {
 // Construction
 public:

@@ -69,14 +69,25 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: cave bot"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,251,368,50,14
+    GROUPBOX        "Depot walker",IDC_FRAME_DEPOT_WALKER,281,78,265,88
+    GROUPBOX        "Debuging",IDC_FRAME_DEBUGGING,281,255,265,61
+    GROUPBOX        "Training",IDC_FRAME_TRAINING,281,171,265,77
+    GROUPBOX        "Waypoint walker",IDC_FRAME_WAYPOINT_WALKER,7,239,268,
+                    109
+    GROUPBOX        "Monster attacking",IDC_FRAME_MONSTER_ATTACKING,7,5,268,
+                    230
+    GROUPBOX        "Corpse looting",IDC_FRAME_CORPSE_LOOTING,281,7,265,66
+    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,251,369,50,
+                    14
     CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,351,539,14
+                    BS_PUSHLIKE | WS_TABSTOP,7,352,539,14
     EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,50,98,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,157,20,81,43,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,125,49,19,14
-    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,125,20,19,14
+    CONTROL         ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,125,49,19,14
+    CONTROL         "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,125,20,19,14
     LTEXT           "Monsters to attack:",IDC_STATIC,157,13,80,8
     CONTROL         "Auto follow mode",IDC_TOOL_AUTOATTACK_AUTOFOLLOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,17,134,69,10
@@ -89,8 +100,10 @@ BEGIN
     LISTBOX         IDC_TOOL_AUTOATTACK_WAYPOINTLIST,157,254,108,61,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Waypoints:",IDC_STATIC,157,246,115,8
-    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,125,283,19,14
-    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,125,254,19,14
+    CONTROL         ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,125,283,19,14
+    CONTROL         "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,125,254,19,14
     CONTROL         "Loot food",IDC_TOOL_AUTOATTACK_AUTOLOOTFOOD,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,289,34,46,10
     CONTROL         "Loot GP",IDC_TOOL_AUTOATTACK_AUTOLOOTGP,"Button",
@@ -105,8 +118,6 @@ BEGIN
     CONTROL         "Reduced attack when player seen",
                     IDC_TOOL_AUTOATTACK_SUSPENDONENEMY,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,147,134,121,10
-    GROUPBOX        "Waypoint walker",IDC_STATIC,7,239,268,109
-    GROUPBOX        "Monster attacking",IDC_STATIC,7,5,268,230
     COMBOBOX        IDC_TOOL_AUTOATTACK_WAYPOINTSELMODE,215,208,57,46,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Waypoint select mode:",IDC_STATIC,139,207,74,12,
@@ -116,7 +127,6 @@ BEGIN
     COMBOBOX        IDC_TOOL_AUTOATTACK_MAPUSED,70,303,65,46,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Map used:",IDC_STATIC,17,303,44,12,SS_CENTERIMAGE
-    GROUPBOX        "Corpse looting",IDC_STATIC,281,7,265,66
     LTEXT           "Loot capacity limit:",IDC_STATIC,289,18,64,13,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_AMMORESTACK_LOOTCAPLIMIT,363,15,47,14,
@@ -155,14 +165,15 @@ BEGIN
                     IDC_STATIC,17,319,127,14,SS_CENTERIMAGE
     CONTROL         "Gather loot statistics",IDC_GATHER_LOOT_STATS,"Button",
                     BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,416,18,125,10
-    GROUPBOX        "Depot walker",IDC_STATIC,281,78,265,88
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_DEPOT,289,
                     154,206,8
     EDITTEXT        IDC_DEPOT_WHEN,289,134,40,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_DEPOT_ITEMLIST,289,104,89,184,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      ">>>",IDC_DEPOT_ENTRYADD,387,134,19,14
-    PUSHBUTTON      "<<<",IDC_DEPOT_ENTRYREMOVE,387,102,19,14
+    CONTROL         ">>>",IDC_DEPOT_ENTRYADD,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,387,134,19,14
+    CONTROL         "<<<",IDC_DEPOT_ENTRYREMOVE,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,387,102,19,14
     LISTBOX         IDC_DEPOT_ENTRYLIST,415,104,121,44,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
                     WS_TABSTOP
@@ -170,11 +181,9 @@ BEGIN
     LTEXT           "When:",IDC_STATIC,289,124,22,8
     LTEXT           "Remain:",IDC_STATIC,338,124,27,8
     CONTROL         "Enable cavebot debuging",IDC_DEBUG,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,289,299,97,10
-    GROUPBOX        "Debuging",IDC_STATIC,281,255,265,61
+                    BS_AUTOCHECKBOX | WS_TABSTOP,289,302,97,10
     LTEXT           "If you experiance any problems with the cavebot, activate debuging and look for the results in the tibiaauto-debug-cavebot.txt file. If you think you have found a bug please report it on the forum and attach the debug file and your config file.",
-                    IDC_STATIC,289,263,247,35
-    GROUPBOX        "Training",IDC_STATIC,281,171,265,77
+                    IDC_STATIC,289,265,247,35
     CONTROL         "Blood hit control",IDC_TRAINING_BLOOD_HIT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,190,67,10
     COMBOBOX        IDC_TRAINING_WEAPON_TRAIN,351,180,89,184,
@@ -205,19 +214,24 @@ BEGIN
     EDITTEXT        IDC_TOOL_AUTOATTACK_IGNORE,18,102,98,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_IGNORELIST,157,73,108,43,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_IGNORE,125,102,19,14
-    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_IGNORE,125,73,19,14
+    CONTROL         ">>>",IDC_TOOL_AUTOATTACK_ADD_IGNORE,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,125,102,19,14
+    CONTROL         "<<<",IDC_TOOL_AUTOATTACK_REMOVE_IGNORE,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,125,73,19,14
     LTEXT           "Monsters to ignore:",IDC_STATIC,157,66,106,8
     CONTROL         "Backattack alien with runes",IDC_BACKATTACK_RUNES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,164,103,10
-    PUSHBUTTON      "Load from minimap",IDC_LOAD_FROM_MINIMAP,17,254,92,14
+    CONTROL         "Load from minimap",IDC_LOAD_FROM_MINIMAP,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,17,254,92,14
     CONTROL         "Share force attack",IDC_SHARE_ALIEN_BACKATTACK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,166,164,76,10
     LTEXT           "Go to depot when cap below:",IDC_STATIC,416,89,94,11,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_DEPOT_CAP,513,86,23,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Down",IDC_MONSTER_ATTACK_DOWN,248,49,22,14
-    PUSHBUTTON      "Up",IDC_MONSTER_ATTACK_UP,248,20,22,14
+    CONTROL         "Down",IDC_MONSTER_ATTACK_DOWN,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,248,49,22,14
+    CONTROL         "Up",IDC_MONSTER_ATTACK_UP,"Button",BS_OWNERDRAW | 
+                    WS_TABSTOP,248,20,22,14
     LTEXT           "New monsters for attack are selected in the order top-first. Creatures out of the list always have priority.",
                     IDC_STATIC,17,15,106,32
     CONTROL         "Don't attack players",IDC_DONT_ATTACK_PLAYERS,"Button",
@@ -227,7 +241,7 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Enable PauseBreak key as pause hotkey(or %ta pause)",
                     IDC_PAUSING_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    289,320,191,10
+                    289,323,191,10
     CONTROL         "Use Right Hand",IDC_TRAINING_WEAPON_HAND,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,220,67,10
     CONTROL         "Auto Research Map (Test Version)",IDC_AUTORESEARCH,
@@ -235,17 +249,18 @@ BEGIN
                     WS_TABSTOP,181,319,80,23
 END
 
-IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 94
+IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 203, 94
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Send loot statistics info!"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,69,73,50,14
-    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 800k. Please support Tibia Auto by going into ""General options and statistics"" and sending the file to us! \n Sending time varies with file size.",
-                    IDC_STATIC,7,7,172,46,WS_BORDER
-    PUSHBUTTON      "Send loot.txt",IDC_SEND_LOOTSTATS_CAVEBOT,107,56,64,14
-    PUSHBUTTON      "Send creature.txt",IDC_SEND_CREATURESTATS_CAVEBOT,15,56,
-                    63,14
+    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,76,73,50,14
+    CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 800k. Please support Tibia Auto by going into ""General Options and Statistics"" and sending the file to us! \n\n Sending time varies with file size.",
+                    IDC_STATIC,7,7,189,46,WS_BORDER
+    CONTROL         "Send loot.txt",IDC_SEND_LOOTSTATS_CAVEBOT,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,124,56,64,14
+    CONTROL         "Send creature.txt",IDC_SEND_CREATURESTATS_CAVEBOT,
+                    "Button",BS_OWNERDRAW | WS_TABSTOP,15,56,63,14
 END
 
 
@@ -284,7 +299,7 @@ BEGIN
     IDD_SENDSTATS, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 179
+        RIGHTMARGIN, 196
         TOPMARGIN, 7
         BOTTOMMARGIN, 87
     END

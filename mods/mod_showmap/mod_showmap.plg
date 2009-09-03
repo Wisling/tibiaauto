@@ -6,17 +6,39 @@
 --------------------Configuration: mod_showmap - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP9E1A.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7E9.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_showmap.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\ConfigWindow.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\MapButton.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\mod_showmap.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\proxy.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\ToolMapShow.cpp"
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_showmap.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\ConfigData.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\ConfigWindow.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\exports.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\MapButton.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\mod_showmap.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\proxy.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\TibiaItem_impl.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\ToolMapShow.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP9E1A.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP9E1B.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7E9.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7EA.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_showmap.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_showmap\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7EA.tmp" 
+<h3>Output Window</h3>
+Compiling...
+StdAfx.cpp
+Compiling...
+ConfigData.cpp
+ConfigWindow.cpp
+exports.cpp
+MapButton.cpp
+mod_showmap.cpp
+proxy.cpp
+TibiaItem_impl.cpp
+ToolMapShow.cpp
+Generating Code...
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7EB.tmp" with contents
 [
 xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_showmap.pdb" /machine:I386 /def:".\mod_showmap.def" /out:"../mod_showmap.dll" /implib:"Release/mod_showmap.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\ConfigData.obj"
@@ -30,17 +52,25 @@ xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_sho
 ".\Release\ToolMapShow.obj"
 ".\Release\mod_showmap.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP9E1B.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7EB.tmp"
 <h3>Output Window</h3>
-Compiling...
-ConfigWindow.cpp
-MapButton.cpp
-mod_showmap.cpp
-proxy.cpp
-ToolMapShow.cpp
-Generating Code...
 Linking...
    Creating library Release/mod_showmap.lib and object Release/mod_showmap.exp
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7EF.tmp" with contents
+[
+/nologo /o"Release/mod_showmap.bsc" 
+".\Release\StdAfx.sbr"
+".\Release\ConfigData.sbr"
+".\Release\ConfigWindow.sbr"
+".\Release\exports.sbr"
+".\Release\MapButton.sbr"
+".\Release\mod_showmap.sbr"
+".\Release\proxy.sbr"
+".\Release\TibiaItem_impl.sbr"
+".\Release\ToolMapShow.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP7EF.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

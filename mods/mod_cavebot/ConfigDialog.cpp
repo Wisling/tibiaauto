@@ -41,7 +41,7 @@ extern int pathfindDistance;
 void PathfindThread(LPVOID lpParam);
 
 CConfigDialog::CConfigDialog(CMod_cavebotApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -55,6 +55,12 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_FRAME_WAYPOINT_WALKER, m_WaypointWalker);
+	DDX_Control(pDX, IDC_FRAME_TRAINING, m_Training);
+	DDX_Control(pDX, IDC_FRAME_MONSTER_ATTACKING, m_MonsterAttacking);
+	DDX_Control(pDX, IDC_FRAME_DEPOT_WALKER, m_DepotWalker);
+	DDX_Control(pDX, IDC_FRAME_DEBUGGING, m_Debugging);
+	DDX_Control(pDX, IDC_FRAME_CORPSE_LOOTING, m_CorpseLooting);
 	DDX_Control(pDX, IDC_DEPOT_CAP, m_depotCap);
 	DDX_Control(pDX, IDC_SHARE_ALIEN_BACKATTACK, m_shareAlienBackattack);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_IGNORE, m_ignore);
@@ -66,11 +72,11 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT, m_depotDropInsteadOfDepositon);
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_TRAIN, m_weaponTrain);
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_FIGHT, m_weaponFight);
-	DDX_Control(pDX, IDC_TRAINING_WEAPON_HAND, m_weaponHand);
 	DDX_Control(pDX, IDC_TRAINING_STATE, m_trainingState);
-	DDX_Control(pDX, IDC_TRAINING_ATTACK_MODE, m_trainingMode);
+	DDX_Control(pDX, IDC_TRAINING_WEAPON_HAND, m_weaponHand);
 	DDX_Control(pDX, IDC_TRAINING_FIGHT_WHEN_SURROUNDED, m_fightWhenSurrounded);
 	DDX_Control(pDX, IDC_TRAINING_FIGHT_WHEN_ALIEN, m_fightWhenAlien);
+	DDX_Control(pDX, IDC_TRAINING_ATTACK_MODE, m_trainingMode);
 	DDX_Control(pDX, IDC_TRAINING_BLOOD_HIT, m_bloodHit);
 	DDX_Control(pDX, IDC_TRAINING_ACTIVATE, m_activate);
 	DDX_Control(pDX, IDC_DEBUG, m_debug);
@@ -136,6 +142,9 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_AUTORESEARCH, OnAutoResearch)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

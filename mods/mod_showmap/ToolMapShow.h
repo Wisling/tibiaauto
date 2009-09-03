@@ -61,7 +61,6 @@ private:
 	CMapButton * m_mapButtons[21][21];
 	int m_mapButtonImage[21][21];
 	CTibiaTile *memTilesForConfig[10];
-	int alt, flicker, back;
 };
 
 //{{AFX_INSERT_LOCATION}}
