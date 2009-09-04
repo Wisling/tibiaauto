@@ -751,7 +751,6 @@ void CMemReaderProxy::setRemainingTilesToGo(int val)
 
 }
 
-
 void CMemReaderProxy::setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
 {	
 	typedef void (*Proto_fun)(DWORD memAddressStart,DWORD memAddressEnd, char *data);
@@ -873,8 +872,6 @@ void CMemReaderProxy::setMainTrayText(char *text)
 	} 
 }
 
-
-
 int CMemReaderProxy::getPlayerModeAttackPlayers()
 {
 	typedef int (*Proto_fun)();
@@ -903,7 +900,6 @@ int CMemReaderProxy::getPlayerModeAttackType()
 	return 0;
 }
 
-
 int CMemReaderProxy::getPlayerModeFollow()
 {
 	typedef int (*Proto_fun)();
@@ -917,7 +913,6 @@ int CMemReaderProxy::getPlayerModeFollow()
 	} 
 	return 0;
 }
-
 
 char * CMemReaderProxy::getOpenWindowName()
 {
@@ -933,7 +928,6 @@ char * CMemReaderProxy::getOpenWindowName()
 	return "";
 }
 
-
 int CMemReaderProxy::getConnectionState()
 {
 	typedef int (*Proto_fun)();
@@ -947,7 +941,6 @@ int CMemReaderProxy::getConnectionState()
 	} 
 	return 0;
 }
-
 
 void CMemReaderProxy::setXRayValues(int v1, int v2)
 {
@@ -976,7 +969,6 @@ int CMemReaderProxy::getXRayValue1()
 	return 0;
 }
 
-
 int CMemReaderProxy::getXRayValue2()
 {
 	typedef int (*Proto_fun)();
@@ -990,7 +982,6 @@ int CMemReaderProxy::getXRayValue2()
 	}
 	return 0;
 }
-
 
 void CMemReaderProxy::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
 {

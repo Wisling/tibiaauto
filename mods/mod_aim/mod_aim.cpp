@@ -285,3 +285,8 @@ char *CMod_aimApp::getConfigParamName(int nr)
 		return NULL;
 	}
 }
+
+void CMod_aimApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	m_configDialog->Invalidate();
+}
