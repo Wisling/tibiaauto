@@ -96,6 +96,8 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 	} 
 	catch (...) {
 		AfxMessageBox("Unable to load .skin file!");
+		delete parser;
+		return skin;
 	}
 	
 	delete parser;
@@ -169,7 +171,9 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 	CUtil util;
 	XercesDOMParser *parser = new XercesDOMParser();
 	
-	try {	
+	try {
+		FILE *f = NULL;
+		f=fopen(pathBuf.GetBuffer(200),"wb");
 		char installPath[1024] = {'\0'};
 		unsigned long installPathLen=1023;
 		HKEY hkey=NULL;
@@ -313,6 +317,7 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
 			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
 		}
+		fclose(f);
 		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
 		if (saveSeperate) {
 			theSerializer->writeNode(outfile, *doc);

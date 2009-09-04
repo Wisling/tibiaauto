@@ -1211,10 +1211,9 @@ void CColorChooser::OnLoad()
 	if (fd.DoModal()==IDOK)
 	{		
 		pathBuf = (LPCSTR)fd.GetPathName();         						
+		skin = loadedSkin = reader.loadSkin(pathBuf);
 	}		
-	skin = loadedSkin = reader.loadSkin(pathBuf);
 
-	m_DetailPicker.SetCurSel(0);
 	UpdateDisplay(6, skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue);
 }
 

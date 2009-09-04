@@ -80,11 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-<<<<<<< tibiaauto_util.dsp
-# ADD LINK32 xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto/mods/tibiaauto_util.dll" /pdbtype:sept
-=======
-# ADD LINK32 xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/tibiaauto_util.dll" /pdbtype:sept
->>>>>>> 1.15
+# ADD LINK32 xerces.lib libdb45.lib  xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/tibiaauto_util.dll" /pdbtype:sept
 
 !ENDIF 
 

@@ -1298,5 +1298,6 @@ BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	Invalidate();
 	m_pythonScriptsDialog->Invalidate();
 	m_modulePlayerInfo->getNewSkin(skin);
+	m_moduleAutoAttack->getNewSkin(skin);
 	return CDialog::OnNotify(wParam, lParam, pResult);
 }
