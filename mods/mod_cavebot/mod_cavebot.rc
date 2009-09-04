@@ -69,17 +69,17 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: cave bot"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Depot walker",IDC_FRAME_DEPOT_WALKER,281,78,265,88
+    GROUPBOX        "Depot Walker",IDC_FRAME_DEPOT_WALKER,281,78,265,88
     GROUPBOX        "Debuging",IDC_FRAME_DEBUGGING,281,255,265,61
     GROUPBOX        "Training",IDC_FRAME_TRAINING,281,171,265,77
-    GROUPBOX        "Waypoint walker",IDC_FRAME_WAYPOINT_WALKER,7,239,268,
+    GROUPBOX        "Waypoint Walker",IDC_FRAME_WAYPOINT_WALKER,7,239,268,
                     109
-    GROUPBOX        "Monster attacking",IDC_FRAME_MONSTER_ATTACKING,7,5,268,
+    GROUPBOX        "Monster Attacking",IDC_FRAME_MONSTER_ATTACKING,7,5,268,
                     230
-    GROUPBOX        "Corpse looting",IDC_FRAME_CORPSE_LOOTING,281,7,265,66
+    GROUPBOX        "Corpse Looting",IDC_FRAME_CORPSE_LOOTING,281,7,265,66
     CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,251,369,50,
                     14
-    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_OWNERDRAW | 
                     BS_PUSHLIKE | WS_TABSTOP,7,352,539,14
     EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,50,98,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,157,20,81,43,
@@ -245,7 +245,7 @@ BEGIN
     CONTROL         "Use Right Hand",IDC_TRAINING_WEAPON_HAND,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,220,67,10
     CONTROL         "Auto Research Map (Test Version)",IDC_AUTORESEARCH,
-                    "Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | BS_MULTILINE | 
+                    "Button",BS_OWNERDRAW | BS_PUSHLIKE | BS_MULTILINE | 
                     WS_TABSTOP,181,319,80,23
 END
 

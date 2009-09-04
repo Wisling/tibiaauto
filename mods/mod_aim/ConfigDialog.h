@@ -9,13 +9,14 @@
 
 #include "mod_aim.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
 
 class CMod_aimApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:

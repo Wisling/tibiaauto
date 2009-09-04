@@ -97,6 +97,7 @@ public:
 	int isStarted();
 	void start();
 	void stop();
+	void getNewSkin(CSkin);
 	void showConfigDialog();
 	void configToControls();
 	void controlsToConfig();

@@ -2640,3 +2640,8 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
 	if (!strcmp(paramName,"depot/entry")) m_currentDepotEntryNr=0;
 	if (!strcmp(paramName,"attack/ignore")) m_currentIgnoreNr=0;
 }
+
+void CMod_cavebotApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	m_configDialog->Invalidate();
+}
