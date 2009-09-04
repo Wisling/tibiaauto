@@ -186,11 +186,19 @@ SOURCE=.\res\bmp00003.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\check.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_self.bmp
 # End Source File
 # Begin Source File
 
 SOURCE=.\res\mod_itemconfig.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\uncheck.bmp
 # End Source File
 # End Group
 # Begin Source File
