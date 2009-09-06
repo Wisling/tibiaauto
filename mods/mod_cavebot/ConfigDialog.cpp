@@ -664,7 +664,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		if (exitCode==1){//errors finding path
 			failedOnce=1;
 			hThread=0;
-			char buf[128];
+			char buf[256];
 			sprintf(buf,"Failed to find path to waypoint %d. Either the travelling distance is much larger than distance between the points or it may be blocked via the minimap.",cavebotFindpathStartedWaypoint);
 			SetTimer(1001,100,NULL);
 			CDialog::OnTimer(nIDEvent);
@@ -1145,7 +1145,7 @@ void CConfigDialog::OnAutoResearch(){
 		pathfindPoints.push(myData);
 	}
 
-	char buf[111];
+	char buf[128];
 	if (!m_waypointList.GetCount()) return;
 	for (int i=0;i<m_waypointList.GetCount()+(m_waypointList.GetCount()>2);i++){//goes around waypoints in a circle+1 path from current point(no circle if only 2 points)
 		m_waypointList.GetText(i%m_waypointList.GetCount(),buf);
