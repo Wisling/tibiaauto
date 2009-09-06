@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "MemConstData.h"
 
 #include "MemReaderProxy.h"
+#include "TAMiniMapProxy.h"
 #include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
@@ -61,35 +62,44 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {		
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
+	CTAMiniMapProxy taMiniMap;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
-	int count=0;
+	int iter=0;
 
 	sender.enableCName(1);
 	while (!toolThreadShouldStop)
 	{			
-		count++;
+		iter++;
 		Sleep(200);	
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
-		if (config->revealNoFish&&count%5==0)
+		if (config->revealNoFish&&iter%5==0)
 		{			
-			int x,y;
-			for (x=-7;x<=7;x++)
-			{
-				for (y=-5;y<=5;y++)
+			CTibiaCharacter* self=reader.readSelfCharacter();
+
+			static int lastFishX=0,lastFishY=0,lastFishZ=0;
+			if (lastFishX!=self->x || lastFishY!=self->y || lastFishZ!=self->z){
+				int x,y;
+				for (x=-7;x<=7;x++)
 				{
-					int tileId = reader.mapGetPointItemId(point(x,y,0),0);
-					if (tileId>=itemProxy.getValueForConst("waterWithFishStart")+12&&tileId<=itemProxy.getValueForConst("waterWithFishEnd")+12)
+					for (y=-5;y<=5;y++)
 					{
-						reader.mapSetPointItemId(point(x,y,0),0,727);
+						int tileId = reader.mapGetPointItemId(point(x,y,0),0);
+						if (tileId>=itemProxy.getValueForConst("waterWithFishStart")+12&&tileId<=itemProxy.getValueForConst("waterWithFishEnd")+12)
+						{
+							reader.mapSetPointItemId(point(x,y,0),0,727);
+						}
 					}
 				}
+				lastFishX=self->x;
+				lastFishY=self->y;
+				lastFishZ=self->z;
 			}
 		}
 
-		if (config->revealCName&&count%5==0)
+		if (config->revealCName&&iter%5==0)
 		{
 			reader.writeEnableRevealCName();
 		}
@@ -106,8 +116,163 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			*/
 
 		}
+		if (config->minimapResearch&&iter%2==0)
+		{
+			char buf[1111];
+			CTibiaCharacter* self=reader.readSelfCharacter();
+
+			static int lastX=0,lastY=0,lastZ=0,lastMinZ=0,lastMaxZ=0;
+			if (lastX!=self->x || lastY!=self->y || lastZ!=self->z){
+				//
+				char mapArrCol[18][14][8]={{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},
+{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},
+				{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}}};
+				char mapArrSpd[18][14][8]={{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},
+{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},
+				{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}},{{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0},{0,0,0,0,0,0,0,0}}};
+
+				int x,y,z;
+				int sigX=max(-1,min(1,self->x-lastX));
+				int sigY=max(-1,min(1,self->y-lastY));
+				int sigZ=max(-1,min(1,self->z-lastZ));
+
+				int minZ=(self->z<=7?-self->z:-2);
+				int maxZ=(self->z<=7?7-self->z:min(2,15-self->z));
+				int minY=-6;
+				int maxY=7;
+				int minX=-8;
+				int maxX=9;
+
+				int minNewZ=max(minZ,min(maxZ, (lastZ-self->z)+(sigZ==1?lastMaxZ:lastMinZ)+sigZ ));
+				int maxNewZ=minNewZ+max(minZ-maxZ-1,min(maxZ-minZ+1, (self->z-lastZ)+(sigZ==1?maxZ-lastMaxZ:minZ-lastMinZ) ));
+				int minNewY=max(minY,min(maxY, (lastY-self->y)+(sigY==1?maxY:minY)+sigY ));
+				int maxNewY=minNewY+max(minY-maxY-1,min(maxY-minY+1,self->y-lastY));
+				int minNewX=max(minX,min( maxX,(lastX-self->x)+(sigX==1?maxX:minX)+sigX ));
+				int maxNewX=minNewX+max(minX-maxX-1,min(maxX-minX+1,self->x-lastX));
+
+
+				sprintf(buf,"%x looping sigs(%d,%d,%d) x:%d to %d  y:%d to %d  z:%d to %d minmax's %d,%d  %d,%d  %d,%d",&mapArrCol,sigX,sigY,sigZ,minNewX,maxNewX,minNewY,maxNewY,minNewZ,maxNewZ,minX,maxX,minY,maxY,minZ,maxZ);
+				//AfxMessageBox(buf);
+
+				int relToCell=reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
+
+				for (x=minNewX;x*sigX<maxNewX*sigX;x+=sigX){
+					for (y=minY;y<=maxY;y++){
+						for(z=minZ;z<=maxZ;z++){
+							int i;
+							int mapColour=-1;
+							int mapSpeed=-1;
+							int count=reader.mapGetPointItemsCount(point(x,y,z),relToCell);
+							sprintf(buf,"Looking (%d,%d,%d) i=%d count=%d",x,y,z,i,count);
+							//AfxMessageBox(buf);
+							//start from top and go to bottom until found both a speed and a colour
+							for (i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
+								int tileId = reader.mapGetPointItemId(point(x,y,z),i,relToCell);
+								if (tileId==99) {mapSpeed=255; continue;}//reached top of relevant tiles
+
+								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								if(tileData->minimapColor && mapColour==-1) mapColour=tileData->minimapColor;
+								if(tileData->speed && mapSpeed==-1) mapSpeed=tileData->speed;
+								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
+							}
+							if (mapColour!=-1 && mapSpeed!=-1){
+								sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
+								//AfxMessageBox(buf); 
+								mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
+								mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
+							}
+						}
+					}
+				}
+				for (x=minX;x<=maxX;x++){
+					for (y=minNewY;y*sigY<maxNewY*sigY;y+=sigY){
+						for(z=minZ;z<=maxZ;z++){
+							if(x>=minNewX && x<maxNewX) continue;//already did these points
+							int i;
+							int mapColour=-1;
+							int mapSpeed=-1;
+							int count=reader.mapGetPointItemsCount(point(x,y,z),relToCell);
+							sprintf(buf,"Looking (%d,%d,%d) i=%d count=%d",x,y,z,i,count);
+							//AfxMessageBox(buf);
+							//start from top and go to bottom until found both a speed and a colour
+							for (i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
+								int tileId = reader.mapGetPointItemId(point(x,y,z),i,relToCell);
+								if (tileId==99) {mapSpeed=255; continue;}//reached top of relevant tiles
+
+								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								if(tileData->minimapColor && mapColour==-1)
+									mapColour=tileData->minimapColor;
+								if(tileData->speed && mapSpeed==-1) mapSpeed=tileData->speed;
+								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
+							}
+							if (mapColour!=-1 && mapSpeed!=-1){
+								sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
+								//AfxMessageBox(buf);
+								mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
+								mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
+							}
+						}
+					}
+				}
+				for (x=minX;x<=maxX;x++){
+					for (y=minY;y<=maxY;y++){
+						for(z=minNewZ;z*sigZ<maxNewZ*sigZ;z+=sigZ){
+							if(x>=minNewX && x<maxNewX) continue;//already did these points
+							if(y>=minNewY && y<maxNewY) continue;//already did these points
+							int i;
+							int mapColour=-1;
+							int mapSpeed=-1;
+							int count=reader.mapGetPointItemsCount(point(x,y,z),relToCell);
+							sprintf(buf,"Looking (%d,%d,%d) i=%d count=%d",x,y,z,i,count);
+							//AfxMessageBox(buf);
+							//start from top and go to bottom until found both a speed and a colour
+							for (i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
+								int tileId = reader.mapGetPointItemId(point(x,y,z),i,relToCell);
+								if (tileId==99) {mapSpeed=255; continue;}//reached top of relevant tiles
+
+								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								if(tileData->minimapColor && mapColour==-1) mapColour=tileData->minimapColor;
+								if(tileData->speed && mapSpeed==-1) mapSpeed=tileData->speed;
+								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
+							}
+							if (mapColour!=-1 && mapSpeed!=-1){
+								sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
+								//AfxMessageBox(buf); 
+								mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
+								mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
+							}
+						}
+					}
+				}
+				CTibiaCharacter* newSelf=reader.readSelfCharacter();
+				if (newSelf->z==self->z){//since we used relToCell only floorchanges drastically matter
+					// tiles changed between read from tibia and write to map are excluded
+					for (x=-8+max(0,newSelf->x-self->x);x<=9+min(0,newSelf->x-self->x);x++){
+						for (y=-6+max(0,newSelf->y-self->y);y<=7+min(0,newSelf->y-self->y);y++){
+							for(z=minZ;z<=maxZ;z++){
+								if(mapArrSpd[x-(-8)][y-(-6)][z-minZ]!=0){
+									reader.writeMiniMapPoint(self->x+x-z,self->y+y-z,self->z+z,mapArrCol[x-(-8)][y-(-6)][z-minZ],mapArrSpd[x-(-8)][y-(-6)][z-minZ]);
+								}
+							}
+						}
+					}
+					lastX=self->x;
+					lastY=self->y;
+					lastZ=self->z;
+
+					lastMinZ=minZ;
+					lastMaxZ=maxZ;
+				}
+				delete newSelf;
+
+
+			}
+			delete self;
+
+		}
 				
 	}
+
 	sender.enableCName(0);
 	reader.writeDisableRevealCName();
 	toolThreadShouldStop=0;
