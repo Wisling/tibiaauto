@@ -255,9 +255,26 @@ int CTibiaMap::isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int
 	return 0;// if reached here then points are not connected(impossible)
 }
 
+int CTibiaMap::getPointSpeed(int x, int y, int z)
+{
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;	
+	if (tibiaMap2.Lookup(&p,pd)) return pd->speed;
+
+	return 0;
+}
+
+
+void CTibiaMap::setPointSpeed(int x, int y, int z,int speed)
+{
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+	if (tibiaMap2.Lookup(&p,pd)) pd->speed=speed;
+}
+
 int CTibiaMap::getDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	return 2+isPointLonger(x, y, z, prevX, prevY, prevZ)*3;
+	return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);
 }
 
 typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
@@ -441,4 +458,24 @@ int CTibiaMap::getPointUpDownNoProh(int x, int y, int z)
 		if (isPointAvailableNoProh(x,y,z)) return pd->updown;
 	}
 	return 0;	
+}
+
+point CTibiaMap::getDestPoint(int x,int y, int z){
+	if (isPointAvailableNoProh(x,y,z)){
+		struct point p=point(x,y,z);
+		struct pointData *pd=NULL;
+		if (tibiaMap2.Lookup(&p,pd))
+			return pd->destPoint;
+	}
+	return point(0,0,0);
+}
+
+void CTibiaMap::setDestPoint(int x,int y,int z,int destX, int destY, int destZ){
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+	if (tibiaMap2.Lookup(&p,pd))
+	{
+		point dest=point(destX,destY,destZ);
+		pd->destPoint=dest;
+	}
 }

@@ -26,7 +26,7 @@ struct paramType
 {
 	char name[128];
 	char description[128];
-	char value[128];
+	char value[1024];
 };
 
 

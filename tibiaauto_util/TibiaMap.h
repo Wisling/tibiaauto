@@ -24,6 +24,8 @@ public:
 	int prevX;
 	int prevY;
 	int prevZ;
+	int speed;
+	point destPoint;
 
 	pointData()
 	{
@@ -36,6 +38,8 @@ public:
 		prevX=0;
 		prevY=0;
 		prevZ=0;
+		speed=0;
+		destPoint=point(0,0,0);
 	}	
 };
  
@@ -63,7 +67,11 @@ public:
 	struct point getRandomPoint();
 	void clear();
 	void setPointAsAvailable(int x,int y,int z);
-	int isPointAvailable(int x,int y,int z);	
+	int isPointAvailable(int x,int y,int z);
+	point getDestPoint(int x,int y, int z);
+	void setDestPoint(int x,int y,int z,int destX, int destY, int destZ);
+	int getPointSpeed(int x,int y, int z);
+	void setPointSpeed(int x, int y, int z,int speed);
 	CTibiaMap();
 	virtual ~CTibiaMap();
 	

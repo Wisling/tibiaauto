@@ -40,17 +40,18 @@ public:
 	void setMainWindowText(char *text);
 	CTibiaMiniMapLabel * readMiniMapLabel(int mapNr,int pointNr);
 	CTibiaMiniMapPoint * readMiniMapPoint(int x,int y,int z);
+	void writeMiniMapPoint(int x,int y,int z,int col,int spd);
 	CTibiaMiniMap * readMiniMap(int nr);
 	void setRemainingTilesToGo(int val);
 	void writeDisableRevealCName();
 	void writeEnableRevealCName();
 	long getCurrentTm();
-	int mapGetPointItemExtraInfo(point p,int stackNr,int extraPos);
-	int mapGetPointStackIndex(point p,int stackNr);
-	void mapSetPointItemsCount(point p,int count);
-	void mapSetPointItemId(point p, int stackNr, int tileId);
-	int mapGetPointItemId(struct point p,int stackNr);
-	int mapGetPointItemsCount(struct point p);
+	int mapGetPointItemExtraInfo(point p,int stackNr,int extraPos,int relToCell=-1);
+	int mapGetPointStackIndex(point p,int stackNr,int relToCell=-1);
+	void mapSetPointItemsCount(point p,int count,int relToCell=-1);
+	void mapSetPointItemId(point p, int stackNr, int tileId,int relToCell=-1);
+	int mapGetPointItemId(struct point p,int stackNr,int relToCell=-1);
+	int mapGetPointItemsCount(struct point p,int relToCell=-1);
 	void writeSelfLightColor(int value);
 	void writeSelfLightPower(int value);
 	int readSelfLightColor();
@@ -78,8 +79,6 @@ public:
 	CTibiaCharacter *readSelfCharacter();
 	CTibiaCharacter *getCharacterByTibiaId(int tibiaId);
 	CTibiaVIPEntry *readVIPEntry(int nr);
-
-private:
 	int dereference(int addr);
 	int mapConvertPointToCell(struct point p);
 	struct point mapConvertRelPointToPoint(struct point p);

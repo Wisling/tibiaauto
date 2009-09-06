@@ -259,6 +259,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"readMiniMap", tibiaauto_reader_readMiniMap, METH_VARARGS},
 	{"readMiniMapPoint", tibiaauto_reader_readMiniMapPoint, METH_VARARGS},
 	{"readMiniMapLabel", tibiaauto_reader_readMiniMapLabel, METH_VARARGS},
+	{"writeMiniMapPoint", tibiaauto_reader_writeMiniMapPoint, METH_VARARGS},
 	{"setMainWindowText", tibiaauto_reader_setMainWindowText, METH_VARARGS},
 	{"setMainTrayText", tibiaauto_reader_setMainTrayText, METH_VARARGS},
 	{"getPlayerModeAttackPlayers", tibiaauto_reader_getPlayerModeAttackPlayers, METH_VARARGS},
@@ -336,7 +337,7 @@ static PyMethodDef Methods_tasender[] = {
 };
 
 
-static PyMethodDef Methods_tamap[] = {    
+static PyMethodDef Methods_tamap[] = {
 	{"removePointAvailable", tibiaauto_map_removePointAvailable, METH_VARARGS},
 	{"prohPointClear", tibiaauto_map_prohPointClear, METH_VARARGS},
 	{"prohPointAdd", tibiaauto_map_prohPointAdd, METH_VARARGS},

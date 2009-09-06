@@ -212,6 +212,28 @@ CTibiaMiniMapPoint* CTAMiniMap::getMiniMapPoint(int x, int y, int z){
 	}
 	return new CTibiaMiniMapPoint(x,y,z,0,250);
 }
+void CTAMiniMap::setMiniMapPoint(int x,int y,int z,int col,int spd){
+	CTibiaItemProxy itemProxy;
+	CMemReader* reader=new CMemReader();
+
+	int xMap=(int)(x/256),yMap=(int)(y/256),zMap=z;
+	int m_processId=CMemUtil::getGlobalProcessId();
+	for (int nr = 0; nr<10;nr++){
+		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
+		CTibiaMiniMap *map = reader->readMiniMap(nr);
+		char buf[1111];
+		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
+		//AfxMessageBox(buf);
+		if (xMap==map->x && yMap==map->y && zMap==map->z){
+			int pointOffset=(x%256)*256+y%256;
+			char colour=col;
+			char speed=spd;
+
+			CMemUtil::SetMemRange(m_processId,mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour);
+			CMemUtil::SetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
+		}
+	}
+}
 
 void CTAMiniMap::unloadMiniMaps(){
 	taMiniMap.RemoveAll();

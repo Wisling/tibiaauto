@@ -184,12 +184,19 @@ EXPORTS
 	packSenderUseItemFromContainerOnCreature @178
 	packSenderUseItemFromFloorOnCreature @179
 	memReadReadMiniMapPoint @180
-	tibiaMapIsPointInMiniMap @181
-	tibiaMapGetMiniMapPoint @182
-	tibiaMapFindPathOnMiniMap @183
-	tibiaMapFindPathStop @184
-	tibiaMapIsFindPathStopped @185
-	tibiaMapGetCurrentDistance @186
-	loadSkin @187
-	loadCurrentSkin @188
-	saveSkin @189
+	memReadWriteMiniMapPoint @181
+	tibiaMapIsPointInMiniMap @182
+	tibiaMapGetMiniMapPoint @183
+	tibiaMapSetMiniMapPoint @184
+	tibiaMapFindPathOnMiniMap @185
+	tibiaMapFindPathStop @186
+	tibiaMapIsFindPathStopped @187
+	tibiaMapGetCurrentDistance @188
+	loadSkin @189
+	loadCurrentSkin @190
+	saveSkin @191
+	tibiaMapGetDestPoint @192
+	tibiaMapSetDestPoint @193
+	memReadMapGetSelfCellNr @194
+	tibiaMapGetPointSpeed @195
+	tibiaMapSetPointSpeed @196

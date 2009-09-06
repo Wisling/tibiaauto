@@ -194,9 +194,9 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 		do {	
 			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
 			{				
-				char newParamName[512];
-				char subNodeName[512];
-				wcstombs(subNodeName,subNode->getNodeName(),200);
+				char newParamName[1024];
+				char subNodeName[1024];
+				wcstombs(subNodeName,subNode->getNodeName(),1024);
 				sprintf(newParamName,"%s/%s",paramName,subNodeName);
 				isLeaf=0;
 
@@ -210,15 +210,15 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 			
 		if (strlen(paramName+1)&&attrNode)
 		{
-			char nodeValue[512];
-			wcstombs(nodeValue,attrNode->getNodeValue(),200);
+			char nodeValue[1024];
+			wcstombs(nodeValue,attrNode->getNodeValue(),1024);
 			// +8 to skip /config/
 			if (module->isMultiParam(paramName+8)&&!multiParams->isKnownMultiparam(paramName+8))
 			{
 				multiParams->registerMultiparam(paramName+8);
 				module->resetMultiParamAccess(paramName+8);
 			}
-			module->loadConfigParam(paramName+8,nodeValue);			
+			module->loadConfigParam(paramName+8,nodeValue);
 		}		
 	}
 }
@@ -233,9 +233,9 @@ void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNod
 		do {	
 			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
 			{				
-				char newParamName[512];
-				char subNodeName[512];
-				wcstombs(subNodeName,subNode->getNodeName(),200);
+				char newParamName[1024];
+				char subNodeName[1024];
+				wcstombs(subNodeName,subNode->getNodeName(),1024);
 				sprintf(newParamName,"%s/%s",paramName,subNodeName);
 				isLeaf=0;
 
@@ -249,8 +249,8 @@ void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNod
 			
 		if (strlen(paramName+1)&&attrNode)
 		{
-			char nodeValue[512];
-			wcstombs(nodeValue,attrNode->getNodeValue(),200);
+			char nodeValue[1024];
+			wcstombs(nodeValue,attrNode->getNodeValue(),1024);
 			
 			pythonScript->setParamValue(paramName+8,nodeValue);			
 		}		

@@ -543,6 +543,26 @@ struct point tibiaMapGetPointByNr(int nr)
 	return tibiaMap.getPointByNr(nr);
 }
 
+point tibiaMapGetDestPoint(int x,int y, int z)
+{
+	return tibiaMap.getDestPoint(x,y,z);
+}
+
+void tibiaMapSetDestPoint(int x,int y, int z, int destX, int destY, int destZ)
+{
+	tibiaMap.setDestPoint(x, y, z, destX, destY, destZ);
+}
+
+int tibiaMapGetPointSpeed(int x,int y, int z)
+{
+	return tibiaMap.getPointSpeed(x,y,z);
+}
+
+void tibiaMapSetPointSpeed(int x,int y, int z, int speed)
+{
+	tibiaMap.setPointSpeed(x, y, z, speed);
+}
+
 int tibiaMapIsPointInMiniMap(int x,int y,int z)
 {
 	return taMiniMap.isPointInMiniMap(x,y,z);
@@ -551,6 +571,11 @@ int tibiaMapIsPointInMiniMap(int x,int y,int z)
 CTibiaMiniMapPoint* tibiaMapGetMiniMapPoint(int x,int y,int z)
 {
 	return taMiniMap.getMiniMapPoint(x,y,z);
+}
+
+void tibiaMapSetMiniMapPoint(int x,int y,int z,int col,int spd)
+{
+	taMiniMap.setMiniMapPoint(x,y,z,col,spd);
 }
 
 CUIntArray * tibiaMapFindPathOnMiniMap(int x,int y,int z,int x2,int y2,int z2)
@@ -760,38 +785,43 @@ void packSenderFollow(int tibiaCharId)
 	sender.follow(tibiaCharId);
 }
 
-int memReadMapGetPointItemsCount(point p)
+int memReadMapGetSelfCellNr()
 {
 	startMemReader();
-	return reader->mapGetPointItemsCount(p);
+	return reader->mapGetSelfCellNr();
 }
-int memReadMapGetPointItemId(point p, int stackNr)
+int memReadMapGetPointItemsCount(point p,int relToCell=-1)
 {
 	startMemReader();
-	return reader->mapGetPointItemId(p,stackNr);
+	return reader->mapGetPointItemsCount(p,relToCell);
 }
-
-int memReadMapGetPointItemExtraInfo(point p, int stackNr,int extraPos)
+int memReadMapGetPointItemId(point p, int stackNr,int relToCell=-1)
 {
 	startMemReader();
-	return reader->mapGetPointItemExtraInfo(p,stackNr,extraPos);
-}
-
-int memReadMapGetPointStackIndex(point p, int stackNr)
-{
-	startMemReader();
-	return reader->mapGetPointStackIndex(p,stackNr);
+	return reader->mapGetPointItemId(p,stackNr,relToCell);
 }
 
-void memReadMapSetPointItemsCount(point p, int count)
+int memReadMapGetPointItemExtraInfo(point p, int stackNr,int extraPos,int relToCell=-1)
 {
 	startMemReader();
-	reader->mapSetPointItemsCount(p,count);
+	return reader->mapGetPointItemExtraInfo(p,stackNr,extraPos,relToCell);
 }
-void memReadMapSetPointItemId(point p, int stackNr, int tileId)
+
+int memReadMapGetPointStackIndex(point p, int stackNr,int relToCell=-1)
 {
 	startMemReader();
-	reader->mapSetPointItemId(p,stackNr,tileId);
+	return reader->mapGetPointStackIndex(p,stackNr,relToCell);
+}
+
+void memReadMapSetPointItemsCount(point p, int count,int relToCell=-1)
+{
+	startMemReader();
+	reader->mapSetPointItemsCount(p,count,relToCell);
+}
+void memReadMapSetPointItemId(point p, int stackNr, int tileId,int relToCell=-1)
+{
+	startMemReader();
+	reader->mapSetPointItemId(p,stackNr,tileId,relToCell);
 }
 
 void packSenderTurnLeft()
@@ -952,6 +982,12 @@ CTibiaMiniMapPoint *memReadReadMiniMapPoint(int x,int y,int z)
 {
 	startMemReader();
 	return reader->readMiniMapPoint(x,y,z);
+}
+
+void memReadWriteMiniMapPoint(int x, int y, int z,int col,int spd)
+{
+	startMemReader();
+	reader->writeMiniMapPoint(x,y,z,col,spd);
 }
 
 int crFindCreatureStatForLocationTibiaId(int x, int y, int z, int pos)

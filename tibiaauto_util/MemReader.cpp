@@ -404,11 +404,16 @@ int CMemReader::mapGetSelfCellNr()
 			
 		} 
 	}	
+	;
 
-	int tileNr;
-	for (tileNr=0;tileNr<m_memMaxMapTiles;tileNr++)
+	int floorSize=m_memMaxMapTiles/8;
+	//there are 8 stages, if above ground each floor 7 to 0 always has the same stage
+	//if underground player is always on stage 2 and only stages 0,1,2,3,4 are relevant
+	int tileNrLowest=(self->z<=7)?floorSize*(7-self->z):(floorSize*2);
+	int tileNrHighest=tileNrLowest+floorSize;
+	for (int tileNr=tileNrLowest;tileNr<tileNrHighest;tileNr++)
 	{
-		int pos;		
+		int pos;
 		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile);		
 		for (pos=0;pos<count;pos++)
 		{
@@ -420,12 +425,34 @@ int CMemReader::mapGetSelfCellNr()
 				{					
 					delete self;
 					prevSelfTileNr=tileNr;
-					prevSelfTilePos=pos;					
+					prevSelfTilePos=pos;
 					return tileNr;
 				}						
 			}			
 		}					
-	}	
+	}
+
+	//just in case.  Usually only run when changing levels
+	for (tileNr=0;tileNr<m_memMaxMapTiles;tileNr++)
+	{
+		int pos;
+		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile);		
+		for (pos=0;pos<count;pos++)
+		{
+			int tileId=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile+pos*12+4);
+			if (tileId==99)
+			{								
+				int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile+pos*12+4+4);
+				if (tileCharId==self->tibiaId)
+				{					
+					delete self;
+					prevSelfTileNr=tileNr;
+					prevSelfTilePos=pos;
+					return tileNr;
+				}						
+			}			
+		}					
+	}
 	delete self;
 	return 0;
 }
@@ -454,82 +481,94 @@ int CMemReader::mapConvertPointToCell(point p)
 	return p.z*14*18+p.y*18+p.x;
 }
 
-int CMemReader::mapGetPointItemsCount(point p)
+int CMemReader::mapGetPointItemsCount(point p,int relToCell/*=-1*/)
 {		
-	int selfCell=mapGetSelfCellNr();
+	CTibiaCharacter *self = readSelfCharacter();
+	int selfCell=(relToCell==-1?mapGetSelfCellNr():relToCell);
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
 
-	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
+	//out of xy-range OR above ground and out of z-range OR underground and out of z-range
+	if (p.x<-8||p.x>9||p.y<-6||p.y>7||(p.z>7-self->z||p.z<-self->z)&&self->z<=7||(p.z>min(2,15-self->z)||p.z<-2)&&self->z>7)
 	{
+		delete self;
+		return 0;//perceived # of items on square should be 0
 		p.x=p.y=p.z=0;
 	}
-	selfRelPoint.x+=p.x;
-	selfRelPoint.y+=p.y;
-	selfRelPoint.z+=p.z;
-	if (selfRelPoint.x<-8) selfRelPoint.x+=18;
-	if (selfRelPoint.x>9) selfRelPoint.x-=18;
-	if (selfRelPoint.y<-6) selfRelPoint.y+=14;
-	if (selfRelPoint.y>7) selfRelPoint.y-=14;
+	delete self;
+	selfPoint.x+=p.x;
+	selfPoint.y+=p.y;
+	selfPoint.z-=p.z;//in tile array 0 is lowest
+	if (selfPoint.x<0) selfPoint.x+=18;
+	if (selfPoint.x>=18) selfPoint.x-=18;
+	if (selfPoint.y<0) selfPoint.y+=14;
+	if (selfPoint.y>=14) selfPoint.y-=14;
+	if (selfPoint.z<0 || selfPoint.z>7) return 0;//should never return here
 
-	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
-	int itemCell = mapConvertPointToCell(itemPoint);
+	int itemCell = mapConvertPointToCell(selfPoint);
 	
 	int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile);	
 	return count;
 }
 
-int CMemReader::mapGetPointItemId(point p, int stackNr)
+int CMemReader::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/)
 {
-	return mapGetPointItemExtraInfo(p,stackNr,0);
+	return mapGetPointItemExtraInfo(p,stackNr,0,relToCell);
 }
 
-void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId)
+void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId,int relToCell/*=-1*/)
 {
-	int selfCell=mapGetSelfCellNr();
+	CTibiaCharacter *self = readSelfCharacter();
+	int selfCell=(relToCell==-1?mapGetSelfCellNr():relToCell);
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
 
-	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
+	//out of xy-range OR above ground and out of z-range OR underground and out of z-range
+	if (p.x<-8||p.x>9||p.y<-6||p.y>7||(p.z>7-self->z||p.z<-self->z)&&self->z<=7||(p.z>min(2,15-self->z)||p.z<-2)&&self->z>7)
 	{
+		delete self;
+		return;
 		p.x=p.y=p.z=0;
 	}
-	selfRelPoint.x+=p.x;
-	selfRelPoint.y+=p.y;
-	selfRelPoint.z+=p.z;
-	if (selfRelPoint.x<-8) selfRelPoint.x+=18;
-	if (selfRelPoint.x>9) selfRelPoint.x-=18;
-	if (selfRelPoint.y<-6) selfRelPoint.y+=14;
-	if (selfRelPoint.y>7) selfRelPoint.y-=14;
+	delete self;
+	selfPoint.x+=p.x;
+	selfPoint.y+=p.y;
+	selfPoint.z-=p.z;//in tile array 0 is lowest
+	if (selfPoint.x<0) selfPoint.x+=18;
+	if (selfPoint.x>=18) selfPoint.x-=18;
+	if (selfPoint.y<0) selfPoint.y+=14;
+	if (selfPoint.y>=14) selfPoint.y-=14;
+	if (selfPoint.z<0 || selfPoint.z>7) return;//should never return here
 
-	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
-	int itemCell = mapConvertPointToCell(itemPoint);
-
-	CMemUtil::SetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile+4+stackNr*12,tileId);	
+	int itemCell = mapConvertPointToCell(selfPoint);
+	
+	CMemUtil::SetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile+4+stackNr*12,tileId);
 }
 
-void CMemReader::mapSetPointItemsCount(point p, int count)
+void CMemReader::mapSetPointItemsCount(point p, int count,int relToCell/*=-1*/)
 {
-	int selfCell=mapGetSelfCellNr();
+	CTibiaCharacter *self = readSelfCharacter();
+	int selfCell=(relToCell==-1?mapGetSelfCellNr():relToCell);
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
 
-	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
+	//out of xy-range OR above ground and out of z-range OR underground and out of z-range
+	if (p.x<-8||p.x>9||p.y<-6||p.y>7||(p.z>7-self->z||p.z<-self->z)&&self->z<=7||(p.z>min(2,15-self->z)||p.z<-2)&&self->z>7)
 	{
+		delete self;
+		return;
 		p.x=p.y=p.z=0;
 	}
-	selfRelPoint.x+=p.x;
-	selfRelPoint.y+=p.y;
-	selfRelPoint.z+=p.z;
-	if (selfRelPoint.x<-8) selfRelPoint.x+=18;
-	if (selfRelPoint.x>9) selfRelPoint.x-=18;
-	if (selfRelPoint.y<-6) selfRelPoint.y+=14;
-	if (selfRelPoint.y>7) selfRelPoint.y-=14;
+	delete self;
+	selfPoint.x+=p.x;
+	selfPoint.y+=p.y;
+	selfPoint.z-=p.z;//in tile array 0 is lowest
+	if (selfPoint.x<0) selfPoint.x+=18;
+	if (selfPoint.x>=18) selfPoint.x-=18;
+	if (selfPoint.y<0) selfPoint.y+=14;
+	if (selfPoint.y>=14) selfPoint.y-=14;
+	if (selfPoint.z<0 || selfPoint.z>7) return;//should never return here
 
-	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
-	int itemCell = mapConvertPointToCell(itemPoint);
-
-	CMemUtil::SetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile,count);	
+	int itemCell = mapConvertPointToCell(selfPoint);
+	
+	CMemUtil::SetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile,count);
 }
 
 int CMemReader::dereference(int addr)
@@ -543,52 +582,56 @@ int CMemReader::dereference(int addr)
 	return lastAddrResp;
 }
 
-int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos)
+int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos,int relToCell/*=-1*/)
 {
-	int selfCell=mapGetSelfCellNr();
+	CTibiaCharacter *self = readSelfCharacter();
+	int selfCell=(relToCell==-1?mapGetSelfCellNr():relToCell);
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
 
-	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
+	//out of xy-range OR above ground and out of z-range OR underground and out of z-range
+	if (p.x<-8||p.x>9||p.y<-6||p.y>7||(p.z>7-self->z||p.z<-self->z)&&self->z<=7||(p.z>min(2,15-self->z)||p.z<-2)&&self->z>7)
 	{
 		p.x=p.y=p.z=0;
 	}
-	selfRelPoint.x+=p.x;
-	selfRelPoint.y+=p.y;
-	selfRelPoint.z+=p.z;
-	if (selfRelPoint.x<-8) selfRelPoint.x+=18;
-	if (selfRelPoint.x>9) selfRelPoint.x-=18;
-	if (selfRelPoint.y<-6) selfRelPoint.y+=14;
-	if (selfRelPoint.y>7) selfRelPoint.y-=14;
+	delete self;
+	selfPoint.x+=p.x;
+	selfPoint.y+=p.y;
+	selfPoint.z-=p.z;//in tile array 0 is lowest
+	if (selfPoint.x<0) selfPoint.x+=18;
+	if (selfPoint.x>=18) selfPoint.x-=18;
+	if (selfPoint.y<0) selfPoint.y+=14;
+	if (selfPoint.y>=14) selfPoint.y-=14;
+	if (selfPoint.z<0 || selfPoint.z>7) return 0;//should never return here
 
-	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
-	int itemCell = mapConvertPointToCell(itemPoint);
-
+	int itemCell = mapConvertPointToCell(selfPoint);
+	
 	int data=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile+4+stackNr*12+extraPos*4);
 	return data;
 }
 
-int CMemReader::mapGetPointStackIndex(point p, int stackNr)// returns the index of an item in a stack on a tibia tile
+int CMemReader::mapGetPointStackIndex(point p, int stackNr,int relToCell/*=-1*/)// returns the index of an item in a stack on a tibia tile
 {
-	int selfCell=mapGetSelfCellNr();
+	CTibiaCharacter *self = readSelfCharacter();
+	int selfCell=(relToCell==-1?mapGetSelfCellNr():relToCell);
 	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	struct point selfRelPoint = mapConvertPointToRelPoint(selfPoint);
 
-	if (p.x<-8||p.x>9||p.y<-6||p.y>7||p.z!=0)
+	//out of xy-range OR above ground and out of z-range OR underground and out of z-range
+	if (p.x<-8||p.x>9||p.y<-6||p.y>7||(p.z>7-self->z||p.z<-self->z)&&self->z<=7||(p.z>min(2,15-self->z)||p.z<-2)&&self->z>7)
 	{
 		p.x=p.y=p.z=0;
 	}
-	selfRelPoint.x+=p.x;
-	selfRelPoint.y+=p.y;
-	selfRelPoint.z+=p.z;
-	if (selfRelPoint.x<-8) selfRelPoint.x+=18;
-	if (selfRelPoint.x>9) selfRelPoint.x-=18;
-	if (selfRelPoint.y<-6) selfRelPoint.y+=14;
-	if (selfRelPoint.y>7) selfRelPoint.y-=14;
+	delete self;
+	selfPoint.x+=p.x;
+	selfPoint.y+=p.y;
+	selfPoint.z-=p.z;//in tile array 0 is lowest
+	if (selfPoint.x<0) selfPoint.x+=18;
+	if (selfPoint.x>=18) selfPoint.x-=18;
+	if (selfPoint.y<0) selfPoint.y+=14;
+	if (selfPoint.y>=14) selfPoint.y-=14;
+	if (selfPoint.z<0 || selfPoint.z>7) return 0;//should never return here
 
-	struct point itemPoint = mapConvertRelPointToPoint(selfRelPoint);
-	int itemCell = mapConvertPointToCell(itemPoint);
-
+	int itemCell = mapConvertPointToCell(selfPoint);
+	
 	int data=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+itemCell*m_memLengthMapTile+4+10*12+stackNr*4);
 	return data;
 }
@@ -732,6 +775,76 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 	//point does not exist on minimaps in memory nor in files
 	return bogusPoint;
 }	
+
+void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
+	//AfxMessageBox("write started");
+	CTibiaItemProxy itemProxy;
+
+	int xMap=(int)(x/256),yMap=(int)(y/256),zMap=z;
+	int m_processId=CMemUtil::getGlobalProcessId();
+	for (int nr = 0; nr<10;nr++){
+		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
+		CTibiaMiniMap *map = readMiniMap(nr);
+		char buf[1111];
+		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
+
+		//AfxMessageBox(buf);
+		if (xMap==map->x && yMap==map->y && zMap==map->z){
+			//AfxMessageBox("map found and writing");
+			int pointOffset=(x%256)*256+y%256;
+			char colour[2]="0";
+			char speed[2]="0";
+			colour[0]=col;
+			speed[0]=spd;
+			char colour2[1];
+			char speed2[1];
+
+			CMemUtil::SetMemRange(m_processId,mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour);
+			CMemUtil::GetMemRange(m_processId,mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour2);
+			CMemUtil::SetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
+			CMemUtil::GetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed2);
+			sprintf(buf,"made:(%d,%d),(%x,%x)",colour2[0],speed2[0],mapOffset+pointOffset,mapOffset+65536+pointOffset);
+			//AfxMessageBox(buf);
+			break;
+		}
+	}
+	//write to file too to make changes permanent(creates file if none but maphack doesn't create one if not needed/blank map)
+	char filename[1024+20];
+	sprintf(filename,"%s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)(x/256),(int)(y/256),z);
+	fstream f;
+	f.open(filename,ifstream::in | ifstream::out);
+	if (f.good())
+	{
+		char colour[1];
+		char speed[1];
+		colour[0]=col;
+		speed[0]=spd;
+		f.seekg((x%256)*256+y%256);
+		f.write(colour,1);
+		f.seekg((x%256)*256+y%256+65536);
+		f.write(speed,1);
+		f.close();
+	} else {
+		fstream g;
+		g.open(filename,ifstream::out);
+		if(g.good()){
+			char colour[65536],speed[65536];
+			for (int i=0;i<65536;i++){
+				colour[i]='\x00';
+				speed[i]='\xFA';
+				if (i==(x%256)*256+y%256){
+					colour[i]=col;
+					speed[i]=spd;
+				}
+			}
+
+			g.write(colour,65536);
+			g.write(speed,65536);
+			g.close();
+		}
+	}
+}
+
 
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {	

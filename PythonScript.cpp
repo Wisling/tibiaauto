@@ -222,7 +222,7 @@ void CPythonScript::setParamValue(char *name, char *value)
 	{
 		if (!strcmp(name,paramDefTab[nr].name))
 		{
-			strncpy(paramDefTab[nr].value,value,127);
+			strncpy(paramDefTab[nr].value,value,1024);
 		}
 	}
 }

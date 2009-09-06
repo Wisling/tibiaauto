@@ -661,7 +661,7 @@ static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 	int arg1;
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
 	CTibiaTile *tile=reader.getTibiaTile(arg1);
-	PyObject *ret = Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+	PyObject *ret = Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"ground",tile->ground,
 		"goUp",tile->goUp,
 		"goDown",tile->goDown,
@@ -676,7 +676,15 @@ static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 		"notMoveable",tile->notMoveable,
 		"stackable",tile->stackable,
 		"alwaysOnTop",tile->alwaysOnTop,
-		"moreAlwaysOnTop",tile->moreAlwaysOnTop);
+		"moreAlwaysOnTop",tile->moreAlwaysOnTop,
+		"isTeleporter",tile->isTeleporter,
+		"isReadable",tile->isReadable,
+		"isFluid",tile->isFluid,
+		"isRune",tile->isRune,
+		"isUseable",tile->isUseable,
+		"isUseableImmobile",tile->isUseableImmobile,
+		"blockPathFind",tile->blockPathFind,
+		"minimapColor",tile->minimapColor);
 	
 	return ret;
 }
@@ -1856,6 +1864,17 @@ static PyObject *tibiaauto_reader_readMiniMapPoint(PyObject *self,PyObject *args
 	delete MiniMapPoint;
 	
 	return ret;
+}
+static PyObject *tibiaauto_reader_writeMiniMapPoint(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+	
+	int arg1,arg2,arg3,arg4,arg5;
+  	 if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;
+	reader.writeMiniMapPoint(arg1,arg2,arg3,arg4,arg5);
+
+	Py_INCREF(Py_None);
+	return Py_None;
 }
 
 static PyObject *tibiaauto_crstat_count(PyObject *self, PyObject *args)

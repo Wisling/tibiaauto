@@ -111,10 +111,18 @@ void CTileReader::loadTiles() {
 						tiles[tileId]->requireShovel=CUtil::getNodeIntAttribute(item,_L("requireShovel"));
 						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,_L("requireUse"));
 						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));												
+						tiles[tileId]->minimapColor=CUtil::getNodeIntAttribute(item,_L("minimapColor"));
 						tiles[tileId]->notMoveable=CUtil::getNodeIntAttribute(item,_L("notMoveable"));
 						tiles[tileId]->stackable=CUtil::getNodeIntAttribute(item,_L("stackable"));
 						tiles[tileId]->alwaysOnTop=CUtil::getNodeIntAttribute(item,_L("alwaysOnTop"));
 						tiles[tileId]->moreAlwaysOnTop=CUtil::getNodeIntAttribute(item,_L("moreAlwaysOnTop"));
+						tiles[tileId]->isTeleporter=CUtil::getNodeIntAttribute(item,_L("isTeleporter"));
+						tiles[tileId]->isReadable=CUtil::getNodeIntAttribute(item,_L("isReadable"));
+						tiles[tileId]->isFluid=CUtil::getNodeIntAttribute(item,_L("isFluid"));
+						tiles[tileId]->isRune=CUtil::getNodeIntAttribute(item,_L("isRune"));
+						tiles[tileId]->isUseable=CUtil::getNodeIntAttribute(item,_L("isUseable"));
+						tiles[tileId]->isUseableImmobile=CUtil::getNodeIntAttribute(item,_L("isUseableImmobile"));
+						tiles[tileId]->blockPathFind=CUtil::getNodeIntAttribute(item,_L("blockPathFind"));
 					}		
 				} while ((item=item->getNextSibling())!=NULL);
 			}
@@ -167,10 +175,18 @@ void CTileReader::saveTiles() {
 						CUtil::setNodeIntAttribute(item,_L("requireShovel"), tiles[tileId]->requireShovel);
 						CUtil::setNodeIntAttribute(item,_L("requireUse"), tiles[tileId]->requireUse);
 						CUtil::setNodeIntAttribute(item,_L("speed"), tiles[tileId]->speed);												
+						CUtil::setNodeIntAttribute(item,_L("minimapColor"), tiles[tileId]->minimapColor);
 						CUtil::setNodeIntAttribute(item,_L("notMoveable"), tiles[tileId]->notMoveable);
 						CUtil::setNodeIntAttribute(item,_L("stackable"),  tiles[tileId]->stackable);
 						CUtil::setNodeIntAttribute(item,_L("alwaysOnTop"), tiles[tileId]->alwaysOnTop);
 						CUtil::setNodeIntAttribute(item,_L("moreAlwaysOnTop"), tiles[tileId]->moreAlwaysOnTop);
+						CUtil::setNodeIntAttribute(item,_L("isTeleporter"), tiles[tileId]->isTeleporter);
+						CUtil::setNodeIntAttribute(item,_L("isReadable"), tiles[tileId]->isReadable);
+						CUtil::setNodeIntAttribute(item,_L("isFluid"), tiles[tileId]->isFluid);
+						CUtil::setNodeIntAttribute(item,_L("isRune"), tiles[tileId]->isRune);
+						CUtil::setNodeIntAttribute(item,_L("isUseable"), tiles[tileId]->isUseable);
+						CUtil::setNodeIntAttribute(item,_L("isUseableImmobile"), tiles[tileId]->isUseableImmobile);
+						CUtil::setNodeIntAttribute(item,_L("blockPathFind"), tiles[tileId]->blockPathFind);
 					}		
 				} while ((item=item->getNextSibling())!=NULL);
 			}

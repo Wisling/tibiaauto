@@ -112,15 +112,15 @@ void CScriptConfigDialg::saveParamValue(int paramNr)
 {
 	CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 
-	char buf[128];
-	m_edit.GetWindowText(buf,127);
+	char buf[1024];
+	m_edit.GetWindowText(buf,1023);
 	// save last param value
 	
 	m_list.SetItemText(paramNr,2,buf);
 	struct paramType *oldParam = pythonScript->getParamDef(paramNr);
 	if (oldParam)
 	{
-		strncpy(oldParam->value,buf,127);
+		strncpy(oldParam->value,buf,1023);
 	}
 }
 

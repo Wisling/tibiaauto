@@ -52,6 +52,7 @@ public:
 
 	int isPointInMiniMap(int x,int y,int z);
 	CTibiaMiniMapPoint* getMiniMapPoint(int x, int y, int z);
+	void setMiniMapPoint(int x,int y,int z,int col,int spd);
 	CUIntArray * findPathOnMiniMap(int x,int y,int z,int x2,int y2,int z2);
 	void findPathStop();
 	bool isFindPathStopped();
