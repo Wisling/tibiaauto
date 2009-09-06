@@ -1,8 +1,13 @@
 1.20.3, ??.08.2009
 Enhancments
  Fluid Drinker: improved drinking speed when backpacks closed
- Cavebot: decreased walking pause after eating/casting
- Python: added 3 minimap reading functions
+ Cavebot: decreased walking pause after eating/casting spell
+ Python: added 4 minimap reading/writing functions
+ Show Map: improved map refresh rate(now it should NEVER miss any squares by walking too fast)
+ Map Hacks: allowed for ALL mini map levels to be researched at the same time within Tibia
+ Show Map: added functionality for teleports as well as permanently blocked squares
+ Cavebot: Tends towards walking on faster tiles
+ Python Scripts: Increased maximum parameter text length from 128 to 1024
 
 Defects
  Cavebot: Fixed one of the crash bugs in the cavebot(when not looting creature and going back to hunt)
@@ -11,6 +16,8 @@ Defects
  Fluid Drinker: Added safety to not drink when at max hp or mana
  Spellcaster: Fixed saving Exori Mas option
  Ammo Restacker: Fixed saving Restack to Right Hand option
+ Cavebot: Fixed walking bug when it continually goes up and down levels in a loop
+ Cavebot: Fixed crashing when debug enabled and cavebot cannot find a path to destination
 
 1.20.2, 24.07.2009
 Enhancments
