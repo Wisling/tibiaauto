@@ -32,6 +32,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REVEALCNAME, m_revealCName);
 	DDX_Control(pDX, IDC_REVEAL_NOFISH, m_revealNoFish);
 	DDX_Control(pDX, IDC_REVEALINVISIBLE, m_revealInvisible);
+	DDX_Control(pDX, IDC_MINIMAPRESEARCH, m_minimapResearch);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -79,13 +80,15 @@ void CConfigDialog::disableControls()
 	m_revealNoFish.EnableWindow(false);
 	m_revealCName.EnableWindow(false);	
 	m_revealInvisible.EnableWindow(false);	
-}
+	m_minimapResearch.EnableWindow(false);
+}	
 
 void CConfigDialog::enableControls()
 {
 	m_revealNoFish.EnableWindow(true);
 	m_revealCName.EnableWindow(true);
-	m_revealInvisible.EnableWindow(true);	
+	m_revealInvisible.EnableWindow(true);
+	m_minimapResearch.EnableWindow(true);
 }
 
 
@@ -95,6 +98,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_revealNoFish.SetCheck(configData->revealNoFish);
 	m_revealCName.SetCheck(configData->revealCName);
 	m_revealInvisible.SetCheck(configData->revealInvisible);
+	m_minimapResearch.SetCheck(configData->minimapResearch);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -104,6 +108,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->revealNoFish=m_revealNoFish.GetCheck();
 	newConfigData->revealCName=m_revealCName.GetCheck();	
 	newConfigData->revealInvisible=m_revealInvisible.GetCheck();
+	newConfigData->minimapResearch=m_minimapResearch.GetCheck();
 
 	return newConfigData;
 }
