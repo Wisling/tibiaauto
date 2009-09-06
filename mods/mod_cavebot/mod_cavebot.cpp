@@ -783,7 +783,7 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 	int weaponHand = config->weaponHand ? 5 : 6;
 	
 	if (config->trainingActivate) {
-		char buf[128];
+		char buf[256];
 		sprintf(buf,"Training check: attackedCr=%d, alien=%d, #attacking=%d, lastHpDrop=%d, attackMode=%d",currentlyAttackedCreatureNr,alienFound,attackingCreatures,time(NULL)-lastAttackedCreatureBloodHit,*attackMode);
 		if (config->debug) registerDebug(buf);
 
@@ -851,7 +851,7 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 
 /////////////////////////////////////////////////////////////////////////////
 void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
-	char buf[128];
+	char buf[256];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -1803,7 +1803,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				registerDebug(buf);
 			}
 			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(!attackedCh||attackedCh->hpPercLeft)) {
-				char buf[128];
+				char buf[256];
 				sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
 				if (config->debug) registerDebug(buf);
 
@@ -1895,7 +1895,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					// even if ID changed, since 'lastAttackTm' is NOT updated when Tibia reuses slot.
 					if (creatureList[crNr].lastAttackTm!=ch->lastAttackTm && currentTm-ch->lastAttackTm<attackConsiderPeriod) {
 						creatureList[crNr].isAttacking=1;
-						char buf[1024];
+						char buf[256];
 						sprintf(buf,"lastAttackTm change for %d: was %d/%d is %d/%d",creatureList[crNr].tibiaId,creatureList[crNr].lastAttackTm,ch->tibiaId,ch->lastAttackTm);
 						if (config->debug) registerDebug(buf);
 					}
@@ -1948,7 +1948,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// if visible
 				deleteAndNull(ch);
 				if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
-					char buf[128];
+					char buf[256];
 					sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d",crNr!=self->nr?creatureList[crNr].name:"****",crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z);
 					registerDebug(buf);
 				}
