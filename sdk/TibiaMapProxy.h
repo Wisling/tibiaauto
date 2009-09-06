@@ -39,6 +39,10 @@ public:
 	int isPointAvailableNoProh(int x,int y,int z);	
 	int size();
 	struct point getPointByNr(int nr);
+	point getDestPoint(int x,int y, int z);
+	void setDestPoint(int x,int y,int z,int destX, int destY, int destZ);
+	int getPointSpeed(int x,int y, int z);
+	void setPointSpeed(int x, int y, int z,int speed);
 
 	CTibiaMapProxy();
 	virtual ~CTibiaMapProxy();

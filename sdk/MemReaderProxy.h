@@ -49,12 +49,13 @@ public:
 	CTibiaCharacter *readSelfCharacter();
 	CTibiaCharacter *getCharacterByTibiaId(int tibiaId);
 	CMemConstData getMemConstData();
-	int mapGetPointItemsCount(point p);
-	int mapGetPointItemId(point p, int stackNr);
-	void mapSetPointItemsCount(point p,int count);
-	void mapSetPointItemId(point p, int stackNr, int tileId);
-	int mapGetPointItemExtraInfo(point p, int stackNr,int extraPos);
-	int mapGetPointStackIndex(point p, int stackNr);
+	int mapGetSelfCellNr();
+	int mapGetPointItemsCount(point p,int relToCell=-1);
+	int mapGetPointItemId(point p, int stackNr,int relToCell=-1);
+	void mapSetPointItemsCount(point p,int count,int relToCell=-1);
+	void mapSetPointItemId(point p, int stackNr, int tileId,int relToCell=-1);
+	int mapGetPointItemExtraInfo(point p, int stackNr,int extraPos,int relToCell=-1);
+	int mapGetPointStackIndex(point p, int stackNr,int relToCell=-1);
 	long getCurrentTm();
 	void setRemainingTilesToGo(int val);
 	void setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data);
@@ -94,6 +95,7 @@ public:
 	CTibiaMiniMap *readMiniMap(int nr);
 	CTibiaMiniMapLabel *readMiniMapLabel(int mapNr,int pointNr);
 	CTibiaMiniMapPoint *readMiniMapPoint(int x, int y, int z);
+	void writeMiniMapPoint(int x, int y, int z,int col,int spd);
 
 	void setMainWindowText(char *text);
 	void setMainTrayText(char *text);

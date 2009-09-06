@@ -452,87 +452,101 @@ int CMemReaderProxy::getMemIntValue(int address)
 	return 0;
 }
 
-int CMemReaderProxy::mapGetPointItemsCount(point p)
+int CMemReaderProxy::mapGetSelfCellNr()
 {
-	typedef int (*Proto_fun)(point p);
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetSelfCellNr");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+
+}
+int CMemReaderProxy::mapGetPointItemsCount(point p,int relToCell/*=-1*/)
+{
+	typedef int (*Proto_fun)(point p,int relToCell=-1);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemsCount");
 		if (fun)
 		{
-			return fun(p);
+			return fun(p, relToCell);
 		}
 	} 
 	return 0;
 
 }
-int CMemReaderProxy::mapGetPointItemId(point p, int stackNr)
+int CMemReaderProxy::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr);
+	typedef int (*Proto_fun)(point p,int stackNr,int relToCell=-1);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemId");
 		if (fun)
 		{
-			return fun(p,stackNr);
+			return fun(p,stackNr, relToCell);
 		}
 	} 
 	return 0;
 
 }
 
-int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos)
+int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr, int extraPos);
+	typedef int (*Proto_fun)(point p,int stackNr, int extraPos,int relToCell=-1);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemExtraInfo");
 		if (fun)
 		{
-			return fun(p,stackNr,extraPos);
+			return fun(p,stackNr,extraPos, relToCell);
 		}
 	} 
 	return 0;
 
 }
 
-int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr)
+int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr);
+	typedef int (*Proto_fun)(point p,int stackNr,int relToCell=-1);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointStackIndex");
 		if (fun)
 		{
-			return fun(p,stackNr);
+			return fun(p,stackNr, relToCell);
 		}
 	} 
 	return 0;
 
 }
 
-void  CMemReaderProxy::mapSetPointItemsCount(point p, int count)
+void  CMemReaderProxy::mapSetPointItemsCount(point p, int count,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p, int count);
+	typedef int (*Proto_fun)(point p, int count,int relToCell=-1);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapSetPointItemsCount");
 		if (fun)
 		{
-			fun(p,count);
+			fun(p,count, relToCell);
 		}
 	} 
 
 }
-void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId)
+void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr, int tileId);
+	typedef int (*Proto_fun)(point p,int stackNr, int tileId,int relToCell=-1);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapSetPointItemId");
 		if (fun)
 		{
-			fun(p,stackNr, tileId);
+			fun(p,stackNr, tileId, relToCell);
 		}
 	} 
 }
@@ -844,6 +858,19 @@ CTibiaMiniMapPoint *CMemReaderProxy::readMiniMapPoint(int x, int y, int z)
 		}
 	} 
 	return NULL;
+}
+
+void CMemReaderProxy::writeMiniMapPoint(int x, int y, int z,int col,int spd)
+{
+	typedef void (*Proto_fun)(int x, int y, int z,int col,int spd);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteMiniMapPoint");
+		if (fun)
+		{
+			fun(x,y,z,col,spd);
+		}
+	} 
 }
 
 void CMemReaderProxy::setMainWindowText(char *text)
