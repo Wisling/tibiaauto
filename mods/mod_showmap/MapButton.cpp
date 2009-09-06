@@ -135,6 +135,16 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 		CToolMapShow *parent = (CToolMapShow *)GetParent();		
 		parent->mapPointClicked(m_x,m_y,301);
 	}	
+	if (wParam==ID_SHOWMAPOPTIONS_TELE)
+	{
+		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		parent->mapPointClicked(m_x,m_y,302);
+	}	
+	if (wParam==ID_SHOWMAPOPTIONS_BLOCK)
+	{
+		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		parent->mapPointClicked(m_x,m_y,303);
+	}	
 	if (wParam==IDD_TOOL_MAPSHOW_CONFIG)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
