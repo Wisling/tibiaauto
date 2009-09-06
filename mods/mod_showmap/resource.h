@@ -21,6 +21,7 @@
 #define IDB_MAP_CRATE                   3009
 #define IDD_TOOL_MAPSHOW_CONFIG         3009
 #define IDB_MAP_BLOCKED                 3010
+#define IDB_MAP_BLOCK                   3010
 #define IDC_TILE_INFO                   3011
 #define IDB_MAP_DEPOT                   3011
 #define IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH 3012
@@ -29,7 +30,9 @@
 #define IDB_BACKGROUND                  3016
 #define IDC_CONTAINER                   3017
 #define IDC_DEPOT                       3018
+#define IDB_MAP_UNKTELE                 3019
 #define IDC_SHOVEL                      3020
+#define IDB_MAP_TELE                    3020
 #define IDC_ROPE                        3021
 #define IDC_USE_TILE                    3022
 #define IDC_MOVABLE                     3023
@@ -56,13 +59,15 @@
 #define ID_SHOWMAPOPTIONS_CRATE         32779
 #define ID_SHOWMAPOPTIONS_WALKABLE      32780
 #define ID_SHOWMAPOPTIONS_DEPOT         32781
+#define ID_SHOWMAPOPTIONS_TELE          32782
 #define ID_SHOWMAPOPTIONS_SET_AS_GROUND 32783
+#define ID_SHOWMAPOPTIONS_BLOCK         32784
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3018
+#define _APS_NEXT_RESOURCE_VALUE        3019
 #define _APS_NEXT_COMMAND_VALUE         32786
 #define _APS_NEXT_CONTROL_VALUE         3049
 #define _APS_NEXT_SYMED_VALUE           3000
