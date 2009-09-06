@@ -320,3 +320,54 @@ struct point CTibiaMapProxy::getPointByNr(int nr)
 	} 
 	return struct point();
 }
+point CTibiaMapProxy::getDestPoint(int x,int y, int z)
+{
+	typedef point (*Proto_fun)(int x,int y, int z);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetDestPoint");
+		if (fun)
+		{
+			return fun(x, y, z);
+		}
+	} 
+	return struct point();
+}
+void CTibiaMapProxy::setDestPoint(int x,int y, int z, int destX, int destY, int destZ)
+{
+	typedef void (*Proto_fun)(int x,int y, int z, int destX, int destY, int destZ);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetDestPoint");
+		if (fun)
+		{
+			fun(x, y, z, destX, destY, destZ);
+		}
+	} 
+}
+int CTibiaMapProxy::getPointSpeed(int x,int y, int z)
+{
+	typedef int (*Proto_fun)(int x,int y, int z);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointSpeed");
+		if (fun)
+		{
+			return fun(x, y, z);
+		}
+	} 
+	return 0;
+}
+void CTibiaMapProxy::setPointSpeed(int x,int y, int z, int speed)
+{
+	typedef void (*Proto_fun)(int x,int y, int z, int speed);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointSpeed");
+		if (fun)
+		{
+			fun(x, y, z, speed);
+		}
+	} 
+}
+

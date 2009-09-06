@@ -244,14 +244,15 @@ void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, i
 	CTibiaMapProxy tibiaMap;
 
 	int loopsOnItself=newX==tibiaMap.getPrevPointX(prevX,newY,prevZ)&&newY==tibiaMap.getPrevPointY(prevX,newY,prevZ)&&newZ==tibiaMap.getPrevPointZ(prevX,newY,prevZ);
-	
-	if (tibiaMap.isPointAvailable(newX,newY,newZ)&&!loopsOnItself)
+	int upDownToUpDown = tibiaMap.getPointUpDownNoProh(prevX,prevY,prevZ) && tibiaMap.getPointUpDownNoProh(newX,newY,newZ);
+
+	if (tibiaMap.isPointAvailable(newX,newY,newZ) && !loopsOnItself && !upDownToUpDown)
 	{
 		//Diagonal fix: Only add possible next point to queue if on different floor or is not a diagonal move with a non-diagonal possibility
 		int diagonalMove = (newX-prevX)&&(newY-prevY)&&(newZ==prevZ);
 		int otherAvailableX = tibiaMap.getPrevPointZ(newX,prevY,prevZ)==newZ;
 		int otherAvailableY = tibiaMap.getPrevPointZ(prevX,newY,prevZ)==newZ;
-		if (prevZ != newZ || !(diagonalMove && (otherAvailableX || otherAvailableY))){
+		if (prevZ != newZ || !(diagonalMove && (otherAvailableX || otherAvailableY)) || tibiaMap.getPointUpDownNoProh(newX,newY,newZ)){
 			if (tibiaMap.getPrevPointX(newX,newY,newZ)==0) queue->add(newX,newY,newZ);// prevents overflow
 			tibiaMap.setBestPrevPoint(newX,newY,newZ,prevX,prevY,prevZ);
 		}
@@ -265,7 +266,7 @@ void inline mapDebug(char *s)
 #ifndef MAPDEBUG
 	//return;
 #endif
-	FILE *f=fopen("tibiaauto-debug-map.txt","a+");
+	FILE *f=fopen("C:/tibiaauto-debug-map.txt","a+");
 	if (f)
 	{
 		char dateStr [15];
@@ -303,7 +304,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	path[0]=0;
 	memset(path,0x00,sizeof(int)*15);
 #ifdef MAPDEBUG
-	char buf[128];
+	char buf[512];
 	sprintf(buf,"findPathOnMap(startX=%d,startY=%d,startZ=%d,endX=%d,endY=%d,endZ=%d,endSpecialLocation=%d",startX,startY,startZ,endX,endY,endZ,endSpecialLocation);
 	mapDebug(buf);
 #endif
@@ -342,7 +343,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 
 
-void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z,int forceUpDown)
+void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z)
 {
 		int randDir = rand()%4;
 		//First piority points(sides)
@@ -435,7 +436,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
 
 #ifdef MAPDEBUG	
-	char buf[128];
+	char buf[512];
 	sprintf(buf,"============== (%d,%d,%d)->(%d,%d,%d) =========",startX,startY,startZ,endX,endY,endZ);
 	mapDebug(buf);
 #endif
@@ -451,7 +452,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 #ifdef MAPDEBUG
 		sprintf(buf,"queue: [%3d] (%d,%d,%d)",queue->size(),currentPoint.x,currentPoint.y,currentPoint.z);
-		//mapDebug(buf);
+		mapDebug(buf);
 #endif
 
 		int gotToEndPoint=0;
@@ -531,6 +532,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				sprintf(buf,"X cur=(%d,%d,%d) next=(%d,%d,%d)",curX,curY,curZ,nextX,nextY,nextZ);
 				mapDebug(buf);
 #endif
+				path[pos]=0;
 				if (curX+1==nextX&&curY==nextY) path[pos]=1; // right
 				if (curX-1==nextX&&curY==nextY) path[pos]=5; // left
 				if (curX==nextX&&curY+1==nextY) path[pos]=7; // down
@@ -580,6 +582,19 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 					}
 					break;
 				}
+				if (abs(curX-nextX)>1||abs(curY-nextY)>1||path[pos]==0&&abs(curZ-nextZ)>0)
+				{
+					if (pos==0)
+					{
+						path[pos]=0xD2;
+					}
+					else
+					{
+						path[pos]=0;//undoes direction assignment
+					}
+					break;
+				}
+
 			}
 			
 #ifdef MAPDEBUG
@@ -622,7 +637,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		 * 204 - stairs
 		 * 301 - depot
 		 * 302 - teleporter
-		 * 303 - tortoise
+		 * 303 - permanent block
 		 */
 		
 		int forcedLevelChange=0; // if set to 1 then going north, south, east, west is forbidden
@@ -640,7 +655,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if (currentUpDown>=200&&currentUpDown<300&&tibiaMap.isPointAvailableNoProh(x,y,z-1))
 		{						
 			tibiaMap.setBestPrevPoint(x,y,z-1,x,y,z);
-			findPathAllDirection(queue,x,y,z-1,0);
+			findPathAllDirection(queue,x,y,z-1);
 #ifdef MAPDEBUG
 			mapDebug("go up");
 #endif
@@ -650,13 +665,25 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if (currentUpDown>=100&&currentUpDown<200&&tibiaMap.isPointAvailableNoProh(x,y,z+1))
 		{
 			tibiaMap.setBestPrevPoint(x,y,z+1,x,y,z);
-			findPathAllDirection(queue,x,y,z+1,0);
+			findPathAllDirection(queue,x,y,z+1);
 #ifdef MAPDEBUG
 			mapDebug("go down");
 #endif
 		}
 
-		if (currentUpDown==101||currentUpDown==204)
+		// we go directly down using open hole, closed hole, crate
+		if (currentUpDown==302)
+		{
+			point dest=tibiaMap.getDestPoint(x,y,z);
+			tibiaMap.setBestPrevPoint(dest.x,dest.y,dest.z,x,y,z);
+			findPathAllDirection(queue,dest.x,dest.y,dest.z);
+#ifdef MAPDEBUG
+			mapDebug("go teleport");
+#endif
+		}
+
+		//prevents the adding of squares around current square as possible next points except when standing on it(303 goes nowhere)
+		if ((currentUpDown==101||currentUpDown==204||currentUpDown==302||currentUpDown==303) && !(startX==x && startY==y && startZ==z))
 		{
 			forcedLevelChange=1;
 		}
@@ -664,7 +691,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 		if (!forcedLevelChange){
 		
-			findPathAllDirection(queue,x,y,z,0);
+			findPathAllDirection(queue,x,y,z);
 
 
 			int xShift=-2,yShift=-2;
@@ -680,13 +707,13 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				if ((updown==201||updown==203)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z-1))
 				{
 					tibiaMap.setBestPrevPoint(x+xShift,y+yShift,z-1,x,y,z);
-					findPathAllDirection(queue,x+xShift,y+yShift,z-1,0);
+					findPathAllDirection(queue,x+xShift,y+yShift,z-1);
 				}
 				// special going down if grate or hole busy
 				if ((updown==102||updown==103)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z+1))
 				{
 					tibiaMap.setBestPrevPoint(x+xShift,y+yShift,z+1,x,y,z);
-					findPathAllDirection(queue,x+xShift,y+yShift,z+1,0);
+					findPathAllDirection(queue,x+xShift,y+yShift,z+1);
 				}
 			}
 		}
@@ -885,7 +912,7 @@ int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of charac
 	return 1;
 }
 
-int CModuleUtil::waitToStandOnSquare(int x, int y)// depends on speed of character (1.4 seconds for lvl 1 doing diagonal)
+int CModuleUtil::waitToStandOnSquare(int x, int y)// depends on speed of character (1.4 seconds for lvl 1 doing diagonal)// see tileDelay
 {
 	CMemReaderProxy reader;
 
@@ -1001,7 +1028,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	int pathSize;
 	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 #ifdef MAPDEBUG
-	char buf[128];
+	char buf[512];
 	sprintf(buf,"pathsize=%d assumed=(%d,%d,%d) now=(%d,%d,%d) delta=(%d,%d,%d)=%d",pathSize,startX,startY,startZ,self->x,self->y,self->z,self->x-startX,self->y-startY,self->z-startZ,abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ));	
 	mapDebug(buf);
 #endif
@@ -1178,6 +1205,11 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 					break;
 				} // switch updown
 			} // case 0xD1	
+		case 0xD2:
+			{
+				// teleporter it will have walked onto it
+				break;
+			} // case 0xD2
 		case 0xE1:
 		case 0xE2:
 		case 0xE3:
