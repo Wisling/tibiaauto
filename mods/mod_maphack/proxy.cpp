@@ -6,6 +6,7 @@
 #include "MemConstData.cpp"
 #include "ModuleUtil.cpp"
 #include "TibiaMapProxy.cpp"
+#include "TAMiniMapProxy.cpp"
 #include "TibiaMapPoint.cpp"
 #include "TibiaItemProxy.cpp"
 #include "Queue.cpp"

@@ -71,13 +71,16 @@ FONT 8, "MS Sans Serif"
 BEGIN
     DEFPUSHBUTTON   "OK",IDOK,62,74,50,14
     CONTROL         "Enable map hacks",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,55,159,14
+                    BS_PUSHLIKE | WS_TABSTOP,7,56,159,14
     CONTROL         "Reveal water with no fish",IDC_REVEAL_NOFISH,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,7,7,95,10
     CONTROL         "Always show creature name/hp bar",IDC_REVEALCNAME,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,23,127,10
-    CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",
-                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,40,92,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,19,127,10
+    CONTROL         "Detect invisible creatures(not guaranteed)",
+                    IDC_REVEALINVISIBLE,"Button",BS_AUTOCHECKBOX | NOT 
+                    WS_VISIBLE | WS_TABSTOP,7,32,147,10
+    CONTROL         "Multi-level Minimap Research",IDC_MINIMAPRESEARCH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,44,108,10
 END
 
 
