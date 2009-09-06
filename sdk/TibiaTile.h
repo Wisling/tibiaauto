@@ -29,6 +29,14 @@ public:
 	int stackable;
 	int alwaysOnTop;
 	int moreAlwaysOnTop;
+	int isTeleporter;
+	int isReadable;
+	int isFluid;
+	int isRune;
+	int isUseable;
+	int isUseableImmobile;
+	int blockPathFind;
+	int minimapColor;
 };
 
 #endif // !defined(AFX_TIBIATILE_H__39D75BF9_16BF_4794_92F0_27A6875108E8__INCLUDED_)
