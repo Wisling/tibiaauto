@@ -5,7 +5,6 @@
 #include "stdafx.h"
 #include "TibiaMap.h"
 #include "TibiaMapPoint.h"
-#include "HashMap.h"
 
 #include <iostream>
 #include <fstream>
@@ -176,82 +175,101 @@ int CTibiaMap::intPoint(point p) {return p.x*1000000+p.y*10+p.z;}
 //returns -1 if loops onto itself, 0 if nothing should change, 1 if should change
 int CTibiaMap::isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ)
 {	
-//	ofstream myfile;
-//	myfile.open ("C:/example.txt",ios::app);
-//	myfile <<"Start\n";
-//	myfile.close();
+	//ofstream myfile;
+	//myfile.open ("C:/example.txt",ios::app);
+	//myfile <<"Start\n";
+	//myfile.flush();
 
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
 	tibiaMap2.Lookup(&p,pd);
 
 	//keep track of which points have been seen
-	map<int,int> track;
+	CMap<int,int,int,int> track;
+	int ans=0;
 
 	//start with original prior point and pending prior point
 	struct point p1=point(pd->prevX, pd->prevY, pd->prevZ);
 	struct point p2=point(prevX, prevY, prevZ);
 
-//		myfile.open ("C:/example.txt",ios::app);
-//		myfile <<"Starts with ("<<x<<","<<y<<","<<z<<")"<<"\n";
-//		myfile.close();
+		//myfile <<"Starts with ("<<x<<","<<y<<","<<z<<")"<<"\n";
+	//	myfile.flush();
 
 	int isFinished = 0;
-	int dist1=getDistance(x,y,z,p1.x,p1.y,p1.z);
-	int dist2=getDistance(x,y,x,p2.x,p2.y,p2.z);
+	int dist1=getDistance(p1.x,p1.y,p1.z,x,y,z);
+	int dist2=getDistance(p2.x,p2.y,p2.z,x,y,z);
 
 	while(!isFinished){
-//			myfile.open ("C:/example.txt",ios::app);
-//			myfile <<"("<<p1.x<<","<<p1.y<<","<<p1.z<<")"<<dist1<<" to "<<"("<<p2.x<<","<<p2.y<<","<<p2.z<<")"<<dist2<<"\n";
-//			myfile.close();
+			//myfile <<"("<<p1.x<<","<<p1.y<<","<<p1.z<<")"<<dist1<<" to "<<"("<<p2.x<<","<<p2.y<<","<<p2.z<<")"<<dist2<<"\n";
+			//myfile.flush();
 		isFinished=1;
-		if(p1.x==x && p1.y==y && p1.z==z || p2.x==x && p2.y==y && p2.z==z) return 0;
+		if(p1.x==x && p1.y==y && p1.z==z || p2.x==x && p2.y==y && p2.z==z){track.RemoveAll(); return 0;}
 		struct pointData *pd1=NULL;
 		struct pointData *pd2=NULL;
 		if (tibiaMap2.Lookup(&p1,pd1))
 		{
 			// return if p1 point has been added by p2 already
-			if (track[intPoint(p1)]){
-//					myfile.open ("C:/example.txt",ios::app);
-//					myfile <<"1"<<dist1<<track[intPoint(p1)]<<"\n";
-//					myfile.close();
+			ans=0;
+			track.Lookup(intPoint(p1),ans);
+					//myfile <<"ans1("<<p1.x<<","<<p1.y<<","<<p1.z<<")="<<ans<<"\n";
+					//myfile.flush();
+			if (ans){
+					//myfile <<"1"<<dist1<<track[intPoint(p1)]<<"\n";
+					//myfile.flush();
+				track.RemoveAll();
 
-				if (dist1<=track[intPoint(p1)]) return 0;
+				if (dist1<=ans) return 0;
 				else return 1;
 			}
 			// stop if loops infinitely(start point is set to itself)
 			else if (p1.x==pd1->prevX && p1.y==pd1->prevY && p1.z==pd1->prevZ){
+				track.SetAt(intPoint(p1),dist1);
+					//myfile <<"added1("<<p1.x<<","<<p1.y<<","<<p1.z<<")\n";
+					//myfile.flush();
 				p1=point(0,0,0);
 			}
 			// add to list with distance so far
 			else{
-				track[intPoint(p1)]=dist1;
-				dist1+=getDistance(p1.x,p1.y,p1.z,pd1->prevX,pd1->prevY,pd1->prevZ);
+				track.SetAt(intPoint(p1),dist1);
+					//myfile <<"added1("<<p1.x<<","<<p1.y<<","<<p1.z<<")\n";
+					//myfile.flush();
+				dist1+=getDistance(pd1->prevX,pd1->prevY,pd1->prevZ,p1.x,p1.y,p1.z);
 				isFinished=0;
 				p1=point(pd1->prevX,pd1->prevY,pd1->prevZ);
 			}
 		}
 		if (tibiaMap2.Lookup(&p2,pd2))
 		{
-			if (track[intPoint(p2)]){
-//					myfile.open ("C:/example.txt",ios::app);
-///					myfile <<"2"<<dist2<<track[intPoint(p2)]<<"\n";
-//					myfile.close();
+			ans=0;
+			track.Lookup(intPoint(p2),ans);
+					//myfile <<"ans2("<<p2.x<<","<<p2.y<<","<<p2.z<<")="<<ans<<"\n";
+					//myfile.flush();
+			if (ans){
+					//myfile <<"2"<<dist2<<track[intPoint(p2)]<<"\n";
+					//myfile.flush();
+				track.RemoveAll();
 
-				if (dist2<track[intPoint(p2)]) return 1;
+				if (dist2<ans) return 1;
 				else return 0;
 			}
 			else if (p2.x==pd2->prevX && p2.y==pd2->prevY && p2.z==pd2->prevZ){
+				track.SetAt(intPoint(p2),dist2);
+					//myfile <<"added2("<<p2.x<<","<<p2.y<<","<<p2.z<<")\n";
+					//myfile.flush();
 				p2=point(0,0,0);
 			}
 			else{
-				track[intPoint(p2)]=dist2;
-				dist2+=getDistance(p2.x,p2.y,p2.z,pd2->prevX,pd2->prevY,pd2->prevZ);
+				track.SetAt(intPoint(p2),dist2);
+					//myfile <<"added2("<<p2.x<<","<<p2.y<<","<<p2.z<<")\n";
+					//myfile.flush();
+				dist2+=getDistance(pd2->prevX,pd2->prevY,pd2->prevZ,p2.x,p2.y,p2.z);
 				isFinished=0;
 				p2=point(pd2->prevX,pd2->prevY,pd2->prevZ);
 			}
 		}
 	}
+	//AfxMessageBox("impossible!");
+	track.RemoveAll();
 	return 0;// if reached here then points are not connected(impossible)
 }
 
@@ -274,7 +292,12 @@ void CTibiaMap::setPointSpeed(int x, int y, int z,int speed)
 
 int CTibiaMap::getDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);
+	if (getPointSpeed(x, y, z)==0){
+		char buf[111];
+		sprintf(buf,"speed(%d,%d,%d) %d",x, y, z,getPointSpeed(x, y, z));
+		//AfxMessageBox(buf);
+	}
+	return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);//return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);
 }
 
 typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
