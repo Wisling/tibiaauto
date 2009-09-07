@@ -1660,7 +1660,6 @@ void CMod_creatureinfoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"allFloorInfo"))		m_configData->allFloorInfo = atoi(paramValue);
 	if (!strcmp(paramName,"addRequest"))		m_configData->addRequest = atoi(paramValue);	
 	if (!strcmp(paramName,"area/collectStats"))		m_configData->collectStats = 1;
-	if (!strcmp(paramName,"area/showCreaturesInArea"))		m_configData->showCreaturesInArea = atoi(paramValue);
 	if (!strcmp(paramName,"area/rangeXY"))		m_configData->rangeXY = atoi(paramValue);
 	if (!strcmp(paramName,"area/rangeZ"))		m_configData->rangeZ = atoi(paramValue);
 
@@ -1687,7 +1686,6 @@ char *CMod_creatureinfoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"allFloorInfo"))	sprintf(buf,"%d",m_configData->allFloorInfo);
 	if (!strcmp(paramName,"addRequest"))	sprintf(buf,"%d",m_configData->addRequest);
 	if (!strcmp(paramName,"area/collectStats")) sprintf(buf,"%d",m_configData->collectStats);
-	if (!strcmp(paramName,"area/showCreaturesInArea")) sprintf(buf,"%d",m_configData->showCreaturesInArea);
 	if (!strcmp(paramName,"area/rangeXY")) sprintf(buf,"%d",m_configData->rangeXY);
 	if (!strcmp(paramName,"area/rangeZ")) sprintf(buf,"%d",m_configData->rangeZ);
 

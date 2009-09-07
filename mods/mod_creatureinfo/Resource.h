@@ -46,6 +46,10 @@
 #define IDC_RANGE_Z                     3050
 #define IDC_TOOLCREATURINFO_SELF_WINDOW 3051
 #define IDC_TOOLCREATURINFO_SELF_TRAY   3052
+#define IDC_FRAME_PLAYER_INFO           3053
+#define IDC_FRAME_SELF_INFO             3054
+#define IDC_FRAME_CREATURE_DETECTION    3055
+#define IDC_FRAME_MONSTERS_INFO         3056
 
 // Next default values for new objects
 // 
@@ -53,7 +57,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3053
+#define _APS_NEXT_CONTROL_VALUE         3057
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -79,7 +79,7 @@ BEGIN
     GROUPBOX        "Corpse Looting",IDC_FRAME_CORPSE_LOOTING,281,7,265,66
     CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,251,369,50,
                     14
-    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_OWNERDRAW | 
+    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX |
                     BS_PUSHLIKE | WS_TABSTOP,7,352,539,14
     EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,50,98,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,157,20,81,43,
@@ -245,7 +245,7 @@ BEGIN
     CONTROL         "Use Right Hand",IDC_TRAINING_WEAPON_HAND,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,220,67,10
     CONTROL         "Auto Research Map (Test Version)",IDC_AUTORESEARCH,
-                    "Button",BS_OWNERDRAW | BS_PUSHLIKE | BS_MULTILINE | 
+                    "Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | BS_MULTILINE | 
                     WS_TABSTOP,181,319,80,23
 END
 
