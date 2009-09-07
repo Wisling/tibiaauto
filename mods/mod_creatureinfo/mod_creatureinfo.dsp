@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 ../../xerces.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../mod_creatureinfo.dll" /pdbtype:sept
+# ADD LINK32 ../../xerces.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_creatureinfo.dll" /pdbtype:sept
 # SUBTRACT LINK32 /nodefaultlib
 
 !ENDIF 
@@ -106,6 +106,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\KnownInfo.cpp
 # End Source File
 # Begin Source File
@@ -119,6 +123,10 @@ SOURCE=.\mod_creatureinfo.def
 # Begin Source File
 
 SOURCE=.\mod_creatureinfo.rc
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -163,11 +171,19 @@ SOURCE=.\ConfigDialog.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\KnownInfo.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\mod_creatureinfo.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.h
 # End Source File
 # Begin Source File
 
