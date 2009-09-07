@@ -24,7 +24,7 @@ int initalizeBankers();
 
 
 CConfigDialog::CConfigDialog(CMod_bankerApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
@@ -34,10 +34,11 @@ CConfigDialog::CConfigDialog(CMod_bankerApp *app,CWnd* pParent /*=NULL*/)
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_FRAME_BANKER, m_BankerFrame);
 	DDX_Control(pDX, IDC_BANKER_BANKER, m_Banker);
 	DDX_Control(pDX, IDC_BANKER_MIN_GOLD, m_MinGold);
 	DDX_Control(pDX, IDC_BANKER_ON_HAND, m_OnHand);
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
 
@@ -47,6 +48,9 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 

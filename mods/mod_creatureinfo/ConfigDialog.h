@@ -9,13 +9,15 @@
 
 #include "mod_creatureinfo.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
 
 class CMod_creatureinfoApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,11 +31,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_SelfInfoFrame;
+	CGroupBoxEx	m_CreatureDetectionFrame;
+	CGroupBoxEx	m_MonstersInfoFrame;
+	CGroupBoxEx	m_PlayerInfoFrame;
 	CEdit	m_selfWindow;
 	CEdit	m_selfTray;
 	CEdit	m_rangeZ;
 	CEdit	m_rangeXY;
-	CButton	m_showCreaturesInArea;
 	CButton	m_collectStats;
 	CButton	m_knownInfo;
 	CButton	m_addRequest;

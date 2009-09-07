@@ -9,6 +9,8 @@
 
 #include "mod_banker.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
 
 struct banker{
 	char name[40];
@@ -22,7 +24,7 @@ class CMod_bankerApp;
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -36,6 +38,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_BankerFrame;
 	CComboBox m_Banker;
 	CEdit m_MinGold;
 	CEdit m_OnHand;

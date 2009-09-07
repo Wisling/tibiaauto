@@ -200,7 +200,6 @@ void* CMod_playerinfoApp::GetPlayerInfo()
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
 {
 	skin = newSkin;
-	char buf[33];
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	m_infoDialog->Invalidate();
 }

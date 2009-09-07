@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_creatureinfoApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -31,11 +31,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_FRAME_SELF_INFO, m_SelfInfoFrame);
+	DDX_Control(pDX, IDC_FRAME_CREATURE_DETECTION, m_CreatureDetectionFrame);
+	DDX_Control(pDX, IDC_FRAME_MONSTERS_INFO, m_MonstersInfoFrame);
+	DDX_Control(pDX, IDC_FRAME_PLAYER_INFO, m_PlayerInfoFrame);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_SELF_WINDOW, m_selfWindow);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_SELF_TRAY, m_selfTray);
 	DDX_Control(pDX, IDC_RANGE_Z, m_rangeZ);
 	DDX_Control(pDX, IDC_RANGE_XY, m_rangeXY);
-	DDX_Control(pDX, IDC_SHOW_CREATURES_IN_AREA, m_showCreaturesInArea);
 	DDX_Control(pDX, IDC_COLLECT_STATS, m_collectStats);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_KNOWNINFO, m_knownInfo);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_ADDITIONALREQUEST, m_addRequest);
@@ -57,6 +60,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_BN_CLICKED(IDC_TOOLCREATURINFO_NAMECHANGER, OnToolcreaturinfoNamechanger)
@@ -114,7 +120,6 @@ void CConfigDialog::disableControls()
 	m_selfTray.EnableWindow(false);
 	m_allFloorInfo.EnableWindow(false);
 	m_addRequest.EnableWindow(false);	
-	m_showCreaturesInArea.EnableWindow(false);
 	m_rangeXY.EnableWindow(false);
 	m_rangeZ.EnableWindow(false);
 }
@@ -141,7 +146,6 @@ void CConfigDialog::enableControls()
 	}
 	m_allFloorInfo.EnableWindow(true);
 	m_addRequest.EnableWindow(true);	
-	m_showCreaturesInArea.EnableWindow(true);
 	m_rangeXY.EnableWindow(true);
 	m_rangeZ.EnableWindow(true);
 }
@@ -170,7 +174,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_allFloorInfo.SetCheck(configData->allFloorInfo);
 	m_addRequest.SetCheck(configData->allFloorInfo);
 	m_collectStats.SetCheck(configData->collectStats);
-	m_showCreaturesInArea.SetCheck(configData->showCreaturesInArea);
 
 	sprintf(buf,"%d",configData->rangeXY);m_rangeXY.SetWindowText(buf);
 	sprintf(buf,"%d",configData->rangeZ);m_rangeZ.SetWindowText(buf);
@@ -201,7 +204,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->addRequest = m_addRequest.GetCheck();
 	//newConfigData->collectStats = m_collectStats.GetCheck();	
 	newConfigData->collectStats = 1;
-	newConfigData->showCreaturesInArea = m_showCreaturesInArea.GetCheck();
 	m_rangeXY.GetWindowText(buf,127);
 	newConfigData->rangeXY=atoi(buf);
 	m_rangeZ.GetWindowText(buf,127);
