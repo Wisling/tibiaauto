@@ -7,6 +7,7 @@
 #define IDC_BANKER_BANKER               3016
 #define IDC_BANKER_MIN_GOLD             3017
 #define IDC_BANKER_ON_HAND              3018
+#define IDC_FRAME_BANKER                3019
 
 // Next default values for new objects
 // 
@@ -14,7 +15,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3018
+#define _APS_NEXT_CONTROL_VALUE         3020
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

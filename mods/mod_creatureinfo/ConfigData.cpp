@@ -33,7 +33,7 @@ CConfigData::CConfigData()
 	allFloorInfo=0;
 	addRequest=0;
 	collectStats=1;
-	showCreaturesInArea=0;
+	//showCreaturesInArea=0;
 	rangeXY=50;
 	rangeZ=0;
 }

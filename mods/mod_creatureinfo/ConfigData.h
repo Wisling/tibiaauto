@@ -32,7 +32,7 @@ public:
 	int allFloorInfo;
 	int addRequest;
 	int collectStats;
-	int showCreaturesInArea;
+	//int showCreaturesInArea;
 	int rangeXY;
 	int rangeZ;
 };

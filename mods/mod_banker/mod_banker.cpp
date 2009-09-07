@@ -409,3 +409,8 @@ int shouldBank(CConfigData *config) {
 		return 0;
 }
 
+void CMod_bankerApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	if (m_configDialog)
+		m_configDialog->Invalidate();
+}

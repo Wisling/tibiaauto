@@ -11,6 +11,7 @@
 #include "ConfigData.h"
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
+#include "CheckBox.h"
 #include <queue>
 using namespace std;
 
@@ -165,8 +166,8 @@ public:
 	CEdit	m_monster;
 	CButton m_dontAttackPlayers;
 	CButton m_pausingEnable;
-	CButton	m_autoResearch;
-	CButton	m_enable;
+	CCheckBox	m_autoResearch;
+	CCheckBox	m_enable;
 	//}}AFX_DATA
 
 	void reloadDepotItems();

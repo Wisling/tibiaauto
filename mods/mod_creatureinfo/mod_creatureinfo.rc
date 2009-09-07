@@ -111,22 +111,24 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 225, 327
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 225, 319
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: creature info"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Players Info",IDC_STATIC,7,7,211,47
-    GROUPBOX        "Monsters/NPCs Info",IDC_STATIC,7,56,211,55
-    GROUPBOX        "Self Info",IDC_STATIC,7,113,211,75
-    CONTROL         "Players Info",IDC_TOOLCREATURINFO_PLAYER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,6,53,10
+    GROUPBOX        "Creature detection",IDC_FRAME_CREATURE_DETECTION,7,191,
+                    211,67
+    GROUPBOX        "Players Info",IDC_FRAME_PLAYER_INFO,7,7,211,47
+    GROUPBOX        "Monsters/NPCs Info",IDC_FRAME_MONSTERS_INFO,7,56,211,55
+    GROUPBOX        "Self Info",IDC_FRAME_SELF_INFO,7,113,211,75
+    CONTROL         "",IDC_TOOLCREATURINFO_PLAYER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,7,8,8
     EDITTEXT        IDC_TOOLCREATURINFO_PLAYER_1LINE,65,17,143,14,
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_TOOLCREATURINFO_PLAYER_2LINE,65,32,143,14,
                     ES_AUTOHSCROLL
-    CONTROL         "Monster/NPCs Info",IDC_TOOLCREATURINFO_MONSTER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,56,77,10
+    CONTROL         "",IDC_TOOLCREATURINFO_MONSTER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,56,8,8
     EDITTEXT        IDC_TOOLCREATURINFO_MONSTER_1LINE,65,67,143,14,
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_TOOLCREATURINFO_MONSTER_2LINE,65,82,143,14,
@@ -134,22 +136,24 @@ BEGIN
     CONTROL         "Unique monsters names",
                     IDC_TOOLCREATURINFO_MONSTER_UNIQUEMONSTERNAMES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,66,98,143,10
-    CONTROL         "Self Info",IDC_TOOLCREATURINFO_SELF,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,13,113,42,10
+    CONTROL         "",IDC_TOOLCREATURINFO_SELF,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,113,8,8
     EDITTEXT        IDC_TOOLCREATURINFO_SELF_1LINE,66,124,142,14,
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_TOOLCREATURINFO_SELF_2LINE,66,139,142,14,
                     ES_AUTOHSCROLL
     CONTROL         "Show creatures info on all floors",
                     IDC_TOOLCREATURINFO_ALLINFO,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,191,211,10
-    PUSHBUTTON      "Name Changer",IDC_TOOLCREATURINFO_NAMECHANGER,7,218,104,
+                    WS_TABSTOP,13,201,116,10
+    CONTROL         "Name Changer",IDC_TOOLCREATURINFO_NAMECHANGER,"Button",
+                    BS_OWNERDRAW | WS_TABSTOP,7,262,104,14
+    CONTROL         "Known Creatures Info",IDC_TOOLCREATURINFO_KNOWNINFO,
+                    "Button",BS_OWNERDRAW | WS_DISABLED | WS_TABSTOP,114,262,
+                    104,14
+    CONTROL         "Enable",IDC_ENABLE,"Button",BS_OWNERDRAW | BS_PUSHLIKE | 
+                    WS_TABSTOP,7,281,211,14
+    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,87,299,50,
                     14
-    PUSHBUTTON      "Known Creatures Info",IDC_TOOLCREATURINFO_KNOWNINFO,114,
-                    218,104,14,WS_DISABLED
-    CONTROL         "Enable",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,289,211,14
-    DEFPUSHBUTTON   "OK",IDOK,87,306,50,14
     LTEXT           "First line:",IDC_STATIC,17,21,45,8
     LTEXT           "Second line:",IDC_STATIC,17,35,45,8
     LTEXT           "First line:",IDC_STATIC,17,71,45,8
@@ -158,17 +162,13 @@ BEGIN
     LTEXT           "Second line:",IDC_STATIC,17,142,45,8
     CONTROL         "Additional info request for fast creatures",
                     IDC_TOOLCREATURINFO_ADDITIONALREQUEST,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,204,211,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,13,213,140,10
     CONTROL         "Collect creature statistics",IDC_COLLECT_STATS,"Button",
-                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,13,247,94,10
-    CONTROL         "Show creatures in area",IDC_SHOW_CREATURES_IN_AREA,
-                    "Button",BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,7,
-                    310,89,10
-    GROUPBOX        "Creature detection",IDC_STATIC,7,236,211,44
-    LTEXT           "XY range:",IDC_STATIC,13,260,42,14,SS_CENTERIMAGE
-    LTEXT           "Z range:",IDC_STATIC,118,260,28,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_RANGE_XY,66,260,40,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_RANGE_Z,171,260,40,14,ES_AUTOHSCROLL
+                    BS_AUTOCHECKBOX | WS_DISABLED | WS_TABSTOP,13,225,94,10
+    LTEXT           "XY range:",IDC_STATIC,13,238,42,14,SS_CENTERIMAGE
+    LTEXT           "Z range:",IDC_STATIC,118,238,28,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_RANGE_XY,66,238,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_RANGE_Z,171,238,40,14,ES_AUTOHSCROLL
     LTEXT           "Window line:",IDC_STATIC,17,160,42,8
     EDITTEXT        IDC_TOOLCREATURINFO_SELF_WINDOW,66,154,142,14,
                     ES_AUTOHSCROLL
@@ -258,7 +258,7 @@ BEGIN
         VERTGUIDE, 66
         VERTGUIDE, 208
         TOPMARGIN, 7
-        BOTTOMMARGIN, 320
+        BOTTOMMARGIN, 312
     END
 
     IDD_NAME, DIALOG

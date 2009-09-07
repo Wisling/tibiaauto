@@ -2286,7 +2286,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 // CMod_cavebotApp construction
 
 CMod_cavebotApp::CMod_cavebotApp() {
-	m_configDialog =NULL;
+	m_configDialog = NULL;
 	m_started=0;
 	m_configData = new CConfigData();
 }
@@ -2643,5 +2643,7 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
 
 void CMod_cavebotApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	m_configDialog->Invalidate();
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_configDialog)
+		m_configDialog->Invalidate();
 }
