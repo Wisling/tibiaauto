@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
-//#define MAPDEBUG
+#define MAPDEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -252,10 +252,10 @@ void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, i
 		int diagonalMove = (newX-prevX)&&(newY-prevY)&&(newZ==prevZ);
 		int otherAvailableX = tibiaMap.getPrevPointZ(newX,prevY,prevZ)==newZ;
 		int otherAvailableY = tibiaMap.getPrevPointZ(prevX,newY,prevZ)==newZ;
-		if (prevZ != newZ || !(diagonalMove && (otherAvailableX || otherAvailableY)) || tibiaMap.getPointUpDownNoProh(newX,newY,newZ)){
+		//if (prevZ != newZ || !(diagonalMove && (otherAvailableX || otherAvailableY)) || tibiaMap.getPointUpDownNoProh(newX,newY,newZ)){
 			if (tibiaMap.getPrevPointX(newX,newY,newZ)==0) queue->add(newX,newY,newZ);// prevents overflow
 			tibiaMap.setBestPrevPoint(newX,newY,newZ,prevX,prevY,prevZ);
-		}
+		//}
 	}
 }
 
@@ -472,8 +472,12 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			endZ=z;
 		}
 			
-
 		if (gotToEndPoint)
+		{				
+			gotToEndPoint++;
+		}
+
+		if (gotToEndPoint || gotToEndPoint>50 || gotToEndPoint && !queue->size())
 		{				
 			int pathPos=0;
 			while (currentPoint.x!=startX||currentPoint.y!=startY||currentPoint.z!=startZ)
