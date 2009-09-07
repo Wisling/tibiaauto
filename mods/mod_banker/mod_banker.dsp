@@ -79,7 +79,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../mod_banker.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_banker.dll" /pdbtype:sept
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -105,6 +105,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_banker.cpp
 # End Source File
 # Begin Source File
@@ -114,6 +118,10 @@ SOURCE=.\mod_banker.def
 # Begin Source File
 
 SOURCE=.\mod_banker.rc
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -151,6 +159,10 @@ SOURCE=.\ConfigDialog.h
 # Begin Source File
 
 SOURCE=.\mod_banker.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.h
 # End Source File
 # Begin Source File
 
