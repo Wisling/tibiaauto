@@ -69,7 +69,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: auto aiming"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "Enable aiming",IDC_ENABLE,"Button",BS_OWNERDRAW |BS_AUTOCHECKBOX | 
+    CONTROL         "Enable aiming",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,7,130,139,14
     LTEXT           "To use it, say either of:\n\t%ta hmm\n\t%ta gfb\n\t%ta sd\n\t%ta explo\nAfter you do this, a creature which is being attacked by you, will automatically be shot.\n\nNOTE: \nYou must have the rune with which you want to attack in one your open containers.",
                     IDC_STATIC,7,7,139,92,WS_BORDER
@@ -77,8 +77,7 @@ BEGIN
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Default rune type when attacking creature:",
                     IDC_AUTOAIM_RUNE,7,103,139,11,SS_CENTERIMAGE | WS_BORDER
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,51,148,50,
-                    14
+    DEFPUSHBUTTON   "OK",IDOK,51,148,50,14
 END
 
 

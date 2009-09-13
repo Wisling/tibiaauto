@@ -50,14 +50,14 @@ HeaderFile=ConfigDialog.h
 ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_TRADETOOL_YELL
+LastObject=IDC_ENABLE
 VirtualFilter=dWC
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1
-Class=?
+Class=CConfigDialog
 ControlCount=19
-Control1=IDC_STATIC,button,1342177287
+Control1=IDC_FRAME_TRADE_TALKER,button,1342177287
 Control2=IDOK,button,1342242817
 Control3=IDC_STATIC,static,1342308352
 Control4=IDC_TRADETOOL_MESSAGE,edit,1350631552

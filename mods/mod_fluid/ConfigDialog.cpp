@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_fluidApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -30,6 +30,10 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_FRAME_GENERAL_OPTIONS, m_GeneralOptionsFrame);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_MANA_RECOVERY, m_ManaRecoveryFrame);
+	DDX_Control(pDX, IDC_FRAME_HEALTH_RECOVERY, m_HealthRecoveryFrame);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW_S, m_manaBelowS);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW_N, m_manaBelowN);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW_G, m_manaBelowG);
@@ -70,6 +74,8 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -268,7 +274,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+
 	reloadCustomItems();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control

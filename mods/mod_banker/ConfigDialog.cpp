@@ -34,6 +34,7 @@ CConfigDialog::CConfigDialog(CMod_bankerApp *app,CWnd* pParent /*=NULL*/)
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_FRAME_BANKER, m_BankerFrame);
 	DDX_Control(pDX, IDC_BANKER_BANKER, m_Banker);
 	DDX_Control(pDX, IDC_BANKER_MIN_GOLD, m_MinGold);
@@ -49,7 +50,6 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
-	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -127,6 +127,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 
 BOOL CConfigDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+
 	initalizeBankers();
 	SetTimer(1001,250,NULL);	
 	return TRUE;  // return TRUE unless you set the focus to a control

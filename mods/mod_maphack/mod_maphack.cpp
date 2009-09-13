@@ -440,3 +440,13 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 		return NULL;
 	}
 }
+
+void CMod_maphackApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_configDialog)
+		m_configDialog->Invalidate();
+}

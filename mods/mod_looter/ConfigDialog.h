@@ -9,16 +9,20 @@
 
 #include "mod_looter.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 class CMod_looterApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
+	void setButtonSkins();
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
@@ -29,6 +33,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_LootOptionsFrame;
+	CGroupBoxEx	m_ContainerSetupFrame;
 	CStatic	m_status10;
 	CComboBox	m_mode10;
 	CButton	m_lootWorms;
@@ -36,7 +42,6 @@ public:
 	CButton	m_lootFood;
 	CButton	m_lootCustom;
 	CButton	m_autoOpen;
-	CButton	m_enable;
 	CStatic	m_status9;
 	CStatic	m_status8;
 	CStatic	m_status7;
@@ -55,6 +60,8 @@ public:
 	CComboBox	m_mode3;
 	CComboBox	m_mode2;
 	CComboBox	m_mode1;
+	CButtonST	m_enable;
+	CButtonST	m_OK;
 	//}}AFX_DATA
 
 

@@ -9,13 +9,16 @@
 
 #include "mod_fluid.h"
 #include "ConfigData.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
+#include "MyDialog.h"
 
 class CMod_fluidApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -30,6 +33,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_GeneralOptionsFrame;
+	CGroupBoxEx	m_ManaRecoveryFrame;
+	CGroupBoxEx	m_HealthRecoveryFrame;
 	CEdit	m_manaBelowS;
 	CEdit	m_manaBelowN;
 	CEdit	m_manaBelowG;
@@ -60,7 +66,8 @@ public:
 	CButton	m_drinkHp;
 	CButton	m_randomCast;
 	CButton	m_useHotkey;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

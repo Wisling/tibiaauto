@@ -64,23 +64,22 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 173, 95
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 152, 98
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: map hack"
+CAPTION "Module: Map Hack"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,62,74,50,14
+    GROUPBOX        "Map Options",IDC_FRAME_MAP_OPTIONS,7,7,138,48
+    DEFPUSHBUTTON   "OK",IDOK,52,77,50,14
     CONTROL         "Enable map hacks",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,56,159,14
+                    BS_PUSHLIKE | WS_TABSTOP,7,59,138,14
     CONTROL         "Reveal water with no fish",IDC_REVEAL_NOFISH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,7,95,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,18,127,10
     CONTROL         "Always show creature name/hp bar",IDC_REVEALCNAME,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,19,127,10
-    CONTROL         "Detect invisible creatures(not guaranteed)",
-                    IDC_REVEALINVISIBLE,"Button",BS_AUTOCHECKBOX | NOT 
-                    WS_VISIBLE | WS_TABSTOP,7,32,147,10
-    CONTROL         "Multi-level Minimap Research",IDC_MINIMAPRESEARCH,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,44,108,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,30,127,10
+    CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,42,127,
+                    10
 END
 
 
@@ -95,9 +94,9 @@ BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 166
+        RIGHTMARGIN, 145
         TOPMARGIN, 7
-        BOTTOMMARGIN, 88
+        BOTTOMMARGIN, 91
     END
 END
 #endif    // APSTUDIO_INVOKED

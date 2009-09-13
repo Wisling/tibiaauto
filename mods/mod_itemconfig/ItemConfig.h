@@ -7,10 +7,12 @@
 // ItemConfig.h : header file
 //
 #include "resource.h"
+#include "MyDialog.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // CItemAdd dialog
 
-class CItemAdd : public CDialog {
+class CItemAdd : public MyDialog {
 // Construction
 public:
 	char name[64];
@@ -20,6 +22,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CItemAdd)
 	enum { IDD = IDD_ITEM_ADD };
+	CButtonST	m_OK;
+	CButtonST	m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	//}}AFX_DATA
@@ -47,7 +51,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CItemEdit dialog
 
-class CItemEdit : public CDialog {
+class CItemEdit : public MyDialog {
 // Construction
 public:
 	char name[64];
@@ -57,8 +61,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CItemEdit)
 	enum { IDD = IDD_ITEM_EDIT };
+	CButtonST	m_OK;
+	CButtonST	m_Cancel;
 	CEdit m_ItemName;
-	CEdit m_ItemID;\
+	CEdit m_ItemID;
 	//}}AFX_DATA
 
 
@@ -84,7 +90,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CFoodAdd dialog
 
-class CFoodAdd : public CDialog
+class CFoodAdd : public MyDialog
 {
 // Construction
 public:
@@ -96,6 +102,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CFoodAdd)
 	enum { IDD = IDD_FOOD_ADD };
+	CButtonST	m_OK;
+	CButtonST	m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	CEdit m_EatTime;
@@ -124,7 +132,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CFoodEdit dialog
 
-class CFoodEdit : public CDialog
+class CFoodEdit : public MyDialog
 {
 // Construction
 public:
@@ -136,6 +144,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CFoodEdit)
 	enum { IDD = IDD_FOOD_EDIT };
+	CButtonST	m_OK;
+	CButtonST	m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	CEdit m_EatTime;
@@ -164,7 +174,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CLootAdd dialog
 
-class CLootAdd : public CDialog
+class CLootAdd : public MyDialog
 {
 // Construction
 public:
@@ -175,6 +185,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CLootAdd)
 	enum { IDD = IDD_LOOT_ADD };
+	CButtonST	m_OK;
+	CButtonST	m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	//}}AFX_DATA
@@ -202,7 +214,7 @@ private:
 /////////////////////////////////////////////////////////////////////////////
 // CLootEdit dialog
 
-class CLootEdit : public CDialog
+class CLootEdit : public MyDialog
 {
 // Construction
 public:
@@ -213,8 +225,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CLootEdit)
 	enum { IDD = IDD_LOOT_EDIT };
+	CButtonST	m_OK;
+	CButtonST	m_Cancel;
 	CEdit m_ItemName;
-	CEdit m_ItemID;\
+	CEdit m_ItemID;
 	//}}AFX_DATA
 
 

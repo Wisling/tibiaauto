@@ -15,7 +15,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
@@ -26,6 +26,19 @@ CConfigDialog::CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent /*=NULL*/)
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_SUMMON_CONTROL, m_SummonControlFrame);
+	DDX_Control(pDX, IDC_FRAME_STRIKE_SPELLS, m_StrikeSpellsFrame);
+	DDX_Control(pDX, IDC_FRAME_SORCERER_AOE, m_SorcererAOEFrame);
+	DDX_Control(pDX, IDC_FRAME_PALADIN_STRIKE, m_PaladinStrikeFrame);
+	DDX_Control(pDX, IDC_FRAME_PALADIN_AOE, m_PaladinAOEFrame);
+	DDX_Control(pDX, IDC_FRAME_MANA, m_ManaFrame);
+	DDX_Control(pDX, IDC_FRAME_LIFE, m_LifeFrame);
+	DDX_Control(pDX, IDC_FRAME_MAGE_STRIKE, m_MageStrikeFrame);
+	DDX_Control(pDX, IDC_FRAME_KNIGHT_STRIKE, m_KnightStrikeFrame);
+	DDX_Control(pDX, IDC_FRAME_KNIGHT_AOE, m_KnightAOEFrame);
+	DDX_Control(pDX, IDC_FRAME_DRUID_AOE, m_DruidAOEFrame);
+	DDX_Control(pDX, IDC_FRAME_AOE_SPELLS, m_AOESpellsFrame);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN, m_summonLessThan);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA, m_mana);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA_MANA, m_manaMana);
@@ -47,8 +60,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO, m_sioSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO_LIFE, m_sioHp);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO_MANA, m_sioSpellMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_POISON, m_poisonSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS, m_paralysisSpell);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_POISON, m_poisonSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE, m_minPoisonDmg);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON, m_summon);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON_MANA, m_summonMana);
@@ -65,6 +78,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_MANA, m_manaStrike);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT, m_defaultStrikeSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN, m_strikeSpellHpMin);
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE_AFFECT, m_aoeAffect);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI, m_exori);
@@ -84,13 +98,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_LIST, m_healList);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_DISABLE_WARNING, m_disableWarning);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_RANDOM_CAST,m_randomCast);//new
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -419,6 +434,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_healList);
+	skin.SetButtonSkin(	m_OK);
 	
 	OnToolSpellcasterMana();
 	OnToolSpellcasterLife();

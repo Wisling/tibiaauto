@@ -64,69 +64,74 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 179, 263
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 179, 335
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: auto restack"
+CAPTION "Module: Auto Restack"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,65,242,50,14
+    GROUPBOX        "Ammunition",IDC_FRAME_AMMUNITION,7,7,165,66
+    GROUPBOX        "Throwables",IDC_FRAME_THROWABLES,7,75,165,66
+    GROUPBOX        "Throwable Pickup Area",IDC_FRAME_PICKUP_AREA,7,143,165,
+                    57
+    GROUPBOX        "Options",IDC_FRAME_OPTIONS,7,202,165,90
+    DEFPUSHBUTTON   "OK",IDOK,65,314,50,14
     CONTROL         "Enable restacking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,222,165,14
-    LTEXT           "Ammo to restack:",IDC_STATIC,7,7,58,13,SS_CENTERIMAGE
-    COMBOBOX        IDC_TOOL_AMMORESTACK_AMMO,99,7,73,66,CBS_DROPDOWNLIST | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,296,165,14
+    LTEXT           "Ammo to restack:",IDC_STATIC,15,17,70,13,SS_CENTERIMAGE
+    COMBOBOX        IDC_TOOL_AMMORESTACK_AMMO,89,17,73,66,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Throwable to restack:",IDC_STATIC,7,65,83,13,
+    LTEXT           "Throwable to restack:",IDC_STATIC,15,85,70,13,
                     SS_CENTERIMAGE
-    COMBOBOX        IDC_TOOL_AMMORESTACK_THROWABLE,99,66,73,56,
+    COMBOBOX        IDC_TOOL_AMMORESTACK_THROWABLE,89,86,73,56,
                     CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Restack ammo at:",IDC_STATIC,7,25,58,13,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_AMMORESTACK_AMMO_AT,99,25,73,14,ES_AUTOHSCROLL
-    LTEXT           "Restack ammo to:",IDC_STATIC,7,44,58,13,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_AMMORESTACK_AMMO_TO,99,42,73,14,ES_AUTOHSCROLL
-    LTEXT           "Restack throwable at:",IDC_STATIC,7,83,73,13,
+    LTEXT           "Restack ammo at:",IDC_STATIC,15,34,70,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_AMMO_AT,89,33,73,14,ES_AUTOHSCROLL
+    LTEXT           "Restack ammo to:",IDC_STATIC,15,52,70,13,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AMMORESTACK_AMMO_TO,89,51,73,14,ES_AUTOHSCROLL
+    LTEXT           "Restack throwable at:",IDC_STATIC,15,103,70,13,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_AT,99,82,73,14,
+    EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_AT,89,102,73,14,
                     ES_AUTOHSCROLL
-    LTEXT           "Restack throwable to:",IDC_STATIC,7,102,72,13,
+    LTEXT           "Restack throwable to:",IDC_STATIC,15,121,70,13,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_TO,99,101,73,14,
+    EDITTEXT        IDC_TOOL_AMMORESTACK_THROWABLE_TO,89,120,73,14,
                     ES_AUTOHSCROLL
-    CONTROL         "Pickup throwable to bp",IDC_TOOL_ARMMORESTACK_PICKUP,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,139,89,10
-    LTEXT           "Throwable pickup area",IDC_STATIC,99,125,73,8
+    CONTROL         "Pickup throwables to backpack",
+                    IDC_TOOL_ARMMORESTACK_PICKUP,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,213,116,10
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,137,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,68,156,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_CL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,152,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,68,171,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_BL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,166,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,68,185,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_BC,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,146,166,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,86,185,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_BR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,164,166,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,104,185,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_CR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,164,152,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,104,171,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UR,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,164,137,8,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,104,156,8,8
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_UC,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,146,137,8,8
-    CONTROL         "Move items covering throwable",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,86,156,8,8
+    CONTROL         "Move items covering throwables",
                     IDC_TOOL_ARMMORESTACK_PICKUPCOVERED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,162,114,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,235,117,10
     CONTROL         "Restack to right hand",IDC_TOOL_RESTACKTORIGHT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,173,84,10
-    CONTROL         "Pickup throwable to hand",IDC_PICKUP_TO_HAND,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,151,97,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,246,84,10
+    CONTROL         "Pickup throwables to hand",IDC_PICKUP_TO_HAND,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,224,100,10
     CONTROL         "",IDC_TOOL_AMMORESTACK_PICKUP_CC,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,146,152,8,8
-    LTEXT           "Pickup period[s]:",IDC_STATIC,7,182,54,14,
+                    BS_AUTOCHECKBOX | WS_TABSTOP,86,171,8,8
+    LTEXT           "Pickup period[s]:",IDC_STATIC,15,257,54,14,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_PERIOD_FROM,67,182,16,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_PERIOD_TO,99,182,16,14,ES_AUTOHSCROLL
-    LTEXT           "to",IDC_STATIC,87,182,8,14,SS_CENTERIMAGE
-    LTEXT           "No pickup when cap below:",IDC_STATIC,7,198,94,14,
+    EDITTEXT        IDC_PERIOD_FROM,73,257,16,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_PERIOD_TO,105,257,16,14,ES_AUTOHSCROLL
+    LTEXT           "to",IDC_STATIC,93,257,8,14,SS_CENTERIMAGE
+    LTEXT           "No pickup when cap below:",IDC_STATIC,15,273,94,14,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_CAP_LIMIT,105,198,16,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CAP_LIMIT,111,273,16,14,ES_AUTOHSCROLL
 END
 
 
@@ -143,8 +148,8 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 172
         TOPMARGIN, 7
-        BOTTOMMARGIN, 256
-        HORZGUIDE, 212
+        BOTTOMMARGIN, 328
+        HORZGUIDE, 213
     END
 END
 #endif    // APSTUDIO_INVOKED

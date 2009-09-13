@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CToolContainerContent::CToolContainerContent(int containerNr,CWnd* pParent /*=NULL*/)
-	: CDialog(CToolContainerContent::IDD, pParent)
+	: MyDialog(CToolContainerContent::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CToolContainerContent)
 		// NOTE: the ClassWizard will add member initialization here
@@ -32,6 +32,8 @@ void CToolContainerContent::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CToolContainerContent)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_BACKPACK_CONTENTS, m_BackpackContainerFrame);
 	DDX_Control(pDX, IDC_CONTAINERCONTENT_LIST, m_list);
 	//}}AFX_DATA_MAP
 }
@@ -39,6 +41,8 @@ void CToolContainerContent::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CToolContainerContent, CDialog)
 	//{{AFX_MSG_MAP(CToolContainerContent)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -50,12 +54,13 @@ BOOL CToolContainerContent::OnInitDialog()
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
 	int i;
 	char buf[256];
 
 	
-	m_list.InsertColumn(0,"Object id",LVCFMT_LEFT,60);	
-	m_list.InsertColumn(1,"Name",LVCFMT_LEFT,140);
+	m_list.InsertColumn(0,"Object ID",LVCFMT_LEFT,60);	
+	m_list.InsertColumn(1,"Name",LVCFMT_LEFT,122);
 	m_list.InsertColumn(2,"Quantity",LVCFMT_LEFT,60);	
 
 	m_list.SetExtendedStyle(m_list.GetExtendedStyle()|LVS_EX_FULLROWSELECT);

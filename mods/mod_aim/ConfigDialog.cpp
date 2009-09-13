@@ -30,6 +30,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_AUTOAIM_RUNELIST, m_RuneType);
 	//}}AFX_DATA_MAP
@@ -119,6 +120,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 
 	CTibiaItemProxy itemProxy;
 

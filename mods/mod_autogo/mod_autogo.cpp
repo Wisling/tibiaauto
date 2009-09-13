@@ -1517,3 +1517,25 @@ void CMod_autogoApp::resetMultiParamAccess(char *paramName)
 {
 	if (!strcmp(paramName,"whiteList/List")) currentPos=0;
 }
+
+void CMod_autogoApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_configDialog->m_battleWhiteList);
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+	skin.SetButtonSkin(	m_configDialog->m_SetStart);
+	skin.SetButtonSkin(	m_configDialog->m_SetRunaway);
+	skin.SetButtonSkin(	m_configDialog->m_signPoison);
+	skin.SetButtonSkin(	m_configDialog->m_signFire);
+	skin.SetButtonSkin(	m_configDialog->m_signEnergy);
+	skin.SetButtonSkin(	m_configDialog->m_signBattle);
+	skin.SetButtonSkin(	m_configDialog->m_skullWhite);
+	skin.SetButtonSkin(	m_configDialog->m_skullRed);
+	skin.SetButtonSkin(	m_configDialog->m_skullYellow);
+	skin.SetButtonSkin(	m_configDialog->m_skullGreen);
+	skin.SetButtonSkin(	m_configDialog->m_skullBlack);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_configDialog)
+		m_configDialog->Invalidate();
+}

@@ -1,5 +1,6 @@
 1.20.3, ??.08.2009
 Enhancments
+ Kernal: added primary skinning ability for dialogs - color schemes
  Fluid Drinker: improved drinking speed when backpacks closed
  Cavebot: decreased walking pause after eating/casting spell
  Python: added 4 minimap reading/writing functions
@@ -14,7 +15,6 @@ Defects
  Spellcaster: Fixed the saving of the Exori Mas setting
  Auto Go/Log:Fixed "Reached Runaway" option
  Fluid Drinker: Added safety to not drink when at max hp or mana
- Spellcaster: Fixed saving Exori Mas option
  Ammo Restacker: Fixed saving Restack to Right Hand option
  Cavebot: Fixed walking bug when it continually goes up and down levels in a loop
  Cavebot: Fixed crashing when debug enabled and cavebot cannot find a path to destination

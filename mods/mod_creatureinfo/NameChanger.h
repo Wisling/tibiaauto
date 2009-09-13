@@ -6,11 +6,12 @@
 #endif // _MSC_VER > 1000
 // NameChanger.h : header file
 //
-
+#include "MyDialog.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // CNameChanger dialog
 
-class CNameChanger : public CDialog
+class CNameChanger : public MyDialog
 {
 // Construction
 public:
@@ -19,10 +20,11 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CNameChanger)
 	enum { IDD = IDD_NAME };
-	CButton	m_battleOnly;
-	CButton	m_advanced;
-	CButton	m_relpos;
-	CButton	m_refresh;
+	CButtonST	m_OK;
+	CButtonST	m_battleOnly;
+	CButtonST	m_advanced;
+	CButtonST	m_relpos;
+	CButtonST	m_refresh;
 	CListCtrl	m_list;
 	//}}AFX_DATA
 

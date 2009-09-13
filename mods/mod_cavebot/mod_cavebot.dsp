@@ -92,7 +92,7 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
-SOURCE=..\..\sdk\CheckBox.cpp
+SOURCE=..\..\sdk\BtnST.cpp
 # End Source File
 # Begin Source File
 
@@ -159,10 +159,6 @@ SOURCE=.\TibiaItem_impl.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=..\..\sdk\CheckBox.h
-# End Source File
 # Begin Source File
 
 SOURCE=.\ConfigData.h

@@ -9,13 +9,16 @@
 
 #include "mod_trademon.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_trademonApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,6 +32,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_TradeTalkerFrame;
 	CButton	m_channel;
 	CEdit	m_channelInterval;
 	CButton	m_tradeTalker;
@@ -38,7 +42,8 @@ public:
 	CEdit	m_sayInterval;
 	CButton	m_say;
 	CEdit	m_message;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

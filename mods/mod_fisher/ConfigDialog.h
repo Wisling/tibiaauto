@@ -9,13 +9,16 @@
 
 #include "mod_fisher.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_fisherApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,13 +32,16 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_StatisticsFrame;
+	CGroupBoxEx	m_OptionsFrame;
 	CEdit	m_fishOnlyWhenCap;
 	CStatic	m_fishyWater;
 	CStatic	m_time;
 	CStatic	m_quantity;
 	CButton	m_fishOnlyWhenWorms;
 	CButton	m_moveFromHandToCont;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

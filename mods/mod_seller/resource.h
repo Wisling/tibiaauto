@@ -39,6 +39,12 @@
 #define IDC_SELLER_TRIGGER_QUANTITY     3049
 #define IDC_SELLER_RETURN_ON_CAP        3050
 #define IDC_SELLER_RETURN_ON_NO_SPACE   3051
+#define IDC_FRAME_SELLER1               3052
+#define IDC_FRAME_SELLER2               3053
+#define IDC_FRAME_SELLER3               3054
+#define IDC_FRAME_SELLER4               3055
+#define IDC_FRAME_BUYSELL_CONTROLS      3056
+#define IDC_FRAME_BUY_CONTROLS          3057
 
 // Next default values for new objects
 // 
@@ -46,7 +52,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3051
+#define _APS_NEXT_CONTROL_VALUE         3058
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -73,6 +73,18 @@
 #define IDC_TOOL_SPELLCASTER_DISABLE_WARNING 3048
 #define IDC_TOOL_SPELLCASTER_RANDM_CAST 3049
 #define IDC_TOOL_SPELLCASTER_RANDOM_CAST 3049
+#define IDC_FRAME_SUMMON_CONTROL        3050
+#define IDC_FRAME_STRIKE_SPELLS         3051
+#define IDC_FRAME_SORCERER_AOE          3052
+#define IDC_FRAME_PALADIN_STRIKE        3053
+#define IDC_FRAME_PALADIN_AOE           3054
+#define IDC_FRAME_MANA                  3055
+#define IDC_FRAME_LIFE                  3056
+#define IDC_FRAME_MAGE_STRIKE           3057
+#define IDC_FRAME_KNIGHT_STRIKE         3058
+#define IDC_FRAME_KNIGHT_AOE            3059
+#define IDC_FRAME_DRUID_AOE             3060
+#define IDC_FRAME_AOE_SPELLS            3061
 #define IDC_WHITELIST_NAME              3100
 #define IDC_WHITELIST_ADD               3101
 #define IDC_WHITELIST_DELETE            3102
@@ -85,7 +97,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3008
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3049
+#define _APS_NEXT_CONTROL_VALUE         3062
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

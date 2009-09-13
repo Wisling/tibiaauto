@@ -28,10 +28,13 @@
 #define IDD_FOOD_EDIT                   3026
 #define IDC_TREE1                       3026
 #define IDC_FOOD_EDIT_NAME              3027
+#define IDC_FRAME_FOOD                  3027
 #define IDC_FOOD_EDIT_ID                3028
+#define IDC_FRAME_LOOT                  3028
 #define IDC_EDIT_FOOD                   3029
 #define IDC_DELETE_FOOD                 3030
 #define IDD_LOOT_ADD                    3031
+#define IDC_FRAME_ITEMS                 3031
 #define IDC_LOOT_ADD_NAME               3032
 #define IDC_LOOT_ADD_ID                 3033
 #define IDC_ADD_LOOT                    3034
@@ -47,7 +50,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3007
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3027
+#define _APS_NEXT_CONTROL_VALUE         3032
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

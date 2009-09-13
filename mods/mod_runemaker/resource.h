@@ -7,6 +7,7 @@
 #define IDC_TOOL_RUNEMAKER_CONT         1027
 #define IDC_TOOL_RUNEMAKER_SOUL         1028
 #define IDC_CONTAINERCONTENT_LIST       1029
+#define IDC_TOOL_RUNEMAKER_CONT2        1029
 #define IDC_TOOL_RUNEMAKER_INFO_BLANKS  1073
 #define IDC_TOOL_RUNEMAKER_INFO_FOOD    1074
 #define IDC_TOOL_RUNEMAKER_INFO_RUNETIME 1075
@@ -59,8 +60,13 @@
 #define IDC_LOOT_CUSTOM                 3022
 #define IDC_USE_BACKPACK                3022
 #define IDC_LOOT_WORMS                  3023
+#define IDC_FRAME_BACKPACK_VIEWER       3023
 #define IDC_CONTAINER_MODE_10           3024
+#define IDC_FRAME_RUNE_OPTIONS          3024
 #define IDC_CONTAINER_STATUS10          3025
+#define IDC_FRAME_GENERAL_OPTIONS       3025
+#define IDC_FRAME_STATISTICS            3026
+#define IDC_FRAME_BACKPACK_CONTENTS     3027
 
 // Next default values for new objects
 // 
@@ -68,7 +74,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3023
+#define _APS_NEXT_CONTROL_VALUE         3028
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

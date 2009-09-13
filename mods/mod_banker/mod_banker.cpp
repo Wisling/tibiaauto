@@ -411,6 +411,9 @@ int shouldBank(CConfigData *config) {
 
 void CMod_bankerApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+
 	if (m_configDialog)
 		m_configDialog->Invalidate();
 }

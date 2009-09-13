@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_restackApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -30,6 +30,11 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_THROWABLES, m_ThrowablesFrame);
+	DDX_Control(pDX, IDC_FRAME_PICKUP_AREA, m_PickupAreaFrame);
+	DDX_Control(pDX, IDC_FRAME_OPTIONS, m_OptionsFrame);
+	DDX_Control(pDX, IDC_FRAME_AMMUNITION, m_AmmunitionFrame);
 	DDX_Control(pDX, IDC_CAP_LIMIT, m_capLimit);
 	DDX_Control(pDX, IDC_TOOL_AMMORESTACK_PICKUP_CC, m_pickupCC);
 	DDX_Control(pDX, IDC_PERIOD_TO, m_periodTo);
@@ -59,6 +64,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -224,6 +231,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_enable);		
+	skin.SetButtonSkin(	m_OK);
 	
 	// reload ammo and throwable combo boxes
 	CTibiaItemProxy itemProxy;

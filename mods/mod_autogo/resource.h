@@ -71,9 +71,11 @@
 #define IDC_CONTAINER_MODE_8            3018
 #define IDC_AUTOGO_OTHERSIGN            3018
 #define IDC_AUTOGO_TRIGGERVIP           3018
+#define IDI_SPEAKER                     3018
 #define IDC_CONTAINER_STATUS8           3019
 #define IDC_AUTOGO_WHITELIST            3019
 #define IDC_AUTOGO_BATTLEWHITELIST      3019
+#define IDI_SPEAKER2                    3019
 #define IDC_CONTAINER_MODE_9            3020
 #define IDC_AUTOGO_HPLOSS               3020
 #define IDC_WHITELIST_LIST              3020
@@ -195,14 +197,16 @@
 #define IDC_AUTOGO_SOUNDSTAMINA_ABOVE   3113
 #define IDC_AUTOGO_ACTIONVIP            3114
 #define IDC_AUTOGO_SOUNDVIP             3115
+#define IDC_FRAME_TRIGGER_OPTIONS       3116
+#define IDC_FRAME_WHITE_LIST            3117
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3018
+#define _APS_NEXT_RESOURCE_VALUE        3020
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3097
+#define _APS_NEXT_CONTROL_VALUE         3118
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

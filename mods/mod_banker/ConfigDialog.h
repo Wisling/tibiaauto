@@ -11,6 +11,7 @@
 #include "ConfigData.h"
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
+#include "BtnSt.h"
 
 struct banker{
 	char name[40];
@@ -42,7 +43,8 @@ public:
 	CComboBox m_Banker;
 	CEdit m_MinGold;
 	CEdit m_OnHand;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

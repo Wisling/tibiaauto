@@ -9,13 +9,16 @@
 
 #include "mod_spellcaster.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_spellcasterApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,6 +32,18 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_SummonControlFrame;
+	CGroupBoxEx	m_StrikeSpellsFrame;
+	CGroupBoxEx	m_SorcererAOEFrame;
+	CGroupBoxEx	m_PaladinStrikeFrame;
+	CGroupBoxEx	m_PaladinAOEFrame;
+	CGroupBoxEx	m_ManaFrame;
+	CGroupBoxEx	m_LifeFrame;
+	CGroupBoxEx	m_MageStrikeFrame;
+	CGroupBoxEx	m_KnightStrikeFrame;
+	CGroupBoxEx	m_KnightAOEFrame;
+	CGroupBoxEx	m_DruidAOEFrame;
+	CGroupBoxEx	m_AOESpellsFrame;
 	CEdit	m_summonLessThan;
 	CButton	m_mana;
 	CEdit	m_manaMana;
@@ -68,7 +83,6 @@ public:
 	CEdit	m_manaStrike;
 	CEdit	m_defaultStrikeSpell;
 	CEdit	m_strikeSpellHpMin;
-	CButton	m_enable;
 	CButton m_aoe;
 	CEdit	m_aoeAffect;
 	CButton m_exori;
@@ -85,9 +99,11 @@ public:
 	CButton m_exevoGranMasFlam;
 	CButton m_exevoGranMasTera;
 	CButton m_exevoGranMasFrigo;
-	CButton	m_healList;
 	CButton	m_disableWarning;
 	CButton m_randomCast;//new
+	CButtonST	m_enable;
+	CButtonST	m_healList;
+	CButtonST	m_OK;
 	//}}AFX_DATA
 
 

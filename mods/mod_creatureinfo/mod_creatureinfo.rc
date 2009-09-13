@@ -145,15 +145,13 @@ BEGIN
     CONTROL         "Show creatures info on all floors",
                     IDC_TOOLCREATURINFO_ALLINFO,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,13,201,116,10
-    CONTROL         "Name Changer",IDC_TOOLCREATURINFO_NAMECHANGER,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,7,262,104,14
-    CONTROL         "Known Creatures Info",IDC_TOOLCREATURINFO_KNOWNINFO,
-                    "Button",BS_OWNERDRAW | WS_DISABLED | WS_TABSTOP,114,262,
-                    104,14
-    CONTROL         "Enable",IDC_ENABLE,"Button",BS_OWNERDRAW | BS_PUSHLIKE | 
-                    WS_TABSTOP,7,281,211,14
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,87,299,50,
+    PUSHBUTTON      "Name Changer",IDC_TOOLCREATURINFO_NAMECHANGER,7,262,104,
                     14
+    PUSHBUTTON      "Known Creatures Info",IDC_TOOLCREATURINFO_KNOWNINFO,114,
+                    262,104,14,WS_DISABLED
+    CONTROL         "Enable",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,281,211,14
+    DEFPUSHBUTTON   "OK",IDOK,87,299,50,14
     LTEXT           "First line:",IDC_STATIC,17,21,45,8
     LTEXT           "Second line:",IDC_STATIC,17,35,45,8
     LTEXT           "First line:",IDC_STATIC,17,71,45,8
@@ -185,7 +183,7 @@ BEGIN
     CONTROL         "List1",IDC_TOOLCREATURINFO_LIST,"SysListView32",
                     LVS_REPORT | LVS_SINGLESEL | LVS_EDITLABELS | WS_BORDER | 
                     WS_TABSTOP,7,7,220,164
-    PUSHBUTTON      "Close",IDOK,177,196,50,14
+    DEFPUSHBUTTON   "Close",IDOK,177,196,50,14
     CONTROL         "Refresh",IDC_TOOLCREATURINFO_REFRESH,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,177,50,15
     CONTROL         "Relative Pos",IDC_TOOLCREATURINFO_RELPOS,"Button",

@@ -64,49 +64,52 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 226, 293
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 226, 332
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: login"
+CAPTION "Module: Auto Login"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,88,272,50,14
+    GROUPBOX        "Login Settings",IDC_FRAME_LOGIN_SETTINGS,7,37,212,101
+    GROUPBOX        "Debug Log",IDC_FRAME_DEBUG_LOG,7,207,212,81
+    GROUPBOX        "Backpack Control",IDC_FRAME_BACKPACK_CONTROL,7,140,212,
+                    64
+    DEFPUSHBUTTON   "OK",IDOK,88,311,50,14
     CONTROL         "Enable automatic login",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,256,212,14
-    LTEXT           "Account number:",IDC_STATIC,7,41,55,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_ACCOUNT_NUMBER,80,41,90,14,ES_PASSWORD | 
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,293,212,14
+    LTEXT           "Account Number:",IDC_STATIC,14,49,55,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_ACCOUNT_NUMBER,87,49,90,14,ES_PASSWORD | 
                     ES_AUTOHSCROLL
-    LTEXT           "Password:",IDC_STATIC,7,58,55,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_PASSWORD,80,57,90,14,ES_PASSWORD | ES_AUTOHSCROLL
+    LTEXT           "Password:",IDC_STATIC,14,67,55,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_PASSWORD,87,67,90,14,ES_PASSWORD | ES_AUTOHSCROLL
     CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,119,212,63
-    LTEXT           "Debug log:",IDC_STATIC,7,111,212,8
-    LTEXT           "Connection status: -",IDC_STATUS,7,97,212,8
-    LTEXT           "Character position:",IDC_STATIC,7,78,67,14,
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,14,219,198,63
+    LTEXT           "Connection status: -",IDC_STATUS,14,121,198,8
+    LTEXT           "Character Position:",IDC_STATIC,14,85,67,14,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_CHAR_POS,80,79,90,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CHAR_POS,87,85,90,14,ES_AUTOHSCROLL
     CONTROL         "Open main backpack",IDC_OPEN_BACKPACK,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,188,84,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,153,84,10
     CONTROL         "Open container 1",IDC_OPEN_CONTAINER1,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,198,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,163,71,10
     CONTROL         "Open container 2",IDC_OPEN_CONTAINER2,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,208,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,173,71,10
     CONTROL         "Open container 3",IDC_OPEN_CONTAINER3,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,217,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,182,71,10
     CONTROL         "Open container 4",IDC_OPEN_CONTAINER4,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,227,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,192,71,10
     CONTROL         "Open container 5",IDC_OPEN_CONTAINER5,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,95,198,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,163,71,10
     CONTROL         "Open container 6",IDC_OPEN_CONTAINER6,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,95,208,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,173,71,10
     CONTROL         "Open container 7",IDC_OPEN_CONTAINER7,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,95,217,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,182,71,10
     CONTROL         "Open container 8",IDC_OPEN_CONTAINER8,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,95,227,71,10
-    LTEXT           "Always test auto login before using it! Please also note that backpacks may not all be opened properly even though they are minimized at startup.",
-                    IDC_STATIC,7,7,212,25,SS_SUNKEN
-    LTEXT           "Login Delay:",IDC_STATIC,7,238,55,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_LOGIN_DELAY,80,239,57,14,ES_AUTOHSCROLL
-    LTEXT           "seconds",IDC_STATIC,137,239,55,14,SS_CENTERIMAGE
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,192,71,10
+    CTEXT           "Always test auto login before using it!\nPlease also note that backpacks may not all be opened properly even though they are minimized at startup.",
+                    IDC_STATIC,7,7,212,27,WS_BORDER
+    LTEXT           "Login Delay:",IDC_STATIC,14,103,55,14,SS_CENTERIMAGE
+    EDITTEXT        IDC_LOGIN_DELAY,87,103,57,14,ES_AUTOHSCROLL
+    LTEXT           "seconds",IDC_STATIC,145,103,55,14,SS_CENTERIMAGE
 END
 
 
@@ -122,13 +125,10 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 219
-        VERTGUIDE, 80
+        VERTGUIDE, 14
+        VERTGUIDE, 212
         TOPMARGIN, 7
-        BOTTOMMARGIN, 286
-        HORZGUIDE, 176
-        HORZGUIDE, 185
-        HORZGUIDE, 195
-        HORZGUIDE, 205
+        BOTTOMMARGIN, 325
     END
 END
 #endif    // APSTUDIO_INVOKED

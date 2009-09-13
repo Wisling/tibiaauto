@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CNameChanger::CNameChanger(CWnd* pParent /*=NULL*/)
-	: CDialog(CNameChanger::IDD, pParent)
+	: MyDialog(CNameChanger::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CNameChanger)
 	//}}AFX_DATA_INIT
@@ -28,6 +28,7 @@ void CNameChanger::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CNameChanger)
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_BATTLEONLY, m_battleOnly);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_ADVANCED, m_advanced);
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_RELPOS, m_relpos);
@@ -39,6 +40,8 @@ void CNameChanger::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CNameChanger, CDialog)
 	//{{AFX_MSG_MAP(CNameChanger)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_TOOLCREATURINFO_REFRESH, OnToolcreaturinfoRefresh)
 	ON_NOTIFY(LVN_BEGINLABELEDIT, IDC_TOOLCREATURINFO_LIST, OnBeginlabeleditToolcreaturinfoList)
@@ -118,6 +121,11 @@ void CNameChanger::RefreshInfo()
 BOOL CNameChanger::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_battleOnly);
+	skin.SetButtonSkin(	m_advanced);
+	skin.SetButtonSkin(	m_relpos);
+	skin.SetButtonSkin(	m_refresh);
 	
 	InitList();
 	RefreshInfo();

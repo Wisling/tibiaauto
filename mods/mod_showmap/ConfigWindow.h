@@ -8,10 +8,14 @@
 //
 #include "TibiaTile.h"
 #include "resource.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CMapConfig dialog
 
-class CMapConfig : public CDialog
+class CMapConfig : public MyDialog
 {
 // Construction
 public:
@@ -25,8 +29,12 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CMapConfig)
 	enum { IDD = IDD_TOOL_MAPSHOW_CONFIG };
+	CGroupBoxEx	m_UseFrame;
+	CGroupBoxEx	m_TileTypeFrame;
+	CGroupBoxEx	m_MovementFrame;
+	CGroupBoxEx	m_CharacteristicsFrame;
 	CEdit m_TileId;
-	CEdit m_Speed;\
+	CEdit m_Speed;
 	CButton m_AlwaysOnTop;
 	CButton m_Blocking;
 	CButton m_Walkable;
@@ -40,8 +48,9 @@ public:
 	CButton m_RequireShovel;
 	CButton m_RequireUse;
 	CButton m_Stackable;
-	CButton m_Previous;
-	CButton m_Next;
+	CButtonST m_Previous;
+	CButtonST	m_Commit;
+	CButtonST m_Next;
 	//}}AFX_DATA
 
 

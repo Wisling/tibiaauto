@@ -10,10 +10,13 @@
 #include "MapButton.h"
 #include "ConfigWindow.h"
 #include "tibiatile.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 /////////////////////////////////////////////////////////////////////////////
 // CToolMapShow dialog
 
-class CToolMapShow : public CDialog
+class CToolMapShow : public MyDialog
 {
 // Construction
 public:
@@ -27,6 +30,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolMapShow)
 	enum { IDD = IDD_TOOL_MAPSHOW };
+	CButtonST	m_ClearMap;
+	CButtonST	m_OK;
+	CGroupBoxEx	m_MappingOptionFrame;
 	CButton	m_research;
 	CButton m_extendedResearch;
 	CStatic m_tileInfo;

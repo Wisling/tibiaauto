@@ -8,12 +8,15 @@
 //
 #include "resource.h"
 #include "MemConstData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 ////////////////////
 /////////////////////////////////////////////////////////
 // CToolMonsterShow dialog
 
-class CToolMonsterShow : public CDialog
+class CToolMonsterShow : public MyDialog
 {
 // Construction
 public:
@@ -23,6 +26,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolMonsterShow)
 	enum { IDD = IDD_TOOL_MONSTERSHOW };
+	CGroupBoxEx	m_OptionsFrame;
+	CButtonST	m_OK;
+	CGroupBoxEx	m_MonsterMapFrame;
 	CButton	m_revealSlime;
 	CButton	m_freeze;
 	CButton	m_showOneRelLvl;

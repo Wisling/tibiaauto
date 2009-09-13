@@ -126,3 +126,14 @@ void CMod_responderApp::stop()
 		m_infoDialog->stop();
 	}
 }
+
+void CMod_responderApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_infoDialog->m_enable);
+	skin.SetButtonSkin(	m_infoDialog->m_ClearLogs);
+	skin.SetButtonSkin(	m_infoDialog->m_OK);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_infoDialog)
+		m_infoDialog->Invalidate();
+}

@@ -9,13 +9,16 @@
 
 #include "mod_xray.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_xrayApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -31,7 +34,8 @@ public:
 	enum { IDD = IDD_CONFIG };
 	CButton	m_extrahotkeys;
 	CButton	m_autoreset;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

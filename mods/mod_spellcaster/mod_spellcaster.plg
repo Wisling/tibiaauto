@@ -3,102 +3,42 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_spellcaster - Win32 Release--------------------
+--------------------Configuration: mod_spellcaster - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_spellcaster.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPAF.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1B9.tmp" with contents
 [
-/nologo /MD /W3 /GX /Ox /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\ConfigData.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\ConfigDialog.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\exports.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\proxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\TibiaItem_impl.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\WhiteList.cpp"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_spellcaster.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\MyDialog.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPAF.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB0.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1B9.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1BA.tmp" with contents
 [
-/nologo /MD /W3 /GX /Ox /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\StdAfx.cpp"
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_spellcaster.pdb" /debug /machine:I386 /def:".\mod_spellcaster.def" /out:"C:\Program Files\Tibia Auto\mods/mod_spellcaster.dll" /implib:"Debug/mod_spellcaster.lib" /pdbtype:sept 
+".\Debug\BtnST.obj"
+".\Debug\ConfigData.obj"
+".\Debug\ConfigDialog.obj"
+".\Debug\exports.obj"
+".\Debug\GroupBoxEx.obj"
+".\Debug\mod_spellcaster.obj"
+".\Debug\MyDialog.obj"
+".\Debug\proxy.obj"
+".\Debug\Skin.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\WhiteList.obj"
+".\Debug\mod_spellcaster.res"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB0.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB1.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_spellcaster.pdb" /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Release/mod_spellcaster.lib" 
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\mod_spellcaster.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\WhiteList.obj"
-".\Release\mod_spellcaster.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB1.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1BA.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-StdAfx.cpp
-Compiling...
-ConfigData.cpp
-ConfigDialog.cpp
-exports.cpp
-mod_spellcaster.cpp
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(200) : warning C4786: '?rbegin@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QAE?AV?$reverse_bidirectional_iterator@Viterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@U?$pair@$$CBHH@3@AAU43@PAU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(202) : warning C4786: '?rbegin@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@U?$pair@$$CBHH@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(204) : warning C4786: '?rend@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QAE?AV?$reverse_bidirectional_iterator@Viterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@U?$pair@$$CBHH@3@AAU43@PAU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(206) : warning C4786: '?rend@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@U?$pair@$$CBHH@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(237) : warning C4786: '?insert@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QAE?AU?$pair@Viterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@_N@2@ABU?$pair@$$CBHH@2@@Z' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(411) : warning C4786: '?equal_range@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QAE?AU?$pair@Viterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@V123@@2@ABH@Z' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(414) : warning C4786: '?equal_range@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@QBE?AU?$pair@Vconst_iterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@V123@@2@ABH@Z' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >' being compiled
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(81) : warning C4786: '?rbegin@?$map@HHU?$less@H@std@@V?$allocator@H@2@@std@@QBE?AV?$reverse_bidirectional_iterator@Vconst_iterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@U?$pair@$$CBHH@3@ABU43@PBU43@H@2@XZ' : identifier was truncated to '255' characters in the browser information
-        C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(80) : see reference to class template instantiation 'std::map<int,int,struct std::less<int>,class std::allocator<int> >' being compiled
-C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@_N@std@@QAE@ABViterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >::iterator,bool>' being compiled
-        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'int &__thiscall std::map<int,int,struct std::less<int>,class std::allocator<int> >::operator [](const int &)'
-proxy.cpp
-TibiaItem_impl.cpp
-WhiteList.cpp
-Generating Code...
+MyDialog.cpp
 Linking...
-   Creating library Release/mod_spellcaster.lib and object Release/mod_spellcaster.exp
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB5.tmp" with contents
-[
-/nologo /o"Release/mod_spellcaster.bsc" 
-".\Release\StdAfx.sbr"
-".\Release\ConfigData.sbr"
-".\Release\ConfigDialog.sbr"
-".\Release\exports.sbr"
-".\Release\mod_spellcaster.sbr"
-".\Release\proxy.sbr"
-".\Release\TibiaItem_impl.sbr"
-".\Release\WhiteList.sbr"]
-Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPB5.tmp"
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-mod_spellcaster.dll - 0 error(s), 9 warning(s)
+mod_spellcaster.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>
