@@ -226,3 +226,13 @@ void CMod_showmapApp::resetMultiParamAccess(char *paramName)
 {
 	currentPointNr=0;
 }
+
+void CMod_showmapApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_infoDialog->m_ClearMap);
+	skin.SetButtonSkin(	m_infoDialog->m_OK);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_infoDialog)
+		m_infoDialog->Invalidate();
+}

@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
+# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -93,6 +93,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ConfigData.cpp
 # End Source File
 # Begin Source File
@@ -102,6 +106,10 @@ SOURCE=.\ConfigDialog.cpp
 # Begin Source File
 
 SOURCE=.\exports.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\GroupBoxEx.cpp
 # End Source File
 # Begin Source File
 
@@ -118,6 +126,10 @@ SOURCE=.\mod_autogo.def
 # Begin Source File
 
 SOURCE=.\mod_autogo.rc
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -227,6 +239,14 @@ SOURCE=.\res\skull_white.bmp
 # Begin Source File
 
 SOURCE=.\res\skull_yellow.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\speaker.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\speaker2.ico
 # End Source File
 # End Group
 # Begin Source File

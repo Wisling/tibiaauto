@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "CheckBox.h"
+#include "Skin.h"
 
 
 #ifdef _DEBUG
@@ -49,7 +50,7 @@ CCheckBox::CCheckBox ()
 
 	hasFocus = false;
 
-	prepare_bitmaps = true;
+//	prepare_bitmaps = true;
 
 //	for (int i=0; i<6; i++)
 //		m_bitmaps [i] = 0;
@@ -105,18 +106,6 @@ void CCheckBox::PreSubclassWindow()
 	CButton::PreSubclassWindow();
 }
 
-
-//-----------------------------------------------------------------------------
-// Name:		DrawItem
-// Description:	We have to override this, because CButton::DrawItem
-//				only executes an ASSERT
-//-----------------------------------------------------------------------------
-//void CCheckBox::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
-//{	
-//	return;	
-//}
-
-
 //-----------------------------------------------------------------------------
 // Name:		PreTranslateMessage
 // Description:	WM_LBUTTONDBLCLK => WM_LBUTTONDOWN
@@ -140,8 +129,6 @@ BOOL CCheckBox::PreTranslateMessage(MSG* pMsg)
 
 BEGIN_MESSAGE_MAP(CCheckBox, CButton)
 	//{{AFX_MSG_MAP(CCheckBox)
-//	ON_WM_PAINT()
-//	ON_WM_ERASEBKGND()
 	ON_WM_ENABLE()
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
@@ -155,53 +142,6 @@ BEGIN_MESSAGE_MAP(CCheckBox, CButton)
 	ON_MESSAGE (BM_GETCHECK, OnGetCheck)
 	ON_MESSAGE (BM_SETCHECK, OnSetCheck)
 END_MESSAGE_MAP()
-
-
-//-----------------------------------------------------------------------------
-// Name:		OnPaint
-// Description:	Blits the prepared bitmaps to the screen
-//-----------------------------------------------------------------------------
-/*void CCheckBox::OnPaint() 
-{
-	DWORD clr1 = ::GetSysColor (COLOR_3DFACE);
-	if (m_clr != clr1) {			// sysColor changed ??				
-		for (int i=0; i<6; i++) {	// => prepare bitmaps again
-			if (m_bitmaps [i])
-				DeleteObject (m_bitmaps [0]);
-		}
-		m_clr = clr1;
-
-		if (m_brush) DeleteObject (m_brush);
-		m_brush = ::CreateSolidBrush (m_clr);
-
-		prepare_bitmaps = true;
-	}
-
-
-	if (hasFocus)
-		DrawFocus (true);
-
-	CPaintDC dc (this);
-
-	if (prepare_bitmaps) {			// called first time or sysColor changed?
-		PrepareBitmaps (dc.m_hDC);	// => prepare bitmaps
-		prepare_bitmaps = false;
-	}
-	BlitToScreen (dc.m_hDC,m_nState);
-
-	if (hasFocus)
-		DrawFocus (true);
-}
-*/
-
-//-----------------------------------------------------------------------------
-// Name:		OnEraseBkgnd
-// Description:	Prevent any background erasing
-//-----------------------------------------------------------------------------
-//BOOL CCheckBox::OnEraseBkgnd(CDC* pDC) 
-//{		
-//	return 1;
-//}
 
 
 //-----------------------------------------------------------------------------

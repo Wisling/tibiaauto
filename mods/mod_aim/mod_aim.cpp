@@ -288,6 +288,9 @@ char *CMod_aimApp::getConfigParamName(int nr)
 
 void CMod_aimApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
+	skin.SetButtonSkin(m_configDialog->m_OK);
+	skin.SetButtonSkin(m_configDialog->m_enable);
+
 	if (m_configDialog)
 		m_configDialog->Invalidate();
 }

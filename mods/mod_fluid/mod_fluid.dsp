@@ -93,6 +93,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ConfigData.cpp
 # End Source File
 # Begin Source File
@@ -105,6 +109,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_fluid.cpp
 # End Source File
 # Begin Source File
@@ -114,6 +122,10 @@ SOURCE=.\mod_fluid.def
 # Begin Source File
 
 SOURCE=.\mod_fluid.rc
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -146,7 +158,15 @@ SOURCE=.\ConfigDialog.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_fluid.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.h
 # End Source File
 # Begin Source File
 

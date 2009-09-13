@@ -92,16 +92,10 @@ char * CMod_itemconfigApp::getName()
 	return "Item configuration";
 }
 
-
 int CMod_itemconfigApp::isStarted()
 {
 	return 0;
 }
-
-
-
-
-
 
 void CMod_itemconfigApp::showConfigDialog()
 {
@@ -115,19 +109,31 @@ void CMod_itemconfigApp::showConfigDialog()
 	m_infoDialog->ShowWindow(SW_SHOW);
 }
 
-
-
-
-
-
-
 void CMod_itemconfigApp::enableControls()
 {
 	
 }
 
-
 char *CMod_itemconfigApp::getVersion()
 {
 	return "1.0";
+}
+
+void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_infoDialog->m_OK);
+	skin.SetButtonSkin(	m_infoDialog->m_RefreshItems);
+	skin.SetButtonSkin(	m_infoDialog->m_EditLoot);
+	skin.SetButtonSkin(	m_infoDialog->m_EditItem);
+	skin.SetButtonSkin(	m_infoDialog->m_EditFood);
+	skin.SetButtonSkin(	m_infoDialog->m_DeleteLoot);
+	skin.SetButtonSkin(	m_infoDialog->m_DeleteItem);
+	skin.SetButtonSkin(	m_infoDialog->m_DeleteFood);
+	skin.SetButtonSkin(	m_infoDialog->m_AddLoot);
+	skin.SetButtonSkin(	m_infoDialog->m_AddItem);
+	skin.SetButtonSkin(	m_infoDialog->m_AddFood);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_infoDialog)
+		m_infoDialog->Invalidate();
 }

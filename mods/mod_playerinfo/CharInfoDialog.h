@@ -9,6 +9,7 @@
 
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
+#include "BtnST.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CCharInfoDialog dialog
@@ -22,6 +23,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CCharInfoDialog)
 	enum { IDD = IDD_CHARINFO };
+	CButtonST	m_ResetCounters;
+	CButtonST	m_OK;
 	CGroupBoxEx	m_SpellStats;
 	CGroupBoxEx	m_CharStats;
 	CStatic	m_expUpin;

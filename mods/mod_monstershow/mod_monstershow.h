@@ -35,6 +35,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 public:	
+	void getNewSkin(CSkin);
 	// functions from IModuleInterface
 	char * getName();
 	void showConfigDialog();

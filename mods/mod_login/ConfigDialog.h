@@ -9,13 +9,16 @@
 
 #include "mod_login.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_loginApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,6 +32,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_LoginSettingsFrame;
+	CGroupBoxEx	m_DebugLogFrame;
+	CGroupBoxEx	m_BackpackControlFrame;
 	CButton	m_openCont8;
 	CButton	m_openCont7;
 	CButton	m_openCont6;
@@ -43,8 +49,9 @@ public:
 	CEdit	m_password;
 	CListCtrl	m_debug;
 	CEdit	m_accountNumber;
-	CButton	m_enable;
 	CEdit m_loginDelay;
+	CButtonST	m_enable;
+	CButtonST	m_OK;
 	//}}AFX_DATA
 
 

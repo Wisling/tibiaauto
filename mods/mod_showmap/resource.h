@@ -21,7 +21,6 @@
 #define IDB_MAP_CRATE                   3009
 #define IDD_TOOL_MAPSHOW_CONFIG         3009
 #define IDB_MAP_BLOCKED                 3010
-#define IDB_MAP_BLOCK                   3010
 #define IDC_TILE_INFO                   3011
 #define IDB_MAP_DEPOT                   3011
 #define IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH 3012
@@ -30,9 +29,7 @@
 #define IDB_BACKGROUND                  3016
 #define IDC_CONTAINER                   3017
 #define IDC_DEPOT                       3018
-#define IDB_MAP_UNKTELE                 3019
 #define IDC_SHOVEL                      3020
-#define IDB_MAP_TELE                    3020
 #define IDC_ROPE                        3021
 #define IDC_USE_TILE                    3022
 #define IDC_MOVABLE                     3023
@@ -46,6 +43,14 @@
 #define IDC_PREVIOUS_CONFIG_TILE        3046
 #define IDC_NEXT_CONFIG_TILE            3047
 #define IDC_COMMIT                      3048
+#define IDC_FRAME_MAPPING_OPTIONS       3049
+#define IDC_FRAME_TILE_TYPE             3050
+#define IDC_FRAME_MOVEMENT              3051
+#define IDC_FRAME_USE                   3052
+#define IDC_FRAME_CHARACTERISTICS       3053
+#define IDB_MAP_UNKTELE                 4000
+#define IDB_MAP_TELE                    4001
+#define IDB_MAP_BLOCK                   4002
 #define ID_SHOWMAPOPTIONS_AVAILABLE     32770
 #define ID_SHOWMAPOPTIONS_STAIRS        32771
 #define ID_SHOWMAPOPTIONS_MAGICROPE     32772
@@ -67,9 +72,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3019
+#define _APS_NEXT_RESOURCE_VALUE        3018
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         3049
+#define _APS_NEXT_CONTROL_VALUE         3054
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

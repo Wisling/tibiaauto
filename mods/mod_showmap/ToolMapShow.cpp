@@ -29,7 +29,7 @@ int MINX=-8,MAXX=9,MINY=-6,MAXY=7;
 
 
 CToolMapShow::CToolMapShow(CWnd* pParent /*=NULL*/)
-	: CDialog(CToolMapShow::IDD, pParent)
+	: MyDialog(CToolMapShow::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CToolMapShow)
 	//}}AFX_DATA_INIT
@@ -40,6 +40,9 @@ void CToolMapShow::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CToolMapShow)
+	DDX_Control(pDX, IDC_TOOL_MAPSHOW_CLEAR, m_ClearMap);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_MAPPING_OPTIONS, m_MappingOptionFrame);
 	DDX_Control(pDX, IDC_TOOL_MAPSHOW_RESEARCH, m_research);
 	DDX_Control(pDX, IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH, m_extendedResearch);
 	DDX_Control(pDX, IDC_TILE_INFO, m_tileInfo);
@@ -52,6 +55,7 @@ BEGIN_MESSAGE_MAP(CToolMapShow, CDialog)
 	ON_WM_CLOSE()
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW_CLEAR, OnToolMapshowClear)
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW_RESEARCH, OnToolMapshowResearch)
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH, OnToolMapshowExtendedResearch)
@@ -74,6 +78,8 @@ void CToolMapShow::OnOK()
 BOOL CToolMapShow::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_ClearMap);
+	skin.SetButtonSkin(	m_OK);
 	int x;
 	int y;
 	RECT rect;

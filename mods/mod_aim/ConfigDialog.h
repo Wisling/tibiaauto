@@ -10,7 +10,7 @@
 #include "mod_aim.h"
 #include "ConfigData.h"
 #include "MyDialog.h"
-#include "CheckBox.h"
+#include "BtnST.h"
 
 class CMod_aimApp;
 
@@ -31,7 +31,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CCheckBox	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	CComboBox m_RuneType;
 	//}}AFX_DATA
 

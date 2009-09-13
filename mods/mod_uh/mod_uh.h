@@ -36,6 +36,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 public:		
+	void getNewSkin(CSkin);
 	void resetMultiParamAccess(char *paramName);
 	int isMultiParam(char *paramName);
 	int validateConfig(int showAlerts);

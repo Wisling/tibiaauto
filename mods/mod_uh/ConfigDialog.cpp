@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_uhApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -29,6 +29,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_SELF_HEALING, m_SelfHealingFrame);
+	DDX_Control(pDX, IDC_FRAME_GROUP_HEALING, m_GroupHealingFrame);
 	DDX_Control(pDX, IDC_TOOL_AUTOUH_GRP_MEMBER_REMOVE, m_memberRemove);
 	DDX_Control(pDX, IDC_TOOL_AUTOUH_GRP_MEMBER_ADD, m_memberAdd);
 	DDX_Control(pDX, IDC_TOOL_AUTOUH_GRP_MEMBER_LIST, m_memberList);
@@ -48,6 +51,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -183,8 +188,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-
-
+	skin.SetButtonSkin(	m_memberRemove);
+	skin.SetButtonSkin(	m_memberAdd);
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

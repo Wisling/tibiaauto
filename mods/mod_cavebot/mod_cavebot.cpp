@@ -2643,6 +2643,22 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
 
 void CMod_cavebotApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
+	//skin.SetButtonSkin(	m_configDialog->m_pausingEnable);
+	skin.SetButtonSkin(	m_configDialog->m_autoResearch);
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+	skin.SetButtonSkin(	m_configDialog->m_depotEntryRemove);
+	skin.SetButtonSkin(	m_configDialog->m_depotEntryAdd);
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+	skin.SetButtonSkin(	m_configDialog->m_RemoveWaypoint);
+	skin.SetButtonSkin(	m_configDialog->m_RemoveMonster);
+	skin.SetButtonSkin(	m_configDialog->m_RemoveIgnore);
+	skin.SetButtonSkin(	m_configDialog->m_AddWaypoint);
+	skin.SetButtonSkin(	m_configDialog->m_AddMonster);
+	skin.SetButtonSkin(	m_configDialog->m_AddIgnore);
+	skin.SetButtonSkin(	m_configDialog->m_LoadMinimap);
+	skin.SetButtonSkin(	m_configDialog->m_MonsterDown);
+	skin.SetButtonSkin(	m_configDialog->m_MonsterUp);
+
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	if (m_configDialog)
 		m_configDialog->Invalidate();

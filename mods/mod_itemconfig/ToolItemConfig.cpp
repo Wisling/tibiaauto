@@ -23,7 +23,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
-: CDialog(CToolItemConfig::IDD, pParent)
+: MyDialog(CToolItemConfig::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CToolItemConfig)
 	//}}AFX_DATA_INIT
@@ -34,30 +34,44 @@ void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CToolItemConfig)
+	DDX_Control(pDX, IDC_FRAME_LOOT, m_LootFrame);
+	DDX_Control(pDX, IDC_FRAME_ITEMS, m_ItemsFrame);
+	DDX_Control(pDX, IDC_FRAME_FOOD, m_FoodFrame);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_REFRESH, m_RefreshItems);
+	DDX_Control(pDX, IDC_EDIT_LOOT, m_EditLoot);
+	DDX_Control(pDX, IDC_EDIT_ITEM, m_EditItem);
+	DDX_Control(pDX, IDC_EDIT_FOOD, m_EditFood);
+	DDX_Control(pDX, IDC_DELETE_LOOT, m_DeleteLoot);
+	DDX_Control(pDX, IDC_DELETE_ITEM, m_DeleteItem);
+	DDX_Control(pDX, IDC_DELETE_FOOD, m_DeleteFood);
+	DDX_Control(pDX, IDC_ADD_LOOT, m_AddLoot);
+	DDX_Control(pDX, IDC_ADD_ITEM, m_AddItem);
+	DDX_Control(pDX, IDC_ADD_FOOD, m_AddFood);
 	DDX_Control(pDX, IDC_TREE1, m_testTree);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_LOOTED_LIST, m_lootedList);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_ITEMS_LIST, m_itemsList);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_FOODLIST, m_foodList);
-	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_CORPSES_LIST, m_corpsesList);
-	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_CORPSES_LIST, m_corpsesList);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CToolItemConfig, CDialog)
-//{{AFX_MSG_MAP(CToolItemConfig)
-ON_WM_CLOSE()
-ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG_REFRESH, OnToolItemconfigRefresh)
-ON_BN_CLICKED(IDC_ADD_ITEM, OnItemAdd)
-ON_BN_CLICKED(IDC_EDIT_ITEM, OnItemEdit)
-ON_BN_CLICKED(IDC_DELETE_ITEM, OnItemDelete)
-ON_BN_CLICKED(IDC_ADD_FOOD, OnFoodAdd)
-ON_BN_CLICKED(IDC_EDIT_FOOD, OnFoodEdit)
-ON_BN_CLICKED(IDC_DELETE_FOOD, OnFoodDelete)
-ON_BN_CLICKED(IDC_ADD_LOOT, OnLootAdd)
-ON_BN_CLICKED(IDC_EDIT_LOOT, OnLootEdit)
-ON_BN_CLICKED(IDC_DELETE_LOOT, OnLootDelete)
-//}}AFX_MSG_MAP
+	//{{AFX_MSG_MAP(CToolItemConfig)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
+	ON_WM_CLOSE()
+	ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG_REFRESH, OnToolItemconfigRefresh)
+	ON_BN_CLICKED(IDC_ADD_ITEM, OnItemAdd)
+	ON_BN_CLICKED(IDC_EDIT_ITEM, OnItemEdit)
+	ON_BN_CLICKED(IDC_DELETE_ITEM, OnItemDelete)
+	ON_BN_CLICKED(IDC_ADD_FOOD, OnFoodAdd)
+	ON_BN_CLICKED(IDC_EDIT_FOOD, OnFoodEdit)
+	ON_BN_CLICKED(IDC_DELETE_FOOD, OnFoodDelete)
+	ON_BN_CLICKED(IDC_ADD_LOOT, OnLootAdd)
+	ON_BN_CLICKED(IDC_EDIT_LOOT, OnLootEdit)
+	ON_BN_CLICKED(IDC_DELETE_LOOT, OnLootDelete)
+	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -95,13 +109,6 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 		m_foodList.AddString(buf);
 	}
 	
-	while (m_corpsesList.GetCount()) m_corpsesList.DeleteString(0);
-	for (i=0;i<itemProxy.getItemsCorpsesCount();i++)
-	{
-		sprintf(buf,"(0x%x) %s",itemProxy.getItemsCorpsesId(i),itemProxy.getItemsCorpses(i));
-		m_corpsesList.AddString(buf);
-	}
-	
 	while (m_lootedList.GetCount()) m_lootedList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsLootedCount();i++)
 	{
@@ -123,6 +130,17 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 BOOL CToolItemConfig::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_RefreshItems);
+	skin.SetButtonSkin(	m_EditLoot);
+	skin.SetButtonSkin(	m_EditItem);
+	skin.SetButtonSkin(	m_EditFood);
+	skin.SetButtonSkin(	m_DeleteLoot);
+	skin.SetButtonSkin(	m_DeleteItem);
+	skin.SetButtonSkin(	m_DeleteFood);
+	skin.SetButtonSkin(	m_AddLoot);
+	skin.SetButtonSkin(	m_AddItem);
+	skin.SetButtonSkin(	m_AddFood);
 	
 	OnToolItemconfigRefresh();
 	

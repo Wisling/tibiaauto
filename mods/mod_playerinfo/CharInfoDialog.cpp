@@ -39,6 +39,8 @@ void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCharInfoDialog)
+	DDX_Control(pDX, IDC_RESET_COUNTERS, m_ResetCounters);
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_SPELL_STATS, m_SpellStats);
 	DDX_Control(pDX, IDC_CHARACTER_STATS, m_CharStats);
 	DDX_Control(pDX, IDC_CHARINFO_EXP_UPIN, m_expUpin);
@@ -144,6 +146,8 @@ void CCharInfoDialog::resetCounters()
 BOOL CCharInfoDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_ResetCounters);
+	skin.SetButtonSkin(	m_OK);
 	
 	resetCounters();
 

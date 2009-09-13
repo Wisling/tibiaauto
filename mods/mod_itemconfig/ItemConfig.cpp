@@ -21,7 +21,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CItemAdd dialog
 
-CItemAdd::CItemAdd() : CDialog(CItemAdd::IDD) {
+CItemAdd::CItemAdd() : MyDialog(CItemAdd::IDD) {
 	//{{AFX_DATA_INIT(CItemAdd)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
@@ -32,13 +32,16 @@ void CItemAdd::DoDataExchange(CDataExchange* pDX) {
 	//{{AFX_DATA_MAP(CItemAdd)
 	DDX_Control(pDX, IDC_ITEM_ADD_NAME, m_ItemName);
 	DDX_Control(pDX, IDC_ITEM_ADD_ID, m_ItemID);
-
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CItemAdd, CDialog)
 	//{{AFX_MSG_MAP(CItemAdd)
 	ON_BN_CLICKED(IDOK, OnCommit)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -59,6 +62,8 @@ void CItemAdd::OnCommit() {
 
 BOOL CItemAdd::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_Cancel);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -68,7 +73,7 @@ BOOL CItemAdd::OnInitDialog() {
 // CItemEdit dialog
 
 CItemEdit::CItemEdit(int idIn, char* nameIn)
-: CDialog(CItemEdit::IDD) {
+: MyDialog(CItemEdit::IDD) {
 	itemId = idIn;
 	memcpy(name, nameIn, 59);
 	//{{AFX_DATA_INIT(CItemEdit)
@@ -79,15 +84,18 @@ CItemEdit::CItemEdit(int idIn, char* nameIn)
 void CItemEdit::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CItemEdit)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	DDX_Control(pDX, IDC_ITEM_EDIT_NAME, m_ItemName);
 	DDX_Control(pDX, IDC_ITEM_EDIT_ID, m_ItemID);
-
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CItemEdit, CDialog)
 	//{{AFX_MSG_MAP(CItemEdit)
 	ON_BN_CLICKED(IDOK, OnCommit)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -108,6 +116,8 @@ void CItemEdit::OnCommit() {
 
 BOOL CItemEdit::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_Cancel);
 	char buf[64];
 	sprintf(buf, "%d", itemId);
 	m_ItemID.SetWindowText(buf);
@@ -120,7 +130,7 @@ BOOL CItemEdit::OnInitDialog() {
 /////////////////////////////////////////////////////////////////////////////
 // CFoodAdd dialog
 
-CFoodAdd::CFoodAdd() : CDialog(CFoodAdd::IDD) {
+CFoodAdd::CFoodAdd() : MyDialog(CFoodAdd::IDD) {
 	//{{AFX_DATA_INIT(CFoodAdd)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
@@ -129,16 +139,19 @@ CFoodAdd::CFoodAdd() : CDialog(CFoodAdd::IDD) {
 void CFoodAdd::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CFoodAdd)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	DDX_Control(pDX, IDC_FOOD_ADD_NAME, m_ItemName);
 	DDX_Control(pDX, IDC_FOOD_ADD_ID, m_ItemID);
 	DDX_Control(pDX, IDC_FOOD_ADD_TIME, m_EatTime);
-
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CFoodAdd, CDialog)
 	//{{AFX_MSG_MAP(CFoodAdd)
 	ON_BN_CLICKED(IDOK, OnCommit)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -160,6 +173,8 @@ void CFoodAdd::OnCommit() {
 
 BOOL CFoodAdd::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_Cancel);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -169,7 +184,7 @@ BOOL CFoodAdd::OnInitDialog() {
 // CFoodEdit dialog
 
 CFoodEdit::CFoodEdit(int idIn, char* nameIn, int timeIn)
-: CDialog(CFoodEdit::IDD) {
+: MyDialog(CFoodEdit::IDD) {
 	itemId = idIn;
 	memcpy(name, nameIn, 59);
 	eatTime = timeIn;
@@ -181,16 +196,19 @@ CFoodEdit::CFoodEdit(int idIn, char* nameIn, int timeIn)
 void CFoodEdit::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CFoodEdit)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	DDX_Control(pDX, IDC_FOOD_EDIT_NAME, m_ItemName);
 	DDX_Control(pDX, IDC_FOOD_EDIT_ID, m_ItemID);
 	DDX_Control(pDX, IDC_FOOD_EDIT_TIME, m_EatTime);
-
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CFoodEdit, CDialog)
 	//{{AFX_MSG_MAP(CFoodEdit)
 	ON_BN_CLICKED(IDOK, OnCommit)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -213,6 +231,8 @@ void CFoodEdit::OnCommit() {
 
 BOOL CFoodEdit::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_Cancel);
 	char buf[64];
 	sprintf(buf, "%d", itemId);
 	m_ItemID.SetWindowText(buf);
@@ -222,12 +242,12 @@ BOOL CFoodEdit::OnInitDialog() {
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
-}
+};
 
 /////////////////////////////////////////////////////////////////////////////
 // CLootAdd dialog
 
-CLootAdd::CLootAdd() : CDialog(CLootAdd::IDD) {
+CLootAdd::CLootAdd() : MyDialog(CLootAdd::IDD) {
 	//{{AFX_DATA_INIT(CLootAdd)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
@@ -238,13 +258,16 @@ void CLootAdd::DoDataExchange(CDataExchange* pDX) {
 	//{{AFX_DATA_MAP(CLootAdd)
 	DDX_Control(pDX, IDC_LOOT_ADD_NAME, m_ItemName);
 	DDX_Control(pDX, IDC_LOOT_ADD_ID, m_ItemID);
-
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CLootAdd, CDialog)
 	//{{AFX_MSG_MAP(CLootAdd)
 	ON_BN_CLICKED(IDOK, OnCommit)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -265,6 +288,8 @@ void CLootAdd::OnCommit() {
 
 BOOL CLootAdd::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_Cancel);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -274,7 +299,7 @@ BOOL CLootAdd::OnInitDialog() {
 // CLootEdit dialog
 
 CLootEdit::CLootEdit(int idIn, char* nameIn)
-: CDialog(CLootEdit::IDD) {
+: MyDialog(CLootEdit::IDD) {
 	itemId = idIn;
 	memcpy(name, nameIn, 59);
 	//{{AFX_DATA_INIT(CLootEdit)
@@ -285,15 +310,18 @@ CLootEdit::CLootEdit(int idIn, char* nameIn)
 void CLootEdit::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CLootEdit)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	DDX_Control(pDX, IDC_LOOT_EDIT_NAME, m_ItemName);
 	DDX_Control(pDX, IDC_LOOT_EDIT_ID, m_ItemID);
-
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CLootEdit, CDialog)
 	//{{AFX_MSG_MAP(CLootEdit)
 	ON_BN_CLICKED(IDOK, OnCommit)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -314,6 +342,8 @@ void CLootEdit::OnCommit() {
 
 BOOL CLootEdit::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_Cancel);
 	char buf[64];
 	sprintf(buf, "%d", itemId);
 	m_ItemID.SetWindowText(buf);

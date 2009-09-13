@@ -70,9 +70,8 @@ CAPTION "Module: Banker"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Banking Options",IDC_FRAME_BANKER,6,7,136,55
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,49,84,50,14
-    CONTROL         "Enable Banking",IDC_ENABLE,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,6,67,136,14
+    DEFPUSHBUTTON   "OK",IDOK,49,84,50,14
+    PUSHBUTTON      "Enable Banking",IDC_ENABLE,6,67,136,14,BS_AUTOCHECKBOX | BS_PUSHLIKE
     COMBOBOX        IDC_BANKER_BANKER,37,18,99,65,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Banker:",IDC_STATIC,11,20,24,8

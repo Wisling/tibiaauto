@@ -731,3 +731,17 @@ void CMod_runemakerApp::resetMultiParamAccess(char *paramName)
 {
 	if (!strcmp(paramName,"spells/spell")) m_currentSpellNr=0;
 }
+
+void CMod_runemakerApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin( m_configDialog->m_addSpell);
+	skin.SetButtonSkin( m_configDialog->m_deleteSpell);
+	skin.SetButtonSkin( m_configDialog->m_loadSpell);
+	skin.SetButtonSkin( m_configDialog->m_makeNow);
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_configDialog)
+		m_configDialog->Invalidate();
+}

@@ -18,3 +18,4 @@ EXPORTS
 	validateConfig @17
 	init @18
 	activate @19
+	getNewSkin @20

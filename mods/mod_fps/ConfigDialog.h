@@ -9,13 +9,16 @@
 
 #include "mod_fps.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 class Cmod_fpsApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,6 +32,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_OptionsFrame;
 	CStatic	m_state;
 	CEdit	m_minimizedVal;
 	CButton	m_minimized;
@@ -36,7 +40,8 @@ public:
 	CButton	m_inactive;
 	CStatic	m_fpsRate;
 	CEdit	m_activeVal;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

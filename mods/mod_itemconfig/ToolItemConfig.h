@@ -8,11 +8,14 @@
 //
 
 #include "ItemConfig.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CToolItemConfig dialog
 
-class CToolItemConfig : public CDialog
+class CToolItemConfig : public MyDialog
 {
 // Construction
 public:
@@ -21,13 +24,24 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolItemConfig)
 	enum { IDD = IDD_TOOL_ITEMCONFIG };
+	CGroupBoxEx	m_LootFrame;
+	CGroupBoxEx	m_ItemsFrame;
+	CGroupBoxEx	m_FoodFrame;
+	CButtonST	m_OK;
+	CButtonST	m_RefreshItems;
+	CButtonST	m_EditLoot;
+	CButtonST	m_EditItem;
+	CButtonST	m_EditFood;
+	CButtonST	m_DeleteLoot;
+	CButtonST	m_DeleteItem;
+	CButtonST	m_DeleteFood;
+	CButtonST	m_AddLoot;
+	CButtonST	m_AddItem;
+	CButtonST	m_AddFood;
 	CTreeCtrl	m_testTree;
 	CListBox	m_lootedList;
 	CListBox	m_itemsList;
 	CListBox	m_foodList;
-	CListBox	m_corpsesList;
-	CButton		m_addItem;
-	CButton		m_editItem;
 	//}}AFX_DATA
 
 
@@ -41,6 +55,7 @@ public:
 // Implementation
 protected:
 	char outbuf[64];
+	char *parseNameFromItemSelected(int type);
 	// Generated message map functions
 	//{{AFX_MSG(CToolItemConfig)
 	virtual void OnOK();
@@ -56,7 +71,6 @@ protected:
 	virtual void OnLootAdd();
 	virtual void OnLootEdit();
 	virtual void OnLootDelete();
-	char *parseNameFromItemSelected(int type);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

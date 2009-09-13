@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(Cmod_fpsApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -31,6 +31,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_OPTIONS, m_OptionsFrame);
 	DDX_Control(pDX, IDC_FPSTOOL_TIBIASTATE, m_state);
 	DDX_Control(pDX, IDC_FPSTOOL_MINIMIZEDVAL, m_minimizedVal);
 	DDX_Control(pDX, IDC_FPSTOOL_MINIMIZED, m_minimized);
@@ -45,6 +47,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -188,6 +192,8 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam){
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
 
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;

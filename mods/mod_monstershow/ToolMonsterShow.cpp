@@ -20,7 +20,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CToolMonsterShow::CToolMonsterShow(CWnd* pParent /*=NULL*/)
-	: CDialog(CToolMonsterShow::IDD, pParent)
+	: MyDialog(CToolMonsterShow::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CToolMonsterShow)
 		// NOTE: the ClassWizard will add member initialization here
@@ -32,8 +32,11 @@ CToolMonsterShow::CToolMonsterShow(CWnd* pParent /*=NULL*/)
 
 void CToolMonsterShow::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	MyDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CToolMonsterShow)
+	DDX_Control(pDX, IDC_FRAME_OPTIONS, m_OptionsFrame);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_MONSTER_MAP, m_MonsterMapFrame);
 	DDX_Control(pDX, IDC_MONSTERSHOW_REVEALSLIME, m_revealSlime);
 	DDX_Control(pDX, IDC_MONSTERSHOW_FREEZE, m_freeze);
 	DDX_Control(pDX, IDC_MONSTERSHOW_ONERELLVL, m_showOneRelLvl);
@@ -41,13 +44,14 @@ void CToolMonsterShow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MONSTERSHOW_MONSTERNIFO_BELOW, m_monsterInfoBelow);
 	DDX_Control(pDX, IDC_MONSTERSHOW_MONSTERNIFO_SAME, m_monsterInfoSame);
 	DDX_Control(pDX, IDC_MONSTERSHOW_MONSTERNIFO_ABOVE, m_monsterInfoAbove);
-
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CToolMonsterShow, CDialog)
 	//{{AFX_MSG_MAP(CToolMonsterShow)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_MONSTERSHOW_FREEZE, OnMonstershowFreeze)
@@ -62,6 +66,7 @@ END_MESSAGE_MAP()
 BOOL CToolMonsterShow::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
 	
 	int x;
 	int y;
@@ -73,7 +78,7 @@ BOOL CToolMonsterShow::OnInitDialog()
 
 			CButton *but = new CMonsterButton(x,y);
 			RECT rect;
-			rect.top=20+y*20;
+			rect.top=29+y*20;
 			rect.left=20+x*20;
 			rect.right=rect.left+14;
 			rect.bottom=rect.top+14;

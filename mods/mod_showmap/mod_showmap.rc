@@ -64,19 +64,20 @@ END
 // Dialog
 //
 
-IDD_TOOL_MAPSHOW DIALOG DISCARDABLE  0, 0, 351, 310
+IDD_TOOL_MAPSHOW DIALOG DISCARDABLE  0, 0, 351, 323
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tool: show recorded map"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,236,289,50,14
+    GROUPBOX        "Mapping Options",IDC_FRAME_MAPPING_OPTIONS,7,291,195,26
+    DEFPUSHBUTTON   "OK",IDOK,237,303,50,14
     CONTROL         "Research map",IDC_TOOL_MAPSHOW_RESEARCH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,293,62,10
-    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,289,50,14
-    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,273,337,11,WS_BORDER
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,303,62,10
+    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,303,50,14
+    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,277,337,11,WS_BORDER
     CONTROL         "Extended research map",
                     IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,83,293,91,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,83,303,91,10
 END
 
 
@@ -92,8 +93,11 @@ BEGIN
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 344
+        VERTGUIDE, 14
+        VERTGUIDE, 337
         TOPMARGIN, 7
-        BOTTOMMARGIN, 303
+        BOTTOMMARGIN, 316
+        HORZGUIDE, 304
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -114,7 +118,7 @@ IDB_MAP_STAIRS          BITMAP  DISCARDABLE     "res\\map_stairs.bmp"
 IDB_MAP_OPENHOLE        BITMAP  DISCARDABLE     "res\\map_openhole.bmp"
 IDB_MAP_CLOSEDHOLE      BITMAP  DISCARDABLE     "res\\map_closedhole.bmp"
 IDB_MAP_CRATE           BITMAP  DISCARDABLE     "res\\map_crate.bmp"
-IDB_MAP_BLOCK           BITMAP  DISCARDABLE     "res\\map_block.bmp"
+IDB_MAP_BLOCKED         BITMAP  DISCARDABLE     "res\\map_blocked.bmp"
 IDB_MAP_DEPOT           BITMAP  DISCARDABLE     "res\\map_depot.bmp"
 IDB_MAP_UNKTELE         BITMAP  DISCARDABLE     "res\\map_unktele.bmp"
 IDB_MAP_TELE            BITMAP  DISCARDABLE     "res\\map_tele.bmp"
@@ -132,9 +136,6 @@ BEGIN
         MENUITEM "Available",                   ID_SHOWMAPOPTIONS_AVAILABLE
         MENUITEM SEPARATOR
         MENUITEM "Depot",                       ID_SHOWMAPOPTIONS_DEPOT
-        MENUITEM SEPARATOR
-        MENUITEM "Permanent Teleporter",        ID_SHOWMAPOPTIONS_TELE
-        MENUITEM "Permanent Block",             ID_SHOWMAPOPTIONS_BLOCK
         MENUITEM SEPARATOR
         POPUP "Go Up One Level"
         BEGIN
@@ -177,12 +178,17 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_TOOL_MAPSHOW_CONFIG DIALOG DISCARDABLE  0, 0, 224, 153
+IDD_TOOL_MAPSHOW_CONFIG DIALOG DISCARDABLE  0, 0, 229, 162
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tile Configuration Tool"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,136,132,50,14
+    GROUPBOX        "Tile Type",IDC_FRAME_TILE_TYPE,6,7,104,44
+    GROUPBOX        "Movement",IDC_FRAME_MOVEMENT,6,53,104,83
+    GROUPBOX        "Use",IDC_FRAME_USE,12,87,93,45
+    GROUPBOX        "Characteristics",IDC_FRAME_CHARACTERISTICS,116,7,104,
+                    101
+    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,87,141,50,14
     CONTROL         "Ground",IDC_GROUND,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,12,18,39,10
     CONTROL         "Container",IDC_CONTAINER,"Button",BS_AUTOCHECKBOX | 
@@ -190,39 +196,35 @@ BEGIN
     CONTROL         "Depot",IDC_DEPOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     12,40,35,10
     CONTROL         "Use Shovel",IDC_SHOVEL,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,18,94,53,10
+                    BS_LEFT | WS_TABSTOP,18,98,53,10
     CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,18,104,48,10
+                    WS_TABSTOP,18,108,48,10
     CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,114,86,10
+                    BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,118,86,10
     CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,119,67,93,10
-    GROUPBOX        "Tile Type",IDC_STATIC,6,7,104,44
-    GROUPBOX        "Movement",IDC_STATIC,6,53,104,76
-    GROUPBOX        "Use",IDC_STATIC,12,85,93,42
+                    WS_TABSTOP,123,55,93,10
     CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
                     WS_TABSTOP,12,65,51,10
     CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,12,75,64,10
-    GROUPBOX        "Characteristics",IDC_STATIC,111,32,104,97
     CONTROL         "Blocks walking",IDC_BLOCKING,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | BS_MULTILINE | WS_TABSTOP,119,43,93,10
+                    BS_LEFT | BS_MULTILINE | WS_TABSTOP,123,31,93,10
     CONTROL         "Walkable ground tile",IDC_WALKABLE,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    119,55,93,10
+                    123,42,93,10
     CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    119,79,93,10
+                    123,66,93,10
     CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,119,91,93,10
-    EDITTEXT        IDC_TILE_ID,149,7,24,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    BS_LEFT | WS_TABSTOP,123,79,93,10
+    EDITTEXT        IDC_TILE_ID,153,17,24,12,ES_AUTOHSCROLL | ES_READONLY | 
                     ES_NUMBER
-    LTEXT           "Tile ID:",IDC_STATIC,113,7,22,12,SS_NOTIFY | 
+    LTEXT           "Tile ID:",IDC_STATIC,123,17,22,12,SS_NOTIFY | 
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_SPEED,149,114,24,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Speed:",IDC_STATIC,119,116,24,10,SS_CENTERIMAGE
-    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,6,132,50,14
-    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,59,132,50,14
+    EDITTEXT        IDC_SPEED,154,92,24,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Speed:",IDC_STATIC,123,93,24,10,SS_CENTERIMAGE
+    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,116,122,50,14
+    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,170,122,50,14
 END
 
 
@@ -237,9 +239,9 @@ BEGIN
     IDD_TOOL_MAPSHOW_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 6
-        RIGHTMARGIN, 215
+        RIGHTMARGIN, 220
         TOPMARGIN, 7
-        BOTTOMMARGIN, 146
+        BOTTOMMARGIN, 155
     END
 END
 #endif    // APSTUDIO_INVOKED
