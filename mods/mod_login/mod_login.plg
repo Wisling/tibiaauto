@@ -6,33 +6,52 @@
 --------------------Configuration: mod_login - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP80BB.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Debug/mod_login.res" /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_login\mod_login.rc"" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2B5.tmp" with contents
 [
 /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /FR"Debug/" /Fp"Debug/mod_login.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_login\mod_login.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_login\ConfigData.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_login\ConfigDialog.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_login\exports.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_login\mod_login.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\MyDialog.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\BtnST.cpp"
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\GroupBoxEx.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP80BB.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP80BC.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2B5.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2B6.tmp" with contents
 [
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_login.pdb" /debug /machine:I386 /def:".\mod_login.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_login.dll" /implib:"Debug/mod_login.lib" /pdbtype:sept 
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_login.pdb" /debug /machine:I386 /def:".\mod_login.def" /out:"C:\Program Files\Tibia Auto\mods/mod_login.dll" /implib:"Debug/mod_login.lib" /pdbtype:sept 
 ".\Debug\ConfigData.obj"
 ".\Debug\ConfigDialog.obj"
 ".\Debug\exports.obj"
 ".\Debug\mod_login.obj"
 ".\Debug\proxy.obj"
 ".\Debug\SendKeys.obj"
+".\Debug\Skin.obj"
 ".\Debug\StdAfx.obj"
 ".\Debug\TibiaItem_impl.obj"
 ".\Debug\mod_login.res"
+".\Debug\MyDialog.obj"
+".\Debug\BtnST.obj"
+".\Debug\GroupBoxEx.obj"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP80BC.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2B6.tmp"
 <h3>Output Window</h3>
+Compiling resources...
 Compiling...
+ConfigDialog.cpp
 mod_login.cpp
+MyDialog.cpp
+BtnST.cpp
+GroupBoxEx.cpp
+Generating Code...
+Compiling...
+ConfigData.cpp
+exports.cpp
+Generating Code...
 Linking...
-Creating command line "bscmake.exe /nologo /o"Debug/mod_login.bsc"  ".\Debug\StdAfx.sbr" ".\Debug\ConfigData.sbr" ".\Debug\ConfigDialog.sbr" ".\Debug\exports.sbr" ".\Debug\mod_login.sbr" ".\Debug\proxy.sbr" ".\Debug\SendKeys.sbr" ".\Debug\TibiaItem_impl.sbr""
-Creating browse info file...
-<h3>Output Window</h3>
+   Creating library Debug/mod_login.lib and object Debug/mod_login.exp
 
 
 

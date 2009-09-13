@@ -87,7 +87,7 @@ protected:
 	int GetMinHeight (HDC);	// calculates the minimal height 'mHeight'
 							// based on m_font
 
-	bool prepare_bitmaps;
+//	bool prepare_bitmaps;
 
 	void SetState     (int nState);         // set state (BOX_ON,BOX_OFF,...BOX_DISABLED_2)
 
@@ -97,15 +97,12 @@ protected:
 	
 
 	//{{AFX_VIRTUAL(CCheckBox)
-	//virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);	
 	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
 
 
 	//{{AFX_MSG(CCheckBox)
-//	afx_msg void OnPaint();
-//	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnEnable(BOOL bEnable);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 	afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);	

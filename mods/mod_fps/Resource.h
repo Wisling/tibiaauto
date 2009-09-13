@@ -19,6 +19,7 @@
 #define IDC_FPSTOOL_MINIMIZEDVAL        3027
 #define IDC_FPSTOOL_TIBIASTATE          3028
 #define IDC_FPSTOOL_FPSRATE             3029
+#define IDC_FRAME_OPTIONS               3031
 
 // Next default values for new objects
 // 
@@ -26,7 +27,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3031
+#define _APS_NEXT_CONTROL_VALUE         3032
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

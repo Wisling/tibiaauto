@@ -93,6 +93,10 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ConfigData.cpp
 # End Source File
 # Begin Source File
@@ -102,6 +106,10 @@ SOURCE=.\ConfigWindow.cpp
 # Begin Source File
 
 SOURCE=.\exports.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\GroupBoxEx.cpp
 # End Source File
 # Begin Source File
 
@@ -118,6 +126,10 @@ SOURCE=.\mod_showmap.def
 # Begin Source File
 
 SOURCE=.\mod_showmap.rc
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -214,6 +226,14 @@ SOURCE=.\res\map_stairs.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_tele.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_unktele.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\mod_showmap.rc2
 # End Source File
 # Begin Source File
@@ -234,11 +254,19 @@ SOURCE=.\ConfigWindow.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\MapButton.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\mod_showmap.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.h
 # End Source File
 # Begin Source File
 

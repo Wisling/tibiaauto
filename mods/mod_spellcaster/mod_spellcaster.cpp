@@ -1199,3 +1199,14 @@ int aoeShouldFire(CConfigData *config) {
 
 	return returnSpell;
 }
+
+void CMod_spellcasterApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+	skin.SetButtonSkin(	m_configDialog->m_healList);
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_configDialog)
+		m_configDialog->Invalidate();
+}

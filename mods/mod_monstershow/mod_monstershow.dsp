@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../mod_monstershow.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_monstershow.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -93,11 +93,19 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ConfigData.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\exports.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\GroupBoxEx.cpp
 # End Source File
 # Begin Source File
 
@@ -114,6 +122,10 @@ SOURCE=.\mod_monstershow.rc
 # Begin Source File
 
 SOURCE=.\MonsterButton.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -146,11 +158,19 @@ SOURCE=.\ConfigData.h
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\GroupBoxEx.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_monstershow.h
 # End Source File
 # Begin Source File
 
 SOURCE=.\MonsterButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.h
 # End Source File
 # Begin Source File
 

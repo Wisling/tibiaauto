@@ -41,11 +41,11 @@ LastObject=CConfigDialog
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1
-Class=?
+Class=CConfigDialog
 ControlCount=5
-Control1=IDC_ENABLE,button,1342246923
+Control1=IDC_ENABLE,button,1342246915
 Control2=IDC_STATIC,static,1350696960
 Control3=IDC_AUTOAIM_RUNELIST,combobox,1344340227
 Control4=IDC_AUTOAIM_RUNE,static,1350697472
-Control5=IDOK,button,1342242827
+Control5=IDOK,button,1342242817
 

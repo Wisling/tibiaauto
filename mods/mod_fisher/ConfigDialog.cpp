@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_fisherApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -30,12 +30,15 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_FRAME_STATISTICS, m_StatisticsFrame);
+	DDX_Control(pDX, IDC_FRAME_OPTIONS, m_OptionsFrame);
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_FISH_CAP, m_fishOnlyWhenCap);
 	DDX_Control(pDX, IDC_AUTOFISH_FISHYWATER, m_fishyWater);
 	DDX_Control(pDX, IDC_AUTOFISH_TIME, m_time);
 	DDX_Control(pDX, IDC_AUTOFISH_QTY, m_quantity);
-	DDX_Control(pDX, IDC_AUTOFISH_MOVETOCONT, m_moveFromHandToCont);
 	DDX_Control(pDX, IDC_AUTOFISH_FISH_WHEN_WORMS, m_fishOnlyWhenWorms);
+	DDX_Control(pDX, IDC_AUTOFISH_MOVETOCONT, m_moveFromHandToCont);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -43,6 +46,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -132,6 +137,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
 	
 	refreshFishStatus();
 

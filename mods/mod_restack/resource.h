@@ -46,9 +46,13 @@
 #define IDC_CONTAINER_STATUS7           3017
 #define IDC_CAP_LIMIT                   3017
 #define IDC_CONTAINER_MODE_8            3018
+#define IDC_FRAME_OPTIONS               3018
 #define IDC_CONTAINER_STATUS8           3019
+#define IDC_FRAME_PICKUP_AREA           3019
 #define IDC_CONTAINER_MODE_9            3020
+#define IDC_FRAME_THROWABLES            3020
 #define IDC_CONTAINER_STATUS9           3021
+#define IDC_FRAME_AMMUNITION            3021
 #define IDC_LOOT_CUSTOM                 3022
 #define IDC_LOOT_WORMS                  3023
 #define IDC_CONTAINER_MODE_10           3024
@@ -60,7 +64,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3017
+#define _APS_NEXT_CONTROL_VALUE         3022
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

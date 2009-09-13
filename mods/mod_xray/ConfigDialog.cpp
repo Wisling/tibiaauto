@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_xrayApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -31,6 +31,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_EXTRAHOTKEYS, m_extrahotkeys);
 	DDX_Control(pDX, IDC_AUTORESET, m_autoreset);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
@@ -40,6 +41,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -120,10 +123,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-		
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
 
-
-	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

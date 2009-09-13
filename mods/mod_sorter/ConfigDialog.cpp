@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_sorterApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
@@ -28,7 +28,18 @@ CConfigDialog::CConfigDialog(CMod_sorterApp *app,CWnd* pParent /*=NULL*/)
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_BAG8, m_Bag8Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG7, m_Bag7Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG6, m_Bag6Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG5, m_Bag5Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG4, m_Bag4Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG3, m_Bag3Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG2, m_Bag2Frame);
+	DDX_Control(pDX, IDC_FRAME_BAG1, m_Bag1Frame);
+	DDX_Control(pDX, IDC_SORTER_ITEM_LIST, m_sortItemList);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SORTER_BAG1, m_Bag[0]);
 	DDX_Control(pDX, IDC_SORTER_BAG1_IN, m_BagIn[0]);
 	DDX_Control(pDX, IDC_SORTER_BAG1_OUT, m_BagOut[0]);
@@ -53,13 +64,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SORTER_BAG8, m_Bag[7]);
 	DDX_Control(pDX, IDC_SORTER_BAG8_IN, m_BagIn[7]);
 	DDX_Control(pDX, IDC_SORTER_BAG8_OUT, m_BagOut[7]);
-	DDX_Control(pDX, IDC_SORTER_ITEM_LIST, m_sortItemList);
-	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -180,6 +191,13 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 
 BOOL CConfigDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(		m_enable);
+	skin.SetButtonSkin(	m_OK);
+	for(int loop = 0; loop < 8; loop++) {
+		skin.SetButtonSkin(		m_BagIn[loop]);
+		skin.SetButtonSkin(		m_BagOut[loop]);
+	}
+
 	SetTimer(1001,250,NULL);	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

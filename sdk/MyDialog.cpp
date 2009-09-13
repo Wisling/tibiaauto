@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "MyDialog.h"
 #include "Skin.h"
+#include "BtnST.h"
 #include "MemReaderProxy.h"
 
 #ifdef _DEBUG
@@ -80,7 +81,7 @@ BEGIN_MESSAGE_MAP(MyDialog, CDialog)
 	//{{AFX_MSG_MAP(MyDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_CTLCOLOR()
-	ON_WM_DRAWITEM()
+	//ON_WM_DRAWITEM()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -104,6 +105,9 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	case CTLCOLOR_STATIC:
 		pDC->SetTextColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
 		pDC->SetBkMode(TRANSPARENT);
+		if (pWnd->GetExStyle() & WS_EX_TRANSPARENT) {
+			return (HBRUSH)::GetStockObject(HOLLOW_BRUSH);
+		}
 		return (HBRUSH)foreBrush;
 		break;
 	default:
@@ -112,7 +116,7 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
  	}
 }
 
-void MyDialog::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
+/*void MyDialog::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
 {
 	// TODO: Add your message handler code here and/or call default
 	CPen newPen;
@@ -121,8 +125,8 @@ void MyDialog::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CRect rc = lpDrawItemStruct->rcItem;
 	// This code only works with buttons.
 	//ASSERT(lpDrawItemStruct->CtlType == ODT_);
-
-
+	HWND mine = lpDrawItemStruct->hwndItem;
+ 
 	HBRUSH myBrush = CreateSolidBrush(RGB(skin.m_ButtonFaceRedValue,skin.m_ButtonFaceGreenValue,skin.m_ButtonFaceBlueValue));
 	FillRect(lpDrawItemStruct->hDC, &lpDrawItemStruct->rcItem, myBrush);
 	// If drawing selected, add the pushed style to DrawFrameControl.
@@ -226,5 +230,5 @@ void MyDialog::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 	DeleteObject(myBrush);
 	newPen.DeleteObject();
 	oldPen->DeleteObject();	
-}
+}*/
 

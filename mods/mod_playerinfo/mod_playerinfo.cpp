@@ -200,6 +200,9 @@ void* CMod_playerinfoApp::GetPlayerInfo()
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
 {
 	skin = newSkin;
+	skin.SetButtonSkin(	m_infoDialog->m_ResetCounters);
+	skin.SetButtonSkin(	m_infoDialog->m_OK);
+	
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	m_infoDialog->Invalidate();
 }

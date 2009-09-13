@@ -2,6 +2,7 @@
 //
 //////////////////////////////////////////////////////////////////////
 
+
 #if !defined(AFX_SKIN_H__1ADFBD53_B8CB_4C44_B6F2_A423968B0BBC__INCLUDED_)
 #define AFX_SKIN_H__1ADFBD53_B8CB_4C44_B6F2_A423968B0BBC__INCLUDED_
 
@@ -9,10 +10,13 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "BtnST.h"
+
 class CSkin  
 {
 	
 public:
+	void SetButtonSkin(CButtonST&);
 	bool operator==(const CSkin &) const;
 	bool CSkin::operator!=(const CSkin &other) const;
 

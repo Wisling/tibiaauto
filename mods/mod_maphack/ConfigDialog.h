@@ -9,13 +9,16 @@
 
 #include "mod_maphack.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_maphackApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,11 +32,13 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_MapOptionFrame;
 	CButton	m_revealCName;
 	CButton	m_revealNoFish;
 	CButton	m_revealInvisible;
-	CButton	m_minimapResearch;
-	CButton	m_enable;
+	//CButton	m_minimapResearch;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

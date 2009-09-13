@@ -10,6 +10,9 @@
 #include "mod_autogo.h"
 #include "ConfigData.h"
 #include "ImageButtonWithStyle.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
+#include "MyDialog.h"
 
 #define TRIGGER_BATTLELIST		0x0001
 	#define BATTLELIST_ANXIETY	0x0001
@@ -89,7 +92,7 @@ class CMod_autogoApp;
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -105,32 +108,11 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButton	m_manaBelowUntilRecovery;
-	CButton	m_hpBelowUntilRecovery;
-	CButton	m_triggerOutOf;
-	CButton	m_triggerSoulPointAbove;
-	CButton	m_triggerStamina;
-	CButton	m_triggerStaminaAbove;
-	CButton	m_triggerManaBelow;
-	CButton	m_triggerManaAbove;
-	CButton	m_triggerHpAbove;
-	CButton	m_soundSoulPointAbove;
-	CButton	m_soundStamina;
-	CButton	m_soundStaminaAbove;
-	CButton	m_soundRunawayReached;
-	CButton	m_soundOutOfSpace;
-	CButton	m_soundOutOfFood;
-	CButton	m_soundOutOfCustom;
-	CButton	m_soundManaBelow;
-	CButton	m_soundManaAbove;
-	CButton	m_soundHpAbove;
+	CGroupBoxEx	m_TriggerOptionsFrame;
 	CEdit	m_soulPointAbove;
 	CEdit	m_stamina;
 	CEdit	m_staminaAbove;
 	CEdit	m_runawayReachedRadius;
-	CButton	m_runawayReached;
-	CButton	m_outOfCustom;
-	CButton	m_messageIgnoreSpells;
 	CEdit	m_manaBelow;
 	CEdit	m_manaAbove;
 	CEdit	m_hpAbove;
@@ -145,64 +127,19 @@ public:
 	CComboBox	m_actionManaBelow;
 	CComboBox	m_actionManaAbove;
 	CComboBox	m_actionHpAbove;
-	CButton	m_soundBattleListPlayer;
-	CButton	m_soundBattleListMonster;
-	CButton	m_soundBattleListList;
-	CButton	m_soundBattleListGm;
 	CComboBox	m_actionBattleListPlayer;
 	CComboBox	m_actionBattleListMonster;
 	CComboBox	m_actionBattleListList;
 	CComboBox	m_actionBattleListGm;
-	CButton	m_battleBattlelist;
-	CButton	m_battleParanoiaM;
-	CButton	m_battleAnxiety;
 	CComboBox	m_actDirection;
-	CButton	m_soundHpBelow;
-	CButton	m_triggerHpBelow;
-	CEdit	m_hpBelow;
 	CComboBox	m_actionHpBelow;
-	CButton	m_outOfSpace;
 	CEdit	m_actX;
 	CEdit	m_actZ;
 	CEdit	m_actY;
 	CEdit	m_soulPoint;
-	CButton	m_soundSign;
-	CButton	m_soundSkull;
-	CButton	m_soundVIP;
-	CButton	m_triggerSoulPoint;
-	CButton	m_triggerSign;
-	CButton	m_triggerSkull;
-	CButton	m_triggerVIP;
-	CButton	m_triggerMessage;
-	CButton	m_triggerMove;
-	CButton	m_triggerHpLoss;
-	CButton	m_triggerCapacity;
-	CButton	m_triggerBlank;
-	CButton	m_triggerBattleList;
-	CButton	m_soundSoulPoint;
-	CButton	m_soundMove;
-	CButton	m_soundMessage;
-	CButton	m_soundHpLoss;
-	CButton	m_soundCapacity;
-	CButton	m_soundBlank;
-	CImageButtonWithStyle	m_signPoison;
-	CImageButtonWithStyle	m_signFire;
-	CImageButtonWithStyle	m_signEnergy;
-	CImageButtonWithStyle	m_signBattle;
-	CImageButtonWithStyle	m_skullWhite;
-	CImageButtonWithStyle	m_skullRed;
-	CImageButtonWithStyle	m_skullYellow;
-	CImageButtonWithStyle	m_skullGreen;
-	CImageButtonWithStyle	m_skullBlack;
-	CButton	m_messagePublic;
-	CButton	m_outOfFood;
-	CButton	m_messagePrivate;
+	CEdit	m_hpBelow;
 	CEdit	m_capacity;
 	CEdit	m_blank;
-	CButton	m_battleWhiteList;
-	CButton	m_battlePlayer;
-	CButton	m_battleMonster;
-	CButton	m_battleGM;
 	CComboBox	m_actionSoulPoint;
 	CComboBox	m_actionSign;
 	CComboBox	m_actionSkull;
@@ -219,7 +156,79 @@ public:
 	CEdit	m_runawayZ;	
 	CEdit	m_runawayY;
 	CEdit	m_runawayX;
-	CButton	m_enable;
+	CButton	m_soundMove;
+	CButton	m_soundMessage;
+	CButton	m_soundHpLoss;
+	CButton	m_soundCapacity;
+	CButton	m_soundBlank;
+	CButton	m_soundHpBelow;
+	CButton	m_soundSign;
+	CButton	m_soundSkull;
+	CButton	m_soundVIP;
+	CButton	m_soundSoulPoint;
+	CButton	m_soundBattleListPlayer;
+	CButton	m_soundBattleListMonster;
+	CButton	m_soundBattleListList;
+	CButton	m_soundBattleListGm;
+	CButton	m_soundSoulPointAbove;
+	CButton	m_soundStamina;
+	CButton	m_soundStaminaAbove;
+	CButton	m_soundRunawayReached;
+	CButton	m_soundOutOfSpace;
+	CButton	m_soundOutOfFood;
+	CButton	m_soundOutOfCustom;
+	CButton	m_soundManaBelow;
+	CButton	m_soundManaAbove;
+	CButton	m_soundHpAbove;
+
+	CButton	m_manaBelowUntilRecovery;
+	CButton	m_hpBelowUntilRecovery;
+	CButton	m_triggerOutOf;
+	CButton	m_triggerSoulPointAbove;
+	CButton	m_triggerStamina;
+	CButton	m_triggerStaminaAbove;
+	CButton	m_triggerManaBelow;
+	CButton	m_triggerManaAbove;
+	CButton	m_triggerHpAbove;
+	CButton	m_runawayReached;
+	CButton	m_outOfCustom;
+	CButton	m_messageIgnoreSpells;
+	CButton	m_battleBattlelist;
+	CButton	m_battleParanoiaM;
+	CButton	m_battleAnxiety;
+	CButton	m_triggerHpBelow;
+	CButton	m_outOfSpace;
+	CButton	m_triggerSoulPoint;
+	CButton	m_triggerSign;
+	CButton	m_triggerSkull;
+	CButton	m_triggerVIP;
+	CButton	m_triggerMessage;
+	CButton	m_triggerMove;
+	CButton	m_triggerHpLoss;
+	CButton	m_triggerCapacity;
+	CButton	m_triggerBlank;
+	CButton	m_triggerBattleList;
+	CButton	m_messagePrivate;
+	CButton	m_battlePlayer;
+	CButton	m_battleMonster;
+	CButton	m_battleGM;
+	CButton	m_messagePublic;
+	CButton	m_outOfFood;
+
+	CButtonST	m_battleWhiteList;
+	CButtonST	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_SetStart;
+	CButtonST	m_SetRunaway;
+	CButtonST	m_signPoison;
+	CButtonST	m_signFire;
+	CButtonST	m_signEnergy;
+	CButtonST	m_signBattle;
+	CButtonST	m_skullWhite;
+	CButtonST	m_skullRed;
+	CButtonST	m_skullYellow;
+	CButtonST	m_skullGreen;
+	CButtonST	m_skullBlack;
 	//}}AFX_DATA
 
 

@@ -7,6 +7,7 @@
 // MyDialog.h : header file
 //
 #include "Skin.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // MyDialog dialog
 
@@ -39,7 +40,7 @@ protected:
 	//{{AFX_MSG(MyDialog)
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
+	//afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

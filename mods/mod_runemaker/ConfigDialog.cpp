@@ -19,7 +19,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_runemakerApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -31,6 +31,11 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_STATISTICS, m_StatisticsFrame);
+	DDX_Control(pDX, IDC_FRAME_RUNE_OPTIONS, m_RuneOptionsFrame);
+	DDX_Control(pDX, IDC_FRAME_GENERAL_OPTIONS, m_GeneralOptionsFrame);
+	DDX_Control(pDX, IDC_FRAME_BACKPACK_VIEWER, m_BackpackViewerFrame);
 	DDX_Control(pDX, IDC_USE_BACKPACK, m_useBackpack);
 	DDX_Control(pDX, IDC_TOOL_MAXMANAUSE, m_maxUse);
 	DDX_Control(pDX, IDC_TOOL_PREMIUM, m_premium);
@@ -58,6 +63,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -336,6 +343,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin( m_addSpell);
+	skin.SetButtonSkin( m_deleteSpell);
+	skin.SetButtonSkin( m_loadSpell);
+	skin.SetButtonSkin( m_makeNow);
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
 
 	initialiseContainers();
 	

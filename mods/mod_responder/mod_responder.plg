@@ -3,127 +3,46 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_responder - Win32 Release--------------------
+--------------------Configuration: mod_responder - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/mod_responder.res" /d "NDEBUG" /d "_AFXDLL" "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\mod_responder.rc"" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1DD.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1A0.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_responder.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\AutoResponderParser.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\AutoResponderParserContext.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\ConfigData.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\exports.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\mod_responder.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\proxy.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\TibiaItem_impl.cpp"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_responder.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\ToolAutoRespond.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\ToolAutoResponderMessage.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\ToolAutoResponderThreadConfig.cpp"
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\Util.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1DD.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1DE.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1A0.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1A1.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_responder.pch" /Yc"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_responder\StdAfx.cpp"
+../../xerces.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_responder.pdb" /debug /machine:I386 /def:".\mod_responder.def" /out:"C:\Program Files\Tibia Auto\mods/mod_responder.dll" /implib:"Debug/mod_responder.lib" /pdbtype:sept 
+".\Debug\AutoResponderParser.obj"
+".\Debug\AutoResponderParserContext.obj"
+".\Debug\ConfigData.obj"
+".\Debug\exports.obj"
+".\Debug\mod_responder.obj"
+".\Debug\proxy.obj"
+".\Debug\Skin.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\ToolAutoRespond.obj"
+".\Debug\ToolAutoResponderMessage.obj"
+".\Debug\ToolAutoResponderThreadConfig.obj"
+".\Debug\Util.obj"
+".\Debug\mod_responder.res"
+".\Debug\MyDialog.obj"
+".\Debug\BtnST.obj"
+".\Debug\GroupBoxEx.obj"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1DE.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1DF.tmp" with contents
-[
-../../xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_responder.pdb" /machine:I386 /def:".\mod_responder.def" /out:"../mod_responder.dll" /implib:"Release/mod_responder.lib" 
-".\Release\AutoResponderParser.obj"
-".\Release\AutoResponderParserContext.obj"
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\mod_responder.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\ToolAutoRespond.obj"
-".\Release\ToolAutoResponderMessage.obj"
-".\Release\ToolAutoResponderThreadConfig.obj"
-".\Release\Util.obj"
-".\Release\mod_responder.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1DF.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP1A1.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-StdAfx.cpp
-Compiling...
-AutoResponderParser.cpp
-AutoResponderParserContext.cpp
-ConfigData.cpp
-exports.cpp
-mod_responder.cpp
-proxy.cpp
-TibiaItem_impl.cpp
 ToolAutoRespond.cpp
-ToolAutoResponderMessage.cpp
-ToolAutoResponderThreadConfig.cpp
-Util.cpp
-Generating Code...
 Linking...
-   Creating library Release/mod_responder.lib and object Release/mod_responder.exp
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::handleAttributesPSVI(unsigned short const * const,unsigned short const * const,class xercesc_2_8::PSVIAttributeList *)" (?handleAttributesPSVI@AbstractDOMParser@xercesc_2_8@@UAEXQBG0PAVPSVIAttributeList@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::handlePartialElementPSVI(unsigned short const * const,unsigned short const * const,class xercesc_2_8::PSVIElement *)" (?handlePartialElementPSVI@AbstractDOMParser@xercesc_2_8@@UAEXQBG0PAVPSVIElement@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::handleElementPSVI(unsigned short const * const,unsigned short const * const,class xercesc_2_8::PSVIElement *)" (?handleElementPSVI@AbstractDOMParser@xercesc_2_8@@UAEXQBG0PAVPSVIElement@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::TextDecl(unsigned short const * const,unsigned short const * const)" (?TextDecl@AbstractDOMParser@xercesc_2_8@@UAEXQBG0@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::startExtSubset(void)" (?startExtSubset@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::startIntSubset(void)" (?startIntSubset@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::startAttList(class xercesc_2_8::DTDElementDecl const &)" (?startAttList@AbstractDOMParser@xercesc_2_8@@UAEXABVDTDElementDecl@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::notationDecl(class xercesc_2_8::XMLNotationDecl const &,bool)" (?notationDecl@AbstractDOMParser@xercesc_2_8@@UAEXABVXMLNotationDecl@2@_N@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::resetDocType(void)" (?resetDocType@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::entityDecl(class xercesc_2_8::DTDEntityDecl const &,bool,bool)" (?entityDecl@AbstractDOMParser@xercesc_2_8@@UAEXABVDTDEntityDecl@2@_N1@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::endExtSubset(void)" (?endExtSubset@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::endIntSubset(void)" (?endIntSubset@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::endAttList(class xercesc_2_8::DTDElementDecl const &)" (?endAttList@AbstractDOMParser@xercesc_2_8@@UAEXABVDTDElementDecl@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::elementDecl(class xercesc_2_8::DTDElementDecl const &,bool)" (?elementDecl@AbstractDOMParser@xercesc_2_8@@UAEXABVDTDElementDecl@2@_N@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::doctypeWhitespace(unsigned short const * const,unsigned int)" (?doctypeWhitespace@AbstractDOMParser@xercesc_2_8@@UAEXQBGI@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::doctypePI(unsigned short const * const,unsigned short const * const)" (?doctypePI@AbstractDOMParser@xercesc_2_8@@UAEXQBG0@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::doctypeDecl(class xercesc_2_8::DTDElementDecl const &,unsigned short const * const,unsigned short const * const,bool,bool)" (?doctypeDecl@AbstractDOMParser@xercesc_2_8@@UAEXABVDTDElementDecl@2@QBG1_N2@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::doctypeComment(unsigned short const * const)" (?doctypeComment@AbstractDOMParser@xercesc_2_8@@UAEXQBG@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::attDef(class xercesc_2_8::DTDElementDecl const &,class xercesc_2_8::DTDAttDef const &,bool)" (?attDef@AbstractDOMParser@xercesc_2_8@@UAEXABVDTDElementDecl@2@ABVDTDAttDef@2@_N@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::XercesDOMParser::startInputSource(class xercesc_2_8::InputSource const &)" (?startInputSource@XercesDOMParser@xercesc_2_8@@UAEXABVInputSource@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual class xercesc_2_8::InputSource * __thiscall xercesc_2_8::XercesDOMParser::resolveEntity(unsigned short const * const,unsigned short const * const,unsigned short const * const)" (?resolveEntity@XercesDOMParser@xercesc_2_8@@UAEPAVInputSource@2@QBG00@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual class xercesc_2_8::InputSource * __thiscall xercesc_2_8::XercesDOMParser::resolveEntity(class xercesc_2_8::XMLResourceIdentifier *)" (?resolveEntity@XercesDOMParser@xercesc_2_8@@UAEPAVInputSource@2@PAVXMLResourceIdentifier@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::XercesDOMParser::resetEntities(void)" (?resetEntities@XercesDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual bool __thiscall xercesc_2_8::XercesDOMParser::expandSystemId(unsigned short const * const,class xercesc_2_8::XMLBuffer &)" (?expandSystemId@XercesDOMParser@xercesc_2_8@@UAE_NQBGAAVXMLBuffer@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::XercesDOMParser::endInputSource(class xercesc_2_8::InputSource const &)" (?endInputSource@XercesDOMParser@xercesc_2_8@@UAEXABVInputSource@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::XercesDOMParser::resetErrors(void)" (?resetErrors@XercesDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::XercesDOMParser::error(unsigned int,unsigned short const * const,enum xercesc_2_8::XMLErrorReporter::ErrTypes,unsigned short const * const,unsigned short const * const,unsigned short const * const,long,long)" (?error@XercesDOMParser@xercesc_2_8@@UAEXIQBGW4ErrTypes@XMLErrorReporter@2@000JJ@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "protected: virtual class xercesc_2_8::DOMElement * __thiscall xercesc_2_8::AbstractDOMParser::createElementNSNode(unsigned short const *,unsigned short const *)" (?createElementNSNode@AbstractDOMParser@xercesc_2_8@@MAEPAVDOMElement@2@PBG0@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::setPSVIHandler(class xercesc_2_8::PSVIHandler * const)" (?setPSVIHandler@AbstractDOMParser@xercesc_2_8@@UAEXQAVPSVIHandler@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::elementTypeInfo(unsigned short const * const,unsigned short const * const)" (?elementTypeInfo@AbstractDOMParser@xercesc_2_8@@UAEXQBG0@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::XMLDecl(unsigned short const * const,unsigned short const * const,unsigned short const * const,unsigned short const * const)" (?XMLDecl@AbstractDOMParser@xercesc_2_8@@UAEXQBG000@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::startEntityReference(class xercesc_2_8::XMLEntityDecl const &)" (?startEntityReference@AbstractDOMParser@xercesc_2_8@@UAEXABVXMLEntityDecl@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::startElement(class xercesc_2_8::XMLElementDecl const &,unsigned int,unsigned short const * const,class xercesc_2_8::RefVectorOf<class xercesc_2_8::XMLAttr> const &,unsigned int,bool,bool)" (?startElement@AbstractDOMParser@xercesc_2_8@@UAEXABVXMLElementDecl@2@IQBGABV?$RefVectorOf@VXMLAttr@xercesc_2_8@@@2@I_N3@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::startDocument(void)" (?startDocument@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::resetDocument(void)" (?resetDocument@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::ignorableWhitespace(unsigned short const * const,unsigned int,bool)" (?ignorableWhitespace@AbstractDOMParser@xercesc_2_8@@UAEXQBGI_N@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::endEntityReference(class xercesc_2_8::XMLEntityDecl const &)" (?endEntityReference@AbstractDOMParser@xercesc_2_8@@UAEXABVXMLEntityDecl@2@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::endElement(class xercesc_2_8::XMLElementDecl const &,unsigned int,bool,unsigned short const * const)" (?endElement@AbstractDOMParser@xercesc_2_8@@UAEXABVXMLElementDecl@2@I_NQBG@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::endDocument(void)" (?endDocument@AbstractDOMParser@xercesc_2_8@@UAEXXZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::docPI(unsigned short const * const,unsigned short const * const)" (?docPI@AbstractDOMParser@xercesc_2_8@@UAEXQBG0@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::docComment(unsigned short const * const)" (?docComment@AbstractDOMParser@xercesc_2_8@@UAEXQBG@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "public: virtual void __thiscall xercesc_2_8::AbstractDOMParser::docCharacters(unsigned short const * const,unsigned int,bool)" (?docCharacters@AbstractDOMParser@xercesc_2_8@@UAEXQBGI_N@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static void __cdecl xercesc_2_8::XMemory::operator delete(void *)" (__imp_??3XMemory@xercesc_2_8@@SAXPAX@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: __thiscall xercesc_2_8::XercesDOMParser::XercesDOMParser(class xercesc_2_8::XMLValidator * const,class xercesc_2_8::MemoryManager * const,class xercesc_2_8::XMLGrammarPool * const)" (__imp_??0XercesDOMParser@xercesc_2_8@@QAE@QAVXMLValidator@1@QAVMemoryManager@1@QAVXMLGrammarPool@1@@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static class xercesc_2_8::MemoryManager * xercesc_2_8::XMLPlatformUtils::fgMemoryManager" (__imp_?fgMemoryManager@XMLPlatformUtils@xercesc_2_8@@2PAVMemoryManager@2@A)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static void * __cdecl xercesc_2_8::XMemory::operator new(unsigned int)" (__imp_??2XMemory@xercesc_2_8@@SAPAXI@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static void __cdecl xercesc_2_8::XMLPlatformUtils::Initialize(char const * const,char const * const,class xercesc_2_8::PanicHandler * const,class xercesc_2_8::MemoryManager * const,bool)" (__imp_?Initialize@XMLPlatformUtils@xercesc_2_8@@SAXQBD0QAVPanicHandler@2@QAVMemoryManager@2@_N@Z)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: static char const * const xercesc_2_8::XMLUni::fgXercescDefaultLocale" (__imp_?fgXercescDefaultLocale@XMLUni@xercesc_2_8@@2QBDB)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: virtual __thiscall xercesc_2_8::XercesDOMParser::~XercesDOMParser(void)" (__imp_??1XercesDOMParser@xercesc_2_8@@UAE@XZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: class xercesc_2_8::DOMDocument * __thiscall xercesc_2_8::AbstractDOMParser::getDocument(void)" (__imp_?getDocument@AbstractDOMParser@xercesc_2_8@@QAEPAVDOMDocument@2@XZ)
-ToolAutoRespond.obj : error LNK2001: unresolved external symbol "__declspec(dllimport) public: void __thiscall xercesc_2_8::AbstractDOMParser::parse(char const * const)" (__imp_?parse@AbstractDOMParser@xercesc_2_8@@QAEXQBD@Z)
-../mod_responder.dll : fatal error LNK1120: 51 unresolved externals
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_responder.dll - 52 error(s), 0 warning(s)
+mod_responder.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

@@ -11,6 +11,7 @@
 #include "ConfigData.h"
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
+#include "BtnST.h"
 
 class CMod_creatureinfoApp;
 
@@ -40,7 +41,6 @@ public:
 	CEdit	m_rangeZ;
 	CEdit	m_rangeXY;
 	CButton	m_collectStats;
-	CButton	m_knownInfo;
 	CButton	m_addRequest;
 	CButton	m_self;
 	CButton	m_player;
@@ -53,7 +53,10 @@ public:
 	CEdit	m_player1;
 	CEdit	m_monster2;
 	CEdit	m_monster1;
-	CButton	m_enable;
+	CButtonST	m_knownInfo;
+	CButtonST	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_NameChanger;
 	//}}AFX_DATA
 
 

@@ -64,7 +64,7 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 553, 390
+IDD_CONFIG DIALOGEX 0, 0, 553, 390
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: cave bot"
 FONT 8, "MS Sans Serif"
@@ -77,17 +77,14 @@ BEGIN
     GROUPBOX        "Monster Attacking",IDC_FRAME_MONSTER_ATTACKING,7,5,268,
                     230
     GROUPBOX        "Corpse Looting",IDC_FRAME_CORPSE_LOOTING,281,7,265,66
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,251,369,50,
-                    14
-    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX |
+    PUSHBUTTON      "OK",IDOK,251,369,50,14
+    CONTROL         "Enable cavebot",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,7,352,539,14
     EDITTEXT        IDC_TOOL_AUTOATTACK_MONSTER,17,50,98,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_MONSTERLIST,157,20,81,43,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,125,49,19,14
-    CONTROL         "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,125,20,19,14
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_MONSTER,125,49,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_MONSTER,125,20,19,14
     LTEXT           "Monsters to attack:",IDC_STATIC,157,13,80,8
     CONTROL         "Auto follow mode",IDC_TOOL_AUTOATTACK_AUTOFOLLOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,17,134,69,10
@@ -100,16 +97,14 @@ BEGIN
     LISTBOX         IDC_TOOL_AUTOATTACK_WAYPOINTLIST,157,254,108,61,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Waypoints:",IDC_STATIC,157,246,115,8
-    CONTROL         ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,125,283,19,14
-    CONTROL         "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,125,254,19,14
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,125,283,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,125,254,19,14
     CONTROL         "Loot food",IDC_TOOL_AUTOATTACK_AUTOLOOTFOOD,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,289,34,46,10
     CONTROL         "Loot GP",IDC_TOOL_AUTOATTACK_AUTOLOOTGP,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,351,34,42,10
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_LOOT,291,
-                    62,120,8
+                    61,120,8
     COMBOBOX        IDC_TOOL_AUTOATTACK_MODE,69,208,57,46,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     LTEXT           "Attack mode:",IDC_STATIC,17,208,45,12,SS_CENTERIMAGE
@@ -137,9 +132,9 @@ BEGIN
     CONTROL         "Loot in bags",IDC_TOOL_AUTOATTACK_LOOTINBAGS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,289,48,55,10
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_WALKER,17,
-                    337,168,8
+                    336,157,8
     LTEXT           "State: not running",IDC_TOOL_AUTOATTACK_STATE_ATTACK,17,
-                    224,247,8
+                    223,247,8
     LTEXT           "Consider monsters in range:",IDC_STATIC,147,191,88,14,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_ATTACK_RANGE,242,191,24,14,ES_AUTOHSCROLL
@@ -170,10 +165,8 @@ BEGIN
     EDITTEXT        IDC_DEPOT_WHEN,289,134,40,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_DEPOT_ITEMLIST,289,104,89,184,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         ">>>",IDC_DEPOT_ENTRYADD,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,387,134,19,14
-    CONTROL         "<<<",IDC_DEPOT_ENTRYREMOVE,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,387,102,19,14
+    PUSHBUTTON      ">>>",IDC_DEPOT_ENTRYADD,387,134,19,14
+    PUSHBUTTON      "<<<",IDC_DEPOT_ENTRYREMOVE,387,102,19,14
     LISTBOX         IDC_DEPOT_ENTRYLIST,415,104,121,44,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_HSCROLL | 
                     WS_TABSTOP
@@ -200,7 +193,7 @@ BEGIN
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,448,210,87,10
     CONTROL         "Activate training mode",IDC_TRAINING_ACTIVATE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,180,86,10
-    LTEXT           "State: not running",IDC_TRAINING_STATE,289,236,152,8
+    LTEXT           "State: not running",IDC_TRAINING_STATE,289,235,152,8
     CONTROL         "Drop items instead of depositing",
                     IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,289,90,116,10
@@ -214,24 +207,19 @@ BEGIN
     EDITTEXT        IDC_TOOL_AUTOATTACK_IGNORE,18,102,98,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_IGNORELIST,157,73,108,43,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         ">>>",IDC_TOOL_AUTOATTACK_ADD_IGNORE,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,125,102,19,14
-    CONTROL         "<<<",IDC_TOOL_AUTOATTACK_REMOVE_IGNORE,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,125,73,19,14
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_IGNORE,125,102,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_IGNORE,125,73,19,14
     LTEXT           "Monsters to ignore:",IDC_STATIC,157,66,106,8
     CONTROL         "Backattack alien with runes",IDC_BACKATTACK_RUNES,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,17,164,103,10
-    CONTROL         "Load from minimap",IDC_LOAD_FROM_MINIMAP,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,17,254,92,14
+    PUSHBUTTON      "Load from minimap",IDC_LOAD_FROM_MINIMAP,17,254,92,14
     CONTROL         "Share force attack",IDC_SHARE_ALIEN_BACKATTACK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,166,164,76,10
     LTEXT           "Go to depot when cap below:",IDC_STATIC,416,89,94,11,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_DEPOT_CAP,513,86,23,14,ES_AUTOHSCROLL
-    CONTROL         "Down",IDC_MONSTER_ATTACK_DOWN,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,248,49,22,14
-    CONTROL         "Up",IDC_MONSTER_ATTACK_UP,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,248,20,22,14
+    PUSHBUTTON      "Down",IDC_MONSTER_ATTACK_DOWN,248,49,22,14
+    PUSHBUTTON      "Up",IDC_MONSTER_ATTACK_UP,248,20,22,14
     LTEXT           "New monsters for attack are selected in the order top-first. Creatures out of the list always have priority.",
                     IDC_STATIC,17,15,106,32
     CONTROL         "Don't attack players",IDC_DONT_ATTACK_PLAYERS,"Button",
@@ -241,7 +229,7 @@ BEGIN
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Enable PauseBreak key as pause hotkey(or %ta pause)",
                     IDC_PAUSING_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
-                    289,323,191,10
+                    289,323,191,10,WS_EX_TRANSPARENT
     CONTROL         "Use Right Hand",IDC_TRAINING_WEAPON_HAND,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,448,220,67,10
     CONTROL         "Auto Research Map (Test Version)",IDC_AUTORESEARCH,

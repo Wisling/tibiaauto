@@ -81,34 +81,35 @@ END
 // Dialog
 //
 
-IDD_TOOL_AUTORESPOND DIALOG DISCARDABLE  0, 0, 535, 399
+IDD_TOOL_AUTORESPOND DIALOG DISCARDABLE  0, 0, 534, 383
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: auto responder"
+CAPTION "Module: Auto Responder"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,241,378,50,14
+    GROUPBOX        "Responder Logs",IDC_FRAME_RESPONDER_LOGS,7,7,520,333
+    DEFPUSHBUTTON   "OK",IDOK,241,362,50,14
     CONTROL         "List1",IDC_AUTORESPOND_MSGHISTORY,"SysListView32",
-                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,
-                    139,362,105
+                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,15,
+                    136,354,105
     CONTROL         "List1",IDC_AUTORESPOND_ACTIONLOG,"SysListView32",
-                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,
-                    257,362,62
-    LTEXT           "Message log",IDC_STATIC,7,127,336,8
-    LTEXT           "Debug log",IDC_STATIC,7,249,47,8
+                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,14,
+                    255,354,62
+    LTEXT           "Message Log",IDC_STATIC,15,125,336,8
+    LTEXT           "Debug Log",IDC_STATIC,15,244,47,8
     CONTROL         "Enable auto responder",IDC_AUTORESPOND_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,358,521,15
-    EDITTEXT        IDC_AUTORESPOND_SCRIPT,7,7,521,113,ES_MULTILINE | 
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,344,520,15
+    EDITTEXT        IDC_AUTORESPOND_SCRIPT,15,17,504,104,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
                     WS_VSCROLL | WS_HSCROLL
-    PUSHBUTTON      "Clear log",IDC_AUTORESPOND_CLEAR,319,328,50,14
+    PUSHBUTTON      "Clear log",IDC_AUTORESPOND_CLEAR,319,320,50,14
     CONTROL         "List1",IDC_AUTORESPOND_THREADSTATUS,"SysListView32",
                     LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,376,
-                    139,152,180
-    LTEXT           "Threads status",IDC_STATIC,376,131,152,8
-    CONTROL         "Enable debug",IDC_AUTORESPOND_ENABLEDEBUG,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,325,60,10
-    CONTROL         "Local echo",IDC_AUTORESPOND_LOCALECHO,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,7,340,51,10
+                    136,143,181
+    LTEXT           "Threads Status",IDC_STATIC,376,125,151,8
+    CONTROL         "Enable Debug",IDC_AUTORESPOND_ENABLEDEBUG,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,325,61,10
+    CONTROL         "Local Echo",IDC_AUTORESPOND_LOCALECHO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,85,325,52,10
 END
 
 
@@ -123,14 +124,13 @@ BEGIN
     IDD_TOOL_AUTORESPOND, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 528
+        RIGHTMARGIN, 527
         VERTGUIDE, 369
         VERTGUIDE, 376
         TOPMARGIN, 7
-        BOTTOMMARGIN, 392
-        HORZGUIDE, 139
-        HORZGUIDE, 319
-        HORZGUIDE, 373
+        BOTTOMMARGIN, 376
+        HORZGUIDE, 133
+        HORZGUIDE, 314
     END
 END
 #endif    // APSTUDIO_INVOKED

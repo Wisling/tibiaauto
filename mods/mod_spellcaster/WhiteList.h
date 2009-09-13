@@ -6,11 +6,12 @@
 #endif // _MSC_VER > 1000
 // WhiteList.h : header file
 //
-
+#include "MyDialog.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // CWhiteList dialog
 
-class CWhiteList : public CDialog
+class CWhiteList : public MyDialog
 {
 // Construction
 public:
@@ -20,10 +21,11 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CWhiteList)
 	enum { IDD = IDD_WHITELIST };
-	CEdit	m_name;
 	CListBox	m_list;
-	CButton	m_delete;
-	CButton	m_add;
+	CButtonST	m_OK;
+	CEdit	m_name;
+	CButtonST	m_delete;
+	CButtonST	m_add;
 	//}}AFX_DATA
 
 

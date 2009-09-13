@@ -16,7 +16,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CWhiteList::CWhiteList(char whiteListParam[100][32], CWnd* pParent /*=NULL*/)
-	: CDialog(CWhiteList::IDD, pParent)
+	: MyDialog(CWhiteList::IDD, pParent)
 {
 	whiteList = (char*)whiteListParam;
 	//{{AFX_DATA_INIT(CWhiteList)
@@ -29,6 +29,7 @@ void CWhiteList::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CWhiteList)
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_WHITELIST_NAME, m_name);
 	DDX_Control(pDX, IDC_WHITELIST_LIST, m_list);
 	DDX_Control(pDX, IDC_WHITELIST_DELETE, m_delete);
@@ -39,6 +40,8 @@ void CWhiteList::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CWhiteList, CDialog)
 	//{{AFX_MSG_MAP(CWhiteList)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_WHITELIST_ADD, OnWhitelistAdd)
 	ON_BN_CLICKED(IDC_WHITELIST_DELETE, OnWhitelistDelete)
 	//}}AFX_MSG_MAP
@@ -97,6 +100,9 @@ void CWhiteList::Mem2List()
 BOOL CWhiteList::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_delete);
+	skin.SetButtonSkin(	m_add);
 	
 	Mem2List();
 	

@@ -72,7 +72,7 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 
 
 CToolAutoRespond::CToolAutoRespond(CWnd* pParent /*=NULL*/)
-	: CDialog(CToolAutoRespond::IDD, pParent)
+	: MyDialog(CToolAutoRespond::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CToolAutoRespond)
 	//}}AFX_DATA_INIT
@@ -92,6 +92,9 @@ void CToolAutoRespond::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CToolAutoRespond)
+	DDX_Control(pDX, IDC_AUTORESPOND_CLEAR, m_ClearLogs);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_RESPONDER_LOGS, m_ResponderLogsFrame);
 	DDX_Control(pDX, IDC_AUTORESPOND_LOCALECHO, m_localEcho);
 	DDX_Control(pDX, IDC_AUTORESPOND_ENABLEDEBUG, m_debug);
 	DDX_Control(pDX, IDC_AUTORESPOND_THREADSTATUS, m_threadStatus);
@@ -105,6 +108,8 @@ void CToolAutoRespond::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CToolAutoRespond, CDialog)
 	//{{AFX_MSG_MAP(CToolAutoRespond)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_WM_TIMER()	
 	ON_BN_CLICKED(IDC_AUTORESPOND_ENABLE, OnAutorespondEnable)
@@ -233,7 +238,9 @@ void CToolAutoRespond::readInfo()
 BOOL CToolAutoRespond::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_ClearLogs);
+	skin.SetButtonSkin(	m_OK);
 	
 	m_msgHistory.InsertColumn(0,"time",LVCFMT_LEFT,50);
 	m_msgHistory.InsertColumn(1,"channel",LVCFMT_LEFT,70);

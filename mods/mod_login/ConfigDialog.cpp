@@ -22,7 +22,7 @@ CRITICAL_SECTION QueueCriticalSection;
 std::queue<char *> queue;
 
 CConfigDialog::CConfigDialog(CMod_loginApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -34,6 +34,10 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_LOGIN_SETTINGS, m_LoginSettingsFrame);
+	DDX_Control(pDX, IDC_FRAME_DEBUG_LOG, m_DebugLogFrame);
+	DDX_Control(pDX, IDC_FRAME_BACKPACK_CONTROL, m_BackpackControlFrame);
 	DDX_Control(pDX, IDC_OPEN_CONTAINER8, m_openCont8);
 	DDX_Control(pDX, IDC_OPEN_CONTAINER7, m_openCont7);
 	DDX_Control(pDX, IDC_OPEN_CONTAINER6, m_openCont6);
@@ -50,13 +54,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ACCOUNT_NUMBER, m_accountNumber);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_LOGIN_DELAY, m_loginDelay);
-
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -225,6 +230,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_OK);
 	
 	m_debug.InsertColumn(0,"time",LVCFMT_LEFT,65);
 	m_debug.InsertColumn(1,"message",LVCFMT_LEFT,240);

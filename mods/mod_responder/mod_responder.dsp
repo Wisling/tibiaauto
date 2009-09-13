@@ -101,11 +101,19 @@ SOURCE=.\AutoResponderParserContext.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\ConfigData.cpp
 # End Source File
 # Begin Source File
 
 SOURCE=.\exports.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\GroupBoxEx.cpp
 # End Source File
 # Begin Source File
 
@@ -118,6 +126,10 @@ SOURCE=.\mod_responder.def
 # Begin Source File
 
 SOURCE=.\mod_responder.rc
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 

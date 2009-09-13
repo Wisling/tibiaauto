@@ -9,13 +9,16 @@
 
 #include "mod_uh.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 class CMod_uhApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 { 
 // Construction
 public:
@@ -29,11 +32,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButton	m_memberRemove;
-	CButton	m_memberAdd;
+	CGroupBoxEx	m_SelfHealingFrame;
+	CGroupBoxEx	m_GroupHealingFrame;
 	CListBox	m_memberList;
 	CEdit	m_member;
-	CButton	m_enable;
 	CComboBox	m_grpRunetype;
 	CEdit	m_selfBorderline;
 	CEdit	m_sleepAfter;
@@ -42,6 +44,10 @@ public:
 	CEdit	m_grpBorderline;
 	CButton	m_grpFallback;
 	CButton	m_selfFallback;
+	CButtonST	m_memberRemove;
+	CButtonST	m_memberAdd;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

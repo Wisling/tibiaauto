@@ -9,13 +9,16 @@
 
 #include "mod_sorter.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_sorterApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -29,12 +32,21 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CListBox	m_Bag[8];
-	CButton		m_BagIn[8];
-	CButton		m_BagOut[8];
+	CGroupBoxEx	m_Bag8Frame;
+	CGroupBoxEx	m_Bag7Frame;
+	CGroupBoxEx	m_Bag6Frame;
+	CGroupBoxEx	m_Bag5Frame;
+	CGroupBoxEx	m_Bag4Frame;
+	CGroupBoxEx	m_Bag3Frame;
+	CGroupBoxEx	m_Bag2Frame;
+	CGroupBoxEx	m_Bag1Frame;
 	CComboBox	m_sortItemList;
-	CButton		m_enable;
+	CButtonST		m_enable;
+	CButtonST	m_OK;
 	//}}AFX_DATA
+	CButtonST		m_BagIn[8];
+	CButtonST		m_BagOut[8];
+	CListBox	m_Bag[8];
 
 	void reloadSortItems();
 // Overrides

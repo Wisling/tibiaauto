@@ -18,7 +18,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CMapConfig::CMapConfig(CTibiaTile *memTilesForConfig[10], int x, int y, CWnd* pParent /*=NULL*/)
-: CDialog(CMapConfig::IDD, pParent)
+: MyDialog(CMapConfig::IDD, pParent)
 {
 	xMem = x;
 	yMem = y;
@@ -33,6 +33,11 @@ void CMapConfig::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CMapConfig)
+	DDX_Control(pDX, IDC_FRAME_USE, m_UseFrame);
+	DDX_Control(pDX, IDC_FRAME_TILE_TYPE, m_TileTypeFrame);
+	DDX_Control(pDX, IDC_FRAME_MOVEMENT, m_MovementFrame);
+	DDX_Control(pDX, IDC_FRAME_CHARACTERISTICS, m_CharacteristicsFrame);
+	DDX_Control(pDX, IDC_COMMIT, m_Commit);
 	DDX_Control(pDX, IDC_TILE_ID, m_TileId);
 	DDX_Control(pDX, IDC_SPEED, m_Speed);
 	DDX_Control(pDX, IDC_ALWAYS_ON_TOP, m_AlwaysOnTop);
@@ -50,13 +55,14 @@ void CMapConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_STACKABLE, m_Stackable);
 	DDX_Control(pDX, IDC_PREVIOUS_CONFIG_TILE, m_Previous);
 	DDX_Control(pDX, IDC_NEXT_CONFIG_TILE, m_Next);
-
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CMapConfig, CDialog)
 	//{{AFX_MSG_MAP(CMapConfig)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_BN_CLICKED(IDC_COMMIT, OnCommit)
 	ON_BN_CLICKED(IDC_PREVIOUS_CONFIG_TILE, OnPreviousTile)
 	ON_BN_CLICKED(IDC_NEXT_CONFIG_TILE, OnNextTile)
@@ -159,6 +165,9 @@ void CMapConfig::saveTile() {
 
 BOOL CMapConfig::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin( m_Previous);
+	skin.SetButtonSkin(	m_Commit);
+	skin.SetButtonSkin( m_Next);
 	
 	Mem2Config();
 	

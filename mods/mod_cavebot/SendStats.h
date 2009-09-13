@@ -7,6 +7,7 @@
 // OptionsDialog.h : header file
 //
 #include "MyDialog.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // CSendStats dialog
 
@@ -19,9 +20,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CSendStats)
 	enum { IDD = IDD_SENDSTATS };
-	CButton	m_send2;
-	CButton	m_send1;
-	CButton	m_ok;
+	CButtonST	m_send2;
+	CButtonST	m_send1;
+	CButtonST	m_ok;
 	//}}AFX_DATA
 
 

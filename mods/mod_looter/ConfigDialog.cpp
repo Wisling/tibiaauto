@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_looterApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -29,6 +29,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_LOOT_OPTIONS, m_LootOptionsFrame);
+	DDX_Control(pDX, IDC_FRAME_CONTAINER_SETUP, m_ContainerSetupFrame);
 	DDX_Control(pDX, IDC_CONTAINER_STATUS10, m_status10);
 	DDX_Control(pDX, IDC_CONTAINER_MODE_10, m_mode10);
 	DDX_Control(pDX, IDC_LOOT_WORMS, m_lootWorms);
@@ -61,6 +64,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -196,7 +201,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_OK);
 
 	refreshContainerStatus();
 
@@ -272,4 +278,10 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 void CConfigDialog::activateEnableButton(int enable)
 {
 	m_enable.SetCheck(enable);
+}
+
+void CConfigDialog::setButtonSkins()
+{
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_OK);
 }

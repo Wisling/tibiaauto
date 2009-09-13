@@ -6,11 +6,13 @@
 #endif // _MSC_VER > 1000
 // ToolContainerContent.h : header file
 //
-
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // CToolContainerContent dialog
 
-class CToolContainerContent : public CDialog
+class CToolContainerContent : public MyDialog
 {
 private:
 	int m_containerNr;
@@ -21,6 +23,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolContainerContent)
 	enum { IDD = IDD_TOOL_CONTAINERCONTENT };
+	CButtonST	m_OK;
+	CGroupBoxEx	m_BackpackContainerFrame;
 	CListCtrl	m_list;
 	//}}AFX_DATA
 

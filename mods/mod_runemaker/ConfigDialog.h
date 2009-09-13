@@ -10,13 +10,16 @@
 #include "mod_runemaker.h"
 #include "ConfigData.h"
 #include "TibiaContainer.h"
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 class CMod_runemakerApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -30,9 +33,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_StatisticsFrame;
+	CGroupBoxEx	m_RuneOptionsFrame;
+	CGroupBoxEx	m_GeneralOptionsFrame;
+	CGroupBoxEx	m_BackpackViewerFrame;
 	CButton	m_useBackpack;
 	CButton	m_maxUse;
 	CButton	m_premium;
+	CButton	m_randomCast;
 	CEdit	m_manaLimit;
 	CEdit	m_mana;
 	CListCtrl	m_safe;
@@ -45,12 +53,12 @@ public:
 	CStatic	m_infoSoulpointsTime;
 	CStatic	m_infoFood;
 	CStatic	m_infoBlanks;
-	CButton m_addSpell;
-	CButton m_deleteSpell;
-	CButton m_loadSpell;
-	CButton m_makeNow;
-	CButton	m_enable;
-	CButton	m_randomCast;
+	CButtonST m_addSpell;
+	CButtonST m_deleteSpell;
+	CButtonST m_loadSpell;
+	CButtonST m_makeNow;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
 
 

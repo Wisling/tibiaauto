@@ -55,6 +55,16 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT, m_RemoveWaypoint);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_MONSTER, m_RemoveMonster);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, m_RemoveIgnore);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_WAYPOINT, m_AddWaypoint);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_MONSTER, m_AddMonster);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_IGNORE, m_AddIgnore);
+	DDX_Control(pDX, IDC_LOAD_FROM_MINIMAP, m_LoadMinimap);
+	DDX_Control(pDX, IDC_MONSTER_ATTACK_UP, m_MonsterDown);
+	DDX_Control(pDX, IDC_MONSTER_ATTACK_DOWN, m_MonsterUp);
 	DDX_Control(pDX, IDC_FRAME_WAYPOINT_WALKER, m_WaypointWalker);
 	DDX_Control(pDX, IDC_FRAME_TRAINING, m_Training);
 	DDX_Control(pDX, IDC_FRAME_MONSTER_ATTACKING, m_MonsterAttacking);
@@ -725,6 +735,21 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	//skin.SetButtonSkin(	m_pausingEnable);
+	skin.SetButtonSkin(	m_autoResearch);
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_depotEntryRemove);
+	skin.SetButtonSkin(	m_depotEntryAdd);
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_RemoveWaypoint);
+	skin.SetButtonSkin(	m_RemoveMonster);
+	skin.SetButtonSkin(	m_RemoveIgnore);
+	skin.SetButtonSkin(	m_AddWaypoint);
+	skin.SetButtonSkin(	m_AddMonster);
+	skin.SetButtonSkin(	m_AddIgnore);
+	skin.SetButtonSkin(	m_LoadMinimap);
+	skin.SetButtonSkin(	m_MonsterDown);
+	skin.SetButtonSkin(	m_MonsterUp);
 
 	// initialise comboboxes, etc.
 	reloadDepotItems();

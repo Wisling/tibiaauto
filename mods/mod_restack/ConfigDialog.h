@@ -9,13 +9,16 @@
 
 #include "mod_restack.h"
 #include "ConfigData.h"
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 class CMod_restackApp;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public: 
@@ -29,6 +32,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_ThrowablesFrame;
+	CGroupBoxEx	m_PickupAreaFrame;
+	CGroupBoxEx	m_OptionsFrame;
+	CGroupBoxEx	m_AmmunitionFrame;
 	CEdit	m_capLimit;
 	CButton	m_pickupCC;
 	CEdit	m_periodTo;
@@ -36,7 +43,6 @@ public:
 	CButton	m_pickupToHand;
 	CButton	m_restackToRight;
 	CButton	m_moveCovering;
-	CButton	m_enable;		
 	CButton	m_pickupUR;
 	CButton	m_pickupUL;
 	CButton	m_pickupUC;
@@ -52,6 +58,8 @@ public:
 	CEdit	m_ammoTo;
 	CEdit	m_ammoAt;
 	CComboBox	m_ammoType;
+	CButtonST	m_enable;		
+	CButtonST	m_OK;
 	//}}AFX_DATA
 
 

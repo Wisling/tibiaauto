@@ -1718,3 +1718,15 @@ char *CMod_creatureinfoApp::getConfigParamName(int nr)
 		return NULL;
 	}
 }
+
+void CMod_creatureinfoApp::getNewSkin(CSkin newSkin) {
+	skin = newSkin;
+	skin.SetButtonSkin(	m_configDialog->m_knownInfo);
+	skin.SetButtonSkin(	m_configDialog->m_enable);
+	skin.SetButtonSkin(	m_configDialog->m_OK);
+	skin.SetButtonSkin(	m_configDialog->m_NameChanger);
+
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	if (m_configDialog)
+		m_configDialog->Invalidate();
+}

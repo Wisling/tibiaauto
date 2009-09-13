@@ -26,7 +26,7 @@ int initalizeSellers();
 
 
 CConfigDialog::CConfigDialog(CMod_SellerApp *app,CWnd* pParent /*=NULL*/)
-: CDialog(CConfigDialog::IDD, pParent) {
+: MyDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
@@ -36,8 +36,22 @@ CConfigDialog::CConfigDialog(CMod_SellerApp *app,CWnd* pParent /*=NULL*/)
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_FRAME_BUYSELL_CONTROLS, m_BuySellControlsFrame);
+	DDX_Control(pDX, IDC_FRAME_BUY_CONTROLS, m_BuyControlsFrame);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_FRAME_SELLER4, m_Seller4Frame);
+	DDX_Control(pDX, IDC_FRAME_SELLER3, m_Seller3Frame);
+	DDX_Control(pDX, IDC_FRAME_SELLER2, m_Seller2Frame);
+	DDX_Control(pDX, IDC_FRAME_SELLER1, m_Seller1Frame);
 	DDX_Control(pDX, IDC_SELLER_ITEM_LIST, m_tradeItemList);
+	DDX_Control(pDX, IDC_SELLER_RETURN_ON_CAP, m_sellOnCap);
+	DDX_Control(pDX, IDC_SELLER_RETURN_ON_NO_SPACE, m_sellOnSpace);
+	DDX_Control(pDX, IDC_SELLER_CAP_LIMIT, m_sellWhen);
+	DDX_Control(pDX, IDC_SELLER_QUANTITY, m_quantityBuySell);
+	DDX_Control(pDX, IDC_SELLER_PRICE, m_buyPrice);
+	DDX_Control(pDX, IDC_SELLER_TRIGGER_QUANTITY, m_buyTriggerQuantity);
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SELLER_SELLER1, m_Seller[0]);
 	DDX_Control(pDX, IDC_SELLER_SELLER2, m_Seller[1]);
 	DDX_Control(pDX, IDC_SELLER_SELLER3, m_Seller[2]);
@@ -66,18 +80,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_BUY2_REMOVE, m_BuyBoxRemove[1]);
 	DDX_Control(pDX, IDC_SELLER_BUY3_REMOVE, m_BuyBoxRemove[2]);
 	DDX_Control(pDX, IDC_SELLER_BUY4_REMOVE, m_BuyBoxRemove[3]);
-	DDX_Control(pDX, IDC_SELLER_QUANTITY, m_quantityBuySell);
-	DDX_Control(pDX, IDC_SELLER_TRIGGER_QUANTITY, m_buyTriggerQuantity);
-	DDX_Control(pDX, IDC_SELLER_PRICE, m_buyPrice);
-	DDX_Control(pDX, IDC_SELLER_RETURN_ON_CAP, m_sellOnCap);
-	DDX_Control(pDX, IDC_SELLER_RETURN_ON_NO_SPACE, m_sellOnSpace);
-	DDX_Control(pDX, IDC_SELLER_CAP_LIMIT, m_sellWhen);
-	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
 	ON_BN_CLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
@@ -256,6 +265,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 
 BOOL CConfigDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+	for (int loop = 0; loop < MAX_SELLERS; loop++) {
+		skin.SetButtonSkin( m_BuyBoxAdd[loop]);
+		skin.SetButtonSkin( m_BuyBoxRemove[loop]);
+		skin.SetButtonSkin( m_SellBoxAdd[loop]);
+		skin.SetButtonSkin( m_SellBoxRemove[loop]);
+	}
+
 	initalizeSellers();
 	SetTimer(1001,250,NULL);	
 	return TRUE;  // return TRUE unless you set the focus to a control

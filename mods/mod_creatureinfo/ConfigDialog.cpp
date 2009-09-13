@@ -31,6 +31,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_TOOLCREATURINFO_NAMECHANGER, m_NameChanger);
 	DDX_Control(pDX, IDC_FRAME_SELF_INFO, m_SelfInfoFrame);
 	DDX_Control(pDX, IDC_FRAME_CREATURE_DETECTION, m_CreatureDetectionFrame);
 	DDX_Control(pDX, IDC_FRAME_MONSTERS_INFO, m_MonstersInfoFrame);
@@ -61,7 +63,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
 	ON_WM_ERASEBKGND()
-	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
@@ -220,6 +221,10 @@ void CConfigDialog::activateEnableButton(int enable)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_knownInfo);
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_NameChanger);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

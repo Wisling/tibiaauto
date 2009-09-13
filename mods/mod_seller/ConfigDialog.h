@@ -9,7 +9,9 @@
 
 #include "mod_seller.h"
 #include "ConfigData.h"
-
+#include "MyDialog.h"
+#include "BtnST.h"
+#include "GroupBoxEx.h"
 
 struct seller{
 	char name[64];
@@ -23,7 +25,7 @@ class CMod_SellerApp;
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-class CConfigDialog : public CDialog
+class CConfigDialog : public MyDialog
 {
 // Construction
 public:
@@ -37,22 +39,29 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CGroupBoxEx	m_BuySellControlsFrame;
+	CGroupBoxEx	m_BuyControlsFrame;
+	CGroupBoxEx	m_Seller4Frame;
+	CGroupBoxEx	m_Seller3Frame;
+	CGroupBoxEx	m_Seller2Frame;
+	CGroupBoxEx	m_Seller1Frame;
 	CComboBox m_tradeItemList;
-	CComboBox m_Seller[MAX_SELLERS];
-	CListBox m_SellBox[MAX_SELLERS];
-	CListBox m_BuyBox[MAX_SELLERS];
-	CButton m_BuyBoxAdd[MAX_SELLERS];
-	CButton m_BuyBoxRemove[MAX_SELLERS];
-	CButton m_SellBoxAdd[MAX_SELLERS];
-	CButton m_SellBoxRemove[MAX_SELLERS];
 	CButton m_sellOnCap;
 	CButton m_sellOnSpace;
 	CEdit m_sellWhen;
 	CEdit m_quantityBuySell;
 	CEdit m_buyPrice;
 	CEdit m_buyTriggerQuantity;
-	CButton	m_enable;
+	CButtonST	m_OK;
+	CButtonST	m_enable;
 	//}}AFX_DATA
+	CButtonST m_BuyBoxAdd[MAX_SELLERS];
+	CButtonST m_BuyBoxRemove[MAX_SELLERS];
+	CButtonST m_SellBoxAdd[MAX_SELLERS];
+	CButtonST m_SellBoxRemove[MAX_SELLERS];
+	CComboBox m_Seller[MAX_SELLERS];
+	CListBox m_SellBox[MAX_SELLERS];
+	CListBox m_BuyBox[MAX_SELLERS];
 
 	void reloadSaleItems();
 // Overrides

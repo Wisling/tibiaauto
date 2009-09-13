@@ -20,7 +20,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_autogoApp *app,CWnd* pParent /*=NULL*/)
-	: CDialog(CConfigDialog::IDD, pParent)
+	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
@@ -33,6 +33,58 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_FRAME_TRIGGER_OPTIONS, m_TriggerOptionsFrame);
+	DDX_Control(pDX, IDC_AUTOGO_SOULPOINT_ABOVE, m_soulPointAbove);
+	DDX_Control(pDX, IDC_AUTOGO_STAMINA, m_stamina);
+	DDX_Control(pDX, IDC_AUTOGO_STAMINA_ABOVE, m_staminaAbove);
+	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_REACHED_RADIUS, m_runawayReachedRadius);
+	DDX_Control(pDX, IDC_AUTOGO_MANABELOW, m_manaBelow);
+	DDX_Control(pDX, IDC_AUTOGO_MANAABOVE, m_manaAbove);
+	DDX_Control(pDX, IDC_AUTOGO_HPABOVE, m_hpAbove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSOULPOINT_ABOVE, m_actionSoulpointAbove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSTAMINA, m_actionStamina);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSTAMINA_ABOVE, m_actionStaminaAbove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONRUNAWAY_REACHED, m_actionRunawayReached);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_SPACE, m_actionOutOfSpace);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_FOOD, m_actionOutOfFood);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_CUSTOM_ITEM, m_outOfCustomItem);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_CUSTOM, m_actionOutOfCustom);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONMANABELOW, m_actionManaBelow);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONMANAABOVE, m_actionManaAbove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONHPABOVE, m_actionHpAbove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_PLAYER, m_actionBattleListPlayer);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_MONSTER, m_actionBattleListMonster);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_LIST, m_actionBattleListList);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_GM, m_actionBattleListGm);
+	DDX_Control(pDX, IDC_AUTOGO_ACT_DIRECTION, m_actDirection);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONHPBELOW, m_actionHpBelow);
+	DDX_Control(pDX, IDC_AUTOGO_ACT_X, m_actX);
+	DDX_Control(pDX, IDC_AUTOGO_ACT_Z, m_actZ);
+	DDX_Control(pDX, IDC_AUTOGO_ACT_Y, m_actY);
+	DDX_Control(pDX, IDC_AUTOGO_SOULPOINT, m_soulPoint);
+	DDX_Control(pDX, IDC_AUTOGO_HPBELOW, m_hpBelow);
+	DDX_Control(pDX, IDC_AUTOGO_CAPACITY, m_capacity);
+	DDX_Control(pDX, IDC_AUTOGO_BLANK, m_blank);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSOULPOINT, m_actionSoulPoint);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSIGN, m_actionSign);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONSKULL, m_actionSkull);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONVIP, m_actionVIP);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONMOVE, m_actionMove);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONMESSAGE, m_actionMessage);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONHPLOSS, m_actionHpLoss);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONCAPACITY, m_actionCapacity);
+	DDX_Control(pDX, IDC_AUTOGO_ACTIONBLANK, m_actionBlank);
+	DDX_Control(pDX, IDC_AUTOGO_STATUS, m_status);
+	DDX_Control(pDX, IDC_AUTOGO_CUR_Z, m_curZ);
+	DDX_Control(pDX, IDC_AUTOGO_CUR_Y, m_curY);
+	DDX_Control(pDX, IDC_AUTOGO_CUR_X, m_curX);
+	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Z, m_runawayZ);
+	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Y, m_runawayY);
+	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_X, m_runawayX);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_AUTOGO_TOSTART, m_SetStart);
+	DDX_Control(pDX, IDC_AUTOGO_TORUNAWAY, m_SetRunaway);
 	DDX_Control(pDX, IDC_MANABELOW_UNTIL_RECOVERY, m_manaBelowUntilRecovery);
 	DDX_Control(pDX, IDC_HPBELOW_UNTIL_RECOVERY, m_hpBelowUntilRecovery);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGEROUTOF, m_triggerOutOf);
@@ -52,51 +104,26 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDMANABELOW, m_soundManaBelow);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDMANAABOVE, m_soundManaAbove);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDHPABOVE, m_soundHpAbove);
-	DDX_Control(pDX, IDC_AUTOGO_SOULPOINT_ABOVE, m_soulPointAbove);
-	DDX_Control(pDX, IDC_AUTOGO_STAMINA, m_stamina);
-	DDX_Control(pDX, IDC_AUTOGO_STAMINA_ABOVE, m_staminaAbove);
-	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_REACHED_RADIUS, m_runawayReachedRadius);
 	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_REACHED, m_runawayReached);
 	DDX_Control(pDX, IDC_AUTOGO_OUTOFCUSTOM, m_outOfCustom);
 	DDX_Control(pDX, IDC_AUTOGO_MESSAGE_IGNORE_SPELLS, m_messageIgnoreSpells);
-	DDX_Control(pDX, IDC_AUTOGO_MANABELOW, m_manaBelow);
-	DDX_Control(pDX, IDC_AUTOGO_MANAABOVE, m_manaAbove);
-	DDX_Control(pDX, IDC_AUTOGO_HPABOVE, m_hpAbove);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONSOULPOINT_ABOVE, m_actionSoulpointAbove);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONSTAMINA, m_actionStamina);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONSTAMINA_ABOVE, m_actionStaminaAbove);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONRUNAWAY_REACHED, m_actionRunawayReached);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_SPACE, m_actionOutOfSpace);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_FOOD, m_actionOutOfFood);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_CUSTOM_ITEM, m_outOfCustomItem);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONOUTOF_CUSTOM, m_actionOutOfCustom);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONMANABELOW, m_actionManaBelow);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONMANAABOVE, m_actionManaAbove);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONHPABOVE, m_actionHpAbove);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDBATTLELIST_PLAYER, m_soundBattleListPlayer);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDBATTLELIST_MONSTER, m_soundBattleListMonster);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDBATTLELIST_LIST, m_soundBattleListList);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDBATTLELIST_GM, m_soundBattleListGm);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_PLAYER, m_actionBattleListPlayer);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_MONSTER, m_actionBattleListMonster);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_LIST, m_actionBattleListList);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONBATTLELIST_GM, m_actionBattleListGm);
 	DDX_Control(pDX, IDC_AUTOGO_BATTELIST, m_battleBattlelist);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEPARANOIAM, m_battleParanoiaM);
 	DDX_Control(pDX, IDC_AUTOGO_BATTLEANXIETY, m_battleAnxiety);
-	DDX_Control(pDX, IDC_AUTOGO_ACT_DIRECTION, m_actDirection);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDHPBELOW, m_soundHpBelow);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERHPBELOW, m_triggerHpBelow);
-	DDX_Control(pDX, IDC_AUTOGO_HPBELOW, m_hpBelow);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONHPBELOW, m_actionHpBelow);
 	DDX_Control(pDX, IDC_AUTOGO_OUTOFSPACE, m_outOfSpace);
-	DDX_Control(pDX, IDC_AUTOGO_ACT_X, m_actX);
-	DDX_Control(pDX, IDC_AUTOGO_ACT_Z, m_actZ);
-	DDX_Control(pDX, IDC_AUTOGO_ACT_Y, m_actY);
-	DDX_Control(pDX, IDC_AUTOGO_SOULPOINT, m_soulPoint);
 	DDX_Control(pDX, IDC_AUTOGO_SOUNDSIGN, m_soundSign);
+	DDX_Control(pDX, IDC_AUTOGO_SOUNDSKULL, m_soundSkull);
+	DDX_Control(pDX, IDC_AUTOGO_SOUNDVIP, m_soundVIP);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSOULPOINTS, m_triggerSoulPoint);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSIGN, m_triggerSign);
+	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSKULL, m_triggerSkull);
+	DDX_Control(pDX, IDC_AUTOGO_TRIGGERVIP, m_triggerVIP);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERMESSAGE, m_triggerMessage);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERMOVE, m_triggerMove);
 	DDX_Control(pDX, IDC_AUTOGO_TRIGGERHPLOSS, m_triggerHpLoss);
@@ -113,48 +140,27 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTOGO_SIGNFIRE, m_signFire);
 	DDX_Control(pDX, IDC_AUTOGO_SIGNENERGY, m_signEnergy);
 	DDX_Control(pDX, IDC_AUTOGO_SIGNBATTLE, m_signBattle);
-	DDX_Control(pDX, IDC_AUTOGO_MESSAGEPUBLIC, m_messagePublic);
-	DDX_Control(pDX, IDC_AUTOGO_OUTOFFOOD, m_outOfFood);
-	DDX_Control(pDX, IDC_AUTOGO_MESSAGEPRIVATE, m_messagePrivate);
-	DDX_Control(pDX, IDC_AUTOGO_CAPACITY, m_capacity);
-	DDX_Control(pDX, IDC_AUTOGO_BLANK, m_blank);
-	DDX_Control(pDX, IDC_AUTOGO_BATTLEWHITELIST, m_battleWhiteList);
-	DDX_Control(pDX, IDC_AUTOGO_BATTLEPLAYER, m_battlePlayer);
-	DDX_Control(pDX, IDC_AUTOGO_BATTLEMONSTER, m_battleMonster);
-	DDX_Control(pDX, IDC_AUTOGO_BATTLEGM, m_battleGM);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONSOULPOINT, m_actionSoulPoint);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONSIGN, m_actionSign);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONMOVE, m_actionMove);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONMESSAGE, m_actionMessage);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONHPLOSS, m_actionHpLoss);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONCAPACITY, m_actionCapacity);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONBLANK, m_actionBlank);
-	DDX_Control(pDX, IDC_AUTOGO_STATUS, m_status);
-	DDX_Control(pDX, IDC_AUTOGO_CUR_Z, m_curZ);
-	DDX_Control(pDX, IDC_AUTOGO_CUR_Y, m_curY);
-	DDX_Control(pDX, IDC_AUTOGO_CUR_X, m_curX);
-	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Z, m_runawayZ);
-	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_Y, m_runawayY);
-	DDX_Control(pDX, IDC_AUTOGO_RUNAWAY_X, m_runawayX);
-	DDX_Control(pDX, IDC_AUTOGO_TRIGGERSKULL, m_triggerSkull);
 	DDX_Control(pDX, IDC_AUTOGO_SKULLWHITE, m_skullWhite);
 	DDX_Control(pDX, IDC_AUTOGO_SKULLRED, m_skullRed);
 	DDX_Control(pDX, IDC_AUTOGO_SKULLYELLOW, m_skullYellow);
 	DDX_Control(pDX, IDC_AUTOGO_SKULLGREEN, m_skullGreen);
 	DDX_Control(pDX, IDC_AUTOGO_SKULLBLACK, m_skullBlack);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONSKULL, m_actionSkull);
-	DDX_Control(pDX, IDC_AUTOGO_SOUNDSKULL, m_soundSkull);
-	DDX_Control(pDX, IDC_AUTOGO_TRIGGERVIP, m_triggerVIP);
-	DDX_Control(pDX, IDC_AUTOGO_ACTIONVIP, m_actionVIP);
-	DDX_Control(pDX, IDC_AUTOGO_SOUNDVIP, m_soundVIP);
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
-
+	DDX_Control(pDX, IDC_AUTOGO_MESSAGEPUBLIC, m_messagePublic);
+	DDX_Control(pDX, IDC_AUTOGO_OUTOFFOOD, m_outOfFood);
+	DDX_Control(pDX, IDC_AUTOGO_MESSAGEPRIVATE, m_messagePrivate);
+	DDX_Control(pDX, IDC_AUTOGO_BATTLEWHITELIST, m_battleWhiteList);
+	DDX_Control(pDX, IDC_AUTOGO_BATTLEPLAYER, m_battlePlayer);
+	DDX_Control(pDX, IDC_AUTOGO_BATTLEMONSTER, m_battleMonster);
+	DDX_Control(pDX, IDC_AUTOGO_BATTLEGM, m_battleGM);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
+	ON_WM_ERASEBKGND()
+	ON_WM_DRAWITEM()
+	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
@@ -832,6 +838,20 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_battleWhiteList);
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_SetStart);
+	skin.SetButtonSkin(	m_SetRunaway);
+	skin.SetButtonSkin(	m_signPoison);
+	skin.SetButtonSkin(	m_signFire);
+	skin.SetButtonSkin(	m_signEnergy);
+	skin.SetButtonSkin(	m_signBattle);
+	skin.SetButtonSkin(	m_skullWhite);
+	skin.SetButtonSkin(	m_skullRed);
+	skin.SetButtonSkin(	m_skullYellow);
+	skin.SetButtonSkin(	m_skullGreen);
+	skin.SetButtonSkin(	m_skullBlack);
 
 	CComboBox *list[] = {
 		&m_actionBattleListMonster,

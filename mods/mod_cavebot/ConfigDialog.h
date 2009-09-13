@@ -11,7 +11,7 @@
 #include "ConfigData.h"
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
-#include "CheckBox.h"
+#include "BtnST.h"
 #include <queue>
 using namespace std;
 
@@ -126,8 +126,6 @@ public:
 	CButton	m_bloodHit;
 	CButton	m_activate;
 	CButton	m_debug;
-	CButton	m_depotEntryRemove;
-	CButton	m_depotEntryAdd;
 	CEdit	m_depotWhen;
 	CEdit	m_depotRemain;
 	CComboBox	m_depotItemList;
@@ -161,13 +159,25 @@ public:
 	CEdit	m_curY;
 	CEdit	m_curX;
 	CListBox	m_waypointList;
-	CButton	m_autoFollow;
+	CButton		m_autoFollow;
 	CListBox	m_monsterList;
-	CEdit	m_monster;
-	CButton m_dontAttackPlayers;
-	CButton m_pausingEnable;
-	CCheckBox	m_autoResearch;
-	CCheckBox	m_enable;
+	CEdit		m_monster;
+	CButton		m_dontAttackPlayers;
+	CButton	m_pausingEnable;
+	CButtonST	m_autoResearch;
+	CButtonST	m_enable;
+	CButtonST	m_depotEntryRemove;
+	CButtonST	m_depotEntryAdd;
+	CButtonST	m_OK;
+	CButtonST	m_RemoveWaypoint;
+	CButtonST	m_RemoveMonster;
+	CButtonST	m_RemoveIgnore;
+	CButtonST	m_AddWaypoint;
+	CButtonST	m_AddMonster;
+	CButtonST	m_AddIgnore;
+	CButtonST	m_LoadMinimap;
+	CButtonST	m_MonsterDown;
+	CButtonST	m_MonsterUp;
 	//}}AFX_DATA
 
 	void reloadDepotItems();

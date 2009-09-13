@@ -8,7 +8,9 @@
 //
 #include "AutoResponderParserContext.h"
 #include "ToolAutoResponderThreadConfig.h"
-
+#include "MyDialog.h"
+#include "GroupBoxEx.h"
+#include "BtnST.h"
 
 #include <xercesc/util/PlatformUtils.hpp>
 
@@ -30,7 +32,7 @@ XERCES_CPP_NAMESPACE_USE
 /////////////////////////////////////////////////////////////////////////////
 // CToolAutoRespond dialog
 
-class CToolAutoRespond : public CDialog
+class CToolAutoRespond : public MyDialog
 {
 // Construction
 
@@ -43,11 +45,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolAutoRespond)
 	enum { IDD = IDD_TOOL_AUTORESPOND };
+	CGroupBoxEx	m_ResponderLogsFrame;
 	CButton	m_localEcho;
 	CButton	m_debug;
 	CListCtrl	m_threadStatus;
 	CEdit	m_script;
-	CButton	m_enable;
+	CButtonST	m_enable;
+	CButtonST	m_ClearLogs;
+	CButtonST	m_OK;
 	CListCtrl	m_actionLog;
 	CListCtrl	m_msgHistory;
 	//}}AFX_DATA
