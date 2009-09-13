@@ -13,7 +13,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-#define CUSTOM_SELCHANGE 1
+#define CUSTOM_SELCHANGE 123456
 /////////////////////////////////////////////////////////////////////////////
 int fileSendingProgress=1 ;
 
@@ -33,6 +33,7 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COptionsDialog)
+	DDX_Control(pDX, IDC_SKIN, m_Skin);
 	DDX_Control(pDX, IDC_USAGE_STATISTICS, m_UsageStatistics);
 	DDX_Control(pDX, IDC_TIBIA_MAPS, m_TibiaMaps);
 	DDX_Control(pDX, IDC_LOOT_STATISTICS, m_LootStatistics);
@@ -143,6 +144,12 @@ void COptionsDialog::OnSendLootstats()
 BOOL COptionsDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(m_ok);
+	skin.SetButtonSkin(m_Skin);
+	skin.SetButtonSkin(m_send1);
+	skin.SetButtonSkin(m_send2);
+	skin.SetButtonSkin(m_send3);
+	skin.SetButtonSkin(m_send4);
 
 	refreshStatFiles();
 
@@ -375,14 +382,18 @@ void COptionsDialog::OnSkin()
 	// TODO: Add your control notification handler code here
 	CColorChooser *dlg = new CColorChooser();
 	if (dlg->DoModal() == IDOK) {
-		this->RedrawWindow();
-NMHDR nmh;
-nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
-nmh.idFrom = this->GetDlgCtrlID();
-nmh.hwndFrom = this->GetSafeHwnd();
-GetParent()->SendMessage(WM_NOTIFY, 
-    (WPARAM)this->GetSafeHwnd(), 
-    (LPARAM)&nmh);	}
+		skin.SetButtonSkin(m_ok);
+		skin.SetButtonSkin(m_Skin);
+		skin.SetButtonSkin(m_send1);
+		skin.SetButtonSkin(m_send2);
+		skin.SetButtonSkin(m_send3);
+		skin.SetButtonSkin(m_send4);
+		this->Invalidate();
+		NMHDR nmh;
+		nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
+		nmh.idFrom = this->GetDlgCtrlID();
+		nmh.hwndFrom = this->GetSafeHwnd();
+		GetParent()->SendMessage(WM_NOTIFY, (WPARAM)this->GetSafeHwnd(), (LPARAM)&nmh);	}
 
-	//delete dlg;
+	delete dlg;
 }

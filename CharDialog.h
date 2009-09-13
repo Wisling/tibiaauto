@@ -7,6 +7,7 @@
 // CharDialog.h : header file
 //
 #include "MyDialog.h"
+#include "BtnST.h"
 /////////////////////////////////////////////////////////////////////////////
 // CCharDialog dialog
 
@@ -19,6 +20,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CCharDialog)
 	enum { IDD = IDD_CHAR_DIALOG };
+	CButtonST	m_Exit;
+	CButtonST	m_OK;
 	CComboBox	m_charList;
 	//}}AFX_DATA
 

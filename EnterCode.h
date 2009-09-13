@@ -22,6 +22,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CEnterCode)
 	enum { IDD = IDD_ENTERCODE };
+	CButtonST	m_OK;
 	CEdit	m_runtimeId;
 	CEdit	m_code;
 	//}}AFX_DATA

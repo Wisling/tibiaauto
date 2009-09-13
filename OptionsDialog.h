@@ -22,17 +22,18 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDialog)
 	enum { IDD = IDD_OPTIONS };
+	CButtonST	m_Skin;
 	CGroupBoxEx	m_UsageStatistics;
 	CGroupBoxEx	m_TibiaMaps;
 	CGroupBoxEx	m_LootStatistics;
 	CGroupBoxEx	m_CreatureStatistics;
 	CStatic	m_sizeUsagestats;
-	CButton	m_send4;
-	CButton	m_send3;
-	CButton	m_send2;
-	CButton	m_send1;
+	CButtonST	m_send4;
+	CButtonST	m_send3;
+	CButtonST	m_send2;
+	CButtonST	m_send1;
 	CProgressCtrl	m_progress;
-	CButton	m_ok;
+	CButtonST	m_ok;
 	CStatic	m_sizeCreatureStats;
 	CStatic	m_sizeLootstats;
 	//}}AFX_DATA

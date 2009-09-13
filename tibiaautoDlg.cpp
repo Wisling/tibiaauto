@@ -84,6 +84,15 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CTibiaautoDlg)
+	DDX_Control(pDX, IDC_EXIT, m_exit);
+	DDX_Control(pDX, IDC_LOADED_MODULES, m_LoadedModules);
+	DDX_Control(pDX, IDC_OPTIONS, m_Options);
+	DDX_Control(pDX, IDC_PYTHON_SCRIPTS, m_PythonScripts);
+	DDX_Control(pDX, IDC_TOOL_MONSERSHOW, m_MonsterShow);
+	DDX_Control(pDX, IDC_TOOL_MAPSHOW, m_MapShow);
+	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG, m_ItemConfig);
+	DDX_Control(pDX, IDC_TOOL_INJECTMC, m_InjectMC);
+	DDX_Control(pDX, IDC_TOOL_CHARINFO, m_CharInfo);
 	DDX_Control(pDX, IDC_OTHER_TOOLS, m_OtherTools);
 	DDX_Control(pDX, IDC_INFORMATION_TOOLS, m_InformationTools);
 	DDX_Control(pDX, IDC_FIGHT_TOOLS, m_FightTools);
@@ -112,11 +121,11 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_EATER, m_eater);
 	DDX_Control(pDX, IDC_TOOL_TRADEMON, m_tradeMon);
 	DDX_Control(pDX, IDC_TOOL_AUTOGROUP, m_grouping);
-	DDX_Control(pDX, IDC_LOGINNAME, m_loginName);
 	DDX_Control(pDX, IDC_LIGHT, m_light);
 	DDX_Control(pDX, IDC_TOOL_BANKER, m_banker);
 	DDX_Control(pDX, IDC_TOOL_SORTER, m_sorter);
 	DDX_Control(pDX, IDC_TOOL_SELLER, m_seller);
+	DDX_Control(pDX, IDC_LOGINNAME, m_loginName);
 	DDX_Control(pDX, IDC_BROWSER_ADS, m_browserAds);
 	//}}AFX_DATA_MAP
 }
@@ -183,6 +192,42 @@ BOOL CTibiaautoDlg::OnInitDialog()
 {	
 	srand(time(NULL));
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(	m_exit);
+	skin.SetButtonSkin(	m_LoadedModules);
+	skin.SetButtonSkin(	m_Options);
+	skin.SetButtonSkin(	m_PythonScripts);
+	skin.SetButtonSkin(	m_MonsterShow);
+	skin.SetButtonSkin(	m_MapShow);
+	skin.SetButtonSkin(	m_ItemConfig);
+	skin.SetButtonSkin(	m_InjectMC);
+	skin.SetButtonSkin(	m_CharInfo);
+	skin.SetButtonSkin(	m_xray);
+	skin.SetButtonSkin(	m_autoAttack);
+	skin.SetButtonSkin(	m_login);
+	skin.SetButtonSkin(	m_ammoRestack);
+	skin.SetButtonSkin(	m_autoAim);
+	skin.SetButtonSkin(	m_autoFish);
+	skin.SetButtonSkin(	m_autoGo);
+	skin.SetButtonSkin(	m_autoLooter);
+	skin.SetButtonSkin(	m_autoRespond);
+	skin.SetButtonSkin(	m_autoUh);
+	skin.SetButtonSkin(	m_fluidDrinker);
+	skin.SetButtonSkin(	m_runeMaker);
+	skin.SetButtonSkin(	m_spellCaster);
+	skin.SetButtonSkin(	m_fps);
+	skin.SetButtonSkin(	m_antilogout);
+	skin.SetButtonSkin(	m_mapHack);
+	skin.SetButtonSkin(	m_creatureInfo);
+	skin.SetButtonSkin(	m_save);
+	skin.SetButtonSkin(	m_load);
+	skin.SetButtonSkin(	m_eater);
+	skin.SetButtonSkin(	m_tradeMon);
+	skin.SetButtonSkin(	m_grouping);
+	skin.SetButtonSkin(	m_light);
+	skin.SetButtonSkin(	m_banker);
+	skin.SetButtonSkin(	m_sorter);
+	skin.SetButtonSkin(	m_seller);
+
 	
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
@@ -1295,9 +1340,54 @@ CTibiaautoDlg::~CTibiaautoDlg()
 BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
 {
 	// TODO: Add your specialized code here and/or call the base class
-	Invalidate();
-	m_pythonScriptsDialog->Invalidate();
-	m_modulePlayerInfo->getNewSkin(skin);
-	m_moduleAutoAttack->getNewSkin(skin);
+	if (((LPNMHDR) lParam)->code == 123456) {
+		Invalidate();
+		skin.SetButtonSkin(	m_exit);
+		skin.SetButtonSkin(	m_LoadedModules);
+		skin.SetButtonSkin(	m_Options);
+		skin.SetButtonSkin(	m_PythonScripts);
+		skin.SetButtonSkin(	m_MonsterShow);
+		skin.SetButtonSkin(	m_MapShow);
+		skin.SetButtonSkin(	m_ItemConfig);
+		skin.SetButtonSkin(	m_InjectMC);
+		skin.SetButtonSkin(	m_CharInfo);
+		skin.SetButtonSkin(	m_xray);
+		skin.SetButtonSkin(	m_autoAttack);
+		skin.SetButtonSkin(	m_login);
+		skin.SetButtonSkin(	m_ammoRestack);
+		skin.SetButtonSkin(	m_autoAim);
+		skin.SetButtonSkin(	m_autoFish);
+		skin.SetButtonSkin(	m_autoGo);
+		skin.SetButtonSkin(	m_autoLooter);
+		skin.SetButtonSkin(	m_autoRespond);
+		skin.SetButtonSkin(	m_autoUh);
+		skin.SetButtonSkin(	m_fluidDrinker);
+		skin.SetButtonSkin(	m_runeMaker);
+		skin.SetButtonSkin(	m_spellCaster);
+		skin.SetButtonSkin(	m_fps);
+		skin.SetButtonSkin(	m_antilogout);
+		skin.SetButtonSkin(	m_mapHack);
+		skin.SetButtonSkin(	m_creatureInfo);
+		skin.SetButtonSkin(	m_save);
+		skin.SetButtonSkin(	m_load);
+		skin.SetButtonSkin(	m_eater);
+		skin.SetButtonSkin(	m_tradeMon);
+		skin.SetButtonSkin(	m_grouping);
+		skin.SetButtonSkin(	m_light);
+		skin.SetButtonSkin(	m_banker);
+		skin.SetButtonSkin(	m_sorter);
+		skin.SetButtonSkin(	m_seller);
+		
+		m_pythonScriptsDialog->Invalidate();
+		m_loadedModules->Invalidate();
+		
+		int count=CModuleProxy::allModulesCount;
+		int pos;
+		for (pos=0;pos<count;pos++)
+		{
+			CModuleProxy *mod=CModuleProxy::allModules[pos];
+			mod->getNewSkin(skin);
+		}
+	}
 	return CDialog::OnNotify(wParam, lParam, pResult);
 }

@@ -50,6 +50,8 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
+		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
+			throw;
 		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
 		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
 		item=item->getNextSibling();
@@ -114,6 +116,8 @@ CSkin CSkinLoader::loadSkin(CString pathBuf) {
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
+		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
+			throw;
 		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
 		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
 		item=item->getNextSibling();

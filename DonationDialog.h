@@ -19,7 +19,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CDonationDialog)
 	enum { IDD = IDD_DONATION };
-		// NOTE: the ClassWizard will add data members here
+	CButtonST	m_OK;
 	//}}AFX_DATA
 
 
@@ -35,7 +35,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CDonationDialog)
-		// NOTE: the ClassWizard will add member functions here
+	virtual BOOL OnInitDialog();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

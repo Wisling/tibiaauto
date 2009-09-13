@@ -28,14 +28,13 @@ void CDonationDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CDonationDialog)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
+	DDX_Control(pDX, IDOK, m_OK);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CDonationDialog, CDialog)
 	//{{AFX_MSG_MAP(CDonationDialog)
-		// NOTE: the ClassWizard will add message map macros here
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
@@ -44,3 +43,13 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CDonationDialog message handlers
+
+BOOL CDonationDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	skin.SetButtonSkin(m_OK);
+	// TODO: Add extra initialization here
+	
+	return TRUE;  // return TRUE unless you set the focus to a control
+	              // EXCEPTION: OCX Property Pages should return FALSE
+}

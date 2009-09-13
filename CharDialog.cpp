@@ -30,6 +30,8 @@ void CCharDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCharDialog)
+	DDX_Control(pDX, IDCANCEL, m_Exit);
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_CHAR_LIST, m_charList);
 	//}}AFX_DATA_MAP
 }
@@ -116,7 +118,8 @@ void CCharDialog::OnOK()
 BOOL CCharDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+skin.SetButtonSkin(m_OK);
+skin.SetButtonSkin(m_Exit);
 	OnCharRefresh();
 	
 	SetTimer(1001,250,NULL);

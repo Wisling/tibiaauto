@@ -45,7 +45,7 @@ public:
 	CRepeatButton	m_GreenSliderDown;
 	CRepeatButton	m_BlueSliderUp;
 	CRepeatButton	m_BlueSliderDown;
-	CButton	m_Example;
+	CButtonST		m_Example;
 	CRepeatButton	m_RedSliderDown;
 	CSliderCtrlEx	m_GreenSlider;
 	CSliderCtrlEx	m_BlueSlider;
@@ -81,7 +81,6 @@ protected:
 	afx_msg void OnGreenSliderUp();
 	afx_msg void OnBlueSliderUp();
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	afx_msg void OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	afx_msg void OnSelchangeDetailPicker();
 	virtual void OnOK();

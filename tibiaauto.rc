@@ -78,8 +78,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Modules information"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,91,152,50,
-                    14
+    DEFPUSHBUTTON   "OK",IDOK,91,152,50,14
     CONTROL         "List1",IDC_LOADEDMODULES_LIST,"SysListView32",
                     LVS_REPORT | WS_BORDER | WS_TABSTOP,7,7,220,138
 END
@@ -101,10 +100,8 @@ FONT 8, "MS Sans Serif"
 BEGIN
     COMBOBOX        IDC_CHAR_LIST,7,7,143,90,CBS_DROPDOWNLIST | CBS_SORT | 
                     WS_VSCROLL | WS_TABSTOP
-    CONTROL         "&OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,93,25,50,
-                    14
-    CONTROL         "Exit",IDCANCEL,"Button",BS_OWNERDRAW | WS_TABSTOP,16,25,
-                    50,14
+    DEFPUSHBUTTON   "&OK",IDOK,93,25,50,14
+    PUSHBUTTON      "Exit",IDCANCEL,16,25,50,14
 END
 
 IDD_ENTERCODE DIALOG DISCARDABLE  0, 0, 280, 82
@@ -112,8 +109,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Enter code"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,114,61,50,
-                    14
+    DEFPUSHBUTTON   "OK",IDOK,114,61,50,14
     CTEXT           "To proceed you must enter a code you will obtain at: http://www.tibiaauto.net/code.php",
                     IDC_STATIC,7,7,266,20,WS_BORDER
     EDITTEXT        IDC_RUNTIMEID,48,28,225,14,ES_AUTOHSCROLL | ES_READONLY
@@ -128,16 +124,13 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Python scripts status"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,94,209,50,
-                    14
+    DEFPUSHBUTTON   "OK",IDOK,94,209,50,14
     CONTROL         "List1",IDC_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,41,233,83
     CONTROL         "List1",IDC_FUNLIST,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,7,139,233,50
-    CONTROL         "IDLE",IDC_RUN_INTERPRETER,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,67,193,173,14
-    CONTROL         "Load script...",IDC_LOAD_SCRIPT,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,7,193,56,14
+    PUSHBUTTON      "IDLE",IDC_RUN_INTERPRETER,67,193,173,14
+    PUSHBUTTON      "Load script...",IDC_LOAD_SCRIPT,7,193,56,14
     LTEXT           "Loaded Python scripts:",IDC_STATIC,7,31,233,11,
                     WS_BORDER
     CTEXT           "For help and reference about the scripting framework see the TibiaAuto Wiki site under the term ""Scripting"".",
@@ -151,8 +144,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Script configuration"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,123,186,50,
-                    14
+    PUSHBUTTON      "OK",IDOK,123,186,50,14
     CONTROL         "List1",IDC_SCRIPT_CONFIG_PARAM_LIST,"SysListView32",
                     LVS_REPORT | LVS_SINGLESEL | LVS_SHOWSELALWAYS | 
                     WS_BORDER | WS_TABSTOP,7,7,280,102
@@ -164,7 +156,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Premium Area!"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,69,47,50,14
+    DEFPUSHBUTTON   "OK",IDOK,69,47,50,14
     CTEXT           "If you want to get access to all pre-releases and new versions of the Tibia Auto immediatelly after they get released, visit our homesite and join the Premium Area NOW for as low as 0.30 EUR/month!",
                     IDC_STATIC,7,7,172,36,WS_BORDER
 END
@@ -179,33 +171,27 @@ BEGIN
                     31
     GROUPBOX        "Tibia Maps",IDC_TIBIA_MAPS,7,76,178,36
     GROUPBOX        "Usage Statistics",IDC_USAGE_STATISTICS,7,118,178,31
-    CONTROL         "OK",IDOK,"Button",BS_OWNERDRAW | WS_TABSTOP,135,177,50,
-                    14
-    CONTROL         "Send",IDC_SEND_LOOTSTATS,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,126,18,50,14
+    DEFPUSHBUTTON   "OK",IDOK,135,177,50,14
+    PUSHBUTTON      "Send",IDC_SEND_LOOTSTATS,126,18,50,14
     LTEXT           "Statistics files size: ",IDC_STATIC,16,18,61,14,
                     SS_CENTERIMAGE
     LTEXT           "10000000",IDC_SIZE_LOOTSTATS,83,18,37,14,SS_CENTERIMAGE
-    CONTROL         "Send",IDC_SEND_CREATURESTATS,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,126,52,50,14
+    PUSHBUTTON      "Send",IDC_SEND_CREATURESTATS,126,52,50,14
     LTEXT           "Statistics files size: ",IDC_STATIC,16,52,61,14,
                     SS_CENTERIMAGE
     LTEXT           "10000000",IDC_SIZE_CREATURESTATS,83,52,37,14,
                     SS_CENTERIMAGE
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
                     NOT WS_VISIBLE | WS_BORDER,7,156,178,14
-    CONTROL         "Send",IDC_SEND_MAPS,"Button",BS_OWNERDRAW | WS_TABSTOP,
-                    126,90,50,14
+    PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,50,14
     LTEXT           "Tibia client maps are used to build a Tibia world map.",
                     IDC_STATIC,16,88,83,22
-    CONTROL         "Send",IDC_SEND_USAGESTATS,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,126,129,50,14
+    PUSHBUTTON      "Send",IDC_SEND_USAGESTATS,126,129,50,14
     LTEXT           "Statistics files size: ",IDC_STATIC,16,129,61,14,
                     SS_CENTERIMAGE
     LTEXT           "10000000",IDC_SIZE_USAGESTATS,83,129,37,14,
                     SS_CENTERIMAGE
-    CONTROL         "Skins",IDC_SKIN,"Button",BS_OWNERDRAW | WS_TABSTOP,7,
-                    177,50,14
+    PUSHBUTTON      "Skins",IDC_SKIN,7,177,50,14
 END
 
 
@@ -347,97 +333,87 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 239, 326
+IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 1.20.2 for Tibia 8.50"
+CAPTION "Tibia Auto v 2.0 for Tibia 8.50"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,90,28,142,79
-    GROUPBOX        "Information Tools",IDC_INFORMATION_TOOLS,90,108,142,62
-    GROUPBOX        "Cavebot Tools",IDC_CAVEBOT_TOOLS,90,171,142,28
-    GROUPBOX        "Fight Tools",IDC_FIGHT_TOOLS,7,28,76,97
-    GROUPBOX        "Other Tools",IDC_OTHER_TOOLS,7,129,76,124
-    GROUPBOX        "Config",IDC_CONFIG,90,200,142,61
-    CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,39,61,14
-    CONTROL         "Auto aim",IDC_TOOL_AUTOAIM,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,57,61,14
+    GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
+    GROUPBOX        "Information Tools",IDC_INFORMATION_TOOLS,89,105,142,62
+    GROUPBOX        "Cavebot Tools",IDC_CAVEBOT_TOOLS,89,168,142,29
+    GROUPBOX        "Fight Tools",IDC_FIGHT_TOOLS,7,24,76,93
+    GROUPBOX        "Other Tools",IDC_OTHER_TOOLS,7,119,76,126
+    GROUPBOX        "Config",IDC_CONFIG,89,199,142,61
+    CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,35,61,14
+    CONTROL         "Auto aim",IDC_TOOL_AUTOAIM,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,51,61,14
     CONTROL         "Fluid drinker",IDC_TOOL_FLUIDDRINKER,"Button",
-                    BS_OWNERDRAW | BS_PUSHLIKE | WS_TABSTOP,13,73,61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,67,61,14
     CONTROL         "Ammo restack",IDC_TOOL_AMMORESTACK,"Button",
-                    BS_OWNERDRAW | BS_PUSHLIKE | WS_TABSTOP,13,89,61,14
-    CONTROL         "Auto looter",IDC_TOOL_AUTOLOOTER,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,106,61,14
-    CONTROL         "Rune maker",IDC_TOOL_RUNEMAKER,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,96,39,61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,83,61,14
+    CONTROL         "Auto looter",IDC_TOOL_AUTOLOOTER,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,99,61,14
+    CONTROL         "Rune maker",IDC_TOOL_RUNEMAKER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,35,61,14
     CONTROL         "Spell caster",IDC_TOOL_SPELLCASTER,"Button",
-                    BS_OWNERDRAW | BS_PUSHLIKE | WS_TABSTOP,161,39,61,14
-    CONTROL         "Auto go/log",IDC_TOOL_AUTOGO,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,96,55,61,14
-    CONTROL         "Auto fish",IDC_TOOL_AUTOFISH,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,161,55,61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,35,61,14
+    CONTROL         "Auto go/log",IDC_TOOL_AUTOGO,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,51,61,14
+    CONTROL         "Auto fish",IDC_TOOL_AUTOFISH,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,51,61,14
     CONTROL         "Auto respond",IDC_TOOL_AUTORESPOND,"Button",
-                    BS_OWNERDRAW | BS_PUSHLIKE | WS_TABSTOP,96,73,61,14
-    CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,161,73,61,14
-    CONTROL         "Auto login",IDC_TOOL_LOGIN,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,96,89,61,14
-    CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,161,89,61,14
-    CONTROL         "Show map",IDC_TOOL_MAPSHOW,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,96,182,61,14
-    CONTROL         "Auto attack",IDC_TOOL_AUTOATTACK,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,161,182,61,14
-    CONTROL         "Char info",IDC_TOOL_CHARINFO,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,96,119,61,14
-    CONTROL         "Monsters",IDC_TOOL_MONSERSHOW,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,161,119,61,14
-    CONTROL         "Mem debug",IDC_TOOL_MEMDEBUG,"Button",BS_OWNERDRAW | 
-                    NOT WS_VISIBLE | WS_TABSTOP,96,243,61,14
-    CONTROL         "Trade monitor",IDC_TOOL_TRADEMON,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,161,135,61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,96,67,61,14
+    CONTROL         "Food eater",IDC_TOOL_EATER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,67,61,14
+    CONTROL         "Auto login",IDC_TOOL_LOGIN,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,83,61,14
+    CONTROL         "Anti-logout",IDC_TOOL_ANTILOG,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,83,61,14
+    PUSHBUTTON      "Show map",IDC_TOOL_MAPSHOW,96,179,61,14
+    CONTROL         "Auto attack",IDC_TOOL_AUTOATTACK,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,179,61,14
+    PUSHBUTTON      "Char info",IDC_TOOL_CHARINFO,96,116,61,14
+    PUSHBUTTON      "Monsters",IDC_TOOL_MONSERSHOW,161,116,61,14
+    PUSHBUTTON      "Mem debug",IDC_TOOL_MEMDEBUG,96,242,61,14,NOT 
+                    WS_VISIBLE
+    CONTROL         "Trade monitor",IDC_TOOL_TRADEMON,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,161,132,61,14
     CONTROL         "Creature info",IDC_TOOL_CREATUREINFO,"Button",
-                    BS_OWNERDRAW | BS_PUSHLIKE | WS_TABSTOP,96,151,61,14
-    CONTROL         "Map hacks",IDC_TOOL_MAPHACK,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,161,151,61,14
-    CONTROL         "Enable light",IDC_LIGHT,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,140,61,14
-    CONTROL         "Auto grouping",IDC_TOOL_AUTOGROUP,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,156,61,14
-    CONTROL         "FPS changer",IDC_FPS,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,220,61,14
-    CONTROL         "Inject MC support",IDC_TOOL_INJECTMC,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,13,236,61,14
-    CONTROL         "Load config",IDC_LOAD,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,96,211,61,14
-    CONTROL         "Save config",IDC_SAVE,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,161,211,61,14
-    CONTROL         "Item config",IDC_TOOL_ITEMCONFIG,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,96,227,61,14
-    CONTROL         "Modules",IDC_LOADED_MODULES,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,161,227,61,14
-    CONTROL         "Python scripts",IDC_PYTHON_SCRIPTS,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,161,243,61,14
-    CONTROL         "General options and statistics",IDC_OPTIONS,"Button",
-                    BS_OWNERDRAW | WS_TABSTOP,90,264,142,14
-    CONTROL         "EXIT",IDC_EXIT,"Button",BS_OWNERDRAW | WS_TABSTOP,7,306,
-                    61,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,96,148,61,14
+    CONTROL         "Map hacks",IDC_TOOL_MAPHACK,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,161,148,61,14
+    CONTROL         "Enable light",IDC_LIGHT,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,130,61,14
+    CONTROL         "Auto grouping",IDC_TOOL_AUTOGROUP,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,146,61,14
+    CONTROL         "FPS changer",IDC_FPS,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,210,61,14
+    PUSHBUTTON      "Inject MC support",IDC_TOOL_INJECTMC,13,226,61,14
+    PUSHBUTTON      "Load config",IDC_LOAD,96,210,61,14
+    PUSHBUTTON      "Save config",IDC_SAVE,161,210,61,14
+    PUSHBUTTON      "Item config",IDC_TOOL_ITEMCONFIG,96,226,61,14
+    PUSHBUTTON      "Modules",IDC_LOADED_MODULES,161,226,61,14
+    PUSHBUTTON      "Python scripts",IDC_PYTHON_SCRIPTS,161,242,61,14
+    PUSHBUTTON      "General options and statistics",IDC_OPTIONS,89,263,142,
+                    14
+    PUSHBUTTON      "EXIT",IDC_EXIT,7,307,61,14
     CONTROL         "Logged as: unknown",IDC_LOGINNAME,"Static",
                     SS_LEFTNOWORDWRAP | SS_CENTERIMAGE | WS_BORDER | 
-                    WS_GROUP,7,7,225,14
+                    WS_GROUP,7,7,224,14
     CONTROL         "",IDC_BROWSER_ADS,
-                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",0x0,73,281,159,
+                    "{8856F961-340A-11D0-A96B-00C04FD705A2}",0x0,72,281,159,
                     40
-    CONTROL         "XRay",IDC_TOOL_XRAY,"Button",BS_OWNERDRAW | BS_PUSHLIKE | 
-                    WS_TABSTOP,96,135,61,14
+    CONTROL         "XRay",IDC_TOOL_XRAY,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,96,132,61,14
     PUSHBUTTON      "Button1",IDC_BUTTON1,13,288,50,14,NOT WS_VISIBLE
-    CONTROL         "Sort Loot",IDC_TOOL_SORTER,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,172,61,14
-    CONTROL         "Auto Banker",IDC_TOOL_BANKER,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,188,61,14
-    CONTROL         "Auto Seller",IDC_TOOL_SELLER,"Button",BS_OWNERDRAW | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,204,61,14
+    CONTROL         "Sort Loot",IDC_TOOL_SORTER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,162,61,14
+    CONTROL         "Auto Banker",IDC_TOOL_BANKER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,178,61,14
+    CONTROL         "Auto Seller",IDC_TOOL_SELLER,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,13,194,61,14
 END
 
 IDD_COLORCHOOSER_DIALOG DIALOGEX 0, 0, 367, 129
@@ -445,7 +421,7 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Color Scheme Selector"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Secondary Background  ",IDC_SECONDARY_BACKGROUND,197,36,
+    GROUPBOX        "Secondary Background",IDC_SECONDARY_BACKGROUND,197,36,
                     143,45
     DEFPUSHBUTTON   "Save...",IDSAVE,6,108,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,76,108,50,14
@@ -469,8 +445,7 @@ BEGIN
                     ES_NUMBER
     EDITTEXT        IDC_BLUE_VALUE,131,71,26,14,ES_CENTER | ES_AUTOHSCROLL | 
                     ES_NUMBER
-    CONTROL         "Button",IDC_EXAMPLE_BUTTON,"Button",BS_OWNERDRAW | 
-                    WS_TABSTOP,197,90,50,14
+    PUSHBUTTON      "Button",IDC_EXAMPLE_BUTTON,197,90,50,14
     COMBOBOX        IDC_DETAIL_PICKER,6,7,120,83,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
     LTEXT           "Primary Background",IDC_EXAMPLE_STATIC,183,17,64,8
@@ -495,12 +470,11 @@ BEGIN
     IDD_TIBIAAUTO_DIALOG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 232
+        RIGHTMARGIN, 231
         VERTGUIDE, 13
         VERTGUIDE, 96
         TOPMARGIN, 7
-        BOTTOMMARGIN, 322
-        HORZGUIDE, 28
+        BOTTOMMARGIN, 321
     END
 
     IDD_COLORCHOOSER_DIALOG, DIALOG

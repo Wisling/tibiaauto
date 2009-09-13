@@ -19,6 +19,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CPythonScriptsDialog)
 	enum { IDD = IDD_PYTHON_SCRIPTS };
+	CButtonST	m_OK;
+	CButtonST	m_Interpreter;
+	CButtonST	m_LoadScript;
 	CListCtrl	m_funlist;
 	CListCtrl	m_list;
 	//}}AFX_DATA
@@ -46,6 +49,8 @@ protected:
 	afx_msg void OnRunInterpreter();
 	afx_msg void OnLoadScript();
 	afx_msg void OnRclickList(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnPaint();
+	afx_msg void OnCancelMode();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

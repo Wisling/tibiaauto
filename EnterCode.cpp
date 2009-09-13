@@ -31,6 +31,7 @@ void CEnterCode::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CEnterCode)
+	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_RUNTIMEID, m_runtimeId);
 	DDX_Control(pDX, IDC_CODE, m_code);
 	//}}AFX_DATA_MAP
@@ -90,6 +91,7 @@ int getVal(int p1, int p2)
 BOOL CEnterCode::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	skin.SetButtonSkin(m_OK);
 	/*
 	char pBuf[64];
 	int pLen;

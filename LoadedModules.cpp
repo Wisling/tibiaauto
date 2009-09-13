@@ -46,6 +46,7 @@ BEGIN_MESSAGE_MAP(CLoadedModules, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -65,7 +66,8 @@ void CLoadedModules::OnOK()
 BOOL CLoadedModules::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+	skin.SetButtonSkin(m_ok);
+
 	m_list.InsertColumn(0,"name",LVCFMT_LEFT,70);
 	m_list.InsertColumn(1,"loaded",LVCFMT_LEFT,50);
 	m_list.InsertColumn(2,"description",LVCFMT_LEFT,100);
@@ -208,3 +210,13 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CDialog::OnCommand(wParam, lParam);
 }
 
+
+void CLoadedModules::OnPaint() 
+{
+	CPaintDC dc(this); // device context for painting
+	skin.SetButtonSkin(m_ok);
+	
+	// TODO: Add your message handler code here
+	CDialog::OnPaint();
+	// Do not call CDialog::OnPaint() for painting messages
+}

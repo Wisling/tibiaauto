@@ -19,7 +19,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CLoadedModules)
 	enum { IDD = IDD_LOADED_MODULES };
-	CButton	m_ok;
+	CButtonST	m_ok;
 	CListCtrl	m_list;
 	//}}AFX_DATA
 
@@ -42,6 +42,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnRclickLoadedmodulesList(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnPaint();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

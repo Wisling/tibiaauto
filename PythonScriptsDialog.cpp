@@ -33,6 +33,9 @@ void CPythonScriptsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CPythonScriptsDialog)
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_RUN_INTERPRETER, m_Interpreter);
+	DDX_Control(pDX, IDC_LOAD_SCRIPT, m_LoadScript);
 	DDX_Control(pDX, IDC_FUNLIST, m_funlist);
 	DDX_Control(pDX, IDC_LIST, m_list);
 	//}}AFX_DATA_MAP
@@ -51,6 +54,8 @@ BEGIN_MESSAGE_MAP(CPythonScriptsDialog, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
+	ON_WM_PAINT()
+	ON_WM_CANCELMODE()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -87,7 +92,10 @@ void CPythonScriptsDialog::OnTimer(UINT nIDEvent)
 BOOL CPythonScriptsDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_Interpreter);
+	skin.SetButtonSkin(m_LoadScript);
+
 	m_list.InsertColumn(0,"Name",LVCFMT_LEFT,70);
 	m_list.InsertColumn(1,"Version",LVCFMT_LEFT,50);
 	m_list.InsertColumn(2,"Functions",LVCFMT_LEFT,70);
@@ -469,4 +477,24 @@ void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 		
 		*pResult = 0;
 	}
+}
+
+void CPythonScriptsDialog::OnPaint() 
+{
+	CPaintDC dc(this); // device context for painting
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_Interpreter);
+	skin.SetButtonSkin(m_LoadScript);
+	
+	// TODO: Add your message handler code here
+	CDialog::OnPaint();
+	// Do not call CDialog::OnPaint() for painting messages
+}
+
+void CPythonScriptsDialog::OnCancelMode() 
+{
+	CDialog::OnCancelMode();
+	
+	// TODO: Add your message handler code here
+	
 }

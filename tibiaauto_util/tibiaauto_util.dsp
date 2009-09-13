@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 xerces.lib libdb45.lib  xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/tibiaauto_util.dll" /pdbtype:sept
+# ADD LINK32 xerces.lib libdb45.lib xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/tibiaauto_util.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -91,6 +91,10 @@ LINK32=link.exe
 # Begin Group "Source Files"
 
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
+# Begin Source File
+
+SOURCE="..\..\tibiaauto-pub\sdk\BtnST.cpp"
+# End Source File
 # Begin Source File
 
 SOURCE=.\CreaturesReader.cpp
