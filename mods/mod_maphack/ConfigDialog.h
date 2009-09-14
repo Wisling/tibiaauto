@@ -36,7 +36,7 @@ public:
 	CButton	m_revealCName;
 	CButton	m_revealNoFish;
 	CButton	m_revealInvisible;
-	//CButton	m_minimapResearch;
+	CButton	m_minimapResearch;
 	CButtonST	m_OK;
 	CButtonST	m_enable;
 	//}}AFX_DATA

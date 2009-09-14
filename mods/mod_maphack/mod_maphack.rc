@@ -77,8 +77,11 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,18,127,10
     CONTROL         "Always show creature name/hp bar",IDC_REVEALCNAME,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,30,127,10
+    CONTROL         "Multi-level Minimap Research",IDC_MINIMAPRESEARCH,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,42,127,
+                    10
     CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",
-                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,42,127,
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,44,127,
                     10
 END
 
