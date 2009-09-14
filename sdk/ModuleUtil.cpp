@@ -114,7 +114,7 @@ int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR){
 CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty)
 {	
 	CMemReaderProxy reader;
-	int foodContNr=-1;	
+	int foodContNr=-1;
 	 
 	int itemNr;
 	
@@ -441,8 +441,9 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	mapDebug(buf);
 #endif
 	
+	int gotToEndPoint=0;
 	
-	while (queue->size())
+	while (queue->size() && gotToEndPoint!=1)
 	{	
 		point currentPoint = queue->getFirst();
 
@@ -455,177 +456,26 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 
-		int gotToEndPoint=0;
-		// final point reached
-		if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ) gotToEndPoint=1;
-		// standing by the depot
-		if (endSpecialLocation&&
-			(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
-			tibiaMap.getPointUpDown(x-1,y,z)==endSpecialLocation||
-			tibiaMap.getPointUpDown(x,y+1,z)==endSpecialLocation||
-			tibiaMap.getPointUpDown(x,y-1,z)==endSpecialLocation))
-		{
-			// endSpecialLocation found - where we stand is our "end point"
-			gotToEndPoint=1;
-			endX=x;
-			endY=y;
-			endZ=z;
+		if (gotToEndPoint) gotToEndPoint--;
+		else{
+			// final point reached
+			//also clear out all remaining queue points
+			if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ) gotToEndPoint=queue->size();
+			// standing by the depot
+			if (endSpecialLocation&&
+				(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
+				tibiaMap.getPointUpDown(x-1,y,z)==endSpecialLocation||
+				tibiaMap.getPointUpDown(x,y+1,z)==endSpecialLocation||
+				tibiaMap.getPointUpDown(x,y-1,z)==endSpecialLocation))
+			{
+				// endSpecialLocation found - where we stand is our "end point"
+				gotToEndPoint=queue->size();
+				endX=x;
+				endY=y;
+				endZ=z;
+			}
 		}
 			
-		if (gotToEndPoint)
-		{				
-			gotToEndPoint++;
-		}
-
-		if (gotToEndPoint || gotToEndPoint>50 || gotToEndPoint && !queue->size())
-		{				
-			int pathPos=0;
-			while (currentPoint.x!=startX||currentPoint.y!=startY||currentPoint.z!=startZ)
-			{				
-				p.x=currentPoint.x;
-				p.y=currentPoint.y;
-				p.z=currentPoint.z;
-				pathTab[pathPos].x=p.x;
-				pathTab[pathPos].y=p.y;
-				pathTab[pathPos].z=p.z;
-
-				currentPoint.x=tibiaMap.getPrevPointX(p.x,p.y,p.z);
-				currentPoint.y=tibiaMap.getPrevPointY(p.x,p.y,p.z);
-				currentPoint.z=tibiaMap.getPrevPointZ(p.x,p.y,p.z);
-#ifdef MAPDEBUG
-				sprintf(buf,"cur=(%d,%d,%d) new=(%d,%d,%d)",p.x,p.y,p.z,currentPoint.x,currentPoint.y,currentPoint.z);
-				//mapDebug(buf);
-#endif
-
-				pathPos++;
-				
-				if (pathPos>MAX_PATH_LEN-5)
-				{
-					delete queue;
-					return point(0,0,0);
-				}
-			};
-			pathTab[pathPos].x=startX;
-			pathTab[pathPos].y=startY;
-			pathTab[pathPos].z=startZ;
-			pathPos++;
-
-#ifdef MAPDEBUG
-			char buf2[256];
-			buf2[0]=0;
-			for (int ind=pathPos-1;ind>pathPos-11&&ind>=0;ind--){
-				sprintf(buf2,"%s(%d,%d,%d)->",buf2,pathTab[ind].x,pathTab[ind].y,pathTab[ind].z);
-			}
-			mapDebug(buf2);
-#endif
-					
-#ifdef MAPDEBUG
-			sprintf(buf,"111 pathPos=%d",pathPos);
-			mapDebug(buf);
-#endif
-			int pos=0;
-			for (pos=0;pos<10&&pos<pathPos-1;pos++)			
-			{
-				int curX = pathTab[pathPos-pos-1].x;
-				int curY = pathTab[pathPos-pos-1].y;
-				int curZ = pathTab[pathPos-pos-1].z;
-				int nextX = pathTab[pathPos-pos-2].x;
-				int nextY = pathTab[pathPos-pos-2].y;
-				int nextZ = pathTab[pathPos-pos-2].z;
-#ifdef MAPDEBUG
-				sprintf(buf,"X cur=(%d,%d,%d) next=(%d,%d,%d)",curX,curY,curZ,nextX,nextY,nextZ);
-				mapDebug(buf);
-#endif
-				path[pos]=0;
-				if (curX+1==nextX&&curY==nextY) path[pos]=1; // right
-				if (curX-1==nextX&&curY==nextY) path[pos]=5; // left
-				if (curX==nextX&&curY+1==nextY) path[pos]=7; // down
-				if (curX==nextX&&curY-1==nextY) path[pos]=3; // up
-
-				if (curX+1==nextX&&curY+1==nextY) path[pos]=8; // down-right
-				if (curX-1==nextX&&curY+1==nextY) path[pos]=6; // down-left
-				if (curX+1==nextX&&curY-1==nextY) path[pos]=2; // up-right
-				if (curX-1==nextX&&curY-1==nextY) path[pos]=4; // up-left
-
-				if (curZ-1==nextZ)
-				{
-					// up
-					if (pos==0)
-					{		
-					
-						if (curX==nextX&&curY==nextY)
-						{
-							path[pos]=0xD0;
-						} 
-						else 
-						{
-							path[pos]+=0xE0;
-						}
-					}
-					else{
-						path[pos]=0;//undoes direction assignment
-					}
-					break;
-				}
-				if (curZ+1==nextZ)
-				{
-					// down
-					if (pos==0)
-					{
-						if (curX==nextX&&curY==nextY)
-						{
-							path[pos]=0xD1;
-						}
-						else 
-						{
-							path[pos]+=0xF0;
-						}
-					}
-					else{
-						path[pos]=0;//undoes direction assignment
-					}
-					break;
-				}
-				if (abs(curX-nextX)>1||abs(curY-nextY)>1||path[pos]==0&&abs(curZ-nextZ)>0)
-				{
-					if (pos==0)
-					{
-						path[pos]=0xD2;
-					}
-					else
-					{
-						path[pos]=0;//undoes direction assignment
-					}
-					break;
-				}
-
-			}
-			
-#ifdef MAPDEBUG
-			sprintf(buf,"XXX pos=%d pathPos=%d ",pos,pathPos);
-			int i;
-			for (i=0;i<pos;i++)
-			{
-				char buf2[128];				
-				sprintf(buf2," (%d)",path[i]);
-				if (strlen(buf2)<100)
-				{
-					strcat(buf,buf2);
-				}
-			}
-			mapDebug(buf);
-#endif
-
-			lastEndX=endX;
-			lastEndY=endY;
-			lastEndZ=endZ;
-			pathTabLen=pathPos;
-
-			delete queue;
-			return point(endX,endY,endZ);
-		}
-		
-		
 		/**
 		 * For each direction - check whether the next point is available on the map
 		 * and whether it has not been visited before.
@@ -722,6 +572,155 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			}
 		}
 	}
+
+	if (gotToEndPoint)
+	{				
+		int pathPos=0;
+		while (currentPoint.x!=startX||currentPoint.y!=startY||currentPoint.z!=startZ)
+		{				
+			p.x=currentPoint.x;
+			p.y=currentPoint.y;
+			p.z=currentPoint.z;
+			pathTab[pathPos].x=p.x;
+			pathTab[pathPos].y=p.y;
+			pathTab[pathPos].z=p.z;
+
+			currentPoint.x=tibiaMap.getPrevPointX(p.x,p.y,p.z);
+			currentPoint.y=tibiaMap.getPrevPointY(p.x,p.y,p.z);
+			currentPoint.z=tibiaMap.getPrevPointZ(p.x,p.y,p.z);
+#ifdef MAPDEBUG
+			sprintf(buf,"cur=(%d,%d,%d) new=(%d,%d,%d)",p.x,p.y,p.z,currentPoint.x,currentPoint.y,currentPoint.z);
+			//mapDebug(buf);
+#endif
+
+			pathPos++;
+			
+			if (pathPos>MAX_PATH_LEN-5)
+			{
+				delete queue;
+				return point(0,0,0);
+			}
+		};
+		pathTab[pathPos].x=startX;
+		pathTab[pathPos].y=startY;
+		pathTab[pathPos].z=startZ;
+		pathPos++;
+
+#ifdef MAPDEBUG
+		char buf2[256];
+		buf2[0]=0;
+		for (int ind=pathPos-1;ind>pathPos-11&&ind>=0;ind--){
+			sprintf(buf2,"%s(%d,%d,%d)->",buf2,pathTab[ind].x,pathTab[ind].y,pathTab[ind].z);
+		}
+		mapDebug(buf2);
+#endif
+				
+#ifdef MAPDEBUG
+		sprintf(buf,"111 pathPos=%d",pathPos);
+		mapDebug(buf);
+#endif
+		int pos=0;
+		for (pos=0;pos<10&&pos<pathPos-1;pos++)			
+		{
+			int curX = pathTab[pathPos-pos-1].x;
+			int curY = pathTab[pathPos-pos-1].y;
+			int curZ = pathTab[pathPos-pos-1].z;
+			int nextX = pathTab[pathPos-pos-2].x;
+			int nextY = pathTab[pathPos-pos-2].y;
+			int nextZ = pathTab[pathPos-pos-2].z;
+#ifdef MAPDEBUG
+			sprintf(buf,"X cur=(%d,%d,%d) next=(%d,%d,%d)",curX,curY,curZ,nextX,nextY,nextZ);
+			mapDebug(buf);
+#endif
+			path[pos]=0;
+			if (curX+1==nextX&&curY==nextY) path[pos]=1; // right
+			if (curX-1==nextX&&curY==nextY) path[pos]=5; // left
+			if (curX==nextX&&curY+1==nextY) path[pos]=7; // down
+			if (curX==nextX&&curY-1==nextY) path[pos]=3; // up
+
+			if (curX+1==nextX&&curY+1==nextY) path[pos]=8; // down-right
+			if (curX-1==nextX&&curY+1==nextY) path[pos]=6; // down-left
+			if (curX+1==nextX&&curY-1==nextY) path[pos]=2; // up-right
+			if (curX-1==nextX&&curY-1==nextY) path[pos]=4; // up-left
+
+			if (curZ-1==nextZ)
+			{
+				// up
+				if (pos==0)
+				{		
+				
+					if (curX==nextX&&curY==nextY)
+					{
+						path[pos]=0xD0;
+					} 
+					else 
+					{
+						path[pos]+=0xE0;
+					}
+				}
+				else{
+					path[pos]=0;//undoes direction assignment
+				}
+				break;
+			}
+			if (curZ+1==nextZ)
+			{
+				// down
+				if (pos==0)
+				{
+					if (curX==nextX&&curY==nextY)
+					{
+						path[pos]=0xD1;
+					}
+					else 
+					{
+						path[pos]+=0xF0;
+					}
+				}
+				else{
+					path[pos]=0;//undoes direction assignment
+				}
+				break;
+			}
+			if (abs(curX-nextX)>1||abs(curY-nextY)>1||path[pos]==0&&abs(curZ-nextZ)>0)
+			{
+				if (pos==0)
+				{
+					path[pos]=0xD2;
+				}
+				else
+				{
+					path[pos]=0;//undoes direction assignment
+				}
+				break;
+			}
+
+		}
+		
+#ifdef MAPDEBUG
+		sprintf(buf,"XXX pos=%d pathPos=%d ",pos,pathPos);
+		int i;
+		for (i=0;i<pos;i++)
+		{
+			char buf2[128];				
+			sprintf(buf2," (%d)",path[i]);
+			if (strlen(buf2)<100)
+			{
+				strcat(buf,buf2);
+			}
+		}
+		mapDebug(buf);
+#endif
+
+		lastEndX=endX;
+		lastEndY=endY;
+		lastEndZ=endZ;
+		pathTabLen=pathPos;
+
+		delete queue;
+		return point(endX,endY,endZ);
+	}
+
 	delete queue;
 	return point(0,0,0);
 }
