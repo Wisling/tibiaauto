@@ -1342,6 +1342,7 @@ BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	// TODO: Add your specialized code here and/or call the base class
 	if (((LPNMHDR) lParam)->code == 123456) {
 		Invalidate();
+		m_browserAds.Refresh();
 		skin.SetButtonSkin(	m_exit);
 		skin.SetButtonSkin(	m_LoadedModules);
 		skin.SetButtonSkin(	m_Options);
