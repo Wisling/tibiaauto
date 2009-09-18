@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
-//#define MAPDEBUG
+#define MAPDEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -243,9 +243,9 @@ void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, i
 {
 	CTibiaMapProxy tibiaMap;
 
-	int loopsOnItself=newX==tibiaMap.getPrevPointX(prevX,newY,prevZ)&&newY==tibiaMap.getPrevPointY(prevX,newY,prevZ)&&newZ==tibiaMap.getPrevPointZ(prevX,newY,prevZ);
+	int loopsOnItself=newX==tibiaMap.getPrevPointX(prevX,prevY,prevZ)&&newY==tibiaMap.getPrevPointY(prevX,prevY,prevZ)&&newZ==tibiaMap.getPrevPointZ(prevX,prevY,prevZ);
 	int upDownToUpDown = tibiaMap.getPointUpDownNoProh(prevX,prevY,prevZ) && tibiaMap.getPointUpDownNoProh(newX,newY,newZ);
-
+	int oldPrevX=tibiaMap.getPrevPointX(newX,newY,newZ),oldPrevY=tibiaMap.getPrevPointY(newX,newY,newZ),oldPrevZ=tibiaMap.getPrevPointZ(newX,newY,newZ);
 	if (tibiaMap.isPointAvailable(newX,newY,newZ) && !loopsOnItself && !upDownToUpDown)
 	{
 		//Diagonal fix: Only add possible next point to queue if on different floor or is not a diagonal move with a non-diagonal possibility
@@ -253,8 +253,10 @@ void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, i
 		int otherAvailableX = tibiaMap.getPrevPointZ(newX,prevY,prevZ)==newZ;
 		int otherAvailableY = tibiaMap.getPrevPointZ(prevX,newY,prevZ)==newZ;
 		//if (prevZ != newZ || !(diagonalMove && (otherAvailableX || otherAvailableY)) || tibiaMap.getPointUpDownNoProh(newX,newY,newZ)){
-			if (tibiaMap.getPrevPointX(newX,newY,newZ)==0) queue->add(newX,newY,newZ);// prevents overflow
 			tibiaMap.setBestPrevPoint(newX,newY,newZ,prevX,prevY,prevZ);
+			//if value changed, add to queue again since best distance to point will have changed
+			if (oldPrevX!=tibiaMap.getPrevPointX(newX,newY,newZ)||oldPrevY!=tibiaMap.getPrevPointY(newX,newY,newZ)||oldPrevZ!=tibiaMap.getPrevPointZ(newX,newY,newZ)) queue->add(newX,newY,newZ);
+
 		//}
 	}
 }
@@ -319,6 +321,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	
 
 	// try to go to the point normally
+	// efficiently returns if end is blocked
 	retPoint=findPathOnMap(startX,startY,startZ,endX,endY,endZ,endSpecialLocation,path,0);
 	if (path[0]) return retPoint;
 
@@ -442,7 +445,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif
 	
 	int gotToEndPoint=0;
-	
+	point endPoint;
+
 	while (queue->size() && gotToEndPoint!=1)
 	{	
 		point currentPoint = queue->getFirst();
@@ -456,11 +460,15 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 
-		if (gotToEndPoint) gotToEndPoint--;
+		if (gotToEndPoint){gotToEndPoint--;
+		char buf[111];
+		sprintf(buf,"%d",gotToEndPoint);
+		//AfxMessageBox(buf);
+		}
 		else{
 			// final point reached
 			//also clear out all remaining queue points
-			if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ) gotToEndPoint=queue->size();
+			if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ) gotToEndPoint=max(queue->size(),200);
 			// standing by the depot
 			if (endSpecialLocation&&
 				(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
@@ -469,11 +477,11 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				tibiaMap.getPointUpDown(x,y-1,z)==endSpecialLocation))
 			{
 				// endSpecialLocation found - where we stand is our "end point"
-				gotToEndPoint=queue->size();
-				endX=x;
-				endY=y;
-				endZ=z;
+				gotToEndPoint=max(queue->size(),200);
 			}
+			endPoint.x=x;
+			endPoint.y=y;
+			endPoint.z=z;
 		}
 			
 		/**
@@ -576,6 +584,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	if (gotToEndPoint)
 	{				
 		int pathPos=0;
+		point currentPoint=endPoint;
+
 		while (currentPoint.x!=startX||currentPoint.y!=startY||currentPoint.z!=startZ)
 		{				
 			p.x=currentPoint.x;

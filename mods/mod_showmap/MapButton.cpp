@@ -70,11 +70,27 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 		/* Convert the co-ords into a CPoint structure */
 		CPoint pt( dwPos&0xffff , (dwPos>>16)&0xffff );				
 		
-		for (i=0;i<4;i++)
+		for (i=0;i<11;i++)
 		{
 			mapActionsMenu->GetSubMenu(0)->CheckMenuItem(i,MF_BYPOSITION|MF_UNCHECKED);
 		}
-		mapActionsMenu->GetSubMenu(0)->CheckMenuItem(m_value+1,MF_BYPOSITION|MF_CHECKED);
+		int itemNum;
+		switch( m_value){
+			case -1: itemNum=0; break;
+			case 0: itemNum=1; break;
+			case 301: itemNum=3; break;
+			case 302: itemNum=5; break;
+			case 303: itemNum=6; break;
+			case 201:
+			case 202:
+			case 203:
+			case 204:itemNum=8; break;
+			case 101:
+			case 102:
+			case 103:itemNum=10; break;
+		}
+
+		mapActionsMenu->GetSubMenu(0)->CheckMenuItem(itemNum,MF_BYPOSITION|MF_CHECKED);
 
 		mapActionsMenu->GetSubMenu(0)->TrackPopupMenu(0,pt.x,pt.y,this);
 		
