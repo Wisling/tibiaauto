@@ -174,12 +174,16 @@ void CMod_showmapApp::loadConfigParam(char *paramName,char *paramValue)
 			tibiaMap.clear();
 		}
 		int x,y,z,updown;
-		int altX,altY,altZ;
-		int numData=sscanf(paramValue,"%d,%d,%d,%d,%d,%d,%d",&x,&y,&z,&updown,&altX,&altY,&altZ);
+		int speed,altX,altY,altZ;
+		int numData=sscanf(paramValue,"%d,%d,%d,%d,%d,%d,%d,%d",&x,&y,&z,&updown,&speed,&altX,&altY,&altZ);
 		tibiaMap.setPointAsAvailable(x,y,z);
 		tibiaMap.setPointUpDown(x,y,z,updown);
-		if (7==numData){
-			tibiaMap.setDestPoint(x,y,z,altX,altY,altZ);
+
+		//is new point for 2.0
+		if (numData>=5){
+			tibiaMap.setPointSpeed(x,y,z,speed);
+			//has destination data
+			if (8>=numData)	tibiaMap.setDestPoint(x,y,z,altX,altY,altZ);
 		}
 		currentPointNr++;
 	}
@@ -200,8 +204,8 @@ getNextCurrentPoint:
 			if (tibiaMap.isPointAvailableNoProh(p.x,p.y,p.z))
 			{
 				point dest=tibiaMap.getDestPoint(p.x,p.y,p.z);
-				if (dest.x==0) sprintf(buf,"%d,%d,%d,%d",p.x,p.y,p.z,tibiaMap.getPointUpDown(p.x,p.y,p.z));
-				else sprintf(buf,"%d,%d,%d,%d,%d,%d,%d",p.x,p.y,p.z,tibiaMap.getPointUpDown(p.x,p.y,p.z),dest.x,dest.y,dest.z);
+				if (dest.x==0) sprintf(buf,"%d,%d,%d,%d,%d",p.x,p.y,p.z,tibiaMap.getPointUpDown(p.x,p.y,p.z),tibiaMap.getPointSpeed(p.x,p.y,p.z));
+				else sprintf(buf,"%d,%d,%d,%d,%d,%d,%d,%d",p.x,p.y,p.z,tibiaMap.getPointUpDown(p.x,p.y,p.z),tibiaMap.getPointSpeed(p.x,p.y,p.z),dest.x,dest.y,dest.z);
 			} else {
 				goto getNextCurrentPoint;
 			}

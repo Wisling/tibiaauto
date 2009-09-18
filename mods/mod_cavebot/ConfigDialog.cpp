@@ -1099,7 +1099,10 @@ void PathfindThread(LPVOID lpParam){
 		for (y=startY-radius;y<=startY+radius;y++){
 			if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
 				CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x,y,startZ);
-				if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+						if (mp->speed!=255 && mp->colour!=0){
+							tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking nor unexplored
+							tibiaMap.setPointSpeed(x,y,startZ,mp->speed);
+						}
 				delete mp;
 			}
 		}
@@ -1118,7 +1121,10 @@ void PathfindThread(LPVOID lpParam){
 				for (y=startY-radius;y<=startY+radius;y++){
 					if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
 						CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x,y,startZ);
-						if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+						if (mp->speed!=255 && mp->colour!=0){
+							tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking nor unexplored
+							tibiaMap.setPointSpeed(x,y,startZ,mp->speed);
+						}
 						delete mp;
 					}
 				}
@@ -1130,13 +1136,18 @@ void PathfindThread(LPVOID lpParam){
 			tibiaMap.setPointAsAvailable(startX,startY,startZ);
 			tibiaMap.setPointUpDown(startX,startY,startZ-direction[dir][2],setPrev);
 			tibiaMap.setPointUpDown(startX,startY,startZ,setCur);
+			tibiaMap.setPointSpeed(startX,startY,startZ-direction[dir][2],130);//130 default( is >255/2 and <70*2)
+			tibiaMap.setPointSpeed(startX,startY,startZ,130);
 		}else{
 			y=startY+radius*direction[dir][1];
 			//explore one row of map in direction of travel
 			for (x=startX-radius;x<=startX+radius && direction[dir][1];x++){
 				if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
 					CTibiaMiniMapPoint* mp = taMiniMap.getMiniMapPoint(x,y,startZ);
-					if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+					if (mp->speed!=255 && mp->colour!=0){
+						tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking nor unexplored
+						tibiaMap.setPointSpeed(x,y,startZ,mp->speed);
+					}
 					delete mp;
 				}
 			}
@@ -1146,7 +1157,10 @@ void PathfindThread(LPVOID lpParam){
 			for (y=startY-radius;y<=startY+radius && direction[dir][0];y++){
 				if(!tibiaMap.isPointAvailableNoProh(x,y,startZ)){
 					CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x,y,startZ);
-					if (mp->speed!=255 && mp->colour!=0) tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking or unexplored
+					if (mp->speed!=255 && mp->colour!=0){
+						tibiaMap.setPointAsAvailable(x,y,startZ);//is not blocking nor unexplored
+						tibiaMap.setPointSpeed(x,y,startZ,mp->speed);
+					}
 					delete mp;
 				}
 			}

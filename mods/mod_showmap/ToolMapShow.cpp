@@ -318,6 +318,12 @@ void CToolMapShow::refreshVisibleMap()
 	delete self;
 }
 
+int mod(int i,int m){
+	int ans=i%m;
+	if (ans<0) ans+=m;
+	return ans;
+}
+
 void CToolMapShow::OnTimer(UINT nIDEvent) 
 {
 	if (nIDEvent==1001)
@@ -334,6 +340,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
 		tibiaMap.setPointAsAvailable(self->x,self->y,self->z);
+		tibiaMap.setPointSpeed(self->x,self->y,self->z,130);//130 default( is >255/2 and <70*2)
 	
 
 		delete self;
@@ -359,9 +366,9 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 			int relToCell=reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
 
 			for (x=-8;x<=9;x++)
-			{				
+			{
 				for (y=-6;y<=7;y++)
-				{					
+				{
 					int i;
 					int count=reader.mapGetPointItemsCount(point(x,y,0),relToCell);
 
@@ -462,8 +469,13 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 				} // for y
 			} // for x
 			CTibiaCharacter *newSelf = reader.readSelfCharacter();
-			//write results only if on same floor as when starting
-			if (newSelf->z==self->z)//since we used relToCell only floorchanges drastically matter
+
+			int cellNr=reader.mapGetSelfCellNr();
+			//if change in cellNr does not match with change in (x,y) then teleported  ( mod func returns >= 0 )
+			int wasTeleported=(cellNr%18!=mod((relToCell%18+(newSelf->x-self->x)),18))||(cellNr%(14*18)/18!=mod((relToCell%(14*18)/18+(newSelf->y-self->y)),14));
+
+			//since we used relToCell only changing floors and teleports while reading drastically matter
+			if (newSelf->z==self->z && !wasTeleported)
 			{
 				prevX=self->x;
 				prevY=self->y;
@@ -478,7 +490,8 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 						{
 							tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
 							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
-							tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,tileArrSpd[x+8][y+6]);
+							if (tileArrSpd[x+8][y+6]==0) tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,130);//130 default( is >255/2 and <70*2)
+							else tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,tileArrSpd[x+8][y+6]);
 						} else {
 							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
 							tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,0);
@@ -517,16 +530,17 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					else if (!ySwitch && abs(x)==abs(y)){ySwitch=-xSwitch;xSwitch=0;x+=xSwitch;y+=ySwitch;}
 					else {x+=xSwitch;y+=ySwitch;}
 
-					if(tibiaMap.getPointUpDown(prevXTele+x,prevYTele+y,prevZTele)==302){//teleporter
+					int upDown=tibiaMap.getPointUpDown(prevXTele+x,prevYTele+y,prevZTele);
+					if(upDown==302){//teleporter
 						CPackSenderProxy sender;
 						char buf[128];
-						sprintf(buf,"Assigned Teleporter Dest(%d,%d,%d)",prevXTele+x,prevYTele+y,prevZTele);
+						sprintf(buf,"Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)",prevXTele+x,prevYTele+y,prevZTele,self->x,self->y,self->z);
 						sender.sendTAMessage(buf);
 						if (tibiaMap.getDestPoint(prevXTele+x,prevYTele+y,prevZTele).x==0){
 							tibiaMap.setDestPoint(prevXTele+x,prevYTele+y,prevZTele,self->x,self->y,self->z);
 							break;
 						}
-					}
+					}else if(upDown>0) break;//other updown is closer and probably used
 				}
 			}
 			prevXTele=self->x;
@@ -583,12 +597,14 @@ void CToolMapShow::mapPointClicked(int posX, int posY, int pos)
 
 	if (pos>=0)
 	{
-		// point added/updated		
-		tibiaMap.setPointAsAvailable(realX,realY,realZ);				
+		// point added/updated
+		tibiaMap.setPointAsAvailable(realX,realY,realZ);
 		tibiaMap.setPointUpDown(realX,realY,realZ,pos);
+		tibiaMap.setPointSpeed(realX,realY,realZ,130);//130 default( is >255/2 and <70*2)
 	} else {
 		// point removed
 		tibiaMap.removePointAvailable(realX,realY,realZ);
+		tibiaMap.setPointSpeed(realX,realY,realZ,0);
 	}
 	
 	refreshVisibleMap();
@@ -604,9 +620,11 @@ BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam)
 void CToolMapShow::showTileDetails(int x, int y)
 {		
 	CMemReaderProxy reader;
+	CTibiaMapProxy tibiaMap;
 	int outOfRange=0;
 	char buf[2560];	
 
+	CTibiaCharacter* self=reader.readSelfCharacter();
 	// make (x,y) relative to the center
 	x-=10;
 	y-=10;
@@ -620,7 +638,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 		int pos=0;
 		if (count>10) count=10;
 		
-		sprintf(buf,"Tile info: [x=%d y=%d]",x,y);
+		sprintf(buf,"Tile info: %d [x=%d y=%d]",tibiaMap.getPointSpeed(self->x+x,self->y+y,self->z),x,y);
 		for (pos=0;pos<count;pos++)
 		{			
 			sprintf(subbuf," id=%d [%d,%d]",reader.mapGetPointItemId(point(x,y,0),pos),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,2));
@@ -631,6 +649,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 		sprintf(buf,"Tile info: n/a");
 		m_tileInfo.SetWindowText(buf);
 	}
+	delete self;
 	
 }
 
