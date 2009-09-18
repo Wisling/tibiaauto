@@ -25,6 +25,7 @@ public:
 	int prevY;
 	int prevZ;
 	int speed;
+	int dist;
 	point destPoint;
 
 	pointData()
@@ -38,7 +39,8 @@ public:
 		prevX=0;
 		prevY=0;
 		prevZ=0;
-		speed=0;
+		dist=0;
+		speed=130;//130 default( is >255/2 and <70*2)
 		destPoint=point(0,0,0);
 	}	
 };
@@ -83,7 +85,9 @@ private:
 	int CTibiaMap::intPoint(point p);
 	int isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ);
 	int isPointLonger(int x,int y,int z,int prevX, int prevY, int prevZ);
-	int getDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
+	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
+	int getPointDistance(int x, int y, int z);
+	void setPointDistance(int x, int y, int z, int dist);
 
 	//map<point, pointData, point> tibiaMap;
 	CMap<point *,point *,pointData *,pointData *> tibiaMap2;

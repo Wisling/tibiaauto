@@ -58,7 +58,7 @@ SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
 int COMPLEX=0;
-int SENTONLY=1;
+int SENTONLY=0;
 
 time_t debugFileStart;
 int lastSendFlags;
@@ -111,15 +111,15 @@ public:
 
 /** 
 * codes for communication
-* 1001: incoming message -> ?
+* 1001: incoming message -> Auto Rsponder
 * 1002: middle screen info (you see) -> creature info
-* 1003: incoming message -> ?
-* 1004: incoming message -> ?
-* 1005: incoming message -> ?
+* 1003: incoming message -> Autogo message alarm
+* 1004: incoming message -> Self info haste/ms timer
+* 1005: incoming message -> Mesage commands for unfinished TEAM module
 * 1006: incoming message -> python engine
 * 1007: %ta messages -> python engine
 * 1008: %ta lu/%ta ld -> xray
-* 1009: % pause -> cavebot pausing
+* 1009: %ta pause -> cavebot pausing
 * 2001: hooks -> xray
 * 2002: hooks -> cavebot pausing
 */

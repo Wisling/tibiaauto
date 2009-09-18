@@ -1222,7 +1222,7 @@ void CTibiaautoDlg::OnOptions()
 }
 
 void CTibiaautoDlg::refreshAds()
-{		
+{
 	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.19.1",NULL,NULL,NULL,NULL);
 }
 

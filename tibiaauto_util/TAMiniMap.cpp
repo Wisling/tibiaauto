@@ -438,7 +438,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 		mDistance=parentNode.h;
 		mOpenSize=mOpen.size();
 		//if (mDistance<30) maxDistBreak=60;//readjust when close in case end is unreachable
-		fout << parentNode.x << " " << parentNode.y << "\n";
+		fout << parentNode.x-endX << " " << parentNode.y-endY << " " << parentNode.z - endZ << "\n";
 
 
 		if (max(abs(parentNode.x-endX),abs(parentNode.y-endY))<=endBlocked && parentNode.z == endZ)//can be 1 away if end is blocked
