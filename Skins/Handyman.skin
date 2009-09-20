@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Skin Name="Default">
+
+  <ButtonFace Blue="0" Green="205" Red="205"/>
+
+  <ButtonDS Blue="58" Green="154" Red="113"/>
+
+  <ButtonLS Blue="35" Green="60" Red="109"/>
+
+  <ButtonHighLight Blue="107" Green="206" Red="179"/>
+
+  <ButtonLight Blue="187" Green="191" Red="199"/>
+
+  <Text Blue="0" Green="0" Red="0"/>
+
+  <Editbox Blue="0" Green="0" Red="0"/>
+
+  <PrimaryBackground Blue="117" Green="175" Red="162"/>
+
+  <SecondaryBackground Blue="0" Green="117" Red="187"/>
+
+</Skin>
