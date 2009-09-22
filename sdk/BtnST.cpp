@@ -561,7 +561,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 		if (m_bIsFocused)
 		{
 			CRect focusRect = itemRect;
-			focusRect.DeflateRect(3, 3);
+			focusRect.DeflateRect(2, 2);
 			pDC->DrawFocusRect(&focusRect);
 		} // if
 	} // if
@@ -2403,6 +2403,10 @@ DWORD CButtonST::OnDrawBackground(CDC* pDC, CRect* pRect)
 //
 DWORD CButtonST::OnDrawBorder(CDC* pDC, CRect* pRect)
 {
+	CPen penBtnHiLight(PS_SOLID, 0, m_crColors[BTNST_COLOR_HILIGHT]); // White
+	CPen pen3DLight(PS_SOLID, 0, m_crColors[BTNST_COLOR_3DLIGHT]);       // Light gray
+	CPen penBtnShadow(PS_SOLID, 0, m_crColors[BTNST_COLOR_SHADOW]);   // Dark gray
+	CPen pen3DDKShadow(PS_SOLID, 0, m_crColors[BTNST_COLOR_DKSHADOW]); // Black
 	// Draw pressed button
 	if (m_bIsPressed)
 	{
@@ -2413,17 +2417,34 @@ DWORD CButtonST::OnDrawBorder(CDC* pDC, CRect* pRect)
 		}
 		else    
 		{
-			CBrush brBtnShadow(m_crColors[BTNST_COLOR_SHADOW]);
-			pDC->FrameRect(pRect, &brBtnShadow);
+//			CBrush brBtnShadow(m_crColors[BTNST_COLOR_SHADOW]);
+//			pDC->FrameRect(pRect, &brBtnShadow);
+			CPen* pOldPen = pDC->SelectObject(&pen3DDKShadow);
+			pDC->MoveTo(pRect->left, pRect->bottom-1);
+			pDC->LineTo(pRect->left, pRect->top);
+			pDC->LineTo(pRect->right, pRect->top);
+			// Light gray line
+			pDC->SelectObject(penBtnShadow);
+			pDC->MoveTo(pRect->left+1, pRect->bottom-1);
+			pDC->LineTo(pRect->left+1, pRect->top+1);
+			pDC->LineTo(pRect->right, pRect->top+1);
+			// Draw bottom-right borders
+			// Black line
+			pDC->SelectObject(penBtnHiLight);
+			pDC->MoveTo(pRect->left, pRect->bottom-1);
+			pDC->LineTo(pRect->right-1, pRect->bottom-1);
+			pDC->LineTo(pRect->right-1, pRect->top-1);
+			// Dark gray line
+			pDC->SelectObject(pen3DLight);
+			pDC->MoveTo(pRect->left+1, pRect->bottom-2);
+			pDC->LineTo(pRect->right-2, pRect->bottom-2);
+			pDC->LineTo(pRect->right-2, pRect->top);
+			//
+			pDC->SelectObject(pOldPen);
 		}
 	}
 	else // ...else draw non pressed button
 	{
-		CPen penBtnHiLight(PS_SOLID, 0, m_crColors[BTNST_COLOR_HILIGHT]); // White
-		CPen pen3DLight(PS_SOLID, 0, m_crColors[BTNST_COLOR_3DLIGHT]);       // Light gray
-		CPen penBtnShadow(PS_SOLID, 0, m_crColors[BTNST_COLOR_SHADOW]);   // Dark gray
-		CPen pen3DDKShadow(PS_SOLID, 0, m_crColors[BTNST_COLOR_DKSHADOW]); // Black
-
 		if (m_bIsFlat)
 		{
 			if (m_bMouseOnButton && m_bDrawBorder)
