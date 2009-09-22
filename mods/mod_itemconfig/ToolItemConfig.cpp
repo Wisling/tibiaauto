@@ -98,33 +98,26 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 	while (m_itemsList.GetCount()) m_itemsList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsItemsCount();i++)
 	{
-		sprintf(buf,"(0x%x) %s",itemProxy.getItemsItemsId(i),itemProxy.getItemsItems(i));
+		sprintf(buf,"%s (#%d)",itemProxy.getItemsItems(i),itemProxy.getItemsItemsId(i));
 		m_itemsList.AddString(buf);
 	}
 	
 	while (m_foodList.GetCount()) m_foodList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsFoodCount();i++)
 	{
-		sprintf(buf,"(0x%x) %s",itemProxy.getItemsFoodId(i),itemProxy.getItemsFood(i));
+		sprintf(buf,"%s (#%d)",itemProxy.getItemsFood(i),itemProxy.getItemsFoodId(i));
 		m_foodList.AddString(buf);
 	}
 	
 	while (m_lootedList.GetCount()) m_lootedList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsLootedCount();i++)
 	{
-		sprintf(buf,"(0x%x) %s",itemProxy.getItemsLootedId(i),itemProxy.getItemsLooted(i));
+		sprintf(buf,"%s (#%d)",itemProxy.getItemsLooted(i),itemProxy.getItemsLootedId(i));
 		m_lootedList.AddString(buf);
+		m_testTree.InsertItem(buf);
 	}
 
-	HTREEITEM item1=m_testTree.InsertItem("hi");;
-	while (m_lootedList.GetCount()) m_lootedList.DeleteString(0);
-	for (i=0;i<itemProxy.getItemsLootedCount();i++)
-	{
-		sprintf(buf,"(0x%x) %s",itemProxy.getItemsLootedId(i),itemProxy.getItemsLooted(i));
-		m_testTree.InsertItem(buf,item1);
-	}
-	
-	
+	//HTREEITEM item1=m_testTree.InsertItem("hi");
 }
 
 BOOL CToolItemConfig::OnInitDialog() 
