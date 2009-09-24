@@ -154,3 +154,15 @@ int CTAMiniMapProxy::getCurrentDistance()
 	} 
 	return NULL;
 }
+void CTAMiniMapProxy::unloadMiniMaps()
+{
+	typedef void(*Proto_fun)();
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapUnloadMiniMaps");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}

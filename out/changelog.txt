@@ -9,8 +9,15 @@ Enhancments
  Show Map: improved map refresh rate(now it should NEVER miss any squares by walking too fast)
  Map Hacks: allowed for ALL mini map levels to be researched at the same time within Tibia
  Show Map: added functionality for teleports as well as permanently blocked squares
- Cavebot: Tends towards walking on faster tiles
+ Cavebot: Will find 'fastest' path based on tile speeds rather than just shortest
+ Tiles.xml: Added many different tile attributes, made damaging fields have a long speed so they get avoided when possible
  Python Scripts: Increased maximum parameter text length from 128 to 1024
+ Cavebot: Will retreive less items if they are too heavy(ie. 50 spears)
+ Cavebot: Will eat more food from corpses
+ Spellcaster: Added some default spells to list
+ Cavebot & Auto go/log: Can manually edit the x,y,z coordinates before adding to list
+ Banker: Added 4 new bankers
+ Banker: After going to bank, will restock and deposit at depot to save time (but cavebot will not stop by bank)
 
 Defects
  Cavebot: Fixed one of the crash bugs in the cavebot(when not looting creature and going back to hunt)
@@ -20,6 +27,11 @@ Defects
  Ammo Restacker: Fixed saving Restack to Right Hand option
  Cavebot: Fixed walking bug when it continually goes up and down levels in a loop
  Cavebot: Fixed crashing when debug enabled and cavebot cannot find a path to destination
+ Cavebot: Sped up wakling algorithm (has been unnoticeably broken ever since last time it was improved)
+ Cavebot: Fixed retreiving items from main depot container
+ Cavebot: Fixed resuming attack on distance creatures
+ %ta : No longer accidentally sends words beginning with %ta in private chat and NPC channel(will still show up,but won't be sent)
+ All Over: Fixed more than 30 memory leaks just sitting
 
 1.20.2, 24.07.2009
 Enhancments

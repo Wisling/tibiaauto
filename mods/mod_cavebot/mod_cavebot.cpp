@@ -100,7 +100,6 @@ void deleteAndNull(CTibiaItem *&ptr)
 	ptr=NULL;
 }
 
-
 CToolAutoAttackStateAttack globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
 CToolAutoAttackStateLoot globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 CToolAutoAttackStateWalker globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
@@ -202,10 +201,12 @@ int depotCheckShouldGo(CConfigData *config) {
 		}
 		// check whether we should deposit something
 		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
-			totalQty>=config->depotTrigger[i].when) ret++;
+			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateWalker==CToolAutoAttackStateWalker_halfSleep)) 
+			ret++;
 		// check whether we should restack something
 		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
-			totalQty<=config->depotTrigger[i].when) ret++;
+			(totalQty<=config->depotTrigger[i].when || globalAutoAttackStateWalker==CToolAutoAttackStateWalker_halfSleep)) 
+			ret++;
 	}
 	deleteAndNull(self);
 	return ret;
@@ -510,7 +511,17 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup,in
 	*/
 	int count=depotChest->itemsInside;
 	for (itemNr=0;itemNr<count;itemNr++) {
-		CTibiaItem *item = (CTibiaItem *)depotChest->items.GetAt(itemNr);
+		CTibiaItem *item = (CTibiaItem*)depotChest->items.GetAt(itemNr);
+		if (item->objectId==objectId) {
+			// that's this item - pick it up
+			if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
+			sender.moveObjectBetweenContainers(objectId,0x40+depotContNr,itemNr,0x40+contNr,pos,qtyToPickup);
+			CModuleUtil::waitForItemsInsideChange(depotContNr,depotChest->itemsInside);
+			Sleep(CModuleUtil::randomFormula(300,100));
+			deleteAndNull(depotChest);
+			
+			return qtyToPickup;
+		}
 		if (reader.getTibiaTile(item->objectId)->isContainer) {
 			// that object is a container, so open it
 			sender.closeContainer(depotContNr2);
@@ -519,12 +530,12 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup,in
 			CModuleUtil::waitForOpenContainer(depotContNr2,true);
 			CTibiaContainer *newContainer = reader.readContainer(depotContNr2);
 			if (newContainer->flagOnOff) {
-				for (itemNr=0;itemNr<newContainer->itemsInside;itemNr++) {
-					CTibiaItem *item=((CTibiaItem *)newContainer->items.GetAt(itemNr));
-					if (item->objectId==objectId) {
+				for (int itemNr2=0;itemNr2<newContainer->itemsInside;itemNr2++) {
+					CTibiaItem *item2=((CTibiaItem *)newContainer->items.GetAt(itemNr2));
+					if (item2->objectId==objectId) {
 						// that's this item - pick it up
-						if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
-						sender.moveObjectBetweenContainers(objectId,0x40+depotContNr2,itemNr,0x40+contNr,pos,qtyToPickup);
+						if (qtyToPickup>item2->quantity) qtyToPickup=item2->quantity;
+						sender.moveObjectBetweenContainers(objectId,0x40+depotContNr2,itemNr2,0x40+contNr,pos,qtyToPickup);
 						CModuleUtil::waitForItemsInsideChange(depotContNr2,newContainer->itemsInside);
 						Sleep(CModuleUtil::randomFormula(300,100));
 						deleteAndNull(newContainer);
@@ -544,11 +555,13 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup,in
 	return 0;
 }
 
-int countAllItemsOfType(int objectId) {
+int countAllItemsOfType(int objectId,int depotContNr,int depotContNr2) {
 	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
 	int ret=0;
-	for (contNr=0;contNr<8;contNr++) {
+	for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+		if (contNr==depotContNr || contNr==depotContNr2) continue;
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
 		if (cont->flagOnOff)
@@ -605,7 +618,7 @@ void depotDeposit(CConfigData *config) {
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
 		int objectToMove = itemProxy.getObjectId(config->depotTrigger[i].itemName);
 		int contNr;
-		int totalQty=countAllItemsOfType(objectToMove);
+		int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
 		
 		if (config->depotTrigger[i].when>config->depotTrigger[i].remain) {
 			// deposit to depot
@@ -647,21 +660,31 @@ void depotDeposit(CConfigData *config) {
 		}
 		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon) {
 			// pickup from depot
-			int qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove);
+			int currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
+			int qtyToPickup=config->depotTrigger[i].remain-currentQty;
 			int movesInItemation=1;
 			while (qtyToPickup>0&&movesInItemation>0) {
 				movesInItemation=0;
 				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-					if (contNr==depotContNr) continue;
+					if (contNr==depotContNr || contNr==depotContNr2) continue;
 
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size) {
 						int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup,depotContNr,depotContNr2);
-						if (movedQty) movesInItemation++;
+						if (movedQty) {
+							movesInItemation++;
+							deleteAndNull(cont);
+							break;
+						}
 					}
 					deleteAndNull(cont);
 				}
-				qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove);
+				currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
+				// halves amount to take each time it fails to pick up any
+				if (config->depotTrigger[i].remain-currentQty>=qtyToPickup && movesInItemation)
+					qtyToPickup=qtyToPickup/2;
+				else
+					qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
 			} // while picking up 
 		} // if pickup from depot
 	}
@@ -669,15 +692,19 @@ void depotDeposit(CConfigData *config) {
 	
 	// all is finished :) - we can go back to the hunting area
 	if (!config->depotDropInsteadOfDepositon) {
-		if (reader.readContainer(depotContNr2)->flagOnOff){
+		CTibiaContainer *cont=reader.readContainer(depotContNr2);
+		if (cont->flagOnOff){
 			sender.closeContainer(depotContNr2);
 			CModuleUtil::waitForOpenContainer(depotContNr2,false);
 			Sleep(CModuleUtil::randomFormula(300,100));
 		}
-		if (reader.readContainer(depotContNr)->flagOnOff){
+		delete cont;
+		cont=reader.readContainer(depotContNr);
+		if (cont->flagOnOff){
 			sender.closeContainer(depotContNr);
 			CModuleUtil::waitForOpenContainer(depotContNr,false);
 		}
+		delete cont;
 	}
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	depotX=depotY=depotZ=0;
@@ -1268,6 +1295,7 @@ void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
 	if (rune) {
 		if (config->debug) registerDebug("Rune to fire found!");
 		sender.castRuneAgainstCreature(0x40+realContNr,rune->pos,rune->objectId,creatureId,2);
+		delete rune;
 	}
 } // fireRunesAgainstCreature()
 
@@ -1326,24 +1354,28 @@ int AttackCreature(CConfigData *config,int id){
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(id);
 	int old =reader.getAttackedCreature();
-	if (attackedCh&&reader.getAttackedCreature()!=id){
-		reader.cancelAttackCoords();
-		Sleep(200);
-		reader.setRemainingTilesToGo(0);
-		reader.writeCreatureDeltaXY(self->nr,0,0);
-		reader.setAttackedCreature(id);
-		sender.attack(id);
-		if (config->debug&&id){
-			char buf[128];
-			sprintf(buf,"used to be=%d, set to=%d, now attacking=%d,hp=%d",old,id,reader.getAttackedCreature(),attackedCh->hpPercLeft);
-			registerDebug(buf);
+	if (attackedCh){
+		if (reader.getAttackedCreature()!=id){
+			reader.cancelAttackCoords();
+			Sleep(200);
+			reader.setRemainingTilesToGo(0);
+			reader.writeCreatureDeltaXY(self->nr,0,0);
+			reader.setAttackedCreature(id);
+			sender.attack(id);
+			currentPosTM=time(NULL);
+			if (config->debug&&id){
+				char buf[128];
+				sprintf(buf,"used to be=%d, set to=%d, now attacking=%d,hp=%d",old,id,reader.getAttackedCreature(),attackedCh->hpPercLeft);
+				registerDebug(buf);
+			}
+			deleteAndNull(self);
+			deleteAndNull(attackedCh);
+			return 1;
 		}
-		deleteAndNull(self);
 		deleteAndNull(attackedCh);
-		return 1;
 	}
 	deleteAndNull(self);
-	deleteAndNull(attackedCh);
+	//attackedCh is NULL
 	return 0;
 }
 //returns the smallest radius of a square centred at x1,y1 and covers x2,y2
@@ -1555,10 +1587,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
 			if (config->lootFood) {
 				int p;
-				for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++) {
-					droppedLootArray[droppedLootArrayCount++]=itemProxy.getItemsFoodArray()->GetAt(p);
+				CUIntArray *foods=itemProxy.getItemsFoodArray();
+				for (p=0;p<foods->GetSize();p++) {
+					droppedLootArray[droppedLootArrayCount++]=foods->GetAt(p);
 					if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
 				}
+				//taken care of. delete foods;
 			}
 			if (config->lootGp) {
 				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("GP");
@@ -1597,9 +1631,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			Start attack process
 			******/
 			
-			CTibiaCharacter *attackedCh = NULL;
-			if (currentlyAttackedCreatureNr!=-1)
-				attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+			CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
 			
 			/**
 			* Check if currently attacked creature is alive still
@@ -1629,166 +1661,168 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 			if (currentlyAttackedCreatureNr!=-1&&(self->cap>config->capacityLimit||config->eatFromCorpse)&&(config->lootFood||config->lootGp||config->lootWorms||config->lootCustom||config->eatFromCorpse)) {
 				// now let's see whether creature is still alive or not
-				if (attackedCh) {
-					if (!attackedCh->hpPercLeft&&
-						abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=10&&
-						attackedCh->z==self->z) {
+				if (!attackedCh->hpPercLeft&&
+					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=10&&
+					attackedCh->z==self->z) {
 
-						if (config->debug) registerDebug("Looter: Creature is dead.");
-						FILE *lootStatsFile = NULL;
-						// time,rand,creature,name,pos,objectId,count,bagopen,checksum
-						int killNr=rand();
+					if (config->debug) registerDebug("Looter: Creature is dead.");
+					FILE *lootStatsFile = NULL;
+					// time,rand,creature,name,pos,objectId,count,bagopen,checksum
+					int killNr=rand();
 
-						int lootContNr[2];
-						lootContNr[0] = CModuleUtil::findNextClosedContainer();
-						if (config->lootInBags)
-							lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
+					int lootContNr[2];
+					lootContNr[0] = CModuleUtil::findNextClosedContainer();
+					if (config->lootInBags)
+						lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
 
-						if (config->gatherLootStats) {
-							lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
-						}
-						
-						// first make sure all needed containers are closed
-						
-						currentlyAttackedCreatureNr=-1;
-						// attacked creature dead, near me, same floor
-						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
+					if (config->gatherLootStats) {
+						lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
+					}
+					
+					// first make sure all needed containers are closed
+					
+					currentlyAttackedCreatureNr=-1;
+					// attacked creature dead, near me, same floor
+					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 
-						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-						deleteAndNull(self);
-						self = reader.readSelfCharacter();
-						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
-						if (1){
-							// Open corpse to container, wait to get to corpse on ground and wait for open
+					CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
+					deleteAndNull(self);
+					self = reader.readSelfCharacter();
+					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+					if (1){
+						// Open corpse to container, wait to get to corpse on ground and wait for open
+						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
+
+						if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
+							//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
 							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
+							CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
+						}
 
-							if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
-								//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
-								sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
-								CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
+						//Normal looting if autolooter not enabled
+						if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
+							//sender.sendTAMessage("[debug] opened container");
+							if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
+							if (config->lootInBags) {
+								if (config->debug) registerDebug("Looter: Opening bag (second container)");
+								CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
+								int itemNr;
+								for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
+									CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
+									if (insideItem->objectId==itemProxy.getValueForConst("bagbrown")) {
+										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
+										sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
+										if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
+											if (config->debug) registerDebug("Failed opening bag");
+										break;
+									}
+								}
+								deleteAndNull(cont);
 							}
-
-							//Normal looting if autolooter not enabled
-							if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
-								//sender.sendTAMessage("[debug] opened container");
-								if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
-								if (config->lootInBags) {
-									if (config->debug) registerDebug("Looter: Opening bag (second container)");
-									CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
-									int itemNr;
-									for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
-										CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
-										if (insideItem->objectId==itemProxy.getValueForConst("bagbrown")) {
-											globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
-											sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
-											if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
-												if (config->debug) registerDebug("Failed opening bag");
-											break;
-										}
-									}
-									deleteAndNull(cont);
-								}
-								if (lootStatsFile) {
-									int checksum;
-									int tm=time(NULL);
-									for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
-										int contNr=lootContNr[contNrInd];
-										//sender.sendTAMessage("[debug] stats from conts");
-										CTibiaContainer *lootCont = reader.readContainer(contNr);
-										if(lootCont->flagOnOff){
-											if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
-											int itemNr;
-											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
-												int i,len;
-												char statChName[128];
-												for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
-													if (statChName[i]=='[')
-														statChName[i]='\0';
-												}
-												
-												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
-												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
-											}
-										}
-										deleteAndNull(lootCont);
-									}
-									//free(lootCont);
-									if (config->debug) registerDebug("Container data registered.");
-								}
-								
-								CUIntArray acceptedItems;
-
-								if (config->lootGp)
-									acceptedItems.Add(itemProxy.getValueForConst("GP"));
-									acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
-									acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
-								if (config->lootWorms)
-									acceptedItems.Add(itemProxy.getValueForConst("worms"));
-								if (config->lootCustom) {
-									int i;
-									for (i=0;i<itemProxy.getItemsLootedCount();i++)
-										acceptedItems.Add(itemProxy.getItemsLootedId(i));
-								}
-								if (config->lootFood) {
-									int p;
-									for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
-										acceptedItems.Add(itemProxy.getItemsFoodArray()->GetAt(p));
-								}
-								int lootTakeItem;
-								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
+							if (lootStatsFile) {
+								int checksum;
+								int tm=time(NULL);
+								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
 									int contNr=lootContNr[contNrInd];
-
-									if (contNrInd==0) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-									else if (contNrInd==1) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveingBag;
+									//sender.sendTAMessage("[debug] stats from conts");
 									CTibiaContainer *lootCont = reader.readContainer(contNr);
-									//sender.sendTAMessage("[debug] looting");
 									if(lootCont->flagOnOff){
-										if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
-										for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
-											if (self->cap>config->capacityLimit) {
-												CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+										if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
+										int itemNr;
+										for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
+											int i,len;
+											char statChName[128];
+											for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
+												if (statChName[i]=='[')
+													statChName[i]='\0';
 											}
-											if (config->eatFromCorpse) {
-												CModuleUtil::eatItemFromContainer(contNr);
-											}
+											
+											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
+											if (checksum<0) checksum*=-1;
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										}
-										if (config->dropNotLooted) {
-											dropAllItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
-										}
-										
-										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closingBag;
-										//sender.sendTAMessage("[debug] closing bag");
-										sender.closeContainer(contNr);
-										CModuleUtil::waitForOpenContainer(contNr,false);
 									}
 									deleteAndNull(lootCont);
 								}
-								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-								if (config->debug) registerDebug("End of looting");
-							} // if waitForContainer(9)
-							else{
-								char buf[128];
-								sprintf(buf,"Failed to open Item ID:%d",corpseId);
-								if (config->debug) registerDebug(buf);
+								//free(lootCont);
+								if (config->debug) registerDebug("Container data registered.");
 							}
-							if (lootStatsFile)  {
-								fclose(lootStatsFile);
+							
+							CUIntArray acceptedItems;
+
+							if (config->lootGp)
+								acceptedItems.Add(itemProxy.getValueForConst("GP"));
+								acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
+								acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
+							if (config->lootWorms)
+								acceptedItems.Add(itemProxy.getValueForConst("worms"));
+							if (config->lootCustom) {
+								int i;
+								for (i=0;i<itemProxy.getItemsLootedCount();i++)
+									acceptedItems.Add(itemProxy.getItemsLootedId(i));
 							}
+							if (config->lootFood) {
+								int p;
+								CUIntArray *foods=itemProxy.getItemsFoodArray();
+								for (p=0;p<foods->GetSize();p++){
+									acceptedItems.Add(foods->GetAt(p));
+								}
+								//taken care of. delete foods;
+							}
+							int lootTakeItem;
+							for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
+								int contNr=lootContNr[contNrInd];
+
+								if (contNrInd==0) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
+								else if (contNrInd==1) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveingBag;
+								CTibiaContainer *lootCont = reader.readContainer(contNr);
+								//sender.sendTAMessage("[debug] looting");
+								if(lootCont->flagOnOff){
+									if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
+									for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
+										if (self->cap>config->capacityLimit) {
+											CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+										}
+										if (config->eatFromCorpse) {
+											CModuleUtil::eatItemFromContainer(contNr);
+											CModuleUtil::eatItemFromContainer(contNr);
+										}
+									}
+									if (config->dropNotLooted) {
+										dropAllItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
+									}
+									
+									globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closingBag;
+									//sender.sendTAMessage("[debug] closing bag");
+									sender.closeContainer(contNr);
+									CModuleUtil::waitForOpenContainer(contNr,false);
+								}
+								deleteAndNull(lootCont);
+							}
+							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+							if (config->debug) registerDebug("End of looting");
+						} // if waitForContainer(9)
+						else{
+							char buf[128];
+							sprintf(buf,"Failed to open Item ID:%d",corpseId);
+							if (config->debug) registerDebug(buf);
 						}
-						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-						deleteAndNull(attackedCh);
-						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & attackedCh=NULL");
-						currentlyAttackedCreatureNr=-1;
-						attackedCh = NULL;
+						if (lootStatsFile)  {
+							fclose(lootStatsFile);
+						}
 					}
-					else {// if creatureIsNotDead
-						char debugBuf[256];
-						sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
-						if (config->debug) registerDebug(debugBuf);
-					}
-				} // if attackedCh
+					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+					if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
+					currentlyAttackedCreatureNr=-1;
+					deleteAndNull(attackedCh);
+					attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+				}
+				else {// if creatureIsNotDead
+					char debugBuf[256];
+					sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
+					if (config->debug) registerDebug(debugBuf);
+				}
 			}
 
 			//only time currentlyAttackedCreatureNr can = -1 is if looter has run(fixes skipping monster)
@@ -1802,7 +1836,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				sprintf(buf,"Tmp:currentlyAttackedCreatureNr=%d",currentlyAttackedCreatureNr);
 				registerDebug(buf);
 			}
-			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(!attackedCh||attackedCh->hpPercLeft)) {
+			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(attackedCh&&attackedCh->hpPercLeft)) {
 				char buf[256];
 				sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
 				if (config->debug) registerDebug(buf);
@@ -1812,21 +1846,31 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				char debugBuf[256];
 				sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
 				//AfxMessageBox(debugBuf);
-
+				if (config->debug) registerDebug("Incrementing failed attempts since something cancelled attacking creature.");
 			}
 			else if (reader.getAttackedCreature()&&attackedCh&&reader.getAttackedCreature()!=attackedCh->tibiaId){
 				//wis: keep player-chosen creature as attackee
-				currentlyAttackedCreatureNr=reader.getCharacterByTibiaId(reader.getAttackedCreature())->nr;
-				char buf[128];
-				sprintf(buf,"Setting attacked creature to %d [1]",currentlyAttackedCreatureNr);
-				if (config->debug) registerDebug(buf);
+				CTibiaCharacter *attCh= reader.getCharacterByTibiaId(reader.getAttackedCreature());
+				if (attCh){
+					currentlyAttackedCreatureNr=attCh->nr;
+					char buf[128];
+					sprintf(buf,"Setting attacked creature to %d [1]",currentlyAttackedCreatureNr);
+					if (config->debug) registerDebug(buf);
+					deleteAndNull(attCh);
+				}
+				//attCh is NULL
+
 			}
 			//if autofollow on, still not <=1 from creature and standing for > 2s refresh attack and add fail attack
 			//wait .5 secs between failed attacks
 			else if (currentlyAttackedCreatureNr!=-1&&config->autoFollow&&creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y)>1&&time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks)){
 				if (creatureList[currentlyAttackedCreatureNr].tibiaId){
 					creatureList[currentlyAttackedCreatureNr].failedAttacks++;
-					sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);}
+					sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);
+					char buf[256];
+					sprintf(buf,"Incrementing failed attempts for not reaching target in time. time:%d lastPosChange:%d, %d",time(NULL),currentPosTM,time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks));
+					if (config->debug) registerDebug(buf);
+				}
 			}
 
 			deleteAndNull(attackedCh);
@@ -1914,6 +1958,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (creatureList[crNr].failedAttacks>=3 && !creatureList[crNr].isInvisible && strcmp(creatureList[crNr].name,"Warlock") && strcmp(creatureList[crNr].name,"Infernalist")){
 						creatureList[crNr].isIgnoredUntil=time(NULL)+30;
 						creatureList[crNr].failedAttacks=0;
+						if (config->debug) registerDebug("Ignore creatures with >=3 failed attacks");
 					} //else if creature attacking us from 1 away but ignored for <5 mins, unignore
 					else if (creatureList[crNr].isIgnoredUntil-time(NULL)<9999&&!creatureList[crNr].isInvisible&&(creatureList[crNr].distance(self->x,self->y)<=1&&currentlyAttackedCreatureNr!=-1)){
 						creatureList[crNr].isIgnoredUntil=0;
@@ -2200,7 +2245,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				switch (mapUsed) {
 					// Tibia Auto map chosen
 				case 0: {
-					char buf[128];
+					char buf[256];
 					int path[15];
 					
 					deleteAndNull(self);

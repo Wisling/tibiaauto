@@ -207,10 +207,11 @@ struct tibiaMessage *triggerMessage(){
 		memcpy(nickBuf,mess.payload+12,nickLen);
 		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
 		
-		CTibiaCharacter *temp = reader.readSelfCharacter();
+		CTibiaCharacter *self = reader.readSelfCharacter();
 		//T4: Name in temp structure is empty, bug?
-		CTibiaCharacter *self = reader.getCharacterByTibiaId(temp->tibiaId);
-		delete temp;
+		//CTibiaCharacter *self = reader.getCharacterByTibiaId(temp->tibiaId);
+		//if (!self) return NULL;
+		//delete temp;
 
 		if (strcmpi(nickBuf,self->name)!=0 && strcmpi(nickBuf,"Tibia Auto")!=0){
 			delete self;
@@ -257,6 +258,7 @@ int triggerNoSpace(){
 		CTibiaContainer *container = reader.readContainer(pos);
 		if (container->flagOnOff && container->itemsInside < container->size){
 			ret = 0;
+			delete container;
 			break;
 		}
 		delete container;
@@ -638,7 +640,9 @@ int triggerOutOfFood()
 	for (pos=0;pos<10;pos++){		
 		CTibiaContainer *container = reader.readContainer(pos);
 		if (container->flagOnOff){			
-			CTibiaItem *item = CModuleUtil::lookupItem(pos,itemProxy.getItemsFoodArray());
+			CUIntArray *foods=itemProxy.getItemsFoodArray();
+			CTibiaItem *item = CModuleUtil::lookupItem(pos,foods);
+			//taken care of. delete foods;
 			if (item != NULL)
 			{					
 				delete item;

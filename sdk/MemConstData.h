@@ -62,7 +62,8 @@ public:
 	int m_memAddressRevealCName3;
 	int m_memAddressRevealCName4;
 	int m_memAddressSelfId;
-	int m_memAddressMapStart;	
+	int m_memAddressMapStart;
+	int m_memAddressMiniMapStart;
 	int m_memAddressCurrentTm;
 	int m_memAddressTilesToGo;
 	int m_memAddressSkillFist;

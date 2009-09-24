@@ -62,7 +62,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CConfigData *config = (CConfigData *)lpParam;
-	char buf[128];
+	char buf[256];
 	while (!toolThreadShouldStop) {	
 		Sleep(200);
 		int sorted=0;
@@ -147,7 +147,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											}
 										}
 									}
-									
+									delete fullCont;
+
 									//sprintf(buf, "Full bag %sfound!", found?"":"not ");
 									//AfxMessageBox(buf);
 									if (!found) {
@@ -160,6 +161,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										itemNr = 0;
 									}
 								}
+							delete sortCont;
+							delete destCont;
 							sortCont = reader.readContainer(contNr);
 							destCont = reader.readContainer(i);
 							int slotsChecked = count - itemNr;

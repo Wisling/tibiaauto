@@ -234,7 +234,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						Sleep(CModuleUtil::randomFormula(600,200));
 						offsetX=offsetY=-2;
 					}
-				}												
+				}	
+				delete itemLeftHand;
+				delete itemRightHand;
 
 				
 			}

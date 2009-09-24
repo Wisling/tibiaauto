@@ -244,7 +244,10 @@ char *CMod_bankerApp::getConfigParamName(int nr) {
 int findBanker(CConfigData *config) {
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z) return 1; 
+	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z){
+		delete self; 
+		return 1;
+	}
 	for (int x = 0; x < 10; x++) {
 		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.position[x].bankerX, config->banker.position[x].bankerY, config->banker.position[x].bankerZ, 0, config->path);
 		if (nearestBank.x && nearestBank.y && nearestBank.z) {
@@ -260,6 +263,7 @@ int findBanker(CConfigData *config) {
 			return 0;
 		}
 	}
+	delete self;
 	return -1;
 }
 
@@ -273,10 +277,8 @@ int moveToBanker(CConfigData *config) {
 		delete self;
 		return 1;
 	}
-	else {
-		delete self;
-		return 0;
-	}
+	delete self;
+	return 0;
 }
 
 void getBalance() {
@@ -301,12 +303,12 @@ int depositGold() {
 			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
 			if (item->objectId == goldId || item->objectId == platId || item->objectId == crystalId) {
 				foundInBag = contNr;
-				contNr = 16;
-				slotNr = 0;
+				goto exitLoop;
 			}
 		}
+		delete cont;
 	}
-
+exitLoop:
 	Sleep (RandomTimeBankerSay(strlen("hi")));
 	sender.say("hi");
 	Sleep(500);//Give time for NPC window to open

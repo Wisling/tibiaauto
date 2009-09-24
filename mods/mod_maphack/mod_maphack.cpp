@@ -97,6 +97,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				lastFishY=self->y;
 				lastFishZ=self->z;
 			}
+			delete self;
 		}
 
 		if (config->revealCName&&iter%5==0)
@@ -156,6 +157,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 				int relToCell=reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
 
+
 				for (x=minNewX;x*sigX<maxNewX*sigX;x+=sigX){
 					for (y=minY;y<=maxY;y++){
 						for(z=minZ;z<=maxZ;z++){
@@ -172,7 +174,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 								CTibiaTile *tileData = reader.getTibiaTile(tileId);
 								if(tileData->minimapColor && mapColour==-1) mapColour=tileData->minimapColor;
-								if(tileData->speed && mapSpeed==-1) mapSpeed=tileData->speed;
+								if(tileData->speed && tileData->speed<256&& mapSpeed==-1) mapSpeed=tileData->speed;
 								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
 							}
 							if (mapColour!=-1 && mapSpeed!=-1){
@@ -202,7 +204,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								CTibiaTile *tileData = reader.getTibiaTile(tileId);
 								if(tileData->minimapColor && mapColour==-1)
 									mapColour=tileData->minimapColor;
-								if(tileData->speed && mapSpeed==-1) mapSpeed=tileData->speed;
+								if(tileData->speed && tileData->speed<256&& mapSpeed==-1) mapSpeed=tileData->speed;
 								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
 							}
 							if (mapColour!=-1 && mapSpeed!=-1){
@@ -232,7 +234,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 								CTibiaTile *tileData = reader.getTibiaTile(tileId);
 								if(tileData->minimapColor && mapColour==-1) mapColour=tileData->minimapColor;
-								if(tileData->speed && mapSpeed==-1) mapSpeed=tileData->speed;
+								if(tileData->speed && tileData->speed<256 && mapSpeed==-1) mapSpeed=tileData->speed;
 								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
 							}
 							if (mapColour!=-1 && mapSpeed!=-1){

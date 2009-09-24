@@ -160,7 +160,11 @@ int findNextClosedContainer(int afterCont=-1)
 	int targetBag;
 	for (targetBag=afterCont+1;targetBag<memConstData.m_memMaxContainers;targetBag++){
 		container = reader.readContainer(targetBag);
-		if (!container->flagOnOff) break;
+		if (!container->flagOnOff){
+			delete container;
+			break;
+		}
+		delete container;
 	}
 	
 	if (targetBag == memConstData.m_memMaxContainers){

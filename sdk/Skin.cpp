@@ -86,7 +86,7 @@ void CSkin::SetButtonSkin(CButtonST &newButton)
 {
 	try {
 		newButton.SetFlat(FALSE, FALSE);
-		newButton.SetColor(0, RGB(skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue), FALSE);
+		newButton.SetColor(0, RGB(min(255,skin.m_ButtonFaceRedValue+30), min(255,skin.m_ButtonFaceGreenValue+30), min(255,skin.m_ButtonFaceBlueValue+30)), FALSE);
 		newButton.SetColor(1, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
 		newButton.SetColor(2, RGB(skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue), FALSE);
 		newButton.SetColor(3, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);

@@ -75,8 +75,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (config->moveFromHandToCont) {
 			// left hand
 			CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
-			int contNr = 0;
-			CTibiaContainer *cont = reader.readContainer(contNr);
+			int contNr;
+			CTibiaContainer *cont;
 			if (item->objectId==itemProxy.getValueForConst("fish")) {
 				// fish in left hand - move to first open container
 				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
@@ -85,10 +85,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
 						contNr=memConstData.m_memMaxContainers;
 					}
+					delete cont;
 				}
 			}
 
 			// right hand
+			delete item;
 			item = reader.readItem(memConstData.m_memAddressRightHand);
 			if (item->objectId==itemProxy.getValueForConst("fish")) {
 				// fish in right hand - move to first open container
@@ -98,12 +100,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						sender.moveObjectBetweenContainers(item->objectId,0x05,0,0x40+contNr,0,item->quantity?item->quantity:1);
 						contNr=memConstData.m_memMaxContainers;
 					}
+					delete cont;
 				}
 			}
 			delete item;
-			delete cont;
 		}	
 		
+		delete self;
 		// refresh self to have correct cap
 		self = reader.readSelfCharacter();
 		// if cap check enabled, 
@@ -121,13 +124,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					break;
 				}
 				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
-				delete item;
 			}
 		}
 
 		int fishingRodCont=0xa;
 		int fishingRodPos=0;
-		if (reader.readItem(memConstData.m_memAddressSlotArrow)->objectId != itemProxy.getValueForConst("fishingRod")) {
+		CTibiaItem *itemArrow=reader.readItem(memConstData.m_memAddressSlotArrow);
+		if (itemArrow->objectId != itemProxy.getValueForConst("fishingRod")) {
 			CUIntArray itemsAccepted;
 			int contNr;
 			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
@@ -140,9 +143,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					break;
 				}
 				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
-				delete item;
 			}
 		}
+		delete itemArrow;
 		// now find "random" water field with a fish
 		if (continueFishing){
 			int offsetX,offsetY=0;
