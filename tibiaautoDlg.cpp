@@ -480,7 +480,10 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		char *loggedCharName = reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		sprintf(buf,"Logged as: %s",loggedCharName);
 		free(loggedCharName);
-		m_loginName.SetWindowText(buf);
+		CString currentDisplay;
+		m_loginName.GetWindowText(currentDisplay);
+		if (currentDisplay != buf)
+			m_loginName.SetWindowText(buf);
 		shutdownCounter--;						
 		if (shutdownCounter<-100000) shutdownCounter=-123;
 		if (shutdownCounter==0)
@@ -680,30 +683,54 @@ void CTibiaautoDlg::OnToolAutofish()
 
 void CTibiaautoDlg::refreshToolInfo()
 {	
-	m_runeMaker.SetCheck(m_moduleRuneMaker->isStarted());
-	m_autoGo.SetCheck(m_moduleAutoGo->isStarted());
-	m_autoFish.SetCheck(m_moduleFisher->isStarted());
-	m_autoAttack.SetCheck(m_moduleAutoAttack->isStarted());
-	m_autoUh.SetCheck(m_moduleUH->isStarted());
-	m_spellCaster.SetCheck(m_moduleSpellCaster->isStarted());
-	m_autoAim.SetCheck(m_moduleAim->isStarted());
-	m_fluidDrinker.SetCheck(m_moduleFluid->isStarted());
-	m_ammoRestack.SetCheck(m_moduleRestack->isStarted());
-	m_autoLooter.SetCheck(m_moduleLooter->isStarted());
-	m_autoRespond.SetCheck(m_moduleResponder->isStarted());
-	m_mapHack.SetCheck(m_moduleMapHack->isStarted());
-	m_light.SetCheck(m_moduleLight->isStarted());
-	m_grouping.SetCheck(m_moduleGrouping->isStarted());
-	m_tradeMon.SetCheck(m_moduleTradeMon->isStarted());
-	m_eater.SetCheck(m_moduleEater->isStarted());
-	m_creatureInfo.SetCheck(m_moduleCreatureInfo->isStarted());
-	m_antilogout.SetCheck(m_moduleAntylogout->isStarted());
-	m_fps.SetCheck(m_moduleFps->isStarted());
-	m_login.SetCheck(m_moduleLogin->isStarted());
-	m_xray.SetCheck(m_moduleXRay->isStarted());
-	m_sorter.SetCheck(m_moduleSorter->isStarted());
-	m_banker.SetCheck(m_moduleBanker->isStarted());
-	m_seller.SetCheck(m_moduleSeller->isStarted());
+	if (m_runeMaker.GetCheck() != m_moduleRuneMaker->isStarted())
+		m_runeMaker.SetCheck(m_moduleRuneMaker->isStarted());
+	if (m_autoGo.GetCheck() != m_moduleAutoGo->isStarted())
+		m_autoGo.SetCheck(m_moduleAutoGo->isStarted());
+	if (m_autoFish.GetCheck() != m_moduleFisher->isStarted())
+		m_autoFish.SetCheck(m_moduleFisher->isStarted());
+	if (m_autoAttack.GetCheck() != m_moduleAutoAttack->isStarted())
+		m_autoAttack.SetCheck(m_moduleAutoAttack->isStarted());
+	if (m_autoUh.GetCheck() != m_moduleUH->isStarted())
+		m_autoUh.SetCheck(m_moduleUH->isStarted());
+	if (m_spellCaster.GetCheck() != m_moduleSpellCaster->isStarted())
+		m_spellCaster.SetCheck(m_moduleSpellCaster->isStarted());
+	if (m_autoAim.GetCheck() != m_moduleAim->isStarted())
+		m_autoAim.SetCheck(m_moduleAim->isStarted());
+	if (m_fluidDrinker.GetCheck() != m_moduleFluid->isStarted())
+		m_fluidDrinker.SetCheck(m_moduleFluid->isStarted());
+	if (m_ammoRestack.GetCheck() != m_moduleRestack->isStarted())
+		m_ammoRestack.SetCheck(m_moduleRestack->isStarted());
+	if (m_autoLooter.GetCheck() != m_moduleLooter->isStarted())
+		m_autoLooter.SetCheck(m_moduleLooter->isStarted());
+	if (m_autoRespond.GetCheck() != m_moduleResponder->isStarted())
+		m_autoRespond.SetCheck(m_moduleResponder->isStarted());
+	if (m_mapHack.GetCheck() != m_moduleMapHack->isStarted())
+		m_mapHack.SetCheck(m_moduleMapHack->isStarted());
+	if (m_light.GetCheck() != m_moduleLight->isStarted())
+		m_light.SetCheck(m_moduleLight->isStarted());
+	if (m_grouping.GetCheck() != m_moduleGrouping->isStarted())
+		m_grouping.SetCheck(m_moduleGrouping->isStarted());
+	if (m_tradeMon.GetCheck() != m_moduleTradeMon->isStarted())
+		m_tradeMon.SetCheck(m_moduleTradeMon->isStarted());
+	if (m_eater.GetCheck() != m_moduleEater->isStarted())
+		m_eater.SetCheck(m_moduleEater->isStarted());
+	if (m_creatureInfo.GetCheck() != m_moduleCreatureInfo->isStarted())
+		m_creatureInfo.SetCheck(m_moduleCreatureInfo->isStarted());
+	if (m_antilogout.GetCheck() != m_moduleAntylogout->isStarted())
+		m_antilogout.SetCheck(m_moduleAntylogout->isStarted());
+	if (m_fps.GetCheck() != m_moduleFps->isStarted())
+		m_fps.SetCheck(m_moduleFps->isStarted());
+	if (m_login.GetCheck() != m_moduleLogin->isStarted())
+		m_login.SetCheck(m_moduleLogin->isStarted());
+	if (m_xray.GetCheck() != m_moduleXRay->isStarted())
+		m_xray.SetCheck(m_moduleXRay->isStarted());
+	if (m_sorter.GetCheck() != m_moduleSorter->isStarted())
+		m_sorter.SetCheck(m_moduleSorter->isStarted());
+	if (m_banker.GetCheck() != m_moduleBanker->isStarted())
+		m_banker.SetCheck(m_moduleBanker->isStarted());
+	if (m_seller.GetCheck() != m_moduleSeller->isStarted())
+		m_seller.SetCheck(m_moduleSeller->isStarted());
 }
 
 void CTibiaautoDlg::OnSave()
