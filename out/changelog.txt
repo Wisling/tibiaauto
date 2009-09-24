@@ -1,5 +1,6 @@
 1.20.3, ??.08.2009
 Enhancments
+ Kernal: fixed an error destroying .skin files when they were loaded and set.
  Item Config: fixed loot list Items not being displayed
  Kernal: Provided for more depressed-looking buttons
  Kernal: added primary skinning ability for dialogs - color schemes
