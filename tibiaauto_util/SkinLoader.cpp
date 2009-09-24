@@ -323,14 +323,12 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		}
 		fclose(f);
 		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-		if (saveSeperate) {
-			theSerializer->writeNode(outfile, *doc);
-		}
-		delete outfile;
+		theSerializer->writeNode(outfile, *doc);
 
 		outfile = new xercesc::LocalFileFormatTarget(currentPathBuf) ;
-		theSerializer->writeNode(outfile, *doc);			
-		//theSerializer->release();
+		theSerializer->writeNode(outfile, *doc);
+		doc->release();
+		delete parser;
 		delete outfile;
 		delete theSerializer;
 	}
