@@ -80,6 +80,7 @@ public:
 
 	CTibiaTile *getTibiaTile(int tileNr);
 	void setTibiaTile(int tileNr, CTibiaTile *newTile);
+	void cleanupTibiaTiles();
 
 	CSkin loadSkin(CString);
 	CSkin loadCurrentSkin(CString);

@@ -711,6 +711,19 @@ void CMemReaderProxy::setTibiaTile(int tileNr, CTibiaTile *newTile)
 	} 
 }
 
+void CMemReaderProxy::cleanupTibiaTiles()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"cleanupTibiaTiles");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
 CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
 	typedef CSkin (__stdcall *Proto_fun)(CString);
 	if (dllModule)

@@ -478,3 +478,12 @@ void CTibiaItemProxy::setLootItemId(int index, int objectId) {
 		}
 	} 
 }
+void CTibiaItemProxy::cleanup() {
+	typedef void (*Proto_fun)();
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemCleanup");
+		if (fun) {
+			fun();
+		}
+	} 
+}

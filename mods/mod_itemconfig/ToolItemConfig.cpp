@@ -116,8 +116,15 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 		m_lootedList.AddString(buf);
 		m_testTree.InsertItem(buf);
 	}
-
-	//HTREEITEM item1=m_testTree.InsertItem("hi");
+/*
+	HTREEITEM item1=m_testTree.InsertItem("hi");;
+	for (i=0;i<itemProxy.getItemsLootedCount();i++)
+	{
+		sprintf(buf,"(0x%x) %s",itemProxy.getItemsLootedId(i),itemProxy.getItemsLooted(i));
+		m_testTree.InsertItem(buf,item1);
+	}
+*/	
+	
 }
 
 BOOL CToolItemConfig::OnInitDialog() 

@@ -253,7 +253,7 @@ char *CMod_SellerApp::getVersion() {
 }
 
 int CMod_SellerApp::validateConfig(int showAlerts) {
-	char buf[128];
+	char buf[256];
 	if (m_configData->sellOnCap && m_configData->sellWhen < 1) {
 		if (showAlerts) AfxMessageBox("\"Sell when capacity is less than:\" amount must not be 0(zero)!!");
 		return 0;
@@ -683,6 +683,7 @@ int findSeller(CConfigData *config, int traderNum) {
 			return 0;
 		}
 	}
+	delete self;
 	return -1;
 }
 
@@ -691,17 +692,16 @@ int moveToSeller(CConfigData *config) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
+	delete self;
 	self = reader.readSelfCharacter();
 	if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
 		delete self;
 //		AfxMessageBox("Arrived at Seller");
 		return 1;
 	}
-	else {
-		delete self;
-//		AfxMessageBox("Still more to go...");
-		return 0;
-	}
+	delete self;
+//	AfxMessageBox("Still more to go...");
+	return 0;
 }
 
 int sellItems(CConfigData *config, int traderNum) {
@@ -740,9 +740,9 @@ int sellItems(CConfigData *config, int traderNum) {
 					}
 				}
 			}
+			delete cont;
 		}		
 	}
-	delete cont;
 	return done;
 }
 
@@ -844,17 +844,16 @@ bool shouldGo(CConfigData *config) {
 	//char buf[64];
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
-	CTibiaCharacter *self;
-	self = reader.readSelfCharacter();
+	CTibiaCharacter *self = reader.readSelfCharacter();
 
 
 	int count = 0;
 	bool should = false;
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i)) 
-			return true;
+			{delete self; return true;}
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
-			return true;
+			{delete self; return true;}
 		for (int j = 0; j < 32; j++) {
 			int objectId = itemProxy.getObjectId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId) {
@@ -881,6 +880,7 @@ bool shouldGo(CConfigData *config) {
 		}
 	}
 //	should?AfxMessageBox("Should go"):AfxMessageBox("Should not go");
+	delete self;
 	return should;
 }
 

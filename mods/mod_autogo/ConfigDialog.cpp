@@ -309,9 +309,9 @@ void CConfigDialog::disableControls()
 	m_outOfSpace.EnableWindow(false);	
 	
 	//m_status.EnableWindow(false);
-	m_curZ.EnableWindow(false);
-	m_curY.EnableWindow(false);
 	m_curX.EnableWindow(false);
+	m_curY.EnableWindow(false);
+	m_curZ.EnableWindow(false);
 	m_runawayZ.EnableWindow(false);
 	m_runawayY.EnableWindow(false);
 	m_runawayX.EnableWindow(false);
@@ -440,9 +440,9 @@ void CConfigDialog::enableControls()
 
 	
 	//m_status.EnableWindow(true);
-	m_curZ.EnableWindow(true);
-	m_curY.EnableWindow(true);
 	m_curX.EnableWindow(true);
+	m_curY.EnableWindow(true);
+	m_curZ.EnableWindow(true);
 	m_runawayZ.EnableWindow(true);
 	m_runawayY.EnableWindow(true);
 	m_runawayX.EnableWindow(true);
@@ -803,6 +803,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
+static int lastX=0,lastY=0,lastZ=0;
+
 void CConfigDialog::OnTimer(UINT nIDEvent) 
 {
 	if (nIDEvent==1001)
@@ -815,12 +817,17 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 		if (!m_enable.GetCheck())
 		{
-			sprintf(buf,"%d",self->x);
-			m_curX.SetWindowText(buf);
-			sprintf(buf,"%d",self->y);
-			m_curY.SetWindowText(buf);
-			sprintf(buf,"%d",self->z);
-			m_curZ.SetWindowText(buf);
+			if (lastX!=self->x || lastY!=self->y || lastZ!=self->z){
+				sprintf(buf,"%d",self->x);
+				m_curX.SetWindowText(buf);
+				sprintf(buf,"%d",self->y);
+				m_curY.SetWindowText(buf);
+				sprintf(buf,"%d",self->z);
+				m_curZ.SetWindowText(buf);
+				lastX=self->x;
+				lastY=self->y;
+				lastZ=self->z;
+			}
 			triggerMessage();
 		}else if (!m_triggerMessage.GetCheck()){
 			triggerMessage();

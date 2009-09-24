@@ -275,6 +275,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,self->x,self->y,self->z,1);
 						Sleep(CModuleUtil::randomFormula(config->sleep,200,0));
 						delete item;
+						delete cont;
 						break;
 					}											
 				}

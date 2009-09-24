@@ -275,7 +275,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					{
 						m_safe.DeleteItem(i);					
 						mustRun=1;
-						
+						delete container;
 						break;
 					}
 					
@@ -331,7 +331,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			
 			
 			SetTimer(1001,250,NULL);
-			
+			delete myself;
 								
 		}
 		break;
@@ -449,7 +449,7 @@ void CConfigDialog::OnDblclkToolRunemakerCont(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CConfigDialog::OnAddspelltolist() 
 {
-	char buf[1024];
+	char buf[1025];
 
 	int c=m_spells.GetItemCount();
 	int i=c;
@@ -473,7 +473,7 @@ void CConfigDialog::OnAddspelltolist()
 void CConfigDialog::OnLoadspellfromlist() 
 {
 
-	char buf[1024];
+	char buf[1025];
 
 	int c = m_spells.GetSelectionMark();
 

@@ -165,7 +165,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				RandomVariableHp((int)&config->lifeHp,MAKE,config);
 				sender.say(config->lifeSpell);
 				Sleep(700);
-				self = reader.readSelfCharacter();
 			}
 			else if(config->vitaSpell && self->hp<vitaHp && self->mana >= config->vitaSpellMana){
 				RandomVariableHp((int)&config->vitaHp,MAKE,config);
@@ -190,6 +189,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					sender.sendTAMessage("WARNING!!! Not enough mana to Heal!!!");
 				}
 			}
+			delete self;
+			self = reader.readSelfCharacter();
 		}			
 		else if(config->poisonSpell && (flags & 1 == 1)) {
 			for (int i = 0; i<6; i++) {

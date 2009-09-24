@@ -139,7 +139,7 @@ BOOL CConfigDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_enable);
-	
+
 	refreshFishStatus();
 
 	SetTimer(1001,250,NULL);

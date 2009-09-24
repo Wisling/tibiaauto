@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
-#define MAPDEBUG
+//#define MAPDEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -59,7 +59,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	CTibiaContainer *container = reader.readContainer(containerNr);
 	if (container->flagOnOff&&container->itemsInside>0)
 	{		
-        for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)		
+        for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)
 		{			
 			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
 			
@@ -69,10 +69,10 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos))
 				{
 					// item found!
-					CTibiaItem *retItem = new CTibiaItem();				
+					CTibiaItem *retItem = new CTibiaItem();
 					retItem->pos=itemNr;
 					retItem->objectId=item->objectId;
-					retItem->quantity=item->quantity;				
+					retItem->quantity=item->quantity;
 					
 					delete container;
 					return retItem;
@@ -377,6 +377,12 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
 		
+#ifdef MAPDEBUG
+		char buf[512];
+
+		sprintf(buf,"INPUT (%d,%d,%d) %d",endX,endY,endZ,endSpecialLocation);
+		mapDebug(buf);
+#endif
 
 	path[0]=0;
 	memset(path,0x00,sizeof(int)*15);
@@ -426,7 +432,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		closerEndY=pCloser.y;
 		closerEndZ=pCloser.z;
 #ifdef MAPDEBUG
-			char buf[128];
 			sprintf(buf,"Goint to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
 			mapDebug(buf);
 #endif
@@ -439,7 +444,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
 
 #ifdef MAPDEBUG	
-	char buf[512];
 	sprintf(buf,"============== (%d,%d,%d)->(%d,%d,%d) =========",startX,startY,startZ,endX,endY,endZ);
 	mapDebug(buf);
 #endif
@@ -468,7 +472,12 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		else{
 			// final point reached
 			//also clear out all remaining queue points
-			if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ) gotToEndPoint=max(queue->size(),200);
+			if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ){
+				gotToEndPoint=max(queue->size(),200);
+				endPoint.x=endX;
+				endPoint.y=endY;
+				endPoint.z=endZ;
+			}
 			// standing by the depot
 			if (endSpecialLocation&&
 				(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
@@ -478,10 +487,10 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			{
 				// endSpecialLocation found - where we stand is our "end point"
 				gotToEndPoint=max(queue->size(),200);
+				endPoint.x=x;
+				endPoint.y=y;
+				endPoint.z=z;
 			}
-			endPoint.x=x;
-			endPoint.y=y;
-			endPoint.z=z;
 		}
 			
 		/**
@@ -722,13 +731,18 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 
-		lastEndX=endX;
-		lastEndY=endY;
-		lastEndZ=endZ;
+		lastEndX=endPoint.x;
+		lastEndY=endPoint.y;
+		lastEndZ=endPoint.z;
 		pathTabLen=pathPos;
+#ifdef MAPDEBUG
+		sprintf(buf,"RETURN (%d,%d,%d)",endPoint.x,endPoint.y,endPoint.z);
+		mapDebug(buf);
+#endif
 
 		delete queue;
-		return point(endX,endY,endZ);
+
+		return point(endPoint.x,endPoint.y,endPoint.z);
 	}
 
 	delete queue;
@@ -866,10 +880,12 @@ void CModuleUtil::eatItemFromContainer(int contNr)
 	CUIntArray acceptedItems;
 	
 	int p;
-	for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
+	CUIntArray *foods=itemProxy.getItemsFoodArray();
+	for (p=0;p<foods->GetSize();p++)
 	{
-		acceptedItems.Add(itemProxy.getItemsFoodArray()->GetAt(p));
+		acceptedItems.Add(foods->GetAt(p));
 	}
+	//taken care of. delete foods;
 	
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -877,8 +893,10 @@ void CModuleUtil::eatItemFromContainer(int contNr)
 
 	if (item)
 	{
-		sender.useItemInContainer(item->objectId,0x40+contNr,item->pos);
-		Sleep(CModuleUtil::randomFormula(400,100));
+		for (int i=0;i<3&&i<item->quantity;i++){
+			sender.useItemInContainer(item->objectId,0x40+contNr,item->pos);
+			Sleep(CModuleUtil::randomFormula(400,100));
+		}
 		delete item;
 	}
 }
@@ -1412,8 +1430,10 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		while (iterCount-->0)
 		{
 			CTibiaCharacter* selfTmp=reader.readSelfCharacter();
-			if (selfTmp->z!=self->z)
+			if (selfTmp->z!=self->z){
+				delete selfTmp;
 				break;
+			}
 			Sleep(50);
 			delete selfTmp;
 		}
@@ -1432,7 +1452,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		delete mp;
 		//&&reader.getMemIntValue(itemProxy.getValueForConst("addrTilesToGo"))==0
 		//time to walk 1 sqm is inverse to the speed, double speed== half the time
-		int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3.5:1.5)*1000/self->walkSpeed);
+		int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3:1)*1000/self->walkSpeed)+300;
 		bool stoppedWalking=currentTm-lastStartChangeTm>=maxTileDelay;
 		if (pathSize>0&&(lastEndEqStart||stoppedWalking||currentTm-lastExecuteWalkTm>15000))
 		{
@@ -1507,9 +1527,13 @@ int CModuleUtil::findNextClosedContainer(int afterCont/*=-1*/)
 	int targetBag;
 	for (targetBag=afterCont+1;targetBag<memConstData.m_memMaxContainers;targetBag++){
 		container = reader.readContainer(targetBag);
-		if (!container->flagOnOff) break;
+		if (!container->flagOnOff){
+			delete container;
+			break;
+		}
+		delete container;
 	}
-	
+
 	if (targetBag == memConstData.m_memMaxContainers){
 		targetBag=memConstData.m_memMaxContainers-1;
 		sender.closeContainer(targetBag);

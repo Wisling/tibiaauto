@@ -107,7 +107,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (cont->flagOnOff && !groupTime[contNr]) groupTime[contNr]=time(NULL)+minOpenTime;
 			else if (!cont->flagOnOff) groupTime[contNr] = 0;
 
-			if (!groupTime[contNr] || time(NULL)<=groupTime[contNr]) continue;
+			if (!groupTime[contNr] || time(NULL)<=groupTime[contNr]){
+				delete cont;
+				continue;
+			}
 			int itemNrMoved;
 			for (itemNrMoved=cont->itemsInside-1;itemNrMoved>=0&&!movedSomething;itemNrMoved--)//Search backwards for a stackable item to move
 			{
@@ -147,9 +150,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							movedSomething=1;
 							
 						}
-					};
-				};
-			};
+					}
+				}
+			}
 			
 			delete cont;
 		}
