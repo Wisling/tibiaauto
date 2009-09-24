@@ -150,7 +150,6 @@ BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 
 void CToolMapShow::refreshVisibleMap()
 {
-	
 	CMemReaderProxy reader;
 	int x;
 	int y;
@@ -364,6 +363,9 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 			int tileArrUpDown[18][14];
 			int tileArrSpd[18][14];
 			int relToCell=reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
+//			char buf[111];
+//			sprintf(buf,"%d-%d %d",relToCell,relToCell%18,relToCell%(14*18)/18);
+//			AfxMessageBox(buf);
 
 			for (x=-8;x<=9;x++)
 			{
@@ -533,11 +535,11 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					int upDown=tibiaMap.getPointUpDown(prevXTele+x,prevYTele+y,prevZTele);
 					if(upDown==302){//teleporter
 						CPackSenderProxy sender;
-						char buf[128];
-						sprintf(buf,"Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)",prevXTele+x,prevYTele+y,prevZTele,self->x,self->y,self->z);
-						sender.sendTAMessage(buf);
 						if (tibiaMap.getDestPoint(prevXTele+x,prevYTele+y,prevZTele).x==0){
 							tibiaMap.setDestPoint(prevXTele+x,prevYTele+y,prevZTele,self->x,self->y,self->z);
+							char buf[128];
+							sprintf(buf,"Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)",prevXTele+x,prevYTele+y,prevZTele,self->x,self->y,self->z);
+							sender.sendTAMessage(buf);
 							break;
 						}
 					}else if(upDown>0) break;//other updown is closer and probably used
@@ -613,7 +615,6 @@ void CToolMapShow::mapPointClicked(int posX, int posY, int pos)
 BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam) 
 {
 
-	
 	return CDialog::OnCommand(wParam, lParam);
 }
 
@@ -630,7 +631,6 @@ void CToolMapShow::showTileDetails(int x, int y)
 	y-=10;
 
 	if (x<-8||x>9||y<-6||y>7) outOfRange=1;
-	
 	if (!outOfRange)	
 	{		
 		char subbuf[256];
@@ -643,7 +643,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 		{			
 			sprintf(subbuf," id=%d [%d,%d]",reader.mapGetPointItemId(point(x,y,0),pos),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,2));
 			strcat(buf,subbuf);
-		}		
+		}
 		m_tileInfo.SetWindowText(buf);
 	} else {
 		sprintf(buf,"Tile info: n/a");

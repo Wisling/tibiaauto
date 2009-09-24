@@ -278,6 +278,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			*/
 			moveLeftHandToContainer();
 			delete handItem;
+			delete myself;
 			continue;				
 		}
 		
@@ -291,6 +292,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				moveArrowItemToContainer();					
 				delete handItem;
 				delete arrowItem;
+				delete myself;
 				continue;
 			}				
 			delete arrowItem;
@@ -340,7 +342,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					 */
 					sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
 					Sleep(CModuleUtil::randomFormula(500,200));
-					delete handItem;				
+					delete handItem;
+					delete myself;
 					continue;	
 				}
 				delete handItem;
@@ -367,7 +370,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					}
 					sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
 					Sleep(CModuleUtil::randomFormula(500,200));
-					delete handItem;				
+					delete handItem;	
+					delete myself;
 					continue;	
 				}
 				delete handItem;
@@ -383,8 +387,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				// left hand is busy - we can't make any runes :(
 				delete item;
+				delete myself;
 				continue;
 			}
+			delete item;
 			
 			// step 0.a - check right hand
 			if (config->makeTwo)
@@ -400,14 +406,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			int blankContNrLeft=moveBlankRuneToHand(config,memConstData.m_memAddressLeftHand,0x06);			
 			
 			int blankContNrRight=-1;
-			if (blankContNrLeft<0)
+			if (blankContNrLeft<0){
+				delete myself;
 				continue;
+			}
 			
 			if (useRightHand)
 			{
 				blankContNrRight=moveBlankRuneToHand(config,memConstData.m_memAddressRightHand,0x05);
-				if (blankContNrRight<0)
+				if (blankContNrRight<0){
+					delete myself;
 					continue;
+				}
 			}
 			
 			

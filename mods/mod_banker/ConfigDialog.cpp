@@ -177,7 +177,7 @@ int initalizeBankers() {
 	
 	ifstream bankerFile (pathBuf, ios::in);
 	if (!bankerFile.is_open()) {	AfxMessageBox("File TibiaAuto-Bankers.csv Not found!"); bankerFile.close(); return 0;}
-	char buf[128] = {0};
+	char buf[129] = {0};
 	int bankerNum = 0;
 	int posNum = 0;
 	

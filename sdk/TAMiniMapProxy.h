@@ -22,6 +22,7 @@ public:
 	void findPathStop();
 	bool isFindPathStopped();
 	int getCurrentDistance();
+	void unloadMiniMaps();
 
 
 	CTAMiniMapProxy();

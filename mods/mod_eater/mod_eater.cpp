@@ -126,22 +126,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			foodContainer=-1;
 						
 			
-				for (pos=0;pos<10&&foodItem==NULL;pos++)		
-				{
-					foodItem = CModuleUtil::lookupItem(pos,itemProxy.getItemsFoodArray());
-					foodContainer = pos;
-
-				}
+			CUIntArray *foods=itemProxy.getItemsFoodArray();
+			for (pos=0;pos<memConstData.m_memMaxContainers&&foodItem==NULL;pos++)		
+			{
+				foodItem = CModuleUtil::lookupItem(pos,foods);
+				foodContainer = pos;
+			}
+			//taken care of. delete foods;
 
 			
 			if (foodItem!=NULL)
 			{
 				sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
-				CTibiaCharacter* self=reader.readSelfCharacter();
-				if (CModuleUtil::waitForCapsChange(self->cap))
+				CTibiaCharacter* self2=reader.readSelfCharacter();
+				if (CModuleUtil::waitForCapsChange(self2->cap))
 					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
-				delete self;
+				delete self2;
 				char buf[111];
 				if (i!=1)
 					Sleep(CModuleUtil::randomFormula(400,100));

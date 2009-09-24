@@ -270,7 +270,6 @@ void CCharInfoDialog::dataCalc(){
 		int msgLen;
 		char nickBuf[16384];
 		char msgBuf[16384];
-		CTibiaCharacter *self = reader.getCharacterByTibiaId(ch->tibiaId);		
 
 		memset(nickBuf,0,16384);
 		memset(msgBuf,0,16384);
@@ -281,8 +280,8 @@ void CCharInfoDialog::dataCalc(){
 		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
 
 
-		if ((infoType == 1) && (strcmp(nickBuf, self->name) == 0) && (strcmp(nickBuf,"Tibia Auto") != 0)) {
-//			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, self->name, infoType);
+		if ((infoType == 1) && (strcmp(nickBuf, ch->name) == 0) && (strcmp(nickBuf,"Tibia Auto") != 0)) {
+//			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch->name, infoType);
 //			sender.sendTAMessage(buf);
 
 			if ((strcmpi(msgBuf, "utana vid") == 0) || (strcmp(msgBuf,"test invis") == 0)) { //invisible

@@ -45,7 +45,7 @@ public:
 	void setItemsItemsCount(int newCount);
 	void setItemsFoodCount(int newCount);
 	void setItemsLootCount(int newCount);
-
+	void cleanup();
 
 	CTibiaItemProxy();
 	virtual ~CTibiaItemProxy();

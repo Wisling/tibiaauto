@@ -124,7 +124,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		if(config->m_autoOpen){
 			for (int i=0;i<3;i++){
-				if(lastLootContNr[i]!=-1 && !reader.readContainer(lastLootContNr[i])->flagOnOff) lastLootContNr[i]=-1;
+				CTibiaContainer *cont=reader.readContainer(lastLootContNr[i]);
+				if(lastLootContNr[i]!=-1 && !cont->flagOnOff) lastLootContNr[i]=-1;
+				delete cont;
 			}
 		}
 
@@ -133,8 +135,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 		if (reader.getGlobalVariable("autolooterTm")&&reader.getGlobalVariable("autolooterTm")!=""){//cavebot is enabled Not applicable yet
 			if (lastAttackedMonster){
-				CTibiaCharacter *self = reader.readSelfCharacter();
-				CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 				if (attackedCh && !attackedCh->hpPercLeft &&
 					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=4&&
 					attackedCh->z==self->z){
@@ -185,6 +185,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					}
 					int autolooterTm = atoi(reader.getGlobalVariable("autolooterTm"));
 					while (autolooterTm>time(NULL) && abs(autolooterTm-time(NULL))<30){
+						delete self;
 						self = reader.readSelfCharacter();
 						sender.openContainerFromFloor(currentCorpse->itemId,attackedCh->x,attackedCh->y,attackedCh->z,9);
 						int iterCount=50;
@@ -252,8 +253,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							}
 							if (config->m_lootFood) {
 								int p;
-								for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
-									acceptedItems.Add(itemProxy.getItemsFoodArray()->GetAt(p));
+								CUIntArray *foods=itemProxy.getItemsFoodArray();
+								for (p=0;p<foods->GetSize();p++)
+									acceptedItems.Add(foods->GetAt(p));
+								//taken care of. delete foods;
 							}
 							
 							int lootTakeItem;
@@ -414,19 +417,24 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							
 							
 						} // if corpseId && cont9 open
+						delete attackedCh;
+						attackedCh=NULL;//important
 					} // if (attackedCh)
 					
 					
-					for(i=0;i<3;i++) delete cont[i];
+					for(i=0;i<3;i++) {
+						if (cont[i])
+							delete cont[i];
+					}
 					
 					
 					
 				}
-				delete self;
-				if (attackedCh)
-					delete attackedCh;
 			}
 		}
+		delete self;
+		if (attackedCh)
+			delete attackedCh;
 		lastAttackedMonster = reader.getAttackedCreature();
 
 		/*** moving part ***/
@@ -460,10 +468,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (config->m_lootFood)
 			{
 				int p;
-				for (p=0;p<itemProxy.getItemsFoodArray()->GetSize();p++)
+				CUIntArray *foods=itemProxy.getItemsFoodArray();
+				for (p=0;p<foods->GetSize();p++)
 				{
-					acceptedItems.Add(itemProxy.getItemsFoodArray()->GetAt(p));
+					acceptedItems.Add(foods->GetAt(p));
 				}
+				//taken care of. delete foods;
 			}
 			if (config->m_lootGp)
 			{
