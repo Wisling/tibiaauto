@@ -449,11 +449,11 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif
 	
 	int gotToEndPoint=0;
-	point currentPoint = queue->getFirst();	
 	point endPoint;
 
 	while (queue->size() && gotToEndPoint!=1)
 	{	
+		point currentPoint = queue->getFirst();	
 
 		int x=currentPoint.x;
 		int y=currentPoint.y;
