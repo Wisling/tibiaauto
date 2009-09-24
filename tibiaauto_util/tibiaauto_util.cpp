@@ -598,6 +598,11 @@ int tibiaMapGetCurrentDistance()
 	return taMiniMap.getCurrentDistance();
 }
 
+void tibiaMapUnloadMiniMaps()
+{
+	taMiniMap.unloadMiniMaps();
+}
+
 int tibiaItemGetIndex(int objectId, int type)
 {
 	return CTibiaItem::getIndex(objectId, type);
@@ -685,7 +690,6 @@ CUIntArray * tibiaItemGetItemsFoodArray()
 	return CTibiaItem::getItemsFood();
 }
 
-
 char *tibiaItemGetItemsItems(int nr)
 {
 	return CTibiaItem::itemsItems[nr];
@@ -747,6 +751,10 @@ int tibiaItemGetItemsLootedCount()
 int tibiaItemGetValueForConst(char *code)
 {
 	return CTibiaItem::getValueForConst(code);
+}
+
+void tibiaItemCleanup(){
+	CTibiaItem::cleanup();
 }
 
 void packSenderLogout()
@@ -942,6 +950,12 @@ void setTibiaTile(int tileNr, CTibiaTile *newTile)
 {
 	CTileReader tileReader;
 	tileReader.setTile(tileNr, newTile);
+}
+
+void cleanupTibiaTiles()
+{
+	CTileReader tileReader;
+	tileReader.cleanup();
 }
 
 void memReadSetRemainingTilesToGo(int val)

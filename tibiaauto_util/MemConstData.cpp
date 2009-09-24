@@ -73,6 +73,7 @@ CMemConstData::CMemConstData()
 	
 	m_memAddressSelfId              = offset + itemProxy.getValueForConst("addrSelfId");
 	m_memAddressMapStart            = offset + itemProxy.getValueForConst("addrMapStart");
+	m_memAddressMiniMapStart            = offset + itemProxy.getValueForConst("addrMiniMapStart");
 	m_memAddressCurrentTm           = offset + itemProxy.getValueForConst("addrCurrentTm");
 
 	m_memAddressTilesToGo		= offset + itemProxy.getValueForConst("addrTilesToGo");

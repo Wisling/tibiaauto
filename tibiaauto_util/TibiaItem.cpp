@@ -70,7 +70,9 @@ CTibiaItem::CTibiaItem()
 	quantity=0;
 	pos=0;
 }
-
+void CTibiaItem::cleanup(){
+	delete foodList;
+}
 
 int CTibiaItem::getIndex(int objectId, int type) {	
 	int i;	

@@ -20,6 +20,7 @@ public:
 	virtual ~CTileReader();
 	CTibiaTile *getTile(int tileNr);
 	void setTile(int, CTibiaTile *);
+	void cleanup();
 private:
 	void loadTiles();
 	void saveTiles();

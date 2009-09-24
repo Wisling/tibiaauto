@@ -54,6 +54,14 @@ CTileReader::~CTileReader()
 {
 }
 
+void CTileReader::cleanup()
+{
+	for (int i=0;i<MAX_TILES;i++) {
+		delete(tiles[i]);
+	}
+}
+
+
 CTibiaTile *CTileReader::getTile(int tileNr)
 {
 	return tiles[tileNr];

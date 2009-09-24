@@ -24,10 +24,13 @@ CLoadedModules::CLoadedModules(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CLoadedModules)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
+	moduleActionsMenu=NULL;
 
 }
 
-
+CLoadedModules::~CLoadedModules(){
+	if (moduleActionsMenu) delete moduleActionsMenu;
+}
 void CLoadedModules::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);

@@ -26,6 +26,10 @@ public:
 		timeUsed=0;
 	}
 
+	~MiniMapSection(){
+		delete mapLoc;
+	}
+
 	unsigned char setColourSpeed(char* col,char* spd){
 		for (int i=0;i<65536;i++){
 			colour[i]=col[i];

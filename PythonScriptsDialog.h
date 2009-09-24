@@ -15,6 +15,7 @@ class CPythonScriptsDialog : public MyDialog
 // Construction
 public:	
 	CPythonScriptsDialog(CWnd* pParent = NULL);   // standard constructor
+	virtual ~CPythonScriptsDialog();
 
 // Dialog Data
 	//{{AFX_DATA(CPythonScriptsDialog)

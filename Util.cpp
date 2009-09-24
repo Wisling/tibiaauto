@@ -92,7 +92,7 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 	{
 		char buf[128];
 		buf[0]=0;
-		wcstombs(buf,attrNode->getNodeValue(),60);
+		wcstombs(buf,attrNode->getNodeValue(),127);
 		return atoi(buf);
 	} else {
 		return 0;

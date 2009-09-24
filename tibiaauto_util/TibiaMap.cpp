@@ -92,19 +92,33 @@ int CTibiaMap::isPointAvailable(int x, int y,int z)
 
 void CTibiaMap::setPointAsAvailable(int x, int y,int z)
 {	
-	if (!isPointAvailableNoProh(x,y,z))
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+	if (tibiaMap2.Lookup(&p,pd))
+	{
+		pd->available=1;
+		pd->updown=0;
+	} 
+	else 
 	{
 		struct point *p=new point(x,y,z);
 		struct pointData *pd=new pointData();
-		pd->available=1;	
+		pd->available=1;
 		tibiaMap2.SetAt(p,pd);
-		//delete [] p;
 	}
 }
 
 void CTibiaMap::clear()
 {	
-	pointCacheSize=-1;	
+	pointCacheSize=-1;
+	POSITION pos=tibiaMap2.GetStartPosition();
+	point *p;
+	pointData *pd;
+	while(pos!=NULL){
+		tibiaMap2.GetNextAssoc(pos,p,pd);
+		delete p;
+		delete pd;
+	}
 	tibiaMap2.RemoveAll();
 }
 
@@ -491,7 +505,7 @@ struct point CTibiaMap::getPointByNr(int nr)
 	{
 		return pointCache[nr];
 	} else {
-		// this is patological
+		// this is pathological
 		return point(0,0,0);
 	}
 }

@@ -9,6 +9,8 @@
 #include "CharDialog.h"
 #include "MemReaderProxy.h"
 #include "TibiaMapProxy.h"
+#include "TAMiniMapProxy.h"
+#include "TibiaItemProxy.h"
 #include "TibiaCharacter.h"
 #include "ModuleProxy.h"
 #include "MemReaderProxy.h"
@@ -274,11 +276,16 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	// shutdownCounter is anti-hack protection
 	shutdownCounter=rand()%100;
+#ifndef _DEBUG
 	CEnterCode *enterCode = new CEnterCode(this);
 	int res=enterCode->DoModal();
 	delete enterCode;
 
-	if (res!=IDOK) ExitProcess(0);	
+	if (res!=IDOK) ExitProcess(0);
+#else
+	shutdownCounter=-rand();
+#endif
+
 
 	m_loadedModules = new CLoadedModules();
 	m_loadedModules->Create(IDD_LOADED_MODULES);
@@ -1008,6 +1015,18 @@ void CTibiaautoDlg::OnExit()
 	data.uFlags=0;
 	Shell_NotifyIcon(NIM_DELETE,&data);
 
+	CTAMiniMapProxy taMiniMap;
+	taMiniMap.unloadMiniMaps();
+
+	CTibiaItemProxy tibiaItem;
+	tibiaItem.cleanup();
+
+	CTibiaMapProxy tibiaMap;
+	tibiaMap.clear();
+
+	CMemReaderProxy reader;
+	reader.cleanupTibiaTiles();
+
 	delete m_loadedModules;	
 	delete m_pythonScriptsDialog;
 	m_moduleLooter->stop();
@@ -1046,6 +1065,12 @@ void CTibiaautoDlg::OnExit()
 	{
 		UnhookWindowsHookEx(hhookKeyb);
 	}	
+
+	for (int scriptNr=0;;scriptNr++){
+		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
+		if (!pythonScript) break;
+		delete pythonScript;
+	}
 
 
 	ExitProcess(0);	
@@ -1286,7 +1311,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=1.20.1,tm=%d,",tm);
+		fprintf(f,"version=1.20.3,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

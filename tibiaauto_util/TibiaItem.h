@@ -31,6 +31,7 @@ public:
 	static void saveItemLists();
 	static void setCount(int type, int newCount);
 	static void setExtraInfo(int index, int info, int type);
+	static void cleanup();
 	CTibiaItem();
 
 	int objectId;

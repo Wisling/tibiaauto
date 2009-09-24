@@ -15,7 +15,7 @@ class CLoadedModules : public MyDialog
 // Construction
 public:
 	CLoadedModules(CWnd* pParent = NULL);   // standard constructor
-
+	virtual ~CLoadedModules();
 // Dialog Data
 	//{{AFX_DATA(CLoadedModules)
 	enum { IDD = IDD_LOADED_MODULES };

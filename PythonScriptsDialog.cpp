@@ -26,8 +26,14 @@ CPythonScriptsDialog::CPythonScriptsDialog(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CPythonScriptsDialog)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT	
+	funListMenu=NULL;
+	modListMenu=NULL;
 }
 
+CPythonScriptsDialog::~CPythonScriptsDialog(){
+	if (funListMenu) delete funListMenu;
+	if (modListMenu) delete modListMenu;
+}
 
 void CPythonScriptsDialog::DoDataExchange(CDataExchange* pDX)
 {

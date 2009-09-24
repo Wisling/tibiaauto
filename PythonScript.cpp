@@ -54,6 +54,7 @@ CPythonScript::~CPythonScript()
 		Py_XDECREF(funDefTab[i].fun);
 	}
 	free(funDefTab);
+	if (paramDefTab) delete paramDefTab;
 }
 
 

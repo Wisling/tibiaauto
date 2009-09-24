@@ -249,6 +249,7 @@ void CPackSender::useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_C
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (sourceX!=0xffff) sourceInd_Pos=getItemIndex(sourceX-self->x,sourceY_Cont-self->y,sourceObjectId);
 		if (targetX!=0xffff) targetInd_Pos=getItemIndex(targetX-self->x,targetY_Cont-self->y,targetObjectId);
+		delete self;
 	}
 
 	sendbuf[0]=17;

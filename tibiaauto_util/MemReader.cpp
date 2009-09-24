@@ -223,16 +223,15 @@ int CMemReader::getAttackedCreature()
 }
 
 CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
-{			
+{		
+	CMemReader reader;
 	int i;
 	for (i=0;i<m_memMaxCreatures;i++)
 	{
-		CTibiaCharacter *ch = readVisibleCreature(i);
+		int offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 
-		if (ch->tibiaId==tibiaId)
-			return ch;
-
-		delete ch;
+		if (CMemUtil::GetMemIntValue(offset)==tibiaId)
+			return readVisibleCreature(i);
 	}
 	return NULL;
 }
@@ -390,6 +389,10 @@ int CMemReader::mapGetSelfCellNr()
 	static int prevSelfTilePos=0;
 	int wouldReturn=0;
 	CTibiaCharacter *self = readSelfCharacter();
+	if (self->z<0 || self->z>20) {
+		delete self; 
+		return 0;
+	}
 	
 	// check self tile cache
 	int c=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+prevSelfTileNr*m_memLengthMapTile);
@@ -407,13 +410,40 @@ int CMemReader::mapGetSelfCellNr()
 	;
 
 	int floorSize=m_memMaxMapTiles/8;
+	int tileNrLowest=max(0,min(1768,(self->z<=7)?floorSize*(7-self->z):(floorSize*2)));
+	int tileNrHighest=tileNrLowest+floorSize;
+/*
+	// check using one of 8 memory locations for current cell(this makes the function 100 times faster)
+	int tmp=CMemUtil::GetMemIntValue(dereference(m_memAddressMiniMapStart-4));
+	for (int lvl=0;lvl<8;lvl++)
+	{
+		int cell=252*lvl+(tmp+116)%(14*18);
+		int pos;
+		int tmo=dereference(m_memAddressMapStart)+cell*m_memLengthMapTile;
+		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile);		
+		for (pos=0;pos<count;pos++)
+		{
+			int tileId=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4);
+			if (tileId==99)
+			{								
+				int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4+4);
+				if (tileCharId==self->tibiaId)
+				{					
+					delete self;
+					prevSelfTileNr=cell;
+					prevSelfTilePos=pos;
+					return cell;
+				}						
+			}			
+		}					
+	}
+*/
 	//there are 8 stages, if above ground each floor 7 to 0 always has the same stage
 	//if underground player is always on stage 2 and only stages 0,1,2,3,4 are relevant
-	int tileNrLowest=(self->z<=7)?floorSize*(7-self->z):(floorSize*2);
-	int tileNrHighest=tileNrLowest+floorSize;
 	for (int tileNr=tileNrLowest;tileNr<tileNrHighest;tileNr++)
 	{
 		int pos;
+		int tmo=dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile;
 		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+tileNr*m_memLengthMapTile);		
 		for (pos=0;pos<count;pos++)
 		{
@@ -448,7 +478,7 @@ int CMemReader::mapGetSelfCellNr()
 					delete self;
 					prevSelfTileNr=tileNr;
 					prevSelfTilePos=pos;
-					return tileNr;
+ 					return tileNr;
 				}						
 			}			
 		}					
@@ -805,8 +835,10 @@ void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
 			CMemUtil::GetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed2);
 			sprintf(buf,"made:(%d,%d),(%x,%x)",colour2[0],speed2[0],mapOffset+pointOffset,mapOffset+65536+pointOffset);
 			//AfxMessageBox(buf);
+			delete map;
 			break;
 		}
+		delete map;
 	}
 	//write to file too to make changes permanent(creates file if none but maphack doesn't create one if not needed/blank map)
 	char filename[1024+20];

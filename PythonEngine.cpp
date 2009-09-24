@@ -35,7 +35,6 @@ CRITICAL_SECTION ScriptEngineCriticalSection;
 //////////////////////////////////////////////////////////////////////
 
 int registerPluginCount=0;
-
  
 static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *args)    
 {					
@@ -49,7 +48,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	PyObject *pluginClass=NULL;
 	if (!PyArg_ParseTuple(args,"O",&pluginClass)) return NULL;
 		
-	Py_XINCREF(pluginClass);	
+	Py_XINCREF(pluginClass);
 	pythonScript->setPluginClass(pluginClass);
 	
 	PyObject *pluginObject = PyInstance_New(pluginClass,NULL,NULL);			
@@ -439,7 +438,6 @@ CPythonEngine::CPythonEngine()
 
 CPythonEngine::~CPythonEngine()
 {
-
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -726,7 +724,7 @@ void CPythonEngine::unloadScript(int scriptNr)
 	CPythonScript::pythonScriptCount--;
 	// this is commented out by purpose - there would be too much threads 
 	// playing to cleanup this memory here
-	//delete pythonScript;
+	delete pythonScript;
 	leaveCriticalSection();
 }
 

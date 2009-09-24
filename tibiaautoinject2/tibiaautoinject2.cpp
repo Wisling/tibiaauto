@@ -58,7 +58,7 @@ SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
 int COMPLEX=0;
-int SENTONLY=0;
+int SENTONLY=1;
 
 time_t debugFileStart;
 int lastSendFlags;
@@ -605,7 +605,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 			if (ch)
 			{
 				castRuneAgainstHuman(contNr,itemPos,objectId,ch->x,ch->y,ch->z);
-				//delete ch;
+				delete ch;
 				return 1;
 			}
 		}
@@ -613,7 +613,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 	/**
 	*/
 	
-	if (code==0x96&&buf[3]==1)
+	if (code==0x96&&(buf[3]==1 || buf[3]==4))
 	{		
 		// "say"
 		char sayBuf[1000];
@@ -648,6 +648,29 @@ int parseMessageForTibiaAction(char *buf,int len)
 		
 		memset(sayBuf,0,1000);
 		memcpy(sayBuf,buf+8,sayLen);
+		if (!strncmp(sayBuf,"%ta ",3))
+		{
+			parseMessageSay(sayBuf);			
+			return 1;
+		}
+	}
+	
+	if (code==0x96&&buf[3]==6)
+	{		
+		// "private"
+		char sayBuf[1000];
+		unsigned char nameV1=buf[4];
+		unsigned char nameV2=buf[5];
+		int nameLen=nameV1+256*nameV2;
+		
+		unsigned char sayV1=buf[6+nameLen];
+		unsigned char sayV2=buf[7+nameLen];
+		int sayLen=sayV1+256*sayV2;
+
+		if (sayLen>500) return 0;
+		
+		memset(sayBuf,0,1000);
+		memcpy(sayBuf,buf+8+nameLen,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
 			parseMessageSay(sayBuf);			

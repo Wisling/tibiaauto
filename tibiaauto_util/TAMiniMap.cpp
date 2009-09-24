@@ -45,7 +45,6 @@ AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint>
 	return false;    	
 }
 
-typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
 CTAMiniMap::CTAMiniMap()
 {
 	//AfxMessageBox("new minimap?");
@@ -56,7 +55,6 @@ CTAMiniMap::CTAMiniMap()
 
 CTAMiniMap::~CTAMiniMap()
 {
-	taMiniMap.RemoveAll();
 }
 
 //returns true if the map containing (x,y,z) is currently loaded
@@ -78,32 +76,41 @@ MiniMapSection* CTAMiniMap::loadFromMemory(int xMap,int yMap,int zMap){
 
 
 	CTibiaItemProxy itemProxy;
-	CMemReader* reader=new CMemReader();
+	CMemReader reader;
 
 	int m_processId=CMemUtil::getGlobalProcessId();
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
-		CTibiaMiniMap *map = reader->readMiniMap(nr);
+		CTibiaMiniMap *map = reader.readMiniMap(nr);
 		char buf[1111];
 		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
 		//AfxMessageBox(buf);
 		if (xMap==map->x && yMap==map->y && zMap==map->z){
 			//AfxMessageBox("map found");
+			MiniMapSection* pdNew= new MiniMapSection(xMap,yMap,zMap);
+			pdNew->timeUsed=time(NULL);
+			CMemUtil::GetMemRange(m_processId,mapOffset,mapOffset+65536,(char*)pdNew->colour);
+			CMemUtil::GetMemRange(m_processId,mapOffset+65536,mapOffset+65536+65536,(char*)pdNew->speed);
+
 			struct point *p=new point(xMap,yMap,zMap);
-			struct MiniMapSection *tmp=NULL;
-			taMiniMap.Lookup(p,tmp);
-			struct MiniMapSection* pd= new MiniMapSection(xMap,yMap,zMap);
+			struct MiniMapSection *pd=NULL;
+			taMiniMap.Lookup(p,pd);
 
-			pd->timeUsed=time(NULL);
-			CMemUtil::GetMemRange(m_processId,mapOffset,mapOffset+65536,(char*)pd->colour);
-			CMemUtil::GetMemRange(m_processId,mapOffset+65536,mapOffset+65536+65536,(char*)pd->speed);
-			//AfxMessageBox("set Hash");
-			taMiniMap.SetAt(p,pd);
-			if (tmp) delete tmp;
+			//AfxMessageBox("setting pointer data");
+			if (pd){
+				delete pd;
+				delete p;
+				pd=pdNew;
+			} else {
+				pd=pdNew;
+				taMiniMap.SetAt(p,pd);
+				mapCount+=1;
+			}
 
-			mapCount+=1;
+			delete map;
 			return pd;
 		}
+		delete map;
 	}
 	//minimap does not exist in memory
 	return NULL;
@@ -123,37 +130,43 @@ MiniMapSection* CTAMiniMap::loadFromFile(int xMap,int yMap,int zMap){
 	if (!f.bad())
 	{
 		//AfxMessageBox("file found, loading");
+		struct MiniMapSection *pdNew=new MiniMapSection(xMap,yMap,zMap);
 
-		struct point* p=new point(xMap,yMap,zMap);
-		struct MiniMapSection *tmp=NULL;
-		taMiniMap.Lookup(p,tmp);
-		struct MiniMapSection* pd= new MiniMapSection(xMap,yMap,zMap);
-
-		pd->timeUsed=time(NULL);
-		f.read((char*)pd->colour,65536);
+		pdNew->timeUsed=time(NULL);
+		f.read((char*)pdNew->colour,65536);
 		if (f.bad()) {//read failed
 			f.close();
-			delete p;
-			delete pd;
+			delete pdNew;
 			sprintf(filename,"Fileread Failed: %s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",xMap,yMap,zMap);
 			AfxMessageBox(filename);
 			return NULL;
 		}
-		f.read((char*)pd->speed,65536);
+		f.read((char*)pdNew->speed,65536);
 		if (f.bad()) {//read failed
 			f.close();
-			delete p;
-			delete pd;
+			delete pdNew;
 			sprintf(filename,"Fileread Failed: %s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",xMap,yMap,zMap);
 			AfxMessageBox(filename);
 			return NULL;
 		}
 		f.close();
-		//AfxMessageBox("set hash value");
-		taMiniMap.SetAt(p,pd);
-		if(tmp) delete tmp;
+		//AfxMessageBox("setting pointer data");
 
-		mapCount+=1;
+		struct point *p=new point(xMap,yMap,zMap);
+		struct MiniMapSection *pd=NULL;
+		taMiniMap.Lookup(p,pd);
+
+		//AfxMessageBox("setting pointer data");
+		if (pd){
+			delete pd;
+			delete p;
+			pd=pdNew;
+		} else {
+			pd=pdNew;
+			taMiniMap.SetAt(p,pdNew);
+			mapCount+=1;
+		}
+
 		return pd;
 	}
 
@@ -214,13 +227,13 @@ CTibiaMiniMapPoint* CTAMiniMap::getMiniMapPoint(int x, int y, int z){
 }
 void CTAMiniMap::setMiniMapPoint(int x,int y,int z,int col,int spd){
 	CTibiaItemProxy itemProxy;
-	CMemReader* reader=new CMemReader();
+	CMemReader reader;
 
 	int xMap=(int)(x/256),yMap=(int)(y/256),zMap=z;
 	int m_processId=CMemUtil::getGlobalProcessId();
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
-		CTibiaMiniMap *map = reader->readMiniMap(nr);
+		CTibiaMiniMap *map = reader.readMiniMap(nr);
 		char buf[1111];
 		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
 		//AfxMessageBox(buf);
@@ -232,12 +245,21 @@ void CTAMiniMap::setMiniMapPoint(int x,int y,int z,int col,int spd){
 			CMemUtil::SetMemRange(m_processId,mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour);
 			CMemUtil::SetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
 		}
+		delete map;
 	}
 }
 
 void CTAMiniMap::unloadMiniMaps(){
-	taMiniMap.RemoveAll();
 	mapCount=0;
+	POSITION pos=taMiniMap.GetStartPosition();
+	point *p;
+	MiniMapSection *pd;
+	while(pos!=NULL){
+		taMiniMap.GetNextAssoc(pos,p,pd);
+		delete p;
+		delete pd;
+	}
+	taMiniMap.RemoveAll();
 }
 
 class PathFinderNode 
@@ -340,15 +362,18 @@ bool CTAMiniMap::isUpPoint(CTibiaMiniMapPoint* lower){//return true;
 	bool ret=false;
 	//check if both are yellow spots
 	if (lower->colour==210){
-		CTibiaMiniMapPoint* upper=reader.readMiniMapPoint(lower->x,lower->y,lower->z-1);
+		CTibiaMiniMapPoint* upper=getMiniMapPoint(lower->x,lower->y,lower->z-1);
 		if(upper->colour==210) ret=true;
 		else if(upper->colour==129){//check if might be able to go down light gray spot
-			CTibiaMiniMapPoint* mpTest1=reader.readMiniMapPoint(upper->x,upper->y-1,upper->z);
-			CTibiaMiniMapPoint* mpTest2=reader.readMiniMapPoint(upper->x+1,upper->y+1,upper->z);
-			CTibiaMiniMapPoint* mpTest3=reader.readMiniMapPoint(upper->x-1,upper->y+1,upper->z);				
+			CTibiaMiniMapPoint* mpTest1=getMiniMapPoint(upper->x,upper->y-1,upper->z);
+			CTibiaMiniMapPoint* mpTest2=getMiniMapPoint(upper->x+1,upper->y+1,upper->z);
+			CTibiaMiniMapPoint* mpTest3=getMiniMapPoint(upper->x-1,upper->y+1,upper->z);				
 			if (mpTest1->colour!=129 && mpTest2->colour!=129 && mpTest3->colour!=129){//surrounding tiles aren't grey good chance it is hole
 				ret=true;
 			}
+			delete(mpTest1);
+			delete(mpTest2);
+			delete(mpTest3);
 		}
 		delete(upper);
 		//CTibiaMiniMapPoint* lower2=reader.readMiniMapPoint(lower->x,lower->y,lower->z+1);
@@ -364,7 +389,7 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper){//return true;
 	bool ret=false;
 	//check if both are yellow spots
 	if (upper->colour==210){
-		CTibiaMiniMapPoint* lower=reader.readMiniMapPoint(upper->x,upper->y,upper->z+1);
+		CTibiaMiniMapPoint* lower=getMiniMapPoint(upper->x,upper->y,upper->z+1);
 		if (lower->colour==210) ret= true;
 		delete(lower);
 		//CTibiaMiniMapPoint* lower2=reader.readMiniMapPoint(lower->x,lower->y,lower->z+1);
@@ -376,10 +401,13 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper){//return true;
 		CTibiaMiniMapPoint* mpTest2=getMiniMapPoint(upper->x+1,upper->y+1,upper->z);
 		CTibiaMiniMapPoint* mpTest3=getMiniMapPoint(upper->x-1,upper->y+1,upper->z);				
 		if (mpTest1->colour!=129 && mpTest2->colour!=129 && mpTest3->colour!=129){//surrounding tiles aren't grey good chance it is hole
-			CTibiaMiniMapPoint* lower=reader.readMiniMapPoint(upper->x,upper->y,upper->z+1);
+			CTibiaMiniMapPoint* lower=getMiniMapPoint(upper->x,upper->y,upper->z+1);
 			if(lower->colour==210) ret= true;
 			delete(lower);
 		}
+		delete(mpTest1);
+		delete(mpTest2);
+		delete(mpTest3);
 	}
 	//DebugPrint("result",ret);
 	return ret;
@@ -396,7 +424,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 {
 	//inits
 	CMemReader reader;
-	CUIntArray* path=new CUIntArray();
+	CUIntArray *path=new CUIntArray();
 	PQI mOpen;
     int direction[10][3]= {{0,0,1},{1,0,0},{1,-1,0},{0,-1,0},{-1,-1,0},{-1,0,0},{-1,1,0},{0,1,0},{1,1,0},{0,0,-1}};
 	CMap<PathFinderNode,PathFinderNode,PathFinderNode,PathFinderNode> mClose;
@@ -404,6 +432,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 
 	CTibiaMiniMapPoint* endPt=reader.readMiniMapPoint(endX,endY,endZ);
 	int endBlocked=endPt->speed==255;
+	delete endPt;
 	//DebugPrint("endBlocked",endBlocked);
 	int mHEstimate = 1;
 	int maxDistBreak = 1.7*(abs(startX-endX)+abs(startY-endY))+50*abs(startZ-endZ);//will stop if looking farther away than 1.5x original distance
@@ -416,7 +445,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 
 	PathFinderNode parentNode=PathFinderNode();
     parentNode.g = 0;
-    parentNode.h = mHEstimate;
+    parentNode.h = 0;
     parentNode.f = parentNode.g + parentNode.h;
     parentNode.x = startX;
     parentNode.y = startY;
@@ -426,8 +455,8 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	parentNode.pz = parentNode.z;
 	mOpen.push(parentNode);
 
-	ofstream fout;
-	fout.open("C:/path.txt",ofstream::out);
+	//ofstream fout;
+	//fout.open("C:/path.txt",ofstream::out);
 	while (!mOpen.empty() && !mStop && !(time(NULL)-timeStart>minTimeBreak && mDistance>maxDistBreak)){
 
 		
@@ -437,8 +466,9 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 		mOpen.pop();
 		mDistance=parentNode.h;
 		mOpenSize=mOpen.size();
-		//if (mDistance<30) maxDistBreak=60;//readjust when close in case end is unreachable
-		fout << parentNode.x-endX << " " << parentNode.y-endY << " " << parentNode.z - endZ << "\n";
+		if (mDistance&&mDistance<30)
+			maxDistBreak=60;//readjust when close in case end is unreachable
+		//fout << parentNode.x-endX << " " << parentNode.y-endY << " " << parentNode.z - endZ << "\n";
 
 
 		if (max(abs(parentNode.x-endX),abs(parentNode.y-endY))<=endBlocked && parentNode.z == endZ)//can be 1 away if end is blocked
@@ -462,17 +492,17 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			bool isAvailable=false;
 
 			//ensures it doesn't load an uneeded map into memory
+			CTibiaMiniMapPoint* mp=getMiniMapPoint(newNode.x,newNode.y,newNode.z);
 			if (i==0 || i==9){
 				if (i==0 && isDownPoint(mpPar) || i==9 && isUpPoint(mpPar)) isAvailable=true;
 			}
 			else{
-				CTibiaMiniMapPoint* mp=getMiniMapPoint(newNode.x,newNode.y,newNode.z);
 				if (mp->speed!=255 && mp->colour!=0 || mp->colour==210 /*isUpPoint(mp) || isDownPoint(mp)*/) isAvailable=true;
-				delete(mp);
 			}
 
-			if (!isAvailable) continue;
-			int newG = parentNode.g + 1;//mp->speed*(1+2*(i%2==0 && i>0));//lower speed value = faster do x3 for diagonals
+			if (!isAvailable){delete mp; continue;}
+			int newG = parentNode.g + mp->speed*(i%2==0 && i>0?3:1);//lower speed value = faster do x3 for diagonals
+			delete mp;
 
 			newNode.px = parentNode.x;
 			newNode.py = parentNode.y;
@@ -492,6 +522,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 				}
 				continue;
 			}
+			mOpenIter=NULL;
 
 			PathFinderNode tmpNode;
 			if (mClose.Lookup(newNode,tmpNode)){
@@ -510,7 +541,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 
 	}	
 	mStopped = true;
-	fout.close();
+	//fout.close();
 	if (found)
 	{
 
