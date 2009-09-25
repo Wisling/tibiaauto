@@ -19,6 +19,7 @@ Enhancments
  Cavebot & Auto go/log: Can manually edit the x,y,z coordinates before adding to list
  Banker: Added 4 new bankers
  Banker: After going to bank, will restock and deposit at depot to save time (but cavebot will not stop by bank)
+ Install: Looks for tibia client install location in registry
 
 Defects
  Cavebot: Fixed one of the crash bugs in the cavebot(when not looting creature and going back to hunt)
@@ -32,7 +33,8 @@ Defects
  Cavebot: Fixed retreiving items from main depot container
  Cavebot: Fixed resuming attack on distance creatures
  %ta : No longer accidentally sends words beginning with %ta in private chat and NPC channel(will still show up,but won't be sent)
- All Over: Fixed more than 30 memory leaks just sitting
+ All Over: Fixed more than 30 memory leaks just sitting around waiting to crash TA
+ Runemaker: fixed issue with suddenly stopping after a couple hours
 
 1.20.2, 24.07.2009
 Enhancments
