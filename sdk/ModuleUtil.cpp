@@ -86,17 +86,17 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 
 }
 
-int CModuleUtil::randomFormula(int average, int halfrange){
+int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange| <= ans <= average+|halfrange|
 	halfrange = abs(halfrange)+1;
 	return (average-(halfrange-1))+(rand()%halfrange)+(rand()%halfrange);
 }
 
 int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
 	//if cutoff==average a value >=average is returned
-	//cutoff is included if is it below or = avg, and included if it is above
-	//99.9% chance of exit within 10 iterations
+	//cutoff always included
+	//95% chance of exit within 3 iterations
 	int sample = randomFormula(average,halfrange);
-	while ((sample<cutoff) == (cutoff<=average)){
+	while ((sample<cutoff) == (cutoff<=average) && sample!=cutoff){
 		sample = randomFormula(average,halfrange);
 	}
 	return sample;
