@@ -328,7 +328,6 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		outfile = new xercesc::LocalFileFormatTarget(currentPathBuf) ;
 		theSerializer->writeNode(outfile, *doc);
 		doc->release();
-		delete parser;
 		delete outfile;
 		delete theSerializer;
 	}

@@ -1181,6 +1181,7 @@ static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 	if(arg15!=0) path[14]=arg15;
 
 	sender.stepMulti(path,size);
+	delete path;
 	Py_INCREF(Py_None);
 	return Py_None; 
 }

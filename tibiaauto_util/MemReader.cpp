@@ -120,8 +120,11 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 		ch->walkSpeed=monCh->walkSpeed;
 		ch->skulls=monCh->skulls;
 		ch->shields=monCh->shields;
+		ch->outfitId=monCh->outfitId;
+		ch->monsterType=monCh->monsterType;
+		ch->hpPercLeft=monCh->hpPercLeft;
+		ch->lastAttackTm=monCh->lastAttackTm;
 		ch->nr=loggedCharNr;
-
 
 		delete monCh;
 	}
