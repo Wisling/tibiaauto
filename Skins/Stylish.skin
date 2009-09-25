@@ -3,13 +3,13 @@
 
   <ButtonFace Blue="0" Green="0" Red="0"/>
 
-  <ButtonDS Blue="0" Green="0" Red="160"/>
+  <ButtonDS Blue="0" Green="105" Red="0"/>
 
-  <ButtonLS Blue="0" Green="0" Red="255"/>
+  <ButtonLS Blue="0" Green="160" Red="0"/>
 
-  <ButtonHighLight Blue="0" Green="255" Red="0"/>
+  <ButtonHighLight Blue="0" Green="240" Red="0"/>
 
-  <ButtonLight Blue="0" Green="160" Red="0"/>
+  <ButtonLight Blue="0" Green="202" Red="0"/>
 
   <Text Blue="255" Green="200" Red="173"/>
 
