@@ -41,7 +41,7 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x1067B1"/> <!--D7 3D B7 -->
+		<const code="addrMCInject" value="0x106801"/> <!--D7 3D B7 -->
 		<const code="addrXRay1" value="0x4D22BC"/> 
 		<const code="addrXRay2" value="0x4D22C4"/> 
 		<const code="addrFunRevealCName1" value="0x4ED2D3"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
