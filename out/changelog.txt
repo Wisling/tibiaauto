@@ -1,3 +1,6 @@
+2.0.0, 10.02.2009
+Enhancments
+  Gereral upgrade to Tibia 8.52
 1.20.3, ??.08.2009
 Enhancments
  Kernal: fixed an error destroying .skin files when they were loaded and set.
