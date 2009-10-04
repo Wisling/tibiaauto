@@ -479,7 +479,6 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		char buf[1024];
 		char *loggedCharName = reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		sprintf(buf,"Logged as: %s",loggedCharName);
-		free(loggedCharName);
 		CString currentDisplay;
 		m_loginName.GetWindowText(currentDisplay);
 		if (currentDisplay != buf)
@@ -831,7 +830,6 @@ void CTibiaautoDlg::OnSave()
 		fprintf(f,"\n</configfile>\n");
 		fclose(f);
 	}
-	free(loggedCharName);
 }
 
 struct loadThreadParam
@@ -936,7 +934,6 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	
 	delete []restartedModulesTab;		
 	
-	free(loggedCharName);	
 	free ((struct loadThreadParam *)lpParam);
 	return 0;
 }
@@ -997,7 +994,6 @@ void CTibiaautoDlg::OnLoad()
 		}		
 	}	
 	
-	free(loggedCharName);
 }	
 
 void CTibiaautoDlg::OnToolAutogroup() 

@@ -196,12 +196,11 @@ int CMemReader::readBattleListMax()
 
 char * CMemReader::GetLoggedChar(int processId)
 {
-	char *ret=(char *)malloc(MAX_STRING_LEN);
+	char *ret=NULL;//ch34=(char *)malloc(MAX_STRING_LEN);
 	long selfId;
 	int i;
 	
-	memset(ret,0x00,MAX_STRING_LEN);
-	sprintf(ret,"unknown");
+	//memset(ret,0x00,MAX_STRING_LEN);
 		
 	CMemUtil::GetMemIntValue(processId,m_memAddressSelfId,&selfId);
 
@@ -216,7 +215,7 @@ char * CMemReader::GetLoggedChar(int processId)
 			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,ret);
 		};
 	};
-		
+	if(!ret) ret="unknown";
 	return ret;
 }
 

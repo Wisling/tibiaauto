@@ -95,10 +95,21 @@ int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value)
 	};
     
     ptr = (void *)memAddress;
-    if (ReadProcessMemory(dwHandle, ptr, value,   sizeof(long int), NULL)) {		
+	if (ReadProcessMemory(dwHandle, ptr, value,   sizeof(long int), NULL)) {		
         return 0;
     }
     else {	
+		if (::GetLastError()==ERROR_INVALID_HANDLE){
+			//FILE *f=fopen("C:/out.txt","a+");
+			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (ReadProcessMemory(dwHandle, ptr, value,   sizeof(long int), NULL)) {		
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
@@ -131,6 +142,17 @@ int CMemUtil::GetMemIntValue(long processId, DWORD memAddressStart, DWORD memAdd
         return 0;
     }
     else {	
+		if (::GetLastError()==ERROR_INVALID_HANDLE){
+			//FILE *f=fopen("C:/out.txt","a+");
+			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (ReadProcessMemory(dwHandle, ptr, result,   memAddressEnd-memAddressStart, NULL)) {		
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
@@ -163,6 +185,17 @@ int CMemUtil::GetMemRange(long processId, DWORD memAddressStart, DWORD memAddres
         return 0;
     }
     else {	
+		if (::GetLastError()==ERROR_INVALID_HANDLE){
+			//FILE *f=fopen("C:/out.txt","a+");
+			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (ReadProcessMemory(dwHandle, ptr, result,   memAddressEnd-memAddressStart, NULL)) {
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
@@ -220,6 +253,17 @@ int CMemUtil::SetMemIntValue(long processId, DWORD memAddress, long int value)
         return 0;
     }
     else {	
+		if (::GetLastError()==ERROR_INVALID_HANDLE){
+			//FILE *f=fopen("C:/out.txt","a+");
+			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (WriteProcessMemory(dwHandle, ptr, &value,   sizeof(long int), NULL)) {		
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
@@ -252,6 +296,17 @@ int CMemUtil::SetMemByteValue(long processId, DWORD memAddress, char value)
         return 0;
     }
     else {	
+		if (::GetLastError()==ERROR_INVALID_HANDLE){
+			//FILE *f=fopen("C:/out.txt","a+");
+			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (WriteProcessMemory(dwHandle, ptr, &value,   sizeof(char), NULL)) {
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
@@ -290,6 +345,17 @@ int CMemUtil::SetMemRange(int processId, DWORD memAddressStart, DWORD memAddress
         return 0;
     }
     else {	
+		if (::GetLastError()==ERROR_INVALID_HANDLE){
+			//FILE *f=fopen("C:/out.txt","a+");
+			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
+			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (WriteProcessMemory(dwHandle, ptr, data,   memAddressEnd-memAddressStart, &bytesWritten)) {		
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
