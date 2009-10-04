@@ -72,12 +72,13 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
+static map<int,int> setMana;
+static map<int,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
 	CMemReaderProxy reader;
-	static map<int,int> setMana;
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
@@ -93,7 +94,6 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
-	static map<int,int> setHp;
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
@@ -414,6 +414,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}	
 		delete self;
 	}
+	setMana.clear();
+	setHp.clear();
 	toolThreadShouldStop=0;
 	return 0;
 }

@@ -1,4 +1,4 @@
-<!-- Tibia Items for Tibia 8.5 -->
+<!-- Tibia Items for Tibia 8.52 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
@@ -83,9 +83,8 @@
 		<const code="addrBackpack" value="0x6402E8"/> 
 		<const code="addrRightHand" value="0x640300"/> 
 		<const code="addrLeftHand" value="0x64030C"/> 
-		<const code="addrSlotArrow" value="0x640336"/> <!-- cat2 -->
+		<const code="addrSlotArrow" value="0x64033C"/> <!-- cat2 -->
 		<const code="addrFirstContainer" value="0x640348"/> <!-- cat2 -->
-
 		<const code="addrTradeCountSelf" value="0x642208"/>
 		<const code="addrTradeFirstItemSelf" value="0x64222C"/>
 		<const code="addrTradeCountPartner" value="0x6426E0"/>
