@@ -25,6 +25,7 @@
 #define IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH 3012
 #define IDC_GROUND                      3013
 #define IDC_STACKABLE                   3014
+#define IDC_TELEPORTER                  3015
 #define IDB_BACKGROUND                  3016
 #define IDC_CONTAINER                   3017
 #define IDC_DEPOT                       3018

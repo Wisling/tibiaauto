@@ -181,7 +181,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 // Dialog
 //
 
-IDD_TOOL_MAPSHOW_CONFIG DIALOG DISCARDABLE  0, 0, 229, 162
+IDD_TOOL_MAPSHOW_CONFIG DIALOG DISCARDABLE  0, 0, 229, 191
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tile Configuration Tool"
 FONT 8, "MS Sans Serif"
@@ -190,8 +190,8 @@ BEGIN
     GROUPBOX        "Movement",IDC_FRAME_MOVEMENT,6,53,104,83
     GROUPBOX        "Use",IDC_FRAME_USE,12,87,93,45
     GROUPBOX        "Characteristics",IDC_FRAME_CHARACTERISTICS,116,7,104,
-                    101
-    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,87,141,50,14
+                    107
+    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,87,170,50,14
     CONTROL         "Ground",IDC_GROUND,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,12,18,39,10
     CONTROL         "Container",IDC_CONTAINER,"Button",BS_AUTOCHECKBOX | 
@@ -205,7 +205,7 @@ BEGIN
     CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,118,86,10
     CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,123,55,93,10
+                    WS_TABSTOP,123,53,93,10
     CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
                     WS_TABSTOP,12,65,51,10
     CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
@@ -217,17 +217,19 @@ BEGIN
                     123,42,93,10
     CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
-                    123,66,93,10
+                    123,64,93,10
     CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,123,79,93,10
+                    BS_LEFT | WS_TABSTOP,123,75,93,10
     EDITTEXT        IDC_TILE_ID,153,17,24,12,ES_AUTOHSCROLL | ES_READONLY | 
                     ES_NUMBER
     LTEXT           "Tile ID:",IDC_STATIC,123,17,22,12,SS_NOTIFY | 
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_SPEED,154,92,24,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Speed:",IDC_STATIC,123,93,24,10,SS_CENTERIMAGE
-    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,116,122,50,14
-    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,170,122,50,14
+    EDITTEXT        IDC_SPEED,154,98,24,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Speed:",IDC_STATIC,123,99,24,10,SS_CENTERIMAGE
+    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,116,152,50,14
+    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,170,152,50,14
+    CONTROL         "Teleporter",IDC_TELEPORTER,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFT | WS_TABSTOP,123,86,93,10
 END
 
 
@@ -244,7 +246,7 @@ BEGIN
         LEFTMARGIN, 6
         RIGHTMARGIN, 220
         TOPMARGIN, 7
-        BOTTOMMARGIN, 155
+        BOTTOMMARGIN, 184
     END
 END
 #endif    // APSTUDIO_INVOKED

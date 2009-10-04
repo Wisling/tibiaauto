@@ -53,6 +53,7 @@ void CMapConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SHOVEL, m_RequireShovel);
 	DDX_Control(pDX, IDC_USE_TILE, m_RequireUse);
 	DDX_Control(pDX, IDC_STACKABLE, m_Stackable);
+	DDX_Control(pDX, IDC_TELEPORTER, m_Teleporter);
 	DDX_Control(pDX, IDC_PREVIOUS_CONFIG_TILE, m_Previous);
 	DDX_Control(pDX, IDC_NEXT_CONFIG_TILE, m_Next);
 	//}}AFX_DATA_MAP
@@ -140,6 +141,7 @@ void CMapConfig::loadTile(int tileId, int pos) {
 	m_RequireShovel.SetCheck(memTilesForConfig[pos]->requireShovel);
 	m_RequireUse.SetCheck(memTilesForConfig[pos]->requireUse);
 	m_Stackable.SetCheck(memTilesForConfig[pos]->stackable);
+	m_Teleporter.SetCheck(memTilesForConfig[pos]->isTeleporter);
 }
 
 void CMapConfig::saveTile() {
@@ -161,6 +163,7 @@ void CMapConfig::saveTile() {
 	memTilesForConfig[currentStackPos]->requireShovel = m_RequireShovel.GetCheck();
 	memTilesForConfig[currentStackPos]->requireUse = m_RequireUse.GetCheck();
 	memTilesForConfig[currentStackPos]->stackable = m_Stackable.GetCheck();
+	memTilesForConfig[currentStackPos]->isTeleporter = m_Teleporter.GetCheck();
 }
 
 BOOL CMapConfig::OnInitDialog() {

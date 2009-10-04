@@ -1,8 +1,12 @@
+2.0.1, 10.03.2009
+Defects
+ All: Fixed crash bug from change in the way Tibia.exe runs
+ Fisher: Fixed
+ TibiaAuto: Fixed memory leak when reading in name string from memory
+
 2.0.0, 10.02.2009
 Enhancments
-  Gereral upgrade to Tibia 8.52
-1.20.3, ??.08.2009
-Enhancments
+ Gereral upgrade to Tibia 8.52
  Kernal: fixed an error destroying .skin files when they were loaded and set.
  Item Config: fixed loot list Items not being displayed
  Kernal: Provided for more depressed-looking buttons
@@ -21,8 +25,8 @@ Enhancments
  Spellcaster: Added some default spells to list
  Cavebot & Auto go/log: Can manually edit the x,y,z coordinates before adding to list
  Banker: Added 4 new bankers
- Banker: After going to bank, will restock and deposit at depot to save time (but cavebot will not stop by bank)
- Install: Looks for tibia client install location in registry
+ Banker: Banker will stop by bank then will restock and deposit at depot to save time (but cavebot will not stop by bank after going to the depot so still add )
+ Installer: Looks for tibia client install location in registry
 
 Defects
  Cavebot: Fixed one of the crash bugs in the cavebot(when not looting creature and going back to hunt)

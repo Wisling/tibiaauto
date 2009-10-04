@@ -136,7 +136,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (item) {
+				if (item) {	
 					fishingRodCont=0x40+contNr;
 					fishingRodPos=item->pos;
 					delete item;

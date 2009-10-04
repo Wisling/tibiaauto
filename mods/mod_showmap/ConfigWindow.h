@@ -48,6 +48,7 @@ public:
 	CButton m_RequireShovel;
 	CButton m_RequireUse;
 	CButton m_Stackable;
+	CButton m_Teleporter;
 	CButtonST m_Previous;
 	CButtonST	m_Commit;
 	CButtonST m_Next;

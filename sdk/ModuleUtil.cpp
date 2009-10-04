@@ -92,11 +92,11 @@ int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange
 }
 
 int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
-	//if cutoff==average a value >=average is returned
+	//if cutoff==average a value <=average is returned
 	//cutoff always included
 	//95% chance of exit within 3 iterations
 	int sample = randomFormula(average,halfrange);
-	while ((sample<cutoff) == (cutoff<=average) && sample!=cutoff){
+	while ((sample>cutoff) == (cutoff>=average) && sample!=cutoff){
 		sample = randomFormula(average,halfrange);
 	}
 	return sample;
@@ -1452,10 +1452,15 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		delete mp;
 		//&&reader.getMemIntValue(itemProxy.getValueForConst("addrTilesToGo"))==0
 		//time to walk 1 sqm is inverse to the speed, double speed== half the time
-		int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3:1)*1000/self->walkSpeed)+300;
+		int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3:1)*1000/self->walkSpeed)+600;
 		bool stoppedWalking=currentTm-lastStartChangeTm>=maxTileDelay;
 		if (pathSize>0&&(lastEndEqStart||stoppedWalking||currentTm-lastExecuteWalkTm>15000))
 		{
+			if (stoppedWalking){
+				char buf2[111];
+				sprintf(buf2,"waited %d max %d",currentTm-lastStartChangeTm,maxTileDelay);
+				//sender.sendTAMessage(buf2);
+			}
 			// 'normal' stepping limited to 10 steps
 			int i;
 			if (pathSize>10) pathSize=10;
