@@ -19,6 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
 #include "stdafx.h"
+#include <sys/stat.h> 
 #include "mod_maphack.h"
 
 #include "ConfigDialog.h"
@@ -177,12 +178,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								if(tileData->speed && tileData->speed<256&& mapSpeed==-1) mapSpeed=tileData->speed;
 								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
 							}
-							if (mapColour!=-1 && mapSpeed!=-1){
-								sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
-								//AfxMessageBox(buf); 
-								mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
-								mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
+							if (mapColour==-1 || mapSpeed==-1){
+								mapColour=0; mapSpeed=100; continue;
 							}
+							sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
+							//AfxMessageBox(buf); 
+							mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
+							mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
 						}
 					}
 				}
@@ -207,12 +209,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								if(tileData->speed && tileData->speed<256&& mapSpeed==-1) mapSpeed=tileData->speed;
 								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
 							}
-							if (mapColour!=-1 && mapSpeed!=-1){
-								sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
-								//AfxMessageBox(buf);
-								mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
-								mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
+							if (mapColour==-1 || mapSpeed==-1){
+								mapColour=0; mapSpeed=100; continue;
 							}
+							sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
+							//AfxMessageBox(buf); 
+							mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
+							mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
 						}
 					}
 				}
@@ -237,21 +240,35 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								if(tileData->speed && tileData->speed<256 && mapSpeed==-1) mapSpeed=tileData->speed;
 								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp) mapSpeed=255;
 							}
-							if (mapColour!=-1 && mapSpeed!=-1){
-								sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
-								//AfxMessageBox(buf); 
-								mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
-								mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
+							if (mapColour==-1 || mapSpeed==-1){
+								mapColour=0; mapSpeed=100; continue;
 							}
+							sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
+							//AfxMessageBox(buf); 
+							mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
+							mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
 						}
 					}
 				}
 				CTibiaCharacter* newSelf=reader.readSelfCharacter();
+				int fileExists;
+				int last = 0;
 				if (newSelf->z==self->z){//since we used relToCell only floorchanges drastically matter
 					// tiles changed between read from tibia and write to map are excluded
-					for (x=-8+max(0,newSelf->x-self->x);x<=9+min(0,newSelf->x-self->x);x++){
-						for (y=-6+max(0,newSelf->y-self->y);y<=7+min(0,newSelf->y-self->y);y++){
-							for(z=minZ;z<=maxZ;z++){
+					for(z=minZ;z<=maxZ;z++){
+						for (x=-8+max(0,newSelf->x-self->x);x<=9+min(0,newSelf->x-self->x);x++){
+							for (y=-6+max(0,newSelf->y-self->y);y<=7+min(0,newSelf->y-self->y);y++){
+/*
+								if (last !=(int)((self->x+x-z)/256)*256*30+(int)((self->y+y-z)/256)*30+self->z+z){
+									char filename[1024+20];
+									sprintf(filename,"%s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)((self->x+x-z)/256),(int)((self->y+y-z)/256),self->z+z);
+									FILE *f=fopen(filename,"r");
+									fileExists=(f?1:0);
+									if (f) fclose(f);
+									last =(int)((self->x+x-z)/256)*256*30+(int)((self->y+y-z)/256)*30+self->z+z;
+								}
+*/
+								//if(mapArrSpd[x-(-8)][y-(-6)][z-minZ]!=0 && (mapArrCol[x-(-8)][y-(-6)][z-minZ]!=0 || fileExists)){
 								if(mapArrSpd[x-(-8)][y-(-6)][z-minZ]!=0){
 									reader.writeMiniMapPoint(self->x+x-z,self->y+y-z,self->z+z,mapArrCol[x-(-8)][y-(-6)][z-minZ],mapArrSpd[x-(-8)][y-(-6)][z-minZ]);
 								}

@@ -59,12 +59,13 @@ END_MESSAGE_MAP()
 // Tool functions
 
 int drinkFails=0;
+static map<int,int> setHp;
+static map<int,int> setMana;
 
 int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
-	static map<int,int> setHp;
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
@@ -79,7 +80,6 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
-	static map<int,int> setMana;
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxMana
@@ -287,6 +287,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		delete self;
 				
 	}
+	setMana.clear();
+	setHp.clear();
 	toolThreadShouldStop=0;
 	drinkFails=0;
 	return 0;
