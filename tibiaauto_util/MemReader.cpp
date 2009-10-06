@@ -175,11 +175,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->shields=CMemUtil::GetMemIntValue(offset+152);
 	ch->nr=nr;
 	
-
-	
-	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);
-	
 	
 	return ch;
 }
@@ -204,14 +200,16 @@ char * CMemReader::GetLoggedChar(int processId)
 		
 	CMemUtil::GetMemIntValue(processId,m_memAddressSelfId,&selfId);
 
+	char buf[32];
 	for (i=0;i<m_memMaxCreatures;i++)
 	{
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId);		
 		CMemUtil::GetMemIntValue(processId,offset+144,&visible);
-		if (selfId==creatureId&&visible)
+		if (selfId==creatureId&&visible &&creatureId > 0)
 		{
+			ret="known"; //For some reason if ret is not given a value beforehand GetMemRange will not either.
 			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,ret);
 		};
 	};
