@@ -209,7 +209,7 @@ char * CMemReader::GetLoggedChar(int processId)
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId);		
-		CMemUtil::GetMemIntValue(processId,offset+140,&visible);
+		CMemUtil::GetMemIntValue(processId,offset+144,&visible);
 		if (selfId==creatureId&&visible)
 		{
 			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,ret);
