@@ -228,38 +228,25 @@ void CToolItemConfig::OnLootDelete() {
 }
 
 char *CToolItemConfig::parseNameFromItemSelected(int type) {
+	char buf[128];
+	int index = 0;
 	if (type == ITEM) {
-		int index = m_itemsList.GetCurSel();
-		char buf[128];
+		index = m_itemsList.GetCurSel();
 		m_itemsList.GetText(index, buf);
-		for (int k = strlen(buf)-1; k > 0; k--)	{
-			if (buf[k] == ')' && buf[k + 1] == ' ') {
-				memcpy(outbuf, buf + k + 2, strlen(buf)-k);
-			}
-		}
-		return outbuf;
 	}
 	if (type == FOOD) {
-		int index = m_foodList.GetCurSel();
-		char buf[128];
+		index = m_foodList.GetCurSel();
 		m_foodList.GetText(index, buf);
-		for (int k = strlen(buf)-1; k > 0; k--)	{
-			if (buf[k] == ')' && buf[k + 1] == ' ') {
-				memcpy(outbuf, buf + k + 2, strlen(buf)-k);
-			}
-		}
-		return outbuf;
 	}
 	if (type == LOOT) {
-		int index = m_lootedList.GetCurSel();
-		char buf[128];
+		index = m_lootedList.GetCurSel();
 		m_lootedList.GetText(index, buf);
-		for (int k = strlen(buf)-1; k > 0; k--)	{
-			if (buf[k] == ')' && buf[k + 1] == ' ') {
-				memcpy(outbuf, buf + k + 2, strlen(buf)-k);
-			}
-		}
-		return outbuf;
 	}
-	return NULL;
+	for (int k = 0; k < strlen(buf); k++)	{
+		if (buf[k] == ' ' && buf[k + 1] == '(') {
+			buf [k] = '\0';
+			memcpy(outbuf, buf, k+1);
+		}
+	}
+	return outbuf?outbuf:NULL;
 }

@@ -11,6 +11,7 @@
 #define IDD_ITEM_ADD                    3003
 #define IDB_UNCHECK                     3006
 #define IDB_CHECK                       3007
+#define IDD_FULL_ITEM_LIST_ADD          3007
 #define IDC_ITEM_ADD_NAME               3013
 #define IDC_ITEM_ADD_ID                 3014
 #define IDC_ADD_ITEM                    3015
@@ -36,7 +37,9 @@
 #define IDD_LOOT_ADD                    3031
 #define IDC_FRAME_ITEMS                 3031
 #define IDC_LOOT_ADD_NAME               3032
+#define IDC_FRAME_TIBIA_ITEMS           3032
 #define IDC_LOOT_ADD_ID                 3033
+#define IDC_TIBIA_ITEM_TREE             3033
 #define IDC_ADD_LOOT                    3034
 #define IDD_LOOT_EDIT                   3035
 #define IDC_LOOT_EDIT_NAME              3036
@@ -48,9 +51,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3007
+#define _APS_NEXT_RESOURCE_VALUE        3008
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3032
+#define _APS_NEXT_CONTROL_VALUE         3034
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
