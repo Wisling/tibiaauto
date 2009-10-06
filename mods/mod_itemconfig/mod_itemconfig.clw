@@ -18,14 +18,15 @@ Class6=CLootEdit
 Class7=CMod_itemconfigApp
 Class8=CToolItemConfig
 
-ResourceCount=7
-Resource1=IDD_FOOD_EDIT
-Resource2=IDD_TOOL_ITEMCONFIG (Polish)
-Resource3=IDD_ITEM_ADD
-Resource4=IDD_LOOT_ADD
-Resource5=IDD_FOOD_ADD
-Resource6=IDD_ITEM_EDIT
-Resource7=IDD_LOOT_EDIT
+ResourceCount=8
+Resource1=IDD_FOOD_ADD
+Resource2=IDD_LOOT_EDIT
+Resource3=IDD_TOOL_ITEMCONFIG (Polish)
+Resource4=IDD_FOOD_EDIT
+Resource5=IDD_ITEM_EDIT
+Resource6=IDD_ITEM_ADD
+Resource7=IDD_LOOT_ADD
+Resource8=IDD_FULL_ITEM_LIST_ADD
 
 [CLS:CItemAdd]
 Type=0
@@ -173,7 +174,7 @@ Control14=IDC_DELETE_FOOD,button,1342242816
 Control15=IDC_ADD_LOOT,button,1342242816
 Control16=IDC_EDIT_LOOT,button,1342242816
 Control17=IDC_DELETE_LOOT,button,1342242816
-Control18=IDC_TREE1,SysTreeView32,1350632323
+Control18=IDC_TREE1,SysTreeView32,1082196867
 
 [DLG:IDD_ITEM_ADD]
 Type=1
@@ -185,4 +186,13 @@ Control3=IDC_STATIC,static,1350697472
 Control4=IDC_STATIC,static,1350697472
 Control5=IDC_ITEM_ADD_NAME,edit,1350631552
 Control6=IDC_ITEM_ADD_ID,edit,1350631552
+
+[DLG:IDD_FULL_ITEM_LIST_ADD]
+Type=1
+Class=?
+ControlCount=4
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_FRAME_TIBIA_ITEMS,button,1342177287
+Control4=IDC_TIBIA_ITEM_TREE,SysTreeView32,1350631680
 
