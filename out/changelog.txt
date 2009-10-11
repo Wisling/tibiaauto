@@ -1,3 +1,11 @@
+2.0.2, 10.??.2009
+Defects
+  Eater: Fixed the randomizing functions to eat 1-5 item randomly with a +/-10% digestion time delay
+  Kernal: Fixed the character selection
+  ItemConfig: Fixed the Add, edit and delete functions
+Enhancments
+  ItemConfig: Alphabetized the lists for ease of use
+
 2.0.1, 10.03.2009
 Defects
  All: Fixed crash bug from change in the way Tibia.exe runs
