@@ -30,8 +30,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "MemConstData.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
-#include <stdlib.h>  //Includes rand() and srand() functions
-#include <time.h> //Includes timd(int) function for random number seeding
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -86,16 +84,15 @@ int RandomTimeEaterWait(int digestTime){
 	rand() % (int)(digestTime * .2)	:: Pseudo-random number between 0 and 20% of digestTime
 	digestTime * .9					:: 90% of digestTime...
 									   When added to a random number from 0 to 20% of digestTime, 
-									   this creates a random number from 90 to 110% (+/- 10%)
+									   this creates a uniform random number from 90 to 110% (+/- 10%)
 	***************************/
-	return rand() % (int)(digestTime * .2) + (int)(digestTime * .9);
+	return rand() % (int)(digestTime * .2) + (int)(digestTime * .9);//randomFormula creates a non-uniform distribution weighted towards an average
 }
 
 int RandomTimeEaterAmount(){//returns how much food to eat
-	//int ans =1;
-	//while (rand()%100<60) ans++;	//A really round about way of getting a random range of 1 to 60
-	//return ans;
-	return rand() % 5 + 1;			//Do we need to eat more than 5 items at any one time?
+	int ans =1;
+	while (rand()%100<60) ans++;
+	return ans;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -104,9 +101,10 @@ int RandomTimeEaterAmount(){//returns how much food to eat
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
+
+
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {			
-	srand(time(NULL));				//Seed the random number generation
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -118,51 +116,55 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{			
 		int pos;
-		if (digestTime!=-1)		//Simplified the if-statement since digestTime will be zeroed out in a second. Now it is only 0 if we are connected and the module SHOULD run.
+		if (digestTime==-1) digestTime=0;
+		else {
     		CModuleUtil::sleepWithStop(RandomTimeEaterWait(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
+        	}
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
-		//Redundant check on toolThreadShouldStop removed
+		if (toolThreadShouldStop) continue;
 
 		digestTime=0;
 		
 		CTibiaItem *foodItem;
-		CTibiaCharacter *self;
 		for (int i=RandomTimeEaterAmount();i>0;i--){
+			CTibiaCharacter *self = reader.readSelfCharacter();
 			int foodContainer;
 
-			foodItem=NULL;		//foodItem is NULLed during each iteration.
-								//Mo need to delete and re-initialize each time, let's do it at the end
+			foodItem=NULL;
 			foodContainer=-1;
 						
+			
 			CUIntArray *foods=itemProxy.getItemsFoodArray();
 			for (pos=0;pos<memConstData.m_memMaxContainers&&foodItem==NULL;pos++)		
 			{
 				foodItem = CModuleUtil::lookupItem(pos,foods);
 				foodContainer = pos;
 			}
+			//taken care of. delete foods;
+
 			
 			if (foodItem!=NULL)
 			{
-				//self=reader.readSelfCharacter(); //This is the only time the self variable was ever used in the algorithim. self2 was removed.
-				//The previous line was commented out until a fix for waitForCapsChange could be found.
 				sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
-				//if (CModuleUtil::waitForCapsChange(self->cap)) //TA does not seem to be "catching" the change
-					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2); 
-				//Without the if-statement we are assuming that ALL food we attempt to eat will be eaten
-				//BAD assumption but none other is working ATM!!!
+				
+				CTibiaCharacter* self2=reader.readSelfCharacter();
+				if (CModuleUtil::waitForCapsChange(self2->cap))
+					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
+				delete self2;
+				char buf[111];
 				if (i!=1)
 					Sleep(CModuleUtil::randomFormula(400,100));
+				delete foodItem;
+				foodItem = NULL;
 			}
+			delete self;
 		}
-		foodItem = NULL;
-		delete foodItem;
-		self = NULL;
-		delete self;
 	}	
 
 	toolThreadShouldStop=0;
 	return 0;
 }
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_eaterApp construction
@@ -180,14 +182,16 @@ CMod_eaterApp::~CMod_eaterApp()
 
 char * CMod_eaterApp::getName()
 {
-	return "Food Eater";
+	return "Food eater";
 }
+
 
 int CMod_eaterApp::isStarted()
 {
 	return m_started;
 }
 
+ 
 void CMod_eaterApp::start()
 {	
 	superStart();
@@ -207,9 +211,10 @@ void CMod_eaterApp::stop()
 	m_started=0;		
 } 
 
+
 char *CMod_eaterApp::getVersion()
 {
-	return "2.0";
+	return "1.0";
 }
 
 
