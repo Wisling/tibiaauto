@@ -128,7 +128,7 @@ void CTibiaMap::enlarge()
 }
 
 int CTibiaMap::isPointLonger(int x,int y,int z,int prevX, int prevY, int prevZ){
-	return x!=prevX && y!=prevY && z==prevZ;
+	return x!=prevX && y!=prevY || z!=prevZ;
 }
 
 struct point CTibiaMap::getRandomPoint()
@@ -341,12 +341,19 @@ void CTibiaMap::setPointDistance(int x, int y, int z,int dist)
 
 int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	if (getPointSpeed(x, y, z)==0){
+	int currentUpDown=getPointUpDown(x,y,z);
+	int forcedLevelChange=0;
+	if (currentUpDown==101||currentUpDown==204||currentUpDown==302||currentUpDown==303)
+	{
+		forcedLevelChange=1;
+	}
+	int spd = getPointSpeed(x, y, z);
+	if (spd==0){
 		char buf[111];
-		sprintf(buf,"speed(%d,%d,%d) %d",x, y, z,getPointSpeed(x, y, z));
+		sprintf(buf,"speed(%d,%d,%d) %d",x, y, z,spd);
 		//AfxMessageBox(buf);
 	}
-	return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);//return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);
+	return spd*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1)+forcedLevelChange*10000;//return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);
 }
 
 typedef CMap<point *,point *,pointData *,pointData *> CMyMap;

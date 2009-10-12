@@ -479,6 +479,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		char buf[1024];
 		char *loggedCharName = reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		sprintf(buf,"Logged as: %s",loggedCharName);
+		free(loggedCharName);
 		CString currentDisplay;
 		m_loginName.GetWindowText(currentDisplay);
 		if (currentDisplay != buf)
@@ -743,6 +744,7 @@ void CTibiaautoDlg::OnSave()
       "Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
 
 	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
+	free(loggedCharName);
 	CFileDialog fd(false,"",fName,OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY, szFilters, this);
 	
 	if (fd.DoModal()==IDOK)
@@ -930,6 +932,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	}	
 	
 	sprintf(logBuf,"Loading character '%s' finished.",loggedCharName);
+	free(loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 	
 	delete []restartedModulesTab;		
@@ -969,6 +972,7 @@ void CTibiaautoDlg::OnLoad()
 		"Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
 	
 	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
+	free(loggedCharName);
 	CFileDialog fd(true,"",fName,OFN_FILEMUSTEXIST, szFilters, NULL);
 	
 	
