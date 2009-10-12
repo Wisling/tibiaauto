@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
-//#define MAPDEBUG
+#define MAPDEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -92,21 +92,22 @@ int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange
 }
 
 int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
-	//if cutoff==average a value <=average is returned
+	//if cutoff>average returns [average-halfrange,cutoff-1] else [cutoff,average+halfrange]
 	//cutoff always included
 	//95% chance of exit within 3 iterations
 	int sample = randomFormula(average,halfrange);
-	while ((sample>cutoff) == (cutoff>=average) && sample!=cutoff){
+	while ((sample>=cutoff) == (cutoff>average)){
 		sample = randomFormula(average,halfrange);
 	}
 	return sample;
 }
 
 int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR){
+	//returns between max and min inclusive
 	if (minR > average || maxR < average) return average;
 	halfrange = min(halfrange,max(average-minR,maxR-average));
 	if (maxR-average<average-minR)
-		return randomFormula(average, halfrange, maxR);
+		return randomFormula(average, halfrange, maxR+1);
 	else
 		return randomFormula(average, halfrange, minR);
 }

@@ -77,14 +77,13 @@ static map<int,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
-	//References to *(int*)<int> removed
-	if (!config->randomCast) return pt;
+	if (!config->randomCast) return *(int*)pt;
 	CMemReaderProxy reader;
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),self->maxMana);
+		setMana[pt]=CModuleUtil::randomFormula(*(int*)pt,(int)(*(int*)pt*.1),self->maxMana+1);
 		delete self;
 	}
 	return setMana[pt];
@@ -92,16 +91,14 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableHp(int pt,int command,CConfigData *config){
-	//References to *(int*)<int> removed
-	//We are now sending the value of the integers and not their addresses
-	if (!config->randomCast) return pt;
+	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setHp[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,self->maxHp);
+		setHp[pt]=CModuleUtil::randomFormula(*(int*)pt,(int)(*(int*)pt*.1),*(int*)pt,self->maxHp);//4 param formula
 		delete self;
 	}
 	return setHp[pt];
@@ -157,19 +154,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int attackedCreature = reader.getAttackedCreature();
 		int flags = reader.getSelfEventFlags();
 		//T4: First try to heal/also uses paralysis cure here
-		char buf[32];
-		//referances to (int)& removed
-		//We need the variables' value not their memory address (&)
-		int exuraHp = RandomVariableHp(config->exuraHp,GET,config);
-		sprintf(buf,"config->exuraHp: %d", config->exuraHp);
-		AfxMessageBox(buf);
-		sprintf(buf,"exuraHp: %d", exuraHp);
-		AfxMessageBox(buf);
-		Sleep(2000);
-		int granHp = RandomVariableHp(config->granHp,GET,config);
-		int vitaHp = RandomVariableHp(config->vitaHp,GET,config);
-		int lifeHp = RandomVariableHp(config->lifeHp,GET,config);
-		int manaMana = RandomVariableMana(config->manaMana,GET,config);
+		int exuraHp = RandomVariableHp((int)&config->exuraHp,GET,config);
+		int granHp = RandomVariableHp((int)&config->granHp,GET,config);
+		int vitaHp = RandomVariableHp((int)&config->vitaHp,GET,config);
+		int lifeHp = RandomVariableHp((int)&config->lifeHp,GET,config);
+		int manaMana = RandomVariableMana((int)&config->manaMana,GET,config);
 		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){

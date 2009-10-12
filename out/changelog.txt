@@ -1,18 +1,21 @@
-2.0.2, 10.??.2009
-Defects
-  Eater: Fixed the randomizing functions to eat 1-5 item randomly with a +/-10% digestion time delay
-  Kernal: Fixed the character selection
-  ItemConfig: Fixed the Add, edit and delete functions
+2.0.3, ??.12.2009
 Enhancments
-  ItemConfig: Alphabetized the lists for ease of use
+Defects
 
-2.0.1, 10.03.2009
+2.0.2, 12.10.2009
+Enhancments
+ ItemConfig: Alphabetized the lists for ease of use
+Defects
+ Kernel: Fixed the character selection
+ ItemConfig: Fixed the Add, edit and delete functions
+
+2.0.1, 03.10.2009
 Defects
  All: Fixed crash bug from change in the way Tibia.exe runs
  Fisher: Fixed
  TibiaAuto: Fixed memory leak when reading in name string from memory
 
-2.0.0, 10.02.2009
+2.0.0, 02.10.2009
 Enhancments
  Gereral upgrade to Tibia 8.52
  Kernal: fixed an error destroying .skin files when they were loaded and set.
