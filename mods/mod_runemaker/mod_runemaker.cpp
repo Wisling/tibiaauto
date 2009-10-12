@@ -57,17 +57,17 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 static map<int,int> setMana;
 int RandomVariableMana(int pt,int command,CConfigData *config){
-	if (!config->randomCast) return pt;
+	if (!config->randomCast) return *(int*)pt;
 
 	CMemReaderProxy reader;
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxMana
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,pt * 0.1,pt,self->maxMana);
+		setMana[pt]=CModuleUtil::randomFormula((int)(*(int*)pt),(int)((*(int*)pt)*0.1),(int)(*(int*)pt),self->maxMana);//4 param formula
 		delete self;
 	}
-	return pt;
+	return *(int*)pt;
 }
 
 /**
@@ -157,6 +157,7 @@ void moveRuneBankToContainer(int handAddress,int locId,int targetContNr)
 			{
 				runeInHand=1;										
 			}
+			delete item;
 			Sleep(50);
 			iters++;					
 		};
@@ -317,11 +318,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			delete container;
 		}
 
-		int manaLimit = RandomVariableMana(config->makeNow?config->mana:config->manaLimit,GET,config);
+		int manaLimit = RandomVariableMana(config->makeNow?((int)&config->mana):((int)&config->manaLimit),GET,config);
 		
 
 		if (myself->mana>=manaLimit){
-			RandomVariableMana(config->makeNow?config->mana:config->manaLimit,MAKE,config);
+			RandomVariableMana(config->makeNow?((int)&config->mana):((int)&config->manaLimit),MAKE,config);
 			bMakeRune = 1;
 			//config->makeNow = 0;
 		}else if(myself->mana < config->mana){
