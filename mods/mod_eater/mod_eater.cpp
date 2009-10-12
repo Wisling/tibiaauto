@@ -118,6 +118,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int pos;
 		if (digestTime==-1) digestTime=0;
 		else {
+			char buf[111];
+			sprintf(buf,"food wait time %d",digestTime);
+			sender.sendTAMessage(buf);
     		CModuleUtil::sleepWithStop(RandomTimeEaterWait(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
         	}
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
@@ -145,9 +148,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			if (foodItem!=NULL)
 			{
+				CTibiaCharacter* self2=reader.readSelfCharacter();
 				sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
-				CTibiaCharacter* self2=reader.readSelfCharacter();
 				if (CModuleUtil::waitForCapsChange(self2->cap))
 					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
 				delete self2;
