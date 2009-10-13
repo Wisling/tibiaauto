@@ -31,6 +31,7 @@ int toolThreadAutoResponderShouldStop=0;
 
 DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 {
+	srand(time(NULL));
 	CMemReaderProxy reader;
 	CToolAutoResponderThreadConfig *config = (CToolAutoResponderThreadConfig *)lpParam;
 	while (!toolThreadAutoResponderShouldStop)
