@@ -77,7 +77,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
-int RandomTimeEaterWait(int digestTime){
+int RandomEaterWaitTime(int digestTime){
 	/***************************
 	rand()							:: Random number between 0 and RAND_MAX (?32767?)
 	digestTime * .2					:: 20% of digestTime
@@ -89,10 +89,8 @@ int RandomTimeEaterWait(int digestTime){
 	return rand() % (int)(digestTime * .2) + (int)(digestTime * .9);//randomFormula creates a non-uniform distribution weighted towards an average
 }
 
-int RandomTimeEaterAmount(){//returns how much food to eat
-	int ans =1;
-	while (rand()%100<60) ans++;
-	return ans;
+int RandomAmountEater(){//returns how much food to eat
+	return rand() % 7 + 1;			//Eat only 1-7 pieces of food at a time
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -100,8 +98,6 @@ int RandomTimeEaterAmount(){//returns how much food to eat
 
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
-
-
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {			
@@ -112,63 +108,78 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CConfigData *config = (CConfigData *)lpParam;
 	int digestTime = -1;
-	int digestAmount = 0;
+									//Superfluous referance to "digestAmount" removed
 
 	while (!toolThreadShouldStop)
 	{			
 		int pos;
 		if (digestTime==-1) digestTime=0;
 		else {
-			char buf[111];
-			sprintf(buf,"food wait time %d",digestTime);
-			sender.sendTAMessage(buf);
-    		CModuleUtil::sleepWithStop(RandomTimeEaterWait(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
-        	}
+			CModuleUtil::sleepWithStop(RandomEaterWaitTime(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
+		}
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		if (toolThreadShouldStop) continue;
-
+		
 		digestTime=0;
 		
-		CTibiaItem *foodItem;
-		for (int i=RandomTimeEaterAmount();i>0;i--){
-			CTibiaCharacter *self = reader.readSelfCharacter();
+		for (int i=RandomAmountEater();i>0;i--){
+									//Superfluous referance to "self" removed
+			CTibiaItem *foodItem;	//In keeping with the paradigm of declaring and deleting dynamic items in the same scope
 			int foodContainer;
 
 			foodItem=NULL;
 			foodContainer=-1;
 						
-			
 			CUIntArray *foods=itemProxy.getItemsFoodArray();
-			for (pos=0;pos<memConstData.m_memMaxContainers&&foodItem==NULL;pos++)		
+			for (pos=0;pos<memConstData.m_memMaxContainers;pos++)		
 			{
-				foodItem = CModuleUtil::lookupItem(pos,foods);
-				foodContainer = pos;
-			}
-			//taken care of. delete foods;
+				CTibiaItem *tempFoodItem;
+				tempFoodItem = NULL;
 
+									//We haven't found a food item yet! 
+				if (foodItem==NULL) {
+					foodItem = CModuleUtil::lookupItem(pos,foods);
+					foodContainer = pos;
+				}
+									//Are there any other things to eat?
+				else 
+					tempFoodItem = CModuleUtil::lookupItem(pos,foods);
+									//Free up space in BPs by eating items with smaller quantities until they are gone
+									//Incomplete algorithim!!!! (only find smaller quantity items if they exist in another BP)
+				if (tempFoodItem != NULL && tempFoodItem->quantity < foodItem->quantity) {
+					foodItem = CModuleUtil::lookupItem(pos,foods);
+					foodContainer = pos;
+				}
+
+				delete tempFoodItem;
+				tempFoodItem = NULL;
+			}
 			
 			if (foodItem!=NULL)
 			{
-				CTibiaCharacter* self2=reader.readSelfCharacter();
-				sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
+									//Previously used "self" variable was unneeded, changed variable name for clarity
+				CTibiaCharacter* self=reader.readSelfCharacter();
+									//Eat only if the character has less than full health or mana and only if not in a protection zone
+				int flags = reader.getSelfEventFlags();
+				if (!(flags & 0x4000) && self->mana < self->maxMana || self->hp < self->maxHp)
+					sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
-				if (CModuleUtil::waitForCapsChange(self2->cap))
+				if (CModuleUtil::waitForCapsChange(self->cap))
 					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
-				delete self2;
-				char buf[111];
+				delete self; 
+				self = NULL;
+									//Superfluous referance to buf removed.
 				if (i!=1)
 					Sleep(CModuleUtil::randomFormula(400,100));
-				delete foodItem;
-				foodItem = NULL;
 			}
-			delete self;
+			delete foodItem;		//In keeping with the paradigm of declaring and deleting dynamic items in the same scope
+			foodItem = NULL;
 		}
 	}	
 
 	toolThreadShouldStop=0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_eaterApp construction
@@ -189,13 +200,11 @@ char * CMod_eaterApp::getName()
 	return "Food eater";
 }
 
-
 int CMod_eaterApp::isStarted()
 {
 	return m_started;
 }
 
- 
 void CMod_eaterApp::start()
 {	
 	superStart();
@@ -215,10 +224,9 @@ void CMod_eaterApp::stop()
 	m_started=0;		
 } 
 
-
 char *CMod_eaterApp::getVersion()
 {
-	return "1.0";
+	return "2.0";
 }
 
 
