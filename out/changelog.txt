@@ -1,8 +1,9 @@
-2.0.3, ??.12.2009
+2.0.3, 10.??.2009
 Enhancments
-Defects
+  Eater: No longer eats while in a PZ
+  Eater: Attempts to eat items with smaller quantities in other backpacks, freeing space.
 
-2.0.2, 12.10.2009
+2.0.2, 10.12.2009
 Enhancments
  ItemConfig: Alphabetized the lists for ease of use
 Defects
