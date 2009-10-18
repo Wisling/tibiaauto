@@ -143,7 +143,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastCastTime = 0;
 	int lastWarning = 0;
 	double minCastTime = 0.7;
-	char text[128] = {0};
+	char whiteText[32] = {0};
 	int best = 0;
 	CTibiaItemProxy itemProxy;
 
@@ -161,11 +161,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		//referances to (int)& removed
 		//We need the variables' value not their memory address (&)
 		int exuraHp = RandomVariableHp(config->exuraHp,GET,config);
-		sprintf(buf,"config->exuraHp: %d", config->exuraHp);
-		AfxMessageBox(buf);
-		sprintf(buf,"exuraHp: %d", exuraHp);
-		AfxMessageBox(buf);
-		Sleep(2000);
 		int granHp = RandomVariableHp(config->granHp,GET,config);
 		int vitaHp = RandomVariableHp(config->vitaHp,GET,config);
 		int lifeHp = RandomVariableHp(config->lifeHp,GET,config);
@@ -203,19 +198,26 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			delete self;
 			self = reader.readSelfCharacter();
 		}			
-		else if(config->poisonSpell && (flags & 1 == 1)) {
-			for (int i = 0; i<6; i++) {
-				for (int j = 0; j<10; j++) {
-					char word = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+i*10+j);
-					if (word % 0x100 == 0) text[i*10+j] = ' '; 
-					text[i*10+j] = word%0x100;
-				}				
+		else if(config->poisonSpell && (flags & 1)) {
+			//Greater understanding leades to more efficient reading of white text.
+			for (int i = 0; i<31; i++) {
+				whiteText[i] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+i);
 			}
-			if ((strstr(text,"hitpoints.") != 0) || (strstr(text,"hitpoint.") != 0)) {
+			if ((strstr(whiteText,"hitpoints.") != 0) || (strstr(whiteText,"hitpoint.") != 0)) {
+				//First, let's reassure the user, help is on the way
+				//Also, this ensures the same white text won't trigger multiple castings, in theory we only need one.
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 4, 'h');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 5, 'a');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 6, 'v');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 7, 'e');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 8, ' ');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 9, 'T');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 10, 'A');
+				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 11, '.');
 				char pointLossText[10] = {0};
 				for (int i = 0; i<10;i++) {
-					if (!isdigit(text[strlen("You lose ")+i])) break;
-					pointLossText[i] = text[strlen("You lose ")+i];
+					if (!isdigit(whiteText[strlen("You lose ")+i])) break;
+					pointLossText[i] = whiteText[strlen("You lose ")+i];
 				}
 				if (atoi(pointLossText) >= config->minPoisonDmg && atoi(pointLossText) != 5) sender.say("exana pox");
 			}
@@ -525,7 +527,7 @@ void CMod_spellcasterApp::enableControls() {
 }
 
 char *CMod_spellcasterApp::getVersion() {
-	return "2.6";
+	return "2.7";
 }
 
 int CMod_spellcasterApp::validateConfig(int showAlerts) {

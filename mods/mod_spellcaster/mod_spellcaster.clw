@@ -14,8 +14,8 @@ Class2=CMod_spellcasterApp
 Class3=CWhiteList
 
 ResourceCount=2
-Resource1=IDD_CONFIG (Polish)
-Resource2=IDD_WHITELIST (Polish)
+Resource1=IDD_WHITELIST (Polish)
+Resource2=IDD_CONFIG (Polish)
 
 [CLS:CConfigDialog]
 Type=0
