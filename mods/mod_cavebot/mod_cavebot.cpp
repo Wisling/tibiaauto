@@ -1359,7 +1359,7 @@ int AttackCreature(CConfigData *config,int id){
 			reader.cancelAttackCoords();
 			Sleep(200);
 			reader.setRemainingTilesToGo(0);
-			reader.writeCreatureDeltaXY(self->nr,0,0);
+	//		reader.writeCreatureDeltaXY(self->nr,0,0);
 			reader.setAttackedCreature(id);
 			sender.attack(id);
 			currentPosTM=time(NULL);
@@ -1434,7 +1434,6 @@ void SendAttackMode(int attack,int follow){
 
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
-
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
@@ -1511,7 +1510,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	
 	while (!toolThreadShouldStop) {
 		Sleep(250);	
-		
+
 		if (reader.getConnectionState()!=8||!config->pausingEnable)
 		{
 			// flush IPC communication if not logged
@@ -1626,6 +1625,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (config->debug) registerDebug("Suspend attack period end");
 			}
 		}
+
 		if (globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_attackSuspended) {
 			/*****
 			Start attack process
@@ -1652,6 +1652,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 			}
 			*/
+
+
 			// keep track of how long standing in same place for info to user
 			if (lastStandingX!=self->x||lastStandingY!=self->y||lastStandingZ!=self->z){
 				lastStandingX=self->x;
@@ -2167,7 +2169,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			/*****
 			End attack process
 			******/
+
 		}
+
+
 
 		/*****
 		Start Walking Process
@@ -2175,7 +2180,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
 		if (currentlyAttackedCreatureNr==-1 && !moving){//wis:make sure doesn;t start while looting last monster
-									//Waypoint selection algorithim	starts here:
+			//Waypoint selection algorithim	starts here:
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ) {
 				if (config->debug) registerDebug("Depot reached");
 				// depot waypoint reached!
@@ -2196,7 +2201,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				deleteAndNull(self);
 				continue;
 			}
-
 			// no target found - go somewhere
 			if (!targetX&&!targetY&&!targetZ) {
 
@@ -2245,46 +2249,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}						//End waypoint selection algorithim
 									//Waypoint walking algrithim starts here:
 			if (targetX&&targetY&&!isInHalfSleep()) {
-									//Let's try something really new!
-									//First: Let's map our path
-				char buf[256];
-				int path[15];
-				
-				deleteAndNull(self);
-				self = reader.readSelfCharacter();
-				
-									// proceed with path searching
-				sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
-				if (config->debug) registerDebug(buf);
-				int ticksStart = GetTickCount();
-				CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
-				int ticksEnd = GetTickCount();
-									//Now let's try to "click" the mini	map. Let Tibia do the walking for us
-									//Check the full path to our target
-				int pathPointCount = CModuleUtil::GetPathTabCount();
-				int pathPointIndex;
-									//Limit searching to the first 200 relevant points or 0 for "all"
-				if (pathPointCount >= 200)
-					pathPointIndex = pathPointCount - 200;
-				else
-					pathPointIndex = 0;
-									//Set a intermediate waypoint to walk to
-				point pathPoint;
-				pathPoint.x = 0;
-				pathPoint.y = 0;
-				pathPoint.z = 0;
-									//We con only "click" a path to points on our level
-				pathPoint = CModuleUtil::GetPathTab(pathPointIndex);
-				while (pathPoint.z != self->z && pathPointIndex < pathPointCount) {
-					pathPoint = CModuleUtil::GetPathTab(++pathPointIndex);
-				}
-				sprintf(buf,"self: (%d, %d, %d)\npathPoint: (%d, %d, %d),Index: %d", self->x, self->y, self->z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
-				if (config->debug) registerDebug(buf);
-									//Did we find a pathPoint on our level?
-				deleteAndNull(self);
-				self = reader.readSelfCharacter();
-				if (abs(self->x - pathPoint.x) <= 2 && abs(self->y - pathPoint.y) <= 2) {
-									//Found it, but for short paths TA map method proves best especially near rope spots and teleporters
+				int mapUsed=config->mapUsed;
+				if (targetZ!=self->z&&config->mapUsed==2)
+					config->mapUsed=0;
+				switch (mapUsed) {
+					// Tibia Auto map chosen
+				case 1: {
+					char buf[256];
+					int path[15];
+					
+					deleteAndNull(self);
+					self = reader.readSelfCharacter();
+					
+					// proceed with path searching
+					sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
+					if (config->debug) registerDebug(buf);
+
+					int ticksStart = GetTickCount();
+					CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+					int ticksEnd = GetTickCount();
+
+					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
+					if (config->debug) registerDebug(buf);
+
 					int pathSize;
 					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 					if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
@@ -2296,123 +2283,188 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						char buf[128];
 						sprintf(buf,"Walking: no path found to (%d,%d,%d)",targetX,targetY,targetZ);
 						if (config->debug) registerDebug(buf);
-									// if no path found - then we forget current target
+
+						// if no path found - then we forget current target
 						targetX=targetY=targetZ=0;
 						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
 					}
-				}						
-				else if (pathPoint.z == self->z) {
-									//Found it! Let's try "clicking" there (Attempt 1)
+						} // case 1
+					break;
+					// Tibia client map chosen
+				default: {
+										//Let's try something really new!
+										//First: Let's map our path
+					char buf[256];
+					int path[15];
+					
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();
-					point startPoint;
-					startPoint.x = self->x;
-					startPoint.y = self->y;
-					startPoint.z = self->z;
-					globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
-					reader.writeGotoCoords(pathPoint.x, pathPoint.y, pathPoint.z);
-									//Wait long enough to get a proper responce from the white text
-					int timeIn = GetTickCount();
-					int timeOut = GetTickCount();
-					while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 500) {timeOut = GetTickCount();}
-					char whiteText[15];				//Stores white text.
-					for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
-						whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);
+					
+										// proceed with path searching
+					sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
+					if (config->debug) registerDebug(buf);
+					int ticksStart = GetTickCount();
+					CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+					int ticksEnd = GetTickCount();
+										//Now let's try to "click" the mini	map. Let Tibia do the walking for us
+										//Check the full path to our target
+					int pathPointCount = CModuleUtil::GetPathTabCount();
+					int pathPointIndex;
+										//Limit searching to the first 200 relevant points or 0 for "all"
+					if (pathPointCount >= 200)
+						pathPointIndex = pathPointCount - 200;
+					else
+						pathPointIndex = 0;
+										//Set a intermediate waypoint to walk to
+					point pathPoint;
+					pathPoint.x = 0;
+					pathPoint.y = 0;
+					pathPoint.z = 0;
+										//We con only "click" a path to points on our level
+					pathPoint = CModuleUtil::GetPathTab(pathPointIndex);
+					while (pathPoint.z != self->z && pathPointIndex < pathPointCount) {
+						pathPoint = CModuleUtil::GetPathTab(++pathPointIndex);
 					}
-									//If we are still not moving kick TA in the butt to get her going
-					if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0) {
-									//Since Tibia merely times out the white text not override it, we need to change the text for subsequent iterations.
-									//Let's have fun and give the users hope.  :P
-						reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+9, 'T');
-						reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+10, 'A');
-						
-									//Path blocked (parcels, crates, etc.)
-									//One more time through path selection
-									//Limit searching to the half the first selection
-						pathPointIndex += (int)((pathPointCount - pathPointIndex) / 2);
-						pathPoint.x = 0;
-						pathPoint.y = 0;
-						pathPoint.z = 0;
-									//We con only "click" a path to points on our level
-						pathPoint = CModuleUtil::GetPathTab(pathPointIndex);
-						while (pathPoint.z != self->z && pathPointIndex < pathPointCount) {
-							pathPoint = CModuleUtil::GetPathTab(++pathPointIndex);
-						}
-						sprintf(buf,"self: (%d, %d, %d)\nHalf-Range pathPoint: (%d, %d, %d)<Index: %d", self->x, self->y, self->z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
-						if (config->debug) registerDebug(buf);
-									//Did we find a pathPoint on our level?
-						if (pathPoint.z == self->z) {
-									//Found it! Let's try "clicking" there (Attempt 2)
-							deleteAndNull(self);
-							self = reader.readSelfCharacter();
-							startPoint.x = self->x;
-							startPoint.y = self->y;
-							startPoint.z = self->z;
+					sprintf(buf,"self: (%d, %d, %d)\npathPoint: (%d, %d, %d),Index: %d", self->x, self->y, self->z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
+					if (config->debug) registerDebug(buf);
+										//Did we find a pathPoint on our level?
+					deleteAndNull(self);
+					self = reader.readSelfCharacter();
+					if (abs(self->x - pathPoint.x) <= 2 && abs(self->y - pathPoint.y) <= 2) {
+										//Found it, but for short paths TA map method proves best especially near rope spots and teleporters
+						int pathSize;
+						for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
+						if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+							CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
-							reader.writeGotoCoords(pathPoint.x, pathPoint.y, pathPoint.z);
-									//Wait longer this time to get a proper responce from the white text
-							int timeIn = GetTickCount();
-							int timeOut = GetTickCount();
-							while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000) {timeOut = GetTickCount();}
-							char whiteText[15];				//Stores white text.
-							for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
-								whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);
-							}				
-							if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0 || (startPoint.x == self->x && startPoint.y == self->y)) {
-									//Since Tibia merely times out the white text not delete it, we need to change the text for subsequent iterations.
-									//Let's have fun and give the users hope.  :P
-								reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+9, 'T');
-								reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+10, 'A');
-									//Path blocked (parcels, crates, etc.)
-									//Oh well, we tried. Let's let TA's executeWalk method take over for awhile.
-									//Proceed with path searching
-								sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
-								if (config->debug) registerDebug(buf);
-								int ticksStart = GetTickCount();
-								CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
-								int ticksEnd = GetTickCount();
-								int pathSize;
-								for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-								if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
-									CModuleUtil::executeWalk(self->x,self->y,self->z,path);
-									globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
-									if (config->debug) registerDebug("Walking: execute walk");
-								}
-								else {
-									char buf[128];
-									sprintf(buf,"Walking: no path found to (%d,%d,%d)",targetX,targetY,targetZ);
+							if (config->debug) registerDebug("Walking: execute walk");
+						}
+						else {
+							char buf[128];
+							sprintf(buf,"Walking: no path found to (%d,%d,%d)",targetX,targetY,targetZ);
+							if (config->debug) registerDebug(buf);
+										// if no path found - then we forget current target
+							targetX=targetY=targetZ=0;
+							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
+						}
+					}						
+					else if (pathPoint.z == self->z) {
+										//Found it! Let's try "clicking" there (Attempt 1)
+						deleteAndNull(self);
+						self = reader.readSelfCharacter();
+						point startPoint;
+						startPoint.x = self->x;
+						startPoint.y = self->y;
+						startPoint.z = self->z;
+						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
+						reader.writeGotoCoords(pathPoint.x, pathPoint.y, pathPoint.z);
+										//Wait long enough to get a proper responce from the white text
+						int timeIn = GetTickCount();
+						int timeOut = GetTickCount();
+						while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 500) {timeOut = GetTickCount();}
+						char whiteText[15];				//Stores white text.
+						for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
+							whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);
+						}
+										//If we are still not moving kick TA in the butt to get her going
+						if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0) {
+										//Since Tibia merely times out the white text not override it, we need to change the text for subsequent iterations.
+										//Let's have fun and give the users hope.  :P
+							reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+9, 'T');
+							reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+10, 'A');
+							
+										//Path blocked (parcels, crates, etc.)
+										//One more time through path selection
+										//Limit searching to the half the first selection
+							pathPointIndex += (int)((pathPointCount - pathPointIndex) / 2);
+							pathPoint.x = 0;
+							pathPoint.y = 0;
+							pathPoint.z = 0;
+										//We con only "click" a path to points on our level
+							pathPoint = CModuleUtil::GetPathTab(pathPointIndex);
+							while (pathPoint.z != self->z && pathPointIndex < pathPointCount) {
+								pathPoint = CModuleUtil::GetPathTab(++pathPointIndex);
+							}
+							sprintf(buf,"self: (%d, %d, %d)\nHalf-Range pathPoint: (%d, %d, %d)<Index: %d", self->x, self->y, self->z, pathPoint.x, pathPoint.y, pathPoint.z, pathPointIndex);
+							if (config->debug) registerDebug(buf);
+										//Did we find a pathPoint on our level?
+							if (pathPoint.z == self->z) {
+										//Found it! Let's try "clicking" there (Attempt 2)
+								deleteAndNull(self);
+								self = reader.readSelfCharacter();
+								startPoint.x = self->x;
+								startPoint.y = self->y;
+								startPoint.z = self->z;
+								globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
+								reader.writeGotoCoords(pathPoint.x, pathPoint.y, pathPoint.z);
+										//Wait longer this time to get a proper responce from the white text
+								int timeIn = GetTickCount();
+								int timeOut = GetTickCount();
+								while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000) {timeOut = GetTickCount();}
+								char whiteText[15];				//Stores white text.
+								for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
+									whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);
+								}				
+								if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0 || (startPoint.x == self->x && startPoint.y == self->y)) {
+										//Since Tibia merely times out the white text not delete it, we need to change the text for subsequent iterations.
+										//Let's have fun and give the users hope.  :P
+									reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+9, 'T');
+									reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+10, 'A');
+										//Path blocked (parcels, crates, etc.)
+										//Oh well, we tried. Let's let TA's executeWalk method take over for awhile.
+										//Proceed with path searching
+									sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
 									if (config->debug) registerDebug(buf);
-									
-									// if no path found - then we forget current target
-									targetX=targetY=targetZ=0;
-									globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
+									int ticksStart = GetTickCount();
+									CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+									int ticksEnd = GetTickCount();
+									int pathSize;
+									for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
+									if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+										CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+										globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
+										if (config->debug) registerDebug("Walking: execute walk");
+									}
+									else {
+										char buf[128];
+										sprintf(buf,"Walking: no path found to (%d,%d,%d)",targetX,targetY,targetZ);
+										if (config->debug) registerDebug(buf);
+										
+										// if no path found - then we forget current target
+										targetX=targetY=targetZ=0;
+										globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
+									}
 								}
 							}
 						}
 					}
-				}
-				else {
-									//No point on our level we must use TA's executeWalk method
-					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
-					if (config->debug) registerDebug(buf);
-					int pathSize;
-					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-					if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
-						CModuleUtil::executeWalk(self->x,self->y,self->z,path);
-						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
-						if (config->debug) registerDebug("Walking: execute walk");
-					}
 					else {
-						char buf[128];
-						sprintf(buf,"Walking: no path found to (%d,%d,%d)",targetX,targetY,targetZ);
+										//No point on our level we must use TA's executeWalk method
+						sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
 						if (config->debug) registerDebug(buf);
-						
-									// if no path found - then we forget current target
-						targetX=targetY=targetZ=0;
-						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
+						int pathSize;
+						for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
+						if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+							CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
+							if (config->debug) registerDebug("Walking: execute walk");
+						}
+						else {
+							char buf[128];
+							sprintf(buf,"Walking: no path found to (%d,%d,%d)",targetX,targetY,targetZ);
+							if (config->debug) registerDebug(buf);
+							
+										// if no path found - then we forget current target
+							targetX=targetY=targetZ=0;
+							globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
+						}
 					}
-				}
 				
+					}// default
+					break;
+				}
+
+
 			}						//End waypoint walking algorithim
 		}							// if (no currentlyAttackedCreatureNr)
 		deleteAndNull(self);

@@ -327,6 +327,11 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	// try to go to the point normally
 	// efficiently returns if end is blocked
 	retPoint=findPathOnMap(startX,startY,startZ,endX,endY,endZ,endSpecialLocation,path,0);
+	//char buf[111];
+	//sprintf(buf,"retPoint %d.%d,(%d,%d,%d)",path[0],path[1],retPoint.x,retPoint.y,retPoint.z);
+	//AfxMessageBox(buf);
+
+	
 	if (path[0]) return retPoint;
 
 	// try to go to some point nearby
@@ -374,7 +379,7 @@ void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z)
 #define MAX_PATH_LEN 10000
 point pathTab[MAX_PATH_LEN];
 int pathTabLen;
-int lastEndX=-1,lastEndY=-1,lastEndZ=-1;
+int lastDestX=-1,lastDestY=-1,lastDestZ=-1;
 
 struct point CModuleUtil::GetPathTab(int index) {
 	return pathTab[index];
@@ -418,7 +423,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 	int closerEndX=endX,closerEndY=endY,closerEndZ=endZ;
 	// If still going to same place, clear only points on screen and keep rest
-	if (lastEndX==endX&&lastEndY==endY&&lastEndZ==endZ)
+	if (lastDestX==endX&&lastDestY==endY&&lastDestZ==endZ)
 	{
 		tibiaMap.clearLocalPrevPoint(startX, startY, startZ,10);
 		p = point(endX,endY,endZ);
@@ -452,8 +457,9 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif
 		
 	}
-	else
+	else{
 		tibiaMap.clearPrevPoint();
+	}
 
 
 	tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
@@ -750,9 +756,10 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 
-		lastEndX=endPoint.x;
-		lastEndY=endPoint.y;
-		lastEndZ=endPoint.z;
+		lastDestX=endPoint.x;
+		lastDestY=endPoint.y;
+		lastDestZ=endPoint.z;
+
 		pathTabLen=pathPos;
 #ifdef MAPDEBUG
 		sprintf(buf,"RETURN (%d,%d,%d)",endPoint.x,endPoint.y,endPoint.z);
@@ -1066,7 +1073,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	static int lastExecuteWalkTm=0; // indicates when last a "real" walk was executed
 	static int lastStartChangeTm=0; // indicates when start point was changed for the last time
 	static int movedDiagonally=0; // will make delay to resend walk 3x longer
-	static int lastEndX=0,lastEndY=0,lastEndZ=0; 
+	static int lastEndX=0,lastEndY=0,lastEndZ=0;
 	static int lastStartX=0,lastStartY=0,lastStartZ=0;
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
