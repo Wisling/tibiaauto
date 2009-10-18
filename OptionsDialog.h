@@ -18,6 +18,7 @@ class COptionsDialog : public MyDialog
 // Construction
 public:
 	COptionsDialog(CWnd* pParent = NULL);   // standard constructor
+	void sendStats();
 
 // Dialog Data
 	//{{AFX_DATA(COptionsDialog)
@@ -33,6 +34,7 @@ public:
 	CButtonST	m_send2;
 	CButtonST	m_send1;
 	CProgressCtrl	m_progress;
+	CButton m_gatherBotStats;
 	CButtonST	m_ok;
 	CStatic	m_sizeCreatureStats;
 	CStatic	m_sizeLootstats;
@@ -59,6 +61,7 @@ protected:
 	afx_msg void OnSendMaps();
 	afx_msg void OnSendUsagestats();
 	afx_msg void OnSkin();
+	afx_msg void OnGatherBotStats();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

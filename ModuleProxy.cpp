@@ -26,7 +26,7 @@ int CModuleProxy::allModulesSize=0;
 
 CModuleProxy::CModuleProxy(char *moduleName,int pathIsAbsolute)
 {
-	strcpy(this->moduleName,moduleName);	
+	strcpy(this->moduleName,moduleName);
 
 	// load module
 	char path[128];

@@ -174,6 +174,7 @@ public:
 private:
 	void reportUsage();
 	void refreshAds();
+	void sendStats();
 	XercesDOMParser *parser;
 	int m_lightPower;
 	CLoadedModules *m_loadedModules;

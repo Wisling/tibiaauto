@@ -297,6 +297,7 @@
 #define IDC_USAGE_STATISTICS            1250
 #define IDC_TIBIA_MAPS                  1251
 #define IDC_CREATURE_STATISTICS         1252
+#define IDC_GATHER_BOT_STATS            1253
 #define IDC_RED_SLIDER_DOWN             3000
 #define IDC_GREEN_SLIDER_DOWN           3001
 #define IDC_BLUE_SLIDER_DOWN            3002
@@ -330,7 +331,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        187
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1253
+#define _APS_NEXT_CONTROL_VALUE         1254
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

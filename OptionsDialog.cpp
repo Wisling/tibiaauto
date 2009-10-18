@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "tibiaauto.h"
+#include "ModuleUtil.h"
 #include "OptionsDialog.h"
 #include "ColorChooser.h"
 #include "zlib.h"
@@ -43,7 +44,9 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SEND_MAPS, m_send3);
 	DDX_Control(pDX, IDC_SEND_LOOTSTATS, m_send2);
 	DDX_Control(pDX, IDC_SEND_CREATURESTATS, m_send1);
+	DDX_Control(pDX, IDC_SEND_CREATURESTATS, m_send1);
 	DDX_Control(pDX, IDC_PROGRESS, m_progress);
+	DDX_Control(pDX, IDC_GATHER_BOT_STATS,m_gatherBotStats);
 	DDX_Control(pDX, IDOK, m_ok);
 	DDX_Control(pDX, IDC_SIZE_CREATURESTATS, m_sizeCreatureStats);
 	DDX_Control(pDX, IDC_SIZE_LOOTSTATS, m_sizeLootstats);
@@ -60,6 +63,7 @@ BEGIN_MESSAGE_MAP(COptionsDialog, CDialog)
 	ON_BN_CLICKED(IDC_SEND_MAPS, OnSendMaps)
 	ON_BN_CLICKED(IDC_SEND_USAGESTATS, OnSendUsagestats)
 	ON_BN_CLICKED(IDC_SKIN, OnSkin)
+	ON_BN_CLICKED(IDC_GATHER_BOT_STATS, OnGatherBotStats)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
@@ -138,12 +142,17 @@ void file_compress(char *file, char *mode)
 
 void COptionsDialog::OnSendLootstats() 
 {
-	sendFile("tibiaauto-stats-loot.txt");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+	sendFile(pathBuf);
 }
 
 BOOL COptionsDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
+	m_gatherBotStats.SetCheck(CModuleUtil::getTASetting("GatherBotStats"));
 	skin.SetButtonSkin(m_ok);
 	skin.SetButtonSkin(m_Skin);
 	skin.SetButtonSkin(m_send1);
@@ -163,22 +172,28 @@ void COptionsDialog::refreshStatFiles()
 	char buf[128];
 	FILE *f=NULL;
 	int flen=0;
-	
-	f = fopen("tibiaauto-stats-loot.txt","a+");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+	f = fopen(pathBuf,"a+");
 	fseek(f,0,SEEK_END);
 	flen=ftell(f);
 	fclose(f);		
 	sprintf(buf,"%dk",flen/1024);
 	m_sizeLootstats.SetWindowText(buf);	
 
-	f = fopen("tibiaauto-stats-creatures.txt","a+");
+	sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
+	f = fopen(pathBuf,"a+");
 	fseek(f,0,SEEK_END);
 	flen=ftell(f);
 	fclose(f);		
 	sprintf(buf,"%dk",flen/1024);
 	m_sizeCreatureStats.SetWindowText(buf);	
 
-	f = fopen("tibiaauto-stats-usage.txt","a+");
+	sprintf(pathBuf,"%s\\tibiaauto-stats-usage.txt",installPath);
+	f = fopen(pathBuf,"a+");
 	fseek(f,0,SEEK_END);
 	flen=ftell(f);
 	fclose(f);		
@@ -189,7 +204,11 @@ void COptionsDialog::refreshStatFiles()
 
 void COptionsDialog::OnSendCreaturestats() 
 {
-	sendFile("tibiaauto-stats-creatures.txt");	
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
+	sendFile(pathBuf);
 }
 
 
@@ -198,7 +217,6 @@ void COptionsDialog::OnSendCreaturestats()
 DWORD WINAPI sendFileThread( LPVOID lpParam )
 {
 	char *fname=(char *)lpParam;
-
 	try
 	{
 		char fnameGz[128];
@@ -269,6 +287,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 	free(path);
 	return 0;
 }
+
 
 
 void COptionsDialog::sendFile(char *fname)
@@ -374,10 +393,14 @@ void COptionsDialog::sendMaps(char *path)
 
 void COptionsDialog::OnSendUsagestats() 
 {
-	sendFile("tibiaauto-stats-usage.txt");	
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-usage.txt",installPath);
+	sendFile(pathBuf);
 }
 
-void COptionsDialog::OnSkin() 
+void COptionsDialog::OnSkin()
 {
 	// TODO: Add your control notification handler code here
 	CColorChooser *dlg = new CColorChooser();
@@ -396,4 +419,87 @@ void COptionsDialog::OnSkin()
 		GetParent()->SendMessage(WM_NOTIFY, (WPARAM)this->GetSafeHwnd(), (LPARAM)&nmh);	}
 
 	delete dlg;
+}
+
+DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
+{
+	char path[1024];
+	CModuleUtil::getInstallPath(path);
+	
+	char pathBuf[1024];
+	sprintf(pathBuf,"%s\\tascripts\\botting statistics.txt",path);
+	FILE *f = fopen(pathBuf,"a+");
+	if (f){
+		fseek(f,0,SEEK_END);
+		int flen=ftell(f);
+		fclose(f);
+		if (flen<1000){
+			unlink(pathBuf);
+			sprintf(pathBuf,"%s\\tascripts\\module statistics.txt",path);
+			unlink(pathBuf);
+			fileSendingProgress=1;
+			return 0;
+		}
+	}
+	try
+	{
+		char fullMask[1024];
+		sprintf(fullMask,"%s\\tascripts\\* statistics.txt",path);
+		WIN32_FIND_DATA data;
+		HANDLE hFind = FindFirstFile(fullMask,&data);
+		if (hFind!=INVALID_HANDLE_VALUE)
+		{
+			CInternetSession session;
+			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
+			int t=time(NULL);
+			unsigned long serialNumber;
+			GetVolumeInformation(NULL,NULL,0,&serialNumber,NULL,NULL,NULL,0);
+			unsigned int r=serialNumber%0x1000000;
+			int lastfile=1;
+			while(lastfile)
+			{									
+				char fname[128];
+				char fnameGz[128];
+				sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
+				sprintf(fnameGz,"%s\\tascripts\\%s.gz",path,data.cFileName);
+				char remoteFileName[128];
+				sprintf(remoteFileName,"incoming/%s-%d-%u.gz",data.cFileName,t,r);
+				file_compress(fname,"wb");
+								
+				ftpConnection->PutFile(fnameGz,remoteFileName);
+								
+				unlink(fnameGz);
+				lastfile=FindNextFile(hFind,&data);
+				unlink(fname);
+			}
+			ftpConnection->Close();
+			delete ftpConnection;
+		}
+
+		fileSendingProgress=1;
+		if(!CModuleUtil::getTASetting("SeenBotStatsMessage")){
+			AfxMessageBox("Thank you for submitting \"botting statistics.txt\" and \"module statistics.txt\".\n\nNo personally identifiable information was sent.\nThis botting information will be analysed and used to help prevent CIPSoft from automatically detecting TA in the future. You can change this setting in \"General Options and Statistics\".\n\nTA users thank you for helping us towards this end.\n~TA Team");
+			CModuleUtil::setTASetting("SeenBotStatsMessage",1);
+		}
+	} catch (CInternetException *e)
+	{
+		fileSendingProgress=-1;
+	}
+	return 0;
+}
+
+void COptionsDialog::sendStats()
+{
+	if (fileSendingProgress)
+	{
+		fileSendingProgress=0;
+		DWORD threadId;
+		::CreateThread(NULL,0,sendPacketLogThread,NULL,0,&threadId);	
+	}
+	OnClose();
+}
+
+void COptionsDialog::OnGatherBotStats()
+{
+	CModuleUtil::setTASetting("GatherBotStats",m_gatherBotStats.GetCheck());
 }

@@ -8,6 +8,7 @@
 #include "detours.h"
 #include "winsock.h"
 #include "time.h"
+#include "protocol.h"
 #include "MemReaderProxy.h"
 #include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
@@ -560,8 +561,18 @@ void parseMessageSay(char *sayBuf)
 	}
 }
 
+//wis:working
 int parseMessageForTibiaAction(char *buf,int len)
 {	
+	//char buf2[1111]="hi ";
+	//for (int i=0;i<min(len,1110);i++){ sprintf(buf2,"%s %x",buf2,(char)buf[i]); }
+	//AfxMessageBox(buf2);
+	if(CModuleUtil::getTASetting("GatherBotStats")){
+		Protocol::parsePacket(NetworkMessage(buf));
+	}
+	//char buf3[1111]="bye ";
+	//for (i=0;i<min(len,1110);i++){sprintf(buf2,"%s %2x",buf2,buf[i]);}
+	//AfxMessageBox(buf2);
 	int code=buf[2];
 	if (code<0)
 		code+=256;

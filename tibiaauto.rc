@@ -161,7 +161,7 @@ BEGIN
                     IDC_STATIC,7,7,172,36,WS_BORDER
 END
 
-IDD_OPTIONS DIALOG DISCARDABLE  0, 0, 192, 198
+IDD_OPTIONS DIALOGEX 0, 0, 192, 201
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tibia Auto: general options"
 FONT 8, "MS Sans Serif"
@@ -171,7 +171,7 @@ BEGIN
                     31
     GROUPBOX        "Tibia Maps",IDC_TIBIA_MAPS,7,76,178,36
     GROUPBOX        "Usage Statistics",IDC_USAGE_STATISTICS,7,118,178,31
-    DEFPUSHBUTTON   "OK",IDOK,135,177,50,14
+    DEFPUSHBUTTON   "OK",IDOK,135,180,50,14
     PUSHBUTTON      "Send",IDC_SEND_LOOTSTATS,126,18,50,14
     LTEXT           "Statistics files size: ",IDC_STATIC,16,18,61,14,
                     SS_CENTERIMAGE
@@ -182,7 +182,7 @@ BEGIN
     LTEXT           "10000000",IDC_SIZE_CREATURESTATS,83,52,37,14,
                     SS_CENTERIMAGE
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
-                    NOT WS_VISIBLE | WS_BORDER,7,156,178,14
+                    NOT WS_VISIBLE | WS_BORDER,7,164,178,14
     PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,50,14
     LTEXT           "Tibia client maps are used to build a Tibia world map.",
                     IDC_STATIC,16,88,83,22
@@ -191,7 +191,10 @@ BEGIN
                     SS_CENTERIMAGE
     LTEXT           "10000000",IDC_SIZE_USAGESTATS,83,129,37,14,
                     SS_CENTERIMAGE
-    PUSHBUTTON      "Skins",IDC_SKIN,7,177,50,14
+    PUSHBUTTON      "Skins",IDC_SKIN,7,180,50,14
+    CONTROL         "On TA startup submit botting stats",
+                    IDC_GATHER_BOT_STATS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,7,153,122,10,WS_EX_TRANSPARENT
 END
 
 
@@ -268,7 +271,7 @@ BEGIN
         VERTGUIDE, 16
         VERTGUIDE, 126
         TOPMARGIN, 7
-        BOTTOMMARGIN, 191
+        BOTTOMMARGIN, 194
         HORZGUIDE, 32
     END
 END
@@ -337,7 +340,7 @@ IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
 CAPTION "Tibia Auto v 2.0.2 for Tibia 8.52"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
     GROUPBOX        "Information Tools",IDC_INFORMATION_TOOLS,89,105,142,62
@@ -419,7 +422,7 @@ END
 IDD_COLORCHOOSER_DIALOG DIALOGEX 0, 0, 367, 129
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Color Scheme Selector"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Secondary Background",IDC_SECONDARY_BACKGROUND,197,36,
                     143,45

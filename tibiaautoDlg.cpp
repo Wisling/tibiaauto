@@ -6,6 +6,7 @@
 #include "tibiaauto.h"
 #include "tibiaautoDlg.h"
 #include "MemUtil.h" 
+#include "ModuleUtil.h"
 #include "CharDialog.h"
 #include "MemReaderProxy.h"
 #include "TibiaMapProxy.h"
@@ -27,6 +28,8 @@
 #include "PythonScriptsDialog.h"
 #include "PythonScript.h"
 #include "url.h"
+#include <iostream>
+#include <fstream>
 
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
@@ -325,13 +328,18 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleBanker = new CModuleProxy("mod_banker",0);
 	m_moduleSeller = new CModuleProxy("mod_seller",0);
 	refreshToolInfo();
-	FILE* f =fopen("./SubmitMaps","r");
-	if (!f){
-		FILE* f =fopen("./SubmitMaps","w");
-		fclose(f);
+
+	if (!CModuleUtil::getTASetting("SeenMapMessage")){
 		AfxMessageBox("Please consider submitting your map files to TibiaAuto.net to help us with the new system in place to create a complete Tibia map. \n\nYou will only receive this reminder once. Thank you for any contribution you make.");
+		CModuleUtil::setTASetting("SeenMapMessage",1);
 		OnOptions();
 	}
+	if(CModuleUtil::getTASetting("GatherBotStats")){
+		COptionsDialog dlg;
+		//dlg.Create(IDD_OPTIONS);
+		dlg.sendStats();
+	}
+
 	SetTimer(1001,100,NULL);
 	SetTimer(1002,100,NULL);
 
@@ -358,7 +366,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 		if (strlen(ffCheckString))
 		{
 			// found
-			if (time(NULL)-atoi(ffCheckString)<60*60*24)
+			if (time(NULL)-atoi(ffCheckString)<60*60*24*3)
 			{
 				ffBoxDisplay=0;
 			}
@@ -413,6 +421,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
 	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
+	SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
+
 
 
 		
@@ -512,6 +522,29 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	{		
 		reportUsage();
 	}
+	if (nIDEvent==1005)
+	{		
+		static unsigned int enabledModules=0xffffffff;
+		unsigned int modCheck=0;
+		for (int i=0;i<CModuleProxy::allModulesCount && i<32;i++){
+			modCheck|=CModuleProxy::allModules[i]->isStarted()<<i;
+		}
+		if (modCheck!=enabledModules){
+			//char buf[111];
+			//sprintf(buf,"%x",enabledModules);
+			//AfxMessageBox(buf);
+			enabledModules=modCheck;
+			char path[1024];
+			CModuleUtil::getInstallPath(path);
+			char pathBuf[2048];
+			sprintf(pathBuf,"%s\\tascripts\\module statistics.txt",path);
+			std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
+			int tm=time(NULL);
+			fout.write((char*)&tm,4);
+			fout.write((char*)&enabledModules,4);
+			fout.close();
+		}
+	}
 
 
 	
@@ -565,7 +598,7 @@ void CTibiaautoDlg::InitialiseIPC()
 		ExitProcess(1);
 	}	
 	
-	//injectDll="tibiaauto_develtest.dll";				
+	//injectDll="tibiaauto_develtest.dll";			
 	
 	//DetourContinueProcessWithDll(procHandle, injectDll);
 	
@@ -1270,7 +1303,7 @@ void CTibiaautoDlg::OnPythonScripts()
 void CTibiaautoDlg::OnOptions() 
 {
 	COptionsDialog dlg;
-	dlg.DoModal();							
+	dlg.DoModal();
 }
 
 void CTibiaautoDlg::refreshAds()
@@ -1331,7 +1364,11 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 
 void CTibiaautoDlg::reportUsage()
 {
-	FILE *f = fopen("tibiaauto-stats-usage.txt","a+");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-usage.txt",installPath);
+	FILE *f = fopen(pathBuf,"a+");
 	if (f)
 	{
 		int tm=time(NULL);
@@ -1387,8 +1424,66 @@ CTibiaautoDlg::~CTibiaautoDlg()
 }
 
 
+/*
+DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
+{
+	char path[1024];
+	CModuleUtil::getInstallPath(path);
+	
+	try
+	{
+		char fullMask[1024];
+		sprintf(fullMask,"%s\\tascripts\\* statistics.txt",path);
+		WIN32_FIND_DATA data;
+		HANDLE hFind = FindFirstFile(fullMask,&data);
+		if (hFind!=INVALID_HANDLE_VALUE)
+		{
+			CInternetSession session;
+			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
+			int t=time(NULL);
+			unsigned long serialNumber;
+			GetVolumeInformation(NULL,NULL,0,&serialNumber,NULL,NULL,NULL,0);
+			unsigned int r=serialNumber%0x100000000;
+			int lastfile=1;
+			while(lastfile)
+			{									
+				char fname[128];
+				char fnameGz[128];
+				sprintf(fname,"%s\\%s",path,data.cFileName);
+				sprintf(fnameGz,"%s\\%s.gz",path,data.cFileName);
+				char remoteFileName[128];
+				sprintf(remoteFileName,"incoming/%s-%d-%u.gz",data.cFileName,t,r);
+				file_compress(fname,"wb");
+								
+				ftpConnection->PutFile(fnameGz,remoteFileName);
+								
+				unlink(fnameGz);
+				lastfile=FindNextFile(hFind,&data);
+			}
+			ftpConnection->Close();
+			delete ftpConnection;
+		}
 
+		statSendingProgress=1;
+	} catch (CInternetException *e)
+	{
+		statSendingProgress=-1;
+	}
+	return 0;
+}
 
+void CTibiaautoDlg::sendStats()
+{
+	if (fileSendingProgress)
+	{
+		DWORD threadId;
+		statSendingProgress=0;	
+		::CreateThread(NULL,0,sendPacketLogThread,NULL,0,&threadId);	
+		SetTimer(10002,100,NULL);
+	}
+}
+
+*/
 BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
 {
 	// TODO: Add your specialized code here and/or call the base class
