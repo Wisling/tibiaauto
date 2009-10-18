@@ -41,7 +41,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 CModuleUtil::CModuleUtil()
 {
-
 }
 
 CModuleUtil::~CModuleUtil()
@@ -284,7 +283,11 @@ void inline mapDebug(char *s)
 
 void inline testDebug(char *s)
 {	
-	FILE *f=fopen("tibiaauto-debug-test.txt","a+");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-debug-test.txt",installPath);
+	FILE *f=fopen(pathBuf,"a+");
 	if (f)
 	{
 		char dateStr [15];
@@ -1016,7 +1019,7 @@ int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near inst
 		delete ch;
 		Sleep(50);
 	}
-	return 0;  
+	return 0;
 }
 
 int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId)
@@ -1564,10 +1567,58 @@ int CModuleUtil::findNextClosedContainer(int afterCont/*=-1*/)
 	return targetBag;
 }
 
+
+void CModuleUtil::getInstallPath(char path[1024]){
+	static char installPath[1024]="";
+	if (installPath[0]==0){
+		unsigned long installPathLen=1023;
+		installPath[0]='\0';
+		HKEY hkey=NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+		{
+			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegCloseKey(hkey);
+		}
+		if (!strlen(installPath))
+		{
+			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+			exit(1);
+		}
+	}
+	strcpy(path,installPath);
+}
+
+int CModuleUtil::getTASetting(const char* name){
+	HKEY hkey=NULL;
+	int value=0;
+	unsigned long valueLen=4;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT(name),NULL,NULL,(unsigned char *)&value,&valueLen);
+		RegCloseKey(hkey);
+	}
+	return value;
+}
+
+void CModuleUtil::setTASetting(const char* name,int value){
+	HKEY hkey=NULL;
+	unsigned long valueLen=4;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegSetValueEx(hkey,TEXT(name),NULL,REG_DWORD,(unsigned char *)&value,valueLen);
+		RegCloseKey(hkey);
+	}
+}
+
 void CModuleUtil::masterDebug(const char* fname, const char* buf1,const char* buf2,const char* buf3,const char* buf4,const char* buf5,const char* buf6){
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\%s",installPath,fname);
+
 	//replace old file
 	if (strlen(buf1)==0){
-		FILE *f=fopen(fname,"w");
+		FILE *f=fopen(pathBuf,"w");
 		if (f)
 		{
 			fclose(f);
@@ -1578,11 +1629,10 @@ void CModuleUtil::masterDebug(const char* fname, const char* buf1,const char* bu
 	char timeStr [15];
 	_strdate( dateStr);
 	_strtime( timeStr );
-	FILE *f=fopen(fname,"a+");
+	FILE *f=fopen(pathBuf,"a+");
 	if (f)
 	{
 		fprintf(f,"%s\t%s\tTibiaAuto\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6);
 		fclose(f);
-		//delete f;
 	}
 }

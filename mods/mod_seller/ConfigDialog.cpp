@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "mod_seller.h"
+#include "ModuleUtil.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
 #include "TibiaItemProxy.h"
@@ -313,20 +314,8 @@ void CConfigDialog::reloadSellers() {
 
 int initalizeSellers() {
 	char installPath[1024];
-	unsigned long installPathLen=1023;
-	installPath[0]='\0';
-	HKEY hkey=NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey)) {
-		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath)) {
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		exit(1);
-	}
-	
+	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];    
-	
 	sprintf(pathBuf,"%s\\mods\\tibiaauto-sellers.csv",installPath);
 	
 	ifstream sellerFile (pathBuf, ios::in);
