@@ -1,5 +1,6 @@
 2.0.3, 10.??.2009
 Enhancments
+ ItemConfig: Fixed a bug that prevented users from deleting certain items from their loot list
  Statistics: Can upload info on how you play Tibia to TA.net to help make TA undetectable
  Installer: Added information on uploading stats to inform users of the new option
  SpellCaster: Finally fixed the spam casting "exana pox" bug when poisoned
@@ -8,6 +9,7 @@ Enhancments
  Eater: Attempts to eat items with smaller quantities in other backpacks, freeing space.
 Defects
  TibiaAuto: Made debug and stats files always save to same directory
+
 
 2.0.2, 10.12.2009
 Enhancments
