@@ -42,6 +42,8 @@ public:
 	static void findPathAllDirection(CQueue *queue,int x,int y,int z);
 	static int findNextClosedContainer(int afterCont=-1);
 	static void masterDebug(const char* fname,const char* buf1="",const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="");
+	static struct point GetPathTab(int);
+	static int GetPathTabCount(void);
 private:
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ,int endSpecialLocation, int path[15],int useDiagonal);
 	static void findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
