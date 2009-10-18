@@ -26,6 +26,60 @@ NetworkMessage::NetworkMessage(char* rawMsg){
 	}
 }
 
+int isSpellMessage(const char *msg)
+{
+	int pos;
+	const char *spellPre[] = 
+	{
+		"ex",
+		"ad",
+		"ut",
+		"al",
+		NULL
+	};
+	const char *spellSuf[] = 
+	{
+		"ana",
+		"eta",
+		"evo",
+		"ito",
+		"ori",
+		"ura",
+		"ani",
+		"iva",
+		"amo",
+		NULL
+	};
+	char newmsg[128];
+	newmsg[0]=0;
+	//get 5 characters from msg discarding all spaces
+	int count=0;
+	for (int i=0;count<5&&msg[i];i++){
+		if (msg[i]!=' '){
+			newmsg[count]=msg[i];
+			count++;
+		}
+	}
+	newmsg[count]='\0';
+	if (strlen(newmsg)!=5) return 0;
+	//if string starts with prefix and is = prefix+suffix, return 1
+	for (pos=0;spellPre[pos];pos++){
+		if (strnicmp(newmsg,spellPre[pos],2)==0){
+			for (int pos2=0;spellSuf[pos2];pos2++){
+				char tmp[10];
+				tmp[0]=0;
+				strcat(tmp,spellPre[pos]);
+				strcat(tmp,spellSuf[pos2]);
+				tmp[5]='\0';
+				if (strnicmp(newmsg,tmp,5)==0){
+					return 1;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
 bool NetworkMessage::canAdd(int size) {return (size + readPos < NETWORKMESSAGE_MAXSIZE - 16);}
 
 void NetworkMessage::Refresh(){
@@ -137,6 +191,7 @@ void Protocol::parsePacket(NetworkMessage &msg){
 				case 0x06://SPEAK_PRIVATE
 				case 0x0E://SPEAK_PRIVATE_RED
 				case 0x0A://SPEAK_RVR_ANSWER
+					msg.GetString();
 					msgNew.AddString("<priv name removed>");
 					break;
 				case 0x07://SPEAK_CHANNEL_Y
@@ -147,8 +202,10 @@ void Protocol::parsePacket(NetworkMessage &msg){
 				default:
 					break;
 			}
-			msgNew.AddString("<removed message text>");
-			msg=msgNew;
+			if (!isSpellMessage(msg.GetString().c_str())){
+				msgNew.AddString("<removed message text>");
+				msg=msgNew;
+			}
 			break;
 			}
 		case 0xAB: //parseChannelInvite(msg);
