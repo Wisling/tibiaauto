@@ -215,7 +215,7 @@ void CToolItemConfig::OnLootEdit() {
 }
 void CToolItemConfig::OnLootDelete() {
 	CTibiaItemProxy itemProxy;
-	int loop = itemProxy.getIndex(itemProxy.getObjectId(parseNameFromItemSelected(LOOT)), 3);
+	int loop = itemProxy.getIndex(itemProxy.getLootItemId(parseNameFromItemSelected(LOOT)), 3);
 	for (; loop < itemProxy.getItemsLootedCount() - 1; loop++) {
 		if (loop < itemProxy.getItemsLootedCount()) {
 			itemProxy.setLootItemId(loop, itemProxy.getItemsLootedId(loop + 1));
