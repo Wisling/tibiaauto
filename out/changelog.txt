@@ -1,5 +1,6 @@
 2.0.3, 10.??.2009
 Enhancments
+  SpellCaster: Finally fixed the spam casting "exana pox" bug when poisoned
   Cavebot: Reworked the cavebot's waypoint walking to include the best features form both map methods
   Eater: No longer eats while in a PZ
   Eater: Attempts to eat items with smaller quantities in other backpacks, freeing space.
