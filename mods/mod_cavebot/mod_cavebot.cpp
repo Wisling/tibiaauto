@@ -1676,7 +1676,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
 
 					if (config->gatherLootStats) {
-						lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
+						char installPath[1024];
+						CModuleUtil::getInstallPath(installPath);
+						char pathBuf[2048];
+						sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+						lootStatsFile=fopen(pathBuf,"a+");
 					}
 					
 					// first make sure all needed containers are closed
@@ -2472,7 +2476,11 @@ void CMod_cavebotApp::start() {
 	}
 	
 	if (m_configData->gatherLootStats) {
-		FILE *f=fopen("tibiaauto-stats-loot.txt","r");
+		char installPath[1024];
+		CModuleUtil::getInstallPath(installPath);
+		char pathBuf[2048];
+		sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+		FILE *f=fopen(pathBuf,"r");
 		
 		if (f)
 		{

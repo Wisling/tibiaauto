@@ -3,6 +3,7 @@
 
 #include "stdafx.h"
 #include "mod_cavebot.h"
+#include "ModuleUtil.h"
 #include "SendStats.h"
 #include "zlib.h"
 
@@ -130,7 +131,11 @@ void file_compress(char *file, char *mode)
 
 void CSendStats::OnSendLootstats() 
 {
-	sendFile("tibiaauto-stats-loot.txt");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+	sendFile(pathBuf);
 }
 
 BOOL CSendStats::OnInitDialog() 
@@ -146,7 +151,11 @@ BOOL CSendStats::OnInitDialog()
 
 void CSendStats::OnSendCreaturestats() 
 {
-	sendFile("tibiaauto-stats-creatures.txt");	
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
+	sendFile(pathBuf);
 }
 
 
