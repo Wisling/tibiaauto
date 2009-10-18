@@ -82,7 +82,11 @@ void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const 
 		char timeStr [15];
 		_strdate( dateStr);
 		_strtime( timeStr );
-		FILE *f=fopen("tibiaauto-debug-autogo.txt","a+");
+		char installPath[1024];
+		CModuleUtil::getInstallPath(installPath);
+		char pathBuf[2048];
+		sprintf(pathBuf,"%s\\tibiaauto-debug-autogo.txt",installPath);
+		FILE *f=fopen(pathBuf,"a+");
 		if (f)
 		{
 			fprintf(f,"%s\t%s\tAutogo\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",dateStr,timeStr,buf1,buf2,buf3,buf4,buf5,buf6,buf7);

@@ -181,7 +181,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					FILE *lootStatsFile = NULL;
 					int killNr=rand();
 					if (config->m_autoOpen) {
-						lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
+						char installPath[1024];
+						CModuleUtil::getInstallPath(installPath);
+						char pathBuf[2048];
+						sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+						lootStatsFile=fopen(pathBuf,"a+");
 					}
 					int autolooterTm = atoi(reader.getGlobalVariable("autolooterTm"));
 					while (autolooterTm>time(NULL) && abs(autolooterTm-time(NULL))<30){
@@ -353,7 +357,11 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								FILE *lootStatsFile = NULL;
 								// time,rand,creature,name,pos,objectId,count,bagopen,checksum
 								int killNr=rand();
-								lootStatsFile=fopen("tibiaauto-stats-loot.txt","a+");
+								char installPath[1024];
+								CModuleUtil::getInstallPath(installPath);
+								char pathBuf[2048];
+								sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+								lootStatsFile=fopen(pathBuf,"a+");
 								if (lootStatsFile)
 								{
 									int i,len;
@@ -555,7 +563,11 @@ void CMod_looterApp::start()
 	}
 
 		
-	FILE *f=fopen("tibiaauto-stats-loot.txt","r");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+	FILE *f=fopen(pathBuf,"r");
 		
 	if (f)
 	

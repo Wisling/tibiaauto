@@ -831,20 +831,8 @@ int Player_CalcHp(int vocId, int lvl){
 void CreatureList_Init(){   
 	
 	char installPath[1024];
-	unsigned long installPathLen=1023;
-	installPath[0]='\0';
-	HKEY hkey=NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
-	{
-		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		exit(1);
-	}
-	
+	CModuleUtil::getInstallPath(installPath);
+
 	char pathBuf[2048];	
 	
 	
@@ -1309,7 +1297,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					creatureData crData = crMap[creatureKey(ch->tibiaId)];
 					if (!crData.tibiaId || (crData.tibiaId&&curTime-crData.tm>30))
 					{										
-						FILE *f = fopen("tibiaauto-stats-creatures.txt","a+");
+						char installPath[1024];
+						CModuleUtil::getInstallPath(installPath);
+						char pathBuf[2048];
+						sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
+						FILE *f = fopen(pathBuf,"a+");
 						if (f) 
 						{	
 							char statChName[128];
@@ -1525,7 +1517,11 @@ void CMod_creatureinfoApp::start()
 
 	DWORD threadId;
 
-	FILE *f=fopen("tibiaauto-stats-creatures.txt","r");
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
+	FILE *f=fopen(pathBuf,"r");
 		
 	if (f)
 	
