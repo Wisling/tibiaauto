@@ -19,13 +19,13 @@ Class7=CMod_itemconfigApp
 Class8=CToolItemConfig
 
 ResourceCount=8
-Resource1=IDD_FOOD_ADD
-Resource2=IDD_LOOT_EDIT
-Resource3=IDD_TOOL_ITEMCONFIG (Polish)
-Resource4=IDD_FOOD_EDIT
-Resource5=IDD_ITEM_EDIT
-Resource6=IDD_ITEM_ADD
-Resource7=IDD_LOOT_ADD
+Resource1=IDD_ITEM_ADD
+Resource2=IDD_FOOD_EDIT
+Resource3=IDD_LOOT_ADD
+Resource4=IDD_ITEM_EDIT
+Resource5=IDD_TOOL_ITEMCONFIG (Polish)
+Resource6=IDD_LOOT_EDIT
+Resource7=IDD_FOOD_ADD
 Resource8=IDD_FULL_ITEM_LIST_ADD
 
 [CLS:CItemAdd]

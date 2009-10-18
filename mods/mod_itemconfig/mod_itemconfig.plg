@@ -6,6 +6,35 @@
 --------------------Configuration: mod_itemconfig - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP228.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_itemconfig.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_itemconfig\mod_itemconfig.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP228.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP229.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_itemconfig.pdb" /machine:I386 /def:".\mod_itemconfig.def" /out:"../mod_itemconfig.dll" /implib:"Release/mod_itemconfig.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\BtnST.obj"
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\GroupBoxEx.obj"
+".\Release\ItemConfig.obj"
+".\Release\mod_itemconfig.obj"
+".\Release\MyDialog.obj"
+".\Release\proxy.obj"
+".\Release\Skin.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\ToolItemConfig.obj"
+".\Release\mod_itemconfig.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP229.tmp"
+<h3>Output Window</h3>
+Compiling...
+mod_itemconfig.cpp
+Linking...
+   Creating library Release/mod_itemconfig.lib and object Release/mod_itemconfig.exp
 
 
 

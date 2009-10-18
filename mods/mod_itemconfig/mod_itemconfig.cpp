@@ -89,7 +89,7 @@ CMod_itemconfigApp::~CMod_itemconfigApp()
 
 char * CMod_itemconfigApp::getName()
 {
-	return "Item configuration";
+	return "Item Configuration";
 }
 
 int CMod_itemconfigApp::isStarted()
@@ -116,7 +116,7 @@ void CMod_itemconfigApp::enableControls()
 
 char *CMod_itemconfigApp::getVersion()
 {
-	return "1.0";
+	return "2.1";
 }
 
 void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
