@@ -146,7 +146,6 @@ public:
 	CStatic	m_stateLoot;
 	CStatic	m_stateAttack;
 	CButton	m_nomoveSuspended;
-	CComboBox	m_mapUsed;
 	CButton	m_lootinBags;
 	CEdit	m_lootCapLimit;
 	CButton	m_suspendOnEnemy;

@@ -38,7 +38,6 @@ public:
 
 	int suspendOnNoMove;
 	int waypointSelectMode;
-	int mapUsed;
 	int capacityLimit;
 	int lootCustom;
 	int lootInBags;
