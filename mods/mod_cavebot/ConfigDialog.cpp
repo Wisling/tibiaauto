@@ -56,16 +56,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDOK, m_OK);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT, m_RemoveWaypoint);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_MONSTER, m_RemoveMonster);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, m_RemoveIgnore);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_WAYPOINT, m_AddWaypoint);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_MONSTER, m_AddMonster);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_IGNORE, m_AddIgnore);
-	DDX_Control(pDX, IDC_LOAD_FROM_MINIMAP, m_LoadMinimap);
-	DDX_Control(pDX, IDC_MONSTER_ATTACK_UP, m_MonsterDown);
-	DDX_Control(pDX, IDC_MONSTER_ATTACK_DOWN, m_MonsterUp);
 	DDX_Control(pDX, IDC_FRAME_WAYPOINT_WALKER, m_WaypointWalker);
 	DDX_Control(pDX, IDC_FRAME_TRAINING, m_Training);
 	DDX_Control(pDX, IDC_FRAME_MONSTER_ATTACKING, m_MonsterAttacking);
@@ -91,8 +81,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TRAINING_BLOOD_HIT, m_bloodHit);
 	DDX_Control(pDX, IDC_TRAINING_ACTIVATE, m_activate);
 	DDX_Control(pDX, IDC_DEBUG, m_debug);
-	DDX_Control(pDX, IDC_DEPOT_ENTRYREMOVE, m_depotEntryRemove);
-	DDX_Control(pDX, IDC_DEPOT_ENTRYADD, m_depotEntryAdd);
 	DDX_Control(pDX, IDC_DEPOT_WHEN, m_depotWhen);
 	DDX_Control(pDX, IDC_DEPOT_REMAIN, m_depotRemain);
 	DDX_Control(pDX, IDC_DEPOT_ITEMLIST, m_depotItemList);
@@ -113,7 +101,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_STATE_LOOT, m_stateLoot);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_STATE_ATTACK, m_stateAttack);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_NOMOVESUSPEND, m_nomoveSuspended);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MAPUSED, m_mapUsed);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_LOOTINBAGS, m_lootinBags);
 	DDX_Control(pDX, IDC_TOOL_AMMORESTACK_LOOTCAPLIMIT, m_lootCapLimit);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_SUSPENDONENEMY, m_suspendOnEnemy);
@@ -132,6 +119,18 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PAUSING_ENABLE, m_pausingEnable);
 	DDX_Control(pDX, IDC_AUTORESEARCH, m_autoResearch);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_DEPOT_ENTRYREMOVE, m_depotEntryRemove);
+	DDX_Control(pDX, IDC_DEPOT_ENTRYADD, m_depotEntryAdd);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT, m_RemoveWaypoint);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_MONSTER, m_RemoveMonster);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, m_RemoveIgnore);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_WAYPOINT, m_AddWaypoint);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_MONSTER, m_AddMonster);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_IGNORE, m_AddIgnore);
+	DDX_Control(pDX, IDC_LOAD_FROM_MINIMAP, m_LoadMinimap);
+	DDX_Control(pDX, IDC_MONSTER_ATTACK_UP, m_MonsterDown);
+	DDX_Control(pDX, IDC_MONSTER_ATTACK_DOWN, m_MonsterUp);
 	//}}AFX_DATA_MAP
 }
 
@@ -193,7 +192,6 @@ void CConfigDialog::disableControls()
 	m_lootCustom.EnableWindow(false);
 	m_waypointSelMode.EnableWindow(false);	
 	m_nomoveSuspended.EnableWindow(false);
-	m_mapUsed.EnableWindow(false);
 	m_lootinBags.EnableWindow(false);	
 	m_lootCapLimit.EnableWindow(false);
 	m_suspendOnEnemy.EnableWindow(false);
@@ -250,7 +248,6 @@ void CConfigDialog::enableControls()
 	m_lootCustom.EnableWindow(true);
 	m_waypointSelMode.EnableWindow(true);	
 	m_nomoveSuspended.EnableWindow(true);
-	m_mapUsed.EnableWindow(true);
 	m_lootinBags.EnableWindow(true);	
 	m_lootCapLimit.EnableWindow(true);
 	m_suspendOnEnemy.EnableWindow(true);
@@ -327,7 +324,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_suspendOnEnemy.SetCheck(configData->suspendOnEnemy);
 	m_nomoveSuspended.SetCheck(configData->suspendOnNoMove);
 	m_waypointSelMode.SetCurSel(configData->waypointSelectMode);
-	m_mapUsed.SetCurSel(configData->mapUsed);	
 	m_lootCustom.SetCheck(configData->lootCustom);
 	m_lootinBags.SetCheck(configData->lootInBags);
 	m_gatherLootStats.SetCheck(configData->gatherLootStats);
@@ -450,7 +446,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 	};
 	newConfigData->suspendOnNoMove=m_nomoveSuspended.GetCheck();
 	newConfigData->waypointSelectMode=m_waypointSelMode.GetCurSel();
-	newConfigData->mapUsed=m_mapUsed.GetCurSel();	
 	m_lootCapLimit.GetWindowText(buf,127);
 	newConfigData->capacityLimit=atoi(buf);	
 	m_depotCap.GetWindowText(buf,127);

@@ -33,7 +33,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
-#define MAPDEBUG
+//#define MAPDEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -267,7 +267,7 @@ void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, i
 void inline mapDebug(char *s)
 {	
 #ifndef MAPDEBUG
-	//return;
+	return;
 #endif
 	FILE *f=fopen("C:/tibiaauto-debug-map.txt","a+");
 	if (f)
@@ -372,6 +372,17 @@ void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z)
 point pathTab[MAX_PATH_LEN];
 int pathTabLen;
 int lastEndX=-1,lastEndY=-1,lastEndZ=-1;
+
+struct point CModuleUtil::GetPathTab(int index) {
+	return pathTab[index];
+}
+
+int CModuleUtil::GetPathTabCount() {
+	int index = 0;
+	int count = 0;
+	while (pathTab[index++].x != 0 && pathTab[index].y !=0 && pathTab[index].z !=0) count++;
+	return count;
+}
 
 struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15], int useDiagonal)
 {		
@@ -625,6 +636,10 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		pathTab[pathPos].y=startY;
 		pathTab[pathPos].z=startZ;
 		pathPos++;
+		//This is past our start point, zero out these value to ensure proper functioning of the getPathTabCount function
+		pathTab[pathPos].x=0;
+		pathTab[pathPos].y=0;
+		pathTab[pathPos].z=0;
 
 #ifdef MAPDEBUG
 		char buf2[256];
@@ -767,6 +782,7 @@ int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 	}
 	return 0;
 }
+
 
 
 int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying)
@@ -917,7 +933,7 @@ int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of charac
 			break;
 		}
 		delete self;
-
+		
 		//wait until square changes and return if took too long
 		int iterCount=28;
 		while (iterCount-->0) {
