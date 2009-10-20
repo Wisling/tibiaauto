@@ -6,13 +6,13 @@
 --------------------Configuration: mod_cavebot - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP11C.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP3DA.tmp" with contents
 [
 /nologo /MD /W3 /GX /Ox /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_cavebot.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
 "C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP11C.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP11D.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP3DA.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP3DB.tmp" with contents
 [
 zdll.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_cavebot.pdb" /machine:I386 /def:".\mod_cavebot.def" /out:"../mod_cavebot.dll" /implib:"Release/mod_cavebot.lib" 
 ".\Release\BtnST.obj"
@@ -31,13 +31,13 @@ zdll.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_caveb
 ".\Release\TibiaItem_impl.obj"
 ".\Release\mod_cavebot.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP11D.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP3DB.tmp"
 <h3>Output Window</h3>
 Compiling...
 mod_cavebot.cpp
 Linking...
    Creating library Release/mod_cavebot.lib and object Release/mod_cavebot.exp
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP121.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP3DF.tmp" with contents
 [
 /nologo /o"Release/mod_cavebot.bsc" 
 ".\Release\StdAfx.sbr"
@@ -54,7 +54,7 @@ Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP121.tmp" with conten
 ".\Release\SharedMemory.sbr"
 ".\Release\Skin.sbr"
 ".\Release\TibiaItem_impl.sbr"]
-Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP121.tmp"
+Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP3DF.tmp"
 Creating browse info file...
 <h3>Output Window</h3>
 
