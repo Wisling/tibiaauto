@@ -9,7 +9,7 @@ Enhancments
  Eater: Attempts to eat items with smaller quantities in other backpacks, freeing space.
 Defects
  TibiaAuto: Made debug and stats files always save to same directory
-
+ Cavebot: Fixed erratic status messages
 
 2.0.2, 10.12.2009
 Enhancments

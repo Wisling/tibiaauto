@@ -35,7 +35,7 @@ public:
 	int mode;
 	int suspendOnEnemy;
 	point waypointList[1000];
-
+	int mapUsed;
 	int suspendOnNoMove;
 	int waypointSelectMode;
 	int capacityLimit;
