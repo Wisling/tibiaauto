@@ -145,7 +145,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				else 
 					tempFoodItem = CModuleUtil::lookupItem(pos,foods);
 									//Free up space in BPs by eating items with smaller quantities until they are gone
-									//Incomplete algorithim!!!! (only find smaller quantity items if they exist in another BP)
+									//Incomplete algorithim!!!! (only finds smaller quantity items if they exist in another BP)
 				if (tempFoodItem != NULL && tempFoodItem->quantity < foodItem->quantity) {
 					foodItem = CModuleUtil::lookupItem(pos,foods);
 					foodContainer = pos;
@@ -161,7 +161,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CTibiaCharacter* self=reader.readSelfCharacter();
 									//Eat only if the character has less than full health or mana and only if not in a protection zone
 				int flags = reader.getSelfEventFlags();
-				if (!(flags & 0x4000) && self->mana < self->maxMana || self->hp < self->maxHp)
+				if (!(flags & 0x4000) && (self->mana < self->maxMana || self->hp < self->maxHp))
 					sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
 				if (CModuleUtil::waitForCapsChange(self->cap))

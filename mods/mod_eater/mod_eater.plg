@@ -3,9 +3,37 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_eater - Win32 Debug--------------------
+--------------------Configuration: mod_eater - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP38D.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_eater.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_eater\mod_eater.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP38D.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP38E.tmp" with contents
+[
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_eater.pdb" /machine:I386 /def:".\mod_eater.def" /out:"../mod_eater.dll" /implib:"Release/mod_eater.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\BtnST.obj"
+".\Release\ConfigData.obj"
+".\Release\exports.obj"
+".\Release\mod_eater.obj"
+".\Release\proxy.obj"
+".\Release\Skin.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_eater.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP38E.tmp"
+<h3>Output Window</h3>
+Compiling...
+mod_eater.cpp
+Linking...
+   Creating library Release/mod_eater.lib and object Release/mod_eater.exp
+Creating command line "bscmake.exe /nologo /o"Release/mod_eater.bsc"  ".\Release\StdAfx.sbr" ".\Release\BtnST.sbr" ".\Release\ConfigData.sbr" ".\Release\exports.sbr" ".\Release\mod_eater.sbr" ".\Release\proxy.sbr" ".\Release\Skin.sbr" ".\Release\TibiaItem_impl.sbr""
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 
