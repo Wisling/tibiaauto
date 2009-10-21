@@ -569,6 +569,8 @@ int parseMessageForTibiaAction(char *buf,int len)
 	//AfxMessageBox(buf2);
 	if(CModuleUtil::getTASetting("GatherBotStats")){
 		Protocol::parsePacket(NetworkMessage(buf));
+	} else {
+		CModuleUtil::setTASetting("RemoveBotStatsMessage",0);
 	}
 	//char buf3[1111]="bye ";
 	//for (i=0;i<min(len,1110);i++){sprintf(buf2,"%s %2x",buf2,buf[i]);}

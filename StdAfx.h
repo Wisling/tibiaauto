@@ -25,6 +25,9 @@
 
 
 #include <afxinet.h>
+#include <afxtempl.h>
+#include <queue>
+#include <vector>
 
 #include "ipcm.h"
 

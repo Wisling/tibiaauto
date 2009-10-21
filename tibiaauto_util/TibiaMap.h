@@ -63,6 +63,7 @@ public:
 	int getPrevPointY(int x,int y, int z);
 	int getPrevPointX(int x,int y, int z);
 	void clearPrevPoint();
+	void clearDistance();
 	void clearLocalPrevPoint(int x,int y,int z,int radius);
 	void setPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ);
 	void setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ);
@@ -74,6 +75,9 @@ public:
 	void setDestPoint(int x,int y,int z,int destX, int destY, int destZ);
 	int getPointSpeed(int x,int y, int z);
 	void setPointSpeed(int x, int y, int z,int speed);
+	int getPointDistance(int x, int y, int z);
+	void setPointDistance(int x, int y, int z, int dist);
+	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
 	CTibiaMap();
 	virtual ~CTibiaMap();
 	
@@ -85,9 +89,6 @@ private:
 	int CTibiaMap::intPoint(point p);
 	int isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ);
 	int isPointLonger(int x,int y,int z,int prevX, int prevY, int prevZ);
-	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
-	int getPointDistance(int x, int y, int z);
-	void setPointDistance(int x, int y, int z, int dist);
 
 	//map<point, pointData, point> tibiaMap;
 	CMap<point *,point *,pointData *,pointData *> tibiaMap2;

@@ -4,6 +4,7 @@
 #include "protocol.h"
 #include "ModuleUtil.h"
 #include "ModuleProxy.h"
+#include "MemReaderProxy.h"
 #include <fstream>
 #include "time.h"
 
@@ -164,6 +165,7 @@ void NetworkMessage::AddBytes(const char* bytes, int size){
 }
 
 void Protocol::parsePacket(NetworkMessage &msg){
+	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.PeekByte();
 	NetworkMessage msgNew=NetworkMessage();
 	switch(recvbyte)
@@ -299,7 +301,7 @@ void Protocol::parsePacket(NetworkMessage &msg){
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\tascripts\\botting statistics.txt",path);
+	sprintf(pathBuf,"%s\\tascripts\\botting %d statistics.txt",path,reader.getProcessId());
 	std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
 	int tm=time(NULL);
 	fout.write((char*)&tm,4);

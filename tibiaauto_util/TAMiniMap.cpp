@@ -10,7 +10,6 @@
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
 #include "TibiaItemProxy.h"
-#include "Queue.h"
 #include "PackSender.h"
 #include "MemReader.h"
 #include "MemUtil.h"

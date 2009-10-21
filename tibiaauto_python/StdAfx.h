@@ -44,6 +44,9 @@
 //something, but do not change the name of _Module
 extern CComModule _Module;
 #include <atlcom.h>
+#include <afxtempl.h>
+#include <queue>
+#include <vector>
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

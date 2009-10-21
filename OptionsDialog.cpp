@@ -425,28 +425,51 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 {
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
-	
-	char pathBuf[1024];
-	sprintf(pathBuf,"%s\\tascripts\\botting statistics.txt",path);
-	FILE *f = fopen(pathBuf,"a+");
-	if (f){
-		fseek(f,0,SEEK_END);
-		int flen=ftell(f);
-		fclose(f);
-		if (flen<1000){
-			unlink(pathBuf);
-			sprintf(pathBuf,"%s\\tascripts\\module statistics.txt",path);
-			unlink(pathBuf);
-			fileSendingProgress=1;
-			return 0;
+	char fullMask[1024];
+	sprintf(fullMask,"%s\\tascripts\\* statistics.txt",path);
+	WIN32_FIND_DATA data;
+	HANDLE hFind = FindFirstFile(fullMask,&data);
+	if (hFind!=INVALID_HANDLE_VALUE){
+		char fname[128];
+		int lastfile=1;
+		while(lastfile)
+		{									
+			sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
+			FILE* f = fopen(fname,"a+");
+			if (f){
+				fseek(f,0,SEEK_END);
+				int flen=ftell(f);
+				fclose(f);
+				if (flen>1000) 
+					goto sendFiles;
+			}
+			lastfile=FindNextFile(hFind,&data);
 		}
 	}
+	{
+		hFind = FindFirstFile(fullMask,&data);
+		if (hFind!=INVALID_HANDLE_VALUE){
+			char fname[128];
+			int lastfile=1;
+			while(lastfile)
+			{									
+				sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
+				unlink(fname);
+				lastfile=FindNextFile(hFind,&data);
+			}
+		}
+		fileSendingProgress=1;
+		return 0;
+	}
+sendFiles:
+	int msgboxID=-1;
+	if(!CModuleUtil::getTASetting("RemoveBotStatsMessage")){
+		msgboxID = MessageBox(NULL,"TA is about to send your botting statistics to TA.net. You can edit this option in \"General options and statistics\".\n\nWould you like to receive this message every time before TA sends this data?\nUse cancel to stop the operation.","Submit Botting Data",MB_YESNOCANCEL);
+	}
+	if (msgboxID==IDCANCEL) return 0;
 	try
 	{
-		char fullMask[1024];
-		sprintf(fullMask,"%s\\tascripts\\* statistics.txt",path);
-		WIN32_FIND_DATA data;
-		HANDLE hFind = FindFirstFile(fullMask,&data);
+		hFind = FindFirstFile(fullMask,&data);
 		if (hFind!=INVALID_HANDLE_VALUE)
 		{
 			CInternetSession session;
@@ -477,13 +500,19 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 		}
 
 		fileSendingProgress=1;
-		if(!CModuleUtil::getTASetting("SeenBotStatsMessage")){
+		if(!CModuleUtil::getTASetting("RemoveBotStatsMessage")){
 			AfxMessageBox("Thank you for submitting \"botting statistics.txt\" and \"module statistics.txt\".\n\nNo personally identifiable information was sent.\nThis botting information will be analysed and used to help prevent CIPSoft from automatically detecting TA in the future. You can change this setting in \"General Options and Statistics\".\n\nTA users thank you for helping us towards this end.\n~TA Team");
-			CModuleUtil::setTASetting("SeenBotStatsMessage",1);
 		}
+
 	} catch (CInternetException *e)
 	{
+		if(!CModuleUtil::getTASetting("RemoveBotStatsMessage")){
+			AfxMessageBox("Failed to send file. Check your connection to the internet.");
+		}
 		fileSendingProgress=-1;
+	}
+	if(msgboxID==IDNO){
+		CModuleUtil::setTASetting("RemoveBotStatsMessage",1);
 	}
 	return 0;
 }

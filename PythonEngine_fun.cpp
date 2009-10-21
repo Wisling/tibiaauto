@@ -1041,14 +1041,14 @@ static PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
-	int arg1,arg2,arg3;
+	int arg1,arg2,arg3,arg4;
 	int path[10000];
 
-    if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)) return NULL;	
+    if (!PyArg_ParseTuple(args, "iiii",&arg1,&arg2,&arg3,&arg4)) return NULL;	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();	
 	
 	
-	CModuleUtil::findPathOnMap(selfCh->x,selfCh->y,selfCh->z,arg1,arg2,arg3,0,path);											
+	CModuleUtil::findPathOnMap(selfCh->x,selfCh->y,selfCh->z,arg1,arg2,arg3,0,path,arg4);											
 	int pathSize;
 	for (pathSize=0;pathSize<10000&&path[pathSize];pathSize++){}										
 	if (pathSize){

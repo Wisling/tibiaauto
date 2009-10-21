@@ -6,7 +6,7 @@
 #define AFX_UTIL_H__79D8A6EB_5316_41E0_BA36_717AF72A873E__INCLUDED_
 
 #include "TibiaItem.h"
-#include "Queue.h"
+#include "PQI.h"
 
 
 #include <xercesc/util/PlatformUtils.hpp>

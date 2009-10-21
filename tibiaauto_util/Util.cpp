@@ -4,7 +4,7 @@
 
 #include "stdafx.h"
 #include "Util.h"
-#include "Queue.h"
+#include "PQI.h"
 #include <xercesc/util/XMLString.hpp>
 #include "TibiaContainer.h"
 #include "TibiaMap.h"

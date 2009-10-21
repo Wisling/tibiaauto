@@ -499,6 +499,10 @@ void tibiaMapClearPrevPoint()
 {
 	tibiaMap.clearPrevPoint();
 }
+void tibiaMapClearDistance()
+{
+	tibiaMap.clearDistance();
+}
 void tibiaMapClearLocalPrevPoint(int x,int y,int z,int radius)
 {
 	tibiaMap.clearLocalPrevPoint(x,y,z,radius);
@@ -561,6 +565,21 @@ int tibiaMapGetPointSpeed(int x,int y, int z)
 void tibiaMapSetPointSpeed(int x,int y, int z, int speed)
 {
 	tibiaMap.setPointSpeed(x, y, z, speed);
+}
+
+int tibiaMapGetPointDistance(int x,int y, int z)
+{
+	return tibiaMap.getPointDistance(x,y,z);
+}
+
+void tibiaMapSetPointDistance(int x,int y, int z, int dist)
+{
+	tibiaMap.setPointDistance(x, y, z, dist);
+}
+
+int tibiaMapCalcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
+{
+	return tibiaMap.calcDistance(x, y, z, prevX, prevY, prevZ);
 }
 
 int tibiaMapIsPointInMiniMap(int x,int y,int z)

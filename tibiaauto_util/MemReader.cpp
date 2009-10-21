@@ -314,16 +314,17 @@ void CMemReader::writeGotoCoords(int x, int y, int z)
 	CMemUtil::SetMemIntValue(m_memAddressGoX,x);
 	CMemUtil::SetMemIntValue(m_memAddressGoY,y);
 	CMemUtil::SetMemIntValue(m_memAddressGoZ,z);
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature,1);
+	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature,1);//enable to accept gotocoords, (76=is char moving param)
 }	
 
 void CMemReader::cancelAttackCoords()
 {
 	int chNr=getLoggedCharNr();
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature,0);
+//	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature,0); will take care of itself
 	CMemUtil::SetMemIntValue(m_memAddressGoX,0);
 	CMemUtil::SetMemIntValue(m_memAddressGoY,0);
-	CMemUtil::SetMemIntValue(m_memAddressGoZ,0);	
+	CMemUtil::SetMemIntValue(m_memAddressGoZ,0);
+	setRemainingTilesToGo(0);//if left at > 0, no actions can be performed
 }
 
 int CMemReader::readCreatureLightPower(int creatureNr)

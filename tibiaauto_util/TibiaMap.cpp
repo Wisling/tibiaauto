@@ -179,7 +179,14 @@ void CTibiaMap::setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int 
 //			myfile.open ("C:/example.txt",ios::app);
 //			myfile <<"BEFORE---"<<"("<<p.x<<","<<p.y<<","<<p.z<<") to "<<"("<<pd->prevX<<","<<pd->prevY<<","<<pd->prevZ<<")"<<"("<<pPrev.x<<","<<pPrev.y<<","<<pPrev.z<<") to "<<"("<<pdPrev->prevX<<","<<pdPrev->prevY<<","<<pdPrev->prevZ<<")"<<"\n";
 //			myfile.close();
-			if(isBetterPrevPoint(x, y, z, prevX, prevY, prevZ))
+			struct point p1=point(pd->prevX, pd->prevY, pd->prevZ);
+			struct point p2=point(prevX, prevY, prevZ);
+			int newDist=getPointDistance(p2.x,p2.y,p2.z)+calcDistance(x,y,z,p2.x,p2.y,p2.z);
+			int oldDist=getPointDistance(p1.x,p1.y,p1.z)+calcDistance(x,y,z,p1.x,p1.y,p1.z);
+			//setPointDistance(x,y,z,min(newDist,oldDist));
+
+			//return is new point less distance than old point
+			if(newDist<oldDist)
 				setPrevPoint(x,y,z,prevX, prevY, prevZ);
 		}
 	}
@@ -190,7 +197,7 @@ int CTibiaMap::intPoint(point p) {return p.x*1000000+p.y*10+p.z;}
 //returns -1 if loops onto itself, 0 if nothing should change, 1 if should change
 int CTibiaMap::isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ)
 {	
-
+	return 1;
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
 	tibiaMap2.Lookup(&p,pd);
@@ -309,7 +316,7 @@ int CTibiaMap::isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int
 int CTibiaMap::getPointSpeed(int x, int y, int z)
 {
 	struct point p=point(x,y,z);
-	struct pointData *pd=NULL;	
+	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd)) return pd->speed;
 
 	return 0;
@@ -372,6 +379,19 @@ void CTibiaMap::clearPrevPoint()
 	}
 }
 
+void CTibiaMap::clearDistance()
+{
+	POSITION pos = tibiaMap2.GetStartPosition();	
+	while (pos != NULL)
+	{
+		point *p=NULL;
+		pointData *pd=NULL;
+		tibiaMap2.GetNextAssoc( pos, p, pd );
+		pd->dist=0;
+	}
+}
+
+
 void CTibiaMap::clearLocalPrevPoint(int x,int y,int z,int radius)
 {
 	POSITION pos = tibiaMap2.GetStartPosition();
@@ -384,6 +404,7 @@ void CTibiaMap::clearLocalPrevPoint(int x,int y,int z,int radius)
 			pd->prevX=0;
 			pd->prevY=0;
 			pd->prevZ=0;
+			pd->dist=0;
 		}
 	}
 }

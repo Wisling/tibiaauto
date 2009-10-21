@@ -537,7 +537,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			char path[1024];
 			CModuleUtil::getInstallPath(path);
 			char pathBuf[2048];
-			sprintf(pathBuf,"%s\\tascripts\\module statistics.txt",path);
+			sprintf(pathBuf,"%s\\tascripts\\module %d statistics.txt",path,reader.getProcessId());
 			std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
 			int tm=time(NULL);
 			fout.write((char*)&tm,4);
@@ -1423,67 +1423,6 @@ CTibiaautoDlg::~CTibiaautoDlg()
 	CDialog::~CDialog();
 }
 
-
-/*
-DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
-{
-	char path[1024];
-	CModuleUtil::getInstallPath(path);
-	
-	try
-	{
-		char fullMask[1024];
-		sprintf(fullMask,"%s\\tascripts\\* statistics.txt",path);
-		WIN32_FIND_DATA data;
-		HANDLE hFind = FindFirstFile(fullMask,&data);
-		if (hFind!=INVALID_HANDLE_VALUE)
-		{
-			CInternetSession session;
-			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
-			int t=time(NULL);
-			unsigned long serialNumber;
-			GetVolumeInformation(NULL,NULL,0,&serialNumber,NULL,NULL,NULL,0);
-			unsigned int r=serialNumber%0x100000000;
-			int lastfile=1;
-			while(lastfile)
-			{									
-				char fname[128];
-				char fnameGz[128];
-				sprintf(fname,"%s\\%s",path,data.cFileName);
-				sprintf(fnameGz,"%s\\%s.gz",path,data.cFileName);
-				char remoteFileName[128];
-				sprintf(remoteFileName,"incoming/%s-%d-%u.gz",data.cFileName,t,r);
-				file_compress(fname,"wb");
-								
-				ftpConnection->PutFile(fnameGz,remoteFileName);
-								
-				unlink(fnameGz);
-				lastfile=FindNextFile(hFind,&data);
-			}
-			ftpConnection->Close();
-			delete ftpConnection;
-		}
-
-		statSendingProgress=1;
-	} catch (CInternetException *e)
-	{
-		statSendingProgress=-1;
-	}
-	return 0;
-}
-
-void CTibiaautoDlg::sendStats()
-{
-	if (fileSendingProgress)
-	{
-		DWORD threadId;
-		statSendingProgress=0;	
-		::CreateThread(NULL,0,sendPacketLogThread,NULL,0,&threadId);	
-		SetTimer(10002,100,NULL);
-	}
-}
-
-*/
 BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
 {
 	// TODO: Add your specialized code here and/or call the base class
