@@ -1,4 +1,8 @@
-2.0.3, 10.??.2009
+2.0.4, ??.12.2009
+Enhancments
+Defects
+
+2.0.3, 21.10.2009
 Enhancments
  ItemConfig: Fixed a bug that prevented users from deleting certain items from their loot list
  Statistics: Can upload info on how you play Tibia to TA.net to help make TA undetectable
@@ -7,11 +11,15 @@ Enhancments
  Cavebot: Reworked the cavebot's waypoint walking to include the best features form both map methods
  Eater: No longer eats while in a PZ
  Eater: Attempts to eat items with smaller quantities in other backpacks, freeing space.
+ Cavebot: Fixed the high CPU usage of the walker and simplified the algorithm
 Defects
  TibiaAuto: Made debug and stats files always save to same directory
+ Cavebot: Stopped the Map Debug info from slowing down walking algorithm
+ Cavebot: FINALLY found a fix for the old error where Tibia freezes completely and prevents you from doing anything and clicking anywhere and attacking anything.(This may still happen though if your screen turns off... still looking into it)
+ Cavebot: Stops tryng to open snakes and fire elementals
  Cavebot: Fixed erratic status messages
 
-2.0.2, 10.12.2009
+2.0.2, 12.10.2009
 Enhancments
  ItemConfig: Alphabetized the lists for ease of use
 Defects

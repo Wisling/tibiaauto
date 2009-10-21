@@ -249,7 +249,7 @@ int findBanker(CConfigData *config) {
 		return 1;
 	}
 	for (int x = 0; x < 10; x++) {
-		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.position[x].bankerX, config->banker.position[x].bankerY, config->banker.position[x].bankerZ, 0, config->path);
+		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.position[x].bankerX, config->banker.position[x].bankerY, config->banker.position[x].bankerZ, 0, config->path,0);
 		if (nearestBank.x && nearestBank.y && nearestBank.z) {
 			config->targetX = nearestBank.x;
 			config->targetY = nearestBank.y;

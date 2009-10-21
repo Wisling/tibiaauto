@@ -146,6 +146,7 @@ public:
 	CStatic	m_stateLoot;
 	CStatic	m_stateAttack;
 	CButton	m_nomoveSuspended;
+	CComboBox	m_mapUsed;
 	CButton	m_lootinBags;
 	CEdit	m_lootCapLimit;
 	CButton	m_suspendOnEnemy;
@@ -177,6 +178,7 @@ public:
 	CButtonST	m_LoadMinimap;
 	CButtonST	m_MonsterDown;
 	CButtonST	m_MonsterUp;
+	CEdit	m_radius;
 	//}}AFX_DATA
 
 	void reloadDepotItems();

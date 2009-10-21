@@ -37,6 +37,9 @@
 
 #include <afxmt.h>
 #include <afxinet.h>
+#include <afxtempl.h>
+#include <queue>
+#include <vector>
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
