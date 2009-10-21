@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "Util.h"
-#include "Queue.h"
+#include "PQI.h"
 
 #include "TibiaContainer.h"
 #include "TibiaMapProxy.h"

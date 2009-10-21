@@ -36,6 +36,9 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxsock.h>		// MFC socket extensions
+#include <afxtempl.h>
+#include <queue>
+#include <vector>
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
