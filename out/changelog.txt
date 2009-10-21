@@ -12,12 +12,14 @@ Enhancments
  Eater: No longer eats while in a PZ
  Eater: Attempts to eat items with smaller quantities in other backpacks, freeing space.
  Cavebot: Fixed the high CPU usage of the walker and simplified the algorithm
+ Cavebot: Added a radius your player will randomly walk within when going to a waypoint.
 Defects
  TibiaAuto: Made debug and stats files always save to same directory
  Cavebot: Stopped the Map Debug info from slowing down walking algorithm
  Cavebot: FINALLY found a fix for the old error where Tibia freezes completely and prevents you from doing anything and clicking anywhere and attacking anything.(This may still happen though if your screen turns off... still looking into it)
  Cavebot: Stops tryng to open snakes and fire elementals
  Cavebot: Fixed erratic status messages
+ ShowMap: Added pitfalls as holes
 
 2.0.2, 12.10.2009
 Enhancments
