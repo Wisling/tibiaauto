@@ -27,7 +27,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "MemReaderProxy.h"
 #include "TibiaContainer.h"
 #include "TibiaItem.h"
-#include "Queue.h"
 #include "TibiaMapProxy.h"
 #include "TibiaMiniMapPoint.h"
 #include "TibiaItemProxy.h"
@@ -239,29 +238,6 @@ void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes 
 	return;
 }
 
-void CModuleUtil::findPathOnMapProcessPoint(CQueue *queue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
-{
-	CTibiaMapProxy tibiaMap;
-
-	int loopsOnItself=newX==tibiaMap.getPrevPointX(prevX,prevY,prevZ)&&newY==tibiaMap.getPrevPointY(prevX,prevY,prevZ)&&newZ==tibiaMap.getPrevPointZ(prevX,prevY,prevZ);
-	int upDownToUpDown = tibiaMap.getPointUpDownNoProh(prevX,prevY,prevZ) && tibiaMap.getPointUpDownNoProh(newX,newY,newZ);
-	int oldPrevX=tibiaMap.getPrevPointX(newX,newY,newZ),oldPrevY=tibiaMap.getPrevPointY(newX,newY,newZ),oldPrevZ=tibiaMap.getPrevPointZ(newX,newY,newZ);
-	if (tibiaMap.isPointAvailable(newX,newY,newZ) && !loopsOnItself && !upDownToUpDown)
-	{
-		//Diagonal fix: Only add possible next point to queue if on different floor or is not a diagonal move with a non-diagonal possibility
-		int diagonalMove = (newX-prevX)&&(newY-prevY)&&(newZ==prevZ);
-		int otherAvailableX = tibiaMap.getPrevPointZ(newX,prevY,prevZ)==newZ;
-		int otherAvailableY = tibiaMap.getPrevPointZ(prevX,newY,prevZ)==newZ;
-		//if (prevZ != newZ || !(diagonalMove && (otherAvailableX || otherAvailableY)) || tibiaMap.getPointUpDownNoProh(newX,newY,newZ)){
-			tibiaMap.setBestPrevPoint(newX,newY,newZ,prevX,prevY,prevZ);
-			//if value changed, add to queue again since best distance to point will have changed
-			if (oldPrevX!=tibiaMap.getPrevPointX(newX,newY,newZ)||oldPrevY!=tibiaMap.getPrevPointY(newX,newY,newZ)||oldPrevZ!=tibiaMap.getPrevPointZ(newX,newY,newZ)) queue->add(newX,newY,newZ);
-
-		//}
-	}
-}
-
-
 
 void inline mapDebug(char *s)
 {	
@@ -299,87 +275,47 @@ void inline testDebug(char *s)
 	}
 }
 
-
-
-struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15])
-{			
-	struct point retPoint(0,0,0);
-
-	
-
-	path[0]=0;
-	memset(path,0x00,sizeof(int)*15);
-#ifdef MAPDEBUG
-	char buf[512];
-	sprintf(buf,"findPathOnMap(startX=%d,startY=%d,startZ=%d,endX=%d,endY=%d,endZ=%d,endSpecialLocation=%d",startX,startY,startZ,endX,endY,endZ,endSpecialLocation);
-	mapDebug(buf);
-#endif
-
-	// means: we are already on the target location
-	if (startX==endX&&startY==endY&&startZ==endZ) return retPoint;
-
-	int x,y;
-	prepareProhPointList();
+void CModuleUtil::findPathOnMapProcessPoint(PQI &pQueue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
+{
 	CTibiaMapProxy tibiaMap;
-
-	
-
-	// try to go to the point normally
-	// efficiently returns if end is blocked
-	retPoint=findPathOnMap(startX,startY,startZ,endX,endY,endZ,endSpecialLocation,path,0);
-	//char buf[111];
-	//sprintf(buf,"retPoint %d.%d,(%d,%d,%d)",path[0],path[1],retPoint.x,retPoint.y,retPoint.z);
-	//AfxMessageBox(buf);
-
-	
-	if (path[0]) return retPoint;
-
-	// try to go to some point nearby
-	for (x=-1;x<=1;x++)
-	{
-		for (y=-1;y<=1;y++)
-		{	
-			if (x||y)
-			{
-#ifdef MAPDEBUG
-				sprintf(buf,"trampoline (%d,%d,%d)->(%d,%d,%d)",startX,startY,startZ,endX+x,endY+y,endZ);
-				mapDebug(buf);
-#endif
-				retPoint=findPathOnMap(startX,startY,startZ,endX+x,endY+y,endZ,endSpecialLocation,path,0);
-				if (path[0]) return retPoint;
-			}
-		}
+	if(tibiaMap.isPointAvailable(newX,newY,newZ) && !tibiaMap.getPointDistance(newX,newY,newZ)){
+		pQueue.push(pointNode(newX, newY, newZ, prevX, prevY, prevZ, tibiaMap.getPointDistance(prevX, prevY, prevZ)+tibiaMap.calcDistance(prevX, prevY, prevZ, newX, newY, newZ)));
 	}
-	return retPoint;
 }
 
-
-
-void CModuleUtil::findPathAllDirection(CQueue *queue,int x,int y,int z)
+void CModuleUtil::findPathAllDirection(PQI &pQueue,int x,int y,int z)
 {
 		int randDir = rand()%4;
 		//First piority points(sides)
-		// if we stand on open hole or stairs we can only change z coordinate
 		for (int i=randDir;i<randDir+4;i++){
 			switch(i%4){
-			case 0:	findPathOnMapProcessPoint(queue,x,y,z,x+1,y,z); break;
-			case 1:	findPathOnMapProcessPoint(queue,x,y,z,x-1,y,z); break;
-			case 2:	findPathOnMapProcessPoint(queue,x,y,z,x,y+1,z); break;
-			case 3:	findPathOnMapProcessPoint(queue,x,y,z,x,y-1,z); break;
+			case 0:	findPathOnMapProcessPoint(pQueue,x,y,z,x+1,y,z); break;
+			case 1:	findPathOnMapProcessPoint(pQueue,x,y,z,x-1,y,z); break;
+			case 2:	findPathOnMapProcessPoint(pQueue,x,y,z,x,y+1,z); break;
+			case 3:	findPathOnMapProcessPoint(pQueue,x,y,z,x,y-1,z); break;
 			}
 		}
 
 		//Second piority points(diagonals)
-		findPathOnMapProcessPoint(queue,x,y,z,x+1,y+1,z);
-		findPathOnMapProcessPoint(queue,x,y,z,x-1,y+1,z);
-		findPathOnMapProcessPoint(queue,x,y,z,x+1,y-1,z);
-		findPathOnMapProcessPoint(queue,x,y,z,x-1,y-1,z);
+		findPathOnMapProcessPoint(pQueue,x,y,z,x+1,y+1,z);
+		findPathOnMapProcessPoint(pQueue,x,y,z,x-1,y+1,z);
+		findPathOnMapProcessPoint(pQueue,x,y,z,x+1,y-1,z);
+		findPathOnMapProcessPoint(pQueue,x,y,z,x-1,y-1,z);
 }
 
 #define MAX_PATH_LEN 10000
 point pathTab[MAX_PATH_LEN];
 int pathTabLen;
-int lastDestX=-1,lastDestY=-1,lastDestZ=-1;
+
+int lastDestX=-1, lastDestY=-1, lastDestZ=-1, lastSpecLoc=-1;
+point lastEndPoint=point(-1,-1,-1);
+void resetPathfinderData(){
+	lastDestX=-1;
+	lastDestY=-1;
+	lastDestZ=-1;
+	lastEndPoint=point(-1,-1,-1);
+	lastSpecLoc=-1;
+}
 
 struct point CModuleUtil::GetPathTab(int index) {
 	return pathTab[index];
@@ -392,67 +328,77 @@ int CModuleUtil::GetPathTabCount() {
 	return count;
 }
 
-struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15], int useDiagonal)
+struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15], int radius/*=1*/)
 {		
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
-		
-#ifdef MAPDEBUG
-		char buf[512];
-
-		sprintf(buf,"INPUT (%d,%d,%d) %d",endX,endY,endZ,endSpecialLocation);
-		mapDebug(buf);
-#endif
 
 	path[0]=0;
 	memset(path,0x00,sizeof(int)*15);
+#ifdef MAPDEBUG
+	char buf[512];
+	sprintf(buf,"findPathOnMap(startX=%d,startY=%d,startZ=%d,endX=%d,endY=%d,endZ=%d,endSpecialLocation=%d,radius=%d",startX,startY,startZ,endX,endY,endZ,endSpecialLocation,radius);
+	mapDebug(buf);
+#endif
+
+	radius = rand()%(radius+1);
+	// means: we are already on the target location
+	if (max(abs(startX-endX),abs(startY-endY)) <= radius && startZ==endZ) return point(startX, startY, startZ);
+
+	prepareProhPointList();
+
 
 	// unable to reach point which is not available (e.g. other creature standing on it)
-	if (!endSpecialLocation&&!tibiaMap.isPointAvailable(endX,endY,endZ)) return point(0,0,0);
+	//if (!endSpecialLocation&&!tibiaMap.isPointAvailable(endX,endY,endZ)) return point(0,0,0);
+	if (endSpecialLocation){
+		if (endSpecialLocation==lastSpecLoc && lastDestX!=-1)// go to same location if found a path to last location
+		{
+			endX=lastDestX;
+			endY=lastDestY;
+			endZ=lastDestZ;
+		}
+	}
 	
-	
-	CQueue *queue = new CQueue();
+	PQI pQueue;
 
-	point p;
-	p.x=startX;
-	p.y=startY;
-	p.z=startZ;
-	
+	pointNode p=pointNode(startX,startY,startZ,startX,startY,startZ,1);
+#ifdef MAPDEBUG
+					sprintf(buf,"Beginning: (%d,%d,%d) (%d,%d,%d) %d ",startX,startY,startZ,startX,startY,startZ,1);
+					mapDebug(buf);
+#endif
+	pQueue.push(p);
 
-	queue->add(p);
-
-	int closerEndX=endX,closerEndY=endY,closerEndZ=endZ;
+	int closerEndX=-1,closerEndY=-1,closerEndZ=-1;
 	// If still going to same place, clear only points on screen and keep rest
+	// Follow the last endpoint back to where the cleared points cut off.  Go to this closer point.
+	tibiaMap.clearDistance();
 	if (lastDestX==endX&&lastDestY==endY&&lastDestZ==endZ)
 	{
 		tibiaMap.clearLocalPrevPoint(startX, startY, startZ,10);
-		p = point(endX,endY,endZ);
+		point pTrack = lastEndPoint;//trace path back from last destination square
 		point pCloser;
 		int stepsSoFar=0;
-		while (!(p.x==0&&p.y==0&&p.z==0))
+		while (!(pTrack.x==0&&pTrack.y==0&&pTrack.z==0))// stop when reached a cleared point
 		{				
+			closerEndX=pTrack.x;
+			closerEndY=pTrack.y;
+			closerEndZ=pTrack.z;
 
-			pCloser.x=p.x;
-			pCloser.y=p.y;
-			pCloser.z=p.z;
-
-			p.x=tibiaMap.getPrevPointX(pCloser.x,pCloser.y,pCloser.z);
-			p.y=tibiaMap.getPrevPointY(pCloser.x,pCloser.y,pCloser.z);
-			p.z=tibiaMap.getPrevPointZ(pCloser.x,pCloser.y,pCloser.z);
+			pTrack.x=tibiaMap.getPrevPointX(closerEndX,closerEndY,closerEndZ);
+			pTrack.y=tibiaMap.getPrevPointY(closerEndX,closerEndY,closerEndZ);
+			pTrack.z=tibiaMap.getPrevPointZ(closerEndX,closerEndY,closerEndZ);
 
 			stepsSoFar++;
 
 			if (stepsSoFar>MAX_PATH_LEN-5)
 			{
 				tibiaMap.clearPrevPoint();
+				closerEndX=-1,closerEndY=-1,closerEndZ=-1;
 				break;
 			}
 		};
-		closerEndX=pCloser.x;
-		closerEndY=pCloser.y;
-		closerEndZ=pCloser.z;
 #ifdef MAPDEBUG
-			sprintf(buf,"Goint to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
+			sprintf(buf,"Going to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
 			mapDebug(buf);
 #endif
 		
@@ -462,7 +408,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	}
 
 
-	tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
+	//tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
+	//tibiaMap.setPointDistance(startX,startY,startZ,1);
 
 #ifdef MAPDEBUG	
 	sprintf(buf,"============== (%d,%d,%d)->(%d,%d,%d) =========",startX,startY,startZ,endX,endY,endZ);
@@ -472,46 +419,86 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	int gotToEndPoint=0;
 	point endPoint;
 
-	while (queue->size() && gotToEndPoint!=1)
+	while (!pQueue.empty() && gotToEndPoint!=1)
 	{	
-		point currentPoint = queue->getFirst();	
+		pointNode currentPoint = pQueue.top();
+		pQueue.pop();
 
 		int x=currentPoint.x;
 		int y=currentPoint.y;
 		int z=currentPoint.z;
-
+		int px=currentPoint.px;
+		int py=currentPoint.py;
+		int pz=currentPoint.pz;
+		int dist=currentPoint.dist;
+		if (!tibiaMap.getPointDistance(x,y,z)){
 #ifdef MAPDEBUG
-		sprintf(buf,"queue: [%3d] (%d,%d,%d)",queue->size(),currentPoint.x,currentPoint.y,currentPoint.z);
-		mapDebug(buf);
+					sprintf(buf,"Setting: (%d,%d,%d) (%d,%d,%d) %d ",x,y,z,px,py,pz,dist);
+					mapDebug(buf);
 #endif
-
-		if (gotToEndPoint){gotToEndPoint--;
-		char buf[111];
-		sprintf(buf,"%d",gotToEndPoint);
-		//AfxMessageBox(buf);
+			tibiaMap.setPrevPoint(x,y,z,px,py,pz);
+			tibiaMap.setPointDistance(x,y,z,dist);
 		}
 		else{
-			// final point reached
-			//also clear out all remaining queue points
-			if (currentPoint.x==closerEndX&&currentPoint.y==closerEndY&&currentPoint.z==closerEndZ){
-				gotToEndPoint=max(queue->size(),200);
-				endPoint.x=endX;
-				endPoint.y=endY;
-				endPoint.z=endZ;
+			continue;
+		}
+
+#ifdef MAPDEBUG
+		vector<pointNode>* pQueueIter =pQueue.Container();
+		{
+			sprintf(buf,"Queue ===== ");
+			for (int i=0;i<pQueueIter->size()&&i<10;i++){
+				sprintf(buf,"%s(%d,%d,%d)-",buf,pQueueIter->at(i).x,pQueueIter->at(i).y,pQueueIter->at(i).z);
 			}
-			// standing by the depot
-			if (endSpecialLocation&&
-				(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
-				tibiaMap.getPointUpDown(x-1,y,z)==endSpecialLocation||
-				tibiaMap.getPointUpDown(x,y+1,z)==endSpecialLocation||
-				tibiaMap.getPointUpDown(x,y-1,z)==endSpecialLocation))
-			{
-				// endSpecialLocation found - where we stand is our "end point"
-				gotToEndPoint=max(queue->size(),200);
-				endPoint.x=x;
-				endPoint.y=y;
-				endPoint.z=z;
+			//mapDebug(buf);
+		}
+		sprintf(buf,"pQueue: [%3d] (%d,%d,%d) %d",pQueueIter->size(),x,y,z,dist);
+		mapDebug(buf);
+		pQueueIter=NULL;
+#endif
+
+		if (gotToEndPoint){//until it gets to 1 this will keep emptying the queue array
+			gotToEndPoint--;
+			char buf[111];
+			sprintf(buf,"%d",gotToEndPoint);
+			//AfxMessageBox(buf);
+		}
+		else{
+			// Check if reached closerPoint, within radius of endPoint or 1 square away from an endSpecialLocation tile
+			vector<pointNode>* pQueueIter =pQueue.Container();
+			if (closerEndX==-1){// Check normally
+				if (max(abs(x-endX),abs(y-endY))<= radius && z==endZ){
+					gotToEndPoint=1;//max(pQueueIter->size(),200);// found a path, but keep looking to find shortest path
+					endPoint.x=x;
+					endPoint.y=y;
+					endPoint.z=z;
+				}
+				// standing by the depot
+				if (endSpecialLocation&&
+					(tibiaMap.getPointUpDown(x+1,y,z)==endSpecialLocation||
+					tibiaMap.getPointUpDown(x-1,y,z)==endSpecialLocation||
+					tibiaMap.getPointUpDown(x,y+1,z)==endSpecialLocation||
+					tibiaMap.getPointUpDown(x,y-1,z)==endSpecialLocation))
+				{
+					// endSpecialLocation found - where we stand is our "end point"
+					gotToEndPoint=1;//max(pQueueIter->size(),200);
+					endPoint.x=x;
+					endPoint.y=y;
+					endPoint.z=z;
+				}
+
+			} else {// Check if reached shortcut point
+				if (x==closerEndX&&y==closerEndY&&z==closerEndZ){
+					gotToEndPoint=1;//max(pQueueIter->size(),200);
+					endPoint=lastEndPoint;
+				}
 			}
+			if(gotToEndPoint){
+				break;
+				//tibiaMap.setPrevPoint(endPoint.x,endPoint.y,endPoint.z,px,py,pz);
+				//tibiaMap.setPointDistance(endPoint.x,endPoint.y,endPoint.z,dist);
+			}
+			pQueueIter=NULL;
 		}
 			
 		/**
@@ -532,7 +519,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		 * 303 - permanent block
 		 */
 		
-		int forcedLevelChange=0; // if set to 1 then going north, south, east, west is forbidden
+		int forcedLevelChange=0,usedLevelChange=0; // if set to 1 then going north, south, east, west is forbidden
 
 #ifdef MAPDEBUG
 		char buf[128];
@@ -545,30 +532,27 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 		// we directly go up using rope, magic rope, ladder, stairs
 		if (currentUpDown>=200&&currentUpDown<300&&tibiaMap.isPointAvailableNoProh(x,y,z-1))
-		{						
-			tibiaMap.setBestPrevPoint(x,y,z-1,x,y,z);
-			findPathAllDirection(queue,x,y,z-1);
+		{					
+			pQueue.push(pointNode(x,y,z-1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x,y,z-1)));
 #ifdef MAPDEBUG
 			mapDebug("go up");
 #endif
 		}
 
-		// we go directly down using open hole, closed hole, crate
+		// we go directly down using open hole, closed hole, grate
 		if (currentUpDown>=100&&currentUpDown<200&&tibiaMap.isPointAvailableNoProh(x,y,z+1))
 		{
-			tibiaMap.setBestPrevPoint(x,y,z+1,x,y,z);
-			findPathAllDirection(queue,x,y,z+1);
+			pQueue.push(pointNode(x,y,z+1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x,y,z+1)));
 #ifdef MAPDEBUG
 			mapDebug("go down");
 #endif
 		}
 
-		// we go directly down using open hole, closed hole, crate
+		// we go directly down using open hole, closed hole, grate
 		if (currentUpDown==302)
 		{
 			point dest=tibiaMap.getDestPoint(x,y,z);
-			tibiaMap.setBestPrevPoint(dest.x,dest.y,dest.z,x,y,z);
-			findPathAllDirection(queue,dest.x,dest.y,dest.z);
+			pQueue.push(pointNode(dest.x,dest.y,dest.z,x,y,z,dist+tibiaMap.calcDistance(x,y,z,dest.x,dest.y,dest.z)));
 #ifdef MAPDEBUG
 			mapDebug("go teleport");
 #endif
@@ -580,10 +564,13 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			forcedLevelChange=1;
 		}
 
+		if(abs(x-px)>1 || abs(y-py)>1 || z!=pz){
+			usedLevelChange=1;
+		}
 
-		if (!forcedLevelChange){
+		if (!forcedLevelChange || usedLevelChange){
 		
-			findPathAllDirection(queue,x,y,z);
+			findPathAllDirection(pQueue,x,y,z);
 
 
 			int xShift=-2,yShift=-2;
@@ -591,25 +578,27 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				if (xShift==-2 && yShift==-2) {xShift=-1;yShift=-1;}
 				else xShift++;
 				if (xShift>1) {xShift=-1;yShift++;}
-				if (xShift==0 && yShift==0) xShift++;
+				if (xShift==0 && yShift==0) xShift++;//skip middle
 				
 				int updown=tibiaMap.getPointUpDownNoProh(x+xShift,y+yShift,z);
 			
 				// special going up if ladder busy
 				if ((updown==201||updown==203)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z-1))
 				{
-					tibiaMap.setBestPrevPoint(x+xShift,y+yShift,z-1,x,y,z);
-					findPathAllDirection(queue,x+xShift,y+yShift,z-1);
+					pQueue.push(pointNode(x+xShift,y+yShift,z-1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x+xShift,y+yShift,z-1)));
 				}
 				// special going down if grate or hole busy
 				if ((updown==102||updown==103)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z+1))
 				{
-					tibiaMap.setBestPrevPoint(x+xShift,y+yShift,z+1,x,y,z);
-					findPathAllDirection(queue,x+xShift,y+yShift,z+1);
+					pQueue.push(pointNode(x+xShift,y+yShift,z+1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x+xShift,y+yShift,z+1)));
 				}
 			}
 		}
 	}
+#ifdef MAPDEBUG
+			sprintf(buf,"Ended loop empty=%d gotToEndPoint=%d",pQueue.empty(),gotToEndPoint);
+			mapDebug(buf);
+#endif
 
 	if (gotToEndPoint)
 	{				
@@ -637,7 +626,9 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			
 			if (pathPos>MAX_PATH_LEN-5)
 			{
-				delete queue;
+				while (!pQueue.empty()){
+					pQueue.pop();
+				}
 				return point(0,0,0);
 			}
 		};
@@ -756,9 +747,11 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 
-		lastDestX=endPoint.x;
-		lastDestY=endPoint.y;
-		lastDestZ=endPoint.z;
+		//store param passed to findPathOnMap
+		lastDestX=endX;
+		lastDestY=endY;
+		lastDestZ=endZ;
+		lastEndPoint=endPoint;//keep actual location we found a path to
 
 		pathTabLen=pathPos;
 #ifdef MAPDEBUG
@@ -766,12 +759,19 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 
-		delete queue;
+		while (!pQueue.empty()){
+			pQueue.pop();
+		}
 
-		return point(endPoint.x,endPoint.y,endPoint.z);
+		return endPoint;
 	}
 
-	delete queue;
+	//reset stored information since no path was found
+	resetPathfinderData();
+
+	while (!pQueue.empty()){
+		pQueue.pop();
+	}
 	return point(0,0,0);
 }
 

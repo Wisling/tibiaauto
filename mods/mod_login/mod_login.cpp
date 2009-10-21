@@ -29,10 +29,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
-#include "ModuleUtil.h"
 #include "SendKeys.h"
 #include <queue>
 #include <time.h>
+#include "ModuleUtil.h"
+using namespace std;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -54,7 +55,7 @@ END_MESSAGE_MAP()
 
 
 extern CRITICAL_SECTION QueueCriticalSection;
-extern std::queue<char *> queue;
+extern std::queue<char *> queue2;
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
@@ -67,7 +68,7 @@ void registerDebug(char *msg)
 	char *newMsg = (char *)malloc(strlen(msg)+1);
 	sprintf(newMsg,"%s",msg);
 	EnterCriticalSection(&QueueCriticalSection);
-	queue.push(newMsg);
+	queue2.push(newMsg);
 	LeaveCriticalSection(&QueueCriticalSection);
 }
 

@@ -180,6 +180,18 @@ int CTibiaMapProxy::getPrevPointX(int x,int y, int z)
 	} 
 	return 0;
 }
+void CTibiaMapProxy::clearDistance()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapClearDistance");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
 void CTibiaMapProxy::clearPrevPoint()
 {
 	typedef void (*Proto_fun)();
@@ -371,3 +383,42 @@ void CTibiaMapProxy::setPointSpeed(int x,int y, int z, int speed)
 	} 
 }
 
+int CTibiaMapProxy::getPointDistance(int x,int y, int z)
+{
+	typedef int (*Proto_fun)(int x,int y, int z);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointDistance");
+		if (fun)
+		{
+			return fun(x, y, z);
+		}
+	} 
+	return 0;
+}
+void CTibiaMapProxy::setPointDistance(int x,int y, int z, int dist)
+{
+	typedef void (*Proto_fun)(int x,int y, int z, int dist);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointDistance");
+		if (fun)
+		{
+			fun(x, y, z, dist);
+		}
+	} 
+}
+
+int CTibiaMapProxy::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
+{
+	typedef int (*Proto_fun)(int x, int y, int z, int prevX, int prevY, int prevZ);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapCalcDistance");
+		if (fun)
+		{
+			return fun(x, y, z, prevX, prevY, prevZ);
+		}
+	} 
+	return 0;
+}

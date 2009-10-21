@@ -19,7 +19,7 @@ extern int loginTime;
 // CConfigDialog dialog
 
 CRITICAL_SECTION QueueCriticalSection;
-std::queue<char *> queue;
+std::queue<char *> queue2;
 
 CConfigDialog::CConfigDialog(CMod_loginApp *app,CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
@@ -203,11 +203,11 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		};
 
 		EnterCriticalSection(&QueueCriticalSection);
-		while (!queue.empty())
+		while (!queue2.empty())
 		{
 			char timeBuf[256];
-			char *msg = queue.front();
-			queue.pop();
+			char *msg = queue2.front();
+			queue2.pop();
 			m_debug.InsertItem(0,"");
 			time_t nowSec = time(NULL);
 			struct tm *now = localtime(&nowSec);

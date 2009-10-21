@@ -262,7 +262,7 @@ void depotCheck(CConfigData *config) {
 		// check whether the depot is reachable
 		int path[15];
 		if (config->debug) registerDebug("findPathOnMap: depot walker");
-		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,0,path);
+		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,0,path,0);
 		if (!path[0]||!tibiaMap.isPointAvailable(depotX,depotY,depotZ)) {
 			if (config->debug) registerDebug("Path to the current depot not found: must find a new one");
 			// path to the current depot not found, must find a new depot
@@ -952,7 +952,7 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 					registerDebug(buf);
 				}
 				CTibiaCharacter *self2 = reader.readSelfCharacter();
-				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+x, self->y+y, self->z, 0,path);
+				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+x, self->y+y, self->z, 0,path,1);
 				for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 
 				//continue if farther than 10 spaces or path does not include enough info to get there(meaning floor change)
@@ -1071,193 +1071,6 @@ exitLoop:
 	deleteAndNull(self);
 
 
-/*
-//anilez	if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-		if (config->debug) registerDebug("Entering 'loot from floor' area");
-		
-		int freeContNr=-1;
-		int freeContPos=-1;
-		int freeContInside=-1;
-		int x,y;
-		int bestX=0,bestY=0,bestPath=1000;
-		
-		// lookup a free place in any container
-		int contNr;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-			CTibiaContainer *cont = reader.readContainer(contNr);
-			if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-				freeContNr=contNr;
-				freeContPos=cont->size-1;
-				freeContInside=cont->itemsInside;
-				deleteAndNull(cont);
-				break;
-			}
-			deleteAndNull(cont);
-		}
-		
-		if (freeContNr==-1) {
-			if (config->debug) registerDebug("Loot from floor: no free container found");
-			// no free place in container found - exit
-			deleteAndNull(self);
-			return;
-		}
-		
-		int foundLootedObjectId=0;
-		
-		for (x=-7;x<=7;x++) {
-			for (y=-5;y<=5;y++) {
-				int f1=isItemCovered(x,y,lootedArr,lootedArrSize);
-				int f2=isItemOnTop(x,y,lootedArr,lootedArrSize);
-				if (f1) foundLootedObjectId=f1;
-				if (f2) foundLootedObjectId=f2;
-				
-				if (f1||f2) {
-					if (f2 && abs(x) <= 1 && abs(y) <= 1) {
-						sprintf(buf, "Loot from floor: picking up item (adjacent/same square) [0x%x]", f2);
-						if (config->debug) registerDebug(buf);
-						int qty=itemOnTopQty(x, y);
-						sender.moveObjectFromFloorToContainer(foundLootedObjectId, self->x + x, self->y + y, self->z, 0x40+freeContNr, freeContPos,qty);
-						CModuleUtil::waitForItemsInsideChange(freeContNr, freeContInside);
-						//y--; // Recheck the square.
-					}
-					else {
-						// there is the lootedItem (on top or covered)
-						int path[15];
-						int pathSize=0;
-						memset(path,0x00,sizeof(int)*15);
-						if (config->debug){
-							sprintf(buf, "findPathOnMap: loot from floor (%d, %d)", x, y);
-							registerDebug(buf);
-						}
-						CModuleUtil::findPathOnMap(self->x, self->y, self->z, self->x+x, self->y+y, self->z, 0,path);
-						for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-						
-						// if item is on our place then this is the best situation
-						if (x==0&&y==0) pathSize=0;
-						
-						if (path[0] && bestPath>=pathSize) {
-							
-							// there is a path to the point AND the path
-							// is the closest (the best)
-							bestX=x;
-							bestY=y;
-							bestPath=pathSize;
-							sprintf(buf,"Loot from floor: item (%d,%d,%d)",x,y,pathSize);
-							if (config->debug) registerDebug(buf);
-						}
-						if (x == 0 && y == 0) {
-							bestX=x;
-							bestY=y;
-							bestPath=pathSize;
-						}
-						sprintf(buf, "Path[0]: %d\tpathSize: %d", path[0], pathSize);
-						if (config->debug) registerDebug(buf);
-					} //end else
-					sprintf(buf, "Covered: %s\tOn Top: %s\tCode: 0x%x", f1?"Yes":"No", f2?"Yes":"No", foundLootedObjectId);
-					if (config->debug) registerDebug(buf);
-				}
-			} // for y
-		} // for x
-		if (foundLootedObjectId) {
-			sprintf(buf,"Loot from floor: found looted object id=0x%x",foundLootedObjectId);
-			if (config->debug) registerDebug(buf);
-		}
-		else
-			
-
-		//lootTile = reader.getTibiaTile(itemOnTopCode(bestX, bestY));
-		//if (lootTile->notMoveable) {
-		//	sprintf(buf,"Loot from floor: Loot object %d currently not lootable (Loot Tile: %d)",foundLootedObjectId, lootTile);
-		//	if (config->debug) registerDebug(buf);
-		//	return;
-		//}
-		
-		if (config->debug) registerDebug("Loot from floor: before anything to loot check");
-		
-		if (bestPath<1000) {
-			if (config->debug) registerDebug("Loot from floor: found something to loot -> walking");
-			// anything to loot found
-			
-			CTibiaCharacter *self2 = reader.readSelfCharacter();
-			
-			if (self2->x==self->x+bestX&&self2->y==self->y+bestY&&self2->z==self->z) {
-				// no need to walk as we are on position already
-			}
-			
-			int path[15];
-			int pathSize=0;
-			memset(path,0x00,sizeof(int)*15);
-			if (config->debug) registerDebug("findPathOnMap: loot from floor 2");
-			CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+bestX, self->y+bestY, self->z, 0,path);
-			for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-			
-			sprintf(buf,"Loot from floor: path size=%d between (%d,%d,%d) and (%d,%d,%d)",pathSize,self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
-			if (config->debug) registerDebug(buf);
-			if (pathSize)  {
-				//sender.stopAll();
-				//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
-				//AfxMessageBox(buf);
-				CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
-				// wait for reaching final point
-				CModuleUtil::waitToApproachSquare(self->x+bestX,self->y+bestY);
-			}
-			else {
-				sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
-				if (config->debug) registerDebug(buf);
-			}
-			sprintf(buf,"Loot from floor: location me(%d,%d,%d)->item(%d,%d,%d)",self2->x,self2->y,self2->z,self->x+bestX,self->y+bestY,self->z);
-			if (config->debug) registerDebug(buf);
-			
-			deleteAndNull(self2);
-			self2 = reader.readSelfCharacter();
-			if (self->x+bestX==self2->x&&self->y+bestY==self2->y&&self->z==self2->z) {
-				if (config->debug) registerDebug("Loot from floor: standing over item");
-				// we are standing over the item
-				
-				int offsetX,offsetY;
-				// means - it's covered, so we need to "dig" to it
-				for (offsetX=-1;offsetX<=1;offsetX++) {
-					for (offsetY=-1;offsetY<=1;offsetY++) {
-						// double loop break!
-						if ((offsetX||offsetY)&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)) 
-						{
-							// force loop break;
-							goto exitLoop;	
-						}
-					}
-				}
-exitLoop:
-				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
-				if (config->debug) registerDebug(buf);
-				if (offsetX!=2&&offsetY!=2) {
-					int uncoverItem=0;
-					// do it only when drop place if found
-					while (uncoverItem++<10&&isItemCovered(0,0,foundLootedObjectId)&&!isItemOnTop(0,0,foundLootedObjectId)) {
-						if (config->debug) registerDebug("Loot from floor: uncovering item");
-						int objectId=itemOnTopCode(0,0);
-						int qty=itemOnTopQty(0,0);
-						sender.moveObjectFromFloorToFloor(objectId,self2->x,self2->y,self2->z,self2->x+offsetX,self2->y+offsetY,self2->z,qty);
-						Sleep(CModuleUtil::randomFormula(400,200));
-					}
-					if (isItemOnTop(0,0,foundLootedObjectId)) {
-						if (config->debug) registerDebug("Loot from floor: picking up item");
-						int qty=itemOnTopQty(0,0);
-						sender.moveObjectFromFloorToContainer(foundLootedObjectId,self2->x,self2->y,self->z,0x40+freeContNr,freeContPos,qty);
-						CModuleUtil::waitForItemsInsideChange(freeContNr,freeContInside);
-						Sleep(CModuleUtil::randomFormula(400,200));
-
-					}
-					else {
-						if (config->debug) registerDebug("Loot from floor: bad luck - item is not on top");
-					}
-				}
-			}
-			
-			deleteAndNull(self2);
-		}
-	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-	deleteAndNull(self);
-	*/
 }
 
 void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
@@ -1358,8 +1171,6 @@ int AttackCreature(CConfigData *config,int id){
 		if (reader.getAttackedCreature()!=id){
 			reader.cancelAttackCoords();
 			Sleep(200);
-			reader.setRemainingTilesToGo(0);
-	//		reader.writeCreatureDeltaXY(self->nr,0,0);
 			reader.setAttackedCreature(id);
 			sender.attack(id);
 			currentPosTM=time(NULL);
@@ -1540,7 +1351,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// restore attack mode
 						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
 
-						//reader.setRemainingTilesToGo(0);
 						if (config->debug) registerDebug("Paused cavebot");
 					}
 				}
@@ -1695,7 +1505,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();
 					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
-					if (corpseId){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
+					CTibiaTile *tile=reader.getTibiaTile(corpseId);
+					if (corpseId && tile->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
 						// Open corpse to container, wait to get to corpse on ground and wait for open
 						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
 
@@ -2266,7 +2077,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (config->debug) registerDebug(buf);
 					
 					int ticksStart = GetTickCount();
-					CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+					point destPoint = CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path,config->radius);
 					int ticksEnd = GetTickCount();
 					
 					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
@@ -2274,7 +2085,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					
 					int pathSize;
 					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-					if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+					if (pathSize||self->x==destPoint.x&&destPoint.y==self->y&&self->z==destPoint.z) {							
 						CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 						if (config->debug) registerDebug("Walking: execute walk");
@@ -2336,7 +2147,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
 						if (config->debug) registerDebug(buf);
 						int ticksStart = GetTickCount();
-						CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+						point destPoint=CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path,config->radius);
 						int ticksEnd = GetTickCount();
 						//Now let's try to "click" the mini	map. Let Tibia do the walking for us
 						//Check the full path to our target
@@ -2366,7 +2177,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							//For short paths TA map method proves best especially near rope spots and teleporters
 							int pathSize;
 							for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-							if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+							if (pathSize||self->x==destPoint.x&&destPoint.y==self->y&&self->z==destPoint.z) {							
 								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 								globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 								if (config->debug) registerDebug("Walking: execute walk");
@@ -2447,11 +2258,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,targetX,targetY,targetZ);
 										if (config->debug) registerDebug(buf);
 										int ticksStart = GetTickCount();
-										CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path);
+										point destPoint=CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path,config->radius);
 										int ticksEnd = GetTickCount();
 										int pathSize;
 										for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-										if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+										if (pathSize||self->x==destPoint.x&&destPoint.y==self->y&&self->z==destPoint.z) {							
 											CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 											globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 											if (config->debug) registerDebug("Walking: execute walk");
@@ -2477,7 +2288,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							if (config->debug) registerDebug(buf);
 							int pathSize;
 							for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-							if (pathSize||self->x==targetX&&targetY==self->y&&self->z==targetZ) {							
+							if (pathSize||self->x==destPoint.x&&destPoint.y==self->y&&self->z==destPoint.z) {							
 								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 								globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 								if (config->debug) registerDebug("Walking: execute walk");
@@ -2511,12 +2322,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	reader.setAttackedCreature(0);
 	reader.cancelAttackCoords();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	reader.writeCreatureDeltaXY(self->nr,0,0);
 	deleteAndNull(self);
 	// restore attack mode
 	SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
 
-	//reader.setRemainingTilesToGo(0);
 	if (config->debug) registerDebug("Exiting cavebot");
 	globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
 	globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
@@ -2667,6 +2476,10 @@ int CMod_cavebotApp::validateConfig(int showAlerts) {
 		if (showAlerts) AfxMessageBox("Depot capacity must be >= 0!");
 		return 0;
 	}
+	if (m_configData->radius<0) {
+		if (showAlerts) AfxMessageBox("Radius must be >= 0!");
+		return 0;
+	}
 	
 	return 1;
 }
@@ -2710,6 +2523,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"training/activate")) m_configData->trainingActivate=atoi(paramValue);
 	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) m_configData->depotDropInsteadOfDepositon=atoi(paramValue);
 	if (!strcmp(paramName,"depot/depotCap")) m_configData->depotCap=atoi(paramValue);
+	if (!strcmp(paramName,"walker/radius")) m_configData->radius=atoi(paramValue);
 	
 	if (!strcmp(paramName,"general/debug")) m_configData->debug=atoi(paramValue);
 	
@@ -2820,7 +2634,8 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"training/activate")) sprintf(buf,"%d",m_configData->trainingActivate);
 	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) sprintf(buf,"%d",m_configData->depotDropInsteadOfDepositon);
 	if (!strcmp(paramName,"depot/depotCap")) sprintf(buf,"%d",m_configData->depotCap);
-	
+	if (!strcmp(paramName,"walker/radius")) sprintf(buf,"%d",m_configData->radius);
+
 	return buf;
 }
 
@@ -2867,6 +2682,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 38: return "depot/depotCap";
 	case 39: return "training/weaponHand";
 	case 40: return "training/trainingMode";
+	case 41: return "walker/radius";
 		
 	default:
 		return NULL;
