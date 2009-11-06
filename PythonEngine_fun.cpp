@@ -19,7 +19,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",selfCh->hp,
 		"mana",selfCh->mana,
 		"x",selfCh->x,
@@ -63,7 +63,8 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 		"colorFoot",selfCh->colorFoot,
 		"walkSpeed",selfCh->walkSpeed,
 		"skulls",selfCh->skulls,
-		"shields",selfCh->shields);	
+		"shields",selfCh->shields,	
+		"warIcon",selfCh->warIcon);
 
 	delete selfCh;
 	return ret;
@@ -299,7 +300,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.readVisibleCreature(arg1);
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -343,7 +344,8 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 		"colorFoot",ch->colorFoot,
 		"walkSpeed",ch->walkSpeed,
 		"skulls",ch->skulls,
-		"shields",ch->shields);
+		"shields",ch->shields,
+		"warIcon",ch->warIcon);
 
 	
 
@@ -378,7 +380,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
 	if (!ch) return NULL;
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -422,7 +424,8 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 		"colorFoot",ch->colorFoot,
 		"walkSpeed",ch->walkSpeed,
 		"skulls",ch->skulls,
-		"shields",ch->shields);
+		"shields",ch->shields,
+		"warIcon",ch->warIcon);
 
 	
 
@@ -1044,7 +1047,10 @@ static PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 	int arg1,arg2,arg3,arg4;
 	int path[10000];
 
-    if (!PyArg_ParseTuple(args, "iiii",&arg1,&arg2,&arg3,&arg4)) return NULL;	
+    if (!PyArg_ParseTuple(args, "iiii",&arg1,&arg2,&arg3,&arg4)){
+		arg4=0;
+		if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)) return NULL;
+	}
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();	
 	
 	

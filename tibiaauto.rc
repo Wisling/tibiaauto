@@ -192,9 +192,9 @@ BEGIN
     LTEXT           "10000000",IDC_SIZE_USAGESTATS,83,129,37,14,
                     SS_CENTERIMAGE
     PUSHBUTTON      "Skins",IDC_SKIN,7,180,50,14
-    CONTROL         "On TA startup submit botting stats",
+    CONTROL         "Submit botting stats (Off) Thanks for helping out",
                     IDC_GATHER_BOT_STATS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,7,153,122,10,WS_EX_TRANSPARENT
+                    WS_DISABLED | WS_TABSTOP,7,153,165,10,WS_EX_TRANSPARENT
 END
 
 
@@ -339,7 +339,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 2.0.3 for Tibia 8.52"
+CAPTION "Tibia Auto v 2.1.0 for Tibia 8.53"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79

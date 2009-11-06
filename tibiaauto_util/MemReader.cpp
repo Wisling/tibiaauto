@@ -125,6 +125,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 		ch->hpPercLeft=monCh->hpPercLeft;
 		ch->lastAttackTm=monCh->lastAttackTm;
 		ch->nr=loggedCharNr;
+		ch->warIcon=monCh->warIcon;
 
 		delete monCh;
 	}
@@ -160,6 +161,12 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->x=CMemUtil::GetMemIntValue(offset+36);
 	ch->y=CMemUtil::GetMemIntValue(offset+40);
 	ch->z=CMemUtil::GetMemIntValue(offset+44);
+	//ch->horizShift=CMemUtil::GetMemIntValue(offset+48);
+	//ch->vertShift=CMemUtil::GetMemIntValue(offset+52);
+	//ch->timeFinishMove=CMemUtil::GetMemIntValue(offset+56);
+	//ch->timeTillCanMoveAgain=CMemUtil::GetMemIntValue(offset+60);
+	//ch->totHorizIncement=CMemUtil::GetMemIntValue(offset+64);
+	//ch->totVertIncrement=CMemUtil::GetMemIntValue(offset+68);
 	ch->outfitId=CMemUtil::GetMemIntValue(offset+72);
 	ch->lookDirection=CMemUtil::GetMemIntValue(offset+80);
 	ch->monsterType=CMemUtil::GetMemIntValue(offset+96);		
@@ -167,12 +174,16 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->colorBody=CMemUtil::GetMemIntValue(offset+104);
 	ch->colorLegs=CMemUtil::GetMemIntValue(offset+108);
 	ch->colorFoot=CMemUtil::GetMemIntValue(offset+112);
+	//ch->addon=CMemUtil::GetMemIntValue(offset+116);
+	//ch->sleeptime=CMemUtil::GetMemIntValue(offset+120);
+	//ch->boxcolour=CMemUtil::GetMemIntValue(offset+128);
 	ch->lastAttackTm=CMemUtil::GetMemIntValue(offset+132);
 	ch->hpPercLeft=CMemUtil::GetMemIntValue(offset+136);
 	ch->walkSpeed=CMemUtil::GetMemIntValue(offset+140);
 	ch->visible=CMemUtil::GetMemIntValue(offset+144);	
 	ch->skulls=CMemUtil::GetMemIntValue(offset+148);
 	ch->shields=CMemUtil::GetMemIntValue(offset+152);
+	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
 	ch->nr=nr;
 	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);

@@ -722,6 +722,7 @@ void CPythonEngine::unloadScript(int scriptNr)
 	pythonScript->setEnabled(false);
 	CPythonScript::pythonScriptTab[scriptNr]=CPythonScript::pythonScriptTab[CPythonScript::pythonScriptCount-1];	
 	CPythonScript::pythonScriptCount--;
+	registerPluginCount--;
 	// this is commented out by purpose - there would be too much threads 
 	// playing to cleanup this memory here
 	delete pythonScript;

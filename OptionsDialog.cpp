@@ -1,6 +1,24 @@
 // OptionsDialog.cpp : implementation file
 //
 
+#include <afxwin.h>         // MFC core and standard components
+#include <afxext.h>         // MFC extensions
+#include <afxdisp.h>        // MFC Automation classes
+#include <afxdtctl.h>		// MFC support for Internet Explorer 4 Common Controls
+#ifndef _AFX_NO_AFXCMN_SUPPORT
+#include <afxcmn.h>			// MFC support for Windows Common Controls
+#endif // _AFX_NO_AFXCMN_SUPPORT
+#include <afxsock.h>
+#include <Tlhelp32.h>
+
+
+#include <afxinet.h>
+#include <afxtempl.h>
+#include <queue>
+#include <vector>
+
+#include "ipcm.h"
+
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "ModuleUtil.h"
@@ -142,11 +160,7 @@ void file_compress(char *file, char *mode)
 
 void COptionsDialog::OnSendLootstats() 
 {
-	char installPath[1024];
-	CModuleUtil::getInstallPath(installPath);
-	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
-	sendFile(pathBuf);
+	sendFile("tibiaauto-stats-loot.txt");
 }
 
 BOOL COptionsDialog::OnInitDialog() 
@@ -204,11 +218,7 @@ void COptionsDialog::refreshStatFiles()
 
 void COptionsDialog::OnSendCreaturestats() 
 {
-	char installPath[1024];
-	CModuleUtil::getInstallPath(installPath);
-	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
-	sendFile(pathBuf);
+	sendFile("tibiaauto-stats-creatures.txt");
 }
 
 
@@ -216,15 +226,20 @@ void COptionsDialog::OnSendCreaturestats()
 
 DWORD WINAPI sendFileThread( LPVOID lpParam )
 {
-	char *fname=(char *)lpParam;
+	char *filename=(char *)lpParam;
 	try
 	{
-		char fnameGz[128];
-		sprintf(fnameGz,"%s.gz",fname);
+		char installPath[1024];
+		CModuleUtil::getInstallPath(installPath);
+
+		char fname[1024];
+		sprintf(fname,"%s\\%s.gz",installPath,filename);
+		char fnameGz[1024];
+		sprintf(fnameGz,"%s\\%s.gz",installPath,filename);
 		char remoteFileName[128];
-		sprintf(remoteFileName,"incoming/%s-%d-%d.gz",fname,time(NULL),rand());
-		file_compress(fname,"wb");		
-		CInternetSession session;	
+		sprintf(remoteFileName,"incoming/%s-%d-%d.gz",filename,time(NULL),rand());
+		file_compress(fname,"wb");
+		CInternetSession session;
 		CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
 		ftpConnection->PutFile(fnameGz,remoteFileName);
 		ftpConnection->Close();
@@ -393,11 +408,7 @@ void COptionsDialog::sendMaps(char *path)
 
 void COptionsDialog::OnSendUsagestats() 
 {
-	char installPath[1024];
-	CModuleUtil::getInstallPath(installPath);
-	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\tibiaauto-stats-usage.txt",installPath);
-	sendFile(pathBuf);
+	sendFile("tibiaauto-stats-usage.txt");
 }
 
 void COptionsDialog::OnSkin()
