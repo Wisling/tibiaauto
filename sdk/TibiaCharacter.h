@@ -59,6 +59,7 @@ public:
 	int walkSpeed;
 	int skulls;
 	int shields;
+	int warIcon;
 
 };
 
