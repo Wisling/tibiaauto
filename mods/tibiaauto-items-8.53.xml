@@ -1,0 +1,450 @@
+<!-- Tibia Items for Tibia 8.53 -->
+<item-definitions>
+	<consts>
+		<!-- item codes -->
+		<const code="ropespot" value="0x182"/> 
+		<const code="bagbrown" value="0xb25"/>
+		<const code="rope" value="0xbbb"/>
+		<const code="GP" value="0xbd7"/>
+		<const code="PlatinumCoin" value="0xbdb"/>
+		<const code="CrystalCoin" value="0xbe3"/>
+		<const code="runeUH" value="0xc58"/>
+		<const code="runeIH" value="0xc50"/>
+		<const code="runeLMM" value="0xc66"/>
+		<const code="runeHMM" value="0xc7e"/>
+		<const code="runeGFB" value="0xc77"/>
+		<const code="runeExplo" value="0xc80"/>
+		<const code="runeSoulFire" value="0xc7b"/>
+		<const code="runeSD" value="0xc53"/>
+		<const code="runeBlank" value="0xc4b"/>
+		<const code="fish" value="0xdfa"/>
+		<const code="fishingRod" value="0xd9b"/>
+		<const code="fluid" value="0xb3a"/>
+		<const code="fluidLifeH" value="0x1ec4"/>
+		<const code="fluidLife" value="0x10a"/>
+		<const code="fluidLifeS" value="0xec"/>
+		<const code="fluidLifeG" value="0xef"/>
+		<const code="fluidLifeU" value="0x1ddb"/>
+		<const code="fluidMana" value="0x10c"/>
+		<const code="fluidManaS" value="0xed"/>
+		<const code="fluidManaG" value="0xee"/>
+		<const code="fluidEmpty" value="0x11d"/>
+		<const code="fluidEmptyS" value="0x11b"/>
+		<const code="fluidEmptyG" value="0x11c"/>
+		<const code="worms" value="0xda4"/>
+		<const code="waterWithFishStart" value="0x11F5"/>
+		<const code="waterWithFishEnd" value="0x11FA"/>
+		<const code="crate" value="0x1B3"/>
+		<const code="shovel" value="0xD81"/>
+		<const code="closedhole" value="0x251"/>
+
+		<!-- addresses -->
+		<const code="addrOffset" value="0"/>
+
+		<const code="addrMCInject" value="0x106E81"/> <!--D7 3D B7 -->
+		<const code="addrXRay1" value="0x4D255C"/> 
+		<const code="addrXRay2" value="0x4D2564"/> 
+		<const code="addrFunRevealCName1" value="0x4ED733"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
+		<const code="addrFunRevealCName2" value="0"/>
+		<const code="addrFunRevealCName3" value="0"/>
+		<const code="addrFunRevealCName4" value="0"/>
+		<const code="addrSelfPosX" value="0"/>
+		<const code="addrSelfPosY" value="0"/>
+		<const code="addrSelfPosZ" value="0"/>
+
+		<const code="addrVIP" value="0x633C30"/> <!-- cat0 -->
+		<const code="addrSelfFlags" value="0x635E98"/> <!-- cat1 -->
+		<const code="addrSkillFistPercLeft" value="0x635E9C"/>
+		<const code="addrSkillFist" value="0x635EB8"/>
+		<const code="addrSkillFish" value="0x635ED0"/>
+		<const code="addrAttackedCreature" value="0x635EDC"/>
+		<const code="addrCap" value="0x635EE0"/>
+		<const code="addrStamina" value="0x633E60"/>
+		<const code="addrSoulPoints" value="0x635EE8"/>
+		<const code="addrManaMax" value="0x635EEC"/>
+		<const code="addrMana" value="0x635EF0"/>
+		<const code="addrMlvlPercLeft" value="0x635EF4"/>
+		<const code="addrMlvl" value="0x635EFC"/>
+		<const code="addrLvl" value="0x635F00"/>
+		<const code="addrExp" value="0x635F04"/> 
+		<const code="addrHPMax" value="0x635F08"/>
+		<const code="addrHP" value="0x635F0C"/>
+		<const code="addrSelfId" value="0x635F10"/>
+		<const code="addrCurrentTileToGo" value="0x635F18"/>
+		<const code="addrTilesToGo" value="0x635F1C"/>
+		<const code="addrGoZ" value="0x635F4C"/>
+		<const code="addrGoY" value="0x635F50"/>
+		<const code="addrGoX" value="0x635F54"/>
+		<const code="addrBattleMax" value="0x635F68"/>
+		<const code="addrBattleMin" value="0x635F6C"/>
+		<const code="addrFirstCreature" value="0x635F70"/> <!-- cat1 -->
+
+		<const code="addrCurrentTm" value="0x641DA8"/> <!-- cat2 -->
+		<const code="addrBackpack" value="0x6427F8"/> 
+		<const code="addrRightHand" value="0x642810"/> 
+		<const code="addrLeftHand" value="0x64281C"/> 
+		<const code="addrSlotArrow" value="0x64284C"/> <!-- cat2 -->
+		<const code="addrFirstContainer" value="0x642858"/> <!-- cat2 -->
+		<const code="addrTradeCountSelf" value="0x644718"/>
+		<const code="addrTradeFirstItemSelf" value="0x64473C"/>
+		<const code="addrTradeCountPartner" value="0x644BF0"/>
+		<const code="addrTradeFirstItemPartner" value="0x644C14"/> <!-- cat2 -->
+
+		<const code="addrCurrentWindow" value="0x64510C"/> <!-- cat2 -->
+		<const code="addrMapStart" value="0x649C60"/>
+		<const code="addrMiniMapStart" value="0x649C80"/> <!-- cat2 -->
+
+		<const code="addrModeAttackPlayers" value="0x78F834"/> <!-- cat3 -->
+		<const code="addrModeFollow" value="0x78F838"/>
+		<const code="addrModeAttackType" value="0x78F83C"/> <!-- cat3 -->
+
+		<const code="addrConnectionState" value="0x792A68"/> <!-- cat4 -->
+		<const code="addrFps" value="0x7935B4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->
+		<const code="addrWhiteMessage" value="0x7D62F0"/>
+
+		<!-- structure lengths -->
+		<const code="lengthContainer" value="492"/>
+		<const code="lengthItem" value="12"/>
+		<const code="lengthCreature" value="164"/>
+		<const code="lengthMapTile" value="168"/>
+		<const code="lengthVIP" value="44"/>
+		<const code="lengthMiniMap" value="131240"/>
+		<const code="lengthMiniMapLabel" value="112"/>
+		<const code="maxContainers" value="16"/>
+		<const code="maxCreatures" value="250"/>
+		<const code="maxMapTiles" value="2016"/>
+	</consts>
+
+    <items>
+		<item id="0xc4b" name="Rune: Blank"/>
+		<item id="0xc4c" name="Rune: Destroy Field"/>
+		<item id="0xc4d" name="Rune: Energybomb"/>
+		<item id="0xc50" name="Rune: Intense Healing"/>
+		<item id="0xc51" name="Rune: Antidote"/>
+		<item id="0xc53" name="Rune: Sudden Death"/>
+		<item id="0xc58" name="Rune: Ultimate Healing"/>
+		<item id="0xc5c" name="Rune: Energy Field"/>
+		<item id="0xc5d" name="Rune: Paralyze"/>
+		<item id="0xc64" name="Rune: Poison Field"/>
+		<item id="0xc66" name="Rune: Light Magic Missile"/>
+		<item id="0xc6a" name="Rune: Chameleon"/>
+		<item id="0xc6c" name="Rune: Magic Wall"/>
+		<item id="0xc74" name="Rune: Fire Field"/>
+		<item id="0xc77" name="Rune: Great Fireball"/>
+		<item id="0xc78" name="Rune: Firebomb"/>
+		<item id="0xc7d" name="Rune: Desintegrate"/>
+		<item id="0xc7e" name="Rune: Heavy Magic Missile"/>
+		<item id="0xc80" name="Rune: Explosion"/>
+		<item id="0xc83" name="Rune: Animate Dead"/>
+
+		<item id="0xbe8" name="Might Ring"/>
+		<item id="0xbe9" name="Stealth Ring"/>
+		<item id="0xbea" name="Power Ring"/>
+		<item id="0xbeb" name="Energy Ring"/>
+		<item id="0xbec" name="Life Ring"/>
+		<item id="0xbed" name="Time Ring"/>
+		<item id="0xc13" name="Sword Ring"/>
+		<item id="0xc14" name="Axe Ring"/>
+		<item id="0xc15" name="Club Ring"/>
+		<item id="0xc19" name="Dwarven Ring"/>
+		<item id="0xc1a" name="Ring Of Healing"/>
+		<item id="0x189b" name="Death Ring"/>
+
+		<item id="0xd2c" name="Brass Legs"/>
+		<item id="0xd36" name="Crown Legs"/>
+		<item id="0xde5" name="Plate Legs"/>
+		<item id="0xde7" name="Leather Legs"/>
+
+		<item id="0xd3f" name="Crusader Helmet"/>
+		<item id="0xd40" name="Royal Helmet"/>
+
+		<item id="0xec" name="Strong Health Potion"/>
+		<item id="0xed" name="Strong Mana Potion"/>
+		<item id="0xee" name="Great Mana Potion"/>
+		<item id="0xef" name="Great Health Potion"/>
+		<item id="0x10a" name="Health Potion"/>
+		<item id="0x10c" name="Mana Potion"/>
+		<item id="0x11b" name="Empty Strong Potion Flask"/>
+		<item id="0x11c" name="Empty Great Potion Flask"/>
+		<item id="0x11d" name="Empty Potion Flask"/>
+		<item id="0xb3a" name="Vial"/>
+		<item id="0x1dda" name="Great Spirit Potion"/>
+		<item id="0x1ddb" name="Ultimate Health Potion"/>
+		<item id="0x1ddc" name="Antidote Potion"/>
+		<item id="0x1ec4" name="Small Health Potion"/>
+      
+		<item id="0x6f5" name="Small Stone"/>
+		<item id="0xccd" name="Spear"/>
+		<item id="0xcd7" name="Throwing Star"/>
+		<item id="0xce2" name="Throwing Knife"/>
+		<item id="0xd15" name="Crossbow"/>
+		<item id="0xd16" name="Bow"/>
+		<item id="0xd76" name="Bolt"/>
+		<item id="0xd77" name="Arrow"/>
+		<item id="0xd79" name="Burst Arrow"/>
+		<item id="0xd78" name="Poison Arrow"/>
+		<item id="0x1cc7" name="Enchanted Spear"/>
+		<item id="0x1cc8" name="Assassin Star"/>
+		<item id="0x1cd2" name="Royal Spear"/>
+
+		<item id="0xb25" name="Brown Bag"/>
+		<item id="0xb26" name="Brown Backpack"/>
+		<item id="0xb31" name="Green Backpack"/>
+		<item id="0xb32" name="Yellow Backpack"/>
+		<item id="0xb33" name="Red Backpack"/>
+		<item id="0xb34" name="Purple Backpack"/>
+		<item id="0xb35" name="Blue Backpack"/>
+		<item id="0xb36" name="Grey Backpack"/>
+		<item id="0xb37" name="Gold Backpack"/>
+		<item id="0xb38" name="Grass Backpack"/>
+		<item id="0x1726"  name="Pirate Backpack"/>
+		<item id="0x173d"  name="Star backpack"/>
+
+		<item id="0xce8" name="Crowbar"/>
+		<item id="0xccf" name="War Hammer"/>
+		<item id="0xcd2" name="Morning Star"/>
+		<item id="0xcd6" name="Mace"/>
+		<item id="0xce9" name="Battle Hammer"/>
+		<item id="0xcc6" name="Club"/>
+
+		<item id="0xcc5" name="Halberd"/>
+		<item id="0xcf8" name="Fire Axe"/>
+		<item id="0xcdd" name="Sickle"/>
+		<item id="0xce6" name="Dragon Lance"/>
+
+		<item id="0xd1d" name="Plate Armor"/>
+		<item id="0xdef" name="Blue Robe"/>
+
+		<item id="0xbee" name="Silver Amulet"/>
+		<item id="0xbef" name="Platinum Amulet"/>
+		<item id="0xbf0" name="Bronze Amulet"/>
+		<item id="0xbf1" name="Amulet Of Loss"/>
+		<item id="0xdf4" name="Scarf"/>
+		<item id="0xc0b" name="Garlic Necklace"/>
+		<item id="0xc0c" name="Protection Amulet"/>
+		<item id="0xc09"  name="Stone Skin Amulet"/>
+
+		<item id="0xd57" name="Guardian Shield"/>
+		<item id="0xd5a" name="Beholder Shield"/>
+		<item id="0xd5b" name="Crown Shield"/>
+		<item id="0xd61" name="Dwarven Shield"/>
+
+		<item id="0xbbb" name="Rope"/>
+		<item id="0xd80" name="Pick"/>
+		<item id="0xd81" name="Shovel"/>
+		<item id="0xd9b" name="Fishing Rod"/>
+		<item id="0xda4" name="Worm"/>
+		<item id="0x1618" name="Light Shovel"/>
+		<item id="0xbdb" name="Platinum Coin"/>
+		<item id="0xbd7" name="Gold Coin"/>
+		<item id="0xbe3" name="Crystal Coin"/>
+		<item id="0x286" name="Elvenhair Rope"/>
+
+		<item id="0xbf9" name="Terra Rod"/>
+		<item id="0xbfa" name="Snakebite Rod"/>
+		<item id="0xbfb" name="Hailstorm Rod"/>
+		<item id="0xbfc" name="Crystal Wand"/>
+		<item id="0xbfd" name="Necrotic Rod"/>
+		<item id="0xbfe" name="Moonlight Rod"/>
+		<item id="0xbff" name="Wand Of Inferno"/>
+		<item id="0xc00" name="Wand Of Decay"/>
+		<item id="0xc01" name="Wand Of Cosmic Energy"/>
+		<item id="0xc02" name="Wand Of Vortex"/>
+		<item id="0xc03" name="Wand Of Dragonbreath"/>
+		<item id="0x1f92" name="Underworld Rod"/>
+		<item id="0x1f93" name="Northwind Rod"/>
+		<item id="0x1f94" name="Springsprout Rod"/>
+		<item id="0x1f9c" name="Wand of Starstorm"/>
+		<item id="0x1f9d" name="Wand of Draconia"/>
+		<item id="0x1f9e" name="Wand of Voodoo"/>
+
+		<item id="0xcc1" name="Two Handed Sword"/>
+		<item id="0xcc3" name="Dagger"/>
+		<item id="0xcd1" name="Giant Sword"/>
+		<item id="0xcdf" name="Bright Sword"/>
+		<item id="0xcdb" name="Knife"/>
+		<item id="0xcc7" name="Spike Sword"/>
+		<item id="0xcd0" name="Fire Sword"/>
+		<item id="0xce1" name="Serpent Sword"/>
+		<item id="0xce4" name="Katana"/>
+    </items>
+
+	<foods>
+		<item id="0x344" name="Walnut" time="48" />
+		<item id="0x349" name="Peanut" time="48" />
+		<item id="0xdf9" name="Meat" time="180" />
+		<item id="0xdfa" name="Fish" time="144" />
+		<item id="0xdfb" name="Salmon" time="120" />
+		<item id="0xdfc" name="Northern Pike" time="204" />
+		<item id="0xdfd" name="Shrimp" time="48" />
+		<item id="0xdfe" name="Ham" time="360" />
+		<item id="0xdff" name="Dragon Ham" time="720" />
+		<item id="0xe00" name="Pear" time="60" />
+		<item id="0xe01" name="Red Apple" time="72" />
+		<item id="0xe02" name="Orange" time="156" />
+		<item id="0xe03" name="Banana" time="96" />
+		<item id="0xe04" name="Blueberry" time="12" />
+		<item id="0xe05" name="Coconut" time="216" />
+		<item id="0xe06" name="Cherry" time="12" />
+		<item id="0xe07" name="Strawberry" time="24" />
+		<item id="0xe08" name="Grapes" time="108" />
+		<item id="0xe09" name="Melon" time="240" />
+		<item id="0xe0a" name="Pumpkin" time="204" />
+		<item id="0xe0b" name="Carrot" time="60" />
+		<item id="0xe0c" name="Tomato" time="72" />
+		<item id="0xe0d" name="Corncob" time="108" />
+		<item id="0xe0e" name="Cookie" time="24" />
+		<item id="0xe0f" name="Candy Cane" time="24" />
+		<item id="0xe10" name="Bread" time="120" />
+		<item id="0xe11" name="Roll" time="36" />
+		<item id="0xe12" name="Brown Bread" time="96" />
+		<item id="0xe16" name="Egg" time="72" />
+		<item id="0xe17" name="Cheese" time="108" />
+		<item id="0xe8b" name="White Mushroom" time="108" />
+		<item id="0xe8d" name="Brown Mushroom" time="264" />
+		<item id="0xe8e" name="Orange Mushroom" time="360" />
+		<item id="0xe8f" name="Wood Mushroom" time="108" />
+		<item id="0xe90" name="Dark Mushroom" time="72" />
+		<item id="0xe91" name="Some Mushrooms(Orange)" time="144" />
+		<item id="0xe94" name="Green Mushroom" time="60" />
+		<item id="0x13e8" name="Mango" time="48" />
+		<item id="0x1885" name="Cake" time="120" />
+		<item id="0x1886" name="Decorated Cake" time="180" />
+		<item id="0x18f8" name="Valentine's Cake" time="144" />
+		<item id="0x18f9" name="Cream Cake" time="180" />
+		<item id="0x1964" name="Gingerbreadman" time="240" />
+		<item id="0x1bf6" name="Rainbow Trout" time="300" />
+		<item id="0x1bf7" name="Green Perch" time="180" />
+		<item id="0x1f4a" name="Potato" time="120" />
+		<item id="0x1f4b" name="Plum" time="60" />
+		<item id="0x1f4c" name="Raspberry" time="12" />
+		<item id="0x1f4d" name="Lemon" time="12" />
+		<item id="0x1f4e" name="Cucumber" time="84" />
+		<item id="0x1f4f" name="Onion" time="60" />
+		<item id="0x1f50" name="Jalapeno Pepper" time="12" />
+		<item id="0x1f51" name="Beetroot" time="60" />
+		<item id="0x1f53" name="Chocolate Cake" time="132" />
+
+		<!-- Food not to eat
+		<item id="0xa9" name="Scarab Cheese" time="108" />
+		<item id="0xe8c" name="Red Mushroom" time="48" />
+		<item id="0xe92" name="Some Mushrooms(Wood)" time="36" />
+		<item id="0xe93" name="Fire Mushroom" time="432" />
+		-->
+	</foods>
+        
+	<looted>
+		<item id="0xbe4" name="Elephant Tusk"/>
+		<item id="0x16b2" name="Pirate Voodoo Doll"/>
+		<item id="0x16f3" name="Sniper Gloves"/>
+		<item id="0x16f4" name="Lizard Leather"/>
+		<item id="0x16f5" name="Green Dragon Leather"/>
+		<item id="0x16f6" name="Minotaur Leather"/>
+		<item id="0x16f7" name="Giant Spider Silk"/>
+		<item id="0x16f8" name="Iron Ore"/>
+		<item id="0x16f9" name="Lizard Scale"/>
+		<item id="0x16fa" name="Red Dragon Scale"/>
+		<item id="0x16fb" name="Ape Fur"/>
+		<item id="0x1702" name="Chicken Feather"/>
+		<item id="0x1706" name="Bat Wing"/>
+		<item id="0x1707" name="Fish Fin"/>
+		<item id="0x1708" name="Bear Paw"/>
+		<item id="0x1709" name="Wolf Paw"/>
+		<item id="0x170a" name="Beholder Eye"/>
+		<item id="0x170b" name="Turtle Shell"/>
+		<item id="0x170d" name="Wood"/>
+		<item id="0x170e" name="Honeycomb"/>
+		<item id="0x1711" name="Vampire Dust"/>
+		<item id="0x1715" name="White Piece Of Cloth"/>
+		<item id="0x1716" name="Green Piece Of Cloth"/>
+		<item id="0x1717" name="Red Piece Of Cloth"/>
+		<item id="0x1718" name="Blue Piece Of Cloth"/>
+		<item id="0x1719" name="Brown Piece Of Cloth"/>
+		<item id="0x171a" name="Yellow Piece Of Cloth"/>
+		<item id="0x1720" name="Green Dragon Scale"/>
+		<item id="0x1721" name="Heaven Blossom"/>
+		<item id="0x1722" name="Holy Orchid"/>
+		<item id="0x1725" name="Hardened Bone"/>
+		<item id="0x173c" name="Red Dragon Leather"/>
+		<item id="0x17c7" name="First Verse Of The Cult Hymn"/>
+		<item id="0x17c8" name="Second Verse Of The Cult Hymn"/>
+		<item id="0x17c9" name="Third Verse Of The Cult Hymn"/>
+		<item id="0x17ca" name="Fourth Verse Of The Cult Hymn"/>
+		<item id="0x17cf" name="Pirate Shirt"/>
+		<item id="0x17d0" name="Pirate Hat"/>
+		<item id="0x17d1" name="Hook"/>
+		<item id="0x17d2" name="Eyepatch"/>
+		<item id="0x17ee" name="Peg Leg"/>
+		<item id="0x1c7a" name="Shard"/>
+		<item id="0x1d11" name="Ice Cube"/>
+		<item id="0x1eca" name="Cockroach Leg"/>
+		<item id="0x1fcf" name="Gland"/>
+
+		<item id="0xbd2" name="White Pearl"/>
+		<item id="0xbd3" name="Black Pearl"/>
+		<item id="0xbd4" name="Small Diamond"/>
+		<item id="0xbd5" name="Small Sapphire"/>
+		<item id="0xbd6" name="Small Ruby"/>
+		<item id="0xbd8" name="Small Emerald"/>
+		<item id="0xbd9" name="Small Amethyst"/>
+		<item id="0xbe2" name="Scarab Coin"/>
+
+		<item id="0xc0d" name="Dragon Necklace"/>
+		<item id="0xc0b" name="Garlic Necklace"/>
+		<item id="0xc0c" name="Protection Amulet"/>
+		<item id="0xbf0" name="Bronze Amulet "/>
+		<item id="0xbe5" name="Strange Talisman"/>
+		<item id="0x6f5" name="Small Stone"/>
+		<item id="0xbb0" name="Snowball"/>
+		<item id="0xcd7" name="Throwing Star"/>
+		<item id="0xce2" name="Throwing Knife"/>
+		<item id="0xd76" name="Bolt"/>
+		<item id="0xd77" name="Arrow"/>
+		<item id="0xd78" name="Poison Arrow"/>
+		<item id="0xd79" name="Burst Arrow"/>
+		<item id="0xd7a" name="Power Bolt"/>
+
+		<item id="0xc13" name="Sword Ring"/>
+		<item id="0xbec" name="Life Ring"/>
+		<item id="0xbe9" name="Stealth Ring"/>
+		<item id="0xc15" name="Club Ring"/>
+		<item id="0xc14" name="Axe Ring"/>
+		<item id="0xc19" name="Dwarven Ring"/>
+		<item id="0xbea" name="Power Ring"/>
+		<item id="0xbeb" name="Energy Ring"/>
+		<item id="0xc1a" name="Ring of Healing"/>
+
+	<!--North Carlin Hunt
+		<item id="0xd1d" name="Plate Armor"/>
+		<item id="0xd1f" name="Brass Armor"/>
+		<item id="0xccb" name="Double Axe"/>-->
+
+	<!--Laguna Islands
+		<item id="0xccf" name="War Hammer"/>
+		<item id="0xd1f" name="Brass Armor"/>
+		<item id="0xd2c" name="Brass Legs"/>
+		<item id="0xce9" name="Battle Hammer"/>-->
+
+	<!--Dworc Caves
+		<item id="0xce3" name="Poison Dagger"/>
+		<item id="0xd13" name="Hunting Spear"/>
+		<item id="0xd4b" name="Tribal Mask"/>
+		<item id="0xd12" name="Ripper Lance"/>-->
+
+	<!--Minotaurs
+		<item id="0xd1e" name="Chain Armor"/>
+		<item id="0xd52" name="Plate Shield"/>
+		<item id="0xcc0" name="Sword"/>
+		<item id="0xcd6" name="Mace"/>
+		<item id="0xd81" name="Shovel"/>
+		<item id="0xd15" name="Crossbow"/>
+		<item id="0xd31" name="Scale Armor"/>
+		<item id="0xd1f" name="Brass Armor"/>
+		<item id="0xd55" name="Battle Shield"/>
+		<item id="0xc01" name="Wand Of Cosmic Energy"/>
+		<item id="0xccb" name="Double Axe"/>
+		<item id="0xcca" name="Axe"/>
+		<item id="0xccc" name="Hatchet"/>
+		<item id="0xd18" name="Chain Helmet"/>
+		<item id="0xd1a" name="Brass Helmet"/>-->
+	</looted>
