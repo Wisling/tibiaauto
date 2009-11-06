@@ -12,7 +12,8 @@
 #define IDC_REVEALCNAME                 1143
 #define IDC_TOOL_FLUIDDRINKER_HOTKEY_MANA 1144
 #define IDC_REVEALINVISIBLE             1144
-#define IDC_MINIMAPRESEARCH				1145
+#define IDC_MINIMAPRESEARCH             1145
+#define IDC_SMOOTHWALKING               1146
 #define IDC_TOOL_FLUIDDRINKER_DROPEMPTY 1176
 #define IDD_CONFIG                      3000
 #define IDC_CONTAINER_MODE_1            3000
@@ -50,7 +51,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3012
+#define _APS_NEXT_CONTROL_VALUE         3014
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

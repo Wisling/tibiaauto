@@ -35,6 +35,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REVEAL_NOFISH, m_revealNoFish);
 	DDX_Control(pDX, IDC_REVEALINVISIBLE, m_revealInvisible);
 	DDX_Control(pDX, IDC_MINIMAPRESEARCH, m_minimapResearch);
+	DDX_Control(pDX, IDC_SMOOTHWALKING, m_smoothWalking);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
