@@ -341,7 +341,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	mapDebug(buf);
 #endif
 
-	radius = rand()%(radius+1);
 	// means: we are already on the target location
 	if (max(abs(startX-endX),abs(startY-endY)) <= radius && startZ==endZ) return point(startX, startY, startZ);
 

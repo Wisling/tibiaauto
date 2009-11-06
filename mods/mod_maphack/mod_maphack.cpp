@@ -100,7 +100,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			delete self;
 		}
-
 		if (config->revealCName&&iter%5==0)
 		{
 			reader.writeEnableRevealCName();
@@ -117,6 +116,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			*/
 
+		}
+		if (config->smoothWalking&&iter%5==2)
+		{
+			
 		}
 		if (config->minimapResearch&&iter%2==0)
 		{
@@ -434,6 +437,8 @@ void CMod_maphackApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"reveal/noFish")) m_configData->revealNoFish=atoi(paramValue);
 	if (!strcmp(paramName,"reveal/cName")) m_configData->revealCName=atoi(paramValue);	
 	if (!strcmp(paramName,"reveal/invisible")) m_configData->revealInvisible=atoi(paramValue);
+	if (!strcmp(paramName,"reveal/minimap")) m_configData->minimapResearch=atoi(paramValue);
+	if (!strcmp(paramName,"smoothWalking")) m_configData->smoothWalking=atoi(paramValue);
 }
 
 char *CMod_maphackApp::saveConfigParam(char *paramName)
@@ -444,6 +449,8 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"reveal/noFish")) sprintf(buf,"%d",m_configData->revealNoFish);
 	if (!strcmp(paramName,"reveal/cName")) sprintf(buf,"%d",m_configData->revealCName);	
 	if (!strcmp(paramName,"reveal/invisible")) sprintf(buf,"%d",m_configData->revealInvisible);
+	if (!strcmp(paramName,"reveal/minimap")) sprintf(buf,"%d",m_configData->minimapResearch);
+	if (!strcmp(paramName,"smoothWalking")) sprintf(buf,"%d",m_configData->smoothWalking);
 
 	return buf;
 }
@@ -455,6 +462,8 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 	case 0: return "reveal/noFish";
 	case 1: return "reveal/cName";
 	case 2: return "reveal/invisible";
+	case 3: return "reveal/minimap";
+	case 4: return "smoothWalking";
 	default:
 		return NULL;
 	}

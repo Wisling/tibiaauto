@@ -206,14 +206,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if ((strstr(whiteText,"hitpoints.") != 0) || (strstr(whiteText,"hitpoint.") != 0)) {
 				//First, let's reassure the user, help is on the way
 				//Also, this ensures the same white text won't trigger multiple castings, in theory we only need one.
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 4, 'h');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 5, 'a');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 6, 'v');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 7, 'e');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 8, ' ');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 9, 'T');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 10, 'A');
-				reader.setMemIntValue(itemProxy.getValueForConst("addrWhiteMessage") + 11, '.');
+				reader.setMemRange(itemProxy.getValueForConst("addrWhiteMessage") + 4,itemProxy.getValueForConst("addrWhiteMessage") + 4 + strlen("have TA"), "have TA");
 				char pointLossText[10] = {0};
 				for (int i = 0; i<10;i++) {
 					if (!isdigit(whiteText[strlen("You lose ")+i])) break;
