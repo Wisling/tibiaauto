@@ -1,6 +1,20 @@
-2.1.1, ??.12.2009
+2.1.1, 9.11.2009
 Enhancments
+ Runemaker: Added ability for enchanted spears
+ Cavebot: A tile marked as "depot" or "closed hole" will now not require a specific item to be a closed hole or depot box
+(you can set a bag as a depot and desert sand as a closed hole)
+Since it doesn't know which item is actually the hole or depot it will use the lowest item in a pile
+ Cavebot: Uncovers blocked level changes
+
 Defects
+ items.xml: Fixed addresses used for attack mode and follow mode
+ tiles.xml: Fixed the mislabeled goUp and goDown tags on certain stairs/holes and added more holes/stairs to the file
+ Spellcaster: The "cast when mana above" is no longer disabled by the "summon control"
+ Cavebot: Fixed the way it sets the Tibia attack mode and follow mode
+ Cavebot: Sometimes would randomly stop following creatures if the follow button was not pressed
+ Runemaker: Fixed accidentally moving weapon to arrow slot when not using arrow slot
+ Cavebot: Would not loot from creatures underneath archways and doors
+ Restacker: Made it comform to sending real tibia packets
 
 2.1.0, 6.11.2009
 Enhancments

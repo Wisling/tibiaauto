@@ -59,6 +59,7 @@ public:
 	CButtonST m_makeNow;
 	CButtonST	m_OK;
 	CButtonST	m_enable;
+	CButton	m_useSpear;
 	//}}AFX_DATA
 
 

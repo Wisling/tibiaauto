@@ -94,9 +94,9 @@
 		<const code="addrMapStart" value="0x649C60"/>
 		<const code="addrMiniMapStart" value="0x649C80"/> <!-- cat2 -->
 
-		<const code="addrModeAttackPlayers" value="0x78F834"/> <!-- cat3 -->
-		<const code="addrModeFollow" value="0x78F838"/>
-		<const code="addrModeAttackType" value="0x78F83C"/> <!-- cat3 -->
+		<const code="addrModeAttackPlayers" value="0x78F82C"/> <!-- cat3 -->
+		<const code="addrModeFollow" value="0x78F830"/>
+		<const code="addrModeAttackType" value="0x78F834"/> <!-- cat3 -->
 
 		<const code="addrConnectionState" value="0x792A68"/> <!-- cat4 -->
 		<const code="addrFps" value="0x7935B4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->

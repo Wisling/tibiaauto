@@ -234,6 +234,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (config->aoe)//Akilez: allow other spell to cast if AOE doesn't want to
 			spell = aoeShouldFire(config);//Wis:Performs calculation only if needed
 		
+		int summonCount=0;//Wis: Used to determine whether or not it will summon
+		if(config->summon){
+			int chNr;
+			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
+				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+				if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
+					summonCount++;
+				delete ch;
+			}
+		}
+
 		if (spell && config->aoe && time(NULL)-lastCastTime >= minCastTime) {
 			if (spell) {
 				char spellname[25] = "";
@@ -394,23 +405,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				attackedCreature = 0;
 			}			
 		}	
-		else if (config->summon) {
-			// now try to summon creatures
-			int chNr;
-			int summonCount=0;
-			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
-				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-				if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
-					summonCount++;
-				delete ch;
-			}
-			if (summonCount<config->summonLessThan && self->mana>=config->summonMana) {				
-				// we should summon something
-				char buf[256];
-				sprintf(buf,"utevo res \"%s\"",config->summonName);
-				sender.sayWhisper(buf);
-				Sleep(700);
-			}
+		else if (config->summon&&summonCount<config->summonLessThan && self->mana>=config->summonMana) {
+			// we should summon something
+			char buf[256];
+			sprintf(buf,"utevo res \"%s\"",config->summonName);
+			sender.sayWhisper(buf);
+			Sleep(700);
 		}
 		//T4: Use mana in other purpose otherwise
 		else if(config->mana && self->mana>=manaMana){

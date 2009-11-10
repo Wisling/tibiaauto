@@ -329,36 +329,37 @@ int depotDepositOpenChest(int x,int y,int z) {
 	int pos=0;
 	if (count>10) count=10;
 	
-	int lastNonDepotObject=0;
+	int depotId=0;
 	for (pos=0;pos<count;pos++) {
 		int tileId=reader.mapGetPointItemId(point(x-self->x,y-self->y,0),pos);
-		if (!reader.getTibiaTile(tileId)->ground&&
-			!reader.getTibiaTile(tileId)->blocking&&
-			!reader.getTibiaTile(tileId)->isDepot&&
-			!lastNonDepotObject) {
-			// not depot, not ground, not blocking => some junk on the depot
-			lastNonDepotObject=tileId;
+		CTibiaTile* tile=reader.getTibiaTile(tileId);
+		if (!tile->notMoveable && !tile->isDepot && pos!=count-1) {
+			//leave at least 1 object that is either movable or the depot box on the tile
+			int qty=reader.mapGetPointItemExtraInfo(point(x-self->x,y-self->y,0),pos,1);
+			sender.moveObjectFromFloorToFloor(tileId,x,y,z,self->x,self->y,self->z,qty?qty:1);
+			Sleep(CModuleUtil::randomFormula(400,200));
+			pos--;
+			count--;
 		}
-		if (reader.getTibiaTile(tileId)->isDepot) {
-			if (lastNonDepotObject) {
-				// remove junk laying over the depot chest
-				sender.moveObjectFromFloorToFloor(lastNonDepotObject,x,y,z,self->x,self->y,self->z,100);
-				Sleep(CModuleUtil::randomFormula(400,200));
-			}
-
-			// this is the depot chest so open it
-			depotContNr= CModuleUtil::findNextClosedContainer();
-			sender.openContainerFromFloor(tileId,x,y,z,depotContNr);
-			CModuleUtil::waitForOpenContainer(depotContNr,true);
-			CTibiaContainer *cont = reader.readContainer(depotContNr);
-			int isOpen=cont->flagOnOff;
-			deleteAndNull(cont);
-			deleteAndNull(self);
-			return depotContNr;
+		if (tile->isDepot) {
+			depotId=tileId;
+			break;
 		}
 	}
+	if (!depotId && count){
+		depotId=itemOnTopCode(x-self->x,y-self->y);
+	}
+	if (depotId){
+		// this is the depot chest so open it
+		depotContNr=CModuleUtil::findNextClosedContainer();
+		sender.openContainerFromFloor(depotId,x,y,z,depotContNr);
+		CModuleUtil::waitForOpenContainer(depotContNr,true);
+		CTibiaContainer *cont = reader.readContainer(depotContNr);
+		int isOpen=cont->flagOnOff;
+		deleteAndNull(cont);
+	}
 	deleteAndNull(self);
-	return -1;
+	return depotContNr;
 }
 
 /**
@@ -595,9 +596,11 @@ void depotDeposit(CConfigData *config) {
 		globalAutoAttackStateDepot=CToolAutoAttackStateDepot_opening;
 		for (int x=-1;x<=1;x++){
 			for (int y=-1;y<=1;y++){
-				if ((x!=0)!=(y!=0)){
-					depotContNr=depotDepositOpenChest(self->x+x,self->y+y,self->z);
-					if (depotContNr!=-1){ x=999;y=999;} // exit loop
+				if (x||y){
+					if(tibiaMap.getPointUpDown(self->x+x,self->y+y,self->z)==301){//is depot spot
+						depotContNr=depotDepositOpenChest(self->x+x,self->y+y,self->z);
+						if (depotContNr!=-1){ x=999;y=999;} // exit loop
+					}
 				}
 			}
 		}
@@ -843,7 +846,7 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 				if (time(NULL)-lastAttackedCreatureBloodHit<20) {
 					// if 30s has passed since last blood hit, then we do 'normal' attack mode
 					// otherwise we do full defence
-					*attackMode=2;
+					*attackMode=max(*attackMode-1,1);
 					globalAutoAttackStateTraining=CToolAutoAttackStateTraining_trainingFullDef;
 				}
 			}
@@ -1213,31 +1216,55 @@ int canGetToPoint(int targetX,int targetY,int targetZ){
 	return 1;
 }
 
-void SendAttackMode(int attack,int follow){
+void SendAttackMode(int attack,int follow,int attLock){
+
+	//Ensures that only changes in the three values are sent, and only one at a time
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
 	static int curAttack = reader.getPlayerModeAttackType();
 	static int curFollow = reader.getPlayerModeFollow();
+	static int curAttLock = reader.getPlayerModeAttackPlayers();
+
 	static int buttonAttack = reader.getPlayerModeAttackType();
 	static int buttonFollow = reader.getPlayerModeFollow();
+	static int buttonAttLock = reader.getPlayerModeAttackPlayers();
 
-	if (buttonAttack!=reader.getPlayerModeAttackType()) curAttack=reader.getPlayerModeAttackType();
-	if (buttonFollow!=reader.getPlayerModeFollow()) curFollow=reader.getPlayerModeFollow();
+	if (buttonAttack!=reader.getPlayerModeAttackType()){
+		curAttack=reader.getPlayerModeAttackType();
+		buttonAttack=reader.getPlayerModeAttackType();
+	}
+	if (buttonFollow!=reader.getPlayerModeFollow()){
+		curFollow=reader.getPlayerModeFollow();
+		buttonFollow=reader.getPlayerModeFollow();
+	}
+	if (buttonAttLock!=reader.getPlayerModeAttackPlayers()){
+		curAttLock=reader.getPlayerModeAttackPlayers();
+		buttonAttLock=reader.getPlayerModeAttackPlayers();
+	}
 
-	if (attack == curAttack && follow == curFollow)
-		return;
-	else if (attack != curAttack && follow != curFollow){
-		sender.attackMode(attack,curFollow);
-		Sleep(CModuleUtil::randomFormula(700,500));
-		sender.attackMode(curAttack,follow);
-	} else {
-		sender.attackMode(attack,follow);
+	if (attack==-1) attack=curAttack;
+	if (follow==-1) follow=curFollow;
+	if (attLock==-1) attLock=curAttLock;
+
+	if (attack != curAttack){
+		sender.attackMode(attack,curFollow,curAttLock);
+		//if going to send another attack mode change right away then sleep
+		if(attLock != curAttLock || follow != curFollow) Sleep(CModuleUtil::randomFormula(700,500));
+	}
+	if (follow != curFollow){
+		sender.attackMode(curAttack,follow,curAttLock);
+		//if going to send another attack mode change right away then sleep
+		if (attLock != curAttLock) Sleep(CModuleUtil::randomFormula(700,500));
+	}
+	if (attLock != curAttLock){
+		sender.attackMode(curAttack,curFollow,attLock);
 	}
 	//char buf[111];
 	//sprintf(buf,"Attack Set to: %d,%d",attack,follow);
 	//sender.sendTAMessage(buf);
 	curAttack = attack;
 	curFollow = follow;
+	curAttLock = attLock;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1349,7 +1376,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						reader.setAttackedCreature(0);
 						reader.cancelAttackCoords();
 						// restore attack mode
-						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
+						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1);
 
 						if (config->debug) registerDebug("Paused cavebot");
 					}
@@ -1947,7 +1974,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			*/
 			int attackMode=config->mode+1;
 			trainingCheck(config,currentlyAttackedCreatureNr,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
-			SendAttackMode(attackMode,config->autoFollow);
+			SendAttackMode(attackMode,config->autoFollow,-1);
 
 			CTibiaCharacter *attackCh=reader.readVisibleCreature(currentlyAttackedCreatureNr);
 			//perform server visible tasks if we have something to attack
@@ -2324,7 +2351,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	deleteAndNull(self);
 	// restore attack mode
-	SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow());
+	SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1);
 
 	if (config->debug) registerDebug("Exiting cavebot");
 	globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;

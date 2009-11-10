@@ -32,6 +32,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 
+
 //#define MAPDEBUG
 
 //////////////////////////////////////////////////////////////////////
@@ -82,6 +83,56 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	delete container;
 	return NULL;
 
+}
+
+int itemOnTopIndex2(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
+{
+	CMemReaderProxy reader;
+	int pos;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
+	int immoveableItems=0;//count the number of items Tibia is using for decorations and made immovable
+	for (pos=0;pos<stackCount;pos++)
+	{
+		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
+		CTibiaTile *tile=reader.getTibiaTile(tileId);
+		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
+			immoveableItems++;
+	}
+	int newCount=stackCount;
+	for (pos=0;pos<stackCount;pos++)
+	{
+		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
+		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
+		CTibiaTile *tile=reader.getTibiaTile(tileId);
+		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
+		//If a movable tile is never found, then keep things the way they are
+		//Edit: check if it is a container, since recently killed creatures are immovable(10 second rule)
+		if (immoveableItems && (tileId==99 || !tile->notMoveable || tile->isContainer)) {
+			stackCount-=immoveableItems;
+			newCount-=immoveableItems;
+			immoveableItems=0;
+		}
+		//decrease the index we want to find by 1 if we found a creature or an overhanging object
+		newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
+
+		//If we are at the index we wanted to get to or are at top of stack, return
+		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
+			return pos;
+	}
+	return -1;
+}
+
+int itemOnTopCode2(int x,int y)
+{
+
+	CMemReaderProxy reader;
+	int pos=itemOnTopIndex2(x,y,0);
+	if (pos!=-1)
+	{
+		return reader.mapGetPointItemId(point(x,y,0),pos);
+	}
+	return 0;
 }
 
 int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange| <= ans <= average+|halfrange|
@@ -1218,11 +1269,9 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							}
 							sender.stepMulti(path,1);
 							Sleep(CModuleUtil::randomFormula(1100,300));
-							CTibiaCharacter *self2 = reader.readSelfCharacter();						
-							int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));
-							
-							int blocked=0;
-							int updown=0;
+							CTibiaCharacter *self2 = reader.readSelfCharacter();
+							int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));							
+							int holeId=0;
 							int i;
 							for (i=0;i<count;i++)
 							{						
@@ -1235,30 +1284,92 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 									CTibiaTile *tile = reader.getTibiaTile(tileId);
 									
 									if (tile->requireShovel)
-									{										
-										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,self->x,self->y,self->z);
-										break;
+									{
+										holeId=tileId;
+									}
+									//remove an item if it is on top of hole
+									if(!tile->notMoveable){
+										int qty=reader.mapGetPointItemExtraInfo(point(self->x-self2->x,self->y-self2->y,0),i,1);
+										sender.moveObjectFromFloorToFloor(tileId,self->x,self->y,self->z,self2->x,self2->y,self2->z,qty?qty:1);
+										Sleep(CModuleUtil::randomFormula(400,200));
+										i--;
+										count--;
 									}
 								}
 							}
-							delete self2;
-							Sleep(CModuleUtil::randomFormula(900,300));
-							switch (mode)
-							{
-							case 2: path[0]=5;break;
-							case 1: path[0]=1;break;
-							case 4: path[0]=3;break;
-							case 3: path[0]=7;break;						
+							//did not find tile, open top tile (hopefully this is a hole)
+							if (!holeId && count){
+								holeId=itemOnTopCode2(self->x-self2->x,self->y-self2->y);
 							}
-							sender.stepMulti(path,1);
-							Sleep(CModuleUtil::randomFormula(1100,300));
+
+							if (holeId){
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,holeId,self->x,self->y,self->z);
+								Sleep(CModuleUtil::randomFormula(900,300));
+
+								switch (mode)
+								{
+								case 2: path[0]=5;break;
+								case 1: path[0]=1;break;
+								case 4: path[0]=3;break;
+								case 3: path[0]=7;break;						
+								}
+								sender.stepMulti(path,1);
+								Sleep(CModuleUtil::randomFormula(1100,300));
+							}
+							delete self2;
 							delete shovel;
 						}
 					}
 					break;
-				case 103:
-					// crate - use to go down
-					sender.useItemOnFloor(itemProxy.getValueForConst("crate"),self->x,self->y,self->z);
+				case 103:// crate - use to go down
+					int freeX=0,freeY=0;
+					for (int x=-1;x<=1;x++){
+						for (int y=-1;y<=1;y++){
+							if (x||y){
+								if (tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z)){ 
+									freeX=x;
+									freeY=y;
+									x=999;//exit both loops
+									y=999;
+								}
+							}
+						}
+					}
+					int count=reader.mapGetPointItemsCount(point(0,0,0));
+					int grateId=0;
+					int i;
+					for (i=0;i<count;i++)
+					{						
+						int tileId = reader.mapGetPointItemId(point(0,0,0),i);
+						//char buf[128];
+						//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
+						//::MessageBox(0,buf,buf,0);
+						if (tileId!=99)
+						{
+							CTibiaTile *tile = reader.getTibiaTile(tileId);
+							
+							if (tile->requireUse)
+							{
+								grateId=tileId;
+							}
+							//remove an item if it is on top of grate
+							if(!tile->notMoveable){
+								int qty=reader.mapGetPointItemExtraInfo(point(0,0,0),i,1);
+								sender.moveObjectFromFloorToFloor(tileId,self->x,self->y,self->z,self->x+freeX,self->y+freeY,self->z,qty?qty:1);
+								Sleep(CModuleUtil::randomFormula(400,200));
+								i--;
+								count--;
+							}
+						}
+					}
+					//did not find tile, use top tile (hopefully this is a grate)
+					if (!grateId && count>1){
+						grateId=itemOnTopCode2(0,0);
+					}
+
+					if (grateId){
+						sender.useItemOnFloor(grateId,self->x,self->y,self->z);
+					}					
 					break;
 				} // switch updown
 			} // case 0xD1	
@@ -1383,8 +1494,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							// shovel found, so proceed with opening hole
 							int count=reader.mapGetPointItemsCount(point(modX-self->x,modY-self->y,0));
 							
-							int blocked=0;
-							int updown=0;
+							int holeId=0;
+							int movePlayer=0;
 							int i;
 							for (i=0;i<count;i++)
 							{						
@@ -1397,44 +1508,78 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 									CTibiaTile *tile = reader.getTibiaTile(tileId);
 									
 									if (tile->requireShovel)
-									{										
-										sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,tileId,modX,modY,self->z);
-										break;
+									{
+										holeId=tileId;
 									}
+									//remove an item if it is on top of hole
+									if(!tile->notMoveable){
+										int qty=reader.mapGetPointItemExtraInfo(point(modX-self->x,modY-self->y,0),i,1);
+										sender.moveObjectFromFloorToFloor(tileId,modX,modY,self->z,self->x,self->y,self->z,qty?qty:1);
+										Sleep(CModuleUtil::randomFormula(400,200));
+										i--;
+										count--;
+									}
+								} else {
+									movePlayer=1;
 								}
 							}
-							Sleep(CModuleUtil::randomFormula(900,300));
-
-							int mode = path[0]&0xF;
-							int path[3];
-							path[1]=0;
-							int size=0;
-							if (modX-self->x&&modY-self->y){
-								if (tibiaMap.isPointAvailable(modX,self->y,self->z)) {
-									switch (mode)
-									{
-								case 2: path[0]=1;path[1]=3;break;
-								case 8: path[0]=1;path[1]=7;break;
-								case 4: path[0]=5;path[1]=3;break;
-								case 6: path[0]=5;path[1]=7;break;						
+							if(movePlayer){
+								int freeX=0,freeY=0;
+								for (int x=-1;x<=1;x++){
+									for (int y=-1;y<=1;y++){
+										if (x||y){
+											if (tibiaMap.isPointAvailable(modX+x,modY+y,self->z)){ 
+												freeX=x;
+												freeY=y;
+												x=999;//exit both loops
+												y=999;
+											}
+										}
 									}
 								}
-								else if (modY&&tibiaMap.isPointAvailable(self->x,modY,self->z)){
-									switch (mode)
-									{
-								case 2: path[0]=7;path[1]=5;break;
-								case 8: path[0]=3;path[1]=5;break;
-								case 4: path[0]=7;path[1]=1;break;
-								case 6: path[0]=3;path[1]=1;break;					
-									}
-								}
-								path[2]=0;
-								size=2;
+								sender.moveObjectFromFloorToFloor(99,modX,modY,self->z,modX+freeX,modY+freeY,self->z,1);
+								Sleep(CModuleUtil::randomFormula(1500,300));
 							}
-							if (path[1]==0) { path[0]=mode; size=1; }
+							//did not find tile, open last tile in list(hopefully this is a hole)
+							if (!holeId && count){
+								holeId=itemOnTopCode2(modX-self->x,modY-self->y);
+							}
 
-							sender.stepMulti(path,size);
-							Sleep(CModuleUtil::randomFormula(1100,300));
+							if (holeId){
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("shovel"),0x40+contNr,shovel->pos,holeId,modX,modY,self->z);
+								Sleep(CModuleUtil::randomFormula(900,300));
+
+								int mode = path[0]&0xF;
+								int path[3];
+								path[1]=0;
+								int size=0;
+								if (modX-self->x&&modY-self->y){
+									if (tibiaMap.isPointAvailable(modX,self->y,self->z)) {
+										switch (mode)
+										{
+									case 2: path[0]=1;path[1]=3;break;
+									case 8: path[0]=1;path[1]=7;break;
+									case 4: path[0]=5;path[1]=3;break;
+									case 6: path[0]=5;path[1]=7;break;						
+										}
+									}
+									else if (modY&&tibiaMap.isPointAvailable(self->x,modY,self->z)){
+										switch (mode)
+										{
+									case 2: path[0]=7;path[1]=5;break;
+									case 8: path[0]=3;path[1]=5;break;
+									case 4: path[0]=7;path[1]=1;break;
+									case 6: path[0]=3;path[1]=1;break;		
+										}
+									}
+									path[2]=0;
+									size=2;
+								}
+								if (path[1]==0) { path[0]=mode; size=1; }
+
+								sender.stepMulti(path,size);
+								Sleep(CModuleUtil::randomFormula(1100,300));
+							}
 							delete shovel;
 						}
 					}
@@ -1442,7 +1587,38 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 				case 103:
 					// crate
 					{
-						sender.useItemOnFloor(itemProxy.getValueForConst("crate"),modX,modY,self->z);
+						int count=reader.mapGetPointItemsCount(point(modX-self->x,modY-self->y,0));
+						
+						int grateId=0;
+						int i;
+						for (i=0;i<count;i++)
+						{						
+							int tileId = reader.mapGetPointItemId(point(modX-self->x,modY-self->y,0),i);
+							//char buf[128];
+							//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
+							//::MessageBox(0,buf,buf,0);
+							if (tileId!=99)
+							{
+								CTibiaTile *tile = reader.getTibiaTile(tileId);
+								
+								if (tile->requireUse)
+								{
+									grateId=tileId;
+								}
+								//remove an item if it is on top of grate
+								if(!tile->notMoveable){
+									int qty=reader.mapGetPointItemExtraInfo(point(modX-self->x,modY-self->y,0),i,1);
+									sender.moveObjectFromFloorToFloor(tileId,modX,modY,self->z,self->x,self->y,self->z,qty?qty:1);
+									Sleep(CModuleUtil::randomFormula(400,200));
+									i--;
+									count--;
+								}
+							}
+						}
+						if(!grateId && count)
+							grateId=itemOnTopCode2(modX-self->x,modY-self->y);
+						if(grateId)
+							sender.useItemOnFloor(grateId,modX,modY,self->z);
 					}
 					break;													
 				}		
@@ -1642,3 +1818,4 @@ void CModuleUtil::masterDebug(const char* fname, const char* buf1,const char* bu
 		fclose(f);
 	}
 }
+
