@@ -483,16 +483,21 @@ void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos,
 }
 
 
-void CPackSender::attackMode(int mode,int follow)
+void CPackSender::attackMode(int attack,int follow,int attLock)
 {
 	char sendbuf[6];
+	char buf[111];
+
+	if(attack!=2 && attack!=1 && attack!=3){ AfxMessageBox("Packet error attack"); return;}
+	if(follow!=0 && follow!=1){ AfxMessageBox("Packet error follow"); return;}
+	if(attLock!=0 && attLock!=1){ AfxMessageBox("Packet error attklock"); return;}
 
 	sendbuf[0]=4;
 	sendbuf[1]=0;
 	sendbuf[2]=0xa0;
-	sendbuf[3]=mode;
+	sendbuf[3]=attack;
 	sendbuf[4]=follow;
-	sendbuf[5]=1;
+	sendbuf[5]=attLock;
 
 	sendPacket(sendbuf,2);
 }
@@ -564,7 +569,7 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 	retbuf[6]=(sourceY>>8)&0xff;
 	retbuf[7]=sourceZ;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=max(0,getItemIndex(sourceX,sourceY,objectId));
 
 	retbuf[11]=0xff;

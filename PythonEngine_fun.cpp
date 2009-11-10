@@ -1080,9 +1080,12 @@ static PyObject *tibiaauto_sender_attackMode(PyObject *self, PyObject *args)
 {	
 	CPackSenderProxy sender;
 
-	int arg1,arg2;
-    if (!PyArg_ParseTuple(args, "ii",&arg1,&arg2)) return NULL;	
-	sender.attackMode(arg1,arg2);
+	int arg1,arg2,arg3;
+	if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)){
+		if (!PyArg_ParseTuple(args, "ii",&arg1,&arg2)) return NULL;	
+		arg3=1;
+	}
+	sender.attackMode(arg1,arg2,arg3);
 	Py_INCREF(Py_None);
 	return Py_None; 
 }

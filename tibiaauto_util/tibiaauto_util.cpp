@@ -794,10 +794,10 @@ void packSenderCloseContainer(int contNr)
 	sender.closeContainer(contNr);
 }
 
-void packSenderAttackMode(int mode,int follow)
+void packSenderAttackMode(int attack,int follow,int attlock)
 {
 	CPackSender sender;
-	sender.attackMode(mode,follow);
+	sender.attackMode(attack,follow,attlock);
 }
 
 void packSenderAttack(int tibiaCharId)
