@@ -57,6 +57,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_MAKENOW, m_makeNow);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_TOOL_RANDOMCAST,m_randomCast);
+	DDX_Control(pDX, IDC_TOOL_USESPEAR,m_useSpear);
 	//}}AFX_DATA_MAP
 }
 
@@ -120,6 +121,7 @@ void CConfigDialog::disableControls()
 	m_loadSpell.EnableWindow(false);
 	m_deleteSpell.EnableWindow(false);
 	m_useBackpack.EnableWindow(false);
+	m_useSpear.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -137,6 +139,7 @@ void CConfigDialog::enableControls()
 	m_loadSpell.EnableWindow(true);
 	m_deleteSpell.EnableWindow(true);
 	m_useBackpack.EnableWindow(true);
+	m_useSpear.EnableWindow(true);
 }
 
 
@@ -154,6 +157,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_premium.SetCheck(configData->premium);
 	m_maxUse.SetCheck(configData->maxUse);
 	m_randomCast.SetCheck(configData->randomCast);
+	m_useSpear.SetCheck(configData->useSpear);
 
 	m_spells.DeleteAllItems();
 	for (int i=0; i<15; i++) {
@@ -193,12 +197,13 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->premium	= m_premium.GetCheck();
 	newConfigData->maxUse	= m_maxUse.GetCheck();
 	newConfigData->randomCast	= m_randomCast.GetCheck();
+	newConfigData->useSpear	= m_useSpear.GetCheck();
 
 	for (int i=0; i < 15; i++) {
 		if (i >= m_spells.GetItemCount()) {
 			newConfigData->listSpells[i].mana = 0;
 			newConfigData->listSpells[i].words[0] = '0';
-			newConfigData->listSpells[i].soulPoints = 100;
+			newConfigData->listSpells[i].soulPoints = 5;
 		} else {
 			sprintf(newConfigData->listSpells[i].words,"%s",m_spells.GetItemText(i,1));
 			newConfigData->listSpells[i].soulPoints = atoi(m_spells.GetItemText(i,2));

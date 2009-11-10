@@ -25,6 +25,7 @@ public:
 	char spell[1024];
 	int useBackpack;
 	int randomCast;
+	int useSpear;
 
 	int makeNow;
 
