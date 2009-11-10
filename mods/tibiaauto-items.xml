@@ -17,6 +17,7 @@
 		<const code="runeSoulFire" value="0xc7b"/>
 		<const code="runeSD" value="0xc53"/>
 		<const code="runeBlank" value="0xc4b"/>
+		<const code="spear" value="0xccd"/>
 		<const code="fish" value="0xdfa"/>
 		<const code="fishingRod" value="0xd9b"/>
 		<const code="fluid" value="0xb3a"/>
@@ -94,9 +95,9 @@
 		<const code="addrMapStart" value="0x649C60"/>
 		<const code="addrMiniMapStart" value="0x649C80"/> <!-- cat2 -->
 
-		<const code="addrModeAttackPlayers" value="0x78F834"/> <!-- cat3 -->
-		<const code="addrModeFollow" value="0x78F838"/>
-		<const code="addrModeAttackType" value="0x78F83C"/> <!-- cat3 -->
+		<const code="addrModeAttackPlayers" value="0x78F82C"/> <!-- cat3 -->
+		<const code="addrModeFollow" value="0x78F830"/>
+		<const code="addrModeAttackType" value="0x78F834"/> <!-- cat3 -->
 
 		<const code="addrConnectionState" value="0x792A68"/> <!-- cat4 -->
 		<const code="addrFps" value="0x7935B4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->

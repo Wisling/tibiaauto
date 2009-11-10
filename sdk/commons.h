@@ -14,7 +14,7 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
 		CTibiaTile *tile=reader.getTibiaTile(tileId);
-		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop)
+		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
 			immoveableItems++;
 	}
 	int newCount=stackCount;
@@ -25,12 +25,16 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 		CTibiaTile *tile=reader.getTibiaTile(tileId);
 		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
 		//If a movable tile is never found, then keep things the way they are
-		if (immoveableItems && (tileId==99 || !tile->notMoveable)) {
+		//Edit: check if it is a container, since recently killed creatures are immovable(10 second rule)
+		if (immoveableItems && (tileId==99 || !tile->notMoveable || tile->isContainer)) {
 			stackCount-=immoveableItems;
 			newCount-=immoveableItems;
 			immoveableItems=0;
 		}
-		newCount-=tileId==99?1:0;
+		//decrease the index we want to find by 1 if we found a creature or an overhanging object
+		newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
+
+		//If we are at the index we wanted to get to or are at top of stack, return
 		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
 			return pos;
 	}
