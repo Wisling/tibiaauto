@@ -1,0 +1,63 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: mod_addressfinder - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2FC.tmp" with contents
+[
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_addressfinder.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_addressfinder\mod_addressfinder.cpp"
+]
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2FC.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2FD.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_addressfinder.pdb" /machine:I386 /def:".\mod_addressfinder.def" /out:"../mod_addressfinder.dll" /implib:"Release/mod_addressfinder.lib" 
+".\Release\BtnST.obj"
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\GroupBoxEx.obj"
+".\Release\mod_addressfinder.obj"
+".\Release\MyDialog.obj"
+".\Release\proxy.obj"
+".\Release\Skin.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaContainer_impl.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_addressfinder.res"
+]
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP2FD.tmp"
+<h3>Output Window</h3>
+Compiling...
+mod_addressfinder.cpp
+Linking...
+   Creating library Release/mod_addressfinder.lib and object Release/mod_addressfinder.exp
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP301.tmp" with contents
+[
+/nologo /o"Release/mod_addressfinder.bsc" 
+".\Release\StdAfx.sbr"
+".\Release\BtnST.sbr"
+".\Release\ConfigData.sbr"
+".\Release\ConfigDialog.sbr"
+".\Release\exports.sbr"
+".\Release\GroupBoxEx.sbr"
+".\Release\mod_addressfinder.sbr"
+".\Release\MyDialog.sbr"
+".\Release\proxy.sbr"
+".\Release\Skin.sbr"
+".\Release\TibiaContainer_impl.sbr"
+".\Release\TibiaItem_impl.sbr"]
+Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP301.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
+
+
+
+<h3>Results</h3>
+mod_addressfinder.dll - 0 error(s), 0 warning(s)
+</pre>
+</body>
+</html>

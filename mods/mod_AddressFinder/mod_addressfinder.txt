@@ -1,0 +1,286 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Polish resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_PLK)
+#ifdef _WIN32
+LANGUAGE LANG_POLISH, SUBLANG_DEFAULT
+#pragma code_page(1250)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#ifdef _WIN32\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32\r\n"
+    "#include ""res\\mod_addressfinder.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 230, 452
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Module: AddressFinder"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Address Check Byte Ouput",IDC_FRAME_2,6,377,217,33
+    GROUPBOX        "Player Info Addresses",IDC_FRAME_,6,7,217,368
+    DEFPUSHBUTTON   "OK",IDOK,90,431,50,14
+    CONTROL         "Search",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,6,415,217,14
+    LTEXT           "Flags Address:",IDC_STATIC,13,25,47,8
+    EDITTEXT        IDC_FLAGS_ADDRESS,85,19,40,14,ES_AUTOHSCROLL
+    LTEXT           "Flags:",IDC_STATIC,135,25,20,8
+    EDITTEXT        IDC_FLAGS,178,19,40,14,ES_AUTOHSCROLL
+    LTEXT           "Start at:",IDC_STATIC,13,395,26,8
+    EDITTEXT        IDC_START_BYTE,42,389,40,14,ES_AUTOHSCROLL
+    LTEXT           "End at:",IDC_STATIC,90,395,24,8
+    EDITTEXT        IDC_END_BYTE,119,389,40,14,ES_AUTOHSCROLL
+    PUSHBUTTON      "Begin",IDC_BEGIN_OUTPUT,167,389,50,14
+    LTEXT           "Fist % Left Address:",IDC_STATIC,13,39,62,8
+    EDITTEXT        IDC_FIST_PERCENT_LEFT_ADDRESS,85,33,40,14,ES_AUTOHSCROLL
+    LTEXT           "Fist % Left:",IDC_STATIC,135,39,35,8
+    EDITTEXT        IDC_FIST_PERCENT_LEFT,178,33,40,14,ES_AUTOHSCROLL
+    LTEXT           "Fist Skill Address:",IDC_STATIC,13,53,56,8
+    EDITTEXT        IDC_FIST_SKILL_ADDRESS,85,47,40,14,ES_AUTOHSCROLL
+    LTEXT           "Fist Skill:",IDC_STATIC,135,53,28,8
+    EDITTEXT        IDC_FIST_SKILL,178,47,40,14,ES_AUTOHSCROLL
+    LTEXT           "Fish Skill Address:",IDC_STATIC,13,67,58,8
+    EDITTEXT        IDC_FISH_SKILL_ADDRESS,85,61,40,14,ES_AUTOHSCROLL
+    LTEXT           "Fish Skill:",IDC_STATIC,135,67,30,8
+    EDITTEXT        IDC_FISH_SKILL,178,61,40,14,ES_AUTOHSCROLL
+    LTEXT           "Att Creature Address:",IDC_STATIC,13,81,68,8
+    EDITTEXT        IDC_ATTACKED_CREATURE_ADDRESS,85,75,40,14,ES_AUTOHSCROLL
+    LTEXT           "Att Creature:",IDC_STATIC,135,81,40,8
+    EDITTEXT        IDC_ATTACKED_CREATURE,178,75,40,14,ES_AUTOHSCROLL
+    LTEXT           "Capacity Address:",IDC_STATIC,13,95,58,8
+    EDITTEXT        IDC_CAPACITY_ADDRESS,85,89,40,14,ES_AUTOHSCROLL
+    LTEXT           "Capacity:",IDC_STATIC,135,95,30,8
+    EDITTEXT        IDC_CAPACITY,178,89,40,14,ES_AUTOHSCROLL
+    LTEXT           "Stamina Address:",IDC_STATIC,13,109,56,8
+    EDITTEXT        IDC_STAMINA_ADDRESS,85,103,40,14,ES_AUTOHSCROLL
+    LTEXT           "Stamina:",IDC_STATIC,135,109,28,8
+    EDITTEXT        IDC_STAMINA,178,103,40,14,ES_AUTOHSCROLL
+    LTEXT           "Soul Points Address:",IDC_STATIC,13,123,66,8
+    EDITTEXT        IDC_SOUL_POINTS_ADDRESS,85,117,40,14,ES_AUTOHSCROLL
+    LTEXT           "Soul Points:",IDC_STATIC,135,123,38,8
+    EDITTEXT        IDC_SOUL_POINTS,178,117,40,14,ES_AUTOHSCROLL
+    LTEXT           "Mana Max Address:",IDC_STATIC,13,137,64,8
+    EDITTEXT        IDC_MANA_MAX_ADDRESS,85,131,40,14,ES_AUTOHSCROLL
+    LTEXT           "Mana Max:",IDC_STATIC,135,137,36,8
+    EDITTEXT        IDC_MANA_MAX,178,131,40,14,ES_AUTOHSCROLL
+    LTEXT           "Mana Address:",IDC_STATIC,13,151,48,8
+    EDITTEXT        IDC_MANA_ADDRESS,85,145,40,14,ES_AUTOHSCROLL
+    LTEXT           "Mana:",IDC_STATIC,135,151,21,8
+    EDITTEXT        IDC_MANA,178,145,40,14,ES_AUTOHSCROLL
+    LTEXT           "MLvl % Left Address:",IDC_STATIC,13,165,67,8
+    EDITTEXT        IDC_MAGIC_LEVEL_PERCENT_LEFT_ADDRESS,85,159,40,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "MLvl % Left:",IDC_STATIC,135,165,40,8
+    EDITTEXT        IDC_MAGIC_LEVEL_PERCENT_LEFT,178,159,40,14,
+                    ES_AUTOHSCROLL
+    LTEXT           "Magic Level Address:",IDC_STATIC,13,179,69,8
+    EDITTEXT        IDC_MAGIC_LEVEL_ADDRESS,85,173,40,14,ES_AUTOHSCROLL
+    LTEXT           "Magic Level:",IDC_STATIC,135,179,42,8
+    EDITTEXT        IDC_MAGIC_LEVEL,178,173,40,14,ES_AUTOHSCROLL
+    LTEXT           "Level Address:",IDC_STATIC,13,193,48,8
+    EDITTEXT        IDC_LEVEL_ADDRESS,85,187,40,14,ES_AUTOHSCROLL
+    LTEXT           "Level:",IDC_STATIC,135,193,20,8
+    EDITTEXT        IDC_LEVEL,178,187,40,14,ES_AUTOHSCROLL
+    LTEXT           "Experience Address:",IDC_STATIC,13,207,66,8
+    EDITTEXT        IDC_EXPERIENCE_ADDRESS,85,201,40,14,ES_AUTOHSCROLL
+    LTEXT           "Experience:",IDC_STATIC,135,207,38,8
+    EDITTEXT        IDC_EXPERIENCE,178,201,40,14,ES_AUTOHSCROLL
+    LTEXT           "HP Max Address:",IDC_STATIC,13,221,56,8
+    EDITTEXT        IDC_HP_MAX_ADDRESS,85,215,40,14,ES_AUTOHSCROLL
+    LTEXT           "Hp Max:",IDC_STATIC,135,221,28,8
+    EDITTEXT        IDC_HP_MAX,178,215,40,14,ES_AUTOHSCROLL
+    LTEXT           "Hit Points Address:",IDC_STATIC,13,235,60,8
+    EDITTEXT        IDC_HP_ADDRESS,85,229,40,14,ES_AUTOHSCROLL
+    LTEXT           "Hit Points:",IDC_STATIC,135,235,33,8
+    EDITTEXT        IDC_HP,178,229,40,14,ES_AUTOHSCROLL
+    LTEXT           "Self ID Address:",IDC_STATIC,13,249,52,8
+    EDITTEXT        IDC_SELF_ID_ADDRESS,85,243,40,14,ES_AUTOHSCROLL
+    LTEXT           "Self ID:",IDC_STATIC,135,249,24,8
+    EDITTEXT        IDC_SELF_ID,178,243,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go To Tile Address:",IDC_STATIC,13,263,64,8
+    EDITTEXT        IDC_GO_TO_TILE_ADDRESS,85,257,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go To Tile:",IDC_STATIC,135,263,36,8
+    EDITTEXT        IDC_GO_TO_TILE,178,257,40,14,ES_AUTOHSCROLL
+    LTEXT           "Tiles Left Address:",IDC_STATIC,13,277,59,8
+    EDITTEXT        IDC_TILES_LEFT_ADDRESS,85,271,40,14,ES_AUTOHSCROLL
+    LTEXT           "Tiles Left:",IDC_STATIC,135,277,32,8
+    EDITTEXT        IDC_TILES_LEFT,178,271,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go Z Address:",IDC_STATIC,13,291,46,8
+    EDITTEXT        IDC_GO_Z_ADDRESS,85,285,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go Z:",IDC_STATIC,135,291,19,8
+    EDITTEXT        IDC_GO_Z,178,285,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go Y Address:",IDC_STATIC,13,305,46,8
+    EDITTEXT        IDC_GO_Y_ADDRESS,85,299,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go Y:",IDC_STATIC,135,305,19,8
+    EDITTEXT        IDC_GO_Y,178,299,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go X Address:",IDC_STATIC,13,319,46,8
+    EDITTEXT        IDC_GO_X_ADDRESS,85,313,40,14,ES_AUTOHSCROLL
+    LTEXT           "Go X:",IDC_STATIC,135,319,19,8
+    EDITTEXT        IDC_GO_X,178,313,40,14,ES_AUTOHSCROLL
+    LTEXT           "BL Max Address:",IDC_STATIC,13,333,54,8
+    EDITTEXT        IDC_BATTLE_LIST_MAX_ADDRESS,85,327,40,14,ES_AUTOHSCROLL
+    LTEXT           "BL Max:",IDC_STATIC,135,333,27,8
+    EDITTEXT        IDC_BATTLE_LIST_MAX,178,327,40,14,ES_AUTOHSCROLL
+    LTEXT           "BL Min Address:",IDC_STATIC,13,347,52,8
+    EDITTEXT        IDC_BATTLE_LIST_MIN_ADDRESS,85,341,40,14,ES_AUTOHSCROLL
+    LTEXT           "BL Min:",IDC_STATIC,135,347,25,8
+    EDITTEXT        IDC_BATTLE_LIST_MIN,178,341,40,14,ES_AUTOHSCROLL
+    LTEXT           "1st Creature Address:",IDC_STATIC,13,361,68,8
+    EDITTEXT        IDC_FIRST_CREATURE_ADDRESS,85,355,40,14,ES_AUTOHSCROLL
+    LTEXT           "1st Ctrature:",IDC_STATIC,135,361,39,8
+    EDITTEXT        IDC_FIRST_CREATURE,178,355,40,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 6
+        RIGHTMARGIN, 223
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 445
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Polish resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "mod_addressfinder DLL\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "mod_addressfinder\0"
+            VALUE "LegalCopyright", "Copyright (C) 2005\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "mod_addressfinder.DLL\0"
+            VALUE "ProductName", "mod_addressfinder Dynamic Link Library\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32
+#include "res\mod_addressfinder.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
