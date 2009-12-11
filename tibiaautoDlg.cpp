@@ -421,7 +421,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	
 	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
 	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
-	SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
+	if (CModuleUtil::getTASetting("GatherBotStats"))
+		SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
 
 
 
@@ -1375,7 +1376,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.1.1,tm=%d,",tm);
+		fprintf(f,"version=2.1.2,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#define MAX_ITEMS 200
+#define MAX_ITEMS 300
 #define MAX_ITEM_LEN 60
 
 class CTibiaItem  

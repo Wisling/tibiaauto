@@ -560,7 +560,7 @@ void CPythonEngine::loadScript(char *path)
 		sprintf(buf,"execfile('%s')",path);		
 		int pos,len;
 		len=strlen(buf);
-		for (pos=0;pos<len;pos++) if (buf[pos]=='\\') buf[pos]='/';		
+		for (pos=0;pos<len;pos++){if (buf[pos]=='\\') buf[pos]='/';	}
 		//AfxMessageBox(buf);
 		PyRun_SimpleString(buf);		
 		//AfxMessageBox("2");
@@ -725,7 +725,7 @@ void CPythonEngine::unloadScript(int scriptNr)
 	registerPluginCount--;
 	// this is commented out by purpose - there would be too much threads 
 	// playing to cleanup this memory here
-	delete pythonScript;
+	//delete pythonScript;//crashes TA on reloading script possibly fix later!
 	leaveCriticalSection();
 }
 

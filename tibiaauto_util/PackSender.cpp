@@ -488,9 +488,9 @@ void CPackSender::attackMode(int attack,int follow,int attLock)
 	char sendbuf[6];
 	char buf[111];
 
-	if(attack!=2 && attack!=1 && attack!=3){ AfxMessageBox("Packet error attack"); return;}
-	if(follow!=0 && follow!=1){ AfxMessageBox("Packet error follow"); return;}
-	if(attLock!=0 && attLock!=1){ AfxMessageBox("Packet error attklock"); return;}
+	if(attack!=2 && attack!=1 && attack!=3){ sendTAMessage("Packet error attack"); return;}
+	if(follow!=0 && follow!=1){ sendTAMessage("Packet error follow"); return;}
+	if(attLock!=0 && attLock!=1){ sendTAMessage("Packet error attklock"); return;}
 
 	sendbuf[0]=4;
 	sendbuf[1]=0;

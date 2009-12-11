@@ -126,6 +126,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 		ch->lastAttackTm=monCh->lastAttackTm;
 		ch->nr=loggedCharNr;
 		ch->warIcon=monCh->warIcon;
+		ch->blocking=monCh->blocking;
 
 		delete monCh;
 	}
@@ -184,6 +185,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->skulls=CMemUtil::GetMemIntValue(offset+148);
 	ch->shields=CMemUtil::GetMemIntValue(offset+152);
 	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
+	ch->blocking=CMemUtil::GetMemIntValue(offset+164);
 	ch->nr=nr;
 	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);

@@ -200,6 +200,10 @@ EXPORTS
 	memReadMapGetSelfCellNr @194
 	tibiaMapGetPointSpeed @195
 	tibiaMapSetPointSpeed @196
-	tibiaMapUnloadMiniMaps @197
-	cleanupTibiaTiles @198
-	tibiaItemCleanup @199
+	tibiaMapGetPointDistance @197
+	tibiaMapSetPointDistance @198
+	tibiaMapCalcDistance @199
+	tibiaMapUnloadMiniMaps @200
+	cleanupTibiaTiles @201
+	tibiaItemCleanup @202
+	tibiaMapClearDistance @203
