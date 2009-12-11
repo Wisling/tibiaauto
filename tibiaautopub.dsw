@@ -15,6 +15,18 @@ Package=<4>
 
 ###############################################################################
 
+Project: "mod_addressfinder"=".\mods\mod_AddressFinder\mod_addressfinder.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
 Project: "mod_aim"=".\mods\mod_aim\mod_aim.dsp" - Package Owner=<4>
 
 Package=<5>

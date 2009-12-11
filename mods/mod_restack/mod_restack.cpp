@@ -196,8 +196,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size)
-					{							
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,100);
+					{	
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,itemOnTopQty(offsetX,offsetY));
 						Sleep(CModuleUtil::randomFormula(600,200));
 						// reset offsetXY to avoid pickup up same item to hand
 						offsetX=offsetY=-2;
@@ -219,7 +219,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (itemLeftHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to left hand
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,100);
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,itemOnTopQty(offsetX,offsetY));
 						Sleep(CModuleUtil::randomFormula(600,200));
 						offsetX=offsetY=-2;
 					}
@@ -230,7 +230,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (itemRightHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to left hand
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,100);
+						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,itemOnTopQty(offsetX,offsetY));
 						Sleep(CModuleUtil::randomFormula(600,200));
 						offsetX=offsetY=-2;
 					}

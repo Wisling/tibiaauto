@@ -118,6 +118,7 @@ int currentWaypointNr=0;
 
 int lastTAMessageTm=0;
 int taMessageDelay=4;
+int forwardBackDir=1;//forward and back direction
 
 CTibiaMapProxy tibiaMap;
 
@@ -262,7 +263,7 @@ void depotCheck(CConfigData *config) {
 		// check whether the depot is reachable
 		int path[15];
 		if (config->debug) registerDebug("findPathOnMap: depot walker");
-		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,0,path,0);
+		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,301,path);
 		if (!path[0]||!tibiaMap.isPointAvailable(depotX,depotY,depotZ)) {
 			if (config->debug) registerDebug("Path to the current depot not found: must find a new one");
 			// path to the current depot not found, must find a new depot
@@ -386,7 +387,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
 	if (cont8->flagOnOff&&cont8->itemsInside<cont8->size) {
 		// found container in which we can do deposit!
-		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr2,cont8->size,qty);
+		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr2,cont8->size-1,qty);
 		CModuleUtil::waitForItemsInsideChange(depotContNr2,cont8->itemsInside);
 		Sleep(CModuleUtil::randomFormula(300,100));
 		deleteAndNull(cont8);
@@ -730,6 +731,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 		deleteAndNull(itemSlot);
 		return 1;
 	}
+
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_switchingWeapon;
 	for (int i=0;i<2 && itemSlot->objectId!=objectId;i++)
 	{
@@ -808,6 +810,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 */
 void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, int lastAttackedCreatureBloodHit,int *attackMode) {
 	CMemReaderProxy reader;
+	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	int weaponHandAddress = config->weaponHand ? memConstData.m_memAddressRightHand : memConstData.m_memAddressLeftHand;
 	int weaponHand = config->weaponHand ? 5 : 6;
@@ -831,7 +834,10 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 		if (config->fightWhenAlien&&alienFound) canTrain=0;
 		if (config->fightWhenSurrounded&&attackingCreatures>2) canTrain=0;
 
-		if (canTrain) {
+		static int lastFightModeTm=0;
+
+		if (canTrain && time(NULL)-lastFightModeTm>5) {//and has been more than 5 seconds since fight mode
+			lastFightModeTm=0;
 			//if (config->debug) registerDebug("Training: Training mode.");
 			if (!ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponTrain)){
 				registerDebug("Training: Failed to switch to training weapon.");
@@ -844,14 +850,16 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 				sprintf(buf,"Training: inside blood hit control (%d-%d=%d)",time(NULL),lastAttackedCreatureBloodHit,time(NULL)-lastAttackedCreatureBloodHit);
 				if (config->debug) registerDebug(buf);
 				if (time(NULL)-lastAttackedCreatureBloodHit<20) {
-					// if 30s has passed since last blood hit, then we do 'normal' attack mode
-					// otherwise we do full defence
+					// if 20s has passed since last blood hit, then we do harder attack mode
+					// otherwise we do selected attack mode
 					*attackMode=max(*attackMode-1,1);
 					globalAutoAttackStateTraining=CToolAutoAttackStateTraining_trainingFullDef;
 				}
 			}
 		}
 		else {
+			if (!lastFightModeTm)
+				lastFightModeTm=time(NULL);
 			//if (config->debug) registerDebug("Training: Fight mode.");
 			if (!ensureItemInPlace(config->debug,weaponHand,weaponHandAddress,config->weaponFight)){
 				if (config->debug) registerDebug("Training: Failed to equip fight for fight mode.");
@@ -1531,6 +1539,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();
+
 					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 					CTibiaTile *tile=reader.getTibiaTile(corpseId);
 					if (corpseId && tile->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
@@ -1886,7 +1895,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 				if(isCloser){
 					if (creatureList[bestCreatureNr].isAttacking &&
-						(creatureList[bestCreatureNr].listPriority>creatureList[crNr].listPriority ||
+						(creatureList[bestCreatureNr].listPriority>creatureList[crNr].listPriority && creatureList[bestCreatureNr].listPriority ||
 						creatureList[bestCreatureNr].listPriority==0 && creatureList[crNr].listPriority!=0)&&
 						canGetToPoint(creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z)){
 						//distance creature has higher priority and can be reached
@@ -1906,7 +1915,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						bestCreatureNr=crNr;}
 				} else if (isFarther){
 					if (creatureList[crNr].isAttacking &&
-						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority ||
+						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority ||
 						creatureList[crNr].listPriority==0 && creatureList[bestCreatureNr].listPriority!=0)&&
 						canGetToPoint(creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z)) {
 						if (config->debug) registerDebug("Attacker: Better because attacking and higher priority.");
@@ -2075,6 +2084,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						if (currentWaypointNr==waypointsCount)
 							currentWaypointNr=0;
 						break;
+					case 2: // forward and back
+						if (currentWaypointNr==waypointsCount-1)
+							forwardBackDir=-1;
+						if (currentWaypointNr==0)
+							forwardBackDir=1;
+						if (waypointsCount>1)
+							currentWaypointNr+=forwardBackDir;
+						break;
 					}
 				}//else:continue to previous waypoint
 				
@@ -2088,8 +2105,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									//Waypoint walking algrithim starts here:
 			if (targetX&&targetY&&!isInHalfSleep()) {
 				int mapUsed=config->mapUsed;
-				if (targetZ!=self->z&&config->mapUsed==2)
-					config->mapUsed=0;
 				switch (mapUsed) {
 					// Tibia Auto map chosen
 				case 1: {
@@ -2104,7 +2119,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (config->debug) registerDebug(buf);
 					
 					int ticksStart = GetTickCount();
-					point destPoint = CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,0,path,config->radius);
+					point destPoint = CModuleUtil::findPathOnMap(self->x,self->y,self->z,targetX,targetY,targetZ,(depotX?301:0),path,config->radius);
 					int ticksEnd = GetTickCount();
 					
 					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
@@ -2516,7 +2531,7 @@ void CMod_cavebotApp::resetConfig() {
 }
 
 void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
-	if (!strcmp(paramName,"attack/follow")) m_configData->autoFollow=atoi(paramValue);
+	if (!strcmp(paramName,"attack/follow")) m_configData->autoFollow=(atoi(paramValue)?1:0);
 	if (!strcmp(paramName,"attack/mode")) m_configData->mode=atoi(paramValue);
 	if (!strcmp(paramName,"attack/suspendOnEnemey")) m_configData->suspendOnEnemy=atoi(paramValue);
 	if (!strcmp(paramName,"attack/suspendOnNoMove")) m_configData->suspendOnNoMove=atoi(paramValue);
@@ -2558,6 +2573,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	//if (!strcmp(paramName,"loot/stats/gather")) m_configData->gatherLootStats=atoi(paramValue);
 	
 	if (!strcmp(paramName,"walker/other/selectMode")) m_configData->waypointSelectMode=atoi(paramValue);
+	if (!strcmp(paramName,"walker/other/mapUsed")) m_configData->mapUsed=atoi(paramValue);
 	if (!strcmp(paramName,"walker/other/standAfterWaypointReached")) m_configData->standStill=atoi(paramValue);
 	
 	if (!strcmp(paramName,"walker/waypoint")) {
@@ -2630,6 +2646,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"loot/other/lootFromFloor")) sprintf(buf,"%d",m_configData->lootFromFloor);
 	
 	if (!strcmp(paramName,"walker/other/selectMode")) sprintf(buf,"%d",m_configData->waypointSelectMode);
+	if (!strcmp(paramName,"walker/other/mapUsed")) sprintf(buf,"%d",m_configData->mapUsed);
 	if (!strcmp(paramName,"walker/other/standAfterWaypointReached")) sprintf(buf,"%d",m_configData->standStill);
 	
 	if (!strcmp(paramName,"general/debug")) sprintf(buf,"%d",m_configData->debug);

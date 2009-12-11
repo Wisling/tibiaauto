@@ -45,6 +45,7 @@
 #define IDC_HP_MAX                      3053
 #define IDC_HP_ADDRESS                  3054
 #define IDC_HP                          3055
+#define IDC_SEARCHSTRING                3056
 #define IDC_SELF_ID_ADDRESS             3072
 #define IDC_SELF_ID                     3073
 #define IDC_GO_TO_TILE_ADDRESS          3074

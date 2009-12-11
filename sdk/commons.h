@@ -23,12 +23,11 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
 		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
 		CTibiaTile *tile=reader.getTibiaTile(tileId);
-		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
-		//If a movable tile is never found, then keep things the way they are
-		//Edit: check if it is a container, since recently killed creatures are immovable(10 second rule)
-		if (immoveableItems && (tileId==99 || !tile->notMoveable || tile->isContainer)) {
+		//If a player is found then pretend as if the immoveableItems are not in the stack(they are at the end)
+		//If a player is NEVER found, then keep things the way they are
+		if (immoveableItems && tileId==99) {
+			//stackCount-=immoveableItems;
 			stackCount-=immoveableItems;
-			newCount-=immoveableItems;
 			immoveableItems=0;
 		}
 		//decrease the index we want to find by 1 if we found a creature or an overhanging object

@@ -29,7 +29,7 @@ public:
 	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation,int path[15],int radius=1);	
 	static void executeWalk(int startX, int startY, int startZ, int path[15]);
 	static void lootItemFromContainer(int conTNr, CUIntArray *acceptedItems,int ignoreCont1=-1,int ignoreCont2=-1);
-	static int loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying);
+	static int lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying);
 	static void eatItemFromContainer(int contNr);
 	static int waitForOpenContainer(int contNr,int open);
 	static void sleepWithStop(int ms,int *stopFlag);

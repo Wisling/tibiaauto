@@ -64,16 +64,16 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 230, 452
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 230, 463
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: AddressFinder"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Address Check Byte Ouput",IDC_FRAME_2,6,375,217,33
     GROUPBOX        "Player Info Addresses",IDC_FRAME_,6,7,217,362
-    DEFPUSHBUTTON   "OK",IDOK,90,431,50,14
+    DEFPUSHBUTTON   "OK",IDOK,90,442,50,14
     CONTROL         "Search",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,6,415,217,14
+                    BS_PUSHLIKE | WS_TABSTOP,6,426,217,14
     LTEXT           "Flags Address:",IDC_STATIC,13,20,47,8
     LTEXT           "Not Found",IDC_FLAGS_ADDRESS,85,20,40,8
     LTEXT           "Flags:",IDC_STATIC,135,20,20,8
@@ -181,6 +181,7 @@ BEGIN
     LTEXT           "Not Found",IDC_FIRST_CREATURE_ADDRESS,85,356,40,8
     LTEXT           "1st Creature:",IDC_STATIC,135,356,41,8
     LTEXT           "Not Found",IDC_FIRST_CREATURE,178,356,40,8
+    PUSHBUTTON      "Make search string",IDC_SEARCHSTRING,6,409,81,14
 END
 
 
@@ -197,7 +198,7 @@ BEGIN
         LEFTMARGIN, 6
         RIGHTMARGIN, 223
         TOPMARGIN, 7
-        BOTTOMMARGIN, 445
+        BOTTOMMARGIN, 456
     END
 END
 #endif    // APSTUDIO_INVOKED
