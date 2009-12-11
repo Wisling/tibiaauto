@@ -1,4 +1,4 @@
-<!-- Tibia Items for Tibia 8.53 -->
+<!-- Tibia Items for Tibia 8.54 -->
 <item-definitions>
 	<consts>
 		<!-- item codes -->
@@ -42,10 +42,10 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x106E81"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x4D255C"/> 
-		<const code="addrXRay2" value="0x4D2564"/> 
-		<const code="addrFunRevealCName1" value="0x4ED733"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
+		<const code="addrMCInject" value="0x1070D1"/> <!--D7 3D B7 -->
+		<const code="addrXRay1" value="0x4D277C"/> 
+		<const code="addrXRay2" value="0x4D2784"/> 
+		<const code="addrFunRevealCName1" value="0x4ED983"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -60,7 +60,7 @@
 		<const code="addrSkillFish" value="0x635ED0"/>
 		<const code="addrAttackedCreature" value="0x635EDC"/>
 		<const code="addrCap" value="0x635EE0"/>
-		<const code="addrStamina" value="0x633E60"/>
+		<const code="addrStamina" value="0x635EE4"/>
 		<const code="addrSoulPoints" value="0x635EE8"/>
 		<const code="addrManaMax" value="0x635EEC"/>
 		<const code="addrMana" value="0x635EF0"/>
@@ -80,33 +80,33 @@
 		<const code="addrBattleMin" value="0x635F6C"/>
 		<const code="addrFirstCreature" value="0x635F70"/> <!-- cat1 -->
 
-		<const code="addrCurrentTm" value="0x641DA8"/> <!-- cat2 -->
-		<const code="addrBackpack" value="0x6427F8"/> 
-		<const code="addrRightHand" value="0x642810"/> 
-		<const code="addrLeftHand" value="0x64281C"/> 
-		<const code="addrSlotArrow" value="0x64284C"/> <!-- cat2 -->
-		<const code="addrFirstContainer" value="0x642858"/> <!-- cat2 -->
-		<const code="addrTradeCountSelf" value="0x644718"/>
-		<const code="addrTradeFirstItemSelf" value="0x64473C"/>
-		<const code="addrTradeCountPartner" value="0x644BF0"/>
-		<const code="addrTradeFirstItemPartner" value="0x644C14"/> <!-- cat2 -->
+		<const code="addrCurrentTm" value="0x642190"/> <!-- cat2 -->
+		<const code="addrBackpack" value="0x642BE0"/> 
+		<const code="addrRightHand" value="0x642BF8"/> 
+		<const code="addrLeftHand" value="0x642C04"/> 
+		<const code="addrSlotArrow" value="0x642C34"/> <!-- cat2 -->
+		<const code="addrFirstContainer" value="0x642C40"/> <!-- cat2 -->
+		<const code="addrTradeCountSelf" value="0x644B00"/>
+		<const code="addrTradeFirstItemSelf" value="0x644B24"/>
+		<const code="addrTradeCountPartner" value="0x644FD8"/>
+		<const code="addrTradeFirstItemPartner" value="0x644FFC"/> <!-- cat2 -->
 
-		<const code="addrCurrentWindow" value="0x64510C"/> <!-- cat2 -->
-		<const code="addrMapStart" value="0x649C60"/>
-		<const code="addrMiniMapStart" value="0x649C80"/> <!-- cat2 -->
+		<const code="addrCurrentWindow" value="0x6454F4"/> <!-- cat2 -->
+		<const code="addrMapStart" value="0x64A048"/>
+		<const code="addrMiniMapStart" value="0x64A068"/> <!-- cat2 -->
 
-		<const code="addrModeAttackPlayers" value="0x78F82C"/> <!-- cat3 -->
-		<const code="addrModeFollow" value="0x78F830"/>
-		<const code="addrModeAttackType" value="0x78F834"/> <!-- cat3 -->
+		<const code="addrModeAttackPlayers" value="0x78FC14"/> <!-- cat3 -->
+		<const code="addrModeFollow" value="0x78FC18"/>
+		<const code="addrModeAttackType" value="0x78FC1C"/> <!-- cat3 -->
 
-		<const code="addrConnectionState" value="0x792A68"/> <!-- cat4 -->
-		<const code="addrFps" value="0x7935B4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->
-		<const code="addrWhiteMessage" value="0x7D62F0"/>
+		<const code="addrConnectionState" value="0x792E50"/> <!-- cat4 -->
+		<const code="addrFps" value="0x79399C"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->
+		<const code="addrWhiteMessage" value="0x7D66D8"/>
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
 		<const code="lengthItem" value="12"/>
-		<const code="lengthCreature" value="164"/>
+		<const code="lengthCreature" value="168"/>
 		<const code="lengthMapTile" value="168"/>
 		<const code="lengthVIP" value="44"/>
 		<const code="lengthMiniMap" value="131240"/>
@@ -414,6 +414,126 @@
 		<item id="0xbea" name="Power Ring"/>
 		<item id="0xbeb" name="Energy Ring"/>
 		<item id="0xc1a" name="Ring of Healing"/>
+
+		<item id="9631" value="new item 1"/>
+		<item id="9632" value="new item 2"/>
+		<item id="9633" value="new item 3"/>
+		<item id="9634" value="new item 4"/>
+		<item id="9635" value="new item 5"/>
+		<item id="9636" value="new item 6"/>
+		<item id="9637" value="new item 7"/>
+		<item id="9638" value="new item 8"/>
+		<item id="9639" value="new item 9"/>
+		<item id="9640" value="new item 10"/>
+		<item id="9641" value="new item 11"/>
+		<item id="9642" value="new item 12"/>
+		<item id="9643" value="new item 13"/>
+		<item id="9644" value="new item 14"/>
+		<item id="9645" value="new item 15"/>
+		<item id="9646" value="new item 16"/>
+		<item id="9647" value="new item 17"/>
+		<item id="9648" value="new item 18"/>
+		<item id="9649" value="new item 19"/>
+		<item id="9650" value="new item 20"/>
+		<item id="9651" value="new item 21"/>
+		<item id="9652" value="new item 22"/>
+		<item id="9654" value="new item 23"/>
+		<item id="9655" value="new item 24"/>
+		<item id="9656" value="new item 25"/>
+		<item id="9657" value="new item 26"/>
+		<item id="9658" value="new item 27"/>
+		<item id="9659" value="new item 28"/>
+		<item id="9660" value="new item 29"/>
+		<item id="9661" value="new item 30"/>
+		<item id="9662" value="new item 31"/>
+		<item id="9663" value="new item 32"/>
+		<item id="9664" value="new item 33"/>
+		<item id="9665" value="new item 34"/>
+		<item id="9666" value="new item 35"/>
+		<item id="9667" value="new item 36"/>
+		<item id="9668" value="new item 37"/>
+		<item id="9683" value="new item 38"/>
+		<item id="9684" value="new item 39"/>
+		<item id="9685" value="new item 40"/>
+		<item id="9686" value="new item 41"/>
+		<item id="9688" value="new item 42"/>
+		<item id="9689" value="new item 43"/>
+		<item id="9690" value="new item 44"/>
+		<item id="9691" value="new item 45"/>
+		<item id="9692" value="new item 46"/>
+		<item id="9693" value="new item 47"/>
+		<item id="9694" value="new item 48"/>
+		<item id="10196" value="new item 49"/>
+		<item id="10218" value="new item 50"/>
+		<item id="10219" value="new item 51"/>
+		<item id="10272" value="new item 52"/>
+		<item id="10273" value="new item 53"/>
+		<item id="10274" value="new item 54"/>
+		<item id="10275" value="new item 55"/>
+		<item id="10276" value="new item 56"/>
+		<item id="10277" value="new item 57"/>
+		<item id="10278" value="new item 58"/>
+		<item id="10279" value="new item 59"/>
+		<item id="10280" value="new item 60"/>
+		<item id="10281" value="new item 61"/>
+		<item id="10282" value="new item 62"/>
+		<item id="10283" value="new item 63"/>
+		<item id="10289" value="new item 64"/>
+		<item id="10291" value="new item 65"/>
+		<item id="10292" value="new item 66"/>
+		<item id="10293" value="new item 67"/>
+		<item id="10295" value="new item 68"/>
+		<item id="10296" value="new item 69"/>
+		<item id="10297" value="new item 70"/>
+		<item id="10298" value="new item 71"/>
+		<item id="10299" value="new item 72"/>
+		<item id="10300" value="new item 73"/>
+		<item id="10301" value="new item 74"/>
+		<item id="10302" value="new item 75"/>
+		<item id="10303" value="new item 76"/>
+		<item id="10304" value="new item 77"/>
+		<item id="10305" value="new item 78"/>
+		<item id="10306" value="new item 79"/>
+		<item id="10307" value="new item 80"/>
+		<item id="10308" value="new item 81"/>
+		<item id="10309" value="new item 82"/>
+		<item id="10310" value="new item 83"/>
+		<item id="10311" value="new item 84"/>
+		<item id="10312" value="new item 85"/>
+		<item id="10313" value="new item 86"/>
+		<item id="10314" value="new item 87"/>
+		<item id="10315" value="new item 88"/>
+		<item id="10316" value="new item 89"/>
+		<item id="10317" value="new item 90"/>
+		<item id="10318" value="new item 91"/>
+		<item id="10319" value="new item 92"/>
+		<item id="10320" value="new item 93"/>
+		<item id="10321" value="new item 94"/>
+		<item id="10328" value="new item 95"/>
+		<item id="10329" value="new item 96"/>
+		<item id="10397" value="new item 97"/>
+		<item id="10404" value="new item 98"/>
+		<item id="10405" value="new item 99"/>
+		<item id="10407" value="new item 100"/>
+		<item id="10408" value="new item 101"/>
+		<item id="10409" value="new item 102"/>
+		<item id="10410" value="new item 103"/>
+		<item id="10411" value="new item 104"/>
+		<item id="10413" value="new item 105"/>
+		<item id="10414" value="new item 106"/>
+		<item id="10415" value="new item 107"/>
+		<item id="10416" value="new item 108"/>
+		<item id="10417" value="new item 109"/>
+		<item id="10418" value="new item 110"/>
+		<item id="10420" value="new item 111"/>
+		<item id="10444" value="new item 112"/>
+		<item id="10449" value="new item 113"/>
+		<item id="10450" value="new item 114"/>
+		<item id="10452" value="new item 115"/>
+		<item id="10453" value="new item 116"/>
+		<item id="10454" value="new item 117"/>
+		<item id="10455" value="new item 118"/>
+		<item id="10456" value="new item 119"/>
 
 	<!--North Carlin Hunt
 		<item id="0xd1d" name="Plate Armor"/>

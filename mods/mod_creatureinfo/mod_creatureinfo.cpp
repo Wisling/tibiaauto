@@ -254,6 +254,9 @@ void Expression_Tags_Internals(char* tagName, char* svalue, CTibiaCharacter *ch)
 	}else if(!strcmpi(tagName,"waricon")){
 		sprintf(svalue,"%d",ch->warIcon);
 
+	}else if(!strcmpi(tagName,"blocking")){
+		sprintf(svalue,"%d",ch->blocking);
+
 	}
 }
 

@@ -91,6 +91,7 @@ public:
 	CButtonST	m_enable;
 	int		m_outputStartByte;
 	int		m_outputEndByte;
+	CButtonST		m_searchString;
 	//}}AFX_DATA
 
 
@@ -114,6 +115,7 @@ protected:
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();
 	afx_msg void OnBeginOutput();
+	afx_msg void OnCreateSearchString();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

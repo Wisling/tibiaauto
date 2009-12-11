@@ -76,12 +76,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		Sleep(200);	
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
-		if (config->revealNoFish&&iter%5==0)
+		if (config->revealNoFish&&iter%4==0)//Checks every 0.8 seconds
 		{			
 			CTibiaCharacter* self=reader.readSelfCharacter();
 
 			static int lastFishX=0,lastFishY=0,lastFishZ=0;
-			if (lastFishX!=self->x || lastFishY!=self->y || lastFishZ!=self->z){
+			if (lastFishX!=self->x || lastFishY!=self->y || lastFishZ!=self->z || iter%(4*2)==0){//runs at least every 1.6 seconds if not moved
 				int x,y;
 				for (x=-7;x<=7;x++)
 				{

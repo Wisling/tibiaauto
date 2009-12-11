@@ -503,16 +503,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			
 			
 			int extraSleep=0;
-			if (config->m_mode1==2&&CModuleUtil::loopItemFromSpecifiedContainer(0,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode2==2&&CModuleUtil::loopItemFromSpecifiedContainer(1,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode3==2&&CModuleUtil::loopItemFromSpecifiedContainer(2,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode4==2&&CModuleUtil::loopItemFromSpecifiedContainer(3,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode5==2&&CModuleUtil::loopItemFromSpecifiedContainer(4,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode6==2&&CModuleUtil::loopItemFromSpecifiedContainer(5,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode7==2&&CModuleUtil::loopItemFromSpecifiedContainer(6,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode8==2&&CModuleUtil::loopItemFromSpecifiedContainer(7,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode9==2&&CModuleUtil::loopItemFromSpecifiedContainer(8,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode10==2&&CModuleUtil::loopItemFromSpecifiedContainer(9,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode1==2&&CModuleUtil::lootItemFromSpecifiedContainer(0,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode2==2&&CModuleUtil::lootItemFromSpecifiedContainer(1,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode3==2&&CModuleUtil::lootItemFromSpecifiedContainer(2,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode4==2&&CModuleUtil::lootItemFromSpecifiedContainer(3,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode5==2&&CModuleUtil::lootItemFromSpecifiedContainer(4,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode6==2&&CModuleUtil::lootItemFromSpecifiedContainer(5,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode7==2&&CModuleUtil::lootItemFromSpecifiedContainer(6,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode8==2&&CModuleUtil::lootItemFromSpecifiedContainer(7,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode9==2&&CModuleUtil::lootItemFromSpecifiedContainer(8,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode10==2&&CModuleUtil::lootItemFromSpecifiedContainer(9,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
 			if (extraSleep) Sleep(1000);
 		}
 				

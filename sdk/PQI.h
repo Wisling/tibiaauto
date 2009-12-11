@@ -30,6 +30,7 @@ public:
 		px = px1;
 		py = py1;
 		pz = pz1;
+		dist=0;
 	}
 	pointNode(int x1,int y1,int z1,int px1,int py1,int pz1,int dist1) {
 		x = x1;

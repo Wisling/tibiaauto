@@ -386,6 +386,9 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 	path[0]=0;
 	memset(path,0x00,sizeof(int)*15);
+
+	if (endSpecialLocation) radius=0;
+
 #ifdef MAPDEBUG
 	char buf[512];
 	sprintf(buf,"findPathOnMap(startX=%d,startY=%d,startZ=%d,endX=%d,endY=%d,endZ=%d,endSpecialLocation=%d,radius=%d",startX,startY,startZ,endX,endY,endZ,endSpecialLocation,radius);
@@ -422,7 +425,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	// If still going to same place, clear only points on screen and keep rest
 	// Follow the last endpoint back to where the cleared points cut off.  Go to this closer point.
 	tibiaMap.clearDistance();
-	if (lastDestX==endX&&lastDestY==endY&&lastDestZ==endZ)
+	if (lastDestX==endX&&lastDestY==endY&&lastDestZ==endZ    &&0   )
 	{
 		tibiaMap.clearLocalPrevPoint(startX, startY, startZ,10);
 		point pTrack = lastEndPoint;//trace path back from last destination square
@@ -447,6 +450,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				break;
 			}
 		};
+		char buf[111];
 #ifdef MAPDEBUG
 			sprintf(buf,"Going to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
 			mapDebug(buf);
@@ -498,6 +502,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		{
 			sprintf(buf,"Queue ===== ");
 			for (int i=0;i<pQueueIter->size()&&i<10;i++){
+				break;//
 				sprintf(buf,"%s(%d,%d,%d)-",buf,pQueueIter->at(i).x,pQueueIter->at(i).y,pQueueIter->at(i).z);
 			}
 			//mapDebug(buf);
@@ -845,7 +850,7 @@ int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 
 
 
-int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying)
+int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acceptedItems, int containerCarrying)
 {
 
 	CMemReaderProxy reader;
@@ -866,13 +871,14 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 				if ((int)item->objectId==(int)acceptedItems->GetAt(i))
 				{
 					// item needs to be looted
-					int targetPos=contCarrying->size;
+					int targetPos=contCarrying->size-1;
 					int moved = item->quantity?item->quantity:1;
 					CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+					int stackedItemPos=-1;
 					if (tile->stackable)
 					{						
 						// if item is stackable then try to find a suitable stack for it
-						for (int stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
+						for (stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
 						{
 							CTibiaItem *stackedItem=(CTibiaItem *)contCarrying->items.GetAt(stackedItemPos);
 							if (stackedItem->objectId==item->objectId&&stackedItem->quantity<100)
@@ -893,11 +899,17 @@ int CModuleUtil::loopItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 								break;
 							}
 						}	
+					} 
+					// If not full or we found a spot inside the container for a stackable item move item
+					if(contCarrying->itemsInside!=contCarrying->size || stackedItemPos!=-1 && stackedItemPos<contCarrying->itemsInside){
+						sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
+						Sleep(CModuleUtil::randomFormula(300,150));
+						//char buf[111];
+						//sprintf(buf,"id %d,cont %d,pos %d,tocont %d,topos %d,qty %d",item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
+						//sender.sendTAMessage(buf);
+						looted++;//needed for positioning of next loot item
+						numberItemsLooted++;// return velue
 					}
-					sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
-					Sleep(CModuleUtil::randomFormula(300,150));
-					looted++;//needed for positioning of next loot item
-					numberItemsLooted++;// return velue
 					break;
 				}
 			}
@@ -923,7 +935,12 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems,in
 		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
 		{			
-			qtyLooted += (int)(CModuleUtil::loopItemFromSpecifiedContainer(contNr,acceptedItems,openCont));//Akilez: loot items and get # of items returned
+			CTibiaContainer *sourceCont = reader.readContainer(contNr);
+			qtyLooted = (int)(CModuleUtil::lootItemFromSpecifiedContainer(contNr,acceptedItems,openCont));//Akilez: loot items and get # of items returned
+			if (qtyLooted)
+				waitForItemsInsideChange(contNr,sourceCont->itemsInside);
+			delete sourceCont;
+
 			if (targetCont->itemsInside<targetCont->size) 
 			{
 				delete targetCont;
@@ -1567,9 +1584,9 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 										switch (mode)
 										{
 									case 2: path[0]=7;path[1]=5;break;
-									case 8: path[0]=3;path[1]=5;break;
-									case 4: path[0]=7;path[1]=1;break;
-									case 6: path[0]=3;path[1]=1;break;		
+									case 8: path[0]=7;path[1]=1;break;
+									case 4: path[0]=3;path[1]=5;break;
+									case 6: path[0]=3;path[1]=1;break;	
 										}
 									}
 									path[2]=0;

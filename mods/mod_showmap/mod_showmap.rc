@@ -64,20 +64,20 @@ END
 // Dialog
 //
 
-IDD_TOOL_MAPSHOW DIALOG DISCARDABLE  0, 0, 351, 323
+IDD_TOOL_MAPSHOW DIALOG DISCARDABLE  0, 0, 351, 336
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tool: show recorded map"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Mapping Options",IDC_FRAME_MAPPING_OPTIONS,7,291,195,26
-    DEFPUSHBUTTON   "OK",IDOK,237,303,50,14
+    GROUPBOX        "Mapping Options",IDC_FRAME_MAPPING_OPTIONS,7,303,195,26
+    DEFPUSHBUTTON   "OK",IDOK,237,315,50,14
     CONTROL         "Research map",IDC_TOOL_MAPSHOW_RESEARCH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,303,62,10
-    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,303,50,14
-    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,277,337,11,WS_BORDER
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,317,62,10
+    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,315,50,14
+    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,277,337,22,WS_BORDER
     CONTROL         "Extended research map",
                     IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,83,303,91,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,81,317,91,10
 END
 
 
@@ -96,8 +96,8 @@ BEGIN
         VERTGUIDE, 14
         VERTGUIDE, 337
         TOPMARGIN, 7
-        BOTTOMMARGIN, 316
-        HORZGUIDE, 304
+        BOTTOMMARGIN, 329
+        HORZGUIDE, 317
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -135,7 +135,7 @@ BEGIN
         MENUITEM "Clear",                       ID_SHOWMAPOPTIONS_CLEAR
         MENUITEM "Available",                   ID_SHOWMAPOPTIONS_AVAILABLE
         MENUITEM SEPARATOR
-        MENUITEM "Depot",                       ID_SHOWMAPOPTIONS_DEPOT
+        MENUITEM "Permanent Depot",                       ID_SHOWMAPOPTIONS_DEPOT
         MENUITEM SEPARATOR
         MENUITEM "Permanent Teleporter",        ID_SHOWMAPOPTIONS_TELE
         MENUITEM "Permanent Block",             ID_SHOWMAPOPTIONS_BLOCK

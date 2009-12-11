@@ -60,6 +60,7 @@ public:
 	int skulls;
 	int shields;
 	int warIcon;
+	int blocking;
 
 };
 
