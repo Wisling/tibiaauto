@@ -1,3 +1,26 @@
+2.1.2, 9.11.2009
+Enhancments
+ Updated to 8.54
+ Items.xml: Added new STACKABLE items to loot section(unnamed, but should still be useful)
+ Cavebot: Added see-saw waypoint walker option that goes through them forward then backward
+ Showmap: Made depots permenent map features that don't disappear when extended research is enabled.
+
+Defects
+ Cavebot: Fixed depot walker staying 1 square away from depot
+ Cavebot: Made trainer have minimum delay before switching weapons
+ Cavebot: Type of map used saves properly
+ Auto Go/Log: Fixed spamming of logout command when battle sign is on
+ Maphacks: For Reveal Fish Tiles, if you don't move it will still refresh after 1.5 seconds
+ Cavebot: Fixed constantly toggling attacks between two creatures, one on the attack list, one not on the list
+ Cavebot: Loot tried to be placed into full backpacks before being placed into spacious backpacks
+ Statistics: Kept creating extraneous module statistics files even though it never sent them
+ Python: Fixed TA crash when reloading a script
+ Python: Fixed problem preventing StandDiagonal and other scripts that move the player from working
+ Auto Go/Log: Corrected stamina alarm memory address
+ Cavebot: Fixed cavebot standing 1 sqm away from depot on "TA Map" option
+ Cavebot: Fixed not opening creatures when there was an item underneath
+ Cavebot: Fixed not opening creatures underneath arches
+
 2.1.1, 9.11.2009
 Enhancments
  Runemaker: Added ability for enchanted spears

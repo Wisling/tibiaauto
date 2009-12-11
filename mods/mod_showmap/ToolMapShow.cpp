@@ -440,7 +440,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					int prevUpDown=tibiaMap.getPointUpDown(self->x+x,self->y+y,self->z);
 
 					//blocking tiles and teleporters are marked permanently until changed manually
-					if (prevUpDown==302 || prevUpDown==303) updown=prevUpDown;
+					if (prevUpDown==302 || prevUpDown==301 || prevUpDown==303) updown=prevUpDown;
 
 					// if tile is depot chest or teleporter then treat it in a special way
 					if (updown==301 || updown==302) blocked=0;
@@ -641,7 +641,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 		sprintf(buf,"Tile info: %d [x=%d y=%d]",tibiaMap.getPointSpeed(self->x+x,self->y+y,self->z),x,y);
 		for (pos=0;pos<count;pos++)
 		{			
-			sprintf(subbuf," id=%d [%d,%d]",reader.mapGetPointItemId(point(x,y,0),pos),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,2));
+			sprintf(subbuf," id=%d[%d:%d,%d]",reader.mapGetPointStackIndex(point(x,y,0),pos),reader.mapGetPointItemId(point(x,y,0),pos),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,2));
 			strcat(buf,subbuf);
 		}
 		m_tileInfo.SetWindowText(buf);

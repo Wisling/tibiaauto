@@ -59,6 +59,7 @@ public:
 	void loadConfigParam(char *paramName,char *paramValue);
 	char *saveConfigParam(char *paramName);
 	char *getConfigParamName(int nr);
+
 private:	
 	int m_started;
 	CConfigDialog * m_configDialog;

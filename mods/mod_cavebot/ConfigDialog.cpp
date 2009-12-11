@@ -664,7 +664,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_trainingState.SetWindowText("State: training");
 			break;
 		case CToolAutoAttackStateTraining_trainingFullDef:
-			m_trainingState.SetWindowText("State: training in full defence");
+			m_trainingState.SetWindowText("State: training and attempting bloodhit");
 			break;
 		case CToolAutoAttackStateTraining_fighting:
 			m_trainingState.SetWindowText("State: fighting");
