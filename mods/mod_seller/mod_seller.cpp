@@ -769,6 +769,8 @@ int buyItems(CConfigData *config, int traderNum) {
 		else 
 			break;		;
 		goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"));
+		goldCount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
+		goldCount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
 		itemCount = config->buyItem[traderNum].tradeItem[j].quantityBuySell - itemCount;
 		itemCount = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount?itemCount:goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
 		//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
