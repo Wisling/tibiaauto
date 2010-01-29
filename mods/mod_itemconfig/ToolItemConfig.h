@@ -71,6 +71,9 @@ protected:
 	virtual void OnLootAdd();
 	virtual void OnLootEdit();
 	virtual void OnLootDelete();
+	afx_msg void OnSelchangedTree(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnClickTree(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

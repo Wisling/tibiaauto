@@ -4,7 +4,7 @@
 Version=1
 ClassCount=4
 Class1=CMod_cavebotApp
-LastClass=CConfigDialog
+LastClass=CSendStats
 NewFileInclude2=#include "mod_cavebot.h"
 ResourceCount=4
 NewFileInclude1=#include "stdafx.h"
@@ -140,11 +140,12 @@ HeaderFile=SendStats.h
 ImplementationFile=SendStats.cpp
 BaseClass=CDialog
 Filter=D
+LastObject=CSendStats
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=CConfigDialog
-ControlCount=96
+ControlCount=98
 Control1=IDC_FRAME_DEPOT_WALKER,button,1342177287
 Control2=IDC_FRAME_DEBUGGING,button,1342177287
 Control3=IDC_FRAME_TRAINING,button,1342177287
@@ -241,6 +242,8 @@ Control93=IDC_TRAINING_ATTACK_MODE,combobox,1344339971
 Control94=IDC_PAUSING_ENABLE,button,1342242819
 Control95=IDC_TRAINING_WEAPON_HAND,button,1342242819
 Control96=IDC_AUTORESEARCH,button,1342255107
+Control97=IDC_STATIC,static,1342308864
+Control98=IDC_TOOL_AUTOATTACK_RADIUS,edit,1350631552
 
 [DLG:IDD_SENDSTATS (Polish)]
 Type=1

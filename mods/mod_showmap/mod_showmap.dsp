@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_showmap.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -175,6 +175,10 @@ SOURCE=.\res\bmp00003.bmp
 # Begin Source File
 
 SOURCE=.\res\map_bloced.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_block.bmp
 # End Source File
 # Begin Source File
 

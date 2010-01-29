@@ -6,38 +6,6 @@
 --------------------Configuration: mod_creatureinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP124A.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_creatureinfo.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\sdk\MyDialog.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP124A.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP124B.tmp" with contents
-[
-../../xerces.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_creatureinfo.pdb" /debug /machine:I386 /def:".\mod_creatureinfo.def" /out:"C:\Program Files\Tibia Auto\mods/mod_creatureinfo.dll" /implib:"Debug/mod_creatureinfo.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\KnownInfo.obj"
-".\Debug\mod_creatureinfo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\NameChanger.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\Util.obj"
-".\Debug\mod_creatureinfo.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP124B.tmp"
-<h3>Output Window</h3>
-Compiling...
-MyDialog.cpp
-Linking...
-   Creating library Debug/mod_creatureinfo.lib and object Debug/mod_creatureinfo.exp
 
 
 

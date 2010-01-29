@@ -41,6 +41,9 @@ public:
 	int getTradeCountPartner();
 	int getTradeCountSelf();
 	int getAttackedCreature();
+	void setAttackedCreature(int tibiaId);	
+	int getFollowedCreature();
+	void setFollowedCreature(int tibiaId);	
 	char * GetLoggedChar(int processId);
 	int readBattleListMax();
 	int readBattleListMin();
@@ -112,7 +115,6 @@ public:
 	int getCreatureDeltaX(int creatureNr);
 	int getCreatureDeltaY(int creatureNr);
 
-	void setAttackedCreature(int tibiaId);	
 	CTibiaVIPEntry *readVIPEntry(int vipNr);
 	CMemReaderProxy();
 	virtual ~CMemReaderProxy();

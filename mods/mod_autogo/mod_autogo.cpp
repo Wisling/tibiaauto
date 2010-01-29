@@ -460,7 +460,7 @@ void alarmAction(int alarmId, CConfigData *config){
 	//}
 	if (iAction&ACTION_LOGOUT){				
 		//sender.sendTAMessage("Logout");
-		if(!reader.getSelfEventFlags()&(128+8192))
+		if(!(reader.getSelfEventFlags()&(128+8192)))
 			sender.logout();
 	}
 	if (iAction&ACTION_KILL){
