@@ -207,3 +207,5 @@ EXPORTS
 	cleanupTibiaTiles @201
 	tibiaItemCleanup @202
 	tibiaMapClearDistance @203
+	memReadGetFollowedCreature @204
+	memReadSetFollowedCreature @205

@@ -265,6 +265,37 @@ static PyObject *tibiaauto_reader_getAttackedCreature(PyObject *self, PyObject *
 	
 	return ret;
 }
+static PyObject *tibiaauto_reader_setAttackedCreature(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+
+	reader.setAttackedCreature(arg1);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+static PyObject *tibiaauto_reader_getFollowedCreature(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+	
+	int arg1=reader.getFollowedCreature();
+	PyObject *ret = Py_BuildValue("i",arg1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_reader_setFollowedCreature(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+
+	reader.setFollowedCreature(arg1);
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
 static PyObject *tibiaauto_reader_GetLoggedChar(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -1083,11 +1114,12 @@ static PyObject *tibiaauto_sender_closeContainer(PyObject *self, PyObject *args)
 static PyObject *tibiaauto_sender_attackMode(PyObject *self, PyObject *args)
 {	
 	CPackSenderProxy sender;
+	CMemReaderProxy reader;
 
 	int arg1,arg2,arg3;
 	if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)){
 		PyErr_Clear();
-		arg3=1;
+		arg3=reader.getPlayerModeAttackPlayers();
 		if (!PyArg_ParseTuple(args, "ii",&arg1,&arg2)) return NULL;	
 	}
 	sender.attackMode(arg1,arg2,arg3);
@@ -2077,18 +2109,6 @@ static PyObject *tibiaauto_reader_writeCreatureDeltaXY(PyObject *self, PyObject 
 	return Py_None; 
 }
 
-
-static PyObject *tibiaauto_reader_setAttackedCreature(PyObject *self, PyObject *args)
-{
-	CMemReaderProxy reader;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
-
-	reader.setAttackedCreature(arg1);
-	Py_INCREF(Py_None);
-	return Py_None; 
-}
 
 static PyObject *tibiaauto_reader_getCreatureDeltaX(PyObject *self, PyObject *args)
 {	

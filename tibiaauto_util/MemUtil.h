@@ -12,7 +12,7 @@
 class CMemUtil  
 {
 public:	
-	static int SetMemRange(int processId,DWORD memAddressStart,DWORD memAddressEnd,char *data);
+	static int SetMemRanvge(int processId,DWORD memAddressStart,DWORD memAddressEnd,char *data);
 	static int SetMemRange(DWORD memAddressStart,DWORD memAddressEnd,char *data);
 	static long int GetMemIntValue(DWORD memAddress);
 	static int GetMemIntValue(long processId,DWORD memAddress,long int *value);

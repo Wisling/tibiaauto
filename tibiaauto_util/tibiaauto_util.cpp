@@ -212,6 +212,21 @@ int memReadGetAttackedCreature()
 	startMemReader();
 	return reader->getAttackedCreature();
 }
+void memReadSetAttackedCreature(int tibiaId)
+{	
+	startMemReader();
+	reader->setAttackedCreature(tibiaId);	
+}
+int memReadGetFollowedCreature()
+{
+	startMemReader();
+	return reader->getFollowedCreature();
+}
+void memReadSetFollowedCreature(int tibiaId)
+{	
+	startMemReader();
+	reader->setFollowedCreature(tibiaId);	
+}
 char * memReadGetLoggedChar(int processId)
 {
 	startMemReader();
@@ -1112,12 +1127,6 @@ void memReadWriteCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
 {	
 	startMemReader();
 	reader->writeCreatureDeltaXY(creatureNr,deltaX,deltaY);	
-}
-
-void memReadSetAttackedCreature(int tibiaId)
-{	
-	startMemReader();
-	reader->setAttackedCreature(tibiaId);	
 }
 
 int memReadGetCreatureDeltaX(int creatureNr)

@@ -41,7 +41,31 @@ static char THIS_FILE[]=__FILE__;
 CUIntArray *CTibiaItem::foodList=NULL;
 int CTibiaItem::itemListsFresh=0;
 int CTibiaItem::xmlInitialised=0;
+/*
+class CTibiaTreeNode{
+	char name[40];
+	int id;
+	vector<CTibiaTreeNode*> children;
+	CTibiaTreeNode* parent;
 
+	CTibiaTreeNode(CTibiaTreeNode* a_parent){
+		id=0;
+		parent=a_parent;
+	}
+
+	CTibiaTreeNode(int a_id, CTibiaTreeNode* a_parent){
+		id=a_id; 
+		parent=a_parent;
+	}
+
+};
+
+class CTibiaTree{
+
+	CTibiaTree(){};
+
+};
+*/
 char CTibiaItem::itemsItems[MAX_ITEMS][MAX_ITEM_LEN];
 int CTibiaItem::itemsItemsId[MAX_ITEMS];
 int CTibiaItem::itemsItemsExtra[MAX_ITEMS];
@@ -608,7 +632,285 @@ void CTibiaItem::refreshItemLists()
 	foodList=NULL;
 	LeaveCriticalSection(&ItemsInitCriticalSection);
 }
- 
+/*wis
+void refreshItemLists2()
+{	
+	EnterCriticalSection(&ItemsInitCriticalSection);
+	if (itemListsFresh) 
+	{
+		LeaveCriticalSection(&ItemsInitCriticalSection);
+		return;
+	}
+	itemListsFresh=1;
+	if (!xmlInitialised)
+	{
+		XMLPlatformUtils::Initialize();
+		xmlInitialised=1;
+	}
+
+	char installPath[1024];
+	unsigned long installPathLen=1023;
+	installPath[0]='\0';
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	{
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+	
+	
+	
+
+	XercesDOMParser *parser = new XercesDOMParser();
+	try
+	{	
+		int listNr,itemNr,rootNr;
+
+		itemsItemsCount=0;
+		itemsLootedCount=0;
+		itemsCorpsesCount=0;
+		itemsFoodCount=0;
+		constsCount=0;
+				
+		char pathBuf[2048];
+		sprintf(pathBuf,"%s\\mods\\tibiaauto-items.xml",installPath);
+		parser->parse(pathBuf);
+		DOMNode  *doc = parser->getDocument();
+		for (rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
+		{			
+			DOMNode *root = doc->getChildNodes()->item(rootNr);
+				
+			if (wcscmp(root->getNodeName(),_L("item-definitions")))
+				continue;			
+			for (listNr=0;listNr<root->getChildNodes()->getLength();listNr++)
+			{
+				DOMNode *listNode = root->getChildNodes()->item(listNr);			
+				if (!wcscmp(listNode->getNodeName(),_L("items"))) {
+					
+					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+					{
+						int attrNr;
+						DOMNode *item = listNode->getChildNodes()->item(itemNr);
+						if (wcscmp(item->getNodeName(),_L("item")))
+							continue;
+						
+						int objectId=0;
+						char *objectName=NULL;						
+						
+						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
+						{
+							DOMNode *attrNode = item->getAttributes()->item(attrNr);
+							if (!wcscmp(attrNode->getNodeName(),_L("name")))							
+								objectName=CUtil::wc2c(attrNode->getNodeValue());																							
+							if (!wcscmp(attrNode->getNodeName(),_L("id")))
+							{
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								sscanf(idTmp,"0x%x",&objectId);
+								free(idTmp);
+							}
+						}			 			
+						if (!objectId||!objectName||!strlen(objectName))
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
+						memcpy(itemsItems[itemsItemsCount],objectName,strlen(objectName)+1);
+						itemsItemsId[itemsItemsCount]=objectId;
+						itemsItemsCount++;
+						if (objectName) free(objectName);
+					}
+				}
+				if (!wcscmp(listNode->getNodeName(),_L("foods"))) {
+					
+					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+					{
+						int attrNr;
+						DOMNode *item = listNode->getChildNodes()->item(itemNr);
+						if (wcscmp(item->getNodeName(),_L("item")))
+							continue;
+						
+						int objectId=0;
+						int eatTime = 0;
+						char *objectName=NULL;						
+						
+						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
+						{
+							DOMNode *attrNode = item->getAttributes()->item(attrNr);
+							if (!wcscmp(attrNode->getNodeName(),_L("name")))							
+								objectName=CUtil::wc2c(attrNode->getNodeValue());																							
+							if (!wcscmp(attrNode->getNodeName(),_L("id")))
+							{
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								sscanf(idTmp,"0x%x",&objectId);
+								free(idTmp);
+							}
+							if (!wcscmp(attrNode->getNodeName(),_L("time"))) {
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								sscanf(idTmp,"%d",&eatTime);
+								free(idTmp);
+							}
+						}			 			
+						if (!objectId||!objectName||!strlen(objectName))
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
+						
+						
+						memcpy(itemsFood[itemsFoodCount],objectName,strlen(objectName)+1);
+						itemsFoodId[itemsFoodCount]=objectId;
+						itemsFoodTime[itemsFoodCount] = eatTime;
+						itemsFoodCount++;
+						if (objectName) free(objectName);
+					}
+				}
+
+				if (!wcscmp(listNode->getNodeName(),_L("corpses"))) {
+					
+					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+					{
+						int attrNr;
+						DOMNode *item = listNode->getChildNodes()->item(itemNr);
+						if (wcscmp(item->getNodeName(),_L("item")))
+							continue;
+						
+						int objectId=0;
+						char *objectName=NULL;						
+						
+						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
+						{
+							DOMNode *attrNode = item->getAttributes()->item(attrNr);
+							if (!wcscmp(attrNode->getNodeName(),_L("name")))							
+								objectName=CUtil::wc2c(attrNode->getNodeValue());																							
+							if (!wcscmp(attrNode->getNodeName(),_L("id")))
+							{
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								sscanf(idTmp,"0x%x",&objectId);
+								free(idTmp);
+							}
+						}			 			
+						if (!objectId||!objectName||!strlen(objectName))
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
+						
+						memcpy(itemsCorpses[itemsCorpsesCount],objectName,strlen(objectName)+1);
+						itemsCorpsesId[itemsCorpsesCount]=objectId;
+						itemsCorpsesCount++;
+						if (objectName) free(objectName);
+					}
+				}
+
+				if (!wcscmp(listNode->getNodeName(),_L("looted"))) {
+					
+					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+					{
+						int attrNr;
+						DOMNode *item = listNode->getChildNodes()->item(itemNr);
+						if (wcscmp(item->getNodeName(),_L("item")))
+							continue;
+						
+						int objectId=0;
+						char *objectName=NULL;						
+						
+						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
+						{
+							DOMNode *attrNode = item->getAttributes()->item(attrNr);
+							if (!wcscmp(attrNode->getNodeName(),_L("name")))							
+								objectName=CUtil::wc2c(attrNode->getNodeValue());																							
+							if (!wcscmp(attrNode->getNodeName(),_L("id")))
+							{
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								sscanf(idTmp,"0x%x",&objectId);
+								free(idTmp);
+							}
+						}			 			
+						if (!objectId||!objectName||!strlen(objectName))
+						{
+							if (objectName) free(objectName);
+							continue;						
+						}
+						
+						memcpy(itemsLooted[itemsLootedCount],objectName,strlen(objectName)+1);
+						itemsLootedId[itemsLootedCount]=objectId;
+						itemsLootedCount++;
+						if (objectName) free(objectName);
+					}
+				}
+
+				if (!wcscmp(listNode->getNodeName(),_L("consts"))) {
+					
+					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+					{
+						int attrNr;
+						DOMNode *item = listNode->getChildNodes()->item(itemNr);
+						if (wcscmp(item->getNodeName(),_L("const")))
+							continue;
+						
+						int constValue=0;
+						char *constCode=NULL;						
+						
+						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
+						{
+							DOMNode *attrNode = item->getAttributes()->item(attrNr);
+							if (!wcscmp(attrNode->getNodeName(),_L("code")))							
+								constCode=CUtil::wc2c(attrNode->getNodeValue());																							
+							if (!wcscmp(attrNode->getNodeName(),_L("value")))
+							{
+								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+								if (idTmp[0]=='0'&&idTmp[1]=='x')
+								{
+									// 0xFFFF pattern
+									sscanf(idTmp,"0x%x",&constValue);
+								} else {
+									// 1234 pattern
+									sscanf(idTmp,"%d",&constValue);
+								}
+								free(idTmp);
+							}
+						}			 			
+						if (!constCode||!strlen(constCode))
+						{
+							if (constCode) free(constCode);
+							continue;
+						}
+
+						int i,len;
+						len=strlen(constCode);
+						for (i=0;i<len;i++)
+							constCode[i]=tolower(constCode[i]);
+						
+						memcpy(constsCode[constsCount],constCode,strlen(constCode)+1);
+						constsValue[constsCount]=constValue;
+						constsCount++;
+
+						if (constCode) free(constCode);						
+					}
+				}
+				
+			}
+		}
+		
+	} catch (...)
+	{
+		AfxMessageBox("Unable to load item definitions!");
+	}
+
+	delete parser;		
+
+
+	// remove cached food list
+	delete foodList;
+	foodList=NULL;
+	LeaveCriticalSection(&ItemsInitCriticalSection);
+}
+ */
 void CTibiaItem::saveItemLists() {
 	if (!xmlInitialised) {
 		XMLPlatformUtils::Initialize();

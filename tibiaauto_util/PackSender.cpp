@@ -338,6 +338,9 @@ void CPackSender::stepMulti(int *direction, int size)
 
 void CPackSender::attack(int tibiaCharId)
 {
+	CMemReader reader;
+	reader.setAttackedCreature(tibiaCharId);
+
 	char sendbuf[7];
 	sendbuf[0]=5;
 	sendbuf[1]=0;
@@ -352,6 +355,9 @@ void CPackSender::attack(int tibiaCharId)
 
 void CPackSender::follow(int tibiaCharId)
 {
+	CMemReader reader;
+	reader.setFollowedCreature(tibiaCharId);
+
 	char sendbuf[7];
 	sendbuf[0]=5;
 	sendbuf[1]=0;

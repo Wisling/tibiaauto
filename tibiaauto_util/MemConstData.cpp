@@ -45,6 +45,7 @@ CMemConstData::CMemConstData()
 	m_memAddressMlvl                = offset + itemProxy.getValueForConst("addrMlvl");
 	m_memAddressMlvlPercLeft        = offset + itemProxy.getValueForConst("addrMlvlPercLeft");
 	m_memAddressAttackedCreature    = offset + itemProxy.getValueForConst("addrAttackedCreature"); 
+	m_memAddressFollowedCreature    = m_memAddressAttackedCreature + 4;
 	m_memAddressSoulPoints          = offset + itemProxy.getValueForConst("addrSoulPoints");
 	m_memAddressTradeCountSelf      = offset + itemProxy.getValueForConst("addrTradeCountSelf");
 	m_memAddressTradeCountPartner   = offset + itemProxy.getValueForConst("addrTradeCountPartner");

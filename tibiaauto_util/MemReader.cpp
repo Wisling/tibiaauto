@@ -234,6 +234,21 @@ int CMemReader::getAttackedCreature()
 	return CMemUtil::GetMemIntValue(m_memAddressAttackedCreature);
 }
 
+void CMemReader::setAttackedCreature(int tibiaId)
+{	
+	CMemUtil::SetMemIntValue(m_memAddressAttackedCreature,tibiaId);
+}
+
+int CMemReader::getFollowedCreature(int tibiaId)
+{	
+	return CMemUtil::GetMemIntValue(m_memAddressFollowedCreature);
+}
+
+void CMemReader::setFollowedCreature(int tibiaId)
+{	
+	CMemUtil::SetMemIntValue(m_memAddressFollowedCreature,tibiaId);
+}
+
 CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
 {		
 	CMemReader reader;
@@ -985,11 +1000,6 @@ void CMemReader::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
 {	
 	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+48,deltaX);
 	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+52,deltaY);
-}
-
-void CMemReader::setAttackedCreature(int tibiaId)
-{	
-	CMemUtil::SetMemIntValue(m_memAddressAttackedCreature,tibiaId);
 }
 
 int CMemReader::getCreatureDeltaX(int creatureNr)
