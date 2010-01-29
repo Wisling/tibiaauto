@@ -140,7 +140,7 @@ int ensureForeground(HWND hwnd)
 {
 	CRect rect;
 	GetWindowRect(hwnd,rect);
-	SetWindowPos((HWND__ *)&CWnd::wndTop,hwnd, rect.left, rect.top, rect.Width(),  rect.Height(), SWP_SHOWWINDOW);
+	SetWindowPos(hwnd,HWND_TOP, rect.left, rect.top, rect.Width(),  rect.Height(), SWP_SHOWWINDOW);
 
 		int i;
 	if (::IsIconic(hwnd)) return 1;
@@ -246,7 +246,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			CRect wndRect;
 			
 			CSendKeys sk;
-			HWND  hwnd=getTibiaWindow(reader.getProcessId());			
+			HWND  hwnd=getTibiaWindow(reader.getProcessId());
 			
 			
 			

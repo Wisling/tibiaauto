@@ -12,6 +12,7 @@
 #define IDB_UNCHECK                     3006
 #define IDB_CHECK                       3007
 #define IDD_FULL_ITEM_LIST_ADD          3007
+#define IDB_HALFCHECK                   3008
 #define IDC_ITEM_ADD_NAME               3013
 #define IDC_ITEM_ADD_ID                 3014
 #define IDC_ADD_ITEM                    3015

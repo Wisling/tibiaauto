@@ -81,7 +81,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"../../tibiaauto-pub/mods/alice.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/alice.dll" /pdbtype:sept
 
 !ENDIF 
 

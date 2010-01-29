@@ -22,7 +22,7 @@
 	<creature name="Green Frog" hp="25" exp="0" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
 	<creature name="Grorlam" hp="3000" exp="1600" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
 	<creature name="Grynch Clan Goblin" hp="80" exp="4" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
-	<creature name="Hairy One" hp="325" exp="115" physical="2" earth="2" fire="2" energy="5" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Hairy One" hp="325" exp="115" physical="2" earth="2" fire="5" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Halloween Hare" hp="???" exp="0" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Inky" hp="250" exp="???" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
 	<creature name="Lersatio" hp="1800" exp="2000" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
@@ -55,241 +55,258 @@
 	<creature name="The Evil Eye" hp="1200" exp="500" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
 	<creature name="The Horned Fox" hp="???" exp="200" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
 	<creature name="The Old Widow" hp="3200" exp="2800" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
-	<creature name="Thul" hp="3000" exp="1800" physical="2" earth="2" fire="0" energy="2" ice="5" holy="2" death="0" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Thul" hp="3000" exp="1800" physical="2" earth="0" fire="2" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Tibia Bug" hp="270" exp="50" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Tiquandas Revenge" hp="2400" exp="2635" physical="1" earth="1" fire="5" energy="0" ice="2" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Tiquandas Revenge" hp="2400" exp="2635" physical="1" earth="5" fire="0" energy="2" ice="1" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
 	<creature name="Vashresamun" hp="3920" exp="2950" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
-	<creature name="Verminor" hp="???" exp="???" physical="2" earth="2" fire="0" energy="2" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Verminor" hp="???" exp="???" physical="2" earth="0" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Yeti" hp="950" exp="460" physical="???" earth="???" fire="???" energy="???" ice="???" holy="???" death="???" see_invisible="???" paralysis_immune="???"/>
-	<creature name="Acid Blob" hp="250" exp="250" physical="2" earth="0" fire="5" energy="5" ice="1" holy="2" death="0" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Acolyte Of The Cult" hp="390" exp="300" physical="5" earth="1" fire="2" energy="5" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Adept Of The Cult" hp="430" exp="400" physical="2" earth="1" fire="2" energy="5" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Amazon" hp="110" exp="60" physical="5" earth="2" fire="2" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Ancient Scarab" hp="1000" exp="720" physical="1" earth="0" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Assassin" hp="175" exp="105" physical="5" earth="2" fire="2" energy="2" ice="2" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Azure Frog" hp="60" exp="20" physical="2" earth="2" fire="5" energy="2" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Acid Blob" hp="250" exp="250" physical="0" earth="5" fire="5" energy="1" ice="0" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Acolyte Of The Cult" hp="390" exp="300" physical="1" earth="2" fire="5" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Adept Of The Cult" hp="430" exp="400" physical="1" earth="2" fire="5" energy="1" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Amazon" hp="110" exp="60" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Ancient Scarab" hp="1000" exp="720" physical="0" earth="5" fire="1" energy="5" ice="2" holy="2" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Assassin" hp="175" exp="105" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Azure Frog" hp="60" exp="20" physical="2" earth="5" fire="2" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Badger" hp="23" exp="5" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Bandit" hp="245" exp="65" physical="5" earth="2" fire="2" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Banshee" hp="1000" exp="900" physical="2" earth="0" fire="0" energy="2" ice="2" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Barbarian Bloodwalker" hp="305" exp="195" physical="1" earth="5" fire="2" energy="1" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Barbarian Brutetamer" hp="145" exp="90" physical="5" earth="2" fire="2" energy="1" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Barbarian Headsplitter" hp="100" exp="85" physical="2" earth="5" fire="2" energy="1" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Barbarian Skullhunter" hp="135" exp="85" physical="1" earth="5" fire="2" energy="1" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Bat" hp="30" exp="10" physical="2" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Bear" hp="80" exp="23" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Behemoth" hp="4000" exp="2500" physical="1" earth="1" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Beholder" hp="260" exp="170" physical="2" earth="0" fire="5" energy="2" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Betrayed Wraith" hp="4200" exp="3500" physical="2" earth="0" fire="0" energy="0" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Black Knight" hp="1800" exp="1600" physical="1" earth="0" fire="1" energy="1" ice="0" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Blightwalker" hp="8900" exp="5850" physical="5" earth="0" fire="1" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Blood Crab" hp="290" exp="160" physical="1" earth="0" fire="5" energy="5" ice="0" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Blue Djinn" hp="330" exp="215" physical="2" earth="2" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Bog Raider" hp="1300" exp="800" physical="5" earth="1" fire="1" energy="5" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Bonebeast" hp="515" exp="580" physical="2" earth="0" fire="5" energy="2" ice="2" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Braindeath" hp="1225" exp="985" physical="1" earth="0" fire="5" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Bug" hp="29" exp="18" physical="2" earth="2" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Bandit" hp="245" exp="65" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Banshee" hp="1000" exp="900" physical="0" earth="0" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Barbarian Bloodwalker" hp="305" exp="195" physical="5" earth="2" fire="1" energy="1" ice="5" holy="1" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Barbarian Brutetamer" hp="145" exp="90" physical="2" earth="2" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Barbarian Headsplitter" hp="100" exp="85" physical="5" earth="2" fire="1" energy="1" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Barbarian Skullhunter" hp="135" exp="85" physical="5" earth="2" fire="1" energy="1" ice="5" holy="1" death="1" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Bat" hp="30" exp="10" physical="5" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Bear" hp="80" exp="23" physical="2" earth="2" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Behemoth" hp="4000" exp="2500" physical="1" earth="1" fire="1" energy="5" ice="5" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Beholder" hp="260" exp="170" physical="0" earth="5" fire="2" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Betrayed Wraith" hp="4200" exp="3500" physical="0" earth="0" fire="0" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Black Knight" hp="1800" exp="1600" physical="0" earth="1" fire="1" energy="0" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Blightwalker" hp="8900" exp="5850" physical="0" earth="1" fire="1" energy="1" ice="0" holy="5" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Blood Crab" hp="290" exp="160" physical="0" earth="5" fire="5" energy="0" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Blue Djinn" hp="330" exp="215" physical="2" earth="1" fire="1" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Bog Raider" hp="1300" exp="800" physical="1" earth="1" fire="5" energy="5" ice="1" holy="5" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Bonebeast" hp="515" exp="580" physical="0" earth="5" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Braindeath" hp="1225" exp="985" physical="0" earth="5" fire="1" energy="1" ice="0" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Bug" hp="29" exp="18" physical="2" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Butterfly" hp="2" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Carniphila" hp="255" exp="150" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Carrion Worm" hp="145" exp="70" physical="2" earth="1" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Carniphila" hp="255" exp="150" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Carrion Worm" hp="145" exp="70" physical="1" earth="5" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Cat" hp="20" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Cave Rat" hp="30" exp="10" physical="2" earth="2" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Centipede" hp="70" exp="34" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Chakoya Toolshaper" hp="80" exp="40" physical="2" earth="2" fire="1" energy="5" ice="0" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Chakoya Tribewarden" hp="68" exp="40" physical="2" earth="2" fire="1" energy="5" ice="0" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Chakoya Windcaller" hp="84" exp="48" physical="2" earth="2" fire="1" energy="5" ice="0" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Cave Rat" hp="30" exp="10" physical="2" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Centipede" hp="70" exp="34" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Chakoya Toolshaper" hp="80" exp="40" physical="2" earth="1" fire="5" energy="0" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Chakoya Tribewarden" hp="68" exp="40" physical="2" earth="1" fire="5" energy="0" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Chakoya Windcaller" hp="84" exp="48" physical="2" earth="1" fire="5" energy="0" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Chicken" hp="15" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Cobra" hp="65" exp="30" physical="2" earth="0" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Crab" hp="55" exp="30" physical="2" earth="0" fire="5" energy="5" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Crazed Beggar" hp="100" exp="35" physical="1" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Crocodile" hp="105" exp="40" physical="5" earth="1" fire="5" energy="5" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Crypt Shambler" hp="330" exp="195" physical="2" earth="0" fire="2" energy="2" ice="2" holy="5" death="0" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Crystal Spider" hp="1250" exp="900" physical="2" earth="1" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Cyclops" hp="260" exp="150" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Cyclops Drone" hp="325" exp="200" physical="2" earth="5" fire="2" energy="1" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Cyclops Smith" hp="435" exp="255" physical="2" earth="5" fire="1" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dark Apprentice" hp="225" exp="100" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Dark Magician" hp="325" exp="185" physical="2" earth="1" fire="1" energy="1" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Dark Monk" hp="190" exp="145" physical="5" earth="2" fire="2" energy="2" ice="2" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Dark Torturer" hp="7350" exp="4650" physical="2" earth="1" fire="0" energy="1" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Death Blob" hp="320" exp="300" physical="1" earth="0" fire="5" energy="5" ice="1" holy="5" death="0" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Cobra" hp="65" exp="30" physical="0" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Crab" hp="55" exp="30" physical="0" earth="5" fire="5" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Crazed Beggar" hp="100" exp="35" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Crocodile" hp="105" exp="40" physical="1" earth="5" fire="5" energy="1" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Crypt Shambler" hp="330" exp="195" physical="0" earth="2" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Crystal Spider" hp="1250" exp="900" physical="1" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Cyclops" hp="260" exp="150" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Cyclops Drone" hp="325" exp="200" physical="5" earth="2" fire="1" energy="1" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Cyclops Smith" hp="435" exp="255" physical="5" earth="1" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Dark Apprentice" hp="225" exp="100" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Dark Magician" hp="325" exp="185" physical="1" earth="1" fire="1" energy="1" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Dark Monk" hp="190" exp="145" physical="2" earth="2" fire="2" energy="2" ice="1" holy="5" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Dark Torturer" hp="7350" exp="4650" physical="1" earth="0" fire="1" energy="5" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Death Blob" hp="320" exp="300" physical="0" earth="5" fire="5" energy="1" ice="0" holy="5" death="1" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Deer" hp="25" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Defiler" hp="3650" exp="3700" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Demon" hp="8200" exp="6000" physical="1" earth="1" fire="0" energy="1" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Demon Skeleton" hp="400" exp="240" physical="2" earth="0" fire="0" energy="2" ice="2" holy="5" death="0" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Destroyer" hp="3700" exp="2500" physical="1" earth="1" fire="1" energy="0" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Diabolic Imp" hp="1950" exp="2900" physical="2" earth="1" fire="0" energy="2" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Defiler" hp="3650" exp="3700" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Demon" hp="8200" exp="6000" physical="1" earth="0" fire="1" energy="5" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Demon Skeleton" hp="400" exp="240" physical="0" earth="0" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Destroyer" hp="3700" exp="2500" physical="1" earth="1" fire="0" energy="5" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Diabolic Imp" hp="1950" exp="2900" physical="1" earth="0" fire="2" energy="5" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Dog" hp="20" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dragon" hp="1000" exp="700" physical="2" earth="1" fire="0" energy="1" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Dragon Hatchling" hp="380" exp="185" physical="2" earth="1" fire="0" energy="5" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Dragon Lord" hp="1900" exp="2100" physical="2" earth="1" fire="0" energy="1" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Dragon Lord Hatchling" hp="750" exp="645" physical="2" earth="1" fire="0" energy="5" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Dwarf" hp="90" exp="45" physical="2" earth="1" fire="5" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dwarf Geomancer" hp="380" exp="265" physical="2" earth="1" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Dwarf Guard" hp="245" exp="165" physical="1" earth="1" fire="5" energy="2" ice="2" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Dwarf Miner" hp="120" exp="60" physical="2" earth="1" fire="5" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dwarf Soldier" hp="135" exp="70" physical="2" earth="1" fire="5" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dworc Fleshhunter" hp="85" exp="40" physical="2" earth="0" fire="5" energy="2" ice="5" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dworc Venomsniper" hp="80" exp="35" physical="2" earth="0" fire="5" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Dworc Voodoomaster" hp="80" exp="55" physical="2" earth="0" fire="5" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Earth Elemental" hp="650" exp="450" physical="1" earth="0" fire="5" energy="0" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Efreet" hp="550" exp="325" physical="2" earth="1" fire="1" energy="1" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Elder Beholder" hp="500" exp="280" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Elephant" hp="320" exp="160" physical="1" earth="2" fire="2" energy="5" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Elf" hp="100" exp="42" physical="2" earth="2" fire="2" energy="2" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Elf Arcanist" hp="220" exp="175" physical="2" earth="2" fire="1" energy="1" ice="2" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Elf Scout" hp="160" exp="75" physical="2" earth="2" fire="2" energy="2" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Energy Elemental" hp="500" exp="550" physical="1" earth="5" fire="0" energy="0" ice="0" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Enlightened Of The Cult" hp="700" exp="500" physical="5" earth="2" fire="2" energy="5" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Fire Devil" hp="200" exp="110" physical="1" earth="1" fire="0" energy="1" ice="5" holy="5" death="1" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Fire Elemental" hp="280" exp="220" physical="2" earth="2" fire="0" energy="2" ice="5" holy="2" death="0" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Dragon" hp="1000" exp="700" physical="1" earth="0" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Dragon Hatchling" hp="380" exp="185" physical="1" earth="0" fire="5" energy="5" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Dragon Lord" hp="1900" exp="2100" physical="1" earth="0" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Dragon Lord Hatchling" hp="750" exp="645" physical="1" earth="0" fire="5" energy="5" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Dwarf" hp="90" exp="45" physical="1" earth="5" fire="2" energy="2" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Dwarf Geomancer" hp="380" exp="265" physical="1" earth="1" fire="1" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Dwarf Guard" hp="245" exp="165" physical="1" earth="5" fire="2" energy="2" ice="5" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Dwarf Miner" hp="120" exp="60" physical="1" earth="5" fire="2" energy="2" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Dwarf Soldier" hp="135" exp="70" physical="1" earth="5" fire="2" energy="2" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Dworc Fleshhunter" hp="85" exp="40" physical="0" earth="5" fire="2" energy="5" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Dworc Venomsniper" hp="80" exp="35" physical="0" earth="5" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Dworc Voodoomaster" hp="80" exp="55" physical="0" earth="5" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Earth Elemental" hp="650" exp="450" physical="0" earth="5" fire="0" energy="1" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Efreet" hp="550" exp="325" physical="1" earth="1" fire="1" energy="5" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Elder Beholder" hp="500" exp="280" physical="0" earth="5" fire="1" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Elephant" hp="320" exp="160" physical="2" earth="2" fire="5" energy="1" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Elf" hp="100" exp="42" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Elf Arcanist" hp="220" exp="175" physical="2" earth="1" fire="1" energy="2" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Elf Scout" hp="160" exp="75" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Energy Elemental" hp="500" exp="550" physical="5" earth="0" fire="0" energy="0" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Enlightened Of The Cult" hp="700" exp="500" physical="2" earth="2" fire="5" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Fire Devil" hp="200" exp="110" physical="1" earth="0" fire="1" energy="5" ice="1" holy="5" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Fire Elemental" hp="280" exp="220" physical="2" earth="0" fire="2" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Flamingo" hp="25" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Frost Dragon" hp="1800" exp="2100" physical="1" earth="0" fire="0" energy="2" ice="0" holy="2" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Frost Dragon Hatchling" hp="800" exp="745" physical="2" earth="0" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Frost Giant" hp="270" exp="150" physical="2" earth="2" fire="2" energy="2" ice="0" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Frost Giantess" hp="275" exp="150" physical="2" earth="2" fire="1" energy="5" ice="0" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Frost Troll" hp="55" exp="23" physical="2" earth="5" fire="1" energy="5" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Fury" hp="4100" exp="4500" physical="5" earth="5" fire="0" energy="5" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Gang Member" hp="295" exp="70" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Gargoyle" hp="250" exp="150" physical="1" earth="0" fire="5" energy="2" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Gazer" hp="120" exp="90" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Ghost" hp="150" exp="120" physical="0" earth="0" fire="2" energy="2" ice="2" holy="2" death="0" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Ghoul" hp="100" exp="85" physical="2" earth="1" fire="2" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Giant Spider" hp="1300" exp="900" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Gladiator" hp="185" exp="90" physical="1" earth="2" fire="2" energy="2" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Goblin" hp="50" exp="25" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Goblin Assassin" hp="75" exp="52" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Goblin Scavenger" hp="60" exp="37" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Gozzler" hp="240" exp="180" physical="5" earth="2" fire="2" energy="2" ice="2" holy="1" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Green Djinn" hp="330" exp="215" physical="1" earth="2" fire="1" energy="1" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Grim Reaper" hp="4100" exp="4500" physical="1" earth="1" fire="5" energy="5" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Hand of Cursed Fate" hp="10500" exp="5000" physical="2" earth="0" fire="0" energy="0" ice="5" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Haunted Treeling" hp="450" exp="310" physical="2" earth="0" fire="5" energy="2" ice="1" holy="1" death="1" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Hellfire Fighter" hp="3800" exp="3900" physical="1" earth="2" fire="0" energy="1" ice="5" holy="2" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Hellhound" hp="7500" exp="6800" physical="2" earth="1" fire="0" energy="1" ice="5" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Hellspawn" hp="3500" exp="2550" physical="1" earth="1" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Hero" hp="1400" exp="1200" physical="1" earth="1" fire="1" energy="1" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Hunter" hp="150" exp="150" physical="5" earth="2" fire="2" energy="2" ice="2" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Frost Dragon" hp="1800" exp="2100" physical="0" earth="0" fire="2" energy="0" ice="1" holy="2" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Frost Dragon Hatchling" hp="800" exp="745" physical="0" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Frost Giant" hp="270" exp="150" physical="2" earth="2" fire="2" energy="0" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Frost Giantess" hp="275" exp="150" physical="2" earth="1" fire="5" energy="0" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Frost Troll" hp="55" exp="23" physical="5" earth="1" fire="5" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Fury" hp="4100" exp="4500" physical="5" earth="0" fire="5" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Gang Member" hp="295" exp="70" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Gargoyle" hp="250" exp="150" physical="0" earth="5" fire="2" energy="2" ice="1" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Gazer" hp="120" exp="90" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Ghost" hp="150" exp="120" physical="0" earth="2" fire="2" energy="2" ice="0" holy="2" death="0" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Ghoul" hp="100" exp="85" physical="1" earth="2" fire="1" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Giant Spider" hp="1300" exp="900" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Gladiator" hp="185" exp="90" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Goblin" hp="50" exp="25" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Goblin Assassin" hp="75" exp="52" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Goblin Scavenger" hp="60" exp="37" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Gozzler" hp="240" exp="180" physical="2" earth="2" fire="2" energy="2" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Green Djinn" hp="330" exp="215" physical="2" earth="1" fire="1" energy="5" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Grim Reaper" hp="4100" exp="4500" physical="1" earth="5" fire="5" energy="1" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Hand of Cursed Fate" hp="10500" exp="5000" physical="0" earth="0" fire="0" energy="5" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Haunted Treeling" hp="450" exp="310" physical="0" earth="5" fire="2" energy="1" ice="1" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Hellfire Fighter" hp="3800" exp="3900" physical="2" earth="0" fire="1" energy="5" ice="1" holy="2" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Hellhound" hp="7500" exp="6800" physical="1" earth="0" fire="1" energy="5" ice="2" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Hellspawn" hp="3500" exp="2550" physical="1" earth="1" fire="1" energy="5" ice="5" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Hero" hp="1400" exp="1200" physical="1" earth="1" fire="1" energy="1" ice="5" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Hunter" hp="150" exp="150" physical="2" earth="2" fire="2" energy="2" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Husky" hp="140" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Hyaena" hp="60" exp="20" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Hydra" hp="2350" exp="2100" physical="5" earth="0" fire="2" energy="5" ice="1" holy="1" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Ice Golem" hp="385" exp="295" physical="1" earth="2" fire="0" energy="5" ice="0" holy="0" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Ice Witch" hp="540" exp="580" physical="2" earth="1" fire="1" energy="5" ice="0" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Infernalist" hp="3650" exp="4000" physical="5" earth="1" fire="0" energy="0" ice="5" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Hydra" hp="2350" exp="2100" physical="0" earth="2" fire="5" energy="1" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Ice Golem" hp="385" exp="295" physical="2" earth="0" fire="5" energy="0" ice="0" holy="0" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Ice Witch" hp="540" exp="580" physical="1" earth="1" fire="5" energy="0" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Infernalist" hp="3650" exp="4000" physical="1" earth="0" fire="0" energy="5" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Island Troll" hp="50" exp="20" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Juggernaut" hp="20000" exp="8700" physical="1" earth="1" fire="1" energy="5" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Kongra" hp="340" exp="115" physical="2" earth="1" fire="1" energy="1" ice="5" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Larva" hp="70" exp="44" physical="2" earth="0" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Lich" hp="880" exp="900" physical="2" earth="0" fire="2" energy="1" ice="2" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Lion" hp="80" exp="30" physical="2" earth="1" fire="2" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Lizard Sentinel" hp="265" exp="110" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Lizard Snakecharmer" hp="325" exp="210" physical="5" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Lizard Templar" hp="410" exp="155" physical="2" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Lost Soul" hp="8500" exp="4000" physical="2" earth="0" fire="0" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Mad Scientist" hp="325" exp="205" physical="2" earth="1" fire="1" energy="1" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Mammoth" hp="320" exp="160" physical="1" earth="1" fire="5" energy="2" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Marid" hp="550" exp="325" physical="2" earth="1" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Massive Earth Elemental" hp="1330" exp="950" physical="1" earth="0" fire="5" energy="1" ice="0" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Massive Energy Elemental" hp="1100" exp="950" physical="1" earth="5" fire="0" energy="0" ice="0" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Massive Water Elemental" hp="1250" exp="1100" physical="1" earth="0" fire="0" energy="5" ice="0" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Mercury Blob" hp="150" exp="180" physical="1" earth="1" fire="1" energy="2" ice="1" holy="1" death="0" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Merlkin" hp="235" exp="145" physical="2" earth="2" fire="1" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Minotaur" hp="100" exp="50" physical="2" earth="2" fire="1" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Minotaur Archer" hp="100" exp="65" physical="2" earth="2" fire="1" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Minotaur Guard" hp="185" exp="160" physical="2" earth="2" fire="1" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Minotaur Mage" hp="155" exp="150" physical="2" earth="1" fire="2" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Monk" hp="240" exp="200" physical="5" earth="2" fire="2" energy="2" ice="2" holy="1" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Mummy" hp="240" exp="150" physical="2" earth="0" fire="2" energy="2" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Mutated Bat" hp="900" exp="615" physical="2" earth="0" fire="2" energy="2" ice="2" holy="2" death="0" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Mutated Human" hp="240" exp="150" physical="2" earth="0" fire="2" energy="2" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Mutated Rat" hp="550" exp="450" physical="2" earth="0" fire="5" energy="2" ice="2" holy="1" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Mutated Tiger" hp="1100" exp="750" physical="2" earth="1" fire="1" energy="1" ice="1" holy="2" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Necromancer" hp="580" exp="580" physical="5" earth="0" fire="5" energy="1" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Nightmare" hp="2700" exp="2150" physical="2" earth="0" fire="1" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Nightmare Scion" hp="1400" exp="1350" physical="2" earth="0" fire="1" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Nightstalker" hp="700" exp="500" physical="5" earth="2" fire="2" energy="5" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Nomad" hp="160" exp="60" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Novice Of The Cult" hp="285" exp="100" physical="5" earth="1" fire="5" energy="5" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Orc" hp="70" exp="25" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Orc Berserker" hp="210" exp="195" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Orc Leader" hp="450" exp="270" physical="2" earth="5" fire="0" energy="1" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Orc Rider" hp="180" exp="110" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Orc Shaman" hp="115" exp="110" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Orc Spearman" hp="105" exp="38" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Orc Warlord" hp="950" exp="670" physical="2" earth="5" fire="1" energy="1" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Orc Warrior" hp="125" exp="50" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Panda" hp="80" exp="23" physical="2" earth="0" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Juggernaut" hp="20000" exp="8700" physical="1" earth="1" fire="5" energy="1" ice="2" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Kongra" hp="340" exp="115" physical="1" earth="1" fire="1" energy="5" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Larva" hp="70" exp="44" physical="0" earth="5" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Lich" hp="880" exp="900" physical="0" earth="2" fire="1" energy="2" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Lion" hp="80" exp="30" physical="1" earth="2" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Lizard Sentinel" hp="265" exp="110" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lizard Snakecharmer" hp="325" exp="210" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lizard Templar" hp="410" exp="155" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Lost Soul" hp="8500" exp="4000" physical="0" earth="0" fire="1" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Mad Scientist" hp="325" exp="205" physical="1" earth="1" fire="1" energy="1" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Mammoth" hp="320" exp="160" physical="1" earth="5" fire="2" energy="1" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Marid" hp="550" exp="325" physical="1" earth="1" fire="1" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Massive Earth Elemental" hp="1330" exp="950" physical="0" earth="5" fire="1" energy="0" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Massive Energy Elemental" hp="1100" exp="950" physical="5" earth="0" fire="0" energy="0" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Massive Water Elemental" hp="1250" exp="1100" physical="0" earth="0" fire="5" energy="0" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Mercury Blob" hp="150" exp="180" physical="1" earth="1" fire="2" energy="1" ice="0" holy="1" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Merlkin" hp="235" exp="145" physical="2" earth="1" fire="1" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Minotaur" hp="100" exp="50" physical="2" earth="1" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Minotaur Archer" hp="100" exp="65" physical="2" earth="1" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Minotaur Guard" hp="185" exp="160" physical="2" earth="1" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Minotaur Mage" hp="155" exp="150" physical="1" earth="2" fire="1" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Monk" hp="240" exp="200" physical="2" earth="2" fire="2" energy="2" ice="1" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Mummy" hp="240" exp="150" physical="0" earth="2" fire="2" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Mutated Bat" hp="900" exp="615" physical="0" earth="2" fire="2" energy="2" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Mutated Human" hp="240" exp="150" physical="0" earth="2" fire="2" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Mutated Rat" hp="550" exp="450" physical="0" earth="5" fire="2" energy="2" ice="0" holy="1" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Mutated Tiger" hp="1100" exp="750" physical="1" earth="1" fire="1" energy="1" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Necromancer" hp="580" exp="580" physical="0" earth="5" fire="1" energy="1" ice="1" holy="5" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Nightmare" hp="2700" exp="2150" physical="0" earth="1" fire="1" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Nightmare Scion" hp="1400" exp="1350" physical="0" earth="1" fire="1" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Nightstalker" hp="700" exp="500" physical="2" earth="2" fire="5" energy="1" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Nomad" hp="160" exp="60" physical="2" earth="1" fire="2" energy="5" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Novice Of The Cult" hp="285" exp="100" physical="1" earth="5" fire="5" energy="1" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Orc" hp="70" exp="25" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Orc Berserker" hp="210" exp="195" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Orc Leader" hp="450" exp="270" physical="5" earth="0" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Orc Rider" hp="180" exp="110" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Orc Shaman" hp="115" exp="110" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Orc Spearman" hp="105" exp="38" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Orc Warlord" hp="950" exp="670" physical="5" earth="1" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Orc Warrior" hp="125" exp="50" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Panda" hp="80" exp="23" physical="0" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Parrot" hp="25" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Penguin" hp="33" exp="1" physical="2" earth="2" fire="2" energy="5" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Phantasm" hp="3950" exp="4400" physical="0" earth="1" fire="5" energy="5" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Penguin" hp="33" exp="1" physical="2" earth="2" fire="5" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Phantasm" hp="3950" exp="4400" physical="1" earth="5" fire="5" energy="1" ice="0" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Pig" hp="25" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Pirate Buccaneer" hp="425" exp="250" physical="5" earth="1" fire="5" energy="5" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Pirate Corsair" hp="675" exp="350" physical="2" earth="1" fire="5" energy="2" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Pirate Cutthroat" hp="325" exp="175" physical="2" earth="1" fire="5" energy="2" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Pirate Ghost" hp="275" exp="250" physical="0" earth="0" fire="2" energy="2" ice="2" holy="5" death="0" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Pirate Marauder" hp="210" exp="125" physical="2" earth="1" fire="5" energy="5" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Pirate Skeleton" hp="190" exp="85" physical="2" earth="2" fire="2" energy="2" ice="2" holy="5" death="0" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Plaguesmith" hp="8250" exp="4500" physical="2" earth="0" fire="1" energy="5" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Pirate Buccaneer" hp="425" exp="250" physical="1" earth="5" fire="5" energy="5" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Pirate Corsair" hp="675" exp="350" physical="1" earth="5" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Pirate Cutthroat" hp="325" exp="175" physical="1" earth="5" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Pirate Ghost" hp="275" exp="250" physical="0" earth="2" fire="2" energy="2" ice="0" holy="5" death="0" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Pirate Marauder" hp="210" exp="125" physical="1" earth="5" fire="5" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Pirate Skeleton" hp="190" exp="85" physical="2" earth="2" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Plaguesmith" hp="8250" exp="4500" physical="0" earth="1" fire="5" energy="1" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Poacher" hp="90" exp="70" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Poison Spider" hp="26" exp="22" physical="2" earth="0" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Polar Bear" hp="85" exp="28" physical="2" earth="2" fire="1" energy="5" ice="1" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Priestess" hp="390" exp="420" physical="5" earth="1" fire="1" energy="2" ice="2" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Quara Constrictor" hp="450" exp="250" physical="2" earth="5" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Quara Hydromancer" hp="1100" exp="800" physical="2" earth="5" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Quara Mantassin" hp="800" exp="400" physical="2" earth="5" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Quara Pincher" hp="1800" exp="1200" physical="2" earth="5" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Quara Predator" hp="2200" exp="1600" physical="2" earth="5" fire="0" energy="5" ice="0" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Poison Spider" hp="26" exp="22" physical="0" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Polar Bear" hp="85" exp="28" physical="2" earth="1" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Priestess" hp="390" exp="420" physical="1" earth="1" fire="2" energy="2" ice="1" holy="5" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Quara Constrictor" hp="450" exp="250" physical="5" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Quara Hydromancer" hp="1100" exp="800" physical="5" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Quara Mantassin" hp="800" exp="400" physical="5" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Quara Pincher" hp="1800" exp="1200" physical="5" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Quara Predator" hp="2200" exp="1600" physical="5" earth="0" fire="5" energy="0" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
 	<creature name="Rabbit" hp="15" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Rat" hp="20" exp="5" physical="2" earth="1" fire="2" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Rat" hp="20" exp="5" physical="1" earth="2" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Rotworm" hp="65" exp="40" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Scarab" hp="320" exp="120" physical="1" earth="0" fire="5" energy="1" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Scorpion" hp="45" exp="45" physical="2" earth="0" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Sea Serpent" hp="1750" exp="2300" physical="5" earth="2" fire="1" energy="5" ice="0" holy="2" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Scarab" hp="320" exp="120" physical="0" earth="5" fire="1" energy="1" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Scorpion" hp="45" exp="45" physical="0" earth="5" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Sea Serpent" hp="1750" exp="2300" physical="2" earth="1" fire="5" energy="0" ice="5" holy="2" death="5" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Seagull" hp="25" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Serpent Spawn" hp="3000" exp="3050" physical="2" earth="0" fire="5" energy="5" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Sheep" hp="20" exp="0" physical="2" earth="2" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Sibang" hp="225" exp="105" physical="2" earth="2" fire="1" energy="2" ice="5" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Serpent Spawn" hp="3000" exp="3050" physical="0" earth="5" fire="5" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Sheep" hp="20" exp="0" physical="2" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Sibang" hp="225" exp="105" physical="2" earth="1" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
 	<creature name="Silver Rabbit" hp="15" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Skeleton" hp="50" exp="35" physical="2" earth="2" fire="2" energy="2" ice="2" holy="5" death="0" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Skeleton Warrior" hp="65" exp="45" physical="2" earth="2" fire="2" energy="2" ice="2" holy="5" death="0" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Skeleton" hp="50" exp="35" physical="2" earth="2" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Skeleton Warrior" hp="65" exp="45" physical="2" earth="2" fire="2" energy="2" ice="0" holy="5" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Skunk" hp="20" exp="3" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Slime" hp="150" exp="160" physical="2" earth="0" fire="5" energy="5" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Smuggler" hp="130" exp="48" physical="5" earth="2" fire="2" energy="2" ice="2" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Snake" hp="15" exp="10" physical="2" earth="0" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Son of Verminor" hp="8500" exp="5900" physical="2" earth="0" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Spectre" hp="1350" exp="2100" physical="1" earth="0" fire="5" energy="5" ice="1" holy="2" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Spider" hp="20" exp="12" physical="2" earth="2" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Spit Nettle" hp="150" exp="20" physical="2" earth="0" fire="5" energy="0" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Slime" hp="150" exp="160" physical="0" earth="5" fire="5" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Smuggler" hp="130" exp="48" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Snake" hp="15" exp="10" physical="0" earth="5" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Son of Verminor" hp="8500" exp="5900" physical="0" earth="1" fire="1" energy="2" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Spectre" hp="1350" exp="2100" physical="0" earth="5" fire="5" energy="1" ice="0" holy="2" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Spider" hp="20" exp="12" physical="2" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Spit Nettle" hp="150" exp="20" physical="0" earth="5" fire="0" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Squirrel" hp="20" exp="0" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Stalker" hp="120" exp="90" physical="5" earth="2" fire="2" energy="2" ice="2" holy="5" death="1" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Stone Golem" hp="270" exp="160" physical="1" earth="0" fire="1" energy="1" ice="5" holy="2" death="1" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Swamp Troll" hp="55" exp="25" physical="2" earth="1" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Tarantula" hp="225" exp="120" physical="2" earth="0" fire="5" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Terror Bird" hp="300" exp="150" physical="2" earth="5" fire="5" energy="1" ice="1" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Thornback Tortoise" hp="300" exp="150" physical="1" earth="1" fire="5" energy="2" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Tiger" hp="75" exp="40" physical="2" earth="2" fire="2" energy="2" ice="5" holy="2" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Toad" hp="135" exp="60" physical="2" earth="1" fire="5" energy="2" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Tortoise" hp="185" exp="90" physical="1" earth="1" fire="5" energy="2" ice="1" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Troll" hp="50" exp="20" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Troll Champion" hp="75" exp="40" physical="2" earth="5" fire="2" energy="1" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Undead Dragon" hp="8350" exp="7200" physical="1" earth="0" fire="0" energy="2" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Undead Gladiator" hp="1000" exp="800" physical="2" earth="5" fire="1" energy="1" ice="2" holy="1" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Valkyrie" hp="190" exp="85" physical="5" earth="2" fire="1" energy="2" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Vampire" hp="475" exp="305" physical="1" earth="0" fire="5" energy="2" ice="2" holy="5" death="0" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Vampire Bride" hp="1200" exp="1050" physical="2" earth="1" fire="5" energy="1" ice="1" holy="5" death="0" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Stalker" hp="120" exp="90" physical="2" earth="2" fire="2" energy="2" ice="1" holy="5" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Stone Golem" hp="270" exp="160" physical="0" earth="1" fire="1" energy="5" ice="1" holy="2" death="1" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Swamp Troll" hp="55" exp="25" physical="1" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Tarantula" hp="225" exp="120" physical="0" earth="5" fire="1" energy="5" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Terror Bird" hp="300" exp="150" physical="5" earth="5" fire="1" energy="1" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Thornback Tortoise" hp="300" exp="150" physical="1" earth="5" fire="2" energy="1" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Tiger" hp="75" exp="40" physical="2" earth="2" fire="2" energy="5" ice="5" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Toad" hp="135" exp="60" physical="1" earth="5" fire="2" energy="1" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Tortoise" hp="185" exp="90" physical="1" earth="5" fire="2" energy="1" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Troll" hp="50" exp="20" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Troll Champion" hp="75" exp="40" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Undead Dragon" hp="8350" exp="7200" physical="0" earth="0" fire="2" energy="1" ice="0" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Undead Gladiator" hp="1000" exp="800" physical="5" earth="1" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Valkyrie" hp="190" exp="85" physical="2" earth="1" fire="2" energy="1" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Vampire" hp="475" exp="305" physical="0" earth="5" fire="2" energy="2" ice="0" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Vampire Bride" hp="1200" exp="1050" physical="1" earth="5" fire="1" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="0"/>
 	<creature name="War Golem" hp="4300" exp="2550" physical="1" earth="1" fire="1" energy="1" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="War Wolf" hp="140" exp="55" physical="2" earth="1" fire="2" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Warlock" hp="3500" exp="4000" physical="5" earth="1" fire="0" energy="0" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Wasp" hp="35" exp="24" physical="2" earth="0" fire="5" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Water Elemental" hp="550" exp="650" physical="1" earth="0" fire="0" energy="5" ice="0" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Werewolf" hp="1955" exp="1450" physical="1" earth="1" fire="5" energy="1" ice="5" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Wild Warrior" hp="135" exp="60" physical="5" earth="2" fire="2" energy="2" ice="2" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Winter Wolf" hp="30" exp="20" physical="2" earth="2" fire="1" energy="5" ice="1" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Wisp" hp="115" exp="65" physical="1" earth="1" fire="2" energy="1" ice="2" holy="2" death="0" see_invisible="0" paralysis_immune="1"/>
-	<creature name="Witch" hp="300" exp="120" physical="5" earth="1" fire="2" energy="0" ice="2" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Wolf" hp="25" exp="18" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
-	<creature name="Worker Golem" hp="1400" exp="1250" physical="1" earth="1" fire="2" energy="5" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Wyrm" hp="1825" exp="1450" physical="2" earth="1" fire="1" energy="0" ice="5" holy="2" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Wyvern" hp="795" exp="515" physical="2" earth="0" fire="2" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
-	<creature name="Young Sea Serpent" hp="1050" exp="1000" physical="5" earth="0" fire="1" energy="5" ice="0" holy="2" death="5" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Zombie" hp="500" exp="280" physical="2" earth="0" fire="1" energy="0" ice="0" holy="2" death="0" see_invisible="0" paralysis_immune="1"/>
+	<creature name="War Wolf" hp="140" exp="55" physical="1" earth="2" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Warlock" hp="3500" exp="4000" physical="1" earth="0" fire="0" energy="0" ice="2" holy="5" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Wasp" hp="35" exp="24" physical="0" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Water Elemental" hp="550" exp="650" physical="0" earth="0" fire="5" energy="0" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Werewolf" hp="1955" exp="1450" physical="1" earth="5" fire="1" energy="5" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Wild Warrior" hp="135" exp="60" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="5" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Winter Wolf" hp="30" exp="20" physical="2" earth="1" fire="5" energy="1" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Wisp" hp="115" exp="65" physical="1" earth="2" fire="1" energy="2" ice="0" holy="2" death="1" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Witch" hp="300" exp="120" physical="1" earth="2" fire="0" energy="2" ice="5" holy="2" death="5" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Wolf" hp="25" exp="18" physical="2" earth="2" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Worker Golem" hp="1400" exp="1250" physical="1" earth="2" fire="5" energy="1" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Wyrm" hp="1825" exp="1450" physical="1" earth="1" fire="0" energy="5" ice="5" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Wyvern" hp="795" exp="515" physical="0" earth="2" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Young Sea Serpent" hp="1050" exp="1000" physical="0" earth="1" fire="5" energy="0" ice="5" holy="2" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Zombie" hp="500" exp="280" physical="0" earth="1" fire="0" energy="0" ice="0" holy="2" death="2" see_invisible="0" paralysis_immune="1"/>
+	<creature name="Draken Spellweaver" hp="5000" exp="2600" physical="5" earth="0" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Draken Warmaster" hp="4150" exp="2400" physical="1" earth="0" fire="1" energy="1" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Ghastly Dragon" hp="7800" exp="4600" physical="0" earth="1" fire="5" energy="1" ice="0" holy="5" death="5" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Gnarlhound" hp="198" exp="60" physical="2" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Insect Swarm" hp="50" exp="40" physical="0" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Killer Caiman" hp="1500" exp="800" physical="1" earth="2" fire="5" energy="1" ice="2" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lancer Beetle" hp="400" exp="275" physical="0" earth="2" fire="2" energy="2" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Lizard Chosen" hp="3050" exp="2200" physical="0" earth="1" fire="1" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lizard Dragon Priest" hp="1450" exp="1320" physical="0" earth="1" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lizard High Guard" hp="1800" exp="1450" physical="0" earth="1" fire="2" energy="5" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lizard Legionnaire" hp="1400" exp="1100" physical="0" earth="1" fire="2" energy="5" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Lizard Zaogun" hp="2955" exp="1700" physical="0" earth="1" fire="1" energy="1" ice="1" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Medusa" hp="4500" exp="4050" physical="0" earth="5" fire="5" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="1"/>
+	<creature name="Orc Marauder" hp="235" exp="205" physical="5" earth="2" fire="1" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Sandcrawler" hp="30" exp="20" physical="2" earth="5" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
+	<creature name="Terramite" hp="365" exp="160" physical="1" earth="5" fire="5" energy="2" ice="2" holy="2" death="1" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Wailing Widow" hp="850" exp="450" physical="0" earth="5" fire="2" energy="2" ice="0" holy="1" death="2" see_invisible="1" paralysis_immune="1"/>
 </creatures-definitions>

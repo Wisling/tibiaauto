@@ -1182,7 +1182,6 @@ int AttackCreature(CConfigData *config,int id){
 		if (reader.getAttackedCreature()!=id){
 			reader.cancelAttackCoords();
 			Sleep(200);
-			reader.setAttackedCreature(id);
 			sender.attack(id);
 			currentPosTM=time(NULL);
 			if (config->debug&&id){
@@ -1953,7 +1952,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (currentlyAttackedCreatureNr==-1
 					||!creatureList[currentlyAttackedCreatureNr].isOnscreen
 					|| creatureList[currentlyAttackedCreatureNr].isInvisible
-					|| creatureList[currentlyAttackedCreatureNr].isDead
+					//|| creatureList[currentlyAttackedCreatureNr].isDead // if current creature is dead we still need to loot it
 					|| creatureList[currentlyAttackedCreatureNr].hpPercLeft<config->attackHpAbove
 					|| config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
 					|| config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
@@ -1975,6 +1974,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 				}
 			}
+			//if no best creature, then something probably ran away.quickly
 			else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft!=0) currentlyAttackedCreatureNr=-1;
 			if (config->debug) registerDebug("Entering attack execution area");
 
@@ -2361,7 +2361,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	// cancel attacks
 	//sender.stopAll();
 	sender.attack(0);
-	reader.setAttackedCreature(0);
 	reader.cancelAttackCoords();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	deleteAndNull(self);

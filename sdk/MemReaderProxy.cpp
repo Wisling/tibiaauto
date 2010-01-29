@@ -307,6 +307,44 @@ int CMemReaderProxy::getAttackedCreature()
 	return 0;
 
 }
+void CMemReaderProxy::setAttackedCreature(int tibiaId)
+{
+	typedef void (*Proto_fun)(int v1);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetAttackedCreature");
+		if (fun)
+		{
+			fun(tibiaId);
+		}
+	}
+}
+int CMemReaderProxy::getFollowedCreature()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetFollowedCreature");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+
+}
+void CMemReaderProxy::setFollowedCreature(int tibiaId)
+{
+	typedef void (*Proto_fun)(int v1);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetFollowedCreature");
+		if (fun)
+		{
+			fun(tibiaId);
+		}
+	}
+}
 char * CMemReaderProxy::GetLoggedChar(int processId)
 {
 	typedef char * (*Proto_fun)(int);
@@ -1032,19 +1070,6 @@ void CMemReaderProxy::writeCreatureDeltaXY(int creatureNr, int deltaX, int delta
 		if (fun)
 		{
 			fun(creatureNr,deltaX,deltaY);
-		}
-	}
-}
-
-void CMemReaderProxy::setAttackedCreature(int tibiaId)
-{
-	typedef void (*Proto_fun)(int v1);
-	if (dllModule)
-	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetAttackedCreature");
-		if (fun)
-		{
-			fun(tibiaId);
 		}
 	}
 }
