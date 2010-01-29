@@ -6,38 +6,71 @@
 --------------------Configuration: mod_maphack - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPE2.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Debug/mod_maphack.res" /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\mod_maphack.rc"" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP79A1.tmp" with contents
 [
 /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_maphack.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_maphack\ConfigDialog.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\BtnST.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\ConfigData.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\ConfigDialog.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\exports.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\GroupBoxEx.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\mod_maphack.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\MyDialog.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\proxy.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\Skin.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\TibiaItem_impl.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPE2.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPE3.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP79A1.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP79A2.tmp" with contents
 [
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_maphack.pdb" /debug /machine:I386 /def:".\mod_maphack.def" /out:"C:\Program Files\Tibia Auto\mods/mod_maphack.dll" /implib:"Debug/mod_maphack.lib" /pdbtype:sept 
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_maphack.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\StdAfx.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP79A2.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP79A3.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_maphack.pdb" /debug /machine:I386 /def:".\mod_maphack.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_maphack.dll" /implib:"Debug/mod_maphack.lib" /pdbtype:sept 
+".\Debug\BtnST.obj"
 ".\Debug\ConfigData.obj"
 ".\Debug\ConfigDialog.obj"
 ".\Debug\exports.obj"
+".\Debug\GroupBoxEx.obj"
 ".\Debug\mod_maphack.obj"
+".\Debug\MyDialog.obj"
 ".\Debug\proxy.obj"
 ".\Debug\Skin.obj"
 ".\Debug\StdAfx.obj"
 ".\Debug\TibiaItem_impl.obj"
 ".\Debug\mod_maphack.res"
-".\Debug\MyDialog.obj"
-".\Debug\BtnST.obj"
-".\Debug\GroupBoxEx.obj"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPE3.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP79A3.tmp"
 <h3>Output Window</h3>
+Compiling resources...
 Compiling...
+StdAfx.cpp
+Compiling...
+BtnST.cpp
+ConfigData.cpp
 ConfigDialog.cpp
+exports.cpp
+GroupBoxEx.cpp
+mod_maphack.cpp
+E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_maphack\mod_maphack.cpp(257) : warning C4101: 'fileExists' : unreferenced local variable
+MyDialog.cpp
+proxy.cpp
+e:\tibia\sourse code\tibiaauto-pub\sdk\moduleutil.cpp(453) : warning C4101: 'buf' : unreferenced local variable
+Skin.cpp
+TibiaItem_impl.cpp
+Generating Code...
 Linking...
+LINK : LNK6004: E:\Tibia\Tibia\Tibia Auto\mods/mod_maphack.dll not found or not built by the last incremental link; performing full link
+   Creating library Debug/mod_maphack.lib and object Debug/mod_maphack.exp
 
 
 
 <h3>Results</h3>
-mod_maphack.dll - 0 error(s), 0 warning(s)
+mod_maphack.dll - 0 error(s), 2 warning(s)
 </pre>
 </body>
 </html>

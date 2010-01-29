@@ -37,7 +37,7 @@ Class=CConfigDialog
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=CConfigDialog
-ControlCount=109
+ControlCount=110
 Control1=IDC_FRAME_2,button,1342177287
 Control2=IDC_FRAME_,button,1342177287
 Control3=IDOK,button,1342242817
@@ -147,4 +147,5 @@ Control106=IDC_STATIC,static,1342308352
 Control107=IDC_FIRST_CREATURE_ADDRESS,static,1342308352
 Control108=IDC_STATIC,static,1342308352
 Control109=IDC_FIRST_CREATURE,static,1342308352
+Control110=IDC_SEARCHSTRING,button,1342242816
 

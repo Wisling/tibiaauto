@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="windows-1250"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="8,00"
+	Version="9.00"
 	Name="mod_aim"
 	ProjectGUID="{6B287844-D897-43A7-8B88-B3764EC57D3C}"
+	RootNamespace="mod_aim"
 	Keyword="MFCProj"
+	TargetFrameworkVersion="0"
 	>
 	<Platforms>
 		<Platform
@@ -106,9 +108,6 @@
 				Name="VCAppVerifierTool"
 			/>
 			<Tool
-				Name="VCWebDeploymentTool"
-			/>
-			<Tool
 				Name="VCPostBuildEventTool"
 			/>
 		</Configuration>
@@ -203,9 +202,6 @@
 			/>
 			<Tool
 				Name="VCAppVerifierTool"
-			/>
-			<Tool
-				Name="VCWebDeploymentTool"
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
@@ -378,6 +374,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath="..\..\sdk\TAMiniMap.cpp"
+				>
+			</File>
+			<File
 				RelativePath="TibiaItem_impl.cpp"
 				>
 				<FileConfiguration
@@ -422,6 +422,10 @@
 			</File>
 			<File
 				RelativePath="StdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\sdk\TAMiniMap.h"
 				>
 			</File>
 		</Filter>

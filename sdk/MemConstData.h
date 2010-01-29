@@ -37,6 +37,7 @@ public:
 	int m_memAddressBattleMin;
 	int m_memAddressBattleMax;
 	int m_memAddressAttackedCreature;	
+	int m_memAddressFollowedCreature;	
 	int m_memAddressSkillSword;
 	int m_memAddressSkillAxe;
 	int m_memAddressSkillShield;

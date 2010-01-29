@@ -72,7 +72,7 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=W
 VirtualFilter=dWC
-LastObject=IDC_TOOL_APPLYASHOTKEY
+LastObject=CConfigDialog
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1

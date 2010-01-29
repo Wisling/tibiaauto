@@ -3,32 +3,57 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_grouping - Win32 Release--------------------
+--------------------Configuration: mod_grouping - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP258C.tmp" with contents
+Creating command line "rc.exe /l 0x415 /fo"Debug/mod_grouping.res" /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\mod_grouping.rc"" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDF4C.tmp" with contents
 [
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_grouping.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_grouping.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\BtnST.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\ConfigData.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\exports.cpp"
 "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\mod_grouping.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\proxy.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\Skin.cpp"
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\TibiaItem_impl.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP258C.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP258D.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDF4C.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDF4D.tmp" with contents
 [
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_grouping.pdb" /machine:I386 /def:".\mod_grouping.def" /out:"../mod_grouping.dll" /implib:"Release/mod_grouping.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\mod_grouping.obj"
-".\Release\proxy.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_grouping.res"
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Debug/mod_grouping.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_grouping\StdAfx.cpp"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP258D.tmp"
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDF4D.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDF4E.tmp" with contents
+[
+/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_grouping.pdb" /debug /machine:I386 /def:".\mod_grouping.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_grouping.dll" /implib:"Debug/mod_grouping.lib" /pdbtype:sept 
+".\Debug\BtnST.obj"
+".\Debug\ConfigData.obj"
+".\Debug\exports.obj"
+".\Debug\mod_grouping.obj"
+".\Debug\proxy.obj"
+".\Debug\Skin.obj"
+".\Debug\StdAfx.obj"
+".\Debug\TibiaItem_impl.obj"
+".\Debug\mod_grouping.res"
+]
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDF4E.tmp"
 <h3>Output Window</h3>
+Compiling resources...
 Compiling...
+StdAfx.cpp
+Compiling...
+BtnST.cpp
+ConfigData.cpp
+exports.cpp
 mod_grouping.cpp
+proxy.cpp
+Skin.cpp
+TibiaItem_impl.cpp
+Generating Code...
 Linking...
-   Creating library Release/mod_grouping.lib and object Release/mod_grouping.exp
+   Creating library Debug/mod_grouping.lib and object Debug/mod_grouping.exp
 
 
 

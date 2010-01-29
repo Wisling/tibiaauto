@@ -270,7 +270,7 @@ void CAutoResponderParser::processNodeRepeat(DOMNode *node, CAutoResponderParser
 
 	char *buf=(char *)malloc(MAX_STRING_LEN);
 	sprintf(buf,"DEBUG: repeat %d times to process",countTotal);
-	registerDebug(buf,context);	
+	registerDebug(buf,context);
 
 	while (countLeft>0)
 	{
@@ -279,9 +279,9 @@ void CAutoResponderParser::processNodeRepeat(DOMNode *node, CAutoResponderParser
 		int nodeNr;
 		for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 		{
-			DOMNode *childNode = node->getChildNodes()->item(nodeNr);			
+			DOMNode *childNode = node->getChildNodes()->item(nodeNr);		
 			
-			processAction(childNode,context);		
+			processAction(childNode,context);	
 		}
 		countLeft--;
 	}
@@ -293,9 +293,9 @@ void CAutoResponderParser::processNodeIgnoreplayer(DOMNode *node, CAutoResponder
 {
 	registerDebug("DEBUG: action: ignoreplayer",context);
 
-	char *nameText=CUtil::getNodeAttribute(node,"name");	
+	char *nameText=CUtil::getNodeAttribute(node,"name");
 	replaceSpecialStrings(nameText,context);
-	char *timeText=CUtil::getNodeAttribute(node,"time");	
+	char *timeText=CUtil::getNodeAttribute(node,"time");
 	context->setIgnoredPlayer(nameText,time(NULL)+atoi(timeText));
 	free(nameText);
 	free(timeText);
@@ -304,11 +304,11 @@ void CAutoResponderParser::processNodeIgnoreplayer(DOMNode *node, CAutoResponder
 void CAutoResponderParser::processNodeSetvariable(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: setvariable",context);
-	char *nameText=CUtil::getNodeAttribute(node,"name");	
+	char *nameText=CUtil::getNodeAttribute(node,"name");
 	replaceSpecialStrings(nameText,context);
-	char *valueText=CUtil::getNodeAttribute(node,"value");	
+	char *valueText=CUtil::getNodeAttribute(node,"value");
 	replaceSpecialStrings(valueText,context);
-	context->setVariable(nameText,valueText);	
+	context->setVariable(nameText,valueText);
 	free(nameText);
 	free(valueText);
 }

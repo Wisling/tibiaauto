@@ -58,8 +58,6 @@ void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CToolItemConfig, CDialog)
 	//{{AFX_MSG_MAP(CToolItemConfig)
-	ON_WM_CTLCOLOR()
-	ON_WM_ERASEBKGND()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG_REFRESH, OnToolItemconfigRefresh)
 	ON_BN_CLICKED(IDC_ADD_ITEM, OnItemAdd)
@@ -71,6 +69,11 @@ BEGIN_MESSAGE_MAP(CToolItemConfig, CDialog)
 	ON_BN_CLICKED(IDC_ADD_LOOT, OnLootAdd)
 	ON_BN_CLICKED(IDC_EDIT_LOOT, OnLootEdit)
 	ON_BN_CLICKED(IDC_DELETE_LOOT, OnLootDelete)
+	ON_NOTIFY(TVN_SELCHANGED, IDC_TREE1, OnSelchangedTree)
+	ON_NOTIFY(NM_CLICK, IDC_TREE1, OnClickTree)
+	ON_WM_CTLCOLOR()
+	ON_WM_ERASEBKGND()
+	ON_NOTIFY(TVN_SELCHANGING, IDC_TREE1, OnSelchangingTree)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -109,13 +112,35 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 		m_foodList.AddString(buf);
 	}
 	
+/*
+	CImageList imgList;
+	imgList.Create(12,12,ILC_COLOR8,2,0);
+
+	CBitmap bitmap1;
+	bitmap1.LoadBitmap(IDB_UNCHECK);
+	imgList.Add(&bitmap1,RGB(0,0,255));
+	CBitmap bitmap2;
+	bitmap2.LoadBitmap(IDB_CHECK);
+	imgList.Add(&bitmap2,RGB(0,0,255));
+	//CBitmap bitmap3;
+	//bitmap3.LoadBitmap(IDB_HALFCHECK);
+	//imgList.Add(&bitmap3,RGB(0,0,255));
+	m_testTree.SetImageList(&imgList,3);
+
 	while (m_lootedList.GetCount()) m_lootedList.DeleteString(0);
 	for (i=0;i<itemProxy.getItemsLootedCount();i++)
 	{
 		sprintf(buf,"%s (#%d)",itemProxy.getItemsLooted(i),itemProxy.getItemsLootedId(i));
 		m_lootedList.AddString(buf);
-		m_testTree.InsertItem(buf);
+		if (i>10)
+			m_testTree.InsertItem(buf,(int)imgList.ExtractIcon(0),(int)imgList.ExtractIcon(1),m_testTree.GetChildItem(m_testTree.GetRootItem()));
+			
+		else if (i>3)
+			m_testTree.InsertItem(buf,(int)imgList.ExtractIcon(0),(int)imgList.ExtractIcon(1),m_testTree.GetRootItem());
+		else
+			m_testTree.InsertItem(buf,(int)imgList.ExtractIcon(0),(int)imgList.ExtractIcon(1));
 	}
+	*/
 /*
 	HTREEITEM item1=m_testTree.InsertItem("hi");;
 	for (i=0;i<itemProxy.getItemsLootedCount();i++)
@@ -126,6 +151,8 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 */	
 	
 }
+
+
 
 BOOL CToolItemConfig::OnInitDialog() 
 {
@@ -250,3 +277,75 @@ char *CToolItemConfig::parseNameFromItemSelected(int type) {
 	}
 	return outbuf?outbuf:NULL;
 }
+
+void CToolItemConfig::OnSelchangedTree(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	static int jjj=-2;
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	HTREEITEM treeItem=pNMTreeView->itemNew.hItem;
+	
+	// TODO: Add your control notification handler code here
+	
+	//Single child case
+	//HTREEITEM treeItem=m_testTree.GetSelectedItem();
+	if (treeItem){
+		BOOL isChecked=m_testTree.GetCheck(treeItem);
+
+		CImageList imgList;
+		imgList.Create(12,12,ILC_COLOR8,3,0);
+
+		CBitmap bitmap1;
+		bitmap1.LoadBitmap(IDB_UNCHECK);
+		imgList.Add(&bitmap1,RGB(0,0,255));
+		CBitmap bitmap2;
+		bitmap2.LoadBitmap(IDB_CHECK);
+		imgList.Add(&bitmap2,RGB(0,0,255));
+		CBitmap bitmap3;
+		bitmap3.LoadBitmap(IDB_HALFCHECK);
+		imgList.Add(&bitmap3,RGB(0,0,255));
+
+		//m_testTree.SetItemImage(treeItem,(int)imgList2.ExtractIcon(0),);
+		//m_testTree.SetItemImage(treeItem,(int)imgList.ExtractIcon(isChecked),(int)imgList.ExtractIcon(isChecked));
+
+		//m_testTree.SetCheck(treeItem,!isChecked);
+		//m_testTree.Expand(treeItem,1);
+		//m_testTree.Expand(treeItem,1);
+		//m_testTree.SelectItem(0);
+		//m_testTree.SetIndent(40);
+		//m_testTree.SetIndent(40);
+		//m_testTree.SetTextColor(RGB(255,0,0));
+		//m_testTree.SetItemState(treeItem,(isChecked<<3),0x100-1);
+		int nImage=-5;
+		//m_testTree.SetBkColor(RGB(255,255,0));
+		//m_testTree.SetItemHeight(40);
+		int nSelectedImage=-5;
+		//m_testTree.SetItemData(treeItem,2);
+		m_testTree.GetItemImage(treeItem, nImage,nSelectedImage);
+		//m_testTree.EditLabel(treeItem);
+		//m_testTree.SetInsertMark(treeItem,TRUE);
+	}
+	*pResult = 0;
+}
+
+void CToolItemConfig::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	// TODO: Add your control notification handler code here
+	
+	HTREEITEM treeItem=m_testTree.GetDropHilightItem();
+	//Single child case
+	if (treeItem){
+		BOOL isChecked=m_testTree.GetCheck(treeItem);
+		m_testTree.SetCheck(treeItem,!isChecked);
+	}
+
+	*pResult = 0;
+}
+
+void CToolItemConfig::OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	// TODO: Add your control notification handler code here
+	
+	*pResult = 0;
+}
+
