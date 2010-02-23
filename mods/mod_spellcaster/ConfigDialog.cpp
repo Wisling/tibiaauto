@@ -2,7 +2,13 @@
 #include "mod_spellcaster.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
-#include "Whitelist.h"
+//#include "HealList.h"
+#include "LifeDialog.h"
+#include "ManaDialog.h"
+#include "SummonDialog.h"
+#include "StrikeDialog.h"
+#include "AOEDialog.h"
+#include "TimedDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -15,92 +21,38 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+: MyDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app=app;
-	memset(memWhiteList,0,3200);
-}
 
+	m_DialogID[0] = IDD_LIFE_DIALOG;
+	m_DialogID[1] = IDD_MANA_DIALOG;
+	m_DialogID[2] = IDD_SUMMON_DIALOG;
+	m_DialogID[3] = IDD_STRIKE_DIALOG;
+	m_DialogID[4] = IDD_AOE_DIALOG;
+	m_DialogID[5] = IDD_TIMED_DIALOG;
+	
+	m_Dialog[0] = new LifeDialog;
+	m_Dialog[1] = new ManaDialog;
+	m_Dialog[2] = new SummonDialog;
+	m_Dialog[3] = new StrikeDialog;
+	m_Dialog[4] = new AOEDialog;
+	m_Dialog[5] = new TimedDialog;
+	
+	m_nPageCount = 6;	
+}
 
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDOK, m_OK);
-	DDX_Control(pDX, IDC_FRAME_SUMMON_CONTROL, m_SummonControlFrame);
-	DDX_Control(pDX, IDC_FRAME_STRIKE_SPELLS, m_StrikeSpellsFrame);
-	DDX_Control(pDX, IDC_FRAME_SORCERER_AOE, m_SorcererAOEFrame);
-	DDX_Control(pDX, IDC_FRAME_PALADIN_STRIKE, m_PaladinStrikeFrame);
-	DDX_Control(pDX, IDC_FRAME_PALADIN_AOE, m_PaladinAOEFrame);
-	DDX_Control(pDX, IDC_FRAME_MANA, m_ManaFrame);
-	DDX_Control(pDX, IDC_FRAME_LIFE, m_LifeFrame);
-	DDX_Control(pDX, IDC_FRAME_MAGE_STRIKE, m_MageStrikeFrame);
-	DDX_Control(pDX, IDC_FRAME_KNIGHT_STRIKE, m_KnightStrikeFrame);
-	DDX_Control(pDX, IDC_FRAME_KNIGHT_AOE, m_KnightAOEFrame);
-	DDX_Control(pDX, IDC_FRAME_DRUID_AOE, m_DruidAOEFrame);
-	DDX_Control(pDX, IDC_FRAME_AOE_SPELLS, m_AOESpellsFrame);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON_LESSTHAN, m_summonLessThan);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA, m_mana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA_MANA, m_manaMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MANA_SPELL, m_manaSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_LIFE, m_life);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_CUSTOM, m_customSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_LIFE_HP, m_lifeHp);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_LIFE_SPELL, m_lifeSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_LIFE_SPELL_MANA, m_lifeSpellMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXURA, m_exuraSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXURA_LIFE, m_exuraHp);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXURA_MANA, m_exuraSpellMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_GRAN, m_granSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_GRAN_LIFE, m_granHp);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_GRAN_MANA, m_granSpellMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VITA, m_vitaSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VITA_LIFE, m_vitaHp);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VITA_MANA, m_vitaSpellMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO, m_sioSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO_LIFE, m_sioHp);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SIO_MANA, m_sioSpellMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS, m_paralysisSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_POISON, m_poisonSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE, m_minPoisonDmg);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON, m_summon);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON_MANA, m_summonMana);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SUMMON_NAME, m_summonName);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE, m_strike);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_FLAM, m_flam);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_FRIGO, m_frigo);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_MORT, m_mort);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_TERA, m_tera);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_VIS, m_vis);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_CON, m_con);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_SAN, m_san);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HUR, m_hur);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_MANA, m_manaStrike);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT, m_defaultStrikeSpell);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_STRIKE_SPELL_DEFAULT_HP_MIN, m_strikeSpellHpMin);
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE_AFFECT, m_aoeAffect);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI, m_exori);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_GRAN, m_exoriGran);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_MAS, m_exoriMas);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN, m_exevoMasSan);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, m_exevoFlamHur);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, m_exevoFrigoHur);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR, m_exevoTeraHur);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR, m_exevoVisHur);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX, m_exevoVisLux);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX, m_exevoGranVisLux);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS, m_exevoGranMasVis);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM, m_exevoGranMasFlam);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, m_exevoGranMasTera);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, m_exevoGranMasFrigo);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_LIST, m_healList);
+	DDX_Control(pDX, IDC_TAB1, m_tabCtrl);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_DISABLE_WARNING, m_disableWarning);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_RANDOM_CAST,m_randomCast);//new
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_RANDOM_CAST,m_randomCast);
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDOK, m_OK);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
@@ -109,40 +61,6 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MANA, OnToolSpellcasterMana)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_LIFE, OnToolSpellcasterLife)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CUSTOM, OnToolSpellcasterCustom)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXURA, OnToolSpellcasterExura)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_GRAN, OnToolSpellcasterGran)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VITA, OnToolSpellcasterVita)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SIO, OnToolSpellcasterSio)	
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_LIST, OnToolSpellcasterHealList)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_STRIKE, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FRIGO, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MORT, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_TERA, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VIS, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CON, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HUR, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_POISON, OnToolSpellcasterPoison)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_AOE, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_GRAN, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_MAS, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, OnToolSpellcasterAOE)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -173,277 +91,83 @@ void CConfigDialog::OnEnable() {
 }
 
 void CConfigDialog::disableControls() {
-	m_mana.EnableWindow(false);
-	m_manaMana.EnableWindow(false);
-	m_manaSpell.EnableWindow(false);
-	m_customSpell.EnableWindow(false);
-	m_life.EnableWindow(false);
-	m_exuraSpell.EnableWindow(false);
-	m_exuraHp.EnableWindow(false);
-	m_exuraSpellMana.EnableWindow(false);
-	m_granHp.EnableWindow(false);
-	m_granSpell.EnableWindow(false);
-	m_granSpellMana.EnableWindow(false);
-	m_vitaSpell.EnableWindow(false);
-	m_vitaHp.EnableWindow(false);
-	m_vitaSpellMana.EnableWindow(false);
-	m_sioSpell.EnableWindow(false);
-	m_sioHp.EnableWindow(false);
-	m_sioSpellMana.EnableWindow(false);
-	m_healList.EnableWindow(false);
-	m_lifeSpell.EnableWindow(false);
-	m_lifeHp.EnableWindow(false);
-	m_lifeSpell.EnableWindow(false);
-	m_lifeSpellMana.EnableWindow(false);
-	m_poisonSpell.EnableWindow(false);
-	m_paralysisSpell.EnableWindow(false);
-	m_minPoisonDmg.EnableWindow(false);
-	m_summon.EnableWindow(false);
-	m_summonLessThan.EnableWindow(false);
-	m_summonMana.EnableWindow(false);
-	m_summonName.EnableWindow(false);
-	m_strike.EnableWindow(false);
-	m_flam.EnableWindow(false);
-	m_frigo.EnableWindow(false);
-	m_mort.EnableWindow(false);
-	m_tera.EnableWindow(false);
-	m_vis.EnableWindow(false);
-	m_con.EnableWindow(false);
-	m_san.EnableWindow(false);
-	m_hur.EnableWindow(false);
-	m_manaStrike.EnableWindow(false);
-	m_defaultStrikeSpell.EnableWindow(false);
-	m_strikeSpellHpMin.EnableWindow(false);
-	m_aoe.EnableWindow(false);
-	m_aoeAffect.EnableWindow(false);
-	m_exori.EnableWindow(false);
-	m_exoriGran.EnableWindow(false);
-	m_exoriMas.EnableWindow(false);
-	m_exevoMasSan.EnableWindow(false);
-	m_exevoFlamHur.EnableWindow(false);
-	m_exevoFrigoHur.EnableWindow(false);
-	m_exevoTeraHur.EnableWindow(false);
-	m_exevoVisHur.EnableWindow(false);
-	m_exevoVisLux.EnableWindow(false);
-	m_exevoGranVisLux.EnableWindow(false);
-	m_exevoGranMasVis.EnableWindow(false);
-	m_exevoGranMasFlam.EnableWindow(false);
-	m_exevoGranMasTera.EnableWindow(false);
-	m_exevoGranMasFrigo.EnableWindow(false);
+	m_Dialog[0]->disableControls();
+	m_Dialog[1]->disableControls();
+	m_Dialog[2]->disableControls();
+	m_Dialog[3]->disableControls();
+	m_Dialog[4]->disableControls();
+	m_Dialog[5]->disableControls();
+
 	m_disableWarning.EnableWindow(false);
-	m_randomCast.EnableWindow(false);//new
+	m_randomCast.EnableWindow(false);
 }
 
-void CConfigDialog::enableControls()
-{
-	m_mana.EnableWindow(true);
-	if (m_mana.GetCheck()){
-		m_manaMana.EnableWindow(true);
-		m_manaSpell.EnableWindow(true);
-	}
-	m_life.EnableWindow(true);
-	if (m_life.GetCheck()){
-		m_customSpell.EnableWindow(true);
-		OnToolSpellcasterCustom();
-		m_exuraSpell.EnableWindow(true);
-		OnToolSpellcasterExura();
-		m_granSpell.EnableWindow(true);
-		OnToolSpellcasterGran();
-		m_vitaSpell.EnableWindow(true);
-		OnToolSpellcasterVita();
-		m_sioSpell.EnableWindow(true);
-		OnToolSpellcasterSio();
-		m_paralysisSpell.EnableWindow(true);
-		m_poisonSpell.EnableWindow(true);
-		OnToolSpellcasterPoison();
-	}
-	m_summon.EnableWindow(true);
-	if (m_summon.GetCheck()){
-		m_summonLessThan.EnableWindow(true);
-		m_summonMana.EnableWindow(true);
-		m_summonName.EnableWindow(true);
-	}
-	m_strike.EnableWindow(true);
-		if (m_strike.GetCheck()){
-			OnToolSpellcasterMageStrike();
-			OnToolSpellcasterPaladinStrike();
-			OnToolSpellcasterKnightStrike();
-			m_manaStrike.EnableWindow(true);
-			m_defaultStrikeSpell.EnableWindow(true);
-			m_strikeSpellHpMin.EnableWindow(true);
-	}
-	m_aoe.EnableWindow(true);
-		if (m_aoe.GetCheck()) {
-			OnToolSpellcasterAOE();
-		}
+void CConfigDialog::enableControls() {
+	m_Dialog[0]->enableControls();
+	m_Dialog[1]->enableControls();
+	m_Dialog[2]->enableControls();
+	m_Dialog[3]->enableControls();
+	m_Dialog[4]->enableControls();
+	m_Dialog[5]->enableControls();
+
 	m_disableWarning.EnableWindow(true);
-	m_randomCast.EnableWindow(true);//new
+	m_randomCast.EnableWindow(true);
 }
 
+void CConfigDialog::configToControls(CConfigData *configData) {
+	m_Dialog[0]->configToControls(configData);
+	m_Dialog[1]->configToControls(configData);
+	m_Dialog[2]->configToControls(configData);
+	m_Dialog[3]->configToControls(configData);
+	m_Dialog[4]->configToControls(configData);
+	m_Dialog[5]->configToControls(configData);
 
-
-void CConfigDialog::configToControls(CConfigData *configData)
-{
-	char buf[128];
-	m_mana.SetCheck(configData->mana);
-	sprintf(buf,"%d",configData->manaMana);			m_manaMana.SetWindowText(buf);
-	sprintf(buf,"%s",configData->manaSpell);		m_manaSpell.SetWindowText(buf);
-	m_life.SetCheck(configData->life);
-	m_customSpell.SetCheck(configData->customSpell);
-	sprintf(buf,"%d",configData->lifeHp);			m_lifeHp.SetWindowText(buf);
-	sprintf(buf,"%s",configData->lifeSpell);		m_lifeSpell.SetWindowText(buf);	
-	sprintf(buf,"%d",configData->lifeSpellMana);	m_lifeSpellMana.SetWindowText(buf);
-	m_exuraSpell.SetCheck(configData->exuraSpell);
-	sprintf(buf,"%d",configData->exuraHp);			m_exuraHp.SetWindowText(buf);
-	sprintf(buf,"%d",configData->exuraSpellMana);	m_exuraSpellMana.SetWindowText(buf);
-	m_granSpell.SetCheck(configData->granSpell);
-	sprintf(buf,"%d",configData->granHp);			m_granHp.SetWindowText(buf);
-	sprintf(buf,"%d",configData->granSpellMana);	m_granSpellMana.SetWindowText(buf);
-	m_vitaSpell.SetCheck(configData->vitaSpell);
-	sprintf(buf,"%d",configData->vitaHp);			m_vitaHp.SetWindowText(buf);
-	sprintf(buf,"%d",configData->vitaSpellMana);	m_vitaSpellMana.SetWindowText(buf);
-	m_sioSpell.SetCheck(configData->sioSpell);
-	sprintf(buf,"%d",configData->sioHp);			m_sioHp.SetWindowText(buf);
-	sprintf(buf,"%d",configData->sioSpellMana);		m_sioSpellMana.SetWindowText(buf);
-	m_paralysisSpell.SetCheck(configData->paralysisSpell);
-	m_poisonSpell.SetCheck(configData->poisonSpell);
-	sprintf(buf,"%d",configData->minPoisonDmg);		m_minPoisonDmg.SetWindowText(buf);
-	m_summon.SetCheck(configData->summon);
-	sprintf(buf,"%d",configData->summonLessThan);	m_summonLessThan.SetWindowText(buf);
-	sprintf(buf,"%s",configData->summonName);		m_summonName.SetWindowText(buf);	
-	sprintf(buf,"%d",configData->summonMana);		m_summonMana.SetWindowText(buf);
-	m_strike.SetCheck(configData->strike);
-	m_flam.SetCheck(configData->flam);
-	m_frigo.SetCheck(configData->frigo);
-	m_mort.SetCheck(configData->mort);
-	m_tera.SetCheck(configData->tera);
-	m_vis.SetCheck(configData->vis);
-	m_con.SetCheck(configData->con);
-	m_san.SetCheck(configData->san);
-	m_hur.SetCheck(configData->hur);
-	sprintf(buf,"%d",configData->manaStrike);		m_manaStrike.SetWindowText(buf);
-	sprintf(buf,"%s",configData->defaultStrikeSpell);		m_defaultStrikeSpell.SetWindowText(buf);
-	sprintf(buf,"%d",configData->strikeSpellHpMin);		m_strikeSpellHpMin.SetWindowText(buf);
-	m_aoe.SetCheck(configData->aoe);
-	sprintf(buf,"%d",configData->aoeAffect);		m_aoeAffect.SetWindowText(buf);
-	m_exori.SetCheck(configData->exori);
-	m_exoriGran.SetCheck(configData->exoriGran);
-	m_exoriMas.SetCheck(configData->exoriMas);
-	m_exevoMasSan.SetCheck(configData->exevoMasSan);
-	m_exevoFlamHur.SetCheck(configData->exevoFlamHur);
-	m_exevoFrigoHur.SetCheck(configData->exevoFrigoHur);
-	m_exevoTeraHur.SetCheck(configData->exevoTeraHur);
-	m_exevoVisHur.SetCheck(configData->exevoVisHur);
-	m_exevoVisLux.SetCheck(configData->exevoVisLux);
-	m_exevoGranVisLux.SetCheck(configData->exevoGranVisLux);
-	m_exevoGranMasVis.SetCheck(configData->exevoGranMasVis);
-	m_exevoGranMasFlam.SetCheck(configData->exevoGranMasFlam);
-	m_exevoGranMasTera.SetCheck(configData->exevoGranMasTera);
-	m_exevoGranMasFrigo.SetCheck(configData->exevoGranMasFrigo);
 	m_disableWarning.SetCheck(configData->disableWarning);
-	m_randomCast.SetCheck(configData->randomCast);//new
-	
-	memcpy(memWhiteList,configData->healList,3200);
-
-	OnToolSpellcasterMana();
-	OnToolSpellcasterLife();
-	OnToolSpellcasterSummon();
-	OnToolSpellcasterStrike();
-	OnToolSpellcasterAOE();
+	m_randomCast.SetCheck(configData->randomCast);
 }
 
-CConfigData * CConfigDialog::controlsToConfig()
-{
-	char buf[128];
+CConfigData * CConfigDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->mana = m_mana.GetCheck();
-	m_manaMana.GetWindowText(buf,127);newConfigData->manaMana=atoi(buf);
-	m_manaSpell.GetWindowText(newConfigData->manaSpell,127);
+	m_Dialog[0]->controlsToConfig(newConfigData);
+	m_Dialog[1]->controlsToConfig(newConfigData);
+	m_Dialog[2]->controlsToConfig(newConfigData);
+	m_Dialog[3]->controlsToConfig(newConfigData);
+	m_Dialog[4]->controlsToConfig(newConfigData);
+	m_Dialog[5]->controlsToConfig(newConfigData);
 
-	newConfigData->life = m_life.GetCheck();
-	newConfigData->customSpell = m_customSpell.GetCheck();
-	m_lifeHp.GetWindowText(buf,127);newConfigData->lifeHp=atoi(buf);
-	m_lifeSpell.GetWindowText(newConfigData->lifeSpell,127);
-	m_lifeSpellMana.GetWindowText(buf,127); newConfigData->lifeSpellMana=atoi(buf);
-	newConfigData->exuraSpell = m_exuraSpell.GetCheck();
-	m_exuraHp.GetWindowText(buf,127);newConfigData->exuraHp=atoi(buf);
-	m_exuraSpellMana.GetWindowText(buf,127); newConfigData->exuraSpellMana=atoi(buf);
-	newConfigData->granSpell = m_granSpell.GetCheck();
-	m_granHp.GetWindowText(buf,127);newConfigData->granHp=atoi(buf);
-	m_granSpellMana.GetWindowText(buf,127); newConfigData->granSpellMana=atoi(buf);
-	newConfigData->vitaSpell = m_vitaSpell.GetCheck();
-	m_vitaHp.GetWindowText(buf,127);newConfigData->vitaHp=atoi(buf);
-	m_vitaSpellMana.GetWindowText(buf,127); newConfigData->vitaSpellMana=atoi(buf);
-	newConfigData->sioSpell = m_sioSpell.GetCheck();
-	m_sioHp.GetWindowText(buf,127);newConfigData->sioHp=atoi(buf);
-	m_sioSpellMana.GetWindowText(buf,127); newConfigData->sioSpellMana=atoi(buf);
-	newConfigData->paralysisSpell = m_paralysisSpell.GetCheck();
-	newConfigData->poisonSpell = m_poisonSpell.GetCheck();
-	m_minPoisonDmg.GetWindowText(buf,127);newConfigData->minPoisonDmg=atoi(buf);
-
-	newConfigData->summon = m_summon.GetCheck();
-	m_summonLessThan.GetWindowText(buf,127);newConfigData->summonLessThan=atoi(buf);
-	m_summonMana.GetWindowText(buf,127);newConfigData->summonMana=atoi(buf);
-	m_summonName.GetWindowText(newConfigData->summonName,127);
-
-	newConfigData->strike = m_strike.GetCheck();
-	newConfigData->flam = m_flam.GetCheck();
-	newConfigData->frigo = m_frigo.GetCheck();
-	newConfigData->mort = m_mort.GetCheck();
-	newConfigData->tera = m_tera.GetCheck();
-	newConfigData->vis = m_vis.GetCheck();
-	newConfigData->con = m_con.GetCheck();
-	newConfigData->san = m_san.GetCheck();
-	newConfigData->hur = m_hur.GetCheck();
-	m_manaStrike.GetWindowText(buf,127);newConfigData->manaStrike=atoi(buf);
-	m_defaultStrikeSpell.GetWindowText(newConfigData->defaultStrikeSpell,127);
-	m_strikeSpellHpMin.GetWindowText(buf,127);newConfigData->strikeSpellHpMin=atoi(buf);
-
-	newConfigData->aoe = m_aoe.GetCheck();
-	m_aoeAffect.GetWindowText(buf,127);newConfigData->aoeAffect=atoi(buf);
-	newConfigData->exori = m_exori.GetCheck();
-	newConfigData->exoriGran = m_exoriGran.GetCheck();
-	newConfigData->exoriMas = m_exoriMas.GetCheck();
-	newConfigData->exevoMasSan = m_exevoMasSan.GetCheck();
-	newConfigData->exevoFlamHur = m_exevoFlamHur.GetCheck();
-	newConfigData->exevoFrigoHur = m_exevoFrigoHur.GetCheck();
-	newConfigData->exevoTeraHur = m_exevoTeraHur.GetCheck();
-	newConfigData->exevoVisHur = m_exevoVisHur.GetCheck();
-	newConfigData->exevoVisLux = m_exevoVisLux.GetCheck();
-	newConfigData->exevoGranVisLux = m_exevoGranVisLux.GetCheck();
-	newConfigData->exevoGranMasVis = m_exevoGranMasVis.GetCheck();
-	newConfigData->exevoGranMasFlam = m_exevoGranMasFlam.GetCheck();
-	newConfigData->exevoGranMasTera = m_exevoGranMasTera.GetCheck();
-	newConfigData->exevoGranMasFrigo = m_exevoGranMasFrigo.GetCheck();
 	newConfigData->disableWarning = m_disableWarning.GetCheck();
-	newConfigData->randomCast = m_randomCast.GetCheck();//new
-
-	memcpy(newConfigData->healList,memWhiteList,3200);
+	newConfigData->randomCast = m_randomCast.GetCheck();
 
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
-{
-
-	
+void CConfigDialog::OnTimer(UINT nIDEvent) {	
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
-{
+BOOL CConfigDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_enable);
-	skin.SetButtonSkin(	m_healList);
 	skin.SetButtonSkin(	m_OK);
-	
-	OnToolSpellcasterMana();
-	OnToolSpellcasterLife();
-	OnToolSpellcasterSummon();
-	OnToolSpellcasterStrike();
-	OnToolSpellcasterAOE();
-	
+
+	m_Dialog[0]->Create(m_DialogID[0],&m_tabCtrl);
+	m_Dialog[1]->Create(m_DialogID[1],&m_tabCtrl);
+	m_Dialog[2]->Create(m_DialogID[2],&m_tabCtrl);
+	m_Dialog[3]->Create(m_DialogID[3],&m_tabCtrl);
+	m_Dialog[4]->Create(m_DialogID[4],&m_tabCtrl);
+	m_Dialog[5]->Create(m_DialogID[5],&m_tabCtrl);
+
+	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
+	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
+
+	m_tabCtrl.AddTab(m_Dialog[0], "Healing");
+	m_tabCtrl.AddTab(m_Dialog[1], "Mana Burning");
+	m_tabCtrl.AddTab(m_Dialog[2], "Summon Control");
+	m_tabCtrl.AddTab(m_Dialog[3], "Strike Spells");
+	m_tabCtrl.AddTab(m_Dialog[4], "AOE Spells");
+	m_tabCtrl.AddTab(m_Dialog[5], "Timed Spells");
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -459,229 +183,4 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::OnToolSpellcasterMana() 
-{
-	int val = m_mana.GetCheck();
-	m_manaMana.EnableWindow(val);
-	m_manaSpell.EnableWindow(val);
-}
 
-void CConfigDialog::OnToolSpellcasterLife() 
-{
-	int val = m_life.GetCheck();
-		int exuraVal = m_exuraSpell.GetCheck();
-		int granVal = m_granSpell.GetCheck();
-		int vitaVal = m_vitaSpell.GetCheck();
-		int sioVal = m_sioSpell.GetCheck();
-		int customVal = m_customSpell.GetCheck();
-		int poisonVal = m_poisonSpell.GetCheck();
-			m_exuraSpell.EnableWindow(val);
-			m_exuraHp.EnableWindow(val && exuraVal?true:false);
-				m_exuraSpellMana.EnableWindow(val && exuraVal?true:false);
-			m_granSpell.EnableWindow(val);
-				m_granHp.EnableWindow(val && granVal?true:false);
-				m_granSpellMana.EnableWindow(val && granVal?true:false);
-			m_vitaSpell.EnableWindow(val);
-				m_vitaHp.EnableWindow(val && vitaVal?true:false);
-				m_vitaSpellMana.EnableWindow(val && vitaVal?true:false);
-			m_sioSpell.EnableWindow(val);
-				m_sioHp.EnableWindow(val && sioVal?true:false);
-				m_sioSpellMana.EnableWindow(val && sioVal?true:false);
-				m_healList.EnableWindow(val && sioVal?true:false);
-			m_customSpell.EnableWindow(val);
-				m_lifeHp.EnableWindow(val && customVal?true:false);
-				m_lifeSpell.EnableWindow(val && customVal?true:false);
-				m_lifeSpellMana.EnableWindow(val && customVal?true:false);
-			m_paralysisSpell.EnableWindow(val);
-			m_poisonSpell.EnableWindow(val);
-				m_minPoisonDmg.EnableWindow(val && poisonVal?true:false);
-
-}
-
-void CConfigDialog::OnToolSpellcasterSummon() {
-	int val = m_summon.GetCheck();
-	m_summonLessThan.EnableWindow(val);
-	m_summonMana.EnableWindow(val);
-	m_summonName.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterStrike() {
-	int val = m_strike.GetCheck();
-		OnToolSpellcasterMageStrike();
-		OnToolSpellcasterPaladinStrike();
-		OnToolSpellcasterKnightStrike();
-		m_manaStrike.EnableWindow(val);
-		m_defaultStrikeSpell.EnableWindow(val);
-		m_strikeSpellHpMin.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterExura() {
-	int val = m_exuraSpell.GetCheck();
-		m_exuraHp.EnableWindow(val);
-		m_exuraSpellMana.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterGran() {
-	int val = m_granSpell.GetCheck();
-		m_granHp.EnableWindow(val);
-		m_granSpellMana.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterVita() {
-	int val = m_vitaSpell.GetCheck();
-		m_vitaHp.EnableWindow(val);
-		m_vitaSpellMana.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterSio() {
-	int val = m_sioSpell.GetCheck();
-		m_sioHp.EnableWindow(val);
-		m_sioSpellMana.EnableWindow(val);
-		m_healList.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterHealList() {
-	CWhiteList *dialog = new CWhiteList(memWhiteList);
-	dialog->DoModal();
-	delete dialog;
-}
-
-void CConfigDialog::OnToolSpellcasterCustom() {
-	int val = m_customSpell.GetCheck();
-		m_lifeHp.EnableWindow(val);
-		m_lifeSpell.EnableWindow(val);
-		m_lifeSpellMana.EnableWindow(val);
-
-}
-void CConfigDialog::OnToolSpellcasterPoison() {
-	int val = m_poisonSpell.GetCheck();
-		m_minPoisonDmg.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterMageStrike() {
-	if (m_con.GetCheck() || m_san.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck()) {
-		m_flam.EnableWindow(false);
-		m_frigo.EnableWindow(false);
-		m_mort.EnableWindow(false);
-		m_tera.EnableWindow(false);
-		m_vis.EnableWindow(false);
-	}
-	else if (!m_flam.GetCheck() && !m_frigo.GetCheck() && !m_mort.GetCheck() && !m_tera.GetCheck() && !m_vis.GetCheck()) {
-		m_hur.EnableWindow(true);
-		m_flam.EnableWindow(true);
-		m_frigo.EnableWindow(true);
-		m_mort.EnableWindow(true);
-		m_tera.EnableWindow(true);
-		m_vis.EnableWindow(true);
-		m_san.EnableWindow(true);
-		m_con.EnableWindow(true);
-	}
-	else {
-		m_flam.EnableWindow(true);
-		m_frigo.EnableWindow(true);
-		m_mort.EnableWindow(true);
-		m_tera.EnableWindow(true);
-		m_vis.EnableWindow(true);
-		m_san.EnableWindow(false);
-		m_con.EnableWindow(false);
-		m_hur.EnableWindow(false);
-	}
-}
-
-void CConfigDialog::OnToolSpellcasterPaladinStrike() {
-	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck()){
-		m_san.EnableWindow(false);
-		m_con.EnableWindow(false);
-		m_hur.EnableWindow(false);
-	}
-	else if (!m_san.GetCheck() && !m_con.GetCheck()) {
-		m_hur.EnableWindow(true);
-		m_flam.EnableWindow(true);
-		m_frigo.EnableWindow(true);
-		m_mort.EnableWindow(true);
-		m_tera.EnableWindow(true);
-		m_vis.EnableWindow(true);
-		m_san.EnableWindow(true);
-		m_con.EnableWindow(true);
-	}
-	else {
-		m_san.EnableWindow(true);
-		m_con.EnableWindow(true);
-		m_flam.EnableWindow(false);
-		m_frigo.EnableWindow(false);
-		m_mort.EnableWindow(false);
-		m_tera.EnableWindow(false);
-		m_vis.EnableWindow(false);
-		m_hur.EnableWindow(false);
-	}
-}
-
-void CConfigDialog::OnToolSpellcasterKnightStrike() {
-	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck()){
-		m_hur.EnableWindow(false);
-	}
-	else if (!m_hur.GetCheck()) {
-		m_hur.EnableWindow(true);
-		m_flam.EnableWindow(true);
-		m_frigo.EnableWindow(true);
-		m_mort.EnableWindow(true);
-		m_tera.EnableWindow(true);
-		m_vis.EnableWindow(true);
-		m_san.EnableWindow(true);
-		m_con.EnableWindow(true);
-	}
-	else {
-		m_hur.EnableWindow(true);
-		m_flam.EnableWindow(false);
-		m_frigo.EnableWindow(false);
-		m_mort.EnableWindow(false);
-		m_tera.EnableWindow(false);
-		m_vis.EnableWindow(false);
-		m_san.EnableWindow(false);
-		m_con.EnableWindow(false);
-	}
-}
-
-void CConfigDialog::OnToolSpellcasterAOE()
-{
-	m_aoeAffect.EnableWindow(m_aoe.GetCheck());
-
-	OnToolSpellcasterSorcererAOE();
-	OnToolSpellcasterDruidAOE();
-	OnToolSpellcasterPaladinAOE();
-	OnToolSpellcasterKnightAOE();
-
-}
-void CConfigDialog::OnToolSpellcasterSorcererAOE()
-{
-	int val = !m_exori.GetCheck() && !m_exoriGran.GetCheck() && !m_exoriMas.GetCheck() && !m_exevoMasSan.GetCheck() && !m_exevoFrigoHur.GetCheck() && !m_exevoTeraHur.GetCheck() && !m_exevoGranMasTera.GetCheck() && !m_exevoGranMasFrigo.GetCheck() && m_aoe.GetCheck();
-	m_exevoFlamHur.EnableWindow(val);
-	m_exevoVisHur.EnableWindow(val);
-	m_exevoVisLux.EnableWindow(val);
-	m_exevoGranVisLux.EnableWindow(val);
-	m_exevoGranMasVis.EnableWindow(val);
-	m_exevoGranMasFlam.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterDruidAOE()
-{
-	int val = !m_exori.GetCheck() && !m_exoriGran.GetCheck() && !m_exoriMas.GetCheck() && !m_exevoMasSan.GetCheck() && !m_exevoFlamHur.GetCheck() && !m_exevoVisHur.GetCheck() && !m_exevoVisLux.GetCheck() && !m_exevoGranVisLux.GetCheck() && !m_exevoGranMasVis.GetCheck() && !m_exevoGranMasFlam.GetCheck() && m_aoe.GetCheck();
-	m_exevoFrigoHur.EnableWindow(val);
-	m_exevoTeraHur.EnableWindow(val);
-	m_exevoGranMasTera.EnableWindow(val);
-	m_exevoGranMasFrigo.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterPaladinAOE()
-{
-	int val = !m_exori.GetCheck() && !m_exoriGran.GetCheck() && !m_exoriMas.GetCheck() && !m_exevoFlamHur.GetCheck() && !m_exevoFrigoHur.GetCheck() && !m_exevoTeraHur.GetCheck() && !m_exevoVisHur.GetCheck() && !m_exevoVisLux.GetCheck() && !m_exevoGranVisLux.GetCheck() && !m_exevoGranMasVis.GetCheck() && !m_exevoGranMasFlam.GetCheck() && !m_exevoGranMasTera.GetCheck() && !m_exevoGranMasFrigo.GetCheck() && m_aoe.GetCheck();
-	m_exevoMasSan.EnableWindow(val);
-}
-
-void CConfigDialog::OnToolSpellcasterKnightAOE()
-{
-	int val = !m_exevoMasSan.GetCheck() && !m_exevoFlamHur.GetCheck() && !m_exevoFrigoHur.GetCheck() && !m_exevoTeraHur.GetCheck() && !m_exevoVisHur.GetCheck() && !m_exevoVisLux.GetCheck() && !m_exevoGranVisLux.GetCheck() && !m_exevoGranMasVis.GetCheck() && !m_exevoGranMasFlam.GetCheck() && !m_exevoGranMasTera.GetCheck() && !m_exevoGranMasFrigo.GetCheck() && m_aoe.GetCheck();
-	m_exori.EnableWindow(val);
-	m_exoriGran.EnableWindow(val);
-	m_exoriMas.EnableWindow(val);
-}
