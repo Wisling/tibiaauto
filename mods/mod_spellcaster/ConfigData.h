@@ -5,6 +5,23 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+
+struct Player {
+	char name[64];
+	int maxHP;
+	int triggerHP;
+	int randTriggerHP;
+};
+
+struct TimedSpell {
+	char spell[64];
+	int mana;
+	int delay;
+	int triggerTime;
+	int randMana;
+	bool usePotions;
+};
+
 class CConfigData  
 {
 public:
@@ -30,14 +47,12 @@ public:
 	int vitaHp;
 	int vitaSpellMana;
 	int sioSpell;
-	int sioHp;
 	int sioSpellMana;
 	int poisonSpell;
 	int paralysisSpell;
 	int minPoisonDmg;
-
-	char healList[100][32];
-
+	std::vector<Player> healList;
+	
 	int summon;
 	int summonLessThan;
 	char summonName[128];
@@ -73,8 +88,11 @@ public:
 	int exevoGranMasTera;
 	int exevoGranMasFrigo;
 
+	int timedSpell;
+	std::vector<TimedSpell> timedSpellList;
+
 	int disableWarning;
-	int randomCast;//new
+	int randomCast;
 
 };
 

@@ -22,6 +22,7 @@ of the License, or (at your option) any later version.
 #include "mod_spellcaster.h"
 
 #include "ConfigDialog.h"
+#include "LifeDialog.h"
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 #include "MemConstData.h"
@@ -72,22 +73,27 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
-static map<int,int> setMana;
-static map<int,int> setHp;
+//static map<int,int> setMana;
+//static map<int,int> setHp;
+int setMana = 0;
+int setHp = 0;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
 	//References to *(int*)<int> removed
 	if (!config->randomCast) return pt;
 	CMemReaderProxy reader;
-	if (!setMana[pt]) command=MAKE;
+	//if (!setMana[pt]) command=MAKE;
+	if (!setMana) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),self->maxMana);
+		//setMana[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),self->maxMana);
+		setMana=CModuleUtil::randomFormula(pt,(int)(pt*.1),self->maxMana);
 		delete self;
 	}
-	return setMana[pt];
+	//return setMana[pt];
+	return setMana;
 }
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
@@ -97,14 +103,17 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return pt;
 
 	CMemReaderProxy reader;
-	if (!setHp[pt]) command=MAKE;
+	//if (!setHp[pt]) command=MAKE;
+	if (!setHp) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setHp[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,self->maxHp);
+		//setHp[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,self->maxHp);
+		setHp=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,self->maxHp);
 		delete self;
 	}
-	return setHp[pt];
+	//return setHp[pt];
+	return setHp;
 }
 
 
@@ -121,13 +130,9 @@ int isInitializedCreatures();
 int getcurrentMonsterNumberFromName(char *);
 int aoeShouldFire(CConfigData *);
 
-int OnList(char whiteList[100][32],char name[]){
-	int i=0;
-	while (IsCharAlphaNumeric(whiteList[i][0])){
-		if (!strcmpi(whiteList[i],name)){
-			return 1;
-		}
-		i++;
+int OnList(char whiteList[32],char name[]){
+	if (!strcmpi(whiteList,name)){
+		return 1;
 	}
 	
 	return 0;
@@ -146,6 +151,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	char whiteText[32] = {0};
 	int best = 0;
 	CTibiaItemProxy itemProxy;
+	for (int loop = 0; loop < config->timedSpellList.size(); loop++)
+		config->timedSpellList[loop].triggerTime = config->timedSpellList[loop].delay + time(NULL);
 
 	if (isInitializedCreatures() == 0)
 		initalizeCreatures();
@@ -157,7 +164,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int attackedCreature = reader.getAttackedCreature();
 		int flags = reader.getSelfEventFlags();
 		//T4: First try to heal/also uses paralysis cure here
-		char buf[32];
 		//referances to (int)& removed
 		//We need the variables' value not their memory address (&)
 		int exuraHp = RandomVariableHp(config->exuraHp,GET,config);
@@ -165,25 +171,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int vitaHp = RandomVariableHp(config->vitaHp,GET,config);
 		int lifeHp = RandomVariableHp(config->lifeHp,GET,config);
 		int manaMana = RandomVariableMana(config->manaMana,GET,config);
+		for (int loop = 0; loop < config->timedSpellList.size(); loop++)
+			config->timedSpellList[loop].randMana = RandomVariableHp(config->timedSpellList[loop].mana,GET,config);
+		for (loop = 0; loop < config->healList.size(); loop++)
+			config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP,GET,config);
 		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
-				RandomVariableHp((int)&config->lifeHp,MAKE,config);
+				RandomVariableHp(config->lifeHp,MAKE,config);
 				sender.say(config->lifeSpell);
 				Sleep(700);
 			}
 			else if(config->vitaSpell && self->hp<vitaHp && self->mana >= config->vitaSpellMana){
-				RandomVariableHp((int)&config->vitaHp,MAKE,config);
+				RandomVariableHp(config->vitaHp,MAKE,config);
 				sender.say("exura vita");
 				Sleep(700);
 			}
 			else if(config->granSpell && self->hp<=granHp && self->mana >= config->granSpellMana){
-				RandomVariableHp((int)&config->granHp,MAKE,config);
+				RandomVariableHp(config->granHp,MAKE,config);
 				sender.say("exura gran");
 				Sleep(700);
 			}
 			else if((config->exuraSpell && self->hp<=exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
-				RandomVariableHp((int)&config->exuraHp,MAKE,config);
+				RandomVariableHp(config->exuraHp,MAKE,config);
 				sender.say("exura");
 				Sleep(700);
 			}
@@ -219,13 +229,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			int chNr;
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-				int sioHp = RandomVariableHp((int)&config->sioHp,GET,config);
-				if (OnList(config->healList,ch->name) && ch->hpPercLeft <= sioHp && ch->visible == 1 && ch->z == self->z) {
-					RandomVariableHp((int)&config->sioHp,MAKE,config);
-					char buf[256];
-					sprintf(buf,"exura sio \"%s\"",ch->name);
-					sender.say(buf);
-					Sleep(700);	
+				for (int loop = 0; loop < config->healList.size(); loop++) {
+					if (OnList(config->healList[loop].name,ch->name) && config->healList[loop].maxHP * (double)(ch->hpPercLeft / 100) <= config->healList[loop].randTriggerHP && ch->visible == 1 && ch->z == self->z) {
+						config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP,MAKE,config);
+						char buf[256];
+						sprintf(buf,"exura sio \"%s\"",ch->name);
+						sender.say(buf);
+						Sleep(700);	
+					}
 				}
 				delete ch;
 			}
@@ -414,14 +425,49 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		//T4: Use mana in other purpose otherwise
 		else if(config->mana && self->mana>=manaMana){
-			RandomVariableMana((int)&config->manaMana,MAKE,config);
+			RandomVariableMana(config->manaMana,MAKE,config);
 			sender.say(config->manaSpell);
 			Sleep(700);
 		}	
+		else if(config->timedSpell) {
+			for (loop = 0; loop < config->timedSpellList.size(); loop ++) {
+				if (self->mana >= config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime) {
+					RandomVariableMana(config->timedSpellList[loop].randMana,MAKE,config);
+					config->timedSpellList[loop].triggerTime = time(NULL) + config->timedSpellList[loop].delay;
+					sender.say(config->timedSpellList[loop].spell);
+					Sleep(700);
+				}
+				else if(config->timedSpellList[loop].usePotions && self->mana < config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime + 10) {
+					int contNr;
+					CUIntArray itemArray;
+					if (self->lvl > 80)
+						itemArray.Add(itemProxy.getValueForConst("fluidManaG"));
+					if (self->lvl > 50)
+						itemArray.Add(itemProxy.getValueForConst("fluidManaS"));
+					itemArray.Add(itemProxy.getValueForConst("fluidMana"));
+					for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
+						CTibiaContainer *cont = reader.readContainer(contNr);				
+						if (cont->flagOnOff) {
+							CTibiaItem *item = NULL;
+							item = CModuleUtil::lookupItem(contNr, &itemArray);
+							if (item) {
+								sender.useItemFromContainerOnCreature(item->objectId,0x40+contNr,item->pos,self->tibiaId);
+								delete item;
+								delete cont;
+								break;
+							}
+						}
+						delete cont;
+					}
+					Sleep(700);
+				}
+			}
+		}	
+		
 		delete self;
 	}
-	setMana.clear();
-	setHp.clear();
+	//setMana.clear();
+	//setHp.clear();
 	toolThreadShouldStop=0;
 	return 0;
 }
@@ -432,7 +478,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 CMod_spellcasterApp::CMod_spellcasterApp()
 {
-	m_configDialog =NULL;
+	m_configDialog = NULL;
 	m_started=0;
 	m_configData = new CConfigData();	
 }
@@ -520,7 +566,7 @@ void CMod_spellcasterApp::enableControls() {
 }
 
 char *CMod_spellcasterApp::getVersion() {
-	return "2.7";
+	return "3.0 (Beta)";
 }
 
 int CMod_spellcasterApp::validateConfig(int showAlerts) {
@@ -566,14 +612,23 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 			}
 		}
 		if (m_configData->sioSpell) {
-			if (m_configData->sioHp<0)
-			{
-				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
+			char buf[64];
+			for(int loop = 0; loop < m_configData->healList.size(); loop ) {
+			if (m_configData->healList[loop].triggerHP <= 0) {
+				sprintf(buf, "%s: 'Cast when life below' must be >0!", m_configData->healList[loop].name);
+				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
-			if (m_configData->sioSpellMana<140) {
+			if (m_configData->healList[loop].maxHP < 1)
+			{
+				sprintf(buf, "%s: 'Maximum Life' must be >1!", m_configData->healList[loop].name);
+				if (showAlerts) AfxMessageBox(buf);
+				return 0;
+			}
+			if (m_configData->sioSpellMana < 140) {
 				if (showAlerts) AfxMessageBox("'Exura sio mana' must be >=140!");
 				return 0;
+			}
 			}
 		}
 		if (m_configData->granSpell) {
@@ -639,6 +694,21 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 			return 0;
 		}
 	}
+	if (m_configData->timedSpell) {
+		if (!strlen(m_configData->timedSpellList[0].spell)) {
+			if (showAlerts) AfxMessageBox("Some timed spell to cast must be defined!");
+			return 0;
+		}
+		if (m_configData->timedSpellList[0].mana < 0) {
+			if (showAlerts) AfxMessageBox("'Spell Mana' must be >= 0!");
+			return 0;
+		}
+		if (m_configData->timedSpellList[0].delay < 0) {
+			if (showAlerts) AfxMessageBox("'Timed Delay' must be >= 0!");
+			return 0;
+		}
+	}
+
 	return 1;
 }
 
@@ -666,7 +736,6 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"vitaHp")) m_configData->vitaHp=atoi(paramValue);
 	if (!strcmp(paramName,"vitaSpellMana")) m_configData->vitaSpellMana=atoi(paramValue);
 	if (!strcmp(paramName,"sioSpell")) m_configData->sioSpell=atoi(paramValue);
-	if (!strcmp(paramName,"sioHp")) m_configData->sioHp=atoi(paramValue);
 	if (!strcmp(paramName,"sioSpellMana")) m_configData->sioSpellMana=atoi(paramValue);
 	if (!strcmp(paramName,"poisonSpell")) m_configData->poisonSpell=atoi(paramValue);
 	if (!strcmp(paramName,"paralysisSpell")) m_configData->paralysisSpell=atoi(paramValue);
@@ -706,86 +775,127 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"ExevoGranMasFlam")) m_configData->exevoGranMasFlam=atoi(paramValue);
 	if (!strcmp(paramName,"ExevoGranMasTera")) m_configData->exevoGranMasTera=atoi(paramValue);
 	if (!strcmp(paramName,"ExevoGranMasFrigo")) m_configData->exevoGranMasFrigo=atoi(paramValue);
+	
+	if (!strcmp(paramName,"timedSpell")) m_configData->timedSpell=atoi(paramValue);
+	if (!strcmp(paramName,"timedSpellList")) {
+		char buf1[8];
+		char buf2[8];
+		char buf3[8];
+		TimedSpell temp;
+		sscanf(paramValue, "%s %s %s %s",temp.spell, buf1, buf2, buf3);
+		temp.mana = atoi(buf1);
+		temp.delay = atoi(buf2);
+		temp.usePotions = (bool)atoi(buf3);
+		m_configData->timedSpellList.push_back(temp);
+		m_configDialog->m_Dialog[5]->configToControls(m_configData);
+		currentPos++;
+	}
+
 	if (!strcmp(paramName,"DisableWarning")) m_configData->disableWarning=atoi(paramValue);
 	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
-	if (!strcmp(paramName,"healList")){
-		if (currentPos>99)
-			return;
-		lstrcpyn(m_configData->healList[currentPos++],paramValue,32);
+
+	if (!strcmp(paramName,"healList")) {
+		char buf1[8];
+		char buf2[8];
+		Player temp;
+		AfxMessageBox(paramValue);
+		sscanf(paramValue, "%s %s %s",temp.name, buf1, buf2);
+		temp.maxHP = atoi(buf1);
+		temp.triggerHP = atoi(buf2);
+		m_configData->healList.push_back(temp);
+		currentPos++;
 	}
 }
 
 char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
 	buf[0]=0;
-	
-	if (!strcmp(paramName,"mana")) sprintf(buf,"%d",m_configData->mana);
-	if (!strcmp(paramName,"manaMana")) sprintf(buf,"%d",m_configData->manaMana);
-	if (!strcmp(paramName,"manaSpell")) sprintf(buf,"%s",m_configData->manaSpell);
-	
-	if (!strcmp(paramName,"life")) sprintf(buf,"%d",m_configData->life);
-	if (!strcmp(paramName,"customSpell")) sprintf(buf,"%d",m_configData->customSpell);
-	if (!strcmp(paramName,"lifeHp")) sprintf(buf,"%d",m_configData->lifeHp);
-	if (!strcmp(paramName,"lifeSpell")) sprintf(buf,"%s",m_configData->lifeSpell);
-	if (!strcmp(paramName,"lifeSpellMana")) sprintf(buf,"%d",m_configData->lifeSpellMana);
-	if (!strcmp(paramName,"exuraSpell")) sprintf(buf,"%d",m_configData->exuraSpell);
-	if (!strcmp(paramName,"exuraHp")) sprintf(buf,"%d",m_configData->exuraHp);
-	if (!strcmp(paramName,"exuraSpellMana")) sprintf(buf,"%d",m_configData->exuraSpellMana);
-	if (!strcmp(paramName,"granSpell")) sprintf(buf,"%d",m_configData->granSpell);
-	if (!strcmp(paramName,"granHp")) sprintf(buf,"%d",m_configData->granHp);
-	if (!strcmp(paramName,"granSpellMana")) sprintf(buf,"%d",m_configData->granSpellMana);
-	if (!strcmp(paramName,"vitaSpell")) sprintf(buf,"%d",m_configData->vitaSpell);
-	if (!strcmp(paramName,"vitaHp")) sprintf(buf,"%d",m_configData->vitaHp);
-	if (!strcmp(paramName,"vitaSpellMana")) sprintf(buf,"%d",m_configData->vitaSpellMana);
-	if (!strcmp(paramName,"sioSpell")) sprintf(buf,"%d",m_configData->sioSpell);
-	if (!strcmp(paramName,"sioHp")) sprintf(buf,"%d",m_configData->sioHp);
-	if (!strcmp(paramName,"sioSpellMana")) sprintf(buf,"%d",m_configData->sioSpellMana);
-	if (!strcmp(paramName,"poisonSpell")) sprintf(buf,"%d",m_configData->poisonSpell);
-	if (!strcmp(paramName,"paralysisSpell")) sprintf(buf,"%d",m_configData->paralysisSpell);
-	if (!strcmp(paramName,"minPoisonDmg")) sprintf(buf,"%d",m_configData->minPoisonDmg);
-	
-	if (!strcmp(paramName,"summon")) sprintf(buf,"%d",m_configData->summon);
-	if (!strcmp(paramName,"summonLessThan")) sprintf(buf,"%d",m_configData->summonLessThan);
-	if (!strcmp(paramName,"summonMana")) sprintf(buf,"%d",m_configData->summonMana);
-	if (!strcmp(paramName,"summonName")) strcpy(buf,m_configData->summonName);
-	
-	if (!strcmp(paramName,"strike")) sprintf(buf,"%d",m_configData->strike);
-	if (!strcmp(paramName,"ExoriFlam")) sprintf(buf,"%d",m_configData->flam);
-	if (!strcmp(paramName,"ExoriFrigo")) sprintf(buf,"%d",m_configData->frigo);
-	if (!strcmp(paramName,"ExoriMort")) sprintf(buf,"%d",m_configData->mort);
-	if (!strcmp(paramName,"ExoriTera")) sprintf(buf,"%d",m_configData->tera);
-	if (!strcmp(paramName,"ExoriVis")) sprintf(buf,"%d",m_configData->vis);
-	if (!strcmp(paramName,"ExoriCon")) sprintf(buf,"%d",m_configData->con);
-	if (!strcmp(paramName,"ExoriSan")) sprintf(buf,"%d",m_configData->san);
-	if (!strcmp(paramName,"ExoriHur")) sprintf(buf,"%d",m_configData->hur);
-	if (!strcmp(paramName,"manaStrike")) sprintf(buf,"%d",m_configData->manaStrike);
-	if (!strcmp(paramName,"defaultStrikeSpell")) sprintf(buf,"%s",m_configData->defaultStrikeSpell);
-	if (!strcmp(paramName,"strikeSpellHpMin")) sprintf(buf,"%d",m_configData->strikeSpellHpMin);
-	
-	if (!strcmp(paramName,"aoe")) sprintf(buf,"%d",m_configData->aoe);
-	if (!strcmp(paramName,"aoeAffect")) sprintf(buf,"%d",m_configData->aoeAffect);
-	if (!strcmp(paramName,"Exori")) sprintf(buf,"%d",m_configData->exori);
-	if (!strcmp(paramName,"ExoriGran")) sprintf(buf,"%d",m_configData->exoriGran);
-	if (!strcmp(paramName,"ExoriMas")) sprintf(buf,"%d",m_configData->exoriMas);
-	if (!strcmp(paramName,"ExoriMasSan")) sprintf(buf,"%d",m_configData->exevoMasSan);
-	if (!strcmp(paramName,"ExevoFlamHur")) sprintf(buf,"%d",m_configData->exevoFlamHur);
-	if (!strcmp(paramName,"ExevoFrigoHur")) sprintf(buf,"%d",m_configData->exevoFrigoHur);
-	if (!strcmp(paramName,"ExevoTeraHur")) sprintf(buf,"%d",m_configData->exevoTeraHur);
-	if (!strcmp(paramName,"ExevoVisHur")) sprintf(buf,"%d",m_configData->exevoVisHur);
-	if (!strcmp(paramName,"ExevoVisLux")) sprintf(buf,"%d",m_configData->exevoVisLux);
-	if (!strcmp(paramName,"ExevoGranVisLux")) sprintf(buf,"%d",m_configData->exevoGranVisLux);
-	if (!strcmp(paramName,"ExevoGranMasVis")) sprintf(buf,"%d",m_configData->exevoGranMasVis);
-	if (!strcmp(paramName,"ExevoGranMasFlam")) sprintf(buf,"%d",m_configData->exevoGranMasFlam);
-	if (!strcmp(paramName,"ExevoGranMasTera")) sprintf(buf,"%d",m_configData->exevoGranMasTera);
-	if (!strcmp(paramName,"ExevoGranMasFrigo")) sprintf(buf,"%d",m_configData->exevoGranMasFrigo);
-	if (!strcmp(paramName,"DisableWarning")) sprintf(buf,"%d",m_configData->disableWarning);
-	if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
-	if (!strcmp(paramName,"healList")){		
-		if (currentPos<100){				
-			if (IsCharAlphaNumeric(m_configData->healList[currentPos][0])){				
-				lstrcpyn(buf,m_configData->healList[currentPos++],32);
+	try {		
+		if (!strcmp(paramName,"mana")) sprintf(buf,"%d",m_configData->mana);
+		if (!strcmp(paramName,"manaMana")) sprintf(buf,"%d",m_configData->manaMana);
+		if (!strcmp(paramName,"manaSpell")) sprintf(buf,"%s",m_configData->manaSpell);
+		
+		if (!strcmp(paramName,"life")) sprintf(buf,"%d",m_configData->life);
+		if (!strcmp(paramName,"customSpell")) sprintf(buf,"%d",m_configData->customSpell);
+		if (!strcmp(paramName,"lifeHp")) sprintf(buf,"%d",m_configData->lifeHp);
+		if (!strcmp(paramName,"lifeSpell")) sprintf(buf,"%s",m_configData->lifeSpell);
+		if (!strcmp(paramName,"lifeSpellMana")) sprintf(buf,"%d",m_configData->lifeSpellMana);
+		if (!strcmp(paramName,"exuraSpell")) sprintf(buf,"%d",m_configData->exuraSpell);
+		if (!strcmp(paramName,"exuraHp")) sprintf(buf,"%d",m_configData->exuraHp);
+		if (!strcmp(paramName,"exuraSpellMana")) sprintf(buf,"%d",m_configData->exuraSpellMana);
+		if (!strcmp(paramName,"granSpell")) sprintf(buf,"%d",m_configData->granSpell);
+		if (!strcmp(paramName,"granHp")) sprintf(buf,"%d",m_configData->granHp);
+		if (!strcmp(paramName,"granSpellMana")) sprintf(buf,"%d",m_configData->granSpellMana);
+		if (!strcmp(paramName,"vitaSpell")) sprintf(buf,"%d",m_configData->vitaSpell);
+		if (!strcmp(paramName,"vitaHp")) sprintf(buf,"%d",m_configData->vitaHp);
+		if (!strcmp(paramName,"vitaSpellMana")) sprintf(buf,"%d",m_configData->vitaSpellMana);
+		if (!strcmp(paramName,"sioSpell")) sprintf(buf,"%d",m_configData->sioSpell);
+		if (!strcmp(paramName,"sioSpellMana")) sprintf(buf,"%d",m_configData->sioSpellMana);
+		if (!strcmp(paramName,"poisonSpell")) sprintf(buf,"%d",m_configData->poisonSpell);
+		if (!strcmp(paramName,"paralysisSpell")) sprintf(buf,"%d",m_configData->paralysisSpell);
+		if (!strcmp(paramName,"minPoisonDmg")) sprintf(buf,"%d",m_configData->minPoisonDmg);
+		
+		if (!strcmp(paramName,"summon")) sprintf(buf,"%d",m_configData->summon);
+		if (!strcmp(paramName,"summonLessThan")) sprintf(buf,"%d",m_configData->summonLessThan);
+		if (!strcmp(paramName,"summonMana")) sprintf(buf,"%d",m_configData->summonMana);
+		if (!strcmp(paramName,"summonName")) strcpy(buf,m_configData->summonName);
+		
+		if (!strcmp(paramName,"strike")) sprintf(buf,"%d",m_configData->strike);
+		if (!strcmp(paramName,"ExoriFlam")) sprintf(buf,"%d",m_configData->flam);
+		if (!strcmp(paramName,"ExoriFrigo")) sprintf(buf,"%d",m_configData->frigo);
+		if (!strcmp(paramName,"ExoriMort")) sprintf(buf,"%d",m_configData->mort);
+		if (!strcmp(paramName,"ExoriTera")) sprintf(buf,"%d",m_configData->tera);
+		if (!strcmp(paramName,"ExoriVis")) sprintf(buf,"%d",m_configData->vis);
+		if (!strcmp(paramName,"ExoriCon")) sprintf(buf,"%d",m_configData->con);
+		if (!strcmp(paramName,"ExoriSan")) sprintf(buf,"%d",m_configData->san);
+		if (!strcmp(paramName,"ExoriHur")) sprintf(buf,"%d",m_configData->hur);
+		if (!strcmp(paramName,"manaStrike")) sprintf(buf,"%d",m_configData->manaStrike);
+		if (!strcmp(paramName,"defaultStrikeSpell")) sprintf(buf,"%s",m_configData->defaultStrikeSpell);
+		if (!strcmp(paramName,"strikeSpellHpMin")) sprintf(buf,"%d",m_configData->strikeSpellHpMin);
+		
+		if (!strcmp(paramName,"aoe")) sprintf(buf,"%d",m_configData->aoe);
+		if (!strcmp(paramName,"aoeAffect")) sprintf(buf,"%d",m_configData->aoeAffect);
+		if (!strcmp(paramName,"Exori")) sprintf(buf,"%d",m_configData->exori);
+		if (!strcmp(paramName,"ExoriGran")) sprintf(buf,"%d",m_configData->exoriGran);
+		if (!strcmp(paramName,"ExoriMas")) sprintf(buf,"%d",m_configData->exoriMas);
+		if (!strcmp(paramName,"ExoriMasSan")) sprintf(buf,"%d",m_configData->exevoMasSan);
+		if (!strcmp(paramName,"ExevoFlamHur")) sprintf(buf,"%d",m_configData->exevoFlamHur);
+		if (!strcmp(paramName,"ExevoFrigoHur")) sprintf(buf,"%d",m_configData->exevoFrigoHur);
+		if (!strcmp(paramName,"ExevoTeraHur")) sprintf(buf,"%d",m_configData->exevoTeraHur);
+		if (!strcmp(paramName,"ExevoVisHur")) sprintf(buf,"%d",m_configData->exevoVisHur);
+		if (!strcmp(paramName,"ExevoVisLux")) sprintf(buf,"%d",m_configData->exevoVisLux);
+		if (!strcmp(paramName,"ExevoGranVisLux")) sprintf(buf,"%d",m_configData->exevoGranVisLux);
+		if (!strcmp(paramName,"ExevoGranMasVis")) sprintf(buf,"%d",m_configData->exevoGranMasVis);
+		if (!strcmp(paramName,"ExevoGranMasFlam")) sprintf(buf,"%d",m_configData->exevoGranMasFlam);
+		if (!strcmp(paramName,"ExevoGranMasTera")) sprintf(buf,"%d",m_configData->exevoGranMasTera);
+		if (!strcmp(paramName,"ExevoGranMasFrigo")) sprintf(buf,"%d",m_configData->exevoGranMasFrigo);
+		
+		if (!strcmp(paramName,"timedSpell")) sprintf(buf,"%d",m_configData->timedSpell);
+		if (!strcmp(paramName,"timedSpellList")) {		
+			if (currentPos >= m_configData->timedSpellList.size())
+				return buf;
+			else {
+				TimedSpell temp;
+				temp = m_configData->timedSpellList[currentPos++];
+				sprintf(buf, "%s %d %d %d",temp.spell, temp.mana, temp.delay, temp.usePotions);
 			}
-		}		
+		}
+		
+		if (!strcmp(paramName,"DisableWarning")) sprintf(buf,"%d",m_configData->disableWarning);
+		if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
+		
+		if (!strcmp(paramName,"healList")) {		
+			if (currentPos >= m_configData->healList.size())
+				return buf;
+			else {
+				Player temp;
+				temp = m_configData->healList[currentPos++];
+				sprintf(buf, "%s %d %d",temp.name, temp.maxHP, temp.triggerHP);
+			}
+		}
+	}
+	catch (exception e) {
+		AfxMessageBox(e.what());
 	}
 	
 	return buf;
@@ -847,23 +957,26 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 49: return "ExevoGranMasTera";
 	case 50: return "ExevoGranMasFrigo";
 	case 51: return "sioSpell";
-	case 52: return "sioHp";
-	case 53: return "sioSpellMana";
-	case 54: return "healList";
-	case 55: return "aoeAffect";
-	case 56: return "DisableWarning";
-	case 57: return "randomCast";
+	case 52: return "sioSpellMana";
+	case 53: return "healList";
+	case 54: return "aoeAffect";
+	case 55: return "DisableWarning";
+	case 56: return "randomCast";
+	case 57: return "timedSpell";
+	case 58: return "timedSpellList";
 	default:
 		return NULL;
 	}
 }
 int CMod_spellcasterApp::isMultiParam(char *paramName) {
 	if (!strcmp(paramName,"healList")) return 1;
+	if (!strcmp(paramName,"timedSpellList")) return 1;
 	return 0;
 }
 
 void CMod_spellcasterApp::resetMultiParamAccess(char *paramName) {
 	if (!strcmp(paramName,"healList")) currentPos=0;
+	if (!strcmp(paramName,"timedSpellList")) currentPos=0;
 }
 
 int initalizeCreatures() {
@@ -1200,7 +1313,8 @@ int aoeShouldFire(CConfigData *config) {
 void CMod_spellcasterApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 	skin.SetButtonSkin(	m_configDialog->m_enable);
-	skin.SetButtonSkin(	m_configDialog->m_healList);
+	LifeDialog *temp = (LifeDialog*)m_configDialog->m_Dialog[0];
+	skin.SetButtonSkin( temp->m_healList);
 	skin.SetButtonSkin(	m_configDialog->m_OK);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			

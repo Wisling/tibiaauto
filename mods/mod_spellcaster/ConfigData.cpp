@@ -35,52 +35,50 @@ CConfigData::CConfigData()
 	vitaHp=0;
 	vitaSpellMana=160;
 	sioSpell=0;
-	sioHp=0;
 	sioSpellMana=140;
 	paralysisSpell=0;
 	poisonSpell=0;
 	minPoisonDmg=0;
 
-	memset(healList,0,3200);
-
-
 	summon=0;
-	summonLessThan=0;
-	summonName[0]=0;
-	summonMana=0;
+	summonLessThan = 0;
+	summonName[0] = 0;
+	summonMana = 0;
 	
-	strike=0;
-	flam=0;
-	frigo=0;
-	mort=0;
-	tera=0;
-	vis=0;
-	con=0;
-	san=0;
-	hur=0;
-	manaStrike=20;
-	defaultStrikeSpell[0]=0;
-	strikeSpellHpMin=0;
+	strike = 0;
+	flam = 0;
+	frigo = 0;
+	mort = 0;
+	tera = 0;
+	vis = 0;
+	con = 0;
+	san = 0;
+	hur = 0;
+	manaStrike = 20;
+	defaultStrikeSpell[0] = 0;
+	strikeSpellHpMin = 0;
 
-	aoe=0;
-	aoeAffect=0;
-	exori=0;
-	exoriGran=0;
-	exoriMas=0;
-	exevoMasSan=0;
-	exevoFlamHur=0;
-	exevoFrigoHur=0;
-	exevoTeraHur=0;
-	exevoVisHur=0;
-	exevoVisLux=0;
-	exevoGranVisLux=0;
-	exevoGranMasVis=0;
-	exevoGranMasFlam=0;
-	exevoGranMasTera=0;
-	exevoGranMasFrigo=0;
+	aoe = 0;
+	aoeAffect = 0;
+	exori = 0;
+	exoriGran = 0;
+	exoriMas = 0;
+	exevoMasSan = 0;
+	exevoFlamHur = 0;
+	exevoFrigoHur = 0;
+	exevoTeraHur = 0;
+	exevoVisHur = 0;
+	exevoVisLux = 0;
+	exevoGranVisLux = 0;
+	exevoGranMasVis = 0;
+	exevoGranMasFlam = 0;
+	exevoGranMasTera = 0;
+	exevoGranMasFrigo = 0;
 
-	disableWarning=0;
-	randomCast=1;//new
+	timedSpell = 0;
+
+	disableWarning = 0;
+	randomCast = 1;
 }
 
 CConfigData::~CConfigData()
