@@ -2,7 +2,6 @@
 #include "mod_spellcaster.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
-//#include "HealList.h"
 #include "LifeDialog.h"
 #include "ManaDialog.h"
 #include "SummonDialog.h"
@@ -158,6 +157,8 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_Dialog[4]->Create(m_DialogID[4],&m_tabCtrl);
 	m_Dialog[5]->Create(m_DialogID[5],&m_tabCtrl);
 
+	CPoint topLeft(3, 39);
+	m_tabCtrl.SetTopLeftCorner(topLeft);
 	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
 	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
 

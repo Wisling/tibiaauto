@@ -17,7 +17,7 @@ ResourceCount=8
 Resource1=IDD_SUMMON_DIALOG
 Class4=LifeDialog
 Resource2=IDD_AOE_DIALOG
-Resource3=IDD_CONFIG (Polish)
+Resource3=IDD_TIMED_DIALOG
 Class5=ManaDialog
 Resource4=IDD_HEALLIST (Polish)
 Class6=SummonDialog
@@ -27,7 +27,7 @@ Resource6=IDD_LIFE_DIALOG
 Class8=AOEDialog
 Resource7=IDD_STRIKE_DIALOG
 Class9=TimedDialog
-Resource8=IDD_TIMED_DIALOG
+Resource8=IDD_CONFIG (Polish)
 
 [CLS:CConfigDialog]
 Type=0

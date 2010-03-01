@@ -3,52 +3,14 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_spellcaster - Win32 Release--------------------
+--------------------Configuration: mod_spellcaster - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPCA2.tmp" with contents
-[
-/nologo /MD /W3 /GX /Ox /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_spellcaster.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp"
-]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPCA2.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPCA3.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_spellcaster.pdb" /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Release/mod_spellcaster.lib" 
-".\Release\AOEDialog.obj"
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\HealList.obj"
-".\Release\LifeDialog.obj"
-".\Release\ManaDialog.obj"
-".\Release\mod_spellcaster.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\StrikeDialog.obj"
-".\Release\SummonDialog.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\TimedDialog.obj"
-".\Release\XTabCtrl.obj"
-".\Release\mytabctrl.obj"
-".\Release\mod_spellcaster.res"
-]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSPCA3.tmp"
-<h3>Output Window</h3>
-Compiling...
-mod_spellcaster.cpp
-E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.cpp(788) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
-Linking...
-   Creating library Release/mod_spellcaster.lib and object Release/mod_spellcaster.exp
 
 
 
 <h3>Results</h3>
-mod_spellcaster.dll - 0 error(s), 1 warning(s)
+mod_spellcaster.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>
