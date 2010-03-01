@@ -239,7 +239,7 @@ void CMemReader::setAttackedCreature(int tibiaId)
 	CMemUtil::SetMemIntValue(m_memAddressAttackedCreature,tibiaId);
 }
 
-int CMemReader::getFollowedCreature(int tibiaId)
+int CMemReader::getFollowedCreature()
 {	
 	return CMemUtil::GetMemIntValue(m_memAddressFollowedCreature);
 }

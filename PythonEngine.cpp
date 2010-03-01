@@ -375,7 +375,7 @@ static PyMethodDef Methods_taalice[] = {
     {NULL,      NULL}        /* Sentinel */
 };
 
-static PyMethodDef Methods_tacrstat[] = { 
+static PyMethodDef Methods_tacrstat[] = {
 	{"findCreatureStatForLocationTibiaId", tibiaauto_crstat_tibiaId, METH_VARARGS},
 	{"findCreatureStatForLocationCount", tibiaauto_crstat_count, METH_VARARGS},
 	{"findCreatureStatForLocationName", tibiaauto_crstat_name, METH_VARARGS},
@@ -385,23 +385,47 @@ static PyMethodDef Methods_tacrstat[] = {
 };
 
 static PyMethodDef Methods_taitem[] = {
-	{"getName", tibiaauto_item_getName, METH_VARARGS},
-	{"getObjectId", tibiaauto_item_getObjectId, METH_VARARGS},
+	{"getItemName", tibiaauto_item_getItemName, METH_VARARGS},
+	{"getItemId", tibiaauto_item_getItemId, METH_VARARGS},
+	{"getItemIndex", tibiaauto_item_getItemIndex, METH_VARARGS},
+	{"getFoodIndex", tibiaauto_item_getFoodIndex, METH_VARARGS},
+	{"getLootItemIndex", tibiaauto_item_getLootItemIndex, METH_VARARGS},
+	{"getItemIdAtIndex", tibiaauto_item_getItemIdAtIndex, METH_VARARGS},
+	{"getFoodIdAtIndex", tibiaauto_item_getFoodIdAtIndex, METH_VARARGS},
+	{"getLootItemIdAtIndex", tibiaauto_item_getLootItemIdAtIndex, METH_VARARGS},
+	{"getItemNameAtIndex", tibiaauto_item_getItemNameAtIndex, METH_VARARGS},
+	{"getFoodNameAtIndex", tibiaauto_item_getFoodNameAtIndex, METH_VARARGS},
+	{"getLootItemNameAtIndex", tibiaauto_item_getLootItemNameAtIndex, METH_VARARGS},
+	{"getFoodTimeAtIndex", tibiaauto_item_getFoodTimeAtIndex, METH_VARARGS},
+	{"addItem", tibiaauto_item_addItem, METH_VARARGS},
+	{"addFood", tibiaauto_item_addFood, METH_VARARGS},
+	{"addLootItem", tibiaauto_item_addLootItem, METH_VARARGS},
+	{"removeItem", tibiaauto_item_removeItem, METH_VARARGS},
+	{"removeFood", tibiaauto_item_removeFood, METH_VARARGS},
+	{"removeLootItem", tibiaauto_item_removeLootItem, METH_VARARGS},
+	{"clearFoodList", tibiaauto_item_clearFoodList, METH_VARARGS},
+	{"getItemCount", tibiaauto_item_getItemCount, METH_VARARGS},
+	{"getFoodCount", tibiaauto_item_getFoodCount, METH_VARARGS},
+	{"getLootItemCount", tibiaauto_item_getLootItemCount, METH_VARARGS},
 	{"getValueForConst", tibiaauto_item_getValueForConst, METH_VARARGS},
 	{"refreshItemLists", tibiaauto_item_refreshItemLists, METH_VARARGS},
+	{"saveItemLists", tibiaauto_item_saveItemLists, METH_VARARGS},
+	
+	/* Deprecated Section Start*/
+	{"getName", tibiaauto_item_getName, METH_VARARGS},
 	{"getCorpseIdByCreatureName", tibiaauto_item_getCorpseIdByCreatureName, METH_VARARGS},
 	{"getItemsItems", tibiaauto_item_getItemsItems, METH_VARARGS},
 	{"getItemsItemsId", tibiaauto_item_getItemsItemsId, METH_VARARGS},
-	{"getItemsItemsCount", tibiaauto_item_getItemsItemsCount, METH_VARARGS},
 	{"getItemsFood", tibiaauto_item_getItemsFood, METH_VARARGS},
-	{"getItemsFoodId", tibiaauto_item_getItemsFoodId, METH_VARARGS},
-	{"getItemsFoodCount", tibiaauto_item_getItemsFoodCount, METH_VARARGS},
 	{"getItemsCorpses", tibiaauto_item_getItemsCorpses, METH_VARARGS},
 	{"getItemsCorpsesId", tibiaauto_item_getItemsCorpsesId, METH_VARARGS},
 	{"getItemsCorpsesCount", tibiaauto_item_getItemsCorpsesCount, METH_VARARGS},
 	{"getItemsLooted", tibiaauto_item_getItemsLooted, METH_VARARGS},
 	{"getItemsLootedId", tibiaauto_item_getItemsLootedId, METH_VARARGS},
-	{"getItemsLootedCount", tibiaauto_item_getItemsLootedCount, METH_VARARGS},
+	{"getItemsItemsCount",tibiaauto_item_getItemsItemsCount, METH_VARARGS},
+	{"getItemsFoodCount",tibiaauto_item_getItemsFoodCount, METH_VARARGS},
+	{"getItemsLootedCount",tibiaauto_item_getItemsLootedCount, METH_VARARGS},
+	/* Deprecated Section End*/
 	
 	
     {NULL,      NULL}        /* Sentinel */

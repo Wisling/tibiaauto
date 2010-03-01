@@ -26,7 +26,7 @@ public:
 public:
 	int getCreatureDeltaY(int creatureNr);
 	int getCreatureDeltaX(int creatureNr);
-	void setAttackedCreature(int tibiaId);
+	
 	void writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY);
 	int getXRayValue2();
 	int getXRayValue1();
@@ -70,6 +70,9 @@ public:
 	int getTradeCountPartner();
 	int getTradeCountSelf();
 	int getAttackedCreature();
+	void setAttackedCreature(int tibiaId);
+	int getFollowedCreature();
+	void setFollowedCreature(int tibiaId);
 	char * GetLoggedChar(int processId);
 	int readBattleListMax();
 	int readBattleListMin();

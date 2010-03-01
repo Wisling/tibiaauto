@@ -9,9 +9,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "TibiaMap.h"
 #include "TibiaMapPoint.h"
-#include "TibiaMiniMapPoint.h"
+class CTibiaMap;
+class CTibiaMiniMapPoint;
 
 struct MiniMapSection{
 private:

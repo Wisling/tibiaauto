@@ -85,8 +85,6 @@ BOOL CTibiaauto_utilApp::InitInstance()
 
 }
 
-
-
 void setProcessId(int processId)
 {
 	CMemUtil::setGlobalProcessId(processId);
@@ -98,7 +96,7 @@ int getProcessId()
 }
 
 
- 
+
 void setPipeHandle(HANDLE hPipePar)
 {	
 	hPipe=hPipePar;
@@ -637,156 +635,99 @@ void tibiaMapUnloadMiniMaps()
 	taMiniMap.unloadMiniMaps();
 }
 
-int tibiaItemGetIndex(int objectId, int type)
-{
-	return CTibiaItem::getIndex(objectId, type);
+char * tibiaItemGetItemName(int objectId){	
+	return CTibiaItem::getItemName(objectId);
+}
+int tibiaItemGetItemId(char *name){
+	return CTibiaItem::getItemId(name);
+}
+int tibiaItemGetItemIndex(int objectId){	
+	return CTibiaItem::getItemIndex(objectId);
+}
+int tibiaItemGetFoodIndex(int objectId){	
+	return CTibiaItem::getFoodIndex(objectId);
+}
+int tibiaItemGetLootItemIndex(int objectId){	
+	return CTibiaItem::getLootItemIndex(objectId);
 }
 
-char * tibiaItemGetName(int objectId)
-{
-	return CTibiaItem::getName(objectId);
+int tibiaItemGetItemIdAtIndex(int ind){	
+	return CTibiaItem::getItemIdAtIndex(ind);
+}
+int tibiaItemGetFoodIdAtIndex(int ind){	
+	return CTibiaItem::getFoodIdAtIndex(ind);
+}
+int tibiaItemGetLootItemIdAtIndex(int ind){	
+	return CTibiaItem::getLootItemIdAtIndex(ind);
+}
+char* tibiaItemGetItemNameAtIndex(int ind){	
+	return CTibiaItem::getItemNameAtIndex(ind);
+}
+char* tibiaItemGetFoodNameAtIndex(int ind){	
+	return CTibiaItem::getFoodNameAtIndex(ind);
+}
+char* tibiaItemgetLootItemNameAtIndex(int ind){	
+	return CTibiaItem::getLootItemNameAtIndex(ind);
+}
+int tibiaItemGetFoodTimeAtIndex(int ind){
+	return CTibiaItem::getFoodTimeAtIndex(ind);
+}
+CUIntArray* tibiaItemGetItemIdArrayPtr(){
+	return CTibiaItem::getItemIdArrayPtr();
+}
+CUIntArray* tibiaItemGetFoodIdArrayPtr(){
+	return CTibiaItem::getFoodIdArrayPtr();
+}
+CUIntArray* tibiaItemGetLootItemIdArrayPtr(){
+	return CTibiaItem::getLootItemIdArrayPtr();
+}
+void tibiaItemAddItem(char *name, int objectId){
+	CTibiaItem::addItem(name,objectId);
+}
+void tibiaItemAddFood(char *name, int objectId, int extraInfo){
+	CTibiaItem::addFood(name,objectId,extraInfo);
+}
+void tibiaItemAddLootItem(char *name, int objectId) {
+	CTibiaItem::addLootItem(name,objectId);
 }
 
-int tibiaItemGetObjectId(char *name)
-{
-	return CTibiaItem::getObjectId(name);
+void tibiaItemRemoveItem(int ind) {
+	CTibiaItem::removeItem(ind);
 }
-int tibiaItemGetFoodId(char *name)
-{
-	return CTibiaItem::getFoodId(name);
+void tibiaItemRemoveFood(int ind) {
+	CTibiaItem::removeFood(ind);
 }
-int tibiaItemGetLootItemId(char *name) {
-	return CTibiaItem::getLootItemId(name);
+void tibiaItemRemoveLootItem(int ind) {
+	CTibiaItem::removeLootItem(ind);
 }
-int tibiaItemGetExtraInfo(int index, int type) {
-	if (type == 1) {
-		return CTibiaItem::itemsItemsExtra[index];
-	}
-	if (type == 2) {
-		return CTibiaItem::itemsFoodTime[index];
-	}
-	if (type == 3) {
-		return CTibiaItem::itemsLootedExtra[index];
-	}
-	return 0;
+void tibiaItemClearFoodList(){
+	CTibiaItem::clearFoodList();
 }
-
-void tibiaItemSetItemName(int index, char *name) {
-	CTibiaItem::setName(index, name, 1);
+int tibiaItemGetItemCount(){
+	return CTibiaItem::getItemCount();
 }
-void tibiaItemSetFoodName(int index, char *name) {
-	CTibiaItem::setName(index, name, 2);
+int tibiaItemGetFoodCount(){
+	return CTibiaItem::getFoodCount();
 }
-void tibiaItemSetLootName(int index, char *name) {
-	CTibiaItem::setName(index, name, 3);
+int tibiaItemGetLootItemCount(){
+	return CTibiaItem::getLootItemCount();
 }
-void tibiaItemSetExtraInfo(int index, int info, int type) {
-	CTibiaItem::setExtraInfo(index, info, type);
+int tibiaItemGetValueForConst(char *code){
+	return CTibiaItem::getValueForConst(code);
 }
-
-void tibiaItemSetItemObjectId(int index, int objectId) {
-	CTibiaItem::setObjectId(index, objectId, 1);
+CTibiaTree * tibiaItemGetItemsTree(){
+	return CTibiaItem::getItemsTree();
 }
-void tibiaItemSetFoodObjectId(int index, int objectId) {
-	CTibiaItem::setObjectId(index, objectId, 2);
+void tibiaItemSetItemsTree(CTibiaTree * tibiaTree){
+	CTibiaItem::setItemsTree(tibiaTree);
 }
-void tibiaItemSetLootObjectId(int index, int objectId) {
-	CTibiaItem::setObjectId(index, objectId, 3);
-}
-
-void tibiaItemRefreshItemLists()
-{	
+void tibiaItemRefreshItemLists(){
 	CTibiaItem::itemListsFresh=0;
 	CTibiaItem::refreshItemLists();
 }
-
-void tibiaItemSaveItemLists() {	
+void tibiaItemSaveItemLists(){
 	CTibiaItem::saveItemLists();
 }
-
-void tibiaItemAddItem(char *name, int objectId) {	
-	CTibiaItem::addItem(name, objectId, NULL, 1);
-}
-void tibiaItemAddFood(char *name, int objectId, int time) {	
-	CTibiaItem::addItem(name, objectId, time, 2);
-}
-void tibiaItemAddLoot(char *name, int objectId) {	
-	CTibiaItem::addItem(name, objectId, NULL, 3);
-}
-
-int tibiaItemGetCorpseIdByCreatureName(char *name)
-{
-	return CTibiaItem::getCorpseIdByCreatureName(name);
-}
-
-CUIntArray * tibiaItemGetItemsFoodArray()
-{
-	return CTibiaItem::getItemsFood();
-}
-
-char *tibiaItemGetItemsItems(int nr)
-{
-	return CTibiaItem::itemsItems[nr];
-}
-int tibiaItemGetItemsItemsId(int nr)
-{
-	return CTibiaItem::itemsItemsId[nr];
-}
-int tibiaItemGetItemsItemsCount()
-{
-	return CTibiaItem::itemsItemsCount;
-}
-void tibiaItemSetItemsItemsCount(int newCount) {
-	CTibiaItem::setCount(1, newCount);
-}
-void tibiaItemSetItemsFoodCount(int newCount) {
-	CTibiaItem::setCount(2, newCount);
-}
-void tibiaItemSetItemsLootCount(int newCount) {
-	CTibiaItem::setCount(3, newCount);
-}
-char *tibiaItemGetItemsFood(int nr)
-{
-	return CTibiaItem::itemsFood[nr];
-}
-int tibiaItemGetItemsFoodId(int nr)
-{
-	return CTibiaItem::itemsFoodId[nr];
-}
-int tibiaItemGetItemsFoodCount()
-{
-	return CTibiaItem::itemsFoodCount;
-}
-char *tibiaItemGetItemsCorpses(int nr)
-{
-	return CTibiaItem::itemsCorpses[nr];
-}
-int tibiaItemGetItemsCorpsesId(int nr)
-{
-	return CTibiaItem::itemsCorpsesId[nr];
-}
-int tibiaItemGetItemsCorpsesCount()
-{
-	return CTibiaItem::itemsCorpsesCount;
-}
-char *tibiaItemGetItemsLooted(int nr)
-{
-	return CTibiaItem::itemsLooted[nr];
-}
-int tibiaItemGetItemsLootedId(int nr)
-{
-	return CTibiaItem::itemsLootedId[nr];
-}
-int tibiaItemGetItemsLootedCount()
-{
-	return CTibiaItem::itemsLootedCount;
-}
-
-int tibiaItemGetValueForConst(char *code)
-{
-	return CTibiaItem::getValueForConst(code);
-}
-
 void tibiaItemCleanup(){
 	CTibiaItem::cleanup();
 }

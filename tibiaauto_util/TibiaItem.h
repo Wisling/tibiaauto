@@ -9,63 +9,65 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#define MAX_ITEMS 300
-#define MAX_ITEM_LEN 60
+class CTibiaList;
+class CTibiaTree;
 
 class CTibiaItem  
 {
 public:
-	static int getIndex(int objectId, int type);
-	static char * getName(int objectId);
-	static void setName(int index, char *name, int type);
-	static void addName(char *name, int type);
-	static int getObjectId(char *name);
-	static int getFoodId(char *name);
-	static int getLootItemId(char *name);
-	static void setObjectId(int index, int objectId, int type);
-	static void addObjectId(int objectId, int type);
-	static void addExtraInfo(int extraInfo, int type);
-	static void addItem(char *name, int objectId, int extraInfo, int type);
+	static void cleanup();
+	static char * getItemName(int objectId);
+	static int getItemId(char *name);
+	static int getItemIndex(int objectId);
+	static int getFoodIndex(int objectId);
+	static int getLootItemIndex(int objectId);
+	static int getItemIdAtIndex(int ind);
+	static int getFoodIdAtIndex(int ind);
+	static int getLootItemIdAtIndex(int ind);
+	static char * getItemNameAtIndex(int ind);
+	static char * getFoodNameAtIndex(int ind);
+	static char * getLootItemNameAtIndex(int ind);
+	static int getFoodTimeAtIndex(int ind);
+	static CUIntArray* getItemIdArrayPtr();
+	static CUIntArray* getFoodIdArrayPtr();
+	static CUIntArray* getLootItemIdArrayPtr();
+	//static void setFoodNameAtIndex(int ind, int objectId);
+	//static void setFoodTimeAtIndex(int ind, int objectId);
+	//static void setFoodIdAtIndex(int ind, char *name);
+
+	static void addItem(char *name, int objectId);
+	static void addFood(char *name, int objectId, int extraInfo);
+	static void addLootItem(char *name, int objectId);
+	static void removeItem(int ind);
+	static void removeFood(int ind);
+	static void removeLootItem(int ind);
+	static void clearFoodList();
+	static int getItemCount();
+	static int getFoodCount();
+	static int getLootItemCount();
 	static int getValueForConst(char *code);
+	static CTibiaTree * getItemsTree();
+	static void setItemsTree(CTibiaTree * tibiaTree);
 	static void refreshItemLists();
 	static void saveItemLists();
-	static void setCount(int type, int newCount);
-	static void setExtraInfo(int index, int info, int type);
-	static void cleanup();
+
 	CTibiaItem();
 
 	int objectId;
 	int quantity;
 	int pos;
 
-public:
-	static int getCorpseIdByCreatureName(char *name);
-	static CUIntArray * getItemsFood();
 private:
-	static CUIntArray *foodList;	
+	static CTibiaTree* itemTree;
+	static CTibiaList* foodList;
+	static CTibiaList* lootList;
+	static CTibiaList* itemList;
+	static CTibiaList* constCodeList;
 	static int xmlInitialised;
 	
 
 public:
 	static int itemListsFresh;
-	static char itemsItems[MAX_ITEMS][MAX_ITEM_LEN];
-	static int itemsItemsId[MAX_ITEMS];
-	static int itemsItemsExtra[MAX_ITEMS];
-	static int itemsItemsCount;
-	static char itemsFood[MAX_ITEMS][MAX_ITEM_LEN];
-	static int itemsFoodId[MAX_ITEMS];
-	static int itemsFoodTime[MAX_ITEMS];
-	static int itemsFoodCount;
-	static char itemsCorpses[MAX_ITEMS][MAX_ITEM_LEN];
-	static int itemsCorpsesId[MAX_ITEMS];
-	static int itemsCorpsesCount;
-	static char itemsLooted[MAX_ITEMS][MAX_ITEM_LEN];
-	static int itemsLootedId[MAX_ITEMS];
-	static int itemsLootedExtra[MAX_ITEMS];
-	static int itemsLootedCount;
-	static char constsCode[MAX_ITEMS][MAX_ITEM_LEN];
-	static int constsValue[MAX_ITEMS];
-	static int constsCount;
 };
 
 #endif // !defined(AFX_TIBIAITEM_H__65F1AF50_58EE_4C63_8E79_E5BC61BD74C9__INCLUDED_)

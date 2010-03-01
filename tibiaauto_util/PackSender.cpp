@@ -465,7 +465,7 @@ void CPackSender::useItemFromFloorOnCreature(int objectId, int x, int y, int z, 
 void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos, int creatureId)
 {
 	char retbuf[256];
-	int targetInd_Pos=(x&0xffff==x)?z_Pos:getItemIndex(x,y_Cont,objectId);//Decide if using floor or bag
+	int targetInd_Pos=((x&0xffff)==x)?z_Pos:getItemIndex(x,y_Cont,objectId);//Decide if using floor or bag
 
 	retbuf[0]=13;
 	retbuf[1]=0;

@@ -1511,28 +1511,249 @@ static PyObject *tibiaauto_alice_respond(PyObject *self, PyObject *args)
 	
 	return ret;
 }
-static PyObject *tibiaauto_item_getName(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_item_getItemName(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
 
 	int arg1;
   	  if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
-	char *ret1=itemProxy.getName(arg1);	
+	char *ret1=itemProxy.getItemName(arg1);	
 	PyObject *ret = Py_BuildValue("s",ret1);
 	
 	return ret;
 }
-static PyObject *tibiaauto_item_getObjectId(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_item_getItemId(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
 
 	char *arg1;
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
-	int ret1=itemProxy.getObjectId(arg1);
+	int ret1=itemProxy.getItemId(arg1);
 	PyObject *ret = Py_BuildValue("i",ret1);
 	
 	return ret;
 }
+static PyObject *tibiaauto_item_getItemIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getItemIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getFoodIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getFoodIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getLootItemIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getLootItemIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getItemIdAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getItemIdAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getFoodIdAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getFoodIdAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getLootItemIdAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getLootItemIdAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getItemNameAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	char* ret1=itemProxy.getItemNameAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("s",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getFoodNameAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	char* ret1=itemProxy.getFoodNameAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("s",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getLootItemNameAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	char* ret1=itemProxy.getLootItemNameAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("s",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_item_getFoodTimeAtIndex(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	int ret1=itemProxy.getFoodTimeAtIndex(arg1);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+
+static PyObject *tibiaauto_item_addItem(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	char* arg1;
+	int arg2;
+    if (!PyArg_ParseTuple(args, "si", &arg1, &arg2)) return NULL;
+	itemProxy.addItem(arg1,arg2);
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+static PyObject *tibiaauto_item_addFood(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	char* arg1;
+	int arg2,arg3;
+    if (!PyArg_ParseTuple(args, "sii", &arg1, &arg2, &arg3)) return NULL;
+	itemProxy.addFood(arg1,arg2,arg3);
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+static PyObject *tibiaauto_item_addLootItem(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	char* arg1;
+	int arg2;
+    if (!PyArg_ParseTuple(args, "si", &arg1, &arg2)) return NULL;
+	itemProxy.addLootItem(arg1,arg2);
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_item_removeItem(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	itemProxy.removeItem(arg1);
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_item_removeFood(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	itemProxy.removeFood(arg1);
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_item_removeLootItem(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int arg1;
+    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
+	itemProxy.removeLootItem(arg1);
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_item_clearFoodList(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	itemProxy.clearFoodList();
+	
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_item_getItemCount(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int ret1=itemProxy.getItemCount();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+
+static PyObject *tibiaauto_item_getFoodCount(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int ret1=itemProxy.getFoodCount();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+
+static PyObject *tibiaauto_item_getLootItemCount(PyObject *self, PyObject *args)
+{
+	CTibiaItemProxy itemProxy;
+
+	int ret1=itemProxy.getLootItemCount();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+
 static PyObject *tibiaauto_item_getValueForConst(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1552,142 +1773,92 @@ static PyObject *tibiaauto_item_refreshItemLists(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
-static PyObject *tibiaauto_item_getCorpseIdByCreatureName(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_item_saveItemLists(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
-
-	char *arg1;
-    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
-	int ret1=itemProxy.getCorpseIdByCreatureName(arg1);
-	PyObject *ret = Py_BuildValue("i",ret1);
 	
-	return ret;
+	itemProxy.saveItemLists();
+	Py_INCREF(Py_None);
+	return Py_None; 
 }
 
+/* Deprecated Section Start*/
+static PyObject *tibiaauto_item_getName(PyObject *self, PyObject *args)
+{
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getName has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
+}
+static PyObject *tibiaauto_item_getObjectId(PyObject *self, PyObject *args)
+{
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getObjectId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
+}
+static PyObject *tibiaauto_item_getCorpseIdByCreatureName(PyObject *self, PyObject *args)
+{
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getCorpseIdByCreatureName has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
+}
 static PyObject *tibiaauto_item_getItemsItems(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	char *ret1=itemProxy.getItemsItems(arg1);
-	PyObject *ret = Py_BuildValue("s",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsItems has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsItemsId(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	int ret1=itemProxy.getItemsItemsId(arg1);
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsItemsId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsItemsCount(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-	
-	int ret1=itemProxy.getItemsItemsCount();
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsItemsCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsFood(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	char *ret1=itemProxy.getItemsFood(arg1);
-	PyObject *ret = Py_BuildValue("s",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsFood has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsFoodId(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	int ret1=itemProxy.getItemsFoodId(arg1);
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret; 
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsFoodId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsFoodCount(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-	
-	int ret1=itemProxy.getItemsFoodCount();
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsFoodCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsCorpses(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	char *ret1=itemProxy.getItemsCorpses(arg1);
-	PyObject *ret = Py_BuildValue("s",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsCorpses has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsCorpsesId(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	int ret1=itemProxy.getItemsCorpsesId(arg1);
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsCorpsesId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsCorpsesCount(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-	
-	int ret1=itemProxy.getItemsCorpsesCount();
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsCorpsesCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsLooted(PyObject *self, PyObject *args)
 {	
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	char *ret1=itemProxy.getItemsLooted(arg1);
-	PyObject *ret = Py_BuildValue("",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsLooted has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsLootedId(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	int ret1=itemProxy.getItemsLootedId(arg1);
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret; 
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsLootedId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
 static PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *args)
 {
-	CTibiaItemProxy itemProxy;
-	
-	int ret1=itemProxy.getItemsLootedCount();
-	PyObject *ret = Py_BuildValue("i",ret1);
-	
-	return ret;
+	PyErr_SetString(PyExc_NameError,"Tibia Auto Function Error: tibiaauto_item_getItemsLootedCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
+	return NULL;
 }
+/* Deprecated Section End*/
 
 static PyObject *tibiaauto_kernel_startModule(PyObject *self,PyObject *args)
 {

@@ -15,6 +15,7 @@
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
 
 #include <afxwin.h>         // MFC core and standard components
+#include <afxcmn.h>         // MFC common components
 #include <afxext.h>         // MFC extensions
 
 #ifndef _AFX_NO_OLE_SUPPORT
@@ -45,3 +46,4 @@
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_STDAFX_H__149DCA14_1990_4BD0_A449_BA6EC636DABE__INCLUDED_)
+

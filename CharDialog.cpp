@@ -74,10 +74,10 @@ void CCharDialog::OnCharRefresh()
 			char *loggedCharName=reader.GetLoggedChar(procEntry.th32ProcessID);
 			sprintf(buf,"[%5d] %s",procEntry.th32ProcessID,loggedCharName);
 			free(loggedCharName);
-			if (m_charList.FindString(0,buf)==-1)
+			if (m_charList.FindStringExact(-1,buf)==-1)
 			{		
-				m_charList.AddString(buf);				
-				m_charList.SetItemData(m_charList.FindString(0,buf),procEntry.th32ProcessID);
+				m_charList.AddString(buf);
+				m_charList.SetItemData(m_charList.FindStringExact(-1,buf),procEntry.th32ProcessID);
 				m_charList.SetCurSel(0);
 			}
 
@@ -143,7 +143,7 @@ void CCharDialog::OnTimer(UINT nIDEvent)
 }
 
 
-void CCharDialog::OnCancel() 
+void CCharDialog::OnCancel()
 {
-	EndDialog(-1);		
+	EndDialog(-1);
 }
