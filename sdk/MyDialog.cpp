@@ -64,8 +64,6 @@ void MyDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
-
 BOOL MyDialog::OnEraseBkgnd(CDC* pDC) 
 {
 	CRect rect;
@@ -231,4 +229,3 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	newPen.DeleteObject();
 	oldPen->DeleteObject();	
 }*/
-
