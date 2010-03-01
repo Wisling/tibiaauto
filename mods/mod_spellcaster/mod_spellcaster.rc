@@ -2,11 +2,6 @@
 //
 #include "resource.h"
 
-// Generated Help ID header file
-#define APSTUDIO_HIDDEN_SYMBOLS
-#include "resource.hm"
-#undef APSTUDIO_HIDDEN_SYMBOLS
-
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -90,7 +85,7 @@ BEGIN
 END
 
 IDD_HEALLIST DIALOGEX 0, 0, 192, 177
-STYLE DS_SYSMODAL | WS_CAPTION | WS_SYSMENU
+STYLE WS_CAPTION
 CAPTION "Heal List"
 FONT 8, "MS Sans Serif"
 BEGIN
@@ -107,7 +102,6 @@ BEGIN
     EDITTEXT        IDC_HEALLIST_TRIGGER_HP,68,48,56,14,ES_AUTOHSCROLL | 
                     ES_WANTRETURN
     LTEXT           "Heal if below:",IDC_STATIC,12,51,44,8,SS_CENTERIMAGE,0,
-                    HIDC_STATIC
     CONTROL         "List1",IDC_HEALLIST_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SORTASCENDING | WS_BORDER | WS_TABSTOP,12,64,112,101
 END
