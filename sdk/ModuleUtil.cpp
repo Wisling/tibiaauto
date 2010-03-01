@@ -450,7 +450,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				break;
 			}
 		};
-		char buf[111];
 #ifdef MAPDEBUG
 			sprintf(buf,"Going to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
 			mapDebug(buf);
