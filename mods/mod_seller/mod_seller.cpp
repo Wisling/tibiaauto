@@ -718,7 +718,7 @@ int sellItems(CConfigData *config, int traderNum) {
 	sender.sayNPC("trade");
 	Sleep (RandomTimeSeller());
 	for (int j = 0; j < 32; j++) {
-		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
+		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
 		for (int contNr = 0; contNr < 16; contNr++) {
 			cont = reader.readContainer(contNr);
 			if (cont->flagOnOff) {
@@ -761,7 +761,7 @@ int buyItems(CConfigData *config, int traderNum) {
 	sender.sayNPC("trade");
 	Sleep (RandomTimeSeller());
 	for (int j = 0; j < 32; j++) {
-		objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
+		objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
 		//AfxMessageBox(buf);
 		if (objectId)
@@ -857,7 +857,7 @@ bool shouldGo(CConfigData *config) {
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 			{delete self; return true;}
 		for (int j = 0; j < 32; j++) {
-			int objectId = itemProxy.getObjectId(config->sellItem[i].tradeItem[j].itemName);
+			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
@@ -868,7 +868,7 @@ bool shouldGo(CConfigData *config) {
 
 		}
 		for (j = 0; j < 32; j++) {
-			int objectId = itemProxy.getObjectId(config->buyItem[i].tradeItem[j].itemName);
+			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
@@ -892,14 +892,14 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 	CMemReaderProxy reader;
 	int ret = NOGO;
 	for (int j = 0; j < 32; j++) {
-		int objectId = itemProxy.getObjectId(config->sellItem[traderNum].tradeItem[j].itemName);
+		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		if (objectId && countAllItemsOfType(objectId) > 0)
 			ret = SELLONLY;
 	}
 	for (j = 0; j < 32; j++) {
-		int objectId = itemProxy.getObjectId(config->buyItem[traderNum].tradeItem[j].itemName);
+		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		int count = countAllItemsOfType(itemProxy.getValueForConst("GP"));

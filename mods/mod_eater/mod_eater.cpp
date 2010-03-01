@@ -108,11 +108,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CConfigData *config = (CConfigData *)lpParam;
 	int digestTime = -1;
-									//Superfluous referance to "digestAmount" removed
+									
 
 	while (!toolThreadShouldStop)
 	{			
-		int pos;
+		int contNr;
 		if (digestTime==-1) digestTime=0;
 		else {
 			CModuleUtil::sleepWithStop(RandomEaterWaitTime(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
@@ -123,32 +123,28 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		digestTime=0;
 		
 		for (int i=RandomAmountEater();i>0;i--){
-									//Superfluous referance to "self" removed
-			CTibiaItem *foodItem;	//In keeping with the paradigm of declaring and deleting dynamic items in the same scope
-			int foodContainer;
 
-			foodItem=NULL;
-			foodContainer=-1;
-						
-			CUIntArray *foods=itemProxy.getItemsFoodArray();
-			for (pos=0;pos<memConstData.m_memMaxContainers;pos++)		
+			CTibiaItem *foodItem=NULL;
+			int foodContainer=-1;
+
+			CUIntArray *foods=itemProxy.getFoodIdArrayPtr();
+			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 			{
-				CTibiaItem *tempFoodItem;
-				tempFoodItem = NULL;
+				CTibiaItem *tempFoodItem=NULL;
 
 									//We haven't found a food item yet! 
 				if (foodItem==NULL) {
-					foodItem = CModuleUtil::lookupItem(pos,foods);
-					foodContainer = pos;
+					foodItem = CModuleUtil::lookupItem(contNr,foods);
+					foodContainer = contNr;
 				}
 									//Are there any other things to eat?
 				else 
-					tempFoodItem = CModuleUtil::lookupItem(pos,foods);
+					tempFoodItem = CModuleUtil::lookupItem(contNr,foods);
 									//Free up space in BPs by eating items with smaller quantities until they are gone
 									//Incomplete algorithim!!!! (only finds smaller quantity items if they exist in another BP)
 				if (tempFoodItem != NULL && tempFoodItem->quantity < foodItem->quantity) {
-					foodItem = CModuleUtil::lookupItem(pos,foods);
-					foodContainer = pos;
+					foodItem = CModuleUtil::lookupItem(contNr,foods);
+					foodContainer = contNr;
 				}
 
 				delete tempFoodItem;
@@ -165,14 +161,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
 				if (CModuleUtil::waitForCapsChange(self->cap))
-					digestTime += itemProxy.getExtraInfo(itemProxy.getIndex(foodItem->objectId, 2), 2);
-				delete self; 
+					digestTime += itemProxy.getFoodTimeAtIndex(itemProxy.getFoodIndex(foodItem->objectId));
+				delete self;
 				self = NULL;
-									//Superfluous referance to buf removed.
+
 				if (i!=1)
 					Sleep(CModuleUtil::randomFormula(400,100));
 			}
-			delete foodItem;		//In keeping with the paradigm of declaring and deleting dynamic items in the same scope
+			delete foodItem;
 			foodItem = NULL;
 		}
 	}	

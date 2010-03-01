@@ -424,7 +424,7 @@ void CConfigDialog::updateListItem(CListCtrl *list, CTibiaContainer *container, 
 	CTibiaItemProxy itemProxy;
 	char buf[256];
 	
-	sprintf(buf,"%s",itemProxy.getName(container->objectId));
+	sprintf(buf,"%s",itemProxy.getItemName(container->objectId));
 	list->SetItemText(itemNr,1,buf);
 	sprintf(buf,"%d",container->itemsInside);
 	list->SetItemText(itemNr,2,buf);

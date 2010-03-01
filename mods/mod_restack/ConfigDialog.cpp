@@ -169,10 +169,10 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_pickupSpears.SetCheck(configData->pickupSpears);
 	sprintf(buf,"%d",configData->throwableTo);m_throwableTo.SetWindowText(buf);
 	sprintf(buf,"%d",configData->throwableAt);m_throwableAt.SetWindowText(buf);	
-	m_throwableType.SelectString(-1,itemProxy.getName(configData->throwableType));
+	m_throwableType.SelectString(-1,itemProxy.getItemName(configData->throwableType));
 	sprintf(buf,"%d",configData->ammoTo);m_ammoTo.SetWindowText(buf);
 	sprintf(buf,"%d",configData->ammoAt);m_ammoAt.SetWindowText(buf);	
-	m_ammoType.SelectString(-1,itemProxy.getName(configData->ammoType));
+	m_ammoType.SelectString(-1,itemProxy.getItemName(configData->ammoType));
 	m_moveCovering.SetCheck(configData->moveCovering);
 	m_restackToRight.SetCheck(configData->restackToRight);
 	m_pickupToHand.SetCheck(configData->pickupToHand);
@@ -202,13 +202,13 @@ CConfigData * CConfigDialog::controlsToConfig()
 	
 	buf[0]='\0';
 	m_throwableType.GetLBText(m_throwableType.GetCurSel(),buf);
-	newConfigData->throwableType=itemProxy.getObjectId(buf);
+	newConfigData->throwableType=itemProxy.getItemId(buf);
 
 	m_ammoTo.GetWindowText(buf,127);newConfigData->ammoTo=atoi(buf);
 	m_ammoAt.GetWindowText(buf,127);newConfigData->ammoAt=atoi(buf);
 	buf[0]='\0';
 	m_ammoType.GetLBText(m_ammoType.GetCurSel(),buf);
-	newConfigData->ammoType=itemProxy.getObjectId(buf);
+	newConfigData->ammoType=itemProxy.getItemId(buf);
 
 	
 	newConfigData->moveCovering=m_moveCovering.GetCheck();
@@ -242,19 +242,20 @@ BOOL CConfigDialog::OnInitDialog()
 	while (m_throwableType.GetCount()>0) m_throwableType.DeleteString(0);
 	
 	// load items for depot item combo
-	int count = itemProxy.getItemsItemsCount();
+	int count = itemProxy.getItemCount();
 	int i;
 	m_ammoType.AddString("<disabled>");
 	m_throwableType.AddString("<disabled>");
 	
 	for (i=0;i<count;i++)
 	{
-		int objectId=itemProxy.getObjectId(itemProxy.getItemsItems(i));
+		char* name=itemProxy.getItemNameAtIndex(i);
+		int objectId=itemProxy.getItemIdAtIndex(i);
 		CTibiaTile *tile = reader.getTibiaTile(objectId);
 		if (tile&&tile->stackable)
 		{
-			m_ammoType.AddString(itemProxy.getItemsItems(i));
-			m_throwableType.AddString(itemProxy.getItemsItems(i));
+			m_ammoType.AddString(name);
+			m_throwableType.AddString(name);
 		}
 	}
 	m_ammoType.SetCurSel(0);

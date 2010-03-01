@@ -365,7 +365,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 		{
 			sprintf(buf,"%s %d->%d",configData->depotTrigger[i].itemName,configData->depotTrigger[i].when,configData->depotTrigger[i].remain);
 			m_depotEntryList.AddString(buf);
-			m_depotItemList.DeleteString(m_depotItemList.FindString(0,configData->depotTrigger[i].itemName));		
+			m_depotItemList.DeleteString(m_depotItemList.FindStringExact(-1,configData->depotTrigger[i].itemName));		
 		}
 	}
 	m_weaponHand.SetCheck(configData->weaponHand);
@@ -374,9 +374,9 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_trainingMode.SetCurSel(configData->trainingMode);
 	m_bloodHit.SetCheck(configData->bloodHit);
 	m_activate.SetCheck(configData->trainingActivate);
-	m_weaponTrain.SetCurSel(m_weaponTrain.FindString(-1,itemProxy.getName(configData->weaponTrain)));
+	m_weaponTrain.SetCurSel(m_weaponTrain.FindStringExact(-1,itemProxy.getItemName(configData->weaponTrain)));
 	if (m_weaponTrain.GetCurSel()==-1) m_weaponTrain.SetCurSel(0);
-	m_weaponFight.SetCurSel(m_weaponFight.FindString(-1,itemProxy.getName(configData->weaponFight)));	
+	m_weaponFight.SetCurSel(m_weaponFight.FindStringExact(-1,itemProxy.getItemName(configData->weaponFight)));	
 	if (m_weaponFight.GetCurSel()==-1) m_weaponFight.SetCurSel(0);
 	m_depotDropInsteadOfDepositon.SetCheck(configData->depotDropInsteadOfDepositon);
 	m_dropNotLooted.SetCheck(configData->dropNotLooted);
@@ -876,7 +876,7 @@ void CConfigDialog::OnDepotEntryadd()
 		
 	sprintf(buf,"%s %d->%d",itemName,depotWhen,depotRemain);
 	m_depotEntryList.AddString(buf);
-	m_depotItemList.DeleteString(m_depotItemList.FindString(0,itemName));
+	m_depotItemList.DeleteString(m_depotItemList.FindStringExact(-1,itemName));
 	m_depotItemList.SetCurSel(0);
 	m_depotWhen.SetWindowText("");
 	m_depotRemain.SetWindowText("");
@@ -907,7 +907,7 @@ void CConfigDialog::OnDepotEntryremove()
 	}
 	sscanf(paramString,"%d->%d",&depotWhen,&depotRemain);
 	m_depotItemList.AddString(itemName);
-	m_depotItemList.SetCurSel(m_depotItemList.FindString(0,itemName));
+	m_depotItemList.SetCurSel(m_depotItemList.FindStringExact(-1,itemName));
 	sprintf(buf,"%d",depotWhen);
 	m_depotWhen.SetWindowText(buf);
 	sprintf(buf,"%d",depotRemain);
@@ -922,11 +922,10 @@ void CConfigDialog::reloadDepotItems()
 	while (m_depotItemList.GetCount()>0) m_depotItemList.DeleteString(0);
 
 	// load items for depot item combo
-	int count = itemProxy.getItemsItemsCount();
-	int i;
-	for (i=0;i<count;i++)
+	int count = itemProxy.getItemCount();
+	for (int i=0;i<count;i++)
 	{
-		m_depotItemList.AddString(itemProxy.getItemsItems(i));
+		m_depotItemList.AddString(itemProxy.getItemNameAtIndex(i));
 	}
 	m_depotItemList.SetCurSel(0);
 }
@@ -939,15 +938,15 @@ void CConfigDialog::reloadTrainingItems()
 	while (m_weaponFight.GetCount()>0) m_weaponFight.DeleteString(0);
 
 	// load items for depot item combo
-	int count = itemProxy.getItemsItemsCount();
+	int count = itemProxy.getItemCount();
 	int i;
 	for (i=0;i<count;i++)
 	{
-		m_weaponTrain.AddString(itemProxy.getItemsItems(i));
-		m_weaponFight.AddString(itemProxy.getItemsItems(i));
-		int idx = m_weaponTrain.FindString(-1,itemProxy.getItemsItems(i));
-		m_weaponTrain.SetItemData(idx,itemProxy.getItemsItemsId(i));
-		m_weaponFight.SetItemData(idx,itemProxy.getItemsItemsId(i));
+		m_weaponTrain.AddString(itemProxy.getItemNameAtIndex(i));
+		m_weaponFight.AddString(itemProxy.getItemNameAtIndex(i));
+		int idx = m_weaponTrain.FindString(-1,itemProxy.getItemNameAtIndex(i));
+		m_weaponTrain.SetItemData(idx,itemProxy.getItemIdAtIndex(i));
+		m_weaponFight.SetItemData(idx,itemProxy.getItemIdAtIndex(i));
 	}
 	m_weaponTrain.SetCurSel(0);
 	m_weaponFight.SetCurSel(0);

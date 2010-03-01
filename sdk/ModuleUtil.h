@@ -5,9 +5,9 @@
 #if !defined(AFX_MODULEUTIL_H__B8B0187F_3022_4C4E_8E60_C3593CDB21D5__INCLUDED_)
 #define AFX_MODULEUTIL_H__B8B0187F_3022_4C4E_8E60_C3593CDB21D5__INCLUDED_
 
-#include "TibiaItem.h"
-#include "PQI.h"
-
+class CTibiaItem;
+class CTibiaList;
+class PQI;
 
 #if _MSC_VER > 1000
 #pragma once

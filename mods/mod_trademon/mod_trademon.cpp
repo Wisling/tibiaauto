@@ -127,13 +127,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					itemsCount[item->objectId]+=item->quantity?item->quantity:1;				
 					delete item;
 				}
-				sprintf(strbuf,"[trade] ");			
+				sprintf(strbuf,"[trade] ");
 				for (i=0;i<65536;i++)
 				{
 					if (itemsCount[i])
 					{
 						char buf[500];
-						sprintf(buf,"%s [%d]",itemProxy.getName(i),itemsCount[i]);
+						sprintf(buf,"%s [%d]",itemProxy.getItemName(i),itemsCount[i]);
 						if (i)
 							strcat(strbuf,", ");
 						strcat(strbuf,buf);

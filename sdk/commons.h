@@ -3,7 +3,7 @@
 #include "MemReaderProxy.h"
 #include "ModuleUtil.h"
 
-int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
+int itemOnTopIndex(int x,int y,int z=0)//Now uses Tibia's own indexing system found in memory to determine this
 {
 	CMemReaderProxy reader;
 	int pos;
@@ -40,11 +40,6 @@ int itemOnTopIndex(int x,int y,int z)//Now uses Tibia's own indexing system foun
 	return -1;
 }
 
-int itemOnTopIndex(int x,int y)
-{
-	return itemOnTopIndex(x,y,0);
-}
-
 int isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
 {
 	CMemReaderProxy reader;
@@ -72,6 +67,42 @@ int isItemCovered(int x,int y,int *itemArr,int itemArrSize)
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
 		for (int i=0;i<itemArrSize;i++)
+		{
+			if (tileId==itemArr[i]) return tileId;
+		}		
+	}
+	return 0;
+}
+
+int isItemOnTop(int x,int y,CUIntArray& itemArr)
+{
+	CMemReaderProxy reader;
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int tileId = reader.mapGetPointItemId(point(x,y,0),topPos);
+	int size =itemArr.GetSize();
+	for (int i=0;i<size;i++)
+	{
+		if (tileId==itemArr[i]) return tileId;
+	}		
+	return 0;
+}
+
+int isItemCovered(int x,int y,CUIntArray& itemArr)
+{
+	CMemReaderProxy reader;
+
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+	if (topPos>=stackCount) return 0;
+	for (int pos=(topPos+1)%stackCount;pos!=topPos;pos=(pos+1)%stackCount)
+	{
+		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
+		int size =itemArr.GetSize();
+		for (int i=0;i<size;i++)
 		{
 			if (tileId==itemArr[i]) return tileId;
 		}		
