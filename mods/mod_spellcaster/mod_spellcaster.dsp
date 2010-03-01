@@ -173,7 +173,7 @@ SOURCE=.\TimedDialog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\XTabCtrl.cpp
+SOURCE=..\..\sdk\XTabCtrl.cpp
 # End Source File
 # End Group
 # Begin Group "Header Files"
@@ -217,14 +217,6 @@ SOURCE=..\..\sdk\MyDialog.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\mytabctrl.cpp
-# End Source File
-# Begin Source File
-
-SOURCE=.\mytabctrl.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\Resource.h
 # End Source File
 # Begin Source File
@@ -249,7 +241,7 @@ SOURCE=.\TimedDialog.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\XTabCtrl.h
+SOURCE=..\..\sdk\XTabCtrl.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

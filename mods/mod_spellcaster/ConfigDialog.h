@@ -36,10 +36,6 @@ public:
 	//CDialog Array Variable to hold the dialogs 
 	MyDialog *m_Dialog[6];
 	
-	//Function to Create the dialog boxes during startup
-	
-	//Function to activate the tab dialog boxes 
-	void ActivateTabDialogs();
 	int m_nPageCount;
 
 // Dialog Data
