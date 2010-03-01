@@ -18,6 +18,7 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
+	m_lootInDepot=0;
 	m_lootWorms=0;
 	m_lootGp=0;
 	m_lootFood=0;

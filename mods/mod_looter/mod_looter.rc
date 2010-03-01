@@ -125,16 +125,18 @@ BEGIN
     CONTROL         "Loot food",IDC_LOOT_FOOD,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,15,199,52,10
     CONTROL         "Loot gp",IDC_LOOT_GP,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,67,199,52,10
+                    WS_TABSTOP,71,199,52,10
     CONTROL         "Loot custom",IDC_LOOT_CUSTOM,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,120,199,52,10
+                    WS_TABSTOP,127,199,52,10
     CONTROL         "Loot worms",IDC_LOOT_WORMS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,211,52,10
+                    WS_TABSTOP,15,211,49,10
     LTEXT           "Container 10:",IDC_STATIC,15,153,43,12,SS_CENTERIMAGE
     COMBOBOX        IDC_CONTAINER_MODE_10,61,153,48,46,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS10,119,153,46,12,
                     SS_CENTERIMAGE
+    CONTROL         "Loot while in Depot",IDC_LOOT_DEPOT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,71,211,108,10
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
