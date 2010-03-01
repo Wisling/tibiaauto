@@ -41,7 +41,7 @@ public:
 	void enableControls();	
 	char *getVersion();
 private:	
-	CConfigData *m_configData;	
+	CConfigData *m_configData;
 	CToolItemConfig *m_infoDialog;
 	int currentPointNr;
 };

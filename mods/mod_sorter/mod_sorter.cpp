@@ -75,7 +75,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				//AfxMessageBox(buf);
 				if (!strlen(config->sortBags[i].slotNr[j].itemName))
 					break;
-				int sortItem = itemProxy.getObjectId(config->sortBags[i].slotNr[j].itemName);
+				int sortItem = itemProxy.getItemId(config->sortBags[i].slotNr[j].itemName);
 				//sprintf(buf, "ObjectID: %d",  sortItem);
 				//AfxMessageBox(buf);
 				for (int contNr = 0; contNr < 16;contNr++) {
@@ -139,7 +139,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										CTibiaItem *item = (CTibiaItem *)fullCont->items.GetAt(l);
 										for (int m = 0; m < 8; m++) {
 											for (int n = 0; n < 32; n++) {
-												findItem = itemProxy.getObjectId(config->sortBags[m].slotNr[n].itemName);
+												findItem = itemProxy.getItemId(config->sortBags[m].slotNr[n].itemName);
 												if (item->objectId == findItem && findItem != sortItem && m != i) { 
 													found = 1;
 													//break;

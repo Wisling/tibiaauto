@@ -427,45 +427,45 @@
 		<item id="0x25A8" name="new item 10"/>
 		<item id="0x25A9" name="new item 11"/>
 		<item id="0x25AA" name="new item 12"/>
-		<item id="0x25ab" name="new item 13"/>
-		<item id="0x25ac" name="new item 14"/>
-		<item id="0x25ad" name="new item 15"/>
-		<item id="0x25ae" name="new item 16"/>
-		<item id="0x25af" name="new item 17"/>
-		<item id="0x25b0" name="new item 18"/>
-		<item id="0x25b1" name="new item 19"/>
-		<item id="0x25b2" name="new item 20"/>
-		<item id="0x25b3" name="new item 21"/>
-		<item id="0x25b4" name="new item 22"/>
-		<item id="0x25b6" name="new item 23"/>
-		<item id="0x25b7" name="new item 24"/>
-		<item id="0x25b8" name="new item 25"/>
-		<item id="0x25b9" name="new item 26"/>
-		<item id="0x25ba" name="new item 27"/>
-		<item id="0x25bb" name="new item 28"/>
-		<item id="0x25bc" name="new item 29"/>
-		<item id="0x25bd" name="new item 30"/>
-		<item id="0x25be" name="new item 31"/>
-		<item id="0x25bf" name="new item 32"/>
-		<item id="0x25c0" name="new item 33"/>
-		<item id="0x25c1" name="new item 34"/>
-		<item id="0x25c2" name="new item 35"/>
-		<item id="0x25c3" name="new item 36"/>
-		<item id="0x25c4" name="new item 37"/>
-		<item id="0x25d3" name="new item 38"/>
-		<item id="0x25d4" name="new item 39"/>
-		<item id="0x25d5" name="new item 40"/>
-		<item id="0x25d6" name="new item 41"/>
-		<item id="0x25d8" name="new item 42"/>
-		<item id="0x25d9" name="new item 43"/>
-		<item id="0x25da" name="new item 44"/>
-		<item id="0x25db" name="new item 45"/>
-		<item id="0x25dc" name="new item 46"/>
-		<item id="0x25dd" name="new item 47"/>
-		<item id="0x25de" name="new item 48"/>
-		<item id="0x27d4" name="new item 49"/>
-		<item id="0x27ea" name="new item 50"/>
-		<item id="0x27eb" name="new item 51"/>
+		<item id="0x25AB" name="new item 13"/>
+		<item id="0x25AC" name="new item 14"/>
+		<item id="0x25AD" name="new item 15"/>
+		<item id="0x25AE" name="new item 16"/>
+		<item id="0x25AF" name="new item 17"/>
+		<item id="0x25B0" name="new item 18"/>
+		<item id="0x25B1" name="new item 19"/>
+		<item id="0x25B2" name="new item 20"/>
+		<item id="0x25B3" name="new item 21"/>
+		<item id="0x25B4" name="new item 22"/>
+		<item id="0x25B6" name="new item 23"/>
+		<item id="0x25B7" name="new item 24"/>
+		<item id="0x25B8" name="new item 25"/>
+		<item id="0x25B9" name="new item 26"/>
+		<item id="0x25BA" name="new item 27"/>
+		<item id="0x25BB" name="new item 28"/>
+		<item id="0x25BC" name="new item 29"/>
+		<item id="0x25BD" name="new item 30"/>
+		<item id="0x25BE" name="new item 31"/>
+		<item id="0x25BF" name="new item 32"/>
+		<item id="0x25C0" name="new item 33"/>
+		<item id="0x25C1" name="new item 34"/>
+		<item id="0x25C2" name="new item 35"/>
+		<item id="0x25C3" name="new item 36"/>
+		<item id="0x25C4" name="new item 37"/>
+		<item id="0x25D3" name="new item 38"/>
+		<item id="0x25D4" name="new item 39"/>
+		<item id="0x25D5" name="new item 40"/>
+		<item id="0x25D6" name="new item 41"/>
+		<item id="0x25D8" name="new item 42"/>
+		<item id="0x25D9" name="new item 43"/>
+		<item id="0x25DA" name="new item 44"/>
+		<item id="0x25DB" name="new item 45"/>
+		<item id="0x25DC" name="new item 46"/>
+		<item id="0x25DD" name="new item 47"/>
+		<item id="0x25DE" name="new item 48"/>
+		<item id="0x27D4" name="new item 49"/>
+		<item id="0x27EA" name="new item 50"/>
+		<item id="0x27EB" name="new item 51"/>
 		<item id="0x2820" name="new item 52"/>
 		<item id="0x2821" name="new item 53"/>
 		<item id="0x2822" name="new item 54"/>
@@ -476,8 +476,8 @@
 		<item id="0x2827" name="new item 59"/>
 		<item id="0x2828" name="new item 60"/>
 		<item id="0x2829" name="new item 61"/>
-		<item id="0x282a" name="new item 62"/>
-		<item id="0x282b" name="new item 63"/>
+		<item id="0x282A" name="new item 62"/>
+		<item id="0x282B" name="new item 63"/>
 		<item id="0x2831" name="new item 64"/>
 		<item id="0x2833" name="new item 65"/>
 		<item id="0x2834" name="new item 66"/>
@@ -485,12 +485,12 @@
 		<item id="0x2837" name="new item 68"/>
 		<item id="0x2838" name="new item 69"/>
 		<item id="0x2839" name="new item 70"/>
-		<item id="0x283a" name="new item 71"/>
-		<item id="0x283b" name="new item 72"/>
-		<item id="0x283c" name="new item 73"/>
-		<item id="0x283d" name="new item 74"/>
-		<item id="0x283e" name="new item 75"/>
-		<item id="0x283f" name="new item 76"/>
+		<item id="0x283A" name="new item 71"/>
+		<item id="0x283B" name="new item 72"/>
+		<item id="0x283C" name="new item 73"/>
+		<item id="0x283D" name="new item 74"/>
+		<item id="0x283E" name="new item 75"/>
+		<item id="0x283F" name="new item 76"/>
 		<item id="0x2840" name="new item 77"/>
 		<item id="0x2841" name="new item 78"/>
 		<item id="0x2842" name="new item 79"/>
@@ -501,39 +501,39 @@
 		<item id="0x2847" name="new item 84"/>
 		<item id="0x2848" name="new item 85"/>
 		<item id="0x2849" name="new item 86"/>
-		<item id="0x284a" name="new item 87"/>
-		<item id="0x284b" name="new item 88"/>
-		<item id="0x284c" name="new item 89"/>
-		<item id="0x284d" name="new item 90"/>
-		<item id="0x284e" name="new item 91"/>
-		<item id="0x284f" name="new item 92"/>
+		<item id="0x284A" name="new item 87"/>
+		<item id="0x284B" name="new item 88"/>
+		<item id="0x284C" name="new item 89"/>
+		<item id="0x284D" name="new item 90"/>
+		<item id="0x284E" name="new item 91"/>
+		<item id="0x284F" name="new item 92"/>
 		<item id="0x2850" name="new item 93"/>
 		<item id="0x2851" name="new item 94"/>
 		<item id="0x2858" name="new item 95"/>
 		<item id="0x2859" name="new item 96"/>
-		<item id="0x289d" name="new item 97"/>
-		<item id="0x28a4" name="new item 98"/>
-		<item id="0x28a5" name="new item 99"/>
-		<item id="0x28a7" name="new item 100"/>
-		<item id="0x28a8" name="new item 101"/>
-		<item id="0x28a9" name="new item 102"/>
-		<item id="0x28aa" name="new item 103"/>
-		<item id="0x28ab" name="new item 104"/>
-		<item id="0x28ad" name="new item 105"/>
-		<item id="0x28ae" name="new item 106"/>
-		<item id="0x28af" name="new item 107"/>
-		<item id="0x28b0" name="new item 108"/>
-		<item id="0x28b1" name="new item 109"/>
-		<item id="0x28b2" name="new item 110"/>
-		<item id="0x28b4" name="new item 111"/>
-		<item id="0x28cc" name="new item 112"/>
-		<item id="0x28d1" name="new item 113"/>
-		<item id="0x28d2" name="new item 114"/>
-		<item id="0x28d4" name="new item 115"/>
-		<item id="0x28d5" name="new item 116"/>
-		<item id="0x28d6" name="new item 117"/>
-		<item id="0x28d7" name="new item 118"/>
-		<item id="0x28d8" name="new item 119"/>
+		<item id="0x289D" name="new item 97"/>
+		<item id="0x28A4" name="new item 98"/>
+		<item id="0x28A5" name="new item 99"/>
+		<item id="0x28A7" name="new item 100"/>
+		<item id="0x28A8" name="new item 101"/>
+		<item id="0x28A9" name="new item 102"/>
+		<item id="0x28AA" name="new item 103"/>
+		<item id="0x28AB" name="new item 104"/>
+		<item id="0x28AD" name="new item 105"/>
+		<item id="0x28AE" name="new item 106"/>
+		<item id="0x28AF" name="new item 107"/>
+		<item id="0x28B0" name="new item 108"/>
+		<item id="0x28B1" name="new item 109"/>
+		<item id="0x28B2" name="new item 110"/>
+		<item id="0x28B4" name="new item 111"/>
+		<item id="0x28CC" name="new item 112"/>
+		<item id="0x28D1" name="new item 113"/>
+		<item id="0x28D2" name="new item 114"/>
+		<item id="0x28D4" name="new item 115"/>
+		<item id="0x28D5" name="new item 116"/>
+		<item id="0x28D6" name="new item 117"/>
+		<item id="0x28D7" name="new item 118"/>
+		<item id="0x28D8" name="new item 119"/>
 
 	<!--North Carlin Hunt
 		<item id="0xd1d" name="Plate Armor"/>
@@ -568,4 +568,10 @@
 		<item id="0xccc" name="Hatchet"/>
 		<item id="0xd18" name="Chain Helmet"/>
 		<item id="0xd1a" name="Brass Helmet"/>-->
+   <item id="0xd15" name="Crossbow"/>
+   <item id="0xc01" name="Wand Of Cosmic Energy"/>
+   <item id="0xd9b" name="Fishing Rod"/>
+   <item id="0x1ce9" name="Minotaur Trophy"/>
+   <item id="0x1cc3" name="Piercing Bolt"/>
+   <item id="0xd1f" name="Brass Armor"/>
 	</looted>

@@ -189,7 +189,7 @@ int depotCheckShouldGo(CConfigData *config) {
 	
 	int i;
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
-		int objectId = itemProxy.getObjectId(config->depotTrigger[i].itemName);
+		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		int contNr;
 		int totalQty=0;
 		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
@@ -620,7 +620,7 @@ void depotDeposit(CConfigData *config) {
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_depositing;
 	
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
-		int objectToMove = itemProxy.getObjectId(config->depotTrigger[i].itemName);
+		int objectToMove = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		int contNr;
 		int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
 		
@@ -888,7 +888,7 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 
 
 /////////////////////////////////////////////////////////////////////////////
-void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
+void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 	char buf[256];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -943,8 +943,8 @@ void droppedLootCheck(CConfigData *config, int *lootedArr,int lootedArrSize) {
 			if (reader.mapGetPointItemsCount(point(x,y,0))==0) continue;
 
 			foundLootedObjectId=0;
-			int f1=isItemCovered(x,y,lootedArr,lootedArrSize);
-			int f2=isItemOnTop(x,y,lootedArr,lootedArrSize);
+			int f1=isItemCovered(x,y,lootedArr);
+			int f2=isItemOnTop(x,y,lootedArr);
 			if (f1) foundLootedObjectId=f1;
 			if (f2) foundLootedObjectId=f2;
 			if(!foundLootedObjectId) continue;
@@ -1424,36 +1424,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		* 2. we are not in a half sleep (no walking) mode
 		* 3. there is something to loot
 		*/
-		int droppedLootArray[MAX_LOOT_ARRAY];
-		int droppedLootArrayCount=0;
+		CUIntArray droppedLootArray;
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
-		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep()/* && !moving*/) {  //Temporarily removed to test the vaibility of "Loot from floor" with new walking algorithim
+		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
 			if (config->lootFood) {
-				int p;
-				CUIntArray *foods=itemProxy.getItemsFoodArray();
-				for (p=0;p<foods->GetSize();p++) {
-					droppedLootArray[droppedLootArrayCount++]=foods->GetAt(p);
-					if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
-				}
-				//taken care of. delete foods;
+				droppedLootArray.Copy(*itemProxy.getFoodIdArrayPtr());
 			}
 			if (config->lootGp) {
-				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("GP");
-				if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
+				droppedLootArray.Add(itemProxy.getValueForConst("GP"));
 			}
 			if (config->lootWorms) {
-				droppedLootArray[droppedLootArrayCount++]=itemProxy.getValueForConst("worms");
-				if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
+				droppedLootArray.Add(itemProxy.getValueForConst("worms"));
 			}
 			if (config->lootCustom) {
-				int i;
-				for (i=0;i<itemProxy.getItemsLootedCount();i++) {
-					droppedLootArray[droppedLootArrayCount++]=itemProxy.getItemsLootedId(i);
-					if (droppedLootArrayCount>=MAX_LOOT_ARRAY-1) droppedLootArrayCount=MAX_LOOT_ARRAY-1;
-				}
+				droppedLootArray.Copy(*itemProxy.getLootItemIdArrayPtr());
 			}
-			if (droppedLootArrayCount) {
-				droppedLootCheck(config,droppedLootArray,droppedLootArrayCount);
+			if (droppedLootArray.GetSize()) {
+				droppedLootCheck(config,droppedLootArray);
 			}
 		}
 		
@@ -1610,17 +1597,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							if (config->lootWorms)
 								acceptedItems.Add(itemProxy.getValueForConst("worms"));
 							if (config->lootCustom) {
-								int i;
-								for (i=0;i<itemProxy.getItemsLootedCount();i++)
-									acceptedItems.Add(itemProxy.getItemsLootedId(i));
+								acceptedItems.Copy(*itemProxy.getLootItemIdArrayPtr());
 							}
 							if (config->lootFood) {
-								int p;
-								CUIntArray *foods=itemProxy.getItemsFoodArray();
-								for (p=0;p<foods->GetSize();p++){
-									acceptedItems.Add(foods->GetAt(p));
-								}
-								//taken care of. delete foods;
+								acceptedItems.Copy(*itemProxy.getFoodIdArrayPtr());
 							}
 							int lootTakeItem;
 							for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags

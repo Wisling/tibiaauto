@@ -39,6 +39,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CMod_aimApp
 
+
 BEGIN_MESSAGE_MAP(CMod_aimApp, CWinApp)
 	//{{AFX_MSG_MAP(CMod_aimApp)
 		// NOTE - the ClassWizard will add and remove mapping macros here.

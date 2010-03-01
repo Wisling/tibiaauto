@@ -15,9 +15,11 @@
 class CItemAdd : public MyDialog {
 // Construction
 public:
-	char name[64];
+	char name[1024];
 	int itemId;
-	CItemAdd();   // standard constructor
+	CTreeCtrl* tree;
+	HTREEITEM item;
+	CItemAdd(CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CItemAdd)
@@ -26,6 +28,7 @@ public:
 	CButtonST	m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
+	CButton m_ItemBranch;
 	//}}AFX_DATA
 
 
@@ -43,6 +46,7 @@ protected:
 	// Generated message map functions
 	//{{AFX_MSG(CItemAdd)
 	virtual BOOL OnInitDialog();
+	afx_msg void OnAddBranch();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
@@ -54,9 +58,11 @@ private:
 class CItemEdit : public MyDialog {
 // Construction
 public:
-	char name[64];
+	char name[1024];
 	int itemId;
-	CItemEdit(int, char*);   // standard constructor
+	CTreeCtrl* tree;
+	HTREEITEM item;
+	CItemEdit(int idIn, char* nameIn, CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CItemEdit)
@@ -94,10 +100,11 @@ class CFoodAdd : public MyDialog
 {
 // Construction
 public:
-	char name[64];
+	char name[512];
 	int itemId;
 	int eatTime;
-	CFoodAdd();   // standard constructor
+	CListBox* list;
+	CFoodAdd(CListBox*);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CFoodAdd)
@@ -136,10 +143,12 @@ class CFoodEdit : public MyDialog
 {
 // Construction
 public:
-	char name[64];
+	char name[512];
 	int itemId;
 	int eatTime;
-	CFoodEdit(int, char*, int);   // standard constructor
+	CListBox* list;
+	int index;
+	CFoodEdit(int, char*, int,CListBox*,int);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CFoodEdit)
@@ -171,85 +180,6 @@ protected:
 private:
 };
 
-/////////////////////////////////////////////////////////////////////////////
-// CLootAdd dialog
-
-class CLootAdd : public MyDialog
-{
-// Construction
-public:
-	char name[64];
-	int itemId;
-	CLootAdd();   // standard constructor
-
-// Dialog Data
-	//{{AFX_DATA(CLootAdd)
-	enum { IDD = IDD_LOOT_ADD };
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
-	CEdit m_ItemName;
-	CEdit m_ItemID;
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CLootAdd)
-	protected:
-	virtual void OnCommit();
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(CLootAdd)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-private:
-};
-
-/////////////////////////////////////////////////////////////////////////////
-// CLootEdit dialog
-
-class CLootEdit : public MyDialog
-{
-// Construction
-public:
-	char name[64];
-	int itemId;
-	CLootEdit(int, char*);   // standard constructor
-
-// Dialog Data
-	//{{AFX_DATA(CLootEdit)
-	enum { IDD = IDD_LOOT_EDIT };
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
-	CEdit m_ItemName;
-	CEdit m_ItemID;
-	//}}AFX_DATA
-
-
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CLootEdit)
-	protected:
-	virtual void OnCommit();
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
-	//}}AFX_VIRTUAL
-
-// Implementation
-protected:
-
-	// Generated message map functions
-	//{{AFX_MSG(CLootEdit)
-	virtual BOOL OnInitDialog();
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
-private:
-};
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.

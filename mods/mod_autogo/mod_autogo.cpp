@@ -636,26 +636,24 @@ int triggerOutOfFood()
 	masterDebug("triggerOutOfFood");
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;	
-	CUIntArray itemArray;
-			
-	itemArray.Add(itemProxy.getValueForConst("worms"));
-	int pos;	
+	int wormId = itemProxy.getValueForConst("worms");
 	
-	
-	for (pos=0;pos<10;pos++){		
-		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff){			
-			CUIntArray *foods=itemProxy.getItemsFoodArray();
-			CTibiaItem *item = CModuleUtil::lookupItem(pos,foods);
-			//taken care of. delete foods;
-			if (item != NULL)
-			{					
-				delete item;
-				delete container;
-				return 0;
-			}
+	int maxCont=itemProxy.getValueForConst("maxContainers");
+	for (int cont=0;cont<maxCont;cont++){
+
+		CTibiaItem *item = CModuleUtil::lookupItem(cont,itemProxy.getFoodIdArrayPtr());
+		if (item){
+			delete item;
+			return 0;
 		}
-		delete container;
+
+		CUIntArray otherItems;
+		otherItems.Add(wormId);
+		item = CModuleUtil::lookupItem(cont,&otherItems);
+		if (item){
+			delete item;
+			return 0;
+		}
 	}
 	
 	return 1;
@@ -665,7 +663,6 @@ int triggerOutOfSpace()
 {
 	masterDebug("triggerOutOfSpace");
 	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;	
 	
 	int pos;	
 	
@@ -690,7 +687,6 @@ int triggerOutOfCustom(int customItemId)
 {
 	masterDebug("triggerOutOfCustom");
 	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;	
 	CUIntArray itemArray;
 			
 	itemArray.Add(customItemId);
@@ -699,7 +695,7 @@ int triggerOutOfCustom(int customItemId)
 	
 	for (pos=0;pos<10;pos++){		
 		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff){			
+		if (container->flagOnOff){
 			CTibiaItem *item = CModuleUtil::lookupItem(pos,&itemArray);
 			if (item != NULL){					
 				delete item;
