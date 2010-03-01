@@ -15,6 +15,7 @@ public:
 	CConfigData();
 	virtual ~CConfigData();
 
+	int	m_lootInDepot;
 	int	m_lootWorms;
 	int	m_lootGp;
 	int	m_lootFood;
