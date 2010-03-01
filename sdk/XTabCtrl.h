@@ -5,8 +5,8 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "ConfigData.h"
 #include "Skin.h"
+class CConfigData;
 
 // XTabCtrl.h : header file
 //

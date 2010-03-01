@@ -6,7 +6,6 @@
 #include "ConfigDialog.h"
 #include "ModuleUtil.h"
 #include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
 #include <fstream>
 
 using namespace std;
@@ -96,7 +95,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	sprintf(buf, "%d", configData->minimumGoldToBank); m_MinGold.SetWindowText(buf);
 	sprintf(buf, "%d", configData->cashOnHand); m_OnHand.SetWindowText(buf);
 	reloadBankers();
-	m_Banker.SetCurSel(m_Banker.FindString(-1,configData->banker.bankerName));
+	m_Banker.SetCurSel(m_Banker.FindStringExact(-1,configData->banker.bankerName));
 	if (m_Banker.GetCurSel()==-1) m_Banker.SetCurSel(0);
 }
 
@@ -147,7 +146,6 @@ void CConfigDialog::activateEnableButton(int enable) {
 }
 
 void CConfigDialog::reloadBankers() {
-	CTibiaItemProxy itemProxy;
 	while (m_Banker.GetCount()>0) m_Banker.DeleteString(0);
 	for (int count = 0; count < 50; count++) {
 		if (strcmp(bankersInfo[count].name, "End of Bankers"))			

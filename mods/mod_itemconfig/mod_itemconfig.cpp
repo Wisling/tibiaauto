@@ -123,13 +123,10 @@ void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 	skin.SetButtonSkin(	m_infoDialog->m_OK);
 	skin.SetButtonSkin(	m_infoDialog->m_RefreshItems);
-	skin.SetButtonSkin(	m_infoDialog->m_EditLoot);
 	skin.SetButtonSkin(	m_infoDialog->m_EditItem);
 	skin.SetButtonSkin(	m_infoDialog->m_EditFood);
-	skin.SetButtonSkin(	m_infoDialog->m_DeleteLoot);
 	skin.SetButtonSkin(	m_infoDialog->m_DeleteItem);
 	skin.SetButtonSkin(	m_infoDialog->m_DeleteFood);
-	skin.SetButtonSkin(	m_infoDialog->m_AddLoot);
 	skin.SetButtonSkin(	m_infoDialog->m_AddItem);
 	skin.SetButtonSkin(	m_infoDialog->m_AddFood);
 

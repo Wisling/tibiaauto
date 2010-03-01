@@ -254,7 +254,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			int wndIconic=IsIconic(hwnd);
 			if (wndIconic)
 			{	
-				::ShowWindow(hwnd,SW_RESTORE);
+				AfxMessageBox("hi");
+				::ShowWindow(hwnd,SW_SHOWMAXIMIZED);
 				
 				// wait 5s for the window to restore
 				for (i=0;i<50;i++)
@@ -381,6 +382,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				// open the main backpack flow
 
+				//Comemnted out checking number of backpacks open.  Assume infalliability.
+				//This portion is not needed and has caused problems regarding closing already opened backpacks and never reopening them
+				/*
 				int openContainersCount=0;
 				for (i=0;i<7;i++)
 				{
@@ -404,74 +408,74 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 						delete cont;
 					}
-					// now open containers
-					
-					CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
-					sender.openContainerFromContainer(item->objectId,0x03,0,0);
-					CModuleUtil::waitForOpenContainer(0,1);
+					*/
+				// now open containers
+				
+				CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
+				sender.openContainerFromContainer(item->objectId,0x03,0,0);
+				CModuleUtil::waitForOpenContainer(0,1);
 
-					//Double click on the main bar of the container
-					SetCursorPos(wndRect.right-100,wndRect.top+387);
-					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-					SetCursorPos(wndRect.right-100,wndRect.top+282);
-					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+				//Double click on the main bar of the container
+				SetCursorPos(wndRect.right-100,wndRect.top+387);
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				SetCursorPos(wndRect.right-100,wndRect.top+282);
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 
-					CTibiaContainer *cont = reader.readContainer(0);
-					if (cont->flagOnOff)
+				CTibiaContainer *cont = reader.readContainer(0);
+				if (cont->flagOnOff)
+				{
+					int foundContNr=1;
+					int foundContOpenNr=1;
+					for (int pos=0;pos<cont->itemsInside;pos++)
 					{
-						int foundContNr=1;
-						int foundContOpenNr=1;
-						for (pos=0;pos<cont->itemsInside;pos++)
+						CTibiaItem *itemInside = (CTibiaItem *)cont->items.GetAt(pos);
+						CTibiaTile *itemTile = reader.getTibiaTile(itemInside->objectId);
+						if (itemTile->isContainer)
 						{
-							CTibiaItem *itemInside = (CTibiaItem *)cont->items.GetAt(pos);
-							CTibiaTile *itemTile = reader.getTibiaTile(itemInside->objectId);
-							if (itemTile->isContainer)
+							int doOpen=0;
+							if (foundContNr==1&&config->openCont1) doOpen=1;
+							if (foundContNr==2&&config->openCont2) doOpen=1;
+							if (foundContNr==3&&config->openCont3) doOpen=1;
+							if (foundContNr==4&&config->openCont4) doOpen=1;
+							if (foundContNr==5&&config->openCont5) doOpen=1;
+							if (foundContNr==6&&config->openCont6) doOpen=1;
+							if (foundContNr==7&&config->openCont7) doOpen=1;
+							if (foundContNr==8&&config->openCont8) doOpen=1;
+							if (doOpen)
 							{
-								int doOpen=0;
-								if (foundContNr==1&&config->openCont1) doOpen=1;
-								if (foundContNr==2&&config->openCont2) doOpen=1;
-								if (foundContNr==3&&config->openCont3) doOpen=1;
-								if (foundContNr==4&&config->openCont4) doOpen=1;
-								if (foundContNr==5&&config->openCont5) doOpen=1;
-								if (foundContNr==6&&config->openCont6) doOpen=1;
-								if (foundContNr==7&&config->openCont7) doOpen=1;
-								if (foundContNr==8&&config->openCont8) doOpen=1;
-								if (doOpen)
-								{
-									sender.openContainerFromContainer(itemInside->objectId,0x40,pos,foundContOpenNr);
-									CModuleUtil::waitForOpenContainer(foundContOpenNr,1);
+								sender.openContainerFromContainer(itemInside->objectId,0x40,pos,foundContOpenNr);
+								CModuleUtil::waitForOpenContainer(foundContOpenNr,1);
 
-									//Double click on main bar of open container(each container heign =19
-									SetCursorPos(wndRect.right-100,wndRect.top+387+19*foundContOpenNr);
-									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-									SetCursorPos(wndRect.right-100,wndRect.top+282+19*foundContOpenNr);
-									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-									mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-									mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-									
-									foundContOpenNr++;
-								}
-								foundContNr++;
+								//Double click on main bar of open container(each container heign =19
+								SetCursorPos(wndRect.right-100,wndRect.top+387+19*foundContOpenNr);
+								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+								SetCursorPos(wndRect.right-100,wndRect.top+282+19*foundContOpenNr);
+								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+								
+								foundContOpenNr++;
 							}
+							foundContNr++;
 						}
-					} else {
-						// something went wrong
-						sender.closeContainer(0);
-					}				
-					delete cont;
-					
-					//delete item;
-				}
+					}
+				} else {
+					// something went wrong
+					sender.closeContainer(0);
+				}				
+				delete cont;
+				
+				//}  Comemnted out checking number of backpacks open.
 				
 			}
 			//SetCursorPos(prevCursorPos.x,prevCursorPos.y);			

@@ -209,12 +209,12 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 	m_customItem1Use.SetCheck(configData->customItem1Use);
 	sprintf(buf,"%d",configData->customItem1Below);m_customItem1Below.SetWindowText(buf);
-	m_customItem1List.SetCurSel(m_customItem1List.FindString(-1,itemProxy.getName(configData->customItem1Item)));
+	m_customItem1List.SetCurSel(m_customItem1List.FindString(-1,itemProxy.getItemName(configData->customItem1Item)));
 	if (m_customItem1List.GetCurSel()==-1) m_customItem1List.SetCurSel(0);
 
 	m_customItem2Use.SetCheck(configData->customItem2Use);
 	sprintf(buf,"%d",configData->customItem2Below);m_customItem2Below.SetWindowText(buf);
-	m_customItem2List.SetCurSel(m_customItem2List.FindString(-1,itemProxy.getName(configData->customItem2Item)));
+	m_customItem2List.SetCurSel(m_customItem2List.FindString(-1,itemProxy.getItemName(configData->customItem2Item)));
 	if (m_customItem2List.GetCurSel()==-1) m_customItem2List.SetCurSel(0);
 
 	m_randomCast.SetCheck(configData->randomCast);
@@ -224,7 +224,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 CConfigData * CConfigDialog::controlsToConfig()
 {
-	CTibiaItemProxy itemProxy;
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
@@ -302,17 +301,16 @@ void CConfigDialog::reloadCustomItems()
 	while (m_customItem1List.GetCount()>0) m_customItem2List.DeleteString(0);
 
 	// load items for depot item combo
-	int count = itemProxy.getItemsItemsCount();
-	int i;
-	for (i=0;i<count;i++)
+
+	int size = itemProxy.getItemCount();
+	for (int i=0;i<size;i++)
 	{
-		m_customItem1List.AddString(itemProxy.getItemsItems(i));
-		m_customItem2List.AddString(itemProxy.getItemsItems(i));
-		int idx;
-		idx = m_customItem1List.FindString(-1,itemProxy.getItemsItems(i));
-		m_customItem1List.SetItemData(idx,itemProxy.getItemsItemsId(i));
-		idx = m_customItem2List.FindString(-1,itemProxy.getItemsItems(i));
-		m_customItem2List.SetItemData(idx,itemProxy.getItemsItemsId(i));
+		char* s=itemProxy.getItemNameAtIndex(i);
+		int objectId=itemProxy.getItemIdAtIndex(i);
+		int idx1 = m_customItem1List.AddString(s);
+		int idx2 = m_customItem2List.AddString(s);
+		m_customItem1List.SetItemData(idx1,objectId);
+		m_customItem2List.SetItemData(idx2,objectId);
 	}
 	m_customItem1List.SetCurSel(0);
 	m_customItem2List.SetCurSel(0);

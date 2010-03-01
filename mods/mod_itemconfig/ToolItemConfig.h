@@ -20,27 +20,29 @@ class CToolItemConfig : public MyDialog
 // Construction
 public:
 	CToolItemConfig(CWnd* pParent = NULL);   // standard constructor
+	HWND hWnd;
+	HTREEITEM itemOrigin;
+	TVHITTESTINFO htDest;
+	int insertAfter;
+	POINTS Pos;
+
+	bool Dragging;
 
 // Dialog Data
 	//{{AFX_DATA(CToolItemConfig)
 	enum { IDD = IDD_TOOL_ITEMCONFIG };
-	CGroupBoxEx	m_LootFrame;
+	CTreeCtrl	m_itemsTree;
+	CButtonST	m_AddChild;
 	CGroupBoxEx	m_ItemsFrame;
 	CGroupBoxEx	m_FoodFrame;
 	CButtonST	m_OK;
 	CButtonST	m_RefreshItems;
-	CButtonST	m_EditLoot;
-	CButtonST	m_EditItem;
-	CButtonST	m_EditFood;
-	CButtonST	m_DeleteLoot;
-	CButtonST	m_DeleteItem;
 	CButtonST	m_DeleteFood;
-	CButtonST	m_AddLoot;
-	CButtonST	m_AddItem;
+	CButtonST	m_EditFood;
 	CButtonST	m_AddFood;
-	CTreeCtrl	m_testTree;
-	CListBox	m_lootedList;
-	CListBox	m_itemsList;
+	CButtonST	m_DeleteItem;
+	CButtonST	m_EditItem;
+	CButtonST	m_AddItem;
 	CListBox	m_foodList;
 	//}}AFX_DATA
 
@@ -55,25 +57,25 @@ public:
 // Implementation
 protected:
 	char outbuf[64];
-	char *parseNameFromItemSelected(int type);
+	char *parseName(char*);
+	int parseId(char*);
 	// Generated message map functions
 	//{{AFX_MSG(CToolItemConfig)
-	virtual void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnToolItemconfigRefresh();
 	virtual BOOL OnInitDialog();
-	virtual void OnItemAdd();
 	virtual void OnItemEdit();
 	virtual void OnItemDelete();
 	virtual void OnFoodAdd();
 	virtual void OnFoodEdit();
 	virtual void OnFoodDelete();
-	virtual void OnLootAdd();
-	virtual void OnLootEdit();
-	virtual void OnLootDelete();
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	virtual void OnOK();
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnAddItem();
 	afx_msg void OnSelchangedTree(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnBegindragTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnClickTree(NMHDR* pNMHDR, LRESULT* pResult);
-	afx_msg void OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

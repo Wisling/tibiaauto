@@ -501,7 +501,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_actionOutOfSpace.SetCurSel(configData->actionOutOfSpace);
 	m_outOfSpace.SetCheck((configData->trigger&TRIGGER_OUTOF_SPACE?1:0));
 	m_soundOutOfSpace.SetCheck((configData->sound&TRIGGER_OUTOF_SPACE?1:0));
-	m_outOfCustomItem.SelectString(-1,itemProxy.getName(configData->optionsOutOfCustomItem));	
+	m_outOfCustomItem.SelectString(-1,itemProxy.getItemName(configData->optionsOutOfCustomItem));	
 
 	
 	m_triggerSign.SetCheck((configData->trigger&TRIGGER_SIGN?1:0));
@@ -792,7 +792,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->optionsManaBelowUntilRecovery=m_manaBelowUntilRecovery.GetCheck();
 	buf[0]='\0';
 	m_outOfCustomItem.GetLBText(m_outOfCustomItem.GetCurSel(),buf);
-	newConfigData->optionsOutOfCustomItem=itemProxy.getObjectId(buf);
+	newConfigData->optionsOutOfCustomItem=itemProxy.getItemId(buf);
 
 	memcpy(newConfigData->whiteList,memWhiteList,3200);
 	newConfigData->mkBlack	=	memMkBlack;
@@ -997,14 +997,17 @@ BOOL CConfigDialog::OnInitDialog()
 
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
-	int count = itemProxy.getItemsItemsCount();
-	for (i=0;i<count;i++)
 	{
-		int objectId=itemProxy.getObjectId(itemProxy.getItemsItems(i));
-		CTibiaTile *tile = reader.getTibiaTile(objectId);
-		if (tile)
+		int size = itemProxy.getItemCount();
+		for (int i=0;i<size;i++)
 		{
-			m_outOfCustomItem.AddString(itemProxy.getItemsItems(i));			
+			char* name=itemProxy.getItemNameAtIndex(i);
+			int objectId=itemProxy.getItemIdAtIndex(i);
+			CTibiaTile *tile = reader.getTibiaTile(objectId);
+			if (tile)
+			{
+				m_outOfCustomItem.AddString(name);			
+			}
 		}
 	}
 
