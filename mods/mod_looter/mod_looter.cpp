@@ -130,6 +130,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 
+		int flags = reader.getSelfEventFlags();
+		if (!config->m_lootInDepot && flags & 0x4000) continue;
 
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
@@ -659,7 +661,7 @@ void CMod_looterApp::enableControls()
 
 char *CMod_looterApp::getVersion()
 {
-	return "1.4";
+	return "1.5";
 }
 
 
@@ -688,6 +690,7 @@ void CMod_looterApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"mode/cont10")) m_configData->m_mode10=atoi(paramValue);
 
 	if (!strcmp(paramName,"loot/worms")) m_configData->m_lootWorms=atoi(paramValue);
+	if (!strcmp(paramName,"loot/inDepot")) m_configData->m_lootInDepot=atoi(paramValue);
 	if (!strcmp(paramName,"loot/gp")) m_configData->m_lootGp=atoi(paramValue);
 	if (!strcmp(paramName,"loot/food")) m_configData->m_lootFood=atoi(paramValue);
 	if (!strcmp(paramName,"loot/custom")) m_configData->m_lootCustom=atoi(paramValue);	
@@ -712,6 +715,7 @@ char *CMod_looterApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"mode/cont10")) sprintf(buf,"%d",m_configData->m_mode10);
 
 	if (!strcmp(paramName,"loot/worms")) sprintf(buf,"%d",m_configData->m_lootWorms);
+	if (!strcmp(paramName,"loot/inDepot")) sprintf(buf,"%d",m_configData->m_lootInDepot);
 	if (!strcmp(paramName,"loot/gp")) sprintf(buf,"%d",m_configData->m_lootGp);
 	if (!strcmp(paramName,"loot/food")) sprintf(buf,"%d",m_configData->m_lootFood);
 	if (!strcmp(paramName,"loot/custom")) sprintf(buf,"%d",m_configData->m_lootCustom);
@@ -739,6 +743,7 @@ char *CMod_looterApp::getConfigParamName(int nr)
 	case 12: return "loot/food";
 	case 13: return "loot/custom";
 	case 14: return "other/autoOpen";	
+	case 15: return "loot/inDepot";
 	default:
 		return NULL;
 	}

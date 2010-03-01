@@ -33,6 +33,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_lootInDepot;
 	CGroupBoxEx	m_LootOptionsFrame;
 	CGroupBoxEx	m_ContainerSetupFrame;
 	CStatic	m_status10;

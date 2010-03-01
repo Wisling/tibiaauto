@@ -29,7 +29,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_LOOT_DEPOT, m_lootInDepot);
 	DDX_Control(pDX, IDC_FRAME_LOOT_OPTIONS, m_LootOptionsFrame);
 	DDX_Control(pDX, IDC_FRAME_CONTAINER_SETUP, m_ContainerSetupFrame);
 	DDX_Control(pDX, IDC_CONTAINER_STATUS10, m_status10);
@@ -39,7 +39,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOOT_FOOD, m_lootFood);
 	DDX_Control(pDX, IDC_LOOT_CUSTOM, m_lootCustom);
 	DDX_Control(pDX, IDC_AUTO_OPEN, m_autoOpen);
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_CONTAINER_STATUS9, m_status9);
 	DDX_Control(pDX, IDC_CONTAINER_STATUS8, m_status8);
 	DDX_Control(pDX, IDC_CONTAINER_STATUS7, m_status7);
@@ -58,6 +57,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CONTAINER_MODE_3, m_mode3);
 	DDX_Control(pDX, IDC_CONTAINER_MODE_2, m_mode2);
 	DDX_Control(pDX, IDC_CONTAINER_MODE_1, m_mode1);
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDOK, m_OK);
 	//}}AFX_DATA_MAP
 }
 
@@ -103,6 +104,7 @@ void CConfigDialog::OnEnable()
 
 void CConfigDialog::disableControls()
 {
+	m_lootInDepot.EnableWindow(false);
 	m_lootWorms.EnableWindow(false);
 	m_lootGp.EnableWindow(false);
 	m_lootFood.EnableWindow(false);
@@ -122,6 +124,7 @@ void CConfigDialog::disableControls()
 
 void CConfigDialog::enableControls()
 {
+	m_lootInDepot.EnableWindow(true);
 	m_lootWorms.EnableWindow(true);
 	m_lootGp.EnableWindow(true);
 	m_lootFood.EnableWindow(true);
@@ -147,6 +150,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_lootGp.SetCheck(configData->m_lootGp);
 	m_lootFood.SetCheck(configData->m_lootFood);
 	m_lootWorms.SetCheck(configData->m_lootWorms);
+	m_lootInDepot.SetCheck(configData->m_lootInDepot);
 	m_autoOpen.SetCheck(configData->m_autoOpen);
 	m_mode1.SetCurSel(configData->m_mode1);
 	m_mode2.SetCurSel(configData->m_mode2);
@@ -168,6 +172,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->m_lootGp=m_lootGp.GetCheck();
 	newConfigData->m_lootFood=m_lootFood.GetCheck();
 	newConfigData->m_lootWorms=m_lootWorms.GetCheck();
+	newConfigData->m_lootInDepot=m_lootInDepot.GetCheck();
 	newConfigData->m_autoOpen=m_autoOpen.GetCheck();
 	newConfigData->m_mode1=m_mode1.GetCurSel();
 	newConfigData->m_mode2=m_mode2.GetCurSel();
