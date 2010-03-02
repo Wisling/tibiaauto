@@ -191,7 +191,7 @@ void moveLeftHandToContainer()
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);	
+	CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
 	int contNr;
 
 	for (contNr=0;contNr<10;contNr++)

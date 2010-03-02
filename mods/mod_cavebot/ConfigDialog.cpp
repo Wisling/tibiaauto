@@ -13,6 +13,7 @@
 #include "TibiaMiniMapLabel.h"
 #include "TibiaMiniMapPoint.h"
 #include "IPCBackPipeProxy.h"
+#include "LoadWaypointsInfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -34,7 +35,7 @@ extern int attackSuspendedUntil;
 extern int firstCreatureAttackTM;
 extern int currentWaypointNr;
 extern int pathfindDistance;
-
+extern int walkerStandingEndTm;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
@@ -56,16 +57,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	CDialog::DoDataExchange(pDX);
 
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDOK, m_OK);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT, m_RemoveWaypoint);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_MONSTER, m_RemoveMonster);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, m_RemoveIgnore);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_WAYPOINT, m_AddWaypoint);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_MONSTER, m_AddMonster);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_IGNORE, m_AddIgnore);
-	DDX_Control(pDX, IDC_LOAD_FROM_MINIMAP, m_LoadMinimap);
-	DDX_Control(pDX, IDC_MONSTER_ATTACK_UP, m_MonsterDown);
-	DDX_Control(pDX, IDC_MONSTER_ATTACK_DOWN, m_MonsterUp);
 	DDX_Control(pDX, IDC_FRAME_WAYPOINT_WALKER, m_WaypointWalker);
 	DDX_Control(pDX, IDC_FRAME_TRAINING, m_Training);
 	DDX_Control(pDX, IDC_FRAME_MONSTER_ATTACKING, m_MonsterAttacking);
@@ -91,8 +82,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TRAINING_BLOOD_HIT, m_bloodHit);
 	DDX_Control(pDX, IDC_TRAINING_ACTIVATE, m_activate);
 	DDX_Control(pDX, IDC_DEBUG, m_debug);
-	DDX_Control(pDX, IDC_DEPOT_ENTRYREMOVE, m_depotEntryRemove);
-	DDX_Control(pDX, IDC_DEPOT_ENTRYADD, m_depotEntryAdd);
 	DDX_Control(pDX, IDC_DEPOT_WHEN, m_depotWhen);
 	DDX_Control(pDX, IDC_DEPOT_REMAIN, m_depotRemain);
 	DDX_Control(pDX, IDC_DEPOT_ITEMLIST, m_depotItemList);
@@ -128,11 +117,25 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_AUTOFOLLOW, m_autoFollow);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTERLIST, m_monsterList);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTER, m_monster);
-	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_RADIUS, m_radius);
 	DDX_Control(pDX, IDC_DONT_ATTACK_PLAYERS, m_dontAttackPlayers);
 	DDX_Control(pDX, IDC_PAUSING_ENABLE, m_pausingEnable);
 	DDX_Control(pDX, IDC_AUTORESEARCH, m_autoResearch);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDC_DEPOT_ENTRYREMOVE, m_depotEntryRemove);
+	DDX_Control(pDX, IDC_DEPOT_ENTRYADD, m_depotEntryAdd);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT, m_RemoveWaypoint);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_MONSTER, m_RemoveMonster);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, m_RemoveIgnore);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_WAYPOINT, m_AddWaypoint);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_MONSTER, m_AddMonster);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_IGNORE, m_AddIgnore);
+	DDX_Control(pDX, IDC_LOAD_FROM_MINIMAP, m_LoadMinimap);
+	DDX_Control(pDX, IDC_MONSTER_ATTACK_UP, m_MonsterDown);
+	DDX_Control(pDX, IDC_MONSTER_ATTACK_DOWN, m_MonsterUp);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_RADIUS, m_radius);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_DELAY, m_AddDelay);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_DELAY, m_delay);
 	//}}AFX_DATA_MAP
 }
 
@@ -151,12 +154,13 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_IGNORE, OnToolAutoattackAddIgnore)
 	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_REMOVE_IGNORE, OnToolAutoattackRemoveIgnore)
 	ON_BN_CLICKED(IDC_LOAD_FROM_MINIMAP, OnLoadFromMinimap)
-	ON_BN_CLICKED(IDC_AUTORESEARCH, OnAutoResearch)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
+	ON_BN_CLICKED(IDC_AUTORESEARCH, OnAutoResearch)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_DELAY, OnAddDelay)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -245,6 +249,7 @@ void CConfigDialog::disableControls()
 	m_curY.EnableWindow(false);
 	m_curZ.EnableWindow(false);
 	m_radius.EnableWindow(false);
+	m_delay.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -302,6 +307,7 @@ void CConfigDialog::enableControls()
 	m_curY.EnableWindow(true);
 	m_curZ.EnableWindow(true);
 	m_radius.EnableWindow(true);
+	m_delay.EnableWindow(true);
 }
 
 
@@ -338,13 +344,17 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->capacityLimit);m_lootCapLimit.SetWindowText(buf);
 	sprintf(buf,"%d",configData->depotCap);m_depotCap.SetWindowText(buf);
 	while (m_waypointList.GetCount()) m_waypointList.DeleteString(0);
-	for (i=0;i<100;i++)
+	for (i=0;i<1000;i++)
 	{
-		if (configData->waypointList[i].x&&configData->waypointList[i].y)
-		{
+		//y==-1 and z==-1 means waypoint is a delay
+		if (configData->waypointList[i].y==-1&&configData->waypointList[i].z==-1) {
+			int delay = configData->waypointList[i].x;
+			sprintf(buf,"Delay %d sec",delay);
+			m_waypointList.AddString(buf);
+		}else if(configData->waypointList[i].x!=0&&configData->waypointList[i].y!=0) {
 			sprintf(buf,"(%d,%d,%d)",configData->waypointList[i].x,configData->waypointList[i].y,configData->waypointList[i].z);
 			m_waypointList.AddString(buf);
-		};	
+		}
 	}
 	while (m_monsterList.GetCount())	
 		m_monsterList.DeleteString(0);		
@@ -441,16 +451,25 @@ CConfigData * CConfigDialog::controlsToConfig()
 		for (j=0;j<len;j++)
 			newConfigData->ignoreList[i][j]=tolower(newConfigData->ignoreList[i][j]);
 	};
-	for (i=0;i<100;i++)
+	for (i=0;i<1000;i++)
 		newConfigData->waypointList[i].x=newConfigData->waypointList[i].y=0;
 	for (i=0;i<m_waypointList.GetCount();i++)
 	{			
 		m_waypointList.GetText(i,buf);
 		int curX=0,curY=0,curZ=0;
 		sscanf(buf,"(%d,%d,%d)",&curX,&curY,&curZ);
-		newConfigData->waypointList[i].x=curX;
-		newConfigData->waypointList[i].y=curY;
-		newConfigData->waypointList[i].z=curZ;
+
+		if (curX==0&&curY==0&&curZ==0){
+			int delay=0;
+			sscanf(buf,"Delay %d sec",&delay);
+			newConfigData->waypointList[i].x=delay;
+			newConfigData->waypointList[i].y=-1;
+			newConfigData->waypointList[i].z=-1;
+		} else {
+			newConfigData->waypointList[i].x=curX;
+			newConfigData->waypointList[i].y=curY;
+			newConfigData->waypointList[i].z=curZ;
+		}
 	};
 	newConfigData->suspendOnNoMove=m_nomoveSuspended.GetCheck();
 	newConfigData->waypointSelectMode=m_waypointSelMode.GetCurSel();
@@ -615,7 +634,11 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateWalker.SetWindowText("State: no path found");
 			break;
 		case CToolAutoAttackStateWalker_standing:
-			m_stateWalker.SetWindowText("State: standing");
+			if (walkerStandingEndTm-time(NULL)<0) break;
+			sprintf(buf,"State: standing for %d more seconds",walkerStandingEndTm-time(NULL));
+			m_stateWalker.SetWindowText(buf);
+			if (currentWaypointNr!=m_waypointList.GetCurSel())
+				m_waypointList.SetCurSel(currentWaypointNr);
 			break;
 		case CToolAutoAttackStateWalker_halfSleep:
 			m_stateWalker.SetWindowText("State: half module sleep");
@@ -772,6 +795,7 @@ BOOL CConfigDialog::OnInitDialog()
 	skin.SetButtonSkin(	m_LoadMinimap);
 	skin.SetButtonSkin(	m_MonsterDown);
 	skin.SetButtonSkin(	m_MonsterUp);
+	skin.SetButtonSkin(	m_AddDelay);
 
 	// initialise comboboxes, etc.
 	reloadDepotItems();
@@ -810,8 +834,8 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 
 {
-	// max 500 waypoints may be defined
-	if (m_waypointList.GetCount()>=499)
+	// max 1000 waypoints may be defined
+	if (m_waypointList.GetCount()>=999)
 		return;
 	char buf[256];
 	int curX,curY,curZ;
@@ -822,6 +846,29 @@ void CConfigDialog::OnToolAutoattackAddWaypoint()
 	m_curZ.GetWindowText(buf,255);
 	curZ=atoi(buf);
 	sprintf(buf,"(%d,%d,%d)",curX,curY,curZ);
+	if (m_waypointList.GetCount()!=1&&m_waypointList.GetCurSel()==0){
+		m_waypointList.InsertString(0,buf);
+		m_waypointList.SetCurSel(0);
+	} else {
+		m_waypointList.InsertString(m_waypointList.GetCurSel()+1,buf);
+		m_waypointList.SetCurSel(m_waypointList.GetCurSel()+1);
+	}
+}
+
+void CConfigDialog::OnAddDelay()
+{
+	// max 1000 waypoints may be defined
+	if (m_waypointList.GetCount()>=999)
+		return;
+	char buf[256];
+	m_delay.GetWindowText(buf,255);
+	int tm = atoi(buf);
+	if (tm<0){
+		AfxMessageBox("Delay time must be >=0!");
+		m_delay.SetWindowText(""); 
+		return; 
+	}
+	sprintf(buf,"Delay %d sec",tm);
 	if (m_waypointList.GetCount()!=1&&m_waypointList.GetCurSel()==0){
 		m_waypointList.InsertString(0,buf);
 		m_waypointList.SetCurSel(0);
@@ -988,7 +1035,11 @@ int pointTabCompare( const void *arg1, const void *arg2 )
 
 void CConfigDialog::OnLoadFromMinimap() 
 {
-	int ret=AfxMessageBox("Do you want to clear all waypoints before loading from minimap?",MB_YESNOCANCEL);
+	char prefixOut[512];
+	CLoadWaypointsInfo *dialog = new CLoadWaypointsInfo(prefixOut);
+	int ret = dialog->DoModal();
+	delete dialog;
+
 	if (ret==IDCANCEL) return;
 
 	CTibiaMiniMapLabel **pointTab = (CTibiaMiniMapLabel **)malloc(sizeof(CTibiaMiniMapLabel *)*500);
@@ -1017,7 +1068,8 @@ void CConfigDialog::OnLoadFromMinimap()
 				CTibiaMiniMapLabel *point = reader.readMiniMapLabel(mapNr,pointNr);
 
 				// point->x==0 means the point is deleted
-				if (point->x&&!strncmp(point->desc,"$ta",3)&&totalPointCount<500)
+				int len=strlen(prefixOut);
+				if (point->x&&!strncmp(point->desc,prefixOut,len)&&totalPointCount<500)
 				{
 					// hack: store on point->type 'z' coord
 					point->type=map->z;
@@ -1039,7 +1091,7 @@ void CConfigDialog::OnLoadFromMinimap()
 	{
 		AfxMessageBox("Warning: maximum (500) supported waypoints amount exceeded!");
 	}
-	// sort all points to be added lexycographically
+	// sort all points to be added lexicographically
 	qsort(pointTab,500,sizeof(CTibiaMiniMapLabel *),pointTabCompare);
 	for (i=0;i<500;i++) 
 	{
@@ -1099,7 +1151,6 @@ void PathfindThread(LPVOID lpParam){
 	int endZ=myData->z2;
 	int direction[10][3]= {{0,0,1},{1,0,0},{1,-1,0},{0,-1,0},{-1,-1,0},{-1,0,0},{-1,1,0},{0,1,0},{1,1,0},{0,0,-1}};
 
-	//char buf[111111];
 	CUIntArray *path=taMiniMap.findPathOnMiniMap(myData->x,myData->y,myData->z,myData->x2,myData->y2,myData->z2);
 
 	int i;
@@ -1107,10 +1158,11 @@ void PathfindThread(LPVOID lpParam){
 	int x,y;
 	int sz=path->GetSize();
 	/*
+	char buf[111111];
 	sprintf(buf,"%d - ",sz);
 	for (i=0;i<sz;i++){
 
-		sprintf(buf,"%s %d",buf,a->GetAt(i));
+		sprintf(buf+strlen(buf),"%d",a->GetAt(i));
 	}
 	AfxMessageBox(buf);
 	*/
@@ -1210,6 +1262,7 @@ void CConfigDialog::OnAutoResearch(){
 	for (int i=0;i<m_waypointList.GetCount()+(m_waypointList.GetCount()>2);i++){//goes around waypoints in a circle+1 path from current point(no circle if only 2 points)
 		m_waypointList.GetText(i%m_waypointList.GetCount(),buf);
 		sscanf(buf,"(%d,%d,%d)",&nextX,&nextY,&nextZ);
+		if (nextX==curX&&nextY==curY&&nextZ==curZ) continue;// is a delay waypoint
 		PathfindParams* myData =new PathfindParams(curX,curY,curZ,nextX,nextY,nextZ);
 		if (!(curX==nextX&&nextY==curY&&curZ==nextZ)) pathfindPoints.push(myData);
 		curX=nextX;

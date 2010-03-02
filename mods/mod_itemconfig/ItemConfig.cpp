@@ -76,9 +76,10 @@ void CItemAdd::OnCommit() {
 	}else{// Branch node
 		m_ItemName.GetWindowText(name,1023);
 		newItem=tree->InsertItem(name,parent,TVI_LAST);
+		tree->SetItemState(newItem,TVIS_BOLD,TVIS_BOLD);
 	}
-	tree->SelectItem(newItem);
-	tree->SetItemState(newItem,TVIS_SELECTED,TVIS_SELECTED);
+
+	tree->SelectItem(newItem);//ToolConfign function looks at selected item to see what was added
 	
 	this->EndDialog(IDOK);
 }

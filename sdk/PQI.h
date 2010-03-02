@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+
 using namespace std;
 
 class pointNode 
