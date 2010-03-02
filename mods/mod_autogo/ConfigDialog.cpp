@@ -893,7 +893,7 @@ BOOL CConfigDialog::OnInitDialog()
 	for (int i=0;list[i]!=NULL;i++){
 		list[i]->InsertString(ACTION_NONE_POS,"(none)");
 		list[i]->InsertString(ACTION_SUSPEND_POS,"Suspend macro");		
-		list[i]->InsertString(ACTION_LOGOUT_POS,"Logout");		
+		list[i]->InsertString(ACTION_LOGOUT_POS,"Logout+half attack");		
 		list[i]->InsertString(ACTION_KILL_POS,"Logout+Kill");		
 		list[i]->InsertString(ACTION_SHUTDOWN_POS,"Logout+Shutdown");		
 		list[i]->InsertString(ACTION_RUNAWAY_POS,"Runaway");

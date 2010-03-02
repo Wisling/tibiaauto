@@ -292,10 +292,10 @@ private:
 	}
 };
 ///////////////////////////////////////////////////////////////////////////////////////
-////////////////////////////// CTibiaMap Implementation INCOMPLETE //////////////////////////////
+////////////////////////////// CTibiaHashMap Implementation INCOMPLETE //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 typedef map<int, CTibiaListData*> IntMap;
-class CTibiaMap{
+class CTibiaHashMap{
 private:
 	StrMap strMap;
 	IntMap intMap;
@@ -307,20 +307,20 @@ private:
 	bool uniqueInt;
 	bool uniqueStr;
 public:
-	CTibiaMap(){
+	CTibiaHashMap(){
 		counter=0x10000;
 		count=0;
 		uniqueInt=TRUE;
 		uniqueStr=TRUE;
 	}
 	// At least one should be true in order to use the map properly
-	CTibiaMap(bool a_uniqueInt,bool a_uniqueStr){
+	CTibiaHashMap(bool a_uniqueInt,bool a_uniqueStr){
 		counter=0x10000;
 		count=0;
 		uniqueInt=a_uniqueInt;
 		uniqueStr=a_uniqueStr;
 	}
-	~CTibiaMap(){
+	~CTibiaHashMap(){
 		RemoveAll();
 	}
 
@@ -554,10 +554,10 @@ typedef enum {
 	TT_ITEM_NODE=2
 }CTibiaTreeDataType;
 
-
 class CTibiaTreeData{
 protected:
 	CTibiaTreeDataType nodeType;
+	char *name;
 public:
 	CTibiaTreeData(){
 		nodeType=TT_ITEM_NODE;
@@ -568,7 +568,9 @@ public:
 	CTibiaTreeDataType GetType(){
 		return nodeType;
 	}
-	virtual ~CTibiaTreeData(){}
+	virtual ~CTibiaTreeData(){
+		//gets called after inherited class' destructor
+	}
 	virtual void toString(char* outStr){
 		int ind=strlen(outStr);
 		sprintf(outStr+ind,"\n");

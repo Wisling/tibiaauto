@@ -18,6 +18,7 @@
 #define IDC_ITEM_ADD_ID                 3014
 #define IDC_ADD_ITEM                    3015
 #define IDD_ITEM_EDIT                   3016
+#define IDC_ITEM_SORT                   3016
 #define IDC_ITEM_EDIT_NAME              3017
 #define IDC_ITEM_EDIT_ID                3018
 #define IDC_EDIT_ITEM                   3019

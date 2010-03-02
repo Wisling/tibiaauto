@@ -67,7 +67,7 @@ END
 IDD_CONFIG DIALOGEX 0, 0, 553, 390
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: cave bot"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Depot Walker",IDC_FRAME_DEPOT_WALKER,281,78,265,88
     GROUPBOX        "Debuging",IDC_FRAME_DEBUGGING,281,255,265,61
@@ -88,14 +88,14 @@ BEGIN
     LTEXT           "Monsters to attack:",IDC_STATIC,157,13,80,8
     CONTROL         "Auto follow mode",IDC_TOOL_AUTOATTACK_AUTOFOLLOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,17,134,69,10
-    EDITTEXT        IDC_TOOL_AUTOATTACK_CURX,17,283,25,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_AUTOATTACK_CURY,54,283,25,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_AUTOATTACK_CURZ,90,283,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_AUTOATTACK_CURX,17,288,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_AUTOATTACK_CURY,54,288,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_AUTOATTACK_CURZ,90,288,25,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOATTACK_WAYPOINTLIST,157,254,108,61,
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Waypoints:",IDC_STATIC,157,246,115,8
-    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,125,283,19,14
-    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,125,254,19,14
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_WAYPOINT,131,288,19,14
+    PUSHBUTTON      "<<<",IDC_TOOL_AUTOATTACK_REMOVE_WAYPOINT,131,254,19,14
     CONTROL         "Loot food",IDC_TOOL_AUTOATTACK_AUTOLOOTFOOD,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,289,34,46,10
     CONTROL         "Loot GP",IDC_TOOL_AUTOATTACK_AUTOLOOTGP,"Button",
@@ -116,9 +116,9 @@ BEGIN
                     SS_CENTERIMAGE
     CONTROL         "Loot custom",IDC_TOOL_AUTOATTACK_AUTOLOOTCUSTOM,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,481,34,59,10
-    COMBOBOX        IDC_TOOL_AUTOATTACK_MAPUSED,70,303,65,36,
+    COMBOBOX        IDC_TOOL_AUTOATTACK_MAPUSED,70,306,65,36,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Map used:",IDC_STATIC,17,303,44,12,SS_CENTERIMAGE
+    LTEXT           "Map used:",IDC_STATIC,17,306,44,12,SS_CENTERIMAGE
     LTEXT           "Loot capacity limit:",IDC_STATIC,289,18,64,13,
                     SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_AMMORESTACK_LOOTCAPLIMIT,363,15,47,14,
@@ -232,8 +232,11 @@ BEGIN
     CONTROL         "Auto Research Map (Test Version)",IDC_AUTORESEARCH,
                     "Button",BS_AUTOCHECKBOX | BS_PUSHLIKE | BS_MULTILINE | 
                     WS_TABSTOP,181,319,80,23
-    LTEXT           "Radius:",IDC_STATIC,61,268,28,12,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_AUTOATTACK_RADIUS,90,267,25,14,ES_AUTOHSCROLL
+    LTEXT           "Radius:",IDC_STATIC,17,270,28,12,SS_CENTERIMAGE
+    EDITTEXT        IDC_TOOL_AUTOATTACK_RADIUS,45,271,25,14,ES_AUTOHSCROLL
+    LTEXT           "Delay(s)",IDC_STATIC,73,271,25,12,SS_CENTERIMAGE
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOATTACK_ADD_DELAY,131,271,19,14
+    EDITTEXT        IDC_TOOL_AUTOATTACK_DELAY,101,271,25,14,ES_AUTOHSCROLL
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 203, 94
@@ -341,6 +344,51 @@ END
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 #pragma code_page(1252)
 #endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_LOADWAYPOINTSINFO DIALOG DISCARDABLE  0, 0, 202, 132
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "Load Mini Map Points",IDC_FRAME,7,7,188,99
+    DEFPUSHBUTTON   "Yes",IDYES,7,111,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,145,111,50,14
+    DEFPUSHBUTTON   "No",IDNO,76,111,50,14
+    EDITTEXT        IDC_PREFIX,25,63,152,13,ES_AUTOHSCROLL
+    CTEXT           "Do you want to clear all waypoints before loading from minimap?",
+                    IDC_STATIC,19,82,164,17
+    LTEXT           "Map labels with this prefix will be loaded. eg($ta strm)",
+                    IDC_STATIC,17,46,168,11
+    LTEXT           "Only map sections loaded recently can be used so explore the Tibia map with Alt+PgUp/PgDn and the arrow keys.",
+                    IDC_STATIC,35,17,154,27
+    LTEXT           "Tip:",IDC_STATIC,17,17,14,8
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_LOADWAYPOINTSINFO, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 195
+        VERTGUIDE, 101
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 125
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////

@@ -460,8 +460,13 @@ void alarmAction(int alarmId, CConfigData *config){
 	//}
 	if (iAction&ACTION_LOGOUT){				
 		//sender.sendTAMessage("Logout");
+		reader.setGlobalVariable("caveboot_halfsleep","true");
 		if(!(reader.getSelfEventFlags()&(128+8192)))
 			sender.logout();
+	} else if (config->allActions&ACTION_LOGOUT)
+	{
+		// support for 'cancel of caveboot halfsleep'
+		reader.setGlobalVariable("caveboot_halfsleep","false");
 	}
 	if (iAction&ACTION_KILL){
 		//sender.sendTAMessage("Kill");

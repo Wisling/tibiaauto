@@ -1,3 +1,22 @@
+ Installation will not repace items file unless it is missing
+
+
+2.2.0, ?.?.2010
+Enhancments
+ Item Config: Created Tree Control for items, visit wiki for more information
+ Python: Added taitem python functions
+ Python: Removed older taitem python functions(only functions not used in forum python scripts)
+ Tibia Auto: Separated out items and constants into different files
+ Tibia Auto: Installation added new items and consts XMLs and will not need to overwrite future items.xml's
+ (reminder to check with Akilez)Auto Go/Log: On logout the cavebot will Half attack, but stay in the same spot until log out
+ Cavebot: Able to choose your own prefix for loading mini map labels (default was $ta)
+ 
+Defects
+ Auto Login: Fixed closing backpack after opening them
+ Auto Go/Log: Fixed Logging out command for alarms(it now logs out)
+ Auto Login: Always maximizes window when trying to log in
+ Tiles: Made closed hole very slow so that in case it is actually open but not researched it will avoid it
+
 2.1.2, 9.11.2009
 Enhancments
  Updated to 8.54

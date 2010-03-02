@@ -115,6 +115,7 @@ int creatureAttackDist=0;
 int attackSuspendedUntil=0;
 int firstCreatureAttackTM=0;
 int currentWaypointNr=0;
+int walkerStandingEndTm=0;
 
 int lastTAMessageTm=0;
 int taMessageDelay=4;
@@ -1296,7 +1297,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int currentlyAttackedCreatureNr=-1;
 
 	int lastStandingX=0,lastStandingY=0,lastStandingZ=0;
-	int walkerStandingEndTm=0;
 	targetX=targetY=targetZ=0;
 
 	int lastAttackedCreatureBloodHit=0;
@@ -1428,7 +1428,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
 		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
 			if (config->lootFood) {
-				droppedLootArray.Copy(*itemProxy.getFoodIdArrayPtr());
+				droppedLootArray.Append(*itemProxy.getFoodIdArrayPtr());
 			}
 			if (config->lootGp) {
 				droppedLootArray.Add(itemProxy.getValueForConst("GP"));
@@ -1437,7 +1437,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				droppedLootArray.Add(itemProxy.getValueForConst("worms"));
 			}
 			if (config->lootCustom) {
-				droppedLootArray.Copy(*itemProxy.getLootItemIdArrayPtr());
+				droppedLootArray.Append(*itemProxy.getLootItemIdArrayPtr());
 			}
 			if (droppedLootArray.GetSize()) {
 				droppedLootCheck(config,droppedLootArray);
@@ -1597,10 +1597,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							if (config->lootWorms)
 								acceptedItems.Add(itemProxy.getValueForConst("worms"));
 							if (config->lootCustom) {
-								acceptedItems.Copy(*itemProxy.getLootItemIdArrayPtr());
+								acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
 							}
 							if (config->lootFood) {
-								acceptedItems.Copy(*itemProxy.getFoodIdArrayPtr());
+								acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
 							}
 							int lootTakeItem;
 							for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
@@ -1664,7 +1664,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			// if client thinks we are not attacking anything, then
 			// send "attack new target" to it and increment failed attack for creatureNr by 1
 			if (config->debug) {
-				char buf[111];
+				char buf[128];
 				sprintf(buf,"Tmp:currentlyAttackedCreatureNr=%d",currentlyAttackedCreatureNr);
 				registerDebug(buf);
 			}
@@ -2074,13 +2074,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						break;
 					}
 				}//else:continue to previous waypoint
-				
-				targetX=config->waypointList[currentWaypointNr].x;
-				targetY=config->waypointList[currentWaypointNr].y;
-				targetZ=config->waypointList[currentWaypointNr].z;
-				char buf[128];
-				sprintf(buf,"Walking to waypoint (%d,%d,%d)",targetX,targetY,targetZ);
-				if (config->debug) registerDebug(buf);
+
+				// y and z ==-1 means it is a delay
+				if (config->waypointList[currentWaypointNr].y==-1 && config->waypointList[currentWaypointNr].z==-1)
+				{
+					int delay=config->waypointList[currentWaypointNr].x;
+					walkerStandingEndTm=time(NULL)+delay;//replaces default standStill delay
+					char buf[128];
+					sprintf(buf,"Standing at delaypoint (%d) for %d sec",currentWaypointNr,delay);
+					if (config->debug) registerDebug(buf);
+				} else {
+					targetX=config->waypointList[currentWaypointNr].x;
+					targetY=config->waypointList[currentWaypointNr].y;
+					targetZ=config->waypointList[currentWaypointNr].z;
+					char buf[128];
+					sprintf(buf,"Walking to waypoint (%d,%d,%d)",targetX,targetY,targetZ);
+					if (config->debug) registerDebug(buf);
+				}
 			}						//End waypoint selection algorithim
 									//Waypoint walking algrithim starts here:
 			if (targetX&&targetY&&!isInHalfSleep()) {
@@ -2562,6 +2572,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 				m_configData->waypointList[i].x=0;
 			}
 		}
+		// y and z == -1 means delay instead of waypoint
 		sscanf(paramValue,"%d,%d,%d",
 			&m_configData->waypointList[m_currentWaypointNr].x,
 			&m_configData->waypointList[m_currentWaypointNr].y,
@@ -2639,6 +2650,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 		m_currentIgnoreNr++;
 	}
 	if (!strcmp(paramName,"walker/waypoint")&&m_configData->waypointList[m_currentWaypointNr].x) {
+		// y and z == -1 means delay
 		sprintf(buf,"%d,%d,%d",m_configData->waypointList[m_currentWaypointNr].x,m_configData->waypointList[m_currentWaypointNr].y,m_configData->waypointList[m_currentWaypointNr].z);
 		m_currentWaypointNr++;
 	}
@@ -2706,6 +2718,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 39: return "training/weaponHand";
 	case 40: return "training/trainingMode";
 	case 41: return "walker/radius";
+	case 42: return "walker/waypoint/delay";
 		
 	default:
 		return NULL;

@@ -101,6 +101,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
+	CButton	m_addDelay;
 	CGroupBoxEx	m_WaypointWalker;
 	CGroupBoxEx	m_Training;
 	CGroupBoxEx	m_MonsterAttacking;
@@ -179,6 +180,9 @@ public:
 	CButtonST	m_MonsterDown;
 	CButtonST	m_MonsterUp;
 	CEdit	m_radius;
+	CButtonST	m_AddDelay;
+	CEdit	m_delay;
+
 	//}}AFX_DATA
 
 	void reloadDepotItems();
@@ -213,6 +217,7 @@ protected:
 	afx_msg void OnMonsterAttackUp();
 	afx_msg void OnMonsterAttackDown();
 	afx_msg void OnAutoResearch();
+	afx_msg void OnAddDelay();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

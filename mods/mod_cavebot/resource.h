@@ -6,6 +6,7 @@
 #define IDC_TOOL_AUTOATTACK_CURY        1053
 #define IDC_TOOL_AUTOATTACK_CURZ        1054
 #define IDC_TOOL_AUTOATTACK_RADIUS      1055
+#define IDC_TOOL_AUTOATTACK_DELAY       1056
 #define IDC_TOOL_AUTOATTACK_MONSTER     1076
 #define IDC_TOOL_AUTOATTACK_IGNORE      1077
 #define IDC_TOOL_AUTOATTACK_MONSTERLIST 1079
@@ -25,6 +26,7 @@
 #define IDC_TOOL_AUTOATTACK_NOMOVESUSPEND 1093
 #define IDC_MONSTER_ATTACK_DOWN         1094
 #define IDC_MONSTER_ATTACK_UP           1095
+#define IDC_TOOL_AUTOATTACK_ADD_DELAY   1096
 #define IDC_TOOL_AUTOATTACK_AUTOLOOTGP  1106
 #define IDC_TOOL_AUTOATTACK_STATE_LOOT  1109
 #define IDC_TOOL_AUTOATTACK_STATE_WALKER 1110
@@ -57,6 +59,7 @@
 #define IDC_ENABLE                      3004
 #define IDB_BITMAP1                     3004
 #define IDC_AUTO_OPEN                   3005
+#define IDD_LOADWAYPOINTSINFO           3005
 #define IDC_CONTAINER_MODE_3            3006
 #define IDC_CONTAINER_STATUS3           3007
 #define IDC_CONTAINER_MODE_4            3008
@@ -121,14 +124,16 @@
 #define IDC_FRAME_DEBUGGING             3051
 #define IDC_FRAME_WAYPOINT_WALKER       3052
 #define IDC_FRAME_MONSTER_ATTACKING     3053
+#define IDC_PREFIX                      3054
+#define IDC_FRAME                       3055
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3005
+#define _APS_NEXT_RESOURCE_VALUE        3006
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3054
+#define _APS_NEXT_CONTROL_VALUE         3056
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
