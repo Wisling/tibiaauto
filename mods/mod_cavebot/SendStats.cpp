@@ -141,9 +141,9 @@ void CSendStats::OnSendLootstats()
 BOOL CSendStats::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	//skin.SetButtonSkin(	m_send2);
-	//skin.SetButtonSkin(	m_send1);
-	//skin.SetButtonSkin(	m_ok);
+	skin.SetButtonSkin(	m_send2);
+	skin.SetButtonSkin(	m_send1);
+	skin.SetButtonSkin(	m_ok);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

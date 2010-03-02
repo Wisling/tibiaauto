@@ -116,6 +116,10 @@ SOURCE=.\Helpers.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\LoadWaypointsInfo.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_cavebot.cpp
 # End Source File
 # Begin Source File
@@ -170,6 +174,10 @@ SOURCE=.\ConfigDialog.h
 # Begin Source File
 
 SOURCE=.\Helpers.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\LoadWaypointsInfo.h
 # End Source File
 # Begin Source File
 

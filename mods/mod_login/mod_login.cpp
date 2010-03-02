@@ -217,7 +217,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(500);
 			}
 		}
-
 		connectionState = reader.getConnectionState();
 		if (connectionState!=8)
 		{	
@@ -251,22 +250,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			
 						
-			int wndIconic=IsIconic(hwnd);
-			if (wndIconic)
+			int wndIconic=::IsIconic(hwnd);
+			int wndMaximized=::IsZoomed(hwnd);
+			if (wndIconic || !wndMaximized)
 			{	
-				AfxMessageBox("hi");
 				::ShowWindow(hwnd,SW_SHOWMAXIMIZED);
 				
 				// wait 5s for the window to restore
 				for (i=0;i<50;i++)
 				{
-					if (!::IsIconic(hwnd)) break;
+					if (!::IsIconic(hwnd) && wndIconic || ::IsZoomed(hwnd) && wndMaximized) break;
 					if (toolThreadShouldStop) break;
 					Sleep(100);
 				}
-				if (::IsIconic(hwnd)) 
+				if (::IsIconic(hwnd) && wndIconic || !::IsZoomed(hwnd) && wndMaximized) 
 				{				
-					registerDebug("ERROR: tibia window is still iconic but it should not be");					
+					registerDebug("ERROR: tibia window is still not maximized but it should be");
 					ReleaseSemaphore(hSemaphore,1,&prevCount);
 					continue;
 				}
@@ -295,7 +294,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 		
 			
-			::GetWindowRect(hwnd,&wndRect);		
+			::GetWindowRect(hwnd,&wndRect);
 			
 			
 			
@@ -364,17 +363,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
 			}
 			// finalize
-			if (wndIconic)
-			{
-				::ShowWindow(hwnd,SW_MINIMIZE);
-				// wait 5s for the window to minimize
-				for (i=0;i<50;i++)
-				{
-					if (IsIconic(hwnd)) break;
-					if (toolThreadShouldStop) break;
-					Sleep(100);
-				}
-			}
 			ReleaseSemaphore(hSemaphore,1,&prevCount);
 			registerDebug("Relogin procedure completed.");
 			loginTime=0;
@@ -478,7 +466,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				//}  Comemnted out checking number of backpacks open.
 				
 			}
-			//SetCursorPos(prevCursorPos.x,prevCursorPos.y);			
+			Sleep(100);//Wait for clicks to finish
+			//reset window back to original state
+			if (wndIconic)//prioritize wndIconic over !wndMaxmized
+			{
+				::ShowWindow(hwnd,SW_MINIMIZE);
+				// wait 5s for the window to minimize
+				for (i=0;i<50;i++)
+				{
+					if (::IsIconic(hwnd)) break;
+					if (toolThreadShouldStop) break;
+					Sleep(100);
+				}
+			} else if (!wndMaximized){
+				::ShowWindow(hwnd,SW_RESTORE);
+				// wait 5s for the window to minimize
+				for (i=0;i<50;i++)
+				{
+					if (!::IsZoomed(hwnd)) break;
+					if (toolThreadShouldStop) break;
+					Sleep(100);
+				}
+			}
+			SetCursorPos(prevCursorPos.x,prevCursorPos.y);
 		} // if (connectionState!=8)
 		else loginTime=0;
 	}

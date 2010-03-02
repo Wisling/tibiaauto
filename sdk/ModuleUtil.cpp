@@ -512,8 +512,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 		if (gotToEndPoint){//until it gets to 1 this will keep emptying the queue array
 			gotToEndPoint--;
-			char buf[111];
-			sprintf(buf,"%d",gotToEndPoint);
+			//char buf[111];
+			//sprintf(buf,"%d",gotToEndPoint);
 			//AfxMessageBox(buf);
 		}
 		else{

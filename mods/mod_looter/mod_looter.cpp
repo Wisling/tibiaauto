@@ -253,16 +253,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							if (config->m_lootWorms)
 								acceptedItems.Add(itemProxy.getValueForConst("worms"));
 							if (config->m_lootCustom) {
-								int i;
-								for (i=0;i<itemProxy.getItemsLootedCount();i++)
-									acceptedItems.Add(itemProxy.getItemsLootedId(i));
+								acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
 							}
 							if (config->m_lootFood) {
-								int p;
-								CUIntArray *foods=itemProxy.getItemsFoodArray();
-								for (p=0;p<foods->GetSize();p++)
-									acceptedItems.Add(foods->GetAt(p));
-								//taken care of. delete foods;
+								acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
 							}
 							
 							int lootTakeItem;
@@ -477,13 +471,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			
 			if (config->m_lootFood)
 			{
-				int p;
-				CUIntArray *foods=itemProxy.getItemsFoodArray();
-				for (p=0;p<foods->GetSize();p++)
-				{
-					acceptedItems.Add(foods->GetAt(p));
-				}
-				//taken care of. delete foods;
+				acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
 			}
 			if (config->m_lootGp)
 			{
@@ -495,12 +483,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			if (config->m_lootCustom)
 			{
-				int i;
-				for (i=0;i<itemProxy.getItemsLootedCount();i++)
-				{					
-					
-					acceptedItems.Add(itemProxy.getItemsLootedId(i));
-				}
+				acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
 			}
 			
 			
