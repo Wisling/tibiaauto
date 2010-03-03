@@ -8,7 +8,7 @@
 //
 #include "Skin.h"
 #include "BtnST.h"
-class CConfigData;
+#include "ConfigData.h"
 /////////////////////////////////////////////////////////////////////////////
 // MyDialog dialog
 

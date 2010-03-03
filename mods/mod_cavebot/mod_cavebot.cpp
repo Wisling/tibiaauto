@@ -1178,7 +1178,7 @@ int AttackCreature(CConfigData *config,int id){
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(id);
-	int old =reader.getAttackedCreature();
+	int old = reader.getAttackedCreature();
 	if (attackedCh){
 		if (reader.getAttackedCreature()!=id){
 			reader.cancelAttackCoords();
