@@ -694,7 +694,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 			return 0;
 		}
 	}
-	if (m_configData->timedSpell) {
+	if (m_configData->timedSpell && m_configData->timedSpellList.size()) {
 		if (!strlen(m_configData->timedSpellList[0].spell)) {
 			if (showAlerts) AfxMessageBox("Some timed spell to cast must be defined!");
 			return 0;
@@ -782,6 +782,8 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 		char buf2[8];
 		char buf3[8];
 		TimedSpell temp;
+		if (currentPos == 0)
+			m_configData->timedSpellList.clear();
 		sscanf(paramValue, "%s %s %s %s",temp.spell, buf1, buf2, buf3);
 		temp.mana = atoi(buf1);
 		temp.delay = atoi(buf2);
@@ -798,7 +800,8 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 		char buf1[8];
 		char buf2[8];
 		Player temp;
-		AfxMessageBox(paramValue);
+		if (currentPos == 0)
+			m_configData->healList.clear();
 		sscanf(paramValue, "%s %s %s",temp.name, buf1, buf2);
 		temp.maxHP = atoi(buf1);
 		temp.triggerHP = atoi(buf2);
