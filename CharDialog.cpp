@@ -6,6 +6,7 @@
 #include "CharDialog.h"
 #include "MemUtil.h"
 #include "MemReaderProxy.h"
+#include "TibiaItemProxy.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,6 +40,7 @@ void CCharDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CCharDialog, CDialog)
 	//{{AFX_MSG_MAP(CCharDialog)
+	ON_BN_CLICKED(IDCANCEL, OnCancel)
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
@@ -118,8 +120,8 @@ void CCharDialog::OnOK()
 BOOL CCharDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-skin.SetButtonSkin(m_OK);
-skin.SetButtonSkin(m_Exit);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_Exit);
 	OnCharRefresh();
 	
 	SetTimer(1001,250,NULL);
@@ -145,5 +147,7 @@ void CCharDialog::OnTimer(UINT nIDEvent)
 
 void CCharDialog::OnCancel()
 {
+	CTibiaItemProxy itemProxy;
+	itemProxy.cleanup();
 	EndDialog(-1);
 }

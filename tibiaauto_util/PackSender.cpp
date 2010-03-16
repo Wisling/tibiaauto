@@ -492,7 +492,6 @@ void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos,
 void CPackSender::attackMode(int attack,int follow,int attLock)
 {
 	char sendbuf[6];
-	char buf[111];
 
 	if(attack!=2 && attack!=1 && attack!=3){ sendTAMessage("Packet error attack"); return;}
 	if(follow!=0 && follow!=1){ sendTAMessage("Packet error follow"); return;}
@@ -935,6 +934,17 @@ void CPackSender::stopAll()
 	retbuf[1]=0;
 
 	retbuf[2]=0xbe;
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::sendDirectPacket(const char* buf,int len)
+{
+	char retbuf[16384];
+
+	retbuf[0]=len%0xFF;
+	retbuf[1]=(len>>8)%0xFF;
+	memcpy(retbuf+2,buf,min(len,16384-2));
 
 	sendPacket(retbuf);
 }

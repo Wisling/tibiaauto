@@ -59,10 +59,10 @@ public:
 
 private:
 	static CTibiaTree* itemTree;
-	static CTibiaList* foodList;
-	static CTibiaList* lootList;
-	static CTibiaList* itemList;
-	static CTibiaList* constCodeList;
+	static CTibiaList foodList;
+	static CTibiaList lootList;
+	static CTibiaList itemList;
+	static CTibiaList constCodeList;
 	static int xmlInitialised;
 	
 

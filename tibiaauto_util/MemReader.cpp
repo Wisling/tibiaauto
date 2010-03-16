@@ -843,10 +843,11 @@ void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
 		CTibiaMiniMap *map = readMiniMap(nr);
-		char buf[1111];
-		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
 
+		//char buf[1111];
+		//sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
 		//AfxMessageBox(buf);
+
 		if (xMap==map->x && yMap==map->y && zMap==map->z){
 			//AfxMessageBox("map found and writing");
 			int pointOffset=(x%256)*256+y%256;
@@ -861,7 +862,7 @@ void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
 			CMemUtil::GetMemRange(m_processId,mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour2);
 			CMemUtil::SetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
 			CMemUtil::GetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed2);
-			sprintf(buf,"made:(%d,%d),(%x,%x)",colour2[0],speed2[0],mapOffset+pointOffset,mapOffset+65536+pointOffset);
+			//sprintf(buf,"made:(%d,%d),(%x,%x)",colour2[0],speed2[0],mapOffset+pointOffset,mapOffset+65536+pointOffset);
 			//AfxMessageBox(buf);
 			delete map;
 			break;

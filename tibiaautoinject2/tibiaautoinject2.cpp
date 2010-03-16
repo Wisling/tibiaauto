@@ -105,7 +105,7 @@ public:
 			this,
 			sizeof(struct ipcMessage), 
 			&cbWritten,
-			NULL);		
+			NULL);
 	}
 	
 };
@@ -368,7 +368,7 @@ void sendBufferViaSocket(char *buffer)
 	}	
 	lastAction=GetTickCount();
 	
-	
+
 	
 	int ret=send(tibiaSocket, outbufHeader,test+2,0);
 	
@@ -1135,10 +1135,10 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-#ifdef _DEBUG
+#ifndef _DEBUG
 	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
 #endif
-#ifndef _DEBUG
+#ifdef _DEBUG
 	debugFile=NULL;
 #endif
 	if (debugFile) fprintf(debugFile,"Start\r\n");
@@ -2139,8 +2139,8 @@ void ParseIPCMessage(struct ipcMessage mess)
 };
 
 int ReadFromPipe()
-{		
-	
+{
+
 	BOOL fSuccess=false;
 	do 
 	{ 

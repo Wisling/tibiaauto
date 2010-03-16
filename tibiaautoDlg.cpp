@@ -243,7 +243,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 
 	CCharDialog *charDialog = new CCharDialog();
-	m_processId=charDialog->DoModal();	
+	m_processId=charDialog->DoModal();
 	globalProcessId=m_processId;
 	delete charDialog;
 	if (m_processId==-1)
@@ -413,7 +413,9 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	data.hWnd=GetSafeHwnd();
 	data.uID=1;		
 	data.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
-	snprintf(data.szTip,60,"%s","<Running Tibia Auto>");
+	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+	snprintf(data.szTip,60,"%s",loggedCharName);
+	free(loggedCharName);
 	data.uCallbackMessage=WM_APP+1;
 	data.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
 	Shell_NotifyIcon(NIM_ADD,&data);
@@ -467,12 +469,12 @@ HCURSOR CTibiaautoDlg::OnQueryDragIcon()
 }
 
 
-void CTibiaautoDlg::OnChangeEditAddress() 
+void CTibiaautoDlg::OnChangeEditAddress()
 {
 
 }
 
-void CTibiaautoDlg::OnChangeEditValue() 
+void CTibiaautoDlg::OnChangeEditValue()
 {
 	
 	
@@ -844,8 +846,18 @@ void CTibiaautoDlg::OnSave()
 			
 			char scriptModuleName[128];
 			snprintf(scriptModuleName,127,"Script: %s",pythonScript->getName());
+			if (!strcmp("Script: Stub",scriptModuleName))
+				int a=1;
 			CConfigCreatorUtil configCreator;			
-			DOMNode *moduleConfig = configCreator.getEmptyConfigForModule(scriptModuleName);
+			DOMNode *moduleConfig;
+			try {
+				moduleConfig = configCreator.getEmptyConfigForModule(scriptModuleName);
+			} catch (...){
+				char buf [1024];
+				sprintf(buf,"The python module name \"%s\" is invalid", pythonScript->getName());
+				AfxMessageBox(buf);
+				continue;
+			}
 			
 			int paramNr=0;
 			for (;;)
@@ -855,7 +867,14 @@ void CTibiaautoDlg::OnSave()
 								
 				char realParamName[1024];
 				sprintf(realParamName,"config/%s",param->name);
-				configCreator.addParamToConfig(moduleConfig,realParamName,param->value);
+				try {
+					configCreator.addParamToConfig(moduleConfig,realParamName,param->value);
+				} catch (...){
+					char buf [1024];
+					sprintf(buf,"Parameter name \"%s\" for the python module \"%s\" is invalid", param->name,pythonScript->getName());
+					AfxMessageBox(buf);
+					continue;
+				}
 				
 			}
 			configCreator.serializeConfigForModule(moduleConfig,f);
@@ -1376,7 +1395,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.1.2,tm=%d,",tm);
+		fprintf(f,"version=2.2.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

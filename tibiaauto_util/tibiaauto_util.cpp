@@ -185,6 +185,20 @@ void memReadWriteVisibleCreatureName(int chNr,char *name)
 	startMemReader();
 	reader->writeVisibleCreatureName(chNr,name);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 CTibiaItem * memReadGetTradeItemPartner(int nr)
 {
 	startMemReader();
@@ -666,7 +680,7 @@ char* tibiaItemGetItemNameAtIndex(int ind){
 char* tibiaItemGetFoodNameAtIndex(int ind){	
 	return CTibiaItem::getFoodNameAtIndex(ind);
 }
-char* tibiaItemgetLootItemNameAtIndex(int ind){	
+char* tibiaItemGetLootItemNameAtIndex(int ind){	
 	return CTibiaItem::getLootItemNameAtIndex(ind);
 }
 int tibiaItemGetFoodTimeAtIndex(int ind){
@@ -893,6 +907,37 @@ void packSenderSendClearCreatureInfo()
 	sender.sendClearCreatureInfo();
 }
 
+void packSenderStepLeft()
+{
+	CPackSender sender;
+	sender.stepLeft();
+}
+
+void packSenderStepRight()
+{
+	CPackSender sender;
+	sender.stepRight();
+}
+
+void packSenderStepUp()
+{
+	CPackSender sender;
+	sender.stepUp();
+}
+
+void packSenderStepDown()
+{
+	CPackSender sender;
+	sender.stepDown();
+}
+
+void packSenderSendDirectPacket(const char* buf,int len)
+{
+	CPackSender sender;
+	sender.sendDirectPacket(buf,len);
+}
+
+
 void memReadWriteEnableRevealCName ()
 {
 	startMemReader();
@@ -1086,3 +1131,148 @@ CTibiaVIPEntry *memReadReadVIPEntry(int nr)
 	startMemReader();
 	return reader->readVIPEntry(nr);
 }
+
+//////////////////////////////////////////
+// Blow lie older removed functions that make use of their newer replacement functions
+
+/* Deprecated function START*/
+int tibiaItemGetIndex(int objectId, int type)
+{
+	switch (type){
+	case 1:
+		return tibiaItemGetItemIndex(objectId);
+	case 2:
+		return tibiaItemGetFoodIndex(objectId);
+	case 3:
+		return tibiaItemGetLootItemIndex(objectId);
+	}
+	return -1;
+}
+char * tibiaItemGetName(int objectId){
+	return tibiaItemGetItemName(objectId);
+}
+int tibiaItemGetObjectId(char *name){
+	return tibiaItemGetItemId(name);
+}
+int tibiaItemGetFoodId(char *name){
+	int size=tibiaItemGetFoodCount();
+	for (int i=0;i<size;i++){
+		if(!strcmp(tibiaItemGetFoodNameAtIndex(i),name)) return tibiaItemGetFoodIdAtIndex(i);
+	}
+	return 0;
+}
+//Deprecated Functions Section
+int tibiaItemGetLootItemId(char *name){
+	int size=tibiaItemGetLootItemCount();
+	for (int i=0;i<size;i++){
+		if(!strcmp(tibiaItemGetLootItemNameAtIndex(i),name)) return tibiaItemGetLootItemIdAtIndex(i);
+	}
+	return 0;
+}
+void tibiaItemSetItemName(int index, char *name){
+	tibiaItemAddItem(name,tibiaItemGetItemIdAtIndex(index));
+	tibiaItemRemoveItem(index);
+}
+int tibiaItemGetExtraInfo(int index, int type){
+	if (type==2){
+		return tibiaItemGetFoodTimeAtIndex(index);
+	}
+	return 0;
+}
+void tibiaItemAddLoot (char *name, int objectId){
+	tibiaItemAddLootItem(name, objectId);
+}
+//Deprecated Functions Section
+void tibiaItemSetFoodName(int index, char *name){
+	tibiaItemAddFood(name,tibiaItemGetFoodIdAtIndex(index),tibiaItemGetFoodTimeAtIndex(index));
+	tibiaItemRemoveFood(index);
+}
+void tibiaItemSetLootName(int index, char *name){
+	tibiaItemAddLootItem(name,tibiaItemGetLootItemIdAtIndex(index));
+	tibiaItemRemoveLootItem(index);
+}
+void tibiaItemSetExtraInfo(int index, int info, int type){
+	if (type==2){
+		char* name=tibiaItemGetFoodNameAtIndex(index);
+		char* name2=(char*)malloc(strlen(name)+1);
+		tibiaItemRemoveFood(index);
+		tibiaItemAddFood(name2,tibiaItemGetFoodIdAtIndex(index),info);
+		free(name2);
+	}
+}
+void tibiaItemSetItemObjectId(int index, int objectId){
+	char* name=tibiaItemGetItemNameAtIndex(index);
+	char* name2=(char*)malloc(strlen(name)+1);
+	strcpy(name2,name);
+	tibiaItemRemoveItem(index);
+	tibiaItemAddItem(name2,objectId);
+	free(name2);
+}
+//Deprecated Functions Section
+void tibiaItemSetFoodObjectId(int index, int objectId){
+	char* name=tibiaItemGetFoodNameAtIndex(index);
+	char* name2=(char*)malloc(strlen(name)+1);
+	strcpy(name2,name);
+	tibiaItemRemoveFood(index);
+	tibiaItemAddFood(name2,objectId,tibiaItemGetFoodTimeAtIndex(index));
+	free(name2);
+}
+void tibiaItemSetLootObjectId(int index, int objectId){
+	char* name=tibiaItemGetLootItemNameAtIndex(index);
+	char* name2=(char*)malloc(strlen(name)+1);
+	strcpy(name2,name);
+	tibiaItemRemoveLootItem(index);
+	tibiaItemAddLootItem(name2,objectId);
+	free(name2);
+}
+int tibiaItemGetCorpseIdByCreatureName(char *name){
+	return 0;
+}
+CUIntArray * tibiaItemGetItemsFoodArray(){
+	return tibiaItemGetFoodIdArrayPtr();
+}
+char *tibiaItemGetItemsItems(int nr){
+	return tibiaItemGetItemNameAtIndex(nr);
+}
+int tibiaItemGetItemsItemsId(int nr){
+	return tibiaItemGetItemIdAtIndex(nr);
+}
+//Deprecated Functions Section
+int tibiaItemGetItemsItemsCount(){
+	return tibiaItemGetItemCount();
+}
+void tibiaItemSetItemsItemsCount(int newCount){
+}
+void tibiaItemSetItemsFoodCount(int newCount){
+}
+void tibiaItemSetItemsLootCount(int newCount){
+}
+char *tibiaItemGetItemsFood(int nr){
+	return tibiaItemGetFoodNameAtIndex(nr);
+}
+int tibiaItemGetItemsFoodId(int nr){
+	return tibiaItemGetFoodIdAtIndex(nr);
+}
+int tibiaItemGetItemsFoodCount(){
+	return tibiaItemGetFoodCount();
+}
+char *tibiaItemGetItemsCorpses(int nr){
+	return "not implemented";
+}
+//Deprecated Functions Section
+int tibiaItemGetItemsCorpsesId(int nr){
+	return 0;
+}
+int tibiaItemGetItemsCorpsesCount(){
+	return 0;
+}
+char *tibiaItemGetItemsLooted(int nr){
+	return tibiaItemGetLootItemNameAtIndex(nr);
+}
+int tibiaItemGetItemsLootedId(int nr){
+	return tibiaItemGetLootItemIdAtIndex(nr);
+}
+int tibiaItemGetItemsLootedCount(){
+	return tibiaItemGetLootItemCount();
+}
+/* Deprecated Function END */

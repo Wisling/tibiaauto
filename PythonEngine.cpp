@@ -332,6 +332,11 @@ static PyMethodDef Methods_tasender[] = {
 	{"sendAttackedCreatureToAutoAim", tibiaauto_sender_sendAttackedCreatureToAutoAim, METH_VARARGS},
 	{"stopAll", tibiaauto_sender_stopAll, METH_VARARGS},
 	{"stepMulti", tibiaauto_sender_stepMulti, METH_VARARGS},
+	{"stepLeft", tibiaauto_sender_stepLeft, METH_VARARGS},
+	{"stepRight", tibiaauto_sender_stepRight, METH_VARARGS},
+	{"stepUp", tibiaauto_sender_stepUp, METH_VARARGS},
+	{"stepDown", tibiaauto_sender_stepDown, METH_VARARGS},
+	{"sendDirectPacket", tibiaauto_sender_sendDirectPacket, METH_VARARGS},
 
 	
     {NULL,      NULL}        /* Sentinel */
@@ -413,6 +418,7 @@ static PyMethodDef Methods_taitem[] = {
 	
 	/* Deprecated Section Start*/
 	{"getName", tibiaauto_item_getName, METH_VARARGS},
+	{"getObjectId", tibiaauto_item_getObjectId, METH_VARARGS},
 	{"getCorpseIdByCreatureName", tibiaauto_item_getCorpseIdByCreatureName, METH_VARARGS},
 	{"getItemsItems", tibiaauto_item_getItemsItems, METH_VARARGS},
 	{"getItemsItemsId", tibiaauto_item_getItemsItemsId, METH_VARARGS},

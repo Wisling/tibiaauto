@@ -61,37 +61,39 @@ EXPORTS
 	tibiaMapIsPointAvailable @55
 	tibiaMapGetPointByNr @56
 	tibiaMapSize @57
-	tibiaItemGetItemName @58
-	tibiaItemGetItemId @59
-	tibiaItemGetItemIndex @60
-	tibiaItemGetFoodIndex @61
-	tibiaItemGetLootItemIndex @62
-	tibiaItemGetItemIdAtIndex @63
-	tibiaItemGetFoodIdAtIndex @64
-	tibiaItemGetLootItemIdAtIndex @65
-	tibiaItemGetItemNameAtIndex @66
-	tibiaItemGetFoodNameAtIndex @67
-	tibiaItemgetLootItemNameAtIndex @68
-	tibiaItemGetFoodTimeAtIndex @69
-	tibiaItemGetItemIdArrayPtr @70
-	tibiaItemGetFoodIdArrayPtr @71
-	tibiaItemGetLootItemIdArrayPtr @72
-	tibiaItemAddItem @73
-	tibiaItemAddFood @74
-	tibiaItemAddLootItem @75
-	tibiaItemRemoveItem @76
-	tibiaItemRemoveFood @77
-	tibiaItemRemoveLootItem @78
-	tibiaItemClearFoodList @79
-	tibiaItemGetItemCount @80
-	tibiaItemGetFoodCount @81
-	tibiaItemGetLootItemCount @82
-	tibiaItemGetValueForConst @83
-	tibiaItemGetItemsTree @84
-	tibiaItemSetItemsTree @85
-	tibiaItemRefreshItemLists @86
-	tibiaItemSaveItemLists @87
-	tibiaItemCleanup @88
+; All Deprecated TibiaItem Functions START
+	tibiaItemGetItemsFoodArray @58
+	tibiaItemGetCorpseIdByCreatureName @59
+	tibiaItemGetName @60
+	tibiaItemGetItemsItems @61
+	tibiaItemGetItemsItemsId @62
+	tibiaItemGetItemsItemsCount @63
+	tibiaItemGetItemsFood @64
+	tibiaItemGetItemsFoodId @65
+	tibiaItemGetItemsFoodCount @66
+	tibiaItemGetItemsCorpses @67
+	tibiaItemGetItemsCorpsesId @68
+	tibiaItemGetItemsCorpsesCount @69
+	tibiaItemGetItemsLooted @70
+	tibiaItemGetItemsLootedId @71
+	tibiaItemGetItemsLootedCount @72
+	tibiaItemGetObjectId @73
+	tibiaItemSetItemName @74
+	tibiaItemSetItemObjectId @75
+	tibiaItemGetIndex @76
+	tibiaItemSetItemsItemsCount @77
+	tibiaItemAddLoot @78
+	tibiaItemSetLootName @79
+	tibiaItemSetFoodName @80
+	tibiaItemSetFoodObjectId @81
+	tibiaItemSetLootObjectId @82
+	tibiaItemSetItemsFoodCount @83
+	tibiaItemSetItemsLootCount @84
+	tibiaItemGetFoodId @85
+	tibiaItemGetLootItemId @86
+	tibiaItemGetExtraInfo @87
+	tibiaItemSetExtraInfo @88
+; All Deprecated TibiaItem Functions END
 	packSenderLogout @89
 	packSenderStepMulti @90
 	packSenderCloseContainer @91
@@ -203,3 +205,39 @@ EXPORTS
 	tibiaMapClearDistance @197
 	memReadGetFollowedCreature @198
 	memReadSetFollowedCreature @199
+	tibiaItemGetItemName @200
+	tibiaItemGetItemId @201
+	tibiaItemGetItemIndex @202
+	tibiaItemGetFoodIndex @203
+	tibiaItemGetLootItemIndex @204
+	tibiaItemGetItemIdAtIndex @205
+	tibiaItemGetFoodIdAtIndex @206
+	tibiaItemGetLootItemIdAtIndex @207
+	tibiaItemGetItemNameAtIndex @208
+	tibiaItemGetFoodNameAtIndex @209
+	tibiaItemGetLootItemNameAtIndex @210
+	tibiaItemGetFoodTimeAtIndex @211
+	tibiaItemGetItemIdArrayPtr @212
+	tibiaItemGetFoodIdArrayPtr @213
+	tibiaItemGetLootItemIdArrayPtr @214
+	tibiaItemAddItem @215
+	tibiaItemAddFood @216
+	tibiaItemAddLootItem @217
+	tibiaItemRemoveItem @218
+	tibiaItemRemoveFood @219
+	tibiaItemRemoveLootItem @220
+	tibiaItemClearFoodList @221
+	tibiaItemGetItemCount @222
+	tibiaItemGetFoodCount @223
+	tibiaItemGetLootItemCount @224
+	tibiaItemGetValueForConst @225
+	tibiaItemGetItemsTree @226
+	tibiaItemSetItemsTree @227
+	tibiaItemRefreshItemLists @228
+	tibiaItemSaveItemLists @229
+	tibiaItemCleanup @230
+	packSenderStepLeft @231
+	packSenderStepRight @232
+	packSenderStepUp @233
+	packSenderStepDown @234
+	packSenderSendDirectPacket @235

@@ -21,7 +21,7 @@ CMemConstData::CMemConstData()
 {
 	CTibiaItemProxy itemProxy;	
 	
-	int offset = itemProxy.getValueForConst("addrOffset");		
+	int offset = itemProxy.getValueForConst("addrOffset");
 	// addresses	
 	m_memAddressVIP					= offset + itemProxy.getValueForConst("addrVIP");	
 	m_memAddressFirstContainer      = offset + itemProxy.getValueForConst("addrFirstContainer");

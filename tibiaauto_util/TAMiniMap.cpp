@@ -81,9 +81,11 @@ MiniMapSection* CTAMiniMap::loadFromMemory(int xMap,int yMap,int zMap){
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
 		CTibiaMiniMap *map = reader.readMiniMap(nr);
-		char buf[1111];
-		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
+
+		//char buf[1111];
+		//sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
 		//AfxMessageBox(buf);
+
 		if (xMap==map->x && yMap==map->y && zMap==map->z){
 			//AfxMessageBox("map found");
 			MiniMapSection* pdNew= new MiniMapSection(xMap,yMap,zMap);
@@ -175,37 +177,6 @@ MiniMapSection* CTAMiniMap::loadFromFile(int xMap,int yMap,int zMap){
 }
 
 CTibiaMiniMapPoint* CTAMiniMap::getMiniMapPoint(int x, int y, int z){
-	//if(rand()>.3) return new CTibiaMiniMapPoint(x,y,z,0,255);
-	//return new CTibiaMiniMapPoint(x,y,z,1,200);
-
-
-	/*
-	char buf[111];
-	sprintf(buf,"(%d,%d,%d) %d",x,y,z,taMiniMap.GetCount());
-	AfxMessageBox(buf);
-
-	struct point *ps=new point(1,2,3);
-	struct MiniMapSection *pds=new MiniMapSection(1,2,3);
-	taMiniMap.SetAt(ps,pds);
-	sprintf(buf,"setAt1-");
-	AfxMessageBox(buf);	
-
-	ps=new point(3,4,5);
-	pds=new MiniMapSection(3,4,5);
-	taMiniMap.SetAt(ps,pds);
-	sprintf(buf,"setAt2-");
-	AfxMessageBox(buf);	
-
-	struct point pl=point(1,2,3);
-	struct MiniMapSection *pdl=NULL;
-	sprintf(buf,"elements-%d lookup-%d",taMiniMap.GetCount(),taMiniMap.Lookup(&pl,pdl));
-	AfxMessageBox(buf);	
-
-	pl=point(0,0,0);
-	pdl=NULL;
-	sprintf(buf,"elements-%d lookup-%d",taMiniMap.GetCount(),taMiniMap.Lookup(&pl,pdl));
-	AfxMessageBox(buf);*/
-	
 	struct point p=point((int)(x/256),(int)(y/256),z);
 	MiniMapSection *pd=NULL;
 	//AfxMessageBox("Lookup");
@@ -233,9 +204,7 @@ void CTAMiniMap::setMiniMapPoint(int x,int y,int z,int col,int spd){
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
 		CTibiaMiniMap *map = reader.readMiniMap(nr);
-		char buf[1111];
-		sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
-		//AfxMessageBox(buf);
+
 		if (xMap==map->x && yMap==map->y && zMap==map->z){
 			int pointOffset=(x%256)*256+y%256;
 			char colour=col;

@@ -94,25 +94,32 @@ static PyObject *tibiaauto_reader_readContainer(PyObject *self, PyObject *args)
 static PyObject *tibiaauto_reader_readContainerItem(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
+	PyObject *retNULL = 
+		Py_BuildValue("{s:i,s:i,s:i}",
+		"objectId",0,
+		"quantity",0,
+		"pos",0);
 	
 	int contNr;
 	int itemNr;
     if (!PyArg_ParseTuple(args, "ii", &contNr,&itemNr)) return NULL;	
+	if (contNr<0 || contNr>=16) {
+		return retNULL;//avoids returning NULL
+	}
 	CTibiaContainer *cont = reader.readContainer(contNr);
-	if (itemNr>=cont->itemsInside) 
+	if (itemNr<0 || itemNr>=cont->itemsInside) 
 	{
 		delete cont;
-		return NULL;
+		return retNULL;//avoids returning NULL
 	}
 	CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
+	
 	PyObject *ret = 
 		Py_BuildValue("{s:i,s:i,s:i}",
 		"objectId",item->objectId,
 		"quantity",item->quantity,
 		"pos",item->pos);
 
-		
- 
 	delete cont; 
 	return ret;
 }
@@ -411,7 +418,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	int arg1;
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
-	if (!ch) return NULL;
+	if (!ch) ch=reader.readSelfCharacter();//avoids returning NULL
 	PyObject *ret = 
 		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
@@ -1231,6 +1238,54 @@ static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
+
+static PyObject *tibiaauto_sender_stepLeft(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepLeft();
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+static PyObject *tibiaauto_sender_stepRight(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepRight();
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+static PyObject *tibiaauto_sender_stepUp(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepUp();
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+static PyObject *tibiaauto_sender_stepDown(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepDown();
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+static PyObject *tibiaauto_sender_sendDirectPacket(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	char* arg1;
+	int arg2;
+    if (!PyArg_ParseTuple(args, "s#",&arg1,&arg2)) return NULL;	
+
+	sender.sendDirectPacket(arg1,arg2);
+
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
 static PyObject *tibiaauto_sender_sendCreatureInfo(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
