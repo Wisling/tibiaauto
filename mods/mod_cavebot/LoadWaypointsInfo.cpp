@@ -69,7 +69,7 @@ BOOL CLoadWaypointsInfo::OnInitDialog()
 	skin.SetButtonSkin(	m_YES);
 	skin.SetButtonSkin(	m_NO);
 	skin.SetButtonSkin(	m_CANCEL);
-	m_prefix.SetWindowText("$ta");
+	m_prefix.SetWindowText("");
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

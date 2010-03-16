@@ -1161,13 +1161,13 @@ int getAttackPriority(CConfigData *config,char *monsterName) {
 
 int isInHalfSleep() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("caveboot_halfsleep");
+	char *var=reader.getGlobalVariable("cavebot_halfsleep");
 	if (var==NULL||strcmp(var,"true")) return 0; else return 1;
 }
 
 int isInFullSleep() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("caveboot_fullsleep");
+	char *var=reader.getGlobalVariable("cavebot_fullsleep");
 	if (var==NULL||strcmp(var,"true")) return 0; else return 1;
 }
 
@@ -1799,7 +1799,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					//update environmental variables
 					if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
 					if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isOnscreen) playersOnScreen++;
-					if (crNr!=self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen) alienCreatureForTrainerFound=1;
+					//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
+					if (crNr!=self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking)) alienCreatureForTrainerFound=1;
 
 					// if sharing alien backattack is active, then we may attack
 					// creatures which are not directly attacking us
@@ -2351,6 +2352,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	// cancel attacks
 	//sender.stopAll();
 	sender.attack(0);
+
 	reader.cancelAttackCoords();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	deleteAndNull(self);
@@ -2718,7 +2720,6 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 39: return "training/weaponHand";
 	case 40: return "training/trainingMode";
 	case 41: return "walker/radius";
-	case 42: return "walker/waypoint/delay";
 		
 	default:
 		return NULL;

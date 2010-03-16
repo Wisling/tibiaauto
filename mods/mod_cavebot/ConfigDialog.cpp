@@ -167,7 +167,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }

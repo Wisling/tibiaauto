@@ -20,6 +20,7 @@ class CToolItemConfig : public MyDialog
 // Construction
 public:
 	CToolItemConfig(CWnd* pParent = NULL);   // standard constructor
+
 	//For dragging
 	HTREEITEM itemOrigin;
 	TVHITTESTINFO htDest;
@@ -27,6 +28,10 @@ public:
 	CPoint offsetPt;
 	CPoint lastInsertMark;
 	bool Dragging;
+
+	//For Copy, Cut and Paste
+	int actionIndicator;
+	HTREEITEM actionItem;
 
 	CImageList* checkImgList;
 
@@ -47,6 +52,8 @@ public:
 	CButtonST	m_EditItem;
 	CButtonST	m_AddItem;
 	CButtonST	m_itemSort;
+	CButtonST	m_helpInfo;
+	CButtonST	m_selectedToBranch;
 	CListBox	m_foodList;
 	//}}AFX_DATA
 
@@ -63,6 +70,7 @@ protected:
 	char outbuf[64];
 	char *parseName(char*);
 	int parseId(char*);
+	void CancelTwoStepOperations();
 	// Generated message map functions
 	//{{AFX_MSG(CToolItemConfig)
 	afx_msg void OnClose();
@@ -82,6 +90,9 @@ protected:
 	afx_msg void OnClickTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnItemSort();
+	afx_msg void OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnHelpInfo();
+	afx_msg void OnSelectedToBranch();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
