@@ -54,7 +54,7 @@ void CItemAdd::OnCommit() {
 
 	//Add as child if item is a branch, otherwise add as sibling
 	HTREEITEM parent;
-	if (tree->ItemHasChildren(item) || tree->GetItemData(item)==0){
+	if (item==TVI_ROOT || tree->ItemHasChildren(item) || tree->GetItemData(item)==0){
 		parent=item;
 	} else {
 		parent = tree->GetParentItem(item);

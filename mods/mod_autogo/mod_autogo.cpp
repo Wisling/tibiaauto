@@ -450,8 +450,8 @@ void alarmAction(int alarmId, CConfigData *config){
 	if (alarmId&TRIGGER_OUTOF_CUSTOM)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfCustom);}
 
 	// now expand composed actions
-	if (iAction&ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP) iAction|=ACTION_RUNAWAY;
-	if (iAction&ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP) iAction|=ACTION_RUNAWAY;
+	if (iAction&ACTION_RUNAWAY_CAVEBOT_HALFSLEEP) iAction|=ACTION_RUNAWAY;
+	if (iAction&ACTION_RUNAWAY_CAVEBOT_FULLSLEEP) iAction|=ACTION_RUNAWAY;
 	if (iAction&ACTION_RUNAWAY_BACK) iAction|=ACTION_RUNAWAY;
 	
 
@@ -460,13 +460,13 @@ void alarmAction(int alarmId, CConfigData *config){
 	//}
 	if (iAction&ACTION_LOGOUT){				
 		//sender.sendTAMessage("Logout");
-		reader.setGlobalVariable("caveboot_halfsleep","true");
+		reader.setGlobalVariable("cavebot_halfsleep","true");
 		if(!(reader.getSelfEventFlags()&(128+8192)))
 			sender.logout();
 	} else if (config->allActions&ACTION_LOGOUT)
 	{
-		// support for 'cancel of caveboot halfsleep'
-		reader.setGlobalVariable("caveboot_halfsleep","false");
+		// support for 'cancel of cavebot halfsleep'
+		reader.setGlobalVariable("cavebot_halfsleep","false");
 	}
 	if (iAction&ACTION_KILL){
 		//sender.sendTAMessage("Kill");
@@ -484,21 +484,21 @@ void alarmAction(int alarmId, CConfigData *config){
 		Sleep(2000);
 			
 	}
-	if (iAction&ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP)
+	if (iAction&ACTION_RUNAWAY_CAVEBOT_HALFSLEEP)
 	{
-		reader.setGlobalVariable("caveboot_halfsleep","true");
-	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP)
+		reader.setGlobalVariable("cavebot_halfsleep","true");
+	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOT_HALFSLEEP)
 	{
-		// support for 'cancel of caveboot halfsleep'
-		reader.setGlobalVariable("caveboot_halfsleep","false");
+		// support for 'cancel of cavebot halfsleep'
+		reader.setGlobalVariable("cavebot_halfsleep","false");
 	}
-	if (iAction&ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP)
+	if (iAction&ACTION_RUNAWAY_CAVEBOT_FULLSLEEP)
 	{
-		reader.setGlobalVariable("caveboot_fullsleep","true");
-	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP)
+		reader.setGlobalVariable("cavebot_fullsleep","true");
+	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOT_FULLSLEEP)
 	{
-		// support for 'cancel of caveboot fullsleep'
-		reader.setGlobalVariable("caveboot_fullsleep","false");
+		// support for 'cancel of cavebot fullsleep'
+		reader.setGlobalVariable("cavebot_fullsleep","false");
 	}
 	if (iAction&ACTION_RUNAWAY){
 		CTibiaCharacter *self = reader.readSelfCharacter();
@@ -1179,8 +1179,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	config->status[0]='\0';
 
 	// clear cavebot half/full sleep vars
-	reader.setGlobalVariable("caveboot_halfsleep","false");
-	reader.setGlobalVariable("caveboot_fullsleep","false");
+	reader.setGlobalVariable("cavebot_halfsleep","false");
+	reader.setGlobalVariable("cavebot_fullsleep","false");
 
 	toolThreadShouldStop=0;
 	return 0;
