@@ -45,7 +45,7 @@ static char THIS_FILE[] = __FILE__;
 
 
 #define G_ENERGY_BEAM 0
-#define ENERGY_BEAM 1
+#define  ENERGY_BEAM 1
 #define ENERGY_WAVE 2
 #define EARTH_WAVE 3
 #define FIRE_WAVE 4
@@ -466,7 +466,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		delete self;
 	}
-	//setMana.clear();
+	//setMana.clear();// Will grow indefinitely but at the speed of human time, not a computer's(1-10 times/min)
 	//setHp.clear();
 	toolThreadShouldStop=0;
 	return 0;
@@ -778,21 +778,19 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	
 	if (!strcmp(paramName,"timedSpell")) m_configData->timedSpell=atoi(paramValue);
 	if (!strcmp(paramName,"timedSpellList")) {
-		char buf1[8];
-		char buf2[8];
-		char buf3[8];
+		char* sep = strstr(paramValue,"|");//special separator char
+		if (paramValue[0]==0 || sep==NULL) return; //no parameters to load
 		TimedSpell temp;
-		if (currentPos == 0)
-			m_configData->timedSpellList.clear();
-		sscanf(paramValue, "%s %s %s %s",temp.spell, buf1, buf2, buf3);
-		temp.mana = atoi(buf1);
-		temp.delay = atoi(buf2);
-		temp.usePotions = (bool)atoi(buf3);
-		m_configData->timedSpellList.push_back(temp);
-		m_configDialog->m_Dialog[5]->configToControls(m_configData);
-		currentPos++;
-	}
+		sep[0]='\0';//make 2 separate null terminated strings
+		lstrcpyn(temp.spell,paramValue,64);//first half is spell name
 
+		int mn=0,dl=0,pot=0;
+		if (sscanf(sep+1,"%d %d %d",&mn,&dl,&pot)!=3) return;// second half are parameters
+		temp.mana=mn;
+		temp.delay=dl;
+		temp.usePotions=pot!=0;
+		m_configData->timedSpellList.push_back(temp);
+	}
 	if (!strcmp(paramName,"DisableWarning")) m_configData->disableWarning=atoi(paramValue);
 	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
 
@@ -874,13 +872,13 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 		if (!strcmp(paramName,"ExevoGranMasFrigo")) sprintf(buf,"%d",m_configData->exevoGranMasFrigo);
 		
 		if (!strcmp(paramName,"timedSpell")) sprintf(buf,"%d",m_configData->timedSpell);
-		if (!strcmp(paramName,"timedSpellList")) {		
+		if (!strcmp(paramName,"timedSpellList")) {
 			if (currentPos >= m_configData->timedSpellList.size())
 				return buf;
 			else {
-				TimedSpell temp;
-				temp = m_configData->timedSpellList[currentPos++];
-				sprintf(buf, "%s %d %d %d",temp.spell, temp.mana, temp.delay, temp.usePotions);
+				//special "|" character used for seaparation
+				TimedSpell spl=m_configData->timedSpellList[currentPos++];
+				sprintf(buf,"%s|%d %d %d",spl.spell,spl.mana, spl.delay, spl.usePotions);
 			}
 		}
 		
@@ -979,7 +977,10 @@ int CMod_spellcasterApp::isMultiParam(char *paramName) {
 
 void CMod_spellcasterApp::resetMultiParamAccess(char *paramName) {
 	if (!strcmp(paramName,"healList")) currentPos=0;
-	if (!strcmp(paramName,"timedSpellList")) currentPos=0;
+	if (!strcmp(paramName,"timedSpellList")){
+		m_configData->timedSpellList.clear();
+		currentPos=0;
+	}
 }
 
 int initalizeCreatures() {
