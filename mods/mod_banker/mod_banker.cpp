@@ -82,7 +82,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	while (!toolThreadShouldStop) {
 		Sleep(200);
 		int attackedCreature = reader.getAttackedCreature();
-		var=reader.getGlobalVariable("caveboot_halfsleep");
+		var=reader.getGlobalVariable("cavebot_halfsleep");
 		if (var==NULL||strcmp(var,"true")) 
 			alreadySleeping = 0; 
 		else 
@@ -92,13 +92,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		//if (isDepositing() || !isCavebotOn() || shouldBank(config) && !attackedCreature) {
 		if (shouldBank(config) && !attackedCreature) {
 			if (findBanker(config)) {
-				reader.setGlobalVariable("caveboot_halfsleep", "true");
+				reader.setGlobalVariable("cavebot_halfsleep", "true");
 				bankerInvoked = 1;
 				if (moveToBanker(config)) {
 					//AfxMessageBox("Yup, found the banker!");
 					if (depositGold()) {
 						if (config->cashOnHand && withdrawGold(config)) {							
-							reader.setGlobalVariable("caveboot_halfsleep","false");
+							reader.setGlobalVariable("cavebot_halfsleep","false");
 							bankerInvoked = 0;
 						}
 						getBalance();
@@ -107,11 +107,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 		}
 		else {
-			reader.setGlobalVariable("caveboot_halfsleep","false");
+			reader.setGlobalVariable("cavebot_halfsleep","false");
 			bankerInvoked = 0;
 		}
 	}
-	reader.setGlobalVariable("caveboot_halfsleep","false");
+	reader.setGlobalVariable("cavebot_halfsleep","false");
 	bankerInvoked = 0;
 	toolThreadShouldStop=0;
 	return 0;

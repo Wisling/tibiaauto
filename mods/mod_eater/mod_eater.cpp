@@ -121,6 +121,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (toolThreadShouldStop) continue;
 		
 		digestTime=0;
+		int failedTimes=0;
 		
 		for (int i=RandomAmountEater();i>0;i--){
 
@@ -160,13 +161,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (!(flags & 0x4000) && (self->mana < self->maxMana || self->hp < self->maxHp))
 					sender.useItemInContainer(foodItem->objectId,0x40+foodContainer,foodItem->pos);
 				
-				if (CModuleUtil::waitForCapsChange(self->cap))
+				if (CModuleUtil::waitForCapsChange(self->cap)){
 					digestTime += itemProxy.getFoodTimeAtIndex(itemProxy.getFoodIndex(foodItem->objectId));
+					if (i!=1)
+						Sleep(CModuleUtil::randomFormula(400,100));
+				}else {
+					failedTimes+=1;
+					Sleep(CModuleUtil::randomFormula(100,50));//sleep for much less time
+				}
+
 				delete self;
 				self = NULL;
 
-				if (i!=1)
-					Sleep(CModuleUtil::randomFormula(400,100));
+				//Assume we are full and wait for however long the food we tried to eat lasts
+				if (failedTimes>=2){
+					digestTime += itemProxy.getFoodTimeAtIndex(itemProxy.getFoodIndex(foodItem->objectId));
+					break;
+				}
 			}
 			delete foodItem;
 			foodItem = NULL;

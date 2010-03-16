@@ -69,6 +69,11 @@ public:
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
 	void enableCName(int enable);
+	void stepLeft();
+	void stepRight();
+	void stepUp();
+	void stepDown();
+	void sendDirectPacket(const char* buf,int len);
 
 
 

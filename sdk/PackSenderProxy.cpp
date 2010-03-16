@@ -718,3 +718,69 @@ void CPackSenderProxy::enableCName(int enable)
 		}
 	} 
 }
+
+void CPackSenderProxy::stepLeft()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepLeft");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+void CPackSenderProxy::stepRight()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepRight");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+void CPackSenderProxy::stepUp()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepUp");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+void CPackSenderProxy::stepDown()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepDown");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+
+void CPackSenderProxy::sendDirectPacket(const char* buf,int len)
+{
+	typedef void (*Proto_fun)(const char* buf,int len);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderSendDirectPacket");
+		if (fun)
+		{
+			fun(buf,len);
+		}
+	} 
+}

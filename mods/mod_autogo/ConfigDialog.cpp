@@ -898,8 +898,8 @@ BOOL CConfigDialog::OnInitDialog()
 		list[i]->InsertString(ACTION_SHUTDOWN_POS,"Logout+Shutdown");		
 		list[i]->InsertString(ACTION_RUNAWAY_POS,"Runaway");
 		list[i]->InsertString(ACTION_RUNAWAY_BACK_POS,"Runaway+back");
-		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS,"Runaway+half attack");
-		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS,"Runaway+no attack");
+		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOT_HALFSLEEP_POS,"Runaway+half attack");
+		list[i]->InsertString(ACTION_RUNAWAY_CAVEBOT_FULLSLEEP_POS,"Runaway+no attack");
 		
 		
 		//T4: Corrects problem with dropdown list height problem
@@ -1321,8 +1321,8 @@ int CConfigDialog::actionPos2ID(int pos) {
 		case ACTION_SHUTDOWN_POS:	return ACTION_SHUTDOWN;
 		case ACTION_RUNAWAY_POS:	return ACTION_RUNAWAY;
 		case ACTION_RUNAWAY_BACK_POS:	return ACTION_RUNAWAY_BACK;
-		case ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_HALFSLEEP;
-		case ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP_POS: return ACTION_RUNAWAY_CAVEBOOT_FULLSLEEP;
+		case ACTION_RUNAWAY_CAVEBOT_HALFSLEEP_POS: return ACTION_RUNAWAY_CAVEBOT_HALFSLEEP;
+		case ACTION_RUNAWAY_CAVEBOT_FULLSLEEP_POS: return ACTION_RUNAWAY_CAVEBOT_FULLSLEEP;
 		default:					return 0;
 	}
 

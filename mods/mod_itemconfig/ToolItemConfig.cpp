@@ -22,8 +22,9 @@ const int DEF_STATE_MASK=0;
 
 static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataTree);
 static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM guiTree);
-static void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,BOOL check);
-static void SetChildrenCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,BOOL check);
+static void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,int check);
+static void SetChildrenCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,int check);
+static HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,HTREEITEM src,HTREEITEM recursiveStop, bool MkCopy=FALSE);
 
 CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
 : MyDialog(CToolItemConfig::IDD, pParent)
@@ -31,7 +32,7 @@ CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CToolItemConfig)
 	//}}AFX_DATA_INIT
 	Dragging=FALSE;
-
+	actionIndicator=0;
 }
 
 
@@ -53,6 +54,8 @@ void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_EDIT_ITEM, m_EditItem);
 	DDX_Control(pDX, IDC_ADD_ITEM, m_AddItem);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG_FOODLIST, m_foodList);
+	DDX_Control(pDX, IDC_HELP_INFO, m_helpInfo);
+	DDX_Control(pDX, IDC_SELECTEDTOBRANCH, m_selectedToBranch);
 	//}}AFX_DATA_MAP
 }
 
@@ -72,11 +75,14 @@ BEGIN_MESSAGE_MAP(CToolItemConfig, CDialog)
 	ON_NOTIFY(TVN_BEGINDRAG, IDC_ITEMCONFIG_ITEMSTREE, OnBegindragTree)
 	ON_NOTIFY(NM_CLICK, IDC_ITEMCONFIG_ITEMSTREE, OnClickTree)
 	ON_NOTIFY(TVN_SELCHANGING, IDC_ITEMCONFIG_ITEMSTREE, OnSelchangingTree)
+	ON_BN_CLICKED(IDC_ITEM_SORT, OnItemSort)
+	ON_NOTIFY(TVN_KEYDOWN, IDC_ITEMCONFIG_ITEMSTREE, OnKeydownTree)
+	ON_BN_CLICKED(IDC_HELP_INFO, OnHelpInfo)
 	ON_BN_CLICKED(IDOK, OnOK)
 	ON_BN_CLICKED(IDCANCEL, OnCancel)
 	ON_WM_CTLCOLOR()
 	ON_WM_ERASEBKGND()
-	ON_BN_CLICKED(IDC_ITEM_SORT, OnItemSort)
+	ON_BN_CLICKED(IDC_SELECTEDTOBRANCH, OnSelectedToBranch)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -106,6 +112,7 @@ void CToolItemConfig::OnOK()
 	}
 
 	itemProxy.saveItemLists();
+	itemProxy.refreshItemLists();
 	ShowWindow(SW_HIDE);
 }
 
@@ -189,9 +196,10 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 
 void CToolItemConfig::OnToolItemconfigRefresh()
 {
+	CancelTwoStepOperations();
 	char buf[16384];
 	CTibiaItemProxy itemProxy;
-	itemProxy.refreshItemLists();
+	//itemProxy.refreshItemLists();
 	
 	//Create Food List
 	while (m_foodList.GetCount()) m_foodList.DeleteString(0);
@@ -208,6 +216,8 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 	CTibiaTree* itemsTree=(CTibiaTree*)itemProxy.getItemsTree();
 	m_itemsTree.DeleteAllItems();
 	CreateGUITree(&m_itemsTree,TVI_ROOT,itemsTree);
+	m_itemsTree.SelectItem(m_itemsTree.GetRootItem());
+	m_itemsTree.SelectDropTarget(m_itemsTree.GetRootItem());//needed once to add blue hilighting for the rest of the tree's use
 }
 
 
@@ -225,6 +235,8 @@ BOOL CToolItemConfig::OnInitDialog()
 	skin.SetButtonSkin(	m_EditItem);
 	skin.SetButtonSkin(	m_DeleteItem);
 	skin.SetButtonSkin(	m_itemSort);
+	skin.SetButtonSkin(	m_helpInfo);
+	skin.SetButtonSkin(	m_selectedToBranch);
 	
 	checkImgList=new CImageList();
 	checkImgList->Create(13,13,ILC_COLOR8|ILC_MASK,0,1);
@@ -250,11 +262,13 @@ BOOL CToolItemConfig::OnInitDialog()
 }
 
 void CToolItemConfig::OnFoodAdd() {
+	CancelTwoStepOperations();
 	CFoodAdd *dialog = new CFoodAdd(&m_foodList);
 	dialog->DoModal();
 	delete dialog;
 }
 void CToolItemConfig::OnFoodEdit() {
+	CancelTwoStepOperations();
 	int index = m_foodList.GetCurSel();
 
 	char text[30000];
@@ -271,6 +285,7 @@ void CToolItemConfig::OnFoodEdit() {
 	free(name);
 }
 void CToolItemConfig::OnFoodDelete() {
+	CancelTwoStepOperations();
 	int index = m_foodList.GetCurSel();
 	m_foodList.DeleteString(index);
 	m_foodList.SetCurSel(index);
@@ -278,19 +293,23 @@ void CToolItemConfig::OnFoodDelete() {
 
 void CToolItemConfig::OnAddItem() 
 {
+	CancelTwoStepOperations();
 	HTREEITEM item=m_itemsTree.GetSelectedItem();
+	if (item==NULL) item=TVI_ROOT;
 	CItemAdd *dialog;
 	dialog = new CItemAdd(&m_itemsTree,item);
 	dialog->DoModal();
 	delete dialog;
 
 	item=m_itemsTree.GetSelectedItem();//CItemAdd changes selected item
-	m_itemsTree.SelectDropTarget(item);
+	m_itemsTree.SelectItem(item);
 	SetParentsCheck(&m_itemsTree,item,0);
 }
 
 void CToolItemConfig::OnItemEdit() {
+	CancelTwoStepOperations();
 	HTREEITEM item=m_itemsTree.GetSelectedItem();
+	if (item==NULL) return;
 	CItemEdit *dialog;
 	if (!m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item)!=0){//Branch node
 		int id = m_itemsTree.GetItemData(item);
@@ -310,6 +329,7 @@ void CToolItemConfig::OnItemEdit() {
 }
 
 void CToolItemConfig::OnItemDelete(){
+	CancelTwoStepOperations();
 	HTREEITEM item = m_itemsTree.GetSelectedItem();
 	if (item==NULL) return;
 	HTREEITEM selItem= m_itemsTree.GetNextSiblingItem(item);
@@ -322,7 +342,7 @@ void CToolItemConfig::OnItemDelete(){
 	}
 
 	if (selItem!=NULL){
-		m_itemsTree.SelectDropTarget(selItem);
+		m_itemsTree.SelectItem(selItem);
 	}
 	
 }
@@ -364,13 +384,13 @@ void SetChildrenCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,BOOL check){
 	}
 }
 
-void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,BOOL check){
+void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,int check){
 	//Recursively looks at the parents of treeItem and check if all children are checked
 	if (check){
 		//At least one child is checked so no need to consider unchecked
 		HTREEITEM parent=treeCtrl->GetNextItem(treeItem,TVGN_PARENT);
 		if(parent==NULL) return;
-		int keepFullCheck=1;
+		int keepFullCheck=check==2;
 		HTREEITEM item=treeCtrl->GetNextItem(parent,TVGN_CHILD);
 		while(item!=NULL && keepFullCheck){
 			int curCheck;
@@ -382,7 +402,7 @@ void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,BOOL check){
 		if (keepFullCheck) val=2;
 		else val=1;
 		treeCtrl->SetItemImage(parent,val,val);
-		SetParentsCheck(treeCtrl,parent,check);
+		SetParentsCheck(treeCtrl,parent,val);
 	}else{
 		//At least one child is unchecked so no need to consider full check
 		HTREEITEM parent=treeCtrl->GetNextItem(treeItem,TVGN_PARENT);
@@ -399,7 +419,7 @@ void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,BOOL check){
 		if (!keepCheck) val=0;
 		else val=1;
 		treeCtrl->SetItemImage(parent,val,val);
-		SetParentsCheck(treeCtrl,parent,check);
+		SetParentsCheck(treeCtrl,parent,val);
 
 	}
 }
@@ -415,31 +435,36 @@ void CToolItemConfig::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult)
 	hti.pt.y = pt.y;
 	m_itemsTree.HitTest(&hti);
 
-	if (!(hti.flags & TVHT_ONITEMICON && hti.hItem)) return;
-	HTREEITEM treeItem=hti.hItem;
+	if (hti.flags & TVHT_ONITEMICON && hti.hItem){
+		CancelTwoStepOperations();
+		HTREEITEM treeItem=hti.hItem;
 
-	int isChecked;
-	m_itemsTree.GetItemImage(treeItem,isChecked,isChecked);
+		int isChecked;
+		m_itemsTree.GetItemImage(treeItem,isChecked,isChecked);
 
-	//Coding error in GetItemState requires &TVIS_BOLD
-	int isBold=m_itemsTree.GetItemState(treeItem,TVIS_BOLD)&TVIS_BOLD;//Coding error in GetItemState requires &TVIS_BOLD
-	//Coding error in GetItemState requires &TVIS_BOLD
+		//Coding error in GetItemState requires &TVIS_BOLD
+		int isBold=m_itemsTree.GetItemState(treeItem,TVIS_BOLD)&TVIS_BOLD;//Coding error in GetItemState requires &TVIS_BOLD
+		//Coding error in GetItemState requires &TVIS_BOLD
 
-	m_itemsTree.SelectItem(treeItem);
-	
-	if(isChecked){//Uncheck
-		SetChildrenCheck(&m_itemsTree,treeItem,FALSE);
-		SetParentsCheck(&m_itemsTree,treeItem,FALSE);
-	}else{//Check
-		SetChildrenCheck(&m_itemsTree,treeItem,TRUE);
-		SetParentsCheck(&m_itemsTree,treeItem,TRUE);
+		m_itemsTree.SelectItem(treeItem);
+		
+		if(isChecked){//Uncheck
+			SetChildrenCheck(&m_itemsTree,treeItem,FALSE);
+			SetParentsCheck(&m_itemsTree,treeItem,0);
+		}else{//Check
+			SetChildrenCheck(&m_itemsTree,treeItem,TRUE);
+			SetParentsCheck(&m_itemsTree,treeItem,2);
+		}
 	}
-
+	else if (hti.flags & TVHT_NOWHERE && !hti.hItem){
+		m_itemsTree.SelectItem(NULL);
+	}
 	*pResult = 0;
 }
 
 void CToolItemConfig::OnBegindragTree(NMHDR* pNMHDR, LRESULT* pResult) 
 {
+	CancelTwoStepOperations();
 	//Disabled Drag and Drop image as it was problematic
 
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
@@ -449,7 +474,9 @@ void CToolItemConfig::OnBegindragTree(NMHDR* pNMHDR, LRESULT* pResult)
     //CImageList* imList=new CImageList();
 
 	itemOrigin=pNMTreeView->itemNew.hItem;
-	m_itemsTree.SelectDropTarget(itemOrigin);
+	m_itemsTree.SelectItem(NULL);
+	m_itemsTree.SelectItem(itemOrigin);
+
 	//imList=m_itemsTree.CreateDragImage(itemOrigin);
 	//m_itemsTree.SetItemState(itemOrigin,TVIS_CUT,TVIS_CUT);
 
@@ -523,6 +550,52 @@ void CToolItemConfig::OnMouseMove(UINT nFlags, CPoint point)
 	}
 }
 
+HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,HTREEITEM src,HTREEITEM recursiveStop, bool MkCopy)
+{
+	//useful to know if this is the initial call
+	int isRootNode=recursiveStop==NULL;
+
+	dest.item.mask=TVIF_TEXT|TVIF_IMAGE|TVIF_STATE|TVIF_SELECTEDIMAGE;
+	dest.item.stateMask=0xFFFFFFFF;
+	dest.item.state=treeSrc->GetItemState(src,dest.item.stateMask);
+	CString cText=treeSrc->GetItemText(src);
+	char* text=(char *)(LPCTSTR)cText;
+	dest.item.pszText=text;
+	treeSrc->GetItemImage(src,dest.item.iImage,dest.item.iSelectedImage);
+	HTREEITEM parent=treeDst->InsertItem(&dest);
+	treeSrc->SetItemData(parent,treeSrc->GetItemData(src));
+	CString mtext=treeSrc->GetItemText(parent);
+
+	if(recursiveStop==NULL) recursiveStop=parent;
+	HTREEITEM  child = treeSrc->GetChildItem(src);
+	while (child!=NULL){
+		if (child!=recursiveStop){
+			TV_INSERTSTRUCT newDest;
+			newDest.hParent=parent;
+			newDest.hInsertAfter=TVI_LAST;
+			moveTree(treeDst,newDest,treeSrc,child,recursiveStop,MkCopy);
+		}
+		child = treeSrc->GetNextSiblingItem(child);
+	}
+	if (isRootNode){
+		if (!MkCopy){
+			HTREEITEM sibling=treeSrc->GetNextSiblingItem(src);
+			treeSrc->DeleteItem(src);//delete root item when finished
+			if (sibling!=NULL){
+				int sibCheck;
+				treeSrc->GetItemImage(sibling,sibCheck,sibCheck);
+				SetParentsCheck(treeDst,sibling,sibCheck);
+			}
+		}
+		if (parent!=NULL){
+			int curCheck;
+			treeSrc->GetItemImage(parent,curCheck,curCheck);
+			SetParentsCheck(treeDst,parent,curCheck);
+		}
+	}
+	return parent;
+}
+
 void CToolItemConfig::OnLButtonUp(UINT nFlags, CPoint point) 
 {
 	// TODO: Add your message handler code here and/or call default
@@ -538,55 +611,31 @@ void CToolItemConfig::OnLButtonUp(UINT nFlags, CPoint point)
 		Dragging = FALSE;
 
 		//currently no legal branch moving until we can copy entire tree structures
-		int isLegalMove=!m_itemsTree.ItemHasChildren(itemOrigin);// || m_itemsTree.GetParentItem(htDest.hItem)==m_itemsTree.GetParentItem(itemOrigin);
+		int isLegalMove=1;//!m_itemsTree.ItemHasChildren(itemOrigin);// || m_itemsTree.GetParentItem(htDest.hItem)==m_itemsTree.GetParentItem(itemOrigin);
 		if (htDest.hItem && isLegalMove){
-			//m_itemsTree.SetItemState(itemOrigin,0,TVIS_CUT);
-			//Gather information from item being deleted
-			int curCheck;
-			m_itemsTree.GetItemImage(itemOrigin,curCheck,curCheck);
-			int data=m_itemsTree.GetItemData(itemOrigin);
-			CString cText=m_itemsTree.GetItemText(itemOrigin);
-			char* text=(char *)(LPCTSTR)cText;
-			//Gather info for destination location
-			HTREEITEM parentItem=m_itemsTree.GetParentItem(htDest.hItem);
-			if (parentItem==NULL) parentItem=TVI_ROOT;
-			HTREEITEM insertAfterItem=insertAfter?htDest.hItem:m_itemsTree.GetPrevSiblingItem(htDest.hItem);
-			if (insertAfterItem==NULL) insertAfterItem=TVI_FIRST;
-			if (insertAfterItem==itemOrigin) return;//do nothing
-				
+			m_itemsTree.SelectItem(NULL);
+			TV_INSERTSTRUCT dest;
+			dest.hParent=m_itemsTree.GetParentItem(htDest.hItem);
+			if (dest.hParent==NULL) dest.hParent=TVI_ROOT;
+			dest.hInsertAfter=insertAfter?htDest.hItem:m_itemsTree.GetPrevSiblingItem(htDest.hItem);
+			if (dest.hInsertAfter==NULL) dest.hInsertAfter=TVI_FIRST;
 
-			//Keep deleting branches without children until we find one with childnren
-			HTREEITEM sibling;
-			while(TRUE){
-				sibling = m_itemsTree.GetNextSiblingItem(itemOrigin);
-				if (sibling==NULL) sibling = m_itemsTree.GetPrevSiblingItem(itemOrigin);
+			if (dest.hInsertAfter==itemOrigin) return;
 
-				if (sibling==NULL){
-					sibling = m_itemsTree.GetParentItem(itemOrigin);
-				} else{
-					m_itemsTree.DeleteItem(itemOrigin);//Found siblings, return
-					break;
-				}
-				m_itemsTree.DeleteItem(itemOrigin);
-
-				break;//Edit: Exits after only 1 iteration
-
-				if (sibling==NULL) break; //no items in list, reached top
-				itemOrigin = sibling;
+			//Check for branch being added to itself
+			HTREEITEM parent=dest.hParent;
+			while (parent!=TVI_ROOT && parent!=NULL){
+				if (parent==itemOrigin) return;
+				parent=m_itemsTree.GetParentItem(parent);
 			}
 
-			HTREEITEM item = m_itemsTree.InsertItem(DEF_MASK,text, 0,0,0,0,data,parentItem, insertAfterItem);
-			m_itemsTree.SetItemImage(item,curCheck,curCheck);
+			HTREEITEM destItem=moveTree(&m_itemsTree,dest,&m_itemsTree,itemOrigin,NULL);
 
-			if (sibling!=NULL){
-				int sibCheck;
-				m_itemsTree.GetItemImage(sibling,sibCheck,sibCheck);
-				SetParentsCheck(&m_itemsTree,sibling,sibCheck!=0);
-			}
-			SetParentsCheck(&m_itemsTree,item,curCheck!=0);
+			m_itemsTree.SelectItem(destItem);
 		}
 	}
 }
+
 
 void CToolItemConfig::OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult) 
 {
@@ -601,6 +650,163 @@ void CToolItemConfig::OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CToolItemConfig::OnItemSort()
 {
+	CancelTwoStepOperations();
+	HTREEITEM item= m_itemsTree.GetSelectedItem();
+	if (item==NULL) item=TVI_ROOT;
+	m_itemsTree.SortChildren(item);
+}
+
+void CToolItemConfig::CancelTwoStepOperations(){
+	if(actionIndicator){
+		m_itemsTree.SetItemState(actionItem,0,TVIS_CUT);
+		actionItem=NULL;
+		actionIndicator=0;
+	}
+}
+
+void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult) 
+{
+	TV_KEYDOWN* pTVKeyDown = (TV_KEYDOWN*)pNMHDR;
 	// TODO: Add your control notification handler code here
-	m_itemsTree.SortChildren(m_itemsTree.GetSelectedItem());
+	// pTVKeyDown->hdr
+	if (pTVKeyDown->wVKey==VK_SPACE)
+	{
+		CancelTwoStepOperations();
+		HTREEITEM treeItem=m_itemsTree.GetSelectedItem();
+		if (treeItem==NULL) return;
+
+		int isChecked;
+		m_itemsTree.GetItemImage(treeItem,isChecked,isChecked);
+
+		//Coding error in GetItemState requires &TVIS_BOLD
+		int isBold=m_itemsTree.GetItemState(treeItem,TVIS_BOLD)&TVIS_BOLD;//Coding error in GetItemState requires &TVIS_BOLD
+		//Coding error in GetItemState requires &TVIS_BOLD
+
+		m_itemsTree.SelectItem(treeItem);
+		
+		if(isChecked){//Uncheck
+			SetChildrenCheck(&m_itemsTree,treeItem,FALSE);
+			SetParentsCheck(&m_itemsTree,treeItem,0);
+		}else{//Check
+			SetChildrenCheck(&m_itemsTree,treeItem,TRUE);
+			SetParentsCheck(&m_itemsTree,treeItem,2);
+		}
+		
+	}
+	if (GetKeyState(VK_LCONTROL) || GetKeyState(VK_RCONTROL)){
+		if (pTVKeyDown->wVKey=='C')
+		{
+			CancelTwoStepOperations();
+			HTREEITEM item = m_itemsTree.GetSelectedItem();
+			if (item){
+				actionIndicator=1;
+				actionItem=item;
+				m_itemsTree.SetItemState(actionItem,TVIS_CUT,TVIS_CUT);
+			}
+		}
+		if (pTVKeyDown->wVKey=='X')
+		{
+			CancelTwoStepOperations();
+			HTREEITEM item = m_itemsTree.GetSelectedItem();
+			if (item){
+				actionIndicator=2;
+				actionItem=item;
+				m_itemsTree.SetItemState(actionItem,TVIS_CUT,TVIS_CUT);
+			}
+		}
+		if (pTVKeyDown->wVKey=='V')
+		{
+			if (actionIndicator){
+				m_itemsTree.SetItemState(actionItem,0,TVIS_CUT);
+				TV_INSERTSTRUCT dest;
+
+				HTREEITEM item = m_itemsTree.GetSelectedItem();
+				if (item==NULL) dest.hParent=TVI_ROOT;
+				else dest.hParent=m_itemsTree.GetParentItem(item);
+				if (dest.hParent==NULL) dest.hParent=TVI_ROOT;
+
+				dest.hInsertAfter=item;
+				if (dest.hInsertAfter==NULL) dest.hInsertAfter=TVI_FIRST;
+
+				if (dest.hInsertAfter==actionItem) return;
+
+				//Check for branch being added to itself if CUTTING
+				HTREEITEM parent=dest.hParent;
+				while (parent!=TVI_ROOT && parent!=NULL && actionIndicator==2){
+					if (parent==actionItem) return;
+					parent=m_itemsTree.GetParentItem(parent);
+				}
+
+				HTREEITEM sibling=m_itemsTree.GetNextSiblingItem(actionItem);
+
+				HTREEITEM destItem=moveTree(&m_itemsTree,dest,&m_itemsTree,actionItem,NULL,actionIndicator==1);//copy if actionIndicator==1
+
+				if (actionIndicator==2 && sibling!=NULL){
+					int sibCheck;
+					m_itemsTree.GetItemImage(sibling,sibCheck,sibCheck);
+					SetParentsCheck(&m_itemsTree,sibling,sibCheck);
+				}
+				if (destItem!=NULL){
+					int curCheck;
+					m_itemsTree.GetItemImage(destItem,curCheck,curCheck);
+					SetParentsCheck(&m_itemsTree,destItem,curCheck);
+				}
+				m_itemsTree.SelectItem(destItem);
+
+				actionIndicator=0;
+				actionItem=NULL;
+			}
+		}
+	}
+	
+	*pResult = 0;
+}
+
+void CToolItemConfig::OnHelpInfo() 
+{
+	AfxMessageBox("Currently Implemented Features:\nPress Spacebar to check/uncheck\nUse arrow keys to browse tree\nClick on +- sign for expanding\nDrag and drop to move items and branches.\nButton actions are performed on selected items\nClicking in bottom whitespace clears selection/selects root)\n\nTo come:\nCopying and pasting items\n\nOn tibiaauto.net/forum you can post other ideas!");
+
+}
+
+void addChildrenToTreeItem(CTreeCtrl* treeCtrl,HTREEITEM parentItem,HTREEITEM destItem){
+	HTREEITEM child=treeCtrl->GetChildItem(parentItem);
+	while (child!=NULL){
+
+		if (treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)==0){
+			addChildrenToTreeItem(treeCtrl,child,destItem);
+		} else if(!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=0) {
+			int check;
+			treeCtrl->GetItemImage(child,check,check);
+			if (check==2){
+				TV_INSERTSTRUCT dest;
+				dest.hParent=destItem;
+				dest.hInsertAfter=TVI_LAST;
+				dest.item.mask=TVIF_TEXT|TVIF_IMAGE|TVIF_STATE|TVIF_SELECTEDIMAGE;
+				dest.item.stateMask=0xFFFFFFFF;
+				dest.item.state=treeCtrl->GetItemState(child,dest.item.stateMask);
+				CString cText=treeCtrl->GetItemText(child);
+				char* text=(char *)(LPCTSTR)cText;
+				dest.item.pszText=text;
+				dest.item.iImage=0;
+				dest.item.iSelectedImage=0;
+				HTREEITEM item = treeCtrl->InsertItem(&dest);
+				treeCtrl->SetItemData(item,treeCtrl->GetItemData(child));
+			}
+		}
+		child=treeCtrl->GetNextSiblingItem(child);
+	}
+}
+
+void CToolItemConfig::OnSelectedToBranch()
+{
+	HTREEITEM parentItem=m_itemsTree.GetSelectedItem();
+	if (parentItem==NULL) parentItem=TVI_ROOT;
+	if (parentItem!=TVI_ROOT && m_itemsTree.GetItemData(parentItem)!=0) parentItem=m_itemsTree.GetParentItem(parentItem);
+	if (parentItem==NULL) parentItem=TVI_ROOT;
+	HTREEITEM destItem = m_itemsTree.InsertItem("New Branch",parentItem, TVI_FIRST);
+
+	addChildrenToTreeItem(&m_itemsTree,TVI_ROOT,destItem); 
+	SetParentsCheck(&m_itemsTree,destItem,0);
+	m_itemsTree.SetItemState(destItem,TVIS_BOLD,TVIS_BOLD);
+	m_itemsTree.SelectItem(destItem);
 }

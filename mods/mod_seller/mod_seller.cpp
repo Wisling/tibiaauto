@@ -122,7 +122,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 */
 		Sleep(200);
-		var=reader.getGlobalVariable("caveboot_halfsleep");
+		var=reader.getGlobalVariable("cavebot_halfsleep");
 		if (var==NULL||strcmp(var,"true")) 
 			alreadySleeping = 0; 
 		else 
@@ -136,13 +136,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			allAtOnce = 1;
 			for (int i = buyOrSell; i < MAX_SELLERS; i++) {
 				if (individualShouldGo(config, i) && findSeller(config, i)) {
-					reader.setGlobalVariable("caveboot_halfsleep","true");
+					reader.setGlobalVariable("cavebot_halfsleep","true");
 					sellerInvoked = 1;
 					if (moveToSeller(config)) {
 						config->targetX = config->targetY = config->targetZ = 0;
 						sellItems(config, i);
 						buyItems(config, i);
-						reader.setGlobalVariable("caveboot_halfsleep","false");
+						reader.setGlobalVariable("cavebot_halfsleep","false");
 						sellerInvoked = 0;
 						
 						buyOrSell++;
@@ -153,11 +153,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 		}
 		else {
-			reader.setGlobalVariable("caveboot_halfsleep","false");
+			reader.setGlobalVariable("cavebot_halfsleep","false");
 			sellerInvoked = 0;
 		}
 	}
-	reader.setGlobalVariable("caveboot_halfsleep","false");
+	reader.setGlobalVariable("cavebot_halfsleep","false");
 	sellerInvoked = 0;
 	toolThreadShouldStop=0;
 	return 0;
