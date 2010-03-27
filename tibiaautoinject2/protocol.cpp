@@ -237,20 +237,20 @@ void Protocol::parsePacket(NetworkMessage &msg){
 		case 0x14: // logout
 		case 0x1E: // keep alive / ping response
 		case 0x64: // move with steps
-		case 0x65: // move north
-		case 0x66: // move east
-		case 0x67: // move south
-		case 0x68: // move west
-		case 0x69: // stop-autowalk
-		case 0x6A: //parseMove(msg, NORTHEAST);
-		case 0x6B: //parseMove(msg, SOUTHEAST);
-		case 0x6C: //parseMove(msg, SOUTHWEST);
-		case 0x6D: //parseMove(msg, NORTHWEST);
-		case 0x6F: // turn north
-		case 0x70: // turn east
-		case 0x71: // turn south
-		case 0x72: // turn west
-		case 0x78: // throw item
+		case 0x65: // move north e
+		case 0x66: // move east f
+		case 0x67: // move south g
+		case 0x68: // move west h
+		case 0x69: // stop-autowalk i
+		case 0x6A: //parseMove(msg, NORTHEAST); j
+		case 0x6B: //parseMove(msg, SOUTHEAST); k
+		case 0x6C: //parseMove(msg, SOUTHWEST); l
+		case 0x6D: //parseMove(msg, NORTHWEST); m
+		case 0x6F: // turn north n
+		case 0x70: // turn east o
+		case 0x71: // turn south p
+		case 0x72: // turn west q	
+		case 0x78: // throw item r
 		case 0x79: // description in shop window
 		case 0x7A: // player bought from shop
 		case 0x7B: // player sold to shop
@@ -265,7 +265,7 @@ void Protocol::parsePacket(NetworkMessage &msg){
 		case 0x85: // rotate item
 		case 0x87: // close container
 		case 0x88: //"up-arrow" - container
-		case 0x8C: // throw item
+		case 0x8C: // loot at square
 		case 0x97: // request channels
 		case 0x98: // open channel
 		case 0x99: // close channel
