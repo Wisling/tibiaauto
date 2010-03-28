@@ -590,6 +590,7 @@ public:
 	}
 	virtual ~CTibiaTreeBranchData(){
 		free(name);
+		name=NULL;
 	}
 	char* GetName(){
 		return name;
@@ -618,6 +619,7 @@ public:
 	}
 	virtual ~CTibiaTreeItemData(){
 		free(name);
+		name=NULL;
 	}
 	int GetId(){
 		return id;
@@ -643,9 +645,13 @@ public:
 	}
 	~CTibiaTree(){
 		delete data;
+		data=NULL;
 		int size=children.size();
-		for (int i=0;i<size;i++){
-			delete children[i];
+		for (int i=size-1;i>=0;i--){
+			CTibiaTree* ptTree=children[i];
+			children.pop_back();
+			delete ptTree;
+			int a=1;
 		}
 	}
 	CTibiaTree* AddChild(CTibiaTreeData* a_data){

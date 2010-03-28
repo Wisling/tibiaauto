@@ -1,4 +1,3 @@
-<!--Items file for Tibia 8.54-->
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <item-definitions>
 
@@ -411,7 +410,6 @@
       <item id="0x283d" looted="1" name="Centipede Leg"/>
       <item id="0xd43" looted="1" name="Ceremonial Mask"/>
       <item id="0x1f56" looted="1" name="Chain Bolter"/>
-      <item id="0xde6" looted="1" name="Chain Legs"/>
       <item id="0x1d03" looted="1" name="Chaos Mace"/>
       <item id="0xd4f" looted="1" name="Charmer's Tiara"/>
       <item id="0x1702" looted="1" name="Chicken Feather"/>
@@ -881,7 +879,6 @@
       <item id="0x2847" looted="1" name="Sabretooth"/>
       <item id="0x2456" looted="1" name="Sacred Tree Amulet"/>
       <item id="0x2895" looted="1" name="Sais"/>
-      <item id="0xddf" looted="1" name="Sandals"/>
       <item id="0x28d8" looted="1" name="Sandcrawler Shell"/>
       <item id="0x286a" looted="1" name="Santa Backpack"/>
       <item id="0x1983" looted="1" name="Santa Hat"/>
@@ -2333,6 +2330,7 @@
   </items>
 
   <foods>
+    <item id="0x0" name="" time="0"/>
     <item id="0xe03" name="Banana" time="0"/>
     <item id="0x1f51" name="Beetroot" time="0"/>
     <item id="0xe04" name="Blueberry" time="0"/>
@@ -2382,11 +2380,12 @@
     <item id="0xdfd" name="Shrimp" time="0"/>
     <item id="0xe91" name="Some Mushrooms(Orange)" time="0"/>
     <item id="0xe07" name="Strawberry" time="0"/>
+    <item id="0x162e" name="Tortoise Egg" time="96"/>
     <item id="0xe0c" name="Tomato" time="0"/>
     <item id="0x18f8" name="Valentine's Cake" time="0"/>
     <item id="0x344" name="Walnut" time="108"/>
     <item id="0xe8b" name="White Mushroom" time="360"/>
-    <item id="0xe8f" name="Wood Mushroom" time="132"/>
+    <item id="0xe8f" name="Wood Mushroom" time="96"/>
   </foods>
 
 </item-definitions>

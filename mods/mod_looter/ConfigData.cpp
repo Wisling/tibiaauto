@@ -22,6 +22,7 @@ CConfigData::CConfigData()
 	m_lootWorms=0;
 	m_lootGp=0;
 	m_lootFood=0;
+	m_eatFromCorpse=0;
 	m_lootCustom=0;
 	m_autoOpen=0;
 	m_mode10=2;

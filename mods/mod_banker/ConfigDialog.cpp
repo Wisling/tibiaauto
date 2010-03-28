@@ -105,7 +105,11 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	m_MinGold.GetWindowText(buf,127);newConfigData->minimumGoldToBank=atoi(buf);
 	m_OnHand.GetWindowText(buf,127);newConfigData->cashOnHand=atoi(buf);
 	int index = m_Banker.GetCurSel();
-	strcpy(newConfigData->banker.bankerName, bankersInfo[index].name);
+	m_Banker.GetLBText(index,buf);
+	index=0;
+	while (strcmp(bankersInfo[index].name,"End of Bankers") && strcmp(bankersInfo[index].name,buf)) index++;
+
+	strcpy(newConfigData->banker.bankerName,bankersInfo[index].name);
 	for (int loopPos = 0; loopPos < 10; loopPos++) {
 		newConfigData->banker.position[loopPos].bankerX = bankersInfo[index].xPos[loopPos];
 		newConfigData->banker.position[loopPos].bankerY = bankersInfo[index].yPos[loopPos];
@@ -131,7 +135,8 @@ BOOL CConfigDialog::OnInitDialog() {
 	skin.SetButtonSkin(	m_enable);
 
 	initalizeBankers();
-	SetTimer(1001,250,NULL);	
+	SetTimer(1001,250,NULL);
+	m_Banker.LimitText(127);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

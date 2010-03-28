@@ -144,7 +144,7 @@ BEGIN
                     ES_AUTOHSCROLL
     CONTROL         "Show creatures info on all floors",
                     IDC_TOOLCREATURINFO_ALLINFO,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,13,201,116,10
+                    NOT WS_VISIBLE | WS_TABSTOP,13,201,116,10
     PUSHBUTTON      "Name Changer",IDC_TOOLCREATURINFO_NAMECHANGER,7,262,104,
                     14
     PUSHBUTTON      "Known Creatures Info",IDC_TOOLCREATURINFO_KNOWNINFO,114,

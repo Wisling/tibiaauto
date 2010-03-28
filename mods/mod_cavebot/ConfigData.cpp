@@ -43,6 +43,7 @@ CConfigData::CConfigData()
 	mapUsed=0;
 	capacityLimit=50;
 	lootCustom=0;
+	lootWhileKill=0;
 	lootInBags=1;
 	attackRange=5;
 	stickToMonster=0;
@@ -56,7 +57,7 @@ CConfigData::CConfigData()
 	debug=1;
 	weaponTrain=0;
 	weaponFight=0;
-	weaponHand = 0;
+	weaponHand=0;
 	fightWhenSurrounded=1;
 	fightWhenAlien=1;
 	trainingMode=0;

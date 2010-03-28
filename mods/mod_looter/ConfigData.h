@@ -19,6 +19,7 @@ public:
 	int	m_lootWorms;
 	int	m_lootGp;
 	int	m_lootFood;
+	int m_eatFromCorpse;
 	int	m_lootCustom;
 	int	m_autoOpen;	
 	int m_mode10;

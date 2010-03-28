@@ -242,6 +242,9 @@ CConfigData * CConfigDialog::controlsToConfig() {
 			sscanf(paramString, "%d:%d@%dgp", &newConfigData->buyItem[i].tradeItem[j].triggerQuantity, &newConfigData->buyItem[i].tradeItem[j].quantityBuySell, &newConfigData->buyItem[i].tradeItem[j].salePrice);
 		}
 		int index = m_Seller[i].GetCurSel();
+		m_Seller[i].GetLBText(index,buf);
+		index=0;
+		while (strcmp(sellersInfo[index].name,"End of Sellers") && strcmp(sellersInfo[index].name,buf)) index++;
 		strcpy(newConfigData->sellerList[i].sellerName, sellersInfo[index].name);
 		for (int loop = 0; loop < 10; loop++) {
 			newConfigData->sellerList[i].position[loop].sellerX = sellersInfo[index].xPos[loop];
@@ -273,6 +276,7 @@ BOOL CConfigDialog::OnInitDialog() {
 		skin.SetButtonSkin( m_BuyBoxRemove[loop]);
 		skin.SetButtonSkin( m_SellBoxAdd[loop]);
 		skin.SetButtonSkin( m_SellBoxRemove[loop]);
+		m_Seller[loop].LimitText(127);
 	}
 
 	initalizeSellers();

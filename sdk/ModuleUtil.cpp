@@ -387,6 +387,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	memset(path,0x00,sizeof(int)*15);
 
 	if (endSpecialLocation) radius=0;
+	else radius=(rand()%max(1,radius))+1;
 
 #ifdef MAPDEBUG
 	char buf[512];
@@ -424,7 +425,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	// If still going to same place, clear only points on screen and keep rest
 	// Follow the last endpoint back to where the cleared points cut off.  Go to this closer point.
 	tibiaMap.clearDistance();
-	if (lastDestX==endX&&lastDestY==endY&&lastDestZ==endZ    &&0   )
+	if (lastDestX==endX&&lastDestY==endY&&lastDestZ==endZ)
 	{
 		tibiaMap.clearLocalPrevPoint(startX, startY, startZ,10);
 		point pTrack = lastEndPoint;//trace path back from last destination square
@@ -458,7 +459,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	else{
 		tibiaMap.clearPrevPoint();
 	}
-
 
 	//tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
 	//tibiaMap.setPointDistance(startX,startY,startZ,1);
@@ -510,7 +510,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		pQueueIter=NULL;
 #endif
 
-		if (gotToEndPoint){//until it gets to 1 this will keep emptying the queue array
+		if (gotToEndPoint){//until it gets to 1 this will keep emptying the queue array(not used anymore)
 			gotToEndPoint--;
 			//char buf[111];
 			//sprintf(buf,"%d",gotToEndPoint);
