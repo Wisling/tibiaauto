@@ -1,7 +1,11 @@
- Installation will not repace items file unless it is missing
+ Installation will now never repace the items.xml file unless it is missing
 
+2.2.1, 28.3.2010
+Defects
+ Spellcaster: Fixed not casting spells
+ Spellcaster: Fixed never casting when cast mana == maximum mana
 
-2.2.0, ?.?.2010
+2.2.0, 27.3.2010
 Enhancments
  Item Config: Created Tree Control for items, visit wiki for more information
  Python: Added entirely new taitem python functions

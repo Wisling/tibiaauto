@@ -70,7 +70,7 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setHp[pt]=CModuleUtil::randomFormula(pt,pt*0.05,self->maxHp);
+		setHp[pt]=CModuleUtil::randomFormula(pt,pt*0.05,max(self->maxHp,pt+1));
 		delete self;
 	}
 	return setHp[pt];
@@ -84,7 +84,7 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxMana
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,pt*0.05,self->maxMana);
+		setMana[pt]=CModuleUtil::randomFormula(pt,pt*0.05,max(self->maxMana,pt+1));
 		delete self;
 	}
 	return setMana[pt];
