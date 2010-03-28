@@ -261,6 +261,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (!versionOk)
 	{		
 		char outBuf[32];
+
 		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%d  %d)", buf[0], buf[1]);
 		AfxMessageBox(outBuf);
 		ExitProcess(0);

@@ -671,7 +671,7 @@ void CPackSender::openContainerFromContainer(int objectId, int contNrFrom, int c
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;	
 	retbuf[10]=contPosFrom;	
-	retbuf[11]=targetBag;	
+	retbuf[11]=targetBag;
 
 	sendPacket(retbuf);
 }
