@@ -69,7 +69,7 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxMana
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,pt * 0.1,pt,self->maxMana);
+		setMana[pt]=CModuleUtil::randomFormula(pt,pt * 0.1,pt,max(self->maxMana,pt+1));
 		delete self;
 	}
 	return pt;

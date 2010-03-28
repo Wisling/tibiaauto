@@ -41,6 +41,7 @@ public:
 	int capacityLimit;
 	int lootCustom;
 	int lootInBags;
+	int lootWhileKill;
 	int stickToMonster;
 	int eatFromCorpse;
 	int attackRange;
