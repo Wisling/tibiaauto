@@ -37,6 +37,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOOT_WORMS, m_lootWorms);
 	DDX_Control(pDX, IDC_LOOT_GP, m_lootGp);
 	DDX_Control(pDX, IDC_LOOT_FOOD, m_lootFood);
+	DDX_Control(pDX, IDC_EAT_FROM_CORPSE, m_eatFromCorpse);
 	DDX_Control(pDX, IDC_LOOT_CUSTOM, m_lootCustom);
 	DDX_Control(pDX, IDC_AUTO_OPEN, m_autoOpen);
 	DDX_Control(pDX, IDC_CONTAINER_STATUS9, m_status9);
@@ -104,6 +105,7 @@ void CConfigDialog::OnEnable()
 
 void CConfigDialog::disableControls()
 {
+	m_eatFromCorpse.EnableWindow(false);
 	m_lootInDepot.EnableWindow(false);
 	m_lootWorms.EnableWindow(false);
 	m_lootGp.EnableWindow(false);
@@ -124,6 +126,7 @@ void CConfigDialog::disableControls()
 
 void CConfigDialog::enableControls()
 {
+	m_eatFromCorpse.EnableWindow(true);
 	m_lootInDepot.EnableWindow(true);
 	m_lootWorms.EnableWindow(true);
 	m_lootGp.EnableWindow(true);
@@ -149,6 +152,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_lootCustom.SetCheck(configData->m_lootCustom);
 	m_lootGp.SetCheck(configData->m_lootGp);
 	m_lootFood.SetCheck(configData->m_lootFood);
+	m_eatFromCorpse.SetCheck(configData->m_eatFromCorpse);
 	m_lootWorms.SetCheck(configData->m_lootWorms);
 	m_lootInDepot.SetCheck(configData->m_lootInDepot);
 	m_autoOpen.SetCheck(configData->m_autoOpen);
@@ -171,6 +175,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->m_lootCustom=m_lootCustom.GetCheck();
 	newConfigData->m_lootGp=m_lootGp.GetCheck();
 	newConfigData->m_lootFood=m_lootFood.GetCheck();
+	newConfigData->m_eatFromCorpse=m_eatFromCorpse.GetCheck();
 	newConfigData->m_lootWorms=m_lootWorms.GetCheck();
 	newConfigData->m_lootInDepot=m_lootInDepot.GetCheck();
 	newConfigData->m_autoOpen=m_autoOpen.GetCheck();

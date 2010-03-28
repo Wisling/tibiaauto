@@ -64,14 +64,14 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 186, 267
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 186, 275
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Auto Looter"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Container Setup",IDC_FRAME_CONTAINER_SETUP,7,7,172,164
-    GROUPBOX        "Loot Options",IDC_FRAME_LOOT_OPTIONS,7,175,172,49
-    DEFPUSHBUTTON   "OK",IDOK,69,246,50,14
+    GROUPBOX        "Loot Options",IDC_FRAME_LOOT_OPTIONS,7,175,172,60
+    DEFPUSHBUTTON   "OK",IDOK,69,254,50,14
     LTEXT           "Container 1:",IDC_STATIC,15,18,43,12,SS_CENTERIMAGE
     COMBOBOX        IDC_CONTAINER_MODE_1,61,18,48,46,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
@@ -118,25 +118,28 @@ BEGIN
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS9,119,138,46,12,
                     SS_CENTERIMAGE
     CONTROL         "Enable looting",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,228,172,14
+                    BS_PUSHLIKE | WS_TABSTOP,7,237,172,14
     CONTROL         "Auto open killed monsters and gather statistics",
                     IDC_AUTO_OPEN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,
                     187,158,10
     CONTROL         "Loot food",IDC_LOOT_FOOD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,199,52,10
+                    WS_TABSTOP,15,211,52,10
     CONTROL         "Loot gp",IDC_LOOT_GP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,71,199,52,10
     CONTROL         "Loot custom",IDC_LOOT_CUSTOM,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,127,199,52,10
     CONTROL         "Loot worms",IDC_LOOT_WORMS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,211,49,10
+                    WS_TABSTOP,15,199,49,10
     LTEXT           "Container 10:",IDC_STATIC,15,153,43,12,SS_CENTERIMAGE
     COMBOBOX        IDC_CONTAINER_MODE_10,61,153,48,46,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS10,119,153,46,12,
                     SS_CENTERIMAGE
     CONTROL         "Loot while in Depot",IDC_LOOT_DEPOT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,71,211,108,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,223,108,10
+    CONTROL         "Eat from corpse",IDC_EAT_FROM_CORPSE,"Button",
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,71,211,63,
+                    10
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
@@ -163,7 +166,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 179
         TOPMARGIN, 7
-        BOTTOMMARGIN, 260
+        BOTTOMMARGIN, 268
     END
 
     IDD_SENDSTATS, DIALOG

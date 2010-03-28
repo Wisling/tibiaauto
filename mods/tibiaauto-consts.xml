@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 8.54 -->
+<!-- Tibia constants for Tibia 8.55 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -43,8 +43,8 @@
 		<const code="addrOffset" value="0"/>
 
 		<const code="addrMCInject" value="0x10B891"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x4D6F3B"/> 
-		<const code="addrXRay2" value="0x4D6F43"/> 
+		<const code="addrXRay1" value="0x4D6F1C"/> 
+		<const code="addrXRay2" value="0x4D6F24"/> 
 		<const code="addrFunRevealCName1" value="0x4F2123"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
@@ -86,9 +86,9 @@
 		<const code="addrLeftHand" value="0x64A1FC"/> 
 		<const code="addrSlotArrow" value="0x64A22C"/> <!-- cat2 -->
 		<const code="addrFirstContainer" value="0x64A238"/> <!-- cat2 -->
-		<const code="addrTradeCountSelf" value="0x64C0F8"/>
+		<const code="addrTradeCountSelf" value="0x64C118"/>
 		<const code="addrTradeFirstItemSelf" value="0x64C11C"/>
-		<const code="addrTradeCountPartner" value="0x64C5D0"/>
+		<const code="addrTradeCountPartner" value="0x64C5F0"/>
 		<const code="addrTradeFirstItemPartner" value="0x64C5F4"/> <!-- cat2 -->
 
 		<const code="addrCurrentWindow" value="0x64CAEC"/> <!-- cat2 -->
