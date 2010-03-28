@@ -55,6 +55,11 @@ END_MESSAGE_MAP()
 
 
 /////////////////////////////////////////////////////////////////////////////
+const int numCont=16;//"maxContainers"
+int openContTime[numCont];
+const int minSecondsOpen=20;
+
+
 static map<int,int> setMana;
 int RandomVariableMana(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return pt;
@@ -75,7 +80,7 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
  */
 int moveBlankRuneToHand(CConfigData *config,int handAddress,int locId)
 {
-	int pos;
+	int contNr;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -85,12 +90,12 @@ int moveBlankRuneToHand(CConfigData *config,int handAddress,int locId)
 
 	// step 1. find blank and put into hand
 	// scan safe containers
-	for (pos=0;pos<10;pos++)
+	for (contNr=0;contNr<numCont;contNr++)
 	{
 		int itemNr;
 		
-		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff)
+		CTibiaContainer *container = reader.readContainer(contNr);
+		if (container->flagOnOff && openContTime[contNr] && time(NULL)-openContTime[contNr]>minSecondsOpen)
 		{
 			for (itemNr=0;itemNr<container->itemsInside;itemNr++)
 			{
@@ -101,12 +106,11 @@ int moveBlankRuneToHand(CConfigData *config,int handAddress,int locId)
 					blankRuneContNr=container->number;
 					blankRuneContPos=item->pos;
 					blankRuneId=item->objectId;
-					pos=9999;//exit both loops
+					contNr=9999;//exit both loops
 					break;
 				};
 			};				
 		}
-		
 		delete container;
 	};
 	
@@ -194,11 +198,11 @@ void moveLeftHandToContainer()
 	CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
 	int contNr;
 
-	for (contNr=0;contNr<10;contNr++)
+	for (contNr=0;contNr<numCont;contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 
-		if (cont->flagOnOff&&cont->itemsInside<cont->size)
+		if (cont->flagOnOff&&cont->itemsInside<cont->size&& openContTime[contNr] && time(NULL)-openContTime[contNr]>minSecondsOpen)
 		{
 			sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
 			Sleep(CModuleUtil::randomFormula(500,200));
@@ -220,11 +224,11 @@ void moveArrowItemToContainer()
 	CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow);	
 	int contNr;
 
-	for (contNr=0;contNr<10;contNr++)
+	for (contNr=0;contNr<numCont;contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 
-		if (cont->flagOnOff&&cont->itemsInside<cont->size)
+		if (cont->flagOnOff&&cont->itemsInside<cont->size&& openContTime[contNr] && time(NULL)-openContTime[contNr]>minSecondsOpen)
 		{
 			sender.moveObjectBetweenContainers(item->objectId,0x0a,0,0x40+contNr,0,item->quantity?item->quantity:1);
 			Sleep(CModuleUtil::randomFormula(500,200));
@@ -263,8 +267,28 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		delete handItem;
 	}
 
+	//Containers open on start are okay to put stuff in
+	for (int contNr=0;contNr<numCont;contNr++){
+		CTibiaContainer *cont = reader.readContainer(contNr);
+		if (cont->flagOnOff) {
+			openContTime[contNr]=time(NULL)-minSecondsOpen-1;
+		} else {
+			openContTime[contNr]=0;
+		}
+	}
 	while (!toolThreadShouldStop)
 	{			
+		//Keep track of when containers are opened. Later that container will only be
+		//used if time(NULL)-openContTime[i]>minSecondsOpen
+		for (int contNr=0;contNr<numCont;contNr++){
+			CTibiaContainer *cont = reader.readContainer(contNr);
+			if (cont->flagOnOff)
+			{
+				if (!openContTime[contNr]) openContTime[contNr]=time(NULL);
+			} else {
+				openContTime[contNr]=0;
+			}
+		}
 		CTibiaCharacter *myself = reader.readSelfCharacter();
 		
 		Sleep(900);
@@ -277,7 +301,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		/**
 		* Cleanup left hand. There can be only: leftHandObjectId - other
 		* items we move to the first container
-			*/
+		*/
 			moveLeftHandToContainer();
 			delete handItem;
 			delete myself;
@@ -361,11 +385,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (handItem->objectId)
 				{					
 					int saveContNr;
-					// we must skip container 7,8,9 due to cave bot!
-					for (saveContNr=0;saveContNr<7;saveContNr++)
+					for (saveContNr=0;saveContNr<numCont;saveContNr++)
 					{
 						CTibiaContainer *saveCont=reader.readContainer(saveContNr);
-						if (saveCont->flagOnOff&&saveCont->itemsInside<saveCont->size)
+						if (saveCont->flagOnOff&&saveCont->itemsInside<saveCont->size&& openContTime[saveContNr] && time(NULL)-openContTime[saveContNr]>minSecondsOpen)
 						{
 							// some open container with some space inside found
 							sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x40+saveContNr,saveCont->size-1,handItem->quantity?handItem->quantity:1);
@@ -377,7 +400,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						delete saveCont;
 					}
 					Sleep(CModuleUtil::randomFormula(500,200));
-					delete handItem;	
+					delete handItem;
 					delete myself;
 					continue;	
 				}

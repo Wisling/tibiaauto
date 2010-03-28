@@ -4,7 +4,7 @@
 2.2.0, ?.?.2010
 Enhancments
  Item Config: Created Tree Control for items, visit wiki for more information
- Python: Added taitem python functions
+ Python: Added entirely new taitem python functions
  Python: Added MoveUp/Down/Right/Left functions
  Python: Added other function
  Python: Removed older taitem python functions(only functions not used in forum python scripts)
@@ -14,7 +14,7 @@ Enhancments
  Cavebot: Able to choose your own prefix for loading mini map labels (default was $ta)
  Cavebot: For the trainer, a player must be attacking you to be considered an "Alien"
  Cavebot: Fixed sometimes not looting creature after killing
- Autolooter: Improved auto open corpses to always loot except when a creature dies while it is moving items
+ Autolooter: Improved algorithm for auto open corpses to always loot except when a creature dies while it is moving items
  
 Defects
  Auto Login: Fixed closing backpack after opening them

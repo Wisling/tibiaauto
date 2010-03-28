@@ -149,6 +149,7 @@ public:
 	CButton	m_nomoveSuspended;
 	CComboBox	m_mapUsed;
 	CButton	m_lootinBags;
+	CButton	m_lootWhileKill;
 	CEdit	m_lootCapLimit;
 	CButton	m_suspendOnEnemy;
 	CButton	m_lootWorms;

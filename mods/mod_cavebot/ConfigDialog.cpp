@@ -27,7 +27,7 @@ extern CToolAutoAttackStateLoot globalAutoAttackStateLoot;
 extern CToolAutoAttackStateWalker globalAutoAttackStateWalker;
 extern CToolAutoAttackStateDepot globalAutoAttackStateDepot;
 extern CToolAutoAttackStateTraining globalAutoAttackStateTraining;
-extern int targetX,targetY,targetZ;
+extern int actualTargetX,actualTargetY,actualTargetZ;
 extern int depotX,depotY,depotZ;
 extern int currentPosTM;
 extern int creatureAttackDist;
@@ -136,6 +136,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_RADIUS, m_radius);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_DELAY, m_AddDelay);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_DELAY, m_delay);
+	DDX_Control(pDX, IDC_LOOTWHILEKILL, m_lootWhileKill);
 	//}}AFX_DATA_MAP
 }
 
@@ -196,6 +197,7 @@ void CConfigDialog::OnEnable()
 void CConfigDialog::disableControls()
 {
 	m_lootCustom.EnableWindow(false);
+	m_lootWhileKill.EnableWindow(false);
 	m_waypointSelMode.EnableWindow(false);	
 	m_nomoveSuspended.EnableWindow(false);
 	m_mapUsed.EnableWindow(false);
@@ -255,6 +257,7 @@ void CConfigDialog::disableControls()
 void CConfigDialog::enableControls()
 {
 	m_lootCustom.EnableWindow(true);
+	m_lootWhileKill.EnableWindow(true);
 	m_waypointSelMode.EnableWindow(true);	
 	m_nomoveSuspended.EnableWindow(true);
 	m_mapUsed.EnableWindow(true);
@@ -338,6 +341,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_waypointSelMode.SetCurSel(configData->waypointSelectMode);
 	m_mapUsed.SetCurSel(configData->mapUsed);	
 	m_lootCustom.SetCheck(configData->lootCustom);
+	m_lootWhileKill.SetCheck(configData->lootWhileKill);
 	m_lootinBags.SetCheck(configData->lootInBags);
 	m_gatherLootStats.SetCheck(configData->gatherLootStats);
 	m_debug.SetCheck(configData->debug);
@@ -479,6 +483,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_depotCap.GetWindowText(buf,127);
 	newConfigData->depotCap=atoi(buf);	
 	newConfigData->lootCustom=m_lootCustom.GetCheck();
+	newConfigData->lootWhileKill=m_lootWhileKill.GetCheck();
 	newConfigData->lootInBags=m_lootinBags.GetCheck();	
 
 	for (i=0;i<100;i++)
@@ -623,8 +628,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			break;
 		case CToolAutoAttackStateWalker_ok:
 			{
-				int tilesAway=abs(self->x-targetX)+abs(self->y-targetY)+abs(self->z-targetZ);
-				sprintf(buf,"State: walking to (%d,%d,%d) %d tiles away",targetX,targetY,targetZ,tilesAway);
+				int tilesAway=abs(self->x-actualTargetX)+abs(self->y-actualTargetY)+abs(self->z-actualTargetZ);
+				sprintf(buf,"State: walking to (%d,%d,%d) %d tiles away",actualTargetX,actualTargetY,actualTargetZ,tilesAway);
 				m_stateWalker.SetWindowText(buf);
 				if (currentWaypointNr!=m_waypointList.GetCurSel())
 					m_waypointList.SetCurSel(currentWaypointNr);
@@ -826,6 +831,14 @@ void CConfigDialog::activateEnableButton(int enable)
 void CConfigDialog::OnToolAutoattackRemoveWaypoint() 
 {
 	int sel=m_waypointList.GetCurSel();
+	int x,y,z;
+	char buf[128];
+	m_waypointList.GetText(sel,buf);
+	if (sscanf(buf,"(%d,%d,%d)",&x,&y,&z)==3){
+		sprintf(buf,"%d",x);m_curX.SetWindowText(buf);
+		sprintf(buf,"%d",y);m_curY.SetWindowText(buf);
+		sprintf(buf,"%d",z);m_curZ.SetWindowText(buf);
+	}
 	if (sel==-1)
 		return;
 	m_waypointList.DeleteString(sel);
@@ -959,7 +972,8 @@ void CConfigDialog::OnDepotEntryremove()
 	m_depotWhen.SetWindowText(buf);
 	sprintf(buf,"%d",depotRemain);
 	m_depotRemain.SetWindowText(buf);
-	m_depotEntryList.DeleteString(sel);	
+	m_depotEntryList.DeleteString(sel);
+	m_depotEntryList.SetCurSel(min(sel,m_depotEntryList.GetCount()));
 }
 
 void CConfigDialog::reloadDepotItems()

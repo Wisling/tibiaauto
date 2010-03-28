@@ -1120,7 +1120,7 @@ void ReadPipeInfo(){
 			}else{
 				// T4: No match, this is non-player info text
 				regex_t preg2;
-				if (!regexpProxy.regcomp(&preg2,"You see (an? |)([a-z '-,]+).$",REG_EXTENDED|REG_ICASE)){
+				if (!regexpProxy.regcomp(&preg2,"You see (an? |)([a-z '-,.]+).$",REG_EXTENDED|REG_ICASE)){
 					if (!regexpProxy.regexec(&preg2,msgBuf,20,pmatch,0)){
 						char resNick[128];
 						lstrcpyn(resNick,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
@@ -1134,7 +1134,7 @@ void ReadPipeInfo(){
 						//sender.sendTAMessage(resNick);
 					}else{
 						regex_t preg3;
-						if (!regexpProxy.regcomp(&preg3,"You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
+						if (!regexpProxy.regcomp(&preg3,"You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation).*( You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
 							if (!regexpProxy.regexec(&preg3,msgBuf,20,pmatch,0)){
 								//T4: This is self
 								char resVoc[128];
@@ -1224,10 +1224,10 @@ void Monster_SetNameNumber(char *sCreature,int nr, char *out){
 
 int RandomTimeCreatureInfo(CTibiaCharacter *self,CTibiaCharacter *ch){
 	int dist = self->x-ch->x + self->y-ch->y;
-	return CModuleUtil::randomFormula(300,dist*10);//ranges from 220-380
+	return CModuleUtil::randomFormula(300,(7-dist)*30);//ranges from 220-510
 }
 
-
+map <int,int> lookCount;
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
@@ -1332,7 +1332,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 
-			if (ch->visible && (config->allFloorInfo?1:ch->z==self->z)){
+			if (ch->visible && abs(self->x-ch->x)<=7 && abs(self->y-ch->y)<=5 && (config->allFloorInfo?1:ch->z==self->z)){
 				char line1[MAX_LINE_LEN];
 				char line2[MAX_LINE_LEN];
 				char lineWindow[MAX_LINE_LEN];
@@ -1433,10 +1433,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						}
 					}
 				}
-				if (!found) {
+				if (!found && lookCount[ch->tibiaId]<7) {
 					// creature not yet known - send "look" command
 					sender.ignoreLook(time(NULL)+2);
 					sender.look(ch->x,ch->y,ch->z,99);
+					lookCount[ch->tibiaId]=lookCount[ch->tibiaId]+1;
 					if (config->addRequest && ch->walkSpeed >= 350){
 						if (ch->lookDirection==0){
 							sender.look(ch->x,ch->y-1,ch->z,99);
@@ -1659,7 +1660,8 @@ void CMod_creatureinfoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"self/second"))	lstrcpyn(m_configData->self2,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"self/window"))	lstrcpyn(m_configData->selfWindow,paramValue,MAX_LINE_LEN);
 	if (!strcmp(paramName,"self/tray"))	lstrcpyn(m_configData->selfTray,paramValue,MAX_LINE_LEN);
-	if (!strcmp(paramName,"allFloorInfo"))		m_configData->allFloorInfo = atoi(paramValue);
+	//LOCKED
+	//if (!strcmp(paramName,"allFloorInfo"))		m_configData->allFloorInfo = atoi(paramValue);
 	if (!strcmp(paramName,"addRequest"))		m_configData->addRequest = atoi(paramValue);	
 	if (!strcmp(paramName,"area/collectStats"))		m_configData->collectStats = 1;
 	if (!strcmp(paramName,"area/rangeXY"))		m_configData->rangeXY = atoi(paramValue);

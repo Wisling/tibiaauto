@@ -34,6 +34,7 @@
 #define IDC_FRAME_CONTAINER_SETUP       3026
 #define IDC_FRAME_LOOT_OPTIONS          3027
 #define IDC_LOOT_DEPOT                  3028
+#define IDC_EAT_FROM_CORPSE             3029
 
 // Next default values for new objects
 // 

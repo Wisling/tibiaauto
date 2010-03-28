@@ -41,6 +41,7 @@ public:
 	CButton	m_lootWorms;
 	CButton	m_lootGp;
 	CButton	m_lootFood;
+	CButton m_eatFromCorpse;
 	CButton	m_lootCustom;
 	CButton	m_autoOpen;
 	CStatic	m_status9;
