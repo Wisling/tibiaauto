@@ -73,27 +73,22 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
-//static map<int,int> setMana;
-//static map<int,int> setHp;
-int setMana = 0;
-int setHp = 0;
+static map<int,int> setMana;
+static map<int,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
 	//References to *(int*)<int> removed
 	if (!config->randomCast) return pt;
 	CMemReaderProxy reader;
-	//if (!setMana[pt]) command=MAKE;
-	if (!setMana) command=MAKE;
+	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		//setMana[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),self->maxMana);
-		setMana=CModuleUtil::randomFormula(pt,(int)(pt*.1),self->maxMana);
+		setMana[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),max(self->maxMana,pt+1));
 		delete self;
 	}
-	//return setMana[pt];
-	return setMana;
+	return setMana[pt];
 }
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
@@ -103,19 +98,15 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 	if (!config->randomCast) return pt;
 
 	CMemReaderProxy reader;
-	//if (!setHp[pt]) command=MAKE;
-	if (!setHp) command=MAKE;
+	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
 		CTibiaCharacter* self=reader.readSelfCharacter();
-		//setHp[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,self->maxHp);
-		setHp=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,self->maxHp);
+		setHp[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,max(self->maxHp,pt+1));
 		delete self;
 	}
-	//return setHp[pt];
-	return setHp;
+	return setHp[pt];
 }
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -466,8 +457,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		delete self;
 	}
-	//setMana.clear();// Will grow indefinitely but at the speed of human time, not a computer's(1-10 times/min)
-	//setHp.clear();
+	setMana.clear();
+	setHp.clear();
 	toolThreadShouldStop=0;
 	return 0;
 }
