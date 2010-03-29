@@ -1,5 +1,12 @@
  Installation will now never repace the items.xml file unless it is missing
 
+2.2.2, ?.?.2010
+Enhancments
+
+Defects
+ Cavebot: Fixed toggling between two creatures
+ ItemConfig: Fixed "refresh items from file" button
+
 2.2.1, 28.3.2010
 Defects
  Spellcaster: Fixed not casting spells
@@ -7,6 +14,7 @@ Defects
 
 2.2.0, 27.3.2010
 Enhancments
+ Spellcaster: New and improved spellcaster
  Item Config: Created Tree Control for items, visit wiki for more information
  Python: Added entirely new taitem python functions
  Python: Added MoveUp/Down/Right/Left functions
