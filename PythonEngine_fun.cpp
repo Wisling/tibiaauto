@@ -1093,7 +1093,7 @@ static PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 		arg4=0;
 		if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)) return NULL;
 	}
-	CTibiaCharacter *selfCh = reader.readSelfCharacter();	
+	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	
 	
 	CModuleUtil::findPathOnMap(selfCh->x,selfCh->y,selfCh->z,arg1,arg2,arg3,0,path,arg4);											

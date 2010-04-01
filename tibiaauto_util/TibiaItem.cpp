@@ -375,6 +375,8 @@ void CTibiaItem::refreshItemLists()
 	
 
 	XercesDOMParser *parser = new XercesDOMParser();
+	try
+	{	
 
 		int listNr,itemNr,rootNr;
 
@@ -607,8 +609,6 @@ void CTibiaItem::refreshItemLists()
 				}
 			}
 		}//if file tibiaauto-consts.xml exists
-	try
-	{	
 	} catch (...)
 	{
 		AfxMessageBox("Unable to load const/item definitions!");
