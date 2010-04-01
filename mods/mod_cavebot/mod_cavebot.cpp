@@ -205,12 +205,13 @@ int depotCheckShouldGo(CConfigData *config) {
 			deleteAndNull(cont);
 		}
 		// check whether we should deposit something
+		int a=config->depotTrigger[i].when;
 		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
-			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateWalker==CToolAutoAttackStateWalker_halfSleep)) 
+			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning))
 			ret++;
 		// check whether we should restack something
 		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
-			(totalQty<=config->depotTrigger[i].when || globalAutoAttackStateWalker==CToolAutoAttackStateWalker_halfSleep)) 
+			(totalQty<=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)) 
 			ret++;
 	}
 	deleteAndNull(self);
@@ -1439,6 +1440,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	actualTargetX=actualTargetY=actualTargetZ=0;
 	depotX=depotY=depotZ=0;
 	creatureAttackDist=0;
+	walkerStandingEndTm=0;
 	attackSuspendedUntil=0;
 	firstCreatureAttackTM=0;
 	currentPosTM=time(NULL);
@@ -2001,7 +2003,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 				//if bestCreatureNr is not picked yet switch to first reasonable option
 				if(bestCreatureNr==-1) bestCreatureNr=crNr;
-				int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
+				int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)+1<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 				int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 				if(isCloser){
 					if (creatureList[bestCreatureNr].isAttacking &&
