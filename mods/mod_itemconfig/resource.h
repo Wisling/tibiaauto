@@ -34,7 +34,7 @@
 #define IDD_FOOD_EDIT                   3026
 #define IDC_TREE1                       3026
 #define IDC_TOOL_ITEMCONFIG_ITEMsTREE   3026
-#define IDC_ITEMCONFIG_ITEMSTREE        3026
+#define IDC_ITEMCONFIG_ITEMSTREE        3040
 #define IDC_FOOD_EDIT_NAME              3027
 #define IDC_FRAME_FOOD                  3027
 #define IDC_FOOD_EDIT_ID                3028

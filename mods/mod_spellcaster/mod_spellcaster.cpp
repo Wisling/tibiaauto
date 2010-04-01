@@ -604,15 +604,15 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		}
 		if (m_configData->sioSpell) {
 			char buf[64];
-			for(int loop = 0; loop < m_configData->healList.size(); loop ) {
+			for(int loop = 0; loop < m_configData->healList.size(); loop++ ) {
 			if (m_configData->healList[loop].triggerHP <= 0) {
 				sprintf(buf, "%s: 'Cast when life below' must be >0!", m_configData->healList[loop].name);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
-			if (m_configData->healList[loop].maxHP < 1)
+			if (m_configData->healList[loop].maxHP <= 0)
 			{
-				sprintf(buf, "%s: 'Maximum Life' must be >1!", m_configData->healList[loop].name);
+				sprintf(buf, "%s: 'Maximum Life' must be >=1!", m_configData->healList[loop].name);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}

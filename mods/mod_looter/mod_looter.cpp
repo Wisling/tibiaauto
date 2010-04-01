@@ -128,17 +128,20 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
-		/*** killed monster opening part ***/
-		if (config->m_autoOpen&&lastAttackedMonster&&attackedCh->hpPercLeft==0)
-		{		
-			if(config->m_autoOpen){
-				for (int i=0;i<3;i++){
+
+		//Check if container is closed, then no need to close it
+		if(config->m_autoOpen){
+			for (int i=0;i<3;i++){
+				if (lastLootContNr[i]!=-1){
 					CTibiaContainer *cont=reader.readContainer(lastLootContNr[i]);
-					if(lastLootContNr[i]!=-1 && !cont->flagOnOff) lastLootContNr[i]=-1;
+					if(!cont->flagOnOff) lastLootContNr[i]=-1;
 					delete cont;
 				}
 			}
-
+		}
+		/*** killed monster opening part ***/
+		if (config->m_autoOpen&&lastAttackedMonster&&(!attackedCh || attackedCh->hpPercLeft==0))
+		{		
 			//::MessageBox(NULL,"x 1","x",0);			
 
 			if (attackedCh)
@@ -172,6 +175,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					delete self;
 					self = reader.readSelfCharacter();
 					delete attackedCh;
+					attackedCh=NULL;
 					attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 					if (attackedCh)
 					{
@@ -284,9 +288,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 			lastAttackedMonster=0;
 		}
-		if (attackedCh->hpPercLeft!=0 && lastAttackedMonster || !lastAttackedMonster) lastAttackedMonster = reader.getAttackedCreature();
+		if (attackedCh && attackedCh->hpPercLeft!=0 && lastAttackedMonster || !lastAttackedMonster) lastAttackedMonster = reader.getAttackedCreature();
 		delete self;
-		delete attackedCh;
+		if (attackedCh) delete attackedCh;//attackedCh is null if not present
 		/*** moving part ***/
 
 		/**

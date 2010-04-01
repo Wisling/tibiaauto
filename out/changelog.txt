@@ -2,10 +2,17 @@
 
 2.2.2, ?.?.2010
 Enhancments
+ Auto Go/Log:Runaway+Back kills monsters on the way
 
 Defects
  Cavebot: Fixed toggling between two creatures
  ItemConfig: Fixed "refresh items from file" button
+ Cavebot: Resets standing timer when cavebot disabled
+ Spellcaster: Freezing when enabling Exura Sio spells
+ Autolooter: Fixed random crashing
+ Cavebot: No longer randomly walks to depot when autogo alarm goes off
+ Cavebot: Fixed fighting with Auto Go/Log when going to runaway point
+ Autolooter: Fixed sometimes closing your own backpacks
 
 2.2.1, 28.3.2010
 Defects
