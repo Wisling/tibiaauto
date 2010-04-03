@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
+# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -93,7 +93,19 @@ LINK32=link.exe
 # PROP Default_Filter "cpp;c;cxx;rc;def;r;odl;idl;hpj;bat"
 # Begin Source File
 
+SOURCE=.\Alarm.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\alarmdialog.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\ComboBoxSuper.cpp
 # End Source File
 # Begin Source File
 
@@ -106,6 +118,10 @@ SOURCE=.\ConfigDialog.cpp
 # Begin Source File
 
 SOURCE=.\exports.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\GeneralConfigDialog.cpp
 # End Source File
 # Begin Source File
 
@@ -156,10 +172,26 @@ SOURCE=.\VisualStylesXP.cpp
 
 SOURCE=.\WhiteList.cpp
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\XTabCtrl.cpp
+# End Source File
 # End Group
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\Alarm.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\alarmdialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\ComboBoxSuper.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\ConfigData.h
@@ -167,6 +199,14 @@ SOURCE=.\ConfigData.h
 # Begin Source File
 
 SOURCE=.\ConfigDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Enumerations.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\GeneralConfigDialog.h
 # End Source File
 # Begin Source File
 
@@ -192,10 +232,34 @@ SOURCE=.\VisualStylesXP.h
 
 SOURCE=.\WhiteList.h
 # End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\XTabCtrl.h
+# End Source File
 # End Group
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\Attack.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Audio.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Blank.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\CastSpell.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Columns.bmp
+# End Source File
 # Begin Source File
 
 SOURCE=.\condition_burning.bmp
@@ -218,7 +282,47 @@ SOURCE=.\res\condition_poisoned.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\Depot.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\general.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Items.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\KillTibia.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LogEvents.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\LogOut.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\MaximizeWindow.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\mod_autogo.rc2
+# End Source File
+# Begin Source File
+
+SOURCE=.\proximity.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Runaway.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\ShutdownComputer.bmp
 # End Source File
 # Begin Source File
 
@@ -248,7 +352,31 @@ SOURCE=.\res\speaker.ico
 
 SOURCE=.\res\speaker2.ico
 # End Source File
+# Begin Source File
+
+SOURCE=.\Start.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\StartModule.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\SuspendModule.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\TakeScreenshot.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\vip.bmp
+# End Source File
 # End Group
+# Begin Source File
+
+SOURCE=.\sound\incorrec.wav
+# End Source File
 # Begin Source File
 
 SOURCE=.\ReadMe.txt

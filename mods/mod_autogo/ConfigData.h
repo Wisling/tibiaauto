@@ -9,69 +9,28 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include <list>
+#include "Alarm.h"
+
+using namespace std;
+
 class CConfigData  
 {
 public:
+	int options;
 	CConfigData();
 	virtual ~CConfigData();
 
+	list<Alarm> alarmList;
 	int actX,actY,actZ,actDirection;	
 	int runawayX,runawayY,runawayZ;
 
-	int trigger;
-
-	int optionsBattleList;
-	int optionsSign;
-	int optionsSkull;
-	int optionsVIP;
-	int optionsMessage;
-	int optionsHpAbove;
-	int optionsHpBelow;
-	int optionsManaAbove;
-	int optionsManaBelow;
-	int optionsSoulPointBelow;
-	int optionsSoulPointAbove;
-	int optionsStaminaBelow;
-	int optionsStaminaAbove;
-	int optionsBlank;
-	int optionsCapacity;
-	int optionsOutOfCustomItem;
-	int optionsRunawayReached;
-	int optionsHpBelowUntilRecovery;
-	int optionsManaBelowUntilRecovery;
-
-	//int action;
-	int actionBattleListGm;
-	int actionBattleListList;
-	int actionBattleListPlayer;
-	int actionBattleListMonster;
-	int actionSign;
-	int actionSkull;
-	int actionVIP;
-	int actionMessage;
-	int actionMove;
-	int actionHpLoss;
-	int actionHpAbove;
-	int actionHpBelow;
-	int actionManaAbove;
-	int actionManaBelow;
-	int actionSoulPointBelow;
-	int actionSoulPointAbove;
-	int actionStaminaBelow;
-	int actionStaminaAbove;
-	int actionBlank;
-	int actionCapacity;
-	int actionOutOfFood;
-	int actionOutOfCustom;
-	int actionOutOfSpace;
-	int actionRunawayReached;
-
-	int sound;
-	int allActions;
+	bool triggerMessage;
+	bool maintainStart;
 
 	char whiteList[100][32];
 	int mkBlack;
-	char* status;
+	CString status;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

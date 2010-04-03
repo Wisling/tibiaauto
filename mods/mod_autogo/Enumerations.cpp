@@ -1,10 +1,10 @@
-// ConfigData.cpp: implementation of the CConfigData class.
+// Enumerations.cpp: implementation of the Enumerations class.
 //
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
 #include "mod_autogo.h"
-#include "ConfigData.h"
+#include "Enumerations.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -16,20 +16,12 @@ static char THIS_FILE[]=__FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CConfigData::CConfigData()
+Enumerations::Enumerations()
 {
-	options = 0;
-	actX = actY = actZ = actDirection = 0;
-	runawayX = runawayY = runawayZ = 0;
 
-	triggerMessage = 0;
-	maintainStart = 0;
-
-	memset(whiteList,0,3200);
-	mkBlack=0;
 }
 
-CConfigData::~CConfigData()
+Enumerations::~Enumerations()
 {
 
 }
