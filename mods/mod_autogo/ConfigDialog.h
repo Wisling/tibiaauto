@@ -13,46 +13,49 @@
 #include "GroupBoxEx.h"
 #include "BtnST.h"
 #include "MyDialog.h"
+#include "XTabCtrl.h"
 
-#define TRIGGER_BATTLELIST		0x0001
-	#define BATTLELIST_ANXIETY	0x0001
-	#define BATTLELIST_PARANOIAM	0x0008
-#define TRIGGER_SIGN			0x0002
-	#define SIGN_BATTLE			0x0080
-	#define SIGN_POISON			0x0001
-	#define SIGN_FIRE			0x0002
-	#define SIGN_ENERGY			0x0004
-#define TRIGGER_MESSAGE			0x0004
-	#define MESSAGE_PRIVATE		0x0001
-	#define MESSAGE_PUBLIC		0x0002
-	#define MESSAGE_IGNORE_SPELLS	0x0004
-#define TRIGGER_MOVE			0x0008
-#define TRIGGER_HPLOSS			0x0010
-#define TRIGGER_HPBELOW			0x0020
-#define TRIGGER_SOULPOINT_BELOW		0x0040
-#define TRIGGER_BLANK			0x0080
-#define TRIGGER_CAPACITY		0x0100
-#define TRIGGER_OUTOF			0x0200
-#define TRIGGER_HPABOVE			0x0400
-#define TRIGGER_MANABELOW		0x0800
-#define TRIGGER_MANAABOVE		0x1000
-#define TRIGGER_SOULPOINT_ABOVE		0x2000
-#define TRIGGER_RUNAWAY_REACHED		0x4000
+#define BATTLELIST_ANXIETY				0x0001
+#define BATTLELIST_PARANOIAM			0x0002
+#define MAKE_BLACKLIST					0x0004
+
+#define TRIGGER_BATTLELIST				0x0001
+#define TRIGGER_SIGN					0x0002
+	#define SIGN_BATTLE					0x0080
+	#define SIGN_POISON					0x0001
+	#define SIGN_FIRE					0x0002
+	#define SIGN_ENERGY					0x0004
+#define TRIGGER_MESSAGE					0x0004
+	#define MESSAGE_PRIVATE				0x0001
+	#define MESSAGE_PUBLIC				0x0002
+	#define MESSAGE_IGNORE_SPELLS		0x0004
+#define TRIGGER_MOVE					0x0008
+#define TRIGGER_HPLOSS					0x0010
+#define TRIGGER_HPBELOW					0x0020
+#define TRIGGER_SOULPOINT_BELOW			0x0040
+#define TRIGGER_BLANK					0x0080
+#define TRIGGER_CAPACITY				0x0100
+#define TRIGGER_OUTOF					0x0200
+#define TRIGGER_HPABOVE					0x0400
+#define TRIGGER_MANABELOW				0x0800
+#define TRIGGER_MANAABOVE				0x1000
+#define TRIGGER_SOULPOINT_ABOVE			0x2000
+#define TRIGGER_RUNAWAY_REACHED			0x4000
 #define TRIGGER_BATTLELIST_MONSTER      0x08000
 #define TRIGGER_BATTLELIST_GM           0x10000
 #define TRIGGER_BATTLELIST_PLAYER       0x20000
 #define TRIGGER_BATTLELIST_LIST         0x40000
-#define TRIGGER_OUTOF_FOOD		0x080000
-#define TRIGGER_OUTOF_SPACE		0x100000
-#define TRIGGER_OUTOF_CUSTOM		0x200000
-#define TRIGGER_SKULL			0x400000
-	#define SKULL_NONE			0x0001
-	#define SKULL_YELLOW		0x0002
-	#define SKULL_GREEN			0x0004
-	#define SKULL_WHITE			0x0008
-	#define SKULL_RED			0x0010
-	#define SKULL_BLACK			0x0020
-#define TRIGGER_VIP			0x800000
+#define TRIGGER_OUTOF_FOOD				0x080000
+#define TRIGGER_OUTOF_SPACE				0x100000
+#define TRIGGER_OUTOF_CUSTOM			0x200000
+#define TRIGGER_SKULL					0x400000
+	#define SKULL_NONE					0x0001
+	#define SKULL_YELLOW				0x0002
+	#define SKULL_GREEN					0x0004
+	#define SKULL_WHITE					0x0008
+	#define SKULL_RED					0x0010
+	#define SKULL_BLACK					0x0020
+#define TRIGGER_VIP						0x800000
 #define TRIGGER_STAMINA_BELOW			0x1000000
 #define TRIGGER_STAMINA_ABOVE			0x2000000
 
@@ -96,139 +99,28 @@ class CConfigDialog : public MyDialog
 {
 // Construction
 public:
-	char status[128];
+	CString status;
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
 	CConfigDialog(CMod_autogoApp *app,CWnd* pParent = NULL);   // standard constructor
-	static int actionPos2ID(int pos);
+	//Array to hold the list of dialog boxes/tab pages for CTabCtrl
+	int m_DialogID[2];
+	
+	//CDialog Array Variable to hold the dialogs 
+	MyDialog *m_Dialog[2];
+	
+	int m_nPageCount;
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_TriggerOptionsFrame;
-	CEdit	m_soulPointAbove;
-	CEdit	m_stamina;
-	CEdit	m_staminaAbove;
-	CEdit	m_runawayReachedRadius;
-	CEdit	m_manaBelow;
-	CEdit	m_manaAbove;
-	CEdit	m_hpAbove;
-	CComboBox	m_actionSoulpointAbove;
-	CComboBox	m_actionStamina;
-	CComboBox	m_actionStaminaAbove;
-	CComboBox	m_actionRunawayReached;
-	CComboBox	m_actionOutOfSpace;
-	CComboBox	m_actionOutOfFood;
-	CComboBox	m_outOfCustomItem;
-	CComboBox	m_actionOutOfCustom;
-	CComboBox	m_actionManaBelow;
-	CComboBox	m_actionManaAbove;
-	CComboBox	m_actionHpAbove;
-	CComboBox	m_actionBattleListPlayer;
-	CComboBox	m_actionBattleListMonster;
-	CComboBox	m_actionBattleListList;
-	CComboBox	m_actionBattleListGm;
-	CComboBox	m_actDirection;
-	CComboBox	m_actionHpBelow;
-	CEdit	m_actX;
-	CEdit	m_actZ;
-	CEdit	m_actY;
-	CEdit	m_soulPoint;
-	CEdit	m_hpBelow;
-	CEdit	m_capacity;
-	CEdit	m_blank;
-	CComboBox	m_actionSoulPoint;
-	CComboBox	m_actionSign;
-	CComboBox	m_actionSkull;
-	CComboBox	m_actionVIP;
-	CComboBox	m_actionMove;
-	CComboBox	m_actionMessage;
-	CComboBox	m_actionHpLoss;
-	CComboBox	m_actionCapacity;
-	CComboBox	m_actionBlank;
+	CXTabCtrl	m_tabCtrl;
 	CStatic	m_status;
-	CEdit	m_curZ;
-	CEdit	m_curY;
-	CEdit	m_curX;
-	CEdit	m_runawayZ;	
-	CEdit	m_runawayY;
-	CEdit	m_runawayX;
-	CButton	m_soundMove;
-	CButton	m_soundMessage;
-	CButton	m_soundHpLoss;
-	CButton	m_soundCapacity;
-	CButton	m_soundBlank;
-	CButton	m_soundHpBelow;
-	CButton	m_soundSign;
-	CButton	m_soundSkull;
-	CButton	m_soundVIP;
-	CButton	m_soundSoulPoint;
-	CButton	m_soundBattleListPlayer;
-	CButton	m_soundBattleListMonster;
-	CButton	m_soundBattleListList;
-	CButton	m_soundBattleListGm;
-	CButton	m_soundSoulPointAbove;
-	CButton	m_soundStamina;
-	CButton	m_soundStaminaAbove;
-	CButton	m_soundRunawayReached;
-	CButton	m_soundOutOfSpace;
-	CButton	m_soundOutOfFood;
-	CButton	m_soundOutOfCustom;
-	CButton	m_soundManaBelow;
-	CButton	m_soundManaAbove;
-	CButton	m_soundHpAbove;
-
-	CButton	m_manaBelowUntilRecovery;
-	CButton	m_hpBelowUntilRecovery;
-	CButton	m_triggerOutOf;
-	CButton	m_triggerSoulPointAbove;
-	CButton	m_triggerStamina;
-	CButton	m_triggerStaminaAbove;
-	CButton	m_triggerManaBelow;
-	CButton	m_triggerManaAbove;
-	CButton	m_triggerHpAbove;
-	CButton	m_runawayReached;
-	CButton	m_outOfCustom;
-	CButton	m_messageIgnoreSpells;
-	CButton	m_battleBattlelist;
-	CButton	m_battleParanoiaM;
-	CButton	m_battleAnxiety;
-	CButton	m_triggerHpBelow;
-	CButton	m_outOfSpace;
-	CButton	m_triggerSoulPoint;
-	CButton	m_triggerSign;
-	CButton	m_triggerSkull;
-	CButton	m_triggerVIP;
-	CButton	m_triggerMessage;
-	CButton	m_triggerMove;
-	CButton	m_triggerHpLoss;
-	CButton	m_triggerCapacity;
-	CButton	m_triggerBlank;
-	CButton	m_triggerBattleList;
-	CButton	m_messagePrivate;
-	CButton	m_battlePlayer;
-	CButton	m_battleMonster;
-	CButton	m_battleGM;
-	CButton	m_messagePublic;
-	CButton	m_outOfFood;
-
-	CButtonST	m_battleWhiteList;
 	CButtonST	m_enable;
 	CButtonST	m_OK;
-	CButtonST	m_SetStart;
-	CButtonST	m_SetRunaway;
-	CButtonST	m_signPoison;
-	CButtonST	m_signFire;
-	CButtonST	m_signEnergy;
-	CButtonST	m_signBattle;
-	CButtonST	m_skullWhite;
-	CButtonST	m_skullRed;
-	CButtonST	m_skullYellow;
-	CButtonST	m_skullGreen;
-	CButtonST	m_skullBlack;
 	//}}AFX_DATA
 
 
@@ -251,39 +143,11 @@ protected:
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();
-	afx_msg void OnAutogoTorunaway();
-	afx_msg void OnAutogoTostart();
-	afx_msg void OnAutogoWhitelist();
-	afx_msg void OnAutogoTriggerbattlelist();
-	afx_msg void OnAutogoTriggersign();
-	afx_msg void OnAutogoTriggerskull();
-	afx_msg void OnAutogoTriggervip();
-	afx_msg void OnAutogoTriggermessage();
-	afx_msg void OnAutogoTriggerhploss();
-	afx_msg void OnAutogoTriggermove();
-	afx_msg void OnAutogoTriggersoulpoints();
-	afx_msg void OnAutogoTriggerblank();
-	afx_msg void OnAutogoTriggercapacity();
-	afx_msg void OnAutogoTriggeroutof();
-	afx_msg void OnAutogoTriggerhpbelow();
-	afx_msg void OnAutogoTriggerhpabove();
-	afx_msg void OnAutogoTriggermanabelow();
-	afx_msg void OnAutogoTriggermanaabove();
-	afx_msg void OnAutogoTriggersoulpointsAbove();
-	afx_msg void OnAutogoTriggerstamina();
-	afx_msg void OnAutogoTriggerstaminaAbove();
-	afx_msg void OnAutogoOutoffood();
-	afx_msg void OnAutogoOutofspace();
-	afx_msg void OnAutogoOutofcustom();
-	afx_msg void OnAutogoRunawayReached();
-	afx_msg void OnAutogoBattleplayer();
-	afx_msg void OnAutogoBattlemonster();
-	afx_msg void OnAutogoBattlegm();
-	afx_msg void OnAutogoBattelist();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
 private:
+	int	m_triggerMessage;
 	CMod_autogoApp * m_app;
 	char memWhiteList[100][32];
 	int memMkBlack;

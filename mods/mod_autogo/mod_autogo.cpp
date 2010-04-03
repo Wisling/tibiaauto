@@ -74,6 +74,19 @@ HANDLE toolThreadHandle;
 char suspendedModules[20][64];
 int suspendedCount = 0;
 char* lastFilename="";
+HWND tibiaHWND = NULL;
+
+BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
+	CMemReaderProxy reader;
+	
+	DWORD dwThreadId, dwProcessId;
+	if (!hWnd)
+		return TRUE;		// Not a window
+	dwThreadId = GetWindowThreadProcessId(hWnd, &dwProcessId);
+	if (dwProcessId == reader.getProcessId() && GetParent(hWnd) == NULL)
+		tibiaHWND = hWnd;
+	return TRUE;
+}
 
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
 
@@ -94,6 +107,7 @@ void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const 
 		}
 #endif
 }
+
 std::string intstr(int value){
 	stringstream ss;// from ModuleUtil.h import
 	ss << value;
@@ -132,49 +146,50 @@ int actionShutdownSystem(){
 	return 0;
 }
 
-int actionSuspend(int lSuspend){
+void actionSuspend(CString module) {
 	masterDebug("actionSuspend");
-	if (lSuspend){
-		masterDebug("actionSuspend","Time to stop module");
-		HANDLE hSnap;
-		hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
-		if (hSnap){
-			MODULEENTRY32 lpModule;
-			lpModule.dwSize = sizeof(MODULEENTRY32);
+	masterDebug("actionSuspend","Time to stop module");
+	HANDLE hSnap;
+	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
+	if (hSnap) {
+		MODULEENTRY32 lpModule;
+		lpModule.dwSize = sizeof(MODULEENTRY32);
 
-			Module32First(hSnap,&lpModule);
-			do {
-				if (strcmpi(lpModule.szModule,"mod_autogo.dll")!=0){
-					FARPROC isStarted;
-					isStarted = GetProcAddress(lpModule.hModule,"isStarted");
-					if (isStarted){
-						if (isStarted()){
-							/*FARPROC stop;
-							stop = GetProcAddress(lpModule.hModule,"stop");
-							stop();*/
-							GetProcAddress(lpModule.hModule,"stop")();
-							lstrcpyn(suspendedModules[suspendedCount++],lpModule.szModule,63);
-						}
-					}
+		Module32First(hSnap,&lpModule);
+		do {
+			if (lpModule.szModule == module){
+				FARPROC isStarted;
+				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
+				if (isStarted && isStarted()) {
+					GetProcAddress(lpModule.hModule,"stop")();
 				}
-			}while (Module32Next(hSnap,&lpModule));
-
-			CloseHandle(hSnap);
-		}
-	}else{
-		int i;
-		for (i=0;i<suspendedCount;i++){
-			HMODULE hModule;
-			hModule = GetModuleHandle(suspendedModules[i]);
-			if (hModule){
-				FARPROC start;
-				start = GetProcAddress(hModule,"start");
-				start();
 			}
-		}
-		suspendedCount=0;
+		} while (Module32Next(hSnap,&lpModule));
+		CloseHandle(hSnap);
 	}
-	return 0;
+}
+
+void actionStart(CString module) {
+	masterDebug("actionStart");
+	masterDebug("actionStart","Time to start module", module);
+	HANDLE hSnap;
+	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
+	if (hSnap) {
+		MODULEENTRY32 lpModule;
+		lpModule.dwSize = sizeof(MODULEENTRY32);
+
+		Module32First(hSnap,&lpModule);
+		do {
+			if (lpModule.szModule == module){
+				FARPROC isStarted;
+				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
+				if (isStarted && !isStarted()) {
+					GetProcAddress(lpModule.hModule,"start")();
+				}
+			}
+		} while (Module32Next(hSnap,&lpModule));
+		CloseHandle(hSnap);
+	}
 }
 
 int OnList(char whiteList[100][32],char name[]){
@@ -190,7 +205,7 @@ int OnList(char whiteList[100][32],char name[]){
 	return 0;
 }
 
-struct tibiaMessage *triggerMessage(){
+struct tibiaMessage * triggerMessage(){
 	masterDebug("triggerMessage");
 	CMemReaderProxy reader;
 	CIPCBackPipeProxy backPipe;
@@ -212,12 +227,8 @@ struct tibiaMessage *triggerMessage(){
 		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		//T4: Name in temp structure is empty, bug?
-		//CTibiaCharacter *self = reader.getCharacterByTibiaId(temp->tibiaId);
-		//if (!self) return NULL;
-		//delete temp;
 
-		if (strcmpi(nickBuf,self->name)!=0 && strcmpi(nickBuf,"Tibia Auto")!=0){
+		if (strcmpi(nickBuf,self->name)!=0 && strcmpi(nickBuf,"Tibia Auto") != 0) {
 			delete self;
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type=infoType;
@@ -230,156 +241,6 @@ struct tibiaMessage *triggerMessage(){
 	masterDebug("triggerMessage Exit");
 	return NULL;
 }
-
-int triggerBlank(){
-	masterDebug("triggerBlank");
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
-	int ret=0;
-	int pos;
-	for (pos=0;pos<10;pos++){
-		int itemNr;
-		CTibiaContainer *container = reader.readContainer(pos);
-		//T4: Update missing OnOff flag checking
-		for (itemNr=0;itemNr<container->itemsInside && container->flagOnOff;itemNr++){
-			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
-			if (item->objectId==itemProxy.getValueForConst("runeBlank")){
-				// blank rune found!
-				ret++;
-			};
-		};								
-		delete container;
-	};
-	return ret;
-}
-
-int triggerNoSpace(){
-	masterDebug("triggerNoSpace");
-	CMemReaderProxy reader;
-	int ret=1;
-	int pos;
-	for (pos=0;pos<10;pos++){
-		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff && container->itemsInside < container->size){
-			ret = 0;
-			delete container;
-			break;
-		}
-		delete container;
-	};
-	return ret;
-}
-
-
-
-//returns seconds of play for wav file
-int getWavFileLength(char* wavFile){
-	masterDebug("getWavFileLength");
-	//return .3;
-	//wavFile="E:/Tibia/Tibia/Tibia Auto/mods/sound/hploss.wav";
-	FILE *f=fopen(wavFile,"r");
-
-	if (!f) return 0;
-	char buf[101];
-
-	if(fread( buf, sizeof( char ), 100, f )!=100) return 0;
-	int numChan=0;
-	int samplesPerSec=0;
-	int bytesPerSample=0;
-	int playSize=0;
-	for (int i =0;i<96;i++){
-		if (buf[i]==(int)'f' && buf[i+1]==(int)'m' && buf[i+2]==(int)'t' && buf[i+3]==(int)' '){
-			numChan = (UCHAR)buf[i+10] + (UCHAR)buf[i+11]*256;
-			samplesPerSec = (UCHAR)buf[i+12] + (UCHAR)buf[i+13]*256 + (UCHAR)buf[i+14]*256*256 + (UCHAR)buf[i+15]*256*256*256;
-			bytesPerSample=max((int)(((UCHAR)buf[i+22] + (UCHAR)buf[i+11]*23)/8),1);
-		}
-		if (buf[i]==(int)'d' && buf[i+1]==(int)'a' && buf[i+2]==(int)'t' && buf[i+3]==(int)'a'){
-			playSize = (UCHAR)buf[i+4] + (UCHAR)buf[i+5]*256 + (UCHAR)buf[i+6]*256*256 + (UCHAR)buf[i+7]*256*256*256;
-		}
-	}
-	fclose(f);
-	return (int)(playSize*1000/(numChan*samplesPerSec*bytesPerSample));
-}
-
-void alarmSound(int alarmId){
-	masterDebug("alarmSound");
-	static int playsUntilTm=0;
-	static int lastAlarmId=0;
-	char installPath[1024];
-	unsigned long installPathLen=1023;
-	installPath[0]='\0';
-	HKEY hkey=NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
-	{
-		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
-		RegCloseKey(hkey);
-	}
-	if (!strlen(installPath))
-	{
-		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		exit(1);
-	}
-	masterDebug("alarmSound","directory read");
-
-	OFSTRUCT lpOpen;
-	char wavFile[1024];
-
-	switch (alarmId){
-		case TRIGGER_BATTLELIST_LIST:sprintf(wavFile,"%s\\mods\\sound\\battlelistlist.wav",installPath);break;
-		case TRIGGER_BATTLELIST_GM:sprintf(wavFile,"%s\\mods\\sound\\battlelistgm.wav",installPath);break;
-		case TRIGGER_BATTLELIST_PLAYER:sprintf(wavFile,"%s\\mods\\sound\\battlelistplayer.wav",installPath);break;
-		case TRIGGER_BATTLELIST_MONSTER:sprintf(wavFile,"%s\\mods\\sound\\battlelistmonster.wav",installPath);break;
-		case TRIGGER_SIGN:		sprintf(wavFile,"%s\\mods\\sound\\sign.wav",installPath);break;
-		case TRIGGER_SKULL:		sprintf(wavFile,"%s\\mods\\sound\\skull.wav",installPath);break;
-		case TRIGGER_VIP:		sprintf(wavFile,"%s\\mods\\sound\\vip.wav",installPath);break;
-		case TRIGGER_MESSAGE:	sprintf(wavFile,"%s\\mods\\sound\\message.wav",installPath);break;
-		case TRIGGER_MOVE:		sprintf(wavFile,"%s\\mods\\sound\\move.wav",installPath);break;
-		case TRIGGER_HPLOSS:	sprintf(wavFile,"%s\\mods\\sound\\hploss.wav",installPath);break;
-		case TRIGGER_HPBELOW:	sprintf(wavFile,"%s\\mods\\sound\\hpbelow.wav",installPath);break;
-		case TRIGGER_HPABOVE:	sprintf(wavFile,"%s\\mods\\sound\\hpabove.wav",installPath);break;
-		case TRIGGER_MANABELOW:	sprintf(wavFile,"%s\\mods\\sound\\manabelow.wav",installPath);break;
-		case TRIGGER_MANAABOVE:	sprintf(wavFile,"%s\\mods\\sound\\manaabove.wav",installPath);break;
-		case TRIGGER_SOULPOINT_BELOW:	sprintf(wavFile,"%s\\mods\\sound\\soulpointbelow.wav",installPath);break;
-		case TRIGGER_SOULPOINT_ABOVE:	sprintf(wavFile,"%s\\mods\\sound\\soulpointabove.wav",installPath);break;
-		case TRIGGER_STAMINA_BELOW:	sprintf(wavFile,"%s\\mods\\sound\\staminabelow.wav",installPath);break;
-		case TRIGGER_STAMINA_ABOVE:	sprintf(wavFile,"%s\\mods\\sound\\staminaabove.wav",installPath);break;
-		case TRIGGER_BLANK:		sprintf(wavFile,"%s\\mods\\sound\\blank.wav",installPath);break;
-		case TRIGGER_CAPACITY:	sprintf(wavFile,"%s\\mods\\sound\\capacity.wav",installPath);break;
-		case TRIGGER_OUTOF_FOOD:		sprintf(wavFile,"%s\\mods\\sound\\outoffood.wav",installPath);break;
-		case TRIGGER_OUTOF_CUSTOM:		sprintf(wavFile,"%s\\mods\\sound\\outofcustom.wav",installPath);break;
-		case TRIGGER_OUTOF_SPACE:		sprintf(wavFile,"%s\\mods\\sound\\outofspace.wav",installPath);break;
-		case TRIGGER_RUNAWAY_REACHED:		sprintf(wavFile,"%s\\mods\\sound\\runawayreached.wav",installPath);break;
-		default:				sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);break;
-	}
-	masterDebug("alarmSound","Wavfile parsed");
-	if (OpenFile(wavFile,&lpOpen,OF_EXIST) == HFILE_ERROR){
-		masterDebug("alarmSound","File not found. Switching to default.");
-		sprintf(wavFile,"%s\\mods\\sound\\alarm.wav",installPath);
-	} 
-	if(OpenFile(wavFile,&lpOpen,OF_EXIST) != HFILE_ERROR){
-		masterDebug("alarmSound","Soundfile exists.");
-		//if (!lastFilename) strcpy(lastFilename,wavFile);
-		if (lastAlarmId != alarmId || clock()>playsUntilTm){// removed :strcmp(lastFilename,wavFile)!=0
-			masterDebug("alarmSound","Time to play.");
-			playsUntilTm = clock()+getWavFileLength(wavFile);
-			lastAlarmId = alarmId;
-			//char buf[122];
-			//sprintf(buf,"%d,%d,%d",(int)playsUntilTm,clock(),getWavFileLength(wavFile));
-			//AfxMessageBox(buf);
-			masterDebug("alarmSound","Sound length:",intstr(getWavFileLength(wavFile)).c_str());
-			PlaySound(wavFile,NULL,SND_FILENAME | SND_ASYNC);
-			
-		}
-		// isn't some wait needed? cause multiple async plays will kill CPU --vanitas(fixed--wis)
-		// isn't some CloseFile() needed? -- vanitas(OF_EXIST closes file after use automatically--wis)
-	} else{
-		masterDebug("alarmSound","Default file not found. Using System Beep");
-		MessageBeep(MB_OK);
-		//PlaySound(TEXT((LPCWSTR)SND_ALIAS_SYSTEMASTERISK), NULL, SND_ALIAS_ID | SND_ASYNC);
-	}	
-}
-
-
 
 char *alarmStatus(int alarmId){	
 	masterDebug("alarmStatus");
@@ -403,508 +264,204 @@ char *alarmStatus(int alarmId){
 	if (alarmId&TRIGGER_STAMINA_ABOVE)	return "Stamina is above a certain value";
 	if (alarmId&TRIGGER_BLANK)		return "Too few blank runes";
 	if (alarmId&TRIGGER_CAPACITY)	return "Capacity is too small";
-	if (alarmId&TRIGGER_OUTOF_SPACE)		return "You run out of space";
-	if (alarmId&TRIGGER_OUTOF_FOOD)		return "You run out of food";
-	if (alarmId&TRIGGER_OUTOF_CUSTOM)		return "You run out of an item";
+	if (alarmId&TRIGGER_OUTOF_SPACE)		return "You've run out of space";
+	if (alarmId&TRIGGER_OUTOF_FOOD)		return "You've run out of food";
+	if (alarmId&TRIGGER_OUTOF_CUSTOM)		return "You've run out of an item";
 	if (alarmId&TRIGGER_RUNAWAY_REACHED)		return "You reached the run away point";
 	return "";
 }
 
-void alarmAction(int alarmId, CConfigData *config){
-	masterDebug("alarmAction");
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-
-	strcpy(config->status,alarmStatus(alarmId));
-
-	//sender.sendTAMessage(statusInfo(alarmId));
-	/*if (config->sound&alarmId){
-		playSound(alarmId);
-	}*/
-
-	int iAction=0;
+void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
+	BITMAP bmp; 
+	PBITMAPINFO pbmi; 
+	WORD cClrBits; 
+	HANDLE hf; // file handle 
+	BITMAPFILEHEADER hdr; // bitmap file-header 
+	PBITMAPINFOHEADER pbih; // bitmap info-header 
+	LPBYTE lpBits; // memory pointer 
+	DWORD dwTotal; // total count of bytes 
+	DWORD cb; // incremental count of bytes 
+	BYTE *hp; // byte pointer 
+	DWORD dwTmp; 
 	
-	if (alarmId&TRIGGER_SIGN)		{iAction|=CConfigDialog::actionPos2ID(config->actionSign);}
-	if (alarmId&TRIGGER_SKULL)		{iAction|=CConfigDialog::actionPos2ID(config->actionSkull);}
-	if (alarmId&TRIGGER_VIP)		{iAction|=CConfigDialog::actionPos2ID(config->actionVIP);}
-	if (alarmId&TRIGGER_MESSAGE)	{iAction|=CConfigDialog::actionPos2ID(config->actionMessage);}
-	if (alarmId&TRIGGER_MOVE)		{iAction|=CConfigDialog::actionPos2ID(config->actionMove);}
-	if (alarmId&TRIGGER_HPLOSS)		{iAction|=CConfigDialog::actionPos2ID(config->actionHpLoss);}
-	if (alarmId&TRIGGER_HPBELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionHpBelow);}
-	if (alarmId&TRIGGER_HPABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionHpAbove);}
-	if (alarmId&TRIGGER_MANABELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionManaBelow);}
-	if (alarmId&TRIGGER_MANAABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionManaAbove);}
-	if (alarmId&TRIGGER_SOULPOINT_BELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionSoulPointBelow);}
-	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionSoulPointAbove);}
-	if (alarmId&TRIGGER_STAMINA_BELOW)	{iAction|=CConfigDialog::actionPos2ID(config->actionStaminaBelow);}
-	if (alarmId&TRIGGER_STAMINA_ABOVE)	{iAction|=CConfigDialog::actionPos2ID(config->actionStaminaAbove);}
-	if (alarmId&TRIGGER_BLANK)		{iAction|=CConfigDialog::actionPos2ID(config->actionBlank);}
-	if (alarmId&TRIGGER_CAPACITY)	{iAction|=CConfigDialog::actionPos2ID(config->actionCapacity);}
-	if (alarmId&TRIGGER_RUNAWAY_REACHED)	{iAction|=CConfigDialog::actionPos2ID(config->actionRunawayReached);}
-	if (alarmId&TRIGGER_BATTLELIST_LIST)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListList);}
-	if (alarmId&TRIGGER_BATTLELIST_GM)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListGm);}
-	if (alarmId&TRIGGER_BATTLELIST_PLAYER)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListPlayer);}
-	if (alarmId&TRIGGER_BATTLELIST_MONSTER)	{iAction|=CConfigDialog::actionPos2ID(config->actionBattleListMonster);}
-	if (alarmId&TRIGGER_OUTOF_FOOD)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfFood);}
-	if (alarmId&TRIGGER_OUTOF_SPACE)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfSpace);}
-	if (alarmId&TRIGGER_OUTOF_CUSTOM)	{iAction|=CConfigDialog::actionPos2ID(config->actionOutOfCustom);}
-
-	// now expand composed actions
-	if (iAction&ACTION_RUNAWAY_CAVEBOT_HALFSLEEP) iAction|=ACTION_RUNAWAY;
-	if (iAction&ACTION_RUNAWAY_CAVEBOT_FULLSLEEP) iAction|=ACTION_RUNAWAY;
-	if (iAction&ACTION_RUNAWAY_BACK) iAction|=ACTION_RUNAWAY;
+	// create the bitmapinfo header information
 	
-
-	//if (iAction&ACTION_SUSPEND){
-		actionSuspend(iAction&ACTION_SUSPEND);
-	//}
-	if (iAction&ACTION_LOGOUT){				
-		//sender.sendTAMessage("Logout");
-		reader.setGlobalVariable("cavebot_halfsleep","true");
-		if(!(reader.getSelfEventFlags()&(128+8192)))
-			sender.logout();
-	} else if (config->allActions&ACTION_LOGOUT)
-	{
-		// support for 'cancel of cavebot halfsleep'
-		reader.setGlobalVariable("cavebot_halfsleep","false");
-	}
-	if (iAction&ACTION_KILL){
-		//sender.sendTAMessage("Kill");
-		sender.logout();
-		Sleep(1500);
-
-		actionTerminate();
-	}
-	if (iAction&ACTION_SHUTDOWN){
-		sender.logout();
-		Sleep(1500);			
-		if (!actionShutdownSystem()){
-			actionTerminate();
-		};
-		Sleep(2000);
-			
-	}
-	if (iAction&ACTION_RUNAWAY_CAVEBOT_HALFSLEEP)
-	{
-		reader.setGlobalVariable("cavebot_halfsleep","true");
-	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOT_HALFSLEEP)
-	{
-		// support for 'cancel of cavebot halfsleep'
-		reader.setGlobalVariable("cavebot_halfsleep","false");
-	}
-	if (iAction&ACTION_RUNAWAY_CAVEBOT_FULLSLEEP)
-	{
-		reader.setGlobalVariable("cavebot_fullsleep","true");
-	} else if (config->allActions&ACTION_RUNAWAY_CAVEBOT_FULLSLEEP)
-	{
-		// support for 'cancel of cavebot fullsleep'
-		reader.setGlobalVariable("cavebot_fullsleep","false");
-	}
-	if (iAction&ACTION_RUNAWAY){
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		CMemConstData memConstData = reader.getMemConstData();
-		CTibiaMapProxy tibiaMap;
-		
-		int path[10000];
-		delete self;
-		self = reader.readSelfCharacter();
-		
-		if (self->x!=config->runawayX || self->y!=config->runawayY || self->z!=config->runawayZ){
-			
-			// proceed with path searching									
-			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->runawayX,config->runawayY,config->runawayZ,0,path,1);
-			int pathSize;
-			for (pathSize=0;pathSize<10000&&path[pathSize];pathSize++){}										
-			if (pathSize){
-				CModuleUtil::executeWalk(self->x,self->y,self->z,path);
-				CModuleUtil::sleepWithStop(500,&toolThreadShouldStop);
-			}
-		}
-		delete self;
-	}else if (config->allActions&ACTION_RUNAWAY_BACK){
-		// support for 'go back to act'
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		CMemConstData memConstData = reader.getMemConstData();
-		CTibiaMapProxy tibiaMap;
-		
-		int path[10000];
-		delete self;
-		self = reader.readSelfCharacter();
-		
-		if (self->x!=config->actX || self->y!=config->actY || self->z!=config->actZ){
-			
-			CModuleUtil::sleepWithStop(2000,&toolThreadShouldStop);
-			
-			// proceed with path searching									
-			CModuleUtil::findPathOnMap(self->x,self->y,self->z,config->actX,config->actY,config->actZ,0,path,1);
-			int pathSize;
-			for (pathSize=0;pathSize<10000&&path[pathSize];pathSize++){}										
-			if (pathSize){
-				CModuleUtil::executeWalk(self->x,self->y,self->z,path);											
-			}
-		}else{
-			if (config->actDirection){
-				CPackSenderProxy sender;
-				if (config->actDirection==DIR_LEFT){
-					sender.turnLeft();
-				}else if(config->actDirection==DIR_RIGHT){
-					sender.turnRight();
-				}else if(config->actDirection==DIR_UP){
-					sender.turnUp();
-				}else if(config->actDirection==DIR_DOWN){
-					sender.turnDown();
-				}
-			}
-		}
-		delete self;
-	}
-}
-
-int triggerRunawayReached(CConfigData *config)
-{
-	masterDebug("triggerRunawayReached");
-	
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int maxDistance=config->optionsRunawayReached;
-	int ret=1;
-
-
-	if (self->z!=config->runawayZ) ret=0;
-	if (max(abs(self->x-config->runawayX),abs(self->y-config->runawayY))>maxDistance) ret=0;
-	masterDebug("triggerRunawayReached-Values",intstr(self->x).c_str(),intstr(self->y).c_str(),intstr(self->z).c_str(),intstr(config->runawayX).c_str(),intstr(config->runawayY).c_str(),intstr(config->runawayZ).c_str());
-	masterDebug("triggerRunawayReached-Values2",intstr(abs(self->x-config->runawayX)+abs(self->y-config->runawayY)).c_str(),intstr(maxDistance).c_str(),intstr(self->z-config->runawayZ).c_str());
-
-	delete self;		
-	return ret;
-}
-
-int isSpellMessage(char *msg)
-{
-	masterDebug("isSpellMessage");
-	CPackSenderProxy sender;
-	int pos;
-	const char *spellPre[] = 
-	{
-		"ex",
-		"ad",
-		"ut",
-		"al",
-		NULL
-	};
-	const char *spellSuf[] = 
-	{
-		"ana",
-		"eta",
-		"evo",
-		"ito",
-		"ori",
-		"ura",
-		"ani",
-		"iva",
-		"amo",
-		NULL
-	};
-	char newmsg[128];
-	newmsg[0]=0;
-	//get 5 characters from msg discarding all spaces
-	int count=0;
-	for (int i=0;count<5&&msg[i];i++){
-		if (msg[i]!=' '){
-			newmsg[count]=msg[i];
-			count++;
-		}
-	}
-	newmsg[count]='\0';
-	if (strlen(newmsg)!=5) return 0;
-	//if string starts with prefix and is = prefix+suffix, return 1
-	for (pos=0;spellPre[pos];pos++){
-		if (strnicmp(newmsg,spellPre[pos],2)==0){
-			for (int pos2=0;spellSuf[pos2];pos2++){
-				char tmp[10];
-				tmp[0]=0;
-				strcat(tmp,spellPre[pos]);
-				strcat(tmp,spellSuf[pos2]);
-				tmp[5]='\0';
-				if (strnicmp(newmsg,tmp,5)==0){
-					return 1;
-				}
-			}
-		}
-	}
-	return 0;
-}
-
-int triggerOutOfFood()
-{
-	masterDebug("triggerOutOfFood");
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;	
-	int wormId = itemProxy.getValueForConst("worms");
-	
-	int maxCont=itemProxy.getValueForConst("maxContainers");
-	for (int cont=0;cont<maxCont;cont++){
-
-		CTibiaItem *item = CModuleUtil::lookupItem(cont,itemProxy.getFoodIdArrayPtr());
-		if (item){
-			delete item;
-			return 0;
-		}
-
-		CUIntArray otherItems;
-		otherItems.Add(wormId);
-		item = CModuleUtil::lookupItem(cont,&otherItems);
-		if (item){
-			delete item;
-			return 0;
-		}
+	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp)) {
+		AfxMessageBox("Could not retrieve bitmap info");
+		return;
 	}
 	
-	return 1;
-}
-
-int triggerOutOfSpace()
-{
-	masterDebug("triggerOutOfSpace");
-	CMemReaderProxy reader;
+	// Convert the color format to a count of bits. 
+	cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel); 
+	if (cClrBits == 1) 
+		cClrBits = 1; 
+	else if (cClrBits <= 4) 
+		cClrBits = 4; 
+	else if (cClrBits <= 8) 
+		cClrBits = 8; 
+	else if (cClrBits <= 16) 
+		cClrBits = 16; 
+	else if (cClrBits <= 24) 
+		cClrBits = 24; 
+	else cClrBits = 32; 
+	// Allocate memory for the BITMAPINFO structure.
+	if (cClrBits != 24) 
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, 
+		sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<< cClrBits)); 
+	else 
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER)); 
 	
-	int pos;	
+	// Initialize the fields in the BITMAPINFO structure. 
 	
+	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER); 
+	pbmi->bmiHeader.biWidth = bmp.bmWidth; 
+	pbmi->bmiHeader.biHeight = bmp.bmHeight; 
+	pbmi->bmiHeader.biPlanes = bmp.bmPlanes; 
+	pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel; 
+	if (cClrBits < 24) 
+		pbmi->bmiHeader.biClrUsed = (1<<cClrBits); 
 	
-	for (pos=0;pos<10;pos++){		
-		
-		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff){
-			if (container->itemsInside<container->size) 
-			{
-				delete container;
-				return 0;
-			}			
-		}
-		delete container;
+	// If the bitmap is not compressed, set the BI_RGB flag. 
+	pbmi->bmiHeader.biCompression = BI_RGB; 
+	
+	// Compute the number of bytes in the array of color 
+	// indices and store the result in biSizeImage. 
+	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) /8 * pbmi->bmiHeader.biHeight * cClrBits; 
+	// Set biClrImportant to 0, indicating that all of the 
+	// device colors are important. 
+	pbmi->bmiHeader.biClrImportant = 0; 
+	
+	// now open file and save the data
+	pbih = (PBITMAPINFOHEADER) pbmi; 
+	lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
+	
+	if (!lpBits) {
+		AfxMessageBox("writeBMP::Could not allocate memory");
+		return;
 	}
 	
-	return 1;
-}
-
-int triggerOutOfCustom(int customItemId)
-{
-	masterDebug("triggerOutOfCustom");
-	CMemReaderProxy reader;
-	CUIntArray itemArray;
-			
-	itemArray.Add(customItemId);
-	int pos;	
-	
-	
-	for (pos=0;pos<10;pos++){		
-		CTibiaContainer *container = reader.readContainer(pos);
-		if (container->flagOnOff){
-			CTibiaItem *item = CModuleUtil::lookupItem(pos,&itemArray);
-			if (item != NULL){					
-				delete item;
-				delete container;
-				return 0;
-			}
-		}			
-		
-		delete container;
+	// Retrieve the color table (RGBQUAD array) and the bits 
+	if (!GetDIBits(hDC, HBITMAP(bitmap), 0, (WORD) pbih->biHeight, lpBits, pbmi, 
+		DIB_RGB_COLORS)) {
+		AfxMessageBox("writeBMP::GetDIB error");
+		return;
 	}
-		
-	return 1;
+	
+	// Create the .BMP file. 
+	hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0, 
+		NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 
+		(HANDLE) NULL); 
+	if (hf == INVALID_HANDLE_VALUE){
+		AfxMessageBox("Could not create file for writing");
+		return;
+	}
+	hdr.bfType = 0x4d42; // 0x42 = "B" 0x4d = "M" 
+	// Compute the size of the entire file. 
+	hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) + 
+		pbih->biSize + pbih->biClrUsed 
+		* sizeof(RGBQUAD) + pbih->biSizeImage); 
+	hdr.bfReserved1 = 0; 
+	hdr.bfReserved2 = 0; 
+	
+	// Compute the offset to the array of color indices. 
+	hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) + 
+		pbih->biSize + pbih->biClrUsed 
+		* sizeof (RGBQUAD); 
+	
+	// Copy the BITMAPFILEHEADER into the .BMP file. 
+	if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER), 
+		(LPDWORD) &dwTmp, NULL)) {
+		AfxMessageBox("Could not write in to file");
+		return;
+	}
+	
+	// Copy the BITMAPINFOHEADER and RGBQUAD array into the file. 
+	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) 
+		+ pbih->biClrUsed * sizeof (RGBQUAD), 
+		(LPDWORD) &dwTmp, ( NULL))){
+		AfxMessageBox("Could not write in to file");
+		return;
+	}	
+	
+	// Copy the array of color indices into the .BMP file. 
+	dwTotal = cb = pbih->biSizeImage; 
+	hp = lpBits; 
+	if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL)) {
+		AfxMessageBox("Could not write in to file");
+		return;
+	}
+	
+	// Close the .BMP file. 
+	if (!CloseHandle(hf)){
+		AfxMessageBox("Could not close file");
+		return;
+	}
+
+	// Free memory. 
+	GlobalFree((HGLOBAL)lpBits);
 }
 
-int triggerSkulls(int options)
-{
-	masterDebug("triggerSkulls");
-	CPackSenderProxy sender;
+DWORD WINAPI takeScreenshot(LPVOID lpParam) {		
 	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureNr;
+	if (!tibiaHWND)
+		EnumWindows(EnumWindowsProc, NULL);
+	RECT rect;
+	bool captured = false;
+	bool minimized = IsIconic(tibiaHWND);
+
+	char path[1024];
+	CModuleUtil::getInstallPath(path);
+	time_t lTime;
+	time(&lTime);
+	char timeBuf[64];
+	strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", gmtime(&lTime));
+	CString filePath;
+	filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
 	
-	
-	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
-		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-		
-		if (ch->visible){
-			if (ch->tibiaId!=self->tibiaId)
-			{				
-				if (ch->z==self->z)
-				{					
-					if ((int)pow(2,ch->skulls) & options)
-					{
-						delete ch;
-						delete self;						
-						return 1;
-					}
-				}
-			}
-			
+	while (!captured) {
+		Sleep (100);
+		if (reader.getConnectionState()!=8)
+			continue;
+		if(IsIconic(tibiaHWND)) {
+			ShowWindow(tibiaHWND, SW_RESTORE);
+			continue;
 		}
-		delete ch;
-	};
-	delete self;
-	return 0;
-}
-
-int triggerVIP()
-{
-	masterDebug("triggerVIP");
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaVIPEntry *vip;
-
-	int vipNr;
-	for (vipNr=0;strcmp((vip=reader.readVIPEntry(vipNr))->name,"");vipNr++){
-		if (vip->icon==2 && vip->status==1){
-			delete vip;
-			return 1;
+		if(tibiaHWND != GetForegroundWindow()) {
+			SetForegroundWindow(tibiaHWND);
+			continue;
 		}
-		delete vip;
-	};
-	return 0;
-}
+		Sleep (500);
+		GetClientRect(tibiaHWND, &rect);
 
-int triggerBattleListList(char whiteList[100][32],int options,int makeBlackList)
-{
-	masterDebug("triggerBattleListList");
-	CMemReaderProxy reader;
-
-	return (reader.readBattleListMax()>=0||reader.readBattleListMin()>=0);	
-}
-
-int triggerBattleListGm(char whiteList[100][32],int options,int makeBlackList)
-{
-	masterDebug("triggerBattleListGm");
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureNr;
-	
-	
-	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
-		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-		
-		if (ch->visible){		
-			if (ch->tibiaId!=self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ makeBlackList))
-			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
-				{					
-					if (ch->name[0]=='G'&&ch->name[1]=='M')
-					{
-						// this is GM						
-						delete ch;
-						delete self;						
-						return 1;
-					}
-					if (ch->name[0]=='C'&&ch->name[1]=='M')
-					{
-						// this is CM						
-						delete ch;
-						delete self;						
-						return 1;
-					}
-					
-					
-				}
-			}
-			
-		}
-		delete ch;
-	};
-	delete self;
-	return 0;
-}
-
-int triggerBattleListMonster(char whiteList[100][32],int options,int makeBlackList)
-{
-	masterDebug("triggerBattleListMonster");
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureNr;
-	
-	
-	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
-		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-		
-		if (ch->visible){
-			if (ch->tibiaId!=self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ makeBlackList))
-			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
-				{					
-					
-					// this is monster/npc
-					if (ch->tibiaId >= 0x40000000)
-					{
-						delete ch;
-						delete self;							
-						return 1;
-					}
-					
-				}
-			}
-			
-		}
-		delete ch;
-	};
-	delete self;
-	return 0;
-}
-int triggerBattleListPlayer(char whiteList[100][32],int options,int makeBlacklist)
-{
-	masterDebug("triggerBattleListPlayer");
-	CPackSenderProxy sender;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int creatureNr;
-	
-	
-	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++){
-		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-		
-		if (ch->visible){		
-			if (ch->tibiaId!=self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ makeBlacklist))
-			{				
-				if (ch->z==self->z||(options&BATTLELIST_PARANOIAM)||(options&BATTLELIST_ANXIETY&&abs(ch->z-self->z)<=1))
-				{					
-					
-					// this is other player
-					if (ch->tibiaId < 0x40000000)
-					{
-						delete ch;
-						delete self;							
-						return 1;
-					}
-					
-				}
-			}
-			
-		}
-		delete ch;
-	};
-	delete self;
-	return 0;
+		int nWidth = rect.right - rect.left;
+		int mHeight = rect.bottom - rect.top;
+		HDC hDDC = GetDC(tibiaHWND);
+		HDC hCDC = CreateCompatibleDC(hDDC);
+		HBITMAP hBitmap =CreateCompatibleBitmap(hDDC,nWidth,mHeight);
+		SelectObject(hCDC,hBitmap); 
+		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,0,0,SRCCOPY); 
+		WriteBMPFile(hBitmap, filePath, hCDC);
+		captured = true;
+	}
+	if (minimized)
+		ShowWindow(tibiaHWND, SW_MINIMIZE);
+	return NULL;
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
 	masterDebug("toolThreadProc");
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
-
+	list<Alarm>::iterator alarmItr;
 	CTibiaCharacter *self = reader.readSelfCharacter();
+	char path[1024];
+	CModuleUtil::getInstallPath(path);
+	strcat(path, "\\mods\\sound\\");
 
 	int lastX = self->x;
 	int lastY = self->y;
@@ -914,269 +471,385 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int lastMana = self->mana;
 	int recoveryAlarmHp=0;
 	int recoveryAlarmMana=0;
+	int goPriority = 0;
 	
-	int alarm;
-
 	delete self;	
 
 	PlaySound(0, 0, 0);
 		
-	while (!toolThreadShouldStop)
-	{			
+	while (!toolThreadShouldStop) {			
 		Sleep(100);
-		alarm = 0;
-	
+		//if we're not looking for messages consume them anyway to avoid buffer overflow/expansion
+		if (!config->triggerMessage)
+			triggerMessage();
+		alarmItr = config->alarmList.begin();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (recoveryAlarmMana&&self->mana==self->maxMana) recoveryAlarmMana=0;
 		if (recoveryAlarmHp&&self->hp==self->maxMana) recoveryAlarmHp=0;
-		delete self;
-	
 
-		if (config->trigger&TRIGGER_SIGN){
-			int flags = reader.getSelfEventFlags()&config->optionsSign;
-			if (flags){
-				alarm |= TRIGGER_SIGN;
-				if (config->sound&TRIGGER_SIGN)
-					alarmSound(TRIGGER_SIGN);
-			}
-			//0x00000001 - poison;
-			//0x00000002 - fire;
-			//0x00000004 - energy;
-			//0x00000008 - drunk;
-			//0x00000010 - shield;
-			//0x00000020 - paralize;
-			//0x00000040 - haste
-			//0x00000080 - attack;
-			/*char buffer[1024];
-			sprintf(buffer,"0x%x",reader.getSelfEventFlags());
-			sender.sendTAMessage(buffer);
-			Sleep(1000);*/
-		}
-		if (config->trigger&TRIGGER_SKULL){
-			if (triggerSkulls(config->optionsSkull)){
-				alarm |= TRIGGER_SKULL;
-				if (config->sound&TRIGGER_SKULL)
-					alarmSound(TRIGGER_SKULL);
-			}
-			//1 - yellow;
-			//2 - green;
-			//3 - white;
-			//4 - red;
-			//5 - black;
-		}
-		if (config->trigger&TRIGGER_VIP){
-			if (triggerVIP()){
-				alarm |= TRIGGER_VIP;
-				if (config->sound&TRIGGER_VIP)
-					alarmSound(TRIGGER_VIP);
-			}
-		}
-		if (config->trigger&TRIGGER_MESSAGE){
-			struct tibiaMessage *msg = triggerMessage();
+		//insert my alarm check and action code
+		while (alarmItr != config->alarmList.end()) {
+			if (alarmItr->checkAlarm(config->whiteList, config->options)) {
+				// Flash Window ***************
+				if (!alarmItr->flashed) {
+					if (!tibiaHWND)
+						EnumWindows(EnumWindowsProc, NULL);
+					FlashWindow(tibiaHWND, true);
+					alarmItr->flashed = true;
+				}// ***************************
 
-			
-			int isSpell = msg && (config->optionsMessage&MESSAGE_IGNORE_SPELLS) && isSpellMessage(msg->msg);
-			
-			if (config->optionsMessage&MESSAGE_PUBLIC && !isSpell && msg && (msg->type == 1 || msg->type == 2) /*|| iType == 3*/){
-				alarm |= TRIGGER_MESSAGE;
-				if (config->sound&TRIGGER_MESSAGE)
-					alarmSound(TRIGGER_MESSAGE);
-			}
-			if (config->optionsMessage&MESSAGE_PRIVATE && !isSpell && msg && msg->type == 6){
-				alarm |= TRIGGER_MESSAGE;
-				if (config->sound&TRIGGER_MESSAGE)
-					alarmSound(TRIGGER_MESSAGE);
-			}
-			if (msg) delete msg;
+				// Log Event ******************
+				if (alarmItr->doLogEvents() && !alarmItr->eventLogged) {
+					time_t rawtime;
+					struct tm * timeinfo;					
+					timeinfo = localtime(&rawtime );
+					CString dateStr = asctime(timeinfo);
+					char filename[64];
+					strftime(filename, 64, "%d%b%y.txt", gmtime(&rawtime));
+					CString pathBuf;
+					pathBuf.Format("%s\\logs\\%s", path, filename);
+					FILE *f = fopen(pathBuf, "a+");
+					if (f) {
+						fprintf(f, "%s  %s\n\t%s", "***  Active  -->", alarmItr->getDescriptor(), dateStr);
+						fclose(f);
+					}
+					alarmItr->eventLogged = true;
+				}// ****************************
 
-		}
-		if (config->trigger&TRIGGER_MOVE){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (lastX != self->x || lastY != self->y || lastZ != self->z){
-				alarm |= TRIGGER_MOVE;
-				if (config->sound&TRIGGER_MOVE)
-					alarmSound(TRIGGER_MOVE);
-				lastMoved=1;
-			} else {
-				if (lastMoved)
-				{
-					alarm |= TRIGGER_MOVE;
-					if ((config->sound&TRIGGER_MOVE))
-						alarmSound(TRIGGER_MOVE);
+				// Play sound ******************
+				if (alarmItr->doAlarm().GetLength()) 
+					PlaySound(path + alarmItr->doAlarm(), NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
+				// *****************************
+
+				// Attack ******************
+				if (alarmItr->doAttack()) { 
+					HANDLE hSnap;
+					hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
+					if (hSnap) {
+						MODULEENTRY32 lpModule;
+						lpModule.dwSize = sizeof(MODULEENTRY32);
+
+						Module32First(hSnap,&lpModule);
+						do {
+							if (lpModule.szModule == "mod_cavebot.dll") {
+								FARPROC isStarted;
+								isStarted = GetProcAddress(lpModule.hModule, "isStarted");
+								if (isStarted && !isStarted()) {
+									GetProcAddress(lpModule.hModule,"start")();
+									alarmItr->cavebotForced = true;
+								}
+							}
+						} while (Module32Next(hSnap,&lpModule));
+						CloseHandle(hSnap);
+					}
 				}
+				else {
+					reader.setGlobalVariable("cavebot_fullsleep","true");
+					fullSleep++;
+				}
+				// *****************************
+				
+				// Maximize Window *************
+				if (alarmItr->doMaximizeClient() && !alarmItr->maximized) {
+					if (!tibiaHWND)
+						EnumWindows(EnumWindowsProc, NULL);
+					ShowWindow(tibiaHWND, SW_MAXIMIZE);
+					alarmItr->maximized = true;
+				}// ****************************
+				
+				// Suspend Modules  ************
+				if (alarmItr->doStopModules().size() && !alarmItr->modulesSuspended) {
+					list<CString> temp = alarmItr->doStopModules();
+					list<CString>::iterator modulesItr = temp.begin();
+					while(modulesItr != temp.end()) {
+						actionSuspend(*modulesItr);
+						modulesItr++;
+						alarmItr->modulesSuspended = true;
+					}
+				}// ****************************
+			
+				// Start Modules ***************
+				if (alarmItr->doStartModules().size() && !alarmItr->modulesStarted) {
+					list<CString> temp = alarmItr->doStartModules();
+					list<CString>::iterator modulesItr = temp.begin();
+					while(modulesItr != temp.end()) {
+						actionStart(*modulesItr);
+						modulesItr++;
+						alarmItr->modulesStarted = true;
+					}
+
+				}// ****************************
+
+				// Cast spell ******************
+				if (alarmItr->doCastSpell().GetLength() && !alarmItr->spellCast) {
+					if (self->mana >= alarmItr->getManaCost()) {
+						sender.sayWhisper(alarmItr->doCastSpell());
+						alarmItr->spellCast = true;
+					}
+					delete self;
+				}
+				// *****************************
+
+				// Take Screenshot ******************
+				if (alarmItr->doTakeScreenshot() > -1) {
+					DWORD threadId;
+					switch (alarmItr->doTakeScreenshot()) {
+					case 0:
+						if (!alarmItr->screenshotsTaken) {
+							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+							alarmItr->timeLastSS = time(NULL);
+						}
+						break;
+					case 1:
+						if (alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
+							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+							alarmItr->timeLastSS = time(NULL);
+						}
+						break;
+					case 2:
+						if (time(NULL) - alarmItr->timeLastSS >= 5) {
+							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+							alarmItr->timeLastSS = time(NULL);
+						}
+						break;
+					case 3:
+						if (time(NULL) - alarmItr->timeLastSS >= 10) {
+							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+							alarmItr->timeLastSS = time(NULL);
+						}
+						break;
+					}				
+				}
+				// *****************************
+
+				// Goto Start ******************
+				if (alarmItr->doGoToStart()  && goPriority <= 1) {
+					goPriority = 1;
+				}// ****************************
+
+				// Goto Runaway ****************
+				if (alarmItr->doGoToRunaway() && goPriority <= 2) {
+					goPriority = 2;
+				}
+				// *****************************
+
+				// Goto Depot ******************
+				if (alarmItr->doGoToDepot()  && goPriority <= 3) {
+					goPriority = 3;
+				}// ****************************
+
+				// Logout **********************
+				if (alarmItr->doLogout()) {
+					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() != 8 ) {
+						sender.logout();
+					}
+				}
+				// *****************************
+
+				// Kill Client *****************
+				if (alarmItr->doKillClient()) {
+					actionTerminate();
+				}
+				// *****************************
+
+				// Shutdown Computer ***********
+				if (alarmItr->doShutdownComputer()) {
+					actionShutdownSystem();
+				}
+				// *****************************
 
 			}
-			lastX = self->x;
-			lastY = self->y;
-			lastZ = self->z;			
-			delete self;
-		}
-		if (config->trigger&TRIGGER_HPLOSS){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (lastHp > self->hp ){
-				alarm |= TRIGGER_HPLOSS;
-				if (config->sound&TRIGGER_HPLOSS)
-					alarmSound(TRIGGER_HPLOSS);
+			else if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
+				// the alarm may have stopped BEFORE we took our 3 screenshots, let's contuinue
+				DWORD threadId;
+				::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
+				alarmItr->screenshotsTaken++;
+				alarmItr->timeLastSS = time(NULL);
 			}
-			lastHp = self->hp;
-			delete self;
-		}
-		if (config->trigger&TRIGGER_HPBELOW){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->hp < config->optionsHpBelow||recoveryAlarmHp){
-				alarm |= TRIGGER_HPBELOW;
-				if (config->sound&TRIGGER_HPBELOW)
-					alarmSound(TRIGGER_HPBELOW);
-				if (config->optionsHpBelowUntilRecovery) recoveryAlarmHp=1;
+			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
+				if (alarmItr->cavebotForced)
+					actionSuspend("mod_cavebot.dll");
+				alarmItr->cavebotForced = false;
+				alarmItr->flashed = false;
+				alarmItr->maximized = false;
+				PlaySound(NULL, NULL, SND_NOSTOP);
+				alarmItr->spellCast = false;
+				alarmItr->timeLastSS = time(NULL);
+				alarmItr->screenshotsTaken = 0;
+				if (alarmItr->modulesStarted && alarmItr->modulesStarted) { // Stop when alarm is over
+					list<CString> temp = alarmItr->doStartModules();
+					list<CString>::iterator modulesItr = temp.begin();
+					while(modulesItr != temp.end()) {
+						actionSuspend(*modulesItr);
+						modulesItr++;
+					}
+					alarmItr->modulesStarted = false;
+				}
+				if (alarmItr->modulesSuspended && alarmItr->modulesSuspended) { // Start when alarm is over
+					list<CString> temp = alarmItr->doStopModules();
+					list<CString>::iterator modulesItr = temp.begin();
+					while(modulesItr != temp.end()) {
+						actionStart(*modulesItr);
+						modulesItr++;
+					}
+					alarmItr->modulesSuspended = false;
+				}
+				if (alarmItr->eventLogged) {
+					time_t rawtime;
+					struct tm * timeinfo;					
+					timeinfo = localtime(&rawtime );
+					CString dateStr = asctime(timeinfo);
+					char filename[64];
+					strftime(filename, 64, "%d%b%y.txt", gmtime(&rawtime));
+					CString pathBuf;
+					pathBuf.Format("%s\\logs\\%s", path, filename);
+					FILE *f = fopen(pathBuf, "a+");
+					if (f) {
+						fprintf(f, "%s  %s\n\t%s", "***  Inactive  -->", alarmItr->getDescriptor(), dateStr);
+						fclose(f);
+					}
+					alarmItr->eventLogged = false;
+				}
 			}
-			lastHp = self->hp;
-			delete self;
+			alarmItr++;
 		}
-		if (config->trigger&TRIGGER_HPABOVE){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->hp > config->optionsHpAbove){
-				alarm |= TRIGGER_HPABOVE;
-				if (config->sound&TRIGGER_HPABOVE)
-					alarmSound(TRIGGER_HPABOVE);
+		// Do not let seperate alarms fight for control!!
+		switch (goPriority) {
+			if (!reader.getGlobalVariable("cavebot_fullsleep")) {
+				reader.setGlobalVariable("cavebot_halfsleep","true");
+				halfSleep++;
 			}
-			lastHp = self->hp;
+		case 1: {// Start position (By definition, the least safe place to be)
+			int pathSize = 0;
+			self = reader.readSelfCharacter();
+			CMemConstData memConstData = reader.getMemConstData();
+			int path[15];
 			delete self;
-		}
-		if (config->trigger&TRIGGER_MANABELOW){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->mana < config->optionsManaBelow||recoveryAlarmMana){
-				alarm |= TRIGGER_MANABELOW;
-				if (config->sound&TRIGGER_MANABELOW)
-					alarmSound(TRIGGER_MANABELOW);
-				if (config->optionsManaBelowUntilRecovery) recoveryAlarmMana=1;
+			
+			self = reader.readSelfCharacter();
+			if (self->x != config->actX || self->y != config->actY || self->z != config->actZ) {						
+				// proceed with path searching									
+				CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+				for (; pathSize < 15 && path[pathSize]; pathSize++);										
+				if (pathSize)
+					CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
 			}
-			lastMana = self->mana;
-			delete self;
-		}
-		if (config->trigger&TRIGGER_MANAABOVE){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->mana > config->optionsManaAbove){
-				alarm |= TRIGGER_MANAABOVE;
-				if (config->sound&TRIGGER_MANAABOVE)
-					alarmSound(TRIGGER_MANAABOVE);
-			}
-			lastMana = self->mana;
-			delete self;
-		}
-		if (config->trigger&TRIGGER_SOULPOINT_BELOW){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->soulPoints < config->optionsSoulPointBelow){
-				alarm |= TRIGGER_SOULPOINT_BELOW;
-				if (config->sound&TRIGGER_SOULPOINT_BELOW)
-					alarmSound(TRIGGER_SOULPOINT_BELOW);
-			}
-			delete self;
-		}
-		if (config->trigger&TRIGGER_SOULPOINT_ABOVE){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->soulPoints > config->optionsSoulPointAbove){
-				alarm |= TRIGGER_SOULPOINT_ABOVE;
-				if (config->sound&TRIGGER_SOULPOINT_ABOVE)
-					alarmSound(TRIGGER_SOULPOINT_ABOVE);
-			}
-			delete self;
-		}
-		if (config->trigger&TRIGGER_STAMINA_BELOW){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->stamina < config->optionsStaminaBelow){
-				alarm |= TRIGGER_STAMINA_BELOW;
-				if (config->sound&TRIGGER_STAMINA_BELOW)
-					alarmSound(TRIGGER_STAMINA_BELOW);
-			}
-			delete self;
-		}
-		if (config->trigger&TRIGGER_STAMINA_ABOVE){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->stamina > config->optionsStaminaAbove){
-				alarm |= TRIGGER_STAMINA_ABOVE;
-				if (config->sound&TRIGGER_STAMINA_ABOVE)
-					alarmSound(TRIGGER_STAMINA_ABOVE);
+			else if (config->actDirection) {
+				if (config->actDirection == DIR_LEFT)
+					sender.turnLeft();
+				else if(config->actDirection == DIR_RIGHT)
+					sender.turnRight();
+				else if(config->actDirection == DIR_UP)
+					sender.turnUp();
+				else if(config->actDirection == DIR_DOWN)
+					sender.turnDown();
 			}
 			delete self;
-		}
-		if (config->trigger&TRIGGER_BLANK){
-			if (triggerBlank() < config->optionsBlank){
-				alarm |= TRIGGER_BLANK;
-				if (config->sound&TRIGGER_BLANK)
-					alarmSound(TRIGGER_BLANK);
-			}
-		}
-		if (config->trigger&TRIGGER_RUNAWAY_REACHED){
-			if (triggerRunawayReached(config)){
-				alarm |= TRIGGER_RUNAWAY_REACHED;
-				if (config->sound&TRIGGER_RUNAWAY_REACHED)
-					alarmSound(TRIGGER_RUNAWAY_REACHED);
-			}
-		}
-		if (config->trigger&TRIGGER_CAPACITY){
-			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->cap < config->optionsCapacity){
-				alarm |= TRIGGER_CAPACITY;
-				if (config->sound&TRIGGER_CAPACITY)
-					alarmSound(TRIGGER_CAPACITY);
+			   }
+			break;
+		case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
+			int pathSize = 0;
+			self = reader.readSelfCharacter();
+			CMemConstData memConstData = reader.getMemConstData();
+			CTibiaMapProxy tibiaMap;
+			
+			int path[15];
+			delete self;
+			self = reader.readSelfCharacter();
+			
+			if (self->x != config->runawayX || self->y != config->runawayY || self->z != config->runawayZ) {						
+				// proceed with path searching									
+				CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
+				for (; pathSize < 15 && path[pathSize]; pathSize++);										
+				if (pathSize)
+					CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 			}
 			delete self;
-		}
-		if (config->trigger&TRIGGER_OUTOF_FOOD){
-			if (triggerOutOfFood()){
-				alarm |= TRIGGER_OUTOF_FOOD;
-				if (config->sound&TRIGGER_OUTOF_FOOD)
-					alarmSound(TRIGGER_OUTOF_FOOD);
+				}
+			break;
+		case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+			int pathSize = 0;
+			self = reader.readSelfCharacter();
+			CMemConstData memConstData = reader.getMemConstData();
+			int path[15];
+			CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+			for (; pathSize < 15 && path[pathSize]; pathSize++);										
+			if (pathSize)
+				CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+			delete self;
+				}
+			break;
+		default: {
+			if (config->maintainStart) {
+				int pathSize = 0;
+				self = reader.readSelfCharacter();
+				CMemConstData memConstData = reader.getMemConstData();
+				int path[15];
+				delete self;
+				
+				self = reader.readSelfCharacter();
+				if (self->x != config->actX || self->y != config->actY || self->z != config->actZ) {						
+					// proceed with path searching									
+					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+					for (; pathSize < 15 && path[pathSize]; pathSize++);										
+					if (pathSize)
+						CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+				}
+				else if (config->actDirection) {
+					if (config->actDirection == DIR_LEFT)
+						sender.turnLeft();
+					else if(config->actDirection == DIR_RIGHT)
+						sender.turnRight();
+					else if(config->actDirection == DIR_UP)
+						sender.turnUp();
+					else if(config->actDirection == DIR_DOWN)
+						sender.turnDown();
+				}
+				delete self;
 			}
+			   }
+			break;
 		}
-		if (config->trigger&TRIGGER_OUTOF_SPACE){
-			if (triggerOutOfSpace()){
-				alarm |= TRIGGER_OUTOF_SPACE;
-				if (config->sound&TRIGGER_OUTOF_SPACE)
-					alarmSound(TRIGGER_OUTOF_SPACE);
-			}
-		}
-		if (config->trigger&TRIGGER_OUTOF_CUSTOM){
-			if (triggerOutOfCustom(config->optionsOutOfCustomItem)){
-				alarm |= TRIGGER_OUTOF_CUSTOM;
-				if (config->sound&TRIGGER_OUTOF_CUSTOM)
-					alarmSound(TRIGGER_OUTOF_CUSTOM);
-			}
-		}
-		if (config->trigger&TRIGGER_BATTLELIST_LIST){
-			if (triggerBattleListList(config->whiteList,config->optionsBattleList,config->mkBlack)){
-				alarm |= TRIGGER_BATTLELIST_LIST;
-				if (config->sound&TRIGGER_BATTLELIST_LIST)
-					alarmSound(TRIGGER_BATTLELIST_LIST);
-			}
-		}
-		if (config->trigger&TRIGGER_BATTLELIST_GM){
-			if (triggerBattleListGm(config->whiteList,config->optionsBattleList,config->mkBlack)){
-				alarm |= TRIGGER_BATTLELIST_GM;
-				if (config->sound&TRIGGER_BATTLELIST_GM)
-					alarmSound(TRIGGER_BATTLELIST_GM);
-			}
-		}
-		if (config->trigger&TRIGGER_BATTLELIST_MONSTER){
-			if (triggerBattleListMonster(config->whiteList,config->optionsBattleList,config->mkBlack)){
-				alarm |= TRIGGER_BATTLELIST_MONSTER;
-				if (config->sound&TRIGGER_BATTLELIST_MONSTER)
-					alarmSound(TRIGGER_BATTLELIST_MONSTER);
-			}
-		}
-		if (config->trigger&TRIGGER_BATTLELIST_PLAYER){
-			if (triggerBattleListPlayer(config->whiteList,config->optionsBattleList,config->mkBlack)){
-				alarm |= TRIGGER_BATTLELIST_PLAYER;
-				if (config->sound&TRIGGER_BATTLELIST_PLAYER)
-					alarmSound(TRIGGER_BATTLELIST_PLAYER);
-			}
-		}
-	
+		goPriority = 0;
+	}
 
-		alarmAction(alarm,config);
+	// Clean-up alarm flags before disabling, reset modules to previous state.
+	alarmItr = config->alarmList.begin();
+	while (alarmItr != config->alarmList.end()) {
+		alarmItr->cavebotForced = false;
+		alarmItr->flashed = false;
+		alarmItr->maximized = false;
+		alarmItr->spellCast = false;
+		alarmItr->timeLastSS = time(NULL);
+		alarmItr->screenshotsTaken = 0;
+		if (alarmItr->modulesStarted) { // Stop when alarm is over
+			list<CString> temp = alarmItr->doStartModules();
+			list<CString>::iterator modulesItr = temp.begin();
+			while(modulesItr != temp.end()) {
+				actionSuspend(*modulesItr);
+				modulesItr++;
+			}
+			alarmItr->modulesStarted = false;
+		}
+				if (alarmItr->modulesSuspended && alarmItr->modulesSuspended) { // Start when alarm is over
+			list<CString> temp = alarmItr->doStopModules();
+			list<CString>::iterator modulesItr = temp.begin();
+			while(modulesItr != temp.end()) {
+				actionStart(*modulesItr);
+				modulesItr++;
+			}
+			alarmItr->modulesSuspended = false;
+		}
+		alarmItr++;
 	}
 	// clear current status
-	config->status[0]='\0';
+	config->status.Empty();
+	// stop the alarm;
+	PlaySound(NULL, NULL, NULL);
 
 	// clear cavebot half/full sleep vars
 	reader.setGlobalVariable("cavebot_halfsleep","false");
@@ -1194,7 +867,7 @@ CMod_autogoApp::CMod_autogoApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_autogoApp::~CMod_autogoApp()
@@ -1216,7 +889,7 @@ int CMod_autogoApp::isStarted()
 {
 	if (!m_started)
 	{
-		// if not started then regularry consume 1003 messages from the queue
+		// if not started then regularly consume 1003 messages from the queue
 		CIPCBackPipeProxy backPipe;
 		struct ipcMessage mess;	
 
@@ -1334,50 +1007,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"runaway/x"))					m_configData->runawayX				= atoi(paramValue);
 	if (!strcmp(paramName,"runaway/y"))					m_configData->runawayY				= atoi(paramValue);
 	if (!strcmp(paramName,"runaway/z"))					m_configData->runawayZ				= atoi(paramValue);
-	if (!strcmp(paramName,"trigger"))					m_configData->trigger				= atoi(paramValue);
-	if (!strcmp(paramName,"action/BattleListGm"))		m_configData->actionBattleListGm	= atoi(paramValue);
-	if (!strcmp(paramName,"action/BattleListPlayer"))	m_configData->actionBattleListPlayer	= atoi(paramValue);
-	if (!strcmp(paramName,"action/BattleListList"))		m_configData->actionBattleListList	= atoi(paramValue);
-	if (!strcmp(paramName,"action/BattleListMonster"))	m_configData->actionBattleListMonster	= atoi(paramValue);
-	if (!strcmp(paramName,"action/Sign"))				m_configData->actionSign			= atoi(paramValue);
-	if (!strcmp(paramName,"action/Skull"))				m_configData->actionSkull			= atoi(paramValue);
-	if (!strcmp(paramName,"action/VIP"))				m_configData->actionVIP				= atoi(paramValue);
-	if (!strcmp(paramName,"action/Message"))			m_configData->actionMessage			= atoi(paramValue);
-	if (!strcmp(paramName,"action/HpLoss"))				m_configData->actionHpLoss			= atoi(paramValue);
-	if (!strcmp(paramName,"action/HpBelow"))			m_configData->actionHpBelow			= atoi(paramValue);
-	if (!strcmp(paramName,"action/HpAbove"))			m_configData->actionHpAbove			= atoi(paramValue);
-	if (!strcmp(paramName,"action/ManaBelow"))			m_configData->actionManaBelow		= atoi(paramValue);
-	if (!strcmp(paramName,"action/ManaAbove"))			m_configData->actionManaAbove		= atoi(paramValue);
-	if (!strcmp(paramName,"action/Move"))				m_configData->actionMove			= atoi(paramValue);
-	if (!strcmp(paramName,"action/SoulPointBelow"))		m_configData->actionSoulPointBelow	= atoi(paramValue);
-	if (!strcmp(paramName,"action/SoulPointAbove"))		m_configData->actionSoulPointAbove	= atoi(paramValue);
-	if (!strcmp(paramName,"action/StaminaBelow"))		m_configData->actionStaminaBelow	= atoi(paramValue);
-	if (!strcmp(paramName,"action/StaminaAbove"))		m_configData->actionStaminaAbove	= atoi(paramValue);
-	if (!strcmp(paramName,"action/Blank"))				m_configData->actionBlank			= atoi(paramValue);
-	if (!strcmp(paramName,"action/Capacity"))			m_configData->actionCapacity		= atoi(paramValue);
-	if (!strcmp(paramName,"action/OutOfFood"))			m_configData->actionOutOfFood		= atoi(paramValue);
-	if (!strcmp(paramName,"action/OutOfCustom"))		m_configData->actionOutOfCustom		= atoi(paramValue);
-	if (!strcmp(paramName,"action/OutOfSpace"))			m_configData->actionOutOfSpace		= atoi(paramValue);
-	if (!strcmp(paramName,"action/RunawayReached"))		m_configData->actionRunawayReached		= atoi(paramValue);
-	if (!strcmp(paramName,"options/BattleList"))		m_configData->optionsBattleList		= atoi(paramValue);
-	if (!strcmp(paramName,"options/Sign"))				m_configData->optionsSign			= atoi(paramValue);
-	if (!strcmp(paramName,"options/Skull"))				m_configData->optionsSkull			= atoi(paramValue);
-	if (!strcmp(paramName,"options/Message"))			m_configData->optionsMessage		= atoi(paramValue);
-	if (!strcmp(paramName,"options/HpBelow"))			m_configData->optionsHpBelow		= atoi(paramValue);
-	if (!strcmp(paramName,"options/HpAbove"))			m_configData->optionsHpAbove		= atoi(paramValue);
-	if (!strcmp(paramName,"options/ManaBelow"))			m_configData->optionsManaBelow		= atoi(paramValue);
-	if (!strcmp(paramName,"options/ManaAbove"))			m_configData->optionsManaAbove		= atoi(paramValue);
-	if (!strcmp(paramName,"options/SoulPointBelow"))	m_configData->optionsSoulPointBelow	= atoi(paramValue);
-	if (!strcmp(paramName,"options/SoulPointAbove"))	m_configData->optionsSoulPointAbove	= atoi(paramValue);
-	if (!strcmp(paramName,"options/StaminaBelow"))		m_configData->optionsStaminaBelow	= atoi(paramValue);
-	if (!strcmp(paramName,"options/StaminaAbove"))		m_configData->optionsStaminaAbove	= atoi(paramValue);
-	if (!strcmp(paramName,"options/Blank"))				m_configData->optionsBlank			= atoi(paramValue);
-	if (!strcmp(paramName,"options/Capacity"))			m_configData->optionsCapacity		= atoi(paramValue);
-	if (!strcmp(paramName,"options/OutOfCustomItem"))	m_configData->optionsOutOfCustomItem= atoi(paramValue);
-	if (!strcmp(paramName,"options/RunawayReached"))	m_configData->optionsRunawayReached= atoi(paramValue);
-	if (!strcmp(paramName,"options/HpBelowUntilRecovery"))	m_configData->optionsHpBelowUntilRecovery=atoi(paramValue);
-	if (!strcmp(paramName,"options/ManaBelowUntilRecovery"))	m_configData->optionsManaBelowUntilRecovery=atoi(paramValue);
-	if (!strcmp(paramName,"sound"))						m_configData->sound					= atoi(paramValue);
+	if (!strcmp(paramName,"triggerMessage"))			m_configData->triggerMessage		= atoi(paramValue);
 	if (!strcmp(paramName,"whiteList/List")){
 		if (currentPos>99)
 			return;
@@ -1399,50 +1029,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"runaway/x"))					sprintf(buf,"%d",m_configData->runawayX);
 	if (!strcmp(paramName,"runaway/y"))					sprintf(buf,"%d",m_configData->runawayY);
 	if (!strcmp(paramName,"runaway/z"))					sprintf(buf,"%d",m_configData->runawayZ);
-	if (!strcmp(paramName,"trigger"))					sprintf(buf,"%d",m_configData->trigger);
-	if (!strcmp(paramName,"action/BattleListGm"))		sprintf(buf,"%d",m_configData->actionBattleListGm);
-	if (!strcmp(paramName,"action/BattleListList"))		sprintf(buf,"%d",m_configData->actionBattleListList);
-	if (!strcmp(paramName,"action/BattleListPlayer"))	sprintf(buf,"%d",m_configData->actionBattleListPlayer);
-	if (!strcmp(paramName,"action/BattleListMonster"))	sprintf(buf,"%d",m_configData->actionBattleListMonster);
-	if (!strcmp(paramName,"action/Sign"))				sprintf(buf,"%d",m_configData->actionSign);
-	if (!strcmp(paramName,"action/Skull"))				sprintf(buf,"%d",m_configData->actionSkull);
-	if (!strcmp(paramName,"action/VIP"))				sprintf(buf,"%d",m_configData->actionVIP);
-	if (!strcmp(paramName,"action/Message"))			sprintf(buf,"%d",m_configData->actionMessage);
-	if (!strcmp(paramName,"action/HpLoss"))				sprintf(buf,"%d",m_configData->actionHpLoss);
-	if (!strcmp(paramName,"action/HpBelow"))			sprintf(buf,"%d",m_configData->actionHpBelow);
-	if (!strcmp(paramName,"action/HpAbove"))			sprintf(buf,"%d",m_configData->actionHpAbove);
-	if (!strcmp(paramName,"action/ManaBelow"))			sprintf(buf,"%d",m_configData->actionManaBelow);
-	if (!strcmp(paramName,"action/ManaAbove"))			sprintf(buf,"%d",m_configData->actionManaAbove);
-	if (!strcmp(paramName,"action/Move"))				sprintf(buf,"%d",m_configData->actionMove);
-	if (!strcmp(paramName,"action/SoulPointBelow"))		sprintf(buf,"%d",m_configData->actionSoulPointBelow);
-	if (!strcmp(paramName,"action/SoulPointAbove"))		sprintf(buf,"%d",m_configData->actionSoulPointAbove);
-	if (!strcmp(paramName,"action/StaminaBelow"))		sprintf(buf,"%d",m_configData->actionStaminaBelow);
-	if (!strcmp(paramName,"action/StaminaAbove"))		sprintf(buf,"%d",m_configData->actionStaminaAbove);
-	if (!strcmp(paramName,"action/Blank"))				sprintf(buf,"%d",m_configData->actionBlank);
-	if (!strcmp(paramName,"action/Capacity"))			sprintf(buf,"%d",m_configData->actionCapacity);
-	if (!strcmp(paramName,"action/OutOfFood"))			sprintf(buf,"%d",m_configData->actionOutOfFood);
-	if (!strcmp(paramName,"action/OutOfCustom"))		sprintf(buf,"%d",m_configData->actionOutOfCustom);
-	if (!strcmp(paramName,"action/OutOfSpace"))			sprintf(buf,"%d",m_configData->actionOutOfSpace);
-	if (!strcmp(paramName,"action/RunawayReached"))		sprintf(buf,"%d",m_configData->actionRunawayReached);
-	if (!strcmp(paramName,"options/BattleList"))		sprintf(buf,"%d",m_configData->optionsBattleList);
-	if (!strcmp(paramName,"options/Sign"))				sprintf(buf,"%d",m_configData->optionsSign);
-	if (!strcmp(paramName,"options/Skull"))				sprintf(buf,"%d",m_configData->optionsSkull);
-	if (!strcmp(paramName,"options/Message"))			sprintf(buf,"%d",m_configData->optionsMessage);
-	if (!strcmp(paramName,"options/HpAbove"))			sprintf(buf,"%d",m_configData->optionsHpAbove);
-	if (!strcmp(paramName,"options/HpBelow"))			sprintf(buf,"%d",m_configData->optionsHpBelow);
-	if (!strcmp(paramName,"options/ManaAbove"))			sprintf(buf,"%d",m_configData->optionsManaAbove);
-	if (!strcmp(paramName,"options/ManaBelow"))			sprintf(buf,"%d",m_configData->optionsManaBelow);
-	if (!strcmp(paramName,"options/SoulPointBelow"))	sprintf(buf,"%d",m_configData->optionsSoulPointBelow);
-	if (!strcmp(paramName,"options/SoulPointAbove"))	sprintf(buf,"%d",m_configData->optionsSoulPointAbove);
-	if (!strcmp(paramName,"options/StaminaBelow"))		sprintf(buf,"%d",m_configData->optionsStaminaBelow);
-	if (!strcmp(paramName,"options/StaminaAbove"))		sprintf(buf,"%d",m_configData->optionsStaminaAbove);
-	if (!strcmp(paramName,"options/Blank"))				sprintf(buf,"%d",m_configData->optionsBlank);
-	if (!strcmp(paramName,"options/Capacity"))			sprintf(buf,"%d",m_configData->optionsCapacity);
-	if (!strcmp(paramName,"options/OutOfCustomItem"))	sprintf(buf,"%d",m_configData->optionsOutOfCustomItem);
-	if (!strcmp(paramName,"options/RunawayReached"))	sprintf(buf,"%d",m_configData->optionsRunawayReached);
-	if (!strcmp(paramName,"options/HpBelowUntilRecovery"))	sprintf(buf,"%d",m_configData->optionsHpBelowUntilRecovery);	
-	if (!strcmp(paramName,"options/ManaBelowUntilRecovery"))	sprintf(buf,"%d",m_configData->optionsManaBelowUntilRecovery);	
-	if (!strcmp(paramName,"sound"))						sprintf(buf,"%d",m_configData->sound);
+	if (!strcmp(paramName,"triggerMessage"))			sprintf(buf,"%d",m_configData->triggerMessage);
 	if (!strcmp(paramName,"whiteList/List")){		
 		if (currentPos<100){
 			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
@@ -1466,52 +1053,9 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 4: return "runaway/x";
 	case 5: return "runaway/y";
 	case 6: return "runaway/z";
-	case 7: return "trigger";
-	case 8: return "action/BattleListGm";
-	case 9: return "action/BattleListPlayer";
-	case 10: return "action/BattleListMonster";
-	case 11: return "action/BattleListList";
-	case 12: return "action/Sign";
-	case 13: return "action/Message";
-	case 14: return "action/HpLoss";
-	case 15: return "action/HpAbove";
-	case 16: return "action/HpBelow";	
-	case 17: return "action/ManaAbove";
-	case 18: return "action/ManaBelow";
-	case 19: return "action/Move";
-	case 20: return "action/SoulPointBelow";
-	case 21: return "action/SoulPointAbove";
-	case 22: return "action/Blank";
-	case 23: return "action/Capacity";	
-	case 24: return "action/OutOfCustom";
-	case 25: return "action/OutOfFood";
-	case 26: return "action/OutOfSpace";
-	case 27: return "action/RunawayReached";
-	case 28: return "options/BattleList";
-	case 29: return "options/Sign";
-	case 30: return "options/Message";
-	case 31: return "options/HpAbove";
-	case 32: return "options/HpBelow";
-	case 33: return "options/ManaAbove";
-	case 34: return "options/ManaBelow";
-	case 35: return "options/SoulPointBelow";
-	case 36: return "options/SoulPointAbove";
-	case 37: return "options/RunawayReached";
-	case 38: return "options/Blank";
-	case 39: return "options/Capacity";
-	case 40: return "options/OutOfCustomItem";
-	case 41: return "sound";
-	case 42: return "whiteList/List";
-	case 43: return "options/ManaBelowUntilRecovery";
-	case 44: return "options/HpBelowUntilRecovery";
-	case 45: return "whiteList/mkBlack";
-	case 46: return "action/Skull";
-	case 47: return "options/Skull";
-	case 48: return "action/VIP";
-	case 49: return "action/StaminaBelow";
-	case 50: return "action/StaminaAbove";
-	case 51: return "options/StaminaBelow";
-	case 52: return "options/StaminaAbove";
+	case 7: return "triggerMessage";
+	case 8: return "whiteList/List";
+	case 9: return "whiteList/mkBlack";
 
 	default:
 		return NULL;
@@ -1530,20 +1074,8 @@ void CMod_autogoApp::resetMultiParamAccess(char *paramName)
 
 void CMod_autogoApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_battleWhiteList);
 	skin.SetButtonSkin(	m_configDialog->m_enable);
 	skin.SetButtonSkin(	m_configDialog->m_OK);
-	skin.SetButtonSkin(	m_configDialog->m_SetStart);
-	skin.SetButtonSkin(	m_configDialog->m_SetRunaway);
-	skin.SetButtonSkin(	m_configDialog->m_signPoison);
-	skin.SetButtonSkin(	m_configDialog->m_signFire);
-	skin.SetButtonSkin(	m_configDialog->m_signEnergy);
-	skin.SetButtonSkin(	m_configDialog->m_signBattle);
-	skin.SetButtonSkin(	m_configDialog->m_skullWhite);
-	skin.SetButtonSkin(	m_configDialog->m_skullRed);
-	skin.SetButtonSkin(	m_configDialog->m_skullYellow);
-	skin.SetButtonSkin(	m_configDialog->m_skullGreen);
-	skin.SetButtonSkin(	m_configDialog->m_skullBlack);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	if (m_configDialog)

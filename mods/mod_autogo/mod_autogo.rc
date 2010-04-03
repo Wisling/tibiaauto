@@ -69,263 +69,18 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOGEX 0, 0, 320, 446
+IDD_CONFIG DIALOGEX 0, 0, 300, 394
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTROLPARENT
 CAPTION "Module: auto go/log"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Trigger Options",IDC_FRAME_TRIGGER_OPTIONS,7,7,306,397
-    CONTROL         "Creature in range",IDC_AUTOGO_TRIGGERBATTLELIST,"Button",
-                    BS_AUTOCHECKBOX | BS_LEFT | BS_VCENTER | WS_TABSTOP,16,
-                    18,79,10
-    CONTROL         "Player",IDC_AUTOGO_BATTLEPLAYER,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,103,18,79,10
-    CONTROL         "Monster/NPC",IDC_AUTOGO_BATTLEMONSTER,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,103,33,81,8
-    CONTROL         "GM/CM",IDC_AUTOGO_BATTLEGM,"Button",BS_AUTOCHECKBOX | 
-                    BS_VCENTER | WS_TABSTOP,103,47,81,8
-    CONTROL         "Creature on battle list",IDC_AUTOGO_BATTELIST,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,103,60,82,10
-    PUSHBUTTON      "Black/White List",IDC_AUTOGO_BATTLEWHITELIST,23,58,62,
-                    14
-    COMBOBOX        IDC_AUTOGO_ACTIONBATTLELIST_PLAYER,190,17,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDBATTLELIST_PLAYER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,18,37,10
-    CONTROL         "Sign appears",IDC_AUTOGO_TRIGGERSIGN,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,74,79,10
-    CONTROL         "",IDC_AUTOGO_SIGNBATTLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,103,73,17,
-                    11
-    CONTROL         "",IDC_AUTOGO_SIGNPOISON,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,123,73,17,
-                    11
-    CONTROL         "",IDC_AUTOGO_SIGNFIRE,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,143,73,17,
-                    11
-    CONTROL         "",IDC_AUTOGO_SIGNENERGY,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,164,73,17,
-                    11
-    COMBOBOX        IDC_AUTOGO_ACTIONSIGN,190,73,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDSIGN,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,74,37,10
-    CONTROL         "Message",IDC_AUTOGO_TRIGGERMESSAGE,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,115,79,10
-    CONTROL         "Private",IDC_AUTOGO_MESSAGEPRIVATE,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,103,112,34,10
-    CONTROL         "Public",IDC_AUTOGO_MESSAGEPUBLIC,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,146,112,34,10
-    COMBOBOX        IDC_AUTOGO_ACTIONMESSAGE,190,114,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDMESSAGE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,115,37,10
-    CONTROL         "Move",IDC_AUTOGO_TRIGGERMOVE,"Button",BS_AUTOCHECKBOX | 
-                    BS_VCENTER | WS_TABSTOP,16,129,79,10
-    COMBOBOX        IDC_AUTOGO_ACTIONMOVE,190,128,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDMOVE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,129,37,10
-    CONTROL         "HP loss",IDC_AUTOGO_TRIGGERHPLOSS,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,143,79,10
-    COMBOBOX        IDC_AUTOGO_ACTIONHPLOSS,190,142,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDHPLOSS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,143,37,10
-    CONTROL         "HP below",IDC_AUTOGO_TRIGGERHPBELOW,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,157,79,10
-    EDITTEXT        IDC_AUTOGO_HPBELOW,102,156,24,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONHPBELOW,190,156,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDHPBELOW,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,157,37,10
-    CONTROL         "Soul points below",IDC_AUTOGO_TRIGGERSOULPOINTS,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,213,79,10
-    EDITTEXT        IDC_AUTOGO_SOULPOINT,102,212,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONSOULPOINT,190,212,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDSOULPOINT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,213,37,10
-    CONTROL         "Blank runes less then",IDC_AUTOGO_TRIGGERBLANK,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,269,79,10
-    EDITTEXT        IDC_AUTOGO_BLANK,102,268,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONBLANK,190,268,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDBLANK,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,269,37,10
-    CONTROL         "Capacity less then",IDC_AUTOGO_TRIGGERCAPACITY,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,283,79,10
-    EDITTEXT        IDC_AUTOGO_CAPACITY,102,282,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONCAPACITY,190,282,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDCAPACITY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,283,37,10
-    CONTROL         "Out of",IDC_AUTOGO_TRIGGEROUTOF,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,297,79,10
-    CONTROL         "Food",IDC_AUTOGO_OUTOFFOOD,"Button",BS_AUTOCHECKBOX | 
-                    BS_VCENTER | WS_TABSTOP,102,297,34,10
-    CONTROL         "Space",IDC_AUTOGO_OUTOFSPACE,"Button",BS_AUTOCHECKBOX | 
-                    BS_VCENTER | WS_TABSTOP,102,312,34,8
-    COMBOBOX        IDC_AUTOGO_ACTIONOUTOF_FOOD,190,296,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDOUTOF_FOOD,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,297,37,10
-    EDITTEXT        IDC_AUTOGO_RUNAWAY_X,52,354,24,13,ES_CENTER | 
-                    ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_AUTOGO_RUNAWAY_Y,80,354,24,13,ES_CENTER | 
-                    ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_AUTOGO_RUNAWAY_Z,108,354,24,13,ES_CENTER | 
-                    ES_AUTOHSCROLL | ES_NUMBER
-    PUSHBUTTON      "Set runaway pos",IDC_AUTOGO_TORUNAWAY,164,370,60,14,
-                    BS_VCENTER
-    EDITTEXT        IDC_AUTOGO_CUR_X,66,370,24,14,ES_CENTER | ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Y,94,370,25,14,ES_CENTER | ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Z,122,370,24,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_ACT_X,168,354,24,13,ES_CENTER | 
-                    ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_AUTOGO_ACT_Y,196,354,24,13,ES_CENTER | 
-                    ES_AUTOHSCROLL | ES_NUMBER
-    EDITTEXT        IDC_AUTOGO_ACT_Z,224,354,24,13,ES_CENTER | 
-                    ES_AUTOHSCROLL | ES_NUMBER
-    PUSHBUTTON      "Set start pos",IDC_AUTOGO_TOSTART,230,370,60,14,
-                    BS_VCENTER
     CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,408,306,14
-    DEFPUSHBUTTON   "OK",IDOK,133,425,50,14
-    LTEXT           "Runaway:",IDC_STATIC,16,353,34,14,SS_CENTERIMAGE
-    LTEXT           "Current pos:",IDC_STATIC,16,370,40,14,SS_CENTERIMAGE
-    LTEXT           "Status:",IDC_AUTOGO_STATUS,16,388,289,11,SS_CENTERIMAGE | 
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,354,286,14
+    DEFPUSHBUTTON   "OK",IDOK,125,373,50,14
+    LTEXT           "Status:",IDC_AUTOGO_STATUS,7,338,286,11,SS_CENTERIMAGE | 
                     WS_BORDER
-    LTEXT           "Start:",IDC_STATIC,148,353,19,14,SS_CENTERIMAGE
-    COMBOBOX        IDC_AUTOGO_ACT_DIRECTION,254,354,48,56,CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Detect all floors",IDC_AUTOGO_BATTLEPARANOIAM,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,23,33,79,8
-    COMBOBOX        IDC_AUTOGO_ACTIONBATTLELIST_MONSTER,190,31,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_AUTOGO_ACTIONBATTLELIST_GM,190,45,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_AUTOGO_ACTIONBATTLELIST_LIST,190,59,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDBATTLELIST_MONSTER,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,32,37,10
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDBATTLELIST_GM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,46,37,10
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDBATTLELIST_LIST,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,60,37,10
-    CONTROL         "Ignore spells",IDC_AUTOGO_MESSAGE_IGNORE_SPELLS,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,103,123,58,10
-    CONTROL         "HP above",IDC_AUTOGO_TRIGGERHPABOVE,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,171,79,10
-    EDITTEXT        IDC_AUTOGO_HPABOVE,102,170,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONHPABOVE,190,170,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDHPABOVE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,171,37,10
-    CONTROL         "Soul points above",IDC_AUTOGO_TRIGGERSOULPOINTS_ABOVE,
-                    "Button",BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,
-                    227,79,10
-    EDITTEXT        IDC_AUTOGO_SOULPOINT_ABOVE,102,226,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONSOULPOINT_ABOVE,190,226,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDSOULPOINT_ABOVE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,227,37,10
-    CONTROL         "Mana below",IDC_AUTOGO_TRIGGERMANABELOW,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,185,79,10
-    EDITTEXT        IDC_AUTOGO_MANABELOW,102,184,24,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONMANABELOW,190,184,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDMANABELOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,185,37,10
-    CONTROL         "Mana above",IDC_AUTOGO_TRIGGERMANAABOVE,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,199,79,10
-    EDITTEXT        IDC_AUTOGO_MANAABOVE,102,198,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONMANAABOVE,190,198,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDMANAABOVE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,199,37,10
-    CONTROL         "Runaway reached",IDC_AUTOGO_RUNAWAY_REACHED,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,339,79,10
-    EDITTEXT        IDC_AUTOGO_RUNAWAY_REACHED_RADIUS,132,338,52,13,
-                    ES_AUTOHSCROLL | ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONRUNAWAY_REACHED,190,338,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDRUNAWAY_REACHED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,339,37,10
-    LTEXT           "Radius:",IDC_STATIC,102,338,27,13,SS_CENTERIMAGE
-    CONTROL         "Custom",IDC_AUTOGO_OUTOFCUSTOM,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,102,325,39,10
-    COMBOBOX        IDC_AUTOGO_ACTIONOUTOF_SPACE,190,310,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDOUTOF_SPACE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,311,37,10
-    COMBOBOX        IDC_AUTOGO_ACTIONOUTOF_CUSTOM,190,324,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDOUTOF_CUSTOM,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,325,37,10
-    COMBOBOX        IDC_AUTOGO_ACTIONOUTOF_CUSTOM_ITEM,16,324,79,51,
-                    CBS_DROPDOWNLIST | CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Until recovery",IDC_HPBELOW_UNTIL_RECOVERY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,157,59,10
-    CONTROL         "Until recovery",IDC_MANABELOW_UNTIL_RECOVERY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,128,185,59,10
-    CONTROL         "Detect +/- 1 floor",IDC_AUTOGO_BATTLEANXIETY,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,23,47,79,8
-    CONTROL         "Skull appears",IDC_AUTOGO_TRIGGERSKULL,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,87,79,10
-    COMBOBOX        IDC_AUTOGO_ACTIONSKULL,190,86,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDSKULL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,87,37,10
-    CONTROL         "",IDC_AUTOGO_SKULLWHITE,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,103,86,13,
-                    11
-    CONTROL         "",IDC_AUTOGO_SKULLRED,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,119,86,13,
-                    11
-    CONTROL         "",IDC_AUTOGO_SKULLYELLOW,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,135,86,13,
-                    11
-    CONTROL         "",IDC_AUTOGO_SKULLGREEN,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,151,86,13,
-                    11
-    CONTROL         "",IDC_AUTOGO_SKULLBLACK,"Button",BS_AUTOCHECKBOX | 
-                    BS_ICON | BS_CENTER | BS_VCENTER | BS_PUSHLIKE,168,86,13,
-                    11
-    CONTROL         "Stamina below(mins)",IDC_AUTOGO_TRIGGERSTAMINA,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,241,79,10
-    EDITTEXT        IDC_AUTOGO_STAMINA,102,240,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONSTAMINA,190,240,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDSTAMINA,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,241,37,10
-    CONTROL         "Stamina above(mins)",IDC_AUTOGO_TRIGGERSTAMINA_ABOVE,
-                    "Button",BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,
-                    255,79,10
-    EDITTEXT        IDC_AUTOGO_STAMINA_ABOVE,102,254,82,13,ES_AUTOHSCROLL | 
-                    ES_NUMBER
-    COMBOBOX        IDC_AUTOGO_ACTIONSTAMINA_ABOVE,190,254,79,30,
-                    CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDSTAMINA_ABOVE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,272,255,37,10
-    CONTROL         "VIP with cross-bones online",IDC_AUTOGO_TRIGGERVIP,
-                    "Button",BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,16,
-                    101,100,10
-    COMBOBOX        IDC_AUTOGO_ACTIONVIP,190,100,79,30,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Sound",IDC_AUTOGO_SOUNDVIP,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,272,101,37,10
+    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,286,327
 END
 
 IDD_WHITELIST DIALOGEX 0, 0, 191, 185
@@ -359,13 +114,9 @@ BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 313
-        VERTGUIDE, 19
-        VERTGUIDE, 24
-        VERTGUIDE, 104
-        VERTGUIDE, 120
+        RIGHTMARGIN, 293
         TOPMARGIN, 7
-        BOTTOMMARGIN, 439
+        BOTTOMMARGIN, 387
     END
 
     IDD_WHITELIST, DIALOG
@@ -403,14 +154,214 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Dialog
+//
+
+IDD_ALARM_DIALOG DIALOGEX 0, 0, 281, 310
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,296
+    GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,108
+    COMBOBOX        IDC_ALARM_TYPE,14,34,80,61,CBS_DROPDOWN | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_ATTRIBUTE,14,65,80,60,CBS_DROPDOWN | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    COMBOBOX        IDC_CONDITION,100,65,80,62,CBS_DROPDOWN | 
+                    CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Go to Runaway",IDC_ACTION_RUNAWAY,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,96,73,10
+    CONTROL         "Go to Start",IDC_ACTION_START,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,109,73,10
+    CONTROL         "Go to Depot",IDC_ACTION_DEPOT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,122,73,10
+    CONTROL         "Attack",IDC_ACTION_ATTACK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,100,96,73,10
+    CONTROL         "Log Out",IDC_ACTION_LOGOUT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,100,109,73,10
+    CONTROL         "Kill Tibia Client",IDC_ACTION_KILL,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,122,73,10
+    CONTROL         "Computer Off",IDC_ACTION_SHUTDOWN,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,135,73,10
+    CONTROL         "Take Screenshot:",IDC_ACTION_SCREENSHOT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,161,73,10
+    COMBOBOX        IDC_SCREENSHOT_OPTIONS,29,173,67,62,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Audio Alarm:",IDC_ACTION_SOUND,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,100,161,73,10
+    COMBOBOX        IDC_AUDIO_FILE,106,173,67,71,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Suspend Mod(s):",IDC_ACTION_SUSPEND_MODULES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,148,73,10
+    PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,200,50,14
+    PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,200,50,14
+    PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,200,50,14
+    LTEXT           "Type:",IDC_STATIC,14,20,19,8
+    LTEXT           "Attribute:",IDC_STATIC,14,52,29,8
+    LTEXT           "Condition:",IDC_STATIC,100,51,32,8
+    LTEXT           "Trigger:",IDC_STATIC,186,51,25,8
+    CONTROL         "List1",IDC_ALARM_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,21,221,239,75
+    CONTROL         "Cast Spell:",IDC_ACTION_SPELL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,135,73,10
+    COMBOBOX        IDC_SPELL_LIST,28,146,67,62,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    EDITTEXT        IDC_TRIGGER,186,65,80,15,ES_AUTOHSCROLL
+    LISTBOX         IDC_MODULES_LIST,186,159,67,27,LBS_SORT | 
+                    LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    CTEXT           "Select an alarm type to begin.",IDC_INSTRUCTION_TEXT,
+                    100,17,167,29,0,WS_EX_STATICEDGE
+    CONTROL         "Start Mod(s):",IDC_ACTION_START_MODULES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,109,73,10
+    LISTBOX         IDC_MODULES_LIST2,186,120,67,27,LBS_SORT | 
+                    LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,96,73,10
+    CONTROL         "Maximize Tibia",IDC_ACTION_MAXIMIZE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,148,73,10
+END
+
+IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 310
+STYLE WS_CHILD | WS_VISIBLE
+FONT 8, "MS Sans Serif"
+BEGIN
+    GROUPBOX        "General Configuration",IDC_GENERAL_CONFIG_FRAME,7,7,267,
+                    296
+    GROUPBOX        "Positional Options",
+                    IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME,14,95,253,64
+    GROUPBOX        "Proximity Options",
+                    IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME,14,56,253,33
+    GROUPBOX        "Message Options",
+                    IDC_GENERAL_CONFIG_MESSAGE_OPTIONS_FRAME,14,18,253,33
+    PUSHBUTTON      "Black/White List",IDC_AUTOGO_BATTLEWHITELIST,21,30,62,
+                    14
+    CONTROL         "Detect all floors",IDC_AUTOGO_BATTLEPARANOIA,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,21,69,65,10
+    CONTROL         "Ignore Spells",IDC_AUTOGO_MESSAGE_IGNORE_SPELLS,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,88,32,58,10
+    CONTROL         "Detect +/- 1 floor",IDC_AUTOGO_BATTLEANXIETY,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,88,69,67,10
+    CTEXT           "Black List = ""Always Alert Me""\r\nWhite List = ""Never Alert Me""",
+                    IDC_STATIC,162,28,98,17,0,WS_EX_STATICEDGE
+    CTEXT           "Addional detection options to same-floor detection.",
+                    IDC_STATIC,162,65,98,17,0,WS_EX_STATICEDGE
+    EDITTEXT        IDC_AUTOGO_RUNAWAY_X,79,108,24,13,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_RUNAWAY_Y,107,108,24,13,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_RUNAWAY_Z,135,108,24,13,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Set Runaway Position",IDC_AUTOGO_TORUNAWAY,162,108,86,
+                    14,BS_VCENTER
+    EDITTEXT        IDC_AUTOGO_CUR_X,79,282,24,14,ES_CENTER | ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_CUR_Y,107,282,25,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_CUR_Z,135,282,24,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_ACT_X,79,125,24,13,ES_CENTER | ES_AUTOHSCROLL | 
+                    ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_ACT_Y,107,125,24,13,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_AUTOGO_ACT_Z,135,125,24,13,ES_CENTER | 
+                    ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "Set Start Position",IDC_AUTOGO_TOSTART,162,125,86,14,
+                    BS_VCENTER
+    LTEXT           "Runaway To:",IDC_STATIC,31,111,44,8,SS_CENTERIMAGE
+    LTEXT           "Current Position:",IDC_STATIC,23,285,52,8,
+                    SS_CENTERIMAGE
+    LTEXT           "Start Position:",IDC_STATIC,31,128,44,8,SS_CENTERIMAGE
+    COMBOBOX        IDC_AUTOGO_ACT_DIRECTION,79,142,52,56,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Facing Direction:",IDC_STATIC,21,144,54,8
+    CONTROL         "Maintain Start Position",IDC_MAINTAIN_START,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,161,143,86,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ALARM_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 274
+        VERTGUIDE, 14
+        VERTGUIDE, 21
+        VERTGUIDE, 260
+        VERTGUIDE, 267
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 303
+        HORZGUIDE, 17
+        HORZGUIDE, 28
+        HORZGUIDE, 65
+        HORZGUIDE, 80
+        HORZGUIDE, 85
+        HORZGUIDE, 96
+        HORZGUIDE, 186
+        HORZGUIDE, 193
+        HORZGUIDE, 200
+        HORZGUIDE, 214
+        HORZGUIDE, 221
+        HORZGUIDE, 296
+    END
+
+    IDD_GENERAL_CONFIG_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 274
+        VERTGUIDE, 14
+        VERTGUIDE, 21
+        VERTGUIDE, 260
+        VERTGUIDE, 267
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 303
+        HORZGUIDE, 16
+        HORZGUIDE, 296
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Bitmap
 //
 
-IDB_BLACK               BITMAP  DISCARDABLE     "res\\skull_black.bmp"
 IDB_GREEN               BITMAP  DISCARDABLE     "res\\skull_green.bmp"
 IDB_RED                 BITMAP  DISCARDABLE     "res\\skull_red.bmp"
 IDB_WHITE               BITMAP  DISCARDABLE     "res\\skull_white.bmp"
 IDB_YELLOW              BITMAP  DISCARDABLE     "res\\skull_yellow.bmp"
+IDB_COLUMN_HEADERS      BITMAP  DISCARDABLE     "Columns.bmp"
+IDB_VIP                 BITMAP  DISCARDABLE     "vip.bmp"
+IDB_GENERAL             BITMAP  DISCARDABLE     "general.bmp"
+IDB_PROXIMITY           BITMAP  DISCARDABLE     "proximity.bmp"
+IDB_SCREENSHOT          BITMAP  DISCARDABLE     "TakeScreenshot.bmp"
+IDB_ATTACK              BITMAP  DISCARDABLE     "Attack.bmp"
+IDB_AUDIO               BITMAP  DISCARDABLE     "Audio.bmp"
+IDB_BLANK               BITMAP  DISCARDABLE     "Blank.bmp"
+IDB_SPELL               BITMAP  DISCARDABLE     "CastSpell.bmp"
+IDB_DEPOT               BITMAP  DISCARDABLE     "Depot.bmp"
+IDB_KILLTIBIA           BITMAP  DISCARDABLE     "KillTibia.bmp"
+IDB_LOGEVENTS           BITMAP  DISCARDABLE     "LogEvents.bmp"
+IDB_LOGOUT              BITMAP  DISCARDABLE     "LogOut.bmp"
+IDB_MAXIMIZE            BITMAP  DISCARDABLE     "MaximizeWindow.bmp"
+IDB_RUNAWAY             BITMAP  DISCARDABLE     "Runaway.bmp"
+IDB_SHUTDOWN            BITMAP  DISCARDABLE     "ShutdownComputer.bmp"
+IDB_START               BITMAP  DISCARDABLE     "Start.bmp"
+IDB_STARTMODULE         BITMAP  DISCARDABLE     "StartModule.bmp"
+IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "SuspendModule.bmp"
+IDB_ITEMS               BITMAP  DISCARDABLE     "Items.bmp"
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
@@ -464,6 +415,210 @@ END
 // remains consistent on all systems.
 IDI_SPEAKER             ICON    DISCARDABLE     "res\\speaker.ico"
 IDI_SPEAKER2            ICON    DISCARDABLE     "res\\speaker2.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_ALARM_DIALOG DLGINIT
+BEGIN
+    IDC_ALARM_TYPE, 0x403, 6, 0
+0x6b53, 0x6c69, 0x006c, 
+    IDC_ALARM_TYPE, 0x403, 9, 0
+0x6552, 0x6f73, 0x7275, 0x6563, "\000" 
+    IDC_ALARM_TYPE, 0x403, 7, 0
+0x7453, 0x7461, 0x7375, "\000" 
+    IDC_ALARM_TYPE, 0x403, 10, 0
+0x7250, 0x786f, 0x6d69, 0x7469, 0x0079, 
+    IDC_ALARM_TYPE, 0x403, 14, 0
+0x6e4f, 0x696c, 0x656e, 0x5320, 0x6174, 0x7574, 0x0073, 
+    IDC_ALARM_TYPE, 0x403, 5, 0
+0x7449, 0x6d65, "\000" 
+    IDC_ALARM_TYPE, 0x403, 8, 0
+0x6547, 0x656e, 0x6172, 0x006c, 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 9, 0
+0x6e4f, 0x2065, 0x6954, 0x656d, "\000" 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 12, 0
+0x6854, 0x6572, 0x2065, 0x6954, 0x656d, 0x0073, 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 16, 0
+0x7645, 0x7265, 0x2079, 0x2035, 0x6573, 0x6f63, 0x646e, 0x0073, 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 17, 0
+0x7645, 0x7265, 0x2079, 0x3031, 0x5320, 0x6365, 0x6e6f, 0x7364, "\000" 
+    IDC_SPELL_LIST, 0x403, 10, 0
+0x7455, 0x6e61, 0x2069, 0x7548, 0x0072, 
+    IDC_SPELL_LIST, 0x403, 15, 0
+0x7455, 0x6e61, 0x2069, 0x7247, 0x6e61, 0x4820, 0x7275, "\000" 
+    IDC_SPELL_LIST, 0x403, 11, 0
+0x7455, 0x6d61, 0x206f, 0x6956, 0x6174, "\000" 
+    IDC_SPELL_LIST, 0x403, 7, 0
+0x7543, 0x7473, 0x6d6f, "\000" 
+    0
+END
+
+IDD_GENERAL_CONFIG_DIALOG DLGINIT
+BEGIN
+    IDC_AUTOGO_ACT_DIRECTION, 0x403, 1, 0
+"\000" 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// WAVE
+//
+
+IDR_UHOH                WAVE    MOVEABLE PURE   "sound\\incorrec.wav"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BEGIN               "Select an alarm type to begin."
+    IDS_SKILL               "Skill alarms will trigger when the set skill level or percentage of it is achieved."
+    IDS_RESOURCE            "Resource alarms will trigger when a resource reaches, exceeds or is less than the trigger amount based on the set condition."
+    IDS_PROXIMITY           "Proximity alarms will trigger when specified characters are nearby. Use configuration settings to filter results in or out."
+    IDS_ITEM                "Item alarms will trigger when an item or item type's quantiity reaches the set trigger amount based on conditions."
+    IDS_GENERAL             "General alarms contain alarms detect and trigger for specific purposes that are not covered among other alarm types."
+    IDS_SKILL_ALL           "Any skill that meets the conditions at the trigger level will activate the alarm."
+    IDS_SKILL_LEVEL         "When your character's experience level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_MAGICLVL      "When your character's magic level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_FISHING       "When your character's fishing skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_FIST          "When your character's fist skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_CLUB          "When your character's club skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_SWORD         "When your character's sword skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_AXE           "When your character's axe skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_DISTANCE      "When your character's distance skill level meets the condition at the trigger amount, the alarm will activate."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SKILL_SHIELDING     "When your character's shielding skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_HP         "When your character's hit points meet the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_MP         "When your character's mana points meet the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_SP         "When your character's soul points meet the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_STAMINA    "When your character's stamina meets the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_CAPACITY   "When your character's capacity meets the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_SPACE      "When your character's open backpack spaces meet the condition at the trigger amount, the alarm will activate."
+    IDS_ITEM_FOOD           "When your character's quantity of food items in open backpacks meet the condition at the trigger amount, the alarm will activate."
+    IDS_ITEM_CUSTOM         "When your character's quantity of this item in open backpacks meet the condition at the trigger amount, the alarm will activate."
+    IDS_PROXIMITY_PLAYER    "When a player enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_MONSTER   "When a monster or NPC enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_GM        "When a Gamemaster or Community Manager enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_BATTLELIST 
+                            "When anything appears on the battlelist, the alarm will activate. (NOTE: Will detect creatures that are up to 2 sqm  outside the viewable area.)"
+    IDS_PROXIMITY_SKULL     "When any skulled players appears or becomes skulled, the alarm will activate."
+    IDS_GENERAL_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_GENERAL_PUBLICMESSAGES 
+                            "When any public message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GENERAL_PRIVATEMESSAGES 
+                            "When any private message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_GENERAL_CHARACTERMOVED 
+                            "When the character moves or is moved (pushed) this alarm will trigger."
+    IDS_GENERAL_STATUSFLAG  "When a negative status flag is registered, this alarm will trigger. You can filter specific negative status flags in General Options."
+    IDS_BEGIN_ATTRIBUTE     "Select an attribute that will trigger the alarm."
+    IDS_LEVELUP             "The alarm will activate when the selected skill reaches new and subsequent levels."
+    IDS_PERCLVLACHIEVED     "The alarm will activate when the selected skill has met or surpassed the percentage of completion set in the trigger amount."
+    IDS_PERCLVLREMAINING    "The alarm will activate when the selected skill has a percentage of completion that is equal to or less than the trigger amount."
+    IDS_CONDITION           "Please select a condition to continue."
+    IDS_EQUAL               "The alarm will trigger when the attribute is equal to the  trigger amount."
+    IDS_LESS                "The alarm will trigger when the attribute is less than the  trigger amount."
+    IDS_MORE                "The alarm will trigger when the attribute is more than the  trigger amount."
+    IDS_NEARBY              "When the designated actor (attribute)  is nearby the alarm will activate."
+    IDS_DISAPPEARS          "When the designated actor (attribute) leaves the area the alarm will activate."
+    IDS_ISONSCREENFOR       "When the designated actor (attribute) remians onscreen for longer than the trigger amount the alarm will activate."
+    IDS_KILL                "This option will terminate the Tibia client. This option is incompatible with the ""Shutdown Computer"" option."
+    IDS_SHUTDOWN            "This option will shut-down the computer. This option is incompatible with the ""Kill Tibia Client"" option."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RUNAWAY             "This option will send the player to the designated runaway location. The runaway location is set is General Options."
+    IDS_START               "This option will send the player to the designated starting location. The starting location is set is General Options."
+    IDS_DEPOT               "This option will send the player to the nearest mapped depot loaction. "
+    IDS_SPELL               "This option will attempt to cast the spell configured in the dropdown menu."
+    IDS_SCREENSHOT          "This option will save one or more screenshots of the Tibia client window as configured in the dropdown menu."
+    IDS_SUSPEND_MODULES     "This option will disable one or more of the loaded modules as configured in the list's selections."
+    IDS_START_MODULES       "This option will enable one or more of the loaded modules as configured in the list's selections. Be sure to configure these before enabling this module."
+    IDS_SOUND               "This option will play the designated sound when the alarm is triggered. Additional sounds can be added for use by copying .wav files to the Sounds folder."
+    IDS_ATTACK              "This option will force the player to attack according to the options set in General Options."
+    IDS_LOGOUT              "This option will attempt to log the player out form the Tibia client."
+    IDS_MAXIMIZE            "This option will maximize the Tibia client window controlled by this dialog."
+    IDS_LOG_EVENTS          "This option will write a status message to a logfile for later review. The log can be found in the Logs folder of TA."
+    IDS_FROMALL             "This alarm will trigger on any message from any player. To filter spell casting out of the recognized messages enable that option in General Options."
+    IDS_FROM                "This alarm will trigger on any message from a specified player. To filter spell casting out of the recognized messages enable that option in General Options."
+    IDS_CONTAINS            "This alarm will trigger on any message, from any player, containing the specified string."
+    IDS_RESOURCE_XP         "When your character's experience points meet the condition at the trigger amount, the alarm will activate."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ONLINE              "When the player or specified VIP type logs in or out the alarm will trigger."
+    IDS_ONLINE_CURRENT_PLAYER 
+                            "When the current player is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_NONE         "When an unmarked VIP is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_HEART        "When a  VIP marked with a heart is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_SKULL        "When a  VIP marked with a skull and crossbones is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_LIGHTNING    "When a  VIP marked with a lightning bolt is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_RETICLE      "When a  VIP marked with a reticle is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_STAR         "When a  VIP marked with a star is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_YINYANG      "When a  VIP marked with a yin-yang is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_TRIPOINT     "When a  VIP marked with a tripoint is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_X            "When a  VIP marked with an X is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_DOLLARSIGN   "When a  VIP marked with a dollar sign is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_IRONCROSS    "When a  VIP marked with an iron cross is logged in or out according to the conditions, the alarm will trigger."
+    IDS_LOGON               "When the specified actor (attribute) logs in , the alarm will trigger."
+    IDS_LOGOFF              "When the specified actor (attribute) logs out , the alarm will trigger."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROXIMITY_SKULL_BLACK 
+                            "When any black-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_RED "When any red-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_GREEN 
+                            "When any green-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_WHITE 
+                            "When any white-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_YELLOW 
+                            "When any yellow-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_STATUS              "When the selected status indicator is present, the alarm will trigger."
+    IDS_STATUS_POISONED     "When the poisoned status indicator is present, the alarm will trigger."
+    IDS_STATUS_BURNING      "When the burning status indicator is present, the alarm will trigger."
+    IDS_STATUS_ELECTRIFIED  "When the electrified status indicator is present, the alarm will trigger."
+    IDS_STATUS_DRUNK        "When the drunk status indicator is present, the alarm will trigger."
+    IDS_STATUS_MANASHIELD   "When the mana shield status indicator is present, the alarm will trigger."
+    IDS_STATUS_SLOWED       "When the slowed status indicator is present, the alarm will trigger."
+    IDS_STATUS_HASTED       "When the hasted status indicator is present, the alarm will trigger."
+    IDS_STATUS_FREEZING     "When the freezing status indicator is present, the alarm will trigger."
+    IDS_STATUS_DROWNING     "When the drowning status indicator is present, the alarm will trigger."
+    IDS_STATUS_DAZZLED      "When the dazzled status indicator is present, the alarm will trigger."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STATUS_CURSED       "When the cursed status indicator is present, the alarm will trigger."
+    IDS_STATUS_STRENGTHENED "When the strengthened status indicator is present, the alarm will trigger."
+    IDS_STATUS_LOGOUTBLOCK  "When the log-out block status indicator is present, the alarm will trigger."
+    IDS_STATUS_PZBLOCK      "When the proctection zone block status indicator is present, the alarm will trigger."
+    IDS_STATUS_INPZ         "When the protection zone status indicator is present, the alarm will trigger."
+    IDS_ALARM_TYPE_ERROR    "********  Error!!  ********\r\nNo alarm type specified!!!\r\n********************************"
+    IDS_ATTRIBUTE_ERROR     "********  Error!!  ********\r\nNo attribute specified!!!\r\n********************************"
+    IDS_CONDITION_ERROR     "********  Error!!  ********\r\nNo condition specified!!!\r\n********************************"
+    IDS_TRIGGER_ERROR       "********  Error!!  ********\r\nNo trigger specified!!!\r\n********************************"
+    IDS_SPELLWORDS_ERROR    "********  Error!!  ********\r\nNo spell words specified!!!\r\n********************************"
+    IDS_SOUNDFILE_ERROR     "********  Error!!  ********\r\nNo sound file specified!!!\r\n********************************"
+    IDS_SCREENSHOT_ERROR    "********  Error!!  ********\r\nNo screenshot option specified!!!\r\n********************************"
+END
+
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
 
