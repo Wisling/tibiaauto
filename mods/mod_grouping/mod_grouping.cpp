@@ -94,6 +94,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int groupTime[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};//max containers = 16
 	int minOpenTime = 5;
 
+	for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++){
+		groupTime[contNr]=time(NULL);
+	}
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(CModuleUtil::randomFormula(500,200));
