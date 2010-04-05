@@ -1,6 +1,6 @@
  Installation will now never repace the items.xml file unless it is missing
 
-2.2.2, ?.?.2010
+2.2.2, 4.4.2010
 Enhancments
  Auto Go/Log:Runaway+Back kills monsters on the way
 
@@ -13,6 +13,9 @@ Defects
  Cavebot: No longer randomly walks to depot when autogo alarm goes off
  Cavebot: Fixed fighting with Auto Go/Log when going to runaway point
  Autolooter: Fixed sometimes closing your own backpacks
+ Cavebot: No more long pauses every ~8 steps when walking
+ Grouper: Groups immediately when enabled
+ 
 
 2.2.1, 28.3.2010
 Defects
