@@ -890,10 +890,60 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 	}
 	deleteAndNull(dropCont);
 }
+int binarySearch(int f,CUIntArray& arr){
+	int e=arr.GetSize();
+	int s=0;
+	while (s<e){
+		int m=(e+s)/2; //m==s iff e-s==1
+		if (arr[m]==f) return m;
+		else if (arr[m]>f) e=m;
+		else if (arr[m]<f) s=m+1;
+	}
+	return -1;
+}
 
+void quickSort(CUIntArray& arr,int s,int e){
+	if (e-s<=1) return;
+	int size = arr.GetSize();
+	if (s<0 || e<0 || s>size || e>size){
+		s=0;
+		e=size;
+	}
+	int rotator=e-1;
 
+	//select random pivot
+	int pivot = s+rand()%(e-s);
+
+	//switch pivot to start
+	int tmp = arr[s];
+	arr[s]=arr[pivot];
+	arr[pivot]=arr[s];
+
+	//set index
+	pivot=s;
+	while (pivot!=rotator){
+		//check if should switch rotator and pivot
+		if (arr[pivot]>=arr[rotator] != (pivot<rotator)){
+			tmp=arr[rotator];
+			arr[rotator]=arr[pivot];
+			arr[pivot]=tmp;
+
+			tmp=rotator;
+			rotator=pivot;
+			pivot=tmp;
+		}
+		//moves rotator 1 closer to pivot
+		rotator+= (pivot-rotator)/abs(pivot-rotator);
+	}
+	quickSort(arr,s,pivot);
+	quickSort(arr,pivot+1,e);
+	return;   
+}	
+void sortArray(CUIntArray& arr){
+	quickSort(arr,0,arr.GetSize());
+}
 /////////////////////////////////////////////////////////////////////////////
-void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
+void droppedLootCheck2(CConfigData *config, CUIntArray& lootedArr) {
 	char buf[256];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -1088,29 +1138,242 @@ exitLoop:
 
 
 }
+void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
+	char buf[256];
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaItemProxy itemProxy;
+	CTibiaMapProxy tibiaMap;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	if (config->lootFromFloor&&self->cap>config->capacityLimit) {
+
+		if (config->debug) registerDebug("Entering 'loot from floor' area");
+		
+		int freeContNr=-1;
+		int freeContPos=-1;
+		
+		// lookup a free place in any container
+		int contNr;
+		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+			CTibiaContainer *cont = reader.readContainer(contNr);
+			if (cont->flagOnOff&&cont->itemsInside<cont->size) {
+				freeContNr=contNr;
+				freeContPos=cont->size-1;
+				deleteAndNull(cont);
+				break;
+			}
+			deleteAndNull(cont);
+		}
+		
+		if (freeContNr==-1) {
+			if (config->debug) registerDebug("Loot from floor: no free container found");
+			// no free place in container found - exit
+			deleteAndNull(self);
+			return;
+		}else{
+			sprintf(buf,"Container Found: Cont %d Slot%d)",freeContNr,freeContPos);
+			if (config->debug) registerDebug(buf);
+		}
+		
+		sortArray(lootedArr);
+
+		int foundLootedObjectId=0;
+		int isTopItem=0;
+		int x=0,y=0;
+		int xSwitch=0;
+		int ySwitch=0;
+		int count=0;
+		while (x!=8 && y !=8){
+			//manage x and y coords for spiraling
+			if (xSwitch==0 && ySwitch==0){xSwitch=1;}
+			else if (x==y && x>=0 && xSwitch==1 && ySwitch==0) {x++; xSwitch=0;ySwitch=-1;}
+			else if (!xSwitch && !(x==y && x>=0) && abs(x)==abs(y)){xSwitch=ySwitch;ySwitch=0;x+=xSwitch;y+=ySwitch;}
+			else if (!ySwitch && abs(x)==abs(y)){ySwitch=-xSwitch;xSwitch=0;x+=xSwitch;y+=ySwitch;}
+			else {x+=xSwitch;y+=ySwitch;}
+			
+			if (abs(x)>7 || abs(y)>5) continue;
+
+			int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+			if (stackCount==0) continue;
+
+			foundLootedObjectId=0;
+			isTopItem=0;
+
+			//horribly inefficient for 165 tiles, is performed later //int topPos=itemOnTopIndex(x,y);
+			//top of Tibia's stack starts somewhere in the middle of the array
+			for (int pos=0;pos<stackCount;pos++)
+			{
+				count++;
+				int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
+				int ind = binarySearch(tileId,lootedArr);
+				if (ind!=-1){
+					foundLootedObjectId=lootedArr[ind];
+					isTopItem = pos==itemOnTopIndex(x,y);
+					break;
+				}
+			}				
+
+			if(!foundLootedObjectId) continue;
+			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,getItemIndex(x,y,f1),getItemIndex(x,y,f2),x,y);
+			//AfxMessageBox(buf);
+
+			int shouldStandOn=0;//reader.mapGetPointItemsCount(point(x,y,0))>=10;
+
+			//Walk To Square
+			if (abs(x) > 1 || abs(y) > 1 || shouldStandOn && !(x==0&&y==0)) {
+				int path[15];
+				int pathSize=0;
+				memset(path,0x00,sizeof(int)*15);
+				if (config->debug){
+					sprintf(buf, "findPathOnMap: loot from floor (%d, %d) %x", x, y,foundLootedObjectId);
+					registerDebug(buf);
+				}
+				CTibiaCharacter *self2 = reader.readSelfCharacter();
+				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+x, self->y+y, self->z, 0,path,1);
+				for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
+
+				//continue if farther than 10 spaces or path does not include enough info to get there(meaning floor change)
+				if (pathSize>=10 || pathSize<x+y-3) {deleteAndNull(self2); continue;}
+
+				sprintf(buf,"Loot from floor: item (%d,%d,%d)",x,y,pathSize);
+				if (config->debug) registerDebug(buf);
+				sprintf(buf, "Path[0]: %d\tpathSize: %d", path[0], pathSize);
+				if (config->debug) registerDebug(buf);
+
+				if (pathSize)  {
+					//sender.stopAll();
+					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
+					//AfxMessageBox(buf);
+					if (!shouldStandOn){
+					    if(path[pathSize-1]==path[pathSize-2]){//means we will be 1 square away 1 space before path end
+                            path[--pathSize]=0;
+                        }else{//means we will be 1 square away 2 spaces before path end
+						    path[--pathSize]=0;
+						    path[--pathSize]=0;
+                        }
+					}
+					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
+					// wait for reaching final point
+					if (!shouldStandOn) CModuleUtil::waitToApproachSquare(self->x+x,self->y+y);
+					else CModuleUtil::waitToStandOnSquare(self->x+x,self->y+y);
+				}
+				else {
+					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+x,self->y+y,self->z);
+					if (config->debug) registerDebug(buf);
+					deleteAndNull(self2);
+					continue;
+				}
+				deleteAndNull(self2);
+			}
+			CTibiaCharacter *self2 = reader.readSelfCharacter();
+			int itemX=self->x+x-self2->x;
+			int itemY=self->y+y-self2->y;
+
+			sprintf(buf,"Loot from floor: found looted object id=0x%x at %d,%d",foundLootedObjectId,itemX,itemY);
+			if (config->debug) registerDebug(buf);
+			
+			//If failed to get within 1 square, let cavebot take over again
+			if(!(abs(itemX)<=1 && abs(itemY)<=1 && self2->z==self->z)) break;
+
+			//Uncover Item
+			if(!isTopItem)
+			{
+				int offsetX,offsetY;
+				int foundSpace=0;
+				// Need to find free square to dump items
+				for (offsetX=-1;offsetX<=1;offsetX++) {
+					for (offsetY=-1;offsetY<=1;offsetY++) {
+						// double loop break!
+						if (self2->x+offsetX!=self->x+x&&self2->y+offsetY!=self->y+y&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)&&reader.mapGetPointItemsCount(point(offsetX,offsetY,0))<9) 
+						{
+							//force loop break;
+							foundSpace=1;
+							goto exitLoop;
+						}
+					}
+				}
+				if (!(self2->x==self->x+x && self2->y==self->y+y)){
+					offsetX=0;
+					offsetY=0;
+					foundSpace=1;
+				}
+exitLoop:
+				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
+				if (config->debug) registerDebug(buf);
+				// do it only when drop place is found
+				if (foundSpace){
+
+					int itemInd=getItemIndex(itemX,itemY,foundLootedObjectId);
+					int topInd=itemOnTopIndex(itemX,itemY);
+					int count=reader.mapGetPointItemsCount(point(itemX,itemY,0));
+					sprintf(buf,"Loot from floor vars: itemInd %d,topInd %d,count %d,(%d,%d)=%d",itemInd,topInd,count,itemX,itemY,foundLootedObjectId);
+					if (config->debug) registerDebug(buf);
+					
+					int itemIds[10];
+					int itemQtys[10];
+					int numItems=0;
+					for (int ind=topInd;ind<itemInd;ind++){
+						itemIds[numItems]=reader.mapGetPointItemId(point(itemX,itemY,0),ind);
+						itemQtys[numItems]=reader.mapGetPointItemExtraInfo(point(itemX,itemY,0),ind,1);
+						numItems++;
+					}
+					for (int i=0;i<numItems;i++){
+						sender.moveObjectFromFloorToFloor(itemIds[i],self->x+x,self->y+y,self->z,self2->x+offsetX,self2->y+offsetY,self2->z,itemQtys[i]);
+						Sleep(CModuleUtil::randomFormula(400,200));
+					}
+				}
+				else {
+					if (config->debug) registerDebug("Loot from floor: bad luck - no place to throw junk.");
+					deleteAndNull(self2);
+					continue;
+				}
+			}
+
+			//Take item
+			if (isItemOnTop(itemX,itemY,foundLootedObjectId)) {
+				if (config->debug) registerDebug("Loot from floor: picking up item");
+				int qty=itemOnTopQty(itemX,itemY);
+				sender.moveObjectFromFloorToContainer(foundLootedObjectId,self->x+x,self->y+y,self->z,0x40+freeContNr,freeContPos,qty);
+				Sleep(CModuleUtil::randomFormula(400,200));
+				CModuleUtil::waitForItemsInsideChange(freeContNr,freeContPos);
+			}
+			else {
+				if (config->debug) registerDebug("Loot from floor: tough luck - item is not on top. Please wait and try again.");
+			}
+			//If gotten this far, let cavebot takeover for a bit
+			deleteAndNull(self2);
+			break;
+		}
+	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
+	deleteAndNull(self);
+
+
+}
 
 void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	
+
 	int contNr,realContNr;
 	CUIntArray acceptedItems;
 	CTibiaItem *rune=NULL;
-	
+
 	if (config->debug) registerDebug("Firing runes at alien enemy");
-	
+
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeSD"));
 	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
 		rune = CModuleUtil::lookupItem(contNr,&acceptedItems),realContNr=contNr;
-	
+
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeExplo"));
 	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
 		rune = CModuleUtil::lookupItem(contNr,&acceptedItems),realContNr=contNr;
-	
+
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeHMM"));
 	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
@@ -1555,7 +1818,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		CUIntArray droppedLootArray;
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
-		if (currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
+		if (config->lootFromFloor && currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
 			if (config->lootFood) {
 				droppedLootArray.Append(*itemProxy.getFoodIdArrayPtr());
 			}
@@ -1964,7 +2227,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 
 			}//end for
-			
 			//Determine best creature to attack on-screen
 			int bestCreatureNr=-1;
 			for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {

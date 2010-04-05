@@ -53,7 +53,7 @@ CConfigData::CConfigData()
 	attackOnlyAttacking=1;
 	standStill=2;
 	forceAttackAfterAttack=1;
-	gatherLootStats=1;
+	gatherLootStats=0;
 	debug=1;
 	weaponTrain=0;
 	weaponFight=0;
