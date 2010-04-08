@@ -17,6 +17,8 @@ using namespace std;
 class Alarm  
 {
 public:
+	bool halfSleep;
+	bool fullSleep;
 	bool cavebotForced;
 	bool flashed;
 	bool maximized;

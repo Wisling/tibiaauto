@@ -146,7 +146,7 @@ int actionShutdownSystem(){
 	return 0;
 }
 
-void actionSuspend(CString module) {
+bool actionSuspend(CString module) {
 	masterDebug("actionSuspend");
 	masterDebug("actionSuspend","Time to stop module");
 	HANDLE hSnap;
@@ -160,16 +160,24 @@ void actionSuspend(CString module) {
 			if (lpModule.szModule == module){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
-				if (isStarted && isStarted()) {
-					GetProcAddress(lpModule.hModule,"stop")();
+				if (isStarted) {
+					if (isStarted())
+						GetProcAddress(lpModule.hModule,"stop")();
+					CloseHandle(hSnap);
+					return true;
 				}
+				else {
+					CloseHandle(hSnap);
+					return false;
+				}	
 			}
 		} while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
 	}
+	return false;
 }
 
-void actionStart(CString module) {
+bool actionStart(CString module) {
 	masterDebug("actionStart");
 	masterDebug("actionStart","Time to start module", module);
 	HANDLE hSnap;
@@ -183,13 +191,21 @@ void actionStart(CString module) {
 			if (lpModule.szModule == module){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
-				if (isStarted && !isStarted()) {
-					GetProcAddress(lpModule.hModule,"start")();
+				if (isStarted) {
+					if (!isStarted())
+						GetProcAddress(lpModule.hModule,"start")();
+					CloseHandle(hSnap);
+					return true;
 				}
+				else {
+					CloseHandle(hSnap);
+					return false;
+				}	
 			}
 		} while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
 	}
+	return false;
 }
 
 int OnList(char whiteList[100][32],char name[]){
@@ -472,6 +488,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int recoveryAlarmHp=0;
 	int recoveryAlarmMana=0;
 	int goPriority = 0;
+	bool cavebotForced = false;
+	int fullSleepCount = 0;
+	int halfSleepCount = 0;
 	
 	delete self;	
 
@@ -486,10 +505,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (recoveryAlarmMana&&self->mana==self->maxMana) recoveryAlarmMana=0;
 		if (recoveryAlarmHp&&self->hp==self->maxMana) recoveryAlarmHp=0;
-
+		
 		//insert my alarm check and action code
 		while (alarmItr != config->alarmList.end()) {
 			if (alarmItr->checkAlarm(config->whiteList, config->options)) {
+				config->status = alarmItr->getDescriptor();
 				// Flash Window ***************
 				if (!alarmItr->flashed) {
 					if (!tibiaHWND)
@@ -497,7 +517,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					FlashWindow(tibiaHWND, true);
 					alarmItr->flashed = true;
 				}// ***************************
-
+				
 				// Log Event ******************
 				if (alarmItr->doLogEvents() && !alarmItr->eventLogged) {
 					time_t rawtime;
@@ -515,37 +535,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 					alarmItr->eventLogged = true;
 				}// ****************************
-
+				
 				// Play sound ******************
 				if (alarmItr->doAlarm().GetLength()) 
 					PlaySound(path + alarmItr->doAlarm(), NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
 				// *****************************
-
+				
 				// Attack ******************
-				if (alarmItr->doAttack()) { 
-					HANDLE hSnap;
-					hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
-					if (hSnap) {
-						MODULEENTRY32 lpModule;
-						lpModule.dwSize = sizeof(MODULEENTRY32);
-
-						Module32First(hSnap,&lpModule);
-						do {
-							if (lpModule.szModule == "mod_cavebot.dll") {
-								FARPROC isStarted;
-								isStarted = GetProcAddress(lpModule.hModule, "isStarted");
-								if (isStarted && !isStarted()) {
-									GetProcAddress(lpModule.hModule,"start")();
-									alarmItr->cavebotForced = true;
-								}
-							}
-						} while (Module32Next(hSnap,&lpModule));
-						CloseHandle(hSnap);
-					}
-				}
+				if (alarmItr->doAttack()) 
+					cavebotForced = actionStart("mod_cavebot.dll");
 				else {
 					reader.setGlobalVariable("cavebot_fullsleep","true");
-					fullSleep++;
+					if (!alarmItr->fullSleep) {
+						alarmItr->fullSleep = true;
+						fullSleepCount++;
+					}
 				}
 				// *****************************
 				
@@ -567,7 +571,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						alarmItr->modulesSuspended = true;
 					}
 				}// ****************************
-			
+				
 				// Start Modules ***************
 				if (alarmItr->doStartModules().size() && !alarmItr->modulesStarted) {
 					list<CString> temp = alarmItr->doStartModules();
@@ -577,9 +581,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						modulesItr++;
 						alarmItr->modulesStarted = true;
 					}
-
+					
 				}// ****************************
-
+				
 				// Cast spell ******************
 				if (alarmItr->doCastSpell().GetLength() && !alarmItr->spellCast) {
 					if (self->mana >= alarmItr->getManaCost()) {
@@ -589,7 +593,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					delete self;
 				}
 				// *****************************
-
+				
 				// Take Screenshot ******************
 				if (alarmItr->doTakeScreenshot() > -1) {
 					DWORD threadId;
@@ -625,30 +629,28 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}				
 				}
 				// *****************************
-
+				
 				// Goto Start ******************
-				if (alarmItr->doGoToStart()  && goPriority <= 1) {
+				if (alarmItr->doGoToStart()  && goPriority <= 1)
 					goPriority = 1;
-				}// ****************************
+				// *****************************
 
 				// Goto Runaway ****************
-				if (alarmItr->doGoToRunaway() && goPriority <= 2) {
+				if (alarmItr->doGoToRunaway() && goPriority <= 2)
 					goPriority = 2;
-				}
 				// *****************************
 
 				// Goto Depot ******************
-				if (alarmItr->doGoToDepot()  && goPriority <= 3) {
+				if (alarmItr->doGoToDepot()  && goPriority <= 3)
 					goPriority = 3;
-				}// ****************************
+				// ****************************
 
 				// Logout **********************
 				if (alarmItr->doLogout()) {
 					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() != 8 ) {
 						sender.logout();
 					}
-				}
-				// *****************************
+				}// ****************************
 
 				// Kill Client *****************
 				if (alarmItr->doKillClient()) {
@@ -659,8 +661,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// Shutdown Computer ***********
 				if (alarmItr->doShutdownComputer()) {
 					actionShutdownSystem();
-				}
-				// *****************************
+				}// ****************************
 
 			}
 			else if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
@@ -671,7 +672,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr->timeLastSS = time(NULL);
 			}
 			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
-				if (alarmItr->cavebotForced)
+				if (alarmItr->fullSleep) {
+					alarmItr->halfSleep = false;
+					fullSleepCount--;
+				}
+				if (alarmItr->halfSleep) {
+					alarmItr->halfSleep = false;
+					halfSleepCount--;
+				}
+				if (cavebotForced)
 					actionSuspend("mod_cavebot.dll");
 				alarmItr->cavebotForced = false;
 				alarmItr->flashed = false;
@@ -721,7 +730,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		switch (goPriority) {
 			if (!reader.getGlobalVariable("cavebot_fullsleep")) {
 				reader.setGlobalVariable("cavebot_halfsleep","true");
-				halfSleep++;
+				halfSleepCount++;
 			}
 		case 1: {// Start position (By definition, the least safe place to be)
 			int pathSize = 0;
@@ -814,13 +823,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			   }
 			break;
 		}
+		if (reader.getGlobalVariable("cavebot_fullsleep") && fullSleepCount <= 0) {
+			reader.setGlobalVariable("cavebot_fullsleep", "false");
+			fullSleepCount = 0;
+		}
+		if (reader.getGlobalVariable("cavebot_halfsleep") && halfSleepCount <= 0) {
+			reader.setGlobalVariable("cavebot_halfsleep", "false");
+			halfSleepCount = 0;
+		}
 		goPriority = 0;
 	}
 
 	// Clean-up alarm flags before disabling, reset modules to previous state.
 	alarmItr = config->alarmList.begin();
 	while (alarmItr != config->alarmList.end()) {
-		alarmItr->cavebotForced = false;
+
+		if (cavebotForced) {
+			cavebotForced = false;
+			actionSuspend("mod_cavebot.dll");
+		}
 		alarmItr->flashed = false;
 		alarmItr->maximized = false;
 		alarmItr->spellCast = false;
