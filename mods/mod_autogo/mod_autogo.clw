@@ -4,7 +4,7 @@
 Version=1
 ClassCount=5
 Class1=CMod_autogoApp
-LastClass=GeneralConfigDialog
+LastClass=CAlarmDialog
 NewFileInclude2=#include "mod_autogo.h"
 ResourceCount=7
 NewFileInclude1=#include "stdafx.h"
@@ -14,10 +14,10 @@ Resource1=IDD_CONFIG
 Class3=CWhiteList
 Resource2=IDD_WHITELIST
 Resource3=IDD_WHITELIST (Polish)
-Resource4=IDD_ALARM_DIALOG
+Resource4=IDD_CONFIG (Polish)
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
-Resource6=IDD_CONFIG (Polish)
+Resource6=IDD_ALARM_DIALOG
 Class5=GeneralConfigDialog
 Resource7=IDD_GENERAL_CONFIG_DIALOG
 
@@ -255,7 +255,7 @@ ImplementationFile=alarmdialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_ACTION_MAXIMIZE
+LastObject=IDC_ACTION_SPELL
 
 [DLG:IDD_GENERAL_CONFIG_DIALOG]
 Type=1
