@@ -117,7 +117,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 		if (!m_enable.GetCheck()) 
 			triggerMessage();
 
-		buf.Format("Status: %s",status);
+		buf.Format("Status: %s", status);
 		m_status.SetWindowText(buf);
 
 		delete self;

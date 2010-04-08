@@ -42,6 +42,7 @@ Alarm::Alarm() {
 	attribute = 0;
 	alarmType = 0;
 
+// execution markers only, no need to save orecord here
 	onScreenAt = 0;
 	spellCast = false;
 	screenshotsTaken = 0;
@@ -52,6 +53,8 @@ Alarm::Alarm() {
 	maximized = false;
 	flashed = false;
 	cavebotForced = false;
+	fullSleep = false;
+	halfSleep = false;
 }
 
 Alarm::Alarm(int type, int attr, int cond, int trig, bool run, bool sta, bool dep, CString spe, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
@@ -85,6 +88,8 @@ Alarm::Alarm(int type, int attr, int cond, int trig, bool run, bool sta, bool de
 	maximized = false;
 	flashed = false;
 	cavebotForced = false;
+	fullSleep = false;
+	halfSleep = false;
 }
 
 Alarm::~Alarm(){
