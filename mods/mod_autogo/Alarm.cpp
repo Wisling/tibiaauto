@@ -23,7 +23,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 Alarm::Alarm() {
-	alarmDescriptor = "";
+	alarmDescriptor = "<none>";
 	spell = "";
 	sound = "";
 	logEvents = false;
@@ -56,6 +56,8 @@ Alarm::Alarm() {
 	fullSleep = false;
 	halfSleep = false;
 }
+
+
 
 Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
 	alarmDescriptor = "";

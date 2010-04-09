@@ -85,9 +85,10 @@ BEGIN_MESSAGE_MAP(CAlarmDialog, CDialog)
 	ON_BN_CLICKED(IDC_ACTION_MAXIMIZE, OnActionMaximize)
 	ON_BN_CLICKED(IDC_ACTION_LOG_EVENTS, OnActionLogEvents)
 	ON_BN_CLICKED(IDC_ALARM_ADD, OnAlarmAdd)
+	ON_BN_CLICKED(IDC_ALARM_DELETE, OnAlarmDelete)
 	ON_WM_ERASEBKGND()
 	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_ALARM_DELETE, OnAlarmDelete)
+	ON_BN_CLICKED(IDC_ALARM_EDIT, OnAlarmEdit)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -254,8 +255,8 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("VIP (Iron Cross)"), 11);
 
 			m_condition.ResetContent();
-			m_condition.AddString("Logs On");
-			m_condition.AddString("Logs Off");
+			m_condition.AddString("Online");
+			m_condition.AddString("Offline");
 
 			m_condition.EnableWindow(true);
 			m_trigger.SetWindowText("Not Applicable");
@@ -290,7 +291,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 						m_attribute.SetItemImage(index, 44);
 					else if (text.Find("shield") != -1 || text.Find("Shield") != -1)
 						m_attribute.SetItemImage(index, 46);
-					else if (text.Find("Arrow") != -1 || text.Find("bow") != -1 || text.Find("Bow") != -1 || text.Find("Throwing") != -1 || text.Find("Spear") != -1 || text.Find(" Star") != -1 || text.Find(" Stone") != -1)
+					else if (text.Find("Arrow") != -1 || (text.Find("bow") != -1 && text.Find("Rainbow") == -1) || text.Find("Bow") != -1 || text.Find("Throwing") != -1 || text.Find("Spear") != -1 || text.Find(" Star") != -1 || text.Find(" Stone") != -1)
 						m_attribute.SetItemImage(index, 45);
 					else if (text.Find("Club") != -1 || text.Find("Mace") != -1 || text.Find("Hammer") != -1)
 						m_attribute.SetItemImage(index, 47);
@@ -979,10 +980,14 @@ void CAlarmDialog::OnSelchangeCondition() {
 		case NEARBY:
 			VERIFY(instructionText.LoadString(IDS_NEARBY)); 
 			m_instructionText.SetWindowText(instructionText);
+			m_trigger.SetWindowText("<Not Applicable>");
+			m_trigger.EnableWindow(false);
 			break;
 		case DISAPPEARS:
 			VERIFY(instructionText.LoadString(IDS_DISAPPEARS)); 
 			m_instructionText.SetWindowText(instructionText);
+			m_trigger.SetWindowText("<Not Applicable>");
+			m_trigger.EnableWindow(true);
 			break;
 		case ISONSCREENFOR:
 			VERIFY(instructionText.LoadString(IDS_ISONSCREENFOR)); 
@@ -1357,4 +1362,9 @@ void CAlarmDialog::OnAlarmDelete() {
 		
 		memAlarmList.erase(alarmItr);
 	}
+}
+
+void CAlarmDialog::OnAlarmEdit() {
+	// TODO: Add your control notification handler code here
+	
 }

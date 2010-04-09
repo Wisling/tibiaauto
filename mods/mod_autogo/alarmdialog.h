@@ -100,6 +100,7 @@ protected:
 	afx_msg void OnActionLogEvents();
 	afx_msg void OnAlarmAdd();
 	afx_msg void OnAlarmDelete();
+	afx_msg void OnAlarmEdit();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

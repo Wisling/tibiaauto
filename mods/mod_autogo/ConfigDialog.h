@@ -19,12 +19,6 @@
 #define BATTLELIST_PARANOIAM			0x0002
 #define MAKE_BLACKLIST					0x0004
 
-#define TRIGGER_BATTLELIST				0x0001
-#define TRIGGER_SIGN					0x0002
-	#define SIGN_BATTLE					0x0080
-	#define SIGN_POISON					0x0001
-	#define SIGN_FIRE					0x0002
-	#define SIGN_ENERGY					0x0004
 #define TRIGGER_MESSAGE					0x0004
 	#define MESSAGE_PRIVATE				0x0001
 	#define MESSAGE_PUBLIC				0x0002
@@ -99,19 +93,15 @@ class CConfigDialog : public MyDialog
 {
 // Construction
 public:
-	CString status;
+	char status[201];
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
 	CConfigDialog(CMod_autogoApp *app,CWnd* pParent = NULL);   // standard constructor
-	//Array to hold the list of dialog boxes/tab pages for CTabCtrl
 	int m_DialogID[2];
-	
-	//CDialog Array Variable to hold the dialogs 
 	MyDialog *m_Dialog[2];
-	
 	int m_nPageCount;
 
 // Dialog Data

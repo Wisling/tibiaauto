@@ -4,7 +4,7 @@
 Version=1
 ClassCount=5
 Class1=CMod_autogoApp
-LastClass=CAlarmDialog
+LastClass=GeneralConfigDialog
 NewFileInclude2=#include "mod_autogo.h"
 ResourceCount=7
 NewFileInclude1=#include "stdafx.h"
@@ -14,10 +14,10 @@ Resource1=IDD_CONFIG
 Class3=CWhiteList
 Resource2=IDD_WHITELIST
 Resource3=IDD_WHITELIST (Polish)
-Resource4=IDD_CONFIG (Polish)
+Resource4=IDD_ALARM_DIALOG
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
-Resource6=IDD_ALARM_DIALOG
+Resource6=IDD_CONFIG (Polish)
 Class5=GeneralConfigDialog
 Resource7=IDD_GENERAL_CONFIG_DIALOG
 
@@ -231,7 +231,7 @@ Control15=IDC_ACTION_SOUND,button,1342242819
 Control16=IDC_AUDIO_FILE,combobox,1344339970
 Control17=IDC_ACTION_SUSPEND_MODULES,button,1342242819
 Control18=IDC_ALARM_ADD,button,1342242816
-Control19=IDC_ALARM_EDIT,button,1342242816
+Control19=IDC_ALARM_EDIT,button,1073807360
 Control20=IDC_ALARM_DELETE,button,1342242816
 Control21=IDC_STATIC,static,1342308352
 Control22=IDC_STATIC,static,1342308352
@@ -255,7 +255,7 @@ ImplementationFile=alarmdialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_ACTION_SPELL
+LastObject=IDC_ALARM_EDIT
 
 [DLG:IDD_GENERAL_CONFIG_DIALOG]
 Type=1
@@ -295,6 +295,6 @@ HeaderFile=GeneralConfigDialog.h
 ImplementationFile=GeneralConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_MAINTAIN_START
+LastObject=IDC_RUNAWAY_PICTURE
 VirtualFilter=dWC
 
