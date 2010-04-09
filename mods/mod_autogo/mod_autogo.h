@@ -71,7 +71,6 @@ private:
 	int m_started;
 	int currentPos;
 	list<Alarm>::iterator currentAlarmPos;
-	int getWavFileLength(char * wavFile);
 	CConfigDialog * m_configDialog;
 	CConfigData *m_configData;
 };

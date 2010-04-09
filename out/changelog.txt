@@ -1,10 +1,15 @@
  Installation will now never repace the items.xml file unless it is missing
+2.2.2, 4.8.2010
+Enhancments
+ Auto Go/Log:Reworked AutoGo now 4.0
+
 2.2.2, 4.4.2010
 Enhancments
 
 Defects
  Cavebot: Loot from floor works now
  Python: walkOnTAMap function will now walk to positions 1 square away
+
 
 2.2.2, 4.4.2010
 Enhancments

@@ -102,7 +102,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 	m_Dialog[0]->controlsToConfig(newConfigData);
 	m_Dialog[1]->controlsToConfig(newConfigData);
-
+	newConfigData->status = status;
 	return newConfigData;
 }
 
@@ -143,7 +143,7 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_tabCtrl.AddTab(m_Dialog[0], "Alarms");
 	m_tabCtrl.AddTab(m_Dialog[1], "General Configuration");
 	
-
+	memset(status, 0, 128);
 	SetTimer(1001,250,NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
