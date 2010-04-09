@@ -164,7 +164,7 @@ END
 IDD_OPTIONS DIALOGEX 0, 0, 192, 201
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tibia Auto: general options"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Loot Statistics",IDC_LOOT_STATISTICS,7,7,178,31
     GROUPBOX        "Creature Statistics",IDC_CREATURE_STATISTICS,7,41,178,
@@ -339,7 +339,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 2.2.1 for Tibia 8.55"
+CAPTION "Tibia Auto v 2.2.2 for Tibia 8.55"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
@@ -583,6 +583,155 @@ BEGIN
 END
 
 #endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_BEGIN               "Select an alarm type to begin."
+    IDS_SKILL               "Skill alarms will trigger when the set skill level or percentage of it is achieved."
+    IDS_RESOURCE            "Resource alarms will trigger when a resource reaches, exceeds or is less than the trigger amount based on the set condition."
+    IDS_PROXIMITY           "Proximity alarms will trigger when specified characters are nearby. Use configuration settings to filter results in or out."
+    IDS_ITEM                "Item alarms will trigger when an item or item type's quantiity reaches the set trigger amount based on conditions."
+    IDS_GENERAL             "General alarms contain alarms detect and trigger for specific purposes that are not covered among other alarm types."
+    IDS_SKILL_ALL           "Any skill that meets the conditions at the trigger level will activate the alarm."
+    IDS_SKILL_LEVEL         "When your character's experience level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_MAGICLVL      "When your character's magic level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_FISHING       "When your character's fishing skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_FIST          "When your character's fist skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_CLUB          "When your character's club skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_SWORD         "When your character's sword skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_AXE           "When your character's axe skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_SKILL_DISTANCE      "When your character's distance skill level meets the condition at the trigger amount, the alarm will activate."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_SKILL_SHIELDING     "When your character's shielding skill level meets the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_HP         "When your character's hit points meet the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_MP         "When your character's mana points meet the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_SP         "When your character's soul points meet the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_STAMINA    "When your character's stamina meets the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_CAPACITY   "When your character's capacity meets the condition at the trigger amount, the alarm will activate."
+    IDS_RESOURCE_SPACE      "When your character's open backpack spaces meet the condition at the trigger amount, the alarm will activate."
+    IDS_ITEM_FOOD           "When your character's quantity of food items in open backpacks meet the condition at the trigger amount, the alarm will activate."
+    IDS_ITEM_CUSTOM         "When your character's quantity of this item in open backpacks meet the condition at the trigger amount, the alarm will activate."
+    IDS_PROXIMITY_PLAYER    "When a player enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_MONSTER   "When a monster or NPC enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_GM        "When a Gamemaster or Community Manager enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_BATTLELIST 
+                            "When anything appears on the battlelist, the alarm will activate. (NOTE: Will detect creatures that are up to 2 sqm  outside the viewable area.)"
+    IDS_PROXIMITY_SKULL     "When any skulled players appears or becomes skulled, the alarm will activate."
+    IDS_GENERAL_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_GENERAL_PUBLICMESSAGES 
+                            "When any public message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_GENERAL_PRIVATEMESSAGES 
+                            "When any private message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_GENERAL_CHARACTERMOVED 
+                            "When the character moves or is moved (pushed) this alarm will trigger."
+    IDS_GENERAL_STATUSFLAG  "When a negative status flag is registered, this alarm will trigger. You can filter specific negative status flags in General Options."
+    IDS_BEGIN_ATTRIBUTE     "Select an attribute that will trigger the alarm."
+    IDS_LEVELUP             "The alarm will activate when the selected skill reaches new and subsequent levels."
+    IDS_PERCLVLACHIEVED     "The alarm will activate when the selected skill has met or surpassed the percentage of completion set in the trigger amount."
+    IDS_PERCLVLREMAINING    "The alarm will activate when the selected skill has a percentage of completion that is equal to or less than the trigger amount."
+    IDS_CONDITION           "Please select a condition to continue."
+    IDS_EQUAL               "The alarm will trigger when the attribute is equal to the  trigger amount."
+    IDS_LESS                "The alarm will trigger when the attribute is less than the  trigger amount."
+    IDS_MORE                "The alarm will trigger when the attribute is more than the  trigger amount."
+    IDS_NEARBY              "When the designated actor (attribute)  is nearby the alarm will activate."
+    IDS_DISAPPEARS          "When the designated actor (attribute) leaves the area the alarm will activate."
+    IDS_ISONSCREENFOR       "When the designated actor (attribute) remians onscreen for longer than the trigger amount the alarm will activate."
+    IDS_KILL                "This option will terminate the Tibia client. This option is incompatible with the ""Shutdown Computer"" option."
+    IDS_SHUTDOWN            "This option will shut-down the computer. This option is incompatible with the ""Kill Tibia Client"" option."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_RUNAWAY             "This option will send the player to the designated runaway location. The runaway location is set is General Options."
+    IDS_START               "This option will send the player to the designated starting location. The starting location is set is General Options."
+    IDS_DEPOT               "This option will send the player to the nearest mapped depot loaction. "
+    IDS_SPELL               "This option will attempt to cast the spell configured in the dropdown menu."
+    IDS_SCREENSHOT          "This option will save one or more screenshots of the Tibia client window as configured in the dropdown menu."
+    IDS_SUSPEND_MODULES     "This option will disable one or more of the loaded modules as configured in the list's selections."
+    IDS_START_MODULES       "This option will enable one or more of the loaded modules as configured in the list's selections. Be sure to configure these before enabling this module."
+    IDS_SOUND               "This option will play the designated sound when the alarm is triggered. Additional sounds can be added for use by copying .wav files to the Sounds folder."
+    IDS_ATTACK              "This option will force the player to attack according to the options set in General Options."
+    IDS_LOGOUT              "This option will attempt to log the player out form the Tibia client."
+    IDS_MAXIMIZE            "This option will maximize the Tibia client window controlled by this dialog."
+    IDS_LOG_EVENTS          "This option will write a status message to a logfile for later review. The log can be found in the Logs folder of TA."
+    IDS_FROMALL             "This alarm will trigger on any message from any player. To filter spell casting out of the recognized messages enable that option in General Options."
+    IDS_FROM                "This alarm will trigger on any message from a specified player. To filter spell casting out of the recognized messages enable that option in General Options."
+    IDS_CONTAINS            "This alarm will trigger on any message, from any player, containing the specified string."
+    IDS_RESOURCE_XP         "When your character's experience points meet the condition at the trigger amount, the alarm will activate."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ONLINE              "When the player or specified VIP type logs in or out the alarm will trigger."
+    IDS_ONLINE_CURRENT_PLAYER 
+                            "When the current player is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_NONE         "When an unmarked VIP is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_HEART        "When a  VIP marked with a heart is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_SKULL        "When a  VIP marked with a skull and crossbones is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_LIGHTNING    "When a  VIP marked with a lightning bolt is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_RETICLE      "When a  VIP marked with a reticle is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_STAR         "When a  VIP marked with a star is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_YINYANG      "When a  VIP marked with a yin-yang is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_TRIPOINT     "When a  VIP marked with a tripoint is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_X            "When a  VIP marked with an X is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_DOLLARSIGN   "When a  VIP marked with a dollar sign is logged in or out according to the conditions, the alarm will trigger."
+    IDS_ONLINE_IRONCROSS    "When a  VIP marked with an iron cross is logged in or out according to the conditions, the alarm will trigger."
+    IDS_LOGON               "When the specified actor (attribute) logs in , the alarm will trigger."
+    IDS_LOGOFF              "When the specified actor (attribute) logs out , the alarm will trigger."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PROXIMITY_SKULL_BLACK 
+                            "When any black-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_RED "When any red-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_GREEN 
+                            "When any green-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_WHITE 
+                            "When any white-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_PROXIMITY_SKULL_YELLOW 
+                            "When any yellow-skulled player appears or becomes skulled, the alarm will activate."
+    IDS_STATUS              "When the selected status indicator is present, the alarm will trigger."
+    IDS_STATUS_POISONED     "When the poisoned status indicator is present, the alarm will trigger."
+    IDS_STATUS_BURNING      "When the burning status indicator is present, the alarm will trigger."
+    IDS_STATUS_ELECTRIFIED  "When the electrified status indicator is present, the alarm will trigger."
+    IDS_STATUS_DRUNK        "When the drunk status indicator is present, the alarm will trigger."
+    IDS_STATUS_MANASHIELD   "When the mana shield status indicator is present, the alarm will trigger."
+    IDS_STATUS_SLOWED       "When the slowed status indicator is present, the alarm will trigger."
+    IDS_STATUS_HASTED       "When the hasted status indicator is present, the alarm will trigger."
+    IDS_STATUS_FREEZING     "When the freezing status indicator is present, the alarm will trigger."
+    IDS_STATUS_DROWNING     "When the drowning status indicator is present, the alarm will trigger."
+    IDS_STATUS_DAZZLED      "When the dazzled status indicator is present, the alarm will trigger."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_STATUS_CURSED       "When the cursed status indicator is present, the alarm will trigger."
+    IDS_STATUS_STRENGTHENED "When the strengthened status indicator is present, the alarm will trigger."
+    IDS_STATUS_LOGOUTBLOCK  "When the log-out block status indicator is present, the alarm will trigger."
+    IDS_STATUS_PZBLOCK      "When the proctection zone block status indicator is present, the alarm will trigger."
+    IDS_STATUS_INPZ         "When the protection zone status indicator is present, the alarm will trigger."
+    IDS_ALARM_TYPE_ERROR    "********  Error!!  ********\r\nNo alarm type specified!!!\r\n********************************"
+    IDS_ATTRIBUTE_ERROR     "********  Error!!  ********\r\nNo attribute specified!!!\r\n********************************"
+    IDS_CONDITION_ERROR     "********  Error!!  ********\r\nNo condition specified!!!\r\n********************************"
+    IDS_TRIGGER_ERROR       "********  Error!!  ********\r\nNo trigger specified!!!\r\n********************************"
+    IDS_SPELLWORDS_ERROR    "********  Error!!  ********\r\nNo spell words specified!!!\r\n********************************"
+    IDS_SOUNDFILE_ERROR     "********  Error!!  ********\r\nNo sound file specified!!!\r\n********************************"
+    IDS_SCREENSHOT_ERROR    "********  Error!!  ********\r\nNo screenshot option specified!!!\r\n********************************"
+END
 
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
