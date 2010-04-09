@@ -57,7 +57,7 @@ Alarm::Alarm() {
 	halfSleep = false;
 }
 
-Alarm::Alarm(int type, int attr, int cond, int trig, bool run, bool sta, bool dep, CString spe, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
@@ -74,6 +74,7 @@ Alarm::Alarm(int type, int attr, int cond, int trig, bool run, bool sta, bool de
 	runaway = run;
 	screenshot = scr;
 	intTrigger = trig;
+	strTrigger=strTrig;
 	condition = cond;
 	attribute = attr;
 	alarmType = type;
@@ -415,7 +416,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			case SPACE:
 				return spaceAvailable() == intTrigger ? true : false;
 				break;
-			}
+			} 
 			break;
 		case LESS:
 			switch(attribute) {

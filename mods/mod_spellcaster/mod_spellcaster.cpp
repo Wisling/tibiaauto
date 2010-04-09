@@ -769,6 +769,9 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	
 	if (!strcmp(paramName,"timedSpell")) m_configData->timedSpell=atoi(paramValue);
 	if (!strcmp(paramName,"timedSpellList")) {
+		if (currentPos==0){
+			m_configData->timedSpellList.clear();
+		}
 		char* sep = strstr(paramValue,"|");//special separator char
 		if (paramValue[0]==0 || sep==NULL) return; //no parameters to load
 		TimedSpell temp;
@@ -969,7 +972,6 @@ int CMod_spellcasterApp::isMultiParam(char *paramName) {
 void CMod_spellcasterApp::resetMultiParamAccess(char *paramName) {
 	if (!strcmp(paramName,"healList")) currentPos=0;
 	if (!strcmp(paramName,"timedSpellList")){
-		m_configData->timedSpellList.clear();
 		currentPos=0;
 	}
 }

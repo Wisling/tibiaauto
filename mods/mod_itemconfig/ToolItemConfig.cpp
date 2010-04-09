@@ -196,7 +196,6 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 
 void CToolItemConfig::OnToolItemconfigRefresh()
 {
-	WindowSnap(Self.Handle, Image1.Picture.Bitmap) ;
 	CancelTwoStepOperations();
 	char buf[16384];
 	CTibiaItemProxy itemProxy;

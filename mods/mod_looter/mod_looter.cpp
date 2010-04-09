@@ -180,11 +180,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (attackedCh)
 					{
 						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);							
+						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+						CTibiaTile *tile=reader.getTibiaTile(corpseId);
 						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lastLootContNr[0]);
 						CModuleUtil::waitForOpenContainer(lastLootContNr[0],1);
 						cont[0] = reader.readContainer(lastLootContNr[0]);
-						if (corpseId&&cont[0]->flagOnOff)
+						if (corpseId&&cont[0]->flagOnOff&&tile->isContainer)
 						{
 							
 							int currentExtraContainerNr = 1;
