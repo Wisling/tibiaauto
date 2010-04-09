@@ -71,9 +71,6 @@ END_MESSAGE_MAP()
 
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
-char suspendedModules[20][64];
-int suspendedCount = 0;
-char* lastFilename="";
 HWND tibiaHWND = NULL;
 
 BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
@@ -147,6 +144,7 @@ int actionShutdownSystem(){
 }
 
 bool actionSuspend(CString module) {
+	bool retval = false;
 	masterDebug("actionSuspend");
 	masterDebug("actionSuspend","Time to stop module");
 	HANDLE hSnap;
@@ -157,27 +155,22 @@ bool actionSuspend(CString module) {
 
 		Module32First(hSnap,&lpModule);
 		do {
-			if (lpModule.szModule == module){
+			if (lpModule.szModule == module || module.Find("<all modules>") > 0){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
-				if (isStarted) {
-					if (isStarted())
-						GetProcAddress(lpModule.hModule,"stop")();
-					CloseHandle(hSnap);
-					return true;
+				if (isStarted && isStarted()) {
+					GetProcAddress(lpModule.hModule,"stop")();
+					retval = true;
 				}
-				else {
-					CloseHandle(hSnap);
-					return false;
-				}	
 			}
 		} while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
 	}
-	return false;
+	return retval;
 }
 
 bool actionStart(CString module) {
+	bool retval = false;
 	masterDebug("actionStart");
 	masterDebug("actionStart","Time to start module", module);
 	HANDLE hSnap;
@@ -188,24 +181,18 @@ bool actionStart(CString module) {
 
 		Module32First(hSnap,&lpModule);
 		do {
-			if (lpModule.szModule == module){
+			if (lpModule.szModule == module || module.Find("<all modules>") > 0){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
-				if (isStarted) {
-					if (!isStarted())
-						GetProcAddress(lpModule.hModule,"start")();
-					CloseHandle(hSnap);
-					return true;
+				if (isStarted && !isStarted()) {
+					GetProcAddress(lpModule.hModule,"start")();
+					retval = true;
 				}
-				else {
-					CloseHandle(hSnap);
-					return false;
-				}	
 			}
 		} while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
 	}
-	return false;
+	return retval;
 }
 
 int OnList(char whiteList[100][32],char name[]){
@@ -258,33 +245,16 @@ struct tibiaMessage * triggerMessage(){
 	return NULL;
 }
 
-char *alarmStatus(int alarmId){	
-	masterDebug("alarmStatus");
-	if (alarmId&TRIGGER_BATTLELIST_LIST) return "BattleList list alarm";	
-	if (alarmId&TRIGGER_BATTLELIST_GM) return "BattleList GM alarm";	
-	if (alarmId&TRIGGER_BATTLELIST_PLAYER) return "BattleList player alarm";	
-	if (alarmId&TRIGGER_BATTLELIST_MONSTER) return "BattleList monster alarm";	
-	if (alarmId&TRIGGER_SIGN)		return "A sign appeared";
-	if (alarmId&TRIGGER_SKULL)		return "A skulled player appeared";
-	if (alarmId&TRIGGER_VIP)		return "A vip with crossbones is logged in";
-	if (alarmId&TRIGGER_MESSAGE)	return "New message";
-	if (alarmId&TRIGGER_MOVE)		return "You're moving";
-	if (alarmId&TRIGGER_HPLOSS)		return "You have lost HP";
-	if (alarmId&TRIGGER_HPBELOW)	return "Your HP is below a certain value";
-	if (alarmId&TRIGGER_HPABOVE)	return "Your HP is above a certain value";
-	if (alarmId&TRIGGER_MANABELOW)	return "Your mana is below a certain value";
-	if (alarmId&TRIGGER_MANAABOVE)	return "Your mana is above a certain value";
-	if (alarmId&TRIGGER_SOULPOINT_BELOW)	return "Too few soul points";
-	if (alarmId&TRIGGER_SOULPOINT_ABOVE)	return "Too many soul points";
-	if (alarmId&TRIGGER_STAMINA_BELOW)	return "Stamina is below a certain value";
-	if (alarmId&TRIGGER_STAMINA_ABOVE)	return "Stamina is above a certain value";
-	if (alarmId&TRIGGER_BLANK)		return "Too few blank runes";
-	if (alarmId&TRIGGER_CAPACITY)	return "Capacity is too small";
-	if (alarmId&TRIGGER_OUTOF_SPACE)		return "You've run out of space";
-	if (alarmId&TRIGGER_OUTOF_FOOD)		return "You've run out of food";
-	if (alarmId&TRIGGER_OUTOF_CUSTOM)		return "You've run out of an item";
-	if (alarmId&TRIGGER_RUNAWAY_REACHED)		return "You reached the run away point";
-	return "";
+CString alarmStatus(CString alarm) {
+	static int index = 0;
+	if (alarm.GetLength() < 200) {
+		index = 0;
+		return alarm;
+	}
+	if (index >= alarm.GetLength())
+		index = 0;
+	CString buf = alarm + alarm.Left(200 - 10 - (alarm.GetLength() ? alarm.GetLength() : -1));
+	return buf.Mid(index++) + buf.Left(200 - 10 - alarm.GetLength());
 }
 
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
@@ -485,12 +455,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int lastMoved = 0;
 	int lastHp = self->hp;
 	int lastMana = self->mana;
-	int recoveryAlarmHp=0;
-	int recoveryAlarmMana=0;
+	int recoveryAlarmHp = 0;
+	int recoveryAlarmMana = 0;
 	int goPriority = 0;
 	bool cavebotForced = false;
 	int fullSleepCount = 0;
 	int halfSleepCount = 0;
+	CString statusBuf = "";
 	
 	delete self;
 
@@ -503,13 +474,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			triggerMessage();
 		alarmItr = config->alarmList.begin();
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		if (recoveryAlarmMana&&self->mana==self->maxMana) recoveryAlarmMana=0;
-		if (recoveryAlarmHp&&self->hp==self->maxMana) recoveryAlarmHp=0;
+		if (recoveryAlarmMana && self->mana == self->maxMana) recoveryAlarmMana = 0;
+		if (recoveryAlarmHp && self->hp == self->maxMana) recoveryAlarmHp = 0;
 		
 		//insert my alarm check and action code
 		while (alarmItr != config->alarmList.end()) {
 			if (alarmItr->checkAlarm(config->whiteList, config->options)) {
-				config->status = alarmItr->getDescriptor();
+				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
+					statusBuf += "  ******  " + alarmItr->getDescriptor();
 				// Flash Window ***************
 				if (!alarmItr->flashed) {
 					if (!tibiaHWND)
@@ -672,6 +644,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr->timeLastSS = time(NULL);
 			}
 			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
+				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
+					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
+				memcpy(config->status, "", 12);
 				if (alarmItr->fullSleep) {
 					alarmItr->halfSleep = false;
 					fullSleepCount--;
@@ -726,6 +701,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 			alarmItr++;
 		}
+		if (statusBuf.GetLength())
+			memcpy(config->status, alarmStatus(statusBuf), 200);
+		else
+			memcpy(config->status, "", 200);
 		// Do not let seperate alarms fight for control!!
 		switch (goPriority) {
 			if (!reader.getGlobalVariable("cavebot_fullsleep")) {
@@ -837,7 +816,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	// Clean-up alarm flags before disabling, reset modules to previous state.
 	alarmItr = config->alarmList.begin();
 	while (alarmItr != config->alarmList.end()) {
-
+		if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
+			statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
 		if (cavebotForced) {
 			cavebotForced = false;
 			actionSuspend("mod_cavebot.dll");
@@ -868,7 +848,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		alarmItr++;
 	}
 	// clear current status
-	config->status.Empty();
+	config->status[0] = '\0';
 	// stop the alarm;
 	PlaySound(NULL, NULL, NULL);
 
@@ -884,32 +864,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 /////////////////////////////////////////////////////////////////////////////
 // CMod_autogoApp construction
 
-CMod_autogoApp::CMod_autogoApp()
-{
-	m_configDialog =NULL;
+CMod_autogoApp::CMod_autogoApp() {
+	m_configDialog = NULL;
 	m_started=0;
 	m_configData = new CConfigData();
 }
 
-CMod_autogoApp::~CMod_autogoApp()
-{
+CMod_autogoApp::~CMod_autogoApp() {
 	if (m_configDialog)
-	{
 		delete m_configDialog;
-	}
 	delete m_configData;	
 }
 
-char * CMod_autogoApp::getName()
-{
+char * CMod_autogoApp::getName() {
 	return "Auto go/logout";
 }
 
-
-int CMod_autogoApp::isStarted()
-{
-	if (!m_started)
-	{
+int CMod_autogoApp::isStarted() {
+	if (!m_started) {
 		// if not started then regularly consume 1003 messages from the queue
 		CIPCBackPipeProxy backPipe;
 		struct ipcMessage mess;	
@@ -920,12 +892,9 @@ int CMod_autogoApp::isStarted()
 }
 
 
-void CMod_autogoApp::start()
-{	
-
+void CMod_autogoApp::start() {
 	superStart();
-	if (m_configDialog)
-	{
+	if (m_configDialog) {
 		m_configDialog->disableControls();
 		m_configDialog->activateEnableButton(true);
 	}
@@ -933,31 +902,26 @@ void CMod_autogoApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle = ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
 	m_started=1;
 }
 
-void CMod_autogoApp::stop()
-{
-	toolThreadShouldStop=1;
-	while (toolThreadShouldStop) {
+void CMod_autogoApp::stop() {
+	toolThreadShouldStop = 1;
+	while (toolThreadShouldStop)
 		Sleep(50);
-	};
-	m_started=0;
+	m_started = 0;
 	
-	if (m_configDialog)
-	{
+	if (m_configDialog) {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
 } 
 
-void CMod_autogoApp::showConfigDialog()
-{
+void CMod_autogoApp::showConfigDialog() {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
 
-	if (!m_configDialog)
-	{
+	if (!m_configDialog) {
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
@@ -966,61 +930,44 @@ void CMod_autogoApp::showConfigDialog()
 }
 
 
-void CMod_autogoApp::configToControls()
-{
-	if (m_configDialog)
-	{		
-		
+void CMod_autogoApp::configToControls() {
+	if (m_configDialog)		
 		m_configDialog->configToControls(m_configData);
-	}
 }
 
 
-void CMod_autogoApp::controlsToConfig()
-{
-	if (m_configDialog)
-	{
+void CMod_autogoApp::controlsToConfig() {
+	if (m_configDialog) {
 		delete m_configData;
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
 
 
-void CMod_autogoApp::disableControls()
-{
-	if (m_configDialog)
-	{
+void CMod_autogoApp::disableControls() {
+	if (m_configDialog) 
 		m_configDialog->disableControls();
-	}
 }
 
-void CMod_autogoApp::enableControls()
-{
-	if (m_configDialog)
-	{
+void CMod_autogoApp::enableControls() {
+	if (m_configDialog) 
 		m_configDialog->enableControls();
-	}
+}
+
+char *CMod_autogoApp::getVersion() {	
+	return "4.0";
 }
 
 
-char *CMod_autogoApp::getVersion()
-{	
-	return "3.1";
-}
-
-
-int CMod_autogoApp::validateConfig(int showAlerts)
-{	
+int CMod_autogoApp::validateConfig(int showAlerts) {	
 	return 1;
 }
 
-void CMod_autogoApp::resetConfig()
-{
+void CMod_autogoApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
-{
+void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"act/x"))						m_configData->actX					= atoi(paramValue);
 	if (!strcmp(paramName,"act/y"))						m_configData->actY					= atoi(paramValue);
 	if (!strcmp(paramName,"act/z"))						m_configData->actZ					= atoi(paramValue);
@@ -1029,7 +976,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"runaway/y"))					m_configData->runawayY				= atoi(paramValue);
 	if (!strcmp(paramName,"runaway/z"))					m_configData->runawayZ				= atoi(paramValue);
 	if (!strcmp(paramName,"triggerMessage"))			m_configData->triggerMessage		= atoi(paramValue);
-	if (!strcmp(paramName,"whiteList/List")){
+	if (!strcmp(paramName,"whiteList/List")) {
 		if (currentPos>99)
 			return;
 		lstrcpyn(m_configData->whiteList[currentPos++],paramValue,32);
@@ -1102,8 +1049,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 
 }
 
-char *CMod_autogoApp::saveConfigParam(char *paramName)
-{
+char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
 	buf[0]=0;
 	
@@ -1173,11 +1119,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_autogoApp::getConfigParamName(int nr)
-{
-
-	switch (nr)
-	{
+char *CMod_autogoApp::getConfigParamName(int nr) {
+	switch (nr) {
 	case 0: return "act/x";
 	case 1: return "act/y";
 	case 2: return "act/z";
@@ -1194,15 +1137,14 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 		return NULL;
 	}
 }
-int CMod_autogoApp::isMultiParam(char *paramName)
-{
+
+int CMod_autogoApp::isMultiParam(char *paramName) {
 	if (!strcmp(paramName,"whiteList/List")) return 1;
 	if (!strcmp(paramName,"alarmList")) return 1;
 	return 0;
 }
 
-void CMod_autogoApp::resetMultiParamAccess(char *paramName)
-{
+void CMod_autogoApp::resetMultiParamAccess(char *paramName) {
 	if (!strcmp(paramName,"whiteList/List")) currentPos=0;
 	if (!strcmp(paramName,"alarmList")){
 		currentAlarmPos=m_configData->alarmList.begin();
