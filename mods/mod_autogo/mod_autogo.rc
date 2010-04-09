@@ -73,7 +73,7 @@ IDD_CONFIG DIALOGEX 0, 0, 300, 394
 STYLE DS_MODALFRAME | WS_MINIMIZEBOX | WS_POPUP | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTROLPARENT
 CAPTION "Module: auto go/log"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,354,286,14
@@ -159,17 +159,17 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDD_ALARM_DIALOG DIALOGEX 0, 0, 281, 310
 STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,296
     GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,108
-    COMBOBOX        IDC_ALARM_TYPE,14,34,80,61,CBS_DROPDOWN | 
+    COMBOBOX        IDC_ALARM_TYPE,14,34,80,85,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
-    COMBOBOX        IDC_ATTRIBUTE,14,65,80,60,CBS_DROPDOWN | 
+    COMBOBOX        IDC_ATTRIBUTE,14,65,80,156,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
-    COMBOBOX        IDC_CONDITION,100,65,80,62,CBS_DROPDOWN | 
+    COMBOBOX        IDC_CONDITION,100,65,80,128,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Go to Runaway",IDC_ACTION_RUNAWAY,"Button",
@@ -229,7 +229,7 @@ END
 
 IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 310
 STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "General Configuration",IDC_GENERAL_CONFIG_FRAME,7,7,267,
                     296
@@ -384,8 +384,9 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904B0"
+        BLOCK "040904b0"
         BEGIN
+            VALUE "Comments", "\0"
             VALUE "CompanyName", "\0"
             VALUE "FileDescription", "mod_autogo DLL\0"
             VALUE "FileVersion", "1, 0, 0, 1\0"
@@ -393,8 +394,10 @@ BEGIN
             VALUE "LegalCopyright", "Copyright (C) 2005\0"
             VALUE "LegalTrademarks", "\0"
             VALUE "OriginalFilename", "mod_autogo.DLL\0"
+            VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "mod_autogo Dynamic Link Library\0"
             VALUE "ProductVersion", "1, 0, 0, 1\0"
+            VALUE "SpecialBuild", "\0"
         END
     END
     BLOCK "VarFileInfo"

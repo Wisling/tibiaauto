@@ -492,7 +492,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int fullSleepCount = 0;
 	int halfSleepCount = 0;
 	
-	delete self;	
+	delete self;
 
 	PlaySound(0, 0, 0);
 		
@@ -1035,6 +1035,70 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue)
 		lstrcpyn(m_configData->whiteList[currentPos++],paramValue,32);
 	}
 	if (!strcmp(paramName,"whiteList/mkBlack"))			m_configData->mkBlack	= atoi(paramValue);
+	if (!strcmp(paramName,"alarmList")) {
+		if (m_configData->alarmList.begin()==currentAlarmPos){
+			m_configData->alarmList.clear();
+		}
+		CString cstr;
+		char* sep=paramValue;
+
+		char* startModules=sep;
+		if ((sep=strstr(sep,"|"))==NULL) return;
+		sep[0]='\0'; sep=sep+1;
+
+		char* stopModules=sep;
+		if ((sep=strstr(sep,"|"))==NULL) return;
+		sep[0]='\0'; sep=sep+1;
+
+		char* selections=sep;
+		if ((sep=strstr(sep,"|"))==NULL) return;
+		sep[0]='\0'; sep=sep+1;
+
+		char* strTrigger=sep;
+		if ((sep=strstr(sep,"|"))==NULL) return;
+		sep[0]='\0'; sep=sep+1;
+
+		char* castSpell=sep;
+		if ((sep=strstr(sep,"|"))==NULL) return;
+		sep[0]='\0'; sep=sep+1;
+
+		char* alarmName=sep;
+		if ((sep=strstr(sep,"|"))==NULL) return;
+		sep[0]='\0'; sep=sep+1;
+
+		char* params=sep;
+
+		list<CString> startList=list<CString>();
+		for (sep=strstr(startModules,",");sep!=NULL;sep=strstr(sep+1,",")){
+			sep[0]=0;
+			cstr=startModules;
+			startList.push_back(cstr);
+			startModules=sep+1;
+		}
+
+		list<CString> stopList=list<CString>();
+		for (sep=strstr(stopModules,",");sep!=NULL;sep=strstr(sep+1,",")){
+			sep[0]=0;
+			cstr=stopModules;
+			stopList.push_back(cstr);
+			stopModules=sep+1;
+		}
+		
+		int alarmType=0,attribute=0,condition=0,intTrigger=0;
+		if (sscanf(selections,"%d %d %d %d",&alarmType,&attribute,&condition,&intTrigger)!=4) return;
+
+		CString cStrTrigger=CString(strTrigger);
+
+		CString cCastSpell=CString(castSpell);
+
+		CString cAlarmName=CString(alarmName);
+
+		int screenshot=0,logEvents=0,maximize=0,shutdown=0,killTibia=0,logout=0,attack=0,depot=0,start=0,runaway=0;
+		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&maximize,&shutdown,&killTibia,&logout,&attack,&depot,&start,&runaway)!=10) return;
+
+		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,screenshot,attack,logout,killTibia,shutdown,maximize,cAlarmName,logEvents,startList,stopList);
+		m_configData->alarmList.push_back(temp);
+	}
 
 }
 
@@ -1059,6 +1123,53 @@ char *CMod_autogoApp::saveConfigParam(char *paramName)
 		}		
 	}
 	if (!strcmp(paramName,"whiteList/mkBlack"))						sprintf(buf,"%d",m_configData->mkBlack);
+	if (!strcmp(paramName,"alarmList")) {
+		if (currentAlarmPos == m_configData->alarmList.end())
+			return buf;
+		else {
+			//special "|" character used for seaparation
+			Alarm alm=*currentAlarmPos;
+			currentAlarmPos++;
+			list<CString> startList=alm.doStartModules();
+			list<CString> stopList=alm.doStopModules();
+			//AddStart Modules
+			list<CString>::iterator lstIter;
+			lstIter=startList.begin();
+			while (lstIter!=startList.end()){
+				strcpy(buf+strlen(buf),*lstIter);
+				sprintf(buf+strlen(buf),",");
+				lstIter++;
+			}
+			//AddStop Modules
+			lstIter=stopList.begin();
+			sprintf(buf+strlen(buf),"%s","|");
+			while (lstIter!=stopList.end()){
+				strcpy(buf+strlen(buf),*lstIter);
+				sprintf(buf+strlen(buf),",");
+				lstIter++;
+			}
+			sprintf(buf+strlen(buf),"%s","|");
+			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d",
+				alm.getAlarmType(),
+				alm.getAttribute(),
+				alm.getCondition(),
+				alm.getIntTrigger(),
+				alm.getStrTrigger(),
+				alm.doCastSpell(),
+				alm.doAlarm(),
+				alm.doTakeScreenshot(),
+				alm.doLogEvents(),
+				alm.doMaximizeClient(),
+				alm.doShutdownComputer(),
+				alm.doKillClient(),
+				alm.doLogout(),
+				alm.doAttack(),
+				alm.doGoToDepot(),
+				alm.doGoToStart(),
+				alm.doGoToRunaway()
+			);
+		}
+	}
 	return buf;
 }
 
@@ -1077,6 +1188,7 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 	case 7: return "triggerMessage";
 	case 8: return "whiteList/List";
 	case 9: return "whiteList/mkBlack";
+	case 10: return "alarmList";
 
 	default:
 		return NULL;
@@ -1085,12 +1197,16 @@ char *CMod_autogoApp::getConfigParamName(int nr)
 int CMod_autogoApp::isMultiParam(char *paramName)
 {
 	if (!strcmp(paramName,"whiteList/List")) return 1;
+	if (!strcmp(paramName,"alarmList")) return 1;
 	return 0;
 }
 
 void CMod_autogoApp::resetMultiParamAccess(char *paramName)
 {
 	if (!strcmp(paramName,"whiteList/List")) currentPos=0;
+	if (!strcmp(paramName,"alarmList")){
+		currentAlarmPos=m_configData->alarmList.begin();
+	}
 }
 
 void CMod_autogoApp::getNewSkin(CSkin newSkin) {

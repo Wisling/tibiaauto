@@ -650,7 +650,7 @@ public:
 		for (int i=size-1;i>=0;i--){
 			CTibiaTree* ptTree=children[i];
 			children.pop_back();
-			delete ptTree;
+			//delete ptTree;
 			int a=1;
 		}
 	}
