@@ -79,7 +79,7 @@ public:
 	bool checkAlarm(char whiteList[100][32], int);
 
 	// Construction/Destruction
-	Alarm(int, int, int, int, bool, bool, bool, CString, int, bool, bool, bool, bool, bool, CString, bool, list<CString>, list<CString>);
+	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, bool, bool, bool, bool, bool, CString, bool, list<CString>, list<CString>);
 	Alarm();
 	virtual ~Alarm();
 

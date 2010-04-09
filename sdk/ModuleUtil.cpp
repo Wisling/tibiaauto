@@ -386,7 +386,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	path[0]=0;
 	memset(path,0x00,sizeof(int)*15);
 
-	if (endSpecialLocation) radius=0;
+	if (endSpecialLocation || !radius) radius=0;
 	else radius=(rand()%max(1,radius))+1;
 
 #ifdef MAPDEBUG

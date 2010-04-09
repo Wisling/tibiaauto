@@ -186,7 +186,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_trigger.SetWindowText("");
 			m_trigger.EnableWindow(true);
 		}
-		VERIFY(instructionText.LoadString(IDS_SKILL)); 
+		VERIFY(instructionText.LoadString(IDS_SKILL));
 		m_instructionText.SetWindowText(instructionText); 
 		break;
 	case RESOURCE:
@@ -1088,6 +1088,8 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 	CString text;
 
 	list<Alarm>::iterator listItr = config->alarmList.begin();
+	memAlarmList.clear();
+	m_alarmList.DeleteAllItems();
 	while (listItr != config->alarmList.end()) {
 		m_alarmType.SetCurSel(listItr->getAlarmType());
 		OnSelchangeAlarmType();
@@ -1118,11 +1120,15 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionLogEvents.SetCheck(listItr->doLogEvents());
 		m_actionEnable.SetCheck(listItr->doStartModules().size());
 		m_actionSuspend.SetCheck(listItr->doStopModules().size());
+		int size=memAlarmList.size();
 		OnAlarmAdd();
-		memAlarmList.end()->setStartModules(listItr->doStartModules());
-		m_alarmList.SetItemText(memAlarmList.size() - 1, 13, memAlarmList.end()->doStartModules().size() ? "X" : "");
-		memAlarmList.end()->setStopModules(listItr->doStopModules());
-		m_alarmList.SetItemText(memAlarmList.size() - 1, 14, memAlarmList.end()->doStopModules().size() ? "X" : "");
+		if(memAlarmList.size()==size+1){
+			list<CString> tmpl=listItr->doStartModules();
+			memAlarmList.rbegin()->setStartModules(tmpl);
+			m_alarmList.SetItemText(memAlarmList.size() - 1, 13, memAlarmList.rbegin()->doStartModules().size() ? "X" : "");
+			memAlarmList.rbegin()->setStopModules(listItr->doStopModules());
+			m_alarmList.SetItemText(memAlarmList.size() - 1, 14, memAlarmList.rbegin()->doStopModules().size() ? "X" : "");
+		}
 		listItr++;
 	}
 }
@@ -1138,7 +1144,7 @@ void CAlarmDialog::OnAlarmAdd() {
 	if (addToList(&temp)) {
 		strBuffer = m_attribute.GetItemText(m_attribute.GetCurSel(), 0) + " (" + m_alarmType.GetItemText(m_alarmType.GetCurSel(), 0);
 		strBuffer += strBuffer.Right(1) == 's' ? "es)" : "s)";
-		if (strBuffer.Right(2) == "ys")
+		if (strBuffer.Right(3) == "ys)")
 			strBuffer.Replace("ys", "ies");
 		strBuffer += m_condition.IsWindowEnabled() ? " " + m_condition.GetItemText(m_condition.GetCurSel(), 0) : "";
 		strBuffer.Replace("Equal To", "=");

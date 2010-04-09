@@ -53,7 +53,7 @@ int isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
 	for (int i=0;i<itemArrSize;i++)
 	{
 		if (tileId==itemArr[i]) return tileId;
-	}		
+	}
 	return 0;
 }
 

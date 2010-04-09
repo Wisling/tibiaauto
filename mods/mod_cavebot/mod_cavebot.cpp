@@ -205,7 +205,6 @@ int depotCheckShouldGo(CConfigData *config) {
 			deleteAndNull(cont);
 		}
 		// check whether we should deposit something
-		int a=config->depotTrigger[i].when;
 		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
 			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning))
 			ret++;
@@ -891,18 +890,20 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 	deleteAndNull(dropCont);
 }
 int binarySearch(int f,CUIntArray& arr){
+	int ASCENDING=1;
 	int e=arr.GetSize();
 	int s=0;
 	while (s<e){
 		int m=(e+s)/2; //m==s iff e-s==1
 		if (arr[m]==f) return m;
-		else if (arr[m]>f) e=m;
-		else if (arr[m]<f) s=m+1;
+		else if ((arr[m]>f)==ASCENDING) e=m;
+		else if ((arr[m]<f)==ASCENDING) s=m+1;
 	}
 	return -1;
 }
 
 void quickSort(CUIntArray& arr,int s,int e){
+	int ASCENDING=1;
 	if (e-s<=1) return;
 	int size = arr.GetSize();
 	if (s<0 || e<0 || s>size || e>size){
@@ -923,7 +924,7 @@ void quickSort(CUIntArray& arr,int s,int e){
 	pivot=s;
 	while (pivot!=rotator){
 		//check if should switch rotator and pivot
-		if (arr[pivot]>=arr[rotator] != (pivot<rotator)){
+		if ((arr[pivot]>=arr[rotator] == (pivot<rotator))==ASCENDING){
 			tmp=arr[rotator];
 			arr[rotator]=arr[pivot];
 			arr[pivot]=tmp;
@@ -1231,7 +1232,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 					registerDebug(buf);
 				}
 				CTibiaCharacter *self2 = reader.readSelfCharacter();
-				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+x, self->y+y, self->z, 0,path,1);
+				struct point destPoint = CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+x, self->y+y, self->z, 0,path,shouldStandOn?0:1);
 				for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 
 				//continue if farther than 10 spaces or path does not include enough info to get there(meaning floor change)
@@ -1246,18 +1247,9 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 					//sender.stopAll();
 					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
 					//AfxMessageBox(buf);
-					if (!shouldStandOn){
-					    if(path[pathSize-1]==path[pathSize-2]){//means we will be 1 square away 1 space before path end
-                            path[--pathSize]=0;
-                        }else{//means we will be 1 square away 2 spaces before path end
-						    path[--pathSize]=0;
-						    path[--pathSize]=0;
-                        }
-					}
 					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
 					// wait for reaching final point
-					if (!shouldStandOn) CModuleUtil::waitToApproachSquare(self->x+x,self->y+y);
-					else CModuleUtil::waitToStandOnSquare(self->x+x,self->y+y);
+					CModuleUtil::waitToStandOnSquare(destPoint.x,destPoint.y);
 				}
 				else {
 					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+x,self->y+y,self->z);
