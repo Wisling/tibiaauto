@@ -2,11 +2,11 @@
 
 [General Info]
 Version=1
-ClassCount=5
+ClassCount=6
 Class1=CMod_autogoApp
-LastClass=GeneralConfigDialog
+LastClass=CCustomSpellDialog
 NewFileInclude2=#include "mod_autogo.h"
-ResourceCount=7
+ResourceCount=8
 NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CDialog
@@ -14,12 +14,14 @@ Resource1=IDD_CONFIG
 Class3=CWhiteList
 Resource2=IDD_WHITELIST
 Resource3=IDD_WHITELIST (Polish)
-Resource4=IDD_ALARM_DIALOG
+Resource4=IDD_CONFIG (Polish)
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
-Resource6=IDD_CONFIG (Polish)
+Resource6=IDD_GENERAL_CONFIG_DIALOG
 Class5=GeneralConfigDialog
-Resource7=IDD_GENERAL_CONFIG_DIALOG
+Resource7=IDD_ALARM_DIALOG
+Class6=CCustomSpellDialog
+Resource8=IDD_ADD_CUSTOM_SPELL
 
 [CLS:CMod_autogoApp]
 Type=0
@@ -255,12 +257,12 @@ ImplementationFile=alarmdialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_ALARM_EDIT
+LastObject=CAlarmDialog
 
 [DLG:IDD_GENERAL_CONFIG_DIALOG]
 Type=1
 Class=GeneralConfigDialog
-ControlCount=27
+ControlCount=31
 Control1=IDC_GENERAL_CONFIG_FRAME,button,1342177287
 Control2=IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME,button,1342177287
 Control3=IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME,button,1342177287
@@ -288,6 +290,10 @@ Control24=IDC_STATIC,static,1342308864
 Control25=IDC_AUTOGO_ACT_DIRECTION,combobox,1344340227
 Control26=IDC_STATIC,static,1342308352
 Control27=IDC_MAINTAIN_START,button,1342242819
+Control28=IDC_START_PICTURE,static,1350570510
+Control29=IDC_STATIC,static,1342308864
+Control30=IDC_RUNAWAY_PICTURE,static,1350570510
+Control31=IDC_STATIC,static,1342308864
 
 [CLS:GeneralConfigDialog]
 Type=0
@@ -295,6 +301,30 @@ HeaderFile=GeneralConfigDialog.h
 ImplementationFile=GeneralConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_RUNAWAY_PICTURE
+LastObject=IDC_START_PICTURE
+VirtualFilter=dWC
+
+[DLG:IDD_ADD_CUSTOM_SPELL]
+Type=1
+Class=CCustomSpellDialog
+ControlCount=10
+Control1=IDOK,button,1342242817
+Control2=IDCANCEL,button,1342242816
+Control3=IDC_STATIC,static,1342308352
+Control4=IDC_SPELLWORDS,edit,1350631552
+Control5=IDC_STATIC,static,1342308352
+Control6=IDC_REQUIRED_MANA,edit,1350631552
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_CASTING_DELAY,edit,1350631552
+Control9=IDC_SPELL_CONFIGURATION_FRAME,button,1342177287
+Control10=IDC_STATIC,static,1342308352
+
+[CLS:CCustomSpellDialog]
+Type=0
+HeaderFile=CustomSpellDialog.h
+ImplementationFile=CustomSpellDialog.cpp
+BaseClass=CDialog
+Filter=D
+LastObject=IDC_CASTING_DELAY
 VirtualFilter=dWC
 

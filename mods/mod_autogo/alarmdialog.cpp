@@ -7,6 +7,7 @@
 #include "TibiaItemProxy.h"
 #include "MemReaderProxy.h"
 #include "ModuleUtil.h"
+#include "CustomSpellDialog.h"
 #include <Tlhelp32.h>
 #include <MMSystem.h>
 
@@ -26,6 +27,14 @@ CAlarmDialog::CAlarmDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
+CAlarmDialog::~CAlarmDialog() {
+	int count = m_spellList.GetCount() - 1;
+	SpellInfo *spellData;
+	for (int loop = 1; loop < count; loop++) {
+		spellData = (SpellInfo *)m_spellList.GetItemData(loop);
+		delete spellData;
+	}
+}
 
 void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
@@ -86,9 +95,10 @@ BEGIN_MESSAGE_MAP(CAlarmDialog, CDialog)
 	ON_BN_CLICKED(IDC_ACTION_LOG_EVENTS, OnActionLogEvents)
 	ON_BN_CLICKED(IDC_ALARM_ADD, OnAlarmAdd)
 	ON_BN_CLICKED(IDC_ALARM_DELETE, OnAlarmDelete)
+	ON_BN_CLICKED(IDC_ALARM_EDIT, OnAlarmEdit)
 	ON_WM_ERASEBKGND()
 	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_ALARM_EDIT, OnAlarmEdit)
+	ON_CBN_SELCHANGE(IDC_SPELL_LIST, OnSelchangeSpellList)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -414,9 +424,18 @@ BOOL CAlarmDialog::OnInitDialog() {
 		CloseHandle(hSnap);
 	}
 	// Spell List Mana Costs
-	m_spellList.SetItemData(0, 60);
-	m_spellList.SetItemData(1, 100);
-	m_spellList.SetItemData(2, 50);
+	SpellInfo *haste = new SpellInfo();
+		haste->manaCost = 60;
+		haste->spellDelay = 33;
+	m_spellList.SetItemData(1, (long)haste);
+	SpellInfo *greatHaste = new SpellInfo();
+		greatHaste->manaCost = 100;
+		greatHaste->spellDelay = 22;
+	m_spellList.SetItemData(2, (long)greatHaste);
+	SpellInfo *magicShield = new SpellInfo();
+		magicShield->manaCost = 100;
+		magicShield->spellDelay = 200;
+	m_spellList.SetItemData(3, (long)magicShield);
 
 	// Attribute Combo Box...
 	m_attributeImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
@@ -1112,7 +1131,16 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionStart.SetCheck(listItr->doGoToStart());
 		m_actionDepot.SetCheck(listItr->doGoToDepot());
 		m_actionSpell.SetCheck(listItr->doCastSpell().GetLength());
-			m_spellList.SetCurSel(m_spellList.FindString(-1, listItr->doCastSpell()));
+		int index = m_spellList.FindString(-1, listItr->doCastSpell());
+		if (index == CB_ERR) {
+			index = m_spellList.AddString(listItr->doCastSpell());
+		}
+		else
+			m_spellList.SetCurSel(index);
+		SpellInfo *info = new SpellInfo();
+			info->manaCost = listItr->getManaCost();
+			info->spellDelay = listItr->getSpellDelay();
+		m_spellList.SetItemData(index, (long)info);
 		m_actionScreenshot.SetCheck(listItr->doTakeScreenshot()+1);
 			m_screenshotOptions.SetCurSel(listItr->doTakeScreenshot());
 		m_actionAttack.SetCheck(listItr->doAttack());
@@ -1125,9 +1153,9 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionLogEvents.SetCheck(listItr->doLogEvents());
 		m_actionEnable.SetCheck(listItr->doStartModules().size());
 		m_actionSuspend.SetCheck(listItr->doStopModules().size());
-		int size=memAlarmList.size();
+		int size = memAlarmList.size();
 		OnAlarmAdd();
-		if(memAlarmList.size()==size+1){
+		if(memAlarmList.size() == size + 1) {
 			list<CString> tmpl=listItr->doStartModules();
 			memAlarmList.rbegin()->setStartModules(tmpl);
 			m_alarmList.SetItemText(memAlarmList.size() - 1, 13, memAlarmList.rbegin()->doStartModules().size() ? "X" : "");
@@ -1282,8 +1310,11 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	temp->setGoToDepot(m_actionDepot.GetCheck());
 	if (m_actionSpell.GetCheck()) {
 		if (m_spellList.GetCurSel() != -1) {
+			SpellInfo *spellData = (SpellInfo *)m_spellList.GetItemData(m_spellList.GetCurSel());
 			m_spellList.GetLBText(m_spellList.GetCurSel(), text);
 			temp->setCastSpell(text);
+			temp->setManaCost(spellData->manaCost);
+			temp->setSpellDelay(spellData->spellDelay);
 		}
 		else {
 			VERIFY(instructionText.LoadString(IDS_SPELLWORDS_ERROR)); 
@@ -1367,4 +1398,19 @@ void CAlarmDialog::OnAlarmDelete() {
 void CAlarmDialog::OnAlarmEdit() {
 	// TODO: Add your control notification handler code here
 	
+}
+
+void CAlarmDialog::OnSelchangeSpellList() {
+	switch (m_spellList.GetCurSel()) {
+	case 0:
+		CCustomSpellDialog temp;
+		if (temp.DoModal() == IDOK) {
+			SpellInfo *info = new SpellInfo();
+				info->manaCost = temp.m_manaCost;
+				info->spellDelay = temp.m_castingDelay;
+			m_spellList.SetItemData(m_spellList.AddString(temp.m_spellWords), (long)info);
+			m_spellList.SetCurSel(-1);
+		}
+		break;
+	}	
 }

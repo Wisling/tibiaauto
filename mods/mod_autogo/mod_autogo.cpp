@@ -73,18 +73,6 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 HWND tibiaHWND = NULL;
 
-BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam) {
-	CMemReaderProxy reader;
-	
-	DWORD dwThreadId, dwProcessId;
-	if (!hWnd)
-		return TRUE;		// Not a window
-	dwThreadId = GetWindowThreadProcessId(hWnd, &dwProcessId);
-	if (dwProcessId == reader.getProcessId() && GetParent(hWnd) == NULL)
-		tibiaHWND = hWnd;
-	return TRUE;
-}
-
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
 
 #ifdef MASTER_DEBUG
@@ -390,7 +378,7 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 DWORD WINAPI takeScreenshot(LPVOID lpParam) {		
 	CMemReaderProxy reader;
 	if (!tibiaHWND)
-		EnumWindows(EnumWindowsProc, NULL);
+		tibiaHWND = FindWindow("TibiaClient", NULL);
 	RECT rect;
 	bool captured = false;
 	bool minimized = IsIconic(tibiaHWND);
@@ -400,13 +388,13 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	time_t lTime;
 	time(&lTime);
 	char timeBuf[64];
-	strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", gmtime(&lTime));
+		strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
 	CString filePath;
 	filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
 	
 	while (!captured) {
 		Sleep (100);
-		if (reader.getConnectionState()!=8)
+		if (reader.getConnectionState() != 8)
 			continue;
 		if(IsIconic(tibiaHWND)) {
 			ShowWindow(tibiaHWND, SW_RESTORE);
@@ -447,7 +435,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
-	strcat(path, "\\mods\\sound\\");
 
 	int lastX = self->x;
 	int lastY = self->y;
@@ -485,7 +472,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// Flash Window ***************
 				if (!alarmItr->flashed) {
 					if (!tibiaHWND)
-						EnumWindows(EnumWindowsProc, NULL);
+						tibiaHWND = FindWindow("TibiaClient", NULL);
 					FlashWindow(tibiaHWND, true);
 					alarmItr->flashed = true;
 				}// ***************************
@@ -493,27 +480,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// Log Event ******************
 				if (alarmItr->doLogEvents() && !alarmItr->eventLogged) {
 					time_t rawtime;
-					struct tm * timeinfo;					
-					timeinfo = localtime(&rawtime );
-					CString dateStr = asctime(timeinfo);
+					time(&rawtime );
 					char filename[64];
-					strftime(filename, 64, "%d%b%y.txt", gmtime(&rawtime));
+						strftime(filename, 63, "%d%b%y.txt", localtime(&rawtime));
+					char timestamp[64];
+						strftime(timestamp, 63, "%c", localtime(&rawtime));
 					CString pathBuf;
 					pathBuf.Format("%s\\logs\\%s", path, filename);
 					FILE *f = fopen(pathBuf, "a+");
 					if (f) {
-						fprintf(f, "%s  %s\n\t%s", "***  Active  -->", alarmItr->getDescriptor(), dateStr);
+						fprintf(f, "%s  %s\n\t%s", "***  Active  -->", alarmItr->getDescriptor(), timestamp);
 						fclose(f);
 					}
 					alarmItr->eventLogged = true;
 				}// ****************************
 				
 				// Play sound ******************
-				if (alarmItr->doAlarm().GetLength()) 
-					PlaySound(path + alarmItr->doAlarm(), NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
-				// *****************************
+				if (alarmItr->doAlarm().GetLength()) {
+					CString pathBuf;
+					pathBuf.Format("%s\\mods\\sound\\%s", path, alarmItr->doAlarm());
+					PlaySound(pathBuf, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
+				}// ****************************
 				
-				// Attack ******************
+				// Attack **********************
 				if (alarmItr->doAttack()) 
 					cavebotForced = actionStart("mod_cavebot.dll");
 				else {
@@ -528,7 +517,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// Maximize Window *************
 				if (alarmItr->doMaximizeClient() && !alarmItr->maximized) {
 					if (!tibiaHWND)
-						EnumWindows(EnumWindowsProc, NULL);
+						tibiaHWND = FindWindow("TibiaClient", NULL);
 					ShowWindow(tibiaHWND, SW_MAXIMIZE);
 					alarmItr->maximized = true;
 				}// ****************************
@@ -557,16 +546,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 				
 				// Cast spell ******************
-				if (alarmItr->doCastSpell().GetLength() && !alarmItr->spellCast) {
-					if (self->mana >= alarmItr->getManaCost()) {
+				if (alarmItr->doCastSpell().GetLength()) {						
+					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay()) {
 						sender.sayWhisper(alarmItr->doCastSpell());
-						alarmItr->spellCast = true;
+						alarmItr->spellCast = time(NULL);
 					}
 					delete self;
-				}
-				// *****************************
+				}// *****************************
 				
-				// Take Screenshot ******************
+				// Take Screenshot **************
 				if (alarmItr->doTakeScreenshot() > -1) {
 					DWORD threadId;
 					switch (alarmItr->doTakeScreenshot()) {
@@ -599,8 +587,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 						break;
 					}				
-				}
-				// *****************************
+				}// ****************************
 				
 				// Goto Start ******************
 				if (alarmItr->doGoToStart()  && goPriority <= 1)
@@ -619,7 +606,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 				// Logout **********************
 				if (alarmItr->doLogout()) {
-					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() != 8 ) {
+					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() == 8 ) {
 						sender.logout();
 					}
 				}// ****************************
@@ -661,7 +648,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr->flashed = false;
 				alarmItr->maximized = false;
 				PlaySound(NULL, NULL, SND_NOSTOP);
-				alarmItr->spellCast = false;
+				alarmItr->spellCast = 0;
 				alarmItr->timeLastSS = time(NULL);
 				alarmItr->screenshotsTaken = 0;
 				if (alarmItr->modulesStarted && alarmItr->modulesStarted) { // Stop when alarm is over
@@ -684,16 +671,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				if (alarmItr->eventLogged) {
 					time_t rawtime;
-					struct tm * timeinfo;					
-					timeinfo = localtime(&rawtime );
-					CString dateStr = asctime(timeinfo);
+					time(&rawtime );
 					char filename[64];
-					strftime(filename, 64, "%d%b%y.txt", gmtime(&rawtime));
+						strftime(filename, 64, "%d%b%y.txt", localtime(&rawtime));
+					char timestamp[64];
+						strftime(timestamp, 63, "%c", localtime(&rawtime));
 					CString pathBuf;
 					pathBuf.Format("%s\\logs\\%s", path, filename);
 					FILE *f = fopen(pathBuf, "a+");
 					if (f) {
-						fprintf(f, "%s  %s\n\t%s", "***  Inactive  -->", alarmItr->getDescriptor(), dateStr);
+						fprintf(f, "%s  %s\n\t%s", "***  Inactive  -->", alarmItr->getDescriptor(), timestamp);
 						fclose(f);
 					}
 					alarmItr->eventLogged = false;
@@ -824,7 +811,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 		alarmItr->flashed = false;
 		alarmItr->maximized = false;
-		alarmItr->spellCast = false;
+		alarmItr->spellCast = 0;
 		alarmItr->timeLastSS = time(NULL);
 		alarmItr->screenshotsTaken = 0;
 		if (alarmItr->modulesStarted) { // Stop when alarm is over
@@ -836,7 +823,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 			alarmItr->modulesStarted = false;
 		}
-				if (alarmItr->modulesSuspended && alarmItr->modulesSuspended) { // Start when alarm is over
+		if (alarmItr->modulesSuspended && alarmItr->modulesSuspended) { // Start when alarm is over
 			list<CString> temp = alarmItr->doStopModules();
 			list<CString>::iterator modulesItr = temp.begin();
 			while(modulesItr != temp.end()) {
@@ -844,6 +831,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				modulesItr++;
 			}
 			alarmItr->modulesSuspended = false;
+		}
+		if (alarmItr->eventLogged) {
+			time_t rawtime;
+			time(&rawtime );
+			char filename[64];
+				strftime(filename, 64, "%d%b%y.txt", localtime(&rawtime));
+			char timestamp[64];
+				strftime(timestamp, 63, "%c", localtime(&rawtime));
+			CString pathBuf;
+			pathBuf.Format("%s\\logs\\%s", path, filename);
+			FILE *f = fopen(pathBuf, "a+");
+			if (f) {
+				fprintf(f, "%s\n\t%s", "***  Module Stopped  ***", timestamp);
+				fclose(f);
+			}
+			alarmItr->eventLogged = false;
 		}
 		alarmItr++;
 	}
@@ -955,7 +958,7 @@ void CMod_autogoApp::enableControls() {
 }
 
 char *CMod_autogoApp::getVersion() {	
-	return "4.0";
+	return "4.11";
 }
 
 
@@ -968,6 +971,7 @@ void CMod_autogoApp::resetConfig() {
 }
 
 void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
+#pragma warning(disable: 4800)
 	if (!strcmp(paramName,"act/x"))						m_configData->actX					= atoi(paramValue);
 	if (!strcmp(paramName,"act/y"))						m_configData->actY					= atoi(paramValue);
 	if (!strcmp(paramName,"act/z"))						m_configData->actZ					= atoi(paramValue);
@@ -1040,13 +1044,13 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 
 		CString cAlarmName=CString(alarmName);
 
-		int screenshot=0,logEvents=0,maximize=0,shutdown=0,killTibia=0,logout=0,attack=0,depot=0,start=0,runaway=0;
-		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&maximize,&shutdown,&killTibia,&logout,&attack,&depot,&start,&runaway)!=10) return;
+		int screenshot=0,logEvents=0,maximize=0,shutdown=0,killTibia=0,logout=0,attack=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
+		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&maximize,&shutdown,&killTibia,&logout,&attack,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
 
-		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,screenshot,attack,logout,killTibia,shutdown,maximize,cAlarmName,logEvents,startList,stopList);
+		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,attack,logout,killTibia,shutdown,maximize,cAlarmName,logEvents,startList,stopList);
 		m_configData->alarmList.push_back(temp);
 	}
-
+#pragma warning(default: 4800)
 }
 
 char *CMod_autogoApp::saveConfigParam(char *paramName) {
@@ -1095,7 +1099,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				lstIter++;
 			}
 			sprintf(buf+strlen(buf),"%s","|");
-			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d",
+			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d %d %d",
 				alm.getAlarmType(),
 				alm.getAttribute(),
 				alm.getCondition(),
@@ -1112,7 +1116,9 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				alm.doAttack(),
 				alm.doGoToDepot(),
 				alm.doGoToStart(),
-				alm.doGoToRunaway()
+				alm.doGoToRunaway(),
+				alm.getManaCost(),
+				alm.getSpellDelay()
 			);
 		}
 	}
