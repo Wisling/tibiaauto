@@ -818,8 +818,11 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 
 	// Center text
 	CRect centerRect = rpCaption;
-	pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK | DT_CENTER | DT_CALCRECT);
-	rpCaption->OffsetRect((centerRect.Width() - rpCaption->Width())/2, (centerRect.Height() - rpCaption->Height())/2);
+	pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK | DT_CALCRECT);
+	if (m_bIsFlat)
+		rpCaption->OffsetRect(2, (centerRect.Height() - rpCaption->Height())/2);
+	else
+		rpCaption->OffsetRect((centerRect.Width() - rpCaption->Width())/2, (centerRect.Height() - rpCaption->Height())/2);
 	/* RFU
 	rpCaption->OffsetRect(0, (centerRect.Height() - rpCaption->Height())/2);
 	rpCaption->OffsetRect((centerRect.Width() - rpCaption->Width())-4, (centerRect.Height() - rpCaption->Height())/2);
@@ -834,10 +837,10 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 	{
 		rpCaption->OffsetRect(1, 1);
 		pDC->SetTextColor(::GetSysColor(COLOR_3DHILIGHT));
-		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK | DT_CENTER);
+		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK );
 		rpCaption->OffsetRect(-1, -1);
 		pDC->SetTextColor(::GetSysColor(COLOR_3DSHADOW));
-		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK | DT_CENTER);
+		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK);
 	} // if
 	else
 	{
@@ -859,7 +862,7 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 				pDC->SetBkColor(m_crColors[BTNST_COLOR_BK_OUT]); 
 			} // else
 		} // else
-		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK | DT_CENTER);
+		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK );
 	} // if
 } // End of DrawTheText
 
