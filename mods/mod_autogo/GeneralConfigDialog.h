@@ -27,6 +27,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(GeneralConfigDialog)
 	enum { IDD = IDD_GENERAL_CONFIG_DIALOG };
+	CStatic	m_runawayPicture;
+	CStatic	m_startPicture;
 	CButton	m_maintainStart;
 	CEdit	m_curY;
 	CButton	m_proximityFrame;
@@ -77,6 +79,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 private:
+	CString RunawayBMP;
+	CString StartBMP;
 	char memWhiteList[100][32];
 	int memMkBlack;
 };

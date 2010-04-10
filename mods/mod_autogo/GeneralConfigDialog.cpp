@@ -18,18 +18,6 @@ static char THIS_FILE[] = __FILE__;
 
 static HWND tibiaHwnd = NULL;
 
-BOOL CALLBACK EnumWindowsProcLoc(HWND hWnd, LPARAM lParam) {
-	CMemReaderProxy reader;
-	
-	DWORD dwThreadId, dwProcessId;
-	if (!hWnd)
-		return TRUE;		// Not a window
-	dwThreadId = GetWindowThreadProcessId(hWnd, &dwProcessId);
-	if (dwProcessId == reader.getProcessId() && GetParent(hWnd) == NULL)
-		tibiaHwnd = hWnd;
-	return TRUE;
-}
-
 void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 	BITMAP bmp; 
 	PBITMAPINFO pbmi; 
@@ -159,10 +147,11 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 	// Free memory. 
 	GlobalFree((HGLOBAL)lpBits);
 }
-HBITMAP capturePosition() {		
+
+CString capturePosition(CString name) {		
 	CMemReaderProxy reader;
 	if (!tibiaHwnd)
-		EnumWindows(EnumWindowsProcLoc, NULL);
+		tibiaHwnd = FindWindow("TibiaClient", NULL);
 	RECT rect;
 	bool captured = false;
 	bool minimized = IsIconic(tibiaHwnd);
@@ -172,14 +161,9 @@ HBITMAP capturePosition() {
 	time_t lTime;
 	time(&lTime);
 	char timeBuf[64];
-	strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", gmtime(&lTime));
+		strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
 	CString filePath;
-	filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
-	HDC hDDC = GetDC(tibiaHwnd);
-	HDC hCDC = CreateCompatibleDC(hDDC);
-	int nWidth = 200;
-	int mHeight = 200;
-	HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,nWidth,mHeight);
+	filePath.Format("%s\\screenshots\\%s%s.bmp", path, name, timeBuf);
 	
 	while (!captured) {
 		Sleep (100);
@@ -193,30 +177,23 @@ HBITMAP capturePosition() {
 		}
 		Sleep (500);
 		GetClientRect(tibiaHwnd, &rect);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		SelectObject(hCDC,hBitmap); 
-		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,0,0,SRCCOPY); 
-	//	WriteBMPFileLoc(hBitmap, filePath, hCDC);
+		rect.right -= 200;
+		int width = rect.right - rect.left;
+		int posx = (width/2) - 102;
+		rect.bottom -= 200;
+		int height = rect.bottom - rect.top;
+		int posy = (height/2) - 85;
+		HDC hDDC = GetDC(tibiaHwnd);
+		HDC hCDC = CreateCompatibleDC(hDDC);
+		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,205,175);
+		SelectObject(hCDC,hBitmap);
+		BitBlt(hCDC,0,0,205,175,hDDC,posx,posy,SRCCOPY);
+		WriteBMPFileLoc(hBitmap, filePath, hCDC);
 		captured = true;
 	}
 	if (minimized)
 		ShowWindow(tibiaHwnd, SW_MINIMIZE);
-	return hBitmap;
+	return filePath;
 }
 /////////////////////////////////////////////////////////////////////////////
 // GeneralConfigDialog dialog
@@ -239,6 +216,8 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(GeneralConfigDialog)
+	DDX_Control(pDX, IDC_RUNAWAY_PICTURE, m_runawayPicture);
+	DDX_Control(pDX, IDC_START_PICTURE, m_startPicture);
 	DDX_Control(pDX, IDC_MAINTAIN_START, m_maintainStart);
 	DDX_Control(pDX, IDC_AUTOGO_CUR_Y, m_curY);
 	DDX_Control(pDX, IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME, m_proximityFrame);
@@ -417,6 +396,12 @@ void GeneralConfigDialog::OnAutogoTorunaway() {
 	m_runawayY.SetWindowText(buf);
 	m_curZ.GetWindowText(buf);
 	m_runawayZ.SetWindowText(buf);
+	if (RunawayBMP.GetLength())
+		remove(RunawayBMP);
+	RunawayBMP = capturePosition("RunawayPosition");
+	m_runawayPicture.SetBitmap((HBITMAP)::LoadImage(NULL, RunawayBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION));
+	m_runawayPicture.Invalidate();
+	
 }
 
 void GeneralConfigDialog::OnAutogoTostart() {
@@ -427,4 +412,9 @@ void GeneralConfigDialog::OnAutogoTostart() {
 	m_actY.SetWindowText(buf);
 	m_curZ.GetWindowText(buf);
 	m_actZ.SetWindowText(buf);
+	if (StartBMP.GetLength())
+		remove(StartBMP);
+	StartBMP = capturePosition("StartPosition");
+	m_startPicture.SetBitmap((HBITMAP)::LoadImage(NULL, StartBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION));
+	m_startPicture.Invalidate();
 }
