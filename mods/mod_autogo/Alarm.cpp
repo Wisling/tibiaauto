@@ -25,6 +25,8 @@ static char THIS_FILE[]=__FILE__;
 Alarm::Alarm() {
 	alarmDescriptor = "<none>";
 	spell = "";
+	spellDelay = 0;
+	manaCost = 0;
 	sound = "";
 	logEvents = false;
 	maximize = false;
@@ -44,7 +46,7 @@ Alarm::Alarm() {
 
 // execution markers only, no need to save orecord here
 	onScreenAt = 0;
-	spellCast = false;
+	spellCast = 0;
 	screenshotsTaken = 0;
 	timeLastSS = 0;
 	modulesStarted = false;
@@ -59,11 +61,13 @@ Alarm::Alarm() {
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
 	spell = spe;
+	spellDelay = delay;
+	manaCost = cost;
 	sound = audio;
 	logEvents = event;
 	maximize = max;
@@ -82,7 +86,7 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	alarmType = type;
 
 	onScreenAt = 0;
-	spellCast = false;
+	spellCast = 0;
 	screenshotsTaken = 0;
 	timeLastSS = 0;
 	modulesStarted = false;
@@ -1005,4 +1009,12 @@ CString Alarm::getDescriptor() {
 
 void Alarm::setDescriptor(CString descriptor) {
 	alarmDescriptor = descriptor;
+}
+
+void Alarm::setSpellDelay(int delay) {
+	spellDelay = delay;
+}
+
+int Alarm::getSpellDelay() {
+	return spellDelay;
 }

@@ -14,6 +14,11 @@
 
 using namespace std;
 
+struct SpellInfo {
+	int manaCost;
+	int spellDelay;
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // CAlarmDialog dialog
 
@@ -27,6 +32,7 @@ public:
 	void enableControls();
 	void disableControls();
 	CAlarmDialog(CWnd* pParent = NULL);   // standard constructor
+	~CAlarmDialog();   // standard destructor
 
 // Dialog Data
 	//{{AFX_DATA(CAlarmDialog)
@@ -101,6 +107,7 @@ protected:
 	afx_msg void OnAlarmAdd();
 	afx_msg void OnAlarmDelete();
 	afx_msg void OnAlarmEdit();
+	afx_msg void OnSelchangeSpellList();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

@@ -117,6 +117,10 @@ SOURCE=.\ConfigDialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\CustomSpellDialog.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
@@ -199,6 +203,10 @@ SOURCE=.\ConfigData.h
 # Begin Source File
 
 SOURCE=.\ConfigDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\CustomSpellDialog.h
 # End Source File
 # Begin Source File
 

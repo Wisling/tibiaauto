@@ -17,6 +17,8 @@ using namespace std;
 class Alarm  
 {
 public:
+	int getSpellDelay();
+	void setSpellDelay(int);
 	bool halfSleep;
 	bool fullSleep;
 	bool cavebotForced;
@@ -29,7 +31,7 @@ public:
 	bool modulesStarted;
 	int timeLastSS;
 	int screenshotsTaken;
-	bool spellCast;
+	int spellCast;
 	void setManaCost(int);
 	int getManaCost();
 	int getIntTrigger();
@@ -79,11 +81,12 @@ public:
 	bool checkAlarm(char whiteList[100][32], int);
 
 	// Construction/Destruction
-	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, bool, bool, bool, bool, bool, CString, bool, list<CString>, list<CString>);
+	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, int, int, bool, bool, bool, bool, bool, CString, bool, list<CString>, list<CString>);
 	Alarm();
 	virtual ~Alarm();
 
 private:
+	int spellDelay;
 	CString alarmDescriptor;
 	int manaCost;
 	// Trigger Functions

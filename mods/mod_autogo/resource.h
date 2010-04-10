@@ -260,6 +260,7 @@
 #define IDC_AUTOGO_SOUNDCAPACITY        3050
 #define IDB_ITEMS                       3050
 #define IDC_AUTOGO_SOUNDHPBELOW         3051
+#define IDD_ADD_CUSTOM_SPELL            3051
 #define IDC_AUTOGO_SOUNDOUTOF           3052
 #define IDC_AUTOGO_SOUNDOUTOF_FOOD      3052
 #define IDC_AUTOGO_CAPACITY             3053
@@ -368,14 +369,19 @@
 #define IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME 3155
 #define IDC_MAINTAIN_START              3156
 #define IDC_RUNAWAY_PICTURE             3158
+#define IDC_START_PICTURE               3159
+#define IDC_SPELLWORDS                  3160
+#define IDC_REQUIRED_MANA               3161
+#define IDC_CASTING_DELAY               3162
+#define IDC_SPELL_CONFIGURATION_FRAME   3163
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3051
+#define _APS_NEXT_RESOURCE_VALUE        3052
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3159
+#define _APS_NEXT_CONTROL_VALUE         3164
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
