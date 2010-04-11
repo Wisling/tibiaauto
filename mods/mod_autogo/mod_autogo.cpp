@@ -406,16 +406,20 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		}
 		Sleep (500);
 		GetClientRect(tibiaHWND, &rect);
+		ClientToScreen(tibiaHWND, (LPPOINT)&rect.left);
+		ClientToScreen(tibiaHWND, (LPPOINT)&rect.right);
 
 		int nWidth = rect.right - rect.left;
 		int mHeight = rect.bottom - rect.top;
-		HDC hDDC = GetDC(tibiaHWND);
+		HDC hDDC = GetDC(GetDesktopWindow());
 		HDC hCDC = CreateCompatibleDC(hDDC);
-		HBITMAP hBitmap =CreateCompatibleBitmap(hDDC,nWidth,mHeight);
+		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,nWidth,mHeight);
 		SelectObject(hCDC,hBitmap); 
-		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,0,0,SRCCOPY); 
+		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,rect.left,rect.top,SRCCOPY);
 		WriteBMPFile(hBitmap, filePath, hCDC);
 		captured = true;
+		ReleaseDC(GetDesktopWindow(), hDDC);
+		DeleteDC(hCDC);
 	}
 	if (minimized)
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
