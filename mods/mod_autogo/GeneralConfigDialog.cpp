@@ -177,19 +177,24 @@ CString capturePosition(CString name) {
 		}
 		Sleep (500);
 		GetClientRect(tibiaHwnd, &rect);
+		ClientToScreen(tibiaHwnd, (LPPOINT)&rect.left);
+		ClientToScreen(tibiaHwnd, (LPPOINT)&rect.right);
+
 		rect.right -= 200;
 		int width = rect.right - rect.left;
-		int posx = (width/2) - 102;
+		int posx = (width/2) - 102 + rect.left;
 		rect.bottom -= 200;
 		int height = rect.bottom - rect.top;
-		int posy = (height/2) - 85;
-		HDC hDDC = GetDC(tibiaHwnd);
+		int posy = (height/2) - 85 + rect.top;
+		HDC hDDC = GetDC(GetDesktopWindow());
 		HDC hCDC = CreateCompatibleDC(hDDC);
 		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,205,175);
 		SelectObject(hCDC,hBitmap);
 		BitBlt(hCDC,0,0,205,175,hDDC,posx,posy,SRCCOPY);
 		WriteBMPFileLoc(hBitmap, filePath, hCDC);
 		captured = true;
+		ReleaseDC(GetDesktopWindow(), hDDC);
+		DeleteDC(hCDC);
 	}
 	if (minimized)
 		ShowWindow(tibiaHwnd, SW_MINIMIZE);
