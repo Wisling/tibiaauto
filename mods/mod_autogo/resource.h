@@ -266,6 +266,7 @@
 #define IDD_ADD_CUSTOM_SPELL            3051
 #define IDC_AUTOGO_SOUNDOUTOF           3052
 #define IDC_AUTOGO_SOUNDOUTOF_FOOD      3052
+#define IDB_STOP                        3052
 #define IDC_AUTOGO_CAPACITY             3053
 #define IDC_AUTOGO_SOULPOINT            3054
 #define IDC_AUTOGO_BLANK                3055
@@ -383,14 +384,15 @@
 #define IDC_SPELL_CONFIGURATION_FRAME   3163
 #define IDC_ACTION_WINDOW_LIST          3164
 #define IDC_FLASHONALARM                3165
+#define IDC_ACTION_STOP_WALKING         3167
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3052
+#define _APS_NEXT_RESOURCE_VALUE        3053
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3167
+#define _APS_NEXT_CONTROL_VALUE         3168
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

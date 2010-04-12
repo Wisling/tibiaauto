@@ -700,7 +700,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 	case CHARACTER_STATUS:
 		return reader.getSelfEventFlags() & (int)pow(2, attribute);
 		break;
-	case GENERAL:
+	case EVENT:
 		struct tibiaMessage *msg = triggerMessage();
 		int isSpell = msg && (options & MESSAGE_IGNORE_SPELLS) && isSpellMessage(msg->msg);
 		switch (attribute) {
@@ -717,8 +717,8 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			retval = positionXInit != self->x || positionYInit != self->y || positionZInit != self->z;
 			break;
 		case CHARACTERHIT:
-			retval = self->hp<healthInit;
-			healthInit=self->hp;
+			retval = self->hp < healthInit;
+			healthInit = self->hp;
 			break;
 		}
 		if (msg) delete msg;
