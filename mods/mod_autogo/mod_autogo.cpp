@@ -529,13 +529,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 				
 				// Attack **********************
-				if (alarmItr->doAttack()) 
+				if (alarmItr->doAttack()) { 
 					cavebotForced = actionStart("mod_cavebot.dll");
+					reader.setGlobalVariable("cavebot_halfsleep","true");
+					alarmItr->halfSleep = true;
+					halfSleepCount++;
+				}
 				else {
 					reader.setGlobalVariable("cavebot_fullsleep","true");
 					if (!alarmItr->fullSleep) {
-						alarmItr->fullSleep = true;
-						fullSleepCount++;
 					}
 				}
 				// *****************************
@@ -553,11 +555,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					case 1://restore
 						if (!alarmItr->windowActed) {
 							if (!tibiaHWND) InitTibiaHandle();
-							if(IsIconic(tibiaHWND)) {
+							if(IsIconic(tibiaHWND))
 								ShowWindow(tibiaHWND, SW_RESTORE);
-							} else if(tibiaHWND != GetForegroundWindow()) {
+							else if(tibiaHWND != GetForegroundWindow())
 								SetForegroundWindow(tibiaHWND);
-							}
 							alarmItr->windowActed = true;
 						}
 						break;
@@ -694,15 +695,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
 				memcpy(config->status, "", 12);
 				if (alarmItr->fullSleep) {
-					alarmItr->halfSleep = false;
+					alarmItr->fullSleep = false;
 					fullSleepCount--;
 				}
 				if (alarmItr->halfSleep) {
 					alarmItr->halfSleep = false;
 					halfSleepCount--;
 				}
-				if (cavebotForced)
+				if (cavebotForced) {
 					actionSuspend("mod_cavebot.dll");
+					alarmItr->halfSleep = false;
+					halfSleepCount--;
+				}
 				alarmItr->cavebotForced = false;
 				alarmItr->flashed = false;
 				alarmItr->windowActed = false;
