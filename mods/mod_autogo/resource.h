@@ -61,6 +61,7 @@
 #define IDS_ATTACK                      56
 #define IDS_LOGOUT                      57
 #define IDS_MAXIMIZE                    58
+#define IDS_WINDOW_ACTION               58
 #define IDS_LOG_EVENTS                  59
 #define IDS_FROMALL                     60
 #define IDS_FROM                        61
@@ -110,6 +111,8 @@
 #define IDS_SPELLWORDS_ERROR            105
 #define IDS_SOUNDFILE_ERROR             106
 #define IDS_SCREENSHOT_ERROR            107
+#define IDS_GENERAL_CHARACTERHIT        108
+#define IDS_WINDOWACTION_ERROR          109
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048
@@ -340,11 +343,13 @@
 #define IDC_ACTION_START                3125
 #define IDC_ACTION_DEPOT                3126
 #define IDC_ACTION_ATTACK               3127
+#define IDC_ACTION_START_CAVEBOT        3127
 #define IDC_ACTION_LOGOUT               3128
 #define IDC_ACTION_KILL                 3129
 #define IDC_ACTION_SHUTDOWN             3130
 #define IDC_ACTION_SCREENSHOT           3131
 #define IDC_SCREENSHOT_OPTIONS          3132
+#define IDC_ACTION_HALFSLEEP            3133
 #define IDC_AUDIO_FILE                  3134
 #define IDC_ACTION_SOUND                3135
 #define IDC_ACTION_SUSPEND              3136
@@ -358,11 +363,13 @@
 #define IDC_TRIGGER                     3143
 #define IDC_MODULES_LIST                3144
 #define IDC_TAB_CONTROL                 3145
+#define IDC_ACTION_FULLSLEEP            3145
 #define IDC_ACTION_START_MODULES        3147
 #define IDC_INSTRUCTION_TEXT            3148
 #define IDC_MODULES_LIST2               3149
 #define IDC_ACTION_LOG_EVENTS           3150
 #define IDC_ACTION_MAXIMIZE             3151
+#define IDC_ACTION_WINDOW               3151
 #define IDC_GENERAL_CONFIG_FRAME        3152
 #define IDC_GENERAL_CONFIG_MESSAGE_OPTIONS_FRAME 3153
 #define IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME 3154
@@ -374,6 +381,8 @@
 #define IDC_REQUIRED_MANA               3161
 #define IDC_CASTING_DELAY               3162
 #define IDC_SPELL_CONFIGURATION_FRAME   3163
+#define IDC_ACTION_WINDOW_LIST          3164
+#define IDC_FLASHONALARM                3165
 
 // Next default values for new objects
 // 
@@ -381,7 +390,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3052
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3164
+#define _APS_NEXT_CONTROL_VALUE         3167
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

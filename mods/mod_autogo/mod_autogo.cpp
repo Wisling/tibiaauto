@@ -99,6 +99,28 @@ std::string intstr(int value){
 	return ss.str();
 }
 
+void InitTibiaHandle(){
+	CMemReaderProxy reader;
+	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
+	while (tibiaHWND) {
+		DWORD pid;
+		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
+
+		if (pid == reader.getProcessId())
+			break;
+		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
+	}
+}
+
+bool flashToggle(){
+	static bool flashState=true;
+	static int lastFlash=GetTickCount();
+	if (time(NULL)-lastFlash>=1000){
+		flashState=!flashState;
+		lastFlash=GetTickCount();
+	}
+	return flashState;
+}
 void actionTerminate(){
 	masterDebug("ActionTerminate");
 	CMemReaderProxy reader;
@@ -377,17 +399,7 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 
 DWORD WINAPI takeScreenshot(LPVOID lpParam) {		
 	CMemReaderProxy reader;
-	if (!tibiaHWND) {
-		tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
-		while (tibiaHWND) {
-			DWORD pid;
-			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
-
-			if (pid == reader.getProcessId())
-				break;
-			tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
-		}
-	}
+	if (!tibiaHWND) InitTibiaHandle();
 	RECT rect;
 	bool captured = false;
 	bool minimized = IsIconic(tibiaHWND);
@@ -483,19 +495,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
 					statusBuf += "  ******  " + alarmItr->getDescriptor();
 				// Flash Window ***************
-				if (!alarmItr->flashed) {
-					if (!tibiaHWND) {
-						tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
-						while (tibiaHWND) {
-							DWORD pid;
-							DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
-
-							if (pid == reader.getProcessId())
-								break;
-							tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
-						}
+				if (config->options&OPTIONS_FLASHONALARM && !alarmItr->flashed) {
+					if (!alarmItr->windowActed){
+						if (!tibiaHWND) InitTibiaHandle();
+						FlashWindow(tibiaHWND, true);
 					}
-					FlashWindow(tibiaHWND, true);
 					alarmItr->flashed = true;
 				}// ***************************
 				
@@ -536,21 +540,45 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				// *****************************
 				
-				// Maximize Window *************
-				if (alarmItr->doMaximizeClient() && !alarmItr->maximized) {
-					if (!tibiaHWND) {
-						tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
-						while (tibiaHWND) {
-							DWORD pid;
-							DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
-							
-							if (pid == reader.getProcessId())
-								break;
-							tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
+				// Window Action*************
+				if (alarmItr->doWindowAction()!=-1){
+					switch (alarmItr->doWindowAction()){
+					case 0://maximize
+						if (!alarmItr->windowActed) {
+							if (!tibiaHWND) InitTibiaHandle();
+							ShowWindow(tibiaHWND, SW_MAXIMIZE);
+							alarmItr->windowActed = true;
 						}
+						break;
+					case 1://restore
+						if (!alarmItr->windowActed) {
+							if (!tibiaHWND) InitTibiaHandle();
+							if(IsIconic(tibiaHWND)) {
+								ShowWindow(tibiaHWND, SW_RESTORE);
+							} else if(tibiaHWND != GetForegroundWindow()) {
+								SetForegroundWindow(tibiaHWND);
+							}
+							alarmItr->windowActed = true;
+						}
+						break;
+					case 2://flash once
+						if (!alarmItr->windowActed && !alarmItr->flashed) {
+							if (!tibiaHWND) InitTibiaHandle();
+							FlashWindow(tibiaHWND, true);
+							alarmItr->windowActed = true;
+						}
+						break;
+					case 3://flash continuously
+						if (!alarmItr->windowActed) {
+							if (!tibiaHWND) InitTibiaHandle();
+							static int lastFlash=GetTickCount();
+							if (GetTickCount()-lastFlash>=1000){
+								FlashWindow(tibiaHWND, false);
+								lastFlash=GetTickCount();
+							}
+						}
+						break;
 					}
-					ShowWindow(tibiaHWND, SW_MAXIMIZE);
-					alarmItr->maximized = true;
 				}// ****************************
 				
 				// Suspend Modules  ************
@@ -677,7 +705,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					actionSuspend("mod_cavebot.dll");
 				alarmItr->cavebotForced = false;
 				alarmItr->flashed = false;
-				alarmItr->maximized = false;
+				alarmItr->windowActed = false;
 				PlaySound(NULL, NULL, SND_NOSTOP);
 				alarmItr->spellCast = 0;
 				alarmItr->timeLastSS = time(NULL);
@@ -841,7 +869,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			actionSuspend("mod_cavebot.dll");
 		}
 		alarmItr->flashed = false;
-		alarmItr->maximized = false;
+		alarmItr->windowActed = false;
 		alarmItr->spellCast = 0;
 		alarmItr->timeLastSS = time(NULL);
 		alarmItr->screenshotsTaken = 0;
@@ -1075,10 +1103,10 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 
 		CString cAlarmName=CString(alarmName);
 
-		int screenshot=0,logEvents=0,maximize=0,shutdown=0,killTibia=0,logout=0,attack=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
-		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&maximize,&shutdown,&killTibia,&logout,&attack,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
+		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,attack=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
+		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&attack,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
 
-		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,attack,logout,killTibia,shutdown,maximize,cAlarmName,logEvents,startList,stopList);
+		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,attack,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);
 		m_configData->alarmList.push_back(temp);
 	}
 #pragma warning(default: 4800)
@@ -1140,7 +1168,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				alm.doAlarm(),
 				alm.doTakeScreenshot(),
 				alm.doLogEvents(),
-				alm.doMaximizeClient(),
+				alm.doWindowAction(),
 				alm.doShutdownComputer(),
 				alm.doKillClient(),
 				alm.doLogout(),
