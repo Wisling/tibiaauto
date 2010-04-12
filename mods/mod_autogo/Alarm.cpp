@@ -29,7 +29,7 @@ Alarm::Alarm() {
 	manaCost = 0;
 	sound = "";
 	logEvents = false;
-	maximize = false;
+	windowAction = -1;
 	shutdown = false;
 	killTibia = false;
 	logout = false;
@@ -52,7 +52,7 @@ Alarm::Alarm() {
 	modulesStarted = false;
 	modulesSuspended = false;
 	eventLogged = false;
-	maximized = false;
+	windowActed = false;
 	flashed = false;
 	cavebotForced = false;
 	fullSleep = false;
@@ -61,7 +61,7 @@ Alarm::Alarm() {
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool atk, bool log, bool kill, bool shut, bool max, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool atk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
@@ -70,7 +70,7 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	manaCost = cost;
 	sound = audio;
 	logEvents = event;
-	maximize = max;
+	windowAction = winAct;
 	shutdown = shut;
 	killTibia = kill;
 	logout = log;
@@ -92,7 +92,7 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	modulesStarted = false;
 	modulesSuspended = false;
 	eventLogged = false;
-	maximized = false;
+	windowActed = false;
 	flashed = false;
 	cavebotForced = false;
 	fullSleep = false;
@@ -170,8 +170,8 @@ void Alarm::setShutdownComputer(bool onOff) {
 	shutdown = onOff;
 }
 
-void Alarm::setMaximizeTibia(bool onOff) {
-	maximize = onOff;
+void Alarm::setWindowAction(int windowActionOpt) {
+	windowAction = windowActionOpt;
 }
 
 void Alarm::setAudioAlarm(CString waveToPlay) {
@@ -206,8 +206,8 @@ bool Alarm::doShutdownComputer() {
 	return shutdown;
 }
 
-bool Alarm::doMaximizeClient() {
-	return maximize;
+int Alarm::doWindowAction() {
+	return windowAction;
 }
 
 CString Alarm::doAlarm() {
@@ -262,6 +262,7 @@ void Alarm::initializeCharacter() {
 	positionXInit = self->x;
 	positionYInit = self->y;
 	positionZInit = self->z;
+	healthInit = self->hp;
 }
 
 bool Alarm::checkAlarm(char whiteList[100][32], int options) {
@@ -714,6 +715,10 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			break;
 		case CHARACTERMOVED:
 			retval = positionXInit != self->x || positionYInit != self->y || positionZInit != self->z;
+			break;
+		case CHARACTERHIT:
+			retval = self->hp<healthInit;
+			healthInit=self->hp;
 			break;
 		}
 		if (msg) delete msg;

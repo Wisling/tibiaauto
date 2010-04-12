@@ -50,7 +50,8 @@ public:
 	CListCtrl	m_alarmList;
 	CGroupBoxEx	m_actionFrame;
 	CGroupBoxEx	m_alarmFrame;
-	CButtonST	m_maximizeWindow;
+	CButtonST	m_windowAction;
+	CComboBox	m_windowActionList;
 	CButtonST	m_actionSound;
 	CButtonST	m_actionEnable;
 	CButtonST	m_actionLogEvents;
@@ -102,7 +103,7 @@ protected:
 	afx_msg void OnSetfocusTrigger();
 	afx_msg void OnActionAttack();
 	afx_msg void OnActionLogout();
-	afx_msg void OnActionMaximize();
+	afx_msg void OnWindowAction();
 	afx_msg void OnActionLogEvents();
 	afx_msg void OnAlarmAdd();
 	afx_msg void OnAlarmDelete();

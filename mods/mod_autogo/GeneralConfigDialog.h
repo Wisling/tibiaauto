@@ -53,6 +53,7 @@ public:
 	int		lastX;
 	int		lastY;
 	int		lastZ;
+	CButton	m_flashOnAlarm;
 	//}}AFX_DATA
 
 
