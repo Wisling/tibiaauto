@@ -37,6 +37,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAlarmDialog)
 	enum { IDD = IDD_ALARM_DIALOG };
+	CButtonST	m_actionStopWalking;
 	CListBox	m_modules2;
 	CStatic	m_instructionText;
 	CListBox	m_modules;

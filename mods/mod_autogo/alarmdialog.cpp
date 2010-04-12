@@ -39,8 +39,7 @@ CAlarmDialog::~CAlarmDialog() {
 void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAlarmDialog)
-	DDX_Control(pDX, IDC_ACTION_WINDOW, m_windowAction);
-	DDX_Control(pDX, IDC_ACTION_WINDOW_LIST, m_windowActionList);
+	DDX_Control(pDX, IDC_ACTION_STOP_WALKING, m_actionStopWalking);
 	DDX_Control(pDX, IDC_MODULES_LIST2, m_modules2);
 	DDX_Control(pDX, IDC_INSTRUCTION_TEXT, m_instructionText);
 	DDX_Control(pDX, IDC_MODULES_LIST, m_modules);
@@ -54,6 +53,8 @@ void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_ALARM_LIST, m_alarmList);
 	DDX_Control(pDX, IDC_ACTION_FRAME, m_actionFrame);
 	DDX_Control(pDX, IDC_ALARM_FRAME, m_alarmFrame);
+	DDX_Control(pDX, IDC_ACTION_WINDOW, m_windowAction);
+	DDX_Control(pDX, IDC_ACTION_WINDOW_LIST, m_windowActionList);
 	DDX_Control(pDX, IDC_ACTION_SOUND, m_actionSound);
 	DDX_Control(pDX, IDC_ACTION_START_MODULES, m_actionEnable);
 	DDX_Control(pDX, IDC_ACTION_LOG_EVENTS, m_actionLogEvents);
@@ -350,7 +351,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		VERIFY(instructionText.LoadString(IDS_STATUS)); 
 		m_instructionText.SetWindowText(instructionText); 
 		break;
-	case GENERAL:
+	case EVENT:
 		if(strcmp(itemText, "All Messages")) {
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("All Messages"), 21);
@@ -468,7 +469,7 @@ BOOL CAlarmDialog::OnInitDialog() {
 	m_columnImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
 
 	int index = 0;
-	CBitmap actionIcons[14];
+	CBitmap actionIcons[15];
 
 	actionIcons[index].LoadBitmap(IDB_RUNAWAY);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
@@ -511,6 +512,13 @@ BOOL CAlarmDialog::OnInitDialog() {
 	skin.SetButtonSkin(m_actionAttack);
 	m_actionAttack.SetFlat(true);
 	m_actionAttack.DrawFlatFocus(false);
+
+	actionIcons[index].LoadBitmap(IDB_STOP);
+	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
+	m_actionStopWalking.SetBitmaps(IDB_ATTACK, RGB(255, 0, 255), IDB_BLANK);
+	skin.SetButtonSkin(m_actionStopWalking);
+	m_actionStopWalking.SetFlat(true);
+	m_actionStopWalking.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_LOGOUT);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
@@ -606,6 +614,8 @@ BOOL CAlarmDialog::OnInitDialog() {
 	m_alarmList.InsertColumn(13, &lvColumn);
 	lvColumn.iImage = 13;
 	m_alarmList.InsertColumn(14, &lvColumn);
+	lvColumn.iImage = 14;
+	m_alarmList.InsertColumn(15, &lvColumn);
 	CConfigData test;
 	configToControls(&test);
 	skin.SetButtonSkin(m_alarmEdit);
@@ -892,7 +902,7 @@ void CAlarmDialog::OnSelchangeAttribute(){
 			break;
 		}
 		break;
-	case GENERAL:
+	case EVENT:
 		selected = m_attribute.GetCurSel();
 		switch (selected) {
 		case ALLMESSAGES:
@@ -1050,7 +1060,7 @@ void CAlarmDialog::OnSelchangeCondition() {
 		m_trigger.SetWindowText("Not Applicable");
 		m_trigger.EnableWindow(false);
 		break;
-	case GENERAL:
+	case EVENT:
 		selected = m_condition.GetCurSel();
 		switch (selected) {
 		case FROMALL:
@@ -1129,18 +1139,16 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 	while (listItr != config->alarmList.end()) {
 		m_alarmType.SetCurSel(listItr->getAlarmType());
 		OnSelchangeAlarmType();
-		if (listItr->getAlarmType()==ITEMS){
-			//search for item ID
-			for (int i=0;i<m_attribute.GetCount();i++){
-				if (listItr->getAttribute()==m_attribute.GetItemData(i)){
+		if (listItr->getAlarmType() == ITEMS) {
+			for (int i = 0; i < m_attribute.GetCount(); i++){
+				if (listItr->getAttribute() == m_attribute.GetItemData(i)) {
 					m_attribute.SetCurSel(i);
 					break;
 				}
 			}
-		} else {
-			m_attribute.SetCurSel(listItr->getAttribute());
 		}
-		//int a = listItr->getAlarmType();
+		else
+			m_attribute.SetCurSel(listItr->getAttribute());
 		OnSelchangeAttribute();
 		m_condition.SetCurSel(listItr->getCondition());
 		OnSelchangeCondition();
@@ -1155,9 +1163,8 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionDepot.SetCheck(listItr->doGoToDepot());
 		m_actionSpell.SetCheck(listItr->doCastSpell().GetLength());
 		int index = m_spellList.FindString(-1, listItr->doCastSpell());
-		if (index == CB_ERR) {
-			index = m_spellList.AddString(listItr->doCastSpell());
-		}
+		if (index == CB_ERR)
+			m_spellList.SetCurSel(m_spellList.AddString(listItr->doCastSpell()));
 		else
 			m_spellList.SetCurSel(index);
 		SpellInfo *info = new SpellInfo();
@@ -1216,12 +1223,12 @@ void CAlarmDialog::OnAlarmAdd() {
 				strBuffer.Insert(index, triggerBuffer);
 			else {
 				strBuffer += " ";
-				if (m_alarmType.GetCurSel() == GENERAL && m_attribute.GetCurSel() < CHARACTERMOVED && m_condition.GetCurSel() > FROMALL)
+				if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() < CHARACTERMOVED && m_condition.GetCurSel() > FROMALL)
 					strBuffer += "\"";
 				strBuffer += triggerBuffer;
 			}
 		}
-		if (m_alarmType.GetCurSel() == GENERAL && m_attribute.GetCurSel() < CHARACTERMOVED && m_condition.GetCurSel() > FROMALL)
+		if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() < CHARACTERMOVED && m_condition.GetCurSel() > FROMALL)
 			strBuffer += "\"";
 		temp.setDescriptor(strBuffer);
 		memAlarmList.push_back(temp);
@@ -1320,7 +1327,7 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	if (m_trigger.IsWindowEnabled()) {
 		m_trigger.GetWindowText(text);
 		if (text.GetLength() && text[0] != '<') {
-			if (m_alarmType.GetCurSel() != GENERAL)
+			if (m_alarmType.GetCurSel() != EVENT)
 				temp->setTrigger(atoi(text));
 			else
 				temp->setTrigger(text);
@@ -1417,7 +1424,7 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	}
 	temp->setStopModules(endModules);
 	//Special case variable
-	if (m_alarmType.GetCurSel() == GENERAL && m_attribute.GetCurSel() <= PRIVATEMESSAGES)
+	if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() <= PRIVATEMESSAGES)
 		triggerMessage |= true;
 #pragma warning(default: 4800)
 	return true;
@@ -1436,8 +1443,101 @@ void CAlarmDialog::OnAlarmDelete() {
 }
 
 void CAlarmDialog::OnAlarmEdit() {
-	// TODO: Add your control notification handler code here
-	
+	CString text;
+	list<Alarm>::iterator alarmItr = memAlarmList.begin();
+	POSITION pos = m_alarmList.GetFirstSelectedItemPosition();
+	if (pos) {
+		int index =	m_alarmList.GetNextSelectedItem(pos);
+		m_alarmList.DeleteItem(index);
+
+		for (; index != 0; index--, alarmItr++);
+		m_alarmType.SetCurSel(alarmItr->getAlarmType());
+		OnSelchangeAlarmType();
+		if (alarmItr->getAlarmType() == ITEMS) {
+			for (int i = 0; i < m_attribute.GetCount(); i++){
+				if (alarmItr->getAttribute() == m_attribute.GetItemData(i)) {
+					m_attribute.SetCurSel(i);
+					break;
+				}
+			}
+		}
+		else
+			m_attribute.SetCurSel(alarmItr->getAttribute());
+		OnSelchangeAttribute();
+		m_condition.SetCurSel(alarmItr->getCondition());
+		OnSelchangeCondition();
+		if (alarmItr->getStrTrigger().GetLength() > 0)
+			m_trigger.SetWindowText(alarmItr->getStrTrigger());
+		else if (alarmItr->getIntTrigger() != -1) {
+			text.Format("%d", alarmItr->getIntTrigger());
+			m_trigger.SetWindowText(text);
+		}
+		m_actionRunaway.SetCheck(alarmItr->doGoToRunaway());			
+		m_actionStart.SetCheck(alarmItr->doGoToStart());
+		m_actionDepot.SetCheck(alarmItr->doGoToDepot());
+		m_actionStart.EnableWindow(!m_actionDepot.GetCheck()); 
+		m_actionRunaway.EnableWindow(!m_actionDepot.GetCheck());
+		if (m_actionRunaway.GetCheck()) {
+			m_actionDepot.EnableWindow(!m_actionRunaway.GetCheck());
+			m_actionStart.EnableWindow(!m_actionRunaway.GetCheck());
+		}
+		else if (m_actionStart.GetCheck()) {
+			m_actionDepot.EnableWindow(!m_actionStart.GetCheck());
+			m_actionRunaway.EnableWindow(!m_actionStart.GetCheck());
+		}
+		else if (m_actionDepot.GetCheck()) {
+			m_actionStart.EnableWindow(!m_actionDepot.GetCheck()); 
+			m_actionRunaway.EnableWindow(!m_actionDepot.GetCheck());
+		}
+		m_actionSpell.SetCheck(alarmItr->doCastSpell().GetLength());
+		m_spellList.EnableWindow(m_actionSpell.GetCheck());
+		index = m_spellList.FindString(-1, alarmItr->doCastSpell());
+		if (index == CB_ERR)
+			m_spellList.SetCurSel(m_spellList.AddString(alarmItr->doCastSpell()));
+		else
+			m_spellList.SetCurSel(index);
+		SpellInfo *info = new SpellInfo();
+		info->manaCost = alarmItr->getManaCost();
+		info->spellDelay = alarmItr->getSpellDelay();
+		m_spellList.SetItemData(index, (long)info);
+		m_actionScreenshot.SetCheck(alarmItr->doTakeScreenshot()+1);
+		m_screenshotOptions.EnableWindow(m_actionScreenshot.GetCheck());
+		m_screenshotOptions.SetCurSel(alarmItr->doTakeScreenshot());
+		m_actionAttack.SetCheck(alarmItr->doAttack());
+		m_actionLogout.SetCheck(alarmItr->doLogout());
+		m_actionKill.SetCheck(alarmItr->doKillClient());
+		m_actionShutdown.SetCheck(alarmItr->doShutdownComputer());
+		if (m_actionKill.GetCheck())
+			m_actionShutdown.EnableWindow(!m_actionKill.GetCheck());
+		else if (m_actionShutdown.GetCheck())
+			m_actionKill.EnableWindow(!m_actionShutdown.GetCheck());
+		m_windowAction.SetCheck(alarmItr->doWindowAction()!=-1);
+		m_windowActionList.SetCurSel(alarmItr->doWindowAction());
+		m_windowActionList.EnableWindow(m_windowAction.GetCheck());
+		m_actionSound.SetCheck(alarmItr->doAlarm().GetLength());
+		m_audioFile.EnableWindow(m_actionSound.GetCheck());	
+		m_audioFile.SetCurSel(m_audioFile.FindString(-1, alarmItr->doAlarm()));
+		m_actionLogEvents.SetCheck(alarmItr->doLogEvents());
+		m_actionEnable.SetCheck(alarmItr->doStartModules().size());
+		m_modules2.EnableWindow(m_actionEnable.GetCheck());
+		list<CString>::iterator modsItr = alarmItr->doStartModules().begin();
+		while (modsItr != alarmItr->doStartModules().end()) {
+			modsItr->Replace("mod_", NULL);
+			modsItr->Replace(".dll", NULL);
+			m_modules2.SetSel(m_modules2.FindString(-1, *modsItr));
+			modsItr++;
+		}
+		m_actionSuspend.SetCheck(alarmItr->doStopModules().size());
+		m_modules.EnableWindow(m_actionSuspend.GetCheck());
+		modsItr = alarmItr->doStartModules().begin();
+		while (modsItr != alarmItr->doStartModules().end()) {
+			modsItr->Replace("mod_", NULL);
+			modsItr->Replace(".dll", NULL);
+			m_modules.SetSel(m_modules.FindString(-1, *modsItr));
+			modsItr++;
+		}
+		memAlarmList.erase(alarmItr);
+	}
 }
 
 void CAlarmDialog::OnSelchangeSpellList() {
