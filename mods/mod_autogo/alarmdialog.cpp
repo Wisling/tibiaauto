@@ -39,7 +39,8 @@ CAlarmDialog::~CAlarmDialog() {
 void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAlarmDialog)
-	DDX_Control(pDX, IDC_ACTION_MAXIMIZE, m_maximizeWindow);
+	DDX_Control(pDX, IDC_ACTION_WINDOW, m_windowAction);
+	DDX_Control(pDX, IDC_ACTION_WINDOW_LIST, m_windowActionList);
 	DDX_Control(pDX, IDC_MODULES_LIST2, m_modules2);
 	DDX_Control(pDX, IDC_INSTRUCTION_TEXT, m_instructionText);
 	DDX_Control(pDX, IDC_MODULES_LIST, m_modules);
@@ -91,7 +92,7 @@ BEGIN_MESSAGE_MAP(CAlarmDialog, CDialog)
 	ON_EN_SETFOCUS(IDC_TRIGGER, OnSetfocusTrigger)
 	ON_BN_CLICKED(IDC_ACTION_ATTACK, OnActionAttack)
 	ON_BN_CLICKED(IDC_ACTION_LOGOUT, OnActionLogout)
-	ON_BN_CLICKED(IDC_ACTION_MAXIMIZE, OnActionMaximize)
+	ON_BN_CLICKED(IDC_ACTION_WINDOW, OnWindowAction)
 	ON_BN_CLICKED(IDC_ACTION_LOG_EVENTS, OnActionLogEvents)
 	ON_BN_CLICKED(IDC_ALARM_ADD, OnAlarmAdd)
 	ON_BN_CLICKED(IDC_ALARM_DELETE, OnAlarmDelete)
@@ -356,6 +357,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("Public Messages"), 22);
 			m_attribute.SetItemImage(m_attribute.AddString("Private Messages"), 23);
 			m_attribute.SetItemImage(m_attribute.AddString("Character Moved"), 0);
+			m_attribute.SetItemImage(m_attribute.AddString("Character Hit"), 0);
 
 			m_condition.ResetContent();
 			m_condition.AddString("From Anyone");
@@ -385,6 +387,7 @@ BOOL CAlarmDialog::OnInitDialog() {
 	m_modules.EnableWindow(m_actionSuspend.GetCheck());
 	m_modules2.EnableWindow(m_actionEnable.GetCheck());
 	m_screenshotOptions.EnableWindow(m_actionScreenshot.GetCheck());
+	m_windowActionList.EnableWindow(m_windowAction.GetCheck());
 	m_spellList.EnableWindow(m_actionSpell.GetCheck());
 	m_audioFile.EnableWindow(m_actionSound.GetCheck());	
 	
@@ -532,10 +535,10 @@ BOOL CAlarmDialog::OnInitDialog() {
 
 	actionIcons[index].LoadBitmap(IDB_MAXIMIZE);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
-	m_maximizeWindow.SetBitmaps(IDB_MAXIMIZE, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_maximizeWindow);
-	m_maximizeWindow.SetFlat(true);
-	m_maximizeWindow.DrawFlatFocus(false);
+	m_windowAction.SetBitmaps(IDB_MAXIMIZE, RGB(255, 0, 255), IDB_BLANK);
+	skin.SetButtonSkin(m_windowAction);
+	m_windowAction.SetFlat(true);
+	m_windowAction.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_AUDIO);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
@@ -915,6 +918,14 @@ void CAlarmDialog::OnSelchangeAttribute(){
 			VERIFY(instructionText.LoadString(IDS_GENERAL_CHARACTERMOVED)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
+		case CHARACTERHIT:
+			m_condition.EnableWindow(false);
+			m_condition.SetCurSel(-1);
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
+			VERIFY(instructionText.LoadString(IDS_GENERAL_CHARACTERHIT)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
 		default:
 			VERIFY(instructionText.LoadString(IDS_GENERAL)); 
 			m_instructionText.SetWindowText(instructionText);
@@ -1086,14 +1097,15 @@ void CAlarmDialog::OnActionLogout() {
 	m_instructionText.SetWindowText(instructionText); 
 }
 
-void CAlarmDialog::OnActionMaximize() {
-	VERIFY(instructionText.LoadString(IDS_MAXIMIZE)); 
-	m_instructionText.SetWindowText(instructionText); 
+void CAlarmDialog::OnWindowAction() {
+	VERIFY(instructionText.LoadString(IDS_WINDOW_ACTION));
+	m_instructionText.SetWindowText(instructionText);
+	m_windowActionList.EnableWindow(m_windowAction.GetCheck());
 }
 
 void CAlarmDialog::OnActionLogEvents() {
-	VERIFY(instructionText.LoadString(IDS_LOG_EVENTS)); 
-	m_instructionText.SetWindowText(instructionText); 
+	VERIFY(instructionText.LoadString(IDS_LOG_EVENTS));
+	m_instructionText.SetWindowText(instructionText);
 }
 
 void CAlarmDialog::disableControls() {
@@ -1117,7 +1129,18 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 	while (listItr != config->alarmList.end()) {
 		m_alarmType.SetCurSel(listItr->getAlarmType());
 		OnSelchangeAlarmType();
-		m_attribute.SetCurSel(listItr->getAttribute());
+		if (listItr->getAlarmType()==ITEMS){
+			//search for item ID
+			for (int i=0;i<m_attribute.GetCount();i++){
+				if (listItr->getAttribute()==m_attribute.GetItemData(i)){
+					m_attribute.SetCurSel(i);
+					break;
+				}
+			}
+		} else {
+			m_attribute.SetCurSel(listItr->getAttribute());
+		}
+		//int a = listItr->getAlarmType();
 		OnSelchangeAttribute();
 		m_condition.SetCurSel(listItr->getCondition());
 		OnSelchangeCondition();
@@ -1147,7 +1170,8 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionLogout.SetCheck(listItr->doLogout());
 		m_actionKill.SetCheck(listItr->doKillClient());
 		m_actionShutdown.SetCheck(listItr->doShutdownComputer());
-		m_maximizeWindow.SetCheck(listItr->doMaximizeClient());
+		m_windowAction.SetCheck(listItr->doWindowAction()!=-1);
+			m_windowActionList.SetCurSel(listItr->doWindowAction());
 		m_actionSound.SetCheck(listItr->doAlarm().GetLength());
 			m_audioFile.SetCurSel(m_audioFile.FindString(-1, listItr->doAlarm()));
 		m_actionLogEvents.SetCheck(listItr->doLogEvents());
@@ -1211,7 +1235,7 @@ void CAlarmDialog::OnAlarmAdd() {
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 7, m_actionLogout.GetCheck() ? "X" : "");
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 8, m_actionKill.GetCheck() ? "X" : "");
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 9, m_actionShutdown.GetCheck() ? "X" : "");
-		m_alarmList.SetItemText(memAlarmList.size() - 1, 10, m_maximizeWindow.GetCheck() ? "X" : "");
+		m_alarmList.SetItemText(memAlarmList.size() - 1, 10, m_windowAction.GetCheck() ? "X" : "");
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 11, m_actionSound.GetCheck() ? "X" : "");
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 12, m_actionLogEvents.GetCheck() ? "X" : "");
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 13, m_actionEnable.GetCheck() ? "X" : "");
@@ -1241,7 +1265,9 @@ void CAlarmDialog::OnAlarmAdd() {
 			m_actionKill.EnableWindow();
 		m_actionShutdown.SetCheck(false);
 			m_actionShutdown.EnableWindow();
-		m_maximizeWindow.SetCheck(false);
+		m_windowAction.SetCheck(false);
+			m_windowActionList.SetCurSel(-1);
+			m_windowActionList.EnableWindow(false);
 		m_actionSound.SetCheck(false);
 			m_audioFile.SetCurSel(-1);
 			m_audioFile.EnableWindow(false);
@@ -1266,7 +1292,7 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 		return false;
 	}
 
-	if (m_attribute.GetCurSel() != -1) 
+	if (m_attribute.GetCurSel() != -1)
 		if (m_alarmType.GetCurSel() == ITEMS && m_attribute.GetCurSel() > 0)
 			temp->setAttribute(m_attribute.GetItemData(m_attribute.GetCurSel()));
 		else
@@ -1275,6 +1301,8 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 		VERIFY(instructionText.LoadString(IDS_ATTRIBUTE_ERROR)); 
 		m_instructionText.SetWindowText(instructionText);
 		PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
+		m_alarmType.GetCurSel();
+		int a=0;
 		return false;
 	}
 
@@ -1339,7 +1367,19 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	temp->setLogout(m_actionLogout.GetCheck());
 	temp->setKillClient(m_actionKill.GetCheck());
 	temp->setShutdownComputer(m_actionShutdown.GetCheck());
-	temp->setMaximizeTibia(m_maximizeWindow.GetCheck());
+	if (m_windowAction.GetCheck()) {
+		if (m_windowActionList.GetCurSel() != -1) {
+			temp->setWindowAction(m_windowActionList.GetCurSel());
+		}
+		else {
+			VERIFY(instructionText.LoadString(IDS_WINDOWACTION_ERROR)); 
+			m_instructionText.SetWindowText(instructionText);
+			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
+			return false;
+		}
+	} 
+	else
+		temp->setWindowAction(-1);
 	if (m_actionSound.GetCheck()) {
 		if (m_audioFile.GetCurSel() != -1) {
 			m_audioFile.GetLBText(m_audioFile.GetCurSel(), text);

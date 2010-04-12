@@ -23,7 +23,7 @@ public:
 	bool fullSleep;
 	bool cavebotForced;
 	bool flashed;
-	bool maximized;
+	int windowActed;
 	bool eventLogged;
 	void setDescriptor(CString);
 	CString getDescriptor();
@@ -49,7 +49,7 @@ public:
 	void setStopModules(list<CString>);
 	void setLogEvents(bool);
 	void setAudioAlarm(CString);
-	void setMaximizeTibia(bool);
+	void setWindowAction(int);
 	void setShutdownComputer(bool);
 	void setKillClient(bool);
 	void setLogout(bool);
@@ -65,7 +65,7 @@ public:
 	list<CString> doStartModules();
 	bool doLogEvents();
 	CString doAlarm();
-	bool doMaximizeClient();
+	int doWindowAction();
 	bool doShutdownComputer();
 	bool doKillClient();
 	bool doLogout();
@@ -81,7 +81,7 @@ public:
 	bool checkAlarm(char whiteList[100][32], int);
 
 	// Construction/Destruction
-	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, int, int, bool, bool, bool, bool, bool, CString, bool, list<CString>, list<CString>);
+	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, int, int, bool, bool, bool, bool, int, CString, bool, list<CString>, list<CString>);
 	Alarm();
 	virtual ~Alarm();
 
@@ -112,7 +112,7 @@ private:
 	CString spell;
 	CString sound;
 	bool logEvents;
-	bool maximize;
+	int windowAction;
 	bool shutdown;
 	bool killTibia;
 	bool logout;
@@ -139,6 +139,7 @@ private:
 	int positionXInit;
 	int positionYInit;
 	int positionZInit;
+	int healthInit;
 
 	// Specific Needs Variables
 	int onScreenAt;

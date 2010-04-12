@@ -18,7 +18,7 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	options = 0;
+	options = OPTIONS_FLASHONALARM;
 	actX = actY = actZ = actDirection = 0;
 	runawayX = runawayY = runawayZ = 0;
 

@@ -256,6 +256,7 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_AUTOGO_CUR_X, lastX);
 	DDX_Text(pDX, IDC_AUTOGO_CUR_Y, lastY);
 	DDX_Text(pDX, IDC_AUTOGO_CUR_Z, lastZ);
+	DDX_Control(pDX, IDC_FLASHONALARM, m_flashOnAlarm);
 	//}}AFX_DATA_MAP
 }
 
@@ -300,6 +301,7 @@ void GeneralConfigDialog::disableControls() {
 	m_SetRunaway.EnableWindow(false);
 	m_SetStart.EnableWindow(false);
 	m_maintainStart.EnableWindow(false);
+	m_flashOnAlarm.EnableWindow(false);
 }
 
 BOOL GeneralConfigDialog::OnInitDialog() 
@@ -339,6 +341,7 @@ void GeneralConfigDialog::enableControls() {
 	m_SetRunaway.EnableWindow(true);
 	m_SetStart.EnableWindow(true);
 	m_maintainStart.EnableWindow(true);
+	m_flashOnAlarm.EnableWindow(true);
 }
 
 void GeneralConfigDialog::configToControls(CConfigData *configData) {
@@ -357,6 +360,7 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	m_battleAnxiety.SetCheck(configData->options & OPTIONS_BATTLE_ANXIETY);
 	memMkBlack = configData->options & OPTIONS_MAKE_BLACKLIST;
 	m_maintainStart.SetCheck(configData->maintainStart);
+	m_flashOnAlarm.SetCheck(configData->options & OPTIONS_FLASHONALARM);
 }
 
 void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
@@ -374,6 +378,7 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	if (m_battleAnxiety.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_ANXIETY;
 	if (memMkBlack) newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
 	newConfigData->maintainStart = m_maintainStart.GetCheck();
+	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
 }
 
 void GeneralConfigDialog::OnAutogoBattleparanoia() {
