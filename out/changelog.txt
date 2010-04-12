@@ -8,6 +8,8 @@ Defects
  Auto Go/Log: Stabalized Tibia client window manipulation
  Auto Go/Log: Corrected and error prevent the logout action to complete successfully
  Auto Go/Log: Corrected several problems with the spellcasting action
+ Auto Go/Log: Corrected Vista screenshot error
+ Auto Go/Log: Corrected MC Window Confusion error
 
 Defects
  Cavebot: Loot from floor works now

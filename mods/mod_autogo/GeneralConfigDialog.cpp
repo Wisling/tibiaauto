@@ -150,8 +150,17 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 
 CString capturePosition(CString name) {		
 	CMemReaderProxy reader;
-	if (!tibiaHwnd)
-		tibiaHwnd = FindWindow("TibiaClient", NULL);
+	if (!tibiaHwnd) {
+		tibiaHwnd = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
+		while (tibiaHwnd) {
+			DWORD pid;
+			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHwnd, &pid);
+
+			if (pid == reader.getProcessId())
+				break;
+			tibiaHwnd = FindWindowEx(NULL, tibiaHwnd, "TibiaClient", NULL);
+		}
+	}
 	RECT rect;
 	bool captured = false;
 	bool minimized = IsIconic(tibiaHwnd);
