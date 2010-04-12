@@ -377,8 +377,17 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 
 DWORD WINAPI takeScreenshot(LPVOID lpParam) {		
 	CMemReaderProxy reader;
-	if (!tibiaHWND)
-		tibiaHWND = FindWindow("TibiaClient", NULL);
+	if (!tibiaHWND) {
+		tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
+		while (tibiaHWND) {
+			DWORD pid;
+			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
+
+			if (pid == reader.getProcessId())
+				break;
+			tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
+		}
+	}
 	RECT rect;
 	bool captured = false;
 	bool minimized = IsIconic(tibiaHWND);
@@ -475,8 +484,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					statusBuf += "  ******  " + alarmItr->getDescriptor();
 				// Flash Window ***************
 				if (!alarmItr->flashed) {
-					if (!tibiaHWND)
-						tibiaHWND = FindWindow("TibiaClient", NULL);
+					if (!tibiaHWND) {
+						tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
+						while (tibiaHWND) {
+							DWORD pid;
+							DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
+
+							if (pid == reader.getProcessId())
+								break;
+							tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
+						}
+					}
 					FlashWindow(tibiaHWND, true);
 					alarmItr->flashed = true;
 				}// ***************************
@@ -520,8 +538,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				// Maximize Window *************
 				if (alarmItr->doMaximizeClient() && !alarmItr->maximized) {
-					if (!tibiaHWND)
-						tibiaHWND = FindWindow("TibiaClient", NULL);
+					if (!tibiaHWND) {
+						tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
+						while (tibiaHWND) {
+							DWORD pid;
+							DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
+							
+							if (pid == reader.getProcessId())
+								break;
+							tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
+						}
+					}
 					ShowWindow(tibiaHWND, SW_MAXIMIZE);
 					alarmItr->maximized = true;
 				}// ****************************
