@@ -69,17 +69,17 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 300, 400
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 300, 410
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Auto Go/Log"
 FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,360,286,14
-    DEFPUSHBUTTON   "OK",IDOK,124,379,50,14
-    LTEXT           "Status:",IDC_AUTOGO_STATUS,7,344,286,11,SS_CENTERIMAGE | 
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,368,286,14
+    DEFPUSHBUTTON   "OK",IDOK,124,389,50,14
+    LTEXT           "Status:",IDC_AUTOGO_STATUS,7,350,286,11,SS_CENTERIMAGE | 
                     WS_BORDER
-    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,286,334
+    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,286,336
 END
 
 IDD_WHITELIST DIALOGEX 0, 0, 191, 185
@@ -115,7 +115,13 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 293
         TOPMARGIN, 7
-        BOTTOMMARGIN, 393
+        BOTTOMMARGIN, 403
+        HORZGUIDE, 343
+        HORZGUIDE, 350
+        HORZGUIDE, 361
+        HORZGUIDE, 368
+        HORZGUIDE, 382
+        HORZGUIDE, 389
     END
 
     IDD_WHITELIST, DIALOG
@@ -161,7 +167,7 @@ STYLE WS_CHILD | WS_VISIBLE
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,307
-    GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,110
+    GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,127
     COMBOBOX        IDC_ALARM_TYPE,14,34,80,85,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
@@ -172,60 +178,60 @@ BEGIN
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Go to Runaway",IDC_ACTION_RUNAWAY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,96,73,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,96,73,11
     CONTROL         "Go to Start",IDC_ACTION_START,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,107,73,9
+                    WS_TABSTOP,21,110,73,11
     CONTROL         "Go to Depot",IDC_ACTION_DEPOT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,118,73,9
+                    WS_TABSTOP,21,124,73,11
     CONTROL         "Log Out",IDC_ACTION_LOGOUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,100,107,73,9
+                    WS_TABSTOP,100,110,73,11
     CONTROL         "Kill Tibia Client",IDC_ACTION_KILL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,118,73,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,124,73,11
     CONTROL         "Computer Off",IDC_ACTION_SHUTDOWN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,129,73,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,138,73,11
     CONTROL         "Take Screenshot:",IDC_ACTION_SCREENSHOT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,166,73,9
-    COMBOBOX        IDC_SCREENSHOT_OPTIONS,29,178,67,62,CBS_DROPDOWN | 
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,180,73,11
+    COMBOBOX        IDC_SCREENSHOT_OPTIONS,28,193,67,62,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Audio Alarm:",IDC_ACTION_SOUND,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,100,166,73,9
-    COMBOBOX        IDC_AUDIO_FILE,106,178,67,71,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,100,180,73,11
+    COMBOBOX        IDC_AUDIO_FILE,106,193,67,71,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Suspend Mod(s):",IDC_ACTION_SUSPEND_MODULES,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,179,145,73,11
-    PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,198,50,14
-    PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,198,50,14
-    PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,198,50,14
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,152,73,11
+    PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,219,50,14
+    PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,219,50,14
+    PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,219,50,14
     LTEXT           "Type:",IDC_STATIC,14,20,19,8
     LTEXT           "Attribute:",IDC_STATIC,14,52,29,8
     LTEXT           "Condition:",IDC_STATIC,100,51,32,8
     LTEXT           "Trigger:",IDC_STATIC,186,51,25,8
     CONTROL         "List1",IDC_ALARM_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
-                    WS_TABSTOP,21,217,239,86
+                    WS_TABSTOP,21,240,239,66
     CONTROL         "Cast Spell:",IDC_ACTION_SPELL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,140,73,9
-    COMBOBOX        IDC_SPELL_LIST,28,151,67,62,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,21,152,73,11
+    COMBOBOX        IDC_SPELL_LIST,28,165,67,62,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
     EDITTEXT        IDC_TRIGGER,186,65,80,15,ES_AUTOHSCROLL
-    LISTBOX         IDC_MODULES_LIST,186,156,67,35,LBS_SORT | 
+    LISTBOX         IDC_MODULES_LIST,186,165,67,38,LBS_SORT | 
                     LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_TABSTOP
     CTEXT           "Select an alarm type to begin.",IDC_INSTRUCTION_TEXT,
                     100,17,167,29,0,WS_EX_STATICEDGE
     CONTROL         "Start Mod(s):",IDC_ACTION_START_MODULES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,179,96,73,11
-    LISTBOX         IDC_MODULES_LIST2,186,107,67,35,LBS_SORT | 
+    LISTBOX         IDC_MODULES_LIST2,186,110,67,38,LBS_SORT | 
                     LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,129,73,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,138,73,11
     CONTROL         "Window Action",IDC_ACTION_WINDOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,140,73,9
-    COMBOBOX        IDC_ACTION_WINDOW_LIST,106,151,67,79,CBS_DROPDOWN | 
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,152,73,11
+    COMBOBOX        IDC_ACTION_WINDOW_LIST,106,165,67,79,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Stop Walking",IDC_ACTION_STOP_WALKING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,96,73,9
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,96,73,11
 END
 
 IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 320
@@ -233,7 +239,7 @@ STYLE WS_CHILD | WS_VISIBLE
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "General Configuration",IDC_GENERAL_CONFIG_FRAME,7,7,267,
-                    341
+                    306
     GROUPBOX        "Positional Options",
                     IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME,14,95,253,64
     GROUPBOX        "Proximity Options",
@@ -260,10 +266,10 @@ BEGIN
                     ES_AUTOHSCROLL | ES_NUMBER
     PUSHBUTTON      "Set Runaway Position",IDC_AUTOGO_TORUNAWAY,162,108,86,
                     14,BS_VCENTER
-    EDITTEXT        IDC_AUTOGO_CUR_X,79,281,24,14,ES_CENTER | ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Y,107,281,24,14,ES_CENTER | 
+    EDITTEXT        IDC_AUTOGO_CUR_X,72,280,24,14,ES_CENTER | ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_CUR_Y,100,280,24,14,ES_CENTER | 
                     ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Z,135,281,24,14,ES_CENTER | 
+    EDITTEXT        IDC_AUTOGO_CUR_Z,128,280,24,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_AUTOGO_ACT_X,79,125,24,13,ES_CENTER | ES_AUTOHSCROLL | 
                     ES_NUMBER
@@ -274,7 +280,7 @@ BEGIN
     PUSHBUTTON      "Set Start Position",IDC_AUTOGO_TOSTART,162,125,86,14,
                     BS_VCENTER
     LTEXT           "Runaway To:",IDC_STATIC,31,111,44,8,SS_CENTERIMAGE
-    LTEXT           "Current Position:",IDC_STATIC,23,285,52,8,
+    LTEXT           "Current Position:",IDC_STATIC,14,283,52,8,
                     SS_CENTERIMAGE
     LTEXT           "Start Position:",IDC_STATIC,31,128,44,8,SS_CENTERIMAGE
     COMBOBOX        IDC_AUTOGO_ACT_DIRECTION,79,142,52,56,CBS_DROPDOWNLIST | 
@@ -283,14 +289,14 @@ BEGIN
     CONTROL         "Maintain Start Position",IDC_MAINTAIN_START,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,161,143,86,10
     CONTROL         3031,IDC_START_PICTURE,"Static",SS_BITMAP | 
-                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,14,173,124,100
-    LTEXT           "Start Position:",IDC_STATIC,14,161,44,8,SS_CENTERIMAGE
+                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,14,176,124,100
+    LTEXT           "Start Position:",IDC_STATIC,14,164,44,8,SS_CENTERIMAGE
     CONTROL         3031,IDC_RUNAWAY_PICTURE,"Static",SS_BITMAP | 
-                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,144,173,124,100
-    LTEXT           "Runaway Position:",IDC_STATIC,144,161,60,8,
+                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,144,176,124,100
+    LTEXT           "Runaway Position:",IDC_STATIC,144,164,60,8,
                     SS_CENTERIMAGE
     CONTROL         "Highlight window when alarm sounds",IDC_FLASHONALARM,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,21,299,144,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,296,144,10
 END
 
 IDD_ADD_CUSTOM_SPELL DIALOG DISCARDABLE  0, 0, 187, 97
@@ -336,6 +342,11 @@ BEGIN
         HORZGUIDE, 80
         HORZGUIDE, 85
         HORZGUIDE, 96
+        HORZGUIDE, 212
+        HORZGUIDE, 220
+        HORZGUIDE, 233
+        HORZGUIDE, 240
+        HORZGUIDE, 306
     END
 
     IDD_GENERAL_CONFIG_DIALOG, DIALOG
@@ -349,8 +360,8 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 313
         HORZGUIDE, 16
-        HORZGUIDE, 295
-        HORZGUIDE, 299
+        HORZGUIDE, 296
+        HORZGUIDE, 306
     END
 
     IDD_ADD_CUSTOM_SPELL, DIALOG
@@ -374,27 +385,27 @@ IDB_GREEN               BITMAP  DISCARDABLE     "res\\skull_green.bmp"
 IDB_RED                 BITMAP  DISCARDABLE     "res\\skull_red.bmp"
 IDB_WHITE               BITMAP  DISCARDABLE     "res\\skull_white.bmp"
 IDB_YELLOW              BITMAP  DISCARDABLE     "res\\skull_yellow.bmp"
-IDB_COLUMN_HEADERS      BITMAP  DISCARDABLE     "res\\Columns.bmp"
-IDB_VIP                 BITMAP  DISCARDABLE     "res\\vip.bmp"
-IDB_GENERAL             BITMAP  DISCARDABLE     "res\\general.bmp"
-IDB_PROXIMITY           BITMAP  DISCARDABLE     "res\\proximity.bmp"
-IDB_SCREENSHOT          BITMAP  DISCARDABLE     "res\\TakeScreenshot.bmp"
-IDB_ATTACK              BITMAP  DISCARDABLE     "res\\Attack.bmp"
-IDB_AUDIO               BITMAP  DISCARDABLE     "res\\Audio.bmp"
-IDB_BLANK               BITMAP  DISCARDABLE     "res\\Blank.bmp"
-IDB_SPELL               BITMAP  DISCARDABLE     "res\\CastSpell.bmp"
-IDB_DEPOT               BITMAP  DISCARDABLE     "res\\Depot.bmp"
-IDB_KILLTIBIA           BITMAP  DISCARDABLE     "res\\KillTibia.bmp"
-IDB_LOGEVENTS           BITMAP  DISCARDABLE     "res\\LogEvents.bmp"
-IDB_LOGOUT              BITMAP  DISCARDABLE     "res\\LogOut.bmp"
-IDB_MAXIMIZE            BITMAP  DISCARDABLE     "res\\MaximizeWindow.bmp"
-IDB_RUNAWAY             BITMAP  DISCARDABLE     "res\\Runaway.bmp"
-IDB_SHUTDOWN            BITMAP  DISCARDABLE     "res\\ShutdownComputer.bmp"
-IDB_START               BITMAP  DISCARDABLE     "res\\Start.bmp"
-IDB_STARTMODULE         BITMAP  DISCARDABLE     "res\\StartModule.bmp"
-IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "res\\SuspendModule.bmp"
-IDB_ITEMS               BITMAP  DISCARDABLE     "res\\Items.bmp"
-IDB_STOP                BITMAP  DISCARDABLE     "res\\Stop.bmp"
+IDB_COLUMN_HEADERS      BITMAP  DISCARDABLE     "Columns.bmp"
+IDB_VIP                 BITMAP  DISCARDABLE     "vip.bmp"
+IDB_GENERAL             BITMAP  DISCARDABLE     "general.bmp"
+IDB_PROXIMITY           BITMAP  DISCARDABLE     "proximity.bmp"
+IDB_SCREENSHOT          BITMAP  DISCARDABLE     "TakeScreenshot.bmp"
+IDB_ATTACK              BITMAP  DISCARDABLE     "Attack.bmp"
+IDB_AUDIO               BITMAP  DISCARDABLE     "Audio.bmp"
+IDB_BLANK               BITMAP  DISCARDABLE     "Blank.bmp"
+IDB_SPELL               BITMAP  DISCARDABLE     "CastSpell.bmp"
+IDB_DEPOT               BITMAP  DISCARDABLE     "Depot.bmp"
+IDB_KILLTIBIA           BITMAP  DISCARDABLE     "KillTibia.bmp"
+IDB_LOGEVENTS           BITMAP  DISCARDABLE     "LogEvents.bmp"
+IDB_LOGOUT              BITMAP  DISCARDABLE     "LogOut.bmp"
+IDB_MAXIMIZE            BITMAP  DISCARDABLE     "MaximizeWindow.bmp"
+IDB_RUNAWAY             BITMAP  DISCARDABLE     "Runaway.bmp"
+IDB_SHUTDOWN            BITMAP  DISCARDABLE     "ShutdownComputer.bmp"
+IDB_START               BITMAP  DISCARDABLE     "Start.bmp"
+IDB_STARTMODULE         BITMAP  DISCARDABLE     "StartModule.bmp"
+IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "SuspendModule.bmp"
+IDB_ITEMS               BITMAP  DISCARDABLE     "Items.bmp"
+IDB_STOP                BITMAP  DISCARDABLE     "Stop.bmp"
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
