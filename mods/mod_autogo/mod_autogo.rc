@@ -69,17 +69,17 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 300, 390
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 300, 400
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Auto Go/Log"
 FONT 8, "MS Sans Serif"
 BEGIN
     CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,351,286,14
-    DEFPUSHBUTTON   "OK",IDOK,124,369,50,14
-    LTEXT           "Status:",IDC_AUTOGO_STATUS,7,335,286,11,SS_CENTERIMAGE | 
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,360,286,14
+    DEFPUSHBUTTON   "OK",IDOK,124,379,50,14
+    LTEXT           "Status:",IDC_AUTOGO_STATUS,7,344,286,11,SS_CENTERIMAGE | 
                     WS_BORDER
-    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,286,324
+    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,286,334
 END
 
 IDD_WHITELIST DIALOGEX 0, 0, 191, 185
@@ -115,7 +115,7 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 293
         TOPMARGIN, 7
-        BOTTOMMARGIN, 383
+        BOTTOMMARGIN, 393
     END
 
     IDD_WHITELIST, DIALOG
@@ -158,7 +158,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDD_ALARM_DIALOG DIALOGEX 0, 0, 281, 320
 STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,307
     GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,110
@@ -260,10 +260,10 @@ BEGIN
                     ES_AUTOHSCROLL | ES_NUMBER
     PUSHBUTTON      "Set Runaway Position",IDC_AUTOGO_TORUNAWAY,162,108,86,
                     14,BS_VCENTER
-    EDITTEXT        IDC_AUTOGO_CUR_X,79,282,24,14,ES_CENTER | ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Y,107,282,24,14,ES_CENTER | 
+    EDITTEXT        IDC_AUTOGO_CUR_X,79,281,24,14,ES_CENTER | ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_CUR_Y,107,281,24,14,ES_CENTER | 
                     ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Z,135,282,24,14,ES_CENTER | 
+    EDITTEXT        IDC_AUTOGO_CUR_Z,135,281,24,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_AUTOGO_ACT_X,79,125,24,13,ES_CENTER | ES_AUTOHSCROLL | 
                     ES_NUMBER
@@ -349,7 +349,7 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 313
         HORZGUIDE, 16
-        HORZGUIDE, 296
+        HORZGUIDE, 295
         HORZGUIDE, 299
     END
 
@@ -374,26 +374,26 @@ IDB_GREEN               BITMAP  DISCARDABLE     "res\\skull_green.bmp"
 IDB_RED                 BITMAP  DISCARDABLE     "res\\skull_red.bmp"
 IDB_WHITE               BITMAP  DISCARDABLE     "res\\skull_white.bmp"
 IDB_YELLOW              BITMAP  DISCARDABLE     "res\\skull_yellow.bmp"
-IDB_COLUMN_HEADERS      BITMAP  DISCARDABLE     "Columns.bmp"
-IDB_VIP                 BITMAP  DISCARDABLE     "vip.bmp"
-IDB_GENERAL             BITMAP  DISCARDABLE     "general.bmp"
-IDB_PROXIMITY           BITMAP  DISCARDABLE     "proximity.bmp"
-IDB_SCREENSHOT          BITMAP  DISCARDABLE     "TakeScreenshot.bmp"
-IDB_ATTACK              BITMAP  DISCARDABLE     "Attack.bmp"
-IDB_AUDIO               BITMAP  DISCARDABLE     "Audio.bmp"
-IDB_BLANK               BITMAP  DISCARDABLE     "Blank.bmp"
-IDB_SPELL               BITMAP  DISCARDABLE     "CastSpell.bmp"
-IDB_DEPOT               BITMAP  DISCARDABLE     "Depot.bmp"
-IDB_KILLTIBIA           BITMAP  DISCARDABLE     "KillTibia.bmp"
-IDB_LOGEVENTS           BITMAP  DISCARDABLE     "LogEvents.bmp"
-IDB_LOGOUT              BITMAP  DISCARDABLE     "LogOut.bmp"
-IDB_MAXIMIZE            BITMAP  DISCARDABLE     "MaximizeWindow.bmp"
-IDB_RUNAWAY             BITMAP  DISCARDABLE     "Runaway.bmp"
-IDB_SHUTDOWN            BITMAP  DISCARDABLE     "ShutdownComputer.bmp"
-IDB_START               BITMAP  DISCARDABLE     "Start.bmp"
-IDB_STARTMODULE         BITMAP  DISCARDABLE     "StartModule.bmp"
-IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "SuspendModule.bmp"
-IDB_ITEMS               BITMAP  DISCARDABLE     "Items.bmp"
+IDB_COLUMN_HEADERS      BITMAP  DISCARDABLE     "res\\Columns.bmp"
+IDB_VIP                 BITMAP  DISCARDABLE     "res\\vip.bmp"
+IDB_GENERAL             BITMAP  DISCARDABLE     "res\\general.bmp"
+IDB_PROXIMITY           BITMAP  DISCARDABLE     "res\\proximity.bmp"
+IDB_SCREENSHOT          BITMAP  DISCARDABLE     "res\\TakeScreenshot.bmp"
+IDB_ATTACK              BITMAP  DISCARDABLE     "res\\Attack.bmp"
+IDB_AUDIO               BITMAP  DISCARDABLE     "res\\Audio.bmp"
+IDB_BLANK               BITMAP  DISCARDABLE     "res\\Blank.bmp"
+IDB_SPELL               BITMAP  DISCARDABLE     "res\\CastSpell.bmp"
+IDB_DEPOT               BITMAP  DISCARDABLE     "res\\Depot.bmp"
+IDB_KILLTIBIA           BITMAP  DISCARDABLE     "res\\KillTibia.bmp"
+IDB_LOGEVENTS           BITMAP  DISCARDABLE     "res\\LogEvents.bmp"
+IDB_LOGOUT              BITMAP  DISCARDABLE     "res\\LogOut.bmp"
+IDB_MAXIMIZE            BITMAP  DISCARDABLE     "res\\MaximizeWindow.bmp"
+IDB_RUNAWAY             BITMAP  DISCARDABLE     "res\\Runaway.bmp"
+IDB_SHUTDOWN            BITMAP  DISCARDABLE     "res\\ShutdownComputer.bmp"
+IDB_START               BITMAP  DISCARDABLE     "res\\Start.bmp"
+IDB_STARTMODULE         BITMAP  DISCARDABLE     "res\\StartModule.bmp"
+IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "res\\SuspendModule.bmp"
+IDB_ITEMS               BITMAP  DISCARDABLE     "res\\Items.bmp"
 IDB_STOP                BITMAP  DISCARDABLE     "res\\Stop.bmp"
 
 #ifndef _MAC
