@@ -1,15 +1,24 @@
  Installation will now never repace the items.xml file unless it is missing
-2.2.3, 4.8.2010
+2.3.0, 13.4.2010
 Enhancments
  Auto Go/Log: Reworked AutoGo now 4.11
  Auto Go/Log: Added functionality to capture an image of start and runaway positions.
+ Cavebot: Changed adding and removing waypoint slightly
 
 Defects
  Auto Go/Log: Stabalized Tibia client window manipulation
  Auto Go/Log: Corrected and error prevent the logout action to complete successfully
  Auto Go/Log: Corrected several problems with the spellcasting action
+ Auto Go/Log: Fixed alarm for leveling up
  Auto Go/Log: Corrected Vista screenshot error
  Auto Go/Log: Corrected MC Window Confusion error
+ ItemConfig: Cancel button doesn't make any changes now
+ Installer: Added logs folder to TA directory 
+
+2.2.3, 4.8.2010
+Enhancments
+ Auto Go/Log: Reworked AutoGo now 4.11
+ Auto Go/Log: Added functionality to capture an image of start and runaway positions.
 
 Defects
  Cavebot: Loot from floor works now
