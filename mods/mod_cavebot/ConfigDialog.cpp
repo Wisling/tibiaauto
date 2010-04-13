@@ -831,6 +831,7 @@ void CConfigDialog::activateEnableButton(int enable)
 void CConfigDialog::OnToolAutoattackRemoveWaypoint() 
 {
 	int sel=m_waypointList.GetCurSel();
+	/* Removed to avoid confusion
 	int x,y,z;
 	char buf[128];
 	m_waypointList.GetText(sel,buf);
@@ -839,10 +840,11 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 		sprintf(buf,"%d",y);m_curY.SetWindowText(buf);
 		sprintf(buf,"%d",z);m_curZ.SetWindowText(buf);
 	}
+	*/
 	if (sel==-1)
 		return;
 	m_waypointList.DeleteString(sel);
-	m_waypointList.SetCurSel(min(sel,m_waypointList.GetCount()-1));
+	m_waypointList.SetCurSel(max(sel-1,0));
 }
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 

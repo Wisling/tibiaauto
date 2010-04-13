@@ -944,201 +944,6 @@ void sortArray(CUIntArray& arr){
 	quickSort(arr,0,arr.GetSize());
 }
 /////////////////////////////////////////////////////////////////////////////
-void droppedLootCheck2(CConfigData *config, CUIntArray& lootedArr) {
-	char buf[256];
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CTibiaMapProxy tibiaMap;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-
-	if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-		
-		if (config->debug) registerDebug("Entering 'loot from floor' area");
-		
-		int freeContNr=-1;
-		int freeContPos=-1;
-		
-		// lookup a free place in any container
-		int contNr;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-			CTibiaContainer *cont = reader.readContainer(contNr);
-			if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-				freeContNr=contNr;
-				freeContPos=cont->size-1;
-				deleteAndNull(cont);
-				break;
-			}
-			deleteAndNull(cont);
-		}
-		
-		if (freeContNr==-1) {
-			if (config->debug) registerDebug("Loot from floor: no free container found");
-			// no free place in container found - exit
-			deleteAndNull(self);
-			return;
-		}else{
-			sprintf(buf,"Container Found: Cont %d Slot%d)",freeContNr,freeContPos);
-			if (config->debug) registerDebug(buf);
-		}
-		
-		int foundLootedObjectId=0;
-		int x=0,y=0;
-		int xSwitch=0;
-		int ySwitch=0;
-		while (x!=8 && y !=8){
-			//manage x and y coords for spiraling
-			if (xSwitch==0 && ySwitch==0){xSwitch=1;}
-			else if (x==y && x>=0 && xSwitch==1 && ySwitch==0) {x++; xSwitch=0;ySwitch=-1;}
-			else if (!xSwitch && !(x==y && x>=0) && abs(x)==abs(y)){xSwitch=ySwitch;ySwitch=0;x+=xSwitch;y+=ySwitch;}
-			else if (!ySwitch && abs(x)==abs(y)){ySwitch=-xSwitch;xSwitch=0;x+=xSwitch;y+=ySwitch;}
-			else {x+=xSwitch;y+=ySwitch;}
-			
-			if (abs(x)>7 || abs(y)>5) continue;
-			if (reader.mapGetPointItemsCount(point(x,y,0))==0) continue;
-
-			foundLootedObjectId=0;
-			int f1=isItemCovered(x,y,lootedArr);
-			int f2=isItemOnTop(x,y,lootedArr);
-			if (f1) foundLootedObjectId=f1;
-			if (f2) foundLootedObjectId=f2;
-			if(!foundLootedObjectId) continue;
-			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,getItemIndex(x,y,f1),getItemIndex(x,y,f2),x,y);
-			//AfxMessageBox(buf);
-
-			int shouldStandOn=0;//reader.mapGetPointItemsCount(point(x,y,0))>=10;
-
-			//Walk To Square
-			if (abs(x) > 1 || abs(y) > 1 || shouldStandOn&&!(x==0&&y==0)) {
-				int path[15];
-				int pathSize=0;
-				memset(path,0x00,sizeof(int)*15);
-				if (config->debug){
-					sprintf(buf, "findPathOnMap: loot from floor (%d, %d) %x", x, y,foundLootedObjectId);
-					registerDebug(buf);
-				}
-				CTibiaCharacter *self2 = reader.readSelfCharacter();
-				CModuleUtil::findPathOnMap(self2->x, self2->y, self2->z, self->x+x, self->y+y, self->z, 0,path,1);
-				for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-
-				//continue if farther than 10 spaces or path does not include enough info to get there(meaning floor change)
-				if (pathSize>=10 || pathSize<x+y-3) {deleteAndNull(self2); continue;}
-
-				sprintf(buf,"Loot from floor: item (%d,%d,%d)",x,y,pathSize);
-				if (config->debug) registerDebug(buf);
-				sprintf(buf, "Path[0]: %d\tpathSize: %d", path[0], pathSize);
-				if (config->debug) registerDebug(buf);
-
-				if (pathSize)  {
-					//sender.stopAll();
-					//sprintf(buf, "Walking attempt: %d\nPath Size: %d", walkItem, pathSize);
-					//AfxMessageBox(buf);
-					if (!shouldStandOn){
-					    if(path[pathSize-1]==path[pathSize-2]){//means we will be 1 square away 1 space before path end
-                            path[--pathSize]=0;
-                        }else{//means we will be 1 square away 2 spaces before path end
-						    path[--pathSize]=0;
-						    path[--pathSize]=0;
-                        }
-					}
-					CModuleUtil::executeWalk(self2->x,self2->y,self2->z,path);
-					// wait for reaching final point
-					if (!shouldStandOn) CModuleUtil::waitToApproachSquare(self->x+x,self->y+y);
-					else CModuleUtil::waitToStandOnSquare(self->x+x,self->y+y);
-				}
-				else {
-					sprintf(buf,"Loot from floor: aiks, no path found (%d,%d,%d)->(%d,%d,%d)!",self2->x,self2->y,self2->z,self->x+x,self->y+y,self->z);
-					if (config->debug) registerDebug(buf);
-					deleteAndNull(self2);
-					continue;
-				}
-				deleteAndNull(self2);
-			}
-			CTibiaCharacter *self2 = reader.readSelfCharacter();
-			int itemX=self->x+x-self2->x;
-			int itemY=self->y+y-self2->y;
-
-			sprintf(buf,"Loot from floor: found looted object id=0x%x at %d,%d",foundLootedObjectId,itemX,itemY);
-			if (config->debug) registerDebug(buf);
-			
-			//If failed to get within 1 square, let cavebot take over again
-			if(!(abs(itemX)<=1 && abs(itemY)<=1 && self2->z==self->z)) break;
-
-			//Uncover Item
-			if(foundLootedObjectId==f1&&foundLootedObjectId!=f2)
-			{
-				int offsetX,offsetY;
-				int foundSpace=0;
-				// Need to find free square to dump items
-				for (offsetX=-1;offsetX<=1;offsetX++) {
-					for (offsetY=-1;offsetY<=1;offsetY++) {
-						// double loop break!
-						if (self2->x+offsetX!=self->x+x&&self2->y+offsetY!=self->y+y&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)&&reader.mapGetPointItemsCount(point(offsetX,offsetY,0))<9) 
-						{
-							// force loop break;
-							foundSpace=1;
-							goto exitLoop;
-						}
-					}
-				}
-				if (!(self2->x==self->x+x && self2->y==self->y+y)){
-					offsetX=0;
-					offsetY=0;
-					foundSpace=1;
-				}
-exitLoop:
-				sprintf(buf,"Loot from floor: using (%d,%d) as dropout offset/item=%d",offsetX,offsetY,foundLootedObjectId);
-				if (config->debug) registerDebug(buf);
-				// do it only when drop place is found
-				if (foundSpace){
-
-					int itemInd=getItemIndex(itemX,itemY,foundLootedObjectId);
-					int topInd=itemOnTopIndex(itemX,itemY);
-					int count=reader.mapGetPointItemsCount(point(itemX,itemY,0));
-					sprintf(buf,"Loot from floor vars: itemInd %d,topInd %d,count %d,(%d,%d)=%d",itemInd,topInd,count,itemX,itemY,foundLootedObjectId);
-					if (config->debug) registerDebug(buf);
-					
-					int itemIds[10];
-					int itemQtys[10];
-					int numItems=0;
-					for (int ind=topInd;ind<itemInd;ind++){
-						itemIds[numItems]=reader.mapGetPointItemId(point(itemX,itemY,0),ind);
-						itemQtys[numItems]=reader.mapGetPointItemExtraInfo(point(itemX,itemY,0),ind,1);
-						numItems++;
-					}
-					for (int i=0;i<numItems;i++){
-						sender.moveObjectFromFloorToFloor(itemIds[i],self->x+x,self->y+y,self->z,self2->x+offsetX,self2->y+offsetY,self2->z,itemQtys[i]);
-						Sleep(CModuleUtil::randomFormula(400,200));
-					}
-				}
-				else {
-					if (config->debug) registerDebug("Loot from floor: bad luck - no place to throw junk.");
-					deleteAndNull(self2);
-					continue;
-				}
-			}
-
-			//Take item
-			if (isItemOnTop(itemX,itemY,foundLootedObjectId)) {
-				if (config->debug) registerDebug("Loot from floor: picking up item");
-				int qty=itemOnTopQty(itemX,itemY);
-				sender.moveObjectFromFloorToContainer(foundLootedObjectId,self->x+x,self->y+y,self->z,0x40+freeContNr,freeContPos,qty);
-				Sleep(CModuleUtil::randomFormula(400,200));
-				CModuleUtil::waitForItemsInsideChange(freeContNr,freeContPos);
-			}
-			else {
-				if (config->debug) registerDebug("Loot from floor: tough luck - item is not on top. Please wait and try again.");
-			}
-			//If gotten this far, let cavebot takeover for a bit
-			deleteAndNull(self2);
-			break;
-		}
-	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
-	deleteAndNull(self);
-
-
-}
 void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 	char buf[256];
 	CMemReaderProxy reader;
@@ -1434,15 +1239,16 @@ int isLooterDone(CConfigData *config) {
 	if (!config->lootWhileKill) return 1;
 	CMemReaderProxy reader;
 	char *var=reader.getGlobalVariable("autolooterTm");
-	if (var==NULL||!strcmp(var,"")) 
-		return 1; 
-	else return 0;
+	//check if looter is done or time given to looter is up
+	if (var==NULL||!strcmp(var,"")||time(NULL)>autolooterTm || abs(time(NULL)-autolooterTm)>3600*24)
+		return 1;
+	return 0;
 }
 int shouldLoot() {
 	CMemReaderProxy reader;
 	char *var=reader.getGlobalVariable("autolooterTm");
 	int tmp;
-	if (!var==NULL && sscanf(var,"%d %d",&tmp,&tmp)==2)
+	if (var!=NULL && sscanf(var,"%d %d",&tmp,&tmp)==2)
 		return 1;
 	return 0;
 }
@@ -1558,7 +1364,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 HANDLE lootThreadHandle;
 
-DWORD WINAPI lootThreadProc( LPVOID lpParam ) {//Note:Improve and use a queue to add multiple items at once(like for AOE spellcaster)
+DWORD WINAPI lootThreadProc( LPVOID lpParam ) {//Note:Improve and use a queue to add multiple corpses at once(like for AOE spellcaster)
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -1595,7 +1401,6 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {//Note:Improve and use a queue to
 					CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
 				}
 
-				//Normal looting if autolooter not enabled
 				if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
 					if (config->lootInBags) {
 						if (config->debug) registerDebug("Looter: Opening bag (second container)");
@@ -1662,6 +1467,8 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {//Note:Improve and use a queue to
 			globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 		}
 	}
+	reader.setGlobalVariable("autolooterTm","");
+	lootThreadId=0;
 	return 0;
 }
 
@@ -1752,8 +1559,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		if (config->pausingEnable){
 			if (backPipe.readFromPipe(&mess,1009)||backPipe.readFromPipe(&mess,2002)){
 				int msgLen;
-				char msgBuf[512];		
-				memset(msgBuf,0,512);		
+				char msgBuf[512];
+				memset(msgBuf,0,512);
 				memcpy(&msgLen,mess.payload,sizeof(int));
 				memcpy(msgBuf,mess.payload+4,msgLen);		
 				
@@ -1876,7 +1683,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							lootThreadHandle = ::CreateThread(NULL,0,lootThreadProc,config,0,&lootThreadId);
 
 						char buf[30];
-						autolooterTm=time(NULL)+5;
+						autolooterTm=time(NULL)+10;
 						sprintf(buf,"%d %d",autolooterTm,attackedCh->tibiaId);
 						reader.setGlobalVariable("autolooterTm",buf);
 
@@ -2765,6 +2572,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 	toolThreadShouldStop=0;
+	lootThreadId=0;
 	return 0;
 }
 

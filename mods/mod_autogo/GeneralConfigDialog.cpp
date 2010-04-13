@@ -377,7 +377,7 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	if (m_battleParanoia.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_PARANOIA;
 	if (m_battleAnxiety.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_ANXIETY;
 	if (memMkBlack) newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
-	newConfigData->maintainStart = m_maintainStart.GetCheck();
+	newConfigData->maintainStart = m_maintainStart.GetCheck()!=0;
 	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
 }
 
