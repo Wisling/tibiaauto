@@ -13,13 +13,13 @@ LastTemplate=CDialog
 Resource1=IDD_CONFIG
 Class3=CWhiteList
 Resource2=IDD_WHITELIST
-Resource3=IDD_ALARM_DIALOG
-Resource4=IDD_WHITELIST (Polish)
+Resource3=IDD_WHITELIST (Polish)
+Resource4=IDD_CONFIG (Polish)
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
-Resource6=IDD_GENERAL_CONFIG_DIALOG
+Resource6=IDD_ALARM_DIALOG
 Class5=GeneralConfigDialog
-Resource7=IDD_CONFIG (Polish)
+Resource7=IDD_GENERAL_CONFIG_DIALOG
 Class6=CCustomSpellDialog
 Resource8=IDD_ADD_CUSTOM_SPELL
 

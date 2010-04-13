@@ -515,7 +515,7 @@ BOOL CAlarmDialog::OnInitDialog() {
 
 	actionIcons[index].LoadBitmap(IDB_STOP);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
-	m_actionStopWalking.SetBitmaps(IDB_ATTACK, RGB(255, 0, 255), IDB_BLANK);
+	m_actionStopWalking.SetBitmaps(IDB_STOP, RGB(255, 0, 255), IDB_BLANK);
 	skin.SetButtonSkin(m_actionStopWalking);
 	m_actionStopWalking.SetFlat(true);
 	m_actionStopWalking.DrawFlatFocus(false);
@@ -575,9 +575,6 @@ BOOL CAlarmDialog::OnInitDialog() {
 	skin.SetButtonSkin(m_actionSuspend);
 	m_actionSuspend.SetFlat(true);
 	m_actionSuspend.DrawFlatFocus(false);
-
-
-
 
 	//Alarm ListView container (column headers)...
 	m_alarmList.SetImageList(&m_columnImg, LVSIL_SMALL);
@@ -1520,19 +1517,21 @@ void CAlarmDialog::OnAlarmEdit() {
 		m_actionLogEvents.SetCheck(alarmItr->doLogEvents());
 		m_actionEnable.SetCheck(alarmItr->doStartModules().size());
 		m_modules2.EnableWindow(m_actionEnable.GetCheck());
-		list<CString>::iterator modsItr = alarmItr->doStartModules().begin();
-		while (modsItr != alarmItr->doStartModules().end()) {
-			modsItr->Replace("mod_", NULL);
-			modsItr->Replace(".dll", NULL);
+		list<CString> temp = alarmItr->doStartModules(); 
+		list<CString>::iterator modsItr = temp.begin();
+		while (modsItr != temp.end()) {
+			modsItr->TrimLeft("mod_");
+			modsItr->TrimRight(".dll");
 			m_modules2.SetSel(m_modules2.FindString(-1, *modsItr));
 			modsItr++;
 		}
 		m_actionSuspend.SetCheck(alarmItr->doStopModules().size());
 		m_modules.EnableWindow(m_actionSuspend.GetCheck());
-		modsItr = alarmItr->doStartModules().begin();
-		while (modsItr != alarmItr->doStartModules().end()) {
-			modsItr->Replace("mod_", NULL);
-			modsItr->Replace(".dll", NULL);
+		temp =  alarmItr->doStopModules();
+		modsItr = temp.begin();
+		while (modsItr != temp.end()) {
+			modsItr->TrimLeft("mod_");
+			modsItr->TrimRight(".dll");
 			m_modules.SetSel(m_modules.FindString(-1, *modsItr));
 			modsItr++;
 		}
