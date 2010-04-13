@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
+#include "TibiaMapPoint.h"
 #include "Enumerations.h"
 #include <list>
 
@@ -19,9 +20,10 @@ class Alarm
 public:
 	int getSpellDelay();
 	void setSpellDelay(int);
+	struct point currentLoc;
+	int movedTime;
 	bool halfSleep;
-	bool fullSleep;
-	bool cavebotForced;
+	bool stopWalk;
 	bool flashed;
 	int windowActed;
 	bool eventLogged;
@@ -53,12 +55,12 @@ public:
 	void setShutdownComputer(bool);
 	void setKillClient(bool);
 	void setLogout(bool);
-	void setAttack(bool);
 	void setTakeScreenshot(int);
 	void setCastSpell(CString);
 	void setGoToDepot(bool);
 	void setGoToStart(bool);
 	void setGoToRunaway(bool);
+	void setStopWalking(bool);
 
 	// Actions/Accessors
 	list<CString> doStopModules();
@@ -69,12 +71,12 @@ public:
 	bool doShutdownComputer();
 	bool doKillClient();
 	bool doLogout();
-	bool doAttack();
 	CString doCastSpell();
 	bool doGoToDepot();
 	bool doGoToStart();
 	bool doGoToRunaway();
 	int doTakeScreenshot();
+	bool doStopWalking();
 
 	// Methods
 	void initializeCharacter();
@@ -116,7 +118,6 @@ private:
 	bool shutdown;
 	bool killTibia;
 	bool logout;
-	bool attack;
 	bool depot;
 	bool start;
 	bool runaway;
@@ -125,6 +126,7 @@ private:
 	int condition;
 	int attribute;
 	int alarmType;
+	bool stopWalking;
 
 	// Initial Character State
 	int lvlInit;

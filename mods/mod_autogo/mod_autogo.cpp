@@ -112,15 +112,6 @@ void InitTibiaHandle(){
 	}
 }
 
-bool flashToggle(){
-	static bool flashState=true;
-	static int lastFlash=GetTickCount();
-	if (time(NULL)-lastFlash>=1000){
-		flashState=!flashState;
-		lastFlash=GetTickCount();
-	}
-	return flashState;
-}
 void actionTerminate(){
 	masterDebug("ActionTerminate");
 	CMemReaderProxy reader;
@@ -165,7 +156,7 @@ bool actionSuspend(CString module) {
 
 		Module32First(hSnap,&lpModule);
 		do {
-			if (lpModule.szModule == module || module.Find("<all modules>") > 0){
+			if (lpModule.szModule == module){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
 				if (isStarted && isStarted()) {
@@ -191,7 +182,7 @@ bool actionStart(CString module) {
 
 		Module32First(hSnap,&lpModule);
 		do {
-			if (lpModule.szModule == module || module.Find("<all modules>") > 0){
+			if (lpModule.szModule == module){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
 				if (isStarted && !isStarted()) {
@@ -470,14 +461,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int recoveryAlarmHp = 0;
 	int recoveryAlarmMana = 0;
 	int goPriority = 0;
-	bool cavebotForced = false;
-	int fullSleepCount = 0;
+	int stopWalk = 0;
 	int halfSleepCount = 0;
 	CString statusBuf = "";
 	
 	delete self;
 
 	PlaySound(0, 0, 0);
+	alarmItr = config->alarmList.begin();
+	while (alarmItr != config->alarmList.end()) {
+		alarmItr->initializeCharacter();
+		alarmItr++;
+	}
 		
 	while (!toolThreadShouldStop) {			
 		Sleep(100);
@@ -495,7 +490,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
 					statusBuf += "  ******  " + alarmItr->getDescriptor();
 				// Flash Window ***************
-				if (config->options&OPTIONS_FLASHONALARM && !alarmItr->flashed) {
+				if ((config->options&OPTIONS_FLASHONALARM) && !alarmItr->flashed) {
 					if (!alarmItr->windowActed){
 						if (!tibiaHWND) InitTibiaHandle();
 						FlashWindow(tibiaHWND, true);
@@ -528,20 +523,24 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					PlaySound(pathBuf, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
 				}// ****************************
 				
-				// Attack **********************
-				if (alarmItr->doAttack()) { 
-					cavebotForced = actionStart("mod_cavebot.dll");
+				// Stop Walking **********************
+				if (alarmItr->doStopWalking()) {
 					reader.setGlobalVariable("cavebot_halfsleep","true");
-					alarmItr->halfSleep = true;
-					halfSleepCount++;
-				}
-				else {
-					reader.setGlobalVariable("cavebot_fullsleep","true");
-					if (!alarmItr->fullSleep) {
+					if (!alarmItr->stopWalk){
+						alarmItr->stopWalk = true;
+						stopWalk++;
+						halfSleepCount++;
+					}
+				} else {
+					reader.setGlobalVariable("cavebot_halfsleep","false");
+					if (alarmItr->stopWalk) {
+						alarmItr->stopWalk = false;
+						stopWalk--;
+						halfSleepCount--;
 					}
 				}
 				// *****************************
-				
+
 				// Window Action*************
 				if (alarmItr->doWindowAction()!=-1){
 					switch (alarmItr->doWindowAction()){
@@ -555,10 +554,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					case 1://restore
 						if (!alarmItr->windowActed) {
 							if (!tibiaHWND) InitTibiaHandle();
-							if(IsIconic(tibiaHWND))
+							if(IsIconic(tibiaHWND)) {
 								ShowWindow(tibiaHWND, SW_RESTORE);
-							else if(tibiaHWND != GetForegroundWindow())
+							} else if(tibiaHWND != GetForegroundWindow()) {
 								SetForegroundWindow(tibiaHWND);
+							}
 							alarmItr->windowActed = true;
 						}
 						break;
@@ -586,6 +586,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->doStopModules().size() && !alarmItr->modulesSuspended) {
 					list<CString> temp = alarmItr->doStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
+					modulesItr++;//first one is <all modules>
 					while(modulesItr != temp.end()) {
 						actionSuspend(*modulesItr);
 						modulesItr++;
@@ -597,6 +598,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->doStartModules().size() && !alarmItr->modulesStarted) {
 					list<CString> temp = alarmItr->doStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
+					modulesItr++;//first one is <all modules>
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
 						modulesItr++;
@@ -694,20 +696,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
 					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
 				memcpy(config->status, "", 12);
-				if (alarmItr->fullSleep) {
-					alarmItr->fullSleep = false;
-					fullSleepCount--;
-				}
 				if (alarmItr->halfSleep) {
 					alarmItr->halfSleep = false;
 					halfSleepCount--;
 				}
-				if (cavebotForced) {
-					actionSuspend("mod_cavebot.dll");
-					alarmItr->halfSleep = false;
+				if (alarmItr->stopWalk) {
+					alarmItr->stopWalk = false;
+					stopWalk--;
 					halfSleepCount--;
 				}
-				alarmItr->cavebotForced = false;
 				alarmItr->flashed = false;
 				alarmItr->windowActed = false;
 				PlaySound(NULL, NULL, SND_NOSTOP);
@@ -757,6 +754,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			memcpy(config->status, "", 200);
 		// Do not let seperate alarms fight for control!!
 		switch (goPriority) {
+			if (!stopWalk) break;
 			if (!reader.getGlobalVariable("cavebot_fullsleep")) {
 				reader.setGlobalVariable("cavebot_halfsleep","true");
 				halfSleepCount++;
@@ -852,10 +850,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			   }
 			break;
 		}
-		if (reader.getGlobalVariable("cavebot_fullsleep") && fullSleepCount <= 0) {
-			reader.setGlobalVariable("cavebot_fullsleep", "false");
-			fullSleepCount = 0;
-		}
 		if (reader.getGlobalVariable("cavebot_halfsleep") && halfSleepCount <= 0) {
 			reader.setGlobalVariable("cavebot_halfsleep", "false");
 			halfSleepCount = 0;
@@ -868,10 +862,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	while (alarmItr != config->alarmList.end()) {
 		if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
 			statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
-		if (cavebotForced) {
-			cavebotForced = false;
-			actionSuspend("mod_cavebot.dll");
-		}
 		alarmItr->flashed = false;
 		alarmItr->windowActed = false;
 		alarmItr->spellCast = 0;
@@ -920,7 +910,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 	// clear cavebot half/full sleep vars
 	reader.setGlobalVariable("cavebot_halfsleep","false");
-	reader.setGlobalVariable("cavebot_fullsleep","false");
 
 	toolThreadShouldStop=0;
 	return 0;
@@ -1107,10 +1096,10 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 
 		CString cAlarmName=CString(alarmName);
 
-		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,attack=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
-		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&attack,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
+		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,stopWalk=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
+		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
 
-		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,attack,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);
+		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);
 		m_configData->alarmList.push_back(temp);
 	}
 #pragma warning(default: 4800)
@@ -1153,6 +1142,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				sprintf(buf+strlen(buf),",");
 				lstIter++;
 			}
+
 			//AddStop Modules
 			lstIter=stopList.begin();
 			sprintf(buf+strlen(buf),"%s","|");
@@ -1176,7 +1166,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				alm.doShutdownComputer(),
 				alm.doKillClient(),
 				alm.doLogout(),
-				alm.doAttack(),
+				alm.doStopWalking(),
 				alm.doGoToDepot(),
 				alm.doGoToStart(),
 				alm.doGoToRunaway(),

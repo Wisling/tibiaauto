@@ -68,7 +68,6 @@ public:
 	CButtonST	m_actionLogout;
 	CButtonST	m_actionKill;
 	CButtonST	m_actionDepot;
-	CButtonST	m_actionAttack;
 	//}}AFX_DATA
 
 
@@ -102,7 +101,6 @@ protected:
 	afx_msg void OnSelchangeCondition();
 	afx_msg void OnActionStartModules();
 	afx_msg void OnSetfocusTrigger();
-	afx_msg void OnActionAttack();
 	afx_msg void OnActionLogout();
 	afx_msg void OnWindowAction();
 	afx_msg void OnActionLogEvents();
@@ -110,6 +108,9 @@ protected:
 	afx_msg void OnAlarmDelete();
 	afx_msg void OnAlarmEdit();
 	afx_msg void OnSelchangeSpellList();
+	afx_msg void OnActionStopWalking();
+	afx_msg void OnSelchangeModulesList();
+	afx_msg void OnSelchangeModulesList2();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
