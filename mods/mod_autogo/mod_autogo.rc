@@ -158,7 +158,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDD_ALARM_DIALOG DIALOGEX 0, 0, 281, 320
 STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,307
     GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,110
@@ -172,27 +172,27 @@ BEGIN
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Go to Runaway",IDC_ACTION_RUNAWAY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,96,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,96,73,9
     CONTROL         "Go to Start",IDC_ACTION_START,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,107,73,8
+                    WS_TABSTOP,21,107,73,9
     CONTROL         "Go to Depot",IDC_ACTION_DEPOT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,118,73,8
+                    WS_TABSTOP,21,118,73,9
     CONTROL         "Log Out",IDC_ACTION_LOGOUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,100,107,73,8
+                    WS_TABSTOP,100,107,73,9
     CONTROL         "Kill Tibia Client",IDC_ACTION_KILL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,118,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,118,73,9
     CONTROL         "Computer Off",IDC_ACTION_SHUTDOWN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,129,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,129,73,9
     CONTROL         "Take Screenshot:",IDC_ACTION_SCREENSHOT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,166,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,166,73,9
     COMBOBOX        IDC_SCREENSHOT_OPTIONS,29,178,67,62,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Audio Alarm:",IDC_ACTION_SOUND,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,100,166,73,8
+                    WS_TABSTOP,100,166,73,9
     COMBOBOX        IDC_AUDIO_FILE,106,178,67,71,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Suspend Mod(s):",IDC_ACTION_SUSPEND_MODULES,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,179,145,73,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,145,73,11
     PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,198,50,14
     PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,198,50,14
     PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,198,50,14
@@ -204,7 +204,7 @@ BEGIN
                     LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
                     WS_TABSTOP,21,217,239,86
     CONTROL         "Cast Spell:",IDC_ACTION_SPELL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,140,73,8
+                    WS_TABSTOP,21,140,73,9
     COMBOBOX        IDC_SPELL_LIST,28,151,67,62,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
     EDITTEXT        IDC_TRIGGER,186,65,80,15,ES_AUTOHSCROLL
@@ -214,18 +214,18 @@ BEGIN
     CTEXT           "Select an alarm type to begin.",IDC_INSTRUCTION_TEXT,
                     100,17,167,29,0,WS_EX_STATICEDGE
     CONTROL         "Start Mod(s):",IDC_ACTION_START_MODULES,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,179,96,73,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,96,73,11
     LISTBOX         IDC_MODULES_LIST2,186,107,67,35,LBS_SORT | 
                     LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,129,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,129,73,9
     CONTROL         "Window Action",IDC_ACTION_WINDOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,140,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,140,73,9
     COMBOBOX        IDC_ACTION_WINDOW_LIST,106,151,67,79,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Stop Walking",IDC_ACTION_STOP_WALKING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,96,73,8
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,96,73,9
 END
 
 IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 320
