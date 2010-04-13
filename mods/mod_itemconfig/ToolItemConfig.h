@@ -75,6 +75,7 @@ protected:
 	//{{AFX_MSG(CToolItemConfig)
 	afx_msg void OnClose();
 	afx_msg void OnToolItemconfigRefresh();
+	afx_msg void ConfigToControls();
 	virtual BOOL OnInitDialog();
 	virtual void OnItemEdit();
 	virtual void OnItemDelete();

@@ -15,11 +15,6 @@
 #include "MyDialog.h"
 #include "XTabCtrl.h"
 
-#define BATTLELIST_ANXIETY				0x0001
-#define BATTLELIST_PARANOIAM			0x0002
-#define MAKE_BLACKLIST					0x0004
-#define MESSAGE_IGNORE_SPELLS		0x0004
-
 #define DIR_LEFT	1
 #define DIR_RIGHT	2
 #define DIR_UP		3

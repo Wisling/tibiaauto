@@ -58,7 +58,7 @@
 #define IDS_SUSPEND_MODULES             53
 #define IDS_START_MODULES               54
 #define IDS_SOUND                       55
-#define IDS_ATTACK                      56
+#define IDS_STOPWALKING                 56
 #define IDS_LOGOUT                      57
 #define IDS_MAXIMIZE                    58
 #define IDS_WINDOW_ACTION               58
@@ -113,6 +113,7 @@
 #define IDS_SCREENSHOT_ERROR            107
 #define IDS_GENERAL_CHARACTERHIT        108
 #define IDS_WINDOWACTION_ERROR          109
+#define IDS_GENERAL_CHARACTERNOTMOVED   110
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048
@@ -266,9 +267,9 @@
 #define IDD_ADD_CUSTOM_SPELL            3051
 #define IDC_AUTOGO_SOUNDOUTOF           3052
 #define IDC_AUTOGO_SOUNDOUTOF_FOOD      3052
-#define IDB_STOP                        3052
 #define IDC_AUTOGO_CAPACITY             3053
 #define IDC_AUTOGO_SOULPOINT            3054
+#define IDB_STOP                        3054
 #define IDC_AUTOGO_BLANK                3055
 #define IDC_AUTOGO_BATTLEGM             3056
 #define IDC_AUTOGO_HPBELOW              3057
@@ -343,14 +344,13 @@
 #define IDC_ACTION_RUNAWAY              3124
 #define IDC_ACTION_START                3125
 #define IDC_ACTION_DEPOT                3126
-#define IDC_ACTION_ATTACK               3127
-#define IDC_ACTION_START_CAVEBOT        3127
+#define IDC_ACTION_STOPWAKING           3127
 #define IDC_ACTION_LOGOUT               3128
 #define IDC_ACTION_KILL                 3129
 #define IDC_ACTION_SHUTDOWN             3130
 #define IDC_ACTION_SCREENSHOT           3131
 #define IDC_SCREENSHOT_OPTIONS          3132
-#define IDC_ACTION_HALFSLEEP            3133
+#define IDC_ACTION_STOP_WALKING         3133
 #define IDC_AUDIO_FILE                  3134
 #define IDC_ACTION_SOUND                3135
 #define IDC_ACTION_SUSPEND              3136
@@ -364,7 +364,6 @@
 #define IDC_TRIGGER                     3143
 #define IDC_MODULES_LIST                3144
 #define IDC_TAB_CONTROL                 3145
-#define IDC_ACTION_FULLSLEEP            3145
 #define IDC_ACTION_START_MODULES        3147
 #define IDC_INSTRUCTION_TEXT            3148
 #define IDC_MODULES_LIST2               3149
@@ -384,15 +383,14 @@
 #define IDC_SPELL_CONFIGURATION_FRAME   3163
 #define IDC_ACTION_WINDOW_LIST          3164
 #define IDC_FLASHONALARM                3165
-#define IDC_ACTION_STOP_WALKING         3167
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3053
+#define _APS_NEXT_RESOURCE_VALUE        3055
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3168
+#define _APS_NEXT_CONTROL_VALUE         3167
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

@@ -117,7 +117,7 @@ void CToolItemConfig::OnOK()
 }
 
 void CToolItemConfig::OnCancel(){
-	OnToolItemconfigRefresh();
+	ConfigToControls();
 	CDialog::OnCancel();
 }
 
@@ -194,13 +194,11 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 	}
 }
 
-void CToolItemConfig::OnToolItemconfigRefresh()
-{
+void CToolItemConfig::ConfigToControls(){
 	CancelTwoStepOperations();
 	char buf[16384];
 	CTibiaItemProxy itemProxy;
-	itemProxy.refreshItemLists();
-	
+
 	//Create Food List
 	while (m_foodList.GetCount()) m_foodList.DeleteString(0);
 	int size = itemProxy.getFoodCount();
@@ -218,6 +216,13 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 	CreateGUITree(&m_itemsTree,TVI_ROOT,itemsTree);
 	m_itemsTree.SelectItem(m_itemsTree.GetRootItem());
 	m_itemsTree.SelectDropTarget(m_itemsTree.GetRootItem());//needed once to add blue hilighting for the rest of the tree's use
+}
+
+void CToolItemConfig::OnToolItemconfigRefresh()
+{
+	CTibiaItemProxy itemProxy;
+	itemProxy.refreshItemLists();
+	ConfigToControls();	
 }
 
 

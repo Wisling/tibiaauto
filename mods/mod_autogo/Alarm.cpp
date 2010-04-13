@@ -33,7 +33,6 @@ Alarm::Alarm() {
 	shutdown = false;
 	killTibia = false;
 	logout = false;
-	attack = false;
 	depot = false;
 	start = false;
 	runaway = true;
@@ -43,6 +42,7 @@ Alarm::Alarm() {
 	condition = 0;
 	attribute = 0;
 	alarmType = 0;
+	stopWalking = false;
 
 // execution markers only, no need to save orecord here
 	onScreenAt = 0;
@@ -54,14 +54,15 @@ Alarm::Alarm() {
 	eventLogged = false;
 	windowActed = false;
 	flashed = false;
-	cavebotForced = false;
-	fullSleep = false;
 	halfSleep = false;
+	stopWalk = false;
+	currentLoc=point(0,0,0);
+	movedTime=time(NULL);
 }
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool atk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
@@ -74,7 +75,6 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	shutdown = shut;
 	killTibia = kill;
 	logout = log;
-	attack = atk;
 	depot = dep;
 	start = sta;
 	runaway = run;
@@ -84,7 +84,8 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	condition = cond;
 	attribute = attr;
 	alarmType = type;
-
+	stopWalking = stopwalk;
+	
 	onScreenAt = 0;
 	spellCast = 0;
 	screenshotsTaken = 0;
@@ -94,9 +95,10 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	eventLogged = false;
 	windowActed = false;
 	flashed = false;
-	cavebotForced = false;
-	fullSleep = false;
 	halfSleep = false;
+	stopWalk = false;
+	currentLoc=point(0,0,0);
+	movedTime=time(NULL);
 }
 
 Alarm::~Alarm(){
@@ -154,8 +156,8 @@ void Alarm::setTakeScreenshot(int screenshotOption) {
 	screenshot = screenshotOption;
 }
 
-void Alarm::setAttack(bool onOff) {
-	attack = onOff;
+void Alarm::setStopWalking(bool onOff) {
+	stopWalking = onOff;
 }
 
 void Alarm::setLogout(bool onOff) {
@@ -238,8 +240,8 @@ CString Alarm::doCastSpell() {
 	return spell;
 }
 
-bool Alarm::doAttack() {
-	return attack;
+bool Alarm::doStopWalking() {
+	return stopWalking;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -269,130 +271,153 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 	bool retval = false;
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
+	if (currentLoc.x!=self->x || currentLoc.y!=self->y || currentLoc.z!=self->z){
+		currentLoc=point(self->x,self->y,self->z);
+		movedTime=time(NULL);
+	}
+
 	switch (alarmType) {
 	case SKILL:
 		switch (condition) {
 		case LEVELUP:
 			switch (attribute) {
 			case ALL:
-				retval |= self->lvl > lvlInit ? true : false;
-				retval |= self->mlvl > mlvlInit ? true : false;
-				retval |= self->skillFish > skillFishInit ? true : false;
-				retval |= self->skillFist > skillFistInit ? true : false;
-				retval |= self->skillClub > skillClubInit ? true : false;
-				retval |= self->skillSword > skillSwordInit ? true : false;
-				retval |= self->skillAxe > skillAxeInit ? true : false;
-				retval |= self->skillDist > skillDistInit ? true : false;
-				retval |= self->skillShield > skillShieldInit ? true : false;
+				retval |= self->lvl > lvlInit;
+				retval |= self->mlvl > mlvlInit;
+				retval |= self->skillFish > skillFishInit;
+				retval |= self->skillFist > skillFistInit;
+				retval |= self->skillClub > skillClubInit;
+				retval |= self->skillSword > skillSwordInit;
+				retval |= self->skillAxe > skillAxeInit;
+				retval |= self->skillDist > skillDistInit;
+				retval |= self->skillShield > skillShieldInit;
+				lvlInit=self->lvl;
+				mlvlInit=self->mlvl;
+				skillFishInit=self->skillFish;
+				skillFistInit=self->skillFist;
+				skillClubInit=self->skillClub;
+				skillSwordInit=self->skillSword;
+				skillAxeInit=self->skillAxe;
+				skillDistInit=self->skillDist;
+				skillShieldInit=self->skillShield;
 				break;
 			case LEVEL:
-				return self->lvl > lvlInit ? true : false;
+				retval = self->lvl > lvlInit;
+				lvlInit=self->lvl;
 				break;
 			case MAGICLVL:
-				return self->mlvl > mlvlInit ? true : false;
+				retval = self->mlvl > mlvlInit;
+				mlvlInit=self->mlvl;
 				break;
 			case FISHING:
-				return self->skillFish > skillFishInit ? true : false;
+				retval = self->skillFish > skillFishInit;
+				skillFishInit=self->skillFish;
 				break;
 			case FIST:
-				return self->skillFist > skillFistInit ? true : false;
+				retval = self->skillFist > skillFistInit;
+				skillFistInit=self->skillFist;
 				break;
 			case CLUB:
-				return self->skillClub > skillClubInit ? true : false;
+				retval = self->skillClub > skillClubInit;
+				skillClubInit=self->skillClub;
 				break;
 			case SWORDSKILL:
-				return self->skillSword > skillSwordInit ? true : false;
+				retval=self->skillSword > skillSwordInit;
+				skillSwordInit=self->skillSword;
 				break;
 			case AXE:
-				return self->skillAxe > skillAxeInit ? true : false;
+				retval = self->skillAxe > skillAxeInit;
+				skillAxeInit=self->skillAxe;
 				break;
 			case DISTANCE:
-				return self->skillDist > skillDistInit ? true : false;
+				retval = self->skillDist > skillDistInit;
+				skillDistInit=self->skillDist;
 				break;
 			case SHIELD:
-				return self->skillShield > skillShieldInit ? true : false;
+				retval = self->skillShield > skillShieldInit;
+				skillShieldInit=self->skillShield;
 				break;
 			}
 			break;
 		case PERCLVLACHIEVED: 
 			switch (attribute) {
 			case ALL:
-				retval |= 100 - self->mlvlPercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillFishPercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillFistPercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillClubPercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillSwordPercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillAxePercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillDistPercLeft >= intTrigger ? true : false;
-				retval |= 100 - self->skillShieldPercLeft >= intTrigger ? true : false;
+				retval |= 100 - self->mlvlPercLeft >= intTrigger;
+				retval |= 100 - self->skillFishPercLeft >= intTrigger;
+				retval |= 100 - self->skillFistPercLeft >= intTrigger;
+				retval |= 100 - self->skillClubPercLeft >= intTrigger;
+				retval |= 100 - self->skillSwordPercLeft >= intTrigger;
+				retval |= 100 - self->skillAxePercLeft >= intTrigger;
+				retval |= 100 - self->skillDistPercLeft >= intTrigger;
+				retval |= 100 - self->skillShieldPercLeft >= intTrigger;
 				break;
 			case LEVEL:
 //				return ??;
 				break;
 			case MAGICLVL:
-				return 100 - self->mlvlPercLeft >= intTrigger ? true : false;
+				return 100 - self->mlvlPercLeft >= intTrigger;
 				break;
 			case FISHING:
-				return 100 - self->skillFishPercLeft >= intTrigger ? true : false;
+				return 100 - self->skillFishPercLeft >= intTrigger;
 				break;
 			case FIST:
-				return 100 - self->skillFistPercLeft >= intTrigger ? true : false;
+				return 100 - self->skillFistPercLeft >= intTrigger;
 				break;
 			case CLUB:
-				return 100 - self->skillClubPercLeft >= intTrigger ? true : false;
+				return 100 - self->skillClubPercLeft >= intTrigger;
 				break;
 			case SWORDSKILL:
-				return 100 - self->skillSwordPercLeft >= intTrigger ? true : false;
+				return 100 - self->skillSwordPercLeft >= intTrigger;
 				break;
 			case AXE:
-				return 100 - self->skillAxePercLeft >= intTrigger ? true : false;
+				return 100 - self->skillAxePercLeft >= intTrigger;
 				break;
 			case DISTANCE:
-				return 100 - self->skillDistPercLeft >= intTrigger ? true : false;
+				return 100 - self->skillDistPercLeft >= intTrigger;
 				break;
 			case SHIELD:
-				return 100 - self->skillShieldPercLeft >= intTrigger ? true : false;
+				return 100 - self->skillShieldPercLeft >= intTrigger;
 				break;
 			}
 			break;
 		case PERCLVLREMAINING: 
 			switch (attribute) {
 			case ALL:
-				retval |= self->mlvlPercLeft <= intTrigger ? true : false;
-				retval |= self->skillFishPercLeft <= intTrigger ? true : false;
-				retval |= self->skillFistPercLeft <= intTrigger ? true : false;
-				retval |= self->skillClubPercLeft <= intTrigger ? true : false;
-				retval |= self->skillSwordPercLeft <= intTrigger ? true : false;
-				retval |= self->skillAxePercLeft <= intTrigger ? true : false;
-				retval |= self->skillDistPercLeft <= intTrigger ? true : false;
-				retval |= self->skillShieldPercLeft <= intTrigger ? true : false;
+				retval |= self->mlvlPercLeft <= intTrigger;
+				retval |= self->skillFishPercLeft <= intTrigger;
+				retval |= self->skillFistPercLeft <= intTrigger;
+				retval |= self->skillClubPercLeft <= intTrigger;
+				retval |= self->skillSwordPercLeft <= intTrigger;
+				retval |= self->skillAxePercLeft <= intTrigger;
+				retval |= self->skillDistPercLeft <= intTrigger;
+				retval |= self->skillShieldPercLeft <= intTrigger;
 				break;
 			case LEVEL:
 //				return ??;
 				break;
 			case MAGICLVL:
-				return self->mlvlPercLeft <= intTrigger ? true : false;
+				return self->mlvlPercLeft <= intTrigger;
 				break;
 			case FISHING:
-				return self->skillFishPercLeft <= intTrigger ? true : false;
+				return self->skillFishPercLeft <= intTrigger;
 				break;
 			case FIST:
-				return self->skillFistPercLeft <= intTrigger ? true : false;
+				return self->skillFistPercLeft <= intTrigger;
 				break;
 			case CLUB:
-				return self->skillClubPercLeft <= intTrigger ? true : false;
+				return self->skillClubPercLeft <= intTrigger;
 				break;
 			case SWORDSKILL:
-				return self->skillSwordPercLeft <= intTrigger ? true : false;
+				return self->skillSwordPercLeft <= intTrigger;
 				break;
 			case AXE:
-				return self->skillAxePercLeft <= intTrigger ? true : false;
+				return self->skillAxePercLeft <= intTrigger;
 				break;
 			case DISTANCE:
-				return self->skillDistPercLeft <= intTrigger ? true : false;
+				return self->skillDistPercLeft <= intTrigger;
 				break;
 			case SHIELD:
-				return self->skillShieldPercLeft <= intTrigger ? true : false;
+				return self->skillShieldPercLeft <= intTrigger;
 				break;
 			}
 			break;
@@ -403,75 +428,75 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case EQUAL:
 			switch(attribute) {
 			case HP:
-				return self->hp == intTrigger ? true : false;
+				return self->hp == intTrigger;
 				break;
 			case MP:
-				return self->mana == intTrigger ? true : false;
+				return self->mana == intTrigger;
 				break;
 			case XP:
-				return self->exp == intTrigger ? true : false;
+				return self->exp == intTrigger;
 				break;
 			case SP:
-				return self->soulPoints == intTrigger ? true : false;
+				return self->soulPoints == intTrigger;
 				break;
 			case STAMINA:
-				return self->stamina == intTrigger ? true : false;
+				return self->stamina == intTrigger;
 				break;
 			case CAPACITY:
-				return self->cap == intTrigger ? true : false;
+				return self->cap == intTrigger;
 				break;
 			case SPACE:
-				return spaceAvailable() == intTrigger ? true : false;
+				return spaceAvailable() == intTrigger;
 				break;
 			} 
 			break;
 		case LESS:
 			switch(attribute) {
 			case HP:
-				return self->hp < intTrigger ? true : false;
+				return self->hp < intTrigger;
 				break;
 			case MP:
-				return self->mana < intTrigger ? true : false;
+				return self->mana < intTrigger;
 				break;
 			case XP:
-				return self->exp < intTrigger ? true : false;
+				return self->exp < intTrigger;
 				break;
 			case SP:
-				return self->soulPoints < intTrigger ? true : false;
+				return self->soulPoints < intTrigger;
 				break;
 			case STAMINA:
-				return self->stamina < intTrigger ? true : false;
+				return self->stamina < intTrigger;
 				break;
 			case CAPACITY:
-				return self->cap < intTrigger ? true : false;
+				return self->cap < intTrigger;
 				break;
 			case SPACE:
-				return spaceAvailable() < intTrigger ? true : false;
+				return spaceAvailable() < intTrigger;
 				break;
 			}
 			break;
 		case MORE:
 			switch(attribute) {
 			case HP:
-				return self->hp > intTrigger ? true : false;
+				return self->hp > intTrigger;
 				break;
 			case MP:
-				return self->mana > intTrigger ? true : false;
+				return self->mana > intTrigger;
 				break;
 			case XP:
-				return self->exp > intTrigger ? true : false;
+				return self->exp > intTrigger;
 				break;
 			case SP:
-				return self->soulPoints > intTrigger ? true : false;
+				return self->soulPoints > intTrigger;
 				break;
 			case STAMINA:
-				return self->stamina > intTrigger ? true : false;
+				return self->stamina > intTrigger;
 				break;
 			case CAPACITY:
-				return self->cap > intTrigger ? true : false;
+				return self->cap > intTrigger;
 				break;
 			case SPACE:
-				return spaceAvailable() > intTrigger ? true : false;
+				return spaceAvailable() > intTrigger;
 				break;
 			}
 			break;
@@ -482,30 +507,30 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case EQUAL:
 			switch(attribute) {
 			case 0:
-				return countAllFood() == intTrigger ? true : false;
+				return countAllFood() == intTrigger;
 				break;
 			default:
-				return countAllItemsOfType(attribute) == intTrigger ? true : false;
+				return countAllItemsOfType(attribute) == intTrigger;
 				break;
 			}
 			break;
 		case LESS:
 			switch(attribute) {
 			case 0:
-				return countAllFood() < intTrigger ? true : false;
+				return countAllFood() < intTrigger;
 				break;
 			default:
-				return countAllItemsOfType(attribute) < intTrigger ? true : false;
+				return countAllItemsOfType(attribute) < intTrigger;
 				break;
 			}
 			break;
 		case MORE:
 			switch(attribute) {
 			case 0:
-				return countAllFood() > intTrigger ? true : false;
+				return countAllFood() > intTrigger;
 				break;
 			default:
-				return countAllItemsOfType(attribute) > intTrigger ? true : false;
+				return countAllItemsOfType(attribute) > intTrigger;
 				break;
 			}
 			break;
@@ -702,7 +727,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		break;
 	case EVENT:
 		struct tibiaMessage *msg = triggerMessage();
-		int isSpell = msg && (options & MESSAGE_IGNORE_SPELLS) && isSpellMessage(msg->msg);
+		int isSpell = msg && (options & OPTIONS_IGNORE_SPELLS) && isSpellMessage(msg->msg);
 		switch (attribute) {
 		case ALLMESSAGES:
 			retval = !isSpell && msg && (msg->type == 1 || msg->type == 2 || msg->type == 6);
@@ -719,6 +744,16 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case CHARACTERHIT:
 			retval = self->hp < healthInit;
 			healthInit = self->hp;
+			break;
+		case CHARACTERNOTMOVED:
+			switch (condition) {
+			case EQUAL:
+				return time(NULL)-movedTime == getIntTrigger();
+			case LESS:
+				return time(NULL)-movedTime < getIntTrigger();
+			case MORE:
+				return time(NULL)-movedTime > getIntTrigger();
+			}
 			break;
 		}
 		if (msg) delete msg;
@@ -753,8 +788,8 @@ bool Alarm::playerOnScreen(char whiteList[100][32], int options) {
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
 		if (ch->visible) {		
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ options & MAKE_BLACKLIST)) {				
-				if (ch->z == self->z || (options & BATTLELIST_PARANOIAM) || (options & BATTLELIST_ANXIETY && abs(ch->z - self->z) <= 1)) {					
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ options & OPTIONS_MAKE_BLACKLIST)) {				
+				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
 					if (ch->tibiaId < 0x40000000) {
 						delete ch;
 						delete self;							
@@ -777,14 +812,14 @@ bool Alarm::gmOnScreen(char whiteList[100][32],int options) {
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++){
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
 		if (ch->visible) {		
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ options & MAKE_BLACKLIST)) {				
-				if (ch->z == self->z || (options & BATTLELIST_PARANOIAM) || (options & BATTLELIST_ANXIETY && abs(ch->z - self->z) <= 1)) {					
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ options & OPTIONS_MAKE_BLACKLIST)) {				
+				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
 					if (ch->name[0] == 'G' && ch->name[1] == 'M') { // this is GM						
 						delete ch;
 						delete self;						
 						return true;
 					}
-					if (ch->name[0] == 'C' && ch->name[1] == 'M') { // this is CM						
+					if (ch->name[0] == 'C' && ch->name[1] == 'M') { // this is CM				
 						delete ch;
 						delete self;						
 						return true;
@@ -806,8 +841,8 @@ bool Alarm::monsterOnScreen(char whiteList[100][32], int options) {
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->visible) {
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ options & MAKE_BLACKLIST)) {				
-				if (ch->z == self->z || (options & BATTLELIST_PARANOIAM) || (options & BATTLELIST_ANXIETY && abs(ch->z - self->z) <= 1)) {					
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ options & OPTIONS_MAKE_BLACKLIST)) {				
+				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
 					if (ch->tibiaId >= 0x40000000) { // this is monster/npc
 						delete ch;
 						delete self;							

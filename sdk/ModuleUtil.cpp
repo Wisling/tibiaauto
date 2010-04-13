@@ -203,7 +203,7 @@ int CModuleUtil::waitForHpManaIncrease(int oldHp,int oldMana){//max about 0.45s
 	for (t=0;t<15;t++)
 	{
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		if (self->hp-oldHp>10 || self->mana-oldMana>10)
+		if (self->hp-oldHp>30 || self->mana-oldMana>30)
 		{
 			delete self;
 			return 1;
