@@ -4,7 +4,7 @@
 Version=1
 ClassCount=6
 Class1=CMod_autogoApp
-LastClass=CAlarmDialog
+LastClass=GeneralConfigDialog
 NewFileInclude2=#include "mod_autogo.h"
 ResourceCount=8
 NewFileInclude1=#include "stdafx.h"
@@ -14,19 +14,19 @@ Resource1=IDD_CONFIG
 Class3=CWhiteList
 Resource2=IDD_WHITELIST
 <<<<<<< mod_autogo.clw
-Resource3=IDD_CONFIG (Polish)
+Resource3=IDD_GENERAL_CONFIG_DIALOG
 Resource4=IDD_WHITELIST (Polish)
 =======
-Resource3=IDD_CONFIG (Polish)
+Resource3=IDD_GENERAL_CONFIG_DIALOG
 Resource4=IDD_WHITELIST (Polish)
 >>>>>>> 1.17
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
-Resource6=IDD_GENERAL_CONFIG_DIALOG
+Resource6=IDD_CONFIG (Polish)
 Class5=GeneralConfigDialog
-Resource7=IDD_ALARM_DIALOG
+Resource7=IDD_ADD_CUSTOM_SPELL
 Class6=CCustomSpellDialog
-Resource8=IDD_ADD_CUSTOM_SPELL
+Resource8=IDD_ALARM_DIALOG
 
 [CLS:CMod_autogoApp]
 Type=0
@@ -308,7 +308,7 @@ HeaderFile=GeneralConfigDialog.h
 ImplementationFile=GeneralConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_START_PICTURE
+LastObject=IDC_FLASHONALARM
 VirtualFilter=dWC
 
 [DLG:IDD_ADD_CUSTOM_SPELL]
