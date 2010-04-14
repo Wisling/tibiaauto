@@ -248,7 +248,7 @@ struct tibiaMessage * triggerMessage(){
 
 CString alarmStatus(CString alarm) {
 	static int index = 0;
-	if (alarm.GetLength() < 200) {
+	if (alarm.GetLength() < 75) {
 		index = 0;
 		return alarm;
 	}
@@ -259,6 +259,7 @@ CString alarmStatus(CString alarm) {
 }
 
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
+	static extra = 0;
 	BITMAP bmp; 
 	PBITMAPINFO pbmi; 
 	WORD cClrBits; 
@@ -337,10 +338,18 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 	// Create the .BMP file. 
 	hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0, 
 		NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 
-		(HANDLE) NULL); 
-	if (hf == INVALID_HANDLE_VALUE){
-		AfxMessageBox("Could not create file for writing");
-		return;
+		(HANDLE) NULL);
+	if (hf == INVALID_HANDLE_VALUE) {
+		CString postfix;
+		postfix.Format("%d.bmp", extra++);
+		filename.Replace(".bmp", postfix);
+		hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0, 
+			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 
+			(HANDLE) NULL); 
+		if (hf == INVALID_HANDLE_VALUE) {
+			AfxMessageBox("Could not create file for writing");
+			return;
+		}
 	}
 	hdr.bfType = 0x4d42; // 0x42 = "B" 0x4d = "M" 
 	// Compute the size of the entire file. 
@@ -388,7 +397,7 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 	GlobalFree((HGLOBAL)lpBits);
 }
 
-DWORD WINAPI takeScreenshot(LPVOID lpParam) {		
+DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	CMemReaderProxy reader;
 	if (!tibiaHWND) InitTibiaHandle();
 	RECT rect;
@@ -489,14 +498,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (alarmItr->checkAlarm(config->whiteList, config->options)) {
 				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
 					statusBuf += "  ******  " + alarmItr->getDescriptor();
-				// Flash Window ***************
-				if ((config->options&OPTIONS_FLASHONALARM) && !alarmItr->flashed) {
-					if (!alarmItr->windowActed){
-						if (!tibiaHWND) InitTibiaHandle();
-						FlashWindow(tibiaHWND, true);
-					}
-					alarmItr->flashed = true;
-				}// ***************************
 				
 				// Log Event ******************
 				if (alarmItr->doLogEvents() && !alarmItr->eventLogged) {
@@ -542,45 +543,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// *****************************
 
 				// Window Action*************
-				if (alarmItr->doWindowAction()!=-1){
-					switch (alarmItr->doWindowAction()){
+				if (alarmItr->doWindowAction() > -1) {
+					switch (alarmItr->doWindowAction()) {
 					case 0://maximize
 						if (!alarmItr->windowActed) {
 							if (!tibiaHWND) InitTibiaHandle();
 							ShowWindow(tibiaHWND, SW_MAXIMIZE);
+							if(tibiaHWND != GetForegroundWindow())
+								SetForegroundWindow(tibiaHWND);
 							alarmItr->windowActed = true;
 						}
 						break;
 					case 1://restore
 						if (!alarmItr->windowActed) {
 							if (!tibiaHWND) InitTibiaHandle();
-							if(IsIconic(tibiaHWND)) {
+							if(IsIconic(tibiaHWND))
 								ShowWindow(tibiaHWND, SW_RESTORE);
-							} else if(tibiaHWND != GetForegroundWindow()) {
+							else if(tibiaHWND != GetForegroundWindow())
 								SetForegroundWindow(tibiaHWND);
-							}
 							alarmItr->windowActed = true;
-						}
-						break;
-					case 2://flash once
-						if (!alarmItr->windowActed && !alarmItr->flashed) {
-							if (!tibiaHWND) InitTibiaHandle();
-							FlashWindow(tibiaHWND, true);
-							alarmItr->windowActed = true;
-						}
-						break;
-					case 3://flash continuously
-						if (!alarmItr->windowActed) {
-							if (!tibiaHWND) InitTibiaHandle();
-							static int lastFlash=GetTickCount();
-							if (GetTickCount()-lastFlash>=1000){
-								FlashWindow(tibiaHWND, false);
-								lastFlash=GetTickCount();
-							}
 						}
 						break;
 					}
-				}// ****************************
+				}// **************************** 
 				
 				// Suspend Modules  ************
 				if (alarmItr->doStopModules().size() && !alarmItr->modulesSuspended) {
@@ -684,6 +669,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					actionShutdownSystem();
 				}// ****************************
 
+				// Flash Window ***************
+				if ((config->options & OPTIONS_FLASHONALARM)) {
+					if (!tibiaHWND) InitTibiaHandle();
+					static int lastFlash = GetTickCount();
+					if (GetTickCount() - lastFlash >= 1000) {
+						FlashWindow(tibiaHWND, true);
+						lastFlash = GetTickCount();
+					}
+				}
+				else if (!alarmItr->flashed) {
+					if (!tibiaHWND) InitTibiaHandle();
+					alarmItr->flashed = FlashWindow(tibiaHWND, false);
+				}// ***************************
 			}
 			else if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
 				// the alarm may have stopped BEFORE we took our 3 screenshots, let's contuinue
