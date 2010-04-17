@@ -347,7 +347,6 @@ void GeneralConfigDialog::enableControls() {
 void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	CString buf;
 	memcpy(memWhiteList, configData->whiteList, 3200);
-	memMkBlack = configData->mkBlack;
 	buf.Format("%d",configData->actX);		m_actX.SetWindowText(buf);
 	buf.Format("%d",configData->actY);		m_actY.SetWindowText(buf);
 	buf.Format("%d",configData->actZ);		m_actZ.SetWindowText(buf);
@@ -359,8 +358,8 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	m_battleParanoia.SetCheck(configData->options & OPTIONS_BATTLE_PARANOIA);
 	m_battleAnxiety.SetCheck(configData->options & OPTIONS_BATTLE_ANXIETY);
 	memMkBlack = configData->options & OPTIONS_MAKE_BLACKLIST;
-	m_maintainStart.SetCheck(configData->maintainStart);
 	m_flashOnAlarm.SetCheck(configData->options & OPTIONS_FLASHONALARM);
+	m_maintainStart.SetCheck(configData->maintainStart);
 }
 
 void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
@@ -373,12 +372,14 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	m_runawayX.GetWindowText(buf);	newConfigData->runawayX=atoi(buf);
 	m_runawayY.GetWindowText(buf);	newConfigData->runawayY=atoi(buf);
 	m_runawayZ.GetWindowText(buf);	newConfigData->runawayZ=atoi(buf);		
+
+	newConfigData->options=0;
 	if (m_ignoreSpells.GetCheck())	newConfigData->options |= OPTIONS_IGNORE_SPELLS;
 	if (m_battleParanoia.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_PARANOIA;
 	if (m_battleAnxiety.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_ANXIETY;
 	if (memMkBlack) newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
-	newConfigData->maintainStart = m_maintainStart.GetCheck()!=0;
 	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
+	newConfigData->maintainStart = m_maintainStart.GetCheck()!=0;
 }
 
 void GeneralConfigDialog::OnAutogoBattleparanoia() {

@@ -26,7 +26,6 @@ CConfigData::CConfigData()
 	maintainStart = 0;
 	status = 0;
 	memset(whiteList,0,3200);
-	mkBlack=0;
 }
 
 CConfigData::~CConfigData()

@@ -269,15 +269,17 @@ int findBanker(CConfigData *config) {
 
 int moveToBanker(CConfigData *config) {
 	CMemReaderProxy reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
-	self = reader.readSelfCharacter();
-	if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+	if (!reader.getAttackedCreature()){
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
+		self = reader.readSelfCharacter();
+		if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+			delete self;
+			return 1;
+		}
 		delete self;
-		return 1;
 	}
-	delete self;
 	return 0;
 }
 

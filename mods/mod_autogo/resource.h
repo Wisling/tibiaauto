@@ -114,6 +114,7 @@
 #define IDS_GENERAL_CHARACTERHIT        108
 #define IDS_WINDOWACTION_ERROR          109
 #define IDS_GENERAL_CHARACTERNOTMOVED   110
+#define IDS_START_RUNAWAY               111
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048

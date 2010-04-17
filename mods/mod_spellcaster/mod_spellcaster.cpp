@@ -221,7 +221,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 				for (int loop = 0; loop < config->healList.size(); loop++) {
-					if (OnList(config->healList[loop].name,ch->name) && config->healList[loop].maxHP * (double)(ch->hpPercLeft / 100) <= config->healList[loop].randTriggerHP && ch->visible == 1 && ch->z == self->z) {
+					if (OnList(config->healList[loop].name,ch->name) && config->healList[loop].maxHP * (ch->hpPercLeft / 100.0) <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x-self->x)<=7 && abs(ch->y-self->y)<=5 && ch->z == self->z) {
 						config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP,MAKE,config);
 						char buf[256];
 						sprintf(buf,"exura sio \"%s\"",ch->name);

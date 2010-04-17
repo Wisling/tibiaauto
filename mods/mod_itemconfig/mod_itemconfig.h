@@ -39,11 +39,18 @@ public:
 	int isStarted();
 	void showConfigDialog();
 	void enableControls();	
+	void configToControls();
+	void controlsToConfig();
+	void loadConfigParam(char *paramName,char *paramValue);
+	char *saveConfigParam(char *paramName);
+	char *getConfigParamName(int nr);
+	int isMultiParam(char *paramName);
+	void resetMultiParamAccess(char *paramName);
 	char *getVersion();
 private:	
 	CConfigData *m_configData;
 	CToolItemConfig *m_infoDialog;
-	int currentPointNr;
+	int currentPos;
 };
 
 

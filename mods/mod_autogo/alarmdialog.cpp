@@ -121,17 +121,19 @@ void CAlarmDialog::OnActionShutdown() {
 }
 
 void CAlarmDialog::OnActionRunaway() {
-	VERIFY(instructionText.LoadString(IDS_RUNAWAY)); 
+	if (m_actionStart.GetCheck() && m_actionRunaway.GetCheck()) VERIFY(instructionText.LoadString(IDS_START_RUNAWAY));
+	else VERIFY(instructionText.LoadString(IDS_RUNAWAY));
 	m_instructionText.SetWindowText(instructionText); 
-	m_actionDepot.EnableWindow(!m_actionRunaway.GetCheck());
-	m_actionStart.EnableWindow(!m_actionRunaway.GetCheck());
+	m_actionDepot.EnableWindow(!m_actionRunaway.GetCheck() && !m_actionStart.GetCheck());
+	//m_actionStart.EnableWindow(!m_actionRunaway.GetCheck());
 }
 
 void CAlarmDialog::OnActionStart() {
-	VERIFY(instructionText.LoadString(IDS_START)); 
+	if (m_actionStart.GetCheck() && m_actionRunaway.GetCheck()) VERIFY(instructionText.LoadString(IDS_START_RUNAWAY));
+	else VERIFY(instructionText.LoadString(IDS_START));
 	m_instructionText.SetWindowText(instructionText); 
-	m_actionDepot.EnableWindow(!m_actionStart.GetCheck());
-	m_actionRunaway.EnableWindow(!m_actionStart.GetCheck());
+	m_actionDepot.EnableWindow(!m_actionStart.GetCheck() && !m_actionRunaway.GetCheck());
+	//m_actionRunaway.EnableWindow(!m_actionStart.GetCheck());
 }
 
 void CAlarmDialog::OnActionDepot() {
@@ -145,12 +147,14 @@ void CAlarmDialog::OnActionSpell() {
 	VERIFY(instructionText.LoadString(IDS_SPELL)); 
 	m_instructionText.SetWindowText(instructionText); 
 	m_spellList.EnableWindow(m_actionSpell.GetCheck());
+	m_spellList.SetCurSel(m_actionSpell.GetCheck()?0:-1);
 }
 
 void CAlarmDialog::OnActionScreenshot() {
 	VERIFY(instructionText.LoadString(IDS_SCREENSHOT)); 
 	m_instructionText.SetWindowText(instructionText); 
 	m_screenshotOptions.EnableWindow(m_actionScreenshot.GetCheck());
+	m_screenshotOptions.SetCurSel(m_actionScreenshot.GetCheck()?0:-1);
 }
 
 void CAlarmDialog::OnActionSuspendModules() {
@@ -169,6 +173,7 @@ void CAlarmDialog::OnActionSound() {
 	VERIFY(instructionText.LoadString(IDS_SOUND)); 
 	m_instructionText.SetWindowText(instructionText); 
 	m_audioFile.EnableWindow(m_actionSound.GetCheck());	
+	m_audioFile.SetCurSel(m_actionSound.GetCheck()?0:-1);
 }
 
 void CAlarmDialog::OnSelchangeAlarmType() {
@@ -336,12 +341,12 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("Mana Shield"), 28);
 			m_attribute.SetItemImage(m_attribute.AddString("Slowed"), 29);
 			m_attribute.SetItemImage(m_attribute.AddString("Hasted"), 30);
+			m_attribute.SetItemImage(m_attribute.AddString("Log-out Block"), 19);
 			m_attribute.SetItemImage(m_attribute.AddString("Drowning"), 31);
 			m_attribute.SetItemImage(m_attribute.AddString("Freezing"), 32);
 			m_attribute.SetItemImage(m_attribute.AddString("Dazzled"), 33);
 			m_attribute.SetItemImage(m_attribute.AddString("Cursed"), 34);
 			m_attribute.SetItemImage(m_attribute.AddString("Strengthened"), 35);
-			m_attribute.SetItemImage(m_attribute.AddString("Log-out Block"), 19);
 			m_attribute.SetItemImage(m_attribute.AddString("PZ Block"), 36);
 			m_attribute.SetItemImage(m_attribute.AddString("In PZ"), 37);
 
@@ -383,8 +388,8 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 BOOL CAlarmDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
 	m_actionDepot.EnableWindow(!m_actionRunaway.GetCheck() && !m_actionStart.GetCheck());
-	m_actionRunaway.EnableWindow(!m_actionDepot.GetCheck() && !m_actionStart.GetCheck());
-	m_actionStart.EnableWindow(!m_actionDepot.GetCheck() && !m_actionRunaway.GetCheck());
+	m_actionRunaway.EnableWindow(!m_actionDepot.GetCheck());
+	m_actionStart.EnableWindow(!m_actionDepot.GetCheck());
 	m_actionKill.EnableWindow(!m_actionShutdown.GetCheck());
 	m_actionShutdown.EnableWindow(!m_actionKill.GetCheck());
 	m_modules.EnableWindow(m_actionSuspend.GetCheck());
@@ -1150,6 +1155,7 @@ void CAlarmDialog::OnWindowAction() {
 	VERIFY(instructionText.LoadString(IDS_WINDOW_ACTION));
 	m_instructionText.SetWindowText(instructionText);
 	m_windowActionList.EnableWindow(m_windowAction.GetCheck());
+	m_windowActionList.SetCurSel(m_windowAction.GetCheck()?0:-1);
 }
 
 void CAlarmDialog::OnActionLogEvents() {
@@ -1348,7 +1354,6 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 		m_instructionText.SetWindowText(instructionText);
 		PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
 		m_alarmType.GetCurSel();
-		int a=0;
 		return false;
 	}
 
@@ -1518,11 +1523,9 @@ void CAlarmDialog::OnAlarmEdit() {
 		m_actionRunaway.EnableWindow(!m_actionDepot.GetCheck());
 		if (m_actionRunaway.GetCheck()) {
 			m_actionDepot.EnableWindow(!m_actionRunaway.GetCheck());
-			m_actionStart.EnableWindow(!m_actionRunaway.GetCheck());
 		}
 		else if (m_actionStart.GetCheck()) {
 			m_actionDepot.EnableWindow(!m_actionStart.GetCheck());
-			m_actionRunaway.EnableWindow(!m_actionStart.GetCheck());
 		}
 		else if (m_actionDepot.GetCheck()) {
 			m_actionStart.EnableWindow(!m_actionDepot.GetCheck()); 
