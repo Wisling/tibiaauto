@@ -99,9 +99,10 @@ BEGIN_MESSAGE_MAP(CAlarmDialog, CDialog)
 	ON_CBN_SELCHANGE(IDC_SPELL_LIST, OnSelchangeSpellList)
 	ON_BN_CLICKED(IDC_ACTION_STOP_WALKING, OnActionStopWalking)
 	ON_LBN_SELCHANGE(IDC_MODULES_LIST, OnSelchangeModulesList)
+	ON_LBN_SELCHANGE(IDC_MODULES_LIST2, OnSelchangeModulesList2)
 	ON_WM_ERASEBKGND()
 	ON_WM_CTLCOLOR()
-	ON_LBN_SELCHANGE(IDC_MODULES_LIST2, OnSelchangeModulesList2)
+	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -405,8 +406,7 @@ BOOL CAlarmDialog::OnInitDialog() {
 
 	CFileFind finder;
 	BOOL bWorking = finder.FindFile(path);
-	while (bWorking)
-	{
+	while (bWorking) {
 		bWorking = finder.FindNextFile();
 		if(!finder.IsDirectory() && !finder.IsDots())
 			m_audioFile.AddString(finder.GetFileName());
@@ -435,18 +435,18 @@ BOOL CAlarmDialog::OnInitDialog() {
 		CloseHandle(hSnap);
 	}
 	// Spell List Mana Costs
-	SpellInfo *haste = new SpellInfo();
-		haste->manaCost = 60;
-		haste->spellDelay = 33;
-	m_spellList.SetItemData(1, (long)haste);
-	SpellInfo *greatHaste = new SpellInfo();
-		greatHaste->manaCost = 100;
-		greatHaste->spellDelay = 22;
-	m_spellList.SetItemData(2, (long)greatHaste);
-	SpellInfo *magicShield = new SpellInfo();
-		magicShield->manaCost = 100;
-		magicShield->spellDelay = 200;
-	m_spellList.SetItemData(3, (long)magicShield);
+	m_spellInfo[1]  = new SpellInfo();
+		m_spellInfo[1]->manaCost = 60;
+		m_spellInfo[1]->spellDelay = 33;
+	m_spellList.SetItemData(1, (long)m_spellInfo[1]);
+	m_spellInfo[2] = new SpellInfo();
+		m_spellInfo[2]->manaCost = 100;
+		m_spellInfo[2]->spellDelay = 22;
+	m_spellList.SetItemData(2, (long)m_spellInfo[2]);
+	m_spellInfo[3] = new SpellInfo();
+		m_spellInfo[3]->manaCost = 100;
+		m_spellInfo[3]->spellDelay = 200;
+	m_spellList.SetItemData(3, (long)m_spellInfo[3]);
 
 	// Attribute Combo Box...
 	m_attributeImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
@@ -1594,10 +1594,11 @@ void CAlarmDialog::OnSelchangeSpellList() {
 	case 0:
 		CCustomSpellDialog temp;
 		if (temp.DoModal() == IDOK) {
-			SpellInfo *info = new SpellInfo();
-				info->manaCost = temp.m_manaCost;
-				info->spellDelay = temp.m_castingDelay;
-			m_spellList.SetItemData(m_spellList.AddString(temp.m_spellWords), (long)info);
+			int index = m_spellList.AddString(temp.m_spellWords);
+			m_spellInfo[index] = new SpellInfo();
+				m_spellInfo[index]->manaCost = temp.m_manaCost;
+				m_spellInfo[index]->spellDelay = temp.m_castingDelay;
+			m_spellList.SetItemData(index, (long)m_spellInfo[index]);
 			m_spellList.SetCurSel(-1);
 		}
 		break;
@@ -1617,3 +1618,12 @@ void CAlarmDialog::OnSelchangeModulesList2()
 		m_modules2.SelItemRange(m_modules2.GetSel(0),0,m_modules2.GetCount());
 	}	
 }
+
+void CAlarmDialog::OnDestroy() 
+{
+	MyDialog::OnDestroy();
+	for (int loop = 0; loop < m_spellList.GetCount(); loop++) {
+		delete(m_spellInfo[loop + 1]);
+	}
+}
+

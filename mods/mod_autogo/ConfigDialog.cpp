@@ -54,7 +54,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
-	ON_WM_CANCELMODE()
+	ON_WM_DESTROY()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -143,13 +143,12 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_tabCtrl.AddTab(m_Dialog[0], "Alarms");
 	m_tabCtrl.AddTab(m_Dialog[1], "General Configuration");
 	
-	memset(status, 0, 128);
+	memset(status, 0, 201);
 	SetTimer(1001,250,NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
 	return CDialog::PreTranslateMessage(pMsg);
@@ -159,4 +158,15 @@ void CConfigDialog::activateEnableButton(int enable) {
 	m_enable.SetCheck(enable);
 }
 
+void CConfigDialog::OnCaptureChanged(CWnd *pWnd) 
+{
+	// TODO: Add your message handler code here
+	
+	CDialog::OnCaptureChanged(pWnd);
+}
 
+void CConfigDialog::OnDestroy() {
+	delete(m_Dialog[0]);
+ 	delete(m_Dialog[1]);
+ 	MyDialog::OnDestroy();
+}

@@ -111,9 +111,11 @@ protected:
 	afx_msg void OnActionStopWalking();
 	afx_msg void OnSelchangeModulesList();
 	afx_msg void OnSelchangeModulesList2();
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
+	SpellInfo * m_spellInfo[50];
 	bool triggerMessage;
 };
 
