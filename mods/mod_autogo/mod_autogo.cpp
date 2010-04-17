@@ -912,7 +912,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		alarmItr++;
 	}
 	// clear current status
-	config->status[0] = '\0';
+	memcpy(config->status, "", 200);
 	// stop the alarm;
 	PlaySound(NULL, NULL, NULL);
 
