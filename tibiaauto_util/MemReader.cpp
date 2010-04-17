@@ -69,7 +69,6 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 
 	return container;
 }
-
 CTibiaCharacter *CMemReader::readSelfCharacter() {	
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
@@ -205,12 +204,10 @@ int CMemReader::readBattleListMax()
 
 char * CMemReader::GetLoggedChar(int processId)
 {
-	char *ret=(char *)malloc(MAX_STRING_LEN);
+	char *ret;
 	long selfId;
 	int i;
 	
-	memset(ret,0x00,MAX_STRING_LEN);
-	sprintf(ret,"unknown");
 		
 	CMemUtil::GetMemIntValue(processId,m_memAddressSelfId,&selfId);
 
@@ -222,10 +219,17 @@ char * CMemReader::GetLoggedChar(int processId)
 		CMemUtil::GetMemIntValue(processId,offset+140,&visible);
 		if (selfId==creatureId&&visible)
 		{
-			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,ret);
+			char buf[33];
+			buf[32]==0;
+			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,buf);
+			ret=(char *)malloc(strlen(buf)+1);
+			strcpy(ret,buf);
+			return ret;
 		};
 	};
 		
+	ret=(char*)malloc(strlen("unknown")+1);
+	sprintf(ret,"unknown");
 	return ret;
 }
 

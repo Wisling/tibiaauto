@@ -58,8 +58,10 @@
 #define IDS_START_MODULES               54
 #define IDS_SOUND                       55
 #define IDS_ATTACK                      56
+#define IDS_STOPWALKING                 56
 #define IDS_LOGOUT                      57
 #define IDS_MAXIMIZE                    58
+#define IDS_WINDOW_ACTION               58
 #define IDS_LOG_EVENTS                  59
 #define IDS_FROMALL                     60
 #define IDS_FROM                        61
@@ -109,7 +111,10 @@
 #define IDS_SPELLWORDS_ERROR            105
 #define IDS_SOUNDFILE_ERROR             106
 #define IDS_SCREENSHOT_ERROR            107
+#define IDS_GENERAL_CHARACTERHIT        108
 #define IDD_COLORCHOOSER_DIALOG         109
+#define IDS_WINDOWACTION_ERROR          109
+#define IDS_GENERAL_CHARACTERNOTMOVED   110
 #define IDR_MAINFRAME                   128
 #define IDD_CHAR_DIALOG                 130
 #define IDD_TOOL_RUNEMAKER              131

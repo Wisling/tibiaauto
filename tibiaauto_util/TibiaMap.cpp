@@ -118,6 +118,8 @@ void CTibiaMap::clear()
 		tibiaMap2.GetNextAssoc(pos,p,pd);
 		delete p;
 		delete pd;
+		p=NULL;
+		pd=NULL;
 	}
 	tibiaMap2.RemoveAll();
 }

@@ -31,6 +31,8 @@ public:
 	static CUIntArray* getItemIdArrayPtr();
 	static CUIntArray* getFoodIdArrayPtr();
 	static CUIntArray* getLootItemIdArrayPtr();
+	static void setItemAsLooted(int objectId);
+	static void clearLootItems();
 	//static void setFoodNameAtIndex(int ind, int objectId);
 	//static void setFoodTimeAtIndex(int ind, int objectId);
 	//static void setFoodIdAtIndex(int ind, char *name);

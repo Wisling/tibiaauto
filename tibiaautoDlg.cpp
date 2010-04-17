@@ -799,6 +799,7 @@ void CTibiaautoDlg::OnSave()
 		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
+			char* nme=module->getName();
 			if (module->isLoaded())
 			{
 				CConfigCreatorUtil configCreator;

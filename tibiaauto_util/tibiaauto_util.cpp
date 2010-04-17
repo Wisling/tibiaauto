@@ -695,6 +695,13 @@ CUIntArray* tibiaItemGetFoodIdArrayPtr(){
 CUIntArray* tibiaItemGetLootItemIdArrayPtr(){
 	return CTibiaItem::getLootItemIdArrayPtr();
 }
+void tibiaItemSetItemAsLooted(int objectId){
+	CTibiaItem::setItemAsLooted(objectId);
+}
+void tibiaItemClearLootItems(){
+	CTibiaItem::clearLootItems();
+}
+
 void tibiaItemAddItem(char *name, int objectId){
 	CTibiaItem::addItem(name,objectId);
 }

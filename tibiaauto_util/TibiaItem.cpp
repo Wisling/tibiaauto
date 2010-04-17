@@ -320,7 +320,6 @@ void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 		} else if (child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){
 			//recurse for all children
 			traverseTreeForItemList(child, list);
-			CTibiaTreeBranchData* data = (CTibiaTreeBranchData*)(child->data);
 		}
 	}
 }
@@ -336,9 +335,56 @@ void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
 		} else if (child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){
 			//recurse for all children
 			traverseTreeForLootList(child, list);
-			CTibiaTreeBranchData* data = (CTibiaTreeBranchData*)(child->data);
 		}
 	}
+}
+
+void traverseTreeToClearLootItems(CTibiaTree* parent, CTibiaList* list){
+	int size=parent->children.size();
+	for (int i=0;i<size;i++){
+		CTibiaTree* child=parent->children[i];
+		if (!child->HasChildren() && child->data->GetType()==TT_ITEM_NODE){
+			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
+			if (data->IsLooted()){
+				data->SetIsLooted(false);
+			}
+		} else if (child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){
+			//recurse for all children
+			traverseTreeToClearLootItems(child, list);
+		}
+	}
+}
+void CTibiaItem::clearLootItems(){
+	refreshItemLists();
+	lootList.RemoveAll();
+	traverseTreeToClearLootItems(itemTree, &lootList);
+}
+
+bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list,int objectId){
+	int size=parent->children.size();
+	for (int i=0;i<size;i++){
+		CTibiaTree* child=parent->children[i];
+		if (!child->HasChildren() && child->data->GetType()==TT_ITEM_NODE){
+			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
+			if (data->GetId()==objectId){
+				data->SetIsLooted(true);
+				list->Add(data->GetId(),data->GetName(),0);
+				return true;
+			}
+		} else if (child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){
+			//recurse for all children
+			if (traverseTreeToSetAsLooted(child, list, objectId)) return true;
+		}
+	}
+	return false;
+}
+
+void CTibiaItem::setItemAsLooted(int objectId){
+	refreshItemLists();
+	char tempName[32];
+	sprintf(tempName,"%d",objectId);
+
+	if (!traverseTreeToSetAsLooted(itemTree, &lootList, objectId)) lootList.Add(objectId,tempName,0);
 }
 
 void CTibiaItem::refreshItemLists()

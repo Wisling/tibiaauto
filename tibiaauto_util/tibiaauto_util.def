@@ -236,8 +236,10 @@ EXPORTS
 	tibiaItemRefreshItemLists @228
 	tibiaItemSaveItemLists @229
 	tibiaItemCleanup @230
-	packSenderStepLeft @231
-	packSenderStepRight @232
-	packSenderStepUp @233
-	packSenderStepDown @234
-	packSenderSendDirectPacket @235
+	tibiaItemSetItemAsLooted @231
+	tibiaItemClearLootItems @232
+	packSenderStepLeft @233
+	packSenderStepRight @234
+	packSenderStepUp @235
+	packSenderStepDown @236
+	packSenderSendDirectPacket @237

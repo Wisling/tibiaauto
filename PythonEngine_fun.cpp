@@ -94,21 +94,26 @@ static PyObject *tibiaauto_reader_readContainer(PyObject *self, PyObject *args)
 static PyObject *tibiaauto_reader_readContainerItem(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
-	PyObject *retNULL = 
-		Py_BuildValue("{s:i,s:i,s:i}",
-		"objectId",0,
-		"quantity",0,
-		"pos",0);
 	
 	int contNr;
 	int itemNr;
     if (!PyArg_ParseTuple(args, "ii", &contNr,&itemNr)) return NULL;	
 	if (contNr<0 || contNr>=16) {
+		PyObject *retNULL = 
+			Py_BuildValue("{s:i,s:i,s:i}",
+			"objectId",0,
+			"quantity",0,
+			"pos",0);
 		return retNULL;//avoids returning NULL
 	}
 	CTibiaContainer *cont = reader.readContainer(contNr);
 	if (itemNr<0 || itemNr>=cont->itemsInside) 
 	{
+		PyObject *retNULL = 
+			Py_BuildValue("{s:i,s:i,s:i}",
+			"objectId",0,
+			"quantity",0,
+			"pos",0);
 		delete cont;
 		return retNULL;//avoids returning NULL
 	}

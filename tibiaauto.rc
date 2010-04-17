@@ -339,7 +339,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 2.2.3 for Tibia 8.55"
+CAPTION "Tibia Auto v 2.3.0 for Tibia 8.55"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
@@ -663,9 +663,9 @@ BEGIN
     IDS_SUSPEND_MODULES     "This option will disable one or more of the loaded modules as configured in the list's selections."
     IDS_START_MODULES       "This option will enable one or more of the loaded modules as configured in the list's selections. Be sure to configure these before enabling this module."
     IDS_SOUND               "This option will play the designated sound when the alarm is triggered. Additional sounds can be added for use by copying .wav files to the Sounds folder."
-    IDS_ATTACK              "This option will force the player to attack according to the options set in General Options."
+    IDS_STOPWALKING         "This option will stop both the Cavebot and the Auto Go/log from walking to destinations.  The cavebot will keep attacking creatures if it is enabled."
     IDS_LOGOUT              "This option will attempt to log the player out form the Tibia client."
-    IDS_MAXIMIZE            "This option will maximize the Tibia client window controlled by this dialog."
+    IDS_WINDOW_ACTION       "This option can either maximize the Tibia client window controlled by this dialog, restore it, flash it once or flash it continuously."
     IDS_LOG_EVENTS          "This option will write a status message to a logfile for later review. The log can be found in the Logs folder of TA."
     IDS_FROMALL             "This alarm will trigger on any message from any player. To filter spell casting out of the recognized messages enable that option in General Options."
     IDS_FROM                "This alarm will trigger on any message from a specified player. To filter spell casting out of the recognized messages enable that option in General Options."
@@ -731,6 +731,11 @@ BEGIN
     IDS_SPELLWORDS_ERROR    "********  Error!!  ********\r\nNo spell words specified!!!\r\n********************************"
     IDS_SOUNDFILE_ERROR     "********  Error!!  ********\r\nNo sound file specified!!!\r\n********************************"
     IDS_SCREENSHOT_ERROR    "********  Error!!  ********\r\nNo screenshot option specified!!!\r\n********************************"
+    IDS_GENERAL_CHARACTERHIT 
+                            "Each time your character's health decreases this alarm will trigger."
+    IDS_WINDOWACTION_ERROR  "********  Error!!  ********\r\nNo window action specified!!!\r\n********************************"
+    IDS_GENERAL_CHARACTERNOTMOVED 
+                            "When the time your character has not moved satisfies the trigger condition, this alarm will trigger."
 END
 
 #endif    // English (U.S.) resources
