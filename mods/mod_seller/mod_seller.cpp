@@ -689,18 +689,20 @@ int findSeller(CConfigData *config, int traderNum) {
 
 int moveToSeller(CConfigData *config) {
 	CMemReaderProxy reader;
-	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
-	delete self;
-	self = reader.readSelfCharacter();
-	if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+	if (!reader.getAttackedCreature()){
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
 		delete self;
-//		AfxMessageBox("Arrived at Seller");
-		return 1;
+		self = reader.readSelfCharacter();
+		if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+			delete self;
+	//		AfxMessageBox("Arrived at Seller");
+			return 1;
+		}
+		delete self;
+	//	AfxMessageBox("Still more to go...");
 	}
-	delete self;
-//	AfxMessageBox("Still more to go...");
 	return 0;
 }
 

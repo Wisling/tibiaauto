@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 #include "MemConstData.h"
+#include "TibiaItemProxy.h"
 
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
@@ -64,7 +65,27 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	
 	//sender.sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
-
+	CTibiaItemProxy itemProxy;
+	CTibiaCharacter *sel = reader.readSelfCharacter();
+	float caps=sel->cap;
+	FILE* f = fopen("C:/srangp.txt","wb");
+	while (!toolThreadShouldStop)
+	{
+		Sleep(100);
+		delete sel;
+		sel = reader.readSelfCharacter();
+		if (caps!=sel->cap && sel->cap>5000){
+			char buf[42];
+			int addy=itemProxy.getValueForConst("addrCap");
+			for (int i=0;i<20;i++){
+				int a=reader.getMemIntValue(addy+(i-10)*4);
+				fprintf(f,"%8x",a);
+			}
+			fprintf(f,"\n");
+			fflush(f);
+			caps=sel->cap;
+		}
+	}
 	while (!toolThreadShouldStop)
 	{	
 		

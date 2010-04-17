@@ -1,4 +1,20 @@
  Installation will now never repace the items.xml file unless it is missing
+2.3.1, ?.?.2010
+Enhancements
+ ItemConfig: Looted items are now saved to script files.  It will always add them to the loot array when loading but it will only select them first one in the tree if it exists.
+
+Defects
+ AutoGo: Fixed fighting with banker and seller for control
+ Banker, Seller, AutoGo: Fixed fighting for control with cavebot
+ AutoGo: Fixed crash when alarm triggers
+ AutoGo: Now saves blacklist,highlight, detect all floor, detect +-1 floor options
+ AutoGo: Newer conditions like drowning and dazzled are now correctly detected
+ AutoGo: Checks if a logout block is on before trying to log out
+ ItemConfig: Fixed memory leak
+ Cavebot: Fixed potential crash errors when looting while killing
+ Spellcaster: Exura sio now heals at proper health
+ Python: Fixed memory leak for readContainerItem() function
+
 2.3.0, 13.4.2010
 Enhancments
  Auto Go/Log: Reworked AutoGo now 4.11

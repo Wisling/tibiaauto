@@ -260,6 +260,24 @@ CUIntArray* CTibiaItemProxy::getLootItemIdArrayPtr()
 	} 
 	return NULL;
 }
+void CTibiaItemProxy::setItemAsLooted(int objectId) {
+	typedef void (*Proto_fun)(int objectId);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemSetItemAsLooted");
+		if (fun) {
+			fun(objectId);
+		} else AfxMessageBox("Error: function not loaded");
+	}
+}
+void CTibiaItemProxy::clearLootItems() {
+	typedef void (*Proto_fun)();
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemClearLootItems");
+		if (fun) {
+			fun();
+		} else AfxMessageBox("Error: function not loaded");
+	}
+}
 
 void CTibiaItemProxy::addItem(char *name, int objectId) {
 	typedef void (*Proto_fun)(char *name, int objectId);

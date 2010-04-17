@@ -1134,6 +1134,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	static int lastStartChangeTm=0; // indicates when start point was changed for the last time
 	static int movedDiagonally=0; // will make delay to resend walk 3x longer
 	static int lastEndX=0,lastEndY=0,lastEndZ=0;
+	static int lastPath[15][2]={{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0},{0,0}};//used to check if next space has been blocked
+	static int lastPathInd=0;
 	static int lastStartX=0,lastStartY=0,lastStartZ=0;
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
@@ -1659,20 +1661,32 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		 */
 		
 		int lastEndEqStart=(lastEndX==startX&&lastEndY==startY&&lastEndZ==startZ);
-		CTibiaMiniMapPoint* mp=reader.readMiniMapPoint(self->x+1,self->y,self->z);//take sample from 1 square away
-		int tileSpeed=(mp->speed==255)?200:mp->speed;
+		int nextX=0,nextY=0;
+		for (lastPathInd;lastPathInd<15-1 && lastPath[lastPathInd][0];lastPathInd++){
+			if(lastPath[lastPathInd][0]==self->x && lastPath[lastPathInd][1]==self->y && lastPath[lastPathInd+1][0]){
+				nextX=lastPath[lastPathInd+1][0];
+				nextY=lastPath[lastPathInd+1][1];
+				break;
+			}
+		}
+
+		bool nextSquareBlocked=false;
+		CTibiaMiniMapPoint* mp=reader.readMiniMapPoint(nextX?nextX:self->x+1,nextY?nextY:self->y,self->z);//take sample from 1 square away
+		if (mp->speed==255){
+			if (nextX) nextSquareBlocked=true;
+			delete mp;
+			mp=reader.readMiniMapPoint(self->x+(nextX-self->x<0?1:-1),self->y+(nextY-self->y<0?1:-1),self->z);//sample behind us
+		}
+		int tileSpeed=mp->speed==255?200:mp->speed;
 		delete mp;
+
 		//&&reader.getMemIntValue(itemProxy.getValueForConst("addrTilesToGo"))==0
 		//time to walk 1 sqm is inverse to the speed, double speed== half the time
 		int maxTileDelay=(int)(tileSpeed*(movedDiagonally?3:1)*1000/self->walkSpeed)+600;
-		bool stoppedWalking=currentTm-lastStartChangeTm>=maxTileDelay;
+		bool stoppedWalking=currentTm-lastStartChangeTm>=maxTileDelay || nextSquareBlocked;
+		
 		if (pathSize>0&&(lastEndEqStart||stoppedWalking||currentTm-lastExecuteWalkTm>15000))
 		{
-			if (stoppedWalking){
-				char buf2[111];
-				sprintf(buf2,"waited %d max %d",currentTm-lastStartChangeTm,maxTileDelay);
-				//sender.sendTAMessage(buf2);
-			}
 			// 'normal' stepping limited to 10 steps
 			int i;
 			if (pathSize>10) pathSize=10;
@@ -1680,12 +1694,36 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 			sprintf(buf,"Send walk to server. size=%d,lastEndEqStart=%d,lastStartChangeTm_diff=%d,lastExecuteWalkTm=%d,tileDelay=%d,stoppedWalking=%d",pathSize,lastEndEqStart,currentTm-lastStartChangeTm,currentTm-lastExecuteWalkTm,maxTileDelay,stoppedWalking);
 			mapDebug(buf);
 #endif
-			sender.stepMulti(path,pathSize);
+			int x1=startX;
+			int y1=startY;
+			int offset=0;
+			if (self->x!=startX || self->y!=startY || self->z!=startZ)
+			{
+				for (offset=0;offset<pathSize;offset++)
+				{
+					if (self->x==x1 && self->y==y1) break;
+					switch (path[offset])
+					{
+					case 1: x1++;break;
+					case 5: x1--;break;
+					case 7: y1++;break;
+					case 3: y1--;break;
+					case 8: y1++;x1++;break;
+					case 6: y1++;x1--;break;
+					case 2: y1--;x1++;break;
+					case 4: y1--;x1--;break;
+					}
+				}
+				if (offset>=pathSize || startZ!=self->z) return; //failed to find our position on the proposed path
+			}
+			sender.stepMulti(path+offset*sizeof(int),pathSize-offset);
 
-			lastEndX=startX;
-			lastEndY=startY;
+			lastEndX=x1;
+			lastEndY=y1;
 			lastEndZ=startZ;
 			lastExecuteWalkTm=currentTm;
+			memset(lastPath,0,15*2*sizeof(int));
+			lastPathInd=0;
 			for (i=0;i<pathSize;i++)
 			{
 				switch (path[i])
@@ -1699,6 +1737,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 				case 2: lastEndY--;lastEndX++;break;
 				case 4: lastEndY--;lastEndX--;break;
 				}
+				lastPath[i][0]=lastEndX;
+				lastPath[i][1]=lastEndY;
 			}
 			//sprintf(buf,"walk: (%d,%d,%d)->(%d,%d,%d) [%d,%d,%d] %d,%d p=%d",startX,startY,startZ,lastEndX,lastEndY,lastEndZ,lastStartX,lastStartY,lastStartZ,currentTm-lastStartChangeTm,currentTm-lastExecuteWalkTm,pathSize);
 			//testDebug(buf);

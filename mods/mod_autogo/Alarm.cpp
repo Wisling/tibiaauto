@@ -265,6 +265,7 @@ void Alarm::initializeCharacter() {
 	positionYInit = self->y;
 	positionZInit = self->z;
 	healthInit = self->hp;
+	delete self;
 }
 
 bool Alarm::checkAlarm(char whiteList[100][32], int options) {
@@ -723,7 +724,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		}
 		break;
 	case CHARACTER_STATUS:
-		return reader.getSelfEventFlags() & (int)pow(2, attribute);
+		return reader.getSelfEventFlags() & (int)pow(2,attribute);
 		break;
 	case EVENT:
 		struct tibiaMessage *msg = triggerMessage();
@@ -788,8 +789,8 @@ bool Alarm::playerOnScreen(char whiteList[100][32], int options) {
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
 		if (ch->visible) {		
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ options & OPTIONS_MAKE_BLACKLIST)) {				
-				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {				
+				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)) {					
 					if (ch->tibiaId < 0x40000000) {
 						delete ch;
 						delete self;							
@@ -812,7 +813,7 @@ bool Alarm::gmOnScreen(char whiteList[100][32],int options) {
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++){
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
 		if (ch->visible) {		
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ options & OPTIONS_MAKE_BLACKLIST)) {				
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {				
 				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
 					if (ch->name[0] == 'G' && ch->name[1] == 'M') { // this is GM						
 						delete ch;
@@ -841,7 +842,7 @@ bool Alarm::monsterOnScreen(char whiteList[100][32], int options) {
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->visible) {
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ options & OPTIONS_MAKE_BLACKLIST)) {				
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {
 				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
 					if (ch->tibiaId >= 0x40000000) { // this is monster/npc
 						delete ch;

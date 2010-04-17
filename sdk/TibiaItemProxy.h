@@ -27,6 +27,8 @@ public:
 	CUIntArray* getItemIdArrayPtr();
 	CUIntArray* getFoodIdArrayPtr();
 	CUIntArray* getLootItemIdArrayPtr();
+	void setItemAsLooted(int objectId);
+	void clearLootItems();
 
 	void addItem(char *name, int objectId);
 	void addFood(char *name, int objectId, int extraInfo);

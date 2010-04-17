@@ -20,6 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include "ConfigData.h"
 #include "TibiaContainer.h"
+#include "TibiaItemProxy.h"
 
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
@@ -78,7 +79,6 @@ END_MESSAGE_MAP()
 CMod_itemconfigApp::CMod_itemconfigApp()
 {	
 	m_infoDialog=NULL;
-	currentPointNr=0;
 }
 
 CMod_itemconfigApp::~CMod_itemconfigApp()
@@ -133,4 +133,50 @@ void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	if (m_infoDialog)
 		m_infoDialog->Invalidate();
+}
+
+void CMod_itemconfigApp::configToControls() {
+	if (m_infoDialog) {
+		m_infoDialog->ConfigToControls();
+	}
+}
+void CMod_itemconfigApp::controlsToConfig() {
+	if (m_infoDialog) {
+		m_infoDialog->ControlsToConfig();
+	}
+}
+void CMod_itemconfigApp::loadConfigParam(char *paramName,char *paramValue) {
+	CTibiaItemProxy itemProxy;
+	if (!strcmp(paramName,"lootedItems")){
+		if (currentPos==0) itemProxy.clearLootItems();
+		itemProxy.setItemAsLooted(atoi(paramValue));
+		currentPos++;
+	}
+}
+
+char *CMod_itemconfigApp::saveConfigParam(char *paramName) {
+	CTibiaItemProxy itemProxy;
+	static char buf[1024];
+	buf[0]=0;
+	
+	if (!strcmp(paramName,"lootedItems") && currentPos<itemProxy.getLootItemCount()){
+		sprintf(buf,"%d",itemProxy.getLootItemIdAtIndex(currentPos++));
+	}
+	return buf;
+}
+char *CMod_itemconfigApp::getConfigParamName(int nr) {
+	if (!m_infoDialog) return NULL;//special case where user has not opened the itemConfig
+
+	switch (nr) {
+	case 0: return "lootedItems";
+	default:
+		return NULL;
+	}
+}
+int CMod_itemconfigApp::isMultiParam(char *paramName) {
+	if (!strcmp(paramName,"lootedItems")) return 1;
+	return 0;
+}
+void CMod_itemconfigApp::resetMultiParamAccess(char *paramName) {
+	if (!strcmp(paramName,"lootedItems")) currentPos=0;
 }

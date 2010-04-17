@@ -29,7 +29,6 @@ public:
 	bool maintainStart;
 
 	char whiteList[100][32];
-	int mkBlack;
 	char* status;
 };
 
