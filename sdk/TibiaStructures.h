@@ -557,7 +557,6 @@ typedef enum {
 class CTibiaTreeData{
 protected:
 	CTibiaTreeDataType nodeType;
-	char *name;
 public:
 	CTibiaTreeData(){
 		nodeType=TT_ITEM_NODE;
@@ -604,11 +603,13 @@ public:
 
 class CTibiaTreeItemData:public CTibiaTreeData
 {
-	char *name;
 	int id;
 	bool looted;
+	char *name;
 public:
 	CTibiaTreeItemData(char *a_name,int a_id, bool a_looted){
+		if (!strcmp(a_name,"Wooden Doll"))
+			int a=0;
 		nodeType=TT_ITEM_NODE;
 		id=a_id;
 		looted=a_looted;
@@ -626,6 +627,9 @@ public:
 	}
 	bool IsLooted(){
 		return looted;
+	}
+	void SetIsLooted(bool val){
+		looted=val;
 	}
 	char* GetName(){
 		return name;
@@ -650,8 +654,7 @@ public:
 		for (int i=size-1;i>=0;i--){
 			CTibiaTree* ptTree=children[i];
 			children.pop_back();
-			//delete ptTree;
-			int a=1;
+			delete ptTree;
 		}
 	}
 	CTibiaTree* AddChild(CTibiaTreeData* a_data){

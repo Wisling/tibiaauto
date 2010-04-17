@@ -20,6 +20,8 @@ class CToolItemConfig : public MyDialog
 // Construction
 public:
 	CToolItemConfig(CWnd* pParent = NULL);   // standard constructor
+	void ConfigToControls();
+	void ControlsToConfig();
 
 	//For dragging
 	HTREEITEM itemOrigin;
@@ -75,7 +77,6 @@ protected:
 	//{{AFX_MSG(CToolItemConfig)
 	afx_msg void OnClose();
 	afx_msg void OnToolItemconfigRefresh();
-	afx_msg void ConfigToControls();
 	virtual BOOL OnInitDialog();
 	virtual void OnItemEdit();
 	virtual void OnItemDelete();

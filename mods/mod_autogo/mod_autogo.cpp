@@ -26,7 +26,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "ConfigDialog.h"
 #include "ConfigData.h"
 #include "TibiaContainer.h"
-#include "MemConstData.h"
 
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
@@ -246,16 +245,18 @@ struct tibiaMessage * triggerMessage(){
 	return NULL;
 }
 
-CString alarmStatus(CString alarm) {
+CString* alarmStatus(CString alarm) {
 	static int index = 0;
 	if (alarm.GetLength() < 75) {
 		index = 0;
-		return alarm;
+		CString* ret=new CString(alarm);
+		return ret;
 	}
 	if (index >= alarm.GetLength())
 		index = 0;
 	CString buf = alarm + alarm.Left(200 - 10 - (alarm.GetLength() ? alarm.GetLength() : -1));
-	return buf.Mid(index++) + buf.Left(200 - 10 - alarm.GetLength());
+	CString* ret=new CString(buf.Mid(index++) + buf.Left(200 - 10 - alarm.GetLength()));
+	return ret;
 }
 
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
@@ -402,7 +403,7 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	if (!tibiaHWND) InitTibiaHandle();
 	RECT rect;
 	bool captured = false;
-	bool minimized = IsIconic(tibiaHWND);
+	bool minimized = IsIconic(tibiaHWND)!=0;
 
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
@@ -454,7 +455,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	masterDebug("toolThreadProc");
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	list<Alarm>::iterator alarmItr;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -470,6 +470,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int recoveryAlarmHp = 0;
 	int recoveryAlarmMana = 0;
 	int goPriority = 0;
+	bool isGoingToRunaway=true;
 	int stopWalk = 0;
 	int halfSleepCount = 0;
 	CString statusBuf = "";
@@ -482,7 +483,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		alarmItr->initializeCharacter();
 		alarmItr++;
 	}
-		
 	while (!toolThreadShouldStop) {			
 		Sleep(100);
 		//if we're not looking for messages consume them anyway to avoid buffer overflow/expansion
@@ -526,14 +526,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				// Stop Walking **********************
 				if (alarmItr->doStopWalking()) {
-					reader.setGlobalVariable("cavebot_halfsleep","true");
 					if (!alarmItr->stopWalk){
+						reader.setGlobalVariable("cavebot_halfsleep","true");
 						alarmItr->stopWalk = true;
 						stopWalk++;
 						halfSleepCount++;
 					}
 				} else {
-					reader.setGlobalVariable("cavebot_halfsleep","false");
 					if (alarmItr->stopWalk) {
 						alarmItr->stopWalk = false;
 						stopWalk--;
@@ -636,13 +635,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}				
 				}// ****************************
 				
+				//Start and Runaway can both be selected at the same time, but not Depot
 				// Goto Start ******************
 				if (alarmItr->doGoToStart()  && goPriority <= 1)
 					goPriority = 1;
 				// *****************************
 
-				// Goto Runaway ****************
-				if (alarmItr->doGoToRunaway() && goPriority <= 2)
+				// Goto Runaway **************** //stick with going to Start if not isGoingToRunaway
+				if (alarmItr->doGoToRunaway() && goPriority <= 2 && (!alarmItr->doGoToStart() || isGoingToRunaway))
 					goPriority = 2;
 				// *****************************
 
@@ -693,7 +693,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
 				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
 					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
-				memcpy(config->status, "", 12);
+				config->status[0]='\0';
 				if (alarmItr->halfSleep) {
 					alarmItr->halfSleep = false;
 					halfSleepCount--;
@@ -746,10 +746,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 			alarmItr++;
 		}
-		if (statusBuf.GetLength())
-			memcpy(config->status, alarmStatus(statusBuf), 200);
-		else
-			memcpy(config->status, "", 200);
+		if (statusBuf.GetLength()){
+			CString* statusMsg=alarmStatus(statusBuf);
+			memcpy(config->status,*statusMsg, 200);
+			delete statusMsg;
+		} else
+			config->status[0]='\0';
 		// Do not let seperate alarms fight for control!!
 		switch (goPriority) {
 			if (!stopWalk) break;
@@ -760,27 +762,30 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		case 1: {// Start position (By definition, the least safe place to be)
 			int pathSize = 0;
 			self = reader.readSelfCharacter();
-			CMemConstData memConstData = reader.getMemConstData();
 			int path[15];
 			delete self;
 			
 			self = reader.readSelfCharacter();
-			if (self->x != config->actX || self->y != config->actY || self->z != config->actZ) {						
-				// proceed with path searching									
-				CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-				for (; pathSize < 15 && path[pathSize]; pathSize++);										
-				if (pathSize)
-					CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
-			}
-			else if (config->actDirection) {
-				if (config->actDirection == DIR_LEFT)
-					sender.turnLeft();
-				else if(config->actDirection == DIR_RIGHT)
-					sender.turnRight();
-				else if(config->actDirection == DIR_UP)
-					sender.turnUp();
-				else if(config->actDirection == DIR_DOWN)
-					sender.turnDown();
+			if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
+				if (!reader.getAttackedCreature()){
+					// proceed with path searching
+					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+					for (; pathSize < 15 && path[pathSize]; pathSize++);
+					if (pathSize)
+						CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+				}
+			} else {
+				isGoingToRunaway=true; //Switch to going to runaway if enabled
+				if (config->actDirection) {
+					if (config->actDirection == DIR_LEFT)
+						sender.turnLeft();
+					else if(config->actDirection == DIR_RIGHT)
+						sender.turnRight();
+					else if(config->actDirection == DIR_UP)
+						sender.turnUp();
+					else if(config->actDirection == DIR_DOWN)
+						sender.turnDown();
+				}
 			}
 			delete self;
 			   }
@@ -788,50 +793,55 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
 			int pathSize = 0;
 			self = reader.readSelfCharacter();
-			CMemConstData memConstData = reader.getMemConstData();
 			CTibiaMapProxy tibiaMap;
 			
 			int path[15];
 			delete self;
 			self = reader.readSelfCharacter();
 			
-			if (self->x != config->runawayX || self->y != config->runawayY || self->z != config->runawayZ) {						
+			if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
 				// proceed with path searching									
-				CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
-				for (; pathSize < 15 && path[pathSize]; pathSize++);										
-				if (pathSize)
-					CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+				if (!reader.getAttackedCreature()){
+					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
+					for (; pathSize < 15 && path[pathSize]; pathSize++);										
+					if (pathSize)
+						CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+				}
+			} else {
+				isGoingToRunaway=false; //switch going back to statr if enabled
 			}
 			delete self;
 				}
 			break;
 		case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
-			int pathSize = 0;
-			self = reader.readSelfCharacter();
-			CMemConstData memConstData = reader.getMemConstData();
-			int path[15];
-			CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-			for (; pathSize < 15 && path[pathSize]; pathSize++);										
-			if (pathSize)
-				CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
-			delete self;
+			if (!reader.getAttackedCreature()){
+				int pathSize = 0;
+				self = reader.readSelfCharacter();
+				int path[15];
+				CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+				for (; pathSize < 15 && path[pathSize]; pathSize++);										
+				if (pathSize)
+					CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+				delete self;
+			}
 				}
 			break;
 		default: {
 			if (config->maintainStart) {
 				int pathSize = 0;
 				self = reader.readSelfCharacter();
-				CMemConstData memConstData = reader.getMemConstData();
 				int path[15];
 				delete self;
 				
 				self = reader.readSelfCharacter();
-				if (self->x != config->actX || self->y != config->actY || self->z != config->actZ) {						
-					// proceed with path searching									
-					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-					for (; pathSize < 15 && path[pathSize]; pathSize++);										
-					if (pathSize)
-						CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+				if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
+					if (!reader.getAttackedCreature()){
+						// proceed with path searching									
+						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+						for (; pathSize < 15 && path[pathSize]; pathSize++);										
+						if (pathSize)
+							CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+					}
 				}
 				else if (config->actDirection) {
 					if (config->actDirection == DIR_LEFT)
@@ -1030,12 +1040,13 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"runaway/y"))					m_configData->runawayY				= atoi(paramValue);
 	if (!strcmp(paramName,"runaway/z"))					m_configData->runawayZ				= atoi(paramValue);
 	if (!strcmp(paramName,"triggerMessage"))			m_configData->triggerMessage		= atoi(paramValue);
+	if (!strcmp(paramName,"whiteList/mkBlack"))			m_configData->options |= OPTIONS_MAKE_BLACKLIST*atoi(paramValue);
+	if (!strcmp(paramName,"options"))			m_configData->options = atoi(paramValue);
 	if (!strcmp(paramName,"whiteList/List")) {
 		if (currentPos>99)
 			return;
 		lstrcpyn(m_configData->whiteList[currentPos++],paramValue,32);
 	}
-	if (!strcmp(paramName,"whiteList/mkBlack"))			m_configData->mkBlack	= atoi(paramValue);
 	if (!strcmp(paramName,"alarmList")) {
 		if (m_configData->alarmList.begin()==currentAlarmPos){
 			m_configData->alarmList.clear();
@@ -1115,6 +1126,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"runaway/y"))					sprintf(buf,"%d",m_configData->runawayY);
 	if (!strcmp(paramName,"runaway/z"))					sprintf(buf,"%d",m_configData->runawayZ);
 	if (!strcmp(paramName,"triggerMessage"))			sprintf(buf,"%d",m_configData->triggerMessage);
+	if (!strcmp(paramName,"options"))			sprintf(buf,"%d",m_configData->options);
 	if (!strcmp(paramName,"whiteList/List")){		
 		if (currentPos<100){
 			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
@@ -1122,7 +1134,6 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 			}
 		}		
 	}
-	if (!strcmp(paramName,"whiteList/mkBlack"))						sprintf(buf,"%d",m_configData->mkBlack);
 	if (!strcmp(paramName,"alarmList")) {
 		if (currentAlarmPos == m_configData->alarmList.end())
 			return buf;
@@ -1189,6 +1200,7 @@ char *CMod_autogoApp::getConfigParamName(int nr) {
 	case 8: return "whiteList/List";
 	case 9: return "whiteList/mkBlack";
 	case 10: return "alarmList";
+	case 11: return "options";
 
 	default:
 		return NULL;

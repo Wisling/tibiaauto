@@ -1065,7 +1065,7 @@ void ReadPipeInfo(){
 
 	while (backPipe.readFromPipe(&mess,1002)){			
 		int len;
-		char msgBuf[16384];			
+		char msgBuf[16384];
 				
 		memset(msgBuf,0,16384);
 		memcpy(&len,mess.payload,sizeof(int));						
@@ -1079,8 +1079,7 @@ void ReadPipeInfo(){
 		//You see Test (Level 30). He is a master sorcerer. He is Member of Guild.
 		//You see Test (Level 37). He is a master sorcerer. He is Member of Guild (Description).
 		//You see yourself. You are a sorcerer. You are Member of the Guild (Description).
-
-		if (!regexpProxy.regcomp(&preg,"You see ([a-z' -]+)..Level ([0-9]+).. (he|she) (is an?|has) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(s?he is ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){			
+		if (!regexpProxy.regcomp(&preg,"You see ([a-z' -]+)..Level ([0-9]+).. (he|she) (is an?|has) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(s?he is ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
 			if (!regexpProxy.regexec(&preg,msgBuf,20,pmatch,0)){
 				//T4: This is a player
 				char resNick[128]; 
@@ -1118,68 +1117,66 @@ void ReadPipeInfo(){
 				//sender.sendTAMessage(resNick);
 
 			}else{
-				// T4: No match, this is non-player info text
-				regex_t preg2;
-				if (!regexpProxy.regcomp(&preg2,"You see (an? |)([a-z '-,.]+).$",REG_EXTENDED|REG_ICASE)){
-					if (!regexpProxy.regexec(&preg2,msgBuf,20,pmatch,0)){
-						char resNick[128];
-						lstrcpyn(resNick,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
-						if (pmatch[1].rm_eo!=pmatch[1].rm_so){
-							Monster_Register
-								(resNick,TYPE_MONSTER,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
-						}else{
-							Monster_Register(resNick,TYPE_NPC,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
-						}
-						//sprintf(resNick,"Registered Monsters: %d",monstersCount);
-						//sender.sendTAMessage(resNick);
-					}else{
-						regex_t preg3;
-						if (!regexpProxy.regcomp(&preg3,"You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation).*( You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
-							if (!regexpProxy.regexec(&preg3,msgBuf,20,pmatch,0)){
-								//T4: This is self
-								char resVoc[128];
-								char resGuildName[128];
-								char resGuildRank[128];
-								char resGuildDescription[128];
+				regex_t preg3;
+				if (!regexpProxy.regcomp(&preg3,"You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation).*( You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
+					if (!regexpProxy.regexec(&preg3,msgBuf,20,pmatch,0)){
+						//T4: This is self
+						char resVoc[128];
+						char resGuildName[128];
+						char resGuildRank[128];
+						char resGuildDescription[128];
 
-								lstrcpyn(resVoc,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
-								
-								if (pmatch[3].rm_so>0){
-									//T4: This player is a member of guild
-									lstrcpyn(resGuildRank,msgBuf+pmatch[4].rm_so,min(127,pmatch[4].rm_eo-pmatch[4].rm_so+1));
-									lstrcpyn(resGuildName,msgBuf+pmatch[5].rm_so,min(127,pmatch[5].rm_eo-pmatch[5].rm_so+1));
-									if (pmatch[6].rm_so>0){
-										//T4: Also have description
-										lstrcpyn(resGuildDescription,msgBuf+pmatch[7].rm_so,min(127,pmatch[7].rm_eo-pmatch[7].rm_so+1));
-									}
-								}else{
-									resGuildRank[0]=0;
-									resGuildName[0]=0;
-									resGuildDescription[0]=0;
-								}
-
-								CTibiaCharacter *self = reader.readSelfCharacter();
-								CTibiaCharacter *selfName = reader.readVisibleCreature(reader.getLoggedCharNr());
-
-								lstrcpyn(playersInfo[0].name,selfName->name,32);
-								playersInfo[0].type	= TYPE_SELF;
-								playersInfo[0].maxHp = self->maxHp;
-								playersInfo[0].vocId = Player_Vocation2VocID(resVoc);
-								playersInfo[0].level = self->lvl;
-								lstrcpyn(playersInfo[0].guildName,resGuildName,31);
-								lstrcpyn(playersInfo[0].guildRank,resGuildRank,31);
-								lstrcpyn(playersInfo[0].guildDescription,resGuildDescription,31);
-
-								delete self;
-								delete selfName;
-							}
-							regexpProxy.regfree(&preg3);
-						}
+						lstrcpyn(resVoc,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
 						
+						if (pmatch[3].rm_so>0){
+							//T4: This player is a member of guild
+							lstrcpyn(resGuildRank,msgBuf+pmatch[4].rm_so,min(127,pmatch[4].rm_eo-pmatch[4].rm_so+1));
+							lstrcpyn(resGuildName,msgBuf+pmatch[5].rm_so,min(127,pmatch[5].rm_eo-pmatch[5].rm_so+1));
+							if (pmatch[6].rm_so>0){
+								//T4: Also have description
+								lstrcpyn(resGuildDescription,msgBuf+pmatch[7].rm_so,min(127,pmatch[7].rm_eo-pmatch[7].rm_so+1));
+							}
+						}else{
+							resGuildRank[0]=0;
+							resGuildName[0]=0;
+							resGuildDescription[0]=0;
+						}
+
+						CTibiaCharacter *self = reader.readSelfCharacter();
+						CTibiaCharacter *selfName = reader.readVisibleCreature(reader.getLoggedCharNr());
+
+						lstrcpyn(playersInfo[0].name,selfName->name,32);
+						playersInfo[0].type	= TYPE_SELF;
+						playersInfo[0].maxHp = self->maxHp;
+						playersInfo[0].vocId = Player_Vocation2VocID(resVoc);
+						playersInfo[0].level = self->lvl;
+						lstrcpyn(playersInfo[0].guildName,resGuildName,31);
+						lstrcpyn(playersInfo[0].guildRank,resGuildRank,31);
+						lstrcpyn(playersInfo[0].guildDescription,resGuildDescription,31);
+
+						delete self;
+						delete selfName;
+					}else{
+						// T4: No match, this is non-player info text
+						regex_t preg2;
+						if (!regexpProxy.regcomp(&preg2,"You see (an? |)([a-z '-,.]+).$",REG_EXTENDED|REG_ICASE)){
+							if (!regexpProxy.regexec(&preg2,msgBuf,20,pmatch,0)){
+								char resNick[128];
+								lstrcpyn(resNick,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
+								if (pmatch[1].rm_eo!=pmatch[1].rm_so){
+									Monster_Register
+										(resNick,TYPE_MONSTER,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
+								}else{
+									Monster_Register(resNick,TYPE_NPC,0,0,2,2,2,2,2,2,2,0,0,"Auto Added");
+								}
+								//sprintf(resNick,"Registered Monsters: %d",monstersCount);
+								//sender.sendTAMessage(resNick);
+							}
+							regexpProxy.regfree(&preg2);									
+						}
 					}
-					regexpProxy.regfree(&preg2);
+					regexpProxy.regfree(&preg3);
 				}
-				
 			}
 			regexpProxy.regfree(&preg);
 		}

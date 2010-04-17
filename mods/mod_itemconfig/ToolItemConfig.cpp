@@ -91,8 +91,15 @@ END_MESSAGE_MAP()
 
 void CToolItemConfig::OnOK()
 {
-	// Applies changes to the lists only after OK is clicked.
-	// Recreates entire list and tree from the GUI
+	CTibiaItemProxy itemProxy;
+	ControlsToConfig();
+
+	itemProxy.saveItemLists();
+	itemProxy.refreshItemLists();
+	ShowWindow(SW_HIDE);
+}
+
+void CToolItemConfig::ControlsToConfig(){
 	CTibiaItemProxy itemProxy;
 	CTibiaTree* dataTree=new CTibiaTree(new CTibiaTreeBranchData("Root"));
 	CreateDataTree(dataTree,&m_itemsTree,TVI_ROOT);
@@ -111,11 +118,7 @@ void CToolItemConfig::OnOK()
 		free(name);
 	}
 
-	itemProxy.saveItemLists();
-	itemProxy.refreshItemLists();
-	ShowWindow(SW_HIDE);
 }
-
 void CToolItemConfig::OnCancel(){
 	ConfigToControls();
 	CDialog::OnCancel();
@@ -140,6 +143,7 @@ static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataT
 			sprintf(txt,"%s[%d]",data->GetName(),data->GetId());
 
 			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,txt, 0,0,0,0,data->GetId(),guiTree, TVI_LAST);
+			free(txt);
 
 			//2 is fully checked, 0 is not checked
 			val=data->IsLooted()?2:0;
@@ -260,7 +264,8 @@ BOOL CToolItemConfig::OnInitDialog()
 
 	m_itemsTree.SetImageList(checkImgList,TVSIL_NORMAL);
 
-	OnToolItemconfigRefresh();
+	//OnToolItemconfigRefresh();
+	ConfigToControls();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE

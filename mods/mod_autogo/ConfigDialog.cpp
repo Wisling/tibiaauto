@@ -112,12 +112,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	if (nIDEvent==1001) {
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		CString buf;
+		char buf[512];
 
 		if (!m_enable.GetCheck()) 
-			triggerMessage();
-
-		buf.Format("Status: %s", status);
+			triggerMessage(); 
+	
+		sprintf(buf,"Status: %s", status);
 		m_status.SetWindowText(buf);
 
 		delete self;
