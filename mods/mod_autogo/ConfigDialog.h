@@ -69,6 +69,8 @@ protected:
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();
+	afx_msg void OnCaptureChanged(CWnd *pWnd);
+	afx_msg void OnDestroy();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

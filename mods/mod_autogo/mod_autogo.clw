@@ -22,11 +22,11 @@ Resource4=IDD_WHITELIST (Polish)
 >>>>>>> 1.17
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
-Resource6=IDD_CONFIG (Polish)
+Resource6=IDD_ALARM_DIALOG
 Class5=GeneralConfigDialog
-Resource7=IDD_ADD_CUSTOM_SPELL
+Resource7=IDD_CONFIG (Polish)
 Class6=CCustomSpellDialog
-Resource8=IDD_ALARM_DIALOG
+Resource8=IDD_ADD_CUSTOM_SPELL
 
 [CLS:CMod_autogoApp]
 Type=0
