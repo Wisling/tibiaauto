@@ -283,15 +283,15 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case LEVELUP:
 			switch (attribute) {
 			case ALL:
-				retval |= self->lvl > lvlInit;
-				retval |= self->mlvl > mlvlInit;
-				retval |= self->skillFish > skillFishInit;
-				retval |= self->skillFist > skillFistInit;
-				retval |= self->skillClub > skillClubInit;
-				retval |= self->skillSword > skillSwordInit;
-				retval |= self->skillAxe > skillAxeInit;
-				retval |= self->skillDist > skillDistInit;
-				retval |= self->skillShield > skillShieldInit;
+				retval |= (self->lvl > lvlInit);
+				retval |= (self->mlvl > mlvlInit);
+				retval |= (self->skillFish > skillFishInit);
+				retval |= (self->skillFist > skillFistInit);
+				retval |= (self->skillClub > skillClubInit);
+				retval |= (self->skillSword > skillSwordInit);
+				retval |= (self->skillAxe > skillAxeInit);
+				retval |= (self->skillDist > skillDistInit);
+				retval |= (self->skillShield > skillShieldInit);
 				lvlInit=self->lvl;
 				mlvlInit=self->mlvl;
 				skillFishInit=self->skillFish;
@@ -341,87 +341,95 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			}
 			break;
 		case PERCLVLACHIEVED: 
+			{
+			int lvlExp=(50*pow(self->lvl-1,3)-150*pow(self->lvl-1,2)+400*(self->lvl-1))/3;
 			switch (attribute) {
 			case ALL:
-				retval |= 100 - self->mlvlPercLeft >= intTrigger;
-				retval |= 100 - self->skillFishPercLeft >= intTrigger;
-				retval |= 100 - self->skillFistPercLeft >= intTrigger;
-				retval |= 100 - self->skillClubPercLeft >= intTrigger;
-				retval |= 100 - self->skillSwordPercLeft >= intTrigger;
-				retval |= 100 - self->skillAxePercLeft >= intTrigger;
-				retval |= 100 - self->skillDistPercLeft >= intTrigger;
-				retval |= 100 - self->skillShieldPercLeft >= intTrigger;
+				retval |= (100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= intTrigger);
+				retval |= (100 - self->mlvlPercLeft >= intTrigger);
+				retval |= (100 - self->skillFishPercLeft >= intTrigger);
+				retval |= (100 - self->skillFistPercLeft >= intTrigger);
+				retval |= (100 - self->skillClubPercLeft >= intTrigger);
+				retval |= (100 - self->skillSwordPercLeft >= intTrigger);
+				retval |= (100 - self->skillAxePercLeft >= intTrigger);
+				retval |= (100 - self->skillDistPercLeft >= intTrigger);
+				retval |= (100 - self->skillShieldPercLeft >= intTrigger);
 				break;
 			case LEVEL:
-//				return ??;
+				retval=100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= intTrigger;
 				break;
 			case MAGICLVL:
-				return 100 - self->mlvlPercLeft >= intTrigger;
+				retval=100 - self->mlvlPercLeft >= intTrigger;
 				break;
 			case FISHING:
-				return 100 - self->skillFishPercLeft >= intTrigger;
+				retval=100 - self->skillFishPercLeft >= intTrigger;
 				break;
 			case FIST:
-				return 100 - self->skillFistPercLeft >= intTrigger;
+				retval=100 - self->skillFistPercLeft >= intTrigger;
 				break;
 			case CLUB:
-				return 100 - self->skillClubPercLeft >= intTrigger;
+				retval=100 - self->skillClubPercLeft >= intTrigger;
 				break;
 			case SWORDSKILL:
-				return 100 - self->skillSwordPercLeft >= intTrigger;
+				retval=100 - self->skillSwordPercLeft >= intTrigger;
 				break;
 			case AXE:
-				return 100 - self->skillAxePercLeft >= intTrigger;
+				retval=100 - self->skillAxePercLeft >= intTrigger;
 				break;
 			case DISTANCE:
-				return 100 - self->skillDistPercLeft >= intTrigger;
+				retval=100 - self->skillDistPercLeft >= intTrigger;
 				break;
 			case SHIELD:
-				return 100 - self->skillShieldPercLeft >= intTrigger;
+				retval=100 - self->skillShieldPercLeft >= intTrigger;
 				break;
 			}
 			break;
-		case PERCLVLREMAINING: 
+			}
+		case PERCLVLREMAINING:
+			{
+			int lvlExp=(50 * pow(self->lvl-1,3)-150 * pow(self->lvl-1,2)+400*(self->lvl-1))/3;
 			switch (attribute) {
 			case ALL:
-				retval |= self->mlvlPercLeft <= intTrigger;
-				retval |= self->skillFishPercLeft <= intTrigger;
-				retval |= self->skillFistPercLeft <= intTrigger;
-				retval |= self->skillClubPercLeft <= intTrigger;
-				retval |= self->skillSwordPercLeft <= intTrigger;
-				retval |= self->skillAxePercLeft <= intTrigger;
-				retval |= self->skillDistPercLeft <= intTrigger;
-				retval |= self->skillShieldPercLeft <= intTrigger;
+				retval |= ((self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= intTrigger);
+				retval |= (self->mlvlPercLeft <= intTrigger);
+				retval |= (self->skillFishPercLeft <= intTrigger);
+				retval |= (self->skillFistPercLeft <= intTrigger);
+				retval |= (self->skillClubPercLeft <= intTrigger);
+				retval |= (self->skillSwordPercLeft <= intTrigger);
+				retval |= (self->skillAxePercLeft <= intTrigger);
+				retval |= (self->skillDistPercLeft <= intTrigger);
+				retval |= (self->skillShieldPercLeft <= intTrigger);
 				break;
 			case LEVEL:
-//				return ??;
+				retval=(self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= intTrigger;
 				break;
 			case MAGICLVL:
-				return self->mlvlPercLeft <= intTrigger;
+				retval=self->mlvlPercLeft <= intTrigger;
 				break;
 			case FISHING:
-				return self->skillFishPercLeft <= intTrigger;
+				retval=self->skillFishPercLeft <= intTrigger;
 				break;
 			case FIST:
-				return self->skillFistPercLeft <= intTrigger;
+				retval=self->skillFistPercLeft <= intTrigger;
 				break;
 			case CLUB:
-				return self->skillClubPercLeft <= intTrigger;
+				retval=self->skillClubPercLeft <= intTrigger;
 				break;
 			case SWORDSKILL:
-				return self->skillSwordPercLeft <= intTrigger;
+				retval=self->skillSwordPercLeft <= intTrigger;
 				break;
 			case AXE:
-				return self->skillAxePercLeft <= intTrigger;
+				retval=self->skillAxePercLeft <= intTrigger;
 				break;
 			case DISTANCE:
-				return self->skillDistPercLeft <= intTrigger;
+				retval=self->skillDistPercLeft <= intTrigger;
 				break;
 			case SHIELD:
-				return self->skillShieldPercLeft <= intTrigger;
+				retval=self->skillShieldPercLeft <= intTrigger;
 				break;
 			}
 			break;
+			}
 		}
 		break;
 	case RESOURCE:
@@ -429,75 +437,75 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case EQUAL:
 			switch(attribute) {
 			case HP:
-				return self->hp == intTrigger;
+				retval=self->hp == intTrigger;
 				break;
 			case MP:
-				return self->mana == intTrigger;
+				retval=self->mana == intTrigger;
 				break;
 			case XP:
-				return self->exp == intTrigger;
+				retval=self->exp == intTrigger;
 				break;
 			case SP:
-				return self->soulPoints == intTrigger;
+				retval=self->soulPoints == intTrigger;
 				break;
 			case STAMINA:
-				return self->stamina == intTrigger;
+				retval=self->stamina == intTrigger;
 				break;
 			case CAPACITY:
-				return self->cap == intTrigger;
+				retval=self->cap == intTrigger;
 				break;
 			case SPACE:
-				return spaceAvailable() == intTrigger;
+				retval=spaceAvailable() == intTrigger;
 				break;
 			} 
 			break;
 		case LESS:
 			switch(attribute) {
 			case HP:
-				return self->hp < intTrigger;
+				retval= self->hp < intTrigger;
 				break;
 			case MP:
-				return self->mana < intTrigger;
+				retval= self->mana < intTrigger;
 				break;
 			case XP:
-				return self->exp < intTrigger;
+				retval= self->exp < intTrigger;
 				break;
 			case SP:
-				return self->soulPoints < intTrigger;
+				retval= self->soulPoints < intTrigger;
 				break;
 			case STAMINA:
-				return self->stamina < intTrigger;
+				retval= self->stamina < intTrigger;
 				break;
 			case CAPACITY:
-				return self->cap < intTrigger;
+				retval= self->cap < intTrigger;
 				break;
 			case SPACE:
-				return spaceAvailable() < intTrigger;
+				retval= spaceAvailable() < intTrigger;
 				break;
 			}
 			break;
 		case MORE:
 			switch(attribute) {
 			case HP:
-				return self->hp > intTrigger;
+				retval= self->hp > intTrigger;
 				break;
 			case MP:
-				return self->mana > intTrigger;
+				retval= self->mana > intTrigger;
 				break;
 			case XP:
-				return self->exp > intTrigger;
+				retval= self->exp > intTrigger;
 				break;
 			case SP:
-				return self->soulPoints > intTrigger;
+				retval=self->soulPoints > intTrigger;
 				break;
 			case STAMINA:
-				return self->stamina > intTrigger;
+				retval= self->stamina > intTrigger;
 				break;
 			case CAPACITY:
-				return self->cap > intTrigger;
+				retval= self->cap > intTrigger;
 				break;
 			case SPACE:
-				return spaceAvailable() > intTrigger;
+				retval= spaceAvailable() > intTrigger;
 				break;
 			}
 			break;
@@ -508,30 +516,30 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case EQUAL:
 			switch(attribute) {
 			case 0:
-				return countAllFood() == intTrigger;
+				retval= countAllFood() == intTrigger;
 				break;
 			default:
-				return countAllItemsOfType(attribute) == intTrigger;
+				retval= countAllItemsOfType(attribute) == intTrigger;
 				break;
 			}
 			break;
 		case LESS:
 			switch(attribute) {
 			case 0:
-				return countAllFood() < intTrigger;
+				retval= countAllFood() < intTrigger;
 				break;
 			default:
-				return countAllItemsOfType(attribute) < intTrigger;
+				retval= countAllItemsOfType(attribute) < intTrigger;
 				break;
 			}
 			break;
 		case MORE:
 			switch(attribute) {
 			case 0:
-				return countAllFood() > intTrigger;
+				retval= countAllFood() > intTrigger;
 				break;
 			default:
-				return countAllItemsOfType(attribute) > intTrigger;
+				retval= countAllItemsOfType(attribute) > intTrigger;
 				break;
 			}
 			break;
@@ -542,62 +550,62 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case NEARBY:
 			switch(attribute) {
 			case PLAYER:
-				return playerOnScreen(whiteList, options);
+				retval= playerOnScreen(whiteList, options);
 				break;
 			case MONSTER:
-				return monsterOnScreen(whiteList, options);
+				retval= monsterOnScreen(whiteList, options);
 				break;
 			case GM:
-				return gmOnScreen(whiteList, options);
+				retval= gmOnScreen(whiteList, options);
 				break;
 			case BATTLELIST:
-				return battleListActive();
+				retval= battleListActive();
 				break;
 			case BLACKSKULL:
-				return skullOnScreen(BLACK_SKULL);
+				retval= skullOnScreen(BLACK_SKULL);
 				break;
 			case REDSKULL:
-				return skullOnScreen(RED_SKULL);
+				retval= skullOnScreen(RED_SKULL);
 				break;
 			case GREENSKULL:
-				return skullOnScreen(GREEN_SKULL);
+				retval= skullOnScreen(GREEN_SKULL);
 				break;
 			case YELLOWSKULL:
-				return skullOnScreen(YELLOW_SKULL);
+				retval= skullOnScreen(YELLOW_SKULL);
 				break;
 			case WHITESKULL:
-				return skullOnScreen(WHITE_SKULL);
+				retval= skullOnScreen(WHITE_SKULL);
 				break;
 			}
 			break;
 		case DISAPPEARS:
 			switch(attribute) {
 			case PLAYER:
-				return !playerOnScreen(whiteList, options);
+				retval= !playerOnScreen(whiteList, options);
 				break;
 			case MONSTER:
-				return !monsterOnScreen(whiteList, options);
+				retval= !monsterOnScreen(whiteList, options);
 				break;
 			case GM:
-				return !gmOnScreen(whiteList, options);
+				retval= !gmOnScreen(whiteList, options);
 				break;
 			case BATTLELIST:
-				return !battleListActive();
+				retval= !battleListActive();
 				break;
 			case BLACKSKULL:
-				return !skullOnScreen(BLACK_SKULL);
+				retval= !skullOnScreen(BLACK_SKULL);
 				break;
 			case REDSKULL:
-				return !skullOnScreen(RED_SKULL);
+				retval= !skullOnScreen(RED_SKULL);
 				break;
 			case GREENSKULL:
-				return !skullOnScreen(GREEN_SKULL);
+				retval= !skullOnScreen(GREEN_SKULL);
 				break;
 			case YELLOWSKULL:
-				return !skullOnScreen(YELLOW_SKULL);
+				retval= !skullOnScreen(YELLOW_SKULL);
 				break;
 			case WHITESKULL:
-				return !skullOnScreen(WHITE_SKULL);
+				retval= !skullOnScreen(WHITE_SKULL);
 				break;
 			}
 			break;
@@ -607,92 +615,92 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			case PLAYER:
 				onscreen = playerOnScreen(whiteList, options);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case MONSTER:
 				onscreen = monsterOnScreen(whiteList, options);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case GM:
 				onscreen = gmOnScreen(whiteList, options);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case BATTLELIST:
 				onscreen = battleListActive();
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case BLACKSKULL:
 				onscreen = skullOnScreen(BLACK_SKULL);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case REDSKULL:
 				onscreen = skullOnScreen(RED_SKULL);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case GREENSKULL:
 				onscreen = skullOnScreen(GREEN_SKULL);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case YELLOWSKULL:
 				onscreen = skullOnScreen(YELLOW_SKULL);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			case WHITESKULL:
 				onscreen = skullOnScreen(WHITE_SKULL);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
-					return true;
+					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
 				else if (!onscreen)
 					onScreenAt = 0;
-				return false;
+				retval=false;
 				break;
 			}
 			}
@@ -704,27 +712,27 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case LOGON:
 			switch (attribute) {
 			case CURRENTPLAYERONLINE:
-				return reader.getConnectionState() == 8;
+				retval=reader.getConnectionState() == 8;
 				break;
 			default:
-				return vipOnline(attribute);
+				retval=vipOnline(attribute);
 				break;
 			}
 			break;
 		case LOGOFF:
 			switch (attribute) {
 			case CURRENTPLAYERONLINE:
-				return reader.getConnectionState() != 8;
+				retval=reader.getConnectionState() != 8;
 				break;
 			default:
-				return !vipOnline(attribute);
+				retval=!vipOnline(attribute);
 				break;
 			}
 			break;
 		}
 		break;
 	case CHARACTER_STATUS:
-		return reader.getSelfEventFlags() & (int)pow(2,attribute);
+		retval=reader.getSelfEventFlags() & (int)pow(2,attribute);
 		break;
 	case EVENT:
 		struct tibiaMessage *msg = triggerMessage();
@@ -749,17 +757,21 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case CHARACTERNOTMOVED:
 			switch (condition) {
 			case EQUAL:
-				return time(NULL)-movedTime == getIntTrigger();
+				retval=time(NULL)-movedTime == getIntTrigger();
+				break;
 			case LESS:
-				return time(NULL)-movedTime < getIntTrigger();
+				retval=time(NULL)-movedTime < getIntTrigger();
+				break;
 			case MORE:
-				return time(NULL)-movedTime > getIntTrigger();
+				retval=time(NULL)-movedTime > getIntTrigger();
+				break;
 			}
 			break;
 		}
 		if (msg) delete msg;
 		break;
 	}
+	delete self;
 	return retval;
 }
 

@@ -226,7 +226,7 @@ BEGIN
                     WS_TABSTOP
     CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,21,138,73,11
-    CONTROL         "Restore Window",IDC_ACTION_WINDOW,"Button",
+    CONTROL         "Window Action",IDC_ACTION_WINDOW,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,100,152,73,11
     COMBOBOX        IDC_ACTION_WINDOW_LIST,106,165,67,79,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
@@ -295,7 +295,7 @@ BEGIN
                     SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,144,176,124,100
     LTEXT           "Runaway Position:",IDC_STATIC,144,164,60,8,
                     SS_CENTERIMAGE
-    CONTROL         "Flash continuously when alarm sounds",IDC_FLASHONALARM,
+    CONTROL         "Highlight window when alarm sounds",IDC_FLASHONALARM,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,296,144,10
 END
 
@@ -406,6 +406,7 @@ IDB_STARTMODULE         BITMAP  DISCARDABLE     "res\\StartModule.bmp"
 IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "res\\SuspendModule.bmp"
 IDB_ITEMS               BITMAP  DISCARDABLE     "res\\Items.bmp"
 IDB_STOP                BITMAP  DISCARDABLE     "res\\Stop.bmp"
+
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -504,6 +505,11 @@ BEGIN
 0x614d, 0x6978, 0x696d, 0x657a, 0x5420, 0x6269, 0x6169, "\000" 
     IDC_ACTION_WINDOW_LIST, 0x403, 14, 0
 0x6552, 0x7473, 0x726f, 0x2065, 0x6954, 0x6962, 0x0061, 
+    IDC_ACTION_WINDOW_LIST, 0x403, 11, 0
+0x6c46, 0x7361, 0x2068, 0x6e4f, 0x6563, "\000" 
+    IDC_ACTION_WINDOW_LIST, 0x403, 19, 0
+0x6c46, 0x7361, 0x2068, 0x6f43, 0x746e, 0x6e69, 0x6f75, 0x7375, 0x796c, 
+"\000" 
     0
 END
 

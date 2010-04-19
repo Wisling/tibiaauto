@@ -711,7 +711,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_autoResearch.SetWindowText(buf);
 		}else{
 			char buf[128];
-			sprintf(buf,"Auto Research Map (Test Version)");
+			sprintf(buf,"Auto Research Map");
 			m_autoResearch.SetWindowText(buf);
 		}
 

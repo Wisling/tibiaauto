@@ -683,3 +683,166 @@ public:
 
 
 };
+
+///////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////// CTibiaQueue Implementation //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+class CTibiaQueue{
+private:
+	int count;
+	int origTabSize;
+	int tabSize;
+	int start;
+	int end;
+	DWORD*tab;
+public:
+	CTibiaQueue(){
+		origTabSize=15;
+		tabSize=origTabSize;
+		count=0;
+		tab=(DWORD*)malloc(sizeof(DWORD)*tabSize);
+		memset(tab,0,sizeof(DWORD)*tabSize);
+		start=0;
+		end=0;
+	}
+	~CTibiaQueue(){
+		free(tab);
+	}
+	void Add(DWORD ptr){
+		growCheck();
+		tab[end]=ptr;
+		end=(end+1) % tabSize;
+		count++;
+	}
+	DWORD Remove(){
+		if (!count) return NULL;
+		DWORD ret=tab[start];
+		tab[start]=NULL;
+		start = (start+1)%tabSize;
+		count--;
+		shrinkCheck();
+		return ret;
+	}
+	int GetCount(){
+		return count;
+	}
+	char* toString(){
+		return toString(tab,tabSize);
+	}
+private:
+	char* toString(DWORD* tab, int tabSize){
+		char * ret=(char*)malloc(tabSize*10+100);
+		ret[0]=0;
+		sprintf(ret+strlen(ret),"[s:%d,e:%d,c:%d,sz:%d][",start,end,count,tabSize);
+		for (int i=0;i<tabSize;i++){
+			sprintf(ret+strlen(ret),"%d ",tab[i]);
+		}
+		ret[strlen(ret)-1]=0;
+		sprintf(ret+strlen(ret),"]");
+		return ret;
+	}
+	void growCheck(){
+		if (count==tabSize){//start==end
+			int tmpTabSize=tabSize*2;
+			DWORD* tmpTab=(DWORD*)malloc(sizeof(DWORD)*tmpTabSize);
+			memset(tmpTab,0,sizeof(DWORD)*tmpTabSize);
+
+			memcpy(tmpTab,tab+start,(tabSize-start)*sizeof(DWORD));
+			memcpy(tmpTab+tabSize-start,tab,(end)*sizeof(DWORD));
+
+			free(tab);
+			tab=tmpTab;
+			tabSize=tmpTabSize;
+			start=0;
+			end=count;
+		}
+	}
+	void shrinkCheck(){
+		if (tabSize>origTabSize && count==tabSize/4) {//start!=end
+			int tmpTabSize=tabSize/2;
+			DWORD* tmpTab=(DWORD*)malloc(sizeof(DWORD)*tmpTabSize);
+			memset(tmpTab,0,sizeof(DWORD)*tmpTabSize);
+
+			memcpy(tmpTab,tab+start,min(count,tabSize-start)*sizeof(DWORD));
+			memcpy(tmpTab+min(count,tabSize-start),tab,(start>=end?end:0)*sizeof(DWORD));
+
+			free(tab);
+			tabSize=tmpTabSize;
+			tab=tmpTab;
+			start=0;
+			end=count;
+		}
+	}
+	void testAddUntilFull(){
+		for (int i=0;i<origTabSize;i++){
+			Add (i+1);
+		}
+	}
+	void testPop(){
+		Remove();
+		for (int i=0;i<origTabSize;i++){
+			Add (i+1);
+		}
+		while (count>4){
+			Remove();
+		}
+	}
+	void testGrowAligned(){
+		for (int i=0;i<origTabSize*1.5;i++){
+			Add (i+1);
+		}
+	}
+	void testGrowUnaligned(){
+		for (int i=0;i<origTabSize*1.5;i++){
+			Add (i+1);
+			if(i==2){
+				Remove();
+				Remove();
+			}
+		}
+	}
+	void testGrowLooped(){
+		for (int i=0;i<origTabSize*2;i++){
+			Add (i+1);
+			if(i==3){
+				Remove();
+				Remove();
+				Remove();
+				Remove();
+			}
+		}
+	}
+	void testShrinkAligned(){
+		for (int i=0;i<origTabSize*4;i++){
+			Add (i+1);
+		}
+		for (i=0;i<origTabSize*3;i++){
+			Remove ();
+		}
+	}
+	void testShrinkUnaligned(){
+		origTabSize=1;
+		for (int i=0;i<18;i++){
+			if (i==7){
+				while (count>1+tabSize/4){Remove();}
+			}
+			Add (i+1);
+		}
+		while(Remove()){}
+	}
+	void testMass(){
+		int runtime=0;
+		int i=1;
+		while(count<1000){
+			if (rand()%100>51) Remove();
+			else Add(i++);
+			runtime++;
+		}
+		runtime=0;
+		while(count>0){
+			if (rand()%100>49) Remove();
+			else Add(i++);
+			runtime++;
+		}
+	}
+};
