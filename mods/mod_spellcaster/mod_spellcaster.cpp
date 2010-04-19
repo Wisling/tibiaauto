@@ -311,7 +311,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					break;
 				}
 				if (strlen(spellname)>0) {
-					sender.sayWhisper(spellname);
+					sender.say(spellname);
 					lastCastTime = time(NULL);
 					Sleep(500);
 				}
@@ -321,7 +321,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		else if(config->strike && time(NULL)-lastCastTime >= minCastTime && self->mana>=config->manaStrike && attackedCreature){
 			attackedCreature = reader.getAttackedCreature();
 			//T4: If any creature is attacked
-			if (attackedCreature > 0) {			
+			if (attackedCreature > 0) {
 				//T4: Get attacked creature stucture
 				CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
 				if (ch) {
@@ -396,7 +396,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								sender.sendTAMessage("WARNING!!! No appropriate strike spell configured!");
 							}
 							if (strlen(spellname)>0) {
-								sender.sayWhisper(spellname);
+								sender.say(spellname);
 								lastCastTime = time(NULL);
 								Sleep(500);
 							}
@@ -411,7 +411,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// we should summon something
 			char buf[256];
 			sprintf(buf,"utevo res \"%s\"",config->summonName);
-			sender.sayWhisper(buf);
+			sender.say(buf);
 			Sleep(700);
 		}
 		//T4: Use mana in other purpose otherwise

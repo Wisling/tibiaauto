@@ -123,7 +123,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (itemMoved->objectId==itemProxy.getValueForConst("fluid"))
 					nonGroupable=1;
 				CTibiaTile *tile = reader.getTibiaTile(itemMoved->objectId);
-				if (!tile->stackable)
+				if (tile && !tile->stackable)
 					nonGroupable=1;
 
 				if (itemMoved->quantity&&itemMoved->quantity<100&&!nonGroupable)//If items should be stacked
