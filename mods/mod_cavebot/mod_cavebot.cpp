@@ -1404,8 +1404,6 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 	//start helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
 
 	while (!toolThreadShouldStop) {
-		if (!lootThreadId)
-			
 		Sleep(100);
 		while (corpseQueue.GetCount()){
 			Corpse* corpseCh=(Corpse*)corpseQueue.Remove();
