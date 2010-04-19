@@ -70,6 +70,8 @@ END_MESSAGE_MAP()
 
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
+HANDLE soundThreadHandle;
+char soundPath[2048];
 HWND tibiaHWND = NULL;
 
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
@@ -447,7 +449,38 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
 	return NULL;
 }
+/*
+DWORD WINAPI managePlaySoundThread(LPVOID lpParam) {
+	//char* alarm = lpParam;
+	//alarm[0]=0;
+	char currentSound[2048];
+	char nextSound[2048];
+	bool playedCurrentSound=false;
 
+	while(!toolThreadShouldStop){
+		Sleep(100);
+		if (soundPath[0]){
+			if (strcmp(nextSound,soundPath)!=0){
+				memcpy(nextSound,soundPath,2047);
+				nextSound[2047]=0;
+				playedCurrentSound=false;
+			}			
+			soundPath[0]=0;
+		}
+		if (nextSound[0] || playedCurrentSound[0]){
+			if (strcmp(currenSound,nextSound)!=0){
+				memcpy(currentSound,nextSound,2047);
+				currentSound[2047]=0;
+			}else{
+				nextSound[0]=0;
+			}
+		}
+		if (PlaySound(playedCurrentSound, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP)){
+			playedCurrentSound=true;
+		}
+	}
+}
+*/
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -474,10 +507,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int stopWalk = 0;
 	int halfSleepCount = 0;
 	CString statusBuf = "";
+	soundPath[0]=0;
 	
 	delete self;
 
 	PlaySound(0, 0, 0);
+	/* Del
+	{
+		DWORD threadId;
+		soundThreadHandle = ::CreateThread(NULL,0,managePlaySoundThread,&soundPath,0,&threadId);
+	}
+	*/
 	alarmItr = config->alarmList.begin();
 	while (alarmItr != config->alarmList.end()) {
 		alarmItr->initializeCharacter();
@@ -499,6 +539,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
 					statusBuf += "  ******  " + alarmItr->getDescriptor();
 				
+				// Flash Window ***************
+				if ((config->options&OPTIONS_FLASHONALARM) && !alarmItr->flashed) {
+					if (!alarmItr->windowActed){
+						if (!tibiaHWND) InitTibiaHandle();
+						FlashWindow(tibiaHWND, true);
+					}
+					alarmItr->flashed = true;
+				}// ****************************
+
 				// Log Event ******************
 				if (alarmItr->doLogEvents() && !alarmItr->eventLogged) {
 					time_t rawtime;
@@ -563,6 +612,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							alarmItr->windowActed = true;
 						}
 						break;
+					case 2://flash once
+						if (!alarmItr->windowActed && !alarmItr->flashed) {
+							if (!tibiaHWND) InitTibiaHandle();
+							FlashWindow(tibiaHWND, true);
+							alarmItr->windowActed = true;
+						}
+						break;
+					case 3://flash continuously
+						if (!alarmItr->windowActed) {
+							if (!tibiaHWND) InitTibiaHandle();
+							static int lastFlash=GetTickCount();
+							if (GetTickCount()-lastFlash>=1000){
+								FlashWindow(tibiaHWND, true);
+								lastFlash=GetTickCount();
+							}
+						}
+						break;
 					}
 				}// **************************** 
 				
@@ -594,10 +660,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// Cast spell ******************
 				if (alarmItr->doCastSpell().GetLength()) {						
 					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay()) {
-						sender.sayWhisper(alarmItr->doCastSpell());
+						sender.say(alarmItr->doCastSpell());
 						alarmItr->spellCast = time(NULL);
 					}
-					delete self;
 				}// *****************************
 				
 				// Take Screenshot **************
@@ -669,19 +734,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					actionShutdownSystem();
 				}// ****************************
 
-				// Flash Window ***************
-				if ((config->options & OPTIONS_FLASHONALARM)) {
-					if (!tibiaHWND) InitTibiaHandle();
-					static int lastFlash = GetTickCount();
-					if (GetTickCount() - lastFlash >= 1000) {
-						FlashWindow(tibiaHWND, true);
-						lastFlash = GetTickCount();
-					}
-				}
-				else if (!alarmItr->flashed) {
-					if (!tibiaHWND) InitTibiaHandle();
-					alarmItr->flashed = FlashWindow(tibiaHWND, false);
-				}// ***************************
 			}
 			else if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
 				// the alarm may have stopped BEFORE we took our 3 screenshots, let's contuinue
@@ -705,7 +757,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				alarmItr->flashed = false;
 				alarmItr->windowActed = false;
-				PlaySound(NULL, NULL, SND_NOSTOP);
+				//PlaySound(NULL, NULL, SND_NOSTOP);
 				alarmItr->spellCast = 0;
 				alarmItr->timeLastSS = time(NULL);
 				alarmItr->screenshotsTaken = 0;
@@ -761,14 +813,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 		case 1: {// Start position (By definition, the least safe place to be)
 			int pathSize = 0;
-			self = reader.readSelfCharacter();
 			int path[15];
-			delete self;
 			
-			self = reader.readSelfCharacter();
 			if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
 				if (!reader.getAttackedCreature()){
 					// proceed with path searching
+					delete self;
+					self=reader.readSelfCharacter();
 					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
 					for (; pathSize < 15 && path[pathSize]; pathSize++);
 					if (pathSize)
@@ -787,21 +838,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						sender.turnDown();
 				}
 			}
-			delete self;
 			   }
 			break;
 		case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
 			int pathSize = 0;
-			self = reader.readSelfCharacter();
 			CTibiaMapProxy tibiaMap;
 			
 			int path[15];
-			delete self;
-			self = reader.readSelfCharacter();
 			
 			if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
 				// proceed with path searching									
 				if (!reader.getAttackedCreature()){
+					delete self;
+					self=reader.readSelfCharacter();
 					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
 					for (; pathSize < 15 && path[pathSize]; pathSize++);										
 					if (pathSize)
@@ -810,33 +859,31 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			} else {
 				isGoingToRunaway=false; //switch going back to statr if enabled
 			}
-			delete self;
 				}
 			break;
 		case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
 			if (!reader.getAttackedCreature()){
+				delete self;
+				self=reader.readSelfCharacter();
 				int pathSize = 0;
-				self = reader.readSelfCharacter();
 				int path[15];
 				CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
 				for (; pathSize < 15 && path[pathSize]; pathSize++);										
 				if (pathSize)
 					CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
-				delete self;
 			}
 				}
 			break;
 		default: {
 			if (config->maintainStart) {
 				int pathSize = 0;
-				self = reader.readSelfCharacter();
 				int path[15];
-				delete self;
 				
-				self = reader.readSelfCharacter();
 				if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
 					if (!reader.getAttackedCreature()){
 						// proceed with path searching									
+						delete self;
+						self=reader.readSelfCharacter();
 						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
 						for (; pathSize < 15 && path[pathSize]; pathSize++);										
 						if (pathSize)
@@ -853,7 +900,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					else if(config->actDirection == DIR_DOWN)
 						sender.turnDown();
 				}
-				delete self;
 			}
 			   }
 			break;
@@ -863,6 +909,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			halfSleepCount = 0;
 		}
 		goPriority = 0;
+		delete self;
 	}
 
 	// Clean-up alarm flags before disabling, reset modules to previous state.

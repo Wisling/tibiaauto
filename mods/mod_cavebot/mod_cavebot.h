@@ -26,6 +26,12 @@ struct Item{
 	int x,y,z;
 	Item *prev;
 	Item *nxt;
+	Item(){
+		prev=this;
+		nxt=this;
+		name[0]=0;
+		x=y=z=0;
+	}
 	int distance(int x,int y){
 		return max(abs(this->x-x),abs(this->y-y));
 	}
@@ -61,13 +67,20 @@ struct Creature: public Item
 	}
 };
 
-struct Corpse: public Item
+
+
+struct Corpse
 {
-	int timeOfDeath;
-	int itemId;
+	int tod;
+	int x,y,z;
 	Corpse() {
-		timeOfDeath=itemId=x=y=z=0;
-		memset(name,0,40);
+		tod=x=y=z=0;
+	}
+	Corpse(int x,int y,int z,int tod) {
+		this->tod=tod;
+		this->x=x;
+		this->y=y;
+		this->z=z;
 	}
 };
 

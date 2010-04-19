@@ -314,6 +314,14 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 						m_attribute.SetItemImage(index, 45);
 					else if (text.Find("Club") != -1 || text.Find("Mace") != -1 || text.Find("Hammer") != -1)
 						m_attribute.SetItemImage(index, 47);
+					else if (text.Find("axe") != -1 || text.Find("Axe") != -1 || text.Find("Halberd") != -1 || text.Find("Lance") != -1)
+						m_attribute.SetItemImage(index, 48);
+					else if (text.Find("Legs") != -1 || text.Find("Skirt") != -1 || text.Find("Kilt") != -1 || text.Find("Shorts") != -1 || text.Find("Breeches") != -1 || text.Find("Trousers") != -1 || text.Find("Leg ") != -1)
+						m_attribute.SetItemImage(index, 49);
+					else if (text.Find("Helmet") != -1 || (text.Find("Hatchet") == -1 && text.Find("Hat") != -1) || text.Find("Tiara") != -1 || text.Find("Bandana") != -1 || text.Find("Mask") != -1 || text.Find("Headdress") != -1 || text.Find("Wreath") != -1 || text.Find("Fur Cap") != -1 || text.Find("Monocle") != -1 || text.Find("Earmuffs") != -1 || text.Find("Hood") != -1)
+						m_attribute.SetItemImage(index, 50);
+					else if (text.Find("Armor") != -1 ||text.Find("Cape") != -1 || text.Find("Gown") != -1 || text.Find("Robe") != -1 || text.Find(" Plate") != -1 || text.Find(" Mail") != -1 || text.Find("Dress") != -1 || text.Find("Tunic") != -1 || text.Find("Coat") != -1 || text.Find("Shirt") != -1 || text.Find("Cloak") != -1 || text.Find("Mantle") != -1)
+						m_attribute.SetItemImage(index, 51);
 					else
 						m_attribute.SetItemImage(index, 38);
 					m_attribute.SetItemData(index, objectId);
@@ -1450,8 +1458,10 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	aryListBoxSel.SetSize(nCount);
 	m_modules2.GetSelItems(nCount, aryListBoxSel.GetData()); 
 	list<CString> beginModules;
-	for (int loop = 1; loop < nCount; loop++) {// 0 is special and need not be added
-		m_modules2.GetText(aryListBoxSel.GetAt(loop), text);
+	for (int loop = 0; loop < nCount; loop++) {
+		int ind = aryListBoxSel.GetAt(loop);
+		if (ind==0) continue; // 0 is special and need not be added
+		m_modules2.GetText(ind, text);
 		text.MakeLower();
 		beginModules.push_back("mod_" + text + ".dll");
 	}
@@ -1461,8 +1471,10 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	aryListBoxSel.SetSize(nCount);
 	m_modules.GetSelItems(nCount, aryListBoxSel.GetData()); 
 	list<CString> endModules;
-	for (loop = 1; loop < nCount; loop++) {// 0 is special and need not be added
-		m_modules.GetText(aryListBoxSel.GetAt(loop), text);
+	for (loop = 0; loop < nCount; loop++) {
+		int ind = aryListBoxSel.GetAt(loop);
+		if (ind==0) continue; // 0 is special and need not be added
+		m_modules.GetText(ind, text);
 		text.MakeLower();
 		endModules.push_back("mod_" + text + ".dll");
 	}
@@ -1567,9 +1579,10 @@ void CAlarmDialog::OnAlarmEdit() {
         list<CString> temp = alarmItr->doStartModules();
         list<CString>::iterator modsItr = temp.begin();
 		CString prefix("mod_");
-		CString postfix("dll");
+		CString postfix(".dll");
         while (modsItr != temp.end()) {
             *modsItr=modsItr->Mid(prefix.GetLength(),modsItr->GetLength()-prefix.GetLength()-postfix.GetLength());//remove "mod_" and ".dll"
+			CString a=*modsItr;
 			int sel=m_modules2.FindStringExact(-1, *modsItr);
 			if (sel!=-1) m_modules2.SetSel(sel);
 			modsItr++;
@@ -1622,8 +1635,8 @@ void CAlarmDialog::OnSelchangeModulesList2()
 void CAlarmDialog::OnDestroy() 
 {
 	MyDialog::OnDestroy();
-	for (int loop = 0; loop < m_spellList.GetCount(); loop++) {
-		delete(m_spellInfo[loop + 1]);
+	for (int loop = 1; loop < m_spellList.GetCount(); loop++) {
+		delete(m_spellInfo[loop]);
 	}
 }
 
