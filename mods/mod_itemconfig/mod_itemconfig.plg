@@ -3,885 +3,143 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: alice - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-alice.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_aim - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_aim.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_antylogout - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE06D.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_antylogout.pdb" /machine:I386 /def:".\mod_antylogout.def" /out:"../mod_antylogout.dll" /implib:"Release/mod_antylogout.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\mod_antylogout.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_antylogout.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE06D.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_antylogout.lib and object Release/mod_antylogout.exp
-
-
-
-<h3>Results</h3>
-mod_antylogout.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_autogo - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_autogo.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_banker - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_banker.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_cavebot - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE1F4.tmp" with contents
-[
-zdll.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_cavebot.pdb" /machine:I386 /def:".\mod_cavebot.def" /out:"../mod_cavebot.dll" /implib:"Release/mod_cavebot.lib" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\Helpers.obj"
-".\Release\mod_cavebot.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\SendStats.obj"
-".\Release\SharedMemory.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_cavebot.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE1F4.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_cavebot.lib and object Release/mod_cavebot.exp
-
-
-
-<h3>Results</h3>
-mod_cavebot.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_creatureinfo - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE35B.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_creatureinfo.pdb" /machine:I386 /def:".\mod_creatureinfo.def" /out:"../mod_creatureinfo.dll" /implib:"Release/mod_creatureinfo.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\KnownInfo.obj"
-".\Release\mod_creatureinfo.obj"
-".\Release\MyDialog.obj"
-".\Release\NameChanger.obj"
-".\Release\proxy.obj"
-".\Release\SendStats.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\Util.obj"
-".\Release\mod_creatureinfo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE35B.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_creatureinfo.lib and object Release/mod_creatureinfo.exp
-
-
-
-<h3>Results</h3>
-mod_creatureinfo.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_eater - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE4F2.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_eater.pdb" /machine:I386 /def:".\mod_eater.def" /out:"../mod_eater.dll" /implib:"Release/mod_eater.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\mod_eater.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_eater.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE4F2.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_eater.lib and object Release/mod_eater.exp
-
-
-
-<h3>Results</h3>
-mod_eater.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_fisher - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_fisher.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_fluid - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE705.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fluid.pdb" /machine:I386 /def:".\mod_fluid.def" /out:"../mod_fluid.dll" /implib:"Release/mod_fluid.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_fluid.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_fluid.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE705.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_fluid.lib and object Release/mod_fluid.exp
-
-
-
-<h3>Results</h3>
-mod_fluid.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_fps - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE8DA.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_fps.pdb" /machine:I386 /def:".\mod_fps.def" /out:"../mod_fps.dll" /implib:"Release/mod_fps.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_fps.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_fps.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE8DA.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_fps.lib and object Release/mod_fps.exp
-
-
-
-<h3>Results</h3>
-mod_fps.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_grouping - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_grouping.dll - 0 error(s), 0 warning(s)
-<h3>
 --------------------Configuration: mod_itemconfig - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_itemconfig.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_light - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_light.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_login - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEA71.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP6F4.tmp" with contents
 [
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_login.pdb" /machine:I386 /def:".\mod_login.def" /out:"../mod_login.dll" /implib:"Release/mod_login.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_login.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\SendKeys.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_login.res"
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/mod_itemconfig.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_itemconfig\exports.cpp"
+"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_itemconfig\ItemConfig.cpp"
+"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_itemconfig\mod_itemconfig.cpp"
+"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_itemconfig\ToolItemConfig.cpp"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEA71.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_login.lib and object Release/mod_login.exp
-
-
-
-<h3>Results</h3>
-mod_login.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_looter - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEC65.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP6F4.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP6F5.tmp" with contents
 [
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_looter.pdb" /machine:I386 /def:".\mod_looter.def" /out:"../mod_looter.dll" /implib:"Release/mod_looter.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_itemconfig.pdb" /machine:I386 /def:".\mod_itemconfig.def" /out:"../mod_itemconfig.dll" /implib:"Release/mod_itemconfig.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
 ".\Release\BtnST.obj"
 ".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
 ".\Release\exports.obj"
 ".\Release\GroupBoxEx.obj"
-".\Release\mod_looter.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\SendStats.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_looter.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEC65.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_looter.lib and object Release/mod_looter.exp
-
-
-
-<h3>Results</h3>
-mod_looter.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_maphack - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEE59.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_maphack.pdb" /machine:I386 /def:".\mod_maphack.def" /out:"../mod_maphack.dll" /implib:"Release/mod_maphack.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_maphack.obj"
+".\Release\ItemConfig.obj"
+".\Release\mod_itemconfig.obj"
 ".\Release\MyDialog.obj"
 ".\Release\proxy.obj"
 ".\Release\Skin.obj"
 ".\Release\StdAfx.obj"
 ".\Release\TibiaItem_impl.obj"
-".\Release\mod_maphack.res"
+".\Release\ToolItemConfig.obj"
+".\Release\mod_itemconfig.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEE59.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_maphack.lib and object Release/mod_maphack.exp
-
-
-
-<h3>Results</h3>
-mod_maphack.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_memdebug - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_memdebug.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_monstershow - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF06D.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_monstershow.pdb" /machine:I386 /def:".\mod_monstershow.def" /out:"../mod_monstershow.dll" /implib:"Release/mod_monstershow.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_monstershow.obj"
-".\Release\MonsterButton.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\ToolMonsterShow.obj"
-".\Release\mod_monstershow.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF06D.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_monstershow.lib and object Release/mod_monstershow.exp
-
-
-
-<h3>Results</h3>
-mod_monstershow.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_playerinfo - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_playerinfo.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_responder - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF242.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_responder.pdb" /machine:I386 /def:".\mod_responder.def" /out:"../mod_responder.dll" /implib:"Release/mod_responder.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\AutoResponderParser.obj"
-".\Release\AutoResponderParserContext.obj"
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_responder.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\ToolAutoRespond.obj"
-".\Release\ToolAutoResponderMessage.obj"
-".\Release\ToolAutoResponderThreadConfig.obj"
-".\Release\Util.obj"
-".\Release\mod_responder.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF242.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_responder.lib and object Release/mod_responder.exp
-
-
-
-<h3>Results</h3>
-mod_responder.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_restack - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_restack.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_runemaker - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF475.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_runemaker.pdb" /machine:I386 /def:".\mod_runemaker.def" /out:"../mod_runemaker.dll" /implib:"Release/mod_runemaker.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_runemaker.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\ToolContainerContent.obj"
-".\Release\mod_runemaker.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF475.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_runemaker.lib and object Release/mod_runemaker.exp
-
-
-
-<h3>Results</h3>
-mod_runemaker.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_seller - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF669.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_seller.pdb" /machine:I386 /def:".\mod_seller.def" /out:"../mod_seller.dll" /implib:"Release/mod_seller.lib" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_seller.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaContainer_impl.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_seller.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF669.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_seller.lib and object Release/mod_seller.exp
-
-
-
-<h3>Results</h3>
-mod_seller.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_showmap - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_showmap.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_sorter - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF84D.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_sorter.pdb" /machine:I386 /def:".\mod_sorter.def" /out:"../mod_sorter.dll" /implib:"Release/mod_sorter.lib" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_sorter.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaContainer_impl.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_sorter.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF84D.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_sorter.lib and object Release/mod_sorter.exp
-
-
-
-<h3>Results</h3>
-mod_sorter.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_spellcaster - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFA42.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_spellcaster.pdb" /machine:I386 /def:".\mod_spellcaster.def" /out:"../mod_spellcaster.dll" /implib:"Release/mod_spellcaster.lib" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_spellcaster.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\WhiteList.obj"
-".\Release\mod_spellcaster.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFA42.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_spellcaster.lib and object Release/mod_spellcaster.exp
-
-
-
-<h3>Results</h3>
-mod_spellcaster.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_team - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_team.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_trademon - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFC26.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_trademon.pdb" /machine:I386 /def:".\mod_trademon.def" /out:"../mod_trademon.dll" /implib:"Release/mod_trademon.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_trademon.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_trademon.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFC26.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_trademon.lib and object Release/mod_trademon.exp
-
-
-
-<h3>Results</h3>
-mod_trademon.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_uh - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-mod_uh.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: mod_xray - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFE1A.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_xray.pdb" /machine:I386 /def:".\mod_xray.def" /out:"../mod_xray.dll" /implib:"Release/mod_xray.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\mod_xray.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaContainer_impl.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_xray.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFE1A.tmp"
-<h3>Output Window</h3>
-Linking...
-   Creating library Release/mod_xray.lib and object Release/mod_xray.exp
-
-
-
-<h3>Results</h3>
-mod_xray.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: tibiaauto - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1E.tmp" with contents
-[
-zlib.lib ws2_32.lib zdll.lib xerces.lib detours.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/tibiaauto.pdb" /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
-".\Release\BtnST.obj"
-".\Release\CharDialog.obj"
-".\Release\ColorChooser.obj"
-".\Release\ConfigCreatorUtil.obj"
-".\Release\ConfigCreatorUtilMultiParams.obj"
-".\Release\ConfigDialogStatus.obj"
-".\Release\DonationDialog.obj"
-".\Release\EnterCode.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\LoadedModules.obj"
-".\Release\md5c.obj"
-".\Release\md5class.obj"
-".\Release\MemUtil.obj"
-".\Release\ModuleProxy.obj"
-".\Release\MyDialog.obj"
-".\Release\OptionsDialog.obj"
-".\Release\proxy.obj"
-".\Release\PythonEngine.obj"
-".\Release\PythonScript.obj"
-".\Release\PythonScriptsDialog.obj"
-".\Release\RepeatButton.obj"
-".\Release\ScriptConfigDialg.obj"
-".\Release\Skin.obj"
-".\Release\SliderCtrlEx.obj"
-".\Release\StdAfx.obj"
-".\Release\tibiaauto.obj"
-".\Release\tibiaautoDlg.obj"
-".\Release\Util.obj"
-".\Release\webbrowser2.obj"
-".\Release\tibiaauto.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : warning LNK4098: defaultlib "LIBC" conflicts with use of other libs; use /NODEFAULTLIB:library
-
-
-
-<h3>Results</h3>
-tibiaauto.exe - 0 error(s), 1 warning(s)
-<h3>
---------------------Configuration: tibiaauto_util - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1E4.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/tibiaauto_util.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemUtil.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\TAMiniMap.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1E4.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1E5.tmp" with contents
-[
-libdb45.lib xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/tibiaauto_util.pdb" /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /implib:"Release/tibiaauto_util.lib" /libpath:"E:\Tibia\Sourse Code\tibiaauto-kernel" 
-".\Release\BtnST.obj"
-".\Release\CreaturesReader.obj"
-".\Release\IPCBackPipe.obj"
-".\Release\md5c.obj"
-".\Release\md5class.obj"
-".\Release\MemConstData.obj"
-".\Release\MemReader.obj"
-".\Release\MemUtil.obj"
-".\Release\PackSender.obj"
-".\Release\proxy.obj"
-".\Release\Queue.obj"
-".\Release\Skin.obj"
-".\Release\SkinLoader.obj"
-".\Release\StdAfx.obj"
-".\Release\TAMiniMap.obj"
-".\Release\tibiaauto_util.obj"
-".\Release\TibiaCharacter.obj"
-".\Release\TibiaContainer.obj"
-".\Release\TibiaItem.obj"
-".\Release\TibiaMap.obj"
-".\Release\TibiaVIPEntry.obj"
-".\Release\TileReader.obj"
-".\Release\Util.obj"
-".\Release\VariableStore.obj"
-".\Release\tibiaauto_util.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1E5.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP6F5.tmp"
 <h3>Output Window</h3>
 Compiling...
-MemReader.cpp
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(242) : error C2039: 'getFollowedCreature' : is not a member of 'CMemReader'
-        E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.h(21) : see declaration of 'CMemReader'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(244) : error C2065: 'm_memAddressFollowedCreature' : undeclared identifier
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(247) : error C2039: 'setFollowedCreature' : is not a member of 'CMemReader'
-        E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.h(21) : see declaration of 'CMemReader'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(860) : error C2660: 'SetMemRange' : function does not take 4 parameters
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.cpp(862) : error C2660: 'SetMemRange' : function does not take 4 parameters
-MemUtil.cpp
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemUtil.cpp(319) : error C2660: 'SetMemRange' : function does not take 4 parameters
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemUtil.cpp(323) : error C2511: 'SetMemRange' : overloaded member function 'int (int,unsigned long,unsigned long,char *)' not found in 'CMemUtil'
-        E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemUtil.h(13) : see declaration of 'CMemUtil'
-PackSender.cpp
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(71) : warning C4101: 'cbWritten' : unreferenced local variable
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(87) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(87) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(102) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(102) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(117) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(117) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(133) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(133) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(135) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(135) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(136) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(136) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(156) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(156) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(158) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(158) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(159) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(159) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(185) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(185) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(257) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(257) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(347) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(347) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(359) : error C2039: 'setFollowedCreature' : is not a member of 'CMemReader'
-        E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.h(21) : see declaration of 'CMemReader'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(364) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(364) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(379) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(379) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(395) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(395) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(397) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(397) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(398) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(398) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(427) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(427) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(429) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(429) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(430) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(430) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(468) : warning C4554: '&' : check operator precedence for possible error; use parentheses to clarify precedence
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(473) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(473) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(503) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(503) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(581) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(581) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(582) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(582) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(601) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(601) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(602) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(602) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(610) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(610) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(611) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(611) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(630) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(630) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(631) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(631) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(665) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(665) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(667) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(667) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(668) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(668) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(687) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(687) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(710) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(710) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(728) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(728) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(744) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(744) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(873) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(873) : warning C4309: '=' : truncation of constant value
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(937) : warning C4305: '=' : truncation from 'const int' to 'char'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\PackSender.cpp(937) : warning C4309: '=' : truncation of constant value
-TAMiniMap.cpp
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\TAMiniMap.cpp(244) : error C2660: 'SetMemRange' : function does not take 4 parameters
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\TAMiniMap.cpp(245) : error C2660: 'SetMemRange' : function does not take 4 parameters
-tibiaauto_util.cpp
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.cpp(223) : error C2039: 'getFollowedCreature' : is not a member of 'CMemReader'
-        E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.h(21) : see declaration of 'CMemReader'
-E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.cpp(228) : error C2039: 'setFollowedCreature' : is not a member of 'CMemReader'
-        E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto_util\MemReader.h(21) : see declaration of 'CMemReader'
+exports.cpp
+ItemConfig.cpp
+mod_itemconfig.cpp
+ToolItemConfig.cpp
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(56) : warning C4786: '?address@?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QBEPAViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@2@AAV342@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(337) : see reference to class template instantiation 'std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(58) : warning C4786: '?address@?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QBEPBViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@2@ABV342@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(337) : see reference to class template instantiation 'std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(61) : warning C4786: '?allocate@?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAEPAViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@2@IPBX@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(337) : see reference to class template instantiation 'std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(68) : warning C4786: '?construct@?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAEXPAViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@2@ABV342@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(337) : see reference to class template instantiation 'std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(70) : warning C4786: '?destroy@?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAEXPAViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(337) : see reference to class template instantiation 'std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@$$CBHViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAE@ABHABViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(28) : see reference to class template instantiation 'std::pair<int const ,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(337) : see reference to class template instantiation 'std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(56) : warning C4786: '?address@?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QBEPAViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@2@AAV342@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(58) : warning C4786: '?address@?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QBEPBViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@2@ABV342@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(61) : warning C4786: '?allocate@?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAEPAViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@2@IPBX@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(68) : warning C4786: '?construct@?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAEXPAViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@2@ABV342@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xmemory(70) : warning C4786: '?destroy@?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAEXPAViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@2@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(44) : see reference to class template instantiation 'std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@QAE@ABHABViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(28) : see reference to class template instantiation 'std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(67) : warning C4786: '?$iterator@Ubidirectional_iterator_tag@std@@U?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@H' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(74) : see reference to class template instantiation 'std::iterator<struct std::bidirectional_iterator_tag,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,int>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(61) : see reference to class template instantiation 'std::_Bidit<struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,int>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(68) : warning C4786: '?$iterator@Ubidirectional_iterator_tag@std@@U?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@H' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(74) : see reference to class template instantiation 'std::iterator<struct std::bidirectional_iterator_tag,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,int>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(61) : see reference to class template instantiation 'std::_Bidit<struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,int>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(198) : warning C4503: 'rbegin' : decorated name length exceeded, name was truncated
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(200) : warning C4503: 'rbegin' : decorated name length exceeded, name was truncated
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(202) : warning C4503: 'rend' : decorated name length exceeded, name was truncated
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\xtree(204) : warning C4503: 'rend' : decorated name length exceeded, name was truncated
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(46) : see reference to class template instantiation 'std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+        ..\..\sdk\TibiaStructures.h(338) : see reference to class template instantiation 'std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >' being compiled
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@_N@std@@QAE@ABViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class CTibiaListData *&__thiscall std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::operator [](char *const & ) '
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@_N@std@@QAE@ABViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class CTibiaListData *&__thiscall std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::operator [](const int &) '
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(17) : warning C4786: '?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(21) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N@std@@QAE@XZ' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N@std@@QAE@ABViterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(25) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@PADU?$pair@QADPAVCTibiaListData@@@std@@U_Kfn@?$map@PADPAVCTibiaListData@@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@std@@@2@Ucmp_str@@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N@std@@QAE@ABU?$pair@$DCAB@$DCAC@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<char *,struct std::pair<char * const,class CTibiaListData *>,struct std::map<char *,class CTibiaListData *,struct cmp_str,class std::allocator<class CTibiaListData *> >::_Kfn,struct cmp_str,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(17) : warning C4786: '?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(21) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N@std@@QAE@XZ' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N@std@@QAE@ABViterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(25) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@std@@U_Kfn@?$map@HViterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@U?$less@H@3@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@3@@2@U?$less@H@2@V?$allocator@Viterator@?$_Tree@HU?$pair@$$CBHPAVCTibiaListData@@@std@@U_Kfn@?$map@HPAVCTibiaListData@@U?$less@H@std@@V?$allocator@PAVCTibiaListData@@@3@@2@U?$less@H@2@V?$allocator@PAVCTibiaListData@@@2@@std@@@2@@std@@_N@std@@QAE@ABU?$pair@$DCAB@$DCAC@@1@@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator>,struct std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::_Kfn,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator &__thiscall std::map<int,class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator,struct std::less<int>,class std::allocator<class std::_Tree<int,struct std::pair<int const ,class CTibiaListData *>,struct std::map<int,class CTibiaListData *,struct std::less<int>,class std::allocator<class CTibiaListData *> >::_Kfn,struct std::less<int>,class std::allocator<class CTibiaListData *> >::iterator> >::operator [](const int &)'
+C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\utility(23) : warning C4786: '??0?$pair@Viterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@std@@_N@std@@QAE@ABViterator@?$_Tree@HU?$pair@$$CBHH@std@@U_Kfn@?$map@HHU?$less@H@std@@V?$allocator@H@2@@2@U?$less@H@2@V?$allocator@H@2@@1@AB_N@Z' : identifier was truncated to '255' characters in the browser information
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : see reference to class template instantiation 'std::pair<class std::_Tree<int,struct std::pair<int const ,int>,struct std::map<int,int,struct std::less<int>,class std::allocator<int> >::_Kfn,struct std::less<int>,class std::allocator<int> >::iterator,bool>' being compiled
+        C:\Program Files\Microsoft Visual Studio\VC98\INCLUDE\map(93) : while compiling class-template member function 'int &__thiscall std::map<int,int,struct std::less<int>,class std::allocator<int> >::operator [](const int &)'
 Generating Code...
-Error executing cl.exe.
-
-
-
-<h3>Results</h3>
-tibiaauto_util.dll - 12 error(s), 80 warning(s)
-<h3>
---------------------Configuration: tibiaautoinject2 - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP61A.tmp" with contents
-[
-ws2_32.lib xerces.lib detours.lib zdll.lib /nologo /dll /incremental:no /pdb:"Release/tibiaautoinject2.pdb" /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"../../tibiaauto-pub/tibiaautoinject2.dll" /implib:"Release/tibiaautoinject2.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
-".\Release\BtnST.obj"
-".\Release\MyMenu.obj"
-".\Release\MyMenuData.obj"
-".\Release\proxy.obj"
-".\Release\protocol.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\tibiaautoinject2.obj"
-".\Release\tibiaautoinject2.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP61A.tmp"
-<h3>Output Window</h3>
 Linking...
-LINK : warning LNK4075: ignoring /EDITANDCONTINUE due to /INCREMENTAL:NO specification
-   Creating library Release/tibiaautoinject2.lib and object Release/tibiaautoinject2.exp
+   Creating library Release/mod_itemconfig.lib and object Release/mod_itemconfig.exp
 
 
 
 <h3>Results</h3>
-tibiaautoinject2.dll - 0 error(s), 1 warning(s)
-<h3>
---------------------Configuration: tibiaautoinject3 - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-tibiaautoinject3.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: tre - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-tre.dll - 0 error(s), 0 warning(s)
+mod_itemconfig.dll - 0 error(s), 29 warning(s)
 </pre>
 </body>
 </html>

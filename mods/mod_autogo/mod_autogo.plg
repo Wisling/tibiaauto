@@ -6,13 +6,13 @@
 --------------------Configuration: mod_autogo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP37C.tmp" with contents
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP765.tmp" with contents
 [
 /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_autogo.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_autogo\mod_autogo.cpp"
+"E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_autogo\alarmdialog.cpp"
 ]
-Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP37C.tmp" 
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP37D.tmp" with contents
+Creating command line "cl.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP765.tmp" 
+Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP766.tmp" with contents
 [
 WINMM.LIB /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_autogo.pdb" /debug /machine:I386 /def:".\mod_autogo.def" /out:"E:\Tibia Auto\mods/mod_autogo.dll" /implib:"Debug/mod_autogo.lib" /pdbtype:sept 
 ".\Debug\Alarm.obj"
@@ -37,43 +37,16 @@ WINMM.LIB /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_autog
 ".\Debug\XTabCtrl.obj"
 ".\Debug\mod_autogo.res"
 ]
-Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP37D.tmp"
+Creating command line "link.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP766.tmp"
 <h3>Output Window</h3>
 Compiling...
-mod_autogo.cpp
-E:\My Documents\TibiaAuto\tibiaauto-pub\mods\mod_autogo\mod_autogo.cpp(683) : warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+alarmdialog.cpp
 Linking...
-Creating temporary file "C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP37E.tmp" with contents
-[
-/nologo /o"Debug/mod_autogo.bsc" 
-".\Debug\StdAfx.sbr"
-".\Debug\Alarm.sbr"
-".\Debug\alarmdialog.sbr"
-".\Debug\BtnST.sbr"
-".\Debug\ComboBoxSuper.sbr"
-".\Debug\ConfigData.sbr"
-".\Debug\ConfigDialog.sbr"
-".\Debug\CustomSpellDialog.sbr"
-".\Debug\exports.sbr"
-".\Debug\GeneralConfigDialog.sbr"
-".\Debug\GroupBoxEx.sbr"
-".\Debug\ImageButtonWithStyle.sbr"
-".\Debug\mod_autogo.sbr"
-".\Debug\MyDialog.sbr"
-".\Debug\proxy.sbr"
-".\Debug\Skin.sbr"
-".\Debug\TibiaItem_impl.sbr"
-".\Debug\VisualStylesXP.sbr"
-".\Debug\WhiteList.sbr"
-".\Debug\XTabCtrl.sbr"]
-Creating command line "bscmake.exe @C:\DOCUME~1\Owner\LOCALS~1\Temp\RSP37E.tmp"
-Creating browse info file...
-<h3>Output Window</h3>
 
 
 
 <h3>Results</h3>
-mod_autogo.dll - 0 error(s), 1 warning(s)
+mod_autogo.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

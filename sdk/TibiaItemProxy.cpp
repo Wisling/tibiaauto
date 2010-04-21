@@ -59,6 +59,15 @@ CTibiaItemProxy::~CTibiaItemProxy()
 {
 	
 }
+void CTibiaItemProxy::fillTypedItemIdArray(int ind) {
+	typedef void (*Proto_fun)(int ind);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemfillTypedItemIdArray");
+		if (fun) {
+			fun(ind);
+		} else AfxMessageBox("Error: function not loaded");
+	}
+}
 
 char * CTibiaItemProxy::getItemName(int objectId)
 {
@@ -73,12 +82,41 @@ char * CTibiaItemProxy::getItemName(int objectId)
 	} 
 	return "not implemented";
 }
+
+char * CTibiaItemProxy::getTypedItemName(int objectId)
+{
+	typedef char * (*Proto_fun)(int objectId);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemName");
+		if (fun)
+		{
+			return fun(objectId);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return "not implemented";
+}
+
 int CTibiaItemProxy::getItemId(char* name)
 {
 	typedef int (*Proto_fun)(char* name);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemId");
+		if (fun)
+		{
+			return fun(name);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return 0;
+}
+
+int CTibiaItemProxy::getTypedItemId(char* name)
+{
+	typedef int (*Proto_fun)(char* name);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemId");
 		if (fun)
 		{
 			return fun(name);
@@ -100,6 +138,21 @@ int CTibiaItemProxy::getItemIndex(int objectId)
 	} 
 	return 0;
 }
+
+int CTibiaItemProxy::getTypedItemIndex(int objectId)
+{
+	typedef int (*Proto_fun)(int objectId);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemIndex");
+		if (fun)
+		{
+			return fun(objectId);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return 0;
+}
+
 int CTibiaItemProxy::getFoodIndex(int objectId)
 {
 	typedef int (*Proto_fun)(int objectId);
@@ -140,6 +193,35 @@ int CTibiaItemProxy::getItemIdAtIndex(int ind)
 	} 
 	return 0;
 }
+
+int CTibiaItemProxy::getItemTypeAtIndex(int ind)
+{
+	typedef int (*Proto_fun)(int ind);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetItemTypeAtIndex");
+		if (fun)
+		{
+			return fun(ind);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return 0;
+}
+
+int CTibiaItemProxy::getTypedItemIdAtIndex(int ind)
+{
+	typedef int (*Proto_fun)(int ind);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemIdAtIndex");
+		if (fun)
+		{
+			return fun(ind);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return 0;
+}
+
 int CTibiaItemProxy::getFoodIdAtIndex(int ind)
 {
 	typedef int (*Proto_fun)(int ind);
@@ -180,6 +262,21 @@ char* CTibiaItemProxy::getItemNameAtIndex(int ind)
 	} 
 	return "not implemented";
 }
+
+char* CTibiaItemProxy::getTypedItemNameAtIndex(int ind)
+{
+	typedef char* (*Proto_fun)(int ind);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemNameAtIndex");
+		if (fun)
+		{
+			return fun(ind);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return "not implemented";
+}
+
 char* CTibiaItemProxy::getFoodNameAtIndex(int ind)
 {
 	typedef char* (*Proto_fun)(int ind);
@@ -234,6 +331,21 @@ CUIntArray* CTibiaItemProxy::getItemIdArrayPtr()
 	} 
 	return NULL;
 }
+
+CUIntArray* CTibiaItemProxy::getTypedItemIdArrayPtr(int ind)
+{
+	typedef CUIntArray* (*Proto_fun)(int ind);
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemIdArrayPtr");
+		if (fun)
+		{
+			return fun(ind);
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return NULL;
+}
+
 CUIntArray* CTibiaItemProxy::getFoodIdArrayPtr()
 {
 	typedef CUIntArray* (*Proto_fun)();
@@ -288,6 +400,17 @@ void CTibiaItemProxy::addItem(char *name, int objectId) {
 		} else AfxMessageBox("Error: function not loaded");
 	}
 }
+
+void CTibiaItemProxy::addTypedItem(char *name, int objectId, int type) {
+	typedef void (*Proto_fun)(char *name, int objectId, int type);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemAddTypedItem");
+		if (fun) {
+			fun(name, objectId, type);
+		} else AfxMessageBox("Error: function not loaded");
+	}
+}
+
 void CTibiaItemProxy::addFood(char *name, int objectId, int time) {
 	typedef void (*Proto_fun)(char *name, int objectId, int time);
 	if (dllModule) {			
@@ -306,6 +429,7 @@ void CTibiaItemProxy::addLootItem(char *name, int objectId) {
 		} else AfxMessageBox("Error: function not loaded");
 	}
 }
+
 void CTibiaItemProxy::removeItem(int ind) {
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule) {			
@@ -315,6 +439,17 @@ void CTibiaItemProxy::removeItem(int ind) {
 		} else AfxMessageBox("Error: function not loaded");
 	}
 }
+
+void CTibiaItemProxy::removeTypedItem(int ind) {
+	typedef void (*Proto_fun)(int ind);
+	if (dllModule) {			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemRemoveTypedItem");
+		if (fun) {
+			fun(ind);
+		} else AfxMessageBox("Error: function not loaded");
+	}
+}
+
 void CTibiaItemProxy::removeFood(int ind) {
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule) {			
@@ -382,6 +517,21 @@ int CTibiaItemProxy::getItemCount()
 	} 
 	return 0;
 }
+
+int CTibiaItemProxy::getTypedItemCount()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaItemGetTypedItemCount");
+		if (fun)
+		{
+			return fun();
+		} else AfxMessageBox("Error: function not loaded");
+	} 
+	return 0;
+}
+
 int CTibiaItemProxy::getFoodCount()
 {
 	typedef int (*Proto_fun)();

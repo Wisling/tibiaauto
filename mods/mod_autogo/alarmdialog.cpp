@@ -10,6 +10,7 @@
 #include "CustomSpellDialog.h"
 #include <Tlhelp32.h>
 #include <MMSystem.h>
+#include <math.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -290,44 +291,70 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("Food"), 39);
 			CTibiaItemProxy itemProxy;
 			CMemReaderProxy reader;
-			int count = itemProxy.getItemCount();
-			int index;
-			for (int i = 0; i < count; i++) {
-				int objectId = itemProxy.getItemIdAtIndex(i);
-				CTibiaTile *tile = reader.getTibiaTile(objectId);
-				if (tile) {
-					text = itemProxy.getItemNameAtIndex(i);
-					index = m_attribute.AddString(text);
-					if (text.Find("Rune") != -1)
-						m_attribute.SetItemImage(index, 40);
-					else if (text.Find("Ring") != -1)
-						m_attribute.SetItemImage(index, 41);
-					else if (text.Find("Necklace") != -1 || text.Find("Amulet") != -1 || text.Find("Scarf") != -1)
-						m_attribute.SetItemImage(index, 42);
-					else if (text.Find("Potion") != -1 || text.Find("Vial") != -1)
-						m_attribute.SetItemImage(index, 43);
-					else if (text.Find("Sword") != -1 || text.Find("Katana") != -1)
-						m_attribute.SetItemImage(index, 44);
-					else if (text.Find("shield") != -1 || text.Find("Shield") != -1)
-						m_attribute.SetItemImage(index, 46);
-					else if (text.Find("Arrow") != -1 || (text.Find("bow") != -1 && text.Find("Rainbow") == -1) || text.Find("Bow") != -1 || text.Find("Throwing") != -1 || text.Find("Spear") != -1 || text.Find(" Star") != -1 || text.Find(" Stone") != -1)
-						m_attribute.SetItemImage(index, 45);
-					else if (text.Find("Club") != -1 || text.Find("Mace") != -1 || text.Find("Hammer") != -1)
-						m_attribute.SetItemImage(index, 47);
-					else if (text.Find("axe") != -1 || text.Find("Axe") != -1 || text.Find("Halberd") != -1 || text.Find("Lance") != -1)
-						m_attribute.SetItemImage(index, 48);
-					else if (text.Find("Legs") != -1 || text.Find("Skirt") != -1 || text.Find("Kilt") != -1 || text.Find("Shorts") != -1 || text.Find("Breeches") != -1 || text.Find("Trousers") != -1 || text.Find("Leg ") != -1)
-						m_attribute.SetItemImage(index, 49);
-					else if (text.Find("Helmet") != -1 || (text.Find("Hatchet") == -1 && text.Find("Hat") != -1) || text.Find("Tiara") != -1 || text.Find("Bandana") != -1 || text.Find("Mask") != -1 || text.Find("Headdress") != -1 || text.Find("Wreath") != -1 || text.Find("Fur Cap") != -1 || text.Find("Monocle") != -1 || text.Find("Earmuffs") != -1 || text.Find("Hood") != -1)
-						m_attribute.SetItemImage(index, 50);
-					else if (text.Find("Armor") != -1 ||text.Find("Cape") != -1 || text.Find("Gown") != -1 || text.Find("Robe") != -1 || text.Find(" Plate") != -1 || text.Find(" Mail") != -1 || text.Find("Dress") != -1 || text.Find("Tunic") != -1 || text.Find("Coat") != -1 || text.Find("Shirt") != -1 || text.Find("Cloak") != -1 || text.Find("Mantle") != -1)
-						m_attribute.SetItemImage(index, 51);
-					else
-						m_attribute.SetItemImage(index, 38);
-					m_attribute.SetItemData(index, objectId);
+			for (int j = 0; j < 26; j++) {
+				itemProxy.fillTypedItemIdArray(pow(2, j));
+				int count = itemProxy.getTypedItemCount();
+				int index;
+				for (int i = 0; i < count; i++) {
+					int objectId = itemProxy.getTypedItemIdAtIndex(i);
+					CTibiaTile *tile = reader.getTibiaTile(objectId);
+					if (tile) {
+						text = itemProxy.getTypedItemNameAtIndex(i);
+						index = m_attribute.AddString(text);
+						switch ((int)pow(2, j)) {
+						case 1:
+							m_attribute.SetItemImage(index, 48);
+							break;
+						case 2:
+							m_attribute.SetItemImage(index, 47);
+							break;
+						case 4:
+							m_attribute.SetItemImage(index, 44);
+							break;
+						case 8:
+							m_attribute.SetItemImage(index, 45);
+							break;
+						case 16:
+							m_attribute.SetItemImage(index, 38);
+							break;
+						case 32:
+							m_attribute.SetItemImage(index, 38);
+							break;
+						case 64:
+							m_attribute.SetItemImage(index, 38);
+							break;
+						case 128:
+							m_attribute.SetItemImage(index, 42);
+							break;
+						case 256:
+							m_attribute.SetItemImage(index, 51);
+							break;
+						case 512:
+							m_attribute.SetItemImage(index, 38);
+							break;
+						case 1024:
+							m_attribute.SetItemImage(index, 50);
+							break;
+						case 2048:
+							m_attribute.SetItemImage(index, 49);
+							break;
+						case 4096:
+							m_attribute.SetItemImage(index, 46);
+							break;
+						case 8192:
+							m_attribute.SetItemImage(index, 41);
+							break;
+						case 32768:
+							m_attribute.SetItemImage(index, 43);
+							break;
+						default:
+							m_attribute.SetItemImage(index, 38);
+							break;
+						}
+						m_attribute.SetItemData(index, objectId);
+					}
 				}
 			}
-
 			m_condition.ResetContent();
 			m_condition.AddString("Equal To...");
 			m_condition.AddString("Less Than...");
