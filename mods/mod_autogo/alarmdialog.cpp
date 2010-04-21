@@ -315,13 +315,13 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 							m_attribute.SetItemImage(index, 45);
 							break;
 						case 16:
-							m_attribute.SetItemImage(index, 38);
+							m_attribute.SetItemImage(index, 54);
 							break;
 						case 32:
-							m_attribute.SetItemImage(index, 38);
+							m_attribute.SetItemImage(index, 52);
 							break;
 						case 64:
-							m_attribute.SetItemImage(index, 38);
+							m_attribute.SetItemImage(index, 53);
 							break;
 						case 128:
 							m_attribute.SetItemImage(index, 42);
@@ -343,6 +343,9 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 							break;
 						case 8192:
 							m_attribute.SetItemImage(index, 41);
+							break;
+						case 16384:
+							m_attribute.SetItemImage(index, 40);
 							break;
 						case 32768:
 							m_attribute.SetItemImage(index, 43);
