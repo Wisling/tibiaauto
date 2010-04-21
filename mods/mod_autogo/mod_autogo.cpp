@@ -757,7 +757,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				alarmItr->flashed = false;
 				alarmItr->windowActed = false;
-				//PlaySound(NULL, NULL, SND_NOSTOP);
 				alarmItr->spellCast = 0;
 				alarmItr->timeLastSS = time(NULL);
 				alarmItr->screenshotsTaken = 0;

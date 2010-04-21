@@ -18,6 +18,7 @@ public:
 	int getFoodIndex(int objectId);
 	int getLootItemIndex(int objectId);
 	int getItemIdAtIndex(int ind);
+	int getItemTypeAtIndex(int ind);
 	int getFoodIdAtIndex(int ind);
 	int getLootItemIdAtIndex(int ind);
 	char * getItemNameAtIndex(int ind);
@@ -27,6 +28,16 @@ public:
 	CUIntArray* getItemIdArrayPtr();
 	CUIntArray* getFoodIdArrayPtr();
 	CUIntArray* getLootItemIdArrayPtr();
+	CUIntArray* getTypedItemIdArrayPtr(int ind);
+	int getTypedItemIdAtIndex(int ind);
+	void addTypedItem(char *name, int objectId, int type);
+	int getTypedItemCount();
+	void removeTypedItem(int ind);
+	char* getTypedItemNameAtIndex(int ind);
+	int getTypedItemIndex(int objectId);
+	int getTypedItemId(char *name);
+	char * getTypedItemName(int objectId);
+	void fillTypedItemIdArray(int ind);
 	void setItemAsLooted(int objectId);
 	void clearLootItems();
 
