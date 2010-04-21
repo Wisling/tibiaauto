@@ -19,6 +19,7 @@ class CTibiaListData{
 	int val;
 	char* s;
 	int val2;
+	int type;
 public:
 	CTibiaListData(int a_val,char* a_s){
 		s=(char*)malloc(strlen(a_s)+1);
@@ -26,19 +27,24 @@ public:
 
 		val=a_val;
 		val2=0;
+		SetType(0);
 	}
-	CTibiaListData(int a_val,char* a_s,int a_val2){
+	CTibiaListData(int a_val,char* a_s,int a_val2, int a_val3){
 		s=(char*)malloc(strlen(a_s)+1);
 		strcpy(s,a_s);
 
 		val=a_val;
 		val2=a_val2;
+		SetType(a_val3);
 	}
 	char* GetText(){
 		return s;
 	}
 	int GetValue(){
 		return val;
+	}
+	int GetType(){
+		return type;
 	}
 	int GetExtraInfo(){
 		return val2;
@@ -48,6 +54,9 @@ public:
 	}
 	void SetValue(int a_val){
 		val=a_val;
+	}
+	void SetType(int a_val){
+		type=a_val;
 	}
 	void SetText(char* a_s){
 		free(s);
@@ -61,7 +70,6 @@ public:
 		int ind = strlen(outStr);
 		sprintf(outStr+ind,"(%d,%s,%d)\n",val,s,val2);
 	}
-	
 };
 
 typedef map<char *, CTibiaListData*, cmp_str> StrMap;
@@ -79,8 +87,8 @@ public:
 		RemoveAll();
 	}
 
-	bool Add(int a_val,char* a_s,int a_val2){
-		CTibiaListData* data=new CTibiaListData(a_val,a_s,a_val2);
+	bool Add(int a_val,char* a_s,int a_val2 = 0, int a_val3 = 0) {
+		CTibiaListData* data=new CTibiaListData(a_val, a_s, a_val2, a_val3);
 		if (Add(data)) return TRUE;
 		delete data;
 		return FALSE;
@@ -88,6 +96,7 @@ public:
 	bool Add(CTibiaListData* data){
 		if (data==NULL) return FALSE;
 		int a_val=data->GetValue();
+		int type=data->GetType();
 		char* a_s=data->GetText();
 		if (HasText(a_s)) return FALSE;
 
@@ -155,6 +164,14 @@ public:
 		}
 		return NULL;
 	}
+
+	int GetTypeAtIndex(int ind) {
+		if (ind>=0 && ind<dataList.GetSize()) {
+			return dataList[ind]->GetType();
+		}
+		return NULL;
+	}
+
 	int GetExtraInfoAtIndex(int ind){
 		if (ind>=0 && ind<dataList.GetSize()){
 			return dataList[ind]->GetExtraInfo();
@@ -191,6 +208,22 @@ public:
 		int ind=GetIndex(val);
 		if (ind==-1) return FALSE;
 		dataList[ind]->SetExtraInfo(val2);
+		return TRUE;
+	}
+	void SetTypeAtIndex(int ind,int val2){
+		if (!(ind>=0 && ind<dataList.GetSize())) AfxMessageBox("CTibiaList index out of bounds!");
+		dataList[ind]->SetType(val2);
+	}
+	bool SetType(char* s,int val2){
+		StrMap::iterator iter=strMap.find(s);
+		if(iter==strMap.end()) return FALSE;
+		iter->second->SetType(val2);
+		return TRUE;
+	}
+	bool SetType(int val,int val2){
+		int ind=GetIndex(val);
+		if (ind==-1) return FALSE;
+		dataList[ind]->SetType(val2);
 		return TRUE;
 	}
 	bool Remove(char* s){
@@ -241,6 +274,7 @@ public:
 	CUIntArray* GetArrayPtr(){
 		return &valList;
 	}
+
 	void RemoveAll(){
 		StrMap::iterator iter=strMap.begin();
 		while (iter!=strMap.end()){
@@ -405,8 +439,8 @@ public:
 			return iter->second->GetExtraInfo();
 		}
 	}
-	bool Add(int a_val,char* a_s,int a_val2){
-		CTibiaListData* data=new CTibiaListData(a_val,a_s,a_val2);
+	bool Add(int a_val,char* a_s,int a_val2, int a_val3 = 0){
+		CTibiaListData* data=new CTibiaListData(a_val, a_s, a_val2, a_val3);
 		if (Add(data)) return TRUE;
 		delete data;
 		return FALSE;
@@ -607,12 +641,13 @@ class CTibiaTreeItemData:public CTibiaTreeData
 	bool looted;
 	char *name;
 public:
-	CTibiaTreeItemData(char *a_name,int a_id, bool a_looted){
+	CTibiaTreeItemData(char *a_name,int a_id, bool a_looted, int i_type = 0){
 		if (!strcmp(a_name,"Wooden Doll"))
 			int a=0;
 		nodeType=TT_ITEM_NODE;
 		id=a_id;
 		looted=a_looted;
+		type = i_type;
 		
 		int len=strlen(a_name)+1;
 		name=(char*)malloc(len);
@@ -625,11 +660,14 @@ public:
 	int GetId(){
 		return id;
 	}
+	int GetItemType(){
+		return type;
+	}
 	bool IsLooted(){
 		return looted;
 	}
-	void SetIsLooted(bool val){
-		looted=val;
+	void SetIsLooted(bool b_looted){
+		looted = b_looted;
 	}
 	char* GetName(){
 		return name;
@@ -638,6 +676,11 @@ public:
 		int ind=strlen(outStr);
 		sprintf(outStr+ind,"(Item:%s,%d,%d)\n",this->name,this->id,this->looted);
 	}
+private:
+	int type;
+	char *name;
+	int id;
+	bool looted;
 };
 
 class CTibiaTree{

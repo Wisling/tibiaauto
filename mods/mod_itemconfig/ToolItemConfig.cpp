@@ -142,7 +142,7 @@ static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataT
 			txt=(char*)malloc(strlen(data->GetName())+10);
 			sprintf(txt,"%s[%d]",data->GetName(),data->GetId());
 
-			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,txt, 0,0,0,0,data->GetId(),guiTree, TVI_LAST);
+			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,txt, 0,0,0,0,(long)data,guiTree, TVI_LAST);
 			free(txt);
 
 			//2 is fully checked, 0 is not checked
@@ -178,7 +178,7 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 
 			CreateDataTree(newTree,treeCtrl,child);
 		} else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=0) {//Branch node
-			int id=treeCtrl->GetItemData(child);
+			CTibiaTreeItemData* data = (CTibiaTreeItemData*)treeCtrl->GetItemData(child);
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
 			//Parse text
@@ -190,7 +190,7 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 			}
 			int curCheck;
 			treeCtrl->GetItemImage(child,curCheck,curCheck);
-			dataTree->AddChild(new CTibiaTreeItemData(text,id,curCheck!=0));
+			dataTree->AddChild(new CTibiaTreeItemData(text,data->GetId(),curCheck!=0, data->GetItemType()));
 		} else{//empty branch case
 		}
 
@@ -322,7 +322,8 @@ void CToolItemConfig::OnItemEdit() {
 	if (item==NULL) return;
 	CItemEdit *dialog;
 	if (!m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item)!=0){//Branch node
-		int id = m_itemsTree.GetItemData(item);
+		CTibiaTreeItemData* data = (CTibiaTreeItemData*)m_itemsTree.GetItemData(item);
+		int id = data->GetId();
 		CString cText=m_itemsTree.GetItemText(item);
 		char* text=(char *)(LPCTSTR)cText;
 		char* name = parseName(text);

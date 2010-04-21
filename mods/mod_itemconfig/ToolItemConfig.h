@@ -12,6 +12,8 @@
 #include "GroupBoxEx.h"
 #include "BtnST.h"
 
+using namespace std;
+
 /////////////////////////////////////////////////////////////////////////////
 // CToolItemConfig dialog
 
