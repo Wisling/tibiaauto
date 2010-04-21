@@ -649,14 +649,26 @@ void tibiaMapUnloadMiniMaps()
 	taMiniMap.unloadMiniMaps();
 }
 
+void tibiaItemfillTypedItemIdArray(int ind){	
+	CTibiaItem::fillTypedItemIdArray(ind);
+}
 char * tibiaItemGetItemName(int objectId){	
 	return CTibiaItem::getItemName(objectId);
+}
+char * tibiaItemGetTypedItemName(int objectId){	
+	return CTibiaItem::getTypedItemName(objectId);
 }
 int tibiaItemGetItemId(char *name){
 	return CTibiaItem::getItemId(name);
 }
+int tibiaItemGetTypedItemId(char *name){
+	return CTibiaItem::getTypedItemId(name);
+}
 int tibiaItemGetItemIndex(int objectId){	
 	return CTibiaItem::getItemIndex(objectId);
+}
+int tibiaItemGetTypedItemIndex(int objectId){	
+	return CTibiaItem::getTypedItemIndex(objectId);
 }
 int tibiaItemGetFoodIndex(int objectId){	
 	return CTibiaItem::getFoodIndex(objectId);
@@ -664,9 +676,14 @@ int tibiaItemGetFoodIndex(int objectId){
 int tibiaItemGetLootItemIndex(int objectId){	
 	return CTibiaItem::getLootItemIndex(objectId);
 }
-
 int tibiaItemGetItemIdAtIndex(int ind){	
 	return CTibiaItem::getItemIdAtIndex(ind);
+}
+int tibiaItemGetItemTypeAtIndex(int ind){	
+	return CTibiaItem::getItemTypeAtIndex(ind);
+}
+int tibiaItemGetTypedItemIdAtIndex(int ind){	
+	return CTibiaItem::getTypedItemIdAtIndex(ind);
 }
 int tibiaItemGetFoodIdAtIndex(int ind){	
 	return CTibiaItem::getFoodIdAtIndex(ind);
@@ -676,6 +693,9 @@ int tibiaItemGetLootItemIdAtIndex(int ind){
 }
 char* tibiaItemGetItemNameAtIndex(int ind){	
 	return CTibiaItem::getItemNameAtIndex(ind);
+}
+char* tibiaItemGetTypedItemNameAtIndex(int ind){	
+	return CTibiaItem::getTypedItemNameAtIndex(ind);
 }
 char* tibiaItemGetFoodNameAtIndex(int ind){	
 	return CTibiaItem::getFoodNameAtIndex(ind);
@@ -688,6 +708,9 @@ int tibiaItemGetFoodTimeAtIndex(int ind){
 }
 CUIntArray* tibiaItemGetItemIdArrayPtr(){
 	return CTibiaItem::getItemIdArrayPtr();
+}
+CUIntArray* tibiaItemGetTypedItemIdArrayPtr(int ind){
+	return CTibiaItem::getTypedItemIdArrayPtr(ind);
 }
 CUIntArray* tibiaItemGetFoodIdArrayPtr(){
 	return CTibiaItem::getFoodIdArrayPtr();
@@ -705,15 +728,20 @@ void tibiaItemClearLootItems(){
 void tibiaItemAddItem(char *name, int objectId){
 	CTibiaItem::addItem(name,objectId);
 }
+void tibiaItemAddTypedItem(char *name, int objectId, int type){
+	CTibiaItem::addTypedItem(name,objectId, type);
+}
 void tibiaItemAddFood(char *name, int objectId, int extraInfo){
 	CTibiaItem::addFood(name,objectId,extraInfo);
 }
 void tibiaItemAddLootItem(char *name, int objectId) {
 	CTibiaItem::addLootItem(name,objectId);
 }
-
 void tibiaItemRemoveItem(int ind) {
 	CTibiaItem::removeItem(ind);
+}
+void tibiaItemRemoveTypedItem(int ind) {
+	CTibiaItem::removeTypedItem(ind);
 }
 void tibiaItemRemoveFood(int ind) {
 	CTibiaItem::removeFood(ind);
@@ -726,6 +754,9 @@ void tibiaItemClearFoodList(){
 }
 int tibiaItemGetItemCount(){
 	return CTibiaItem::getItemCount();
+}
+int tibiaItemGetTypedItemCount() {
+	return CTibiaItem::getTypedItemCount();
 }
 int tibiaItemGetFoodCount(){
 	return CTibiaItem::getFoodCount();

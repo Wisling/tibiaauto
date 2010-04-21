@@ -236,10 +236,20 @@ EXPORTS
 	tibiaItemRefreshItemLists @228
 	tibiaItemSaveItemLists @229
 	tibiaItemCleanup @230
-	tibiaItemSetItemAsLooted @231
-	tibiaItemClearLootItems @232
-	packSenderStepLeft @233
-	packSenderStepRight @234
-	packSenderStepUp @235
-	packSenderStepDown @236
-	packSenderSendDirectPacket @237
+	packSenderStepLeft @231
+	packSenderStepRight @232
+	packSenderStepUp @233
+	packSenderStepDown @234
+	packSenderSendDirectPacket @235
+	tibiaItemGetTypedItemIdArrayPtr @236
+	tibiaItemAddTypedItem @237
+	tibiaItemGetTypedItemCount @238
+	tibiaItemRemoveTypedItem @239
+	tibiaItemGetTypedItemNameAtIndex @240
+	tibiaItemGetTypedItemIdAtIndex @241
+	tibiaItemGetTypedItemIndex @242
+	tibiaItemGetTypedItemId @243
+	tibiaItemGetTypedItemName @244
+	tibiaItemfillTypedItemIdArray @245
+	tibiaItemSetItemAsLooted @246
+	tibiaItemClearLootItems @247

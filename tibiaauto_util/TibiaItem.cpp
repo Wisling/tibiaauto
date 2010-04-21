@@ -1,7 +1,6 @@
 // TibiaItem.cpp: implementation of the CTibiaItem class.
 //
 //////////////////////////////////////////////////////////////////////
-
 #include "stdafx.h"
 #include "TibiaStructures.h"
 #include "TibiaItem.h"
@@ -43,6 +42,7 @@ CTibiaTree* CTibiaItem::itemTree=new CTibiaTree(new CTibiaTreeBranchData("Root")
 CTibiaList CTibiaItem::foodList;
 CTibiaList CTibiaItem::lootList;
 CTibiaList CTibiaItem::itemList;
+CTibiaList CTibiaItem::typedList;
 CTibiaList CTibiaItem::constCodeList;
 
 void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent);
@@ -75,11 +75,28 @@ char * CTibiaItem::getItemName(int objectId)
 
 	return "unknown";
 }
+
+//Returns "unknown" if name not in list
+char * CTibiaItem::getTypedItemName(int objectId)
+{	
+	refreshItemLists();
+
+	char * ret=typedList.GetText(objectId);
+	if (ret!=NULL) return ret;
+
+	return "unknown";
+}
+
 //Returns the objectId associated with a name and 0 if not in list
 int CTibiaItem::getItemId(char *name)
 {
 	refreshItemLists();
 	return itemList.GetValue(name);
+}
+int CTibiaItem::getTypedItemId(char *name)
+{
+	refreshItemLists();
+	return typedList.GetValue(name);
 }
 
 int CTibiaItem::getItemIndex(int objectId)
@@ -87,11 +104,19 @@ int CTibiaItem::getItemIndex(int objectId)
 	refreshItemLists();
 	return itemList.GetIndex(objectId);
 }
+
+int CTibiaItem::getTypedItemIndex(int objectId)
+{	
+	refreshItemLists();
+	return typedList.GetIndex(objectId);
+}
+
 int CTibiaItem::getFoodIndex(int objectId)
 {	
 	refreshItemLists();
 	return foodList.GetIndex(objectId);
 }
+
 int CTibiaItem::getLootItemIndex(int objectId)
 {	
 	refreshItemLists();
@@ -103,6 +128,19 @@ int CTibiaItem::getItemIdAtIndex(int ind)
 	refreshItemLists();
 	return itemList.GetValueAtIndex(ind);
 }
+
+int CTibiaItem::getItemTypeAtIndex(int ind)
+{	
+	refreshItemLists();
+	return itemList.GetTypeAtIndex(ind);
+}
+
+int CTibiaItem::getTypedItemIdAtIndex(int ind)
+{	
+	refreshItemLists();
+	return typedList.GetValueAtIndex(ind);
+}
+
 int CTibiaItem::getFoodIdAtIndex(int ind)
 {	
 	refreshItemLists();
@@ -119,6 +157,13 @@ char* CTibiaItem::getItemNameAtIndex(int ind)
 	refreshItemLists();
 	return itemList.GetTextAtIndex(ind);
 }
+
+char* CTibiaItem::getTypedItemNameAtIndex(int ind)
+{	
+	refreshItemLists();
+	return typedList.GetTextAtIndex(ind);
+}
+
 char* CTibiaItem::getFoodNameAtIndex(int ind)
 {	
 	refreshItemLists();
@@ -139,10 +184,26 @@ CUIntArray* CTibiaItem::getItemIdArrayPtr(){
 	refreshItemLists();
 	return itemList.GetArrayPtr();
 }
+
+CUIntArray* CTibiaItem::getTypedItemIdArrayPtr(int ind) {
+	refreshItemLists();
+	return typedList.GetArrayPtr();
+}
+
+void CTibiaItem::fillTypedItemIdArray(int ind) {
+	refreshItemLists();
+	typedList.RemoveAll();
+	for (int loop = 0; loop < getItemCount(); loop++) {
+		if (itemList.GetTypeAtIndex(loop) & ind)
+			typedList.Add(itemList.GetValueAtIndex(loop), itemList.GetTextAtIndex(loop), itemList.GetExtraInfoAtIndex(loop), itemList.GetTypeAtIndex(loop));
+	}
+}
+
 CUIntArray* CTibiaItem::getFoodIdArrayPtr(){
 	refreshItemLists();
 	return foodList.GetArrayPtr();
 }
+
 CUIntArray* CTibiaItem::getLootItemIdArrayPtr(){
 	refreshItemLists();
 	return lootList.GetArrayPtr();
@@ -151,6 +212,10 @@ CUIntArray* CTibiaItem::getLootItemIdArrayPtr(){
 void CTibiaItem::addItem(char *name, int objectId) {
 	refreshItemLists();
 	itemList.Add(objectId,name,0);
+}
+void CTibiaItem::addTypedItem(char *name, int objectId, int type) {
+	refreshItemLists();
+	typedList.Add(objectId,name,0,type);
 }
 void CTibiaItem::addFood(char *name, int objectId, int extraInfo) {
 	refreshItemLists();
@@ -165,6 +230,11 @@ void CTibiaItem::removeItem(int ind) {
 	refreshItemLists();
 	itemList.RemoveAtIndex(ind);
 }
+
+void CTibiaItem::removeTypedItem(int ind) {
+	refreshItemLists();
+	typedList.RemoveAtIndex(ind);
+}
 void CTibiaItem::removeFood(int ind) {
 	refreshItemLists();
 	foodList.RemoveAtIndex(ind);
@@ -178,11 +248,19 @@ void CTibiaItem::clearFoodList(){
 	refreshItemLists();
 	foodList.RemoveAll();
 }
+
 int CTibiaItem::getItemCount()
 {		
 	refreshItemLists();
 	return itemList.GetCount();
 }
+
+int CTibiaItem::getTypedItemCount()
+{		
+	refreshItemLists();
+	return typedList.GetCount();
+}
+
 int CTibiaItem::getFoodCount()
 {		
 	refreshItemLists();
@@ -247,6 +325,7 @@ void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 			
 			int objectId=0;
 			int objectLoot=0;
+			int type = 0;
 			char *objectName=NULL;
 			
 			for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
@@ -269,13 +348,19 @@ void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 					sscanf(idTmp,"%d",&objectLoot);
 					free(idTmp);
 				}
+				if (!wcscmp(attrNode->getNodeName(),_L("type")))
+				{
+					char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
+					sscanf(idTmp,"%d",&type);
+					free(idTmp);
+				}
 			}			 			
 			if (!objectId||!objectName||!strlen(objectName))
 			{
 				if (objectName) free(objectName);
 				continue;
 			}
-			parent->AddChild(new CTibiaTreeItemData(objectName,objectId,objectLoot!=0));
+			parent->AddChild(new CTibiaTreeItemData(objectName,objectId,objectLoot!=0, type));
 			if (objectName) free(objectName);
 		}
 		if (!wcscmp(item->getNodeName(),_L("branch"))){
@@ -309,7 +394,7 @@ void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 
 			char* name=data->GetName();
 			//Add to list, but if failed, display item info
-			if(! list->Add(data->GetId(),data->GetName(),0)){
+			if(! list->Add(data->GetId(), data->GetName(), 0, data->GetItemType())){
 				char buf[1024];
 				char trunc_name[500];
 				int len=min(strlen(name),500);
@@ -330,7 +415,7 @@ void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
 		if (!child->HasChildren() && child->data->GetType()==TT_ITEM_NODE){
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
 			if (data->IsLooted()){
-				list->Add(data->GetId(),data->GetName(),0);
+				list->Add(data->GetId(),data->GetName(),data->GetItemType());
 			}
 		} else if (child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){
 			//recurse for all children
@@ -368,7 +453,7 @@ bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list,int objectId
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
 			if (data->GetId()==objectId){
 				data->SetIsLooted(true);
-				list->Add(data->GetId(),data->GetName(),0);
+				list->Add(data->GetId(),data->GetName(),data->GetItemType());
 				return true;
 			}
 		} else if (child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){
@@ -676,7 +761,7 @@ void CTibiaItem::refreshItemLists()
 	LeaveCriticalSection(&ItemsInitCriticalSection);
 }
 
-void saveItemsBranch(DOMNode* node, CTibiaTree* parent,DOMDocument  *doc){
+void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument  *doc){
 	int size=parent->children.size();
 	for (int i=0;i<size;i++){
 		CTibiaTree* child=parent->children[i];
@@ -692,6 +777,7 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent,DOMDocument  *doc){
 			char buf[512];
 
 			int id = data->GetId();
+			int type = data->GetItemType();
 			bool looted = data->IsLooted();
 			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
 			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(data->GetName()));
@@ -699,6 +785,8 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent,DOMDocument  *doc){
 			itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
 			sprintf(buf,"%d",looted?1:0);
 			itemElem->setAttribute(XMLString::transcode("looted"), XMLString::transcode(buf));
+			sprintf(buf,"%d",type);
+			itemElem->setAttribute(XMLString::transcode("type"), XMLString::transcode(buf));
 			node->appendChild(itemElem);
 		}
 	}

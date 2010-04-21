@@ -68,7 +68,6 @@ void CPackSender::sendPacket(char *buf,int method)
 	int len=lowB+hiB*256+2;
 
 	struct ipcMessage mess;		
-	DWORD cbWritten;
 
 	mess.messageType=method;
 	memcpy(mess.payload,buf,len);
@@ -77,7 +76,9 @@ void CPackSender::sendPacket(char *buf,int method)
 	mess.send();
 }
 
-
+#pragma warning (push)
+#pragma warning(disable:4305 )
+#pragma warning(disable:4309 )
 void CPackSender::say(const char *buf)
 {
 	char retbuf[65536];
@@ -521,11 +522,9 @@ void CPackSender::revealFish(int enable)
 void CPackSender::sendTAMessage(char *msg)
 {
 	struct ipcMessage mess;		
-	DWORD cbWritten;
 
 	mess.messageType=3;
 	strcpy(mess.payload,msg);
-
 	
 	mess.send();
 }
@@ -847,7 +846,6 @@ void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 {
 	struct ipcMessage mess;		
-	DWORD cbWritten;
 
 	if (strlen(info1)>499) info1[499]='\0';
 	if (strlen(info2)>499) info2[499]='\0';
@@ -885,7 +883,6 @@ void CPackSender::look(int x, int y, int z, int objectId)
 void CPackSender::ignoreLook(int end)
 {
 	struct ipcMessage mess;		
-	DWORD cbWritten;
 
 	mess.messageType=302;
 	memset(mess.payload,0x0,1024);
@@ -898,7 +895,6 @@ void CPackSender::ignoreLook(int end)
 void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle)
 {
 	struct ipcMessage mess;
-	DWORD cbWritten;
 	mess.messageType=303;
 	memset(mess.payload,0,1024);
 	memcpy(mess.payload,&active,4);
@@ -911,7 +907,6 @@ void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayer
 void CPackSender::sendClearCreatureInfo()
 {
 	struct ipcMessage mess;
-	DWORD cbWritten;
 	mess.messageType=304;
 	mess.send();
 }
@@ -937,6 +932,8 @@ void CPackSender::stopAll()
 
 	sendPacket(retbuf);
 }
+
+#pragma warning (pop)
 
 void CPackSender::sendDirectPacket(const char* buf,int len)
 {

@@ -220,7 +220,7 @@ char * CMemReader::GetLoggedChar(int processId)
 		if (selfId==creatureId&&visible)
 		{
 			char buf[33];
-			buf[32]==0;
+			buf[32]='\0';
 			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,buf);
 			ret=(char *)malloc(strlen(buf)+1);
 			strcpy(ret,buf);
@@ -346,7 +346,7 @@ void CMemReader::writeGotoCoords(int x, int y, int z)
 	CMemUtil::SetMemIntValue(m_memAddressGoX,x);
 	CMemUtil::SetMemIntValue(m_memAddressGoY,y);
 	CMemUtil::SetMemIntValue(m_memAddressGoZ,z);
-	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature,1);//enable to accept gotocoords, (76=is char moving param)
+	//CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature, 1);//enable to accept gotocoords, (76=is char moving param)
 }	
 
 void CMemReader::cancelAttackCoords()
