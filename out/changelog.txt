@@ -1,5 +1,8 @@
 2.3.1, ?.?.2010
 Enhancements
+ Auto Go/Log: Typed Item List 
+ Auto Go/Log: Additional Icons 
+ Kernal: Added support for item typing
 
 Defects
 
@@ -30,11 +33,12 @@ Enhancments
 
 Defects
  Auto Go/Log: Stabalized Tibia client window manipulation
- Auto Go/Log: Corrected and error prevent the logout action to complete successfully
+ Auto Go/Log: Corrected and error preventing the logout action from completing successfully
  Auto Go/Log: Corrected several problems with the spellcasting action
  Auto Go/Log: Fixed alarm for leveling up
  Auto Go/Log: Corrected Vista screenshot error
  Auto Go/Log: Corrected MC Window Confusion error
+ Auto Go/Log: Corrected Window flashing
  ItemConfig: Cancel button doesn't make any changes now
  Installer: Added logs folder to TA directory 
 
