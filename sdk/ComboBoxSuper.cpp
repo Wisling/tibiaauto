@@ -84,8 +84,10 @@ void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	// If we use images, and there is data, and the index is valid:
 	if (m_pImageList && m_bUseImage && pItemData && pItemData->nImageIndex!=-1)
 	{
-		DrawIconEx(dc.GetSafeHdc(),rect.left,rect.top,
-			m_pImageList->ExtractIcon(pItemData->nImageIndex),0, 0, 0, NULL, DI_NORMAL);
+		HICON icon = m_pImageList->ExtractIcon(pItemData->nImageIndex);
+		DrawIconEx((HDC)dc,rect.left,rect.top,
+			icon,0, 0, 0, NULL, DI_NORMAL);
+		DestroyIcon(icon);
 	}
 
 	// If we use images - move text to the right:
