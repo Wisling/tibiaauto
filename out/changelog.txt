@@ -5,6 +5,7 @@ Enhancements
  Kernal: Added support for item typing
 
 Defects
+ Auto Go/Log: Corrected a graphical glitch related to using icons in drop-down menus. 
 
 2.3.1, 18.4.2010
 Enhancements
