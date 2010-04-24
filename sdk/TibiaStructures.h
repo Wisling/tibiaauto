@@ -637,9 +637,6 @@ public:
 
 class CTibiaTreeItemData:public CTibiaTreeData
 {
-	int id;
-	bool looted;
-	char *name;
 public:
 	CTibiaTreeItemData(char *a_name,int a_id, bool a_looted, int i_type = 0){
 		if (!strcmp(a_name,"Wooden Doll"))

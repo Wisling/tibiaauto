@@ -75,7 +75,7 @@ public:
 	void stepDown();
 	void sendDirectPacket(const char* buf,int len);
 
-
+	void printText(CPoint pos, int red, int green, int blue, const char* text);
 
 
 	void sendAttackedCreatureToAutoAim(int attackedCreature);
