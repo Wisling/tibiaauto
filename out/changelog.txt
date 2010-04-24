@@ -3,6 +3,7 @@ Enhancements
  Auto Go/Log: Typed Item List 
  Auto Go/Log: Additional Icons 
  Kernal: Added support for item typing
+ Kernal: Added support for on-screen text display
 
 Defects
  Auto Go/Log: Corrected a graphical glitch related to using icons in drop-down menus. 
