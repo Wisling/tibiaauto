@@ -653,6 +653,19 @@ void CPackSenderProxy::sendCreatureInfo(char *name, char *info1, char *info2)
 	} 
 }
 
+void CPackSenderProxy::printText(CPoint pos, int red, int green, int blue, const char* text)
+{
+	typedef void (*Proto_fun)(CPoint pos, int red, int green, int blue, const char* text);
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderPrintText");
+		if (fun)
+			fun(pos, red, green, blue, text);
+		else
+			AfxMessageBox("printText() not loaded!!");
+	} 
+}
+
 void CPackSenderProxy::look(int x,int y, int z,int objectId)
 {
 	typedef void (*Proto_fun)(int x,int y, int z,int objectId);
