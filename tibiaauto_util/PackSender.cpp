@@ -24,8 +24,6 @@ struct ipcMessage
 public:
 	void send()
 	{
-
-		
 		DWORD cbWritten;
 		BOOL fSuccess = WriteFile(
 			hPipe,
@@ -856,6 +854,23 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 	strcpy(mess.payload+32,info1);
 	strcpy(mess.payload+500+32,info2);
 	
+	mess.send();
+
+}
+
+void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message)
+{
+	struct ipcMessage mess;		
+	int messLen = strlen(message);
+	mess.messageType=307;
+	memset(mess.payload,0x0,1024);
+	memcpy(mess.payload, &pos.x, sizeof(int));
+	memcpy(mess.payload + 4, &pos.y, sizeof(int));
+	memcpy(mess.payload + 8, &red, sizeof(int));
+	memcpy(mess.payload + 12, &green, sizeof(int));
+	memcpy(mess.payload + 16, &green, sizeof(int));
+	memcpy(mess.payload + 20, &messLen, sizeof(int));
+	strcpy(mess.payload + 24, message);
 	mess.send();
 
 }

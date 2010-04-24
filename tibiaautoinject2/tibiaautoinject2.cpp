@@ -72,9 +72,26 @@ int encryptPos;
 int encryptPrevPtr=0;
 int encryptKeyPtr=0;
 
-
 int privChanBufferPtr=0;
 
+struct HUD {
+	CPoint pos;
+	int redColor;
+	int blueColor;
+	int greenColor;
+	char message[1024];
+public:
+	HUD() {
+		pos.x = 0;
+		pos.y = 0;
+		CPoint pos;
+		redColor = 0;
+		blueColor = 0;
+		greenColor = 0;
+		message[0] = '\0';
+	}
+};
+HUD HUDisplay[100];
 
 struct tibiaState
 {
@@ -1161,7 +1178,18 @@ void InitialiseCreatureInfo()
 	}
 }
 
+void myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
+{
+	int titleOffset=0;	
 
+	typedef void (*Proto_fun)(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign);
+	Proto_fun fun = (Proto_fun)(0x4B4130); // 8.55-
+	fun(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
+	for (int loop = 0; loop < 100; loop++ ) {
+		if (HUDisplay[loop].pos.x && HUDisplay[loop].pos.y && HUDisplay[loop].message != NULL && HUDisplay[loop].message[0] != '\0')
+			fun(1, HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, nFont, HUDisplay[loop].redColor, HUDisplay[loop].greenColor, HUDisplay[loop].blueColor, HUDisplay[loop].message, 0);
+	}
+}
 
 void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, int colB, int v8, char *str, int v10, int v11, int v12, int v13, int v14, int v15)
 {
@@ -1231,7 +1259,6 @@ void myPlayerNameText(int v1, int x, int y, int fontNumber, int colR, int colG, 
 
 }
 
-
 void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	typedef void (*Proto_fun)(int type,char *s);			
@@ -1246,7 +1273,6 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	//Proto_fun fun=(Proto_fun)(0x545730); //8.53
 	//Proto_fun fun=(Proto_fun)(0x545980); //8.54
 	Proto_fun fun=(Proto_fun)(0x54A350); //8.55-
-	
 	
 	if (debugFile&&COMPLEX)
 	{
@@ -1456,7 +1482,6 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 		mess.send();
 	}
 	
-	
 	if (type!=0x16||time(NULL)>ignoreLookEnd) 
 	{ 		
 		//int happy=*(int*)v1;
@@ -1467,23 +1492,23 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 	}	
 }
 
-
-
-
-
 void trapFun(HANDLE dwHandle,int addr,unsigned int targetFun)
 {				
 	int targetAddr=targetFun - addr - 4;
 	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr,   sizeof(long int), NULL);	
 }
 
-
-
 void InitialisePlayerInfoHack()
 {		
 	DWORD procId=GetCurrentProcessId();
 	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);    
 	
+	trapFun(dwHandle,0x44d49c+1,(unsigned int)myPrintText); // 8.55
+	trapFun(dwHandle,0x44d4ec+1,(unsigned int)myPrintText); // 8.55
+	trapFun(dwHandle,0x45a058+1,(unsigned int)myPrintText); // 8.55
+	trapFun(dwHandle,0x4F5133+1,(unsigned int)myPrintText); // 8.55
+	trapFun(dwHandle,0x4f5ef0+1,(unsigned int)myPrintText); // 8.55
+
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 	
 	//trapFun(dwHandle,0x4AC191+1,(unsigned int)myPlayerNameText); // OLD
@@ -2171,6 +2196,61 @@ void ParseIPCMessage(struct ipcMessage mess)
 			revealCNameActive=0;
 			break;
 		}	
+	case 307: {
+		/*CString buf;
+		buf.Format("(%d, %d) rgb(%d, %d, %d) '%s'", mess.data[0], mess.data[1], mess.data[2], mess.data[3], mess.data[4], mess.payload);
+		AfxMessageBox(buf);*/
+		int x, y, red, green, blue, messLen;
+		char message[1000];
+		memcpy(&x, mess.payload, sizeof(int));
+		memcpy(&y, mess.payload + 4, sizeof(int));
+		memcpy(&red, mess.payload + 8, sizeof(int));
+		memcpy(&green, mess.payload + 12, sizeof(int));
+		memcpy(&blue, mess.payload + 16, sizeof(int));
+		memcpy(&messLen, mess.payload + 20, sizeof(int));
+		memcpy(&message, mess.payload + 24, messLen+1);
+
+		bool actionComplete = false;
+		int found = -1;
+		for (int loop = 0; loop < 100; loop++) {
+			//buf.Format("(%d, %d), %d", HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, found);
+			//AfxMessageBox(buf);
+			if (HUDisplay[loop].pos.x == x && HUDisplay[loop].pos.y == y) {
+				if (message != "") {// Update message on screen at point (mess.data[0], mess.data[1]):
+					HUDisplay[loop].redColor = red;
+					HUDisplay[loop].greenColor = green;
+					HUDisplay[loop].blueColor = blue;
+					memcpy(HUDisplay[loop].message, message, messLen);
+					//AfxMessageBox("update");
+					actionComplete = true;
+					break;
+				}
+				else {// "Delete" message from screen
+					HUDisplay[loop].pos.x = 0;
+					HUDisplay[loop].pos.y = 0;
+					HUDisplay[loop].redColor = 0;
+					HUDisplay[loop].greenColor = 0;
+					HUDisplay[loop].blueColor = 0;
+					HUDisplay[loop].message[0] = '\0';
+					//AfxMessageBox("delete");
+					actionComplete = true;
+					break;
+				}
+			}
+			else if  (!HUDisplay[loop].pos.x && !HUDisplay[loop].pos.y && found < 0) 
+				found = loop;
+		}
+		if (!actionComplete && found > -1) { // Add a message to the screen if there is room to store it and no delete or update action took place
+			HUDisplay[found].pos.x = x;
+			HUDisplay[found].pos.y = y;
+			HUDisplay[found].redColor = red;
+			HUDisplay[found].greenColor = green;
+			HUDisplay[found].blueColor = blue;
+			memcpy(HUDisplay[loop].message, message, messLen);
+			//AfxMessageBox("add");
+		}
+		break;
+		}
 	default:		
 		break;
 	};

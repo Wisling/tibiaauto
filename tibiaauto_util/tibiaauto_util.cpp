@@ -914,6 +914,12 @@ void packSenderSendCreatureInfo(char *name, char *info1, char *info2)
 	sender.sendCreatureInfo(name,info1,info2);
 }
 
+void packSenderPrintText(CPoint pos, int red, int green, int blue, char* text)
+{
+	CPackSender sender;
+	sender.printText(pos, red, green, blue, text);
+}
+
 void packSenderLook(int x,int y, int z,int objectId)
 {
 	CPackSender sender;

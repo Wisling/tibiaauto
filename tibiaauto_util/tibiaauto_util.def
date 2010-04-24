@@ -253,3 +253,4 @@ EXPORTS
 	tibiaItemfillTypedItemIdArray @245
 	tibiaItemSetItemAsLooted @246
 	tibiaItemClearLootItems @247
+	packSenderPrintText @248
