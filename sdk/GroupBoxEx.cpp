@@ -31,7 +31,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CGroupBoxEx message handlers
 
-void CGroupBoxEx::OnPaint() 
+void CGroupBoxEx::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	

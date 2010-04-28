@@ -2,10 +2,12 @@
 Enhancements
  Auto Go/Log: Typed Item List 
  Auto Go/Log: Additional Icons 
- Kernal: Added support for item typing
+ Kernel: Added support for item typing
  Load and Save: Saves and starts scripts and modules when loading
  Load and Save: Option in general settings to load a player's script on startup
  Kernel: Added support for on-screen text display
+ Restacker: Improved speed of restacker
+ Restacker: Allowed it to pick up less than a full stack if it's too heavy
 
 Defects
  Auto Go/Log: Corrected a graphical glitch related to using icons in drop-down menus. 

@@ -104,7 +104,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (self->hp<=config->m_uhBorderline||config->m_hotkeySelf)
 		{	
-			CTibiaItem *uhItem;	
 			int uhContainer;
 			
 			acceptedItems.RemoveAll();
@@ -121,17 +120,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				uhFallbackNeeded=0;
 			}
 			
-			uhItem=NULL;
+			CTibiaItem *uhItem=new CTibiaItem();
 			uhContainer=-1;
 			
 			int contNr;
-			for (contNr=0;contNr<memConstData.m_memMaxContainers&&uhItem==NULL;contNr++)
+			for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId;contNr++)
 			{
 				CTibiaContainer *cont = reader.readContainer(contNr);
 
 				if (cont->flagOnOff)
-				{					
-					uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);		
+				{		
+					delete uhItem;
+					uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 					uhContainer = contNr;
 				};
 
@@ -140,7 +140,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 										
 			
-			if (uhItem!=NULL)
+			if (uhItem->objectId)
 			{
 				reader.setGlobalVariable("UH_needed","true");
 				if (self->hp<=config->m_uhBorderline)
@@ -156,14 +156,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
 						self->x,self->y,self->z,105);				
 				}
-				delete uhItem;
-				uhItem=NULL;
 			} else {
 				if (config->m_fallback)
 				{
 					uhFallbackNeeded=1;
 				}
 			}			
+			delete uhItem;
 		}
 		else 
 			reader.setGlobalVariable("UH_needed","false");
@@ -195,7 +194,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}				
 				if (chToHeal&&ch->hpPercLeft<config->m_grpBorderline&&self->z==ch->z)
 				{
-					CTibiaItem *uhItem=NULL;
+					CTibiaItem *uhItem=new CTibiaItem();
 					int uhContainer=-1;
 
 					acceptedItems.RemoveAll();
@@ -205,7 +204,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						{
 						case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH"));break;
 						case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH"));break;
-						}				
+						}
 					} else {
 						acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
 						acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
@@ -213,31 +212,32 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					}
 					
 					int contNr;
-					for (contNr=0;contNr<memConstData.m_memMaxContainers&&uhItem==NULL;contNr++)
+					for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId;contNr++)
 					{
 						CTibiaContainer *cont = reader.readContainer(contNr);
-						
+
 						if (cont->flagOnOff)
-						{					
-							uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);		
+						{
+							delete uhItem;
+							uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 							uhContainer = contNr;
 						};
 						
 						delete cont;
 					}										
 					
-					if (uhItem!=NULL)
+					if (uhItem->objectId)
 					{						
 						sender.useWithObjectFromContainerOnFloor(
 							uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
 							ch->x,ch->y,ch->z);					
 						Sleep(config->m_sleepAfter);						
 
-						delete uhItem;
 					} else {
 						if (config->m_grpFallback)
 							grpUhFallbackNeeded=1;
 					}
+					delete uhItem;
 				}
 			}
 
@@ -324,6 +324,9 @@ void CMod_uhApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
