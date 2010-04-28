@@ -58,7 +58,7 @@ struct Creature: public Item
 	int isInvisible;
 	int isDead;
 	int number;
-	int tibiaId;
+	unsigned int tibiaId;
 	int lastAttackTm;
 	Creature() {
 		failedAttacks=isIgnoredUntil=isInvisible=isOnscreen=isAttacking=lastAttackTm=listPriority=isDead=number=tibiaId=x=y=z=0;

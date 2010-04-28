@@ -133,6 +133,16 @@ CTibiaMapProxy tibiaMap;
 /**
 * Register cavebot debug.
 */
+/*
+void registerDebug(int argNum,...){
+	char * args[]=&argNum+sizeof(argNum);
+	CString buf="";
+	while (argNum--){
+		buf+=args[argNum];
+		if (argNum) buf+="\t";
+	}
+	CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt",buf.GetBuffer(2000));
+}*/
 void registerDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6=""){
 	CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt",buf1,buf2,buf3,buf4,buf5,buf6);
 }
@@ -146,7 +156,7 @@ std::string intstr(DWORD value){
 /**
 * Dump full info about a creature (for debuging purposes)
 */
-void dumpCreatureInfo(char *info,int tibiaId) {
+void dumpCreatureInfo(char *info,unsigned int tibiaId) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	
@@ -1161,35 +1171,48 @@ void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
 
 	int contNr,realContNr;
 	CUIntArray acceptedItems;
-	CTibiaItem *rune=NULL;
+	CTibiaItem *rune=new CTibiaItem();
 
 	if (config->debug) registerDebug("Firing runes at alien enemy");
 
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeSD"));
-	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
+	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune->objectId;contNr++)
+	{
+		delete rune;
 		rune = CModuleUtil::lookupItem(contNr,&acceptedItems),realContNr=contNr;
+	}
+
 
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeExplo"));
-	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
+	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune->objectId;contNr++)
+	{
+		delete rune;
 		rune = CModuleUtil::lookupItem(contNr,&acceptedItems),realContNr=contNr;
+	}
 
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeHMM"));
-	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
+	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune->objectId;contNr++)
+	{
+		delete rune;
 		rune = CModuleUtil::lookupItem(contNr,&acceptedItems),realContNr=contNr;
+	}
 	
 	acceptedItems.RemoveAll();
 	acceptedItems.Add(itemProxy.getValueForConst("runeGFB"));
-	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune;contNr++)
+	for (contNr=0;contNr<memConstData.m_memMaxContainers&&!rune->objectId;contNr++)
+	{
+		delete rune;
 		rune = CModuleUtil::lookupItem(contNr,&acceptedItems),realContNr=contNr;
+	}
 	
-	if (rune) {
+	if (rune->objectId) {
 		if (config->debug) registerDebug("Rune to fire found!");
 		sender.castRuneAgainstCreature(0x40+realContNr,rune->pos,rune->objectId,creatureId,2);
-		delete rune;
 	}
+	delete rune;
 } // fireRunesAgainstCreature()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1379,7 +1402,7 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 		Sleep(100);
 		if (shouldLoot()){
 			char* var=reader.getGlobalVariable("autolooterTm");
-			int endTime,tibiaId;
+			unsigned int endTime,tibiaId;
 			sscanf(var,"%d %d",&endTime,&tibiaId);
 			reader.setGlobalVariable("autolooterTm","wait");
 
@@ -1646,7 +1669,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		CUIntArray droppedLootArray;
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
-		if (config->lootFromFloor && currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving) {
+		if (config->lootFromFloor && currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving && isLooterDone(config)) {
 			if (config->lootFood) {
 				droppedLootArray.Append(*itemProxy.getFoodIdArrayPtr());
 			}
@@ -1705,7 +1728,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					attackedCh->z==self->z) {
 
 					if (config->debug) registerDebug("Looter: Creature is dead.");
-//wiz:
 					if (config->lootWhileKill){
 						
 						if (!lootThreadId){
@@ -1845,6 +1867,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											}
 										}
 										if (config->dropNotLooted) {
+											CTibiaCharacter *self=reader.readSelfCharacter();
+											if (attackedCh->z != self->z){
+												dumpCreatureInfo("XXXYYYZZZ Creature replaced??",attackedCh->tibiaId);
+												char buf[1111];
+												sprintf(buf,"Drop looted?? %x,%d (%d,%d,%d)",attackedCh->tibiaId,attackedCh->nr,attackedCh->x,attackedCh->y,attackedCh->z);
+												AfxMessageBox(buf);
+											}
+											delete self;
 											dropAllItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
 										}
 										
@@ -2687,6 +2717,9 @@ void CMod_cavebotApp::showConfigDialog() {
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }

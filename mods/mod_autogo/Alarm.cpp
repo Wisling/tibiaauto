@@ -895,7 +895,6 @@ bool Alarm::skullOnScreen(int options) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-CString buf;	
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
 		if (ch->visible) {
@@ -940,8 +939,9 @@ int Alarm::countAllFood() {
 	
 	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
 		CTibiaItem *item = CModuleUtil::lookupItem(contNr, itemProxy.getFoodIdArrayPtr());
-		if (item)
+		if (item->objectId)
 			foodCount += countAllItemsOfType(item->objectId);
+		delete item;
 	}	
 	return foodCount;
 }

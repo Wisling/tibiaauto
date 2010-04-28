@@ -126,7 +126,7 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 			
 			if (cont->flagOnOff)
 			{
-				CTibiaItem *item=NULL;
+				CTibiaItem *item;
 				if (itemType)
 				{
 					item=CModuleUtil::lookupItem(contNr,&itemArray,itemType);
@@ -134,7 +134,7 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 					item=CModuleUtil::lookupItem(contNr,&itemArray);
 				}
 				
-				if (item)
+				if (item->objectId)
 				{
 					if ((self->hp<hpBelow||hpBelow==-1)&&(self->mana<manaBelow||manaBelow==-1)&&drink)
 					{
@@ -142,10 +142,10 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 						drank=1;
 						drinkFails=0;
 					}
-					
 					delete item;
 					break;
-				};
+				}
+				delete item;
 			}
 			delete cont;
 		}
@@ -270,14 +270,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (cont->flagOnOff)
 				{
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray,0);
-					if (item)
+					if (item->objectId)
 					{						
 						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,self->x,self->y,self->z,1);
 						Sleep(CModuleUtil::randomFormula(config->sleep,200,0));
 						delete item;
 						delete cont;
 						break;
-					}											
+					}		
+					delete item;
 				}
 				
 				delete cont;
@@ -366,7 +367,10 @@ void CMod_fluidApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
-	}
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
+4	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
