@@ -88,6 +88,7 @@ void CMod_responderApp::showConfigDialog()
 	{ 
 		m_infoDialog=new CToolAutoRespond();
 		m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_infoDialog->ShowWindow(SW_SHOW);
 }

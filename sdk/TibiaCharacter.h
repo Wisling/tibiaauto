@@ -20,7 +20,7 @@ public:
 	int x;
 	int y;
 	int z;
-	int tibiaId;
+	unsigned int tibiaId;
 	int visible;
 	int outfitId;
 	int monsterType;

@@ -53,6 +53,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	CMemReaderProxy reader;
 	int foodContNr=-1;
 	 
+	CTibiaItem *retItem = new CTibiaItem();
 	int itemNr;
 	
 	CTibiaContainer *container = reader.readContainer(containerNr);
@@ -68,7 +69,6 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos))
 				{
 					// item found!
-					CTibiaItem *retItem = new CTibiaItem();
 					retItem->pos=itemNr;
 					retItem->objectId=item->objectId;
 					retItem->quantity=item->quantity;
@@ -81,8 +81,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	}
 	
 	delete container;
-	return NULL;
-
+	return retItem;
 }
 
 int itemOnTopIndex2(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
@@ -166,6 +165,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 	int foodContNr=-1;
 	 
 	int itemNr;
+	CTibiaItem *retItem = new CTibiaItem();
 	
 	CTibiaContainer *container = reader.readContainer(containerNr);
 	if (container->flagOnOff&&container->itemsInside>0)
@@ -180,7 +180,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos)&&item->quantity==qty)
 				{
 					// item found!
-					CTibiaItem *retItem = new CTibiaItem();
+					
 					retItem->pos=itemNr;
 					retItem->objectId=item->objectId;
 					retItem->quantity=item->quantity;				
@@ -193,7 +193,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 	}			
 	
 	delete container;
-	return NULL;
+	return retItem;
 }
 
 
@@ -281,8 +281,7 @@ void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes 
 			delete item;
 			return;
 		}
-		if (item)
-			delete item;
+		delete item;
 		Sleep(50);
 	}
 	return;
@@ -309,7 +308,7 @@ void inline mapDebug(char *s)
 
 void inline testDebug(char *s)
 {	
-	char installPath[1024];
+	char installPath[2048];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
 	sprintf(pathBuf,"%s\\tibiaauto-debug-test.txt",installPath);
@@ -565,7 +564,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		/**
 		 * 101 - open hole
 		 * 102 - closed hole--
-		 * 103 - crate--
+		 * 103 - grate--
 		 * 201 - rope--
 		 * 202 - magic rope
 		 * 203 - ladder--
@@ -587,22 +586,57 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		int currentUpDown=tibiaMap.getPointUpDown(x,y,z);
 
 		// we directly go up using rope, magic rope, ladder, stairs
-		if (currentUpDown>=200&&currentUpDown<300&&tibiaMap.isPointAvailableNoProh(x,y,z-1))
+		if (currentUpDown>=200&&currentUpDown<300)
 		{					
-			pQueue.push(pointNode(x,y,z-1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x,y,z-1)));
+			if(tibiaMap.isPointAvailableNoProh(x,y,z-1)){
+				pQueue.push(pointNode(x,y,z-1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x,y,z-1)));
 #ifdef MAPDEBUG
-			mapDebug("go up");
+				mapDebug("go up");
 #endif
+			} else {
+				for (int xl=-1;xl<=1;xl++){
+					for (int yl=-1;yl<=1;yl++){
+						if (xl ^ yl){
+							int ud=tibiaMap.getPointUpDown(x+xl,y+yl,z-1);
+							if (ud>=100 && ud<200){
+								pQueue.push(pointNode(x+xl,y+yl,z-1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x+xl,y+yl,z-1)));
+								xl=yl=9999;
+#ifdef MAPDEBUG
+								mapDebug("go up oblong stairs");
+#endif
+							}
+						}
+					}
+				}
+			}
 		}
 
 		// we go directly down using open hole, closed hole, grate
-		if (currentUpDown>=100&&currentUpDown<200&&tibiaMap.isPointAvailableNoProh(x,y,z+1))
+		if (currentUpDown>=100&&currentUpDown<200)
 		{
-			pQueue.push(pointNode(x,y,z+1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x,y,z+1)));
+			if (tibiaMap.isPointAvailableNoProh(x,y,z+1)) {
+				pQueue.push(pointNode(x,y,z+1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x,y,z+1)));
 #ifdef MAPDEBUG
-			mapDebug("go down");
+				mapDebug("go down");
 #endif
+			} else {
+				for (int xl=-1;xl<=1;xl++){
+					for (int yl=-1;yl<=1;yl++){
+						if (xl ^ yl){
+							int ud=tibiaMap.getPointUpDown(x+xl,y+yl,z+1);
+							if (ud>=200 && ud<300){
+								pQueue.push(pointNode(x+xl,y+yl,z+1,x,y,z,dist+tibiaMap.calcDistance(x,y,z,x+xl,y+yl,z+1)));
+								xl=yl=9999;
+#ifdef MAPDEBUG
+								mapDebug("go down oblong stairs");
+#endif
+							}
+						}
+					}
+				}
+			}
 		}
+
 
 		// we go directly down using open hole, closed hole, grate
 		if (currentUpDown==302)
@@ -978,14 +1012,14 @@ void CModuleUtil::eatItemFromContainer(int contNr)
 
 	CUIntArray* acceptedItems=itemProxy.getFoodIdArrayPtr();
 	CTibiaItem* item=lookupItem(contNr,acceptedItems);
-	if (item)
+	if (item->objectId)
 	{
 		for (int i=0;i<3&&i<item->quantity;i++){
 			sender.useItemInContainer(item->objectId,0x40+contNr,item->pos);
 			Sleep(CModuleUtil::randomFormula(400,100));
 		}
-		delete item;
 	}
+	delete item;
 }
 
 int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of character (1.4 seconds for lvl 1 doing diagonal)
@@ -1195,12 +1229,13 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-							if (item)
+							if (item->objectId)
 							{
 								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),self->x,self->y,self->z);
 								delete item;
 								break;
 							}
+							delete item;
 						}
 					}
 					break;
@@ -1256,11 +1291,12 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-							if (item)
+							if (item->objectId)
 							{
 								shovel=item;
 								break;
-							}							
+							}
+							delete item;
 						}									
 						if (shovel)
 						{
@@ -1421,12 +1457,13 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-							if (item)
+							if (item->objectId)
 							{
 								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),modX,modY,self->z);
 								delete item;
 								break;
 							}
+							delete item;
 						}
 					}
 					break;
@@ -1495,11 +1532,12 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 						{
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-							if (item)
+							if (item->objectId)
 							{
 								shovel=item;
 								break;
-							}							
+							}			
+							delete item;
 						}									
 						if (shovel)
 						{
@@ -1800,10 +1838,10 @@ int CModuleUtil::findNextClosedContainer(int afterCont/*=-1*/)
 }
 
 
-void CModuleUtil::getInstallPath(char path[1024]){
-	static char installPath[1024]="";
+void CModuleUtil::getInstallPath(char path[2048]){
+	static char installPath[2048]="";
 	if (installPath[0]==0){
-		unsigned long installPathLen=1023;
+		unsigned long installPathLen=2047;
 		installPath[0]='\0';
 		HKEY hkey=NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))

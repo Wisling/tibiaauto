@@ -249,7 +249,7 @@ CTibiaItem * CMemReaderProxy::getTradeItemPartner(int nr)
 			return fun(nr);
 		}
 	} 
-	return NULL;
+	return new CTibiaItem();
 
 }
 CTibiaItem * CMemReaderProxy::getTradeItemSelf(int nr)
@@ -263,7 +263,7 @@ CTibiaItem * CMemReaderProxy::getTradeItemSelf(int nr)
 			return fun(nr);
 		}
 	} 
-	return NULL;
+	return new CTibiaItem();
 }
 int CMemReaderProxy::getTradeCountPartner()
 {
@@ -419,7 +419,7 @@ CTibiaItem * CMemReaderProxy::readItem(int locationAddress)
 			return fun(locationAddress);
 		}
 	} 
-	return NULL;
+	return new CTibiaItem();
 }
 CTibiaCharacter *CMemReaderProxy::readSelfCharacter()
 {

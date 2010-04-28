@@ -221,6 +221,9 @@ void CMod_SellerApp::showConfigDialog() {
 		
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
@@ -734,12 +737,14 @@ int sellItems(CConfigData *config, int traderNum) {
 						Sleep(RandomTimeSeller());
 						if (CModuleUtil::waitForCapsChange(self->cap)) {
 							done = 1;
+							delete item;
 							delete self;
 							break;
 						}
 						delete self;
 						done = 0;
 					}
+					delete item;
 				}
 			}
 			delete cont;

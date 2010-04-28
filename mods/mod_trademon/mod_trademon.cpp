@@ -123,7 +123,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				for (i=0;i<offeredItems;i++)
 				{
-					CTibiaItem *item = reader.getTradeItemPartner(i);				
+					CTibiaItem *item = reader.getTradeItemPartner(i);
 					itemsCount[item->objectId]+=item->quantity?item->quantity:1;				
 					delete item;
 				}
@@ -223,6 +223,9 @@ void CMod_trademonApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
@@ -311,7 +314,7 @@ void CMod_trademonApp::resetConfig()
 void CMod_trademonApp::loadConfigParam(char *paramName,char *paramValue)
 {	
 	if (!strcmp(paramName,"tradeTalker")) m_configData->tradeTalk=atoi(paramValue);
-	if (!strcmp(paramName,"message")) lstrcpyn(m_configData->message,paramValue,255);
+	if (!strcmp(paramName,"message")){ lstrcpyn(m_configData->message,paramValue,255);m_configData->message[255]=0;}
 	if (!strcmp(paramName,"channel")) m_configData->channel=atoi(paramValue);
 	if (!strcmp(paramName,"channelInterval")) m_configData->channelInterval=atoi(paramValue);
 	if (!strcmp(paramName,"yell")) m_configData->yell=atoi(paramValue);
