@@ -439,14 +439,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
 						CTibiaContainer *cont = reader.readContainer(contNr);				
 						if (cont->flagOnOff) {
-							CTibiaItem *item = NULL;
-							item = CModuleUtil::lookupItem(contNr, &itemArray);
-							if (item) {
+							CTibiaItem *item=CModuleUtil::lookupItem(contNr, &itemArray);
+							if (item->objectId) {
 								sender.useItemFromContainerOnCreature(item->objectId,0x40+contNr,item->pos,self->tibiaId);
 								delete item;
 								delete cont;
 								break;
 							}
+							delete item;
 						}
 						delete cont;
 					}
@@ -526,6 +526,9 @@ void CMod_spellcasterApp::showConfigDialog() {
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
@@ -1196,7 +1199,7 @@ int aoeShouldFire(CConfigData *config) {
 		returnSpell = 1;
 	if (config->exoriGran && exoriCount >= config->aoeAffect)
 		returnSpell = 14;
-	if (config->exoriMas && exoriMasCount > exoriCount)
+	if (config->exoriMas && exoriMasCount > exoriCount && exoriMasCount >= config->aoeAffect)
 		returnSpell = 2;
 	
 	if (config->exevoMasSan && exevoMasSanCount >= config->aoeAffect)	

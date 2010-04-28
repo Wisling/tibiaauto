@@ -59,7 +59,20 @@ END_MESSAGE_MAP()
 
 int getNewPeriod(CConfigData *config)
 {
-	return ((rand()%(config->periodTo-config->periodFrom+1))+config->periodFrom)*2;	
+	return ((rand()%(config->periodTo-config->periodFrom+1))+config->periodFrom);	
+}
+
+void pickupItemFromFloor(int itemId,int x,int y,int z,int contNr,int slotNr,int qty){
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	sender.moveObjectFromFloorToContainer(itemId,x,y,z,contNr,slotNr,qty);
+	while (!CModuleUtil::waitForCapsChange(self->cap) && qty>0) { 
+		Sleep(CModuleUtil::randomFormula(100,50));// +1.5 sec wait for caps change
+		qty=qty/2;
+		sender.moveObjectFromFloorToContainer(itemId,x,y,z,contNr,slotNr,qty);
+	}
+	Sleep(CModuleUtil::randomFormula(100,100));
 }
 
 int toolThreadShouldStop=0;
@@ -74,17 +87,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	int periodRemaining=getNewPeriod(config);
 
-	
+
 
 	while (!toolThreadShouldStop)
 	{					
-		Sleep(500);	
+		Sleep(200);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
 		CTibiaCharacter *self = reader.readSelfCharacter();
-				
 		CTibiaItem *item;
-		CUIntArray itemsAccepted;		
+		CUIntArray itemsAccepted;
 
 		if (periodRemaining)
 		{			
@@ -94,7 +106,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 
 		// check ammo to restack
-		int ammoItemId=config->ammoType;		
+		int ammoItemId=config->ammoType;
 		item=reader.readItem(memConstData.m_memAddressSlotArrow);
 
 		if (ammoItemId&&(item->objectId==0||item->objectId==ammoItemId))
@@ -111,7 +123,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (cont->flagOnOff)
 					{
 						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);
-						if (itemAccepted)
+						if (itemAccepted->objectId)
 						{
 							if (itemAccepted->quantity<qtyToRestack)
 								qtyToRestack=itemAccepted->quantity;
@@ -121,6 +133,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							delete cont;
 							break;
 						}
+						delete itemAccepted;
 					}
 					delete cont;
 				}
@@ -151,7 +164,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (cont->flagOnOff)
 					{ 
 						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);					
-						if (itemAccepted)
+						if (itemAccepted->objectId)
 						{
 							if (itemAccepted->quantity<qtyToRestack)
 								qtyToRestack=itemAccepted->quantity;
@@ -165,7 +178,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							delete itemAccepted;
 							delete cont;
 							break;
-						}						
+						}	
+						delete itemAccepted;
 					}
 					delete cont;
 				}
@@ -187,8 +201,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->pickupBL&&isItemOnTop(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
 			if (config->pickupBC&&isItemOnTop(0,1,throwableItemId)) offsetX=0,offsetY=1;
 			if (config->pickupBR&&isItemOnTop(1,1,throwableItemId)) offsetX=1,offsetY=1;
-			
-			
+
+
 			if ((offsetX!=-2||offsetY!=-2)&&config->pickupSpears)
 			{
 				int contNr;						
@@ -197,11 +211,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size)
 					{	
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,itemOnTopQty(offsetX,offsetY));
-						Sleep(CModuleUtil::randomFormula(600,200));
+						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,itemOnTopQty(offsetX,offsetY));
 						// reset offsetXY to avoid pickup up same item to hand
 						offsetX=offsetY=-2;
-						
+
 						delete cont;
 						break;
 					} // if
@@ -219,8 +232,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (itemLeftHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to left hand
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,itemOnTopQty(offsetX,offsetY));
-						Sleep(CModuleUtil::randomFormula(600,200));
+						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,itemOnTopQty(offsetX,offsetY));
 						offsetX=offsetY=-2;
 					}
 				}
@@ -229,9 +241,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					CTibiaTile *itemHandTile = reader.getTibiaTile(itemRightHand->objectId);
 					if (itemRightHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
-						// move to left hand
-						sender.moveObjectFromFloorToContainer(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,itemOnTopQty(offsetX,offsetY));
-						Sleep(CModuleUtil::randomFormula(600,200));
+						// move to right hand
+						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,itemOnTopQty(offsetX,offsetY));
 						offsetX=offsetY=-2;
 					}
 				}	
@@ -270,7 +281,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (config->pickupUL) moveToX=-1,moveToY=-1;
 					if (config->pickupUC) moveToX=0,moveToY=-1;
 					if (config->pickupUR) moveToX=1,moveToY=-1;
-					if (config->pickupCL) moveToX=-1,moveToY=0;					
+					if (config->pickupCL) moveToX=-1,moveToY=0;
 					if (config->pickupCR) moveToX=1,moveToY=0;
 					if (config->pickupBL) moveToX=-1,moveToY=1;
 					if (config->pickupBC) moveToX=0,moveToY=1;
@@ -361,6 +372,9 @@ void CMod_restackApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }

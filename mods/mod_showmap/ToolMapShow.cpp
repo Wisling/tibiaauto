@@ -153,6 +153,8 @@ void CToolMapShow::refreshVisibleMap()
 	CMemReaderProxy reader;
 	int x;
 	int y;
+
+	if (!IsWindowVisible()) return;
 		
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	

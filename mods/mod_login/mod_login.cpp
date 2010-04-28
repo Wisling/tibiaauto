@@ -401,6 +401,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
 				sender.openContainerFromContainer(item->objectId,0x03,0,0);
+				delete item;
 				CModuleUtil::waitForOpenContainer(0,1);
 
 				//Double click on the main bar of the container
@@ -574,6 +575,9 @@ void CMod_loginApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }

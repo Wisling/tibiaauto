@@ -25,20 +25,20 @@ CConfigData::CConfigData()
 	throwableAt=0;
 	throwableTo=0;
 	pickupSpears=0;
-	pickupUL=0;
-	pickupUC=0;
-	pickupUR=0;	
-	pickupCL=0;
-	pickupCC=0;
-	pickupCR=0;
-	pickupBL=0;
-	pickupBC=0;
-	pickupBR=0;
+	pickupUL=1;
+	pickupUC=1;
+	pickupUR=1;	
+	pickupCL=1;
+	pickupCC=1;
+	pickupCR=1;
+	pickupBL=1;
+	pickupBC=1;
+	pickupBR=1;
 	moveCovering=1;
 	restackToRight=0;
 	pickupToHand=0;
-	periodFrom=periodTo=1;
-	capLimit=5;
+	periodFrom=periodTo=0;
+	capLimit=20;
 }
 
 CConfigData::~CConfigData()

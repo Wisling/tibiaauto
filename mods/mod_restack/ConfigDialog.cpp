@@ -124,6 +124,7 @@ void CConfigDialog::disableControls()
 	m_pickupToHand.EnableWindow(false);
 	m_periodFrom.EnableWindow(false);
 	m_periodTo.EnableWindow(false);
+	m_capLimit.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -149,6 +150,7 @@ void CConfigDialog::enableControls()
 	m_pickupToHand.EnableWindow(true);
 	m_periodFrom.EnableWindow(true);
 	m_periodTo.EnableWindow(true);
+	m_capLimit.EnableWindow(true);
 }
 
 

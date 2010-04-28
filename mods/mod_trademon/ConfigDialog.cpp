@@ -119,7 +119,7 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	char buf[128];	
+	char buf[128];
 	m_tradeTalker.SetCheck(configData->tradeTalk);
 	m_message.SetWindowText(configData->message);
 	m_channel.SetCheck(configData->channel);
@@ -138,7 +138,8 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	newConfigData->tradeTalk = m_tradeTalker.GetCheck();
-	m_message.GetWindowText(newConfigData->message,256);
+	m_message.GetWindowText(newConfigData->message,255);
+	newConfigData->message[255]=0;
 	newConfigData->channel = m_channel.GetCheck();
 	m_channelInterval.GetWindowText(buf,128); newConfigData->channelInterval = atoi(buf);
 	newConfigData->yell = m_yell.GetCheck();

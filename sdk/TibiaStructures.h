@@ -688,14 +688,16 @@ public:
 		data=a_data;
 	}
 	~CTibiaTree(){
-		delete data;
-		data=NULL;
+
 		int size=children.size();
 		for (int i=size-1;i>=0;i--){
 			CTibiaTree* ptTree=children[i];
 			children.pop_back();
 			delete ptTree;
+
 		}
+		delete data;
+		data=NULL;
 	}
 	CTibiaTree* AddChild(CTibiaTreeData* a_data){
 		CTibiaTree* ret = new CTibiaTree(a_data);

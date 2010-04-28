@@ -164,7 +164,8 @@ void moveRuneBackToContainer(int handAddress,int locId,int targetContNr,CConfigD
 				objectMoved=1;			
 			}
 			Sleep(50);
-			iters++;					
+			iters++;
+			delete item;
 		};
 		
 		// send the blank rune to the blank rune's container 
@@ -604,6 +605,9 @@ void CMod_runemakerApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
