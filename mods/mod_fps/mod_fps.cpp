@@ -27,6 +27,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 #include "MemReaderProxy.h"
 #include "PackSenderProxy.h"
+#include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -72,6 +73,9 @@ void SetFPS(double iFps){
 
 double GetFPS(){
 	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;
+	if (!addrFps) addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
+
 	double *fpsVal;
 	int ifpsVal[2];
 
@@ -183,6 +187,9 @@ void Cmod_fpsApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }

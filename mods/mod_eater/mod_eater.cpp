@@ -125,34 +125,36 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		for (int i=RandomAmountEater();i>0;i--){
 
-			CTibiaItem *foodItem=NULL;
+			CTibiaItem *foodItem=new CTibiaItem();
 			int foodContainer=-1;
 
 			CUIntArray *foods=itemProxy.getFoodIdArrayPtr();
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 			{
-				CTibiaItem *tempFoodItem=NULL;
+				CTibiaItem *tempFoodItem=new CTibiaItem();
 
 									//We haven't found a food item yet! 
-				if (foodItem==NULL) {
+				if (foodItem->objectId) {
+					delete foodItem;
 					foodItem = CModuleUtil::lookupItem(contNr,foods);
 					foodContainer = contNr;
 				}
 									//Are there any other things to eat?
 				else 
+					delete tempFoodItem;
 					tempFoodItem = CModuleUtil::lookupItem(contNr,foods);
 									//Free up space in BPs by eating items with smaller quantities until they are gone
 									//Incomplete algorithim!!!! (only finds smaller quantity items if they exist in another BP)
-				if (tempFoodItem != NULL && tempFoodItem->quantity < foodItem->quantity) {
+				if (tempFoodItem->objectId && tempFoodItem->quantity < foodItem->quantity) {
+					delete foodItem;
 					foodItem = CModuleUtil::lookupItem(contNr,foods);
 					foodContainer = contNr;
 				}
 
 				delete tempFoodItem;
-				tempFoodItem = NULL;
 			}
 			
-			if (foodItem!=NULL)
+			if (foodItem->objectId)
 			{
 									//Previously used "self" variable was unneeded, changed variable name for clarity
 				CTibiaCharacter* self=reader.readSelfCharacter();
@@ -180,7 +182,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			delete foodItem;
-			foodItem = NULL;
 		}
 	}	
 
