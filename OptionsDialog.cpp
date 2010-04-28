@@ -65,6 +65,7 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SEND_CREATURESTATS, m_send1);
 	DDX_Control(pDX, IDC_PROGRESS, m_progress);
 	DDX_Control(pDX, IDC_GATHER_BOT_STATS,m_gatherBotStats);
+	DDX_Control(pDX, IDC_LOAD_ON_STARTUP,m_loadOnStartup);
 	DDX_Control(pDX, IDOK, m_ok);
 	DDX_Control(pDX, IDC_SIZE_CREATURESTATS, m_sizeCreatureStats);
 	DDX_Control(pDX, IDC_SIZE_LOOTSTATS, m_sizeLootstats);
@@ -82,6 +83,7 @@ BEGIN_MESSAGE_MAP(COptionsDialog, CDialog)
 	ON_BN_CLICKED(IDC_SEND_USAGESTATS, OnSendUsagestats)
 	ON_BN_CLICKED(IDC_SKIN, OnSkin)
 	ON_BN_CLICKED(IDC_GATHER_BOT_STATS, OnGatherBotStats)
+	ON_BN_CLICKED(IDC_LOAD_ON_STARTUP, OnLoadOnStartup)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
@@ -167,6 +169,7 @@ BOOL COptionsDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_gatherBotStats.SetCheck(CModuleUtil::getTASetting("GatherBotStats"));
+	m_loadOnStartup.SetCheck(CModuleUtil::getTASetting("LoadScriptOnStartup"));
 	skin.SetButtonSkin(m_ok);
 	skin.SetButtonSkin(m_Skin);
 	skin.SetButtonSkin(m_send1);
@@ -542,4 +545,16 @@ void COptionsDialog::sendStats()
 void COptionsDialog::OnGatherBotStats()
 {
 	CModuleUtil::setTASetting("GatherBotStats",m_gatherBotStats.GetCheck());
+}
+
+void COptionsDialog::OnLoadOnStartup()
+{
+	CModuleUtil::setTASetting("LoadScriptOnStartup",m_loadOnStartup.GetCheck());
+	if (m_loadOnStartup.GetCheck()){
+		char pathbuf[2048];
+		CModuleUtil::getInstallPath(pathbuf);
+		char message[5000];
+		sprintf(message,"Save files to your TA directory in the form of\n%s\\tibiaAuto.cfg.<char name>.xml",pathbuf);
+		AfxMessageBox(message);
+	}
 }

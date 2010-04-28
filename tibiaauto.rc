@@ -161,17 +161,17 @@ BEGIN
                     IDC_STATIC,7,7,172,36,WS_BORDER
 END
 
-IDD_OPTIONS DIALOGEX 0, 0, 192, 201
+IDD_OPTIONS DIALOGEX 0, 0, 192, 219
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tibia Auto: general options"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Loot Statistics",IDC_LOOT_STATISTICS,7,7,178,31
     GROUPBOX        "Creature Statistics",IDC_CREATURE_STATISTICS,7,41,178,
                     31
     GROUPBOX        "Tibia Maps",IDC_TIBIA_MAPS,7,76,178,36
     GROUPBOX        "Usage Statistics",IDC_USAGE_STATISTICS,7,118,178,31
-    DEFPUSHBUTTON   "OK",IDOK,135,180,50,14
+    DEFPUSHBUTTON   "OK",IDOK,135,198,50,14
     PUSHBUTTON      "Send",IDC_SEND_LOOTSTATS,126,18,50,14
     LTEXT           "Statistics files size: ",IDC_STATIC,16,18,61,14,
                     SS_CENTERIMAGE
@@ -182,7 +182,7 @@ BEGIN
     LTEXT           "10000000",IDC_SIZE_CREATURESTATS,83,52,37,14,
                     SS_CENTERIMAGE
     CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",PBS_SMOOTH | 
-                    NOT WS_VISIBLE | WS_BORDER,7,164,178,14
+                    NOT WS_VISIBLE | WS_BORDER,7,179,178,14
     PUSHBUTTON      "Send",IDC_SEND_MAPS,126,90,50,14
     LTEXT           "Tibia client maps are used to build a Tibia world map.",
                     IDC_STATIC,16,88,83,22
@@ -191,10 +191,14 @@ BEGIN
                     SS_CENTERIMAGE
     LTEXT           "10000000",IDC_SIZE_USAGESTATS,83,129,37,14,
                     SS_CENTERIMAGE
-    PUSHBUTTON      "Skins",IDC_SKIN,7,180,50,14
+    PUSHBUTTON      "Skins",IDC_SKIN,7,198,50,14
     CONTROL         "Submit botting stats (Off) Thanks for helping out",
-                    IDC_GATHER_BOT_STATS,"Button",BS_AUTOCHECKBOX | 
-                    WS_DISABLED | WS_TABSTOP,7,153,165,10,WS_EX_TRANSPARENT
+                    IDC_GATHER_BOT_STATS,"Button",BS_AUTOCHECKBOX | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_TABSTOP,7,165,165,10,
+                    WS_EX_TRANSPARENT
+    CONTROL         "Load player script on startup",IDC_LOAD_ON_STARTUP,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,7,153,178,8,
+                    WS_EX_TRANSPARENT
 END
 
 
@@ -271,7 +275,7 @@ BEGIN
         VERTGUIDE, 16
         VERTGUIDE, 126
         TOPMARGIN, 7
-        BOTTOMMARGIN, 194
+        BOTTOMMARGIN, 212
         HORZGUIDE, 32
     END
 END

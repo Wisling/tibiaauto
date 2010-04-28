@@ -59,11 +59,35 @@ CTibiaMapProxy tibiaMap;
 
 XERCES_CPP_NAMESPACE_USE
 
+class XStr
+{
+public :
+    XStr(const char* const toTranscode)
+    {
+        // Call the private transcoding method
+        fUnicodeForm = XMLString::transcode(toTranscode);
+    }
+
+    ~XStr()
+    {
+        XMLString::release(&fUnicodeForm);
+    }
+
+    const XMLCh* unicodeForm() const
+    {
+        return fUnicodeForm;
+    }
+private:
+    XMLCh*   fUnicodeForm;
+};
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+#define X(str) XStr(str).unicodeForm()
 
 
 
@@ -405,8 +429,20 @@ BOOL CTibiaautoDlg::OnInitDialog()
 		}		
 	}
 	
+	if (CModuleUtil::getTASetting("LoadScriptOnStartup")){
+		char fName[128];
+		char *charName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);		
+		sprintf(fName,"tibiaAuto.cfg.%s.xml",charName);
+		free(charName);
+		char pathbuf[2048];
+		CModuleUtil::getInstallPath(pathbuf);
+		CString pathName=pathbuf;
+		if (pathName.Right(1)!="\\") pathName+="\\";
+		pathName+=fName;
+		loadConfig(pathName);
+	}
 
-	refreshAds();	
+	refreshAds();
 
 	// set shell tray
 	NOTIFYICONDATA data;
@@ -793,9 +829,44 @@ void CTibiaautoDlg::OnSave()
 	if (f)
 	{				
 		fprintf(f,"<configfile>\n");
-		
-		// save "normal" modules
 		int modNr;
+		int someModuleRunning=0;
+		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+		{
+			CModuleProxy * module = CModuleProxy::allModules[modNr];
+			if (module->isStarted())
+			{
+				someModuleRunning=1;
+				break;
+			}			
+		}
+		//Save a list of started scripts so they can be started on load
+		if (someModuleRunning){
+			if (AfxMessageBox("Some modules are running.\nWould you like to save a list of running modules?",MB_YESNO)==IDYES){
+				fprintf(f,"<startedModules>\n");
+				for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+				{
+					CModuleProxy * module = CModuleProxy::allModules[modNr];
+					if (module->isStarted())
+					{
+						fprintf(f,"<module name = \"%s\"/>",module->getModuleName());
+					}
+				}
+				fprintf(f,"</startedModules>\n");
+				fprintf(f,"<startedScripts>\n");
+				for (modNr=0;modNr<CPythonScript::getScriptCount();modNr++)
+				{
+					CPythonScript * script = CPythonScript::getScriptByNr(modNr);
+					if (script->isEnabled())
+					{
+						fprintf(f,"<module name = \"%s\"/>",script->getName());
+					}
+				}
+				fprintf(f,"</startedScripts>\n");
+			}
+		}
+
+		// save "normal" modules
 		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
@@ -892,7 +963,7 @@ void CTibiaautoDlg::OnSave()
 struct loadThreadParam
 {
 	CConfigDialogStatus *configDialogStatus;
-	char fName[256];
+	char fName[1024];
 };
 
 DWORD WINAPI loadThread( LPVOID lpParam )
@@ -903,6 +974,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	
 
 	CMemReaderProxy reader;
+	CConfigCreatorUtil configCreator;
 	
 	
 	char logBuf[16384];		
@@ -927,7 +999,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 		{
 			sprintf(logBuf,"Stopping module %s ...",module->getModuleName());
 			m_configDialogStatus->msgAddToLog(logBuf);
-			module->stop();				
+			module->stop();
 		}
 	}
 				
@@ -942,7 +1014,6 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
 		if (module->isLoaded())
 		{
-			CConfigCreatorUtil configCreator;
 			char *moduleName = module->getModuleName();
 			DOMNode *moduleConfig = configCreator.getConfigForModule(root,moduleName);
 			if (moduleConfig)
@@ -972,19 +1043,91 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 			configCreator.parseConfigFromNode(pythonScript,scriptConfig,"");
 		}
 	}
-
-	doc->release();
-	
-	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+	int otherModulesLoaded=0;
+	DOMNodeList *childNodes = root->getElementsByTagName(X("startedModules"));
+	DOMNode *moduleConfig;
+	if (childNodes->getLength() && (moduleConfig = childNodes->item(0)))
 	{
-		CModuleProxy * module = CModuleProxy::allModules[modNr];
-		if (restartedModulesTab[modNr])
+		if (AfxMessageBox("This config contains saved started modules. Do you wish to start them?",MB_YESNO)==IDYES)
 		{
-			sprintf(logBuf,"Starting module %s ...",module->getModuleName());
-			m_configDialogStatus->msgAddToLog(logBuf);
-			module->start();				
+			DOMNode *subNode = moduleConfig->getFirstChild();
+			if (subNode)
+			{
+				do {
+					if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
+					{				
+						char subNodeName[1024];
+						wcstombs(subNodeName,subNode->getNodeName(),1024);
+
+						DOMNode *attrNode=subNode->getAttributes()->getNamedItem(_L("name"));
+						if (!strcmp(subNodeName,"module")&&attrNode)
+						{
+							char nodeValue[1024];
+							wcstombs(nodeValue,attrNode->getNodeValue(),1024);
+							for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+							{
+								CModuleProxy * module = CModuleProxy::allModules[modNr];
+								if (!strcmp(nodeValue,module->getModuleName()))
+								{
+									sprintf(logBuf,"Starting module %s ...",module->getModuleName());
+									m_configDialogStatus->msgAddToLog(logBuf);
+									module->start();
+								}
+							}
+						}
+					}
+				} while ((subNode=subNode->getNextSibling())!=NULL);
+			}
+			childNodes = root->getElementsByTagName(X("startedScripts"));
+			DOMNode *scriptConfig;
+			if (childNodes->getLength() && (scriptConfig = childNodes->item(0)))
+			{
+				DOMNode *subNode = scriptConfig->getFirstChild();
+				if (subNode)
+				{
+					do {
+						if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
+						{				
+							char subNodeName[1024];
+							wcstombs(subNodeName,subNode->getNodeName(),1024);
+
+							DOMNode *attrNode=subNode->getAttributes()->getNamedItem(_L("name"));
+								
+							if (!strcmp(subNodeName,"module")&&attrNode)
+							{
+								char nodeValue[1024];
+								wcstombs(nodeValue,attrNode->getNodeValue(),1024);
+								for (modNr=0;modNr<CPythonScript::getScriptCount();modNr++)
+								{
+									CPythonScript * script = CPythonScript::getScriptByNr(modNr);
+									if (!strcmp(nodeValue,script->getName()))
+									{
+										sprintf(logBuf,"Starting script %s ...",script->getName());
+										m_configDialogStatus->msgAddToLog(logBuf);
+										script->setEnabled(1);
+									}
+								}
+							}		
+						}
+					} while ((subNode=subNode->getNextSibling())!=NULL);
+				}
+			}
+			otherModulesLoaded=1;
 		}
-	}	
+	}
+	if (!otherModulesLoaded){	
+		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+		{
+			CModuleProxy * module = CModuleProxy::allModules[modNr];
+			if (restartedModulesTab[modNr])
+			{
+				sprintf(logBuf,"Starting module %s ...",module->getModuleName());
+				m_configDialogStatus->msgAddToLog(logBuf);
+				module->start();				
+			}
+		}	
+	}
+	doc->release();
 	
 	sprintf(logBuf,"Loading character '%s' finished.",loggedCharName);
 	free(loggedCharName);
@@ -996,11 +1139,31 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	return 0;
 }
 	
+void CTibiaautoDlg::loadConfig(CString pathName){
 
-void CTibiaautoDlg::OnLoad() 
+	FILE *f=fopen(pathName.GetBuffer(1024),"rb");	
+	
+	if (f)
+	{
+		fclose(f);
+		
+		CConfigDialogStatus * configDialogStatus = new CConfigDialogStatus();	
+		configDialogStatus->Create(IDD_CONFIGSTATUS);
+		configDialogStatus->ShowWindow(SW_SHOW);
+		
+		struct loadThreadParam *ltp = new struct loadThreadParam();;
+		strncpy(ltp->fName,pathName.GetBuffer(1023),1023);
+		ltp->configDialogStatus=configDialogStatus;
+		DWORD threadId;
+		::CreateThread(NULL,0,loadThread,ltp,0,&threadId);				
+		
+	}
+}
+
+void CTibiaautoDlg::OnLoad()
 {	
 	int someModuleRunning=0;
-	int modNr;		
+	int modNr;
 	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
 	{
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
@@ -1018,7 +1181,6 @@ void CTibiaautoDlg::OnLoad()
 	}
 	CMemReaderProxy reader;
 	
-	FILE *f=NULL;
 	char fName[128];
 	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);		
 	
@@ -1029,30 +1191,11 @@ void CTibiaautoDlg::OnLoad()
 	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
 	free(loggedCharName);
 	CFileDialog fd(true,"",fName,OFN_FILEMUSTEXIST, szFilters, NULL);
-	
-	
-	if (fd.DoModal()==IDOK)
-	{		
-		CString pathName = fd.GetPathName();         						
-		f=fopen(pathName.GetBuffer(200),"rb");	
-		
-		if (f)
-		{
-			fclose(f);			
-			
-			CConfigDialogStatus * configDialogStatus = new CConfigDialogStatus();	
-			configDialogStatus->Create(IDD_CONFIGSTATUS);
-			configDialogStatus->ShowWindow(SW_SHOW);
-			
-			struct loadThreadParam *ltp = new struct loadThreadParam();;
-			strncpy(ltp->fName,pathName.GetBuffer(200),200);
-			ltp->configDialogStatus=configDialogStatus;
-			DWORD threadId;
-			::CreateThread(NULL,0,loadThread,ltp,0,&threadId);				
-			
-		}		
-	}	
-	
+	if (fd.DoModal()==IDOK){
+		CString pathName;
+		pathName = fd.GetPathName();
+		loadConfig(pathName);
+	}
 }	
 
 void CTibiaautoDlg::OnToolAutogroup() 

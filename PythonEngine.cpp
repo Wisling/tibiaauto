@@ -569,7 +569,7 @@ void CPythonEngine::init()
 				snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
 				// tautil.py will be loaded in a special way
 				if (!strstr(buf,"tascripts\\tautil.py"))
-				{					
+				{
 					loadScript(buf);
 				}
 			} while (FindNextFile(hFind,&findFileData));

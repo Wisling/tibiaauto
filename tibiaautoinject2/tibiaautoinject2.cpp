@@ -339,7 +339,7 @@ void sendBufferViaSocket(char *buffer)
 	if (hiB<0) hiB+=256;
 	int len=lowB+hiB*256+2;	
 
-	int outbuflen=len;			
+	int outbuflen=len;
 	if (len%8!=0) outbuflen+=8-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
 	char outbufHeader[7] = {0};
 	outbufHeader[0]=outbuflen%256;
@@ -482,7 +482,7 @@ void autoAimAttack(int runeId)
 				
 				acceptedItems.Add(runeId);
 				runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);		
-				if (runeItem!=NULL)
+				if (runeItem->objectId)
 				{			
 					if (autoAimOnlyCreatures)
 					{
@@ -490,8 +490,8 @@ void autoAimAttack(int runeId)
 					} else {
 						castRuneAgainstHuman(0x40+contNr,runeItem->pos,runeId,ch->x,ch->y,ch->z);							
 					}
-					delete runeItem;
 				}
+				delete runeItem;
 				
 			};
 			
@@ -621,7 +621,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 		if (v3<0) v3+=256;
 		if (v4<0) v4+=256;
 		
-		int playerId=v1+v2*256+v3*256*256+v4*256*256*256;
+		unsigned int playerId=v1+v2*256+v3*256*256+v4*256*256*256;
 		if (debugFile)
 		{
 			fprintf(debugFile,"### %x, %x\r\n",objectId,playerId);

@@ -62,7 +62,7 @@ CTibiaItem::CTibiaItem()
 
 //Run when closing down
 void CTibiaItem::cleanup(){
-	delete itemTree;
+	delete CTibiaItem::itemTree;
 }
 
 //Returns "unknown" if name not in list
@@ -303,7 +303,7 @@ CTibiaTree * CTibiaItem::getItemsTree()
 }
 
 void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree){
-	if (itemTree) delete itemTree;
+	if (itemTree) delete CTibiaItem::itemTree;
 	if (!tibiaTree){
 		itemTree=new CTibiaTree(new CTibiaTreeBranchData("Root"));
 	}else{
@@ -525,9 +525,9 @@ void CTibiaItem::refreshItemLists()
 		parser->parse(pathBuf);
 		DOMNode  *doc = parser->getDocument();
 		for (rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
-		{			
+		{
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
-				
+
 			if (wcscmp(root->getNodeName(),_L("item-definitions")))
 				continue;
 			for (listNr=0;listNr<root->getChildNodes()->getLength();listNr++)
@@ -539,7 +539,7 @@ void CTibiaItem::refreshItemLists()
 
 					//recursively add to itemTree from XML tree, works with older versions
 					parseItemsBranch(listNode,itemTree);
-					
+
 				}
 
 				//FOOD
@@ -777,6 +777,8 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument  *doc){
 			char buf[512];
 
 			int id = data->GetId();
+			if (id>100000 || id <0)
+				int a=0;
 			int type = data->GetItemType();
 			bool looted = data->IsLooted();
 			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));

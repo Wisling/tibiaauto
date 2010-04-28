@@ -173,6 +173,7 @@ public:
 		int shutdownCounter;
 private:
 	void reportUsage();
+	void loadConfig(CString);
 	void refreshAds();
 	void sendStats();
 	XercesDOMParser *parser;

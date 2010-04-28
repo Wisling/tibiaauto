@@ -35,6 +35,7 @@ public:
 	CButtonST	m_send1;
 	CProgressCtrl	m_progress;
 	CButton m_gatherBotStats;
+	CButton m_loadOnStartup;
 	CButtonST	m_ok;
 	CStatic	m_sizeCreatureStats;
 	CStatic	m_sizeLootstats;
@@ -62,6 +63,7 @@ protected:
 	afx_msg void OnSendUsagestats();
 	afx_msg void OnSkin();
 	afx_msg void OnGatherBotStats();
+	afx_msg void OnLoadOnStartup();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

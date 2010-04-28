@@ -82,7 +82,7 @@ void CPackSender::say(const char *buf)
 	char retbuf[65536];
 
 	retbuf[0]=strlen(buf)+4;
-	retbuf[1]=0;
+	retbuf[1]=(strlen(buf)+4)>>8;
 	retbuf[2]=0x96;
 	retbuf[3]=0x01;
 	retbuf[4]=strlen(buf);
@@ -97,7 +97,7 @@ void CPackSender::sayWhisper(const char *buf)
 	char retbuf[65536];
 
 	retbuf[0]=strlen(buf)+4;
-	retbuf[1]=0;
+	retbuf[1]=(strlen(buf)+4)>>8;
 	retbuf[2]=0x96;
 	retbuf[3]=0x02;
 	retbuf[4]=strlen(buf);
@@ -112,7 +112,7 @@ void CPackSender::sayYell(const char *buf)
 	char retbuf[65536];
 
 	retbuf[0]=strlen(buf)+4;
-	retbuf[1]=0;
+	retbuf[1]=(strlen(buf)+4)>>8;
 	retbuf[2]=0x96;
 	retbuf[3]=0x03;
 	retbuf[4]=strlen(buf);
@@ -720,7 +720,7 @@ void CPackSender::sayNPC(char *buf)
 	char retbuf[65536];
 
 	retbuf[0]=strlen(buf)+4;
-	retbuf[1]=0;
+	retbuf[1]=(strlen(buf)+4)>>8;
 	retbuf[2]=0x96;
 	retbuf[3]=0x04;
 	retbuf[4]=strlen(buf);

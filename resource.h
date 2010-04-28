@@ -409,6 +409,7 @@
 #define IDC_TIBIA_MAPS                  1251
 #define IDC_CREATURE_STATISTICS         1252
 #define IDC_GATHER_BOT_STATS            1253
+#define IDC_LOAD_ON_STARTUP             1254
 #define IDC_RED_SLIDER_DOWN             3000
 #define IDC_GREEN_SLIDER_DOWN           3001
 #define IDC_BLUE_SLIDER_DOWN            3002
