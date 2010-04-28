@@ -96,6 +96,7 @@ void CToolItemConfig::OnOK()
 
 	itemProxy.saveItemLists();
 	itemProxy.refreshItemLists();
+	ConfigToControls();
 	ShowWindow(SW_HIDE);
 }
 
@@ -132,6 +133,7 @@ void CToolItemConfig::OnClose()
 static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataTree){
 	//recirsively ensures all children of dataTree are added as children of guiTree
 	int size=dataTree->children.size();
+
 	int ret=-1;
 	for (int i=0;i<size;i++){
 		CTibiaTree* child = dataTree->children[i];
@@ -171,13 +173,13 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 	//recirsively ensures all children of guiTree are added as children of dataTree
 	HTREEITEM child=treeCtrl->GetChildItem(guiTree);
 	while (child!=NULL){
-		if (treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)==0){//Item node
+		if (treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)==0){//Branch node
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
 			CTibiaTree* newTree=dataTree->AddChild(new CTibiaTreeBranchData(text));
 
 			CreateDataTree(newTree,treeCtrl,child);
-		} else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=0) {//Branch node
+		} else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=0) {//Item node
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)treeCtrl->GetItemData(child);
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
@@ -704,7 +706,12 @@ void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 		}
 		
 	}
-	if (GetKeyState(VK_LCONTROL) || GetKeyState(VK_RCONTROL)){
+	if (pTVKeyDown->wVKey==VK_DELETE){
+		HTREEITEM treeItem=m_itemsTree.GetSelectedItem();
+		if (treeItem==NULL) return;
+
+	}
+	if (GetKeyState(VK_LCONTROL)>>1 || GetKeyState(VK_RCONTROL)>>1){ // Checks high order bit
 		if (pTVKeyDown->wVKey=='C')
 		{
 			CancelTwoStepOperations();
@@ -775,7 +782,7 @@ void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 
 void CToolItemConfig::OnHelpInfo() 
 {
-	AfxMessageBox("Currently Implemented Features:\nPress Spacebar to check/uncheck\nUse arrow keys to browse tree\nClick on +- sign for expanding\nDrag and drop to move items and branches.\nButton actions are performed on selected items\nClicking in bottom whitespace clears selection/selects root)\n\nTo come:\nCopying and pasting items\n\nOn tibiaauto.net/forum you can post other ideas!");
+	AfxMessageBox("Currently Implemented Features:\nPress Spacebar to check/uncheck\nUse arrow keys to browse tree\nClick on +- sign for expanding\nDrag and drop to move items and branches.\nButton actions are performed on selected items\nCopying, cutting and pasting items\n(Clicking in bottom whitespace clears selection/selects root)");
 
 }
 

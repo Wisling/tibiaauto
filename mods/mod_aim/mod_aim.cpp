@@ -120,21 +120,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{				
 
 						CUIntArray acceptedItems;
-						CTibiaItem *runeItem;
 						//T4: If default rune has been choosen then cast it every time creature is attacked
 
 						if (config->RuneType!=0){
 							
 							acceptedItems.RemoveAll();
 							acceptedItems.Add(config->RuneType);
-							runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
+							CTibiaItem *runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 							
-							if (runeItem!=NULL)
+							if (runeItem->objectId)
 							{
 								sender.castRuneAgainstCreature(0x40+contNr,runeItem->pos,
 									config->RuneType,attackedCreature);
-							}		
-							
+							}
+							delete runeItem;
 						}
 					};
 					
@@ -225,6 +224,9 @@ void CMod_aimApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }

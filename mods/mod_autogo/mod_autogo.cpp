@@ -449,38 +449,6 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
 	return NULL;
 }
-/*
-DWORD WINAPI managePlaySoundThread(LPVOID lpParam) {
-	//char* alarm = lpParam;
-	//alarm[0]=0;
-	char currentSound[2048];
-	char nextSound[2048];
-	bool playedCurrentSound=false;
-
-	while(!toolThreadShouldStop){
-		Sleep(100);
-		if (soundPath[0]){
-			if (strcmp(nextSound,soundPath)!=0){
-				memcpy(nextSound,soundPath,2047);
-				nextSound[2047]=0;
-				playedCurrentSound=false;
-			}			
-			soundPath[0]=0;
-		}
-		if (nextSound[0] || playedCurrentSound[0]){
-			if (strcmp(currenSound,nextSound)!=0){
-				memcpy(currentSound,nextSound,2047);
-				currentSound[2047]=0;
-			}else{
-				nextSound[0]=0;
-			}
-		}
-		if (PlaySound(playedCurrentSound, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP)){
-			playedCurrentSound=true;
-		}
-	}
-}
-*/
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -512,19 +480,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	delete self;
 
 	PlaySound(0, 0, 0);
-	/* Del
-	{
-		DWORD threadId;
-		soundThreadHandle = ::CreateThread(NULL,0,managePlaySoundThread,&soundPath,0,&threadId);
-	}
-	*/
 	alarmItr = config->alarmList.begin();
 	while (alarmItr != config->alarmList.end()) {
 		alarmItr->initializeCharacter();
 		alarmItr++;
 	}
-	while (!toolThreadShouldStop) {			
-		Sleep(100);
+	while (!toolThreadShouldStop) {
+		Sleep(200);
 		//if we're not looking for messages consume them anyway to avoid buffer overflow/expansion
 		if (!config->triggerMessage)
 			triggerMessage();
@@ -1034,14 +996,18 @@ void CMod_autogoApp::showConfigDialog() {
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
 
 void CMod_autogoApp::configToControls() {
-	if (m_configDialog)		
+	if (m_configDialog)	{
 		m_configDialog->configToControls(m_configData);
+	}
 }
 
 

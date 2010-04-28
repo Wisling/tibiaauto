@@ -119,10 +119,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			itemsAccepted.Add(itemProxy.getValueForConst("worms"));
 			for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (item) {
+				if (item->objectId) {
 					delete item;
 					break;
 				}
+				delete item;
 				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
 			}
 		}
@@ -136,12 +137,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (item) {	
+				if (item->objectId) {	
 					fishingRodCont=0x40+contNr;
 					fishingRodPos=item->pos;
 					delete item;
 					break;
 				}
+				delete item;
 				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
 			}
 		}
@@ -166,7 +168,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (randLoopCount>0) {
 				
 				
-				int tileId = reader.mapGetPointItemId(point(offsetX,offsetY,0),0);			
+				int tileId = reader.mapGetPointItemId(point(offsetX,offsetY,0),0);
 				sender.useWithObjectFromContainerOnFloor(
 					itemProxy.getValueForConst("fishingRod"),fishingRodCont,fishingRodPos,tileId,self->x+offsetX,self->y+offsetY,self->z);
 			}
@@ -255,6 +257,9 @@ void CMod_fisherApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }

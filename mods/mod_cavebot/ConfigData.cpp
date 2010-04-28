@@ -73,6 +73,7 @@ CConfigData::CConfigData()
 	dontAttackPlayers=1;
 	pausingEnable=1;
 	radius=1;
+	selectedWaypoint=-1;
 }
 
 CConfigData::~CConfigData()

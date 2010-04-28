@@ -175,13 +175,17 @@ void CMod_bankerApp::showConfigDialog() {
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
+		if (m_started) disableControls();
+		else enableControls();
+		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
 void CMod_bankerApp::configToControls() {
-	if (m_configDialog)		
+	if (m_configDialog)		{
 		m_configDialog->configToControls(m_configData);
+	}
 }
 
 void CMod_bankerApp::controlsToConfig() {
