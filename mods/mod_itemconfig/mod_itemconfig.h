@@ -16,7 +16,16 @@
 
 /////////////////////////////////////////////////////////////////////////////
 //
- 
+
+struct CGUITreeItemData{
+	int id;
+	int type;
+	CGUITreeItemData(int a_id,int a_type){
+		id=a_id;
+		type=a_type;
+	}
+};
+
 class CMod_itemconfigApp : public CWinApp, public IModuleInterface
 {
 public:

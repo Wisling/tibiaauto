@@ -22,6 +22,7 @@ class CToolItemConfig : public MyDialog
 // Construction
 public:
 	CToolItemConfig(CWnd* pParent = NULL);   // standard constructor
+	cleanup();
 	void ConfigToControls();
 	void ControlsToConfig();
 

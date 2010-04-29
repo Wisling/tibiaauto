@@ -8,4 +8,5 @@
 #include "TibiaMapProxy.cpp"
 #include "TibiaMapPoint.cpp"
 #include "TibiaItemProxy.cpp"
+#include "ComboBoxSuper.cpp"
 #include "Queue.cpp"

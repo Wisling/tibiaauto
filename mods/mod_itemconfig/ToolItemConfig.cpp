@@ -24,6 +24,7 @@ static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataT
 static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM guiTree);
 static void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,int check);
 static void SetChildrenCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,int check);
+static void DeleteGUITreeItem(CTreeCtrl* treeCtrl,HTREEITEM treeItem,HTREEITEM rootItem=0);
 static HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,HTREEITEM src,HTREEITEM recursiveStop, bool MkCopy=FALSE);
 
 CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
@@ -35,6 +36,11 @@ CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
 	actionIndicator=0;
 }
 
+CToolItemConfig::cleanup()
+{
+	DeleteGUITreeItem(&m_itemsTree,TVI_ROOT);
+	delete checkImgList;
+}
 
 void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 {
@@ -96,8 +102,7 @@ void CToolItemConfig::OnOK()
 
 	itemProxy.saveItemLists();
 	itemProxy.refreshItemLists();
-	ConfigToControls();
-	ShowWindow(SW_HIDE);
+	ShowWindow(SW_HIDE);	
 }
 
 void CToolItemConfig::ControlsToConfig(){
@@ -130,6 +135,24 @@ void CToolItemConfig::OnClose()
 	ShowWindow(SW_HIDE);
 }
 
+static void DeleteGUITreeItem(CTreeCtrl* treeCtrl,HTREEITEM treeItem,HTREEITEM rootItem/*=0*/){
+	if (!rootItem) rootItem=treeItem;//sets the root item for rest of recursive calls
+	HTREEITEM child=treeCtrl->GetChildItem(treeItem);
+	while (child!=NULL){
+		CString tmp=treeCtrl->GetItemText(child);
+		DeleteGUITreeItem(treeCtrl,child,rootItem);
+		child=treeCtrl->GetNextSiblingItem(child);//iterate
+	}
+
+	if (treeItem!=TVI_ROOT){
+		CGUITreeItemData *itemData=(CGUITreeItemData*)treeCtrl->GetItemData(treeItem);
+		if (itemData) delete itemData;
+		if (treeItem==rootItem) treeCtrl->DeleteItem(rootItem);//delete everything at the end
+	} else if (rootItem==TVI_ROOT){
+		treeCtrl->DeleteAllItems();//delete everything at the end
+	}
+}
+
 static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataTree){
 	//recirsively ensures all children of dataTree are added as children of guiTree
 	int size=dataTree->children.size();
@@ -143,8 +166,9 @@ static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataT
 			CTibiaTreeItemData* data=(CTibiaTreeItemData*)child->data;
 			txt=(char*)malloc(strlen(data->GetName())+10);
 			sprintf(txt,"%s[%d]",data->GetName(),data->GetId());
-
-			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,txt, 0,0,0,0,(long)data,guiTree, TVI_LAST);
+			
+			CGUITreeItemData *itemData=new CGUITreeItemData(data->GetId(),data->GetItemType());
+			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,txt, 0,0,0,0,(long)itemData,guiTree, TVI_LAST);
 			free(txt);
 
 			//2 is fully checked, 0 is not checked
@@ -153,7 +177,7 @@ static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataT
 		}else if(child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){//Branch node
 			CTibiaTreeBranchData* data=(CTibiaTreeBranchData*)child->data;
 
-			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,data->GetName(), 0,0,0,0,(long)data,guiTree, TVI_LAST);
+			HTREEITEM newItem=treeCtrl->InsertItem(data->GetName(),guiTree, TVI_LAST);
 			val=CreateGUITree(treeCtrl,newItem,child);//return value indicates if children are checked
 
 			//2 is fully checked, 0 is not checked, 1 is half-checked
@@ -173,14 +197,14 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 	//recirsively ensures all children of guiTree are added as children of dataTree
 	HTREEITEM child=treeCtrl->GetChildItem(guiTree);
 	while (child!=NULL){
-		if (treeCtrl->ItemHasChildren(child)){//Branch node
+		if (treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)==0){//Branch node
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
 			CTibiaTree* newTree=dataTree->AddChild(new CTibiaTreeBranchData(text));
 
 			CreateDataTree(newTree,treeCtrl,child);
-		} else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=0) {//Item node
-			CTibiaTreeItemData* data = (CTibiaTreeItemData*)treeCtrl->GetItemData(child);
+		} else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=NULL) {//Item node
+			CGUITreeItemData* itemData = (CGUITreeItemData*)treeCtrl->GetItemData(child);
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
 			//Parse text
@@ -192,7 +216,7 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 			}
 			int curCheck;
 			treeCtrl->GetItemImage(child,curCheck,curCheck);
-			dataTree->AddChild(new CTibiaTreeItemData(text,data->GetId(),curCheck!=0, data->GetItemType()));
+			dataTree->AddChild(new CTibiaTreeItemData(text,itemData->id,curCheck!=0, itemData->type));
 		} else{//empty branch case
 		}
 
@@ -218,7 +242,7 @@ void CToolItemConfig::ConfigToControls(){
 	//Create Item Tree 
 	m_itemsTree.ModifyStyle(TVS_DISABLEDRAGDROP,TVS_HASLINES | TVS_HASBUTTONS | TVS_LINESATROOT | TVS_TRACKSELECT);
 	CTibiaTree* itemsTree=(CTibiaTree*)itemProxy.getItemsTree();
-	m_itemsTree.DeleteAllItems();
+	DeleteGUITreeItem(&m_itemsTree,TVI_ROOT);
 	CreateGUITree(&m_itemsTree,TVI_ROOT,itemsTree);
 	m_itemsTree.SelectItem(m_itemsTree.GetRootItem());
 	m_itemsTree.SelectDropTarget(m_itemsTree.GetRootItem());//needed once to add blue hilighting for the rest of the tree's use
@@ -322,8 +346,23 @@ void CToolItemConfig::OnItemEdit() {
 	CancelTwoStepOperations();
 	HTREEITEM item=m_itemsTree.GetSelectedItem();
 	if (item==NULL) return;
-	CItemEdit *dialog = new CItemEdit(&m_itemsTree,item);
-	dialog->DoModal();
+	CItemEdit *dialog;
+	if (!m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item)!=0){//Item node
+		CGUITreeItemData* itemData = (CGUITreeItemData*)m_itemsTree.GetItemData(item);
+		int id=itemData->id;
+		int type=itemData->type;
+		CString cText=m_itemsTree.GetItemText(item);
+		char* text=(char *)(LPCTSTR)cText;
+		char* name = parseName(text);
+		dialog = new CItemEdit(id,name,type,&m_itemsTree,item);
+		dialog->DoModal();
+		free(name);
+	} else {//Branch node
+		CString cText=m_itemsTree.GetItemText(item);
+		char* text=(char *)(LPCTSTR)cText;
+		dialog = new CItemEdit(0,text,0,&m_itemsTree,item);
+		dialog->DoModal();
+	}
 	delete dialog;
 }
 
@@ -334,11 +373,11 @@ void CToolItemConfig::OnItemDelete(){
 	HTREEITEM selItem= m_itemsTree.GetNextSiblingItem(item);
 	if (selItem==NULL) selItem=m_itemsTree.GetParentItem(item);
 	if (m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item)==0){//Branch node
-		if(AfxMessageBox("Are you sure you want to delete this branch and all its items?",MB_OKCANCEL)==IDOK) 
-			m_itemsTree.DeleteItem(item);
-	} else {//Item node
-		m_itemsTree.DeleteItem(item);
+		if(AfxMessageBox("Are you sure you want to delete this branch and all its items?",MB_OKCANCEL)!=IDOK) {
+			return;
+		}
 	}
+	DeleteGUITreeItem(&m_itemsTree,item);
 
 	if (selItem!=NULL){
 		m_itemsTree.SelectItem(selItem);
@@ -562,8 +601,8 @@ HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,
 	dest.item.pszText=text;
 	treeSrc->GetItemImage(src,dest.item.iImage,dest.item.iSelectedImage);
 	HTREEITEM parent=treeDst->InsertItem(&dest);
-	treeSrc->SetItemData(parent,treeSrc->GetItemData(src));
-	CString mtext=treeSrc->GetItemText(parent);
+	CGUITreeItemData* itemData=(CGUITreeItemData*)treeSrc->GetItemData(src);
+	if (itemData) treeDst->SetItemData(parent,(long)new CGUITreeItemData(itemData->id,itemData->type));
 
 	if(recursiveStop==NULL) recursiveStop=parent;
 	HTREEITEM  child = treeSrc->GetChildItem(src);
@@ -579,7 +618,7 @@ HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,
 	if (isRootNode){
 		if (!MkCopy){
 			HTREEITEM sibling=treeSrc->GetNextSiblingItem(src);
-			treeSrc->DeleteItem(src);//delete root item when finished
+			DeleteGUITreeItem(treeSrc,src);//delete root item when finished
 			if (sibling!=NULL){
 				int sibCheck;
 				treeSrc->GetItemImage(sibling,sibCheck,sibCheck);
@@ -695,6 +734,16 @@ void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 	if (pTVKeyDown->wVKey==VK_DELETE){
 		HTREEITEM treeItem=m_itemsTree.GetSelectedItem();
 		if (treeItem==NULL) return;
+		if (m_itemsTree.ItemHasChildren(treeItem) && m_itemsTree.GetItemData(treeItem)==0){//Branch node
+			if(AfxMessageBox("Are you sure you want to delete this branch and all its items?",MB_OKCANCEL)!=IDOK) {
+				return;
+			}
+		} else {
+			if(AfxMessageBox("Are you sure you want to delete this item?",MB_OKCANCEL)!=IDOK) {
+				return;
+			}
+		}
+		DeleteGUITreeItem(&m_itemsTree,treeItem);
 
 	}
 	if (GetKeyState(VK_LCONTROL)>>1 || GetKeyState(VK_RCONTROL)>>1){ // Checks high order bit
@@ -794,7 +843,8 @@ void addChildrenToTreeItem(CTreeCtrl* treeCtrl,HTREEITEM parentItem,HTREEITEM de
 				dest.item.iImage=0;
 				dest.item.iSelectedImage=0;
 				HTREEITEM item = treeCtrl->InsertItem(&dest);
-				treeCtrl->SetItemData(item,treeCtrl->GetItemData(child));
+				CGUITreeItemData* itemData=(CGUITreeItemData*)treeCtrl->GetItemData(child);
+				if (itemData) treeCtrl->SetItemData(item,(long)new CGUITreeItemData(itemData->id,itemData->type));
 			}
 		}
 		child=treeCtrl->GetNextSiblingItem(child);
