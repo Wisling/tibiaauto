@@ -14,6 +14,7 @@
 #define IDD_FULL_ITEM_LIST_ADD          3007
 #define IDB_HALFCHECK                   3008
 #define IDB_BITMAP1                     3009
+#define IDB_ITEMS                       3010
 #define IDC_ITEM_ADD_NAME               3013
 #define IDC_ITEM_ADD_ID                 3014
 #define IDC_ADD_ITEM                    3015
@@ -34,7 +35,6 @@
 #define IDD_FOOD_EDIT                   3026
 #define IDC_TREE1                       3026
 #define IDC_TOOL_ITEMCONFIG_ITEMsTREE   3026
-#define IDC_ITEMCONFIG_ITEMSTREE        3040
 #define IDC_FOOD_EDIT_NAME              3027
 #define IDC_FRAME_FOOD                  3027
 #define IDC_FOOD_EDIT_ID                3028
@@ -55,14 +55,16 @@
 #define IDC_LOOT_EDIT_ID                3037
 #define IDC_EDIT_LOOT                   3038
 #define IDC_DELETE_LOOT                 3039
+#define IDC_ITEMCONFIG_ITEMSTREE        3040
+#define IDC_TYPE                        3040
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3010
+#define _APS_NEXT_RESOURCE_VALUE        3011
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3040
+#define _APS_NEXT_CONTROL_VALUE         3042
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
