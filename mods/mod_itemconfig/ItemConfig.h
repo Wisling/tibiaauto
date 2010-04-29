@@ -10,15 +10,16 @@
 #include "MyDialog.h"
 #include "BtnST.h"
 #include "ComboBoxSuper.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CItemAdd dialog
 
 class CItemAdd : public MyDialog {
 // Construction
 public:
-	char* name;
+	char name[1024];
 	int itemId;
-	int itemType;
+    int itemType;
 	CTreeCtrl* tree;
 	HTREEITEM item;
 	CItemAdd(CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
@@ -26,7 +27,7 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CItemAdd)
 	enum { IDD = IDD_ITEM_ADD };
-	CComboBoxSuper	m_ItemType;
+    CComboBoxSuper   m_ItemType;
 	CButtonST	m_OK;
 	CButtonST	m_Cancel;
 	CEdit m_ItemName;
@@ -45,7 +46,7 @@ public:
 
 // Implementation
 protected:
-	CImageList m_itemImg; 
+    CImageList m_itemImg; 
 
 	// Generated message map functions
 	//{{AFX_MSG(CItemAdd)
@@ -62,17 +63,17 @@ private:
 class CItemEdit : public MyDialog {
 // Construction
 public:
-	char* name;
+	char name[1024];
 	int itemId;
 	int itemType;
 	CTreeCtrl* tree;
 	HTREEITEM item;
-	CItemEdit(CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
+	CItemEdit(int idIn, char* nameIn,int typeIn, CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CItemEdit)
 	enum { IDD = IDD_ITEM_EDIT };
-	CComboBoxSuper	m_ItemType;
+    CComboBoxSuper   m_ItemType;
 	CButtonST	m_OK;
 	CButtonST	m_Cancel;
 	CEdit m_ItemName;
@@ -90,7 +91,7 @@ public:
 
 // Implementation
 protected:
-	CImageList m_itemImg; 
+    CImageList m_itemImg; 
 
 	// Generated message map functions
 	//{{AFX_MSG(CItemEdit)

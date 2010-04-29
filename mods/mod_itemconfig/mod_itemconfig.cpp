@@ -83,8 +83,11 @@ CMod_itemconfigApp::CMod_itemconfigApp()
 
 CMod_itemconfigApp::~CMod_itemconfigApp()
 {
-	
-	delete m_configData;	
+	if (m_infoDialog){
+		m_infoDialog->cleanup();
+		delete m_infoDialog;
+	}
+	delete m_configData;
 }
 
 char * CMod_itemconfigApp::getName()
