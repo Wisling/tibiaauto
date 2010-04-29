@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia Auto\mods/mod_itemconfig.dll" /pdbtype:sept
+# ADD LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /out:"C:\Program Files\Tibia Auto\mods/mod_itemconfig.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -94,6 +94,10 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE=..\..\sdk\BtnST.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\ComboBoxSuper.cpp
 # End Source File
 # Begin Source File
 
@@ -219,6 +223,10 @@ SOURCE=.\check.bmp
 # Begin Source File
 
 SOURCE=.\halfchec.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\Items.bmp
 # End Source File
 # Begin Source File
 

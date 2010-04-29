@@ -153,7 +153,7 @@ static int CreateGUITree(CTreeCtrl* treeCtrl,HTREEITEM guiTree,CTibiaTree* dataT
 		}else if(child->HasChildren() && child->data->GetType()==TT_BRANCH_NODE){//Branch node
 			CTibiaTreeBranchData* data=(CTibiaTreeBranchData*)child->data;
 
-			HTREEITEM newItem=treeCtrl->InsertItem(data->GetName(),guiTree, TVI_LAST);
+			HTREEITEM newItem = treeCtrl->InsertItem(DEF_MASK,data->GetName(), 0,0,0,0,(long)data,guiTree, TVI_LAST);
 			val=CreateGUITree(treeCtrl,newItem,child);//return value indicates if children are checked
 
 			//2 is fully checked, 0 is not checked, 1 is half-checked
@@ -173,7 +173,7 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 	//recirsively ensures all children of guiTree are added as children of dataTree
 	HTREEITEM child=treeCtrl->GetChildItem(guiTree);
 	while (child!=NULL){
-		if (treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)==0){//Branch node
+		if (treeCtrl->ItemHasChildren(child)){//Branch node
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
 			CTibiaTree* newTree=dataTree->AddChild(new CTibiaTreeBranchData(text));
@@ -322,22 +322,8 @@ void CToolItemConfig::OnItemEdit() {
 	CancelTwoStepOperations();
 	HTREEITEM item=m_itemsTree.GetSelectedItem();
 	if (item==NULL) return;
-	CItemEdit *dialog;
-	if (!m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item)!=0){//Branch node
-		CTibiaTreeItemData* data = (CTibiaTreeItemData*)m_itemsTree.GetItemData(item);
-		int id = data->GetId();
-		CString cText=m_itemsTree.GetItemText(item);
-		char* text=(char *)(LPCTSTR)cText;
-		char* name = parseName(text);
-		dialog = new CItemEdit(id,name,&m_itemsTree,item);
-		dialog->DoModal();
-		free(name);
-	} else {//Item node
-		CString cText=m_itemsTree.GetItemText(item);
-		char* text=(char *)(LPCTSTR)cText;
-		dialog = new CItemEdit(0,text,&m_itemsTree,item);
-		dialog->DoModal();
-	}
+	CItemEdit *dialog = new CItemEdit(&m_itemsTree,item);
+	dialog->DoModal();
 	delete dialog;
 }
 
