@@ -15,6 +15,7 @@
 #define IDB_HALFCHECK                   3008
 #define IDB_BITMAP1                     3009
 #define IDB_ITEMS                       3010
+#define IDB_CHECKS                      3011
 #define IDC_ITEM_ADD_NAME               3013
 #define IDC_ITEM_ADD_ID                 3014
 #define IDC_ADD_ITEM                    3015
@@ -62,7 +63,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3011
+#define _APS_NEXT_RESOURCE_VALUE        3012
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         3042
 #define _APS_NEXT_SYMED_VALUE           3000
