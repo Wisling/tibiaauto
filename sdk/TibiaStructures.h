@@ -654,11 +654,17 @@ public:
 		free(name);
 		name=NULL;
 	}
+	void SetId(int idIn){
+		id = idIn;
+	}
 	int GetId(){
 		return id;
 	}
 	int GetItemType(){
 		return type;
+	}
+	void SetType(int typeIn){
+		type = typeIn;
 	}
 	bool IsLooted(){
 		return looted;
@@ -668,6 +674,9 @@ public:
 	}
 	char* GetName(){
 		return name;
+	}
+	void SetName(char* nameIn){
+		memcpy(name, nameIn, sizeof(nameIn)+1);
 	}
 	virtual void CTibiaTreeItemData::toString(char* outStr){
 		int ind=strlen(outStr);
@@ -688,16 +697,14 @@ public:
 		data=a_data;
 	}
 	~CTibiaTree(){
-
+		delete data;
+		data=NULL;
 		int size=children.size();
 		for (int i=size-1;i>=0;i--){
 			CTibiaTree* ptTree=children[i];
 			children.pop_back();
 			delete ptTree;
-
 		}
-		delete data;
-		data=NULL;
 	}
 	CTibiaTree* AddChild(CTibiaTreeData* a_data){
 		CTibiaTree* ret = new CTibiaTree(a_data);
