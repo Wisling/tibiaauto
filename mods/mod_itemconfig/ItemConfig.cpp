@@ -32,7 +32,7 @@ CItemAdd::CItemAdd(CTreeCtrl* treeIn, HTREEITEM itemIn)
 void CItemAdd::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CItemAdd)
-	DDX_Control(pDX, IDC_TYPE, m_ItemType);
+    DDX_Control(pDX, IDC_TYPE, m_ItemType);
 	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	DDX_Control(pDX, IDC_ITEM_ADD_NAME, m_ItemName);
@@ -71,10 +71,13 @@ void CItemAdd::OnCommit() {
 		sscanf(buf,"0x%x",&itemId);
 		if (!itemId) sscanf(buf,"%d",&itemId);
 
+		itemType=pow(2, m_ItemType.GetCurSel());
+
 		m_ItemName.GetWindowText(name,1023);
 		char* txt=(char*)malloc(strlen(name)+10);
 		sprintf(txt,"%s[%d]",name,itemId);
-		newItem=tree->InsertItem(TVIF_STATE|TVIF_PARAM|TVIF_TEXT|TVIF_HANDLE,txt,0,0,0,0,itemId,parent,TVI_LAST);
+		CGUITreeItemData *itemData=new CGUITreeItemData (itemId,itemType);
+		newItem=tree->InsertItem(TVIF_STATE|TVIF_PARAM|TVIF_TEXT|TVIF_HANDLE,txt,0,0,0,0,(long)itemData,parent,TVI_LAST);
 		free(txt);
 	}else{// Branch node
 		m_ItemName.GetWindowText(name,1023);
@@ -92,43 +95,44 @@ BOOL CItemAdd::OnInitDialog() {
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_Cancel);
 
-	CBitmap items; 
-	items.LoadBitmap(IDB_ITEMS);
-	m_itemImg.Add(&items, RGB(255, 0, 255));
-	// Set type dropdown settings
-	m_ItemType.SetColumnCount(0);
-	m_ItemType.SetUseImage(true);
-	m_ItemType.SetImageList(&m_itemImg);
+    CBitmap items; 
+    items.LoadBitmap(IDB_ITEMS);
+    m_itemImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
+    m_itemImg.Add(&items, RGB(255, 0, 255));
+    // Set type dropdown settings
+    m_ItemType.SetColumnCount(0);
+    m_ItemType.SetUseImage(true);
+    m_ItemType.SetImageList(&m_itemImg);
 
-	//m_ItemType.AddString("Select a type");
-	m_ItemType.SetItemImage(m_ItemType.AddString("Axes"), 10);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Clubs"), 9);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Swords"), 6);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Distance Weapons"), 7);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Wands and Rods"), 16);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Throwables"), 15);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Ammunition"), 14);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Amulets and Necklaces"), 4);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Armor"), 13);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Boots"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Helmets"), 12);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Legs"), 11);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Shields"), 8);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Rings"), 3);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Runes"), 2);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Flasks"), 5);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Containers"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Creature Products"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Gamepieces"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Instruments"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Keys"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Paperwork"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Quest Items"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Tools"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Trophies"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Valuables"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Foods"), 1);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Misc. Loots"), 0);
+    //m_ItemType.AddString("Select a type");
+    m_ItemType.SetItemImage(m_ItemType.AddString("Axes"), 10);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Clubs"), 9);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Swords"), 6);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Distance Weapons"), 7);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Wands and Rods"), 16);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Throwables"), 15);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Ammunition"), 14);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Amulets and Necklaces"), 4);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Armor"), 13);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Boots"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Helmets"), 12);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Legs"), 11);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Shields"), 8);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Rings"), 3);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Runes"), 2);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Flasks"), 5);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Containers"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Creature Products"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Gamepieces"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Instruments"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Keys"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Paperwork"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Quest Items"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Tools"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Trophies"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Valuables"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Foods"), 1);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Misc. Loots"), 0);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -144,30 +148,23 @@ void CItemAdd::OnAddBranch()
 /////////////////////////////////////////////////////////////////////////////
 // CItemEdit dialog
 
-CItemEdit::CItemEdit(CTreeCtrl* treeIn, HTREEITEM itemIn)
+CItemEdit::CItemEdit(int idIn, char* nameIn,int typeIn, CTreeCtrl* treeIn, HTREEITEM itemIn)
 : MyDialog(CItemEdit::IDD) {
-	itemId = 0;
-	CTibiaTreeData* selectedData = (CTibiaTreeData*)treeIn->GetItemData(itemIn);
-	if (!treeIn->ItemHasChildren(itemIn) && selectedData->GetType() == TT_ITEM_NODE){//Branch node
-		CTibiaTreeItemData* data = (CTibiaTreeItemData*)treeIn->GetItemData(itemIn);
-		itemId = data->GetId();
-		itemType = data->GetItemType();
-		name = data->GetName();
-	}
-	else {
-		CTibiaTreeBranchData* data = (CTibiaTreeBranchData*)treeIn->GetItemData(itemIn);
-		name = data->GetName();
-	}
+	itemId = idIn;
+	itemType=typeIn;
+	name[1023]='\0';
 	tree=treeIn;
 	item=itemIn;
+	memcpy(name, nameIn, 1023);
 	//{{AFX_DATA_INIT(CItemEdit)
+		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
 void CItemEdit::DoDataExchange(CDataExchange* pDX) {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CItemEdit)
-	DDX_Control(pDX, IDC_TYPE, m_ItemType);
+    DDX_Control(pDX, IDC_TYPE, m_ItemType);
 	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDCANCEL, m_Cancel);
 	DDX_Control(pDX, IDC_ITEM_EDIT_NAME, m_ItemName);
@@ -189,19 +186,22 @@ END_MESSAGE_MAP()
 void CItemEdit::OnCommit() {
 
 	if(m_ItemID.IsWindowEnabled()){//Item node
-		CTibiaTreeItemData* selectedData = (CTibiaTreeItemData*)tree->GetItemData(item);
+
 		char buf[64];
 		m_ItemID.GetWindowText(buf,63);
 		itemId=0;
 		sscanf(buf,"0x%x",&itemId);
-		if (!itemId) sscanf(buf,"%d",&itemId);
-		selectedData->SetId(itemId);
-		selectedData->SetType(pow(2, m_ItemType.GetCurSel()));
+		if (!itemId) itemId=atoi(buf);
 
 		m_ItemName.GetWindowText(name,1023);
 		char* txt=(char*)malloc(strlen(name)+10);
 		sprintf(txt,"%s[%d]",name,itemId);
 
+		itemType=pow(2, m_ItemType.GetCurSel());
+
+		CGUITreeItemData* itemData = (CGUITreeItemData*)tree->GetItemData(item);
+		itemData->id=itemId;
+		itemData->type=itemType;
 		tree->SetItemText(item,txt);
 		free(txt);
 	}else{// Branch node
@@ -217,62 +217,58 @@ BOOL CItemEdit::OnInitDialog() {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_Cancel);
-	m_itemImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
 
-	CBitmap items; //Images 38 & 39
-	items.LoadBitmap(IDB_ITEMS);
-	m_itemImg.Add(&items, RGB(255, 0, 255));
-	// Set type dropdown settings
-	m_ItemType.SetColumnCount(0);
-	m_ItemType.SetUseImage(true);
-	m_ItemType.SetImageList(&m_itemImg);
+    m_itemImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
 
-	//m_ItemType.AddString("Select a type");
-	m_ItemType.SetItemImage(m_ItemType.AddString("Axes"), 10);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Clubs"), 9);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Swords"), 6);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Distance Weapons"), 7);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Wands and Rods"), 16);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Throwables"), 15);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Ammunition"), 14);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Amulets and Necklaces"), 4);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Armor"), 13);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Boots"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Helmets"), 12);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Legs"), 11);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Shields"), 8);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Rings"), 3);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Runes"), 2);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Flasks"), 5);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Containers"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Creature Products"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Gamepieces"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Instruments"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Keys"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Paperwork"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Quest Items"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Tools"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Trophies"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Valuables"), 0);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Foods"), 1);
-	m_ItemType.SetItemImage(m_ItemType.AddString("Misc. Loots"), 0);
+    CBitmap items; //Images 38 & 39
+    items.LoadBitmap(IDB_ITEMS);
+    m_itemImg.Add(&items, RGB(255, 0, 255));
+    // Set type dropdown settings
+    m_ItemType.SetColumnCount(0);
+    m_ItemType.SetUseImage(true);
+    m_ItemType.SetImageList(&m_itemImg);
+
+    //m_ItemType.AddString("Select a type");
+    m_ItemType.SetItemImage(m_ItemType.AddString("Axes"), 10);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Clubs"), 9);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Swords"), 6);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Distance Weapons"), 7);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Wands and Rods"), 16);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Throwables"), 15);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Ammunition"), 14);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Amulets and Necklaces"), 4);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Armor"), 13);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Boots"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Helmets"), 12);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Legs"), 11);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Shields"), 8);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Rings"), 3);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Runes"), 2);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Flasks"), 5);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Containers"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Creature Products"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Gamepieces"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Instruments"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Keys"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Paperwork"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Quest Items"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Tools"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Trophies"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Valuables"), 0);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Foods"), 1);
+    m_ItemType.SetItemImage(m_ItemType.AddString("Misc. Loots"), 0);
 
 	if (itemId){//Item node
 		char buf[64];
 		sprintf(buf, "%d", itemId);
 		m_ItemID.SetWindowText(buf);
-		CString buff;
-		buff.Format("%d", itemType);
-		AfxMessageBox(buff);
-		int index = log10((double)itemType)/log10(2);
-		m_ItemType.SetCurSel(index);
-	} 
-	else {
-		m_ItemID.EnableWindow(false);//Branch node
-		m_ItemType.EnableWindow(false);
+        int index = log10((double)itemType)/log10(2);
+        m_ItemType.SetCurSel(index);
+	} else{ //Branch node
+		m_ItemID.EnableWindow(FALSE);
+		m_ItemType.EnableWindow(FALSE);
 	}
 	m_ItemName.SetWindowText(name);
-
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
