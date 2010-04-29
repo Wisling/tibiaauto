@@ -276,18 +276,9 @@ BOOL CToolItemConfig::OnInitDialog()
 	checkImgList=new CImageList();
 	checkImgList->Create(13,13,ILC_COLOR8|ILC_MASK,0,1);
 
-	CBitmap bitmap1;
-	bitmap1.LoadBitmap(IDB_UNCHECK);
-	checkImgList->Add(&bitmap1,RGB(0,0,255));
-
-	CBitmap bitmap2;
-	bitmap2.LoadBitmap(IDB_HALFCHECK);
-	checkImgList->Add(&bitmap2,RGB(0,0,255));
-
-	CBitmap bitmap3;
-	bitmap3.LoadBitmap(IDB_CHECK);
-	checkImgList->Add(&bitmap3,RGB(0,0,255));
-
+	CBitmap checks;
+	checks.LoadBitmap(IDB_CHECKS);
+	checkImgList->Add(&checks, RGB(0, 0, 255));
 	m_itemsTree.SetImageList(checkImgList,TVSIL_NORMAL);
 
 	//OnToolItemconfigRefresh();

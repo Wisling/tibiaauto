@@ -280,9 +280,7 @@ END
 // Bitmap
 //
 
-IDB_UNCHECK             BITMAP  DISCARDABLE     "uncheck.bmp"
-IDB_CHECK               BITMAP  DISCARDABLE     "check.bmp"
-IDB_HALFCHECK           BITMAP  DISCARDABLE     "halfchec.bmp"
+IDB_CHECKS              BITMAP  DISCARDABLE     "res\\checks.bmp"
 IDB_ITEMS               BITMAP  DISCARDABLE     "res\\Items.bmp"
 #endif    // English (U.S.) resources
 /////////////////////////////////////////////////////////////////////////////
