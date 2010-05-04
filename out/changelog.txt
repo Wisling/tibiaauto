@@ -1,4 +1,10 @@
-2.3.1, ?.?.2010
+2.3.3, ?.?.2010
+Enhancements
+
+Defects
+ Auto Go/Log: Corrected a bug in the detection of VIP online status 
+
+2.3.2, 5.1.2010
 Enhancements
  Auto Go/Log: Typed Item List 
  Auto Go/Log: Additional Icons 
