@@ -715,7 +715,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 				retval=reader.getConnectionState() == 8;
 				break;
 			default:
-				retval=vipOnline(attribute);
+				retval=vipOnline(attribute - 1);
 				break;
 			}
 			break;
@@ -725,7 +725,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 				retval=reader.getConnectionState() != 8;
 				break;
 			default:
-				retval=!vipOnline(attribute);
+				retval=!vipOnline(attribute - 1);
 				break;
 			}
 			break;
@@ -882,7 +882,7 @@ bool Alarm::vipOnline(int iconIndex) {
 	CTibiaVIPEntry *vip;
 
 	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++) {
-		if (vip->icon == iconIndex && vip->status == 1){
+		if (vip->icon == iconIndex && vip->status == 1) {
 			delete vip;
 			return true;
 		}
