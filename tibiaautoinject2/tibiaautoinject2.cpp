@@ -1303,7 +1303,20 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	
 	
 	if (type!=0x19||time(NULL)>ignoreLookEnd) 
-	{ 
+	{
+		/*
+		if (true && !strncmp(s,"Loot",4)){
+			int len=strlen(s);
+			for (int i=0;i<len;i++){
+				if (s[i]==':'){
+					s[++i]='\n';
+				}
+				if (s[i]==','){
+					s[i]=' ';
+					s[++i]='\n';
+				}
+			}
+		}*/
 		fun(type,s);
 	} else {
 		if (debugFile&&COMPLEX)
@@ -1878,29 +1891,27 @@ void InitialisePlayerInfoHack()
 
 	// BLOCK is 8.56
 	/*
-	trapFun(dwHandle,0x413388+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x413553+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x413553+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x4138e9+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x428587+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x42b9e8+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x42b9ff+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x450488+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x496374+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x4db962+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x4dc130+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x4dc199+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x54e8d2+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x54e905+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x54ea1c+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x54ec50+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
-	trapFun(dwHandle,0x54f366+1,(unsigned int)myInterceptInfoMessageBox); // 8.56
+	trapFun(dwHandle,0x413388+1,(unsigned int)myInterceptInfoMessageBox);//1
+	trapFun(dwHandle,0x413553+1,(unsigned int)myInterceptInfoMessageBox);//1
+	trapFun(dwHandle,0x4138E9+1,(unsigned int)myInterceptInfoMessageBox);//1
+	trapFun(dwHandle,0x428587+1,(unsigned int)myInterceptInfoMessageBox);//2
+	trapFun(dwHandle,0x42B9E8+1,(unsigned int)myInterceptInfoMessageBox);//2
+	trapFun(dwHandle,0x42B9FF+1,(unsigned int)myInterceptInfoMessageBox);//2
+	trapFun(dwHandle,0x450488+1,(unsigned int)myInterceptInfoMessageBox);//3
+	trapFun(dwHandle,0x496374+1,(unsigned int)myInterceptInfoMessageBox);//4
+	trapFun(dwHandle,0x4DB962+1,(unsigned int)myInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4DC130+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x4DC199+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x54E8D2+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x54E905+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x54EA1C+1,(unsigned int)myInterceptInfoMessageBox);	
+	trapFun(dwHandle,0x54EC50+1,(unsigned int)myInterceptInfoMessageBox);//6
+	trapFun(dwHandle,0x54F366+1,(unsigned int)myInterceptInfoMessageBox);//6
 	*/
 
 	// BLOCK is 8.57
 	
 	trapFun(dwHandle,0x413388+1,(unsigned int)myInterceptInfoMessageBox); // 8.57
-	trapFun(dwHandle,0x413553+1,(unsigned int)myInterceptInfoMessageBox); // 8.57
 	trapFun(dwHandle,0x413553+1,(unsigned int)myInterceptInfoMessageBox); // 8.57
 	trapFun(dwHandle,0x4138e9+1,(unsigned int)myInterceptInfoMessageBox); // 8.57
 	trapFun(dwHandle,0x428587+1,(unsigned int)myInterceptInfoMessageBox); // 8.57
