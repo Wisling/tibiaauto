@@ -1,27 +1,31 @@
-2.3.3, ?.?.2010
+2.4.0, 7.5.2010
 Enhancements
+ General update to Tibia 8.57
 
 Defects
  Auto Go/Log: Corrected a bug in the detection of VIP online status 
 
-2.3.2, 5.1.2010
+2.3.2, 2.5.2010
 Enhancements
- Auto Go/Log: Typed Item List 
- Auto Go/Log: Additional Icons 
+ Auto Go/Log: Typed Item List
+ Auto Go/Log: Additional Icons
  Kernel: Added support for item typing
  Load and Save: Saves and starts scripts and modules when loading
  Load and Save: Option in general settings to load a player's script on startup
  Kernel: Added support for on-screen text display
  Restacker: Improved speed of restacker
  Restacker: Allowed it to pick up less than a full stack if it's too heavy
+ Item Config: Added a couple more items
 
 Defects
- Auto Go/Log: Corrected a graphical glitch related to using icons in drop-down menus. 
+ Auto Go/Log: Corrected a graphical glitch related to using icons in drop-down menus.
  Python: Fixed setFollowedCreature function
  Spellcaster: Exori mas casts properly
  Trade Monitor: Fixed corrupt packet sending after saying long messages
  Creature Info: No longer fails to read green text when looking at self
  Cavebot: Is able to go up and down stairs like the ones at the edge of the dock in Yalahar
+ ItemConfig: Correctly identifies CTRL key for Copying, cutting and pasting
+ Tibia Auto: Cleans up more stuff when exiting
 
 2.3.1, 18.4.2010
 Enhancements
