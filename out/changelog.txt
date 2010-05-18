@@ -3,6 +3,9 @@ Enhancements
  Cavebot: TA Map walk delay after interruptions has been improved
  Auto Login: Accounts for message of the day
  Python: Decreased Python function delay to 25ms
+ Python: Extra diagonal walk python functions
+ Python: Added moving variable to characters
+ Cavebot: Walking packets better mimick what the client sends
 
 Defects
  ShowMap: Saves destination teleporter to xml file properly
