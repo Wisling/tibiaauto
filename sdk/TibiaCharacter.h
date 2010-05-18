@@ -23,6 +23,7 @@ public:
 	unsigned int tibiaId;
 	int visible;
 	int outfitId;
+	int moving;
 	int monsterType;
 	int hpPercLeft;
 	float cap;

@@ -494,12 +494,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (recoveryAlarmMana && self->mana == self->maxMana) recoveryAlarmMana = 0;
 		if (recoveryAlarmHp && self->hp == self->maxMana) recoveryAlarmHp = 0;
-		
+
+		statusBuf="";
 		//insert my alarm check and action code
 		while (alarmItr != config->alarmList.end()) {
 			if (alarmItr->checkAlarm(config->whiteList, config->options)) {
-				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
-					statusBuf += "  ******  " + alarmItr->getDescriptor();
+				statusBuf += "  ******  " + alarmItr->getDescriptor();
 				
 				// Flash Window ***************
 				if ((config->options&OPTIONS_FLASHONALARM) && !alarmItr->flashed) {
@@ -705,9 +705,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr->timeLastSS = time(NULL);
 			}
 			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
-				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
-					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
-				config->status[0]='\0';
 				if (alarmItr->halfSleep) {
 					alarmItr->halfSleep = false;
 					halfSleepCount--;
@@ -761,7 +758,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 		if (statusBuf.GetLength()){
 			CString* statusMsg=alarmStatus(statusBuf);
-			memcpy(config->status,*statusMsg, 200);
+			int len=min(statusBuf.GetLength(),2000);
+			memcpy(config->status,*statusMsg, len);
+			config->status[len]=0;
 			delete statusMsg;
 		} else
 			config->status[0]='\0';
@@ -920,7 +919,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		alarmItr++;
 	}
 	// clear current status
-	memcpy(config->status, "", 200);
+	config->status[0]=0;
 	// stop the alarm;
 	PlaySound(NULL, NULL, NULL);
 

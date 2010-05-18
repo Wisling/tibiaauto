@@ -2263,8 +2263,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		Start Walking Process
 		******/
 	
-		moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
-		if (currentlyAttackedCreatureNr==-1 && !moving && isLooterDone(config)){//wis:make sure doesn't start while looting last monster
+		if (currentlyAttackedCreatureNr==-1 && isLooterDone(config)){//wis:make sure doesn't start while looting last monster
 			//Waypoint selection algorithim	starts here
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ) {
 				if (config->debug) registerDebug("Depot reached");
@@ -2423,7 +2422,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						//Wait long enough to get a proper response from the white text
 						int timeIn = GetTickCount();
 						int timeOut = GetTickCount();
-						while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000) {timeOut = GetTickCount();}
+						while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000) {timeOut = GetTickCount(); Sleep(50);}
 						char whiteText[15];				//Stores white text.
 						for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
 							whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);

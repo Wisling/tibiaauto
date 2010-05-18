@@ -784,6 +784,57 @@ void CPackSenderProxy::stepDown()
 	} 
 }
 
+void CPackSenderProxy::stepUpRight()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepUpRight");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+void CPackSenderProxy::stepUpLeft()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepUpLeft");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+void CPackSenderProxy::stepDownRight()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepDownRight");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
+
+void CPackSenderProxy::stepDownLeft()
+{
+	typedef void (*Proto_fun)();
+	if (dllModule)
+	{		
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderStepDownLeft");
+		if (fun)
+		{
+			fun();
+		}
+	} 
+}
 
 void CPackSenderProxy::sendDirectPacket(const char* buf,int len)
 {
