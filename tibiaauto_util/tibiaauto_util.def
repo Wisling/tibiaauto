@@ -254,3 +254,7 @@ EXPORTS
 	tibiaItemSetItemAsLooted @246
 	tibiaItemClearLootItems @247
 	packSenderPrintText @248
+	packSenderStepUpRight @249
+	packSenderStepDownRight @250
+	packSenderStepUpLeft @251
+	packSenderStepDownLeft @252

@@ -552,7 +552,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		CPythonEngine::backpipeMsgTick();
 		CPythonEngine::backpipeTamsgTick();
 
-		SetTimer(1002,100,NULL);
+		SetTimer(1002,25,NULL);
 	}
 	if (nIDEvent==1003)
 	{

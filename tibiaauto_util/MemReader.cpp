@@ -126,6 +126,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 		ch->nr=loggedCharNr;
 		ch->warIcon=monCh->warIcon;
 		ch->blocking=monCh->blocking;
+		ch->moving=monCh->moving;
 
 		delete monCh;
 	}
@@ -168,6 +169,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	//ch->totHorizIncement=CMemUtil::GetMemIntValue(offset+64);
 	//ch->totVertIncrement=CMemUtil::GetMemIntValue(offset+68);
 	ch->outfitId=CMemUtil::GetMemIntValue(offset+72);
+	ch->moving=CMemUtil::GetMemIntValue(offset+76);
 	ch->lookDirection=CMemUtil::GetMemIntValue(offset+80);
 	ch->monsterType=CMemUtil::GetMemIntValue(offset+96);		
 	ch->colorHead=CMemUtil::GetMemIntValue(offset+100);
@@ -342,11 +344,14 @@ int CMemReader::getLoggedCharNr()
 
 void CMemReader::writeGotoCoords(int x, int y, int z)
 {
+	CMemReader reader;
+
 	int chNr=getLoggedCharNr();
 	CMemUtil::SetMemIntValue(m_memAddressGoX,x);
 	CMemUtil::SetMemIntValue(m_memAddressGoY,y);
 	CMemUtil::SetMemIntValue(m_memAddressGoZ,z);
-	//CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature, 1);//enable to accept gotocoords, (76=is char moving param)
+	//Manage Tibia's memory
+	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature, 1);//enable to accept gotocoords, (76=is char moving param)
 }	
 
 void CMemReader::cancelAttackCoords()

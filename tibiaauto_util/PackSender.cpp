@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "PackSender.h"
 #include "MemReader.h"
+#include "MemUtil.h"
 #include "Util.h"
 #include "commons2.h"
 #include <stdio.h>
@@ -276,62 +277,89 @@ void CPackSender::useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_C
 	sendPacket(sendbuf,method);	
 }
 
-void CPackSender::stepUp()
-{
-	char sendbuf[3];
-
-	sendbuf[0]=0x01;
-	sendbuf[1]=0x00;
-	sendbuf[2]=0x65;
-
-	sendPacket(sendbuf);
-}
-
-void CPackSender::stepDown()
-{
-	char sendbuf[3];
-
-	sendbuf[0]=0x01;
-	sendbuf[1]=0x00;
-	sendbuf[2]=0x67;
-
-	sendPacket(sendbuf);
-}
-
-void CPackSender::stepLeft()
-{
-	char sendbuf[3];
-
-	sendbuf[0]=0x01;
-	sendbuf[1]=0x00;
-	sendbuf[2]=0x68;
-
-	sendPacket(sendbuf);
-}
-
 void CPackSender::stepRight()
 {
-	char sendbuf[3];
-
-	sendbuf[0]=0x01;
-	sendbuf[1]=0x00;
-	sendbuf[2]=0x66;
-
-	sendPacket(sendbuf);
+	int i[1]={1};
+	stepMulti(i,1);
+}
+void CPackSender::stepUpRight()
+{
+	int i[1]={2};
+	stepMulti(i,1);
+}
+void CPackSender::stepUp()
+{
+	int i[1]={3};
+	stepMulti(i,1);
+}
+void CPackSender::stepUpLeft()
+{
+	int i[1]={4};
+	stepMulti(i,1);
+}
+void CPackSender::stepLeft()
+{
+	int i[1]={5};
+	stepMulti(i,1);
+}
+void CPackSender::stepDownLeft()
+{
+	int i[1]={6};
+	stepMulti(i,1);
+}
+void CPackSender::stepDown()
+{
+	int i[1]={7};
+	stepMulti(i,1);
+}
+void CPackSender::stepDownRight()
+{
+	int i[1]={8};
+	stepMulti(i,1);
 }
 
+
+
+// Tibia client sends single steps instead of multisteps of distance 1
 void CPackSender::stepMulti(int *direction, int size)
 {
-	char sendbuf[1000];
+	CMemReader reader;
 	int i;
 
-	sendbuf[0]=size+2;
-	sendbuf[1]=0;
-	sendbuf[2]=0x64;
-	sendbuf[3]=size;
-	for (i=0;i<size;i++)
-		sendbuf[4+i]=(char)direction[i];
+	//Manage Tibia's memory
+	int pathIndAddr=reader.m_memAddressCurrentTileToGo;
+	int pathLenAddr=reader.m_memAddressTilesToGo;
+	int pathStartAddr=pathLenAddr+4;
+	CMemUtil::SetMemIntValue(pathIndAddr,0);
+	CMemUtil::SetMemIntValue(pathLenAddr,size);
+	for (i=0;i<size && i<10;i++){
+		CMemUtil::SetMemIntValue(pathStartAddr+4*i,direction[i]);
+	}
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstContainer+reader.m_memLengthCreature*reader.getLoggedCharNr()+76,1);
 	
+	char sendbuf[1000];
+
+	if (size==1){
+		sendbuf[0]=1;
+		sendbuf[1]=0;
+		switch(direction[0]){
+		case 3: sendbuf[2]=0x65; break;
+		case 1: sendbuf[2]=0x66; break;
+		case 7: sendbuf[2]=0x67; break;
+		case 5: sendbuf[2]=0x68; break;
+		case 2: sendbuf[2]=0x6A; break;
+		case 8: sendbuf[2]=0x6B; break;
+		case 6: sendbuf[2]=0x6C; break;
+		case 4: sendbuf[2]=0x6D; break;
+		}
+	} else {
+		sendbuf[0]=size+2;
+		sendbuf[1]=0;
+		sendbuf[2]=0x64;
+		sendbuf[3]=size;
+		for (i=0;i<size;i++)
+			sendbuf[4+i]=(char)direction[i];
+	}
 	sendPacket(sendbuf);
 }
 

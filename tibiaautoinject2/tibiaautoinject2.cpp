@@ -58,8 +58,8 @@ HHOOK hook;
 SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
-int COMPLEX=0;
-int SENTONLY=1;
+int COMPLEX=1;
+int SENTONLY=0;
 
 time_t debugFileStart;
 int lastSendFlags;
@@ -1302,7 +1302,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	
 	
 	
-	if (type!=0x19||time(NULL)>ignoreLookEnd) 
+	if (type!=0x19||time(NULL)>ignoreLookEnd)
 	{
 		/*
 		if (true && !strncmp(s,"Loot",4)){

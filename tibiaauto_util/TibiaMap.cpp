@@ -459,15 +459,17 @@ int CTibiaMap::getPointUpDownNoProh(int x, int y, int z)
 	{
 		if (isPointAvailableNoProh(x,y,z)) return pd->updown;
 	}
-	return 0;	
+	return 0;
 }
 
 point CTibiaMap::getDestPoint(int x,int y, int z){
 	if (isPointAvailableNoProh(x,y,z)){
 		struct point p=point(x,y,z);
 		struct pointData *pd=NULL;
-		if (tibiaMap2.Lookup(&p,pd))
-			return pd->destPoint;
+		if (tibiaMap2.Lookup(&p,pd)){
+			if (pd->destPoint.x!=0)
+				return pd->destPoint;
+		}
 	}
 	return point(0,0,0);
 }

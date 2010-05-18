@@ -242,10 +242,10 @@ void Protocol::parsePacket(NetworkMessage &msg){
 		case 0x67: // move south g
 		case 0x68: // move west h
 		case 0x69: // stop-autowalk i
-		case 0x6A: //parseMove(msg, NORTHEAST); j
-		case 0x6B: //parseMove(msg, SOUTHEAST); k
-		case 0x6C: //parseMove(msg, SOUTHWEST); l
-		case 0x6D: //parseMove(msg, NORTHWEST); m
+		case 0x6A: // parseMove(msg, NORTHEAST); j
+		case 0x6B: // parseMove(msg, SOUTHEAST); k
+		case 0x6C: // parseMove(msg, SOUTHWEST); l
+		case 0x6D: // parseMove(msg, NORTHWEST); m
 		case 0x6F: // turn north n
 		case 0x70: // turn east o
 		case 0x71: // turn south p

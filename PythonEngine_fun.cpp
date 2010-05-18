@@ -19,7 +19,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",selfCh->hp,
 		"mana",selfCh->mana,
 		"x",selfCh->x,
@@ -28,6 +28,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 		"tibiaId",selfCh->tibiaId,
 		"visible",selfCh->visible,
 		"outfitId",selfCh->outfitId,
+		"moving",selfCh->moving,
 		"monsterType",selfCh->monsterType,
 		"hpPercLeft",selfCh->hpPercLeft,
 		"cap",selfCh->cap,
@@ -344,7 +345,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.readVisibleCreature(arg1);
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -353,6 +354,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 		"tibiaId",ch->tibiaId,
 		"visible",ch->visible,
 		"outfitId",ch->outfitId,
+		"moving",ch->moving,
 		"monsterType",ch->monsterType,
 		"hpPercLeft",ch->hpPercLeft,
 		"cap",ch->cap,
@@ -425,7 +427,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
 	if (!ch) ch=reader.readSelfCharacter();//avoids returning NULL
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -434,6 +436,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 		"tibiaId",ch->tibiaId,
 		"visible",ch->visible,
 		"outfitId",ch->outfitId,
+		"moving",ch->moving,
 		"monsterType",ch->monsterType,
 		"hpPercLeft",ch->hpPercLeft,
 		"cap",ch->cap,
@@ -1173,7 +1176,7 @@ static PyObject *tibiaauto_sender_turnRight(PyObject *self, PyObject *args)
 	
 	sender.turnRight();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_turnUp(PyObject *self, PyObject *args)
 {
@@ -1181,7 +1184,7 @@ static PyObject *tibiaauto_sender_turnUp(PyObject *self, PyObject *args)
 	
 	sender.turnUp();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
 {
@@ -1189,7 +1192,7 @@ static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
 	
 	sender.turnDown();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_stopAll(PyObject *self, PyObject *args)
 {
@@ -1197,7 +1200,7 @@ static PyObject *tibiaauto_sender_stopAll(PyObject *self, PyObject *args)
 	
 	sender.stopAll();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 {
@@ -1242,7 +1245,7 @@ static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 	sender.stepMulti(path,size);
 	delete path;
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 
 static PyObject *tibiaauto_sender_stepLeft(PyObject *self, PyObject *args)
@@ -1251,7 +1254,7 @@ static PyObject *tibiaauto_sender_stepLeft(PyObject *self, PyObject *args)
 	
 	sender.stepLeft();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_stepRight(PyObject *self, PyObject *args)
 {
@@ -1259,7 +1262,7 @@ static PyObject *tibiaauto_sender_stepRight(PyObject *self, PyObject *args)
 	
 	sender.stepRight();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_stepUp(PyObject *self, PyObject *args)
 {
@@ -1267,13 +1270,59 @@ static PyObject *tibiaauto_sender_stepUp(PyObject *self, PyObject *args)
 	
 	sender.stepUp();
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 static PyObject *tibiaauto_sender_stepDown(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
 	
 	sender.stepDown();
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_stepUpRight(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepUpRight();
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_stepDownRight(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepDownRight();
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_stepUpLeft(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepUpLeft();
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_sender_stepDownLeft(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+	
+	sender.stepDownLeft();
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+
+static PyObject *tibiaauto_sender_printText(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	int arg1,arg2,arg3,arg4,arg5;
+	char* arg6;
+    if (!PyArg_ParseTuple(args, "iiiiis",&arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
+
+	sender.printText(CPoint(arg1,arg2),arg3,arg4,arg5,arg6);
+
 	Py_INCREF(Py_None);
 	return Py_None; 
 }

@@ -209,8 +209,8 @@ static PyMethodDef Methods_tibiaauto[] = {
 };
 
 static PyMethodDef Methods_tareader[] = {
-    {"setProcessId", tibiaauto_reader_setProcessId, METH_VARARGS},    
-	{"readSelfCharacter", tibiaauto_reader_readSelfCharacter, METH_VARARGS},	
+    {"setProcessId", tibiaauto_reader_setProcessId, METH_VARARGS},
+	{"readSelfCharacter", tibiaauto_reader_readSelfCharacter, METH_VARARGS},
 	{"readContainer", tibiaauto_reader_readContainer, METH_VARARGS},
 	{"readContainerItem", tibiaauto_reader_readContainerItem,METH_VARARGS},
 	{"writeSelfLightPower", tibiaauto_reader_writeSelfLightPower, METH_VARARGS},
@@ -281,7 +281,7 @@ static PyMethodDef Methods_tareader[] = {
     {NULL,      NULL}        /* Sentinel */
 };
 
-static PyMethodDef Methods_tasender[] = {    
+static PyMethodDef Methods_tasender[] = {
 	{"useWithObjectFromFloorOnFloor", tibiaauto_sender_useWithObjectFromFloorOnFloor, METH_VARARGS},
 	{"useWithObjectFromFloorInContainer", tibiaauto_sender_useWithObjectFromFloorInContainer, METH_VARARGS},
 	{"useWithObjectFromContainerInContainer", tibiaauto_sender_useWithObjectFromContainerInContainer, METH_VARARGS},
@@ -336,7 +336,12 @@ static PyMethodDef Methods_tasender[] = {
 	{"stepRight", tibiaauto_sender_stepRight, METH_VARARGS},
 	{"stepUp", tibiaauto_sender_stepUp, METH_VARARGS},
 	{"stepDown", tibiaauto_sender_stepDown, METH_VARARGS},
+	{"stepUpRight", tibiaauto_sender_stepUpRight, METH_VARARGS},
+	{"stepDownRight", tibiaauto_sender_stepDownRight, METH_VARARGS},
+	{"stepUpLeft", tibiaauto_sender_stepUpLeft, METH_VARARGS},
+	{"stepDownLeft", tibiaauto_sender_stepDownLeft, METH_VARARGS},
 	{"sendDirectPacket", tibiaauto_sender_sendDirectPacket, METH_VARARGS},
+	{"printText", tibiaauto_sender_printText, METH_VARARGS},
 
 	
     {NULL,      NULL}        /* Sentinel */
@@ -659,7 +664,7 @@ void CPythonEngine::periodicalTick()
 			if (!fun) break;
 
 			if (fun->type==FUNTYPE_PERIODICAL&&tm>=fun->tmNextExec)
-			{				
+			{
 				CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 				
 				PyGILState_STATE gstate;

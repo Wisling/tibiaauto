@@ -975,6 +975,30 @@ void packSenderStepDown()
 	sender.stepDown();
 }
 
+void packSenderStepUpRight()
+{
+	CPackSender sender;
+	sender.stepUpRight();
+}
+
+void packSenderStepDownRight()
+{
+	CPackSender sender;
+	sender.stepDownRight();
+}
+
+void packSenderStepUpLeft()
+{
+	CPackSender sender;
+	sender.stepUpLeft();
+}
+
+void packSenderStepDownLeft()
+{
+	CPackSender sender;
+	sender.stepDownLeft();
+}
+
 void packSenderSendDirectPacket(const char* buf,int len)
 {
 	CPackSender sender;

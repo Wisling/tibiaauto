@@ -47,6 +47,10 @@ public:
 	void stepLeft();
 	void stepDown();
 	void stepUp();
+	void stepDownRight();
+	void stepUpRight();
+	void stepDownLeft();
+	void stepUpLeft();
 	void logout();
 	void useItemInContainer(int objectId,int contNr,int pos);
 	int openAutoContainerFromFloor(int objectId,int x,int y,int z);
