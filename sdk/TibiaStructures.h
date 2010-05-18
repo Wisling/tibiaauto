@@ -676,7 +676,7 @@ public:
 		return name;
 	}
 	void SetName(char* nameIn){
-		memcpy(name, nameIn, sizeof(nameIn)+1);
+		memcpy(name, nameIn, strlen(nameIn)+1);
 	}
 	virtual void CTibiaTreeItemData::toString(char* outStr){
 		int ind=strlen(outStr);

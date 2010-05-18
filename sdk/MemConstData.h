@@ -66,6 +66,7 @@ public:
 	int m_memAddressMapStart;
 	int m_memAddressMiniMapStart;
 	int m_memAddressCurrentTm;
+	int m_memAddressCurrentTileToGo;
 	int m_memAddressTilesToGo;
 	int m_memAddressSkillFist;
 	int m_memAddressSkillFistPercLeft;

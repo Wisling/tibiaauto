@@ -73,6 +73,10 @@ public:
 	void stepRight();
 	void stepUp();
 	void stepDown();
+	void stepUpRight();
+	void stepDownRight();
+	void stepUpLeft();
+	void stepDownLeft();
 	void sendDirectPacket(const char* buf,int len);
 
 	void printText(CPoint pos, int red, int green, int blue, const char* text);

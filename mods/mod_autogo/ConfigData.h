@@ -29,7 +29,7 @@ public:
 	bool maintainStart;
 
 	char whiteList[100][32];
-	char* status;
+	char status[2001];
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

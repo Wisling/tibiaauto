@@ -68,7 +68,7 @@ public:
 	int itemType;
 	CTreeCtrl* tree;
 	HTREEITEM item;
-	CItemEdit(int idIn, char* nameIn,int typeIn, CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
+	CItemEdit(CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CItemEdit)

@@ -24,7 +24,7 @@ CConfigData::CConfigData()
 
 	triggerMessage = 0;
 	maintainStart = 0;
-	status = 0;
+	status[0] = 0;
 	memset(whiteList,0,3200);
 }
 

@@ -16,6 +16,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
+
 /////////////////////////////////////////////////////////////////////////////
 // CItemAdd dialog
 
@@ -148,14 +150,27 @@ void CItemAdd::OnAddBranch()
 /////////////////////////////////////////////////////////////////////////////
 // CItemEdit dialog
 
-CItemEdit::CItemEdit(int idIn, char* nameIn,int typeIn, CTreeCtrl* treeIn, HTREEITEM itemIn)
+CItemEdit::CItemEdit(CTreeCtrl* treeIn, HTREEITEM itemIn)
 : MyDialog(CItemEdit::IDD) {
-	itemId = idIn;
-	itemType=typeIn;
-	name[1023]='\0';
 	tree=treeIn;
 	item=itemIn;
-	memcpy(name, nameIn, 1023);
+	if (!tree->ItemHasChildren(item) && tree->GetItemData(item)!=0){//Item node
+		CGUITreeItemData* itemData = (CGUITreeItemData*)tree->GetItemData(item);
+		itemId=itemData->id;
+		itemType=itemData->type;
+		CString cText=tree->GetItemText(item);
+		int ind=min(cText.GetLength(),1023,(unsigned int)cText.ReverseFind('['));
+		memcpy(name,cText,ind);
+		name[ind]=0;
+	} else {//Branch node
+		CString cText=tree->GetItemText(item);
+		int ind=min(cText.GetLength(),1023,(unsigned int)cText.ReverseFind('['));
+		memcpy(name,cText,ind);
+		name[ind]=0;
+		itemId=0;
+		itemType=0;
+	}
+
 	//{{AFX_DATA_INIT(CItemEdit)
 		// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
