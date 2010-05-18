@@ -134,15 +134,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CTibiaItem *tempFoodItem=new CTibiaItem();
 
 									//We haven't found a food item yet! 
-				if (foodItem->objectId) {
+				if (foodItem->objectId==0) {
 					delete foodItem;
 					foodItem = CModuleUtil::lookupItem(contNr,foods);
 					foodContainer = contNr;
 				}
 									//Are there any other things to eat?
-				else 
+				else{
 					delete tempFoodItem;
 					tempFoodItem = CModuleUtil::lookupItem(contNr,foods);
+				}
 									//Free up space in BPs by eating items with smaller quantities until they are gone
 									//Incomplete algorithim!!!! (only finds smaller quantity items if they exist in another BP)
 				if (tempFoodItem->objectId && tempFoodItem->quantity < foodItem->quantity) {

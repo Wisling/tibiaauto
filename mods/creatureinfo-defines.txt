@@ -10,6 +10,7 @@ TibiaInternals:
 <y>	d
 <z>	d
 <outfitid>	d
+<moving>	d
 <monstertype>	d
 <hppercleft>	d
 <nr>	d

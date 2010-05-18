@@ -1,3 +1,14 @@
+2.4.1, ?.?.2010
+Enhancements
+ Cavebot: TA Map walk delay after interruptions has been improved
+ Auto Login: Accounts for message of the day
+ Python: Decreased Python function delay to 25ms
+
+Defects
+ ShowMap: Saves destination teleporter to xml file properly
+ Python: Fixed writeGotoCoordinates function
+ Cavebot: Hybrid map walker is working again
+
 2.4.0, 7.5.2010
 Enhancements
  General update to Tibia 8.57

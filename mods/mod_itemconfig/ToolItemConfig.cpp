@@ -338,22 +338,8 @@ void CToolItemConfig::OnItemEdit() {
 	HTREEITEM item=m_itemsTree.GetSelectedItem();
 	if (item==NULL) return;
 	CItemEdit *dialog;
-	if (!m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item)!=0){//Item node
-		CGUITreeItemData* itemData = (CGUITreeItemData*)m_itemsTree.GetItemData(item);
-		int id=itemData->id;
-		int type=itemData->type;
-		CString cText=m_itemsTree.GetItemText(item);
-		char* text=(char *)(LPCTSTR)cText;
-		char* name = parseName(text);
-		dialog = new CItemEdit(id,name,type,&m_itemsTree,item);
-		dialog->DoModal();
-		free(name);
-	} else {//Branch node
-		CString cText=m_itemsTree.GetItemText(item);
-		char* text=(char *)(LPCTSTR)cText;
-		dialog = new CItemEdit(0,text,0,&m_itemsTree,item);
-		dialog->DoModal();
-	}
+	dialog = new CItemEdit(&m_itemsTree,item);
+	dialog->DoModal();
 	delete dialog;
 }
 

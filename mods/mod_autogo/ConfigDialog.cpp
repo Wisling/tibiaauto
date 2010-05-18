@@ -26,6 +26,7 @@ CConfigDialog::CConfigDialog(CMod_autogoApp *app,CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app = app;
+	status=NULL;
 	memset(memWhiteList, 0, 3200);
 	m_DialogID[0] = IDD_ALARM_DIALOG;
 	m_DialogID[1] = IDD_GENERAL_CONFIG_DIALOG;
@@ -102,7 +103,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 	m_Dialog[0]->controlsToConfig(newConfigData);
 	m_Dialog[1]->controlsToConfig(newConfigData);
-	newConfigData->status = status;
+	status = newConfigData->status;
 	return newConfigData;
 }
 
@@ -143,7 +144,7 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_tabCtrl.AddTab(m_Dialog[0], "Alarms");
 	m_tabCtrl.AddTab(m_Dialog[1], "General Configuration");
 	
-	memset(status, 0, 201);
+	status=NULL;
 	SetTimer(1001,250,NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

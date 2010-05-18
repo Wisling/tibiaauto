@@ -328,6 +328,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 			waitOnPleaseWait();
+			if (!waitForWindow("Message of the Day"))
+				sk.SendKeys("~",true);
+
 			waitForWindow("Select Character");
 			
 			// STEP3: select char

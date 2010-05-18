@@ -221,6 +221,9 @@ void Expression_Tags_Internals(char* tagName, char* svalue, CTibiaCharacter *ch)
 	}else if(!strcmpi(tagName,"outfitid")){
 		sprintf(svalue,"%d",ch->outfitId);
 
+	}else if(!strcmpi(tagName,"moving")){
+		sprintf(svalue,"%d",ch->moving);
+
 	}else if(!strcmpi(tagName,"monstertype")){
 		sprintf(svalue,"%d",ch->monsterType);
 
