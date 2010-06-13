@@ -6,6 +6,7 @@
 #include "mod_autogo.h"
 #include "Alarm.h"
 #include "MemReaderProxy.h"
+#include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
 #include "IPCBackPipeProxy.h"
 #include "TibiaContainer.cpp" //What am I missing???  Why do I have to include a .cpp to get this to compile???? Other modules call the .h and work fine!
@@ -37,8 +38,6 @@ Alarm::Alarm() {
 	start = false;
 	runaway = true;
 	screenshot = 0;
-	intTrigger = -1;
-	strTrigger = "";
 	condition = 0;
 	attribute = 0;
 	alarmType = 0;
@@ -56,13 +55,13 @@ Alarm::Alarm() {
 	flashed = false;
 	halfSleep = false;
 	stopWalk = false;
-	currentLoc=point(0,0,0);
-	movedTime=time(NULL);
+	currentLoc = point(0,0,0);
+	movedTime = time(NULL);
 }
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
@@ -79,9 +78,13 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 	start = sta;
 	runaway = run;
 	screenshot = scr;
-	intTrigger = trig;
-	strTrigger=strTrig;
-	condition = cond;
+	if (trigType = 1) {
+		trigger = new CIntTrigger(strTrig);
+	}
+	else if (trigType = 2) {
+		trigger = new CPointTrigger(strTrig);
+	}
+	if (strTrig)condition = cond;
 	attribute = attr;
 	alarmType = type;
 	stopWalking = stopwalk;
@@ -102,7 +105,6 @@ Alarm::Alarm(int type, int attr, int cond, int trig, CString strTrig, bool run, 
 }
 
 Alarm::~Alarm(){
-
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -121,13 +123,11 @@ void Alarm::setCondition(int cond) {
 	condition = cond;
 }
 
-void Alarm::setTrigger(int trig) {
-	intTrigger = trig;
+void Alarm::setTrigger(int triggerType, CString trig) {
+	trigger.setType(triggerType);
+	trigger.setTriggerText(trig);
 }
 
-void Alarm::setTrigger(CString trig) {
-	strTrigger = trig;
-}
 void Alarm::setStartModules(list<CString> beginModules) {
 	startModules = beginModules;
 }
@@ -268,7 +268,7 @@ void Alarm::initializeCharacter() {
 	delete self;
 }
 
-bool Alarm::checkAlarm(char whiteList[100][32], int options) {
+bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) {
 	bool retval = false;
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -345,42 +345,42 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			int lvlExp=(50*pow(self->lvl-1,3)-150*pow(self->lvl-1,2)+400*(self->lvl-1))/3;
 			switch (attribute) {
 			case ALL:
-				retval |= (100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= intTrigger);
-				retval |= (100 - self->mlvlPercLeft >= intTrigger);
-				retval |= (100 - self->skillFishPercLeft >= intTrigger);
-				retval |= (100 - self->skillFistPercLeft >= intTrigger);
-				retval |= (100 - self->skillClubPercLeft >= intTrigger);
-				retval |= (100 - self->skillSwordPercLeft >= intTrigger);
-				retval |= (100 - self->skillAxePercLeft >= intTrigger);
-				retval |= (100 - self->skillDistPercLeft >= intTrigger);
-				retval |= (100 - self->skillShieldPercLeft >= intTrigger);
+				retval |= (100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= trigger.getIntTrigger());
+				retval |= (100 - self->mlvlPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillFishPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillFistPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillClubPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillSwordPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillAxePercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillDistPercLeft >= trigger.getIntTrigger());
+				retval |= (100 - self->skillShieldPercLeft >= trigger.getIntTrigger());
 				break;
 			case LEVEL:
-				retval=100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= intTrigger;
+				retval=100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= trigger.getIntTrigger();
 				break;
 			case MAGICLVL:
-				retval=100 - self->mlvlPercLeft >= intTrigger;
+				retval=100 - self->mlvlPercLeft >= trigger.getIntTrigger();
 				break;
 			case FISHING:
-				retval=100 - self->skillFishPercLeft >= intTrigger;
+				retval=100 - self->skillFishPercLeft >= trigger.getIntTrigger();
 				break;
 			case FIST:
-				retval=100 - self->skillFistPercLeft >= intTrigger;
+				retval=100 - self->skillFistPercLeft >= trigger.getIntTrigger();
 				break;
 			case CLUB:
-				retval=100 - self->skillClubPercLeft >= intTrigger;
+				retval=100 - self->skillClubPercLeft >= trigger.getIntTrigger();
 				break;
 			case SWORDSKILL:
-				retval=100 - self->skillSwordPercLeft >= intTrigger;
+				retval=100 - self->skillSwordPercLeft >= trigger.getIntTrigger();
 				break;
 			case AXE:
-				retval=100 - self->skillAxePercLeft >= intTrigger;
+				retval=100 - self->skillAxePercLeft >= trigger.getIntTrigger();
 				break;
 			case DISTANCE:
-				retval=100 - self->skillDistPercLeft >= intTrigger;
+				retval=100 - self->skillDistPercLeft >= trigger.getIntTrigger();
 				break;
 			case SHIELD:
-				retval=100 - self->skillShieldPercLeft >= intTrigger;
+				retval=100 - self->skillShieldPercLeft >= trigger.getIntTrigger();
 				break;
 			}
 			break;
@@ -390,42 +390,42 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			int lvlExp=(50 * pow(self->lvl-1,3)-150 * pow(self->lvl-1,2)+400*(self->lvl-1))/3;
 			switch (attribute) {
 			case ALL:
-				retval |= ((self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= intTrigger);
-				retval |= (self->mlvlPercLeft <= intTrigger);
-				retval |= (self->skillFishPercLeft <= intTrigger);
-				retval |= (self->skillFistPercLeft <= intTrigger);
-				retval |= (self->skillClubPercLeft <= intTrigger);
-				retval |= (self->skillSwordPercLeft <= intTrigger);
-				retval |= (self->skillAxePercLeft <= intTrigger);
-				retval |= (self->skillDistPercLeft <= intTrigger);
-				retval |= (self->skillShieldPercLeft <= intTrigger);
+				retval |= ((self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= trigger.getIntTrigger());
+				retval |= (self->mlvlPercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillFishPercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillFistPercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillClubPercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillSwordPercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillAxePercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillDistPercLeft <= trigger.getIntTrigger());
+				retval |= (self->skillShieldPercLeft <= trigger.getIntTrigger());
 				break;
 			case LEVEL:
-				retval=(self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= intTrigger;
+				retval=(self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= trigger.getIntTrigger();
 				break;
 			case MAGICLVL:
-				retval=self->mlvlPercLeft <= intTrigger;
+				retval=self->mlvlPercLeft <= trigger.getIntTrigger();
 				break;
 			case FISHING:
-				retval=self->skillFishPercLeft <= intTrigger;
+				retval=self->skillFishPercLeft <= trigger.getIntTrigger();
 				break;
 			case FIST:
-				retval=self->skillFistPercLeft <= intTrigger;
+				retval=self->skillFistPercLeft <= trigger.getIntTrigger();
 				break;
 			case CLUB:
-				retval=self->skillClubPercLeft <= intTrigger;
+				retval=self->skillClubPercLeft <= trigger.getIntTrigger();
 				break;
 			case SWORDSKILL:
-				retval=self->skillSwordPercLeft <= intTrigger;
+				retval=self->skillSwordPercLeft <= trigger.getIntTrigger();
 				break;
 			case AXE:
-				retval=self->skillAxePercLeft <= intTrigger;
+				retval=self->skillAxePercLeft <= trigger.getIntTrigger();
 				break;
 			case DISTANCE:
-				retval=self->skillDistPercLeft <= intTrigger;
+				retval=self->skillDistPercLeft <= trigger.getIntTrigger();
 				break;
 			case SHIELD:
-				retval=self->skillShieldPercLeft <= intTrigger;
+				retval=self->skillShieldPercLeft <= trigger.getIntTrigger();
 				break;
 			}
 			break;
@@ -437,75 +437,75 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case EQUAL:
 			switch(attribute) {
 			case HP:
-				retval=self->hp == intTrigger;
+				retval=self->hp == trigger.getIntTrigger();
 				break;
 			case MP:
-				retval=self->mana == intTrigger;
+				retval=self->mana == trigger.getIntTrigger();
 				break;
 			case XP:
-				retval=self->exp == intTrigger;
+				retval=self->exp == trigger.getIntTrigger();
 				break;
 			case SP:
-				retval=self->soulPoints == intTrigger;
+				retval=self->soulPoints == trigger.getIntTrigger();
 				break;
 			case STAMINA:
-				retval=self->stamina == intTrigger;
+				retval=self->stamina == trigger.getIntTrigger();
 				break;
 			case CAPACITY:
-				retval=self->cap == intTrigger;
+				retval=self->cap == trigger.getIntTrigger();
 				break;
 			case SPACE:
-				retval=spaceAvailable() == intTrigger;
+				retval=spaceAvailable() == trigger.getIntTrigger();
 				break;
 			} 
 			break;
 		case LESS:
 			switch(attribute) {
 			case HP:
-				retval= self->hp < intTrigger;
+				retval= self->hp < trigger.getIntTrigger();
 				break;
 			case MP:
-				retval= self->mana < intTrigger;
+				retval= self->mana < trigger.getIntTrigger();
 				break;
 			case XP:
-				retval= self->exp < intTrigger;
+				retval= self->exp < trigger.getIntTrigger();
 				break;
 			case SP:
-				retval= self->soulPoints < intTrigger;
+				retval= self->soulPoints < trigger.getIntTrigger();
 				break;
 			case STAMINA:
-				retval= self->stamina < intTrigger;
+				retval= self->stamina < trigger.getIntTrigger();
 				break;
 			case CAPACITY:
-				retval= self->cap < intTrigger;
+				retval= self->cap < trigger.getIntTrigger();
 				break;
 			case SPACE:
-				retval= spaceAvailable() < intTrigger;
+				retval= spaceAvailable() < trigger.getIntTrigger();
 				break;
 			}
 			break;
 		case MORE:
 			switch(attribute) {
 			case HP:
-				retval= self->hp > intTrigger;
+				retval= self->hp > trigger.getIntTrigger();
 				break;
 			case MP:
-				retval= self->mana > intTrigger;
+				retval= self->mana > trigger.getIntTrigger();
 				break;
 			case XP:
-				retval= self->exp > intTrigger;
+				retval= self->exp > trigger.getIntTrigger();
 				break;
 			case SP:
-				retval=self->soulPoints > intTrigger;
+				retval=self->soulPoints > trigger.getIntTrigger();
 				break;
 			case STAMINA:
-				retval= self->stamina > intTrigger;
+				retval= self->stamina > trigger.getIntTrigger();
 				break;
 			case CAPACITY:
-				retval= self->cap > intTrigger;
+				retval= self->cap > trigger.getIntTrigger();
 				break;
 			case SPACE:
-				retval= spaceAvailable() > intTrigger;
+				retval= spaceAvailable() > trigger.getIntTrigger();
 				break;
 			}
 			break;
@@ -516,30 +516,30 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case EQUAL:
 			switch(attribute) {
 			case 0:
-				retval= countAllFood() == intTrigger;
+				retval= countAllFood() == trigger.getIntTrigger();
 				break;
 			default:
-				retval= countAllItemsOfType(attribute) == intTrigger;
+				retval= countAllItemsOfType(attribute) == trigger.getIntTrigger();
 				break;
 			}
 			break;
 		case LESS:
 			switch(attribute) {
 			case 0:
-				retval= countAllFood() < intTrigger;
+				retval= countAllFood() < trigger.getIntTrigger();
 				break;
 			default:
-				retval= countAllItemsOfType(attribute) < intTrigger;
+				retval= countAllItemsOfType(attribute) < trigger.getIntTrigger();
 				break;
 			}
 			break;
 		case MORE:
 			switch(attribute) {
 			case 0:
-				retval= countAllFood() > intTrigger;
+				retval= countAllFood() > trigger.getIntTrigger();
 				break;
 			default:
-				retval= countAllItemsOfType(attribute) > intTrigger;
+				retval= countAllItemsOfType(attribute) > trigger.getIntTrigger();
 				break;
 			}
 			break;
@@ -614,93 +614,102 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 			switch(attribute) {
 			case PLAYER:
 				onscreen = playerOnScreen(whiteList, options);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case MONSTER:
 				onscreen = monsterOnScreen(whiteList, options);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case GM:
 				onscreen = gmOnScreen(whiteList, options);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case BATTLELIST:
 				onscreen = battleListActive();
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case BLACKSKULL:
 				onscreen = skullOnScreen(BLACK_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case REDSKULL:
 				onscreen = skullOnScreen(RED_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case GREENSKULL:
 				onscreen = skullOnScreen(GREEN_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case YELLOWSKULL:
 				onscreen = skullOnScreen(YELLOW_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			case WHITESKULL:
 				onscreen = skullOnScreen(WHITE_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= intTrigger)
+				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
 				else if (onscreen && onScreenAt == 0)
 					onScreenAt = time(NULL);
-				else if (!onscreen)
+				else if (!onscreen) {
 					onScreenAt = 0;
-				retval=false;
+					retval=false;
+				}
 				break;
 			}
 			}
@@ -732,21 +741,55 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		}
 		break;
 	case CHARACTER_STATUS:
-		retval=reader.getSelfEventFlags() & (int)pow(2,attribute);
+		retval = reader.getSelfEventFlags() & (int)pow(2,attribute);
 		break;
-	case EVENT:
-		struct tibiaMessage *msg = triggerMessage();
+	case MESSAGE: {
 		int isSpell = msg && (options & OPTIONS_IGNORE_SPELLS) && isSpellMessage(msg->msg);
 		switch (attribute) {
 		case ALLMESSAGES:
-			retval = !isSpell && msg && (msg->type == 1 || msg->type == 2 || msg->type == 6);
+			retval = !isSpell && msg && (msg->type == 1 || msg->type == 2 || msg->type == 6 || msg->type == 4);
+			if (retval) {
+				if (condition == FROM) {
+					if (strcmp(msg->nick, trigger.getTriggerText()))
+						retval = false;
+				}
+				if (condition == CONTAINS) {
+					if (strstr(msg->msg, trigger.getTriggerText()) == NULL)
+						retval = false;
+				}
+			}
 			break;
 		case PUBLICMESSAGES:
 			retval =  !isSpell && msg && (msg->type == 1 || msg->type == 2);
+			if (retval) {
+				if (condition == FROM) {
+					if (strcmp(msg->nick, trigger.getTriggerText()))
+						retval = false;
+				}
+				if (condition == CONTAINS) {
+					if (strstr(msg->msg, trigger.getTriggerText()) == NULL)
+						retval = false;
+				}
+			}
 			break;
 		case PRIVATEMESSAGES:
-			retval = !isSpell && msg && msg->type == 6;
+			retval = !isSpell && msg && (msg->type == 6 || msg->type == 4);
+			if (retval) {
+				if (condition == FROM) {
+					if (strcmp(msg->nick, trigger.getTriggerText()))
+						retval = false;
+				}
+				if (condition == CONTAINS) {
+					if (strstr(msg->msg, trigger.getTriggerText()) == NULL)
+						retval = false;
+				}
+			}
 			break;
+		}
+		break;
+				  }
+	case EVENT:
+		switch (attribute) {
 		case CHARACTERMOVED:
 			retval = positionXInit != self->x || positionYInit != self->y || positionZInit != self->z;
 			break;
@@ -757,18 +800,25 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options) {
 		case CHARACTERNOTMOVED:
 			switch (condition) {
 			case EQUAL:
-				retval=time(NULL)-movedTime == getIntTrigger();
+				retval=time(NULL)-movedTime == trigger.getIntTrigger();
 				break;
 			case LESS:
-				retval=time(NULL)-movedTime < getIntTrigger();
+				retval=time(NULL)-movedTime < trigger.getIntTrigger();
 				break;
 			case MORE:
-				retval=time(NULL)-movedTime > getIntTrigger();
+				retval=time(NULL)-movedTime > trigger.getIntTrigger();
 				break;
 			}
 			break;
+		case WAYPOINTREACHED:
+			//Insert check code here
+			int x = trigger.getMultiIntTrigger(0);
+			int y = trigger.getMultiIntTrigger(1);
+			int z = trigger.getMultiIntTrigger(2);
+			int radius = trigger.getMultiIntTrigger(3);
+			retval = abs(self->x - x) <= radius && abs(self->y - y) <= radius && self->z == z;
+			break;
 		}
-		if (msg) delete msg;
 		break;
 	}
 	delete self;
@@ -991,43 +1041,6 @@ bool Alarm::isSpellMessage(char *msg) {
 	return false;
 }
 
-struct tibiaMessage * Alarm::triggerMessage() {
-	CMemReaderProxy reader;
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
-
-	if (backPipe.readFromPipe(&mess,1003)) {
-		int infoType;
-		int nickLen;
-		int msgLen;
-		char nickBuf[16384];
-		char msgBuf[16384];
-		
-		memset(nickBuf,0,16384);
-		memset(msgBuf,0,16384);
-		memcpy(&infoType,mess.payload,sizeof(int));
-		memcpy(&nickLen,mess.payload+4,sizeof(int));
-		memcpy(&msgLen,mess.payload+8,sizeof(int));
-		memcpy(nickBuf,mess.payload+12,nickLen);
-		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
-		
-		CTibiaCharacter *self = reader.readSelfCharacter();
-
-		if (strcmpi(nickBuf, self->name) != 0 && strcmpi(nickBuf, "Tibia Auto") != 0) {
-			delete self;
-			struct tibiaMessage *newMsg = new tibiaMessage();
-			newMsg->type = infoType;
-			strcpy(newMsg->msg, msgBuf);
-			return newMsg;
-		}
-		delete self;
-	}
-	return NULL;
-}
-
-
-
-
 int Alarm::getAlarmType() {
 	return alarmType;
 }
@@ -1038,14 +1051,6 @@ int Alarm::getAttribute() {
 
 int Alarm::getCondition() {
 	return condition;
-}
-
-CString Alarm::getStrTrigger() {
-	return strTrigger;
-}
-
-int Alarm::getIntTrigger() {
-	return intTrigger;
 }
 
 int Alarm::getManaCost() {
@@ -1070,4 +1075,8 @@ void Alarm::setSpellDelay(int delay) {
 
 int Alarm::getSpellDelay() {
 	return spellDelay;
+}
+
+CTrigger Alarm::getTrigger() {
+	return trigger;
 }
