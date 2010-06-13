@@ -1,5 +1,7 @@
 2.4.1, ?.?.2010
 Enhancements
+ Autogo: New "Waypoint Reached" Alarm
+ AutoGo: Restructured alarm types
  Cavebot: TA Map walk delay after interruptions has been improved
  Auto Login: Accounts for message of the day
  Python: Decreased Python function delay to 25ms
@@ -8,6 +10,7 @@ Enhancements
  Cavebot: Walking packets better mimick what the client sends
 
 Defects
+ Autogo: Several Bugs corrected
  ShowMap: Saves destination teleporter to xml file properly
  Python: Fixed writeGotoCoordinates function
  Cavebot: Hybrid map walker is working again

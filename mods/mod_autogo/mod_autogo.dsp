@@ -137,6 +137,10 @@ SOURCE=.\ImageButtonWithStyle.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IntTrigger.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_autogo.cpp
 # End Source File
 # Begin Source File
@@ -153,6 +157,10 @@ SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\PointTrigger.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\proxy.cpp
 # End Source File
 # Begin Source File
@@ -166,7 +174,15 @@ SOURCE=.\StdAfx.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\StrTrigger.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\TibiaItem_impl.cpp
+# End Source File
+# Begin Source File
+
+SOURCE=.\Trigger.cpp
 # End Source File
 # Begin Source File
 
@@ -222,7 +238,15 @@ SOURCE=.\ImageButtonWithStyle.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\IntTrigger.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_autogo.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\PointTrigger.h
 # End Source File
 # Begin Source File
 
@@ -231,6 +255,14 @@ SOURCE=.\Resource.h
 # Begin Source File
 
 SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\StrTrigger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Trigger.h
 # End Source File
 # Begin Source File
 
@@ -254,7 +286,15 @@ SOURCE=.\Attack.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\Attack.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Audio.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\Audio.bmp
 # End Source File
 # Begin Source File
 
@@ -262,11 +302,23 @@ SOURCE=.\Blank.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\Blank.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\CastSpell.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\CastSpell.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Columns.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\Columns.bmp
 # End Source File
 # Begin Source File
 
@@ -294,7 +346,15 @@ SOURCE=.\Depot.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\Depot.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\general.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\general.bmp
 # End Source File
 # Begin Source File
 
@@ -302,7 +362,15 @@ SOURCE=.\Items.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\Items.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\KillTibia.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\KillTibia.bmp
 # End Source File
 # Begin Source File
 
@@ -310,11 +378,23 @@ SOURCE=.\LogEvents.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\LogEvents.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\LogOut.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\LogOut.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MaximizeWindow.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\MaximizeWindow.bmp
 # End Source File
 # Begin Source File
 
@@ -326,7 +406,19 @@ SOURCE=.\proximity.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\proximity.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\Runaway.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Runaway.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\ShutdownComputer.bmp
 # End Source File
 # Begin Source File
 
@@ -362,7 +454,15 @@ SOURCE=.\res\speaker2.ico
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\Start.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\Start.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\StartModule.bmp
 # End Source File
 # Begin Source File
 
@@ -378,11 +478,23 @@ SOURCE=.\Stop.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\SuspendModule.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\SuspendModule.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\TakeScreenshot.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\TakeScreenshot.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\vip.bmp
 # End Source File
 # Begin Source File
 

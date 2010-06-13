@@ -26,7 +26,7 @@ class CAlarmDialog : public MyDialog
 {
 // Construction
 public:
-	bool addToList(Alarm *);
+	Alarm* addToList();
 	void controlsToConfig(CConfigData *);
 	void configToControls(CConfigData *);
 	void enableControls();

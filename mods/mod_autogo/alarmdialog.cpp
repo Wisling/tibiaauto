@@ -397,14 +397,12 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText); 
 		break;
 	case EVENT:
-		if(strcmp(itemText, "All Messages")) {
+		if(strcmp(itemText, "Character Moved")) {
 			m_attribute.ResetContent();
-			m_attribute.SetItemImage(m_attribute.AddString("All Messages"), 21);
-			m_attribute.SetItemImage(m_attribute.AddString("Public Messages"), 22);
-			m_attribute.SetItemImage(m_attribute.AddString("Private Messages"), 23);
 			m_attribute.SetItemImage(m_attribute.AddString("Character Moved"), 0);
-			m_attribute.SetItemImage(m_attribute.AddString("Character Hit"), 0);
 			m_attribute.SetItemImage(m_attribute.AddString("Character Not Moved"), 0);
+			m_attribute.SetItemImage(m_attribute.AddString("Character Hit"), 0);
+			m_attribute.SetItemImage(m_attribute.AddString("Waypoint Reached"), 0);
 
 			m_condition.ResetContent();
 			m_condition.AddString("From Anyone");
@@ -415,6 +413,24 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_trigger.EnableWindow(false);
 		}
 		VERIFY(instructionText.LoadString(IDS_GENERAL)); 
+		m_instructionText.SetWindowText(instructionText); 
+		break;
+	case MESSAGE:
+		if(strcmp(itemText, "All Messages")) {
+			m_attribute.ResetContent();
+			m_attribute.SetItemImage(m_attribute.AddString("All Messages"), 21);
+			m_attribute.SetItemImage(m_attribute.AddString("Public Messages"), 22);
+			m_attribute.SetItemImage(m_attribute.AddString("Private Messages"), 23);
+
+			m_condition.ResetContent();
+			m_condition.AddString("From Anyone");
+			m_condition.AddString("From...");
+			m_condition.AddString("Containing...");
+			m_condition.EnableWindow(false);
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
+		}
+		VERIFY(instructionText.LoadString(IDS_MESSAGE)); 
 		m_instructionText.SetWindowText(instructionText); 
 		break;
 	default:
@@ -450,8 +466,10 @@ BOOL CAlarmDialog::OnInitDialog() {
 			m_audioFile.AddString(finder.GetFileName());
 	}
 
-	m_modules.AddString("<All Modules>");
-	m_modules2.AddString("<All Modules>");
+	m_modules.AddString("<Select All>");
+	m_modules.AddString("<Deselect All>");
+	m_modules2.AddString("<Select All>");
+	m_modules2.AddString("<Deselect All>");
 	HANDLE hSnap;
 	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE,GetCurrentProcessId());
 	if (hSnap){
@@ -943,21 +961,6 @@ void CAlarmDialog::OnSelchangeAttribute(){
 	case EVENT:
 		selected = m_attribute.GetCurSel();
 		switch (selected) {
-		case ALLMESSAGES:
-			m_condition.EnableWindow(true);
-			VERIFY(instructionText.LoadString(IDS_GENERAL_ALLMESSAGES)); 
-			m_instructionText.SetWindowText(instructionText);
-			break;
-		case PUBLICMESSAGES:
-			m_condition.EnableWindow(true);
-			VERIFY(instructionText.LoadString(IDS_GENERAL_PUBLICMESSAGES)); 
-			m_instructionText.SetWindowText(instructionText);
-			break;
-		case PRIVATEMESSAGES:
-			m_condition.EnableWindow(true);
-			VERIFY(instructionText.LoadString(IDS_GENERAL_PRIVATEMESSAGES)); 
-			m_instructionText.SetWindowText(instructionText);
-			break;
 		case CHARACTERMOVED:
 			m_condition.EnableWindow(false);
 			m_condition.SetCurSel(-1);
@@ -982,13 +985,46 @@ void CAlarmDialog::OnSelchangeAttribute(){
 			m_condition.EnableWindow(true);
 
 			m_condition.SetCurSel(-1);
-			m_trigger.SetWindowText("");
+			m_trigger.SetWindowText("Not Applicable");
 			m_trigger.EnableWindow(true);
 			VERIFY(instructionText.LoadString(IDS_GENERAL_CHARACTERNOTMOVED)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
+		case WAYPOINTREACHED:
+			m_condition.EnableWindow(false);
+			m_condition.SetCurSel(-1);
+
+			m_trigger.SetWindowText("");
+			m_trigger.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_GENERAL_WAYPOINTREACHED)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
 		default:
 			VERIFY(instructionText.LoadString(IDS_GENERAL)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		}
+		break;
+	case MESSAGE:
+		selected = m_attribute.GetCurSel();
+		switch (selected) {
+		case ALLMESSAGES:
+			m_condition.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_MESSAGE_ALLMESSAGES)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		case PUBLICMESSAGES:
+			m_condition.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_MESSAGE_PUBLICMESSAGES)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		case PRIVATEMESSAGES:
+			m_condition.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_MESSAGE_PRIVATEMESSAGES)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		default:
+			VERIFY(instructionText.LoadString(IDS_MESSAGE)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		}
@@ -1078,7 +1114,7 @@ void CAlarmDialog::OnSelchangeCondition() {
 			VERIFY(instructionText.LoadString(IDS_DISAPPEARS)); 
 			m_instructionText.SetWindowText(instructionText);
 			m_trigger.SetWindowText("<Not Applicable>");
-			m_trigger.EnableWindow(true);
+			m_trigger.EnableWindow(false);
 			break;
 		case ISONSCREENFOR:
 			VERIFY(instructionText.LoadString(IDS_ISONSCREENFOR)); 
@@ -1142,36 +1178,37 @@ void CAlarmDialog::OnSelchangeCondition() {
 			}
 			break;
 		default:
-			selected = m_condition.GetCurSel();
-			switch (selected) {
-			case FROMALL:
-				m_trigger.SetWindowText("Not Applicable");
-				m_trigger.EnableWindow(false);
-				VERIFY(instructionText.LoadString(IDS_FROMALL)); 
-				m_instructionText.SetWindowText(instructionText);
-				break;
-			case FROM:
-				m_trigger.SetWindowText("<Character Name>");
-				m_trigger.EnableWindow(true);
-				VERIFY(instructionText.LoadString(IDS_FROM)); 
-				m_instructionText.SetWindowText(instructionText);
-				break;
-			case CONTAINS:
-				m_trigger.SetWindowText("<Message Part>");
-				m_trigger.EnableWindow(true);
-				VERIFY(instructionText.LoadString(IDS_CONTAINS)); 
-				m_instructionText.SetWindowText(instructionText);
-				break;
-			default:
-				VERIFY(instructionText.LoadString(IDS_CONDITION)); 
-				m_instructionText.SetWindowText(instructionText);
-				break;
-			}
+			VERIFY(instructionText.LoadString(IDS_CONDITION)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
 		}
 		break;
-	default:
-		VERIFY(instructionText.LoadString(IDS_CONDITION)); 
-		m_instructionText.SetWindowText(instructionText);
+	case MESSAGE:
+	selected = m_condition.GetCurSel();
+		switch (selected) {
+		case FROMALL:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
+			VERIFY(instructionText.LoadString(IDS_FROMALL)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		case FROM:
+			m_trigger.SetWindowText("<Character Name>");
+			m_trigger.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_FROM)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		case CONTAINS:
+			m_trigger.SetWindowText("<Message Part>");
+			m_trigger.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_CONTAINS)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		default:
+			VERIFY(instructionText.LoadString(IDS_CONDITION)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		}
 	}
 }
 
@@ -1235,12 +1272,8 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		OnSelchangeAttribute();
 		m_condition.SetCurSel(listItr->getCondition());
 		OnSelchangeCondition();
-		if (listItr->getStrTrigger().GetLength() > 0)
-			m_trigger.SetWindowText(listItr->getStrTrigger());
-		else {
-			text.Format("%d", listItr->getIntTrigger());
-			m_trigger.SetWindowText(text);
-		}
+		if (listItr->getTrigger().getTriggerText().GetLength() > 0)
+			m_trigger.SetWindowText(listItr->getTrigger().getTriggerText());
 		m_actionRunaway.SetCheck(listItr->doGoToRunaway());
 		m_actionStart.SetCheck(listItr->doGoToStart());
 		m_actionDepot.SetCheck(listItr->doGoToDepot());
@@ -1286,9 +1319,9 @@ void CAlarmDialog::controlsToConfig(CConfigData *config) {
 }
 
 void CAlarmDialog::OnAlarmAdd() {
-	Alarm temp;
 	CString strBuffer;
-	if (addToList(&temp)) {
+	Alarm* temp = addToList();
+	if (temp) {
 		strBuffer = m_attribute.GetItemText(m_attribute.GetCurSel(), 0) + " (" + m_alarmType.GetItemText(m_alarmType.GetCurSel(), 0);
 		strBuffer += strBuffer.Right(1) == 's' ? "es)" : "s)";
 		if (strBuffer.Right(3) == "ys)")
@@ -1313,8 +1346,8 @@ void CAlarmDialog::OnAlarmAdd() {
 		}
 		if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() < CHARACTERMOVED && m_condition.GetCurSel() > FROMALL)
 			strBuffer += "\"";
-		temp.setDescriptor(strBuffer);
-		memAlarmList.push_back(temp);
+		temp->setDescriptor(strBuffer);
+		memAlarmList.push_back(*temp);
 		m_alarmList.InsertItem(memAlarmList.size(), strBuffer, -1);
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 1, m_actionRunaway.GetCheck() ? "X" : "");
 		m_alarmList.SetItemText(memAlarmList.size() - 1, 2, m_actionStart.GetCheck() ? "X" : "");
@@ -1371,8 +1404,28 @@ void CAlarmDialog::OnAlarmAdd() {
 	}
 }
 
-bool CAlarmDialog::addToList(Alarm *temp) {
+Alarm* CAlarmDialog::addToList() {
+	Alarm *temp = new Alarm();
 	CString text;
+	if (m_trigger.IsWindowEnabled()) {
+		m_trigger.GetWindowText(text);
+		if (text.GetLength() && text[0] != '<') {
+			if (m_alarmType.GetCurSel() ==  MESSAGE) {
+				temp->setTrigger(2, text);
+			}
+			else if (m_alarmType.GetCurSel() ==  EVENT && m_attribute.GetCurSel() == WAYPOINTREACHED) {
+			temp->setTrigger(3, text);
+			}
+			else
+				temp->setTrigger(1, text);
+		}
+		else {
+			VERIFY(instructionText.LoadString(IDS_TRIGGER_ERROR)); 
+			m_instructionText.SetWindowText(instructionText);
+			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
+			return false;
+		}
+	}
 	if (m_alarmType.GetCurSel() != -1) 
 		temp->setType(m_alarmType.GetCurSel());
 	else {
@@ -1406,21 +1459,6 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 		}
 	}
 
-	if (m_trigger.IsWindowEnabled()) {
-		m_trigger.GetWindowText(text);
-		if (text.GetLength() && text[0] != '<') {
-			if (m_alarmType.GetCurSel() != EVENT || m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel()==CHARACTERNOTMOVED)
-				temp->setTrigger(atoi(text));
-			else
-				temp->setTrigger(text);
-		}
-		else {
-			VERIFY(instructionText.LoadString(IDS_TRIGGER_ERROR)); 
-			m_instructionText.SetWindowText(instructionText);
-			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
-		}
-	}
 #pragma warning(disable: 4800)
 	temp->setGoToRunaway(m_actionRunaway.GetCheck());
 	temp->setGoToStart(m_actionStart.GetCheck());
@@ -1513,7 +1551,7 @@ bool CAlarmDialog::addToList(Alarm *temp) {
 	if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() <= PRIVATEMESSAGES)
 		triggerMessage |= true;
 #pragma warning(default: 4800)
-	return true;
+	return temp;
 }
 
 void CAlarmDialog::OnAlarmDelete() {
@@ -1552,12 +1590,12 @@ void CAlarmDialog::OnAlarmEdit() {
 		OnSelchangeAttribute();
 		m_condition.SetCurSel(alarmItr->getCondition());
 		OnSelchangeCondition();
-		if (alarmItr->getStrTrigger().GetLength() > 0)
-			m_trigger.SetWindowText(alarmItr->getStrTrigger());
-		else if (alarmItr->getIntTrigger() != -1) {
-			text.Format("%d", alarmItr->getIntTrigger());
-			m_trigger.SetWindowText(text);
-		}
+		//if (alarmItr->getTrigger().getTrigger().GetLength() > 0)
+			m_trigger.SetWindowText(alarmItr->getTrigger().getTriggerText());
+		//else if (alarmItr->getTrigger().getTrigger() != -1) {
+		//	text.Format("%d", alarmItr->getTrigger().getTrigger());
+		//	m_trigger.SetWindowText(text);
+		//}
 		m_actionRunaway.SetCheck(alarmItr->doGoToRunaway());			
 		m_actionStart.SetCheck(alarmItr->doGoToStart());
 		m_actionDepot.SetCheck(alarmItr->doGoToDepot());
@@ -1650,16 +1688,22 @@ void CAlarmDialog::OnSelchangeSpellList() {
 
 void CAlarmDialog::OnSelchangeModulesList() 
 {
-	if (m_modules.GetCurSel()==0){//if <all modules>
-		m_modules.SelItemRange(m_modules.GetSel(0),0,m_modules.GetCount());
+	if (m_modules.GetCurSel() == 1){//if <Select All>
+		m_modules.SelItemRange(true, 2, m_modules.GetCount());
+		m_modules.SetSel(1, false);
 	}
+	if (m_modules.GetCurSel() == 0)//if <Deselect All>
+		m_modules.SelItemRange(false, 0, m_modules.GetCount());
 }
 
 void CAlarmDialog::OnSelchangeModulesList2() 
 {
-	if (m_modules2.GetCurSel()==0){//if <all modules>
-		m_modules2.SelItemRange(m_modules2.GetSel(0),0,m_modules2.GetCount());
+	if (m_modules2.GetCurSel() == 1){//if <Select All>
+		m_modules2.SelItemRange(m_modules2.GetSel(1), 2, m_modules2.GetCount());
+		m_modules2.SetSel(1, false);
 	}	
+	if (m_modules2.GetCurSel() == 0)//if <Deselect All>
+		m_modules2.SelItemRange(false, 0, m_modules.GetCount());
 }
 
 void CAlarmDialog::OnDestroy() 
