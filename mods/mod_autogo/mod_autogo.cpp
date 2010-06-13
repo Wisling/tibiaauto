@@ -237,6 +237,7 @@ struct tibiaMessage * triggerMessage(){
 			delete self;
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type=infoType;
+			strcpy(newMsg->nick,nickBuf);
 			strcpy(newMsg->msg,msgBuf);
 			masterDebug("triggerMessage Exit");
 			return newMsg;
@@ -449,6 +450,16 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
 	return NULL;
 }
+
+bool shouldHalfSleep(list<Alarm> test) {
+	bool retVal = false;
+	list<Alarm>::iterator alarmItr = test.begin();
+	while (alarmItr != test.end() && !retVal) {
+		retVal = (alarmItr->halfSleep || alarmItr->stopWalk);
+		alarmItr++;
+	}
+	return retVal;
+}
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -473,7 +484,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int goPriority = 0;
 	bool isGoingToRunaway=true;
 	int stopWalk = 0;
-	int halfSleepCount = 0;
 	CString statusBuf = "";
 	soundPath[0]=0;
 	
@@ -488,8 +498,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	while (!toolThreadShouldStop) {
 		Sleep(200);
 		//if we're not looking for messages consume them anyway to avoid buffer overflow/expansion
-		if (!config->triggerMessage)
-			triggerMessage();
 		alarmItr = config->alarmList.begin();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (recoveryAlarmMana && self->mana == self->maxMana) recoveryAlarmMana = 0;
@@ -497,9 +505,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		statusBuf="";
 		//insert my alarm check and action code
+		struct tibiaMessage *msg = triggerMessage();
 		while (alarmItr != config->alarmList.end()) {
-			if (alarmItr->checkAlarm(config->whiteList, config->options)) {
-				statusBuf += "  ******  " + alarmItr->getDescriptor();
+			if (alarmItr->checkAlarm(config->whiteList, config->options, msg)) {
+				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
+					statusBuf += "  ******  " + alarmItr->getDescriptor();
 				
 				// Flash Window ***************
 				if ((config->options&OPTIONS_FLASHONALARM) && !alarmItr->flashed) {
@@ -541,13 +551,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						reader.setGlobalVariable("cavebot_halfsleep","true");
 						alarmItr->stopWalk = true;
 						stopWalk++;
-						halfSleepCount++;
 					}
 				} else {
 					if (alarmItr->stopWalk) {
 						alarmItr->stopWalk = false;
 						stopWalk--;
-						halfSleepCount--;
 					}
 				}
 				// *****************************
@@ -598,11 +606,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->doStopModules().size() && !alarmItr->modulesSuspended) {
 					list<CString> temp = alarmItr->doStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
-					modulesItr++;//first one is <all modules>
 					while(modulesItr != temp.end()) {
-						actionSuspend(*modulesItr);
+						alarmItr->modulesSuspended = actionSuspend(*modulesItr);
 						modulesItr++;
-						alarmItr->modulesSuspended = true;
+						
 					}
 				}// ****************************
 				
@@ -610,7 +617,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->doStartModules().size() && !alarmItr->modulesStarted) {
 					list<CString> temp = alarmItr->doStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
-					modulesItr++;//first one is <all modules>
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
 						modulesItr++;
@@ -664,19 +670,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				//Start and Runaway can both be selected at the same time, but not Depot
 				// Goto Start ******************
-				if (alarmItr->doGoToStart()  && goPriority <= 1)
+				if (alarmItr->doGoToStart()  && goPriority <= 1) {
 					goPriority = 1;
-				// *****************************
+					alarmItr->halfSleep = true;
+				}// *****************************
 
 				// Goto Runaway **************** //stick with going to Start if not isGoingToRunaway
-				if (alarmItr->doGoToRunaway() && goPriority <= 2 && (!alarmItr->doGoToStart() || isGoingToRunaway))
+				if (alarmItr->doGoToRunaway() && goPriority <= 2 && (!alarmItr->doGoToStart() || isGoingToRunaway)) {
 					goPriority = 2;
-				// *****************************
+					alarmItr->halfSleep = true;
+				}// *****************************
 
 				// Goto Depot ******************
-				if (alarmItr->doGoToDepot()  && goPriority <= 3)
+				if (alarmItr->doGoToDepot()  && goPriority <= 3) {
 					goPriority = 3;
-				// ****************************
+					alarmItr->halfSleep = true;
+				}// ****************************
 
 				// Logout **********************
 				if (alarmItr->doLogout()) {
@@ -705,14 +714,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr->timeLastSS = time(NULL);
 			}
 			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
-				if (alarmItr->halfSleep) {
-					alarmItr->halfSleep = false;
-					halfSleepCount--;
-				}
+				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
+					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
+				config->status[0]='\0';
+				alarmItr->halfSleep = false;
 				if (alarmItr->stopWalk) {
 					alarmItr->stopWalk = false;
 					stopWalk--;
-					halfSleepCount--;
 				}
 				alarmItr->flashed = false;
 				alarmItr->windowActed = false;
@@ -765,111 +773,110 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		} else
 			config->status[0]='\0';
 		// Do not let seperate alarms fight for control!!
-		switch (goPriority) {
-			if (!stopWalk) break;
-			if (!reader.getGlobalVariable("cavebot_fullsleep")) {
-				reader.setGlobalVariable("cavebot_halfsleep","true");
-				halfSleepCount++;
-			}
-		case 1: {// Start position (By definition, the least safe place to be)
-			int pathSize = 0;
-			int path[15];
-			
-			if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
-				if (!reader.getAttackedCreature()){
-					// proceed with path searching
-					delete self;
-					self=reader.readSelfCharacter();
-					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-					for (; pathSize < 15 && path[pathSize]; pathSize++);
-					if (pathSize)
-						CModuleUtil::executeWalk(self->x, self->y, self->z, path);
-				}
-			} else {
-				isGoingToRunaway=true; //Switch to going to runaway if enabled
-				if (config->actDirection) {
-					if (config->actDirection == DIR_LEFT)
-						sender.turnLeft();
-					else if(config->actDirection == DIR_RIGHT)
-						sender.turnRight();
-					else if(config->actDirection == DIR_UP)
-						sender.turnUp();
-					else if(config->actDirection == DIR_DOWN)
-						sender.turnDown();
-				}
-			}
-			   }
-			break;
-		case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
-			int pathSize = 0;
-			CTibiaMapProxy tibiaMap;
-			
-			int path[15];
-			
-			if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
-				// proceed with path searching									
-				if (!reader.getAttackedCreature()){
-					delete self;
-					self=reader.readSelfCharacter();
-					CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
-					for (; pathSize < 15 && path[pathSize]; pathSize++);										
-					if (pathSize)
-						CModuleUtil::executeWalk(self->x,self->y,self->z,path);
-				}
-			} else {
-				isGoingToRunaway=false; //switch going back to statr if enabled
-			}
-				}
-			break;
-		case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
-			if (!reader.getAttackedCreature()){
-				delete self;
-				self=reader.readSelfCharacter();
-				int pathSize = 0;
-				int path[15];
-				CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-				for (; pathSize < 15 && path[pathSize]; pathSize++);										
-				if (pathSize)
-					CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
-			}
-				}
-			break;
-		default: {
-			if (config->maintainStart) {
+		if (goPriority)
+			reader.setGlobalVariable("cavebot_halfsleep","true");
+		if (!stopWalk) {
+			switch (goPriority) {
+			case 1: {// Start position (By definition, the least safe place to be)
 				int pathSize = 0;
 				int path[15];
 				
 				if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
 					if (!reader.getAttackedCreature()){
-						// proceed with path searching									
+						// proceed with path searching
 						delete self;
 						self=reader.readSelfCharacter();
 						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-						for (; pathSize < 15 && path[pathSize]; pathSize++);										
+						for (; pathSize < 15 && path[pathSize]; pathSize++);
 						if (pathSize)
 							CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 					}
+				} else {
+					isGoingToRunaway=true; //Switch to going to runaway if enabled
+					if (config->actDirection) {
+						if (config->actDirection == DIR_LEFT)
+							sender.turnLeft();
+						else if(config->actDirection == DIR_RIGHT)
+							sender.turnRight();
+						else if(config->actDirection == DIR_UP)
+							sender.turnUp();
+						else if(config->actDirection == DIR_DOWN)
+							sender.turnDown();
+					}
 				}
-				else if (config->actDirection) {
-					if (config->actDirection == DIR_LEFT)
-						sender.turnLeft();
-					else if(config->actDirection == DIR_RIGHT)
-						sender.turnRight();
-					else if(config->actDirection == DIR_UP)
-						sender.turnUp();
-					else if(config->actDirection == DIR_DOWN)
-						sender.turnDown();
+				   }
+				break;
+			case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
+				int pathSize = 0;
+				CTibiaMapProxy tibiaMap;
+				
+				int path[15];
+				
+				if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
+					// proceed with path searching									
+					if (!reader.getAttackedCreature()){
+						delete self;
+						self=reader.readSelfCharacter();
+						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
+						for (; pathSize < 15 && path[pathSize]; pathSize++);										
+						if (pathSize)
+							CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+					}
+				} else {
+					isGoingToRunaway=false; //switch going back to statr if enabled
 				}
+					}
+				break;
+			case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+				if (!reader.getAttackedCreature()){
+					delete self;
+					self=reader.readSelfCharacter();
+					int pathSize = 0;
+					int path[15];
+					CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+					for (; pathSize < 15 && path[pathSize]; pathSize++);										
+					if (pathSize)
+						CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+				}
+					}
+				break;
+			default: {
+				if (config->maintainStart) {
+					int pathSize = 0;
+					int path[15];
+					
+					if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
+						if (!reader.getAttackedCreature()) {
+							// proceed with path searching									
+							delete self;
+							self=reader.readSelfCharacter();
+							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+							for (; pathSize < 15 && path[pathSize]; pathSize++);										
+							if (pathSize)
+								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+						}
+					}
+					else if (config->actDirection) {
+						if (config->actDirection == DIR_LEFT)
+							sender.turnLeft();
+						else if(config->actDirection == DIR_RIGHT)
+							sender.turnRight();
+						else if(config->actDirection == DIR_UP)
+							sender.turnUp();
+						else if(config->actDirection == DIR_DOWN)
+							sender.turnDown();
+					}
+				}
+				   }
+				break;
 			}
-			   }
-			break;
 		}
-		if (reader.getGlobalVariable("cavebot_halfsleep") && halfSleepCount <= 0) {
+char* var= reader.getGlobalVariable("cavebot_halfsleep");
+		if (!shouldHalfSleep(config->alarmList))
 			reader.setGlobalVariable("cavebot_halfsleep", "false");
-			halfSleepCount = 0;
-		}
 		goPriority = 0;
 		delete self;
+		if (msg) delete msg;
 	}
 
 	// Clean-up alarm flags before disabling, reset modules to previous state.
@@ -1176,8 +1183,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				alm.getAlarmType(),
 				alm.getAttribute(),
 				alm.getCondition(),
-				alm.getIntTrigger(),
-				alm.getStrTrigger(),
+				alm.getTrigger().getType(),
+				alm.getTrigger().getTriggerText(),
 				alm.doCastSpell(),
 				alm.doAlarm(),
 				alm.doTakeScreenshot(),

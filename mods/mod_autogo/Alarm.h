@@ -10,14 +10,19 @@
 #endif // _MSC_VER > 1000
 
 #include "TibiaMapPoint.h"
+#include "Trigger.h"
+#include "IntTrigger.h"
+#include "PointTrigger.h"
 #include "Enumerations.h"
 #include <list>
+
 
 using namespace std;
 
 class Alarm  
 {
 public:
+	CTrigger getTrigger();
 	int getSpellDelay();
 	void setSpellDelay(int);
 	struct point currentLoc;
@@ -36,14 +41,11 @@ public:
 	int spellCast;
 	void setManaCost(int);
 	int getManaCost();
-	int getIntTrigger();
-	CString getStrTrigger();
 	int getCondition();
 	int getAttribute();
 	int getAlarmType();
 	// Setters
-	void setTrigger(CString);
-	void setTrigger(int);
+	void setTrigger(int, CString);
 	void setCondition(int);
 	void setAttribute(int);
 	void setType(int);
@@ -80,7 +82,7 @@ public:
 
 	// Methods
 	void initializeCharacter();
-	bool checkAlarm(char whiteList[100][32], int);
+	bool checkAlarm(char whiteList[100][32], int, struct tibiaMessage*);
 
 	// Construction/Destruction
 	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, int, int, bool, bool, bool, bool, int, CString, bool, list<CString>, list<CString>);
@@ -103,7 +105,6 @@ private:
 	int spaceAvailable();
 	bool isSpellMessage(char *);
 	bool OnList(char whiteList[100][32], char name[]);
-	struct tibiaMessage * Alarm::triggerMessage();
 	int countAllFood();
 	int countAllItemsOfType(int);
 
@@ -121,8 +122,7 @@ private:
 	bool depot;
 	bool start;
 	bool runaway;
-	CString strTrigger;
-	int intTrigger;
+	CTrigger trigger;
 	int condition;
 	int attribute;
 	int alarmType;

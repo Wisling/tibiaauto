@@ -482,6 +482,8 @@ BEGIN
 0x6e4f, 0x696c, 0x656e, 0x5320, 0x6174, 0x7574, 0x0073, 
     IDC_ALARM_TYPE, 0x403, 5, 0
 0x7449, 0x6d65, "\000" 
+    IDC_ALARM_TYPE, 0x403, 9, 0
+0x654d, 0x7373, 0x6761, 0x7365, "\000" 
     IDC_ALARM_TYPE, 0x403, 6, 0
 0x7645, 0x6e65, 0x0074, 
     IDC_SCREENSHOT_OPTIONS, 0x403, 9, 0
@@ -569,18 +571,19 @@ BEGIN
     IDS_PROXIMITY_BATTLELIST 
                             "When anything appears on the battlelist, the alarm will activate. (NOTE: Will detect creatures that are up to 2 sqm  outside the viewable area.)"
     IDS_PROXIMITY_SKULL     "When any skulled players appears or becomes skulled, the alarm will activate."
-    IDS_GENERAL_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
-    IDS_GENERAL_PUBLICMESSAGES 
+    IDS_MESSAGE_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_MESSAGE_PUBLICMESSAGES 
                             "When any public message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_GENERAL_PRIVATEMESSAGES 
+    IDS_MESSAGE_PRIVATEMESSAGES 
                             "When any private message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
     IDS_GENERAL_CHARACTERMOVED 
                             "When the character moves or is moved (pushed) this alarm will trigger."
-    IDS_GENERAL_STATUSFLAG  "When a negative status flag is registered, this alarm will trigger. You can filter specific negative status flags in General Options."
+    IDS_GENERAL_WAYPOINTREACHED 
+                            "When the gven waypoint is reched to within the given radius, the alarm will sound. The Trigger format is as follows: (XXX, YYY, ZZZ)RRR "
     IDS_BEGIN_ATTRIBUTE     "Select an attribute that will trigger the alarm."
     IDS_LEVELUP             "The alarm will activate when the selected skill reaches new and subsequent levels."
     IDS_PERCLVLACHIEVED     "The alarm will activate when the selected skill has met or surpassed the percentage of completion set in the trigger amount."
@@ -618,6 +621,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    IDS_MESSAGE             "Text alarms contain alarms detect and trigger for specific text types and in-game messages."
     IDS_ONLINE              "When the player or specified VIP type logs in or out the alarm will trigger."
     IDS_ONLINE_CURRENT_PLAYER 
                             "When the current player is logged in or out according to the conditions, the alarm will trigger."
