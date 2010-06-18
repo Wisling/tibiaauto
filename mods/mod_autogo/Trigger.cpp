@@ -29,15 +29,17 @@ CTrigger::CTrigger(int typeIn, CString textIn) {
 		setIntTrigger(atoi(textIn));	
 		break;
 	case POINT:
-		int index;
+		int index, index2;
 		index = textIn.Find(',');
-		setIntTrigger(atoi(textIn.Left(index)));
-		index = textIn.Find(',', index);
-		setIntTrigger(atoi(textIn.Left(index)));
-		index = textIn.Find(',', index);
-		setIntTrigger(atoi(textIn.Left(index)));
-		index = textIn.Find(',', index);
-		setIntTrigger(atoi(textIn.Right(index)));
+		setIntTrigger(atoi(textIn.Mid(1, index)));
+
+		index2 = textIn.Find(',', ++index);
+		setIntTrigger(atoi(textIn.Mid(index, index2 - index)));
+
+		index = textIn.Find(')', ++index2);
+		setIntTrigger(atoi(textIn.Mid(index2, index - index2)));
+
+		setIntTrigger(atoi(textIn.Right(textIn.GetLength() - ++index)));
 		break;
 	}
 }

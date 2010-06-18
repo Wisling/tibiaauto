@@ -11,8 +11,6 @@
 
 #include "TibiaMapPoint.h"
 #include "Trigger.h"
-#include "IntTrigger.h"
-#include "PointTrigger.h"
 #include "Enumerations.h"
 #include <list>
 
