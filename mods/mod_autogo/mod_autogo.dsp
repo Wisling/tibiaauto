@@ -137,10 +137,6 @@ SOURCE=.\ImageButtonWithStyle.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\IntTrigger.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\mod_autogo.cpp
 # End Source File
 # Begin Source File
@@ -157,10 +153,6 @@ SOURCE=..\..\sdk\MyDialog.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\PointTrigger.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\proxy.cpp
 # End Source File
 # Begin Source File
@@ -171,10 +163,6 @@ SOURCE=..\..\sdk\Skin.cpp
 
 SOURCE=.\StdAfx.cpp
 # ADD CPP /Yc"stdafx.h"
-# End Source File
-# Begin Source File
-
-SOURCE=.\StrTrigger.cpp
 # End Source File
 # Begin Source File
 
@@ -238,15 +226,7 @@ SOURCE=.\ImageButtonWithStyle.h
 # End Source File
 # Begin Source File
 
-SOURCE=.\IntTrigger.h
-# End Source File
-# Begin Source File
-
 SOURCE=.\mod_autogo.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\PointTrigger.h
 # End Source File
 # Begin Source File
 
@@ -255,10 +235,6 @@ SOURCE=.\Resource.h
 # Begin Source File
 
 SOURCE=.\StdAfx.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\StrTrigger.h
 # End Source File
 # Begin Source File
 
