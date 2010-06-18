@@ -78,13 +78,7 @@ Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool r
 	start = sta;
 	runaway = run;
 	screenshot = scr;
-	if (trigType = 1) {
-		trigger = new CIntTrigger(strTrig);
-	}
-	else if (trigType = 2) {
-		trigger = new CPointTrigger(strTrig);
-	}
-	if (strTrig)condition = cond;
+	condition = cond;
 	attribute = attr;
 	alarmType = type;
 	stopWalking = stopwalk;
