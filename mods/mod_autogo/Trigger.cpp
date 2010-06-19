@@ -28,7 +28,7 @@ CTrigger::CTrigger(int typeIn, CString textIn) {
 	case INTEGER:
 		setIntTrigger(atoi(textIn));	
 		break;
-	case POINT:
+	case PointTRIGGER:
 		int index, index2;
 		index = textIn.Find(',');
 		setIntTrigger(atoi(textIn.Mid(1, index)));
@@ -72,7 +72,7 @@ void CTrigger::setTriggerText(CString textIn) {
 	case INTEGER:
 		setIntTrigger(atoi(textIn));	
 		break;
-	case POINT:
+	case PointTRIGGER:
 		int index, index2;
 		index = textIn.Find(',');
 		setIntTrigger(atoi(textIn.Mid(1, index)));
@@ -99,7 +99,7 @@ void CTrigger::setIntTrigger(int intIn) {
 			intTriggerList.clear();
 		intTriggerList.push_back(intIn);
 		break;
-	case POINT:
+	case PointTRIGGER:
 		if (intTriggerList.size() > 4)
 			intTriggerList.clear();
 		intTriggerList.push_back(intIn);
