@@ -610,8 +610,9 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 				onscreen = playerOnScreen(whiteList, options);
 				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 					retval=true;
-				else if (onscreen && onScreenAt == 0)
+				else if (onscreen && onScreenAt == 0){
 					onScreenAt = time(NULL);
+				}
 				else if (!onscreen) {
 					onScreenAt = 0;
 					retval=false;
