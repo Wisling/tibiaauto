@@ -17,14 +17,13 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CConfigData::CConfigData() {
-	for (int x = 0; x < 15; x++)
-		path[x] = 0;
+	memset(path,0,15);
 	targetX = 0;
 	targetY = 0;
 	targetZ = 0;
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		sellerList[i].sellerName[0] = 0;
-		for (x = 0; x < 10; x++) {
+		for (int x = 0; x < 10; x++) {
 			sellerList[i].position[x].sellerX = 0;
 			sellerList[i].position[x].sellerY = 0;
 			sellerList[i].position[x].sellerZ = 0;
