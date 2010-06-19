@@ -1522,31 +1522,35 @@ Alarm* CAlarmDialog::addToList() {
 	temp->setLogEvents(m_actionLogEvents.GetCheck());
 	int nCount = m_modules2.GetSelCount();
 	CArray<int,int> aryListBoxSel;
-	// Start Modules
-	aryListBoxSel.SetSize(nCount);
-	m_modules2.GetSelItems(nCount, aryListBoxSel.GetData()); 
-	list<CString> beginModules;
-	for (int loop = 0; loop < nCount; loop++) {
-		int ind = aryListBoxSel.GetAt(loop);
-		if (ind==0) continue; // 0 is special and need not be added
-		m_modules2.GetText(ind, text);
-		text.MakeLower();
-		beginModules.push_back("mod_" + text + ".dll");
+	if (m_actionEnable.GetCheck()){
+		// Start Modules
+		aryListBoxSel.SetSize(nCount);
+		m_modules2.GetSelItems(nCount, aryListBoxSel.GetData()); 
+		list<CString> beginModules;
+		for (int loop = 0; loop < nCount; loop++) {
+			int ind = aryListBoxSel.GetAt(loop);
+			if (ind==0) continue; // 0 is special and need not be added
+			m_modules2.GetText(ind, text);
+			text.MakeLower();
+			beginModules.push_back("mod_" + text + ".dll");
+		}
+		temp->setStartModules(beginModules);
 	}
-	temp->setStartModules(beginModules);
-	// Suspend Modules
-	nCount = m_modules.GetSelCount();
-	aryListBoxSel.SetSize(nCount);
-	m_modules.GetSelItems(nCount, aryListBoxSel.GetData()); 
-	list<CString> endModules;
-	for (loop = 0; loop < nCount; loop++) {
-		int ind = aryListBoxSel.GetAt(loop);
-		if (ind==0) continue; // 0 is special and need not be added
-		m_modules.GetText(ind, text);
-		text.MakeLower();
-		endModules.push_back("mod_" + text + ".dll");
+	if (m_actionSuspend.GetCheck()){
+		// Suspend Modules
+		nCount = m_modules.GetSelCount();
+		aryListBoxSel.SetSize(nCount);
+		m_modules.GetSelItems(nCount, aryListBoxSel.GetData()); 
+		list<CString> endModules;
+		for (int loop = 0; loop < nCount; loop++) {
+			int ind = aryListBoxSel.GetAt(loop);
+			if (ind==0) continue; // 0 is special and need not be added
+			m_modules.GetText(ind, text);
+			text.MakeLower();
+			endModules.push_back("mod_" + text + ".dll");
+		}
+		temp->setStopModules(endModules);
 	}
-	temp->setStopModules(endModules);
 	//Special case variable
 	if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() <= PRIVATEMESSAGES)
 		triggerMessage |= true;
