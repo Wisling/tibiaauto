@@ -57,6 +57,7 @@ Alarm::Alarm() {
 	stopWalk = false;
 	currentLoc = point(0,0,0);
 	movedTime = time(NULL);
+	trigger;//Default constructor(UNDEFINED,"")
 }
 
 
@@ -81,6 +82,8 @@ Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool r
 	condition = cond;
 	attribute = attr;
 	alarmType = type;
+	setTrigger(trigType, strTrig);
+
 	stopWalking = stopwalk;
 	
 	onScreenAt = 0;
