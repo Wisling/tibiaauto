@@ -1114,8 +1114,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 			stopModules=sep+1;
 		}
 		
-		int alarmType=0,attribute=0,condition=0,intTrigger=0;
-		if (sscanf(selections,"%d %d %d %d",&alarmType,&attribute,&condition,&intTrigger)!=4) return;
+		int alarmType=0,attribute=0,condition=0,trigType=0;
+		if (sscanf(selections,"%d %d %d %d",&alarmType,&attribute,&condition,&trigType)!=4) return;
 
 		CString cStrTrigger=CString(strTrigger);
 
@@ -1126,7 +1126,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,stopWalk=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
 		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
 
-		Alarm temp(alarmType,attribute,condition,intTrigger,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);
+		Alarm temp(alarmType,attribute,condition,trigType,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);
 		m_configData->alarmList.push_back(temp);
 	}
 #pragma warning(default: 4800)
