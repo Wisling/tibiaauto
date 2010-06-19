@@ -17,8 +17,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CConfigData::CConfigData() {
-	for (int x = 0; x < 15; x++)
-		path[x] = 0;
+	memset(path,0,15);
 	targetX = 0;
 	targetY = 0;
 	targetZ = 0;
