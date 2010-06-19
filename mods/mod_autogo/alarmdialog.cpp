@@ -1411,13 +1411,13 @@ Alarm* CAlarmDialog::addToList() {
 		m_trigger.GetWindowText(text);
 		if (text.GetLength() && text[0] != '<') {
 			if (m_alarmType.GetCurSel() ==  MESSAGE) {
-				temp->setTrigger(2, text);
+				temp->setTrigger(1, text);
 			}
-			else if (m_alarmType.GetCurSel() ==  EVENT && m_attribute.GetCurSel() == WAYPOINTREACHED) {
+			else if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() == WAYPOINTREACHED) {
 			temp->setTrigger(3, text);
 			}
 			else
-				temp->setTrigger(1, text);
+				temp->setTrigger(2, text);
 		}
 		else {
 			VERIFY(instructionText.LoadString(IDS_TRIGGER_ERROR)); 
