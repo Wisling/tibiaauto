@@ -668,7 +668,11 @@ void CMod_SellerApp::resetMultiParamAccess(char *paramName) {
 int findSeller(CConfigData *config, int traderNum) {
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z) return 1; 
+	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z){
+		memset(config->path,0,15);
+		delete self;
+		return 1;
+	}
 	for (int x = 0; x < 10; x++) {
 		struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].position[x].sellerX, config->sellerList[traderNum].position[x].sellerY, config->sellerList[traderNum].position[x].sellerZ, 0, config->path,0);
 		if (nearestSell.x && nearestSell.y && nearestSell.z) {

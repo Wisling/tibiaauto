@@ -249,6 +249,7 @@ int findBanker(CConfigData *config) {
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z){
+		memset(config->path,0,15);
 		delete self; 
 		return 1;
 	}
