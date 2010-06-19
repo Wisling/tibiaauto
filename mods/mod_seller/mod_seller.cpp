@@ -716,6 +716,10 @@ int sellItems(CConfigData *config, int traderNum) {
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = 0;
+
+	if (itemProxy.getItemId(config->sellItem[traderNum].tradeItem[0].itemName)==0)
+		return 1;
+
 	Sleep (RandomTimeSellerSay(strlen("hi")));
 	sender.say("hi");
 	Sleep (800);//Give time for NPC window to open
@@ -737,14 +741,12 @@ int sellItems(CConfigData *config, int traderNum) {
 						Sleep(RandomTimeSeller());
 						if (CModuleUtil::waitForCapsChange(self->cap)) {
 							done = 1;
-							delete item;
 							delete self;
 							break;
 						}
 						delete self;
 						done = 0;
 					}
-					delete item;
 				}
 			}
 			delete cont;
@@ -759,6 +761,10 @@ int buyItems(CConfigData *config, int traderNum) {
 	CTibiaItemProxy itemProxy;
 	int itemCount, goldCount;
 	int done = -1;
+
+	if (itemProxy.getItemId(config->buyItem[traderNum].tradeItem[0].itemName)==0)
+		return 1;
+
 	int objectId;
 	//char buf[64];
 	Sleep (RandomTimeSellerSay(strlen("hi")));
