@@ -21,9 +21,6 @@ public:
 	int getMultiIntTrigger(int);
 	int getIntTrigger();
 	void setIntTrigger(int);
-	enum {
-		UNDEFINED, STRING, INTEGER, POINT
-	};
 	void setTriggerText(CString);
 	CString getTriggerText();
 	void setType(int);
