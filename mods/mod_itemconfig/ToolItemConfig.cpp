@@ -123,8 +123,8 @@ void CToolItemConfig::ControlsToConfig(){
 		itemProxy.addFood(name,id,eatTime);
 		free(name);
 	}
-
 }
+
 void CToolItemConfig::OnCancel(){
 	ConfigToControls();
 	CDialog::OnCancel();
@@ -235,8 +235,8 @@ void CToolItemConfig::ConfigToControls(){
 	for (int i=0;i<size;i++)
 	{
 		sprintf(buf,"%s[%d]",itemProxy.getFoodNameAtIndex(i),itemProxy.getFoodIdAtIndex(i));
-		m_foodList.AddString(buf);
-		m_foodList.SetItemData(i,itemProxy.getFoodTimeAtIndex(i));
+		int ind=m_foodList.AddString(buf);
+		m_foodList.SetItemData(ind,itemProxy.getFoodTimeAtIndex(i));
 	}
 
 	//Create Item Tree 

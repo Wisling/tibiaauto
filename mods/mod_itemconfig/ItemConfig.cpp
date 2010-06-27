@@ -335,10 +335,10 @@ void CFoodAdd::OnCommit() {
 
 	char* txt=(char*)malloc(strlen(name)+10);
 	sprintf(txt,"%s[%d]",name,itemId);
-	list->AddString(buf);
-	list->SetItemData(list->GetCount()-1,eatTime);
+	int ind=list->AddString(txt);
+	list->SetItemData(ind,eatTime);
 	free(txt);
-	list->SetCurSel(list->GetCount()-1);
+	list->SetCurSel(ind);
 
 	this->EndDialog(IDOK);
 }
