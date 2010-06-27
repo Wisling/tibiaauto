@@ -2682,7 +2682,7 @@ void CMod_cavebotApp::start() {
 			
 			int flen=ftell(f);
 			fclose(f);
-			if (flen>1024*800) {
+			if (flen>1024*800 && m_configDialog) {
 				CSendStats info;
 				info.DoModal();
 			}
@@ -2830,6 +2830,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"depot/depotCap")) m_configData->depotCap=atoi(paramValue);
 	if (!strcmp(paramName,"walker/radius")) m_configData->radius=atoi(paramValue);
 	if (!strcmp(paramName,"loot/other/whilekilling")) m_configData->lootWhileKill=atoi(paramValue);
+	if (!strcmp(paramName,"attack/dontAttackPlayers")) m_configData->dontAttackPlayers=atoi(paramValue);
 
 	if (!strcmp(paramName,"general/debug")) m_configData->debug=atoi(paramValue);
 	
@@ -2946,6 +2947,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"depot/depotCap")) sprintf(buf,"%d",m_configData->depotCap);
 	if (!strcmp(paramName,"walker/radius")) sprintf(buf,"%d",m_configData->radius);
 	if (!strcmp(paramName,"loot/other/whilekilling")) sprintf(buf,"%d",m_configData->lootWhileKill);
+	if (!strcmp(paramName,"attack/dontAttackPlayers")) sprintf(buf,"%d",m_configData->dontAttackPlayers);
 
 	return buf;
 }
@@ -2995,6 +2997,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 40: return "training/trainingMode";
 	case 41: return "walker/radius";
 	case 42: return "loot/other/whilekilling";
+	case 43: return "attack/dontAttackPlayers";
 		
 	default:
 		return NULL;

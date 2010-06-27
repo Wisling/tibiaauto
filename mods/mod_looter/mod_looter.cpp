@@ -411,7 +411,7 @@ void CMod_looterApp::start()
 
 		int flen=ftell(f);
 		fclose(f);		
-		if (flen>1024*800)
+		if (flen>1024*800 && m_configDialog)
 		{
 			CSendStats info;
 			info.DoModal();				

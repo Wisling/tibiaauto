@@ -1537,7 +1537,7 @@ void CMod_creatureinfoApp::start()
 
 		int flen=ftell(f);
 		fclose(f);		
-		if (flen>1024*500)
+		if (flen>1024*500 && m_configDialog)
 		{
 			CSendStats info;
 			info.DoModal();				
