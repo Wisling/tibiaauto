@@ -26,7 +26,7 @@ CTrigger::CTrigger(int typeIn, CString textIn) {
 	setTriggerText(textIn);
 	switch (type) {
 	case INTEGER:
-		setIntTrigger(atoi(textIn));	
+		setIntTrigger(atoi(textIn));
 		break;
 	case PointTRIGGER:
 		int index, index2;
@@ -61,7 +61,7 @@ void CTrigger::setType(int typeIn) {
 	type = typeIn;
 }
 
-ostream &operator<<(ostream &out, CTrigger &t) {
+static ostream &operator<<(ostream &out, CTrigger &t) {
 	out << t.getType() << " [" << (LPCTSTR) t.getTriggerText() << "]";
 	return out;
 }
@@ -70,17 +70,20 @@ void CTrigger::setTriggerText(CString textIn) {
 	triggerText = textIn;
 	switch (type) {
 	case INTEGER:
-		setIntTrigger(atoi(textIn));	
+		setIntTrigger(atoi(textIn));
 		break;
 	case PointTRIGGER:
 		int index, index2;
 		index = textIn.Find(',');
+		ASSERT(index!=-1);
 		setIntTrigger(atoi(textIn.Mid(1, index)));
 
 		index2 = textIn.Find(',', ++index);
+		ASSERT(index2!=-1);
 		setIntTrigger(atoi(textIn.Mid(index, index2 - index)));
 
 		index = textIn.Find(')', ++index2);
+		ASSERT(index!=-1);
 		setIntTrigger(atoi(textIn.Mid(index2, index - index2)));
 
 		setIntTrigger(atoi(textIn.Right(textIn.GetLength() - ++index)));
