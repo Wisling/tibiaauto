@@ -694,10 +694,26 @@ int findSeller(CConfigData *config, int traderNum) {
 	return -1;
 }
 
+int shouldKeepWalking() {
+	static lastAttackTime=0;
+	CMemReaderProxy reader;
+	if (!reader.getAttackedCreature()){
+		char *var=reader.getGlobalVariable("autolooterTm");
+		if (var==NULL || strcmp(var,"")==0){
+			if (lastAttackTime<time(NULL)-3)
+				return 1;
+			else
+				return 0;
+		}
+	}
+	lastAttackTime=time(NULL);
+	return 0;
+}
+
 int moveToSeller(CConfigData *config) {
 	CMemReaderProxy reader;
 
-	if (!reader.getAttackedCreature()){
+	if (shouldKeepWalking()){
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
 		delete self;
