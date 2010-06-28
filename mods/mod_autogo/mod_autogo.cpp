@@ -460,6 +460,23 @@ bool shouldHalfSleep(list<Alarm> test) {
 	}
 	return retVal;
 }
+
+int shouldKeepWalking() {
+	static lastAttackTime=0;
+	CMemReaderProxy reader;
+	if (!reader.getAttackedCreature()){
+		char *var=reader.getGlobalVariable("autolooterTm");
+		if (var==NULL || strcmp(var,"")==0){
+			if (lastAttackTime<time(NULL)-3)
+				return 1;
+			else
+				return 0;
+		}
+	}
+	lastAttackTime=time(NULL);
+	return 0;
+}
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -780,9 +797,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			case 1: {// Start position (By definition, the least safe place to be)
 				int pathSize = 0;
 				int path[15];
-				
+				char* var=reader.getGlobalVariable("autolooterTm");
+
+
 				if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
-					if (!reader.getAttackedCreature()){
+					if (shouldKeepWalking()){
 						// proceed with path searching
 						delete self;
 						self=reader.readSelfCharacter();
@@ -814,7 +833,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
 					// proceed with path searching									
-					if (!reader.getAttackedCreature()){
+					if (shouldKeepWalking()){
 						delete self;
 						self=reader.readSelfCharacter();
 						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
@@ -828,7 +847,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 				break;
 			case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
-				if (!reader.getAttackedCreature()){
+				if (shouldKeepWalking()){
 					delete self;
 					self=reader.readSelfCharacter();
 					int pathSize = 0;
@@ -846,7 +865,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					int path[15];
 					
 					if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
-						if (!reader.getAttackedCreature()) {
+						if (shouldKeepWalking()) {
 							// proceed with path searching									
 							delete self;
 							self=reader.readSelfCharacter();
