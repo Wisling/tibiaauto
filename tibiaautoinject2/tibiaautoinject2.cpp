@@ -1977,11 +1977,8 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4ED70C+1,(unsigned int)myIsCreatureVisible); // 8.53
 	//trapFun(dwHandle,0x4ED95C+1,(unsigned int)myIsCreatureVisible); // 8.54
 	//trapFun(dwHandle,0x4F20FC+1,(unsigned int)myIsCreatureVisible); // 8.55
-
 	//trapFun(dwHandle,0x460352+1,(unsigned int)myIsCreatureVisible); // 8.56
 	//trapFun(dwHandle,0x469120+1,(unsigned int)myIsCreatureVisible); // 8.56
-
-	trapFun(dwHandle,0x460302+1,(unsigned int)myIsCreatureVisible); // 8.57
 	trapFun(dwHandle,0x4f266c+1,(unsigned int)myIsCreatureVisible); // 8.57
 
     CloseHandle(dwHandle);
