@@ -12,6 +12,7 @@
 class CConfigData  
 {
 public:
+	bool enableTimers;
 	CConfigData();
 	virtual ~CConfigData();
 };

@@ -1,6 +1,8 @@
 2.5.0, ?.?.2010
+Enhancements:
+ Player Info: Added the ability to disable spell timers
 Defects
- Kernal: Fixed bug in MapHacks module causing Tibia to crash/dead creatures to appear in BL.
+ Kernal: Fixed bug in MapHacks module causing Tibia to crash/dead creatures to appear in BL
 
 2.4.1, ?.?.2010
 Enhancements

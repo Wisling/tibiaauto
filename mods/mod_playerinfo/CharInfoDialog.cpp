@@ -27,11 +27,12 @@ static char THIS_FILE[] = __FILE__;
 // CCharInfoDialog dialog
 
 
-CCharInfoDialog::CCharInfoDialog(CWnd* pParent /*=NULL*/)
+CCharInfoDialog::CCharInfoDialog(CConfigData *configIn, CWnd* pParent /*=NULL*/)
 	: MyDialog(CCharInfoDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CCharInfoDialog)
 	//}}AFX_DATA_INIT
+	config = configIn;
 }
 
 
@@ -39,6 +40,11 @@ void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCharInfoDialog)
+	DDX_Control(pDX, IDC_MAGIC_SHIELD_TIMER_TEXT, m_magicShieldText);
+	DDX_Control(pDX, IDC_STRONG_HASTE_TIMER_TEXT, m_strongHasteText);
+	DDX_Control(pDX, IDC_INVIS_TIMER_TEXT, m_invisText);
+	DDX_Control(pDX, IDC_HASTE_TIMER_TEXT, m_hasteText);
+	DDX_Control(pDX, IDC_ENABLETIMERS, m_EnableTimer);
 	DDX_Control(pDX, IDC_RESET_COUNTERS, m_ResetCounters);
 	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_SPELL_STATS, m_SpellStats);
@@ -90,6 +96,7 @@ BEGIN_MESSAGE_MAP(CCharInfoDialog, MyDialog)
 	//{{AFX_MSG_MAP(CCharInfoDialog)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_RESET_COUNTERS, OnResetCounters)
+	ON_BN_CLICKED(IDC_ENABLETIMERS, OnEnabletimers)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
@@ -143,13 +150,21 @@ void CCharInfoDialog::resetCounters()
 	delete ch;
 }
 
-BOOL CCharInfoDialog::OnInitDialog() 
-{
+BOOL CCharInfoDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_ResetCounters);
 	skin.SetButtonSkin(	m_OK);
 	
+	configToControls(config);
 	resetCounters();
+	m_hasteRemaining.EnableWindow(config->enableTimers);
+	m_stronghasteRemaining.EnableWindow(config->enableTimers);
+	m_invisRemaining.EnableWindow(config->enableTimers);
+	m_magicshieldRemaining.EnableWindow(config->enableTimers);
+	m_magicShieldText.EnableWindow(config->enableTimers);
+	m_strongHasteText.EnableWindow(config->enableTimers);
+	m_invisText.EnableWindow(config->enableTimers);
+	m_hasteText.EnableWindow(config->enableTimers);
 
 	SetTimer(1001,500,NULL);
 	
@@ -309,7 +324,8 @@ void CCharInfoDialog::dataCalc(){
 		playerInfo.spell[i].remaining = max(playerInfo.spell[i].lasts - (time(NULL) - playerInfo.spell[i].start),0);
 		if (playerInfo.spell[i].remaining > 0 && ((playerInfo.spell[i].remaining <= WARNING1 && !(playerInfo.spell[i].warning&0x01)) || (playerInfo.spell[i].remaining <= WARNING2 && !(playerInfo.spell[i].warning&0x02)))){
 			sprintf(buffer,"%s will wear off in %d seconds.",spellName[i],playerInfo.spell[i].remaining);
-			sender.sendTAMessage(buffer);
+			if (config->enableTimers)
+				sender.sendTAMessage(buffer);
 			if (playerInfo.spell[i].remaining <= WARNING1)
 				playerInfo.spell[i].warning |= 0x01;
 			if (playerInfo.spell[i].remaining <= WARNING2)
@@ -369,7 +385,45 @@ void CCharInfoDialog::dataShow(){
 
 	for (i=0;i<4;i++){
 		sprintf(buffer, "%d seconds remaining", playerInfo.spell[i].remaining);
-		spellCtrl[i]->SetWindowText(buffer);
+		if (config->enableTimers)
+			spellCtrl[i]->SetWindowText(buffer);
 	}
+}
+void CCharInfoDialog::configToControls(CConfigData *configData) {
+	//Something here
+	m_EnableTimer.SetCheck(configData->enableTimers);
+}
+
+CConfigData * CCharInfoDialog::controlsToConfig() {
+	CConfigData *newConfigData = new CConfigData();
+
+	newConfigData->enableTimers = m_EnableTimer.GetCheck();
+
+	return newConfigData;
+}
+
+void CCharInfoDialog::OnEnabletimers() 
+{
+	m_hasteRemaining.EnableWindow(m_EnableTimer.GetCheck());
+	m_stronghasteRemaining.EnableWindow(m_EnableTimer.GetCheck());
+	m_invisRemaining.EnableWindow(m_EnableTimer.GetCheck());
+	m_magicshieldRemaining.EnableWindow(m_EnableTimer.GetCheck());
+	m_magicShieldText.EnableWindow(m_EnableTimer.GetCheck());
+	m_strongHasteText.EnableWindow(m_EnableTimer.GetCheck());
+	m_invisText.EnableWindow(m_EnableTimer.GetCheck());
+	m_hasteText.EnableWindow(m_EnableTimer.GetCheck());
+	if (!m_EnableTimer.GetCheck()) {
+		m_hasteRemaining.SetWindowText("DISABLED");
+		m_stronghasteRemaining.SetWindowText("DISABLED");
+		m_invisRemaining.SetWindowText("DISABLED");
+		m_magicshieldRemaining.SetWindowText("DISABLED");
+	}
+	else {
+		m_hasteRemaining.SetWindowText("ENABLED");
+		m_stronghasteRemaining.SetWindowText("ENABLED");
+		m_invisRemaining.SetWindowText("ENABLED");
+		m_magicshieldRemaining.SetWindowText("ENABLED");
+	}
+	config = controlsToConfig();
 }
 

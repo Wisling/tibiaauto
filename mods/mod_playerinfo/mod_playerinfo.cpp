@@ -80,9 +80,9 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMod_playerinfoApp construction
 
-CMod_playerinfoApp::CMod_playerinfoApp()
-{	
+CMod_playerinfoApp::CMod_playerinfoApp() {
 	m_infoDialog=NULL;	
+	m_configData = new CConfigData();	
 }
 
 CMod_playerinfoApp::~CMod_playerinfoApp()
@@ -105,7 +105,7 @@ int CMod_playerinfoApp::isStarted()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	if (!m_infoDialog)
 	{ 
-		m_infoDialog=new CCharInfoDialog();
+		m_infoDialog=new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 	}
 	return 0;
@@ -119,7 +119,7 @@ void CMod_playerinfoApp::start()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	if (!m_infoDialog)
 	{ 
-		m_infoDialog=new CCharInfoDialog();
+		m_infoDialog=new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 	}
 }
@@ -134,21 +134,26 @@ void CMod_playerinfoApp::showConfigDialog()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
 	if (!m_infoDialog)
 	{ 
-		m_infoDialog=new CCharInfoDialog();
+		m_infoDialog = new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
+		configToControls();
 	}
 	m_infoDialog->ShowWindow(SW_SHOW);
 }
 
 
-void CMod_playerinfoApp::configToControls()
-{	
+void CMod_playerinfoApp::configToControls() {
+	if (m_infoDialog)	{		
+		m_infoDialog->configToControls(m_configData);
+	}
 }
 
 
-void CMod_playerinfoApp::controlsToConfig()
-{
-	
+void CMod_playerinfoApp::controlsToConfig() {
+	if (m_infoDialog) {
+		delete m_configData;
+		m_configData = m_infoDialog->controlsToConfig();
+	}
 }
 
 
@@ -175,23 +180,30 @@ int CMod_playerinfoApp::validateConfig(int showAlerts)
 }
 
 
-void CMod_playerinfoApp::resetConfig()
-{
-	
+void CMod_playerinfoApp::resetConfig() {
+	m_configData = new CConfigData();
 }
 
-void CMod_playerinfoApp::loadConfigParam(char *paramName,char *paramValue)
-{
+void CMod_playerinfoApp::loadConfigParam(char *paramName,char *paramValue) {
+	if (!strcmp(paramName,"enableTimer")) m_configData->enableTimers=atoi(paramValue);
 }
 
 char *CMod_playerinfoApp::saveConfigParam(char *paramName)
 {
-	return "";
+	static char buf[1024];
+	buf[0]=0;
+	
+	if (!strcmp(paramName,"enableTimer")) sprintf(buf,"%d",m_configData->enableTimers);
+
+	return buf;
 }
 
-char *CMod_playerinfoApp::getConfigParamName(int nr)
-{
-	return NULL;
+char *CMod_playerinfoApp::getConfigParamName(int nr) {
+	switch (nr)	{
+	case 0: return "enableTimer";
+	default:
+		return NULL;
+	}
 }
 
 void* CMod_playerinfoApp::GetPlayerInfo()

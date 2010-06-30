@@ -46,6 +46,11 @@
 #define IDC_TIME                        1098
 #define IDC_CHARACTER_STATS             1099
 #define IDC_SPELL_STATS                 1100
+#define IDC_ENABLETIMERS                3016
+#define IDC_INVIS_TIMER_TEXT            3017
+#define IDC_HASTE_TIMER_TEXT            3018
+#define IDC_STRONG_HASTE_TIMER_TEXT     3019
+#define IDC_MAGIC_SHIELD_TIMER_TEXT     3020
 
 // Next default values for new objects
 // 
@@ -53,7 +58,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3016
+#define _APS_NEXT_CONTROL_VALUE         3021
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

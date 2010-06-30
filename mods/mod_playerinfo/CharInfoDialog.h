@@ -10,6 +10,7 @@
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
 #include "BtnST.h"
+#include "ConfigData.h"	// Added by ClassView
 
 /////////////////////////////////////////////////////////////////////////////
 // CCharInfoDialog dialog
@@ -18,11 +19,19 @@ class CCharInfoDialog : public MyDialog
 {
 // Construction
 public:
-	CCharInfoDialog(CWnd* pParent = NULL);   // standard constructor
+	CConfigData *config;
+	CCharInfoDialog(CConfigData *configIn, CWnd* pParent = NULL);   // standard constructor
+	void configToControls(CConfigData *configData);
+	CConfigData * controlsToConfig();
 
 // Dialog Data
 	//{{AFX_DATA(CCharInfoDialog)
 	enum { IDD = IDD_CHARINFO };
+	CStatic	m_magicShieldText;
+	CStatic	m_strongHasteText;
+	CStatic	m_invisText;
+	CStatic	m_hasteText;
+	CButton	m_EnableTimer;
 	CButtonST	m_ResetCounters;
 	CButtonST	m_OK;
 	CGroupBoxEx	m_SpellStats;
@@ -84,6 +93,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnResetCounters();
+	afx_msg void OnEnabletimers();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
