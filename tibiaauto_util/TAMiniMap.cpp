@@ -294,7 +294,6 @@ AFX_INLINE UINT AFXAPI HashKey<PathFinderNode> (PathFinderNode key)
 	return key.x*191+key.y*257+key.z*317;
 }
 
-
 void DebugPrint(const char* s,int a,int b=0,int c=0,int d=0){
 	char buf[111];
 	sprintf(buf,"%s - %d %d %d %d",s,a,b,c,d);
@@ -476,7 +475,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			newNode.py = parentNode.y;
 			newNode.pz = parentNode.z;
 			newNode.g = newG;
-			newNode.h = mHEstimate * (abs(newNode.x - endX) + abs(newNode.y - endY) + abs(newNode.z - endZ));// + 50*abs(newNode.z - endZ);
+			newNode.h = mHEstimate * (abs(newNode.x - endX) + abs(newNode.y - endY) + abs(newNode.z - endZ));// + 50*abs(newNode.z - endZ)
 			newNode.f = newNode.g + newNode.h;
 			//DebugPrint("newNode",newNode.x,newNode.y,newNode.z);
 
