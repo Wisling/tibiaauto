@@ -85,6 +85,8 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
 	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+
 	CConfigData *config = (CConfigData *)lpParam;
 	int allAtOnce = 0;
 	int buyOrSell = 0;
@@ -121,7 +123,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			AfxMessageBox(buf);
 		}
 */
+		static int tStart=0;
+		char buf[1111];
+		sprintf(buf,"%d",GetTickCount()-tStart);
+		sender.sendTAMessage(buf);
 		Sleep(200);
+		tStart=GetTickCount();
 		var=reader.getGlobalVariable("cavebot_halfsleep");
 		if (var==NULL||strcmp(var,"true")) 
 			alreadySleeping = 0; 

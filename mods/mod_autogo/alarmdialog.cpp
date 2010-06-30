@@ -682,6 +682,8 @@ BOOL CAlarmDialog::OnInitDialog() {
 }
 
 void CAlarmDialog::OnSelchangeAttribute(){
+	CMemReaderProxy reader;
+
 	int selected = m_alarmType.GetCurSel();
 	switch (selected) {
 	case SKILL:
@@ -986,18 +988,23 @@ void CAlarmDialog::OnSelchangeAttribute(){
 
 			m_condition.SetCurSel(-1);
 			m_trigger.SetWindowText("Not Applicable");
-			m_trigger.EnableWindow(true);
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_GENERAL_CHARACTERNOTMOVED)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case WAYPOINTREACHED:
+			{
 			m_condition.EnableWindow(false);
 			m_condition.SetCurSel(-1);
-
-			m_trigger.SetWindowText("");
+			CTibiaCharacter* self=reader.readSelfCharacter();
+			char buf[256];
+			sprintf(buf,"(%d,%d,%d)%d",self->x,self->y,self->z,2);
+			delete self;
+			m_trigger.SetWindowText(buf);
 			m_trigger.EnableWindow(true);
 			VERIFY(instructionText.LoadString(IDS_GENERAL_WAYPOINTREACHED)); 
 			m_instructionText.SetWindowText(instructionText);
+			}
 			break;
 		default:
 			VERIFY(instructionText.LoadString(IDS_GENERAL)); 
@@ -1157,18 +1164,21 @@ void CAlarmDialog::OnSelchangeCondition() {
 				VERIFY(instructionText.LoadString(IDS_EQUAL)); 
 				m_instructionText.SetWindowText(instructionText);
 
+				m_trigger.EnableWindow(true);
 				m_trigger.SetWindowText("<Seconds>");
 				break;
 			case LESS:
 				VERIFY(instructionText.LoadString(IDS_LESS)); 
 				m_instructionText.SetWindowText(instructionText);
 
+				m_trigger.EnableWindow(true);
 				m_trigger.SetWindowText("<Seconds>");
 				break;
 			case MORE:
 				VERIFY(instructionText.LoadString(IDS_MORE)); 
 				m_instructionText.SetWindowText(instructionText);
 
+				m_trigger.EnableWindow(true);
 				m_trigger.SetWindowText("<Seconds>");
 				break;
 			default:
@@ -1213,7 +1223,12 @@ void CAlarmDialog::OnSelchangeCondition() {
 }
 
 void CAlarmDialog::OnSetfocusTrigger() {
-	m_trigger.SetWindowText("");
+	CString text;
+	m_trigger.GetWindowText(text);
+	if (strncmp("Not ",text,4)==0)
+		m_trigger.SetWindowText("");
+	else if (strncmp("<",text,1)==0)
+		m_trigger.SetWindowText("");
 }
 
 void CAlarmDialog::OnActionStopWalking() {
