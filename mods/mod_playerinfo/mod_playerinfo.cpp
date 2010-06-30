@@ -87,11 +87,11 @@ CMod_playerinfoApp::CMod_playerinfoApp() {
 
 CMod_playerinfoApp::~CMod_playerinfoApp()
 {
-	if (!m_infoDialog)
-	{ 
+	if (m_infoDialog)
+	{
 		delete m_infoDialog;
-	}	
-	delete m_configData;	
+	}
+	delete m_configData;
 }
 
 char * CMod_playerinfoApp::getName()

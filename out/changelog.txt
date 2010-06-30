@@ -4,7 +4,7 @@ Enhancements:
 Defects
  Kernal: Fixed bug in MapHacks module causing Tibia to crash/dead creatures to appear in BL
 
-2.4.1, ?.?.2010
+2.4.1, 27.6.2010
 Enhancements
  Autogo: New "Waypoint Reached" Alarm
  AutoGo: Restructured alarm types
@@ -14,12 +14,24 @@ Enhancements
  Python: Extra diagonal walk python functions
  Python: Added moving variable to characters
  Cavebot: Walking packets better mimick what the client sends
+ Autogo: waits for 3 seconds after killing something before walking again
+ Autogo: You can edit text in the autogo trigger window instead of having it disappear
 
 Defects
  Autogo: Several Bugs corrected
  ShowMap: Saves destination teleporter to xml file properly
  Python: Fixed writeGotoCoordinates function
  Cavebot: Hybrid map walker is working again
+ Autogo: Autogo no longer crashes when enabling modules that have not been opened yet with popup windows
+ Cavebot: Don't attack players option get saved
+ Item Config: Fixed adding food items to list
+ Eater: Fixed food eating times in xml file
+ Seller: Fixed memory leak
+ Seller & Banker: Fixed overshooting destination
+ Seller: No longer says "hi" twice in a row
+ Seller: Fixed seller crashing when it tries to buy items
+ AutoGo: Fixed triggers with integer values
+ AutoGo: No longer adds selected modules to start if the start module button is not enabled
 
 2.4.0, 7.5.2010
 Enhancements
