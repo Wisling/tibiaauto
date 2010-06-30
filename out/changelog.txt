@@ -1,3 +1,7 @@
+2.5.0, ?.?.2010
+Defects
+ Kernal: Fixed bug in MapHacks module causing Tibia to crash/dead creatures to appear in BL.
+
 2.4.1, ?.?.2010
 Enhancements
  Autogo: New "Waypoint Reached" Alarm
