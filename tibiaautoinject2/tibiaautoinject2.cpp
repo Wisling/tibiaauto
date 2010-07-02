@@ -58,8 +58,8 @@ HHOOK hook;
 SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
-int COMPLEX=1;
-int SENTONLY=0;
+int COMPLEX=0;
+int SENTONLY=1;
 
 time_t debugFileStart;
 int lastSendFlags;

@@ -239,6 +239,11 @@ void memReadSetFollowedCreature(int tibiaId)
 	startMemReader();
 	reader->setFollowedCreature(tibiaId);	
 }
+int memReadGetNextPacketCount()
+{	
+	startMemReader();
+	return reader->getNextPacketCount();	
+}
 char * memReadGetLoggedChar(int processId)
 {
 	startMemReader();

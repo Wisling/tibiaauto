@@ -73,6 +73,7 @@ public:
 	void setAttackedCreature(int tibiaId);
 	int getFollowedCreature();
 	void setFollowedCreature(int tibiaId);
+	int getNextPacketCount();
 	char * GetLoggedChar(int processId);
 	int readBattleListMax();
 	int readBattleListMin();

@@ -367,15 +367,22 @@ void CPackSender::attack(int tibiaCharId)
 {
 	CMemReader reader;
 	reader.setAttackedCreature(tibiaCharId);
+	int cnt=reader.getNextPacketCount();
+	
 
-	char sendbuf[7];
-	sendbuf[0]=5;
+	char sendbuf[11];
+	sendbuf[0]=9;
 	sendbuf[1]=0;
 	sendbuf[2]=0xa1;
 	sendbuf[3]=tibiaCharId&0xff;
 	sendbuf[4]=(tibiaCharId>>8)&0xff;
 	sendbuf[5]=(tibiaCharId>>16)&0xff;
 	sendbuf[6]=(tibiaCharId>>24)&0xff;
+
+	sendbuf[7]=cnt&0xff;
+	sendbuf[8]=(cnt>>8)&0xff;
+	sendbuf[9]=(cnt>>16)&0xff;
+	sendbuf[10]=(cnt>>24)&0xff;
 	
 	sendPacket(sendbuf);
 }
@@ -384,15 +391,21 @@ void CPackSender::follow(int tibiaCharId)
 {
 	CMemReader reader;
 	reader.setFollowedCreature(tibiaCharId);
+	int cnt=reader.getNextPacketCount();
 
-	char sendbuf[7];
-	sendbuf[0]=5;
+	char sendbuf[11];
+	sendbuf[0]=9;
 	sendbuf[1]=0;
 	sendbuf[2]=0xa2;
 	sendbuf[3]=tibiaCharId&0xff;
 	sendbuf[4]=(tibiaCharId>>8)&0xff;
 	sendbuf[5]=(tibiaCharId>>16)&0xff;
 	sendbuf[6]=(tibiaCharId>>24)&0xff;
+
+	sendbuf[7]=cnt&0xff;
+	sendbuf[8]=(cnt>>8)&0xff;
+	sendbuf[9]=(cnt>>16)&0xff;
+	sendbuf[10]=(cnt>>24)&0xff;
 
 	sendPacket(sendbuf);
 }

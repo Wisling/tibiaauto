@@ -255,6 +255,13 @@ void CMemReader::setFollowedCreature(int tibiaId)
 	CMemUtil::SetMemIntValue(m_memAddressFollowedCreature,tibiaId);
 }
 
+int CMemReader::getNextPacketCount()
+{	
+	int ret=CMemUtil::GetMemIntValue(m_memAddressPacketCount)+1;
+	CMemUtil::SetMemIntValue(m_memAddressPacketCount,ret);
+	return ret;
+}
+
 CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
 {		
 	CMemReader reader;
