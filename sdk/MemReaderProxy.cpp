@@ -345,6 +345,19 @@ void CMemReaderProxy::setFollowedCreature(int tibiaId)
 		}
 	}
 }
+int CMemReaderProxy::getNextPacketCount()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetNextPacketCount");
+		if (fun)
+		{
+			return fun();
+		}
+	}
+	return 0;
+}
 char * CMemReaderProxy::GetLoggedChar(int processId)
 {
 	typedef char * (*Proto_fun)(int);

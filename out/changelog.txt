@@ -1,7 +1,16 @@
-2.5.0, ?.?.2010
+2.5.1, ?.?.2010
 Enhancements:
+Defects:
+
+2.5.0, 1.7.2010
+Enhancements:
+ Installer: Installer does not change the current items.xml, but it adds a file named "tibiaauto-items-{version number}.xml"
+ Tibia Auto: Updated to Tibia 8.6
+ items.xml: added new items
+ tiles.xml: made all runes a potions stackable and added all new tiles for new areas
+ consts.xml: updated addresses
  Player Info: Added the ability to disable spell timers
-Defects
+Defects:
  Kernal: Fixed bug in MapHacks module causing Tibia to crash/dead creatures to appear in BL
 
 2.4.1, 27.6.2010
