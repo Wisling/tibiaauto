@@ -103,6 +103,8 @@
 		<const code="addrFps" value="0x79DA74" /> <!-- lookup: Surface.cpp --> <!-- cat4  -->
 		<const code="addrWhiteMessage" value="0x7E07B0" />
 
+		<const code="addrPacketCount" value="0x63DA40" />
+
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
 		<const code="lengthItem" value="12"/>
