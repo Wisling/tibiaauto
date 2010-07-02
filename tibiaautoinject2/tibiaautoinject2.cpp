@@ -1150,10 +1150,10 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-#ifdef _DEBUG
+#ifndef _DEBUG
 	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
 #endif
-#ifndef _DEBUG
+#ifdef _DEBUG
 	debugFile=NULL;
 #endif
 	if (debugFile) fprintf(debugFile,"Start\r\n");
