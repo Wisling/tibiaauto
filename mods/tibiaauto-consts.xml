@@ -59,7 +59,7 @@
 		<const code="addrSkillFist" value="0x63FE40" />
 		<const code="addrSkillFish" value="0x63FE58" />
 		<const code="addrAttackedCreature" value="0x63FE64" />
-		<const code="addrCap" value="0x63FE60" />
+		<const code="addrCap" value="0x63FE68" />
 		<const code="addrStamina" value="0x63FE6C" />
 		<const code="addrSoulPoints" value="0x63FE70" />
 		<const code="addrManaMax" value="0x63FE74" />
