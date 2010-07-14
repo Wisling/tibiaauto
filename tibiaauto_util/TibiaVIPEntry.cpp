@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 
 CTibiaVIPEntry::CTibiaVIPEntry()
 {
-	memset(name,0x00,32);
+	memset(name,0x00,64);
 }
 
 CTibiaVIPEntry::~CTibiaVIPEntry()

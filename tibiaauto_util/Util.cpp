@@ -61,10 +61,10 @@ char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 		char *attrNameWide=CUtil::wc2c(attrNode->getNodeName());
 		if (!strcmp(attrNameWide,attrName))
 		{
-			free(attrNameWide);
+			//free(attrNameWide);
 			return CUtil::wc2c(attrNode->getNodeValue());			
 		}
-		free(attrNameWide);
+		//free(attrNameWide);
 	}
 	char *emptyRet=(char *)malloc(MAX_STRING_LEN);
 	memset(emptyRet,0,MAX_STRING_LEN);
@@ -89,7 +89,7 @@ int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
 {
 	char *attrValue=getNodeAttribute(node,attrName);
 	int ret=atoi(attrValue);
-	free(attrValue);
+	//free(attrValue);
 	return ret;
 	
 }

@@ -129,7 +129,7 @@ void CTileReader::loadTiles() {
 						tiles[tileId]->isReadable=CUtil::getNodeIntAttribute(item,_L("isReadable"));
 						tiles[tileId]->isFluid=CUtil::getNodeIntAttribute(item,_L("isFluid"));
 						tiles[tileId]->isRune=CUtil::getNodeIntAttribute(item,_L("isRune"));
-						tiles[tileId]->isUseable=CUtil::getNodeIntAttribute(item,_L("isUseable"));
+						tiles[tileId]->isUseable=CUtil::getNodeIntAttribute(item,_L("isUseableWith"));
 						tiles[tileId]->isUseableImmobile=CUtil::getNodeIntAttribute(item,_L("isUseableImmobile"));
 						tiles[tileId]->blockPathFind=CUtil::getNodeIntAttribute(item,_L("blockPathFind"));
 					}		
@@ -193,7 +193,7 @@ void CTileReader::saveTiles() {
 						CUtil::setNodeIntAttribute(item,_L("isReadable"), tiles[tileId]->isReadable);
 						CUtil::setNodeIntAttribute(item,_L("isFluid"), tiles[tileId]->isFluid);
 						CUtil::setNodeIntAttribute(item,_L("isRune"), tiles[tileId]->isRune);
-						CUtil::setNodeIntAttribute(item,_L("isUseable"), tiles[tileId]->isUseable);
+						CUtil::setNodeIntAttribute(item,_L("isUseableWith"), tiles[tileId]->isUseable);
 						CUtil::setNodeIntAttribute(item,_L("isUseableImmobile"), tiles[tileId]->isUseableImmobile);
 						CUtil::setNodeIntAttribute(item,_L("blockPathFind"), tiles[tileId]->blockPathFind);
 					}		
