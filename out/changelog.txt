@@ -1,6 +1,8 @@
 2.5.1, ?.?.2010
 Enhancements:
 Defects:
+ PlayerInfo: Fixed "Not detecting spells" bug
+ Kernal/Showmap: Fixed "error messages when editing tiles" bug
 
 2.5.0, 1.7.2010
 Enhancements:
