@@ -299,16 +299,16 @@ void CCharInfoDialog::dataCalc(){
 //			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch->name, infoType);
 //			sender.sendTAMessage(buf);
 
-			if ((strcmpi(msgBuf, "utana vid") == 0) || (strcmp(msgBuf,"test invis") == 0)) { //invisible
+			if ((strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf,"test invis") == 0)) { //invisible
 				playerInfo.spell[SPELL_INVISIBLE].start		= time(NULL);
 				playerInfo.spell[SPELL_INVISIBLE].warning	= 0;
-			} else if ((strcmpi(msgBuf, "utani hur") == 0) || (strcmp(msgBuf,"test haste") == 0)) { //haste
+			} else if ((strcmpi(msgBuf, "utani hur ") == 0) || (strcmp(msgBuf,"test haste") == 0)) { //haste
 				playerInfo.spell[SPELL_HASTE].start			= time(NULL);
 				playerInfo.spell[SPELL_HASTE].warning		= 0;
-			} else if ((strcmpi(msgBuf, "utani gran hur") == 0) || (strcmp(msgBuf,"test strong haste") == 0)) { //strong haste
+			} else if ((strcmpi(msgBuf, "utani gran hur ") == 0) || (strcmp(msgBuf,"test strong haste") == 0)) { //strong haste
 				playerInfo.spell[SPELL_STRONGHASTE].start	= time(NULL);
 				playerInfo.spell[SPELL_STRONGHASTE].warning	= 0x01; //0x01 cuz it lasts less then warnin1
-			} else if ((lstrcmpi(msgBuf, "utamo vita") == 0) || (strcmp(msgBuf,"test magic shield") == 0)) { //magic shield
+			} else if ((lstrcmpi(msgBuf, "utamo vita ") == 0) || (strcmp(msgBuf,"test magic shield") == 0)) { //magic shield
 				playerInfo.spell[SPELL_SHIELD].start		= time(NULL);
 				playerInfo.spell[SPELL_SHIELD].warning		= 0;
 			}
