@@ -335,7 +335,7 @@ void CPackSender::stepMulti(int *direction, int size)
 	for (i=0;i<size && i<10;i++){
 		CMemUtil::SetMemIntValue(pathStartAddr+4*i,direction[i]);
 	}
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstContainer+reader.m_memLengthCreature*reader.getLoggedCharNr()+76,1);
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+reader.m_memLengthCreature*reader.getLoggedCharNr()+76,1);
 	
 	char sendbuf[1000];
 
