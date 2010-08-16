@@ -1,6 +1,14 @@
-2.5.1, ?.?.2010
+2.5.2, ?.?.2010
+Enhancements:
+ Cavebot: Walks through players on non-PvP
+Defects:
+ TAUtil: Fixed not sending correct index
+
+2.5.1, 2.7.2010
 Enhancements:
 Defects:
+ Cavebot: Fixed attacking monsters
+ Modules: Fixed x-ray, fisher, and depot walker
  PlayerInfo: Fixed "Not detecting spells" bug
  Kernal/Showmap: Fixed "error messages when editing tiles" bug
 
