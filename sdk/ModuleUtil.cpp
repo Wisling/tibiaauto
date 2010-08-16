@@ -1835,7 +1835,6 @@ void CModuleUtil::prepareProhPointList()
 						tibiaMap.prohPointAdd(ch->x,ch->y,ch->z);
 					}
 				}
-				reader.
 			}
 		}
 		delete ch;
