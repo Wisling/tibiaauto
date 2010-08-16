@@ -1707,6 +1707,19 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		int pathInd=reader.getMemIntValue(itemProxy.getValueForConst("addrCurrentTileToGo"));
 		bool stoppedWalking=self->moving==0 && (pathLen==pathInd || pathLen==0);
 
+		//int pathStartAddr=reader.m_memAddressTilesToGo+4;
+		//int tmpX=lastEndX,tmpY=lastEndY;
+		
+		//while (tmpX!=self->x && tmpY!=self->y){
+		//		case 1: tmpX--;break;
+		//		case 5: tmpX++;break;
+		//		case 7: tmpY--;break;
+	//			case 3: tmpY++;break;
+	//			case 8: tmpY--;tmpX--;break;
+	//			case 6: tmpY--;tmpX++;break;
+	//			case 2: tmpY++;tmpX--;break;
+	//			case 4: tmpY++;tmpX++;break;
+	//	}
 
 		if (pathSize>0&&(lastEndEqStart||stoppedWalking||currentTm-lastExecuteWalkTm>15000))
 		{
@@ -1794,7 +1807,36 @@ void CModuleUtil::prepareProhPointList()
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->visible&&(ch->x!=self->x||ch->y!=self->y||ch->z!=self->z))
 		{
-			tibiaMap.prohPointAdd(ch->x,ch->y,ch->z);
+			if(ch->blocking){
+				tibiaMap.prohPointAdd(ch->x,ch->y,ch->z);
+			} else {
+				point checkpoint(ch->x-self->x,ch->y-self->y,ch->z-self->z);
+				int stackCount=reader.mapGetPointItemsCount(checkpoint);
+				for (int pos=0;pos!=stackCount;pos++)
+				{
+					int itemId=reader.mapGetPointItemId(checkpoint,pos);
+
+					if (10145 == itemId/*depot tile*/ || 
+						1647 == itemId || 
+						1649 == itemId ||
+						1665 == itemId || 
+						1667 == itemId ||
+						1679 == itemId || 
+						1681 == itemId ||
+						1688 == itemId || 
+						1697 == itemId ||
+						5103 == itemId || 
+						5121 == itemId ||
+						6897 == itemId || 
+						7039 == itemId ||
+						9557 == itemId || 
+						9864 == itemId/*level doors*/)
+					{
+						tibiaMap.prohPointAdd(ch->x,ch->y,ch->z);
+					}
+				}
+				reader.
+			}
 		}
 		delete ch;
 	}
