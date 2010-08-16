@@ -122,7 +122,7 @@ int isItemCovered(int x,int y,int itemId)
 	return isItemCovered(x,y,itemArr,1);
 }
 
-int getItemIndex(int x,int y,int itemInd)
+int getItemIndex(int x,int y,int itemId)
 {
 	CMemReaderProxy reader;
 
@@ -130,10 +130,11 @@ int getItemIndex(int x,int y,int itemInd)
 	if (topPos==-1) return 0;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
-	for (int pos=0;pos<=stackCount;pos++)
+	for (int pos=topPos;pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
 	{
-		if (itemInd == reader.mapGetPointItemId(point(x,y,0),pos))		return pos;
+		if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
 	}
+	if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
 	return -1;
 }
 
