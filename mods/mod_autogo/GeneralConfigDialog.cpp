@@ -163,7 +163,8 @@ CString capturePosition(CString name) {
 	}
 	RECT rect;
 	bool captured = false;
-	bool minimized = IsIconic(tibiaHwnd);
+	bool minimized = IsIconic(tibiaHwnd)!=0;
+	bool trayed = IsWindowVisible(tibiaHwnd)==0;
 
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
@@ -176,6 +177,10 @@ CString capturePosition(CString name) {
 	
 	while (!captured) {
 		Sleep (100);
+		if(!IsWindowVisible(tibiaHwnd)) {
+			ShowWindow(tibiaHwnd, SW_SHOW);
+			continue;
+		}
 		if(IsIconic(tibiaHwnd)) {
 			ShowWindow(tibiaHwnd, SW_RESTORE);
 			continue;
@@ -207,6 +212,9 @@ CString capturePosition(CString name) {
 	}
 	if (minimized)
 		ShowWindow(tibiaHwnd, SW_MINIMIZE);
+	if (trayed)
+		ShowWindow(tibiaHwnd, SW_HIDE);
+	//CWnd::SetForegroundWindow();
 	return filePath;
 }
 /////////////////////////////////////////////////////////////////////////////
