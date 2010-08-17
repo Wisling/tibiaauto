@@ -177,7 +177,10 @@ int CPackSender::openAutoContainerFromFloor(int objectId,int x,int y,int z)
 void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int targetBag)
 {
 	char retbuf[256];
-	int targetInd=getItemIndex(x,y,objectId);
+	CMemReader reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int targetInd=max(0,getItemIndex(x-self->x,y-self->y,objectId));
+	delete self;
 
 	retbuf[0]=10;
 	retbuf[1]=0;
@@ -188,10 +191,10 @@ void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int tar
 	retbuf[4]=(x>>8)&0xff;
 	retbuf[5]=y&0xff;
 	retbuf[6]=(y>>8)&0xff;
-	retbuf[7]=z;	
+	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=max(0,targetInd);	
+	retbuf[9]=(objectId>>8)&0xff;
+	retbuf[10]=targetInd;
 	retbuf[11]=targetBag;	
 
 	sendPacket(retbuf);
@@ -247,8 +250,8 @@ void CPackSender::useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_C
 	if (sourceX!=0xffff || targetX!=0xffff){
 		CMemReader reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		if (sourceX!=0xffff) sourceInd_Pos=getItemIndex(sourceX-self->x,sourceY_Cont-self->y,sourceObjectId);
-		if (targetX!=0xffff) targetInd_Pos=getItemIndex(targetX-self->x,targetY_Cont-self->y,targetObjectId);
+		if (sourceX!=0xffff) sourceInd_Pos=max(0,getItemIndex(sourceX-self->x,sourceY_Cont-self->y,sourceObjectId));
+		if (targetX!=0xffff) targetInd_Pos=max(0,getItemIndex(targetX-self->x,targetY_Cont-self->y,targetObjectId));
 		delete self;
 	}
 
@@ -505,7 +508,11 @@ void CPackSender::useItemFromFloorOnCreature(int objectId, int x, int y, int z, 
 void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos, int creatureId)
 {
 	char retbuf[256];
-	int targetInd_Pos=((x&0xffff)==x)?z_Pos:getItemIndex(x,y_Cont,objectId);//Decide if using floor or bag
+	
+	CMemReader reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int targetInd_Pos=((x&0xffff)==x)?z_Pos:max(0,getItemIndex(x-self->x,y_Cont-self->y,objectId));//Decide if using floor or bag
+	delete self;
 
 	retbuf[0]=13;
 	retbuf[1]=0;
@@ -572,6 +579,11 @@ void CPackSender::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, i
 {
 	char retbuf[256];
 
+	CMemReader reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int targetInd=max(0,getItemIndex(srcX-self->x,srcY-self->y,objectId));
+	delete self;
+
 	retbuf[0]=15;
 	retbuf[1]=0;
 
@@ -583,8 +595,8 @@ void CPackSender::moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, i
 	retbuf[6]=(srcY>>8)&0xff;
 	retbuf[7]=srcZ;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=max(0,getItemIndex(srcX,srcY,objectId));
+	retbuf[9]=(objectId>>8)&0xff;
+	retbuf[10]=targetInd;
 
 	retbuf[11]=destX&0xff;
 	retbuf[12]=(destX>>8)&0xff;
@@ -601,6 +613,11 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 {
 	char retbuf[256];
 
+	CMemReader reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int targetInd=max(0,getItemIndex(sourceX-self->x,sourceY-self->y,objectId));
+	delete self;
+
 	retbuf[0]=15;
 	retbuf[1]=0;
 
@@ -613,7 +630,7 @@ void CPackSender::moveObjectFromFloorToContainer(int objectId, int sourceX, int 
 	retbuf[7]=sourceZ;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;
-	retbuf[10]=max(0,getItemIndex(sourceX,sourceY,objectId));
+	retbuf[10]=targetInd;
 
 	retbuf[11]=0xff;
 	retbuf[12]=0xff;
@@ -718,6 +735,11 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 {
 	char retbuf[256];
 
+	CMemReader reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int targetInd=max(0,getItemIndex(x-self->x,y-self->y,objectId));
+	delete self;
+
 	retbuf[0]=10;
 	retbuf[1]=0;
 
@@ -730,7 +752,7 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;
-	retbuf[10]=max(0,getItemIndex(x,y,objectId));
+	retbuf[10]=targetInd;
 	retbuf[11]=findNextClosedContainer();
 
 	sendPacket(retbuf);
@@ -920,6 +942,11 @@ void CPackSender::look(int x, int y, int z, int objectId)
 {
 	char retbuf[256];
 
+	CMemReader reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int targetInd=max(0,getItemIndex(x-self->x,y-self->y,objectId));
+	delete self;
+
 	retbuf[0]=9;
 	retbuf[1]=0;
 
@@ -931,7 +958,7 @@ void CPackSender::look(int x, int y, int z, int objectId)
 	retbuf[7]=z;
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;
-	retbuf[10]=max(0,getItemIndex(x,y,objectId));
+	retbuf[10]=targetInd;
 
 	sendPacket(retbuf);
 }

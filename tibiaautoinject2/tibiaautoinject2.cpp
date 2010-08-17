@@ -1150,15 +1150,20 @@ void InitialiseHooks()
 
 void InitialiseDebugFile()
 {
-#ifndef _DEBUG
-	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
-#endif
+	AfxMessageBox("hi");
 #ifdef _DEBUG
+	debugFile=fopen("C:\\temp\\tibiaDebug.txt","wb");
+	AfxMessageBox("hi2");
+#endif
+#ifndef _DEBUG
 	debugFile=NULL;
+	AfxMessageBox("hi3");
 #endif
 	if (debugFile) fprintf(debugFile,"Start\r\n");
 	fflush(debugFile);
 	debugFileStart=time(NULL);
+	AfxMessageBox("hi4");
+
 }
 
 void InitialiseTibiaState()
@@ -1179,6 +1184,16 @@ void InitialiseCreatureInfo()
 void myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
 {
 	int titleOffset=0;	
+
+	//wis
+	if (IsWindowVisible())
+	{
+		ShowWindow(SW_HIDE);
+	} else {
+		ShowWindow(SW_SHOW);
+		SetForegroundWindow();
+	}
+	//wiz
 
 	typedef void (*Proto_fun)(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign);
 	//Proto_fun fun = (Proto_fun)(0x4B4130); // 8.55-

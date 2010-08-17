@@ -410,6 +410,11 @@
 #define IDC_CREATURE_STATISTICS         1252
 #define IDC_GATHER_BOT_STATS            1253
 #define IDC_LOAD_ON_STARTUP             1254
+#define IDC_HIDE_TIBIA                  1255
+#define IDC_SCRIPTLOAD_ASK              1256
+#define IDC_SCRIPTLOAD_START            1257
+#define IDC_SCRIPTLOAD_NOSTART          1258
+#define IDC_LOADING_SCRIPT_OPTIONS      1260
 #define IDC_RED_SLIDER_DOWN             3000
 #define IDC_GREEN_SLIDER_DOWN           3001
 #define IDC_BLUE_SLIDER_DOWN            3002
@@ -443,7 +448,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        187
 #define _APS_NEXT_COMMAND_VALUE         32786
-#define _APS_NEXT_CONTROL_VALUE         1254
+#define _APS_NEXT_CONTROL_VALUE         1261
 #define _APS_NEXT_SYMED_VALUE           110
 #endif
 #endif

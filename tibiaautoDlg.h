@@ -171,6 +171,7 @@ public:
 	~CTibiaautoDlg();
 	void passSecurityInfo(int value);
 		int shutdownCounter;
+	LRESULT DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam);
 private:
 	void reportUsage();
 	void loadConfig(CString);

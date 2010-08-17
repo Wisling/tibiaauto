@@ -28,6 +28,7 @@ public:
 	CGroupBoxEx	m_TibiaMaps;
 	CGroupBoxEx	m_LootStatistics;
 	CGroupBoxEx	m_CreatureStatistics;
+	CGroupBoxEx	m_loadingScriptOptions;
 	CStatic	m_sizeUsagestats;
 	CButtonST	m_send4;
 	CButtonST	m_send3;
@@ -36,6 +37,10 @@ public:
 	CProgressCtrl	m_progress;
 	CButton m_gatherBotStats;
 	CButton m_loadOnStartup;
+	CButton m_hideTibia;
+	CButton m_scriptLoadAsk;
+	CButton m_scriptLoadStart;
+	CButton m_scriptLoadNoStart;
 	CButtonST	m_ok;
 	CStatic	m_sizeCreatureStats;
 	CStatic	m_sizeLootstats;
@@ -64,6 +69,10 @@ protected:
 	afx_msg void OnSkin();
 	afx_msg void OnGatherBotStats();
 	afx_msg void OnLoadOnStartup();
+	afx_msg void OnHideTibia();
+	afx_msg void OnScriptloadAsk();
+	afx_msg void OnScriptloadNostart();
+	afx_msg void OnScriptloadStart();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:

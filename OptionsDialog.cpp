@@ -57,15 +57,19 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TIBIA_MAPS, m_TibiaMaps);
 	DDX_Control(pDX, IDC_LOOT_STATISTICS, m_LootStatistics);
 	DDX_Control(pDX, IDC_CREATURE_STATISTICS, m_CreatureStatistics);
+	DDX_Control(pDX, IDC_LOADING_SCRIPT_OPTIONS,m_loadingScriptOptions);
 	DDX_Control(pDX, IDC_SIZE_USAGESTATS, m_sizeUsagestats);
 	DDX_Control(pDX, IDC_SEND_USAGESTATS, m_send4);
 	DDX_Control(pDX, IDC_SEND_MAPS, m_send3);
 	DDX_Control(pDX, IDC_SEND_LOOTSTATS, m_send2);
 	DDX_Control(pDX, IDC_SEND_CREATURESTATS, m_send1);
-	DDX_Control(pDX, IDC_SEND_CREATURESTATS, m_send1);
 	DDX_Control(pDX, IDC_PROGRESS, m_progress);
 	DDX_Control(pDX, IDC_GATHER_BOT_STATS,m_gatherBotStats);
 	DDX_Control(pDX, IDC_LOAD_ON_STARTUP,m_loadOnStartup);
+	DDX_Control(pDX, IDC_HIDE_TIBIA,m_hideTibia);
+	DDX_Control(pDX, IDC_SCRIPTLOAD_ASK,m_scriptLoadAsk);
+	DDX_Control(pDX, IDC_SCRIPTLOAD_START,m_scriptLoadStart);
+	DDX_Control(pDX, IDC_SCRIPTLOAD_NOSTART,m_scriptLoadNoStart);
 	DDX_Control(pDX, IDOK, m_ok);
 	DDX_Control(pDX, IDC_SIZE_CREATURESTATS, m_sizeCreatureStats);
 	DDX_Control(pDX, IDC_SIZE_LOOTSTATS, m_sizeLootstats);
@@ -84,9 +88,13 @@ BEGIN_MESSAGE_MAP(COptionsDialog, CDialog)
 	ON_BN_CLICKED(IDC_SKIN, OnSkin)
 	ON_BN_CLICKED(IDC_GATHER_BOT_STATS, OnGatherBotStats)
 	ON_BN_CLICKED(IDC_LOAD_ON_STARTUP, OnLoadOnStartup)
+	ON_BN_CLICKED(IDC_SCRIPTLOAD_ASK, OnScriptloadAsk)
+	ON_BN_CLICKED(IDC_HIDE_TIBIA, OnHideTibia)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_SCRIPTLOAD_NOSTART, OnScriptloadNostart)
+	ON_BN_CLICKED(IDC_SCRIPTLOAD_START, OnScriptloadStart)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -111,8 +119,10 @@ void gz_compress(FILE *in, gzFile out)
     for (;;) {
         len = (int)fread(buf, 1, sizeof(buf), in);
         if (ferror(in)) {
-            perror("fread");
-            exit(1);
+			char msgBuf[2048];
+			sprintf(msgBuf,"ERROR: Unable to send file. %s",strerror(errno));
+			AfxMessageBox(msgBuf);
+            return;
         }
         if (len == 0) break;
 
@@ -144,8 +154,10 @@ void file_compress(char *file, char *mode)
 
     in = fopen(file, "rb");
     if (in == NULL) {
-        perror(file);
-        exit(1);
+		char msgBuf[2048];
+        sprintf(msgBuf,"ERROR: Unable to send file. %s  %s",strerror(errno), file);
+		AfxMessageBox(msgBuf);
+		return;
     }
     out = gzopen(outfile, mode);
     if (out == NULL) {
@@ -170,6 +182,10 @@ BOOL COptionsDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	m_gatherBotStats.SetCheck(CModuleUtil::getTASetting("GatherBotStats"));
 	m_loadOnStartup.SetCheck(CModuleUtil::getTASetting("LoadScriptOnStartup"));
+	m_hideTibia.SetCheck(CModuleUtil::getTASetting("HideTibiaWithTA"));
+	m_scriptLoadAsk.SetCheck(CModuleUtil::getTASetting("StartModulesOnLoad")==0);
+	m_scriptLoadStart.SetCheck(CModuleUtil::getTASetting("StartModulesOnLoad")==1);
+	m_scriptLoadNoStart.SetCheck(CModuleUtil::getTASetting("StartModulesOnLoad")==2);
 	skin.SetButtonSkin(m_ok);
 	skin.SetButtonSkin(m_Skin);
 	skin.SetButtonSkin(m_send1);
@@ -236,7 +252,7 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		CModuleUtil::getInstallPath(installPath);
 
 		char fname[1024];
-		sprintf(fname,"%s\\%s.gz",installPath,filename);
+		sprintf(fname,"%s\\%s",installPath,filename);
 		char fnameGz[1024];
 		sprintf(fnameGz,"%s\\%s.gz",installPath,filename);
 		char remoteFileName[128];
@@ -557,4 +573,30 @@ void COptionsDialog::OnLoadOnStartup()
 		sprintf(message,"Save files to your TA directory in the form of\n%s\\tibiaAuto.cfg.<char name>.xml",pathbuf);
 		AfxMessageBox(message);
 	}
+}
+
+void COptionsDialog::OnHideTibia()
+{
+	CModuleUtil::setTASetting("HideTibiaWithTA",m_hideTibia.GetCheck());
+}
+
+void COptionsDialog::OnScriptloadAsk()
+{
+	CModuleUtil::setTASetting("StartModulesOnLoad",0);
+	m_scriptLoadStart.SetCheck(0);
+	m_scriptLoadNoStart.SetCheck(0);
+}
+
+void COptionsDialog::OnScriptloadStart() 
+{
+	CModuleUtil::setTASetting("StartModulesOnLoad",1);	
+	m_scriptLoadAsk.SetCheck(0);
+	m_scriptLoadNoStart.SetCheck(0);
+}
+
+void COptionsDialog::OnScriptloadNostart() 
+{
+	CModuleUtil::setTASetting("StartModulesOnLoad",2);
+	m_scriptLoadAsk.SetCheck(0);
+	m_scriptLoadStart.SetCheck(0);
 }

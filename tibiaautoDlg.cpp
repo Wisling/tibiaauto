@@ -33,6 +33,7 @@
 
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
+HWND tibiaHWND = NULL;
 
 
 extern int toolAutoResponderRunning;
@@ -90,9 +91,54 @@ static char THIS_FILE[] = __FILE__;
 #define X(str) XStr(str).unicodeForm()
 
 
+void InitTibiaHandle(){
+	CMemReaderProxy reader;
+	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
+	while (tibiaHWND) {
+		DWORD pid;
+		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
+
+		if (pid == reader.getProcessId())
+			break;
+		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
+	}
+}
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg dialog
+
+LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam){
+	char buf[1111];
+	sprintf(buf,"%d,%d,%d",uMessage, wParam, lParam);
+	//AfxMessageBox(buf);
+    static UINT s_uTaskbarRestart;
+
+	sprintf(buf,"%d,%d,%d,%d",uMessage, wParam, lParam,s_uTaskbarRestart);
+	if (uMessage==WM_CREATE){
+            s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
+	}else{
+        if(uMessage == s_uTaskbarRestart)
+        {
+			CMemReaderProxy reader;
+			NOTIFYICONDATA data;
+			data.cbSize=sizeof(NOTIFYICONDATA);
+			data.hWnd=GetSafeHwnd();
+			data.uID=1;
+			data.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+			char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+			snprintf(data.szTip,60,"%s",loggedCharName);
+			free(loggedCharName);
+			data.uCallbackMessage=WM_APP+1;
+			data.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
+			Shell_NotifyIcon(NIM_ADD,&data);
+		
+		}
+    }
+
+	return CWnd::DefWindowProc(uMessage, wParam, lParam);
+
+}
 
 CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
 	: MyDialog(CTibiaautoDlg::IDD, pParent)
@@ -448,7 +494,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	NOTIFYICONDATA data;
 	data.cbSize=sizeof(NOTIFYICONDATA);
 	data.hWnd=GetSafeHwnd();
-	data.uID=1;		
+	data.uID=1;
 	data.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
 	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 	snprintf(data.szTip,60,"%s",loggedCharName);
@@ -457,11 +503,11 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	data.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
 	Shell_NotifyIcon(NIM_ADD,&data);
 	
-	
 	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
 	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
 	if (CModuleUtil::getTASetting("GatherBotStats"))
 		SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
+	SetTimer(1006,1000,NULL);
 
 
 
@@ -1048,7 +1094,8 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	DOMNode *moduleConfig;
 	if (childNodes->getLength() && (moduleConfig = childNodes->item(0)))
 	{
-		if (AfxMessageBox("This config contains saved started modules. Do you wish to start them?",MB_YESNO)==IDYES)
+		int startOnLoad=CModuleUtil::getTASetting("StartModulesOnLoad");
+		if (startOnLoad!=2 && (startOnLoad==1 || AfxMessageBox("This config contains saved started modules. Do you wish to start them?",MB_YESNO)==IDYES))
 		{
 			DOMNode *subNode = moduleConfig->getFirstChild();
 			if (subNode)
@@ -1515,12 +1562,28 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	if (message==WM_APP+1&&lParam==WM_LBUTTONDOWN)
 	{
+		if (!tibiaHWND) InitTibiaHandle();
 		if (IsWindowVisible())
 		{
+			if (!CModuleUtil::getTASetting("SeenHideTibiaMessage")){
+				CModuleUtil::setTASetting("SeenHideTibiaMessage",1);
+				if (AfxMessageBox("Both Tibia and TA can be hidden by clicking on the Tray icon.  Would you like to enable this?\nThis setting can be changed in \"General Options and Statistics\"",MB_YESNO)==IDYES)
+				{				
+					CModuleUtil::setTASetting("HideTibiaWithTA",1);
+				} else {
+					CModuleUtil::setTASetting("HideTibiaWithTA",0);
+				}
+			}
 			ShowWindow(SW_HIDE);
+			if(CModuleUtil::getTASetting("HideTibiaWithTA")){
+				::ShowWindow(tibiaHWND,SW_HIDE);
+			}
 		} else {
 			ShowWindow(SW_SHOW);
-			SetForegroundWindow();			
+			if(CModuleUtil::getTASetting("HideTibiaWithTA")){
+				::ShowWindow(tibiaHWND,SW_SHOW);
+			}
+			SetForegroundWindow();
 		}
 		
 	}
