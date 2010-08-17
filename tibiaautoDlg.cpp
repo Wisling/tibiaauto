@@ -40,6 +40,7 @@ extern int toolAutoResponderRunning;
 extern volatile char *checksum;
 
 int globalProcessId;
+NOTIFYICONDATA currentIconData;
 
 // other externs
 CTibiaMapProxy tibiaMap;
@@ -121,17 +122,16 @@ LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam
         if(uMessage == s_uTaskbarRestart)
         {
 			CMemReaderProxy reader;
-			NOTIFYICONDATA data;
-			data.cbSize=sizeof(NOTIFYICONDATA);
-			data.hWnd=GetSafeHwnd();
-			data.uID=1;
-			data.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+			currentIconData.cbSize=sizeof(NOTIFYICONDATA);
+			currentIconData.hWnd=GetSafeHwnd();
+			currentIconData.uID=1;
+			currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
 			char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
-			snprintf(data.szTip,60,"%s",loggedCharName);
+			snprintf(currentIconData.szTip,60,"%s",loggedCharName);
 			free(loggedCharName);
-			data.uCallbackMessage=WM_APP+1;
-			data.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
-			Shell_NotifyIcon(NIM_ADD,&data);
+			currentIconData.uCallbackMessage=WM_APP+1;
+			currentIconData.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
+			Shell_NotifyIcon(NIM_ADD,&currentIconData);
 		
 		}
     }
@@ -491,23 +491,22 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	refreshAds();
 
 	// set shell tray
-	NOTIFYICONDATA data;
-	data.cbSize=sizeof(NOTIFYICONDATA);
-	data.hWnd=GetSafeHwnd();
-	data.uID=1;
-	data.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+	currentIconData.cbSize=sizeof(NOTIFYICONDATA);
+	currentIconData.hWnd=GetSafeHwnd();
+	currentIconData.uID=1;
+	currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
 	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
-	snprintf(data.szTip,60,"%s",loggedCharName);
+	snprintf(currentIconData.szTip,60,"%s",loggedCharName);
 	free(loggedCharName);
-	data.uCallbackMessage=WM_APP+1;
-	data.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
-	Shell_NotifyIcon(NIM_ADD,&data);
+	currentIconData.uCallbackMessage=WM_APP+1;
+	currentIconData.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
+	Shell_NotifyIcon(NIM_ADD,&currentIconData);
 	
 	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
 	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
 	if (CModuleUtil::getTASetting("GatherBotStats"))
 		SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
-	SetTimer(1006,1000,NULL);
+	SetTimer(1006,5000,NULL);//refresh tray icon name if changed
 
 
 
@@ -631,7 +630,21 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			fout.close();
 		}
 	}
+	if (nIDEvent==1006)
+	{	
+		char currChar[40];
 
+		char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+		if (strcmp(loggedCharName,currentIconData.szTip)!=0){
+			currentIconData.cbSize=sizeof(NOTIFYICONDATA);
+			currentIconData.hWnd=GetSafeHwnd();
+			currentIconData.uID=1;
+			snprintf(currentIconData.szTip,60,"%s",loggedCharName);
+			currentIconData.uFlags=NIF_TIP;
+			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
+		}
+		free(loggedCharName);
+	}
 
 	
 	
@@ -1280,12 +1293,12 @@ void CTibiaautoDlg::OnToolSpellcaster()
 void CTibiaautoDlg::OnExit() 
 {
 	DisconnectNamedPipe(hPipe);
-	NOTIFYICONDATA data;
-	data.cbSize=sizeof(NOTIFYICONDATA);
-	data.hWnd=GetSafeHwnd();
-	data.uID=1;				
-	data.uFlags=0;
-	Shell_NotifyIcon(NIM_DELETE,&data);
+	NOTIFYICONDATA currentIconData;
+	currentIconData.cbSize=sizeof(NOTIFYICONDATA);
+	currentIconData.hWnd=GetSafeHwnd();
+	currentIconData.uID=1;				
+	currentIconData.uFlags=0;
+	Shell_NotifyIcon(NIM_DELETE,&currentIconData);
 
 	CTAMiniMapProxy taMiniMap;
 	taMiniMap.unloadMiniMaps();
