@@ -2262,7 +2262,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		/*****
 		Start Walking Process
 		******/
-	
 		if (currentlyAttackedCreatureNr==-1 && isLooterDone(config)){//wis:make sure doesn't start while looting last monster
 			//Waypoint selection algorithim	starts here
 			if (self->x==depotX&&self->y==depotY&&self->z==depotZ) {

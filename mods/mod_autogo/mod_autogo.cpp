@@ -407,6 +407,7 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	RECT rect;
 	bool captured = false;
 	bool minimized = IsIconic(tibiaHWND)!=0;
+	bool trayed = IsWindowVisible(tibiaHWND)==0;
 
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
@@ -416,11 +417,16 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
 	CString filePath;
 	filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
-	
-	while (!captured) {
+	int tr=50;
+	while (!captured && tr>=0) {//attempt to take screenshot for 5 seconds
+		tr--;
 		Sleep (100);
 		if (reader.getConnectionState() != 8)
 			continue;
+		if(!IsWindowVisible(tibiaHWND)) {
+			ShowWindow(tibiaHWND, SW_SHOW);
+			continue;
+		}
 		if(IsIconic(tibiaHWND)) {
 			ShowWindow(tibiaHWND, SW_RESTORE);
 			continue;
@@ -448,6 +454,8 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	}
 	if (minimized)
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
+	if (trayed)
+		ShowWindow(tibiaHWND, SW_HIDE);
 	return NULL;
 }
 
@@ -592,6 +600,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					case 1://restore
 						if (!alarmItr->windowActed) {
 							if (!tibiaHWND) InitTibiaHandle();
+							if(!IsWindowVisible(tibiaHWND))
+								ShowWindow(tibiaHWND, SW_SHOW);
 							if(IsIconic(tibiaHWND))
 								ShowWindow(tibiaHWND, SW_RESTORE);
 							else if(tibiaHWND != GetForegroundWindow())

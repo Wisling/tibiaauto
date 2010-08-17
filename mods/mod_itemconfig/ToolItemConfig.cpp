@@ -107,11 +107,10 @@ void CToolItemConfig::OnOK()
 
 void CToolItemConfig::ControlsToConfig(){
 	CTibiaItemProxy itemProxy;
-	CTibiaTree* dataTree=new CTibiaTree(new CTibiaTreeBranchData("Root"));
+	itemProxy.setItemsTree(NULL);//deletes old tree and makes blank one
+	CTibiaTree* dataTree=itemProxy.getItemsTree();
 	CreateDataTree(dataTree,&m_itemsTree,TVI_ROOT);
 
-	itemProxy.setItemsTree(dataTree);
-	
 	itemProxy.clearFoodList();
 	int count=m_foodList.GetCount();
 	for (int i=0;i<count;i++){
@@ -200,7 +199,7 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 		if (treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)==0){//Branch node
 			CString cText=treeCtrl->GetItemText(child);
 			char* text=(char *)(LPCTSTR)cText;
-			CTibiaTree* newTree=dataTree->AddChild(new CTibiaTreeBranchData(text));
+			CTibiaTree* newTree=dataTree->AddChild(CTibiaTreeBranchData::newCTibiaTreeBranchData(text));
 
 			CreateDataTree(newTree,treeCtrl,child);
 		} else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child)!=NULL) {//Item node
@@ -216,7 +215,7 @@ static void CreateDataTree(CTibiaTree* dataTree,CTreeCtrl* treeCtrl,HTREEITEM gu
 			}
 			int curCheck;
 			treeCtrl->GetItemImage(child,curCheck,curCheck);
-			dataTree->AddChild(new CTibiaTreeItemData(text,itemData->id,curCheck!=0, itemData->type));
+			dataTree->AddChild(CTibiaTreeItemData::newCTibiaTreeItemData(text,itemData->id,curCheck!=0, itemData->type));
 		} else{//empty branch case
 		}
 
