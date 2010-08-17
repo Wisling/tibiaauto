@@ -252,6 +252,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						
 			int wndIconic=::IsIconic(hwnd);
 			int wndMaximized=::IsZoomed(hwnd);
+			int wndTrayed=!::IsWindowVisible(hwnd);
+			if (wndTrayed){
+				::ShowWindow(hwnd,SW_SHOW);
+				// wait 5s for the window to show
+				for (i=0;i<50;i++)
+				{
+					if (::IsWindowVisible(hwnd)) break;
+					if (toolThreadShouldStop) break;
+					Sleep(100);
+				}
+			}
 			if (wndIconic || !wndMaximized)
 			{	
 				::ShowWindow(hwnd,SW_SHOWMAXIMIZED);
@@ -345,7 +356,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 			
 			registerDebug("Waiting fo establishing connection up to 15s");
 			for (i=0;i<150;i++)
@@ -488,6 +499,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				for (i=0;i<50;i++)
 				{
 					if (!::IsZoomed(hwnd)) break;
+					if (toolThreadShouldStop) break;
+					Sleep(100);
+				}
+			}
+			if (wndTrayed)
+			{
+				::ShowWindow(hwnd,SW_HIDE);
+				// wait 5s for the window to minimize
+				for (i=0;i<50;i++)
+				{
+					if (!::IsWindowVisible(hwnd)) break;
 					if (toolThreadShouldStop) break;
 					Sleep(100);
 				}

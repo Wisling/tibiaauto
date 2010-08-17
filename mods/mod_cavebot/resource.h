@@ -127,6 +127,7 @@
 #define IDC_FRAME_MONSTER_ATTACKING     3053
 #define IDC_PREFIX                      3054
 #define IDC_FRAME                       3055
+#define IDC_RADIO1                      3056
 
 // Next default values for new objects
 // 
@@ -134,7 +135,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3006
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3056
+#define _APS_NEXT_CONTROL_VALUE         3057
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

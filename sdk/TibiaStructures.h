@@ -621,6 +621,9 @@ public:
 		name=(char*)malloc(len);
 		memcpy(name,a_name,len);
 	}
+	static CTibiaTreeBranchData* newCTibiaTreeBranchData(char *a_name){
+		return new CTibiaTreeBranchData(a_name);
+	}
 	virtual ~CTibiaTreeBranchData(){
 		free(name);
 		name=NULL;
@@ -649,6 +652,9 @@ public:
 		int len=strlen(a_name)+1;
 		name=(char*)malloc(len);
 		memcpy(name,a_name,len);
+	}
+	static CTibiaTreeItemData* newCTibiaTreeItemData(char *a_name,int a_id, bool a_looted, int i_type = 0){
+		return new CTibiaTreeItemData(a_name,a_id,a_looted,i_type);
 	}
 	virtual ~CTibiaTreeItemData(){
 		free(name);
