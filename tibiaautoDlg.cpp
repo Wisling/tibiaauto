@@ -632,8 +632,6 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1006)
 	{	
-		char currChar[40];
-
 		char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		if (strcmp(loggedCharName,currentIconData.szTip)!=0){
 			currentIconData.cbSize=sizeof(NOTIFYICONDATA);
@@ -655,7 +653,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 
 void CTibiaautoDlg::OnLight() 
 {	
-	m_moduleLight->showConfigDialog();	
+	m_moduleLight->showConfigDialog();
 }
 
 
@@ -1593,10 +1591,14 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 			}
 		} else {
 			ShowWindow(SW_SHOW);
-			if(CModuleUtil::getTASetting("HideTibiaWithTA")){
-				::ShowWindow(tibiaHWND,SW_SHOW);
-			}
 			SetForegroundWindow();
+			if(!::IsWindowVisible(tibiaHWND) && CModuleUtil::getTASetting("HideTibiaWithTA")){
+				::ShowWindow(tibiaHWND,SW_SHOW);
+				if(::IsIconic(tibiaHWND)) {
+					::ShowWindow(tibiaHWND, SW_RESTORE);
+				}
+				::SetForegroundWindow(tibiaHWND);
+			}
 		}
 		
 	}
