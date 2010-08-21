@@ -49,6 +49,7 @@
 #define IDC_FRAME_LOGIN_SETTINGS        3027
 #define IDC_FRAME_BACKPACK_CONTROL      3028
 #define IDC_FRAME_DEBUG_LOG             3029
+#define IDC_AUTOPASS                    3030
 
 // Next default values for new objects
 // 
@@ -56,7 +57,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3002
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3030
+#define _APS_NEXT_CONTROL_VALUE         3031
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
