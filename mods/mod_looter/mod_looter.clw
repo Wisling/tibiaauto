@@ -13,8 +13,8 @@ LastTemplate=CDialog
 Resource1=IDD_CONFIG
 Class3=CSendStats
 Resource2=IDD_SENDSTATS
-Resource3=IDD_CONFIG (Polish)
-Resource4=IDD_SENDSTATS (Polish)
+Resource3=IDD_SENDSTATS (Polish)
+Resource4=IDD_CONFIG (Polish)
 
 [CLS:CMod_looterApp]
 Type=0
@@ -90,7 +90,7 @@ Filter=D
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=CConfigDialog
-ControlCount=40
+ControlCount=41
 Control1=IDC_FRAME_CONTAINER_SETUP,button,1342177287
 Control2=IDC_FRAME_LOOT_OPTIONS,button,1342177287
 Control3=IDOK,button,1342242817
@@ -131,6 +131,7 @@ Control37=IDC_STATIC,static,1342308864
 Control38=IDC_CONTAINER_MODE_10,combobox,1344339971
 Control39=IDC_CONTAINER_STATUS10,static,1342308864
 Control40=IDC_LOOT_DEPOT,button,1342242819
+Control41=IDC_EAT_FROM_CORPSE,button,1073807363
 
 [DLG:IDD_SENDSTATS (Polish)]
 Type=1

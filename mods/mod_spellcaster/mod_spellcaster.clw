@@ -16,18 +16,18 @@ Class3=CHealList
 ResourceCount=8
 Resource1=IDD_SUMMON_DIALOG
 Class4=LifeDialog
-Resource2=IDD_AOE_DIALOG
-Resource3=IDD_TIMED_DIALOG
+Resource2=IDD_CONFIG (Polish)
+Resource3=IDD_LIFE_DIALOG
 Class5=ManaDialog
-Resource4=IDD_HEALLIST (Polish)
+Resource4=IDD_STRIKE_DIALOG
 Class6=SummonDialog
-Resource5=IDD_MANA_DIALOG
+Resource5=IDD_TIMED_DIALOG
 Class7=StrikeDialog
-Resource6=IDD_LIFE_DIALOG
+Resource6=IDD_MANA_DIALOG
 Class8=AOEDialog
-Resource7=IDD_STRIKE_DIALOG
+Resource7=IDD_AOE_DIALOG
 Class9=TimedDialog
-Resource8=IDD_CONFIG (Polish)
+Resource8=IDD_HEALLIST (Polish)
 
 [CLS:CConfigDialog]
 Type=0

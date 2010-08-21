@@ -3,37 +3,9 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_restack - Win32 Release--------------------
+--------------------Configuration: mod_restack - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP244.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /Fp"Release/mod_restack.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_restack\mod_restack.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP244.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP245.tmp" with contents
-[
-xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_restack.pdb" /machine:I386 /def:".\mod_restack.def" /out:"../mod_restack.dll" /implib:"Release/mod_restack.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
-".\Release\BtnST.obj"
-".\Release\ConfigData.obj"
-".\Release\ConfigDialog.obj"
-".\Release\exports.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\mod_restack.obj"
-".\Release\MyDialog.obj"
-".\Release\proxy.obj"
-".\Release\Skin.obj"
-".\Release\StdAfx.obj"
-".\Release\TibiaItem_impl.obj"
-".\Release\mod_restack.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP245.tmp"
-<h3>Output Window</h3>
-Compiling...
-mod_restack.cpp
-Linking...
-   Creating library Release/mod_restack.lib and object Release/mod_restack.exp
 
 
 

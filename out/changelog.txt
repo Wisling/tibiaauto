@@ -1,4 +1,4 @@
-2.5.2, ?.?.2010
+2.5.2, 21.8.2010
 Enhancements:
  Tibia Auto: TibiaAuto icon reloads if Explorer crashes
  Tibia Auto: Can choose to hide Tibia with TA(works with login, and autogo)
