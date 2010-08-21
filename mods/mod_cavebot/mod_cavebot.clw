@@ -4,9 +4,9 @@
 Version=1
 ClassCount=4
 Class1=CMod_cavebotApp
-LastClass=CSendStats
+LastClass=CConfigDialog
 NewFileInclude2=#include "mod_cavebot.h"
-ResourceCount=4
+ResourceCount=5
 NewFileInclude1=#include "stdafx.h"
 Class2=CConfigDialog
 LastTemplate=CButton
@@ -16,6 +16,7 @@ Resource2=IDD_CONFIG (Polish)
 Resource3=IDD_SENDSTATS
 Class4=CCheckBoxEx
 Resource4=IDD_SENDSTATS (Polish)
+Resource5=IDD_LOADWAYPOINTSINFO
 
 [CLS:CMod_cavebotApp]
 Type=0
@@ -125,7 +126,7 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=IDC_TOOL_AUTOATTACK_MAPUSED
+LastObject=CConfigDialog
 
 [DLG:IDD_SENDSTATS]
 Type=1
@@ -145,7 +146,7 @@ LastObject=CSendStats
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=CConfigDialog
-ControlCount=98
+ControlCount=102
 Control1=IDC_FRAME_DEPOT_WALKER,button,1342177287
 Control2=IDC_FRAME_DEBUGGING,button,1342177287
 Control3=IDC_FRAME_TRAINING,button,1342177287
@@ -241,9 +242,13 @@ Control92=IDC_STATIC,static,1342308864
 Control93=IDC_TRAINING_ATTACK_MODE,combobox,1344339971
 Control94=IDC_PAUSING_ENABLE,button,1342242819
 Control95=IDC_TRAINING_WEAPON_HAND,button,1342242819
-Control96=IDC_AUTORESEARCH,button,1342255107
+Control96=IDC_AUTORESEARCH,button,1342258947
 Control97=IDC_STATIC,static,1342308864
 Control98=IDC_TOOL_AUTOATTACK_RADIUS,edit,1350631552
+Control99=IDC_STATIC,static,1342308864
+Control100=IDC_TOOL_AUTOATTACK_ADD_DELAY,button,1342242816
+Control101=IDC_TOOL_AUTOATTACK_DELAY,edit,1350631552
+Control102=IDC_LOOTWHILEKILL,button,1342242819
 
 [DLG:IDD_SENDSTATS (Polish)]
 Type=1
@@ -260,4 +265,18 @@ HeaderFile=CheckBoxEx.h
 ImplementationFile=CheckBoxEx.cpp
 BaseClass=CButton
 Filter=T
+
+[DLG:IDD_LOADWAYPOINTSINFO]
+Type=1
+Class=?
+ControlCount=9
+Control1=IDC_FRAME,button,1342177287
+Control2=IDYES,button,1342242817
+Control3=IDCANCEL,button,1342242816
+Control4=IDNO,button,1342242817
+Control5=IDC_PREFIX,edit,1350631552
+Control6=IDC_STATIC,static,1342308353
+Control7=IDC_STATIC,static,1342308352
+Control8=IDC_STATIC,static,1342308352
+Control9=IDC_STATIC,static,1342308352
 

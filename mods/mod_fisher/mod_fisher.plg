@@ -285,51 +285,11 @@ mod_xray.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tibiaauto - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Release/tibiaauto.res" /d "NDEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-kernel\tibiaauto.rc"" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDA2A.tmp" with contents
-[
-zlib.lib ws2_32.lib zdll.lib xerces.lib detours.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/tibiaauto.pdb" /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
-".\Release\BtnST.obj"
-".\Release\CharDialog.obj"
-".\Release\ColorChooser.obj"
-".\Release\ConfigCreatorUtil.obj"
-".\Release\ConfigCreatorUtilMultiParams.obj"
-".\Release\ConfigDialogStatus.obj"
-".\Release\DonationDialog.obj"
-".\Release\EnterCode.obj"
-".\Release\GroupBoxEx.obj"
-".\Release\LoadedModules.obj"
-".\Release\md5c.obj"
-".\Release\md5class.obj"
-".\Release\MemUtil.obj"
-".\Release\ModuleProxy.obj"
-".\Release\MyDialog.obj"
-".\Release\OptionsDialog.obj"
-".\Release\proxy.obj"
-".\Release\PythonEngine.obj"
-".\Release\PythonScript.obj"
-".\Release\PythonScriptsDialog.obj"
-".\Release\RepeatButton.obj"
-".\Release\ScriptConfigDialg.obj"
-".\Release\Skin.obj"
-".\Release\SliderCtrlEx.obj"
-".\Release\StdAfx.obj"
-".\Release\tibiaauto.obj"
-".\Release\tibiaautoDlg.obj"
-".\Release\Util.obj"
-".\Release\webbrowser2.obj"
-".\Release\tibiaauto.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDA2A.tmp"
-<h3>Output Window</h3>
-Compiling resources...
-Linking...
-LINK : warning LNK4098: defaultlib "LIBC" conflicts with use of other libs; use /NODEFAULTLIB:library
 
 
 
 <h3>Results</h3>
-tibiaauto.exe - 0 error(s), 1 warning(s)
+tibiaauto.exe - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto_util - Win32 Release--------------------
 </h3>
@@ -339,15 +299,6 @@ tibiaauto.exe - 0 error(s), 1 warning(s)
 
 <h3>Results</h3>
 tibiaauto_util.dll - 0 error(s), 0 warning(s)
-<h3>
---------------------Configuration: tibiaautoinject2 - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-
-
-
-<h3>Results</h3>
-tibiaautoinject2.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject3 - Win32 Release--------------------
 </h3>

@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
+# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -238,7 +238,15 @@ SOURCE=.\StdAfx.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\tmschema.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\Trigger.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\uxtheme.h
 # End Source File
 # Begin Source File
 

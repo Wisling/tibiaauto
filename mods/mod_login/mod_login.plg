@@ -3,42 +3,43 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: mod_login - Win32 Debug--------------------
+--------------------Configuration: mod_login - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB99.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPB4DB.tmp" with contents
 [
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /FR"Debug/" /Fp"Debug/mod_login.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_login\mod_login.cpp"
+/nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /Fp"Release/mod_login.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_login\ConfigDialog.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB99.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB9A.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPB4DB.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPB4DC.tmp" with contents
 [
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_login.pdb" /debug /machine:I386 /def:".\mod_login.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_login.dll" /implib:"Debug/mod_login.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_login.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendKeys.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_login.res"
+xerces.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/mod_login.pdb" /machine:I386 /def:".\mod_login.def" /out:"../mod_login.dll" /implib:"Release/mod_login.lib" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub" 
+".\Release\BtnST.obj"
+".\Release\ConfigData.obj"
+".\Release\ConfigDialog.obj"
+".\Release\exports.obj"
+".\Release\GroupBoxEx.obj"
+".\Release\mod_login.obj"
+".\Release\MyDialog.obj"
+".\Release\proxy.obj"
+".\Release\SendKeys.obj"
+".\Release\Skin.obj"
+".\Release\StdAfx.obj"
+".\Release\TibiaItem_impl.obj"
+".\Release\mod_login.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB9A.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPB4DC.tmp"
 <h3>Output Window</h3>
 Compiling...
-mod_login.cpp
-Linking...
+ConfigDialog.cpp
+E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_login\ConfigDialog.cpp(159) : error C2143: syntax error : missing ';' before '}'
+Error executing cl.exe.
 
 
 
 <h3>Results</h3>
-mod_login.dll - 0 error(s), 0 warning(s)
+mod_login.dll - 1 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

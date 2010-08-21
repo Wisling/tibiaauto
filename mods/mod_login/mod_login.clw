@@ -52,12 +52,12 @@ ImplementationFile=ConfigDialog.cpp
 BaseClass=CDialog
 Filter=D
 VirtualFilter=dWC
-LastObject=CConfigDialog
+LastObject=IDC_AUTOPASS
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1
 Class=CConfigDialog
-ControlCount=26
+ControlCount=27
 Control1=IDC_FRAME_LOGIN_SETTINGS,button,1342177287
 Control2=IDC_FRAME_DEBUG_LOG,button,1342177287
 Control3=IDC_FRAME_BACKPACK_CONTROL,button,1342177287
@@ -84,4 +84,5 @@ Control23=IDC_STATIC,static,1350696961
 Control24=IDC_STATIC,static,1342308864
 Control25=IDC_LOGIN_DELAY,edit,1350631552
 Control26=IDC_STATIC,static,1342308864
+Control27=IDC_AUTOPASS,button,1342242819
 
