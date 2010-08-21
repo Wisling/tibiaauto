@@ -1,8 +1,17 @@
 2.5.2, ?.?.2010
 Enhancements:
+ Tibia Auto: TibiaAuto icon reloads if Explorer crashes
+ Tibia Auto: Can choose to hide Tibia with TA(works with login, and autogo)
  Cavebot: Walks through players on non-PvP
+ Tibia Auto: Can choose what to do when starting modules after loading a script
+ Tibia Auto: Added new settings in general options and statistics
+ Tibia Auto: Tray icon name changes based on player name
+ AutoLogin: Fixed long delay before logging in
+ AutoLogin: Can automatically use last password and account name
 Defects:
  TAUtil: Fixed not sending correct index
+ Tibia Auto: Fixed crashing when sending stats
+ TAUtil: fixed getMemRange function
 
 2.5.1, 2.7.2010
 Enhancements:
