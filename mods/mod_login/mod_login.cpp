@@ -342,15 +342,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				strncpy(pass,config->password,32);
 			}
 			sk.SendKeys(accNum,true);
-			//SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
-			//mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			//mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
-			sk.SendKeys("{TAB}");
+			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
+			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 			sk.SendKeys(pass,true);
-			//SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15+90);
-			//mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			//mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
-			sk.SendKeys("~");
+			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15+90);
+			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 			waitOnConnecting();
 			if (waitForWindow("Select Character",2) && !waitForWindow("Message of the Day",5))
 				sk.SendKeys("~",true);
@@ -369,10 +367,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					sk.SendKeys("{DOWN}");
 				}
 			}
-			//SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
-			//mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			//mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
-			sk.SendKeys("~");
+			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
+			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 			
 			registerDebug("Waiting fo establishing connection up to 15s");
 			for (i=0;i<150;i++)

@@ -124,9 +124,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 */
 		static int tStart=0;
-		char buf[1111];
-		sprintf(buf,"%d",GetTickCount()-tStart);
-		sender.sendTAMessage(buf);
 		Sleep(200);
 		tStart=GetTickCount();
 		var=reader.getGlobalVariable("cavebot_halfsleep");
