@@ -278,6 +278,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		} else {
 			openContTime[contNr]=0;
 		}
+		delete cont;
 	}
 	while (!toolThreadShouldStop)
 	{			
@@ -298,6 +299,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				} else {
 					openContTime[contNr]=0;
 				}
+				delete cont;
 			}
 			
 			if (handItem->objectId&&handItem->objectId!=leftHandObjectId)
