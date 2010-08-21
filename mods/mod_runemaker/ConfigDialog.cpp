@@ -156,6 +156,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_randomCast.SetCheck(configData->randomCast);
 	m_useSpear.SetCheck(configData->useSpear);
 
+	OnUseSpear();
+
 	m_spells.DeleteAllItems();
 	for (int i=0; i<15; i++) {
 		if (configData->listSpells[i].words[0] != '0') {
