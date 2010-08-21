@@ -34,7 +34,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
-	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_FRAME_LOGIN_SETTINGS, m_LoginSettingsFrame);
 	DDX_Control(pDX, IDC_FRAME_DEBUG_LOG, m_DebugLogFrame);
 	DDX_Control(pDX, IDC_FRAME_BACKPACK_CONTROL, m_BackpackControlFrame);
@@ -52,19 +51,22 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_PASSWORD, m_password);
 	DDX_Control(pDX, IDC_DEBUG, m_debug);
 	DDX_Control(pDX, IDC_ACCOUNT_NUMBER, m_accountNumber);
-	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDC_LOGIN_DELAY, m_loginDelay);
+	DDX_Control(pDX, IDC_ENABLE, m_enable);
+	DDX_Control(pDX, IDOK, m_OK);
+	DDX_Control(pDX, IDC_AUTOPASS, m_autopass);
 	//}}AFX_DATA_MAP
 }
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
+	ON_WM_ERASEBKGND()
+	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDC_AUTOPASS, OnAutopass)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -112,13 +114,11 @@ void CConfigDialog::disableControls()
 	m_openCont7.EnableWindow(false);
 	m_openCont8.EnableWindow(false);
 	m_loginDelay.EnableWindow(false);
+	m_autopass.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
 {
-	m_accountNumber.EnableWindow(true);
-	m_password.EnableWindow(true);
-	m_charPos.EnableWindow(true);	
 	m_openMain.EnableWindow(true);
 	m_openCont1.EnableWindow(true);
 	m_openCont2.EnableWindow(true);
@@ -129,6 +129,9 @@ void CConfigDialog::enableControls()
 	m_openCont7.EnableWindow(true);
 	m_openCont8.EnableWindow(true);
 	m_loginDelay.EnableWindow(true);
+
+	m_autopass.EnableWindow(true);
+	OnAutopass();
 }
 
 
@@ -149,7 +152,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_openCont6.SetCheck(configData->openCont6);
 	m_openCont7.SetCheck(configData->openCont7);
 	m_openCont8.SetCheck(configData->openCont8);
-	sprintf(buf,"%d",configData->loginDelay);m_loginDelay.SetWindowText(buf);	
+	sprintf(buf,"%d",configData->loginDelay);m_loginDelay.SetWindowText(buf);
+	m_autopass.SetCheck(configData->autopass);
 	
 }
 
@@ -171,6 +175,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->openCont7=m_openCont7.GetCheck();
 	newConfigData->openCont8=m_openCont8.GetCheck();
 	m_loginDelay.GetWindowText(buf,63);newConfigData->loginDelay=atoi(buf);
+	newConfigData->autopass=m_autopass.GetCheck();
 
 	return newConfigData;
 }
@@ -253,4 +258,12 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 void CConfigDialog::activateEnableButton(int enable)
 {
 	m_enable.SetCheck(enable);
+}
+
+void CConfigDialog::OnAutopass()
+{
+	int enable=m_autopass.GetCheck();
+	m_accountNumber.EnableWindow(!enable);
+	m_password.EnableWindow(!enable);
+	m_charPos.EnableWindow(!enable);
 }
