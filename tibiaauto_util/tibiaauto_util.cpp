@@ -488,7 +488,7 @@ void memReadSetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
 
 void memReadGetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
 {
-	CMemUtil::SetMemRange(memAddressStart,memAddressEnd,data);
+	CMemUtil::GetMemRange(memAddressStart,memAddressEnd,data);
 }
 
 void tibiaMapRemovePointAvailable(int x,int y,int z)
