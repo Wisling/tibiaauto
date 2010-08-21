@@ -73,31 +73,31 @@ void registerDebug(char *msg)
 }
 
 // wait on "Please wait" and "" windows up to 60 seconds
-int waitOnPleaseWait()
+int waitOnConnecting()
 {
 	CMemReaderProxy reader;
 	int i;
-	registerDebug("Waiting on 'Please wait' window up to 60 seconds");
-	for (i=0;i<600;i++)
+	registerDebug("Waiting on 'Connecting' window up to 10 seconds");
+	for (i=0;i<100;i++)
 	{		
-		if (strcmp(reader.getOpenWindowName(),"Please wait")&&strcmp(reader.getOpenWindowName(),"")) return 0;
+		if (strcmp(reader.getOpenWindowName(),"Connecting")!=0) return 0;
 		Sleep(100);
 		if (toolThreadShouldStop) return 1;
 	}
-	registerDebug("WARN: Waiting on 'please wait' window failed");
+	registerDebug("WARN: Waiting on 'Connecting' window failed");
 	return 1;
 }
 
-int waitForWindow(char *name, int doEsc=0)
+int waitForWindow(char *name, int secs=10, int doEsc=0)
 {
 	CMemReaderProxy reader;
 	CSendKeys sk;
 	int i;
 
 	char buf[128];
-	sprintf(buf,"Waiting for window '%s' up to 10 seconds",name);
+	sprintf(buf,"Waiting for window '%s' up to %d seconds",name,secs);
 	registerDebug(buf);
-	for (i=0;i<100;i++) 
+	for (i=0;i<secs*10;i++)
 	{
 		if (strcmp(reader.getOpenWindowName(),name)) 
 		{
@@ -284,7 +284,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (toolThreadShouldStop) 
 			{
 				ReleaseSemaphore(hSemaphore,1,&prevCount);
-				continue;			
+				continue;
 			}
 
 						
@@ -310,7 +310,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			
 			// STEP0: make sure no window is open
-			waitForWindow("",1);
+			waitForWindow("",2,1);
 			
 			// STEP1: show login window
 			if (ensureForeground(hwnd)) 
@@ -320,43 +320,59 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			SetCursorPos(wndRect.left+125,wndRect.bottom-223);
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);				
-			waitOnPleaseWait();
-			waitForWindow("Enter Game");
+			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			if (waitOnConnecting() || waitForWindow("Enter Game",5) || ensureForeground(hwnd))
+			{
+				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				continue;
+			}
 			
 			// STEP2: enter user and pass
-			if (ensureForeground(hwnd)) 
-			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
-				continue;
+			char accNum[33];
+			char pass[33];
+			accNum[32]=0;
+			pass[32]=0;
+			if (config->autopass){
+				CTibiaItemProxy itemProxy;
+				int addr=itemProxy.getValueForConst("addrConnectionState");
+				reader.getMemRange(addr-0x24,addr-0x24+32,accNum);
+				reader.getMemRange(addr-0x44,addr-0x44+32,pass);
+			} else {
+				strncpy(accNum,config->accountNumber,32);
+				strncpy(pass,config->password,32);
 			}
-			sk.SendKeys(config->accountNumber,true);		
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
-			sk.SendKeys(config->password,true);
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15+90);
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
-			waitOnPleaseWait();
-			if (!waitForWindow("Message of the Day"))
+			sk.SendKeys(accNum,true);
+			//SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
+			//mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+			//mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			sk.SendKeys("{TAB}");
+			sk.SendKeys(pass,true);
+			//SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15+90);
+			//mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+			//mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			sk.SendKeys("~");
+			waitOnConnecting();
+			if (waitForWindow("Select Character",2) && !waitForWindow("Message of the Day",5))
 				sk.SendKeys("~",true);
 
-			waitForWindow("Select Character");
 			
 			// STEP3: select char
-			if (ensureForeground(hwnd)) 
+			if (waitForWindow("Select Character",5) || ensureForeground(hwnd)) 
 			{
 				ReleaseSemaphore(hSemaphore,1,&prevCount);
 				continue;
 			}
-			sk.SendKeys("a");// goes to beginning of list
-			for (int i=1;i<config->charPos;i++){
-				sk.SendKeys("{DOWN}");
+
+			if (!config->autopass){
+				sk.SendKeys("a");// goes to beginning of list
+				for (int i=1;i<config->charPos;i++){
+					sk.SendKeys("{DOWN}");
+				}
 			}
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			//SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
+			//mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
+			//mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			sk.SendKeys("~");
 			
 			registerDebug("Waiting fo establishing connection up to 15s");
 			for (i=0;i<150;i++)
@@ -374,12 +390,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
 				SetCursorPos(wndRect.right-15,wndRect.top+382);//inventory minimized
 				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+				Sleep(100);
 			}
 			// finalize
-			ReleaseSemaphore(hSemaphore,1,&prevCount);
-			registerDebug("Relogin procedure completed.");
-			loginTime=0;
 			if (reader.getConnectionState()==8&&config->openMain) {	
 				
 				// open the main backpack flow
@@ -515,6 +529,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			SetCursorPos(prevCursorPos.x,prevCursorPos.y);
+			ReleaseSemaphore(hSemaphore,1,&prevCount);
+			registerDebug("Relogin procedure completed.");
+			loginTime=0;
 		} // if (connectionState!=8)
 		else loginTime=0;
 	}
@@ -653,17 +670,17 @@ char *CMod_loginApp::getVersion()
 
 int CMod_loginApp::validateConfig(int showAlerts)
 {
-	if (strlen(m_configData->accountNumber)==0)
+	if (!m_configData->autopass && strlen(m_configData->accountNumber)==0)
 	{
 		if (showAlerts) AfxMessageBox("Account number must be filled in!");
 		return 0;
 	}
-	if (strlen(m_configData->password)==0)
+	if (!m_configData->autopass && strlen(m_configData->password)==0)
 	{
 		if (showAlerts) AfxMessageBox("Password must be filled in!");
 		return 0;
 	}
-	if (m_configData->charPos<=0||m_configData->charPos>20)
+	if (!m_configData->autopass && (m_configData->charPos<=0||m_configData->charPos>20))
 	{
 		if (showAlerts) AfxMessageBox("Character position must be between 1 and 20.");
 		return 0;
@@ -704,6 +721,7 @@ void CMod_loginApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"open/cont7")) m_configData->openCont7=atoi(paramValue);
 	if (!strcmp(paramName,"open/cont8")) m_configData->openCont8=atoi(paramValue);
 	if (!strcmp(paramName,"loginDelay")) m_configData->loginDelay=atoi(paramValue);
+	if (!strcmp(paramName,"autopass")) m_configData->autopass=atoi(paramValue);
 }
 
 char *CMod_loginApp::saveConfigParam(char *paramName)
@@ -721,6 +739,7 @@ char *CMod_loginApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"open/cont7")) sprintf(buf,"%d",m_configData->openCont7);
 	if (!strcmp(paramName,"open/cont8")) sprintf(buf,"%d",m_configData->openCont8);
 	if (!strcmp(paramName,"loginDelay")) sprintf(buf,"%d",m_configData->loginDelay);
+	if (!strcmp(paramName,"autopass")) sprintf(buf,"%d",m_configData->autopass);
 
 	return buf;
 }
@@ -739,6 +758,7 @@ char *CMod_loginApp::getConfigParamName(int nr)
 	case 7: return "open/cont7";
 	case 8: return "open/cont8";
 	case 9: return "loginDelay";
+	case 10: return "autopass";
 	default:
 		return NULL;
 	}
