@@ -48,6 +48,7 @@ CModuleUtil::~CModuleUtil()
 {
 }
 
+//Always returns a valid item.  objectId==0 if fails
 CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 {
 	CMemReaderProxy reader;
@@ -81,6 +82,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	}
 	
 	delete container;
+	retItem->objectId=0;
 	return retItem;
 }
 
@@ -1816,7 +1818,8 @@ void CModuleUtil::prepareProhPointList()
 				{
 					int itemId=reader.mapGetPointItemId(checkpoint,pos);
 
-					if (10145 == itemId/*depot tile*/ || 
+					if (10145 == itemId||
+						10146 == itemId/*depot tile*/ || 
 						1647 == itemId || 
 						1649 == itemId ||
 						1665 == itemId || 
