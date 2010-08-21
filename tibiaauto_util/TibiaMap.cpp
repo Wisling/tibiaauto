@@ -258,8 +258,8 @@ int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ
 	}
 	int spd = getPointSpeed(x, y, z);
 	if (spd==0){
-		char buf[111];
-		sprintf(buf,"speed(%d,%d,%d) %d",x, y, z,spd);
+		//char buf[111];
+		//sprintf(buf,"speed(%d,%d,%d) %d",x, y, z,spd);
 		//AfxMessageBox(buf);
 	}
 	return spd*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1)+forcedLevelChange*10000;//return getPointSpeed(x, y, z)*(isPointLonger(x, y, z, prevX, prevY, prevZ)?3:1);

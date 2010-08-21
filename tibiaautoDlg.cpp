@@ -110,12 +110,8 @@ void InitTibiaHandle(){
 // CTibiaautoDlg dialog
 
 LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam){
-	char buf[1111];
-	sprintf(buf,"%d,%d,%d",uMessage, wParam, lParam);
-	//AfxMessageBox(buf);
     static UINT s_uTaskbarRestart;
 
-	sprintf(buf,"%d,%d,%d,%d",uMessage, wParam, lParam,s_uTaskbarRestart);
 	if (uMessage==WM_CREATE){
             s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
 	}else{
@@ -615,9 +611,6 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			modCheck|=CModuleProxy::allModules[i]->isStarted()<<i;
 		}
 		if (modCheck!=enabledModules){
-			//char buf[111];
-			//sprintf(buf,"%x",enabledModules);
-			//AfxMessageBox(buf);
 			enabledModules=modCheck;
 			char path[1024];
 			CModuleUtil::getInstallPath(path);
@@ -1618,7 +1611,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.5.1,tm=%d,",tm);
+		fprintf(f,"version=2.5.2,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
