@@ -451,8 +451,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				break;
 			}
 		};
-		char buf[1111];
-		sprintf(buf,"Going to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
+//		char buf[1111];
+//		sprintf(buf,"Going to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));
 //		AfxMessageBox(buf);
 #ifdef MAPDEBUG
 			sprintf(buf,"Going to %d,%d,%d instead of %d,%d,%d diff %d",closerEndX,closerEndY,closerEndZ,endX,endY,endZ,abs(closerEndX-endX)+abs(closerEndY-endY));

@@ -153,8 +153,9 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_openCont7.SetCheck(configData->openCont7);
 	m_openCont8.SetCheck(configData->openCont8);
 	sprintf(buf,"%d",configData->loginDelay);m_loginDelay.SetWindowText(buf);
+
 	m_autopass.SetCheck(configData->autopass);
-	
+	OnAutopass();
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
