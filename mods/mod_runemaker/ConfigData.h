@@ -18,7 +18,6 @@ public:
 	int mana;
 	int manaLimit;
 	int soulPoints;
-	int makeTwo;
 	int useArrow;
 	int maxUse;
 	int premium;
