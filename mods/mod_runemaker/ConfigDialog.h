@@ -48,7 +48,6 @@ public:
 	CEdit	m_soulPoints;
 	CButton	m_useArrow;
 	CEdit	m_spell;
-	CButton	m_makeTwo;
 	CStatic	m_infoRuneTime;
 	CStatic	m_infoSoulpointsTime;
 	CStatic	m_infoFood;
@@ -87,6 +86,9 @@ protected:
 	afx_msg void OnLoadspellfromlist();
 	afx_msg void OnDeletefromlist();
 	afx_msg void OnMakenow();
+	afx_msg void OnUseSpear();
+	afx_msg void OnUseArrow();
+	afx_msg void OnUseBackpack();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

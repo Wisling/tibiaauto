@@ -46,7 +46,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_SOUL, m_soulPoints);
 	DDX_Control(pDX, IDC_TOOL_USEARROW, m_useArrow);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_RUNESPELL, m_spell);
-	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_MAKETWO, m_makeTwo);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_RUNETIME, m_infoRuneTime);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME, m_infoSoulpointsTime);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_FOOD, m_infoFood);
@@ -74,6 +73,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_LOADSPELLFROMLIST, OnLoadspellfromlist)
 	ON_BN_CLICKED(IDC_DELETEFROMLIST, OnDeletefromlist)
 	ON_BN_CLICKED(IDC_MAKENOW, OnMakenow)
+	ON_BN_CLICKED(IDC_TOOL_USESPEAR,OnUseSpear)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -112,7 +112,6 @@ void CConfigDialog::disableControls()
 	m_manaLimit.EnableWindow(false);
 	m_soulPoints.EnableWindow(false);
 	m_useArrow.EnableWindow(false);
-	m_makeTwo.EnableWindow(false);
 	m_spell.EnableWindow(false);
 	m_premium.EnableWindow(false);
 	m_maxUse.EnableWindow(false);
@@ -129,8 +128,6 @@ void CConfigDialog::enableControls()
 	m_mana.EnableWindow(true);
 	m_manaLimit.EnableWindow(true);
 	m_soulPoints.EnableWindow(true);
-	m_useArrow.EnableWindow(true);
-	m_makeTwo.EnableWindow(true);
 	m_spell.EnableWindow(true);
 	m_premium.EnableWindow(true);
 	m_maxUse.EnableWindow(true);
@@ -138,8 +135,9 @@ void CConfigDialog::enableControls()
 	m_addSpell.EnableWindow(true);
 	m_loadSpell.EnableWindow(true);
 	m_deleteSpell.EnableWindow(true);
-	m_useBackpack.EnableWindow(true);
+
 	m_useSpear.EnableWindow(true);
+	OnUseSpear();
 }
 
 
@@ -151,7 +149,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->mana);m_mana.SetWindowText(buf);
 	sprintf(buf,"%d",configData->manaLimit);m_manaLimit.SetWindowText(buf);
 	sprintf(buf,"%d",configData->soulPoints);m_soulPoints.SetWindowText(buf);
-	m_makeTwo.SetCheck(configData->makeTwo);
 	m_useArrow.SetCheck(configData->useArrow);
 	m_useBackpack.SetCheck(configData->useBackpack);
 	m_premium.SetCheck(configData->premium);
@@ -191,7 +188,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_mana.GetWindowText(buf,127);newConfigData->mana=atoi(buf);
 	m_manaLimit.GetWindowText(buf,127);newConfigData->manaLimit=atoi(buf);
 	m_soulPoints.GetWindowText(buf,127);newConfigData->soulPoints=atoi(buf);
-	newConfigData->makeTwo	= m_makeTwo.GetCheck();
 	newConfigData->useArrow	= m_useArrow.GetCheck();
 	newConfigData->useBackpack	= m_useBackpack.GetCheck();
 	newConfigData->premium	= m_premium.GetCheck();
@@ -355,6 +351,7 @@ BOOL CConfigDialog::OnInitDialog()
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_enable);
 
+
 	initialiseContainers();
 	
 	SetTimer(1001,250,NULL);
@@ -506,4 +503,22 @@ void CConfigDialog::OnMakenow()
 	int enable=m_makeNow.GetCheck();
 	m_app->makeNow(enable);
 	
+}
+void CConfigDialog::OnUseSpear() 
+{
+
+	int enable=m_useSpear.GetCheck();
+	m_useArrow.EnableWindow(enable);
+	m_useBackpack.EnableWindow(enable);
+	
+}
+
+void CConfigDialog::OnUseArrow()
+{
+	m_useBackpack.SetCheck(0);
+}
+
+void CConfigDialog::OnUseBackpack()
+{
+	m_useArrow.SetCheck(0);
 }

@@ -78,7 +78,6 @@ static map<int,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
-	//References to *(int*)<int> removed
 	if (!config->randomCast) return pt;
 	CMemReaderProxy reader;
 	if (!setMana[pt]) command=MAKE;
