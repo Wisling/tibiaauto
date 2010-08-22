@@ -300,22 +300,22 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		 * mode 2 - external
 		 */
 
-		int containerCarrying=-1;
+		int carriedContainers=0;
 
 		// find carrying container
-		if (containerCarrying==-1&&config->m_mode1==1&&containerNotFull(0)) containerCarrying=0;
-		if (containerCarrying==-1&&config->m_mode2==1&&containerNotFull(1)) containerCarrying=1;
-		if (containerCarrying==-1&&config->m_mode3==1&&containerNotFull(2)) containerCarrying=2;
-		if (containerCarrying==-1&&config->m_mode4==1&&containerNotFull(3)) containerCarrying=3;
-		if (containerCarrying==-1&&config->m_mode5==1&&containerNotFull(4)) containerCarrying=4;
-		if (containerCarrying==-1&&config->m_mode6==1&&containerNotFull(5)) containerCarrying=5;
-		if (containerCarrying==-1&&config->m_mode7==1&&containerNotFull(6)) containerCarrying=6;
-		if (containerCarrying==-1&&config->m_mode8==1&&containerNotFull(7)) containerCarrying=7;
-		if (containerCarrying==-1&&config->m_mode9==1&&containerNotFull(8)) containerCarrying=8;
-		if (containerCarrying==-1&&config->m_mode10==1&&containerNotFull(9)) containerCarrying=9;
+		carriedContainers|=(config->m_mode1==1)*1;
+		carriedContainers|=(config->m_mode2==1)*2;
+		carriedContainers|=(config->m_mode3==1)*4;
+		carriedContainers|=(config->m_mode4==1)*8;
+		carriedContainers|=(config->m_mode5==1)*16;
+		carriedContainers|=(config->m_mode6==1)*32;
+		carriedContainers|=(config->m_mode7==1)*64;
+		carriedContainers|=(config->m_mode8==1)*128;
+		carriedContainers|=(config->m_mode9==1)*256;
+		carriedContainers|=(config->m_mode10==1)*512;
 
 
-		if (containerCarrying!=-1)
+		if (carriedContainers!=0)
 		{
 			// find items in the other containers
 			CUIntArray acceptedItems;
@@ -339,16 +339,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			
 			
 			int extraSleep=0;
-			if (config->m_mode1==2&&CModuleUtil::lootItemFromSpecifiedContainer(0,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode2==2&&CModuleUtil::lootItemFromSpecifiedContainer(1,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode3==2&&CModuleUtil::lootItemFromSpecifiedContainer(2,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode4==2&&CModuleUtil::lootItemFromSpecifiedContainer(3,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode5==2&&CModuleUtil::lootItemFromSpecifiedContainer(4,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode6==2&&CModuleUtil::lootItemFromSpecifiedContainer(5,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode7==2&&CModuleUtil::lootItemFromSpecifiedContainer(6,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode8==2&&CModuleUtil::lootItemFromSpecifiedContainer(7,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode9==2&&CModuleUtil::lootItemFromSpecifiedContainer(8,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
-			if (config->m_mode10==2&&CModuleUtil::lootItemFromSpecifiedContainer(9,&acceptedItems,containerCarrying)!=-1) extraSleep=1;
+			if (config->m_mode1==2&&CModuleUtil::lootItemsToSpecifiedContainers(0,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode2==2&&CModuleUtil::lootItemsToSpecifiedContainers(1,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode3==2&&CModuleUtil::lootItemsToSpecifiedContainers(2,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode4==2&&CModuleUtil::lootItemsToSpecifiedContainers(3,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode5==2&&CModuleUtil::lootItemsToSpecifiedContainers(4,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode6==2&&CModuleUtil::lootItemsToSpecifiedContainers(5,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode7==2&&CModuleUtil::lootItemsToSpecifiedContainers(6,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode8==2&&CModuleUtil::lootItemsToSpecifiedContainers(7,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode9==2&&CModuleUtil::lootItemsToSpecifiedContainers(8,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
+			if (config->m_mode10==2&&CModuleUtil::lootItemsToSpecifiedContainers(9,&acceptedItems,carriedContainers)!=-1) extraSleep=1;
 			if (extraSleep) Sleep(CModuleUtil::randomFormula(300,100));
 		}
 	}
