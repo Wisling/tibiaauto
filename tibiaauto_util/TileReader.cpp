@@ -47,7 +47,14 @@ CTileReader::CTileReader()
 		XMLPlatformUtils::Initialize();
 		xmlInitialised=1;
 		loadTiles();
+		xmlInitialised=2;
 	}
+	if (xmlInitialised!=2){ //wait 10 seconds to load
+		for (int wait=200;xmlInitialised!=2;wait--)
+			Sleep(50);
+		if (xmlInitialised!=2) AfxMessageBox("Waited 10 seconds to load items.  Items failed to load.");
+	}
+
 }
 
 CTileReader::~CTileReader()
@@ -65,7 +72,8 @@ void CTileReader::cleanup()
 
 CTibiaTile *CTileReader::getTile(int tileNr)
 {
-	return tiles[tileNr];
+	CTibiaTile* ret=tiles[tileNr];
+	return ret;
 }
 
 void CTileReader::setTile(int tileNr, CTibiaTile *newTile) {
@@ -78,7 +86,6 @@ void CTileReader::loadTiles() {
 	for (i=0;i<MAX_TILES;i++) {
 		tiles[i]=new CTibiaTile();
 	}
-	
 	XercesDOMParser *parser = new XercesDOMParser();
 	try {	
 		char installPath[1024];
