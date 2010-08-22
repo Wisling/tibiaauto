@@ -412,7 +412,6 @@ void CToolAutoRespond::start()
 		toolAutoResponderRunning=1;
 	}
 	
-	m_debug.EnableWindow(false);
 }
 
 void CToolAutoRespond::stop()
@@ -422,8 +421,8 @@ void CToolAutoRespond::stop()
 	// step 1 -> uninitialised everything		
 	toolThreadAutoResponderShouldStop=threadCount;		
 	toolThreadAutoResponderShouldStopWaiting=1;
-	m_enable.EnableWindow(false);
-	
-	m_debug.EnableWindow(true);
+
+	m_enable.EnableWindow(true);
+	//m_debug.EnableWindow(true);  //mysteriously hangs TA when disabling then enabling button
 	toolAutoResponderRunning=0;
 }
