@@ -97,13 +97,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++){
 		groupTime[contNr]=time(NULL);
 	}
+	int movedSomething=0;
 	while (!toolThreadShouldStop)
 	{			
-		Sleep(CModuleUtil::randomFormula(500,200));
+		if (!movedSomething) Sleep(CModuleUtil::randomFormula(500,200)); //movedSomething==1 has it's own sleep timer
+		movedSomething=0;
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 		
 		int contNr;
-		int movedSomething=0;
 		for (contNr=0;contNr<memConstData.m_memMaxContainers && !movedSomething;contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
@@ -151,6 +152,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								item->objectId,0x40+contNr,itemNrMoved,
 								0x40+contNr,itemNr,	qtyToMove);
 							movedSomething=1;
+							CModuleUtil::waitForItemsInsideChange(contNr, itemNrMoved, itemMoved->quantity, cont->itemsInside);
+							Sleep(CModuleUtil::randomFormula(200,100));
 							
 						}
 					}
