@@ -259,8 +259,13 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int orig
 	for (t=0;t<30;t++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
+		if (cont->itemsInside!=origItemsCount)//ensures cont->items.GetAt array has at least origItemSlot items
+		{
+			delete cont;
+			return 1;
+		}
 		CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(origItemSlot);
-		if (cont->itemsInside!=origItemsCount || item->quantity != origItemQuantity)
+		if (item->quantity != origItemQuantity)
 		{
 			delete cont;
 			return 1;
