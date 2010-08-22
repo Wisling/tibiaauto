@@ -1,3 +1,12 @@
+2.6.0, ?.?.2010
+Enhancements:
+ Grouping: Made more accurate and efficient
+ AutoLooter: stacks items in backpacks that are already full
+Defects:
+ Maphack: Fixed maphack crashing when it's the first module to start
+ AutoGo/Log: fixed hanging when enabling and disabling reponder
+ Show Map: fixed "Research" overwriting ladders and holes when enabled
+
 2.5.2, 21.8.2010
 Enhancements:
  Tibia Auto: TibiaAuto icon reloads if Explorer crashes
@@ -12,6 +21,7 @@ Defects:
  TAUtil: Fixed not sending correct index
  Tibia Auto: Fixed crashing when sending stats
  TAUtil: fixed getMemRange function
+ Seller: Spam when enabled is now gone
 
 2.5.1, 2.7.2010
 Enhancements:
