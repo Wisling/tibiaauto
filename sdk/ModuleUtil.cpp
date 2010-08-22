@@ -963,6 +963,88 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 	return numberItemsLooted;//Akilez: return value now reflects items looted
 }
 
+int CModuleUtil::lootItemsToSpecifiedContainers(int containerNr,CUIntArray *acceptedItems, int carriedContainers)
+{
+
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CMemConstData memConstData = reader.getMemConstData();
+
+	CTibiaContainer *cont = reader.readContainer(containerNr);
+	int looted = 0;
+	int numberItemsLooted=0;
+	if (cont->flagOnOff)
+	{
+		int itemNr;
+		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)
+		{			
+			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
+			int i;
+			for (i=0;i<acceptedItems->GetSize();i++)
+			{
+				if ((int)item->objectId==(int)acceptedItems->GetAt(i))
+				{
+					// item needs to be looted
+					for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+					{
+						if (!(carriedContainers&(contNr+1))) continue;
+						CTibiaContainer *contCarrying = reader.readContainer(contNr);
+						if (contCarrying->flagOnOff==0){
+							delete contCarrying;
+							continue;
+						}
+
+						int targetPos=contCarrying->size-1;
+						int moved = item->quantity?item->quantity:1;
+						CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+						int stackedItemPos=-1;
+						if (tile->stackable)
+						{						
+							// if item is stackable then try to find a suitable stack for it
+							for (stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
+							{
+								CTibiaItem *stackedItem=(CTibiaItem *)contCarrying->items.GetAt(stackedItemPos);
+								if (stackedItem->objectId==item->objectId&&stackedItem->quantity<100)
+								{
+									// we have found a suitable stack! :)
+									targetPos=stackedItemPos+looted;//since contCarrying is never updated add looted
+									//Akilez: Stackable item overflow goes back into container at the same position
+									if ((stackedItem->quantity + item->quantity) > 100){
+										itemNr++;//Akilez: recheck this space in the container for lootables
+									}
+									else {
+										looted--;//number of items in container will stay the same, undo increment
+									}
+
+									moved = min(item->quantity,100-stackedItem->quantity);
+									stackedItem->quantity += moved;
+									item->quantity -= moved;
+									break;
+								}
+							}	
+						} 
+						// If not full or we found a spot inside the container for a stackable item move item
+						if(contCarrying->itemsInside!=contCarrying->size || stackedItemPos!=-1 && stackedItemPos<contCarrying->itemsInside){
+							sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+contNr,targetPos,moved);
+							Sleep(CModuleUtil::randomFormula(300,150));
+							//char buf[111];
+							//sprintf(buf,"id %d,cont %d,pos %d,tocont %d,topos %d,qty %d",item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
+							//sender.sendTAMessage(buf);
+							looted++;//needed for positioning of next loot item
+							numberItemsLooted++;// return velue
+							goto gotoNextItem;
+						}
+						delete contCarrying;
+					}
+				}
+			}
+gotoNextItem:;
+		}
+	}
+	delete cont;
+	return numberItemsLooted;//Akilez: return value now reflects items looted
+}
+
 void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems,int ignoreCont1/*=-1*/,int ignoreCont2/*=-1*/)
 {	
 	CMemReaderProxy reader;
@@ -983,7 +1065,7 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems,in
 				waitForItemsInsideChange(contNr,sourceCont->itemsInside);
 			delete sourceCont;
 
-			if (targetCont->itemsInside<targetCont->size) 
+			if (targetCont->itemsInside<targetCont->size)
 			{
 				delete targetCont;
 				break;
