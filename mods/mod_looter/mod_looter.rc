@@ -127,7 +127,7 @@ BEGIN
     CONTROL         "Loot gp",IDC_LOOT_GP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,71,199,52,10
     CONTROL         "Loot custom",IDC_LOOT_CUSTOM,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,127,199,52,10
+                    WS_TABSTOP,124,199,52,10
     CONTROL         "Loot worms",IDC_LOOT_WORMS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,15,199,49,10
     LTEXT           "Container 10:",IDC_STATIC,15,153,43,12,SS_CENTERIMAGE
