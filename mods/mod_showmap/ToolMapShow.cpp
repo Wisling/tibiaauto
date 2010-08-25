@@ -340,8 +340,11 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		tibiaMap.setPointAsAvailable(self->x,self->y,self->z);
-		tibiaMap.setPointSpeed(self->x,self->y,self->z,130);//130 default( is >255/2 and <70*2)
+		if (tibiaMap.getPointUpDownNoProh(self->x,self->y,self->z)==0)
+		{
+			tibiaMap.setPointAsAvailable(self->x,self->y,self->z);
+			tibiaMap.setPointSpeed(self->x,self->y,self->z,130);//130 default( is >255/2 and <70*2)
+		}
 	
 
 		delete self;
