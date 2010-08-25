@@ -65,11 +65,13 @@ HANDLE toolThreadHandle;
 
 void registerDebug(char *msg)
 {
-	char *newMsg = (char *)malloc(strlen(msg)+1);
-	sprintf(newMsg,"%s",msg);
-	EnterCriticalSection(&QueueCriticalSection);
-	queue2.push(newMsg);
-	LeaveCriticalSection(&QueueCriticalSection);
+	if (QueueCriticalSection.OwningThread!=0){
+		char *newMsg = (char *)malloc(strlen(msg)+1);
+		sprintf(newMsg,"%s",msg);
+		EnterCriticalSection(&QueueCriticalSection);
+		queue2.push(newMsg);
+		LeaveCriticalSection(&QueueCriticalSection);
+	}
 }
 
 // wait on "Please wait" and "" windows up to 60 seconds
