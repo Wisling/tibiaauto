@@ -55,6 +55,9 @@ HANDLE toolThreadHandle;
 HWND hTibiaWnd;
 DWORD addrFps;
 
+extern BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam); //in ConfigDialog.cpp
+
+
 void SetFPS(double iFps){
 	CMemReaderProxy reader;
 	double *fpsVal;
@@ -88,26 +91,28 @@ double GetFPS(){
 	return 1000/(*fpsVal);
 }
 
+
 DWORD WINAPI toolThreadProc( LPVOID lpParam ){		
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 
 	double oldFps;
 
-	oldFps = GetFPS();
+	oldFps = max(GetFPS(),20);
+	if (!hTibiaWnd) EnumWindows(EnumWindowsProc,reader.getProcessId());
+
 
 	while (!toolThreadShouldStop)
 	{	
-		if(config->minimized && IsIconic(hTibiaWnd)){
+		if(config->minimized && (IsIconic(hTibiaWnd) || !IsWindowVisible(hTibiaWnd))){
 			SetFPS(config->minimizedVal);
+		}else if (config->inactive && GetForegroundWindow() != hTibiaWnd){
+			SetFPS(config->inactiveVal);
 		}else{
-			if (config->inactive && GetForegroundWindow() != hTibiaWnd){
-				SetFPS(config->inactiveVal);
-			}else{
-				SetFPS(config->activeVal);
-			}
+			SetFPS(config->activeVal);
 		}
-		Sleep(1000);		
+		double currFps = GetFPS();
+		Sleep(1000);
 	}
 
 	SetFPS(oldFps);
