@@ -78,7 +78,7 @@
 	<creature name="Bat" hp="30" exp="10" physical="5" earth="2" fire="2" energy="2" ice="2" holy="2" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Bear" hp="80" exp="23" physical="2" earth="2" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Behemoth" hp="4000" exp="2500" physical="1" earth="1" fire="1" energy="5" ice="5" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Beholder" hp="260" exp="170" physical="0" earth="5" fire="2" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Bonelord" hp="260" exp="170" physical="0" earth="5" fire="2" energy="1" ice="2" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
 	<creature name="Betrayed Wraith" hp="4200" exp="3500" physical="0" earth="0" fire="0" energy="1" ice="0" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Black Knight" hp="1800" exp="1600" physical="0" earth="1" fire="1" energy="0" ice="1" holy="5" death="1" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Blightwalker" hp="8900" exp="5850" physical="0" earth="1" fire="1" energy="1" ice="0" holy="5" death="5" see_invisible="1" paralysis_immune="1"/>
@@ -133,7 +133,7 @@
 	<creature name="Dworc Voodoomaster" hp="80" exp="55" physical="0" earth="5" fire="2" energy="5" ice="5" holy="1" death="2" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Earth Elemental" hp="650" exp="450" physical="0" earth="5" fire="0" energy="1" ice="1" holy="1" death="1" see_invisible="1" paralysis_immune="1"/>
 	<creature name="Efreet" hp="550" exp="325" physical="1" earth="1" fire="1" energy="5" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="1"/>
-	<creature name="Elder Beholder" hp="500" exp="280" physical="0" earth="5" fire="1" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
+	<creature name="Elder Bonelord" hp="500" exp="280" physical="0" earth="5" fire="1" energy="1" ice="1" holy="2" death="2" see_invisible="1" paralysis_immune="0"/>
 	<creature name="Elephant" hp="320" exp="160" physical="2" earth="2" fire="5" energy="1" ice="2" holy="2" death="1" see_invisible="0" paralysis_immune="0"/>
 	<creature name="Elf" hp="100" exp="42" physical="2" earth="2" fire="2" energy="2" ice="5" holy="1" death="2" see_invisible="1" paralysis_immune="0"/>
 	<creature name="Elf Arcanist" hp="220" exp="175" physical="2" earth="1" fire="1" energy="2" ice="1" holy="5" death="2" see_invisible="1" paralysis_immune="0"/>
