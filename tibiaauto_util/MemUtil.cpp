@@ -214,6 +214,8 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress)
 	int ret=CMemUtil::GetMemIntValue(m_globalProcessId,memAddress,&value);
 	if (ret!=0)
 	{
+		//char buf[128];
+		//sprintf(buf,"ERROR: read memory failed reading %d; error=%d",memAddress,ret);		
 		//AfxMessageBox(buf);
 		ExitProcess(0);
 

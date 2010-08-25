@@ -312,8 +312,9 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_processId=charDialog->DoModal();
 	globalProcessId=m_processId;
 	delete charDialog;
-	if (m_processId==-1)
+	if (m_processId==-1){
 		ExitProcess(0);
+	}
 
 	unsigned char buf[5];
 	int versionOk=0;
@@ -1611,7 +1612,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.5.2,tm=%d,",tm);
+		fprintf(f,"version=2.6.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
