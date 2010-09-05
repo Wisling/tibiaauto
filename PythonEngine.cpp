@@ -717,7 +717,15 @@ void CPythonEngine::backpipeMsgTick()
 		case 6: sprintf(chanBuf,"private");break;
 		case 7: sprintf(chanBuf,"channel");break;
 		default: sprintf(chanBuf,"other[%d]",infoType);break;
-		}			
+		}
+		//Channel IDs
+		//1-Party
+		//2-Own Chat Channel(premium)
+		//3-Game Chat
+		//4-Trade
+		//5-Rook Trade
+		//6-RL chat
+		//7-Help
 						
 		int scriptNr;
 		for (scriptNr=0;;scriptNr++)
