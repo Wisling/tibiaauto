@@ -45,7 +45,7 @@
 		<const code="addrMCInject" value="0x106C11"/> <!--D7 3D B7 -->
 		<const code="addrXRay1" value="0x4D253C"/> 
 		<const code="addrXRay2" value="0x4D2544"/> 
-		<const code="addrFunRevealCName1" value="0x4ED743"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
+		<const code="addrFunRevealCName1" value="0x524D14"/> <!-- lookup: CMP ECX, 07H; ret through 3rd from end or search 75 40 -->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>

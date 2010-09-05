@@ -84,7 +84,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (channelTime+randTimeTrade < time(NULL)){
 					randTimeTrade = RandomTimeTrademon(config->channelInterval);
 					channelTime = time(NULL);
-					sender.sayOnChan(config->message,7,6);
+					sender.sayOnChan(config->message,7,4);
 				}
 			}
 			if (config->yell){
