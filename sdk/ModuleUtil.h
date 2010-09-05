@@ -7,7 +7,7 @@
 
 class CTibiaItem;
 class CTibiaList;
-class PQI;
+class CTibiaQueue;
 
 #if _MSC_VER > 1000
 #pragma once
@@ -41,7 +41,7 @@ public:
 	static int waitForCreatureDisappear(int x,int y, int tibiaId, int &, int &);
 	static int calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ);
 	static void prepareProhPointList();
-	static void findPathAllDirection(PQI &pQueue,int x,int y,int z);
+	static void findPathAllDirection(CTibiaQueue &pointsToAdd,int x,int y,int z);
 	static int findNextClosedContainer(int afterCont=-1);
 	static void masterDebug(const char* fname,const char* buf1="",const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="");
 	static void getInstallPath(char path[2048]);
@@ -50,7 +50,7 @@ public:
 	static struct point GetPathTab(int);
 	static int GetPathTabCount(void);
 private:
-	static void findPathOnMapProcessPoint(PQI &pQueue,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
+	static void findPathOnMapProcessPoint(CTibiaQueue &pointsToAdd,int prevX,int prevY, int prevZ, int newX, int newY, int newZ);
 
 
 	CModuleUtil();
