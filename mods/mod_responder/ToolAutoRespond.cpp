@@ -210,6 +210,14 @@ void CToolAutoRespond::readInfo()
 		case 7: sprintf(chanBuf,"channel");break;
 		default: sprintf(chanBuf,"other[%d]",infoType);break;
 		}			
+		//Channel IDs
+		//1-Party
+		//2-Own Chat Channel(premium)
+		//3-Game Chat
+		//4-Trade
+		//5-Rook Trade
+		//6-RL chat
+		//7-Help
 		time_t nowSec = time(NULL);
 		struct tm *now = localtime(&nowSec);
 		sprintf(timeBuf,"%d:%d:%d",now->tm_hour,now->tm_min,now->tm_sec);

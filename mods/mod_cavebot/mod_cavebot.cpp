@@ -202,7 +202,8 @@ int depotCheckShouldGo(CConfigData *config) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (self->cap<config->depotCap&&strlen(config->depotTrigger[0].itemName)) {
 		// capacity limit check only when some depot items defined
-		ret++;
+		ret=1;
+		goto exitDSG;
 	}
 	
 	int i;
@@ -220,13 +221,18 @@ int depotCheckShouldGo(CConfigData *config) {
 		}
 		// check whether we should deposit something
 		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
-			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning))
-			ret++;
+			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
+			ret=1;
+			goto exitDSG;
+		}
 		// check whether we should restack something
 		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
-			(totalQty<=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)) 
-			ret++;
+			(totalQty<=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
+			ret=1;
+			goto exitDSG;
+		}
 	}
+exitDSG:
 	deleteAndNull(self);
 	return ret;
 }
@@ -1548,7 +1554,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	
 	int pauseInvoked=0;
 
-	int modRuns=0;//for performing actions once every 10 iterations
+	int modRuns=-1;//for performing actions once every 10 iterations
 	// reset globals
 	waypointTargetX=waypointTargetY=waypointTargetZ=0;
 	actualTargetX=actualTargetY=actualTargetZ=0;
@@ -1594,11 +1600,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 
 
-	
+	bool DISPLAY_TIMING=false;
+	int TIMING_MAX=10;
+	int TIMING_COUNTS[100];
+	memset(TIMING_COUNTS,0,100*sizeof(int));
+	int TIMING_TOTALS[100];
+	memset(TIMING_TOTALS,0,100*sizeof(int));
 	
 	while (!toolThreadShouldStop) {
-		Sleep(250);	
-
+		Sleep(250);
+		int beginningS = GetTickCount();
 		if (reader.getConnectionState()!=8||!config->pausingEnable)
 		{
 			// flush IPC communication if not logged
@@ -1608,13 +1619,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
 
+		int pausingS = GetTickCount();
 		if (config->pausingEnable){
 			if (backPipe.readFromPipe(&mess,1009)||backPipe.readFromPipe(&mess,2002)){
 				int msgLen;
 				char msgBuf[512];
 				memset(msgBuf,0,512);
 				memcpy(&msgLen,mess.payload,sizeof(int));
-				memcpy(msgBuf,mess.payload+4,msgLen);		
+				memcpy(msgBuf,mess.payload+4,msgLen);
 				
 				if (!strncmp("%ta pause",msgBuf,9))
 				{				
@@ -1625,7 +1637,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						sender.attack(0);
 						reader.setAttackedCreature(0);
 						reader.cancelAttackCoords();
-						// restore attack mode
+						//restore attack mode
 						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1);
 
 						if (config->debug) registerDebug("Paused cavebot");
@@ -1633,6 +1645,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 			}
 			if (pauseInvoked) continue;
+		}
+		int pausingE = GetTickCount();
+		if (DISPLAY_TIMING)
+		{
+			TIMING_COUNTS[3]+=1;
+			TIMING_TOTALS[3]+=pausingE-pausingS;
+			if (TIMING_COUNTS[3]==TIMING_MAX){
+				char bufDisp[400];
+				sprintf(bufDisp,"pausing %d",TIMING_TOTALS[3]);
+				sender.sendTAMessage(bufDisp);
+				TIMING_COUNTS[3]=0;
+				TIMING_TOTALS[3]=0;
+			}
 		}
 
 		if (config->debug)  {
@@ -1655,10 +1680,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
+		int depotS = GetTickCount();
 		/**
 		* Check whether we should go to a depot
 		*/
-		depotCheck(config);
+		if (modRuns==0 || depotX!=0) depotCheck(config);
+
+		int depotE = GetTickCount();
+		if (DISPLAY_TIMING)
+		{
+			TIMING_COUNTS[4]+=1;
+			TIMING_TOTALS[4]+=depotE-depotS;
+			if (TIMING_COUNTS[4]==TIMING_MAX){
+				char bufDisp[400];
+				sprintf(bufDisp,"depot %d",TIMING_TOTALS[4]);
+				sender.sendTAMessage(bufDisp);
+				TIMING_COUNTS[4]=0;
+				TIMING_TOTALS[4]=0;
+			}
+		}
 		
 		/**
 		* Check whether we should collected dropped loot.
@@ -1690,7 +1730,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		/*wis notes:
 		going to depot ignore creatures that aren't attacking
-		training changes weapon and mode also
 		*/
 
 		if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_attackSuspended) {
@@ -1699,7 +1738,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (config->debug) registerDebug("Suspend attack period end");
 			}
 		}
+		int beginningE = GetTickCount();
+		if (DISPLAY_TIMING)
+		{
+			TIMING_COUNTS[0]+=1;
+			TIMING_TOTALS[0]+=beginningE-beginningS;
+			if (TIMING_COUNTS[0]==TIMING_MAX){
+				char bufDisp[400];
+				sprintf(bufDisp,"beginning %d",TIMING_TOTALS[0]);
+				sender.sendTAMessage(bufDisp);
+				TIMING_COUNTS[0]=0;
+				TIMING_TOTALS[0]=0;
+			}
+		}
 
+		int attackS = GetTickCount();
 		if (globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_attackSuspended) {
 			/*****
 			Start attack process
@@ -2256,8 +2309,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			******/
 
 		}
+		int attackE = GetTickCount();
+		if (DISPLAY_TIMING)
+		{
+			TIMING_COUNTS[1]+=1;
+			TIMING_TOTALS[1]+=attackE-attackS;
+			if (TIMING_COUNTS[1]==TIMING_MAX){
+				char bufDisp[400];
+				sprintf(bufDisp,"attack %d",TIMING_TOTALS[1]);
+				sender.sendTAMessage(bufDisp);
+				TIMING_COUNTS[1]=0;
+				TIMING_TOTALS[1]=0;
+			}
+		}
 
 
+
+		int walkS = GetTickCount();
 
 		/*****
 		Start Walking Process
@@ -2373,10 +2441,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					actualTargetY=destPoint.y;
 					actualTargetZ=destPoint.z;
 					int ticksEnd = GetTickCount();
+					if (DISPLAY_TIMING)
+					{
+						TIMING_COUNTS[5]+=1;
+						TIMING_TOTALS[5]+=ticksEnd-ticksStart;
+						if (TIMING_COUNTS[5]==TIMING_MAX){
+							char bufDisp[400];
+							sprintf(bufDisp,"path %d",TIMING_TOTALS[5]);
+							sender.sendTAMessage(bufDisp);
+							TIMING_COUNTS[5]=0;
+							TIMING_TOTALS[5]=0;
+						}
+					}
+					if (DISPLAY_TIMING && 0)
+					{
+						char bufDisp[400];
+						sprintf(bufDisp,"path %d",ticksEnd-ticksStart);
+						sender.sendTAMessage(bufDisp);
+					}
 					
 					sprintf(buf,"timing: findPathOnMap() = %dms",ticksEnd-ticksStart);
 					if (config->debug) registerDebug(buf);
 					
+					int executeS = GetTickCount();
 					int pathSize;
 					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 					if (pathSize||self->x==actualTargetX&&actualTargetY==self->y&&self->z==actualTargetZ) {
@@ -2392,6 +2479,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						// if no path found - then we forget current target
 						waypointTargetX=waypointTargetY=waypointTargetZ=0;
 						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
+					}
+					int executeE = GetTickCount();
+					if (DISPLAY_TIMING)
+					{
+						TIMING_COUNTS[6]+=1;
+						TIMING_TOTALS[6]+=executeE-executeS;
+						if (TIMING_COUNTS[6]==TIMING_MAX){
+							char bufDisp[400];
+							sprintf(bufDisp,"execute %d",TIMING_TOTALS[6]);
+							sender.sendTAMessage(bufDisp);
+							TIMING_COUNTS[6]=0;
+							TIMING_TOTALS[6]=0;
+						}
 					}
 						} // case 1
 					break;
@@ -2609,6 +2709,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 			}						//End waypoint walking algorithim
 		}							// if (no currentlyAttackedCreatureNr)
+		int walkE=GetTickCount();
+		if (DISPLAY_TIMING)
+		{
+			TIMING_COUNTS[2]+=1;
+			TIMING_TOTALS[2]+=walkE-walkS;
+			if (TIMING_COUNTS[2]==TIMING_MAX){
+				char bufDisp[400];
+				sprintf(bufDisp,"walk %d",TIMING_TOTALS[2]);
+				sender.sendTAMessage(bufDisp);
+				TIMING_COUNTS[2]=0;
+				TIMING_TOTALS[2]=0;
+			}
+		}
+
 		deleteAndNull(self);
 	} // while
 	

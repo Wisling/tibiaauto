@@ -1,5 +1,16 @@
-2.6.0, ?.?.2010
+2.6.1, 9.4.2010
 Enhancements:
+ Cavebot: Reduced CPU usage for depot walker check
+Defects
+ Maphack: Name viewer fixed
+ Trade Monitor: No longer talks normally when trying to talk in Trade channel
+ Spellcaster: Loads Sio players with spaces within names(need to save a new script)
+ Cavebot: Depot walker fixed
+ Fluid: Drops empty flasks again 
+
+2.6.0, 8.23.2010
+Enhancements:
+ TibiaAuto: Updated to 8.61
  Grouping: Made more accurate and efficient
  AutoLooter: stacks items in backpacks that are already full
 Defects:

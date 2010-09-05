@@ -791,14 +791,10 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
 
 	if (!strcmp(paramName,"healList")) {
-		char buf1[8];
-		char buf2[8];
 		Player temp;
 		if (currentPos == 0)
 			m_configData->healList.clear();
-		sscanf(paramValue, "%s %s %s",temp.name, buf1, buf2);
-		temp.maxHP = atoi(buf1);
-		temp.triggerHP = atoi(buf2);
+		sscanf(paramValue, "%d %d %[a-zA-Z0-9+\"\'\\/ \,\-]",&(temp.maxHP),&(temp.triggerHP),&(temp.name));
 		m_configData->healList.push_back(temp);
 		currentPos++;
 	}
@@ -887,7 +883,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 			else {
 				Player temp;
 				temp = m_configData->healList[currentPos++];
-				sprintf(buf, "%s %d %d",temp.name, temp.maxHP, temp.triggerHP);
+				sprintf(buf, "%d %d %s",temp.maxHP, temp.triggerHP,temp.name);
 			}
 		}
 	}
