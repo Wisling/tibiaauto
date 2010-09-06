@@ -767,7 +767,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 		itemsAccepted.Add(objectId);
 		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 			CTibiaItem *itemWear = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-			if (itemWear) {
+			if (itemWear->objectId) {
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				if (cont->flagOnOff) {
 					if (cont->itemsInside>=cont->size && itemSlot->objectId!=0) {
@@ -805,9 +805,8 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 					hasNeededItem=1;
 				}
 				deleteAndNull(cont);
-				deleteAndNull(itemWear);
 			}
-			
+			deleteAndNull(itemWear);
 		}
 		if (!hasNeededItem) {
 			//means: we cannot find the needed item
@@ -1684,7 +1683,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		/**
 		* Check whether we should go to a depot
 		*/
-		if (modRuns==0 || depotX!=0) depotCheck(config);
+		if (modRuns%10==0 || depotX!=0) depotCheck(config);
 
 		int depotE = GetTickCount();
 		if (DISPLAY_TIMING)
