@@ -16,7 +16,7 @@ int itemOnTopIndex(int x,int y,int z=0)//Now uses Tibia's own indexing system fo
 	{
 		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
 		CTibiaTile *tile=tileReader.getTile(tileId);
-		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
+		if (tile && tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
 			immoveableItems++;
 	}
 	int newCount=stackCount;
@@ -35,7 +35,7 @@ int itemOnTopIndex(int x,int y,int z=0)//Now uses Tibia's own indexing system fo
 			immoveableItems=0;
 		}
 		//decrease the index we want to find by 1 if we found a creature or an overhanging object
-		newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
+		if (tile) newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
 
 		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
 			return pos;

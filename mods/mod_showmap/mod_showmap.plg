@@ -6,31 +6,13 @@
 --------------------Configuration: mod_showmap - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x415 /fo"Debug/mod_showmap.res" /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL" "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\mod_showmap.rc"" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP68F9.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBAA.tmp" with contents
 [
 /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_showmap.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\BtnST.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\ConfigData.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\ConfigWindow.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\exports.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\GroupBoxEx.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\MapButton.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\mod_showmap.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\MyDialog.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\proxy.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\sdk\Skin.cpp"
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\TibiaItem_impl.cpp"
 "E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\ToolMapShow.cpp"
 ]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP68F9.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP68FA.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/mod_showmap.pch" /Yc"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"E:\Tibia\Sourse Code\tibiaauto-pub\mods\mod_showmap\StdAfx.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP68FA.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP690B.tmp" with contents
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBAA.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBAB.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_showmap.pdb" /debug /machine:I386 /def:".\mod_showmap.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll" /implib:"Debug/mod_showmap.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -48,28 +30,30 @@ Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP690B.tmp" with 
 ".\Debug\ToolMapShow.obj"
 ".\Debug\mod_showmap.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP690B.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBAB.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-StdAfx.cpp
-Compiling...
-BtnST.cpp
-ConfigData.cpp
-ConfigWindow.cpp
-exports.cpp
-GroupBoxEx.cpp
-MapButton.cpp
-mod_showmap.cpp
-MyDialog.cpp
-proxy.cpp
-Skin.cpp
-TibiaItem_impl.cpp
 ToolMapShow.cpp
-Generating Code...
 Linking...
-LINK : LNK6004: E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll not found or not built by the last incremental link; performing full link
-   Creating library Debug/mod_showmap.lib and object Debug/mod_showmap.exp
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDCB5.tmp" with contents
+[
+/nologo /o"Debug/mod_showmap.bsc" 
+".\Debug\StdAfx.sbr"
+".\Debug\BtnST.sbr"
+".\Debug\ConfigData.sbr"
+".\Debug\ConfigWindow.sbr"
+".\Debug\exports.sbr"
+".\Debug\GroupBoxEx.sbr"
+".\Debug\MapButton.sbr"
+".\Debug\mod_showmap.sbr"
+".\Debug\MyDialog.sbr"
+".\Debug\proxy.sbr"
+".\Debug\Skin.sbr"
+".\Debug\TibiaItem_impl.sbr"
+".\Debug\ToolMapShow.sbr"]
+Creating command line "bscmake.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDCB5.tmp"
+Creating browse info file...
+<h3>Output Window</h3>
 
 
 

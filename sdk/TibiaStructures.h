@@ -1,4 +1,4 @@
-#pragma warning(disable:4786)
+#pragma warning( disable : 4786 )
 #include "stdafx.h"
 using namespace std;
 #include <vector>
@@ -742,44 +742,45 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////// CTibiaQueue Implementation //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
+template <class T>
 class CTibiaQueue{
 private:
 	int count;
 	int origTabSize;
-	int tabSize;
 	int start;
 	int end;
-	DWORD*tab;
 public:
+	int tabSize;
+	T*tab;
 	CTibiaQueue(){
 		origTabSize=15;
 		tabSize=origTabSize;
 		count=0;
-		tab=(DWORD*)malloc(sizeof(DWORD)*tabSize);
-		memset(tab,0,sizeof(DWORD)*tabSize);
+		tab=(T*)malloc(sizeof(T)*tabSize);
+		memset(tab,0,sizeof(T)*tabSize);
 		start=0;
 		end=0;
 	}
 	~CTibiaQueue(){
 		free(tab);
 	}
-	void Add(DWORD ptr){
+	void Add(T ptr){
 		growCheck();
 		tab[end]=ptr;
 		end=(end+1) % tabSize;
 		count++;
 	}
-	DWORD Remove(){
-		if (!count) return NULL;
-		DWORD ret=tab[start];
-		tab[start]=NULL;
+	T Remove(){
+		if (!count) return T();
+		T ret=tab[start];
+		tab[start]=T();
 		start = (start+1)%tabSize;
 		count--;
 		shrinkCheck();
 		return ret;
 	}
-	DWORD Peek(){
-		if (!count) return NULL;
+	T Peek(){
+		if (!count) return T();
 		return tab[start];
 	}
 	int GetCount(){
@@ -789,7 +790,7 @@ public:
 		return toString(tab,tabSize);
 	}
 private:
-	char* toString(DWORD* tab, int tabSize){
+	char* toString(T* tab, int tabSize){
 		char * ret=(char*)malloc(tabSize*10+100);
 		ret[0]=0;
 		sprintf(ret+strlen(ret),"[s:%d,e:%d,c:%d,sz:%d][",start,end,count,tabSize);
@@ -803,11 +804,11 @@ private:
 	void growCheck(){
 		if (count==tabSize){//start==end
 			int tmpTabSize=tabSize*2;
-			DWORD* tmpTab=(DWORD*)malloc(sizeof(DWORD)*tmpTabSize);
-			memset(tmpTab,0,sizeof(DWORD)*tmpTabSize);
+			T* tmpTab=(T*)malloc(sizeof(T)*tmpTabSize);
+			memset(tmpTab,0,sizeof(T)*tmpTabSize);
 
-			memcpy(tmpTab,tab+start,(tabSize-start)*sizeof(DWORD));
-			memcpy(tmpTab+tabSize-start,tab,(end)*sizeof(DWORD));
+			memcpy(tmpTab,tab+start,(tabSize-start)*sizeof(T));
+			memcpy(tmpTab+tabSize-start,tab,(end)*sizeof(T));
 
 			free(tab);
 			tab=tmpTab;
@@ -819,11 +820,11 @@ private:
 	void shrinkCheck(){
 		if (tabSize>origTabSize && count==tabSize/4) {//start!=end
 			int tmpTabSize=tabSize/2;
-			DWORD* tmpTab=(DWORD*)malloc(sizeof(DWORD)*tmpTabSize);
-			memset(tmpTab,0,sizeof(DWORD)*tmpTabSize);
+			T* tmpTab=(T*)malloc(sizeof(T)*tmpTabSize);
+			memset(tmpTab,0,sizeof(T)*tmpTabSize);
 
-			memcpy(tmpTab,tab+start,min(count,tabSize-start)*sizeof(DWORD));
-			memcpy(tmpTab+min(count,tabSize-start),tab,(start>=end?end:0)*sizeof(DWORD));
+			memcpy(tmpTab,tab+start,min(count,tabSize-start)*sizeof(T));
+			memcpy(tmpTab+min(count,tabSize-start),tab,(start>=end?end:0)*sizeof(T));
 
 			free(tab);
 			tabSize=tmpTabSize;
@@ -832,6 +833,7 @@ private:
 			end=count;
 		}
 	}
+	/*
 	void testAddUntilFull(){
 		for (int i=0;i<origTabSize;i++){
 			Add (i+1);
@@ -904,6 +906,7 @@ private:
 			runtime++;
 		}
 	}
+	*/
 };
 
 
@@ -946,6 +949,7 @@ public:
 	DWORD CTibiaPriorityQueue::Remove(){
 		if (pq.size()==0) return 0;
 		DWORD ret=pq[0].data;
+		pq[0].data=0;
 		int ind=0;
 		while (true){
 			if (ind*2+2<pq.size() && pq.back().val>pq[ind*2+2].val){

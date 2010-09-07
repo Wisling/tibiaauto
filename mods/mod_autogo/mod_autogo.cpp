@@ -164,6 +164,7 @@ bool actionSuspend(CString module) {
 					GetProcAddress(lpModule.hModule,"stop")();
 					retval = true;
 				}
+				break;
 			}
 		} while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
@@ -758,6 +759,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					list<CString> temp = alarmItr->doStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
+						
 						actionSuspend(*modulesItr);
 						modulesItr++;
 					}
@@ -922,6 +924,10 @@ char* var= reader.getGlobalVariable("cavebot_halfsleep");
 			list<CString> temp = alarmItr->doStartModules();
 			list<CString>::iterator modulesItr = temp.begin();
 			while(modulesItr != temp.end()) {
+				CString a =*modulesItr;
+				if (strcmp(a,"mod_responder.dll")==0){
+					int b=1;
+				}
 				actionSuspend(*modulesItr);
 				modulesItr++;
 			}

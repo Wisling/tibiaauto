@@ -87,12 +87,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	int periodRemaining=getNewPeriod(config);
 
-
+	bool DISPLAY_TIMING=true;
+	int TIMING_MAX=10;
+	int TIMING_COUNTS[100];
+	memset(TIMING_COUNTS,0,100*sizeof(int));
+	int TIMING_TOTALS[100];
+	memset(TIMING_TOTALS,0,100*sizeof(int));
 
 	while (!toolThreadShouldStop)
 	{					
 		Sleep(200);
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		int beginningS = GetTickCount();
 
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CTibiaItem *item;
