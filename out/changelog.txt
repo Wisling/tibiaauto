@@ -1,3 +1,12 @@
+2.6.3, ?.?.2010
+Enhancements:
+Defects:
+
+2.6.2, 9.6.2010
+Enhancements:
+Defects:
+ Cavebot: Bad memory leak in cavebot fixed
+
 2.6.1, 9.4.2010
 Enhancements:
  Cavebot: Reduced CPU usage for depot walker check

@@ -331,15 +331,15 @@ void inline testDebug(char *s)
 	}
 }
 
-void CModuleUtil::findPathOnMapProcessPoint(CTibiaQueue &pointsToAdd,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
+void CModuleUtil::findPathOnMapProcessPoint(CTibiaQueue<point> &pointsToAdd,int prevX,int prevY, int prevZ, int newX, int newY, int newZ)
 {
 	CTibiaMapProxy tibiaMap;
 	if(tibiaMap.isPointAvailable(newX,newY,newZ)){
-		pointsToAdd.Add((DWORD)new point(newX, newY, newZ));
+		pointsToAdd.Add(point(newX, newY, newZ));
 	}
 }
 
-void CModuleUtil::findPathAllDirection(CTibiaQueue &pointsToAdd,int x,int y,int z)
+void CModuleUtil::findPathAllDirection(CTibiaQueue<point> &pointsToAdd,int x,int y,int z)
 {
 	int randDir = rand()%4;
 	//First piority points(sides)
@@ -525,10 +525,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	}
 
 	CTibiaPriorityQueue pQueue;
+	pQueue.Add(1,(DWORD)new pointNode(startX,startY,startZ,startX,startY,startZ,1,0,0));
 
-	pointNode* p=new pointNode(startX,startY,startZ,startX,startY,startZ,1,0,0);
-
-	pQueue.Add(p->g,(DWORD)p);
 	tibiaMap.setPrevPoint(startX,startY,startZ,startX,startY,startZ);
 	tibiaMap.setPointDistance(startX,startY,startZ,1);
 
@@ -549,6 +547,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		int g=currentPoint->g;
 		int h=currentPoint->h;
 		int f=currentPoint->f;
+		delete currentPoint;
+
 
 #ifdef MAPDEBUG
 					sprintf(bufD,"Processing Point: (%d,%d,%d) (%d,%d,%d) %d ",x,y,z,px,py,pz,g);
@@ -612,7 +612,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		 */
 		
 		int forcedLevelChange=0,usedLevelChange=0; // if set to 1 then going north, south, east, west is forbidden
-		CTibiaQueue pointsToAdd;
+		CTibiaQueue<point> pointsToAdd;
 
 		int currentUpDown=tibiaMap.getPointUpDown(x,y,z);
 
@@ -620,7 +620,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if (currentUpDown>=200&&currentUpDown<300)
 		{					
 			if(tibiaMap.isPointAvailableNoProh(x,y,z-1)){
-				pointsToAdd.Add((DWORD)new point(x,y,z-1));
+				pointsToAdd.Add(point(x,y,z-1));
 #ifdef MAPDEBUG
 				mapDebug("go up");
 #endif
@@ -630,7 +630,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 						if (xl ^ yl){
 							int ud=tibiaMap.getPointUpDown(x+xl,y+yl,z-1);
 							if (ud>=100 && ud<200){
-								pointsToAdd.Add((DWORD)new point(x+xl,y+yl,z-1));
+								pointsToAdd.Add(point(x+xl,y+yl,z-1));
 								xl=yl=9999;
 #ifdef MAPDEBUG
 								mapDebug("go up oblong stairs");
@@ -646,7 +646,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if (currentUpDown>=100&&currentUpDown<200)
 		{
 			if (tibiaMap.isPointAvailableNoProh(x,y,z+1)) {
-				pointsToAdd.Add((DWORD)new point(x,y,z+1));
+				pointsToAdd.Add(point(x,y,z+1));
 #ifdef MAPDEBUG
 				mapDebug("go down");
 #endif
@@ -656,7 +656,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 						if (xl ^ yl){
 							int ud=tibiaMap.getPointUpDown(x+xl,y+yl,z+1);
 							if (ud>=200 && ud<300){
-								pointsToAdd.Add((DWORD)new point(x+xl,y+yl,z+1));
+								pointsToAdd.Add(point(x+xl,y+yl,z+1));
 								xl=yl=9999;
 #ifdef MAPDEBUG
 								mapDebug("go down oblong stairs");
@@ -673,7 +673,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if (currentUpDown==302)
 		{
 			point dest=tibiaMap.getDestPoint(x,y,z);
-			pointsToAdd.Add((DWORD)new point(dest.x,dest.y,dest.z));
+			pointsToAdd.Add(point(dest.x,dest.y,dest.z));
 #ifdef MAPDEBUG
 			mapDebug("go teleport");
 #endif
@@ -704,29 +704,28 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				// special going up if ladder busy
 				if ((updown==201||updown==203)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z-1))
 				{
-					pointsToAdd.Add((DWORD)new point(x+xShift,y+yShift,z-1));
+					pointsToAdd.Add(point(x+xShift,y+yShift,z-1));
 				}
 				// special going down if grate or hole busy
 				if ((updown==102||updown==103)&&tibiaMap.isPointAvailableNoProh(x+xShift,y+yShift,z+1))
 				{
-					pointsToAdd.Add((DWORD)new point(x+xShift,y+yShift,z+1));
+					pointsToAdd.Add(point(x+xShift,y+yShift,z+1));
 				}
 			}
 		}
 		while (pointsToAdd.GetCount()){
-			point* addPoint=(point*)pointsToAdd.Remove();
-			int newDist=g+tibiaMap.calcDistance(x,y,z,addPoint->x,addPoint->y,addPoint->z);
-			int oldDist=tibiaMap.getPointDistance(addPoint->x,addPoint->y,addPoint->z);
+			point addPoint=pointsToAdd.Remove();
+			int newDist=g+tibiaMap.calcDistance(x,y,z,addPoint.x,addPoint.y,addPoint.z);
+			int oldDist=tibiaMap.getPointDistance(addPoint.x,addPoint.y,addPoint.z);
 			if (oldDist==0 || newDist<oldDist){
-				tibiaMap.setPrevPoint(addPoint->x,addPoint->y,addPoint->z,x,y,z);
-				tibiaMap.setPointDistance(addPoint->x,addPoint->y,addPoint->z,newDist);
-				pointNode* pn=new pointNode(addPoint->x,addPoint->y,addPoint->z,x,y,z,newDist,0,0);
+				tibiaMap.setPrevPoint(addPoint.x,addPoint.y,addPoint.z,x,y,z);
+				tibiaMap.setPointDistance(addPoint.x,addPoint.y,addPoint.z,newDist);
+				pointNode* pn=new pointNode(addPoint.x,addPoint.y,addPoint.z,x,y,z,newDist,0,0);
 				pQueue.Add(pn->g,(DWORD)pn);
 			}
-			delete addPoint;
 		}
 	}
-	pqcountiter++;	
+	pqcountiter++;
 #ifdef MAPDEBUG
 			char buf[1111];
 			sprintf(buf,"Ended loop count=%d gotToEndPoint=%d",pQueue.GetCount(),gotToEndPoint);
@@ -738,22 +737,23 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	if (gotToEndPoint)
 	{				
 		int pathPos=0;
-		point currentPoint=endPoint;
+		point currPoint=endPoint;
+		point tmpPoint;
 
-		while (currentPoint.x!=startX||currentPoint.y!=startY||currentPoint.z!=startZ)
+		while (currPoint.x!=startX||currPoint.y!=startY||currPoint.z!=startZ)
 		{				
-			p->x=currentPoint.x;
-			p->y=currentPoint.y;
-			p->z=currentPoint.z;
-			pathTab[pathPos].x=p->x;
-			pathTab[pathPos].y=p->y;
-			pathTab[pathPos].z=p->z;
+			tmpPoint.x=currPoint.x;
+			tmpPoint.y=currPoint.y;
+			tmpPoint.z=currPoint.z;
+			pathTab[pathPos].x=tmpPoint.x;
+			pathTab[pathPos].y=tmpPoint.y;
+			pathTab[pathPos].z=tmpPoint.z;
 
-			currentPoint.x=tibiaMap.getPrevPointX(p->x,p->y,p->z);
-			currentPoint.y=tibiaMap.getPrevPointY(p->x,p->y,p->z);
-			currentPoint.z=tibiaMap.getPrevPointZ(p->x,p->y,p->z);
+			currPoint.x=tibiaMap.getPrevPointX(tmpPoint.x,tmpPoint.y,tmpPoint.z);
+			currPoint.y=tibiaMap.getPrevPointY(tmpPoint.x,tmpPoint.y,tmpPoint.z);
+			currPoint.z=tibiaMap.getPrevPointZ(tmpPoint.x,tmpPoint.y,tmpPoint.z);
 #ifdef MAPDEBUG
-			sprintf(buf,"cur=(%d,%d,%d) new=(%d,%d,%d)",p->x,p->y,p->z,currentPoint.x,currentPoint.y,currentPoint.z);
+			sprintf(buf,"cur=(%d,%d,%d) new=(%d,%d,%d)",tmpPoint.x,tmpPoint.y,tmpPoint.z,currPoint.x,currPoint.y,currPoint.z);
 			//mapDebug(buf);
 #endif
 
