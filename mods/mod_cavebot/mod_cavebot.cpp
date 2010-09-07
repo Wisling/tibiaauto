@@ -125,7 +125,7 @@ int forwardBackDir=1;//forward and back direction
 int autolooterTm=0;
 DWORD lootThreadId;
 DWORD queueThreadId;
-CTibiaQueue corpseQueue;
+CTibiaQueue<Corpse> corpseQueue;
 
 
 CTibiaMapProxy tibiaMap;
@@ -1414,12 +1414,13 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 			CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(tibiaId);
 			if (attackedCh){
 				CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-				corpseQueue.Add((DWORD)new Corpse(attackedCh->x,attackedCh->y,attackedCh->z,GetTickCount()));
+				corpseQueue.Add(Corpse(attackedCh->x,attackedCh->y,attackedCh->z,GetTickCount()));
 			}
 		}
 	}
-	Corpse* corpse;
-	while(corpse=(Corpse*)corpseQueue.Remove()) delete corpse;
+	while(corpseQueue.GetCount()){
+		corpseQueue.Remove();
+	}
 	return 0;
 }
 
@@ -1434,9 +1435,8 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 	while (!toolThreadShouldStop) {
 		Sleep(100);
 		while (corpseQueue.GetCount()){
-			Corpse* corpseCh=(Corpse*)corpseQueue.Remove();
-			if(GetTickCount()-corpseCh->tod>1000*60){
-				delete corpseCh;
+			Corpse corpseCh=corpseQueue.Remove();
+			if(GetTickCount()-corpseCh.tod>1000*60){
 				continue;
 			}
 			int lootContNr[3];
@@ -1445,18 +1445,18 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 			
 			globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 			CTibiaCharacter* self = reader.readSelfCharacter();
-			int corpseId = itemOnTopCode(corpseCh->x-self->x,corpseCh->y-self->y);
+			int corpseId = itemOnTopCode(corpseCh.x-self->x,corpseCh.y-self->y);
 			CTibiaTile *tile=reader.getTibiaTile(corpseId);
 			if (corpseId && tile && tile->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
 				// Open corpse to container, wait to get to corpse on ground and wait for open
 				Sleep(CModuleUtil::randomFormula(200,100));
 
-				sender.openContainerFromFloor(corpseId,corpseCh->x,corpseCh->y,corpseCh->z,lootContNr[0]);
+				sender.openContainerFromFloor(corpseId,corpseCh.x,corpseCh.y,corpseCh.z,lootContNr[0]);
 				
-				if(!CModuleUtil::waitToApproachSquare(corpseCh->x,corpseCh->y)){
+				if(!CModuleUtil::waitToApproachSquare(corpseCh.x,corpseCh.y)){
 					//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
-					sender.openContainerFromFloor(corpseId,corpseCh->x,corpseCh->y,corpseCh->z,lootContNr[0]);
-					CModuleUtil::waitToApproachSquare(corpseCh->x,corpseCh->y);
+					sender.openContainerFromFloor(corpseId,corpseCh.x,corpseCh.y,corpseCh.z,lootContNr[0]);
+					CModuleUtil::waitToApproachSquare(corpseCh.x,corpseCh.y);
 				}
 				if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
 					if (config->lootInBags) {
@@ -1505,7 +1505,7 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 								}
 							}
 							if (config->dropNotLooted) {
-								dropAllItemsFromContainer(contNr,corpseCh->x,corpseCh->y,corpseCh->z);
+								dropAllItemsFromContainer(contNr,corpseCh.x,corpseCh.y,corpseCh.z);
 							}
 							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closing;
 							sender.closeContainer(contNr);
@@ -1520,7 +1520,6 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 					//sender.sendTAMessage(buf);
 				}
 			}
-			delete corpseCh;
 			if (!corpseQueue.GetCount()) reader.setGlobalVariable("autolooterTm","");
 		} 
 		globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
