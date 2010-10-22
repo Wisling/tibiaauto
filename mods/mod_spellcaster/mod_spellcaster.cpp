@@ -170,22 +170,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
 				RandomVariableHp(config->lifeHp,MAKE,config);
 				sender.say(config->lifeSpell);
-				Sleep(700);
+				Sleep(800);
 			}
 			else if(config->vitaSpell && self->hp<vitaHp && self->mana >= config->vitaSpellMana){
 				RandomVariableHp(config->vitaHp,MAKE,config);
 				sender.say("exura vita");
-				Sleep(700);
+				Sleep(800);
 			}
 			else if(config->granSpell && self->hp<=granHp && self->mana >= config->granSpellMana){
 				RandomVariableHp(config->granHp,MAKE,config);
 				sender.say("exura gran");
-				Sleep(700);
+				Sleep(800);
 			}
 			else if((config->exuraSpell && self->hp<=exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
 				RandomVariableHp(config->exuraHp,MAKE,config);
 				sender.say("exura");
-				Sleep(700);
+				Sleep(800);
 			}
 			else if (!config->disableWarning) {
 				//sprintf(text, "Time since warning: %dseconds\nLast Warning: %d\nCurrent Time: %d", time(NULL) - lastWarning/1000, lastWarning, time(NULL));

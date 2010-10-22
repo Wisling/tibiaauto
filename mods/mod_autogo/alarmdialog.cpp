@@ -972,7 +972,12 @@ void CAlarmDialog::OnSelchangeAttribute(){
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case CHARACTERHIT:
-			m_condition.EnableWindow(false);
+			m_condition.ResetContent();
+			m_condition.AddString("Equal To...");
+			m_condition.AddString("Less Than...");
+			m_condition.AddString("More Than...");
+			m_condition.EnableWindow(true);
+
 			m_condition.SetCurSel(-1);
 			m_trigger.SetWindowText("Not Applicable");
 			m_trigger.EnableWindow(false);
@@ -1187,9 +1192,35 @@ void CAlarmDialog::OnSelchangeCondition() {
 				break;
 			}
 			break;
-		default:
-			VERIFY(instructionText.LoadString(IDS_CONDITION)); 
-			m_instructionText.SetWindowText(instructionText);
+		case CHARACTERHIT:
+			selected = m_condition.GetCurSel();
+			switch (selected) {
+			case EQUAL:
+				VERIFY(instructionText.LoadString(IDS_EQUAL)); 
+				m_instructionText.SetWindowText(instructionText);
+
+				m_trigger.EnableWindow(true);
+				m_trigger.SetWindowText("<Hit Points>");
+				break;
+			case LESS:
+				VERIFY(instructionText.LoadString(IDS_LESS)); 
+				m_instructionText.SetWindowText(instructionText);
+
+				m_trigger.EnableWindow(true);
+				m_trigger.SetWindowText("<Hit Points>");
+				break;
+			case MORE:
+				VERIFY(instructionText.LoadString(IDS_MORE)); 
+				m_instructionText.SetWindowText(instructionText);
+
+				m_trigger.EnableWindow(true);
+				m_trigger.SetWindowText("<Hit Points>");
+				break;
+			default:
+				VERIFY(instructionText.LoadString(IDS_CONDITION));
+				m_instructionText.SetWindowText(instructionText);
+				break;
+			}
 			break;
 		}
 		break;

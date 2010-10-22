@@ -673,7 +673,7 @@ void depotDeposit(CConfigData *config) {
 								else {
 									// move onto the floor
 									CTibiaCharacter *selftmp = reader.readSelfCharacter();
-									sender.moveObjectFromContainerToFloor(objectToMove,0x40+contNr,item->pos,self->x,self->y,self->z,itemQty);
+									sender.moveObjectFromContainerToFloor(objectToMove,0x40+contNr,item->pos,self->x,self->y,self->z,itemQty?itemQty:1);
 									CModuleUtil::waitForCapsChange(selftmp->cap);
 									Sleep(CModuleUtil::randomFormula(300,100));
 									deleteAndNull(selftmp);
@@ -1136,7 +1136,7 @@ exitLoop:
 						numItems++;
 					}
 					for (int i=0;i<numItems;i++){
-						sender.moveObjectFromFloorToFloor(itemIds[i],self->x+x,self->y+y,self->z,self2->x+offsetX,self2->y+offsetY,self2->z,itemQtys[i]);
+						sender.moveObjectFromFloorToFloor(itemIds[i],self->x+x,self->y+y,self->z,self2->x+offsetX,self2->y+offsetY,self2->z,itemQtys[i]?itemQtys[i]:1);
 						Sleep(CModuleUtil::randomFormula(400,200));
 					}
 				}
@@ -1151,7 +1151,7 @@ exitLoop:
 			if (isItemOnTop(itemX,itemY,foundLootedObjectId)) {
 				if (config->debug) registerDebug("Loot from floor: picking up item");
 				int qty=itemOnTopQty(itemX,itemY);
-				sender.moveObjectFromFloorToContainer(foundLootedObjectId,self->x+x,self->y+y,self->z,0x40+freeContNr,freeContPos,qty);
+				sender.moveObjectFromFloorToContainer(foundLootedObjectId,self->x+x,self->y+y,self->z,0x40+freeContNr,freeContPos,qty?qty:1);
 				Sleep(CModuleUtil::randomFormula(400,200));
 				CModuleUtil::waitForItemsInsideChange(freeContNr,freeContPos);
 			}
@@ -2033,7 +2033,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (creatureList[crNr].tibiaId!=ch->tibiaId&&currentlyAttackedCreatureNr!=crNr) {
 						int keepAttackTm =creatureList[crNr].lastAttackTm;
 						creatureList[crNr]= Creature();
-						creatureList[crNr].lastAttackTm= keepAttackTm;
+						creatureList[crNr].lastAttackTm=keepAttackTm;
 						creatureList[crNr].tibiaId=ch->tibiaId;
 
 						int monstListNr;
@@ -2082,6 +2082,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						char buf[256];
 						sprintf(buf,"lastAttackTm change for %d: was %d/%d is %d/%d",creatureList[crNr].tibiaId,creatureList[crNr].lastAttackTm,ch->tibiaId,ch->lastAttackTm);
 						if (config->debug) registerDebug(buf);
+					} else if(currentTm-ch->lastAttackTm>=attackConsiderPeriod){
+						creatureList[crNr].isAttacking=0;
 					}
 					creatureList[crNr].lastAttackTm= ch->lastAttackTm;
 					creatureList[crNr].x=ch->x;
