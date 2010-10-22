@@ -1056,8 +1056,8 @@ int CModuleUtil::lootItemsToSpecifiedContainers(int containerNr,CUIntArray *acce
 									else {
 										looted--;//number of items in container will stay the same, undo increment
 									}
-
-									moved = min(item->quantity,100-stackedItem->quantity);
+									if (contCarrying->itemsInside!=contCarrying->size) moved =item->quantity;
+									else moved = min(item->quantity,100-stackedItem->quantity);
 									stackedItem->quantity += moved;
 									item->quantity -= moved;
 									break;

@@ -33,7 +33,7 @@ public:
 		char words[1024];
 		int soulPoints;
 		int mana;
-	} listSpells[15];
+	} listSpells[100];
 
 };
 

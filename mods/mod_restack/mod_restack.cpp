@@ -67,9 +67,9 @@ void pickupItemFromFloor(int itemId,int x,int y,int z,int contNr,int slotNr,int 
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	sender.moveObjectFromFloorToContainer(itemId,x,y,z,contNr,slotNr,qty);
-	while (!CModuleUtil::waitForCapsChange(self->cap) && qty>0) { 
+	while (!CModuleUtil::waitForCapsChange(self->cap) && qty>0) {
 		Sleep(CModuleUtil::randomFormula(100,50));// +1.5 sec wait for caps change
-		qty=qty/2;
+		qty=max(qty/2,1);
 		sender.moveObjectFromFloorToContainer(itemId,x,y,z,contNr,slotNr,qty);
 	}
 	Sleep(CModuleUtil::randomFormula(100,100));
@@ -133,7 +133,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						{
 							if (itemAccepted->quantity<qtyToRestack)
 								qtyToRestack=itemAccepted->quantity;
-							sender.moveObjectBetweenContainers(ammoItemId,0x40+contNr,itemAccepted->pos,0xa,0,qtyToRestack);
+							sender.moveObjectBetweenContainers(ammoItemId,0x40+contNr,itemAccepted->pos,0xa,0,qtyToRestack?qtyToRestack:1);
 							Sleep(CModuleUtil::randomFormula(500,200));
 							delete itemAccepted;
 							delete cont;
@@ -176,9 +176,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								qtyToRestack=itemAccepted->quantity;
 							if (!config->restackToRight)
 							{
-								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x6,0,qtyToRestack);
+								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x6,0,qtyToRestack?qtyToRestack:1);
 							} else {
-								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x5,0,qtyToRestack);
+								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x5,0,qtyToRestack?qtyToRestack:1);
 							}
 							Sleep(CModuleUtil::randomFormula(400,150));
 							delete itemAccepted;
@@ -280,7 +280,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int qty=itemOnTopQty(offsetX,offsetY);
 				if (offsetX||offsetY)
 				{
-					sender.moveObjectFromFloorToFloor(objectId,self->x+offsetX,self->y+offsetY,self->z,self->x,self->y,self->z,qty);
+					sender.moveObjectFromFloorToFloor(objectId,self->x+offsetX,self->y+offsetY,self->z,self->x,self->y,self->z,qty?qty:1);
 				} else {
 					// special handling of moving covered items under you
 					int moveToX=-2,moveToY=-2;
@@ -294,7 +294,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (config->pickupBR) moveToX=1,moveToY=1;
 					if (moveToX!=-2||moveToY!=-2)
 					{
-						sender.moveObjectFromFloorToFloor(objectId,self->x,self->y,self->z,self->x+moveToX,self->y+moveToY,self->z,qty);
+						sender.moveObjectFromFloorToFloor(objectId,self->x,self->y,self->z,self->x+moveToX,self->y+moveToY,self->z,qty?qty:1);
 					}
 				}
 				Sleep(CModuleUtil::randomFormula(400,200));

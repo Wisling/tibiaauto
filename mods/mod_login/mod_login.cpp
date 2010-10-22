@@ -147,7 +147,13 @@ int ensureForeground(HWND hwnd)
 		int i;
 	if (::IsIconic(hwnd)) return 1;
 	if (::GetForegroundWindow()==hwnd) return 0;
+	//SPI_SETFOREGROUNDLOCKTIMEOUT prevents window from flashing and simply displays the window
+	int timeout;
+	::SystemParametersInfo(0x2000/*SPI_GETFOREGROUNDLOCKTIMEOUT*/, 0, &timeout, SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE);
+	::SystemParametersInfo(0x2001/*SPI_SETFOREGROUNDLOCKTIMEOUT*/, 0, (LPVOID)0, SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE);
 	::SetForegroundWindow(hwnd);
+	::SystemParametersInfo(0x2001/*SPI_SETFOREGROUNDLOCKTIMEOUT*/, timeout, (LPVOID)0, SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE);
+
 	for (i=0;i<100;i++)
 	{						
 		

@@ -35,7 +35,7 @@ CConfigData::CConfigData()
 	int spellSP[DEFAULT_SIZE]={3,3,4,3,5,3,5,3,2,5};
 	int spellMana[DEFAULT_SIZE]={350,530,570,530,985,400,750,1400,520,600};
 	{
-		for (int i=0; i<15 ; i++) {
+		for (int i=0; i<100 ; i++) {
 			sprintf(listSpells[i].words,"%d",0);
 			listSpells[i].soulPoints = 5;
 			listSpells[i].mana = 0;
