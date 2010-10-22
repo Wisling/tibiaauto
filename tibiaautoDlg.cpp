@@ -922,6 +922,9 @@ void CTibiaautoDlg::OnSave()
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
 			char* nme=module->getName();
+			if (modNr==14){
+				int a=0;
+			}
 			if (module->isLoaded())
 			{
 				CConfigCreatorUtil configCreator;
@@ -1612,7 +1615,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.6.1,tm=%d,",tm);
+		fprintf(f,"version=2.7.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
