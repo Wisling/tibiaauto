@@ -792,7 +792,17 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			retval = positionXInit != self->x || positionYInit != self->y || positionZInit != self->z;
 			break;
 		case CHARACTERHIT:
-			retval = self->hp < healthInit;
+			switch (condition) {
+			case EQUAL:
+				retval = healthInit - self->hp > 0 && healthInit - self->hp == trigger.getIntTrigger();
+				break;
+			case LESS:
+				retval = healthInit - self->hp > 0 && healthInit - self->hp < trigger.getIntTrigger();
+				break;
+			case MORE:
+				retval = healthInit - self->hp > 0 && healthInit - self->hp > trigger.getIntTrigger();
+				break;
+			}
 			healthInit = self->hp;
 			break;
 		case CHARACTERNOTMOVED:
@@ -969,6 +979,7 @@ bool Alarm::skullOnScreen(int options) {
 int Alarm::countAllItemsOfType(int objectId) {
 	CTibiaItemProxy itemProxy;	
 	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
 	int itemCount = 0;
 
 	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
@@ -977,6 +988,12 @@ int Alarm::countAllItemsOfType(int objectId) {
 			itemCount += cont->countItemsOfType(objectId);
 		delete cont;
 	}
+	for (int slotNr = 0; slotNr < 10; slotNr++) { // Loops through all 10 inventory slots(backwards)
+		CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow-slotNr*memConstData.m_memLengthItem);
+		if (item->objectId==objectId)
+			itemCount += item->quantity?item->quantity:1;
+		delete item;
+	}
 	return itemCount;
 }
 
@@ -984,13 +1001,19 @@ int Alarm::countAllFood() {
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	int foodCount = 0;
-	
-	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
-		CTibiaItem *item = CModuleUtil::lookupItem(contNr, itemProxy.getFoodIdArrayPtr());
-		if (item->objectId)
-			foodCount += countAllItemsOfType(item->objectId);
-		delete item;
-	}	
+
+	CUIntArray* foods = itemProxy.getFoodIdArrayPtr();
+	for (int i=0;i<itemProxy.getFoodCount();i++){
+		foodCount+=countAllItemsOfType(itemProxy.getFoodIdAtIndex(i));
+	}
+
+//--Old code--
+//	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
+//		CTibiaItem *item = CModuleUtil::lookupItem(contNr, itemProxy.getFoodIdArrayPtr());
+//		if (item->objectId)
+//			foodCount += countAllItemsOfType(item->objectId);
+//		delete item;
+//	}	
 	return foodCount;
 }
 

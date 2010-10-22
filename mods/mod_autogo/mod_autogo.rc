@@ -679,7 +679,7 @@ BEGIN
     IDS_SOUNDFILE_ERROR     "********  Error!!  ********\r\nNo sound file specified!!!\r\n********************************"
     IDS_SCREENSHOT_ERROR    "********  Error!!  ********\r\nNo screenshot option specified!!!\r\n********************************"
     IDS_GENERAL_CHARACTERHIT 
-                            "Each time your character's health decreases this alarm will trigger."
+                            "Each time your character's health decreases more than the set amount, this alarm will trigger."
     IDS_WINDOWACTION_ERROR  "********  Error!!  ********\r\nNo window action specified!!!\r\n********************************"
     IDS_GENERAL_CHARACTERNOTMOVED 
                             "When the time your character has not moved satisfies the trigger condition, this alarm will trigger."

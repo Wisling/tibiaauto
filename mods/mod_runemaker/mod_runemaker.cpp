@@ -686,7 +686,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 		if (m_currentSpellNr==0)
 		{
 			int i;
-			for (i=0;i<15;i++)
+			for (i=0;i<100;i++)
 			{
 				m_configData->listSpells[i].words[0]='0';
 			}
@@ -716,7 +716,7 @@ char *CMod_runemakerApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
 	if (!strcmp(paramName,"useSpear")) sprintf(buf,"%d",m_configData->useSpear);
 
-	if (!strcmp(paramName,"spells/spell")&&m_configData->listSpells[m_currentSpellNr].words[0] != '0'&&m_currentSpellNr<15)
+	if (!strcmp(paramName,"spells/spell")&&m_configData->listSpells[m_currentSpellNr].words[0] != '0'&&m_currentSpellNr<100)
 	{
 		sprintf(buf,"%d,%d,%s",m_configData->listSpells[m_currentSpellNr].mana,m_configData->listSpells[m_currentSpellNr].soulPoints,m_configData->listSpells[m_currentSpellNr].words);
 		m_currentSpellNr++;

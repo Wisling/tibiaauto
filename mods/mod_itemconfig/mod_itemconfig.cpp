@@ -168,7 +168,8 @@ char *CMod_itemconfigApp::saveConfigParam(char *paramName) {
 	return buf;
 }
 char *CMod_itemconfigApp::getConfigParamName(int nr) {
-	if (!m_infoDialog) return NULL;//special case where user has not opened the itemConfig
+	//Removed since config can be changed even when not opened
+	//if (!m_infoDialog) return NULL;//special case where user has not opened the itemConfig
 
 	switch (nr) {
 	case 0: return "lootedItems";
