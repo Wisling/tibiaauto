@@ -1,6 +1,13 @@
-2.7.2, ?.?.2010
+2.7.2, 4.11.2010
 Enhancements:
+ Seller: Considers equipped items wen deciding what to buy and sell(still does not work well with AutoGo's StopWalking)
+
 Defects:
+ Cavebot: Fixed TA not attacking creatures after hunting for a long time
+ Cavebot: Fixed training option which sometimes accidentally puts your weapon into a creature if switching
+ Items: Fixed light shovel Id
+ Internal: waitForItemChange returns value
+
 
 2.7.1, 22.10.2010
 Enhancements:

@@ -276,7 +276,7 @@ int CModuleUtil::waitForItemsInsideChange(int contNr, int origItemSlot, int orig
 	return 0;
 }
 
-void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes about a max of .6 secs
+int CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes about a max of .6 secs
 {
 	CMemReaderProxy reader;
 	int t;
@@ -286,12 +286,12 @@ void CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes 
 		if (item->objectId!=origItemId)
 		{
 			delete item;
-			return;
+			return 1;
 		}
 		delete item;
 		Sleep(50);
 	}
-	return;
+	return 0;
 }
 
 
