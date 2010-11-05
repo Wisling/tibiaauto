@@ -777,7 +777,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 						// container with desired item is full or not a carried container and we need a place to put the item occupying the slot
 						int hasSpace=0;
 						for (int contNrSpace=0;contNrSpace<memConstData.m_memMaxContainers;contNrSpace++) {
-							if  (time(NULL)-containerTimes[contNr]<CONTAINER_TIME_CUTOFF) continue; //skip if not carried
+							if  (time(NULL)-containerTimes[contNrSpace]<CONTAINER_TIME_CUTOFF) continue; //skip if not carried
 
 							CTibiaContainer *contSpace = reader.readContainer(contNrSpace);
 							if (contSpace->flagOnOff&&contSpace->itemsInside<contSpace->size) {
