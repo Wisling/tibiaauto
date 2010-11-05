@@ -107,7 +107,7 @@ CToolAutoAttackStateWalker globalAutoAttackStateWalker=CToolAutoAttackStateWalke
 CToolAutoAttackStateDepot globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 
-#define MAX_LOOT_ARRAY 250
+#define MAX_LOOT_ARRAY 1300
 
 int waypointTargetX=0,waypointTargetY=0,waypointTargetZ=0;
 int actualTargetX=0,actualTargetY=0,actualTargetZ=0;
@@ -126,6 +126,9 @@ int autolooterTm=0;
 DWORD lootThreadId;
 DWORD queueThreadId;
 CTibiaQueue<Corpse> corpseQueue;
+
+const int CONTAINER_TIME_CUTOFF=10;
+int containerTimes[32];//used to differentiate between carried containers and other containers
 
 
 CTibiaMapProxy tibiaMap;
@@ -770,15 +773,20 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 			if (itemWear->objectId) {
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				if (cont->flagOnOff) {
-					if (cont->itemsInside>=cont->size && itemSlot->objectId!=0) {
-						// container with desired item is full and we need a place to put the item occupying the slot
+					if (cont->itemsInside>=cont->size && itemSlot->objectId!=0 || time(NULL)-containerTimes[contNr]<CONTAINER_TIME_CUTOFF) {
+						// container with desired item is full or not a carried container and we need a place to put the item occupying the slot
 						int hasSpace=0;
 						for (int contNrSpace=0;contNrSpace<memConstData.m_memMaxContainers;contNrSpace++) {
+							if  (time(NULL)-containerTimes[contNr]<CONTAINER_TIME_CUTOFF) continue; //skip if not carried
+
 							CTibiaContainer *contSpace = reader.readContainer(contNrSpace);
 							if (contSpace->flagOnOff&&contSpace->itemsInside<contSpace->size) {
 								// container has some free places
 								sender.moveObjectBetweenContainers(itemSlot->objectId,location,0,0x40+contNrSpace,contSpace->size-1,itemSlot->quantity?itemSlot->quantity:1);
-								CModuleUtil::waitForItemsInsideChange(contNrSpace,contSpace->itemsInside);
+								if (!CModuleUtil::waitForItemChange(locationAddress,itemSlot->objectId)){
+									//Failed to move object out of hand
+									return 0;
+								}
 								Sleep(CModuleUtil::randomFormula(300,100));
 								hasSpace=1;
 								contNrSpace=10000; // stop the loop
@@ -796,6 +804,13 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 							deleteAndNull(cont);
 							return 0;
 						}
+						CTibiaItem *item = reader.readItem(locationAddress);
+						if (item->objectId!=0){
+							//if slot is not empty then we failed at moving the item
+							delete item;
+							return 0;
+						}
+						delete item;
 					}
 					//Assert: we can simply switch the item to wear and the item in the slot OR the slot is empty
 					sender.moveObjectBetweenContainers(itemWear->objectId,0x40+contNr,itemWear->pos,location,0,itemWear->quantity?itemWear->quantity:1);
@@ -1563,8 +1578,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	firstCreatureAttackTM=0;
 	currentPosTM=time(NULL);
 	
-	int waypointsCount=0;
 	int i;
+	for (i=0;i<memConstData.m_memMaxContainers;i++){
+		CTibiaContainer* cont=reader.readContainer(i);
+		if (cont->flagOnOff){
+			containerTimes[i]=time(NULL)-CONTAINER_TIME_CUTOFF;
+		} else {
+			containerTimes[i]=0;
+		}
+		delete cont;
+	}
+
+	int waypointsCount=0;
 	for (i=0;i<100;i++) {
 		if (config->waypointList[i].x || config->waypointList[i].y || config->waypointList[i].z) {//y==z==-1 if a delay
 			waypointsCount++; 
@@ -1590,7 +1615,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		shareAlienBackattack=0;
 	}
 	
-	Creature creatureList[250];
+	Creature creatureList[MAX_LOOT_ARRAY];
 
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
@@ -1674,6 +1699,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		// if in a full sleep mode then just do nothing
 		if (isInFullSleep()) continue;
 		
+		for (i=0;i<memConstData.m_memMaxContainers;i++){
+			CTibiaContainer* cont=reader.readContainer(i);
+			if (cont->flagOnOff){
+				if (containerTimes[i] == 0) containerTimes[i]=time(NULL);
+			} else {
+				containerTimes[i]=0;
+			}
+			delete cont;
+		}
+
 		modRuns++;//for performing actions once every 10 iterations
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
@@ -1697,6 +1732,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				TIMING_TOTALS[4]=0;
 			}
 		}
+
 		
 		/**
 		* Check whether we should collected dropped loot.
@@ -2024,6 +2060,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			int crNr;
 			for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
 				CTibiaCharacter *ch=reader.readVisibleCreature(crNr);
+				// All creature slots that have NEVER had a monster in them have an ID of 0 and they are filled consecutively
+				if (ch->tibiaId=0) break; 
+
 				if (ch->visible==0 || abs(self->x-ch->x)>7 || abs(self->y-ch->y)>5 || ch->z!=self->z) { creatureList[crNr].isOnscreen=0;}
 				else {
 					/**
@@ -2145,6 +2184,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			//Determine best creature to attack on-screen
 			int bestCreatureNr=-1;
 			for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
+				//All creatures after first 0 are blank
+				if (creatureList[crNr].tibiaId=0) break;
+
 				//If cannot attack, don't
 				if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr==self->nr) continue;
 				//If shouldn't attack, don't

@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 8.57 -->
+<!-- Tibia constants for Tibia 8.62 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -115,7 +115,7 @@
 		<const code="lengthMiniMap" value="131240"/>
 		<const code="lengthMiniMapLabel" value="112"/>
 		<const code="maxContainers" value="16"/>
-		<const code="maxCreatures" value="250"/>
+		<const code="maxCreatures" value="1300"/>
 		<const code="maxMapTiles" value="2016"/>
 	</consts>
 </const-definitions>
