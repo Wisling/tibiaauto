@@ -21,7 +21,7 @@ public:
 	static int randomFormula(int average, int halfrange, int minR, int maxR);
 	static int waitForHpManaIncrease(int oldHp,int oldMana);
 	static int waitForCapsChange(float origCaps);
-	static void waitForItemChange(int locationAddress, int origItemId);
+	static int waitForItemChange(int locationAddress, int origItemId);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);
 	static int waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);

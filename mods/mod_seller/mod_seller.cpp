@@ -72,7 +72,7 @@ int buyItems(CConfigData *, int);
 int isDepositing();
 int spaceAvailable();
 int isCavebotOn();
-int countAllItemsOfType(int);
+int countAllItemsOfType(int objectId,bool includeSlots=0);
 bool shouldGo(CConfigData *);
 int individualShouldGo(CConfigData *, int);
 
@@ -802,12 +802,12 @@ int buyItems(CConfigData *config, int traderNum) {
 		//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
 		//AfxMessageBox(buf);
 		if (objectId)
-			itemCount = countAllItemsOfType(objectId);
+			itemCount = countAllItemsOfType(objectId,true);
 		else 
-			break;		;
-		goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"));
-		goldCount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
-		goldCount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
+			break;
+		goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+		goldCount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+		goldCount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
 		itemCount = config->buyItem[traderNum].tradeItem[j].quantityBuySell - itemCount;
 		itemCount = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount?itemCount:goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
 		//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
@@ -865,7 +865,7 @@ int isDepositing() {
 	}
 }
 
-int countAllItemsOfType(int objectId) {
+int countAllItemsOfType(int objectId,bool includeSlots) {
 	CMemReaderProxy reader;
 	int contNr;
 	int ret=0;
@@ -875,6 +875,15 @@ int countAllItemsOfType(int objectId) {
 		if (cont->flagOnOff)
 			ret+=cont->countItemsOfType(objectId);
 		delete cont;
+	}
+	if (includeSlots){
+		CMemConstData memConstData = reader.getMemConstData();
+		for (int slotNr = 0; slotNr < 10; slotNr++) { // Loops through all 10 inventory slots(backwards)
+			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow-slotNr*memConstData.m_memLengthItem);
+			if (item->objectId==objectId)
+				ret += item->quantity?item->quantity:1;
+			delete item;
+		}
 	}
 	return ret;
 }
@@ -909,11 +918,11 @@ bool shouldGo(CConfigData *config) {
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
-				count = countAllItemsOfType(itemProxy.getValueForConst("GP"));
-				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
-				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
+				count = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
 			
-			if (countAllItemsOfType(objectId) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
+			if (countAllItemsOfType(objectId,true) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
 				should = true;
 			}
 		}
@@ -939,11 +948,11 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		int count = countAllItemsOfType(itemProxy.getValueForConst("GP"));
-		count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin")) * 100;
-		count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin")) * 10000;
+		int count = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+		count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+		count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
 
-		if (objectId && countAllItemsOfType(objectId) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice) {
+		if (objectId && countAllItemsOfType(objectId,true) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice) {
 			if (ret == SELLONLY)
 				ret = DOBOTH;
 			else
