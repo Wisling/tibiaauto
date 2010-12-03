@@ -63,7 +63,6 @@ public:
 	int trainingActivate;
 
 	int depotDropInsteadOfDepositon;
-	int dropNotLooted;
 	int lootFromFloor;
 	int attackHpAbove;
 	int backattackRunes;
@@ -74,6 +73,18 @@ public:
 	int pausingEnable;
 	int selectedWaypoint;
 	int radius;
+
+	int dropNotLooted;
+	char dropList[100][64];
+	int dropListCount;
+	int dropWhenCapacityLimitReached;
+	int dropOnlyLooted;
+
+	char modPriorityStr[2];
+	char depotModPriorityStr[2];
+	int stopByDepot;
+
+
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

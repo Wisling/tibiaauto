@@ -23,11 +23,9 @@ CConfigData::CConfigData() {
 	targetZ = 0;
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		sellerList[i].sellerName[0] = 0;
-		for (int x = 0; x < 10; x++) {
-			sellerList[i].position[x].sellerX = 0;
-			sellerList[i].position[x].sellerY = 0;
-			sellerList[i].position[x].sellerZ = 0;
-		}
+		sellerList[i].sellerX = 0;
+		sellerList[i].sellerY = 0;
+		sellerList[i].sellerZ = 0;
 		for (int j = 0; j < 32; j++) {
 			sellItem[i].tradeItem[j].itemName[0] = 0;
 			sellItem[i].tradeItem[j].salePrice = 0;
@@ -42,6 +40,8 @@ CConfigData::CConfigData() {
 	sellOnCap = 1;
 	sellOnSpace = 1;
 	sellWhen = 50;
+	strcpy(modPriorityStr,"2");
+	stopBySeller=0;
 }
 
 CConfigData::~CConfigData() {

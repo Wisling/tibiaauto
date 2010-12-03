@@ -15,11 +15,18 @@
 
 struct seller{
 	char name[64];
-	int xPos[10];
-	int yPos[10];
-	int zPos[10];
+	int xPos;
+	int yPos;
+	int zPos;
 };
 
+enum CToolSellerState{
+	CToolSellerState_notRunning,
+	CToolSellerState_halfSleep,
+	CToolSellerState_noPathFound,
+	CToolSellerState_walking,
+	CToolSellerState_talking
+};
 class CMod_SellerApp;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -40,6 +47,7 @@ public:
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
 	CGroupBoxEx	m_BuySellControlsFrame;
+	CGroupBoxEx	m_listFrame;
 	CGroupBoxEx	m_BuyControlsFrame;
 	CGroupBoxEx	m_Seller4Frame;
 	CGroupBoxEx	m_Seller3Frame;
@@ -52,8 +60,13 @@ public:
 	CEdit m_quantityBuySell;
 	CEdit m_buyPrice;
 	CEdit m_buyTriggerQuantity;
+	CComboBox m_modPriority;
+	CButtonST m_addSeller;
+	CEdit m_addName;
+	CButton m_stopBySeller;
 	CButtonST	m_OK;
 	CButtonST	m_enable;
+	CStatic m_stateSeller;
 	//}}AFX_DATA
 	CButtonST m_BuyBoxAdd[MAX_SELLERS];
 	CButtonST m_BuyBoxRemove[MAX_SELLERS];
@@ -97,6 +110,7 @@ protected:
 	afx_msg void buyBoxRemove2();
 	afx_msg void buyBoxRemove3();
 	afx_msg void onSellOnCap();
+	afx_msg void OnAddSeller();
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();

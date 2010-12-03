@@ -64,22 +64,33 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 149, 105
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 149, 159
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Banker"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Banking Options",IDC_FRAME_BANKER,6,7,136,55
-    DEFPUSHBUTTON   "OK",IDOK,49,84,50,14
+    GROUPBOX        "Banking Options",IDC_FRAME_BANKER,6,7,136,113
+    DEFPUSHBUTTON   "OK",IDOK,49,138,50,14
     CONTROL         "Enable Banking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,6,67,136,14
-    COMBOBOX        IDC_BANKER_BANKER,37,18,99,65,CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+                    BS_PUSHLIKE | WS_TABSTOP,6,121,136,14
+    COMBOBOX        IDC_BANKER_BANKER,37,18,99,122,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Banker:",IDC_STATIC,11,20,24,8
     LTEXT           "Deposit when:",IDC_STATIC,11,34,57,10
     EDITTEXT        IDC_BANKER_MIN_GOLD,11,44,57,12,ES_AUTOHSCROLL
     LTEXT           "Keep on hand:",IDC_STATIC,79,34,57,10
     EDITTEXT        IDC_BANKER_ON_HAND,79,44,57,12,ES_AUTOHSCROLL
+    LTEXT           "Module Priority:",IDC_STATIC,79,58,49,8
+    COMBOBOX        IDC_BANKER_MODPRIORITY,79,69,57,97,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Caps below:",IDC_STATIC,11,58,40,8
+    EDITTEXT        IDC_BANKER_CAPSLIMIT,11,69,57,14,ES_AUTOHSCROLL
+    CONTROL         "Change Gold",IDC_BANKER_CHANGEGOLD,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,84,57,10
+    CONTROL         "Stop by when going to depot/seller",
+                    IDC_BANKER_STOPBYBANKER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,11,95,126,10
+    LTEXT           "None",IDC_BANKER_STATE,12,107,123,8
 END
 
 
@@ -96,10 +107,31 @@ BEGIN
         LEFTMARGIN, 6
         RIGHTMARGIN, 142
         TOPMARGIN, 7
-        BOTTOMMARGIN, 98
+        BOTTOMMARGIN, 152
     END
 END
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_CONFIG DLGINIT
+BEGIN
+    IDC_BANKER_MODPRIORITY, 0x403, 8, 0
+0x2031, 0x202d, 0x6f4c, 0x0077, 
+    IDC_BANKER_MODPRIORITY, 0x403, 2, 0
+0x0032, 
+    IDC_BANKER_MODPRIORITY, 0x403, 2, 0
+0x0033, 
+    IDC_BANKER_MODPRIORITY, 0x403, 2, 0
+0x0034, 
+    IDC_BANKER_MODPRIORITY, 0x403, 9, 0
+0x2035, 0x202d, 0x6948, 0x6867, "\000" 
+    0
+END
 
 #endif    // Polish resources
 /////////////////////////////////////////////////////////////////////////////

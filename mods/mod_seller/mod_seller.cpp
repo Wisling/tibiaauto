@@ -44,6 +44,8 @@ static char THIS_FILE[] = __FILE__;
 #define BUYONLY 2
 #define DOBOTH 3 
 
+CToolSellerState globalSellerState=CToolSellerState_notRunning;
+
 /////////////////////////////////////////////////////////////////////////////
 // CMod_SellerApp
 
@@ -66,7 +68,7 @@ int RandomTimeSeller(){
 }
 
 int findSeller(CConfigData *, int);
-int moveToSeller(CConfigData *);
+int moveToSeller(CConfigData *,int);
 int sellItems(CConfigData *, int);
 int buyItems(CConfigData *, int);
 int isDepositing();
@@ -75,7 +77,18 @@ int isCavebotOn();
 int countAllItemsOfType(int objectId,bool includeSlots=0);
 bool shouldGo(CConfigData *);
 int individualShouldGo(CConfigData *, int);
+bool canGo(CConfigData *config);
 
+// Required to be run more often than the return value is expected to change
+int donaAttackingAndLooting(){
+	CMemReaderProxy reader;
+	static int lastAttackTm=0;
+	int ret = GetTickCount()-lastAttackTm>3*1000 && !reader.getAttackedCreature();
+	if (reader.getAttackedCreature()){
+		lastAttackTm=GetTickCount();
+	}
+	return ret;
+}
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -90,9 +103,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CConfigData *config = (CConfigData *)lpParam;
 	int allAtOnce = 0;
 	int buyOrSell = 0;
-	char *var;
-	int alreadySleeping = 0;
-	int sellerInvoked = 0;
+	int persistentShouldGo=0;
+	int lastPathNotFoundTm=0;
+
 	while (!toolThreadShouldStop) {
 /*		for (int i=0;i<MAX_SELLERS;i++) {
 			char buf[2048];
@@ -124,45 +137,83 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 */
 		static int tStart=0;
-		Sleep(200);
+		Sleep(400);
 		tStart=GetTickCount();
-		var=reader.getGlobalVariable("cavebot_halfsleep");
-		if (var==NULL||strcmp(var,"true")) 
-			alreadySleeping = 0; 
-		else 
-			alreadySleeping = 1;
 		if (buyOrSell == MAX_SELLERS)
-			buyOrSell = allAtOnce = 0;
-		int attackedCreature = reader.getAttackedCreature();
-		if (attackedCreature || alreadySleeping && !sellerInvoked) continue;
+			buyOrSell = allAtOnce = persistentShouldGo = 0;
 
-		if (allAtOnce || shouldGo(config)) {
+		const char* controller=reader.getGlobalVariable("walking_control");
+		if (!persistentShouldGo && shouldGo(config)){
+			persistentShouldGo=1;
+		}
+		if (!persistentShouldGo
+			&& config->stopBySeller
+			&& (!strcmp(controller,"banker") || !strcmp(controller,"depotwalker"))
+			&& canGo(config)){
+			persistentShouldGo=1;
+		}
+
+		bool control= strcmp(controller,"seller")==0;
+		int modpriority=atoi(reader.getGlobalVariable("walking_priority"));
+		int wantsControl=0;
+		int foundPathToSeller=0;
+		// if wants control
+		if ((allAtOnce || persistentShouldGo)) {
+			//if no path found let other modules work and wait 10 secs before trying again
+			if (time(NULL)-lastPathNotFoundTm > 10){
+				//if should have control, take it
+				if (!control){
+					if (atoi(config->modPriorityStr) > modpriority){
+						reader.setGlobalVariable("walking_control","seller");
+						reader.setGlobalVariable("walking_priority",config->modPriorityStr);
+					}else{
+						globalSellerState=CToolSellerState_halfSleep;
+					}
+				}
+			} else { // if doesn't want control
+				globalSellerState=CToolSellerState_noPathFound;
+				//if has control, give it up
+				if (control){
+					reader.setGlobalVariable("walking_control","");
+					reader.setGlobalVariable("walking_priority","0");
+				}
+			}
+		} else { // if doesn't want control
+			globalSellerState=CToolSellerState_notRunning;
+			//if has control, give it up
+			if (control){
+				reader.setGlobalVariable("walking_control","");
+				reader.setGlobalVariable("walking_priority","0");
+			}
+		}
+
+		if (donaAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"seller")==0) {
 			allAtOnce = 1;
 			for (int i = buyOrSell; i < MAX_SELLERS; i++) {
-				if (individualShouldGo(config, i) && findSeller(config, i)) {
-					reader.setGlobalVariable("cavebot_halfsleep","true");
-					sellerInvoked = 1;
-					if (moveToSeller(config)) {
-						config->targetX = config->targetY = config->targetZ = 0;
-						sellItems(config, i);
-						buyItems(config, i);
-						reader.setGlobalVariable("cavebot_halfsleep","false");
-						sellerInvoked = 0;
-						
-						buyOrSell++;
+				if (individualShouldGo(config, i)){
+					if (findSeller(config, i)) {
+						globalSellerState=CToolSellerState_walking;
+						if (moveToSeller(config,i)) {
+							globalSellerState=CToolSellerState_talking;
+							config->targetX = config->targetY = config->targetZ = 0;
+							sellItems(config, i);
+							buyItems(config, i);
+							buyOrSell++;
+						}
+						else break;
+					} else {
+						lastPathNotFoundTm=time(NULL);
 					}
-					else break;
 				}
 				else buyOrSell++;
 			}
 		}
-		else {
-			reader.setGlobalVariable("cavebot_halfsleep","false");
-			sellerInvoked = 0;
-		}
 	}
-	reader.setGlobalVariable("cavebot_halfsleep","false");
-	sellerInvoked = 0;
+	if (strcmp(reader.getGlobalVariable("walking_control"),"seller")==0){
+		reader.setGlobalVariable("walking_control","");
+		reader.setGlobalVariable("walking_priority","0");
+	}
+	globalSellerState=CToolSellerState_notRunning;
 	toolThreadShouldStop=0;
 	return 0;
 }
@@ -304,6 +355,8 @@ void CMod_SellerApp::resetConfig() {
 }
 
 void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
+	if (!strcmp(paramName, "StopBySeller")) m_configData->stopBySeller=atoi(paramValue);
+	if (!strcmp(paramName, "ModPriority")) strncpy(m_configData->modPriorityStr,paramValue,2);
 	if (!strcmp(paramName, "SellOnCap")) m_configData->sellOnCap = atoi(paramValue);
 	if (!strcmp(paramName, "SellOnSpace")) m_configData->sellOnSpace = atoi(paramValue);
 	if (!strcmp(paramName, "SellWhen")) m_configData->sellWhen = atoi(paramValue);
@@ -416,6 +469,8 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
 	buf[0]='\0';
+	if (!strcmp(paramName, "StopBySeller")) sprintf(buf, "%d", m_configData->stopBySeller);
+	if (!strcmp(paramName, "ModPriority")) sprintf(buf, "%s", m_configData->modPriorityStr);
 	if (!strcmp(paramName, "SellOnCap")) sprintf(buf, "%d", m_configData->sellOnCap);
 	if (!strcmp(paramName, "SellOnSpace")) sprintf(buf, "%d", m_configData->sellOnSpace);
 	if (!strcmp(paramName, "SellWhen")) sprintf(buf,"%d",m_configData->sellWhen);
@@ -608,6 +663,8 @@ char *CMod_SellerApp::getConfigParamName(int nr) {
 	case 28: return "SellOnCap";
 	case 29: return "SellWhen";
 	case 30: return "SellOnSpace";
+	case 31: return "ModPriority";
+	case 32: return "StopBySeller";
 
 	default:
 		return NULL;
@@ -677,33 +734,26 @@ int findSeller(CConfigData *config, int traderNum) {
 		delete self;
 		return 1;
 	}
-	for (int x = 0; x < 10; x++) {
-		struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].position[x].sellerX, config->sellerList[traderNum].position[x].sellerY, config->sellerList[traderNum].position[x].sellerZ, 0, config->path,0);
-		if (nearestSell.x && nearestSell.y && nearestSell.z) {
-			config->targetX = nearestSell.x;
-			config->targetY = nearestSell.y;
-			config->targetZ = nearestSell.z;
-			delete self;
+	struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path,3);
+	if (nearestSell.x && nearestSell.y && nearestSell.z) {
+		config->targetX = nearestSell.x;
+		config->targetY = nearestSell.y;
+		config->targetZ = nearestSell.z;
+		delete self;
 //			AfxMessageBox("Seller Found moving");
-			return 1;
-		}
-		else if (x == 9) {
-			config->targetX = config->targetY = config->targetZ = 0;
-			delete self;
-//			AfxMessageBox("Seller Not Found");
-			return 0;
-		}
+		return 1;
 	}
 	delete self;
-	return -1;
+//			AfxMessageBox("Seller Not Found");
+	return 0;
 }
 
 int shouldKeepWalking() {
 	static lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
-		char *var=reader.getGlobalVariable("autolooterTm");
-		if (var==NULL || strcmp(var,"")==0){
+		const char *var=reader.getGlobalVariable("autolooterTm");
+		if (strcmp(var,"")==0){
 			if (lastAttackTime<time(NULL)-3)
 				return 1;
 			else
@@ -714,21 +764,52 @@ int shouldKeepWalking() {
 	return 0;
 }
 
-int moveToSeller(CConfigData *config) {
+int moveToSeller(CConfigData *config, int traderNum) {
 	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
 
+	static int positionFound=0;
 	if (shouldKeepWalking()){
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
-		delete self;
-		self = reader.readSelfCharacter();
-		if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+		//Find a location close enough to NPC
+		if (!positionFound){
+			CTibiaCharacter* self = reader.readSelfCharacter();
+			CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
+			if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+				positionFound=1;
+			}
 			delete self;
-	//		AfxMessageBox("Arrived at Seller");
-			return 1;
+		} else { //Approach NPC after finding them
+			for (int i=0;i<memConstData.m_memMaxCreatures;i++){
+				CTibiaCharacter* mon=reader.readVisibleCreature(i);
+				// since sellerList[traderNum].sellerName may include city, match first part of name
+				if (mon->tibiaId==0) break;
+				int len=strlen(mon->name);
+				if (strncmp(config->sellerList[traderNum].sellerName,mon->name,len)==0 && (config->sellerList[traderNum].sellerName[len]==0 || config->sellerList[traderNum].sellerName[len]==' ')){
+					for (int tries=0;tries<2;tries++){ // should only need 1 try, but we'd need to start over if we don't make it
+						CTibiaCharacter* self = reader.readSelfCharacter();
+						delete mon;
+						mon=reader.readVisibleCreature(i);
+
+						struct point nearestSell=point(0,0,0);
+						int rad=2;
+						while (nearestSell.x==0 && rad<=3){//find paths increasingly farther away
+							nearestSell= CModuleUtil::findPathOnMap(self->x, self->y, self->z, mon->x, mon->y, mon->z, 0, config->path,rad++);
+						}
+						if (nearestSell.x && nearestSell.y && nearestSell.z==self->z){
+							CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
+							if (CModuleUtil::waitToStandOnSquare(nearestSell.x, nearestSell.y)){
+								delete mon;
+								delete self;
+								return 1;
+							}
+						}
+						delete self;
+					}
+				}
+				delete mon;
+			}
+			positionFound=0;
 		}
-		delete self;
-	//	AfxMessageBox("Still more to go...");
 	}
 	return 0;
 }
@@ -737,6 +818,7 @@ int sellItems(CConfigData *config, int traderNum) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
+	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaContainer *cont;
 	int itemCount;
 	int done = 0;
@@ -752,7 +834,7 @@ int sellItems(CConfigData *config, int traderNum) {
 	Sleep (RandomTimeSeller());
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
-		for (int contNr = 0; contNr < 16; contNr++) {
+		for (int contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
 			cont = reader.readContainer(contNr);
 			if (cont->flagOnOff) {
 				int count = cont->itemsInside;
@@ -854,15 +936,8 @@ int isCavebotOn() {
 
 int isDepositing() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("cavebot_depositing");
-	if (var==NULL||strcmp(var,"true")) {
-		delete var;
-		return 0;
-	}
-	else {
-		delete var;
-		return 1;
-	}
+	const char *var=reader.getGlobalVariable("cavebot_depositing");
+	return strcmp(var,"true")==0;
 }
 
 int countAllItemsOfType(int objectId,bool includeSlots) {
@@ -932,6 +1007,43 @@ bool shouldGo(CConfigData *config) {
 	return should;
 }
 
+bool canGo(CConfigData *config) {
+	CTibiaItemProxy itemProxy;
+	CMemReaderProxy reader;
+
+	int count = 0;
+	for (int i = 0; i < MAX_SELLERS; i++) {
+		//see if there's anything to 
+		for (int j = 0; j < 32; j++) {
+			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
+			if (objectId) {
+				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
+				//AfxMessageBox(buf);
+				count = countAllItemsOfType(objectId);
+				if (count) {
+					return true;
+				}
+			}
+
+		}
+		for (j = 0; j < 32; j++) {
+			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
+			if (objectId) {
+				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
+				//AfxMessageBox(buf);
+				count = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
+			
+			if (countAllItemsOfType(objectId,true) < config->buyItem[i].tradeItem[j].quantityBuySell && count >= config->buyItem[i].tradeItem[j].salePrice)
+				return true;
+			}
+		}
+	}
+//	should?AfxMessageBox("Should go"):AfxMessageBox("Should not go");
+	return false;
+}
+
 int individualShouldGo(CConfigData *config, int traderNum) {
 	//char buf[64];
 	CTibiaItemProxy itemProxy;
@@ -939,18 +1051,24 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 	int ret = NOGO;
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
+		if (!objectId) break;
+
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		if (objectId && countAllItemsOfType(objectId) > 0)
 			ret = SELLONLY;
 	}
+	int count = -1;
 	for (j = 0; j < 32; j++) {
 		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
+		if (!objectId) break;
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		int count = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
-		count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
-		count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
+		if (count==-1){
+			count = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+			count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+			count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
+		}
 
 		if (objectId && countAllItemsOfType(objectId,true) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice) {
 			if (ret == SELLONLY)
@@ -968,9 +1086,11 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 
 int spaceAvailable() {
 	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+
 	int contNr;
 	int hasSpace=0;
-	for (contNr = 0; contNr < 16; contNr++) {
+	for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
 		if (cont->flagOnOff && cont->itemsInside < cont->size)

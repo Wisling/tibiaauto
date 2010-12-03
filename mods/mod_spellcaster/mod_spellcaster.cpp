@@ -78,15 +78,19 @@ static map<int,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
-	if (!config->randomCast) return pt;
 	CMemReaderProxy reader;
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	int val=pt<0?max(self->maxMana+pt,self->maxMana/10):pt;
+	if (!config->randomCast){
+		delete self;
+		return val;
+	}
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
-		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),max(self->maxMana,pt+1));
-		delete self;
+		setMana[pt]=CModuleUtil::randomFormula(val,(int)(val*.1),max(self->maxMana,val+1));
 	}
+	delete self;
 	return setMana[pt];
 }
 
@@ -94,16 +98,20 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 int RandomVariableHp(int pt,int command,CConfigData *config){
 	//References to *(int*)<int> removed
 	//We are now sending the value of the integers and not their addresses
-	if (!config->randomCast) return pt;
-
 	CMemReaderProxy reader;
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	int val=pt<0?max(self->maxHp+pt,self->maxHp/10):pt;
+	if (!config->randomCast){
+		delete self;
+		return val;
+	}
+
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		CTibiaCharacter* self=reader.readSelfCharacter();
-		setHp[pt]=CModuleUtil::randomFormula(pt,(int)(pt*.1),pt,max(self->maxHp,pt+1));
-		delete self;
+		setHp[pt]=CModuleUtil::randomFormula(val,(int)(val*.1),val,max(self->maxHp,val+1));
 	}
+	delete self;
 	return setHp[pt];
 }
 
@@ -162,9 +170,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int lifeHp = RandomVariableHp(config->lifeHp,GET,config);
 		int manaMana = RandomVariableMana(config->manaMana,GET,config);
 		for (int loop = 0; loop < config->timedSpellList.size(); loop++)
-			config->timedSpellList[loop].randMana = RandomVariableHp(config->timedSpellList[loop].mana,GET,config);
+			config->timedSpellList[loop].randMana = RandomVariableMana(config->timedSpellList[loop].mana,GET,config);
 		for (loop = 0; loop < config->healList.size(); loop++)
-			config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP,GET,config);
+			config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP*self->maxHp/config->healList[loop].maxHP,MAKE,config)*100/self->maxHp;
 		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
@@ -220,8 +228,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 				for (int loop = 0; loop < config->healList.size(); loop++) {
-					if (OnList(config->healList[loop].name,ch->name) && config->healList[loop].maxHP * (ch->hpPercLeft / 100.0) <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x-self->x)<=7 && abs(ch->y-self->y)<=5 && ch->z == self->z) {
-						config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP,MAKE,config);
+					if (OnList(config->healList[loop].name,ch->name) && ch->hpPercLeft <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x-self->x)<=7 && abs(ch->y-self->y)<=5 && ch->z == self->z) {
+						config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP*self->maxHp/config->healList[loop].maxHP,MAKE,config)*100/self->maxHp;
 						char buf[256];
 						sprintf(buf,"exura sio \"%s\"",ch->name);
 						sender.say(buf);
@@ -568,10 +576,6 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 			if (showAlerts) AfxMessageBox("Some mana spell to cast must be defined!");
 			return 0;
 		}
-		if (m_configData->manaMana<0) {
-			if (showAlerts) AfxMessageBox("'mana above' must be >=0!");
-			return 0;
-		}
 	}
 	if (m_configData->life) {
 		int test = m_configData->customSpell+m_configData->vitaSpell+m_configData->granSpell+m_configData->exuraSpell+m_configData->paralysisSpell+m_configData->poisonSpell+m_configData->sioSpell;
@@ -584,21 +588,12 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 				if (showAlerts) AfxMessageBox("Some life spell to cast must be defined!");
 				return 0;
 			}
-			if (m_configData->lifeHp<0)	{
-				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
-				return 0;
-			}
 			if (m_configData->lifeSpellMana<1) {
 				if (showAlerts) AfxMessageBox("'Spell mana' must be >=1!");
 				return 0;
 			}			
 		}
 		if (m_configData->vitaSpell) {
-			if (m_configData->vitaHp<0)
-			{
-				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
-				return 0;
-			}
 			if (m_configData->vitaSpellMana<160) {
 				if (showAlerts) AfxMessageBox("'Exura vita mana' must be >=160!");
 				return 0;
@@ -607,8 +602,8 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		if (m_configData->sioSpell) {
 			char buf[64];
 			for(int loop = 0; loop < m_configData->healList.size(); loop++ ) {
-			if (m_configData->healList[loop].triggerHP <= 0) {
-				sprintf(buf, "%s: 'Cast when life below' must be >0!", m_configData->healList[loop].name);
+			if (m_configData->healList[loop].triggerHP == 0) {
+				sprintf(buf, "%s: 'Cast when life below' cannot be 0!", m_configData->healList[loop].name);
 				if (showAlerts) AfxMessageBox(buf);
 				return 0;
 			}
@@ -625,20 +620,12 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 			}
 		}
 		if (m_configData->granSpell) {
-			if (m_configData->granHp<0) {
-				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
-				return 0;
-			}
 			if (m_configData->granSpellMana<70) {
 				if (showAlerts) AfxMessageBox("'Exura gran mana' must be >=70!");
 				return 0;
 			}
 		}
 		if (m_configData->exuraSpell) {
-			if (m_configData->exuraHp<0) {
-				if (showAlerts) AfxMessageBox("'Cast when life below' must be >=0!");
-				return 0;
-			}
 			if (m_configData->exuraSpellMana<20) {
 				if (showAlerts) AfxMessageBox("'Exura mana' must be >=20!");
 				return 0;
@@ -690,10 +677,6 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 	if (m_configData->timedSpell && m_configData->timedSpellList.size()) {
 		if (!strlen(m_configData->timedSpellList[0].spell)) {
 			if (showAlerts) AfxMessageBox("Some timed spell to cast must be defined!");
-			return 0;
-		}
-		if (m_configData->timedSpellList[0].mana < 0) {
-			if (showAlerts) AfxMessageBox("'Spell Mana' must be >= 0!");
 			return 0;
 		}
 		if (m_configData->timedSpellList[0].delay < 0) {

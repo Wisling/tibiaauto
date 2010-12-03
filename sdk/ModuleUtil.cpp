@@ -294,6 +294,27 @@ int CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes a
 	return 0;
 }
 
+//Input: x,y absolute position around which to search
+//Output: returns 0 if unsucessful, otherwise returns 1 and changes x and y to location
+int CModuleUtil::findFreeSpace(int &x, int &y, int z,int r /* =1 */){
+	CMemReaderProxy reader;
+	CTibiaMapProxy tibiaMap;
+	int count=0;
+	int totcount=(1+2*r)*(1+2*r);
+	for (int offsetX=rand()%(1+2*r);count<totcount;offsetX=(offsetX+1)%(1+2*r)) {
+		for (int offsetY=rand()%(1+2*r);count<totcount;offsetY=(offsetY+1)%(1+2*r)) {
+			count++;
+			// double loop break!
+			if (tibiaMap.isPointAvailableNoProh(offsetX-r+x,offsetY-r+y,z))
+			{
+				x+=offsetX-r;
+				y+=offsetY-r;
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
 
 void inline mapDebug(char *s)
 {	
@@ -516,7 +537,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			pathSize++;
 			if (pathSize>MAX_PATH_LEN-20){
 				pathFindX=endX,pathFindY=endY,pathFindZ=endZ;
-				tibiaMap.clearPrevPoint();		
+				tibiaMap.clearPrevPoint();
 				break;
 			}
 		}
@@ -1292,6 +1313,8 @@ int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, i
 	//Old checksum return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71;
 }
 
+// In order to 'walk through' other players, this function must be called twice within the walkthrough cutoff time.
+// Todo: Implement 'walking through' other players in this function
 void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 {
 	static int lastExecuteWalkTm=0; // indicates when last a "real" walk was executed

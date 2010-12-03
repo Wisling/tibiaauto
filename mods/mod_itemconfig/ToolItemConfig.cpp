@@ -102,7 +102,7 @@ void CToolItemConfig::OnOK()
 
 	itemProxy.saveItemLists();
 	itemProxy.refreshItemLists();
-	ShowWindow(SW_HIDE);	
+	ShowWindow(SW_HIDE);
 }
 
 void CToolItemConfig::ControlsToConfig(){

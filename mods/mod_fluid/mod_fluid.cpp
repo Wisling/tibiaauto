@@ -63,30 +63,36 @@ static map<int,int> setHp;
 static map<int,int> setMana;
 
 int RandomVariableHp(int pt,int command,CConfigData *config){
-	if (!config->randomCast) return pt;
-
 	CMemReaderProxy reader;
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	int val=pt<0?max(self->maxHp+pt,self->maxHp/10):pt;
+	if (!config->randomCast){
+		delete self;
+		return val;
+	}
 	if (!setHp[pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		CTibiaCharacter* self=reader.readSelfCharacter();
-		setHp[pt]=CModuleUtil::randomFormula(pt,pt*0.05,max(self->maxHp,pt+1));
-		delete self;
+		setHp[pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxHp,val+1));
 	}
+	delete self;
 	return setHp[pt];
 }
 
 int RandomVariableMana(int pt,int command,CConfigData *config){
-	if (!config->randomCast) return pt;
-
 	CMemReaderProxy reader;
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	int val=pt<0?max(self->maxMana+pt,self->maxMana/10):pt;
+	if (!config->randomCast){
+		delete self;
+		return val;
+	}
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
-		// within 10% of number with a min of pt and a max of maxMana
-		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,pt*0.05,max(self->maxMana,pt+1));
-		delete self;
+		// within 10% of number with a cutoff at maxMana
+		setMana[pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxMana,val+1));
 	}
+	delete self;
 	return setMana[pt];
 }
 
@@ -425,74 +431,6 @@ int CMod_fluidApp::validateConfig(int showAlerts)
 		if (showAlerts) AfxMessageBox("Sleep after drink must be >=0!");
 		return 0;
 	}
-
-	if (m_configData->hpBelowH<0)
-	{
-		if (showAlerts) AfxMessageBox("'hpH below' must be >=0!");
-		return 0;
-	}
-
-	if (m_configData->hpBelow<0)
-	{
-		if (showAlerts) AfxMessageBox("'hp below' must be >=0!");
-		return 0;
-	}
-
-	if (m_configData->hpBelowN<0)
-	{
-		if (showAlerts) AfxMessageBox("'hpN below' must be >=0!");
-		return 0;
-	}
-
-	if (m_configData->hpBelowS<0)
-	{
-		if (showAlerts) AfxMessageBox("'hpS below' must be >=0!");
-		return 0;
-	}
-
-	if (m_configData->hpBelowG<0)
-	{
-		if (showAlerts) AfxMessageBox("'hpG below' must be >=0!");
-		return 0;
-	}
-
-	if (m_configData->hpBelowU<0)
-	{
-		if (showAlerts) AfxMessageBox("'hpU below' must be >=0!");
-		return 0;
-	}
-
-	if (m_configData->manaBelow<0)
-	{
-		if (showAlerts) AfxMessageBox("'mana below' must be >=0!");
-		return 0;
-	}
-	if (m_configData->manaBelowN<0)
-	{
-		if (showAlerts) AfxMessageBox("'manaN below' must be >=0!");
-		return 0;
-	}
-	if (m_configData->manaBelowS<0)
-	{
-		if (showAlerts) AfxMessageBox("'manaS below' must be >=0!");
-		return 0;
-	}
-	if (m_configData->manaBelowG<0)
-	{
-		if (showAlerts) AfxMessageBox("'manaG below' must be >=0!");
-		return 0;
-	}
-	if (m_configData->customItem1Below<0)
-	{
-		if (showAlerts) AfxMessageBox("'HP below for custom item 1' must be >=0!");
-		return 0;
-	}
-	if (m_configData->customItem2Below<0)
-	{
-		if (showAlerts) AfxMessageBox("'Mana below for custom item 2' must be >=0!");
-		return 0;
-	}
-	
 	return 1;
 }
 

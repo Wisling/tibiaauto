@@ -1,3 +1,32 @@
+2.8.0, ?.12.2010
+Enhancements:
+Defects:
+
+2.7.3, 3.12.2010
+Enhancements:
+ Various: Negative heal values in the fluid drinker, spellcaster, and runemaker heal at MaxHp/Mana - value
+ Cavebot: Added drop list to cavebot
+ Auto Login: TA does not save but can load passwords from scripts
+ Auto Go: Auto go internals changed and proximity settings take less CPU
+ Various: Autogo, seller, banker and cavebot all work together for control over walking
+ Various: Modules can be given priorities as to which will act first
+ Various: Can go to seller and/or banker and/or depot in the same trip into town
+ Various: Added status messages to walking modules(seller, banker, autogo,cavebot)
+ Cavebot: When cavebot enabled, pausebreak/%ta pause stops all movement from cavebot and other modules as well
+ Banker: The banker can change gold instead of depositing
+ Banker: The banker counts gold in hands and other slots
+ Cavebot: Can go though waypoints backwards
+ CVS Files: Bankers and Sellers only need 1 location
+ Various: Banker, seller and autogo detect gold and items in hand
+ AutoGo: Added alarm for VIP names in the VIP list
+ AutoGo: Added alarm for when conditions disappear 
+
+Defects:
+ Cavebot: Fixed Blood hit control
+ Cavebot: Fixed cavebot always looting plats and crystals 
+ Spellcaster: Fixed bug in casting spells
+ Spellcaster: Fixed problem with healing other using Sio
+
 2.7.2, 4.11.2010
 Enhancements:
  Seller: Considers equipped items wen deciding what to buy and sell(still does not work well with AutoGo's StopWalking)

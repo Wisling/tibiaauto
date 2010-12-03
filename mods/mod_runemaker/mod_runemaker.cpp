@@ -62,17 +62,20 @@ const int minSecondsOpen=20;
 
 static map<int,int> setMana;
 int RandomVariableMana(int pt,int command,CConfigData *config){
-	if (!config->randomCast) return pt;
-
 	CMemReaderProxy reader;
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	int val=pt<0?max(self->maxMana+pt,self->maxMana/10):pt;
+	if (!config->randomCast){
+		delete self;
+		return val;
+	}
 	if (!setMana[pt]) command=MAKE;
 	if (command==MAKE){
-		// within 10% of number with a min of pt and a max of maxMana
-		CTibiaCharacter* self=reader.readSelfCharacter();
-		setMana[pt]=CModuleUtil::randomFormula(pt,pt * 0.1,pt,max(self->maxMana,pt+1));
-		delete self;
+		// within 10% of number with a cutoff at maxMana
+		setMana[pt]=CModuleUtil::randomFormula(val,val * 0.1,val,max(self->maxMana,val+1));
 	}
-	return pt;
+	delete self;
+	return setMana[pt];
 }
 
 /**

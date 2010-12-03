@@ -14,6 +14,7 @@
 #include "TibiaMiniMapPoint.h"
 #include "IPCBackPipeProxy.h"
 #include "LoadWaypointsInfo.h"
+#include "DropLootDialog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,7 +32,6 @@ extern int actualTargetX,actualTargetY,actualTargetZ;
 extern int depotX,depotY,depotZ;
 extern int currentPosTM;
 extern int creatureAttackDist;
-extern int attackSuspendedUntil;
 extern int firstCreatureAttackTM;
 extern int currentWaypointNr;
 extern int pathfindDistance;
@@ -49,6 +49,15 @@ CConfigDialog::CConfigDialog(CMod_cavebotApp *app,CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	m_app=app;
 	cavebotFindpathStartedWaypoint=0;
+
+	for (int i=0;i<100;i++)
+	{
+		virDropList[i][0]='\0';
+	}
+	virDropListCount=0;
+	virDropWhenCapacityLimitReached=0;
+	virDropOnlyLooted=0;
+
 }
 
 
@@ -137,6 +146,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ADD_DELAY, m_AddDelay);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_DELAY, m_delay);
 	DDX_Control(pDX, IDC_LOOTWHILEKILL, m_lootWhileKill);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_DROPLOOTLIST, m_dropLootList);
+	DDX_Control(pDX, IDC_DEPOT_MODPRIORITY,m_depotModPriority);
+	DDX_Control(pDX, IDC_DEPOT_STOPBYDEPOT,m_stopByDepot);
 	//}}AFX_DATA_MAP
 }
 
@@ -158,10 +170,12 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_UP, OnMonsterAttackUp)
 	ON_BN_CLICKED(IDC_MONSTER_ATTACK_DOWN, OnMonsterAttackDown)
 	ON_BN_CLICKED(IDC_AUTORESEARCH, OnAutoResearch)
+	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_DELAY, OnAddDelay)
+	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_DROPLOOTLIST, OnDropLootList)
+	ON_BN_CLICKED(IDC_DROPNOTLOOTED, OnDropLoot)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK_ADD_DELAY, OnAddDelay)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -252,6 +266,10 @@ void CConfigDialog::disableControls()
 	m_curZ.EnableWindow(false);
 	m_radius.EnableWindow(false);
 	m_delay.EnableWindow(false);
+	m_dropLootList.EnableWindow(false);
+	m_dropNotLooted.EnableWindow(false);
+	m_depotModPriority.EnableWindow(false);
+	m_stopByDepot.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -311,6 +329,12 @@ void CConfigDialog::enableControls()
 	m_curZ.EnableWindow(true);
 	m_radius.EnableWindow(true);
 	m_delay.EnableWindow(true);
+	m_dropLootList.EnableWindow(true);
+	m_dropNotLooted.EnableWindow(true);
+	m_depotModPriority.EnableWindow(true);
+	m_stopByDepot.EnableWindow(true);
+
+	OnDropLoot();
 }
 
 
@@ -401,6 +425,14 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_pausingEnable.SetCheck(configData->pausingEnable);
 	sprintf(buf,"%d",configData->radius);m_radius.SetWindowText(buf);
 		
+	memcpy(virDropList,configData->dropList,64*100);
+	virDropListCount=configData->dropListCount;
+	virDropWhenCapacityLimitReached=configData->dropWhenCapacityLimitReached;
+	virDropOnlyLooted=configData->dropOnlyLooted;
+	m_depotModPriority.SetCurSel(atoi(configData->depotModPriorityStr)-1);
+	m_stopByDepot.SetCheck(configData->stopByDepot);
+
+	OnDropLoot();
 
 }
 
@@ -408,7 +440,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 {
 	
 	char buf[128];
-	CConfigData *newConfigData = new CConfigData();	
+	CConfigData *newConfigData = new CConfigData();
 
 	m_standStill.GetWindowText(buf,127);
 	newConfigData->standStill=atoi(buf);
@@ -420,11 +452,11 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->attackHpAbove=atoi(buf);
 	newConfigData->attackOnlyAttacking=m_attackOnlyAttacking.GetCheck();
 	newConfigData->forceAttackAfterAttack=m_forceAttackAfterAttack.GetCheck();
-	newConfigData->stickToMonster=m_stickToMonster.GetCheck();	
+	newConfigData->stickToMonster=m_stickToMonster.GetCheck();
 	newConfigData->eatFromCorpse=m_eatFromCorpse.GetCheck();
 	m_attackRange.GetWindowText(buf,127);
 	newConfigData->attackRange=atoi(buf);
-	newConfigData->autoFollow=m_autoFollow.GetCheck();	
+	newConfigData->autoFollow=m_autoFollow.GetCheck();
 	newConfigData->lootFood=m_lootFood.GetCheck();
 	newConfigData->lootGp=m_lootGp.GetCheck();
 	newConfigData->lootWorms=m_lootWorms.GetCheck();
@@ -450,7 +482,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	for (i=0;i<m_ignoreList.GetCount();i++)
 	{			
 		int j;
-		m_ignoreList.GetText(i,newConfigData->ignoreList[i]);	
+		m_ignoreList.GetText(i,newConfigData->ignoreList[i]);
 		int len=strlen(newConfigData->ignoreList[i]);
 		for (j=0;j<len;j++)
 			newConfigData->ignoreList[i][j]=tolower(newConfigData->ignoreList[i][j]);
@@ -526,8 +558,12 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_radius.GetWindowText(buf,127);
 	newConfigData->radius=atoi(buf);
 
-
-
+	memcpy(newConfigData->dropList,virDropList,64*100);
+	newConfigData->dropListCount=virDropListCount;
+	newConfigData->dropWhenCapacityLimitReached=virDropWhenCapacityLimitReached;
+	newConfigData->dropOnlyLooted=virDropOnlyLooted;
+	sprintf(newConfigData->depotModPriorityStr,"%d",m_depotModPriority.GetCurSel()+1);
+	newConfigData->stopByDepot=m_stopByDepot.GetCheck();
 
 	return newConfigData;
 }
@@ -577,10 +613,6 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				m_stateAttack.SetWindowText(buf);
 			}
 			break;
-		case CToolAutoAttackStateAttack_attackSuspended:
-			sprintf(buf,"State: attackSuspended [yet %ds]",attackSuspendedUntil-time(NULL));
-			m_stateAttack.SetWindowText(buf);
-			break;
 		default:
 			m_stateAttack.SetWindowText("State: unknown");
 		}
@@ -604,18 +636,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		case CToolAutoAttackStateLoot_openingBag:
 			m_stateLoot.SetWindowText("State: opening inner bag");
 			break;
-		case CToolAutoAttackStateLoot_moveingBag:
-			m_stateLoot.SetWindowText("State: moving item from inner bag");
-			break;
-		case CToolAutoAttackStateLoot_closingBag:
-			m_stateLoot.SetWindowText("State: closing inner bag");
-			break;
 		default:
 			m_stateLoot.SetWindowText("State: unknown");
 		}
 
 
-		switch (globalAutoAttackStateWalker) {			
+		switch (globalAutoAttackStateWalker) {
 		
 		case CToolAutoAttackStateWalker_notRunning:
 			m_stateWalker.SetWindowText("State: not running");
@@ -646,7 +672,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				m_waypointList.SetCurSel(currentWaypointNr);
 			break;
 		case CToolAutoAttackStateWalker_halfSleep:
-			m_stateWalker.SetWindowText("State: half module sleep");
+			sprintf(buf,"State: half module sleep by %s:%s",reader.getGlobalVariable("walking_control"),reader.getGlobalVariable("walking_priority"));
+			m_stateWalker.SetWindowText(buf);
 			break;
 		case CToolAutoAttackStateWalker_fullSleep:
 			m_stateWalker.SetWindowText("State: full module sleep");
@@ -659,6 +686,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		{			
 			case CToolAutoAttackStateDepot_notRunning:
 				m_stateDepot.SetWindowText("State: not running");
+				break;
+			case CToolAutoAttackStateDepot_macroPause:
+				m_stateDepot.SetWindowText("State: hotkey paused");
 				break;
 			case CToolAutoAttackStateDepot_notFound:
 				m_stateDepot.SetWindowText("State: depot not found");
@@ -691,7 +721,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		case CToolAutoAttackStateTraining_training:
 			m_trainingState.SetWindowText("State: training");
 			break;
-		case CToolAutoAttackStateTraining_trainingFullDef:
+		case CToolAutoAttackStateTraining_trainingLessDef:
 			m_trainingState.SetWindowText("State: training and attempting bloodhit");
 			break;
 		case CToolAutoAttackStateTraining_fighting:
@@ -801,6 +831,7 @@ BOOL CConfigDialog::OnInitDialog()
 	skin.SetButtonSkin(	m_MonsterDown);
 	skin.SetButtonSkin(	m_MonsterUp);
 	skin.SetButtonSkin(	m_AddDelay);
+	skin.SetButtonSkin(	m_dropLootList);
 
 	// initialise comboboxes, etc.
 	reloadDepotItems();
@@ -1285,4 +1316,15 @@ void CConfigDialog::OnAutoResearch(){
 		curY=nextY;
 		curZ=nextZ;
 	}
+}
+
+void CConfigDialog::OnDropLootList() 
+{
+	CDropLootDialog *dialog = new CDropLootDialog(virDropList,virDropListCount,virDropWhenCapacityLimitReached,virDropOnlyLooted);
+	dialog->DoModal();
+	delete dialog;
+}
+
+void CConfigDialog::OnDropLoot(){
+	m_dropLootList.EnableWindow(m_dropNotLooted.GetCheck());
 }

@@ -39,7 +39,7 @@ of the License, or (at your option) any later version.
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
+CToolBankerState globalBankerState=CToolBankerState_notRunning;
 /////////////////////////////////////////////////////////////////////////////
 // CMod_bankerApp
 
@@ -61,11 +61,24 @@ int findBanker(CConfigData *);
 int moveToBanker(CConfigData *);
 void getBalance();
 int depositGold();
+int changeGold();
 int withdrawGold(CConfigData *config);
 int isDepositing();
 int isCavebotOn();
-int countAllItemsOfType(int);
+int countAllItemsOfType(int,bool);
 int shouldBank(CConfigData *);
+int canBank(CConfigData *);
+
+// Required to be run more often than the return value is expected to change
+int doneAttackingAndLooting(){
+	CMemReaderProxy reader;
+	static int lastAttackTm=0;
+	int ret = GetTickCount()-lastAttackTm>3*1000 && !reader.getAttackedCreature();
+	if (reader.getAttackedCreature()){
+		lastAttackTm=GetTickCount();
+	}
+	return ret;
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
@@ -74,45 +87,83 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
-	int alreadySleeping = 0;
-	int bankerInvoked = 0;
-	char *var;
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
+
+	int persistentShouldGo=0;
+	int lastPathNotFoundTm=0;
 	while (!toolThreadShouldStop) {
-		Sleep(200);
-		int attackedCreature = reader.getAttackedCreature();
-		var=reader.getGlobalVariable("cavebot_halfsleep");
-		if (var==NULL||strcmp(var,"true")) 
-			alreadySleeping = 0; 
-		else 
-			alreadySleeping = 1;
-		if (attackedCreature || alreadySleeping && !bankerInvoked) continue;
-		
-		//if (isDepositing() || !isCavebotOn() || shouldBank(config) && !attackedCreature) {
-		if (shouldBank(config) && !attackedCreature) {
-			if (findBanker(config)) {
-				reader.setGlobalVariable("cavebot_halfsleep", "true");
-				bankerInvoked = 1;
-				if (moveToBanker(config)) {
-					//AfxMessageBox("Yup, found the banker!");
-					if (depositGold()) {
-						if (config->cashOnHand && withdrawGold(config)) {							
-							reader.setGlobalVariable("cavebot_halfsleep","false");
-							bankerInvoked = 0;
-						}
-						getBalance();
+		Sleep(400);
+		if (!persistentShouldGo && shouldBank(config)){
+			persistentShouldGo=1;
+		}
+		const char* controller=reader.getGlobalVariable("walking_control");
+		if (!persistentShouldGo
+			&& config->stopByBanker
+			&& (!strcmp(controller,"seller") || !strcmp(controller,"depotwalker"))
+			&& canBank(config)){
+			persistentShouldGo=1;
+		}
+
+		bool control= strcmp(reader.getGlobalVariable("walking_control"),"banker")==0;
+		int modpriority=atoi(reader.getGlobalVariable("walking_priority"));
+		// if wants control
+		if (persistentShouldGo) {
+			//if no path found let other modules work and wait 10 secs before trying again
+			if (time(NULL)-lastPathNotFoundTm > 10){
+				//if should have control, take it
+				if (!control){
+					if (atoi(config->modPriorityStr) > modpriority){
+						reader.setGlobalVariable("walking_control","banker");
+						reader.setGlobalVariable("walking_priority",config->modPriorityStr);
+					} else {
+						globalBankerState=CToolBankerState_halfSleep;
 					}
 				}
+			} else {
+				globalBankerState=CToolBankerState_noPathFound;
+				//if has control, give it up
+				if (control){
+					reader.setGlobalVariable("walking_control","");
+					reader.setGlobalVariable("walking_priority","0");
+				}
+			}
+		} else { // if doesn't want control
+			globalBankerState=CToolBankerState_notRunning;
+			//if has control, give it up
+			if (control){
+				reader.setGlobalVariable("walking_control","");
+				reader.setGlobalVariable("walking_priority","0");
 			}
 		}
-		else {
-			reader.setGlobalVariable("cavebot_halfsleep","false");
-			bankerInvoked = 0;
+		if (doneAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"banker")==0){
+			if (findBanker(config)){
+				globalBankerState=CToolBankerState_walking;
+				if (moveToBanker(config)) {
+					globalBankerState=CToolBankerState_talking;
+					//AfxMessageBox("Yup, found the banker!");
+					if (config->changeGold){
+						changeGold();
+					} else {
+						if (depositGold()) {
+							if (config->cashOnHand) {
+								withdrawGold(config);
+							}
+							getBalance();
+						}
+					}
+					persistentShouldGo=0;
+				}
+			} else {
+				lastPathNotFoundTm=time(NULL);
+			}
 		}
 	}
-	reader.setGlobalVariable("cavebot_halfsleep","false");
-	bankerInvoked = 0;
+	if (strcmp(reader.getGlobalVariable("walking_control"),"banker")==0){
+		reader.setGlobalVariable("walking_control","");
+		reader.setGlobalVariable("walking_priority","0");
+	}
+	globalBankerState=CToolBankerState_notRunning;
 	toolThreadShouldStop=0;
 	return 0;
 }
@@ -222,6 +273,10 @@ void CMod_bankerApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName, "BankerName")) sprintf(m_configData->banker.bankerName, "%s", paramValue);
 	if (!strcmp(paramName, "DepositTrigger")) m_configData->minimumGoldToBank = atoi(paramValue);
 	if (!strcmp(paramName, "CashOnHand")) m_configData->cashOnHand = atoi(paramValue);
+	if (!strcmp(paramName, "ModPriority")) strcpy(m_configData->modPriorityStr,paramValue);
+	if (!strcmp(paramName, "ChangeGold")) m_configData->changeGold = atoi(paramValue);
+	if (!strcmp(paramName, "CapsLimit")) m_configData->capsLimit = atoi(paramValue);
+	if (!strcmp(paramName, "StopByBanker")) m_configData->stopByBanker = atoi(paramValue);
 
 }
 
@@ -231,6 +286,10 @@ char *CMod_bankerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName, "BankerName")) sprintf(buf,"%s",m_configData->banker.bankerName);
 	if (!strcmp(paramName, "DepositTrigger")) sprintf(buf,"%d",m_configData->minimumGoldToBank);
 	if (!strcmp(paramName, "CashOnHand")) sprintf(buf,"%d",m_configData->cashOnHand);
+	if (!strcmp(paramName, "ModPriority")) strcpy(buf,m_configData->modPriorityStr);
+	if (!strcmp(paramName, "ChangeGold")) sprintf(buf,"%d",m_configData->changeGold);
+	if (!strcmp(paramName, "CapsLimit")) sprintf(buf,"%d",m_configData->capsLimit);
+	if (!strcmp(paramName, "StopByBanker")) sprintf(buf,"%d",m_configData->stopByBanker);
 
 	return buf;
 }
@@ -240,6 +299,10 @@ char *CMod_bankerApp::getConfigParamName(int nr) {
 	case 0: return "BankerName";
 	case 1: return "DepositTrigger";
 	case 2: return "CashOnHand";
+	case 3: return "ModPriority";
+	case 4: return "ChangeGold";
+	case 5: return "CapsLimit";
+	case 6: return "StopByBanker";
 	default:
 		return NULL;
 	}
@@ -253,31 +316,24 @@ int findBanker(CConfigData *config) {
 		delete self; 
 		return 1;
 	}
-	for (int x = 0; x < 10; x++) {
-		struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.position[x].bankerX, config->banker.position[x].bankerY, config->banker.position[x].bankerZ, 0, config->path,0);
-		if (nearestBank.x && nearestBank.y && nearestBank.z) {
-			config->targetX = nearestBank.x;
-			config->targetY = nearestBank.y;
-			config->targetZ = nearestBank.z;
-			delete self;
-			return 1;
-		}
-		else if (x == 9) {
-			config->targetX = config->targetY = config->targetZ = 0;
-			delete self;
-			return 0;
-		}
+	struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.bankerX, config->banker.bankerY, config->banker.bankerZ, 0, config->path,3);
+	if (nearestBank.x && nearestBank.y && nearestBank.z) {
+		config->targetX = nearestBank.x;
+		config->targetY = nearestBank.y;
+		config->targetZ = nearestBank.z;
+		delete self;
+		return 1;
 	}
 	delete self;
-	return -1;
+	return 0;
 }
 
 int shouldKeepWalking() {
 	static lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
-		char *var=reader.getGlobalVariable("autolooterTm");
-		if (var==NULL || strcmp(var,"")==0){
+		const char *var=reader.getGlobalVariable("autolooterTm");
+		if (strcmp(var,"")==0){
 			if (lastAttackTime<time(NULL)-3)
 				return 1;
 			else
@@ -290,16 +346,50 @@ int shouldKeepWalking() {
 
 int moveToBanker(CConfigData *config) {
 	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
 
+	static int positionFound=0;
 	if (shouldKeepWalking()){
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
-		self = reader.readSelfCharacter();
-		if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+		//Find a location close enough to NPC
+		if (!positionFound){
+			CTibiaCharacter* self = reader.readSelfCharacter();
+			CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
+			if (self->x == config->targetX && self->y == config->targetY && self->z == config->targetZ) {
+				positionFound=1;
+			}
 			delete self;
-			return 1;
+		} else { //Approach NPC after finding them
+			for (int i=0;i<memConstData.m_memMaxCreatures;i++){
+				CTibiaCharacter* mon=reader.readVisibleCreature(i);
+				// since banker.bankerName may include city, match first part of name
+				if (mon->tibiaId==0) break;
+				int len=strlen(mon->name);
+				if (strncmp(config->banker.bankerName,mon->name,len)==0 && (config->banker.bankerName[len]==0 || config->banker.bankerName[len]==' ')){
+					for (int tries=0;tries<2;tries++){ // should only need 1 try, but we'd need to start over if we don't make it
+						CTibiaCharacter* self = reader.readSelfCharacter();
+						delete mon;
+						mon=reader.readVisibleCreature(i);
+
+						struct point nearestBank=point(0,0,0);
+						int rad=2;
+						while (nearestBank.x==0 && rad<=3){//find paths increasingly farther away
+							nearestBank= CModuleUtil::findPathOnMap(self->x, self->y, self->z, mon->x, mon->y, mon->z, 0, config->path,rad++);
+						}
+						if (nearestBank.x && nearestBank.y && nearestBank.z==self->z){
+							CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
+							if (CModuleUtil::waitToStandOnSquare(nearestBank.x, nearestBank.y)){
+								delete mon;
+								delete self;
+								return 1;
+							}
+						}
+						delete self;
+					}
+				}
+				delete mon;
+			}
+			positionFound=0;
 		}
-		delete self;
 	}
 	return 0;
 }
@@ -313,25 +403,11 @@ void getBalance() {
 int depositGold() {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CTibiaContainer *cont;
-	int goldId = itemProxy.getValueForConst("GP");
-	int platId = itemProxy.getValueForConst("PlatinumCoin");
-	int crystalId = itemProxy.getValueForConst("CrystalCoin");
-	int foundInBag = 0;
-	for (int contNr = 0; contNr < 16; contNr++) {
-		cont = reader.readContainer(contNr);
-		int count = cont->itemsInside;
-		for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
-			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
-			if (item->objectId == goldId || item->objectId == platId || item->objectId == crystalId) {
-				foundInBag = contNr;
-				goto exitLoop;
-			}
-		}
-		delete cont;
-	}
-exitLoop:
+
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	float origcaps=self->cap;
+	delete self;
+
 	Sleep (RandomTimeBankerSay(strlen("hi")));
 	sender.say("hi");
 	Sleep(500);//Give time for NPC window to open
@@ -339,11 +415,9 @@ exitLoop:
 	sender.sayNPC("deposit all");
 	Sleep (RandomTimeBankerSay(strlen("yes")));
 	sender.sayNPC("yes");
-	if (CModuleUtil::waitForItemsInsideChange(foundInBag, cont->itemsInside)) {
-		delete cont;
+	if (CModuleUtil::waitForCapsChange(origcaps)) {
 		return 1;
 	}
-	delete cont;
 	return 0;
 }
 
@@ -366,6 +440,54 @@ int withdrawGold(CConfigData *config) {
 	}
 	delete self;	
 	return 0;
+}
+
+int changeGold() {
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+	CTibiaItemProxy itemProxy;
+
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	float origcaps=self->cap;
+	delete self;
+	int retval=0;
+
+	int goldId = itemProxy.getValueForConst("GP");
+	int goldCount = countAllItemsOfType(goldId,true);
+
+	char buf[128];
+	Sleep (RandomTimeBankerSay(strlen("hi")));
+	sender.say("hi");
+	Sleep(500);//Give time for NPC window to open
+	if (goldCount>=100){
+		Sleep (RandomTimeBankerSay(strlen("change gold")));
+		sender.sayNPC("change gold");
+		sprintf(buf,"%d",goldCount/100);
+		Sleep (RandomTimeBankerSay(strlen(buf)));
+		sender.sayNPC(buf);
+		Sleep (RandomTimeBankerSay(strlen("yes")));
+		sender.sayNPC("yes");
+	}
+
+	if (CModuleUtil::waitForCapsChange(origcaps)) retval=1;
+
+	int platId = itemProxy.getValueForConst("PlatinumCoin");
+	int platCount = countAllItemsOfType(platId,true);
+	if (platCount>=100){
+		Sleep (RandomTimeBankerSay(strlen("change platinum")));
+		sender.sayNPC("change platinum");
+		Sleep (RandomTimeBankerSay(strlen("crystal")));
+		sender.sayNPC("crystal");
+		sprintf(buf,"%d",platCount/100);
+		Sleep (RandomTimeBankerSay(strlen(buf)));
+		sender.sayNPC(buf);
+		Sleep (RandomTimeBankerSay(strlen("yes")));
+		sender.sayNPC("yes");
+	}
+
+	if (CModuleUtil::waitForCapsChange(origcaps)) retval=1;
+
+	return retval;
 }
 
 int isCavebotOn() {
@@ -395,45 +517,90 @@ int isCavebotOn() {
 
 int isDepositing() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("cavebot_depositing");
-	if (var==NULL||strcmp(var,"true")) {
-		delete var;
-		return 0;
-	}
-	else {
-		delete var;
-		return 1;
-	}
+	const char *var=reader.getGlobalVariable("cavebot_depositing");
+	return strcmp(var,"true")==0;
 }
 
-int countAllItemsOfType(int objectId) {
+int countAllItemsOfType(int objectId,bool includeSlots) {
 	CMemReaderProxy reader;
 	int contNr;
 	int ret=0;
-	for (contNr = 0; contNr < 16; contNr++) {
+	for (contNr = 0; contNr < 8; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
 		if (cont->flagOnOff)
 			ret+=cont->countItemsOfType(objectId);
 		delete cont;
 	}
+	if (includeSlots){
+		CMemConstData memConstData = reader.getMemConstData();
+		for (int slotNr = 0; slotNr < 10; slotNr++) { // Loops through all 10 inventory slots(backwards)
+			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow-slotNr*memConstData.m_memLengthItem);
+			if (item->objectId==objectId)
+				ret += item->quantity?item->quantity:1;
+			delete item;
+		}
+	}
 	return ret;
 }
 
 int shouldBank(CConfigData *config) {
 	CTibiaItemProxy itemProxy;
-	int objectId = itemProxy.getValueForConst("GP");
-	int count = countAllItemsOfType(objectId);
-	objectId = itemProxy.getValueForConst("PlatinumCoin");
-	count += countAllItemsOfType(objectId) * 100;
-	objectId = itemProxy.getValueForConst("CrystalCoin");
-	count += countAllItemsOfType(objectId) * 10000;
-	if (count >= config->minimumGoldToBank)
-		return 1;
-	else 
-		return 0;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+
+	CTibiaCharacter* self = reader.readSelfCharacter();
+	int belowCaps=self->cap < config->capsLimit;
+	delete self;
+
+	
+	int goldId = itemProxy.getValueForConst("GP");
+	int platId = itemProxy.getValueForConst("PlatinumCoin");
+	int crystalId = itemProxy.getValueForConst("CrystalCoin");
+	int goldCount = countAllItemsOfType(goldId,true);
+	int platCount = countAllItemsOfType(platId,true);
+	int crystalCount = countAllItemsOfType(crystalId,true);
+
+	int totalCash=goldCount+platCount*100+crystalCount*10000;
+	int canChange=goldCount>=100 || platCount>=100;
+
+	if (belowCaps){
+		if (!config->changeGold && totalCash > config->cashOnHand || config->changeGold && canChange)
+			return 1;
+	}
+	if (!config->changeGold){
+		if (totalCash >= config->minimumGoldToBank){
+			return 1;
+		} else {
+			return 0;
+		}
+	}
+	return 0;
 }
 
+int canBank(CConfigData *config){
+	CTibiaItemProxy itemProxy;
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+
+	CTibiaCharacter* self = reader.readSelfCharacter();
+	delete self;
+
+	
+	int goldId = itemProxy.getValueForConst("GP");
+	int platId = itemProxy.getValueForConst("PlatinumCoin");
+	int crystalId = itemProxy.getValueForConst("CrystalCoin");
+	int goldCount = countAllItemsOfType(goldId,true);
+	int platCount = countAllItemsOfType(platId,true);
+	int crystalCount = countAllItemsOfType(crystalId,true);
+
+	int totalCash=goldCount+platCount*100+crystalCount*10000;
+	int canChange=goldCount>=100 || platCount>=100;
+
+	if (!config->changeGold && totalCash > config->cashOnHand || config->changeGold && canChange)
+		return 1;
+	return 0;
+}
 void CMod_bankerApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 	skin.SetButtonSkin(	m_configDialog->m_OK);
@@ -442,3 +609,4 @@ void CMod_bankerApp::getNewSkin(CSkin newSkin) {
 	if (m_configDialog)
 		m_configDialog->Invalidate();
 }
+
