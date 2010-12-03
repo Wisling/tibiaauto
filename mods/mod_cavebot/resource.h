@@ -61,6 +61,7 @@
 #define IDC_AUTO_OPEN                   3005
 #define IDD_LOADWAYPOINTSINFO           3005
 #define IDC_CONTAINER_MODE_3            3006
+#define IDD_DROPLIST                    3006
 #define IDC_CONTAINER_STATUS3           3007
 #define IDC_CONTAINER_MODE_4            3008
 #define IDC_CONTAINER_STATUS4           3009
@@ -127,15 +128,24 @@
 #define IDC_FRAME_MONSTER_ATTACKING     3053
 #define IDC_PREFIX                      3054
 #define IDC_FRAME                       3055
-#define IDC_RADIO1                      3056
+#define IDC_TOOL_AUTOATTACK_DROPLOOTLIST 3057
+#define IDC_DROPLIST_ITEMLIST           3058
+#define IDC_DROPLIST_DROPLIST           3059
+#define IDC_DROPLIST_WHENNOCAPS         3061
+#define IDC_DROPLIST_ONLYLOOT           3062
+#define IDC_DROPLIST_ADD                3064
+#define IDC_DROPLIST_DELETE             3065
+#define IDC_DROPLOOT                    3066
+#define IDC_DEPOT_MODPRIORITY           3068
+#define IDC_DEPOT_STOPBYDEPOT           3069
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3006
+#define _APS_NEXT_RESOURCE_VALUE        3007
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3057
+#define _APS_NEXT_CONTROL_VALUE         3070
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

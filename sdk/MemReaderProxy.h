@@ -95,7 +95,7 @@ public:
 	// returns pointer to a global variable value string buffer
 	// note: if other module changes value of the variable in the meantime, the change
 	//       is visible to all modules immediatelly
-	char *getGlobalVariable(char *name);
+	const char *getGlobalVariable(char *name);
 
 	CTibiaMiniMap *readMiniMap(int nr);
 	CTibiaMiniMapLabel *readMiniMapLabel(int mapNr,int pointNr);

@@ -236,7 +236,7 @@ END
 
 IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 320
 STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "General Configuration",IDC_GENERAL_CONFIG_FRAME,7,7,267,
                     306
@@ -287,7 +287,8 @@ BEGIN
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Facing Direction:",IDC_STATIC,21,144,54,8
     CONTROL         "Maintain Start Position",IDC_MAINTAIN_START,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,161,143,86,10
+                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,161,143,86,
+                    10
     CONTROL         3031,IDC_START_PICTURE,"Static",SS_BITMAP | 
                     SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,14,176,124,100
     LTEXT           "Start Position:",IDC_STATIC,14,164,44,8,SS_CENTERIMAGE
@@ -297,6 +298,9 @@ BEGIN
                     SS_CENTERIMAGE
     CONTROL         "Highlight window when alarm sounds",IDC_FLASHONALARM,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,296,144,10
+    LTEXT           "Module Priority:",IDC_STATIC,157,282,49,8
+    COMBOBOX        IDC_AUTOGO_MODPRIORITY,208,280,59,95,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
 END
 
 IDD_ADD_CUSTOM_SPELL DIALOG DISCARDABLE  0, 0, 187, 97
@@ -519,6 +523,16 @@ IDD_GENERAL_CONFIG_DIALOG DLGINIT
 BEGIN
     IDC_AUTOGO_ACT_DIRECTION, 0x403, 1, 0
 "\000" 
+    IDC_AUTOGO_MODPRIORITY, 0x403, 8, 0
+0x2031, 0x202d, 0x6f4c, 0x0077, 
+    IDC_AUTOGO_MODPRIORITY, 0x403, 2, 0
+0x0032, 
+    IDC_AUTOGO_MODPRIORITY, 0x403, 2, 0
+0x0033, 
+    IDC_AUTOGO_MODPRIORITY, 0x403, 2, 0
+0x0034, 
+    IDC_AUTOGO_MODPRIORITY, 0x403, 9, 0
+0x2035, 0x202d, 0x6948, 0x6867, "\000" 
     0
 END
 
@@ -684,6 +698,13 @@ BEGIN
     IDS_GENERAL_CHARACTERNOTMOVED 
                             "When the time your character has not moved satisfies the trigger condition, this alarm will trigger."
     IDS_START_RUNAWAY       "When both Start and Runaway are enabled the alarm with travel between both points continuously."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_PRESENT             "When condition is present the alarm will trigger."
+    IDS_ABSENT              "When condition is absent the alarm will trigger."
+    IDS_ONLINE_VIP_PLAYER   "When a VIP name specified in the trigger is logged in or out according to the conditions, the alarm will trigger."
 END
 
 #endif    // English (U.S.) resources

@@ -129,6 +129,7 @@ private:
 	int m_currentMonsterNr;
 	int m_currentIgnoreNr;
 	int m_currentDepotEntryNr;
+	int m_currentDroplistEntryNr;
 };
 
 

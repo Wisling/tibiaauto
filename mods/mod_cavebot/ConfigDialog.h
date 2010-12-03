@@ -24,7 +24,6 @@ enum CToolAutoAttackStateAttack
 	CToolAutoAttackStateAttack_macroPause,
 	CToolAutoAttackStateAttack_attackingAlienFound,
 	CToolAutoAttackStateAttack_attackingCreature,
-	CToolAutoAttackStateAttack_attackSuspended
 };
 
 enum CToolAutoAttackStateLoot
@@ -35,8 +34,6 @@ enum CToolAutoAttackStateLoot
 	CToolAutoAttackStateLoot_moveing,
 	CToolAutoAttackStateLoot_closing,
 	CToolAutoAttackStateLoot_openingBag,
-	CToolAutoAttackStateLoot_moveingBag,
-	CToolAutoAttackStateLoot_closingBag
 };
 
 
@@ -55,6 +52,7 @@ enum CToolAutoAttackStateWalker
 enum CToolAutoAttackStateDepot
 {
 	CToolAutoAttackStateDepot_notRunning,
+	CToolAutoAttackStateDepot_macroPause,
 	CToolAutoAttackStateDepot_notFound,
 	CToolAutoAttackStateDepot_noSpace,
 	CToolAutoAttackStateDepot_walking,
@@ -66,7 +64,7 @@ enum CToolAutoAttackStateTraining
 {
 	CToolAutoAttackStateTraining_notRunning,
 	CToolAutoAttackStateTraining_training,
-	CToolAutoAttackStateTraining_trainingFullDef,
+	CToolAutoAttackStateTraining_trainingLessDef,
 	CToolAutoAttackStateTraining_fighting,
 	CToolAutoAttackStateTraining_switchingWeapon
 };
@@ -183,6 +181,9 @@ public:
 	CEdit	m_radius;
 	CButtonST	m_AddDelay;
 	CEdit	m_delay;
+	CButtonST	m_dropLootList;
+	CComboBox m_depotModPriority;
+	CButton m_stopByDepot;
 
 	//}}AFX_DATA
 
@@ -219,6 +220,8 @@ protected:
 	afx_msg void OnMonsterAttackDown();
 	afx_msg void OnAutoResearch();
 	afx_msg void OnAddDelay();
+	afx_msg void OnDropLootList();
+	afx_msg void OnDropLoot();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -226,6 +229,11 @@ private:
 	int cavebotFindpathStartedWaypoint;
 	queue <PathfindParams*> pathfindPoints;
 	CMod_cavebotApp * m_app;
+
+	char virDropList[100][64];
+	int virDropListCount;
+	int virDropWhenCapacityLimitReached;
+	int virDropOnlyLooted;
 };
 
 //{{AFX_INSERT_LOCATION}}

@@ -112,9 +112,11 @@ CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateT
 int waypointTargetX=0,waypointTargetY=0,waypointTargetZ=0;
 int actualTargetX=0,actualTargetY=0,actualTargetZ=0;
 int depotX=0,depotY=0,depotZ=0;
+int lastDepotPathNotFoundTm=0;
+int persistentShouldGo=0;
+
 int currentPosTM=0;
 int creatureAttackDist=0;
-int attackSuspendedUntil=0;
 int firstCreatureAttackTM=0;
 int currentWaypointNr=0;
 int walkerStandingEndTm=0;
@@ -129,6 +131,8 @@ CTibiaQueue<Corpse> corpseQueue;
 
 const int CONTAINER_TIME_CUTOFF=10;
 int containerTimes[32];//used to differentiate between carried containers and other containers
+
+CUIntArray lootFromFloorArr;
 
 
 CTibiaMapProxy tibiaMap;
@@ -240,6 +244,44 @@ exitDSG:
 	return ret;
 }
 
+depotCheckCanGo(CConfigData *config){
+	int ret=0;
+	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int i;
+	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
+		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
+		int contNr;
+		int totalQty=0;
+		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+			CTibiaContainer *cont = reader.readContainer(contNr);
+			
+			if (cont->flagOnOff)
+				totalQty+=cont->countItemsOfType(objectId);
+			
+			deleteAndNull(cont);
+		}
+		// check whether we should deposit something
+		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
+			(totalQty>0 || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
+			ret=1;
+			goto exitDCG;
+		}
+		// check whether we should restack something
+		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
+			(totalQty>config->depotTrigger[i].remain || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
+			ret=1;
+			goto exitDCG;
+		}
+	}
+exitDCG:
+	deleteAndNull(self);
+	return ret;
+
+}
+
 /**
 * Do checks concerning 'go to depot' functionality.
 */
@@ -248,10 +290,49 @@ void depotCheck(CConfigData *config) {
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
+
+	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notFound){
+		lastDepotPathNotFoundTm=time(NULL);
+	}
+
 	if (config->debug) registerDebug("Depot check");
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notRunning) {
 		CTibiaCharacter *self=reader.readSelfCharacter();
-		if (depotCheckShouldGo(config)) {
+		if (!persistentShouldGo && depotCheckShouldGo(config)){
+			persistentShouldGo=1;
+		}
+		const char* controller=reader.getGlobalVariable("walking_control");
+		if (!persistentShouldGo
+			&& config->stopByDepot
+			&& (!strcmp(controller,"seller") || !strcmp(controller,"banker"))
+			&& depotCheckCanGo(config)){
+			persistentShouldGo=1;
+		}
+
+		bool control= strcmp(controller,"depotwalker")==0;
+		int modpriority=atoi(reader.getGlobalVariable("walking_priority"));
+		if (persistentShouldGo) {
+			if (time(NULL)-lastDepotPathNotFoundTm > 10){
+				//if should have control, take it
+				if (!control && atoi(config->depotModPriorityStr) > modpriority){
+					reader.setGlobalVariable("walking_control","depotwalker");
+					reader.setGlobalVariable("walking_priority",config->depotModPriorityStr);
+				}
+			} else {
+				//if has control, give it up
+				if (control){
+					reader.setGlobalVariable("walking_control","");
+					reader.setGlobalVariable("walking_priority","0");
+				}
+			}
+		} else { // if doesn't want control
+			//if has control, give it up
+			if (control){
+				reader.setGlobalVariable("walking_control","");
+				reader.setGlobalVariable("walking_priority","0");
+			}
+		}
+		if (strcmp(reader.getGlobalVariable("walking_control"),"depotwalker")==0){
 			if (config->debug) registerDebug("We should go to a depot");
 			/**
 			* Ok then - we should do the depositing.
@@ -341,6 +422,7 @@ void depotCheck(CConfigData *config) {
 			// depot not found - argh
 			globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
 			depotX=depotY=depotZ=0;
+			persistentShouldGo=0;
 			if (config->debug) registerDebug("Depot not found - depot state: not found (again)");
 		}
 		
@@ -739,6 +821,7 @@ void depotDeposit(CConfigData *config) {
 	}
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	depotX=depotY=depotZ=0;
+	persistentShouldGo=0;
 	deleteAndNull(self);
 
 }
@@ -887,11 +970,11 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 			if (config->bloodHit) {
 				sprintf(buf,"Training: inside blood hit control (%d-%d=%d)",time(NULL),lastAttackedCreatureBloodHit,time(NULL)-lastAttackedCreatureBloodHit);
 				if (config->debug) registerDebug(buf);
-				if (time(NULL)-lastAttackedCreatureBloodHit<20) {
+				if (time(NULL)-lastAttackedCreatureBloodHit>20) {
 					// if 20s has passed since last blood hit, then we do harder attack mode
 					// otherwise we do selected attack mode
 					*attackMode=max(*attackMode-1,1);
-					globalAutoAttackStateTraining=CToolAutoAttackStateTraining_trainingFullDef;
+					globalAutoAttackStateTraining=CToolAutoAttackStateTraining_trainingLessDef;
 				}
 			}
 		}
@@ -908,7 +991,7 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 	}
 }
 
-void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
+void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropItems=NULL) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaContainer *dropCont = reader.readContainer(contNr);
@@ -916,9 +999,16 @@ void dropAllItemsFromContainer(int contNr, int x, int y, int z) {
 		int itemNr;
 		for (itemNr=dropCont->itemsInside-1;itemNr>=0;itemNr--) {
 			CTibiaItem *lootItem = (CTibiaItem *)dropCont->items.GetAt(itemNr);
-			sender.moveObjectFromContainerToFloor(lootItem->objectId,0x40+contNr,lootItem->pos,x,y,z,lootItem->quantity?lootItem->quantity:1);
-			CModuleUtil::waitForItemsInsideChange(contNr,itemNr+1);
-			Sleep(CModuleUtil::randomFormula(500,200));
+			for (int listNr=0;dropItems == NULL || listNr<dropItems->GetSize();listNr++){
+				if (dropItems == NULL || dropItems->GetAt(listNr) == lootItem->objectId){
+					int passx=x,passy=y;
+					CModuleUtil::findFreeSpace(passx,passy,z);//changes x and y
+					sender.moveObjectFromContainerToFloor(lootItem->objectId,0x40+contNr,lootItem->pos,passx,passy,z,lootItem->quantity?lootItem->quantity:1);
+					CModuleUtil::waitForItemsInsideChange(contNr,itemNr+1);
+					Sleep(CModuleUtil::randomFormula(500,200));
+					break;
+				}
+			}
 		}
 	}
 	deleteAndNull(dropCont);
@@ -986,6 +1076,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 	CTibiaMapProxy tibiaMap;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
+	if (lootFromFloorArr.GetSize() == 0) lootFromFloorArr.Copy(lootedArr);
 
 	if (config->lootFromFloor&&self->cap>config->capacityLimit) {
 
@@ -1017,7 +1108,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 			if (config->debug) registerDebug(buf);
 		}
 		
-		sortArray(lootedArr);
+		sortArray(lootFromFloorArr);
 
 		int foundLootedObjectId=0;
 		int isTopItem=0;
@@ -1025,7 +1116,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 		int xSwitch=0;
 		int ySwitch=0;
 		int count=0;
-		while (x!=8 && y !=8){
+		while (x!=8 && y!=8){
 			//manage x and y coords for spiraling
 			if (xSwitch==0 && ySwitch==0){xSwitch=1;}
 			else if (x==y && x>=0 && xSwitch==1 && ySwitch==0) {x++; xSwitch=0;ySwitch=-1;}
@@ -1047,9 +1138,9 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 			{
 				count++;
 				int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
-				int ind = binarySearch(tileId,lootedArr);
+				int ind = binarySearch(tileId,lootFromFloorArr);
 				if (ind!=-1){
-					foundLootedObjectId=lootedArr[ind];
+					foundLootedObjectId=(lootFromFloorArr)[ind];
 					isTopItem = pos==itemOnTopIndex(x,y);
 					break;
 				}
@@ -1272,30 +1363,30 @@ int getAttackPriority(CConfigData *config,char *monsterName) {
 
 int isInHalfSleep() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("cavebot_halfsleep");
-	if (var==NULL||strcmp(var,"true")) return 0; else return 1;
+	const char *var=reader.getGlobalVariable("walking_control");
+	return strcmp(var,"cavebot")!=0 && strcmp(var,"depotwalker")!=0;
 }
 
 int isInFullSleep() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("cavebot_fullsleep");
-	if (var==NULL||strcmp(var,"true")) return 0; else return 1;
+	const char *var=reader.getGlobalVariable("cavebot_fullsleep");
+	if (strcmp(var,"true")) return 0; else return 1;
 }
 
 int isLooterDone(CConfigData *config) {
 	if (!config->lootWhileKill) return 1;
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("autolooterTm");
+	const char *var=reader.getGlobalVariable("autolooterTm");
 	//check if looter is done or time given to looter is up
-	if (var==NULL||!strcmp(var,"")||time(NULL)>autolooterTm || abs(time(NULL)-autolooterTm)>3600*24)
+	if (!strcmp(var,"")||time(NULL)>autolooterTm || abs(time(NULL)-autolooterTm)>3600*24)
 		return 1;
 	return 0;
 }
 int shouldLoot() {
 	CMemReaderProxy reader;
-	char *var=reader.getGlobalVariable("autolooterTm");
+	const char *var=reader.getGlobalVariable("autolooterTm");
 	int tmp;
-	if (var!=NULL && sscanf(var,"%d %d",&tmp,&tmp)==2)
+	if (sscanf(var,"%d %d",&tmp,&tmp)==2)
 		return 1;
 	return 0;
 }
@@ -1421,7 +1512,7 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 	while (!toolThreadShouldStop) {
 		Sleep(100);
 		if (shouldLoot()){
-			char* var=reader.getGlobalVariable("autolooterTm");
+			const char* var=reader.getGlobalVariable("autolooterTm");
 			unsigned int endTime,tibiaId;
 			sscanf(var,"%d %d",&endTime,&tibiaId);
 			reader.setGlobalVariable("autolooterTm","wait");
@@ -1447,9 +1538,8 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 	CConfigData *config = (CConfigData *)lpParam;
 	//start helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
 
-	while (!toolThreadShouldStop) {
-		Sleep(100);
-		while (corpseQueue.GetCount()){
+	while (!toolThreadShouldStop) {		Sleep(100);
+		while (corpseQueue.GetCount() && globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_macroPause){
 			Corpse corpseCh=corpseQueue.Remove();
 			if(GetTickCount()-corpseCh.tod>1000*60){
 				continue;
@@ -1480,7 +1570,8 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 						int itemNr;
 						for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
 							CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
-							if (insideItem->objectId==itemProxy.getValueForConst("bagbrown")) {
+							CTibiaTile* tile=reader.getTibiaTile(insideItem->objectId);
+							if (insideItem->objectId && tile && tile->isContainer) {
 								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
 								Sleep(CModuleUtil::randomFormula(200,100));
 								sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
@@ -1493,10 +1584,11 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 					}
 					CUIntArray acceptedItems;
 
-					if (config->lootGp)
+					if (config->lootGp){
 						acceptedItems.Add(itemProxy.getValueForConst("GP"));
 						acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
 						acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
+					}
 					if (config->lootWorms)
 						acceptedItems.Add(itemProxy.getValueForConst("worms"));
 					if (config->lootCustom) {
@@ -1513,14 +1605,35 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 						if(lootCont->flagOnOff){
 							for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
 								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-								CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+								if (self->cap>config->capacityLimit) {
+									CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+								}
 								if (config->eatFromCorpse) {
 									CModuleUtil::eatItemFromContainer(contNr);
 									CModuleUtil::eatItemFromContainer(contNr);
 								}
 							}
 							if (config->dropNotLooted) {
-								dropAllItemsFromContainer(contNr,corpseCh.x,corpseCh.y,corpseCh.z);
+								CTibiaCharacter *self=reader.readSelfCharacter();
+								if (config->dropWhenCapacityLimitReached
+									&& self->cap < config->capacityLimit
+									&& !config->dropOnlyLooted
+									|| !config->dropWhenCapacityLimitReached
+									&& config->dropListCount != 0)
+								{
+									CUIntArray droppedItems;
+									droppedItems.SetSize(config->dropListCount);
+									for (int i=0; i<config->dropListCount;i++){
+										int itemid=itemProxy.getItemId(config->dropList[i]);
+										if (itemid) droppedItems.Add(itemid);
+									}
+									dropItemsFromContainer(contNr,corpseCh.x,corpseCh.y,corpseCh.z,&droppedItems);
+								} else if (self->cap < config->capacityLimit && config->dropOnlyLooted){
+									dropItemsFromContainer(contNr,corpseCh.x,corpseCh.y,corpseCh.z,&acceptedItems);
+								} else if(!config->dropWhenCapacityLimitReached && config->dropListCount == 0) {
+									dropItemsFromContainer(contNr,corpseCh.x,corpseCh.y,corpseCh.z);
+								}
+								delete self;
 							}
 							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closing;
 							sender.closeContainer(contNr);
@@ -1536,8 +1649,10 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 				}
 			}
 			if (!corpseQueue.GetCount()) reader.setGlobalVariable("autolooterTm","");
-		} 
-		globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+			delete self;
+		}
+		if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_macroPause) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_macroPause;
+		else globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
 	}
 	lootThreadId=0;
 	return 0;
@@ -1572,11 +1687,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	waypointTargetX=waypointTargetY=waypointTargetZ=0;
 	actualTargetX=actualTargetY=actualTargetZ=0;
 	depotX=depotY=depotZ=0;
+	lastDepotPathNotFoundTm=0;
+	persistentShouldGo=0;
+
 	creatureAttackDist=0;
 	walkerStandingEndTm=0;
-	attackSuspendedUntil=0;
 	firstCreatureAttackTM=0;
 	currentPosTM=time(NULL);
+
+	lootFromFloorArr.RemoveAll();
 	
 	int i;
 	for (i=0;i<memConstData.m_memMaxContainers;i++){
@@ -1657,6 +1776,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (pauseInvoked) sender.sendTAMessage("Paused Cavebot");
 					else sender.sendTAMessage("Cavebot Unpaused");
 					if (pauseInvoked){
+						globalAutoAttackStateAttack=CToolAutoAttackStateAttack_macroPause;
+						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_macroPause;
+						globalAutoAttackStateDepot=CToolAutoAttackStateDepot_macroPause;
 						sender.attack(0);
 						reader.setAttackedCreature(0);
 						reader.cancelAttackCoords();
@@ -1664,6 +1786,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1);
 
 						if (config->debug) registerDebug("Paused cavebot");
+						reader.setGlobalVariable("walking_control","userpause");
+						reader.setGlobalVariable("walking_priority","10");
+					} else {
+						reader.setGlobalVariable("walking_control","");
+						reader.setGlobalVariable("walking_priority","0");
 					}
 				}
 			}
@@ -1682,6 +1809,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				TIMING_TOTALS[3]=0;
 			}
 		}
+
+		bool control= strcmp(reader.getGlobalVariable("walking_control"),"cavebot")==0;
+		int modpriority=atoi(reader.getGlobalVariable("walking_priority"));
+		if (!control && atoi(config->modPriorityStr) > modpriority){
+			reader.setGlobalVariable("walking_control","cavebot");
+			reader.setGlobalVariable("walking_priority",config->modPriorityStr);
+		}
+
 
 		if (config->debug)  {
 			char buf[256];
@@ -1710,6 +1845,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 
 		modRuns++;//for performing actions once every 10 iterations
+		if (modRuns == 1000000000) modRuns=0;
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -1718,6 +1854,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		* Check whether we should go to a depot
 		*/
 		if (modRuns%10==0 || depotX!=0) depotCheck(config);
+		if (modRuns%(30*4)==10) lootFromFloorArr.RemoveAll();
 
 		int depotE = GetTickCount();
 		if (DISPLAY_TIMING)
@@ -1757,6 +1894,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				droppedLootArray.Append(*itemProxy.getLootItemIdArrayPtr());
 			}
 			if (droppedLootArray.GetSize()) {
+
 				droppedLootCheck(config,droppedLootArray);
 			}
 		}
@@ -1766,12 +1904,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		going to depot ignore creatures that aren't attacking
 		*/
 
-		if (globalAutoAttackStateAttack==CToolAutoAttackStateAttack_attackSuspended) {
-			if (time(NULL)>=attackSuspendedUntil) {
-				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
-				if (config->debug) registerDebug("Suspend attack period end");
-			}
-		}
 		int beginningE = GetTickCount();
 		if (DISPLAY_TIMING)
 		{
@@ -1787,570 +1919,592 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 
 		int attackS = GetTickCount();
-		if (globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_attackSuspended) {
-			/*****
-			Start attack process
-			******/
-			
-			CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
-			
-			
+
+	/*****
+	Start attack process
+	******/
+		
+		CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+		
+		
 
 
-			// keep track of how long standing in same place for info to user
-			if (lastStandingX!=self->x||lastStandingY!=self->y||lastStandingZ!=self->z){
-				lastStandingX=self->x;
-				lastStandingY=self->y;
-				lastStandingZ=self->z;
-				currentPosTM=time(NULL);
-			}
-			/**
-			* Check if currently attacked creature is alive still
-			* If it is dead inform the looter it can loot
-			*/
-			if (currentlyAttackedCreatureNr!=-1&&(self->cap>config->capacityLimit||config->eatFromCorpse)&&(config->lootFood||config->lootGp||config->lootWorms||config->lootCustom||config->eatFromCorpse)) {
-				// now 's see whether creature is still alive or not
-				if (!attackedCh->hpPercLeft&&
-					abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=10&&
-					attackedCh->z==self->z) {
+		// keep track of how long standing in same place for info to user
+		if (lastStandingX!=self->x||lastStandingY!=self->y||lastStandingZ!=self->z){
+			lastStandingX=self->x;
+			lastStandingY=self->y;
+			lastStandingZ=self->z;
+			currentPosTM=time(NULL);
+		}
+		/**
+		* Check if currently attacked creature is alive still
+		* If it is dead inform the looter it can loot
+		*/
+		if(pauseInvoked){
+			globalAutoAttackStateLoot=CToolAutoAttackStateLoot_macroPause;
+		} else if (currentlyAttackedCreatureNr!=-1&&(self->cap>config->capacityLimit||config->eatFromCorpse||config->dropNotLooted)&&(config->lootFood||config->lootGp||config->lootWorms||config->lootCustom||config->eatFromCorpse||config->dropNotLooted)) {
+			// now 's see whether creature is still alive or not
+			if (!attackedCh->hpPercLeft&&
+				abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=10&&
+				attackedCh->z==self->z) {
 
-					if (config->debug) registerDebug("Looter: Creature is dead.");
-					if (config->lootWhileKill){
-						
-						if (!lootThreadId){
-							lootThreadHandle = ::CreateThread(NULL,0,lootThreadProc,config,0,&lootThreadId);
-							queueThreadHandle = ::CreateThread(NULL,0,queueThreadProc,0,0,&queueThreadId);
-						}
+				if (config->debug) registerDebug("Looter: Creature is dead.");
+				if (config->lootWhileKill){
+					
+					if (!lootThreadId){
+						lootThreadHandle = ::CreateThread(NULL,0,lootThreadProc,config,0,&lootThreadId);
+						queueThreadHandle = ::CreateThread(NULL,0,queueThreadProc,0,0,&queueThreadId);
+					}
 
-						char buf[30];
-						autolooterTm=time(NULL)+10;
-						sprintf(buf,"%d %d",autolooterTm,attackedCh->tibiaId);
-						reader.setGlobalVariable("autolooterTm",buf);
+					char buf[30];
+					autolooterTm=time(NULL)+10;
+					sprintf(buf,"%d %d",autolooterTm,attackedCh->tibiaId);
+					reader.setGlobalVariable("autolooterTm",buf);
 
-						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
-						currentlyAttackedCreatureNr=-1;
-						reader.setAttackedCreature(0);
-						deleteAndNull(attackedCh);
-						attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
-					} else {
-						FILE *lootStatsFile = NULL;
-						// time,rand,creature,name,pos,objectId,count,bagopen,checksum
-						int killNr=rand();
+					if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
+					currentlyAttackedCreatureNr=-1;
+					reader.setAttackedCreature(0);
+					deleteAndNull(attackedCh);
+					attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+				} else {
+					FILE *lootStatsFile = NULL;
+					// time,rand,creature,name,pos,objectId,count,bagopen,checksum
+					int killNr=rand();
 
-						int lootContNr[2];
-						lootContNr[0] = CModuleUtil::findNextClosedContainer();
-						if (config->lootInBags)
-							lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
+					int lootContNr[2];
+					lootContNr[0] = CModuleUtil::findNextClosedContainer();
+					if (config->lootInBags)
+						lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
 
-						if (config->gatherLootStats) {
-							char installPath[1024];
-							CModuleUtil::getInstallPath(installPath);
-							char pathBuf[2048];
-							sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
-							lootStatsFile=fopen(pathBuf,"a+");
-						}
-						
-						// first make sure all needed containers are closed
-						
-						// attacked creature dead, near me, same floor
-						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
+					if (config->gatherLootStats) {
+						char installPath[1024];
+						CModuleUtil::getInstallPath(installPath);
+						char pathBuf[2048];
+						sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+						lootStatsFile=fopen(pathBuf,"a+");
+					}
+					
+					// first make sure all needed containers are closed
+					
+					// attacked creature dead, near me, same floor
+					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 
-						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-						deleteAndNull(self);
-						self = reader.readSelfCharacter();
+					CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
+					deleteAndNull(self);
+					self = reader.readSelfCharacter();
 
-						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
-						if (corpseId && reader.getTibiaTile(corpseId)->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
-							// Open corpse to container, wait to get to corpse on ground and wait for open
+					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+					if (corpseId && reader.getTibiaTile(corpseId)->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
+						// Open corpse to container, wait to get to corpse on ground and wait for open
+						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
+
+						if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
+							//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
 							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
+							CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
+						}
 
-							if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
-								//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
-								sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
-								CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
+						//Normal looting if autolooter not enabled
+						if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
+							//sender.sendTAMessage("[debug] opened container");
+							if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
+							if (config->lootInBags) {
+								if (config->debug) registerDebug("Looter: Opening bag (second container)");
+								CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
+								int itemNr;
+								for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
+									CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
+									CTibiaTile* tile=reader.getTibiaTile(insideItem->objectId);
+									if (insideItem->objectId && tile && tile->isContainer) {
+										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
+										sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
+										if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
+											if (config->debug) registerDebug("Failed opening bag");
+										break;
+									}
+								}
+								deleteAndNull(cont);
 							}
-
-							//Normal looting if autolooter not enabled
-							if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
-								//sender.sendTAMessage("[debug] opened container");
-								if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
-								if (config->lootInBags) {
-									if (config->debug) registerDebug("Looter: Opening bag (second container)");
-									CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
-									int itemNr;
-									for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
-										CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
-										if (insideItem->objectId==itemProxy.getValueForConst("bagbrown")) {
-											globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
-											sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
-											if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
-												if (config->debug) registerDebug("Failed opening bag");
-											break;
-										}
-									}
-									deleteAndNull(cont);
-								}
-								if (lootStatsFile) {
-									int checksum;
-									int tm=time(NULL);
-									for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
-										int contNr=lootContNr[contNrInd];
-										//sender.sendTAMessage("[debug] stats from conts");
-										CTibiaContainer *lootCont = reader.readContainer(contNr);
-										if(lootCont->flagOnOff){
-											if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
-											int itemNr;
-											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
-												int i,len;
-												char statChName[128];
-												for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
-													if (statChName[i]=='[')
-														statChName[i]='\0';
-												}
-												
-												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
-												if (checksum<0) checksum*=-1;
-												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
-											}
-										}
-										deleteAndNull(lootCont);
-									}
-									//free(lootCont);
-									if (config->debug) registerDebug("Container data registered.");
-								}
-								
-								CUIntArray acceptedItems;
-
-								if (config->lootGp)
-									acceptedItems.Add(itemProxy.getValueForConst("GP"));
-									acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
-									acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
-								if (config->lootWorms)
-									acceptedItems.Add(itemProxy.getValueForConst("worms"));
-								if (config->lootCustom) {
-									acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
-								}
-								if (config->lootFood) {
-									acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
-								}
-								int lootTakeItem;
-								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
+							if (lootStatsFile) {
+								int checksum;
+								int tm=time(NULL);
+								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
 									int contNr=lootContNr[contNrInd];
-
-									if (contNrInd==0) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-									else if (contNrInd==1) globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveingBag;
+									//sender.sendTAMessage("[debug] stats from conts");
 									CTibiaContainer *lootCont = reader.readContainer(contNr);
-									//sender.sendTAMessage("[debug] looting");
 									if(lootCont->flagOnOff){
-										if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
-										for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
-											if (self->cap>config->capacityLimit) {
-												CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+										if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
+										int itemNr;
+										for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
+											int i,len;
+											char statChName[128];
+											for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
+												if (statChName[i]=='[')
+													statChName[i]='\0';
 											}
-											if (config->eatFromCorpse) {
-												CModuleUtil::eatItemFromContainer(contNr);
-												CModuleUtil::eatItemFromContainer(contNr);
-											}
+											
+											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
+											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
+											if (checksum<0) checksum*=-1;
+											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
 										}
-										if (config->dropNotLooted) {
-											CTibiaCharacter *self=reader.readSelfCharacter();
-											if (attackedCh->z != self->z){
-												dumpCreatureInfo("XXXYYYZZZ Creature replaced??",attackedCh->tibiaId);
-												char buf[1111];
-												sprintf(buf,"Drop looted?? %x,%d (%d,%d,%d)",attackedCh->tibiaId,attackedCh->nr,attackedCh->x,attackedCh->y,attackedCh->z);
-												AfxMessageBox(buf);
-											}
-											delete self;
-											dropAllItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
-										}
-										
-										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closingBag;
-										//sender.sendTAMessage("[debug] closing bag");
-										sender.closeContainer(contNr);
-										CModuleUtil::waitForOpenContainer(contNr,false);
 									}
 									deleteAndNull(lootCont);
 								}
-								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-								if (config->debug) registerDebug("End of looting");
-							} // if waitForContainer(9)
-							else{
-								char buf[128];
-								sprintf(buf,"Failed to open Item ID:%d",corpseId);
-								if (config->debug) registerDebug(buf);
+								//free(lootCont);
+								if (config->debug) registerDebug("Container data registered.");
 							}
-							if (lootStatsFile)  {
-								fclose(lootStatsFile);
+							
+							CUIntArray acceptedItems;
+
+							if (config->lootGp){
+								acceptedItems.Add(itemProxy.getValueForConst("GP"));
+								acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
+								acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
 							}
+							if (config->lootWorms)
+								acceptedItems.Add(itemProxy.getValueForConst("worms"));
+							if (config->lootCustom) {
+								acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
+							}
+							if (config->lootFood) {
+								acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
+							}
+							int lootTakeItem;
+							for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
+								int contNr=lootContNr[contNrInd];
+
+								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
+								CTibiaContainer *lootCont = reader.readContainer(contNr);
+								//sender.sendTAMessage("[debug] looting");
+								if(lootCont->flagOnOff){
+									if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
+									for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
+										if (self->cap>config->capacityLimit) {
+											CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+										}
+										if (config->eatFromCorpse) {
+											CModuleUtil::eatItemFromContainer(contNr);
+											CModuleUtil::eatItemFromContainer(contNr);
+										}
+									}
+									if (config->dropNotLooted) {
+										CTibiaCharacter *self=reader.readSelfCharacter();
+										if (attackedCh->z != self->z){
+											dumpCreatureInfo("XXXYYYZZZ Creature replaced??",attackedCh->tibiaId);
+											char buf[1111];
+											sprintf(buf,"Drop looted?? %x,%d (%d,%d,%d)",attackedCh->tibiaId,attackedCh->nr,attackedCh->x,attackedCh->y,attackedCh->z);
+											AfxMessageBox(buf);
+										}
+										if (config->dropWhenCapacityLimitReached
+											&& self->cap < config->capacityLimit
+											&& !config->dropOnlyLooted
+											|| !config->dropWhenCapacityLimitReached
+											&& config->dropListCount != 0)
+										{
+											CUIntArray droppedItems;
+											droppedItems.SetSize(config->dropListCount);
+											for (int i=0; i<config->dropListCount;i++){
+												int itemid=itemProxy.getItemId(config->dropList[i]);
+												if (itemid) droppedItems.Add(itemid);
+											}
+											dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z,&droppedItems);
+											if (config->debug) registerDebug("Dropping custom items from container:",intstr(contNrInd).c_str());
+										} else if (self->cap < config->capacityLimit && config->dropOnlyLooted){
+											dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z,&acceptedItems);
+											if (config->debug) registerDebug("Dropping loot items from container:",intstr(contNrInd).c_str());
+										} else if(!config->dropWhenCapacityLimitReached && config->dropListCount == 0) {
+											dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
+											if (config->debug) registerDebug("Dropping all items from container:",intstr(contNrInd).c_str());
+										}
+										delete self;
+									}
+									
+									//sender.sendTAMessage("[debug] closing bag");
+									sender.closeContainer(contNr);
+									CModuleUtil::waitForOpenContainer(contNr,false);
+								}
+								deleteAndNull(lootCont);
+							}
+							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+							if (config->debug) registerDebug("End of looting");
+						} // if waitForContainer(9)
+						else{
+							char buf[128];
+							sprintf(buf,"Failed to open Item ID:%d",corpseId);
+							if (config->debug) registerDebug(buf);
 						}
-						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
-						currentlyAttackedCreatureNr=-1;
-						reader.setAttackedCreature(0);
-						deleteAndNull(attackedCh);
-						attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+						if (lootStatsFile)  {
+							fclose(lootStatsFile);
+						}
 					}
+					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+					if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
+					currentlyAttackedCreatureNr=-1;
+					reader.setAttackedCreature(0);
+					deleteAndNull(attackedCh);
+					attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
 				}
-				else {// if creatureIsNotDead
-					char debugBuf[256];
-					sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
-					if (config->debug) registerDebug(debugBuf);
-				}
 			}
-
-			//only time currentlyAttackedCreatureNr can = -1 is if looter has run(fixes skipping monster)
-			if (currentlyAttackedCreatureNr!=-1&&!creatureList[currentlyAttackedCreatureNr].isOnscreen){
-				currentlyAttackedCreatureNr=-1;
-				reader.setAttackedCreature(0);
-			}
-
-			// if client thinks we are not attacking anything, then
-			// send "attack new target" to it and increment failed attack for creatureNr by 1
-			if (config->debug) {
-				char buf[128];
-				sprintf(buf,"Tmp:currentlyAttackedCreatureNr=%d",currentlyAttackedCreatureNr);
-				registerDebug(buf);
-			}
-			if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(attackedCh&&attackedCh->hpPercLeft)) {
-				char buf[256];
-				sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
-				if (config->debug) registerDebug(buf);
-
-				creatureList[currentlyAttackedCreatureNr].failedAttacks++;
-				AttackCreature(config,attackedCh->tibiaId);
+			else {// if creatureIsNotDead
 				char debugBuf[256];
 				sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
-				//AfxMessageBox(debugBuf);
-				if (config->debug) registerDebug("Incrementing failed attempts since something cancelled attacking creature.");
+				if (config->debug) registerDebug(debugBuf);
 			}
-			else if (reader.getAttackedCreature()&&attackedCh&&reader.getAttackedCreature()!=attackedCh->tibiaId){
-				//wis: keep player-chosen creature as attackee
-				CTibiaCharacter *attCh= reader.getCharacterByTibiaId(reader.getAttackedCreature());
-				if (attCh){
-					currentlyAttackedCreatureNr=attCh->nr;
-					char buf[128];
-					sprintf(buf,"Setting attacked creature to %d [1]",currentlyAttackedCreatureNr);
-					if (config->debug) registerDebug(buf);
-					deleteAndNull(attCh);
-				}
-				//attCh is NULL
+		}
 
+		//only time currentlyAttackedCreatureNr can = -1 is if looter has run(fixes skipping monster)
+		if (currentlyAttackedCreatureNr!=-1&&!creatureList[currentlyAttackedCreatureNr].isOnscreen){
+			currentlyAttackedCreatureNr=-1;
+			reader.setAttackedCreature(0);
+		}
+
+		// if client thinks we are not attacking anything, then
+		// send "attack new target" to it and increment failed attack for creatureNr by 1
+		if (config->debug) {
+			char buf[128];
+			sprintf(buf,"Tmp:currentlyAttackedCreatureNr=%d",currentlyAttackedCreatureNr);
+			registerDebug(buf);
+		}
+		if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(attackedCh&&attackedCh->hpPercLeft)) {
+			char buf[256];
+			sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
+			if (config->debug) registerDebug(buf);
+
+			creatureList[currentlyAttackedCreatureNr].failedAttacks++;
+			AttackCreature(config,attackedCh->tibiaId);
+			char debugBuf[256];
+			sprintf(debugBuf,"Attacked creature info: x dist=%d y dist=%d z dist=%d id=%d visible=%d hp=%d",abs(self->x-attackedCh->x),abs(self->y-attackedCh->y),abs(self->z-attackedCh->z),attackedCh->tibiaId,attackedCh->visible,attackedCh->hpPercLeft);
+			//AfxMessageBox(debugBuf);
+			if (config->debug) registerDebug("Incrementing failed attempts since something cancelled attacking creature.");
+		}
+		else if (reader.getAttackedCreature()&&attackedCh&&reader.getAttackedCreature()!=attackedCh->tibiaId){
+			//wis: keep player-chosen creature as attackee
+			CTibiaCharacter *attCh= reader.getCharacterByTibiaId(reader.getAttackedCreature());
+			if (attCh){
+				currentlyAttackedCreatureNr=attCh->nr;
+				char buf[128];
+				sprintf(buf,"Setting attacked creature to %d [1]",currentlyAttackedCreatureNr);
+				if (config->debug) registerDebug(buf);
+				deleteAndNull(attCh);
 			}
-			//if autofollow on, still not <=1 from creature and standing for > 2s refresh attack and add fail attack
-			//wait .5 secs between failed attacks
-			else if (currentlyAttackedCreatureNr!=-1&&config->autoFollow&&creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y)>1&&time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks)){
-				if (creatureList[currentlyAttackedCreatureNr].tibiaId){
-					creatureList[currentlyAttackedCreatureNr].failedAttacks++;
-					sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);
-					char buf[256];
-					sprintf(buf,"Incrementing failed attempts for not reaching target in time. time:%d lastPosChange:%d, %d",time(NULL),currentPosTM,time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks));
-					if (config->debug) registerDebug(buf);
-				}
-			}
+			//attCh is NULL
 
-			deleteAndNull(attackedCh);
-
-			// refresh information
-			int currentTm=reader.getCurrentTm();
-			int playersOnScreen=0;
-			int monstersSurrounding=0;
-			alienCreatureForTrainerFound=0;
-
-			int crNr;
-			for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
-				CTibiaCharacter *ch=reader.readVisibleCreature(crNr);
-				// All creature slots that have NEVER had a monster in them have an ID of 0 and they are filled consecutively
-				if (ch->tibiaId=0) break; 
-
-				if (ch->visible==0 || abs(self->x-ch->x)>7 || abs(self->y-ch->y)>5 || ch->z!=self->z) { creatureList[crNr].isOnscreen=0;}
-				else {
-					/**
-					* creature ID for creature number has changed,
-					* so new creature is occupying the slot already
-					*/
-					if (creatureList[crNr].tibiaId!=ch->tibiaId&&currentlyAttackedCreatureNr!=crNr) {
-						int keepAttackTm =creatureList[crNr].lastAttackTm;
-						creatureList[crNr]= Creature();
-						creatureList[crNr].lastAttackTm=keepAttackTm;
-						creatureList[crNr].tibiaId=ch->tibiaId;
-
-						int monstListNr;
-						//Get name and take care of monsters numbered by TA's creature info
-						int i,len;
-						char statChName[128];
-						for (i=0,strcpy(statChName,ch->name),len=strlen(statChName);i<len;i++) {
-							if (statChName[i]=='[')
-								statChName[i]='\0';
-						}
-						strcpy(creatureList[crNr].name,statChName);
-
-						// scan creature list to find its priority
-						for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++) {
-							if (!strcmpi(config->monsterList[monstListNr],creatureList[crNr].name))
-								creatureList[crNr].listPriority=config->monsterCount-monstListNr;//1 is lowest, 0 means not in attack list
-						}
-
-						// scan ignore list
-						for (monstListNr=0;monstListNr<config->ignoreCount;monstListNr++) {
-							if (!strcmpi(config->ignoreList[monstListNr],creatureList[crNr].name)) {
-								if (config->debug&&creatureList[crNr].isIgnoredUntil-time(NULL)<9999) registerDebug("Creature found on ignore list");
-								creatureList[crNr].isIgnoredUntil=1555555555;//ignore forever
-							}
-						}
-
-						//ignore self forever
-						if (ch->tibiaId==self->tibiaId)creatureList[crNr].isIgnoredUntil=1555555555 ;//ignore forever
-					}
-					else if (crNr==currentlyAttackedCreatureNr){
-						//if creature we are attacking has lost health, record time of bloodhit
-						if (ch->hpPercLeft<creatureList[crNr].hpPercLeft)
-							lastAttackedCreatureBloodHit=time(NULL);
-						//determine if creature reached to ignore creature if not reached in time
-						if(!reachedAttackedCreature && (time(NULL)-lastAttackedCreatureBloodHit<1 || creatureList[crNr].distance(self->x,self->y)<=1))
-							reachedAttackedCreature=1;
-						//if attacked creature has not been reached after given time, ignore creature
-						if (!reachedAttackedCreature && time(NULL)-firstCreatureAttackTM>config->unreachableAfter){
-							creatureList[crNr].isIgnoredUntil=time(NULL)+config->suspendAfterUnreachable;
-						}
-					}
-					// Attack time has changed. We interpret this by saying that ch->tibiaId is attacking us
-					// even if ID changed, since 'lastAttackTm' is NOT updated when Tibia reuses slot.
-					if (creatureList[crNr].lastAttackTm!=ch->lastAttackTm && currentTm-ch->lastAttackTm<attackConsiderPeriod) {
-						creatureList[crNr].isAttacking=1;
-						char buf[256];
-						sprintf(buf,"lastAttackTm change for %d: was %d/%d is %d/%d",creatureList[crNr].tibiaId,creatureList[crNr].lastAttackTm,ch->tibiaId,ch->lastAttackTm);
-						if (config->debug) registerDebug(buf);
-					} else if(currentTm-ch->lastAttackTm>=attackConsiderPeriod){
-						creatureList[crNr].isAttacking=0;
-					}
-					creatureList[crNr].lastAttackTm= ch->lastAttackTm;
-					creatureList[crNr].x=ch->x;
-					creatureList[crNr].y=ch->y;
-					creatureList[crNr].z=ch->z;
-					creatureList[crNr].isOnscreen=1;
-					creatureList[crNr].isDead=(ch->hpPercLeft==0);
-					creatureList[crNr].hpPercLeft=ch->hpPercLeft;
-					creatureList[crNr].isIgnoredUntil=(creatureList[crNr].isIgnoredUntil<time(NULL))?0:creatureList[crNr].isIgnoredUntil;
-					//outfit type&& head color==0 <=> creature is invisible
-					creatureList[crNr].isInvisible = (ch->monsterType==0&&ch->colorHead==0);
-
-					//ignore creatures with >=3 failed attacks for 30 secs
-					if (creatureList[crNr].failedAttacks>=3 && !creatureList[crNr].isInvisible && strcmp(creatureList[crNr].name,"Warlock") && strcmp(creatureList[crNr].name,"Infernalist")){
-						creatureList[crNr].isIgnoredUntil=time(NULL)+30;
-						creatureList[crNr].failedAttacks=0;
-						if (config->debug) registerDebug("Ignore creatures with >=3 failed attacks");
-					} //else if creature attacking us from 1 away but ignored for <5 mins, unignore
-					else if (creatureList[crNr].isIgnoredUntil-time(NULL)<9999&&!creatureList[crNr].isInvisible&&(creatureList[crNr].distance(self->x,self->y)<=1&&currentlyAttackedCreatureNr!=-1)){
-						creatureList[crNr].isIgnoredUntil=0;
-					}
-					
-					//update environmental variables
-					if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
-					if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isOnscreen) playersOnScreen++;
-					//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
-					if (crNr!=self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking)) alienCreatureForTrainerFound=1;
-
-					// if sharing alien backattack is active, then we may attack
-					// creatures which are not directly attacking us
-					if (!creatureList[crNr].isAttacking&&shareAlienBackattack) {
-						int count=sh_mem.GetVariablesCount();
-						int pos;
-						for (pos=0;pos<count;pos++) {
-							ValueHeader valueHeader;
-							sh_mem.GetValueInfo(pos,&valueHeader);
-							if (strcmp(varName,(char *)valueHeader.wszValueName)) {
-								int attackTibiaId=0;
-								unsigned long int len=4;
-								// avoid looping with out own attack target
-								sh_mem.GetValue((char *)valueHeader.wszValueName,&attackTibiaId,&len);
-
-								if (attackTibiaId==ch->tibiaId) {
-									if (config->debug) registerDebug("Setting isAttacking because of shm info");
-									creatureList[crNr].isAttacking=1;
-								}
-							}
-						}
-					}
-				}// if visible
-				deleteAndNull(ch);
-				if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
-					char buf[256];
-					sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d",crNr!=self->nr?creatureList[crNr].name:"****",crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z);
-					registerDebug(buf);
-				}
-
-			}//end for
-			//Determine best creature to attack on-screen
-			int bestCreatureNr=-1;
-			for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
-				//All creatures after first 0 are blank
-				if (creatureList[crNr].tibiaId=0) break;
-
-				//If cannot attack, don't
-				if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr==self->nr) continue;
-				//If shouldn't attack, don't
-				if (creatureList[crNr].hpPercLeft < config->attackHpAbove) {
-					if (config->debug && modRuns%10==0) registerDebug("Quit Case:hp above value");
-					continue;}
-				if (config->dontAttackPlayers && creatureList[crNr].tibiaId<0x40000000) {
-					if (config->debug && modRuns%10==0) registerDebug("Quit Case:No attack player");
-					continue;}
-				if (config->attackOnlyAttacking && !creatureList[crNr].isAttacking){ 
-					if (config->debug && modRuns%10==0) registerDebug("Quit Case:only attack attacking"); 
-					continue;}
-				if ((!creatureList[crNr].isAttacking || creatureList[crNr].hpPercLeft==100) && maxDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>config->attackRange){	
-					if (config->debug && modRuns%10==0) registerDebug("Quit Case:out of range");
-					continue;}
-				if (creatureList[crNr].isIgnoredUntil){
-					if (config->debug && modRuns%10==0) registerDebug("Quit Case:is ignored");
-					continue;}
-				if (config->suspendOnEnemy && playersOnScreen && !creatureList[crNr].isAttacking){
-					if (config->debug) registerDebug("Quit Case:Suspend on enemy");
-					continue;}//only attack creatures attacking me if suspendOnEnemy and player on screen
-				if (!(creatureList[crNr].listPriority || config->forceAttackAfterAttack && creatureList[crNr].isAttacking)){
-					if (config->debug && modRuns%10==0) registerDebug("Quit Case:Options do not allow attack");
-					continue;}
-
-				//if shareBackattackAlien, add possible attack option to list if not on priority list
-				if (!creatureList[crNr].listPriority && shareAlienBackattack){
-					// if we are backattacking and shareing backattack
-					// with other instances is active - then register it
-					// in the shm
-					sh_mem.SetValue(varName,&creatureList[crNr].tibiaId,4);
-				}
-
-				//if bestCreatureNr is not picked yet switch to first reasonable option
-				if(bestCreatureNr==-1) bestCreatureNr=crNr;
-				int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)+1<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
-				int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
-				if(isCloser){
-					if (creatureList[bestCreatureNr].isAttacking &&
-						(creatureList[bestCreatureNr].listPriority>creatureList[crNr].listPriority && creatureList[bestCreatureNr].listPriority ||
-						creatureList[bestCreatureNr].listPriority==0 && creatureList[crNr].listPriority!=0)&&
-						canGetToPoint(creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z)){
-						//distance creature has higher priority and can be reached
-					} else{
-						if (config->debug) registerDebug("Attacker: Better because closer.");
-						bestCreatureNr=crNr;}
-				}else if (!isFarther){
-					//If force attack prioritize creature not on list with lowest health
-					if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
-						(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
-						if (config->debug) registerDebug("Attacker: Better because alien creature.");
-						bestCreatureNr=crNr;}
-					//If attack only if attacked prioritize creature not on list or creatures attacking us with highest priority
-					if ((!config->attackOnlyAttacking || creatureList[crNr].isAttacking) && creatureList[crNr].listPriority!=0  &&
-						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
-						if (config->debug) registerDebug("Attacker: Better because higher priority");
-						bestCreatureNr=crNr;}
-				} else if (isFarther){
-					if (creatureList[crNr].isAttacking &&
-						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority ||
-						creatureList[crNr].listPriority==0 && creatureList[bestCreatureNr].listPriority!=0)&&
-						canGetToPoint(creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z)) {
-						if (config->debug) registerDebug("Attacker: Better because attacking and higher priority.");
-						bestCreatureNr=crNr;
-					}	
-				}
-
-/*
-				if (monstersSurrounding<=2){
-					if (!isFarther&&creatureList[crNr].listPriority>=creatureList[bestCreatureNr].listPriority){
-						if (config->debug) registerDebug("Better:Closer");
-						bestCreatureNr=crNr;
-					}
-				}else{
-					//If force attack prioritize creature not on list with lowest health
-					if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
-						(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
-						if (config->debug) registerDebug("Better:alien creature");
-						bestCreatureNr=crNr;}
-					//If attack only if attacked prioritize creature not on list or creatures attacking us with highest priority
-					if ((!config->attackOnlyAttacking || creatureList[crNr].isAttacking) && creatureList[crNr].listPriority!=0  &&
-						(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
-						if (config->debug) registerDebug("Better:Higher Priority");
-						bestCreatureNr=crNr;}
-				}
-*/
+		}
+		//if autofollow on, still not <=1 from creature and standing for > 2s refresh attack and add fail attack
+		//wait .5 secs between failed attacks
+		else if (currentlyAttackedCreatureNr!=-1&&config->autoFollow&&creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y)>1&&time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks)){
+			if (creatureList[currentlyAttackedCreatureNr].tibiaId){
+				creatureList[currentlyAttackedCreatureNr].failedAttacks++;
+				sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);
 				char buf[256];
-				sprintf(buf,"Nr=%d, name=%s\t isAttacking=%d, Prio=%d, fail#=%d, hp%%=%d, Id=%d, Onscreen=%d, Invis=%d, Dead=%d, lastAttackTm=%d, IgnoredUntil=%d, shouldAttack=%d, dist=%d",crNr,creatureList[crNr].name,creatureList[crNr].isAttacking,creatureList[crNr].listPriority,creatureList[crNr].failedAttacks,creatureList[crNr].hpPercLeft,creatureList[crNr].tibiaId,creatureList[crNr].isOnscreen,creatureList[crNr].isInvisible,creatureList[crNr].isDead,creatureList[crNr].lastAttackTm,creatureList[crNr].isIgnoredUntil,crNr==bestCreatureNr,taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y));
+				sprintf(buf,"Incrementing failed attempts for not reaching target in time. time:%d lastPosChange:%d, %d",time(NULL),currentPosTM,time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks));
 				if (config->debug) registerDebug(buf);
 			}
-			
-			//Determine whether currently attacked creature is better than bestCreature
-			if (bestCreatureNr!=-1){
-				//If cannot attack currentlyAttackedCreature, switch to bestCreature
-				if ((currentlyAttackedCreatureNr==-1
-					||!creatureList[currentlyAttackedCreatureNr].isOnscreen
-					|| creatureList[currentlyAttackedCreatureNr].isInvisible
-					//|| creatureList[currentlyAttackedCreatureNr].isDead // if current creature is dead we still need to loot it
-					|| creatureList[currentlyAttackedCreatureNr].hpPercLeft<config->attackHpAbove
-					|| config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
-					|| config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
-					|| maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft>15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
-					|| creatureList[currentlyAttackedCreatureNr].isIgnoredUntil
-					|| config->suspendOnEnemy && playersOnScreen && creatureList[currentlyAttackedCreatureNr].isAttacking==0
-					||!(creatureList[currentlyAttackedCreatureNr].listPriority || config->forceAttackAfterAttack && creatureList[currentlyAttackedCreatureNr].isAttacking))
-					&& (isLooterDone(config) || maxDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y)<=1)){
-					currentlyAttackedCreatureNr=bestCreatureNr;
+		}
+
+		deleteAndNull(attackedCh);
+
+		// refresh information
+		int currentTm=reader.getCurrentTm();
+		int playersOnScreen=0;
+		int monstersSurrounding=0;
+		alienCreatureForTrainerFound=0;
+
+		int crNr;
+		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
+			CTibiaCharacter *ch=reader.readVisibleCreature(crNr);
+			if (ch->tibiaId==0) break;
+			/**
+			* creature ID for creature number has changed,
+			* so new creature is occupying the slot already
+			*/
+			if (creatureList[crNr].tibiaId!=ch->tibiaId&&currentlyAttackedCreatureNr!=crNr) {
+				int keepAttackTm =creatureList[crNr].lastAttackTm;
+				creatureList[crNr]= Creature();
+				creatureList[crNr].lastAttackTm=keepAttackTm;
+				creatureList[crNr].tibiaId=ch->tibiaId;
+
+				int monstListNr;
+				//Get name and take care of monsters numbered by TA's creature info
+				int i,len;
+				char statChName[128];
+				for (i=0,strcpy(statChName,ch->name),len=strlen(statChName);i<len;i++) {
+					if (statChName[i]=='[')
+						statChName[i]='\0';
 				}
-				//if no harm in switching and monster is not already in low health and running, switch
-				else if ((!reachedAttackedCreature || !config->stickToMonster)
-                     &&(!config->autoFollow || creatureList[currentlyAttackedCreatureNr].hpPercLeft>15)
-                     &&creatureList[bestCreatureNr].listPriority!=creatureList[currentlyAttackedCreatureNr].listPriority){
-					currentlyAttackedCreatureNr=bestCreatureNr;
-					if (config->debug)  {
-						char buf[256];
-						sprintf(buf,"Switching to Nr=%d name=%s point=%d,%d,%d id=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId);
-						registerDebug(buf);
+				strcpy(creatureList[crNr].name,statChName);
+
+				// scan creature list to find its priority
+				for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++) {
+					if (!strcmpi(config->monsterList[monstListNr],creatureList[crNr].name))
+						creatureList[crNr].listPriority=config->monsterCount-monstListNr;//1 is lowest, 0 means not in attack list
+				}
+
+				// scan ignore list
+				for (monstListNr=0;monstListNr<config->ignoreCount;monstListNr++) {
+					if (!strcmpi(config->ignoreList[monstListNr],creatureList[crNr].name)) {
+						if (config->debug&&creatureList[crNr].isIgnoredUntil-time(NULL)<9999) registerDebug("Creature found on ignore list");
+						creatureList[crNr].isIgnoredUntil=1555555555;//ignore forever
 					}
 				}
+
+				//ignore self forever
+				if (ch->tibiaId==self->tibiaId)creatureList[crNr].isIgnoredUntil=1555555555 ;//ignore forever
 			}
-			//if no best creature, then something probably ran away.quickly
-			else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft!=0) currentlyAttackedCreatureNr=-1;
-			if (config->debug) registerDebug("Entering attack execution area");
-
-			/**
-			* Do the training control things.
-			*/
-			int attackMode=config->mode+1;
-			trainingCheck(config,currentlyAttackedCreatureNr,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
-			SendAttackMode(attackMode,config->autoFollow,-1);
-
-			CTibiaCharacter *attackCh=reader.readVisibleCreature(currentlyAttackedCreatureNr);
-			//perform server visible tasks if we have something to attack
-			if (currentlyAttackedCreatureNr!=-1&&attackCh->hpPercLeft){//uses most recent hpPercLeft to prevent crash??
-				if (AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId)){
-					firstCreatureAttackTM=time(NULL);
-					reachedAttackedCreature=0;
+			if (ch->visible==0 || abs(self->x-ch->x)>7 || abs(self->y-ch->y)>5 || ch->z!=self->z) {
+				creatureList[crNr].isOnscreen=0;
+			} else {
+				if (crNr==currentlyAttackedCreatureNr){
+					//if creature we are attacking has lost health, record time of bloodhit
+					if (ch->hpPercLeft<creatureList[crNr].hpPercLeft)
+						lastAttackedCreatureBloodHit=time(NULL);
+					//determine if creature reached to ignore creature if not reached in time
+					if(!reachedAttackedCreature && (time(NULL)-lastAttackedCreatureBloodHit<1 || creatureList[crNr].distance(self->x,self->y)<=1))
+						reachedAttackedCreature=1;
+					//if attacked creature has not been reached after given time, ignore creature
+					if (!reachedAttackedCreature && time(NULL)-firstCreatureAttackTM>config->unreachableAfter){
+						creatureList[crNr].isIgnoredUntil=time(NULL)+config->suspendAfterUnreachable;
+					}
 				}
+				// Attack time has changed. We interpret this by saying that ch->tibiaId is attacking us
+				// even if ID changed, since 'lastAttackTm' is NOT updated when Tibia reuses slot.
+				if (creatureList[crNr].lastAttackTm!=ch->lastAttackTm && currentTm-ch->lastAttackTm<attackConsiderPeriod) {
+					creatureList[crNr].isAttacking=1;
+					char buf[256];
+					sprintf(buf,"lastAttackTm change for %d: was %d/%d is %d/%d",creatureList[crNr].tibiaId,creatureList[crNr].lastAttackTm,ch->tibiaId,ch->lastAttackTm);
+					if (config->debug) registerDebug(buf);
+				} else if(currentTm-ch->lastAttackTm>=attackConsiderPeriod){
+					creatureList[crNr].isAttacking=0;
+				}
+				creatureList[crNr].lastAttackTm= ch->lastAttackTm;
+				creatureList[crNr].x=ch->x;
+				creatureList[crNr].y=ch->y;
+				creatureList[crNr].z=ch->z;
+				creatureList[crNr].isOnscreen=1;
+				creatureList[crNr].isDead=(ch->hpPercLeft==0);
+				creatureList[crNr].hpPercLeft=ch->hpPercLeft;
+				creatureList[crNr].isIgnoredUntil=(creatureList[crNr].isIgnoredUntil<time(NULL))?0:creatureList[crNr].isIgnoredUntil;
+				//outfit type&& head color==0 <=> creature is invisible
+				creatureList[crNr].isInvisible = (ch->monsterType==0&&ch->colorHead==0);
 
-				// if we are backattacking alien then maybe fire runes at them
-				// note: fire runes only if my own hp is over 50%
-				// to avoid uh-exhaust
-				if (!creatureList[currentlyAttackedCreatureNr].listPriority&&config->backattackRunes&&self->hp>self->maxHp/2) {
+				//ignore creatures with >=3 failed attacks for 30 secs
+				if (creatureList[crNr].failedAttacks>=3 && !creatureList[crNr].isInvisible && strcmp(creatureList[crNr].name,"Warlock") && strcmp(creatureList[crNr].name,"Infernalist")){
+					creatureList[crNr].isIgnoredUntil=time(NULL)+30;
+					creatureList[crNr].failedAttacks=0;
+					if (config->debug) registerDebug("Ignore creatures with >=3 failed attacks");
+				} //else if creature attacking us from 1 away but ignored for <5 mins, unignore
+				else if (creatureList[crNr].isIgnoredUntil-time(NULL)<9999&&!creatureList[crNr].isInvisible&&(creatureList[crNr].distance(self->x,self->y)<=1&&currentlyAttackedCreatureNr!=-1)){
+					creatureList[crNr].isIgnoredUntil=0;
+				}
+				
+				//update environmental variables
+				if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
+				if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isOnscreen) playersOnScreen++;
+				//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
+				if (crNr!=self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking)) alienCreatureForTrainerFound=1;
+
+				// if sharing alien backattack is active, then we may attack
+				// creatures which are not directly attacking us
+				if (!creatureList[crNr].isAttacking&&shareAlienBackattack) {
+					int count=sh_mem.GetVariablesCount();
+					int pos;
+					for (pos=0;pos<count;pos++) {
+						ValueHeader valueHeader;
+						sh_mem.GetValueInfo(pos,&valueHeader);
+						if (strcmp(varName,(char *)valueHeader.wszValueName)) {
+							int attackTibiaId=0;
+							unsigned long int len=4;
+							// avoid looping with out own attack target
+							sh_mem.GetValue((char *)valueHeader.wszValueName,&attackTibiaId,&len);
+
+							if (attackTibiaId==ch->tibiaId) {
+								if (config->debug) registerDebug("Setting isAttacking because of shm info");
+								creatureList[crNr].isAttacking=1;
+							}
+						}
+					}
+				}
+			}// if visible
+			deleteAndNull(ch);
+			if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
+				char buf[256];
+				sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d",crNr!=self->nr?creatureList[crNr].name:"****",crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z);
+				registerDebug(buf);
+			}
+
+		}//end for
+		//Determine best creature to attack on-screen
+		int bestCreatureNr=-1;
+		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
+			if (creatureList[crNr].tibiaId==0) break;
+			
+			//If cannot attack, don't
+			if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr==self->nr) continue;
+			//If shouldn't attack, don't
+			if (creatureList[crNr].hpPercLeft < config->attackHpAbove) {
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:hp above value");
+				continue;}
+			if (config->dontAttackPlayers && creatureList[crNr].tibiaId<0x40000000) {
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:No attack player");
+				continue;}
+			if (config->attackOnlyAttacking && !creatureList[crNr].isAttacking){ 
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:only attack attacking"); 
+				continue;}
+			if ((!creatureList[crNr].isAttacking || creatureList[crNr].hpPercLeft==100) && maxDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>config->attackRange){	
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:out of range");
+				continue;}
+			if (creatureList[crNr].isIgnoredUntil){
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:is ignored");
+				continue;}
+			if (config->suspendOnEnemy && playersOnScreen && !creatureList[crNr].isAttacking){
+				if (config->debug) registerDebug("Quit Case:Suspend on enemy");
+				continue;}//only attack creatures attacking me if suspendOnEnemy and player on screen
+			if (!(creatureList[crNr].listPriority || config->forceAttackAfterAttack && creatureList[crNr].isAttacking)){
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:Options do not allow attack");
+				continue;}
+
+			//if shareBackattackAlien, add possible attack option to list if not on priority list
+			if (!creatureList[crNr].listPriority && shareAlienBackattack){
+				// if we are backattacking and shareing backattack
+				// with other instances is active - then register it
+				// in the shm
+				sh_mem.SetValue(varName,&creatureList[crNr].tibiaId,4);
+			}
+
+			//if bestCreatureNr is not picked yet switch to first reasonable option
+			if(bestCreatureNr==-1) bestCreatureNr=crNr;
+			int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)+1<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
+			int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
+			if(isCloser){
+				if (creatureList[bestCreatureNr].isAttacking &&
+					(creatureList[bestCreatureNr].listPriority>creatureList[crNr].listPriority && creatureList[bestCreatureNr].listPriority ||
+					creatureList[bestCreatureNr].listPriority==0 && creatureList[crNr].listPriority!=0)&&
+					canGetToPoint(creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z)){
+					//distance creature has higher priority and can be reached
+				} else{
+					if (config->debug) registerDebug("Attacker: Better because closer.");
+					bestCreatureNr=crNr;}
+			}else if (!isFarther){
+				//If force attack prioritize creature not on list with lowest health
+				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
+					(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
+					if (config->debug) registerDebug("Attacker: Better because alien creature.");
+					bestCreatureNr=crNr;}
+				//If attack only if attacked prioritize creature not on list or creatures attacking us with highest priority
+				if ((!config->attackOnlyAttacking || creatureList[crNr].isAttacking) && creatureList[crNr].listPriority!=0  &&
+					(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
+					if (config->debug) registerDebug("Attacker: Better because higher priority");
+					bestCreatureNr=crNr;}
+			} else if (isFarther){
+				if (creatureList[crNr].isAttacking &&
+					(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority ||
+					creatureList[crNr].listPriority==0 && creatureList[bestCreatureNr].listPriority!=0)&&
+					canGetToPoint(creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z)) {
+					if (config->debug) registerDebug("Attacker: Better because attacking and higher priority.");
+					bestCreatureNr=crNr;
+				}	
+			}
+
+/*
+			if (monstersSurrounding<=2){
+				if (!isFarther&&creatureList[crNr].listPriority>=creatureList[bestCreatureNr].listPriority){
+					if (config->debug) registerDebug("Better:Closer");
+					bestCreatureNr=crNr;
+				}
+			}else{
+				//If force attack prioritize creature not on list with lowest health
+				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
+					(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
+					if (config->debug) registerDebug("Better:alien creature");
+					bestCreatureNr=crNr;}
+				//If attack only if attacked prioritize creature not on list or creatures attacking us with highest priority
+				if ((!config->attackOnlyAttacking || creatureList[crNr].isAttacking) && creatureList[crNr].listPriority!=0  &&
+					(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
+					if (config->debug) registerDebug("Better:Higher Priority");
+					bestCreatureNr=crNr;}
+			}
+*/
+			char buf[256];
+			sprintf(buf,"Nr=%d, name=%s\t isAttacking=%d, Prio=%d, fail#=%d, hp%%=%d, Id=%d, Onscreen=%d, Invis=%d, Dead=%d, lastAttackTm=%d, IgnoredUntil=%d, shouldAttack=%d, dist=%d",crNr,creatureList[crNr].name,creatureList[crNr].isAttacking,creatureList[crNr].listPriority,creatureList[crNr].failedAttacks,creatureList[crNr].hpPercLeft,creatureList[crNr].tibiaId,creatureList[crNr].isOnscreen,creatureList[crNr].isInvisible,creatureList[crNr].isDead,creatureList[crNr].lastAttackTm,creatureList[crNr].isIgnoredUntil,crNr==bestCreatureNr,taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y));
+			if (config->debug) registerDebug(buf);
+		}
+		
+		//Determine whether currently attacked creature is better than bestCreature
+		if (bestCreatureNr!=-1){
+			//If cannot attack currentlyAttackedCreature, switch to bestCreature
+			if ((currentlyAttackedCreatureNr==-1
+				||!creatureList[currentlyAttackedCreatureNr].isOnscreen
+				|| creatureList[currentlyAttackedCreatureNr].isInvisible
+				//|| creatureList[currentlyAttackedCreatureNr].isDead // if current creature is dead we still need to loot it
+				|| creatureList[currentlyAttackedCreatureNr].hpPercLeft<config->attackHpAbove
+				|| config->dontAttackPlayers && creatureList[currentlyAttackedCreatureNr].tibiaId<0x40000000
+				|| config->attackOnlyAttacking && !creatureList[currentlyAttackedCreatureNr].isAttacking
+				|| maxDist(self->x,self->y,creatureList[currentlyAttackedCreatureNr].x,creatureList[currentlyAttackedCreatureNr].y)>config->attackRange && creatureList[currentlyAttackedCreatureNr].hpPercLeft>15 // only switch when the monstr is out of range if they don't seem to be inconveniently 'running in low health'
+				|| creatureList[currentlyAttackedCreatureNr].isIgnoredUntil
+				|| config->suspendOnEnemy && playersOnScreen && creatureList[currentlyAttackedCreatureNr].isAttacking==0
+				||!(creatureList[currentlyAttackedCreatureNr].listPriority || config->forceAttackAfterAttack && creatureList[currentlyAttackedCreatureNr].isAttacking))
+				&& (isLooterDone(config) || maxDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y)<=1)){
+				currentlyAttackedCreatureNr=bestCreatureNr;
+			}
+			//if no harm in switching and monster is not already in low health and running, switch
+			else if ((!reachedAttackedCreature || !config->stickToMonster)
+                 &&(!config->autoFollow || creatureList[currentlyAttackedCreatureNr].hpPercLeft>15)
+                 &&creatureList[bestCreatureNr].listPriority!=creatureList[currentlyAttackedCreatureNr].listPriority){
+				currentlyAttackedCreatureNr=bestCreatureNr;
+				if (config->debug)  {
+					char buf[256];
+					sprintf(buf,"Switching to Nr=%d name=%s point=%d,%d,%d id=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId);
+					registerDebug(buf);
+				}
+			}
+		}
+		//if no best creature, then something probably ran away.quickly
+		else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft!=0) currentlyAttackedCreatureNr=-1;
+		if (config->debug) registerDebug("Entering attack execution area");
+
+		/**
+		* Do the training control things.
+		*/
+		int attackMode=config->mode+1;
+		trainingCheck(config,currentlyAttackedCreatureNr,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
+		SendAttackMode(attackMode,config->autoFollow,-1);
+
+		CTibiaCharacter *attackCh=reader.readVisibleCreature(currentlyAttackedCreatureNr);
+		//perform server visible tasks if we have something to attack
+		if (currentlyAttackedCreatureNr!=-1&&attackCh->hpPercLeft){//uses most recent hpPercLeft to prevent crash??
+			if (AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId)){
+				firstCreatureAttackTM=time(NULL);
+				reachedAttackedCreature=0;
+			}
+
+			// if we are backattacking alien then maybe fire runes at them
+			// note: fire runes only if my own hp is over 50%
+			// to avoid uh-exhaust
+			if (!creatureList[currentlyAttackedCreatureNr].listPriority){
+				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingAlienFound;
+				if (config->backattackRunes&&self->hp>self->maxHp/2) {
 					if (config->debug) registerDebug("Firing SD at enemy");
 					fireRunesAgainstCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId);
 				}
-				globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
-				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingCreature;
-				if (config->debug)  {
-					char buf[256];
-					sprintf(buf,"Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d hp%%=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId,creatureList[bestCreatureNr].isIgnoredUntil,attackCh->hpPercLeft);
-					registerDebug(buf);
-				}
 			}else{
-				AttackCreature(config,0);
-				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
-				if (config->debug) registerDebug("No attack target found");
+				globalAutoAttackStateAttack=CToolAutoAttackStateAttack_attackingCreature;
 			}
-			deleteAndNull(attackCh);
-			/*****
-			End attack process
-			******/
-
+			if (config->debug)  {
+				char buf[256];
+				sprintf(buf,"Attacking Nr=%d name=%s point=%d,%d,%d id=%d ignore=%d hp%%=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId,creatureList[bestCreatureNr].isIgnoredUntil,attackCh->hpPercLeft);
+				registerDebug(buf);
+			}
+		}else{
+			AttackCreature(config,0);
+			globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
+			if (config->debug) registerDebug("No attack target found");
 		}
+		deleteAndNull(attackCh);
+		/*****
+		End attack process
+		******/
+
 		int attackE = GetTickCount();
 		if (DISPLAY_TIMING)
 		{
@@ -2440,6 +2594,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							forwardBackDir=1;
 						if (waypointsCount>1)
 							currentWaypointNr+=forwardBackDir;
+						break;
+					case 3: // reverse
+						currentWaypointNr--;
+						if (currentWaypointNr==-1)
+							currentWaypointNr=waypointsCount-1;
 						break;
 					}
 				}
@@ -2790,6 +2949,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 	toolThreadShouldStop=0;
 	lootThreadId=0;
+
+	if (strcmp(reader.getGlobalVariable("walking_control"),"cavebot")==0){
+		reader.setGlobalVariable("walking_control","");
+		reader.setGlobalVariable("walking_priority","0");
+	}
+	if (strcmp(reader.getGlobalVariable("walking_control"),"userpause")==0){
+		reader.setGlobalVariable("walking_control","");
+		reader.setGlobalVariable("walking_priority","0");
+	}
+
 	return 0;
 }
 
@@ -3035,6 +3204,23 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 		sscanf(paramValue,"%d,%d,%[^#]",&m_configData->depotTrigger[m_currentDepotEntryNr].when,&m_configData->depotTrigger[m_currentDepotEntryNr].remain,m_configData->depotTrigger[m_currentDepotEntryNr].itemName);
 		m_currentDepotEntryNr++;
 	}
+	if (!strcmp(paramName,"walker/other/standAfterWaypointReached")) m_configData->dropListCount=atoi(paramValue);
+	if (!strcmp(paramName,"walker/other/standAfterWaypointReached")) m_configData->dropWhenCapacityLimitReached=atoi(paramValue);
+	if (!strcmp(paramName,"walker/other/standAfterWaypointReached")) m_configData->dropOnlyLooted=atoi(paramValue);
+	if (!strcmp(paramName,"walker/other/standAfterWaypointReached")) m_configData->standStill=atoi(paramValue);
+
+
+	if (!strcmp(paramName,"loot/other/dropListCount")) m_configData->dropListCount=atoi(paramValue);
+
+	if (!strcmp(paramName,"loot/other/dropList") && m_currentDroplistEntryNr < m_configData->dropListCount){
+		strcpy(m_configData->dropList[m_currentDroplistEntryNr],paramValue);
+		m_currentDroplistEntryNr++;
+	}
+
+	if (!strcmp(paramName,"loot/other/dropWhenCapacityLimitReached")) m_configData->dropWhenCapacityLimitReached=atoi(paramValue);
+	if (!strcmp(paramName,"loot/other/dropOnlyLooted")) m_configData->dropOnlyLooted=atoi(paramValue);
+	if (!strcmp(paramName,"depot/depotModPriority")) sprintf(m_configData->depotModPriorityStr,"%s",paramValue);
+	if (!strcmp(paramName,"depot/stopByDepot")) m_configData->stopByDepot=atoi(paramValue);
 }
 
 char *CMod_cavebotApp::saveConfigParam(char *paramName) {
@@ -3104,6 +3290,17 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"loot/other/whilekilling")) sprintf(buf,"%d",m_configData->lootWhileKill);
 	if (!strcmp(paramName,"attack/dontAttackPlayers")) sprintf(buf,"%d",m_configData->dontAttackPlayers);
 
+	if (!strcmp(paramName,"loot/other/dropListCount")) sprintf(buf,"%d",m_configData->dropListCount);
+
+	if (!strcmp(paramName,"loot/other/dropList") && m_currentDroplistEntryNr < m_configData->dropListCount){
+		strcpy(buf,m_configData->dropList[m_currentDroplistEntryNr]);
+		m_currentDroplistEntryNr++;
+	}
+
+	if (!strcmp(paramName,"loot/other/dropWhenCapacityLimitReached")) sprintf(buf,"%d",m_configData->dropWhenCapacityLimitReached);
+	if (!strcmp(paramName,"loot/other/dropOnlyLooted")) sprintf(buf,"%d",m_configData->dropOnlyLooted);
+	if (!strcmp(paramName,"depot/depotModPriority")) sprintf(buf,"%s",m_configData->depotModPriorityStr);
+	if (!strcmp(paramName,"depot/stopByDepot")) sprintf(buf,"%d",m_configData->stopByDepot);
 	return buf;
 }
 
@@ -3153,6 +3350,12 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 41: return "walker/radius";
 	case 42: return "loot/other/whilekilling";
 	case 43: return "attack/dontAttackPlayers";
+	case 44: return "loot/other/dropListCount";
+	case 45: return "loot/other/dropList";
+	case 46: return "loot/other/dropWhenCapacityLimitReached";
+	case 47: return "loot/other/dropOnlyLooted";
+	case 48: return "depot/depotModPriority";
+	case 49: return "depot/stopByDepot";
 		
 	default:
 		return NULL;
@@ -3164,6 +3367,7 @@ int CMod_cavebotApp::isMultiParam(char *paramName) {
 	if (!strcmp(paramName,"attack/monster")) return 1;
 	if (!strcmp(paramName,"depot/entry")) return 1;
 	if (!strcmp(paramName,"attack/ignore")) return 1;
+	if (!strcmp(paramName,"loot/other/dropList")) return 1;
 	return 0;
 }
 
@@ -3172,6 +3376,7 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
 	if (!strcmp(paramName,"attack/monster")) m_currentMonsterNr=0;
 	if (!strcmp(paramName,"depot/entry")) m_currentDepotEntryNr=0;
 	if (!strcmp(paramName,"attack/ignore")) m_currentIgnoreNr=0;
+	if (!strcmp(paramName,"attack/ignore")) m_currentDroplistEntryNr=0;
 }
 
 void CMod_cavebotApp::getNewSkin(CSkin newSkin) {

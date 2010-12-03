@@ -26,6 +26,7 @@ CConfigData::CConfigData()
 	maintainStart = 0;
 	status[0] = 0;
 	memset(whiteList,0,3200);
+	strcpy(modPriorityStr,"2");
 }
 
 CConfigData::~CConfigData()

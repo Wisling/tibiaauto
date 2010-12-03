@@ -54,6 +54,7 @@ public:
 	int		lastY;
 	int		lastZ;
 	CButton	m_flashOnAlarm;
+	CComboBox m_modPriority;
 	//}}AFX_DATA
 
 

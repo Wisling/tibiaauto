@@ -855,9 +855,9 @@ void CMemReaderProxy::getMemRange(DWORD memAddressStart,DWORD memAddressEnd, cha
 	} 	
 }
 
-char *CMemReaderProxy::getGlobalVariable(char *name)
+const char *CMemReaderProxy::getGlobalVariable(char *name)
 {
-	typedef char * (*Proto_fun)(char *name);
+	typedef const char * (*Proto_fun)(char *name);
 	if (dllModule)
 	{			
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"variableStoreGetVariable");

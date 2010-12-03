@@ -19,7 +19,7 @@ public:
 	char* prefix;
 
 // Dialog Data
-	//{{AFX_DATA(CWhiteList)
+	//{{AFX_DATA(CLoadWaypointsInfo)
 	enum { IDD = IDD_LOADWAYPOINTSINFO };
 	CGroupBoxEx m_frame;
 	CEdit	m_prefix;
@@ -31,7 +31,7 @@ public:
 
 // Overrides
 	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CWhiteList)
+	//{{AFX_VIRTUAL(CLoadWaypointsInfo)
 	protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
@@ -40,7 +40,7 @@ public:
 protected:
 
 	// Generated message map functions
-	//{{AFX_MSG(CWhiteList)
+	//{{AFX_MSG(CLoadWaypointsInfo)
 	afx_msg void OnYES();
 	afx_msg void OnNO();
 	virtual BOOL OnInitDialog();

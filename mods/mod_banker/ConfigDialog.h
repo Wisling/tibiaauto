@@ -15,11 +15,18 @@
 
 struct banker{
 	char name[40];
-	int xPos[10];
-	int yPos[10];
-	int zPos[10];
+	int xPos;
+	int yPos;
+	int zPos;
 };
 
+enum CToolBankerState{
+	CToolBankerState_notRunning,
+	CToolBankerState_halfSleep,
+	CToolBankerState_noPathFound,
+	CToolBankerState_walking,
+	CToolBankerState_talking
+};
 class CMod_bankerApp;
 
 /////////////////////////////////////////////////////////////////////////////
@@ -43,8 +50,13 @@ public:
 	CComboBox m_Banker;
 	CEdit m_MinGold;
 	CEdit m_OnHand;
+	CComboBox m_modPriority;
+	CButton m_changeGold;
+	CEdit m_capsLimit;
+	CButton m_stopByBanker;
 	CButtonST	m_OK;
 	CButtonST	m_enable;
+	CStatic m_stateBanker;
 	//}}AFX_DATA
 
 
@@ -64,6 +76,7 @@ protected:
 	//{{AFX_MSG(CConfigDialog)
 	virtual void OnOK();
 	afx_msg void OnClose();
+	afx_msg void OnChangeGold();
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();

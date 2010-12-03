@@ -8,5 +8,6 @@
 #include "TibiaMapProxy.cpp"
 #include "TibiaMapPoint.cpp"
 #include "TibiaItemProxy.cpp"
+#include "TibiaContainer.cpp"
 #include "Queue.cpp"
 #include "IPCBackPipeProxy.cpp"
