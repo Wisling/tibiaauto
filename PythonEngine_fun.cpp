@@ -757,7 +757,7 @@ static PyObject *tibiaauto_reader_getGlobalVariable(PyObject *self, PyObject *ar
 
 	char *arg1;
     if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
-	char *ret1=reader.getGlobalVariable(arg1);	
+	const char *ret1=reader.getGlobalVariable(arg1);	
 	PyObject *ret = Py_BuildValue("s",ret1);
 		
 	return ret; 

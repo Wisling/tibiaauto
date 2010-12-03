@@ -14,7 +14,7 @@
 class CVariableStore  
 {
 public:
-	static char * getVariable(char *name);
+	static const char * getVariable(char *name);
 	static void setVariable(char *name,char *value);
 	CVariableStore();
 	virtual ~CVariableStore();

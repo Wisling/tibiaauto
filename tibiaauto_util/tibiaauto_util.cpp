@@ -1068,7 +1068,7 @@ void variableStoreSetVariable(char *name, char *value)
 	CVariableStore::setVariable(name,value);
 }
 
-char *variableStoreGetVariable(char *name)
+const char *variableStoreGetVariable(char *name)
 {
 	return CVariableStore::getVariable(name);
 }

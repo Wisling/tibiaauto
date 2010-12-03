@@ -54,11 +54,15 @@ void CVariableStore::setVariable(char *name, char *value)
 	}
 }
 
-char * CVariableStore::getVariable(char *name)
+//never returns null string(anymore)
+const char * CVariableStore::getVariable(char *name)
 {
 	
-	int idx=findVariableIndex(name);	
-	if (idx==-1) return NULL; else return variableStoreValues[idx];
+	int idx=findVariableIndex(name);
+	if (idx==-1){
+		return "";
+	}
+	return variableStoreValues[idx];
 }
 
 int CVariableStore::findVariableIndex(char *name)

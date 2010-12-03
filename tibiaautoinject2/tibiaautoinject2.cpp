@@ -25,7 +25,7 @@ void myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, i
 #define TA_MESSAGE_QLEN 10
 #define MAX_CREATUREINFO 1000
 
-const bool OUTPUT_DEBUG_INFO=0;
+const bool OUTPUT_DEBUG_INFO=1;
 
 int tmp1=-1;
 char tmp2[256];
@@ -60,8 +60,8 @@ HHOOK hook;
 SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
-int COMPLEX=0;
-int SENTONLY=1;
+int COMPLEX=1;
+int SENTONLY=0;
 
 time_t debugFileStart;
 int lastSendFlags;

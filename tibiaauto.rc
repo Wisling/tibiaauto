@@ -355,7 +355,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 2.7.2 for Tibia 8.62"
+CAPTION "Tibia Auto v 2.7.3 for Tibia 8.62"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
@@ -752,6 +752,13 @@ BEGIN
     IDS_WINDOWACTION_ERROR  "********  Error!!  ********\r\nNo window action specified!!!\r\n********************************"
     IDS_GENERAL_CHARACTERNOTMOVED 
                             "When the time your character has not moved satisfies the trigger condition, this alarm will trigger."
+    IDS_PRESENT             "When condition is present the alarm will trigger."
+END
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABSENT              "When condition is absent the alarm will trigger."
+    IDS_ONLINE_VIP_PLAYER   "When a VIP name specified in the trigger is logged in or out according to the conditions, the alarm will trigger."
 END
 
 #endif    // English (U.S.) resources

@@ -115,6 +115,9 @@
 #define IDD_COLORCHOOSER_DIALOG         109
 #define IDS_WINDOWACTION_ERROR          109
 #define IDS_GENERAL_CHARACTERNOTMOVED   110
+#define IDS_PRESENT                     111
+#define IDS_ABSENT                      112
+#define IDS_ONLINE_VIP_PLAYER           113
 #define IDR_MAINFRAME                   128
 #define IDD_CHAR_DIALOG                 130
 #define IDD_TOOL_RUNEMAKER              131
