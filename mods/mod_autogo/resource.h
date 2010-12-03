@@ -120,6 +120,9 @@
 #define IDS_WINDOWACTION_ERROR          109
 #define IDS_GENERAL_CHARACTERNOTMOVED   110
 #define IDS_START_RUNAWAY               111
+#define IDS_PRESENT                     112
+#define IDS_ABSENT                      113
+#define IDS_ONLINE_VIP_PLAYER           114
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048
@@ -389,6 +392,7 @@
 #define IDC_SPELL_CONFIGURATION_FRAME   3163
 #define IDC_ACTION_WINDOW_LIST          3164
 #define IDC_FLASHONALARM                3165
+#define IDC_AUTOGO_MODPRIORITY          3167
 
 // Next default values for new objects
 // 
@@ -396,7 +400,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3056
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3167
+#define _APS_NEXT_CONTROL_VALUE         3168
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

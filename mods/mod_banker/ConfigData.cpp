@@ -21,13 +21,18 @@ CConfigData::CConfigData() {
 	targetX = 0;
 	targetY = 0;
 	targetZ = 0;
-	for (int y = 0; y < 10; y++) {
-		banker.position[y].bankerX = 0;
-		banker.position[y].bankerY = 0;
-		banker.position[y].bankerZ = 0;
-	}
+
+	banker.bankerName[0]='\0';
+	banker.bankerX = 0;
+	banker.bankerY = 0;
+	banker.bankerZ = 0;
+
 	minimumGoldToBank = 1000;
 	cashOnHand = 0;
+	strcpy(modPriorityStr,"2");
+	changeGold=0;
+	capsLimit=10;
+	stopByBanker=0;
 }
 
 CConfigData::~CConfigData() {

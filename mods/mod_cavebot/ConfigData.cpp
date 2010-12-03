@@ -63,7 +63,6 @@ CConfigData::CConfigData()
 	trainingMode=0;
 	bloodHit=1;
 	trainingActivate=0;
-	dropNotLooted=0;
 	lootFromFloor=0;
 	attackHpAbove=0;
 	backattackRunes=0;
@@ -74,6 +73,20 @@ CConfigData::CConfigData()
 	pausingEnable=1;
 	radius=1;
 	selectedWaypoint=-1;
+
+	dropNotLooted=0;
+	for (i=0;i<100;i++)
+	{
+		dropList[i][0]='\0';
+	}
+	dropListCount=0;
+	dropWhenCapacityLimitReached=0;
+	dropOnlyLooted=0;
+
+	strcpy(modPriorityStr,"1");
+	strcpy(depotModPriorityStr,"2");
+	stopByDepot=0;
+
 }
 
 CConfigData::~CConfigData()

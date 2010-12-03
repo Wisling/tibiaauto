@@ -727,6 +727,8 @@ void CMod_loginApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"open/cont8")) m_configData->openCont8=atoi(paramValue);
 	if (!strcmp(paramName,"loginDelay")) m_configData->loginDelay=atoi(paramValue);
 	if (!strcmp(paramName,"autopass")) m_configData->autopass=atoi(paramValue);
+	if (!strcmp(paramName,"accountname")) strncpy(m_configData->accountNumber,paramValue,64);
+	if (!strcmp(paramName,"accountpass")) strncpy(m_configData->password,paramValue,64);
 }
 
 char *CMod_loginApp::saveConfigParam(char *paramName)
@@ -745,6 +747,8 @@ char *CMod_loginApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"open/cont8")) sprintf(buf,"%d",m_configData->openCont8);
 	if (!strcmp(paramName,"loginDelay")) sprintf(buf,"%d",m_configData->loginDelay);
 	if (!strcmp(paramName,"autopass")) sprintf(buf,"%d",m_configData->autopass);
+	if (!strcmp(paramName,"accountname")) sprintf(buf,"***censored***");
+	if (!strcmp(paramName,"accountpass")) sprintf(buf,"***censored***");
 
 	return buf;
 }
@@ -764,6 +768,8 @@ char *CMod_loginApp::getConfigParamName(int nr)
 	case 8: return "open/cont8";
 	case 9: return "loginDelay";
 	case 10: return "autopass";
+	case 11: return "accountname";
+	case 12: return "accountpass";
 	default:
 		return NULL;
 	}

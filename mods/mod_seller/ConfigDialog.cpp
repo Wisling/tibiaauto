@@ -19,9 +19,13 @@ using namespace std;
 static char THIS_FILE[] = __FILE__;
 #endif
 
-seller sellersInfo[15];
+seller sellersInfo[MAX_NPCS];
+int sellerNum;
+
+extern CToolSellerState globalSellerState;
 
 int initalizeSellers();
+void saveSellers();
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
@@ -51,6 +55,12 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_QUANTITY, m_quantityBuySell);
 	DDX_Control(pDX, IDC_SELLER_PRICE, m_buyPrice);
 	DDX_Control(pDX, IDC_SELLER_TRIGGER_QUANTITY, m_buyTriggerQuantity);
+	DDX_Control(pDX, IDC_SELLER_MODPRIORITY, m_modPriority);
+	DDX_Control(pDX, IDC_SELLER_ADD, m_addSeller);
+	DDX_Control(pDX, IDC_SELLER_ADD_NAME, m_addName);
+	DDX_Control(pDX, IDC_SELLER_LISTFRAME, m_listFrame);
+	DDX_Control(pDX, IDC_SELLER_STOPBY, m_stopBySeller);
+	DDX_Control(pDX, IDC_SELLER_STATE,m_stateSeller);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SELLER_SELLER1, m_Seller[0]);
@@ -106,6 +116,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
 	ON_BN_CLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
 	ON_BN_CLICKED(IDC_SELLER_RETURN_ON_CAP, onSellOnCap)
+	ON_BN_CLICKED(IDC_SELLER_ADD, OnAddSeller)
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
@@ -149,7 +160,11 @@ void CConfigDialog::disableControls() {
 	m_tradeItemList.EnableWindow(false);
 	m_buyTriggerQuantity.EnableWindow(false);
 	m_sellOnSpace.EnableWindow(false);
-	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
+	m_modPriority.EnableWindow(false);
+	m_sellWhen.EnableWindow(false);
+	m_stopBySeller.EnableWindow(false);
+	m_sellOnCap.EnableWindow(false);
+
 }
 
 void CConfigDialog::enableControls() {
@@ -168,7 +183,12 @@ void CConfigDialog::enableControls() {
 	m_buyTriggerQuantity.EnableWindow(true);
 	m_sellOnSpace.EnableWindow(true);
 	m_sellOnCap.EnableWindow(true);
-	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
+	m_modPriority.EnableWindow(true);
+	m_sellWhen.EnableWindow(true);
+	m_stopBySeller.EnableWindow(true);
+	m_sellOnCap.EnableWindow(true);
+
+	onSellOnCap();
 }
 
 void CConfigDialog::configToControls(CConfigData *configData) {
@@ -203,6 +223,8 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	m_quantityBuySell.SetWindowText(buf);
 	m_buyTriggerQuantity.SetWindowText(buf);
 	m_tradeItemList.SetCurSel(0);
+	m_modPriority.SetCurSel(atoi(configData->modPriorityStr) - 1);
+	m_stopBySeller.SetCheck(configData->stopBySeller);
 }
 
 CConfigData * CConfigDialog::controlsToConfig() {
@@ -243,18 +265,18 @@ CConfigData * CConfigDialog::controlsToConfig() {
 		}
 		int index = m_Seller[i].GetCurSel();
 		m_Seller[i].GetLBText(index,buf);
-		index=0;
-		while (strcmp(sellersInfo[index].name,"End of Sellers") && strcmp(sellersInfo[index].name,buf)) index++;
+		
+		for (index=0;index<sellerNum && strcmp(sellersInfo[index].name,buf);index++){}
 		strcpy(newConfigData->sellerList[i].sellerName, sellersInfo[index].name);
-		for (int loop = 0; loop < 10; loop++) {
-			newConfigData->sellerList[i].position[loop].sellerX = sellersInfo[index].xPos[loop];
-			newConfigData->sellerList[i].position[loop].sellerY = sellersInfo[index].yPos[loop];
-			newConfigData->sellerList[i].position[loop].sellerZ = sellersInfo[index].zPos[loop];
-		}
+		newConfigData->sellerList[i].sellerX = sellersInfo[index].xPos;
+		newConfigData->sellerList[i].sellerY = sellersInfo[index].yPos;
+		newConfigData->sellerList[i].sellerZ = sellersInfo[index].zPos;
 	}
 	newConfigData->sellOnCap = m_sellOnCap.GetCheck();
 	newConfigData->sellOnSpace = m_sellOnSpace.GetCheck();
 	m_sellWhen.GetWindowText(buf,127);newConfigData->sellWhen=atoi(buf);
+	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
+	newConfigData->stopBySeller=m_stopBySeller.GetCheck();
 	
 	return newConfigData;
 }
@@ -262,6 +284,30 @@ CConfigData * CConfigDialog::controlsToConfig() {
 void CConfigDialog::OnTimer(UINT nIDEvent) {
 	if (nIDEvent==1001) {
 		KillTimer(1001);
+		CMemReaderProxy reader;
+
+		char buf[256];
+		switch(globalSellerState){
+		case CToolSellerState_notRunning:
+			m_stateSeller.SetWindowText("Not running");
+			break;
+		case CToolSellerState_halfSleep:
+			sprintf(buf,"Module sleep by %s:%s",reader.getGlobalVariable("walking_control"),reader.getGlobalVariable("walking_priority"));
+			m_stateSeller.SetWindowText(buf);
+			break;
+		case CToolSellerState_noPathFound:
+			m_stateSeller.SetWindowText("Path not found");
+			break;
+		case CToolSellerState_walking:
+			m_stateSeller.SetWindowText("Walking to Seller");
+			break;
+		case CToolSellerState_talking:
+			m_stateSeller.SetWindowText("Talking with Seller");
+			break;
+		default:
+			m_stateSeller.SetWindowText("Unknown state");
+			break;
+		}
 		SetTimer(1001,250,NULL);
 	}	
 	CDialog::OnTimer(nIDEvent);
@@ -269,8 +315,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 
 BOOL CConfigDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_addSeller);
 	for (int loop = 0; loop < MAX_SELLERS; loop++) {
 		skin.SetButtonSkin( m_BuyBoxAdd[loop]);
 		skin.SetButtonSkin( m_BuyBoxRemove[loop]);
@@ -280,7 +327,7 @@ BOOL CConfigDialog::OnInitDialog() {
 	}
 
 	initalizeSellers();
-	SetTimer(1001,250,NULL);	
+	SetTimer(1001,250,NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -300,15 +347,11 @@ void CConfigDialog::reloadSellers() {
 	while (m_Seller[1].GetCount()>0) m_Seller[1].DeleteString(0);
 	while (m_Seller[2].GetCount()>0) m_Seller[2].DeleteString(0);
 	while (m_Seller[3].GetCount()>0) m_Seller[3].DeleteString(0);
-	for (int count = 0; count < 15; count++) {
-		if (strcmp(sellersInfo[count].name, "End of Sellers")) {			
-			m_Seller[0].AddString(sellersInfo[count].name);
-			m_Seller[1].AddString(sellersInfo[count].name);
-			m_Seller[2].AddString(sellersInfo[count].name);
-			m_Seller[3].AddString(sellersInfo[count].name);
-		}
-		else
-			break;
+	for (int count = 0; count < sellerNum; count++) {
+		m_Seller[0].AddString(sellersInfo[count].name);
+		m_Seller[1].AddString(sellersInfo[count].name);
+		m_Seller[2].AddString(sellersInfo[count].name);
+		m_Seller[3].AddString(sellersInfo[count].name);
 	}
 	m_Seller[0].SetCurSel(0);
 	m_Seller[1].SetCurSel(1);
@@ -319,37 +362,51 @@ void CConfigDialog::reloadSellers() {
 int initalizeSellers() {
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
-	char pathBuf[2048];    
+	char pathBuf[2048];
 	sprintf(pathBuf,"%s\\mods\\tibiaauto-sellers.csv",installPath);
 	
 	ifstream sellerFile (pathBuf, ios::in);
 	if (!sellerFile.is_open()) {	AfxMessageBox("File TibiaAuto-Sellers.csv Not found!"); sellerFile.close(); return 0;}
 	char buf[128] = {0};
-	int sellerNum = 0;
-	int posNum = 0;
 	
-	while (!sellerFile.eof()) {
-		sellerFile.getline(sellersInfo[sellerNum].name, 128, ',');
-		for (int posNum = 0; posNum < 9; posNum++) {
-			sellerFile.getline(buf, 128, ',');
-			sellersInfo[sellerNum].xPos[posNum] = atoi(buf);
-			sellerFile.getline(buf, 128, ',');
-			sellersInfo[sellerNum].yPos[posNum] = atoi(buf);
-			sellerFile.getline(buf, 128, ',');
-			sellersInfo[sellerNum].zPos[posNum] = atoi(buf);
-		}
+	sellerNum = 0;
+	while (!sellerFile.eof() && sellerNum<MAX_NPCS) {
 		sellerFile.getline(buf, 128, ',');
-		sellersInfo[sellerNum].xPos[9] = atoi(buf);
+		if (strlen(buf) == 0) break;
+		strcpy(sellersInfo[sellerNum].name,buf);
 		sellerFile.getline(buf, 128, ',');
-		sellersInfo[sellerNum].yPos[9] = atoi(buf);
+		sellersInfo[sellerNum].xPos = atoi(buf);
+		sellerFile.getline(buf, 128, ',');
+		sellersInfo[sellerNum].yPos = atoi(buf);
 		sellerFile.getline(buf, 128, '\n');
-		sellersInfo[sellerNum++].zPos[9] = atoi(buf);		
+		sellersInfo[sellerNum++].zPos = atoi(buf);
 	}
 	sellerFile.close();
 	
 	return 1;
 }
 
+void saveSellers(){
+	char installPath[1024];
+	CModuleUtil::getInstallPath(installPath);
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\mods\\tibiaauto-sellers.csv",installPath);
+	
+	ofstream sellerFile (pathBuf, ios::out);
+	if (!sellerFile.is_open()) {
+		AfxMessageBox("File TibiaAuto-Sellers.csv Not found!");
+		sellerFile.close();
+		return;
+	}
+	char buf[256];
+	for (int num=0;num<sellerNum;num++) {
+		sprintf(buf,"%s,%d,%d,%d\n",sellersInfo[num].name,sellersInfo[num].xPos,sellersInfo[num].yPos,sellersInfo[num].zPos);
+		sellerFile.write(buf,strlen(buf));
+	}
+	sellerFile.close();
+}
+
+	
 void CConfigDialog::reloadSaleItems() {
 	CTibiaItemProxy itemProxy;
 	while (m_tradeItemList.GetCount()>0) m_tradeItemList.DeleteString(0);
@@ -697,3 +754,46 @@ void CConfigDialog::onSellOnCap() {
 }
 
 
+void CConfigDialog::OnAddSeller(){
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	char buf[128];
+	m_addName.GetWindowText(buf,127);
+	int sellerFound=0;
+	int i;
+	for (i=0;i<memConstData.m_memMaxCreatures;i++){
+		CTibiaCharacter* mon=reader.readVisibleCreature(i);
+		if (mon->tibiaId==0) break;
+		int lenName=strlen(mon->name);
+		if (strncmp(buf,mon->name,lenName)==0 && (buf[lenName]==0 || buf[lenName]==' ')){
+			sellerFound=1;
+			break;
+		}
+		delete mon;
+	}
+	if (!sellerFound){
+		AfxMessageBox("NPC not found in recently seen creatures list.");
+		return;
+	}
+
+	CTibiaCharacter* NPCSeller=reader.readVisibleCreature(i);
+	if (sellerNum>=MAX_NPCS){
+		AfxMessageBox("NPC list is full.");
+		return;
+	}
+	strcpy(sellersInfo[sellerNum].name,buf);
+	sellersInfo[sellerNum].xPos=NPCSeller->x;
+	sellersInfo[sellerNum].yPos=NPCSeller->y;
+	sellersInfo[sellerNum].zPos=NPCSeller->z;
+	delete NPCSeller;
+
+	sprintf(buf,"Added %s sucessfully to the list at position (%d,%d,%d)",sellersInfo[sellerNum].name,sellersInfo[sellerNum].xPos,sellersInfo[sellerNum].yPos,sellersInfo[sellerNum].zPos);
+	AfxMessageBox(buf);
+	sellerNum++;
+
+	saveSellers();
+	reloadSellers();
+	return;
+
+	
+}

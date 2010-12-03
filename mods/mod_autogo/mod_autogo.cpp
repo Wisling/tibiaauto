@@ -403,10 +403,11 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 }
 
 DWORD WINAPI takeScreenshot(LPVOID lpParam) {
+	int* screenshotTime=(int*)lpParam;
+
 	CMemReaderProxy reader;
 	if (!tibiaHWND) InitTibiaHandle();
 	RECT rect;
-	bool captured = false;
 	bool minimized = IsIconic(tibiaHWND)!=0;
 	bool trayed = IsWindowVisible(tibiaHWND)==0;
 
@@ -419,8 +420,9 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	CString filePath;
 	filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
 	int tr=50;
-	while (!captured && tr>=0) {//attempt to take screenshot for 5 seconds
+	while (tr>=0) {//attempt to take screenshot for 5 seconds
 		tr--;
+		*screenshotTime=time(NULL); // keep time updated so it does not take another screenshot
 		Sleep (100);
 		if (reader.getConnectionState() != 8)
 			continue;
@@ -436,7 +438,13 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 			SetForegroundWindow(tibiaHWND);
 			continue;
 		}
-		Sleep (500);
+		if (trayed){
+			Sleep(1000);
+		} else if (minimized){
+			Sleep (500);
+		} else {
+			Sleep(100);
+		}
 		GetClientRect(tibiaHWND, &rect);
 		ClientToScreen(tibiaHWND, (LPPOINT)&rect.left);
 		ClientToScreen(tibiaHWND, (LPPOINT)&rect.right);
@@ -449,9 +457,10 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		SelectObject(hCDC,hBitmap); 
 		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,rect.left,rect.top,SRCCOPY);
 		WriteBMPFile(hBitmap, filePath, hCDC);
-		captured = true;
 		ReleaseDC(GetDesktopWindow(), hDDC);
 		DeleteDC(hCDC);
+		*screenshotTime=time(NULL); // Final update for when it has finished
+		break;
 	}
 	if (minimized)
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
@@ -460,22 +469,49 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	return NULL;
 }
 
-bool shouldHalfSleep(list<Alarm> test) {
+bool shouldStopWalking(list<Alarm> test) {
 	bool retVal = false;
 	list<Alarm>::iterator alarmItr = test.begin();
 	while (alarmItr != test.end() && !retVal) {
-		retVal = (alarmItr->halfSleep || alarmItr->stopWalk);
+		retVal = alarmItr->alarmState && alarmItr->doStopWalking();
 		alarmItr++;
 	}
 	return retVal;
 }
+int getGoPriority(list<Alarm> test, bool isGoingToRunaway){
+	int retVal = 0;
+	list<Alarm>::iterator alarmItr = test.begin();
+	while (alarmItr != test.end() && retVal!=3) {
+		if(alarmItr->alarmState==0){
+			alarmItr++;
+			continue;
+		}
+		//Start and Runaway can both be selected at the same time, but not Depot
+		// Goto Start ******************
+		if (alarmItr->doGoToStart()  && retVal <= 1) {
+			retVal = 1;
+		}// *****************************
 
+		// Goto Runaway **************** //stick with going to Start if not isGoingToRunaway
+		if (alarmItr->doGoToRunaway() && retVal <= 2 && (!alarmItr->doGoToStart() || isGoingToRunaway)) {
+			retVal = 2;
+		}// *****************************
+
+		// Goto Depot ******************
+		if (alarmItr->doGoToDepot()  && retVal <= 3) {
+			retVal = 3;
+		}// ****************************
+		alarmItr++;
+	}
+	return retVal;
+
+}
 int shouldKeepWalking() {
 	static lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
-		char *var=reader.getGlobalVariable("autolooterTm");
-		if (var==NULL || strcmp(var,"")==0){
+		const char *var=reader.getGlobalVariable("autolooterTm");
+		if (strcmp(var,"")==0){
 			if (lastAttackTime<time(NULL)-3)
 				return 1;
 			else
@@ -484,6 +520,17 @@ int shouldKeepWalking() {
 	}
 	lastAttackTime=time(NULL);
 	return 0;
+}
+
+// Required to be run at least every 3 seconds to be useful since it updates lastAttackTm
+int donaAttackingAndLooting(){
+	CMemReaderProxy reader;
+	static int lastAttackTm=0;
+	int ret = GetTickCount()-lastAttackTm>3*1000 && !reader.getAttackedCreature();
+	if (reader.getAttackedCreature()){
+		lastAttackTm=GetTickCount();
+	}
+	return ret;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -512,6 +559,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int stopWalk = 0;
 	CString statusBuf = "";
 	soundPath[0]=0;
+	int modRuns=0;
+	int timeLastSS=0;
 	
 	delete self;
 
@@ -529,25 +578,27 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		if (recoveryAlarmMana && self->mana == self->maxMana) recoveryAlarmMana = 0;
 		if (recoveryAlarmHp && self->hp == self->maxMana) recoveryAlarmHp = 0;
 
+		modRuns++;
+
 		statusBuf="";
 		//insert my alarm check and action code
 		struct tibiaMessage *msg = triggerMessage();
 		while (alarmItr != config->alarmList.end()) {
-			if (alarmItr->checkAlarm(config->whiteList, config->options, msg)) {
-				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
-					statusBuf += "  ******  " + alarmItr->getDescriptor();
-				
-				// Flash Window ***************
-				if ((config->options&OPTIONS_FLASHONALARM) && !alarmItr->flashed) {
-					if (!alarmItr->windowActed){
-						if (!tibiaHWND) InitTibiaHandle();
-						FlashWindow(tibiaHWND, true);
-					}
-					alarmItr->flashed = true;
+			if (modRuns%alarmItr->runCycle != 0){ // Never skips alarm if runCycle==1
+				alarmItr++;
+				continue;
+			}
+			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg);
+			if (shouldAlarm && shouldAlarm != alarmItr->alarmState) {//state changed to ON
+
+				// Highlight Window ***************
+				if ((config->options&OPTIONS_FLASHONALARM)) {
+					if (!tibiaHWND) InitTibiaHandle();
+					FlashWindow(tibiaHWND, true);
 				}// ****************************
 
 				// Log Event ******************
-				if (alarmItr->doLogEvents() && !alarmItr->eventLogged) {
+				if (alarmItr->doLogEvents()) {
 					time_t rawtime;
 					time(&rawtime );
 					char filename[64];
@@ -561,165 +612,54 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						fprintf(f, "%s  %s\n\t%s", "***  Active  -->", alarmItr->getDescriptor(), timestamp);
 						fclose(f);
 					}
-					alarmItr->eventLogged = true;
 				}// ****************************
-				
-				// Play sound ******************
-				if (alarmItr->doAlarm().GetLength()) {
-					CString pathBuf;
-					pathBuf.Format("%s\\mods\\sound\\%s", path, alarmItr->doAlarm());
-					PlaySound(pathBuf, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
-				}// ****************************
-				
-				// Stop Walking **********************
-				if (alarmItr->doStopWalking()) {
-					if (!alarmItr->stopWalk){
-						reader.setGlobalVariable("cavebot_halfsleep","true");
-						alarmItr->stopWalk = true;
-						stopWalk++;
-					}
-				} else {
-					if (alarmItr->stopWalk) {
-						alarmItr->stopWalk = false;
-						stopWalk--;
-					}
-				}
-				// *****************************
 
 				// Window Action*************
 				if (alarmItr->doWindowAction() > -1) {
 					switch (alarmItr->doWindowAction()) {
 					case 0://maximize
-						if (!alarmItr->windowActed) {
-							if (!tibiaHWND) InitTibiaHandle();
-							ShowWindow(tibiaHWND, SW_MAXIMIZE);
-							if(tibiaHWND != GetForegroundWindow())
-								SetForegroundWindow(tibiaHWND);
-							alarmItr->windowActed = true;
-						}
+						if (!tibiaHWND) InitTibiaHandle();
+						ShowWindow(tibiaHWND, SW_MAXIMIZE);
+						if(tibiaHWND != GetForegroundWindow())
+							SetForegroundWindow(tibiaHWND);
 						break;
 					case 1://restore
-						if (!alarmItr->windowActed) {
-							if (!tibiaHWND) InitTibiaHandle();
-							if(!IsWindowVisible(tibiaHWND))
-								ShowWindow(tibiaHWND, SW_SHOW);
-							if(IsIconic(tibiaHWND))
-								ShowWindow(tibiaHWND, SW_RESTORE);
-							else if(tibiaHWND != GetForegroundWindow())
-								SetForegroundWindow(tibiaHWND);
-							alarmItr->windowActed = true;
-						}
+						if (!tibiaHWND) InitTibiaHandle();
+						if(!IsWindowVisible(tibiaHWND))
+							ShowWindow(tibiaHWND, SW_SHOW);
+						if(IsIconic(tibiaHWND))
+							ShowWindow(tibiaHWND, SW_RESTORE);
+						else if(tibiaHWND != GetForegroundWindow())
+							SetForegroundWindow(tibiaHWND);
 						break;
 					case 2://flash once
-						if (!alarmItr->windowActed && !alarmItr->flashed) {
+						if (!(config->options&OPTIONS_FLASHONALARM)) {
 							if (!tibiaHWND) InitTibiaHandle();
 							FlashWindow(tibiaHWND, true);
-							alarmItr->windowActed = true;
-						}
-						break;
-					case 3://flash continuously
-						if (!alarmItr->windowActed) {
-							if (!tibiaHWND) InitTibiaHandle();
-							static int lastFlash=GetTickCount();
-							if (GetTickCount()-lastFlash>=1000){
-								FlashWindow(tibiaHWND, true);
-								lastFlash=GetTickCount();
-							}
 						}
 						break;
 					}
 				}// **************************** 
-				
+
 				// Suspend Modules  ************
-				if (alarmItr->doStopModules().size() && !alarmItr->modulesSuspended) {
+				if (alarmItr->doStopModules().size()) {
 					list<CString> temp = alarmItr->doStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
-						alarmItr->modulesSuspended = actionSuspend(*modulesItr);
+						actionSuspend(*modulesItr);
 						modulesItr++;
-						
 					}
 				}// ****************************
-				
+
 				// Start Modules ***************
-				if (alarmItr->doStartModules().size() && !alarmItr->modulesStarted) {
+				if (alarmItr->doStartModules().size()) {
 					list<CString> temp = alarmItr->doStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
 						modulesItr++;
-						alarmItr->modulesStarted = true;
 					}
 					
-				}// ****************************
-				
-				// Cast spell ******************
-				if (alarmItr->doCastSpell().GetLength()) {						
-					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay()) {
-						sender.say(alarmItr->doCastSpell());
-						alarmItr->spellCast = time(NULL);
-					}
-				}// *****************************
-				
-				// Take Screenshot **************
-				if (alarmItr->doTakeScreenshot() > -1) {
-					DWORD threadId;
-					switch (alarmItr->doTakeScreenshot()) {
-					case 0:
-						if (!alarmItr->screenshotsTaken) {
-							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
-							alarmItr->screenshotsTaken++;
-							alarmItr->timeLastSS = time(NULL);
-						}
-						break;
-					case 1:
-						if (alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
-							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
-							alarmItr->screenshotsTaken++;
-							alarmItr->timeLastSS = time(NULL);
-						}
-						break;
-					case 2:
-						if (time(NULL) - alarmItr->timeLastSS >= 5) {
-							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
-							alarmItr->screenshotsTaken++;
-							alarmItr->timeLastSS = time(NULL);
-						}
-						break;
-					case 3:
-						if (time(NULL) - alarmItr->timeLastSS >= 10) {
-							::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
-							alarmItr->screenshotsTaken++;
-							alarmItr->timeLastSS = time(NULL);
-						}
-						break;
-					}				
-				}// ****************************
-				
-				//Start and Runaway can both be selected at the same time, but not Depot
-				// Goto Start ******************
-				if (alarmItr->doGoToStart()  && goPriority <= 1) {
-					goPriority = 1;
-					alarmItr->halfSleep = true;
-				}// *****************************
-
-				// Goto Runaway **************** //stick with going to Start if not isGoingToRunaway
-				if (alarmItr->doGoToRunaway() && goPriority <= 2 && (!alarmItr->doGoToStart() || isGoingToRunaway)) {
-					goPriority = 2;
-					alarmItr->halfSleep = true;
-				}// *****************************
-
-				// Goto Depot ******************
-				if (alarmItr->doGoToDepot()  && goPriority <= 3) {
-					goPriority = 3;
-					alarmItr->halfSleep = true;
-				}// ****************************
-
-				// Logout **********************
-				if (alarmItr->doLogout()) {
-					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() == 8 ) {
-						sender.logout();
-					}
 				}// ****************************
 
 				// Kill Client *****************
@@ -732,49 +672,128 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->doShutdownComputer()) {
 					actionShutdownSystem();
 				}// ****************************
+			}
 
-			}
-			else if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken < 3 && time(NULL) - alarmItr->timeLastSS >= 1) {
-				// the alarm may have stopped BEFORE we took our 3 screenshots, let's contuinue
-				DWORD threadId;
-				::CreateThread(NULL, 0, takeScreenshot,NULL, 0, &threadId);				
-				alarmItr->screenshotsTaken++;
-				alarmItr->timeLastSS = time(NULL);
-			}
-			else { // Clean up Alarm flags here when alarm condition are no longer true , reset modules to previous state, return to start??
-				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
-					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
-				config->status[0]='\0';
-				alarmItr->halfSleep = false;
-				if (alarmItr->stopWalk) {
-					alarmItr->stopWalk = false;
-					stopWalk--;
-				}
-				alarmItr->flashed = false;
-				alarmItr->windowActed = false;
-				alarmItr->spellCast = 0;
-				alarmItr->timeLastSS = time(NULL);
-				alarmItr->screenshotsTaken = 0;
-				if (alarmItr->modulesStarted && alarmItr->modulesStarted) { // Stop when alarm is over
-					list<CString> temp = alarmItr->doStartModules();
-					list<CString>::iterator modulesItr = temp.begin();
-					while(modulesItr != temp.end()) {
-						
-						actionSuspend(*modulesItr);
-						modulesItr++;
+			if (shouldAlarm) {
+				if (statusBuf.Find(alarmItr->getDescriptor()) == -1)
+					statusBuf += "  ******  " + alarmItr->getDescriptor();
+								
+				// Play sound ******************
+				if (alarmItr->doAlarm().GetLength()) {
+					CString pathBuf;
+					pathBuf.Format("%s\\mods\\sound\\%s", path, alarmItr->doAlarm());
+					PlaySound(pathBuf, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
+				}// ****************************
+								
+				// Window Action*************
+				if (alarmItr->doWindowAction() > -1) {
+					switch (alarmItr->doWindowAction()) {
+					case 3://flash continuously
+						if (!tibiaHWND) InitTibiaHandle();
+						static int lastFlash=GetTickCount();
+						if (GetTickCount()-lastFlash>=1000){
+							FlashWindow(tibiaHWND, true);
+							lastFlash=GetTickCount();
+						}
+						break;
 					}
-					alarmItr->modulesStarted = false;
+				}// **************************** 
+							
+				// Cast spell ******************
+				if (alarmItr->doCastSpell().GetLength()) {
+					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay()) {
+						sender.say(alarmItr->doCastSpell());
+						alarmItr->spellCast = time(NULL);
+					}
+				}// *****************************
+				
+				// Take Screenshot **************
+				if (alarmItr->doTakeScreenshot() > -1) {
+					DWORD threadId;
+					switch (alarmItr->doTakeScreenshot()) {
+					case 0:
+						if (!alarmItr->screenshotsTaken) {
+							timeLastSS = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+						}
+						break;
+					case 1:
+						if (alarmItr->screenshotsTaken < 3 && time(NULL) - timeLastSS >= 1) {
+							timeLastSS = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+						}
+						break;
+					case 2:
+						if (time(NULL) - timeLastSS >= 5) {
+							timeLastSS = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+						}
+						break;
+					case 3:
+						if (time(NULL) - timeLastSS >= 10) {
+							timeLastSS = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							alarmItr->screenshotsTaken++;
+						}
+						break;
+					}				
+				}// ****************************
+				
+				// Logout **********************
+				if (alarmItr->doLogout()) {
+					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() == 8 ) {
+						sender.logout();
+					}
+				}// ****************************
+			}
+
+			if (!shouldAlarm){ //Alarm is OFF
+
+				// Take Screenshot **************  //Finishes taking screenshots then resets to 0
+				if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken > 0 && time(NULL) - timeLastSS >= 1){
+					DWORD threadId;
+					if (alarmItr->screenshotsTaken < 3) {
+						timeLastSS = time(NULL);
+						::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+						alarmItr->screenshotsTaken++;
+					}
+					if (alarmItr->screenshotsTaken >= 3) alarmItr->screenshotsTaken = 0;
+				}// ****************************
+			}
+
+			if (!shouldAlarm && shouldAlarm != alarmItr->alarmState) {//state changed to OFF
+
+				// Take Screenshot **************  //Let option 1 finish taking screenshots, it resets to 0 after
+				if (alarmItr->doTakeScreenshot() != 1){
+					alarmItr->screenshotsTaken = 0;
 				}
-				if (alarmItr->modulesSuspended && alarmItr->modulesSuspended) { // Start when alarm is over
+				// *****************************
+
+				// Suspend Modules  ************
+				if (alarmItr->doStopModules().size()) {
 					list<CString> temp = alarmItr->doStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
 						modulesItr++;
 					}
-					alarmItr->modulesSuspended = false;
-				}
-				if (alarmItr->eventLogged) {
+				}// ****************************
+
+				// Start Modules ***************
+				if (alarmItr->doStartModules().size()) {
+					list<CString> temp = alarmItr->doStartModules();
+					list<CString>::iterator modulesItr = temp.begin();
+					while(modulesItr != temp.end()) {					
+						actionSuspend(*modulesItr);
+						modulesItr++;
+					}
+				}// ****************************
+
+				// Log Event ***************
+				if (alarmItr->doLogEvents()) {
 					time_t rawtime;
 					time(&rawtime );
 					char filename[64];
@@ -788,11 +807,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						fprintf(f, "%s  %s\n\t%s", "***  Inactive  -->", alarmItr->getDescriptor(), timestamp);
 						fclose(f);
 					}
-					alarmItr->eventLogged = false;
-				}
+				}// ****************************
+
+				// Clean up 
+				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
+					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
+				config->status[0]='\0';
+				//alarmItr->spellCast = 0; // Probably a good idea to keep cast time
 			}
+			alarmItr->alarmState=shouldAlarm;
 			alarmItr++;
 		}
+
+		//Calculate walk variables from entire list
+		stopWalk = shouldStopWalking(config->alarmList);
+		goPriority = getGoPriority(config->alarmList,isGoingToRunaway);
+
 		if (statusBuf.GetLength()){
 			CString* statusMsg=alarmStatus(statusBuf);
 			int len=min(statusBuf.GetLength(),2000);
@@ -801,111 +831,125 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			delete statusMsg;
 		} else
 			config->status[0]='\0';
-		// Do not let seperate alarms fight for control!!
-		if (goPriority)
-			reader.setGlobalVariable("cavebot_halfsleep","true");
-		if (!stopWalk) {
-			switch (goPriority) {
-			case 1: {// Start position (By definition, the least safe place to be)
-				int pathSize = 0;
-				int path[15];
-				char* var=reader.getGlobalVariable("autolooterTm");
 
-
-				if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
-					if (shouldKeepWalking()){
-						// proceed with path searching
-						delete self;
-						self=reader.readSelfCharacter();
-						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-						for (; pathSize < 15 && path[pathSize]; pathSize++);
-						if (pathSize)
-							CModuleUtil::executeWalk(self->x, self->y, self->z, path);
-					}
-				} else {
-					isGoingToRunaway=true; //Switch to going to runaway if enabled
-					if (config->actDirection) {
-						if (config->actDirection == DIR_LEFT)
-							sender.turnLeft();
-						else if(config->actDirection == DIR_RIGHT)
-							sender.turnRight();
-						else if(config->actDirection == DIR_UP)
-							sender.turnUp();
-						else if(config->actDirection == DIR_DOWN)
-							sender.turnDown();
-					}
-				}
-				   }
-				break;
-			case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
-				int pathSize = 0;
-				CTibiaMapProxy tibiaMap;
-				
-				int path[15];
-				
-				if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
-					// proceed with path searching									
-					if (shouldKeepWalking()){
-						delete self;
-						self=reader.readSelfCharacter();
-						CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
-						for (; pathSize < 15 && path[pathSize]; pathSize++);										
-						if (pathSize)
-							CModuleUtil::executeWalk(self->x,self->y,self->z,path);
-					}
-				} else {
-					isGoingToRunaway=false; //switch going back to statr if enabled
-				}
-					}
-				break;
-			case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
-				if (shouldKeepWalking()){
-					delete self;
-					self=reader.readSelfCharacter();
+		// Do not let seperate modules fight for control!!
+		bool control= strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0;
+		int modpriority=atoi(reader.getGlobalVariable("walking_priority"));
+		// if wants control
+		if (goPriority || stopWalk){
+			//if should have control, take it
+			if (!control && atoi(config->modPriorityStr) > modpriority){
+				reader.setGlobalVariable("walking_control","autogo");
+				reader.setGlobalVariable("walking_priority",config->modPriorityStr);
+			}
+		} else { // if doesn't want control
+			//if has control, give it up
+			if (control){
+				reader.setGlobalVariable("walking_control","");
+				reader.setGlobalVariable("walking_priority","0");
+			}
+		}
+		if (donaAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0){
+			// if stopWalk do nothing
+			if (!stopWalk) {
+				switch (goPriority) {
+				case 1: {// Start position (By definition, the least safe place to be)
 					int pathSize = 0;
 					int path[15];
-					CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-					for (; pathSize < 15 && path[pathSize]; pathSize++);										
-					if (pathSize)
-						CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
-				}
-					}
-				break;
-			default: {
-				if (config->maintainStart) {
-					int pathSize = 0;
-					int path[15];
-					
+					const char* var=reader.getGlobalVariable("autolooterTm");
+
+
 					if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
-						if (shouldKeepWalking()) {
-							// proceed with path searching									
+						if (shouldKeepWalking()){
+							// proceed with path searching
 							delete self;
 							self=reader.readSelfCharacter();
 							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-							for (; pathSize < 15 && path[pathSize]; pathSize++);										
+							for (; pathSize < 15 && path[pathSize]; pathSize++);
 							if (pathSize)
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 						}
+					} else {
+						isGoingToRunaway=true; //Switch to going to runaway if enabled
+						if (config->actDirection) {
+							if (config->actDirection == DIR_LEFT)
+								sender.turnLeft();
+							else if(config->actDirection == DIR_RIGHT)
+								sender.turnRight();
+							else if(config->actDirection == DIR_UP)
+								sender.turnUp();
+							else if(config->actDirection == DIR_DOWN)
+								sender.turnDown();
+						}
 					}
-					else if (config->actDirection) {
-						if (config->actDirection == DIR_LEFT)
-							sender.turnLeft();
-						else if(config->actDirection == DIR_RIGHT)
-							sender.turnRight();
-						else if(config->actDirection == DIR_UP)
-							sender.turnUp();
-						else if(config->actDirection == DIR_DOWN)
-							sender.turnDown();
+					   }
+					break;
+				case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
+					int pathSize = 0;
+					CTibiaMapProxy tibiaMap;
+					
+					int path[15];
+					
+					if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
+						// proceed with path searching									
+						if (shouldKeepWalking()){
+							delete self;
+							self=reader.readSelfCharacter();
+							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
+							for (; pathSize < 15 && path[pathSize]; pathSize++);										
+							if (pathSize)
+								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+						}
+					} else {
+						isGoingToRunaway=false; //switch going back to statr if enabled
 					}
+						}
+					break;
+				case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+					if (shouldKeepWalking()){
+						delete self;
+						self=reader.readSelfCharacter();
+						int pathSize = 0;
+						int path[15];
+						CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+						for (; pathSize < 15 && path[pathSize]; pathSize++);
+						if (pathSize)
+							CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+					}
+						}
+					break;
+				default: {
+					if (config->maintainStart) {
+						int pathSize = 0;
+						int path[15];
+						
+						if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
+							if (shouldKeepWalking()) {
+								// proceed with path searching									
+								delete self;
+								self=reader.readSelfCharacter();
+								CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
+								for (; pathSize < 15 && path[pathSize]; pathSize++);										
+								if (pathSize)
+									CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+							}
+						}
+						else if (config->actDirection) {
+							if (config->actDirection == DIR_LEFT)
+								sender.turnLeft();
+							else if(config->actDirection == DIR_RIGHT)
+								sender.turnRight();
+							else if(config->actDirection == DIR_UP)
+								sender.turnUp();
+							else if(config->actDirection == DIR_DOWN)
+								sender.turnDown();
+						}
+					}
+					   }
+					break;
 				}
-				   }
-				break;
 			}
 		}
-char* var= reader.getGlobalVariable("cavebot_halfsleep");
-		if (!shouldHalfSleep(config->alarmList))
-			reader.setGlobalVariable("cavebot_halfsleep", "false");
-		goPriority = 0;
 		delete self;
 		if (msg) delete msg;
 	}
@@ -913,36 +957,35 @@ char* var= reader.getGlobalVariable("cavebot_halfsleep");
 	// Clean-up alarm flags before disabling, reset modules to previous state.
 	alarmItr = config->alarmList.begin();
 	while (alarmItr != config->alarmList.end()) {
-		if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
-			statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
-		alarmItr->flashed = false;
-		alarmItr->windowActed = false;
-		alarmItr->spellCast = 0;
-		alarmItr->timeLastSS = time(NULL);
 		alarmItr->screenshotsTaken = 0;
-		if (alarmItr->modulesStarted) { // Stop when alarm is over
-			list<CString> temp = alarmItr->doStartModules();
-			list<CString>::iterator modulesItr = temp.begin();
-			while(modulesItr != temp.end()) {
-				CString a =*modulesItr;
-				if (strcmp(a,"mod_responder.dll")==0){
-					int b=1;
-				}
-				actionSuspend(*modulesItr);
-				modulesItr++;
-			}
-			alarmItr->modulesStarted = false;
+		alarmItr->spellCast = 0;
+
+		if (alarmItr->alarmState==0){
+			alarmItr++;
+			continue;
 		}
-		if (alarmItr->modulesSuspended && alarmItr->modulesSuspended) { // Start when alarm is over
+		// Suspend Modules  ************
+		if (alarmItr->doStopModules().size()) {
 			list<CString> temp = alarmItr->doStopModules();
 			list<CString>::iterator modulesItr = temp.begin();
 			while(modulesItr != temp.end()) {
 				actionStart(*modulesItr);
 				modulesItr++;
 			}
-			alarmItr->modulesSuspended = false;
-		}
-		if (alarmItr->eventLogged) {
+		}// ****************************
+
+		// Start Modules ***************
+		if (alarmItr->doStartModules().size()) {
+			list<CString> temp = alarmItr->doStartModules();
+			list<CString>::iterator modulesItr = temp.begin();
+			while(modulesItr != temp.end()) {
+				actionSuspend(*modulesItr);
+				modulesItr++;
+			}
+		}// ****************************
+
+		// Log Event ***************
+		if (alarmItr->doLogEvents()) {
 			time_t rawtime;
 			time(&rawtime );
 			char filename[64];
@@ -953,11 +996,17 @@ char* var= reader.getGlobalVariable("cavebot_halfsleep");
 			pathBuf.Format("%s\\logs\\%s", path, filename);
 			FILE *f = fopen(pathBuf, "a+");
 			if (f) {
-				fprintf(f, "%s\n\t%s", "***  Module Stopped  ***", timestamp);
+				fprintf(f, "%s  %s\n\t%s", "***  Module Stopped  -->", alarmItr->getDescriptor(), timestamp);
 				fclose(f);
 			}
-			alarmItr->eventLogged = false;
-		}
+		}// ****************************
+
+		// Clean up 
+		if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
+			statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
+		config->status[0]='\0';
+				
+		//timeLastSS = 0; keep time from last SS
 		alarmItr++;
 	}
 	// clear current status
@@ -965,8 +1014,11 @@ char* var= reader.getGlobalVariable("cavebot_halfsleep");
 	// stop the alarm;
 	PlaySound(NULL, NULL, NULL);
 
-	// clear cavebot half/full sleep vars
-	reader.setGlobalVariable("cavebot_halfsleep","false");
+	//release control
+	if (strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0){
+		reader.setGlobalVariable("walking_control","");
+		reader.setGlobalVariable("walking_priority","0");
+	}
 
 	toolThreadShouldStop=0;
 	return 0;
@@ -1095,6 +1147,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"triggerMessage"))			m_configData->triggerMessage		= atoi(paramValue);
 	if (!strcmp(paramName,"whiteList/mkBlack"))			m_configData->options |= OPTIONS_MAKE_BLACKLIST*atoi(paramValue);
 	if (!strcmp(paramName,"options"))			m_configData->options = atoi(paramValue);
+	if (!strcmp(paramName,"modPriority")) strncpy(m_configData->modPriorityStr,paramValue,2);
 	if (!strcmp(paramName,"whiteList/List")) {
 		if (currentPos>99)
 			return;
@@ -1180,6 +1233,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"runaway/z"))					sprintf(buf,"%d",m_configData->runawayZ);
 	if (!strcmp(paramName,"triggerMessage"))			sprintf(buf,"%d",m_configData->triggerMessage);
 	if (!strcmp(paramName,"options"))			sprintf(buf,"%d",m_configData->options);
+	if (!strcmp(paramName,"modPriority")) strncpy(buf,m_configData->modPriorityStr,2);
 	if (!strcmp(paramName,"whiteList/List")){		
 		if (currentPos<100){
 			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
@@ -1254,6 +1308,7 @@ char *CMod_autogoApp::getConfigParamName(int nr) {
 	case 9: return "whiteList/mkBlack";
 	case 10: return "alarmList";
 	case 11: return "options";
+	case 12: return "modPriority";
 
 	default:
 		return NULL;

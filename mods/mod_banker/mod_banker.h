@@ -13,6 +13,7 @@
 #endif
 
 #define MAX_BANKERS 16
+#define MAX_BANKER_NPCS 50
 
 #include "resource.h"		// main symbols
 #include <IModuleInterface.h>

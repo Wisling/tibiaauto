@@ -20,14 +20,11 @@ struct ItemList {
 	Item tradeItem[32];
 };
 
-struct ValidPosition {
+struct Seller {
+	char sellerName[64];
 	int sellerX;
 	int sellerY;
 	int sellerZ;
-};
-struct Seller {
-	char sellerName[64];
-	ValidPosition position[10];
 };
 
 class CConfigData {
@@ -45,6 +42,8 @@ public:
 	int sellOnCap;
 	int sellWhen;
 	int sellOnSpace;
+	char modPriorityStr[2];
+	int stopBySeller;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

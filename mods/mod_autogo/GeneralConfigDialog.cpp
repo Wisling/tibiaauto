@@ -265,6 +265,7 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_AUTOGO_CUR_Y, lastY);
 	DDX_Text(pDX, IDC_AUTOGO_CUR_Z, lastZ);
 	DDX_Control(pDX, IDC_FLASHONALARM, m_flashOnAlarm);
+	DDX_Control(pDX, IDC_AUTOGO_MODPRIORITY, m_modPriority);
 	//}}AFX_DATA_MAP
 }
 
@@ -310,6 +311,7 @@ void GeneralConfigDialog::disableControls() {
 	m_SetStart.EnableWindow(false);
 	m_maintainStart.EnableWindow(false);
 	m_flashOnAlarm.EnableWindow(false);
+	m_modPriority.EnableWindow(false);
 }
 
 BOOL GeneralConfigDialog::OnInitDialog() 
@@ -350,6 +352,7 @@ void GeneralConfigDialog::enableControls() {
 	m_SetStart.EnableWindow(true);
 	m_maintainStart.EnableWindow(true);
 	m_flashOnAlarm.EnableWindow(true);
+	m_modPriority.EnableWindow(true);
 }
 
 void GeneralConfigDialog::configToControls(CConfigData *configData) {
@@ -368,6 +371,7 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	memMkBlack = configData->options & OPTIONS_MAKE_BLACKLIST;
 	m_flashOnAlarm.SetCheck(configData->options & OPTIONS_FLASHONALARM);
 	m_maintainStart.SetCheck(configData->maintainStart);
+	m_modPriority.SetCurSel(atoi(configData->modPriorityStr) - 1);
 }
 
 void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
@@ -388,6 +392,7 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	if (memMkBlack) newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
 	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
 	newConfigData->maintainStart = m_maintainStart.GetCheck()!=0;
+	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
 }
 
 void GeneralConfigDialog::OnAutogoBattleparanoia() {

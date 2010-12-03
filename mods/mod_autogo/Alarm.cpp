@@ -9,7 +9,7 @@
 #include "PackSenderProxy.h"
 #include "TibiaItemProxy.h"
 #include "IPCBackPipeProxy.h"
-#include "TibiaContainer.cpp" //What am I missing???  Why do I have to include a .cpp to get this to compile???? Other modules call the .h and work fine!
+#include "TibiaContainer.h"
 #include "ModuleUtil.h"
 #include <math.h>
 
@@ -43,21 +43,17 @@ Alarm::Alarm() {
 	alarmType = 0;
 	stopWalking = false;
 
-// execution markers only, no need to save orecord here
+// execution markers only, no need to save record here
 	onScreenAt = 0;
 	spellCast = 0;
 	screenshotsTaken = 0;
-	timeLastSS = 0;
-	modulesStarted = false;
-	modulesSuspended = false;
-	eventLogged = false;
-	windowActed = false;
-	flashed = false;
-	halfSleep = false;
-	stopWalk = false;
 	currentLoc = point(0,0,0);
 	movedTime = time(NULL);
 	trigger;//Default constructor(UNDEFINED,"")
+
+	//Alarm Variables
+	alarmState=0;
+	runCycle=1;
 }
 
 
@@ -89,16 +85,12 @@ Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool r
 	onScreenAt = 0;
 	spellCast = 0;
 	screenshotsTaken = 0;
-	timeLastSS = 0;
-	modulesStarted = false;
-	modulesSuspended = false;
-	eventLogged = false;
-	windowActed = false;
-	flashed = false;
-	halfSleep = false;
-	stopWalk = false;
 	currentLoc=point(0,0,0);
 	movedTime=time(NULL);
+
+	//Alarm Variables
+	alarmState=0;
+	runCycle=1;
 }
 
 Alarm::~Alarm(){
@@ -543,176 +535,31 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		}
 		break;
 	case PROXIMITY:
-		switch (condition) {
-		case NEARBY:
-			switch(attribute) {
-			case PLAYER:
-				retval= playerOnScreen(whiteList, options);
+		{
+			int bitarray=onScreenCheck(whiteList, options);
+			switch (condition) {
+			case NEARBY:
+				retval = (bitarray & (1<<attribute))!=0;
 				break;
-			case MONSTER:
-				retval= monsterOnScreen(whiteList, options);
+			case DISAPPEARS:
+				retval = (bitarray & (1<<attribute))==0;
 				break;
-			case GM:
-				retval= gmOnScreen(whiteList, options);
-				break;
-			case BATTLELIST:
-				retval= battleListActive();
-				break;
-			case BLACKSKULL:
-				retval= skullOnScreen(BLACK_SKULL);
-				break;
-			case REDSKULL:
-				retval= skullOnScreen(RED_SKULL);
-				break;
-			case GREENSKULL:
-				retval= skullOnScreen(GREEN_SKULL);
-				break;
-			case YELLOWSKULL:
-				retval= skullOnScreen(YELLOW_SKULL);
-				break;
-			case WHITESKULL:
-				retval= skullOnScreen(WHITE_SKULL);
-				break;
-			}
-			break;
-		case DISAPPEARS:
-			switch(attribute) {
-			case PLAYER:
-				retval= !playerOnScreen(whiteList, options);
-				break;
-			case MONSTER:
-				retval= !monsterOnScreen(whiteList, options);
-				break;
-			case GM:
-				retval= !gmOnScreen(whiteList, options);
-				break;
-			case BATTLELIST:
-				retval= !battleListActive();
-				break;
-			case BLACKSKULL:
-				retval= !skullOnScreen(BLACK_SKULL);
-				break;
-			case REDSKULL:
-				retval= !skullOnScreen(RED_SKULL);
-				break;
-			case GREENSKULL:
-				retval= !skullOnScreen(GREEN_SKULL);
-				break;
-			case YELLOWSKULL:
-				retval= !skullOnScreen(YELLOW_SKULL);
-				break;
-			case WHITESKULL:
-				retval= !skullOnScreen(WHITE_SKULL);
-				break;
-			}
-			break;
-		case ISONSCREENFOR: {
-			bool onscreen;
-			switch(attribute) {
-			case PLAYER:
-				onscreen = playerOnScreen(whiteList, options);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0){
-					onScreenAt = time(NULL);
-				}
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case MONSTER:
-				onscreen = monsterOnScreen(whiteList, options);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case GM:
-				onscreen = gmOnScreen(whiteList, options);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case BATTLELIST:
-				onscreen = battleListActive();
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case BLACKSKULL:
-				onscreen = skullOnScreen(BLACK_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case REDSKULL:
-				onscreen = skullOnScreen(RED_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case GREENSKULL:
-				onscreen = skullOnScreen(GREEN_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case YELLOWSKULL:
-				onscreen = skullOnScreen(YELLOW_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
-				}
-				break;
-			case WHITESKULL:
-				onscreen = skullOnScreen(WHITE_SKULL);
-				if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
-					retval=true;
-				else if (onscreen && onScreenAt == 0)
-					onScreenAt = time(NULL);
-				else if (!onscreen) {
-					onScreenAt = 0;
-					retval=false;
+			case ISONSCREENFOR:
+				{
+					bool onscreen = (bitarray & (1<<attribute))!=0;
+					if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
+						retval=true;
+					else if (onscreen && onScreenAt == 0){
+						onScreenAt = time(NULL);
+					}
+					else if (!onscreen) {
+						onScreenAt = 0;
+						retval=false;
+					}
 				}
 				break;
 			}
-			}
-			break;
-		}	
+		}
 		break;
 	case ONLINE:
 		switch (condition) {
@@ -721,8 +568,11 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			case CURRENTPLAYERONLINE:
 				retval=reader.getConnectionState() == 8;
 				break;
+			case VIPPLAYERONLINE:
+				retval=vipNameOnline(trigger.getTriggerText(), false);
+				break;
 			default:
-				retval=vipOnline(attribute - 1);
+				retval=vipOnline(attribute - 2);
 				break;
 			}
 			break;
@@ -731,15 +581,25 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			case CURRENTPLAYERONLINE:
 				retval=reader.getConnectionState() != 8;
 				break;
+			case VIPPLAYERONLINE:
+				retval=!vipNameOnline(trigger.getTriggerText(), true);
+				break;
 			default:
-				retval=!vipOnline(attribute - 1);
+				retval=!vipOnline(attribute - 2);
 				break;
 			}
 			break;
 		}
 		break;
 	case CHARACTER_STATUS:
-		retval = reader.getSelfEventFlags() & (int)pow(2,attribute);
+		switch (condition){
+		case PRESENT:
+			retval = (reader.getSelfEventFlags() & (int)pow(2,attribute))!=0;
+			break;
+		case ABSENT:
+			retval = (reader.getSelfEventFlags() & (int)pow(2,attribute))==0;
+			break;
+		}		
 		break;
 	case MESSAGE: {
 		int isSpell = msg && (options & OPTIONS_IGNORE_SPELLS) && isSpellMessage(msg->msg);
@@ -851,87 +711,49 @@ int Alarm::spaceAvailable() {
 	return space;
 }
 
-bool Alarm::playerOnScreen(char whiteList[100][32], int options) {
+int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	
+	int retval=0;
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
+		if (ch->tibiaId == 0){
+			delete ch;
+			break;
+		}
 		if (ch->visible) {		
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList,(char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {				
-				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)) {					
-					if (ch->tibiaId < 0x40000000) {
-						delete ch;
-						delete self;							
-						return true;
+			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {
+				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)) {
+					if (unsigned int(ch->tibiaId) < 0x40000000) {
+						retval |= 1<<PLAYER;
+					}					
+					if (ch->name[0] == 'G' && ch->name[1] == 'M' || ch->name[0] == 'C' && ch->name[1] == 'M') { // this is GM						
+						retval |= 1<<GM;
+					}					
+					if (ch->tibiaId >= 0x40000000) { // this is monster/npc
+						retval |= 1<<MONSTER;
 					}					
 				}
+				if (ch->z == self->z && abs(ch->x - self->x)<=7 && abs(ch->y - self->y)<=5){
+					retval |= 1<<BATTLELIST;
+				}
 			}			
+			if (ch->tibiaId != self->tibiaId && (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1))) {
+				switch(ch->skulls){
+				case YELLOW_SKULL: retval |= 1<<YELLOWSKULL; break;
+				case GREEN_SKULL: retval |= 1<<GREENSKULL; break;
+				case WHITE_SKULL: retval |= 1<<WHITESKULL; break;
+				case RED_SKULL: retval |= 1<<REDSKULL; break;
+				case BLACK_SKULL: retval |= 1<<BLACKSKULL; break;
+				}
+			}
 		}
 		delete ch;
 	}
 	delete self;
-	return false;
-}
-
-bool Alarm::gmOnScreen(char whiteList[100][32],int options) {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-
-	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++){
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
-		if (ch->visible) {		
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {				
-				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
-					if (ch->name[0] == 'G' && ch->name[1] == 'M') { // this is GM						
-						delete ch;
-						delete self;						
-						return true;
-					}
-					if (ch->name[0] == 'C' && ch->name[1] == 'M') { // this is CM				
-						delete ch;
-						delete self;						
-						return true;
-					}					
-				}
-			}		
-		}
-		delete ch;
-	};
-	delete self;
-	return false;
-}
-
-bool Alarm::monsterOnScreen(char whiteList[100][32], int options) {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	
-	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
-		if (ch->visible) {
-			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {
-				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || (options & OPTIONS_BATTLE_ANXIETY && abs(ch->z - self->z) <= 1)) {					
-					if (ch->tibiaId >= 0x40000000) { // this is monster/npc
-						delete ch;
-						delete self;							
-						return true;
-					}					
-				}
-			}			
-		}
-		delete ch;
-	};
-	delete self;
-	return false;
-}
-
-bool Alarm::battleListActive() {
-	CMemReaderProxy reader;
-
-	return (reader.readBattleListMax() >= 0 || reader.readBattleListMin() >= 0);	
+	return retval;
 }
 
 bool Alarm::vipOnline(int iconIndex) {
@@ -948,29 +770,22 @@ bool Alarm::vipOnline(int iconIndex) {
 	}
 	return false;
 }
-
-bool Alarm::skullOnScreen(int options) {
+bool Alarm::vipNameOnline(CString name,bool deflt) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
-		if (ch->visible) {
-			if (ch->tibiaId != self->tibiaId) {				
-				if (ch->z == self->z) {					
-					if (ch->skulls == options) {
-						delete ch;
-						delete self;						
-						return true;
-					}
-				}
-			}			
+	CTibiaVIPEntry *vip;
+
+	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++) {
+		if (strcmpi((vip = reader.readVIPEntry(vipNr))->name, name)==0) {
+			int ret=vip->status;
+			delete vip;
+			return ret!=0;
 		}
-		delete ch;
+		delete vip;
 	}
-	delete self;
-	return false;
+	return deflt;
 }
+
 
 //////////////////////////////////////////////////////////////////////
 // Helper Functions

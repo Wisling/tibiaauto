@@ -25,16 +25,8 @@ public:
 	void setSpellDelay(int);
 	struct point currentLoc;
 	int movedTime;
-	bool halfSleep;
-	bool stopWalk;
-	bool flashed;
-	int windowActed;
-	bool eventLogged;
 	void setDescriptor(CString);
 	CString getDescriptor();
-	bool modulesSuspended;
-	bool modulesStarted;
-	int timeLastSS;
 	int screenshotsTaken;
 	int spellCast;
 	void setManaCost(int);
@@ -93,11 +85,8 @@ private:
 	int manaCost;
 	// Trigger Functions
 	bool vipOnline(int);
-	bool battleListActive();
-	bool monsterOnScreen(char whiteList[100][32], int options);
-	bool skullOnScreen(int);
-	bool gmOnScreen(char whiteList[100][32],int);
-	bool playerOnScreen(char whiteList[100][32], int);
+	bool vipNameOnline(CString,bool);
+	int onScreenCheck(char whiteList[100][32], int);
 	
 	// Helper Functions
 	int spaceAvailable();
@@ -143,6 +132,12 @@ private:
 
 	// Specific Needs Variables
 	int onScreenAt;
+
+public:
+	//Alarm variables
+	int alarmState;
+	int runCycle;
+
 };
 
 #endif // !defined(AFX_ALARM_H__514125AB_2BAC_490F_9367_E72C0A92DAF0__INCLUDED_)

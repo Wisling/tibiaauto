@@ -57,7 +57,7 @@
 #define IDC_EDIT_LOOT                   3038
 #define IDC_DELETE_LOOT                 3039
 #define IDC_ITEMCONFIG_ITEMSTREE        3040
-#define IDC_TYPE                        3040
+#define IDC_TYPE                        3041
 
 // Next default values for new objects
 // 

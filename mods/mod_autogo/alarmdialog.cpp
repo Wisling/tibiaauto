@@ -262,6 +262,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		if(strcmp(itemText, "Current Player")) {
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Current Player"), 0);
+			m_attribute.SetItemImage(m_attribute.AddString("VIP Name"), 1);
 			m_attribute.SetItemImage(m_attribute.AddString("VIP (Blank)"), 1);
 			m_attribute.SetItemImage(m_attribute.AddString("VIP (Heart)"), 2);
 			m_attribute.SetItemImage(m_attribute.AddString("VIP (Skull)"), 3);
@@ -389,7 +390,10 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("PZ Block"), 36);
 			m_attribute.SetItemImage(m_attribute.AddString("In PZ"), 37);
 
-			m_condition.EnableWindow(false);
+			m_condition.EnableWindow(true);
+			m_condition.AddString("Present");
+			m_condition.AddString("Absent");
+			m_condition.SetCurSel(0);
 			m_trigger.SetWindowText("Not Applicable");
 			m_trigger.EnableWindow(false);
 		}
@@ -890,50 +894,80 @@ void CAlarmDialog::OnSelchangeAttribute(){
 		selected = m_attribute.GetCurSel();
 		switch (selected) {
 		case CURRENTPLAYERONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_CURRENT_PLAYER)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
+		case VIPPLAYERONLINE:
+			m_trigger.SetWindowText("<Name>");
+			m_trigger.EnableWindow(true);
+			VERIFY(instructionText.LoadString(IDS_ONLINE_VIP_PLAYER)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
 		case NONEONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_NONE)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case HEARTONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_HEART)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case SKULLONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_SKULL)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case LIGHTNINGONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_LIGHTNING)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case RETICLEONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_RETICLE)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case STARONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_STAR)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case YINYANGONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_YINYANG)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case TRIPOINTONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_TRIPOINT)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case XONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_X)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case DOLLARSIGNONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_DOLLARSIGN)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		case IRONCROSSONLINE:
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
 			VERIFY(instructionText.LoadString(IDS_ONLINE_IRONCROSS)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
@@ -1156,8 +1190,11 @@ void CAlarmDialog::OnSelchangeCondition() {
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		}
-		m_trigger.SetWindowText("Not Applicable");
-		m_trigger.EnableWindow(false);
+		selected = m_attribute.GetCurSel();
+		if (selected != VIPPLAYERONLINE){
+			m_trigger.SetWindowText("Not Applicable");
+			m_trigger.EnableWindow(false);
+		}
 		break;
 	case EVENT:
 		selected = m_attribute.GetCurSel();
@@ -1250,6 +1287,24 @@ void CAlarmDialog::OnSelchangeCondition() {
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		}
+		break;
+	case CHARACTER_STATUS:
+	selected = m_condition.GetCurSel();
+		switch (selected) {
+		case PRESENT:
+			VERIFY(instructionText.LoadString(IDS_PRESENT));
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		case ABSENT:
+			VERIFY(instructionText.LoadString(IDS_ABSENT));
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		default:
+			VERIFY(instructionText.LoadString(IDS_CONDITION));
+			m_instructionText.SetWindowText(instructionText);
+			break;
+		}
+		break;
 	}
 }
 
@@ -1262,9 +1317,9 @@ void CAlarmDialog::OnSetfocusTrigger() {
 		m_trigger.SetWindowText("");
 }
 
-void CAlarmDialog::OnActionStopWalking() {
-	VERIFY(instructionText.LoadString(IDS_STOPWALKING)); 
-	m_instructionText.SetWindowText(instructionText); 
+void CAlarmDialog::OnActionStopWalking() {	
+	VERIFY(instructionText.LoadString(IDS_STOPWALKING));
+	m_instructionText.SetWindowText(instructionText);
 }
 
 void CAlarmDialog::OnActionLogout() {
@@ -1601,6 +1656,12 @@ Alarm* CAlarmDialog::addToList() {
 	if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() <= PRIVATEMESSAGES)
 		triggerMessage |= true;
 #pragma warning(default: 4800)
+	
+	//Set for computationally intense alarms
+	if (temp->getAlarmType() == RESOURCE  && temp->getAttribute() ==SPACE) temp->runCycle=1;
+	if (temp->getAlarmType() == PROXIMITY) temp->runCycle=1;
+	
+
 	return temp;
 }
 
