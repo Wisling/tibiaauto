@@ -15,8 +15,8 @@ Class3=CMod_showmapApp
 Class4=CToolMapShow
 
 ResourceCount=3
-Resource1=IDD_TOOL_MAPSHOW (Polish)
-Resource2=IDD_TOOL_MAPSHOW_CONFIG
+Resource1=IDD_TOOL_MAPSHOW_CONFIG
+Resource2=IDD_TOOL_MAPSHOW (Polish)
 Resource3=IDR_SHOWMAP_MENU (Polish)
 
 [CLS:CMapConfig]

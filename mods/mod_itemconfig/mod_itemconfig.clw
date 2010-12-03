@@ -17,9 +17,9 @@ ResourceCount=8
 NewFileInclude1=#include "stdafx.h"
 Class2=CItemEdit
 LastTemplate=CDialog
-Resource1=IDD_ITEM_EDIT
-Resource2=IDD_FOOD_EDIT
-Resource3=IDD_TOOL_ITEMCONFIG (Polish)
+Resource1=IDD_FOOD_ADD
+Resource2=IDD_TOOL_ITEMCONFIG (Polish)
+Resource3=IDD_ITEM_EDIT
 Resource4=IDD_FULL_ITEM_LIST_ADD
 Resource5=IDD_LOOT_EDIT
 Resource6=IDD_LOOT_ADD
@@ -40,23 +40,23 @@ Class8=CToolItemConfig
 
 <<<<<<< mod_itemconfig.clw
 ResourceCount=8
-Resource1=IDD_ITEM_EDIT
-Resource2=IDD_FOOD_EDIT
-Resource3=IDD_TOOL_ITEMCONFIG (Polish)
+Resource1=IDD_FOOD_ADD
+Resource2=IDD_TOOL_ITEMCONFIG (Polish)
+Resource3=IDD_ITEM_EDIT
 Resource4=IDD_FULL_ITEM_LIST_ADD
 Resource5=IDD_LOOT_EDIT
 Resource6=IDD_LOOT_ADD
-Resource7=IDD_FOOD_ADD
-Resource7=IDD_FOOD_ADD
+Resource7=IDD_FOOD_EDIT
+Resource7=IDD_FOOD_EDIT
 =======
 ResourceCount=8
-Resource1=IDD_ITEM_EDIT
-Resource2=IDD_FOOD_EDIT
-Resource3=IDD_TOOL_ITEMCONFIG (Polish)
+Resource1=IDD_FOOD_ADD
+Resource2=IDD_TOOL_ITEMCONFIG (Polish)
+Resource3=IDD_ITEM_EDIT
 Resource4=IDD_FULL_ITEM_LIST_ADD
 Resource5=IDD_LOOT_EDIT
 Resource6=IDD_LOOT_ADD
-Resource7=IDD_FOOD_ADD
+Resource7=IDD_FOOD_EDIT
 Resource8=IDD_ITEM_ADD
 Resource8=IDD_ITEM_ADD
 >>>>>>> 1.8

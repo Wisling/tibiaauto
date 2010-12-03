@@ -14,20 +14,20 @@ Class2=CMod_spellcasterApp
 Class3=CHealList
 
 ResourceCount=8
-Resource1=IDD_SUMMON_DIALOG
+Resource1=IDD_MANA_DIALOG
 Class4=LifeDialog
 Resource2=IDD_CONFIG (Polish)
-Resource3=IDD_LIFE_DIALOG
+Resource3=IDD_HEALLIST (Polish)
 Class5=ManaDialog
-Resource4=IDD_STRIKE_DIALOG
+Resource4=IDD_SUMMON_DIALOG
 Class6=SummonDialog
-Resource5=IDD_TIMED_DIALOG
+Resource5=IDD_AOE_DIALOG
 Class7=StrikeDialog
-Resource6=IDD_MANA_DIALOG
+Resource6=IDD_LIFE_DIALOG
 Class8=AOEDialog
-Resource7=IDD_AOE_DIALOG
+Resource7=IDD_STRIKE_DIALOG
 Class9=TimedDialog
-Resource8=IDD_HEALLIST (Polish)
+Resource8=IDD_TIMED_DIALOG
 
 [CLS:CConfigDialog]
 Type=0
