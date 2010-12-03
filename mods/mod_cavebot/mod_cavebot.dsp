@@ -104,6 +104,10 @@ SOURCE=.\ConfigDialog.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\DropLootDialog.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
@@ -170,6 +174,10 @@ SOURCE=.\ConfigData.h
 # Begin Source File
 
 SOURCE=.\ConfigDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\DropLootDialog.h
 # End Source File
 # Begin Source File
 
