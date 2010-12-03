@@ -6,6 +6,57 @@
 --------------------Configuration: tre - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7246.tmp" with contents
+[
+/nologo /MDd /W3 /Gm /GX /ZI /Od /I "../win32" /I "../lib" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRE_EXPORTS" /D "TRE_DEBUG" /D "HAVE_CONFIG_H" /FR"Debug/" /Fp"Debug/tre.pch" /YX /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\regcomp.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\regerror.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\regexec.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-ast.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-compile.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-filter.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-match-approx.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-match-backtrack.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-match-parallel.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-mem.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-parse.c"
+"E:\Tibia\Sourse Code\tibiaauto-pub\tre\lib\tre-stack.c"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7246.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7247.tmp" with contents
+[
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msvcprt.lib /nologo /dll /incremental:yes /pdb:"Debug/tre.pdb" /debug /machine:I386 /def:".\tre.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/tre.dll" /implib:"Debug/tre.lib" /pdbtype:sept 
+".\Debug\regcomp.obj"
+".\Debug\regerror.obj"
+".\Debug\regexec.obj"
+".\Debug\tre-ast.obj"
+".\Debug\tre-compile.obj"
+".\Debug\tre-filter.obj"
+".\Debug\tre-match-approx.obj"
+".\Debug\tre-match-backtrack.obj"
+".\Debug\tre-match-parallel.obj"
+".\Debug\tre-mem.obj"
+".\Debug\tre-parse.obj"
+".\Debug\tre-stack.obj"
+]
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7247.tmp"
+<h3>Output Window</h3>
+Compiling...
+regcomp.c
+regerror.c
+regexec.c
+tre-ast.c
+tre-compile.c
+tre-filter.c
+tre-match-approx.c
+tre-match-backtrack.c
+tre-match-parallel.c
+tre-mem.c
+tre-parse.c
+tre-stack.c
+Linking...
+LINK : LNK6004: E:\Tibia\Tibia\Tibia Auto\mods/tre.dll not found or not built by the last incremental link; performing full link
+   Creating library Debug/tre.lib and object Debug/tre.exp
 
 
 
