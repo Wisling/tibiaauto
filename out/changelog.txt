@@ -17,6 +17,7 @@ Defects:
  Various: When depositing/selling/banking the module doesn't lose control while it is busy with depot/NPC
  Banker: Fixed banker not starting automatically when started by saved script
  Cavebot: Fixed Backattack alien with rune
+ Seller & Banker: Not blocked by players
 
 2.8.0, 8.12.2010
 Enhancements: Update

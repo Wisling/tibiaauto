@@ -2,6 +2,7 @@
 #define AFX_STDAFX_H__9DE80E11_FAFD_45E9_B2AE_45D8B5D9DB17__INCLUDED_
 
 #if _MSC_VER > 1000
+#pragma warning( disable : 4786 503 )
 #pragma once
 #endif // _MSC_VER > 1000
 

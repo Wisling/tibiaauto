@@ -804,9 +804,12 @@ int moveToSeller(CConfigData *config, int traderNum) {
 		} else { //Approach NPC after finding them
 			for (int i=0;i<memConstData.m_memMaxCreatures;i++){
 				CTibiaCharacter* mon=reader.readVisibleCreature(i);
-				// since sellerList[traderNum].sellerName may include city, match first part of name
-				if (mon->tibiaId==0) break;
+				if (mon->tibiaId==0){
+					delete mon;
+					break;
+				}
 				int len=strlen(mon->name);
+				// since sellerList[traderNum].sellerName may include city, match first part of name
 				if (strncmp(config->sellerList[traderNum].sellerName,mon->name,len)==0 && (config->sellerList[traderNum].sellerName[len]==0 || config->sellerList[traderNum].sellerName[len]==' ')){
 					for (int tries=0;tries<2;tries++){ // should only need 1 try, but we'd need to start over if we don't make it
 						CTibiaCharacter* self = reader.readSelfCharacter();
@@ -823,8 +826,8 @@ int moveToSeller(CConfigData *config, int traderNum) {
 							if (CModuleUtil::waitToStandOnSquare(nearestSell.x, nearestSell.y)){
 								delete mon;
 								mon=reader.readVisibleCreature(i);
-								if (abs(self->x - mon->x) <=3 && abs(self->y - mon->y) <=3 && self->z == mon->z){
-									delete mon;
+								if (!(abs(self->x - mon->x) <=3 && abs(self->y - mon->y) <=3 && self->z == mon->z)){
+									delete self;
 									continue;
 								}
 								delete mon;

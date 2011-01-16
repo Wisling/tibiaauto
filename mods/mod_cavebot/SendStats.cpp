@@ -183,7 +183,8 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		fileSendingProgress=1;
 	} catch (CInternetException *e)
 	{
-		fileSendingProgress=-1;		
+		e=0;
+		fileSendingProgress=-1;
 	}	
 	return 0;
 }
