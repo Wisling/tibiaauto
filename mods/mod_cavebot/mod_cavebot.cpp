@@ -727,6 +727,11 @@ void depotDeposit(CConfigData *config) {
 	
 	// do the depositing
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_depositing;
+
+	// High Priority Task
+	reader.setGlobalVariable("walking_control","depotwalker");
+	reader.setGlobalVariable("walking_priority","9");
+
 	
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
 		int objectToMove = itemProxy.getItemId(config->depotTrigger[i].itemName);
@@ -744,6 +749,13 @@ void depotDeposit(CConfigData *config) {
 				if (cont->flagOnOff) {
 					int itemNr;
 					for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--) {
+						CTibiaContainer *contCheck = reader.readContainer(contNr);
+						if (!contCheck->flagOnOff){
+							deleteAndNull(contCheck);
+							deleteAndNull(cont);
+							goto DPfinish;
+						}
+						delete contCheck;
 						CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
 						if (item->objectId==objectToMove) {
 							int itemQty = item->quantity?item->quantity:1;
@@ -788,7 +800,7 @@ void depotDeposit(CConfigData *config) {
 							movesInItemation++;
 							deleteAndNull(cont);
 							break;
-						}
+						}// else exits while since movesInItemation==0
 					}
 					deleteAndNull(cont);
 				}
@@ -801,6 +813,9 @@ void depotDeposit(CConfigData *config) {
 			} // while picking up 
 		} // if pickup from depot
 	}
+DPfinish:
+	reader.setGlobalVariable("walking_control","depotwalker");
+	reader.setGlobalVariable("walking_priority",config->depotModPriorityStr);
 
 	
 	// all is finished :) - we can go back to the hunting area
@@ -1444,7 +1459,7 @@ int canGetToPoint(int X,int Y,int Z){
 	return 1;
 }
 
-void SendAttackMode(int attack,int follow,int attLock){
+void SendAttackMode(int attack,int follow,int attLock, int refreshCur=0){
 
 	//Ensures that only changes in the three values are sent, and only one at a time
 	CPackSenderProxy sender;
@@ -1457,6 +1472,11 @@ void SendAttackMode(int attack,int follow,int attLock){
 	static int buttonFollow = reader.getPlayerModeFollow();
 	static int buttonAttLock = reader.getPlayerModeAttackPlayers();
 
+	if (refreshCur){
+		curAttack = reader.getPlayerModeAttackType();
+		curFollow = reader.getPlayerModeFollow();
+		curAttLock = reader.getPlayerModeAttackPlayers();
+	}
 	if (buttonAttack!=reader.getPlayerModeAttackType()){
 		curAttack=reader.getPlayerModeAttackType();
 		buttonAttack=reader.getPlayerModeAttackType();
@@ -1695,6 +1715,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	firstCreatureAttackTM=0;
 	currentPosTM=time(NULL);
 
+	int loggedOut=0;
+
 	lootFromFloorArr.RemoveAll();
 	
 	int i;
@@ -1758,8 +1780,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			while (backPipe.readFromPipe(&mess,1009)) {};
 			while (backPipe.readFromPipe(&mess,2002)) {};
 		}
+		if (reader.getConnectionState()!=8)
+		{
+			currentlyAttackedCreatureNr=-1;
+			loggedOut=1;
+		}
 
 		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+
+		if (loggedOut){
+			//refresh attackmode since Tibia's buttons would display correct settings
+			SendAttackMode(-1,-1,-1,1);
+		}
 
 		int pausingS = GetTickCount();
 		if (config->pausingEnable){
@@ -1791,6 +1823,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					} else {
 						reader.setGlobalVariable("walking_control","");
 						reader.setGlobalVariable("walking_priority","0");
+						//Depot walker relies on states to decide what to do
+						globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
+						globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;
+						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
 					}
 				}
 			}
@@ -2254,6 +2290,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 			if (ch->visible==0 || abs(self->x-ch->x)>7 || abs(self->y-ch->y)>5 || ch->z!=self->z) {
 				creatureList[crNr].isOnscreen=0;
+				creatureList[crNr].isWithinMargins=ch->visible && ch->z==self->z;
+				if (creatureList[crNr].isWithinMargins) playersOnScreen++;
 			} else {
 				if (crNr==currentlyAttackedCreatureNr){
 					//if creature we are attacking has lost health, record time of bloodhit
@@ -2282,6 +2320,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				creatureList[crNr].y=ch->y;
 				creatureList[crNr].z=ch->z;
 				creatureList[crNr].isOnscreen=1;
+				creatureList[crNr].isWithinMargins=1;
 				creatureList[crNr].isDead=(ch->hpPercLeft==0);
 				creatureList[crNr].hpPercLeft=ch->hpPercLeft;
 				creatureList[crNr].isIgnoredUntil=(creatureList[crNr].isIgnoredUntil<time(NULL))?0:creatureList[crNr].isIgnoredUntil;
@@ -2300,7 +2339,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				//update environmental variables
 				if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
-				if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isOnscreen) playersOnScreen++;
+				if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isWithinMargins) playersOnScreen++;
 				//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
 				if (crNr!=self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking)) alienCreatureForTrainerFound=1;
 
@@ -2329,7 +2368,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			deleteAndNull(ch);
 			if (config->debug && modRuns%10==0 && creatureList[crNr].isOnscreen) {
 				char buf[256];
-				sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d",crNr!=self->nr?creatureList[crNr].name:"****",crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z);
+				sprintf(buf,"%s, nr=%d, isatta=%d, isonscreen=%d, iswithinmargins=%d, atktm=%d ID=%d ignore=%d,x=%d,y=%d,z=%d",crNr!=self->nr?creatureList[crNr].name:"****",crNr,creatureList[crNr].isAttacking,creatureList[crNr].isOnscreen,creatureList[crNr].isWithinMargins,creatureList[crNr].lastAttackTm,creatureList[crNr].tibiaId,creatureList[crNr].isIgnoredUntil?creatureList[crNr].isIgnoredUntil-time(NULL):0,creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z);
 				registerDebug(buf);
 			}
 
@@ -2637,7 +2676,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (config->debug) registerDebug(buf);
 					
 					int ticksStart = GetTickCount();
-					point destPoint = CModuleUtil::findPathOnMap(self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ,(depotX?301:0),path,config->radius);
+					point destPoint = CModuleUtil::findPathOnMap(self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ,(depotX?301:0),path,(rand()%max(1,config->radius))+1);
 					actualTargetX=destPoint.x;
 					actualTargetY=destPoint.y;
 					actualTargetZ=destPoint.z;
@@ -2667,7 +2706,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					int executeS = GetTickCount();
 					int pathSize;
 					for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-					if (pathSize||self->x==actualTargetX&&actualTargetY==self->y&&self->z==actualTargetZ) {
+					if (actualTargetX && (pathSize||self->x==actualTargetX&&actualTargetY==self->y&&self->z==actualTargetZ)) {
 						CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 						if (config->debug) registerDebug("Walking: execute walk");
@@ -2745,7 +2784,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ);
 						if (config->debug) registerDebug(buf);
 						int ticksStart = GetTickCount();
-						point destPoint=CModuleUtil::findPathOnMap(self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ,0,path,config->radius);
+						point destPoint=CModuleUtil::findPathOnMap(self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ,0,path,(rand()%max(1,config->radius))+1);
 						actualTargetX=destPoint.x;
 						actualTargetY=destPoint.y;
 						actualTargetZ=destPoint.z;
@@ -2859,7 +2898,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										sprintf(buf,"findPathOnMap: standard walk (%d,%d,%d)->(%d,%d,%d)",self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ);
 										if (config->debug) registerDebug(buf);
 										int ticksStart = GetTickCount();
-										point destPoint=CModuleUtil::findPathOnMap(self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ,0,path,config->radius);
+										point destPoint=CModuleUtil::findPathOnMap(self->x,self->y,self->z,waypointTargetX,waypointTargetY,waypointTargetZ,0,path,(rand()%max(1,config->radius))+1);
 										int ticksEnd = GetTickCount();
 										int pathSize;
 										for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}

@@ -23,6 +23,7 @@ seller sellersInfo[MAX_NPCS];
 int sellerNum;
 
 extern CToolSellerState globalSellerState;
+extern int GUIx,GUIy,GUIz;
 
 int initalizeSellers();
 void saveSellers();
@@ -296,7 +297,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_noPathFound:
-			m_stateSeller.SetWindowText("Path not found");
+			sprintf(buf,"Path not found (%d,%d,%d)",GUIx,GUIy,GUIz);
+			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_walking:
 			m_stateSeller.SetWindowText("Walking to Seller");

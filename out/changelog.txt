@@ -1,5 +1,25 @@
-2.8.0, ?.12.2010
+2.8.2, ?.1.2011
+
+2.8.1, 16.1.2011
 Enhancements:
+ Seller & Banker: Displays location when path not found
+ Cavebot: Added better method for using "Reduced attack when player seen" (Fixes constantly attacking, then ignoring monster)
+ Cavebot: Depositer stops when BP closed manually
+ 
+Defects:
+ Tibia Auto: Removed Auto Aim
+ Fluid Drinker: Updated vocabulary
+ Seller & Banker: fixed not saving NPC locations to script file (you may need to resave xml file)
+ Maphacks: Fixed showing creature names from different levels
+ Cavebot: Fixed depot walker never walking to depot after cavebot is paused
+ Cavebot: Fixed infrequently trying to walk to point (0,0,0)
+ Autogo/Log: Fixed loading scripts and editing alarms with "Food" trigger saved in them
+ Various: When depositing/selling/banking the module doesn't lose control while it is busy with depot/NPC
+ Banker: Fixed banker not starting automatically when started by saved script
+ Cavebot: Fixed Backattack alien with rune
+
+2.8.0, 8.12.2010
+Enhancements: Update
 Defects:
 
 2.7.3, 3.12.2010

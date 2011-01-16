@@ -20,6 +20,7 @@ banker bankersInfo[MAX_BANKER_NPCS];
 int bankerNum;
 
 extern CToolBankerState globalBankerState;
+extern int GUIx,GUIy,GUIz;
 
 int initalizeBankers();
 /////////////////////////////////////////////////////////////////////////////
@@ -158,7 +159,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 			m_stateBanker.SetWindowText(buf);
 			break;
 		case CToolBankerState_noPathFound:
-			m_stateBanker.SetWindowText("Path not found");
+			sprintf(buf,"Path not found (%d,%d,%d)",GUIx,GUIy,GUIz);
+			m_stateBanker.SetWindowText(buf);
 			break;
 		case CToolBankerState_walking:
 			m_stateBanker.SetWindowText("Walking to bank");

@@ -123,6 +123,7 @@
 #define IDS_PRESENT                     112
 #define IDS_ABSENT                      113
 #define IDS_ONLINE_VIP_PLAYER           114
+#define IDS_PROXIMITY_ATTACKINGPLAYER   115
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048
