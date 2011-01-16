@@ -9,6 +9,7 @@
 #define MAX_STRING_LEN 65536
 
 #if _MSC_VER > 1000
+#pragma warning( disable : 4786 503 )
 #pragma once
 #endif // _MSC_VER > 1000
 

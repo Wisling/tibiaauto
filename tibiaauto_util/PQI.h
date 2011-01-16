@@ -6,6 +6,7 @@
 #define AFX_PQI_H__D521BBEB_1AB6_4737_8ECD_BB910B8DAD37__INCLUDED_
 
 #if _MSC_VER > 1000
+#pragma warning( disable : 4786 503 )
 #pragma once
 #endif // _MSC_VER > 1000
 

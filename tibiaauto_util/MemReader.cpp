@@ -159,7 +159,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 
 	ch->hp=-1;
 	ch->mana=-1;
-	ch->tibiaId=CMemUtil::GetMemIntValue(offset+0);		
+	ch->tibiaId=CMemUtil::GetMemIntValue(offset+0);
 	ch->x=CMemUtil::GetMemIntValue(offset+36);
 	ch->y=CMemUtil::GetMemIntValue(offset+40);
 	ch->z=CMemUtil::GetMemIntValue(offset+44);
