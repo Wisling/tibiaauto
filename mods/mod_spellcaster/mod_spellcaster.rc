@@ -189,7 +189,7 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,41,58,14
     CONTROL         "Exura Vita",IDC_TOOL_SPELLCASTER_VITA,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,57,58,14
-    CONTROL         "Heal Paralasys",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS,
+    CONTROL         "Heal Paralysis",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,153,79,14
     CONTROL         "Cure poison greater than:",
                     IDC_TOOL_SPELLCASTER_HEAL_POISON,"Button",

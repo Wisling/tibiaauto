@@ -705,6 +705,8 @@ BEGIN
     IDS_PRESENT             "When condition is present the alarm will trigger."
     IDS_ABSENT              "When condition is absent the alarm will trigger."
     IDS_ONLINE_VIP_PLAYER   "When a VIP name specified in the trigger is logged in or out according to the conditions, the alarm will trigger."
+    IDS_PROXIMITY_ATTACKINGPLAYER 
+                            "When a player who has attacked you within the last minute appears, the alarm will activate."
 END
 
 #endif    // English (U.S.) resources

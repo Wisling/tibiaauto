@@ -55,13 +55,14 @@ struct Creature: public Item
 	int hpPercLeft;
 	int isAttacking;
 	int isOnscreen;
+	int isWithinMargins;
 	int isInvisible;
 	int isDead;
 	int number;
 	unsigned int tibiaId;
 	int lastAttackTm;
 	Creature() {
-		failedAttacks=isIgnoredUntil=isInvisible=isOnscreen=isAttacking=lastAttackTm=listPriority=isDead=number=tibiaId=x=y=z=0;
+		failedAttacks=isIgnoredUntil=isInvisible=isOnscreen=isWithinMargins=isAttacking=lastAttackTm=listPriority=isDead=number=tibiaId=x=y=z=0;
 		hpPercLeft=100;
 		memset(name,0,40);
 	}

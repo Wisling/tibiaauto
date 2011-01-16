@@ -190,9 +190,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				sender.say("exura gran");
 				Sleep(800);
 			}
-			else if((config->exuraSpell && self->hp<=exuraHp && self->mana >= config->exuraSpellMana) || (config->paralysisSpell && (flags & 32) == 32)) {
+			else if(config->exuraSpell && self->hp<=exuraHp && self->mana >= config->exuraSpellMana) {
 				RandomVariableHp(config->exuraHp,MAKE,config);
 				sender.say("exura");
+				Sleep(800);
+			}
+			else if(config->paralysisSpell && (flags & 32) == 32){
+				RandomVariableHp(config->exuraHp,MAKE,config);
+				sender.say("exura ico");
 				Sleep(800);
 			}
 			else if (!config->disableWarning) {

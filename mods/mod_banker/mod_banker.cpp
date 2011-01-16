@@ -40,6 +40,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 CToolBankerState globalBankerState=CToolBankerState_notRunning;
+int GUIx = 0,GUIy = 0,GUIz = 0;
+
 /////////////////////////////////////////////////////////////////////////////
 // CMod_bankerApp
 
@@ -93,7 +95,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int persistentShouldGo=0;
 	int lastPathNotFoundTm=0;
 	while (!toolThreadShouldStop) {
-		Sleep(400);
+		Sleep(1);
+
 		if (!persistentShouldGo && shouldBank(config)){
 			persistentShouldGo=1;
 		}
@@ -146,10 +149,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						changeGold();
 					} else {
 						if (depositGold()) {
+							// High Priority Task
+							reader.setGlobalVariable("walking_control","banker");
+							reader.setGlobalVariable("walking_priority","9");
+
 							if (config->cashOnHand) {
 								withdrawGold(config);
 							}
 							getBalance();
+
+							reader.setGlobalVariable("walking_control","banker");
+							reader.setGlobalVariable("walking_priority",config->modPriorityStr);
 						}
 					}
 					persistentShouldGo=0;
@@ -271,6 +281,7 @@ void CMod_bankerApp::resetConfig() {
 
 void CMod_bankerApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName, "BankerName")) sprintf(m_configData->banker.bankerName, "%s", paramValue);
+	if (!strcmp(paramName, "BankerPos")) sscanf(paramValue,"(%d,%d,%d)",&(m_configData->banker.bankerX),&(m_configData->banker.bankerY),&(m_configData->banker.bankerZ));
 	if (!strcmp(paramName, "DepositTrigger")) m_configData->minimumGoldToBank = atoi(paramValue);
 	if (!strcmp(paramName, "CashOnHand")) m_configData->cashOnHand = atoi(paramValue);
 	if (!strcmp(paramName, "ModPriority")) strcpy(m_configData->modPriorityStr,paramValue);
@@ -284,6 +295,7 @@ char *CMod_bankerApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
 	buf[0]='\0';
 	if (!strcmp(paramName, "BankerName")) sprintf(buf,"%s",m_configData->banker.bankerName);
+	if (!strcmp(paramName, "BankerPos")) sprintf(buf,"(%d,%d,%d)",m_configData->banker.bankerX,m_configData->banker.bankerY,m_configData->banker.bankerZ);
 	if (!strcmp(paramName, "DepositTrigger")) sprintf(buf,"%d",m_configData->minimumGoldToBank);
 	if (!strcmp(paramName, "CashOnHand")) sprintf(buf,"%d",m_configData->cashOnHand);
 	if (!strcmp(paramName, "ModPriority")) strcpy(buf,m_configData->modPriorityStr);
@@ -297,12 +309,13 @@ char *CMod_bankerApp::saveConfigParam(char *paramName) {
 char *CMod_bankerApp::getConfigParamName(int nr) {
 	switch (nr) {
 	case 0: return "BankerName";
-	case 1: return "DepositTrigger";
-	case 2: return "CashOnHand";
-	case 3: return "ModPriority";
-	case 4: return "ChangeGold";
-	case 5: return "CapsLimit";
-	case 6: return "StopByBanker";
+	case 1: return "BankerPos";
+	case 2: return "DepositTrigger";
+	case 3: return "CashOnHand";
+	case 4: return "ModPriority";
+	case 5: return "ChangeGold";
+	case 6: return "CapsLimit";
+	case 7: return "StopByBanker";
 	default:
 		return NULL;
 	}
@@ -316,6 +329,9 @@ int findBanker(CConfigData *config) {
 		delete self; 
 		return 1;
 	}
+	GUIx = config->banker.bankerX;
+	GUIy = config->banker.bankerY;
+	GUIz = config->banker.bankerZ;
 	struct point nearestBank = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->banker.bankerX, config->banker.bankerY, config->banker.bankerZ, 0, config->path,3);
 	if (nearestBank.x && nearestBank.y && nearestBank.z) {
 		config->targetX = nearestBank.x;

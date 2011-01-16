@@ -45,6 +45,7 @@ static char THIS_FILE[] = __FILE__;
 #define DOBOTH 3 
 
 CToolSellerState globalSellerState=CToolSellerState_notRunning;
+int GUIx = 0,GUIy = 0,GUIz = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_SellerApp
@@ -194,11 +195,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (findSeller(config, i)) {
 						globalSellerState=CToolSellerState_walking;
 						if (moveToSeller(config,i)) {
+							// High Priority Task
+							reader.setGlobalVariable("walking_control","seller");
+							reader.setGlobalVariable("walking_priority","9");
+
 							globalSellerState=CToolSellerState_talking;
 							config->targetX = config->targetY = config->targetZ = 0;
 							sellItems(config, i);
 							buyItems(config, i);
 							buyOrSell++;
+
+							reader.setGlobalVariable("walking_control","seller");
+							reader.setGlobalVariable("walking_priority",config->modPriorityStr);
 						}
 						else break;
 					} else {
@@ -362,6 +370,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName, "SellWhen")) m_configData->sellWhen = atoi(paramValue);
 // Seller 1
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(m_configData->sellerList[0].sellerName, "%s", paramValue);
+	if (!strcmp(paramName,"Seller1/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[0].sellerX),&(m_configData->sellerList[0].sellerY),&(m_configData->sellerList[0].sellerZ));
 	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {
 		if (currentPos>32) return;
 		sprintf(m_configData->sellItem[0].tradeItem[currentPos++].itemName, "%s", paramValue);
@@ -388,6 +397,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 	}
 // Seller 2
 	if (!strcmp(paramName,"Seller2/Name")) sprintf(m_configData->sellerList[1].sellerName, "%s", paramValue);
+	if (!strcmp(paramName,"Seller2/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[1].sellerX),&(m_configData->sellerList[1].sellerY),&(m_configData->sellerList[1].sellerZ));
 	if (!strcmp(paramName,"Seller2/SaleItems/Name")) {
 		if (currentPos>32) return;
 		sprintf(m_configData->sellItem[1].tradeItem[currentPos++].itemName, "%s", paramValue);
@@ -414,6 +424,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 	}
 // Seller 3
 	if (!strcmp(paramName,"Seller3/Name")) sprintf(m_configData->sellerList[2].sellerName, "%s", paramValue);
+	if (!strcmp(paramName,"Seller3/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[2].sellerX),&(m_configData->sellerList[2].sellerY),&(m_configData->sellerList[2].sellerZ));
 	if (!strcmp(paramName,"Seller3/SaleItems/Name")) {
 		if (currentPos>32) return;
 		sprintf(m_configData->sellItem[2].tradeItem[currentPos++].itemName, "%s", paramValue);
@@ -440,6 +451,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 	}
 // Seller 4
 	if (!strcmp(paramName,"Seller4/Name")) sprintf(m_configData->sellerList[3].sellerName, "%s", paramValue);
+	if (!strcmp(paramName,"Seller4/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[3].sellerX),&(m_configData->sellerList[3].sellerY),&(m_configData->sellerList[3].sellerZ));
 	if (!strcmp(paramName,"Seller4/SaleItems/Name")){
 		if (currentPos>32) return;
 		sprintf(m_configData->sellItem[3].tradeItem[currentPos++].itemName, "%s", paramValue);
@@ -476,6 +488,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName, "SellWhen")) sprintf(buf,"%d",m_configData->sellWhen);
 // Seller 1
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(buf,"%s",m_configData->sellerList[0].sellerName);
+	if (!strcmp(paramName,"Seller1/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[0].sellerX,m_configData->sellerList[0].sellerY,m_configData->sellerList[0].sellerZ);
 	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {		
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[0].tradeItem[currentPos].itemName[0]))
@@ -514,6 +527,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	}
 // Seller 2
 	if (!strcmp(paramName,"Seller2/Name")) sprintf(buf,"%s",m_configData->sellerList[1].sellerName);
+	if (!strcmp(paramName,"Seller2/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[1].sellerX,m_configData->sellerList[1].sellerY,m_configData->sellerList[1].sellerZ);
 	if (!strcmp(paramName,"Seller2/SaleItems/Name")) {		
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[1].tradeItem[currentPos].itemName[0]))
@@ -552,6 +566,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	}
 // Seller 3
 	if (!strcmp(paramName,"Seller3/Name")) sprintf(buf,"%s",m_configData->sellerList[2].sellerName);
+	if (!strcmp(paramName,"Seller3/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[2].sellerX,m_configData->sellerList[2].sellerY,m_configData->sellerList[2].sellerZ);
 	if (!strcmp(paramName,"Seller3/SaleItems/Name")) {		
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[2].tradeItem[currentPos].itemName[0]))
@@ -590,6 +605,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	}
 // Seller 4
 	if (!strcmp(paramName,"Seller4/Name")) sprintf(buf,"%s",m_configData->sellerList[3].sellerName);
+	if (!strcmp(paramName,"Seller4/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[3].sellerX,m_configData->sellerList[3].sellerY,m_configData->sellerList[3].sellerZ);
 	if (!strcmp(paramName,"Seller4/SaleItems/Name")) {		
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[3].tradeItem[currentPos].itemName[0]))
@@ -633,38 +649,42 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 char *CMod_SellerApp::getConfigParamName(int nr) {
 	switch (nr) {
 	case 0: return "Seller1/Name";
-	case 1: return "Seller1/SaleItems/Name";
-	case 2: return "Seller1/SaleItems/SaleTriggerQuantity";
-	case 3: return "Seller2/Name";
-	case 4: return "Seller2/SaleItems/Name";
-	case 5: return "Seller2/SaleItems/SaleTriggerQuantity";
-	case 6: return "Seller3/Name";
-	case 7: return "Seller3/SaleItems/Name";
-	case 8: return "Seller3/SaleItems/SaleTriggerQuantity";
-	case 9: return "Seller4/Name";
-	case 10: return "Seller4/SaleItems/Name";
-	case 11: return "Seller4/SaleItems/SaleTriggerQuantity";
-	case 12: return "Seller1/BuyItems/Name";
-	case 13: return "Seller1/BuyItems/BuyQuantity";
-	case 14: return "Seller1/BuyItems/BuyTriggerQuantity";
-	case 15: return "Seller1/BuyItems/BuyPrice";
-	case 16: return "Seller2/BuyItems/Name";
-	case 17: return "Seller2/BuyItems/BuyQuantity";
-	case 18: return "Seller2/BuyItems/BuyTriggerQuantity";
-	case 19: return "Seller2/BuyItems/BuyPrice";
-	case 20: return "Seller3/BuyItems/Name";
-	case 21: return "Seller3/BuyItems/BuyQuantity";
-	case 22: return "Seller3/BuyItems/BuyTriggerQuantity";
-	case 23: return "Seller3/BuyItems/BuyPrice";
-	case 24: return "Seller4/BuyItems/Name";
-	case 25: return "Seller4/BuyItems/BuyQuantity";
-	case 26: return "Seller4/BuyItems/BuyTriggerQuantity";
-	case 27: return "Seller4/BuyItems/BuyPrice";
-	case 28: return "SellOnCap";
-	case 29: return "SellWhen";
-	case 30: return "SellOnSpace";
-	case 31: return "ModPriority";
-	case 32: return "StopBySeller";
+	case 1: return "Seller1/Pos";
+	case 2: return "Seller1/SaleItems/Name";
+	case 3: return "Seller1/SaleItems/SaleTriggerQuantity";
+	case 4: return "Seller2/Name";
+	case 5: return "Seller2/Pos";
+	case 6: return "Seller2/SaleItems/Name";
+	case 7: return "Seller2/SaleItems/SaleTriggerQuantity";
+	case 8: return "Seller3/Name";
+	case 9: return "Seller3/Pos";
+	case 10: return "Seller3/SaleItems/Name";
+	case 11: return "Seller3/SaleItems/SaleTriggerQuantity";
+	case 12: return "Seller4/Name";
+	case 13: return "Seller4/Pos";
+	case 14: return "Seller4/SaleItems/Name";
+	case 15: return "Seller4/SaleItems/SaleTriggerQuantity";
+	case 16: return "Seller1/BuyItems/Name";
+	case 17: return "Seller1/BuyItems/BuyQuantity";
+	case 18: return "Seller1/BuyItems/BuyTriggerQuantity";
+	case 19: return "Seller1/BuyItems/BuyPrice";
+	case 20: return "Seller2/BuyItems/Name";
+	case 21: return "Seller2/BuyItems/BuyQuantity";
+	case 22: return "Seller2/BuyItems/BuyTriggerQuantity";
+	case 23: return "Seller2/BuyItems/BuyPrice";
+	case 24: return "Seller3/BuyItems/Name";
+	case 25: return "Seller3/BuyItems/BuyQuantity";
+	case 26: return "Seller3/BuyItems/BuyTriggerQuantity";
+	case 27: return "Seller3/BuyItems/BuyPrice";
+	case 28: return "Seller4/BuyItems/Name";
+	case 29: return "Seller4/BuyItems/BuyQuantity";
+	case 30: return "Seller4/BuyItems/BuyTriggerQuantity";
+	case 31: return "Seller4/BuyItems/BuyPrice";
+	case 32: return "SellOnCap";
+	case 33: return "SellWhen";
+	case 34: return "SellOnSpace";
+	case 35: return "ModPriority";
+	case 36: return "StopBySeller";
 
 	default:
 		return NULL;
@@ -734,6 +754,9 @@ int findSeller(CConfigData *config, int traderNum) {
 		delete self;
 		return 1;
 	}
+	GUIx = config->sellerList[traderNum].sellerX;
+	GUIy = config->sellerList[traderNum].sellerY;
+	GUIz = config->sellerList[traderNum].sellerZ;
 	struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path,3);
 	if (nearestSell.x && nearestSell.y && nearestSell.z) {
 		config->targetX = nearestSell.x;
@@ -798,6 +821,12 @@ int moveToSeller(CConfigData *config, int traderNum) {
 						if (nearestSell.x && nearestSell.y && nearestSell.z==self->z){
 							CModuleUtil::executeWalk(self->x,self->y,self->z,config->path);
 							if (CModuleUtil::waitToStandOnSquare(nearestSell.x, nearestSell.y)){
+								delete mon;
+								mon=reader.readVisibleCreature(i);
+								if (abs(self->x - mon->x) <=3 && abs(self->y - mon->y) <=3 && self->z == mon->z){
+									delete mon;
+									continue;
+								}
 								delete mon;
 								delete self;
 								return 1;

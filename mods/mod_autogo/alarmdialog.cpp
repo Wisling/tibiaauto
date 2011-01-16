@@ -245,6 +245,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("Green Skull"), 14);
 			m_attribute.SetItemImage(m_attribute.AddString("Yellow Skull"), 15);
 			m_attribute.SetItemImage(m_attribute.AddString("White Skull"), 16);
+			m_attribute.SetItemImage(m_attribute.AddString("Attacking Player"), 19);
 
 			m_condition.ResetContent();
 			m_condition.AddString("Nearby");
@@ -389,6 +390,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("Strengthened"), 35);
 			m_attribute.SetItemImage(m_attribute.AddString("PZ Block"), 36);
 			m_attribute.SetItemImage(m_attribute.AddString("In PZ"), 37);
+			m_attribute.SetItemImage(m_attribute.AddString("Bleeding"), 24);
 
 			m_condition.EnableWindow(true);
 			m_condition.AddString("Present");
@@ -884,6 +886,10 @@ void CAlarmDialog::OnSelchangeAttribute(){
 			VERIFY(instructionText.LoadString(IDS_PROXIMITY_SKULL_WHITE)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
+		case ATTACKINGPLAYER:
+			VERIFY(instructionText.LoadString(IDS_PROXIMITY_ATTACKINGPLAYER)); 
+			m_instructionText.SetWindowText(instructionText);
+			break;
 		default:
 			VERIFY(instructionText.LoadString(IDS_PROXIMITY)); 
 			m_instructionText.SetWindowText(instructionText);
@@ -1360,7 +1366,7 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 	while (listItr != config->alarmList.end()) {
 		m_alarmType.SetCurSel(listItr->getAlarmType());
 		OnSelchangeAlarmType();
-		if (listItr->getAlarmType() == ITEMS) {
+		if (listItr->getAlarmType() == ITEMS && listItr->getAttribute()) {//listItr->getAttribute()==0 means Food which is first
 			for (int i = 0; i < m_attribute.GetCount(); i++){
 				if (listItr->getAttribute() == m_attribute.GetItemData(i)) {
 					m_attribute.SetCurSel(i);
@@ -1380,7 +1386,7 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionDepot.SetCheck(listItr->doGoToDepot());
 		m_actionSpell.SetCheck(listItr->doCastSpell().GetLength());
 		int index = m_spellList.FindString(-1, listItr->doCastSpell());
-		if (index == CB_ERR)
+		if (index == CB_ERR && strcmp(listItr->doCastSpell(),""))
 			m_spellList.SetCurSel(m_spellList.AddString(listItr->doCastSpell()));
 		else
 			m_spellList.SetCurSel(index);
@@ -1688,7 +1694,7 @@ void CAlarmDialog::OnAlarmEdit() {
 		for (; index != 0; index--, alarmItr++);
 		m_alarmType.SetCurSel(alarmItr->getAlarmType());
 		OnSelchangeAlarmType();
-		if (alarmItr->getAlarmType() == ITEMS) {
+		if (alarmItr->getAlarmType() == ITEMS && alarmItr->getAttribute()) {
 			for (int i = 0; i < m_attribute.GetCount(); i++){
 				if (alarmItr->getAttribute() == m_attribute.GetItemData(i)) {
 					m_attribute.SetCurSel(i);
@@ -1725,7 +1731,7 @@ void CAlarmDialog::OnAlarmEdit() {
 		m_actionSpell.SetCheck(alarmItr->doCastSpell().GetLength());
 		m_spellList.EnableWindow(m_actionSpell.GetCheck());
 		index = m_spellList.FindString(-1, alarmItr->doCastSpell());
-		if (index == CB_ERR)
+		if (index == CB_ERR && strcmp(alarmItr->doCastSpell(),""))
 			m_spellList.SetCurSel(m_spellList.AddString(alarmItr->doCastSpell()));
 		else
 			m_spellList.SetCurSel(index);

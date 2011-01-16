@@ -728,6 +728,10 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)) {
 					if (unsigned int(ch->tibiaId) < 0x40000000) {
 						retval |= 1<<PLAYER;
+						if (reader.getCurrentTm() - ch->lastAttackTm < 60*1000)//player has attacked in last minute
+						{
+							retval |= 1<<ATTACKINGPLAYER;
+						}
 					}					
 					if (ch->name[0] == 'G' && ch->name[1] == 'M' || ch->name[0] == 'C' && ch->name[1] == 'M') { // this is GM						
 						retval |= 1<<GM;
