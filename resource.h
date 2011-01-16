@@ -32,10 +32,14 @@
 #define IDS_PROXIMITY_BATTLELIST        28
 #define IDS_PROXIMITY_SKULL             29
 #define IDS_GENERAL_ALLMESSAGES         30
+#define IDS_MESSAGE_ALLMESSAGES         30
 #define IDS_GENERAL_PUBLICMESSAGES      31
+#define IDS_MESSAGE_PUBLICMESSAGES      31
 #define IDS_GENERAL_PRIVATEMESSAGES     32
+#define IDS_MESSAGE_PRIVATEMESSAGES     32
 #define IDS_GENERAL_CHARACTERMOVED      33
 #define IDS_GENERAL_STATUSFLAG          34
+#define IDS_GENERAL_WAYPOINTREACHED     34
 #define IDS_BEGIN_ATTRIBUTE             35
 #define IDS_LEVELUP                     36
 #define IDS_PERCLVLACHIEVED             37
@@ -67,6 +71,7 @@
 #define IDS_FROM                        61
 #define IDS_CONTAINS                    62
 #define IDS_RESOURCE_XP                 63
+#define IDS_MESSAGE                     64
 #define IDS_ONLINE                      65
 #define IDS_ONLINE_CURRENT_PLAYER       66
 #define IDS_ONLINE_NONE                 67
@@ -115,9 +120,11 @@
 #define IDD_COLORCHOOSER_DIALOG         109
 #define IDS_WINDOWACTION_ERROR          109
 #define IDS_GENERAL_CHARACTERNOTMOVED   110
-#define IDS_PRESENT                     111
-#define IDS_ABSENT                      112
-#define IDS_ONLINE_VIP_PLAYER           113
+#define IDS_START_RUNAWAY               111
+#define IDS_PRESENT                     112
+#define IDS_ABSENT                      113
+#define IDS_ONLINE_VIP_PLAYER           114
+#define IDS_PROXIMITY_ATTACKINGPLAYER   115
 #define IDR_MAINFRAME                   128
 #define IDD_CHAR_DIALOG                 130
 #define IDD_TOOL_RUNEMAKER              131

@@ -41,5 +41,7 @@ public:
 	Protocol(){}
 	virtual ~Protocol(){}
 
-	static void Protocol::parsePacket(NetworkMessage &msg);
+	static void Protocol::outputPacket(NetworkMessage &msg);
+	static void Protocol::parsePacketIn(NetworkMessage &msg);
+	static void Protocol::parsePacketOut(NetworkMessage &msg);
 };

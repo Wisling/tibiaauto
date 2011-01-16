@@ -164,7 +164,7 @@ void NetworkMessage::AddBytes(const char* bytes, int size){
 	msgSize += size;
 }
 
-void Protocol::parsePacket(NetworkMessage &msg){
+void Protocol::outputPacket(NetworkMessage &msg){
 	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.PeekByte();
 	NetworkMessage msgNew=NetworkMessage();
@@ -308,4 +308,22 @@ void Protocol::parsePacket(NetworkMessage &msg){
 	fout.write((char*)msg.msgBuf,msg.msgSize);	
 	fout.write("\xff\xff",2);
 	fout.close();
+}
+
+
+void Protocol::parsePacketIn(NetworkMessage &msg){
+	CMemReaderProxy reader;
+	unsigned char recvbyte = msg.PeekByte();
+	switch(recvbyte)
+	{
+		default: break;
+	}
+}
+void Protocol::parsePacketOut(NetworkMessage &msg){
+	CMemReaderProxy reader;
+	unsigned char recvbyte = msg.PeekByte();
+	switch(recvbyte)
+	{
+		default: break;
+	}
 }

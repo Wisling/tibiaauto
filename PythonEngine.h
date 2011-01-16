@@ -22,6 +22,7 @@ public:
 	static void periodicalTick();
 	static void loadScript(char *path);
 	static void init();
+	static void threadGILAcquire(int ms);
 	CPythonEngine();
 	virtual ~CPythonEngine();
 

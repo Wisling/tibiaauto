@@ -322,14 +322,14 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
 	buf[0]=buf[1]=0;
 	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
-	if (buf[0]==0x90&&buf[1]==0x90) versionOk=1;
-	if (buf[0]==0x75&&buf[1]==0x40) versionOk=1;
+	if (buf[0]==0xEB&&buf[1]==0x1D) versionOk=1;
+	if (buf[0]==0x75&&buf[1]==0x13) versionOk=1;
 		
 	if (!versionOk)
 	{		
 		char outBuf[32];
 
-		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%d  %d)", buf[0], buf[1]);
+		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%x  %x)", buf[0], buf[1]);
 		AfxMessageBox(outBuf);
 		ExitProcess(0);
 	}
@@ -560,7 +560,7 @@ void CTibiaautoDlg::OnChangeEditValue()
 }
 
 
-void CTibiaautoDlg::OnTimer(UINT nIDEvent) 
+void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 {	
 	CMemReaderProxy reader;
 	
@@ -593,6 +593,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		CPythonEngine::periodicalTick();
 		CPythonEngine::backpipeMsgTick();
 		CPythonEngine::backpipeTamsgTick();
+		CPythonEngine::threadGILAcquire(1); // allows python bound threads to still have cycles to run or terminate on when module is disabled
 
 		SetTimer(1002,25,NULL);
 	}
@@ -1615,7 +1616,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.7.3,tm=%d,",tm);
+		fprintf(f,"version=2.8.1,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

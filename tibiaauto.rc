@@ -355,7 +355,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "Tibia Auto v 2.7.3 for Tibia 8.62"
+CAPTION "Tibia Auto v 2.8.1 for Tibia 8.7"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
@@ -367,7 +367,7 @@ BEGIN
     CONTROL         "Auto UH",IDC_TOOL_AUTOUH,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,13,35,61,14
     CONTROL         "Auto aim",IDC_TOOL_AUTOAIM,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,13,51,61,14
+                    BS_PUSHLIKE | NOT WS_VISIBLE | WS_TABSTOP,13,51,61,14
     CONTROL         "Fluid drinker",IDC_TOOL_FLUIDDRINKER,"Button",
                     BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,13,67,61,14
     CONTROL         "Ammo restack",IDC_TOOL_AMMORESTACK,"Button",
@@ -642,18 +642,19 @@ BEGIN
     IDS_PROXIMITY_BATTLELIST 
                             "When anything appears on the battlelist, the alarm will activate. (NOTE: Will detect creatures that are up to 2 sqm  outside the viewable area.)"
     IDS_PROXIMITY_SKULL     "When any skulled players appears or becomes skulled, the alarm will activate."
-    IDS_GENERAL_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
-    IDS_GENERAL_PUBLICMESSAGES 
+    IDS_MESSAGE_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_MESSAGE_PUBLICMESSAGES 
                             "When any public message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_GENERAL_PRIVATEMESSAGES 
+    IDS_MESSAGE_PRIVATEMESSAGES 
                             "When any private message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
     IDS_GENERAL_CHARACTERMOVED 
                             "When the character moves or is moved (pushed) this alarm will trigger."
-    IDS_GENERAL_STATUSFLAG  "When a negative status flag is registered, this alarm will trigger. You can filter specific negative status flags in General Options."
+    IDS_GENERAL_WAYPOINTREACHED 
+                            "When the gven waypoint is reched to within the given radius, the alarm will sound. The Trigger format is as follows: (XXX, YYY, ZZZ)RRR "
     IDS_BEGIN_ATTRIBUTE     "Select an attribute that will trigger the alarm."
     IDS_LEVELUP             "The alarm will activate when the selected skill reaches new and subsequent levels."
     IDS_PERCLVLACHIEVED     "The alarm will activate when the selected skill has met or surpassed the percentage of completion set in the trigger amount."
@@ -691,6 +692,7 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    IDS_MESSAGE             "Text alarms contain alarms detect and trigger for specific text types and in-game messages."
     IDS_ONLINE              "When the player or specified VIP type logs in or out the alarm will trigger."
     IDS_ONLINE_CURRENT_PLAYER 
                             "When the current player is logged in or out according to the conditions, the alarm will trigger."
@@ -752,13 +754,16 @@ BEGIN
     IDS_WINDOWACTION_ERROR  "********  Error!!  ********\r\nNo window action specified!!!\r\n********************************"
     IDS_GENERAL_CHARACTERNOTMOVED 
                             "When the time your character has not moved satisfies the trigger condition, this alarm will trigger."
-    IDS_PRESENT             "When condition is present the alarm will trigger."
+    IDS_START_RUNAWAY       "When both Start and Runaway are enabled the alarm with travel between both points continuously."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
+    IDS_PRESENT             "When condition is present the alarm will trigger."
     IDS_ABSENT              "When condition is absent the alarm will trigger."
     IDS_ONLINE_VIP_PLAYER   "When a VIP name specified in the trigger is logged in or out according to the conditions, the alarm will trigger."
+    IDS_PROXIMITY_ATTACKINGPLAYER 
+                            "When a player who has attacked you within the last minute appears, the alarm will activate."
 END
 
 #endif    // English (U.S.) resources

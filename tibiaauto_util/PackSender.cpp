@@ -370,6 +370,7 @@ void CPackSender::attack(int tibiaCharId)
 {
 	CMemReader reader;
 	reader.setAttackedCreature(tibiaCharId);
+	reader.setFollowedCreature(0);
 	int cnt=reader.getNextPacketCount();
 	
 
@@ -394,6 +395,7 @@ void CPackSender::follow(int tibiaCharId)
 {
 	CMemReader reader;
 	reader.setFollowedCreature(tibiaCharId);
+	reader.setAttackedCreature(0);
 	int cnt=reader.getNextPacketCount();
 
 	char sendbuf[11];

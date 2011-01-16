@@ -63,7 +63,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	
 	// getName			
     PyObject *result = PyObject_CallMethod(pluginObject, "getName","()");
-	pythonScript->setName(PyString_AsString(result));	
+	pythonScript->setName(PyString_AsString(result));
 	Py_XDECREF(result);	
 
 	// getVersion		
@@ -506,7 +506,7 @@ void CPythonEngine::init()
 		Py_InitModule("taitem", Methods_taitem);	
 		Py_InitModule("tacrstat", Methods_tacrstat);	
 		Py_InitModule("takernel", Methods_takernel);	
-		PyRun_SimpleString("import tibiaauto");	
+		PyRun_SimpleString("import tibiaauto");
 		PyRun_SimpleString("import tareader");
 		PyRun_SimpleString("import tasender");
 		PyRun_SimpleString("import tamap");
@@ -514,8 +514,9 @@ void CPythonEngine::init()
 		PyRun_SimpleString("import taalice");
 		PyRun_SimpleString("import taitem");
 		PyRun_SimpleString("import tacrstat");
-		PyRun_SimpleString("import takernel");		
-		PyRun_SimpleString("import sys");	
+		PyRun_SimpleString("import takernel");
+		PyRun_SimpleString("import sys");
+		PyRun_SimpleString("import time");
 
 		
 		
@@ -747,7 +748,7 @@ void CPythonEngine::backpipeMsgTick()
 					PyObject *params = pythonScript->getParamsDic();									
 					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(O(isss))",params,infoType,chanBuf,nickBuf,msgBuf);
 					Py_XDECREF(params);
-					Py_XDECREF(result);						
+					Py_XDECREF(result);
 					fun->call();
 					PyGILState_Release(gstate);
 				}
@@ -823,7 +824,7 @@ void CPythonEngine::backpipeTamsgTick()
 					PyObject *params = pythonScript->getParamsDic();									
 					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(Os)",params,msgBuf);
 					Py_XDECREF(params);
-					Py_XDECREF(result);						
+					Py_XDECREF(result);
 					fun->call();
 					PyGILState_Release(gstate);
 				}
@@ -832,5 +833,19 @@ void CPythonEngine::backpipeTamsgTick()
 			
 		}
 	}
+	leaveCriticalSection();
+}
+void CPythonEngine::threadGILAcquire(int ms)
+{
+	init();
+	enterCriticalSection();
+	
+	PyGILState_STATE gstate;
+	gstate = PyGILState_Ensure();
+	char buf[128];
+	sprintf(buf,"time.sleep(%d.%03d)",ms/1000,ms%1000);
+	PyRun_SimpleString(buf);
+
+	PyGILState_Release(gstate);
 	leaveCriticalSection();
 }

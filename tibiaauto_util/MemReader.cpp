@@ -80,6 +80,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 	ch->cap = CMemUtil::GetMemIntValue(m_memAddressCap)/100.0;
 	ch->stamina = CMemUtil::GetMemIntValue(m_memAddressStamina);
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
+	//ch->exp += (__int64)CMemUtil::GetMemIntValue(m_memAddressExp+4) << 32; //Note Experience became 64 bits since 8.7
 	ch->lvl = CMemUtil::GetMemIntValue(m_memAddressLvl);
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);
 	ch->mlvlPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
@@ -171,22 +172,28 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->outfitId=CMemUtil::GetMemIntValue(offset+72);
 	ch->moving=CMemUtil::GetMemIntValue(offset+76);
 	ch->lookDirection=CMemUtil::GetMemIntValue(offset+80);
+	//ch->lastMovedLookDirection=CMemUtil::GetMemIntValue(offset+84);
+	//ch->???=CMemUtil::GetMemIntValue(offset+88);
+	//ch->???=CMemUtil::GetMemIntValue(offset+92);
 	ch->monsterType=CMemUtil::GetMemIntValue(offset+96);		
 	ch->colorHead=CMemUtil::GetMemIntValue(offset+100);
 	ch->colorBody=CMemUtil::GetMemIntValue(offset+104);
 	ch->colorLegs=CMemUtil::GetMemIntValue(offset+108);
 	ch->colorFoot=CMemUtil::GetMemIntValue(offset+112);
 	//ch->addon=CMemUtil::GetMemIntValue(offset+116);
-	//ch->sleeptime=CMemUtil::GetMemIntValue(offset+120);
-	//ch->boxcolour=CMemUtil::GetMemIntValue(offset+128);
-	ch->lastAttackTm=CMemUtil::GetMemIntValue(offset+132);
-	ch->hpPercLeft=CMemUtil::GetMemIntValue(offset+136);
-	ch->walkSpeed=CMemUtil::GetMemIntValue(offset+140);
-	ch->visible=CMemUtil::GetMemIntValue(offset+144);	
-	ch->skulls=CMemUtil::GetMemIntValue(offset+148);
-	ch->shields=CMemUtil::GetMemIntValue(offset+152);
-	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
-	ch->blocking=CMemUtil::GetMemIntValue(offset+164);
+	//ch->mountType=CMemUtil::GetMemIntValue(offset+120);
+	//ch->lightPower=CMemUtil::GetMemIntValue(offset+124);
+	//ch->lightColour=CMemUtil::GetMemIntValue(offset+128);
+	//ch->boxcolour=CMemUtil::GetMemIntValue(offset+132);
+	ch->lastAttackTm=CMemUtil::GetMemIntValue(offset+136);
+	ch->hpPercLeft=CMemUtil::GetMemIntValue(offset+140);
+	ch->walkSpeed=CMemUtil::GetMemIntValue(offset+144);
+	ch->visible=CMemUtil::GetMemIntValue(offset+148);	
+	ch->skulls=CMemUtil::GetMemIntValue(offset+152);
+	ch->shields=CMemUtil::GetMemIntValue(offset+156);
+	//ch->???=CMemUtil::GetMemIntValue(offset+160);
+	ch->warIcon=CMemUtil::GetMemIntValue(offset+164);
+	ch->blocking=CMemUtil::GetMemIntValue(offset+168);
 	ch->nr=nr;
 	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);
@@ -218,7 +225,7 @@ char * CMemReader::GetLoggedChar(int processId)
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId);		
-		CMemUtil::GetMemIntValue(processId,offset+140,&visible);
+		CMemUtil::GetMemIntValue(processId,offset+148,&visible);
 		if (selfId==creatureId&&visible)
 		{
 			char buf[33];
@@ -339,7 +346,7 @@ int CMemReader::getLoggedCharNr()
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		creatureId=CMemUtil::GetMemIntValue(offset+0);		
-		visible=CMemUtil::GetMemIntValue(offset+140);
+		visible=CMemUtil::GetMemIntValue(offset+148);
 		if (selfId==creatureId&&visible)
 		{
 			return i;
@@ -374,25 +381,25 @@ void CMemReader::cancelAttackCoords()
 int CMemReader::readCreatureLightPower(int creatureNr)
 {	
 	CMemReader reader;
-	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+120);
+	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124);
 }
 
 int CMemReader::readCreatureLightColor(int creatureNr)
 {	
 	CMemReader reader;
-	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+120+4);
+	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124+4);
 }
 
 void CMemReader::writeCreatureLightPower(int creatureNr,int value)
 {	
 	CMemReader reader;
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+120,value);		
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124,value);		
 }
 
 void CMemReader::writeCreatureLightColor(int creatureNr,int value)
 {
 	CMemReader reader;
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+120+4,value);		
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124+4,value);		
 }	
 
 
@@ -718,13 +725,9 @@ long CMemReader::getCurrentTm()
 void CMemReader::writeEnableRevealCName()
 {
 	unsigned char *buf=(unsigned char *)malloc(3);
-	buf[0]=0x90;
-	buf[1]=0x90;
-	// replace jumps	
-
-	// disable additionall 'z' check
-	buf[0]=0x90;
-	buf[1]=0x90;
+	// replace jump with own jump
+	buf[0]=0xEB;
+	buf[1]=0x1D;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
 	
 
@@ -737,7 +740,7 @@ void CMemReader::writeDisableRevealCName()
 {
 	unsigned char *buf=(unsigned char *)malloc(2);	
 	buf[0]=0x75;
-	buf[1]=0x40;	
+	buf[1]=0x13;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
 	/*
 	buf[0]=0x46;
@@ -983,7 +986,7 @@ char * CMemReader::getOpenWindowName()
 	ptr2=CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrCurrentWindow"));
 	if (ptr2)
 	{
-		CMemUtil::GetMemRange(ptr2+80,ptr2+80+128,nameBuf);		
+		CMemUtil::GetMemRange(ptr2+80,ptr2+80+128,nameBuf);
 	}	
 	return nameBuf;
 }
