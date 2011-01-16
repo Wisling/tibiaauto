@@ -95,7 +95,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int persistentShouldGo=0;
 	int lastPathNotFoundTm=0;
 	while (!toolThreadShouldStop) {
-		Sleep(1);
+		Sleep(400);
 
 		if (!persistentShouldGo && shouldBank(config)){
 			persistentShouldGo=1;

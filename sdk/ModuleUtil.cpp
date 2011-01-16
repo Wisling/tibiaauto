@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 //
 //////////////////////////////////////////////////////////////////////
 
+#pragma warning( disable : 4786 )
 #include "stdafx.h"
 #include "ModuleUtil.h"
 
@@ -32,6 +33,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "PackSenderProxy.h"
 #include "TibiaStructures.h"
+#pragma warning( disable : 4786 )
+
 
 
 //#define MAPDEBUG
@@ -1193,7 +1196,9 @@ int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of charac
 		int iterCount=28;
 		while (iterCount-->0) {
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->x!=newX || self->y!=newY){
+			if (self->moving == 0){
+				iterCount=0;
+			} else if (self->x!=newX || self->y!=newY){
 				newX=self->x;
 				newY=self->y;
 				delete self;
@@ -1235,7 +1240,9 @@ int CModuleUtil::waitToStandOnSquare(int x, int y)// depends on speed of charact
 		int iterCount=28;
 		while (iterCount-->0) {
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			if (self->x!=newX || self->y!=newY){
+			if (self->moving == 0){
+				iterCount=0;
+			} else if (self->x!=newX || self->y!=newY){
 				newX=self->x;
 				newY=self->y;
 				delete self;

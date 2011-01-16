@@ -75,7 +75,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		delete sel;
 		sel = reader.readSelfCharacter();
 		if (caps!=sel->cap && sel->cap>5000){
-			char buf[42];
 			int addy=itemProxy.getValueForConst("addrCap");
 			for (int i=0;i<20;i++){
 				int a=reader.getMemIntValue(addy+(i-10)*4);

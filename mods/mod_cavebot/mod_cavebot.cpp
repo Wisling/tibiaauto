@@ -1891,6 +1891,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		if (modRuns%10==0 || depotX!=0) depotCheck(config);
 		if (modRuns%(30*4)==10) lootFromFloorArr.RemoveAll();
+		if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notRunning){
+			depotX=depotY=depotZ=0;
+		}
 
 		int depotE = GetTickCount();
 		if (DISPLAY_TIMING)
