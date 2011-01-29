@@ -93,7 +93,7 @@ public:
 	
 	bool operator()(const creatureKey p1, const creatureKey p2) const
 	{
-		return p1.tibiaId-p2.tibiaId;		
+		return p1.tibiaId-p2.tibiaId != 0;
 	}
 };
 
@@ -710,7 +710,7 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 				
-		int x,y;
+		//int x,y;
 		char crStatCreature[128];
 		int crStatMaxValue=0;
 		sprintf(crStatCreature,"<none>");

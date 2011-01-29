@@ -397,7 +397,7 @@ void CCharInfoDialog::configToControls(CConfigData *configData) {
 CConfigData * CCharInfoDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->enableTimers = m_EnableTimer.GetCheck();
+	newConfigData->enableTimers = m_EnableTimer.GetCheck() != 0;
 
 	return newConfigData;
 }

@@ -694,7 +694,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 				m_configData->listSpells[i].words[0]='0';
 			}
 		}
-		sscanf(paramValue,"%d,%d,%[a-zA-Z0-9+\"\'\\/ \,\-]",
+		sscanf(paramValue,"%d,%d,%[a-zA-Z0-9+\"\'\\/ ,-]",
 			&m_configData->listSpells[m_currentSpellNr].mana,
 			&m_configData->listSpells[m_currentSpellNr].soulPoints,
 			&m_configData->listSpells[m_currentSpellNr].words);

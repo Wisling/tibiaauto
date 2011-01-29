@@ -1,4 +1,15 @@
-2.8.2, ?.1.2011
+2.8.3, ?.1.2011
+Enhancements:
+Defects:
+
+2.8.2, 29.1.2011
+Enhancements:
+ Tibia Auto: Updated to 8.71
+ items.xml: Added new items
+ Cavebot: Cavebot will automatically loot "new" items if their ID is above a certain constant(which will increase each release)
+ 
+Defects:
+ Tibia Auto: Fixed bug causing TA to crash when saying things between 124 and 252 characters long
 
 2.8.1, 16.1.2011
 Enhancements:

@@ -185,7 +185,7 @@ void CMod_playerinfoApp::resetConfig() {
 }
 
 void CMod_playerinfoApp::loadConfigParam(char *paramName,char *paramValue) {
-	if (!strcmp(paramName,"enableTimer")) m_configData->enableTimers=atoi(paramValue);
+	if (!strcmp(paramName,"enableTimer")) m_configData->enableTimers = atoi(paramValue)!=0;
 }
 
 char *CMod_playerinfoApp::saveConfigParam(char *paramName)

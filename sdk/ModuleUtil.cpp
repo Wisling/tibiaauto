@@ -43,6 +43,8 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+const int NEW_ITEMS_MIN = 12000;
+
 CModuleUtil::CModuleUtil()
 {
 }
@@ -975,7 +977,7 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 			int i;
 			for (i=0;i<acceptedItems->GetSize();i++)
 			{
-				if ((int)item->objectId==(int)acceptedItems->GetAt(i))
+				if ((int)item->objectId==(int)acceptedItems->GetAt(i) || (int)item->objectId >= NEW_ITEMS_MIN)
 				{
 					// item needs to be looted
 					int targetPos=contCarrying->size-1;

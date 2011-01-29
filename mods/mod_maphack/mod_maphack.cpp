@@ -253,7 +253,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					}
 				}
 				CTibiaCharacter* newSelf=reader.readSelfCharacter();
-				int fileExists;
+				//int fileExists;
 				int last = 0;
 				if (newSelf->z==self->z){//since we used relToCell only floorchanges drastically matter
 					// tiles changed between read from tibia and write to map are excluded
