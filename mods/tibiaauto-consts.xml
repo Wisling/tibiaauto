@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 8.70 -->
+<!-- Tibia constants for Tibia 8.71 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -42,10 +42,11 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x10BFC1"/> <!--D7 3D B7 -->	   
-		<const code="addrXRay1" value="0x4D72EC"/> 	   
-		<const code="addrXRay2" value="0x4D72F4"/> 	   
-		<const code="addrFunRevealCName1" value="0x4F2756"/> <!--search (84 30) 75 13 -->	   
+ 
+		<const code="addrMCInject" value="0x10BFE1"/> <!--D7 3D B7 -->	   
+		<const code="addrXRay1" value="0x4D730C"/> 	   
+		<const code="addrXRay2" value="0x4D7314"/> 	   
+		<const code="addrFunRevealCName1" value="0x4F2776"/> <!-- search (84 C0) 75 13 -->	   
 		<const code="addrFunRevealCName2" value="0"/>	   
 		<const code="addrFunRevealCName3" value="0"/>	   
 		<const code="addrFunRevealCName4" value="0"/>	   
@@ -103,7 +104,7 @@
 		<const code="addrFps" value="0x7C9DD4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->	   
 	   
 		<const code="addrWhiteMessage" value="0x80CB10"/>	   
-		<const code="addrPacketCount" value="0x63D900"/>
+		<const code="addrPacketCount" value="0x63D900"/>	 
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>

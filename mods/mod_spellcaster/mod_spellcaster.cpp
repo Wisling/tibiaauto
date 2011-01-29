@@ -782,7 +782,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 		Player temp;
 		if (currentPos == 0)
 			m_configData->healList.clear();
-		sscanf(paramValue, "%d %d %[a-zA-Z0-9+\"\'\\/ \,\-]",&(temp.maxHP),&(temp.triggerHP),&(temp.name));
+		sscanf(paramValue, "%d %d %[a-zA-Z0-9+\"\'\\/ ,-]",&(temp.maxHP),&(temp.triggerHP),&(temp.name));
 		m_configData->healList.push_back(temp);
 		currentPos++;
 	}

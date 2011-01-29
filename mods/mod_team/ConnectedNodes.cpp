@@ -133,6 +133,7 @@ int CConnectedNodes::findNodeForChar(char *charName)
 			return i;
 		}
 	}
+	return 0;
 }
 
 int CConnectedNodes::getMaxNodeCount()

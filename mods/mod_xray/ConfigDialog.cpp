@@ -96,7 +96,7 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	char buf[128];
+	//char buf[128];
 	m_autoreset.SetCheck(configData->autoreset);	
 	m_extrahotkeys.SetCheck(configData->extrahotkeys);	
 	
@@ -104,7 +104,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 CConfigData * CConfigDialog::controlsToConfig()
 {	
-	char buf[128];
+	//char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
 	newConfigData->autoreset=m_autoreset.GetCheck();	

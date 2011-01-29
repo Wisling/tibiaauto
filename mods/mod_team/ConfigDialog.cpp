@@ -96,7 +96,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 CConfigData * CConfigDialog::controlsToConfig()
 {
-	char buf[128];
+	//char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 	m_masterChar.GetWindowText(newConfigData->masterChar,127);
 
