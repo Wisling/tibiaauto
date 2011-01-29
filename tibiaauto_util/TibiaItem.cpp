@@ -813,7 +813,7 @@ void CTibiaItem::saveItemLists() {
 	}
 	XercesDOMParser *parser = new XercesDOMParser();
 	try{
-		int itemNr;		
+		//int itemNr;		
 		char pathBuf[2048];
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-items.xml", installPath);
 

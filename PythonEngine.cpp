@@ -723,9 +723,9 @@ void CPythonEngine::backpipeMsgTick()
 		//1-Party
 		//2-Own Chat Channel(premium)
 		//3-Game Chat
-		//4-Trade
-		//5-Rook Trade
-		//6-RL chat
+		//4-English Channel
+		//5-Trade
+		//6-Rook Trade
 		//7-Help
 						
 		int scriptNr;
