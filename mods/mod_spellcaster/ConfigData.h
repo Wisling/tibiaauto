@@ -50,6 +50,7 @@ public:
 	int sioSpellMana;
 	int poisonSpell;
 	int paralysisSpell;
+	int paralysisIco;
 	int minPoisonDmg;
 	std::vector<Player> healList;
 	

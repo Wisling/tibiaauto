@@ -43,6 +43,7 @@ public:
 	CEdit	m_exuraHp;
 	CEdit	m_exuraSpellMana;
 	CButton	m_paralysisSpell;
+	CButton	m_paralysisIco;
 	CButton	m_poisonSpell;
 	CButtonST	m_healList;
 	CButton	m_granSpell;

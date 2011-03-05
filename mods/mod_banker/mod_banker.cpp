@@ -288,6 +288,7 @@ void CMod_bankerApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName, "ChangeGold")) m_configData->changeGold = atoi(paramValue);
 	if (!strcmp(paramName, "CapsLimit")) m_configData->capsLimit = atoi(paramValue);
 	if (!strcmp(paramName, "StopByBanker")) m_configData->stopByBanker = atoi(paramValue);
+	if (!strcmp(paramName, "DrawUpTo")) m_configData->drawUpTo = atoi(paramValue);
 
 }
 
@@ -302,6 +303,7 @@ char *CMod_bankerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName, "ChangeGold")) sprintf(buf,"%d",m_configData->changeGold);
 	if (!strcmp(paramName, "CapsLimit")) sprintf(buf,"%d",m_configData->capsLimit);
 	if (!strcmp(paramName, "StopByBanker")) sprintf(buf,"%d",m_configData->stopByBanker);
+	if (!strcmp(paramName, "DrawUpTo")) sprintf(buf,"%d",m_configData->drawUpTo);
 
 	return buf;
 }
@@ -316,6 +318,7 @@ char *CMod_bankerApp::getConfigParamName(int nr) {
 	case 5: return "ChangeGold";
 	case 6: return "CapsLimit";
 	case 7: return "StopByBanker";
+	case 8: return "DrawUpTo";
 	default:
 		return NULL;
 	}
@@ -613,7 +616,7 @@ int canBank(CConfigData *config){
 	int totalCash=goldCount+platCount*100+crystalCount*10000;
 	int canChange=goldCount>=100 || platCount>=100;
 
-	if (!config->changeGold && totalCash > config->cashOnHand || config->changeGold && canChange)
+	if (!config->changeGold && totalCash > config->cashOnHand || config->changeGold && canChange || totalCash < config->cashOnHand && config->drawUpTo)
 		return 1;
 	return 0;
 }

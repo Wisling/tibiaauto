@@ -33,6 +33,7 @@ CConfigData::CConfigData() {
 	changeGold=0;
 	capsLimit=10;
 	stopByBanker=0;
+	drawUpTo=0;
 }
 
 CConfigData::~CConfigData() {

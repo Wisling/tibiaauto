@@ -54,6 +54,7 @@ public:
 	CButton m_changeGold;
 	CEdit m_capsLimit;
 	CButton m_stopByBanker;
+	CButton m_drawUpTo;
 	CButtonST	m_OK;
 	CButtonST	m_enable;
 	CStatic m_stateBanker;
@@ -77,6 +78,7 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnChangeGold();
+	afx_msg void OnStopBy();
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();
