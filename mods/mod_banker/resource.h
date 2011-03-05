@@ -13,6 +13,7 @@
 #define IDC_BANKER_CHANGEGOLD           3024
 #define IDC_BANKER_STOPBYBANKER         3025
 #define IDC_BANKER_STATE                3026
+#define IDC_BANKER_DRAWUPTO             3027
 
 // Next default values for new objects
 // 
@@ -20,7 +21,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3027
+#define _APS_NEXT_CONTROL_VALUE         3028
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif

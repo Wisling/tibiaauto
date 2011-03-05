@@ -37,6 +37,7 @@ CConfigData::CConfigData()
 	sioSpell=0;
 	sioSpellMana=140;
 	paralysisSpell=0;
+	paralysisIco=0;
 	poisonSpell=0;
 	minPoisonDmg=0;
 

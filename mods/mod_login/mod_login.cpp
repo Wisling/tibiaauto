@@ -257,7 +257,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			
 			
 			
-						
+			reader.setGlobalVariable("walking_control","login");
+			reader.setGlobalVariable("walking_priority","10");
+
 			int wndIconic=::IsIconic(hwnd);
 			int wndMaximized=::IsZoomed(hwnd);
 			int wndTrayed=!::IsWindowVisible(hwnd);
@@ -537,6 +539,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			ReleaseSemaphore(hSemaphore,1,&prevCount);
 			registerDebug("Relogin procedure completed.");
 			loginTime=0;
+			reader.setGlobalVariable("walking_control","");
+			reader.setGlobalVariable("walking_priority","0");
+
 		} // if (connectionState!=8)
 		else loginTime=0;
 	}

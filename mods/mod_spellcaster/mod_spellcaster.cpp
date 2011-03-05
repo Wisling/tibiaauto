@@ -173,7 +173,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			config->timedSpellList[loop].randMana = RandomVariableMana(config->timedSpellList[loop].mana,GET,config);
 		for (loop = 0; loop < config->healList.size(); loop++)
 			config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP*self->maxHp/config->healList[loop].maxHP,MAKE,config)*100/self->maxHp;
-		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || (config->paralysisSpell && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
+		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || ((config->paralysisSpell || config->paralysisIco) && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
 				RandomVariableHp(config->lifeHp,MAKE,config);
@@ -196,7 +196,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(800);
 			}
 			else if(config->paralysisSpell && (flags & 32) == 32){
-				RandomVariableHp(config->exuraHp,MAKE,config);
+				sender.say("exura");
+				Sleep(800);
+			}
+			else if(config->paralysisIco && (flags & 32) == 32){
 				sender.say("exura ico");
 				Sleep(800);
 			}
@@ -583,7 +586,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		}
 	}
 	if (m_configData->life) {
-		int test = m_configData->customSpell+m_configData->vitaSpell+m_configData->granSpell+m_configData->exuraSpell+m_configData->paralysisSpell+m_configData->poisonSpell+m_configData->sioSpell;
+		int test = m_configData->customSpell+m_configData->vitaSpell+m_configData->granSpell+m_configData->exuraSpell+m_configData->paralysisSpell+m_configData->paralysisIco+m_configData->poisonSpell+m_configData->sioSpell;
 		if (!test) {
 			AfxMessageBox("At least one healing spell must be defined!");
 			return 0;
@@ -720,6 +723,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"sioSpellMana")) m_configData->sioSpellMana=atoi(paramValue);
 	if (!strcmp(paramName,"poisonSpell")) m_configData->poisonSpell=atoi(paramValue);
 	if (!strcmp(paramName,"paralysisSpell")) m_configData->paralysisSpell=atoi(paramValue);
+	if (!strcmp(paramName,"paralysisIco")) m_configData->paralysisIco=atoi(paramValue);
 	if (!strcmp(paramName,"minPoisonDmg")) m_configData->minPoisonDmg=atoi(paramValue);
 	
 	if (!strcmp(paramName,"summon")) m_configData->summon=atoi(paramValue);
@@ -814,6 +818,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 		if (!strcmp(paramName,"sioSpellMana")) sprintf(buf,"%d",m_configData->sioSpellMana);
 		if (!strcmp(paramName,"poisonSpell")) sprintf(buf,"%d",m_configData->poisonSpell);
 		if (!strcmp(paramName,"paralysisSpell")) sprintf(buf,"%d",m_configData->paralysisSpell);
+		if (!strcmp(paramName,"paralysisIco")) sprintf(buf,"%d",m_configData->paralysisIco);
 		if (!strcmp(paramName,"minPoisonDmg")) sprintf(buf,"%d",m_configData->minPoisonDmg);
 		
 		if (!strcmp(paramName,"summon")) sprintf(buf,"%d",m_configData->summon);
@@ -918,33 +923,34 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 	case 29: return "strikeSpellHpMin";
 	case 30: return "poisonSpell";
 	case 31: return "paralysisSpell";
-	case 32: return "minPoisonDmg";
-	case 33: return "ExoriCon";
-	case 34: return "ExoriSan";
-	case 35: return "ExoriHur";
-	case 36: return "aoe";
-	case 37: return "Exori";
-	case 38: return "ExoriGran";
-	case 39: return "ExoriMas";
-	case 40: return "ExoriMasSan";
-	case 41: return "ExevoFlamHur";
-	case 42: return "ExevoFrigoHur";
-	case 43: return "ExevoTeraHur";
-	case 44: return "ExevoVisHur";
-	case 45: return "ExevoVisLux";
-	case 46: return "ExevoGranVisLux";
-	case 47: return "ExevoGranMasVis";
-	case 48: return "ExevoGranMasFlam";
-	case 49: return "ExevoGranMasTera";
-	case 50: return "ExevoGranMasFrigo";
-	case 51: return "sioSpell";
-	case 52: return "sioSpellMana";
-	case 53: return "healList";
-	case 54: return "aoeAffect";
-	case 55: return "DisableWarning";
-	case 56: return "randomCast";
-	case 57: return "timedSpell";
-	case 58: return "timedSpellList";
+	case 32: return "paralysisIco";
+	case 33: return "minPoisonDmg";
+	case 34: return "ExoriCon";
+	case 35: return "ExoriSan";
+	case 36: return "ExoriHur";
+	case 37: return "aoe";
+	case 38: return "Exori";
+	case 39: return "ExoriGran";
+	case 40: return "ExoriMas";
+	case 41: return "ExoriMasSan";
+	case 42: return "ExevoFlamHur";
+	case 43: return "ExevoFrigoHur";
+	case 44: return "ExevoTeraHur";
+	case 45: return "ExevoVisHur";
+	case 46: return "ExevoVisLux";
+	case 47: return "ExevoGranVisLux";
+	case 48: return "ExevoGranMasVis";
+	case 49: return "ExevoGranMasFlam";
+	case 50: return "ExevoGranMasTera";
+	case 51: return "ExevoGranMasFrigo";
+	case 52: return "sioSpell";
+	case 53: return "sioSpellMana";
+	case 54: return "healList";
+	case 55: return "aoeAffect";
+	case 56: return "DisableWarning";
+	case 57: return "randomCast";
+	case 58: return "timedSpell";
+	case 59: return "timedSpellList";
 	default:
 		return NULL;
 	}

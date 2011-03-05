@@ -44,6 +44,7 @@ void LifeDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXURA_LIFE, m_exuraHp);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXURA_MANA, m_exuraSpellMana);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS, m_paralysisSpell);
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS_ICO, m_paralysisIco);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_POISON, m_poisonSpell);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_HEAL_LIST, m_healList);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_GRAN, m_granSpell);
@@ -81,6 +82,7 @@ void LifeDialog::OnToolSpellcasterLife()
 	int sioVal = m_sioSpell.GetCheck();
 	int customVal = m_customSpell.GetCheck();
 	int poisonVal = m_poisonSpell.GetCheck();
+	int icoVal = m_paralysisSpell.GetCheck();
 	m_exuraSpell.EnableWindow(val);
 	m_exuraHp.EnableWindow(val && exuraVal?true:false);
 	m_exuraSpellMana.EnableWindow(val && exuraVal?true:false);
@@ -98,6 +100,7 @@ void LifeDialog::OnToolSpellcasterLife()
 	m_lifeSpell.EnableWindow(val && customVal?true:false);
 	m_lifeSpellMana.EnableWindow(val && customVal?true:false);
 	m_paralysisSpell.EnableWindow(val);
+	m_paralysisIco.EnableWindow(val);
 	m_poisonSpell.EnableWindow(val);
 	m_minPoisonDmg.EnableWindow(val && poisonVal?true:false);	
 }
@@ -179,6 +182,7 @@ void LifeDialog::disableControls() {
 	m_lifeSpellMana.EnableWindow(false);
 	m_poisonSpell.EnableWindow(false);
 	m_paralysisSpell.EnableWindow(false);
+	m_paralysisIco.EnableWindow(false);
 	m_minPoisonDmg.EnableWindow(false);
 }
 
@@ -196,6 +200,7 @@ void LifeDialog::enableControls() {
 		m_sioSpell.EnableWindow(true);
 		OnToolSpellcasterSio();
 		m_paralysisSpell.EnableWindow(true);
+		m_paralysisIco.EnableWindow(true);
 		m_poisonSpell.EnableWindow(true);
 		OnToolSpellcasterPoison();
 	}
@@ -221,6 +226,7 @@ void LifeDialog::configToControls(CConfigData *configData) {
 	sprintf(buf,"%d",configData->sioSpellMana);		m_sioSpellMana.SetWindowText(buf);
 	memHealList = configData->healList;
 	m_paralysisSpell.SetCheck(configData->paralysisSpell);
+	m_paralysisIco.SetCheck(configData->paralysisIco);
 	m_poisonSpell.SetCheck(configData->poisonSpell);
 	sprintf(buf,"%d",configData->minPoisonDmg);		m_minPoisonDmg.SetWindowText(buf);
 	OnToolSpellcasterLife();
@@ -245,6 +251,7 @@ void LifeDialog::controlsToConfig(CConfigData *newConfigData) {
 	newConfigData->sioSpell = m_sioSpell.GetCheck();
 	m_sioSpellMana.GetWindowText(buf,127); newConfigData->sioSpellMana=atoi(buf);
 	newConfigData->paralysisSpell = m_paralysisSpell.GetCheck();
+	newConfigData->paralysisIco = m_paralysisIco.GetCheck();
 	newConfigData->poisonSpell = m_poisonSpell.GetCheck();
 	m_minPoisonDmg.GetWindowText(buf,127);newConfigData->minPoisonDmg=atoi(buf);
 	newConfigData->healList = memHealList;

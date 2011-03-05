@@ -48,6 +48,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_BANKER_CAPSLIMIT,m_capsLimit);
 	DDX_Control(pDX, IDC_BANKER_STOPBYBANKER,m_stopByBanker);
 	DDX_Control(pDX, IDC_BANKER_STATE,m_stateBanker);
+	DDX_Control(pDX, IDC_BANKER_DRAWUPTO,m_drawUpTo);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -57,6 +58,7 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BANKER_CHANGEGOLD, OnChangeGold)
+	ON_BN_CLICKED(IDC_BANKER_STOPBYBANKER,OnStopBy)
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
@@ -95,6 +97,7 @@ void CConfigDialog::disableControls() {
 	m_changeGold.EnableWindow(false);
 	m_capsLimit.EnableWindow(false);
 	m_stopByBanker.EnableWindow(false);
+	m_drawUpTo.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls() {
@@ -105,8 +108,10 @@ void CConfigDialog::enableControls() {
 	m_changeGold.EnableWindow(true);
 	m_capsLimit.EnableWindow(true);
 	m_stopByBanker.EnableWindow(true);
+	m_drawUpTo.EnableWindow(true);
 
 	OnChangeGold();
+	OnStopBy();
 }
 
 void CConfigDialog::configToControls(CConfigData *configData) {
@@ -120,6 +125,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	m_changeGold.SetCheck(configData->changeGold);
 	sprintf(buf, "%d", configData->capsLimit); m_capsLimit.SetWindowText(buf);
 	m_stopByBanker.SetCheck(configData->stopByBanker);
+	m_drawUpTo.SetCheck(configData->drawUpTo);
 
 }
 
@@ -140,6 +146,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	newConfigData->changeGold = m_changeGold.GetCheck();
 	m_capsLimit.GetWindowText(buf,127);newConfigData->capsLimit=atoi(buf);
 	newConfigData->stopByBanker=m_stopByBanker.GetCheck();
+	newConfigData->drawUpTo=m_drawUpTo.GetCheck();
 
 	return newConfigData;
 }
@@ -212,11 +219,16 @@ void CConfigDialog::OnChangeGold(){
 	m_OnHand.EnableWindow(!val);
 }
 
+void CConfigDialog::OnStopBy(){
+	int val=m_stopByBanker.GetCheck();
+	m_drawUpTo.EnableWindow(val);
+}
+
 int initalizeBankers() {
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	
-	char pathBuf[2048];    
+	char pathBuf[2048];
 	
 	sprintf(pathBuf,"%s\\mods\\tibiaauto-bankers.csv",installPath);
 	

@@ -1862,6 +1862,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		
 		if (isInHalfSleep()) {
 			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_halfSleep;
+		} else if(globalAutoAttackStateWalker==CToolAutoAttackStateWalker_halfSleep){
+			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
 		}
 		if (isInFullSleep()) {
 			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_fullSleep;
