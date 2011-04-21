@@ -82,9 +82,8 @@ BEGIN
     CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",
                     BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,56,127,
                     10
-    CONTROL         "Enable Smooth Walking",IDC_SMOOTHWALKING,"Button",
-                    BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,43,127,
-                    10
+    CONTROL         "Mount Automatically",IDC_AUTOMOUNT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,43,127,10
 END
 
 

@@ -1385,7 +1385,7 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionStart.SetCheck(listItr->doGoToStart());
 		m_actionDepot.SetCheck(listItr->doGoToDepot());
 		m_actionSpell.SetCheck(listItr->doCastSpell().GetLength());
-		int index = m_spellList.FindString(-1, listItr->doCastSpell());
+		int index = m_spellList.FindStringExact(-1,listItr->doCastSpell());
 		if (index == CB_ERR && strcmp(listItr->doCastSpell(),""))
 			m_spellList.SetCurSel(m_spellList.AddString(listItr->doCastSpell()));
 		else

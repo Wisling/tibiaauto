@@ -2296,7 +2296,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (ch->visible==0 || abs(self->x-ch->x)>7 || abs(self->y-ch->y)>5 || ch->z!=self->z) {
 				creatureList[crNr].isOnscreen=0;
 				creatureList[crNr].isWithinMargins=ch->visible && ch->z==self->z;
-				if (creatureList[crNr].isWithinMargins) playersOnScreen++;
+				if (creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isWithinMargins) playersOnScreen++;
 			} else {
 				if (crNr==currentlyAttackedCreatureNr){
 					//if creature we are attacking has lost health, record time of bloodhit

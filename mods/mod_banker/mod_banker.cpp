@@ -542,9 +542,10 @@ int isDepositing() {
 
 int countAllItemsOfType(int objectId,bool includeSlots) {
 	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
 	int ret=0;
-	for (contNr = 0; contNr < 8; contNr++) {
+	for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
 		if (cont->flagOnOff)

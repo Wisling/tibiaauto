@@ -61,6 +61,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
+	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	char buf[256];
 	while (!toolThreadShouldStop) {	
@@ -78,7 +79,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				int sortItem = itemProxy.getItemId(config->sortBags[i].slotNr[j].itemName);
 				//sprintf(buf, "ObjectID: %d",  sortItem);
 				//AfxMessageBox(buf);
-				for (int contNr = 0; contNr < 16;contNr++) {
+				for (int contNr = 0; contNr < memConstData.m_memMaxContainers;contNr++) {
 					if (contNr == i) contNr++;					 
 					CTibiaContainer *sortCont = reader.readContainer(contNr);
 					CTibiaContainer *destCont = reader.readContainer(i);

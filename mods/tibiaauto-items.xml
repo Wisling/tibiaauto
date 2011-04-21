@@ -314,7 +314,7 @@
       <item id="0xb36" looted="0" name="Grey Backpack" type="65536"/>
       <item id="0xb2e" looted="0" name="Grey Bag" type="65536"/>
       <item id="0x27dc" looted="0" name="Heart Backpack" type="65536"/>
-      <item id="0x16a9" looted="0" name="Jewelled Backpack" type="67108864"/>
+      <item id="0x16a9" looted="0" name="Jewelled Backpack" type="65536"/>
       <item id="0xb42" looted="0" name="Jug" type="65536"/>
       <item id="0x2857" looted="0" name="Minotaur Backpack" type="65536"/>
       <item id="0x2584" looted="0" name="Moon Backpack" type="65536"/>
@@ -520,6 +520,10 @@
       <item id="0x1e6a" looted="0" name="Orc Tusk" type="131072"/>
       <item id="0x2cd5" looted="0" name="Orcish Gear" type="131072"/>
       <item id="0x16b0" looted="0" name="Orshabaal's Brain" type="131072"/>
+      <item id="0x224d" looted="0" name="Part of a Jester Doll (Left Arm)" type="131072"/>
+      <item id="0x224f" looted="0" name="Part of a Jester Doll (Left Leg)" type="131072"/>
+      <item id="0x224e" looted="0" name="Part of a Jester Doll (Right Arm)" type="131072"/>
+      <item id="0x2250" looted="0" name="Part of a Jester Doll (Right Leg)" type="131072"/>
       <item id="0x17ee" looted="0" name="Peg Leg" type="131072"/>
       <item id="0x2cd9" looted="0" name="Pelvis Bone" type="131072"/>
       <item id="0x1705" looted="0" name="Perfect Behemoth Fang" type="131072"/>
@@ -601,6 +605,8 @@
       <item id="0x28d6" looted="0" name="Terramite Legs" type="131072"/>
       <item id="0x28d4" looted="0" name="Terramite Shell" type="131072"/>
       <item id="0x2821" looted="0" name="Terrorbird Beak" type="131072"/>
+      <item id="0x224b" looted="0" name="The Head of a Jester Doll" type="131072"/>
+      <item id="0x224c" looted="0" name="The Torso of a Jester Doll" type="131072"/>
       <item id="0x2843" looted="0" name="Thick Fur" type="131072"/>
       <item id="0x17c9" looted="0" name="Third Verse Of The Cult Hymn" type="131072"/>
       <item id="0x25ab" looted="0" name="Thorn" type="131072"/>
@@ -709,6 +715,7 @@
       <item id="0xd43" looted="0" name="Ceremonial Mask" type="1024"/>
       <item id="0xd18" looted="0" name="Chain Helmet" type="1024"/>
       <item id="0xd4f" looted="0" name="Charmer's Tiara" type="1024"/>
+      <item id="0x2db4" looted="0" name="Coolie Hat" type="1024"/>
       <item id="0xd39" looted="0" name="Crown Helmet" type="1024"/>
       <item id="0xd3f" looted="0" name="Crusader Helmet" type="1024"/>
       <item id="0xd38" looted="0" name="Dark Helmet" type="1024"/>
@@ -751,7 +758,6 @@
       <item id="0x1d26" looted="0" name="Ragnir Helmet" type="1024"/>
       <item id="0xd40" looted="0" name="Royal Helmet" type="1024"/>
       <item id="0x1983" looted="0" name="Santa Hat" type="1024"/>
-      <item id="0x2db4" looted="0" name="Sedge Hat" type="1024"/>
       <item id="0x166d" looted="0" name="Skull Helmet" type="1024"/>
       <item id="0xd2f" looted="0" name="Soldier Helmet" type="1024"/>
       <item id="0xd17" looted="0" name="Steel Helmet" type="1024"/>
@@ -869,11 +875,12 @@
       <item id="0x2c64" looted="0" name="Flask of Plant Poison" type="4194304"/>
       <item id="0x2d1e" looted="0" name="Flexible Dragon Scale" type="4194304"/>
       <item id="0x2f09" looted="0" name="Frozen Heart" type="4194304"/>
-      <item id="0x1004" looted="0" name="Gamemaster Doll" type="2"/>
+      <item id="0x1004" looted="0" name="Gamemaster Doll" type="4194304"/>
       <item id="0x2274" looted="0" name="Helmet (Morik)" type="4194304"/>
       <item id="0x2fe4" looted="0" name="Hunting Horn" type="4194304"/>
       <item id="0x1c52" looted="0" name="Hydra Tongue" type="4194304"/>
       <item id="0x2d15" looted="0" name="Jean Pierre's Cookbook II" type="4194304"/>
+      <item id="0x224a" looted="0" name="Jester Doll" type="4194304"/>
       <item id="0x2239" looted="0" name="Jug of Embalming Fluid" type="4194304"/>
       <item id="0xc91" looted="0" name="Letterbag" type="4194304"/>
       <item id="0x17e7" looted="0" name="Love Poem" type="4194304"/>
@@ -883,8 +890,9 @@
       <item id="0x2f0d" looted="0" name="Music Box" type="4194304"/>
       <item id="0x2d1f" looted="0" name="Mystic Root" type="4194304"/>
       <item id="0x2d1d" looted="0" name="Old Iron" type="4194304"/>
-      <item id="0x1013" looted="0" name="Phoenix Statue" type="2"/>
+      <item id="0x1013" looted="0" name="Phoenix Statue" type="4194304"/>
       <item id="0x223a" looted="0" name="Piece of Royal Satin" type="4194304"/>
+      <item id="0x2f8c" looted="0" name="Rabbit's Foot" type="4194304"/>
       <item id="0x2c6b" looted="0" name="Replica of the Sceptre" type="4194304"/>
       <item id="0x2f19" looted="0" name="Reward Box" type="4194304"/>
       <item id="0x2c4d" looted="0" name="Sacred Earth" type="4194304"/>
@@ -898,7 +906,7 @@
       <item id="0x2c68" looted="0" name="Snake Sceptre (Shaft)" type="4194304"/>
       <item id="0x2c62" looted="0" name="Snake Sceptre" type="4194304"/>
       <item id="0x2d1a" looted="0" name="Spectral Cloth" type="4194304"/>
-      <item id="0xfdd" looted="0" name="Stone of Wisdom" type="2"/>
+      <item id="0xfdd" looted="0" name="Stone of Wisdom" type="4194304"/>
       <item id="0x17d9" looted="0" name="Striker's Favourite Pillow" type="4194304"/>
       <item id="0x2d1c" looted="0" name="Strong Sinew" type="4194304"/>
       <item id="0x2c67" looted="0" name="The Tail of the Keeper" type="4194304"/>
@@ -1395,6 +1403,7 @@
       <item id="0xe97" looted="0" name="Stone Herb" type="134217728"/>
       <item id="0x19aa" looted="0" name="Surprise Bag (Blue)" type="134217728"/>
       <item id="0x19ab" looted="0" name="Surprise Bag (Red)" type="134217728"/>
+      <item id="0x2295" looted="0" name="Suspicious Surprise Bag" type="134217728"/>
       <item id="0xe9d" looted="0" name="Troll Green" type="134217728"/>
       <item id="0xbba" looted="0" name="Voodoo Doll" type="134217728"/>
       <item id="0x12db" looted="0" name="Whisper Moss" type="134217728"/>
@@ -1989,6 +1998,7 @@
       <item id="0x2ce2" looted="1" name="Quara Pincers" type="131072"/>
       <item id="0x2cdf" looted="1" name="Quara Tentacle" type="131072"/>
       <item id="0x1cf2" looted="1" name="Queen's Sceptre" type="2"/>
+      <item id="0x2f8c" looted="1" name="Rabbit's Foot" type="4194304"/>
       <item id="0x1d26" looted="1" name="Ragnir Helmet" type="1024"/>
       <item id="0x1f8d" looted="1" name="Rainbow Shield" type="4096"/>
       <item id="0x1f9f" looted="1" name="Ranger Legs" type="2048"/>
@@ -2154,6 +2164,7 @@
       <item id="0x1f6e" looted="1" name="Summer Dress" type="256"/>
       <item id="0x19aa" looted="1" name="Surprise Bag (Blue)" type="134217728"/>
       <item id="0x19ab" looted="1" name="Surprise Bag (Red)" type="134217728"/>
+      <item id="0x2295" looted="1" name="Suspicious Surprise Bag" type="134217728"/>
       <item id="0x25d6" looted="1" name="Swamp Grass" type="131072"/>
       <item id="0x1f74" looted="1" name="Swamplair Armor" type="256"/>
       <item id="0x3020" looted="1" name="Sweet Smelling Bait" type="131072"/>
@@ -2181,11 +2192,13 @@
       <item id="0x1cdf" looted="1" name="Thaian Sword" type="4"/>
       <item id="0x1fa8" looted="1" name="The Calamity" type="4"/>
       <item id="0x1f58" looted="1" name="The Devileye" type="8"/>
+      <item id="0x224b" looted="1" name="The Head of a Jester Doll" type="131072"/>
       <item id="0x1f59" looted="1" name="The Ironworker" type="8"/>
       <item id="0x24b8" looted="1" name="The Rain Coat" type="256"/>
       <item id="0x1ef4" looted="1" name="The Ring of the Count" type="8192"/>
       <item id="0x24b9" looted="1" name="The Shield Nevermourn" type="4096"/>
       <item id="0x1fa5" looted="1" name="The Stomper" type="2"/>
+      <item id="0x224c" looted="1" name="The Torso of a Jester Doll" type="131072"/>
       <item id="0x2843" looted="1" name="Thick Fur" type="131072"/>
       <item id="0x17c9" looted="1" name="Third Verse Of The Cult Hymn" type="131072"/>
       <item id="0x25ab" looted="1" name="Thorn" type="131072"/>
@@ -2309,6 +2322,7 @@
       <item id="0x2cb5" looted="1" name="Bamboo Stick" type="131072"/>
       <item id="0x2cf7" looted="1" name="Banana Sash" type="131072"/>
       <item id="0xd14" looted="1" name="Banana Staff" type="2"/>
+      <item id="0x171d" looted="1" name="Bandana" type="1024"/>
       <item id="0xde8" looted="1" name="Bast Skirt" type="2048"/>
       <item id="0x1706" looted="1" name="Bat Wing" type="131072"/>
       <item id="0x2cb7" looted="1" name="Battle Stone" type="131072"/>
@@ -2801,6 +2815,10 @@
       <item id="0xd60" looted="1" name="Ornamented Shield" type="4096"/>
       <item id="0x16b0" looted="1" name="Orshabaal's Brain" type="131072"/>
       <item id="0x1f7f" looted="1" name="Paladin Armor" type="256"/>
+      <item id="0x224d" looted="1" name="Part of a Jester Doll (Left Arm)" type="131072"/>
+      <item id="0x224f" looted="1" name="Part of a Jester Doll (Left Leg)" type="131072"/>
+      <item id="0x224e" looted="1" name="Part of a Jester Doll (Right Arm)" type="131072"/>
+      <item id="0x2250" looted="1" name="Part of a Jester Doll (Right Leg)" type="131072"/>
       <item id="0x19b2" looted="1" name="Party Hat" type="1024"/>
       <item id="0xdde" looted="1" name="Patched Boots" type="512"/>
       <item id="0xc1c" looted="1" name="Paw Amulet" type="128"/>
@@ -2857,6 +2875,7 @@
       <item id="0x2ce2" looted="1" name="Quara Pincers" type="131072"/>
       <item id="0x2cdf" looted="1" name="Quara Tentacle" type="131072"/>
       <item id="0x1cf2" looted="1" name="Queen's Sceptre" type="2"/>
+      <item id="0x2f8c" looted="1" name="Rabbit's Foot" type="4194304"/>
       <item id="0x1d26" looted="1" name="Ragnir Helmet" type="1024"/>
       <item id="0x1f8d" looted="1" name="Rainbow Shield" type="4096"/>
       <item id="0x1f9f" looted="1" name="Ranger Legs" type="2048"/>
@@ -3017,6 +3036,7 @@
       <item id="0x1f6e" looted="1" name="Summer Dress" type="256"/>
       <item id="0x19aa" looted="1" name="Surprise Bag (Blue)" type="134217728"/>
       <item id="0x19ab" looted="1" name="Surprise Bag (Red)" type="134217728"/>
+      <item id="0x2295" looted="1" name="Suspicious Surprise Bag" type="134217728"/>
       <item id="0x25d6" looted="1" name="Swamp Grass" type="131072"/>
       <item id="0x1f74" looted="1" name="Swamplair Armor" type="256"/>
       <item id="0xc13" looted="1" name="Sword Ring" type="8192"/>
@@ -3043,11 +3063,13 @@
       <item id="0x1cdf" looted="1" name="Thaian Sword" type="4"/>
       <item id="0x1fa8" looted="1" name="The Calamity" type="4"/>
       <item id="0x1f58" looted="1" name="The Devileye" type="8"/>
+      <item id="0x224b" looted="1" name="The Head of a Jester Doll" type="131072"/>
       <item id="0x1f59" looted="1" name="The Ironworker" type="8"/>
       <item id="0x24b8" looted="1" name="The Rain Coat" type="256"/>
       <item id="0x1ef4" looted="1" name="The Ring of the Count" type="8192"/>
       <item id="0x24b9" looted="1" name="The Shield Nevermourn" type="4096"/>
       <item id="0x1fa5" looted="1" name="The Stomper" type="2"/>
+      <item id="0x224c" looted="1" name="The Torso of a Jester Doll" type="131072"/>
       <item id="0x2843" looted="1" name="Thick Fur" type="131072"/>
       <item id="0x17c9" looted="1" name="Third Verse Of The Cult Hymn" type="131072"/>
       <item id="0x25ab" looted="1" name="Thorn" type="131072"/>
@@ -3153,13 +3175,11 @@
     <item id="0xe0b" name="Carrot" time="60"/>
     <item id="0xe17" name="Cheese" time="108"/>
     <item id="0xe06" name="Cherry" time="12"/>
-    <item id="0x1f53" name="Chocolate Cake" time="132"/>
     <item id="0xe05" name="Coconut" time="216"/>
     <item id="0xe0e" name="Cookie" time="24"/>
     <item id="0xe0d" name="Corncob" time="108"/>
     <item id="0x18f9" name="Cream Cake" time="180"/>
     <item id="0x1f4e" name="Cucumber" time="84"/>
-    <item id="0xe90" name="Dark Mushroom" time="72"/>
     <item id="0x1886" name="Decorated Cake" time="180"/>
     <item id="0xdff" name="Dragon Ham" time="720"/>
     <item id="0xe16" name="Egg" time="72"/>
@@ -3167,14 +3187,12 @@
     <item id="0x1964" name="Gingerbreadman" time="240"/>
     <item id="0xe08" name="Grapes" time="108"/>
     <item id="0xe94" name="Green Mushroom" time="60"/>
-    <item id="0x1bf7" name="Green Perch" time="180"/>
     <item id="0xdfe" name="Ham" time="360"/>
     <item id="0x1f50" name="Jalapeno Pepper" time="12"/>
     <item id="0x1f4d" name="Lemon" time="12"/>
     <item id="0x13e8" name="Mango" time="48"/>
     <item id="0xdf9" name="Meat" time="180"/>
     <item id="0xe09" name="Melon" time="240"/>
-    <item id="0xdfc" name="Northern Pike" time="204"/>
     <item id="0x1f4f" name="Onion" time="60"/>
     <item id="0xe8e" name="Orange Mushroom" time="360"/>
     <item id="0xe02" name="Orange" time="156"/>
@@ -3182,7 +3200,6 @@
     <item id="0x1f4b" name="Plum" time="60"/>
     <item id="0x1f4a" name="Potato" time="120"/>
     <item id="0xe0a" name="Pumpkin" time="204"/>
-    <item id="0x1bf6" name="Rainbow Trout" time="300"/>
     <item id="0x1f4c" name="Raspberry" time="12"/>
     <item id="0xe01" name="Red Apple" time="72"/>
     <item id="0xe11" name="Roll" time="36"/>
@@ -3191,7 +3208,6 @@
     <item id="0xe91" name="Some Mushrooms(Orange)" time="144"/>
     <item id="0xe07" name="Strawberry" time="24"/>
     <item id="0xe0c" name="Tomato" time="72"/>
-    <item id="0x18f8" name="Valentine's Cake" time="144"/>
     <item id="0xe8b" name="White Mushroom" time="108"/>
     <item id="0xe8f" name="Wood Mushroom" time="108"/>
   </foods>

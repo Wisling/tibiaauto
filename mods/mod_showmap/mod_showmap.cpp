@@ -81,6 +81,7 @@ CMod_showmapApp::CMod_showmapApp()
 {	
 	m_infoDialog=NULL;
 	currentPointNr=0;
+	m_configData = new CConfigData();
 }
 
 CMod_showmapApp::~CMod_showmapApp()
@@ -108,30 +109,31 @@ void CMod_showmapApp::start()
 
 void CMod_showmapApp::stop()
 {
-		
-} 
+
+}
 
 void CMod_showmapApp::showConfigDialog()
 {
-	
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{ 
 		m_infoDialog=new CToolMapShow();
 		m_infoDialog->Create(IDD_TOOL_MAPSHOW);
+	} else {
+		m_infoDialog->ShowWindow(SW_SHOW);
 	}
-	m_infoDialog->ShowWindow(SW_SHOW);
 }
 
 
 void CMod_showmapApp::configToControls()
 {	
+	m_infoDialog->m_extendedResearch.SetCheck(m_configData->extendedResearch);
 }
 
 
 void CMod_showmapApp::controlsToConfig()
 {
-	
+	m_configData->extendedResearch = m_infoDialog->m_extendedResearch.GetCheck();
 }
 
 
@@ -187,6 +189,10 @@ void CMod_showmapApp::loadConfigParam(char *paramName,char *paramValue)
 		}
 		currentPointNr++;
 	}
+	else if (!strcmp(paramName,"extendedResearch"))
+	{
+		m_configData->extendedResearch = atoi(paramValue);
+	}
 }
 
 char *CMod_showmapApp::saveConfigParam(char *paramName)
@@ -211,12 +217,17 @@ getNextCurrentPoint:
 			}
 		}
 	}
+	else if (!strcmp(paramName,"extendedResearch"))
+	{
+		sprintf(buf,"%d",m_configData->extendedResearch);
+	}
 	return buf;
 }
 
 char *CMod_showmapApp::getConfigParamName(int nr)
 {
 	if (nr==0) return "map/point";
+	if (nr==1) return "extendedResearch";
 	return NULL;
 }
 

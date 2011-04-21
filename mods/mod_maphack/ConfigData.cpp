@@ -22,7 +22,7 @@ CConfigData::CConfigData()
 	revealNoFish=1;
 	revealInvisible=1;
 	minimapResearch=1;
-	smoothWalking=1;
+	autoMount=0;
 }
 
 CConfigData::~CConfigData()

@@ -19,7 +19,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 //
 
 #include "stdafx.h"
-#include <sys/stat.h> 
+#include <sys/stat.h>
 #include "mod_maphack.h"
 
 #include "ConfigDialog.h"
@@ -68,6 +68,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	int iter=0;
+	int mountTm = 0;
+	int mountStarted = 0;
 
 	sender.enableCName(1);
 	while (!toolThreadShouldStop)
@@ -117,9 +119,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			*/
 
 		}
-		if (config->smoothWalking&&iter%5==2)
+		if (config->autoMount&&iter%5==2)
 		{
-			
+			CTibiaCharacter* self=reader.readSelfCharacter();
+			if (self->monsterType != 0 && self->colorHead != 0 && self->mountId == 0 && !(reader.getSelfEventFlags() & 16384/*INPZ*/)){
+				if (!mountStarted){
+					mountStarted = 1;
+					mountTm = time(NULL)+(mountTm?rand()%4:0);
+				}
+				if (mountStarted && time(NULL) >= mountTm){
+					sender.sendMount();
+					mountStarted = 0;
+				}
+			} else {
+				mountStarted = 0;
+			}
+			delete self;
 		}
 		if (config->minimapResearch&&iter%2==0)
 		{
@@ -440,7 +455,7 @@ void CMod_maphackApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"reveal/cName")) m_configData->revealCName=atoi(paramValue);	
 	if (!strcmp(paramName,"reveal/invisible")) m_configData->revealInvisible=atoi(paramValue);
 	if (!strcmp(paramName,"reveal/minimap")) m_configData->minimapResearch=atoi(paramValue);
-	if (!strcmp(paramName,"smoothWalking")) m_configData->smoothWalking=atoi(paramValue);
+	if (!strcmp(paramName,"autoMount")) m_configData->autoMount=atoi(paramValue);
 }
 
 char *CMod_maphackApp::saveConfigParam(char *paramName)
@@ -452,7 +467,7 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"reveal/cName")) sprintf(buf,"%d",m_configData->revealCName);	
 	if (!strcmp(paramName,"reveal/invisible")) sprintf(buf,"%d",m_configData->revealInvisible);
 	if (!strcmp(paramName,"reveal/minimap")) sprintf(buf,"%d",m_configData->minimapResearch);
-	if (!strcmp(paramName,"smoothWalking")) sprintf(buf,"%d",m_configData->smoothWalking);
+	if (!strcmp(paramName,"autoMount")) sprintf(buf,"%d",m_configData->autoMount);
 
 	return buf;
 }
@@ -465,7 +480,7 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 	case 1: return "reveal/cName";
 	case 2: return "reveal/invisible";
 	case 3: return "reveal/minimap";
-	case 4: return "smoothWalking";
+	case 4: return "autoMount";
 	default:
 		return NULL;
 	}

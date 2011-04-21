@@ -1,6 +1,29 @@
-2.8.3, ?.1.2011
+2.9.1, ??.4.2011
 Enhancements:
 Defects:
+
+2.9.0, 20.4.2011
+Enhancements:
+ ShowMap: Made extended research a savable parameter
+ Maphacks: Added auto-mounting
+ Python: Added mount functions
+Defects:
+ Autogo: Fixed problem where spells that were substrings of another spell were not cast
+ Cavebot: Looting no longer gets interrupted by other walkers
+ Added automount feature to Maphacks, anytime it can, it will eventually mount
+ Python: Fixed problem with python scripts staying enabled after a new config has been loaded
+ Autolooter: Fixed autolooter trying to open non-corpses
+ Cavebot: Fix loot dropper list when saves and loads
+
+
+2.8.3, 4.3.2011
+Enhancements:
+ Spellcaster: Added a quick fix ico spell to spellcaster
+ Banker: Added option to banker to withdraw cash if it has none
+ Auto login: it pauses all walking modules until all BPs are opened
+ 
+Defects:
+ Cavebot: Fixed bug causing Cavbot to stop running if the depot walker gets interrupted
 
 2.8.2, 29.1.2011
 Enhancements:

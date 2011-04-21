@@ -14,9 +14,9 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // DropLootDialog  dialog
+const MAX_DROP_ITEMS = 100;
 
-
-CDropLootDialog::CDropLootDialog(char dropListParam[100][64],int& dropListCountParam,int& dropWhenCapacityLimitReachedParam,int& dropOnlyLootedParam, CWnd* pParent /*= NULL*/)
+CDropLootDialog::CDropLootDialog(char dropListParam[MAX_DROP_ITEMS][64],int& dropListCountParam,int& dropWhenCapacityLimitReachedParam,int& dropOnlyLootedParam, CWnd* pParent /*= NULL*/)
 	: MyDialog(CDropLootDialog::IDD, pParent)
 {
 	dropList=(char*)dropListParam;
@@ -78,7 +78,7 @@ void CDropLootDialog::OnOK(){
 	CDialog::OnOK();
 }
 void CDropLootDialog::OnDroplistAdd(){
-	if (m_dropList.GetCount()>=100){
+	if (m_dropList.GetCount()>=MAX_DROP_ITEMS){
 		AfxMessageBox("Limit Reached");
 		return;
 	}
@@ -154,11 +154,12 @@ void CDropLootDialog::LoadItemList(){
 	}
 	m_itemList.SetCurSel(0);
 
-	for (i=0;i<*dropListCount;i++)
+	for (i=0;i<*dropListCount && i<MAX_DROP_ITEMS;i++)
 	{
 		m_dropList.AddString(dropList+i*64);
 	}
 	int j;
+	int found = 0;
 	for (i=j=0;i<m_itemList.GetCount() && j<m_dropList.GetCount();)
 	{
 		char txt1[64];
@@ -172,9 +173,17 @@ void CDropLootDialog::LoadItemList(){
 			switch (comp){
 			case 0:
 				m_itemList.DeleteString(i);
+				found = 1;
 				break;
 			case 1:
-				j++;
+				{
+					if (!found){
+						m_dropList.DeleteString(j);
+					} else {
+						j++;
+						found = 0;
+					}
+				}
 				break;
 			case -1:
 				i++;
