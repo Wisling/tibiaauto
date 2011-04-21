@@ -112,7 +112,8 @@ BOOL CToolMapShow::OnInitDialog()
 	refreshVisibleMap();
 
 	SetTimer(1001,250,NULL);
-	
+
+	OnToolMapshowExtendedResearch();	
 		
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -330,7 +331,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	if (nIDEvent==1001)
 	{
 		KillTimer(1001);
-		refreshVisibleMap();		
+		refreshVisibleMap();
 		SetTimer(1001,1000,NULL);
 	}
 	if (nIDEvent==1002)
@@ -561,12 +562,12 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CToolMapShow::OnToolMapshowClear() 
+void CToolMapShow::OnToolMapshowClear()
 {
 	tibiaMap.clear();	
 }
 
-void CToolMapShow::OnToolMapshowResearch() 
+void CToolMapShow::OnToolMapshowResearch()
 {
 	if (m_research.GetCheck())
 	{

@@ -35,7 +35,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_REVEAL_NOFISH, m_revealNoFish);
 	DDX_Control(pDX, IDC_REVEALINVISIBLE, m_revealInvisible);
 	DDX_Control(pDX, IDC_MINIMAPRESEARCH, m_minimapResearch);
-	DDX_Control(pDX, IDC_SMOOTHWALKING, m_smoothWalking);
+	DDX_Control(pDX, IDC_AUTOMOUNT, m_autoMount);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
@@ -86,6 +86,7 @@ void CConfigDialog::disableControls()
 	m_revealCName.EnableWindow(false);	
 	m_revealInvisible.EnableWindow(false);	
 	m_minimapResearch.EnableWindow(false);
+	m_autoMount.EnableWindow(false);
 }	
 
 void CConfigDialog::enableControls()
@@ -94,6 +95,7 @@ void CConfigDialog::enableControls()
 	m_revealCName.EnableWindow(true);
 	m_revealInvisible.EnableWindow(true);
 	m_minimapResearch.EnableWindow(true);
+	m_autoMount.EnableWindow(true);
 }
 
 
@@ -104,6 +106,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_revealCName.SetCheck(configData->revealCName);
 	m_revealInvisible.SetCheck(configData->revealInvisible);
 	m_minimapResearch.SetCheck(configData->minimapResearch);
+	m_autoMount.SetCheck(configData->autoMount);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -114,6 +117,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->revealCName=m_revealCName.GetCheck();	
 	newConfigData->revealInvisible=m_revealInvisible.GetCheck();
 	newConfigData->minimapResearch=m_minimapResearch.GetCheck();
+	newConfigData->autoMount=m_autoMount.GetCheck();
 
 	return newConfigData;
 }

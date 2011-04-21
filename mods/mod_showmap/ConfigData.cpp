@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-
+	extendedResearch = 0;
 }
 
 CConfigData::~CConfigData()
