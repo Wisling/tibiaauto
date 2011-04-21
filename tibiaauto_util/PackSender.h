@@ -64,6 +64,8 @@ public:
 	void useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
+	void sendMount();
+	void sendDismount();
 	void sendDirectPacket(const char* buf,int len);
 
 	void useItem(int objectId);

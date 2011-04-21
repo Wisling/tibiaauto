@@ -305,7 +305,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 	std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
 	int tm=time(NULL);
 	fout.write((char*)&tm,4);
-	fout.write((char*)msg.msgBuf,msg.msgSize);	
+	fout.write((char*)msg.msgBuf,msg.msgSize);
 	fout.write("\xff\xff",2);
 	fout.close();
 }

@@ -322,8 +322,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
 	buf[0]=buf[1]=0;
 	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
-	if (buf[0]==0xEB&&buf[1]==0x1D) versionOk=1;
-	if (buf[0]==0x75&&buf[1]==0x13) versionOk=1;
+	if (buf[0]==0xEB&&buf[1]==0x1A) versionOk=1;
+	if (buf[0]==0x75&&buf[1]==0x10) versionOk=1;
 		
 	if (!versionOk)
 	{		
@@ -407,6 +407,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 		//dlg.Create(IDD_OPTIONS);
 		dlg.sendStats();
 	}
+
+	
 
 	SetTimer(1001,100,NULL);
 	SetTimer(1002,100,NULL);
@@ -506,8 +508,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetTimer(1006,5000,NULL);//refresh tray icon name if changed
 
 
+	m_moduleMapShow->showConfigDialog();
 
-		
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
@@ -1047,6 +1049,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	sprintf(logBuf,"Loading character '%s' ... started",loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 	
+	//Modules
 	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
 	{
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
@@ -1055,6 +1058,14 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 			sprintf(logBuf,"Stopping module %s ...",module->getModuleName());
 			m_configDialogStatus->msgAddToLog(logBuf);
 			module->stop();
+		}
+	}
+
+	//Scripts
+	for (modNr = 0; modNr < CPythonScript::getScriptCount(); modNr++) {
+		CPythonScript * script = CPythonScript::getScriptByNr(modNr);
+		if (script->isEnabled()) {
+			script->setEnabled(0);
 		}
 	}
 				
@@ -1616,7 +1627,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.8.2,tm=%d,",tm);
+		fprintf(f,"version=2.9.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

@@ -340,6 +340,8 @@ static PyMethodDef Methods_tasender[] = {
 	{"stepDownRight", tibiaauto_sender_stepDownRight, METH_VARARGS},
 	{"stepUpLeft", tibiaauto_sender_stepUpLeft, METH_VARARGS},
 	{"stepDownLeft", tibiaauto_sender_stepDownLeft, METH_VARARGS},
+	{"sendMount", tibiaauto_sender_sendMount, METH_VARARGS},
+	{"sendDismount", tibiaauto_sender_sendDismount, METH_VARARGS},
 	{"sendDirectPacket", tibiaauto_sender_sendDirectPacket, METH_VARARGS},
 	{"printText", tibiaauto_sender_printText, METH_VARARGS},
 
@@ -714,7 +716,7 @@ void CPythonEngine::backpipeMsgTick()
 		case 1: sprintf(chanBuf,"say");break;
 		case 2: sprintf(chanBuf,"whisper");break;
 		case 3: sprintf(chanBuf,"yell");break;
-		case 5: sprintf(chanBuf,"NPC");break;
+		case 0xb: sprintf(chanBuf,"NPC");break;
 		case 6: sprintf(chanBuf,"private");break;
 		case 7: sprintf(chanBuf,"channel");break;
 		default: sprintf(chanBuf,"other[%d]",infoType);break;

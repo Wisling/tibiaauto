@@ -1004,6 +1004,18 @@ void packSenderStepDownLeft()
 	sender.stepDownLeft();
 }
 
+void packSenderSendMount()
+{
+	CPackSender sender;
+	sender.sendMount();
+}
+
+void packSenderSendDismount()
+{
+	CPackSender sender;
+	sender.sendDismount();
+}
+
 void packSenderSendDirectPacket(const char* buf,int len)
 {
 	CPackSender sender;

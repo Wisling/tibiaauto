@@ -19,7 +19,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",selfCh->hp,
 		"mana",selfCh->mana,
 		"x",selfCh->x,
@@ -28,6 +28,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 		"tibiaId",selfCh->tibiaId,
 		"visible",selfCh->visible,
 		"outfitId",selfCh->outfitId,
+		"mountId",selfCh->mountId,
 		"moving",selfCh->moving,
 		"monsterType",selfCh->monsterType,
 		"hpPercLeft",selfCh->hpPercLeft,
@@ -345,7 +346,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.readVisibleCreature(arg1);
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -354,6 +355,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 		"tibiaId",ch->tibiaId,
 		"visible",ch->visible,
 		"outfitId",ch->outfitId,
+		"mountId",ch->mountId,
 		"moving",ch->moving,
 		"monsterType",ch->monsterType,
 		"hpPercLeft",ch->hpPercLeft,
@@ -427,7 +429,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
 	if (!ch) ch=reader.readSelfCharacter();//avoids returning NULL
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -436,6 +438,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 		"tibiaId",ch->tibiaId,
 		"visible",ch->visible,
 		"outfitId",ch->outfitId,
+		"mountId",ch->mountId,
 		"moving",ch->moving,
 		"monsterType",ch->monsterType,
 		"hpPercLeft",ch->hpPercLeft,
@@ -1323,6 +1326,24 @@ static PyObject *tibiaauto_sender_printText(PyObject *self, PyObject *args)
 
 	sender.printText(CPoint(arg1,arg2),arg3,arg4,arg5,arg6);
 
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+static PyObject *tibiaauto_sender_sendMount(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	sender.sendMount();
+	Py_INCREF(Py_None);
+	return Py_None; 
+}
+
+static PyObject *tibiaauto_sender_sendDismount(PyObject *self, PyObject *args)
+{
+	CPackSenderProxy sender;
+
+	sender.sendDismount();
 	Py_INCREF(Py_None);
 	return Py_None; 
 }

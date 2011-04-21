@@ -259,3 +259,6 @@ EXPORTS
 	packSenderStepUpLeft @251
 	packSenderStepDownLeft @252
 	memReadGetNextPacketCount @253
+	packSenderSendMount @254
+	packSenderSendDismount @255
+

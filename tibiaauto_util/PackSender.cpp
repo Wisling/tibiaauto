@@ -787,7 +787,7 @@ void CPackSender::sayNPC(char *buf)
 	retbuf[0]=strlen(buf)+4;
 	retbuf[1]=(strlen(buf)+4)>>8;
 	retbuf[2]=0x96;
-	retbuf[3]=0x04;
+	retbuf[3]=0x0b;
 	retbuf[4]=strlen(buf);
 	retbuf[5]=0;
 	sprintf(retbuf+6,"%s",buf);
@@ -1014,6 +1014,32 @@ void CPackSender::stopAll()
 	retbuf[1]=0;
 
 	retbuf[2]=0xbe;
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::sendMount()
+{
+	char retbuf[4];
+
+	retbuf[0]=2;
+	retbuf[1]=0;
+
+	retbuf[2]=0xd4;
+	retbuf[3]=1;
+
+	sendPacket(retbuf);
+}
+
+void CPackSender::sendDismount()
+{
+	char retbuf[4];
+
+	retbuf[0]=2;
+	retbuf[1]=0;
+
+	retbuf[2]=0xd4;
+	retbuf[3]=0;
 
 	sendPacket(retbuf);
 }
