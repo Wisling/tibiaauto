@@ -1293,7 +1293,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
 			//T4: Check all chars in BattleList
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
- 			
+			if (ch->tibiaId == 0){
+				delete ch;
+				break;
+			}
 			if (config->collectStats)
 			{
 				// collect statistics, but for monsters only
@@ -1473,7 +1476,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
 			char name[40];
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-
+			if (ch->tibiaId == 0){
+				delete ch;
+				break;
+			}
 			Monster_GetName(ch->name,name);
 			reader.writeVisibleCreatureName(ch->nr,name);
 

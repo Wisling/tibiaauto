@@ -174,7 +174,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++)
 		{						
 			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-
+			if (ch->tibiaId == 0){
+				delete ch;
+				break;
+			}
 			if (ch->visible)
 			{
 				char chName[128];

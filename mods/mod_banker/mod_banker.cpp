@@ -381,7 +381,10 @@ int moveToBanker(CConfigData *config) {
 			for (int i=0;i<memConstData.m_memMaxCreatures;i++){
 				CTibiaCharacter* mon=reader.readVisibleCreature(i);
 				// since banker.bankerName may include city, match first part of name
-				if (mon->tibiaId==0) break;
+				if (mon->tibiaId==0){
+					delete mon;
+					break;
+				}
 				int len=strlen(mon->name);
 				if (strncmp(config->banker.bankerName,mon->name,len)==0 && (config->banker.bankerName[len]==0 || config->banker.bankerName[len]==' ')){
 					for (int tries=0;tries<2;tries++){ // should only need 1 try, but we'd need to start over if we don't make it

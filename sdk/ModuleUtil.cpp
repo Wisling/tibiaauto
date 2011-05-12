@@ -43,7 +43,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-const int NEW_ITEMS_MIN = 12842;
+const int NEW_ITEMS_MIN = 13842;
 
 CModuleUtil::CModuleUtil()
 {
@@ -1967,6 +1967,10 @@ void CModuleUtil::prepareProhPointList()
 	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
 	{
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
+		if (ch->tibiaId == 0){
+			delete ch;
+			break;
+		}
 		if (ch->visible&&(ch->x!=self->x||ch->y!=self->y||ch->z!=self->z))
 		{
 			if(ch->blocking){

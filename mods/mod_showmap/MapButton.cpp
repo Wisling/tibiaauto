@@ -32,6 +32,11 @@ CMapButton::CMapButton(int x,int y)
 
 CMapButton::~CMapButton()
 {
+	if (mapActionsMenu!=NULL)
+	{
+		delete mapActionsMenu;
+		mapActionsMenu = NULL;
+	}
 }
 
 

@@ -176,6 +176,10 @@ void dumpCreatureInfo(char *info,unsigned int tibiaId) {
 			nr=i;
 			deleteAndNull(ch);
 			break;
+		} else if(ch->tibiaId == 0){
+			delete ch;
+			registerDebug("dumpCreatureInfo: Creature ID not found.");
+			return;
 		}
 		
 		deleteAndNull(ch);
@@ -1530,7 +1534,7 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 	CPackSenderProxy sender;
 	int a =0;
 	while (!toolThreadShouldStop) {
-		Sleep(100);
+		Sleep(200);
 		if (shouldLoot()){
 			const char* var=reader.getGlobalVariable("autolooterTm");
 			unsigned int endTime,tibiaId;
@@ -1558,7 +1562,8 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 	CConfigData *config = (CConfigData *)lpParam;
 	//start helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
 
-	while (!toolThreadShouldStop) {		Sleep(100);
+	while (!toolThreadShouldStop) {
+		Sleep(100);
 		while (corpseQueue.GetCount() && globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_macroPause){
 			Corpse corpseCh=corpseQueue.Remove();
 			if(GetTickCount()-corpseCh.tod>1000*60){
@@ -1994,6 +1999,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					
 					if (!lootThreadId){
 						lootThreadHandle = ::CreateThread(NULL,0,lootThreadProc,config,0,&lootThreadId);
+						char buf [111];
+						sprintf(buf,"%d",lootThreadId);
+						//AFXMessageBox(buf);
+						sender.sendTAMessage(buf);
 						queueThreadHandle = ::CreateThread(NULL,0,queueThreadProc,0,0,&queueThreadId);
 					}
 
@@ -2255,7 +2264,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		int crNr;
 		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
 			CTibiaCharacter *ch=reader.readVisibleCreature(crNr);
-			if (ch->tibiaId==0) break;
+			if (ch->tibiaId==0){
+				delete ch;
+				break;
+			}
 			/**
 			* creature ID for creature number has changed,
 			* so new creature is occupying the slot already

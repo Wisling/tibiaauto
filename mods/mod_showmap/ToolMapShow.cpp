@@ -34,7 +34,13 @@ CToolMapShow::CToolMapShow(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CToolMapShow)
 	//}}AFX_DATA_INIT
 }
-
+CToolMapShow::~CToolMapShow() {
+	for (int x=0;x<21;x++) {
+		for (int y =0 ;y<21;y++) {
+			delete m_mapButtons[x][y];
+		}
+	}
+}
 
 void CToolMapShow::DoDataExchange(CDataExchange* pDX)
 {
@@ -104,7 +110,7 @@ BOOL CToolMapShow::OnInitDialog()
 			m_mapButtonImage[x][y]=IDB_MAP_EMPTY;						
 			m_mapButtons[x][y]=but;			
 			
-	GetClientRect(&rect);
+			GetClientRect(&rect);
 			
 		}
 	}
@@ -564,7 +570,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 void CToolMapShow::OnToolMapshowClear()
 {
-	tibiaMap.clear();	
+	tibiaMap.clear();
 }
 
 void CToolMapShow::OnToolMapshowResearch()
