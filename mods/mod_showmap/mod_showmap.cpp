@@ -86,8 +86,8 @@ CMod_showmapApp::CMod_showmapApp()
 
 CMod_showmapApp::~CMod_showmapApp()
 {
-	
-	delete m_configData;	
+	delete m_infoDialog;
+	delete m_configData;
 }
 
 char * CMod_showmapApp::getName()

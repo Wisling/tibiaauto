@@ -24,6 +24,7 @@ public:
 	void showTileDetails(int x,int y);
 	void mapPointClicked(int posX, int posY, int pos);
 	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
+	~CToolMapShow();
 	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
 

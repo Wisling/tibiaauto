@@ -148,6 +148,10 @@ void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo() {
 		//T4: Try to find player in BattleList
 		for (int chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+			if (ch->tibiaId == 0){
+				delete ch;
+				break;
+			}
 			if (!lstrcmpi(ch->name,playersInfo[iSel].name)){
 				found = chNr;
 				delete ch;

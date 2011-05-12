@@ -134,7 +134,10 @@ void CToolMonsterShow::showMonsterDetails(int x, int y)
 	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
 	{
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-
+		if (ch->tibiaId == 0){
+			delete ch;
+			break;
+		}
 		int relX=10+(ch->x-self->x);
 		int relY=8+(ch->y-self->y);
 		int relZ=self->z-ch->z;
@@ -143,7 +146,6 @@ void CToolMonsterShow::showMonsterDetails(int x, int y)
 		{
 			sprintf(buf2,"%s [z=%d|hp=%d%%|nr=%d] ",ch->name,relZ,ch->hpPercLeft,creatureNr);
 			strcat(buf,buf2);
-
 		};
 		
 		delete ch;
@@ -186,7 +188,10 @@ void CToolMonsterShow::refreshVisibleCreatures()
 	for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
 	{
 		CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-
+		if (ch->tibiaId == 0){
+			delete ch;
+			break;
+		}
 		if (ch->visible)
 		{
 			x=10+(ch->x-self->x);
@@ -252,7 +257,10 @@ void CToolMonsterShow::OnTimer(UINT nIDEvent)
 		for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
 		{
 			CTibiaCharacter *ch=reader.readVisibleCreature(creatureNr);
-			
+			if (ch->tibiaId == 0){
+				delete ch;
+				break;
+			}
 			if (ch->visible)
 			{
 				if (ch->monsterType==20)

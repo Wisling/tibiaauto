@@ -70,6 +70,10 @@ void CNameChanger::RefreshInfo()
 	
 	for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+		if (ch->tibiaId == 0){
+			delete ch;
+			break;
+		}
 		if (ch->name[0] && (m_battleOnly.GetCheck()?ch->visible&&ch->z==self->z:1)){
 			//T4: We have a creature
 			if (iAdded < iCount){

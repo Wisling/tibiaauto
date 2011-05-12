@@ -765,7 +765,10 @@ void CConfigDialog::OnAddSeller(){
 	int i;
 	for (i=0;i<memConstData.m_memMaxCreatures;i++){
 		CTibiaCharacter* mon=reader.readVisibleCreature(i);
-		if (mon->tibiaId==0) break;
+		if (mon->tibiaId == 0){
+			delete mon;
+			break;
+		}
 		int lenName=strlen(mon->name);
 		if (strncmp(buf,mon->name,lenName)==0 && (buf[lenName]==0 || buf[lenName]==' ')){
 			sellerFound=1;

@@ -235,6 +235,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			int chNr;
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+				if (ch->tibiaId == 0){
+					delete ch;
+					break;
+				}
 				for (int loop = 0; loop < config->healList.size(); loop++) {
 					if (OnList(config->healList[loop].name,ch->name) && ch->hpPercLeft <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x-self->x)<=7 && abs(ch->y-self->y)<=5 && ch->z == self->z) {
 						config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP*self->maxHp/config->healList[loop].maxHP,MAKE,config)*100/self->maxHp;
@@ -256,6 +260,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			int chNr;
 			for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 				CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+				if (ch->tibiaId == 0){
+					delete ch;
+					break;
+				}
 				if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
 					summonCount++;
 				delete ch;
@@ -1092,6 +1100,10 @@ int aoeShouldFire(CConfigData *config) {
 	int facing[6][4] = {0};
 	for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++) {
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
+		if (ch->tibiaId == 0){
+			delete ch;
+			break;
+		}
 		int monster = getcurrentMonsterNumberFromName(ch->name);
 		if (monster>-1 && strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1 && ch->tibiaId > 0x40000000) {
 			deltaX = ch->x - self->x;

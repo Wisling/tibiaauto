@@ -153,6 +153,46 @@ SOURCE=.\TibiaItem_impl.cpp
 SOURCE=.\ToolMapShow.cpp
 # End Source File
 # End Group
+# Begin Group "Header Files"
+
+# PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE=.\ConfigData.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ConfigWindow.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\GroupBoxEx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\MapButton.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\mod_showmap.h
+# End Source File
+# Begin Source File
+
+SOURCE=..\..\sdk\MyDialog.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\Resource.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\StdAfx.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\ToolMapShow.h
+# End Source File
+# End Group
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
@@ -243,46 +283,6 @@ SOURCE=.\res\mod_showmap.rc2
 # Begin Source File
 
 SOURCE=.\thumbnailCARAJ88G.bmp
-# End Source File
-# End Group
-# Begin Group "Header Files"
-
-# PROP Default_Filter "h;hpp;hxx;hm;inl"
-# Begin Source File
-
-SOURCE=.\ConfigData.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ConfigWindow.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\sdk\GroupBoxEx.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\MapButton.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\mod_showmap.h
-# End Source File
-# Begin Source File
-
-SOURCE=..\..\sdk\MyDialog.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\Resource.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\StdAfx.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\ToolMapShow.h
 # End Source File
 # End Group
 # Begin Source File
