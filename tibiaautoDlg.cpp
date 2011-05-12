@@ -322,8 +322,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
 	buf[0]=buf[1]=0;
 	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
-	if (buf[0]==0xEB&&buf[1]==0x1A) versionOk=1;
-	if (buf[0]==0x75&&buf[1]==0x10) versionOk=1;
+	if (buf[0]==0xEB&&buf[1]==0x1D) versionOk=1;
+	if (buf[0]==0x75&&buf[1]==0x13) versionOk=1;
 		
 	if (!versionOk)
 	{		
@@ -414,7 +414,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetTimer(1002,100,NULL);
 
 
-	// this is needed to force loading tibiaauto_util.dll	
+	// this is needed to force loading tibiaauto_util.dll
 	CTibiaCharacter *self=reader.readSelfCharacter();
 	delete self;
 
@@ -578,7 +578,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		m_loginName.GetWindowText(currentDisplay);
 		if (currentDisplay != buf)
 			m_loginName.SetWindowText(buf);
-		shutdownCounter--;						
+		shutdownCounter--;
 		if (shutdownCounter<-100000) shutdownCounter=-123;
 		if (shutdownCounter==0)
 		{
@@ -1200,9 +1200,9 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	free(loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 	
-	delete []restartedModulesTab;		
-	
-	free ((struct loadThreadParam *)lpParam);
+	delete []restartedModulesTab;
+
+	delete (struct loadThreadParam *)lpParam;
 	return 0;
 }
 	
@@ -1218,11 +1218,11 @@ void CTibiaautoDlg::loadConfig(CString pathName){
 		configDialogStatus->Create(IDD_CONFIGSTATUS);
 		configDialogStatus->ShowWindow(SW_SHOW);
 		
-		struct loadThreadParam *ltp = new struct loadThreadParam();;
+		struct loadThreadParam *ltp = new struct loadThreadParam();
 		strncpy(ltp->fName,pathName.GetBuffer(1023),1023);
 		ltp->configDialogStatus=configDialogStatus;
 		DWORD threadId;
-		::CreateThread(NULL,0,loadThread,ltp,0,&threadId);				
+		::CreateThread(NULL,0,loadThread,ltp,0,&threadId);
 		
 	}
 }
@@ -1627,7 +1627,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.9.0,tm=%d,",tm);
+		fprintf(f,"version=2.11.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

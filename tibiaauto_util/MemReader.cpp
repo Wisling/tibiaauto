@@ -227,6 +227,7 @@ char * CMemReader::GetLoggedChar(int processId)
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId);		
 		CMemUtil::GetMemIntValue(processId,offset+148,&visible);
+		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{
 			char buf[33];
@@ -348,6 +349,7 @@ int CMemReader::getLoggedCharNr()
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		creatureId=CMemUtil::GetMemIntValue(offset+0);		
 		visible=CMemUtil::GetMemIntValue(offset+148);
+		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{
 			return i;
@@ -728,7 +730,7 @@ void CMemReader::writeEnableRevealCName()
 	unsigned char *buf=(unsigned char *)malloc(3);
 	// replace jump with own jump
 	buf[0]=0xEB;
-	buf[1]=0x1A;
+	buf[1]=0x1D;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
 	
 
@@ -741,7 +743,7 @@ void CMemReader::writeDisableRevealCName()
 {
 	unsigned char *buf=(unsigned char *)malloc(2);	
 	buf[0]=0x75;
-	buf[1]=0x10;
+	buf[1]=0x13;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
 	/*
 	buf[0]=0x46;
