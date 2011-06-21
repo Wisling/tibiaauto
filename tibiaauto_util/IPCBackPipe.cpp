@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "IPCBackPipe.h"
 #include "ipcm.h"
+#include "time.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -18,6 +19,10 @@ struct ipcMessage *CIPCBackPipe::pipeBackCache=NULL;
 int CIPCBackPipe::pipeBackCacheSize=0;
 int CIPCBackPipe::pipeBackCacheCount=0;
 FILE *debugFile=NULL;
+
+int PIPE_CLEAN_AT_COUNT = 10
+int PIPE_REMOVE_AT_SECS = 30;
+int sentErrMsg = 0;
 
 CRITICAL_SECTION BackPipeQueueCriticalSection;
 
@@ -71,7 +76,7 @@ void CIPCBackPipe::InitialiseIPC()
 			continue;
 		}
 		
-		// All pipe instances are busy, so wait for 10 seconds. 
+		// All pipe instances are busy, so wait for 1 second. 
 		
 		if (! WaitNamedPipe(lpszPipename, 1000) ) 
 		{
@@ -102,10 +107,7 @@ void CIPCBackPipe::InitialiseIPC()
 }
 
 
-
-
-			
- 
+// puts hPipeBack data into pipe managed solely by TA
 int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 {
 	static int initialisedCriticalSection=0;
@@ -123,27 +125,65 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 	}
 	
 
-	EnterCriticalSection(&BackPipeQueueCriticalSection); 			
+	EnterCriticalSection(&BackPipeQueueCriticalSection);
 	
 
-	
+	int firstType = 0;
+	if (pipeBackCacheCount > 0){
+		firstType = pipeBackCache[0].messageType;
+	}
+	if (pipeBackCacheCount >= PIPE_CLEAN_AT_COUNT){ // SOMEONE ISN'T READING FROM THEIR PIPE FAST ENOUGH!! DELETE THEIR ENTRIES!!!!
+		int j = 0;
+		for (i=0;i<pipeBackCacheCount;i++)
+		{
+			if (pipeBackCache[i].messageType != firstType){
+				if (i != j){
+					memcpy(&pipeBackCache[j],&pipeBackCache[i],sizeof(struct ipcMessage));
+				}
+				j++;
+			}
+		}
+		pipeBackCacheCount = j;
+		if (!sentErrMsg){
+			sentErrMsg = 1;
+			char errBuf[256];
+			sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds. Please fix this!", firstType,i-j,PIPE_REMOVE_AT_SECS);
+			MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
+		}
+	}
+
+
+	int j = 0;//keep track of kept items
 	for (i=0;i<pipeBackCacheCount;i++)
 	{
+		if (abs(time(NULL) - pipeBackCache[i].tm) > 10000 && !sentErrMsg){ // 
+			sentErrMsg = 1;
+			char errBuf[256];
+			sprintf(errBuf, "Received unrealistic time for sent ipcMessage. Time %d, sent time %d, type %d", time(NULL), pipeBackCache[i].tm,pipeBackCache[0].messageType);
+			MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
+		}
 		if (pipeBackCache[i].messageType==expectedType)
 		{
 			// message found in cache - return it then
 			memcpy(mess,&pipeBackCache[i],sizeof(struct ipcMessage));
 			// and move the remaining part
-			for (i;i<pipeBackCacheCount-1;i++)
+			for (i=i+1;i<pipeBackCacheCount;i++ && j++)
 			{
-				memcpy(&pipeBackCache[i],&pipeBackCache[i+1],sizeof(struct ipcMessage));
+				memcpy(&pipeBackCache[j],&pipeBackCache[i],sizeof(struct ipcMessage));
 			}
-			pipeBackCacheCount--;
+			pipeBackCacheCount=j;
 			LeaveCriticalSection(&BackPipeQueueCriticalSection);
 			return 1;
+		} else if(time(NULL) <= pipeBackCache[i].tm + PIPE_REMOVE_AT_SECS) { //keep this item
+			if (i != j){
+				memcpy(&pipeBackCache[j],&pipeBackCache[i],sizeof(struct ipcMessage));
+			}
+			j++;
 		}
 	}	
-	
+	pipeBackCacheCount=j;
+
+	// calls to CPythonEngine::backpipeTamsgTick() frequently flushes this hPipeBack pipe
 	for (;;)
 	{
 		DWORD totalBytesLeft,totalBytesAvail,bRead;
@@ -158,8 +198,8 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			{
 				if (mess->messageType==expectedType)
 				{
-					LeaveCriticalSection(&BackPipeQueueCriticalSection); 
-					return 1; 
+					LeaveCriticalSection(&BackPipeQueueCriticalSection);
+					return 1;
 				} else {
 					// put to cache
 					if (pipeBackCacheCount>=pipeBackCacheSize)
@@ -172,7 +212,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 				return 0;
 			}
 		} else {
-			LeaveCriticalSection(&BackPipeQueueCriticalSection); 
+			LeaveCriticalSection(&BackPipeQueueCriticalSection);
 			return 0;
 		}
 	}
@@ -181,7 +221,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 }
 
 void CIPCBackPipe::enlargePipeBackCache()
-{	
+{
 	pipeBackCacheSize=pipeBackCacheSize*2+3;
 	pipeBackCache=(struct ipcMessage *)realloc(pipeBackCache,sizeof(struct ipcMessage)*pipeBackCacheSize);	
 }

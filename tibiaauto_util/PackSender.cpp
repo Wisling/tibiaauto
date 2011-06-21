@@ -7,6 +7,7 @@
 #include "MemReader.h"
 #include "MemUtil.h"
 #include "Util.h"
+#include "time.h"
 #include "commons2.h"
 #include <stdio.h>
 
@@ -22,9 +23,16 @@ struct ipcMessage
 {
 	int messageType;
 	char payload[1024];
+	UINT tm;
 public:
+	ipcMessage(){
+		messageType = 0;
+		memset(payload,0,1024);
+		tm = 0;
+	}
 	void send()
 	{
+		this->tm = time(NULL);
 		DWORD cbWritten;
 		BOOL fSuccess = WriteFile(
 			hPipe,
@@ -914,7 +922,6 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 	if (strlen(info2)>499) info2[499]='\0';
 
 	mess.messageType=301;
-	memset(mess.payload,0x0,1024);
 	strcpy(mess.payload,name);
 	strcpy(mess.payload+32,info1);
 	strcpy(mess.payload+500+32,info2);
@@ -928,7 +935,6 @@ void CPackSender::printText(CPoint pos, int red, int green, int blue, char* mess
 	struct ipcMessage mess;		
 	int messLen = strlen(message);
 	mess.messageType=307;
-	memset(mess.payload,0x0,1024);
 	memcpy(mess.payload, &pos.x, sizeof(int));
 	memcpy(mess.payload + 4, &pos.y, sizeof(int));
 	memcpy(mess.payload + 8, &red, sizeof(int));
@@ -970,7 +976,6 @@ void CPackSender::ignoreLook(int end)
 	struct ipcMessage mess;		
 
 	mess.messageType=302;
-	memset(mess.payload,0x0,1024);
 	memcpy(mess.payload,&end,4);
 	
 	mess.send();
@@ -981,7 +986,6 @@ void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayer
 {
 	struct ipcMessage mess;
 	mess.messageType=303;
-	memset(mess.payload,0,1024);
 	memcpy(mess.payload,&active,4);
 	memcpy(mess.payload+4,&onlyCreatures,4);
 	memcpy(mess.payload+8,&aimPlayersFromBattle,4);

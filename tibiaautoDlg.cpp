@@ -594,7 +594,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 
 		CPythonEngine::periodicalTick();
 		CPythonEngine::backpipeMsgTick();
-		CPythonEngine::backpipeTamsgTick();
+		CPythonEngine::backpipeTamsgTick(); // allows pipe between TAinject2 and TA to flush itself into a TA-managed pipe
 		CPythonEngine::threadGILAcquire(1); // allows python bound threads to still have cycles to run or terminate on when module is disabled
 
 		SetTimer(1002,25,NULL);
@@ -1627,7 +1627,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.11.0,tm=%d,",tm);
+		fprintf(f,"version=2.12.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

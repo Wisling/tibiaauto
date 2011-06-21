@@ -3,12 +3,13 @@
 //	stdafx.obj will contain the pre-compiled type information
 
 #include "stdafx.h"
+#include "time.h"
 
 extern HANDLE hPipe;
 
-
 void ipcMessage::send()
 {
+	this->tm = time(NULL);
 	DWORD cbWritten;
 	BOOL fSuccess = WriteFile( 
 		hPipe,

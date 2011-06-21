@@ -716,7 +716,7 @@ void CPythonEngine::backpipeMsgTick()
 		case 1: sprintf(chanBuf,"say");break;
 		case 2: sprintf(chanBuf,"whisper");break;
 		case 3: sprintf(chanBuf,"yell");break;
-		case 0xb: sprintf(chanBuf,"NPC");break;
+		case 11: sprintf(chanBuf,"NPC");break;
 		case 6: sprintf(chanBuf,"private");break;
 		case 7: sprintf(chanBuf,"channel");break;
 		default: sprintf(chanBuf,"other[%d]",infoType);break;
