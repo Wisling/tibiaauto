@@ -2,7 +2,7 @@
 
 [General Info]
 Version=1
-LastClass=SummonDialog
+LastClass=LifeDialog
 LastTemplate=CDialog
 NewFileInclude1=#include "stdafx.h"
 NewFileInclude2=#include "mod_spellcaster.h"
@@ -14,18 +14,18 @@ Class2=CMod_spellcasterApp
 Class3=CHealList
 
 ResourceCount=8
-Resource1=IDD_MANA_DIALOG
+Resource1=IDD_HEALLIST (Polish)
 Class4=LifeDialog
-Resource2=IDD_CONFIG (Polish)
-Resource3=IDD_HEALLIST (Polish)
+Resource2=IDD_SUMMON_DIALOG
+Resource3=IDD_STRIKE_DIALOG
 Class5=ManaDialog
-Resource4=IDD_SUMMON_DIALOG
+Resource4=IDD_LIFE_DIALOG
 Class6=SummonDialog
-Resource5=IDD_AOE_DIALOG
+Resource5=IDD_MANA_DIALOG
 Class7=StrikeDialog
-Resource6=IDD_LIFE_DIALOG
+Resource6=IDD_AOE_DIALOG
 Class8=AOEDialog
-Resource7=IDD_STRIKE_DIALOG
+Resource7=IDD_CONFIG (Polish)
 Class9=TimedDialog
 Resource8=IDD_TIMED_DIALOG
 
@@ -43,7 +43,7 @@ Type=0
 BaseClass=CWinApp
 HeaderFile=mod_spellcaster.h
 ImplementationFile=mod_spellcaster.cpp
-LastObject=IDC_TOOL_SPELLCASTER_TIMED_SPELL
+LastObject=CMod_spellcasterApp
 
 [DLG:IDD_CONFIG (Polish)]
 Type=1
@@ -83,7 +83,7 @@ Control11=IDC_HEALLIST_LIST,SysListView32,1350631441
 [DLG:IDD_LIFE_DIALOG]
 Type=1
 Class=LifeDialog
-ControlCount=27
+ControlCount=28
 Control1=IDC_FRAME_LIFE,button,1342177287
 Control2=IDC_TOOL_SPELLCASTER_EXURA_MANA,edit,1350631552
 Control3=IDC_TOOL_SPELLCASTER_GRAN_MANA,edit,1350631552
@@ -111,6 +111,7 @@ Control24=IDC_TOOL_SPELLCASTER_SIO_MANA,edit,1350631552
 Control25=IDC_TOOL_SPELLCASTER_SIO,button,1342242819
 Control26=IDC_TOOL_SPELLCASTER_HEAL_LIST,button,1342242816
 Control27=IDC_STATIC,static,1342308864
+Control28=IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS_ICO,button,1342242819
 
 [CLS:LifeDialog]
 Type=0
@@ -118,7 +119,7 @@ HeaderFile=LifeDialog.h
 ImplementationFile=LifeDialog.cpp
 BaseClass=CDialog
 Filter=D
-LastObject=IDC_TOOL_SPELLCASTER_HEAL_LIST
+LastObject=IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS
 VirtualFilter=dWC
 
 [DLG:IDD_MANA_DIALOG]

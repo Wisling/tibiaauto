@@ -2002,7 +2002,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						char buf [111];
 						sprintf(buf,"%d",lootThreadId);
 						//AFXMessageBox(buf);
-						sender.sendTAMessage(buf);
+						//sender.sendTAMessage(buf);
 						queueThreadHandle = ::CreateThread(NULL,0,queueThreadProc,0,0,&queueThreadId);
 					}
 

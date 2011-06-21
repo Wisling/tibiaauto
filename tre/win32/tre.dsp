@@ -113,10 +113,6 @@ SOURCE="..\lib\tre-compile.c"
 # End Source File
 # Begin Source File
 
-SOURCE="..\lib\tre-filter.c"
-# End Source File
-# Begin Source File
-
 SOURCE="..\lib\tre-match-approx.c"
 # End Source File
 # Begin Source File

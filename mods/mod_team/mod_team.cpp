@@ -70,11 +70,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	CConfigData *config = (CConfigData *)lpParam;	
+	CConfigData *config = (CConfigData *)lpParam;
 	
 	connectedNodes.disconnect();
 
-	connectedNodes.setMasterNode(config->masterChar);	
+	connectedNodes.setMasterNode(config->masterChar);
 
 	int iter=-1;
 

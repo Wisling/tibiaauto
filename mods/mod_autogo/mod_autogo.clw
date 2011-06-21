@@ -14,17 +14,17 @@ Resource1=IDD_CONFIG
 Class3=CWhiteList
 Resource2=IDD_WHITELIST
 <<<<<<< mod_autogo.clw
-Resource3=IDD_ALARM_DIALOG
-Resource4=IDD_WHITELIST (Polish)
+Resource3=IDD_WHITELIST (Polish)
+Resource4=IDD_GENERAL_CONFIG_DIALOG
 =======
-Resource3=IDD_ALARM_DIALOG
-Resource4=IDD_WHITELIST (Polish)
+Resource3=IDD_WHITELIST (Polish)
+Resource4=IDD_GENERAL_CONFIG_DIALOG
 >>>>>>> 1.17
 Resource5=IDD_ADVANCMENT_DIALOG
 Class4=CAlarmDialog
 Resource6=IDD_CONFIG (Polish)
 Class5=GeneralConfigDialog
-Resource7=IDD_GENERAL_CONFIG_DIALOG
+Resource7=IDD_ALARM_DIALOG
 Class6=CCustomSpellDialog
 Resource8=IDD_ADD_CUSTOM_SPELL
 

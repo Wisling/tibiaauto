@@ -18,6 +18,8 @@ public:
 	int regexec(const regex_t *preg, const char *string, size_t nmatch,regmatch_t pmatch[], int eflags);
 	int match(char *string, char *regex);
 	void regfree(regex_t *preg);
+	int regnexec(const regex_t *preg, const char *string, size_t len, size_t nmatch, regmatch_t pmatch[], int eflags);
+	int regncomp(regex_t *preg, const char *regex, size_t len, int cflags);
 	CRegexpProxy();
 	virtual ~CRegexpProxy();
 

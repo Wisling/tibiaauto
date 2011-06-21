@@ -41,6 +41,7 @@ Type=0
 BaseClass=CWinApp
 HeaderFile=mod_maphack.h
 ImplementationFile=mod_maphack.cpp
+LastObject=CMod_maphackApp
 
 [DLG:IDD_CONFIG]
 Type=1
@@ -57,5 +58,5 @@ Control4=IDC_REVEAL_NOFISH,button,1342242819
 Control5=IDC_REVEALCNAME,button,1342242819
 Control6=IDC_MINIMAPRESEARCH,button,1342242819
 Control7=IDC_REVEALINVISIBLE,button,1073807363
-Control8=IDC_SMOOTHWALKING,button,1073807363
+Control8=IDC_AUTOMOUNT,button,1342242819
 

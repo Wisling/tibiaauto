@@ -12,11 +12,11 @@ Class2=CConfigDialog
 LastTemplate=CDialog
 Resource1=IDD_CONFIG
 Class3=CSendStats
-Resource2=IDD_LOADWAYPOINTSINFO
+Resource2=IDD_CONFIG (Polish)
 Resource3=IDD_SENDSTATS
 Class4=CCheckBoxEx
-Resource4=IDD_SENDSTATS (Polish)
-Resource5=IDD_CONFIG (Polish)
+Resource4=IDD_LOADWAYPOINTSINFO
+Resource5=IDD_SENDSTATS (Polish)
 Class5=DropLootDialog
 Resource6=IDD_DROPLIST
 
