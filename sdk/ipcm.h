@@ -5,7 +5,13 @@ struct ipcMessage
 {
 	int messageType;
 	char payload[1024];
+	UINT tm;
 public:
+	ipcMessage(){
+		messageType = 0;
+		memset(payload,0,1024);
+		tm = 0;
+	}
 	void send();
 };
 

@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 8.71 -->
+<!-- Tibia constants for Tibia 9.00 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -44,11 +44,10 @@
 
  
  
- 
-		<const code="addrMCInject" value="0x10BCB1"/> <!--D7 3D B7 -->	   
-		<const code="addrXRay1" value="0x4D702C"/> 	   
-		<const code="addrXRay2" value="0x4D7034"/> 	   
-		<const code="addrFunRevealCName1" value="0x4F2448"/> <!-- search (84 C0) 75 (10) -->	   
+		<const code="addrMCInject" value="0x10CF61"/> <!--D7 3D B7 -->	   
+		<const code="addrXRay1" value="0x4D73DC"/> 	   
+		<const code="addrXRay2" value="0x4D73E4"/> 	   
+		<const code="addrFunRevealCName1" value="0x4F2FC8"/> <!-- search (84 C0) 75 (10) -->	   
 		<const code="addrFunRevealCName2" value="0"/>	   
 		<const code="addrFunRevealCName3" value="0"/>	   
 		<const code="addrFunRevealCName4" value="0"/>	   
@@ -56,57 +55,57 @@
 		<const code="addrSelfPosY" value="0"/>	   
 		<const code="addrSelfPosZ" value="0"/>	   
 	   
-		<const code="addrVIP" value="0x63EAA8"/> <!-- cat0 -->	   
-		<const code="addrSelfFlags" value="0x640D10"/> <!-- cat1 -->	   
-		<const code="addrSkillFistPercLeft" value="0x640D14"/>	   
-		<const code="addrSkillFist" value="0x640D30"/>	   
-		<const code="addrSkillFish" value="0x640D48"/>	   
-		<const code="addrAttackedCreature" value="0x640D54"/>	   
-		<const code="addrCap" value="0x640D58"/>	   
-		<const code="addrStamina" value="0x640D5C"/>	   
-		<const code="addrSoulPoints" value="0x640D60"/>	   
-		<const code="addrManaMax" value="0x640D64"/>	   
-		<const code="addrMana" value="0x640D68"/>	   
-		<const code="addrMlvlPercLeft" value="0x640D6C"/>	   
-		<const code="addrMlvl" value="0x640D74"/>	   
-		<const code="addrLvl" value="0x640D78"/>	   
-		<const code="addrExp" value="0x640D80"/> 	   
-		<const code="addrHPMax" value="0x640D88"/>	   
-		<const code="addrHP" value="0x640D8C"/>	   
-		<const code="addrSelfId" value="0x640D90"/>	   
-		<const code="addrCurrentTileToGo" value="0x640D98"/>	   
-		<const code="addrTilesToGo" value="0x640D9C"/>	   
-		<const code="addrGoZ" value="0x640DCC"/>	   
-		<const code="addrGoY" value="0x640DD0"/>	   
-		<const code="addrGoX" value="0x640DD4"/>	   
-		<const code="addrBattleMax" value="0x640E0C"/>	   
-		<const code="addrBattleMin" value="0x640E10"/>	   
-		<const code="addrFirstCreature" value="0x640E18"/> <!-- cat1 -->	   
+		<const code="addrVIP" value="0x640AB8"/> <!-- cat0 -->	   
+		<const code="addrSelfFlags" value="0x642D20"/> <!-- cat1 -->	   
+		<const code="addrSkillFistPercLeft" value="0x642D24"/>	   
+		<const code="addrSkillFist" value="0x642D40"/>	   
+		<const code="addrSkillFish" value="0x642D58"/>	   
+		<const code="addrAttackedCreature" value="0x642D64"/>	   
+		<const code="addrCap" value="0x642D68"/>	   
+		<const code="addrStamina" value="0x642D6C"/>	   
+		<const code="addrSoulPoints" value="0x642D70"/>	   
+		<const code="addrManaMax" value="0x642D74"/>	   
+		<const code="addrMana" value="0x642D78"/>	   
+		<const code="addrMlvlPercLeft" value="0x642D7C"/>	   
+		<const code="addrMlvl" value="0x642D84"/>	   
+		<const code="addrLvl" value="0x642D88"/>	   
+		<const code="addrExp" value="0x642D90"/> 	   
+		<const code="addrHPMax" value="0x642D98"/>	   
+		<const code="addrHP" value="0x642D9C"/>	   
+		<const code="addrSelfId" value="0x642DA0"/>	   
+		<const code="addrCurrentTileToGo" value="0x642DA8"/>	   
+		<const code="addrTilesToGo" value="0x642DAC"/>	   
+		<const code="addrGoZ" value="0x642DDC"/>	   
+		<const code="addrGoY" value="0x642DE0"/>	   
+		<const code="addrGoX" value="0x642DE4"/>	   
+		<const code="addrBattleMax" value="0x642E1C"/>	   
+		<const code="addrBattleMin" value="0x642E20"/>	   
+		<const code="addrFirstCreature" value="0x642E28"/> <!-- cat1 -->	   
 	   
-		<const code="addrCurrentTm" value="0x6796A0"/> <!-- cat2 -->	   
-		<const code="addrBackpack" value="0x67A0F0"/> 	   
-		<const code="addrRightHand" value="0x67A108"/> 	   
-		<const code="addrLeftHand" value="0x67A114"/> 	   
-		<const code="addrSlotArrow" value="0x67A144"/> <!-- cat2 -->	   
-		<const code="addrFirstContainer" value="0x67A150"/> <!-- cat2 -->	   
-		<const code="addrTradeCountSelf" value="0x67C030"/>	   
-		<const code="addrTradeFirstItemSelf" value="0x67C034"/>	   
-		<const code="addrTradeCountPartner" value="0x67C508"/>	   
-		<const code="addrTradeFirstItemPartner" value="0x67C50C"/> <!-- cat2 -->	   
+		<const code="addrCurrentTm" value="0x67B6C0"/> <!-- cat2 -->	   
+		<const code="addrBackpack" value="0x67C110"/> 	   
+		<const code="addrRightHand" value="0x67C128"/> 	   
+		<const code="addrLeftHand" value="0x67C134"/> 	   
+		<const code="addrSlotArrow" value="0x67C164"/> <!-- cat2 -->	   
+		<const code="addrFirstContainer" value="0x67C170"/> <!-- cat2 -->	   
+		<const code="addrTradeCountSelf" value="0x67E050"/>	   
+		<const code="addrTradeFirstItemSelf" value="0x67E054"/>	   
+		<const code="addrTradeCountPartner" value="0x67E528"/>	   
+		<const code="addrTradeFirstItemPartner" value="0x67E52C"/> <!-- cat2 -->	   
 	   
-		<const code="addrCurrentWindow" value="0x67CA04"/> <!-- cat2 -->	   
-		<const code="addrMapStart" value="0x681558"/>	   
-		<const code="addrMiniMapStart" value="0x681578"/> <!-- cat2 -->	   
+		<const code="addrCurrentWindow" value="0x67EA24"/> <!-- cat2 -->	   
+		<const code="addrMapStart" value="0x683578"/>	   
+		<const code="addrMiniMapStart" value="0x683598"/> <!-- cat2 -->	   
 	   
-		<const code="addrModeAttackPlayers" value="0x7C7124"/> <!-- cat3 -->	   
-		<const code="addrModeFollow" value="0x7C7128"/>	   
-		<const code="addrModeAttackType" value="0x7C712C"/> <!-- cat3 -->	   
+		<const code="addrModeAttackPlayers" value="0x7C9144"/> <!-- cat3 -->	   
+		<const code="addrModeFollow" value="0x7C9148"/>	   
+		<const code="addrModeAttackType" value="0x7C914C"/> <!-- cat3 -->	   
 	   
-		<const code="addrConnectionState" value="0x7CA29C"/> <!-- cat4 -->	   
-		<const code="addrFps" value="0x7CADE4"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->	   
+		<const code="addrConnectionState" value="0x7CC2BC"/> <!-- cat4 -->	   
+		<const code="addrFps" value="0x7CCE04"/> <!-- lookup: Surface.cpp --> <!-- cat4  -->	   
 	   
-		<const code="addrWhiteMessage" value="0x80DB20"/>	   
-		<const code="addrPacketCount" value="0x63E920"/>	 
+		<const code="addrWhiteMessage" value="0x80FB40"/>	   
+		<const code="addrPacketCount" value="0x640940"/>	 
 
 
 		<!-- structure lengths -->

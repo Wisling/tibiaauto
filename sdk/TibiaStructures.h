@@ -3,6 +3,7 @@
 using namespace std;
 #include <vector>
 #include <map>
+#include "winbase.h"
 
 struct cmp_str
 {
@@ -1076,4 +1077,294 @@ private:
 			//cout<<toString2()<<endl;
 		}
 	}
+};
+
+///////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////// CTibiaPipe Implementation //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+template <class T>
+struct CTibiaPipeItem{
+	UINT handle;
+	T data;
+	CTibiaPipeItem(UINT a, T b){
+		handle = a;
+		data = b;
+	}
+};
+template <class T>
+class CTibiaPipe{
+	typedef CTibiaPipeItem<T> PItem;
+	CRITICAL_SECTION PipeCriticalSection;
+	PItem *pipeCache;
+	int pipeCacheSize;
+	int pipeCacheCount;
+	int pipeCacheStart;
+	int MAX_PIPE_SIZE;
+public:
+	CTibiaPipe(int max_size = 0){
+		pipeCache = NULL;
+		MAX_PIPE_SIZE = max_size;
+		InitializeCriticalSection(&PipeCriticalSection);
+		pipeCacheSize = 5;
+		pipeCacheStart = 0;
+		pipeCacheCount = 0;
+		pipeCache = (PItem *)calloc(sizeof(PItem),pipeCacheSize);
+	}
+	~CTibiaPipe(){
+		DeleteCriticalSection(&PipeCriticalSection);
+		free(pipeCache);
+	}
+	bool Add(UINT handle, T data){
+		EnterCriticalSection(&PipeCriticalSection);
+		bool ret = false;
+		if (growCheck()){
+			pipeCache[getEndSlot()] = PItem(handle,data);
+			pipeCacheCount++;
+			ret = true;
+		}
+		LeaveCriticalSection(&PipeCriticalSection);
+		return ret;
+	}
+	bool RemoveNext(UINT handle, T* data){
+		EnterCriticalSection(&PipeCriticalSection);
+		bool ret = false;
+		if (pipeCacheCount){
+			int i;
+			for (i = pipeCacheStart; i<pipeCacheStart+pipeCacheCount; i++){
+				int loc = i%pipeCacheSize;
+				if (pipeCache[loc].handle == handle){
+					*data = pipeCache[loc].data;
+					ret = true;
+					break;
+				}
+			}
+			if (ret){
+				//if we are close to start, move previous entries
+				int locFill, locMove;
+				if (i-pipeCacheStart <= (pipeCacheStart+pipeCacheCount)-i){
+					for (i; i>pipeCacheStart; i--){
+						locFill = i%pipeCacheSize;
+						locMove = (i-1)%pipeCacheSize;
+						pipeCache[locFill] = pipeCache[locMove];
+					}
+					locFill = i%pipeCacheSize;
+					memset(&(pipeCache[locFill]),0,sizeof(PItem));
+					pipeCacheStart = (pipeCacheStart+1)%pipeCacheSize;
+					pipeCacheCount--;
+				} else { // if we are closer to end, then move later entries
+					for (i; i<pipeCacheStart+pipeCacheCount-1; i++){
+						locFill = i%pipeCacheSize;
+						locMove = (i+1)%pipeCacheSize;
+						pipeCache[locFill] = pipeCache[locMove];
+					}
+					locFill = i%pipeCacheSize;
+					memset(&(pipeCache[locFill]),0,sizeof(PItem));
+					pipeCacheCount--;
+				}
+			}
+		}
+		LeaveCriticalSection(&PipeCriticalSection);
+		return ret;
+	}
+	bool RemoveNext(UINT* handle, T* data){
+		EnterCriticalSection(&PipeCriticalSection);
+		bool ret = false;
+		if (pipeCacheCount){
+			ret = true;
+			*handle = pipeCache[pipeCacheStart].handle;
+			*data = pipeCache[pipeCacheStart].data;
+			memset(&(pipeCache[pipeCacheStart]),0,sizeof(PItem));
+			pipeCacheStart = (pipeCacheStart+1)%pipeCacheSize;
+			pipeCacheCount--;
+		}
+		LeaveCriticalSection(&PipeCriticalSection);
+		return ret;
+	}
+	void CleanOutHandle(UINT handle){
+		EnterCriticalSection(&PipeCriticalSection);
+		int locMove,locFill;
+		if (pipeCacheCount){
+			int i=pipeCacheStart,j=pipeCacheStart;
+			for (i; i<pipeCacheStart+pipeCacheCount; i++){
+				locMove = (i)%pipeCacheSize;
+				if (handle != pipeCache[locMove].handle){
+					if (i != j){
+						locFill = j%pipeCacheSize;
+						pipeCache[locFill] = pipeCache[locMove];
+					}
+					j++;
+				}
+			}
+			i = j;
+			for (i; i<pipeCacheStart+pipeCacheCount; i++){
+				locFill = i%pipeCacheSize;
+				memset(&(pipeCache[locFill]),0,sizeof(PItem));
+			}
+			pipeCacheCount = j-pipeCacheStart;
+		}
+		LeaveCriticalSection(&PipeCriticalSection);
+		return;
+	}
+	void CleanFirstHandle(){
+		if (pipeCacheCount){
+			CleanOutHandle(pipeCache[pipeCacheStart].handle);
+		}
+	}
+private:
+	int getEndSlot(){
+		return (pipeCacheStart+pipeCacheCount)%pipeCacheSize;
+	}
+	bool growCheck(){
+		if (MAX_PIPE_SIZE && MAX_PIPE_SIZE == pipeCacheSize) return false; // no change
+		if (pipeCacheCount == pipeCacheSize){
+			int tmpSize = pipeCacheSize*2;
+			if (MAX_PIPE_SIZE) tmpSize = min(MAX_PIPE_SIZE,tmpSize);
+			
+			PItem *tmpPipe=(PItem *)calloc(tmpSize,sizeof(PItem));
+
+			memcpy(tmpPipe,pipeCache+pipeCacheStart,(pipeCacheSize-pipeCacheStart)*sizeof(PItem));
+			memcpy(tmpPipe+pipeCacheSize-pipeCacheStart,pipeCache,(getEndSlot())*sizeof(PItem));
+
+			free(pipeCache);
+			pipeCache=tmpPipe;
+			pipeCacheSize=tmpSize;
+			pipeCacheStart=0;
+		}
+		return true;
+	}
+	char* toString(){
+		
+		char *ret=(char*)malloc(pipeCacheSize*25+100);
+		ret[0]=0;
+		sprintf(ret+strlen(ret),"[s:%d,c:%d,sz:%d]",pipeCacheStart,pipeCacheCount,pipeCacheSize);
+		for (int i=0;i<pipeCacheSize+1;i++){
+			sprintf(ret+strlen(ret),"(%d,%X)",pipeCache[i].handle,pipeCache[i].data);
+		}
+		sprintf(ret+strlen(ret),"\n");
+		return ret;
+	}
+
+	void ShowTest(const char *s, int value, int requiredValue){
+		cout << s << " " << value << " " << requiredValue;
+		if (value == requiredValue){
+			cout << endl;
+		} else {
+			cout << " ***FAILED***" << endl;
+		}
+	}
+/*
+	void testAddOne(){
+		Add(rand(),T(1));
+		cout << toString();
+	}
+	void testAddOverflow(){
+		for (int i=0;i<11;i++){
+			cout << Add(rand(),T(i))<< endl;
+		}
+		cout << toString();
+	}
+	void testAddRemoveHandle(){
+		Add(0xffffffff,T(1));
+		Add(0xfffffffe,T(2));
+		Add(0xffffffff,T(3));
+		Add(0xfffffffe,T(4));
+		Add(0xfffffffd,T(5));
+		Add(0xfffffffe,T(6));
+		Add(0xfffffffe,T(7));
+		T data;
+		cout << toString()<< endl;
+		cout<<RemoveNext(0xfffffffe, &data)<<endl;
+		cout << toString()<< endl;
+		cout<<RemoveNext(0x1, &data)<<endl;
+		cout << toString()<< endl;
+		cout<<RemoveNext(0xfffffffe, &data)<<endl;
+		cout << toString()<< endl;
+	}
+	void testAddRemoveRandom(){
+		int j=0;
+		for (int i=0;i<100;i++){
+			if (rand()%100 <= 70){
+				Add(0xffffffff,T(j++));
+			} else {
+				T data;
+				UINT handle;
+				RemoveNext(&handle, &data);
+				cout << i << " " << handle<<","<<data<<endl;
+			}
+		}
+		cout << toString()<< endl;
+	}
+	void testCleanHandle(){
+		Add(0xffffffff,T(1));
+		Add(0xfffffffe,T(2));
+		Add(0xffffffff,T(3));
+		Add(0xfffffffe,T(4));
+		Add(0xfffffffd,T(5));
+		Add(0xfffffffe,T(6));
+		Add(0xfffffffe,T(7));
+		T data;
+		cout << toString()<< endl;
+		CleanOutHandle(0xfffffffe);
+		cout << toString()<< endl;
+		CleanOutHandle(0xffffffff);
+		cout << toString()<< endl;
+	}
+	void testCleanFirstHandle(){
+		Add(0xffffffff,T(1));
+		Add(0xfffffffd,T(2));
+		Add(0xfffffffe,T(3));
+		Add(0xfffffffe,T(4));
+		Add(0xfffffffd,T(5));
+		T data;
+		UINT handle;
+		RemoveNext(&handle, &data);
+		Add(0xffffffff,T(6));
+		cout << toString()<< endl;
+		CleanFirstHandle();
+		cout << toString()<< endl;
+		CleanFirstHandle();
+		cout << toString()<< endl;
+		CleanFirstHandle();
+		cout << toString()<< endl;
+	}
+	void testRemoveFromBothEnds(){
+		Add(0xffffffff,T(1));
+		Add(0xfffffffd,T(2));
+		Add(0xffffffff,T(3));
+		Add(0xffffffff,T(4));
+		Add(0xfffffffe,T(5));
+		T data;
+		UINT handle;
+		RemoveNext(&handle, &data);
+		Add(0xffffffff,T(6));
+		cout << toString()<< endl;
+		RemoveNext(0xfffffffe, &data);
+		cout << toString()<< endl;
+		RemoveNext(0xffffffff, &data);
+		cout << toString()<< endl;
+	}
+	void testVarious(){
+		srand(time(NULL));
+		int j=0;
+		for (int i=0;i<100;i++){
+			int r=rand()%100;
+			T data;
+			UINT handle;
+			if (r < 60){
+				Add(rand()%10,T(j++));
+				cout << "add1 ";
+			} else if(r < 75) {
+				CleanFirstHandle();
+				cout << "clnf ";
+			} else if(r < 80) {
+				RemoveNext(rand()%10,&data);
+				cout << "rndr ";
+			} else {
+				RemoveNext(&handle, &data);
+				cout << "rem1 ";
+			}
+			cout << toString()<< endl;
+		}
+		cout << toString()<< endl;
+	}*/
 };

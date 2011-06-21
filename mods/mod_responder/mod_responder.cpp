@@ -73,7 +73,7 @@ char * CMod_responderApp::getName()
 
 int CMod_responderApp::isStarted()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{ 
 		m_infoDialog=new CToolAutoRespond();
