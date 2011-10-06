@@ -310,7 +310,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (toolThreadShouldStop) 
 			{
 				ReleaseSemaphore(hSemaphore,1,&prevCount);
-				continue;			
+				continue;
 			}
 			
 		
@@ -345,8 +345,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->autopass){
 				CTibiaItemProxy itemProxy;
 				int addr=itemProxy.getValueForConst("addrConnectionState");
-				reader.getMemRange(addr-0x24,addr-0x24+32,accNum);
-				reader.getMemRange(addr-0x44,addr-0x44+32,pass);
+				reader.getMemRange(addr-0x28,addr-0x28+32,accNum);
+				reader.getMemRange(addr+0x70,addr+0x70+32,pass);
 			} else {
 				strncpy(accNum,config->accountNumber,32);
 				strncpy(pass,config->password,32);

@@ -40,7 +40,7 @@ CConfigData::CConfigData()
 	suspendOnEnemy=1;
 	suspendOnNoMove=1;
 	waypointSelectMode=1;
-	mapUsed=0;
+	mapUsed=1;
 	capacityLimit=50;
 	lootCustom=0;
 	lootWhileKill=0;

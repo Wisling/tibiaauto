@@ -92,7 +92,7 @@ double GetFPS(){
 }
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ){		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ){	
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 

@@ -1750,7 +1750,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		currentWaypointNr = min(0,waypointsCount-1);
 	}
 
-	// remove the debug file
+	// clean the debug file
 	if (config->debug) CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt");
 	
 	shareAlienBackattack=config->shareAlienBackattack;
@@ -2144,7 +2144,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											dumpCreatureInfo("XXXYYYZZZ Creature replaced??",attackedCh->tibiaId);
 											char buf[1111];
 											sprintf(buf,"Drop looted?? %x,%d (%d,%d,%d)",attackedCh->tibiaId,attackedCh->nr,attackedCh->x,attackedCh->y,attackedCh->z);
-											AfxMessageBox(buf);
+											//AfxMessageBox(buf);
 										}
 										if (config->dropWhenCapacityLimitReached
 											&& self->cap < config->capacityLimit
