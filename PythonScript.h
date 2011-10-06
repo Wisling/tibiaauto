@@ -37,9 +37,13 @@ struct funType
 	PyObject *fun;
 	int type;
 	char name[128];
+	char *matchExpr;
 	int tmLastExec;
 	int scriptNr;
 public:
+	~funType(){
+		delete matchExpr;
+	}
 	void call()
 	{				
 		long int tm=GetTickCount();
@@ -71,6 +75,7 @@ public:
 	struct funType * getFunDef(int nr);
 	static CPythonScript * getScriptByNr(int nr);
 	void addFunDef(int type,int interval,PyObject *fun);
+	void addFunDef(int type,char *interval,PyObject *fun);
 	CPythonScript();
 	virtual ~CPythonScript();
 	void setName(char *name);

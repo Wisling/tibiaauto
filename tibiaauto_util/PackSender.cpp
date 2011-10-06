@@ -285,7 +285,7 @@ void CPackSender::useWithObjectSend(int sourceObjectId,int sourceX,int sourceY_C
 	sendbuf[17]=(targetObjectId>>8)&0xff;
 	sendbuf[18]=max(0,targetInd_Pos);
 
-	sendPacket(sendbuf,method);	
+	sendPacket(sendbuf,method);
 }
 
 void CPackSender::stepRight()
@@ -340,7 +340,7 @@ void CPackSender::stepMulti(int *direction, int size)
 	//Manage Tibia's memory
 	int pathIndAddr=reader.m_memAddressCurrentTileToGo;
 	int pathLenAddr=reader.m_memAddressTilesToGo;
-	int pathStartAddr=pathLenAddr+4;
+	int pathStartAddr=reader.m_memAddressPathToGo;
 	CMemUtil::SetMemIntValue(pathIndAddr,0);
 	CMemUtil::SetMemIntValue(pathLenAddr,size);
 	for (i=0;i<size && i<10;i++){

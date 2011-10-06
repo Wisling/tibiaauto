@@ -2479,3 +2479,15 @@ static PyObject *tibiaauto_reader_mapGetPointSeenOnTopPos(PyObject *self, PyObje
 	
 	return ret;
 }
+
+static PyObject *tibiaauto_packet_first(PyObject *self, PyObject *args)
+{
+
+	int arg1,arg2,arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;
+
+	int ret1=itemSeenOnTopIndex(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}

@@ -48,7 +48,7 @@ CMemConstData::CMemConstData()
 	m_memAddressMlvl                = offset + itemProxy.getValueForConst("addrMlvl");
 	m_memAddressMlvlPercLeft        = offset + itemProxy.getValueForConst("addrMlvlPercLeft");
 	m_memAddressAttackedCreature    = offset + itemProxy.getValueForConst("addrAttackedCreature"); 
-	m_memAddressFollowedCreature    = m_memAddressAttackedCreature - 4;
+	m_memAddressFollowedCreature    = offset + itemProxy.getValueForConst("addrFollowedCreature"); 
 	m_memAddressSoulPoints          = offset + itemProxy.getValueForConst("addrSoulPoints");
 	m_memAddressTradeCountSelf      = offset + itemProxy.getValueForConst("addrTradeCountSelf");
 	m_memAddressTradeCountPartner   = offset + itemProxy.getValueForConst("addrTradeCountPartner");
@@ -82,6 +82,7 @@ CMemConstData::CMemConstData()
 
 	m_memAddressCurrentTileToGo		= offset + itemProxy.getValueForConst("addrCurrentTileToGo");
 	m_memAddressTilesToGo		= offset + itemProxy.getValueForConst("addrTilesToGo");
+	m_memAddressPathToGo		= offset + itemProxy.getValueForConst("addrPathToGo");
 
 	// functions
 

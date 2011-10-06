@@ -1,4 +1,4 @@
-// MemUtil.cpp: implementation of the CMemUtil class.
+`// MemUtil.cpp: implementation of the CMemUtil class.
 //
 //////////////////////////////////////////////////////////////////////
 
@@ -18,6 +18,7 @@ static char THIS_FILE[]=__FILE__;
 HANDLE CMemUtil::m_prevProcessHandle = NULL;
 long CMemUtil::m_prevProcessId = -1L;
 long CMemUtil::m_globalProcessId=-1L;
+long CMemUtil::m_globalBaseAddress=-1L;
 
 CMemUtil::CMemUtil()
 {
@@ -72,6 +73,38 @@ BOOL CMemUtil::AdjustPrivileges()
 
 	return 1;
 
+}
+int CMemUtil::GetMemBaseAddress(long processId)
+{	
+    HANDLE dwHandle;
+	PMEMORY_BASIC_INFORMATION info;
+    unsigned long int this_xp = 0;
+            
+	if (m_prevProcessId!=processId)
+	{
+		dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+		if (dwHandle==NULL)
+		{
+			m_prevProcessId=-1;
+			return 1;
+		}
+		m_prevProcessId=processId;
+		CloseHandle(m_prevProcessHandle);
+		m_prevProcessHandle=dwHandle;
+	} else {
+		dwHandle=m_prevProcessHandle;
+	};
+    
+    if (VirtualQueryEx(dwHandle, NULL, info, sizeof(PMEMORY_BASIC_INFORMATION))) {		
+		info->BaseAddress;
+		return 0;
+    }
+    else {	
+		DWORD err = ::GetLastError();
+		CloseHandle(dwHandle);
+		m_prevProcessId=-1;
+		return err;
+    }       	
 }
 
 int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value)

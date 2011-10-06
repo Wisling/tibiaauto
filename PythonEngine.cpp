@@ -76,8 +76,9 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	int nr;
 	for (nr=0;;nr++)
 	{						
-		int type,interval; 
-		PyObject *periodicalFun;				
+		int type,interval;
+		char *matchExpr=NULL;
+		PyObject *periodicalFun;
 		
 		result = PyObject_CallMethod(pluginObject, "getFunDef","(i)",nr);		
 		if (result==NULL)
@@ -91,17 +92,24 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 		{				
 			if (type!=-255)
 			{
-				pythonScript->addFunDef(type,interval,periodicalFun);			
+				pythonScript->addFunDef(type,interval,periodicalFun);
 			} else {
 				break;
 			}
-		} else {			
+		} else if (PyArg_ParseTuple(result,"|isO",&type,&matchExpr,&periodicalFun)) {				
+			if (type!=-255)
+			{
+				pythonScript->addFunDef(type,matchExpr,periodicalFun);
+			} else {
+				break;
+			}
+		} else {
 			Py_XDECREF(result);
-			return NULL;			
+			return NULL;
 		}		
 		
 		
-		Py_XDECREF(result);		
+		Py_XDECREF(result);
 	}
 	// getConfigParam
 	for (nr=0;;nr++)
@@ -466,6 +474,13 @@ static PyMethodDef Methods_takernel[] = {
     {NULL,      NULL}        /* Sentinel */
 };
 
+static PyMethodDef Methods_tapacket[] = { 
+	{"first", tibiaauto_packet_first, METH_VARARGS},// create a regex to recieve from
+
+		
+    {NULL,      NULL}        /* Sentinel */
+};
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -508,6 +523,7 @@ void CPythonEngine::init()
 		Py_InitModule("taitem", Methods_taitem);	
 		Py_InitModule("tacrstat", Methods_tacrstat);	
 		Py_InitModule("takernel", Methods_takernel);	
+		Py_InitModule("tapacket", Methods_tapacket);	
 		PyRun_SimpleString("import tibiaauto");
 		PyRun_SimpleString("import tareader");
 		PyRun_SimpleString("import tasender");

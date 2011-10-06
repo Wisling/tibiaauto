@@ -112,6 +112,25 @@ void CPythonScript::addFunDef(int type,int interval, PyObject *fun)
 	funDefCount++;
 }
 
+void CPythonScript::addFunDef(int type,char *matchExpr, PyObject *fun)
+{
+	reallocFunDef();
+	
+	PyObject *py_name = PyObject_GetAttrString(fun,"__name__");	
+	Py_XINCREF(py_name);
+	strncpy(funDefTab[funDefCount].name,PyString_AsString(py_name),127);
+	Py_XDECREF(py_name);
+
+	funDefTab[funDefCount].type=type;
+	funDefTab[funDefCount].matchExpr=matchExpr;
+	funDefTab[funDefCount].fun=fun;
+	funDefTab[funDefCount].tmNextExec=0;
+	funDefTab[funDefCount].tmLastExec=0;
+	funDefTab[funDefCount].scriptNr=scriptNr;
+	Py_XINCREF(fun);
+	funDefCount++;
+}
+
 void CPythonScript::reallocFunDef()
 {
 	if (funDefCount+1>=funDefSize)

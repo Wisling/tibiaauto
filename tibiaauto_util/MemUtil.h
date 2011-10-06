@@ -23,7 +23,7 @@ public:
 	static BOOL AdjustPrivileges();
 	static void GetMemRange(DWORD memAddressStart,DWORD memAddressEnd,char *ret);
 	static int GetMemRange(long processId, DWORD memAddressStart, DWORD memAddressEnd, char *result);
-	
+	static int GetMemBaseAddress(long processId);
 	CMemUtil();
 	virtual ~CMemUtil();
 
@@ -32,6 +32,7 @@ public:
 	static int getGlobalProcessId() {return m_globalProcessId;};
 
 	static long m_globalProcessId;
+	static long m_globalBaseAddress;
 private:
 	static HANDLE m_prevProcessHandle;
 	static long m_prevProcessId;

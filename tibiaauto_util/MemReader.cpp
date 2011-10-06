@@ -193,8 +193,9 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->skulls=CMemUtil::GetMemIntValue(offset+152);
 	ch->shields=CMemUtil::GetMemIntValue(offset+156);
 	//ch->???=CMemUtil::GetMemIntValue(offset+160);
-	ch->warIcon=CMemUtil::GetMemIntValue(offset+164);
-	ch->blocking=CMemUtil::GetMemIntValue(offset+168);
+	//ch->???=CMemUtil::GetMemIntValue(offset+164);
+	ch->warIcon=CMemUtil::GetMemIntValue(offset+168);
+	ch->blocking=CMemUtil::GetMemIntValue(offset+172);
 	ch->nr=nr;
 	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);
@@ -204,7 +205,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 
 int CMemReader::readBattleListMin()
 {
-	return CMemUtil::GetMemIntValue(m_memAddressBattleMin);
+	return 0;
 }
 
 int CMemReader::readBattleListMax()
@@ -218,9 +219,7 @@ char * CMemReader::GetLoggedChar(int processId)
 	long selfId;
 	int i;
 	
-		
 	CMemUtil::GetMemIntValue(processId,m_memAddressSelfId,&selfId);
-
 	for (i=0;i<m_memMaxCreatures;i++)
 	{
 		long creatureId,visible;
@@ -266,7 +265,7 @@ void CMemReader::setFollowedCreature(int tibiaId)
 
 int CMemReader::getNextPacketCount()
 {	
-	int ret=CMemUtil::GetMemIntValue(m_memAddressPacketCount)+2;
+	int ret=CMemUtil::GetMemIntValue(m_memAddressPacketCount)+1;
 	CMemUtil::SetMemIntValue(m_memAddressPacketCount,ret);
 	return ret;
 }
@@ -366,7 +365,6 @@ void CMemReader::writeGotoCoords(int x, int y, int z)
 	int chNr=getLoggedCharNr();
 	CMemUtil::SetMemIntValue(m_memAddressGoX,x);
 	CMemUtil::SetMemIntValue(m_memAddressGoY,y);
-	CMemUtil::SetMemIntValue(m_memAddressGoZ,z);
 	//Manage Tibia's memory
 	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature, 1);//enable to accept gotocoords, (76=is char moving param)
 }	
@@ -377,7 +375,6 @@ void CMemReader::cancelAttackCoords()
 //	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+76+chNr*m_memLengthCreature,0); will take care of itself
 	CMemUtil::SetMemIntValue(m_memAddressGoX,0);
 	CMemUtil::SetMemIntValue(m_memAddressGoY,0);
-	CMemUtil::SetMemIntValue(m_memAddressGoZ,0);
 	setRemainingTilesToGo(0);//if left at > 0, no actions can be performed
 }
 
@@ -730,7 +727,7 @@ void CMemReader::writeEnableRevealCName()
 	unsigned char *buf=(unsigned char *)malloc(3);
 	// replace jump with own jump
 	buf[0]=0xEB;
-	buf[1]=0x1D;
+	buf[1]=0x17;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
 	
 
@@ -743,7 +740,7 @@ void CMemReader::writeDisableRevealCName()
 {
 	unsigned char *buf=(unsigned char *)malloc(2);	
 	buf[0]=0x75;
-	buf[1]=0x13;
+	buf[1]=0x0A;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
 	/*
 	buf[0]=0x46;
@@ -977,7 +974,7 @@ int CMemReader::getPlayerModeFollow()
 int CMemReader::getPlayerModeAttackPlayers()
 {
 	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackPlayers"));
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackPlayers")) & 1;
 }
 
 char * CMemReader::getOpenWindowName()

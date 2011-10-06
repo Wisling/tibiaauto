@@ -20,8 +20,8 @@ int CIPCBackPipe::pipeBackCacheSize=0;
 int CIPCBackPipe::pipeBackCacheCount=0;
 FILE *debugFile=NULL;
 
-int PIPE_CLEAN_AT_COUNT = 10
-int PIPE_REMOVE_AT_SECS = 30;
+int PIPE_CLEAN_AT_COUNT = 40;
+int PIPE_REMOVE_AT_SECS = 10;
 int sentErrMsg = 0;
 
 CRITICAL_SECTION BackPipeQueueCriticalSection;

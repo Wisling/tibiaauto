@@ -5,6 +5,8 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "MemUtil.h"
+#include "psapi.h"
+#include "Winternl.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -19,6 +21,7 @@ static char THIS_FILE[]=__FILE__;
 HANDLE CMemUtil::m_prevProcessHandle = NULL;
 long CMemUtil::m_prevProcessId = -1L;
 long CMemUtil::m_globalProcessId=-1L;
+long CMemUtil::m_globalBaseAddress=-1L;
 
 CMemUtil::CMemUtil()
 {
@@ -73,6 +76,134 @@ BOOL CMemUtil::AdjustPrivileges()
 
 	return 1;
 
+}
+
+long _GetModuleImageAddress(const CString& strPath)
+{
+  HANDLE hFile;
+  HANDLE hMap;
+  long ulImageBase = 0;
+
+  if ((hFile = ::CreateFile((LPCTSTR)strPath,
+      GENERIC_READ, FILE_SHARE_READ|FILE_SHARE_WRITE,
+      NULL, OPEN_EXISTING, 0, NULL)) == INVALID_HANDLE_VALUE) {
+    return 0;
+  }
+
+  if ((hMap = ::CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL))
+      == NULL) {
+    ::CloseHandle(hFile);
+    return 0;
+  }
+
+  PBYTE pData;
+  
+  //
+  // Read the 1st 8192 bytes of the PE image
+  //
+  if ((pData = (PBYTE)::MapViewOfFile(hMap, FILE_MAP_READ, 0, 0, 8192)) == NULL) {
+    ::CloseHandle(hMap);
+    ::CloseHandle(hFile);
+    return 0;
+  }
+
+  //
+  // Find the PE/PE+ header
+  //
+  // IMAGE_NT_SIGNATURE (0x00004550) 'PE00'
+  // IMAGE_FILE_MACHINE_I386 (0x014c)
+  // IMAGE_FILE_MACHINE_AMD64 (0x8664)
+  //
+  PIMAGE_DOS_HEADER pDos = (PIMAGE_DOS_HEADER)pData;
+  if (pDos->e_magic == IMAGE_DOS_SIGNATURE) {
+#ifdef _WIN64
+# define IMAGE_FILE_MACHINE_xxx IMAGE_FILE_MACHINE_AMD64
+    PIMAGE_NT_HEADERS64 pHdr = (PIMAGE_NT_HEADERS64)
+      (((PBYTE)(pDos)) + pDos->e_lfanew);
+#else
+# define IMAGE_FILE_MACHINE_xxx IMAGE_FILE_MACHINE_I386
+    PIMAGE_NT_HEADERS32 pHdr = (PIMAGE_NT_HEADERS32)
+      (((PBYTE)(pDos)) + pDos->e_lfanew);
+#endif
+    //
+    // Sanity: Does the PE header start no further than
+    // the start of page 1, and the 'PE' header matches,
+    // and the 32bit/64bit header matches?
+    //
+    if (((PBYTE)pHdr - pData) <= 4096 && pHdr->Signature == IMAGE_NT_SIGNATURE && pHdr->FileHeader.Machine == IMAGE_FILE_MACHINE_xxx) {
+      //
+      // Snarf the default base load address
+      //
+      ulImageBase = pHdr->OptionalHeader.ImageBase;
+    }
+  } else {
+  }
+
+  if (!::UnmapViewOfFile(pData)) {
+  }
+  if (!::CloseHandle(hMap)) {
+  }
+  ::CloseHandle(hFile);
+
+  return ulImageBase;
+}
+typedef struct _PROCESS_BASIC_INFORMATION {
+    PVOID Reserved1;
+    PVOID PebBaseAddress;
+    PVOID Reserved2[2];
+    PVOID UniqueProcessId;
+    PVOID Reserved3;
+} PROCESS_BASIC_INFORMATION,*PPROCESS_BASIC_INFORMATION;
+
+int CMemUtil::GetMemBaseAddress(long processId)
+{	
+	long aaa = _GetModuleImageAddress("E:\\Tibia\\Tibia\\Tibia.exe");
+    HANDLE dwHandle;
+	MEMORY_BASIC_INFORMATION info;
+    unsigned long int this_xp = 0;
+            
+	if (m_prevProcessId!=processId)
+	{
+		dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, processId);
+		if (dwHandle==NULL)
+		{
+			m_prevProcessId=-1;
+			return 1;
+		}
+		m_prevProcessId=processId;
+		CloseHandle(m_prevProcessHandle);
+		m_prevProcessHandle=dwHandle;
+	} else {
+		dwHandle=m_prevProcessHandle;
+	};
+    
+	HINSTANCE psapi2 = LoadLibrary("ntdll.dll");
+	FARPROC myprocAddr2 = GetProcAddress(HMODULE(psapi2),"NtQueryInformationProcess");
+	typedef BOOL (__stdcall *GETSTUFF2)( HANDLE ProcessHandle, int ProcessInformationClass, PVOID ProcessInformation, int ProcessInformationLength, int ReturnLength);
+	GETSTUFF2 GetModuleInformation2=GETSTUFF2(myprocAddr2);
+
+	PROCESS_BASIC_INFORMATION info3;
+	GetModuleInformation2(dwHandle,0,&info3,20,0);
+
+	HINSTANCE psapi = LoadLibrary("psapi.dll");
+	FARPROC myprocAddr = GetProcAddress(HMODULE(psapi),"GetModuleInformation");
+	typedef BOOL (__stdcall *GETSTUFF)(HANDLE hProcess, HMODULE hModule, LPMODULEINFO lpmodinfo, DWORD cb);
+	GETSTUFF GetModuleInformation=GETSTUFF(myprocAddr);
+
+	int a = sizeof(MEMORY_BASIC_INFORMATION);
+	MODULEINFO info2;
+	GetModuleInformation(dwHandle,0,&info2,12);
+	VirtualQueryEx(dwHandle, (void*)0x500000, &info, sizeof(MEMORY_BASIC_INFORMATION));
+    if (VirtualQueryEx(dwHandle, NULL, &info, 28)) {		
+		info.BaseAddress;
+		return 0;
+    }
+    else {	
+		DWORD err = ::GetLastError();
+		CloseHandle(dwHandle);
+		m_prevProcessId=-1;
+		return err;
+    }       	
 }
 
 int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value)
