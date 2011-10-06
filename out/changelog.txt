@@ -1,5 +1,41 @@
-2.9.1, ??.4.2011
+2.13., ??.8.2011
 Enhancements:
+Defects:
+
+2.13.2, 17.9.2011
+Enhancements:
+Defects:
+ Tibiaauto Util: Fixed mod by 0 error
+ Tibiaauto: Fixed level display bug in text console
+
+2.13.1, 13.8.2011
+Enhancements:
+ Tibiaauto: Updated remaining portions for Tibia 9.10(many function calls were optimized by the new compiler)
+Defects:
+
+2.13.0, 10.7.2011
+Enhancements:
+ Tibiaauto: Partially updated for Tibia 9.10(many function calls were optimized by the new compiler)
+Defects:
+
+2.12.1, 10.7.2011
+Enhancements:
+Defects:
+ Tibiaauto: Fixed IPC back pipe getting full too quickly
+
+2.12.0, 14.6.2011
+Enhancements:
+ Tibiaauto: Updated for Tibia 9.00
+Defects:
+
+2.11.0, 12.5.2011
+Enhancements:
+ Tibiaauto: Updated for Tibia 8.74 
+Defects:
+
+2.10.0, 5.5.2011
+Enhancements:
+ Tibiaauto: Updated for Tibia 8.73 
 Defects:
 
 2.9.0, 20.4.2011

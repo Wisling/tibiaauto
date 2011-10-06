@@ -43,7 +43,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-const int NEW_ITEMS_MIN = 13842;
 
 CModuleUtil::CModuleUtil()
 {
@@ -964,6 +963,7 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
+	CTibiaItemProxy itemProxy;
 	CTibiaContainer *cont = reader.readContainer(containerNr);
 	CTibiaContainer *contCarrying = reader.readContainer(containerCarrying);
 	int looted = 0;
@@ -977,7 +977,8 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 			int i;
 			for (i=0;i<acceptedItems->GetSize();i++)
 			{
-				if ((int)item->objectId==(int)acceptedItems->GetAt(i) || (int)item->objectId >= NEW_ITEMS_MIN)
+				int newItemsMin = itemProxy.getValueForConst("lootItemsAboveId");
+				if ((int)item->objectId==(int)acceptedItems->GetAt(i) || (int)item->objectId >= newItemsMin)
 				{
 					// item needs to be looted
 					int targetPos=contCarrying->size-1;
@@ -1869,7 +1870,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		int pathInd=reader.getMemIntValue(itemProxy.getValueForConst("addrCurrentTileToGo"));
 		bool stoppedWalking=self->moving==0 && (pathLen==pathInd || pathLen==0);
 
-		//int pathStartAddr=reader.m_memAddressTilesToGo+4;
+		//int pathStartAddr=reader.m_memAddressPathToGo;
 		//int tmpX=lastEndX,tmpY=lastEndY;
 		
 		//while (tmpX!=self->x && tmpY!=self->y){

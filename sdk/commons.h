@@ -130,7 +130,7 @@ int getItemIndex(int x,int y,int itemId)
 	if (topPos==-1) return 0;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
-	for (int pos=topPos;pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
+	for (int pos=topPos;stackCount && pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
 	{
 		if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
 	}
