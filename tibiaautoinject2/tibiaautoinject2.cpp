@@ -935,7 +935,6 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 			}
 		}
 	}
-	
 	if (debugFile&&COMPLEX)
 	{
 		fprintf(debugFile,"!!! send !!! [identical=%d]\r\n",identical);
@@ -1260,7 +1259,10 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9);
 	//Proto_fun fun = (Proto_fun)(0x4B4B20); // 8.74
 	//Proto_fun fun = (Proto_fun)(0x4B4E70); // 9.00
-	Proto_fun fun = (Proto_fun)(0x4B6E20); // 9.10
+	//Proto_fun fun = (Proto_fun)(0x4B6E20); // 9.10
+	//Proto_fun fun = (Proto_fun)(0x4B6F10); // 9.20
+	//Proto_fun fun = (Proto_fun)(0x4B7090); // 9.31
+	Proto_fun fun = (Proto_fun)(0x4BFFD0); // 9.40
 
 	__asm{
 		push [ebp + 0x28]
@@ -1334,8 +1336,11 @@ int OUTmyPlayerNameText(int align, char *str, int visible, int x, int y, int fon
 
 	//Proto_fun fun=(Proto_fun)(0x4B3FA0); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x4B42F0); // 9.00
-	Proto_fun fun=(Proto_fun)(0x4B6290); // 9.10
-
+	//Proto_fun fun=(Proto_fun)(0x4B6290); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x4B6380); // 9.20
+	//Proto_fun fun=(Proto_fun)(0x4B6500); // 9.31
+	Proto_fun fun=(Proto_fun)(0x4BF440); // 9.40
+	
 	__asm{
 		mov edi, [ebp + 0x48]
 		mov ebx, [ebp + 0x44]
@@ -1456,7 +1461,10 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	typedef void (*Proto_fun)(int type,char *s);
 	//Proto_fun fun=(Proto_fun)(0x54C1B0); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x54D480); // 9.00
-	Proto_fun fun=(Proto_fun)(0x54BD20); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x54BD20); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x54BEA0); // 9.20
+	//Proto_fun fun=(Proto_fun)(0x54C200); // 9.31
+	Proto_fun fun=(Proto_fun)(0x55D2F0); // 9.40
 
 	if (debugFile&&COMPLEX)
 	{
@@ -1549,7 +1557,10 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 		typedef int (*Proto_fun)(int *creaturePtr);
 		//Proto_fun fun=(Proto_fun)(0x462660); // 8.74
 		//Proto_fun fun=(Proto_fun)(0x462880); // 9.00
-		Proto_fun fun=(Proto_fun)(0x465AD0); // 9.10
+		//Proto_fun fun=(Proto_fun)(0x465AD0); // 9.10
+		//Proto_fun fun=(Proto_fun)(0x465BD0); // 9.20
+		//Proto_fun fun=(Proto_fun)(0x465CD0); // 9.31
+		Proto_fun fun=(Proto_fun)(0x467CC0); // 9.40
 
 
 		return fun(creaturePtr);
@@ -1563,7 +1574,10 @@ int OUTmyInterceptEncrypt(int v1, int v2) //<eax>(int v1, int v2<esi>)
 	typedef void (*Proto_fun)(int v1, int v2);
 	//Proto_fun fun=(Proto_fun)(0x555E80); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x557160); // 9.00
-	Proto_fun fun=(Proto_fun)(0x55BA70); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x55BA70); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x55BC10); // 9.20
+	//Proto_fun fun=(Proto_fun)(0x55BFB0); // 9.31
+	Proto_fun fun=(Proto_fun)(0x56D030); // 9.40
 
 	__asm{
 		push [ebp + 0x08]
@@ -1622,7 +1636,10 @@ int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<esi>, int v2)
 
 	//Proto_fun fun=(Proto_fun)(0x555FB0); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x557290); // 9.00
-	Proto_fun fun=(Proto_fun)(0x55BBA0); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x55BBA0); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x55BD40); // 9.20
+	//Proto_fun fun=(Proto_fun)(0x55C0E0); // 9.31
+	Proto_fun fun=(Proto_fun)(0x56D160); // 9.40
 
 	__asm{
 		mov esi, [ebp + 0x0C] // move v2 to ESI
@@ -1654,7 +1671,7 @@ __declspec(naked) void INmyInterceptDecrypt() //<eax>(int v1, int v2<esi>)
 	int ret;
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi);	
 
-	Proto_fun fun=(Proto_fun)(0x); // 9.10
+	Proto_fun fun=(Proto_fun)(0x);
 
 	__asm{
 		mov edi, [ebp + 0x34]
@@ -1729,12 +1746,19 @@ int myShouldParseRecv(){
 	typedef int (*Proto_fun)();
 	//Proto_fun fun=(Proto_fun)(0x4F9520); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x4FA0A0); // 9.00
-	Proto_fun fun=(Proto_fun)(0x4FC0C0); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x4FC0C0); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x4FC2E0); // 9.20
+	//Proto_fun fun=(Proto_fun)(0x4FC460); // 9.31
+	Proto_fun fun=(Proto_fun)(0x505D40); // 9.40
 	int ret = fun();
 
+	//look for this address near above location, it will be off by 8
 	//packStream* recvStream = (packStream*)(0x7C6CEC); //8.74
 	//packStream* recvStream = (packStream*)(0x7C8D0C); //9.00
-	packStream* recvStream = (packStream*)(0x9B2690); //9.10
+	//packStream* recvStream = (packStream*)(0x9B2690); //9.10
+	//packStream* recvStream = (packStream*)(0x9B2880); //9.20
+	//packStream* recvStream = (packStream*)(0x9B4880); //9.31
+	packStream* recvStream = (packStream*)(0x9D2B90); //9.40
 	//int packLen = ((unsigned char)recvStream->s[6]) + ((unsigned char)recvStream->s[7])*256;
 	if (prevRecvStreamPos){ // If there is an action we can read
 		int actionStart = prevRecvStreamPos - 1;
@@ -1792,7 +1816,10 @@ int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6,
 
 	//Proto_fun fun=(Proto_fun)(0x54F0E0); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x5503C0); // 9.00
-	Proto_fun fun=(Proto_fun)(0x54FB60); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x54FB60); // 9.10
+	//Proto_fun fun=(Proto_fun)(0x54FCE0); // 9.20
+	//Proto_fun fun=(Proto_fun)(0x550040); // 9.31
+	Proto_fun fun=(Proto_fun)(0x561130); // 9.40
 
 	__asm{
 		mov esi, [ebp + 0x28]
@@ -1942,11 +1969,29 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4F6013+1,(unsigned int)myPrintText); // 9.00
 	//trapFun(dwHandle,0x4F6DD7+1,(unsigned int)myPrintText); // 9.00
 
-	trapFun(dwHandle,0x45248C+1,(unsigned int)INmyPrintText); // 9.10
-	trapFun(dwHandle,0x4524D6+1,(unsigned int)INmyPrintText); // 9.10
-	trapFun(dwHandle,0x45A793+1,(unsigned int)INmyPrintText); // 9.10
-	trapFun(dwHandle,0x4F010F+1,(unsigned int)INmyPrintText); // 9.10
-	trapFun(dwHandle,0x4F0EB9+1,(unsigned int)INmyPrintText); // 9.10
+	//trapFun(dwHandle,0x45248C+1,(unsigned int)INmyPrintText); // 9.10
+	//trapFun(dwHandle,0x4524D6+1,(unsigned int)INmyPrintText); // 9.10
+	//trapFun(dwHandle,0x45A793+1,(unsigned int)INmyPrintText); // 9.10
+	//trapFun(dwHandle,0x4F010F+1,(unsigned int)INmyPrintText); // 9.10
+	//trapFun(dwHandle,0x4F0EB9+1,(unsigned int)INmyPrintText); // 9.10
+
+	//trapFun(dwHandle,0x45257C+1,(unsigned int)INmyPrintText); // 9.20
+	//trapFun(dwHandle,0x4525C6+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x45A883+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x4F032F+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x4F10D9+1,(unsigned int)INmyPrintText); // 
+
+	//trapFun(dwHandle,0x45261C+1,(unsigned int)INmyPrintText); // 9.31
+	//trapFun(dwHandle,0x452666+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x45A993+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x4F04AF+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x4F1259+1,(unsigned int)INmyPrintText); // 
+
+	trapFun(dwHandle,0x45456C+1,(unsigned int)INmyPrintText); // 9.40
+	trapFun(dwHandle,0x4545B6+1,(unsigned int)INmyPrintText); // 
+	trapFun(dwHandle,0x45C953+1,(unsigned int)INmyPrintText); // 
+	trapFun(dwHandle,0x4F9D6F+1,(unsigned int)INmyPrintText); // 
+	trapFun(dwHandle,0x4FAB19+1,(unsigned int)INmyPrintText); // 
 
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 	
@@ -1969,7 +2014,8 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x4B54E1+1,(unsigned int)myPlayerNameText); // 9.00
 	trapFun(dwHandle,0x4F693A+1,(unsigned int)myPlayerNameText); // 9.00
 	*/
-
+	
+	/*
 	trapFun(dwHandle,0x41E323+1,(unsigned int)INmyPlayerNameText); // 9.10
 	trapFun(dwHandle,0x4B6A9E+1,(unsigned int)INmyPlayerNameText); // 9.10
 	trapFun(dwHandle,0x4B6CA4+1,(unsigned int)INmyPlayerNameText); // 9.10
@@ -1978,7 +2024,34 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x4B72A4+1,(unsigned int)INmyPlayerNameText); // 9.10
 	trapFun(dwHandle,0x4B74A0+1,(unsigned int)INmyPlayerNameText); // 9.10
 	trapFun(dwHandle,0x4F0A1E+1,(unsigned int)INmyPlayerNameText); // 9.10
+	*/
 
+	//trapFun(dwHandle,0x41E333+1,(unsigned int)INmyPlayerNameText); // 9.20
+	//trapFun(dwHandle,0x4B6B8E+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B6D94+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B6F91+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7191+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7394+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7590+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4F0C3E+1,(unsigned int)INmyPlayerNameText); // 
+
+	//trapFun(dwHandle,0x41E4D3+1,(unsigned int)INmyPlayerNameText); // 9.31
+	//trapFun(dwHandle,0x4B6D0E+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B6F14+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7111+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7311+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7514+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B7710+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4F0DBE+1,(unsigned int)INmyPlayerNameText); // 
+
+	trapFun(dwHandle,0x4203C3+1,(unsigned int)INmyPlayerNameText); // 9.40
+	trapFun(dwHandle,0x4BFC4E+1,(unsigned int)INmyPlayerNameText); // 
+	trapFun(dwHandle,0x4BFE54+1,(unsigned int)INmyPlayerNameText); // 
+	trapFun(dwHandle,0x4C0051+1,(unsigned int)INmyPlayerNameText); // 
+	trapFun(dwHandle,0x4C0251+1,(unsigned int)INmyPlayerNameText); // 
+	trapFun(dwHandle,0x4C0454+1,(unsigned int)INmyPlayerNameText); // 
+	trapFun(dwHandle,0x4C0650+1,(unsigned int)INmyPlayerNameText); // 
+	trapFun(dwHandle,0x4FA67E+1,(unsigned int)INmyPlayerNameText); // 
 
 	// lookup: TALK_INFO_MESSAGE; this is inside of the function
 	//trapFun(dwHandle,0x413A69+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.74
@@ -1989,10 +2062,23 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4A4DB3+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.00
 	//trapFun(dwHandle,0x4EF128+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.00
 
-	trapFun(dwHandle,0x4163EB+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
-	trapFun(dwHandle,0x48C6B5+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
-	trapFun(dwHandle,0x4EE064+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
+	//trapFun(dwHandle,0x4163EB+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
+	//trapFun(dwHandle,0x48C6B5+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
+	//trapFun(dwHandle,0x4EE064+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
 
+	//trapFun(dwHandle,0x4163EB+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.20
+	//trapFun(dwHandle,0x48C765+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x4EE284+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+
+	//trapFun(dwHandle,0x4165CB+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.31
+	//trapFun(dwHandle,0x4570ED+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x48C915+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x4EE3F4+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+
+	trapFun(dwHandle,0x417698+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.40
+	trapFun(dwHandle,0x45904D+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	trapFun(dwHandle,0x490D85+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	trapFun(dwHandle,0x4F7CC4+1,(unsigned int)myInterceptInfoMiddleScreen); // 
 
 	// lookup: TargetBuffer!=NULL; first call is in the middle of the infomessage function
 	//         in fact you need to increcept all calls
@@ -2033,6 +2119,7 @@ void InitialisePlayerInfoHack()
 	*/
 
 	// BLOCK is 9.10
+	/*
 	trapFun(dwHandle,0x415FBA+1,(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,0x42B738+1,(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,0x42BB4C+1,(unsigned int)INmyInterceptInfoMessageBox);
@@ -2046,16 +2133,70 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,0x55043C+1,(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,0x550531+1,(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,0x550770+1,(unsigned int)INmyInterceptInfoMessageBox);
+	*/
+
+	// BLOCK is 9.20
+	/*
+	trapFun(dwHandle,0x415FBA+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x42B7E8+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x42BBFC+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x42BC38+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4A4421+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4E655B+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4E6D2D+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4E6D91+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x54FB47+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x5504EB+1,(unsigned int)INmyInterceptInfoMessageBox);//BADBAD
+	trapFun(dwHandle,0x5505BC+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x5506B1+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x5508F0+1,(unsigned int)INmyInterceptInfoMessageBox);
+	*/
+
+	// BLOCK is 9.31
+	/*
+	trapFun(dwHandle,0x41619A+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x42B8C8+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4A4571+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4E66CB+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4E6E9D+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4E6F01+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x54FEA7+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x55084B+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x55091C+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x550A11+1,(unsigned int)INmyInterceptInfoMessageBox);//BADBAD
+	trapFun(dwHandle,0x550C50+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x5516D6+1,(unsigned int)INmyInterceptInfoMessageBox);
+	*/
+
+	// BLOCK is 9.40
+	trapFun(dwHandle,0x4171FA+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x42D7E8+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4A9171+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4EFF7B+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4F074D+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x4F07B1+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x560F97+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x56193B+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x561A0C+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x561B01+1,(unsigned int)INmyInterceptInfoMessageBox);//BADBAD
+	trapFun(dwHandle,0x561D40+1,(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,0x5627D6+1,(unsigned int)INmyInterceptInfoMessageBox);
 
 	// lookup: manually match around previous address by assembly similarity
 	//trapFun(dwHandle,0x55611D+1,(unsigned int)myInterceptEncrypt); // 8.74
 	//trapFun(dwHandle,0x5573FD+1,(unsigned int)myInterceptEncrypt); // 9.00
-	trapFun(dwHandle,0x4FB7BA+1,(unsigned int)INmyInterceptEncrypt); // 9.10
+	//trapFun(dwHandle,0x4FB7BA+1,(unsigned int)INmyInterceptEncrypt); // 9.10
+	//trapFun(dwHandle,0x4FB9DA+1,(unsigned int)INmyInterceptEncrypt); // 9.20
+	//trapFun(dwHandle,0x4FBB5A+1,(unsigned int)INmyInterceptEncrypt); // 9.31
+	trapFun(dwHandle,0x50543A+1,(unsigned int)INmyInterceptEncrypt); // 9.40
 		
 	// lookup: function below encrypt is the decrypt function
 	//trapFun(dwHandle,0x55613D+1,(unsigned int)myInterceptDecrypt); // 8.74
 	//trapFun(dwHandle,0x55741D+1,(unsigned int)myInterceptDecrypt); // 9.00
-	trapFun(dwHandle,0x4FBDB4+1,(unsigned int)INmyInterceptDecrypt); // 9.10
+	//trapFun(dwHandle,0x4FBDB4+1,(unsigned int)INmyInterceptDecrypt); // 9.10
+	//trapFun(dwHandle,0x4FBFD4+1,(unsigned int)INmyInterceptDecrypt); // 9.20
+	//trapFun(dwHandle,0x4FC154+1,(unsigned int)INmyInterceptDecrypt); // 9.31
+	trapFun(dwHandle,0x505A34+1,(unsigned int)INmyInterceptDecrypt); // 9.40
 
 	
 	// WARNING: decrypt function is not trapped since 8.22 as I did not track it down in the soureccode
@@ -2067,14 +2208,18 @@ void InitialisePlayerInfoHack()
 	//         trap of the second (last one) reference to the function	
 	//trapFun(dwHandle,0x4F243E+1,(unsigned int)myIsCreatureVisible); // 8.74
 	//trapFun(dwHandle,0x4F2FBE+1,(unsigned int)myIsCreatureVisible); // 9.00
-//	trapFun(dwHandle,0x4F309A+1,(unsigned int)myIsCreatureVisible); // 9.10
+	//trapFun(dwHandle,0x4F309A+1,(unsigned int)myIsCreatureVisible); // 9.10
+//	trapFun(dwHandle,0x4F32BA+1,(unsigned int)myIsCreatureVisible); // 9.20
 
 	// lookup: reference to  string "unknown packet type during login" 
 	//         it's about 65 instuctions before it and 300 bytes
 	//         look for CMP ESI,-1 since the function returns -1 when there are no packets to parse
 	//trapFun(dwHandle,0x45D565+1,(unsigned int)myShouldParseRecv); // 8.74
 	//trapFun(dwHandle,0x45D775+1,(unsigned int)myShouldParseRecv); // 9.00
-	trapFun(dwHandle,0x45D230+1,(unsigned int)myShouldParseRecv); // 9.10
+	//trapFun(dwHandle,0x45D230+1,(unsigned int)myShouldParseRecv); // 9.10
+	//trapFun(dwHandle,0x45D320+1,(unsigned int)myShouldParseRecv); // 9.20
+	//trapFun(dwHandle,0x45D430+1,(unsigned int)myShouldParseRecv); // 9.31
+	trapFun(dwHandle,0x45F3F0+1,(unsigned int)myShouldParseRecv); // 9.40
 
     CloseHandle(dwHandle);
 	
@@ -2669,3 +2814,4 @@ void InitialiseCommunication()
 															
 															  } // extern "C"
 */
+

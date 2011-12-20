@@ -154,10 +154,180 @@ typedef struct _PROCESS_BASIC_INFORMATION {
     PVOID UniqueProcessId;
     PVOID Reserved3;
 } PROCESS_BASIC_INFORMATION,*PPROCESS_BASIC_INFORMATION;
+typedef struct _data {
+    ULONG dllBaseAdrr;
+	char targetDir[256];
+}data;
+/*-----------------------------------------------------------------------------------------*/
+//The interesting member in our case is PPEB_LDR_DATA LoaderData that
+//contains information filled by the loader at startup, and then when
+//happens a DLL load/unload.
+typedef struct _PEB_LDR_DATA {
+    ULONG Length;
+    BOOLEAN Initialized;
+    PVOID SsHandle;
+    LIST_ENTRY InLoadOrderModuleList;
+    LIST_ENTRY InMemoryOrderModuleList;
+    LIST_ENTRY InInitializationOrderModuleList;
+     
+}PEB_LDR_DATA, *PPEB_LDR_DATA;
+
+typedef struct _LSA_UNICODE_STRING {
+  USHORT Length;
+  USHORT MaximumLength;
+  PWSTR  Buffer;
+} LSA_UNICODE_STRING, *PLSA_UNICODE_STRING;
+
+/*-----------------------------------------------------------------------------------------*/
+//The PEB_LDR_DATA structure contains three LIST_ENTRY that are part of doubly
+//linked lists gathering information on loaded DLL in the current process.
+//InLoadOrderModuleList sorts modules in load order, InMemoryOrderModuleList
+//in memory order, and InInitializationOrderModuleList keeps track of their
+//load order since process start.
+ 
+//These doubly linked list contains pointers to LDR_MODULE inside the parent
+//structure for next and previous module.
+typedef struct _LDR_MODULE {
+    LIST_ENTRY InLoadOrderModuleList;
+    LIST_ENTRY InMemoryOrderModuleList;
+    LIST_ENTRY InInitializationOrderModuleList;
+    PVOID BaseAddress;
+    PVOID EntryPoint;
+    ULONG SizeOfImage;
+    _LSA_UNICODE_STRING FullDllName;
+    _LSA_UNICODE_STRING BaseDllName;
+    ULONG Flags;
+    SHORT LoadCount;
+    SHORT TlsIndex;
+    LIST_ENTRY HashTableEntry;
+    ULONG TimeDateStamp;
+     
+}LDR_MODULE, *PLDR_MODULE;
+
+/*-----------------------------------------------------------------------------------------*/
+//The role of the PEB is to gather frequently accessed information for a
+//process as follows. At address FS:0x30 (or 0x7FFDF000) stands the
+//following members of the [PEB].
+/* located at 0x7FFDF000 */
+typedef struct _PEB {
+    BYTE Reserved1[2];
+    BYTE BeingDebugged;
+    BYTE Reserved2[1];
+    PVOID Reserved3[2];
+    PPEB_LDR_DATA Ldr;
+    ULONG ProcessParameters;
+    BYTE Reserved4[104];
+    PVOID Reserved5[52];
+    ULONG PostProcessInitRoutine;
+    BYTE Reserved6[128];
+    PVOID Reserved7[1];
+    ULONG SessionId;
+     
+}PEB, *PPEB;
+
+/* * UnicodeToAnsi converts the Unicode string pszW to an ANSI string
+   * and returns the ANSI string through ppszA. Space for the
+   * the converted string is allocated by UnicodeToAnsi.
+   */
+ 
+HRESULT __fastcall UnicodeToAnsi(LPCOLESTR pszW, LPSTR* ppszA){
+    ULONG cbAnsi, cCharacters;
+    DWORD dwError;
+    // If input is null then just return the same.   
+    if (pszW == NULL)   
+    {
+        *ppszA = NULL;
+        return NOERROR;
+         
+    }
+    cCharacters = wcslen(pszW)+1;
+    // Determine number of bytes to be allocated for ANSI string. An   
+    // ANSI string can have at most 2 bytes per character (for Double   
+    // Byte Character Strings.)   
+    cbAnsi = cCharacters*2;
+     
+    // Use of the OLE allocator is not required because the resultant   
+    // ANSI  string will never be passed to another COM component. You   
+    // can use your own allocator.   
+     
+    *ppszA = (LPSTR) CoTaskMemAlloc(cbAnsi);
+    if (NULL == *ppszA)
+        return E_OUTOFMEMORY;
+    // Convert to ANSI.
+    if (0 == WideCharToMultiByte(CP_ACP, 0, pszW, cCharacters, *ppszA, cbAnsi, NULL, NULL))
+    {
+        dwError = GetLastError();
+        CoTaskMemFree(*ppszA);
+        *ppszA = NULL;
+        return HRESULT_FROM_WIN32(dwError);
+         
+    }
+    return NOERROR;
+     
+}
+
+DWORD GetDllBaseAddressViaPeb(char *szDll) {
+	DWORD Ret = 0;
+	ULONG ldr_addr;
+	PPEB_LDR_DATA ldr_data;
+	PLDR_MODULE LdMod;
+	LPSTR psznameA;
+	// The asm code is only for IA-32 architecture   
+	__asm mov eax, fs:[0x30]  //get the PEB ADDR   
+	__asm add eax, 0xc           
+	__asm mov eax, [eax] // get LoaderData ADDR   
+	__asm mov ldr_addr, eax   
+	 
+	__try   
+	{
+	    ldr_data = (PPEB_LDR_DATA)ldr_addr;
+	    LdMod = (PLDR_MODULE)ldr_data->InLoadOrderModuleList.Flink;
+	    // all dlls present        
+	    while(LdMod->BaseAddress != 0)        
+	    {
+	        LdMod = (PLDR_MODULE)LdMod->InLoadOrderModuleList.Flink;
+	        UnicodeToAnsi(LdMod->BaseDllName.Buffer, &psznameA);
+	        //LdMod->FullDllName.Buffer --> path + name              
+	        printf("%s 0x%x\n", psznameA, (PULONG)LdMod->BaseAddress);
+	        if(!strcmp(psznameA, szDll))              
+	        {
+	            Ret = (DWORD)LdMod->BaseAddress;
+	        }
+	         
+	    }
+	     
+	}
+	__except(EXCEPTION_EXECUTE_HANDLER)     {
+	    return (DWORD)false;
+	     
+	}
+	return Ret;
+	 
+}
 
 int CMemUtil::GetMemBaseAddress(long processId)
 {	
-	long aaa = _GetModuleImageAddress("E:\\Tibia\\Tibia\\Tibia.exe");
+	data dat;
+	unsigned long pid=5528;
+	char *mydll = "Tibia.exe";
+	//char cpid [50];
+	//char title [50];
+	//sprintf(cpid, "pid: %d", pid);
+	//sprintf(title, "dllbaviapeb");
+	//MessageBox(0,cpid,title,0);
+	HANDLE hProcess = OpenProcess(PROCESS_CREATE_THREAD | PROCESS_VM_OPERATION | PROCESS_VM_WRITE, false, pid);
+	dat.dllBaseAdrr = GetDllBaseAddressViaPeb(mydll);
+	//dat.dllBaseAdrr = (DWORD)LoadLibrary(mydll);
+	char message [50];
+	char tilte [50];
+	sprintf(message, "ntdll.dll BA 0x%x", dat.dllBaseAdrr);
+	sprintf(tilte, "dllbaviapeb");
+	MessageBox(0,message,tilte,0);
+	GetModuleFileName(GetModuleHandle(NULL), dat.targetDir, 255);
+	return 1;
+	     
+	//long aaa = _GetModuleImageAddress("E:\\Tibia\\Tibia\\Tibia.exe");
+	long aaa = _GetModuleImageAddress("C:\\windows\\system32\\calc.exe");
     HANDLE dwHandle;
 	MEMORY_BASIC_INFORMATION info;
     unsigned long int this_xp = 0;
@@ -205,6 +375,7 @@ int CMemUtil::GetMemBaseAddress(long processId)
 		return err;
     }       	
 }
+
 
 int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value)
 {	
