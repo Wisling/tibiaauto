@@ -345,8 +345,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->autopass){
 				CTibiaItemProxy itemProxy;
 				int addr=itemProxy.getValueForConst("addrConnectionState");
-				reader.getMemRange(addr-0x50,addr-0x50+32,accNum);
-				reader.getMemRange(addr+0x48,addr+0x48+32,pass);
+				reader.getMemRange(addr-0x28,addr-0x28+32,accNum);
+				reader.getMemRange(addr+0x70,addr+0x70+32,pass);
 			} else {
 				strncpy(accNum,config->accountNumber,32);
 				strncpy(pass,config->password,32);
