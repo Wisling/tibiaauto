@@ -55,6 +55,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_AUTOPASS, m_autopass);
+	DDX_Control(pDX, IDC_LOGIN_AFTER_KILLED, m_loginAfterKilled);
 	//}}AFX_DATA_MAP
 }
 
@@ -115,6 +116,7 @@ void CConfigDialog::disableControls()
 	m_openCont8.EnableWindow(false);
 	m_loginDelay.EnableWindow(false);
 	m_autopass.EnableWindow(false);
+	m_loginAfterKilled.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -129,9 +131,11 @@ void CConfigDialog::enableControls()
 	m_openCont7.EnableWindow(true);
 	m_openCont8.EnableWindow(true);
 	m_loginDelay.EnableWindow(true);
+	m_loginAfterKilled.EnableWindow(true);
 
 	m_autopass.EnableWindow(true);
 	OnAutopass();
+
 }
 
 
@@ -153,9 +157,11 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_openCont7.SetCheck(configData->openCont7);
 	m_openCont8.SetCheck(configData->openCont8);
 	sprintf(buf,"%d",configData->loginDelay);m_loginDelay.SetWindowText(buf);
+	m_loginAfterKilled.SetCheck(configData->loginAfterKilled);
 
 	m_autopass.SetCheck(configData->autopass);
 	OnAutopass();
+
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -177,6 +183,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->openCont8=m_openCont8.GetCheck();
 	m_loginDelay.GetWindowText(buf,63);newConfigData->loginDelay=atoi(buf);
 	newConfigData->autopass=m_autopass.GetCheck();
+	newConfigData->loginAfterKilled=m_loginAfterKilled.GetCheck();
 
 	return newConfigData;
 }

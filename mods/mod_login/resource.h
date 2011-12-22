@@ -50,6 +50,7 @@
 #define IDC_FRAME_BACKPACK_CONTROL      3028
 #define IDC_FRAME_DEBUG_LOG             3029
 #define IDC_AUTOPASS                    3030
+#define IDC_LOGIN_AFTER_KILLED          3031
 
 // Next default values for new objects
 // 

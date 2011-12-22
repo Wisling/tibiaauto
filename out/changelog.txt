@@ -1,5 +1,22 @@
-2.13., ??.8.2011
+2.16.0, 14.12.2011
 Enhancements:
+ Tibiaauto: Updated to Tibia 9.40
+Defects:
+ Seller: fixed buying  more that 100 items
+
+2.15.0, 23.10.2011
+Enhancements:
+ Tibiaauto: Updated to 9.31
+Defects:
+
+2.14.1, 15.10.2011
+Enhancements:
+Defects:
+ Auto Login: Fixed clicking on Enter Game button that was moved
+
+2.14.0, 6.10.2011
+Enhancements:
+ Tibiaauto: Update to Tibia 9.20
 Defects:
 
 2.13.2, 17.9.2011

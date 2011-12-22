@@ -53,6 +53,7 @@ public:
 	CButtonST	m_enable;
 	CButtonST	m_OK;
 	CButton	m_autopass;
+	CButton m_loginAfterKilled;
 	//}}AFX_DATA
 
 

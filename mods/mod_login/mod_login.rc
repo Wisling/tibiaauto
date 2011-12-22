@@ -64,25 +64,25 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 226, 332
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 226, 340
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Auto Login"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Login Settings",IDC_FRAME_LOGIN_SETTINGS,7,37,212,101
-    GROUPBOX        "Debug Log",IDC_FRAME_DEBUG_LOG,7,207,212,81
+    GROUPBOX        "Debug Log",IDC_FRAME_DEBUG_LOG,7,217,212,81
     GROUPBOX        "Backpack Control",IDC_FRAME_BACKPACK_CONTROL,7,140,212,
-                    64
-    DEFPUSHBUTTON   "OK",IDOK,88,311,50,14
+                    74
+    DEFPUSHBUTTON   "OK",IDOK,88,319,50,14
     CONTROL         "Enable automatic login",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,293,212,14
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,303,212,14
     LTEXT           "Account Number:",IDC_STATIC,14,55,55,14,SS_CENTERIMAGE
     EDITTEXT        IDC_ACCOUNT_NUMBER,87,55,90,14,ES_PASSWORD | 
                     ES_AUTOHSCROLL
     LTEXT           "Password:",IDC_STATIC,14,73,55,14,SS_CENTERIMAGE
     EDITTEXT        IDC_PASSWORD,87,73,90,14,ES_PASSWORD | ES_AUTOHSCROLL
     CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,14,219,198,63
+                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,14,229,198,63
     LTEXT           "Connection status: -",IDC_STATUS,14,127,198,8
     LTEXT           "Character Position:",IDC_STATIC,14,91,67,14,
                     SS_CENTERIMAGE
@@ -112,6 +112,8 @@ BEGIN
     LTEXT           "seconds",IDC_STATIC,145,109,55,14,SS_CENTERIMAGE
     CONTROL         "Log in with last character",IDC_AUTOPASS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,87,43,95,10
+    CONTROL         "Re-log in after death",IDC_LOGIN_AFTER_KILLED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,202,80,10
 END
 
 
@@ -130,7 +132,7 @@ BEGIN
         VERTGUIDE, 14
         VERTGUIDE, 212
         TOPMARGIN, 7
-        BOTTOMMARGIN, 325
+        BOTTOMMARGIN, 333
     END
 END
 #endif    // APSTUDIO_INVOKED

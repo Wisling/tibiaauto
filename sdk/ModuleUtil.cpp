@@ -298,6 +298,30 @@ int CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes a
 	return 0;
 }
 
+int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId)//takes about a max of .5 secs
+{
+	CMemReaderProxy reader;
+	int t;
+	for (t=0;t<30;t++)
+	{
+		CTibiaContainer *cont = reader.readContainer(contNr);
+		if (cont->itemsInside<slotNr)//ensures cont->items.GetAt array has at least origItemSlot items
+		{
+			delete cont;
+			return 1;
+		}
+		CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
+		if (item->objectId!=origItemId)
+		{
+			delete cont;
+			return 1;
+		}
+		delete cont;
+		Sleep(50);
+	}
+	return 0;
+}
+
 //Input: x,y absolute position around which to search
 //Output: returns 0 if unsucessful, otherwise returns 1 and changes x and y to location
 int CModuleUtil::findFreeSpace(int &x, int &y, int z,int r /* =1 */){
