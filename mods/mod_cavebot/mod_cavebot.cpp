@@ -441,9 +441,9 @@ int depotDepositOpenChest(int x,int y,int z) {
 	int depotContNr=-1;
 	int count=reader.mapGetPointItemsCount(point(x-self->x,y-self->y,0));
 	int pos=0;
-	if (count>10) count=10;
+	if (count>10) count=10;// ? should have written what I found out that provoked putting this here 
 	
-	int depotId=0;
+	int lockerId=0;
 	for (pos=0;pos<count;pos++) {
 		int tileId=reader.mapGetPointItemId(point(x-self->x,y-self->y,0),pos);
 		CTibiaTile* tile=reader.getTibiaTile(tileId);
@@ -456,20 +456,31 @@ int depotDepositOpenChest(int x,int y,int z) {
 			count--;
 		}
 		if (tile->isDepot) {
-			depotId=tileId;
+			lockerId=tileId;
 			break;
 		}
 	}
-	if (!depotId && count){
-		depotId=itemOnTopCode(x-self->x,y-self->y);
+	if (!lockerId && count){
+		lockerId=itemOnTopCode(x-self->x,y-self->y);
 	}
-	if (depotId){
+	if (lockerId){
 		// this is the depot chest so open it
 		depotContNr=CModuleUtil::findNextClosedContainer();
-		sender.openContainerFromFloor(depotId,x,y,z,depotContNr);
+		sender.openContainerFromFloor(lockerId,x,y,z,depotContNr);
 		CModuleUtil::waitForOpenContainer(depotContNr,true);
+		Sleep(CModuleUtil::randomFormula(700,200));
 		CTibiaContainer *cont = reader.readContainer(depotContNr);
-		int isOpen=cont->flagOnOff;
+		CTibiaItem *item;
+		int depotSlotNr = 0,depotId=0;
+		if (cont->flagOnOff && cont->itemsInside>depotSlotNr){
+			depotId = ((CTibiaItem *)cont->items.GetAt(depotSlotNr))->objectId;
+		}
+		if (depotId){
+			sender.openContainerFromContainer(depotId,depotContNr+0x40,depotSlotNr,depotContNr);
+			CModuleUtil::waitForItemChange(depotContNr, depotSlotNr, depotId);
+		} else {
+			depotContNr = -1;
+		}
 		deleteAndNull(cont);
 	}
 	deleteAndNull(self);
@@ -539,7 +550,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 			if (newContainer->flagOnOff) {
 				int targetPos=-1;
 				if (tile->stackable)
-				{						
+				{
 					// if item is stackable then try to find a suitable stack for it
 					for (int stackedItemPos=0;stackedItemPos<newContainer->itemsInside;stackedItemPos++)
 					{
@@ -705,7 +716,7 @@ void depotDeposit(CConfigData *config) {
 	* 2. open depot chest and find place for item (optional)
 	* 3. deposit items
 	*/
-	
+	//In Tibia 9.40 depot container changed to having no slots available in the "Locker"
 	if (!config->depotDropInsteadOfDepositon) {
 		globalAutoAttackStateDepot=CToolAutoAttackStateDepot_opening;
 		for (int x=-1;x<=1;x++){

@@ -13,7 +13,7 @@ template <class T> class CTibiaQueue;
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CModuleUtil  
+class CModuleUtil
 {
 public:
 	static int randomFormula(int average, int halfrange);
@@ -22,6 +22,7 @@ public:
 	static int waitForHpManaIncrease(int oldHp,int oldMana);
 	static int waitForCapsChange(float origCaps);
 	static int waitForItemChange(int locationAddress, int origItemId);
+	static int waitForItemChange(int contNr, int slotNr, int origItemId);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);
 	static int waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);

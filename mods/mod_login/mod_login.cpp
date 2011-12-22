@@ -230,7 +230,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		{	
 			registerDebug("No connection: entering relogin mode");
 
-			if (origExp>getSelfExp()) 
+			if (origExp>getSelfExp() && !config->loginAfterKilled)
 			{
 				registerDebug("ERROR: exp dropped? was I killed?");
 				Sleep(1000);
@@ -328,7 +328,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				ReleaseSemaphore(hSemaphore,1,&prevCount);
 				continue;
 			}
-			SetCursorPos(wndRect.left+125,wndRect.bottom-223);
+			SetCursorPos(wndRect.left+91,wndRect.bottom-181);
 			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 			if (waitOnConnecting() || waitForWindow("Enter Game",5) || ensureForeground(hwnd))
@@ -345,8 +345,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->autopass){
 				CTibiaItemProxy itemProxy;
 				int addr=itemProxy.getValueForConst("addrConnectionState");
-				reader.getMemRange(addr-0x28,addr-0x28+32,accNum);
-				reader.getMemRange(addr+0x70,addr+0x70+32,pass);
+				reader.getMemRange(addr-0x50,addr-0x50+32,accNum);
+				reader.getMemRange(addr+0x48,addr+0x48+32,pass);
 			} else {
 				strncpy(accNum,config->accountNumber,32);
 				strncpy(pass,config->password,32);
@@ -734,6 +734,7 @@ void CMod_loginApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"autopass")) m_configData->autopass=atoi(paramValue);
 	if (!strcmp(paramName,"accountname")) strncpy(m_configData->accountNumber,paramValue,64);
 	if (!strcmp(paramName,"accountpass")) strncpy(m_configData->password,paramValue,64);
+	if (!strcmp(paramName,"loginAfterKilled")) m_configData->loginAfterKilled=atoi(paramValue);
 }
 
 char *CMod_loginApp::saveConfigParam(char *paramName)
@@ -754,6 +755,7 @@ char *CMod_loginApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"autopass")) sprintf(buf,"%d",m_configData->autopass);
 	if (!strcmp(paramName,"accountname")) sprintf(buf,"***censored***");
 	if (!strcmp(paramName,"accountpass")) sprintf(buf,"***censored***");
+	if (!strcmp(paramName,"loginAfterKilled")) sprintf(buf,"%d",m_configData->loginAfterKilled);
 
 	return buf;
 }
@@ -775,6 +777,7 @@ char *CMod_loginApp::getConfigParamName(int nr)
 	case 10: return "autopass";
 	case 11: return "accountname";
 	case 12: return "accountpass";
+	case 13: return "loginAfterKilled";
 	default:
 		return NULL;
 	}

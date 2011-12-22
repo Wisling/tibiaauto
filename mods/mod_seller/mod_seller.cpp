@@ -44,6 +44,8 @@ static char THIS_FILE[] = __FILE__;
 #define BUYONLY 2
 #define DOBOTH 3 
 
+#define MAX_BUY_ITEMS 100
+
 CToolSellerState globalSellerState=CToolSellerState_notRunning;
 int GUIx = 0,GUIy = 0,GUIz = 0;
 
@@ -926,9 +928,11 @@ int buyItems(CConfigData *config, int traderNum) {
 		itemCount = goldCount / config->buyItem[traderNum].tradeItem[j].salePrice >= itemCount?itemCount:goldCount / config->buyItem[traderNum].tradeItem[j].salePrice;
 		//sprintf(buf, "Item: %d\nGold: %d\nCount: %d",objectId, goldCount, itemCount);
 		//AfxMessageBox(buf);
-		if (itemCount > 0) {
+		
+		while (itemCount > 0) {
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			sender.npcBuy(objectId, itemCount, 0, 0);
+			sender.npcBuy(objectId, min(itemCount,MAX_BUY_ITEMS), 0, 0);
+			itemCount -= min(itemCount,MAX_BUY_ITEMS);
 			Sleep (RandomTimeSeller());
 			if (CModuleUtil::waitForCapsChange(self->cap)) {
 				if (done!=0) done = 1;
