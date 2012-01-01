@@ -294,6 +294,15 @@ void Protocol::outputPacket(NetworkMessage &msg){
 		case 0xE7: //parseViolationWindow(msg);
 		case 0xF0: //parseQuests(msg);
 		case 0xF1: //parseQuestInfo(msg);
+		case 0xF5: //request market info(itemId);
+			//F5 B7 0D
+		case 0xF6: //Post a buy/sell item
+			// 0=buy,1=sell  itemid  quant  cost  ??  Anon
+			// F6 00 16 0E 01 00 6F 00 00 00 00
+			// F6 01 06 0E 03 00 03 00 00 00 00
+		case 0xF8: //Accept buy/sell offer
+			// saleId  ??  amount
+			// F8 05 AE 1B 4F 00 00 05 01
 		default:
 			break;
 	}

@@ -11,6 +11,7 @@
 #endif // _MSC_VER > 1000
 
 #include "TibiaContainer.h"
+#include "TibiaMapTile.h"
 #include "TibiaMapPoint.h"
 #include "MemConstData.h"
 #include "TibiaMiniMap.h"
@@ -88,6 +89,11 @@ public:
 	struct point mapConvertRelPointToPoint(struct point p);
 	struct point mapConvertPointToRelPoint(struct point p);
 	struct point mapConvertCellToPoint(int cellNr);
+	int mapGetCellFromRelPoint(point p,int relToCell);
+	struct point mapAddPoints(point p1,point p2);
+	int mapIsPointWithinScope(point p);
+	CTibiaMapTile *readMapTile(int tileNr);
+	int getMapTileStart(int tileNr);
 	int mapGetSelfCellNr();
 	
 };

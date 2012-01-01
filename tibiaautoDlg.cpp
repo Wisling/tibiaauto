@@ -397,10 +397,10 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_moduleSeller = new CModuleProxy("mod_seller",0);
 	refreshToolInfo();
 
-	if (!CModuleUtil::getTASetting("SeenMapMessage")){
-		AfxMessageBox("Please consider submitting your map files to TibiaAuto.net to help us with the new system in place to create a complete Tibia map. \n\nYou will only receive this reminder once. Thank you for any contribution you make.");
-		CModuleUtil::setTASetting("SeenMapMessage",1);
-		OnOptions();
+	if (!CModuleUtil::getTASetting("SeenMapMessage")){ // Disabled Dec 19/11 until these map files will actually be used
+		//AfxMessageBox("Please consider submitting your map files to TibiaAuto.net to help us with the new system in place to create a complete Tibia map. \n\nYou will only receive this reminder once. Thank you for any contribution you make.");
+		//CModuleUtil::setTASetting("SeenMapMessage",1);
+		//OnOptions();
 	}
 	if(CModuleUtil::getTASetting("GatherBotStats")){
 		COptionsDialog dlg;
@@ -1627,7 +1627,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.16.0,tm=%d,",tm);
+		fprintf(f,"version=2.16.2,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
@@ -1639,7 +1639,7 @@ void CTibiaautoDlg::reportUsage()
 	}
 }
 
-void CTibiaautoDlg::OnToolXray() 
+void CTibiaautoDlg::OnToolXray()
 {
 	m_moduleXRay->showConfigDialog();	
 }
