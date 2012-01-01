@@ -1368,3 +1368,246 @@ private:
 		cout << toString()<< endl;
 	}*/
 };
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////// CTibiaPercentile Implementation //////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////
+#define SWAP(a,b) {a=a^b;b=a^b;a=a^b;}
+
+//holds an array of up to MAX_SIZE representing a simple random sampling from all values added to the sample
+//each value added up until MAX_SIZE is reached has a 100% chance of being in the sample
+//after MAX_SIZE is reached, the chance of any particular value that has ever been added being in the sample is (MAX_SIZE/totalAdds)%
+//a MAX_ADDS value can be specified which limits (MAX_SIZE/totalAdds), stopping the probability of adding a value from decreasing any further
+//	this has the effect of decreasing the inclusion probability for older values and increasing the inclusion probability for newer ones
+class CTibiaPercentile{
+public:
+	friend class TestCTibiaPercentile;
+	int* sample;
+	unsigned int size, MAX_SIZE, totalAdds, MAX_ADDS;
+	CTibiaPercentile(unsigned int MAX_SIZE,unsigned int MAX_ADDS=int(0x7FFFFFF/100)){
+		this->MAX_SIZE = MAX_SIZE;
+		this->MAX_ADDS = MAX_ADDS;
+		sample = (int*)calloc(this->MAX_SIZE,sizeof(int));
+		size = 0;
+		totalAdds = 0;
+	}
+	~CTibiaPercentile(){
+		free(sample);
+	}
+	void add(int val){
+		if(totalAdds<MAX_ADDS) totalAdds++;
+		if(size < MAX_SIZE){
+			sample[size]=val;
+			size++;
+			shiftIntoPosition(size-1);
+		} else if(rand()%totalAdds < MAX_SIZE) { //has 100/totalAdds chance of being added to sample
+			int replacedPos = rand()%MAX_SIZE; //each value has equal chance of being replaced
+			sample[replacedPos]=val;
+			shiftIntoPosition(replacedPos);
+		} else {}// Do not add to sample
+	}
+	int getPercentile(int p){
+		if(size==0 || !(p>=0 && p<=99)) return 0;
+		return sample[size*p/100];
+	}
+	void verify(char* a, char* b){}
+private:
+	void shiftIntoPosition(unsigned int index){
+		while(index!=0 && sample[index-1]>sample[index]){
+			SWAP(sample[index-1],sample[index]);
+			index--;
+		}
+		while(index+1<size && sample[index+1]<sample[index]){
+			SWAP(sample[index+1],sample[index]);
+			index++;
+		}
+	}
+	void strSample(char* buf){
+		buf[0]=0;
+		for(unsigned int i=0;i<size;i++){
+			sprintf(&buf[strlen(buf)],"%d,",sample[i]);
+		}
+	}
+};
+
+class TestCTibiaPercentile{
+	char buf[10000];
+	char buf2[10000];
+public:
+	TestCTibiaPercentile(){
+		testAdd1();
+		testAdd3();
+		testAdd100();
+		testAddMore();
+		testUniformSample10();
+		testUniformSample100();
+		testUniformSample1000();
+		testActualData();
+	}
+	void testAdd1(){
+		CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(10);
+		p.strSample(buf);
+		verify("testAdd1",buf,"10,");
+		verify("testAdd1Perc0",10,p.getPercentile(0));
+		verify("testAdd1Perc99",10,p.getPercentile(99));
+	}
+	void testAdd3(){
+		{CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(20);
+		p.add(15);
+		p.add(10);
+		p.strSample(buf);
+		verify("testAdd3Reverse",buf,"10,15,20,");}
+		{CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(10);
+		p.add(15);
+		p.add(20);
+		p.strSample(buf);
+		verify("testAdd3Forward",buf,"10,15,20,");}
+		{CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(15);
+		p.add(10);
+		p.add(20);
+		p.strSample(buf);
+		verify("testAdd3Mix1",buf,"10,15,20,");}
+		CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(20);
+		p.add(10);
+		p.add(15);
+		p.strSample(buf);
+		verify("testAdd3Mix2",buf,"10,15,20,");
+		verify("testAdd3Perc0",10,p.getPercentile(0));
+		verify("testAdd3Perc33",10,p.getPercentile(33));
+		verify("testAdd3Perc34",15,p.getPercentile(34));
+		verify("testAdd3Perc66",15,p.getPercentile(66));
+		verify("testAdd3Perc67",20,p.getPercentile(67));
+		verify("testAdd3Perc99",20,p.getPercentile(99));
+	}
+	void testAdd100(){
+		CTibiaPercentile p=CTibiaPercentile(100);
+		{for(int i=0;i<100;i++){
+			p.add(i);
+		}}
+		p.strSample(buf);
+		verify("testAdd100Sequence",buf);
+		CTibiaPercentile q=CTibiaPercentile(100);
+		{for(int i=0;i<100;i++){
+			q.add(p.getPercentile(i));
+		}}
+		p.strSample(buf);
+		q.strSample(buf2);
+		verify("testAdd100Percs",buf,buf2,0);
+	}
+
+	void testAddMore(){
+		{CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(20); p.add(15); p.add(10);
+		for (int i=0; i<100;i++){
+			p.add(17);
+		}
+		p.strSample(buf);
+		verify("testAddMoreInnerPos",buf,"17,17,17,");}
+		{CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(20); p.add(15); p.add(10);
+		for (int i=0; i<100;i++){
+			p.add(22);
+		}
+		p.strSample(buf);
+		verify("testAddMoreBegPos",buf,"22,22,22,");}
+		{CTibiaPercentile p=CTibiaPercentile(3);
+		p.add(20); p.add(15); p.add(10);
+		for (int i=0; i<100;i++){
+			p.add(7);
+		}
+		p.strSample(buf);
+		verify("testAddMoreEndPos",buf,"7,7,7,");}
+	}
+	void testUniformSample10(){
+		CTibiaPercentile p=CTibiaPercentile(10);
+		for (int i=0; i<1000;i++){
+			p.add(rand()%10);
+		}
+		p.strSample(buf);
+		verify("testUniformSample10Seq",buf);
+	}
+	void testUniformSample100(){
+		int samp = 100;
+		CTibiaPercentile p=CTibiaPercentile(samp);
+		{for (int i=0; i<samp*100;i++){
+			p.add(rand()%samp);
+		}}
+		p.strSample(buf);
+		verify("testUniformSample100Seq",buf);
+		int sumSq = 0;
+		{for (int i=0;i<100;i++){
+			sumSq += (p.getPercentile(i)-i*samp/100)*(p.getPercentile(i)-i*samp/100);
+		}}
+		verify("testUniformSample100Var",sumSq/100);
+	}
+	void testUniformSample1000(){
+		int samp = 1000;
+		CTibiaPercentile p=CTibiaPercentile(samp);
+		{for (int i=0; i<samp*100;i++){
+			p.add(rand()%samp);
+		}}
+		int sumSq = 0;
+		{for (int i=0;i<100;i++){
+			sumSq += (p.getPercentile(i)-i*samp/100)*(p.getPercentile(i)-i*samp/100);
+		}}
+		verify("testUniformSample1000Var",sumSq/100);
+	}
+	void testActualData(){
+		int diceNum = 4;
+		CTibiaPercentile p=CTibiaPercentile(1000);
+		{for (int i=0; i<10000;i++){
+			int total = 0;
+			for (int dice=0; dice<diceNum;dice++){
+				total += rand()%250;
+			}
+			p.add(total);
+		}}
+		int ASTERISK_LEN = 75;
+		int max = 0;
+		int step = 3;
+		{for (int i=step;i<100-step;i=i+step){
+			int avgslope = 0;
+			for(int s=0; s<step;s++) avgslope += 1000/(p.getPercentile(i+s)-p.getPercentile(i+s-step))/step;
+			max = max<avgslope?avgslope:max;
+		}}
+		{for (int i=step;i<100;i=i+step){
+			int avgslope = 0;
+			for(int s=0; s<step;s++) avgslope += ASTERISK_LEN*1000/max/(p.getPercentile(i+s)-p.getPercentile(i+s-step))/step;
+			for (int j=0;j<avgslope;j++) printf("*");
+			printf("\n");
+		}}
+	}
+private:
+	bool verify(const char* name, const char* a, const char* b, int printLong=1){
+		if(strcmp(a,b)==0){
+			if(printLong) printf("PASSED %s %s == %s\n",name,a,b);
+			else printf("PASSED %s\n",name);
+			return 1;
+		}
+		printf("*****FAILED***** %s %s != %s\n",name,a,b);
+		return 0;
+	}
+	bool verify(const char* name, int a, int b, int printLong=1){
+		if(a==b){
+			if (printLong) printf("PASSED %s %d == %d\n",name,a,b);
+			else printf("PASSED %s\n",name);
+			return 1;
+		}
+		printf("*****FAILED***** %s %d != %d\n",name,a,b);
+		return 0;
+	}
+	bool verify(const char* name, const char* a){
+		printf("VERIFY %s %s\n",name,a);
+		return 1;
+	}
+	bool verify(const char* name, int a){
+		printf("VERIFY %s %d\n",name,a);
+		return 1;
+	}
+};
