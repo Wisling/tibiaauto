@@ -261,4 +261,4 @@ EXPORTS
 	memReadGetNextPacketCount @253
 	packSenderSendMount @254
 	packSenderSendDismount @255
-
+	getBaseAddr @256

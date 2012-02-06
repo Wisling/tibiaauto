@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /machine:I386
-# ADD LINK32 zlib.lib ws2_32.lib zdll.lib xerces.lib detours.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel"
+# ADD LINK32 zlib.lib ws2_32.lib zdll.lib xerces.lib psapi.lib /nologo /subsystem:windows /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "tibiaauto - Win32 Debug"
@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 zlib.lib ws2_32.lib xerces.lib zdll.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs"
+# ADD LINK32 zlib.lib ws2_32.lib xerces.lib zdll.lib psapi.lib /nologo /subsystem:windows /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs"
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 

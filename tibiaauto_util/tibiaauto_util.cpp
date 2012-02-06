@@ -95,7 +95,10 @@ int getProcessId()
 	return CMemUtil::getGlobalProcessId();
 }
 
-
+void getBaseAddr()
+{
+	CMemUtil::getGlobalBaseAddr();
+}
 
 void setPipeHandle(HANDLE hPipePar)
 {	
@@ -471,24 +474,24 @@ void packSenderNpcBuy(int objectId,int qty, int ignoreCap, int withBackpack)
 	sender.npcBuy(objectId,qty, ignoreCap, withBackpack);
 }
 
-void memReadSetMemIntValue(int address,int value)
+void memReadSetMemIntValue(int address,int value,int addBaseAddr=1)
 {
-	CMemUtil::SetMemIntValue(address,value);
+	CMemUtil::SetMemIntValue(address,value,addBaseAddr);
 }
 
-int memReadGetMemIntValue(int address)
+int memReadGetMemIntValue(int address,int addBaseAddr=1)
 {
-	return CMemUtil::GetMemIntValue(address);
+	return CMemUtil::GetMemIntValue(address,addBaseAddr);
 }
 
-void memReadSetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
+void memReadSetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr=1)
 {
-	CMemUtil::SetMemRange(memAddressStart,memAddressEnd,data);
+	CMemUtil::SetMemRange(memAddressStart,memAddressEnd,data,addBaseAddr);
 }
 
-void memReadGetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data)
+void memReadGetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr=1)
 {
-	CMemUtil::GetMemRange(memAddressStart,memAddressEnd,data);
+	CMemUtil::GetMemRange(memAddressStart,memAddressEnd,data,addBaseAddr);
 }
 
 void tibiaMapRemovePointAvailable(int x,int y,int z)

@@ -286,6 +286,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"readVIPEntry", tibiaauto_reader_readVIPEntry, METH_VARARGS},
 	{"mapGetPointTopPos", tibiaauto_reader_mapGetPointTopPos, METH_VARARGS},
 	{"mapGetPointSeenOnTopPos", tibiaauto_reader_mapGetPointSeenOnTopPos, METH_VARARGS},
+	{"getBaseAddr", tibiaauto_reader_getBaseAddr, METH_VARARGS},
     {NULL,      NULL}        /* Sentinel */
 };
 

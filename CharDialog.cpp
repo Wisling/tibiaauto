@@ -61,19 +61,16 @@ void CCharDialog::OnCharRefresh()
 	PROCESSENTRY32 procEntry;
 	procEntry.dwSize=sizeof(PROCESSENTRY32);
 	HANDLE procSnapshortHandle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
-	HMODULE aa = GetModuleHandle(0);
-	HMODULE a5 = LoadLibrary("E:\\Tibia\\Tibia\\Tibia.exe");
 	
 	Process32First(procSnapshortHandle,&procEntry);
 	do
 	{
 		int pos,len=strlen(procEntry.szExeFile);
 		for (pos=0;pos<len;pos++)
-			procEntry.szExeFile[pos]=(char)tolower(procEntry.szExeFile[pos]);		
+			procEntry.szExeFile[pos]=(char)tolower(procEntry.szExeFile[pos]);
 		if (!strcmp(procEntry.szExeFile,"tibia.exe"))
 		{
 			char *loggedCharName=reader.GetLoggedChar(procEntry.th32ProcessID);
-			//CMemUtil::GetMemBaseAddress(procEntry.th32ProcessID);
 
 			sprintf(buf,"[%5d] %s",procEntry.th32ProcessID,loggedCharName);
 			free(loggedCharName);

@@ -46,8 +46,8 @@ RSC=rc.exe
 # ADD CPP /nologo /MT /W3 /GX /O2 /I "E:\Python24\include" /I "../../tibiaauto-pub/sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TIBIAAUTO_PYTHON_EXPORTS" /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x415 /d "NDEBUG"
-# ADD RSC /l 0x415 /d "NDEBUG"
+# ADD BASE RSC /l 0x415 /D "NDEBUG"
+# ADD RSC /l 0x415 /D "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -72,8 +72,8 @@ LINK32=link.exe
 # ADD CPP /nologo /MTd /W3 /Gm /GX /ZI /Od /I "E:\Python24\include" /I "../tibiaauto-pub/sdk" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TIBIAAUTO_PYTHON_EXPORTS" /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x415 /d "_DEBUG"
-# ADD RSC /l 0x415 /d "_DEBUG"
+# ADD BASE RSC /l 0x415 /D "_DEBUG"
+# ADD RSC /l 0x415 /D "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo

@@ -53,7 +53,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 libdb45.lib xerces.lib /nologo /subsystem:windows /dll /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /libpath:"E:\Tibia\Sourse Code\tibiaauto-kernel"
+# ADD LINK32 libdb45.lib xerces.lib psapi.lib /nologo /subsystem:windows /dll /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /libpath:"E:\Tibia\Sourse Code\tibiaauto-kernel"
 # SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
@@ -80,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll" /pdbtype:sept /IGNORE:4786 /IGNORE:4786
+# ADD LINK32 xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib psapi.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll" /pdbtype:sept /IGNORE:4786 /IGNORE:4786
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 

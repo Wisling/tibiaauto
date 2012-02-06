@@ -77,7 +77,6 @@ MiniMapSection* CTAMiniMap::loadFromMemory(int xMap,int yMap,int zMap){
 	CTibiaItemProxy itemProxy;
 	CMemReader reader;
 
-	int m_processId=CMemUtil::getGlobalProcessId();
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
 		CTibiaMiniMap *map = reader.readMiniMap(nr);
@@ -90,8 +89,8 @@ MiniMapSection* CTAMiniMap::loadFromMemory(int xMap,int yMap,int zMap){
 			//AfxMessageBox("map found");
 			MiniMapSection* pdNew= new MiniMapSection(xMap,yMap,zMap);
 			pdNew->timeUsed=time(NULL);
-			CMemUtil::GetMemRange(m_processId,mapOffset,mapOffset+65536,(char*)pdNew->colour);
-			CMemUtil::GetMemRange(m_processId,mapOffset+65536,mapOffset+65536+65536,(char*)pdNew->speed);
+			CMemUtil::GetMemRange(mapOffset,mapOffset+65536,(char*)pdNew->colour);
+			CMemUtil::GetMemRange(mapOffset+65536,mapOffset+65536+65536,(char*)pdNew->speed);
 
 			struct point *p=new point(xMap,yMap,zMap);
 			struct MiniMapSection *pd=NULL;
@@ -200,7 +199,6 @@ void CTAMiniMap::setMiniMapPoint(int x,int y,int z,int col,int spd){
 	CMemReader reader;
 
 	int xMap=(int)(x/256),yMap=(int)(y/256),zMap=z;
-	int m_processId=CMemUtil::getGlobalProcessId();
 	for (int nr = 0; nr<10;nr++){
 		int mapOffset = itemProxy.getValueForConst("addrMiniMapStart")+itemProxy.getValueForConst("lengthMiniMap")*nr+20;
 		CTibiaMiniMap *map = reader.readMiniMap(nr);
@@ -210,8 +208,8 @@ void CTAMiniMap::setMiniMapPoint(int x,int y,int z,int col,int spd){
 			char colour=col;
 			char speed=spd;
 
-			CMemUtil::SetMemRange(m_processId,mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour);
-			CMemUtil::SetMemRange(m_processId,mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
+			CMemUtil::SetMemRange(mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour);
+			CMemUtil::SetMemRange(mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
 		}
 		delete map;
 	}

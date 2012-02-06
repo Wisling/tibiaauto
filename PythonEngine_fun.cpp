@@ -649,6 +649,15 @@ static PyObject *tibiaauto_reader_getProcessId(PyObject *self, PyObject *args)
 	
 	return ret;
 }
+static PyObject *tibiaauto_reader_getBaseAddr(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getBaseAddr();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
 static PyObject *tibiaauto_reader_getKernelMainVersion(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;

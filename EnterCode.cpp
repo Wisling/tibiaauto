@@ -88,7 +88,7 @@ int getVal(int p1, int p2)
 
 
 
-BOOL CEnterCode::OnInitDialog() 
+BOOL CEnterCode::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_OK);
