@@ -808,7 +808,7 @@ int Alarm::countAllItemsOfType(int objectId) {
 		delete cont;
 	}
 	for (int slotNr = 0; slotNr < 10; slotNr++) { // Loops through all 10 inventory slots(backwards)
-		CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow-slotNr*memConstData.m_memLengthItem);
+		CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow+slotNr*memConstData.m_memLengthItem);
 		if (item->objectId==objectId)
 			itemCount += item->quantity?item->quantity:1;
 		delete item;

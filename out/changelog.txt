@@ -1,3 +1,12 @@
+2.17.0, 4.2.2012
+Enhancements:
+ Tibiaauto: ALSR.reg is no longer needed for Windows 7 and Vista as TA adjusts addresses automatically
+ Python: Added getBaseAddr function
+Defects:
+ Cavebot: While "loot while killing" is checked, fixed TA using 100% CPU with two looting threads running at once
+ Cavebot: Fixed problems with pausing while walking
+ Cavebot: Fixed Hybrid Map feature so that it is functional again
+
 2.16.0, 14.12.2011
 Enhancements:
  Tibiaauto: Updated to Tibia 9.40

@@ -171,7 +171,7 @@ int getSelfExp()
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int retExp=self->exp;
-	delete self;	
+	delete self;self = NULL;
 	return retExp;
 }
 
@@ -436,7 +436,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
 				sender.openContainerFromContainer(item->objectId,0x03,0,0);
-				delete item;
+				delete item; item = NULL;
 				CModuleUtil::waitForOpenContainer(0,1);
 
 				//Double click on the main bar of the container
@@ -497,7 +497,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// something went wrong
 					sender.closeContainer(0);
 				}				
-				delete cont;
+				delete cont; cont = NULL;
 				
 				//}  Comemnted out checking number of backpacks open.
 				
@@ -563,16 +563,19 @@ CMod_loginApp::CMod_loginApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;
+	m_configData = new CConfigData();
+
 }
 
 CMod_loginApp::~CMod_loginApp()
 {
 	if (m_configDialog)
 	{
-		delete m_configDialog;
+		delete m_configDialog; m_configDialog=NULL;
 	}
-	delete m_configData;	
+	delete m_configData; m_configData=NULL;
 }
 
 char * CMod_loginApp::getName()
@@ -649,7 +652,7 @@ void CMod_loginApp::controlsToConfig()
 {
 	if (m_configDialog)
 	{
-		delete m_configData;
+		delete m_configData; m_configData=NULL;
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }

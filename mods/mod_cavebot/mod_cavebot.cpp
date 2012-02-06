@@ -1544,7 +1544,8 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	int a =0;
-	while (!toolThreadShouldStop) {
+	int myID=queueThreadId;
+	while (!toolThreadShouldStop && myID == queueThreadId) {
 		Sleep(200);
 		if (shouldLoot()){
 			const char* var=reader.getGlobalVariable("autolooterTm");
@@ -1571,10 +1572,12 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
+	int myID=lootThreadId;
 	//start helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
 
-	while (!toolThreadShouldStop) {
+	while (!toolThreadShouldStop && myID == lootThreadId) {
 		Sleep(100);
+		reader.mapGetPointItemsCount(point(8,-2,1),-1); // debugging line, please remove
 		while (corpseQueue.GetCount() && globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_macroPause){
 			Corpse corpseCh=corpseQueue.Remove();
 			if(GetTickCount()-corpseCh.tod>1000*60){
@@ -1786,9 +1789,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	memset(TIMING_COUNTS,0,100*sizeof(int));
 	int TIMING_TOTALS[100];
 	memset(TIMING_TOTALS,0,100*sizeof(int));
-	
 	while (!toolThreadShouldStop) {
 		Sleep(250);
+		
 		int beginningS = GetTickCount();
 		if (reader.getConnectionState()!=8||!config->pausingEnable)
 		{
@@ -1980,7 +1983,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	/*****
 	Start attack process
 	******/
-		
+		//if (!reader.getAttackedCreature()) currentlyAttackedCreatureNr = -1;//this is not needed yet(but may be)
 		CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
 		
 		
@@ -2276,6 +2279,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
 			CTibiaCharacter *ch=reader.readVisibleCreature(crNr);
 			if (ch->tibiaId==0){
+				creatureList[crNr].tibiaId = 0; //Needed since list is now cleaned on logout so that creatures later in this list don't need to be overwritten with 0's
 				delete ch;
 				break;
 			}

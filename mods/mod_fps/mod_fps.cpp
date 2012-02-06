@@ -69,9 +69,8 @@ void SetFPS(double iFps){
 
 	//T4: Fps value can be set to almost 0 
 
-	//reader.setMemRange(0x5F6DF0,0x5F6DF8,(char*)fpsVal);
-	 reader.setMemIntValue(addrFps+88,ifpsVal[0]);
-	 reader.setMemIntValue(addrFps+88+4,ifpsVal[1]);
+	 reader.setMemIntValue(addrFps+88,ifpsVal[0],0);//this address comes from Tibia itself and need not be shifted
+	 reader.setMemIntValue(addrFps+88+4,ifpsVal[1],0);//this address comes from Tibia itself and need not be shifted
 }
 
 double GetFPS(){
@@ -84,8 +83,8 @@ double GetFPS(){
 
 	fpsVal = (double*)ifpsVal;
 
-	ifpsVal[0] = reader.getMemIntValue(addrFps+88);
-	ifpsVal[1] = reader.getMemIntValue(addrFps+88+4);
+	ifpsVal[0] = reader.getMemIntValue(addrFps+88,0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[1] = reader.getMemIntValue(addrFps+88+4,0);//this address comes from Tibia itself and need not be shifted
 
 
 	return 1000/(*fpsVal);

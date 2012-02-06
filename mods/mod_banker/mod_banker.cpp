@@ -96,6 +96,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int lastPathNotFoundTm=0;
 	while (!toolThreadShouldStop) {
 		Sleep(400);
+		reader.mapGetPointItemsCount(point(8,-2,1),-1); // debugging line, please remove
 
 		if (!persistentShouldGo && shouldBank(config)){
 			persistentShouldGo=1;
@@ -558,7 +559,7 @@ int countAllItemsOfType(int objectId,bool includeSlots) {
 	if (includeSlots){
 		CMemConstData memConstData = reader.getMemConstData();
 		for (int slotNr = 0; slotNr < 10; slotNr++) { // Loops through all 10 inventory slots(backwards)
-			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow-slotNr*memConstData.m_memLengthItem);
+			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow+slotNr*memConstData.m_memLengthItem);
 			if (item->objectId==objectId)
 				ret += item->quantity?item->quantity:1;
 			delete item;
