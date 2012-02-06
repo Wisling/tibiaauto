@@ -991,7 +991,7 @@ int countAllItemsOfType(int objectId,bool includeSlots) {
 	if (includeSlots){
 		CMemConstData memConstData = reader.getMemConstData();
 		for (int slotNr = 0; slotNr < 10; slotNr++) { // Loops through all 10 inventory slots(backwards)
-			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow-slotNr*memConstData.m_memLengthItem);
+			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow+slotNr*memConstData.m_memLengthItem);
 			if (item->objectId==objectId)
 				ret += item->quantity?item->quantity:1;
 			delete item;

@@ -46,8 +46,8 @@ RSC=rc.exe
 # ADD CPP /nologo /MD /W3 /GX /O2 /I "../win32" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRE_EXPORTS" /D "HAVE_CONFIG_H" /FR /YX /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x40c /d "NDEBUG"
-# ADD RSC /l 0x40c /d "NDEBUG"
+# ADD BASE RSC /l 0x40c /D "NDEBUG"
+# ADD RSC /l 0x40c /D "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -73,8 +73,8 @@ LINK32=link.exe
 # ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "../win32" /I "../lib" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "TRE_EXPORTS" /D "TRE_DEBUG" /D "HAVE_CONFIG_H" /FR /YX /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x40c /d "_DEBUG"
-# ADD RSC /l 0x40c /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG"
+# ADD BASE RSC /l 0x40c /D "_DEBUG"
+# ADD RSC /l 0x40c /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /D "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo

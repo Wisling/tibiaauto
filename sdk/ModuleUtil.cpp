@@ -305,7 +305,7 @@ int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId)//take
 	for (t=0;t<30;t++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
-		if (cont->itemsInside<slotNr)//ensures cont->items.GetAt array has at least origItemSlot items
+		if (cont->itemsInside<=slotNr)//ensures cont->items.GetAt array has at least origItemSlot items
 		{
 			delete cont;
 			return 1;
@@ -1367,7 +1367,6 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	int currentTm=reader.getCurrentTm();
 	int pathSize;
 	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-
 #ifdef MAPDEBUG
 	char buf[512];
 	sprintf(buf,"pathsize=%d assumed=(%d,%d,%d) now=(%d,%d,%d) delta=(%d,%d,%d)=%d",pathSize,startX,startY,startZ,self->x,self->y,self->z,self->x-startX,self->y-startY,self->z-startZ,abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ));	

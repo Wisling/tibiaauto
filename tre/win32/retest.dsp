@@ -43,8 +43,8 @@ RSC=rc.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /W3 /GX /O2 /I "../lib" /I "../win32" /D "NDEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "HAVE_CONFIG_H" /YX /FD /c
-# ADD BASE RSC /l 0x40b /d "NDEBUG"
-# ADD RSC /l 0x40b /d "NDEBUG"
+# ADD BASE RSC /l 0x40b /D "NDEBUG"
+# ADD RSC /l 0x40b /D "NDEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -67,8 +67,8 @@ LINK32=link.exe
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /GZ /c
 # ADD CPP /nologo /W3 /Gm /GX /ZI /Od /I "../lib" /I "../win32" /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /D "HAVE_CONFIG_H" /YX /FD /GZ /c
-# ADD BASE RSC /l 0x40b /d "_DEBUG"
-# ADD RSC /l 0x40b /d "_DEBUG"
+# ADD BASE RSC /l 0x40b /D "_DEBUG"
+# ADD RSC /l 0x40b /D "_DEBUG"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo

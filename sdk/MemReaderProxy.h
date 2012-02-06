@@ -62,19 +62,20 @@ public:
 	int mapGetPointStackIndex(point p, int stackNr,int relToCell=-1);
 	long getCurrentTm();
 	void setRemainingTilesToGo(int val);
-	void setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data);
-	void getMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data);
+	void setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr=1);
+	void getMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr=1);
 	void setXRayValues(int v1,int v2);
 	int getXRayValue1();
 	int getXRayValue2();
 
 
-	void setMemIntValue(int address,int value);
-	int getMemIntValue(int address);
+	void setMemIntValue(int address,int value,int addBaseAddr=1);
+	int getMemIntValue(int address,int addBaseAddr=1);
 	void writeEnableRevealCName();
 	void writeDisableRevealCName();
 	
 	int getProcessId();
+	int getBaseAddr();
 	int getKernelMainVersion();
 	int getKernelPatchVersion();
 	void writeCreatureLightPower(int creatureNr,int value);
