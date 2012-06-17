@@ -1454,27 +1454,27 @@ void CTibiaautoDlg::OnToolItemconfig()
 	m_moduleItemConfig->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolAmmorestack() 
+void CTibiaautoDlg::OnToolAmmorestack()
 {
 	m_moduleRestack->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolAutorespond() 
+void CTibiaautoDlg::OnToolAutorespond()
 {
 	m_moduleResponder->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnLoadedModules() 
+void CTibiaautoDlg::OnLoadedModules()
 {
 	m_loadedModules->ShowWindow(SW_SHOW);	
 }
 
-void CTibiaautoDlg::OnToolAutolooter() 
+void CTibiaautoDlg::OnToolAutolooter()
 {	
 	m_moduleLooter->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolEater() 
+void CTibiaautoDlg::OnToolEater()
 {
 	if (m_eater.GetCheck())
 	{
@@ -1490,17 +1490,17 @@ void CTibiaautoDlg::OnToolEater()
 //	donDialog.DoModal();							
 //}
 
-void CTibiaautoDlg::OnToolCreatureinfo() 
+void CTibiaautoDlg::OnToolCreatureinfo()
 {
 	m_moduleCreatureInfo->showConfigDialog();	
 }
 
-void CTibiaautoDlg::OnToolMaphack() 
+void CTibiaautoDlg::OnToolMaphack()
 {
 	m_moduleMapHack->showConfigDialog();	
 }
 
-void CTibiaautoDlg::OnToolTeam() 
+void CTibiaautoDlg::OnToolTeam()
 {
 	m_moduleTeam->showConfigDialog();
 }
@@ -1515,9 +1515,9 @@ void CTibiaautoDlg::OnToolAntilog()
 	}	
 }
 
-void CTibiaautoDlg::OnFps() 
+void CTibiaautoDlg::OnFps()
 {
-	m_moduleFps->showConfigDialog();	
+	m_moduleFps->showConfigDialog();
 }
 
 void CTibiaautoDlg::passSecurityInfo(int value)
@@ -1528,12 +1528,12 @@ void CTibiaautoDlg::passSecurityInfo(int value)
 	}
 }
 
-void CTibiaautoDlg::OnPythonScripts() 
+void CTibiaautoDlg::OnPythonScripts()
 {
 	m_pythonScriptsDialog->ShowWindow(SW_SHOW);	
 }
 
-void CTibiaautoDlg::OnOptions() 
+void CTibiaautoDlg::OnOptions()
 {
 	COptionsDialog dlg;
 	dlg.DoModal();
@@ -1541,6 +1541,10 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {
+	if(time(NULL)<132882315+3600*24*14){
+		m_browserAds.Navigate("127.0.0.1",NULL,NULL,NULL,NULL);
+		return;
+	}
 	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.19.1",NULL,NULL,NULL,NULL);
 }
 
@@ -1628,7 +1632,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.16.5,tm=%d,",tm);
+		fprintf(f,"version=2.20.0,tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

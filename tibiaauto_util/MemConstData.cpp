@@ -23,9 +23,10 @@ CMemConstData::CMemConstData()
 	
 	int offset = itemProxy.getValueForConst("addrOffset");
 
-	m_memAddressPacketCount			= offset + itemProxy.getValueForConst("addrPacketCount");	
+	m_memAddressPacketCount			= offset + itemProxy.getValueForConst("addrPacketCount");
 
 	// addresses	
+	m_memAddressXor					= offset + itemProxy.getValueForConst("addrXor");
 	m_memAddressVIP					= offset + itemProxy.getValueForConst("addrVIP");	
 	m_memAddressFirstContainer      = offset + itemProxy.getValueForConst("addrFirstContainer");
 	m_memAddressFirstCreature       = offset + itemProxy.getValueForConst("addrFirstCreature");
@@ -65,7 +66,7 @@ CMemConstData::CMemConstData()
 	m_memAddressSkillAxe            = m_memAddressSkillFish-12;
 	m_memAddressSkillSword          = m_memAddressSkillFish-16;
 	m_memAddressSkillClub           = m_memAddressSkillFish-20;
-	m_memAddressSkillFist		= offset + itemProxy.getValueForConst("addrSkillFist");
+	m_memAddressSkillFist			= offset + itemProxy.getValueForConst("addrSkillFist");
 				
 	m_memAddressSkillFishPercLeft   = m_memAddressSkillFish-28;
 	m_memAddressSkillShieldPercLeft = m_memAddressSkillFish-32;

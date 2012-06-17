@@ -85,16 +85,17 @@ public:
 	CTibiaCharacter *getCharacterByTibiaId(int tibiaId);
 	CTibiaVIPEntry *readVIPEntry(int nr);
 	int dereference(int addr);
-	int mapConvertPointToCell(struct point p);
-	struct point mapConvertRelPointToPoint(struct point p);
-	struct point mapConvertPointToRelPoint(struct point p);
-	struct point mapConvertCellToPoint(int cellNr);
-	int mapGetCellFromRelPoint(point p,int relToCell);
-	struct point mapAddPoints(point p1,point p2);
-	int mapIsPointWithinScope(point p);
-	CTibiaMapTile *readMapTile(int tileNr);
-	int getMapTileStart(int tileNr);
 	int mapGetSelfCellNr();
+	CTibiaMapTile *readMapTile(int tileNr);
+private:
+	struct point mapAddPointToCoord(point coord,point p2);
+	struct point mapGetCellCoord(int cellNr);
+	int mapGetCoordCell(point c);
+	int getMapTileStart(int tileNr);
+	struct point mapDiffCoords(point c1,point c2);
+	struct point mapShiftReferencePoint(point p, point oldCoord, point newCoord);
+	int mapIsPointInTileArray(point p, int relToCell);
+	int mapIsPointInScope(point p, int relToCell);
 	
 };
 

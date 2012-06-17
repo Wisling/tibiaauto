@@ -166,6 +166,13 @@ int CMemUtil::writememory(int processId, int memAddress, int* value, int size, i
 				return 0;
 			}
 		}
+		if (::GetLastError()==ERROR_NOACCESS){
+			dwHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
+			m_prevProcessHandle=dwHandle;
+			if (WriteProcessMemory(dwHandle, ptr, value, size, NULL)) {		
+				return 0;
+			}
+		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
@@ -240,9 +247,9 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress/*=1*/)
 	int ret=CMemUtil::GetMemIntValue(m_globalProcessId,memAddress,&value,addBaseAddress);
 	if (ret!=0)
 	{
-		//char buf[128];
-		//sprintf(buf,"ERROR: read memory failed; error=%d",ret);
-		//AfxMessageBox(buf);
+		char buf[128];
+		sprintf(buf,"ERROR: read memory failed; error=%d",ret);
+		AfxMessageBox(buf);
 		ExitProcess(0);
 		return 0;
 	}

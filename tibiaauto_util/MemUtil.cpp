@@ -121,7 +121,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 			//fprintf(f,"new %d\n",dwHandle);
 			//fclose(f);
 			m_prevProcessHandle=dwHandle;
-			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {		
+			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {
 				return 0;
 			}
 		}
@@ -163,6 +163,13 @@ int CMemUtil::writememory(int processId, int memAddress, int* value, int size, i
 			//fclose(f);
 			m_prevProcessHandle=dwHandle;
 			if (WriteProcessMemory(dwHandle, ptr, value, size, NULL)) {		
+				return 0;
+			}
+		}
+		if (::GetLastError()==ERROR_NOACCESS){
+			dwHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
+			m_prevProcessHandle=dwHandle;
+			if (WriteProcessMemory(dwHandle, ptr, value, size, NULL)) {
 				return 0;
 			}
 		}
@@ -240,9 +247,9 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress/*=1*/)
 	int ret=CMemUtil::GetMemIntValue(m_globalProcessId,memAddress,&value,addBaseAddress);
 	if (ret!=0)
 	{
-		//char buf[128];
-		//sprintf(buf,"ERROR: read memory failed; error=%d",ret);
-		//AfxMessageBox(buf);
+		char buf[128];
+		sprintf(buf,"ERROR: read memory failed; error=%d",ret);
+		AfxMessageBox(buf);
 		ExitProcess(0);
 		return 0;
 	}

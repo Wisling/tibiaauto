@@ -87,7 +87,7 @@ SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
 int COMPLEX=0;
-int SENTONLY=0;
+int SENTONLY=1;
 
 time_t debugFileStart;
 int lastSendFlags;
@@ -191,6 +191,274 @@ int outGfbAvail=0;
 int outSelfUHAvail=0;
 int outFluidManaAvail=0;
 int outFluidLifeAvail=0;
+
+/*
+// 9.46
+int funAddr_tibiaPrintText = 0x4C5BD0;
+int funAddr_tibiaPlayerNameText = 0x4C4F20;
+int funAddr_tibiaInfoMiddleScreen = 0x56CAB0;
+int funAddr_tibiaIsCreatureVisible = 0x46A220;
+int funAddr_tibiaEncrypt = 0x57D060;
+int funAddr_tibiaDecrypt = 0x57D190;
+int funAddr_tibiaShouldParseRecv = 0x510AA0;
+int arrayPtr_recvStream = 0x9E6C30-8; //look for this address near above location, it will be off by 8
+int funAddr_tibiaInfoMessageBox = 0x570A20;
+int callAddr_PrintText01 = 0x455D01;
+int callAddr_PrintText02 = 0x455D4B;
+int callAddr_PrintText03 = 0x45E390;
+int callAddr_PrintText04 = 0x504507;
+int callAddr_PrintText05 = 0x5052CA;
+int callAddr_PlayerNameText01 = 0x420C4B;
+int callAddr_PlayerNameText02 = 0x4C5854;
+int callAddr_PlayerNameText03 = 0x4C5A54;
+int callAddr_PlayerNameText04 = 0x4C5C53;
+int callAddr_PlayerNameText05 = 0x4C5E53;
+int callAddr_PlayerNameText06 = 0x4C6054;
+int callAddr_PlayerNameText07 = 0x4C6252;
+int callAddr_PlayerNameText08 = 0x504E1A;
+int callAddr_InfoMiddleScreen01 = 0x417DAA;
+int callAddr_InfoMiddleScreen02 = 0x45A9AA;
+int callAddr_InfoMiddleScreen03 = 0x4953F5;
+int callAddr_InfoMiddleScreen04 = 0x502414;
+int callAddr_InfoMessageBox01 = 0x417919;
+int callAddr_InfoMessageBox02 = 0x42E397;
+int callAddr_InfoMessageBox03 = 0x4ADDE2;
+int callAddr_InfoMessageBox04 = 0x4F9E20;
+int callAddr_InfoMessageBox05 = 0x4FA5EC;
+int callAddr_InfoMessageBox06 = 0x4FA650;
+int callAddr_InfoMessageBox07 = 0x570887;
+int callAddr_InfoMessageBox08 = 0x5712F7;
+int callAddr_InfoMessageBox09 = 0x5713C7;
+int callAddr_InfoMessageBox10 = 0x5714BC;
+int callAddr_InfoMessageBox11 = 0x571700;
+int callAddr_InfoMessageBox12 = 0x5721DD;
+int callAddr_Encrypt01 = 0x51018D;
+int callAddr_Decrypt01 = 0x510798;
+int callAddr_ShouldParseRecv01 = 0x460E23;
+*/
+
+/*
+// 9.50
+int funAddr_tibiaPrintText =			0x4C6620;
+int funAddr_tibiaPlayerNameText =		0x4C5970;
+int funAddr_tibiaInfoMiddleScreen =		0x56D890;
+int funAddr_tibiaIsCreatureVisible =	0x46AC90;
+int funAddr_tibiaEncrypt =				0x57DE30;
+int funAddr_tibiaDecrypt =				0x57DF60;
+int funAddr_tibiaShouldParseRecv =		0x5115D0;
+int arrayPtr_recvStream =				0x9E8178-8; //look for this address near above location, it will be off by 8
+int funAddr_tibiaInfoMessageBox =		0x5717E0;
+int callAddr_PrintText01 =				0x456581;
+int callAddr_PrintText02 =				0x4565CB;
+int callAddr_PrintText03 =				0x45ECC6;
+int callAddr_PrintText04 =				0x504FD7;
+int callAddr_PrintText05 =				0x505D9A;
+int callAddr_PlayerNameText01 =			0x42145B;
+int callAddr_PlayerNameText02 =			0x4C62A4;
+int callAddr_PlayerNameText03 =			0x4C64A4;
+int callAddr_PlayerNameText04 =			0x4C66A3;
+int callAddr_PlayerNameText05 =			0x4C68A3;
+int callAddr_PlayerNameText06 =			0x4C6AA4;
+int callAddr_PlayerNameText07 =			0x4C6CA2;
+int callAddr_PlayerNameText08 =			0x5058EA;
+int callAddr_InfoMiddleScreen01 =		0x4185BA;
+int callAddr_InfoMiddleScreen02 =		0x45B1FA;
+int callAddr_InfoMiddleScreen03 =		0x495E85;
+int callAddr_InfoMiddleScreen04 =		0x502ED4;
+int callAddr_InfoMessageBox01 =			0x418129;
+int callAddr_InfoMessageBox02 =			0x42EC27;
+int callAddr_InfoMessageBox03 =			0x4AE842;
+int callAddr_InfoMessageBox04 =			0x4FA8B0;
+int callAddr_InfoMessageBox05 =			0x4FB07C;
+int callAddr_InfoMessageBox06 =			0x4FB0E0;
+int callAddr_InfoMessageBox07 =			0x571647;
+int callAddr_InfoMessageBox08 =			0x5720B7;
+int callAddr_InfoMessageBox09 =			0x572187;
+int callAddr_InfoMessageBox10 =			0x57227C;
+int callAddr_InfoMessageBox11 =			0x5724C0;
+int callAddr_InfoMessageBox12 =			0x572FAD;
+int callAddr_Encrypt01 =				0x510CBD;
+int callAddr_Decrypt01 =				0x5112C8;
+int callAddr_ShouldParseRecv01 =		0x461783;
+*/
+/*
+// 9.51
+int funAddr_tibiaPrintText =			0x4C6620;
+int funAddr_tibiaPlayerNameText =		0x4C5970;
+int funAddr_tibiaInfoMiddleScreen =		0x56D890;
+int funAddr_tibiaIsCreatureVisible =	0x46AC90;
+int funAddr_tibiaEncrypt =				0x57DE30;
+int funAddr_tibiaDecrypt =				0x57DF60;
+int funAddr_tibiaShouldParseRecv =		0x5115D0;
+int arrayPtr_recvStream =				0x9E82B8-8; //look for this address near above location, it will be off by 8
+int funAddr_tibiaInfoMessageBox =		0x5717E0;
+int callAddr_PrintText01 =				0x456581;
+int callAddr_PrintText02 =				0x4565CB;
+int callAddr_PrintText03 =				0x45ECC6;
+int callAddr_PrintText04 =				0x504FD7;
+int callAddr_PrintText05 =				0x505D9A;
+int callAddr_PlayerNameText01 =			0x42145B;
+int callAddr_PlayerNameText02 =			0x4C62A4;
+int callAddr_PlayerNameText03 =			0x4C64A4;
+int callAddr_PlayerNameText04 =			0x4C66A3;
+int callAddr_PlayerNameText05 =			0x4C68A3;
+int callAddr_PlayerNameText06 =			0x4C6AA4;
+int callAddr_PlayerNameText07 =			0x4C6CA2;
+int callAddr_PlayerNameText08 =			0x5058EA;
+int callAddr_InfoMiddleScreen01 =		0x4185BA;
+int callAddr_InfoMiddleScreen02 =		0x45B1FA;
+int callAddr_InfoMiddleScreen03 =		0x495E85;
+int callAddr_InfoMiddleScreen04 =		0x502ED4;
+int callAddr_InfoMessageBox01 =			0x418129;
+int callAddr_InfoMessageBox02 =			0x42EC27;
+int callAddr_InfoMessageBox03 =			0x4AE842;
+int callAddr_InfoMessageBox04 =			0x4FA8B0;
+int callAddr_InfoMessageBox05 =			0x4FB07C;
+int callAddr_InfoMessageBox06 =			0x4FB0E0;
+int callAddr_InfoMessageBox07 =			0x571647;
+int callAddr_InfoMessageBox08 =			0x5720B7;
+int callAddr_InfoMessageBox09 =			0x572187;
+int callAddr_InfoMessageBox10 =			0x57227C;
+int callAddr_InfoMessageBox11 =			0x5724C0;
+int callAddr_InfoMessageBox12 =			0x572FAD;
+int callAddr_Encrypt01 =				0x510CBD;
+int callAddr_Decrypt01 =				0x5112C8;
+int callAddr_ShouldParseRecv01 =		0x461783;
+*/
+
+// 9.52
+/*
+int funAddr_tibiaPrintText =			0x4C6620;
+int funAddr_tibiaPlayerNameText =		0x4C5970;
+int funAddr_tibiaInfoMiddleScreen =		0x56D890;
+int funAddr_tibiaIsCreatureVisible =	0x46AC90;
+int funAddr_tibiaEncrypt =				0x57DE30;
+int funAddr_tibiaDecrypt =				0x57DF60;
+int funAddr_tibiaShouldParseRecv =		0x5115D0;
+int arrayPtr_recvStream =				0x9E7F00-8; //look for this address near above location, it will be off by 8
+int funAddr_tibiaInfoMessageBox =		0x5717E0;
+int callAddr_PrintText01 =				0x456581;
+int callAddr_PrintText02 =				0x4565CB;
+int callAddr_PrintText03 =				0x45ECC6;
+int callAddr_PrintText04 =				0x504FD7;
+int callAddr_PrintText05 =				0x505D9A;
+int callAddr_PlayerNameText01 =			0x42145B;
+int callAddr_PlayerNameText02 =			0x4C62A4;
+int callAddr_PlayerNameText03 =			0x4C64A4;
+int callAddr_PlayerNameText04 =			0x4C66A3;
+int callAddr_PlayerNameText05 =			0x4C68A3;
+int callAddr_PlayerNameText06 =			0x4C6AA4;
+int callAddr_PlayerNameText07 =			0x4C6CA2;
+int callAddr_PlayerNameText08 =			0x5058EA;
+int callAddr_InfoMiddleScreen01 =		0x4185BA;
+int callAddr_InfoMiddleScreen02 =		0x45B1FA;
+int callAddr_InfoMiddleScreen03 =		0x495E85;
+int callAddr_InfoMiddleScreen04 =		0x502ED4;
+int callAddr_InfoMessageBox01 =			0x418129;
+int callAddr_InfoMessageBox02 =			0x42EC27;
+int callAddr_InfoMessageBox03 =			0x4AE842;
+int callAddr_InfoMessageBox04 =			0x4FA8B0;
+int callAddr_InfoMessageBox05 =			0x4FB07C;
+int callAddr_InfoMessageBox06 =			0x4FB0E0;
+int callAddr_InfoMessageBox07 =			0x571647;
+int callAddr_InfoMessageBox08 =			0x5720B7;
+int callAddr_InfoMessageBox09 =			0x572187;
+int callAddr_InfoMessageBox10 =			0x57227C;
+int callAddr_InfoMessageBox11 =			0x5724C0;
+int callAddr_InfoMessageBox12 =			0x572FAD;
+int callAddr_Encrypt01 =				0x510CBD;
+int callAddr_Decrypt01 =				0x5112C8;
+int callAddr_ShouldParseRecv01 =		0x461783;
+*/
+
+// 9.53
+/*
+int funAddr_tibiaPrintText =			0x4C6620;0x4C8890
+int funAddr_tibiaPlayerNameText =		0x4C5970;0x4C7BE0
+int funAddr_tibiaInfoMiddleScreen =		0x56DAD0;0x570240
+int funAddr_tibiaIsCreatureVisible =	0x46AC60;0x46C2D0
+int funAddr_tibiaEncrypt =				0x57E0C0;0x580840
+int funAddr_tibiaDecrypt =				0x57E1F0;0x580970
+int funAddr_tibiaShouldParseRecv =		0x5115D0;0x513910
+int arrayPtr_recvStream =				0x9E9518-0x9EDA6C8; //look for this address near above location, it will be off by 8
+int funAddr_tibiaInfoMessageBox =		0x571A20;0x574190
+int callAddr_PrintText01 =				0x456571;0x457B8D
+int callAddr_PrintText02 =				0x4565BB;0x457BD7
+int callAddr_PrintText03 =				0x45ECA6;0x460101
+int callAddr_PrintText04 =				0x504FD7;0x507301
+int callAddr_PrintText05 =				0x505D9A;0x5080CA
+int callAddr_PlayerNameText01 =			0x42145B;0x422110
+int callAddr_PlayerNameText02 =			0x4C62A4;0x4C8514
+int callAddr_PlayerNameText03 =			0x4C64A4;0x4C8714
+int callAddr_PlayerNameText04 =			0x4C66A3;0x4C8913
+int callAddr_PlayerNameText05 =			0x4C68A3;0x4C8B13
+int callAddr_PlayerNameText06 =			0x4C6AA4;0x4C8D14
+int callAddr_PlayerNameText07 =			0x4C6CA2;0x4C8F22
+int callAddr_PlayerNameText08 =			0x5058EA;0x507C20
+int callAddr_InfoMiddleScreen01 =		0x4185BA;0x41873A
+int callAddr_InfoMiddleScreen02 =		0x45B17A;0x45C78A
+int callAddr_InfoMiddleScreen03 =		0x495E15;0x4975E5
+int callAddr_InfoMiddleScreen04 =		0x502ED4;0x5051F4
+int callAddr_InfoMessageBox01 =			0x418129;0x4182A9
+int callAddr_InfoMessageBox02 =			0x42EC27;0x42F8D7
+int callAddr_InfoMessageBox03 =			0x4AE822;0x4B0452
+int callAddr_InfoMessageBox04 =			0x4FA8B0;0x4FCBF0
+int callAddr_InfoMessageBox05 =			0x4FB07C;0x4FD3BC
+int callAddr_InfoMessageBox06 =			0x4FB0E0;0x4FD420
+int callAddr_InfoMessageBox07 =			0x571887;0x573FF7
+int callAddr_InfoMessageBox08 =			0x5722F7;0x574A67
+int callAddr_InfoMessageBox09 =			0x5723C7;0x574B37
+int callAddr_InfoMessageBox10 =			0x5724BC;0x574C2C
+int callAddr_InfoMessageBox11 =			0x572700;0x574E70
+int callAddr_InfoMessageBox12 =			0x5731DD;0x57594D
+int callAddr_Encrypt01 =				0x510CBD;0x512FFD
+int callAddr_Decrypt01 =				0x5112C8;0x513608
+int callAddr_ShouldParseRecv01 =		0x461763;0x462D93
+*/
+
+// 9.54
+int funAddr_tibiaPrintText =			0x4C8890;
+int funAddr_tibiaPlayerNameText =		0x4C7BE0;
+int funAddr_tibiaInfoMiddleScreen =		0x570240;
+int funAddr_tibiaIsCreatureVisible =	0x46C2D0;
+int funAddr_tibiaEncrypt =				0x580840;
+int funAddr_tibiaDecrypt =				0x580970;
+int funAddr_tibiaShouldParseRecv =		0x513910;
+int arrayPtr_recvStream =				0x9EDA6C-8; //look for this address near above location, it will be off by 8
+int funAddr_tibiaInfoMessageBox =		0x574190;
+int callAddr_PrintText01 =				0x457B8D;
+int callAddr_PrintText02 =				0x457BD7;
+int callAddr_PrintText03 =				0x460101;
+int callAddr_PrintText04 =				0x507301;
+int callAddr_PrintText05 =				0x5080CA;
+int callAddr_PlayerNameText01 =			0x422110;
+int callAddr_PlayerNameText02 =			0x4C8514;
+int callAddr_PlayerNameText03 =			0x4C8714;
+int callAddr_PlayerNameText04 =			0x4C8913;
+int callAddr_PlayerNameText05 =			0x4C8B13;
+int callAddr_PlayerNameText06 =			0x4C8D14;
+int callAddr_PlayerNameText07 =			0x4C8F22;
+int callAddr_PlayerNameText08 =			0x507C20;
+int callAddr_InfoMiddleScreen01 =		0x41873A;
+int callAddr_InfoMiddleScreen02 =		0x45C78A;
+int callAddr_InfoMiddleScreen03 =		0x4975E5;
+int callAddr_InfoMiddleScreen04 =		0x5051F4;
+int callAddr_InfoMessageBox01 =			0x4182A9;
+int callAddr_InfoMessageBox02 =			0x42F8D7;
+int callAddr_InfoMessageBox03 =			0x4B0452;
+int callAddr_InfoMessageBox04 =			0x4FCBF0;
+int callAddr_InfoMessageBox05 =			0x4FD3BC;
+int callAddr_InfoMessageBox06 =			0x4FD420;
+int callAddr_InfoMessageBox07 =			0x573FF7;
+int callAddr_InfoMessageBox08 =			0x574A67;
+int callAddr_InfoMessageBox09 =			0x574B37;
+int callAddr_InfoMessageBox10 =			0x574C2C;
+int callAddr_InfoMessageBox11 =			0x574E70;
+int callAddr_InfoMessageBox12 =			0x57594D;
+int callAddr_Encrypt01 =				0x512FFD;
+int callAddr_Decrypt01 =				0x513608;
+int callAddr_ShouldParseRecv01 =		0x462D93;
+
 
 //int recv2 = (void (*)())(*DetourFindFunction("wsock32.dll","recv"));
 DETOUR_TRAMPOLINE(int WINAPI Real_send(SOCKET s,char* buf,int len,int flags),send);
@@ -1037,7 +1305,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 		if (debugFile)
 		{	
 			bufToHexString(encryptBeforeBuf,encryptLen);	
-			//princefprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
+			fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
 			fflush(debugFile);
 		}
 
@@ -1089,7 +1357,7 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 			}
 			
 			bufToHexString(buf,realRecvLen);
-			//princefprintf(debugFile,"<- [%x] %s\r\n",socket,bufToHexStringRet);
+			fprintf(debugFile,"<- [%x] %s\r\n",socket,bufToHexStringRet);
 			
 			parseMessage(buf,realRecvLen,debugFile,0,1);
 			fflush(debugFile);
@@ -1346,7 +1614,8 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 	//Proto_fun fun = (Proto_fun)(0x4BFFD0); // 9.40
 	//Proto_fun fun = (Proto_fun)(0x4C0220); // 9.41
 	//Proto_fun fun = (Proto_fun)(0x4C5B60); // 9.42
-	Proto_fun fun = (Proto_fun)baseAdjust(0x4C5BE0); // 9.43
+	//Proto_fun fun = (Proto_fun)baseAdjust(0x4C5BE0); // 9.43
+	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaPrintText);
 	
 
 	__asm{
@@ -1427,7 +1696,8 @@ int OUTmyPlayerNameText(int align, char *str, int visible, int x, int y, int fon
 	//Proto_fun fun=(Proto_fun)(0x4BF440); // 9.40
 	//Proto_fun fun=(Proto_fun)(0x4BF690); // 9.41
 	//Proto_fun fun=(Proto_fun)(0x4C4EB0); // 9.42
-	Proto_fun fun=(Proto_fun)baseAdjust(0x4C4F30); // 9.43
+	//Proto_fun fun=(Proto_fun)baseAdjust(0x4C4F30); // 9.43
+	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaPlayerNameText);
 	
 	__asm{
 		mov edi, [ebp + 0x48]
@@ -1555,7 +1825,8 @@ void OUTmyInterceptInfoMiddleScreen(int type, char* s)
 	//Proto_fun fun=(Proto_fun)(0x55D2F0); // 9.40
 	//Proto_fun fun=(Proto_fun)(0x55D880); // 9.41
 	//Proto_fun fun=(Proto_fun)(0x56CBD0); // 9.42
-	Proto_fun fun=(Proto_fun)baseAdjust(0x56CBD0); // 9.43
+	//Proto_fun fun=(Proto_fun)baseAdjust(0x56CBD0); // 9.43
+	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaInfoMiddleScreen);
 
 	__asm{
 		mov ecx, [ebp + 0x0C]
@@ -1674,7 +1945,8 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 		//Proto_fun fun=(Proto_fun)(0x467CC0); // 9.40
 		//Proto_fun fun=(Proto_fun)(0x467D00); // 9.41
 		//Proto_fun fun=(Proto_fun)(0x46A2B0); // 9.42
-		Proto_fun fun=(Proto_fun)baseAdjust(0x46A2D0); // 9.43
+		//Proto_fun fun=(Proto_fun)baseAdjust(0x46A2D0); // 9.43
+		Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaIsCreatureVisible);
 
 
 		return fun(creaturePtr);
@@ -1694,7 +1966,8 @@ int OUTmyInterceptEncrypt(int v1, int v2) //<eax>(int v1, int v2<esi>)
 	//Proto_fun fun=(Proto_fun)(0x56D030); // 9.40
 	//Proto_fun fun=(Proto_fun)(0x56D540); // 9.41
 	//Proto_fun fun=(Proto_fun)(0x57D120); // 9.42
-	Proto_fun fun=(Proto_fun)baseAdjust(0x57D170); // 9.43
+	//Proto_fun fun=(Proto_fun)baseAdjust(0x57D170); // 9.43
+	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaEncrypt);
 
 	__asm{
 		push [ebp + 0x08]
@@ -1759,7 +2032,8 @@ int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<esi>, int v2)
 	//Proto_fun fun=(Proto_fun)(0x56D160); // 9.40
 	//Proto_fun fun=(Proto_fun)(0x56D670); // 9.41
 	//Proto_fun fun=(Proto_fun)(0x57D250); // 9.42
-	Proto_fun fun=(Proto_fun)baseAdjust(0x57D2A0); // 9.43
+	//Proto_fun fun=(Proto_fun)baseAdjust(0x57D2A0); // 9.43
+	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaDecrypt);
 
 	__asm{
 		mov esi, [ebp + 0x0C] // move v2 to ESI
@@ -1872,7 +2146,8 @@ int myShouldParseRecv(){
 	//Proto_fun fun=(Proto_fun)(0x505D40); // 9.40
 	//Proto_fun fun=(Proto_fun)(0x506220); // 9.41
 	//Proto_fun fun=(Proto_fun)(0x5109A0); // 9.42
-	Proto_fun fun=(Proto_fun)baseAdjust(0x510B30); // 9.43
+	//Proto_fun fun=(Proto_fun)baseAdjust(0x510B30); // 9.43
+	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaShouldParseRecv);
 	int ret = fun();
 
 	//look for this address near above location, it will be off by 8
@@ -1884,7 +2159,8 @@ int myShouldParseRecv(){
 	//packStream* recvStream = (packStream*)(0x9D2B90); //9.40
 	//packStream* recvStream = (packStream*)(0x9D3BB0); //9.41
 	//packStream* recvStream = (packStream*)(0x9E77C0); //9.42
-	packStream* recvStream = (packStream*)baseAdjust(0x9E7248); //9.43
+	//packStream* recvStream = (packStream*)baseAdjust(0x9E6EB0); //9.43
+	packStream* recvStream = (packStream*)baseAdjust(arrayPtr_recvStream);
 	//int packLen = ((unsigned char)recvStream->s[6]) + ((unsigned char)recvStream->s[7])*256;
 	if (prevRecvStreamPos){ // If there is an action we can read
 		int actionStart = prevRecvStreamPos - 1;
@@ -1948,7 +2224,8 @@ int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6,
 	//Proto_fun fun=(Proto_fun)(0x561130); // 9.40
 	//Proto_fun fun=(Proto_fun)(0x5616C0); // 9.41
 	//Proto_fun fun=(Proto_fun)(0x570B30); // 9.42
-	Proto_fun fun=(Proto_fun)baseAdjust(0x570B30); // 9.43
+	//Proto_fun fun=(Proto_fun)baseAdjust(0x570B30); // 9.43
+	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaInfoMessageBox);
 
 	__asm{
 		push [ebp + 0x28]
@@ -2134,11 +2411,17 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x504407+1,(unsigned int)INmyPrintText); //
 	//trapFun(dwHandle,0x5051CA+1,(unsigned int)INmyPrintText); // 
 
-	trapFun(dwHandle,baseAdjust(0x455D81+1),(unsigned int)INmyPrintText); // 9.43
-	trapFun(dwHandle,baseAdjust(0x455DCB+1),(unsigned int)INmyPrintText); // 
-	trapFun(dwHandle,baseAdjust(0x45E420+1),(unsigned int)INmyPrintText); // 
-	trapFun(dwHandle,baseAdjust(0x504587+1),(unsigned int)INmyPrintText); //
-	trapFun(dwHandle,baseAdjust(0x50534A+1),(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,baseAdjust(0x455D81+1),(unsigned int)INmyPrintText); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x455DCB+1),(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,baseAdjust(0x45E420+1),(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,baseAdjust(0x504587+1),(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,baseAdjust(0x50534A+1),(unsigned int)INmyPrintText); // 
+
+	trapFun(dwHandle,baseAdjust(callAddr_PrintText01+1),(unsigned int)INmyPrintText);
+	trapFun(dwHandle,baseAdjust(callAddr_PrintText02+1),(unsigned int)INmyPrintText); 
+	trapFun(dwHandle,baseAdjust(callAddr_PrintText03+1),(unsigned int)INmyPrintText); 
+	trapFun(dwHandle,baseAdjust(callAddr_PrintText04+1),(unsigned int)INmyPrintText);
+	trapFun(dwHandle,baseAdjust(callAddr_PrintText05+1),(unsigned int)INmyPrintText); 
 
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 	
@@ -2218,14 +2501,23 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4C61E2+1,(unsigned int)INmyPlayerNameText); // 
 	//trapFun(dwHandle,0x504D1A+1,(unsigned int)INmyPlayerNameText); // 
 
-	trapFun(dwHandle,baseAdjust(0x420C4B+1),(unsigned int)INmyPlayerNameText); // 9.43
-	trapFun(dwHandle,baseAdjust(0x4C5864+1),(unsigned int)INmyPlayerNameText); // 
-	trapFun(dwHandle,baseAdjust(0x4C5A64+1),(unsigned int)INmyPlayerNameText); // 
-	trapFun(dwHandle,baseAdjust(0x4C5C63+1),(unsigned int)INmyPlayerNameText); // 
-	trapFun(dwHandle,baseAdjust(0x4C5E63+1),(unsigned int)INmyPlayerNameText); // 
-	trapFun(dwHandle,baseAdjust(0x4C6064+1),(unsigned int)INmyPlayerNameText); // 
-	trapFun(dwHandle,baseAdjust(0x4C6262+1),(unsigned int)INmyPlayerNameText); // 
-	trapFun(dwHandle,baseAdjust(0x504E9A+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x420C4B+1),(unsigned int)INmyPlayerNameText); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x4C5864+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x4C5A64+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x4C5C63+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x4C5E63+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x4C6064+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x4C6262+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x504E9A+1),(unsigned int)INmyPlayerNameText); // 
+
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText01+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText02+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText03+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText04+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText05+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText06+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText07+1),(unsigned int)INmyPlayerNameText);
+	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText08+1),(unsigned int)INmyPlayerNameText);
 
 	// lookup: TALK_INFO_MESSAGE; this is inside of the function
 	//trapFun(dwHandle,0x413A69+1,(unsigned int)myInterceptInfoMiddleScreen); // 8.74
@@ -2264,10 +2556,15 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4953F5+1,(unsigned int)INmyInterceptInfoMiddleScreen); // 
 	//trapFun(dwHandle,0x502314+1,(unsigned int)INmyInterceptInfoMiddleScreen); // 
 
-	trapFun(dwHandle,baseAdjust(0x417DAA+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 9.43
-	trapFun(dwHandle,baseAdjust(0x45A9DA+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
-	trapFun(dwHandle,baseAdjust(0x4953F5+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
-	trapFun(dwHandle,baseAdjust(0x502484+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,baseAdjust(0x417DAA+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x45A9DA+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,baseAdjust(0x4953F5+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,baseAdjust(0x502484+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
+
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMiddleScreen01+1),(unsigned int)INmyInterceptInfoMiddleScreen);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMiddleScreen02+1),(unsigned int)INmyInterceptInfoMiddleScreen);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMiddleScreen03+1),(unsigned int)INmyInterceptInfoMiddleScreen);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMiddleScreen04+1),(unsigned int)INmyInterceptInfoMiddleScreen);
 
 	// lookup: TargetBuffer!=NULL; first call is in the middle of the infomessage function
 	//         in fact you need to increcept all calls
@@ -2406,6 +2703,7 @@ void InitialisePlayerInfoHack()
 	*/
 
 	// BLOCK is 9.43
+	/*
 	trapFun(dwHandle,baseAdjust(0x417919+1),(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,baseAdjust(0x42E427+1),(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,baseAdjust(0x4ADE22+1),(unsigned int)INmyInterceptInfoMessageBox);
@@ -2418,6 +2716,20 @@ void InitialisePlayerInfoHack()
 	trapFun(dwHandle,baseAdjust(0x5715CC+1),(unsigned int)INmyInterceptInfoMessageBox);//BADBAD
 	trapFun(dwHandle,baseAdjust(0x571810+1),(unsigned int)INmyInterceptInfoMessageBox);
 	trapFun(dwHandle,baseAdjust(0x5722ED+1),(unsigned int)INmyInterceptInfoMessageBox);//
+	*/
+
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox01+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox02+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox03+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox04+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox05+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox06+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox07+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox08+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox09+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox10+1),(unsigned int)INmyInterceptInfoMessageBox);//BADBAD
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox11+1),(unsigned int)INmyInterceptInfoMessageBox);
+	trapFun(dwHandle,baseAdjust(callAddr_InfoMessageBox12+1),(unsigned int)INmyInterceptInfoMessageBox);//
 
 	// lookup: manually match around previous address by assembly similarity
 	//trapFun(dwHandle,0x55611D+1,(unsigned int)myInterceptEncrypt); // 8.74
@@ -2428,7 +2740,8 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x50543A+1,(unsigned int)INmyInterceptEncrypt); // 9.40
 	//trapFun(dwHandle,0x50591A+1,(unsigned int)INmyInterceptEncrypt); // 9.41
 	//trapFun(dwHandle,0x51008D+1,(unsigned int)INmyInterceptEncrypt); // 9.42
-	trapFun(dwHandle,baseAdjust(0x51021D+1),(unsigned int)INmyInterceptEncrypt); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x51021D+1),(unsigned int)INmyInterceptEncrypt); // 9.43
+	trapFun(dwHandle,baseAdjust(callAddr_Encrypt01+1),(unsigned int)INmyInterceptEncrypt);
 		
 	// lookup: function below encrypt is the decrypt function
 	//trapFun(dwHandle,0x55613D+1,(unsigned int)myInterceptDecrypt); // 8.74
@@ -2439,7 +2752,8 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x505A34+1,(unsigned int)INmyInterceptDecrypt); // 9.40
 	//trapFun(dwHandle,0x505F14+1,(unsigned int)INmyInterceptDecrypt); // 9.41
 	//trapFun(dwHandle,0x510698+1,(unsigned int)INmyInterceptDecrypt); // 9.42
-	trapFun(dwHandle,baseAdjust(0x510828+1),(unsigned int)INmyInterceptDecrypt); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x510828+1),(unsigned int)INmyInterceptDecrypt); // 9.43
+	trapFun(dwHandle,baseAdjust(callAddr_Decrypt01+1),(unsigned int)INmyInterceptDecrypt);
 
 	
 	// WARNING: decrypt function is not trapped since 8.22 as I did not track it down in the soureccode
@@ -2465,10 +2779,11 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x45F3F0+1,(unsigned int)myShouldParseRecv); // 9.40
 	//trapFun(dwHandle,0x45F430+1,(unsigned int)myShouldParseRecv); // 9.41
 	//trapFun(dwHandle,0x460EB3+1,(unsigned int)myShouldParseRecv); // 9.42
-	trapFun(dwHandle,baseAdjust(0x460EB3+1),(unsigned int)myShouldParseRecv); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x460EB3+1),(unsigned int)myShouldParseRecv); // 9.43
+	trapFun(dwHandle,baseAdjust(callAddr_ShouldParseRecv01+1),(unsigned int)myShouldParseRecv);
 
 	//This allows TA ta handle any errors before they are sent to Tibia
-	trapFun(dwHandle,baseAdjust(0x460EB3+1),(unsigned int)myShouldParseRecv); // 9.43
+	//trapFun(dwHandle,baseAdjust(0x460EB3+1),(unsigned int)myShouldParseRecv); // 9.43 // need to find stuff for this
 
     CloseHandle(dwHandle);
 	

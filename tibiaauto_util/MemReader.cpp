@@ -21,6 +21,12 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
+int mod(int i,int m){
+	int ans=i%m;
+	if (ans<0) ans+=m;
+	return ans;
+}
+
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -72,12 +78,12 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 CTibiaCharacter *CMemReader::readSelfCharacter() {	
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
-	ch->hp = CMemUtil::GetMemIntValue(m_memAddressHP)^CMemUtil::GetMemIntValue(m_memAddressSkillFist+4);
-	ch->mana = CMemUtil::GetMemIntValue(m_memAddressMana)^CMemUtil::GetMemIntValue(m_memAddressSkillFist+4);	
-	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax)^CMemUtil::GetMemIntValue(m_memAddressSkillFist+4);
-	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax)^CMemUtil::GetMemIntValue(m_memAddressSkillFist+4);
+	ch->hp = CMemUtil::GetMemIntValue(m_memAddressHP)^CMemUtil::GetMemIntValue(m_memAddressXor);
+	ch->mana = CMemUtil::GetMemIntValue(m_memAddressMana)^CMemUtil::GetMemIntValue(m_memAddressXor);	
+	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
+	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	// note: since 8.31 capacity has accuracy to 2 decimal places
-	ch->cap = (CMemUtil::GetMemIntValue(m_memAddressCap)^CMemUtil::GetMemIntValue(m_memAddressSkillFist+4))/100.0;
+	ch->cap = (CMemUtil::GetMemIntValue(m_memAddressCap)^CMemUtil::GetMemIntValue(m_memAddressXor))/100.0;
 	ch->stamina = CMemUtil::GetMemIntValue(m_memAddressStamina);
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	//ch->exp += (__int64)CMemUtil::GetMemIntValue(m_memAddressExp+4) << 32; //Note Experience became 64 bits since 8.7
@@ -416,16 +422,16 @@ void CMemReader::writeCreatureLightColor(int creatureNr,int value)
 
 int CMemReader::readSelfLightPower()
 {		
-	CMemReader reader;			
+	CMemReader reader;
 	int loggedCharNr=reader.getLoggedCharNr();
-	return readCreatureLightPower(loggedCharNr);	
+	return readCreatureLightPower(loggedCharNr);
 }
 
 int CMemReader::readSelfLightColor()
 {
-	CMemReader reader;			
+	CMemReader reader;
 	int loggedCharNr=reader.getLoggedCharNr();
-	return readCreatureLightColor(loggedCharNr);	
+	return readCreatureLightColor(loggedCharNr);
 }
 
 void CMemReader::writeSelfLightPower(int value)
@@ -454,12 +460,12 @@ int CMemReader::getMapTileStart(int tileNr){
 }
 
 int CMemReader::mapGetSelfCellNr()
-{				
+{
 	static int prevSelfTileNr=0;
 	static int prevSelfTilePos=0;
 	int wouldReturn=0;
 	CTibiaCharacter *self = readSelfCharacter();
-	if (self->z<0 || self->z>20) {
+	if (self->z<0 || self->z>15) {
 		delete self;
 		return 0;
 	}
@@ -476,7 +482,6 @@ int CMemReader::mapGetSelfCellNr()
 			delete self;
 			delete maptile;
 			return prevSelfTileNr;
-			
 		} 
 	}
 	delete maptile; maptile = NULL;
@@ -564,93 +569,90 @@ int CMemReader::mapGetSelfCellNr()
 	return 0;
 }
 
-struct point CMemReader::mapConvertCellToPoint(int cellNr)
+struct point CMemReader::mapAddPointToCoord(point coord,point p2)
+{
+	coord.x=mod(coord.x+p2.x,18);
+	coord.y=mod(coord.y+p2.y,14);
+	coord.z-=p2.z;//in tile array -ve is down, in tibia map point system -ve is up
+	return coord;
+}
+struct point CMemReader::mapDiffCoords(point c1,point c2) // c1-c2
+{
+	// if diff is 16, it could also actually be -2, -20, 34, ... choose closest
+	c1.x=mod(c1.x-c2.x,18);
+	c1.y=mod(c1.y-c2.y,14);
+	c1.z=c1.z-c2.z;
+	if (c1.x>9) c1.x -= 18;
+	if (c1.y>7) c1.y -= 14;
+	return c1;
+}
+struct point CMemReader::mapShiftReferencePoint(point p, point oldCoord, point newCoord)
+{
+	point delta = mapDiffCoords(oldCoord,newCoord);
+	p.x = p.x + delta.x;
+	p.y = p.y + delta.y;
+	p.z = p.z - delta.z;//in tile array -ve is down, in tibia map point system -ve is up
+	return p;
+}
+struct point CMemReader::mapGetCellCoord(int cellNr)
 {
 	int z=cellNr/(14*18);
 	int y=(cellNr-z*14*18)/18;
 	int x=(cellNr-z*14*18-y*18);
-
 	return point(x,y,z);
 }
 
-struct point CMemReader::mapConvertPointToRelPoint(point p)
-{	
-	return point((p.x<=9)?p.x:(p.x-18),(p.y<=7)?p.y:(p.y-14),p.z);
+int CMemReader::mapGetCoordCell(point c)
+{
+	return c.z*14*18 + mod(c.y,14)*18 + mod(c.x,18);
 }
 
-struct point CMemReader::mapConvertRelPointToPoint(point p)
+// A simple check to verify that the x,y bounds are within limits and z is in array
+int CMemReader::mapIsPointInTileArray(point p, int relToCell)
 {
-	return point((p.x>=0)?p.x:(p.x+18),(p.y>=0)?p.y:(p.y+14),p.z);
+	point cR = mapGetCellCoord(relToCell);
+	//in tile array -ve is down, in tibia map point system -ve is up so z is tricky
+	return p.x >= -8 && p.x <= 9 && p.y >= -6 && p.y <= 7 && 7-cR.z >= -p.z && cR.z >= p.z;
 }
 
-int CMemReader::mapConvertPointToCell(point p)
+// Looks at change in position and decides whether the point would still contain valid information
+int CMemReader::mapIsPointInScope(point p, int relToCell)
 {
-	int ret = p.z*14*18+p.y*18+p.x;
-	if (ret > 0x7E0){
-		int a=0;
-		ret/a;
-	}
-	return ret;
-}
-
-struct point CMemReader::mapAddPoints(point p1,point p2)
-{
-	p1.x+=p2.x;
-	p1.y+=p2.y;
-	p1.z-=p2.z;//in tile array 0 is lowest
-	if (p1.x<0) p1.x+=18;
-	if (p1.x>=18) p1.x-=18;
-	if (p1.y<0) p1.y+=14;
-	if (p1.y>=14) p1.y-=14;
-	if (p1.z<0 || p1.z>7) return point(9999,9999,9999);//should never return here
-	return p1;
-}
-
-int CMemReader::mapIsPointWithinScope(point p)
-{
-	CTibiaCharacter *self = readSelfCharacter();
-	//out of xy-range OR above ground and out of z-range OR underground and out of z-range
-	if (p.x<-8||p.x>9||p.y<-6||p.y>7||(p.z>7-self->z||p.z<-self->z)&&self->z<=7||(p.z>min(2,15-self->z)||p.z<-2)&&self->z>7)
-	{
-		delete self;
-		return 0;//perceived # of items on square should be 0
-	}
-	delete self;
-	return 1;
-}
-
-int CMemReader::mapGetCellFromRelPoint(point p,int relToCell)
-{
-	int selfCell=(relToCell==-1?mapGetSelfCellNr():relToCell);
-	struct point selfPoint = mapConvertCellToPoint(selfCell);
-	selfPoint = mapAddPoints(selfPoint,p);
-	return mapConvertPointToCell(selfPoint);
+	int selfCell = mapGetSelfCellNr();
+	point p2 = mapShiftReferencePoint(p,mapGetCellCoord(relToCell),mapGetCellCoord(selfCell));
+	if(!mapIsPointInTileArray(p,selfCell)) return 0;
+	return 1; // improve on this by detecting when underground and entire tile array is not used
 }
 
 int CMemReader::mapGetPointItemsCount(point p,int relToCell/*=-1*/)
 {
-	if (!mapIsPointWithinScope(p)) return 0;
-	int itemCell = mapGetCellFromRelPoint(p,relToCell);
+	if (relToCell == -1) relToCell=mapGetSelfCellNr();
+	if (!mapIsPointInTileArray(p,relToCell)) return 0;
+	int itemCell = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell),p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr = mt.count;
 	int count = CMemUtil::GetMemIntValue(addr,0);//this address comes from Tibia itself and need not be shifted
+	if(!mapIsPointInScope(p,relToCell)) return 0;
 	return count;
 }
 
 int CMemReader::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/)
 {
-	if (!mapIsPointWithinScope(p)) return 0;
-	int itemCell = mapGetCellFromRelPoint(p,relToCell);
+	if (relToCell == -1) relToCell=mapGetSelfCellNr();
+	if (!mapIsPointInTileArray(p,relToCell)) return 0;
+	int itemCell = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell),p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr = mt.items[stackNr].itemId;
 	int itemId = CMemUtil::GetMemIntValue(addr,0);//this address comes from Tibia itself and need not be shifted
+	if(!mapIsPointInScope(p,relToCell)) return 0;
 	return itemId;
 }
 
 void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId,int relToCell/*=-1*/)
 {
-	if (!mapIsPointWithinScope(p)) return;
-	int itemCell = mapGetCellFromRelPoint(p,relToCell);
+	if (relToCell == -1) relToCell=mapGetSelfCellNr();
+	if (!mapIsPointInTileArray(p,relToCell)) return;
+	int itemCell = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell),p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr = mt.items[stackNr].itemId;
 	CMemUtil::SetMemIntValue(addr,tileId,0);//this address comes from Tibia itself and need not be shifted
@@ -658,8 +660,9 @@ void CMemReader::mapSetPointItemId(point p, int stackNr, int tileId,int relToCel
 
 void CMemReader::mapSetPointItemsCount(point p, int count,int relToCell/*=-1*/)
 {
-	if (!mapIsPointWithinScope(p)) return;
-	int itemCell = mapGetCellFromRelPoint(p,relToCell);
+	if (relToCell == -1) relToCell=mapGetSelfCellNr();
+	if (!mapIsPointInTileArray(p,relToCell)) return;
+	int itemCell = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell),p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr = mt.count;
 	CMemUtil::SetMemIntValue(addr,count,0);//this address comes from Tibia itself and need not be shifted
@@ -678,24 +681,28 @@ int CMemReader::dereference(int addr)
 
 int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraType, int relToCell/*=-1*/)
 {
-	if (!mapIsPointWithinScope(p)) return 0;
-	int itemCell = mapGetCellFromRelPoint(p,relToCell);
+	if (relToCell == -1) relToCell=mapGetSelfCellNr();
+	if (!mapIsPointInTileArray(p,relToCell)) return 0;
+	int itemCell = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell),p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int extraInfo=0;
 	//these address comes from Tibia itself and need not be shifted
 	if (extraType == 0) extraInfo=CMemUtil::GetMemIntValue(mt.items[stackNr].itemId,0);
 	if (extraType == 1) extraInfo=CMemUtil::GetMemIntValue(mt.items[stackNr].quantity,0);
 	if (extraType == 2) extraInfo=CMemUtil::GetMemIntValue(mt.items[stackNr].extra,0);
+	if(!mapIsPointInScope(p,relToCell)) return 0;
 	return extraInfo;
 }
 
 int CMemReader::mapGetPointStackIndex(point p, int stackNr,int relToCell/*=-1*/)// returns the index of an item in a stack on a tibia tile
 {
-	if (!mapIsPointWithinScope(p)) return 0;
-	int itemCell = mapGetCellFromRelPoint(p,relToCell);
+	if (relToCell == -1) relToCell=mapGetSelfCellNr();
+	if (!mapIsPointInTileArray(p,relToCell)) return 0;
+	int itemCell = mapGetCoordCell(mapAddPointToCoord(mapGetCellCoord(relToCell),p));
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr = mt.stackind[stackNr];
 	int data=CMemUtil::GetMemIntValue(addr,0);//this address comes from Tibia itself and need not be shifted
+	if(!mapIsPointInScope(p,relToCell)) return 0;
 	return data;
 }
 
