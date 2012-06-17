@@ -196,6 +196,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	if (config->openCont6) shouldBeOpenedContainers++;
 	if (config->openCont7) shouldBeOpenedContainers++;
 	if (config->openCont8) shouldBeOpenedContainers++;
+	int MYMOUSE_DOWN = MOUSEEVENTF_LEFTDOWN;
+	int MYMOUSE_UP = MOUSEEVENTF_LEFTUP;
+	if (CModuleUtil::getTASetting("SwapMouseButtons")){
+		MYMOUSE_DOWN = MOUSEEVENTF_RIGHTDOWN;
+		MYMOUSE_UP = MOUSEEVENTF_RIGHTUP;
+	}
 
 	HANDLE hSemaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS,true,"TibiaAuto_modLogin_semaphore");
 	if (hSemaphore==NULL)
@@ -329,8 +335,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				continue;
 			}
 			SetCursorPos(wndRect.left+91,wndRect.bottom-181);
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			mouse_event(MYMOUSE_DOWN,0,0,0,0);
+			mouse_event(MYMOUSE_UP,0,0,0,0);
 			if (waitOnConnecting() || waitForWindow("Enter Game",5) || ensureForeground(hwnd))
 			{
 				ReleaseSemaphore(hSemaphore,1,&prevCount);
@@ -353,12 +359,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			sk.SendKeys(accNum,true);
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			mouse_event(MYMOUSE_DOWN,0,0,0,0);
+			mouse_event(MYMOUSE_UP,0,0,0,0);
 			sk.SendKeys(pass,true);
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15+90);
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			mouse_event(MYMOUSE_DOWN,0,0,0,0);
+			mouse_event(MYMOUSE_UP,0,0,0,0);
 			waitOnConnecting();
 			if (waitForWindow("Select Character",2) && !waitForWindow("Message of the Day",5))
 				sk.SendKeys("~",true);
@@ -378,8 +384,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
-			mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-			mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+			mouse_event(MYMOUSE_DOWN,0,0,0,0);
+			mouse_event(MYMOUSE_UP,0,0,0,0);
 			
 			registerDebug("Waiting fo establishing connection up to 15s");
 			for (i=0;i<150;i++)
@@ -393,11 +399,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			//Click on the X of Possibly open skills/battle windows
 			for (i=0;i<4;i++){
 				SetCursorPos(wndRect.right-15,wndRect.top+387);//inventory maximized
-				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				mouse_event(MYMOUSE_DOWN,0,0,0,0);
+				mouse_event(MYMOUSE_UP,0,0,0,0);			
 				SetCursorPos(wndRect.right-15,wndRect.top+382);//inventory minimized
-				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+				mouse_event(MYMOUSE_DOWN,0,0,0,0);
+				mouse_event(MYMOUSE_UP,0,0,0,0);
 				Sleep(100);
 			}
 			// finalize
@@ -441,15 +447,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 				//Double click on the main bar of the container
 				SetCursorPos(wndRect.right-100,wndRect.top+387);
-				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+				mouse_event(MYMOUSE_DOWN,0,0,0,0);
+				mouse_event(MYMOUSE_UP,0,0,0,0);			
+				mouse_event(MYMOUSE_DOWN,0,0,0,0);
+				mouse_event(MYMOUSE_UP,0,0,0,0);			
 				SetCursorPos(wndRect.right-100,wndRect.top+282);
-				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-				mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-				mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
+				mouse_event(MYMOUSE_DOWN,0,0,0,0);
+				mouse_event(MYMOUSE_UP,0,0,0,0);			
+				mouse_event(MYMOUSE_DOWN,0,0,0,0);
+				mouse_event(MYMOUSE_UP,0,0,0,0);
 
 				CTibiaContainer *cont = reader.readContainer(0);
 				if (cont->flagOnOff)
@@ -478,15 +484,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 								//Double click on main bar of open container(each container heign =19
 								SetCursorPos(wndRect.right-100,wndRect.top+387+19*foundContOpenNr);
-								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+								mouse_event(MYMOUSE_DOWN,0,0,0,0);
+								mouse_event(MYMOUSE_UP,0,0,0,0);			
+								mouse_event(MYMOUSE_DOWN,0,0,0,0);
+								mouse_event(MYMOUSE_UP,0,0,0,0);			
 								SetCursorPos(wndRect.right-100,wndRect.top+282+19*foundContOpenNr);
-								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
-								mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
-								mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);			
+								mouse_event(MYMOUSE_DOWN,0,0,0,0);
+								mouse_event(MYMOUSE_UP,0,0,0,0);			
+								mouse_event(MYMOUSE_DOWN,0,0,0,0);
+								mouse_event(MYMOUSE_UP,0,0,0,0);			
 								
 								foundContOpenNr++;
 							}

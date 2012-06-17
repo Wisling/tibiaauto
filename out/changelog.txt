@@ -1,3 +1,34 @@
+2.20.0, 16.6.2012
+Enhancements:
+ Tibiaauto: Updated to 9.54
+Defects:
+
+2.19.4, 15.5.2012
+Enhancements:
+ Tibiaauto: Added debug messages to prevent TA from closing silently
+Defects:
+ ShowMap: Fixed Map Research placing teleporters in random places
+ Cavebot: Fixed Hybrid map from crashing TA when going to different floor 
+
+2.19.3, 4.5.2012
+Enhancements:
+ Tibiaauto: Updated
+
+2.19.2, 15.4.2012
+Enhancements:
+ Tibiaauto: Updated
+
+2.19.1, 11.4.2012
+Enhancements:
+ Tibiaauto: Updated
+
+2.19.0, 4.4.2012
+Enhancements:
+ Tibiaauto: Updated
+
+2.17.1, 9.2.2012
+Enhancements:
+ Tibiaauto: Updated
 
 2.17.0, 4.2.2012
 Enhancements:

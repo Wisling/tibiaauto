@@ -1577,7 +1577,6 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 
 	while (!toolThreadShouldStop && myID == lootThreadId) {
 		Sleep(100);
-		reader.mapGetPointItemsCount(point(8,-2,1),-1); // debugging line, please remove
 		while (corpseQueue.GetCount() && globalAutoAttackStateAttack!=CToolAutoAttackStateAttack_macroPause){
 			Corpse corpseCh=corpseQueue.Remove();
 			if(GetTickCount()-corpseCh.tod>1000*60){

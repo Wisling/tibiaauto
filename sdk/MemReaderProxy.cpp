@@ -522,13 +522,13 @@ int CMemReaderProxy::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/
 {
 	typedef int (*Proto_fun)(point p,int stackNr,int relToCell=-1);
 	if (dllModule)
-	{			
+	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemId");
 		if (fun)
 		{
 			return fun(p,stackNr, relToCell);
 		}
-	} 
+	}
 	return 0;
 
 }

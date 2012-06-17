@@ -2007,21 +2007,21 @@ void CModuleUtil::prepareProhPointList()
 					int itemId=reader.mapGetPointItemId(checkpoint,pos);
 
 					if (10145 == itemId||
-						10146 == itemId/*depot tile*/ || 
-						1647 == itemId || 
+						10146 == itemId/*depot tile*/ ||
+						1647 == itemId ||
 						1649 == itemId ||
-						1665 == itemId || 
+						1665 == itemId ||
 						1667 == itemId ||
-						1679 == itemId || 
+						1679 == itemId ||
 						1681 == itemId ||
-						1688 == itemId || 
+						1688 == itemId ||
 						1697 == itemId ||
-						5103 == itemId || 
+						5103 == itemId ||
 						5121 == itemId ||
-						6897 == itemId || 
+						6897 == itemId ||
 						7039 == itemId ||
-						9557 == itemId || 
-						9864 == itemId/*level doors*/)
+						9557 == itemId ||
+						9864 == itemId/*open level doors*/)
 					{
 						tibiaMap.prohPointAdd(ch->x,ch->y,ch->z);
 					}

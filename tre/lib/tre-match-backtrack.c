@@ -1,20 +1,21 @@
 /*
   tre-match-backtrack.c - TRE backtracking regex matching engine
 
-  Copyright (C) 2001-2004 Ville Laurikari <vl@iki.fi>.
+  Copyright (c) 2001-2006 Ville Laurikari <vl@iki.fi>.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2 (June
-  1991) as published by the Free Software Foundation.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
+  This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
@@ -283,23 +284,32 @@ tre_tnfa_run_backtrack(const tre_tnfa_t *tnfa, const void *string,
   pmatch = alloca(sizeof(*pmatch) * tnfa->num_submatches);
   states_seen = alloca(sizeof(*states_seen) * tnfa->num_states);
 #else /* !TRE_USE_ALLOCA */
-  tags = xmalloc(sizeof(*tags) * tnfa->num_tags);
-  if (!tags)
+  if (tnfa->num_tags)
     {
-      ret = REG_ESPACE;
-      goto error_exit;
+      tags = xmalloc(sizeof(*tags) * tnfa->num_tags);
+      if (!tags)
+	{
+	  ret = REG_ESPACE;
+	  goto error_exit;
+	}
     }
-  pmatch = xmalloc(sizeof(*pmatch) * tnfa->num_submatches);
-  if (!pmatch)
+  if (tnfa->num_submatches)
     {
-      ret = REG_ESPACE;
-      goto error_exit;
+      pmatch = xmalloc(sizeof(*pmatch) * tnfa->num_submatches);
+      if (!pmatch)
+	{
+	  ret = REG_ESPACE;
+	  goto error_exit;
+	}
     }
-  states_seen = xmalloc(sizeof(*states_seen) * tnfa->num_states);
-  if (!states_seen)
+  if (tnfa->num_states)
     {
-      ret = REG_ESPACE;
-      goto error_exit;
+      states_seen = xmalloc(sizeof(*states_seen) * tnfa->num_states);
+      if (!states_seen)
+	{
+	  ret = REG_ESPACE;
+	  goto error_exit;
+	}
     }
 #endif /* !TRE_USE_ALLOCA */
 
@@ -475,10 +485,10 @@ tre_tnfa_run_backtrack(const tre_tnfa_t *tnfa, const void *string,
 	  else if (len - pos < bt_len)
 	    result = 1;
 	  else
+	    /* We can ignore multibyte characters here because the backref
+	       string is already aligned at character boundaries. */
 	    result = memcmp((char*)string + so, str_byte - 1, bt_len);
 
-	  /* We can ignore multibyte characters here because the backref
-	     string is already aligned at character boundaries. */
 	  if (result == 0)
 	    {
 	      /* Back reference matched.  Check for infinite loop. */
@@ -511,7 +521,12 @@ tre_tnfa_run_backtrack(const tre_tnfa_t *tnfa, const void *string,
 	  /* Check for end of string. */
 	  if (len < 0)
 	    {
-	      if (next_c == L'\0')
+	      if (type == STR_USER)
+		{
+		  if (str_user_end)
+		    goto backtrack;
+		}
+	      else if (next_c == L'\0')
 		goto backtrack;
 	    }
 	  else
@@ -563,7 +578,7 @@ tre_tnfa_run_backtrack(const tre_tnfa_t *tnfa, const void *string,
 		}
 	      else
 		{
-		  /* Second mathing transition.	 We may need to backtrack here
+		  /* Second matching transition.  We may need to backtrack here
 		     to take this transition instead of the first one, so we
 		     push this transition in the backtracking stack so we can
 		     jump back here if needed. */

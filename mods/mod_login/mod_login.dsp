@@ -46,8 +46,8 @@ RSC=rc.exe
 # ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x415 /D "NDEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x415 /D "NDEBUG" /d "_AFXDLL"
+# ADD BASE RSC /l 0x415 /d "NDEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x415 /d "NDEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
@@ -73,8 +73,8 @@ LINK32=link.exe
 # ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /D "WINVER 0x600" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /D _WIN32_WINNT=0x401 /D "_AFX_NO_DEBUG_CRT" /FR /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x415 /D "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x415 /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /D "_DEBUG" /d "_AFXDLL" /d "_AFX_NO_DEBUG_CRT"
+# ADD BASE RSC /l 0x415 /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x415 /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL" /d "_AFX_NO_DEBUG_CRT"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo

@@ -14,6 +14,7 @@ class CMemConstData
 public:
 	CMemConstData();
 	
+	int m_memAddressXor;
 	int m_memAddressPacketCount;
 	int m_memAddressVIP;
 	int m_memAddressFirstContainer;

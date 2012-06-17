@@ -32,6 +32,16 @@ CTibiaTile::CTibiaTile()
 	stackable=0;
 	alwaysOnTop=0;
 	moreAlwaysOnTop=0;
+
+	ground=0;
+	isTeleporter=5000;//useful for finding errors. This should never become user visible
+	isReadable=0;
+	isFluid=0;
+	isRune=0;
+	isUseable=0;
+	isUseableImmobile=0;
+	blockPathFind=0;
+	minimapColor=0;
 }
 
 CTibiaTile::~CTibiaTile()

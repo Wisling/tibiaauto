@@ -1,25 +1,50 @@
 /*
   regex.h - POSIX.2 compatible regexp interface and TRE extensions
 
-  Copyright (C) 2001-2004 Ville Laurikari <vl@iki.fi>.
+  Copyright (c) 2001-2006 Ville Laurikari <vl@iki.fi>.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2 (June
-  1991) as published by the Free Software Foundation.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
+  This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
 #ifndef TRE_REGEX_H
 #define TRE_REGEX_H 1
+
+#ifndef __GNUC__
+# define __DLL_IMPORT__  __declspec(dllimport)
+# define __DLL_EXPORT__  __declspec(dllexport)
+#else
+# define __DLL_IMPORT__  __attribute__((dllimport)) extern
+# define __DLL_EXPORT__  __attribute__((dllexport)) extern
+#endif 
+
+#if (defined __WIN32__) || (defined _WIN32)
+# if defined BUILD_LIBTRE_DLL || defined TRE_EXPORTS
+#  define LIBTRE_DLL_IMPEXP     __DLL_EXPORT__
+# elif defined(LIBTRE_STATIC)
+#  define LIBTRE_DLL_IMPEXP      
+# elif defined (USE_LIBTRE_DLL)
+#  define LIBTRE_DLL_IMPEXP     __DLL_IMPORT__
+# elif defined (USE_LIBTRE_STATIC)
+#  define LIBTRE_DLL_IMPEXP      
+# else /* assume USE_LIBTRE_DLL */
+#  define LIBTRE_DLL_IMPEXP     __DLL_IMPORT__
+# endif
+#else /* __WIN32__ */
+# define LIBTRE_DLL_IMPEXP  
+#endif
 
 #include "tre-config.h"
 
@@ -56,7 +81,11 @@ typedef int reg_errcode_t;
 #endif
 
 /* Extra regcomp() flags. */
+#ifndef REG_BASIC
+#define REG_BASIC	0
+#endif /* !REG_BASIC */
 #define REG_RIGHT_ASSOC (REG_LITERAL << 1)
+#define REG_UNGREEDY    (REG_RIGHT_ASSOC << 1)
 
 /* Extra regexec() flags. */
 #define REG_APPROX_MATCHER	 0x1000
@@ -95,7 +124,7 @@ typedef enum {
   REG_BADBR,		/* Invalid content of {} */
   REG_ERANGE,		/* Invalid use of range operator */
   REG_ESPACE,		/* Out of memory.  */
-  REG_BADRPT
+  REG_BADRPT            /* Invalid use of repetition operators. */
 } reg_errcode_t;
 
 /* POSIX regcomp() flags. */
@@ -108,6 +137,7 @@ typedef enum {
 #define REG_BASIC	0
 #define REG_LITERAL	(REG_NOSUB << 1)
 #define REG_RIGHT_ASSOC (REG_LITERAL << 1)
+#define REG_UNGREEDY    (REG_RIGHT_ASSOC << 1)
 
 /* POSIX regexec() flags. */
 #define REG_NOTBOL 1
@@ -120,9 +150,9 @@ typedef enum {
 #endif /* !TRE_USE_SYSTEM_REGEX_H */
 
 /* REG_NOSPEC and REG_LITERAL mean the same thing. */
-#ifdef REG_LITERAL
+#if defined(REG_LITERAL) && !defined(REG_NOSPEC)
 #define REG_NOSPEC	REG_LITERAL
-#elif defined(REG_NOSPEC)
+#elif defined(REG_NOSPEC) && !defined(REG_LITERAL)
 #define REG_LITERAL	REG_NOSPEC
 #endif /* defined(REG_NOSPEC) */
 
@@ -131,12 +161,19 @@ typedef enum {
 #define RE_DUP_MAX 255
 
 /* The POSIX.2 regexp functions */
-int regcomp(regex_t *preg, const char *regex, int cflags);
-int regexec(const regex_t *preg, const char *string, size_t nmatch,
-	    regmatch_t pmatch[], int eflags);
-size_t regerror(int errcode, const regex_t *preg, char *errbuf,
-		size_t errbuf_size);
-void regfree(regex_t *preg);
+LIBTRE_DLL_IMPEXP int
+regcomp(regex_t *preg, const char *regex, int cflags);
+
+LIBTRE_DLL_IMPEXP int
+regexec(const regex_t *preg, const char *string, size_t nmatch,
+	regmatch_t pmatch[], int eflags);
+
+LIBTRE_DLL_IMPEXP size_t
+regerror(int errcode, const regex_t *preg, char *errbuf,
+	 size_t errbuf_size);
+
+LIBTRE_DLL_IMPEXP void
+regfree(regex_t *preg);
 
 #ifdef TRE_WCHAR
 #ifdef HAVE_WCHAR_H
@@ -144,20 +181,30 @@ void regfree(regex_t *preg);
 #endif /* HAVE_WCHAR_H */
 
 /* Wide character versions (not in POSIX.2). */
-int regwcomp(regex_t *preg, const wchar_t *regex, int cflags);
-int regwexec(const regex_t *preg, const wchar_t *string, size_t nmatch,
-	     regmatch_t pmatch[], int eflags);
+LIBTRE_DLL_IMPEXP int
+regwcomp(regex_t *preg, const wchar_t *regex, int cflags);
+
+LIBTRE_DLL_IMPEXP int
+regwexec(const regex_t *preg, const wchar_t *string,
+	 size_t nmatch, regmatch_t pmatch[], int eflags);
 #endif /* TRE_WCHAR */
 
 /* Versions with a maximum length argument and therefore the capability to
    handle null characters in the middle of the strings (not in POSIX.2). */
-int regncomp(regex_t *preg, const char *regex, size_t len, int cflags);
-int regnexec(const regex_t *preg, const char *string, size_t len,
-	     size_t nmatch, regmatch_t pmatch[], int eflags);
+LIBTRE_DLL_IMPEXP int
+regncomp(regex_t *preg, const char *regex, size_t len, int cflags);
+
+LIBTRE_DLL_IMPEXP int
+regnexec(const regex_t *preg, const char *string, size_t len,
+	 size_t nmatch, regmatch_t pmatch[], int eflags);
+
 #ifdef TRE_WCHAR
-int regwncomp(regex_t *preg, const wchar_t *regex, size_t len, int cflags);
-int regwnexec(const regex_t *preg, const wchar_t *string, size_t len,
-	      size_t nmatch, regmatch_t pmatch[], int eflags);
+LIBTRE_DLL_IMPEXP int
+regwncomp(regex_t *preg, const wchar_t *regex, size_t len, int cflags);
+
+LIBTRE_DLL_IMPEXP int
+regwnexec(const regex_t *preg, const wchar_t *string, size_t len,
+	  size_t nmatch, regmatch_t pmatch[], int eflags);
 #endif /* TRE_WCHAR */
 
 #ifdef TRE_APPROX
@@ -187,20 +234,27 @@ typedef struct {
 
 
 /* Approximate matching functions. */
-int regaexec(const regex_t *preg, const char *string,
-	     regamatch_t *match, regaparams_t params, int eflags);
-int reganexec(const regex_t *preg, const char *string, size_t len,
-	      regamatch_t *match, regaparams_t params, int eflags);
+LIBTRE_DLL_IMPEXP int
+regaexec(const regex_t *preg, const char *string,
+	 regamatch_t *match, regaparams_t params, int eflags);
+
+LIBTRE_DLL_IMPEXP int
+reganexec(const regex_t *preg, const char *string, size_t len,
+	  regamatch_t *match, regaparams_t params, int eflags);
 #ifdef TRE_WCHAR
 /* Wide character approximate matching. */
-int regawexec(const regex_t *preg, const wchar_t *string,
-	      regamatch_t *match, regaparams_t params, int eflags);
-int regawnexec(const regex_t *preg, const wchar_t *string, size_t len,
-	       regamatch_t *match, regaparams_t params, int eflags);
+LIBTRE_DLL_IMPEXP int
+regawexec(const regex_t *preg, const wchar_t *string,
+	  regamatch_t *match, regaparams_t params, int eflags);
+
+LIBTRE_DLL_IMPEXP int
+regawnexec(const regex_t *preg, const wchar_t *string, size_t len,
+	   regamatch_t *match, regaparams_t params, int eflags);
 #endif /* TRE_WCHAR */
 
 /* Sets the parameters to default values. */
-void regaparams_default(regaparams_t *params);
+LIBTRE_DLL_IMPEXP void
+regaparams_default(regaparams_t *params);
 #endif /* TRE_APPROX */
 
 #ifdef TRE_WCHAR
@@ -216,16 +270,19 @@ typedef struct {
   void *context;
 } tre_str_source;
 
-int reguexec(const regex_t *preg, const tre_str_source *string,
-	     size_t nmatch, regmatch_t pmatch[], int eflags);
+LIBTRE_DLL_IMPEXP int
+reguexec(const regex_t *preg, const tre_str_source *string,
+	 size_t nmatch, regmatch_t pmatch[], int eflags);
 
 /* Returns the version string.	The returned string is static. */
-char *tre_version(void);
+LIBTRE_DLL_IMPEXP char *
+tre_version(void);
 
 /* Returns the value for a config parameter.  The type to which `result'
    must point to depends of the value of `query', see documentation for
    more details. */
-int tre_config(int query, void *result);
+LIBTRE_DLL_IMPEXP int
+tre_config(int query, void *result);
 
 enum {
   TRE_CONFIG_APPROX,
@@ -236,11 +293,13 @@ enum {
 };
 
 /* Returns 1 if the compiled pattern has back references, 0 if not. */
-int tre_have_backrefs(const regex_t *preg);
+LIBTRE_DLL_IMPEXP int
+tre_have_backrefs(const regex_t *preg);
 
 /* Returns 1 if the compiled pattern uses approximate matching features,
    0 if not. */
-int tre_have_approx(const regex_t *preg);
+LIBTRE_DLL_IMPEXP int
+tre_have_approx(const regex_t *preg);
 
 #ifdef __cplusplus
 }
