@@ -1,20 +1,21 @@
 /*
   regerror.c - POSIX regerror() implementation for TRE.
 
-  Copyright (C) 2001-2004 Ville Laurikari <vl@iki.fi>.
+  Copyright (c) 2001-2006 Ville Laurikari <vl@iki.fi>.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU General Public License version 2 (June
-  1991) as published by the Free Software Foundation.
+  This library is free software; you can redistribute it and/or
+  modify it under the terms of the GNU Lesser General Public
+  License as published by the Free Software Foundation; either
+  version 2.1 of the License, or (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
+  This library is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  Lesser General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software
-  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+  You should have received a copy of the GNU Lesser General Public
+  License along with this library; if not, write to the Free Software
+  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 */
 
@@ -39,20 +40,20 @@
 /* Error message strings for error codes listed in `regex.h'.  This list
    needs to be in sync with the codes listed there, naturally. */
 static const char *tre_error_messages[] =
-  { gettext_noop("No error"),			   /* REG_OK */
-    gettext_noop("No match"),			   /* REG_NOMATCH */
-    gettext_noop("Invalid regexp"),		   /* REG_BADPAT */
-    gettext_noop("Unknown collating element"),	   /* REG_ECOLLATE */
-    gettext_noop("Unknown character class name"),  /* REG_ECTYPE */
-    gettext_noop("Trailing backslash"),		   /* REG_EESCAPE */
-    gettext_noop("Invalid back reference"),	   /* REG_ESUBREG */
-    gettext_noop("Missing ']'"),		   /* REG_EBRACK */
-    gettext_noop("Missing ')'"),		   /* REG_EPAREN */
-    gettext_noop("Missing '}'"),		   /* REG_EBRACE */
-    gettext_noop("Invalid contents of {}"),	   /* REG_BADBR */
-    gettext_noop("Invalid character range"),	   /* REG_ERANGE */
-    gettext_noop("Out of memory"),		   /* REG_ESPACE */
-    gettext_noop("XXX")				   /* REG_BADRPT */
+  { gettext_noop("No error"),				 /* REG_OK */
+    gettext_noop("No match"),				 /* REG_NOMATCH */
+    gettext_noop("Invalid regexp"),			 /* REG_BADPAT */
+    gettext_noop("Unknown collating element"),		 /* REG_ECOLLATE */
+    gettext_noop("Unknown character class name"),	 /* REG_ECTYPE */
+    gettext_noop("Trailing backslash"),			 /* REG_EESCAPE */
+    gettext_noop("Invalid back reference"),		 /* REG_ESUBREG */
+    gettext_noop("Missing ']'"),			 /* REG_EBRACK */
+    gettext_noop("Missing ')'"),			 /* REG_EPAREN */
+    gettext_noop("Missing '}'"),			 /* REG_EBRACE */
+    gettext_noop("Invalid contents of {}"),		 /* REG_BADBR */
+    gettext_noop("Invalid character range"),		 /* REG_ERANGE */
+    gettext_noop("Out of memory"),			 /* REG_ESPACE */
+    gettext_noop("Invalid use of repetition operators")	 /* REG_BADRPT */
   };
 
 size_t

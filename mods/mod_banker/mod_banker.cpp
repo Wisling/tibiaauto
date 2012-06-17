@@ -96,7 +96,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int lastPathNotFoundTm=0;
 	while (!toolThreadShouldStop) {
 		Sleep(400);
-		reader.mapGetPointItemsCount(point(8,-2,1),-1); // debugging line, please remove
 
 		if (!persistentShouldGo && shouldBank(config)){
 			persistentShouldGo=1;
