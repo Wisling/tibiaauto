@@ -59,6 +59,7 @@ struct actionRegexData{
 	regex_t preg;
 	actionRegexData(){
 		inUse = 0;
+		handle = NULL;
 	}
 };
 
@@ -2160,7 +2161,7 @@ int myShouldParseRecv(){
 	//packStream* recvStream = (packStream*)(0x9D3BB0); //9.41
 	//packStream* recvStream = (packStream*)(0x9E77C0); //9.42
 	//packStream* recvStream = (packStream*)baseAdjust(0x9E6EB0); //9.43
-	packStream* recvStream = (packStream*)baseAdjust(arrayPtr_recvStream);
+	packStream* recvStream =	(packStream*)baseAdjust(arrayPtr_recvStream);
 	//int packLen = ((unsigned char)recvStream->s[6]) + ((unsigned char)recvStream->s[7])*256;
 	if (prevRecvStreamPos){ // If there is an action we can read
 		int actionStart = prevRecvStreamPos - 1;
