@@ -19,7 +19,8 @@ enum FUNTYPE
 {
 	FUNTYPE_PERIODICAL = 0,
 	FUNTYPE_MSG = 1,
-	FUNTYPE_TAMSG = 2
+	FUNTYPE_TAMSG = 2,
+	FUNTYPE_INPACKET = 3
 };
 
 struct paramType
@@ -38,11 +39,16 @@ struct funType
 	int type;
 	char name[128];
 	char *matchExpr;
+	int matchExprHandle;
 	int tmLastExec;
 	int scriptNr;
 public:
 	~funType(){
-		delete matchExpr;
+		
+	}
+	funType(){
+		matchExpr = NULL;
+		matchExprHandle = 0;
 	}
 	void call()
 	{				
@@ -75,7 +81,7 @@ public:
 	struct funType * getFunDef(int nr);
 	static CPythonScript * getScriptByNr(int nr);
 	void addFunDef(int type,int interval,PyObject *fun);
-	void addFunDef(int type,char *interval,PyObject *fun);
+	void addFunDef(int type,char *interval, int regLen, PyObject *fun);
 	CPythonScript();
 	virtual ~CPythonScript();
 	void setName(char *name);

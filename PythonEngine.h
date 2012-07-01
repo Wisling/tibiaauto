@@ -19,6 +19,7 @@ public:
 	static void enterCriticalSection();
 	static void unloadScript(int scriptNr);
 	static void backpipeMsgTick();
+	static void backpipeInpacketTick();
 	static void periodicalTick();
 	static void loadScript(char *path);
 	static void init();

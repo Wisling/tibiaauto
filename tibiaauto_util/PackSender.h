@@ -81,6 +81,8 @@ public:
 	void npcBuy(int objectId,int qty, int ignoreCap, int withBackpack);
 	void npcSell(int objectId,int qty);
 	void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message);
+	void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen);
+	void CPackSender::unregisterInpacketRegex(int handle);
 	CPackSender();
 	virtual ~CPackSender();
 private:

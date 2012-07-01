@@ -911,7 +911,7 @@ void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 	struct ipcMessage mess;
 	mess.messageType=100;
 	memcpy(mess.payload,&attackedCreature,sizeof(int));
-	mess.send();	
+	mess.send();
 }
 
 void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
@@ -943,7 +943,28 @@ void CPackSender::printText(CPoint pos, int red, int green, int blue, char* mess
 	memcpy(mess.payload + 20, &messLen, sizeof(int));
 	strcpy(mess.payload + 24, message);
 	mess.send();
+}
 
+void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen)
+{
+	struct ipcMessage mess;
+	regLen = min(regLen,1024-12);
+	mess.messageType=308;
+	int type = 1;
+	memcpy(mess.payload, &type, sizeof(int));
+	memcpy(mess.payload + 4, &handle, sizeof(int));
+	memcpy(mess.payload + 8, &regLen, sizeof(int));
+	memcpy(mess.payload + 12, regExp, regLen);
+	mess.send();
+}
+void CPackSender::unregisterInpacketRegex(int handle)
+{
+	struct ipcMessage mess;
+	mess.messageType=308;
+	int type = 2;
+	memcpy(mess.payload, &type, sizeof(int));
+	memcpy(mess.payload + 4, &handle, sizeof(int));
+	mess.send();
 }
 
 void CPackSender::look(int x, int y, int z, int objectId)

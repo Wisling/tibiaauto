@@ -5,6 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "PythonScript.h"
+#include "PackSenderProxy.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -112,21 +113,27 @@ void CPythonScript::addFunDef(int type,int interval, PyObject *fun)
 	funDefCount++;
 }
 
-void CPythonScript::addFunDef(int type,char *matchExpr, PyObject *fun)
+void CPythonScript::addFunDef(int type,char *matchExpr, int regLen, PyObject *fun)
 {
+	static int handleNum = 1;
+	CPackSenderProxy sender;
 	reallocFunDef();
 	
-	PyObject *py_name = PyObject_GetAttrString(fun,"__name__");	
+	PyObject *py_name = PyObject_GetAttrString(fun,"__name__");
 	Py_XINCREF(py_name);
 	strncpy(funDefTab[funDefCount].name,PyString_AsString(py_name),127);
 	Py_XDECREF(py_name);
 
 	funDefTab[funDefCount].type=type;
-	funDefTab[funDefCount].matchExpr=matchExpr;
+	funDefTab[funDefCount].matchExpr=matchExpr; //wis: may need to be copied into local char array, but I am unsure when string is freed.
+	funDefTab[funDefCount].matchExprHandle = (int)fun;
 	funDefTab[funDefCount].fun=fun;
 	funDefTab[funDefCount].tmNextExec=0;
 	funDefTab[funDefCount].tmLastExec=0;
 	funDefTab[funDefCount].scriptNr=scriptNr;
+	sender.registerInpacketRegex(funDefTab[funDefCount].matchExprHandle, matchExpr, regLen);
+	handleNum++;
+
 	Py_XINCREF(fun);
 	funDefCount++;
 }

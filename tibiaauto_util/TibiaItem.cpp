@@ -777,8 +777,6 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument  *doc){
 			char buf[512];
 
 			int id = data->GetId();
-			if (id>100000 || id <0)
-				int a=0;
 			int type = data->GetItemType();
 			bool looted = data->IsLooted();
 			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));

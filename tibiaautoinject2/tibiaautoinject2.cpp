@@ -888,13 +888,11 @@ void autoAimAttack(int runeId)
 					{
 						castRuneAgainstCreature(0x40+contNr,runeItem->pos,runeId,ch->tibiaId);
 					} else {
-						castRuneAgainstHuman(0x40+contNr,runeItem->pos,runeId,ch->x,ch->y,ch->z);							
+						castRuneAgainstHuman(0x40+contNr,runeItem->pos,runeId,ch->x,ch->y,ch->z);
 					}
 				}
 				delete runeItem;
-				
 			};
-			
 			delete cont;
 		}
 		delete ch;
@@ -929,7 +927,9 @@ void parseRecvActionData(int handle, char* data, int len){
 		p->countLeft = splits;
 		p->len = min(len,maxlen);
 		memcpy(p->actionData,data,p->len);
-		memset(p->actionData+p->len,0,maxlen-p->len);
+		char buf[1111];
+		sprintf(buf,"%d, %s", p->len,p->actionData);
+		//AfxMessageBox(buf);
 		mess.send();
 		splits--;
 		data += p->len;
@@ -2127,17 +2127,13 @@ __declspec(naked) void INmyInterceptAllRegs() //<eax>(int v1, int v2<esi>)
 // We can interfere with this process, but this requires knowing packet structures
 // and error handling for incomplete packets which takes much more work than payoff.
 int prevRecvStreamPos = 0;
-int Runtest=0;
+int prevRecvStreamLen = 0;
+int prevNextRet = 0;
+char prevRecvStream[32768];
 int myShouldParseRecv(){
 	CMemReaderProxy reader;
 	CRegexpProxy regexpProxy;
 
-	if (Runtest){
-		Runtest = 0;
-		recvRegex[0].inUse = 1;
-		regexpProxy.regncomp(&(recvRegex[0].preg),"^\x6b",2,REG_NOSUB|REG_EXTENDED);
-		recvRegexCount = 1;
-	}
 	typedef int (*Proto_fun)();
 	//Proto_fun fun=(Proto_fun)(0x4F9520); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x4FA0A0); // 9.00
@@ -2149,6 +2145,7 @@ int myShouldParseRecv(){
 	//Proto_fun fun=(Proto_fun)(0x5109A0); // 9.42
 	//Proto_fun fun=(Proto_fun)baseAdjust(0x510B30); // 9.43
 	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaShouldParseRecv);
+	//This function looks ahead, it returns the next packet type. It will return -1 if no next packet.
 	int ret = fun();
 
 	//look for this address near above location, it will be off by 8
@@ -2163,36 +2160,38 @@ int myShouldParseRecv(){
 	//packStream* recvStream = (packStream*)baseAdjust(0x9E6EB0); //9.43
 	packStream* recvStream =	(packStream*)baseAdjust(arrayPtr_recvStream);
 	//int packLen = ((unsigned char)recvStream->s[6]) + ((unsigned char)recvStream->s[7])*256;
-	if (prevRecvStreamPos){ // If there is an action we can read
-		int actionStart = prevRecvStreamPos - 1;
-		int actionEnd = (ret==-1?recvStream->pos-1:recvStream->pos-2);
+
+	if (prevNextRet != -1){
+		int actionStart = prevRecvStreamPos - 1; //Tibia eats 1 byte to return "ret" every call it is not -1
+		int actionEnd; // index of last byte
+		if (recvStream->pos <= prevRecvStreamPos || recvStream->pos > prevRecvStreamLen){ // when stream restarts, use previous length instead of current pos
+			actionEnd = prevRecvStreamLen-1;
+		} else if (ret == -1){
+			actionEnd = recvStream->pos-1; // did not eat an extra byte
+		} else {
+			actionEnd = recvStream->pos-2; // ate an extra byte
+		}
 		int actionLen = actionEnd - actionStart + 1;
 		{for (int i=0;i<recvRegexCount;i++){
 			if (recvRegex[i].inUse == 1){
-				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)recvStream->s+actionStart),actionLen,0,NULL,0);
+				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)prevRecvStream+actionStart),actionLen,0,NULL,0);
 				if (match == 0){
-					bufToHexString(((char*)recvStream->s+actionStart),actionLen);
+					bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
 					if (privChanBufferPtr){
-						OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
+						//OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
 					}
-					int a=0;
-					parseRecvActionData	(recvRegex[i].handle,(char*)recvStream->s+actionStart,actionLen);
+					parseRecvActionData(recvRegex[i].handle,(char*)prevRecvStream+actionStart,actionLen);
 				}
 			}
 		}}
-		/*
-		int i;
-		for (i=0;i<recvRegexCount;i++){
-			if (recvRegex[i].inUse == 0) break;
-		}
-		if (i<RECV_REGEX_MAX){
-			recvRegex[i] = actionRegexData();
-		}
-		*/
-		
-		
 	}
-	prevRecvStreamPos = (ret==-1 ? 0 : recvStream->pos);
+	if (ret != -1 && (recvStream->pos <= prevRecvStreamPos || recvStream->pos > prevRecvStreamLen)){
+		prevRecvStreamLen = recvStream->length;
+		memcpy(prevRecvStream, recvStream->s, prevRecvStreamLen);
+	}
+	prevRecvStreamPos = recvStream->pos;
+	prevNextRet = ret;
+
 	//char buf[1111];
 	//sprintf(bufToHexStringRet,"%x:%d, %d  %x%x",ret, recvStream->pos, recvStream->length,((char)recvStream->s[recvStream->pos-2]),((char)recvStream->s[recvStream->pos-2-1]));
 	//AfxMessageBox(buf);
@@ -2200,7 +2199,7 @@ int myShouldParseRecv(){
 	//if (privChanBufferPtr){
 	//	myInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0);
 	//}
-	if (0&&reader.getConnectionState() == 8){
+	if (0&&reader.getConnectionState() == 8){ // see what happens when packets are ignored
 		if (ret == 107){
 			ret = -1;
 		}
@@ -3113,61 +3112,113 @@ void ParseIPCMessage(struct ipcMessage mess)
 			revealCNameActive=0;
 			break;
 		}	
-	case 307: {
-		/*CString buf;
-		buf.Format("(%d, %d) rgb(%d, %d, %d) '%s'", mess.data[0], mess.data[1], mess.data[2], mess.data[3], mess.data[4], mess.payload);
-		AfxMessageBox(buf);*/
-		int x, y, red, green, blue, messLen;
-		char message[1000];
-		memcpy(&x, mess.payload, sizeof(int));
-		memcpy(&y, mess.payload + 4, sizeof(int));
-		memcpy(&red, mess.payload + 8, sizeof(int));
-		memcpy(&green, mess.payload + 12, sizeof(int));
-		memcpy(&blue, mess.payload + 16, sizeof(int));
-		memcpy(&messLen, mess.payload + 20, sizeof(int));
-		memcpy(&message, mess.payload + 24, messLen+1);
+	case 307:
+		{
+			/*CString buf;
+			buf.Format("(%d, %d) rgb(%d, %d, %d) '%s'", mess.data[0], mess.data[1], mess.data[2], mess.data[3], mess.data[4], mess.payload);
+			AfxMessageBox(buf);*/
+			int x, y, red, green, blue, messLen;
+			char message[1000];
+			memcpy(&x, mess.payload, sizeof(int));
+			memcpy(&y, mess.payload + 4, sizeof(int));
+			memcpy(&red, mess.payload + 8, sizeof(int));
+			memcpy(&green, mess.payload + 12, sizeof(int));
+			memcpy(&blue, mess.payload + 16, sizeof(int));
+			memcpy(&messLen, mess.payload + 20, sizeof(int));
+			memcpy(&message, mess.payload + 24, messLen+1);
 
-		bool actionComplete = false;
-		int found = -1;
-		for (int loop = 0; loop < 100; loop++) {
-			//buf.Format("(%d, %d), %d", HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, found);
-			//AfxMessageBox(buf);
-			if (HUDisplay[loop].pos.x == x && HUDisplay[loop].pos.y == y) {
-				if (message != "") {// Update message on screen at point (mess.data[0], mess.data[1]):
-					HUDisplay[loop].redColor = red;
-					HUDisplay[loop].greenColor = green;
-					HUDisplay[loop].blueColor = blue;
-					memcpy(HUDisplay[loop].message, message, messLen);
-					//AfxMessageBox("update");
-					actionComplete = true;
-					break;
+			bool actionComplete = false;
+			int found = -1;
+			for (int loop = 0; loop < 100; loop++) {
+				//buf.Format("(%d, %d), %d", HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, found);
+				//AfxMessageBox(buf);
+				if (HUDisplay[loop].pos.x == x && HUDisplay[loop].pos.y == y) {
+					if (message != "") {// Update message on screen at point (mess.data[0], mess.data[1]):
+						HUDisplay[loop].redColor = red;
+						HUDisplay[loop].greenColor = green;
+						HUDisplay[loop].blueColor = blue;
+						memcpy(HUDisplay[loop].message, message, messLen);
+						//AfxMessageBox("update");
+						actionComplete = true;
+						break;
+					}
+					else {// "Delete" message from screen
+						HUDisplay[loop].pos.x = 0;
+						HUDisplay[loop].pos.y = 0;
+						HUDisplay[loop].redColor = 0;
+						HUDisplay[loop].greenColor = 0;
+						HUDisplay[loop].blueColor = 0;
+						HUDisplay[loop].message[0] = '\0';
+						//AfxMessageBox("delete");
+						actionComplete = true;
+						break;
+					}
 				}
-				else {// "Delete" message from screen
-					HUDisplay[loop].pos.x = 0;
-					HUDisplay[loop].pos.y = 0;
-					HUDisplay[loop].redColor = 0;
-					HUDisplay[loop].greenColor = 0;
-					HUDisplay[loop].blueColor = 0;
-					HUDisplay[loop].message[0] = '\0';
-					//AfxMessageBox("delete");
-					actionComplete = true;
-					break;
-				}
+				else if  (!HUDisplay[loop].pos.x && !HUDisplay[loop].pos.y && found < 0) 
+					found = loop;
 			}
-			else if  (!HUDisplay[loop].pos.x && !HUDisplay[loop].pos.y && found < 0) 
-				found = loop;
+			if (!actionComplete && found > -1) { // Add a message to the screen if there is room to store it and no delete or update action took place
+				HUDisplay[found].pos.x = x;
+				HUDisplay[found].pos.y = y;
+				HUDisplay[found].redColor = red;
+				HUDisplay[found].greenColor = green;
+				HUDisplay[found].blueColor = blue;
+				memcpy(HUDisplay[loop].message, message, messLen);
+				//AfxMessageBox("add");
+			}
+			break;
 		}
-		if (!actionComplete && found > -1) { // Add a message to the screen if there is room to store it and no delete or update action took place
-			HUDisplay[found].pos.x = x;
-			HUDisplay[found].pos.y = y;
-			HUDisplay[found].redColor = red;
-			HUDisplay[found].greenColor = green;
-			HUDisplay[found].blueColor = blue;
-			memcpy(HUDisplay[loop].message, message, messLen);
-			//AfxMessageBox("add");
-		}
-		break;
-		}
+	case 308: // adds given regex to list
+		{
+			switch(*(int*)mess.payload){
+			case 1:
+				{
+					CRegexpProxy regexpProxy;
+					int handle, regLen;
+					memcpy(&handle, mess.payload + 4, sizeof(int));
+					// Since we are using the array at the same time we are creating it, we do not move around items in use to fill empty spaces
+					// this is run only once when the python script is loaded so this inefficioncy is acceptable.
+					// Handles restart with TA so disable duplicate handles
+					int i;
+					for (i=0;i<RECV_REGEX_MAX && recvRegex[i].inUse != 0;i++){ //find first empty space
+						if (recvRegex[i].handle == handle){ // disable duplicate handles as TA has restarted
+							recvRegex[i].inUse = 0;
+						}
+					}
+					if (i<RECV_REGEX_MAX) {
+						memcpy(&regLen, mess.payload + 8, sizeof(int));
+						char* regExp = (char*)malloc(regLen);
+						memcpy(regExp, mess.payload + 12, regLen);
+
+						recvRegex[i].handle = handle;
+						if(regexpProxy.regncomp(&(recvRegex[i].preg),regExp,regLen,REG_NOSUB|REG_EXTENDED)){
+							break;
+						}
+						free(regExp); //wis:need to figure out why string cannot be freed
+
+						recvRegex[i].inUse = 1; //activates regex once everything is in order
+						if (i >= recvRegexCount) recvRegexCount++;
+					}
+					break;
+				}
+			case 2: //sets use of given regex to 0
+				{
+					// it is a (almost absolute) guarantee that the time between the regex being set to 0 and
+					// being set to 1 again will be long enough for the reader to have finished with the entry
+					int handle;
+					memcpy(&handle, mess.payload + 4, sizeof(int));
+					for (int i=0;i<recvRegexCount && recvRegex[i].inUse != 0;i++){
+						if(recvRegex[i].handle == handle){
+							recvRegex[i].inUse = 0;
+						}
+					}
+				}
+				break;
+			default:		
+				break;
+			}
+			break;
+		}	
 	default:		
 		break;
 	};

@@ -2308,10 +2308,10 @@ static PyObject *tibiaauto_reader_setMainWindowText(PyObject *self, PyObject *ar
 	CMemReaderProxy reader;
 
 	char *arg1;
-    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
+    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
 	reader.setMainWindowText(arg1);
 	Py_INCREF(Py_None);
-	return Py_None; 
+	return Py_None;
 }
 
 static PyObject *tibiaauto_reader_setMainTrayText(PyObject *self, PyObject *args)
@@ -2319,7 +2319,7 @@ static PyObject *tibiaauto_reader_setMainTrayText(PyObject *self, PyObject *args
 	CMemReaderProxy reader;
 
 	char *arg1;
-    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;	
+    if (!PyArg_ParseTuple(args, "s", &arg1)) return NULL;
 	reader.setMainTrayText(arg1);
 	Py_INCREF(Py_None);
 	return Py_None; 

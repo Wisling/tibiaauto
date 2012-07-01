@@ -928,6 +928,18 @@ void packSenderPrintText(CPoint pos, int red, int green, int blue, char* text)
 	sender.printText(pos, red, green, blue, text);
 }
 
+void packSenderRegisterInpacketRegex(int handle, char* regExp, int regLen)
+{
+	CPackSender sender;
+	sender.registerInpacketRegex(handle, regExp, regLen);
+}
+
+void packSenderUnregisterInpacketRegex(int handle)
+{
+	CPackSender sender;
+	sender.unregisterInpacketRegex(handle);
+}
+
 void packSenderLook(int x,int y, int z,int objectId)
 {
 	CPackSender sender;

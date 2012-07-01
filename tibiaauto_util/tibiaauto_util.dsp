@@ -126,10 +126,6 @@ SOURCE=.\MemUtil.cpp
 # End Source File
 # Begin Source File
 
-SOURCE=.\MessageHandler.cpp
-# End Source File
-# Begin Source File
-
 SOURCE=.\PackSender.cpp
 # End Source File
 # Begin Source File
@@ -237,10 +233,6 @@ SOURCE=.\MemReader.h
 # Begin Source File
 
 SOURCE=.\MemUtil.h
-# End Source File
-# Begin Source File
-
-SOURCE=.\MessageHandler.h
 # End Source File
 # Begin Source File
 

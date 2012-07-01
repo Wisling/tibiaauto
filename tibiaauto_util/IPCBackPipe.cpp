@@ -156,7 +156,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 	int j = 0;//keep track of kept items
 	for (i=0;i<pipeBackCacheCount;i++)
 	{
-		if (abs(time(NULL) - pipeBackCache[i].tm) > 10000 && !sentErrMsg){ // 
+		if (abs(time(NULL) - pipeBackCache[i].tm) > 10000 && !sentErrMsg){
 			sentErrMsg = 1;
 			char errBuf[256];
 			sprintf(errBuf, "Received unrealistic time for sent ipcMessage. Time %d, sent time %d, type %d", time(NULL), pipeBackCache[i].tm,pipeBackCache[0].messageType);
