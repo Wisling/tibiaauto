@@ -33,35 +33,11 @@ mod_addressfinder.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_addressfinder - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE083.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_aim.pdb" /debug /machine:I386 /def:".\mod_addressfinder.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll" /implib:"Debug/mod_aim.lib" /pdbtype:sept 
-".\Debug\Addresses.obj"
-".\Debug\AddressFinder.obj"
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_addressfinder.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_addressfinder.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE083.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_aim.dll - 1 error(s), 0 warning(s)
+mod_aim.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_aim - Win32 Release--------------------
 </h3>
@@ -75,31 +51,11 @@ mod_aim.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_aim - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE287.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_aim.pdb" /debug /machine:I386 /def:".\mod_aim.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll" /implib:"Debug/mod_aim.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\mod_aim.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_aim.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE287.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_aim.dll - 1 error(s), 0 warning(s)
+mod_aim.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_antylogout - Win32 Release--------------------
 </h3>
@@ -113,29 +69,11 @@ mod_antylogout.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_antylogout - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE381.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_antylogout.pdb" /debug /machine:I386 /def:".\mod_antylogout.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_antylogout.dll" /implib:"Debug/mod_antylogout.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\mod_antylogout.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_antylogout.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE381.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_antylogout.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_antylogout.dll - 1 error(s), 0 warning(s)
+mod_antylogout.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_autogo - Win32 Release--------------------
 </h3>
@@ -149,42 +87,11 @@ mod_autogo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_autogo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE48B.tmp" with contents
-[
-WINMM.LIB /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_autogo.pdb" /debug /machine:I386 /def:".\mod_autogo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /implib:"Debug/mod_autogo.lib" /pdbtype:sept 
-".\Debug\Alarm.obj"
-".\Debug\alarmdialog.obj"
-".\Debug\BtnST.obj"
-".\Debug\ComboBoxSuper.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\CustomSpellDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GeneralConfigDialog.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\ImageButtonWithStyle.obj"
-".\Debug\mod_autogo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\Trigger.obj"
-".\Debug\VisualStylesXP.obj"
-".\Debug\WhiteList.obj"
-".\Debug\XTabCtrl.obj"
-".\Debug\mod_autogo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE48B.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_autogo.dll - 1 error(s), 0 warning(s)
+mod_autogo.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_banker - Win32 Release--------------------
 </h3>
@@ -198,33 +105,11 @@ mod_banker.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_banker - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE5F3.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_banker.pdb" /debug /machine:I386 /def:".\mod_banker.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_banker.dll" /implib:"Debug/mod_banker.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_banker.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_banker.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE5F3.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_banker.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_banker.dll - 1 error(s), 0 warning(s)
+mod_banker.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_cavebot - Win32 Release--------------------
 </h3>
@@ -238,37 +123,11 @@ mod_cavebot.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_cavebot - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE6EE.tmp" with contents
-[
-zdll.lib zdll.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_cavebot.pdb" /debug /machine:I386 /def:".\mod_cavebot.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll" /implib:"Debug/mod_cavebot.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\DropLootDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\Helpers.obj"
-".\Debug\LoadWaypointsInfo.obj"
-".\Debug\mod_cavebot.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\SharedMemory.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_cavebot.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE6EE.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_cavebot.dll - 1 error(s), 0 warning(s)
+mod_cavebot.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_creatureinfo - Win32 Release--------------------
 </h3>
@@ -282,36 +141,11 @@ mod_creatureinfo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_creatureinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE7F8.tmp" with contents
-[
-../../xerces.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_creatureinfo.pdb" /debug /machine:I386 /def:".\mod_creatureinfo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_creatureinfo.dll" /implib:"Debug/mod_creatureinfo.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\KnownInfo.obj"
-".\Debug\mod_creatureinfo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\NameChanger.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\Util.obj"
-".\Debug\mod_creatureinfo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE7F8.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_creatureinfo.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_creatureinfo.dll - 1 error(s), 0 warning(s)
+mod_creatureinfo.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_eater - Win32 Release--------------------
 </h3>
@@ -325,29 +159,11 @@ mod_eater.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_eater - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE902.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_eater.pdb" /debug /machine:I386 /def:".\mod_eater.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_eater.dll" /implib:"Debug/mod_eater.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\mod_eater.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_eater.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE902.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_eater.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_eater.dll - 1 error(s), 0 warning(s)
+mod_eater.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_fisher - Win32 Release--------------------
 </h3>
@@ -361,33 +177,11 @@ mod_fisher.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_fisher - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9FD.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_fisher.pdb" /debug /machine:I386 /def:".\mod_fisher.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fisher.dll" /implib:"Debug/mod_fisher.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_fisher.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_fisher.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9FD.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_fisher.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_fisher.dll - 1 error(s), 0 warning(s)
+mod_fisher.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_fluid - Win32 Release--------------------
 </h3>
@@ -401,32 +195,11 @@ mod_fluid.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_fluid - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB65.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_fluid.pdb" /debug /machine:I386 /def:".\mod_fluid.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fluid.dll" /implib:"Debug/mod_fluid.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_fluid.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_fluid.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB65.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_fluid.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_fluid.dll - 1 error(s), 0 warning(s)
+mod_fluid.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_fps - Win32 Release--------------------
 </h3>
@@ -440,32 +213,11 @@ mod_fps.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_fps - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEC9E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_fps.pdb" /debug /machine:I386 /def:".\mod_fps.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fps.dll" /implib:"Debug/mod_fps.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_fps.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_fps.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEC9E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_fps.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_fps.dll - 1 error(s), 0 warning(s)
+mod_fps.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_grouping - Win32 Release--------------------
 </h3>
@@ -479,29 +231,11 @@ mod_grouping.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_grouping - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPED98.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_grouping.pdb" /debug /machine:I386 /def:".\mod_grouping.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_grouping.dll" /implib:"Debug/mod_grouping.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\mod_grouping.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_grouping.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPED98.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_grouping.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_grouping.dll - 1 error(s), 0 warning(s)
+mod_grouping.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_itemconfig - Win32 Release--------------------
 </h3>
@@ -515,34 +249,11 @@ mod_itemconfig.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_itemconfig - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEE83.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_itemconfig.pdb" /debug /machine:I386 /def:".\mod_itemconfig.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_itemconfig.dll" /implib:"Debug/mod_itemconfig.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ComboBoxSuper.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\ItemConfig.obj"
-".\Debug\mod_itemconfig.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolItemConfig.obj"
-".\Debug\mod_itemconfig.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEE83.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_itemconfig.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_itemconfig.dll - 1 error(s), 0 warning(s)
+mod_itemconfig.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_light - Win32 Release--------------------
 </h3>
@@ -556,32 +267,11 @@ mod_light.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_light - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEF7E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_light.pdb" /debug /machine:I386 /def:".\mod_light.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_light.dll" /implib:"Debug/mod_light.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_light.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_light.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEF7E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_light.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_light.dll - 1 error(s), 0 warning(s)
+mod_light.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_login - Win32 Release--------------------
 </h3>
@@ -595,33 +285,11 @@ mod_login.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_login - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF098.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_login.pdb" /debug /machine:I386 /def:".\mod_login.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_login.dll" /implib:"Debug/mod_login.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_login.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendKeys.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_login.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF098.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_login.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_login.dll - 1 error(s), 0 warning(s)
+mod_login.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_looter - Win32 Release--------------------
 </h3>
@@ -635,33 +303,11 @@ mod_looter.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_looter - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF1F0.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_looter.pdb" /debug /machine:I386 /def:".\mod_looter.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_looter.dll" /implib:"Debug/mod_looter.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_looter.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_looter.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF1F0.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_looter.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_looter.dll - 1 error(s), 0 warning(s)
+mod_looter.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_maphack - Win32 Release--------------------
 </h3>
@@ -675,32 +321,11 @@ mod_maphack.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_maphack - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF396.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_maphack.pdb" /debug /machine:I386 /def:".\mod_maphack.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_maphack.dll" /implib:"Debug/mod_maphack.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_maphack.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_maphack.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF396.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_maphack.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_maphack.dll - 1 error(s), 0 warning(s)
+mod_maphack.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_memdebug - Win32 Release--------------------
 </h3>
@@ -714,29 +339,11 @@ mod_memdebug.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_memdebug - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF4B0.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_memdebug.pdb" /debug /machine:I386 /def:".\mod_memdebug.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_memdebug.dll" /implib:"Debug/mod_memdebug.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\mod_memdebug.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_memdebug.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF4B0.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_memdebug.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_memdebug.dll - 1 error(s), 0 warning(s)
+mod_memdebug.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_monstershow - Win32 Release--------------------
 </h3>
@@ -750,33 +357,11 @@ mod_monstershow.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_monstershow - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF627.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_monstershow.pdb" /debug /machine:I386 /def:".\mod_monstershow.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_monstershow.dll" /implib:"Debug/mod_monstershow.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_monstershow.obj"
-".\Debug\MonsterButton.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolMonsterShow.obj"
-".\Debug\mod_monstershow.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF627.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_monstershow.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_monstershow.dll - 1 error(s), 0 warning(s)
+mod_monstershow.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_playerinfo - Win32 Release--------------------
 </h3>
@@ -790,34 +375,11 @@ mod_playerinfo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_playerinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF7DD.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_playerinfo.pdb" /debug /machine:I386 /def:".\mod_playerinfo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_playerinfo.dll" /implib:"Debug/mod_playerinfo.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\CharInfoDialog.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\IPCBackPipeProxy.obj"
-".\Debug\mod_playerinfo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\playerInfo.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_playerinfo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF7DD.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_playerinfo.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_playerinfo.dll - 1 error(s), 0 warning(s)
+mod_playerinfo.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_responder - Win32 Release--------------------
 </h3>
@@ -831,37 +393,11 @@ mod_responder.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_responder - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF8E7.tmp" with contents
-[
-../../xerces.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_responder.pdb" /debug /machine:I386 /def:".\mod_responder.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_responder.dll" /implib:"Debug/mod_responder.lib" /pdbtype:sept 
-".\Debug\AutoResponderParser.obj"
-".\Debug\AutoResponderParserContext.obj"
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_responder.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolAutoRespond.obj"
-".\Debug\ToolAutoResponderMessage.obj"
-".\Debug\ToolAutoResponderThreadConfig.obj"
-".\Debug\Util.obj"
-".\Debug\mod_responder.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF8E7.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_responder.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_responder.dll - 1 error(s), 0 warning(s)
+mod_responder.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_restack - Win32 Release--------------------
 </h3>
@@ -875,32 +411,11 @@ mod_restack.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_restack - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFA7E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_restack.pdb" /debug /machine:I386 /def:".\mod_restack.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_restack.dll" /implib:"Debug/mod_restack.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_restack.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_restack.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFA7E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_restack.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_restack.dll - 1 error(s), 0 warning(s)
+mod_restack.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_runemaker - Win32 Release--------------------
 </h3>
@@ -914,33 +429,11 @@ mod_runemaker.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_runemaker - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFC24.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_runemaker.pdb" /debug /machine:I386 /def:".\mod_runemaker.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_runemaker.dll" /implib:"Debug/mod_runemaker.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_runemaker.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolContainerContent.obj"
-".\Debug\mod_runemaker.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFC24.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_runemaker.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_runemaker.dll - 1 error(s), 0 warning(s)
+mod_runemaker.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_seller - Win32 Release--------------------
 </h3>
@@ -954,33 +447,11 @@ mod_seller.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_seller - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFD3E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_seller.pdb" /debug /machine:I386 /def:".\mod_seller.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_seller.dll" /implib:"Debug/mod_seller.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_seller.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_seller.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFD3E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_seller.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_seller.dll - 1 error(s), 0 warning(s)
+mod_seller.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_showmap - Win32 Release--------------------
 </h3>
@@ -994,34 +465,11 @@ mod_showmap.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_showmap - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFE29.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_showmap.pdb" /debug /machine:I386 /def:".\mod_showmap.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll" /implib:"Debug/mod_showmap.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigWindow.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\MapButton.obj"
-".\Debug\mod_showmap.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolMapShow.obj"
-".\Debug\mod_showmap.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFE29.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_showmap.dll - 1 error(s), 0 warning(s)
+mod_showmap.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_sorter - Win32 Release--------------------
 </h3>
@@ -1035,33 +483,11 @@ mod_sorter.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_sorter - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFF62.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_sorter.pdb" /debug /machine:I386 /def:".\mod_sorter.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_sorter.dll" /implib:"Debug/mod_sorter.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_sorter.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_sorter.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFF62.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_sorter.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_sorter.dll - 1 error(s), 0 warning(s)
+mod_sorter.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_spellcaster - Win32 Release--------------------
 </h3>
@@ -1075,40 +501,11 @@ mod_spellcaster.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_spellcaster - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP8B.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_spellcaster.pdb" /debug /machine:I386 /def:".\mod_spellcaster.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_spellcaster.dll" /implib:"Debug/mod_spellcaster.lib" /pdbtype:sept 
-".\Debug\AOEDialog.obj"
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\HealList.obj"
-".\Debug\LifeDialog.obj"
-".\Debug\ManaDialog.obj"
-".\Debug\mod_spellcaster.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\StrikeDialog.obj"
-".\Debug\SummonDialog.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\TimedDialog.obj"
-".\Debug\XTabCtrl.obj"
-".\Debug\mod_spellcaster.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP8B.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_spellcaster.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_spellcaster.dll - 1 error(s), 0 warning(s)
+mod_spellcaster.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_team - Win32 Release--------------------
 </h3>
@@ -1122,32 +519,11 @@ mod_team.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_team - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1F3.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_team.pdb" /debug /machine:I386 /def:".\mod_team.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_team.dll" /implib:"Debug/mod_team.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\ConnectedNode.obj"
-".\Debug\ConnectedNodes.obj"
-".\Debug\exports.obj"
-".\Debug\mod_team.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_team.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1F3.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_team.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_team.dll - 1 error(s), 0 warning(s)
+mod_team.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_trademon - Win32 Release--------------------
 </h3>
@@ -1161,32 +537,11 @@ mod_trademon.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_trademon - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP38A.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_trademon.pdb" /debug /machine:I386 /def:".\mod_trademon.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_trademon.dll" /implib:"Debug/mod_trademon.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_trademon.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_trademon.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP38A.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_trademon.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_trademon.dll - 1 error(s), 0 warning(s)
+mod_trademon.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_uh - Win32 Release--------------------
 </h3>
@@ -1200,32 +555,11 @@ mod_uh.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_uh - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP4F1.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_uh.pdb" /debug /machine:I386 /def:".\mod_uh.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_uh.dll" /implib:"Debug/mod_uh.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_uh.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_uh.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP4F1.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_uh.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_uh.dll - 1 error(s), 0 warning(s)
+mod_uh.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_xray - Win32 Release--------------------
 </h3>
@@ -1239,32 +573,11 @@ mod_xray.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_xray - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP698.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_xray.pdb" /debug /machine:I386 /def:".\mod_xray.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_xray.dll" /implib:"Debug/mod_xray.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\mod_xray.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_xray.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP698.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_xray.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_xray.dll - 1 error(s), 0 warning(s)
+mod_xray.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto - Win32 Release--------------------
 </h3>
@@ -1278,174 +591,88 @@ tibiaauto.exe - 0 error(s), 0 warning(s)
 --------------------Configuration: tibiaauto - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP85D.tmp" with contents
-[
-zlib.lib ws2_32.lib xerces.lib zdll.lib psapi.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/tibiaauto.pdb" /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs" 
-".\Debug\BtnST.obj"
-".\Debug\CharDialog.obj"
-".\Debug\ColorChooser.obj"
-".\Debug\ConfigCreatorUtil.obj"
-".\Debug\ConfigCreatorUtilMultiParams.obj"
-".\Debug\ConfigDialogStatus.obj"
-".\Debug\DonationDialog.obj"
-".\Debug\EnterCode.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\LoadedModules.obj"
-".\Debug\md5c.obj"
-".\Debug\md5class.obj"
-".\Debug\MemUtil.obj"
-".\Debug\ModuleProxy.obj"
-".\Debug\MyDialog.obj"
-".\Debug\OptionsDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\PythonEngine.obj"
-".\Debug\PythonScript.obj"
-".\Debug\PythonScriptsDialog.obj"
-".\Debug\RepeatButton.obj"
-".\Debug\ScriptConfigDialg.obj"
-".\Debug\Skin.obj"
-".\Debug\SliderCtrlEx.obj"
-".\Debug\StdAfx.obj"
-".\Debug\tibiaauto.obj"
-".\Debug\tibiaautoDlg.obj"
-".\Debug\Util.obj"
-".\Debug\webbrowser2.obj"
-".\Debug\tibiaauto.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP85D.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tibiaauto.exe - 1 error(s), 0 warning(s)
+tibiaauto.exe - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto_util - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
-Build : warning : failed to (or don't know how to) build 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp'
-
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPA61.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /I "GNORE:4786" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/tibiaauto_util.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPA61.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPA71.tmp" with contents
-[
-libdb45.lib xerces.lib psapi.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/tibiaauto_util.pdb" /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /implib:"Release/tibiaauto_util.lib" /libpath:"E:\Tibia\Sourse Code\tibiaauto-kernel" 
-".\Release\BtnST.obj"
-".\Release\CreaturesReader.obj"
-".\Release\IPCBackPipe.obj"
-".\Release\md5c.obj"
-".\Release\md5class.obj"
-".\Release\MemConstData.obj"
-".\Release\MemReader.obj"
-".\Release\MemUtil.obj"
-".\Release\MessageHandler.obj"
-".\Release\PackSender.obj"
-".\Release\proxy.obj"
-".\Release\Queue.obj"
-".\Release\Skin.obj"
-".\Release\SkinLoader.obj"
-".\Release\StdAfx.obj"
-".\Release\TAMiniMap.obj"
-".\Release\tibiaauto_util.obj"
-".\Release\TibiaCharacter.obj"
-".\Release\TibiaContainer.obj"
-".\Release\TibiaItem.obj"
-".\Release\TibiaMap.obj"
-".\Release\TibiaMapTile.obj"
-".\Release\TibiaMapTileItem.obj"
-".\Release\TibiaVIPEntry.obj"
-".\Release\TileReader.obj"
-".\Release\Util.obj"
-".\Release\VariableStore.obj"
-".\Release\tibiaauto_util.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPA71.tmp"
-<h3>Output Window</h3>
-Compiling...
-MessageHandler.cpp
-fatal error C1083: Cannot open source file: 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp': No such file or directory
-Error executing cl.exe.
 
 
 
 <h3>Results</h3>
-tibiaauto_util.dll - 1 error(s), 1 warning(s)
+tibiaauto_util.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto_util - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Build : warning : failed to (or don't know how to) build 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp'
-
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPC18.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/tibiaauto_util.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPC18.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPC28.tmp" with contents
-[
-xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib psapi.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/tibiaauto_util.pdb" /debug /machine:I386 /def:".\tibiaauto_util.def" /out:"E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll" /implib:"Debug/tibiaauto_util.lib" /pdbtype:sept /IGNORE:4786 /IGNORE:4786 
-".\Debug\BtnST.obj"
-".\Debug\CreaturesReader.obj"
-".\Debug\IPCBackPipe.obj"
-".\Debug\md5c.obj"
-".\Debug\md5class.obj"
-".\Debug\MemConstData.obj"
-".\Debug\MemReader.obj"
-".\Debug\MemUtil.obj"
-".\Debug\MessageHandler.obj"
-".\Debug\PackSender.obj"
-".\Debug\proxy.obj"
-".\Debug\Queue.obj"
-".\Debug\Skin.obj"
-".\Debug\SkinLoader.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TAMiniMap.obj"
-".\Debug\tibiaauto_util.obj"
-".\Debug\TibiaCharacter.obj"
-".\Debug\TibiaContainer.obj"
-".\Debug\TibiaItem.obj"
-".\Debug\TibiaMap.obj"
-".\Debug\TibiaMapTile.obj"
-".\Debug\TibiaMapTileItem.obj"
-".\Debug\TibiaVIPEntry.obj"
-".\Debug\TileReader.obj"
-".\Debug\Util.obj"
-".\Debug\VariableStore.obj"
-".\Debug\tibiaauto_util.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPC28.tmp"
-<h3>Output Window</h3>
-Compiling...
-MessageHandler.cpp
-fatal error C1083: Cannot open source file: 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp': No such file or directory
-Error executing cl.exe.
 
 
 
 <h3>Results</h3>
-tibiaauto_util.dll - 1 error(s), 1 warning(s)
+tibiaauto_util.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject2 - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE99A.tmp" with contents
+[
+/nologo /MD /W3 /GX /ZI /I "../../tibiaauto-pub/sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "TIBIAAUTOINJECT2_EXPORTS" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/tibiaautoinject2.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE99A.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9AB.tmp" with contents
+[
+ws2_32.lib detours.lib psapi.lib /nologo /dll /incremental:no /pdb:"Release/tibiaautoinject2.pdb" /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"../../tibiaauto-pub\tibiaautoinject2.dll" /implib:"Release/tibiaautoinject2.lib" 
+".\Release\BtnST.obj"
+".\Release\exports.obj"
+".\Release\MyMenu.obj"
+".\Release\MyMenuData.obj"
+".\Release\protocol.obj"
+".\Release\proxy.obj"
+".\Release\Skin.obj"
+".\Release\StdAfx.obj"
+".\Release\tibiaautoinject2.obj"
+".\Release\tibiaautoinject2.res"
+]
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9AB.tmp"
+<h3>Output Window</h3>
+Compiling...
+tibiaautoinject2.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4309: '=' : truncation of constant value
+Linking...
+LINK : warning LNK4075: ignoring /EDITANDCONTINUE due to /INCREMENTAL:NO specification
+   Creating library Release/tibiaautoinject2.lib and object Release/tibiaautoinject2.exp
 
 
 
 <h3>Results</h3>
-tibiaautoinject2.dll - 0 error(s), 0 warning(s)
+tibiaautoinject2.dll - 0 error(s), 13 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject2 - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBF.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDA.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../tibiaauto-pub/sdk" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "TIBIAAUTOINJECT2_EXPORTS" /FR"Debug/" /Fp"Debug/tibiaautoinject2.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDA.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDB.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib detours.lib ws2_32.lib psapi.lib /nologo /dll /incremental:yes /pdb:"Debug/tibiaautoinject2.pdb" /debug /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"E:\Tibia\Tibia\tibiaautoinject2.dll" /implib:"Debug/tibiaautoinject2.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -1459,16 +686,28 @@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32
 ".\Debug\tibiaautoinject2.obj"
 ".\Debug\tibiaautoinject2.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBF.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDB.tmp"
 <h3>Output Window</h3>
+Compiling...
+tibiaautoinject2.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4309: '=' : truncation of constant value
 Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\tibiaautoinject2.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tibiaautoinject2.dll - 1 error(s), 0 warning(s)
+tibiaautoinject2.dll - 0 error(s), 12 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject3 - Win32 Release--------------------
 </h3>
@@ -1482,22 +721,11 @@ tibiaautoinject3.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tibiaautoinject3 - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF55.tmp" with contents
-[
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"Debug/tibiaautoinject3.pdb" /debug /machine:I386 /def:".\tibiaautoinject3.def" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaautoinject3.dll" /implib:"Debug/tibiaautoinject3.lib" /pdbtype:sept 
-".\Debug\StdAfx.obj"
-".\Debug\tibiaautoinject3.obj"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF55.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto/tibiaautoinject3.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tibiaautoinject3.dll - 1 error(s), 0 warning(s)
+tibiaautoinject3.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tre - Win32 Release--------------------
 </h3>
@@ -1511,31 +739,11 @@ tre.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tre - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP10EC.tmp" with contents
-[
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msvcprt.lib /nologo /dll /incremental:yes /pdb:"Debug/tre.pdb" /debug /machine:I386 /def:".\tre.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/tre.dll" /implib:"Debug/tre.lib" /pdbtype:sept 
-".\Debug\regcomp.obj"
-".\Debug\regerror.obj"
-".\Debug\regexec.obj"
-".\Debug\tre-ast.obj"
-".\Debug\tre-compile.obj"
-".\Debug\tre-match-approx.obj"
-".\Debug\tre-match-backtrack.obj"
-".\Debug\tre-match-parallel.obj"
-".\Debug\tre-mem.obj"
-".\Debug\tre-parse.obj"
-".\Debug\tre-stack.obj"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP10EC.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/tre.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tre.dll - 1 error(s), 0 warning(s)
+tre.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>
