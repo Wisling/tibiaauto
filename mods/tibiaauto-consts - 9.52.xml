@@ -1,0 +1,119 @@
+<!-- Tibia constants for Tibia 9.52 -->
+<const-definitions>
+	<consts>
+		<!-- item codes -->
+		<const code="ropespot" value="0x182"/> 
+		<const code="bagbrown" value="0xb25"/>
+		<const code="rope" value="0xbbb"/>
+		<const code="GP" value="0xbd7"/>
+		<const code="PlatinumCoin" value="0xbdb"/>
+		<const code="CrystalCoin" value="0xbe3"/>
+		<const code="runeUH" value="0xc58"/>
+		<const code="runeIH" value="0xc50"/>
+		<const code="runeLMM" value="0xc66"/>
+		<const code="runeHMM" value="0xc7e"/>
+		<const code="runeGFB" value="0xc77"/>
+		<const code="runeExplo" value="0xc80"/>
+		<const code="runeSoulFire" value="0xc7b"/>
+		<const code="runeSD" value="0xc53"/>
+		<const code="runeBlank" value="0xc4b"/>
+		<const code="spear" value="0xccd"/>
+		<const code="fish" value="0xdfa"/>
+		<const code="fishingRod" value="0xd9b"/>
+		<const code="fluid" value="0xb3a"/>
+		<const code="fluidLifeH" value="0x1ec4"/>
+		<const code="fluidLife" value="0x10a"/>
+		<const code="fluidLifeS" value="0xec"/>
+		<const code="fluidLifeG" value="0xef"/>
+		<const code="fluidLifeU" value="0x1ddb"/>
+		<const code="fluidMana" value="0x10c"/>
+		<const code="fluidManaS" value="0xed"/>
+		<const code="fluidManaG" value="0xee"/>
+		<const code="fluidEmpty" value="0x11d"/>
+		<const code="fluidEmptyS" value="0x11b"/>
+		<const code="fluidEmptyG" value="0x11c"/>
+		<const code="worms" value="0xda4"/>
+		<const code="waterWithFishStart" value="0x11F5"/>
+		<const code="waterWithFishEnd" value="0x11FA"/>
+		<const code="crate" value="0x1B3"/>
+		<const code="shovel" value="0xD81"/>
+		<const code="closedhole" value="0x251"/>
+		<const code="lootItemsAboveId" value="0x99999"/><!--9.10 value 0x322A-->
+
+		<!-- addresses -->
+		<const code="addrOffset" value="0"/>
+
+		<const code="addrMCInject" value="0x1265EB"/> <!--D7 3D B7 -->
+		<const code="addrXRay1" value="0x4EC9CB"/> <!-- 07000000????????02000000-->
+		<const code="addrXRay2" value="0x4EC9D3"/>
+		<const code="addrFunRevealCName1" value="0x507F99"/> <!-- search (84 C0) 75 (?0A?) -->
+		<const code="addrFunRevealCName2" value="0"/>
+		<const code="addrFunRevealCName3" value="0"/>
+		<const code="addrFunRevealCName4" value="0"/>
+		<const code="addrSelfPosX" value="0"/>
+		<const code="addrSelfPosY" value="0"/>
+		<const code="addrSelfPosZ" value="0"/>
+		<const code="addrGoZ" value="0"/><!-- Tibia uses selfPosZ instead-->
+		<const code="addrBattleMin" value="0"/><!-- Tibia now assumes this to be 0 -->
+
+		<const code="addrCurrentTileToGo" value="0x7AAD30"/><!--counts up to addrTileToGo-->
+		<const code="addrSelfFlags" value="0x7AAD34"/> <!-- cat1 -->
+		<const code="addrFollowedCreature" value="0x7AAD3C"/>
+		<const code="addrVIP" value="0x7AAD40"/> <!-- cat0 -->
+		<const code="addrPathToGo" value="0x7ACFA0"/>
+		<const code="addrXor" value="0x7ACFD0"/>
+		<const code="addrManaMax" value="0x7ACFD4"/>
+		<const code="addrExp" value="0x7ACFE0"/>
+		<const code="addrBattleMax" value="0x7ACFE8"/>
+		<const code="addrLvl" value="0x7AD00C"/>
+		<const code="addrSoulPoints" value="0x7AD010"/>
+		<const code="addrMlvl" value="0x7AD014"/>
+		<const code="addrMlvlPercLeft" value="0x7AD01C"/>
+		<const code="addrAttackedCreature" value="0x7AD020"/>
+		<const code="addrMana" value="0x7AD024"/>
+		<const code="addrTilesToGo" value="0x7AD028"/>
+		<const code="addrSkillFistPercLeft" value="0x7AD038"/>
+		<const code="addrStamina" value="0x7AD068"/>
+		<const code="addrCurrentWindow" value="0x7AD61C"/> <!-- cat2 -->
+		<const code="addrModeFollow" value="0x7B4780"/>
+		<const code="addrModeAttackPlayers" value="0x7B6BAB"/> <!-- cat3 -->
+		<const code="addrModeAttackType" value="0x7B6BB4"/> <!-- cat3 -->
+		<const code="addrConnectionState" value="0x7B6E24"/> <!-- cat4 -->
+		<const code="addrWhiteMessage" value="0x7F8A98"/>
+		<const code="addrFirstContainer" value="0x7FC46C"/> <!-- cat2 -->
+		<const code="addrTradeCountSelf" value="0x7FE340"/>
+		<const code="addrTradeFirstItemSelf" value="0x7FE344"/>
+		<const code="addrTradeCountPartner" value="0x7FE818"/>
+		<const code="addrTradeFirstItemPartner" value="0x7FE81C"/> <!-- cat2 -->
+		<const code="addrMiniMapStart" value="0x7FECD8"/> <!-- begins at x,y map tile cat2 -->
+		<const code="addrHP" value="0x942000"/>
+		<const code="addrFirstCreature" value="0x942008"/> <!-- cat1 -->
+		<const code="addrSkillFist" value="0x979E78"/>
+		<const code="addrSkillFish" value="0x979E90"/>
+		<const code="addrCap" value="0x979E94"/>
+		<const code="addrGoY" value="0x979E98"/>
+		<const code="addrHPMax" value="0x979E9C"/>
+		<const code="addrGoX" value="0x979EA0"/>
+		<const code="addrSelfId" value="0x979EA4"/>
+		<const code="addrFps" value="0x98C15C"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrPacketCount" value="0x9E1FF0"/> <!-- cat0 -->
+		<const code="addrSlotArrow" value="0x9E7E40"/> <!-- cat2 -->
+		<const code="addrLeftHand" value="0x9E7E70"/>
+		<const code="addrRightHand" value="0x9E7E7C"/>
+		<const code="addrBackpack" value="0x9E7E94"/> <!-- itemID - 8 -->
+		<const code="addrMapStart" value="0x9E7ED0"/> <!-- is a pointer to visible map -->
+		<const code="addrCurrentTm" value="0x9E920C"/> <!-- cat2 -->
+
+		<!-- structure lengths -->
+		<const code="lengthContainer" value="492"/>
+		<const code="lengthItem" value="12"/>
+		<const code="lengthCreature" value="176"/>
+		<const code="lengthMapTile" value="168"/>
+		<const code="lengthVIP" value="44"/>
+		<const code="lengthMiniMap" value="131240"/>
+		<const code="lengthMiniMapLabel" value="112"/>
+		<const code="maxContainers" value="16"/>
+		<const code="maxCreatures" value="1300"/>
+		<const code="maxMapTiles" value="2016"/>
+	</consts>
+</const-definitions>
