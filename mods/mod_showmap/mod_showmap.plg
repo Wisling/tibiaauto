@@ -51,26 +51,6 @@ mod_aim.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_aim - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP5AC6.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_aim.pdb" /debug /machine:I386 /def:".\mod_aim.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll" /implib:"Debug/mod_aim.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\mod_aim.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_aim.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP5AC6.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : LNK6006: program database C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-pub\mods\mod_aim\Debug\mod_aim.pdb missing; performing full link
-   Creating library Debug/mod_aim.lib and object Debug/mod_aim.exp
 
 
 
@@ -395,27 +375,6 @@ mod_playerinfo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_playerinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP6783.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_playerinfo.pdb" /debug /machine:I386 /def:".\mod_playerinfo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_playerinfo.dll" /implib:"Debug/mod_playerinfo.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\CharInfoDialog.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\IPCBackPipeProxy.obj"
-".\Debug\mod_playerinfo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\playerInfo.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_playerinfo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP6783.tmp"
-<h3>Output Window</h3>
-Linking...
 
 
 
@@ -488,26 +447,7 @@ mod_seller.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_seller - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP6B3C.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_seller.pdb" /debug /machine:I386 /def:".\mod_seller.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_seller.dll" /implib:"Debug/mod_seller.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_seller.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_seller.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP6B3C.tmp"
-<h3>Output Window</h3>
-Linking...
+
 
 
 
@@ -995,63 +935,13 @@ tibiaauto.exe - 2 error(s), 291 warning(s)
 --------------------Configuration: tibiaauto - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7608.tmp" with contents
-[
-/nologo /MD /W3 /Gm /GX /ZI /Od /I "E:\Python24\include" /I "../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/tibiaauto.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp"
-"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonScript.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7608.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7628.tmp" with contents
-[
-zlib.lib ws2_32.lib xerces.lib zdll.lib psapi.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/tibiaauto.pdb" /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs" 
-".\Debug\BtnST.obj"
-".\Debug\CharDialog.obj"
-".\Debug\ColorChooser.obj"
-".\Debug\ConfigCreatorUtil.obj"
-".\Debug\ConfigCreatorUtilMultiParams.obj"
-".\Debug\ConfigDialogStatus.obj"
-".\Debug\DonationDialog.obj"
-".\Debug\EnterCode.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\LoadedModules.obj"
-".\Debug\md5c.obj"
-".\Debug\md5class.obj"
-".\Debug\MemUtil.obj"
-".\Debug\ModuleProxy.obj"
-".\Debug\MyDialog.obj"
-".\Debug\OptionsDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\PythonEngine.obj"
-".\Debug\PythonScript.obj"
-".\Debug\PythonScriptsDialog.obj"
-".\Debug\RepeatButton.obj"
-".\Debug\ScriptConfigDialg.obj"
-".\Debug\Skin.obj"
-".\Debug\SliderCtrlEx.obj"
-".\Debug\StdAfx.obj"
-".\Debug\tibiaauto.obj"
-".\Debug\tibiaautoDlg.obj"
-".\Debug\Util.obj"
-".\Debug\webbrowser2.obj"
-".\Debug\tibiaauto.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7628.tmp"
-<h3>Output Window</h3>
-Compiling...
-PythonEngine.cpp
-C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp(808) : error C2039: 'unregisterInpacketRegex' : is not a member of 'CPackSenderProxy'
-        c:\mark\software\cygwin\home\mark the mighty\tibia\tibiaauto-pub\sdk\packsenderproxy.h(13) : see declaration of 'CPackSenderProxy'
-PythonScript.cpp
-C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonScript.cpp(134) : error C2039: 'registerInpacketRegex' : is not a member of 'CPackSenderProxy'
-        c:\mark\software\cygwin\home\mark the mighty\tibia\tibiaauto-pub\sdk\packsenderproxy.h(13) : see declaration of 'CPackSenderProxy'
-Generating Code...
-Error executing cl.exe.
+
 
 
 
 <h3>Results</h3>
-tibiaauto.exe - 2 error(s), 0 warning(s)
+
+tibiaauto.exe - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto_util - Win32 Release--------------------
 </h3>
@@ -1065,61 +955,71 @@ tibiaauto_util.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tibiaauto_util - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7A4E.tmp" with contents
-[
-xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib psapi.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/tibiaauto_util.pdb" /debug /machine:I386 /def:".\tibiaauto_util.def" /out:"E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll" /implib:"Debug/tibiaauto_util.lib" /pdbtype:sept /IGNORE:4786 /IGNORE:4786 
-".\Debug\BtnST.obj"
-".\Debug\CreaturesReader.obj"
-".\Debug\IPCBackPipe.obj"
-".\Debug\md5c.obj"
-".\Debug\md5class.obj"
-".\Debug\MemConstData.obj"
-".\Debug\MemReader.obj"
-".\Debug\MemUtil.obj"
-".\Debug\PackSender.obj"
-".\Debug\proxy.obj"
-".\Debug\Queue.obj"
-".\Debug\Skin.obj"
-".\Debug\SkinLoader.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TAMiniMap.obj"
-".\Debug\tibiaauto_util.obj"
-".\Debug\TibiaCharacter.obj"
-".\Debug\TibiaContainer.obj"
-".\Debug\TibiaItem.obj"
-".\Debug\TibiaMap.obj"
-".\Debug\TibiaMapTile.obj"
-".\Debug\TibiaMapTileItem.obj"
-".\Debug\TibiaVIPEntry.obj"
-".\Debug\TileReader.obj"
-".\Debug\Util.obj"
-".\Debug\VariableStore.obj"
-".\Debug\tibiaauto_util.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7A4E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1168: cannot open E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll for writing
-Error executing link.exe.
+
 
 
 
 <h3>Results</h3>
-tibiaauto_util.dll - 1 error(s), 0 warning(s)
+tibiaauto_util.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject2 - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE99A.tmp" with contents
+[
+/nologo /MD /W3 /GX /ZI /I "../../tibiaauto-pub/sdk" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "TIBIAAUTOINJECT2_EXPORTS" /D "_WINDLL" /D "_AFXDLL" /FR"Release/" /Fp"Release/tibiaautoinject2.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE99A.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9AB.tmp" with contents
+[
+ws2_32.lib detours.lib psapi.lib /nologo /dll /incremental:no /pdb:"Release/tibiaautoinject2.pdb" /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"../../tibiaauto-pub\tibiaautoinject2.dll" /implib:"Release/tibiaautoinject2.lib" 
+".\Release\BtnST.obj"
+".\Release\exports.obj"
+".\Release\MyMenu.obj"
+".\Release\MyMenuData.obj"
+".\Release\protocol.obj"
+".\Release\proxy.obj"
+".\Release\Skin.obj"
+".\Release\StdAfx.obj"
+".\Release\tibiaautoinject2.obj"
+".\Release\tibiaautoinject2.res"
+]
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9AB.tmp"
+<h3>Output Window</h3>
+Compiling...
+tibiaautoinject2.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4309: '=' : truncation of constant value
+Linking...
+LINK : warning LNK4075: ignoring /EDITANDCONTINUE due to /INCREMENTAL:NO specification
+   Creating library Release/tibiaautoinject2.lib and object Release/tibiaautoinject2.exp
 
 
 
 <h3>Results</h3>
-tibiaautoinject2.dll - 0 error(s), 0 warning(s)
+tibiaautoinject2.dll - 0 error(s), 13 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject2 - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7C71.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDA.tmp" with contents
+[
+/nologo /MTd /W3 /Gm /GX /ZI /Od /I "../../tibiaauto-pub/sdk" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /D "TIBIAAUTOINJECT2_EXPORTS" /FR"Debug/" /Fp"Debug/tibiaautoinject2.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDA.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDB.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib detours.lib ws2_32.lib psapi.lib /nologo /dll /incremental:yes /pdb:"Debug/tibiaautoinject2.pdb" /debug /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"E:\Tibia\Tibia\tibiaautoinject2.dll" /implib:"Debug/tibiaautoinject2.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -1133,16 +1033,29 @@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32
 ".\Debug\tibiaautoinject2.obj"
 ".\Debug\tibiaautoinject2.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7C71.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEEDB.tmp"
 <h3>Output Window</h3>
+Compiling...
+tibiaautoinject2.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(809) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(811) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(812) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(838) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(840) : warning C4309: '=' : truncation of constant value
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4305: '=' : truncation from 'const int' to 'char'
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\tibiaautoinject2\tibiaautoinject2.cpp(841) : warning C4309: '=' : truncation of constant value
 Linking...
-LINK : fatal error LNK1168: cannot open E:\Tibia\Tibia\tibiaautoinject2.dll for writing
-Error executing link.exe.
+
 
 
 
 <h3>Results</h3>
-tibiaautoinject2.dll - 1 error(s), 0 warning(s)
+tibiaautoinject2.dll - 0 error(s), 12 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject3 - Win32 Release--------------------
 </h3>
