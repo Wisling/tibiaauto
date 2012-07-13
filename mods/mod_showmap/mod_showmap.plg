@@ -33,35 +33,11 @@ mod_addressfinder.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_addressfinder - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE083.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_aim.pdb" /debug /machine:I386 /def:".\mod_addressfinder.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll" /implib:"Debug/mod_aim.lib" /pdbtype:sept 
-".\Debug\Addresses.obj"
-".\Debug\AddressFinder.obj"
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_addressfinder.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_addressfinder.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE083.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_aim.dll - 1 error(s), 0 warning(s)
+mod_aim.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_aim - Win32 Release--------------------
 </h3>
@@ -75,7 +51,7 @@ mod_aim.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_aim - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE287.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP5AC6.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_aim.pdb" /debug /machine:I386 /def:".\mod_aim.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll" /implib:"Debug/mod_aim.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -90,16 +66,16 @@ Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE287.tmp" with 
 ".\Debug\TibiaItem_impl.obj"
 ".\Debug\mod_aim.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE287.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP5AC6.tmp"
 <h3>Output Window</h3>
 Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_aim.dll"
-Error executing link.exe.
+LINK : LNK6006: program database C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-pub\mods\mod_aim\Debug\mod_aim.pdb missing; performing full link
+   Creating library Debug/mod_aim.lib and object Debug/mod_aim.exp
 
 
 
 <h3>Results</h3>
-mod_aim.dll - 1 error(s), 0 warning(s)
+mod_aim.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_antylogout - Win32 Release--------------------
 </h3>
@@ -113,29 +89,11 @@ mod_antylogout.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_antylogout - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE381.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_antylogout.pdb" /debug /machine:I386 /def:".\mod_antylogout.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_antylogout.dll" /implib:"Debug/mod_antylogout.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\mod_antylogout.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_antylogout.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE381.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_antylogout.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_antylogout.dll - 1 error(s), 0 warning(s)
+mod_antylogout.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_autogo - Win32 Release--------------------
 </h3>
@@ -149,42 +107,11 @@ mod_autogo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_autogo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE48B.tmp" with contents
-[
-WINMM.LIB /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_autogo.pdb" /debug /machine:I386 /def:".\mod_autogo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /implib:"Debug/mod_autogo.lib" /pdbtype:sept 
-".\Debug\Alarm.obj"
-".\Debug\alarmdialog.obj"
-".\Debug\BtnST.obj"
-".\Debug\ComboBoxSuper.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\CustomSpellDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GeneralConfigDialog.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\ImageButtonWithStyle.obj"
-".\Debug\mod_autogo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\Trigger.obj"
-".\Debug\VisualStylesXP.obj"
-".\Debug\WhiteList.obj"
-".\Debug\XTabCtrl.obj"
-".\Debug\mod_autogo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE48B.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_autogo.dll - 1 error(s), 0 warning(s)
+mod_autogo.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_banker - Win32 Release--------------------
 </h3>
@@ -198,33 +125,11 @@ mod_banker.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_banker - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE5F3.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_banker.pdb" /debug /machine:I386 /def:".\mod_banker.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_banker.dll" /implib:"Debug/mod_banker.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_banker.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_banker.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE5F3.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_banker.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_banker.dll - 1 error(s), 0 warning(s)
+mod_banker.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_cavebot - Win32 Release--------------------
 </h3>
@@ -238,37 +143,11 @@ mod_cavebot.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_cavebot - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE6EE.tmp" with contents
-[
-zdll.lib zdll.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_cavebot.pdb" /debug /machine:I386 /def:".\mod_cavebot.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll" /implib:"Debug/mod_cavebot.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\DropLootDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\Helpers.obj"
-".\Debug\LoadWaypointsInfo.obj"
-".\Debug\mod_cavebot.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\SharedMemory.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_cavebot.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE6EE.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_cavebot.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_cavebot.dll - 1 error(s), 0 warning(s)
+mod_cavebot.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_creatureinfo - Win32 Release--------------------
 </h3>
@@ -282,36 +161,11 @@ mod_creatureinfo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_creatureinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE7F8.tmp" with contents
-[
-../../xerces.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_creatureinfo.pdb" /debug /machine:I386 /def:".\mod_creatureinfo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_creatureinfo.dll" /implib:"Debug/mod_creatureinfo.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\KnownInfo.obj"
-".\Debug\mod_creatureinfo.obj"
-".\Debug\MyDialog.obj"
-".\Debug\NameChanger.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\Util.obj"
-".\Debug\mod_creatureinfo.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE7F8.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_creatureinfo.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_creatureinfo.dll - 1 error(s), 0 warning(s)
+mod_creatureinfo.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_eater - Win32 Release--------------------
 </h3>
@@ -325,29 +179,11 @@ mod_eater.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_eater - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE902.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_eater.pdb" /debug /machine:I386 /def:".\mod_eater.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_eater.dll" /implib:"Debug/mod_eater.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\mod_eater.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_eater.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE902.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_eater.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_eater.dll - 1 error(s), 0 warning(s)
+mod_eater.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_fisher - Win32 Release--------------------
 </h3>
@@ -361,33 +197,11 @@ mod_fisher.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_fisher - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9FD.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_fisher.pdb" /debug /machine:I386 /def:".\mod_fisher.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fisher.dll" /implib:"Debug/mod_fisher.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_fisher.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_fisher.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPE9FD.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_fisher.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_fisher.dll - 1 error(s), 0 warning(s)
+mod_fisher.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_fluid - Win32 Release--------------------
 </h3>
@@ -401,32 +215,11 @@ mod_fluid.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_fluid - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB65.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_fluid.pdb" /debug /machine:I386 /def:".\mod_fluid.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fluid.dll" /implib:"Debug/mod_fluid.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_fluid.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_fluid.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEB65.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_fluid.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_fluid.dll - 1 error(s), 0 warning(s)
+mod_fluid.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_fps - Win32 Release--------------------
 </h3>
@@ -440,32 +233,11 @@ mod_fps.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_fps - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEC9E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_fps.pdb" /debug /machine:I386 /def:".\mod_fps.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_fps.dll" /implib:"Debug/mod_fps.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_fps.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_fps.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEC9E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_fps.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_fps.dll - 1 error(s), 0 warning(s)
+mod_fps.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_grouping - Win32 Release--------------------
 </h3>
@@ -479,29 +251,11 @@ mod_grouping.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_grouping - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPED98.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_grouping.pdb" /debug /machine:I386 /def:".\mod_grouping.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_grouping.dll" /implib:"Debug/mod_grouping.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\mod_grouping.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_grouping.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPED98.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_grouping.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_grouping.dll - 1 error(s), 0 warning(s)
+mod_grouping.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_itemconfig - Win32 Release--------------------
 </h3>
@@ -515,34 +269,11 @@ mod_itemconfig.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_itemconfig - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEE83.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_itemconfig.pdb" /debug /machine:I386 /def:".\mod_itemconfig.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_itemconfig.dll" /implib:"Debug/mod_itemconfig.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ComboBoxSuper.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\ItemConfig.obj"
-".\Debug\mod_itemconfig.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolItemConfig.obj"
-".\Debug\mod_itemconfig.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEE83.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_itemconfig.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_itemconfig.dll - 1 error(s), 0 warning(s)
+mod_itemconfig.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_light - Win32 Release--------------------
 </h3>
@@ -556,32 +287,11 @@ mod_light.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_light - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPEF7E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_light.pdb" /debug /machine:I386 /def:".\mod_light.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_light.dll" /implib:"Debug/mod_light.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_light.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_light.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPEF7E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_light.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_light.dll - 1 error(s), 0 warning(s)
+mod_light.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_login - Win32 Release--------------------
 </h3>
@@ -595,33 +305,11 @@ mod_login.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_login - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF098.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_login.pdb" /debug /machine:I386 /def:".\mod_login.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_login.dll" /implib:"Debug/mod_login.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_login.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendKeys.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_login.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF098.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_login.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_login.dll - 1 error(s), 0 warning(s)
+mod_login.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_looter - Win32 Release--------------------
 </h3>
@@ -635,33 +323,11 @@ mod_looter.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_looter - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF1F0.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_looter.pdb" /debug /machine:I386 /def:".\mod_looter.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_looter.dll" /implib:"Debug/mod_looter.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_looter.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\SendStats.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_looter.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF1F0.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_looter.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_looter.dll - 1 error(s), 0 warning(s)
+mod_looter.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_maphack - Win32 Release--------------------
 </h3>
@@ -675,32 +341,11 @@ mod_maphack.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_maphack - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF396.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_maphack.pdb" /debug /machine:I386 /def:".\mod_maphack.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_maphack.dll" /implib:"Debug/mod_maphack.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_maphack.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_maphack.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF396.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_maphack.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_maphack.dll - 1 error(s), 0 warning(s)
+mod_maphack.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_memdebug - Win32 Release--------------------
 </h3>
@@ -714,29 +359,11 @@ mod_memdebug.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_memdebug - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF4B0.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_memdebug.pdb" /debug /machine:I386 /def:".\mod_memdebug.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_memdebug.dll" /implib:"Debug/mod_memdebug.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\mod_memdebug.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_memdebug.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF4B0.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_memdebug.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_memdebug.dll - 1 error(s), 0 warning(s)
+mod_memdebug.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_monstershow - Win32 Release--------------------
 </h3>
@@ -750,33 +377,11 @@ mod_monstershow.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_monstershow - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF627.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_monstershow.pdb" /debug /machine:I386 /def:".\mod_monstershow.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_monstershow.dll" /implib:"Debug/mod_monstershow.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_monstershow.obj"
-".\Debug\MonsterButton.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolMonsterShow.obj"
-".\Debug\mod_monstershow.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF627.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_monstershow.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_monstershow.dll - 1 error(s), 0 warning(s)
+mod_monstershow.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_playerinfo - Win32 Release--------------------
 </h3>
@@ -790,7 +395,7 @@ mod_playerinfo.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_playerinfo - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF7DD.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP6783.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_playerinfo.pdb" /debug /machine:I386 /def:".\mod_playerinfo.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_playerinfo.dll" /implib:"Debug/mod_playerinfo.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -808,16 +413,14 @@ Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF7DD.tmp" with 
 ".\Debug\TibiaItem_impl.obj"
 ".\Debug\mod_playerinfo.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF7DD.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP6783.tmp"
 <h3>Output Window</h3>
 Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_playerinfo.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_playerinfo.dll - 1 error(s), 0 warning(s)
+mod_playerinfo.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_responder - Win32 Release--------------------
 </h3>
@@ -831,37 +434,11 @@ mod_responder.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_responder - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF8E7.tmp" with contents
-[
-../../xerces.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_responder.pdb" /debug /machine:I386 /def:".\mod_responder.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_responder.dll" /implib:"Debug/mod_responder.lib" /pdbtype:sept 
-".\Debug\AutoResponderParser.obj"
-".\Debug\AutoResponderParserContext.obj"
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_responder.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolAutoRespond.obj"
-".\Debug\ToolAutoResponderMessage.obj"
-".\Debug\ToolAutoResponderThreadConfig.obj"
-".\Debug\Util.obj"
-".\Debug\mod_responder.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF8E7.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_responder.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_responder.dll - 1 error(s), 0 warning(s)
+mod_responder.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_restack - Win32 Release--------------------
 </h3>
@@ -875,32 +452,11 @@ mod_restack.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_restack - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFA7E.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_restack.pdb" /debug /machine:I386 /def:".\mod_restack.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_restack.dll" /implib:"Debug/mod_restack.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_restack.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_restack.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFA7E.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_restack.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_restack.dll - 1 error(s), 0 warning(s)
+mod_restack.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_runemaker - Win32 Release--------------------
 </h3>
@@ -914,33 +470,11 @@ mod_runemaker.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_runemaker - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFC24.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_runemaker.pdb" /debug /machine:I386 /def:".\mod_runemaker.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_runemaker.dll" /implib:"Debug/mod_runemaker.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_runemaker.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolContainerContent.obj"
-".\Debug\mod_runemaker.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFC24.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_runemaker.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_runemaker.dll - 1 error(s), 0 warning(s)
+mod_runemaker.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_seller - Win32 Release--------------------
 </h3>
@@ -954,7 +488,7 @@ mod_seller.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_seller - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFD3E.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP6B3C.tmp" with contents
 [
 /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_seller.pdb" /debug /machine:I386 /def:".\mod_seller.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_seller.dll" /implib:"Debug/mod_seller.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -971,16 +505,14 @@ Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFD3E.tmp" with 
 ".\Debug\TibiaItem_impl.obj"
 ".\Debug\mod_seller.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFD3E.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP6B3C.tmp"
 <h3>Output Window</h3>
 Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_seller.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_seller.dll - 1 error(s), 0 warning(s)
+mod_seller.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_showmap - Win32 Release--------------------
 </h3>
@@ -994,34 +526,11 @@ mod_showmap.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_showmap - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFE29.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_showmap.pdb" /debug /machine:I386 /def:".\mod_showmap.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll" /implib:"Debug/mod_showmap.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigWindow.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\MapButton.obj"
-".\Debug\mod_showmap.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\ToolMapShow.obj"
-".\Debug\mod_showmap.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFE29.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_showmap.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_showmap.dll - 1 error(s), 0 warning(s)
+mod_showmap.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_sorter - Win32 Release--------------------
 </h3>
@@ -1035,33 +544,11 @@ mod_sorter.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_sorter - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPFF62.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_sorter.pdb" /debug /machine:I386 /def:".\mod_sorter.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_sorter.dll" /implib:"Debug/mod_sorter.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_sorter.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_sorter.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPFF62.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_sorter.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_sorter.dll - 1 error(s), 0 warning(s)
+mod_sorter.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_spellcaster - Win32 Release--------------------
 </h3>
@@ -1075,40 +562,11 @@ mod_spellcaster.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_spellcaster - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP8B.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_spellcaster.pdb" /debug /machine:I386 /def:".\mod_spellcaster.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_spellcaster.dll" /implib:"Debug/mod_spellcaster.lib" /pdbtype:sept 
-".\Debug\AOEDialog.obj"
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\HealList.obj"
-".\Debug\LifeDialog.obj"
-".\Debug\ManaDialog.obj"
-".\Debug\mod_spellcaster.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\StrikeDialog.obj"
-".\Debug\SummonDialog.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\TimedDialog.obj"
-".\Debug\XTabCtrl.obj"
-".\Debug\mod_spellcaster.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP8B.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_spellcaster.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_spellcaster.dll - 1 error(s), 0 warning(s)
+mod_spellcaster.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_team - Win32 Release--------------------
 </h3>
@@ -1122,32 +580,11 @@ mod_team.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_team - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP1F3.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_team.pdb" /debug /machine:I386 /def:".\mod_team.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_team.dll" /implib:"Debug/mod_team.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\ConnectedNode.obj"
-".\Debug\ConnectedNodes.obj"
-".\Debug\exports.obj"
-".\Debug\mod_team.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_team.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP1F3.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_team.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_team.dll - 1 error(s), 0 warning(s)
+mod_team.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_trademon - Win32 Release--------------------
 </h3>
@@ -1161,32 +598,11 @@ mod_trademon.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_trademon - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP38A.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_trademon.pdb" /debug /machine:I386 /def:".\mod_trademon.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_trademon.dll" /implib:"Debug/mod_trademon.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_trademon.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_trademon.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP38A.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_trademon.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_trademon.dll - 1 error(s), 0 warning(s)
+mod_trademon.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_uh - Win32 Release--------------------
 </h3>
@@ -1200,32 +616,11 @@ mod_uh.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_uh - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP4F1.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_uh.pdb" /debug /machine:I386 /def:".\mod_uh.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_uh.dll" /implib:"Debug/mod_uh.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\GroupBoxEx.obj"
-".\Debug\mod_uh.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_uh.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP4F1.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_uh.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_uh.dll - 1 error(s), 0 warning(s)
+mod_uh.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: mod_xray - Win32 Release--------------------
 </h3>
@@ -1239,46 +634,375 @@ mod_xray.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: mod_xray - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP698.tmp" with contents
-[
-/nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/mod_xray.pdb" /debug /machine:I386 /def:".\mod_xray.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_xray.dll" /implib:"Debug/mod_xray.lib" /pdbtype:sept 
-".\Debug\BtnST.obj"
-".\Debug\ConfigData.obj"
-".\Debug\ConfigDialog.obj"
-".\Debug\exports.obj"
-".\Debug\mod_xray.obj"
-".\Debug\MyDialog.obj"
-".\Debug\proxy.obj"
-".\Debug\Skin.obj"
-".\Debug\StdAfx.obj"
-".\Debug\TibiaContainer_impl.obj"
-".\Debug\TibiaItem_impl.obj"
-".\Debug\mod_xray.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP698.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/mod_xray.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-mod_xray.dll - 1 error(s), 0 warning(s)
+mod_xray.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto - Win32 Release--------------------
 </h3>
 <h3>Command Lines</h3>
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7164.tmp" with contents
+[
+/nologo /MD /W4 /GX /O2 /I "E:/Python24/include" /I "../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Release/" /Fp"Release/tibiaauto.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp"
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonScript.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7164.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7175.tmp" with contents
+[
+zlib.lib ws2_32.lib zdll.lib xerces.lib psapi.lib /nologo /subsystem:windows /incremental:no /pdb:"Release/tibiaauto.pdb" /machine:I386 /nodefaultlib:"library" /nodefaultlib:"libcd.lib" /out:"../tibiaauto-pub/tibiaauto.exe" /libpath:"e:\python24\libs" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-kernel" 
+".\Release\BtnST.obj"
+".\Release\CharDialog.obj"
+".\Release\ColorChooser.obj"
+".\Release\ConfigCreatorUtil.obj"
+".\Release\ConfigCreatorUtilMultiParams.obj"
+".\Release\ConfigDialogStatus.obj"
+".\Release\DonationDialog.obj"
+".\Release\EnterCode.obj"
+".\Release\GroupBoxEx.obj"
+".\Release\LoadedModules.obj"
+".\Release\md5c.obj"
+".\Release\md5class.obj"
+".\Release\MemUtil.obj"
+".\Release\ModuleProxy.obj"
+".\Release\MyDialog.obj"
+".\Release\OptionsDialog.obj"
+".\Release\proxy.obj"
+".\Release\PythonEngine.obj"
+".\Release\PythonScript.obj"
+".\Release\PythonScriptsDialog.obj"
+".\Release\RepeatButton.obj"
+".\Release\ScriptConfigDialg.obj"
+".\Release\Skin.obj"
+".\Release\SliderCtrlEx.obj"
+".\Release\StdAfx.obj"
+".\Release\tibiaauto.obj"
+".\Release\tibiaautoDlg.obj"
+".\Release\Util.obj"
+".\Release\webbrowser2.obj"
+".\Release\tibiaauto.res"
+]
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7175.tmp"
+<h3>Output Window</h3>
+Compiling...
+PythonEngine.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp(48) : warning C4100: 'self' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(53) : warning C4100: 'showAlerts' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(60) : warning C4100: 'paramValue' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(60) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(63) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(67) : warning C4100: 'nr' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(72) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\IModuleInterface.h(77) : warning C4100: 'paramName' : unreferenced formal parameter
+../tibiaauto-pub/sdk\commons.h(87) : warning C4018: '==' : signed/unsigned mismatch
+../tibiaauto-pub/sdk\commons.h(107) : warning C4018: '==' : signed/unsigned mismatch
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(6) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(16) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(16) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(75) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(96) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(133) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(143) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(153) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(153) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(162) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(162) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(171) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(171) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(179) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(189) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(189) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(198) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(198) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(207) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(218) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(236) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(255) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(255) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(264) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(264) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(273) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(273) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(282) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(293) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(293) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(302) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(313) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(323) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(323) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(332) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(332) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(341) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(404) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(423) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(488) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(504) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(520) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(536) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(552) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(568) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(584) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(584) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(593) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(605) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(616) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(627) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(627) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(635) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(635) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(643) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(643) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(652) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(652) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(661) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(661) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(670) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(670) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(679) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(689) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(699) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(710) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(721) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(756) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(766) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(777) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(787) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(797) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(807) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(817) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(827) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(838) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(848) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(858) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(869) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(879) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(890) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(900) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(910) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(920) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(931) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(941) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(951) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(961) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(971) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(981) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(991) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1001) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1011) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1021) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1031) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1041) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1051) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1061) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1073) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1086) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1097) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1097) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1105) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1132) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1142) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1157) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1167) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1177) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1177) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1185) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1185) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1193) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1193) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1201) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1201) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1209) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1209) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1217) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1263) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1263) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1271) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1271) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1279) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1279) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1287) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1287) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1295) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1295) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1303) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1303) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1311) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1311) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1319) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1319) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1328) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1342) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1342) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1351) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1351) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1360) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1374) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1384) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1394) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1404) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1414) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1414) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1422) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1432) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1442) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1452) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1452) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1460) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1470) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1481) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1492) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1502) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1513) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1524) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1535) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1535) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1543) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1554) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1554) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1562) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1572) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1583) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1594) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1594) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1603) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1614) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1632) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1643) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1654) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1665) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1676) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1687) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1698) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1709) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1720) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1731) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1742) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1753) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1764) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1775) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1787) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1800) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1813) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1825) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1836) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1847) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1858) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1858) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1867) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1867) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1877) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1877) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1887) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1887) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1897) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1908) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1908) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1916) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1916) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1926) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1926) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1931) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1931) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1936) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1936) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1941) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1941) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1946) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1946) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1951) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1951) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1956) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1956) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1961) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1961) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1966) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1966) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1971) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1971) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1976) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1976) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1981) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1981) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1986) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1986) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1991) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1991) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1996) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(1996) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2003) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2014) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2025) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2025) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2033) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2045) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2057) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2069) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2082) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2094) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2106) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2106) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2114) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2126) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2138) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2152) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2164) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2186) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2206) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2226) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2238) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2250) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2262) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2281) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2306) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2317) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2328) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2328) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2337) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2337) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2346) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2346) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2356) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2356) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2366) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2366) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2376) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2389) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2389) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2400) : warning C4100: 'args' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2400) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2411) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2424) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2436) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2447) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2467) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2479) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine_fun.cpp(2492) : warning C4100: 'self' : unreferenced formal parameter
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp(808) : error C2039: 'unregisterInpacketRegex' : is not a member of 'CPackSenderProxy'
+        ../tibiaauto-pub/sdk\PackSenderProxy.h(13) : see declaration of 'CPackSenderProxy'
+PythonScript.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonScript.cpp(134) : error C2039: 'registerInpacketRegex' : is not a member of 'CPackSenderProxy'
+        ../tibiaauto-pub/sdk\PackSenderProxy.h(13) : see declaration of 'CPackSenderProxy'
+Generating Code...
+Error executing cl.exe.
 
 
 
 <h3>Results</h3>
-tibiaauto.exe - 0 error(s), 0 warning(s)
+tibiaauto.exe - 2 error(s), 291 warning(s)
 <h3>
 --------------------Configuration: tibiaauto - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP85D.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7608.tmp" with contents
+[
+/nologo /MD /W3 /Gm /GX /ZI /Od /I "E:\Python24\include" /I "../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_AFXDLL" /D "_MBCS" /FR"Debug/" /Fp"Debug/tibiaauto.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp"
+"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonScript.cpp"
+]
+Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7608.tmp" 
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7628.tmp" with contents
 [
 zlib.lib ws2_32.lib xerces.lib zdll.lib psapi.lib /nologo /subsystem:windows /incremental:yes /pdb:"Debug/tibiaauto.pdb" /debug /machine:I386 /nodefaultlib:"libcd.lib" /nodefaultlib:"libc.lib" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe" /pdbtype:sept /libpath:"e:\python24\libs" 
 ".\Debug\BtnST.obj"
@@ -1312,84 +1036,36 @@ zlib.lib ws2_32.lib xerces.lib zdll.lib psapi.lib /nologo /subsystem:windows /in
 ".\Debug\webbrowser2.obj"
 ".\Debug\tibiaauto.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP85D.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto/tibiaauto.exe"
-Error executing link.exe.
-
-
-
-<h3>Results</h3>
-tibiaauto.exe - 1 error(s), 0 warning(s)
-<h3>
---------------------Configuration: tibiaauto_util - Win32 Release--------------------
-</h3>
-<h3>Command Lines</h3>
-Build : warning : failed to (or don't know how to) build 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp'
-
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPA61.tmp" with contents
-[
-/nologo /MD /W3 /GX /O2 /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /I "GNORE:4786" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Release/" /Fp"Release/tibiaauto_util.pch" /Yu"stdafx.h" /Fo"Release/" /Fd"Release/" /FD /c 
-"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPA61.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPA71.tmp" with contents
-[
-libdb45.lib xerces.lib psapi.lib /nologo /subsystem:windows /dll /incremental:no /pdb:"Release/tibiaauto_util.pdb" /machine:I386 /def:".\tibiaauto_util.def" /out:"../../tibiaauto-pub/mods/tibiaauto_util.dll" /implib:"Release/tibiaauto_util.lib" /libpath:"E:\Tibia\Sourse Code\tibiaauto-kernel" 
-".\Release\BtnST.obj"
-".\Release\CreaturesReader.obj"
-".\Release\IPCBackPipe.obj"
-".\Release\md5c.obj"
-".\Release\md5class.obj"
-".\Release\MemConstData.obj"
-".\Release\MemReader.obj"
-".\Release\MemUtil.obj"
-".\Release\MessageHandler.obj"
-".\Release\PackSender.obj"
-".\Release\proxy.obj"
-".\Release\Queue.obj"
-".\Release\Skin.obj"
-".\Release\SkinLoader.obj"
-".\Release\StdAfx.obj"
-".\Release\TAMiniMap.obj"
-".\Release\tibiaauto_util.obj"
-".\Release\TibiaCharacter.obj"
-".\Release\TibiaContainer.obj"
-".\Release\TibiaItem.obj"
-".\Release\TibiaMap.obj"
-".\Release\TibiaMapTile.obj"
-".\Release\TibiaMapTileItem.obj"
-".\Release\TibiaVIPEntry.obj"
-".\Release\TileReader.obj"
-".\Release\Util.obj"
-".\Release\VariableStore.obj"
-".\Release\tibiaauto_util.res"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPA71.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7628.tmp"
 <h3>Output Window</h3>
 Compiling...
-MessageHandler.cpp
-fatal error C1083: Cannot open source file: 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp': No such file or directory
+PythonEngine.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonEngine.cpp(808) : error C2039: 'unregisterInpacketRegex' : is not a member of 'CPackSenderProxy'
+        c:\mark\software\cygwin\home\mark the mighty\tibia\tibiaauto-pub\sdk\packsenderproxy.h(13) : see declaration of 'CPackSenderProxy'
+PythonScript.cpp
+C:\Mark\Software\Cygwin\home\Mark The Mighty\tibia\tibiaauto-kernel\PythonScript.cpp(134) : error C2039: 'registerInpacketRegex' : is not a member of 'CPackSenderProxy'
+        c:\mark\software\cygwin\home\mark the mighty\tibia\tibiaauto-pub\sdk\packsenderproxy.h(13) : see declaration of 'CPackSenderProxy'
+Generating Code...
 Error executing cl.exe.
 
 
 
 <h3>Results</h3>
-tibiaauto_util.dll - 1 error(s), 1 warning(s)
+tibiaauto.exe - 2 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: tibiaauto_util - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+
+
+
+<h3>Results</h3>
+tibiaauto_util.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaauto_util - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Build : warning : failed to (or don't know how to) build 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp'
-
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPC18.tmp" with contents
-[
-/nologo /MDd /W3 /Gm /GX /ZI /Od /I "../../tibiaauto-pub/sdk" /I "E:\projects\tibiaauto-pub\external\db-4.5.20\build_windows" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR"Debug/" /Fp"Debug/tibiaauto_util.pch" /Yu"stdafx.h" /Fo"Debug/" /Fd"Debug/" /FD /GZ /c 
-"C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp"
-]
-Creating command line "cl.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPC18.tmp" 
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPC28.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7A4E.tmp" with contents
 [
 xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib psapi.lib /nologo /subsystem:windows /dll /incremental:yes /pdb:"Debug/tibiaauto_util.pdb" /debug /machine:I386 /def:".\tibiaauto_util.def" /out:"E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll" /implib:"Debug/tibiaauto_util.lib" /pdbtype:sept /IGNORE:4786 /IGNORE:4786 
 ".\Debug\BtnST.obj"
@@ -1400,7 +1076,6 @@ xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib 
 ".\Debug\MemConstData.obj"
 ".\Debug\MemReader.obj"
 ".\Debug\MemUtil.obj"
-".\Debug\MessageHandler.obj"
 ".\Debug\PackSender.obj"
 ".\Debug\proxy.obj"
 ".\Debug\Queue.obj"
@@ -1421,17 +1096,16 @@ xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib libdb45.lib xerces.lib 
 ".\Debug\VariableStore.obj"
 ".\Debug\tibiaauto_util.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPC28.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7A4E.tmp"
 <h3>Output Window</h3>
-Compiling...
-MessageHandler.cpp
-fatal error C1083: Cannot open source file: 'C:\Mark\Software\Cygwin\home\Mark The Mighty\tibiaauto-kernel\tibiaauto_util\MessageHandler.cpp': No such file or directory
-Error executing cl.exe.
+Linking...
+LINK : fatal error LNK1168: cannot open E:\Tibia\Tibia\Tibia Auto/mods\tibiaauto_util.dll for writing
+Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tibiaauto_util.dll - 1 error(s), 1 warning(s)
+tibiaauto_util.dll - 1 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tibiaautoinject2 - Win32 Release--------------------
 </h3>
@@ -1445,7 +1119,7 @@ tibiaautoinject2.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tibiaautoinject2 - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBF.tmp" with contents
+Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP7C71.tmp" with contents
 [
 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib detours.lib ws2_32.lib psapi.lib /nologo /dll /incremental:yes /pdb:"Debug/tibiaautoinject2.pdb" /debug /machine:I386 /nodefaultlib:"libcd.lib" /def:".\tibiaautoinject2.def" /out:"E:\Tibia\Tibia\tibiaautoinject2.dll" /implib:"Debug/tibiaautoinject2.lib" /pdbtype:sept 
 ".\Debug\BtnST.obj"
@@ -1459,10 +1133,10 @@ kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32
 ".\Debug\tibiaautoinject2.obj"
 ".\Debug\tibiaautoinject2.res"
 ]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPDBF.tmp"
+Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP7C71.tmp"
 <h3>Output Window</h3>
 Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\tibiaautoinject2.dll"
+LINK : fatal error LNK1168: cannot open E:\Tibia\Tibia\tibiaautoinject2.dll for writing
 Error executing link.exe.
 
 
@@ -1482,22 +1156,11 @@ tibiaautoinject3.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tibiaautoinject3 - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSPF55.tmp" with contents
-[
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /dll /incremental:yes /pdb:"Debug/tibiaautoinject3.pdb" /debug /machine:I386 /def:".\tibiaautoinject3.def" /out:"E:\Tibia\Tibia\Tibia Auto/tibiaautoinject3.dll" /implib:"Debug/tibiaautoinject3.lib" /pdbtype:sept 
-".\Debug\StdAfx.obj"
-".\Debug\tibiaautoinject3.obj"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSPF55.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto/tibiaautoinject3.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tibiaautoinject3.dll - 1 error(s), 0 warning(s)
+tibiaautoinject3.dll - 0 error(s), 0 warning(s)
 <h3>
 --------------------Configuration: tre - Win32 Release--------------------
 </h3>
@@ -1511,31 +1174,11 @@ tre.dll - 0 error(s), 0 warning(s)
 --------------------Configuration: tre - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating temporary file "C:\Users\MARKTH~1\AppData\Local\Temp\RSP10EC.tmp" with contents
-[
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib msvcprt.lib /nologo /dll /incremental:yes /pdb:"Debug/tre.pdb" /debug /machine:I386 /def:".\tre.def" /out:"E:\Tibia\Tibia\Tibia Auto\mods/tre.dll" /implib:"Debug/tre.lib" /pdbtype:sept 
-".\Debug\regcomp.obj"
-".\Debug\regerror.obj"
-".\Debug\regexec.obj"
-".\Debug\tre-ast.obj"
-".\Debug\tre-compile.obj"
-".\Debug\tre-match-approx.obj"
-".\Debug\tre-match-backtrack.obj"
-".\Debug\tre-match-parallel.obj"
-".\Debug\tre-mem.obj"
-".\Debug\tre-parse.obj"
-".\Debug\tre-stack.obj"
-]
-Creating command line "link.exe @C:\Users\MARKTH~1\AppData\Local\Temp\RSP10EC.tmp"
-<h3>Output Window</h3>
-Linking...
-LINK : fatal error LNK1104: cannot open file "E:\Tibia\Tibia\Tibia Auto\mods/tre.dll"
-Error executing link.exe.
 
 
 
 <h3>Results</h3>
-tre.dll - 1 error(s), 0 warning(s)
+tre.dll - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>
