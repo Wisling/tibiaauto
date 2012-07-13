@@ -82,6 +82,8 @@ public:
 	void sendDirectPacket(const char* buf,int len);
 
 	void printText(CPoint pos, int red, int green, int blue, const char* text);
+	void registerInpacketRegex(int handle, char* regExp, int regLen);
+	void unregisterInpacketRegex(int handle);
 
 
 	void sendAttackedCreatureToAutoAim(int attackedCreature);
