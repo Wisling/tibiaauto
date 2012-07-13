@@ -1065,7 +1065,6 @@ void parseMessageSay(char *sayBuf)
 	}
 }
 
-//wis:working
 int parseMessageForTibiaAction(char *buf,int len)
 {	
 	//char buf2[1111]="hi ";
@@ -2221,8 +2220,8 @@ int myShouldParseRecv(){
 			if (recvRegex[i].inUse == 1){
 				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)prevRecvStream+actionStart),actionLen,0,NULL,0);
 				if (match == 0){
-					bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
-					if (privChanBufferPtr){
+					if (privChanBufferPtr && 0){
+						bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
 						//OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
 					}
 					parseRecvActionData(recvRegex[i].handle,(char*)prevRecvStream+actionStart,actionLen);
@@ -3223,7 +3222,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 					memcpy(&handle, mess.payload + 4, sizeof(int));
 					// Since we are using the array at the same time we are creating it, we do not move around items in use to fill empty spaces
 					// this is run only once when the python script is loaded so this inefficioncy is acceptable.
-					// Handles restart with TA so disable duplicate handles
+					// Handles are the same when TA restarts so disable duplicate handles
 					int i;
 					for (i=0;i<RECV_REGEX_MAX && recvRegex[i].inUse != 0;i++){ //find first empty space
 						if (recvRegex[i].handle == handle){ // disable duplicate handles as TA has restarted
@@ -3237,9 +3236,18 @@ void ParseIPCMessage(struct ipcMessage mess)
 
 						recvRegex[i].handle = handle;
 						if(regexpProxy.regncomp(&(recvRegex[i].preg),regExp,regLen,REG_NOSUB|REG_EXTENDED)){
+							//Failed to compile expression, send one message back to user
+							char base[] = "Error: Failed to compile regular expression ";
+							char* errorMsg = (char*)malloc(strlen(base)+regLen+1);
+							strcpy(errorMsg,base);
+							strncpy(errorMsg+strlen(base),regExp,regLen);
+							errorMsg[strlen(base)+regLen]=0;
+							if (privChanBufferPtr){
+								OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)errorMsg,4,(int)"Tibia Auto",0,0,0,0);
+							}
 							break;
 						}
-						free(regExp); //wis:need to figure out why string cannot be freed
+						free(regExp);
 
 						recvRegex[i].inUse = 1; //activates regex once everything is in order
 						if (i >= recvRegexCount) recvRegexCount++;

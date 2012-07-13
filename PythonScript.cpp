@@ -126,7 +126,7 @@ void CPythonScript::addFunDef(int type,char *matchExpr, int regLen, PyObject *fu
 
 	funDefTab[funDefCount].type=type;
 	funDefTab[funDefCount].matchExpr=matchExpr; //wis: may need to be copied into local char array, but I am unsure when string is freed.
-	funDefTab[funDefCount].matchExprHandle = (int)fun;
+	funDefTab[funDefCount].matchExprHandle = (int)fun; //Using the function here has the added advantage of not changing too often when reloading the script or TA
 	funDefTab[funDefCount].fun=fun;
 	funDefTab[funDefCount].tmNextExec=0;
 	funDefTab[funDefCount].tmLastExec=0;
