@@ -102,7 +102,7 @@
 		<const code="addrRightHand" value="0x9D1CA0"/>
 		<const code="addrBackpack" value="0x9D1CB8"/> <!-- itemID - 8 -->
 		<const code="addrMapStart" value="0x9D1CF4"/> <!-- is a pointer to visible map -->
-		<const code="addrCurrentTm" value="0x9D3048"/> <!-- cat2 -->
+		<const code="addrCurrentTm" value="0x9D3030"/> <!-- cat2 -->
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
