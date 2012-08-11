@@ -82,11 +82,8 @@ public:
 	void sendDirectPacket(const char* buf,int len);
 
 	void printText(CPoint pos, int red, int green, int blue, const char* text);
-<<<<<<< HEAD
 	void registerInpacketRegex(int handle, char* regExp, int regLen);
 	void unregisterInpacketRegex(int handle);
-=======
->>>>>>> 18ec6100f7f6d8cadad6ce302029d3c3591c9cf1
 
 
 	void sendAttackedCreatureToAutoAim(int attackedCreature);

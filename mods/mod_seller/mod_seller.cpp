@@ -44,11 +44,7 @@ static char THIS_FILE[] = __FILE__;
 #define BUYONLY 2
 #define DOBOTH 3 
 
-<<<<<<< HEAD
 #define MAX_BUYSELL_ITEMS 100
-=======
-#define MAX_BUY_ITEMS 100
->>>>>>> 18ec6100f7f6d8cadad6ce302029d3c3591c9cf1
 
 CToolSellerState globalSellerState=CToolSellerState_notRunning;
 int GUIx = 0,GUIy = 0,GUIz = 0;
@@ -859,11 +855,7 @@ int sellItems(CConfigData *config, int traderNum) {
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaContainer *cont;
 	int itemCount;
-<<<<<<< HEAD
 	int done = -1;
-=======
-	int done = 0;
->>>>>>> 18ec6100f7f6d8cadad6ce302029d3c3591c9cf1
 
 	if (itemProxy.getItemId(config->sellItem[traderNum].tradeItem[0].itemName)==0)
 		return 1;
@@ -884,7 +876,6 @@ int sellItems(CConfigData *config, int traderNum) {
 					CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
 					if (item->objectId == objectId) {
 						itemCount = countAllItemsOfType(objectId);
-<<<<<<< HEAD
 						while (itemCount > 0) {
 							CTibiaCharacter *self = reader.readSelfCharacter();
 							sender.npcSell(objectId, min(itemCount,MAX_BUYSELL_ITEMS));
@@ -897,18 +888,6 @@ int sellItems(CConfigData *config, int traderNum) {
 								done=0;
 							delete self;
 						}
-=======
-						CTibiaCharacter *self = reader.readSelfCharacter();
-						sender.npcSell(objectId, itemCount);
-						Sleep(RandomTimeSeller());
-						if (CModuleUtil::waitForCapsChange(self->cap)) {
-							done = 1;
-							delete self;
-							break;
-						}
-						delete self;
-						done = 0;
->>>>>>> 18ec6100f7f6d8cadad6ce302029d3c3591c9cf1
 					}
 				}
 			}
@@ -954,13 +933,8 @@ int buyItems(CConfigData *config, int traderNum) {
 		
 		while (itemCount > 0) {
 			CTibiaCharacter *self = reader.readSelfCharacter();
-<<<<<<< HEAD
 			sender.npcBuy(objectId, min(itemCount,MAX_BUYSELL_ITEMS), 0, 0);
 			itemCount -= min(itemCount,MAX_BUYSELL_ITEMS);
-=======
-			sender.npcBuy(objectId, min(itemCount,MAX_BUY_ITEMS), 0, 0);
-			itemCount -= min(itemCount,MAX_BUY_ITEMS);
->>>>>>> 18ec6100f7f6d8cadad6ce302029d3c3591c9cf1
 			Sleep (RandomTimeSeller());
 			if (CModuleUtil::waitForCapsChange(self->cap)) {
 				if (done!=0) done = 1;
