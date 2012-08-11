@@ -463,6 +463,7 @@ int callAddr_ShouldParseRecv01 =		0x462D93;
 */
 
 // 9.60
+/*
 int funAddr_tibiaPrintText =			0x4C8A60;
 int funAddr_tibiaPlayerNameText =		0x4C7DB0;
 int funAddr_tibiaInfoMiddleScreen =		0x570890;
@@ -504,7 +505,50 @@ int callAddr_InfoMessageBox12 =			0x575FAD;
 int callAddr_Encrypt01 =				0x51479D;
 int callAddr_Decrypt01 =				0x514DA8;
 int callAddr_ShouldParseRecv01 =		0x463130;
+*/
 
+// 9.61
+int funAddr_tibiaPrintText =			0x4C8D40;
+int funAddr_tibiaPlayerNameText =		0x4C8090;
+int funAddr_tibiaInfoMiddleScreen =		0x570A10;
+int funAddr_tibiaIsCreatureVisible =	0x46C540;
+int funAddr_tibiaEncrypt =				0x580FB0;
+int funAddr_tibiaDecrypt =				0x5810E0;
+int funAddr_tibiaShouldParseRecv =		0x515300;
+int arrayPtr_recvStream =				0x9D1FCC-8; //look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x574960;
+int callAddr_PrintText01 =				0x45813D;
+int callAddr_PrintText02 =				0x458187;
+int callAddr_PrintText03 =				0x460726;
+int callAddr_PrintText04 =				0x507C21;
+int callAddr_PrintText05 =				0x5089EA;
+int callAddr_PlayerNameText01 =			0x4225A0;
+int callAddr_PlayerNameText02 =			0x4C89C4;
+int callAddr_PlayerNameText03 =			0x4C8BC4;
+int callAddr_PlayerNameText04 =			0x4C8DC3;
+int callAddr_PlayerNameText05 =			0x4C8FC3;
+int callAddr_PlayerNameText06 =			0x4C91C4;
+int callAddr_PlayerNameText07 =			0x4C93C2;
+int callAddr_PlayerNameText08 =			0x508540;
+int callAddr_InfoMiddleScreen01 =		0x418BB7;
+int callAddr_InfoMiddleScreen02 =		0x45CD98;
+int callAddr_InfoMiddleScreen03 =		0x4979C5;
+int callAddr_InfoMiddleScreen04 =		0x505B24;
+int callAddr_InfoMessageBox01 =			0x418729;
+int callAddr_InfoMessageBox02 =			0x42FD57;
+int callAddr_InfoMessageBox03 =			0x4B0842;
+int callAddr_InfoMessageBox04 =			0x4FD540;
+int callAddr_InfoMessageBox05 =			0x4FDD0C;
+int callAddr_InfoMessageBox06 =			0x4FDD70;
+int callAddr_InfoMessageBox07 =			0x5747C7;
+int callAddr_InfoMessageBox08 =			0x575237;
+int callAddr_InfoMessageBox09 =			0x575307;
+int callAddr_InfoMessageBox10 =			0x5753FC;
+int callAddr_InfoMessageBox11 =			0x575640;
+int callAddr_InfoMessageBox12 =			0x57611D;
+int callAddr_Encrypt01 =				0x5149DD;
+int callAddr_Decrypt01 =				0x514FF8;
+int callAddr_ShouldParseRecv01 =		0x463380;
 
 //int recv2 = (void (*)())(*DetourFindFunction("wsock32.dll","recv"));
 DETOUR_TRAMPOLINE(int WINAPI Real_send(SOCKET s,char* buf,int len,int flags),send);
