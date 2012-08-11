@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 2.22.0, 10.8.2012
 Enhancements:
  Tibia Auto: Updated to 9.61
@@ -16,6 +17,8 @@ Enhancements:
 Defects:
  Seller: Fixed seller selling more that 100 items at a time
 
+=======
+>>>>>>> 18ec6100f7f6d8cadad6ce302029d3c3591c9cf1
 2.20.0, 16.6.2012
 Enhancements:
  Tibiaauto: Updated to 9.54
