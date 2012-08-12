@@ -93,7 +93,7 @@ void CPackSenderProxy::useWithObjectFromFloorInContainer(int sourceObjectId,int 
 	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2);
 	if (dllModule)
 	{
-	static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromFloorInContainer");
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromFloorInContainer");
 		if (fun)
 		{
 			fun(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetContNr, targetPos,  method);
