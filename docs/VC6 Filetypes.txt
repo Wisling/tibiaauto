@@ -1,0 +1,2 @@
+plg - for looking up definitions and initializations of functions
+clw - class wizard files used to track all classes, functions, gui items and associated parameters

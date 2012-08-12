@@ -6,6 +6,7 @@
 #include "IPCBackPipe.h"
 #include "ipcm.h"
 #include "time.h"
+#include "PackSender.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -60,7 +61,7 @@ void CIPCBackPipe::InitialiseIPC()
 			0,              // default attributes 
 			NULL);          // no template file 		
 		
-		// pipe handle is invalid - proceed
+		// pipe handle is valid - proceed
 		if (hPipeBack != INVALID_HANDLE_VALUE) 	
 		{
 			break;
@@ -132,6 +133,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 	if (pipeBackCacheCount > 0){
 		firstType = pipeBackCache[0].messageType;
 	}
+
 	if (pipeBackCacheCount >= PIPE_CLEAN_AT_COUNT){ // SOMEONE ISN'T READING FROM THEIR PIPE FAST ENOUGH!! DELETE THEIR ENTRIES!!!!
 		int j = 0;
 		for (i=0;i<pipeBackCacheCount;i++)
@@ -152,7 +154,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 		}
 	}
 
-
+	//Check our own TA pipe first
 	int j = 0;//keep track of kept items
 	for (i=0;i<pipeBackCacheCount;i++)
 	{
@@ -160,7 +162,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			sentErrMsg = 1;
 			char errBuf[256];
 			sprintf(errBuf, "Received unrealistic time for sent ipcMessage. Time %d, sent time %d, type %d", time(NULL), pipeBackCache[i].tm,pipeBackCache[0].messageType);
-			MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
+			MessageBox(NULL, errBuf, "DEBUG MESSAGE", MB_OK);
 		}
 		if (pipeBackCache[i].messageType==expectedType)
 		{
@@ -184,7 +186,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 	pipeBackCacheCount=j;
 
 	// calls to CPythonEngine::backpipeTamsgTick() frequently flushes this hPipeBack pipe
-	for (;;)
+	for (;;) //check pipe from Tibia
 	{
 		DWORD totalBytesLeft,totalBytesAvail,bRead;
 		// check whether there is anything waiting for us
@@ -196,16 +198,18 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			
 			if (ReadFile(hPipeBack,mess,sizeof(struct ipcMessage),&bRead,NULL))
 			{
-				if (mess->messageType==expectedType)
-				{
-					LeaveCriticalSection(&BackPipeQueueCriticalSection);
-					return 1;
-				} else {
-					// put to cache
-					if (pipeBackCacheCount>=pipeBackCacheSize)
-						enlargePipeBackCache();
-					memcpy(&pipeBackCache[pipeBackCacheCount++],mess,sizeof(struct ipcMessage));
-					continue;
+				if(time(NULL) <= mess->tm + PIPE_REMOVE_AT_SECS){ //if pipe item is not too old return/store it
+					if (mess->messageType==expectedType)
+					{
+						LeaveCriticalSection(&BackPipeQueueCriticalSection);
+						return 1;
+					} else {
+						// put to cache
+						if (pipeBackCacheCount>=pipeBackCacheSize)
+							enlargePipeBackCache();
+						memcpy(&pipeBackCache[pipeBackCacheCount++],mess,sizeof(struct ipcMessage));
+						continue;
+					}
 				}
 			} else {
 				LeaveCriticalSection(&BackPipeQueueCriticalSection);

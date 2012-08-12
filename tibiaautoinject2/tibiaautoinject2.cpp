@@ -990,9 +990,10 @@ void autoAimAttack(int runeId)
 
 struct parcelRecvActionData{
 	int handle;
+	int totalCount;
 	int countLeft;
 	int len;
-	char actionData[MAX_PAYLOAD_LEN-4*3];
+	char actionData[MAX_PAYLOAD_LEN-sizeof(int)*4];
 	parcelRecvActionData(){
 		memset(actionData,0,sizeof(actionData));
 	}
@@ -1010,9 +1011,11 @@ void parseRecvActionData(int handle, char* data, int len){
 	parcelRecvActionData* p = ((parcelRecvActionData*)mess.payload);
 	int maxlen = sizeof(p->actionData);
 	int splits = len/maxlen;
+	int messageCounts = splits+1;
 
 	p->handle = handle;
 	while (splits>=0) {
+		p->totalCount = messageCounts;
 		p->countLeft = splits;
 		p->len = min(len,maxlen);
 		memcpy(p->actionData,data,p->len);

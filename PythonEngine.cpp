@@ -32,9 +32,10 @@ CRITICAL_SECTION ScriptEngineCriticalSection;
 
 struct parcelRecvActionData{
 	int handle; //the pointer to the PyObject fun is used as a unique handle.
+	int totalCount;
 	int countLeft;
 	int len;
-	char actionData[MAX_PAYLOAD_LEN-4*3];
+	char actionData[MAX_PAYLOAD_LEN-sizeof(int)*4];
 	parcelRecvActionData(){
 		memset(actionData,0,sizeof(actionData));
 	}
@@ -887,12 +888,15 @@ void CPythonEngine::backpipeInpacketTick()
 	struct ipcMessage mess;
 	struct parcelRecvActionData* pd;
 
-	//runs at most maxtimes python function each tick
+	//runs at most 'maxtimes' python functions each tick
 	for (int maxtimes = 5; backPipe.readFromPipe(&mess, 1010) && maxtimes>0; maxtimes--){
 		char buf[1024];
 
 		long int tm=GetTickCount();
 		pd = (parcelRecvActionData*)&(mess.payload);
+
+		int discardIncompletePacket = pd->countLeft+1 != pd->totalCount; //the initial packets were too old and were discarded
+
 		int countLeft = pd->countLeft;
 		int msgLen = pd->len;
 		int handle = pd->handle;
@@ -912,31 +916,34 @@ void CPythonEngine::backpipeInpacketTick()
 		if (countLeft){
 			sprintf(buf,"ERROR in backpipeInpacketTick: did not finish reading data");
 			//AfxMessageBox(buf);
-			continue;
-		}
-		sprintf(buf,"One packet took %dms",GetTickCount() - tm);
-		//if (GetTickCount() - tm>20) MessageBox(NULL, buf,"huaeotnre",0);
-		CPythonScript *pythonScript = NULL;
-		for (int scriptNr=0;(pythonScript = CPythonScript::getScriptByNr(scriptNr));scriptNr++)
-		{
-			if (!pythonScript->isEnabled()) continue;
-			struct funType *fun = NULL;
-			for (int funNr=0;(fun=pythonScript->getFunDef(funNr));funNr++)
+		} else if (discardIncompletePacket){
+			int a=0;// discard data and continue
+		} else { //everything is OK
+			sprintf(buf,"One packet took %dms",GetTickCount() - tm);
+			//if (GetTickCount() - tm>20) MessageBox(NULL, buf,"huaeotnre",0);
+			CPythonScript *pythonScript = NULL;
+			for (int scriptNr=0;(pythonScript = CPythonScript::getScriptByNr(scriptNr));scriptNr++)
 			{
-				if (fun->type == FUNTYPE_INPACKET && fun->matchExprHandle == pd->handle)
+				if (!pythonScript->isEnabled()) continue;
+				struct funType *fun = NULL;
+				for (int funNr=0;(fun=pythonScript->getFunDef(funNr));funNr++)
 				{
-					PyGILState_STATE gstate;
-					gstate = PyGILState_Ensure();
-					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(s#)",msgBuf,msgLen);
-					Py_XDECREF(result);
-					fun->call();
-					PyGILState_Release(gstate);
-					goto foundRegexOwner;
+					if (fun->type == FUNTYPE_INPACKET && fun->matchExprHandle == pd->handle)
+					{
+						PyGILState_STATE gstate;
+						gstate = PyGILState_Ensure();
+						PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(s#)",msgBuf,msgLen);
+						Py_XDECREF(result);
+						fun->call();
+						PyGILState_Release(gstate);
+						goto inpacketTickCleanup;
+					}
 				}
 			}
 		}
-foundRegexOwner:
-		int placeholder = 0;
+inpacketTickCleanup:
+		msgBuf[0]=0;
+		free(msgBuf);
 	}
 	leaveCriticalSection();
 }
