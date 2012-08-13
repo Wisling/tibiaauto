@@ -3240,6 +3240,8 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 			int i;
 			for (i=0;i<1000;i++) {
 				m_configData->waypointList[i].x=0;
+				m_configData->waypointList[i].y=0;
+				m_configData->waypointList[i].z=0;
 			}
 		}
 		// y and z == -1 means delay instead of waypoint

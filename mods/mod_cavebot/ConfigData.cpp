@@ -22,6 +22,8 @@ CConfigData::CConfigData()
 	for (i=0;i<1000;i++)
 	{
 		waypointList[i].x=0;
+		waypointList[i].y=0;
+		waypointList[i].z=0;
 		monsterList[i][0]=0;
 		ignoreList[i][0]=0;
 	}

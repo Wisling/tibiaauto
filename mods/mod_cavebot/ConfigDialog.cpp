@@ -487,8 +487,11 @@ CConfigData * CConfigDialog::controlsToConfig()
 		for (j=0;j<len;j++)
 			newConfigData->ignoreList[i][j]=tolower(newConfigData->ignoreList[i][j]);
 	};
-	for (i=0;i<1000;i++)
-		newConfigData->waypointList[i].x=newConfigData->waypointList[i].y=0;
+	for (i=0;i<1000;i++){
+		newConfigData->waypointList[i].x=0;
+		newConfigData->waypointList[i].y=0;
+		newConfigData->waypointList[i].z=0;
+	}
 	for (i=0;i<m_waypointList.GetCount();i++)
 	{			
 		m_waypointList.GetText(i,buf);
