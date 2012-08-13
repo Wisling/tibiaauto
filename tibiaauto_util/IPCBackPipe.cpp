@@ -24,6 +24,7 @@ FILE *debugFile=NULL;
 int PIPE_CLEAN_AT_COUNT = 100;
 int PIPE_REMOVE_AT_SECS = 10;
 int sentErrMsg = 0;
+int flushOutPipeAtStart = 0;
 
 CRITICAL_SECTION BackPipeQueueCriticalSection;
 
@@ -32,7 +33,7 @@ CRITICAL_SECTION BackPipeQueueCriticalSection;
 //////////////////////////////////////////////////////////////////////
 
 CIPCBackPipe::CIPCBackPipe()
-{	
+{
 
 }
 
@@ -49,8 +50,8 @@ void CIPCBackPipe::InitialiseIPC()
 	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",pid);	
 
 	while (1)
-	{		
-		
+	{
+
 		hPipeBack = CreateFile( 
 			lpszPipename,   // pipe name 
 			GENERIC_READ |  // read and write access 
@@ -133,7 +134,6 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 	if (pipeBackCacheCount > 0){
 		firstType = pipeBackCache[0].messageType;
 	}
-
 	if (pipeBackCacheCount >= PIPE_CLEAN_AT_COUNT){ // SOMEONE ISN'T READING FROM THEIR PIPE FAST ENOUGH!! DELETE THEIR ENTRIES!!!!
 		int j = 0;
 		for (i=0;i<pipeBackCacheCount;i++)
@@ -149,8 +149,10 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 		if (!sentErrMsg){
 			sentErrMsg = 1;
 			char errBuf[256];
-			sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds. Please fix this!", firstType,i-j,PIPE_REMOVE_AT_SECS);
-			MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
+			sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds. Please fix this!%d %d %d", firstType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
+			CPackSender sender;
+			sender.sendTAMessage(errBuf);
+			//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
 		}
 	}
 
@@ -185,6 +187,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 	}	
 	pipeBackCacheCount=j;
 
+	int flushOutPipeThisTime = flushOutPipeAtStart;
 	// calls to CPythonEngine::backpipeTamsgTick() frequently flushes this hPipeBack pipe
 	for (;;) //check pipe from Tibia
 	{
@@ -198,7 +201,9 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			
 			if (ReadFile(hPipeBack,mess,sizeof(struct ipcMessage),&bRead,NULL))
 			{
-				if(time(NULL) <= mess->tm + PIPE_REMOVE_AT_SECS){ //if pipe item is not too old return/store it
+				flushOutPipeAtStart=0;//only if we get here can we say that all items have been flushed
+				//if pipe item is not too old return/store it; also remove all old entries available from before TA started
+				if(time(NULL) <= mess->tm + PIPE_REMOVE_AT_SECS && !flushOutPipeThisTime){
 					if (mess->messageType==expectedType)
 					{
 						LeaveCriticalSection(&BackPipeQueueCriticalSection);
@@ -212,12 +217,10 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 					}
 				}
 			} else {
-				LeaveCriticalSection(&BackPipeQueueCriticalSection);
-				return 0;
+				break;
 			}
 		} else {
-			LeaveCriticalSection(&BackPipeQueueCriticalSection);
-			return 0;
+			break;
 		}
 	}
 	LeaveCriticalSection(&BackPipeQueueCriticalSection); 
