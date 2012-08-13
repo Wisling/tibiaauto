@@ -183,14 +183,14 @@ void Protocol::outputPacket(NetworkMessage &msg){
 			msgNew.AddString("<removed house window info>");
 			msg=msgNew;
 			break;
-		case 0x96: // say something
+		case 0x96: //say something
 			{
 			msgNew.AddByte(msg.GetByte());
 			unsigned short channelId = 0;
 			unsigned char type=msg.GetByte();
 			msgNew.AddByte(type);
 			switch(type){
-				case 0x06://SPEAK_PRIVATE
+				case 0x05://SPEAK_PRIVATE
 				case 0x0E://SPEAK_PRIVATE_RED
 				case 0x0A://SPEAK_RVR_ANSWER
 					msg.GetString();

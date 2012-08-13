@@ -193,6 +193,94 @@ int outSelfUHAvail=0;
 int outFluidManaAvail=0;
 int outFluidLifeAvail=0;
 
+// 9.63
+
+int funAddr_tibiaPrintText =			0x4CB5A0;
+int funAddr_tibiaPlayerNameText =		0x4CA8F0;
+int funAddr_tibiaInfoMiddleScreen =		0x5736D0;
+int funAddr_tibiaIsCreatureVisible =	0x4715F0;
+int funAddr_tibiaEncrypt =				0x583BD0;
+int funAddr_tibiaDecrypt =				0x5184D8;
+int funAddr_tibiaShouldParseRecv =		0x5187E0;
+int arrayPtr_recvStream =				0x9D457C-8; //look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x577620;
+int callAddr_PrintText01 =				0x45A97D; //...<addr>.*
+int callAddr_PrintText02 =				0x45A9C7;
+int callAddr_PrintText03 =				0x463666;
+int callAddr_PrintText04 =				0x50B101;
+int callAddr_PrintText05 =				0x50BECA;
+int callAddr_PlayerNameText01 =			0x424D60;
+int callAddr_PlayerNameText02 =			0x4CB224;
+int callAddr_PlayerNameText03 =			0x4CB424;
+int callAddr_PlayerNameText04 =			0x4CB623;
+int callAddr_PlayerNameText05 =			0x4CB823;
+int callAddr_PlayerNameText06 =			0x4CBA24;
+int callAddr_PlayerNameText07 =			0x4CBC22;
+int callAddr_PlayerNameText08 =			0x50BA20;
+int callAddr_InfoMiddleScreen01 =		0x41B7B7;
+int callAddr_InfoMiddleScreen02 =		0x45F638;
+int callAddr_InfoMiddleScreen03 =		0x4997A5;
+int callAddr_InfoMiddleScreen04 =		0x509004;
+int callAddr_InfoMessageBox01 =			0x41B329;
+int callAddr_InfoMessageBox02 =			0x4325B7;
+int callAddr_InfoMessageBox03 =			0x4B2712;
+int callAddr_InfoMessageBox04 =			0x500010;
+int callAddr_InfoMessageBox05 =			0x5007DC;
+int callAddr_InfoMessageBox06 =			0x500840;
+int callAddr_InfoMessageBox07 =			0x577487;
+int callAddr_InfoMessageBox08 =			0x577EF7;
+int callAddr_InfoMessageBox09 =			0x577FC7;
+int callAddr_InfoMessageBox10 =			0x5780BC;
+int callAddr_InfoMessageBox11 =			0x578300;
+int callAddr_InfoMessageBox12 =			0x578DDD;
+int callAddr_Encrypt01 =				0x517ECD;
+int callAddr_Decrypt01 =				0x514FF8;
+int callAddr_ShouldParseRecv01 =		0x4662C0;
+
+// 9.61
+/*
+int funAddr_tibiaPrintText =			0x4C8D40;
+int funAddr_tibiaPlayerNameText =		0x4C8090;
+int funAddr_tibiaInfoMiddleScreen =		0x570A10;
+int funAddr_tibiaIsCreatureVisible =	0x46C540;
+int funAddr_tibiaEncrypt =				0x580FB0;
+int funAddr_tibiaDecrypt =				0x5810E0;
+int funAddr_tibiaShouldParseRecv =		0x515300;
+int arrayPtr_recvStream =				0x9D1FCC-8; //look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x574960;
+int callAddr_PrintText01 =				0x45813D;
+int callAddr_PrintText02 =				0x458187;
+int callAddr_PrintText03 =				0x460726;
+int callAddr_PrintText04 =				0x507C21;
+int callAddr_PrintText05 =				0x5089EA;
+int callAddr_PlayerNameText01 =			0x4225A0;
+int callAddr_PlayerNameText02 =			0x4C89C4;
+int callAddr_PlayerNameText03 =			0x4C8BC4;
+int callAddr_PlayerNameText04 =			0x4C8DC3;
+int callAddr_PlayerNameText05 =			0x4C8FC3;
+int callAddr_PlayerNameText06 =			0x4C91C4;
+int callAddr_PlayerNameText07 =			0x4C93C2;
+int callAddr_PlayerNameText08 =			0x508540;
+int callAddr_InfoMiddleScreen01 =		0x418BB7;
+int callAddr_InfoMiddleScreen02 =		0x45CD98;
+int callAddr_InfoMiddleScreen03 =		0x4979C5;
+int callAddr_InfoMiddleScreen04 =		0x505B24;
+int callAddr_InfoMessageBox01 =			0x418729;
+int callAddr_InfoMessageBox02 =			0x42FD57;
+int callAddr_InfoMessageBox03 =			0x4B0842;
+int callAddr_InfoMessageBox04 =			0x4FD540;
+int callAddr_InfoMessageBox05 =			0x4FDD0C;
+int callAddr_InfoMessageBox06 =			0x4FDD70;
+int callAddr_InfoMessageBox07 =			0x5747C7;
+int callAddr_InfoMessageBox08 =			0x575237;
+int callAddr_InfoMessageBox09 =			0x575307;
+int callAddr_InfoMessageBox10 =			0x5753FC;
+int callAddr_InfoMessageBox11 =			0x575640;
+int callAddr_InfoMessageBox12 =			0x57611D;
+int callAddr_Encrypt01 =				0x5149DD;
+int callAddr_Decrypt01 =				0x514FF8;
+int callAddr_ShouldParseRecv01 =		0x463380;
+*/
 /*
 // 9.46
 int funAddr_tibiaPrintText = 0x4C5BD0;
@@ -507,48 +595,6 @@ int callAddr_Decrypt01 =				0x514DA8;
 int callAddr_ShouldParseRecv01 =		0x463130;
 */
 
-// 9.61
-int funAddr_tibiaPrintText =			0x4C8D40;
-int funAddr_tibiaPlayerNameText =		0x4C8090;
-int funAddr_tibiaInfoMiddleScreen =		0x570A10;
-int funAddr_tibiaIsCreatureVisible =	0x46C540;
-int funAddr_tibiaEncrypt =				0x580FB0;
-int funAddr_tibiaDecrypt =				0x5810E0;
-int funAddr_tibiaShouldParseRecv =		0x515300;
-int arrayPtr_recvStream =				0x9D1FCC-8; //look for this address near above location
-int funAddr_tibiaInfoMessageBox =		0x574960;
-int callAddr_PrintText01 =				0x45813D;
-int callAddr_PrintText02 =				0x458187;
-int callAddr_PrintText03 =				0x460726;
-int callAddr_PrintText04 =				0x507C21;
-int callAddr_PrintText05 =				0x5089EA;
-int callAddr_PlayerNameText01 =			0x4225A0;
-int callAddr_PlayerNameText02 =			0x4C89C4;
-int callAddr_PlayerNameText03 =			0x4C8BC4;
-int callAddr_PlayerNameText04 =			0x4C8DC3;
-int callAddr_PlayerNameText05 =			0x4C8FC3;
-int callAddr_PlayerNameText06 =			0x4C91C4;
-int callAddr_PlayerNameText07 =			0x4C93C2;
-int callAddr_PlayerNameText08 =			0x508540;
-int callAddr_InfoMiddleScreen01 =		0x418BB7;
-int callAddr_InfoMiddleScreen02 =		0x45CD98;
-int callAddr_InfoMiddleScreen03 =		0x4979C5;
-int callAddr_InfoMiddleScreen04 =		0x505B24;
-int callAddr_InfoMessageBox01 =			0x418729;
-int callAddr_InfoMessageBox02 =			0x42FD57;
-int callAddr_InfoMessageBox03 =			0x4B0842;
-int callAddr_InfoMessageBox04 =			0x4FD540;
-int callAddr_InfoMessageBox05 =			0x4FDD0C;
-int callAddr_InfoMessageBox06 =			0x4FDD70;
-int callAddr_InfoMessageBox07 =			0x5747C7;
-int callAddr_InfoMessageBox08 =			0x575237;
-int callAddr_InfoMessageBox09 =			0x575307;
-int callAddr_InfoMessageBox10 =			0x5753FC;
-int callAddr_InfoMessageBox11 =			0x575640;
-int callAddr_InfoMessageBox12 =			0x57611D;
-int callAddr_Encrypt01 =				0x5149DD;
-int callAddr_Decrypt01 =				0x514FF8;
-int callAddr_ShouldParseRecv01 =		0x463380;
 
 //int recv2 = (void (*)())(*DetourFindFunction("wsock32.dll","recv"));
 DETOUR_TRAMPOLINE(int WINAPI Real_send(SOCKET s,char* buf,int len,int flags),send);
@@ -1396,7 +1442,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 		parseMessage(encryptBeforeBuf,encryptLen,debugFile,1,1);
 		if (debugFile)
 		{	
-			bufToHexString(encryptBeforeBuf,encryptLen);	
+			bufToHexString(encryptBeforeBuf,encryptLen);
 			fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
 			fflush(debugFile);
 		}

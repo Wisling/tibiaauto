@@ -68,13 +68,13 @@ CMemConstData::CMemConstData()
 	m_memAddressSkillClub           = m_memAddressSkillFish-20;
 	m_memAddressSkillFist			= offset + itemProxy.getValueForConst("addrSkillFist");
 				
-	m_memAddressSkillFishPercLeft   = m_memAddressSkillFish-28;
-	m_memAddressSkillShieldPercLeft = m_memAddressSkillFish-32;
-	m_memAddressSkillDistPercLeft   = m_memAddressSkillFish-36;
-	m_memAddressSkillAxePercLeft    = m_memAddressSkillFish-40;
-	m_memAddressSkillSwordPercLeft  = m_memAddressSkillFish-44;
-	m_memAddressSkillClubPercLeft   = m_memAddressSkillFish-48;
 	m_memAddressSkillFistPercLeft   = offset + itemProxy.getValueForConst("addrSkillFistPercLeft");
+	m_memAddressSkillClubPercLeft   = m_memAddressSkillFistPercLeft+4;
+	m_memAddressSkillSwordPercLeft  = m_memAddressSkillFistPercLeft+8;
+	m_memAddressSkillAxePercLeft    = m_memAddressSkillFistPercLeft+12;
+	m_memAddressSkillDistPercLeft   = m_memAddressSkillFistPercLeft+16;
+	m_memAddressSkillShieldPercLeft = m_memAddressSkillFistPercLeft+20;
+	m_memAddressSkillFishPercLeft   = m_memAddressSkillFistPercLeft+24;
 	
 	m_memAddressSelfId              = offset + itemProxy.getValueForConst("addrSelfId");
 	m_memAddressMapStart            = offset + itemProxy.getValueForConst("addrMapStart");
