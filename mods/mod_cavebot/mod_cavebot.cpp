@@ -1734,6 +1734,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	currentPosTM=time(NULL);
 
 	int loggedOut=0;
+	int wasLoggedOut=0;
+	int attackTimeoutOnLogin=10; //used for disabling attack for first 10 seconds after logging in
+	int loginTm=0;
 
 	lootFromFloorArr.RemoveAll();
 	
@@ -1780,8 +1783,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	struct ipcMessage mess;
 	
 
-
-
 	bool DISPLAY_TIMING=false;
 	int TIMING_MAX=10;
 	int TIMING_COUNTS[100];
@@ -1792,23 +1793,32 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		Sleep(250);
 		
 		int beginningS = GetTickCount();
-		if (reader.getConnectionState()!=8||!config->pausingEnable)
+		loggedOut = reader.getConnectionState()!=8;
+		if (loggedOut)
 		{
-			// flush IPC communication if not logged
+			currentlyAttackedCreatureNr=-1;
+			wasLoggedOut = 1;
+		}
+
+		//on first run after being logged out perform these
+		if (!loggedOut && wasLoggedOut){
+			//refresh attackmode since Tibia's buttons would display server's settings
+			SendAttackMode(-1,-1,-1,1);
+			loginTm = time(NULL);
+			wasLoggedOut=0;
+		}
+		
+		if (loggedOut||!config->pausingEnable)
+		{
+			// flush IPC communication if not logged in or we do not pay attention to pauses
 			while (backPipe.readFromPipe(&mess,1009)) {};
 			while (backPipe.readFromPipe(&mess,2002)) {};
 		}
-		if (reader.getConnectionState()!=8)
-		{
-			currentlyAttackedCreatureNr=-1;
-			loggedOut=1;
-		}
+		
+		if (loggedOut) continue; // do not proceed if not connected
 
-		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
-
-		if (loggedOut){
-			//refresh attackmode since Tibia's buttons would display correct settings
-			SendAttackMode(-1,-1,-1,1);
+		if (time(NULL) - loginTm < attackTimeoutOnLogin){ // do not walk or attack until attack timeout is finished
+			continue;
 		}
 
 		int pausingS = GetTickCount();
