@@ -125,8 +125,13 @@ BOOL CALLBACK EnumWindowsProcTibiaWindow(
 	GetWindowThreadProcessId(hwnd,&procId);
 	if (lParam==procId)
 	{
-		tibiaWindowHwnd=hwnd;
-		return 0;
+		char classname[201];
+		GetClassName(hwnd,classname,200);
+		//AfxMessageBox(classname);
+		if(!strcmp(classname,"TibiaClient")){
+			tibiaWindowHwnd=hwnd;
+			return 0;
+		}
 	}
 	return 1;
 }

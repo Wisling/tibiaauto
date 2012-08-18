@@ -1674,6 +1674,7 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 								delete self;
 							}
 							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_closing;
+							Sleep(CModuleUtil::randomFormula(250,50)); //Add short delay for autostacker to take items
 							sender.closeContainer(contNr);
 							CModuleUtil::waitForOpenContainer(contNr,false);
 						}
@@ -2194,6 +2195,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									}
 									
 									//sender.sendTAMessage("[debug] closing bag");
+									Sleep(CModuleUtil::randomFormula(250,50)); //Add short delay for autostacker to take items
 									sender.closeContainer(contNr);
 									CModuleUtil::waitForOpenContainer(contNr,false);
 								}

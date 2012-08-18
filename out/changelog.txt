@@ -1,3 +1,10 @@
+2.22.2, 15.8.2012
+Enhancements:
+ Cavebot:Pauses during first 10 seconds after logging in while it cannot attack anything
+Defects:
+ Cavebot:Fixed bug that continually sent 'change attack mode' packets to server after relogging
+
+
 2.22.1, 13.8.2012
 Enhancements:
 Defects:
