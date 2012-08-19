@@ -1396,7 +1396,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 		parseMessage(encryptBeforeBuf,encryptLen,debugFile,1,1);
 		if (debugFile)
 		{	
-			bufToHexString(encryptBeforeBuf,encryptLen);	
+			bufToHexString(encryptBeforeBuf,encryptLen);
 			fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
 			fflush(debugFile);
 		}
