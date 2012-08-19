@@ -1,8 +1,8 @@
-2.22.1, 13.8.2012
+2.22.2, 15.8.2012
 Enhancements:
+ Cavebot:Pauses during first 10 seconds after logging in while it cannot attack anything
 Defects:
- Cavebot: fixed cavebot going to location (0,0,0) when loading one script after another with more waypoints.
- Python: Inpacket python function no longer has a memory leak!
- Tibia Auto: fixed some "pipe handle not being read fast enough" messages were caused by restarting TA
- Tibia Auto: made the "pipe handle not being read fast enough" message into a ingame message rather than a dialog box.
- Python: Fixed Inpacket python function from passing on incomplete packets
+ Cavebot:Fixed bug that continually sent 'change attack mode' packets to server after relogging
+ Auto Login: Specified a more specific window to restore before logging in so other windows are not restored
+ Cavebot: Pauses for 200ms before closing container to give restacker better chance to restack items.
+ Tibia Auto: Fixed skill percent addresses.
