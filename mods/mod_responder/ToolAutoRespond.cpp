@@ -200,7 +200,7 @@ void CToolAutoRespond::readInfo()
 		memcpy(&msgLen,mess.payload+8,sizeof(int));
 		memcpy(nickBuf,mess.payload+12,nickLen);
 		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
-		switch (infoType)
+		switch (infoType)//received message types
 		{
 		case 1: sprintf(chanBuf,"say");break;
 		case 2: sprintf(chanBuf,"whisper");break;
@@ -209,7 +209,7 @@ void CToolAutoRespond::readInfo()
 		case 6: sprintf(chanBuf,"private");break;
 		case 7: sprintf(chanBuf,"channel");break;
 		default: sprintf(chanBuf,"other[%d]",infoType);break;
-		}			
+		}
 		//Channel IDs
 		//1-Party
 		//2-Own Chat Channel(premium)
@@ -237,7 +237,7 @@ void CToolAutoRespond::readInfo()
 			{
 				EnterCriticalSection(&QueueCriticalSection); 
 				threadConfig[i].queue.push(new CToolAutoResponderMessage(chanBuf,msgBuf,nickBuf));
-				LeaveCriticalSection(&QueueCriticalSection); 
+				LeaveCriticalSection(&QueueCriticalSection);
 			}
 		}
 		
@@ -259,7 +259,7 @@ BOOL CToolAutoRespond::OnInitDialog()
 	m_actionLog.InsertColumn(0,"log message",LVCFMT_LEFT,550);
 
 	m_threadStatus.InsertColumn(0,"id",LVCFMT_LEFT,50);
-	m_threadStatus.InsertColumn(1,"status",LVCFMT_LEFT,100);	
+	m_threadStatus.InsertColumn(1,"status",LVCFMT_LEFT,100);
 	m_threadStatus.InsertColumn(2,"backlog",LVCFMT_LEFT,50);
 
 	toolThreadAutoResponderShouldStop=0;
