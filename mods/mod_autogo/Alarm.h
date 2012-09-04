@@ -53,6 +53,8 @@ public:
 	void setGoToStart(bool);
 	void setGoToRunaway(bool);
 	void setStopWalking(bool);
+	void setPersistent(bool);
+	void setPermanent(bool);
 
 	// Actions/Accessors
 	list<CString> doStopModules();
@@ -69,6 +71,8 @@ public:
 	bool doGoToRunaway();
 	int doTakeScreenshot();
 	bool doStopWalking();
+	bool doPersistent();
+	bool doPermanent();
 
 	// Methods
 	void initializeCharacter();
@@ -114,6 +118,10 @@ private:
 	int attribute;
 	int alarmType;
 	bool stopWalking;
+	bool persistent;
+	bool permanent;
+
+
 
 	// Initial Character State
 	int lvlInit;

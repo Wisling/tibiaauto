@@ -507,12 +507,13 @@ int getGoPriority(list<Alarm> test, bool isGoingToRunaway){
 
 }
 int shouldKeepWalking() {
+	//considers whether we are attacking and done looting
 	static lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");
 		if (strcmp(var,"")==0){
-			if (lastAttackTime<time(NULL)-3)
+			if (time(NULL)-lastAttackTime>3)
 				return 1;
 			else
 				return 0;
@@ -523,7 +524,7 @@ int shouldKeepWalking() {
 }
 
 // Required to be run at least every 3 seconds to be useful since it updates lastAttackTm
-int donaAttackingAndLooting(){
+int doneAttackingAndLooting(){
 	CMemReaderProxy reader;
 	static int lastAttackTm=0;
 	int ret = GetTickCount()-lastAttackTm>3*1000 && !reader.getAttackedCreature();
@@ -556,6 +557,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int recoveryAlarmMana = 0;
 	int goPriority = 0;
 	bool isGoingToRunaway=true;
+	bool isDestinationReached=false;
 	int stopWalk = 0;
 	CString statusBuf = "";
 	soundPath[0]=0;
@@ -588,7 +590,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr++;
 				continue;
 			}
-			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg);
+			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg); //Check if criteria is satisfied
+			shouldAlarm = shouldAlarm || alarmItr->alarmState && alarmItr->permanent; // keep alarm on if permanent
+			shouldAlarm = shouldAlarm || alarmItr->alarmState && alarmItr->checkPersistent(isDestinationReached); // keep alarm on if action not yet completed
+
 			if (shouldAlarm && shouldAlarm != alarmItr->alarmState) {//state changed to ON
 
 				// Highlight Window ***************
@@ -849,7 +854,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				reader.setGlobalVariable("walking_priority","0");
 			}
 		}
-		if (donaAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0){
+		doneAttackingAndLooting(); //guarantees it will be run even when it is not needed
+		if (doneAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0){
 			// if stopWalk do nothing
 			if (!stopWalk) {
 				switch (goPriority) {
@@ -870,6 +876,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 						}
 					} else {
+						isDestinationReached=true;
 						isGoingToRunaway=true; //Switch to going to runaway if enabled
 						if (config->actDirection) {
 							if (config->actDirection == DIR_LEFT)
@@ -901,20 +908,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 						}
 					} else {
-						isGoingToRunaway=false; //switch going back to statr if enabled
+						isDestinationReached=true;
+						isGoingToRunaway=false; //switch going back to start if enabled
 					}
 						}
 					break;
 				case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+					int pathSize = 0;
+					int path[15];
+					struct point p = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+					for (; pathSize < 15 && path[pathSize]; pathSize++);
 					if (shouldKeepWalking()){
 						delete self;
 						self=reader.readSelfCharacter();
-						int pathSize = 0;
-						int path[15];
-						CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-						for (; pathSize < 15 && path[pathSize]; pathSize++);
-						if (pathSize)
-							CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
+						if (pathSize){
+							CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+						}
+					}
+					if (pathSize==0 && (p.x || p.y || p.z)) {
+						isDestinationReached=true;
 					}
 						}
 					break;
@@ -1211,7 +1223,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 
 		CString cAlarmName=CString(alarmName);
 
-		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,stopWalk=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
+		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,stopWalk=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0,;
 		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
 
 		Alarm temp(alarmType,attribute,condition,trigType,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);

@@ -42,6 +42,9 @@ Alarm::Alarm() {
 	attribute = 0;
 	alarmType = 0;
 	stopWalking = false;
+	persistent = false;
+	permanent = false;
+
 
 // execution markers only, no need to save record here
 	onScreenAt = 0;
@@ -58,7 +61,7 @@ Alarm::Alarm() {
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
@@ -79,6 +82,8 @@ Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool r
 	attribute = attr;
 	alarmType = type;
 	setTrigger(trigType, strTrig);
+	persistent = pers;
+	permanent = perm;
 
 	stopWalking = stopwalk;
 	
@@ -173,6 +178,14 @@ void Alarm::setLogEvents(bool onOff) {
 	logEvents = onOff;
 }
 
+void Alarm::setPesistent(bool onOff) {
+	persistent = onOff;
+}
+
+void Alarm::setPermanent(bool onOff) {
+	permanent = onOff;
+}
+
 //////////////////////////////////////////////////////////////////////
 // Actions/Accessors
 //////////////////////////////////////////////////////////////////////
@@ -231,6 +244,14 @@ CString Alarm::doCastSpell() {
 
 bool Alarm::doStopWalking() {
 	return stopWalking;
+}
+
+bool Alarm::doPersistent() {
+	return persistent;
+}
+
+bool Alarm::doPermanent() {
+	return permanent;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -692,6 +713,10 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 	delete self;
 	return retval;
 }
+bool Alarm::checkPersistent(bool isDestinationReached) {
+
+}
+checkPersistent
 
 //////////////////////////////////////////////////////////////////////
 // Triggers
@@ -821,18 +846,11 @@ int Alarm::countAllFood() {
 	CTibiaItemProxy itemProxy;
 	int foodCount = 0;
 
-	CUIntArray* foods = itemProxy.getFoodIdArrayPtr();
+	CUIntArray* foods = itemProxy.getFoodIdArrayPtr();//unsure whether this is needed to be called
 	for (int i=0;i<itemProxy.getFoodCount();i++){
 		foodCount+=countAllItemsOfType(itemProxy.getFoodIdAtIndex(i));
 	}
 
-//--Old code--
-//	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
-//		CTibiaItem *item = CModuleUtil::lookupItem(contNr, itemProxy.getFoodIdArrayPtr());
-//		if (item->objectId)
-//			foodCount += countAllItemsOfType(item->objectId);
-//		delete item;
-//	}	
 	return foodCount;
 }
 
