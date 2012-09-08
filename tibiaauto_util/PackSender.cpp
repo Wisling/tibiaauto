@@ -777,7 +777,7 @@ void CPackSender::tell(char *msg, char *playerName)
 	retbuf[0]=l%256;
 	retbuf[1]=l/256;
 	retbuf[2]=0x96;
-	retbuf[3]=0x06;
+	retbuf[3]=0x05;
 	retbuf[4]=strlen(playerName)%256;
 	retbuf[5]=strlen(playerName)/256;
 	sprintf(retbuf+6,"%s",playerName);
@@ -939,7 +939,7 @@ void CPackSender::printText(CPoint pos, int red, int green, int blue, char* mess
 	memcpy(mess.payload + 4, &pos.y, sizeof(int));
 	memcpy(mess.payload + 8, &red, sizeof(int));
 	memcpy(mess.payload + 12, &green, sizeof(int));
-	memcpy(mess.payload + 16, &green, sizeof(int));
+	memcpy(mess.payload + 16, &blue, sizeof(int));
 	memcpy(mess.payload + 20, &messLen, sizeof(int));
 	strcpy(mess.payload + 24, message);
 	mess.send();
