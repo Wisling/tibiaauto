@@ -26,7 +26,7 @@ public:
 	int runawayX,runawayY,runawayZ;
 
 	bool triggerMessage;
-	bool maintainStart;
+	bool maintainPos;
 
 	char whiteList[100][32];
 	char status[2001];

@@ -178,7 +178,7 @@ void Alarm::setLogEvents(bool onOff) {
 	logEvents = onOff;
 }
 
-void Alarm::setPesistent(bool onOff) {
+void Alarm::setPersistent(bool onOff) {
 	persistent = onOff;
 }
 
@@ -190,67 +190,67 @@ void Alarm::setPermanent(bool onOff) {
 // Actions/Accessors
 //////////////////////////////////////////////////////////////////////
 
-list<CString> Alarm::doStopModules() {
+list<CString> Alarm::getStopModules() {
 	return stopModules;
 }
 
-list<CString> Alarm::doStartModules() {
+list<CString> Alarm::getStartModules() {
 	return startModules;
 }
 
-bool Alarm::doLogout() {
+bool Alarm::getLogout() {
 	return logout;
 }
 
-bool Alarm::doKillClient() {
+bool Alarm::getKillClient() {
 	return killTibia;
 }
 
-bool Alarm::doShutdownComputer() {
+bool Alarm::getShutdownComputer() {
 	return shutdown;
 }
 
-int Alarm::doWindowAction() {
+int Alarm::getWindowAction() {
 	return windowAction;
 }
 
-CString Alarm::doAlarm() {
+CString Alarm::getAlarm() {
 	return sound;
 }
 
-bool Alarm::doLogEvents() {
+bool Alarm::getLogEvents() {
 	return logEvents;
 }
 
-int Alarm::doTakeScreenshot() {
+int Alarm::getTakeScreenshot() {
 	return screenshot;
 }
 
-bool Alarm::doGoToRunaway() {
+bool Alarm::getGoToRunaway() {
 	return runaway;
 }
 
-bool Alarm::doGoToStart() {
+bool Alarm::getGoToStart() {
 	return start;
 }
 
-bool Alarm::doGoToDepot() {
+bool Alarm::getGoToDepot() {
 	return depot;
 }
 
-CString Alarm::doCastSpell() {
+CString Alarm::getCastSpell() {
 	return spell;
 }
 
-bool Alarm::doStopWalking() {
+bool Alarm::getStopWalking() {
 	return stopWalking;
 }
 
-bool Alarm::doPersistent() {
+bool Alarm::getPersistent() {
 	return persistent;
 }
 
-bool Alarm::doPermanent() {
+bool Alarm::getPermanent() {
 	return permanent;
 }
 
@@ -713,10 +713,31 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 	delete self;
 	return retval;
 }
-bool Alarm::checkPersistent(bool isDestinationReached) {
 
+// Returns true when the action started by the alarm is not yet done, and false otherwise.
+// This tells TA to finish it even after the alarm criteria is no longer met
+// Input: all state variables used to determine whether we should keep any alarm on
+// Output: whether, for the current alarm, we should keep it on
+bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut) {
+	//walking to a destination
+	if(Alarm::getGoToDepot() || Alarm::getGoToStart() || Alarm::getGoToRunaway()){
+		if(!isDestinationReached){
+			return true;
+		}
+	}
+	//logging out
+	if(Alarm::getLogout()){
+		if(!isLoggedOut){
+			return true;
+		}
+	}
+	//taking screenshots
+	//Not needed - the alarm always finishes screenshots anyway by default
+
+	//if no criteria is met for persistent alarm, return 0
+	return false;
 }
-checkPersistent
+
 
 //////////////////////////////////////////////////////////////////////
 // Triggers

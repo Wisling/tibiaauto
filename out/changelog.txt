@@ -1,3 +1,10 @@
+Enhancements:
+ Autogo: Added persistent and permanent alarms to allow a player to finish an action even when the trigger condition is no longer met
+ Autogo: Added safeguard "Maintain Position an Alarm" for standing in same place when an alarm is active and not walking anywhere
+Defects:
+ Responder: Fixed method for sending private messages to ather players
+ Python: Fixed PrintText not being able to output blue text
+
 2.22.1, 13.8.2012
 Enhancements:
 Defects:

@@ -23,7 +23,7 @@ CConfigData::CConfigData()
 	runawayX = runawayY = runawayZ = 0;
 
 	triggerMessage = 0;
-	maintainStart = 0;
+	maintainPos = 0;
 	status[0] = 0;
 	memset(whiteList,0,3200);
 	strcpy(modPriorityStr,"2");

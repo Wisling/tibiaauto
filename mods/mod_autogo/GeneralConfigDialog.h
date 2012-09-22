@@ -29,7 +29,7 @@ public:
 	enum { IDD = IDD_GENERAL_CONFIG_DIALOG };
 	CStatic	m_runawayPicture;
 	CStatic	m_startPicture;
-	CButton	m_maintainStart;
+	CButton	m_maintainPos;
 	CEdit	m_curY;
 	CButton	m_proximityFrame;
 	CButton	m_postionFrame;

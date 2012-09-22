@@ -167,71 +167,75 @@ STYLE WS_CHILD | WS_VISIBLE
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,307
-    GROUPBOX        "Actions",IDC_ACTION_FRAME,14,85,253,127
-    COMBOBOX        IDC_ALARM_TYPE,14,34,80,134,CBS_DROPDOWN | 
+    GROUPBOX        "Actions",IDC_ACTION_FRAME,14,71,253,141
+    COMBOBOX        IDC_ALARM_TYPE,14,28,80,134,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
-    COMBOBOX        IDC_ATTRIBUTE,14,65,80,193,CBS_DROPDOWN | 
+    COMBOBOX        IDC_ATTRIBUTE,14,53,80,193,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
-    COMBOBOX        IDC_CONDITION,100,65,80,128,CBS_DROPDOWN | 
+    COMBOBOX        IDC_CONDITION,100,53,80,128,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Go to Runaway",IDC_ACTION_RUNAWAY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,96,73,11
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,81,73,11
     CONTROL         "Go to Start",IDC_ACTION_START,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,110,73,11
+                    WS_TABSTOP,21,95,73,11
     CONTROL         "Go to Depot",IDC_ACTION_DEPOT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,124,73,11
+                    WS_TABSTOP,21,109,73,11
     CONTROL         "Log Out",IDC_ACTION_LOGOUT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,100,110,73,11
+                    WS_TABSTOP,100,95,73,11
     CONTROL         "Kill Tibia Client",IDC_ACTION_KILL,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,124,73,11
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,109,73,11
     CONTROL         "Computer Off",IDC_ACTION_SHUTDOWN,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,138,73,11
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,123,73,11
     CONTROL         "Take Screenshot:",IDC_ACTION_SCREENSHOT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,180,73,11
-    COMBOBOX        IDC_SCREENSHOT_OPTIONS,28,193,67,62,CBS_DROPDOWN | 
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,165,73,11
+    COMBOBOX        IDC_SCREENSHOT_OPTIONS,28,178,67,62,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Audio Alarm:",IDC_ACTION_SOUND,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,100,180,73,11
-    COMBOBOX        IDC_AUDIO_FILE,106,193,67,71,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,100,165,73,11
+    COMBOBOX        IDC_AUDIO_FILE,106,178,67,71,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Suspend Mod(s):",IDC_ACTION_SUSPEND_MODULES,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,179,152,73,11
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,137,73,11
     PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,219,50,14
     PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,219,50,14
     PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,219,50,14
-    LTEXT           "Type:",IDC_STATIC,14,20,19,8
-    LTEXT           "Attribute:",IDC_STATIC,14,52,29,8
-    LTEXT           "Condition:",IDC_STATIC,100,51,32,8
-    LTEXT           "Trigger:",IDC_STATIC,186,51,25,8
+    LTEXT           "Type:",IDC_STATIC,14,19,19,8
+    LTEXT           "Attribute:",IDC_STATIC,14,44,29,8
+    LTEXT           "Condition:",IDC_STATIC,100,44,32,8
+    LTEXT           "Trigger:",IDC_STATIC,186,44,25,8
     CONTROL         "List1",IDC_ALARM_LIST,"SysListView32",LVS_REPORT | 
                     LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
                     WS_TABSTOP,21,240,239,66
     CONTROL         "Cast Spell:",IDC_ACTION_SPELL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,152,73,11
-    COMBOBOX        IDC_SPELL_LIST,28,165,67,62,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP,21,137,73,11
+    COMBOBOX        IDC_SPELL_LIST,28,150,67,62,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
-    EDITTEXT        IDC_TRIGGER,186,65,80,15,ES_AUTOHSCROLL
-    LISTBOX         IDC_MODULES_LIST,186,165,67,38,LBS_SORT | 
+    EDITTEXT        IDC_TRIGGER,186,53,80,15,ES_AUTOHSCROLL
+    LISTBOX         IDC_MODULES_LIST,186,150,67,38,LBS_SORT | 
                     LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_TABSTOP
     CTEXT           "Select an alarm type to begin.",IDC_INSTRUCTION_TEXT,
-                    100,17,167,29,0,WS_EX_STATICEDGE
+                    100,14,167,29,0,WS_EX_STATICEDGE
     CONTROL         "Start Mod(s):",IDC_ACTION_START_MODULES,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,179,96,73,11
-    LISTBOX         IDC_MODULES_LIST2,186,110,67,38,LBS_SORT | 
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,81,73,11
+    LISTBOX         IDC_MODULES_LIST2,186,95,67,38,LBS_SORT | 
                     LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_TABSTOP
     CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,138,73,11
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,123,73,11
     CONTROL         "Window Action",IDC_ACTION_WINDOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,152,73,11
-    COMBOBOX        IDC_ACTION_WINDOW_LIST,106,165,67,79,CBS_DROPDOWN | 
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,137,73,11
+    COMBOBOX        IDC_ACTION_WINDOW_LIST,106,150,67,79,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Stop Walking",IDC_ACTION_STOP_WALKING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,96,73,11
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,81,73,11
+    CONTROL         "Permanent",IDC_ACTION_PERMANENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,193,73,11
+    CONTROL         "Perisistent",IDC_ACTION_PERSISTENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,194,73,11
 END
 
 IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 320
@@ -286,8 +290,8 @@ BEGIN
     COMBOBOX        IDC_AUTOGO_ACT_DIRECTION,79,142,52,56,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     LTEXT           "Facing Direction:",IDC_STATIC,21,144,54,8
-    CONTROL         "Maintain Start Position",IDC_MAINTAIN_START,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,161,143,86,10
+    CONTROL         "Maintain Position on Alarm",IDC_MAINTAIN_POS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,161,143,99,10
     CONTROL         3031,IDC_START_PICTURE,"Static",SS_BITMAP | 
                     SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,14,176,124,100
     LTEXT           "Start Position:",IDC_STATIC,14,164,44,8,SS_CENTERIMAGE
@@ -335,21 +339,19 @@ BEGIN
         RIGHTMARGIN, 274
         VERTGUIDE, 14
         VERTGUIDE, 21
+        VERTGUIDE, 100
+        VERTGUIDE, 186
         VERTGUIDE, 260
         VERTGUIDE, 267
         TOPMARGIN, 7
         BOTTOMMARGIN, 313
-        HORZGUIDE, 17
+        HORZGUIDE, 14
         HORZGUIDE, 28
-        HORZGUIDE, 65
-        HORZGUIDE, 80
-        HORZGUIDE, 85
+        HORZGUIDE, 53
+        HORZGUIDE, 81
         HORZGUIDE, 96
-        HORZGUIDE, 212
         HORZGUIDE, 220
-        HORZGUIDE, 233
         HORZGUIDE, 240
-        HORZGUIDE, 306
     END
 
     IDD_GENERAL_CONFIG_DIALOG, DIALOG
@@ -409,6 +411,8 @@ IDB_STARTMODULE         BITMAP  DISCARDABLE     "res\\StartModule.bmp"
 IDB_SUSPENDMODULE       BITMAP  DISCARDABLE     "res\\SuspendModule.bmp"
 IDB_ITEMS               BITMAP  DISCARDABLE     "res\\Items.bmp"
 IDB_STOP                BITMAP  DISCARDABLE     "res\\Stop.bmp"
+IDB_PERSISTENT          BITMAP  DISCARDABLE     "res\\Persistent.bmp"
+IDB_PERMANENT           BITMAP  DISCARDABLE     "res\\Permanent.bmp"
 
 #ifndef _MAC
 /////////////////////////////////////////////////////////////////////////////
@@ -706,6 +710,8 @@ BEGIN
     IDS_ONLINE_VIP_PLAYER   "When a VIP name specified in the trigger is logged in or out according to the conditions, the alarm will trigger."
     IDS_PROXIMITY_ATTACKINGPLAYER 
                             "When a player who has attacked you within the last minute appears, the alarm will activate."
+    IDS_PERSISTENT          "A persistent alarm will not stop until the selected action(s) are finished or the destination is reached, even if the trigger condition is no longer met."
+    IDS_PERMANENT           "A permanent alarm will not stop, even if the trigger condition is no longer met."
 END
 
 #endif    // English (U.S.) resources

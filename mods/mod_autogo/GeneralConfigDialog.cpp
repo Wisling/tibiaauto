@@ -240,7 +240,7 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 	//{{AFX_DATA_MAP(GeneralConfigDialog)
 	DDX_Control(pDX, IDC_RUNAWAY_PICTURE, m_runawayPicture);
 	DDX_Control(pDX, IDC_START_PICTURE, m_startPicture);
-	DDX_Control(pDX, IDC_MAINTAIN_START, m_maintainStart);
+	DDX_Control(pDX, IDC_MAINTAIN_POS, m_maintainPos);
 	DDX_Control(pDX, IDC_AUTOGO_CUR_Y, m_curY);
 	DDX_Control(pDX, IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME, m_proximityFrame);
 	DDX_Control(pDX, IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME, m_postionFrame);
@@ -309,7 +309,7 @@ void GeneralConfigDialog::disableControls() {
 	m_ignoreSpells.EnableWindow(false);
 	m_SetRunaway.EnableWindow(false);
 	m_SetStart.EnableWindow(false);
-	m_maintainStart.EnableWindow(false);
+	m_maintainPos.EnableWindow(false);
 	m_flashOnAlarm.EnableWindow(false);
 	m_modPriority.EnableWindow(false);
 }
@@ -350,7 +350,7 @@ void GeneralConfigDialog::enableControls() {
 	m_ignoreSpells.EnableWindow(true);
 	m_SetRunaway.EnableWindow(true);
 	m_SetStart.EnableWindow(true);
-	m_maintainStart.EnableWindow(true);
+	m_maintainPos.EnableWindow(true);
 	m_flashOnAlarm.EnableWindow(true);
 	m_modPriority.EnableWindow(true);
 }
@@ -370,7 +370,7 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	m_battleAnxiety.SetCheck(configData->options & OPTIONS_BATTLE_ANXIETY);
 	memMkBlack = configData->options & OPTIONS_MAKE_BLACKLIST;
 	m_flashOnAlarm.SetCheck(configData->options & OPTIONS_FLASHONALARM);
-	m_maintainStart.SetCheck(configData->maintainStart);
+	m_maintainPos.SetCheck(configData->maintainPos);
 	m_modPriority.SetCurSel(atoi(configData->modPriorityStr) - 1);
 }
 
@@ -391,7 +391,7 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	if (m_battleAnxiety.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_ANXIETY;
 	if (memMkBlack) newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
 	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
-	newConfigData->maintainStart = m_maintainStart.GetCheck()!=0;
+	newConfigData->maintainPos = m_maintainPos.GetCheck()!=0;
 	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
 }
 

@@ -124,6 +124,8 @@
 #define IDS_ABSENT                      113
 #define IDS_ONLINE_VIP_PLAYER           114
 #define IDS_PROXIMITY_ATTACKINGPLAYER   115
+#define IDS_PERSISTENT                  116
+#define IDS_PERMANENT                   117
 #define IDC_AUTOGO_TRIGGER              1046
 #define IDC_AUTOGO_ACTION               1047
 #define IDC_AUTOGO_RUNAWAY_X            1048
@@ -384,7 +386,7 @@
 #define IDC_GENERAL_CONFIG_MESSAGE_OPTIONS_FRAME 3153
 #define IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME 3154
 #define IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME 3155
-#define IDC_MAINTAIN_START              3156
+#define IDC_MAINTAIN_POS              3156
 #define IDC_RUNAWAY_PICTURE             3158
 #define IDC_START_PICTURE               3159
 #define IDC_SPELLWORDS                  3160
@@ -393,7 +395,11 @@
 #define IDC_SPELL_CONFIGURATION_FRAME   3163
 #define IDC_ACTION_WINDOW_LIST          3164
 #define IDC_FLASHONALARM                3165
-#define IDC_AUTOGO_MODPRIORITY          3167
+#define IDC_AUTOGO_MODPRIORITY          3166
+#define IDC_ACTION_PERSISTENT           3167
+#define IDC_ACTION_PERMANENT            3168
+#define IDB_PERSISTENT                  3169
+#define IDB_PERMANENT                   3170
 
 // Next default values for new objects
 // 

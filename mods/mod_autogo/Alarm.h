@@ -56,30 +56,31 @@ public:
 	void setPersistent(bool);
 	void setPermanent(bool);
 
-	// Actions/Accessors
-	list<CString> doStopModules();
-	list<CString> doStartModules();
-	bool doLogEvents();
-	CString doAlarm();
-	int doWindowAction();
-	bool doShutdownComputer();
-	bool doKillClient();
-	bool doLogout();
-	CString doCastSpell();
-	bool doGoToDepot();
-	bool doGoToStart();
-	bool doGoToRunaway();
-	int doTakeScreenshot();
-	bool doStopWalking();
-	bool doPersistent();
-	bool doPermanent();
+	// Accessors
+	list<CString> getStopModules();
+	list<CString> getStartModules();
+	bool getLogEvents();
+	CString getAlarm();
+	int getWindowAction();
+	bool getShutdownComputer();
+	bool getKillClient();
+	bool getLogout();
+	CString getCastSpell();
+	bool getGoToDepot();
+	bool getGoToStart();
+	bool getGoToRunaway();
+	int getTakeScreenshot();
+	bool getStopWalking();
+	bool getPersistent();
+	bool getPermanent();
 
 	// Methods
 	void initializeCharacter();
 	bool checkAlarm(char whiteList[100][32], int, struct tibiaMessage*);
+	bool keepPersistent(bool isDestinationReached, bool isLoggedOut);
 
 	// Construction/Destruction
-	Alarm(int, int, int, int, CString, bool, bool, bool, CString, int, int, int, bool, bool, bool, bool, int, CString, bool, list<CString>, list<CString>);
+	Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm);
 	Alarm();
 	virtual ~Alarm();
 
