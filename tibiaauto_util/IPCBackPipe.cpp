@@ -7,6 +7,7 @@
 #include "ipcm.h"
 #include "time.h"
 #include "PackSender.h"
+#include "MemReader.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -24,7 +25,7 @@ FILE *debugFile=NULL;
 int PIPE_CLEAN_AT_COUNT = 100;
 int PIPE_REMOVE_AT_SECS = 10;
 int sentErrMsg = 0;
-int flushOutPipeAtStart = 0;
+int flushOutPipeAtStart = 1; //To test, set to 0, shutdown TA and start again after > 100 packets sent from Tibia
 
 CRITICAL_SECTION BackPipeQueueCriticalSection;
 
@@ -135,7 +136,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 		firstType = pipeBackCache[0].messageType;
 	}
 	if (pipeBackCacheCount >= PIPE_CLEAN_AT_COUNT){ // SOMEONE ISN'T READING FROM THEIR PIPE FAST ENOUGH!! DELETE THEIR ENTRIES!!!!
-		int j = 0;
+		int j = 0; // count of messages not of firstType that are being deleted
 		for (i=0;i<pipeBackCacheCount;i++)
 		{
 			if (pipeBackCache[i].messageType != firstType){
@@ -145,14 +146,25 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 				j++;
 			}
 		}
-		pipeBackCacheCount = j;
-		if (!sentErrMsg){
-			sentErrMsg = 1;
-			char errBuf[256];
-			sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds. Please fix this!%d %d %d", firstType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
+		pipeBackCacheCount = j; //set count to the remaining number of entries
+		if(i-j>PIPE_CLEAN_AT_COUNT/5){ //sometimes it is TA which is not reading entries and not any particular 
+			if (!sentErrMsg){
+				sentErrMsg = 1;
+				char errBuf[256];
+				sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds. Please fix this!%d %d %d", firstType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
+				CPackSender sender;
+				sender.sendTAMessage(errBuf);
+				//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
+			}
+		}else{
+#ifndef NDEBUG
 			CPackSender sender;
+			CMemReader reader;
+			int tibiaTm = reader.getCurrentTm();
+			char errBuf[256];
+			sprintf(errBuf, "Since Tibia start %d:%d:%d. Since TA start %d:%d:%d type:%d %d/%d over %d seconds", tibiaTm/1000/60/60,(tibiaTm%60)/1000/60,(tibiaTm%(60*60))/1000, GetTickCount()/1000/60/60,(GetTickCount()%60)/1000/60,(GetTickCount()%(60*60))/1000,firstType,i-j,i,PIPE_REMOVE_AT_SECS);
 			sender.sendTAMessage(errBuf);
-			//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
+#endif
 		}
 	}
 
