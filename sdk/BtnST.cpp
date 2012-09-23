@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "BtnST.h"
+#include "PackSenderProxy.h"
 
 #ifdef	BTNST_USE_SOUND
 #pragma comment(lib, "winmm.lib")
@@ -516,20 +517,41 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	m_bIsFocused  = (lpDIS->itemState & ODS_FOCUS);
 	m_bIsDisabled = (lpDIS->itemState & ODS_DISABLED);
 
+	//Never redraw when selection state is changing to 0 when check is 0 as this means nothing for a checkbox and simply causes flicker
+	if(m_bIsCheckBox && (lpDIS->itemAction & ODA_SELECT) && !(lpDIS->itemState & ODS_SELECTED)) return;
+
 	CRect itemRect = lpDIS->rcItem;
 
-	pDC->SetBkMode(TRANSPARENT);
+	int oldBkMode = pDC->SetBkMode(TRANSPARENT);
 
 	// Prepare draw... paint button background
 
+	CDC* dcMem = new CDC();
+	CBitmap bm;
+
+	// Create memory device context
+	dcMem->CreateCompatibleDC(pDC);
+	// Create memory bitmap
+	bm.CreateCompatibleBitmap(pDC,itemRect.Width(),itemRect.Height());
+	// Select bitmap into memory DC
+	CBitmap *pOldBitmap = dcMem->SelectObject(&bm);
+	// Offset origin based on position of rectangle
+	CPoint oldOrg = dcMem->OffsetViewportOrg(-itemRect.left,-itemRect.top);
+	// Copy font from original device context
+	dcMem->SelectObject(pDC->GetCurrentFont());
+
+
+	// Copy part of screen we will update to memory DC
+	//dcMem->BitBlt(itemRect.left, itemRect.top, itemRect.Width(), itemRect.Height(), pDC, itemRect.left, itemRect.top, SRCCOPY);
+
 	// Draw transparent?
 	if (m_bDrawTransparent)
-		PaintBk(pDC);
+		PaintBk(dcMem);
 	else
-		OnDrawBackground(pDC, &itemRect);
+		OnDrawBackground(dcMem, &itemRect);
 
 	// Draw button border
-	OnDrawBorder(pDC, &itemRect);
+	OnDrawBorder(dcMem, &itemRect);
 
 	// Read the button's title
 	CString sTitle;
@@ -537,22 +559,28 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
 	CRect captionRect = lpDIS->rcItem;
 
-	// Draw the icon
+//	CPackSenderProxy sender;
+//	static int aa=0;
+//	char buf[1111];
+//	sprintf(buf,"hi %d isCheckbox-%d check-%d , %d, %d, %d, bDR%d bSL%d bFC%d SL%d GR%d DB%d CK%d FC%d DFf%d BX%d HL%d IA%d %d",aa++,m_bIsCheckBox,m_nCheck,lpDIS->CtlType,lpDIS->CtlID,lpDIS->itemID,lpDIS->itemAction&1,lpDIS->itemAction&2,lpDIS->itemAction&4,lpDIS->itemState&1,lpDIS->itemState&2,lpDIS->itemState&4,lpDIS->itemState&8,lpDIS->itemState&16,lpDIS->itemState&32,lpDIS->itemState&64,lpDIS->itemState&128,lpDIS->itemState&256,lpDIS->itemState&512);
+//	sender.sendTAMessage(buf);
+
+	// Draw the icon	
 	if (m_csIcons[0].hIcon)
 	{
-		DrawTheIcon(pDC, !sTitle.IsEmpty(), &lpDIS->rcItem, &captionRect, m_bIsPressed, m_bIsDisabled);
+		DrawTheIcon(dcMem, !sTitle.IsEmpty(), &lpDIS->rcItem, &captionRect, m_bIsPressed, m_bIsDisabled);
 	} // if
 
 	if (m_csBitmaps[0].hBitmap)
 	{
-		pDC->SetBkColor(RGB(255,255,255));
-		DrawTheBitmap(pDC, !sTitle.IsEmpty(), &lpDIS->rcItem, &captionRect, m_bIsPressed, m_bIsDisabled);
+		dcMem->SetBkColor(RGB(255,255,255));
+		DrawTheBitmap(dcMem, !sTitle.IsEmpty(), &lpDIS->rcItem, &captionRect, m_bIsPressed, m_bIsDisabled);
 	} // if
 
 	// Write the button title (if any)
 	if (sTitle.IsEmpty() == FALSE)
 	{
-		DrawTheText(pDC, (LPCTSTR)sTitle, &lpDIS->rcItem, &captionRect, m_bIsPressed, m_bIsDisabled);
+		DrawTheText(dcMem, (LPCTSTR)sTitle, &lpDIS->rcItem, &captionRect, m_bIsPressed, m_bIsDisabled);
 	} // if
 
 	if (m_bIsFlat == FALSE || (m_bIsFlat && m_bDrawFlatFocus))
@@ -562,9 +590,20 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 		{
 			CRect focusRect = itemRect;
 			focusRect.DeflateRect(2, 2);
-			pDC->DrawFocusRect(&focusRect);
+			dcMem->DrawFocusRect(&focusRect);
 		} // if
 	} // if
+
+	// Copy memory image to display
+	pDC->BitBlt(itemRect.left, itemRect.top, itemRect.Width(), itemRect.Height(), dcMem, itemRect.left, itemRect.top, SRCCOPY);
+
+	// Clean up
+	bm.DeleteObject();
+	dcMem->DeleteDC();
+	dcMem=NULL;
+	pDC->SetBkMode(oldBkMode);
+
+
 } // End of DrawItem
 
 void CButtonST::PaintBk(CDC* pDC)
