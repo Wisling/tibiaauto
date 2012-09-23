@@ -2804,7 +2804,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						//Wait long enough to get a proper response from the white text
 						int timeIn = GetTickCount();
 						int timeOut = GetTickCount();
-						while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000) {timeOut = GetTickCount(); Sleep(50);}
+						while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000) {
+							timeOut = GetTickCount();
+							Sleep(50);
+						}
 						char whiteText[15];				//Stores white text.
 						for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
 							whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);
@@ -2837,10 +2840,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						int pathPointCount = CModuleUtil::GetPathTabCount();
 						int pathPointIndex;
 						//Limit searching to the first 200 relevant points or 0 for "all"
-						if (pathPointCount >= 200)
-							pathPointIndex = pathPointCount - 200;
-						else
-							pathPointIndex = 0;
+						if (pathPointCount >= 200) pathPointIndex = pathPointCount - 200;
+						else pathPointIndex = 0;
 						//Set a intermediate waypoint to walk to
 						point pathPoint;
 						pathPoint.x = 0;

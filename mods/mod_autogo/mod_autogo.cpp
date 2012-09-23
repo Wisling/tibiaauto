@@ -473,12 +473,12 @@ bool shouldStopWalking(list<Alarm> test) {
 	bool retVal = false;
 	list<Alarm>::iterator alarmItr = test.begin();
 	while (alarmItr != test.end() && !retVal) {
-		retVal = alarmItr->alarmState && alarmItr->doStopWalking();
+		retVal = alarmItr->alarmState && alarmItr->getStopWalking();
 		alarmItr++;
 	}
 	return retVal;
 }
-int getGoPriority(list<Alarm> test, bool isGoingToRunaway){
+int getGoPriority(list<Alarm> test, bool isGoingToRunaway, int maintainPos){
 	int retVal = 0;
 	list<Alarm>::iterator alarmItr = test.begin();
 	while (alarmItr != test.end() && retVal!=3) {
@@ -486,33 +486,39 @@ int getGoPriority(list<Alarm> test, bool isGoingToRunaway){
 			alarmItr++;
 			continue;
 		}
+		// Stay In Place ******************
+		if (maintainPos  && retVal <= 1) {
+			retVal = 1;
+		}
+
 		//Start and Runaway can both be selected at the same time, but not Depot
 		// Goto Start ******************
-		if (alarmItr->doGoToStart()  && retVal <= 1) {
-			retVal = 1;
-		}// *****************************
+		if (alarmItr->getGoToStart()  && retVal <= 2) {
+			retVal = 2;
+		}
 
 		// Goto Runaway **************** //stick with going to Start if not isGoingToRunaway
-		if (alarmItr->doGoToRunaway() && retVal <= 2 && (!alarmItr->doGoToStart() || isGoingToRunaway)) {
-			retVal = 2;
-		}// *****************************
+		if (alarmItr->getGoToRunaway() && retVal <= 3 && (!alarmItr->getGoToStart() || isGoingToRunaway)) {
+			retVal = 3;
+		}
 
 		// Goto Depot ******************
-		if (alarmItr->doGoToDepot()  && retVal <= 3) {
-			retVal = 3;
-		}// ****************************
+		if (alarmItr->getGoToDepot()  && retVal <= 4) {
+			retVal = 4;
+		}
 		alarmItr++;
 	}
 	return retVal;
 
 }
 int shouldKeepWalking() {
+	//considers whether we are attacking and done looting
 	static lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");
 		if (strcmp(var,"")==0){
-			if (lastAttackTime<time(NULL)-3)
+			if (time(NULL)-lastAttackTime>3)
 				return 1;
 			else
 				return 0;
@@ -523,7 +529,7 @@ int shouldKeepWalking() {
 }
 
 // Required to be run at least every 3 seconds to be useful since it updates lastAttackTm
-int donaAttackingAndLooting(){
+int doneAttackingAndLooting(){
 	CMemReaderProxy reader;
 	static int lastAttackTm=0;
 	int ret = GetTickCount()-lastAttackTm>3*1000 && !reader.getAttackedCreature();
@@ -546,16 +552,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 
-	int lastX = self->x;
-	int lastY = self->y;
-	int lastZ = self->z;
-	int lastMoved = 0;
-	int lastHp = self->hp;
-	int lastMana = self->mana;
+	int maintainX = 0;
+	int maintainY = 0;
+	int maintainZ = 0;
+	int sentMessagePathnotfound = 0;
+	//int lastMoved = 0;
+	//int lastHp = self->hp;
+	//int lastMana = self->mana;
 	int recoveryAlarmHp = 0;
 	int recoveryAlarmMana = 0;
 	int goPriority = 0;
 	bool isGoingToRunaway=true;
+	bool isDestinationReached=false;
 	int stopWalk = 0;
 	CString statusBuf = "";
 	soundPath[0]=0;
@@ -588,7 +596,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr++;
 				continue;
 			}
-			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg);
+			bool isLoggedOut = reader.getConnectionState()!=8;
+
+			//Note that alarmItr->alarmState is set to shouldAlarm when finished
+			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg); //Check if criteria is satisfied
+			shouldAlarm = shouldAlarm || alarmItr->alarmState && alarmItr->getPermanent(); // keep alarm on if permanent
+			shouldAlarm = shouldAlarm || alarmItr->alarmState && alarmItr->keepPersistent(isDestinationReached,isLoggedOut); // keep alarm on if action not yet completed
+
 			if (shouldAlarm && shouldAlarm != alarmItr->alarmState) {//state changed to ON
 
 				// Highlight Window ***************
@@ -598,7 +612,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 
 				// Log Event ******************
-				if (alarmItr->doLogEvents()) {
+				if (alarmItr->getLogEvents()) {
 					time_t rawtime;
 					time(&rawtime );
 					char filename[64];
@@ -615,8 +629,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 
 				// Window Action*************
-				if (alarmItr->doWindowAction() > -1) {
-					switch (alarmItr->doWindowAction()) {
+				if (alarmItr->getWindowAction() > -1) {
+					switch (alarmItr->getWindowAction()) {
 					case 0://maximize
 						if (!tibiaHWND) InitTibiaHandle();
 						ShowWindow(tibiaHWND, SW_MAXIMIZE);
@@ -642,8 +656,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// **************************** 
 
 				// Suspend Modules  ************
-				if (alarmItr->doStopModules().size()) {
-					list<CString> temp = alarmItr->doStopModules();
+				if (alarmItr->getStopModules().size()) {
+					list<CString> temp = alarmItr->getStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
 						actionSuspend(*modulesItr);
@@ -652,8 +666,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 
 				// Start Modules ***************
-				if (alarmItr->doStartModules().size()) {
-					list<CString> temp = alarmItr->doStartModules();
+				if (alarmItr->getStartModules().size()) {
+					list<CString> temp = alarmItr->getStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
@@ -663,13 +677,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 
 				// Kill Client *****************
-				if (alarmItr->doKillClient()) {
+				if (alarmItr->getKillClient()) {
 					actionTerminate();
 				}
 				// *****************************
 
 				// Shutdown Computer ***********
-				if (alarmItr->doShutdownComputer()) {
+				if (alarmItr->getShutdownComputer()) {
 					actionShutdownSystem();
 				}// ****************************
 			}
@@ -679,15 +693,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					statusBuf += "  ******  " + alarmItr->getDescriptor();
 								
 				// Play sound ******************
-				if (alarmItr->doAlarm().GetLength()) {
+				if (alarmItr->getAlarm().GetLength()) {
 					CString pathBuf;
-					pathBuf.Format("%s\\mods\\sound\\%s", path, alarmItr->doAlarm());
+					pathBuf.Format("%s\\mods\\sound\\%s", path, alarmItr->getAlarm());
 					PlaySound(pathBuf, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
 				}// ****************************
 								
 				// Window Action*************
-				if (alarmItr->doWindowAction() > -1) {
-					switch (alarmItr->doWindowAction()) {
+				if (alarmItr->getWindowAction() > -1) {
+					switch (alarmItr->getWindowAction()) {
 					case 3://flash continuously
 						if (!tibiaHWND) InitTibiaHandle();
 						static int lastFlash=GetTickCount();
@@ -700,17 +714,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// **************************** 
 							
 				// Cast spell ******************
-				if (alarmItr->doCastSpell().GetLength()) {
+				if (alarmItr->getCastSpell().GetLength()) {
 					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay()) {
-						sender.say(alarmItr->doCastSpell());
+						sender.say(alarmItr->getCastSpell());
 						alarmItr->spellCast = time(NULL);
 					}
 				}// *****************************
 				
 				// Take Screenshot **************
-				if (alarmItr->doTakeScreenshot() > -1) {
+				if (alarmItr->getTakeScreenshot() > -1) {
 					DWORD threadId;
-					switch (alarmItr->doTakeScreenshot()) {
+					switch (alarmItr->getTakeScreenshot()) {
 					case 0:
 						if (!alarmItr->screenshotsTaken) {
 							timeLastSS = time(NULL);
@@ -743,7 +757,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 				
 				// Logout **********************
-				if (alarmItr->doLogout()) {
+				if (alarmItr->getLogout()) {
 					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() == 8 ) {
 						sender.logout();
 					}
@@ -753,7 +767,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (!shouldAlarm){ //Alarm is OFF
 
 				// Take Screenshot **************  //Finishes taking screenshots then resets to 0
-				if (alarmItr->doTakeScreenshot() == 1 && alarmItr->screenshotsTaken > 0 && time(NULL) - timeLastSS >= 1){
+				if (alarmItr->getTakeScreenshot() == 1 && alarmItr->screenshotsTaken > 0 && time(NULL) - timeLastSS >= 1){
 					DWORD threadId;
 					if (alarmItr->screenshotsTaken < 3) {
 						timeLastSS = time(NULL);
@@ -767,14 +781,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (!shouldAlarm && shouldAlarm != alarmItr->alarmState) {//state changed to OFF
 
 				// Take Screenshot **************  //Let option 1 finish taking screenshots, it resets to 0 after
-				if (alarmItr->doTakeScreenshot() != 1){
+				if (alarmItr->getTakeScreenshot() != 1){
 					alarmItr->screenshotsTaken = 0;
 				}
 				// *****************************
 
 				// Suspend Modules  ************
-				if (alarmItr->doStopModules().size()) {
-					list<CString> temp = alarmItr->doStopModules();
+				if (alarmItr->getStopModules().size()) {
+					list<CString> temp = alarmItr->getStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
@@ -783,8 +797,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 
 				// Start Modules ***************
-				if (alarmItr->doStartModules().size()) {
-					list<CString> temp = alarmItr->doStartModules();
+				if (alarmItr->getStartModules().size()) {
+					list<CString> temp = alarmItr->getStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {					
 						actionSuspend(*modulesItr);
@@ -793,7 +807,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// ****************************
 
 				// Log Event ***************
-				if (alarmItr->doLogEvents()) {
+				if (alarmItr->getLogEvents()) {
 					time_t rawtime;
 					time(&rawtime );
 					char filename[64];
@@ -821,7 +835,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		//Calculate walk variables from entire list
 		stopWalk = shouldStopWalking(config->alarmList);
-		goPriority = getGoPriority(config->alarmList,isGoingToRunaway);
+		goPriority = getGoPriority(config->alarmList,isGoingToRunaway,config->maintainPos);
 
 		if (statusBuf.GetLength()){
 			CString* statusMsg=alarmStatus(statusBuf);
@@ -849,11 +863,43 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				reader.setGlobalVariable("walking_priority","0");
 			}
 		}
-		if (donaAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0){
-			// if stopWalk do nothing
-			if (!stopWalk) {
+		int keepMaintainPos = 0;
+		doneAttackingAndLooting(); //guarantees it will be run even when it is not needed
+		if (doneAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"),"autogo")==0){
+			// if stopWalk and not maintainPos then do nothing
+			if (!stopWalk || goPriority==1) {
 				switch (goPriority) {
-				case 1: {// Start position (By definition, the least safe place to be)
+				case 1: { // Stay in one place
+					keepMaintainPos=1;
+					if (maintainX == 0){ //Sets position here. Unsets position if not reached here.
+						maintainX = self->x;
+						maintainY = self->y;
+						maintainZ = self->z;
+					}
+					int pathSize = 0;
+					int path[15];
+					
+					if (abs(self->x-maintainX)>1 || abs(self->y-maintainY)>1 || self->z!=maintainZ) {						
+						if (shouldKeepWalking()) {
+							// proceed with path searching
+							delete self;
+							self=reader.readSelfCharacter();
+							CModuleUtil::findPathOnMap(self->x, self->y, self->z, maintainX, maintainY, maintainZ, 0, path, 1);
+							for (; pathSize < 15 && path[pathSize]; pathSize++);										
+							if (pathSize){
+								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+							}else if(self->z==maintainZ && abs(self->x-maintainX)<50 && abs(self->y-maintainY)<50) {
+								//Since we should already be close to the position, try to mapclick when map not researched
+								reader.writeGotoCoords(maintainX, maintainY, maintainZ);
+							}else if(!sentMessagePathnotfound){
+								sentMessagePathnotfound=1;
+								sender.sendTAMessage("Auto go/log: No path found to maintained position");
+							}
+						}
+					}
+					   }
+					break;
+				case 2: {// Start position (By definition, the least safe place to be)
 					int pathSize = 0;
 					int path[15];
 					const char* var=reader.getGlobalVariable("autolooterTm");
@@ -866,10 +912,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							self=reader.readSelfCharacter();
 							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
 							for (; pathSize < 15 && path[pathSize]; pathSize++);
-							if (pathSize)
+							if (pathSize){
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
+							}else if(!sentMessagePathnotfound){
+								sentMessagePathnotfound=1;
+								sender.sendTAMessage("Auto go/log: No path found to start position");
+							}
 						}
 					} else {
+						isDestinationReached=true;
 						isGoingToRunaway=true; //Switch to going to runaway if enabled
 						if (config->actDirection) {
 							if (config->actDirection == DIR_LEFT)
@@ -884,7 +935,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 					   }
 					break;
-				case 2: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
+				case 3: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
 					int pathSize = 0;
 					CTibiaMapProxy tibiaMap;
 					
@@ -897,58 +948,48 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							self=reader.readSelfCharacter();
 							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
 							for (; pathSize < 15 && path[pathSize]; pathSize++);										
-							if (pathSize)
+							if (pathSize){
 								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
+							}else if(!sentMessagePathnotfound){
+								sentMessagePathnotfound=1;
+								sender.sendTAMessage("Auto go/log: No path found to Runaway position");
+							}
 						}
 					} else {
-						isGoingToRunaway=false; //switch going back to statr if enabled
+						isDestinationReached=true;
+						isGoingToRunaway=false; //switch going back to start if enabled
 					}
 						}
 					break;
-				case 3: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+				case 4: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+					int pathSize = 0;
+					int path[15];
+					struct point p = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+					for (; pathSize < 15 && path[pathSize]; pathSize++);
 					if (shouldKeepWalking()){
 						delete self;
 						self=reader.readSelfCharacter();
-						int pathSize = 0;
-						int path[15];
-						CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-						for (; pathSize < 15 && path[pathSize]; pathSize++);
-						if (pathSize)
-							CModuleUtil::executeWalk(self->x, self->y, self->z, path);											
-					}
-						}
-					break;
-				default: {
-					if (config->maintainStart) {
-						int pathSize = 0;
-						int path[15];
-						
-						if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
-							if (shouldKeepWalking()) {
-								// proceed with path searching									
-								delete self;
-								self=reader.readSelfCharacter();
-								CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->actX, config->actY, config->actZ, 0, path, 1);
-								for (; pathSize < 15 && path[pathSize]; pathSize++);										
-								if (pathSize)
-									CModuleUtil::executeWalk(self->x, self->y, self->z, path);
-							}
-						}
-						else if (config->actDirection) {
-							if (config->actDirection == DIR_LEFT)
-								sender.turnLeft();
-							else if(config->actDirection == DIR_RIGHT)
-								sender.turnRight();
-							else if(config->actDirection == DIR_UP)
-								sender.turnUp();
-							else if(config->actDirection == DIR_DOWN)
-								sender.turnDown();
+						if (pathSize){
+							CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 						}
 					}
-					   }
+					if (pathSize==0){
+						if(p.x || p.y || p.z) {
+							isDestinationReached=true;
+						}else if(!sentMessagePathnotfound){
+							sentMessagePathnotfound=1;
+							sender.sendTAMessage("Auto go/log:No path found to depot position");
+						}
+					}
+						}
 					break;
 				}
 			}
+		}
+		if (!keepMaintainPos){
+			maintainX = 0;
+			maintainY = 0;
+			maintainZ = 0;
 		}
 		delete self;
 		if (msg) delete msg;
@@ -965,8 +1006,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			continue;
 		}
 		// Suspend Modules  ************
-		if (alarmItr->doStopModules().size()) {
-			list<CString> temp = alarmItr->doStopModules();
+		if (alarmItr->getStopModules().size()) {
+			list<CString> temp = alarmItr->getStopModules();
 			list<CString>::iterator modulesItr = temp.begin();
 			while(modulesItr != temp.end()) {
 				actionStart(*modulesItr);
@@ -975,8 +1016,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}// ****************************
 
 		// Start Modules ***************
-		if (alarmItr->doStartModules().size()) {
-			list<CString> temp = alarmItr->doStartModules();
+		if (alarmItr->getStartModules().size()) {
+			list<CString> temp = alarmItr->getStartModules();
 			list<CString>::iterator modulesItr = temp.begin();
 			while(modulesItr != temp.end()) {
 				actionSuspend(*modulesItr);
@@ -985,7 +1026,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}// ****************************
 
 		// Log Event ***************
-		if (alarmItr->doLogEvents()) {
+		if (alarmItr->getLogEvents()) {
 			time_t rawtime;
 			time(&rawtime );
 			char filename[64];
@@ -1211,10 +1252,12 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 
 		CString cAlarmName=CString(alarmName);
 
-		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,stopWalk=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0;
-		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
+		int screenshot=0,logEvents=0,windowAction=0,shutdown=0,killTibia=0,logout=0,stopWalk=0,depot=0,start=0,runaway=0,manaCost=0,spellDelay=0,persistent=0,permanent=0;
+		if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay,&persistent,&permanent)!=14){
+			if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
+		}
 
-		Alarm temp(alarmType,attribute,condition,trigType,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList);
+		Alarm temp(alarmType,attribute,condition,trigType,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList,persistent,permanent);
 		m_configData->alarmList.push_back(temp);
 	}
 #pragma warning(default: 4800)
@@ -1248,8 +1291,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 			//special "|" character used for seaparation
 			Alarm alm=*currentAlarmPos;
 			currentAlarmPos++;
-			list<CString> startList=alm.doStartModules();
-			list<CString> stopList=alm.doStopModules();
+			list<CString> startList=alm.getStartModules();
+			list<CString> stopList=alm.getStopModules();
 			//AddStart Modules
 			list<CString>::iterator lstIter;
 			lstIter=startList.begin();
@@ -1268,26 +1311,28 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				lstIter++;
 			}
 			sprintf(buf+strlen(buf),"%s","|");
-			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d %d %d",
+			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d %d %d %d %d",
 				alm.getAlarmType(),
 				alm.getAttribute(),
 				alm.getCondition(),
 				alm.getTrigger().getType(),
 				alm.getTrigger().getTriggerText(),
-				alm.doCastSpell(),
-				alm.doAlarm(),
-				alm.doTakeScreenshot(),
-				alm.doLogEvents(),
-				alm.doWindowAction(),
-				alm.doShutdownComputer(),
-				alm.doKillClient(),
-				alm.doLogout(),
-				alm.doStopWalking(),
-				alm.doGoToDepot(),
-				alm.doGoToStart(),
-				alm.doGoToRunaway(),
+				alm.getCastSpell(),
+				alm.getAlarm(),
+				alm.getTakeScreenshot(),
+				alm.getLogEvents(),
+				alm.getWindowAction(),
+				alm.getShutdownComputer(),
+				alm.getKillClient(),
+				alm.getLogout(),
+				alm.getStopWalking(),
+				alm.getGoToDepot(),
+				alm.getGoToStart(),
+				alm.getGoToRunaway(),
 				alm.getManaCost(),
-				alm.getSpellDelay()
+				alm.getSpellDelay(),
+				alm.getPersistent(),
+				alm.getPermanent()
 			);
 		}
 	}

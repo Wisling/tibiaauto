@@ -42,6 +42,9 @@ Alarm::Alarm() {
 	attribute = 0;
 	alarmType = 0;
 	stopWalking = false;
+	persistent = false;
+	permanent = false;
+
 
 // execution markers only, no need to save record here
 	onScreenAt = 0;
@@ -58,7 +61,7 @@ Alarm::Alarm() {
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules) {
+Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm) {
 	alarmDescriptor = "";
 	startModules = beginModules;
 	stopModules = endModules;
@@ -79,6 +82,8 @@ Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool r
 	attribute = attr;
 	alarmType = type;
 	setTrigger(trigType, strTrig);
+	persistent = pers;
+	permanent = perm;
 
 	stopWalking = stopwalk;
 	
@@ -173,64 +178,80 @@ void Alarm::setLogEvents(bool onOff) {
 	logEvents = onOff;
 }
 
+void Alarm::setPersistent(bool onOff) {
+	persistent = onOff;
+}
+
+void Alarm::setPermanent(bool onOff) {
+	permanent = onOff;
+}
+
 //////////////////////////////////////////////////////////////////////
 // Actions/Accessors
 //////////////////////////////////////////////////////////////////////
 
-list<CString> Alarm::doStopModules() {
+list<CString> Alarm::getStopModules() {
 	return stopModules;
 }
 
-list<CString> Alarm::doStartModules() {
+list<CString> Alarm::getStartModules() {
 	return startModules;
 }
 
-bool Alarm::doLogout() {
+bool Alarm::getLogout() {
 	return logout;
 }
 
-bool Alarm::doKillClient() {
+bool Alarm::getKillClient() {
 	return killTibia;
 }
 
-bool Alarm::doShutdownComputer() {
+bool Alarm::getShutdownComputer() {
 	return shutdown;
 }
 
-int Alarm::doWindowAction() {
+int Alarm::getWindowAction() {
 	return windowAction;
 }
 
-CString Alarm::doAlarm() {
+CString Alarm::getAlarm() {
 	return sound;
 }
 
-bool Alarm::doLogEvents() {
+bool Alarm::getLogEvents() {
 	return logEvents;
 }
 
-int Alarm::doTakeScreenshot() {
+int Alarm::getTakeScreenshot() {
 	return screenshot;
 }
 
-bool Alarm::doGoToRunaway() {
+bool Alarm::getGoToRunaway() {
 	return runaway;
 }
 
-bool Alarm::doGoToStart() {
+bool Alarm::getGoToStart() {
 	return start;
 }
 
-bool Alarm::doGoToDepot() {
+bool Alarm::getGoToDepot() {
 	return depot;
 }
 
-CString Alarm::doCastSpell() {
+CString Alarm::getCastSpell() {
 	return spell;
 }
 
-bool Alarm::doStopWalking() {
+bool Alarm::getStopWalking() {
 	return stopWalking;
+}
+
+bool Alarm::getPersistent() {
+	return persistent;
+}
+
+bool Alarm::getPermanent() {
+	return permanent;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -693,6 +714,31 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 	return retval;
 }
 
+// Returns true when the action started by the alarm is not yet done, and false otherwise.
+// This tells TA to finish it even after the alarm criteria is no longer met
+// Input: all state variables used to determine whether we should keep any alarm on
+// Output: whether, for the current alarm, we should keep it on
+bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut) {
+	//walking to a destination
+	if(Alarm::getGoToDepot() || Alarm::getGoToStart() || Alarm::getGoToRunaway()){
+		if(!isDestinationReached){
+			return true;
+		}
+	}
+	//logging out
+	if(Alarm::getLogout()){
+		if(!isLoggedOut){
+			return true;
+		}
+	}
+	//taking screenshots
+	//Not needed - the alarm always finishes screenshots anyway by default
+
+	//if no criteria is met for persistent alarm, return 0
+	return false;
+}
+
+
 //////////////////////////////////////////////////////////////////////
 // Triggers
 //////////////////////////////////////////////////////////////////////
@@ -821,18 +867,11 @@ int Alarm::countAllFood() {
 	CTibiaItemProxy itemProxy;
 	int foodCount = 0;
 
-	CUIntArray* foods = itemProxy.getFoodIdArrayPtr();
+	CUIntArray* foods = itemProxy.getFoodIdArrayPtr();//unsure whether this is needed to be called
 	for (int i=0;i<itemProxy.getFoodCount();i++){
 		foodCount+=countAllItemsOfType(itemProxy.getFoodIdAtIndex(i));
 	}
 
-//--Old code--
-//	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
-//		CTibiaItem *item = CModuleUtil::lookupItem(contNr, itemProxy.getFoodIdArrayPtr());
-//		if (item->objectId)
-//			foodCount += countAllItemsOfType(item->objectId);
-//		delete item;
-//	}	
 	return foodCount;
 }
 

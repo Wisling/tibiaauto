@@ -151,6 +151,7 @@ BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 		}
 	}
 	BitBlt(dc, 0, 0, rect.Width(), rect.Height(), dcBuffer, 0, 0, SRCCOPY);
+	dcBuffer.SelectObject(pOldBitmap);
 	
 	return true;
 }

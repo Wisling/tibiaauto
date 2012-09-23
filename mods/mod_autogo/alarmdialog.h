@@ -68,6 +68,8 @@ public:
 	CButtonST	m_actionLogout;
 	CButtonST	m_actionKill;
 	CButtonST	m_actionDepot;
+	CButtonST	m_actionPersistent;
+	CButtonST	m_actionPermanent;
 	//}}AFX_DATA
 
 
@@ -84,8 +86,11 @@ protected:
 	CImageList m_attributeImg; 
 	CImageList m_columnImg; 
 	CString instructionText;
+	void UpdateDependentButtons();
 	// Generated message map functions
 	//{{AFX_MSG(CAlarmDialog)
+	afx_msg void OnActionPersistent();
+	afx_msg void OnActionPermanent();
 	afx_msg void OnActionKill();
 	afx_msg void OnActionShutdown();
 	afx_msg void OnActionRunaway();
