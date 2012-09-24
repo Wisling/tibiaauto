@@ -89,8 +89,8 @@ private:
 	CString alarmDescriptor;
 	int manaCost;
 	// Trigger Functions
-	bool vipOnline(int);
-	bool vipNameOnline(CString,bool);
+	bool vipOnline(int, bool=true);
+	bool vipNameOnline(CString,bool=true);
 	int onScreenCheck(char whiteList[100][32], int);
 	
 	// Helper Functions

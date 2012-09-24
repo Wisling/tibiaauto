@@ -590,7 +590,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 				retval=reader.getConnectionState() == 8;
 				break;
 			case VIPPLAYERONLINE:
-				retval=vipNameOnline(trigger.getTriggerText(), false);
+				retval=vipNameOnline(trigger.getTriggerText());
 				break;
 			default:
 				retval=vipOnline(attribute - 2);
@@ -603,10 +603,10 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 				retval=reader.getConnectionState() != 8;
 				break;
 			case VIPPLAYERONLINE:
-				retval=!vipNameOnline(trigger.getTriggerText(), true);
+				retval=vipNameOnline(trigger.getTriggerText(), false);
 				break;
 			default:
-				retval=!vipOnline(attribute - 2);
+				retval=vipOnline(attribute - 2,false);
 				break;
 			}
 			break;
@@ -806,13 +806,14 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 	return retval;
 }
 
-bool Alarm::vipOnline(int iconIndex) {
+bool Alarm::vipOnline(int iconIndex, bool checkOnline/*=true*/) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaVIPEntry *vip;
 
 	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++) {
-		if (vip->icon == iconIndex && vip->status == 1) {
+		if (vip->icon == iconIndex && (vip->status != 0) == checkOnline) {
+			// return true if online status is of the type we are trying to find
 			delete vip;
 			return true;
 		}
@@ -820,20 +821,21 @@ bool Alarm::vipOnline(int iconIndex) {
 	}
 	return false;
 }
-bool Alarm::vipNameOnline(CString name,bool deflt) {
+
+bool Alarm::vipNameOnline(CString name, bool checkOnline/*=true*/) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaVIPEntry *vip;
 
 	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++) {
-		if (strcmpi((vip = reader.readVIPEntry(vipNr))->name, name)==0) {
-			int ret=vip->status;
+		if (strcmpi(vip->name, name)==0 && (vip->status!=0) == checkOnline) {
+			// return true if online status is of the type we are trying to find
 			delete vip;
-			return ret!=0;
+			return true;
 		}
 		delete vip;
 	}
-	return deflt;
+	return false;
 }
 
 

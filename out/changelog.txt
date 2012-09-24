@@ -1,9 +1,12 @@
+2.23.1, 23.9.2012
 Enhancements:
  Autogo: Added persistent and permanent alarms to allow a player to finish an action even when the trigger condition is no longer met
  Autogo: Added safeguard "Maintain Position an Alarm" for standing in same place when an alarm is active and not walking anywhere
+ Autogo: Added compatibility for new method of storing VIPs(9.6)
 Defects:
  Responder: Fixed method for sending private messages to ather players
  Python: Fixed PrintText not being able to output blue text
+ Autogo: Alarm when a VIP player was offline did not trigger properly
 
 2.23.0, 3.9.2012
 Enhancements:
