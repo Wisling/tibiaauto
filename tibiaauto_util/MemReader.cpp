@@ -39,7 +39,60 @@ CMemReader::~CMemReader() {
 
 }
 
+// Reads circularly linked list of VIP entries stored in Tibia memory
+// Input: starting from 0, the index of the entry to be read
+// Output: returns valid CTibiaVIPEntry with name == "" if 'nr' is the first empty entry
+// returns NULL if 'nr' is out of bounds
+// returns complete CTibiaVIPEntry if 'nr'
 CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
+	int vipCount = CMemUtil::GetMemIntValue(m_memAddressVIP+4);
+	if (nr < 0 || nr > vipCount){
+		return NULL;
+	}
+	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
+	
+	if(nr == vipCount){
+		vip->name[0]=0;
+		return vip;
+	}
+
+	DWORD linkedListAddr = dereference(m_memAddressVIP);
+	DWORD vipEntryAddr = dereference(linkedListAddr);
+	for (int iNR=0; iNR!=nr && vipEntryAddr!=linkedListAddr; iNR++){
+		vipEntryAddr = dereference(vipEntryAddr);
+	}
+	if (iNR==nr && vipEntryAddr!=linkedListAddr){
+		vip->id = CMemUtil::GetMemIntValue(vipEntryAddr+0x10);
+		vip->icon = CMemUtil::GetMemIntValue(vipEntryAddr+0x14) & 0xff;
+		vip->notify = CMemUtil::GetMemIntValue(vipEntryAddr+0x14)>>8 & 0xff;
+
+		vip->nameLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x28);
+		if (vip->nameLen >= 16){
+			int nameAddr = dereference(CMemUtil::GetMemIntValue(vipEntryAddr+0x18));
+			CMemUtil::GetMemRange(nameAddr,nameAddr+30,vip->name);
+		}else{
+			CMemUtil::GetMemRange(vipEntryAddr+0x18,vipEntryAddr+0x18+vip->nameLen,vip->name);
+		}
+		vip->name[vip->nameLen]=0;
+
+		vip->descrLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x44);
+		if (vip->descrLen >= 16){
+			int descrAddr = dereference(CMemUtil::GetMemIntValue(vipEntryAddr+0x34));
+			CMemUtil::GetMemRange(descrAddr,descrAddr+0x80,vip->descr);
+		}else{
+			CMemUtil::GetMemRange(vipEntryAddr+0x34,vipEntryAddr+0x34+vip->descrLen,vip->descr);
+		}
+		vip->descr[vip->descrLen]=0;
+
+		vip->status = CMemUtil::GetMemIntValue(vipEntryAddr+0x50) & 0xff;
+		vip->loginTm = CMemUtil::GetMemIntValue(vipEntryAddr+0x58);//64bit
+		
+		return vip;
+	}
+	delete vip;
+	return NULL;
+	
+    /*
 	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
 	if (nr<0||nr>=100) return NULL;
 	int offset = nr*m_memLengthVIP + m_memAddressVIP;
@@ -48,6 +101,7 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 	vip->icon = CMemUtil::GetMemIntValue(offset+40);
 	CMemUtil::GetMemRange(offset+4,offset+4+29,vip->name);
 	return vip;
+	*/
 }
 
 CTibiaContainer *CMemReader::readContainer(int containerNr) {

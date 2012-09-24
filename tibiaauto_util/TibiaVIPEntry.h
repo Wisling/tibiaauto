@@ -16,9 +16,14 @@ public:
 	virtual ~CTibiaVIPEntry();
 
 	int id;
-	char name[64];
+	int nameLen;
+	char name[64];//maxLen=29 without null
+	int descrLen;
+	char descr[200];//maxLen=128 without null
+	unsigned int loginTm;
 	int status;
 	int icon;
+	int notify;
 };
 
 #endif
