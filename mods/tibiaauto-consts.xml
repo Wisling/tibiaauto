@@ -58,7 +58,7 @@
 		<const code="addrCurrentTileToGo" value="0x7B2E50"/><!--counts up to addrTileToGo-->
 		<const code="addrSelfFlags" value="0x7B2E54"/> <!-- cat1 -->
 		<const code="addrFollowedCreature" value="0x7B2E88"/>
-		<const code="addrVIP" value="0x7B5450"/> <!-- cat0 -->
+		<const code="addrVIP" value="0x945CB0"/> <!-- cat0 -->
 		<const code="addrPathToGo" value="0x7B2E5C"/>
 		<const code="addrXor" value="0x7B2E90"/>
 		<const code="addrManaMax" value="0x7B2E94"/>
@@ -109,7 +109,7 @@
 		<const code="lengthItem" value="12"/>
 		<const code="lengthCreature" value="176"/>
 		<const code="lengthMapTile" value="168"/>
-		<const code="lengthVIP" value="44"/>
+		<const code="lengthVIP" value="96"/><!--no longer used-->
 		<const code="lengthMiniMap" value="131240"/>
 		<const code="lengthMiniMapLabel" value="112"/>
 		<const code="maxContainers" value="16"/>
