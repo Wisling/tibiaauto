@@ -114,9 +114,10 @@ char *CMod_monstershowApp::getConfigParamName(int nr)
 
 void CMod_monstershowApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_infoDialog->m_OK);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_infoDialog)
+	if (m_infoDialog){
+		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();
+	}
 }

@@ -148,12 +148,14 @@ void LifeDialog::OnToolSpellcasterPoison() {
 		m_minPoisonDmg.EnableWindow(val);
 }
 
+void LifeDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_healList);
+}
 
 BOOL LifeDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-
-	skin.SetButtonSkin(	m_healList);
+	DoSetButtonSkin();	
 	
 	OnToolSpellcasterLife();
 	

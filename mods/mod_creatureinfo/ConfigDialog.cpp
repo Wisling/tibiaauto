@@ -218,13 +218,17 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_knownInfo);
 	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_NameChanger);
+}
+
+BOOL CConfigDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

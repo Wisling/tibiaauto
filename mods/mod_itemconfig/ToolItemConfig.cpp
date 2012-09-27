@@ -256,9 +256,7 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 
 
 
-BOOL CToolItemConfig::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void CToolItemConfig::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_Cancel);
 	skin.SetButtonSkin(	m_RefreshItems);
@@ -271,6 +269,12 @@ BOOL CToolItemConfig::OnInitDialog()
 	skin.SetButtonSkin(	m_itemSort);
 	skin.SetButtonSkin(	m_helpInfo);
 	skin.SetButtonSkin(	m_selectedToBranch);
+}
+
+BOOL CToolItemConfig::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	checkImgList=new CImageList();
 	checkImgList->Create(13,13,ILC_COLOR8|ILC_MASK,0,1);

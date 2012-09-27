@@ -145,10 +145,18 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_OK);
+	((LifeDialog*)m_Dialog[0])->DoSetButtonSkin();
+	((TimedDialog*)m_Dialog[5])->DoSetButtonSkin();
+	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
+	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
+
+}
+
+BOOL CConfigDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
 
 	m_Dialog[0]->Create(m_DialogID[0],&m_tabCtrl);
 	m_Dialog[1]->Create(m_DialogID[1],&m_tabCtrl);
@@ -156,11 +164,10 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_Dialog[3]->Create(m_DialogID[3],&m_tabCtrl);
 	m_Dialog[4]->Create(m_DialogID[4],&m_tabCtrl);
 	m_Dialog[5]->Create(m_DialogID[5],&m_tabCtrl);
+	DoSetButtonSkin();
 
 	CPoint topLeft(3, 39);
 	m_tabCtrl.SetTopLeftCorner(topLeft);
-	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
-	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
 
 	m_tabCtrl.AddTab(m_Dialog[0], "Healing");
 	m_tabCtrl.AddTab(m_Dialog[1], "Mana Burning");

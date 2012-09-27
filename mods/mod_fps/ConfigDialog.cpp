@@ -189,11 +189,15 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam){
 	return true;
 }
 
+void CConfigDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+}
+
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	DoSetButtonSkin();
 
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;

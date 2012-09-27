@@ -1143,16 +1143,10 @@ int spaceAvailable() {
 
 void CMod_SellerApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_OK);
-	skin.SetButtonSkin(	m_configDialog->m_enable);
-	for (int loop = 0; loop < MAX_SELLERS; loop++) {
-		skin.SetButtonSkin( m_configDialog->m_BuyBoxAdd[loop]);
-		skin.SetButtonSkin( m_configDialog->m_BuyBoxRemove[loop]);
-		skin.SetButtonSkin( m_configDialog->m_SellBoxAdd[loop]);
-		skin.SetButtonSkin( m_configDialog->m_SellBoxRemove[loop]);
-	}
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

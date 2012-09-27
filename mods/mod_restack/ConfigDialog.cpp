@@ -230,11 +230,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
+void CConfigDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_enable);		
+	skin.SetButtonSkin(	m_OK);
+}
+
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_enable);		
-	skin.SetButtonSkin(	m_OK);
+	DoSetButtonSkin();
 	
 	// reload ammo and throwable combo boxes
 	CTibiaItemProxy itemProxy;

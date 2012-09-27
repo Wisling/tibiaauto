@@ -24,6 +24,7 @@ public:
 	int currentStackPos;
 	CTibiaTile *memTilesForConfig[10];
 	int tileId[10];
+	void DoSetButtonSkin();
 	CMapConfig(CTibiaTile *memTilesForConfig[10], int, int, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data

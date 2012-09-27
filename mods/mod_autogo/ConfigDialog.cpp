@@ -127,10 +127,17 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_OK);
+	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
+	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
+	((CAlarmDialog*) m_Dialog[0])->DoSetButtonSkin();
+	((GeneralConfigDialog*) m_Dialog[1])->DoSetButtonSkin();
+}
+
+BOOL CConfigDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
 
 	m_Dialog[0]->Create(m_DialogID[0], &m_tabCtrl);
 	m_Dialog[1]->Create(m_DialogID[1], &m_tabCtrl);
@@ -139,12 +146,11 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_tabCtrl.GetClientRect(rect);
 	m_tabCtrl.SetMinTabWidth(((rect.right - rect.left) / m_nPageCount) - 2);
 	m_tabCtrl.SetTopLeftCorner(CPoint(3,22));
-	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
-	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
 
 	m_tabCtrl.AddTab(m_Dialog[0], "Alarms");
 	m_tabCtrl.AddTab(m_Dialog[1], "General Configuration");
 	
+	DoSetButtonSkin();
 	SetTimer(1001,250,NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

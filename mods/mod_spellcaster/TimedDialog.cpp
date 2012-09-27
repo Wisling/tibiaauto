@@ -103,10 +103,12 @@ void TimedDialog::controlsToConfig(CConfigData *newConfigData) {
 	newConfigData->timedSpellList = spellList;
 }
 
-BOOL TimedDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void TimedDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_timedSpellDelete);
 	skin.SetButtonSkin(	m_timedSpellAdd);
+}
+BOOL TimedDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
 
 	m_timedSpellList.InsertColumn(0,"Spell",LVCFMT_LEFT,78);
 	m_timedSpellList.InsertColumn(1,"Mana",LVCFMT_LEFT,47);

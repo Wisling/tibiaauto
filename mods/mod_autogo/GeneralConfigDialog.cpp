@@ -314,12 +314,16 @@ void GeneralConfigDialog::disableControls() {
 	m_modPriority.EnableWindow(false);
 }
 
-BOOL GeneralConfigDialog::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void GeneralConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_battleWhiteList);
 	skin.SetButtonSkin(	m_SetStart);
 	skin.SetButtonSkin(	m_SetRunaway);
+}
+
+BOOL GeneralConfigDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	m_actDirection.InsertString(0,"<None>");
 	m_actDirection.InsertString(DIR_LEFT,"Left");

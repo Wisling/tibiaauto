@@ -185,13 +185,17 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_memberRemove);
 	skin.SetButtonSkin(	m_memberAdd);
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_enable);
+}
+
+BOOL CConfigDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE

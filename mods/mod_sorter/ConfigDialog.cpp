@@ -189,14 +189,18 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(		m_enable);
 	skin.SetButtonSkin(	m_OK);
 	for(int loop = 0; loop < 8; loop++) {
 		skin.SetButtonSkin(		m_BagIn[loop]);
 		skin.SetButtonSkin(		m_BagOut[loop]);
 	}
+}
+
+BOOL CConfigDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	SetTimer(1001,250,NULL);	
 	return TRUE;  // return TRUE unless you set the focus to a control

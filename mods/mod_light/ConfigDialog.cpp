@@ -133,11 +133,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
+void CConfigDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+}
+
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	DoSetButtonSkin();
 
 	m_combo.InsertString(0,"LightHack");
 	m_combo.SetItemData(0,MAKEWPARAM(100,209));

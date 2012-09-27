@@ -23,10 +23,11 @@ public:
 	void setTileDetails(int, int, int);
 	void showTileDetails(int x,int y);
 	void mapPointClicked(int posX, int posY, int pos);
-	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
-	~CToolMapShow();
 	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
+	void DoSetButtonSkin();
+	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
+	~CToolMapShow();
 
 // Dialog Data
 	//{{AFX_DATA(CToolMapShow)

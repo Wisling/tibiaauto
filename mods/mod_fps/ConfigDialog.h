@@ -27,6 +27,7 @@ public:
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	CConfigDialog(Cmod_fpsApp *app,CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data

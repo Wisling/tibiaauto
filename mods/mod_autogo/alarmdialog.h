@@ -31,6 +31,7 @@ public:
 	void configToControls(CConfigData *);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	CAlarmDialog(CWnd* pParent = NULL);   // standard constructor
 	~CAlarmDialog();   // standard destructor
 

@@ -190,11 +190,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_beginOutput);
+}
+
+BOOL CConfigDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	CMemReaderProxy reader;
 
 	m_addressFinder.addresses.flagsAddress = reader.getMemIntValue(m_addressFinder.getFlagsAddress());

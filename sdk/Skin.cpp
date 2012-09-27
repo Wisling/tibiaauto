@@ -84,19 +84,15 @@ CSkin skin;
 
 void CSkin::SetButtonSkin(CButtonST &newButton)
 {
-	try {
-		newButton.SetFlat(FALSE, FALSE);
-		newButton.SetColor(0, RGB(min(255,skin.m_ButtonFaceRedValue+30), min(255,skin.m_ButtonFaceGreenValue+30), min(255,skin.m_ButtonFaceBlueValue+30)), FALSE);
-		newButton.SetColor(1, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
-		newButton.SetColor(2, RGB(skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue), FALSE);
-		newButton.SetColor(3, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
-		newButton.SetColor(4, RGB(skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue), FALSE);
-		newButton.SetColor(5, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
-		newButton.SetColor(6, RGB(skin.m_ButtonLightRedValue, skin.m_ButtonLightGreenValue, skin.m_ButtonLightBlueValue), FALSE);
-		newButton.SetColor(7, RGB(skin.m_ButtonHighLightRedValue, skin.m_ButtonHighLightGreenValue, skin.m_ButtonHighLightBlueValue), FALSE);
-		newButton.SetColor(8, RGB(skin.m_ButtonLSRedValue, skin.m_ButtonLSGreenValue, skin.m_ButtonLSBlueValue), FALSE);
-		newButton.SetColor(9, RGB(skin.m_ButtonDSRedValue, skin.m_ButtonDSGreenValue, skin.m_ButtonDSBlueValue));
-	}
-	catch(...) {
-	}
+	newButton.SetFlat(FALSE, FALSE);
+	newButton.SetColor(0, RGB(min(255,skin.m_ButtonFaceRedValue+30), min(255,skin.m_ButtonFaceGreenValue+30), min(255,skin.m_ButtonFaceBlueValue+30)), FALSE);
+	newButton.SetColor(1, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
+	newButton.SetColor(2, RGB(skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue), FALSE);
+	newButton.SetColor(3, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
+	newButton.SetColor(4, RGB(skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue), FALSE);
+	newButton.SetColor(5, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue), FALSE);
+	newButton.SetColor(6, RGB(skin.m_ButtonLightRedValue, skin.m_ButtonLightGreenValue, skin.m_ButtonLightBlueValue), FALSE);
+	newButton.SetColor(7, RGB(skin.m_ButtonHighLightRedValue, skin.m_ButtonHighLightGreenValue, skin.m_ButtonHighLightBlueValue), FALSE);
+	newButton.SetColor(8, RGB(skin.m_ButtonLSRedValue, skin.m_ButtonLSGreenValue, skin.m_ButtonLSBlueValue), FALSE);
+	newButton.SetColor(9, RGB(skin.m_ButtonDSRedValue, skin.m_ButtonDSGreenValue, skin.m_ButtonDSBlueValue));
 }

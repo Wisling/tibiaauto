@@ -29,6 +29,7 @@ public:
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent = NULL);   // standard constructor
 	//Array to hold the list of dialog boxes/tab pages for CTabCtrl
 	int m_DialogID[6];

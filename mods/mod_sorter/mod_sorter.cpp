@@ -390,14 +390,10 @@ int isStackable(int sortItem, int contNr) {
 
 void CMod_sorterApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(		m_configDialog->m_enable);
-	skin.SetButtonSkin(	m_configDialog->m_OK);
-	for(int loop = 0; loop < 8; loop++) {
-		skin.SetButtonSkin(		m_configDialog->m_BagIn[loop]);
-		skin.SetButtonSkin(		m_configDialog->m_BagOut[loop]);
-	}
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

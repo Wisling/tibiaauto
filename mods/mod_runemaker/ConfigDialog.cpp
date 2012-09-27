@@ -343,16 +343,19 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin( m_addSpell);
 	skin.SetButtonSkin( m_deleteSpell);
 	skin.SetButtonSkin( m_loadSpell);
 	skin.SetButtonSkin( m_makeNow);
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_enable);
+}
 
+BOOL CConfigDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	initialiseContainers();
 	

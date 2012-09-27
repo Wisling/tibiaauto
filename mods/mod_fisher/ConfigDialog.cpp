@@ -134,11 +134,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
+void CConfigDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+}
+
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	DoSetButtonSkin();
 
 	refreshFishStatus();
 

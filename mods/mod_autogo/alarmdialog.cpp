@@ -493,8 +493,32 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 	}
 }
 
+void CAlarmDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(m_actionRunaway);
+	skin.SetButtonSkin(m_actionStart);
+	skin.SetButtonSkin(m_actionDepot);
+	skin.SetButtonSkin(m_actionSpell);
+	skin.SetButtonSkin(m_actionScreenshot);
+	skin.SetButtonSkin(m_actionStopWalking);
+	skin.SetButtonSkin(m_actionLogout);
+	skin.SetButtonSkin(m_actionKill);
+	skin.SetButtonSkin(m_actionShutdown);
+	skin.SetButtonSkin(m_windowAction);
+	skin.SetButtonSkin(m_actionSound);
+	skin.SetButtonSkin(m_actionLogEvents);
+	skin.SetButtonSkin(m_actionEnable);
+	skin.SetButtonSkin(m_actionSuspend);
+	skin.SetButtonSkin(m_actionPersistent);
+	skin.SetButtonSkin(m_actionPermanent);
+	skin.SetButtonSkin(m_alarmEdit);
+	skin.SetButtonSkin(m_alarmDelete);
+	skin.SetButtonSkin(m_alarmAdd);
+}
+
 BOOL CAlarmDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
+	DoSetButtonSkin();
+
 	UpdateDependentButtons();
 	m_modules.EnableWindow(m_actionSuspend.GetCheck());
 	m_modules2.EnableWindow(m_actionEnable.GetCheck());
@@ -586,112 +610,96 @@ BOOL CAlarmDialog::OnInitDialog() {
 	actionIcons[index].LoadBitmap(IDB_RUNAWAY);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionRunaway.SetBitmaps(IDB_RUNAWAY, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionRunaway);
 	m_actionRunaway.SetFlat(true);
 	m_actionRunaway.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_START);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionStart.SetBitmaps(IDB_START, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionStart);
 	m_actionStart.SetFlat(true);
 	m_actionStart.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_DEPOT);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionDepot.SetBitmaps(IDB_DEPOT, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionDepot);
 	m_actionDepot.SetFlat(true);
 	m_actionDepot.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_SPELL);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionSpell.SetBitmaps(IDB_SPELL, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionSpell);
 	m_actionSpell.SetFlat(true);
 	m_actionSpell.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_SCREENSHOT);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionScreenshot.SetBitmaps(IDB_SCREENSHOT, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionScreenshot);
 	m_actionScreenshot.SetFlat(true);
 	m_actionScreenshot.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_STOP);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionStopWalking.SetBitmaps(IDB_STOP, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionStopWalking);
 	m_actionStopWalking.SetFlat(true);
 	m_actionStopWalking.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_LOGOUT);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionLogout.SetBitmaps(IDB_LOGOUT, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionLogout);
 	m_actionLogout.SetFlat(true);
 	m_actionLogout.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_KILLTIBIA);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionKill.SetBitmaps(IDB_KILLTIBIA, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionKill);
 	m_actionKill.SetFlat(true);
 	m_actionKill.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_SHUTDOWN);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionShutdown.SetBitmaps(IDB_SHUTDOWN, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionShutdown);
 	m_actionShutdown.SetFlat(true);
 	m_actionShutdown.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_MAXIMIZE);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_windowAction.SetBitmaps(IDB_MAXIMIZE, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_windowAction);
 	m_windowAction.SetFlat(true);
 	m_windowAction.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_AUDIO);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionSound.SetBitmaps(IDB_AUDIO, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionSound);
 	m_actionSound.SetFlat(true);
 	m_actionSound.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_LOGEVENTS);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionLogEvents.SetBitmaps(IDB_LOGEVENTS, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionLogEvents);
 	m_actionLogEvents.SetFlat(true);
 	m_actionLogEvents.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_STARTMODULE);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionEnable.SetBitmaps(IDB_STARTMODULE, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionEnable);
 	m_actionEnable.SetFlat(true);
 	m_actionEnable.DrawFlatFocus(false);
 	
 	actionIcons[index].LoadBitmap(IDB_SUSPENDMODULE);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionSuspend.SetBitmaps(IDB_SUSPENDMODULE, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionSuspend);
 	m_actionSuspend.SetFlat(true);
 	m_actionSuspend.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_PERSISTENT);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionPersistent.SetBitmaps(IDB_PERSISTENT, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionPersistent);
 	m_actionPersistent.SetFlat(true);
 	m_actionPersistent.DrawFlatFocus(false);
 
 	actionIcons[index].LoadBitmap(IDB_PERMANENT);
 	m_columnImg.Add(&actionIcons[index++], RGB(255, 0, 255));
 	m_actionPermanent.SetBitmaps(IDB_PERMANENT, RGB(255, 0, 255), IDB_BLANK);
-	skin.SetButtonSkin(m_actionPermanent);
 	m_actionPermanent.SetFlat(true);
 	m_actionPermanent.DrawFlatFocus(false);
 
@@ -740,9 +748,6 @@ BOOL CAlarmDialog::OnInitDialog() {
 	m_alarmList.InsertColumn(17, &lvColumn);
 	CConfigData test;
 	configToControls(&test);
-	skin.SetButtonSkin(m_alarmEdit);
-	skin.SetButtonSkin(m_alarmDelete);
-	skin.SetButtonSkin(m_alarmAdd);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

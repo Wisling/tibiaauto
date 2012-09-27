@@ -39,6 +39,7 @@ class CToolAutoRespond : public MyDialog
 public:
 	void stop();
 	void start();
+	void DoSetButtonSkin();
 	~CToolAutoRespond();
 	CToolAutoRespond(CWnd* pParent = NULL);   // standard constructor
 

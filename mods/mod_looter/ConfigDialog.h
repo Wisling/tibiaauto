@@ -28,6 +28,7 @@ public:
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	CConfigDialog(CMod_looterApp *app,CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data

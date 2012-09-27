@@ -489,12 +489,10 @@ void CMod_uhApp::resetMultiParamAccess(char *paramName)
 
 void CMod_uhApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_memberRemove);
-	skin.SetButtonSkin(	m_configDialog->m_memberAdd);
-	skin.SetButtonSkin(	m_configDialog->m_OK);
-	skin.SetButtonSkin(	m_configDialog->m_enable);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

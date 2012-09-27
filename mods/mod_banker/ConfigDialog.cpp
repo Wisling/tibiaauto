@@ -184,10 +184,14 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_enable);
+}
+
+BOOL CConfigDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	initalizeBankers();
 	SetTimer(1001,250,NULL);

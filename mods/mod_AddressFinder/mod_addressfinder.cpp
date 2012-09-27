@@ -370,10 +370,9 @@ char *CMod_addressfinderApp::getConfigParamName(int nr) {
 
 void CMod_addressfinderApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_OK);
-	skin.SetButtonSkin(	m_configDialog->m_enable);
-	skin.SetButtonSkin(	m_configDialog->m_beginOutput);
-
-	if (m_configDialog)
+	
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

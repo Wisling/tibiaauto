@@ -166,11 +166,15 @@ void CMapConfig::saveTile() {
 	memTilesForConfig[currentStackPos]->isTeleporter = m_Teleporter.GetCheck();
 }
 
-BOOL CMapConfig::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CMapConfig::DoSetButtonSkin(){
 	skin.SetButtonSkin( m_Previous);
 	skin.SetButtonSkin(	m_Commit);
 	skin.SetButtonSkin( m_Next);
+}
+
+BOOL CMapConfig::OnInitDialog() {
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	Mem2Config();
 	

@@ -52,7 +52,6 @@ END_MESSAGE_MAP()
 
 BOOL CCustomSpellDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
-	
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_cancel);
 

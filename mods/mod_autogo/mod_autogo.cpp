@@ -786,22 +786,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				// *****************************
 
+				//Start and Suspend modules MUST be done in reverse order to before to prevent thread dead-lock
+				// Start Modules *************** 
+				if (alarmItr->getStartModules().size()) {
+					list<CString> temp = alarmItr->getStartModules();
+					list<CString>::iterator modulesItr = temp.begin();
+					while(modulesItr != temp.end()) {
+						actionSuspend(*modulesItr);
+						modulesItr++;
+					}
+				}// ****************************
+
 				// Suspend Modules  ************
 				if (alarmItr->getStopModules().size()) {
 					list<CString> temp = alarmItr->getStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
 					while(modulesItr != temp.end()) {
 						actionStart(*modulesItr);
-						modulesItr++;
-					}
-				}// ****************************
-
-				// Start Modules ***************
-				if (alarmItr->getStartModules().size()) {
-					list<CString> temp = alarmItr->getStartModules();
-					list<CString>::iterator modulesItr = temp.begin();
-					while(modulesItr != temp.end()) {					
-						actionSuspend(*modulesItr);
 						modulesItr++;
 					}
 				}// ****************************
@@ -1167,7 +1168,6 @@ char *CMod_autogoApp::getVersion() {
 	return "4.11";
 }
 
-
 int CMod_autogoApp::validateConfig(int showAlerts) {	
 	return 1;
 }
@@ -1385,10 +1385,10 @@ void CMod_autogoApp::resetMultiParamAccess(char *paramName) {
 
 void CMod_autogoApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_enable);
-	skin.SetButtonSkin(	m_configDialog->m_OK);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

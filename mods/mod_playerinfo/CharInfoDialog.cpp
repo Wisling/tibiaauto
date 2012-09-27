@@ -150,10 +150,14 @@ void CCharInfoDialog::resetCounters()
 	delete ch;
 }
 
-BOOL CCharInfoDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CCharInfoDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_ResetCounters);
 	skin.SetButtonSkin(	m_OK);
+}
+
+BOOL CCharInfoDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	configToControls(config);
 	resetCounters();

@@ -244,12 +244,16 @@ void CToolAutoRespond::readInfo()
 	}	
 } 
 
-BOOL CToolAutoRespond::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void CToolAutoRespond::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_ClearLogs);
 	skin.SetButtonSkin(	m_OK);
+}
+
+BOOL CToolAutoRespond::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	m_msgHistory.InsertColumn(0,"time",LVCFMT_LEFT,50);
 	m_msgHistory.InsertColumn(1,"channel",LVCFMT_LEFT,70);

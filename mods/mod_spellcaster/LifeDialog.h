@@ -21,6 +21,7 @@ public:
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	friend class CConfigDialog;
 	LifeDialog(CWnd* pParent = NULL);   // standard constructor
 

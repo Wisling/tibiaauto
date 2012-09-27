@@ -124,18 +124,12 @@ char *CMod_itemconfigApp::getVersion()
 
 void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_infoDialog->m_OK);
-	skin.SetButtonSkin(	m_infoDialog->m_RefreshItems);
-	skin.SetButtonSkin(	m_infoDialog->m_EditItem);
-	skin.SetButtonSkin(	m_infoDialog->m_EditFood);
-	skin.SetButtonSkin(	m_infoDialog->m_DeleteItem);
-	skin.SetButtonSkin(	m_infoDialog->m_DeleteFood);
-	skin.SetButtonSkin(	m_infoDialog->m_AddItem);
-	skin.SetButtonSkin(	m_infoDialog->m_AddFood);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_infoDialog)
+	if (m_infoDialog){
+		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();
+	}
 }
 
 void CMod_itemconfigApp::configToControls() {

@@ -25,6 +25,7 @@ public:
 	cleanup();
 	void ConfigToControls();
 	void ControlsToConfig();
+	void DoSetButtonSkin();
 
 	//For dragging
 	HTREEITEM itemOrigin;

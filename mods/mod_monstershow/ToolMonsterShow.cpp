@@ -63,10 +63,14 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CToolMonsterShow message handlers
 
+void CToolMonsterShow::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_OK);
+}
+
 BOOL CToolMonsterShow::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_OK);
+	DoSetButtonSkin();
 	
 	int x;
 	int y;

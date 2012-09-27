@@ -35,6 +35,7 @@ public:
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	CConfigDialog(CMod_autogoApp *app,CWnd* pParent = NULL);   // standard constructor
 	int m_DialogID[2];
 	MyDialog *m_Dialog[2];

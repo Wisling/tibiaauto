@@ -240,11 +240,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
+void CConfigDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(	m_OK);
+}
+
 BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_enable);
-	skin.SetButtonSkin(	m_OK);
+	DoSetButtonSkin();
 	
 	m_debug.InsertColumn(0,"time",LVCFMT_LEFT,65);
 	m_debug.InsertColumn(1,"message",LVCFMT_LEFT,240);

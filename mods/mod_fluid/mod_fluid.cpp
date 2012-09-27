@@ -553,10 +553,10 @@ char *CMod_fluidApp::getConfigParamName(int nr)
 
 void CMod_fluidApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_OK);
-	skin.SetButtonSkin(	m_configDialog->m_enable);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

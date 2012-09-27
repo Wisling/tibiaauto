@@ -23,6 +23,7 @@ public:
 	CCharInfoDialog(CConfigData *configIn, CWnd* pParent = NULL);   // standard constructor
 	void configToControls(CConfigData *configData);
 	CConfigData * controlsToConfig();
+	void DoSetButtonSkin();
 
 // Dialog Data
 	//{{AFX_DATA(CCharInfoDialog)

@@ -22,6 +22,7 @@ public:
 	void configToControls(CConfigData *);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	GeneralConfigDialog(CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data

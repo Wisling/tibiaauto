@@ -361,10 +361,10 @@ char *CMod_xrayApp::getConfigParamName(int nr)
 
 void CMod_xrayApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_OK);
-	skin.SetButtonSkin(	m_configDialog->m_enable);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

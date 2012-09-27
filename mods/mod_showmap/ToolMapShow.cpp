@@ -81,11 +81,16 @@ void CToolMapShow::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
+void CToolMapShow::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_ClearMap);
+	skin.SetButtonSkin(	m_OK);
+}
+
 BOOL CToolMapShow::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_ClearMap);
-	skin.SetButtonSkin(	m_OK);
+	DoSetButtonSkin();
+
 	int x;
 	int y;
 	RECT rect;

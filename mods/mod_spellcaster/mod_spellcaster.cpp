@@ -1313,12 +1313,10 @@ int aoeShouldFire(CConfigData *config) {
 
 void CMod_spellcasterApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	skin.SetButtonSkin(	m_configDialog->m_enable);
-	LifeDialog *temp = (LifeDialog*)m_configDialog->m_Dialog[0];
-	skin.SetButtonSkin( temp->m_healList);
-	skin.SetButtonSkin(	m_configDialog->m_OK);
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
+	}
 }

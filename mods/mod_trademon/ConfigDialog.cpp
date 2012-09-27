@@ -151,11 +151,15 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
+void CConfigDialog::DoSetButtonSkin(){
+	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(	m_enable);
+}
+
 BOOL CConfigDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	DoSetButtonSkin();
 	
 	m_message.EnableWindow(false);
 	m_channel.EnableWindow(false);

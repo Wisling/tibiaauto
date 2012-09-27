@@ -315,8 +315,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
-	CDialog::OnInitDialog();
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_enable);
 	skin.SetButtonSkin(m_addSeller);
@@ -327,6 +326,12 @@ BOOL CConfigDialog::OnInitDialog() {
 		skin.SetButtonSkin( m_SellBoxRemove[loop]);
 		m_Seller[loop].LimitText(127);
 	}
+
+}
+
+BOOL CConfigDialog::OnInitDialog() {
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	initalizeSellers();
 	SetTimer(1001,250,NULL);

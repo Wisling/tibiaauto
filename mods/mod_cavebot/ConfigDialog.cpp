@@ -815,10 +815,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
-	//skin.SetButtonSkin(	m_pausingEnable);
+void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_autoResearch);
 	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_depotEntryRemove);
@@ -835,6 +832,12 @@ BOOL CConfigDialog::OnInitDialog()
 	skin.SetButtonSkin(	m_MonsterUp);
 	skin.SetButtonSkin(	m_AddDelay);
 	skin.SetButtonSkin(	m_dropLootList);
+}
+
+BOOL CConfigDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	// initialise comboboxes, etc.
 	reloadDepotItems();

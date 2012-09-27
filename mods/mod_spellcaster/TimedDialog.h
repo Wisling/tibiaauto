@@ -22,6 +22,7 @@ public:
 	void configToControls(CConfigData *);
 	void enableControls();
 	void disableControls();
+	void DoSetButtonSkin();
 	TimedDialog(std::vector<TimedSpell>, CWnd* pParent = NULL);
 	TimedDialog(CWnd* pParent = NULL);   // standard constructor
 
