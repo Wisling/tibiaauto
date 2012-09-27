@@ -17,6 +17,7 @@ class COptionsDialog : public MyDialog
 {
 // Construction
 public:
+	void DoSetButtonSkin();
 	COptionsDialog(CWnd* pParent = NULL);   // standard constructor
 	void sendStats();
 

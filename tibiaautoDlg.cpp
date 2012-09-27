@@ -259,10 +259,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg message handlers
  
-BOOL CTibiaautoDlg::OnInitDialog()
-{	
-	srand(time(NULL));
-	CDialog::OnInitDialog();
+void CTibiaautoDlg::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_exit);
 	skin.SetButtonSkin(	m_LoadedModules);
 	skin.SetButtonSkin(	m_Options);
@@ -298,7 +295,13 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	skin.SetButtonSkin(	m_banker);
 	skin.SetButtonSkin(	m_sorter);
 	skin.SetButtonSkin(	m_seller);
+}
 
+BOOL CTibiaautoDlg::OnInitDialog()
+{	
+	srand(time(NULL));
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 	
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
@@ -1685,41 +1688,7 @@ BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 	if (((LPNMHDR) lParam)->code == 123456) {
 		Invalidate();
 		m_browserAds.Refresh();
-		skin.SetButtonSkin(	m_exit);
-		skin.SetButtonSkin(	m_LoadedModules);
-		skin.SetButtonSkin(	m_Options);
-		skin.SetButtonSkin(	m_PythonScripts);
-		skin.SetButtonSkin(	m_MonsterShow);
-		skin.SetButtonSkin(	m_MapShow);
-		skin.SetButtonSkin(	m_ItemConfig);
-		skin.SetButtonSkin(	m_InjectMC);
-		skin.SetButtonSkin(	m_CharInfo);
-		skin.SetButtonSkin(	m_xray);
-		skin.SetButtonSkin(	m_autoAttack);
-		skin.SetButtonSkin(	m_login);
-		skin.SetButtonSkin(	m_ammoRestack);
-		skin.SetButtonSkin(	m_autoAim);
-		skin.SetButtonSkin(	m_autoFish);
-		skin.SetButtonSkin(	m_autoGo);
-		skin.SetButtonSkin(	m_autoLooter);
-		skin.SetButtonSkin(	m_autoRespond);
-		skin.SetButtonSkin(	m_autoUh);
-		skin.SetButtonSkin(	m_fluidDrinker);
-		skin.SetButtonSkin(	m_runeMaker);
-		skin.SetButtonSkin(	m_spellCaster);
-		skin.SetButtonSkin(	m_fps);
-		skin.SetButtonSkin(	m_antilogout);
-		skin.SetButtonSkin(	m_mapHack);
-		skin.SetButtonSkin(	m_creatureInfo);
-		skin.SetButtonSkin(	m_save);
-		skin.SetButtonSkin(	m_load);
-		skin.SetButtonSkin(	m_eater);
-		skin.SetButtonSkin(	m_tradeMon);
-		skin.SetButtonSkin(	m_grouping);
-		skin.SetButtonSkin(	m_light);
-		skin.SetButtonSkin(	m_banker);
-		skin.SetButtonSkin(	m_sorter);
-		skin.SetButtonSkin(	m_seller);
+		DoSetButtonSkin();
 		
 		m_pythonScriptsDialog->Invalidate();
 		m_loadedModules->Invalidate();

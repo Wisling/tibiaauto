@@ -1775,6 +1775,7 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
 {
 	//myPrintText runs continuously, so this is a good place to check if the TA Message pipe has anything for us
+	//EXCEPT when display creature names is off
 	if (taMessageStart!=taMessageEnd)
 	{
 		if (debugFile&&COMPLEX)

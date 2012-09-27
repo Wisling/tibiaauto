@@ -177,6 +177,16 @@ void COptionsDialog::OnSendLootstats()
 	sendFile("tibiaauto-stats-loot.txt");
 }
 
+void COptionsDialog::DoSetButtonSkin() 
+{
+	skin.SetButtonSkin(m_ok);
+	skin.SetButtonSkin(m_Skin);
+	skin.SetButtonSkin(m_send1);
+	skin.SetButtonSkin(m_send2);
+	skin.SetButtonSkin(m_send3);
+	skin.SetButtonSkin(m_send4);
+}
+
 BOOL COptionsDialog::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
@@ -186,12 +196,7 @@ BOOL COptionsDialog::OnInitDialog()
 	m_scriptLoadAsk.SetCheck(CModuleUtil::getTASetting("StartModulesOnLoad")==0);
 	m_scriptLoadStart.SetCheck(CModuleUtil::getTASetting("StartModulesOnLoad")==1);
 	m_scriptLoadNoStart.SetCheck(CModuleUtil::getTASetting("StartModulesOnLoad")==2);
-	skin.SetButtonSkin(m_ok);
-	skin.SetButtonSkin(m_Skin);
-	skin.SetButtonSkin(m_send1);
-	skin.SetButtonSkin(m_send2);
-	skin.SetButtonSkin(m_send3);
-	skin.SetButtonSkin(m_send4);
+	DoSetButtonSkin();
 
 	refreshStatFiles();
 
@@ -435,13 +440,9 @@ void COptionsDialog::OnSkin()
 	// TODO: Add your control notification handler code here
 	CColorChooser *dlg = new CColorChooser();
 	if (dlg->DoModal() == IDOK) {
-		skin.SetButtonSkin(m_ok);
-		skin.SetButtonSkin(m_Skin);
-		skin.SetButtonSkin(m_send1);
-		skin.SetButtonSkin(m_send2);
-		skin.SetButtonSkin(m_send3);
-		skin.SetButtonSkin(m_send4);
+		DoSetButtonSkin();
 		this->Invalidate();
+
 		NMHDR nmh;
 		nmh.code = CUSTOM_SELCHANGE;    // Message type defined by control.
 		nmh.idFrom = this->GetDlgCtrlID();

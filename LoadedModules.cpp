@@ -66,10 +66,14 @@ void CLoadedModules::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
+void CLoadedModules::DoSetButtonSkin(){
+	skin.SetButtonSkin(m_ok);
+}
+
 BOOL CLoadedModules::OnInitDialog() 
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(m_ok);
+	DoSetButtonSkin();
 
 	m_list.InsertColumn(0,"name",LVCFMT_LEFT,70);
 	m_list.InsertColumn(1,"loaded",LVCFMT_LEFT,50);
@@ -217,7 +221,7 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 void CLoadedModules::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
-	skin.SetButtonSkin(m_ok);
+	DoSetButtonSkin();
 	
 	// TODO: Add your message handler code here
 	CDialog::OnPaint();

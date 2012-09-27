@@ -40,6 +40,7 @@ class CTibiaautoDlg : public MyDialog
 {
 // Construction
 public:	
+	void DoSetButtonSkin();
 	void refreshToolInfo();
 	CTibiaautoDlg(CWnd* pParent = NULL);	// standard constructor
 

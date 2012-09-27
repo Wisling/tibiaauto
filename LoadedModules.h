@@ -14,6 +14,7 @@ class CLoadedModules : public MyDialog
 {
 // Construction
 public:
+	void DoSetButtonSkin();
 	CLoadedModules(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CLoadedModules();
 // Dialog Data

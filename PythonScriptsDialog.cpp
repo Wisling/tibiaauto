@@ -95,12 +95,16 @@ void CPythonScriptsDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CPythonScriptsDialog::OnInitDialog() 
-{
-	CDialog::OnInitDialog();
+void CPythonScriptsDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_Interpreter);
 	skin.SetButtonSkin(m_LoadScript);
+}
+
+BOOL CPythonScriptsDialog::OnInitDialog() 
+{
+	CDialog::OnInitDialog();
+	DoSetButtonSkin();
 
 	m_list.InsertColumn(0,"Name",LVCFMT_LEFT,70);
 	m_list.InsertColumn(1,"Version",LVCFMT_LEFT,50);
@@ -488,9 +492,7 @@ void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 void CPythonScriptsDialog::OnPaint() 
 {
 	CPaintDC dc(this); // device context for painting
-	skin.SetButtonSkin(m_OK);
-	skin.SetButtonSkin(m_Interpreter);
-	skin.SetButtonSkin(m_LoadScript);
+	DoSetButtonSkin();
 	
 	// TODO: Add your message handler code here
 	CDialog::OnPaint();
