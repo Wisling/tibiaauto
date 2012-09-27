@@ -26,7 +26,7 @@ CConfigDialog::CConfigDialog(CMod_autogoApp *app,CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app = app;
-	status=NULL;
+	statusPrinted=NULL;
 	memset(memWhiteList, 0, 3200);
 	m_DialogID[0] = IDD_ALARM_DIALOG;
 	m_DialogID[1] = IDD_GENERAL_CONFIG_DIALOG;
@@ -96,6 +96,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	CTibiaItemProxy itemProxy;
 	m_Dialog[0]->configToControls(configData);
 	m_Dialog[1]->configToControls(configData);
+	statusPrinted=configData->status;
 }
 
 CConfigData * CConfigDialog::controlsToConfig() {
@@ -103,7 +104,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 	m_Dialog[0]->controlsToConfig(newConfigData);
 	m_Dialog[1]->controlsToConfig(newConfigData);
-	status = newConfigData->status;
+	statusPrinted = newConfigData->status;
 	return newConfigData;
 }
 
@@ -118,7 +119,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 		if (!m_enable.GetCheck()) 
 			triggerMessage(); 
 	
-		sprintf(buf,"Status: %s", status);
+		sprintf(buf,"Status: %s", statusPrinted);
 		m_status.SetWindowText(buf);
 
 		delete self;
@@ -144,7 +145,6 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_tabCtrl.AddTab(m_Dialog[0], "Alarms");
 	m_tabCtrl.AddTab(m_Dialog[1], "General Configuration");
 	
-	status=NULL;
 	SetTimer(1001,250,NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control

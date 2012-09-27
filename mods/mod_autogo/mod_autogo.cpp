@@ -978,7 +978,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							isDestinationReached=true;
 						}else if(!sentMessagePathnotfound){
 							sentMessagePathnotfound=1;
-							sender.sendTAMessage("Auto go/log:No path found to depot position");
+							sender.sendTAMessage("Auto go/log: No path found to depot position");
 						}
 					}
 						}
@@ -1227,6 +1227,15 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 
 		char* params=sep;
 
+		//added a new saved parameter, not present in older saved configs
+		char* descript;
+		if ((sep=strstr(sep,"|"))==NULL){
+			descript = "unsaved description";
+		}else{
+			sep[0]='\0'; sep=sep+1;
+			descript=sep;
+		}
+
 		list<CString> startList=list<CString>();
 		for (sep=strstr(startModules,",");sep!=NULL;sep=strstr(sep+1,",")){
 			sep[0]=0;
@@ -1257,7 +1266,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 			if (sscanf(params,"%d %d %d %d %d %d %d %d %d %d %d %d",&screenshot,&logEvents,&windowAction,&shutdown,&killTibia,&logout,&stopWalk,&depot,&start,&runaway,&manaCost,&spellDelay)!=12) return;
 		}
 
-		Alarm temp(alarmType,attribute,condition,trigType,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList,persistent,permanent);
+		Alarm temp(alarmType,attribute,condition,trigType,cStrTrigger,runaway,start,depot,cCastSpell,manaCost,spellDelay,screenshot,stopWalk,logout,killTibia,shutdown,windowAction,cAlarmName,logEvents,startList,stopList,persistent,permanent,descript);
 		m_configData->alarmList.push_back(temp);
 	}
 #pragma warning(default: 4800)
@@ -1311,7 +1320,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				lstIter++;
 			}
 			sprintf(buf+strlen(buf),"%s","|");
-			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d %d %d %d %d",
+			sprintf(buf+strlen(buf),"%d %d %d %d|%s|%s|%s|%d %d %d %d %d %d %d %d %d %d %d %d %d %d|%s",
 				alm.getAlarmType(),
 				alm.getAttribute(),
 				alm.getCondition(),
@@ -1332,7 +1341,8 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 				alm.getManaCost(),
 				alm.getSpellDelay(),
 				alm.getPersistent(),
-				alm.getPermanent()
+				alm.getPermanent(),
+				alm.getDescriptor()
 			);
 		}
 	}

@@ -61,8 +61,8 @@ Alarm::Alarm() {
 
 
 
-Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm) {
-	alarmDescriptor = "";
+Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm, CString desc) {
+	alarmDescriptor = desc;
 	startModules = beginModules;
 	stopModules = endModules;
 	spell = spe;
@@ -947,7 +947,7 @@ CString Alarm::getDescriptor() {
 }
 
 void Alarm::setDescriptor(CString descriptor) {
-	alarmDescriptor = descriptor;
+	alarmDescriptor = descriptor; // copies entire CString
 }
 
 void Alarm::setSpellDelay(int delay) {

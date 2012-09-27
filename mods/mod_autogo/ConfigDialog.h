@@ -29,7 +29,7 @@ class CConfigDialog : public MyDialog
 {
 // Construction
 public:
-	char* status;
+	char* statusPrinted;
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
