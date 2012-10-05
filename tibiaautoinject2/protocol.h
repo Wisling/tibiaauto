@@ -5,7 +5,7 @@
 #include <iostream>
 #include <fstream>
 
-#define NETWORKMESSAGE_MAXSIZE 15360
+#define NETWORKMESSAGE_MAXSIZE 65536
 
 
 
@@ -14,7 +14,8 @@ class NetworkMessage
 public:
 	NetworkMessage();
 	NetworkMessage(char* rawMsg);
-	virtual	~NetworkMessage(){};
+	NetworkMessage(char* rawMsg, int len);
+	virtual ~NetworkMessage(){};
 
 	unsigned char GetByte();
 	unsigned int GetInt();

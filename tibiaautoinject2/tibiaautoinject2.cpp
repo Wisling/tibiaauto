@@ -2310,13 +2310,14 @@ int myShouldParseRecv(){
 			actionEnd = recvStream->pos-2; // ate an extra byte
 		}
 		int actionLen = actionEnd - actionStart + 1;
+		parsePacketIn((char*)prevRecvStream+actionStart,actionLen);
 		{for (int i=0;i<recvRegexCount;i++){
 			if (recvRegex[i].inUse == 1){
 				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)prevRecvStream+actionStart),actionLen,0,NULL,0);
 				if (match == 0){
 					if (privChanBufferPtr && 0){
 						bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
-						//OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
+						OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
 					}
 					parseRecvActionData(recvRegex[i].handle,(char*)prevRecvStream+actionStart,actionLen);
 				}
@@ -2409,7 +2410,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	//19-all green message
 	//20-
 	//21-to myself in dark blue
-	//22-
+	//22-hitpoint loss message
 	//23-
 	//AfxMessageBox(buf);
 	//OUTmyInterceptInfoMessageBox(v1, v2, (int)buf, 4, (int)"Tibia Auto", v6, v7, 0, v9);

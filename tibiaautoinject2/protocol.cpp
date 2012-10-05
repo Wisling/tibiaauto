@@ -1,3 +1,4 @@
+
 // protocol.cpp : Defines the entry point for the DLL application.
 //
 #include "stdafx.h"
@@ -8,22 +9,49 @@
 #include <fstream>
 #include "time.h"
 
+//NetworkMessage is a message buffer that can read and write out a NetworkMessage
+//the first two bytes indicate the length of the remaining bytes
+//the remaining bytes compose the NetworkMessage
+//readPos is the absolute position within msgBuf
+//msgSize is the length of msgBuf (the first two bytes are msgBuf-2)
 NetworkMessage::NetworkMessage(){
-	msgSize = 2;
 	readPos = 2;
+	msgSize = 2;
+	::Refresh();
 }
 
+//Copies rawMsg into our msgBuf using the first two bytes as the length
 NetworkMessage::NetworkMessage(char* rawMsg){
-	msgSize = 2;
+	msgBuf = NULL;
 	readPos = 2;
-
+	msgSize = 2;
 	if (rawMsg!=NULL){
-		msgSize = (((unsigned char) rawMsg[0]) | ((unsigned char)rawMsg[1]) << 8) + 2;
-		if (msgSize<NETWORKMESSAGE_MAXSIZE-16){
+		msgSize = ((unsigned int)rawMsg[0]) | ((unsigned int)(rawMsg[1] << 8))+2;
+		if (msgSize<=NETWORKMESSAGE_MAXSIZE){
 			memcpy(msgBuf,rawMsg,msgSize);
 		} else {
 			msgSize=0;
+			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536."
 		}
+	} else {
+		AfxMessageBox("TibiaautoInject2: NetworkMessage constructor sent NULL string"
+	}
+}
+
+//Copies rawMsg into our msgBuf using len as the length
+NetworkMessage::NetworkMessage(char* rawMsg, int len){
+	msgBuf = NULL;
+	readPos = 2;
+	msgSize = len+2;
+	if (rawMsg!=NULL){
+		if (msgSize<=NETWORKMESSAGE_MAXSIZE){
+			memcpy(msgBuf,rawMsg,len);
+		} else {
+			msgSize=0;
+			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536."
+		}
+	} else {
+		AfxMessageBox("TibiaautoInject2: NetworkMessage constructor sent NULL string"
 	}
 }
 
@@ -81,14 +109,16 @@ int isSpellMessage(const char *msg)
 	return 0;
 }
 
-bool NetworkMessage::canAdd(int size) {return (size + readPos < NETWORKMESSAGE_MAXSIZE - 16);}
+bool NetworkMessage::canAdd(int size) {return (size + readPos <= NETWORKMESSAGE_MAXSIZE);}
 
-void NetworkMessage::Refresh(){
-	readPos = 2;
-	msgBuf[0]=(unsigned char)(msgSize-2);
-	msgBuf[1]=(unsigned char)((msgSize-2)>>8);
+void NetworkMessage::RefreshSize(){
+	msgBuf[0] = (unsigned char)(msgSize-2);
+	msgBuf[1] = (unsigned char)((msgSize-2)<<8);
 }
 
+void NetworkMessage::ResetPos(){
+	readPos = 2;
+}
 
 unsigned char NetworkMessage::GetByte(){ return msgBuf[readPos++]; }
 
@@ -117,8 +147,10 @@ unsigned short NetworkMessage::PeekShort(){
 std::string NetworkMessage::GetString(int stringLen/*=0*/){
 	if(!stringLen)
 		stringLen=GetShort();
-	if(stringLen >= (NETWORKMESSAGE_MAXSIZE - readPos))
+	if(stringLen > (NETWORKMESSAGE_MAXSIZE - readPos-1)){
+		AfxMessageBox("TibiaautoInject2: NetworkMessage GetString trying to read past buffer");
 		return std::string();
+	}
 	char* v = (char*)(msgBuf + readPos);
 	readPos += stringLen;
 	return std::string(v,stringLen);
@@ -322,9 +354,19 @@ void Protocol::outputPacket(NetworkMessage &msg){
 
 void Protocol::parsePacketIn(NetworkMessage &msg){
 	CMemReaderProxy reader;
-	unsigned char recvbyte = msg.PeekByte();
+	unsigned char recvbyte = msg.GetByte();
 	switch(recvbyte)
 	{
+		case 0xB4:
+			unsigned char infoType = msg.GetByte();
+			switch(infoType)
+			{
+				case 0x16://22
+					
+					break;
+				default: break;
+			}
+			break;
 		default: break;
 	}
 }

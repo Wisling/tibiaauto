@@ -153,75 +153,70 @@ void CTileReader::loadTiles() {
 
 void CTileReader::saveTiles() {
 	XercesDOMParser *parser = new XercesDOMParser();
-	try {	
-		char installPath[1024] = {'\0'};
-		unsigned long installPathLen=1023;
-		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey)) {
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
-			RegCloseKey(hkey);
-		}
-		if (!strlen(installPath)) {
-			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			exit(1);
-		}
-		int rootNr;
-		char pathBuf[2048];
-		sprintf(pathBuf,"%s\\mods\\tibiaauto-tiles.xml",installPath);
-		parser->parse(pathBuf);
-		DOMNode  *doc = parser->getDocument();	
-		int rootCount=doc->getChildNodes()->getLength();		
-		for (rootNr=0;rootNr<rootCount;rootNr++) {			
-			DOMNode *root = doc->getChildNodes()->item(rootNr);
-			if (wcscmp(root->getNodeName(),_L("tiles")))
-				continue;					
-			DOMNode *item = root->getFirstChild();
-			if (item) {
-				do {			
-					if (!wcscmp(item->getNodeName(),_L("tile"))) {
-						int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
-						CUtil::setNodeIntAttribute(item,_L("blocking"), tiles[tileId]->blocking);						
-						CUtil::setNodeIntAttribute(item,_L("canWalkThrough"),tiles[tileId]->canWalkThrough);
-						CUtil::setNodeIntAttribute(item,_L("goDown"), tiles[tileId]->goDown);
-						CUtil::setNodeIntAttribute(item,_L("goUp"), tiles[tileId]->goUp);
-						CUtil::setNodeIntAttribute(item,_L("ground"),tiles[tileId]->ground);
-						CUtil::setNodeIntAttribute(item,_L("isContainer"), tiles[tileId]->isContainer);
-						CUtil::setNodeIntAttribute(item,_L("isDepot"), tiles[tileId]->isDepot);
-						CUtil::setNodeIntAttribute(item,_L("requireRope"), tiles[tileId]->requireRope);
-						CUtil::setNodeIntAttribute(item,_L("requireShovel"), tiles[tileId]->requireShovel);
-						CUtil::setNodeIntAttribute(item,_L("requireUse"), tiles[tileId]->requireUse);
-						CUtil::setNodeIntAttribute(item,_L("speed"), tiles[tileId]->speed);												
-						CUtil::setNodeIntAttribute(item,_L("minimapColor"), tiles[tileId]->minimapColor);
-						CUtil::setNodeIntAttribute(item,_L("notMoveable"), tiles[tileId]->notMoveable);
-						CUtil::setNodeIntAttribute(item,_L("stackable"),  tiles[tileId]->stackable);
-						CUtil::setNodeIntAttribute(item,_L("alwaysOnTop"), tiles[tileId]->alwaysOnTop);
-						CUtil::setNodeIntAttribute(item,_L("moreAlwaysOnTop"), tiles[tileId]->moreAlwaysOnTop);
-						CUtil::setNodeIntAttribute(item,_L("isTeleporter"), tiles[tileId]->isTeleporter);
-						CUtil::setNodeIntAttribute(item,_L("isReadable"), tiles[tileId]->isReadable);
-						CUtil::setNodeIntAttribute(item,_L("isFluid"), tiles[tileId]->isFluid);
-						CUtil::setNodeIntAttribute(item,_L("isRune"), tiles[tileId]->isRune);
-						CUtil::setNodeIntAttribute(item,_L("isUseableWith"), tiles[tileId]->isUseable);
-						CUtil::setNodeIntAttribute(item,_L("isUseableImmobile"), tiles[tileId]->isUseableImmobile);
-						CUtil::setNodeIntAttribute(item,_L("blockPathFind"), tiles[tileId]->blockPathFind);
-					}		
-				} while ((item=item->getNextSibling())!=NULL);
-			}
-		}
-		XMLCh tempStr[100];
-		XMLString::transcode("LS", tempStr, 99);
-		DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-		DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
-			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
-		}
-		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-		theSerializer->writeNode(outfile, *doc);			
-		theSerializer->release();
-		delete outfile;
-		delete theSerializer;
+	char installPath[1024] = {'\0'};
+	unsigned long installPathLen=1023;
+	HKEY hkey=NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey)) {
+		RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+		RegCloseKey(hkey);
 	}
-	catch (...) {
-		AfxMessageBox("Unable to save tile definitions!");
+	if (!strlen(installPath)) {
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
 	}
+	int rootNr;
+	char pathBuf[2048];
+	sprintf(pathBuf,"%s\\mods\\tibiaauto-tiles.xml",installPath);
+	parser->parse(pathBuf);
+	DOMNode  *doc = parser->getDocument();	
+	int rootCount=doc->getChildNodes()->getLength();		
+	for (rootNr=0;rootNr<rootCount;rootNr++) {			
+		DOMNode *root = doc->getChildNodes()->item(rootNr);
+		if (wcscmp(root->getNodeName(),_L("tiles")))
+			continue;					
+		DOMNode *item = root->getFirstChild();
+		if (item) {
+			do {			
+				if (!wcscmp(item->getNodeName(),_L("tile"))) {
+					int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
+					CUtil::setNodeIntAttribute(item,_L("blocking"), tiles[tileId]->blocking);						
+					CUtil::setNodeIntAttribute(item,_L("canWalkThrough"),tiles[tileId]->canWalkThrough);
+					CUtil::setNodeIntAttribute(item,_L("goDown"), tiles[tileId]->goDown);
+					CUtil::setNodeIntAttribute(item,_L("goUp"), tiles[tileId]->goUp);
+					CUtil::setNodeIntAttribute(item,_L("ground"),tiles[tileId]->ground);
+					CUtil::setNodeIntAttribute(item,_L("isContainer"), tiles[tileId]->isContainer);
+					CUtil::setNodeIntAttribute(item,_L("isDepot"), tiles[tileId]->isDepot);
+					CUtil::setNodeIntAttribute(item,_L("requireRope"), tiles[tileId]->requireRope);
+					CUtil::setNodeIntAttribute(item,_L("requireShovel"), tiles[tileId]->requireShovel);
+					CUtil::setNodeIntAttribute(item,_L("requireUse"), tiles[tileId]->requireUse);
+					CUtil::setNodeIntAttribute(item,_L("speed"), tiles[tileId]->speed);												
+					CUtil::setNodeIntAttribute(item,_L("minimapColor"), tiles[tileId]->minimapColor);
+					CUtil::setNodeIntAttribute(item,_L("notMoveable"), tiles[tileId]->notMoveable);
+					CUtil::setNodeIntAttribute(item,_L("stackable"),  tiles[tileId]->stackable);
+					CUtil::setNodeIntAttribute(item,_L("alwaysOnTop"), tiles[tileId]->alwaysOnTop);
+					CUtil::setNodeIntAttribute(item,_L("moreAlwaysOnTop"), tiles[tileId]->moreAlwaysOnTop);
+					CUtil::setNodeIntAttribute(item,_L("isTeleporter"), tiles[tileId]->isTeleporter);
+					CUtil::setNodeIntAttribute(item,_L("isReadable"), tiles[tileId]->isReadable);
+					CUtil::setNodeIntAttribute(item,_L("isFluid"), tiles[tileId]->isFluid);
+					CUtil::setNodeIntAttribute(item,_L("isRune"), tiles[tileId]->isRune);
+					CUtil::setNodeIntAttribute(item,_L("isUseableWith"), tiles[tileId]->isUseable);
+					CUtil::setNodeIntAttribute(item,_L("isUseableImmobile"), tiles[tileId]->isUseableImmobile);
+					CUtil::setNodeIntAttribute(item,_L("blockPathFind"), tiles[tileId]->blockPathFind);
+				}		
+			} while ((item=item->getNextSibling())!=NULL);
+		}
+	}
+	XMLCh tempStr[100];
+	XMLString::transcode("LS", tempStr, 99);
+	DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
+	DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
+	if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
+		theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
+	}
+	xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
+	theSerializer->writeNode(outfile, *doc);			
+	theSerializer->release();
+	theSerializer=NULL;
+	delete outfile;
 	delete parser;
 }
