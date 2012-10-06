@@ -1,4 +1,4 @@
-2.23.0, 3.9.2012
+2.23.2, 4.10.2012
 Enhancements:
- Tibia Auto:Updated to Tibia 9.63
 Defects:
+ Autogo: Fixed persistent alarms always being on even when not selected.

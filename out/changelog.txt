@@ -1,3 +1,8 @@
+2.23.2, 4.10.2012
+Enhancements:
+Defects:
+ Autogo: Fixed persistent alarms always being on even when not selected.
+
 2.23.1, 23.9.2012
 Enhancements:
  Autogo: Added persistent and permanent alarms to allow a player to finish an action even when the trigger condition is no longer met

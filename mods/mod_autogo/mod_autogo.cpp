@@ -601,7 +601,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			//Note that alarmItr->alarmState is set to shouldAlarm when finished
 			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg); //Check if criteria is satisfied
 			shouldAlarm = shouldAlarm || alarmItr->alarmState && alarmItr->getPermanent(); // keep alarm on if permanent
-			shouldAlarm = shouldAlarm || alarmItr->alarmState && alarmItr->keepPersistent(isDestinationReached,isLoggedOut); // keep alarm on if action not yet completed
+			shouldAlarm = shouldAlarm || alarmItr->alarmState && (alarmItr->getPersistent() && alarmItr->keepPersistent(isDestinationReached,isLoggedOut)); // keep alarm on if action not yet completed
 
 			if (shouldAlarm && shouldAlarm != alarmItr->alarmState) {//state changed to ON
 
