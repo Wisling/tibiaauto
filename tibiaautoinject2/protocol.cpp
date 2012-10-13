@@ -362,7 +362,10 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 			switch(infoType)
 			{
 				case 0x16://22
-					
+					char msg[1024] = msg.GetString().c_str();
+					int hpLost;
+					xscan("You lose %d hitpoints",&hpLost);
+					if(strcmp(msg, "you lose x hitpoints")
 					break;
 				default: break;
 			}
