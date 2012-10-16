@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 9.63 -->
+<!-- Tibia constants for Tibia 9.70 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -43,10 +43,10 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x12DC21"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x4F212C"/> <!-- 07000000????????02000000-->
-		<const code="addrXRay2" value="0x4F2134"/>
-		<const code="addrFunRevealCName1" value="0x50E0C2"/> <!-- search (84 C0) 75 (?0A?) to EB17-->
+		<const code="addrMCInject" value="0x12E071"/> <!--D7 3D B7 -->
+		<const code="addrXRay1" value="0x4F24EC"/> <!-- 07000000????????02000000-->
+		<const code="addrXRay2" value="0x4F24F4"/>
+		<const code="addrFunRevealCName1" value="0x50E582"/> <!-- search (84 C0) 75 (?0A?) to EB17-->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -58,7 +58,7 @@
 		<const code="addrCurrentTileToGo" value="0x7B2E50"/><!--counts up to addrTileToGo-->
 		<const code="addrSelfFlags" value="0x7B2E54"/> <!-- cat1 -->
 		<const code="addrFollowedCreature" value="0x7B2E88"/>
-		<const code="addrVIP" value="0x945CB0"/> <!-- cat0 -->
+		<const code="addrVIP" value="0x945CC8"/> <!-- cat0 -->
 		<const code="addrPathToGo" value="0x7B2E5C"/>
 		<const code="addrXor" value="0x7B2E90"/>
 		<const code="addrManaMax" value="0x7B2E94"/>
@@ -79,12 +79,12 @@
 		<const code="addrModeAttackType" value="0x7BCA60"/> <!-- cat3 -->
 		<const code="addrConnectionState" value="0x7BCCC4"/> <!-- cat4 -->
 		<const code="addrWhiteMessage" value="0x7FE938"/>
-		<const code="addrFirstContainer" value="0x8023B4"/> <!-- cat2 -->
-		<const code="addrTradeCountSelf" value="0x804288"/>
-		<const code="addrTradeFirstItemSelf" value="0x80428C"/>
-		<const code="addrTradeCountPartner" value="0x804760"/>
-		<const code="addrTradeFirstItemPartner" value="0x804764"/> <!-- cat2 -->
-		<const code="addrMiniMapStart" value="0x804C20"/> <!-- begins at x,y map tile cat2 -->
+		<const code="addrFirstContainer" value="0x8023CC"/> <!-- cat2 -->
+		<const code="addrTradeCountSelf" value="0x8042A0"/>
+		<const code="addrTradeFirstItemSelf" value="0x8042A4"/>
+		<const code="addrTradeCountPartner" value="0x804778"/>
+		<const code="addrTradeFirstItemPartner" value="0x80477C"/> <!-- cat2 -->
+		<const code="addrMiniMapStart" value="0x804C38"/> <!-- begins at x,y map tile cat2 -->
 		<const code="addrHP" value="0x948000"/>
 		<const code="addrGoZ" value="0x948004"/>
 		<const code="addrFirstCreature" value="0x948008"/> <!-- cat1 -->
@@ -96,13 +96,14 @@
 		<const code="addrGoX" value="0x97FEA0"/>
 		<const code="addrSelfId" value="0x97FEA4"/>
 		<const code="addrFps" value="0x992008"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrPacketCount" value="0x9CE2A4"/> <!-- cat0 -->
-		<const code="addrSlotArrow" value="0x9D44B4"/> <!-- cat2 -->
-		<const code="addrLeftHand" value="0x9D44E4"/>
-		<const code="addrRightHand" value="0x9D44F0"/>
-		<const code="addrBackpack" value="0x9D4508"/> <!-- itemID - 8 -->
-		<const code="addrMapStart" value="0x9D4544"/> <!-- is a pointer to visible map -->
-		<const code="addrCurrentTm" value="0x9D5800"/> <!-- cat2 -->
+		<const code="addrPacketCount" value="0x9CE2F4"/> <!-- cat0 -->
+		<const code="addrSlotArrow" value="0x9D4504"/> <!-- cat2 -->
+		<const code="addrLeftHand" value="0x9D4534"/>
+		<const code="addrRightHand" value="0x9D4540"/>
+		<const code="addrBackpack" value="0x9D4558"/> <!-- itemID - 8 -->
+		<const code="addrMapStart" value="0x9D4594"/> <!-- is a pointer to visible map -->
+		<const code="addrCurrentTm" value="0x9D5850"/> <!-- cat2 -->
+
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>

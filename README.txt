@@ -1,4 +1,5 @@
-2.23.2, 4.10.2012
+2.24.0, 16.10.2012
 Enhancements:
+ TibiaAuto: Updated to 9.70
 Defects:
- Autogo: Fixed persistent alarms always being on even when not selected.
+ TibiaAuto: Fixed incorrect Decrypt address
