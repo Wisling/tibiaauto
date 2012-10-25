@@ -1230,7 +1230,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 		//added a new saved parameter, not present in older saved configs
 		char* descript;
 		if ((sep=strstr(sep,"|"))==NULL){
-			descript = "unsaved description";
+			descript = "resave script to save the correct description";
 		}else{
 			sep[0]='\0'; sep=sep+1;
 			descript=sep;

@@ -1,5 +1,4 @@
-2.24.0, 16.10.2012
+2.24.1, 25.10.2012
 Enhancements:
- TibiaAuto: Updated to 9.70
 Defects:
- TibiaAuto: Fixed incorrect Decrypt address
+ TibiaAuto: Found bug causing sections of the map to disappear. Fixed!
