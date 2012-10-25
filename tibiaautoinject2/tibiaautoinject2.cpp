@@ -224,7 +224,7 @@ int callAddr_InfoMiddleScreen04 =		0x5094C4;
 int callAddr_InfoMessageBox01 =			0x41B3A9;
 int callAddr_InfoMessageBox02 =			0x432537;
 int callAddr_InfoMessageBox03 =			0x4B2782;
-int callAddr_InfoMessageBox04 =			0x500010;
+int callAddr_InfoMessageBox04 =			0x5003C0;
 int callAddr_InfoMessageBox05 =			0x500B8C;
 int callAddr_InfoMessageBox06 =			0x500BF0;
 int callAddr_InfoMessageBox07 =			0x577887;
@@ -281,6 +281,7 @@ int callAddr_Encrypt01 =				0x517ECD;
 int callAddr_Decrypt01 =				0x514FF8;
 int callAddr_ShouldParseRecv01 =		0x4662C0;
 */
+
 // 9.61
 /*
 int funAddr_tibiaPrintText =			0x4C8D40;
