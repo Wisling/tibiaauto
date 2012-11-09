@@ -193,8 +193,52 @@ int outSelfUHAvail=0;
 int outFluidManaAvail=0;
 int outFluidLifeAvail=0;
 
-// 9.70
+// 9.71
 
+int funAddr_tibiaPrintText =			0x4CD750;
+int funAddr_tibiaPlayerNameText =		0x4CCAA0;
+int funAddr_tibiaInfoMiddleScreen =		0x574210;
+int funAddr_tibiaIsCreatureVisible =	0x473180;
+int funAddr_tibiaEncrypt =				0x5847B0;
+int funAddr_tibiaDecrypt =				0x5848E0;
+int funAddr_tibiaShouldParseRecv =		0x51ACC0;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0x9D539C-8; //look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x578160;
+int callAddr_PrintText01 =				0x45C5DD; //...<addr>.*
+int callAddr_PrintText02 =				0x45C627;
+int callAddr_PrintText03 =				0x4652D6;
+int callAddr_PrintText04 =				0x50D5E1;
+int callAddr_PrintText05 =				0x50E3AA;
+int callAddr_PlayerNameText01 =			0x424D80;
+int callAddr_PlayerNameText02 =			0x4CD3D4;
+int callAddr_PlayerNameText03 =			0x4CD5D4;
+int callAddr_PlayerNameText04 =			0x4CD7D3;
+int callAddr_PlayerNameText05 =			0x4CD9D3;
+int callAddr_PlayerNameText06 =			0x4CDBD4;
+int callAddr_PlayerNameText07 =			0x4CDDD2;
+int callAddr_PlayerNameText08 =			0x50DF00;
+int callAddr_InfoMiddleScreen01 =		0x420C8C;
+int callAddr_InfoMiddleScreen02 =		0x461348;
+int callAddr_InfoMiddleScreen03 =		0x49B3F5;
+int callAddr_InfoMiddleScreen04 =		0x50B4E4;
+int callAddr_InfoMessageBox01 =			0x4207F9;
+int callAddr_InfoMessageBox02 =			0x4341D7;
+int callAddr_InfoMessageBox03 =			0x4B4592;
+int callAddr_InfoMessageBox04 =			0x502340;
+int callAddr_InfoMessageBox05 =			0x502B0C;
+int callAddr_InfoMessageBox06 =			0x502B70;
+int callAddr_InfoMessageBox07 =			0x577FC7;
+int callAddr_InfoMessageBox08 =			0x578A37;
+int callAddr_InfoMessageBox09 =			0x578B07;
+int callAddr_InfoMessageBox10 =			0x578BFC;
+int callAddr_InfoMessageBox11 =			0x578E40;
+int callAddr_InfoMessageBox12 =			0x57991D;
+int callAddr_Encrypt01 =				0x51A3AD;
+int callAddr_Decrypt01 =				0x51A9B8;
+int callAddr_ShouldParseRecv01 =		0x467FD7;
+
+// 9.70
+/*
 int funAddr_tibiaPrintText =			0x4CB8B0;
 int funAddr_tibiaPlayerNameText =		0x4CAC00;
 int funAddr_tibiaInfoMiddleScreen =		0x573AA0;
@@ -236,7 +280,7 @@ int callAddr_InfoMessageBox12 =			0x5791DD;
 int callAddr_Encrypt01 =				0x51840D;
 int callAddr_Decrypt01 =				0x518A18;
 int callAddr_ShouldParseRecv01 =		0x466330;
-
+*/
 // 9.63
 /*
 int funAddr_tibiaPrintText =			0x4CB5A0;
