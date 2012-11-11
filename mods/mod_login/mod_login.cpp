@@ -355,9 +355,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			pass[32]=0;
 			if (config->autopass){
 				CTibiaItemProxy itemProxy;
-				int addr=itemProxy.getValueForConst("addrConnectionState");
-				reader.getMemRange(addr-0x28,addr-0x28+32,accNum);
-				reader.getMemRange(addr+0x70,addr+0x70+32,pass);
+				int addr=itemProxy.getValueForConst("addrVIP");
+				reader.getMemRange(addr-0x40,addr-0x40+32,accNum);
+				reader.getMemRange(addr-0x24,addr-0x24+32,pass);
 			} else {
 				strncpy(accNum,config->accountNumber,32);
 				strncpy(pass,config->password,32);
@@ -388,7 +388,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					sk.SendKeys("{DOWN}");
 				}
 			}
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15-70+217);				
+			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+168-92,wndRect.top+(wndRect.bottom-wndRect.top)/2+187-14+18);
 			mouse_event(MYMOUSE_DOWN,0,0,0,0);
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			

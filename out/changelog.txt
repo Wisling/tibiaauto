@@ -1,3 +1,13 @@
+2.25.2, 11.11.2012
+Enhancements:
+Defects:
+ Auto Login: Changed relogin info address to its new location.
+
+2.25.1, 9.11.2012
+Enhancements:
+Defects:
+ Auto Login: Fixed login step for accepting character selection.
+
 2.25.0, 8.11.2012
 Enhancements:
  TibiaAuto: Updated to 9.71

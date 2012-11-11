@@ -1,4 +1,4 @@
-2.25.0, 8.11.2012
+2.25.2, 11.11.2012
 Enhancements:
- TibiaAuto: Updated to 9.71
 Defects:
+ Auto Login: Changed relogin info address to its new location.
