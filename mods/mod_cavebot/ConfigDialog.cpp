@@ -1303,7 +1303,7 @@ void CConfigDialog::OnAutoResearch(){
 	int curX=ch->x,curY=ch->y,curZ=ch->z;
 	delete ch;
 	int nextX=0,nextY=0,nextZ=0;
-	if (reader.getConnectionState()!=8){
+	if (reader.getConnectionState()!=10){
 		curX=32333;curY=31782;curZ=7;
 		nextX=32333;nextY=32222;nextZ=6;
 		PathfindParams* myData =new PathfindParams(curX,curY,curZ,nextX,nextY,nextZ);

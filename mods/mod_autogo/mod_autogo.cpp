@@ -424,7 +424,7 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		tr--;
 		*screenshotTime=time(NULL); // keep time updated so it does not take another screenshot
 		Sleep (100);
-		if (reader.getConnectionState() != 8)
+		if (reader.getConnectionState() != 10)
 			continue;
 		if(!IsWindowVisible(tibiaHWND)) {
 			ShowWindow(tibiaHWND, SW_SHOW);
@@ -596,7 +596,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				alarmItr++;
 				continue;
 			}
-			bool isLoggedOut = reader.getConnectionState()!=8;
+			bool isLoggedOut = reader.getConnectionState()!=10;
 
 			//Note that alarmItr->alarmState is set to shouldAlarm when finished
 			int shouldAlarm=alarmItr->checkAlarm(config->whiteList, config->options, msg); //Check if criteria is satisfied
@@ -758,7 +758,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				// Logout **********************
 				if (alarmItr->getLogout()) {
-					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() == 8 ) {
+					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.getConnectionState() == 10 ) {
 						sender.logout();
 					}
 				}// ****************************

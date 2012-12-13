@@ -102,7 +102,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{			
 		if (!movedSomething) Sleep(CModuleUtil::randomFormula(500,200)); //movedSomething==1 has it's own sleep timer
 		movedSomething=0;
-		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
 		
 		int contNr;
 		for (contNr=0;contNr<memConstData.m_memMaxContainers && !movedSomething;contNr++)

@@ -1793,7 +1793,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		Sleep(250);
 		
 		int beginningS = GetTickCount();
-		loggedOut = reader.getConnectionState()!=8;
+		loggedOut = reader.getConnectionState()!=10;
 		if (loggedOut)
 		{
 			currentlyAttackedCreatureNr=-1;

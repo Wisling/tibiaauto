@@ -38,7 +38,7 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 	{
 		config->status=CToolAutoResponderThreadStatus_waitingForMatch;
 		Sleep(50);
-		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
 
 		if (config->queue.size()>0)
 		{

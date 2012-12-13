@@ -288,7 +288,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		Sleep(900);
 		//Keep track of when containers are opened. Later that container will only be
 		//used if time(NULL)-openContTime[i]>minSecondsOpen
-		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
 		CTibiaCharacter *myself = reader.readSelfCharacter();
 				
 		

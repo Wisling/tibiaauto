@@ -220,7 +220,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		
 		int connectionState = reader.getConnectionState();
 		
-		if (connectionState!=8)
+		if (connectionState!=10)
 		{	
 			char buf[128];
 			sprintf(buf,"Connection Status Changed to:%d",connectionState);
@@ -228,7 +228,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 			registerDebug("No connection: entering wait area");
 			if (!loginTime) loginTime = time(NULL)+config->loginDelay;
-			while (loginTime>time(NULL) && reader.getConnectionState()!=8){
+			while (loginTime>time(NULL) && reader.getConnectionState()!=10){
 				if (toolThreadShouldStop){
 					registerDebug("Forced Exit. Module stopped.");
 					goto exitFunction;
@@ -237,7 +237,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 		}
 		connectionState = reader.getConnectionState();
-		if (connectionState!=8)
+		if (connectionState!=10)
 		{	
 			registerDebug("No connection: entering relogin mode");
 
@@ -245,7 +245,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				registerDebug("ERROR: exp dropped? was I killed?");
 				Sleep(1000);
-				while (reader.getConnectionState()!=8){
+				while (reader.getConnectionState()!=10){
 					if (toolThreadShouldStop){
 						goto exitFunction;
 					}
@@ -395,7 +395,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			registerDebug("Waiting fo establishing connection up to 15s");
 			for (i=0;i<150;i++)
 			{
-				if (reader.getConnectionState()==8) break;
+				if (reader.getConnectionState()==10) break;
 				if (toolThreadShouldStop) break;
 				Sleep(100);
 			}
@@ -412,7 +412,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(100);
 			}
 			// finalize
-			if (reader.getConnectionState()==8&&config->openMain) {	
+			if (reader.getConnectionState()==10&&config->openMain) {	
 				
 				// open the main backpack flow
 
@@ -553,7 +553,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			reader.setGlobalVariable("walking_control","");
 			reader.setGlobalVariable("walking_priority","0");
 
-		} // if (connectionState!=8)
+		} // if (connectionState!=10)
 		else loginTime=0;
 	}
 exitFunction:

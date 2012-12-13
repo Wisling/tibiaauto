@@ -587,7 +587,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		case LOGON:
 			switch (attribute) {
 			case CURRENTPLAYERONLINE:
-				retval=reader.getConnectionState() == 8;
+				retval=reader.getConnectionState() == 10;
 				break;
 			case VIPPLAYERONLINE:
 				retval=vipNameOnline(trigger.getTriggerText());
@@ -600,7 +600,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		case LOGOFF:
 			switch (attribute) {
 			case CURRENTPLAYERONLINE:
-				retval=reader.getConnectionState() != 8;
+				retval=reader.getConnectionState() != 10;
 				break;
 			case VIPPLAYERONLINE:
 				retval=vipNameOnline(trigger.getTriggerText(), false);

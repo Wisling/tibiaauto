@@ -68,7 +68,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(CModuleUtil::randomFormula(500,200));
-		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
 		int continueFishing = 1;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		

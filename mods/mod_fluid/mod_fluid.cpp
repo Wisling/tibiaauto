@@ -175,7 +175,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if((drinkFails+1)%10==0) {
 			sender.sendTAMessage("Health or Mana failed to change when using healing item.");
 		}
-		if (reader.getConnectionState()!=8) continue; // do not proceed if not connected
+		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
 
 		int drank=0;
 		
