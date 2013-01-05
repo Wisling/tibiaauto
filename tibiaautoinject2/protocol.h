@@ -24,7 +24,8 @@ public:
 	unsigned int PeekInt();
 	unsigned short PeekShort();
 	bool canAdd(int size);
-	void Refresh();
+	void RefreshSize();
+	void ResetPos();
 	std::string GetString(int stringLen=0);
 	void AddByte(unsigned char c);
 	void AddInt(unsigned int i);

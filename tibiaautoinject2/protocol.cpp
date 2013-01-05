@@ -17,12 +17,12 @@
 NetworkMessage::NetworkMessage(){
 	readPos = 2;
 	msgSize = 2;
-	::Refresh();
+	NetworkMessage::RefreshSize();
 }
 
 //Copies rawMsg into our msgBuf using the first two bytes as the length
 NetworkMessage::NetworkMessage(char* rawMsg){
-	msgBuf = NULL;
+	msgBuf[0] = 0;
 	readPos = 2;
 	msgSize = 2;
 	if (rawMsg!=NULL){
@@ -31,16 +31,16 @@ NetworkMessage::NetworkMessage(char* rawMsg){
 			memcpy(msgBuf,rawMsg,msgSize);
 		} else {
 			msgSize=0;
-			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536."
+			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536.");
 		}
 	} else {
-		AfxMessageBox("TibiaautoInject2: NetworkMessage constructor sent NULL string"
+		AfxMessageBox("TibiaautoInject2: NetworkMessage constructor sent NULL string");
 	}
 }
 
 //Copies rawMsg into our msgBuf using len as the length
 NetworkMessage::NetworkMessage(char* rawMsg, int len){
-	msgBuf = NULL;
+	msgBuf[0] = 0;
 	readPos = 2;
 	msgSize = len+2;
 	if (rawMsg!=NULL){
@@ -48,10 +48,10 @@ NetworkMessage::NetworkMessage(char* rawMsg, int len){
 			memcpy(msgBuf,rawMsg,len);
 		} else {
 			msgSize=0;
-			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536."
+			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536.");
 		}
 	} else {
-		AfxMessageBox("TibiaautoInject2: NetworkMessage constructor sent NULL string"
+		AfxMessageBox("TibiaautoInject2: NetworkMessage constructor sent NULL string");
 	}
 }
 
@@ -338,7 +338,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 		default:
 			break;
 	}
-	msg.Refresh();
+	msg.RefreshSize();
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 	char pathBuf[2048];
@@ -358,16 +358,21 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 	switch(recvbyte)
 	{
 		case 0xB4:
+			{
 			unsigned char infoType = msg.GetByte();
 			switch(infoType)
 			{
 				case 0x16://22
-					char msg[1024] = msg.GetString().c_str();
+					{
+					const char* text = msg.GetString().c_str();
+					AfxMessageBox(text);
 					int hpLost;
-					xscan("You lose %d hitpoints",&hpLost);
-					if(strcmp(msg, "you lose x hitpoints")
+					sscanf(text,"You lose %d hitpoints",&hpLost);
+					//if(strcmp(msg, "you lose x hitpoints")
+					}
 					break;
 				default: break;
+			}
 			}
 			break;
 		default: break;

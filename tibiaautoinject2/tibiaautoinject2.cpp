@@ -1170,7 +1170,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 	} else if (removeStatsMessage){
 		CModuleUtil::setTASetting("RemoveBotStatsMessage",0);
 	}
-	Protocol::parsePacketIn(NetworkMessage(buf));
+	Protocol::parsePacketOut(NetworkMessage(buf));
 	//char buf3[1111]="bye ";
 	//for (i=0;i<min(len,1110);i++){sprintf(buf2,"%s %2x",buf2,buf[i]);}
 	//AfxMessageBox(buf2);
@@ -2310,7 +2310,7 @@ int myShouldParseRecv(){
 			actionEnd = recvStream->pos-2; // ate an extra byte
 		}
 		int actionLen = actionEnd - actionStart + 1;
-		parsePacketIn((char*)prevRecvStream+actionStart,actionLen);
+		Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen));
 		{for (int i=0;i<recvRegexCount;i++){
 			if (recvRegex[i].inUse == 1){
 				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)prevRecvStream+actionStart),actionLen,0,NULL,0);
