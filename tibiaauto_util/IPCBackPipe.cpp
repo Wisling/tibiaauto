@@ -151,7 +151,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			if (!sentErrMsg){
 				sentErrMsg = 1;
 				char errBuf[256];
-				sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds. Please fix this!%d %d %d", firstType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
+				sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds.%d %d %d", firstType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
 				CPackSender sender;
 				sender.sendTAMessage(errBuf);
 				//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
