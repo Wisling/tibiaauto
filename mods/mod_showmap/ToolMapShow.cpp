@@ -649,7 +649,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 	y-=10;
 
 	if (x<-8||x>9||y<-6||y>7) outOfRange=1;
-	if (!outOfRange)	
+	if (!outOfRange)
 	{		
 		char subbuf[256];
 		int count=reader.mapGetPointItemsCount(point(x,y,0));

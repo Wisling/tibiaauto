@@ -34,6 +34,7 @@ of the License, or (at your option) any later version.
 #include "time.h"
 #include <fstream>
 #include <map>
+#include "IPCBackPipeProxy.h"
 
 using namespace std;
 
@@ -215,20 +216,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			self = reader.readSelfCharacter();
 		}			
 		else if(config->poisonSpell && (flags & 1)) {
-			//Greater understanding leades to more efficient reading of white text.
-			for (int i = 0; i<31; i++) {
-				whiteText[i] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+i);
-			}
-			if ((strstr(whiteText,"hitpoints.") != 0) || (strstr(whiteText,"hitpoint.") != 0)) {
-				//First, let's reassure the user, help is on the way
-				//Also, this ensures the same white text won't trigger multiple castings, in theory we only need one.
-				reader.setMemRange(itemProxy.getValueForConst("addrWhiteMessage") + 4,itemProxy.getValueForConst("addrWhiteMessage") + 4 + strlen("have TA"), "have TA");
-				char pointLossText[10] = {0};
-				for (int i = 0; i<10;i++) {
-					if (!isdigit(whiteText[strlen("You lose ")+i])) break;
-					pointLossText[i] = whiteText[strlen("You lose ")+i];
-				}
-				if (atoi(pointLossText) >= config->minPoisonDmg && atoi(pointLossText) != 5) sender.say("exana pox");
+			CIPCBackPipeProxy backPipe;
+			struct ipcMessage mess;	
+			if(backPipe.readFromPipe(&mess,1101)){
+				int pointLoss;
+				memcpy(&pointLoss,mess.payload,sizeof(int));
+				if (pointLoss >= config->minPoisonDmg && pointLoss != 5) sender.say("exana pox");
 			}
 		}
 		else if (config->sioSpell && self->mana >= config->sioSpellMana) {
@@ -511,6 +504,12 @@ char * CMod_spellcasterApp::getName() {
 
 
 int CMod_spellcasterApp::isStarted() {
+	if(!m_started){
+		// if not started then regularly consume standard messages from the queue
+		CIPCBackPipeProxy backPipe;
+		struct ipcMessage mess;	
+		backPipe.readFromPipe(&mess,1101);
+	}
 	return m_started;
 }
 

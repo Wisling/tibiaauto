@@ -12,7 +12,7 @@ public:
 		memset(payload,0,1024);
 		tm = 0;
 	}
-	void send();
+	void send(HANDLE pipeHandle);
 };
 
 /**

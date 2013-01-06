@@ -191,9 +191,8 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,57,58,14
     CONTROL         "Para exura",IDC_TOOL_SPELLCASTER_HEAL_PARALYSIS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,10,153,50,14
-    CONTROL         "Cure poison greater than:",
-                    IDC_TOOL_SPELLCASTER_HEAL_POISON,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,10,166,100,14
+    CONTROL         "Cure poison >= than:",IDC_TOOL_SPELLCASTER_HEAL_POISON,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,10,166,100,14
     EDITTEXT        IDC_TOOL_SPELLCASTER_MIN_POISON_DAMAGE,128,166,46,14,
                     ES_AUTOHSCROLL
     LTEXT           "Damage/turn",IDC_STATIC,128,153,43,8
