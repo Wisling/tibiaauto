@@ -8,6 +8,7 @@
 #include "MemReaderProxy.h"
 #include <fstream>
 #include "time.h"
+#include "ipcm.h"
 
 //NetworkMessage is a message buffer that can read and write out a NetworkMessage
 //the first two bytes indicate the length of the remaining bytes
@@ -45,7 +46,9 @@ NetworkMessage::NetworkMessage(char* rawMsg, int len){
 	msgSize = len+2;
 	if (rawMsg!=NULL){
 		if (msgSize<=NETWORKMESSAGE_MAXSIZE){
-			memcpy(msgBuf,rawMsg,len);
+			msgBuf[0] = len%256;
+			msgBuf[1] = (len<<256)%256;
+			memcpy(msgBuf+2,rawMsg,len);
 		} else {
 			msgSize=0;
 			AfxMessageBox("TibiaautoInject2: Requested NetworkMessage buffer more than 65536.");
@@ -352,7 +355,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 }
 
 
-void Protocol::parsePacketIn(NetworkMessage &msg){
+void Protocol::parsePacketIn(NetworkMessage &msg,CIPCPipeBack &ipcPipeBack){
 	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.GetByte();
 	switch(recvbyte)
@@ -364,11 +367,17 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 			{
 				case 0x16://22
 					{
-					const char* text = msg.GetString().c_str();
-					AfxMessageBox(text);
-					int hpLost;
-					sscanf(text,"You lose %d hitpoints",&hpLost);
-					//if(strcmp(msg, "you lose x hitpoints")
+					msg.GetString(15);
+					char text[1024];
+					strncpy(text,msg.GetString().c_str(),1024);
+					//AfxMessageBox(text);
+					int hpLost=0;
+					if(strlen(text)<=strlen("You lose 999 hitpoints.") && sscanf(text,"You lose %d",&hpLost)==1){
+						struct ipcMessage mess;
+						memcpy(mess.payload,&hpLost,sizeof(int));
+						mess.messageType=1101;
+						ipcPipeBack.send(mess);
+					}
 					}
 					break;
 				default: break;

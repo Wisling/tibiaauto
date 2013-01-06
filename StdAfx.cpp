@@ -5,14 +5,12 @@
 #include "stdafx.h"
 #include "time.h"
 
-extern HANDLE hPipe;
-
-void ipcMessage::send()
+void ipcMessage::send(HANDLE pipeHandle)
 {
 	this->tm = time(NULL);
 	DWORD cbWritten;
 	BOOL fSuccess = WriteFile( 
-		hPipe,
+		pipeHandle,
 		this,
 		sizeof(struct ipcMessage), 
 		&cbWritten,

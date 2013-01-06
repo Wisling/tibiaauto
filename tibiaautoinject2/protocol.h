@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "IPCPipeBack.h"
 
 #define NETWORKMESSAGE_MAXSIZE 65536
 
@@ -44,6 +45,6 @@ public:
 	virtual ~Protocol(){}
 
 	static void Protocol::outputPacket(NetworkMessage &msg);
-	static void Protocol::parsePacketIn(NetworkMessage &msg);
+	static void Protocol::parsePacketIn(NetworkMessage &msg,CIPCPipeBack &ipcPipeBack);
 	static void Protocol::parsePacketOut(NetworkMessage &msg);
 };

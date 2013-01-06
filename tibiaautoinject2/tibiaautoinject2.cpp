@@ -20,6 +20,8 @@
 #include "regex.h"
 #include "RegexpProxy.h"
 #include "psapi.h"
+#include "IPCPipeBack.h"
+#include "ipcm.h"
 
 int myInterceptEncrypt(int v1, int v2);
 int myInterceptDecrypt(int v1, int v2);
@@ -80,7 +82,7 @@ int revealCNameActive=0;
 char lastConnectName[16];
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
-HANDLE hPipeBack=INVALID_HANDLE_VALUE;
+static CIPCPipeBack ipcPipeBack;
 
 HHOOK hook;
 
@@ -88,7 +90,7 @@ SOCKET tibiaSocket=NULL;
 FILE *debugFile=NULL;
 
 int COMPLEX=0;
-int SENTONLY=1;
+int SENTONLY=0;
 
 time_t debugFileStart;
 int lastSendFlags;
@@ -143,30 +145,7 @@ struct tibiaState
 2. Here is a handle
 3. Here is info to read
 */
-struct ipcMessage
-{
-	int messageType;
-	char payload[MAX_PAYLOAD_LEN];
-	UINT tm;
-public:
-	ipcMessage()
-	{
-		messageType = 0;
-		memset(payload,0,1024);
-		tm = 0;
-	}
-	void send()
-	{
-		this->tm = time(NULL);
-		DWORD cbWritten;
-		BOOL fSuccess = WriteFile(
-			hPipeBack,
-			this,
-			sizeof(struct ipcMessage),
-			&cbWritten,
-			NULL);
-	}
-};
+
 
 /** 
 * codes for communication
@@ -180,6 +159,9 @@ public:
 * 1008: %ta lu/%ta ld -> xray
 * 1009: %ta pause -> cavebot pausing
 * 1010: matching action found message -> if a recieved packet contains a matching action
+* Located within protocol.cpp to send messages based on incoming packets
+* 1101: for poison cure; the number of hp lost from damage caused without monster "You lose x hitpoints."
+* 1102:
 
 * 2001: hooks -> xray
 * 2002: hooks -> cavebot pausing
@@ -1200,7 +1182,7 @@ void parseRecvActionData(int handle, char* data, int len){
 		char buf[1111];
 		sprintf(buf,"%d, %s", p->len,p->actionData);
 		//AfxMessageBox(buf);
-		mess.send();
+		ipcPipeBack.send(mess);
 		splits--;
 		data += p->len;
 		len -= p->len;
@@ -1227,11 +1209,11 @@ void parseMessageSay(char *sayBuf)
 		mess.messageType=1007;
 		memcpy(mess.payload,&len,sizeof(int));		
 		memcpy(mess.payload+4,sayBuf,len);		
-		mess.send();
+		ipcPipeBack.send(mess);
 		mess.messageType=1008;
-		mess.send();
+		ipcPipeBack.send(mess);
 		mess.messageType=1009;
-		mess.send();
+		ipcPipeBack.send(mess);
 	}
 	
 	
@@ -1483,11 +1465,11 @@ void hookCallback(int value)
 		memcpy(mess.payload+4,message,len);	
 		if (value==0x21||value==0x22){
 			mess.messageType=2001;			
-			mess.send();
+			ipcPipeBack.send(mess);
 		}
 		if (value==0x13){
 			mess.messageType=2002;
-			mess.send();
+			ipcPipeBack.send(mess);
 		}
 	}
 }
@@ -1770,61 +1752,7 @@ void InitialiseIPC()
 	}
 }
 
-void InitialiseIPCback()
-{
-	char buf[1024];
-	char lpszPipename[1024];
-	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",partnerProcessId);
-	if (debugFile&&COMPLEX)
-	{
-		fprintf(debugFile,"[debug] IPC queue is %s\r\n",lpszPipename);
-	}
-	
-	
-	hPipeBack = CreateNamedPipe(
-		lpszPipename,             // pipe name 
-		PIPE_ACCESS_DUPLEX,       // read/write access 
-		PIPE_TYPE_MESSAGE |       // message type pipe 
-		PIPE_READMODE_MESSAGE |   // message-read mode 
-		PIPE_WAIT,                // blocking mode 
-		PIPE_UNLIMITED_INSTANCES, // max. instances  
-		163840,                  // output buffer size 
-		163840,                  // input buffer size 
-		1000,                        // client time-out 
-		NULL);                    // no security attribute 
-	
-	
-	if (hPipeBack == INVALID_HANDLE_VALUE) 
-	{		
-		if (debugFile&&COMPLEX)
-		{
-			fprintf(debugFile,"[ipcback] Invalid pipe handle: %d\r\n",GetLastError());
-			return;
-        }
-	}			
-	
-	
-	BOOL fConnected = ConnectNamedPipe(hPipeBack, NULL) ?  true : (GetLastError() == ERROR_PIPE_CONNECTED); 
-	
-	
-	if (!fConnected)
-	{
-		sprintf(buf,"client not connected via pipe: %d",GetLastError());
-		if (debugFile&&COMPLEX)
-		{
-			fprintf(debugFile,"[ipcback] client not connected via pipe: %d\r\n",GetLastError());
-			return;
-        }
-	}
-	
-	
-	if (debugFile&&COMPLEX)
-	{
-		fprintf(debugFile,"[debug] back IPC initialised ok\r\n");
-		fflush(debugFile);
-	}	
-	
-}
+
 
 
 
@@ -2133,7 +2061,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 		{
 			memcpy(mess.payload,&len,sizeof(int));		
 			memcpy(mess.payload+4,s,len);
-			mess.send();
+			ipcPipeBack.send(mess);
 		}
 	}
 	
@@ -2442,7 +2370,16 @@ int myShouldParseRecv(){
 			actionEnd = recvStream->pos-2; // ate an extra byte
 		}
 		int actionLen = actionEnd - actionStart + 1;
-		Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen));
+		//Parse packet and perform any needed actions
+		Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen),ipcPipeBack);
+		/*
+		int packtype = ((char*)prevRecvStream+actionStart)[0]&0xff;
+		int wanted = 0xb4;
+		if(packtype == wanted){
+			Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen),ipcPipeBack);
+			bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
+			OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
+		}*/
 		{for (int i=0;i<recvRegexCount;i++){
 			if (recvRegex[i].inUse == 1){
 				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)prevRecvStream+actionStart),actionLen,0,NULL,0);
@@ -2578,15 +2515,15 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 		if (nickLen) memcpy(mess.payload+12,nick,nickLen);
 		memcpy(mess.payload+12+nickLen,s,msgLen);
 		mess.messageType=1001;
-		mess.send();
+		ipcPipeBack.send(mess);
 		mess.messageType=1003;
-		mess.send();
+		ipcPipeBack.send(mess);
 		mess.messageType=1004;
-		mess.send();
+		ipcPipeBack.send(mess);
 		//mess.messageType=1005;
-		//mess.send();
+		//ipcPipeBack.send(mess);
 		mess.messageType=1006;
-		mess.send();
+		ipcPipeBack.send(mess);
 	}
 	
 	if (type!=0x13||time(NULL)>ignoreLookEnd)
@@ -3261,14 +3198,13 @@ void ParseIPCMessage(struct ipcMessage mess)
 		{
 			fprintf(debugFile,"[debug] will try to connect back IPC pipe\r\n");
 		}
-		if (hPipeBack!=INVALID_HANDLE_VALUE)
+		if (!ipcPipeBack.hasInvalidHandle())
 		{
 			// close back pipe
-			DisconnectNamedPipe(hPipeBack);
-			hPipeBack=INVALID_HANDLE_VALUE;
+			ipcPipeBack.closePipe();
 		}
 		memcpy(&partnerProcessId,mess.payload,sizeof(int));
-		InitialiseIPCback();
+		ipcPipeBack.InitialiseIPCback(partnerProcessId,debugFile,COMPLEX);
 		break;
 	case 100:
 		memcpy(&tibiaState.attackedCreature,mess.payload,sizeof(int));

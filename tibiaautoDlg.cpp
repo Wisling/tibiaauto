@@ -723,7 +723,7 @@ TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 	struct ipcMessage mess;
 	mess.messageType=4;
 	memcpy(mess.payload,&myProcessId,sizeof(int));
-	mess.send();
+	mess.send(hPipe);
 
 	// wait for incoming IPC connection from the dll
 	
