@@ -102,6 +102,10 @@ SOURCE=.\exports.cpp
 # End Source File
 # Begin Source File
 
+SOURCE=.\IPCPipeBack.cpp
+# End Source File
+# Begin Source File
+
 SOURCE=.\MyMenu.cpp
 # End Source File
 # Begin Source File
@@ -133,6 +137,14 @@ SOURCE=.\tibiaautoinject2.cpp
 # Begin Group "Header Files"
 
 # PROP Default_Filter "h;hpp;hxx;hm;inl"
+# Begin Source File
+
+SOURCE="..\..\tibiaauto-pub\sdk\ipcm.h"
+# End Source File
+# Begin Source File
+
+SOURCE=.\IPCPipeBack.h
+# End Source File
 # Begin Source File
 
 SOURCE=.\madCHook.h
