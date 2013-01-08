@@ -27,7 +27,7 @@ NetworkMessage::NetworkMessage(char* rawMsg){
 	readPos = 2;
 	msgSize = 2;
 	if (rawMsg!=NULL){
-		msgSize = ((unsigned int)rawMsg[0]) | ((unsigned int)(rawMsg[1] << 8))+2;
+		msgSize = ((unsigned int)rawMsg[0]) | ((unsigned int)(rawMsg[1]) << 8)+2;
 		if (msgSize<=NETWORKMESSAGE_MAXSIZE){
 			memcpy(msgBuf,rawMsg,msgSize);
 		} else {
