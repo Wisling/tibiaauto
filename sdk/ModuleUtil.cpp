@@ -90,55 +90,6 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	return retItem;
 }
 
-int itemOnTopIndex2(int x,int y,int z)//Now uses Tibia's own indexing system found in memory to determine this
-{
-	CMemReaderProxy reader;
-	int pos;
-
-	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
-	int immoveableItems=0;//count the number of items Tibia is using for decorations and made immovable
-	for (pos=0;pos<stackCount;pos++)
-	{
-		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
-		CTibiaTile *tile=reader.getTibiaTile(tileId);
-		if (tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
-			immoveableItems++;
-	}
-	int newCount=stackCount;
-	for (pos=0;pos<stackCount;pos++)
-	{
-		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
-		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
-		CTibiaTile *tile=reader.getTibiaTile(tileId);
-		//If a player is found then pretend as if the immoveableItems are not in the stack(they are at the end)
-		//If a player is NEVER found, then keep things the way they are
-		if (immoveableItems && tileId==99) {
-			//stackCount-=immoveableItems;
-			stackCount-=immoveableItems;
-			immoveableItems=0;
-		}
-		//decrease the index we want to find by 1 if we found a creature or an overhanging object
-		newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
-
-		//If we are at the index we wanted to get to or are at top of stack, return
-		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
-			return pos;
-	}
-	return -1;
-}
-
-int itemOnTopCode2(int x,int y)
-{
-
-	CMemReaderProxy reader;
-	int pos=itemOnTopIndex2(x,y,0);
-	if (pos!=-1)
-	{
-		return reader.mapGetPointItemId(point(x,y,0),pos);
-	}
-	return 0;
-}
-
 int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange| <= ans <= average+|halfrange|
 	halfrange = abs(halfrange)+1;
 	return (average-(halfrange-1))+(rand()%halfrange)+(rand()%halfrange);
@@ -1417,7 +1368,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item->objectId)
 							{
-								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),self->x,self->y,self->z);
+								int ropeId = reader.mapGetPointItemId(point(0,0,0),0);
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,ropeId,self->x,self->y,self->z);
 								delete item;
 								break;
 							}
@@ -1533,7 +1485,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							}
 							//did not find tile, open top tile (hopefully this is a hole)
 							if (!holeId && count){
-								holeId=itemOnTopCode2(self->x-self2->x,self->y-self2->y);
+								holeId=reader.itemOnTopCode(self->x-self2->x,self->y-self2->y);
 							}
 
 							if (holeId){
@@ -1598,7 +1550,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 					}
 					//did not find tile, use top tile (hopefully this is a grate)
 					if (!grateId && count>1){
-						grateId=itemOnTopCode2(0,0);
+						grateId=reader.itemOnTopCode(0,0);
 					}
 
 					if (grateId){
@@ -1622,8 +1574,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		case 0xE8:
 			{
 				// go up - but one square away
-				int modX = self->x;
-				int modY = self->y;
+				int modX = 0;
+				int modY = 0;
 				if (path[0]==0xE1) modX++;
 				if (path[0]==0xE2) {modX++;modY--;}
 				if (path[0]==0xE3) modY--;
@@ -1632,7 +1584,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 				if (path[0]==0xE6) {modX--;modY++;}
 				if (path[0]==0xE7) modY++;
 				if (path[0]==0xE8) {modX++;modY++;}
-				switch (tibiaMap.getPointUpDownNoProh(modX,modY,self->z))
+				switch (tibiaMap.getPointUpDownNoProh(self->x+modX,self->y+modY,self->z))
 				{		
 				case 201:
 					// rope
@@ -1645,7 +1597,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item->objectId)
 							{
-								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,itemProxy.getValueForConst("ropespot"),modX,modY,self->z);
+								int ropeId = reader.mapGetPointItemId(point(modX,modY,0),0);
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,ropeId,self->x+modX,self->y+modY,self->z);
 								delete item;
 								break;
 							}
@@ -1778,7 +1731,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							}
 							//did not find tile, open last tile in list(hopefully this is a hole)
 							if (!holeId && count){
-								holeId=itemOnTopCode2(modX-self->x,modY-self->y);
+								holeId=reader.itemOnTopCode(modX-self->x,modY-self->y);
 							}
 
 							if (holeId){
@@ -1852,7 +1805,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							}
 						}
 						if(!grateId && count)
-							grateId=itemOnTopCode2(modX-self->x,modY-self->y);
+							grateId=reader.itemOnTopCode(modX-self->x,modY-self->y);
 						if(grateId)
 							sender.useItemOnFloor(grateId,modX,modY,self->z);
 					}
@@ -2127,4 +2080,3 @@ void CModuleUtil::masterDebug(const char* fname, const char* buf1,const char* bu
 		fclose(f);
 	}
 }
-

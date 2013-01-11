@@ -50,9 +50,6 @@ BEGIN_MESSAGE_MAP(CMod_restackApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-#include "commons.h"
-
-
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
@@ -198,15 +195,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		{
 			int offsetX=-2;
 			int offsetY=-2;
-			if (config->pickupUL&&isItemOnTop(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
-			if (config->pickupUC&&isItemOnTop(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
-			if (config->pickupUR&&isItemOnTop(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
-			if (config->pickupCL&&isItemOnTop(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
-			if (config->pickupCC&&isItemOnTop(0,0,throwableItemId)) offsetX=0,offsetY=0;
-			if (config->pickupCR&&isItemOnTop(1,0,throwableItemId)) offsetX=1,offsetY=0;
-			if (config->pickupBL&&isItemOnTop(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
-			if (config->pickupBC&&isItemOnTop(0,1,throwableItemId)) offsetX=0,offsetY=1;
-			if (config->pickupBR&&isItemOnTop(1,1,throwableItemId)) offsetX=1,offsetY=1;
+			if (config->pickupUL&&reader.isItemOnTop(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
+			if (config->pickupUC&&reader.isItemOnTop(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
+			if (config->pickupUR&&reader.isItemOnTop(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
+			if (config->pickupCL&&reader.isItemOnTop(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
+			if (config->pickupCC&&reader.isItemOnTop(0,0,throwableItemId)) offsetX=0,offsetY=0;
+			if (config->pickupCR&&reader.isItemOnTop(1,0,throwableItemId)) offsetX=1,offsetY=0;
+			if (config->pickupBL&&reader.isItemOnTop(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
+			if (config->pickupBC&&reader.isItemOnTop(0,1,throwableItemId)) offsetX=0,offsetY=1;
+			if (config->pickupBR&&reader.isItemOnTop(1,1,throwableItemId)) offsetX=1,offsetY=1;
 
 
 			if ((offsetX!=-2||offsetY!=-2)&&config->pickupSpears)
@@ -217,7 +214,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size)
 					{	
-						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,itemOnTopQty(offsetX,offsetY));
+						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,reader.itemOnTopQty(offsetX,offsetY));
 						// reset offsetXY to avoid pickup up same item to hand
 						offsetX=offsetY=-2;
 
@@ -238,7 +235,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (itemLeftHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to left hand
-						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,itemOnTopQty(offsetX,offsetY));
+						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x6,0,reader.itemOnTopQty(offsetX,offsetY));
 						offsetX=offsetY=-2;
 					}
 				}
@@ -248,7 +245,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (itemRightHand->objectId==0||itemHandTile->stackable&&itemLeftHand->quantity<100)
 					{
 						// move to right hand
-						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,itemOnTopQty(offsetX,offsetY));
+						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,reader.itemOnTopQty(offsetX,offsetY));
 						offsetX=offsetY=-2;
 					}
 				}	
@@ -264,20 +261,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		{
 			int offsetX=-2,offsetY=-2;
 
-			if (config->pickupUL&&isItemCovered(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
-			if (config->pickupUC&&isItemCovered(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
-			if (config->pickupUR&&isItemCovered(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
-			if (config->pickupCL&&isItemCovered(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
-			if (config->pickupCC&&isItemCovered(0,0,throwableItemId)) offsetX=0,offsetY=0;
-			if (config->pickupCR&&isItemCovered(1,0,throwableItemId)) offsetX=1,offsetY=0;
-			if (config->pickupBL&&isItemCovered(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
-			if (config->pickupBC&&isItemCovered(0,1,throwableItemId)) offsetX=0,offsetY=1;
-			if (config->pickupBR&&isItemCovered(1,1,throwableItemId)) offsetX=1,offsetY=1;			
+			if (config->pickupUL&&reader.isItemCovered(-1,-1,throwableItemId)) offsetX=-1,offsetY=-1;
+			if (config->pickupUC&&reader.isItemCovered(0,-1,throwableItemId)) offsetX=0,offsetY=-1;
+			if (config->pickupUR&&reader.isItemCovered(1,-1,throwableItemId)) offsetX=1,offsetY=-1;
+			if (config->pickupCL&&reader.isItemCovered(-1,0,throwableItemId)) offsetX=-1,offsetY=0;
+			if (config->pickupCC&&reader.isItemCovered(0,0,throwableItemId)) offsetX=0,offsetY=0;
+			if (config->pickupCR&&reader.isItemCovered(1,0,throwableItemId)) offsetX=1,offsetY=0;
+			if (config->pickupBL&&reader.isItemCovered(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
+			if (config->pickupBC&&reader.isItemCovered(0,1,throwableItemId)) offsetX=0,offsetY=1;
+			if (config->pickupBR&&reader.isItemCovered(1,1,throwableItemId)) offsetX=1,offsetY=1;			
 
 			if (offsetX!=-2||offsetY!=-2)
 			{
-				int objectId=itemOnTopCode(offsetX,offsetY);
-				int qty=itemOnTopQty(offsetX,offsetY);
+				int objectId=reader.itemOnTopCode(offsetX,offsetY);
+				int qty=reader.itemOnTopQty(offsetX,offsetY);
 				if (offsetX||offsetY)
 				{
 					sender.moveObjectFromFloorToFloor(objectId,self->x+offsetX,self->y+offsetY,self->z,self->x,self->y,self->z,qty?qty:1);

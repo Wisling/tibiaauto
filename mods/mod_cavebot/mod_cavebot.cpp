@@ -31,7 +31,6 @@ of the License, or (at your option) any later version.
 #include "ModuleUtil.h"
 #include "TibiaItemProxy.h"
 #include "TibiaMapProxy.h"
-#include "commons.h"
 #include "TibiaStructures.h"
 #include "SendStats.h"
 #include "TibiaTile.h"
@@ -461,11 +460,11 @@ int depotDepositOpenChest(int x,int y,int z) {
 		}
 	}
 	if (!lockerId && count){
-		lockerId=itemOnTopCode(x-self->x,y-self->y);
+		lockerId=reader.itemOnTopCode(x-self->x,y-self->y);
 	}
 	if (lockerId){
 		// this is the depot chest so open it
-		depotContNr=CModuleUtil::findNextClosedContainer();
+		depotContNr=reader.findNextClosedContainer();
 		sender.openContainerFromFloor(lockerId,x,y,z,depotContNr);
 		CModuleUtil::waitForOpenContainer(depotContNr,true);
 		Sleep(CModuleUtil::randomFormula(700,200));
@@ -736,7 +735,7 @@ void depotDeposit(CConfigData *config) {
 			return;
 		}
 
-		depotContNr2 = CModuleUtil::findNextClosedContainer(depotContNr);
+		depotContNr2 = reader.findNextClosedContainer(depotContNr);
 	}
 	
 	// do the depositing
@@ -1161,7 +1160,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 			foundLootedObjectId=0;
 			isTopItem=0;
 
-			//horribly inefficient for 165 tiles, is performed later //int topPos=itemOnTopIndex(x,y);
+			//horribly inefficient for 165 tiles, is performed later //int topPos=reader.itemOnTopIndex(x,y);
 			//top of Tibia's stack starts somewhere in the middle of the array
 			for (int pos=0;pos<stackCount;pos++)
 			{
@@ -1170,13 +1169,13 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 				int ind = binarySearch(tileId,lootFromFloorArr);
 				if (ind!=-1){
 					foundLootedObjectId=(lootFromFloorArr)[ind];
-					isTopItem = pos==itemOnTopIndex(x,y);
+					isTopItem = pos==reader.itemOnTopIndex(x,y);
 					break;
 				}
 			}				
 
 			if(!foundLootedObjectId) continue;
-			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,getItemIndex(x,y,f1),getItemIndex(x,y,f2),x,y);
+			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,reader.getItemIndex(x,y,f1),ModuleUtil::getItemIndex(x,y,f2),x,y);
 			//AfxMessageBox(buf);
 
 			int shouldStandOn=0;//reader.mapGetPointItemsCount(point(x,y,0))>=10;
@@ -1256,8 +1255,8 @@ exitLoop:
 				// do it only when drop place is found
 				if (foundSpace){
 
-					int itemInd=getItemIndex(itemX,itemY,foundLootedObjectId);
-					int topInd=itemOnTopIndex(itemX,itemY);
+					int itemInd=reader.getItemIndex(itemX,itemY,foundLootedObjectId);
+					int topInd=reader.itemOnTopIndex(itemX,itemY);
 					int count=reader.mapGetPointItemsCount(point(itemX,itemY,0));
 					sprintf(buf,"Loot from floor vars: itemInd %d,topInd %d,count %d,(%d,%d)=%d",itemInd,topInd,count,itemX,itemY,foundLootedObjectId);
 					if (config->debug) registerDebug(buf);
@@ -1283,9 +1282,9 @@ exitLoop:
 			}
 
 			//Take item
-			if (isItemOnTop(itemX,itemY,foundLootedObjectId)) {
+			if (reader.isItemOnTop(itemX,itemY,foundLootedObjectId)) {
 				if (config->debug) registerDebug("Loot from floor: picking up item");
-				int qty=itemOnTopQty(itemX,itemY);
+				int qty=reader.itemOnTopQty(itemX,itemY);
 				sender.moveObjectFromFloorToContainer(foundLootedObjectId,self->x+x,self->y+y,self->z,0x40+freeContNr,freeContPos,qty?qty:1);
 				Sleep(CModuleUtil::randomFormula(400,200));
 				CModuleUtil::waitForItemsInsideChange(freeContNr,freeContPos);
@@ -1582,12 +1581,12 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 				continue;
 			}
 			int lootContNr[3];
-			lootContNr[0] = CModuleUtil::findNextClosedContainer();
-			lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
+			lootContNr[0] = reader.findNextClosedContainer();
+			lootContNr[1] = reader.findNextClosedContainer(lootContNr[0]);
 			
 			globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
 			CTibiaCharacter* self = reader.readSelfCharacter();
-			int corpseId = itemOnTopCode(corpseCh.x-self->x,corpseCh.y-self->y);
+			int corpseId = reader.itemOnTopCode(corpseCh.x-self->x,corpseCh.y-self->y);
 			CTibiaTile *tile=reader.getTibiaTile(corpseId);
 			if (corpseId && tile && tile->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
 				// Open corpse to container, wait to get to corpse on ground and wait for open
@@ -2045,9 +2044,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					int killNr=rand();
 
 					int lootContNr[2];
-					lootContNr[0] = CModuleUtil::findNextClosedContainer();
+					lootContNr[0] = reader.findNextClosedContainer();
 					if (config->lootInBags)
-						lootContNr[1] = CModuleUtil::findNextClosedContainer(lootContNr[0]);
+						lootContNr[1] = reader.findNextClosedContainer(lootContNr[0]);
 
 					if (config->gatherLootStats) {
 						char installPath[1024];
@@ -2066,7 +2065,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();
 
-					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+					int corpseId = reader.itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 					if (corpseId && reader.getTibiaTile(corpseId)->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
 						// Open corpse to container, wait to get to corpse on ground and wait for open
 						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);

@@ -1128,3 +1128,185 @@ int CMemReaderProxy::getCreatureDeltaY(int creatureNr)
 	}
 	return 0;
 }
+
+int CMemReaderProxy::itemOnTopIndex(int x,int y,int z/*=0*/)
+{
+	typedef int (*Proto_fun)(int x,int y,int z=0);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopIndex");
+		if (fun)
+		{
+			return fun(x,y,z);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
+{
+	typedef int (*Proto_fun)(int x,int y,int *itemArr,int itemArrSize);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemOnTop3");
+		if (fun)
+		{
+			return fun(x,y,itemArr,itemArrSize);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::isItemCovered(int x,int y,int *itemArr,int itemArrSize)
+{
+	typedef int (*Proto_fun)(int x,int y,int *itemArr,int itemArrSize);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemCovered3");
+		if (fun)
+		{
+			return fun(x,y,itemArr,itemArrSize);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::isItemOnTop(int x,int y,CUIntArray& itemArr)
+{
+	typedef int (*Proto_fun)(int x,int y,CUIntArray& itemArr);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemOnTop2");
+		if (fun)
+		{
+			return fun(x,y,itemArr);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::isItemCovered(int x,int y,CUIntArray& itemArr)
+{
+	typedef int (*Proto_fun)(int x,int y,CUIntArray& itemArr);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemCovered2");
+		if (fun)
+		{
+			return fun(x,y,itemArr);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::isItemOnTop(int x,int y,int itemId)
+{
+	typedef int (*Proto_fun)(int x,int y,int itemId);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemOnTop");
+		if (fun)
+		{
+			return fun(x,y,itemId);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::isItemCovered(int x,int y,int itemId)
+{
+	typedef int (*Proto_fun)(int x,int y,int itemId);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemCovered");
+		if (fun)
+		{
+			return fun(x,y,itemId);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::getItemIndex(int x,int y,int itemId)
+{
+	typedef int (*Proto_fun)(int x,int y,int itemId);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetItemIndex");
+		if (fun)
+		{
+			return fun(x,y,itemId);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::itemOnTopCode(int x,int y)
+{
+	typedef int (*Proto_fun)(int x,int y);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopCode");
+		if (fun)
+		{
+			return fun(x,y);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::itemSeenOnTopIndex(int x,int y,int z/*=0*/)
+{
+	typedef int (*Proto_fun)(int x,int y,int z=0);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemSeenOnTopIndex");
+		if (fun)
+		{
+			return fun(x,y,z);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::itemSeenOnTopCode(int x,int y)
+{
+	typedef int (*Proto_fun)(int x,int y);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemSeenOnTopCode");
+		if (fun)
+		{
+			return fun(x,y);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::itemOnTopQty(int x,int y)
+{
+	typedef int (*Proto_fun)(int x,int y);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopQty");
+		if (fun)
+		{
+			return fun(x,y);
+		}
+	}
+	return 0;
+}
+
+int CMemReaderProxy::findNextClosedContainer(int afterCont/*=-1*/)
+{
+	typedef int (*Proto_fun)(int afterCont=-1);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadFindNextClosedContainer");
+		if (fun)
+		{
+			return fun(afterCont);
+		}
+	}
+	return 0;
+}

@@ -31,8 +31,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "TibiaItemProxy.h"
 #include "SendStats.h"
 
-#include "commons.h"
-
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -151,7 +149,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{									
 					//Sleep(1000);
 					// the creature is dead and we can try to open its corpse					
-					int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+					int corpseId = reader.itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 					
 				
 					// now close containers 7-9 which we use for auto-opening purposes
@@ -164,9 +162,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						}
 					}
 
-					lastLootContNr[0]=CModuleUtil::findNextClosedContainer();
-					lastLootContNr[1]=CModuleUtil::findNextClosedContainer(lastLootContNr[0]);
-					lastLootContNr[2]=CModuleUtil::findNextClosedContainer(lastLootContNr[1]);
+					lastLootContNr[0]=reader.findNextClosedContainer();
+					lastLootContNr[1]=reader.findNextClosedContainer(lastLootContNr[0]);
+					lastLootContNr[2]=reader.findNextClosedContainer(lastLootContNr[1]);
 
 					CTibiaContainer *cont[3]={NULL,NULL,NULL};
 					
@@ -180,7 +178,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (attackedCh)
 					{
 						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-						int corpseId = itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+						int corpseId = reader.itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 						CTibiaTile *tile=reader.getTibiaTile(corpseId);
 						if (corpseId&&tile->isContainer)
 						{
