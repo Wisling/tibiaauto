@@ -961,8 +961,8 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
-	int weaponHandAddress = config->weaponHand ? memConstData.m_memAddressRightHand : memConstData.m_memAddressLeftHand;
-	int weaponHand = config->weaponHand ? 5 : 6;
+	int weaponHandAddress = memConstData.m_memAddressLeftHand;
+	int weaponHand = 6;
 	
 	if (config->trainingActivate) {
 		char buf[256];
@@ -2379,14 +2379,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				
 				//update environmental variables
-				if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
+
+				//changed to exclude the criteria of attacking
+				//if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
+				if (taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
+
 				if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isWithinMargins) playersOnScreen++;
 				//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
 				if (crNr!=self->nr && !creatureList[crNr].listPriority && creatureList[crNr].isOnscreen && (creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking)) alienCreatureForTrainerFound=1;
 
 				// if sharing alien backattack is active, then we may attack
 				// creatures which are not directly attacking us
-				if (!creatureList[crNr].isAttacking&&shareAlienBackattack) {
+				if (creatureList[crNr].isAttacking&&shareAlienBackattack) {
 					int count=sh_mem.GetVariablesCount();
 					int pos;
 					for (pos=0;pos<count;pos++) {
@@ -3225,7 +3229,6 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	
 	if (!strcmp(paramName,"training/weaponTrain")) m_configData->weaponTrain=atoi(paramValue);
 	if (!strcmp(paramName,"training/weaponFight")) m_configData->weaponFight=atoi(paramValue);
-	if (!strcmp(paramName,"training/weaponHand")) m_configData->weaponHand=atoi(paramValue);
 	if (!strcmp(paramName,"training/trainingMode")) m_configData->trainingMode=atoi(paramValue);
 	if (!strcmp(paramName,"training/fightWhenSurrounded")) m_configData->fightWhenSurrounded=atoi(paramValue);
 	if (!strcmp(paramName,"training/fightWhenAlien")) m_configData->fightWhenAlien=atoi(paramValue);
@@ -3361,7 +3364,6 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	
 	if (!strcmp(paramName,"training/weaponTrain")) sprintf(buf,"%d",m_configData->weaponTrain);
 	if (!strcmp(paramName,"training/weaponFight")) sprintf(buf,"%d",m_configData->weaponFight);
-	if (!strcmp(paramName,"training/weaponHand")) sprintf(buf,"%d",m_configData->weaponHand);
 	if (!strcmp(paramName,"training/trainingMode")) sprintf(buf,"%d",m_configData->trainingMode);
 	if (!strcmp(paramName,"training/fightWhenSurrounded")) sprintf(buf,"%d",m_configData->fightWhenSurrounded);
 	if (!strcmp(paramName,"training/fightWhenAlien")) sprintf(buf,"%d",m_configData->fightWhenAlien);
@@ -3428,7 +3430,6 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 36: return "attack/backattackRunes";
 	case 37: return "attack/shareAlienBackattack";
 	case 38: return "depot/depotCap";
-	case 39: return "training/weaponHand";
 	case 40: return "training/trainingMode";
 	case 41: return "walker/radius";
 	case 42: return "loot/other/whilekilling";

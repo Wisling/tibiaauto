@@ -84,7 +84,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_TRAIN, m_weaponTrain);
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_FIGHT, m_weaponFight);
 	DDX_Control(pDX, IDC_TRAINING_STATE, m_trainingState);
-	DDX_Control(pDX, IDC_TRAINING_WEAPON_HAND, m_weaponHand);
 	DDX_Control(pDX, IDC_TRAINING_FIGHT_WHEN_SURROUNDED, m_fightWhenSurrounded);
 	DDX_Control(pDX, IDC_TRAINING_FIGHT_WHEN_ALIEN, m_fightWhenAlien);
 	DDX_Control(pDX, IDC_TRAINING_ATTACK_MODE, m_trainingMode);
@@ -244,7 +243,6 @@ void CConfigDialog::disableControls()
 	m_debug.EnableWindow(false);
 	m_weaponTrain.EnableWindow(false);
 	m_weaponFight.EnableWindow(false);	
-	m_weaponHand.EnableWindow(false);	
 	m_fightWhenSurrounded.EnableWindow(false);
 	m_fightWhenAlien.EnableWindow(false);
 	m_trainingMode.EnableWindow(false);
@@ -307,7 +305,6 @@ void CConfigDialog::enableControls()
 	m_debug.EnableWindow(true);
 	m_weaponTrain.EnableWindow(true);
 	m_weaponFight.EnableWindow(true);	
-	m_weaponHand.EnableWindow(true);	
 	m_fightWhenSurrounded.EnableWindow(true);
 	m_fightWhenAlien.EnableWindow(true);
 	m_trainingMode.EnableWindow(true);
@@ -406,7 +403,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 			m_depotItemList.DeleteString(m_depotItemList.FindStringExact(-1,configData->depotTrigger[i].itemName));		
 		}
 	}
-	m_weaponHand.SetCheck(configData->weaponHand);
 	m_fightWhenSurrounded.SetCheck(configData->fightWhenSurrounded);
 	m_fightWhenAlien.SetCheck(configData->fightWhenAlien);
 	m_trainingMode.SetCurSel(configData->trainingMode);
@@ -542,7 +538,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 		sscanf(paramString,"%d->%d",&newConfigData->depotTrigger[i].when,&newConfigData->depotTrigger[i].remain);
 	}
 
-	newConfigData->weaponHand=m_weaponHand.GetCheck();
 	newConfigData->fightWhenSurrounded=m_fightWhenSurrounded.GetCheck();
 	newConfigData->fightWhenAlien=m_fightWhenAlien.GetCheck();
 	newConfigData->trainingMode=m_trainingMode.GetCurSel();

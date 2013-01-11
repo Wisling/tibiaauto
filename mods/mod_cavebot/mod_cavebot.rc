@@ -229,8 +229,6 @@ BEGIN
     CONTROL         "Enable PauseBreak key as pause hotkey(or %ta pause)",
                     IDC_PAUSING_ENABLE,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     289,325,191,10,WS_EX_TRANSPARENT
-    CONTROL         "Use Right Hand",IDC_TRAINING_WEAPON_HAND,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,448,230,67,10
     CONTROL         "Auto Research Map",IDC_AUTORESEARCH,"Button",
                     BS_AUTOCHECKBOX | BS_CENTER | BS_VCENTER | BS_PUSHLIKE | 
                     BS_MULTILINE | WS_TABSTOP,181,319,80,23

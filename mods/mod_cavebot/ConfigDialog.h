@@ -119,7 +119,6 @@ public:
 	CComboBox	m_weaponTrain;
 	CComboBox	m_weaponFight;
 	CStatic	m_trainingState;
-	CButton	m_weaponHand;
 	CButton	m_fightWhenSurrounded;
 	CButton	m_fightWhenAlien;
 	CComboBox	m_trainingMode;
