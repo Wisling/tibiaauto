@@ -1,3 +1,18 @@
+2.26.2, 8.1.2013
+Enhancements:
+Defects:
+  Found and fixed the crashing problem
+
+2.26.1, 6.1.2013
+Enhancements:
+ Item Ids: Added new ropespots to the tile.xml
+Defects:
+ Spellcaster: Fixed healing of poison
+ Show Map: Fixed crash when comitting tile information after an edit.
+ Cavebot: Removed "attack only attacking" feature and others that are no longer client-sided. Updated cavebot to properly attack again.
+ Anti Logout: Uses turns and 'looks' to no longer perform the same action repeatedly.
+
+
 2.26.0, 13.12.2012
 Enhancements:
  Tibia Auto: Updated for Tibia 9.80(still some bugs related to VIPs and minimap markers)
