@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "MemReader.h"
+#include "PackSender.h"
 #include "MemUtil.h"
 #include "TibiaItemProxy.h"
 #include "TibiaTile.h"
@@ -1074,3 +1075,212 @@ int CMemReader::getCreatureDeltaY(int creatureNr)
 	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+48);
 }
 
+
+int CMemReader::itemOnTopIndex(int x,int y,int z/*=0*/)//Now uses Tibia's own indexing system found in memory to determine this
+{
+	CMemReader reader;
+	CTileReader tileReader;
+	int pos;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
+	int immoveableItems=0;//count the number of items Tibia is using for decorations and made immovable
+	for (pos=0;pos<stackCount;pos++)
+	{
+		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
+		CTibiaTile *tile=tileReader.getTile(tileId);
+		if (tile && tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
+			immoveableItems++;
+	}
+	int newCount=stackCount;
+	for (pos=0;pos<stackCount;pos++)
+	{
+
+		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
+		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
+		CTibiaTile *tile=tileReader.getTile(tileId);
+		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
+		//If a movable tile is never found, then keep things the way they are
+		//Edit: check if it is a container, since recently killed creatures are immovable(10 second rule)
+		if (immoveableItems && (tileId==99 || !tile->notMoveable || tile->isContainer)) {
+			stackCount-=immoveableItems;
+			newCount-=immoveableItems;
+			immoveableItems=0;
+		}
+		//decrease the index we want to find by 1 if we found a creature or an overhanging object
+		if (tile) newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
+
+		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
+			return pos;
+	}
+	return -1;
+}
+
+int CMemReader::isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
+{
+	CMemReader reader;
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int tileId = reader.mapGetPointItemId(point(x,y,0),topPos);
+	for (int i=0;i<itemArrSize;i++)
+	{
+		if (tileId==itemArr[i]) return tileId;
+	}
+	return 0;
+}
+
+int CMemReader::isItemCovered(int x,int y,int *itemArr,int itemArrSize)
+{
+	CMemReader reader;
+
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+	if (topPos>=stackCount) return 0;
+	for (int pos=(topPos+1)%stackCount;pos!=topPos;pos=(pos+1)%stackCount)
+	{
+		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
+		for (int i=0;i<itemArrSize;i++)
+		{
+			if (tileId==itemArr[i]) return tileId;
+		}		
+	}
+	return 0;
+}
+
+int CMemReader::isItemOnTop(int x,int y,CUIntArray& itemArr)
+{
+	CMemReader reader;
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int tileId = reader.mapGetPointItemId(point(x,y,0),topPos);
+	int size =itemArr.GetSize();
+	for (int i=0;i<size;i++)
+	{
+		if (tileId==itemArr[i]) return tileId;
+	}		
+	return 0;
+}
+
+int CMemReader::isItemCovered(int x,int y,CUIntArray& itemArr)
+{
+	CMemReader reader;
+
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return 0;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+	if (topPos>=stackCount) return 0;
+	for (int pos=(topPos+1)%stackCount;pos!=topPos;pos=(pos+1)%stackCount)
+	{
+		int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
+		int size =itemArr.GetSize();
+		for (int i=0;i<size;i++)
+		{
+			if (tileId==itemArr[i]) return tileId;
+		}		
+	}
+	return 0;
+}
+
+int CMemReader::isItemOnTop(int x,int y,int itemId)
+{
+	int itemArr[1]={itemId};
+	return isItemOnTop(x,y,itemArr,1);
+}
+
+int CMemReader::isItemCovered(int x,int y,int itemId)
+{
+	int itemArr[1]={itemId};
+	return isItemCovered(x,y,itemArr,1);
+}
+
+int CMemReader::getItemIndex(int x,int y,int itemId)
+{
+	CMemReader reader;
+
+	int topPos=itemOnTopIndex(x,y);
+	if (topPos==-1) return -1;
+
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
+
+	for (int pos=topPos;stackCount && pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
+	{
+		if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
+	}
+	if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
+	return -1;
+}
+
+int CMemReader::itemOnTopCode(int x,int y)
+{
+
+	CMemReader reader;
+	int pos=itemOnTopIndex(x,y);
+	if (pos!=-1)
+	{
+		return reader.mapGetPointItemId(point(x,y,0),pos);
+	}
+	return 0;
+}
+
+int CMemReader::itemSeenOnTopIndex(int x,int y,int z/*=0*/)
+{
+	CMemReader reader;
+	int pos;	
+	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
+	for (pos=0;pos<stackCount;pos++)
+	{
+		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
+		if (stackInd==stackCount-1)
+			return pos;
+	}
+	return stackCount-1;
+}
+
+int CMemReader::itemSeenOnTopCode(int x,int y)
+{
+	CMemReader reader;
+	int pos=itemSeenOnTopIndex(x,y);
+	if (pos!=-1)
+	{
+		return reader.mapGetPointItemId(point(x,y,0),pos);
+	}
+	return 0;
+}
+
+int CMemReader::itemOnTopQty(int x,int y)
+{
+	CMemReader reader;
+	int pos=itemOnTopIndex(x,y);
+	if (pos==-1) return 0;
+
+	int qty=reader.mapGetPointItemExtraInfo(point(x,y,0),itemOnTopIndex(x,y),1);
+	return qty?qty:1;
+}
+
+int CMemReader::findNextClosedContainer(int afterCont/*=-1*/)
+{
+
+	CMemReader reader;
+	CPackSender sender;
+	CTibiaContainer *container;
+	int targetBag;
+	for (targetBag=afterCont+1;targetBag<reader.m_memMaxContainers;targetBag++){
+		container = reader.readContainer(targetBag);
+		if (!container->flagOnOff){
+			delete container;
+			break;
+		}
+		delete container;
+	}
+	
+	if (targetBag == reader.m_memMaxContainers){
+		targetBag=reader.m_memMaxContainers-1;
+		sender.closeContainer(targetBag);
+
+	}
+	return targetBag;
+}

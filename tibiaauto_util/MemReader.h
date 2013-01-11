@@ -87,6 +87,19 @@ public:
 	int dereference(int addr);
 	int mapGetSelfCellNr();
 	CTibiaMapTile *readMapTile(int tileNr);
+	int itemOnTopIndex(int x,int y,int z=0);
+	int isItemOnTop(int x,int y,int *itemArr,int itemArrSize);
+	int isItemCovered(int x,int y,int *itemArr,int itemArrSize);
+	int isItemOnTop(int x,int y,CUIntArray& itemArr);
+	int isItemCovered(int x,int y,CUIntArray& itemArr);
+	int isItemOnTop(int x,int y,int itemId);
+	int isItemCovered(int x,int y,int itemId);
+	int getItemIndex(int x,int y,int itemId);
+	int itemOnTopCode(int x,int y);
+	int itemSeenOnTopIndex(int x,int y, int z=0);
+	int itemSeenOnTopCode(int x,int y);
+	int itemOnTopQty(int x,int y);
+	int findNextClosedContainer(int afterCont=-1);
 private:
 	struct point mapAddPointToCoord(point coord,point p2);
 	struct point mapGetCellCoord(int cellNr);

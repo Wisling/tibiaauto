@@ -1232,6 +1232,84 @@ CTibiaVIPEntry *memReadReadVIPEntry(int nr)
 	return reader->readVIPEntry(nr);
 }
 
+int memReadItemOnTopIndex(int x,int y,int z=0)
+{
+	startMemReader();
+	return reader->itemOnTopIndex(x,y,z);
+}
+
+int memReadIsItemOnTop3(int x,int y,int *itemArr,int itemArrSize)
+{
+	startMemReader();
+	return reader->isItemOnTop(x,y,itemArr,itemArrSize);
+}
+
+int memReadIsItemCovered3(int x,int y,int *itemArr,int itemArrSize)
+{
+	startMemReader();
+	return reader->isItemCovered(x,y,itemArr,itemArrSize);
+}
+
+int memReadIsItemOnTop2(int x,int y,CUIntArray& itemArr)
+{
+	startMemReader();
+	return reader->isItemOnTop(x,y,itemArr);
+}
+
+int memReadIsItemCovered2(int x,int y,CUIntArray& itemArr)
+{
+	startMemReader();
+	return reader->isItemCovered(x,y,itemArr);
+}
+
+int memReadIsItemOnTop(int x,int y,int itemId)
+{
+	startMemReader();
+	return reader->isItemOnTop(x,y,itemId);
+}
+
+int memReadIsItemCovered(int x,int y,int itemId)
+{
+	startMemReader();
+	return reader->isItemCovered(x,y,itemId);
+}
+
+int memReadGetItemIndex(int x,int y,int itemId)
+{
+	startMemReader();
+	return reader->getItemIndex(x,y,itemId);
+}
+
+int memReadItemOnTopCode(int x,int y)
+{
+	startMemReader();
+	return reader->itemOnTopCode(x,y);
+}
+
+int memReadItemSeenOnTopIndex(int x,int y,int z=0)
+{
+	startMemReader();
+	return reader->itemSeenOnTopIndex(x,y,z);
+}
+
+int memReadItemSeenOnTopCode(int x,int y)
+{
+	startMemReader();
+	return reader->itemSeenOnTopCode(x,y);
+}
+
+int memReadItemOnTopQty(int x,int y)
+{
+	startMemReader();
+	return reader->itemOnTopQty(x,y);
+}
+
+int memReadFindNextClosedContainer(int afterCont/*=-1*/)
+{
+	startMemReader();
+	return reader->findNextClosedContainer(afterCont);
+}
+
 //////////////////////////////////////////
 // Blow lie older removed functions that make use of their newer replacement functions
 

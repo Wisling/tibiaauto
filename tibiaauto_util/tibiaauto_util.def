@@ -264,3 +264,17 @@ EXPORTS
 	getBaseAddr @256
 	packSenderRegisterInpacketRegex @257
 	packSenderUnregisterInpacketRegex @258
+	memReadItemOnTopIndex @259
+	memReadIsItemOnTop3 @260
+	memReadIsItemCovered3 @261
+	memReadIsItemOnTop2 @262
+	memReadIsItemCovered2 @263
+	memReadIsItemOnTop @264
+	memReadIsItemCovered @265
+	memReadGetItemIndex @266
+	memReadItemOnTopCode @267
+	memReadItemSeenOnTopIndex @268
+	memReadItemSeenOnTopCode @269
+	memReadItemOnTopQty @270
+	memReadFindNextClosedContainer @271
+
