@@ -1286,7 +1286,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"triggerMessage"))			sprintf(buf,"%d",m_configData->triggerMessage);
 	if (!strcmp(paramName,"options"))			sprintf(buf,"%d",m_configData->options);
 	if (!strcmp(paramName,"modPriority")) strncpy(buf,m_configData->modPriorityStr,2);
-	if (!strcmp(paramName,"whiteList/List")){		
+	if (!strcmp(paramName,"whiteList/List")){
 		if (currentPos<100){
 			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
 				lstrcpyn(buf,m_configData->whiteList[currentPos++],32);

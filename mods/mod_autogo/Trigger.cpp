@@ -21,6 +21,33 @@ CTrigger::CTrigger() {
 	setTriggerText("");
 }
 
+int parseDurationMinutes(CString s){
+	int days=0,hours=0,mins=0;
+	int indDay = s.Find("d");
+	int indHour = s.Find("h");
+	int indMin= s.Find("m");
+	if(indDay==-1){
+		days = 0;
+		indDay=0;
+	}else{
+		days = atoi(s.Right(indDay));
+		indDay++;
+	}
+	if(indHour==-1){
+		hours = 0;
+		indHour=indDay;
+	}else{
+		hours = atoi(s.Mid(indDay,indHour-indDay));
+		indHour++;
+	}
+	if(indMin==-1){
+		mins = atoi(s.Mid(indHour,999));
+	}else{
+		mins = atoi(s.Mid(indHour,indMin-indHour));
+	}
+	return days*24*60+hours*60+mins;
+}
+
 CTrigger::CTrigger(int typeIn, CString textIn) {
 	setType(typeIn);
 	setTriggerText(textIn);
@@ -40,6 +67,9 @@ CTrigger::CTrigger(int typeIn, CString textIn) {
 		setIntTrigger(atoi(textIn.Mid(index2, index - index2)));
 
 		setIntTrigger(atoi(textIn.Right(textIn.GetLength() - ++index)));
+		break;
+	case DURATIONMIN:
+		setIntTrigger(parseDurationMinutes(textIn));
 		break;
 	}
 }
@@ -66,27 +96,57 @@ static ostream &operator<<(ostream &out, CTrigger &t) {
 	return out;
 }
 
-void CTrigger::setTriggerText(CString textIn) { 
-	triggerText = textIn;
+void CTrigger::setTriggerText(CString textIn) {
 	switch (type) {
-	case INTEGER:
-		setIntTrigger(atoi(textIn));
+	case STRING:
+		triggerText = textIn;
 		break;
+	case INTEGER:
+		{
+		int val = atoi(textIn);
+		setIntTrigger(val);
+		sprintf(triggerText.GetBuffer(128),"%d",val);
+		triggerText.ReleaseBuffer();
+		break;
+		}
 	case PointTRIGGER:
+		{
+		int x,y,z,r;
 		int index, index2;
 		index = textIn.Find(',');
-		ASSERT(index!=-1);
-		setIntTrigger(atoi(textIn.Mid(1, index)));
+
+		if(index!=-1) x=atoi(textIn.Mid(1, index));
+		else x=0;
 
 		index2 = textIn.Find(',', ++index);
-		ASSERT(index2!=-1);
-		setIntTrigger(atoi(textIn.Mid(index, index2 - index)));
+		if(index2!=-1) y=atoi(textIn.Mid(index, index2 - index));
+		else y=0;
 
 		index = textIn.Find(')', ++index2);
-		ASSERT(index!=-1);
-		setIntTrigger(atoi(textIn.Mid(index2, index - index2)));
+		if (index!=-1) z=atoi(textIn.Mid(index2, index - index2));
+		else z=0;
 
-		setIntTrigger(atoi(textIn.Right(textIn.GetLength() - ++index)));
+		r=atoi(textIn.Right(textIn.GetLength() - ++index));
+		setIntTrigger(x);
+		setIntTrigger(y);
+		setIntTrigger(z);
+		setIntTrigger(r);
+		sprintf(triggerText.GetBuffer(128),"(%d,%d,%d)%d",x,y,z,r);
+		triggerText.ReleaseBuffer();
+		break;
+		}
+	case DURATIONMIN:
+		{
+		int mins = parseDurationMinutes(textIn);
+		setIntTrigger(mins);
+		char* buf = triggerText.GetBuffer(128);
+		if (mins>=60) sprintf(buf,"%dh%dm",mins/60,mins%60);
+		else sprintf(buf,"%dm",mins);
+		triggerText.ReleaseBuffer();
+		break;
+		}
+	default:
+		triggerText = "Error:Unknown Trigger Type";
 		break;
 	}
 }

@@ -1197,26 +1197,30 @@ void CAlarmDialog::OnSelchangeCondition() {
 		case EQUAL:
 			VERIFY(instructionText.LoadString(IDS_EQUAL)); 
 			m_instructionText.SetWindowText(instructionText);
-
-			m_trigger.SetWindowText("<Quantity>");
 			break;
 		case LESS:
 			VERIFY(instructionText.LoadString(IDS_LESS)); 
 			m_instructionText.SetWindowText(instructionText);
-
-			m_trigger.SetWindowText("<Quantity>");
 			break;
 		case MORE:
 			VERIFY(instructionText.LoadString(IDS_MORE)); 
 			m_instructionText.SetWindowText(instructionText);
-
-			m_trigger.SetWindowText("<Quantity>");
 			break;
 		default:
 			VERIFY(instructionText.LoadString(IDS_CONDITION)); 
 			m_instructionText.SetWindowText(instructionText);
 			break;
 		}
+		selected = m_attribute.GetCurSel();
+		switch(selected){
+		case STAMINA:
+			m_trigger.SetWindowText("<eg. 1h50m>");
+			break;
+		default:
+			m_trigger.SetWindowText("<Quantity>");
+			break;
+		}
+
 		break;
 	case PROXIMITY:
 		selected = m_condition.GetCurSel();
@@ -1472,7 +1476,10 @@ void CAlarmDialog::controlsToConfig(CConfigData *config) {
 
 void CAlarmDialog::OnAlarmAdd() {
 	CString strBuffer;
+
+	//Parses all GUI states and creates a new alarm
 	Alarm* temp = addToList();
+
 	if (temp) {
 		strBuffer = m_attribute.GetItemText(m_attribute.GetCurSel(), 0) + " (" + m_alarmType.GetItemText(m_alarmType.GetCurSel(), 0);
 		strBuffer += strBuffer.Right(1) == 's' ? "es)" : "s)";
@@ -1484,8 +1491,7 @@ void CAlarmDialog::OnAlarmAdd() {
 		strBuffer.Replace("More Than", ">");
 		strBuffer.Replace("...", "");
 		if (m_trigger.IsWindowEnabled()) {
-			CString triggerBuffer;
-			m_trigger.GetWindowText(triggerBuffer);
+			CString triggerBuffer=temp->getTrigger().getTriggerText();
 			int index = strBuffer.Find('%');
 			if (index > 0)
 				strBuffer.Insert(index, triggerBuffer);
@@ -1568,17 +1574,23 @@ Alarm* CAlarmDialog::addToList() {
 	if (m_trigger.IsWindowEnabled()) {
 		m_trigger.GetWindowText(text);
 		if (text.GetLength() && text[0] != '<') {
+			// Here we parse all text triggers in different ways and set the text string to a valid format if it is invalid.
 			if (m_alarmType.GetCurSel() ==  MESSAGE) {
-				temp->setTrigger(1, text);
+				temp->setTrigger(1, text);//STRING
 			}
 			else if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() == WAYPOINTREACHED) {
-			temp->setTrigger(3, text);
+				temp->setTrigger(3, text);//PointTRIGGER
+				//convert to standard format
 			}
-			else
-				temp->setTrigger(2, text);
+			else if(m_alarmType.GetCurSel()==RESOURCE && m_attribute.GetCurSel()==STAMINA){
+				temp->setTrigger(4, text);//DURATIONMIN
+			}
+			else {
+				temp->setTrigger(2, text);//INTEGER
+			}
 		}
 		else {
-			VERIFY(instructionText.LoadString(IDS_TRIGGER_ERROR)); 
+			VERIFY(instructionText.LoadString(IDS_TRIGGER_ERROR));
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
 			return false;
@@ -1760,7 +1772,7 @@ void CAlarmDialog::OnAlarmEdit() {
 		m_condition.SetCurSel(alarmItr->getCondition());
 		OnSelchangeCondition();
 		//if (alarmItr->getTrigger().getTrigger().GetLength() > 0)
-			m_trigger.SetWindowText(alarmItr->getTrigger().getTriggerText());
+		m_trigger.SetWindowText(alarmItr->getTrigger().getTriggerText());
 		//else if (alarmItr->getTrigger().getTrigger() != -1) {
 		//	text.Format("%d", alarmItr->getTrigger().getTrigger());
 		//	m_trigger.SetWindowText(text);
