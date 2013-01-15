@@ -1282,21 +1282,21 @@ void CAlarmDialog::OnSelchangeCondition() {
 				m_instructionText.SetWindowText(instructionText);
 
 				m_trigger.EnableWindow(true);
-				m_trigger.SetWindowText("<Seconds>");
+				m_trigger.SetWindowText("<eg. 2m30s>");
 				break;
 			case LESS:
 				VERIFY(instructionText.LoadString(IDS_LESS)); 
 				m_instructionText.SetWindowText(instructionText);
 
 				m_trigger.EnableWindow(true);
-				m_trigger.SetWindowText("<Seconds>");
+				m_trigger.SetWindowText("<eg. 2m30s>");
 				break;
 			case MORE:
 				VERIFY(instructionText.LoadString(IDS_MORE)); 
 				m_instructionText.SetWindowText(instructionText);
 
 				m_trigger.EnableWindow(true);
-				m_trigger.SetWindowText("<Seconds>");
+				m_trigger.SetWindowText("<eg. 2m30s>");
 				break;
 			default:
 				VERIFY(instructionText.LoadString(IDS_CONDITION));
@@ -1584,6 +1584,9 @@ Alarm* CAlarmDialog::addToList() {
 			}
 			else if(m_alarmType.GetCurSel()==RESOURCE && m_attribute.GetCurSel()==STAMINA){
 				temp->setTrigger(4, text);//DURATIONMIN
+			}
+			else if(m_alarmType.GetCurSel()==EVENT && m_attribute.GetCurSel()==CHARACTERNOTMOVED){
+				temp->setTrigger(5, text);//DURATIONSEC
 			}
 			else {
 				temp->setTrigger(2, text);//INTEGER
