@@ -3352,7 +3352,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 		strcpy(buf,m_configData->ignoreList[m_currentIgnoreNr]);
 		m_currentIgnoreNr++;
 	}
-	if (!strcmp(paramName,"walker/waypoint")&&m_configData->waypointList[m_currentWaypointNr].x) {
+	if (!strcmp(paramName,"walker/waypoint")&&(m_configData->waypointList[m_currentWaypointNr].x || m_configData->waypointList[m_currentWaypointNr].y || m_configData->waypointList[m_currentWaypointNr].z)) {
 		// y and z == -1 means delay
 		sprintf(buf,"%d,%d,%d",m_configData->waypointList[m_currentWaypointNr].x,m_configData->waypointList[m_currentWaypointNr].y,m_configData->waypointList[m_currentWaypointNr].z);
 		m_currentWaypointNr++;
