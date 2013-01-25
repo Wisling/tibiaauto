@@ -1537,7 +1537,7 @@ HANDLE lootThreadHandle;
 HANDLE queueThreadHandle;
 
 //helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
-//Looting corses takes a long time and lootThreadProc may miss changes in autolooterTm
+//Looting corpses takes a long time and lootThreadProc may miss changes in autolooterTm
 DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
