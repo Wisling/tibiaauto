@@ -1574,8 +1574,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		case 0xE8:
 			{
 				// go up - but one square away
-				int modX = 0;
-				int modY = 0;
+				int modX = self->x;
+				int modY = self->y;
 				if (path[0]==0xE1) modX++;
 				if (path[0]==0xE2) {modX++;modY--;}
 				if (path[0]==0xE3) modY--;
@@ -1584,7 +1584,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 				if (path[0]==0xE6) {modX--;modY++;}
 				if (path[0]==0xE7) modY++;
 				if (path[0]==0xE8) {modX++;modY++;}
-				switch (tibiaMap.getPointUpDownNoProh(self->x+modX,self->y+modY,self->z))
+				switch (tibiaMap.getPointUpDownNoProh(modX,modY,self->z))
 				{		
 				case 201:
 					// rope
@@ -1597,8 +1597,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 							if (item->objectId)
 							{
-								int ropeId = reader.mapGetPointItemId(point(modX,modY,0),0);
-								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,ropeId,self->x+modX,self->y+modY,self->z);
+								int ropeId = reader.mapGetPointItemId(point(modX-self->x,modY-self->y,0),0);
+								sender.useWithObjectFromContainerOnFloor(itemProxy.getValueForConst("rope"),0x40+contNr,item->pos,ropeId,modX,modY,self->z);
 								delete item;
 								break;
 							}

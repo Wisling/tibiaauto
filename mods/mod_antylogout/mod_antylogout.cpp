@@ -97,6 +97,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	int iter=0;
 	int randomSeconds=RandomTimeAntylogout();
+	int lastRandomAction = -1;
+	int sameActionTm = 0;
+	int timeLimit = 60*10; //10 minutes before it guarantees a new action
+	int numActions = 2;
 	
 	while (!toolThreadShouldStop)
 	{					
@@ -107,24 +111,42 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (iter%(randomSeconds)==1){
 			randomSeconds=RandomTimeAntylogout();
-
-			CTibiaCharacter *self = reader.readSelfCharacter();
-//			sender.ignoreLook(time(NULL)+1);
-//			sender.look(self->x+rand()%15-7,self->y+rand()%11-5,self->z,0);
-
 			
-			if (self->lookDirection==0){
-				sender.turnUp();
-			}else if(self->lookDirection==1){
-				sender.turnRight();
-			}else if(self->lookDirection==2){				
-				sender.turnDown();
-			}else if(self->lookDirection==3){
-				sender.turnLeft();
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			int r = rand()%numActions;
+			if(lastRandomAction==r && time(NULL)-sameActionTm>timeLimit){
+				while (r != lastRandomAction) r = rand()%numActions;
+			}
+			if(lastRandomAction != r){
+				lastRandomAction = r;
+				sameActionTm = time(NULL);
+			}
+			switch(r){
+			case 0:
+				sender.ignoreLook(time(NULL)+1);
+				sender.look(self->x,self->y,self->z,0);
+				break;
+			case 1:
+				if (self->lookDirection==0){
+					sender.turnUp();
+				}else if(self->lookDirection==1){
+					sender.turnRight();
+				}else if(self->lookDirection==2){				
+					sender.turnDown();
+				}else if(self->lookDirection==3){
+					sender.turnLeft();
+				}
+				break;
+			//case 2:
+				//sender.stopAll(); //halts a few actions
+			//case 3:
+				//Request list of channels
+			//	sender.sendDirectPacket("\x97"); creates a window that gets in the way of the user
+
+
 			}
 			delete self;
 		}
-		
 	}	
 
 	toolThreadShouldStop=0;
