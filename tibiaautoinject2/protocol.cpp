@@ -9,6 +9,7 @@
 #include <fstream>
 #include "time.h"
 #include "ipcm.h"
+#include "deelx.h"
 
 //NetworkMessage is a message buffer that can read and write out a NetworkMessage
 //the first two bytes indicate the length of the remaining bytes
@@ -368,16 +369,31 @@ void Protocol::parsePacketIn(NetworkMessage &msg,CIPCPipeBack &ipcPipeBack){
 				case 0x16://22
 					{
 					msg.GetString(15);
-					char text[1024];
-					strncpy(text,msg.GetString().c_str(),1024);
+					std::string text = msg.GetString();
 					//AfxMessageBox(text);
-					int hpLost=0;
-					if(strlen(text)<=strlen("You lose 999 hitpoints.") && sscanf(text,"You lose %d",&hpLost)==1){
+					static CRegexpT <char> reHitpointsNoAttacker("You lose (\\d+) hitpoints?\\.", IGNORECASE);
+					MatchResult res1 = reHitpointsNoAttacker.Match(text.c_str());
+					if(res1.IsMatched()){
+						int hpLost=atoi(text.substr(res1.GetGroupStart(1),res1.GetGroupEnd(1)-res1.GetGroupStart(1)).c_str());
 						struct ipcMessage mess;
 						memcpy(mess.payload,&hpLost,sizeof(int));
 						mess.messageType=1101;
 						ipcPipeBack.send(mess);
 					}
+					/* not yet useful
+					static CRegexpT <char> reHitpointsWithAttacker("You lose (\\d+) hitpoints? due to an attack by an? (.*)\\.", IGNORECASE);
+					MatchResult res2 = reHitpointsNoAttacker.Match(text.c_str());
+					if(res2.IsMatched()){
+						int hpLost=atoi(text.substr(res2.GetGroupStart(1),res2.GetGroupEnd(1)-res2.GetGroupStart(1)).c_str());
+						std::string attackerName = text.substr(res2.GetGroupStart(2),res2.GetGroupEnd(2)-res2.GetGroupStart(2));
+						struct ipcMessage mess;
+						memcpy(mess.payload,&hpLost,sizeof(int));
+						strncpy(mess.payload+4,attackerName.c_str(),min(attackerName.length()+1,sizeof(mess.payload)-4));
+						mess.payload[sizeof(mess.payload)-1] = 0;
+						mess.messageType=1102;
+						ipcPipeBack.send(mess);
+					}
+					*/
 					}
 					break;
 				default: break;

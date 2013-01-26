@@ -161,7 +161,7 @@ struct tibiaState
 * 1010: matching action found message -> if a recieved packet contains a matching action
 * Located within protocol.cpp to send messages based on incoming packets
 * 1101: for poison cure; the number of hp lost from damage caused without monster "You lose x hitpoints."
-* 1102:
+* 1102: not in use.  for gathering data on damaging creatures
 
 * 2001: hooks -> xray
 * 2002: hooks -> cavebot pausing
