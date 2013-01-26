@@ -23,7 +23,7 @@ CConfigData::CConfigData()
 	m_lootGp=0;
 	m_lootFood=0;
 	m_eatFromCorpse=0;
-	m_lootCustom=0;
+	m_lootCustom=1;
 	m_autoOpen=0;
 	m_mode10=2;
 	m_mode9=2;

@@ -44,7 +44,7 @@ CConfigData::CConfigData()
 	waypointSelectMode=1;
 	mapUsed=1;
 	capacityLimit=50;
-	lootCustom=0;
+	lootCustom=1;
 	lootWhileKill=0;
 	lootInBags=1;
 	attackRange=5;
