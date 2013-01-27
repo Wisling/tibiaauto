@@ -162,7 +162,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			CMemReader reader;
 			int tibiaTm = reader.getCurrentTm();
 			char errBuf[256];
-			sprintf(errBuf, "Since Tibia start %d:%d:%d. Since TA start %d:%d:%d type:%d %d/%d over %d seconds", tibiaTm/1000/60/60,(tibiaTm%60)/1000/60,(tibiaTm%(60*60))/1000, GetTickCount()/1000/60/60,(GetTickCount()%60)/1000/60,(GetTickCount()%(60*60))/1000,firstType,i-j,i,PIPE_REMOVE_AT_SECS);
+			sprintf(errBuf, "Dbg mode: Since Tibia start %d:%d:%d. Since TA start %d:%d:%d type:%d %d/%d over %d seconds", tibiaTm/1000/60/60,(tibiaTm%60)/1000/60,(tibiaTm%(60*60))/1000, GetTickCount()/1000/60/60,(GetTickCount()%60)/1000/60,(GetTickCount()%(60*60))/1000,firstType,i-j,i,PIPE_REMOVE_AT_SECS);
 			sender.sendTAMessage(errBuf);
 #endif
 		}

@@ -1,7 +1,0 @@
-; tibiaauto_util.def : Declares the module parameters for the DLL.
-
-LIBRARY      "tibiaauto_pyhon"
-DESCRIPTION  'tibiaauto_python Windows Dynamic Link Library'
-
-EXPORTS
-       inittibiaauto_python @1

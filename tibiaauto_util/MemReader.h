@@ -84,7 +84,7 @@ public:
 	CTibiaCharacter *readSelfCharacter();
 	CTibiaCharacter *getCharacterByTibiaId(int tibiaId);
 	CTibiaVIPEntry *readVIPEntry(int nr);
-	int dereference(int addr);
+	int dereference(int addr, int addBaseAddr=1);
 	int mapGetSelfCellNr();
 	CTibiaMapTile *readMapTile(int tileNr);
 	int itemOnTopIndex(int x,int y,int z=0);

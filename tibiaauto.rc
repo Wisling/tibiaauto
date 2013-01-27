@@ -354,7 +354,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
-EXSTYLE WS_EX_APPWINDOW
+EXSTYLE WS_EX_APPWINDOW | WS_EX_CONTROLPARENT
 CAPTION "Tibia Auto v 2.26.4 for Tibia 9.81"
 FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
@@ -636,21 +636,21 @@ BEGIN
     IDS_RESOURCE_SPACE      "When your character's open backpack spaces meet the condition at the trigger amount, the alarm will activate."
     IDS_ITEM_FOOD           "When your character's quantity of food items in open backpacks meet the condition at the trigger amount, the alarm will activate."
     IDS_ITEM_CUSTOM         "When your character's quantity of this item in open backpacks meet the condition at the trigger amount, the alarm will activate."
-    IDS_PROXIMITY_PLAYER    "When a player enters TA's viewable area as defined in General Options, the alarm will activate."
-    IDS_PROXIMITY_MONSTER   "When a monster or NPC enters TA's viewable area as defined in General Options, the alarm will activate."
-    IDS_PROXIMITY_GM        "When a Gamemaster or Community Manager enters TA's viewable area as defined in General Options, the alarm will activate."
+    IDS_PROXIMITY_PLAYER    "When a player enters TA's viewable area as defined in the General Config tab, the alarm will activate."
+    IDS_PROXIMITY_MONSTER   "When a monster or NPC enters TA's viewable area as defined in the General Config tab, the alarm will activate."
+    IDS_PROXIMITY_GM        "When a Gamemaster or Community Manager enters TA's viewable area as defined in the General Config tab, the alarm will activate."
     IDS_PROXIMITY_BATTLELIST 
                             "When anything appears on the battlelist, the alarm will activate. (NOTE: Will detect creatures that are up to 2 sqm  outside the viewable area.)"
     IDS_PROXIMITY_SKULL     "When any skulled players appears or becomes skulled, the alarm will activate."
-    IDS_MESSAGE_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Options."
+    IDS_MESSAGE_ALLMESSAGES "When any message is recieved public or private this alarm will trigger. You can filter messages from specific players in General Config."
     IDS_MESSAGE_PUBLICMESSAGES 
-                            "When any public message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
+                            "When any public message is recieved this alarm will trigger. You can filter messages from specific players in the General Config tab."
 END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
     IDS_MESSAGE_PRIVATEMESSAGES 
-                            "When any private message is recieved this alarm will trigger. You can filter messages from specific players in General Options."
+                            "When any private message is recieved this alarm will trigger. You can filter messages from specific players in the General Config tab."
     IDS_GENERAL_CHARACTERMOVED 
                             "When the character moves or is moved (pushed) this alarm will trigger."
     IDS_GENERAL_WAYPOINTREACHED 
@@ -672,8 +672,8 @@ END
 
 STRINGTABLE DISCARDABLE 
 BEGIN
-    IDS_RUNAWAY             "This option will send the player to the designated runaway location. The runaway location is set is General Options."
-    IDS_START               "This option will send the player to the designated starting location. The starting location is set is General Options."
+    IDS_RUNAWAY             "This option will send the player to the designated runaway location. The runaway location is set in the General Config tab."
+    IDS_START               "This option will send the player to the designated starting location. The starting location is set in the General Config tab."
     IDS_DEPOT               "This option will send the player to the nearest mapped depot loaction. "
     IDS_SPELL               "This option will attempt to cast the spell configured in the dropdown menu."
     IDS_SCREENSHOT          "This option will save one or more screenshots of the Tibia client window as configured in the dropdown menu."
@@ -684,8 +684,8 @@ BEGIN
     IDS_LOGOUT              "This option will attempt to log the player out form the Tibia client."
     IDS_WINDOW_ACTION       "This option can either maximize the Tibia client window controlled by this dialog, restore it, flash it once or flash it continuously."
     IDS_LOG_EVENTS          "This option will write a status message to a logfile for later review. The log can be found in the Logs folder of TA."
-    IDS_FROMALL             "This alarm will trigger on any message from any player. To filter spell casting out of the recognized messages enable that option in General Options."
-    IDS_FROM                "This alarm will trigger on any message from a specified player. To filter spell casting out of the recognized messages enable that option in General Options."
+    IDS_FROMALL             "This alarm will trigger on any message from any player. To filter out spells, enable that option in General Config tab."
+    IDS_FROM                "This alarm will trigger on any message from a specified player. To filter out spells, enable that option in General Config tab."
     IDS_CONTAINS            "This alarm will trigger on any message, from any player, containing the specified string."
     IDS_RESOURCE_XP         "When your character's experience points meet the condition at the trigger amount, the alarm will activate."
 END
@@ -764,6 +764,8 @@ BEGIN
     IDS_ONLINE_VIP_PLAYER   "When a VIP name specified in the trigger is logged in or out according to the conditions, the alarm will trigger."
     IDS_PROXIMITY_ATTACKINGPLAYER 
                             "When a player who has attacked you within the last minute appears, the alarm will activate."
+    IDS_PERSISTENT          "A persistent alarm will not stop until the selected action(s) are finished or the destination is reached, even if the trigger condition is no longer met."
+    IDS_PERMANENT           "A permanent alarm will not stop, even if the trigger condition is no longer met."
 END
 
 #endif    // English (U.S.) resources

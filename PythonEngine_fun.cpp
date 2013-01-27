@@ -605,10 +605,15 @@ static PyObject *tibiaauto_reader_setMemIntValue(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
 
-	int arg1,arg2;
-    if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;	
+	int arg1,arg2,arg3;
+    if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)){
+		PyErr_Clear();
+		arg3=1;
+		if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)) return NULL;
+	}
 
-	reader.setMemIntValue(arg1,arg2);
+	reader.setMemIntValue(arg1,arg2,arg3);
+	
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
@@ -616,9 +621,16 @@ static PyObject *tibiaauto_reader_getMemIntValue(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
 
-	int arg1;
-    if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
-	int ret1=reader.getMemIntValue(arg1);
+	int arg1,arg2;
+	int ret1;
+	if (!PyArg_ParseTuple(args, "ii", &arg1,&arg2)){
+		PyErr_Clear();
+		arg2=1;
+		if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;	
+	}
+
+	ret1=reader.getMemIntValue(arg1,arg2);
+	
 	PyObject *ret = Py_BuildValue("i",ret1);
 	
 	return ret;
@@ -2454,11 +2466,14 @@ static PyObject *tibiaauto_reader_readVIPEntry(PyObject *self, PyObject *args)
 	if (!vip) return NULL;
 
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:s,s:i,s:i}",
+		Py_BuildValue("{s:i,s:s,s:i,s:i,s:s,s:i,s:i}",
 		"id",vip->id,
 		"name",vip->name,
 		"status",vip->status,
-		"icon",vip->icon);
+		"icon",vip->icon,
+		"description",vip->descr,
+		"loginTime",vip->loginTm,
+		"notifyAtLogin",vip->notify);
 
 	delete vip;
 	return ret;

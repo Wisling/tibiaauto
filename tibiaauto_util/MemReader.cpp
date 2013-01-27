@@ -58,51 +58,42 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 	}
 
 	DWORD linkedListAddr = dereference(m_memAddressVIP);
-	DWORD vipEntryAddr = dereference(linkedListAddr);
+	DWORD vipEntryAddr = dereference(linkedListAddr,0);
+	//0x0 next entry; 0x4 prev entry; 0x8 E68B6C; 0x10 playerId; 0x14 icon; 0x18 name/pointer to name; 0x28 namelen;
+	//0x28 namemaxlen; 0x34 description/desc pointer; 0x44 desclen; 0x48 descmaxlen; 0x50 status; 0x58 loginTm
 	for (int iNR=0; iNR!=nr && vipEntryAddr!=linkedListAddr; iNR++){
-		vipEntryAddr = dereference(vipEntryAddr);
+		vipEntryAddr = dereference(vipEntryAddr,0);
 	}
 	if (iNR==nr && vipEntryAddr!=linkedListAddr){
-		vip->id = CMemUtil::GetMemIntValue(vipEntryAddr+0x10);
-		vip->icon = CMemUtil::GetMemIntValue(vipEntryAddr+0x14) & 0xff;
-		vip->notify = CMemUtil::GetMemIntValue(vipEntryAddr+0x14)>>8 & 0xff;
+		vip->id = CMemUtil::GetMemIntValue(vipEntryAddr+0x10,0);
+		vip->icon = CMemUtil::GetMemIntValue(vipEntryAddr+0x14,0) & 0xff;
+		vip->notify = CMemUtil::GetMemIntValue(vipEntryAddr+0x14,0)>>8 & 0xff;
 
-		vip->nameLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x28);
+		vip->nameLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x28,0);
 		if (vip->nameLen >= 16){
-			int nameAddr = dereference(CMemUtil::GetMemIntValue(vipEntryAddr+0x18));
-			CMemUtil::GetMemRange(nameAddr,nameAddr+30,vip->name);
+			int nameAddr = CMemUtil::GetMemIntValue(vipEntryAddr+0x18,0);
+			CMemUtil::GetMemRange(nameAddr,nameAddr+30,vip->name,0);
 		}else{
-			CMemUtil::GetMemRange(vipEntryAddr+0x18,vipEntryAddr+0x18+vip->nameLen,vip->name);
+			CMemUtil::GetMemRange(vipEntryAddr+0x18,vipEntryAddr+0x18+vip->nameLen,vip->name,0);
 		}
 		vip->name[vip->nameLen]=0;
 
-		vip->descrLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x44);
+		vip->descrLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x44,0);
 		if (vip->descrLen >= 16){
-			int descrAddr = dereference(CMemUtil::GetMemIntValue(vipEntryAddr+0x34));
-			CMemUtil::GetMemRange(descrAddr,descrAddr+0x80,vip->descr);
+			int descrAddr = CMemUtil::GetMemIntValue(vipEntryAddr+0x34,0);
+			CMemUtil::GetMemRange(descrAddr,descrAddr+vip->descrLen,vip->descr,0);
 		}else{
-			CMemUtil::GetMemRange(vipEntryAddr+0x34,vipEntryAddr+0x34+vip->descrLen,vip->descr);
+			CMemUtil::GetMemRange(vipEntryAddr+0x34,vipEntryAddr+0x34+vip->descrLen,vip->descr,0);
 		}
 		vip->descr[vip->descrLen]=0;
 
-		vip->status = CMemUtil::GetMemIntValue(vipEntryAddr+0x50) & 0xff;
-		vip->loginTm = CMemUtil::GetMemIntValue(vipEntryAddr+0x58);//64bit
+		vip->status = CMemUtil::GetMemIntValue(vipEntryAddr+0x50,0) & 0xff;
+		vip->loginTm = CMemUtil::GetMemIntValue(vipEntryAddr+0x58,0);//64bit
 		
 		return vip;
 	}
 	delete vip;
 	return NULL;
-	
-    /*
-	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
-	if (nr<0||nr>=100) return NULL;
-	int offset = nr*m_memLengthVIP + m_memAddressVIP;
-	vip->id = CMemUtil::GetMemIntValue(offset);
-	vip->status = CMemUtil::GetMemIntValue(offset+34)&1;
-	vip->icon = CMemUtil::GetMemIntValue(offset+40);
-	CMemUtil::GetMemRange(offset+4,offset+4+29,vip->name);
-	return vip;
-	*/
 }
 
 CTibiaContainer *CMemReader::readContainer(int containerNr) {
@@ -723,13 +714,13 @@ void CMemReader::mapSetPointItemsCount(point p, int count,int relToCell/*=-1*/)
 	CMemUtil::SetMemIntValue(addr,count,0);//this address comes from Tibia itself and need not be shifted
 }
 
-int CMemReader::dereference(int addr)
+int CMemReader::dereference(int addr, int addBaseAddr/*=1*/)
 {
 	static int lastAddrReq=0;
 	static int lastAddrResp=0;
 	if (lastAddrReq==addr)
 		return lastAddrResp;
-	lastAddrResp=CMemUtil::GetMemIntValue(addr);
+	lastAddrResp=CMemUtil::GetMemIntValue(addr,addBaseAddr);
 	lastAddrReq=addr;
 	return lastAddrResp;
 }
@@ -840,10 +831,10 @@ CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 	}
 	int mapPointAddr = CMemUtil::GetMemIntValue(mapOffset+131232);
 	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapLabel");
-	retPoint->x=CMemUtil::GetMemIntValue(mapPointOffset+0);
-	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4);	
-	retPoint->type=CMemUtil::GetMemIntValue(mapPointOffset+8);
-	CMemUtil::GetMemRange(mapPointOffset+12,mapPointOffset+12+100,retPoint->desc);	
+	retPoint->x=CMemUtil::GetMemIntValue(mapPointOffset+0,0);
+	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4,0);	
+	retPoint->type=CMemUtil::GetMemIntValue(mapPointOffset+8,0);
+	CMemUtil::GetMemRange(mapPointOffset+12,mapPointOffset+12+100,retPoint->desc,0);	
 
 	return retPoint;
 
@@ -920,10 +911,10 @@ void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
 			char colour2[1];
 			char speed2[1];
 
-			CMemUtil::SetMemRange(mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour);
-			CMemUtil::GetMemRange(mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour2);
-			CMemUtil::SetMemRange(mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed);
-			CMemUtil::GetMemRange(mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed2);
+			CMemUtil::SetMemRange(mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour,1);
+			CMemUtil::GetMemRange(mapOffset+pointOffset,mapOffset+pointOffset+1,(char*)colour2,1);
+			CMemUtil::SetMemRange(mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed,1);
+			CMemUtil::GetMemRange(mapOffset+65536+pointOffset,mapOffset+65536+pointOffset+1,(char*)speed2,1);
 			//sprintf(buf,"made:(%d,%d),(%x,%x)",colour2[0],speed2[0],mapOffset+pointOffset,mapOffset+65536+pointOffset);
 			//AfxMessageBox(buf);
 			delete map;

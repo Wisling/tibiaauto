@@ -125,6 +125,8 @@
 #define IDS_ABSENT                      113
 #define IDS_ONLINE_VIP_PLAYER           114
 #define IDS_PROXIMITY_ATTACKINGPLAYER   115
+#define IDS_PERSISTENT                  116
+#define IDS_PERMANENT                   117
 #define IDR_MAINFRAME                   128
 #define IDD_CHAR_DIALOG                 130
 #define IDD_TOOL_RUNEMAKER              131

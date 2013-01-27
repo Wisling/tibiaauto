@@ -342,7 +342,7 @@ void CPackSender::stepMulti(int *direction, int size)
 	int pathIndAddr=reader.m_memAddressCurrentTileToGo;
 	int pathLenAddr=reader.m_memAddressTilesToGo;
 	int pathStartAddr=reader.m_memAddressPathToGo;
-	CMemUtil::SetMemIntValue(pathIndAddr,0);
+	CMemUtil::SetMemIntValue(pathIndAddr,0x0);
 	CMemUtil::SetMemIntValue(pathLenAddr,size);
 	for (i=0;i<size && i<10;i++){
 		CMemUtil::SetMemIntValue(pathStartAddr+4*i,direction[i]);

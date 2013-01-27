@@ -1388,6 +1388,10 @@ void CTibiaautoDlg::OnMemdebug()
 
 BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg) 
 {
+	//HWND hWnd = ::GetActiveWindow();
+	//if (this->m_hWnd!=hWnd){
+	//	return ::IsDialogMessage(hWnd,pMsg);
+	//}
 	int eventStop=0;
 	if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_ESCAPE)
 	{
