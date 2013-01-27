@@ -138,7 +138,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 				break;
 			//case 2:
-				//sender.stopAll(); //halts a few actions
+				//sender.sendDirectPacket("\x69"); // cancels walk, this is abnormal and shouldn't be used.
+			//case 3:
+				//stopAll(); //halts a few actions so this was removed.
 			//case 3:
 				//Request list of channels
 			//	sender.sendDirectPacket("\x97"); creates a window that gets in the way of the user

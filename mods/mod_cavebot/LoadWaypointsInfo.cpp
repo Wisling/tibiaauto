@@ -29,11 +29,11 @@ void CLoadWaypointsInfo::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CLoadWaypointsInfo)
+	DDX_Control(pDX, IDC_PREFIX, m_prefix);
 	DDX_Control(pDX, IDC_FRAME, m_frame);
 	DDX_Control(pDX, IDYES, m_YES);
-	DDX_Control(pDX, IDNO, m_NO);
 	DDX_Control(pDX, IDCANCEL, m_CANCEL);
-	DDX_Control(pDX, IDC_PREFIX, m_prefix);
+	DDX_Control(pDX, IDNO, m_NO);
 	//}}AFX_DATA_MAP
 }
 

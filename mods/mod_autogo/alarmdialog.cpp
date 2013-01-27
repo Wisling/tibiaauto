@@ -440,6 +440,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_attribute.SetItemImage(m_attribute.AddString("Bleeding"), 24);
 
 			m_condition.EnableWindow(true);
+			m_condition.ResetContent();
 			m_condition.AddString("Present");
 			m_condition.AddString("Absent");
 			m_condition.SetCurSel(0);
@@ -1575,7 +1576,7 @@ Alarm* CAlarmDialog::addToList() {
 		m_trigger.GetWindowText(text);
 		if (text.GetLength() && text[0] != '<') {
 			// Here we parse all text triggers in different ways and set the text string to a valid format if it is invalid.
-			if (m_alarmType.GetCurSel() ==  MESSAGE) {
+			if (m_alarmType.GetCurSel() ==  MESSAGE || m_alarmType.GetCurSel() == ONLINE && m_attribute.GetCurSel() == VIPPLAYERONLINE) {
 				temp->setTrigger(1, text);//STRING
 			}
 			else if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() == WAYPOINTREACHED) {

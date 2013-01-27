@@ -1,3 +1,20 @@
+2.26.5 26.1.2013
+Enhancements:
+ Cavebot & Auto looter: "Loot Custom" option is enabled by default.
+ Python: readVIPEntry returns extra information regarding the 
+Defects:
+ Cavebot: Fixed the process to use ladders when walking
+ Anylogout: Removed the "Stop All" command from the set of commands it uses to stay logged in.
+ VIP reader: fixed crashes from reading operations on the VIP list
+ MapHacks: fixed writing multi-level minimap colours to Tibia's memory
+ Cavebot: fixed load waypoints from minimap
+ Python: Fixed readVIPEntry function
+ Autogo: Fixed VIP alarms
+ Autogo: Fixed text in info box going past end of box
+Internal:
+ added xercesc and libs folders back into tibiaauto-pub
+ added regular expressions engine deelx.h to SDK folder for use in parsing incomming packets.
+
 2.26.4, 25.1.2013
 Enhancements:
  Auto Go/Log: Forced Alarm trigger text to be in a valid format upon adding to the alarm list. eg "[1x,  1y, 3z] 6" for distance away from a point would be simplified to "(1,1,3)6"
