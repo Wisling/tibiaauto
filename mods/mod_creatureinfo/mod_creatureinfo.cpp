@@ -1094,6 +1094,7 @@ void ReadPipeInfo(){
 				char resGuildName[128];
 				char resGuildRank[128];
 				char resGuildDescription[128];
+				resNick[0]=resLvl[0]=resVoc[0]=resGuildName[0]=resGuildRank[0]=resGuildDescription[0]=0;
 
 				lstrcpyn(resLvl,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
 				lstrcpyn(resNick,msgBuf+pmatch[1].rm_so,min(127,pmatch[1].rm_eo-pmatch[1].rm_so+1));
@@ -1107,12 +1108,7 @@ void ReadPipeInfo(){
 						//T4: Also have description
 						lstrcpyn(resGuildDescription,msgBuf+pmatch[10].rm_so,min(127,pmatch[10].rm_eo-pmatch[10].rm_so+1));
 					}
-				}else{
-					resGuildRank[0]=0;
-					resGuildName[0]=0;
-					resGuildDescription[0]=0;
 				}
-
 								
 				int voc=Player_Vocation2VocID(resVoc);
 				int lvl=atoi(resLvl);
@@ -1131,6 +1127,7 @@ void ReadPipeInfo(){
 						char resGuildName[128];
 						char resGuildRank[128];
 						char resGuildDescription[128];
+						resVoc[0]=resGuildName[0]=resGuildRank[0]=resGuildDescription[0]=0;
 
 						lstrcpyn(resVoc,msgBuf+pmatch[2].rm_so,min(127,pmatch[2].rm_eo-pmatch[2].rm_so+1));
 						
@@ -1142,10 +1139,6 @@ void ReadPipeInfo(){
 								//T4: Also have description
 								lstrcpyn(resGuildDescription,msgBuf+pmatch[7].rm_so,min(127,pmatch[7].rm_eo-pmatch[7].rm_so+1));
 							}
-						}else{
-							resGuildRank[0]=0;
-							resGuildName[0]=0;
-							resGuildDescription[0]=0;
 						}
 
 						CTibiaCharacter *self = reader.readSelfCharacter();

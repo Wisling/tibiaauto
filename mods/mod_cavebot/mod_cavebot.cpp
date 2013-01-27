@@ -440,7 +440,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 	int depotContNr=-1;
 	int count=reader.mapGetPointItemsCount(point(x-self->x,y-self->y,0));
 	int pos=0;
-	if (count>10) count=10;// ? should have written what I found out that provoked putting this here 
+	if (count>10) count=10;// ? should have written down why I put this here 
 	
 	int lockerId=0;
 	for (pos=0;pos<count;pos++) {
@@ -460,7 +460,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 		}
 	}
 	if (!lockerId && count){
-		lockerId=reader.itemOnTopCode(x-self->x,y-self->y);
+		lockerId=reader.itemOnTopCode(x-self->x,y-self->y); //use the topmost item as the depot container(useful for bags within houses)
 	}
 	if (lockerId){
 		// this is the depot chest so open it
