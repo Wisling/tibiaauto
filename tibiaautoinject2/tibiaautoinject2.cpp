@@ -1882,10 +1882,10 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 
 
 //(int align<ecx>, char *str<edx>, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16<ebx>, int v17<edi>)
-int OUTmyPlayerNameText(int align, char *str, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16, int v17)
+int OUTmyPlayerNameText(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *str, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
 {
 	int ret;
-	typedef int (*Proto_fun)(int align, char *str, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16, int v17);
+	typedef int (*Proto_fun)(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *str, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17);
 
 	//Proto_fun fun=(Proto_fun)(0x4B3FA0); // 8.74
 	//Proto_fun fun=(Proto_fun)(0x4B42F0); // 9.00
@@ -1922,7 +1922,7 @@ int OUTmyPlayerNameText(int align, char *str, int visible, int x, int y, int fon
 	}
 	return ret;
 }
-int myPlayerNameText(int align, char *str, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16, int v17)
+int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char* str , int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
 {
 	int ret;
 	int titleOffset=0;
@@ -1952,7 +1952,7 @@ int myPlayerNameText(int align, char *str, int visible, int x, int y, int fontNu
 		int i,len;		
 		char convString[1024];
 
-		sprintf(convString,"%s",str);	
+		sprintf(convString,"%s",str);
 		for (i=0,len=strlen(str);i<len;i++)
 		{
 			if (convString[i]=='[')
@@ -1971,17 +1971,17 @@ int myPlayerNameText(int align, char *str, int visible, int x, int y, int fontNu
 		
 		if (strlen(info2)) 
 		{
-			OUTmyPlayerNameText(align,info2,visible,x,y-titleOffset,fontNumber,colR,colG,colB,10, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
+			OUTmyPlayerNameText(align,fontNumber,visible,x,y-titleOffset,10,colR,colG,colB,info2, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 			titleOffset+=14;
 		}		
 		if (strlen(info1)) 
 		{
-			OUTmyPlayerNameText(align,info1,visible,x,y-titleOffset,fontNumber,colR,colG,colB,showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
+			OUTmyPlayerNameText(align,fontNumber,visible,x,y-titleOffset,showFormatting,colR,colG,colB,info1, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 			titleOffset+=14;
 		}
-		ret = OUTmyPlayerNameText(align,convString,visible,x,y-titleOffset,fontNumber,colR,colG,colB, showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
+		ret = OUTmyPlayerNameText(align,fontNumber,visible,x,y-titleOffset,showFormatting,colR,colG,colB, convString, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 	} else {
-		ret = OUTmyPlayerNameText(align,str, visible,x,y-titleOffset,fontNumber,colR,colG,colB,showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
+		ret = OUTmyPlayerNameText(align,fontNumber, visible,x,y-titleOffset,showFormatting,colR,colG,colB,str, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 	}
 	return ret;
 }
@@ -3251,7 +3251,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			{
 				if (!strcmp(creatureInfoPlayerName[i],mess.payload))
 				{
-					found=0;
+					found=1;
 					memcpy(creatureInfoPlayerInfo1[i],mess.payload+32,500);
 					memcpy(creatureInfoPlayerInfo2[i],mess.payload+32+500,500);
 					break;
