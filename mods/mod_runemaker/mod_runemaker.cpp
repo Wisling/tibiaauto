@@ -60,194 +60,28 @@ int openContTime[numCont];
 const int minSecondsOpen=20;
 
 
-static map<int,int> setMana;
-int RandomVariableMana(int pt,int command,CConfigData *config){
+static map<int*,int> setMana;
+int RandomVariableMana(int &pt,int command,CConfigData *config){
 	CMemReaderProxy reader;
+
 	CTibiaCharacter* self=reader.readSelfCharacter();
 	int val=pt<0?max(self->maxMana+pt,self->maxMana/10):pt;
 	if (!config->randomCast){
 		delete self;
 		return val;
 	}
-	if (!setMana[pt]) command=MAKE;
+	if (!setMana[&pt]) command=MAKE;
 	if (command==MAKE){
+		CPackSenderProxy sender;
 		// within 10% of number with a cutoff at maxMana
-		setMana[pt]=CModuleUtil::randomFormula(val,val * 0.1,val,max(self->maxMana,val+1));
+		setMana[&pt]=CModuleUtil::randomFormula(val,val * 0.1,val,max(self->maxMana,val+1));
+		char buf[111];
+		sprintf(buf,"%d",setMana[&pt]);
+		sender.sendTAMessage(buf);
 	}
 	delete self;
-	return setMana[pt];
+	return setMana[&pt];
 }
-
-/**
- * Return >=0: ok; <0: error
- */
-int moveSpearToHand(CConfigData *config,int handAddress,int locId)
-{
-	int contNr;
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	int spearContNr=-1;
-	int spearContPos=-1;
-	int spearId=-1;
-
-	// step 1. find spear and put into hand
-	// scan safe containers
-	for (contNr=0;contNr<numCont;contNr++)
-	{
-		int itemNr;
-		
-		CTibiaContainer *container = reader.readContainer(contNr);
-		if (container->flagOnOff && openContTime[contNr] && time(NULL)-openContTime[contNr]>minSecondsOpen)
-		{
-			for (itemNr=0;itemNr<container->itemsInside;itemNr++)
-			{
-				CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
-				if (item->objectId==itemProxy.getValueForConst("spear"))
-				{
-					// spear found!
-					spearContNr=container->number;
-					spearContPos=item->pos;
-					spearId=item->objectId;
-					contNr=9999;//exit both loops
-					break;
-				};
-			};
-		}
-		delete container;
-	};
-	
-		
-	// send the blank rune to a hand
-	sender.moveObjectBetweenContainers(spearId,0x40+spearContNr,spearContPos,locId,0,1);
-	Sleep(CModuleUtil::randomFormula(500,200));
-	
-	// wait for the spear to appear in the a hand
-	int spearInHand=0;
-	int iters=0;
-	while (!spearInHand)
-	{
-		CTibiaItem *item = reader.readItem(handAddress);		
-		if (item->objectId!=0&&item->objectId!=itemProxy.getValueForConst("spear"))
-			spearInHand=2;//item in hand but not spear
-		if (item->objectId==itemProxy.getValueForConst("spear"))
-			spearInHand=1;
-		Sleep(50);
-		iters++;
-		// if rune is not in hand after 5 seconds then something went wrong
-		if (iters>5000/50)
-			spearInHand=2;
-		delete item;
-	};
-	// when spearInHand==2 then we hit some big problem, so we cancel 
-	// the operation
-	if (spearInHand==2)
-		return -1;
-	return spearContNr;
-}
-
-void moveSpearBackToContainer(int handAddress,int locId,int targetContNr,CConfigData *config)
-{
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-
-	// wait for something except blank rune to appear in the hand
-	int objectMoved=0;
-	int iters=0;
-	int itemBackToContainerLoop=0;
-	// because this is important step - repeat it many times if failed
-	for (itemBackToContainerLoop=0;itemBackToContainerLoop<5;itemBackToContainerLoop++)
-	{
-		while (!objectMoved&&iters++<5000/50)
-		{
-			CTibiaItem *item = reader.readItem(handAddress);
-			if (item->objectId==0 || item->objectId!=itemProxy.getValueForConst("spear"))
-			{
-				objectMoved=1;
-			}
-			Sleep(50);
-			iters++;
-			delete item;
-		};
-		
-		// send the spear to the spear's container 
-		CTibiaItem *item = reader.readItem(handAddress);
-		sender.moveObjectBetweenContainers(item->objectId,locId,0,0x40+targetContNr,0,1);
-		Sleep(CModuleUtil::randomFormula(500,200));
-		delete item;
-		objectMoved=0;
-		iters=0;
-		
-		while (!objectMoved&&iters++<5000/50)
-		{
-			
-			CTibiaItem *item = reader.readItem(handAddress);			
-			if (item->objectId==0)
-			{
-				objectMoved=1;
-				itemBackToContainerLoop=100;
-			}
-			Sleep(50);					
-			delete item;
-		}
-	}	
-}
-
-void moveLeftHandToContainer()
-{
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
-	int contNr;
-
-	for (contNr=0;contNr<numCont;contNr++)
-	{
-		CTibiaContainer *cont = reader.readContainer(contNr);
-
-		if (time(NULL)-openContTime[contNr]>minSecondsOpen && openContTime[contNr]){
-			if (cont->flagOnOff && cont->itemsInside<cont->size)
-			{
-				sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
-				Sleep(CModuleUtil::randomFormula(500,200));
-				delete cont;
-				delete item;
-				return;
-			}
-		}
-
-		delete cont;
-	}
-	delete item;
-}
-
-void moveArrowItemToContainer()
-{
-	CMemReaderProxy reader;
-	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow);	
-	int contNr;
-
-	for (contNr=0;contNr<numCont;contNr++)
-	{
-		CTibiaContainer *cont = reader.readContainer(contNr);
-
-		if (cont->flagOnOff&&cont->itemsInside<cont->size&& openContTime[contNr] && time(NULL)-openContTime[contNr]>minSecondsOpen)
-		{
-			sender.moveObjectBetweenContainers(item->objectId,0x0a,0,0x40+contNr,0,item->quantity?item->quantity:1);
-			Sleep(CModuleUtil::randomFormula(500,200));
-			delete cont;
-			delete item;
-			return;
-		}
-
-		delete cont;
-	}
-	delete item;
-}
-
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
@@ -262,86 +96,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
-	int bMakeRune=0;
 
-
-	int leftHandObjectId=0;
-	if (config->useSpear && (config->useArrow||config->useBackpack))
-	{
-		CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);
-		leftHandObjectId=handItem->objectId;
-		delete handItem;
-	}
-
-	//Containers open on start are okay to put stuff in
-	for (int contNr=0;contNr<numCont;contNr++){
-		CTibiaContainer *cont = reader.readContainer(contNr);
-		if (cont->flagOnOff) {
-			openContTime[contNr]=time(NULL)-minSecondsOpen-1;
-		} else {
-			openContTime[contNr]=0;
-		}
-		delete cont;
-	}
 	while (!toolThreadShouldStop)
 	{			
 		Sleep(900);
-		//Keep track of when containers are opened. Later that container will only be
-		//used if time(NULL)-openContTime[i]>minSecondsOpen
 		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
 		CTibiaCharacter *myself = reader.readSelfCharacter();
-				
-		
-		if (config->useSpear){
-			CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);
-			for (int contNr=0;contNr<numCont;contNr++){
-				CTibiaContainer *cont = reader.readContainer(contNr);
-				if (cont->flagOnOff)
-				{
-					if (!openContTime[contNr]) openContTime[contNr]=time(NULL);
-				} else {
-					openContTime[contNr]=0;
-				}
-				delete cont;
-			}
-			
-			if (handItem->objectId&&handItem->objectId!=leftHandObjectId)
-			{
-			/**
-			* Cleanup left hand. There can be only: leftHandObjectId - other
-			* items we move to the first container
-			*/
-				moveLeftHandToContainer();
-				delete handItem;
-				delete myself;
-				continue;
-			}
-			
-			if (config->useArrow)
-			{
-				CTibiaItem *arrowItem = reader.readItem(memConstData.m_memAddressSlotArrow);
-				
-				if (arrowItem->objectId&&(arrowItem->objectId!=leftHandObjectId||arrowItem->objectId==handItem->objectId))
-				{
-					// cleanup arrow item
-					moveArrowItemToContainer();
-					delete handItem;
-					delete arrowItem;
-					delete myself;
-					continue;
-				}				
-				delete arrowItem;
-				
-			}		
-			delete handItem;
-		}
-		
-		/**
-		 * So now the situation is: left hand clear or The Item in it, 		
-		 * 
-		 * So now - count blanks - if 0 we can't do anything :(.
-		*/
-		
+
 		int blanksCount=0;
 		for (int i=0;i<memConstData.m_memMaxContainers;i++)
 		{
@@ -356,159 +117,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			};
 			delete container;
 		}
-
-		int manaLimit = RandomVariableMana(config->makeNow?config->mana:config->manaLimit,GET,config);
-		
-
-		if (myself->mana>=manaLimit){
-			RandomVariableMana(config->makeNow?config->mana:config->manaLimit,MAKE,config);
-			bMakeRune = 1;
-		}else if(myself->mana < config->mana){
-			bMakeRune = 0;
-		}
-
-		if (bMakeRune && myself->soulPoints>=config->soulPoints && blanksCount)
-		{		
-			if (config->useSpear){
-				if (config->useArrow)
-				{
-					// make sure that left hand is saved to an arrow slot
-					CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);
-					if (handItem->objectId)
-					{
-						/**
-						 * So now the situation is: we have empty arrow, and The Item
-						 * in left hand. So move it.
-						 */
-						sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x0a,0,handItem->quantity?handItem->quantity:1);
-						Sleep(CModuleUtil::randomFormula(500,200));
-						delete handItem;
-						delete myself;
-						continue;
-					}
-					delete handItem;
-				}
-				if (config->useBackpack)
-				{
-					// make sure the left hand is save to some backpack
-					CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);
-					if (handItem->objectId)
-					{					
-						int saveContNr;
-						for (saveContNr=0;saveContNr<numCont;saveContNr++)
-						{
-							if (openContTime[saveContNr] && time(NULL)-openContTime[saveContNr]>minSecondsOpen){
-								CTibiaContainer *saveCont=reader.readContainer(saveContNr);
-								if (saveCont->flagOnOff&&saveCont->itemsInside<saveCont->size)
-								{
-									// some open container with some space inside found
-									sender.moveObjectBetweenContainers(handItem->objectId,0x06,0,0x40+saveContNr,saveCont->size-1,handItem->quantity?handItem->quantity:1);
-									CModuleUtil::waitForItemsInsideChange(saveContNr,saveCont->itemsInside);
-									Sleep(CModuleUtil::randomFormula(500,200));
-									delete saveCont;
-									break;
-
-								}
-								delete saveCont;
-							}
-						}
-						delete handItem;
-						delete myself;
-						continue;
-					}
-					delete handItem;
-				}
-			
-			
-				// step 0. check if left hand is empty - if not - we check 'arrow' area									
-				
-				CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
-				if (item->objectId)
-				{
-					// left hand is busy - we can't make any runes :(
-					delete item;
-					delete myself;
-					continue;
-				}
-				delete item;
-				
-										
-				int spearContNrLeft=moveSpearToHand(config,memConstData.m_memAddressLeftHand,0x06);			
-				
-				if (spearContNrLeft<0){
-					delete myself;
-					continue;
-				}
-				
-			}
-			// step 2. cast spell
-			sender.say((LPCTSTR)config->spell);
-
-			if(!config->maxUse){
-				bMakeRune=0;
-			}
-			
-			if (config->useSpear){
-				// step 3. put spear into container
-				moveLeftHandToContainer();
-			}
-			
-		} else if(config->useSpear) {
-		/** 
-		* If we are here, then we don't have to make spears, but we should
-		* rather make sure that (in case we use arrow slot for item saving
-		* correct item is in hand.
-			*/
-			bMakeRune = 0;
-			if (config->useArrow)
-			{
-				CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);						
-				if (handItem->objectId==0)
-				{					
-					CTibiaItem *arrowItem = reader.readItem(memConstData.m_memAddressSlotArrow);
-					if (arrowItem->objectId==leftHandObjectId)
-					{
-						// The Item is in arrow slot and left hand is empty
-						sender.moveObjectBetweenContainers(arrowItem->objectId,0x0a,0,0x06,0,arrowItem->quantity?arrowItem->quantity:1);
-						Sleep(CModuleUtil::randomFormula(500,200));
-					} else {
-						// AAAAAAAAAAAA: we lost The Item !!!
-						// AAAAAAAAAAAA
-						sender.sendTAMessage("WARNING: I cannot find The Item in neither left hand nor arrow slot!");
-					}
-					delete arrowItem;
-				}
-				
-				delete handItem;
-			}
-			if (config->useBackpack)
-			{
-				// if we are using 'save to backpack' feature, we need to lookup the item
-				// in some backpack and move it to hand
-				CTibiaItem *handItem = reader.readItem(memConstData.m_memAddressLeftHand);							
-				if (!handItem->objectId||handItem->objectId!=leftHandObjectId)
-				{					
-					int saveContNr;
-					// we must skip container 7,8,9 due to cave bot!
-					for (saveContNr=0;saveContNr<numCont;saveContNr++)
-					{
-						CUIntArray itemsAccepted;
-						itemsAccepted.Add(leftHandObjectId);
-						CTibiaItem *savedItem = CModuleUtil::lookupItem(saveContNr,&itemsAccepted);
-						if (savedItem->objectId)
-						{
-							sender.moveObjectBetweenContainers(leftHandObjectId,0x40+saveContNr,savedItem->pos,0x06,0,savedItem->quantity?savedItem->quantity:1);
-							Sleep(CModuleUtil::randomFormula(1000,300));
-							delete savedItem;
-							break;
-						}		
-						delete savedItem;
+		if(myself->soulPoints>=config->soulPoints){
+			for(;blanksCount>0;blanksCount--){
+				int manaLimit = RandomVariableMana(config->makeNow?config->mana:(config->manaLimit>config->mana)?config->manaLimit:config->mana,GET,config);
+				if (myself->mana>=manaLimit){
+					RandomVariableMana(config->makeNow?config->mana:(config->manaLimit>config->mana)?config->manaLimit:config->mana,MAKE,config);
+					// cast spell
+					sender.say((LPCTSTR)config->spell);
+					CModuleUtil::waitForManaDecrease(myself->mana);
+					if(!config->maxUse){
+						break; //even if we have the mana and blank runes/spears do not continue casting
 					}
 				}
-				delete handItem;
 			}
 		}
-		delete myself;		
+		delete myself;
 	}
 	setMana.clear();
 	toolThreadShouldStop=0;
@@ -656,11 +279,6 @@ int CMod_runemakerApp::validateConfig(int showAlerts)
 		if (showAlerts) AfxMessageBox("Please enter rune spell!");
 		return 0;
 	}
-	if (m_configData->useBackpack&&m_configData->useArrow)
-	{
-		if (showAlerts) AfxMessageBox("At most one of 'save backpack' and 'save to arrow slot' can be set at once!");
-		return 0;
-	}
 	
 	return 1;
 }
@@ -677,8 +295,6 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"mana")) m_configData->mana=atoi(paramValue);
 	if (!strcmp(paramName,"manaLimit")) m_configData->manaLimit=atoi(paramValue);
 	if (!strcmp(paramName,"soulPoints")) m_configData->soulPoints=atoi(paramValue);
-	if (!strcmp(paramName,"useArrow")) m_configData->useArrow=atoi(paramValue);
-	if (!strcmp(paramName,"useBackpack")) m_configData->useBackpack=atoi(paramValue);
 	if (!strcmp(paramName,"premium")) m_configData->premium=atoi(paramValue);
 	if (!strcmp(paramName,"maxUse")) m_configData->maxUse=atoi(paramValue);
 	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
@@ -712,8 +328,6 @@ char *CMod_runemakerApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"mana")) sprintf(buf,"%d",m_configData->mana);
 	if (!strcmp(paramName,"manaLimit")) sprintf(buf,"%d",m_configData->manaLimit);
 	if (!strcmp(paramName,"soulPoints")) sprintf(buf,"%d",m_configData->soulPoints);
-	if (!strcmp(paramName,"useArrow")) sprintf(buf,"%d",m_configData->useArrow);
-	if (!strcmp(paramName,"useBackpack")) sprintf(buf,"%d",m_configData->useBackpack);
 	if (!strcmp(paramName,"premium")) sprintf(buf,"%d",m_configData->premium);
 	if (!strcmp(paramName,"maxUse")) sprintf(buf,"%d",m_configData->maxUse);
 	if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
@@ -736,13 +350,11 @@ char *CMod_runemakerApp::getConfigParamName(int nr)
 	case 1: return "mana";
 	case 2: return "manaLimit";
 	case 3: return "soulPoints";
-	case 4: return "useArrow";
-	case 5: return "premium";
-	case 6: return "maxUse";
-	case 7: return "spells/spell";
-	case 8: return "useBackpack";
-	case 9: return "randomCast";
-	case 10: return "useSpear";
+	case 4: return "premium";
+	case 5: return "maxUse";
+	case 6: return "spells/spell";
+	case 7: return "randomCast";
+	case 8: return "useSpear";
 	default:
 		return NULL;
 	}

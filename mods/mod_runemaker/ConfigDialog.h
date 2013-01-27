@@ -38,7 +38,6 @@ public:
 	CGroupBoxEx	m_RuneOptionsFrame;
 	CGroupBoxEx	m_GeneralOptionsFrame;
 	CGroupBoxEx	m_BackpackViewerFrame;
-	CButton	m_useBackpack;
 	CButton	m_maxUse;
 	CButton	m_premium;
 	CButton	m_randomCast;
@@ -47,7 +46,6 @@ public:
 	CListCtrl	m_safe;
 	CListCtrl	m_spells;
 	CEdit	m_soulPoints;
-	CButton	m_useArrow;
 	CEdit	m_spell;
 	CStatic	m_infoRuneTime;
 	CStatic	m_infoSoulpointsTime;
@@ -87,9 +85,6 @@ protected:
 	afx_msg void OnLoadspellfromlist();
 	afx_msg void OnDeletefromlist();
 	afx_msg void OnMakenow();
-	afx_msg void OnUseSpear();
-	afx_msg void OnUseArrow();
-	afx_msg void OnUseBackpack();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

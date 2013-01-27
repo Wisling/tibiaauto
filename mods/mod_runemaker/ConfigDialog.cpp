@@ -36,7 +36,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FRAME_RUNE_OPTIONS, m_RuneOptionsFrame);
 	DDX_Control(pDX, IDC_FRAME_GENERAL_OPTIONS, m_GeneralOptionsFrame);
 	DDX_Control(pDX, IDC_FRAME_BACKPACK_VIEWER, m_BackpackViewerFrame);
-	DDX_Control(pDX, IDC_USE_BACKPACK, m_useBackpack);
 	DDX_Control(pDX, IDC_TOOL_MAXMANAUSE, m_maxUse);
 	DDX_Control(pDX, IDC_TOOL_PREMIUM, m_premium);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_MANALIMIT, m_manaLimit);
@@ -44,7 +43,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_CONT, m_safe);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_SPELLS, m_spells);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_SOUL, m_soulPoints);
-	DDX_Control(pDX, IDC_TOOL_USEARROW, m_useArrow);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_RUNESPELL, m_spell);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_RUNETIME, m_infoRuneTime);
 	DDX_Control(pDX, IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME, m_infoSoulpointsTime);
@@ -73,7 +71,6 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	ON_BN_CLICKED(IDC_LOADSPELLFROMLIST, OnLoadspellfromlist)
 	ON_BN_CLICKED(IDC_DELETEFROMLIST, OnDeletefromlist)
 	ON_BN_CLICKED(IDC_MAKENOW, OnMakenow)
-	ON_BN_CLICKED(IDC_TOOL_USESPEAR,OnUseSpear)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -111,16 +108,14 @@ void CConfigDialog::disableControls()
 	m_mana.EnableWindow(false);
 	m_manaLimit.EnableWindow(false);
 	m_soulPoints.EnableWindow(false);
-	m_useArrow.EnableWindow(false);
 	m_spell.EnableWindow(false);
 	m_premium.EnableWindow(false);
 	m_maxUse.EnableWindow(false);
-//	m_spells.EnableWindow(false);
 	m_addSpell.EnableWindow(false);
 	m_loadSpell.EnableWindow(false);
 	m_deleteSpell.EnableWindow(false);
-	m_useBackpack.EnableWindow(false);
 	m_useSpear.EnableWindow(false);
+	m_randomCast.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -131,13 +126,11 @@ void CConfigDialog::enableControls()
 	m_spell.EnableWindow(true);
 	m_premium.EnableWindow(true);
 	m_maxUse.EnableWindow(true);
-//	m_spells.EnableWindow(true);
 	m_addSpell.EnableWindow(true);
 	m_loadSpell.EnableWindow(true);
 	m_deleteSpell.EnableWindow(true);
-
 	m_useSpear.EnableWindow(true);
-	OnUseSpear();
+	m_randomCast.EnableWindow(true);
 }
 
 
@@ -149,14 +142,10 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->mana);m_mana.SetWindowText(buf);
 	sprintf(buf,"%d",configData->manaLimit);m_manaLimit.SetWindowText(buf);
 	sprintf(buf,"%d",configData->soulPoints);m_soulPoints.SetWindowText(buf);
-	m_useArrow.SetCheck(configData->useArrow);
-	m_useBackpack.SetCheck(configData->useBackpack);
 	m_premium.SetCheck(configData->premium);
 	m_maxUse.SetCheck(configData->maxUse);
 	m_randomCast.SetCheck(configData->randomCast);
 	m_useSpear.SetCheck(configData->useSpear);
-
-	OnUseSpear();
 
 	m_spells.DeleteAllItems();
 	for (int i=0; i<15; i++) {
@@ -190,8 +179,6 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_mana.GetWindowText(buf,127);newConfigData->mana=atoi(buf);
 	m_manaLimit.GetWindowText(buf,127);newConfigData->manaLimit=atoi(buf);
 	m_soulPoints.GetWindowText(buf,127);newConfigData->soulPoints=atoi(buf);
-	newConfigData->useArrow	= m_useArrow.GetCheck();
-	newConfigData->useBackpack	= m_useBackpack.GetCheck();
 	newConfigData->premium	= m_premium.GetCheck();
 	newConfigData->maxUse	= m_maxUse.GetCheck();
 	newConfigData->randomCast	= m_randomCast.GetCheck();
@@ -508,22 +495,4 @@ void CConfigDialog::OnMakenow()
 	int enable=m_makeNow.GetCheck();
 	m_app->makeNow(enable);
 	
-}
-void CConfigDialog::OnUseSpear() 
-{
-
-	int enable=m_useSpear.GetCheck();
-	m_useArrow.EnableWindow(enable);
-	m_useBackpack.EnableWindow(enable);
-	
-}
-
-void CConfigDialog::OnUseArrow()
-{
-	m_useBackpack.SetCheck(0);
-}
-
-void CConfigDialog::OnUseBackpack()
-{
-	m_useArrow.SetCheck(0);
 }

@@ -18,11 +18,9 @@ public:
 	int mana;
 	int manaLimit;
 	int soulPoints;
-	int useArrow;
 	int maxUse;
 	int premium;
 	char spell[1024];
-	int useBackpack;
 	int randomCast;
 	int useSpear;
 

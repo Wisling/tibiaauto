@@ -20,6 +20,7 @@ public:
 	static int randomFormula(int average, int halfrange, int cutoff);
 	static int randomFormula(int average, int halfrange, int minR, int maxR);
 	static int waitForHpManaIncrease(int oldHp,int oldMana);
+	static int waitForManaDecrease(int oldMana);
 	static int waitForCapsChange(float origCaps);
 	static int waitForItemChange(int locationAddress, int origItemId);
 	static int waitForItemChange(int contNr, int slotNr, int origItemId);

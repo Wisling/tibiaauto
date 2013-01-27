@@ -93,9 +93,10 @@ BEGIN
     LTEXT           "Rune mana:",IDC_STATIC,93,100,40,14,SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_RUNEMAKER_MANA,135,100,26,14,ES_AUTOHSCROLL
     CONTROL         "Promoted Player (for stats only)",IDC_TOOL_PREMIUM,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,247,180,10
-    CONTROL         "Use up all mana when limit reached",IDC_TOOL_MAXMANAUSE,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,237,180,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,227,180,10
+    CONTROL         "Make as many runes as possible when mana limit reached",
+                    IDC_TOOL_MAXMANAUSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,217,201,10
     LTEXT           "Soulpoints for: 0s",
                     IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME,113,312,99,8
     PUSHBUTTON      "Add vv",IDC_ADDSPELLTOLIST,93,117,33,12
@@ -107,13 +108,9 @@ BEGIN
     CONTROL         "Make ASAP",IDC_MAKENOW,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,171,101,44,12
     CONTROL         "Random cast at up to 10% more mana",IDC_TOOL_RANDOMCAST,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,257,180,10
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,237,180,10
     CONTROL         "Use spear instead of blank rune",IDC_TOOL_USESPEAR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,207,180,10
-    CONTROL         "Use arrow slot if hands busy",IDC_TOOL_USEARROW,"Button",
-                    BS_AUTORADIOBUTTON,24,217,138,10
-    CONTROL         "Use backpack if hands busy",IDC_USE_BACKPACK,"Button",
-                    BS_AUTORADIOBUTTON,24,227,138,10
 END
 
 IDD_TOOL_CONTAINERCONTENT DIALOG DISCARDABLE  0, 0, 191, 209

@@ -21,10 +21,8 @@ CConfigData::CConfigData()
 	mana=0;
 	manaLimit=500;
 	soulPoints=5;
-	useArrow=0;
 	maxUse=0;
 	spell[0]=0;
-	useBackpack=1;
 	randomCast=1;
 	useSpear=0;
 

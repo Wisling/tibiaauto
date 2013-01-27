@@ -11,7 +11,6 @@
 #define IDC_TOOL_RUNEMAKER_INFO_BLANKS  1073
 #define IDC_TOOL_RUNEMAKER_INFO_FOOD    1074
 #define IDC_TOOL_RUNEMAKER_INFO_RUNETIME 1075
-#define IDC_TOOL_USEARROW               1111
 #define IDC_TOOL_RUNEMAKER_MAKETWO      1112
 #define IDC_TOOL_FLUIDDRINKER_HPBELOW   1113
 #define IDC_TOOL_PREMIUM                1113
@@ -59,7 +58,6 @@
 #define IDC_CONTAINER_MODE_9            3020
 #define IDC_CONTAINER_STATUS9           3021
 #define IDC_LOOT_CUSTOM                 3022
-#define IDC_USE_BACKPACK                3022
 #define IDC_LOOT_WORMS                  3023
 #define IDC_FRAME_BACKPACK_VIEWER       3023
 #define IDC_CONTAINER_MODE_10           3024

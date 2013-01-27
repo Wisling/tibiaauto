@@ -91,6 +91,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 }
 
 int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange| <= ans <= average+|halfrange|
+	srand(GetTickCount()*(average+47328)*(halfrange+23939));
 	halfrange = abs(halfrange)+1;
 	return (average-(halfrange-1))+(rand()%halfrange)+(rand()%halfrange);
 }
@@ -161,6 +162,23 @@ int CModuleUtil::waitForHpManaIncrease(int oldHp,int oldMana){//max about 0.45s
 	{
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		if (self->hp-oldHp>30 || self->mana-oldMana>30)
+		{
+			delete self;
+			return 1;
+		}
+		delete self;
+		Sleep(50);
+	}
+	return 0;
+}
+
+int CModuleUtil::waitForManaDecrease(int oldMana){//max about 0.45s
+	CMemReaderProxy reader;
+	int t;
+	for (t=0;t<15;t++)
+	{
+		CTibiaCharacter *self = reader.readSelfCharacter();
+		if (self->mana-oldMana<10)
 		{
 			delete self;
 			return 1;
