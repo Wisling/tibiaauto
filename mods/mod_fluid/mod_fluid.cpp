@@ -59,10 +59,10 @@ END_MESSAGE_MAP()
 // Tool functions
 
 int drinkFails=0;
-static map<int,int> setHp;
-static map<int,int> setMana;
+static map<int*,int> setHp;
+static map<int*,int> setMana;
 
-int RandomVariableHp(int pt,int command,CConfigData *config){
+int RandomVariableHp(int &pt,int command,CConfigData *config){
 	CMemReaderProxy reader;
 	CTibiaCharacter* self=reader.readSelfCharacter();
 	int val=pt<0?max(self->maxHp+pt,self->maxHp/10):pt;
@@ -70,16 +70,16 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 		delete self;
 		return val;
 	}
-	if (!setHp[pt]) command=MAKE;
+	if (!setHp[&pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxHp,val+1));
+		setHp[&pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxHp,val+1));
 	}
 	delete self;
-	return setHp[pt];
+	return setHp[&pt];
 }
 
-int RandomVariableMana(int pt,int command,CConfigData *config){
+int RandomVariableMana(int &pt,int command,CConfigData *config){
 	CMemReaderProxy reader;
 	CTibiaCharacter* self=reader.readSelfCharacter();
 	int val=pt<0?max(self->maxMana+pt,self->maxMana/10):pt;
@@ -87,13 +87,13 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 		delete self;
 		return val;
 	}
-	if (!setMana[pt]) command=MAKE;
+	if (!setMana[&pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
-		setMana[pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxMana,val+1));
+		setMana[&pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxMana,val+1));
 	}
 	delete self;
-	return setMana[pt];
+	return setMana[&pt];
 }
 
 /////////////////////////////////////////////////////////////////////////////

@@ -74,8 +74,8 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
-static map<int,int> setMana;
-static map<int,int> setHp;
+static map<int*,int> setMana;
+static map<int*,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
 int RandomVariableMana(int pt,int command,CConfigData *config){
@@ -86,19 +86,17 @@ int RandomVariableMana(int pt,int command,CConfigData *config){
 		delete self;
 		return val;
 	}
-	if (!setMana[pt]) command=MAKE;
+	if (!setMana[&pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
-		setMana[pt]=CModuleUtil::randomFormula(val,(int)(val*.1),max(self->maxMana,val+1));
+		setMana[&pt]=CModuleUtil::randomFormula(val,(int)(val*.1),max(self->maxMana,val+1));
 	}
 	delete self;
-	return setMana[pt];
+	return setMana[&pt];
 }
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
-int RandomVariableHp(int pt,int command,CConfigData *config){
-	//References to *(int*)<int> removed
-	//We are now sending the value of the integers and not their addresses
+int RandomVariableHp(int &pt,int command,CConfigData *config){
 	CMemReaderProxy reader;
 	CTibiaCharacter* self=reader.readSelfCharacter();
 	int val=pt<0?max(self->maxHp+pt,self->maxHp/10):pt;
@@ -107,13 +105,33 @@ int RandomVariableHp(int pt,int command,CConfigData *config){
 		return val;
 	}
 
-	if (!setHp[pt]) command=MAKE;
+	if (!setHp[&pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[pt]=CModuleUtil::randomFormula(val,(int)(val*.1),val,max(self->maxHp,val+1));
+		setHp[&pt]=CModuleUtil::randomFormula(val,(int)(val*.1),val,max(self->maxHp,val+1));
 	}
 	delete self;
-	return setHp[pt];
+	return setHp[&pt];
+}
+
+//Creates a random percentage based off of another player's stats that will not change until MAKE is used(GET creates a number if none already present)
+int RandomVariableHpPercent(int &pt, int maxHp,int command,CConfigData *config){
+	CMemReaderProxy reader;
+	CTibiaCharacter* self=reader.readSelfCharacter();
+	int val=pt<0?max(maxHp+pt,maxHp/10):pt;
+	if (!config->randomCast){
+		delete self;
+		return val;
+	}
+
+	if (!setHp[&pt]) command=MAKE;
+	if (command==MAKE){
+		// within 10% of number with a min of pt and a max of maxHp
+		//return value between 0 and 100
+		setHp[&pt]=CModuleUtil::randomFormula(val,(int)(val*.1),val,max(maxHp,val+1))*100/maxHp;
+	}
+	delete self;
+	return setHp[&pt];
 }
 
 
@@ -173,7 +191,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		for (int loop = 0; loop < config->timedSpellList.size(); loop++)
 			config->timedSpellList[loop].randMana = RandomVariableMana(config->timedSpellList[loop].mana,GET,config);
 		for (loop = 0; loop < config->healList.size(); loop++)
-			config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP*self->maxHp/config->healList[loop].maxHP,MAKE,config)*100/self->maxHp;
+			config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP,config->healList[loop].maxHP,MAKE,config);
 		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || ((config->paralysisSpell || config->paralysisIco) && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
 			// Akilez:	Give 1st priority to custom spells!
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
@@ -234,7 +252,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 				for (int loop = 0; loop < config->healList.size(); loop++) {
 					if (OnList(config->healList[loop].name,ch->name) && ch->hpPercLeft <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x-self->x)<=7 && abs(ch->y-self->y)<=5 && ch->z == self->z) {
-						config->healList[loop].randTriggerHP = RandomVariableHp(config->healList[loop].triggerHP*self->maxHp/config->healList[loop].maxHP,MAKE,config)*100/self->maxHp;
+						config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP,config->healList[loop].maxHP,MAKE,config);
 						char buf[256];
 						sprintf(buf,"exura sio \"%s\"",ch->name);
 						sender.say(buf);
