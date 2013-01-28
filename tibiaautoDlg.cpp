@@ -1388,10 +1388,10 @@ void CTibiaautoDlg::OnMemdebug()
 
 BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg) 
 {
-	//HWND hWnd = ::GetActiveWindow();
-	//if (this->m_hWnd!=hWnd){
-	//	return ::IsDialogMessage(hWnd,pMsg);
-	//}
+	HWND hWnd = ::GetActiveWindow();
+	if (this->m_hWnd!=hWnd){
+		return ::IsDialogMessage(hWnd,pMsg);
+	}
 	int eventStop=0;
 	if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_ESCAPE)
 	{
@@ -1638,7 +1638,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.26.4 tm=%d,",tm);
+		fprintf(f,"version=2.26.5 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
