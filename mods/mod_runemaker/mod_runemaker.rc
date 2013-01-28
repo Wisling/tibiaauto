@@ -73,14 +73,9 @@ BEGIN
     GROUPBOX        "Rune Options",IDC_FRAME_RUNE_OPTIONS,7,72,215,121
     GROUPBOX        "General Options",IDC_FRAME_GENERAL_OPTIONS,7,195,215,93
     GROUPBOX        "Statistics",IDC_FRAME_STATISTICS,7,290,215,34
-    DEFPUSHBUTTON   "OK",IDOK,95,345,50,14
-    CONTROL         "Enable rune maker",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,327,215,14
     CONTROL         "List1",IDC_TOOL_RUNEMAKER_CONT,"SysListView32",
                     LVS_REPORT | LVS_SINGLESEL | LVS_NOSORTHEADER | 
-                    WS_BORDER | WS_TABSTOP,14,18,201,46
-    EDITTEXT        IDC_TOOL_RUNEMAKER_RUNESPELL,60,84,155,14,ES_AUTOHSCROLL
-    EDITTEXT        IDC_TOOL_RUNEMAKER_SOUL,60,100,26,14,ES_AUTOHSCROLL
+                    WS_BORDER,14,18,201,46
     LTEXT           "Rune spell:",IDC_STATIC,14,84,38,14,SS_CENTERIMAGE
     LTEXT           "Mana limit:",IDC_STATIC,14,116,38,14,SS_CENTERIMAGE
     LTEXT           "Total blank runes: 0",IDC_TOOL_RUNEMAKER_INFO_BLANKS,14,
@@ -89,28 +84,33 @@ BEGIN
     LTEXT           "Blanks for: 0s",IDC_TOOL_RUNEMAKER_INFO_RUNETIME,113,
                     301,99,8
     LTEXT           "Soul points:",IDC_STATIC,14,100,38,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_RUNEMAKER_MANALIMIT,60,116,26,14,ES_AUTOHSCROLL
     LTEXT           "Rune mana:",IDC_STATIC,93,100,40,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_RUNEMAKER_MANA,135,100,26,14,ES_AUTOHSCROLL
-    CONTROL         "Promoted Player (for stats only)",IDC_TOOL_PREMIUM,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,227,180,10
-    CONTROL         "Make as many runes as possible when mana limit reached",
-                    IDC_TOOL_MAXMANAUSE,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,14,217,201,10
     LTEXT           "Soulpoints for: 0s",
                     IDC_TOOL_RUNEMAKER_INFO_SOULPOINTSTIME,113,312,99,8
+    DEFPUSHBUTTON   "OK",IDOK,95,345,50,14
+    EDITTEXT        IDC_TOOL_RUNEMAKER_RUNESPELL,60,84,155,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_RUNEMAKER_SOUL,60,100,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_RUNEMAKER_MANA,135,100,26,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_TOOL_RUNEMAKER_MANALIMIT,60,116,26,14,ES_AUTOHSCROLL
+    CONTROL         "Make ASAP",IDC_MAKENOW,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,171,101,44,12
     PUSHBUTTON      "Add vv",IDC_ADDSPELLTOLIST,93,117,33,12
     PUSHBUTTON      "Load ^^",IDC_LOADSPELLFROMLIST,138,117,34,12
     PUSHBUTTON      "Delete",IDC_DELETEFROMLIST,184,118,31,11
     CONTROL         "List2",IDC_TOOL_RUNEMAKER_SPELLS,"SysListView32",
                     LVS_REPORT | LVS_SINGLESEL | LVS_NOSORTHEADER | 
                     WS_BORDER | WS_TABSTOP,14,133,201,54
-    CONTROL         "Make ASAP",IDC_MAKENOW,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,171,101,44,12
-    CONTROL         "Random cast at up to 10% more mana",IDC_TOOL_RANDOMCAST,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,237,180,10
     CONTROL         "Use spear instead of blank rune",IDC_TOOL_USESPEAR,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,207,180,10
+    CONTROL         "Make as many runes as possible when mana limit reached",
+                    IDC_TOOL_MAXMANAUSE,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,217,201,10
+    CONTROL         "Promoted Player (for stats only)",IDC_TOOL_PREMIUM,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,227,180,10
+    CONTROL         "Random cast at up to 10% more mana",IDC_TOOL_RANDOMCAST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,237,180,10
+    CONTROL         "Enable rune maker",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,327,215,14
 END
 
 IDD_TOOL_CONTAINERCONTENT DIALOG DISCARDABLE  0, 0, 191, 209

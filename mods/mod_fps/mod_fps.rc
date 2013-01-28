@@ -70,22 +70,22 @@ CAPTION "Module: FPS"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Options",IDC_FRAME_OPTIONS,7,5,135,86
-    DEFPUSHBUTTON   "OK",IDOK,49,114,50,14
-    CONTROL         "Enable FPS",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,96,135,14
-    CONTROL         "Inactive Tibia FPS:",IDC_FPSTOOL_INACTIVE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,33,76,8
-    CONTROL         "Minimized Tibia FPS:",IDC_FPSTOOL_MINIMIZED,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,12,48,81,8
-    EDITTEXT        IDC_FPSTOOL_ACTIVEVAL,97,15,40,14,ES_RIGHT | 
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_FPSTOOL_INACTIVEVAL,97,31,40,14,ES_RIGHT | 
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_FPSTOOL_MINIMIZEDVAL,97,47,40,14,ES_RIGHT | 
-                    ES_AUTOHSCROLL
     LTEXT           "Tibia state:",IDC_FPSTOOL_TIBIASTATE,12,63,125,8
     LTEXT           "Current FPS rate:",IDC_FPSTOOL_FPSRATE,12,78,125,8
     LTEXT           "Active Tibia:",IDC_STATIC,25,18,40,8
+    DEFPUSHBUTTON   "OK",IDOK,49,114,50,14
+    EDITTEXT        IDC_FPSTOOL_ACTIVEVAL,97,15,40,14,ES_RIGHT | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Inactive Tibia FPS:",IDC_FPSTOOL_INACTIVE,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,33,76,8
+    EDITTEXT        IDC_FPSTOOL_INACTIVEVAL,97,31,40,14,ES_RIGHT | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Minimized Tibia FPS:",IDC_FPSTOOL_MINIMIZED,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,12,48,81,8
+    EDITTEXT        IDC_FPSTOOL_MINIMIZEDVAL,97,47,40,14,ES_RIGHT | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Enable FPS",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,96,135,14
 END
 
 

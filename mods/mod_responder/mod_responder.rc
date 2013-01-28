@@ -87,29 +87,26 @@ CAPTION "Module: Auto Responder"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Responder Logs",IDC_FRAME_RESPONDER_LOGS,7,7,520,333
-    DEFPUSHBUTTON   "OK",IDOK,241,362,50,14
     CONTROL         "List1",IDC_AUTORESPOND_MSGHISTORY,"SysListView32",
-                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,15,
-                    136,354,105
+                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER,15,136,354,105
     CONTROL         "List1",IDC_AUTORESPOND_ACTIONLOG,"SysListView32",
-                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,14,
-                    255,354,62
+                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER,14,255,354,62
     LTEXT           "Message Log",IDC_STATIC,15,125,336,8
     LTEXT           "Debug Log",IDC_STATIC,15,244,47,8
-    CONTROL         "Enable auto responder",IDC_AUTORESPOND_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,344,520,15
     EDITTEXT        IDC_AUTORESPOND_SCRIPT,15,17,504,104,ES_MULTILINE | 
                     ES_AUTOVSCROLL | ES_AUTOHSCROLL | ES_READONLY | 
-                    WS_VSCROLL | WS_HSCROLL
-    PUSHBUTTON      "Clear log",IDC_AUTORESPOND_CLEAR,319,320,50,14
+                    WS_VSCROLL | WS_HSCROLL | NOT WS_TABSTOP
     CONTROL         "List1",IDC_AUTORESPOND_THREADSTATUS,"SysListView32",
-                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,376,
-                    136,143,181
+                    LVS_REPORT | LVS_SINGLESEL | WS_BORDER,376,136,143,181
     LTEXT           "Threads Status",IDC_STATIC,376,125,151,8
+    DEFPUSHBUTTON   "OK",IDOK,241,362,50,14
     CONTROL         "Enable Debug",IDC_AUTORESPOND_ENABLEDEBUG,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,325,61,10
     CONTROL         "Local Echo",IDC_AUTORESPOND_LOCALECHO,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,85,325,52,10
+    PUSHBUTTON      "Clear log",IDC_AUTORESPOND_CLEAR,319,320,50,14
+    CONTROL         "Enable auto responder",IDC_AUTORESPOND_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,344,520,15
 END
 
 

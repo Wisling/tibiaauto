@@ -71,25 +71,25 @@ FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Options",IDC_FRAME_OPTIONS,7,59,157,57
     GROUPBOX        "Statistics",IDC_FRAME_STATISTICS,7,7,157,50
-    DEFPUSHBUTTON   "OK",IDOK,61,138,50,14
-    CONTROL         "Enable fishing",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,121,157,14
     LTEXT           "Total fish in all containers:",IDC_STATIC,15,18,88,8
     LTEXT           "Fish reserve for minutes: ",IDC_STATIC,15,31,88,8
     LTEXT           "0 min",IDC_AUTOFISH_TIME,116,31,37,8
     CONTROL         "0",IDC_AUTOFISH_QTY,"Static",SS_LEFTNOWORDWRAP | 
                     WS_GROUP,116,18,37,8
-    CONTROL         "Move fish from hands to containers",
-                    IDC_AUTOFISH_MOVETOCONT,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,71,126,10
     LTEXT           "Recogonized fishy water fields:",IDC_STATIC,15,44,98,8
     LTEXT           "0",IDC_AUTOFISH_FISHYWATER,116,44,37,8
     LTEXT           "Fish when capacity above:",IDC_STATIC,15,97,86,14,
                     SS_CENTERIMAGE
-    EDITTEXT        IDC_FISH_CAP,104,97,40,14,ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK",IDOK,61,138,50,14
+    CONTROL         "Move fish from hands to containers",
+                    IDC_AUTOFISH_MOVETOCONT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,71,126,10
     CONTROL         "Fish only when worms are present",
                     IDC_AUTOFISH_FISH_WHEN_WORMS,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,15,84,122,10
+    EDITTEXT        IDC_FISH_CAP,104,97,40,14,ES_AUTOHSCROLL
+    CONTROL         "Enable fishing",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,121,157,14
 END
 
 

@@ -1,8 +1,9 @@
-2.26.5 26.1.2013
+2.26.5 27.1.2013
 Enhancements:
  Cavebot & Auto looter: "Loot Custom" option is enabled by default.
  Python: readVIPEntry returns extra information regarding the 
  Python: getMemIntValue has added parameter for offsetting address by the base address.
+ Tibia Auto: Sensical tabbing for all modules(except for those with multiple pages)
 Defects:
  Cavebot: Fixed the process to use ladders when walking
  Anylogout: Removed the "Stop All" command from the set of commands it uses to stay logged in.
@@ -16,8 +17,7 @@ Internal:
  added xercesc and libs folders back into tibiaauto-pub
  added regular expressions engine deelx.h to SDK folder for use in parsing incomming packets.
  Changed all RandomVariable generators in all modules to use pointers
-
-
+ Removed duplicated list of the AutoGo IDS strings from tibiaauto.rc that were added to allow tibiaauto.exe to compile.
 
 2.26.4, 25.1.2013
 Enhancements:

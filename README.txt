@@ -1,8 +1,15 @@
-2.26.4, 25.1.2013
+2.26.5 27.1.2013
 Enhancements:
- Auto Go/Log: Forced Alarm trigger text to be in a valid format upon adding to the alarm list. eg "[1x,  1y, 3z] 6" for distance away from a point would be simplified to "(1,1,3)6"
- Auto Go/Log: New accepted format for stamina eg. "2h" or "120" or "2h0m"
- Auto Go/Log: New accepted format for any values involving seconds eg. "1m30s" "90s"
+ Cavebot & Auto looter: "Loot Custom" option is enabled by default.
+ Python: readVIPEntry returns extra information regarding the 
+ Python: getMemIntValue has added parameter for offsetting address by the base address.
+ Tibia Auto: Sensical tabbing for all modules(except for those with multiple pages)
 Defects:
- Cavebot: Fixed the problem of not saving delays of 0 from the waypoint list.
- tiles.xml: Fixed ladder identifiers
+ Cavebot: Fixed the process to use ladders when walking
+ Anylogout: Removed the "Stop All" command from the set of commands it uses to stay logged in.
+ VIP reader: fixed crashes from reading operations on the VIP list
+ MapHacks: fixed writing multi-level minimap colours to Tibia's memory
+ Cavebot: fixed load waypoints from minimap
+ Python: Fixed readVIPEntry function
+ Autogo: Fixed VIP alarms
+ Autogo: Fixed text in info box going past end of box

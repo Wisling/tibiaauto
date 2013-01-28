@@ -70,29 +70,29 @@ CAPTION "Module: Banker"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Banking Options",IDC_FRAME_BANKER,6,7,136,122
-    DEFPUSHBUTTON   "OK",IDOK,49,147,50,14
-    CONTROL         "Enable Banking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,6,131,136,14
-    COMBOBOX        IDC_BANKER_BANKER,37,18,99,122,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Banker:",IDC_STATIC,11,20,24,8
     LTEXT           "Deposit when:",IDC_STATIC,12,31,48,10
-    EDITTEXT        IDC_BANKER_MIN_GOLD,12,42,57,12,ES_AUTOHSCROLL
     LTEXT           "Keep on hand:",IDC_STATIC,80,32,57,10
-    EDITTEXT        IDC_BANKER_ON_HAND,79,42,57,12,ES_AUTOHSCROLL
     LTEXT           "Module Priority:",IDC_STATIC,79,54,49,8
+    LTEXT           "Caps below:",IDC_STATIC,11,54,40,8
+    LTEXT           "None",IDC_BANKER_STATE,12,117,123,8
+    DEFPUSHBUTTON   "OK",IDOK,49,147,50,14
+    COMBOBOX        IDC_BANKER_BANKER,37,18,99,122,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_BANKER_MIN_GOLD,12,42,57,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BANKER_ON_HAND,79,42,57,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_BANKER_CAPSLIMIT,11,65,57,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_BANKER_MODPRIORITY,79,65,57,97,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Caps below:",IDC_STATIC,11,54,40,8
-    EDITTEXT        IDC_BANKER_CAPSLIMIT,11,65,57,14,ES_AUTOHSCROLL
     CONTROL         "Change Gold",IDC_BANKER_CHANGEGOLD,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,11,80,57,10
     CONTROL         "Stop by when going to depot/seller",
                     IDC_BANKER_STOPBYBANKER,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,11,92,126,10
-    LTEXT           "None",IDC_BANKER_STATE,12,117,123,8
     CONTROL         "Withdraw up to Keep on Hand",IDC_BANKER_DRAWUPTO,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,23,104,112,10
+    CONTROL         "Enable Banking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,6,131,136,14
 END
 
 

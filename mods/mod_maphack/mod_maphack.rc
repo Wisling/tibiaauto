@@ -71,19 +71,19 @@ FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Map Options",IDC_FRAME_MAP_OPTIONS,7,7,138,80
     DEFPUSHBUTTON   "OK",IDOK,52,105,50,14
-    CONTROL         "Enable map hacks",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,89,138,14
     CONTROL         "Reveal water with no fish",IDC_REVEAL_NOFISH,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,18,127,10
     CONTROL         "Always show creature name/hp bar",IDC_REVEALCNAME,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,30,127,10
-    CONTROL         "Multi-level Minimap Research",IDC_MINIMAPRESEARCH,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,69,127,10
+    CONTROL         "Mount Automatically",IDC_AUTOMOUNT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,43,127,10
     CONTROL         "Show invisible creatures",IDC_REVEALINVISIBLE,"Button",
                     BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,14,56,127,
                     10
-    CONTROL         "Mount Automatically",IDC_AUTOMOUNT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,43,127,10
+    CONTROL         "Multi-level Minimap Research",IDC_MINIMAPRESEARCH,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,69,127,10
+    CONTROL         "Enable map hacks",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,89,138,14
 END
 
 

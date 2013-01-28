@@ -74,19 +74,19 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Auto Go/Log"
 FONT 8, "MS Sans Serif"
 BEGIN
-    CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,368,286,14
-    DEFPUSHBUTTON   "OK",IDOK,124,389,50,14
     LTEXT           "Status:",IDC_AUTOGO_STATUS,7,350,286,11,SS_CENTERIMAGE | 
                     WS_BORDER
     CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,286,336
+    CONTROL         "Enable auto go/logout",IDC_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,368,286,14
+    DEFPUSHBUTTON   "OK",IDOK,124,389,50,14
 END
 
 IDD_WHITELIST DIALOGEX 0, 0, 191, 185
 STYLE DS_MODALFRAME | DS_NOIDLEMSG | DS_NOFAILCREATE | WS_POPUP | WS_CAPTION | 
     WS_SYSMENU
 CAPTION "Exception List"
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "White List ",IDC_FRAME_WHITE_LIST,5,5,181,155
     EDITTEXT        IDC_WHITELIST_NAME,12,18,112,14,ES_AUTOHSCROLL | 
@@ -95,10 +95,10 @@ BEGIN
     LISTBOX         IDC_WHITELIST_LIST,12,43,111,101,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "Delete",IDC_WHITELIST_DELETE,129,45,50,14
-    DEFPUSHBUTTON   "OK",IDOK,63,166,50,14
     CONTROL         "Use as Black List instead",IDC_WHITELIST_MKBLACK,"Button",
                     BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,24,148,94,10,0,
                     HIDC_WHITELIST_MKBLACK
+    DEFPUSHBUTTON   "OK",IDOK,63,166,50,14
 END
 
 
@@ -164,10 +164,16 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 IDD_ALARM_DIALOG DIALOGEX 0, 0, 281, 320
 STYLE WS_CHILD | WS_VISIBLE
-FONT 8, "MS Sans Serif", 0, 0, 0x1
+FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Alarms",IDC_ALARM_FRAME,7,7,267,307
     GROUPBOX        "Actions",IDC_ACTION_FRAME,14,71,253,141
+    LTEXT           "Type:",IDC_STATIC,14,19,19,8
+    LTEXT           "Attribute:",IDC_STATIC,14,44,29,8
+    LTEXT           "Condition:",IDC_STATIC,100,44,32,8
+    LTEXT           "Trigger:",IDC_STATIC,186,44,25,8
+    CTEXT           "Select an alarm type to begin.",IDC_INSTRUCTION_TEXT,
+                    100,14,167,29,0,WS_EX_STATICEDGE
     COMBOBOX        IDC_ALARM_TYPE,14,28,80,134,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
@@ -177,65 +183,59 @@ BEGIN
     COMBOBOX        IDC_CONDITION,100,53,80,128,CBS_DROPDOWN | 
                     CBS_OWNERDRAWFIXED | CBS_HASSTRINGS | WS_VSCROLL | 
                     WS_TABSTOP
+    EDITTEXT        IDC_TRIGGER,186,53,80,15,ES_AUTOHSCROLL
     CONTROL         "Go to Runaway",IDC_ACTION_RUNAWAY,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,21,81,73,11
     CONTROL         "Go to Start",IDC_ACTION_START,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,21,95,73,11
     CONTROL         "Go to Depot",IDC_ACTION_DEPOT,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,21,109,73,11
+    CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,123,73,11
+    CONTROL         "Cast Spell:",IDC_ACTION_SPELL,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,21,137,73,11
+    COMBOBOX        IDC_SPELL_LIST,28,150,67,62,CBS_DROPDOWN | WS_VSCROLL | 
+                    WS_TABSTOP
+    CONTROL         "Take Screenshot:",IDC_ACTION_SCREENSHOT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,165,73,11
+    COMBOBOX        IDC_SCREENSHOT_OPTIONS,28,178,67,62,CBS_DROPDOWN | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Permanent",IDC_ACTION_PERMANENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,21,193,73,11
+    CONTROL         "Stop Walking",IDC_ACTION_STOP_WALKING,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,81,73,11
     CONTROL         "Log Out",IDC_ACTION_LOGOUT,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,100,95,73,11
     CONTROL         "Kill Tibia Client",IDC_ACTION_KILL,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,100,109,73,11
     CONTROL         "Computer Off",IDC_ACTION_SHUTDOWN,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,100,123,73,11
-    CONTROL         "Take Screenshot:",IDC_ACTION_SCREENSHOT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,165,73,11
-    COMBOBOX        IDC_SCREENSHOT_OPTIONS,28,178,67,62,CBS_DROPDOWN | 
+    CONTROL         "Window Action",IDC_ACTION_WINDOW,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,137,73,11
+    COMBOBOX        IDC_ACTION_WINDOW_LIST,106,150,67,79,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     CONTROL         "Audio Alarm:",IDC_ACTION_SOUND,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,100,165,73,11
     COMBOBOX        IDC_AUDIO_FILE,106,178,67,71,CBS_DROPDOWN | WS_VSCROLL | 
                     WS_TABSTOP
-    CONTROL         "Suspend Mod(s):",IDC_ACTION_SUSPEND_MODULES,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,179,137,73,11
-    PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,219,50,14
-    PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,219,50,14
-    PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,219,50,14
-    LTEXT           "Type:",IDC_STATIC,14,19,19,8
-    LTEXT           "Attribute:",IDC_STATIC,14,44,29,8
-    LTEXT           "Condition:",IDC_STATIC,100,44,32,8
-    LTEXT           "Trigger:",IDC_STATIC,186,44,25,8
-    CONTROL         "List1",IDC_ALARM_LIST,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
-                    WS_TABSTOP,21,240,239,66
-    CONTROL         "Cast Spell:",IDC_ACTION_SPELL,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,21,137,73,11
-    COMBOBOX        IDC_SPELL_LIST,28,150,67,62,CBS_DROPDOWN | WS_VSCROLL | 
-                    WS_TABSTOP
-    EDITTEXT        IDC_TRIGGER,186,53,80,15,ES_AUTOHSCROLL
-    LISTBOX         IDC_MODULES_LIST,186,150,67,38,LBS_SORT | 
-                    LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
-                    WS_TABSTOP
-    CTEXT           "Select an alarm type to begin.",IDC_INSTRUCTION_TEXT,
-                    100,14,167,29,0,WS_EX_STATICEDGE
+    CONTROL         "Perisistent",IDC_ACTION_PERSISTENT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,100,194,73,11
     CONTROL         "Start Mod(s):",IDC_ACTION_START_MODULES,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,179,81,73,11
     LISTBOX         IDC_MODULES_LIST2,186,95,67,38,LBS_SORT | 
                     LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
                     WS_TABSTOP
-    CONTROL         "Log Events",IDC_ACTION_LOG_EVENTS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,123,73,11
-    CONTROL         "Window Action",IDC_ACTION_WINDOW,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,137,73,11
-    COMBOBOX        IDC_ACTION_WINDOW_LIST,106,150,67,79,CBS_DROPDOWN | 
-                    WS_VSCROLL | WS_TABSTOP
-    CONTROL         "Stop Walking",IDC_ACTION_STOP_WALKING,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,81,73,11
-    CONTROL         "Permanent",IDC_ACTION_PERMANENT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,21,193,73,11
-    CONTROL         "Perisistent",IDC_ACTION_PERSISTENT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,100,194,73,11
+    CONTROL         "Suspend Mod(s):",IDC_ACTION_SUSPEND_MODULES,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,179,137,73,11
+    LISTBOX         IDC_MODULES_LIST,186,150,67,38,LBS_SORT | 
+                    LBS_MULTIPLESEL | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | 
+                    WS_TABSTOP
+    PUSHBUTTON      "&Add",IDC_ALARM_ADD,21,219,50,14
+    PUSHBUTTON      "&Edit",IDC_ALARM_EDIT,115,219,50,14
+    PUSHBUTTON      "&Delete",IDC_ALARM_DELETE,209,219,50,14
+    CONTROL         "List1",IDC_ALARM_LIST,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | LVS_NOSORTHEADER | WS_BORDER | 
+                    WS_TABSTOP,21,240,239,66
 END
 
 IDD_GENERAL_CONFIG_DIALOG DIALOGEX 0, 0, 281, 320
@@ -250,18 +250,31 @@ BEGIN
                     IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME,14,56,253,33
     GROUPBOX        "Message Options",
                     IDC_GENERAL_CONFIG_MESSAGE_OPTIONS_FRAME,14,18,253,33
-    PUSHBUTTON      "Black/White List",IDC_AUTOGO_BATTLEWHITELIST,21,30,62,
-                    14
-    CONTROL         "Detect all floors",IDC_AUTOGO_BATTLEPARANOIA,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,21,69,65,10
-    CONTROL         "Ignore Spells",IDC_AUTOGO_MESSAGE_IGNORE_SPELLS,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,88,32,58,10
-    CONTROL         "Detect +/- 1 floor",IDC_AUTOGO_BATTLEANXIETY,"Button",
-                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,88,69,67,10
     CTEXT           "Black List = ""Always Alert Me""\r\nWhite List = ""Never Alert Me""",
                     IDC_STATIC,162,28,98,17,0,WS_EX_STATICEDGE
     CTEXT           "Addional detection options to same-floor detection.",
                     IDC_STATIC,162,65,98,17,0,WS_EX_STATICEDGE
+    LTEXT           "Runaway To:",IDC_STATIC,31,111,44,8,SS_CENTERIMAGE
+    LTEXT           "Current Position:",IDC_STATIC,14,283,52,8,
+                    SS_CENTERIMAGE
+    LTEXT           "Start Position:",IDC_STATIC,31,128,44,8,SS_CENTERIMAGE
+    LTEXT           "Facing Direction:",IDC_STATIC,21,144,54,8
+    CONTROL         3031,IDC_START_PICTURE,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,14,176,124,100
+    LTEXT           "Start Position:",IDC_STATIC,14,164,44,8,SS_CENTERIMAGE
+    CONTROL         3031,IDC_RUNAWAY_PICTURE,"Static",SS_BITMAP | 
+                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,144,176,124,100
+    LTEXT           "Runaway Position:",IDC_STATIC,144,164,60,8,
+                    SS_CENTERIMAGE
+    LTEXT           "Module Priority:",IDC_STATIC,157,282,49,8
+    PUSHBUTTON      "Black/White List",IDC_AUTOGO_BATTLEWHITELIST,21,30,62,
+                    14
+    CONTROL         "Ignore Spells",IDC_AUTOGO_MESSAGE_IGNORE_SPELLS,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,88,32,58,10
+    CONTROL         "Detect all floors",IDC_AUTOGO_BATTLEPARANOIA,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,21,69,65,10
+    CONTROL         "Detect +/- 1 floor",IDC_AUTOGO_BATTLEANXIETY,"Button",
+                    BS_AUTOCHECKBOX | BS_VCENTER | WS_TABSTOP,88,69,67,10
     EDITTEXT        IDC_AUTOGO_RUNAWAY_X,79,108,24,13,ES_CENTER | 
                     ES_AUTOHSCROLL | ES_NUMBER
     EDITTEXT        IDC_AUTOGO_RUNAWAY_Y,107,108,24,13,ES_CENTER | 
@@ -270,11 +283,6 @@ BEGIN
                     ES_AUTOHSCROLL | ES_NUMBER
     PUSHBUTTON      "Set Runaway Position",IDC_AUTOGO_TORUNAWAY,162,108,86,
                     14,BS_VCENTER
-    EDITTEXT        IDC_AUTOGO_CUR_X,72,280,24,14,ES_CENTER | ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Y,100,280,24,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    EDITTEXT        IDC_AUTOGO_CUR_Z,128,280,24,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
     EDITTEXT        IDC_AUTOGO_ACT_X,79,125,24,13,ES_CENTER | ES_AUTOHSCROLL | 
                     ES_NUMBER
     EDITTEXT        IDC_AUTOGO_ACT_Y,107,125,24,13,ES_CENTER | 
@@ -283,27 +291,19 @@ BEGIN
                     ES_AUTOHSCROLL | ES_NUMBER
     PUSHBUTTON      "Set Start Position",IDC_AUTOGO_TOSTART,162,125,86,14,
                     BS_VCENTER
-    LTEXT           "Runaway To:",IDC_STATIC,31,111,44,8,SS_CENTERIMAGE
-    LTEXT           "Current Position:",IDC_STATIC,14,283,52,8,
-                    SS_CENTERIMAGE
-    LTEXT           "Start Position:",IDC_STATIC,31,128,44,8,SS_CENTERIMAGE
     COMBOBOX        IDC_AUTOGO_ACT_DIRECTION,79,142,52,56,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Facing Direction:",IDC_STATIC,21,144,54,8
     CONTROL         "Maintain Position on Alarm",IDC_MAINTAIN_POS,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,161,143,99,10
-    CONTROL         3031,IDC_START_PICTURE,"Static",SS_BITMAP | 
-                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,14,176,124,100
-    LTEXT           "Start Position:",IDC_STATIC,14,164,44,8,SS_CENTERIMAGE
-    CONTROL         3031,IDC_RUNAWAY_PICTURE,"Static",SS_BITMAP | 
-                    SS_CENTERIMAGE | SS_SUNKEN | WS_BORDER,144,176,124,100
-    LTEXT           "Runaway Position:",IDC_STATIC,144,164,60,8,
-                    SS_CENTERIMAGE
-    CONTROL         "Highlight window when alarm sounds",IDC_FLASHONALARM,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,296,144,10
-    LTEXT           "Module Priority:",IDC_STATIC,157,282,49,8
+    EDITTEXT        IDC_AUTOGO_CUR_X,72,280,24,14,ES_CENTER | ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_CUR_Y,100,280,24,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_AUTOGO_CUR_Z,128,280,24,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
     COMBOBOX        IDC_AUTOGO_MODPRIORITY,208,280,59,95,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
+    CONTROL         "Highlight window when alarm sounds",IDC_FLASHONALARM,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,296,144,10
 END
 
 IDD_ADD_CUSTOM_SPELL DIALOG DISCARDABLE  0, 0, 187, 97
@@ -313,15 +313,15 @@ FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Spell Configuration",IDC_SPELL_CONFIGURATION_FRAME,7,7,
                     173,65
+    LTEXT           "Spell Words:",IDC_STATIC,47,20,41,8
+    LTEXT           "Mana Required:",IDC_STATIC,36,38,52,8
+    LTEXT           "Time Between Casting:",IDC_STATIC,14,55,74,8
+    LTEXT           "seconds",IDC_STATIC,140,56,28,8
+    EDITTEXT        IDC_SPELLWORDS,96,17,76,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_REQUIRED_MANA,96,35,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_CASTING_DELAY,96,53,40,14,ES_AUTOHSCROLL
     DEFPUSHBUTTON   "OK",IDOK,7,76,50,14
     PUSHBUTTON      "Cancel",IDCANCEL,130,76,50,14
-    LTEXT           "Spell Words:",IDC_STATIC,47,20,41,8
-    EDITTEXT        IDC_SPELLWORDS,96,17,76,14,ES_AUTOHSCROLL
-    LTEXT           "Mana Required:",IDC_STATIC,36,38,52,8
-    EDITTEXT        IDC_REQUIRED_MANA,96,35,40,14,ES_AUTOHSCROLL
-    LTEXT           "Time Between Casting:",IDC_STATIC,14,55,74,8
-    EDITTEXT        IDC_CASTING_DELAY,96,53,40,14,ES_AUTOHSCROLL
-    LTEXT           "seconds",IDC_STATIC,140,56,28,8
 END
 
 
@@ -493,14 +493,6 @@ BEGIN
 0x654d, 0x7373, 0x6761, 0x7365, "\000" 
     IDC_ALARM_TYPE, 0x403, 6, 0
 0x7645, 0x6e65, 0x0074, 
-    IDC_SCREENSHOT_OPTIONS, 0x403, 9, 0
-0x6e4f, 0x2065, 0x6954, 0x656d, "\000" 
-    IDC_SCREENSHOT_OPTIONS, 0x403, 12, 0
-0x6854, 0x6572, 0x2065, 0x6954, 0x656d, 0x0073, 
-    IDC_SCREENSHOT_OPTIONS, 0x403, 16, 0
-0x7645, 0x7265, 0x2079, 0x2035, 0x6573, 0x6f63, 0x646e, 0x0073, 
-    IDC_SCREENSHOT_OPTIONS, 0x403, 17, 0
-0x7645, 0x7265, 0x2079, 0x3031, 0x5320, 0x6365, 0x6e6f, 0x7364, "\000" 
     IDC_SPELL_LIST, 0x403, 22, 0
 0x413c, 0x6464, 0x4320, 0x7375, 0x6f74, 0x206d, 0x7053, 0x6c65, 0x2e6c, 
 0x2e2e, 0x003e, 
@@ -510,6 +502,14 @@ BEGIN
 0x7455, 0x6e61, 0x2069, 0x7247, 0x6e61, 0x4820, 0x7275, "\000" 
     IDC_SPELL_LIST, 0x403, 11, 0
 0x7455, 0x6d61, 0x206f, 0x6956, 0x6174, "\000" 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 9, 0
+0x6e4f, 0x2065, 0x6954, 0x656d, "\000" 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 12, 0
+0x6854, 0x6572, 0x2065, 0x6954, 0x656d, 0x0073, 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 16, 0
+0x7645, 0x7265, 0x2079, 0x2035, 0x6573, 0x6f63, 0x646e, 0x0073, 
+    IDC_SCREENSHOT_OPTIONS, 0x403, 17, 0
+0x7645, 0x7265, 0x2079, 0x3031, 0x5320, 0x6365, 0x6e6f, 0x7364, "\000" 
     IDC_ACTION_WINDOW_LIST, 0x403, 15, 0
 0x614d, 0x6978, 0x696d, 0x657a, 0x5420, 0x6269, 0x6169, "\000" 
     IDC_ACTION_WINDOW_LIST, 0x403, 14, 0

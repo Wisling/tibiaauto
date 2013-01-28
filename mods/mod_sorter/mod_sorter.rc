@@ -77,9 +77,9 @@ BEGIN
     GROUPBOX        "Bag 7",IDC_FRAME_BAG7,142,133,127,61
     GROUPBOX        "Bag 4",IDC_FRAME_BAG4,7,196,129,61
     GROUPBOX        "Bag 8",IDC_FRAME_BAG8,142,196,127,61
+    LTEXT           "Sortable Items",IDC_STATIC,7,261,46,8,0,
+                    WS_EX_TRANSPARENT
     DEFPUSHBUTTON   "OK",IDOK,112,305,50,14
-    CONTROL         "Enable sorting",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,287,262,14
     LISTBOX         IDC_SORTER_BAG1,14,19,85,41,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SORTER_BAG1_IN,103,19,25,14
@@ -114,8 +114,8 @@ BEGIN
     PUSHBUTTON      ">>>",IDC_SORTER_BAG8_OUT,237,236,25,14
     COMBOBOX        IDC_SORTER_ITEM_LIST,7,271,85,80,CBS_DROPDOWNLIST | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Sortable Items",IDC_STATIC,7,261,46,8,0,
-                    WS_EX_TRANSPARENT
+    CONTROL         "Enable sorting",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,287,262,14
 END
 
 

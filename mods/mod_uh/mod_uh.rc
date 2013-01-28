@@ -73,40 +73,40 @@ BEGIN
                     79
     GROUPBOX        "Group healing features",IDC_FRAME_GROUP_HEALING,7,88,
                     192,130
-    DEFPUSHBUTTON   "OK",IDOK,77,261,50,14
-    CONTROL         "Enable UH",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,242,192,14
     LTEXT           "Sleep after UH cast [ms]:",IDC_STATIC,13,222,84,14,
                     SS_CENTERIMAGE,WS_EX_TRANSPARENT
-    EDITTEXT        IDC_TOOL_AUTOUH_SLEEP,97,222,97,14,ES_AUTOHSCROLL
     LTEXT           "UH when HP below:",IDC_STATIC,13,20,70,14,
                     SS_CENTERIMAGE
+    LTEXT           "Healing rune type:",IDC_STATIC,13,36,68,14,
+                    SS_CENTERIMAGE
+    LTEXT           "UH when HP below [%]:",IDC_STATIC,13,100,84,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Healing rune type:",IDC_STATIC,13,118,68,14,
+                    SS_CENTERIMAGE
+    LTEXT           "Group members to heal:",IDC_STATIC,97,154,84,14
+    DEFPUSHBUTTON   "OK",IDOK,77,261,50,14
     EDITTEXT        IDC_TOOL_AUTOUH_UHBORDERLINE,97,20,97,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_TOOL_AUTOUH_RUNETYPE,97,37,97,54,CBS_DROPDOWNLIST | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Healing rune type:",IDC_STATIC,13,36,68,14,
-                    SS_CENTERIMAGE
     CONTROL         "Fallback to the other rune type",
                     IDC_TOOL_AUTOUH_FALLBACK,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,13,52,112,14
-    LTEXT           "UH when HP below [%]:",IDC_STATIC,13,100,84,14,
-                    SS_CENTERIMAGE
+    CONTROL         "Activate hotkey [%ta selfuh]",IDC_TOOL_AUTOUH_HOTKEY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,68,103,14
     EDITTEXT        IDC_TOOL_AUTOUH_GRP_HPBELOW,97,100,97,14,ES_AUTOHSCROLL
     COMBOBOX        IDC_TOOL_AUTOUH_GRP_RUNETYPE,97,119,97,54,
                     CBS_DROPDOWNLIST | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Healing rune type:",IDC_STATIC,13,118,68,14,
-                    SS_CENTERIMAGE
     CONTROL         "Fallback to the other rune type",
                     IDC_TOOL_AUTOUH_GRP_FALLBACK,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,13,136,112,14
-    EDITTEXT        IDC_TOOL_AUTOUH_GRP_MEMBER,13,196,55,14,ES_AUTOHSCROLL
     LISTBOX         IDC_TOOL_AUTOUH_GRP_MEMBER_LIST,97,168,97,43,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    PUSHBUTTON      ">>>",IDC_TOOL_AUTOUH_GRP_MEMBER_ADD,71,196,19,14
     PUSHBUTTON      "<<<",IDC_TOOL_AUTOUH_GRP_MEMBER_REMOVE,71,168,19,14
-    LTEXT           "Group members to heal:",IDC_STATIC,97,154,84,14
-    CONTROL         "Activate hotkey [%ta selfuh]",IDC_TOOL_AUTOUH_HOTKEY,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,13,68,103,14
+    EDITTEXT        IDC_TOOL_AUTOUH_GRP_MEMBER,13,196,55,14,ES_AUTOHSCROLL
+    PUSHBUTTON      ">>>",IDC_TOOL_AUTOUH_GRP_MEMBER_ADD,71,196,19,14
+    EDITTEXT        IDC_TOOL_AUTOUH_SLEEP,97,222,97,14,ES_AUTOHSCROLL
+    CONTROL         "Enable UH",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,242,192,14
 END
 
 

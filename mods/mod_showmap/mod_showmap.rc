@@ -70,14 +70,14 @@ CAPTION "Tool: show recorded map"
 FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Mapping Options",IDC_FRAME_MAPPING_OPTIONS,7,303,195,26
-    DEFPUSHBUTTON   "OK",IDOK,237,315,50,14
+    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,277,337,22,WS_BORDER
     CONTROL         "Research map",IDC_TOOL_MAPSHOW_RESEARCH,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,317,62,10
-    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,315,50,14
-    LTEXT           "Tile info: n/a",IDC_TILE_INFO,7,277,337,22,WS_BORDER
     CONTROL         "Extended research map",
                     IDC_TOOL_MAPSHOW_EXTENDED_RESEARCH,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,81,317,91,10
+    DEFPUSHBUTTON   "OK",IDOK,237,315,50,14
+    PUSHBUTTON      "Clear map",IDC_TOOL_MAPSHOW_CLEAR,294,315,50,14
 END
 
 
@@ -135,7 +135,7 @@ BEGIN
         MENUITEM "Clear",                       ID_SHOWMAPOPTIONS_CLEAR
         MENUITEM "Available",                   ID_SHOWMAPOPTIONS_AVAILABLE
         MENUITEM SEPARATOR
-        MENUITEM "Permanent Depot",                       ID_SHOWMAPOPTIONS_DEPOT
+        MENUITEM "Permanent Depot",             ID_SHOWMAPOPTIONS_DEPOT
         MENUITEM SEPARATOR
         MENUITEM "Permanent Teleporter",        ID_SHOWMAPOPTIONS_TELE
         MENUITEM "Permanent Block",             ID_SHOWMAPOPTIONS_BLOCK
@@ -191,45 +191,45 @@ BEGIN
     GROUPBOX        "Use",IDC_FRAME_USE,12,87,93,45
     GROUPBOX        "Characteristics",IDC_FRAME_CHARACTERISTICS,116,7,104,
                     107
-    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,87,170,50,14
+    LTEXT           "Tile ID:",IDC_STATIC,123,17,22,12,SS_NOTIFY | 
+                    SS_CENTERIMAGE
+    LTEXT           "Speed:",IDC_STATIC,123,99,24,10,SS_CENTERIMAGE
     CONTROL         "Ground",IDC_GROUND,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,12,18,39,10
     CONTROL         "Container",IDC_CONTAINER,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,12,29,46,10
     CONTROL         "Depot",IDC_DEPOT,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     12,40,35,10
+    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    WS_TABSTOP,12,65,51,10
+    CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFT | WS_TABSTOP,12,75,64,10
     CONTROL         "Use Shovel",IDC_SHOVEL,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,18,98,53,10
     CONTROL         "Use Rope",IDC_ROPE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
                     WS_TABSTOP,18,108,48,10
     CONTROL         "Use Tile (CTRL+Click)",IDC_USE_TILE,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | WS_TABSTOP,18,118,86,10
-    CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,123,53,93,10
-    CONTROL         "Can go UP",IDC_GO_UP,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
-                    WS_TABSTOP,12,65,51,10
-    CONTROL         "Can go DOWN",IDC_GO_DOWN,"Button",BS_AUTOCHECKBOX | 
-                    BS_LEFT | WS_TABSTOP,12,75,64,10
+    EDITTEXT        IDC_TILE_ID,153,17,24,12,ES_AUTOHSCROLL | ES_READONLY | 
+                    ES_NUMBER
     CONTROL         "Blocks walking",IDC_BLOCKING,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | BS_MULTILINE | WS_TABSTOP,123,31,93,10
     CONTROL         "Walkable ground tile",IDC_WALKABLE,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
                     123,42,93,10
+    CONTROL         "Movable",IDC_MOVABLE,"Button",BS_AUTOCHECKBOX | BS_LEFT | 
+                    WS_TABSTOP,123,53,93,10
     CONTROL         "Always appears on top",IDC_ALWAYS_ON_TOP,"Button",
                     BS_AUTOCHECKBOX | BS_LEFT | BS_MULTILINE | WS_TABSTOP,
                     123,64,93,10
     CONTROL         "Stackable item",IDC_STACKABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,123,75,93,10
-    EDITTEXT        IDC_TILE_ID,153,17,24,12,ES_AUTOHSCROLL | ES_READONLY | 
-                    ES_NUMBER
-    LTEXT           "Tile ID:",IDC_STATIC,123,17,22,12,SS_NOTIFY | 
-                    SS_CENTERIMAGE
-    EDITTEXT        IDC_SPEED,154,98,24,12,ES_AUTOHSCROLL | ES_NUMBER
-    LTEXT           "Speed:",IDC_STATIC,123,99,24,10,SS_CENTERIMAGE
-    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,116,152,50,14
-    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,170,152,50,14
     CONTROL         "Teleporter",IDC_TELEPORTER,"Button",BS_AUTOCHECKBOX | 
                     BS_LEFT | WS_TABSTOP,123,86,93,10
+    EDITTEXT        IDC_SPEED,154,98,24,12,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "<<< Previous",IDC_PREVIOUS_CONFIG_TILE,116,152,50,14
+    PUSHBUTTON      "Next >>>",IDC_NEXT_CONFIG_TILE,170,152,50,14
+    DEFPUSHBUTTON   "Commit ",IDC_COMMIT,87,170,50,14
 END
 
 

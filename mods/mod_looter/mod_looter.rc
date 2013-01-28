@@ -71,75 +71,75 @@ FONT 8, "MS Sans Serif"
 BEGIN
     GROUPBOX        "Container Setup",IDC_FRAME_CONTAINER_SETUP,7,7,172,164
     GROUPBOX        "Loot Options",IDC_FRAME_LOOT_OPTIONS,7,175,172,60
-    DEFPUSHBUTTON   "OK",IDOK,69,254,50,14
     LTEXT           "Container 1:",IDC_STATIC,15,18,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_1,61,18,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS1,119,18,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 2:",IDC_STATIC,15,33,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_2,61,33,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS2,119,33,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 3:",IDC_STATIC,15,48,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_3,61,48,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS3,119,48,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 4:",IDC_STATIC,15,63,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_4,61,63,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS4,119,63,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 5:",IDC_STATIC,15,78,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_5,61,78,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS5,119,78,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 6:",IDC_STATIC,15,93,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_6,61,93,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS6,119,93,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 7:",IDC_STATIC,15,108,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_7,61,108,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS7,119,108,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 8:",IDC_STATIC,15,123,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_8,61,123,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS8,119,123,46,12,
                     SS_CENTERIMAGE
     LTEXT           "Container 9:",IDC_STATIC,15,138,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_9,61,138,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
     LTEXT           "Status: closed",IDC_CONTAINER_STATUS9,119,138,46,12,
                     SS_CENTERIMAGE
-    CONTROL         "Enable looting",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,7,237,172,14
+    LTEXT           "Container 10:",IDC_STATIC,15,153,43,12,SS_CENTERIMAGE
+    LTEXT           "Status: closed",IDC_CONTAINER_STATUS10,119,153,46,12,
+                    SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,69,254,50,14
+    COMBOBOX        IDC_CONTAINER_MODE_1,61,18,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_2,61,33,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_3,61,48,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_4,61,63,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_5,61,78,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_6,61,93,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_7,61,108,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_8,61,123,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_9,61,138,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    COMBOBOX        IDC_CONTAINER_MODE_10,61,153,48,46,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
     CONTROL         "Auto open killed monsters and gather statistics",
                     IDC_AUTO_OPEN,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,15,
                     187,158,10
-    CONTROL         "Loot food",IDC_LOOT_FOOD,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,211,52,10
+    CONTROL         "Loot worms",IDC_LOOT_WORMS,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,199,49,10
     CONTROL         "Loot gp",IDC_LOOT_GP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,71,199,52,10
     CONTROL         "Loot custom",IDC_LOOT_CUSTOM,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,124,199,52,10
-    CONTROL         "Loot worms",IDC_LOOT_WORMS,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,15,199,49,10
-    LTEXT           "Container 10:",IDC_STATIC,15,153,43,12,SS_CENTERIMAGE
-    COMBOBOX        IDC_CONTAINER_MODE_10,61,153,48,46,CBS_DROPDOWNLIST | 
-                    WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Status: closed",IDC_CONTAINER_STATUS10,119,153,46,12,
-                    SS_CENTERIMAGE
-    CONTROL         "Loot while in Depot",IDC_LOOT_DEPOT,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,15,223,108,10
+    CONTROL         "Loot food",IDC_LOOT_FOOD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,15,211,52,10
     CONTROL         "Eat from corpse",IDC_EAT_FROM_CORPSE,"Button",
                     BS_AUTOCHECKBOX | NOT WS_VISIBLE | WS_TABSTOP,71,211,63,
                     10
+    CONTROL         "Loot while in Depot",IDC_LOOT_DEPOT,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,15,223,108,10
+    CONTROL         "Enable looting",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,7,237,172,14
 END
 
 IDD_SENDSTATS DIALOG DISCARDABLE  0, 0, 186, 70
@@ -147,9 +147,9 @@ STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Send loot statistics info!"
 FONT 8, "MS Sans Serif"
 BEGIN
-    DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
     CTEXT           "Your loot statistics file (tibiaauto-stats-loot.txt) is bigger than 800k. Please support Tibia Auto by going into ""General options and statistics"" and sending the file to us!",
                     IDC_STATIC,7,7,172,39,WS_BORDER
+    DEFPUSHBUTTON   "OK",IDOK,69,49,50,14
 END
 
 

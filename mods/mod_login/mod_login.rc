@@ -73,20 +73,23 @@ BEGIN
     GROUPBOX        "Debug Log",IDC_FRAME_DEBUG_LOG,7,217,212,81
     GROUPBOX        "Backpack Control",IDC_FRAME_BACKPACK_CONTROL,7,140,212,
                     74
-    DEFPUSHBUTTON   "OK",IDOK,88,319,50,14
-    CONTROL         "Enable automatic login",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,303,212,14
     LTEXT           "Account Number:",IDC_STATIC,14,55,55,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_ACCOUNT_NUMBER,87,55,90,14,ES_PASSWORD | 
-                    ES_AUTOHSCROLL
     LTEXT           "Password:",IDC_STATIC,14,73,55,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_PASSWORD,87,73,90,14,ES_PASSWORD | ES_AUTOHSCROLL
-    CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | 
-                    LVS_SINGLESEL | WS_BORDER | WS_TABSTOP,14,229,198,63
     LTEXT           "Connection status: -",IDC_STATUS,14,127,198,8
     LTEXT           "Character Position:",IDC_STATIC,14,91,67,14,
                     SS_CENTERIMAGE
+    CTEXT           "Always test auto login before using it!\nPlease also note that backpacks may not all be opened properly even though they are minimized at startup.",
+                    IDC_STATIC,7,7,212,27,WS_BORDER
+    LTEXT           "Login Delay:",IDC_STATIC,14,109,55,14,SS_CENTERIMAGE
+    LTEXT           "seconds",IDC_STATIC,145,109,55,14,SS_CENTERIMAGE
+    DEFPUSHBUTTON   "OK",IDOK,88,319,50,14
+    CONTROL         "Log in with last character",IDC_AUTOPASS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,87,43,95,10
+    EDITTEXT        IDC_ACCOUNT_NUMBER,87,55,90,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    EDITTEXT        IDC_PASSWORD,87,73,90,14,ES_PASSWORD | ES_AUTOHSCROLL
     EDITTEXT        IDC_CHAR_POS,87,91,90,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_LOGIN_DELAY,87,109,57,14,ES_AUTOHSCROLL
     CONTROL         "Open main backpack",IDC_OPEN_BACKPACK,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,153,84,10
     CONTROL         "Open container 1",IDC_OPEN_CONTAINER1,"Button",
@@ -105,15 +108,12 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,102,182,71,10
     CONTROL         "Open container 8",IDC_OPEN_CONTAINER8,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,102,192,71,10
-    CTEXT           "Always test auto login before using it!\nPlease also note that backpacks may not all be opened properly even though they are minimized at startup.",
-                    IDC_STATIC,7,7,212,27,WS_BORDER
-    LTEXT           "Login Delay:",IDC_STATIC,14,109,55,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_LOGIN_DELAY,87,109,57,14,ES_AUTOHSCROLL
-    LTEXT           "seconds",IDC_STATIC,145,109,55,14,SS_CENTERIMAGE
-    CONTROL         "Log in with last character",IDC_AUTOPASS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,87,43,95,10
     CONTROL         "Re-log in after death",IDC_LOGIN_AFTER_KILLED,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,202,80,10
+    CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | 
+                    LVS_SINGLESEL | WS_BORDER,14,229,198,63
+    CONTROL         "Enable automatic login",IDC_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,303,212,14
 END
 
 

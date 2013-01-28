@@ -64,103 +64,103 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOG DISCARDABLE  0, 0, 210, 397
+IDD_CONFIG DIALOG DISCARDABLE  0, 0, 405, 248
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Module: Fluid Drinker"
+CAPTION "d"
 FONT 8, "MS Sans Serif"
 BEGIN
-    GROUPBOX        "Health Recovery",IDC_FRAME_HEALTH_RECOVERY,7,7,196,148
-    GROUPBOX        "Mana Recovery",IDC_FRAME_MANA_RECOVERY,7,157,196,117
-    GROUPBOX        "General Options",IDC_FRAME_GENERAL_OPTIONS,7,275,196,82
-    DEFPUSHBUTTON   "OK",IDOK,71,376,50,14
-    CONTROL         "Enable fluid drinker",IDC_ENABLE,"Button",
-                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,359,196,14
+    GROUPBOX        "Health Recovery",IDC_FRAME_HEALTH_RECOVERY,7,7,193,148
+    GROUPBOX        "Mana Recovery",IDC_FRAME_MANA_RECOVERY,205,7,193,148
+    GROUPBOX        "General Options",IDC_FRAME_GENERAL_OPTIONS,7,158,391,49
     LTEXT           "HP Below:",IDC_STATIC,14,20,42,14,SS_CENTERIMAGE
+    LTEXT           "Sleep after drinking:",IDC_STATIC,140,167,65,14,
+                    SS_CENTERIMAGE
+    LTEXT           "HP Below:",IDC_STATIC,14,52,42,14,SS_CENTERIMAGE
+    LTEXT           "HP Below:",IDC_STATIC,14,36,42,14,SS_CENTERIMAGE
+    LTEXT           "HP Below:",IDC_STATIC,14,85,42,14,SS_CENTERIMAGE
+    LTEXT           "Mana Below:",IDC_STATIC,212,20,42,14,SS_CENTERIMAGE
+    LTEXT           "Mana Below:",IDC_STATIC,212,36,42,14,SS_CENTERIMAGE
+    LTEXT           "Mana Below:",IDC_STATIC,212,54,42,14,SS_CENTERIMAGE
+    LTEXT           "Mana Below:",IDC_STATIC,212,71,42,14,SS_CENTERIMAGE
+    LTEXT           "HP Below:",IDC_STATIC,14,136,42,14,SS_CENTERIMAGE
+    LTEXT           "Mana Below:",IDC_STATIC,212,105,42,14,SS_CENTERIMAGE
+    LTEXT           "Custom Health Item:",IDC_STATIC,14,121,64,8,
+                    SS_CENTERIMAGE
+    LTEXT           "Custom Mana Item:",IDC_STATIC,212,89,62,8,
+                    SS_CENTERIMAGE
+    LTEXT           "HP Below:",IDC_STATIC,14,68,42,14,SS_CENTERIMAGE
+    LTEXT           "HP Below:",IDC_STATIC,14,102,42,14,SS_CENTERIMAGE
+    LTEXT           "ms",IDC_STATIC,247,170,10,8
+    LTEXT           "Negative values heal at maximum - value Example: | -50 |  heals at 440-50=390",
+                    IDC_STATIC,140,184,131,19
+    DEFPUSHBUTTON   "OK",IDOK,175,227,50,14
     EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW,58,20,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     CONTROL         "Drink old Life Potion",IDC_TOOL_FLUIDDRINKER_DRINKHP,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,20,94,14
-    LTEXT           "Sleep after drinking:",IDC_STATIC,14,287,76,14,
-                    SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_SLEEP,103,287,40,14,ES_CENTER | 
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_H,58,36,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
-    CONTROL         "Drop empty flasks",IDC_TOOL_FLUIDDRINKER_DROPEMPTY,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,303,72,10
-    LTEXT           "HP Below:",IDC_STATIC,14,52,42,14,SS_CENTERIMAGE
+    CONTROL         "Drink half Life Potion",IDC_TOOL_FLUIDDRINKER_DRINKHP_H,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,36,94,14
     EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_N,58,52,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     CONTROL         "Drink Life Potion",IDC_TOOL_FLUIDDRINKER_DRINKHP_N,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,52,94,14
-    LTEXT           "HP Below:",IDC_STATIC,14,36,42,14,SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_S,58,68,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     CONTROL         "Drink Strong Life Potion",
                     IDC_TOOL_FLUIDDRINKER_DRINKHP_S,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,103,68,94,14
-    LTEXT           "HP Below:",IDC_STATIC,14,85,42,14,SS_CENTERIMAGE
     EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_G,58,85,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     CONTROL         "Drink Great Life Potion",
                     IDC_TOOL_FLUIDDRINKER_DRINKHP_G,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,103,85,94,14
-    LTEXT           "Mana Below:",IDC_STATIC,14,170,42,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW,58,170,40,14,ES_CENTER | 
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_U,58,102,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
-    CONTROL         "Drink old Mana Potion",IDC_TOOL_FLUIDDRINKER_DRINKMANA,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,170,94,14
-    LTEXT           "Mana Below:",IDC_STATIC,13,186,42,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW_N,58,186,40,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    CONTROL         "Drink Mana Potion",IDC_TOOL_FLUIDDRINKER_DRINKMANA_N,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,186,94,14
-    LTEXT           "Mana Below:",IDC_STATIC,13,203,42,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW_S,58,203,40,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    CONTROL         "Drink Strong Mana Potion",
-                    IDC_TOOL_FLUIDDRINKER_DRINKMANA_S,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,103,203,94,14
-    LTEXT           "Mana Below:",IDC_STATIC,13,220,42,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW_G,58,220,40,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    CONTROL         "Drink Great Mana Potion",
-                    IDC_TOOL_FLUIDDRINKER_DRINKMANA_G,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,103,220,94,14
-    LTEXT           "HP Below:",IDC_STATIC,14,136,42,14,SS_CENTERIMAGE
+    CONTROL         "Drink Ultimate Life Potion",
+                    IDC_TOOL_FLUIDDRINKER_DRINKHP_U,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,103,102,94,14
+    COMBOBOX        IDC_CUSTOM_ITEM_1,103,119,87,184,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_CUSTOM_ITEM_1_BELOW,58,136,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     CONTROL         "Use Custom Item",IDC_CUSTOM_ITEM_1_USE,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,103,136,94,14
-    LTEXT           "Mana Below:",IDC_STATIC,13,255,42,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_CUSTOM_ITEM_2_BELOW,58,255,40,14,ES_CENTER | 
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW,256,20,40,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Drink old Mana Potion",IDC_TOOL_FLUIDDRINKER_DRINKMANA,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,300,20,94,14
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW_N,256,36,40,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Drink Mana Potion",IDC_TOOL_FLUIDDRINKER_DRINKMANA_N,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,300,36,94,14
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW_S,256,54,40,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Drink Strong Mana Potion",
+                    IDC_TOOL_FLUIDDRINKER_DRINKMANA_S,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,300,54,94,14
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_MANABELOW_G,256,71,40,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Drink Great Mana Potion",
+                    IDC_TOOL_FLUIDDRINKER_DRINKMANA_G,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,300,71,94,14
+    COMBOBOX        IDC_CUSTOM_ITEM_2,300,87,87,184,CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_CUSTOM_ITEM_2_BELOW,256,105,40,14,ES_CENTER | 
                     ES_AUTOHSCROLL
     CONTROL         "Use Custom Item",IDC_CUSTOM_ITEM_2_USE,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,103,255,94,14
-    LTEXT           "Custom Health Item:",IDC_STATIC,14,121,64,8,
-                    SS_CENTERIMAGE
-    LTEXT           "Custom Mana Item:",IDC_STATIC,13,239,62,8,
-                    SS_CENTERIMAGE
-    COMBOBOX        IDC_CUSTOM_ITEM_1,103,119,87,184,CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    COMBOBOX        IDC_CUSTOM_ITEM_2,103,237,87,184,CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "HP Below:",IDC_STATIC,14,68,42,14,SS_CENTERIMAGE
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_H,58,36,40,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    CONTROL         "Drink half Life Potion",IDC_TOOL_FLUIDDRINKER_DRINKHP_H,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,103,36,94,14
-    CONTROL         "Drink Ultimate Life Potion",
-                    IDC_TOOL_FLUIDDRINKER_DRINKHP_U,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,103,102,94,14
-    EDITTEXT        IDC_TOOL_FLUIDDRINKER_HPBELOW_U,58,102,40,14,ES_CENTER | 
-                    ES_AUTOHSCROLL
-    LTEXT           "HP Below:",IDC_STATIC,14,102,42,14,SS_CENTERIMAGE
-    CONTROL         "5% mana/hp variance to use item",IDC_TOOL_RANDOMCAST,
-                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,327,121,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,300,105,94,14
+    CONTROL         "Drop empty flasks",IDC_TOOL_FLUIDDRINKER_DROPEMPTY,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,169,72,10
     CONTROL         "Use with closed backpacks",IDC_TOOL_USEHOTKEY,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,14,315,103,10
-    LTEXT           "ms",IDC_STATIC,144,290,10,8
-    LTEXT           "Negative values heal at maximum - value Example: | -50 |  heals at 440-50=390",
-                    IDC_STATIC,14,338,131,19
+                    BS_AUTOCHECKBOX | WS_TABSTOP,14,181,103,10
+    CONTROL         "5% mana/hp variance to use item",IDC_TOOL_RANDOMCAST,
+                    "Button",BS_AUTOCHECKBOX | WS_TABSTOP,14,192,121,10
+    EDITTEXT        IDC_TOOL_FLUIDDRINKER_SLEEP,206,167,40,14,ES_CENTER | 
+                    ES_AUTOHSCROLL
+    CONTROL         "Enable fluid drinker",IDC_ENABLE,"Button",
+                    BS_AUTOCHECKBOX | BS_PUSHLIKE | WS_TABSTOP,7,210,391,14
 END
 
 
@@ -175,13 +175,20 @@ BEGIN
     IDD_CONFIG, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 203
+        RIGHTMARGIN, 398
         VERTGUIDE, 14
         VERTGUIDE, 51
-        VERTGUIDE, 61
+        VERTGUIDE, 58
         VERTGUIDE, 96
+        VERTGUIDE, 140
+        VERTGUIDE, 200
+        VERTGUIDE, 205
+        VERTGUIDE, 212
+        VERTGUIDE, 296
+        VERTGUIDE, 300
         TOPMARGIN, 7
-        BOTTOMMARGIN, 390
+        BOTTOMMARGIN, 241
+        HORZGUIDE, 155
     END
 END
 #endif    // APSTUDIO_INVOKED

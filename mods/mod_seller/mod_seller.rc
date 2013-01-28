@@ -77,85 +77,85 @@ BEGIN
                     94
     GROUPBOX        "Buy Controls",IDC_FRAME_BUY_CONTROLS,187,191,113,38
     GROUPBOX        "Seller List",IDC_SELLER_LISTFRAME,315,179,218,94
+    LTEXT           "Items to sell:",IDC_STATIC,14,35,75,8
+    LTEXT           "Items to buy:",IDC_STATIC,141,35,75,8
+    LTEXT           "Items to sell:",IDC_STATIC,14,122,75,8
+    LTEXT           "Items to buy:",IDC_STATIC,141,122,75,8
+    LTEXT           "Items to sell:",IDC_STATIC,279,34,75,8
+    LTEXT           "Items to buy:",IDC_STATIC,407,34,75,8
+    LTEXT           "Items to sell:",IDC_STATIC,279,122,75,8
+    LTEXT           "Items to buy:",IDC_STATIC,407,122,75,8
+    LTEXT           "Item list:",IDC_STATIC,150,223,32,8
+    LTEXT           """Buy up to"" / ""Sell when have"" quantity:",
+                    IDC_STATIC,115,247,129,12,SS_CENTERIMAGE,WS_EX_RIGHT
+    LTEXT           "Price:",IDC_STATIC,247,202,25,8
+    LTEXT           "Buy When <",IDC_STATIC,195,202,51,8
+    LTEXT           "Module Priority:",IDC_STATIC,16,224,49,8
+    LTEXT           "Name:",IDC_STATIC,332,216,22,8
+    LTEXT           "The name entered can be ended by a space and a descriptive label.  Other changes can be done by opening the tibiaauto-selllers.csv file.",
+                    IDC_STATIC,331,232,148,29
+    LTEXT           "None",IDC_SELLER_STATE,17,260,282,10
     DEFPUSHBUTTON   "OK",IDOK,244,295,50,14
-    CONTROL         "Enable Selling",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,6,275,527,14
     COMBOBOX        IDC_SELLER_SELLER1,14,19,127,130,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to sell:",IDC_STATIC,14,35,75,8
     LISTBOX         IDC_SELLER_SELL1,14,46,92,40,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to buy:",IDC_STATIC,141,35,75,8
+    PUSHBUTTON      "<<<",IDC_SELLER_SELL1_ADD,109,46,24,14
+    PUSHBUTTON      ">>>",IDC_SELLER_SELL1_REMOVE,109,72,24,14
     LISTBOX         IDC_SELLER_BUY1,141,46,92,40,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "<<<",IDC_SELLER_BUY1_ADD,237,46,24,14
+    PUSHBUTTON      ">>>",IDC_SELLER_BUY1_REMOVE,237,72,24,14
     COMBOBOX        IDC_SELLER_SELLER2,14,106,127,137,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to sell:",IDC_STATIC,14,122,75,8
     LISTBOX         IDC_SELLER_SELL2,14,133,92,40,LBS_SORT | 
-                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to buy:",IDC_STATIC,141,122,75,8
-    LISTBOX         IDC_SELLER_BUY2,141,133,92,40,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SELLER_SELL2_ADD,109,133,24,14
     PUSHBUTTON      ">>>",IDC_SELLER_SELL2_REMOVE,109,159,24,14
+    LISTBOX         IDC_SELLER_BUY2,141,133,92,40,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SELLER_BUY2_ADD,237,133,24,14
     PUSHBUTTON      ">>>",IDC_SELLER_BUY2_REMOVE,237,159,24,14
-    PUSHBUTTON      "<<<",IDC_SELLER_SELL1_ADD,109,46,24,14
-    PUSHBUTTON      ">>>",IDC_SELLER_SELL1_REMOVE,109,72,24,14
-    PUSHBUTTON      "<<<",IDC_SELLER_BUY1_ADD,237,46,24,14
-    PUSHBUTTON      ">>>",IDC_SELLER_BUY1_REMOVE,237,72,24,14
     COMBOBOX        IDC_SELLER_SELLER3,279,18,127,139,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to sell:",IDC_STATIC,279,34,75,8
     LISTBOX         IDC_SELLER_SELL3,279,45,92,40,LBS_SORT | 
-                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to buy:",IDC_STATIC,407,34,75,8
-    LISTBOX         IDC_SELLER_BUY3,407,45,92,40,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SELLER_SELL3_ADD,375,45,24,14
     PUSHBUTTON      ">>>",IDC_SELLER_SELL3_REMOVE,375,71,24,14
+    LISTBOX         IDC_SELLER_BUY3,407,45,92,40,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SELLER_BUY3_ADD,503,45,24,14
     PUSHBUTTON      ">>>",IDC_SELLER_BUY3_REMOVE,503,71,24,14
     COMBOBOX        IDC_SELLER_SELLER4,279,106,127,142,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to sell:",IDC_STATIC,279,122,75,8
     LISTBOX         IDC_SELLER_SELL4,279,133,92,40,LBS_SORT | 
-                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Items to buy:",IDC_STATIC,407,122,75,8
-    LISTBOX         IDC_SELLER_BUY4,407,133,92,40,LBS_SORT | 
                     LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SELLER_SELL4_ADD,375,133,24,14
     PUSHBUTTON      ">>>",IDC_SELLER_SELL4_REMOVE,375,159,24,14
+    LISTBOX         IDC_SELLER_BUY4,407,133,92,40,LBS_SORT | 
+                    LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
     PUSHBUTTON      "<<<",IDC_SELLER_BUY4_ADD,503,133,24,14
     PUSHBUTTON      ">>>",IDC_SELLER_BUY4_REMOVE,503,159,24,14
-    COMBOBOX        IDC_SELLER_ITEM_LIST,150,232,100,128,CBS_DROPDOWN | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
-    LTEXT           "Item list:",IDC_STATIC,150,223,32,8
-    LTEXT           """Buy up to"" / ""Sell when have"" quantity:",
-                    IDC_STATIC,115,247,129,12,SS_CENTERIMAGE,WS_EX_RIGHT
-    EDITTEXT        IDC_SELLER_QUANTITY,252,247,48,12,ES_AUTOHSCROLL
-    LTEXT           "Price:",IDC_STATIC,247,202,25,8
-    EDITTEXT        IDC_SELLER_PRICE,247,213,48,12,ES_AUTOHSCROLL
-    LTEXT           "Buy When <",IDC_STATIC,195,202,51,8
-    EDITTEXT        IDC_SELLER_TRIGGER_QUANTITY,195,213,48,12,ES_AUTOHSCROLL
     CONTROL         "Sell items if capacity less than:",
                     IDC_SELLER_RETURN_ON_CAP,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,16,194,109,10
+    EDITTEXT        IDC_SELLER_CAP_LIMIT,126,193,54,12,ES_AUTOHSCROLL
     CONTROL         "Sell items if bags are full",
                     IDC_SELLER_RETURN_ON_NO_SPACE,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,16,204,91,10
-    EDITTEXT        IDC_SELLER_CAP_LIMIT,126,193,54,12,ES_AUTOHSCROLL
-    LTEXT           "Module Priority:",IDC_STATIC,16,224,49,8
+    EDITTEXT        IDC_SELLER_TRIGGER_QUANTITY,195,213,48,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SELLER_PRICE,247,213,48,12,ES_AUTOHSCROLL
     COMBOBOX        IDC_SELLER_MODPRIORITY,68,222,58,96,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
-    EDITTEXT        IDC_SELLER_ADD_NAME,355,214,121,14,ES_AUTOHSCROLL
-    PUSHBUTTON      "Add Recently Seen Seller",IDC_SELLER_ADD,332,195,90,14
-    LTEXT           "Name:",IDC_STATIC,332,216,22,8
-    LTEXT           "The name entered can be ended by a space and a descriptive label.  Other changes can be done by opening the tibiaauto-selllers.csv file.",
-                    IDC_STATIC,331,232,148,29
     CONTROL         "Stop by when going to depot/bank",IDC_SELLER_STOPBY,
                     "Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,237,126,10
-    LTEXT           "None",IDC_SELLER_STATE,17,260,282,10
+    COMBOBOX        IDC_SELLER_ITEM_LIST,150,232,100,128,CBS_DROPDOWN | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_SELLER_QUANTITY,252,247,48,12,ES_AUTOHSCROLL
+    PUSHBUTTON      "Add Recently Seen Seller",IDC_SELLER_ADD,332,195,90,14
+    EDITTEXT        IDC_SELLER_ADD_NAME,355,214,121,14,ES_AUTOHSCROLL
+    CONTROL         "Enable Selling",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
+                    BS_PUSHLIKE | WS_TABSTOP,6,275,527,14
 END
 
 
