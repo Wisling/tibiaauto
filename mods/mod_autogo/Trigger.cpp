@@ -171,13 +171,13 @@ CString CTrigger::getTriggerText() {
 
 void CTrigger::setIntTrigger(int intIn) {
 	switch (type) {
-	case INTEGER:
-		if (intTriggerList.size())
+	case PointTRIGGER:
+		if (intTriggerList.size() > 4)
 			intTriggerList.clear();
 		intTriggerList.push_back(intIn);
 		break;
-	case PointTRIGGER:
-		if (intTriggerList.size() > 4)
+	default:
+		if (intTriggerList.size())
 			intTriggerList.clear();
 		intTriggerList.push_back(intIn);
 		break;

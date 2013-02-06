@@ -1,3 +1,11 @@
+2.26.6 5.2.2013
+Enhancements:
+Defects:
+ Cavebot: Fixed the saving of several options.
+ Auto Go/Log: Fixed the converting of the time string to an integer value.
+Internal:
+ Auto Go/Log: fixed help strings
+
 2.26.5 27.1.2013
 Enhancements:
  Cavebot & Auto looter: "Loot Custom" option is enabled by default.

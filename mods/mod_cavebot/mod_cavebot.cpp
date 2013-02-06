@@ -3430,16 +3430,16 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 36: return "attack/backattackRunes";
 	case 37: return "attack/shareAlienBackattack";
 	case 38: return "depot/depotCap";
-	case 40: return "training/trainingMode";
-	case 41: return "walker/radius";
-	case 42: return "loot/other/whilekilling";
-	case 43: return "attack/dontAttackPlayers";
-	case 44: return "loot/other/dropListCount";
-	case 45: return "loot/other/dropList";
-	case 46: return "loot/other/dropWhenCapacityLimitReached";
-	case 47: return "loot/other/dropOnlyLooted";
-	case 48: return "depot/depotModPriority";
-	case 49: return "depot/stopByDepot";
+	case 39: return "training/trainingMode";
+	case 40: return "walker/radius";
+	case 41: return "loot/other/whilekilling";
+	case 42: return "attack/dontAttackPlayers";
+	case 43: return "loot/other/dropListCount";
+	case 44: return "loot/other/dropList";
+	case 45: return "loot/other/dropWhenCapacityLimitReached";
+	case 46: return "loot/other/dropOnlyLooted";
+	case 47: return "depot/depotModPriority";
+	case 48: return "depot/stopByDepot";
 		
 	default:
 		return NULL;
