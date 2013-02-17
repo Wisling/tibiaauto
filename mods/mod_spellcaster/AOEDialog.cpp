@@ -27,6 +27,7 @@ void AOEDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(AOEDialog)
+	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_MAS, m_exoriMas);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI_GRAN, m_exoriGran);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXORI, m_exori);
@@ -42,7 +43,6 @@ void AOEDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, m_exevoFrigoHur);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, m_exevoFlamHur);
 	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE_AFFECT, m_aoeAffect);
-	DDX_Control(pDX, IDC_TOOL_SPELLCASTER_AOE, m_aoe);
 	DDX_Control(pDX, IDC_FRAME_SORCERER_AOE, m_SorcererAOEFrame);
 	DDX_Control(pDX, IDC_FRAME_PALADIN_AOE, m_PaladinAOEFrame);
 	DDX_Control(pDX, IDC_FRAME_KNIGHT_AOE, m_KnightAOEFrame);

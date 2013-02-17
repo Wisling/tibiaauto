@@ -17,6 +17,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
+const UINT RWM_PRETRANSLATEMSG = ::RegisterWindowMessage(_T("RWM_PRETRANSLATEMSG"));
+
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
@@ -158,7 +160,7 @@ BOOL CConfigDialog::OnInitDialog() {
 }
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
-	return CDialog::PreTranslateMessage(pMsg);
+	return MyDialog::PreTranslateMessage(pMsg);
 }
 
 void CConfigDialog::activateEnableButton(int enable) {
@@ -175,5 +177,30 @@ void CConfigDialog::OnCaptureChanged(CWnd *pWnd)
 void CConfigDialog::OnDestroy() {
 	delete(m_Dialog[0]);
  	delete(m_Dialog[1]);
- 	MyDialog::OnDestroy();
+	MyDialog::OnDestroy();
+}
+
+
+LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp){
+	if(msg == RWM_PRETRANSLATEMSG)
+	{
+		MSG* pMsg  = (MSG*)lp;
+		ASSERT(pMsg);
+
+		HWND hWndStop = this->GetSafeHwnd();
+		ASSERT(hWndStop == NULL || ::IsWindow(hWndStop));
+		
+		//Loop through all windows from the receiver of the message to the highest ancestor
+		for (HWND hWnd = pMsg->hwnd; hWnd != NULL; hWnd = ::GetParent(hWnd)) {
+			CWnd* pWnd = CWnd::FromHandlePermanent(hWnd);
+			if (pWnd != NULL) {
+				if (pWnd->PreTranslateMessage(pMsg))
+					return TRUE;
+			}
+			if (hWnd == hWndStop) break;
+		}
+		
+		return FALSE; //do nothing
+	}	
+	return MyDialog::WindowProc(msg, wp, lp);
 }

@@ -38,6 +38,7 @@ public:
 	MyDialog *m_Dialog[6];
 	
 	int m_nPageCount;
+	virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)

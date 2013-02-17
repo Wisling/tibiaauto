@@ -15,6 +15,7 @@
 #include "MyDialog.h"
 #include "XTabCtrl.h"
 
+
 #define DIR_LEFT	1
 #define DIR_RIGHT	2
 #define DIR_UP		3
@@ -40,6 +41,7 @@ public:
 	int m_DialogID[2];
 	MyDialog *m_Dialog[2];
 	int m_nPageCount;
+	virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)

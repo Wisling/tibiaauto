@@ -105,9 +105,9 @@ BEGIN
     CONTROL         "Open container 6",IDC_OPEN_CONTAINER6,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,102,173,71,10
     CONTROL         "Open container 7",IDC_OPEN_CONTAINER7,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,182,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,183,71,10
     CONTROL         "Open container 8",IDC_OPEN_CONTAINER8,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,102,192,71,10
+                    BS_AUTOCHECKBOX | WS_TABSTOP,102,193,71,10
     CONTROL         "Re-log in after death",IDC_LOGIN_AFTER_KILLED,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,14,202,80,10
     CONTROL         "List1",IDC_DEBUG,"SysListView32",LVS_REPORT | 
@@ -130,9 +130,11 @@ BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 219
         VERTGUIDE, 14
+        VERTGUIDE, 102
         VERTGUIDE, 212
         TOPMARGIN, 7
         BOTTOMMARGIN, 333
+        HORZGUIDE, 163
     END
 END
 #endif    // APSTUDIO_INVOKED
