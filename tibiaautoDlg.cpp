@@ -1385,25 +1385,40 @@ void CTibiaautoDlg::OnMemdebug()
 {
 	m_moduleMemDebug->showConfigDialog();
 }
-
-BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg) 
+const UINT RWM_PRETRANSLATEMSG = ::RegisterWindowMessage(_T("RWM_PRETRANSLATEMSG"));
+// If it has a Modeless parent windows then it returns the modeless window just before the parents become modal again.
+// We want this as modal windows do not send all messages to their child modeless windows
+HWND AppGetTopParent(HWND hWnd)
 {
-	HWND hWnd = ::GetActiveWindow();
-	if (this->m_hWnd!=hWnd){
-		return ::IsDialogMessage(hWnd,pMsg);
+    if(hWnd == NULL)
+        return NULL;
+	int isModeless = CWnd::FromHandlePermanent(hWnd)==NULL;
+
+    HWND hWndParent = hWnd;
+	while(::GetParent(hWndParent) != NULL && !(isModeless && CWnd::FromHandlePermanent(::GetParent(hWndParent))!=NULL)){
+		isModeless = CWnd::FromHandlePermanent(hWndParent)==NULL;
+		hWndParent = ::GetParent(hWndParent);
 	}
+    return hWndParent;
+}
+BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
+{
+	//read http://www.codeproject.com/Articles/211862/PreTranslateMessage-support-in-modeless-dialogs-in
+	//Modeless dialogs used for modules need special call to be able to send 'tab key' to them
 	int eventStop=0;
-	if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_ESCAPE)
-	{
+	HWND hWnd = AppGetTopParent(pMsg->hwnd);
+	if (this->m_hWnd!=hWnd && hWnd && pMsg->message==0x100){
+		if (::SendMessage(hWnd, RWM_PRETRANSLATEMSG, 0, (LPARAM)pMsg)==TRUE) return TRUE;
+		return ::IsDialogMessage(hWnd,pMsg);
+	} else if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_ESCAPE){
 		ShowWindow(SW_HIDE);
 		eventStop=1;
-	} 
-	if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_RETURN)
-	{
+	} else if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_RETURN){
 		eventStop=1;
-	} 
-	if (pMsg->message==WM_CHAR) eventStop=1;
-	if (!eventStop) {
+	} else if (pMsg->message==WM_CHAR){
+		eventStop=1;
+	}
+	if (!eventStop){
 		return CDialog::PreTranslateMessage(pMsg);
 	} else {
 		return 0;
