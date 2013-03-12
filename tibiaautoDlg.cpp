@@ -1252,7 +1252,7 @@ void CTibiaautoDlg::OnLoad()
 	CMemReaderProxy reader;
 	
 	char fName[128];
-	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);		
+	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 	
 	
 	char szFilters[]=
@@ -1653,7 +1653,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.26.6 tm=%d,",tm);
+		fprintf(f,"version=2.27.1 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
