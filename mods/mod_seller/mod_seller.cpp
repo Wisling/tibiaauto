@@ -254,7 +254,7 @@ int CMod_SellerApp::isStarted() {
 
 void CMod_SellerApp::start() {	
 	superStart();
-	if (m_configDialog) 	{
+	if (m_configDialog) {
 		m_configDialog->disableControls();
 		m_configDialog->activateEnableButton(true);
 	}

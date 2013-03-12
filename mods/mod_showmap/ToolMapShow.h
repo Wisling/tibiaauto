@@ -26,6 +26,7 @@ public:
 	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
 	void DoSetButtonSkin();
+	void RefreshExtendedResearchMap();
 	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
 	~CToolMapShow();
 

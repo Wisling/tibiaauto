@@ -2,6 +2,7 @@
 #include "mod_spellcaster.h"
 #include "ConfigDialog.h"
 #include "MemReaderProxy.h"
+#include "PackSenderProxy.h"
 #include "LifeDialog.h"
 #include "ManaDialog.h"
 #include "SummonDialog.h"
@@ -182,8 +183,38 @@ BOOL CConfigDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
+int pressed(unsigned int tm){
+	CPackSenderProxy tasender;
+	char buf[1111];
+	sprintf(buf,"tm %d",GetTickCount()-tm);
+	tasender.sendTAMessage(buf);
+	return GetTickCount()-tm < 300;
+}
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+	CPackSenderProxy tasender;
+	static int shift=0,ctrl=0,win=0;
+	LPARAM lParam = pMsg->lParam;
+	WPARAM wParam = pMsg->wParam;
+	int repeatCount=lParam & 0xFFFF;
+	int scanCode=(lParam>>16)&0xFF;
+	int extendedKey=(lParam>>24)&0x1;
+	int reserved=(lParam>>25)&0xF;
+	int contextCode=(lParam>>29)&0x1;
+	int keyState=(lParam>>30)&0x1;
+	int transState=(lParam>>31)&0x1;
+	int alt=contextCode;
+	
+	char buf[1111];
+	sprintf(buf,"rept %d,scan %d, xtend %d, rsvd %d, ctxt %d, keyst %d, transst %d, keyCode=%d",repeatCount,scanCode,extendedKey,reserved,contextCode,keyState,transState,wParam);
+	tasender.sendTAMessage(buf);
+	if (wParam==0x10) {shift=GetTickCount(); goto skip;}
+	else if (wParam==0x11) {ctrl=GetTickCount(); goto skip;}
+	else if (wParam==0x12) {goto skip;}
+	else if (wParam==0x5B) {win=GetTickCount(); goto skip;}
+	if(pressed(ctrl) && wParam == 0x20){ // Ctrl+space Available
+		return 1;
+	}
+skip:
 	return MyDialog::PreTranslateMessage(pMsg);
 }
 

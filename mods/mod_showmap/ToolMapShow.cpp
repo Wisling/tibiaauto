@@ -71,7 +71,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CToolMapShow message handlers
 
-void CToolMapShow::OnClose() 
+void CToolMapShow::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
@@ -591,16 +591,19 @@ void CToolMapShow::OnToolMapshowResearch()
 	}
 }
 
-void CToolMapShow::OnToolMapshowExtendedResearch()
-{
+void CToolMapShow::RefreshExtendedResearchMap(){
 	if (m_extendedResearch.GetCheck())
-	{		
+	{
 		SetTimer(1003,1000,NULL);
 		SetTimer(1004,300,NULL);
 	} else {
 		KillTimer(1003);
 		KillTimer(1004);
 	}
+}
+void CToolMapShow::OnToolMapshowExtendedResearch()
+{
+	RefreshExtendedResearchMap();
 }
 
 void CToolMapShow::mapPointClicked(int posX, int posY, int pos)

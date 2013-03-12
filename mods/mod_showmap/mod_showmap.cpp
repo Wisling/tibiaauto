@@ -109,7 +109,6 @@ void CMod_showmapApp::start()
 
 void CMod_showmapApp::stop()
 {
-
 }
 
 void CMod_showmapApp::showConfigDialog()
@@ -128,6 +127,7 @@ void CMod_showmapApp::showConfigDialog()
 void CMod_showmapApp::configToControls()
 {	
 	m_infoDialog->m_extendedResearch.SetCheck(m_configData->extendedResearch);
+	m_infoDialog->RefreshExtendedResearchMap();
 }
 
 
@@ -192,6 +192,14 @@ void CMod_showmapApp::loadConfigParam(char *paramName,char *paramValue)
 	else if (!strcmp(paramName,"extendedResearch"))
 	{
 		m_configData->extendedResearch = atoi(paramValue);
+		if(m_configData->extendedResearch){
+			if (!m_infoDialog)
+			{ 
+				m_infoDialog=new CToolMapShow();
+				m_infoDialog->Create(IDD_TOOL_MAPSHOW);
+				m_infoDialog->ShowWindow(SW_HIDE);
+			}
+		}
 	}
 }
 
