@@ -451,7 +451,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		//T4: Use mana in other purpose otherwise
 		else if(config->mana && self->mana>=manaMana){
 			RandomVariableMana(config->manaMana,MAKE,config);
-			sender.sendTAMessage("hi");
 			sender.say(config->manaSpell);
 			Sleep(700);
 		}	

@@ -1,7 +1,6 @@
-2.27.0 4.3.2013
+2.28.0 2.5.2013
 Enhancements:
- Tibia Auto: updated for Tibia 9.82
- Spell Caster: Added tabbing to individual tabs
- Auto Go/Log: Added tabbing to individual tabs
+ Tibia Auto: Updated memory addresses to 9.86
+ Tibia Auto: Updated TA to work with new container system(does not handle containers of item stacks yet)
 Defects:
- Show map: Fixed enabling of Extended map research from saved config
+ Spellcaster: Removed "hi" message when casting manaburn spell
