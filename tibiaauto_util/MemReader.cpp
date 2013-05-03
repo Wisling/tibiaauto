@@ -96,31 +96,66 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 	return NULL;
 }
 
+long findContainer(int i, long addrCurr, long addrHead, int depth=0){
+	if(depth>0&& 0){
+		CPackSender sender;
+		char buf[111];
+		sprintf(buf,"%d",depth);
+		sender.sendTAMessage(buf);
+	}
+	if(addrCurr!=addrHead && CMemUtil::GetMemIntValue(addrCurr+0xC,0)==i){
+		return addrCurr;
+	}
+	if(depth<5){//binary structure is guaranteed to reach all 16 containers after 4 iterations
+		for(int adj=0;adj<12;adj+=4){
+			long addrNext = CMemUtil::GetMemIntValue(addrCurr+adj,0);
+			if(addrNext != addrHead){
+				long ret = findContainer(i, addrNext, addrHead, depth+1);
+				if(ret) return ret;
+			}
+		}
+	}
+	return NULL;
+}
+
 CTibiaContainer *CMemReader::readContainer(int containerNr) {
+	//triply linked list
+	//container number
 	int i;
 	
 	CTibiaContainer *container = new CTibiaContainer();
-	long containerOffset=m_memAddressFirstContainer+containerNr*m_memLengthContainer;		
-	container->flagOnOff=CMemUtil::GetMemIntValue(containerOffset+40);	
-	container->objectId=CMemUtil::GetMemIntValue(containerOffset+0);
-	container->size=CMemUtil::GetMemIntValue(containerOffset+44);
-	container->number=containerNr;
-	container->itemsInside=CMemUtil::GetMemIntValue(containerOffset+36);
-
-	for (i=0;i<container->itemsInside;i++)
-	{		
-		CTibiaItem *item = new CTibiaItem();		
-		item->objectId = CMemUtil::GetMemIntValue(containerOffset+48+i*m_memLengthItem+8);
-		item->quantity = CMemUtil::GetMemIntValue(containerOffset+48+i*m_memLengthItem+4);		
-		CTileReader tileReader;
-		CTibiaTile *tile=tileReader.getTile(item->objectId);
-		if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;
-		item->pos = i;
-		container->items.Add(item);
-	};
-
+	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+8,0);
+	int maxContainer = CMemUtil::GetMemIntValue(m_memAddressFirstContainer+0xC);
+	long addrIndCont = 0;
+	try {
+		addrIndCont = findContainer(containerNr,addrHead,addrHead);
+	} catch(const char* e) {
+		addrIndCont = 0;
+	}
+	if(addrIndCont){ // return container as is if not found
+		long addrCont = CMemUtil::GetMemIntValue(addrIndCont+0x10,0);
+		container->flagOnOff=1;
+		container->number=CMemUtil::GetMemIntValue(addrCont,0);
+		container->objectId=CMemUtil::GetMemIntValue(addrCont+0xC,0);
+		container->size=CMemUtil::GetMemIntValue(addrCont+0x30,0);
+		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x34,0);
+		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x3C,0);
+		for (i=0;i<container->itemsInside;i++)
+		{
+			CTibiaItem *item = new CTibiaItem();
+			item->objectId = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+8,0);
+			item->quantity = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+4,0);
+			CTileReader tileReader;
+			CTibiaTile *tile=tileReader.getTile(item->objectId);
+			if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;//handles vials and other special uses of "quantity" variable
+			item->pos = i;
+			container->items.Add(item);
+		}
+	}//else: return container as is if it is not found to be open
 	return container;
 }
+
+
 CTibiaCharacter *CMemReader::readSelfCharacter() {	
 	CTibiaCharacter *ch = new CTibiaCharacter();
 

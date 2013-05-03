@@ -250,7 +250,7 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress/*=1*/)
 		char buf[128];
 		sprintf(buf,"ERROR: read memory failed; error=%d",ret);
 		//AfxMessageBox(buf);
-		ExitProcess(0);
+		throw "Error reading Tibia memory.";//ExitProcess(0);
 		return 0;
 	}
 	return value;
