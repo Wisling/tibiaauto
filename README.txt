@@ -1,6 +1,7 @@
-2.28.0 2.5.2013
+2.29.0 18.6.2013
 Enhancements:
- Tibia Auto: Updated memory addresses to 9.86
- Tibia Auto: Updated TA to work with new container system(does not handle containers of item stacks yet)
+ Tibia Auto: Updated to 10.01
+ tiles.xml: Updated file with new IDs
 Defects:
- Spellcaster: Removed "hi" message when casting manaburn spell
+ Tibia Auto: Fixed one source of random crashing when reading from memory soon after reading conents of a Tibia container
+ Tibia Auto: Made TA exit cleanly when Tibia has been killed rather than spamming errors

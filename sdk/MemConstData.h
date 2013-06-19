@@ -86,6 +86,8 @@ public:
 	int m_memMaxContainers;
 	int m_memMaxCreatures;
 	int m_memMaxMapTiles;
+
+	int m_offsetCreatureVisible;
 };
 
 #endif // !defined(AFX_MEMCONSTDATA_H__90A06B3F_905E_46D1_8243_6ED758E0F845__INCLUDED_)
