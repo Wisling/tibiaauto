@@ -104,4 +104,6 @@ CMemConstData::CMemConstData()
 	m_memMaxContainers=itemProxy.getValueForConst("maxContainers");
 	m_memMaxCreatures=itemProxy.getValueForConst("maxCreatures");
 	m_memMaxMapTiles=itemProxy.getValueForConst("maxMapTiles");
+
+	m_offsetCreatureVisible = 164;
 }

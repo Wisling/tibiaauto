@@ -125,7 +125,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	
 	CTibiaContainer *container = new CTibiaContainer();
 	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+8,0);
-	int maxContainer = CMemUtil::GetMemIntValue(m_memAddressFirstContainer+0xC);
+	int maxContainer = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+0xC,0);
 	long addrIndCont = 0;
 	try {
 		addrIndCont = findContainer(containerNr,addrHead,addrHead);
@@ -136,20 +136,31 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		long addrCont = CMemUtil::GetMemIntValue(addrIndCont+0x10,0);
 		container->flagOnOff=1;
 		container->number=CMemUtil::GetMemIntValue(addrCont,0);
+		//container->???=CMemUtil::GetMemIntValue(addrCont+8,0);
 		container->objectId=CMemUtil::GetMemIntValue(addrCont+0xC,0);
-		container->size=CMemUtil::GetMemIntValue(addrCont+0x30,0);
-		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x34,0);
-		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x3C,0);
-		for (i=0;i<container->itemsInside;i++)
-		{
-			CTibiaItem *item = new CTibiaItem();
-			item->objectId = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+8,0);
-			item->quantity = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+4,0);
-			CTileReader tileReader;
-			CTibiaTile *tile=tileReader.getTile(item->objectId);
-			if (tile&&!tile->stackable&&item->quantity>1) item->quantity=1;//handles vials and other special uses of "quantity" variable
-			item->pos = i;
-			container->items.Add(item);
+		//container->???=CMemUtil::GetMemIntValue(addrCont+0x30,0);
+		//container->???=CMemUtil::GetMemIntValue(addrCont+0x34,0);
+		//container->???=CMemUtil::GetMemIntValue(addrCont+0x38,0);
+		//container->???=CMemUtil::GetMemIntValue(addrCont+0x3C,0);
+		container->size=CMemUtil::GetMemIntValue(addrCont+0x40,0);
+		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x44,0);
+		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x4C,0);
+		try{//if returns error then addrItems is most likely not a valid address anymore
+			for (i=0;i<container->itemsInside;i++)
+			{
+				CTibiaItem *item = new CTibiaItem();
+				item->objectId = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+8,0);
+				item->quantity = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+4,0);
+				CTileReader tileReader;
+				CTibiaTile *tile=tileReader.getTile(item->objectId);
+				if(!tile) throw "Error invalid container item.";
+				if (!tile->stackable&&item->quantity>1) item->quantity=1;//handles vials and other special uses of "quantity" variable
+				item->pos = i;
+				container->items.Add(item);
+			}
+		} catch(const char* e) {
+			delete container;
+			container = new CTibiaContainer(); //return blank container
 		}
 	}//else: return container as is if it is not found to be open
 	return container;
@@ -284,14 +295,19 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->hpPercLeft=CMemUtil::GetMemIntValue(offset+140);
 
 	ch->walkSpeed=CMemUtil::GetMemIntValue(offset+144);
-	ch->visible=CMemUtil::GetMemIntValue(offset+172);
+	ch->visible=CMemUtil::GetMemIntValue(offset+m_offsetCreatureVisible);
 	ch->skulls=CMemUtil::GetMemIntValue(offset+152);
 	ch->shields=CMemUtil::GetMemIntValue(offset+156);
 
-	//ch->???=CMem	Util::GetMemIntValue(offset+160);
-	//ch->???=CMemUtil::GetMemIntValue(offset+164);
-	ch->warIcon=CMemUtil::GetMemIntValue(offset+168);
+	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
 	ch->blocking=CMemUtil::GetMemIntValue(offset+148);
+	//ch->??=CMemUtil::GetMemIntValue(offset+168);357?
+	//ch->??=CMemUtil::GetMemIntValue(offset+172);
+	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+176);
+	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+182);
+	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+186);
+
+
 	ch->nr=nr;
 	
 	CMemUtil::GetMemRange(offset+4,offset+4+31,ch->name);
@@ -321,7 +337,7 @@ char * CMemReader::GetLoggedChar(int processId)
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId,1);		
-		CMemUtil::GetMemIntValue(processId,offset+172,&visible,1);
+		CMemUtil::GetMemIntValue(processId,offset+164,&visible,1);
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{
@@ -443,7 +459,7 @@ int CMemReader::getLoggedCharNr()
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
 		creatureId=CMemUtil::GetMemIntValue(offset+0);		
-		visible=CMemUtil::GetMemIntValue(offset+172);
+		visible=CMemUtil::GetMemIntValue(offset+m_offsetCreatureVisible);
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{

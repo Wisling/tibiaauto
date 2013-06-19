@@ -113,11 +113,23 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
     if (ReadProcessMemory(dwHandle, ptr, result, size, &bytesRead)) {
         return 0;
     }
-    else {	
+    else {
 		if (::GetLastError()==ERROR_INVALID_HANDLE){
 			//FILE *f=fopen("C:/out.txt","a+");
 			//fprintf(f,"time %d old %d,",time(NULL),dwHandle);
-			dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, m_prevProcessId);
+			dwHandle = NULL;
+			for(int iter = 1000;iter>0;iter--){
+				dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, m_prevProcessId);
+				if(dwHandle){
+					char buf[111];
+					sprintf(buf,"iter %d",iter);
+					if(iter!=999)
+						MessageBox(NULL,buf,"",0);
+					break;
+				}
+				Sleep(10);
+			}
+
 			//fprintf(f,"new %d\n",dwHandle);
 			//fclose(f);
 			m_prevProcessHandle=dwHandle;
@@ -126,11 +138,22 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 			}
 		}
 		if (::GetLastError()==ERROR_NOACCESS){
+			CloseHandle(dwHandle);
 			dwHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
 			m_prevProcessHandle=dwHandle;
 			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {		
 				return 0;
 			}
+		}
+		if (::GetLastError()==ERROR_PARTIAL_COPY){
+			//Possibly Tibia has been killed
+			DWORD terminatedStatus=9999;
+			if (GetExitCodeProcess(dwHandle,&terminatedStatus)){
+				if (terminatedStatus!=STILL_ACTIVE){ //If Tibia is no longer active then close TA
+					ExitProcess(0);
+				}
+			}
+			return ERROR_PARTIAL_COPY;
 		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
@@ -249,7 +272,6 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress/*=1*/)
 	{
 		char buf[128];
 		sprintf(buf,"ERROR: read memory failed; error=%d",ret);
-		//AfxMessageBox(buf);
 		throw "Error reading Tibia memory.";//ExitProcess(0);
 		return 0;
 	}
