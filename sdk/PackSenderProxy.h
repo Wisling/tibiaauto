@@ -55,7 +55,7 @@ public:
 	void useItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId);
 
 	void closeContainer(int contNr);
-	void attackMode(int attack,int follow,int attLock);
+	void attackMode(int attack,int follow,int attLock,int PVPMode);
 	void attack(int tibiaCharId);
 	void follow(int tibiaCharId);
 	void turnLeft();

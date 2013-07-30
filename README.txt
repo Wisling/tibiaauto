@@ -1,7 +1,5 @@
-2.29.0 18.6.2013
+2.30.0 17.7.2013
 Enhancements:
- Tibia Auto: Updated to 10.01
- tiles.xml: Updated file with new IDs
+ Tibia Auto: Updated to 10.10
 Defects:
- Tibia Auto: Fixed one source of random crashing when reading from memory soon after reading conents of a Tibia container
- Tibia Auto: Made TA exit cleanly when Tibia has been killed rather than spamming errors
+ Tibia Auto: Fixed TA freezing on computers running for more than 25 days

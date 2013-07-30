@@ -47,7 +47,7 @@ static char THIS_FILE[] = __FILE__;
 #define MAX_BUYSELL_ITEMS 100
 
 CToolSellerState globalSellerState=CToolSellerState_notRunning;
-int GUIx = 0,GUIy = 0,GUIz = 0;
+int GUIx = 0,GUIy = 0,GUIz = 0, GUINum = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_SellerApp
@@ -759,6 +759,7 @@ int findSeller(CConfigData *config, int traderNum) {
 	GUIx = config->sellerList[traderNum].sellerX;
 	GUIy = config->sellerList[traderNum].sellerY;
 	GUIz = config->sellerList[traderNum].sellerZ;
+	GUINum = traderNum;
 	struct point nearestSell = CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->sellerList[traderNum].sellerX, config->sellerList[traderNum].sellerY, config->sellerList[traderNum].sellerZ, 0, config->path,3);
 	if (nearestSell.x && nearestSell.y && nearestSell.z) {
 		config->targetX = nearestSell.x;

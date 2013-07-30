@@ -1472,7 +1472,7 @@ int canGetToPoint(int X,int Y,int Z){
 	return 1;
 }
 
-void SendAttackMode(int attack,int follow,int attLock, int refreshCur=0){
+void SendAttackMode(int attack,int follow,int attLock,int PVPMode, int refreshCur=0){
 
 	//Ensures that only changes in the three values are sent, and only one at a time
 	CPackSenderProxy sender;
@@ -1480,15 +1480,18 @@ void SendAttackMode(int attack,int follow,int attLock, int refreshCur=0){
 	static int curAttack = reader.getPlayerModeAttackType();
 	static int curFollow = reader.getPlayerModeFollow();
 	static int curAttLock = reader.getPlayerModeAttackPlayers();
+	static int curPVPMode = reader.getPlayerModePVP();
 
 	static int buttonAttack = reader.getPlayerModeAttackType();
 	static int buttonFollow = reader.getPlayerModeFollow();
 	static int buttonAttLock = reader.getPlayerModeAttackPlayers();
+	static int buttonPVPMode = reader.getPlayerModePVP();
 
 	if (refreshCur){
 		curAttack = reader.getPlayerModeAttackType();
 		curFollow = reader.getPlayerModeFollow();
 		curAttLock = reader.getPlayerModeAttackPlayers();
+		curPVPMode = reader.getPlayerModePVP();
 	}
 	if (buttonAttack!=reader.getPlayerModeAttackType()){
 		curAttack=reader.getPlayerModeAttackType();
@@ -1502,23 +1505,33 @@ void SendAttackMode(int attack,int follow,int attLock, int refreshCur=0){
 		curAttLock=reader.getPlayerModeAttackPlayers();
 		buttonAttLock=reader.getPlayerModeAttackPlayers();
 	}
+	if (buttonPVPMode!=reader.getPlayerModePVP()){
+		curPVPMode=reader.getPlayerModePVP();
+		buttonPVPMode=reader.getPlayerModePVP();
+	}
 
 	if (attack==-1) attack=curAttack;
 	if (follow==-1) follow=curFollow;
 	if (attLock==-1) attLock=curAttLock;
+	if (PVPMode==-1) PVPMode=curPVPMode;
 
 	if (attack != curAttack){
-		sender.attackMode(attack,curFollow,curAttLock);
+		sender.attackMode(attack,curFollow,curAttLock,curPVPMode);
 		//if going to send another attack mode change right away then sleep
-		if(attLock != curAttLock || follow != curFollow) Sleep(CModuleUtil::randomFormula(700,500));
+		if(attLock != curAttLock || follow != curFollow || PVPMode != curPVPMode) Sleep(CModuleUtil::randomFormula(700,500));
 	}
 	if (follow != curFollow){
-		sender.attackMode(curAttack,follow,curAttLock);
+		sender.attackMode(curAttack,follow,curAttLock,curPVPMode);
 		//if going to send another attack mode change right away then sleep
-		if (attLock != curAttLock) Sleep(CModuleUtil::randomFormula(700,500));
+		if (attLock != curAttLock || PVPMode != curPVPMode) Sleep(CModuleUtil::randomFormula(700,500));
 	}
 	if (attLock != curAttLock){
-		sender.attackMode(curAttack,curFollow,attLock);
+		sender.attackMode(curAttack,curFollow,attLock,curPVPMode);
+		//if going to send another attack mode change right away then sleep
+		if (PVPMode != curPVPMode) Sleep(CModuleUtil::randomFormula(700,500));
+	}
+	if (PVPMode != curPVPMode){
+		sender.attackMode(curAttack,curFollow,curAttLock,PVPMode);
 	}
 	//char buf[111];
 	//sprintf(buf,"Attack Set to: %d,%d",attack,follow);
@@ -1526,6 +1539,7 @@ void SendAttackMode(int attack,int follow,int attLock, int refreshCur=0){
 	curAttack = attack;
 	curFollow = follow;
 	curAttLock = attLock;
+	curPVPMode = PVPMode;
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1802,7 +1816,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		//on first run after being logged out perform these
 		if (!loggedOut && wasLoggedOut){
 			//refresh attackmode since Tibia's buttons would display server's settings
-			SendAttackMode(-1,-1,-1,1);
+			SendAttackMode(-1,-1,-1,-1,1);
 			loginTm = time(NULL);
 			wasLoggedOut=0;
 		}
@@ -1842,7 +1856,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						reader.setAttackedCreature(0);
 						reader.cancelAttackCoords();
 						//restore attack mode
-						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1);
+						SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1,-1);
 
 						if (config->debug) registerDebug("Paused cavebot");
 						reader.setGlobalVariable("walking_control","userpause");
@@ -2552,7 +2566,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		int attackMode=config->mode+1;
 		trainingCheck(config,currentlyAttackedCreatureNr,alienCreatureForTrainerFound,monstersSurrounding,lastAttackedCreatureBloodHit,&attackMode);
-		SendAttackMode(attackMode,config->autoFollow,-1);
+		SendAttackMode(attackMode,config->autoFollow,-1,-1);
 
 		CTibiaCharacter *attackCh=reader.readVisibleCreature(currentlyAttackedCreatureNr);
 		//perform server visible tasks if we have something to attack
@@ -3024,7 +3038,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	deleteAndNull(self);
 	// restore attack mode
-	SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1);
+	SendAttackMode(reader.getPlayerModeAttackType(),reader.getPlayerModeFollow(),-1,-1);
 
 	if (config->debug) registerDebug("Exiting cavebot");
 	globalAutoAttackStateAttack=CToolAutoAttackStateAttack_notRunning;

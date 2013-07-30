@@ -1019,6 +1019,20 @@ int CMemReaderProxy::getPlayerModeFollow()
 	return 0;
 }
 
+int CMemReaderProxy::getPlayerModePVP()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModePVP");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+}
+
 char * CMemReaderProxy::getOpenWindowName()
 {
 	typedef char *(*Proto_fun)();

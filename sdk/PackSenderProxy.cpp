@@ -538,15 +538,15 @@ void CPackSenderProxy::closeContainer(int contNr)
 		}
 	}
 }
-void CPackSenderProxy::attackMode(int attack,int follow,int attLock)
+void CPackSenderProxy::attackMode(int attack,int follow,int attLock,int PVPMode)
 {
-	typedef void (*Proto_fun)(int attack,int follow,int attLock);
+	typedef void (*Proto_fun)(int attack,int follow,int attLock,int PVPMode);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderAttackMode");
 		if (fun)
 		{
-			fun(attack,follow,attLock);
+			fun(attack,follow,attLock,PVPMode);
 		}
 	}
 }

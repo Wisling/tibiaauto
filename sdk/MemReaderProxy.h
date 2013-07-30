@@ -109,6 +109,7 @@ public:
 	int getPlayerModeAttackPlayers();
 	int getPlayerModeFollow();
 	int getPlayerModeAttackType();
+	int getPlayerModePVP();
 
 	char *getOpenWindowName();
 	int getConnectionState();

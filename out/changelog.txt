@@ -1,3 +1,8 @@
+2.29.1 ?.6.2013
+Enhancements:
+ Python: added functions for changing PVP mode
+Defects:
+
 2.29.0 18.6.2013
 Enhancements:
  Tibia Auto: Updated to 10.01

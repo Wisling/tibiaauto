@@ -23,7 +23,7 @@ seller sellersInfo[MAX_NPCS];
 int sellerNum;
 
 extern CToolSellerState globalSellerState;
-extern int GUIx,GUIy,GUIz;
+extern int GUIx,GUIy,GUIz,GUINum;
 
 int initalizeSellers();
 void saveSellers();
@@ -301,7 +301,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_walking:
-			m_stateSeller.SetWindowText("Walking to Seller");
+			sprintf(buf,"Walking to Seller %d (%d,%d,%d)",GUINum,GUIx,GUIy,GUIz);
+			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_talking:
 			m_stateSeller.SetWindowText("Talking with Seller");
