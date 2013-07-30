@@ -37,6 +37,7 @@ public:
 	int getPlayerModeAttackPlayers();
 	int getPlayerModeFollow();
 	int getPlayerModeAttackType();
+	int getPlayerModePVP();
 	void setMainTrayText(char *text);
 	void setMainWindowText(char *text);
 	CTibiaMiniMapLabel * readMiniMapLabel(int mapNr,int pointNr);

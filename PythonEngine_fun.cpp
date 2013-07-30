@@ -1155,13 +1155,17 @@ static PyObject *tibiaauto_sender_attackMode(PyObject *self, PyObject *args)
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
 
-	int arg1,arg2,arg3;
-	if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)){
+	int arg1,arg2,arg3,arg4;
+	if (!PyArg_ParseTuple(args, "iiii",&arg1,&arg2,&arg3,&arg4)){
 		PyErr_Clear();
-		arg3=reader.getPlayerModeAttackPlayers();
-		if (!PyArg_ParseTuple(args, "ii",&arg1,&arg2)) return NULL;	
+		arg4=reader.getPlayerModePVP();
+		if (!PyArg_ParseTuple(args, "iii",&arg1,&arg2,&arg3)){
+			PyErr_Clear();
+			arg3=reader.getPlayerModeAttackPlayers();
+			if (!PyArg_ParseTuple(args, "ii",&arg1,&arg2)) return NULL;	
+		}
 	}
-	sender.attackMode(arg1,arg2,arg3);
+	sender.attackMode(arg1,arg2,arg3,arg4);
 	Py_INCREF(Py_None);
 	return Py_None; 
 }
@@ -2359,6 +2363,15 @@ static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *
 	CMemReaderProxy reader;
 
 	int ret1=reader.getPlayerModeFollow();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+static PyObject *tibiaauto_reader_getPlayerModePVP(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.getPlayerModePVP();
 	PyObject *ret = Py_BuildValue("i",ret1);
 	
 	return ret;

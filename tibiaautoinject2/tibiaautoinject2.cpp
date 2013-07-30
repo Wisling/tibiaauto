@@ -175,7 +175,51 @@ int outSelfUHAvail=0;
 int outFluidManaAvail=0;
 int outFluidLifeAvail=0;
 
+//10.10
+int funAddr_tibiaPrintText =			0x4D3020;
+int funAddr_tibiaPlayerNameText =		0x4D2370;
+int funAddr_tibiaInfoMiddleScreen =		0x578160;
+int funAddr_tibiaIsCreatureVisible =	0x47B080;
+int funAddr_tibiaEncrypt =				0x58AE70;
+int funAddr_tibiaDecrypt =				0x58AFA0;
+int funAddr_tibiaShouldParseRecv =		0x51E230;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0x9E657C-8;//look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x57C0B0;
+int callAddr_PrintText01 =				0x463DDD;//...<addr>.*
+int callAddr_PrintText02 =				0x463E27;
+int callAddr_PrintText03 =				0x46CD06;
+int callAddr_PrintText04 =				0x5107B5;
+int callAddr_PrintText05 =				0x511798;
+int callAddr_PlayerNameText01 =			0x42B410;
+int callAddr_PlayerNameText02 =			0x4D2CA4;
+int callAddr_PlayerNameText03 =			0x4D2EA4;
+int callAddr_PlayerNameText04 =			0x4D30A3;
+int callAddr_PlayerNameText05 =			0x4D32A3;
+int callAddr_PlayerNameText06 =			0x4D34A4;
+int callAddr_PlayerNameText07 =			0x4D36A2;
+int callAddr_PlayerNameText08 =			0x5112CF;
+int callAddr_InfoMiddleScreen01 =		0x424DCC;
+int callAddr_InfoMiddleScreen02 =		0x468D78;
+int callAddr_InfoMiddleScreen03 =		0x4A0955;
+int callAddr_InfoMiddleScreen04 =		0x50E604;
+int callAddr_InfoMessageBox01 =			0x424939;
+int callAddr_InfoMessageBox02 =			0x438C07;
+int callAddr_InfoMessageBox03 =			0x4B9D16;
+int callAddr_InfoMessageBox04 =			0x505570;
+int callAddr_InfoMessageBox05 =			0x505D43;
+int callAddr_InfoMessageBox06 =			0x505DA7;
+int callAddr_InfoMessageBox07 =			0x57BF17;
+int callAddr_InfoMessageBox08 =			0x57C987;
+int callAddr_InfoMessageBox09 =			0x57CA57;
+int callAddr_InfoMessageBox10 =			0x57CB4C;
+int callAddr_InfoMessageBox11 =			0x57CD90;
+int callAddr_InfoMessageBox12 =			0x57D86D;
+int callAddr_Encrypt01 =				0x51D91D;
+int callAddr_Decrypt01 =				0x51DF29;
+int callAddr_ShouldParseRecv01 =		0x46FE27;
+
 //10.01
+/*
 int funAddr_tibiaPrintText =			0x4D2CD0;
 int funAddr_tibiaPlayerNameText =		0x4D2020;
 int funAddr_tibiaInfoMiddleScreen =		0x578080;
@@ -217,7 +261,7 @@ int callAddr_InfoMessageBox12 =			0x57D78D;
 int callAddr_Encrypt01 =				0x51D5BD;
 int callAddr_Decrypt01 =				0x51DBC9;
 int callAddr_ShouldParseRecv01 =		0x46FCD7;
-
+*/
 //10.00
 /*
 int funAddr_tibiaPrintText =			0x4D2BE0;
@@ -1102,6 +1146,12 @@ char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; 
 	
 }
 
+void sendTAMessage(char* message){
+	if(privChanBufferPtr){
+		OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)message,4,(int)"Tibia Auto",0,0,0,0);
+	}
+}
+
 int aaa = 0;
 // direction 0 - incoming (recv); 1 outgoing (send)
 void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int depth)
@@ -1195,18 +1245,18 @@ int lastAction=0;
 void sendBufferViaSocket(char *buffer)
 {	
 	// if we don't yet have key pointer then don't do anything
-	if (!encryptKeyPtr)
+	if (!encryptKeyPtr){
 		return;
-	
+	}
+	fprintf(debugFile,"enter sendBufferViaSocket\n");
+	fflush(debugFile);
 	int i;
 	char outbufHeader[1006];
 	char* outbuf = outbufHeader+6;
-	int lowB=buffer[0];
-	int hiB=buffer[1];
-	if (lowB<0) lowB+=256;
-	if (hiB<0) hiB+=256;
-	int len=lowB+hiB*256+2;
+	int len= (((int)buffer[0])&0xFF) + (((int)buffer[1])&0xFF<<8) + 2;
 
+	fprintf(debugFile,"sendBufferViaSocketDoLenCalcs\n");
+	fflush(debugFile);
 	int outbuflen=len;
 	if (len%8!=0) outbuflen+=8-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
 	outbufHeader[0]=outbuflen%256;
@@ -1214,30 +1264,30 @@ void sendBufferViaSocket(char *buffer)
 
 	//before encryption
 	if (debugFile && COMPLEX) {
-		bufToHexString(buffer,len);	
+		bufToHexString(buffer,len);
 		fprintf(debugFile,"Before Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
 		fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);
 		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
-		fflush(debugFile);	
+		fflush(debugFile);
 	}
 
+	fprintf(debugFile,"sendBufferViaSocketDoEncr\n");
+	fflush(debugFile);
 	for (i=0;i<outbuflen;i+=8)
 	{		
 		memcpy(outbuf+i,buffer+i,8);
-		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);		
-		memcpy(outbuf+i,buffer+i,8); 		
-		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);		
-		memcpy(outbuf+i,buffer+i,8); 		
-		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);		
+		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);// wiz: was repeated 3 times. 2 Removed!
 	}	
 	//after encryption
-	if (debugFile && COMPLEX) {
+	if (debugFile && COMPLEX){
 		fprintf(debugFile,"After Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
 		bufToHexString(outbuf, outbuflen);	
 		fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
 		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
 		fflush(debugFile);
 	}
+	fprintf(debugFile,"sendBufferViaSocketDoChecksum\n");
+	fflush(debugFile);
 	int test = outbuflen;
 	char *check = adler(outbuf, outbuflen);
 	memcpy(outbufHeader + 2 , check, 4);
@@ -1245,10 +1295,14 @@ void sendBufferViaSocket(char *buffer)
 	test += 4;
 
 	// make sure that packets go at most once every minDistance ms
+	fprintf(debugFile,"sendBufferViaSocketDoSleep\n");
+	fflush(debugFile);
 	int minDistance=175;
 	minDistance=1;
 	int nowAction=GetTickCount();
-	if (nowAction-lastAction<minDistance) Sleep(minDistance-(nowAction-lastAction));
+	if (nowAction-lastAction<minDistance && nowAction-lastAction>0){
+		Sleep(minDistance-(nowAction-lastAction));
+	}
 	if (debugFile&&COMPLEX)
 	{				
 		fprintf(debugFile,"sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
@@ -1257,8 +1311,10 @@ void sendBufferViaSocket(char *buffer)
 	lastAction=GetTickCount();
 	
 
+	fprintf(debugFile,"sendBufferViaSocketDoSend\n");
+	fflush(debugFile);
 	
-	int ret=send(tibiaSocket, outbufHeader,test+2,0);
+	int ret=Mine_send(tibiaSocket, outbufHeader,test+2,0); //wiz:changed from "send"
 	
 	if (debugFile&&COMPLEX)
 	{		
@@ -1266,6 +1322,9 @@ void sendBufferViaSocket(char *buffer)
 		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
 	}
 	//delete check;
+
+	fprintf(debugFile,"leave sendBufferViaSocket\n");
+	fflush(debugFile);
 }
 
 
@@ -1506,7 +1565,11 @@ int parseMessageForTibiaAction(char *buf,int len)
 	} else if (removeStatsMessage){
 		CModuleUtil::setTASetting("RemoveBotStatsMessage",0);
 	}
-	Protocol::parsePacketOut(NetworkMessage(buf,len));
+	fprintf(debugFile,"enter parsePacketOut\n");
+	fflush(debugFile);
+	Protocol::parsePacketOut(NetworkMessage(buf));
+	fprintf(debugFile,"leave parsePacketOut\n");
+	fflush(debugFile);
 	//char buf3[1111]="bye ";
 	//for (i=0;i<min(len,1110);i++){sprintf(buf2,"%s %2x",buf2,buf[i]);}
 	//AfxMessageBox(buf2);
@@ -2065,10 +2128,7 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 			fprintf(debugFile,"privChanBufferPtr=%x\r\n",privChanBufferPtr);
 			fflush(debugFile);
 		}
-		if (privChanBufferPtr)
-		{			
-			OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)taMessage[taMessageEnd],4,(int)"Tibia Auto",0,0,0,0);
-		}
+		sendTAMessage(taMessage[taMessageEnd]);
 		taMessageEnd++;
 		if (taMessageEnd==TA_MESSAGE_QLEN)
 			taMessageEnd=0;
@@ -2144,6 +2204,7 @@ int OUTmyPlayerNameText(int align, int fontNumber, int visible, int x, int y, in
 	}
 	return ret;
 }
+
 int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char* str , int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
 {
 	int ret;
@@ -2153,10 +2214,10 @@ int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int s
 	sprintf(buf,"myPlayerNameText(%x,%s,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x)",align, str, visible,x,y,fontNumber,colR,colG,colB,showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 	static int aa = 0;
 	int barn=0;
-	if (privChanBufferPtr && (colR!=0xa0 || colG!=0xa0 || colB!=0xff) && aa%1 == 0){
+	if ((colR!=0xa0 || colG!=0xa0 || colB!=0xff) && aa%1 == 0){
 		if (colR==0xf0 && colG==0xf0 && colB==0 && fontNumber==4){
 			if (aa>10000000) aa=0;
-			OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)buf,4,(int)"Tibia Auto",0,0,0,0);
+			sendTAMessage(buf);
 			barn=1;
 		}
 	}
@@ -2267,7 +2328,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	if (s) sprintf(buf,"XXY v1Type=%x, v2Text=%s",type,s);
 	else sprintf(buf,"XXY v1Type=%x, v2Text=",type);
 
-	//OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)buf,4,(int)"Tibia Auto",0,0,0);
+	//sendTAMessage(buf);
 	if (type==0x13)
 	{
 		if (debugFile&&COMPLEX)
@@ -2600,15 +2661,15 @@ int myShouldParseRecv(){
 		if(packtype == wanted){
 			Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen),ipcPipeBack);
 			bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
-			OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
+			sendTAMessage(bufToHexStringRet);
 		}*/
 		{for (int i=0;i<recvRegexCount;i++){
 			if (recvRegex[i].inUse == 1){
 				int match = regexpProxy.regnexec(&(recvRegex[i].preg),((char*)prevRecvStream+actionStart),actionLen,0,NULL,0);
 				if (match == 0){
-					if (privChanBufferPtr && 0){
+					if (0){
 						bufToHexString(((char*)prevRecvStream+actionStart),actionLen);
-						OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0,0,0);
+						sendTAMessage(bufToHexStringRet);
 					}
 					parseRecvActionData(recvRegex[i].handle,(char*)prevRecvStream+actionStart,actionLen);
 				}
@@ -2626,9 +2687,7 @@ int myShouldParseRecv(){
 	//sprintf(bufToHexStringRet,"%x:%d, %d  %x%x",ret, recvStream->pos, recvStream->length,((char)recvStream->s[recvStream->pos-2]),((char)recvStream->s[recvStream->pos-2-1]));
 	//AfxMessageBox(buf);
 	//bufToHexString(recvStream->s,30);
-	//if (privChanBufferPtr){
-	//	myInterceptInfoMessageBox(privChanBufferPtr,0,(int)bufToHexStringRet,4,(int)"Tibia Auto",0,0);
-	//}
+	//sendTAMessage(bufToHexStringRet);
 	if (0&&reader.getConnectionState() == 10){ // see what happens when packets are ignored
 		if (ret == 107){
 			ret = -1;
@@ -3382,6 +3441,8 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
 void ParseIPCMessage(struct ipcMessage mess)
 {
 	
+	fprintf(debugFile,"enter ipcMessage\n");
+	fflush(debugFile);
 	switch (mess.messageType)
 	{
 	case 1:
@@ -3393,7 +3454,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			buf[0]=0x1;
 			buf[1]=0x0;
 			buf[2]=0x67;
-			send(tibiaSocket,buf,3,0);
+			Mine_send(tibiaSocket,buf,3,0);
 			
 			break;
 		};
@@ -3627,9 +3688,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 							strcpy(errorMsg,base);
 							strncpy(errorMsg+strlen(base),regExp,regLen);
 							errorMsg[strlen(base)+regLen]=0;
-							if (privChanBufferPtr){
-								OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)errorMsg,4,(int)"Tibia Auto",0,0,0,0);
-							}
+							sendTAMessage(errorMsg);
 							break;
 						}
 						free(regExp);
@@ -3660,6 +3719,8 @@ void ParseIPCMessage(struct ipcMessage mess)
 	default:		
 		break;
 	};
+	fprintf(debugFile,"leave parseIPCMessage\n");
+	fflush(debugFile);
 };
 
 int ReadFromPipe()

@@ -810,10 +810,10 @@ void packSenderCloseContainer(int contNr)
 	sender.closeContainer(contNr);
 }
 
-void packSenderAttackMode(int attack,int follow,int attlock)
+void packSenderAttackMode(int attack,int follow,int attlock,int PVPMode)
 {
 	CPackSender sender;
-	sender.attackMode(attack,follow,attlock);
+	sender.attackMode(attack,follow,attlock,PVPMode);
 }
 
 void packSenderAttack(int tibiaCharId)
@@ -1177,6 +1177,12 @@ int memReadGetPlayerModeAttackType()
 {
 	startMemReader();
 	return reader->getPlayerModeAttackType();
+}
+
+int memReadGetPlayerModePVP()
+{
+	startMemReader();
+	return reader->getPlayerModePVP();
 }
 
 char *memReadGetOpenWindowName()

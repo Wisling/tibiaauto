@@ -34,7 +34,7 @@ public:
 	void openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag);
 	void sendTAMessage(char *msg);
 	void revealFish(int enable);
-	void attackMode(int attack,int follow,int attlock);
+	void attackMode(int attack,int follow,int attlock,int PVPMode);
 	void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method);
 	void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ);
 	void castRuneAgainstCreature(int contNr,int itemPos,int runeObjectId,int creatureId);

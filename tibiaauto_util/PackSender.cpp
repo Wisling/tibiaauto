@@ -38,7 +38,7 @@ public:
 			this,
 			sizeof(struct ipcMessage), 
 			&cbWritten,
-			NULL);				
+			NULL);
 	}
 	
 };
@@ -547,20 +547,22 @@ void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos,
 }
 
 
-void CPackSender::attackMode(int attack,int follow,int attLock)
+void CPackSender::attackMode(int attack,int follow,int attLock, int PVPMode)
 {
-	char sendbuf[6];
+	char sendbuf[7];
 
-	if(attack!=2 && attack!=1 && attack!=3){ sendTAMessage("Packet error attack"); return;}
+	if(attack!=1 && attack!=2 && attack!=3){ sendTAMessage("Packet error attack"); return;}
 	if(follow!=0 && follow!=1){ sendTAMessage("Packet error follow"); return;}
 	if(attLock!=0 && attLock!=1){ sendTAMessage("Packet error attklock"); return;}
+	if(PVPMode!=0 && PVPMode!=1 && PVPMode!=2 && PVPMode!=3){ sendTAMessage("Packet error PVPMode"); return;}
 
-	sendbuf[0]=4;
+	sendbuf[0]=5;
 	sendbuf[1]=0;
 	sendbuf[2]=0xa0;
 	sendbuf[3]=attack;
 	sendbuf[4]=follow;
 	sendbuf[5]=attLock;
+	sendbuf[6]=PVPMode;
 
 	sendPacket(sendbuf,2);
 }

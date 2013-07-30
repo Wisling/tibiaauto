@@ -302,7 +302,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
 	ch->blocking=CMemUtil::GetMemIntValue(offset+148);
 	//ch->??=CMemUtil::GetMemIntValue(offset+168);357?
-	//ch->??=CMemUtil::GetMemIntValue(offset+172);
+	//ch->??=CMemUtil::GetMemIntValue(offset+172);	
 	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+176);
 	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+182);
 	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+186);
@@ -1060,6 +1060,12 @@ int CMemReader::getPlayerModeAttackPlayers()
 {
 	CTibiaItemProxy itemProxy;
 	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModeAttackPlayers")) & 1;
+}
+
+int CMemReader::getPlayerModePVP()
+{
+	CTibiaItemProxy itemProxy;
+	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrModePVP")) & 1;
 }
 
 char * CMemReader::getOpenWindowName()

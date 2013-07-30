@@ -290,6 +290,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"getPlayerModeAttackPlayers", tibiaauto_reader_getPlayerModeAttackPlayers, METH_VARARGS},
 	{"getPlayerModeAttackType", tibiaauto_reader_getPlayerModeAttackType, METH_VARARGS},
 	{"getPlayerModeFollow", tibiaauto_reader_getPlayerModeFollow, METH_VARARGS},
+	{"getPlayerModePVP", tibiaauto_reader_getPlayerModePVP, METH_VARARGS},
 	{"getOpenWindowName", tibiaauto_reader_getOpenWindowName, METH_VARARGS},
 	{"getConnectionState", tibiaauto_reader_getConnectionState, METH_VARARGS},
 	{"setXRayValues", tibiaauto_reader_setXRayValues, METH_VARARGS},

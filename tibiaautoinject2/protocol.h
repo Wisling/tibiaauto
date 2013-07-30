@@ -28,6 +28,7 @@ public:
 	void RefreshSize();
 	void ResetPos();
 	std::string GetString(int stringLen=0);
+	std::string GetHex(int len=0);
 	void AddByte(unsigned char c);
 	void AddInt(unsigned int i);
 	void AddShort(unsigned short s);
