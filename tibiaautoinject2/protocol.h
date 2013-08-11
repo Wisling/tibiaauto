@@ -25,6 +25,9 @@ public:
 	unsigned int PeekInt();
 	unsigned short PeekShort();
 	bool canAdd(int size);
+	bool canTake(int size);
+	void sizeError(const char*, int);
+
 	void RefreshSize();
 	void ResetPos();
 	std::string GetString(int stringLen=0);

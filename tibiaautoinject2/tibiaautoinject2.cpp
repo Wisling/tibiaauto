@@ -1148,6 +1148,8 @@ char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; 
 
 void sendTAMessage(char* message){
 	if(privChanBufferPtr){
+		fprintf(debugFile,"sendTAMessage %X %s",privChanBufferPtr,message);
+		fflush(debugFile);
 		OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)message,4,(int)"Tibia Auto",0,0,0,0);
 	}
 }
@@ -1307,7 +1309,7 @@ void sendBufferViaSocket(char *buffer)
 	{				
 		fprintf(debugFile,"sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
 		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
-	}	
+	}
 	lastAction=GetTickCount();
 	
 
@@ -1565,11 +1567,14 @@ int parseMessageForTibiaAction(char *buf,int len)
 	} else if (removeStatsMessage){
 		CModuleUtil::setTASetting("RemoveBotStatsMessage",0);
 	}
-	fprintf(debugFile,"enter parsePacketOut\n");
+	char strcode[111];
+	sprintf(strcode,"code %c\n",buf[2]);
+	fprintf(debugFile,strcode);
+	//fwrite(buf,len);
 	fflush(debugFile);
-	Protocol::parsePacketOut(NetworkMessage(buf));
-	fprintf(debugFile,"leave parsePacketOut\n");
-	fflush(debugFile);
+	//Protocol::parsePacketOut(NetworkMessage(buf));
+	//fprintf(debugFile,"leave parsePacketOut\n");
+	//fflush(debugFile);
 	//char buf3[1111]="bye ";
 	//for (i=0;i<min(len,1110);i++){sprintf(buf2,"%s %2x",buf2,buf[i]);}
 	//AfxMessageBox(buf2);
@@ -2135,7 +2140,7 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 		
 	}
 
-	int titleOffset=0;	
+	int titleOffset=0;
 
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
 	for (int loop = 0; loop < 100; loop++ ) {

@@ -183,6 +183,18 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 	ch->mlvl = CMemUtil::GetMemIntValue(m_memAddressMlvl);
 	ch->mlvlPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
 	ch->soulPoints = CMemUtil::GetMemIntValue(m_memAddressSoulPoints);
+	switch(CMemUtil::GetMemIntValue(m_memAddressVocation)){
+	case 0: strncpy(ch->voc,"n",3); break;
+	case 1: strncpy(ch->voc,"k",3); break;
+	case 2: strncpy(ch->voc,"p",3); break;
+	case 3: strncpy(ch->voc,"s",3); break;
+	case 4: strncpy(ch->voc,"d",3); break;
+	case 5: strncpy(ch->voc,"ek",3); break;
+	case 6: strncpy(ch->voc,"rp",3); break;
+	case 7: strncpy(ch->voc,"ms",3); break;
+	case 8: strncpy(ch->voc,"ed",3); break;
+	}
+
 
 	ch->skillAxe = CMemUtil::GetMemIntValue(m_memAddressSkillAxe);
 	ch->skillClub = CMemUtil::GetMemIntValue(m_memAddressSkillClub);

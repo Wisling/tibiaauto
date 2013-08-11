@@ -18,7 +18,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	
 	CTibiaCharacter *selfCh = reader.readSelfCharacter();
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s}",
 		"hp",selfCh->hp,
 		"mana",selfCh->mana,
 		"x",selfCh->x,
@@ -66,7 +66,8 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 		"skulls",selfCh->skulls,
 		"shields",selfCh->shields,	
 		"warIcon",selfCh->warIcon,
-		"blocking",selfCh->blocking);
+		"blocking",selfCh->blocking,
+		"voc",selfCh->voc);
 
 	delete selfCh;
 	return ret;
@@ -345,7 +346,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
 	CTibiaCharacter *ch = reader.readVisibleCreature(arg1);
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -393,7 +394,8 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 		"skulls",ch->skulls,
 		"shields",ch->shields,
 		"warIcon",ch->warIcon,
-		"blocking",ch->blocking);
+		"blocking",ch->blocking,
+		"voc",ch->voc);
 
 	
 
@@ -428,7 +430,7 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 	CTibiaCharacter *ch = reader.getCharacterByTibiaId(arg1);
 	if (!ch) ch=reader.readSelfCharacter();//avoids returning NULL
 	PyObject *ret = 
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i}",
+		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:f,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:i,s:s}",
 		"hp",ch->hp,
 		"mana",ch->mana,
 		"x",ch->x,
@@ -476,7 +478,8 @@ static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject
 		"skulls",ch->skulls,
 		"shields",ch->shields,
 		"warIcon",ch->warIcon,
-		"blocking",ch->blocking);
+		"blocking",ch->blocking,
+		"voc",ch->voc);
 
 	
 
@@ -790,8 +793,16 @@ static PyObject *tibiaauto_sender_useWithObjectFromFloorOnFloor(PyObject *self, 
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9;
-    if (!PyArg_ParseTuple(args, "iiiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8,&arg9)) return NULL;	
-	sender.useWithObjectFromFloorOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+    if (!PyArg_ParseTuple(args, "iiiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8,&arg9)){
+		PyErr_Clear();
+	    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;
+		else{
+			sender.useWithObjectFromFloorOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+		}
+	}else{
+		sender.useWithObjectFromFloorOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9);
+	}
+	
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -800,8 +811,15 @@ static PyObject *tibiaauto_sender_useWithObjectFromFloorInContainer(PyObject *se
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
-    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
-	sender.useWithObjectFromFloorInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)){
+		PyErr_Clear();
+		if (!PyArg_ParseTuple(args, "iiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7)) return NULL;
+		else{
+			sender.useWithObjectFromFloorInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+		}
+	}else{
+		sender.useWithObjectFromFloorInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+	}
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -810,8 +828,17 @@ static PyObject *tibiaauto_sender_useWithObjectFromContainerInContainer(PyObject
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7;
-    if (!PyArg_ParseTuple(args, "iiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7)) return NULL;	
-	sender.useWithObjectFromContainerInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+    if (!PyArg_ParseTuple(args, "iiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7)){
+		PyErr_Clear();
+		if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;
+		else{
+			sender.useWithObjectFromContainerInContainer(arg1,arg2,arg3,arg4,arg5,arg6);
+		}
+	}else{
+		sender.useWithObjectFromContainerInContainer(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+	}
+
+	
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -820,8 +847,15 @@ static PyObject *tibiaauto_sender_useWithObjectFromContainerOnFloor(PyObject *se
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
-    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
-	sender.useWithObjectFromContainerOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)){
+		PyErr_Clear();
+		if (!PyArg_ParseTuple(args, "iiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7)) return NULL;
+		else{
+			sender.useWithObjectFromContainerOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7);
+		}
+	}else{
+		sender.useWithObjectFromContainerOnFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
+	}
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -830,8 +864,17 @@ static PyObject *tibiaauto_sender_useWithObjectOnFloor(PyObject *self, PyObject 
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6;
-    if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)) return NULL;	
-	sender.useWithObjectOnFloor(arg1,arg2,arg3,arg4,arg5,arg6);
+    if (!PyArg_ParseTuple(args, "iiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6)){
+		PyErr_Clear();
+		if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;
+		else{
+			sender.useWithObjectOnFloor(arg1,arg2,arg3,arg4,arg5);
+		}
+	}else{
+		sender.useWithObjectOnFloor(arg1,arg2,arg3,arg4,arg5,arg6);
+	}
+
+	
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -840,8 +883,16 @@ static PyObject *tibiaauto_sender_useWithObjectInContainer(PyObject *self, PyObj
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5;
-    if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)) return NULL;	
-	sender.useWithObjectInContainer(arg1,arg2,arg3,arg4,arg5);
+    if (!PyArg_ParseTuple(args, "iiiii", &arg1,&arg2,&arg3,&arg4,&arg5)){
+		PyErr_Clear();
+		if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;
+		else{
+			sender.useWithObjectInContainer(arg1,arg2,arg3,arg4);
+		}
+	}else{
+		sender.useWithObjectInContainer(arg1,arg2,arg3,arg4,arg5);
+	}
+
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -851,7 +902,7 @@ static PyObject *tibiaauto_sender_moveObjectFromFloorToFloor(PyObject *self, PyO
 	CPackSenderProxy sender;
 
 	int arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8;
-    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;	
+    if (!PyArg_ParseTuple(args, "iiiiiiii", &arg1,&arg2,&arg3,&arg4,&arg5,&arg6,&arg7,&arg8)) return NULL;
 	sender.moveObjectFromFloorToFloor(arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8);
 	Py_INCREF(Py_None);
 	return Py_None;

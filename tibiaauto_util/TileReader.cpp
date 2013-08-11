@@ -72,7 +72,7 @@ void CTileReader::cleanup()
 
 CTibiaTile *CTileReader::getTile(int tileNr)
 {
-	if(tileNr>=MAX_TILES) return (CTibiaTile*)NULL;
+	if(tileNr<0 || tileNr>=MAX_TILES) return (CTibiaTile*)NULL;
 	CTibiaTile* ret=tiles[tileNr];
 	return ret;
 }

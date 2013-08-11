@@ -123,7 +123,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 				if(dwHandle){
 					char buf[111];
 					sprintf(buf,"iter %d",iter);
-					if(iter!=999)
+					if(iter!=1000)
 						MessageBox(NULL,buf,"",0);
 					break;
 				}

@@ -165,7 +165,7 @@ END
 IDD_OPTIONS DIALOGEX 0, 0, 192, 258
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Tibia Auto: general options"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Loot Statistics",IDC_LOOT_STATISTICS,7,7,178,31
     GROUPBOX        "Creature Statistics",IDC_CREATURE_STATISTICS,7,41,178,
@@ -350,6 +350,15 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME_HIDDEN    ICON    DISCARDABLE     "res\\TA LowFi version Hidden.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Dialog
 //
 
@@ -357,7 +366,7 @@ IDD_TIBIAAUTO_DIALOG DIALOGEX 0, 0, 238, 326
 STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_CONTROLPARENT | WS_EX_APPWINDOW
 CAPTION "Tibia Auto v 2.30.0 for Tibia 10.10"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "AFK Tools",IDC_AFK_TOOLS,89,24,142,79
     GROUPBOX        "Information Tools",IDC_INFORMATION_TOOLS,89,105,142,62
@@ -439,7 +448,7 @@ END
 IDD_COLORCHOOSER_DIALOG DIALOGEX 0, 0, 367, 129
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Color Scheme Selector"
-FONT 8, "MS Sans Serif"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
 BEGIN
     GROUPBOX        "Secondary Background",IDC_SECONDARY_BACKGROUND,197,36,
                     143,45

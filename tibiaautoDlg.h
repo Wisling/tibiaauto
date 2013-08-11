@@ -178,6 +178,7 @@ private:
 	void loadConfig(CString);
 	void refreshAds();
 	void sendStats();
+	void setShellTray();
 	XercesDOMParser *parser;
 	int m_lightPower;
 	CLoadedModules *m_loadedModules;

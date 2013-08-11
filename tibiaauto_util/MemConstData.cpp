@@ -59,6 +59,7 @@ CMemConstData::CMemConstData()
 	m_memAddressGoX                 = offset + itemProxy.getValueForConst("addrGoX");
 	m_memAddressGoY                 = offset + itemProxy.getValueForConst("addrGoY");
 	m_memAddressGoZ                 = offset + itemProxy.getValueForConst("addrGoZ");
+	m_memAddressVocation			= offset + itemProxy.getValueForConst("addrVocation");
 	
 	m_memAddressSkillFish           = offset + itemProxy.getValueForConst("addrSkillFish");
 	m_memAddressSkillShield         = m_memAddressSkillFish-4;
