@@ -63,6 +63,7 @@ public:
 	int shields;
 	int warIcon;
 	int blocking;
+	char voc[3];
 
 };
 

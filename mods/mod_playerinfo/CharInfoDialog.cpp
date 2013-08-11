@@ -224,17 +224,11 @@ void CCharInfoDialog::dataCalc(){
 	playerInfo.soulPoints	= ch->soulPoints;
 	playerInfo.stamina		= ch->stamina;
 	playerInfo.capacity		= ch->cap;
+	strncpy(playerInfo.voc,ch->voc,3);
 
-	int voc;
-	if (ch->lvl == 8){
-		//T4: Div by 0 fix;
-		voc = 0;
-	}else{
-		voc = (ch->maxHp-185)/(ch->lvl-8);
-	}
-	if (voc == 15){ //Knight
+	if (!strcmp(ch->voc,"k") || !strcmp(ch->voc,"ek")){ //Knight
 		playerInfo.maxCapacity	= 270+ch->lvl*25;
-	}else if (voc == 10){ //Pall
+	}else if (!strcmp(ch->voc,"p") || !strcmp(ch->voc,"rp")){ //Pall
 		playerInfo.maxCapacity	= 310+ch->lvl*20;
 	}else{ //Rest
 		playerInfo.maxCapacity	= 390+ch->lvl*10;

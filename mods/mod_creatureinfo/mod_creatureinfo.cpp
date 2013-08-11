@@ -393,6 +393,9 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 	}else if (!strcmpi(tagName,"maxmana")){
 		sprintf(svalue,"%d",playerInfo->maxMana);
 
+	}else if (!strcmpi(tagName,"voc")){
+		sprintf(svalue,"%s",playerInfo->voc);
+		for(int i=strlen(svalue)-1;i>=0;i--) svalue[i] = toupper(svalue[i]);
 	}else if (!strcmpi(tagName,"capacity")){
 		sprintf(svalue,"%d.%02d",(int)playerInfo->capacity,(int)((playerInfo->capacity-(int)playerInfo->capacity)*100));
 

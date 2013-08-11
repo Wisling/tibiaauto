@@ -30,8 +30,10 @@ struct mod_playerinfo{
 	unsigned long expLvl;
 	unsigned long expPerHour;
 	unsigned long expLeft;
+	char voc[3];
 	skillstruct skill[9];
 	spellstruct spell[4];
+
 };
 
 #define SKILL_LEVEL			0

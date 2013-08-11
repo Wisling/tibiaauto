@@ -1,6 +1,7 @@
 2.29.1 ?.6.2013
 Enhancements:
  Python: added functions for changing PVP mode
+ Python: for all useWith functions, the tile position does not need to be specified
 Defects:
 
 2.29.0 18.6.2013

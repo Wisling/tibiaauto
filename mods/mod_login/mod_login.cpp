@@ -550,11 +550,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			ReleaseSemaphore(hSemaphore,1,&prevCount);
 			registerDebug("Relogin procedure completed.");
 			loginTime=0;
-			reader.setGlobalVariable("walking_control","");
-			reader.setGlobalVariable("walking_priority","0");
+			if(strcmp(reader.getGlobalVariable("walking_control"),"login")==0){
+				reader.setGlobalVariable("walking_control","");
+				reader.setGlobalVariable("walking_priority","0");
+			}
 
 		} // if (connectionState!=10)
-		else loginTime=0;
+		else{
+			loginTime=0;
+			if(strcmp(reader.getGlobalVariable("walking_control"),"login")==0){
+				reader.setGlobalVariable("walking_control","");
+				reader.setGlobalVariable("walking_priority","0");
+			}
+		}
 	}
 exitFunction:
 	if (hSemaphore)

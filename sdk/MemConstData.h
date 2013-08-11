@@ -60,6 +60,7 @@ public:
 	int m_memAddressGoX;
 	int m_memAddressGoY;
 	int m_memAddressGoZ;
+	int m_memAddressVocation;
 	int m_memAddressRevealCName1;
 	int m_memAddressRevealCName2;
 	int m_memAddressRevealCName3;
