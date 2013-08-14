@@ -1,3 +1,9 @@
+Added default itempos argument to python useWith functions.
+Added tray icon change to hidden windows.
+Completed outgoing packet parser.
+Added new self vocation identifier to character stats and creature info module
+Fixed login module keeping walking priority when lagging causes short logout
+
 2.29.1 ?.6.2013
 Enhancements:
  Python: added functions for changing PVP mode

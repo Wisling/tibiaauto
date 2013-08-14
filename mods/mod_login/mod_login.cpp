@@ -53,9 +53,8 @@ BEGIN_MESSAGE_MAP(CMod_loginApp, CWinApp)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-
 extern CRITICAL_SECTION QueueCriticalSection;
-extern std::queue<char *> queue2;
+extern char* queue2Message;
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
@@ -65,13 +64,19 @@ HANDLE toolThreadHandle;
 
 void registerDebug(char *msg)
 {
-	if (QueueCriticalSection.OwningThread!=0){
-		char *newMsg = (char *)malloc(strlen(msg)+1);
-		sprintf(newMsg,"%s",msg);
-		EnterCriticalSection(&QueueCriticalSection);
-		queue2.push(newMsg);
-		LeaveCriticalSection(&QueueCriticalSection);
+	//set up a short & simple threading lock until msg has been read
+	queue2Message = msg;
+	int sleeptime = 10;
+	int waitcount = 1000*5/sleeptime;
+	int count = 0;
+	while(queue2Message){
+		Sleep(10);
+		if(++count>=waitcount){
+			queue2Message=NULL;
+			break;
+		}
 	}
+
 }
 
 // wait on "Please wait" and "" windows up to 60 seconds
@@ -189,7 +194,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	int origExp=getSelfExp();
-	long prevCount;
 
 	int shouldBeOpenedContainers=0;
 	if (config->openMain) shouldBeOpenedContainers++;
@@ -208,12 +212,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		MYMOUSE_UP = MOUSEEVENTF_RIGHTUP;
 	}
 
-	HANDLE hSemaphore = OpenSemaphore(SEMAPHORE_ALL_ACCESS,true,"TibiaAuto_modLogin_semaphore");
-	if (hSemaphore==NULL)
+	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS,false,"TibiaAuto_modLogin_semaphore");
+	if (hMutex==NULL)
 	{
-		hSemaphore = CreateSemaphore(NULL,1,1,"TibiaAuto_modLogin_semaphore");
+		hMutex = CreateMutex(NULL,false,"TibiaAuto_modLogin_mutex");
 	}
-
 	while (!toolThreadShouldStop)
 	{					
 		Sleep(100);
@@ -238,7 +241,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		connectionState = reader.getConnectionState();
 		if (connectionState!=10)
-		{	
+		{
 			registerDebug("No connection: entering relogin mode");
 
 			if (origExp>getSelfExp() && !config->loginAfterKilled)
@@ -253,12 +256,37 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 				continue;
 			}
-			if (hSemaphore)
+			if (hMutex)
 			{
-				registerDebug("Waiting on global login semaphore");
-			
-				WaitForSingleObject(hSemaphore,INFINITE);
-				registerDebug("Got on semaphore");
+				registerDebug("Waiting on global login mutex");
+				int itertime = 1000; //1 sec
+				int waitcount = 1000*60*5/itertime; // 5 mins
+				int count = 0;
+				int retVal = 0;
+				while(retVal=WaitForSingleObject(hMutex,itertime)){
+					if(retVal==WAIT_TIMEOUT){
+						if(++count>=waitcount){
+							registerDebug("Wait timeout. Mutex is broken.");
+							CloseHandle(hMutex);
+							hMutex=NULL;
+							break;
+						}
+					}else if(retVal==WAIT_FAILED){
+						CloseHandle(hMutex);
+						hMutex=NULL;
+						break;
+					}
+
+				}
+				if(!hMutex) continue;
+				registerDebug("Acquired mutex");
+			}else{
+				hMutex = OpenMutex(MUTEX_ALL_ACCESS,false,"TibiaAuto_modLogin_mutex");
+				if (hMutex==NULL)
+				{
+					hMutex = CreateMutex(NULL,false,"TibiaAuto_modLogin_mutex");
+				}
+				continue;
 			}
 
 			CRect wndRect;
@@ -298,13 +326,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (::IsIconic(hwnd) && wndIconic || !::IsZoomed(hwnd) && wndMaximized) 
 				{				
 					registerDebug("ERROR: tibia window is still not maximized but it should be");
-					ReleaseSemaphore(hSemaphore,1,&prevCount);
+					ReleaseMutex(hMutex);
 					continue;
 				}
 			}
 			if (toolThreadShouldStop) 
 			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				ReleaseMutex(hMutex);
 				continue;
 			}
 
@@ -315,12 +343,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						
 			if (ensureForeground(hwnd)) 
 			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				ReleaseMutex(hMutex);
 				continue;
 			}
 			if (toolThreadShouldStop) 
 			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				ReleaseMutex(hMutex);
 				continue;
 			}
 			
@@ -336,7 +364,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// STEP1: show login window
 			if (ensureForeground(hwnd)) 
 			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				ReleaseMutex(hMutex);
 				continue;
 			}
 			SetCursorPos(wndRect.left+91,wndRect.bottom-181);
@@ -344,7 +372,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			if (waitOnConnecting() || waitForWindow("Enter Game",5) || ensureForeground(hwnd))
 			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				ReleaseMutex(hMutex);
 				continue;
 			}
 			
@@ -378,7 +406,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// STEP3: select char
 			if (waitForWindow("Select Character",5) || ensureForeground(hwnd)) 
 			{
-				ReleaseSemaphore(hSemaphore,1,&prevCount);
+				ReleaseMutex(hMutex);
 				continue;
 			}
 
@@ -547,7 +575,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			SetCursorPos(prevCursorPos.x,prevCursorPos.y);
-			ReleaseSemaphore(hSemaphore,1,&prevCount);
+			ReleaseMutex(hMutex);
 			registerDebug("Relogin procedure completed.");
 			loginTime=0;
 			if(strcmp(reader.getGlobalVariable("walking_control"),"login")==0){
@@ -565,9 +593,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 	}
 exitFunction:
-	if (hSemaphore)
+	if (hMutex)
 	{
-		CloseHandle(hSemaphore);
+		CloseHandle(hMutex);
 	}
 	toolThreadShouldStop=0;
 	loginTime=0;

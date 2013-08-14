@@ -18,8 +18,7 @@ extern int loginTime;
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-CRITICAL_SECTION QueueCriticalSection;
-std::queue<char *> queue2;
+char* queue2Message=NULL;
 
 CConfigDialog::CConfigDialog(CMod_loginApp *app,CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
@@ -216,25 +215,22 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		default: m_status.SetWindowText("Connection status: unknown");break;
 		};
 
-		EnterCriticalSection(&QueueCriticalSection);
-		while (!queue2.empty())
+		
+		if(queue2Message)
 		{
 			char timeBuf[256];
-			char *msg = queue2.front();
-			queue2.pop();
 			m_debug.InsertItem(0,"");
 			time_t nowSec = time(NULL);
 			struct tm *now = localtime(&nowSec);
 			sprintf(timeBuf,"%d:%d:%d",now->tm_hour,now->tm_min,now->tm_sec);
 			m_debug.SetItemText(0,0,timeBuf);
-			m_debug.SetItemText(0,1,msg);			
+			m_debug.SetItemText(0,1,queue2Message);			
 			if (m_debug.GetItemCount()>100)
 			{
 				m_debug.DeleteItem(m_debug.GetItemCount());
 			}
-			delete msg;
+			queue2Message=NULL;
 		}
-		LeaveCriticalSection(&QueueCriticalSection);
 		SetTimer(1001,500,NULL);
 	}
 	
@@ -254,7 +250,6 @@ BOOL CConfigDialog::OnInitDialog()
 	m_debug.InsertColumn(0,"time",LVCFMT_LEFT,65);
 	m_debug.InsertColumn(1,"message",LVCFMT_LEFT,240);
 
-	InitializeCriticalSection(&QueueCriticalSection);
 	SetTimer(1001,500,NULL);
 	
 	
@@ -263,7 +258,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
