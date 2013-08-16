@@ -416,7 +416,8 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_trigger.SetWindowText("");
 			m_trigger.EnableWindow(true);
 		}
-		VERIFY(instructionText.LoadString(IDS_ITEM)); 
+		VERIFY(instructionText.LoadString(IDS_ITEM));
+		{int a = GetLastError();}
 		m_instructionText.SetWindowText(instructionText); 
 		break;
 	case CHARACTER_STATUS:
@@ -1599,6 +1600,8 @@ Alarm* CAlarmDialog::addToList() {
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
 			return false;
 		}
+	}else{
+		temp->setTrigger(0, "");//UNDEFINED
 	}
 	if (m_alarmType.GetCurSel() != -1) 
 		temp->setType(m_alarmType.GetCurSel());

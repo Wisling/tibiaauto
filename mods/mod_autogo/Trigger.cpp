@@ -102,6 +102,9 @@ static ostream &operator<<(ostream &out, CTrigger &t) {
 
 void CTrigger::setTriggerText(CString textIn) {
 	switch (type) {
+	case UNDEFINED:
+		triggerText = "";
+		break;
 	case STRING:
 		triggerText = textIn;
 		break;
