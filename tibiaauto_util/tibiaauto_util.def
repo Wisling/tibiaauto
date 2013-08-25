@@ -277,5 +277,6 @@ EXPORTS
 	memReadItemSeenOnTopCode @269
 	memReadItemOnTopQty @270
 	memReadFindNextClosedContainer @271
-	memReadGetPlayerModeAttackType @272
+	memReadGetPlayerModePVP @272
+	memReadIsLoggedIn @273
 

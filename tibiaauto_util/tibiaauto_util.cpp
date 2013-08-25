@@ -1197,6 +1197,12 @@ int memReadGetConnectionState()
 	return reader->getConnectionState();
 }
 
+int memReadIsLoggedIn()
+{
+	startMemReader();
+	return reader->isLoggedIn();
+}
+
 void memReadSetXRayValues(int v1,int v2)
 {
 	startMemReader();

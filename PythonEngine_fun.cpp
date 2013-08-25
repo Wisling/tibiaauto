@@ -2438,6 +2438,16 @@ static PyObject *tibiaauto_reader_getConnectionState(PyObject *self, PyObject *a
 	return ret;
 }
 
+static PyObject *tibiaauto_reader_isLoggedIn(PyObject *self, PyObject *args)
+{	
+	CMemReaderProxy reader;
+
+	int ret1=reader.isLoggedIn();
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
+
 static PyObject *tibiaauto_reader_getOpenWindowName(PyObject *self, PyObject *args)
 {	
 	CMemReaderProxy reader;

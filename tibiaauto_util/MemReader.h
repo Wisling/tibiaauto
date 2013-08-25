@@ -33,6 +33,7 @@ public:
 	int getXRayValue1();
 	void setXRayValues(int v1, int v2);
 	int getConnectionState();
+	int isLoggedIn();
 	char * getOpenWindowName();
 	int getPlayerModeAttackPlayers();
 	int getPlayerModeFollow();
