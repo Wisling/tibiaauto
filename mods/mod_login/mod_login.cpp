@@ -221,17 +221,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{					
 		Sleep(100);
 		
-		int connectionState = reader.getConnectionState();
+		int loggedIn = reader.isLoggedIn();
 		
-		if (connectionState!=10)
+		if (!loggedIn)
 		{	
 			char buf[128];
-			sprintf(buf,"Connection Status Changed to:%d",connectionState);
+			sprintf(buf,"Connection Status Changed to:%d",reader.getConnectionState());
 			registerDebug(buf);
 
 			registerDebug("No connection: entering wait area");
 			if (!loginTime) loginTime = time(NULL)+config->loginDelay;
-			while (loginTime>time(NULL) && reader.getConnectionState()!=10){
+			while (loginTime>time(NULL) && !reader.isLoggedIn()){
 				if (toolThreadShouldStop){
 					registerDebug("Forced Exit. Module stopped.");
 					goto exitFunction;
@@ -239,8 +239,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(500);
 			}
 		}
-		connectionState = reader.getConnectionState();
-		if (connectionState!=10)
+		loggedIn = reader.isLoggedIn();
+		if (!loggedIn)
 		{
 			registerDebug("No connection: entering relogin mode");
 
@@ -248,7 +248,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				registerDebug("ERROR: exp dropped? was I killed?");
 				Sleep(1000);
-				while (reader.getConnectionState()!=10){
+				while (!reader.isLoggedIn()){
 					if (toolThreadShouldStop){
 						goto exitFunction;
 					}
@@ -423,7 +423,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			registerDebug("Waiting fo establishing connection up to 15s");
 			for (i=0;i<150;i++)
 			{
-				if (reader.getConnectionState()==10) break;
+				if (reader.isLoggedIn()) break;
 				if (toolThreadShouldStop) break;
 				Sleep(100);
 			}
@@ -440,7 +440,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(100);
 			}
 			// finalize
-			if (reader.getConnectionState()==10&&config->openMain) {	
+			if (reader.isLoggedIn()&&config->openMain) {	
 				
 				// open the main backpack flow
 

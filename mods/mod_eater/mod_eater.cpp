@@ -117,7 +117,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		else {
 			CModuleUtil::sleepWithStop(RandomEaterWaitTime(digestTime ? digestTime * 1000 : 12000), &toolThreadShouldStop);
 		}
-		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
+		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		if (toolThreadShouldStop) continue;
 		
 		digestTime=0;

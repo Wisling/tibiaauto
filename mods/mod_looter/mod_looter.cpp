@@ -119,7 +119,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	while (!toolThreadShouldStop)
 	{		
 		Sleep(50);
-		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
+		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 
 		int flags = reader.getSelfEventFlags();
 		if (!config->m_lootInDepot && flags & 0x4000) continue;

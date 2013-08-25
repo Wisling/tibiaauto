@@ -113,6 +113,7 @@ public:
 
 	char *getOpenWindowName();
 	int getConnectionState();
+	int isLoggedIn();
 
 	void writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY);
 	int getCreatureDeltaX(int creatureNr);

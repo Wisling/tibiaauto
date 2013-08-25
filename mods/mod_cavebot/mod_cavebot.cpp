@@ -1806,13 +1806,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		Sleep(250);
 		
 		int beginningS = GetTickCount();
-		loggedOut = reader.getConnectionState()!=10;
+		loggedOut = !reader.isLoggedIn();
 		if (loggedOut)
 		{
 			currentlyAttackedCreatureNr=-1;
 			wasLoggedOut = 1;
 		}
-
+		
 		//on first run after being logged out perform these
 		if (!loggedOut && wasLoggedOut){
 			//refresh attackmode since Tibia's buttons would display server's settings

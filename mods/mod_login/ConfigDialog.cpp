@@ -211,7 +211,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		case 6: m_status.SetWindowText("Connection status: connecting");break;
 		case 7: m_status.SetWindowText("Connection status: disconnecting");break;
 		case 9: m_status.SetWindowText("Connection status: pending");break;
-		case 10: m_status.SetWindowText("Connection status: connected");break;
+		case 10: m_status.SetWindowText("Connection status: state 10");break;
+		case 11: m_status.SetWindowText("Connection status: connected");break;
 		default: m_status.SetWindowText("Connection status: unknown");break;
 		};
 

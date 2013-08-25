@@ -84,13 +84,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		unsigned long bRead=0;
 		
-		if (reader.getConnectionState()!=10)
+		if (!reader.isLoggedIn())
 		{
 			// flush IPC communication if not logged
 			while (backPipe.readFromPipe(&mess,1008)) {};
 			while (backPipe.readFromPipe(&mess,2001)) {};
 		}
-		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
+		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 	
 		CTibiaCharacter *self = reader.readSelfCharacter();
 	
@@ -178,7 +178,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	}
 
 
-	if (reader.getConnectionState()==10)
+	if (reader.isLoggedIn())
 	{
 		// change xray only when connected fully
 		reader.setXRayValues(7,2);

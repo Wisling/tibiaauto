@@ -45,7 +45,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		
 		Sleep(200);
 		
-		if (reader.getConnectionState()!=10)
+		if (!reader.isLoggedIn())
 			continue;
 		
 		if(tibiaHWND == NULL) {

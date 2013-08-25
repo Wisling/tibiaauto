@@ -1061,6 +1061,20 @@ int CMemReaderProxy::getConnectionState()
 	return 0;
 }
 
+int CMemReaderProxy::isLoggedIn()
+{
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{			
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsLoggedIn");
+		if (fun)
+		{
+			return fun();
+		}
+	} 
+	return 0;
+}
+
 void CMemReaderProxy::setXRayValues(int v1, int v2)
 {
 	typedef void (*Proto_fun)(int v1, int v2);

@@ -89,7 +89,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{	
 		
 		Sleep(100);
-		if (reader.getConnectionState()!=10) continue; // do not proceed if not connected
+		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		const char *var = reader.getGlobalVariable("UH_needed");
 		if (strcmp(var, "true")) continue;
 
