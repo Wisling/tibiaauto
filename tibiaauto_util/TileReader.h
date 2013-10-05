@@ -11,7 +11,7 @@
 
 #include "TibiaTile.h"
 
-#define MAX_TILES 20000
+#define MAX_TILES 50000
 
 class CTileReader  
 {

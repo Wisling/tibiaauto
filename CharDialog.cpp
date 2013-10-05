@@ -117,6 +117,7 @@ void CCharDialog::OnOK()
 
 BOOL CCharDialog::OnInitDialog() 
 {
+	// wis: add large set of checks for all operations needed to be performed by TA
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_Exit);

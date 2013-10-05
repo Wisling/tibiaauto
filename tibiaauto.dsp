@@ -391,6 +391,10 @@ SOURCE=.\res\map_self.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=".\res\TA LowFi version Hidden.ico"
+# End Source File
+# Begin Source File
+
 SOURCE=".\res\TA LowFi version.ico"
 # End Source File
 # Begin Source File

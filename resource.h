@@ -158,7 +158,7 @@
 #define IDR_PYTHON_SCRIPTS_MENU         181
 #define IDD_SCRIPT_CONFIG               182
 #define IDD_OPTIONS                     183
-#define IDR_MAINFRAME_HIDDEN            187
+#define IDR_MAINFRAME_HIDDEN            190
 #define IDC_EDIT_ADDRESS                1000
 #define IDC_EDIT_ADDRESS_RES_DEC        1001
 #define IDC_SCAN                        1004
@@ -459,7 +459,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        188
+#define _APS_NEXT_RESOURCE_VALUE        191
 #define _APS_NEXT_COMMAND_VALUE         32786
 #define _APS_NEXT_CONTROL_VALUE         1261
 #define _APS_NEXT_SYMED_VALUE           110

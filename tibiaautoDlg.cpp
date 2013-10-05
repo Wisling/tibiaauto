@@ -617,11 +617,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	{	
 		char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		if (strcmp(loggedCharName,currentIconData.szTip)!=0){
-			currentIconData.cbSize=sizeof(NOTIFYICONDATA);
-			currentIconData.hWnd=GetSafeHwnd();
-			currentIconData.uID=1;
 			snprintf(currentIconData.szTip,60,"%s",loggedCharName);
-			currentIconData.uFlags=NIF_TIP;
 			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
 		}
 		free(loggedCharName);
@@ -641,14 +637,11 @@ void CTibiaautoDlg::OnLight()
 
 void CTibiaautoDlg::setShellTray(){
 	CMemReaderProxy reader;
+	ZeroMemory(&currentIconData,sizeof(NOTIFYICONDATA));
 	currentIconData.cbSize=sizeof(NOTIFYICONDATA);
 	currentIconData.hWnd=GetSafeHwnd();
 	currentIconData.uID=1;
-	if(IsWindowVisible()){
-		currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
-	}else{
-		currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME_HIDDEN));
-	}
+	currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
 	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 	snprintf(currentIconData.szTip,60,"%s",loggedCharName);
 	free(loggedCharName);
@@ -1301,11 +1294,6 @@ void CTibiaautoDlg::OnToolSpellcaster()
 void CTibiaautoDlg::OnExit() 
 {
 	DisconnectNamedPipe(hPipe);
-	NOTIFYICONDATA currentIconData;
-	currentIconData.cbSize=sizeof(NOTIFYICONDATA);
-	currentIconData.hWnd=GetSafeHwnd();
-	currentIconData.uID=1;				
-	currentIconData.uFlags=0;
 	Shell_NotifyIcon(NIM_DELETE,&currentIconData);
 
 	CTAMiniMapProxy taMiniMap;
@@ -1604,6 +1592,7 @@ void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy)
 
 LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
 {
+	CMemReaderProxy reader;
 	if (message==WM_APP+1&&lParam==WM_LBUTTONDOWN)
 	{
 		if (!tibiaHWND) InitTibiaHandle();
@@ -1625,11 +1614,11 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 				::ShowWindow(tibiaHWND,SW_HIDE);
 			}
 		} else {
+			currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
 			ShowWindow(SW_SHOW);
 			SetForegroundWindow();
 			if(!::IsWindowVisible(tibiaHWND) && CModuleUtil::getTASetting("HideTibiaWithTA")){
-				currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
-				Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
 				::ShowWindow(tibiaHWND,SW_SHOW);
 				if(::IsIconic(tibiaHWND)) {
 					::ShowWindow(tibiaHWND, SW_RESTORE);
@@ -1655,7 +1644,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.31.0 tm=%d,",tm);
+		fprintf(f,"version=2.33.1 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

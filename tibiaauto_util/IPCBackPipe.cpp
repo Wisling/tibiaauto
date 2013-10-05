@@ -136,10 +136,21 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 		firstType = pipeBackCache[0].messageType;
 	}
 	if (pipeBackCacheCount >= PIPE_CLEAN_AT_COUNT){ // SOMEONE ISN'T READING FROM THEIR PIPE FAST ENOUGH!! DELETE THEIR ENTRIES!!!!
-		int j = 0; // count of messages not of firstType that are being deleted
+		int msgcounts[2100];
+		memset(msgcounts,0,sizeof(msgcounts));
+		int maxType=0,maxVal=0;
 		for (i=0;i<pipeBackCacheCount;i++)
 		{
-			if (pipeBackCache[i].messageType != firstType){
+			if(++msgcounts[pipeBackCache[i].messageType]>maxVal){
+				maxType = pipeBackCache[i].messageType;
+				maxVal = msgcounts[maxType];
+			}
+		}
+		int j=0;
+		for (i=0;i<pipeBackCacheCount;i++)
+		{
+			msgcounts[pipeBackCache[i].messageType]++;
+			if (pipeBackCache[i].messageType != maxType){
 				if (i != j){
 					memcpy(&pipeBackCache[j],&pipeBackCache[i],sizeof(struct ipcMessage));
 				}
@@ -151,7 +162,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			if (!sentErrMsg){
 				sentErrMsg = 1;
 				char errBuf[256];
-				sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds.%d %d %d", firstType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
+				sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds.%d %d %d", maxType,i-j,PIPE_REMOVE_AT_SECS,i,j,GetTickCount());
 				CPackSender sender;
 				sender.sendTAMessage(errBuf);
 				//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
@@ -162,7 +173,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			CMemReader reader;
 			int tibiaTm = reader.getCurrentTm();
 			char errBuf[256];
-			sprintf(errBuf, "Dbg mode: Since Tibia start %d:%d:%d. Since TA start %d:%d:%d type:%d %d/%d over %d seconds", tibiaTm/1000/60/60,(tibiaTm%60)/1000/60,(tibiaTm%(60*60))/1000, GetTickCount()/1000/60/60,(GetTickCount()%60)/1000/60,(GetTickCount()%(60*60))/1000,firstType,i-j,i,PIPE_REMOVE_AT_SECS);
+			sprintf(errBuf, "Dbg mode: Since Tibia start %d:%d:%d. Since TA start %d:%d:%d type:%d %d/%d over %d seconds", tibiaTm/1000/60/60,(tibiaTm%60)/1000/60,(tibiaTm%(60*60))/1000, GetTickCount()/1000/60/60,(GetTickCount()%60)/1000/60,(GetTickCount()%(60*60))/1000,maxType,i-j,i,PIPE_REMOVE_AT_SECS);
 			sender.sendTAMessage(errBuf);
 #endif
 		}

@@ -175,7 +175,139 @@ int outSelfUHAvail=0;
 int outFluidManaAvail=0;
 int outFluidLifeAvail=0;
 
+//10.20
+int funAddr_tibiaPrintText =			0x4D4D00;
+int funAddr_tibiaPlayerNameText =		0x4D4050;
+int funAddr_tibiaInfoMiddleScreen =		0x57A280;
+int funAddr_tibiaIsCreatureVisible =	0x47CE00;
+int funAddr_tibiaEncrypt =				0x58CF30;
+int funAddr_tibiaDecrypt =				0x58D060;
+int funAddr_tibiaShouldParseRecv =		0x5201B0;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0x9E93E4-8;//look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x57E1D0;
+int callAddr_PrintText01 =				0x46586D;//...<addr>.*
+int callAddr_PrintText02 =				0x4658B7;
+int callAddr_PrintText03 =				0x46E846;
+int callAddr_PrintText04 =				0x513505;
+int callAddr_PrintText05 =				0x5144E8;
+int callAddr_PlayerNameText01 =			0x42CCD0;
+int callAddr_PlayerNameText02 =			0x4D4984;
+int callAddr_PlayerNameText03 =			0x4D4B84;
+int callAddr_PlayerNameText04 =			0x4D4D83;
+int callAddr_PlayerNameText05 =			0x4D4F83;
+int callAddr_PlayerNameText06 =			0x4D5184;
+int callAddr_PlayerNameText07 =			0x4D5382;
+int callAddr_PlayerNameText08 =			0x51401F;
+int callAddr_InfoMiddleScreen01 =		0x42210C;
+int callAddr_InfoMiddleScreen02 =		0x46A828;
+int callAddr_InfoMiddleScreen03 =		0x4A2605;
+int callAddr_InfoMiddleScreen04 =		0x511324;
+int callAddr_InfoMessageBox01 =			0x421C79;
+int callAddr_InfoMessageBox02 =			0x43A4E7;
+int callAddr_InfoMessageBox03 =			0x4BBA26;
+int callAddr_InfoMessageBox04 =			0x508000;
+int callAddr_InfoMessageBox05 =			0x5089AD;
+int callAddr_InfoMessageBox06 =			0x508A11;
+int callAddr_InfoMessageBox07 =			0x57E037;
+int callAddr_InfoMessageBox08 =			0x57EAA7;
+int callAddr_InfoMessageBox09 =			0x57EB77;
+int callAddr_InfoMessageBox10 =			0x57EC6C;
+int callAddr_InfoMessageBox11 =			0x57EEB0;
+int callAddr_InfoMessageBox12 =			0x57F98D;
+int callAddr_Encrypt01 =				0x51F88D;
+int callAddr_Decrypt01 =				0x51FEA9;
+int callAddr_ShouldParseRecv01 =		0x4719C7;
+
+//10.13
+/*
+int funAddr_tibiaPrintText =			0x4D49E0;
+int funAddr_tibiaPlayerNameText =		0x4D3D30;
+int funAddr_tibiaInfoMiddleScreen =		0x579BF0;
+int funAddr_tibiaIsCreatureVisible =	0x47C8D0;
+int funAddr_tibiaEncrypt =				0x58C930;
+int funAddr_tibiaDecrypt =				0x58CA60;
+int funAddr_tibiaShouldParseRecv =		0x51FE40;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0x9E847C-8;//look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x57DB40;
+int callAddr_PrintText01 =				0x4653BD;//...<addr>.*
+int callAddr_PrintText02 =				0x465407;
+int callAddr_PrintText03 =				0x46E366;
+int callAddr_PrintText04 =				0x513255;
+int callAddr_PrintText05 =				0x514238;
+int callAddr_PlayerNameText01 =			0x42CA40;
+int callAddr_PlayerNameText02 =			0x4D4664;
+int callAddr_PlayerNameText03 =			0x4D4864;
+int callAddr_PlayerNameText04 =			0x4D4A63;
+int callAddr_PlayerNameText05 =			0x4D4C63;
+int callAddr_PlayerNameText06 =			0x4D4E64;
+int callAddr_PlayerNameText07 =			0x4D5062;
+int callAddr_PlayerNameText08 =			0x513D6F;
+int callAddr_InfoMiddleScreen01 =		0x421EFC;
+int callAddr_InfoMiddleScreen02 =		0x46A348;
+int callAddr_InfoMiddleScreen03 =		0x4A2255;
+int callAddr_InfoMiddleScreen04 =		0x5110A4;
+int callAddr_InfoMessageBox01 =			0x421A69;
+int callAddr_InfoMessageBox02 =			0x43A237;
+int callAddr_InfoMessageBox03 =			0x4BB636;
+int callAddr_InfoMessageBox04 =			0x508000;
+int callAddr_InfoMessageBox05 =			0x5087D3;
+int callAddr_InfoMessageBox06 =			0x508837;
+int callAddr_InfoMessageBox07 =			0x57D9A7;
+int callAddr_InfoMessageBox08 =			0x57E417;
+int callAddr_InfoMessageBox09 =			0x57E4E7;
+int callAddr_InfoMessageBox10 =			0x57E5DC;
+int callAddr_InfoMessageBox11 =			0x57E820;
+int callAddr_InfoMessageBox12 =			0x57F2FD;
+int callAddr_Encrypt01 =				0x51F52D;
+int callAddr_Decrypt01 =				0x51FB39;
+int callAddr_ShouldParseRecv01 =		0x4714A7;
+*/
+//10.12
+/*
+int funAddr_tibiaPrintText =			0x4D49E0;
+int funAddr_tibiaPlayerNameText =		0x4D3D30;
+int funAddr_tibiaInfoMiddleScreen =		0x579BF0;
+int funAddr_tibiaIsCreatureVisible =	0x47C8D0;
+int funAddr_tibiaEncrypt =				0x58C930;
+int funAddr_tibiaDecrypt =				0x58CA60;
+int funAddr_tibiaShouldParseRecv =		0x51FE40;//switch table contains "Are you sure you want to leave Tibia"
+int arrayPtr_recvStream =				0x9E847C-8;//look for this address near above location
+int funAddr_tibiaInfoMessageBox =		0x57DB40;
+int callAddr_PrintText01 =				0x4653BD;//...<addr>.*
+int callAddr_PrintText02 =				0x465407;
+int callAddr_PrintText03 =				0x46E366;
+int callAddr_PrintText04 =				0x513255;
+int callAddr_PrintText05 =				0x514238;
+int callAddr_PlayerNameText01 =			0x42CA40;
+int callAddr_PlayerNameText02 =			0x4D4664;
+int callAddr_PlayerNameText03 =			0x4D4864;
+int callAddr_PlayerNameText04 =			0x4D4A63;
+int callAddr_PlayerNameText05 =			0x4D4C63;
+int callAddr_PlayerNameText06 =			0x4D4E64;
+int callAddr_PlayerNameText07 =			0x4D5062;
+int callAddr_PlayerNameText08 =			0x513D6F;
+int callAddr_InfoMiddleScreen01 =		0x421EFC;
+int callAddr_InfoMiddleScreen02 =		0x46A348;
+int callAddr_InfoMiddleScreen03 =		0x4A2255;
+int callAddr_InfoMiddleScreen04 =		0x5110A4;
+int callAddr_InfoMessageBox01 =			0x421A69;
+int callAddr_InfoMessageBox02 =			0x43A237;
+int callAddr_InfoMessageBox03 =			0x4BB636;
+int callAddr_InfoMessageBox04 =			0x508000;
+int callAddr_InfoMessageBox05 =			0x5087D3;
+int callAddr_InfoMessageBox06 =			0x508837;
+int callAddr_InfoMessageBox07 =			0x57D9A7;
+int callAddr_InfoMessageBox08 =			0x57E417;
+int callAddr_InfoMessageBox09 =			0x57E4E7;
+int callAddr_InfoMessageBox10 =			0x57E5DC;
+int callAddr_InfoMessageBox11 =			0x57E820;
+int callAddr_InfoMessageBox12 =			0x57F2FD;
+int callAddr_Encrypt01 =				0x51F52D;
+int callAddr_Decrypt01 =				0x51FB39;
+int callAddr_ShouldParseRecv01 =		0x4714A7;
+*/
 //10.11
+/*
 int funAddr_tibiaPrintText =			0x4D3710;
 int funAddr_tibiaPlayerNameText =		0x4D2A60;
 int funAddr_tibiaInfoMiddleScreen =		0x578750;
@@ -217,7 +349,7 @@ int callAddr_InfoMessageBox12 =			0x57DE6D;
 int callAddr_Encrypt01 =				0x51E09D;
 int callAddr_Decrypt01 =				0x51E6A9;
 int callAddr_ShouldParseRecv01 =		0x470387;
-
+*/
 //10.10
 /*
 int funAddr_tibiaPrintText =			0x4D3020;
@@ -1071,6 +1203,17 @@ void InitialiseCommunication();
 void InitialiseHooks();
 void InitialiseDebugFile();
 
+void WriteOutDebug(const char * format,...){
+	if(debugFile){
+		va_list args;
+		va_start(args,format);
+		fprintf(debugFile,format,args);
+		va_end(args);
+		fflush(debugFile);
+	}
+
+}
+
 #define STRBUFLEN 655360
 char bufToHexStringRet[STRBUFLEN];
 
@@ -1192,8 +1335,7 @@ char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; 
 
 void sendTAMessage(char* message){
 	if(privChanBufferPtr){
-		fprintf(debugFile,"sendTAMessage %X %s",privChanBufferPtr,message);
-		fflush(debugFile);
+		WriteOutDebug("sendTAMessage %X %s",privChanBufferPtr,message);
 		OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)message,4,(int)"Tibia Auto",0,0,0,0);
 	}
 }
@@ -1208,7 +1350,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	{
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"!!! stack overflow protection run\r\n");
+			WriteOutDebug("!!! stack overflow protection run\r\n");
 		}
 		return;
 	}
@@ -1226,7 +1368,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	{	
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"!!! underrun\r\n");
+			WriteOutDebug("!!! underrun\r\n");
 		}
 		return;
 	} 	
@@ -1239,7 +1381,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"### got bytes = %d; packet size = %d; code=0x%x\r\n",realRecvLen,packetSize,code);
+		WriteOutDebug("### got bytes = %d; packet size = %d; code=0x%x\r\n",realRecvLen,packetSize,code);
 	}
 	
 	if (direction==0)
@@ -1253,7 +1395,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 			int i;
 			
 			memcpy(decryptedBuf,buf+6,packetSize-6); // Remember CRC bytes are NOT encrypted either sending or recieving.
-			//fprintf(debugFile,"# decrypted content follows #\r\n");
+			//WriteOutDebug("# decrypted content follows #\r\n");
 			
 			for (i=0;i<packetSize-6;i+=8)	
 			{
@@ -1270,10 +1412,9 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 			int afterDecryptLen=afterDecryptLenH*256+afterDecryptLenL+2;
 
 			if (debugFile&&!SENTONLY){
-				//princefprintf(debugFile,"$$$ len=%d code = 0x%x\r\n",afterDecryptLen,afterDecryptCode);
+				//WriteOutDebug("$$$ len=%d code = 0x%x\r\n",afterDecryptLen,afterDecryptCode);
 				bufToHexString(decryptedBuf,afterDecryptLen);
-				fprintf(debugFile,"<- [%x] %s\r\n",socket,bufToHexStringRet);					
-				fflush(debugFile);	
+				WriteOutDebug("<- [%x] %s\r\n",socket,bufToHexStringRet);					
 			}
 
 				
@@ -1294,15 +1435,11 @@ void sendBufferViaSocket(char *buffer)
 	if (!encryptKeyPtr){
 		return;
 	}
-	fprintf(debugFile,"enter sendBufferViaSocket\n");
-	fflush(debugFile);
 	int i;
 	char outbufHeader[1006];
 	char* outbuf = outbufHeader+6;
 	int len= (((int)buffer[0])&0xFF) + (((int)buffer[1])&0xFF<<8) + 2;
 
-	fprintf(debugFile,"sendBufferViaSocketDoLenCalcs\n");
-	fflush(debugFile);
 	int outbuflen=len;
 	if (len%8!=0) outbuflen+=8-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
 	outbufHeader[0]=outbuflen%256;
@@ -1311,14 +1448,11 @@ void sendBufferViaSocket(char *buffer)
 	//before encryption
 	if (debugFile && COMPLEX) {
 		bufToHexString(buffer,len);
-		fprintf(debugFile,"Before Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
-		fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);
-		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
-		fflush(debugFile);
+		WriteOutDebug("Before Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
+		WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);
+		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
 
-	fprintf(debugFile,"sendBufferViaSocketDoEncr\n");
-	fflush(debugFile);
 	for (i=0;i<outbuflen;i+=8)
 	{		
 		memcpy(outbuf+i,buffer+i,8);
@@ -1326,14 +1460,11 @@ void sendBufferViaSocket(char *buffer)
 	}	
 	//after encryption
 	if (debugFile && COMPLEX){
-		fprintf(debugFile,"After Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
+		WriteOutDebug("After Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
 		bufToHexString(outbuf, outbuflen);	
-		fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
-		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
-		fflush(debugFile);
+		WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);	
+		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
-	fprintf(debugFile,"sendBufferViaSocketDoChecksum\n");
-	fflush(debugFile);
 	int test = outbuflen;
 	char *check = adler(outbuf, outbuflen);
 	memcpy(outbufHeader + 2 , check, 4);
@@ -1341,8 +1472,6 @@ void sendBufferViaSocket(char *buffer)
 	test += 4;
 
 	// make sure that packets go at most once every minDistance ms
-	fprintf(debugFile,"sendBufferViaSocketDoSleep\n");
-	fflush(debugFile);
 	int minDistance=175;
 	minDistance=1;
 	int nowAction=GetTickCount();
@@ -1351,26 +1480,21 @@ void sendBufferViaSocket(char *buffer)
 	}
 	if (debugFile&&COMPLEX)
 	{				
-		fprintf(debugFile,"sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
-		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
+		WriteOutDebug("sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
+		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
 	lastAction=GetTickCount();
 	
-
-	fprintf(debugFile,"sendBufferViaSocketDoSend\n");
-	fflush(debugFile);
 	
 	int ret=Mine_send(tibiaSocket, outbufHeader,test+2,0); //wiz:changed from "send"
 	
 	if (debugFile&&COMPLEX)
 	{		
-		fprintf(debugFile,"sent %d bytes, ret=%d, lastSendFlags=%d\r\n",outbuflen+2,ret,lastSendFlags);
-		fprintf(debugFile, "outbuflen = %d\r\n", outbuflen);
+		WriteOutDebug("sent %d bytes, ret=%d, lastSendFlags=%d\r\n",outbuflen+2,ret,lastSendFlags);
+		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
 	//delete check;
 
-	fprintf(debugFile,"leave sendBufferViaSocket\n");
-	fflush(debugFile);
 }
 
 
@@ -1546,7 +1670,7 @@ void parseMessageSay(char *sayBuf)
 	
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"$$$ ta command - '%s'\r\n",sayBuf);
+		WriteOutDebug("$$$ ta command - '%s'\r\n",sayBuf);
 	}
 	
 	
@@ -1611,14 +1735,8 @@ int parseMessageForTibiaAction(char *buf,int len)
 	} else if (removeStatsMessage){
 		CModuleUtil::setTASetting("RemoveBotStatsMessage",0);
 	}
-	char strcode[111];
-	sprintf(strcode,"code %c\n",buf[2]);
-	fprintf(debugFile,strcode);
 	//fwrite(buf,len);
-	fflush(debugFile);
 	//Protocol::parsePacketOut(NetworkMessage(buf));
-	//fprintf(debugFile,"leave parsePacketOut\n");
-	//fflush(debugFile);
 	//char buf3[1111]="bye ";
 	//for (i=0;i<min(len,1110);i++){sprintf(buf2,"%s %2x",buf2,buf[i]);}
 	//AfxMessageBox(buf2);
@@ -1652,7 +1770,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 		unsigned int playerId=v1+v2*256+v3*256*256+v4*256*256*256;
 		if (debugFile)
 		{
-			fprintf(debugFile,"### %x, %x\r\n",objectId,playerId);
+			WriteOutDebug("### %x, %x\r\n",objectId,playerId);
 		}
 		if ((objectId==itemProxy.getValueForConst("runeHMM")||
 			objectId==itemProxy.getValueForConst("runeGFB")||
@@ -1873,15 +1991,13 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 	}
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"!!! send !!! [identical=%d]\r\n",identical);
-		fflush(debugFile);
+		WriteOutDebug("!!! send !!! [identical=%d]\r\n",identical);
 	}
 	
 	if (debugFile&&!SENTONLY)
 	{	
 		bufToHexString(buf,len);	
-		//princefprintf(debugFile,"E> [%x] %s\r\n",socket,bufToHexStringRet);
-		fflush(debugFile);
+		//WriteOutDebug("E> [%x] %s\r\n",socket,bufToHexStringRet);
 	}
 	if (identical)
 	{
@@ -1891,8 +2007,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 		if (debugFile)
 		{	
 			bufToHexString(encryptBeforeBuf,encryptLen);
-			fprintf(debugFile,"-> [%x] %s\r\n",socket,bufToHexStringRet);	
-			fflush(debugFile);
+			WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);	
 		}
 
 		if (parseMessageForTibiaAction(encryptBeforeBuf,encryptLen))
@@ -1921,8 +2036,7 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 {
 	if (debugFile && COMPLEX && !SENTONLY)
 	{
-		fprintf(debugFile,"!!! recv !!!\r\n");
-		fflush(debugFile);
+		WriteOutDebug("!!! recv !!!\r\n");
 	}
 	int offset=0;
 	
@@ -1938,15 +2052,13 @@ int WINAPI Mine_recv(SOCKET s,char* buf,int len,int flags)
 		if (debugFile&&!SENTONLY)
 		{
 			if (COMPLEX){
-			fprintf(debugFile,"realRecvLen=%d\r\n",realRecvLen);
-			fflush(debugFile);					
+			WriteOutDebug("realRecvLen=%d\r\n",realRecvLen);
 			}
 			
 			bufToHexString(buf,realRecvLen);
-			fprintf(debugFile,"<- [%x] %s\r\n",socket,bufToHexStringRet);
+			WriteOutDebug("<- [%x] %s\r\n",socket,bufToHexStringRet);
 			
 			parseMessage(buf,realRecvLen,debugFile,0,1);
-			fflush(debugFile);
 		}
 	}
 	
@@ -1969,8 +2081,7 @@ SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 	
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"got socket: %d, %d, %d -> %d\r\n",af,type,protocol,s);
-		fflush(debugFile);
+		WriteOutDebug("got socket: %d, %d, %d -> %d\r\n",af,type,protocol,s);
 	}	
     
 	tibiaSocket=s;
@@ -1982,8 +2093,7 @@ int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 {
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"connect [pre]: %d, %x, %d\r\n",s,name,namelen);
-		fflush(debugFile);
+		WriteOutDebug("connect [pre]: %d, %x, %d\r\n",s,name,namelen);
 	}
 	
 	
@@ -1991,8 +2101,7 @@ int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 	
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"connect: %d, %x, %d\r\n",s,name,namelen);
-		fflush(debugFile);
+		WriteOutDebug("connect: %d, %x, %d\r\n",s,name,namelen);
 	}
 	
 	memcpy(lastConnectName,name,16);
@@ -2010,8 +2119,7 @@ int WINAPI Mine_select(
 {
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"select: %x, %x, %x\r\n",readfds,writefds,exceptfds);
-		fflush(debugFile);
+		WriteOutDebug("select: %x, %x, %x\r\n",readfds,writefds,exceptfds);
 	}
 	return Real_select(nfds,readfds,writefds,exceptfds,timeout);
 }
@@ -2081,7 +2189,7 @@ void InitialiseIPC()
 	} else {
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"[debug] straight IPC initialised ok\r\n");
+			WriteOutDebug("[debug] straight IPC initialised ok\r\n");
 		}
 	}
 }
@@ -2111,10 +2219,8 @@ void InitialiseDebugFile()
 	else
 		debugFile=NULL;
 
-	if (debugFile) fprintf(debugFile,"Start\r\n");
-	fflush(debugFile);
+	WriteOutDebug("Start\r\n");
 	debugFileStart=time(NULL);
-
 }
 
 void InitialiseTibiaState()
@@ -2174,8 +2280,7 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 	{
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"privChanBufferPtr=%x\r\n",privChanBufferPtr);
-			fflush(debugFile);
+			WriteOutDebug("privChanBufferPtr=%x\r\n",privChanBufferPtr);
 		}
 		sendTAMessage(taMessage[taMessageEnd]);
 		taMessageEnd++;
@@ -2272,8 +2377,7 @@ int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int s
 	}
 	aa++;
 	if (debugFile) {		
-		fprintf(debugFile,"myPlayerNameText(%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x)\r\n",align,str,visible,x,y,fontNumber,colR,colG,colB,showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
-		fflush(debugFile);
+		WriteOutDebug("myPlayerNameText(%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x)\r\n",align,str,visible,x,y,fontNumber,colR,colG,colB,showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 	}
 	*/
 	if (str!=NULL&&fontNumber==2&&strlen(str)<1000)
@@ -2370,7 +2474,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 {	
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"got middle screen %d/%s\r\n",type,s);
+		WriteOutDebug("got middle screen %d/%s\r\n",type,s);
 	}
 	
 	char buf[1111];
@@ -2382,7 +2486,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	{
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"got see '%s'\r\n",s);
+			WriteOutDebug("got see '%s'\r\n",s);
 		}
 		unsigned long bytesWritten=0;						
 		
@@ -2418,7 +2522,7 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 	} else {
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"ignoring look");
+			WriteOutDebug("ignoring look");
 		}
 	}
 }
@@ -2514,8 +2618,7 @@ int myInterceptEncrypt(int v1, int v2)
 	encryptKeyPtr=v2;
 	if (debugFile&&COMPLEX)
 	{
-		fprintf(debugFile,"QQQQQQQQQQ: %x,%x,%x\r\n",encryptKeyPtr,v1,v2);
-		fflush(debugFile);
+		WriteOutDebug("QQQQQQQQQQ: %x,%x,%x\r\n",encryptKeyPtr,v1,v2);
 	}
 	
 	if (v1!=encryptPrevPtr+8)
@@ -2821,7 +2924,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	int type=v4;
 	if (debugFile)
 	{
-		fprintf(debugFile,"XXX s1=%s s2=%s\r\n",s,nick);
+		WriteOutDebug("XXX s1=%s s2=%s\r\n",s,nick);
 	}
 	//char* happy2="dddddddddddddddddddd";
 	//memcpy(*(char**)(*(char**)v1),happy2,strlen(happy2));
@@ -3490,8 +3593,6 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
 void ParseIPCMessage(struct ipcMessage mess)
 {
 	
-	fprintf(debugFile,"enter ipcMessage\n");
-	fflush(debugFile);
 	switch (mess.messageType)
 	{
 	case 1:
@@ -3528,7 +3629,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 	case 4:
 		if (debugFile&&COMPLEX)
 		{
-			fprintf(debugFile,"[debug] will try to connect back IPC pipe\r\n");
+			WriteOutDebug("[debug] will try to connect back IPC pipe\r\n");
 		}
 		if (!ipcPipeBack.hasInvalidHandle())
 		{
@@ -3768,8 +3869,6 @@ void ParseIPCMessage(struct ipcMessage mess)
 	default:		
 		break;
 	};
-	fprintf(debugFile,"leave parseIPCMessage\n");
-	fflush(debugFile);
 };
 
 int ReadFromPipe()
