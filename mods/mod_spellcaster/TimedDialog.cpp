@@ -93,7 +93,7 @@ void TimedDialog::configToControls(CConfigData *configData) {
 		m_timedSpellList.SetItemText(0, 1, lpBuffer);		
 		sprintf(lpBuffer, "%d", temp.delay);
 		m_timedSpellList.SetItemText(0, 2, lpBuffer);		
-		m_timedSpellList.SetItemText(0, 3, temp.usePotions?"Yes":"No");		
+		m_timedSpellList.SetItemText(0, 3, temp.usePotions?"Yes":"No");
 	}
 	OnToolSpellcasterTimed();
 }

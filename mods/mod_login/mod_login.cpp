@@ -479,12 +479,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CModuleUtil::waitForOpenContainer(0,1);
 
 				//Double click on the main bar of the container
-				SetCursorPos(wndRect.right-100,wndRect.top+387);
+				SetCursorPos(wndRect.right-87,wndRect.top+387);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);			
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);			
-				SetCursorPos(wndRect.right-100,wndRect.top+282);
+				SetCursorPos(wndRect.right-87,wndRect.top+282);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);			
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);

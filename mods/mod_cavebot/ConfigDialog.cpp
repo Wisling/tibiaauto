@@ -148,6 +148,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_DROPLOOTLIST, m_dropLootList);
 	DDX_Control(pDX, IDC_DEPOT_MODPRIORITY,m_depotModPriority);
 	DDX_Control(pDX, IDC_DEPOT_STOPBYDEPOT,m_stopByDepot);
+	DDX_Control(pDX, IDC_DEPOT_DEPOSIT_LOOTED,m_depositLooted);
 	//}}AFX_DATA_MAP
 }
 
@@ -268,6 +269,7 @@ void CConfigDialog::disableControls()
 	m_dropNotLooted.EnableWindow(false);
 	m_depotModPriority.EnableWindow(false);
 	m_stopByDepot.EnableWindow(false);
+	m_depositLooted.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -330,6 +332,7 @@ void CConfigDialog::enableControls()
 	m_dropNotLooted.EnableWindow(true);
 	m_depotModPriority.EnableWindow(true);
 	m_stopByDepot.EnableWindow(true);
+	m_depositLooted.EnableWindow(true);
 
 	OnDropLoot();
 }
@@ -427,6 +430,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	virDropOnlyLooted=configData->dropOnlyLooted;
 	m_depotModPriority.SetCurSel(atoi(configData->depotModPriorityStr)-1);
 	m_stopByDepot.SetCheck(configData->stopByDepot);
+	m_depositLooted.SetCheck(configData->depositLooted);
 
 	OnDropLoot();
 
@@ -562,6 +566,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->dropOnlyLooted=virDropOnlyLooted;
 	sprintf(newConfigData->depotModPriorityStr,"%d",m_depotModPriority.GetCurSel()+1);
 	newConfigData->stopByDepot=m_stopByDepot.GetCheck();
+	newConfigData->depositLooted=m_depositLooted.GetCheck();
 
 	return newConfigData;
 }
@@ -876,7 +881,7 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 	if (sel==-1)
 		return;
 	m_waypointList.DeleteString(sel);
-	m_waypointList.SetCurSel(max(sel-1,0));
+	m_waypointList.SetCurSel(min(sel,m_waypointList.GetCount()-1));
 }
 
 void CConfigDialog::OnToolAutoattackAddWaypoint() 
@@ -934,7 +939,7 @@ void CConfigDialog::OnToolAutoattackRemoveMonster()
 	m_monsterList.GetText(sel,currentMonster);
 	m_monsterList.DeleteString(sel);
 	m_monster.SetWindowText(currentMonster);
-	m_monsterList.SetCurSel(min(sel,m_monsterList.GetCount()));
+	m_monsterList.SetCurSel(min(sel,m_monsterList.GetCount()-1));
 }
 
 void CConfigDialog::OnToolAutoattackAddMonster() 
@@ -1007,7 +1012,7 @@ void CConfigDialog::OnDepotEntryremove()
 	sprintf(buf,"%d",depotRemain);
 	m_depotRemain.SetWindowText(buf);
 	m_depotEntryList.DeleteString(sel);
-	m_depotEntryList.SetCurSel(min(sel,m_depotEntryList.GetCount()));
+	m_depotEntryList.SetCurSel(min(sel,m_depotEntryList.GetCount()-1));
 }
 
 void CConfigDialog::reloadDepotItems()
@@ -1068,7 +1073,7 @@ void CConfigDialog::OnToolAutoattackRemoveIgnore()
 	m_ignoreList.GetText(sel,currentignore);
 	m_ignoreList.DeleteString(sel);
 	m_ignore.SetWindowText(currentignore);	
-	m_ignoreList.SetCurSel(min(sel,m_ignoreList.GetCount()));
+	m_ignoreList.SetCurSel(min(sel,m_ignoreList.GetCount()-1));
 }
 
 /* Compare two points for qsort */

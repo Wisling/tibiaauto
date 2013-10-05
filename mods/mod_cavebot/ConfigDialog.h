@@ -184,6 +184,7 @@ public:
 	CButtonST	m_dropLootList;
 	CComboBox m_depotModPriority;
 	CButton m_stopByDepot;
+	CButton m_depositLooted;
 
 	//}}AFX_DATA
 

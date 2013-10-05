@@ -159,6 +159,13 @@ std::string intstr(DWORD value){
 	return ss.str();
 }
 
+inline int findInIntArray(int v,CUIntArray& arr){
+	for(int i=arr.GetSize()-1;i>=0;i--){
+		if(arr.ElementAt(i)==v) return i;
+	}
+	return -1;
+}
+
 /**
 * Dump full info about a creature (for debuging purposes)
 */
@@ -247,7 +254,7 @@ exitDSG:
 	return ret;
 }
 
-depotCheckCanGo(CConfigData *config){
+int depotCheckCanGo(CConfigData *config){
 	int ret=0;
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
@@ -447,7 +454,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 		int tileId=reader.mapGetPointItemId(point(x-self->x,y-self->y,0),pos);
 		CTibiaTile* tile=reader.getTibiaTile(tileId);
 		if (!tile->notMoveable && !tile->isDepot && pos!=count-1) {
-			//leave at least 1 object that is either movable or the depot box on the tile
+			//leave at least 1 object that is either movable or the depot box on the tile(For depositing in container in house)
 			int qty=reader.mapGetPointItemExtraInfo(point(x-self->x,y-self->y,0),pos,1);
 			sender.moveObjectFromFloorToFloor(tileId,x,y,z,self->x,self->y,self->z,qty?qty:1);
 			Sleep(CModuleUtil::randomFormula(400,200));
@@ -744,17 +751,107 @@ void depotDeposit(CConfigData *config) {
 	// High Priority Task
 	reader.setGlobalVariable("walking_control","depotwalker");
 	reader.setGlobalVariable("walking_priority","9");
-
-	
+	CUIntArray alreadyManagedList; //save itemIDs for later use
 	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
+
 		int objectToMove = itemProxy.getItemId(config->depotTrigger[i].itemName);
-		int contNr;
-		int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-		
-		if (config->depotTrigger[i].when>config->depotTrigger[i].remain) {
-			// deposit to depot
+		if(objectToMove){
+			alreadyManagedList.Add(objectToMove);
+			int contNr;
+			int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
 			
-			int qtyToMove=totalQty-config->depotTrigger[i].remain;
+			if (config->depotTrigger[i].when>config->depotTrigger[i].remain) {
+				// deposit to depot
+				int qtyToMove=totalQty-config->depotTrigger[i].remain;
+				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+					if (contNr==depotContNr || contNr==depotContNr2) continue;
+					CTibiaContainer *cont = reader.readContainer(contNr);
+					
+					if (cont->flagOnOff) {
+						int itemNr;
+						for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--) {
+							CTibiaContainer *contCheck = reader.readContainer(contNr);
+							if (!contCheck->flagOnOff){
+								deleteAndNull(contCheck);
+								deleteAndNull(cont);
+								goto DPfinish;
+							}
+							delete contCheck;
+							CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
+							if (item->objectId==objectToMove) {
+								int itemQty = item->quantity?item->quantity:1;
+								if (totalQty-itemQty<config->depotTrigger[i].remain) {
+									itemQty=totalQty-config->depotTrigger[i].remain;
+								}
+								if (itemQty>0) {
+									if (!config->depotDropInsteadOfDepositon) {
+										// move to the depot chest
+										depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty,depotContNr,depotContNr2);
+									}
+									else {
+										// move onto the floor
+										CTibiaCharacter *selftmp = reader.readSelfCharacter();
+										sender.moveObjectFromContainerToFloor(objectToMove,0x40+contNr,item->pos,self->x,self->y,self->z,itemQty?itemQty:1);
+										CModuleUtil::waitForCapsChange(selftmp->cap);
+										Sleep(CModuleUtil::randomFormula(300,100));
+										deleteAndNull(selftmp);
+									}
+								}
+								totalQty-=itemQty;
+							}
+						}
+					}
+					deleteAndNull(cont);
+				}			
+			}
+			if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon) {
+				// pickup from depot
+				int currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
+				int qtyToPickup=config->depotTrigger[i].remain-currentQty;
+				int movesInItemation=1;
+				while (qtyToPickup>0&&movesInItemation>0) {
+					movesInItemation=0;
+					for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+						if (contNr==depotContNr || contNr==depotContNr2) continue;
+
+						CTibiaContainer *cont = reader.readContainer(contNr);
+						if (cont->flagOnOff&&cont->itemsInside<cont->size) {
+							int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup,depotContNr,depotContNr2);
+							if (movedQty) {
+								movesInItemation++;
+								deleteAndNull(cont);
+								break;
+							}// else exits while since movesInItemation==0
+						}
+						deleteAndNull(cont);
+					}
+					currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
+					// halves amount to take each time it fails to pick up any
+					if (config->depotTrigger[i].remain-currentQty>=qtyToPickup && movesInItemation)
+						qtyToPickup=qtyToPickup/2;
+					else
+						qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
+				} // while picking up 
+			} // if pickup from depot
+		}
+	}
+DPfinish:
+	if(config->depositLooted){
+		//deposit all of every looted item to save from having to add them individually to the list
+		CUIntArray* lootedItems = itemProxy.getLootItemIdArrayPtr();
+		CUIntArray depositList;
+		for(i=0;i<lootedItems->GetSize();i++){
+			int itemId=lootedItems->GetAt(i);
+			if (findInIntArray(itemId,alreadyManagedList)==-1 && findInIntArray(itemId,depositList)==-1){
+				depositList.Add(itemId);
+			}
+		}
+		for(i = 0;i<depositList.GetSize();i++){
+			int objectToMove = depositList.GetAt(i);
+			int contNr;
+			int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
+			// deposit to depot
+			int qtyToMove=totalQty;
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				if (contNr==depotContNr || contNr==depotContNr2) continue;
 				CTibiaContainer *cont = reader.readContainer(contNr);
@@ -766,15 +863,12 @@ void depotDeposit(CConfigData *config) {
 						if (!contCheck->flagOnOff){
 							deleteAndNull(contCheck);
 							deleteAndNull(cont);
-							goto DPfinish;
+							goto DPfinish2;
 						}
 						delete contCheck;
 						CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
 						if (item->objectId==objectToMove) {
 							int itemQty = item->quantity?item->quantity:1;
-							if (totalQty-itemQty<config->depotTrigger[i].remain) {
-								itemQty=totalQty-config->depotTrigger[i].remain;
-							}
 							if (itemQty>0) {
 								if (!config->depotDropInsteadOfDepositon) {
 									// move to the depot chest
@@ -794,39 +888,11 @@ void depotDeposit(CConfigData *config) {
 					}
 				}
 				deleteAndNull(cont);
-			}
-		}
-		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon) {
-			// pickup from depot
-			int currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-			int qtyToPickup=config->depotTrigger[i].remain-currentQty;
-			int movesInItemation=1;
-			while (qtyToPickup>0&&movesInItemation>0) {
-				movesInItemation=0;
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-					if (contNr==depotContNr || contNr==depotContNr2) continue;
-
-					CTibiaContainer *cont = reader.readContainer(contNr);
-					if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-						int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup,depotContNr,depotContNr2);
-						if (movedQty) {
-							movesInItemation++;
-							deleteAndNull(cont);
-							break;
-						}// else exits while since movesInItemation==0
-					}
-					deleteAndNull(cont);
-				}
-				currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-				// halves amount to take each time it fails to pick up any
-				if (config->depotTrigger[i].remain-currentQty>=qtyToPickup && movesInItemation)
-					qtyToPickup=qtyToPickup/2;
-				else
-					qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-			} // while picking up 
-		} // if pickup from depot
+			}			
+		}		
 	}
-DPfinish:
+DPfinish2:
+
 	reader.setGlobalVariable("walking_control","depotwalker");
 	reader.setGlobalVariable("walking_priority",config->depotModPriorityStr);
 
@@ -3321,6 +3387,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"loot/other/dropOnlyLooted")) m_configData->dropOnlyLooted=atoi(paramValue);
 	if (!strcmp(paramName,"depot/depotModPriority")) sprintf(m_configData->depotModPriorityStr,"%s",paramValue);
 	if (!strcmp(paramName,"depot/stopByDepot")) m_configData->stopByDepot=atoi(paramValue);
+	if (!strcmp(paramName,"depot/depositLooted")) m_configData->depositLooted=atoi(paramValue);
 }
 
 char *CMod_cavebotApp::saveConfigParam(char *paramName) {
@@ -3400,6 +3467,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"loot/other/dropOnlyLooted")) sprintf(buf,"%d",m_configData->dropOnlyLooted);
 	if (!strcmp(paramName,"depot/depotModPriority")) sprintf(buf,"%s",m_configData->depotModPriorityStr);
 	if (!strcmp(paramName,"depot/stopByDepot")) sprintf(buf,"%d",m_configData->stopByDepot);
+	if (!strcmp(paramName,"depot/depositLooted")) sprintf(buf,"%d",m_configData->depositLooted);
 	return buf;
 }
 
@@ -3454,6 +3522,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 46: return "loot/other/dropOnlyLooted";
 	case 47: return "depot/depotModPriority";
 	case 48: return "depot/stopByDepot";
+	case 49: return "depot/depositLooted";
 		
 	default:
 		return NULL;

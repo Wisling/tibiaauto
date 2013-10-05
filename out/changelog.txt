@@ -1,3 +1,22 @@
+2.33.1 19.9.2013
+Defects:
+ tibiaauto-tiles.xml: Fixed tile definitions
+
+2.33.0 18.9.2013
+Enhancements:
+ Tibia Auto: updated to Tibia 10.11
+ tibiaauto-tiles.xml: updated tile definitions
+
+2.32.1 5.9.2013
+Enhancements:
+ Tibia Auto: added changing icon when hiding TA client in the tray
+ Tibia Auto: updated to Tibia 10.13
+ 
+
+2.32.0 2.9.2013
+Enhancements:
+ Tibia Auto: updated to Tibia 10.12
+
 2.31.0 24.8.2013
 Tibia Auto: updated to Tibia 10.11
 General Settings: Changed icon for hidden TA windows

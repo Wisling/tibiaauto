@@ -138,6 +138,7 @@
 #define IDC_DROPLOOT                    3066
 #define IDC_DEPOT_MODPRIORITY           3068
 #define IDC_DEPOT_STOPBYDEPOT           3069
+#define IDC_DEPOT_DEPOSIT_LOOTED        3070
 
 // Next default values for new objects
 // 
@@ -145,7 +146,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3007
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         3070
+#define _APS_NEXT_CONTROL_VALUE         3071
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif
 #endif
