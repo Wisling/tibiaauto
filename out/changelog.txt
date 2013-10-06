@@ -1,3 +1,7 @@
+2.33.2 4.10.2013
+Defects:
+ Tibia Auto: Fixed crashing on Windows XP
+
 2.33.1 19.9.2013
 Defects:
  tibiaauto-tiles.xml: Fixed tile definitions

@@ -1,3 +1,3 @@
-2.32.0 2.9.2013
-Enhancements:
- Tibia Auto: updated to Tibia 10.12
+2.33.2 4.10.2013
+Defects:
+ Tibia Auto: Fixed crashing on Windows XP

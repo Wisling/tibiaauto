@@ -108,6 +108,9 @@ CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateT
 
 #define MAX_LOOT_ARRAY 1300
 
+#define GET 0
+#define MAKE 1
+
 int waypointTargetX=0,waypointTargetY=0,waypointTargetZ=0;
 int actualTargetX=0,actualTargetY=0,actualTargetZ=0;
 int depotX=0,depotY=0,depotZ=0;
@@ -164,6 +167,16 @@ inline int findInIntArray(int v,CUIntArray& arr){
 		if(arr.ElementAt(i)==v) return i;
 	}
 	return -1;
+}
+
+static map<int*,int> setTime;
+//Creates a random percentage based off of another player's stats that will not change until MAKE is used(GET creates a number if none already present)
+int RandomVariableTime(int &pt, int minTime, int maxTime,int command){
+	if (!setTime[&pt]) command=MAKE;
+	if (command==MAKE){
+		setTime[&pt]=CModuleUtil::randomFormula(minTime,maxTime,minTime-1);
+	}
+	return setTime[&pt];
 }
 
 /**
@@ -2621,6 +2634,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					sprintf(buf,"Switching to Nr=%d name=%s point=%d,%d,%d id=%d",bestCreatureNr,creatureList[bestCreatureNr].name,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z,creatureList[bestCreatureNr].tibiaId);
 					registerDebug(buf);
 				}
+			}
+		}
+		// If attack packet never reached destination, then the red attack box is meaningless and we need to attack again
+		if(currentlyAttackedCreatureNr!=-1 && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId){
+			if(time(NULL)-lastAttackedCreatureBloodHit>RandomVariableTime(lastAttackedCreatureBloodHit,10,200,GET)){
+				AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId);
+				RandomVariableTime(lastAttackedCreatureBloodHit,10,200,MAKE);
 			}
 		}
 		//if no best creature, then something probably ran away.quickly
