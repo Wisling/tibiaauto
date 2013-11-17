@@ -20,6 +20,8 @@ public:
 	int val2;
 	int val3;
 	int val4;
+	int val5;
+	int val6;
 
 };
 
@@ -35,6 +37,8 @@ public:
 	int val2;
 	int val3;
 	int val4;
+	int val5;
+	int val6;
 
 };
 #endif // !defined(AFX_TIBIAMAPTILEITEM_H__E4092406_EA42_4B13_A38A_50B55EEF0777__INCLUDED_)

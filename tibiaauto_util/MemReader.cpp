@@ -136,16 +136,17 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		long addrCont = CMemUtil::GetMemIntValue(addrIndCont+0x10,0);
 		container->flagOnOff=1;
 		container->number=CMemUtil::GetMemIntValue(addrCont,0);
-		//container->???=CMemUtil::GetMemIntValue(addrCont+8,0);
+		//container->???=CMemUtil::GetMemIntValue(addrCont+4,0); // extraInfo
+		//container->???=CMemUtil::GetMemIntValue(addrCont+8,0); // qty
 		container->objectId=CMemUtil::GetMemIntValue(addrCont+0xC,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x30,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x34,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x38,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x3C,0);
-		container->size=CMemUtil::GetMemIntValue(addrCont+0x40,0);
-		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x44,0);
-		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x4C,0);
-		try{//if returns error then addrItems is most likely not a valid address anymore
+		container->size=CMemUtil::GetMemIntValue(addrCont+0x48,0);
+		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x4C,0);
+		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x54,0);
+//		try{//if returns error then addrItems is most likely not a valid address anymore
 			for (i=0;i<container->itemsInside;i++)
 			{
 				CTibiaItem *item = new CTibiaItem();
@@ -158,10 +159,10 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 				item->pos = i;
 				container->items.Add(item);
 			}
-		} catch(const char* e) {
-			delete container;
-			container = new CTibiaContainer(); //return blank container
-		}
+//		} catch(const char* e) {
+//			delete container;
+//			container = new CTibiaContainer(); //return blank container
+//		}
 	}//else: return container as is if it is not found to be open
 	return container;
 }
@@ -559,7 +560,7 @@ void CMemReader::writeSelfLightColor(int value)
 
 CTibiaMapTile *CMemReader::readMapTile(int tileNr){
 	CTibiaMapTile *maptile = new CTibiaMapTile();
-	DWORD tileStart = getMapTileStart(tileNr); 
+	DWORD tileStart = getMapTileStart(tileNr);
 	CMemUtil::GetMemRange(tileStart,tileStart+m_memLengthMapTile,(char*)maptile,0);//this address comes from Tibia itself and need not be shifted
 	return maptile;
 }

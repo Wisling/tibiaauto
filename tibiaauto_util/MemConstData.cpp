@@ -25,6 +25,13 @@ CMemConstData::CMemConstData()
 
 	m_memAddressPacketCount			= offset + itemProxy.getValueForConst("addrPacketCount");
 
+	// lengths
+	m_memLengthContainer=itemProxy.getValueForConst("lengthContainer");
+	m_memLengthItem=itemProxy.getValueForConst("lengthItem");
+	m_memLengthCreature=itemProxy.getValueForConst("lengthCreature");
+	m_memLengthMapTile=itemProxy.getValueForConst("lengthMapTile");
+	m_memLengthVIP=itemProxy.getValueForConst("lengthVIP");
+	
 	// addresses	
 	m_memAddressXor					= offset + itemProxy.getValueForConst("addrXor");
 	m_memAddressVIP					= offset + itemProxy.getValueForConst("addrVIP");	
@@ -32,9 +39,10 @@ CMemConstData::CMemConstData()
 	m_memAddressFirstCreature       = offset + itemProxy.getValueForConst("addrFirstCreature");
 	m_memAddressHP                  = offset + itemProxy.getValueForConst("addrHP");
 	m_memAddressMana                = offset + itemProxy.getValueForConst("addrMana");
-	m_memAddressLeftHand            = offset + itemProxy.getValueForConst("addrLeftHand");
-	m_memAddressRightHand           = offset + itemProxy.getValueForConst("addrRightHand");
-	m_memAddressSlotArrow           = offset + itemProxy.getValueForConst("addrSlotArrow");
+	m_memAddressSlotArrow           = offset + itemProxy.getValueForConst("addrSlotArrow"); //arrow, ring, boots, legs, right hand, left hand, armor, backpack, necklace, helmet
+	m_memAddressRightHand           = offset + m_memAddressSlotArrow + m_memLengthItem * 4;
+	m_memAddressLeftHand            = offset + m_memAddressSlotArrow + m_memLengthItem * 5;
+	m_memAddressBackpack			= offset + m_memAddressSlotArrow + m_memLengthItem * 7;
 	m_memAddressSelfPosX            = offset + itemProxy.getValueForConst("addrSelfPosX");
 	m_memAddressSelfPosY            = offset + itemProxy.getValueForConst("addrSelfPosY");
 	m_memAddressSelfPosZ            = offset + itemProxy.getValueForConst("addrSelfPosZ");
@@ -93,13 +101,6 @@ CMemConstData::CMemConstData()
 	m_memAddressRevealCName3        = offset + itemProxy.getValueForConst("addrFunRevealCName3");
 	m_memAddressRevealCName4        = offset + itemProxy.getValueForConst("addrFunRevealCName4");
 	
-	
-	// lengths
-	m_memLengthContainer=itemProxy.getValueForConst("lengthContainer");
-	m_memLengthItem=itemProxy.getValueForConst("lengthItem");
-	m_memLengthCreature=itemProxy.getValueForConst("lengthCreature");
-	m_memLengthMapTile=itemProxy.getValueForConst("lengthMapTile");
-	m_memLengthVIP=itemProxy.getValueForConst("lengthVIP");
 	
 	// max values
 	m_memMaxContainers=itemProxy.getValueForConst("maxContainers");
