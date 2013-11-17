@@ -1,3 +1,7 @@
-2.33.2 4.10.2013
+2.34.0 17.11.2013
+Enhancements:
+ Tibia Auto: updated to 10.22
+ tiles.xml: added missing rope spots, stairs and new tiles
 Defects:
- Tibia Auto: Fixed crashing on Windows XP
+ consts.xml: removed some redundant addresses
+ cavebot: Handles issue where creature is not attacked even though they are selected.

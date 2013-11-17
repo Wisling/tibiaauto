@@ -473,7 +473,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					*/
 				// now open containers
 				
-				CTibiaItem *item = reader.readItem(itemProxy.getValueForConst("addrBackpack"));
+				CTibiaItem *item = reader.readItem(memConstData.m_memAddressBackpack);
 				sender.openContainerFromContainer(item->objectId,0x03,0,0);
 				delete item; item = NULL;
 				CModuleUtil::waitForOpenContainer(0,1);

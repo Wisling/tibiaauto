@@ -2635,6 +2635,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					registerDebug(buf);
 				}
 			}
+		}else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft!=0){
+		//if no best creature, then something probably ran away.quickly
+			currentlyAttackedCreatureNr=-1;
 		}
 		// If attack packet never reached destination, then the red attack box is meaningless and we need to attack again
 		if(currentlyAttackedCreatureNr!=-1 && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId){
@@ -2643,8 +2646,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				RandomVariableTime(lastAttackedCreatureBloodHit,10,200,MAKE);
 			}
 		}
-		//if no best creature, then something probably ran away.quickly
-		else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft!=0) currentlyAttackedCreatureNr=-1;
 		if (config->debug) registerDebug("Entering attack execution area");
 
 		/**

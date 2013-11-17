@@ -31,6 +31,7 @@ public:
 	int m_memAddressMlvlPercLeft;
 	int m_memAddressSoulPoints;
 	int m_memAddressLeftHand;
+	int m_memAddressBackpack;
 	int m_memAddressRightHand;
 	int m_memAddressSlotArrow;
 	int m_memAddressSelfPosX;
