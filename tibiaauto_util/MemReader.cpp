@@ -146,7 +146,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		container->size=CMemUtil::GetMemIntValue(addrCont+0x48,0);
 		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x4C,0);
 		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x54,0);
-//		try{//if returns error then addrItems is most likely not a valid address anymore
+		try{//if returns error then addrItems is most likely not a valid address anymore
 			for (i=0;i<container->itemsInside;i++)
 			{
 				CTibiaItem *item = new CTibiaItem();
@@ -159,10 +159,10 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 				item->pos = i;
 				container->items.Add(item);
 			}
-//		} catch(const char* e) {
-//			delete container;
-//			container = new CTibiaContainer(); //return blank container
-//		}
+		} catch(const char* e) {
+			delete container;
+			container = new CTibiaContainer(); //return blank container
+		}
 	}//else: return container as is if it is not found to be open
 	return container;
 }
