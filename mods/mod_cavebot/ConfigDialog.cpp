@@ -30,12 +30,12 @@ extern CToolAutoAttackStateDepot globalAutoAttackStateDepot;
 extern CToolAutoAttackStateTraining globalAutoAttackStateTraining;
 extern int actualTargetX,actualTargetY,actualTargetZ;
 extern int depotX,depotY,depotZ;
-extern int currentPosTM;
+extern unsigned int currentPosTM;
 extern int creatureAttackDist;
-extern int firstCreatureAttackTM;
+extern unsigned int firstCreatureAttackTM;
 extern int currentWaypointNr;
 extern int pathfindDistance;
-extern int walkerStandingEndTm;
+extern unsigned int walkerStandingEndTm;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog

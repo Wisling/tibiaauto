@@ -98,7 +98,7 @@
 		<const code="addrVocation" value="0x969F78"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
 		<const code="addrPacketCount" value="0x9A68EC"/> <!-- cat0 -->
 		<const code="addrFirstCreature" value="0x9AD478"/> <!-- cat1 -->
-		<const code="addrSlotArrow" value="0x9EA4E4"/> <!-- cat2 -->
+		<const code="addrSlotArrow" value="0x9EA4C4"/> <!-- cat2 -->
 		<const code="addrMapStart" value="0x9EA644"/> <!-- is a pointer to visible map -->
 		<const code="addrFirstContainer" value="0x9EB3D4"/> <!-- cat2 -->
 		<const code="addrCurrentTm" value="0x9EB984"/> <!-- cat2 -->

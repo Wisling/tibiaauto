@@ -117,16 +117,16 @@ int depotX=0,depotY=0,depotZ=0;
 int lastDepotPathNotFoundTm=0;
 int persistentShouldGo=0;
 
-int currentPosTM=0;
+unsigned int currentPosTM=0;
 int creatureAttackDist=0;
-int firstCreatureAttackTM=0;
+unsigned int firstCreatureAttackTM=0;
 int currentWaypointNr=0;
-int walkerStandingEndTm=0;
+unsigned int walkerStandingEndTm=0;
 
-int lastTAMessageTm=0;
+unsigned int lastTAMessageTm=0;
 int taMessageDelay=4;
 int forwardBackDir=1;//forward and back direction
-int autolooterTm=0;
+unsigned int autolooterTm=0;
 DWORD lootThreadId;
 DWORD queueThreadId;
 CTibiaQueue<Corpse> corpseQueue;
@@ -1805,8 +1805,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 	int lastStandingX=0,lastStandingY=0,lastStandingZ=0;
 
-	int lastAttackedCreatureBloodHit=0;
+	unsigned int lastAttackedCreatureBloodHit=0;
 	int reachedAttackedCreature=0;//true if 1 sqm away or hp dropped while attacking
+	unsigned int lastResetAttack = time(NULL);
 	int shareAlienBackattack=0;
 	int alienCreatureForTrainerFound=0;
 	
@@ -2640,10 +2641,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			currentlyAttackedCreatureNr=-1;
 		}
 		// If attack packet never reached destination, then the red attack box is meaningless and we need to attack again
-		if(currentlyAttackedCreatureNr!=-1 && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId){
-			if(time(NULL)-lastAttackedCreatureBloodHit>RandomVariableTime(lastAttackedCreatureBloodHit,10,200,GET)){
+		if(currentlyAttackedCreatureNr!=-1 && reader.getAttackedCreature() && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId){
+			int tmTmp = RandomVariableTime((int&)lastResetAttack,10,200,GET);
+			if((lastAttackedCreatureBloodHit==0 || time(NULL)-lastAttackedCreatureBloodHit>tmTmp) && time(NULL)-lastResetAttack>tmTmp){
+				reader.setAttackedCreature(0);
 				AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId);
-				RandomVariableTime(lastAttackedCreatureBloodHit,10,200,MAKE);
+				RandomVariableTime((int&)lastResetAttack,10,200,MAKE);
+				lastResetAttack = time(NULL);
 			}
 		}
 		if (config->debug) registerDebug("Entering attack execution area");

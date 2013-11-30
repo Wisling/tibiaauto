@@ -1,3 +1,15 @@
+2.34.2 18.11.2013
+Enhancements:
+Defects:
+ Auto Login: corrected backpack address
+ Runemaker: corrected hand slot addresses
+ tiles.xml: fixed missing stairs
+
+2.34.1 17.11.2013
+Enhancements:
+Defects:
+ tibiaauto_utils: removed debugging code from container reader.
+ 
 2.34.0 17.11.2013
 Enhancements:
  Tibia Auto: updated to 10.22
