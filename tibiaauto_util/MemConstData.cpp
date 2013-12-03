@@ -39,9 +39,9 @@ CMemConstData::CMemConstData()
 	m_memAddressFirstCreature       = offset + itemProxy.getValueForConst("addrFirstCreature");
 	m_memAddressHP                  = offset + itemProxy.getValueForConst("addrHP");
 	m_memAddressMana                = offset + itemProxy.getValueForConst("addrMana");
-	m_memAddressSlotArrow           = offset + itemProxy.getValueForConst("addrSlotArrow"); //arrow, ring, boots, legs, right hand, left hand, armor, backpack, necklace, helmet
-	m_memAddressRightHand           = offset + m_memAddressSlotArrow + m_memLengthItem * 4;
-	m_memAddressLeftHand            = offset + m_memAddressSlotArrow + m_memLengthItem * 5;
+	m_memAddressSlotArrow           = offset + itemProxy.getValueForConst("addrSlotArrow"); //arrow, ring, boots, legs, left hand, right hand, armor, backpack, necklace, helmet
+	m_memAddressLeftHand            = offset + m_memAddressSlotArrow + m_memLengthItem * 4;
+	m_memAddressRightHand           = offset + m_memAddressSlotArrow + m_memLengthItem * 5;
 	m_memAddressBackpack			= offset + m_memAddressSlotArrow + m_memLengthItem * 7;
 	m_memAddressSelfPosX            = offset + itemProxy.getValueForConst("addrSelfPosX");
 	m_memAddressSelfPosY            = offset + itemProxy.getValueForConst("addrSelfPosY");
