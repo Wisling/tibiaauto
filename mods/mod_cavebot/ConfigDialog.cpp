@@ -657,11 +657,16 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			break;
 		case CToolAutoAttackStateWalker_ok:
 			{
-				int tilesAway=abs(self->x-actualTargetX)+abs(self->y-actualTargetY)+abs(self->z-actualTargetZ);
-				sprintf(buf,"State: walking to (%d,%d,%d) %d tiles away",actualTargetX,actualTargetY,actualTargetZ,tilesAway);
-				m_stateWalker.SetWindowText(buf);
-				if (currentWaypointNr!=m_waypointList.GetCurSel())
-					m_waypointList.SetCurSel(currentWaypointNr);
+				if(globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_walking){
+					int tilesAway=abs(self->x-actualTargetX)+abs(self->y-actualTargetY)+abs(self->z-actualTargetZ);
+					sprintf(buf,"State: walking to (%d,%d,%d) %d tiles away",actualTargetX,actualTargetY,actualTargetZ,tilesAway);
+					m_stateWalker.SetWindowText(buf);
+					if (currentWaypointNr!=m_waypointList.GetCurSel())
+						m_waypointList.SetCurSel(currentWaypointNr);
+				}else{
+					sprintf(buf,"State: not running");
+					m_stateWalker.SetWindowText(buf);
+				}
 			}
 			break;
 		case CToolAutoAttackStateWalker_noPathFound:

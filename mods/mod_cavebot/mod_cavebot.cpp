@@ -222,6 +222,74 @@ void dumpCreatureInfo(char *info,unsigned int tibiaId) {
 }
 
 /*
+* Checks whether or not we can do something productive by going to the depot.
+*/
+int depotCheckCanGo(CConfigData *config){
+	int ret=0;
+	CMemReaderProxy reader;
+	CTibiaItemProxy itemProxy;
+	CMemConstData memConstData = reader.getMemConstData();
+	CUIntArray depotListObjects;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int i;
+	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
+		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
+		//Track the items we check here so we do not check them again in looted item list
+		depotListObjects.Add(objectId);
+		int contNr;
+		int totalQty=0;
+		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+			CTibiaContainer *cont = reader.readContainer(contNr);
+			
+			if (cont->flagOnOff){
+				totalQty+=cont->countItemsOfType(objectId);
+			}
+			
+			deleteAndNull(cont);
+		}
+		// check whether we can deposit something
+		if (config->depotTrigger[i].when>=config->depotTrigger[i].remain&&
+			(totalQty>config->depotTrigger[i].remain)){
+			ret=1;
+			goto exitDCG;
+		}
+		// check whether we can restack something
+		if (config->depotTrigger[i].when<=config->depotTrigger[i].remain&&
+			(totalQty<config->depotTrigger[i].remain)){
+			ret=1;
+			goto exitDCG;
+		}
+	}
+	if(config->depositLooted){
+	// If not returned yet then find another looted item not already checked in the depot list
+		int contNr;
+		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+			CTibiaContainer *cont = reader.readContainer(contNr);
+			if (cont->flagOnOff){
+				int itemNr;
+				for(itemNr=0;itemNr<cont->itemsInside;itemNr++){
+					CTibiaItem* item = (CTibiaItem *)cont->items.GetAt(itemNr);
+					int lootListIndex = itemProxy.getLootItemIndex(item->objectId);
+					if(lootListIndex != -1){
+						if(findInIntArray(item->objectId,depotListObjects)==-1){
+							ret = 1;
+							deleteAndNull(cont);
+							goto exitDCG;
+						}
+					}
+				}
+			}
+			deleteAndNull(cont);
+		}
+	}
+
+
+exitDCG:
+	deleteAndNull(self);
+	return ret;
+
+}
+/*
 * Checks whether we should go back to depot or not.
 */
 int depotCheckShouldGo(CConfigData *config) {
@@ -230,9 +298,12 @@ int depotCheckShouldGo(CConfigData *config) {
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (self->cap<config->depotCap&&strlen(config->depotTrigger[0].itemName)) {
-		// capacity limit check only when some depot items defined
-		ret=1;
+	if (self->cap<config->depotCap) {
+		if(depotCheckCanGo(config)){
+			ret=1;
+			goto exitDSG;
+		}
+		ret=0;
 		goto exitDSG;
 	}
 	
@@ -241,68 +312,33 @@ int depotCheckShouldGo(CConfigData *config) {
 		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		int contNr;
 		int totalQty=0;
+		//Count number of this item in open containers
 		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
-			if (cont->flagOnOff)
+			if (cont->flagOnOff){
 				totalQty+=cont->countItemsOfType(objectId);
+			}
 			
 			deleteAndNull(cont);
 		}
 		// check whether we should deposit something
-		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
+		if (config->depotTrigger[i].when>=config->depotTrigger[i].remain&&
 			(totalQty>=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
 			ret=1;
 			goto exitDSG;
 		}
 		// check whether we should restack something
-		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
+		if (config->depotTrigger[i].when<=config->depotTrigger[i].remain&&
 			(totalQty<=config->depotTrigger[i].when || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
 			ret=1;
 			goto exitDSG;
 		}
 	}
+
 exitDSG:
 	deleteAndNull(self);
 	return ret;
-}
-
-int depotCheckCanGo(CConfigData *config){
-	int ret=0;
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaCharacter *self = reader.readSelfCharacter();
-	int i;
-	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
-		int objectId = itemProxy.getItemId(config->depotTrigger[i].itemName);
-		int contNr;
-		int totalQty=0;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-			CTibiaContainer *cont = reader.readContainer(contNr);
-			
-			if (cont->flagOnOff)
-				totalQty+=cont->countItemsOfType(objectId);
-			
-			deleteAndNull(cont);
-		}
-		// check whether we should deposit something
-		if (config->depotTrigger[i].when>config->depotTrigger[i].remain&&
-			(totalQty>0 || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
-			ret=1;
-			goto exitDCG;
-		}
-		// check whether we should restack something
-		if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&
-			(totalQty>config->depotTrigger[i].remain || globalAutoAttackStateDepot!=CToolAutoAttackStateDepot_notRunning)){
-			ret=1;
-			goto exitDCG;
-		}
-	}
-exitDCG:
-	deleteAndNull(self);
-	return ret;
-
 }
 
 /**
@@ -379,6 +415,7 @@ void depotCheck(CConfigData *config) {
 				// depot not found - argh
 				globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
 				depotX=depotY=depotZ=0;
+				waypointTargetX=waypointTargetY=waypointTargetZ=0;
 				if (config->debug) registerDebug("Depot not found - depot state: not found");
 			}
 			
@@ -388,41 +425,49 @@ void depotCheck(CConfigData *config) {
 		deleteAndNull(self);
 	}
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_walking) {
-		CTibiaMapProxy tibiaMap;
-		if (config->debug) registerDebug("Walking to a depot section");
-		CTibiaCharacter *self = reader.readSelfCharacter();
-		// check whether the depot is reachable
-		int path[15];
-		if (config->debug) registerDebug("findPathOnMap: depot walker");
-		CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,301,path);
-		if (!path[0]||!tibiaMap.isPointAvailable(depotX,depotY,depotZ)) {
-			if (config->debug) registerDebug("Path to the current depot not found: must find a new one");
-			// path to the current depot not found, must find a new depot
-			struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
-			depotX=nearestDepot.x;
-			depotY=nearestDepot.y;
-			depotZ=nearestDepot.z;
-			if (depotX&&depotY&&depotZ) {
-				if (config->debug) registerDebug("New depot found");
-				// depot found - go to it
-				globalAutoAttackStateDepot=CToolAutoAttackStateDepot_walking;
-				// reset goto target
-				waypointTargetX=depotX;
-				waypointTargetY=depotY;
-				waypointTargetZ=depotZ;
+		if(!depotCheckCanGo(config)){
+			globalAutoAttackStateDepot = CToolAutoAttackStateDepot_notRunning;
+			persistentShouldGo = 0;
+			depotX=depotY=depotZ=0;
+			waypointTargetX=waypointTargetY=waypointTargetZ=0;
+		}else{
+			CTibiaMapProxy tibiaMap;
+			if (config->debug) registerDebug("Walking to a depot section");
+			CTibiaCharacter *self = reader.readSelfCharacter();
+			// check whether the depot is reachable
+			int path[15];
+			if (config->debug) registerDebug("findPathOnMap: depot walker");
+			CModuleUtil::findPathOnMap(self->x,self->y,self->z,depotX,depotY,depotZ,301,path);
+			if (!path[0]||!tibiaMap.isPointAvailable(depotX,depotY,depotZ)) {
+				if (config->debug) registerDebug("Path to the current depot not found: must find a new one");
+				// path to the current depot not found, must find a new depot
+				struct point nearestDepot = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
+				depotX=nearestDepot.x;
+				depotY=nearestDepot.y;
+				depotZ=nearestDepot.z;
+				if (depotX&&depotY&&depotZ) {
+					if (config->debug) registerDebug("New depot found");
+					// depot found - go to it
+					globalAutoAttackStateDepot=CToolAutoAttackStateDepot_walking;
+					// reset goto target
+					waypointTargetX=depotX;
+					waypointTargetY=depotY;
+					waypointTargetZ=depotZ;
+				}
+				else {
+					if (config->debug) registerDebug("No new depot found");
+					// depot not found - argh
+					globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
+					depotX=depotY=depotZ=0;
+					waypointTargetX=waypointTargetY=waypointTargetZ=0;
+				}
 			}
 			else {
-				if (config->debug) registerDebug("No new depot found");
-				// depot not found - argh
-				globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
-				depotX=depotY=depotZ=0;
+				if (config->debug) registerDebug("Currently selected depot is reachable");
 			}
+			
+			deleteAndNull(self);
 		}
-		else {
-			if (config->debug) registerDebug("Currently selected depot is reachable");
-		}
-		
-		deleteAndNull(self);
 	}
 	if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notFound) {
 		// not depot found - but try finding another one
@@ -445,6 +490,7 @@ void depotCheck(CConfigData *config) {
 			// depot not found - argh
 			globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notFound;
 			depotX=depotY=depotZ=0;
+			waypointTargetX=waypointTargetY=waypointTargetZ=0;
 			persistentShouldGo=0;
 			if (config->debug) registerDebug("Depot not found - depot state: not found (again)");
 		}
@@ -928,6 +974,7 @@ DPfinish2:
 	}
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_notRunning;
 	depotX=depotY=depotZ=0;
+	waypointTargetX=waypointTargetY=waypointTargetZ=0;
 	persistentShouldGo=0;
 	deleteAndNull(self);
 
@@ -1988,6 +2035,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 		if (isInFullSleep()) {
 			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_fullSleep;
+		} else if(globalAutoAttackStateWalker==CToolAutoAttackStateWalker_fullSleep){
+			globalAutoAttackStateWalker=CToolAutoAttackStateWalker_notRunning;
 		}
 		
 		// if in a full sleep mode then just do nothing
