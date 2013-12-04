@@ -78,7 +78,7 @@ void CConfigDialog::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
@@ -95,15 +95,15 @@ void CConfigDialog::OnEnable()
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
 void CConfigDialog::disableControls()
 {
 	m_accountNumber.EnableWindow(false);
-	m_password.EnableWindow(false);	
-	m_charPos.EnableWindow(false);	
+	m_password.EnableWindow(false);
+	m_charPos.EnableWindow(false);
 	m_openMain.EnableWindow(false);
 	m_openCont1.EnableWindow(false);
 	m_openCont2.EnableWindow(false);
@@ -120,6 +120,7 @@ void CConfigDialog::disableControls()
 
 void CConfigDialog::enableControls()
 {
+	m_charPos.EnableWindow(true);
 	m_openMain.EnableWindow(true);
 	m_openCont1.EnableWindow(true);
 	m_openCont2.EnableWindow(true);
@@ -223,9 +224,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_debug.InsertItem(0,"");
 			time_t nowSec = time(NULL);
 			struct tm *now = localtime(&nowSec);
-			sprintf(timeBuf,"%d:%d:%d",now->tm_hour,now->tm_min,now->tm_sec);
+			sprintf(timeBuf,"%d:%02d:%02d",now->tm_hour,now->tm_min,now->tm_sec);
 			m_debug.SetItemText(0,0,timeBuf);
-			m_debug.SetItemText(0,1,queue2Message);			
+			m_debug.SetItemText(0,1,queue2Message);
 			if (m_debug.GetItemCount()>100)
 			{
 				m_debug.DeleteItem(m_debug.GetItemCount());
@@ -274,5 +275,4 @@ void CConfigDialog::OnAutopass()
 	int enable=m_autopass.GetCheck();
 	m_accountNumber.EnableWindow(!enable);
 	m_password.EnableWindow(!enable);
-	m_charPos.EnableWindow(!enable);
 }

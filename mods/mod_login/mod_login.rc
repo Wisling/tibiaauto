@@ -83,8 +83,8 @@ BEGIN
     LTEXT           "Login Delay:",IDC_STATIC,14,109,55,14,SS_CENTERIMAGE
     LTEXT           "seconds",IDC_STATIC,145,109,55,14,SS_CENTERIMAGE
     DEFPUSHBUTTON   "OK",IDOK,88,319,50,14
-    CONTROL         "Log in with last character",IDC_AUTOPASS,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,87,43,95,10
+    CONTROL         "Log into last account",IDC_AUTOPASS,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,87,43,82,10
     EDITTEXT        IDC_ACCOUNT_NUMBER,87,55,90,14,ES_PASSWORD | 
                     ES_AUTOHSCROLL
     EDITTEXT        IDC_PASSWORD,87,73,90,14,ES_PASSWORD | ES_AUTOHSCROLL

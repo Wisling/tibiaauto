@@ -71,7 +71,7 @@ void registerDebug(char *msg)
 	int count = 0;
 	while(queue2Message){
 		Sleep(10);
-		if(++count>=waitcount){
+		if(++count>=waitcount || toolThreadShouldStop){
 			queue2Message=NULL;
 			break;
 		}
@@ -176,13 +176,13 @@ int ensureForeground(HWND hwnd)
 	return 0;
 }
 
-int getSelfExp()
+int getSelfHealth()
 {
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	int retExp=self->exp;
+	int retHealth=self->hp;
 	delete self;self = NULL;
-	return retExp;
+	return retHealth;
 }
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
@@ -193,7 +193,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
-	int origExp=getSelfExp();
 
 	int shouldBeOpenedContainers=0;
 	if (config->openMain) shouldBeOpenedContainers++;
@@ -218,13 +217,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		hMutex = CreateMutex(NULL,false,"TibiaAuto_modLogin_mutex");
 	}
 	while (!toolThreadShouldStop)
-	{					
+	{
 		Sleep(100);
 		
 		int loggedIn = reader.isLoggedIn();
 		
 		if (!loggedIn)
-		{	
+		{
 			char buf[128];
 			sprintf(buf,"Connection Status Changed to:%d",reader.getConnectionState());
 			registerDebug(buf);
@@ -233,7 +232,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (!loginTime) loginTime = time(NULL)+config->loginDelay;
 			while (loginTime>time(NULL) && !reader.isLoggedIn()){
 				if (toolThreadShouldStop){
-					registerDebug("Forced Exit. Module stopped.");
 					goto exitFunction;
 				}
 				Sleep(500);
@@ -244,9 +242,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		{
 			registerDebug("No connection: entering relogin mode");
 
-			if (origExp>getSelfExp() && !config->loginAfterKilled)
+			if (getSelfHealth()==0 && !config->loginAfterKilled)
 			{
-				registerDebug("ERROR: exp dropped? was I killed?");
+				registerDebug("ERROR: Health is zero, was I killed?");
 				Sleep(1000);
 				while (!reader.isLoggedIn()){
 					if (toolThreadShouldStop){
@@ -410,17 +408,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				continue;
 			}
 
-			if (!config->autopass){
-				sk.SendKeys("a");// goes to beginning of list
-				for (int i=1;i<config->charPos;i++){
-					sk.SendKeys("{DOWN}");
-				}
+			sk.SendKeys("a");// goes to beginning of list
+			for (int i=1;i<config->charPos;i++){
+				sk.SendKeys("{DOWN}");
 			}
+
 			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+168-92,wndRect.top+(wndRect.bottom-wndRect.top)/2+187-14+18);
 			mouse_event(MYMOUSE_DOWN,0,0,0,0);
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			
-			registerDebug("Waiting fo establishing connection up to 15s");
+			registerDebug("Waiting for establishing connection up to 15s");
 			for (i=0;i<150;i++)
 			{
 				if (reader.isLoggedIn()) break;
@@ -479,12 +476,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CModuleUtil::waitForOpenContainer(0,1);
 
 				//Double click on the main bar of the container
-				SetCursorPos(wndRect.right-87,wndRect.top+387);
+				int dblClickXOffset = 87;
+				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);			
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);			
-				SetCursorPos(wndRect.right-87,wndRect.top+282);
+				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);			
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
@@ -516,12 +514,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								CModuleUtil::waitForOpenContainer(foundContOpenNr,1);
 
 								//Double click on main bar of open container(each container heign =19
-								SetCursorPos(wndRect.right-100,wndRect.top+387+19*foundContOpenNr);
+								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387+19*foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
 								mouse_event(MYMOUSE_UP,0,0,0,0);			
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
 								mouse_event(MYMOUSE_UP,0,0,0,0);			
-								SetCursorPos(wndRect.right-100,wndRect.top+282+19*foundContOpenNr);
+								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282+19*foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
 								mouse_event(MYMOUSE_UP,0,0,0,0);			
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
@@ -740,7 +738,7 @@ int CMod_loginApp::validateConfig(int showAlerts)
 		if (showAlerts) AfxMessageBox("Password must be filled in!");
 		return 0;
 	}
-	if (!m_configData->autopass && (m_configData->charPos<=0||m_configData->charPos>20))
+	if (m_configData->charPos<=0||m_configData->charPos>20)
 	{
 		if (showAlerts) AfxMessageBox("Character position must be between 1 and 20.");
 		return 0;
