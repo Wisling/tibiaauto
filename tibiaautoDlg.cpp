@@ -5,7 +5,7 @@
 //#include "vld.h"
 #include "tibiaauto.h"
 #include "tibiaautoDlg.h"
-#include "MemUtil.h" 
+#include "MemUtil.h"
 #include "ModuleUtil.h"
 #include "CharDialog.h"
 #include "MemReaderProxy.h"
@@ -24,7 +24,7 @@
 #include "md5class.h"
 #include "OptionsDialog.h"
 #include "detours.h"
-#include "PythonEngine.h" 
+#include "PythonEngine.h"
 #include "PythonScriptsDialog.h"
 #include "PythonScript.h"
 #include "url.h"
@@ -128,14 +128,14 @@ LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam
 CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
 	: MyDialog(CTibiaautoDlg::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CTibiaautoDlg)	
+	//{{AFX_DATA_INIT(CTibiaautoDlg)
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
-	XMLPlatformUtils::Initialize();		
+	XMLPlatformUtils::Initialize();
 		 
-	parser = new XercesDOMParser();	
+	parser = new XercesDOMParser();
 
 	
 }
@@ -208,7 +208,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_AUTOGROUP, OnToolAutogroup)
 	ON_BN_CLICKED(IDC_TOOL_AUTOUH, OnToolAutouh)
 	ON_BN_CLICKED(IDC_TOOL_MAPSHOW, OnToolMapshow)
-	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK, OnToolAutoattack)	
+	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK, OnToolAutoattack)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER, OnToolSpellcaster)
 	ON_BN_CLICKED(IDC_EXIT, OnExit)
 	ON_WM_CLOSE()
@@ -232,7 +232,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_BN_CLICKED(IDC_OPTIONS, OnOptions)
 	ON_BN_CLICKED(IDC_TOOL_LOGIN, OnToolLogin)
 	ON_WM_SHOWWINDOW()
-	ON_WM_SIZE()	
+	ON_WM_SIZE()
 	ON_BN_CLICKED(IDC_TOOL_XRAY, OnToolXray)
 	ON_BN_CLICKED(IDC_TOOL_SORTER, OnToolSorter)
 	ON_BN_CLICKED(IDC_TOOL_BANKER, OnToolBanker)
@@ -287,7 +287,7 @@ void CTibiaautoDlg::DoSetButtonSkin(){
 }
 
 BOOL CTibiaautoDlg::OnInitDialog()
-{	
+{
 	srand(time(NULL));
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -313,12 +313,12 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	CTibiaItemProxy itemProxy;
 	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
 	buf[0]=buf[1]=0;
-	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf,1);	
+	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf,1);
 	if (buf[0]==0xEB&&buf[1]==0x17) versionOk=1;
 	if (buf[0]==0x75&&buf[1]==0x0A) versionOk=1;
 		
 	if (!versionOk)
-	{		
+	{
 		char outBuf[32];
 
 		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%x  %x)", buf[0], buf[1]);
@@ -356,8 +356,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	m_pythonScriptsDialog = new CPythonScriptsDialog();
 	m_pythonScriptsDialog->Create(IDD_PYTHON_SCRIPTS);
 	
-	m_moduleLooter = new CModuleProxy("mod_looter",0);		
-	m_moduleLight = new CModuleProxy("mod_light",0);	
+	m_moduleLooter = new CModuleProxy("mod_looter",0);
+	m_moduleLight = new CModuleProxy("mod_light",0);
 	m_modulePlayerInfo = new CModuleProxy("mod_playerinfo",0);
 	m_modulePlayerInfo->start();
 	m_moduleUH = new CModuleProxy("mod_uh",0);
@@ -433,16 +433,16 @@ BOOL CTibiaautoDlg::OnInitDialog()
 			{
 				ffBoxDisplay=0;
 			}
-		}	
+		}
 		char buf[128];
 		sprintf(buf,"%d",time(NULL));
 		RegSetValueEx(hkey,TEXT("FFcheck"),0,REG_SZ,(const unsigned char *)buf,strlen(buf)+1);
-		RegCloseKey(hkey);	
+		RegCloseKey(hkey);
 	}
 
 	if (ffBoxDisplay)
 	{
-		// now check for firefox	
+		// now check for firefox
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_ALL_ACCESS,&hkey))
 		{
 			RegCloseKey(hkey);
@@ -451,7 +451,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	}
 	if (ffBoxDisplay)
 	{
-		// now check for firefox	
+		// now check for firefox
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_ALL_ACCESS,&hkey))
 		{
 			RegCloseKey(hkey);
@@ -463,13 +463,13 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	{
 		if (AfxMessageBox("Tibia Auto has detected that you are not using Mozilla Firefox. It is recommend that you install it. Do you want to proceed with installation?",MB_YESNO)==IDYES)
 		{
-			::ShellExecute(NULL, NULL, "http://tibiaauto.net/firefox.html", NULL, NULL, SW_SHOWNORMAL);			
-		}		
+			::ShellExecute(NULL, NULL, "http://tibiaauto.net/firefox.html", NULL, NULL, SW_SHOWNORMAL);
+		}
 	}
 	
 	if (CModuleUtil::getTASetting("LoadScriptOnStartup")){
 		char fName[128];
-		char *charName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);		
+		char *charName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		sprintf(fName,"tibiaAuto.cfg.%s.xml",charName);
 		free(charName);
 		char pathbuf[2048];
@@ -485,8 +485,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	// set shell tray
 	setShellTray();
 	
-	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads	
-	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads	
+	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads
+	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads
 	if (CModuleUtil::getTASetting("GatherBotStats"))
 		SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
 	SetTimer(1006,5000,NULL);//refresh tray icon name if changed
@@ -501,7 +501,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CTibiaautoDlg::OnPaint() 
+void CTibiaautoDlg::OnPaint()
 {
 	if (IsIconic())
 	{
@@ -547,7 +547,7 @@ void CTibiaautoDlg::OnChangeEditValue()
 
 
 void CTibiaautoDlg::OnTimer(UINT nIDEvent)
-{	
+{
 	CMemReaderProxy reader;
 	
 	if (nIDEvent==1001)
@@ -571,7 +571,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			delete this;
 		}
 		SetTimer(1001,150,NULL);
-	}	
+	}
 	if (nIDEvent==1002)
 	{
 		KillTimer(1002);
@@ -590,11 +590,11 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		refreshAds();
 	}
 	if (nIDEvent==1004)
-	{		
+	{
 		reportUsage();
 	}
 	if (nIDEvent==1005)
-	{		
+	{
 		static unsigned int enabledModules=0xffffffff;
 		unsigned int modCheck=0;
 		for (int i=0;i<CModuleProxy::allModulesCount && i<32;i++){
@@ -614,7 +614,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		}
 	}
 	if (nIDEvent==1006)
-	{	
+	{
 		char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
 		if (strcmp(loggedCharName,currentIconData.szTip)!=0){
 			snprintf(currentIconData.szTip,60,"%s",loggedCharName);
@@ -630,8 +630,8 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 
 
 
-void CTibiaautoDlg::OnLight() 
-{	
+void CTibiaautoDlg::OnLight()
+{
 	m_moduleLight->showConfigDialog();
 }
 
@@ -659,19 +659,19 @@ void CTibiaautoDlg::InitialiseIPC()
 	
 
 	 hPipe = CreateNamedPipe(
-          lpszPipename,             // pipe name 
-          PIPE_ACCESS_DUPLEX,       // read/write access 
-          PIPE_TYPE_MESSAGE |       // message type pipe 
-          PIPE_READMODE_MESSAGE |   // message-read mode 
-          PIPE_WAIT,                // blocking mode 
-          PIPE_UNLIMITED_INSTANCES, // max. instances  
-          163840,                  // output buffer size 
-          163840,                  // input buffer size 
-          1000,                        // client time-out 
-          NULL);                    // no security attribute 
+          lpszPipename,             // pipe name
+          PIPE_ACCESS_DUPLEX,       // read/write access
+          PIPE_TYPE_MESSAGE |       // message type pipe
+          PIPE_READMODE_MESSAGE |   // message-read mode
+          PIPE_WAIT,                // blocking mode
+          PIPE_UNLIMITED_INSTANCES, // max. instances
+          163840,                  // output buffer size
+          163840,                  // input buffer size
+          1000,                        // client time-out
+          NULL);                    // no security attribute
 
 
-	if (hPipe == INVALID_HANDLE_VALUE) 
+	if (hPipe == INVALID_HANDLE_VALUE)
 	{
 		sprintf(buf,"Invalid pipe handle: %d",GetLastError());
         AfxMessageBox(buf);
@@ -681,23 +681,23 @@ void CTibiaautoDlg::InitialiseIPC()
 	
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS,true,m_processId);
 	
-	char *injectDll="tibiaautoinject2.dll";				
+	char *injectDll="tibiaautoinject2.dll";
 	
 	if (!DetourContinueProcessWithDll(procHandle, injectDll)) {
 		sprintf(buf,"dll injection failed: %d",GetLastError());
-		AfxMessageBox(buf);		
+		AfxMessageBox(buf);
 		ExitProcess(1);
-	}	
+	}
 	
-	//injectDll="tibiaauto_develtest.dll";			
+	//injectDll="tibiaauto_develtest.dll";
 	
 	//DetourContinueProcessWithDll(procHandle, injectDll);
 	
 	
 	CloseHandle(procHandle);
 	
-	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ? 
-TRUE : (GetLastError() == ERROR_PIPE_CONNECTED); 
+	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ?
+TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 	
 
 	if (!fConnected)
@@ -721,18 +721,18 @@ TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 	CIPCBackPipeProxy backPipe;
 	backPipe.InitialiseIPC();
 	
-	// now hook keys	
+	// now hook keys
 	HINSTANCE hinstDLL=NULL;
 	hhookKeyb=NULL;
 	
 	hinstDLL = LoadLibrary((LPCTSTR) "tibiaautoinject3.dll");
 	
 	if (hinstDLL)
-	{				
+	{
 		typedef LRESULT (CALLBACK *KeyboardProc_fun)(int nCode, WPARAM wParam, LPARAM lParam);
-		static KeyboardProc_fun fun=(KeyboardProc_fun)GetProcAddress(hinstDLL,"KeyboardProc");				
+		static KeyboardProc_fun fun=(KeyboardProc_fun)GetProcAddress(hinstDLL,"KeyboardProc");
 		if (fun)
-		{									
+		{
 			
 			HANDLE hThreadSnap = INVALID_HANDLE_VALUE;
 			THREADENTRY32 te32;
@@ -748,29 +748,29 @@ TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 			// Retrieve information about the first thread,
 			// and exit if unsuccessful
 			if( !Thread32First( hThreadSnap, &te32 ) )
-			{		
+			{
 				CloseHandle( hThreadSnap ); // Must clean up the snapshot object!
 				goto noKeybHook;
 			}
 			
 			// Now walk the thread list of the system,
 			// and display information about each thread
-			// associated with the specified process				
+			// associated with the specified process
 			do
 			{
 				
 				if( te32.th32OwnerProcessID == m_processId )
-				{								
+				{
 					hhookKeyb=SetWindowsHookEx(WH_KEYBOARD,fun,hinstDLL,te32.th32ThreadID);
 					break;
 				}
-			} while( Thread32Next(hThreadSnap, &te32 ) );								
+			} while( Thread32Next(hThreadSnap, &te32 ) );
 			
 			// Don't forget to clean up the snapshot object.
-			CloseHandle( hThreadSnap );				
-			// initialise hooks								
-		}						
-	}	
+			CloseHandle( hThreadSnap );
+			// initialise hooks
+		}
+	}
 noKeybHook:
 	{
 	}
@@ -780,33 +780,33 @@ noKeybHook:
 
 
 
-void CTibiaautoDlg::OnToolRunemaker() 
-{	
+void CTibiaautoDlg::OnToolRunemaker()
+{
 	m_moduleRuneMaker->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolCharinfo() 
-{	
+void CTibiaautoDlg::OnToolCharinfo()
+{
 	m_modulePlayerInfo->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolMonsershow() 
+void CTibiaautoDlg::OnToolMonsershow()
 {
 	m_moduleMonsterShow->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolAutogo() 
+void CTibiaautoDlg::OnToolAutogo()
 {
 	m_moduleAutoGo->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolAutofish() 
+void CTibiaautoDlg::OnToolAutofish()
 {
 	m_moduleFisher->showConfigDialog();
 }
 
 void CTibiaautoDlg::refreshToolInfo()
-{	
+{
 	if (m_runeMaker.GetCheck() != m_moduleRuneMaker->isStarted())
 		m_runeMaker.SetCheck(m_moduleRuneMaker->isStarted());
 	if (m_autoGo.GetCheck() != m_moduleAutoGo->isStarted())
@@ -875,10 +875,10 @@ void CTibiaautoDlg::OnSave()
 	{
 		CString pathName = fd.GetPathName();
 		f=fopen(pathName.GetBuffer(200),"wb");
-	}	
+	}
 		
 	if (f)
-	{				
+	{
 		fprintf(f,"<configfile>\n");
 		int modNr;
 		int someModuleRunning=0;
@@ -889,7 +889,7 @@ void CTibiaautoDlg::OnSave()
 			{
 				someModuleRunning=1;
 				break;
-			}			
+			}
 		}
 		//Save a list of started scripts so they can be started on load
 		if (someModuleRunning){
@@ -933,14 +933,14 @@ void CTibiaautoDlg::OnSave()
 
 				int paramNr;
 				for (paramNr=0;module->getConfigParamName(paramNr);paramNr++)
-				{									
+				{
 					char *paramName=module->getConfigParamName(paramNr);
 					if (module->isMultiParam(paramName))
 					{
 						module->resetMultiParamAccess(paramName);
 						char *paramValue=module->saveConfigParam(paramName);
 						while (strlen(paramValue))
-						{													 						
+						{
 							char realParamName[1024];
 							sprintf(realParamName,"config/%s",paramName);
 							configCreator.addParamToConfig(moduleConfig,realParamName,paramValue);
@@ -962,9 +962,9 @@ void CTibiaautoDlg::OnSave()
 		} // saving normal modules config
 
 		// python scripts
-		int scriptNr=0;		
+		int scriptNr=0;
 		for (;;)
-		{		
+		{
 			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr++);
 			if (!pythonScript) break;
 			
@@ -972,7 +972,7 @@ void CTibiaautoDlg::OnSave()
 			snprintf(scriptModuleName,127,"Script: %s",pythonScript->getName());
 			if (!strcmp("Script: Stub",scriptModuleName))
 				int a=1;
-			CConfigCreatorUtil configCreator;			
+			CConfigCreatorUtil configCreator;
 			DOMNode *moduleConfig;
 			try {
 				moduleConfig = configCreator.getEmptyConfigForModule(scriptModuleName);
@@ -985,7 +985,7 @@ void CTibiaautoDlg::OnSave()
 			
 			int paramNr=0;
 			for (;;)
-			{	
+			{
 				struct paramType *param = pythonScript->getParamDef(paramNr++);
 				if (!param) break;
 								
@@ -1020,21 +1020,21 @@ struct loadThreadParam
 DWORD WINAPI loadThread( LPVOID lpParam )
 {
 	XercesDOMParser *parser;
-	parser = new XercesDOMParser();	
-	CConfigDialogStatus * m_configDialogStatus = ((struct loadThreadParam *)lpParam)->configDialogStatus;	
+	parser = new XercesDOMParser();
+	CConfigDialogStatus * m_configDialogStatus = ((struct loadThreadParam *)lpParam)->configDialogStatus;
 	
 
 	CMemReaderProxy reader;
 	CConfigCreatorUtil configCreator;
 	
 	
-	char logBuf[16384];		
+	char logBuf[16384];
 	
 	int modNr;
 	int *restartedModulesTab = new int[CModuleProxy::allModulesCount];
 	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
 	{
-		CModuleProxy * module = CModuleProxy::allModules[modNr];			
+		CModuleProxy * module = CModuleProxy::allModules[modNr];
 		restartedModulesTab[modNr]=module->isStarted();
 	}
 	
@@ -1064,7 +1064,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	}
 				
 	
-	parser->parse(((struct loadThreadParam *)lpParam)->fName);		
+	parser->parse(((struct loadThreadParam *)lpParam)->fName);
 	
 	DOMDocument *doc = parser->getDocument();
 	DOMElement *root = doc->getDocumentElement();
@@ -1082,9 +1082,9 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 				m_configDialogStatus->msgAddToLog(logBuf);
 				configCreator.parseConfigFromNode(module,moduleConfig,"");
 				module->configToControls();
-			}				
+			}
 		}
-	}	
+	}
 
 	int scriptNr=0;
 	for (;;)
@@ -1116,7 +1116,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 			{
 				do {
 					if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
-					{				
+					{
 						char subNodeName[1024];
 						wcstombs(subNodeName,subNode->getNodeName(),1024);
 
@@ -1148,7 +1148,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 				{
 					do {
 						if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
-						{				
+						{
 							char subNodeName[1024];
 							wcstombs(subNodeName,subNode->getNodeName(),1024);
 
@@ -1168,7 +1168,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 										script->setEnabled(1);
 									}
 								}
-							}		
+							}
 						}
 					} while ((subNode=subNode->getNextSibling())!=NULL);
 				}
@@ -1176,7 +1176,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 			otherModulesLoaded=1;
 		}
 	}
-	if (!otherModulesLoaded){	
+	if (!otherModulesLoaded){
 		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
@@ -1184,9 +1184,9 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 			{
 				sprintf(logBuf,"Starting module %s ...",module->getModuleName());
 				m_configDialogStatus->msgAddToLog(logBuf);
-				module->start();				
+				module->start();
 			}
-		}	
+		}
 	}
 	doc->release();
 	
@@ -1202,13 +1202,13 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	
 void CTibiaautoDlg::loadConfig(CString pathName){
 
-	FILE *f=fopen(pathName.GetBuffer(1024),"rb");	
+	FILE *f=fopen(pathName.GetBuffer(1024),"rb");
 	
 	if (f)
 	{
 		fclose(f);
 		
-		CConfigDialogStatus * configDialogStatus = new CConfigDialogStatus();	
+		CConfigDialogStatus * configDialogStatus = new CConfigDialogStatus();
 		configDialogStatus->Create(IDD_CONFIGSTATUS);
 		configDialogStatus->ShowWindow(SW_SHOW);
 		
@@ -1222,7 +1222,7 @@ void CTibiaautoDlg::loadConfig(CString pathName){
 }
 
 void CTibiaautoDlg::OnLoad()
-{	
+{
 	int someModuleRunning=0;
 	int modNr;
 	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
@@ -1231,12 +1231,12 @@ void CTibiaautoDlg::OnLoad()
 		if (module->isStarted())
 		{
 			someModuleRunning=1;
-		}			
+		}
 	}
 	if (someModuleRunning)
 	{
 		if (AfxMessageBox("Some modules are running. Are you sure you want to load new configuration?",MB_YESNO)==IDNO)
-		{				
+		{
 			return;
 		}
 	}
@@ -1257,41 +1257,41 @@ void CTibiaautoDlg::OnLoad()
 		pathName = fd.GetPathName();
 		loadConfig(pathName);
 	}
-}	
+}
 
-void CTibiaautoDlg::OnToolAutogroup() 
+void CTibiaautoDlg::OnToolAutogroup()
 {
 	if (m_grouping.GetCheck())
 	{
 		m_moduleGrouping->start();
 	} else {
 		m_moduleGrouping->stop();
-	}	
+	}
 }
 
-void CTibiaautoDlg::OnToolAutouh() 
+void CTibiaautoDlg::OnToolAutouh()
 {
 	m_moduleUH->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolMapshow() 
+void CTibiaautoDlg::OnToolMapshow()
 {
 	m_moduleMapShow->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolAutoattack() 
+void CTibiaautoDlg::OnToolAutoattack()
 {
 	m_moduleAutoAttack->showConfigDialog();
 }
 
 
 
-void CTibiaautoDlg::OnToolSpellcaster() 
+void CTibiaautoDlg::OnToolSpellcaster()
 {
 	m_moduleSpellCaster->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnExit() 
+void CTibiaautoDlg::OnExit()
 {
 	DisconnectNamedPipe(hPipe);
 	Shell_NotifyIcon(NIM_DELETE,&currentIconData);
@@ -1308,7 +1308,7 @@ void CTibiaautoDlg::OnExit()
 	CMemReaderProxy reader;
 	reader.cleanupTibiaTiles();
 
-	delete m_loadedModules;	
+	delete m_loadedModules;
 	delete m_pythonScriptsDialog;
 	m_moduleLooter->stop();
 	delete m_moduleLooter;
@@ -1345,7 +1345,7 @@ void CTibiaautoDlg::OnExit()
 	if (hhookKeyb)
 	{
 		UnhookWindowsHookEx(hhookKeyb);
-	}	
+	}
 
 	for (int scriptNr=0;;scriptNr++){
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
@@ -1354,20 +1354,20 @@ void CTibiaautoDlg::OnExit()
 	}
 
 
-	ExitProcess(0);	
+	ExitProcess(0);
 }
 
-void CTibiaautoDlg::OnClose() 
+void CTibiaautoDlg::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CTibiaautoDlg::OnToolAutoaim() 
+void CTibiaautoDlg::OnToolAutoaim()
 {
-	m_moduleAim->showConfigDialog();	
+	m_moduleAim->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnMemdebug() 
+void CTibiaautoDlg::OnMemdebug()
 {
 	m_moduleMemDebug->showConfigDialog();
 }
@@ -1411,23 +1411,23 @@ BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
 	}
 }
 
-void CTibiaautoDlg::OnFinalRelease() 
+void CTibiaautoDlg::OnFinalRelease()
 {
 	CDialog::OnFinalRelease();
 
 }
 
-void CTibiaautoDlg::OnToolFluiddrinker() 
+void CTibiaautoDlg::OnToolFluiddrinker()
 {
 	m_moduleFluid->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolTrademon() 
+void CTibiaautoDlg::OnToolTrademon()
 {
 	m_moduleTradeMon->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolInjectmc() 
+void CTibiaautoDlg::OnToolInjectmc()
 {
 	CTibiaItemProxy itemProxy;
 	char szFilters[]=
@@ -1436,11 +1436,11 @@ void CTibiaautoDlg::OnToolInjectmc()
 	CFileDialog fd(true,"tibia","tibia.exe",OFN_FILEMUSTEXIST| OFN_HIDEREADONLY, szFilters, this);
 	if (fd.DoModal()==IDOK)
 	{
-		CString pathName = fd.GetPathName();         
+		CString pathName = fd.GetPathName();
 						
 		FILE *f = fopen(pathName,"r+b");
 		if (f)
-		{		
+		{
 			if (!fseek(f,itemProxy.getValueForConst("addrMCInject"),SEEK_SET))
 			{
 				unsigned char val=0xff;
@@ -1456,7 +1456,7 @@ void CTibiaautoDlg::OnToolInjectmc()
 	}
 }
 
-void CTibiaautoDlg::OnToolItemconfig() 
+void CTibiaautoDlg::OnToolItemconfig()
 {
 	m_moduleItemConfig->showConfigDialog();
 }
@@ -1473,11 +1473,11 @@ void CTibiaautoDlg::OnToolAutorespond()
 
 void CTibiaautoDlg::OnLoadedModules()
 {
-	m_loadedModules->ShowWindow(SW_SHOW);	
+	m_loadedModules->ShowWindow(SW_SHOW);
 }
 
 void CTibiaautoDlg::OnToolAutolooter()
-{	
+{
 	m_moduleLooter->showConfigDialog();
 }
 
@@ -1488,23 +1488,23 @@ void CTibiaautoDlg::OnToolEater()
 		m_moduleEater->start();
 	} else {
 		m_moduleEater->stop();
-	}	
+	}
 }
 
-//void CTibiaautoDlg::OnDonation() 
-//{	
+//void CTibiaautoDlg::OnDonation()
+//{
 //	CDonationDialog donDialog;
-//	donDialog.DoModal();							
+//	donDialog.DoModal();
 //}
 
 void CTibiaautoDlg::OnToolCreatureinfo()
 {
-	m_moduleCreatureInfo->showConfigDialog();	
+	m_moduleCreatureInfo->showConfigDialog();
 }
 
 void CTibiaautoDlg::OnToolMaphack()
 {
-	m_moduleMapHack->showConfigDialog();	
+	m_moduleMapHack->showConfigDialog();
 }
 
 void CTibiaautoDlg::OnToolTeam()
@@ -1512,14 +1512,14 @@ void CTibiaautoDlg::OnToolTeam()
 	m_moduleTeam->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolAntilog() 
-{	
+void CTibiaautoDlg::OnToolAntilog()
+{
 	if (m_antilogout.GetCheck())
 	{
 		m_moduleAntylogout->start();
 	} else {
 		m_moduleAntylogout->stop();
-	}	
+	}
 }
 
 void CTibiaautoDlg::OnFps()
@@ -1537,7 +1537,7 @@ void CTibiaautoDlg::passSecurityInfo(int value)
 
 void CTibiaautoDlg::OnPythonScripts()
 {
-	m_pythonScriptsDialog->ShowWindow(SW_SHOW);	
+	m_pythonScriptsDialog->ShowWindow(SW_SHOW);
 }
 
 void CTibiaautoDlg::OnOptions()
@@ -1555,42 +1555,42 @@ void CTibiaautoDlg::refreshAds()
 	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.19.1",NULL,NULL,NULL,NULL);
 }
 
-void CTibiaautoDlg::OnToolLogin() 
+void CTibiaautoDlg::OnToolLogin()
 {
-	m_moduleLogin->showConfigDialog();		
+	m_moduleLogin->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolSorter() 
+void CTibiaautoDlg::OnToolSorter()
 {
-	m_moduleSorter->showConfigDialog();		
+	m_moduleSorter->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolBanker() 
+void CTibiaautoDlg::OnToolBanker()
 {
-	m_moduleBanker->showConfigDialog();		
+	m_moduleBanker->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnToolSeller() 
+void CTibiaautoDlg::OnToolSeller()
 {
-	m_moduleSeller->showConfigDialog();		
+	m_moduleSeller->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnShowWindow(BOOL bShow, UINT nStatus) 
+void CTibiaautoDlg::OnShowWindow(BOOL bShow, UINT nStatus)
 {
-	CDialog::OnShowWindow(bShow, nStatus);		
+	CDialog::OnShowWindow(bShow, nStatus);
 }
 
-BOOL CTibiaautoDlg::OnCommand(WPARAM wParam, LPARAM lParam) 
-{		
+BOOL CTibiaautoDlg::OnCommand(WPARAM wParam, LPARAM lParam)
+{
 	return CDialog::OnCommand(wParam, lParam);
 }
 
-void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy) 
+void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy)
 {
 	CDialog::OnSize(nType, cx, cy);
 }
 
-LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	CMemReaderProxy reader;
 	if (message==WM_APP+1&&lParam==WM_LBUTTONDOWN)
@@ -1601,7 +1601,7 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 			if (!CModuleUtil::getTASetting("SeenHideTibiaMessage")){
 				CModuleUtil::setTASetting("SeenHideTibiaMessage",1);
 				if (AfxMessageBox("Both Tibia and TA can be hidden by clicking on the Tray icon.  Would you like to enable this?\nThis setting can be changed in \"General Options and Statistics\"",MB_YESNO)==IDYES)
-				{				
+				{
 					CModuleUtil::setTASetting("HideTibiaWithTA",1);
 				} else {
 					CModuleUtil::setTASetting("HideTibiaWithTA",0);
@@ -1628,7 +1628,7 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 		}
 		
 	}
-	return CDialog::WindowProc(message, wParam, lParam);	
+	return CDialog::WindowProc(message, wParam, lParam);
 }
 
 void CTibiaautoDlg::reportUsage()
@@ -1658,12 +1658,12 @@ void CTibiaautoDlg::reportUsage()
 
 void CTibiaautoDlg::OnToolXray()
 {
-	m_moduleXRay->showConfigDialog();	
+	m_moduleXRay->showConfigDialog();
 }
 
-void CTibiaautoDlg::OnButton1() 
+void CTibiaautoDlg::OnButton1()
 {
-	CMemReaderProxy reader;	
+	CMemReaderProxy reader;
 
 	int i;
 	for (i=0;i<100000;i++)
@@ -1673,14 +1673,14 @@ void CTibiaautoDlg::OnButton1()
 	}
 }
 
-BOOL CTibiaautoDlg::DestroyWindow() 
+BOOL CTibiaautoDlg::DestroyWindow()
 {
 
 	
 	return CDialog::DestroyWindow();
 }
 
-void CTibiaautoDlg::PostNcDestroy() 
+void CTibiaautoDlg::PostNcDestroy()
 {
 	
 	CDialog::PostNcDestroy();
@@ -1692,7 +1692,7 @@ CTibiaautoDlg::~CTibiaautoDlg()
 	CDialog::~CDialog();
 }
 
-BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult) 
+BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
 	// TODO: Add your specialized code here and/or call the base class
 	if (((LPNMHDR) lParam)->code == 123456) {

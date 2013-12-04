@@ -9,7 +9,7 @@
 #include <stdafx.h>
 #include "md5class.h"
 #include "md5.h" //declarations from RFC 1321
-#include <string.h>	  
+#include <string.h>
 #include <stdio.h>
 
 
@@ -28,8 +28,8 @@ CMD5::~CMD5()
 
 }
 
-CMD5::CMD5(const char* plainText)  
-{	
+CMD5::CMD5(const char* plainText)
+{
 	m_plainText =  const_cast<char*>(plainText); //get a pointer to the plain text.  If casting away the const-ness worries you,
 												 //you could make a local copy of the plain text string.
    	m_digestString[32]=0;
@@ -42,11 +42,11 @@ CMD5::CMD5(const char* plainText)
 
 void CMD5::setPlainText(const char* plainText)
 {
-  //set plaintext with a mutator, it's ok to 
-  //to call this multiple times.  If casting away the const-ness of plainText 
-  //worries you, you could either make a local copy of the plain 
-  //text string instead of just pointing at the user's string, or 
-  //modify the RFC 1321 code to take 'const' plaintext, see example below. 
+  //set plaintext with a mutator, it's ok to
+  //to call this multiple times.  If casting away the const-ness of plainText
+  //worries you, you could either make a local copy of the plain
+  //text string instead of just pointing at the user's string, or
+  //modify the RFC 1321 code to take 'const' plaintext, see example below.
 
   m_plainText = const_cast<char*>(plainText);
   m_digestValid = calcDigest();
@@ -54,7 +54,7 @@ void CMD5::setPlainText(const char* plainText)
 
 /* Use a function of this type with your favorite string class
    if casting away the const-ness of the user's text buffer violates you
-   coding standards. 
+   coding standards.
 
 void CMD5::setPlainText(CString& strPlainText)
 {
@@ -77,10 +77,10 @@ const char* CMD5::getMD5Digest()
 
 bool CMD5::calcDigest()
 {
-  //See RFC 1321 for details on how MD5Init, MD5Update, and MD5Final 
+  //See RFC 1321 for details on how MD5Init, MD5Update, and MD5Final
   //calculate a digest for the plain text
   MD5_CTX context;
-  MD5Init(&context); 
+  MD5Init(&context);
 
   //the alternative to these ugly casts is to go into the RFC code and change the declarations
   MD5Update(&context, reinterpret_cast<unsigned char *>(m_plainText), ::strlen(m_plainText));
@@ -100,7 +100,7 @@ const char * CMD5::getMD5Digest(char *buffer, int len)
 {
 
   MD5_CTX context;
-  MD5Init(&context); 
+  MD5Init(&context);
 
   //the alternative to these ugly casts is to go into the RFC code and change the declarations
   MD5Update(&context, reinterpret_cast<unsigned char *>(buffer), len);

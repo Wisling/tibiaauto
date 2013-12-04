@@ -66,7 +66,7 @@ CCreaturesReader::CCreaturesReader()
 	// open database (but for the first time only)
 	// the database is ro and stays open forever
 	if (db==NULL)
-	{		
+	{
 		char installPath[1024];
 		unsigned long installPathLen=1023;
 		installPath[0]='\0';
@@ -80,12 +80,12 @@ CCreaturesReader::CCreaturesReader()
 		{
 			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
 			exit(1);
-		}		
+		}
 		db=new Db(NULL,0);
-		u_int32_t oFlags = DB_RDONLY; 
+		u_int32_t oFlags = DB_RDONLY;
 		char path[1024];
-		sprintf(path,"%s\\ta_creatures_c.db",installPath);		
-		db->open(NULL,path,NULL,DB_BTREE,oFlags,0);		
+		sprintf(path,"%s\\ta_creatures_c.db",installPath);
+		db->open(NULL,path,NULL,DB_BTREE,oFlags,0);
 	}
 }
 
@@ -98,14 +98,14 @@ int CCreaturesReader::findCreatureStatForLocationCount(int x, int y, int z)
 {
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x,y,z,0);	
+	dbKey dbK(x,y,z,0);
 
 	Dbt key(&dbK, sizeof(dbKey));
     Dbt data(NULL,0);
 	int c=0;
 	int flag=DB_SET_RANGE;
 	while (!cursorp->get(&key, &data, flag))
-	{		
+	{
 		memcpy(&dbK,key.get_data(),sizeof(dbKey));
 		
 		if (dbK.getX()==x&&dbK.getY()==y&&dbK.getZ()==z)
@@ -126,14 +126,14 @@ char * CCreaturesReader::findCreatureStatForLocationName(int x, int y, int z, in
 {
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x,y,z,0);	
+	dbKey dbK(x,y,z,0);
 
 	Dbt key(&dbK, sizeof(dbKey));
     Dbt data(NULL, 0);
 	int c=0;
 	int flag=DB_SET_RANGE;
 	while (!cursorp->get(&key, &data, flag))
-	{		
+	{
 		memcpy(&dbK,key.get_data(),sizeof(dbKey));
 
 		if (dbK.getX()==x&&dbK.getY()==y&&dbK.getZ()==z)
@@ -141,7 +141,7 @@ char * CCreaturesReader::findCreatureStatForLocationName(int x, int y, int z, in
 			if (c==pos)
 			{
 				char *ret=(char *)malloc(64);
-				sprintf(ret,"%s",dbCreatureTab[dbK.getCreatureNr()]);				
+				sprintf(ret,"%s",dbCreatureTab[dbK.getCreatureNr()]);
 				
 				cursorp->close();
 				return ret;
@@ -156,27 +156,27 @@ char * CCreaturesReader::findCreatureStatForLocationName(int x, int y, int z, in
 			
 		}
 	}
-	return NULL;	
+	return NULL;
 }
 
 int CCreaturesReader::findCreatureStatForLocationTibiaId(int x, int y, int z, int pos)
 {
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x,y,z,0);	
+	dbKey dbK(x,y,z,0);
 
 	Dbt key(&dbK, sizeof(dbKey));
     Dbt data(NULL,0);
 	int c=0;
 	int flag=DB_SET_RANGE;
 	while (!cursorp->get(&key, &data, flag))
-	{			
+	{
 		memcpy(&dbK,key.get_data(),sizeof(dbKey));
 
 		if (dbK.getX()==x&&dbK.getY()==y&&dbK.getZ()==z)
 		{
 			if (c==pos)
-			{				
+			{
 				cursorp->close();
 				return 1;
 			}
@@ -189,13 +189,13 @@ int CCreaturesReader::findCreatureStatForLocationTibiaId(int x, int y, int z, in
 			c++;
 		}
 	}
-	return 0;	
+	return 0;
 }
 
 
 
 char ** CCreaturesReader::findCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ)
-{	
+{
 	
 	int retSize=8;
 	char **ret = (char **)malloc(sizeof(char *)*retSize);
@@ -204,26 +204,26 @@ char ** CCreaturesReader::findCreatureStatInArea(int x, int y, int z, int rangeX
 	for (i=0;i<retSize;i++)
 	{
 		ret[i]=NULL;
-	}	
+	}
 	
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x-rangeXY,y-rangeXY,z-rangeZ,0);	
+	dbKey dbK(x-rangeXY,y-rangeXY,z-rangeZ,0);
 
 	Dbt key(&dbK, sizeof(dbKey));
-    Dbt data(&dbK, sizeof(dbKey));	
-	int flag=DB_SET_RANGE;		
+    Dbt data(&dbK, sizeof(dbKey));
+	int flag=DB_SET_RANGE;
 	
 	while (!cursorp->get(&key, &data, flag))
-	{				
+	{
 		
 		memcpy(&dbK,key.get_data(),sizeof(dbKey));
 		
 
 		if (dbK.getX()>=x-rangeXY&&dbK.getX()<=x+rangeXY&&
 			dbK.getY()>=y-rangeXY&&dbK.getY()<=y+rangeXY&&
-			dbK.getZ()>=z-rangeZ&&dbK.getZ()<=z+rangeZ)			
-		{			
+			dbK.getZ()>=z-rangeZ&&dbK.getZ()<=z+rangeZ)
+		{
 			
 			// point in range - add it
 			ret=addCreatureToList(ret,dbCreatureTab[dbK.getCreatureNr()],&retSize);
@@ -232,7 +232,7 @@ char ** CCreaturesReader::findCreatureStatInArea(int x, int y, int z, int rangeX
 
 		if (dbK.getX()>x+rangeXY)
 		{
-			// finished looking for data			
+			// finished looking for data
 			break;
 		}
 		flag=DB_NEXT;
@@ -255,7 +255,7 @@ char ** CCreaturesReader::addCreatureToList(char **list, char *name,int *size)
 	}
 	// resize check
 	if (pos>*size-3) {
-		int i;		
+		int i;
 		(*size)=(*size)*2;
 		list=(char **)realloc(list,sizeof(char *)*(*size));
 		for (i=pos;i<*size;i++)

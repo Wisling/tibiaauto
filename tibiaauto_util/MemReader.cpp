@@ -32,7 +32,7 @@ int mod(int i,int m){
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CMemReader::CMemReader() {	
+CMemReader::CMemReader() {
 	CMemConstData();
 }
 
@@ -168,11 +168,11 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 }
 
 
-CTibiaCharacter *CMemReader::readSelfCharacter() {	
+CTibiaCharacter *CMemReader::readSelfCharacter() {
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
 	ch->hp = CMemUtil::GetMemIntValue(m_memAddressHP)^CMemUtil::GetMemIntValue(m_memAddressXor);
-	ch->mana = CMemUtil::GetMemIntValue(m_memAddressMana)^CMemUtil::GetMemIntValue(m_memAddressXor);	
+	ch->mana = CMemUtil::GetMemIntValue(m_memAddressMana)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	// note: since 8.31 capacity has accuracy to 2 decimal places
@@ -203,14 +203,14 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 	ch->skillDist = CMemUtil::GetMemIntValue(m_memAddressSkillDist);
 	ch->skillFish = CMemUtil::GetMemIntValue(m_memAddressSkillFish);
 	ch->skillShield = CMemUtil::GetMemIntValue(m_memAddressSkillShield);
-	ch->skillFist = CMemUtil::GetMemIntValue(m_memAddressSkillFist);	
+	ch->skillFist = CMemUtil::GetMemIntValue(m_memAddressSkillFist);
 	ch->skillAxePercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillAxePercLeft);
 	ch->skillClubPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillClubPercLeft);
 	ch->skillSwordPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillSwordPercLeft);
 	ch->skillDistPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillDistPercLeft);
 	ch->skillFishPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillFishPercLeft);
-	ch->skillShieldPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillShieldPercLeft);			
-	ch->skillFistPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillFistPercLeft);	
+	ch->skillShieldPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillShieldPercLeft);
+	ch->skillFistPercLeft = 100-CMemUtil::GetMemIntValue(m_memAddressSkillFistPercLeft);
 	
 	ch->visible=1;
 
@@ -315,7 +315,7 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
 	ch->blocking=CMemUtil::GetMemIntValue(offset+148);
 	//ch->??=CMemUtil::GetMemIntValue(offset+168);357?
-	//ch->??=CMemUtil::GetMemIntValue(offset+172);	
+	//ch->??=CMemUtil::GetMemIntValue(offset+172);
 	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+176);
 	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+182);
 	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+186);
@@ -349,7 +349,7 @@ char * CMemReader::GetLoggedChar(int processId)
 	{
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
-		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId,1);		
+		CMemUtil::GetMemIntValue(processId,offset+0,&creatureId,1);
 		CMemUtil::GetMemIntValue(processId,offset+164,&visible,1);
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
@@ -374,29 +374,29 @@ int CMemReader::getAttackedCreature()
 }
 
 void CMemReader::setAttackedCreature(int tibiaId)
-{	
+{
 	CMemUtil::SetMemIntValue(m_memAddressAttackedCreature,tibiaId);
 }
 
 int CMemReader::getFollowedCreature()
-{	
+{
 	return CMemUtil::GetMemIntValue(m_memAddressFollowedCreature);
 }
 
 void CMemReader::setFollowedCreature(int tibiaId)
-{	
+{
 	CMemUtil::SetMemIntValue(m_memAddressFollowedCreature,tibiaId);
 }
 
 int CMemReader::getNextPacketCount()
-{	
+{
 	int ret=CMemUtil::GetMemIntValue(m_memAddressPacketCount)+1;
 	CMemUtil::SetMemIntValue(m_memAddressPacketCount,ret);
 	return ret;
 }
 
 CTibiaCharacter *CMemReader::getCharacterByTibiaId(int tibiaId)
-{		
+{
 	CMemReader reader;
 	int i;
 	for (i=0;i<m_memMaxCreatures;i++)
@@ -444,14 +444,14 @@ CTibiaItem * CMemReader::getTradeItemPartner(int nr)
 }
 
 void CMemReader::writeVisibleCreatureName(int chNr, char *name)
-{		
-	int offset = m_memAddressFirstCreature+chNr*m_memLengthCreature;	
+{
+	int offset = m_memAddressFirstCreature+chNr*m_memLengthCreature;
 	if (strlen(name)>31)
 	{
 		AfxMessageBox("writeVisibleCreatureName: too long name");
 		return;
 	}
-	CMemUtil::SetMemRange(offset+4,offset+4+(strlen(name)+1),name);		
+	CMemUtil::SetMemRange(offset+4,offset+4+(strlen(name)+1),name);
 }
 
 int CMemReader::getSelfEventFlags()
@@ -460,9 +460,9 @@ int CMemReader::getSelfEventFlags()
 }
 
 int CMemReader::getLoggedCharNr()
-{	
+{
 	
-	int i;		
+	int i;
 	
 	long selfId=CMemUtil::GetMemIntValue(m_memAddressSelfId);
 	
@@ -471,7 +471,7 @@ int CMemReader::getLoggedCharNr()
 	{
 		long creatureId,visible;
 		long offset = m_memAddressFirstCreature+i*m_memLengthCreature;
-		creatureId=CMemUtil::GetMemIntValue(offset+0);		
+		creatureId=CMemUtil::GetMemIntValue(offset+0);
 		visible=CMemUtil::GetMemIntValue(offset+m_offsetCreatureVisible);
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
@@ -493,7 +493,7 @@ void CMemReader::writeGotoCoords(int x, int y, int z)
 	CMemUtil::SetMemIntValue(m_memAddressGoZ,z);
 	//Manage Tibia's memory
 	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+80+chNr*m_memLengthCreature, 1);//enable to accept gotocoords, (80=is char moving param)
-}	
+}
 
 void CMemReader::cancelAttackCoords()
 {
@@ -505,33 +505,33 @@ void CMemReader::cancelAttackCoords()
 }
 
 int CMemReader::readCreatureLightPower(int creatureNr)
-{	
+{
 	CMemReader reader;
 	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124);
 }
 
 int CMemReader::readCreatureLightColor(int creatureNr)
-{	
+{
 	CMemReader reader;
 	return CMemUtil::GetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+128);
 }
 
 void CMemReader::writeCreatureLightPower(int creatureNr,int value)
-{	
+{
 	CMemReader reader;
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124,value);		
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+124,value);
 }
 
 void CMemReader::writeCreatureLightColor(int creatureNr,int value)
 {
 	CMemReader reader;
-	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+128,value);		
-}	
+	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature+creatureNr*reader.m_memLengthCreature+128,value);
+}
 
 
 
 int CMemReader::readSelfLightPower()
-{		
+{
 	CMemReader reader;
 	int loggedCharNr=reader.getLoggedCharNr();
 	return readCreatureLightPower(loggedCharNr);
@@ -545,18 +545,18 @@ int CMemReader::readSelfLightColor()
 }
 
 void CMemReader::writeSelfLightPower(int value)
-{	
-	CMemReader reader;			
+{
+	CMemReader reader;
 	int loggedCharNr=reader.getLoggedCharNr();
 	writeCreatureLightPower(loggedCharNr,value);
 }
 
 void CMemReader::writeSelfLightColor(int value)
 {
-	CMemReader reader;			
+	CMemReader reader;
 	int loggedCharNr=reader.getLoggedCharNr();
 	writeCreatureLightColor(loggedCharNr,value);
-}	
+}
 
 CTibiaMapTile *CMemReader::readMapTile(int tileNr){
 	CTibiaMapTile *maptile = new CTibiaMapTile();
@@ -592,7 +592,7 @@ int CMemReader::mapGetSelfCellNr()
 			delete self;
 			delete maptile;
 			return prevSelfTileNr;
-		} 
+		}
 	}
 	delete maptile; maptile = NULL;
 
@@ -607,22 +607,22 @@ int CMemReader::mapGetSelfCellNr()
 		int cell=252*lvl+(tmp+116)%(14*18);
 		int pos;
 		int tmo=dereference(m_memAddressMapStart)+cell*m_memLengthMapTile;
-		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile);		
+		int count=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile);
 		for (pos=0;pos<count;pos++)
 		{
 			int tileId=CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4);
 			if (tileId==99)
-			{								
+			{
 				int tileCharId = CMemUtil::GetMemIntValue(dereference(m_memAddressMapStart)+cell*m_memLengthMapTile+pos*12+4+4);
 				if (tileCharId==self->tibiaId)
-				{					
+				{
 					delete self;
 					prevSelfTileNr=cell;
 					prevSelfTilePos=pos;
 					return cell;
-				}						
-			}			
-		}					
+				}
+			}
+		}
 	}
 */
 	//there are 8 stages, if above ground each floor 7 to 0 always has the same stage
@@ -636,10 +636,10 @@ int CMemReader::mapGetSelfCellNr()
 		{
 			int tileId=maptile->items[pos].itemId;
 			if (tileId==99)
-			{								
+			{
 				int tileCharId = maptile->items[pos].quantity;
 				if (tileCharId==self->tibiaId)
-				{					
+				{
 					delete self;
 					delete maptile;
 					prevSelfTileNr=tileNr;
@@ -661,17 +661,17 @@ int CMemReader::mapGetSelfCellNr()
 		{
 			int tileId=maptile->items[pos].itemId;
 			if (tileId==99)
-			{								
+			{
 				int tileCharId = maptile->items[pos].quantity;
 				if (tileCharId==self->tibiaId)
-				{					
+				{
 					delete self;
 					delete maptile;
 					prevSelfTileNr=tileNr;
 					prevSelfTilePos=pos;
  					return tileNr;
-				}						
-			}			
+				}
+			}
 		}
 		delete maptile; maptile = NULL;
 	}
@@ -827,7 +827,7 @@ void CMemReader::writeEnableRevealCName()
 	// replace jump with own jump
 	buf[0]=0xEB;
 	buf[1]=0x17;
-	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);	
+	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
 	
 
 	free(buf);
@@ -837,7 +837,7 @@ void CMemReader::writeEnableRevealCName()
 
 void CMemReader::writeDisableRevealCName()
 {
-	unsigned char *buf=(unsigned char *)malloc(2);	
+	unsigned char *buf=(unsigned char *)malloc(2);
 	buf[0]=0x75;
 	buf[1]=0x0A;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
@@ -850,15 +850,15 @@ void CMemReader::writeDisableRevealCName()
 	buf[0]=5;
 	CMemUtil::SetMemRange(m_memAddressRevealCName4,m_memAddressRevealCName4+1,(char *)buf);
 	*/
-	free(buf);	
+	free(buf);
 }
 
 void CMemReader::setRemainingTilesToGo(int val)
 {
 	CTibiaItemProxy itemProxy;
-	int offset = itemProxy.getValueForConst("addrOffset");		
+	int offset = itemProxy.getValueForConst("addrOffset");
 	CMemUtil::SetMemIntValue(m_memAddressTilesToGo,val);
-	CMemUtil::SetMemIntValue(offset + itemProxy.getValueForConst("addrCurrentTileToGo"),val);		
+	CMemUtil::SetMemIntValue(offset + itemProxy.getValueForConst("addrCurrentTileToGo"),val);
 }
 
 CTibiaMiniMap * CMemReader::readMiniMap(int nr)
@@ -896,13 +896,13 @@ CTibiaMiniMapLabel * CMemReader::readMiniMapLabel(int mapNr, int pointNr)
 	int mapPointAddr = CMemUtil::GetMemIntValue(mapOffset+131232);
 	int mapPointOffset = mapPointAddr+pointNr*itemProxy.getValueForConst("lengthMiniMapLabel");
 	retPoint->x=CMemUtil::GetMemIntValue(mapPointOffset+0,0);
-	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4,0);	
+	retPoint->y=CMemUtil::GetMemIntValue(mapPointOffset+4,0);
 	retPoint->type=CMemUtil::GetMemIntValue(mapPointOffset+8,0);
-	CMemUtil::GetMemRange(mapPointOffset+12,mapPointOffset+12+100,retPoint->desc,0);	
+	CMemUtil::GetMemRange(mapPointOffset+12,mapPointOffset+12+100,retPoint->desc,0);
 
 	return retPoint;
 
-}	
+}
 
 CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 {
@@ -928,15 +928,15 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 	{
 		unsigned char colour[65536],speed[65536];
 		f.read((char*)colour,65536);
-		if (f.bad()){ 
-			f.close(); 
+		if (f.bad()){
+			f.close();
 			sprintf(filename,"Fileread Failed: %s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)(x/256),(int)(y/256),z);
 			AfxMessageBox(filename);
 			return bogusPoint;
 		}//read failed
 		f.read((char*)speed,65536);
-		if (f.bad()){ 
-			f.close(); 
+		if (f.bad()){
+			f.close();
 			sprintf(filename,"Fileread Failed: %s%s%03d%03d%02d.map",getenv("USERPROFILE"),"/Application Data/Tibia/Automap/",(int)(x/256),(int)(y/256),z);
 			AfxMessageBox(filename);
 			return bogusPoint;
@@ -945,12 +945,12 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 
 		CTibiaMiniMapPoint *miniMapPoint=new CTibiaMiniMapPoint(x,y,z,colour[(x%256)*256+y%256],speed[(x%256)*256+y%256]);
 		delete bogusPoint;
-		return miniMapPoint;			
+		return miniMapPoint;
 	}
 
 	//point does not exist on minimaps in memory nor in files
 	return bogusPoint;
-}	
+}
 
 void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
 	//AfxMessageBox("write started");
@@ -1025,11 +1025,11 @@ void CMemReader::writeMiniMapPoint(int x,int y,int z,int col,int spd){
 
 
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
-{	
+{
 	DWORD procId;
 	GetWindowThreadProcessId(hwnd,&procId);
 	if (procId==CMemUtil::m_globalProcessId)
-	{					
+	{
 		CWnd *wnd = new CWnd();
 		wnd->Attach(hwnd);
 		wnd->SetWindowText((char *)lParam);
@@ -1041,7 +1041,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 }
 
 void CMemReader::setMainWindowText(char *text)
-{		
+{
 	EnumWindows(&EnumWindowsProc,(long)text);
 }
 
@@ -1051,7 +1051,7 @@ void CMemReader::setMainTrayText(char *text)
 	data.cbSize=sizeof(NOTIFYICONDATA);
 	
 	data.hWnd=AfxGetMainWnd()->GetSafeHwnd();
-	data.uID=1;			
+	data.uID=1;
 	sprintf(data.szTip,"%s",text);
 	data.uFlags=NIF_TIP;
 	Shell_NotifyIcon(NIM_MODIFY,&data);
@@ -1083,15 +1083,15 @@ int CMemReader::getPlayerModePVP()
 
 char * CMemReader::getOpenWindowName()
 {
-	CTibiaItemProxy itemProxy;	
+	CTibiaItemProxy itemProxy;
 	int ptr2=0;
 	static char nameBuf[128];
-	memset(nameBuf,0,128);		
+	memset(nameBuf,0,128);
 	ptr2=CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrCurrentWindow"));
 	if (ptr2)
 	{
 		CMemUtil::GetMemRange(ptr2+84,ptr2+84+128,nameBuf,0);//this address comes from Tibia itself and need not be shifted
-	}	
+	}
 	return nameBuf;
 }
 
@@ -1127,7 +1127,7 @@ int CMemReader::getXRayValue2()
 }
 
 void CMemReader::writeCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
-{	
+{
 	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+52,deltaX);
 	CMemUtil::SetMemIntValue(m_memAddressFirstCreature+creatureNr*m_memLengthCreature+48,deltaY);
 }
@@ -1211,7 +1211,7 @@ int CMemReader::isItemCovered(int x,int y,int *itemArr,int itemArrSize)
 		for (int i=0;i<itemArrSize;i++)
 		{
 			if (tileId==itemArr[i]) return tileId;
-		}		
+		}
 	}
 	return 0;
 }
@@ -1227,7 +1227,7 @@ int CMemReader::isItemOnTop(int x,int y,CUIntArray& itemArr)
 	for (int i=0;i<size;i++)
 	{
 		if (tileId==itemArr[i]) return tileId;
-	}		
+	}
 	return 0;
 }
 
@@ -1247,7 +1247,7 @@ int CMemReader::isItemCovered(int x,int y,CUIntArray& itemArr)
 		for (int i=0;i<size;i++)
 		{
 			if (tileId==itemArr[i]) return tileId;
-		}		
+		}
 	}
 	return 0;
 }
@@ -1296,7 +1296,7 @@ int CMemReader::itemOnTopCode(int x,int y)
 int CMemReader::itemSeenOnTopIndex(int x,int y,int z/*=0*/)
 {
 	CMemReader reader;
-	int pos;	
+	int pos;
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
 	for (pos=0;pos<stackCount;pos++)
 	{

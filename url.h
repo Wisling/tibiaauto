@@ -59,7 +59,7 @@ public:
 				{
 					// Are they the same?
 					if (nStart != nEnd)
-					{			
+					{
 						// Get the full path
 						m_strBrowser = m_strBrowser.Mid(nStart + 1, nEnd - nStart - 1);
 					}
@@ -79,7 +79,7 @@ public:
 						int nSpace = m_strBrowser.Find(' ', nIndex);
 						// Do we have a space?
 						if (nSpace > 0)
-							m_strBrowser = m_strBrowser.Left(nSpace);				
+							m_strBrowser = m_strBrowser.Left(nSpace);
 					}
 				}
 			}

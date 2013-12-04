@@ -137,7 +137,7 @@ struct tibiaState
 	char outbufExplo[100];
 	char outbufSelfUH[100];
 	char outbufFluidMana[100];
-	char outbufFluidLife[100];	
+	char outbufFluidLife[100];
 }tibiaState;
 
 /*
@@ -147,7 +147,7 @@ struct tibiaState
 */
 
 
-/** 
+/**
 * codes for communication
 * 1001: incoming message -> Auto Rsponder
 * 1002: middle screen info (you see) -> creature info
@@ -1248,13 +1248,13 @@ DETOUR_TRAMPOLINE(SOCKET WINAPI Real_socket(int af,int type,int protocol),socket
 DETOUR_TRAMPOLINE(int Real_select(int nfds,fd_set* readfds,fd_set* writefds,fd_set* exceptfds,const struct timeval* timeout),select);
 
 //there are two recv functions and "recv" specifies the wrong one
-static PVOID __fastcall _Detours_GetVA_recv(VOID) 
-{ 
+static PVOID __fastcall _Detours_GetVA_recv(VOID)
+{
     return (PVOID)DetourFindFunction("wsock32.dll","recv");
-} 
+}
 
-__declspec(naked) int WINAPI Real_recv(SOCKET s,char* buf,int len,int flags) 
-{ 
+__declspec(naked) int WINAPI Real_recv(SOCKET s,char* buf,int len,int flags)
+{
     __asm { nop };
     __asm { nop };
     __asm { call _Detours_GetVA_recv };
@@ -1322,7 +1322,7 @@ int payloadLen(char buf[])
 }
 
 void bufToHexString(char *buf,int len)
-{	
+{
 	if (len>STRBUFLEN/8)
 	{
 		sprintf(bufToHexStringRet,"[buffer length to big: %d]",len);
@@ -1386,22 +1386,22 @@ int baseAdjust(int addr){
 }
 
 #define MOD_ADLER 65521
-char outCheck[5]; 
+char outCheck[5];
 char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; len is in bytes */
 {
 	/*
-	The is the CRC algorithim. I could not nor would I try to find the actual one Tibia 
+	The is the CRC algorithim. I could not nor would I try to find the actual one Tibia
 	uses. So I have copied this of and modified it to fit the data we use.
 	*/
 	int count = 0;
     int a = 1;
 	int b = 0;
 	
-    while (len > 0) 
+    while (len > 0)
     {
         size_t tlen = len > 5552 ? 5552 : len;
         len -= tlen;
-        do 
+        do
         {
             a += (int)data[count]>=0?(int)data[count]:256+(int)data[count];
             b += a;
@@ -1453,13 +1453,13 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 	
 	
 	if (packetSize>realRecvLen)
-	{	
+	{
 		if (debugFile&&COMPLEX)
 		{
 			WriteOutDebug("!!! underrun\r\n");
 		}
 		return;
-	} 	
+	}
 	
 	
 	int code=buf[2];
@@ -1485,7 +1485,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 			memcpy(decryptedBuf,buf+6,packetSize-6); // Remember CRC bytes are NOT encrypted either sending or recieving.
 			//WriteOutDebug("# decrypted content follows #\r\n");
 			
-			for (i=0;i<packetSize-6;i+=8)	
+			for (i=0;i<packetSize-6;i+=8)
 			{
 				myInterceptDecrypt((int)(decryptedBuf+i),encryptKeyPtr);
 			}
@@ -1502,15 +1502,15 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 			if (debugFile&&!SENTONLY){
 				//WriteOutDebug("$$$ len=%d code = 0x%x\r\n",afterDecryptLen,afterDecryptCode);
 				bufToHexString(decryptedBuf,afterDecryptLen);
-				WriteOutDebug("<- [%x] %s\r\n",socket,bufToHexStringRet);					
+				WriteOutDebug("<- [%x] %s\r\n",socket,bufToHexStringRet);
 			}
 
 				
-		}	
+		}
 	}
 	
 	if (packetSize<realRecvLen)
-	{		
+	{
 		parseMessage(buf+packetSize,realRecvLen-packetSize,debugFile,direction,depth+1);
 	} // tail recursion
 	
@@ -1518,7 +1518,7 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 
 int lastAction=0;
 void sendBufferViaSocket(char *buffer)
-{	
+{
 	// if we don't yet have key pointer then don't do anything
 	if (!encryptKeyPtr){
 		return;
@@ -1542,15 +1542,15 @@ void sendBufferViaSocket(char *buffer)
 	}
 
 	for (i=0;i<outbuflen;i+=8)
-	{		
+	{
 		memcpy(outbuf+i,buffer+i,8);
 		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);// wiz: was repeated 3 times. 2 Removed!
-	}	
+	}
 	//after encryption
 	if (debugFile && COMPLEX){
 		WriteOutDebug("After Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
-		bufToHexString(outbuf, outbuflen);	
-		WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);	
+		bufToHexString(outbuf, outbuflen);
+		WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);
 		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
 	int test = outbuflen;
@@ -1567,7 +1567,7 @@ void sendBufferViaSocket(char *buffer)
 		Sleep(minDistance-(nowAction-lastAction));
 	}
 	if (debugFile&&COMPLEX)
-	{				
+	{
 		WriteOutDebug("sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
 		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
@@ -1577,7 +1577,7 @@ void sendBufferViaSocket(char *buffer)
 	int ret=Mine_send(tibiaSocket, outbufHeader,test+2,0); //wiz:changed from "send"
 	
 	if (debugFile&&COMPLEX)
-	{		
+	{
 		WriteOutDebug("sent %d bytes, ret=%d, lastSendFlags=%d\r\n",outbuflen+2,ret,lastSendFlags);
 		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
@@ -1664,14 +1664,14 @@ void autoAimAttack(int runeId)
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
 			if (cont->flagOnOff)
-			{				
+			{
 				CUIntArray acceptedItems;
 				CTibiaItem *runeItem;
 				
 				acceptedItems.Add(runeId);
-				runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);		
+				runeItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 				if (runeItem->objectId)
-				{			
+				{
 					if (autoAimOnlyCreatures)
 					{
 						castRuneAgainstCreature(0x40+contNr,runeItem->pos,runeId,ch->tibiaId);
@@ -1746,8 +1746,8 @@ void parseMessageSay(char *sayBuf)
 	if (len<900)
 	{
 		mess.messageType=1007;
-		memcpy(mess.payload,&len,sizeof(int));		
-		memcpy(mess.payload+4,sayBuf,len);		
+		memcpy(mess.payload,&len,sizeof(int));
+		memcpy(mess.payload+4,sayBuf,len);
 		ipcPipeBack.send(mess);
 		mess.messageType=1008;
 		ipcPipeBack.send(mess);
@@ -1763,31 +1763,31 @@ void parseMessageSay(char *sayBuf)
 	
 	
 	if (!strcmp(sayBuf,"%ta hmm")&&autoAimActive)
-	{			
+	{
 		if (reader.getAttackedCreature())
 		{
-			autoAimAttack(itemProxy.getValueForConst("runeHMM"));					
+			autoAimAttack(itemProxy.getValueForConst("runeHMM"));
 		}
 		
 	}
 	if (!strcmp(sayBuf,"%ta gfb")&&autoAimActive)
-	{			
+	{
 		if (reader.getAttackedCreature())
 		{
-			autoAimAttack(itemProxy.getValueForConst("runeGFB"));					
+			autoAimAttack(itemProxy.getValueForConst("runeGFB"));
 		}
 		
 	}
 	if (!strcmp(sayBuf,"%ta sd")&&autoAimActive)
-	{			
+	{
 		if (reader.getAttackedCreature())
 		{
-			autoAimAttack(itemProxy.getValueForConst("runeSD"));					
+			autoAimAttack(itemProxy.getValueForConst("runeSD"));
 		}
 		
 	}
 	if (!strcmp(sayBuf,"%ta explo")&&autoAimActive)
-	{			
+	{
 		if (reader.getAttackedCreature())
 		{
 			autoAimAttack(itemProxy.getValueForConst("runeExplo"));
@@ -1795,7 +1795,7 @@ void parseMessageSay(char *sayBuf)
 		
 	}
 	if (!strcmp(sayBuf,"%ta selfuh")&&outSelfUHAvail)
-	{							
+	{
 		//Mine_send(tibiaSocket,tibiaState.outbufSelfUH,payloadLen(tibiaState.outbufSelfUH)+2,lastSendFlags);
 		sendBufferViaSocket(tibiaState.outbufSelfUH);
 	}
@@ -1812,7 +1812,7 @@ void parseMessageSay(char *sayBuf)
 }
 
 int parseMessageForTibiaAction(char *buf,int len)
-{	
+{
 	//char buf2[1111]="hi ";
 	//for (int i=0;i<min(len,1110);i++){ sprintf(buf2,"%s %x",buf2,(char)buf[i]); }
 	//AfxMessageBox(buf2);
@@ -1880,7 +1880,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 	*/
 	
 	if (code==0x96&&(buf[3]==1 || buf[3]==0xb))
-	{		
+	{
 		// "say"
 		char sayBuf[1000];
 		int sayV1=buf[4];
@@ -1895,13 +1895,13 @@ int parseMessageForTibiaAction(char *buf,int len)
 		memcpy(sayBuf,buf+6,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
-			parseMessageSay(sayBuf);			
+			parseMessageSay(sayBuf);
 			return 1;
 		}
 	}
 	
 	if (code==0x96&&buf[3]==7)
-	{		
+	{
 		// "channel"
 		char sayBuf[1000];
 		int sayV1=buf[6];
@@ -1916,13 +1916,13 @@ int parseMessageForTibiaAction(char *buf,int len)
 		memcpy(sayBuf,buf+8,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
-			parseMessageSay(sayBuf);			
+			parseMessageSay(sayBuf);
 			return 1;
 		}
 	}
 	
 	if (code==0x96&&buf[3]==6)
-	{		
+	{
 		// "private"
 		char sayBuf[1000];
 		unsigned char nameV1=buf[4];
@@ -1939,7 +1939,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 		memcpy(sayBuf,buf+8+nameLen,sayLen);
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
-			parseMessageSay(sayBuf);			
+			parseMessageSay(sayBuf);
 			return 1;
 		}
 	}
@@ -1973,7 +1973,7 @@ int parseMessageForTibiaAction(char *buf,int len)
 		
 		if (!strncmp(sayBuf,"%ta ",3))
 		{
-			parseMessageSay(sayBuf);		
+			parseMessageSay(sayBuf);
 			return 1;
 		}
 	}
@@ -1991,7 +1991,7 @@ void hookCallback(int value)
 		message="%ta pause";
 	}
 	if (value==0x21)
-	{		
+	{
 		message="%ta lu";
 	}
 	if (value==0x22)
@@ -2001,10 +2001,10 @@ void hookCallback(int value)
 	if (message)
 	{
 		int len=strlen(message);
-		memcpy(mess.payload,&len,sizeof(int));		
-		memcpy(mess.payload+4,message,len);	
+		memcpy(mess.payload,&len,sizeof(int));
+		memcpy(mess.payload+4,message,len);
 		if (value==0x21||value==0x22){
-			mess.messageType=2001;			
+			mess.messageType=2001;
 			ipcPipeBack.send(mess);
 		}
 		if (value==0x13){
@@ -2025,33 +2025,33 @@ void ActivateHookCallback()
 	HANDLE hMapFile;
 	
 	
-	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());	
+	wsprintf(mapFileBuf,"Global\\tibiaauto-mapfile-%d",::GetCurrentProcessId());
 		
 	hMapFile = CreateFileMapping(
 		INVALID_HANDLE_VALUE,    // use paging file
-		NULL,                    // default security 
+		NULL,                    // default security
 		PAGE_READWRITE,          // read/write access
-		0,                       // max. object size 
-		size,                // buffer size  
-		mapFileBuf);                 // name of mapping object	
+		0,                       // max. object size
+		size,                // buffer size
+		mapFileBuf);                 // name of mapping object
 		
-	if (hMapFile == NULL) 
-	{       
+	if (hMapFile == NULL)
+	{
 		return;
-	}	
+	}
 	
 	hooksFile = (LPTSTR) MapViewOfFile(hMapFile,   // handle to map object
 		FILE_MAP_ALL_ACCESS, // read/write permission
-		0,                   
-		0,                   
-		size);           
+		0,
+		0,
+		size);
 		
-	if (hooksFile == NULL) 
-	{       
+	if (hooksFile == NULL)
+	{
 		return;
-	}	
+	}
 		
-	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));   	
+	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));
 	
 	
 	
@@ -2083,8 +2083,8 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 	}
 	
 	if (debugFile&&!SENTONLY)
-	{	
-		bufToHexString(buf,len);	
+	{
+		bufToHexString(buf,len);
 		//WriteOutDebug("E> [%x] %s\r\n",socket,bufToHexStringRet);
 	}
 	if (identical)
@@ -2093,9 +2093,9 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 		
 		parseMessage(encryptBeforeBuf,encryptLen,debugFile,1,1);
 		if (debugFile)
-		{	
+		{
 			bufToHexString(encryptBeforeBuf,encryptLen);
-			WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);	
+			WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);
 		}
 
 		if (parseMessageForTibiaAction(encryptBeforeBuf,encryptLen))
@@ -2170,14 +2170,14 @@ SOCKET WINAPI Mine_socket(int af,int type,int protocol)
 	if (debugFile&&COMPLEX)
 	{
 		WriteOutDebug("got socket: %d, %d, %d -> %d\r\n",af,type,protocol,s);
-	}	
+	}
     
 	tibiaSocket=s;
 	
     return s;
 }
 
-int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen) 
+int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 {
 	if (debugFile&&COMPLEX)
 	{
@@ -2185,7 +2185,7 @@ int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 	}
 	
 	
-	int ret = Real_connect(s,name,namelen);	
+	int ret = Real_connect(s,name,namelen);
 	
 	if (debugFile&&COMPLEX)
 	{
@@ -2216,63 +2216,63 @@ int WINAPI Mine_select(
 
 
 void InitialiseIPC()
-{	
+{
 	HMODULE aa = GetModuleHandle(0);
-	char buf[128];	
+	char buf[128];
 	char lpszPipename[1024];
 	int pid = ::GetCurrentProcessId();
-	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-%d",pid);	
+	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-%d",pid);
 	
 	
 	while (1)
-	{		
+	{
 		
-		hPipe = CreateFile( 
-			lpszPipename,   // pipe name 
-			GENERIC_READ |  // read and write access 
-			GENERIC_WRITE, 
-			0,              // no sharing 
+		hPipe = CreateFile(
+			lpszPipename,   // pipe name
+			GENERIC_READ |  // read and write access
+			GENERIC_WRITE,
+			0,              // no sharing
 			NULL,           // no security attributes
-			OPEN_EXISTING,  // opens existing pipe 
-			0,              // default attributes 
-			NULL);          // no template file 
+			OPEN_EXISTING,  // opens existing pipe
+			0,              // default attributes
+			NULL);          // no template file
 		
 		
 		// pipe handle is invalid - proceed
-		if (hPipe != INVALID_HANDLE_VALUE) 	
+		if (hPipe != INVALID_HANDLE_VALUE)
 		{
 			break;
 		}
 		
 		
-		if (GetLastError() != ERROR_PIPE_BUSY) 
+		if (GetLastError() != ERROR_PIPE_BUSY)
 		{
 			
 			sprintf(buf,"Could not open pipe (not busy): %d",GetLastError());
-			//MessageBox(NULL,"","error 3",0); 
+			//MessageBox(NULL,"","error 3",0);
 			Sleep(50);
 			continue;
 		}
 		
-		// All pipe instances are busy, so wait for 10 seconds. 
+		// All pipe instances are busy, so wait for 10 seconds.
 		
-		if (! WaitNamedPipe(lpszPipename, 1000) ) 
+		if (! WaitNamedPipe(lpszPipename, 1000) )
 		{
 			sprintf(buf,"Could not open pipe (busy too long): %d",GetLastError());
-			//MessageBox(NULL,buf,"error",0); 
+			//MessageBox(NULL,buf,"error",0);
 			Sleep(50);
 			continue;
 		}
 	}
 	
-	DWORD dwMode = PIPE_READMODE_MESSAGE; 
-	BOOL fSuccess = SetNamedPipeHandleState( 
+	DWORD dwMode = PIPE_READMODE_MESSAGE;
+	BOOL fSuccess = SetNamedPipeHandleState(
 		hPipe,    // pipe handle
-		&dwMode,  // new pipe mode 
+		&dwMode,  // new pipe mode
 		NULL,     // don't set maximum bytes
 		NULL);    // don't set maximum time
-	if (!fSuccess) 
-	{	
+	if (!fSuccess)
+	{
 		InitialiseIPC();
 	} else {
 		if (debugFile&&COMPLEX)
@@ -2464,7 +2464,7 @@ int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int s
 		}
 	}
 	aa++;
-	if (debugFile) {		
+	if (debugFile) {
 		WriteOutDebug("myPlayerNameText(%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x)\r\n",align,str,visible,x,y,fontNumber,colR,colG,colB,showFormatting, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 	}
 	*/
@@ -2473,7 +2473,7 @@ int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int s
 		char info1[1024];
 		char info2[1024];
 		info1[0]=info2[0]=0;
-		int i,len;		
+		int i,len;
 		char convString[1024];
 
 		sprintf(convString,"%s",str);
@@ -2491,14 +2491,14 @@ int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int s
 				strncpy(info2,creatureInfoPlayerInfo2[i],128);
 				break;
 			}
-		}				
+		}
 		
-		if (strlen(info2)) 
+		if (strlen(info2))
 		{
 			OUTmyPlayerNameText(align,fontNumber,visible,x,y-titleOffset,10,colR,colG,colB,info2, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 			titleOffset+=14;
-		}		
-		if (strlen(info1)) 
+		}
+		if (strlen(info1))
 		{
 			OUTmyPlayerNameText(align,fontNumber,visible,x,y-titleOffset,showFormatting,colR,colG,colB,info1, charCut, cropLeft, cropTop, cropWidth, cropHeight, v16, v17);
 			titleOffset+=14;
@@ -2559,7 +2559,7 @@ void OUTmyInterceptInfoMiddleScreen(int type, char* s)
 	}
 }
 void myInterceptInfoMiddleScreen(int type,char *s)
-{	
+{
 	if (debugFile&&COMPLEX)
 	{
 		WriteOutDebug("got middle screen %d/%s\r\n",type,s);
@@ -2576,14 +2576,14 @@ void myInterceptInfoMiddleScreen(int type,char *s)
 		{
 			WriteOutDebug("got see '%s'\r\n",s);
 		}
-		unsigned long bytesWritten=0;						
+		unsigned long bytesWritten=0;
 		
 		struct ipcMessage mess;
-		mess.messageType=1002;	
+		mess.messageType=1002;
 		int len=strlen(s);
 		if (len<900)
 		{
-			memcpy(mess.payload,&len,sizeof(int));		
+			memcpy(mess.payload,&len,sizeof(int));
 			memcpy(mess.payload+4,s,len);
 			ipcPipeBack.send(mess);
 		}
@@ -2628,7 +2628,7 @@ __declspec(naked) void INmyInterceptInfoMiddleScreen() //()
 
 
 int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
-{	
+{
 	if (revealCNameActive)
 	{
 		int ret=0;
@@ -2644,10 +2644,10 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 		
 		
 		if (creaturePtr)
-		{		
+		{
 			int *coordPtr;
 			coordPtr=creaturePtr+36/4;
-			int coordX=*coordPtr;	
+			int coordX=*coordPtr;
 			coordPtr=creaturePtr+40/4;
 			int coordY=*coordPtr;
 			int loggedCharNr = reader->getLoggedCharNr();
@@ -2656,7 +2656,7 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 			coordPtr=(int *)(firstAddr+loggedCharNr*crSize+40);
 			int selfY=*coordPtr;
 			if (abs(coordX-selfX)<=8&&abs(coordY-selfY)<=6) ret=1;
-		}	
+		}
 		return ret;
 	} else {
 		typedef int (*Proto_fun)(int *creaturePtr);
@@ -2724,9 +2724,9 @@ int myInterceptEncrypt(int v1, int v2)
 		encryptPrevPtr+=8;
 	}
 	
-	memcpy(encryptBeforeBuf+encryptPos,(void *)v1,8);	
+	memcpy(encryptBeforeBuf+encryptPos,(void *)v1,8);
 	int ret = OUTmyInterceptEncrypt(v1,v2);
-	memcpy(encryptAfterBuf+encryptPos,(void *)v1,8);	
+	memcpy(encryptAfterBuf+encryptPos,(void *)v1,8);
 	return ret;
 }
 __declspec(naked) void INmyInterceptEncrypt() //<eax>(int v1, int v2<esi>)
@@ -2785,7 +2785,7 @@ __declspec(naked) void INmyInterceptDecrypt() //<eax>(int v1, int v2<esi>)
 /*int OUTmyInterceptAllRegs(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi)
 {
 	int ret;
-	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi);	
+	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int va, int vb, int vc, int vd, int vdi, int vsi);
 
 	Proto_fun fun=(Proto_fun)(0x);
 
@@ -2843,7 +2843,7 @@ __declspec(naked) void INmyInterceptAllRegs() //<eax>(int v1, int v2<esi>)
 //This captured function is what Tibia uses to decrypt the packet
 // and determine which action types it contains in order to parse it properly
 // The function returns the action type and Tibia then parses the stream.
-// If the stream has not yet been used up, it will continually run this function to 
+// If the stream has not yet been used up, it will continually run this function to
 // determine the type of and parse the next action.
 // We can interfere with this process, but this requires knowing packet structures
 // and error handling for incomplete packets which takes much more work than payoff.
@@ -2995,7 +2995,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	//14-
 	//15-
 	//16-rule report messages
-	//17-white client messages, login, permanent ignore, 
+	//17-white client messages, login, permanent ignore,
 	//18-white game info messages, attack, experience, depot volume
 	//19-all green message
 	//20-
@@ -3048,7 +3048,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	}
 	
 	if (type!=0x13||time(NULL)>ignoreLookEnd)
-	{ 		
+	{
 		//int happy=*(int*)v1;
 		//happy+=0x20;
 		//*(int***)v1+=0x20;
@@ -3082,15 +3082,15 @@ __declspec(naked) void INmyInterceptInfoMessageBox() //<eax>(int v1, int v2, int
 }}
 
 void trapFun(HANDLE dwHandle,int addr,unsigned int targetFun)
-{				
+{
 	int targetAddr=targetFun - addr - 4;
-	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr,   sizeof(long int), NULL);	
+	WriteProcessMemory(dwHandle, (void *)addr, &targetAddr,   sizeof(long int), NULL);
 }
 
 void InitialisePlayerInfoHack()
-{		
+{
 	DWORD procId=GetCurrentProcessId();
-	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);    
+	HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
 	
 	//trapFun(dwHandle,0x44F1DC+1,(unsigned int)myPrintText); // 8.74
 	//trapFun(dwHandle,0x44F22C+1,(unsigned int)myPrintText); // 8.74
@@ -3111,46 +3111,46 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4F0EB9+1,(unsigned int)INmyPrintText); // 9.10
 
 	//trapFun(dwHandle,0x45257C+1,(unsigned int)INmyPrintText); // 9.20
-	//trapFun(dwHandle,0x4525C6+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x45A883+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4F032F+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4F10D9+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x4525C6+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x45A883+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4F032F+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4F10D9+1,(unsigned int)INmyPrintText); //
 
 	//trapFun(dwHandle,0x45261C+1,(unsigned int)INmyPrintText); // 9.31
-	//trapFun(dwHandle,0x452666+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x45A993+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4F04AF+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4F1259+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x452666+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x45A993+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4F04AF+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4F1259+1,(unsigned int)INmyPrintText); //
 
 	//trapFun(dwHandle,0x45456C+1,(unsigned int)INmyPrintText); // 9.40
-	//trapFun(dwHandle,0x4545B6+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x45C953+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4F9D6F+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4FAB19+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x4545B6+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x45C953+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4F9D6F+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4FAB19+1,(unsigned int)INmyPrintText); //
 
 	//trapFun(dwHandle,0x4545FC+1,(unsigned int)INmyPrintText); // 9.41
-	//trapFun(dwHandle,0x454646+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x45C983+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4FA26F+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x4FB019+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x454646+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x45C983+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4FA26F+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x4FB019+1,(unsigned int)INmyPrintText); //
 
 	//trapFun(dwHandle,0x455DB1+1,(unsigned int)INmyPrintText); // 9.42 String stored in ecx instead of edx
-	//trapFun(dwHandle,0x455DFB+1,(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,0x45E420+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x455DFB+1,(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,0x45E420+1,(unsigned int)INmyPrintText); //
 	//trapFun(dwHandle,0x504407+1,(unsigned int)INmyPrintText); //
-	//trapFun(dwHandle,0x5051CA+1,(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,0x5051CA+1,(unsigned int)INmyPrintText); //
 
 	//trapFun(dwHandle,baseAdjust(0x455D81+1),(unsigned int)INmyPrintText); // 9.43
-	//trapFun(dwHandle,baseAdjust(0x455DCB+1),(unsigned int)INmyPrintText); // 
-	//trapFun(dwHandle,baseAdjust(0x45E420+1),(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,baseAdjust(0x455DCB+1),(unsigned int)INmyPrintText); //
+	//trapFun(dwHandle,baseAdjust(0x45E420+1),(unsigned int)INmyPrintText); //
 	//trapFun(dwHandle,baseAdjust(0x504587+1),(unsigned int)INmyPrintText); //
-	//trapFun(dwHandle,baseAdjust(0x50534A+1),(unsigned int)INmyPrintText); // 
+	//trapFun(dwHandle,baseAdjust(0x50534A+1),(unsigned int)INmyPrintText); //
 
 	//trapFun(dwHandle,baseAdjust(callAddr_PrintText01+1),(unsigned int)INmyPrintText);
-	//trapFun(dwHandle,baseAdjust(callAddr_PrintText02+1),(unsigned int)INmyPrintText); 
-	//trapFun(dwHandle,baseAdjust(callAddr_PrintText03+1),(unsigned int)INmyPrintText); 
+	//trapFun(dwHandle,baseAdjust(callAddr_PrintText02+1),(unsigned int)INmyPrintText);
+	//trapFun(dwHandle,baseAdjust(callAddr_PrintText03+1),(unsigned int)INmyPrintText);
 	//trapFun(dwHandle,baseAdjust(callAddr_PrintText04+1),(unsigned int)INmyPrintText);
-	//trapFun(dwHandle,baseAdjust(callAddr_PrintText05+1),(unsigned int)INmyPrintText); 
+	//trapFun(dwHandle,baseAdjust(callAddr_PrintText05+1),(unsigned int)INmyPrintText);
 
 	// lookup: find string In(FontNumber,1 [6th match is in the middle of the function]
 	
@@ -3186,58 +3186,58 @@ void InitialisePlayerInfoHack()
 	*/
 
 	//trapFun(dwHandle,0x41E333+1,(unsigned int)INmyPlayerNameText); // 9.20
-	//trapFun(dwHandle,0x4B6B8E+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B6D94+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B6F91+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7191+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7394+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7590+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4F0C3E+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B6B8E+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B6D94+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B6F91+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7191+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7394+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7590+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4F0C3E+1,(unsigned int)INmyPlayerNameText); //
 
 	//trapFun(dwHandle,0x41E4D3+1,(unsigned int)INmyPlayerNameText); // 9.31
-	//trapFun(dwHandle,0x4B6D0E+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B6F14+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7111+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7311+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7514+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4B7710+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4F0DBE+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4B6D0E+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B6F14+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7111+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7311+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7514+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4B7710+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4F0DBE+1,(unsigned int)INmyPlayerNameText); //
 
 	//trapFun(dwHandle,0x4203C3+1,(unsigned int)INmyPlayerNameText); // 9.40
-	//trapFun(dwHandle,0x4BFC4E+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4BFE54+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C0051+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C0251+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C0454+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C0650+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4FA67E+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4BFC4E+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4BFE54+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C0051+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C0251+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C0454+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C0650+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4FA67E+1,(unsigned int)INmyPlayerNameText); //
 
 	//trapFun(dwHandle,0x4204A3+1,(unsigned int)INmyPlayerNameText); // 9.41
-	//trapFun(dwHandle,0x4BFE9E+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C00A4+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C02A1+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C04A1+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C06A4+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C08A0+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4FAB7E+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4BFE9E+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C00A4+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C02A1+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C04A1+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C06A4+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C08A0+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4FAB7E+1,(unsigned int)INmyPlayerNameText); //
 
 	//trapFun(dwHandle,0x420D1B+1,(unsigned int)INmyPlayerNameText); // 9.42
-	//trapFun(dwHandle,0x4C57E4+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C59E4+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C5BE3+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C5DE3+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C5FE4+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x4C61E2+1,(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,0x504D1A+1,(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,0x4C57E4+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C59E4+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C5BE3+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C5DE3+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C5FE4+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x4C61E2+1,(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,0x504D1A+1,(unsigned int)INmyPlayerNameText); //
 
 	//trapFun(dwHandle,baseAdjust(0x420C4B+1),(unsigned int)INmyPlayerNameText); // 9.43
-	//trapFun(dwHandle,baseAdjust(0x4C5864+1),(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,baseAdjust(0x4C5A64+1),(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,baseAdjust(0x4C5C63+1),(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,baseAdjust(0x4C5E63+1),(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,baseAdjust(0x4C6064+1),(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,baseAdjust(0x4C6262+1),(unsigned int)INmyPlayerNameText); // 
-	//trapFun(dwHandle,baseAdjust(0x504E9A+1),(unsigned int)INmyPlayerNameText); // 
+	//trapFun(dwHandle,baseAdjust(0x4C5864+1),(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,baseAdjust(0x4C5A64+1),(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,baseAdjust(0x4C5C63+1),(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,baseAdjust(0x4C5E63+1),(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,baseAdjust(0x4C6064+1),(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,baseAdjust(0x4C6262+1),(unsigned int)INmyPlayerNameText); //
+	//trapFun(dwHandle,baseAdjust(0x504E9A+1),(unsigned int)INmyPlayerNameText); //
 
 	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText01+1),(unsigned int)INmyPlayerNameText);
 	trapFun(dwHandle,baseAdjust(callAddr_PlayerNameText02+1),(unsigned int)INmyPlayerNameText);
@@ -3262,33 +3262,33 @@ void InitialisePlayerInfoHack()
 	//trapFun(dwHandle,0x4EE064+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.10
 
 	//trapFun(dwHandle,0x4163EB+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.20
-	//trapFun(dwHandle,0x48C765+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x4EE284+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x48C765+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x4EE284+1,(unsigned int)myInterceptInfoMiddleScreen); //
 
 	//trapFun(dwHandle,0x4165CB+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.31
-	//trapFun(dwHandle,0x4570ED+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x48C915+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x4EE3F4+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x4570ED+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x48C915+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x4EE3F4+1,(unsigned int)myInterceptInfoMiddleScreen); //
 
 	//trapFun(dwHandle,0x417698+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.40
-	//trapFun(dwHandle,0x45904D+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x490D85+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x4F7CC4+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x45904D+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x490D85+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x4F7CC4+1,(unsigned int)myInterceptInfoMiddleScreen); //
 
 	//trapFun(dwHandle,0x417758+1,(unsigned int)myInterceptInfoMiddleScreen); // 9.41
-	//trapFun(dwHandle,0x45907D+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x490EF5+1,(unsigned int)myInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x4F81C4+1,(unsigned int)myInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x45907D+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x490EF5+1,(unsigned int)myInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x4F81C4+1,(unsigned int)myInterceptInfoMiddleScreen); //
 
 	//trapFun(dwHandle,0x417E2A+1,(unsigned int)INmyInterceptInfoMiddleScreen); // 9.42
-	//trapFun(dwHandle,0x45A9DA+1,(unsigned int)INmyInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x4953F5+1,(unsigned int)INmyInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,0x502314+1,(unsigned int)INmyInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,0x45A9DA+1,(unsigned int)INmyInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x4953F5+1,(unsigned int)INmyInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,0x502314+1,(unsigned int)INmyInterceptInfoMiddleScreen); //
 
 	//trapFun(dwHandle,baseAdjust(0x417DAA+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 9.43
-	//trapFun(dwHandle,baseAdjust(0x45A9DA+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,baseAdjust(0x4953F5+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
-	//trapFun(dwHandle,baseAdjust(0x502484+1),(unsigned int)INmyInterceptInfoMiddleScreen); // 
+	//trapFun(dwHandle,baseAdjust(0x45A9DA+1),(unsigned int)INmyInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,baseAdjust(0x4953F5+1),(unsigned int)INmyInterceptInfoMiddleScreen); //
+	//trapFun(dwHandle,baseAdjust(0x502484+1),(unsigned int)INmyInterceptInfoMiddleScreen); //
 
 	trapFun(dwHandle,baseAdjust(callAddr_InfoMiddleScreen01+1),(unsigned int)INmyInterceptInfoMiddleScreen);
 	trapFun(dwHandle,baseAdjust(callAddr_InfoMiddleScreen02+1),(unsigned int)INmyInterceptInfoMiddleScreen);
@@ -3487,17 +3487,17 @@ void InitialisePlayerInfoHack()
 	
 	// WARNING: decrypt function is not trapped since 8.22 as I did not track it down in the soureccode
 	
-	// lookup: reference to  string "Creature!=NULL" 
-	//         [you need to look for PUSH string with this debug] + 
+	// lookup: reference to  string "Creature!=NULL"
+	//         [you need to look for PUSH string with this debug] +
 	//         instruction before PUSH XXX must be MOV ESI, 00000000Fh
 	//         it's in the middle of the function
-	//         trap of the second (last one) reference to the function	
+	//         trap of the second (last one) reference to the function
 	//trapFun(dwHandle,0x4F243E+1,(unsigned int)myIsCreatureVisible); // 8.74
 	//trapFun(dwHandle,0x4F2FBE+1,(unsigned int)myIsCreatureVisible); // 9.00
 	//trapFun(dwHandle,0x4F309A+1,(unsigned int)myIsCreatureVisible); // 9.10
 	//trapFun(dwHandle,0x4F32BA+1,(unsigned int)myIsCreatureVisible); // 9.20
 
-	// lookup: reference to  string "unknown packet type during login" 
+	// lookup: reference to  string "unknown packet type during login"
 	//         it's about 65 instuctions before it and 300 bytes
 	//         look for CMP ESI,-1 since the function returns -1 when there are no packets to parse
 	//trapFun(dwHandle,0x45D565+1,(unsigned int)myShouldParseRecv); // 8.74
@@ -3527,7 +3527,7 @@ void InitialiseProxyClasses()
 
 WNDPROC wndProcOriginal = NULL;
 
-LRESULT APIENTRY FilterProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
+LRESULT APIENTRY FilterProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 				AfxMessageBox("I did it!");
 if (uMsg == WM_COMMAND)
@@ -3567,7 +3567,7 @@ void GetDebugPrivs()
 	}
 }
 
-BOOL CALLBACK EnumWindowsProc(      
+BOOL CALLBACK EnumWindowsProc(
 							  
 							  HWND hwnd,
 							  LPARAM lParam
@@ -3576,7 +3576,7 @@ BOOL CALLBACK EnumWindowsProc(
 	
 	DWORD procId;
 	GetWindowThreadProcessId(hwnd,&procId);
-	if (procId==::GetCurrentProcessId())		
+	if (procId==::GetCurrentProcessId())
 	{
 		
 		CWnd *wnd = new CWnd();
@@ -3597,11 +3597,11 @@ BOOL CALLBACK EnumWindowsProc(
 		subMenu2->EnableMenuItem(4011,1);
 		
 		
-		CMyMenu *menu = new CMyMenu();	
-		menu->CreateMenu();		
-		menu->AppendMenu(MF_STRING,4013,"test menu 1");		
+		CMyMenu *menu = new CMyMenu();
+		menu->CreateMenu();
+		menu->AppendMenu(MF_STRING,4013,"test menu 1");
 		menu->AppendMenu(MF_STRING,4015,"test menu 2");
-		menu->AppendMenu(MF_POPUP|MF_DISABLED,(int)subMenu1->GetSafeHmenu(),"test menu 3");		
+		menu->AppendMenu(MF_POPUP|MF_DISABLED,(int)subMenu1->GetSafeHmenu(),"test menu 3");
 		menu->AppendMenu(MF_POPUP,(int)subMenu2->GetSafeHmenu(),"test menu 4");
 		//menu->LoadOwnerDrawMenu(menu);
 		
@@ -3617,14 +3617,14 @@ BOOL CALLBACK EnumWindowsProc(
 		AfxMessageBox(b);
 		*/
 		
-		//wnd->Detach(); 
+		//wnd->Detach();
 		delete wnd;
 	}
 	return 1;
 }
 
 void InitialiseTibiaMenu()
-{	
+{
 	EnumWindows(&EnumWindowsProc,NULL);
 	
 	
@@ -3635,18 +3635,18 @@ void InitialiseTibiaMenu()
 
 
 
-BOOL APIENTRY DllMain( HINSTANCE hModule, 
-					  DWORD  ul_reason_for_call, 
+BOOL APIENTRY DllMain( HINSTANCE hModule,
+					  DWORD  ul_reason_for_call,
 					  LPVOID lpReserved
 					  )
-{	
+{
 	
 	static HINSTANCE hinstDLL = hModule;
 	
 	
     switch (ul_reason_for_call)
 	{
-	case DLL_PROCESS_ATTACH:						
+	case DLL_PROCESS_ATTACH:
 		
 		InitialiseDebugFile();
 		InitialiseTibiaState();
@@ -3655,21 +3655,21 @@ BOOL APIENTRY DllMain( HINSTANCE hModule,
 		InitialiseCommunication();
 		InitialisePlayerInfoHack();
 		InitialiseProxyClasses();
-		InitialiseCreatureInfo();				
+		InitialiseCreatureInfo();
 		//InitialiseTibiaMenu();
 		ActivateHookCallback();
 		
 		
 		break;
 	case DLL_PROCESS_DETACH:
-		{			
+		{
 			if (hooksFile) UnmapViewOfFile(hooksFile);
 		}
 		
-		break;		
-	case DLL_THREAD_ATTACH:						
 		break;
-	case DLL_THREAD_DETACH:						
+	case DLL_THREAD_ATTACH:
+		break;
+	case DLL_THREAD_DETACH:
 		break;
 		
     }
@@ -3698,7 +3698,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		};
 	case 2:
 		if (tibiaSocket!=NULL)
-		{			
+		{
 			sendBufferViaSocket(mess.payload);
 			
 		};
@@ -3731,7 +3731,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		memcpy(&tibiaState.attackedCreature,mess.payload,sizeof(int));
 		break;
 	case 101:
-		outHmmAvail=1;		
+		outHmmAvail=1;
 		memcpy(&tibiaState.outbufHmm,mess.payload,payloadLen(mess.payload)+2);
 		break;
 	case 102:
@@ -3744,23 +3744,23 @@ void ParseIPCMessage(struct ipcMessage mess)
 		break;
 	case 104:
 		outExploAvail=1;
-		memcpy(&tibiaState.outbufExplo,mess.payload,payloadLen(mess.payload)+2);		
+		memcpy(&tibiaState.outbufExplo,mess.payload,payloadLen(mess.payload)+2);
 		break;
-	case 105:		
+	case 105:
 		outSelfUHAvail=1;
-		memcpy(&tibiaState.outbufSelfUH,mess.payload,payloadLen(mess.payload)+2);		
+		memcpy(&tibiaState.outbufSelfUH,mess.payload,payloadLen(mess.payload)+2);
 		break;
 	case 106:
 		outFluidManaAvail=1;
-		memcpy(&tibiaState.outbufFluidMana,mess.payload,payloadLen(mess.payload)+2);		
+		memcpy(&tibiaState.outbufFluidMana,mess.payload,payloadLen(mess.payload)+2);
 		break;
 	case 107:
 		outFluidLifeAvail=1;
-		memcpy(&tibiaState.outbufFluidLife,mess.payload,payloadLen(mess.payload)+2);		
+		memcpy(&tibiaState.outbufFluidLife,mess.payload,payloadLen(mess.payload)+2);
 		break;
 	case 201:
 		revealFish=1;
-		break; 
+		break;
 	case 202:
 		revealFish=0;
 		break;
@@ -3782,7 +3782,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			{
 				memcpy(creatureInfoPlayerName[creatureInfoNext],mess.payload,32);
 				memcpy(creatureInfoPlayerInfo1[creatureInfoNext],mess.payload+32,500);
-				memcpy(creatureInfoPlayerInfo2[creatureInfoNext],mess.payload+32+500,500);			
+				memcpy(creatureInfoPlayerInfo2[creatureInfoNext],mess.payload+32+500,500);
 				creatureInfoNext++;
 				// roll creatureInfoText if we are out of limit
 				if (creatureInfoNext==MAX_CREATUREINFO)
@@ -3806,12 +3806,12 @@ void ParseIPCMessage(struct ipcMessage mess)
 			* as of tibia 7.8 this is obsolete (handled by the client itself
 			
 			  if (autoAimAimPlayersFromBattle)
-			  {								
+			  {
 			  unsigned char val=0xEB;
 			  unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
 			  DWORD procId=GetCurrentProcessId();
 			  HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-			  WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
+			  WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);
 			  CloseHandle(dwHandle);
 			  } else {
 			  unsigned char val=0x74;
@@ -3819,7 +3819,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			  unsigned char *addr=(unsigned char *)0x42BBAB+0xF430+0x30; //7.72
 			  DWORD procId=GetCurrentProcessId();
 			  HANDLE dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, procId);
-			  WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);				
+			  WriteProcessMemory(dwHandle, (void *)addr, &val,   sizeof(char), NULL);
 			  CloseHandle(dwHandle);
 			  }
 			*/
@@ -3839,7 +3839,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 		{
 			revealCNameActive=0;
 			break;
-		}	
+		}
 	case 307:
 		{
 			/*CString buf;
@@ -3882,7 +3882,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 						break;
 					}
 				}
-				else if  (!HUDisplay[loop].pos.x && !HUDisplay[loop].pos.y && found < 0) 
+				else if  (!HUDisplay[loop].pos.x && !HUDisplay[loop].pos.y && found < 0)
 					found = loop;
 			}
 			if (!actionComplete && found > -1) { // Add a message to the screen if there is room to store it and no delete or update action took place
@@ -3949,12 +3949,12 @@ void ParseIPCMessage(struct ipcMessage mess)
 					}
 				}
 				break;
-			default:		
+			default:
 				break;
 			}
 			break;
-		}	
-	default:		
+		}
+	default:
 		break;
 	};
 };
@@ -3963,8 +3963,8 @@ int ReadFromPipe()
 {
 
 	BOOL fSuccess=false;
-	do 
-	{ 
+	do
+	{
 		// Read from the pipe.
 		struct ipcMessage inBuf;
 		DWORD lpBytesRead;
@@ -3986,7 +3986,7 @@ int ReadFromPipe()
 
 		if (!fSuccess&&err!=ERROR_MORE_DATA){
 			char buf[128];
-			sprintf(buf,"success=%d read=%d err=%d type=%d",fSuccess,lpBytesRead,err,inBuf.messageType);	
+			sprintf(buf,"success=%d read=%d err=%d type=%d",fSuccess,lpBytesRead,err,inBuf.messageType);
 			MessageBox(NULL,buf,"DEBUG",0);
 		}
 		
@@ -3999,7 +3999,7 @@ int ReadFromPipe()
 
 
 
-DWORD WINAPI CommunicationThread( LPVOID lpParam ) 
+DWORD WINAPI CommunicationThread( LPVOID lpParam )
 {
 	InitialiseIPC();
 	for (;;)
@@ -4010,21 +4010,21 @@ DWORD WINAPI CommunicationThread( LPVOID lpParam )
 			InitialiseIPC();
 		}
 		Sleep(10);
-	}; 
+	};
 }
 
 void InitialiseCommunication()
 {
 	DWORD dwThread;
 	
-	HANDLE hThread = CreateThread( 
+	HANDLE hThread = CreateThread(
 		NULL,              // default security attributes
-		0,                 // use default stack size  
-		CommunicationThread,        // thread function 
-		NULL,             // argument to thread function 
-		0,                 // use default creation flags 
-		&dwThread);   // returns the thread identifier 
-}; 
+		0,                 // use default stack size
+		CommunicationThread,        // thread function
+		NULL,             // argument to thread function
+		0,                 // use default creation flags
+		&dwThread);   // returns the thread identifier
+};
 
 /*
 
@@ -4037,15 +4037,15 @@ void InitialiseCommunication()
 	  #include "NewIDirectDraw.cpp"
 	  
 		
-		  extern "C" 
+		  extern "C"
 		  {
 		  
 			typedef HRESULT (WINAPI *RealDirectDrawCreate)(GUID FAR *lpGUID, LPDIRECTDRAW FAR *lplpDD, IUnknown FAR *pUnkOuter);
 			
 			  
 				HRESULT WINAPI DirectDrawCreate(
-				GUID FAR *lpGUID, 
-				LPDIRECTDRAW FAR *lplpDD, 
+				GUID FAR *lpGUID,
+				LPDIRECTDRAW FAR *lplpDD,
 				IUnknown FAR *pUnkOuter)
 				{
 				
@@ -4074,10 +4074,10 @@ void InitialiseCommunication()
 							  if(pDirectDrawCreate == NULL)
 							  {
 							  return FALSE;
-							  } 
+							  }
 							  IDirectDraw *realIDirectDraw;
-							  pDirectDrawCreate(lpGUID,&realIDirectDraw,pUnkOuter);		
-							  *lplpDD = new NewIDirectDraw(realIDirectDraw,"IDirectDraw");		
+							  pDirectDrawCreate(lpGUID,&realIDirectDraw,pUnkOuter);
+							  *lplpDD = new NewIDirectDraw(realIDirectDraw,"IDirectDraw");
 							  
 								return FALSE;
 								
@@ -4086,7 +4086,7 @@ void InitialiseCommunication()
 								  
 									
 									  
-										extern "C" 
+										extern "C"
 										{
 										
 										  typedef PVOID (WINAPI *RealAllocMemEx)(DWORD dwSize, HANDLE hProcess);
@@ -4106,8 +4106,8 @@ void InitialiseCommunication()
 											{
 											MessageBox(NULL,"CreateRemoteThreadEx","",0);
 											RealCreateRemoteThreadEx fun;
-											fun = (RealCreateRemoteThreadEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "CreateRemoteThreadEx");		
-											return fun(hProcess,lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter,dwCreationFlags,lpThreadId);				
+											fun = (RealCreateRemoteThreadEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "CreateRemoteThreadEx");
+											return fun(hProcess,lpThreadAttributes,dwStackSize,lpStartAddress,lpParameter,dwCreationFlags,lpThreadId);
 											}
 											
 											  
@@ -4115,40 +4115,40 @@ void InitialiseCommunication()
 												LPCSTR pszModule,
 												LPCSTR pszFuncName,
 												PVOID  pCallbackFunc,
-												PVOID  *pNextHook,  
-												DWORD  dwFlags  
+												PVOID  *pNextHook,
+												DWORD  dwFlags
 												)
 												{
 												char b[1024];
 												sprintf(b,"HookApi: %s/%s",pszModule,pszFuncName);
 												MessageBox(NULL,b,"",0);
 												RealHookAPI fun;
-												fun = (RealHookAPI)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "HookAPI");		
+												fun = (RealHookAPI)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "HookAPI");
 												return fun(pszModule,pszFuncName,pCallbackFunc,pNextHook,dwFlags);
 												}
 												
 												  
 													
 													  PVOID WINAPI AllocMemEx(
-													  DWORD  dwSize,  
-													  HANDLE hProcess  
+													  DWORD  dwSize,
+													  HANDLE hProcess
 													  )
 													  {
 													  MessageBox(NULL,"AllocMemEx","",0);
 													  RealAllocMemEx fun;
-													  fun = (RealAllocMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "AllocMemEx");		
-													  return fun(dwSize,hProcess);				
+													  fun = (RealAllocMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "AllocMemEx");
+													  return fun(dwSize,hProcess);
 													  }
 													  BOOL WINAPI FreeMemEx(
-													  PVOID  pMem,  
+													  PVOID  pMem,
 													  HANDLE hProcess
 													  
 														)
 														{
 														MessageBox(NULL,"FreeMemEx","",0);
 														RealFreeMemEx fun;
-														fun = (RealFreeMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "FreeMemEx");		
-														return fun(pMem,hProcess);				
+														fun = (RealFreeMemEx)GetProcAddress(LoadLibrary("madCHookOrig.dll"), "FreeMemEx");
+														return fun(pMem,hProcess);
 														}
 														
 														  BOOL WINAPI HookCode(

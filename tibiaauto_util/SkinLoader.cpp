@@ -43,10 +43,10 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 	XMLPlatformUtils::Initialize();
 	XercesDOMParser *parser = new XercesDOMParser();
 	
-	try {	
+	try {
 		parser->parse(currentPathBuf);
-		DOMDocument  *doc = parser->getDocument();	
-		DOMNode *root = doc->getChildNodes()->item(0);     
+		DOMDocument  *doc = parser->getDocument();
+		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
@@ -95,7 +95,7 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 		loadedSkin.m_SecondaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
 		loadedSkin.m_SecondaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
 
-	} 
+	}
 	catch (...) {
 		AfxMessageBox("Unable to load .skin file!");
 		delete parser;
@@ -109,10 +109,10 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 
 CSkin CSkinLoader::loadSkin(CString pathBuf) {
 	XercesDOMParser *parser = new XercesDOMParser();
-	try {	
+	try {
 		parser->parse(pathBuf);
-		DOMDocument  *doc = parser->getDocument();	
-		DOMNode *root = doc->getChildNodes()->item(0);     
+		DOMDocument  *doc = parser->getDocument();
+		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
@@ -161,7 +161,7 @@ CSkin CSkinLoader::loadSkin(CString pathBuf) {
 		loadedSkin.m_SecondaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
 		loadedSkin.m_SecondaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
 
-	} 
+	}
 	catch (...) {
 		AfxMessageBox("Unable to load .skin file!");
 	}

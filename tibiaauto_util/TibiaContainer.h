@@ -11,7 +11,7 @@
 
 #include "TibiaItem.h"
 
-class CTibiaContainer  
+class CTibiaContainer
 {
 public:
 	int countItemsOfType(int objectId);

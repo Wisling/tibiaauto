@@ -12,7 +12,7 @@
 class CTibiaList;
 class CTibiaTree;
 
-class CTibiaItem  
+class CTibiaItem
 {
 public:
 	static void cleanup();

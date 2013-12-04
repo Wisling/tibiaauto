@@ -9,10 +9,10 @@ void ipcMessage::send(HANDLE pipeHandle)
 {
 	this->tm = time(NULL);
 	DWORD cbWritten;
-	BOOL fSuccess = WriteFile( 
+	BOOL fSuccess = WriteFile(
 		pipeHandle,
 		this,
-		sizeof(struct ipcMessage), 
+		sizeof(struct ipcMessage),
 		&cbWritten,
 		NULL);
 }

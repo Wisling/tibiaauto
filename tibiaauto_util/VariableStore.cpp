@@ -47,7 +47,7 @@ void CVariableStore::setVariable(char *name, char *value)
 			sprintf(variableStoreValues[idx],"%s",value);
 		} else {
 			// too many variables - do nothing
-		} 
+		}
 	} else {
 		// update value of variable
 		sprintf(variableStoreValues[idx],"%s",value);

@@ -45,59 +45,59 @@ CIPCBackPipe::~CIPCBackPipe()
 
 void CIPCBackPipe::InitialiseIPC()
 {
-	char buf[128];	
+	char buf[128];
 	char lpszPipename[128];
 	int pid = ::GetCurrentProcessId();
-	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",pid);	
+	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-back-%d",pid);
 
 	while (1)
 	{
 
-		hPipeBack = CreateFile( 
-			lpszPipename,   // pipe name 
-			GENERIC_READ |  // read and write access 
-			GENERIC_WRITE, 
-			0,              // no sharing 
+		hPipeBack = CreateFile(
+			lpszPipename,   // pipe name
+			GENERIC_READ |  // read and write access
+			GENERIC_WRITE,
+			0,              // no sharing
 			NULL,           // no security attributes
-			OPEN_EXISTING,  // opens existing pipe 
-			0,              // default attributes 
-			NULL);          // no template file 		
+			OPEN_EXISTING,  // opens existing pipe
+			0,              // default attributes
+			NULL);          // no template file
 		
 		// pipe handle is valid - proceed
-		if (hPipeBack != INVALID_HANDLE_VALUE) 	
+		if (hPipeBack != INVALID_HANDLE_VALUE)
 		{
 			break;
-		}		
+		}
 		
 		
-		if (GetLastError() != ERROR_PIPE_BUSY) 
+		if (GetLastError() != ERROR_PIPE_BUSY)
 		{
 			
 			sprintf(buf,"Could not open pipe (not busy): %d",GetLastError());
-			//AfxMessageBox(buf); 
+			//AfxMessageBox(buf);
 			Sleep(50);
 			continue;
 		}
 		
-		// All pipe instances are busy, so wait for 1 second. 
+		// All pipe instances are busy, so wait for 1 second.
 		
-		if (! WaitNamedPipe(lpszPipename, 1000) ) 
+		if (! WaitNamedPipe(lpszPipename, 1000) )
 		{
 			sprintf(buf,"Could not open pipe (busy too long): %d",GetLastError());
-			AfxMessageBox(buf); 
+			AfxMessageBox(buf);
 			Sleep(50);
 			continue;
 		}
 	}
 	
-	DWORD dwMode = PIPE_READMODE_MESSAGE; 
-	BOOL fSuccess = SetNamedPipeHandleState( 
-		hPipeBack,    // pipe handle 
-		&dwMode,  // new pipe mode 
-		NULL,     // don't set maximum bytes 
-		NULL);    // don't set maximum time 	
-	if (!fSuccess) 
-	{	
+	DWORD dwMode = PIPE_READMODE_MESSAGE;
+	BOOL fSuccess = SetNamedPipeHandleState(
+		hPipeBack,    // pipe handle
+		&dwMode,  // new pipe mode
+		NULL,     // don't set maximum bytes
+		NULL);    // don't set maximum time
+	if (!fSuccess)
+	{
 		InitialiseIPC();
 	} else {
 		initialised=1;
@@ -158,7 +158,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			}
 		}
 		pipeBackCacheCount = j; //set count to the remaining number of entries
-		if(i-j>PIPE_CLEAN_AT_COUNT/5){ //sometimes it is TA which is not reading entries and not any particular 
+		if(i-j>PIPE_CLEAN_AT_COUNT/5){ //sometimes it is TA which is not reading entries and not any particular
 			if (!sentErrMsg){
 				sentErrMsg = 1;
 				char errBuf[256];
@@ -207,7 +207,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			}
 			j++;
 		}
-	}	
+	}
 	pipeBackCacheCount=j;
 
 	int flushOutPipeThisTime = flushOutPipeAtStart;
@@ -246,12 +246,12 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 			break;
 		}
 	}
-	LeaveCriticalSection(&BackPipeQueueCriticalSection); 
+	LeaveCriticalSection(&BackPipeQueueCriticalSection);
 	return 0;
 }
 
 void CIPCBackPipe::enlargePipeBackCache()
 {
 	pipeBackCacheSize=pipeBackCacheSize*2+3;
-	pipeBackCache=(struct ipcMessage *)realloc(pipeBackCache,sizeof(struct ipcMessage)*pipeBackCacheSize);	
+	pipeBackCache=(struct ipcMessage *)realloc(pipeBackCache,sizeof(struct ipcMessage)*pipeBackCacheSize);
 }

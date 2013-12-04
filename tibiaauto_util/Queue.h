@@ -12,7 +12,7 @@
 #include "TibiaMap.h"
 #include "TibiaMapPoint.h"
 
-class CQueue  
+class CQueue
 {
 public:
 	void add(int x,int y,int z);

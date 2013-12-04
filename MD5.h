@@ -39,7 +39,7 @@ typedef struct {
 } MD5_CTX;
 
 #ifdef __cplusplus	//added by Jim Howard so that these functions can be called from c++
-extern "C" 
+extern "C"
 {
 #endif
 	void MD5Init PROTO_LIST ((MD5_CTX *));

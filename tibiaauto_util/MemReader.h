@@ -21,9 +21,9 @@
 
 class CMemReader  : public CMemConstData
 {
-public:	
-	CMemReader(); 
-	virtual ~CMemReader();		
+public:
+	CMemReader();
+	virtual ~CMemReader();
 public:
 	int getCreatureDeltaY(int creatureNr);
 	int getCreatureDeltaX(int creatureNr);

@@ -42,10 +42,10 @@ public:
 		dist=0;
 		speed=130;//130 default( is >255/2 and <70*2)
 		destPoint=point(0,0,0);
-	}	
+	}
 };
  
-class CTibiaMap  
+class CTibiaMap
 {
 public:
 	int getPointUpDownNoProh(int x,int y, int z);
@@ -83,7 +83,7 @@ public:
 	
 private:
 	void enlarge();
-	int prohCount;	
+	int prohCount;
 	int prohSize;
 	struct point *prohList;
 	int CTibiaMap::intPoint(point p);

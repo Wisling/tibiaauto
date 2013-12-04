@@ -28,27 +28,27 @@ static int pointCacheSize=0;
 //////////////////////////////////////////////////////////////////////
 
 AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
-{	
+{
 	return key->x*191+key->y*257+key->z*317;
 }
 
 
 typedef point* LPpoint;
-AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint> 
+AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint>
      (const LPpoint *v1, const LPpoint *v2)
-{	
+{
 	if (!v1||!v2) return false;
 	point *v1d=*v1;
 	point *v2d=*v2;
-	if (!v1d||!v2d) return false;	
+	if (!v1d||!v2d) return false;
 	if (v1d&&v2d&&v1d->x==v2d->x&&v1d->y==v2d->y&&v1d->z==v2d->z) return true;
-	return false;    	
+	return false;
 }
 
 typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
 
 CTibiaMap::CTibiaMap()
-{		
+{
 	prohCount=0;
 	prohSize=500;
 	prohList=(struct point *)malloc(sizeof(struct point)*prohSize);
@@ -59,20 +59,20 @@ CTibiaMap::CTibiaMap()
 	//		myfile <<"\n";
 	//		myfile.close();
 	//mar/03/08 pointData size=36, point size=12
-	tibiaMap2.InitHashTable(11213);//56115 map points in a mapping of travel between all cities 
+	tibiaMap2.InitHashTable(11213);//56115 map points in a mapping of travel between all cities
 }
 
 CTibiaMap::~CTibiaMap()
 {
-	free(prohList);	
+	free(prohList);
 }
 
 
 
 int CTibiaMap::isPointAvailable(int x, int y,int z)
-{		
+{
 	struct point p=point(x,y,z);
-	struct pointData *pd=NULL;	
+	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
 	{
 		if (!pd->available) return false;
@@ -84,22 +84,22 @@ int CTibiaMap::isPointAvailable(int x, int y,int z)
 		{
 			if (prohList[prohNr].x==x&&prohList[prohNr].y==y&&prohList[prohNr].z==z)
 				return 0;
-		}	
+		}
 		return 1;
 	}
 	return 0;
 }
 
 void CTibiaMap::setPointAsAvailable(int x, int y,int z)
-{	
+{
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
 	{
 		pd->available=1;
 		pd->updown=0;
-	} 
-	else 
+	}
+	else
 	{
 		struct point *p=new point(x,y,z);
 		struct pointData *pd=new pointData();
@@ -109,7 +109,7 @@ void CTibiaMap::setPointAsAvailable(int x, int y,int z)
 }
 
 void CTibiaMap::clear()
-{	
+{
 	pointCacheSize=-1;
 	POSITION pos=tibiaMap2.GetStartPosition();
 	point *p;
@@ -125,7 +125,7 @@ void CTibiaMap::clear()
 }
 
 void CTibiaMap::enlarge()
-{	
+{
 	
 }
 
@@ -198,7 +198,7 @@ int CTibiaMap::intPoint(point p) {return p.x*1000000+p.y*10+p.z;}
 
 //returns -1 if loops onto itself, 0 if nothing should change, 1 if should change
 int CTibiaMap::isBetterPrevPoint (int x, int y, int z, int prevX, int prevY, int prevZ)
-{	
+{
 	return 1;
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
@@ -235,7 +235,7 @@ void CTibiaMap::setPointSpeed(int x, int y, int z,int speed)
 int CTibiaMap::getPointDistance(int x, int y, int z)
 {
 	struct point p=point(x,y,z);
-	struct pointData *pd=NULL;	
+	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd)) return pd->dist;
 
 	return 0;
@@ -269,7 +269,7 @@ typedef CMap<point *,point *,pointData *,pointData *> CMyMap;
 
 void CTibiaMap::clearPrevPoint()
 {
-	POSITION pos = tibiaMap2.GetStartPosition();	
+	POSITION pos = tibiaMap2.GetStartPosition();
 	while (pos != NULL)
 	{
 		point *p=NULL;
@@ -283,7 +283,7 @@ void CTibiaMap::clearPrevPoint()
 
 void CTibiaMap::clearDistance()
 {
-	POSITION pos = tibiaMap2.GetStartPosition();	
+	POSITION pos = tibiaMap2.GetStartPosition();
 	while (pos != NULL)
 	{
 		point *p=NULL;
@@ -312,7 +312,7 @@ void CTibiaMap::clearLocalPrevPoint(int x,int y,int z,int radius)
 }
 
 int CTibiaMap::getPrevPointX(int x, int y, int z)
-{	
+{
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
@@ -355,7 +355,7 @@ void CTibiaMap::loadFromDisk(FILE *f)
 }
 
 void CTibiaMap::setPointUpDown(int x, int y, int z, int updown)
-{	
+{
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
@@ -365,7 +365,7 @@ void CTibiaMap::setPointUpDown(int x, int y, int z, int updown)
 }
 
 int CTibiaMap::getPointUpDown(int x, int y, int z)
-{	
+{
 	struct point p=point(x,y,z);
 	struct pointData *pd=NULL;
 	if (tibiaMap2.Lookup(&p,pd))
@@ -391,9 +391,9 @@ void CTibiaMap::prohPointClear()
 }
 
 void CTibiaMap::removePointAvailable(int x, int y, int z)
-{	
+{
 	struct point p=point(x,y,z);
-	tibiaMap2.RemoveKey(&p);	
+	tibiaMap2.RemoveKey(&p);
 }
 
 int CTibiaMap::size()
@@ -403,7 +403,7 @@ int CTibiaMap::size()
 
 
 struct point CTibiaMap::getPointByNr(int nr)
-{		
+{
 
 	if (tibiaMap2.GetCount()!=pointCacheSize)
 	{
@@ -427,7 +427,7 @@ struct point CTibiaMap::getPointByNr(int nr)
 			pointData *pd=NULL;
 			tibiaMap2.GetNextAssoc( pos, p, pd );
 			pointCache[pointCachePos++]=point(p->x,p->y,p->z);
-		}	
+		}
 
 		
 	}
@@ -448,7 +448,7 @@ int CTibiaMap::isPointAvailableNoProh(int x, int y, int z)
 	{
 		return pd->available;
 	}
-	return 0;	
+	return 0;
 }
 
 int CTibiaMap::getPointUpDownNoProh(int x, int y, int z)

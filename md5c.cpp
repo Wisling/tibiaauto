@@ -115,7 +115,7 @@ void MD5Init (MD5_CTX *context)
   operation, processing another message block, and updating the
   context.
  */
-void MD5Update (MD5_CTX *context, unsigned char *input, unsigned int inputLen)                         
+void MD5Update (MD5_CTX *context, unsigned char *input, unsigned int inputLen)
 {
   unsigned int i, index, partLen;
 

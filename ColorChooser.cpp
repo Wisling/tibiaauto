@@ -70,7 +70,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CColorChooser message handlers
 
-BOOL CColorChooser::OnInitDialog() 
+BOOL CColorChooser::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
@@ -124,7 +124,7 @@ BOOL CColorChooser::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar) 
+void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
 	// TODO: Add your message handler code here and/or call default
 	CSliderCtrl *check = (CSliderCtrl *)pScrollBar;
@@ -515,19 +515,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_ButtonFaceRedValue += 16;
-				else 
+				else
 					skin.m_ButtonFaceRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_ButtonFaceGreenValue += 16;
-				else 
+				else
 					skin.m_ButtonFaceGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_ButtonFaceBlueValue += 16;
-				else 
+				else
 					skin.m_ButtonFaceBlueValue = 255;
 			}
 			break;
@@ -535,19 +535,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_ButtonDSRedValue += 16;
-				else 
+				else
 					skin.m_ButtonDSRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_ButtonDSGreenValue += 16;
-				else 
+				else
 					skin.m_ButtonDSGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_ButtonDSBlueValue += 16;
-				else 
+				else
 					skin.m_ButtonDSBlueValue = 255;
 			}
 			break;
@@ -555,19 +555,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_ButtonLSRedValue += 16;
-				else 
+				else
 					skin.m_ButtonLSRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_ButtonLSGreenValue += 16;
-				else 
+				else
 					skin.m_ButtonLSGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_ButtonLSBlueValue += 16;
-				else 
+				else
 					skin.m_ButtonLSBlueValue = 255;
 			}
 			break;
@@ -575,19 +575,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_ButtonLightRedValue += 16;
-				else 
+				else
 					skin.m_ButtonLightRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_ButtonLightGreenValue += 16;
-				else 
+				else
 					skin.m_ButtonLightGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_ButtonLightBlueValue += 16;
-				else 
+				else
 					skin.m_ButtonLightBlueValue = 255;
 			}
 			break;
@@ -595,19 +595,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_ButtonHighLightRedValue += 16;
-				else 
+				else
 					skin.m_ButtonHighLightRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_ButtonHighLightGreenValue += 16;
-				else 
+				else
 					skin.m_ButtonHighLightGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_ButtonHighLightBlueValue += 16;
-				else 
+				else
 					skin.m_ButtonHighLightBlueValue = 255;
 			}
 			break;
@@ -615,19 +615,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_TextRedValue += 16;
-				else 
+				else
 					skin.m_TextRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_TextGreenValue += 16;
-				else 
+				else
 					skin.m_TextGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_TextBlueValue += 16;
-				else 
+				else
 					skin.m_TextBlueValue = 255;
 			}
 			break;
@@ -635,19 +635,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_PrimaryBackgroundRedValue += 16;
-				else 
+				else
 					skin.m_PrimaryBackgroundRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_PrimaryBackgroundGreenValue += 16;
-				else 
+				else
 					skin.m_PrimaryBackgroundGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_PrimaryBackgroundBlueValue += 16;
-				else 
+				else
 					skin.m_PrimaryBackgroundBlueValue = 255;
 			}
 			break;
@@ -655,19 +655,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_SecondaryBackgroundRedValue += 16;
-				else 
+				else
 					skin.m_SecondaryBackgroundRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_SecondaryBackgroundGreenValue += 16;
-				else 
+				else
 					skin.m_SecondaryBackgroundGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_SecondaryBackgroundBlueValue += 16;
-				else 
+				else
 					skin.m_SecondaryBackgroundBlueValue = 255;
 			}
 			break;
@@ -675,19 +675,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if (m_DetailRedValue < 240)
 					skin.m_EditboxRedValue += 16;
-				else 
+				else
 					skin.m_EditboxRedValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue < 240)
 					skin.m_EditboxGreenValue += 16;
-				else 
+				else
 					skin.m_EditboxGreenValue = 255;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue < 240)
 					skin.m_EditboxBlueValue += 16;
-				else 
+				else
 					skin.m_EditboxBlueValue = 255;
 			}
 			break;
@@ -699,19 +699,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_ButtonFaceRedValue -= 16;
-				else 
+				else
 					skin.m_ButtonFaceRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_ButtonFaceGreenValue -= 16;
-				else 
+				else
 					skin.m_ButtonFaceGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_ButtonFaceBlueValue -= 16;
-				else 
+				else
 					skin.m_ButtonFaceBlueValue = 0;
 			}
 			break;
@@ -719,19 +719,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_ButtonDSRedValue -= 16;
-				else 
+				else
 					skin.m_ButtonDSRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_ButtonDSGreenValue -= 16;
-				else 
+				else
 					skin.m_ButtonDSGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_ButtonDSBlueValue -= 16;
-				else 
+				else
 					skin.m_ButtonDSBlueValue = 0;
 			}
 			break;
@@ -739,19 +739,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_ButtonLSRedValue -= 16;
-				else 
+				else
 					skin.m_ButtonLSRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_ButtonLSGreenValue -= 16;
-				else 
+				else
 					skin.m_ButtonLSGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_ButtonLSBlueValue -= 16;
-				else 
+				else
 					skin.m_ButtonLSBlueValue = 0;
 			}
 			break;
@@ -759,19 +759,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_ButtonLightRedValue -= 16;
-				else 
+				else
 					skin.m_ButtonLightRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_ButtonLightGreenValue -= 16;
-				else 
+				else
 					skin.m_ButtonLightGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_ButtonLightBlueValue -= 16;
-				else 
+				else
 					skin.m_ButtonLightBlueValue = 0;
 			}
 			break;
@@ -779,19 +779,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_ButtonHighLightRedValue -= 16;
-				else 
+				else
 					skin.m_ButtonHighLightRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_ButtonHighLightGreenValue -= 16;
-				else 
+				else
 					skin.m_ButtonHighLightGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_ButtonHighLightBlueValue -= 16;
-				else 
+				else
 					skin.m_ButtonHighLightBlueValue = 0;
 			}
 			break;
@@ -799,19 +799,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_TextRedValue -= 16;
-				else 
+				else
 					skin.m_TextRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_TextGreenValue -= 16;
-				else 
+				else
 					skin.m_TextGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_TextBlueValue -= 16;
-				else 
+				else
 					skin.m_TextBlueValue = 0;
 			}
 			break;
@@ -819,19 +819,19 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_PrimaryBackgroundRedValue -= 16;
-				else 
+				else
 					skin.m_PrimaryBackgroundRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_PrimaryBackgroundGreenValue -= 16;
-				else 
+				else
 					skin.m_PrimaryBackgroundGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_PrimaryBackgroundBlueValue -= 16;
-				else 
+				else
 					skin.m_PrimaryBackgroundBlueValue = 0;
 			}
 			break;
@@ -839,38 +839,38 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_SecondaryBackgroundRedValue -= 16;
-				else 
+				else
 					skin.m_SecondaryBackgroundRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_SecondaryBackgroundGreenValue -= 16;
-				else 
+				else
 					skin.m_SecondaryBackgroundGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_SecondaryBackgroundBlueValue -= 16;
-				else 
+				else
 					skin.m_SecondaryBackgroundBlueValue = 0;
 			}
 		case 8:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER) {
 				if(m_DetailRedValue > 16)
 					skin.m_EditboxRedValue -= 16;
-				else 
+				else
 					skin.m_EditboxRedValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_GREEN_SLIDER) {
 				if (m_DetailGreenValue > 16)
 					skin.m_EditboxGreenValue -= 16;
-				else 
+				else
 					skin.m_EditboxGreenValue = 0;
 			}
 			if (pScrollBar->GetDlgCtrlID() == IDC_BLUE_SLIDER) {
 				if (m_DetailBlueValue > 16)
 					skin.m_EditboxBlueValue -= 16;
-				else 
+				else
 					skin.m_EditboxBlueValue = 0;
 			}
 			break;
@@ -914,43 +914,43 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 
 
-void CColorChooser::OnRedSliderDown() 
+void CColorChooser::OnRedSliderDown()
 {
 	// TODO: Add your control notification handler code here
 	OnHScroll(TB_LINEUP, 0, (CScrollBar*) &m_RedSlider);
 }
 
-void CColorChooser::OnGreenSliderDown() 
+void CColorChooser::OnGreenSliderDown()
 {
 	// TODO: Add your control notification handler code here
 	OnHScroll(TB_LINEUP, 0, (CScrollBar*) &m_GreenSlider);
 }
 
-void CColorChooser::OnBlueSliderDown() 
+void CColorChooser::OnBlueSliderDown()
 {
 	// TODO: Add your control notification handler code here
 	OnHScroll(TB_LINEUP, 0, (CScrollBar*) &m_BlueSlider);
 }
 
-void CColorChooser::OnRedSliderUp() 
+void CColorChooser::OnRedSliderUp()
 {
 	// TODO: Add your control notification handler code here
 	OnHScroll(TB_LINEDOWN, 0, (CScrollBar*) &m_RedSlider);
 }
 
-void CColorChooser::OnGreenSliderUp() 
+void CColorChooser::OnGreenSliderUp()
 {
 	// TODO: Add your control notification handler code here
 	OnHScroll(TB_LINEDOWN, 0, (CScrollBar*) &m_GreenSlider);
 }
 
-void CColorChooser::OnBlueSliderUp() 
+void CColorChooser::OnBlueSliderUp()
 {
 	// TODO: Add your control notification handler code here
 	OnHScroll(TB_LINEDOWN, 0, (CScrollBar*) &m_BlueSlider);
 }
 
-HBRUSH CColorChooser::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH CColorChooser::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	// TODO: Change any attributes of the DC here
 
@@ -958,7 +958,7 @@ HBRUSH CColorChooser::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	CRect rect;
 	pWnd->GetClientRect(&rect);
 	CBrush brush;
-	brush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue)); 
+	brush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue));
 	if(pWnd->GetDlgCtrlID() == 9999){
 		rect.top += 6;
 		rect.right -= 2;
@@ -1005,7 +1005,7 @@ void CColorChooser::UpdateDisplay(int updateID, int redValue, int greenValue, in
 	m_BlueSlider.AddColor(0, 255, RGB(m_DetailRedValue, m_DetailGreenValue, 0), RGB(m_DetailRedValue, m_DetailGreenValue, 255));
 	m_BlueSlider.Refresh();
 
-	if (updateID == 6) 
+	if (updateID == 6)
 		InvalidateRect(m_ExampleRect);
 	m_SecondaryBackground.Invalidate();
 	skin.SetButtonSkin(m_Example);
@@ -1015,7 +1015,7 @@ void CColorChooser::UpdateDisplay(int updateID, int redValue, int greenValue, in
 	UpdateData(false);
 }
 
-void CColorChooser::OnSelchangeDetailPicker() 
+void CColorChooser::OnSelchangeDetailPicker()
 {
 	// TODO: Add your control notification handler code here
 	switch(m_DetailPicker.GetCurSel()) {
@@ -1049,7 +1049,7 @@ void CColorChooser::OnSelchangeDetailPicker()
 	}
 }
 
-BOOL CColorChooser::OnEraseBkgnd(CDC* pDC) 
+BOOL CColorChooser::OnEraseBkgnd(CDC* pDC)
 {
 	CDialog::OnEraseBkgnd(pDC);
 	
@@ -1060,7 +1060,7 @@ BOOL CColorChooser::OnEraseBkgnd(CDC* pDC)
 	return true;
 }
 
-void CColorChooser::OnOK() 
+void CColorChooser::OnOK()
 {
 	// TODO: Add extra validation here
 	CMemReaderProxy reader;
@@ -1074,7 +1074,7 @@ void CColorChooser::OnOK()
 		{
 			pathBuf = fd.GetPathName();
 		}
-		else 
+		else
 			return;
 	}
 	
@@ -1083,7 +1083,7 @@ void CColorChooser::OnOK()
 	CDialog::OnOK();
 }
 
-void CColorChooser::OnLoad() 
+void CColorChooser::OnLoad()
 {
 	// TODO: Add your control notification handler code here
 	CMemReaderProxy reader;
@@ -1092,22 +1092,22 @@ void CColorChooser::OnLoad()
 	
 	CFileDialog fd(true,"",NULL,OFN_FILEMUSTEXIST, szFilters, this);
 	if (fd.DoModal()==IDOK)
-	{		
-		pathBuf = (LPCSTR)fd.GetPathName();         						
+	{
+		pathBuf = (LPCSTR)fd.GetPathName();
 		skin = loadedSkin = reader.loadSkin(pathBuf);
-	}		
+	}
 
 	UpdateDisplay(6, skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue);
 }
 
-void CColorChooser::OnCancel() 
+void CColorChooser::OnCancel()
 {
 	// TODO: Add extra cleanup here
 	skin = originalSkin;
 	CDialog::OnCancel();
 }
 
-void CColorChooser::OnSave() 
+void CColorChooser::OnSave()
 {
 	// TODO: Add your control notification handler code here
 	CMemReaderProxy reader;
@@ -1120,7 +1120,7 @@ void CColorChooser::OnSave()
 	{
 		pathBuf = fd.GetPathName();
 	}
-	else 
+	else
 		return;
 	
 	reader.saveSkin(pathBuf, skin, true);

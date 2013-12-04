@@ -46,29 +46,29 @@ public:
 		
 		
 		hPipeBack = CreateNamedPipe(
-			lpszPipename,             // pipe name 
-			PIPE_ACCESS_DUPLEX,       // read/write access 
-			PIPE_TYPE_MESSAGE |       // message type pipe 
-			PIPE_READMODE_MESSAGE |   // message-read mode 
-			PIPE_WAIT,                // blocking mode 
-			PIPE_UNLIMITED_INSTANCES, // max. instances  
-			163840,                  // output buffer size 
-			163840,                  // input buffer size 
-			1000,                        // client time-out 
-			NULL);                    // no security attribute 
+			lpszPipename,             // pipe name
+			PIPE_ACCESS_DUPLEX,       // read/write access
+			PIPE_TYPE_MESSAGE |       // message type pipe
+			PIPE_READMODE_MESSAGE |   // message-read mode
+			PIPE_WAIT,                // blocking mode
+			PIPE_UNLIMITED_INSTANCES, // max. instances
+			163840,                  // output buffer size
+			163840,                  // input buffer size
+			1000,                        // client time-out
+			NULL);                    // no security attribute
 		
 		
-		if (hPipeBack == INVALID_HANDLE_VALUE) 
-		{		
+		if (hPipeBack == INVALID_HANDLE_VALUE)
+		{
 			if (debugFile&&COMPLEX)
 			{
 				fprintf(debugFile,"[ipcback] Invalid pipe handle: %d\r\n",GetLastError());
 				return;
 			}
-		}			
+		}
 		
 		
-		BOOL fConnected = ConnectNamedPipe(hPipeBack, NULL) ?  true : (GetLastError() == ERROR_PIPE_CONNECTED); 
+		BOOL fConnected = ConnectNamedPipe(hPipeBack, NULL) ?  true : (GetLastError() == ERROR_PIPE_CONNECTED);
 		
 		
 		if (!fConnected)
@@ -86,7 +86,7 @@ public:
 		{
 			fprintf(debugFile,"[debug] back IPC initialised ok\r\n");
 			fflush(debugFile);
-		}	
+		}
 		
 	}
 };

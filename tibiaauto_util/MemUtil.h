@@ -9,9 +9,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CMemUtil  
+class CMemUtil
 {
-public:	
+public:
 	static int SetMemRange(int processId,DWORD memAddressStart,DWORD memAddressEnd,char *data,int addBaseAddress);
 	static int SetMemRange(DWORD memAddressStart,DWORD memAddressEnd,char *data,int addBaseAddress=1);
 	static long int GetMemIntValue(DWORD memAddress,int addBaseAddress=1);

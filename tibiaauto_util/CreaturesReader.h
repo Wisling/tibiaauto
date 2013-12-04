@@ -5,14 +5,14 @@
 #if !defined(AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_)
 #define AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_
 
-// error here means: download berkley db 
+// error here means: download berkley db
 #include "db_cxx.h"
 
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CCreaturesReader  
+class CCreaturesReader
 {
 public:
 	char ** findCreatureStatInArea(int x,int y,int z,int rangeXY,int rangeZ);

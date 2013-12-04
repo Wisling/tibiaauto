@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CConfigCreatorUtilMultiParams::CConfigCreatorUtilMultiParams()
-{	
+{
 	int i;
 	for (i=0;i<MAX_MULTIPARAMS;i++)
 		paramsList[i]=(char *)malloc(MAX_STRING_LEN);
@@ -38,7 +38,7 @@ int CConfigCreatorUtilMultiParams::isKnownMultiparam(char *name)
 	{
 		if (!strcmp(paramsList[i],name))
 			return 1;
-	} 
+	}
 	return 0;
 }
 

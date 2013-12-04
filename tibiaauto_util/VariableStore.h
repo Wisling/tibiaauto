@@ -11,7 +11,7 @@
 
 #define MAX_VARIABLES 100
 
-class CVariableStore  
+class CVariableStore
 {
 public:
 	static const char * getVariable(char *name);
@@ -23,7 +23,7 @@ private:
 	static int findVariableIndex(char *name);
 	static char variableStore[MAX_VARIABLES][210];
 	static char variableStoreValues[MAX_VARIABLES][210];
-	static int variableCount;	
+	static int variableCount;
 };
 
 #endif // !defined(AFX_VARIABLESTORE_H__A09A3B1B_E3C8_4927_AA93_5EBEB2F8E088__INCLUDED_)

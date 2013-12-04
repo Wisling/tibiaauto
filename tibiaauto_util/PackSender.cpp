@@ -36,7 +36,7 @@ public:
 		BOOL fSuccess = WriteFile(
 			hPipe,
 			this,
-			sizeof(struct ipcMessage), 
+			sizeof(struct ipcMessage),
 			&cbWritten,
 			NULL);
 	}
@@ -65,7 +65,7 @@ void CPackSender::sendPacket(char *buf)
 }
 
 void CPackSender::sendPacket(char *buf,int method)
-{	
+{
 	// check if we are connected
 	int lowB=buf[0];
 	int hiB=buf[1];
@@ -73,7 +73,7 @@ void CPackSender::sendPacket(char *buf,int method)
 	if (hiB<0) hiB+=256;
 	int len=lowB+hiB*256+2;
 
-	struct ipcMessage mess;		
+	struct ipcMessage mess;
 
 	mess.messageType=method;
 	memcpy(mess.payload,buf,len);
@@ -145,7 +145,7 @@ void CPackSender::useItem(int objectId)
 	retbuf[6]=0;
 	retbuf[7]=0;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=0;
 	retbuf[11]=0;
 
@@ -169,7 +169,7 @@ void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 	retbuf[6]=0;
 	retbuf[7]=pos;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=pos;
 	retbuf[11]=reader.findNextClosedContainer();
 
@@ -204,7 +204,7 @@ void CPackSender::openContainerFromFloor(int objectId,int x,int y,int z, int tar
 	retbuf[8]=objectId&0xff;
 	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=targetInd;
-	retbuf[11]=targetBag;	
+	retbuf[11]=targetBag;
 
 	sendPacket(retbuf);
 }
@@ -431,7 +431,7 @@ void CPackSender::closeContainer(int contNr)
 	sendbuf[0]=2;
 	sendbuf[1]=0;
 	sendbuf[2]=0x87;
-	sendbuf[3]=contNr;	
+	sendbuf[3]=contNr;
 
 	sendPacket(sendbuf);
 }
@@ -536,8 +536,8 @@ void CPackSender::useItemOnCreatureSend(int objectId,int x,int y_Cont,int z_Pos,
 	retbuf[6]=(y_Cont>>8)&0xff;
 	retbuf[7]=z_Pos;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=max(0,targetInd_Pos);	
+	retbuf[9]=(objectId>>8)&0xff;
+	retbuf[10]=max(0,targetInd_Pos);
 	retbuf[11]=creatureId&0xff;
 	retbuf[12]=(creatureId>>8)&0xff;
 	retbuf[13]=(creatureId>>16)&0xff;
@@ -580,7 +580,7 @@ void CPackSender::revealFish(int enable)
 
 void CPackSender::sendTAMessage(char *msg)
 {
-	struct ipcMessage mess;		
+	struct ipcMessage mess;
 
 	mess.messageType=3;
 	strcpy(mess.payload,msg);
@@ -671,7 +671,7 @@ void CPackSender::moveObjectBetweenContainers(int objectId, int sourceContNr, in
 	retbuf[6]=0;
 	retbuf[7]=sourcePos;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=sourcePos;
 
 	retbuf[11]=0xff;
@@ -700,7 +700,7 @@ void CPackSender::moveObjectFromContainerToFloor(int objectId, int contNr, int p
 	retbuf[6]=0;
 	retbuf[7]=pos;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
+	retbuf[9]=(objectId>>8)&0xff;
 	retbuf[10]=pos;
 
 	retbuf[11]=x&0xff;
@@ -736,10 +736,10 @@ void CPackSender::openContainerFromContainer(int objectId, int contNrFrom, int c
 	retbuf[4]=0xff;
 	retbuf[5]=contNrFrom;
 	retbuf[6]=0;
-	retbuf[7]=contPosFrom;	
+	retbuf[7]=contPosFrom;
 	retbuf[8]=objectId&0xff;
-	retbuf[9]=(objectId>>8)&0xff;	
-	retbuf[10]=contPosFrom;	
+	retbuf[9]=(objectId>>8)&0xff;
+	retbuf[10]=contPosFrom;
 	retbuf[11]=targetBag;
 
 	sendPacket(retbuf);
@@ -789,7 +789,7 @@ void CPackSender::tell(char *msg, char *playerName)
 	retbuf[7+strlen(playerName)]=strlen(msg)/256;
 	memcpy(retbuf+8+strlen(playerName),msg,strlen(msg));
 	
-	sendPacket(retbuf);	
+	sendPacket(retbuf);
 }
 
 void CPackSender::sayNPC(char *buf)
@@ -819,8 +819,8 @@ void CPackSender::sayOnChan(char *msg, int channelId1,int channelId2)
 	retbuf[4]=channelId2%256;
 	retbuf[5]=0;
 	retbuf[6]=strlen(msg)%256;
-	retbuf[7]=strlen(msg)/256;	
-	sprintf(retbuf+8,"%s",msg);			
+	retbuf[7]=strlen(msg)/256;
+	sprintf(retbuf+8,"%s",msg);
 
 	sendPacket(retbuf);
 }
@@ -835,10 +835,10 @@ void CPackSender::npcBuy(int objectId,int qty, int ignoreCap, int withBackpack)
 	retbuf[2]=0x7a;
 	retbuf[3]=objectId&0xff;
 	retbuf[4]=(objectId>>8)&0xff;
-	retbuf[5]=0;	
-	retbuf[6]=qty;	
+	retbuf[5]=0;
+	retbuf[6]=qty;
 	retbuf[7]=ignoreCap ? 1 : 0; //ignore capacity
-	retbuf[8]=withBackpack ? 1 : 0; //buy with backpack	
+	retbuf[8]=withBackpack ? 1 : 0; //buy with backpack
 
 	sendPacket(retbuf);
 }
@@ -852,8 +852,8 @@ void CPackSender::npcSell(int objectId,int qty)
 
 	retbuf[2]=0x7b;
 	retbuf[3]=objectId&0xff;
-	retbuf[4]=(objectId>>8)&0xff;	
-	retbuf[5]=0;	
+	retbuf[4]=(objectId>>8)&0xff;
+	retbuf[5]=0;
 	retbuf[6]=qty;
 	retbuf[7]=1;
 
@@ -920,7 +920,7 @@ void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 
 void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 {
-	struct ipcMessage mess;		
+	struct ipcMessage mess;
 
 	if (strlen(info1)>499) info1[499]='\0';
 	if (strlen(info2)>499) info2[499]='\0';
@@ -936,7 +936,7 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 
 void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message)
 {
-	struct ipcMessage mess;		
+	struct ipcMessage mess;
 	int messLen = strlen(message);
 	mess.messageType=307;
 	memcpy(mess.payload, &pos.x, sizeof(int));
@@ -998,7 +998,7 @@ void CPackSender::look(int x, int y, int z, int objectId)
 
 void CPackSender::ignoreLook(int end)
 {
-	struct ipcMessage mess;		
+	struct ipcMessage mess;
 
 	mess.messageType=302;
 	memcpy(mess.payload,&end,4);

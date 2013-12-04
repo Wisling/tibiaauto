@@ -13,7 +13,7 @@
 #include <vector>
 using namespace std;
 
-class CMyMenu : public CMenu  
+class CMyMenu : public CMenu
 {
 public:
 	CMyMenu();

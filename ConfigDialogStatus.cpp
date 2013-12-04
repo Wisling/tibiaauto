@@ -54,7 +54,7 @@ void CConfigDialogStatus::addToLog(char *message)
 	m_log.InsertItem(0,message);
 }
 
-BOOL CConfigDialogStatus::OnInitDialog() 
+BOOL CConfigDialogStatus::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
@@ -74,12 +74,12 @@ void CConfigDialogStatus::enableOk()
 	m_ok.EnableWindow(true);
 }
 
-void CConfigDialogStatus::OnClose() 
+void CConfigDialogStatus::OnClose()
 {
 		
 }
 
-void CConfigDialogStatus::OnOK() 
+void CConfigDialogStatus::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }

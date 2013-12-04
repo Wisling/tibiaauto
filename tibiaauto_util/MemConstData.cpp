@@ -19,7 +19,7 @@ static char THIS_FILE[]=__FILE__;
 
 CMemConstData::CMemConstData()
 {
-	CTibiaItemProxy itemProxy;	
+	CTibiaItemProxy itemProxy;
 	
 	int offset = itemProxy.getValueForConst("addrOffset");
 
@@ -32,9 +32,9 @@ CMemConstData::CMemConstData()
 	m_memLengthMapTile=itemProxy.getValueForConst("lengthMapTile");
 	m_memLengthVIP=itemProxy.getValueForConst("lengthVIP");
 	
-	// addresses	
+	// addresses
 	m_memAddressXor					= offset + itemProxy.getValueForConst("addrXor");
-	m_memAddressVIP					= offset + itemProxy.getValueForConst("addrVIP");	
+	m_memAddressVIP					= offset + itemProxy.getValueForConst("addrVIP");
 	m_memAddressFirstContainer      = offset + itemProxy.getValueForConst("addrFirstContainer");
 	m_memAddressFirstCreature       = offset + itemProxy.getValueForConst("addrFirstCreature");
 	m_memAddressHP                  = offset + itemProxy.getValueForConst("addrHP");
@@ -56,8 +56,8 @@ CMemConstData::CMemConstData()
 	m_memAddressLvl                 = offset + itemProxy.getValueForConst("addrLvl");
 	m_memAddressMlvl                = offset + itemProxy.getValueForConst("addrMlvl");
 	m_memAddressMlvlPercLeft        = offset + itemProxy.getValueForConst("addrMlvlPercLeft");
-	m_memAddressAttackedCreature    = offset + itemProxy.getValueForConst("addrAttackedCreature"); 
-	m_memAddressFollowedCreature    = offset + itemProxy.getValueForConst("addrFollowedCreature"); 
+	m_memAddressAttackedCreature    = offset + itemProxy.getValueForConst("addrAttackedCreature");
+	m_memAddressFollowedCreature    = offset + itemProxy.getValueForConst("addrFollowedCreature");
 	m_memAddressSoulPoints          = offset + itemProxy.getValueForConst("addrSoulPoints");
 	m_memAddressTradeCountSelf      = offset + itemProxy.getValueForConst("addrTradeCountSelf");
 	m_memAddressTradeCountPartner   = offset + itemProxy.getValueForConst("addrTradeCountPartner");

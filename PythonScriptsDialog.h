@@ -13,7 +13,7 @@
 class CPythonScriptsDialog : public MyDialog
 {
 // Construction
-public:	
+public:
 	void DoSetButtonSkin();
 	CPythonScriptsDialog(CWnd* pParent = NULL);   // standard constructor
 	virtual ~CPythonScriptsDialog();

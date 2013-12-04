@@ -88,7 +88,7 @@ void CTileReader::loadTiles() {
 		tiles[i]=new CTibiaTile();
 	}
 	XercesDOMParser *parser = new XercesDOMParser();
-	try {	
+	try {
 		char installPath[1024];
 		unsigned long installPathLen=1023;
 		installPath[0]='\0';
@@ -105,19 +105,19 @@ void CTileReader::loadTiles() {
 		char pathBuf[2048];
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-tiles.xml",installPath);
 		parser->parse(pathBuf);
-		DOMNode  *doc = parser->getDocument();	
-		int rootCount=doc->getChildNodes()->getLength();		
-		for (rootNr=0;rootNr<rootCount;rootNr++) {			
+		DOMNode  *doc = parser->getDocument();
+		int rootCount=doc->getChildNodes()->getLength();
+		for (rootNr=0;rootNr<rootCount;rootNr++) {
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
 			if (wcscmp(root->getNodeName(),_L("tiles")))
-				continue;					
+				continue;
 			DOMNode *item = root->getFirstChild();
 			if (item) {
-				do 	{			
-					if (!wcscmp(item->getNodeName(),_L("tile"))) {	
+				do 	{
+					if (!wcscmp(item->getNodeName(),_L("tile"))) {
 						int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
 						
-						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,_L("blocking"));						
+						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,_L("blocking"));
 						tiles[tileId]->canWalkThrough=CUtil::getNodeIntAttribute(item,_L("canWalkThrough"));
 						tiles[tileId]->goDown=CUtil::getNodeIntAttribute(item,_L("goDown"));
 						tiles[tileId]->goUp=CUtil::getNodeIntAttribute(item,_L("goUp"));
@@ -127,7 +127,7 @@ void CTileReader::loadTiles() {
 						tiles[tileId]->requireRope=CUtil::getNodeIntAttribute(item,_L("requireRope"));
 						tiles[tileId]->requireShovel=CUtil::getNodeIntAttribute(item,_L("requireShovel"));
 						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,_L("requireUse"));
-						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));												
+						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));
 						tiles[tileId]->minimapColor=CUtil::getNodeIntAttribute(item,_L("minimapColor"));
 						tiles[tileId]->notMoveable=CUtil::getNodeIntAttribute(item,_L("notMoveable"));
 						tiles[tileId]->stackable=CUtil::getNodeIntAttribute(item,_L("stackable"));
@@ -140,16 +140,16 @@ void CTileReader::loadTiles() {
 						tiles[tileId]->isUseable=CUtil::getNodeIntAttribute(item,_L("isUseableWith"));
 						tiles[tileId]->isUseableImmobile=CUtil::getNodeIntAttribute(item,_L("isUseableImmobile"));
 						tiles[tileId]->blockPathFind=CUtil::getNodeIntAttribute(item,_L("blockPathFind"));
-					}		
+					}
 				} while ((item=item->getNextSibling())!=NULL);
 			}
-		}				
-	} 
+		}
+	}
 	catch (...) {
 		AfxMessageBox("Unable to load tile definitions!");
 	}
 	
-	delete parser;		
+	delete parser;
 }
 
 void CTileReader::saveTiles() {
@@ -169,18 +169,18 @@ void CTileReader::saveTiles() {
 	char pathBuf[2048];
 	sprintf(pathBuf,"%s\\mods\\tibiaauto-tiles.xml",installPath);
 	parser->parse(pathBuf);
-	DOMNode  *doc = parser->getDocument();	
-	int rootCount=doc->getChildNodes()->getLength();		
-	for (rootNr=0;rootNr<rootCount;rootNr++) {			
+	DOMNode  *doc = parser->getDocument();
+	int rootCount=doc->getChildNodes()->getLength();
+	for (rootNr=0;rootNr<rootCount;rootNr++) {
 		DOMNode *root = doc->getChildNodes()->item(rootNr);
 		if (wcscmp(root->getNodeName(),_L("tiles")))
-			continue;					
+			continue;
 		DOMNode *item = root->getFirstChild();
 		if (item) {
-			do {			
+			do {
 				if (!wcscmp(item->getNodeName(),_L("tile"))) {
 					int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
-					CUtil::setNodeIntAttribute(item,_L("blocking"), tiles[tileId]->blocking);						
+					CUtil::setNodeIntAttribute(item,_L("blocking"), tiles[tileId]->blocking);
 					CUtil::setNodeIntAttribute(item,_L("canWalkThrough"),tiles[tileId]->canWalkThrough);
 					CUtil::setNodeIntAttribute(item,_L("goDown"), tiles[tileId]->goDown);
 					CUtil::setNodeIntAttribute(item,_L("goUp"), tiles[tileId]->goUp);
@@ -190,7 +190,7 @@ void CTileReader::saveTiles() {
 					CUtil::setNodeIntAttribute(item,_L("requireRope"), tiles[tileId]->requireRope);
 					CUtil::setNodeIntAttribute(item,_L("requireShovel"), tiles[tileId]->requireShovel);
 					CUtil::setNodeIntAttribute(item,_L("requireUse"), tiles[tileId]->requireUse);
-					CUtil::setNodeIntAttribute(item,_L("speed"), tiles[tileId]->speed);												
+					CUtil::setNodeIntAttribute(item,_L("speed"), tiles[tileId]->speed);
 					CUtil::setNodeIntAttribute(item,_L("minimapColor"), tiles[tileId]->minimapColor);
 					CUtil::setNodeIntAttribute(item,_L("notMoveable"), tiles[tileId]->notMoveable);
 					CUtil::setNodeIntAttribute(item,_L("stackable"),  tiles[tileId]->stackable);
@@ -203,7 +203,7 @@ void CTileReader::saveTiles() {
 					CUtil::setNodeIntAttribute(item,_L("isUseableWith"), tiles[tileId]->isUseable);
 					CUtil::setNodeIntAttribute(item,_L("isUseableImmobile"), tiles[tileId]->isUseableImmobile);
 					CUtil::setNodeIntAttribute(item,_L("blockPathFind"), tiles[tileId]->blockPathFind);
-				}		
+				}
 			} while ((item=item->getNextSibling())!=NULL);
 		}
 	}
@@ -215,7 +215,7 @@ void CTileReader::saveTiles() {
 		theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
 	}
 	xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-	theSerializer->writeNode(outfile, *doc);			
+	theSerializer->writeNode(outfile, *doc);
 	theSerializer->release();
 	theSerializer=NULL;
 	delete outfile;

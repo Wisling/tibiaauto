@@ -11,7 +11,7 @@
 
 #define MAX_MULTIPARAMS 20
 
-class CConfigCreatorUtilMultiParams  
+class CConfigCreatorUtilMultiParams
 {
 public:
 	void registerMultiparam(char *name);

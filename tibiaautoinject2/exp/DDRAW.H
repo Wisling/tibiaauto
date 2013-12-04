@@ -2264,7 +2264,7 @@ typedef struct _DDSURFACEDESC2
     union
     {
         DWORD           dwBackBufferCount;      // number of back buffers requested
-        DWORD           dwDepth;                // the depth if this is a volume texture 
+        DWORD           dwDepth;                // the depth if this is a volume texture
     } DUMMYUNIONNAMEN(5);
     union
     {
@@ -2887,7 +2887,7 @@ typedef struct _DDCOLORCONTROL
 #define DDSCAPS2_NPATCHES                       0x02000000L
 
 /*
- * This bit is reserved for internal use 
+ * This bit is reserved for internal use
  */
 #define DDSCAPS2_RESERVED3                      0x04000000L
 
@@ -4355,7 +4355,7 @@ typedef struct _DDCOLORCONTROL
  * that moves surface contents from an offscreen back buffer to the primary
  * surface). The driver is not allowed to "queue"  more than three such blts.
  * The "end" of the presentation blt is indicated, since the
- * blt may be clipped, in which case the runtime will call the driver with 
+ * blt may be clipped, in which case the runtime will call the driver with
  * several blts. All blts (even if not clipped) are tagged with DDBLT_PRESENTATION
  * and the last (even if not clipped) additionally with DDBLT_LAST_PRESENTATION.
  * Thus the true rule is that the driver must not schedule a DDBLT_PRESENTATION
@@ -4369,12 +4369,12 @@ typedef struct _DDCOLORCONTROL
  * When excessive queueing occurs, applications become unusable because the application
  * visibly lags user input, and such problems make windowed interactive applications impossible.
  * Some drivers may not have sufficient knowledge of their hardware's FIFO to know
- * when a certain blt has been retired. Such drivers should code cautiously, and 
+ * when a certain blt has been retired. Such drivers should code cautiously, and
  * simply not allow any frames to be queued at all. DDBLT_LAST_PRESENTATION should cause
  * such drivers to return DDERR_WASSTILLDRAWING until the accelerator is completely
  * finished- exactly as if the application had called Lock on the source surface
- * before calling Blt. 
- * In other words, the driver is allowed and encouraged to 
+ * before calling Blt.
+ * In other words, the driver is allowed and encouraged to
  * generate as much latency as it can, but never more than 3 frames worth.
  * Implementation detail: Drivers should count blts against the SOURCE surface, not
  * against the primary surface. This enables multiple parallel windowed application
@@ -4382,7 +4382,7 @@ typedef struct _DDCOLORCONTROL
  * This flag is passed only to DX8 or higher drivers.
  *
  * APPLICATIONS DO NOT SET THESE FLAGS. THEY ARE SET BY THE DIRECTDRAW RUNTIME.
- * 
+ *
  */
 #define DDBLT_PRESENTATION                      0x10000000l
 #define DDBLT_LAST_PRESENTATION                 0x20000000l

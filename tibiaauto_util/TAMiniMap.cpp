@@ -28,20 +28,20 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////
 
 AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
-{	
+{
 	return key->x*191+key->y*257+key->z*317;
 }
 
 typedef point* LPpoint;
-AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint> 
+AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint>
      (const LPpoint *v1, const LPpoint *v2)
-{	
+{
 	if (!v1||!v2) return false;
 	point *v1d=*v1;
 	point *v2d=*v2;
-	if (!v1d||!v2d) return false;	
+	if (!v1d||!v2d) return false;
 	if (v1d&&v2d&&v1d->x==v2d->x&&v1d->y==v2d->y&&v1d->z==v2d->z) return true;
-	return false;    	
+	return false;
 }
 
 CTAMiniMap::CTAMiniMap()
@@ -185,7 +185,7 @@ CTibiaMiniMapPoint* CTAMiniMap::getMiniMapPoint(int x, int y, int z){
 	}else{
 		if((pd=loadFromMemory((int)(x/256),(int)(y/256),z))!=NULL){
 			CTibiaMiniMapPoint *miniMapPoint=new CTibiaMiniMapPoint(x,y,z,pd->getColour(x%256,y%256),pd->getSpeed(x%256,y%256));
-			return miniMapPoint;			
+			return miniMapPoint;
 		}
 		else if((pd=loadFromFile((int)(x/256),(int)(y/256),z))!=NULL){
 			CTibiaMiniMapPoint *miniMapPoint=new CTibiaMiniMapPoint(x,y,z,pd->getColour(x%256,y%256),pd->getSpeed(x%256,y%256));
@@ -228,7 +228,7 @@ void CTAMiniMap::unloadMiniMaps(){
 	taMiniMap.RemoveAll();
 }
 
-class PathFinderNode 
+class PathFinderNode
 {
 public:
 	int x;
@@ -288,7 +288,7 @@ public:
 //typedef priority_queue<PathFinderNode *, vector<PathFinderNode *>, pComp> PriorityQueue;
 // Get access to the underlying container.
 AFX_INLINE UINT AFXAPI HashKey<PathFinderNode> (PathFinderNode key)
-{	
+{
 	return key.x*191+key.y*257+key.z*317;
 }
 
@@ -299,11 +299,11 @@ void DebugPrint(const char* s,int a,int b=0,int c=0,int d=0){
 }
 
 typedef PathFinderNode LNode;
-AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode> 
+AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode>
      (const LNode* v1d, const LNode* v2d)
-{	
+{
 	if (v1d&&v2d&&v1d->x==v2d->x&&v1d->y==v2d->y&&v1d->z==v2d->z) return true;
-	return false;    	
+	return false;
 }
 
 bool mStop = false;
@@ -323,7 +323,7 @@ int CTAMiniMap::getCurrentDistance(){
 }
 
 bool CTAMiniMap::isUpPoint(CTibiaMiniMapPoint* lower){//return true;
-	CMemReader reader;	
+	CMemReader reader;
 	bool ret=false;
 	//check if both are yellow spots
 	if (lower->colour==210){
@@ -332,7 +332,7 @@ bool CTAMiniMap::isUpPoint(CTibiaMiniMapPoint* lower){//return true;
 		else if(upper->colour==129){//check if might be able to go down light gray spot
 			CTibiaMiniMapPoint* mpTest1=getMiniMapPoint(upper->x,upper->y-1,upper->z);
 			CTibiaMiniMapPoint* mpTest2=getMiniMapPoint(upper->x+1,upper->y+1,upper->z);
-			CTibiaMiniMapPoint* mpTest3=getMiniMapPoint(upper->x-1,upper->y+1,upper->z);				
+			CTibiaMiniMapPoint* mpTest3=getMiniMapPoint(upper->x-1,upper->y+1,upper->z);
 			if (mpTest1->colour!=129 && mpTest2->colour!=129 && mpTest3->colour!=129){//surrounding tiles aren't grey good chance it is hole
 				ret=true;
 			}
@@ -343,7 +343,7 @@ bool CTAMiniMap::isUpPoint(CTibiaMiniMapPoint* lower){//return true;
 		delete(upper);
 		//CTibiaMiniMapPoint* lower2=reader.readMiniMapPoint(lower->x,lower->y,lower->z+1);
 		//CTibiaMiniMapPoint* upper2=reader.readMiniMapPoint(lower->x,lower->y,lower->z-2);
-	} 
+	}
 	return ret;
 }
 
@@ -359,12 +359,12 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper){//return true;
 		delete(lower);
 		//CTibiaMiniMapPoint* lower2=reader.readMiniMapPoint(lower->x,lower->y,lower->z+1);
 		//CTibiaMiniMapPoint* upper2=reader.readMiniMapPoint(lower->x,lower->y,lower->z-2);
-	} 
+	}
 	//check if might be able to go down light gray spot
 	else if (upper->colour==129){
 		CTibiaMiniMapPoint* mpTest1=getMiniMapPoint(upper->x,upper->y-1,upper->z);
 		CTibiaMiniMapPoint* mpTest2=getMiniMapPoint(upper->x+1,upper->y+1,upper->z);
-		CTibiaMiniMapPoint* mpTest3=getMiniMapPoint(upper->x-1,upper->y+1,upper->z);				
+		CTibiaMiniMapPoint* mpTest3=getMiniMapPoint(upper->x-1,upper->y+1,upper->z);
 		if (mpTest1->colour!=129 && mpTest2->colour!=129 && mpTest3->colour!=129){//surrounding tiles aren't grey good chance it is hole
 			CTibiaMiniMapPoint* lower=getMiniMapPoint(upper->x,upper->y,upper->z+1);
 			if(lower->colour==210) ret= true;
@@ -384,7 +384,7 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper){//return true;
 //Do not store in priority queue, use queue and process points in the order they come.
 //occur ie(calculating point already in mClose) calculate g and pick better one to put into mClose
 //when path found, allow algorithm to run for a bit longer(= as many times as the largest anticipated difference between two unjoined, alternative paths)
-//this gets around the need to update all g's for 
+//this gets around the need to update all g's for
 CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, int endX, int endY, int endZ)
 {
 	//inits
@@ -504,7 +504,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 		delete(mpPar);
 		mClose.SetAt(parentNode,parentNode);
 
-	}	
+	}
 	mStopped = true;
 	//fout.close();
 	if (found)

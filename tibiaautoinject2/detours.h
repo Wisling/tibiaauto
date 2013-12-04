@@ -366,10 +366,10 @@ BOOL WINAPI DetourContinueProcessWithDllW(HANDLE hProcess, LPCWSTR lpDllName);
 
 /////////////////////////////////////////////////////////////////// Old Names.
 //
-#define ContinueProcessWithDll            DetourContinueProcessWithDll 
+#define ContinueProcessWithDll            DetourContinueProcessWithDll
 #define ContinueProcessWithDllA           DetourContinueProcessWithDllA
 #define ContinueProcessWithDllW           DetourContinueProcessWithDllW
-#define CreateProcessWithDll              DetourCreateProcessWithDll 
+#define CreateProcessWithDll              DetourCreateProcessWithDll
 #define CreateProcessWithDllA             DetourCreateProcessWithDllA
 #define CreateProcessWithDllW             DetourCreateProcessWithDllW
 #define DETOUR_TRAMPOLINE_WO_TARGET       DETOUR_TRAMPOLINE_EMPTY

@@ -45,7 +45,7 @@ BOOL CMemUtil::AdjustPrivileges()
 
 	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
 	{
-		AfxMessageBox("ERROR: Unable to open process token");		
+		AfxMessageBox("ERROR: Unable to open process token");
 		ExitProcess(0);
 		return 0;
 	}
@@ -141,7 +141,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 			CloseHandle(dwHandle);
 			dwHandle = OpenProcess(PROCESS_QUERY_INFORMATION, FALSE, m_prevProcessId);
 			m_prevProcessHandle=dwHandle;
-			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {		
+			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {
 				return 0;
 			}
 		}
@@ -159,7 +159,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
 		return err;
-    }       	
+    }
 }
 
 int CMemUtil::writememory(int processId, int memAddress, int* value, int size, int addBaseAddress){
@@ -185,7 +185,7 @@ int CMemUtil::writememory(int processId, int memAddress, int* value, int size, i
 			//fprintf(f,"new %d\n",dwHandle);
 			//fclose(f);
 			m_prevProcessHandle=dwHandle;
-			if (WriteProcessMemory(dwHandle, ptr, value, size, NULL)) {		
+			if (WriteProcessMemory(dwHandle, ptr, value, size, NULL)) {
 				return 0;
 			}
 		}
@@ -200,11 +200,11 @@ int CMemUtil::writememory(int processId, int memAddress, int* value, int size, i
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
 		return err;
-    }       	
+    }
 }
 
 int CMemUtil::GetProcessBaseAddr(int processId)
-{	
+{
 	HANDLE dwHandle = gethandle(processId);
 	if (processId == m_prevProcessIdBase && m_prevProcessIdBase != -1 && m_prevBaseAddr != NULL){
 		return m_prevBaseAddr;
@@ -250,7 +250,7 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 }
 
 int CMemUtil::GetMemIntValue(long processId, DWORD memAddress, long int *value, int addBaseAddress)
-{	
+{
     return readmemory(processId,memAddress,(int*)value,sizeof(long int),addBaseAddress);
 }
 
@@ -284,12 +284,12 @@ int CMemUtil::SetMemIntValue(DWORD memAddress, long int value, int addBaseAddres
 }
 
 int CMemUtil::SetMemIntValue(long processId, DWORD memAddress, long int value, int addBaseAddress)
-{	
+{
 	return writememory(processId,memAddress,(int*)&value,sizeof(long int),addBaseAddress);
 }
 
 int CMemUtil::SetMemByteValue(long processId, DWORD memAddress, char value, int addBaseAddress)
-{	
+{
 	return writememory(processId,memAddress,(int*)&value,sizeof(char),addBaseAddress);
 }
 

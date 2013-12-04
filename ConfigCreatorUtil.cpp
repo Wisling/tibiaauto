@@ -8,7 +8,7 @@
 #include "ModuleUtil.h"
 #include "Util.h"
 
-#ifdef _DEBUG 
+#ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
@@ -69,7 +69,7 @@ DOMNode * CConfigCreatorUtil::getEmptyConfigForModule(char *moduleName)
 {
 	try
 	{
-		XMLPlatformUtils::Initialize();		
+		XMLPlatformUtils::Initialize();
 			 
 		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(X("Core"));
 		if (impl)
@@ -144,7 +144,7 @@ void CConfigCreatorUtil::addParamFromNode(DOMDocument *doc,DOMNode *node, char *
 		char remainingNodeName[1024];
 		sprintf(newNodeName,paramName);
 		newNodeName[strstr(paramName,"/")-paramName]=0;
-		sprintf(remainingNodeName,strstr(paramName,"/")+1);	
+		sprintf(remainingNodeName,strstr(paramName,"/")+1);
 
 		DOMNode *newNode=NULL;
 		DOMNodeList *childNodes=node->getChildNodes();
@@ -186,14 +186,14 @@ DOMNode * CConfigCreatorUtil::getConfigForModule(DOMElement *root, char *moduleN
 
 void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node, char *paramName)
 {
-	int isLeaf=1;		
+	int isLeaf=1;
 	//DOMNodeList *childNodes = node->getChildNodes();
 	DOMNode *subNode = node->getFirstChild();
 	if (subNode)
 	{
-		do {	
+		do {
 			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
-			{				
+			{
 				char newParamName[1024];
 				char subNodeName[1024];
 				wcstombs(subNodeName,subNode->getNodeName(),1024);
@@ -205,7 +205,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 		} while ((subNode=subNode->getNextSibling())!=NULL);
 	};
 	if (isLeaf)
-	{	
+	{
 		DOMNode *attrNode=node->getAttributes()->getNamedItem(_L("value"));
 			
 		if (strlen(paramName+1)&&attrNode)
@@ -219,20 +219,20 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 				module->resetMultiParamAccess(paramName+8);
 			}
 			module->loadConfigParam(paramName+8,nodeValue);
-		}		
+		}
 	}
 }
 
 void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNode *node, char *paramName)
 {
-	int isLeaf=1;		
+	int isLeaf=1;
 	
 	DOMNode *subNode = node->getFirstChild();
 	if (subNode)
 	{
-		do {	
+		do {
 			if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
-			{				
+			{
 				char newParamName[1024];
 				char subNodeName[1024];
 				wcstombs(subNodeName,subNode->getNodeName(),1024);
@@ -244,7 +244,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNod
 		} while ((subNode=subNode->getNextSibling())!=NULL);
 	};
 	if (isLeaf)
-	{	
+	{
 		DOMNode *attrNode=node->getAttributes()->getNamedItem(_L("value"));
 			
 		if (strlen(paramName+1)&&attrNode)
@@ -252,7 +252,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNod
 			char nodeValue[1024];
 			wcstombs(nodeValue,attrNode->getNodeValue(),1024);
 			
-			pythonScript->setParamValue(paramName+8,nodeValue);			
-		}		
+			pythonScript->setParamValue(paramName+8,nodeValue);
+		}
 	}
 }

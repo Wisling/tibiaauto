@@ -46,7 +46,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CScriptConfigDialg message handlers
 
-BOOL CScriptConfigDialg::OnInitDialog() 
+BOOL CScriptConfigDialg::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
@@ -76,18 +76,18 @@ BOOL CScriptConfigDialg::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CScriptConfigDialg::OnClickScriptConfigParamList(NMHDR* pNMHDR, LRESULT* pResult) 
-{	
+void CScriptConfigDialg::OnClickScriptConfigParamList(NMHDR* pNMHDR, LRESULT* pResult)
+{
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	if (pos)
-	{			
+	{
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 		int paramNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 		struct paramType *param = pythonScript->getParamDef(paramNr);
 
 		if (lastParamNr!=paramNr&&lastParamNr!=-1)
 		{
-			if (lastParamNr!=-1) saveParamValue(lastParamNr);			
+			if (lastParamNr!=-1) saveParamValue(lastParamNr);
 		}
 
 		if (param)
@@ -97,7 +97,7 @@ void CScriptConfigDialg::OnClickScriptConfigParamList(NMHDR* pNMHDR, LRESULT* pR
 		} else {
 			m_edit.SetWindowText("");
 			lastParamNr=-1;
-		}		
+		}
 	} else {
 		if (lastParamNr!=-1) saveParamValue(lastParamNr);
 		m_edit.SetWindowText("");
@@ -124,14 +124,14 @@ void CScriptConfigDialg::saveParamValue(int paramNr)
 	}
 }
 
-void CScriptConfigDialg::OnOK() 
+void CScriptConfigDialg::OnOK()
 {
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	if (pos)
-	{			
+	{
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 		int paramNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
-		saveParamValue(paramNr);		
+		saveParamValue(paramNr);
 	}
 	CDialog::OnOK();
 }

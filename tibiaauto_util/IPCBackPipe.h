@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CIPCBackPipe  
+class CIPCBackPipe
 {
 public:
 	int readFromPipe(struct ipcMessage *mess,int expectedType);

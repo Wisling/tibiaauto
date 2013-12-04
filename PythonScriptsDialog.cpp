@@ -25,7 +25,7 @@ CPythonScriptsDialog::CPythonScriptsDialog(CWnd* pParent /*=NULL*/)
 {
 	//{{AFX_DATA_INIT(CPythonScriptsDialog)
 		// NOTE: the ClassWizard will add member initialization here
-	//}}AFX_DATA_INIT	
+	//}}AFX_DATA_INIT
 	funListMenu=NULL;
 	modListMenu=NULL;
 }
@@ -68,17 +68,17 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CPythonScriptsDialog message handlers
 
-void CPythonScriptsDialog::OnOK() 
+void CPythonScriptsDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CPythonScriptsDialog::OnClose() 
-{	
+void CPythonScriptsDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CPythonScriptsDialog::OnTimer(UINT nIDEvent) 
+void CPythonScriptsDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -101,7 +101,7 @@ void CPythonScriptsDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(m_LoadScript);
 }
 
-BOOL CPythonScriptsDialog::OnInitDialog() 
+BOOL CPythonScriptsDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -121,11 +121,11 @@ BOOL CPythonScriptsDialog::OnInitDialog()
 
 	refreshLoadedScripts();
 
-	funListMenu = new CMenu();	
-	funListMenu ->LoadMenu(IDR_PYTHON_SCRIPTS_FUNLIST_MENU);	
+	funListMenu = new CMenu();
+	funListMenu ->LoadMenu(IDR_PYTHON_SCRIPTS_FUNLIST_MENU);
 
-	modListMenu = new CMenu();	
-	modListMenu ->LoadMenu(IDR_PYTHON_SCRIPTS_MENU);	
+	modListMenu = new CMenu();
+	modListMenu ->LoadMenu(IDR_PYTHON_SCRIPTS_MENU);
 	
 	/** load all scripts **/
 	/*
@@ -149,25 +149,25 @@ BOOL CPythonScriptsDialog::OnInitDialog()
 	// now load all scripts from 'tascripts' subdirectory
 	sprintf(pathBuf,"%s\\tascripts\\*.py",installPath);
 	WIN32_FIND_DATA findFileData;
-	HANDLE hFind = FindFirstFile(pathBuf,&findFileData);		
+	HANDLE hFind = FindFirstFile(pathBuf,&findFileData);
 	if (hFind!=INVALID_HANDLE_VALUE)
 	{
-		char buf[1024];			
+		char buf[1024];
 		
 		snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
 		CPythonEngine::loadScript(buf);
 		
 		while (FindNextFile(hFind,&findFileData))
-		{				
+		{
 			snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
 			// tautil.py will be loaded in a special way
 			if (!strstr(buf,"tascripts\\tautil.py"))
-			{										
+			{
 				CPythonEngine::loadScript(buf);
 			}
 		}
 		FindClose(hFind);
-	}	
+	}
 	*/
 
 	SetTimer(1001,500,NULL);
@@ -177,11 +177,11 @@ BOOL CPythonScriptsDialog::OnInitDialog()
 }
 
 void CPythonScriptsDialog::refreshLoadedScripts()
-{		
+{
 	int i;
 	int visibleScripts[1000];
 	int foundScripts[1000];
-	for (i=0;i<1000;i++) 
+	for (i=0;i<1000;i++)
 	{
 		visibleScripts[i]=-1;
 		foundScripts[i]=0;
@@ -193,9 +193,9 @@ void CPythonScriptsDialog::refreshLoadedScripts()
 		visibleScripts[data]=i;
 	}
 	for (i=0;;i++)
-	{		
+	{
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(i);
-		if (!pythonScript) break;		
+		if (!pythonScript) break;
 
 		if (visibleScripts[i]==-1)
 		{
@@ -209,7 +209,7 @@ void CPythonScriptsDialog::refreshLoadedScripts()
 
 		int actpos=visibleScripts[i];
 		
-		char buf[128],buf2[128];		
+		char buf[128],buf2[128];
 		
 
 		sprintf(buf,"%s",pythonScript->getName());
@@ -243,21 +243,21 @@ void CPythonScriptsDialog::refreshLoadedScripts()
 	// and refresh fun list
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	if (pos)
-	{			
+	{
 		int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 				
 		refreshModuleFunctions(scriptNr);
 	} else {
 		m_funlist.DeleteAllItems();
-	}	
+	}
 }
 
-void CPythonScriptsDialog::OnClickList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPythonScriptsDialog::OnClickList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	if (pos)
-	{			
+	{
 		int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 				
 		refreshModuleFunctions(scriptNr);
@@ -269,7 +269,7 @@ void CPythonScriptsDialog::OnClickList(NMHDR* pNMHDR, LRESULT* pResult)
 }
 
 void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
-{				
+{
 	static int lastScriptNr=-1;
 	CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 	
@@ -284,7 +284,7 @@ void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
 	
 	int funNr;
 	for (funNr=0;;funNr++)
-	{		
+	{
 		char buf[512];
 
 		struct funType *fun = pythonScript->getFunDef(funNr);
@@ -301,7 +301,7 @@ void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
 		case FUNTYPE_MSG: sprintf(buf,"msg");break;
 		case FUNTYPE_TAMSG: sprintf(buf,"%%ta");break;
 		default: sprintf(buf,"unknown");break;
-		}		
+		}
 		m_funlist.SetItemText(funNr,0,buf);
 
 		sprintf(buf,"%s",fun->name);
@@ -330,7 +330,7 @@ void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
 	
 }
 
-void CPythonScriptsDialog::OnRclickFunlist(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPythonScriptsDialog::OnRclickFunlist(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	POSITION pos = m_funlist.GetFirstSelectedItemPosition();
 	if (pos)
@@ -347,28 +347,28 @@ void CPythonScriptsDialog::OnRclickFunlist(NMHDR* pNMHDR, LRESULT* pResult)
 	}
 }
 
-BOOL CPythonScriptsDialog::OnCommand(WPARAM wParam, LPARAM lParam) 
-{	
+BOOL CPythonScriptsDialog::OnCommand(WPARAM wParam, LPARAM lParam)
+{
 	if (wParam==ID_PYTHONSCRIPTSFUNLISTMENU_CALL)
-	{					
+	{
 		POSITION pos = m_list.GetFirstSelectedItemPosition();
 		if (pos)
-		{			
-			int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));		
+		{
+			int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 			
 			pos = m_funlist.GetFirstSelectedItemPosition();
 			if (pos)
-			{						
+			{
 				PyGILState_STATE gstate;
 				gstate = PyGILState_Ensure();
 				int funNr=m_funlist.GetItemData(m_funlist.GetNextSelectedItem(pos));
-				struct funType *fun = pythonScript->getFunDef(funNr);								
-				PyObject *params = pythonScript->getParamsDic();								
+				struct funType *fun = pythonScript->getFunDef(funNr);
+				PyObject *params = pythonScript->getParamsDic();
 				PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(O)",params);
 				Py_XDECREF(result);
 				Py_XDECREF(params);
-				fun->call();				
+				fun->call();
 				PyGILState_Release(gstate);
 			}
 		}
@@ -377,17 +377,17 @@ BOOL CPythonScriptsDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 	{
 		POSITION pos = m_list.GetFirstSelectedItemPosition();
 		if (pos)
-		{			
+		{
 			int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 			CPythonEngine pythonEngine;
-			pythonEngine.unloadScript(scriptNr);			
+			pythonEngine.unloadScript(scriptNr);
 		}
 	}
 	if (wParam==ID_MENU_RELOAD)
 	{
 		POSITION pos = m_list.GetFirstSelectedItemPosition();
 		if (pos)
-		{			
+		{
 			int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 			char fileName[1024];
 			strcpy(fileName,CPythonScript::getScriptByNr(scriptNr)->getFileName());
@@ -400,7 +400,7 @@ BOOL CPythonScriptsDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 	{
 		POSITION pos = m_list.GetFirstSelectedItemPosition();
 		if (pos)
-		{			
+		{
 			int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 			CScriptConfigDialg *scriptConfigDialog = new CScriptConfigDialg(scriptNr);
 			scriptConfigDialog->DoModal();
@@ -411,16 +411,16 @@ BOOL CPythonScriptsDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 	{
 		POSITION pos = m_list.GetFirstSelectedItemPosition();
 		if (pos)
-		{			
+		{
 			int scriptNr=m_list.GetItemData(m_list.GetNextSelectedItem(pos));
 			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
-			pythonScript->setEnabled(!pythonScript->isEnabled());			
-			if (pythonScript->isEnabled()) 
+			pythonScript->setEnabled(!pythonScript->isEnabled());
+			if (pythonScript->isEnabled())
 			{
-				modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_CHECKED);		
+				modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_CHECKED);
 			} else {
-				modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_UNCHECKED);		
-			}			
+				modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_UNCHECKED);
+			}
 		}
 	}
 	
@@ -428,10 +428,10 @@ BOOL CPythonScriptsDialog::OnCommand(WPARAM wParam, LPARAM lParam)
 	return CDialog::OnCommand(wParam, lParam);
 }
 
-void CPythonScriptsDialog::OnRunInterpreter() 
-{		
+void CPythonScriptsDialog::OnRunInterpreter()
+{
 	if (!pythonInterpreterRunning)
-	{		
+	{
 		pythonInterpreterRunning=1;
 		PyGILState_STATE gstate;
 		gstate = PyGILState_Ensure();
@@ -440,14 +440,14 @@ void CPythonScriptsDialog::OnRunInterpreter()
 		PyRun_SimpleString("import sys");
 		PyRun_SimpleString("sys.argv=['tibiaauto','-n']");
 		PyRun_SimpleString("import idlelib.PyShell");
-		PyRun_SimpleString("idlelib.PyShell.main()");			
+		PyRun_SimpleString("idlelib.PyShell.main()");
 
-		PyGILState_Release(gstate);		
+		PyGILState_Release(gstate);
 		pythonInterpreterRunning=0;
-	} 
+	}
 }
 
-void CPythonScriptsDialog::OnLoadScript() 
+void CPythonScriptsDialog::OnLoadScript()
 {
 	
 	char szFilters[]=
@@ -456,14 +456,14 @@ void CPythonScriptsDialog::OnLoadScript()
 	CFileDialog fd(true,"","",OFN_FILEMUSTEXIST, szFilters, this);
 	if (fd.DoModal()==IDOK)
 	{
-		CString pathName = fd.GetPathName();         
+		CString pathName = fd.GetPathName();
 				
-		CPythonEngine pythonEngine;	
+		CPythonEngine pythonEngine;
 		pythonEngine.loadScript(pathName.GetBuffer(200));
-	}	
+	}
 }
 
-void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	POSITION pos = m_list.GetFirstSelectedItemPosition();
 	if (pos)
@@ -479,9 +479,9 @@ void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 
 		if (pythonScript->isEnabled())
 		{
-			modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_CHECKED);		
+			modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_CHECKED);
 		} else {
-			modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_UNCHECKED);		
+			modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE,MF_BYCOMMAND|MF_UNCHECKED);
 		}
 		modListMenu->GetSubMenu(0)->TrackPopupMenu(0,pt.x,pt.y,this);
 		
@@ -489,7 +489,7 @@ void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 	}
 }
 
-void CPythonScriptsDialog::OnPaint() 
+void CPythonScriptsDialog::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	DoSetButtonSkin();
@@ -499,7 +499,7 @@ void CPythonScriptsDialog::OnPaint()
 	// Do not call CDialog::OnPaint() for painting messages
 }
 
-void CPythonScriptsDialog::OnCancelMode() 
+void CPythonScriptsDialog::OnCancelMode()
 {
 	CDialog::OnCancelMode();
 	

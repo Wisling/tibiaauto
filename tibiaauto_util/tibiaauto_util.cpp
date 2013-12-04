@@ -79,7 +79,7 @@ BOOL CTibiaauto_utilApp::InitInstance()
 }
 
  CTibiaauto_utilApp::ExitInstance()
-{	
+{
 
 	return CWinApp::ExitInstance();
 
@@ -101,7 +101,7 @@ void getBaseAddr()
 }
 
 void setPipeHandle(HANDLE hPipePar)
-{	
+{
 	hPipe=hPipePar;
 }
 
@@ -228,9 +228,9 @@ int memReadGetAttackedCreature()
 	return reader->getAttackedCreature();
 }
 void memReadSetAttackedCreature(int tibiaId)
-{	
+{
 	startMemReader();
-	reader->setAttackedCreature(tibiaId);	
+	reader->setAttackedCreature(tibiaId);
 }
 int memReadGetFollowedCreature()
 {
@@ -238,14 +238,14 @@ int memReadGetFollowedCreature()
 	return reader->getFollowedCreature();
 }
 void memReadSetFollowedCreature(int tibiaId)
-{	
+{
 	startMemReader();
-	reader->setFollowedCreature(tibiaId);	
+	reader->setFollowedCreature(tibiaId);
 }
 int memReadGetNextPacketCount()
-{	
+{
 	startMemReader();
-	return reader->getNextPacketCount();	
+	return reader->getNextPacketCount();
 }
 char * memReadGetLoggedChar(int processId)
 {
@@ -256,13 +256,13 @@ int memReadReadBattleListMax()
 {
 	startMemReader();
 	return reader->readBattleListMax();
-} 
+}
 
 
 int memReadReadBattleListMin()
-{	
+{
 	startMemReader();
-	return reader->readBattleListMin();	
+	return reader->readBattleListMin();
 }
 CTibiaCharacter * memReadReadVisibleCreature(int nr)
 {
@@ -323,7 +323,7 @@ void packSenderUseWithObjectInContainer(int sourceObjectId,int targetObjectId,in
 }
 
 CMemConstData getMemConstData()
-{	
+{
 	return CMemConstData();
 }
 
@@ -340,7 +340,7 @@ void packSenderMoveObjectFromFloorToContainer(int objectId,int sourceX,int sourc
 }
 
 void packSenderMoveObjectBetweenContainers(int objectId,int  sourceContNr,int  sourcePos, int targetContNr, int targetPos,int  qty)
-{	
+{
 	CPackSender sender;
 	sender.moveObjectBetweenContainers(objectId, sourceContNr, sourcePos, targetContNr, targetPos, qty);
 }
@@ -657,13 +657,13 @@ void tibiaMapUnloadMiniMaps()
 	taMiniMap.unloadMiniMaps();
 }
 
-void tibiaItemfillTypedItemIdArray(int ind){	
+void tibiaItemfillTypedItemIdArray(int ind){
 	CTibiaItem::fillTypedItemIdArray(ind);
 }
-char * tibiaItemGetItemName(int objectId){	
+char * tibiaItemGetItemName(int objectId){
 	return CTibiaItem::getItemName(objectId);
 }
-char * tibiaItemGetTypedItemName(int objectId){	
+char * tibiaItemGetTypedItemName(int objectId){
 	return CTibiaItem::getTypedItemName(objectId);
 }
 int tibiaItemGetItemId(char *name){
@@ -672,43 +672,43 @@ int tibiaItemGetItemId(char *name){
 int tibiaItemGetTypedItemId(char *name){
 	return CTibiaItem::getTypedItemId(name);
 }
-int tibiaItemGetItemIndex(int objectId){	
+int tibiaItemGetItemIndex(int objectId){
 	return CTibiaItem::getItemIndex(objectId);
 }
-int tibiaItemGetTypedItemIndex(int objectId){	
+int tibiaItemGetTypedItemIndex(int objectId){
 	return CTibiaItem::getTypedItemIndex(objectId);
 }
-int tibiaItemGetFoodIndex(int objectId){	
+int tibiaItemGetFoodIndex(int objectId){
 	return CTibiaItem::getFoodIndex(objectId);
 }
-int tibiaItemGetLootItemIndex(int objectId){	
+int tibiaItemGetLootItemIndex(int objectId){
 	return CTibiaItem::getLootItemIndex(objectId);
 }
-int tibiaItemGetItemIdAtIndex(int ind){	
+int tibiaItemGetItemIdAtIndex(int ind){
 	return CTibiaItem::getItemIdAtIndex(ind);
 }
-int tibiaItemGetItemTypeAtIndex(int ind){	
+int tibiaItemGetItemTypeAtIndex(int ind){
 	return CTibiaItem::getItemTypeAtIndex(ind);
 }
-int tibiaItemGetTypedItemIdAtIndex(int ind){	
+int tibiaItemGetTypedItemIdAtIndex(int ind){
 	return CTibiaItem::getTypedItemIdAtIndex(ind);
 }
-int tibiaItemGetFoodIdAtIndex(int ind){	
+int tibiaItemGetFoodIdAtIndex(int ind){
 	return CTibiaItem::getFoodIdAtIndex(ind);
 }
-int tibiaItemGetLootItemIdAtIndex(int ind){	
+int tibiaItemGetLootItemIdAtIndex(int ind){
 	return CTibiaItem::getLootItemIdAtIndex(ind);
 }
-char* tibiaItemGetItemNameAtIndex(int ind){	
+char* tibiaItemGetItemNameAtIndex(int ind){
 	return CTibiaItem::getItemNameAtIndex(ind);
 }
-char* tibiaItemGetTypedItemNameAtIndex(int ind){	
+char* tibiaItemGetTypedItemNameAtIndex(int ind){
 	return CTibiaItem::getTypedItemNameAtIndex(ind);
 }
-char* tibiaItemGetFoodNameAtIndex(int ind){	
+char* tibiaItemGetFoodNameAtIndex(int ind){
 	return CTibiaItem::getFoodNameAtIndex(ind);
 }
-char* tibiaItemGetLootItemNameAtIndex(int ind){	
+char* tibiaItemGetLootItemNameAtIndex(int ind){
 	return CTibiaItem::getLootItemNameAtIndex(ind);
 }
 int tibiaItemGetFoodTimeAtIndex(int ind){
@@ -1222,9 +1222,9 @@ int memReadGetXRayValue2()
 }
 
 void memReadWriteCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
-{	
+{
 	startMemReader();
-	reader->writeCreatureDeltaXY(creatureNr,deltaX,deltaY);	
+	reader->writeCreatureDeltaXY(creatureNr,deltaX,deltaY);
 }
 
 int memReadGetCreatureDeltaX(int creatureNr)

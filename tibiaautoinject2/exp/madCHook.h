@@ -238,7 +238,7 @@ madCHookApi(BOOL) RemoteExecute(
     DWORD                   dwSize  = 0
   #else
     PVOID                   pParams,
-    DWORD                   dwSize        
+    DWORD                   dwSize
   #endif
 );
 

@@ -11,7 +11,7 @@
 
 
 
-class CPythonEngine  
+class CPythonEngine
 {
 public:
 	static void backpipeTamsgTick();
@@ -30,7 +30,7 @@ public:
 private:
 	static int initialised;
 
-}; 
+};
 
 #endif // !defined(AFX_PYTHONENGINE_H__5114AA39_4F36_479F_91D9_820A9C5034B4__INCLUDED_)
  

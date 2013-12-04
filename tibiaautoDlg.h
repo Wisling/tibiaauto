@@ -39,7 +39,7 @@ XERCES_CPP_NAMESPACE_USE
 class CTibiaautoDlg : public MyDialog
 {
 // Construction
-public:	
+public:
 	void DoSetButtonSkin();
 	void refreshToolInfo();
 	CTibiaautoDlg(CWnd* pParent = NULL);	// standard constructor
@@ -115,9 +115,9 @@ protected:
 	//{{AFX_MSG(CTibiaautoDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();	
+	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnChangeEditAddress();
-	afx_msg void OnChangeEditValue();	
+	afx_msg void OnChangeEditValue();
 	afx_msg void OnTimer(UINT nIDEvent);
 	afx_msg void OnLight();
 	afx_msg void OnToolRunemaker();
@@ -162,7 +162,7 @@ protected:
 	afx_msg void OnButton1();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-private:	
+private:
 	void InitialiseIPC();
 
 	long m_processId;

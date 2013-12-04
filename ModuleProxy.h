@@ -27,7 +27,7 @@ public:
 	void configToControls();
 	void controlsToConfig();
 	void disableControls();
-	void enableControls();	
+	void enableControls();
 	char *getVersion();
 	void resetConfig();
 	void loadConfigParam(char *paramName,char *paramValue);
@@ -44,10 +44,10 @@ public:
 	void init();
 	int validateConfig(int showAlerts);
 	static CModuleProxy ** allModules;
-	static int allModulesCount;	
+	static int allModulesCount;
 
 	char moduleName[16384];
-private:	
+private:
 	HMODULE dllModule;
 	static int allModulesSize;
 	

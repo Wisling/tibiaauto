@@ -51,23 +51,23 @@ public:
 		matchExprHandle = 0;
 	}
 	void call()
-	{				
+	{
 		long int tm=GetTickCount();
 		tmLastExec=tm;
 		if (type==FUNTYPE_PERIODICAL)
 		{
 			tmNextExec=tm+interval;
-		}						
-	}	
+		}
+	}
 };
 
 
 
 
-class CPythonScript  
+class CPythonScript
 {
 	friend class CPythonEngine;
-public:	
+public:
 	void setParamValue(char *name,char *value);
 	PyObject * getParamsDic();
 	struct paramType *getParamDef(int nr);
@@ -91,7 +91,7 @@ public:
 	char *getName();
 	char *getVersion();
 
-private:	
+private:
 	void reallocParamDef();
 	void reallocFunDef();
 	char name[128];

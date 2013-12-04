@@ -101,7 +101,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 ////// GZIP deflate (compress)
 #define BUFLEN      16384
-#define MAX_NAME_LEN 1024 
+#define MAX_NAME_LEN 1024
 
 void gz_compress      OF((FILE   *in, gzFile out));
 void file_compress    OF((char  *file, char *mode));
@@ -111,10 +111,10 @@ void file_compress    OF((char  *file, char *mode));
  * Compress input to output then close both files.
  */
 
-void gz_compress(FILE *in, gzFile out)    
+void gz_compress(FILE *in, gzFile out)
 {
     char buf[BUFLEN];
-    int len;    
+    int len;
 
     for (;;) {
         len = (int)fread(buf, 1, sizeof(buf), in);
@@ -126,14 +126,14 @@ void gz_compress(FILE *in, gzFile out)
         }
         if (len == 0) break;
 
-        if (gzwrite(out, buf, (unsigned)len) != len) 
+        if (gzwrite(out, buf, (unsigned)len) != len)
 		{
 			AfxMessageBox("gz error");
 			return;
 		}
     }
     fclose(in);
-    if (gzclose(out) != Z_OK) 
+    if (gzclose(out) != Z_OK)
 	{
 		AfxMessageBox("failed gzclose");
 	}
@@ -172,12 +172,12 @@ void file_compress(char *file, char *mode)
 /////////////////////////////////////////////////////////////////////////////
 // COptionsDialog message handlers
 
-void COptionsDialog::OnSendLootstats() 
+void COptionsDialog::OnSendLootstats()
 {
 	sendFile("tibiaauto-stats-loot.txt");
 }
 
-void COptionsDialog::DoSetButtonSkin() 
+void COptionsDialog::DoSetButtonSkin()
 {
 	skin.SetButtonSkin(m_ok);
 	skin.SetButtonSkin(m_Skin);
@@ -187,7 +187,7 @@ void COptionsDialog::DoSetButtonSkin()
 	skin.SetButtonSkin(m_send4);
 }
 
-BOOL COptionsDialog::OnInitDialog() 
+BOOL COptionsDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	m_gatherBotStats.SetCheck(CModuleUtil::getTASetting("GatherBotStats"));
@@ -218,29 +218,29 @@ void COptionsDialog::refreshStatFiles()
 	f = fopen(pathBuf,"a+");
 	fseek(f,0,SEEK_END);
 	flen=ftell(f);
-	fclose(f);		
+	fclose(f);
 	sprintf(buf,"%dk",flen/1024);
-	m_sizeLootstats.SetWindowText(buf);	
+	m_sizeLootstats.SetWindowText(buf);
 
 	sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
 	f = fopen(pathBuf,"a+");
 	fseek(f,0,SEEK_END);
 	flen=ftell(f);
-	fclose(f);		
+	fclose(f);
 	sprintf(buf,"%dk",flen/1024);
-	m_sizeCreatureStats.SetWindowText(buf);	
+	m_sizeCreatureStats.SetWindowText(buf);
 
 	sprintf(pathBuf,"%s\\tibiaauto-stats-usage.txt",installPath);
 	f = fopen(pathBuf,"a+");
 	fseek(f,0,SEEK_END);
 	flen=ftell(f);
-	fclose(f);		
+	fclose(f);
 	sprintf(buf,"%dk",flen/1024);
-	m_sizeUsagestats.SetWindowText(buf);	
+	m_sizeUsagestats.SetWindowText(buf);
 
 }
 
-void COptionsDialog::OnSendCreaturestats() 
+void COptionsDialog::OnSendCreaturestats()
 {
 	sendFile("tibiaauto-stats-creatures.txt");
 }
@@ -271,13 +271,13 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		
 		
 		unlink(fname);
-		unlink(fnameGz);		
+		unlink(fnameGz);
 
 		fileSendingProgress=1;
 	} catch (CInternetException *e)
 	{
-		fileSendingProgress=-1;		
-	}	
+		fileSendingProgress=-1;
+	}
 	return 0;
 }
 
@@ -290,28 +290,28 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 		char fullMask[1024];
 		sprintf(fullMask,"%s\\*.map",path);
 		WIN32_FIND_DATA data;
-		HANDLE hFind = FindFirstFile(fullMask,&data);		
+		HANDLE hFind = FindFirstFile(fullMask,&data);
 		if (hFind!=INVALID_HANDLE_VALUE)
-		{		
+		{
 			CInternetSession session;
 			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
 			int t=time(NULL);
 			int r=rand();
 			int lastfile=1;
 			while(lastfile)
-			{									
-				char fname[128];				
+			{
+				char fname[128];
 				char fnameGz[128];
 				sprintf(fname,"%s\\%s",path,data.cFileName);
 				sprintf(fnameGz,"%s\\%s.gz",path,data.cFileName);
-				char remoteFileName[128];				
-				sprintf(remoteFileName,"incoming/%s-%d-%d.gz",data.cFileName,t,r);				
-				file_compress(fname,"wb");						
+				char remoteFileName[128];
+				sprintf(remoteFileName,"incoming/%s-%d-%d.gz",data.cFileName,t,r);
+				file_compress(fname,"wb");
 								
 				ftpConnection->PutFile(fnameGz,remoteFileName);
 								
-				unlink(fnameGz);	 	
-				lastfile=FindNextFile(hFind,&data);				
+				unlink(fnameGz);
+				lastfile=FindNextFile(hFind,&data);
 			}
 			ftpConnection->Close();
 			delete ftpConnection;
@@ -320,8 +320,8 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 		fileSendingProgress=1;
 	} catch (CInternetException *e)
 	{
-		fileSendingProgress=-1;		
-	}	
+		fileSendingProgress=-1;
+	}
 	// allocated before starting a thread
 	free(path);
 	return 0;
@@ -335,7 +335,7 @@ void COptionsDialog::sendFile(char *fname)
 	{
 		DWORD threadId;
 		fileSendingProgress=0;
-		::CreateThread(NULL,0,sendFileThread,fname,0,&threadId);	
+		::CreateThread(NULL,0,sendFileThread,fname,0,&threadId);
 		m_ok.EnableWindow(false);
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
@@ -348,17 +348,17 @@ void COptionsDialog::sendFile(char *fname)
 	}
 }
 
-void COptionsDialog::OnTimer(UINT nIDEvent) 
+void COptionsDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==10001)
 	{
 		// timer for waiting for upload to finish
 		KillTimer(10001);
 
-		m_progress.SetPos((m_progress.GetPos()+1)%100);		
+		m_progress.SetPos((m_progress.GetPos()+1)%100);
 		if (fileSendingProgress)
 		{
-			if (fileSendingProgress==1) 
+			if (fileSendingProgress==1)
 			{
 				AfxMessageBox("File sent ok. Thank you for support of Tibia Auto!");
 			}
@@ -380,15 +380,15 @@ void COptionsDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void COptionsDialog::OnClose() 
+void COptionsDialog::OnClose()
 {
-	if (fileSendingProgress)	
+	if (fileSendingProgress)
 	{
 		CDialog::OnClose();
 	}
 }
 
-void COptionsDialog::OnSendMaps() 
+void COptionsDialog::OnSendMaps()
 {
 	char *tibiaPath=(char *)malloc(1024);
 	unsigned long tibiaPathLen=1023;
@@ -416,8 +416,8 @@ void COptionsDialog::sendMaps(char *path)
 	if (fileSendingProgress)
 	{
 		DWORD threadId;
-		fileSendingProgress=0;	
-		::CreateThread(NULL,0,sendMapsThread,path,0,&threadId);	
+		fileSendingProgress=0;
+		::CreateThread(NULL,0,sendMapsThread,path,0,&threadId);
 		m_ok.EnableWindow(false);
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
@@ -430,7 +430,7 @@ void COptionsDialog::sendMaps(char *path)
 	}
 }
 
-void COptionsDialog::OnSendUsagestats() 
+void COptionsDialog::OnSendUsagestats()
 {
 	sendFile("tibiaauto-stats-usage.txt");
 }
@@ -464,14 +464,14 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 		char fname[128];
 		int lastfile=1;
 		while(lastfile)
-		{									
+		{
 			sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
 			FILE* f = fopen(fname,"a+");
 			if (f){
 				fseek(f,0,SEEK_END);
 				int flen=ftell(f);
 				fclose(f);
-				if (flen>1000) 
+				if (flen>1000)
 					goto sendFiles;
 			}
 			lastfile=FindNextFile(hFind,&data);
@@ -483,7 +483,7 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 			char fname[128];
 			int lastfile=1;
 			while(lastfile)
-			{									
+			{
 				sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
 				unlink(fname);
 				lastfile=FindNextFile(hFind,&data);
@@ -511,7 +511,7 @@ sendFiles:
 			unsigned int r=serialNumber%0x1000000;
 			int lastfile=1;
 			while(lastfile)
-			{									
+			{
 				char fname[128];
 				char fnameGz[128];
 				sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
@@ -554,7 +554,7 @@ void COptionsDialog::sendStats()
 	{
 		fileSendingProgress=0;
 		DWORD threadId;
-		::CreateThread(NULL,0,sendPacketLogThread,NULL,0,&threadId);	
+		::CreateThread(NULL,0,sendPacketLogThread,NULL,0,&threadId);
 	}
 	OnClose();
 }
@@ -588,14 +588,14 @@ void COptionsDialog::OnScriptloadAsk()
 	m_scriptLoadNoStart.SetCheck(0);
 }
 
-void COptionsDialog::OnScriptloadStart() 
+void COptionsDialog::OnScriptloadStart()
 {
-	CModuleUtil::setTASetting("StartModulesOnLoad",1);	
+	CModuleUtil::setTASetting("StartModulesOnLoad",1);
 	m_scriptLoadAsk.SetCheck(0);
 	m_scriptLoadNoStart.SetCheck(0);
 }
 
-void COptionsDialog::OnScriptloadNostart() 
+void COptionsDialog::OnScriptloadNostart()
 {
 	CModuleUtil::setTASetting("StartModulesOnLoad",2);
 	m_scriptLoadAsk.SetCheck(0);

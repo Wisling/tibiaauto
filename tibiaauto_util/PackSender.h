@@ -9,9 +9,9 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CPackSender  
+class CPackSender
 {
-public:		
+public:
 	void stopAll();
 	void enableCName(int enable);
 	void ignoreLook(int end);
@@ -55,9 +55,9 @@ public:
 	void useItemInContainer(int objectId,int contNr,int pos);
 	int openAutoContainerFromFloor(int objectId,int x,int y,int z);
 	void openContainerFromFloor(int objectId,int x,int y,int z, int targetBag);
-	void say(const char *buf);	
-	void sayWhisper(const char *buf);	
-	void sayYell(const char *buf);	
+	void say(const char *buf);
+	void sayWhisper(const char *buf);
+	void sayYell(const char *buf);
 	void useWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
 	void useWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2);
 	void useWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method=2);

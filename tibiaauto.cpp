@@ -36,7 +36,7 @@ END_MESSAGE_MAP()
 
 CTibiaautoApp::CTibiaautoApp()
 
-{	
+{
 }
 
 
@@ -70,7 +70,7 @@ BOOL CTibiaautoApp::InitInstance()
 #endif
 
 	CTibiaautoDlg dlg;
-	m_pMainWnd = &dlg;	
+	m_pMainWnd = &dlg;
 	dlg.DoModal();
 	dlg.~CTibiaautoDlg();
 	// Since the dialog has been closed, return FALSE so that we exit the

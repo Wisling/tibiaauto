@@ -17,26 +17,26 @@ CMyMenu::CMyMenu()
 CMyMenu::~CMyMenu()
 {
 
-} 
+}
 void CMyMenu::LoadOwnerDrawMenu(CMenu *baseMenu)
-{	
+{
 	/*
 	int iMenuCount = baseMenu->GetMenuItemCount();
 	for (int i=0;i<iMenuCount;i++)
 	{
-		CString str;		
+		CString str;
 		CMyMenuData* pMenuData = new CMyMenuData();
 		baseMenu->GetMenuString(i, str, MF_BYPOSITION);
 		pMenuData->m_strCaption=str;
-		baseMenu->ModifyMenu(i, MF_BYPOSITION | MF_OWNERDRAW, 0, (LPCTSTR)pMenuData);		
+		baseMenu->ModifyMenu(i, MF_BYPOSITION | MF_OWNERDRAW, 0, (LPCTSTR)pMenuData);
 		CMenu *subMenu = baseMenu->GetSubMenu(i);
 		if (subMenu)
 		{
 			CMenu *newSubMenu = new CMenu();
 			newSubMenu->Attach(subMenu->GetSafeHmenu());
-			LoadOwnerDrawMenu(newSubMenu);			
+			LoadOwnerDrawMenu(newSubMenu);
 			newSubMenu->Detach();
-		}		
+		}
 		
 		
 	}
@@ -74,7 +74,7 @@ void CMyMenu::LoadOwnerDrawMenu(CMenu *baseMenu)
 			rgpMyMenu.push_back(pMenu);
 			HMENU hMenu = pMyMenu->GetSubMenu(i)->GetSafeHmenu();
 			pMenu->Attach(hMenu);
-			LoadOwnerDrawMenu(pMenu);			
+			LoadOwnerDrawMenu(pMenu);
 		}
 		else
 		{
@@ -88,14 +88,14 @@ void CMyMenu::LoadOwnerDrawMenu(CMenu *baseMenu)
 
 
 void CMyMenu::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
-{	
+{
 	CMyMenuData* pMyMenuData = (CMyMenuData*)lpMeasureItemStruct->itemData;
 	//get the caption of the menu item
 	CString str = pMyMenuData->m_strCaption;
 	//assign the height of the menu item
 	lpMeasureItemStruct->itemHeight = 23;
 	//assign the width of the menu item
-	lpMeasureItemStruct->itemWidth = str.GetLength()*5;				
+	lpMeasureItemStruct->itemWidth = str.GetLength()*5;
 }
 
 void CMyMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
@@ -103,8 +103,8 @@ void CMyMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	
 	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
 	//draw an orange background
-	pDC->FillSolidRect(&lpDrawItemStruct->rcItem, RGB(0,0,0));	
-	//if the menu item is selected	
+	pDC->FillSolidRect(&lpDrawItemStruct->rcItem, RGB(0,0,0));
+	//if the menu item is selected
 	if ((lpDrawItemStruct->itemState & ODS_SELECTED) &&
 		(lpDrawItemStruct->itemAction & (ODA_SELECT | ODA_DRAWENTIRE)))
 	{
@@ -114,9 +114,9 @@ void CMyMenu::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		
 	CMyMenuData* pMyMenuData = (CMyMenuData*)lpDrawItemStruct->itemData;
 
-	CString str = pMyMenuData->m_strCaption;	
+	CString str = pMyMenuData->m_strCaption;
 	
-	//draw the caption of the menu item	
+	//draw the caption of the menu item
 	pDC->SetTextColor(RGB(255,255,255));
 	pDC->TextOut(lpDrawItemStruct->rcItem.left,lpDrawItemStruct->rcItem.top, str);
 	

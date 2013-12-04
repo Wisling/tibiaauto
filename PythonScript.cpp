@@ -42,7 +42,7 @@ CPythonScript::CPythonScript()
 	reallocParamDef();
 	reallocPythonScript();
 
-	pythonScriptTab[pythonScriptCount++]=this;	
+	pythonScriptTab[pythonScriptCount++]=this;
 }
 
 CPythonScript::~CPythonScript()
@@ -82,29 +82,29 @@ char * CPythonScript::getName()
 
 void CPythonScript::setPluginClass(PyObject *pluginClass)
 {
-	Py_XDECREF(pluginClass);	
+	Py_XDECREF(pluginClass);
 	this->pluginClass=pluginClass;
-	Py_XINCREF(pluginClass);	
+	Py_XINCREF(pluginClass);
 }
 
 void CPythonScript::setPluginObject(PyObject *pluginObject)
 {
-	Py_XDECREF(pluginObject);	
+	Py_XDECREF(pluginObject);
 	this->pluginObject=pluginObject;
-	Py_XINCREF(pluginObject);	
+	Py_XINCREF(pluginObject);
 }
 
 void CPythonScript::addFunDef(int type,int interval, PyObject *fun)
 {
 	reallocFunDef();
 	
-	PyObject *py_name = PyObject_GetAttrString(fun,"__name__");	
+	PyObject *py_name = PyObject_GetAttrString(fun,"__name__");
 	Py_XINCREF(py_name);
 	strncpy(funDefTab[funDefCount].name,PyString_AsString(py_name),127);
 	Py_XDECREF(py_name);
 
 	funDefTab[funDefCount].type=type;
-	funDefTab[funDefCount].interval=interval;	
+	funDefTab[funDefCount].interval=interval;
 	funDefTab[funDefCount].fun=fun;
 	funDefTab[funDefCount].tmNextExec=0;
 	funDefTab[funDefCount].tmLastExec=0;
@@ -161,7 +161,7 @@ void CPythonScript::reallocPythonScript()
 CPythonScript * CPythonScript::getScriptByNr(int nr)
 {
 	if (nr>=pythonScriptCount) return NULL;
-	return pythonScriptTab[nr];	
+	return pythonScriptTab[nr];
 }
 
 struct funType * CPythonScript::getFunDef(int nr)
@@ -202,7 +202,7 @@ void CPythonScript::setFileName(char *newFileName)
 
 void CPythonScript::addParamDef(char *name, char *desc)
 {
-	reallocParamDef();		
+	reallocParamDef();
 		
 	strncpy(paramDefTab[paramDefCount].name,name,127);
 	strncpy(paramDefTab[paramDefCount].description,desc,127);

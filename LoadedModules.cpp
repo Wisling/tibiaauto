@@ -56,12 +56,12 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CLoadedModules message handlers
 
-void CLoadedModules::OnClose() 
+void CLoadedModules::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CLoadedModules::OnOK() 
+void CLoadedModules::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
@@ -70,7 +70,7 @@ void CLoadedModules::DoSetButtonSkin(){
 	skin.SetButtonSkin(m_ok);
 }
 
-BOOL CLoadedModules::OnInitDialog() 
+BOOL CLoadedModules::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -88,17 +88,17 @@ BOOL CLoadedModules::OnInitDialog()
 
 	SetTimer(1001,500,NULL);
 
-	moduleActionsMenu = new CMenu();	
-	moduleActionsMenu->LoadMenu(IDR_LOADED_MODULES_MENU);	
+	moduleActionsMenu = new CMenu();
+	moduleActionsMenu->LoadMenu(IDR_LOADED_MODULES_MENU);
 		
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CLoadedModules::refreshModulesInformation()
- {	
+ {
  	int i;
- 	//m_list.DeleteAllItems();	
+ 	//m_list.DeleteAllItems();
  	for (i=0;i<CModuleProxy::allModulesCount;i++)
  	{
  		char buf[128],buf2[128];
@@ -130,10 +130,10 @@ void CLoadedModules::refreshModulesInformation()
  		m_list.GetItemText(i,4,buf2,127);
  		if (strcmp(buf,buf2)) m_list.SetItemText(i,4,buf);
  		
- 	}	
+ 	}
  }
 
-void CLoadedModules::OnTimer(UINT nIDEvent) 
+void CLoadedModules::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -149,7 +149,7 @@ void CLoadedModules::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CLoadedModules::OnRclickLoadedmodulesList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CLoadedModules::OnRclickLoadedmodulesList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	/* Get the mouse cursor position */
 	DWORD dwPos = GetMessagePos();
@@ -162,14 +162,14 @@ void CLoadedModules::OnRclickLoadedmodulesList(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	if (wParam==ID_STOPMODULE_STOPMODULE||wParam==ID_STOPMODULE_STARTMODULE||wParam==ID_MODULEACTIONS_SHOWCONFIGDIALOG)
-	{			
+	{
 		int modStartFail=0;
 		POSITION pos = m_list.GetFirstSelectedItemPosition();
 		while (pos)
-		{			
+		{
 			int modNr=m_list.GetNextSelectedItem(pos);
 			IModuleInterface *module=CModuleProxy::allModules[modNr];
 			switch (wParam)
@@ -181,12 +181,12 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 			case ID_STOPMODULE_STARTMODULE:
 				module->controlsToConfig();
 				if (module->validateConfig(0))
-				{					
+				{
 					module->disableControls();
 					module->start();
 				} else {
 					modStartFail=1;
-				}				
+				}
 				break;
 			case ID_MODULEACTIONS_SHOWCONFIGDIALOG:
 				module->showConfigDialog();
@@ -207,7 +207,7 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 		CFileDialog fd(true,"dll","*.dll",OFN_FILEMUSTEXIST| OFN_HIDEREADONLY, szFilters, this);
 		if (fd.DoModal()==IDOK)
 		{
-			CString pathName = fd.GetPathName();    
+			CString pathName = fd.GetPathName();
 			new CModuleProxy(pathName.GetBuffer(128),1);
 		}
 		
@@ -218,7 +218,7 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 }
 
 
-void CLoadedModules::OnPaint() 
+void CLoadedModules::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
 	DoSetButtonSkin();

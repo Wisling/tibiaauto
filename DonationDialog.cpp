@@ -44,7 +44,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CDonationDialog message handlers
 
-BOOL CDonationDialog::OnInitDialog() 
+BOOL CDonationDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_OK);

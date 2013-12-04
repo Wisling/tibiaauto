@@ -13,7 +13,7 @@
 
 #define MAX_TILES 50000
 
-class CTileReader  
+class CTileReader
 {
 public:
 	CTileReader();

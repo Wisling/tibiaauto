@@ -27,7 +27,7 @@ XERCES_CPP_NAMESPACE_USE
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CUtil  
+class CUtil
 {
 public:
 	static char * getNodeAttribute(DOMNode *node,char *attrName);

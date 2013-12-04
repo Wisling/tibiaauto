@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CModuleProxy ** CModuleProxy::allModules=NULL;
-int CModuleProxy::allModulesCount=0;	
+int CModuleProxy::allModulesCount=0;
 int CModuleProxy::allModulesSize=0;
 
 //////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ CModuleProxy::CModuleProxy(char *moduleName,int pathIsAbsolute)
 			exit(1);
 		}
 		
-		sprintf(path,"%s\\mods\\%s.dll",installPath,moduleName);	
+		sprintf(path,"%s\\mods\\%s.dll",installPath,moduleName);
 	} else {
 		strcpy(path,moduleName);
 	}
@@ -59,7 +59,7 @@ CModuleProxy::CModuleProxy(char *moduleName,int pathIsAbsolute)
 		allModulesSize=allModulesSize*2+3;
 		allModules=(CModuleProxy **)realloc(allModules,sizeof(CModuleProxy *)*allModulesSize);
 	}
-	allModules[allModulesCount++]=this;	
+	allModules[allModulesCount++]=this;
 	init();
 	// 30 is the current kernel version
 	activate(30);
@@ -91,7 +91,7 @@ char * CModuleProxy::getName()
 }
 
 int CModuleProxy::isStarted()
-{	
+{
 	typedef int(*Proto_fun)();
 	if (dllModule)
 	{
@@ -170,7 +170,7 @@ void CModuleProxy::configToControls()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"configToControls");	
+		Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"configToControls");
 		if (fun)
 		{
 			fun();
@@ -346,7 +346,7 @@ void CModuleProxy::resetMultiParamAccess(char *paramName)
 		{
 			fun(paramName);
 		}
-	}	
+	}
 }
 
 void CModuleProxy::init()

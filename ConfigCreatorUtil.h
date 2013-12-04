@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#include "ModuleProxy.h" 
+#include "ModuleProxy.h"
 #include "ConfigCreatorUtilMultiParams.h"
 #include "PythonScript.h"
 
@@ -28,7 +28,7 @@
 
 XERCES_CPP_NAMESPACE_USE
 
-class CConfigCreatorUtil  
+class CConfigCreatorUtil
 {
 public:
 	void parseConfigFromNode(CPythonScript *pythonScript,DOMNode *node, char *paramName);
@@ -42,8 +42,8 @@ public:
 	virtual ~CConfigCreatorUtil();
 
 	CConfigCreatorUtilMultiParams *multiParams;
-private: 
-	static void addParamFromNode(DOMDocument *doc,DOMNode *modConfig, char *paramName, char *paramValue);	
+private:
+	static void addParamFromNode(DOMDocument *doc,DOMNode *modConfig, char *paramName, char *paramValue);
 };
 
 #endif // !defined(AFX_CONFIGCREATORUTIL_H__9BC2F130_36AF_43E2_B3CB_C27073E3FCED__INCLUDED_)

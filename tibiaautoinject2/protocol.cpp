@@ -63,7 +63,7 @@ NetworkMessage::NetworkMessage(char* rawMsg, int len){
 int isSpellMessage(const char *msg)
 {
 	int pos;
-	const char *spellPre[] = 
+	const char *spellPre[] =
 	{
 		"ex",
 		"ad",
@@ -71,7 +71,7 @@ int isSpellMessage(const char *msg)
 		"al",
 		NULL
 	};
-	const char *spellSuf[] = 
+	const char *spellSuf[] =
 	{
 		"ana",
 		"eta",
@@ -328,7 +328,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 		case 0x6F: // turn north n
 		case 0x70: // turn east o
 		case 0x71: // turn south p
-		case 0x72: // turn west q	
+		case 0x72: // turn west q
 		case 0x78: // throw item r
 		case 0x79: // description in shop window
 		case 0x7A: // player bought from shop
@@ -602,7 +602,7 @@ void Protocol::parsePacketOut(NetworkMessage &msg){
 		case 0x71: // turn south p
 			description += "TurnS";
 			break;
-		case 0x72: // turn west q	
+		case 0x72: // turn west q
 			description += "TurnW";
 			break;
 		case 0x78: // throw item r

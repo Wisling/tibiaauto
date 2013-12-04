@@ -11,7 +11,7 @@
 
 #include "TibiaMapTileItem.h"
 
-class CTibiaMapTile  
+class CTibiaMapTile
 {
 public:
 	CTibiaMapTile();

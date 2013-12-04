@@ -51,7 +51,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CCharDialog message handlers
 
-void CCharDialog::OnCharRefresh() 
+void CCharDialog::OnCharRefresh()
 {
 	CMemReaderProxy reader;
 	char buf[256];
@@ -75,32 +75,32 @@ void CCharDialog::OnCharRefresh()
 			sprintf(buf,"[%5d] %s",procEntry.th32ProcessID,loggedCharName);
 			free(loggedCharName);
 			if (m_charList.FindStringExact(-1,buf)==-1)
-			{		
+			{
 				m_charList.AddString(buf);
 				m_charList.SetItemData(m_charList.FindStringExact(-1,buf),procEntry.th32ProcessID);
 				m_charList.SetCurSel(0);
 			}
 
 			procFound[procEntry.th32ProcessID]=1;
-		}		
+		}
 	} while (Process32Next(procSnapshortHandle,&procEntry));
 
 	
 	int i;
 	
 	for (i=m_charList.GetCount()-1;i>=0;i--)
-	{				
+	{
 		if (!procFound[m_charList.GetItemData(i)])
-		{			
+		{
 			m_charList.DeleteString(i);
 		}
-	};	
+	};
 	
-	CloseHandle(procSnapshortHandle);	
+	CloseHandle(procSnapshortHandle);
 	delete []procFound;
 }
 
-void CCharDialog::OnOK() 
+void CCharDialog::OnOK()
 {
 	int sel=m_charList.GetCurSel();
 	
@@ -108,14 +108,14 @@ void CCharDialog::OnOK()
 	{
 		AfxMessageBox("You must select a character!");
 	} else {
-		int itemData = m_charList.GetItemData(sel);	
-		long m_processId=itemData;			
+		int itemData = m_charList.GetItemData(sel);
+		long m_processId=itemData;
 	
 		EndDialog(m_processId);
 	}
 }
 
-BOOL CCharDialog::OnInitDialog() 
+BOOL CCharDialog::OnInitDialog()
 {
 	// wis: add large set of checks for all operations needed to be performed by TA
 	CDialog::OnInitDialog();
@@ -125,10 +125,10 @@ BOOL CCharDialog::OnInitDialog()
 	
 	SetTimer(1001,250,NULL);
 
-	return TRUE;  
+	return TRUE;
 }
 
-void CCharDialog::OnTimer(UINT nIDEvent) 
+void CCharDialog::OnTimer(UINT nIDEvent)
 {
 	switch (nIDEvent)
 	{
