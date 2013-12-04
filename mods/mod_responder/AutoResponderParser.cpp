@@ -20,7 +20,7 @@ XERCES_CPP_NAMESPACE_USE
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
-#endif 
+#endif
 
 int autoResponderStop=0;
 
@@ -40,20 +40,20 @@ CAutoResponderParser::~CAutoResponderParser()
 
 
 void CAutoResponderParser::parseThread(DOMNode *node,CAutoResponderParserContext *context)
-{					
-	char *selfNodeNameTmp=CUtil::wc2c(node->getNodeName());	
+{
+	char *selfNodeNameTmp=CUtil::wc2c(node->getNodeName());
 	char *selfNodeName=(char *)malloc(MAX_STRING_LEN);
 	int i,len;
 	memcpy(selfNodeName,selfNodeNameTmp,strlen(selfNodeNameTmp)+1);
 	free(selfNodeNameTmp);
 	for (i=0,len=strlen(selfNodeName);i<len;i++)
-		selfNodeName[i]=tolower(selfNodeName[i]);		
+		selfNodeName[i]=tolower(selfNodeName[i]);
 	
 	
 	if (strcmp(selfNodeName,"thread"))
-	{		
+	{
 		free(selfNodeName);
-		breakProcessing(node);	
+		breakProcessing(node);
 		return;
 	}
 	free(selfNodeName);
@@ -61,20 +61,20 @@ void CAutoResponderParser::parseThread(DOMNode *node,CAutoResponderParserContext
 	int nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
-		DOMNode *childNode = node->getChildNodes()->item(nodeNr);								
+		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
 
-		processAction(childNode,context);				
-	};				
+		processAction(childNode,context);
+	};
 }
 
 void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: say",context);
 	CPackSenderProxy sender;
-	int useAlice=0;	
-	char *sayText=CUtil::getNodeAttribute(node,"text");		
-	char *channelText=CUtil::getNodeAttribute(node,"channel");		
-	char *aliceText=CUtil::getNodeAttribute(node,"alice");		
+	int useAlice=0;
+	char *sayText=CUtil::getNodeAttribute(node,"text");
+	char *channelText=CUtil::getNodeAttribute(node,"channel");
+	char *aliceText=CUtil::getNodeAttribute(node,"alice");
 	replaceSpecialStrings(sayText,context);
 
 	if (!strcmp(aliceText,"true")||!strcmp(aliceText,"yes"))
@@ -89,7 +89,7 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 		registerDebug("DEBUG: action: calling Aliece",context);
 
 		char *resp=alice.respond(context->message,context->playerName);
-		sprintf(sayText,resp);	
+		sprintf(sayText,resp);
 		delete resp;
 	}
 	
@@ -110,7 +110,7 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 	if (!strcmp(channelText,"private")||!strcmp(channelText,"priv"))
 	{
 		chanHit=1;
-		char *playerText=CUtil::getNodeAttribute(node,"player");		
+		char *playerText=CUtil::getNodeAttribute(node,"player");
 		replaceSpecialStrings(playerText,context);
 		sender.tell(sayText,playerText);
 		if (context->localEcho)
@@ -141,8 +141,8 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 }
 
 void CAutoResponderParser::processNodeSleep(DOMNode *node, CAutoResponderParserContext *context)
-{		
-	char *timeText=CUtil::getNodeAttribute(node,"time");			
+{
+	char *timeText=CUtil::getNodeAttribute(node,"time");
 	int sleepTimeLeft=atoi(timeText);
 
 	char *buf=(char *)malloc(MAX_STRING_LEN);
@@ -160,7 +160,7 @@ void CAutoResponderParser::processNodeSleep(DOMNode *node, CAutoResponderParserC
 		} else {
 			Sleep(sleepTimeLeft);
 			sleepTimeLeft=0;
-		}		
+		}
 	}
 	config->status=prevStatus;
 	free(timeText);
@@ -177,7 +177,7 @@ void CAutoResponderParser::processNodeIf(DOMNode *node, CAutoResponderParserCont
 		if (childNode->getNodeType()!=DOMNode::ELEMENT_NODE)
 			continue;
 		
-		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());	
+		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());
 		char *nodeName=(char *)malloc(MAX_STRING_LEN);
 		int i,len;
 		memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -187,7 +187,7 @@ void CAutoResponderParser::processNodeIf(DOMNode *node, CAutoResponderParserCont
 		
 		if (!strcmp(nodeName,"condition"))
 		{
-			if (!processNodeBoolCondition(childNode,context)) 
+			if (!processNodeBoolCondition(childNode,context))
 			{
 				char *buf=(char *)malloc(MAX_STRING_LEN);
 				sprintf(buf,"DEBUG: 'if' condition failed");
@@ -195,7 +195,7 @@ void CAutoResponderParser::processNodeIf(DOMNode *node, CAutoResponderParserCont
 				free(buf);
 				free(nodeName);
 				return;
-			} 
+			}
 		}
 		free(nodeName);
 	}
@@ -208,7 +208,7 @@ void CAutoResponderParser::processNodeIf(DOMNode *node, CAutoResponderParserCont
 		if (childNode->getNodeType()!=DOMNode::ELEMENT_NODE)
 			continue;
 		
-		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());	
+		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());
 		char *nodeName=(char *)malloc(MAX_STRING_LEN);
 		int i,len;
 		memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -251,7 +251,7 @@ void CAutoResponderParser::processNodeRandom(DOMNode *node, CAutoResponderParser
 
 			if (!selectedNodeNr)
 			{
-				// this is the selected node 
+				// this is the selected node
 				processAction(childNode,context);
 				return;
 			}
@@ -262,7 +262,7 @@ void CAutoResponderParser::processNodeRandom(DOMNode *node, CAutoResponderParser
 }
 
 void CAutoResponderParser::processNodeRepeat(DOMNode *node, CAutoResponderParserContext *context)
-{	
+{
 	registerDebug("DEBUG: action: repeat",context);
 	char *countText=CUtil::getNodeAttribute(node,"count");
 	int countLeft=atoi(countText);
@@ -279,9 +279,9 @@ void CAutoResponderParser::processNodeRepeat(DOMNode *node, CAutoResponderParser
 		int nodeNr;
 		for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 		{
-			DOMNode *childNode = node->getChildNodes()->item(nodeNr);		
+			DOMNode *childNode = node->getChildNodes()->item(nodeNr);
 			
-			processAction(childNode,context);	
+			processAction(childNode,context);
 		}
 		countLeft--;
 	}
@@ -317,7 +317,7 @@ void CAutoResponderParser::processNodeDance(DOMNode *node, CAutoResponderParserC
 {
 	registerDebug("DEBUG: action: dance",context);
 	CPackSenderProxy sender;
-	char *countText=CUtil::getNodeAttribute(node,"count");	
+	char *countText=CUtil::getNodeAttribute(node,"count");
 	int count=atoi(countText);
 	free(countText);
 	int i;
@@ -342,7 +342,7 @@ int CAutoResponderParser::processNodeBoolCondition(DOMNode *node, CAutoResponder
 		if (childNode->getNodeType()!=DOMNode::ELEMENT_NODE)
 			continue;
 		
-		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());	
+		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());
 		char *nodeName=(char *)malloc(MAX_STRING_LEN);
 		int i,len;
 		memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -365,7 +365,7 @@ int CAutoResponderParser::processNodeBoolCondition(DOMNode *node, CAutoResponder
 		{
 			breakProcessing(node);
 			return 0;
-		}	
+		}
 	}
 	char *buf=(char *)malloc(MAX_STRING_LEN);
 	sprintf(buf,"DEBUG: 'condition' block return with result: %s",processResult?"true":"false");
@@ -385,7 +385,7 @@ int CAutoResponderParser::processNodeBoolAnd(DOMNode *node, CAutoResponderParser
 		if (childNode->getNodeType()!=DOMNode::ELEMENT_NODE)
 			continue;
 		
-		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());	
+		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());
 		char *nodeName=(char *)malloc(MAX_STRING_LEN);
 		int i,len;
 		memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -408,8 +408,8 @@ int CAutoResponderParser::processNodeBoolAnd(DOMNode *node, CAutoResponderParser
 		{
 			breakProcessing(node);
 			return 0;
-		}	
-	}	
+		}
+	}
 	char *buf=(char *)malloc(MAX_STRING_LEN);
 	sprintf(buf,"DEBUG: 'and' block return with result: %s",processResult?"true":"false");
 	registerDebug(buf,context);
@@ -428,7 +428,7 @@ int CAutoResponderParser::processNodeBoolOr(DOMNode *node, CAutoResponderParserC
 		if (childNode->getNodeType()!=DOMNode::ELEMENT_NODE)
 			continue;
 		
-		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());	
+		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());
 		char *nodeName=(char *)malloc(MAX_STRING_LEN);
 		int i,len;
 		memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -451,7 +451,7 @@ int CAutoResponderParser::processNodeBoolOr(DOMNode *node, CAutoResponderParserC
 		{
 			breakProcessing(node);
 			return 0;
-		}	
+		}
 	}
 	char *buf=(char *)malloc(MAX_STRING_LEN);
 	sprintf(buf,"DEBUG: 'or' block return with result: %s",processResult?"true":"false");
@@ -461,10 +461,10 @@ int CAutoResponderParser::processNodeBoolOr(DOMNode *node, CAutoResponderParserC
 }
 
 int CAutoResponderParser::processNodeBoolChannel(DOMNode *node, CAutoResponderParserContext *context)
-{	
+{
 	char *buf=(char *)malloc(MAX_STRING_LEN);
 	char *matchText=CUtil::getNodeAttribute(node,"match");
-	replaceSpecialStrings(matchText,context);	
+	replaceSpecialStrings(matchText,context);
 	if (regexpProxy.match(context->channel,matchText))
 	{
 		sprintf(buf,"DEBUG: channel match '%s' against '%s': true",context->channel,matchText);
@@ -482,9 +482,9 @@ int CAutoResponderParser::processNodeBoolChannel(DOMNode *node, CAutoResponderPa
 }
 
 int CAutoResponderParser::processNodeBoolPlayername(DOMNode *node, CAutoResponderParserContext *context)
-{		
+{
 	char *buf=(char *)malloc(MAX_STRING_LEN);
-	char *matchText=CUtil::getNodeAttribute(node,"match");	
+	char *matchText=CUtil::getNodeAttribute(node,"match");
 	replaceSpecialStrings(matchText,context);
 	if (regexpProxy.match(context->playerName,matchText))
 	{
@@ -505,14 +505,14 @@ int CAutoResponderParser::processNodeBoolPlayername(DOMNode *node, CAutoResponde
 int CAutoResponderParser::processNodeBoolTestvariable(DOMNode *node, CAutoResponderParserContext *context)
 {
 	char *buf=(char *)malloc(MAX_STRING_LEN);
-	char *nameText=CUtil::getNodeAttribute(node,"name");	
+	char *nameText=CUtil::getNodeAttribute(node,"name");
 	char *valueText=CUtil::getNodeAttribute(node,"value");
 	replaceSpecialStrings(nameText,context);
 	replaceSpecialStrings(valueText,context);
 	
 	
 	if (!strcmp(valueText,context->getVariable(nameText)))
-	{ 
+	{
 		sprintf(buf,"DEBUG: testvariable name='%s' value='%s' actualvalue='%s': true",nameText,valueText,context->getVariable(nameText));
 		registerDebug(buf,context);
 		free(buf);
@@ -536,7 +536,7 @@ void CAutoResponderParser::processAction(DOMNode *node, CAutoResponderParserCont
 		return;
 	registerDebug("DEBUG: processing abstract action",context);
 	int hit=0;
-	char *nodeNameTmp=CUtil::wc2c(node->getNodeName());	
+	char *nodeNameTmp=CUtil::wc2c(node->getNodeName());
 	char *nodeName=(char *)malloc(MAX_STRING_LEN);
 	int i,len;
 	memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -556,15 +556,15 @@ void CAutoResponderParser::processAction(DOMNode *node, CAutoResponderParserCont
 	
 	free(nodeName);
 	if (!hit)
-	{		
-		breakProcessing(node);		
+	{
+		breakProcessing(node);
 		return;
-	}	
+	}
 }
 
 void CAutoResponderParser::breakProcessing(DOMNode *node)
 {
-	char *nodeNameTmp=CUtil::wc2c(node->getNodeName());	
+	char *nodeNameTmp=CUtil::wc2c(node->getNodeName());
 	char *nodeName=(char *)malloc(MAX_STRING_LEN);
 	int i,len;
 	memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -583,12 +583,12 @@ void CAutoResponderParser::breakProcessing(DOMNode *node)
 int CAutoResponderParser::processNodeBoolMessage(DOMNode *node, CAutoResponderParserContext *context)
 {
 	char *buf=(char *)malloc(MAX_STRING_LEN);
-	char *matchText=CUtil::getNodeAttribute(node,"match");	
-	replaceSpecialStrings(matchText,context);	
+	char *matchText=CUtil::getNodeAttribute(node,"match");
+	replaceSpecialStrings(matchText,context);
 	if (regexpProxy.match(context->message,matchText))
 	{
 		sprintf(buf,"DEBUG: message match '%s' against '%s': true",context->message,matchText);
-		registerDebug(buf,context);		
+		registerDebug(buf,context);
 		free(buf);
 		free(matchText);
 		return 1;
@@ -606,7 +606,7 @@ void CAutoResponderParser::registerDebug(char *msg,CAutoResponderParserContext *
 {
 	if (context->actionLog)
 	{
-		context->actionLog->InsertItem(0,msg);		
+		context->actionLog->InsertItem(0,msg);
 		if (context->actionLog->GetItemCount()>500)
 			context->actionLog->DeleteItem(500);
 	}
@@ -641,7 +641,7 @@ void CAutoResponderParser::replaceSpecialStrings(char *msg, CAutoResponderParser
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		strcpy(bufStart,msg);
 		bufStart[strstr(msg,"$s")-msg]=0;
-		strcpy(bufEnd,strstr(msg,"$s")+2);		
+		strcpy(bufEnd,strstr(msg,"$s")+2);
 		sprintf(msg,"%s%s%s",bufStart,self->name,bufEnd);
 		replaceSpecialStrings(msg,context);
 		delete self;
@@ -659,10 +659,10 @@ void CAutoResponderParser::replaceSpecialStrings(char *msg, CAutoResponderParser
 				msgToPaste[i]='#';
 		}
 
-		strcpy(bufStart,msg);		
+		strcpy(bufStart,msg);
 		bufStart[strstr(msg,"$m")-msg]=0;
-		strcpy(bufEnd,strstr(msg,"$m")+2);		
-		sprintf(msg,"%s%s%s",bufStart,msgToPaste,bufEnd);		
+		strcpy(bufEnd,strstr(msg,"$m")+2);
+		sprintf(msg,"%s%s%s",bufStart,msgToPaste,bufEnd);
 		replaceSpecialStrings(msg,context);
 		
 	}
@@ -694,7 +694,7 @@ int CAutoResponderParser::processNodeBoolNot(DOMNode *node, CAutoResponderParser
 		if (childNode->getNodeType()!=DOMNode::ELEMENT_NODE)
 			continue;
 		
-		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());	
+		char *nodeNameTmp=CUtil::wc2c(childNode->getNodeName());
 		char *nodeName=(char *)malloc(MAX_STRING_LEN);
 		int i,len;
 		memcpy(nodeName,nodeNameTmp,strlen(nodeNameTmp)+1);
@@ -717,8 +717,8 @@ int CAutoResponderParser::processNodeBoolNot(DOMNode *node, CAutoResponderParser
 		{
 			breakProcessing(node);
 			return 1;
-		}	
-	}	
+		}
+	}
 	char *buf=(char *)malloc(MAX_STRING_LEN);
 	sprintf(buf,"DEBUG: 'not' block return with result: %s",processResult?"true":"false");
 	registerDebug(buf,context);
@@ -728,13 +728,13 @@ int CAutoResponderParser::processNodeBoolNot(DOMNode *node, CAutoResponderParser
 
 void CAutoResponderParser::processNodeSequence(DOMNode *node, CAutoResponderParserContext *context)
 {
-	registerDebug("DEBUG: action: sequence",context);				
+	registerDebug("DEBUG: action: sequence",context);
 	int nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
-		DOMNode *childNode = node->getChildNodes()->item(nodeNr);			
+		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
 		
-		processAction(childNode,context);		
+		processAction(childNode,context);
 	}
 	
 }

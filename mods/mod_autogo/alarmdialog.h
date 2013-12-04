@@ -84,8 +84,8 @@ public:
 // Implementation
 protected:
 	list<Alarm> memAlarmList;
-	CImageList m_attributeImg; 
-	CImageList m_columnImg; 
+	CImageList m_attributeImg;
+	CImageList m_columnImg;
 	CString instructionText;
 	void UpdateDependentButtons();
 	// Generated message map functions

@@ -34,12 +34,12 @@ enum CToolAutoResponderThreadStatus
 	CToolAutoResponderThreadStatus_notRunning,
 	CToolAutoResponderThreadStatus_waitingForMatch,
 	CToolAutoResponderThreadStatus_generalParse,
-	CToolAutoResponderThreadStatus_sleep	
+	CToolAutoResponderThreadStatus_sleep
 };
 
-class CToolAutoResponderThreadConfig  
+class CToolAutoResponderThreadConfig
 {
-public:	
+public:
 	CToolAutoResponderThreadConfig();
 	virtual ~CToolAutoResponderThreadConfig();
 

@@ -56,7 +56,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -91,7 +91,7 @@ HANDLE toolThreadHandle;
 
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{			
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CConfigData *config = (CConfigData *)lpParam;
@@ -99,7 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int randomSeconds=RandomTimeAntylogout();
 	
 	while (!toolThreadShouldStop)
-	{					
+	{
 		Sleep(1000);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 
@@ -117,7 +117,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				sender.turnUp();
 			}else if(self->lookDirection==1){
 				sender.turnRight();
-			}else if(self->lookDirection==2){				
+			}else if(self->lookDirection==2){
 				sender.turnDown();
 			}else if(self->lookDirection==3){
 				sender.turnLeft();
@@ -125,7 +125,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			delete self;
 		}
 		
-	}	
+	}
 
 	toolThreadShouldStop=0;
 	return 0;
@@ -136,14 +136,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 // CMod_antylogoutApp construction
 
 CMod_antylogoutApp::CMod_antylogoutApp()
-{	
-	m_started=0;	
+{
+	m_started=0;
 }
 
 CMod_antylogoutApp::~CMod_antylogoutApp()
 {
 	
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_antylogoutApp::getName()
@@ -159,12 +159,12 @@ int CMod_antylogoutApp::isStarted()
 
  
 void CMod_antylogoutApp::start()
-{	
+{
 	superStart();
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -174,8 +174,8 @@ void CMod_antylogoutApp::stop()
 	while (toolThreadShouldStop) {
 		Sleep(50);
 	};
-	m_started=0;		
-} 
+	m_started=0;
+}
 
 
 char *CMod_antylogoutApp::getVersion()

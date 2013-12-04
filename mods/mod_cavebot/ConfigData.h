@@ -11,7 +11,7 @@
 
 #include "TibiaMapPoint.h"
 
-class CConfigData  
+class CConfigData
 {
 public:
 	struct depotTrigger
@@ -54,7 +54,7 @@ public:
 	int debug;
 
 	int weaponTrain;
-	int weaponFight;	
+	int weaponFight;
 	int fightWhenSurrounded;
 	int fightWhenAlien;
 	int trainingMode;

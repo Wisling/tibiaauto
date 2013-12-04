@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CAliceProxy  
+class CAliceProxy
 {
 public:
 	char * respond(char *text,char *id);

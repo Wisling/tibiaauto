@@ -57,13 +57,13 @@ void CLoadWaypointsInfo::OnYES()
 	this->EndDialog(IDYES);
 }
 
-void CLoadWaypointsInfo::OnNO() 
+void CLoadWaypointsInfo::OnNO()
 {
 	m_prefix.GetWindowText(prefix,511);
 	this->EndDialog(IDNO);
 }
 
-BOOL CLoadWaypointsInfo::OnInitDialog() 
+BOOL CLoadWaypointsInfo::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_YES);

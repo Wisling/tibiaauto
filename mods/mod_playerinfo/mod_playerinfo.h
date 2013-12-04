@@ -35,7 +35,7 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-public:	
+public:
 	void getNewSkin(CSkin);
 	void* GetPlayerInfo();
 	int validateConfig(int showAlerts);
@@ -48,13 +48,13 @@ public:
 	void configToControls();
 	void controlsToConfig();
 	void disableControls();
-	void enableControls();	
+	void enableControls();
 	char *getVersion();
 	void resetConfig();
 	void loadConfigParam(char *paramName,char *paramValue);
 	char *saveConfigParam(char *paramName);
 	char *getConfigParamName(int nr);
-private:	
+private:
 	CConfigData *m_configData;
 	CCharInfoDialog *m_infoDialog;
 };

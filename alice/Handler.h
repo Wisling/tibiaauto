@@ -22,4 +22,4 @@ public:
 	static map<string, AimlProcessor *> processors;
 };
 
-#endif 
+#endif

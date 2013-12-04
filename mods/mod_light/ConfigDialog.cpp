@@ -53,29 +53,29 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -126,7 +126,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 
 	
@@ -138,7 +138,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -159,7 +159,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -169,7 +169,7 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::OnSelchangeToollightCombo() 
+void CConfigDialog::OnSelchangeToollightCombo()
 {
 	// TODO: Add your control notification handler code here
 	int iCurSel = m_combo.GetCurSel();

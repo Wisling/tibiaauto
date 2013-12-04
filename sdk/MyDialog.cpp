@@ -41,8 +41,8 @@ MyDialog::MyDialog(UINT nIDTemplate, CWnd* pParent)
 
 	skin = reader.loadCurrentSkin(currentPathBuf);
 
-	backBrush.CreateSolidBrush(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue)); 
-	foreBrush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue)); 
+	backBrush.CreateSolidBrush(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
+	foreBrush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue));
 }
 
 MyDialog::~MyDialog()
@@ -64,7 +64,7 @@ void MyDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-BOOL MyDialog::OnEraseBkgnd(CDC* pDC) 
+BOOL MyDialog::OnEraseBkgnd(CDC* pDC)
 {
 	CRect rect;
 	GetClientRect(rect);
@@ -86,13 +86,13 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // MyDialog message handlers
 
-HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor) 
+HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 {
 	// TODO: Change any attributes of the DC here
 
 	// TODO: Return a different brush if the default is not desired
 	foreBrush.DeleteObject();
-	foreBrush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue)); 
+	foreBrush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue));
 	
 	switch (nCtlColor) {
  
@@ -114,7 +114,7 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
  	}
 }
 
-/*void MyDialog::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct) 
+/*void MyDialog::OnDrawItem(int nIDCtl, LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	// TODO: Add your message handler code here and/or call default
 	CPen newPen;
@@ -162,7 +162,7 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		pDC->MoveTo(rc.left, rc.bottom - 1);
 		pDC->LineTo(rc.right - 1, rc.bottom - 1);
 		pDC->LineTo(rc.right - 1, rc.top);
-		newPen.DeleteObject();		
+		newPen.DeleteObject();
 
 		rc = lpDrawItemStruct->rcItem;
 		rc.top += 2;
@@ -175,11 +175,11 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		// Draw the  text using the text color red.
 		::SetBkColor(lpDrawItemStruct->hDC, RGB(skin.m_ButtonFaceRedValue,skin.m_ButtonFaceGreenValue,skin.m_ButtonFaceBlueValue));
 		COLORREF crOldColor = ::SetTextColor(lpDrawItemStruct->hDC, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
-		::DrawText(lpDrawItemStruct->hDC, text, text.GetLength(), 
+		::DrawText(lpDrawItemStruct->hDC, text, text.GetLength(),
 			&rc, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
 		::SetTextColor(lpDrawItemStruct->hDC, crOldColor);
 	}
-	else {			
+	else {
 		newPen.CreatePen(PS_SOLID, 1, RGB(skin.m_ButtonHighLightRedValue, skin.m_ButtonHighLightGreenValue, skin.m_ButtonHighLightBlueValue));
 		oldPen = pDC->SelectObject(&newPen);
 		
@@ -194,7 +194,7 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		pDC->MoveTo(rc.left, rc.bottom - 1);
 		pDC->LineTo(rc.right - 1, rc.bottom - 1);
 		pDC->LineTo(rc.right - 1, rc.top);
-		newPen.DeleteObject();		
+		newPen.DeleteObject();
 		
 		rc.InflateRect(-1, -1);
 		
@@ -212,7 +212,7 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		pDC->MoveTo(rc.left, rc.bottom - 1);
 		pDC->LineTo(rc.right - 1, rc.bottom - 1);
 		pDC->LineTo(rc.right - 1, rc.top);
-		newPen.DeleteObject();		
+		newPen.DeleteObject();
 
 		// Get the 's text.
 		char strText[32];
@@ -221,11 +221,11 @@ HBRUSH MyDialog::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 		// Draw the  text using the text color red.
 		::SetBkColor(lpDrawItemStruct->hDC, RGB(skin.m_ButtonFaceRedValue,skin.m_ButtonFaceGreenValue,skin.m_ButtonFaceBlueValue));
 		COLORREF crOldColor = ::SetTextColor(lpDrawItemStruct->hDC, RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
-		::DrawText(lpDrawItemStruct->hDC, text, text.GetLength(), 
+		::DrawText(lpDrawItemStruct->hDC, text, text.GetLength(),
 			&lpDrawItemStruct->rcItem, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
 		::SetTextColor(lpDrawItemStruct->hDC, crOldColor);
 	}
 	DeleteObject(myBrush);
 	newPen.DeleteObject();
-	oldPen->DeleteObject();	
+	oldPen->DeleteObject();
 }*/

@@ -9,7 +9,7 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // RepeatButton allows for a typomatic-style repeat of the button just by
-// holding down the mouse button.  Also known in some circles as a 
+// holding down the mouse button.  Also known in some circles as a
 // "Fire Control" button.
 /////////////////////////////////////////////////////////////////////////////
 // This control is based upon ideas and code presented in:

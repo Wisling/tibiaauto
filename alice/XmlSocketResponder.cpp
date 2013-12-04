@@ -28,7 +28,7 @@ string XmlSocketProcessor::process(Match *m, PElement e, Responder *r, const str
 	server->setServerListener(this);
 	server->init();
 	cout << "Starting up an XML Socket Server on port " << port << endl;
-	SocketHandler::runLoop();	
+	SocketHandler::runLoop();
 	return "";
 }
 

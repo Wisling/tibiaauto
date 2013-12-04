@@ -107,13 +107,13 @@ void CConfigDialog::OnClose() {
 void CConfigDialog::OnEnable() {
 	if (m_enable.GetCheck()) {
 		m_app->controlsToConfig();
-		if (m_app->validateConfig(1))			
+		if (m_app->validateConfig(1))
 			m_app->start();
 		else
 			m_enable.SetCheck(0);
-	} 
+	}
 	else
-		m_app->stop(); 
+		m_app->stop();
 }
 
 void CConfigDialog::disableControls() {
@@ -148,7 +148,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	reloadSortItems();
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {	
+CConfigData * CConfigDialog::controlsToConfig() {
 	CConfigData *newConfigData = new CConfigData();
 	for (int i = 0; i < 8;i++) {
 		for (int j =0; j < 32; j++) {
@@ -185,7 +185,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 				m_BagOut[i].ShowWindow(true);
 			}
 		}SetTimer(1001,250,NULL);
-	}	
+	}
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -202,7 +202,7 @@ BOOL CConfigDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
-	SetTimer(1001,250,NULL);	
+	SetTimer(1001,250,NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -241,11 +241,11 @@ void CConfigDialog::OnSortEntryAdd1() {
 void CConfigDialog::OnSortEntryRemove1() {
 	char itemName[128];
 	int sel=m_Bag[0].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[0].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[0].DeleteString(sel);	
+	m_Bag[0].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd2() {
@@ -261,11 +261,11 @@ void CConfigDialog::OnSortEntryAdd2() {
 void CConfigDialog::OnSortEntryRemove2() {
 	char itemName[128];
 	int sel=m_Bag[1].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[1].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[1].DeleteString(sel);	
+	m_Bag[1].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd3() {
@@ -281,11 +281,11 @@ void CConfigDialog::OnSortEntryAdd3() {
 void CConfigDialog::OnSortEntryRemove3() {
 	char itemName[128];
 	int sel=m_Bag[2].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[2].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[2].DeleteString(sel);	
+	m_Bag[2].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd4() {
@@ -301,11 +301,11 @@ void CConfigDialog::OnSortEntryAdd4() {
 void CConfigDialog::OnSortEntryRemove4() {
 	char itemName[128];
 	int sel=m_Bag[3].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[3].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[3].DeleteString(sel);	
+	m_Bag[3].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd5() {
@@ -321,11 +321,11 @@ void CConfigDialog::OnSortEntryAdd5() {
 void CConfigDialog::OnSortEntryRemove5() {
 	char itemName[128];
 	int sel=m_Bag[4].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[4].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[4].DeleteString(sel);	
+	m_Bag[4].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd6() {
@@ -341,11 +341,11 @@ void CConfigDialog::OnSortEntryAdd6() {
 void CConfigDialog::OnSortEntryRemove6() {
 	char itemName[128];
 	int sel=m_Bag[5].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[5].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[5].DeleteString(sel);	
+	m_Bag[5].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd7() {
@@ -361,11 +361,11 @@ void CConfigDialog::OnSortEntryAdd7() {
 void CConfigDialog::OnSortEntryRemove7() {
 	char itemName[128];
 	int sel=m_Bag[6].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[6].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[6].DeleteString(sel);	
+	m_Bag[6].DeleteString(sel);
 }
 
 void CConfigDialog::OnSortEntryAdd8() {
@@ -381,9 +381,9 @@ void CConfigDialog::OnSortEntryAdd8() {
 void CConfigDialog::OnSortEntryRemove8() {
 	char itemName[128];
 	int sel=m_Bag[7].GetCurSel();
-	if (sel==-1) return;	
+	if (sel==-1) return;
 	m_Bag[7].GetText(sel,itemName);
 	m_sortItemList.AddString(itemName);
 	m_sortItemList.SetCurSel(m_sortItemList.FindStringExact(-1,itemName));
-	m_Bag[7].DeleteString(sel);	
+	m_Bag[7].DeleteString(sel);
 }

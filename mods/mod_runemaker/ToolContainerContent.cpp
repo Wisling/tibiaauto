@@ -49,7 +49,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CToolContainerContent message handlers
 
-BOOL CToolContainerContent::OnInitDialog() 
+BOOL CToolContainerContent::OnInitDialog()
 {
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
@@ -59,9 +59,9 @@ BOOL CToolContainerContent::OnInitDialog()
 	char buf[256];
 
 	
-	m_list.InsertColumn(0,"Object ID",LVCFMT_LEFT,60);	
+	m_list.InsertColumn(0,"Object ID",LVCFMT_LEFT,60);
 	m_list.InsertColumn(1,"Name",LVCFMT_LEFT,122);
-	m_list.InsertColumn(2,"Quantity",LVCFMT_LEFT,60);	
+	m_list.InsertColumn(2,"Quantity",LVCFMT_LEFT,60);
 
 	m_list.SetExtendedStyle(m_list.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 

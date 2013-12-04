@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CToolAutoResponderMessage  
+class CToolAutoResponderMessage
 {
 public:
 	CToolAutoResponderMessage(char chan[16384],char mess[16384],char nick[16384]);

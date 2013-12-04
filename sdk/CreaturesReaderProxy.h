@@ -10,7 +10,7 @@
 #endif // _MSC_VER > 1000
 
 
-class CCreaturesReaderProxy  
+class CCreaturesReaderProxy
 {
 public:
 	int findCreatureStatForLocationTibiaId(int x,int y,int z,int pos);

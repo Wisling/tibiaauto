@@ -88,7 +88,7 @@ int doneAttackingAndLooting(){
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 
@@ -185,13 +185,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 CMod_bankerApp::CMod_bankerApp() {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_bankerApp::~CMod_bankerApp() {
 	if (m_configDialog)
 		delete m_configDialog;
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_bankerApp::getName() {
@@ -202,7 +202,7 @@ int CMod_bankerApp::isStarted() {
 	return m_started;
 }
 
-void CMod_bankerApp::start() {	
+void CMod_bankerApp::start() {
 	superStart();
 	if (m_configDialog) 	{
 		m_configDialog->disableControls();
@@ -212,7 +212,7 @@ void CMod_bankerApp::start() {
 	DWORD threadId;
 	
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -227,10 +227,10 @@ void CMod_bankerApp::stop() {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_bankerApp::showConfigDialog() {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
 	if (!m_configDialog) {
 		m_configDialog = new CConfigDialog(this);
@@ -271,7 +271,7 @@ char *CMod_bankerApp::getVersion() {
 	return "2.0";
 }
 
-int CMod_bankerApp::validateConfig(int showAlerts) {	
+int CMod_bankerApp::validateConfig(int showAlerts) {
 	return 1;
 }
 
@@ -329,7 +329,7 @@ int findBanker(CConfigData *config) {
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z){
 		memset(config->path,0,15);
-		delete self; 
+		delete self;
 		return 1;
 	}
 	GUIx = config->banker.bankerX;
@@ -460,7 +460,7 @@ int withdrawGold(CConfigData *config) {
 		delete self;
 		return 1;
 	}
-	delete self;	
+	delete self;
 	return 0;
 }
 
@@ -531,7 +531,7 @@ int isCavebotOn() {
 						return 0;
 				}
 			}
-		}while (Module32Next(hSnap,&lpModule));		
+		}while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
 	}
 	return -1;

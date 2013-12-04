@@ -77,30 +77,30 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 		m_knownInfo.EnableWindow(true);
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 		m_knownInfo.EnableWindow(false);
 	}
 }
@@ -120,7 +120,7 @@ void CConfigDialog::disableControls()
 	m_selfWindow.EnableWindow(false);
 	m_selfTray.EnableWindow(false);
 	m_allFloorInfo.EnableWindow(false);
-	m_addRequest.EnableWindow(false);	
+	m_addRequest.EnableWindow(false);
 	m_rangeXY.EnableWindow(false);
 	m_rangeZ.EnableWindow(false);
 }
@@ -146,7 +146,7 @@ void CConfigDialog::enableControls()
 		m_selfTray.EnableWindow(true);
 	}
 	m_allFloorInfo.EnableWindow(true);
-	m_addRequest.EnableWindow(true);	
+	m_addRequest.EnableWindow(true);
 	m_rangeXY.EnableWindow(true);
 	m_rangeZ.EnableWindow(true);
 }
@@ -185,7 +185,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
-{	
+{
 	CConfigData *newConfigData = new CConfigData();
 	char buf[128];
 
@@ -203,7 +203,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_selfTray.GetWindowText(newConfigData->selfTray,260);
 	newConfigData->allFloorInfo = m_allFloorInfo.GetCheck();
 	newConfigData->addRequest = m_addRequest.GetCheck();
-	//newConfigData->collectStats = m_collectStats.GetCheck();	
+	//newConfigData->collectStats = m_collectStats.GetCheck();
 	newConfigData->collectStats = 1;
 	m_rangeXY.GetWindowText(buf,127);
 	newConfigData->rangeXY=atoi(buf);
@@ -225,7 +225,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_NameChanger);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -234,7 +234,7 @@ BOOL CConfigDialog::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CConfigDialog::OnToolcreaturinfoNamechanger() 
+void CConfigDialog::OnToolcreaturinfoNamechanger()
 {
 	CNameChanger *nameChanger;
 
@@ -244,7 +244,7 @@ void CConfigDialog::OnToolcreaturinfoNamechanger()
 	
 }
 
-void CConfigDialog::OnToolcreaturinfoPlayer() 
+void CConfigDialog::OnToolcreaturinfoPlayer()
 {
 	int val = m_player.GetCheck();
 
@@ -252,7 +252,7 @@ void CConfigDialog::OnToolcreaturinfoPlayer()
 	m_player2.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolcreaturinfoMonster() 
+void CConfigDialog::OnToolcreaturinfoMonster()
 {
 	int val = m_monster.GetCheck();
 
@@ -261,18 +261,18 @@ void CConfigDialog::OnToolcreaturinfoMonster()
 	m_uniqueMonsterNames.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolcreaturinfoSelf() 
+void CConfigDialog::OnToolcreaturinfoSelf()
 {
 	int val = m_self.GetCheck();
 
 	m_self1.EnableWindow(val);
-	m_self2.EnableWindow(val);	
+	m_self2.EnableWindow(val);
 	m_selfWindow.EnableWindow(val);
-	m_selfTray.EnableWindow(val);	
+	m_selfTray.EnableWindow(val);
 }
 
-void CConfigDialog::OnToolcreaturinfoKnowninfo() 
-{	
+void CConfigDialog::OnToolcreaturinfoKnowninfo()
+{
 	CKnownInfo *knownInfo;
 
 	knownInfo = new CKnownInfo(this);

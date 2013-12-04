@@ -21,12 +21,12 @@ CMenu *CMapButton::mapActionsMenu=NULL;
 CMapButton::CMapButton(int x,int y)
 {
 	m_x=x;
-	m_y=y;	
+	m_y=y;
 	if (mapActionsMenu==NULL)
 	{
 		// if menu object is not yet created then just create it
-		mapActionsMenu = new CMenu();	
-		mapActionsMenu->LoadMenu(IDR_SHOWMAP_MENU);	
+		mapActionsMenu = new CMenu();
+		mapActionsMenu->LoadMenu(IDR_SHOWMAP_MENU);
 	}
 }
 
@@ -52,18 +52,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMapButton message handlers
 
-void CMapButton::OnClicked() 
+void CMapButton::OnClicked()
 {
 	
 }
 
-HBRUSH CMapButton::CtlColor(CDC* pDC, UINT nCtlColor) 
+HBRUSH CMapButton::CtlColor(CDC* pDC, UINT nCtlColor)
 {
 	return NULL;
 }
 
 
-void CMapButton::OnRButtonDown(UINT nFlags, CPoint point) 
+void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	// m_value == -2 is self point
 	if (m_value!=-2)
@@ -73,7 +73,7 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 		DWORD dwPos = GetMessagePos();
 		
 		/* Convert the co-ords into a CPoint structure */
-		CPoint pt( dwPos&0xffff , (dwPos>>16)&0xffff );				
+		CPoint pt( dwPos&0xffff , (dwPos>>16)&0xffff );
 		
 		for (i=0;i<11;i++)
 		{
@@ -103,69 +103,69 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 	CButton::OnRButtonDown(nFlags, point);
 }
 
-BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam) 
-{	
+BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
+{
 	CMemReaderProxy reader;
 	if (wParam==ID_SHOWMAPOPTIONS_CLEAR)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,-1);
-	}		
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_AVAILABLE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,0);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_OPENHOLE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,101);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_CLOSEDHOLE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,102);
-	}	 
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_CRATE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,103);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_ROPE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,201);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_MAGICROPE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,202);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_LADDER)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,203);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_STAIRS)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,204);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_DEPOT)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,301);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_TELE)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,302);
-	}	
+	}
 	if (wParam==ID_SHOWMAPOPTIONS_BLOCK)
 	{
-		CToolMapShow *parent = (CToolMapShow *)GetParent();		
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(m_x,m_y,303);
-	}	
+	}
 	if (wParam==IDD_TOOL_MAPSHOW_CONFIG)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
@@ -177,13 +177,13 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 		else
 			AfxMessageBox("You must enable Extended Research first!");
-	}		
+	}
 	return CButton::OnCommand(wParam, lParam);
 }
 
 void CMapButton::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CToolMapShow *parent = (CToolMapShow *)GetParent();	
+	CToolMapShow *parent = (CToolMapShow *)GetParent();
 
 	parent->showTileDetails(m_x,m_y);
 	

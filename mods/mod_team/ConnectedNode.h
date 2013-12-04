@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CConnectedNode  
+class CConnectedNode
 {
 public:
 	char charName[33];

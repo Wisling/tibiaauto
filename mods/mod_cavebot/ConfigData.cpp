@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CConfigData::CConfigData()
-{	
+{
 	int i;
 	for (i=0;i<1000;i++)
 	{

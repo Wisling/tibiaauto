@@ -2,11 +2,11 @@
 
 #include "sendkeys.h"
 
-/* 
-* ----------------------------------------------------------------------------- 
+/*
+* -----------------------------------------------------------------------------
 * Copyright (c) 2004 lallous <lallousx86@yahoo.com>
 * All rights reserved.
-* 
+*
 * Redistribution and use in source and binary forms, with or without
 * modification, are permitted provided that the following conditions
 * are met:
@@ -15,7 +15,7 @@
 * 2. Redistributions in binary form must reproduce the above copyright
 *    notice, this list of conditions and the following disclaimer in the
 *    documentation and/or other materials provided with the distribution.
-* 
+*
 * THIS SOFTWARE IS PROVIDED BY THE AUTHOR AND CONTRIBUTORS ``AS IS'' AND
 * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
@@ -27,7 +27,7 @@
 * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 * SUCH DAMAGE.
-* ----------------------------------------------------------------------------- 
+* -----------------------------------------------------------------------------
 
 
 The Original SendKeys copyright info
@@ -68,7 +68,7 @@ const WORD CSendKeys::INVALIDKEY       = 0xFFFF;
 
 const BYTE CSendKeys::ExtendedVKeys[MaxExtendedVKeys] =
 {
-    VK_UP, 
+    VK_UP,
     VK_DOWN,
     VK_LEFT,
     VK_RIGHT,
@@ -93,9 +93,9 @@ CSendKeys::CSendKeys()
 // **If you add to this list, you must be sure to keep it sorted alphabetically
 // by Name because a binary search routine is used to scan it.**
 //
-CSendKeys::key_desc_t CSendKeys::KeyNames[CSendKeys::MaxSendKeysRecs] = 
+CSendKeys::key_desc_t CSendKeys::KeyNames[CSendKeys::MaxSendKeysRecs] =
 {
-  {_T("ADD"), VK_ADD}, 
+  {_T("ADD"), VK_ADD},
   {_T("APPS"), VK_APPS},
   {_T("AT"), '@', true},
   {_T("BACKSPACE"), VK_BACK},
@@ -105,10 +105,10 @@ CSendKeys::key_desc_t CSendKeys::KeyNames[CSendKeys::MaxSendKeysRecs] =
   {_T("CAPSLOCK"), VK_CAPITAL},
   {_T("CARET"), '^', true},
   {_T("CLEAR"), VK_CLEAR},
-  {_T("DECIMAL"), VK_DECIMAL}, 
+  {_T("DECIMAL"), VK_DECIMAL},
   {_T("DEL"), VK_DELETE},
   {_T("DELETE"), VK_DELETE},
-  {_T("DIVIDE"), VK_DIVIDE}, 
+  {_T("DIVIDE"), VK_DIVIDE},
   {_T("DOWN"), VK_DOWN},
   {_T("END"), VK_END},
   {_T("ENTER"), VK_RETURN},
@@ -137,18 +137,18 @@ CSendKeys::key_desc_t CSendKeys::KeyNames[CSendKeys::MaxSendKeysRecs] =
   {_T("LEFTBRACE"), '{', true},
   {_T("LEFTPAREN"), '(', true},
   {_T("LWIN"), VK_LWIN},
-  {_T("MULTIPLY"), VK_MULTIPLY}, 
+  {_T("MULTIPLY"), VK_MULTIPLY},
   {_T("NUMLOCK"), VK_NUMLOCK},
-  {_T("NUMPAD0"), VK_NUMPAD0}, 
-  {_T("NUMPAD1"), VK_NUMPAD1}, 
-  {_T("NUMPAD2"), VK_NUMPAD2}, 
-  {_T("NUMPAD3"), VK_NUMPAD3}, 
-  {_T("NUMPAD4"), VK_NUMPAD4}, 
-  {_T("NUMPAD5"), VK_NUMPAD5}, 
-  {_T("NUMPAD6"), VK_NUMPAD6}, 
-  {_T("NUMPAD7"), VK_NUMPAD7}, 
-  {_T("NUMPAD8"), VK_NUMPAD8}, 
-  {_T("NUMPAD9"), VK_NUMPAD9}, 
+  {_T("NUMPAD0"), VK_NUMPAD0},
+  {_T("NUMPAD1"), VK_NUMPAD1},
+  {_T("NUMPAD2"), VK_NUMPAD2},
+  {_T("NUMPAD3"), VK_NUMPAD3},
+  {_T("NUMPAD4"), VK_NUMPAD4},
+  {_T("NUMPAD5"), VK_NUMPAD5},
+  {_T("NUMPAD6"), VK_NUMPAD6},
+  {_T("NUMPAD7"), VK_NUMPAD7},
+  {_T("NUMPAD8"), VK_NUMPAD8},
+  {_T("NUMPAD9"), VK_NUMPAD9},
   {_T("PERCENT"), '%', true},
   {_T("PGDN"), VK_NEXT},
   {_T("PGUP"), VK_PRIOR},
@@ -159,11 +159,11 @@ CSendKeys::key_desc_t CSendKeys::KeyNames[CSendKeys::MaxSendKeysRecs] =
   {_T("RIGHTPAREN"), ')', true},
   {_T("RWIN"), VK_RWIN},
   {_T("SCROLL"), VK_SCROLL},
-  {_T("SEPARATOR"), VK_SEPARATOR}, 
+  {_T("SEPARATOR"), VK_SEPARATOR},
   {_T("SNAPSHOT"), VK_SNAPSHOT},
-  {_T("SUBTRACT"), VK_SUBTRACT}, 
+  {_T("SUBTRACT"), VK_SUBTRACT},
   {_T("TAB"), VK_TAB},
-  {_T("TILDE"), '~', true}, 
+  {_T("TILDE"), '~', true},
   {_T("UP"), VK_UP},
   {_T("WIN"), VK_LWIN}
 };
@@ -202,8 +202,8 @@ void CSendKeys::SendKeyUp(BYTE VKey)
 {
   BYTE ScanCode = LOBYTE(::MapVirtualKey(VKey, 0));
 
-  KeyboardEvent(VKey, 
-                ScanCode, 
+  KeyboardEvent(VKey,
+                ScanCode,
                 KEYEVENTF_KEYUP | (IsVkExtended(VKey) ? KEYEVENTF_EXTENDEDKEY : 0));
 }
 
@@ -240,7 +240,7 @@ void CSendKeys::SendKeyDown(BYTE VKey, WORD NumTimes, bool GenUpMsg, bool bDelay
           input[0].ki.wVk = input[1].ki.wVk = VKey;
           input[1].ki.dwFlags = KEYEVENTF_KEYUP;
           ::SendInput(sizeof(input) / sizeof(INPUT), input, sizeof(INPUT));
-        } 
+        }
         // Win95
         else
         {
@@ -312,7 +312,7 @@ void CSendKeys::SendKey(WORD MKey, WORD NumTimes, bool GenDownMsg)
 WORD CSendKeys::StringToVKey(LPCTSTR KeyString, int &idx)
 {
   bool Found = false, Collided;
-  int  Bottom = 0, 
+  int  Bottom = 0,
        Top = MaxSendKeysRecs,
        Middle = (Bottom + Top) / 2;
   WORD retval = INVALIDKEY;

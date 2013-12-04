@@ -105,7 +105,7 @@ CImageButtonWithStyle::OnNotifyCustomDraw ( NMHDR * pNotifyStruct, LRESULT* resu
 			&pCustomDraw->rc, NULL);
 
 		// get content rectangle (space inside button for image)
-		CRect content_rect (pCustomDraw->rc); 
+		CRect content_rect (pCustomDraw->rc);
 		g_xpStyle.GetThemeBackgroundContentRect (hTheme,
 			pCustomDraw->hdc, BP_PUSHBUTTON,
 			state_id,

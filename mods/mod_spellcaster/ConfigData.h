@@ -22,7 +22,7 @@ struct TimedSpell {
 	bool usePotions;
 };
 
-class CConfigData  
+class CConfigData
 {
 public:
 	CConfigData();

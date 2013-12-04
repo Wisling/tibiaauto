@@ -12,7 +12,7 @@
 #define MAX_ITEMS 200
 #define MAX_ITEM_LEN 60
 
-class CTibiaItem  
+class CTibiaItem
 {
 public:
 	static char * getName(int objectId);

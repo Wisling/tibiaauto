@@ -65,7 +65,7 @@ int lastZ=0;
 
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -77,9 +77,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	
 
 	while (!toolThreadShouldStop)
-	{			
+	{
 		int offset=0;
-		Sleep(100);	
+		Sleep(100);
 
 
 		unsigned long bRead=0;
@@ -106,19 +106,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		// message can go via 'say command' or via hooks
 		if (backPipe.readFromPipe(&mess,1008)||(config->extrahotkeys&&backPipe.readFromPipe(&mess,2001))){
 
-			int msgLen;		
-			char msgBuf[16384];		
+			int msgLen;
+			char msgBuf[16384];
 			
-			memset(msgBuf,0,16384);		
-			memcpy(&msgLen,mess.payload,sizeof(int));		
-			memcpy(msgBuf,mess.payload+4,msgLen);		
+			memset(msgBuf,0,16384);
+			memcpy(&msgLen,mess.payload,sizeof(int));
+			memcpy(msgBuf,mess.payload+4,msgLen);
 			
 			if (!strncmp("%ta lu",msgBuf,6))
-			{				
+			{
 				offset=1;
 			}
 			if (!strncmp("%ta ld",msgBuf,6))
-			{				
+			{
 				offset=-1;
 			}
 			if (!strncmp("%ta lr",msgBuf,6))
@@ -146,7 +146,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				// 8 -> 9 -> 10 and so are lower levels.
 
 				if(self->z <= 7)
-				{					
+				{
 					// Can only go down as many times as you are away from the 7th-1 floor
 					// prevents possible crash when looking at ground floor and you go down 1 floor
 					groundlevel = max(groundlevel,7-((self->z==7?7:6)-self->z));
@@ -162,7 +162,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					undergroundlevel = max(undergroundlevel,max(0,2-(15-self->z)));
 					// Can only go up to 7 only up to 4 is useful though
 					undergroundlevel = min(undergroundlevel,7);
-					reader.setXRayValues(7,undergroundlevel);					
+					reader.setXRayValues(7,undergroundlevel);
 				}
 
 			}
@@ -195,7 +195,7 @@ CMod_xrayApp::CMod_xrayApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_xrayApp::~CMod_xrayApp()
@@ -204,7 +204,7 @@ CMod_xrayApp::~CMod_xrayApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_xrayApp::getName()
@@ -219,7 +219,7 @@ int CMod_xrayApp::isStarted()
 	{
 		// if not started then regularry consume 1008 and 2001 messages from the queue
 		CIPCBackPipeProxy backPipe;
-		struct ipcMessage mess;	
+		struct ipcMessage mess;
 
 		backPipe.readFromPipe(&mess,1008);
 		backPipe.readFromPipe(&mess,2001);
@@ -229,7 +229,7 @@ int CMod_xrayApp::isStarted()
 
 
 void CMod_xrayApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -240,7 +240,7 @@ void CMod_xrayApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -257,11 +257,11 @@ void CMod_xrayApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_xrayApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -279,7 +279,7 @@ void CMod_xrayApp::showConfigDialog()
 void CMod_xrayApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -320,7 +320,7 @@ char *CMod_xrayApp::getVersion()
 
 
 int CMod_xrayApp::validateConfig(int showAlerts)
-{		
+{
 
 	return 1;
 }
@@ -333,7 +333,7 @@ void CMod_xrayApp::resetConfig()
 void CMod_xrayApp::loadConfigParam(char *paramName,char *paramValue)
 {
 	if (!strcmp(paramName,"other/autoreset")) m_configData->autoreset=atoi(paramValue);
-	if (!strcmp(paramName,"other/extrahotkeys")) m_configData->extrahotkeys=atoi(paramValue);		
+	if (!strcmp(paramName,"other/extrahotkeys")) m_configData->extrahotkeys=atoi(paramValue);
 }
 
 char *CMod_xrayApp::saveConfigParam(char *paramName)
@@ -342,7 +342,7 @@ char *CMod_xrayApp::saveConfigParam(char *paramName)
 	buf[0]=0;
 	
 	if (!strcmp(paramName,"other/autoreset")) sprintf(buf,"%d",m_configData->autoreset);
-	if (!strcmp(paramName,"other/extrahotkeys")) sprintf(buf,"%d",m_configData->extrahotkeys);	
+	if (!strcmp(paramName,"other/extrahotkeys")) sprintf(buf,"%d",m_configData->extrahotkeys);
 	
 
 	return buf;
@@ -352,8 +352,8 @@ char *CMod_xrayApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "other/autoreset"; 
-	case 1: return "other/extrahotkeys";	
+	case 0: return "other/autoreset";
+	case 1: return "other/extrahotkeys";
 	default:
 		return NULL;
 	}
@@ -362,7 +362,7 @@ char *CMod_xrayApp::getConfigParamName(int nr)
 void CMod_xrayApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

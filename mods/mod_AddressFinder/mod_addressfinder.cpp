@@ -61,7 +61,7 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop) {
@@ -251,13 +251,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 CMod_addressfinderApp::CMod_addressfinderApp() {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_addressfinderApp::~CMod_addressfinderApp() {
 	if (m_configDialog)
 		delete m_configDialog;
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_addressfinderApp::getName() {
@@ -268,7 +268,7 @@ int CMod_addressfinderApp::isStarted() {
 	return m_started;
 }
 
-void CMod_addressfinderApp::start() {	
+void CMod_addressfinderApp::start() {
 	superStart();
 	if (m_configDialog) 	{
 		m_configDialog->disableControls();
@@ -278,7 +278,7 @@ void CMod_addressfinderApp::start() {
 	DWORD threadId;
 	
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -293,10 +293,10 @@ void CMod_addressfinderApp::stop() {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_addressfinderApp::showConfigDialog() {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
 	if (!m_configDialog) {
 		m_configDialog = new CConfigDialog(this);
@@ -310,7 +310,7 @@ void CMod_addressfinderApp::showConfigDialog() {
 }
 
 void CMod_addressfinderApp::configToControls() {
-	if (m_configDialog) {	
+	if (m_configDialog) {
 		m_configDialog->configToControls(m_configData);
 	}
 }
@@ -337,7 +337,7 @@ char *CMod_addressfinderApp::getVersion() {
 	return "1.0";
 }
 
-int CMod_addressfinderApp::validateConfig(int showAlerts) {	
+int CMod_addressfinderApp::validateConfig(int showAlerts) {
 	return 1;
 }
 

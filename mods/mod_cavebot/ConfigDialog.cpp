@@ -187,7 +187,7 @@ void CConfigDialog::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
@@ -198,13 +198,13 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -212,10 +212,10 @@ void CConfigDialog::disableControls()
 {
 	m_lootCustom.EnableWindow(false);
 	m_lootWhileKill.EnableWindow(false);
-	m_waypointSelMode.EnableWindow(false);	
+	m_waypointSelMode.EnableWindow(false);
 	m_nomoveSuspended.EnableWindow(false);
 	m_mapUsed.EnableWindow(false);
-	m_lootinBags.EnableWindow(false);	
+	m_lootinBags.EnableWindow(false);
 	m_lootCapLimit.EnableWindow(false);
 	m_suspendOnEnemy.EnableWindow(false);
 	m_lootWorms.EnableWindow(false);
@@ -243,7 +243,7 @@ void CConfigDialog::disableControls()
 	m_depotWhen.EnableWindow(false);
 	m_debug.EnableWindow(false);
 	m_weaponTrain.EnableWindow(false);
-	m_weaponFight.EnableWindow(false);	
+	m_weaponFight.EnableWindow(false);
 	m_fightWhenSurrounded.EnableWindow(false);
 	m_fightWhenAlien.EnableWindow(false);
 	m_trainingMode.EnableWindow(false);
@@ -276,10 +276,10 @@ void CConfigDialog::enableControls()
 {
 	m_lootCustom.EnableWindow(true);
 	m_lootWhileKill.EnableWindow(true);
-	m_waypointSelMode.EnableWindow(true);	
+	m_waypointSelMode.EnableWindow(true);
 	m_nomoveSuspended.EnableWindow(true);
 	m_mapUsed.EnableWindow(true);
-	m_lootinBags.EnableWindow(true);	
+	m_lootinBags.EnableWindow(true);
 	m_lootCapLimit.EnableWindow(true);
 	m_suspendOnEnemy.EnableWindow(true);
 	m_lootWorms.EnableWindow(true);
@@ -297,7 +297,7 @@ void CConfigDialog::enableControls()
 	m_suspendAfterUnreachable.EnableWindow(true);
 	m_attackOnlyAttacking.EnableWindow(true);
 	m_standStill.EnableWindow(true);
-	m_forceAttackAfterAttack.EnableWindow(true);	
+	m_forceAttackAfterAttack.EnableWindow(true);
 	m_depotEntryAdd.EnableWindow(true);
 	m_depotEntryList.EnableWindow(true);
 	m_depotEntryRemove.EnableWindow(true);
@@ -306,7 +306,7 @@ void CConfigDialog::enableControls()
 	m_depotWhen.EnableWindow(true);
 	m_debug.EnableWindow(true);
 	m_weaponTrain.EnableWindow(true);
-	m_weaponFight.EnableWindow(true);	
+	m_weaponFight.EnableWindow(true);
 	m_fightWhenSurrounded.EnableWindow(true);
 	m_fightWhenAlien.EnableWindow(true);
 	m_trainingMode.EnableWindow(true);
@@ -363,7 +363,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_suspendOnEnemy.SetCheck(configData->suspendOnEnemy);
 	m_nomoveSuspended.SetCheck(configData->suspendOnNoMove);
 	m_waypointSelMode.SetCurSel(configData->waypointSelectMode);
-	m_mapUsed.SetCurSel(configData->mapUsed);	
+	m_mapUsed.SetCurSel(configData->mapUsed);
 	m_lootCustom.SetCheck(configData->lootCustom);
 	m_lootWhileKill.SetCheck(configData->lootWhileKill);
 	m_lootinBags.SetCheck(configData->lootInBags);
@@ -384,13 +384,13 @@ void CConfigDialog::configToControls(CConfigData *configData)
 			m_waypointList.AddString(buf);
 		}
 	}
-	while (m_monsterList.GetCount())	
-		m_monsterList.DeleteString(0);		
+	while (m_monsterList.GetCount())
+		m_monsterList.DeleteString(0);
 	for (i=0;i<configData->monsterCount;i++)
 		m_monsterList.AddString(configData->monsterList[i]);
 
-	while (m_ignoreList.GetCount())	
-		m_ignoreList.DeleteString(0);		
+	while (m_ignoreList.GetCount())
+		m_ignoreList.DeleteString(0);
 	for (i=0;i<configData->ignoreCount;i++)
 		m_ignoreList.AddString(configData->ignoreList[i]);
 
@@ -403,7 +403,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 		{
 			sprintf(buf,"%s %d->%d",configData->depotTrigger[i].itemName,configData->depotTrigger[i].when,configData->depotTrigger[i].remain);
 			m_depotEntryList.AddString(buf);
-			m_depotItemList.DeleteString(m_depotItemList.FindStringExact(-1,configData->depotTrigger[i].itemName));		
+			m_depotItemList.DeleteString(m_depotItemList.FindStringExact(-1,configData->depotTrigger[i].itemName));
 		}
 	}
 	m_fightWhenSurrounded.SetCheck(configData->fightWhenSurrounded);
@@ -413,7 +413,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_activate.SetCheck(configData->trainingActivate);
 	m_weaponTrain.SetCurSel(m_weaponTrain.FindStringExact(-1,itemProxy.getItemName(configData->weaponTrain)));
 	if (m_weaponTrain.GetCurSel()==-1) m_weaponTrain.SetCurSel(0);
-	m_weaponFight.SetCurSel(m_weaponFight.FindStringExact(-1,itemProxy.getItemName(configData->weaponFight)));	
+	m_weaponFight.SetCurSel(m_weaponFight.FindStringExact(-1,itemProxy.getItemName(configData->weaponFight)));
 	if (m_weaponFight.GetCurSel()==-1) m_weaponFight.SetCurSel(0);
 	m_depotDropInsteadOfDepositon.SetCheck(configData->depotDropInsteadOfDepositon);
 	m_dropNotLooted.SetCheck(configData->dropNotLooted);
@@ -469,9 +469,9 @@ CConfigData * CConfigDialog::controlsToConfig()
 	for (i=0;i<100;i++)
 		newConfigData->monsterList[i][0]=0;
 	for (i=0;i<m_monsterList.GetCount();i++)
-	{			
+	{
 		int j;
-		m_monsterList.GetText(i,newConfigData->monsterList[i]);	
+		m_monsterList.GetText(i,newConfigData->monsterList[i]);
 		int len=strlen(newConfigData->monsterList[i]);
 		for (j=0;j<len;j++)
 			newConfigData->monsterList[i][j]=tolower(newConfigData->monsterList[i][j]);
@@ -480,7 +480,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	for (i=0;i<100;i++)
 		newConfigData->ignoreList[i][0]=0;
 	for (i=0;i<m_ignoreList.GetCount();i++)
-	{			
+	{
 		int j;
 		m_ignoreList.GetText(i,newConfigData->ignoreList[i]);
 		int len=strlen(newConfigData->ignoreList[i]);
@@ -493,7 +493,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 		newConfigData->waypointList[i].z=0;
 	}
 	for (i=0;i<m_waypointList.GetCount();i++)
-	{			
+	{
 		m_waypointList.GetText(i,buf);
 		int curX=0,curY=0,curZ=0;
 		sscanf(buf,"(%d,%d,%d)",&curX,&curY,&curZ);
@@ -512,14 +512,14 @@ CConfigData * CConfigDialog::controlsToConfig()
 	};
 	newConfigData->suspendOnNoMove=m_nomoveSuspended.GetCheck();
 	newConfigData->waypointSelectMode=m_waypointSelMode.GetCurSel();
-	newConfigData->mapUsed=m_mapUsed.GetCurSel();	
+	newConfigData->mapUsed=m_mapUsed.GetCurSel();
 	m_lootCapLimit.GetWindowText(buf,127);
-	newConfigData->capacityLimit=atoi(buf);	
+	newConfigData->capacityLimit=atoi(buf);
 	m_depotCap.GetWindowText(buf,127);
-	newConfigData->depotCap=atoi(buf);	
+	newConfigData->depotCap=atoi(buf);
 	newConfigData->lootCustom=m_lootCustom.GetCheck();
 	newConfigData->lootWhileKill=m_lootWhileKill.GetCheck();
-	newConfigData->lootInBags=m_lootinBags.GetCheck();	
+	newConfigData->lootInBags=m_lootinBags.GetCheck();
 
 	for (i=0;i<100;i++)
 		newConfigData->depotTrigger[i].itemName[0]='\0';
@@ -574,7 +574,7 @@ HANDLE hThread=0;
 
 static int lastX=0,lastY=0,lastZ=0;
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -599,7 +599,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 		switch (globalAutoAttackStateAttack) {
 
-		case CToolAutoAttackStateAttack_notRunning:			
+		case CToolAutoAttackStateAttack_notRunning:
 			m_stateAttack.SetWindowText("State: not running");
 			break;
 		case CToolAutoAttackStateAttack_macroPause:
@@ -620,7 +620,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateAttack.SetWindowText("State: unknown");
 		}
 		
-		switch (globalAutoAttackStateLoot) {				
+		switch (globalAutoAttackStateLoot) {
 		case CToolAutoAttackStateLoot_notRunning:
 			m_stateLoot.SetWindowText("State: not running");
 			break;
@@ -648,7 +648,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		
 		case CToolAutoAttackStateWalker_notRunning:
 			m_stateWalker.SetWindowText("State: not running");
-			break;			
+			break;
 		case CToolAutoAttackStateWalker_macroPause:
 			m_stateWalker.SetWindowText("State: not running");
 			break;
@@ -691,7 +691,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		}
 
 		switch (globalAutoAttackStateDepot)
-		{			
+		{
 			case CToolAutoAttackStateDepot_notRunning:
 				m_stateDepot.SetWindowText("State: not running");
 				break;
@@ -706,7 +706,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				break;
 			case CToolAutoAttackStateDepot_walking:
 				{
-					int tilesAway=abs(self->x-depotX)+abs(self->y-depotY)+abs(self->z-depotZ);					
+					int tilesAway=abs(self->x-depotX)+abs(self->y-depotY)+abs(self->z-depotZ);
 					sprintf(buf,"State: walking to depot (%d,%d,%d) %d tiles away",depotX,depotY,depotZ,tilesAway);
 					m_stateDepot.SetWindowText(buf);
 				}
@@ -776,13 +776,13 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				PathfindParams* myData =pathfindPoints.front();
 				pathfindPoints.pop();
 				DWORD dwThread;
-				hThread = CreateThread( 
+				hThread = CreateThread(
 					NULL,              // default security attributes
-					0,                 // use default stack size  
+					0,                 // use default stack size
 					(LPTHREAD_START_ROUTINE)PathfindThread,        // thread function
-					(LPVOID)myData,             // argument to thread function 
-					0,                 // use default creation flags 
-					&dwThread);   // returns the thread identifier 
+					(LPVOID)myData,             // argument to thread function
+					0,                 // use default creation flags
+					&dwThread);   // returns the thread identifier
 			}else{
 				m_autoResearch.SetCheck(0);
 				if (!failedOnce){
@@ -839,7 +839,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_dropLootList);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -850,14 +850,14 @@ BOOL CConfigDialog::OnInitDialog()
 	
 
 	// set timers
-	SetTimer(1001,100,NULL);	
+	SetTimer(1001,100,NULL);
 	
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -870,7 +870,7 @@ void CConfigDialog::activateEnableButton(int enable)
 
 
 
-void CConfigDialog::OnToolAutoattackRemoveWaypoint() 
+void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 {
 	int sel=m_waypointList.GetCurSel();
 	/* Removed to avoid confusion
@@ -889,7 +889,7 @@ void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 	m_waypointList.SetCurSel(min(sel,m_waypointList.GetCount()-1));
 }
 
-void CConfigDialog::OnToolAutoattackAddWaypoint() 
+void CConfigDialog::OnToolAutoattackAddWaypoint()
 {
 	// max 1000 waypoints may be defined
 	if (m_waypointList.GetCount()>=999)
@@ -922,8 +922,8 @@ void CConfigDialog::OnAddDelay()
 	int tm = atoi(buf);
 	if (tm<0){
 		AfxMessageBox("Delay time must be >=0!");
-		m_delay.SetWindowText(""); 
-		return; 
+		m_delay.SetWindowText("");
+		return;
 	}
 	sprintf(buf,"Delay %d sec",tm);
 	if (m_waypointList.GetCount()!=1&&m_waypointList.GetCurSel()==0){
@@ -935,7 +935,7 @@ void CConfigDialog::OnAddDelay()
 	}
 }
 
-void CConfigDialog::OnToolAutoattackRemoveMonster() 
+void CConfigDialog::OnToolAutoattackRemoveMonster()
 {
 	int sel=m_monsterList.GetCurSel();
 	if (sel==-1)
@@ -947,7 +947,7 @@ void CConfigDialog::OnToolAutoattackRemoveMonster()
 	m_monsterList.SetCurSel(min(sel,m_monsterList.GetCount()-1));
 }
 
-void CConfigDialog::OnToolAutoattackAddMonster() 
+void CConfigDialog::OnToolAutoattackAddMonster()
 {
 	char buf[128];
 	m_monster.GetWindowText(buf,128);
@@ -959,7 +959,7 @@ void CConfigDialog::OnToolAutoattackAddMonster()
 	m_monsterList.SetCurSel(m_monsterList.GetCount()-1);
 }
 
-void CConfigDialog::OnDepotEntryadd() 
+void CConfigDialog::OnDepotEntryadd()
 {
 	char buf[128];
 	int depotWhen=0;
@@ -970,13 +970,13 @@ void CConfigDialog::OnDepotEntryadd()
 	m_depotWhen.GetWindowText(buf,127);
 	depotWhen=atoi(buf);
 	m_depotRemain.GetWindowText(buf,127);
-	depotRemain=atoi(buf);	
+	depotRemain=atoi(buf);
 	m_depotItemList.GetLBText(sel,itemName);
 
 	if (sel==-1) return;
 	if (depotWhen<0) return;
 	if (depotRemain<0) return;
-	if (depotWhen==depotRemain) return;	
+	if (depotWhen==depotRemain) return;
 		
 	sprintf(buf,"%s %d->%d",itemName,depotWhen,depotRemain);
 	m_depotEntryList.AddString(buf);
@@ -986,7 +986,7 @@ void CConfigDialog::OnDepotEntryadd()
 	m_depotRemain.SetWindowText("");
 }
 
-void CConfigDialog::OnDepotEntryremove() 
+void CConfigDialog::OnDepotEntryremove()
 {
 	char buf[128];
 	char itemName[128];
@@ -995,7 +995,7 @@ void CConfigDialog::OnDepotEntryremove()
 	int depotRemain;
 	int sel=m_depotEntryList.GetCurSel();
 	if (sel==-1)
-		return;	
+		return;
 	m_depotEntryList.GetText(sel,itemName);
 	// from depotEntryList we got 'Apple Pie 128->64'
 	// and we convert it to Apple Pie + 128->64
@@ -1057,7 +1057,7 @@ void CConfigDialog::reloadTrainingItems()
 	m_weaponFight.SetCurSel(0);
 }
 
-void CConfigDialog::OnToolAutoattackAddIgnore() 
+void CConfigDialog::OnToolAutoattackAddIgnore()
 {
 	char buf[128];
 	m_ignore.GetWindowText(buf,128);
@@ -1065,11 +1065,11 @@ void CConfigDialog::OnToolAutoattackAddIgnore()
 	{
 		m_ignoreList.AddString(buf);
 	}
-	m_ignore.SetWindowText("");	
+	m_ignore.SetWindowText("");
 	m_ignoreList.SetCurSel(m_ignoreList.GetCount()-1);
 }
 
-void CConfigDialog::OnToolAutoattackRemoveIgnore() 
+void CConfigDialog::OnToolAutoattackRemoveIgnore()
 {
 	int sel=m_ignoreList.GetCurSel();
 	if (sel==-1)
@@ -1077,21 +1077,21 @@ void CConfigDialog::OnToolAutoattackRemoveIgnore()
 	char currentignore[128];
 	m_ignoreList.GetText(sel,currentignore);
 	m_ignoreList.DeleteString(sel);
-	m_ignore.SetWindowText(currentignore);	
+	m_ignore.SetWindowText(currentignore);
 	m_ignoreList.SetCurSel(min(sel,m_ignoreList.GetCount()-1));
 }
 
 /* Compare two points for qsort */
 int pointTabCompare( const void *arg1, const void *arg2 )
-{	
+{
    CTibiaMiniMapLabel *point1=*(CTibiaMiniMapLabel **)arg1;
-   CTibiaMiniMapLabel *point2=*(CTibiaMiniMapLabel **)arg2;   
+   CTibiaMiniMapLabel *point2=*(CTibiaMiniMapLabel **)arg2;
    if (point1==NULL) return 1;
    if (point2==NULL) return -1;
    return strcmp(point1->desc,point2->desc);
 }
 
-void CConfigDialog::OnLoadFromMinimap() 
+void CConfigDialog::OnLoadFromMinimap()
 {
 	char prefixOut[512];
 	CLoadWaypointsInfo *dialog = new CLoadWaypointsInfo(prefixOut);
@@ -1144,16 +1144,16 @@ void CConfigDialog::OnLoadFromMinimap()
 		}
 
 		delete map;
-	}	
+	}
 	if (totalPointCount==500)
 	{
 		AfxMessageBox("Warning: maximum (500) supported waypoints amount exceeded!");
 	}
 	// sort all points to be added lexicographically
 	qsort(pointTab,500,sizeof(CTibiaMiniMapLabel *),pointTabCompare);
-	for (i=0;i<500;i++) 
+	for (i=0;i<500;i++)
 	{
-		if (pointTab[i]) 
+		if (pointTab[i])
 		{
 			// this is a point to be added
 			char buf[256];
@@ -1173,7 +1173,7 @@ void CConfigDialog::OnLoadFromMinimap()
 	}
 }
 
-void CConfigDialog::OnMonsterAttackUp() 
+void CConfigDialog::OnMonsterAttackUp()
 {
 	char monsterName[256];
 	int curSel = m_monsterList.GetCurSel();
@@ -1184,7 +1184,7 @@ void CConfigDialog::OnMonsterAttackUp()
 	m_monsterList.SetCurSel(curSel-1);
 }
 
-void CConfigDialog::OnMonsterAttackDown() 
+void CConfigDialog::OnMonsterAttackDown()
 {
 	char monsterName[256];
 	int curSel = m_monsterList.GetCurSel();
@@ -1329,7 +1329,7 @@ void CConfigDialog::OnAutoResearch(){
 	}
 }
 
-void CConfigDialog::OnDropLootList() 
+void CConfigDialog::OnDropLootList()
 {
 	CDropLootDialog *dialog = new CDropLootDialog(virDropList,virDropListCount,virDropWhenCapacityLimitReached,virDropOnlyLooted);
 	dialog->DoModal();

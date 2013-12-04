@@ -66,4 +66,4 @@ public:
 	static void addSubstitute(const string &, const string &, const string &);
 };
 
-#endif 
+#endif

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class CTrigger  
+class CTrigger
 {
 friend static ostream &operator<<(ostream &out, const CTrigger &t);
 public:

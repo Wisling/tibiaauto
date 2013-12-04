@@ -34,7 +34,7 @@ public:
 	//Array to hold the list of dialog boxes/tab pages for CTabCtrl
 	int m_DialogID[6];
 	
-	//CDialog Array Variable to hold the dialogs 
+	//CDialog Array Variable to hold the dialogs
 	MyDialog *m_Dialog[6];
 	
 	int m_nPageCount;

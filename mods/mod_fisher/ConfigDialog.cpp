@@ -57,29 +57,29 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -102,31 +102,31 @@ void CConfigDialog::enableControls()
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf,"%d",configData->fishOnlyWhenCap);m_fishOnlyWhenCap.SetWindowText(buf);	
-	m_moveFromHandToCont.SetCheck(configData->moveFromHandToCont);	
-	m_fishOnlyWhenWorms.SetCheck(configData->fishOnlyWhenWorms);	
+	sprintf(buf,"%d",configData->fishOnlyWhenCap);m_fishOnlyWhenCap.SetWindowText(buf);
+	m_moveFromHandToCont.SetCheck(configData->moveFromHandToCont);
+	m_fishOnlyWhenWorms.SetCheck(configData->fishOnlyWhenWorms);
 	
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
-{	
+{
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	m_fishOnlyWhenCap.GetWindowText(buf,127);newConfigData->fishOnlyWhenCap=atoi(buf);	
-	newConfigData->moveFromHandToCont=m_moveFromHandToCont.GetCheck();	
-	newConfigData->fishOnlyWhenWorms=m_fishOnlyWhenWorms.GetCheck();	
+	m_fishOnlyWhenCap.GetWindowText(buf,127);newConfigData->fishOnlyWhenCap=atoi(buf);
+	newConfigData->moveFromHandToCont=m_moveFromHandToCont.GetCheck();
+	newConfigData->fishOnlyWhenWorms=m_fishOnlyWhenWorms.GetCheck();
 
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
 		KillTimer(1001);
 
-		refreshFishStatus();		
+		refreshFishStatus();
 
 		SetTimer(1001,250,NULL);
 	}
@@ -139,7 +139,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -153,7 +153,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -174,7 +174,7 @@ void CConfigDialog::refreshFishStatus()
 	int contNr;
 	for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 	{
-		CTibiaContainer *container = reader.readContainer(contNr);			
+		CTibiaContainer *container = reader.readContainer(contNr);
 		
 		if (container->flagOnOff)
 		{

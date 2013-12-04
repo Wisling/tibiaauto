@@ -38,14 +38,14 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-public:	
+public:
 	// functions from IModuleInterface
 	char * getName();
 	int isStarted();
 	void start();
 	void stop();
 	char *getVersion();
-private:	
+private:
 	int m_started;
 	CConfigData *m_configData;
 };

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class CConfigData  
+class CConfigData
 {
 public:
 	int options;
@@ -22,7 +22,7 @@ public:
 	virtual ~CConfigData();
 
 	list<Alarm> alarmList;
-	int actX,actY,actZ,actDirection;	
+	int actX,actY,actZ,actDirection;
 	int runawayX,runawayY,runawayZ;
 
 	bool triggerMessage;

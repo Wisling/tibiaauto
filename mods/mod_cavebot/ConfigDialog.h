@@ -40,7 +40,7 @@ enum CToolAutoAttackStateLoot
 enum CToolAutoAttackStateWalker
 {
 	CToolAutoAttackStateWalker_notRunning,
-	CToolAutoAttackStateWalker_macroPause,		
+	CToolAutoAttackStateWalker_macroPause,
 	CToolAutoAttackStateWalker_noWaypoints,
 	CToolAutoAttackStateWalker_ok,
 	CToolAutoAttackStateWalker_noPathFound,
@@ -211,7 +211,7 @@ protected:
 	afx_msg void OnToolAutoattackRemoveMonster();
 	afx_msg void OnToolAutoattackAddMonster();
 	afx_msg void OnToolAutoattackRemoveWaypoint();
-	afx_msg void OnToolAutoattackAddWaypoint();	
+	afx_msg void OnToolAutoattackAddWaypoint();
 	afx_msg void OnDepotEntryadd();
 	afx_msg void OnDepotEntryremove();
 	afx_msg void OnToolAutoattackAddIgnore();

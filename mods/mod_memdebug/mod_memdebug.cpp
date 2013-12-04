@@ -38,7 +38,7 @@ END_MESSAGE_MAP()
 // CMod_memdebugApp construction
 
 CMod_memdebugApp::CMod_memdebugApp()
-{	
+{
 	m_started=0;
 }
 
@@ -64,7 +64,7 @@ int CMod_memdebugApp::isStarted()
 
 void CMod_memdebugApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{

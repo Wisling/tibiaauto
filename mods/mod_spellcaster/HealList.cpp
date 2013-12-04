@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CHealList message handlers
 
-void CHealList::OnHealListAdd() 
+void CHealList::OnHealListAdd()
 {
 	char lpNameBuffer[64];
 	char lpMaxHPBuffer[8];
@@ -62,9 +62,9 @@ void CHealList::OnHealListAdd()
 	int triggerHPLen = m_triggerHP.GetWindowText(lpTriggerHPBuffer, 8);
 	if (nameLen && hpLen && triggerHPLen) {
 		m_list.InsertItem(healList.size(), "");
-		m_list.SetItemText(0, 0, lpNameBuffer);		
-		m_list.SetItemText(0, 1, lpMaxHPBuffer);		
-		m_list.SetItemText(0, 2, lpTriggerHPBuffer);		
+		m_list.SetItemText(0, 0, lpNameBuffer);
+		m_list.SetItemText(0, 1, lpMaxHPBuffer);
+		m_list.SetItemText(0, 2, lpTriggerHPBuffer);
 		m_name.SetWindowText("");
 		m_maxHP.SetWindowText("");
 		m_triggerHP.SetWindowText("");
@@ -79,7 +79,7 @@ void CHealList::OnHealListAdd()
 		AfxMessageBox("Some entries are blank, please try again!");
 }
 
-void CHealList::OnHealListDelete() 
+void CHealList::OnHealListDelete()
 {
 	int nSelRows = m_list.GetSelectedCount();
 	if(!nSelRows)
@@ -96,7 +96,7 @@ void CHealList::OnHealListDelete()
 	
 	while (i != -1) {
 		int find = i;
-		nTemp = nTemp-1; 
+		nTemp = nTemp-1;
 		pnArrayOfSelRows[nTemp] = i;
 		i = m_list.GetNextSelectedItem(pos);
 		for(int k = 0; k < healList.size(); k++) {
@@ -105,7 +105,7 @@ void CHealList::OnHealListDelete()
 		}
 	}
 	
-	for(int j=0; j < nSelRows; j++) 
+	for(int j=0; j < nSelRows; j++)
 		m_list.DeleteItem(pnArrayOfSelRows[j]);
 	
 	delete(pnArrayOfSelRows);
@@ -121,13 +121,13 @@ void CHealList::Mem2List()
 		m_list.InsertItem(i, "");
 		m_list.SetItemText(0, 0, temp.name);
 		sprintf(lpBuffer, "%d", temp.maxHP);
-		m_list.SetItemText(0, 1, lpBuffer);		
+		m_list.SetItemText(0, 1, lpBuffer);
 		sprintf(lpBuffer, "%d", temp.triggerHP);
-		m_list.SetItemText(0, 2, lpBuffer);		
+		m_list.SetItemText(0, 2, lpBuffer);
 	}
 }
 
-BOOL CHealList::OnInitDialog() { 
+BOOL CHealList::OnInitDialog() {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_delete);

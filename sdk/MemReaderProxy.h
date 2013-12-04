@@ -21,7 +21,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CMemReaderProxy  
+class CMemReaderProxy
 {
 public:
 	void setProcessId(int processId);
@@ -41,9 +41,9 @@ public:
 	int getTradeCountPartner();
 	int getTradeCountSelf();
 	int getAttackedCreature();
-	void setAttackedCreature(int tibiaId);	
+	void setAttackedCreature(int tibiaId);
 	int getFollowedCreature();
-	void setFollowedCreature(int tibiaId);	
+	void setFollowedCreature(int tibiaId);
 	int getNextPacketCount();
 	char * GetLoggedChar(int processId);
 	int readBattleListMax();

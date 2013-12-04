@@ -60,7 +60,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CSliderCtrlEx message handlers
 
-void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult) 
+void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	int loopMax = colorList.GetSize();	// number of color ranges to process
 	LPNMCUSTOMDRAW lpCustDraw = (LPNMCUSTOMDRAW)pNMHDR;
@@ -290,7 +290,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 
 			// width (or height for vertical slider) inside bitmap for this color
 			int widthVal = hval - lval;
-			widthVal = int((double(widthVal)/scale) + 1.0);			
+			widthVal = int((double(widthVal)/scale) + 1.0);
 			
 			// For drawing a gradient, we need to know the individual RGB values
 			int sR,eR,sG,eG,sB,eB;	// start and end R, G, and B values
@@ -593,14 +593,14 @@ void CSliderCtrlEx::clearCallback(void)
 }
 
 // When reporting slider position, we also indicate if it is being dragged by the mouse
-void CSliderCtrlEx::OnLButtonDown(UINT nFlags, CPoint point) 
+void CSliderCtrlEx::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	m_IsDragging = TRUE;
 	CSliderCtrl::OnLButtonDown(nFlags, point);
 }
 
-void CSliderCtrlEx::OnLButtonUp(UINT nFlags, CPoint point) 
+void CSliderCtrlEx::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	m_IsDragging = FALSE;
@@ -638,12 +638,12 @@ BOOL CSliderCtrlEx::SaveBitmap(LPCSTR lpFileName, CBitmap &hBitmap, HPALETTE hPa
 			hr = pPicture->SaveAsFile( pStream, TRUE, &lBytesStreamed );
 			if ( SUCCEEDED(hr) )
 			{
-				HANDLE hFile = CreateFile( lpFileName, 
-					GENERIC_WRITE, 
-					FILE_SHARE_READ, 
+				HANDLE hFile = CreateFile( lpFileName,
+					GENERIC_WRITE,
+					FILE_SHARE_READ,
 					NULL,
-					CREATE_ALWAYS, 
-					FILE_ATTRIBUTE_NORMAL, 
+					CREATE_ALWAYS,
+					FILE_ATTRIBUTE_NORMAL,
 					NULL );
 				if ( hFile )
 				{
@@ -660,14 +660,14 @@ BOOL CSliderCtrlEx::SaveBitmap(LPCSTR lpFileName, CBitmap &hBitmap, HPALETTE hPa
 					CloseHandle(hFile);
 				}
 			}
-			// clean up         
+			// clean up
 			pStream->Release();
 		}
-		// clean up      
+		// clean up
 		pPicture->Release();
 	}
 	
-	return bResult;   
+	return bResult;
 }
 
 void CSliderCtrlEx::Refresh()

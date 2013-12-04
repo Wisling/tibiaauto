@@ -36,8 +36,8 @@ public:
 	struct point getRandomPoint();
 	void clear();
 	void setPointAsAvailable(int x,int y,int z);
-	int isPointAvailable(int x,int y,int z);	
-	int isPointAvailableNoProh(int x,int y,int z);	
+	int isPointAvailable(int x,int y,int z);
+	int isPointAvailableNoProh(int x,int y,int z);
 	int size();
 	struct point getPointByNr(int nr);
 	point getDestPoint(int x,int y, int z);

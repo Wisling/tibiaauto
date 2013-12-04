@@ -185,7 +185,7 @@ void CTrigger::setIntTrigger(int intIn) {
 		intTriggerList.push_back(intIn);
 		break;
 	}
-}		
+}
 
 int CTrigger::getIntTrigger() {
 	list<int>::iterator intItr = intTriggerList.begin();

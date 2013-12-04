@@ -58,7 +58,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -66,7 +66,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 	
 	while (!toolThreadShouldStop)
-	{			
+	{
 		Sleep(CModuleUtil::randomFormula(500,200));
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		int continueFishing = 1;
@@ -104,13 +104,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			delete item;
-		}	
+		}
 		
 		delete self;
 		// refresh self to have correct cap
 		self = reader.readSelfCharacter();
-		// if cap check enabled, 
-		if (self->cap < config->fishOnlyWhenCap)			
+		// if cap check enabled,
+		if (self->cap < config->fishOnlyWhenCap)
 			continueFishing = 0;
 		
 		//New only fish when worms available
@@ -137,7 +137,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
 			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
 				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (item->objectId) {	
+				if (item->objectId) {
 					fishingRodCont=0x40+contNr;
 					fishingRodPos=item->pos;
 					delete item;
@@ -193,7 +193,7 @@ CMod_fisherApp::CMod_fisherApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_fisherApp::~CMod_fisherApp()
@@ -202,7 +202,7 @@ CMod_fisherApp::~CMod_fisherApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_fisherApp::getName()
@@ -218,7 +218,7 @@ int CMod_fisherApp::isStarted()
 
 
 void CMod_fisherApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -229,7 +229,7 @@ void CMod_fisherApp::start()
 	DWORD threadId;
 	
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -246,7 +246,7 @@ void CMod_fisherApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_fisherApp::showConfigDialog()
 {
@@ -268,7 +268,7 @@ void CMod_fisherApp::showConfigDialog()
 void CMod_fisherApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -309,7 +309,7 @@ char *CMod_fisherApp::getVersion()
 
 
 int CMod_fisherApp::validateConfig(int showAlerts)
-{	
+{
 	if (m_configData->fishOnlyWhenCap<0)
 	{
 		if (showAlerts) AfxMessageBox("Minimum fishing capacity must be >=0!");
@@ -327,8 +327,8 @@ void CMod_fisherApp::resetConfig()
 void CMod_fisherApp::loadConfigParam(char *paramName,char *paramValue)
 {
 	if (!strcmp(paramName,"other/fishOnlyWhenCap")) m_configData->fishOnlyWhenCap=atoi(paramValue);
-	if (!strcmp(paramName,"move/fromHandToCont")) m_configData->moveFromHandToCont=atoi(paramValue);		
-	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) m_configData->fishOnlyWhenWorms=atoi(paramValue);		
+	if (!strcmp(paramName,"move/fromHandToCont")) m_configData->moveFromHandToCont=atoi(paramValue);
+	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) m_configData->fishOnlyWhenWorms=atoi(paramValue);
 }
 
 char *CMod_fisherApp::saveConfigParam(char *paramName)
@@ -337,7 +337,7 @@ char *CMod_fisherApp::saveConfigParam(char *paramName)
 	buf[0]=0;
 	
 	if (!strcmp(paramName,"other/fishOnlyWhenCap")) sprintf(buf,"%d",m_configData->fishOnlyWhenCap);
-	if (!strcmp(paramName,"move/fromHandToCont")) sprintf(buf,"%d",m_configData->moveFromHandToCont);	
+	if (!strcmp(paramName,"move/fromHandToCont")) sprintf(buf,"%d",m_configData->moveFromHandToCont);
 	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) sprintf(buf,"%d",m_configData->fishOnlyWhenWorms);
 	
 	
@@ -349,7 +349,7 @@ char *CMod_fisherApp::getConfigParamName(int nr)
 	switch (nr)
 	{
 	case 0: return "other/fishOnlyWhenCap"; // old: fishCap
-	case 1: return "move/fromHandToCont";	
+	case 1: return "move/fromHandToCont";
 	case 2: return "other/fishOnlyWhenWorms";
 	default:
 		return NULL;
@@ -359,7 +359,7 @@ char *CMod_fisherApp::getConfigParamName(int nr)
 void CMod_fisherApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

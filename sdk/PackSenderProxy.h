@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CPackSenderProxy  
+class CPackSenderProxy
 {
 public:
 	void setPipeHandle(HANDLE hPipe);

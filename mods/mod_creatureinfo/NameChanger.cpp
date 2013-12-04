@@ -55,7 +55,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CNameChanger message handlers
 
-void CNameChanger::RefreshInfo() 
+void CNameChanger::RefreshInfo()
 {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -122,7 +122,7 @@ void CNameChanger::RefreshInfo()
 	delete self;
 }
 
-BOOL CNameChanger::OnInitDialog() 
+BOOL CNameChanger::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_OK);
@@ -153,11 +153,11 @@ void CNameChanger::InitList(){
 	m_list.SetColumnOrderArray(4,aCols);
 
 	m_list.SetItemCount(memConstData.m_memMaxCreatures);
-	m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);	
+	m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT|LVS_EX_GRIDLINES);
 
 }
 
-void CNameChanger::OnTimer(UINT nIDEvent) 
+void CNameChanger::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1000){
 		RefreshInfo();
@@ -165,7 +165,7 @@ void CNameChanger::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CNameChanger::OnToolcreaturinfoRefresh() 
+void CNameChanger::OnToolcreaturinfoRefresh()
 {
 	if (m_refresh.GetCheck()){
 		SetTimer(1000,1000,NULL);
@@ -174,7 +174,7 @@ void CNameChanger::OnToolcreaturinfoRefresh()
 	}
 }
 
-void CNameChanger::OnBeginlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CNameChanger::OnBeginlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
 	// TODO: Add your control notification handler code here
@@ -190,7 +190,7 @@ void CNameChanger::OnBeginlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* p
 	*pResult = 0;
 }
 
-void CNameChanger::OnEndlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CNameChanger::OnEndlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LV_DISPINFO* pDispInfo = (LV_DISPINFO*)pNMHDR;
 	
@@ -214,7 +214,7 @@ void CNameChanger::OnEndlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pRe
 	}
 }
 
-void CNameChanger::OnKeydownToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CNameChanger::OnKeydownToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	LV_KEYDOWN* pLVKeyDow = (LV_KEYDOWN*)pNMHDR;
 
@@ -224,7 +224,7 @@ void CNameChanger::OnKeydownToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CNameChanger::OnToolcreaturinfoAdvanced() 
+void CNameChanger::OnToolcreaturinfoAdvanced()
 {
 	if (m_advanced.GetCheck()){
 		m_list.InsertColumn(4,"TibiaID",LVCFMT_RIGHT,80);
@@ -237,7 +237,7 @@ void CNameChanger::OnToolcreaturinfoAdvanced()
 	}
 }
 
-void CNameChanger::OnDblclkToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult) 
+void CNameChanger::OnDblclkToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	m_list.EditLabel(m_list.GetSelectionMark());
 	

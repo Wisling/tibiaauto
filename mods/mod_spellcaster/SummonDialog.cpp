@@ -53,7 +53,7 @@ void SummonDialog::OnToolSpellcasterSummon() {
 	int val = m_summon.GetCheck();
 	m_summonLessThan.EnableWindow(val);
 	m_summonMana.EnableWindow(val);
-	m_summonName.EnableWindow(val);	
+	m_summonName.EnableWindow(val);
 }
 
 void SummonDialog::disableControls() {
@@ -76,7 +76,7 @@ void SummonDialog::configToControls(CConfigData *configData) {
 	char buf[128];
 	m_summon.SetCheck(configData->summon);
 	sprintf(buf,"%d",configData->summonLessThan);	m_summonLessThan.SetWindowText(buf);
-	sprintf(buf,"%s",configData->summonName);		m_summonName.SetWindowText(buf);	
+	sprintf(buf,"%s",configData->summonName);		m_summonName.SetWindowText(buf);
 	sprintf(buf,"%d",configData->summonMana);		m_summonMana.SetWindowText(buf);
 	OnToolSpellcasterSummon();
 }
@@ -89,7 +89,7 @@ void SummonDialog::controlsToConfig(CConfigData *newConfigData) {
 	m_summonName.GetWindowText(newConfigData->summonName,127);
 }
 
-BOOL SummonDialog::OnInitDialog() 
+BOOL SummonDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	int nItem;
@@ -174,7 +174,7 @@ BOOL SummonDialog::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void SummonDialog::OnItemchangingCreatureList(NMHDR* pNMHDR, LRESULT* pResult) 
+void SummonDialog::OnItemchangingCreatureList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	

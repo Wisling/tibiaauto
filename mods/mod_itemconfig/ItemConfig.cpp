@@ -97,7 +97,7 @@ BOOL CItemAdd::OnInitDialog() {
 	skin.SetButtonSkin(	m_OK);
 	skin.SetButtonSkin(	m_Cancel);
 
-    CBitmap items; 
+    CBitmap items;
     items.LoadBitmap(IDB_ITEMS);
     m_itemImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
     m_itemImg.Add(&items, RGB(255, 0, 255));

@@ -58,7 +58,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -86,7 +86,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 	}
 	while (!toolThreadShouldStop)
-	{	
+	{
 		
 		Sleep(100);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
@@ -98,7 +98,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		//T4: If any creature is attacked
 		if (attackedCreature)
-		{			
+		{
 			//T4: Get attacked creature stucture
 			CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
 			
@@ -116,7 +116,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					CTibiaContainer *cont = reader.readContainer(contNr);
 
 					if (cont->flagOnOff)
-					{				
+					{
 
 						CUIntArray acceptedItems;
 						//T4: If default rune has been choosen then cast it every time creature is attacked
@@ -157,7 +157,7 @@ CMod_aimApp::CMod_aimApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_aimApp::~CMod_aimApp()
@@ -166,7 +166,7 @@ CMod_aimApp::~CMod_aimApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_aimApp::getName()
@@ -182,7 +182,7 @@ int CMod_aimApp::isStarted()
 
 
 void CMod_aimApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -195,7 +195,7 @@ void CMod_aimApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -212,11 +212,11 @@ void CMod_aimApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_aimApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -234,7 +234,7 @@ void CMod_aimApp::showConfigDialog()
 void CMod_aimApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -294,7 +294,7 @@ char *CMod_aimApp::saveConfigParam(char *paramName)
 {
 	static char buf[1024];
 	buf[0]=0;
-	if (!strcmp(paramName,"RuneType")) sprintf(buf,"%d",m_configData->RuneType);	
+	if (!strcmp(paramName,"RuneType")) sprintf(buf,"%d",m_configData->RuneType);
 
 	return buf;
 }

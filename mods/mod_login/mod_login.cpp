@@ -86,7 +86,7 @@ int waitOnConnecting()
 	int i;
 	registerDebug("Waiting on 'Connecting' window up to 10 seconds");
 	for (i=0;i<100;i++)
-	{		
+	{
 		if (strcmp(reader.getOpenWindowName(),"Connecting")!=0) return 0;
 		Sleep(100);
 		if (toolThreadShouldStop) return 1;
@@ -106,11 +106,11 @@ int waitForWindow(char *name, int secs=10, int doEsc=0)
 	registerDebug(buf);
 	for (i=0;i<secs*10;i++)
 	{
-		if (strcmp(reader.getOpenWindowName(),name)) 
+		if (strcmp(reader.getOpenWindowName(),name))
 		{
 			if (doEsc) sk.SendKeys("{ESC}",true);
 			Sleep(100);
-		} else {			
+		} else {
 			return 0;
 		}
 		if (toolThreadShouldStop) return 1;
@@ -120,7 +120,7 @@ int waitForWindow(char *name, int secs=10, int doEsc=0)
 }
 
 HWND tibiaWindowHwnd=0;
-BOOL CALLBACK EnumWindowsProcTibiaWindow(      
+BOOL CALLBACK EnumWindowsProcTibiaWindow(
 
     HWND hwnd,
     LPARAM lParam
@@ -165,9 +165,9 @@ int ensureForeground(HWND hwnd)
 	::SystemParametersInfo(0x2001/*SPI_SETFOREGROUNDLOCKTIMEOUT*/, timeout, (LPVOID)0, SPIF_SENDWININICHANGE | SPIF_UPDATEINIFILE);
 
 	for (i=0;i<100;i++)
-	{						
+	{
 		
-		if (::GetForegroundWindow()==hwnd) break;						
+		if (::GetForegroundWindow()==hwnd) break;
 		if (toolThreadShouldStop) break;
 		Sleep(100);
 	}
@@ -186,7 +186,7 @@ int getSelfHealth()
 }
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{	
+{
 	int i;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -311,7 +311,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 			}
 			if (wndIconic || !wndMaximized)
-			{	
+			{
 				::ShowWindow(hwnd,SW_SHOWMAXIMIZED);
 				
 				// wait 5s for the window to restore
@@ -321,14 +321,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (toolThreadShouldStop) break;
 					Sleep(100);
 				}
-				if (::IsIconic(hwnd) && wndIconic || !::IsZoomed(hwnd) && wndMaximized) 
-				{				
+				if (::IsIconic(hwnd) && wndIconic || !::IsZoomed(hwnd) && wndMaximized)
+				{
 					registerDebug("ERROR: tibia window is still not maximized but it should be");
 					ReleaseMutex(hMutex);
 					continue;
 				}
 			}
-			if (toolThreadShouldStop) 
+			if (toolThreadShouldStop)
 			{
 				ReleaseMutex(hMutex);
 				continue;
@@ -339,12 +339,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			POINT prevCursorPos;
 			GetCursorPos(&prevCursorPos);
 						
-			if (ensureForeground(hwnd)) 
+			if (ensureForeground(hwnd))
 			{
 				ReleaseMutex(hMutex);
 				continue;
 			}
-			if (toolThreadShouldStop) 
+			if (toolThreadShouldStop)
 			{
 				ReleaseMutex(hMutex);
 				continue;
@@ -360,7 +360,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			waitForWindow("",2,1);
 			
 			// STEP1: show login window
-			if (ensureForeground(hwnd)) 
+			if (ensureForeground(hwnd))
 			{
 				ReleaseMutex(hMutex);
 				continue;
@@ -402,7 +402,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 			
 			// STEP3: select char
-			if (waitForWindow("Select Character",5) || ensureForeground(hwnd)) 
+			if (waitForWindow("Select Character",5) || ensureForeground(hwnd))
 			{
 				ReleaseMutex(hMutex);
 				continue;
@@ -430,14 +430,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			for (i=0;i<4;i++){
 				SetCursorPos(wndRect.right-15,wndRect.top+387);//inventory maximized
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
-				mouse_event(MYMOUSE_UP,0,0,0,0);			
+				mouse_event(MYMOUSE_UP,0,0,0,0);
 				SetCursorPos(wndRect.right-15,wndRect.top+382);//inventory minimized
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
 				Sleep(100);
 			}
 			// finalize
-			if (reader.isLoggedIn()&&config->openMain) {	
+			if (reader.isLoggedIn()&&config->openMain) {
 				
 				// open the main backpack flow
 
@@ -479,12 +479,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int dblClickXOffset = 87;
 				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
-				mouse_event(MYMOUSE_UP,0,0,0,0);			
+				mouse_event(MYMOUSE_UP,0,0,0,0);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
-				mouse_event(MYMOUSE_UP,0,0,0,0);			
+				mouse_event(MYMOUSE_UP,0,0,0,0);
 				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
-				mouse_event(MYMOUSE_UP,0,0,0,0);			
+				mouse_event(MYMOUSE_UP,0,0,0,0);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
 
@@ -516,14 +516,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								//Double click on main bar of open container(each container heign =19
 								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387+19*foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
-								mouse_event(MYMOUSE_UP,0,0,0,0);			
+								mouse_event(MYMOUSE_UP,0,0,0,0);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
-								mouse_event(MYMOUSE_UP,0,0,0,0);			
+								mouse_event(MYMOUSE_UP,0,0,0,0);
 								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282+19*foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
-								mouse_event(MYMOUSE_UP,0,0,0,0);			
+								mouse_event(MYMOUSE_UP,0,0,0,0);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
-								mouse_event(MYMOUSE_UP,0,0,0,0);			
+								mouse_event(MYMOUSE_UP,0,0,0,0);
 								
 								foundContOpenNr++;
 							}
@@ -533,7 +533,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				} else {
 					// something went wrong
 					sender.closeContainer(0);
-				}				
+				}
 				delete cont; cont = NULL;
 				
 				//}  Comemnted out checking number of backpacks open.
@@ -636,7 +636,7 @@ int CMod_loginApp::isStarted()
 
 
 void CMod_loginApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -647,7 +647,7 @@ void CMod_loginApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -664,11 +664,11 @@ void CMod_loginApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_loginApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -686,7 +686,7 @@ void CMod_loginApp::showConfigDialog()
 void CMod_loginApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -834,7 +834,7 @@ char *CMod_loginApp::getConfigParamName(int nr)
 void CMod_loginApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

@@ -35,7 +35,7 @@ CConfigDialog::CConfigDialog(CMod_autogoApp *app,CWnd* pParent /*=NULL*/)
 
 	m_Dialog[0] = new CAlarmDialog;
 	m_Dialog[1] = new GeneralConfigDialog;
-	m_nPageCount = 2;	
+	m_nPageCount = 2;
 }
 
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
@@ -72,16 +72,16 @@ void CConfigDialog::OnClose() {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {	
+void CConfigDialog::OnEnable() {
 	if (m_enable.GetCheck()) {
-		m_app->controlsToConfig();		
-		if (m_app->validateConfig(1))		
+		m_app->controlsToConfig();
+		if (m_app->validateConfig(1))
 			m_app->start();
 		else
 			m_enable.SetCheck(0);
-	} 
+	}
 	else
-		m_app->stop(); 
+		m_app->stop();
 }
 
 void CConfigDialog::disableControls() {
@@ -94,7 +94,7 @@ void CConfigDialog::enableControls() {
 	m_Dialog[1]->enableControls();
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {	
+void CConfigDialog::configToControls(CConfigData *configData) {
 	CTibiaItemProxy itemProxy;
 	m_Dialog[0]->configToControls(configData);
 	m_Dialog[1]->configToControls(configData);
@@ -118,14 +118,14 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		char buf[512];
 
-		if (!m_enable.GetCheck()) 
-			triggerMessage(); 
+		if (!m_enable.GetCheck())
+			triggerMessage();
 	
 		sprintf(buf,"Status: %s", statusPrinted);
 		m_status.SetWindowText(buf);
 
 		delete self;
-	}	
+	}
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -167,7 +167,7 @@ void CConfigDialog::activateEnableButton(int enable) {
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::OnCaptureChanged(CWnd *pWnd) 
+void CConfigDialog::OnCaptureChanged(CWnd *pWnd)
 {
 	// TODO: Add your message handler code here
 	
@@ -201,6 +201,6 @@ LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp){
 		}
 		
 		return FALSE; //do nothing
-	}	
+	}
 	return MyDialog::WindowProc(msg, wp, lp);
 }

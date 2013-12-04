@@ -55,7 +55,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 ////// GZIP deflate (compress)
 #define BUFLEN      16384
-#define MAX_NAME_LEN 1024 
+#define MAX_NAME_LEN 1024
 
 void gz_compress      OF((FILE   *in, gzFile out));
 void file_compress    OF((char  *file, char *mode));
@@ -65,10 +65,10 @@ void file_compress    OF((char  *file, char *mode));
  * Compress input to output then close both files.
  */
 
-void gz_compress(FILE *in, gzFile out)    
+void gz_compress(FILE *in, gzFile out)
 {
     char buf[BUFLEN];
-    int len;    
+    int len;
 
     for (;;) {
         len = (int)fread(buf, 1, sizeof(buf), in);
@@ -78,14 +78,14 @@ void gz_compress(FILE *in, gzFile out)
         }
         if (len == 0) break;
 
-        if (gzwrite(out, buf, (unsigned)len) != len) 
+        if (gzwrite(out, buf, (unsigned)len) != len)
 		{
 			AfxMessageBox("gz error");
 			return;
 		}
     }
     fclose(in);
-    if (gzclose(out) != Z_OK) 
+    if (gzclose(out) != Z_OK)
 	{
 		AfxMessageBox("failed gzclose");
 	}
@@ -129,7 +129,7 @@ void file_compress(char *file, char *mode)
 /////////////////////////////////////////////////////////////////////////////
 // CSendStats message handlers
 
-void CSendStats::OnSendLootstats() 
+void CSendStats::OnSendLootstats()
 {
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
@@ -138,7 +138,7 @@ void CSendStats::OnSendLootstats()
 	sendFile(pathBuf);
 }
 
-BOOL CSendStats::OnInitDialog() 
+BOOL CSendStats::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_send2);
@@ -149,7 +149,7 @@ BOOL CSendStats::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CSendStats::OnSendCreaturestats() 
+void CSendStats::OnSendCreaturestats()
 {
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
@@ -178,14 +178,14 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		
 		
 		unlink(fname);
-		unlink(fnameGz);		
+		unlink(fnameGz);
 
 		fileSendingProgress=1;
 	} catch (CInternetException *e)
 	{
 		e=0;
 		fileSendingProgress=-1;
-	}	
+	}
 	return 0;
 }
 
@@ -195,7 +195,7 @@ void CSendStats::sendFile(char *fname)
 	{
 		DWORD threadId;
 		fileSendingProgress=0;
-		::CreateThread(NULL,0,sendFileThread,fname,0,&threadId);	
+		::CreateThread(NULL,0,sendFileThread,fname,0,&threadId);
 		m_ok.EnableWindow(false);
 		m_send1.EnableWindow(false);
 		m_send2.EnableWindow(false);
@@ -203,7 +203,7 @@ void CSendStats::sendFile(char *fname)
 	}
 }
 
-void CSendStats::OnTimer(UINT nIDEvent) 
+void CSendStats::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==10001)
 	{
@@ -212,7 +212,7 @@ void CSendStats::OnTimer(UINT nIDEvent)
 
 		if (fileSendingProgress)
 		{
-			if (fileSendingProgress==1) 
+			if (fileSendingProgress==1)
 			{
 				AfxMessageBox("File sent ok. Thank you for support of Tibia Auto!");
 			}
@@ -230,9 +230,9 @@ void CSendStats::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CSendStats::OnClose() 
+void CSendStats::OnClose()
 {
-	if (fileSendingProgress)	
+	if (fileSendingProgress)
 	{
 		CDialog::OnClose();
 	}

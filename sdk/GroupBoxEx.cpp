@@ -100,7 +100,7 @@ void CGroupBoxEx::OnPaint()
 	dc.FillRect(rc, &myBrush);
 
 	rc.top = -1;
-	rc.left = 12; 
+	rc.left = 12;
 	rc.right = 13 + textSize;
 	rc.bottom = 16;
 	logFont.lfWeight = FW_BOLD;
@@ -114,5 +114,5 @@ void CGroupBoxEx::OnPaint()
 	dc.DrawText(text, rc, NULL);
 
 	dc.SelectObject(def_font);
-	font.DeleteObject(); 
+	font.DeleteObject();
 }

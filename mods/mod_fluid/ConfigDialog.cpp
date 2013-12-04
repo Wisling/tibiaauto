@@ -59,7 +59,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DROPEMPTY, m_dropEmpty);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_SLEEP, m_sleep);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_MANABELOW, m_manaBelow);
-	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);	
+	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_HPBELOW, m_hpBelow);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKMANA, m_drinkMana);
 	DDX_Control(pDX, IDC_TOOL_FLUIDDRINKER_DRINKHP, m_drinkHp);
 	DDX_Control(pDX, IDC_TOOL_RANDOMCAST,m_randomCast);
@@ -82,29 +82,29 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -116,12 +116,12 @@ void CConfigDialog::disableControls()
 	m_manaBelowN.EnableWindow(false);
 	m_manaBelowS.EnableWindow(false);
 	m_manaBelowG.EnableWindow(false);
-	m_hpBelowH.EnableWindow(false);	
-	m_hpBelow.EnableWindow(false);	
-	m_hpBelowN.EnableWindow(false);	
-	m_hpBelowS.EnableWindow(false);	
-	m_hpBelowG.EnableWindow(false);	
-	m_hpBelowU.EnableWindow(false);	
+	m_hpBelowH.EnableWindow(false);
+	m_hpBelow.EnableWindow(false);
+	m_hpBelowN.EnableWindow(false);
+	m_hpBelowS.EnableWindow(false);
+	m_hpBelowG.EnableWindow(false);
+	m_hpBelowU.EnableWindow(false);
 	m_drinkMana.EnableWindow(false);
 	m_drinkManaN.EnableWindow(false);
 	m_drinkManaS.EnableWindow(false);
@@ -151,12 +151,12 @@ void CConfigDialog::enableControls()
 	m_manaBelowN.EnableWindow(true);
 	m_manaBelowS.EnableWindow(true);
 	m_manaBelowG.EnableWindow(true);
-	m_hpBelowH.EnableWindow(true);	
-	m_hpBelow.EnableWindow(true);	
-	m_hpBelowN.EnableWindow(true);	
-	m_hpBelowS.EnableWindow(true);	
-	m_hpBelowG.EnableWindow(true);	
-	m_hpBelowU.EnableWindow(true);	
+	m_hpBelowH.EnableWindow(true);
+	m_hpBelow.EnableWindow(true);
+	m_hpBelowN.EnableWindow(true);
+	m_hpBelowS.EnableWindow(true);
+	m_hpBelowG.EnableWindow(true);
+	m_hpBelowU.EnableWindow(true);
 	m_drinkMana.EnableWindow(true);
 	m_drinkManaN.EnableWindow(true);
 	m_drinkManaS.EnableWindow(true);
@@ -264,7 +264,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	
 	CDialog::OnTimer(nIDEvent);
@@ -275,7 +275,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -287,7 +287,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }

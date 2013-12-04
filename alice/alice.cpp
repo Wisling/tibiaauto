@@ -29,7 +29,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -82,17 +82,17 @@ BOOL CAliceApp::InitInstance()
 int kernelInitDone=0;
 
 void kernelInit()
-{		
+{
 	Kernel *kernel = new Kernel();
 	
-	kernel->bootstrap();		
+	kernel->bootstrap();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 
 char *kernelRespond(char *text,char *id)
-{	
+{
 	if (!kernelInitDone)
 	{
 		kernelInit();
@@ -102,7 +102,7 @@ char *kernelRespond(char *text,char *id)
 
 	char *ret=(char *)malloc(65536);
 	memset(ret,0,65536);
-	string aliceString = Kernel::respond(text,id);		
+	string aliceString = Kernel::respond(text,id);
 	sprintf(ret,"%s",aliceString.c_str());
-	return ret;		
+	return ret;
 }

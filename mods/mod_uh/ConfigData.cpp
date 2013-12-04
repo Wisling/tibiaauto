@@ -26,7 +26,7 @@ CConfigData::CConfigData()
 	m_grpBorderline=0;
 	m_grpFallback=1;
 	m_grpRunetype=0;
-	m_grpMemberCount=0;	
+	m_grpMemberCount=0;
 }
 
 CConfigData::~CConfigData()

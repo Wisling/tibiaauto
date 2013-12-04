@@ -1,14 +1,14 @@
 /********************************************************************************************
 * MOD-NAME      : SharedMemory.h
-* LONG-NAME     : 
+* LONG-NAME     :
 *
 * AUTHOR        : Martin Ziacek
-* DEPARTMENT    : 
-* TELEPHONE     : 
+* DEPARTMENT    :
+* TELEPHONE     :
 * CREATION-DATE : 09/05/2001 18:00:00
-* SP-NO         : 
-* FUNCTION      : 
-* 
+* SP-NO         :
+* FUNCTION      :
+*
 *********************************************************************************************/
 #ifndef __MEMMAPFILE_H__
 #define __MEMMAPFILE_H__

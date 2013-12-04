@@ -156,7 +156,7 @@ int OnList(char whiteList[32],char name[]){
 }
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -175,7 +175,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		initalizeCreatures();
 	
 	while (!toolThreadShouldStop)
-	{			
+	{
 		Sleep(200);
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int attackedCreature = reader.getAttackedCreature();
@@ -232,10 +232,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			delete self;
 			self = reader.readSelfCharacter();
-		}			
+		}
 		else if(config->poisonSpell && (flags & 1)) {
 			CIPCBackPipeProxy backPipe;
-			struct ipcMessage mess;	
+			struct ipcMessage mess;
 			if(backPipe.readFromPipe(&mess,1101)){
 				int pointLoss;
 				memcpy(&pointLoss,mess.payload,sizeof(int));
@@ -256,7 +256,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						char buf[256];
 						sprintf(buf,"exura sio \"%s\"",ch->name);
 						sender.say(buf);
-						Sleep(700);	
+						Sleep(700);
 					}
 				}
 				delete ch;
@@ -294,51 +294,51 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						sprintf(spellname,"exori gran");
 					break;
 				case 2:
-					if (self->mana > 160) 
+					if (self->mana > 160)
 						sprintf(spellname,"exori mas");
 					break;
 				case 3:
-					if (self->mana > 180) 
+					if (self->mana > 180)
 						sprintf(spellname,"exevo mas san");
 					break;
 				case 4:
-					if (self->mana > 25) 
+					if (self->mana > 25)
 						sprintf(spellname,"exevo flam hur");
 					break;
 				case 5:
-					if (self->mana > 25) 
+					if (self->mana > 25)
 						sprintf(spellname,"exevo frigo hur");
 					break;
 				case 6:
-					if (self->mana > 210) 
+					if (self->mana > 210)
 						sprintf(spellname,"exevo tera hur");
 					break;
 				case 7:
-					if (self->mana > 170) 
+					if (self->mana > 170)
 						sprintf(spellname,"exevo vis hur");
 					break;
 				case 8:
-					if (self->mana > 40) 
+					if (self->mana > 40)
 						sprintf(spellname,"exevo vis lux");
 					break;
 				case 9:
-					if (self->mana > 110) 
+					if (self->mana > 110)
 						sprintf(spellname,"exevo gran vis lux");
 					break;
 				case 10:
-					if (self->mana > 650) 
+					if (self->mana > 650)
 						sprintf(spellname,"exevo gran mas vis");
 					break;
 				case 11:
-					if (self->mana > 1200) 
+					if (self->mana > 1200)
 						sprintf(spellname,"exevo gran mas flam");
 					break;
 				case 12:
-					if (self->mana > 770) 
+					if (self->mana > 770)
 						sprintf(spellname,"exevo gran mas tera");
 					break;
 				case 13:
-					if (self->mana > 1200) 
+					if (self->mana > 1200)
 						sprintf(spellname,"exevo gran mas frigo");
 					break;
 				default:
@@ -414,7 +414,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								}
 								best = 0;
 							}
-							else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {							
+							else if (maxDist <= 4 && config->san && monstersInfo[currentMonsterNumber].weakHoly) {
 								sprintf(spellname,"exori san");
 							}
 							else if (maxDist <= 5 && config->hur && monstersInfo[currentMonsterNumber].weakPhysical) {
@@ -439,8 +439,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					delete ch;
 				}
 				attackedCreature = 0;
-			}			
-		}	
+			}
+		}
 		else if (config->summon&&summonCount<config->summonLessThan && self->mana>=config->summonMana) {
 			// we should summon something
 			char buf[256];
@@ -453,7 +453,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			RandomVariableMana(config->manaMana,MAKE,config);
 			sender.say(config->manaSpell);
 			Sleep(700);
-		}	
+		}
 		else if(config->timedSpell) {
 			for (loop = 0; loop < config->timedSpellList.size(); loop ++) {
 				if (self->mana >= config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime) {
@@ -471,7 +471,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						itemArray.Add(itemProxy.getValueForConst("fluidManaS"));
 					itemArray.Add(itemProxy.getValueForConst("fluidMana"));
 					for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
-						CTibiaContainer *cont = reader.readContainer(contNr);				
+						CTibiaContainer *cont = reader.readContainer(contNr);
 						if (cont->flagOnOff) {
 							CTibiaItem *item=CModuleUtil::lookupItem(contNr, &itemArray);
 							if (item->objectId) {
@@ -487,7 +487,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					Sleep(700);
 				}
 			}
-		}	
+		}
 		
 		delete self;
 	}
@@ -505,7 +505,7 @@ CMod_spellcasterApp::CMod_spellcasterApp()
 {
 	m_configDialog = NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_spellcasterApp::~CMod_spellcasterApp()
@@ -525,7 +525,7 @@ int CMod_spellcasterApp::isStarted() {
 	if(!m_started){
 		// if not started then regularly consume standard messages from the queue
 		CIPCBackPipeProxy backPipe;
-		struct ipcMessage mess;	
+		struct ipcMessage mess;
 		backPipe.readFromPipe(&mess,1101);
 	}
 	return m_started;
@@ -541,7 +541,7 @@ void CMod_spellcasterApp::start() {
 	DWORD threadId;
 	
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -556,10 +556,10 @@ void CMod_spellcasterApp::stop() {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_spellcasterApp::showConfigDialog() {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	
 	if (!m_configDialog)
 	{
@@ -624,7 +624,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 			if (m_configData->lifeSpellMana<1) {
 				if (showAlerts) AfxMessageBox("'Spell mana' must be >=1!");
 				return 0;
-			}			
+			}
 		}
 		if (m_configData->vitaSpell) {
 			if (m_configData->vitaSpellMana<160) {
@@ -820,7 +820,7 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName,char *paramValue) {
 char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
 	buf[0]=0;
-	try {		
+	try {
 		if (!strcmp(paramName,"mana")) sprintf(buf,"%d",m_configData->mana);
 		if (!strcmp(paramName,"manaMana")) sprintf(buf,"%d",m_configData->manaMana);
 		if (!strcmp(paramName,"manaSpell")) sprintf(buf,"%s",m_configData->manaSpell);
@@ -895,7 +895,7 @@ char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
 		if (!strcmp(paramName,"DisableWarning")) sprintf(buf,"%d",m_configData->disableWarning);
 		if (!strcmp(paramName,"randomCast")) sprintf(buf,"%d",m_configData->randomCast);
 		
-		if (!strcmp(paramName,"healList")) {		
+		if (!strcmp(paramName,"healList")) {
 			if (currentPos >= m_configData->healList.size())
 				return buf;
 			else {
@@ -997,7 +997,7 @@ int initalizeCreatures() {
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 
-	char pathBuf[2048];    
+	char pathBuf[2048];
 	
 	sprintf(pathBuf,"%s\\mods\\tibiaauto-creatureWeakness.csv",installPath);
 	
@@ -1069,10 +1069,10 @@ int isInitializedCreatures() {
 int getcurrentMonsterNumberFromName(char *match) {
 	int foundNone = -1, max = 0;
 	while (true) {
-		if (strcmpi(monstersInfo[max].name, match)==0) {			
+		if (strcmpi(monstersInfo[max].name, match)==0) {
 			return max;
 		}
-		if (max++ == numSpellcasterCreatures) return foundNone;;		
+		if (max++ == numSpellcasterCreatures) return foundNone;;
 	}
 	
 }
@@ -1144,8 +1144,8 @@ int aoeShouldFire(CConfigData *config) {
 							facing[ENERGY_BEAM][faceDir]+=monstersInfo[monster].weakEnergy>0 && deltaY>0;
 							facing[ENERGY_WAVE][faceDir]+=monstersInfo[monster].weakEnergy>0 && deltaY>0;
 							facing[EARTH_WAVE][faceDir]+=monstersInfo[monster].weakEarth>0 && deltaY>0;
-							egmFlamCount+=monstersInfo[monster].weakFire>0;						
-							egmFrigoCount+=monstersInfo[monster].weakIce>0;						
+							egmFlamCount+=monstersInfo[monster].weakFire>0;
+							egmFrigoCount+=monstersInfo[monster].weakIce>0;
 							if (deltaY <= 4) {
 								facing[FIRE_WAVE][faceDir]+=monstersInfo[monster].weakFire>0 && deltaY > 0;
 								facing[ICE_WAVE][faceDir]+=monstersInfo[monster].weakIce>0 && deltaY > 0;
@@ -1185,7 +1185,7 @@ int aoeShouldFire(CConfigData *config) {
 					egmTeraCount+=monstersInfo[monster].weakEarth>0;
 					if (deltaY <= 4) {
 							egmVisCount+=monstersInfo[monster].weakEnergy>0;
-							egmFlamCount+=monstersInfo[monster].weakFire>0;						
+							egmFlamCount+=monstersInfo[monster].weakFire>0;
 							facing[FIRE_WAVE][faceDir]+=monstersInfo[monster].weakFire>0 && deltaY>3;
 							facing[ICE_WAVE][faceDir]+=monstersInfo[monster].weakIce>0 && deltaY>3;
 						if (deltaY <= 3) {
@@ -1220,7 +1220,7 @@ int aoeShouldFire(CConfigData *config) {
 	if (config->exoriMas && exoriMasCount > exoriCount && exoriMasCount >= config->aoeAffect)
 		returnSpell = 2;
 	
-	if (config->exevoMasSan && exevoMasSanCount >= config->aoeAffect)	
+	if (config->exevoMasSan && exevoMasSanCount >= config->aoeAffect)
 		returnSpell = 3;
 	
 	if (config->exevoFlamHur && (facing[FIRE_WAVE][DOWN] >= config->aoeAffect || facing[FIRE_WAVE][RIGHT] >= config->aoeAffect || facing[FIRE_WAVE][UP] >= config->aoeAffect || facing[FIRE_WAVE][LEFT] >= config->aoeAffect))
@@ -1236,7 +1236,7 @@ int aoeShouldFire(CConfigData *config) {
 	if (config->exevoVisLux) {
 		if (returnSpell == 0 && (facing[ENERGY_BEAM][DOWN] >= config->aoeAffect || facing[ENERGY_BEAM][RIGHT] >= config->aoeAffect || facing[ENERGY_BEAM][UP] >= config->aoeAffect || facing[ENERGY_BEAM][LEFT] >= config->aoeAffect))
 			returnSpell = 8;
-		if (returnSpell == 4 && (facing[ENERGY_BEAM][DOWN] > facing[FIRE_WAVE][DOWN] || facing[ENERGY_BEAM][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[ENERGY_BEAM][UP] > facing[FIRE_WAVE][UP] || facing[ENERGY_BEAM][LEFT] > facing[FIRE_WAVE][LEFT]))	
+		if (returnSpell == 4 && (facing[ENERGY_BEAM][DOWN] > facing[FIRE_WAVE][DOWN] || facing[ENERGY_BEAM][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[ENERGY_BEAM][UP] > facing[FIRE_WAVE][UP] || facing[ENERGY_BEAM][LEFT] > facing[FIRE_WAVE][LEFT]))
 			returnSpell = 8;
 	}
 	if (config->exevoGranVisLux) {
@@ -1244,7 +1244,7 @@ int aoeShouldFire(CConfigData *config) {
 			returnSpell = 9;
 		if (returnSpell == 8 && (facing[G_ENERGY_BEAM][DOWN] > facing[ENERGY_BEAM][DOWN] || facing[G_ENERGY_BEAM][RIGHT] > facing[ENERGY_BEAM][RIGHT] || facing[G_ENERGY_BEAM][UP] > facing[ENERGY_BEAM][UP] || facing[G_ENERGY_BEAM][LEFT] > facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 9;
-		if (returnSpell == 4 && (facing[G_ENERGY_BEAM][DOWN] > facing[FIRE_WAVE][DOWN] || facing[G_ENERGY_BEAM][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[G_ENERGY_BEAM][UP] > facing[FIRE_WAVE][UP] || facing[G_ENERGY_BEAM][LEFT] > facing[FIRE_WAVE][LEFT]))		
+		if (returnSpell == 4 && (facing[G_ENERGY_BEAM][DOWN] > facing[FIRE_WAVE][DOWN] || facing[G_ENERGY_BEAM][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[G_ENERGY_BEAM][UP] > facing[FIRE_WAVE][UP] || facing[G_ENERGY_BEAM][LEFT] > facing[FIRE_WAVE][LEFT]))
 			returnSpell = 9;
 	}
 	if (config->exevoVisHur) {
@@ -1252,9 +1252,9 @@ int aoeShouldFire(CConfigData *config) {
 			returnSpell = 7;
 		if (returnSpell == 8 && (facing[ENERGY_WAVE][DOWN] > facing[ENERGY_BEAM][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[ENERGY_BEAM][RIGHT] || facing[ENERGY_WAVE][UP] > facing[ENERGY_BEAM][UP] || facing[ENERGY_WAVE][LEFT] > facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 7;
-		if (returnSpell == 4 && (facing[ENERGY_WAVE][DOWN] > facing[FIRE_WAVE][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[ENERGY_WAVE][UP] > facing[FIRE_WAVE][UP] || facing[ENERGY_WAVE][LEFT] > facing[FIRE_WAVE][LEFT]))		
+		if (returnSpell == 4 && (facing[ENERGY_WAVE][DOWN] > facing[FIRE_WAVE][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[FIRE_WAVE][RIGHT] || facing[ENERGY_WAVE][UP] > facing[FIRE_WAVE][UP] || facing[ENERGY_WAVE][LEFT] > facing[FIRE_WAVE][LEFT]))
 			returnSpell = 7;
-		if (returnSpell == 9 && (facing[ENERGY_WAVE][DOWN] > facing[G_ENERGY_BEAM][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[G_ENERGY_BEAM][RIGHT] || facing[ENERGY_WAVE][UP] > facing[G_ENERGY_BEAM][UP] || facing[ENERGY_WAVE][LEFT] > facing[G_ENERGY_BEAM][LEFT]))		
+		if (returnSpell == 9 && (facing[ENERGY_WAVE][DOWN] > facing[G_ENERGY_BEAM][DOWN] || facing[ENERGY_WAVE][RIGHT] > facing[G_ENERGY_BEAM][RIGHT] || facing[ENERGY_WAVE][UP] > facing[G_ENERGY_BEAM][UP] || facing[ENERGY_WAVE][LEFT] > facing[G_ENERGY_BEAM][LEFT]))
 			returnSpell = 7;
 	}
 	if (config->exevoGranMasVis) {
@@ -1262,11 +1262,11 @@ int aoeShouldFire(CConfigData *config) {
 			returnSpell = 10;
 		if (returnSpell == 8 && (egmVisCount > facing[ENERGY_BEAM][DOWN] + facing[ENERGY_BEAM][RIGHT] + facing[ENERGY_BEAM][UP] + facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 10;
-		if (returnSpell == 4 && (egmVisCount > facing[FIRE_WAVE][DOWN] + facing[FIRE_WAVE][RIGHT] + facing[FIRE_WAVE][UP] + facing[FIRE_WAVE][LEFT]))		
+		if (returnSpell == 4 && (egmVisCount > facing[FIRE_WAVE][DOWN] + facing[FIRE_WAVE][RIGHT] + facing[FIRE_WAVE][UP] + facing[FIRE_WAVE][LEFT]))
 			returnSpell = 10;
-		if (returnSpell == 9 && (egmVisCount > facing[G_ENERGY_BEAM][DOWN] + facing[G_ENERGY_BEAM][RIGHT] + facing[G_ENERGY_BEAM][UP] + facing[G_ENERGY_BEAM][LEFT]))		
+		if (returnSpell == 9 && (egmVisCount > facing[G_ENERGY_BEAM][DOWN] + facing[G_ENERGY_BEAM][RIGHT] + facing[G_ENERGY_BEAM][UP] + facing[G_ENERGY_BEAM][LEFT]))
 			returnSpell = 10;
-		if (returnSpell == 7 && (egmVisCount > facing[ENERGY_WAVE][DOWN] + facing[ENERGY_WAVE][RIGHT] + facing[ENERGY_WAVE][UP] + facing[ENERGY_WAVE][LEFT]))		
+		if (returnSpell == 7 && (egmVisCount > facing[ENERGY_WAVE][DOWN] + facing[ENERGY_WAVE][RIGHT] + facing[ENERGY_WAVE][UP] + facing[ENERGY_WAVE][LEFT]))
 			returnSpell = 10;
 	}
 	if (config->exevoGranMasFlam) {
@@ -1274,13 +1274,13 @@ int aoeShouldFire(CConfigData *config) {
 			returnSpell = 11;
 		if (returnSpell == 8 && (egmFlamCount > facing[ENERGY_BEAM][DOWN] + facing[ENERGY_BEAM][RIGHT] + facing[ENERGY_BEAM][UP] + facing[ENERGY_BEAM][LEFT]))
 			returnSpell = 11;
-		if (returnSpell == 4 && (egmFlamCount > facing[FIRE_WAVE][DOWN] + facing[FIRE_WAVE][RIGHT] + facing[FIRE_WAVE][UP] + facing[FIRE_WAVE][LEFT]))		
+		if (returnSpell == 4 && (egmFlamCount > facing[FIRE_WAVE][DOWN] + facing[FIRE_WAVE][RIGHT] + facing[FIRE_WAVE][UP] + facing[FIRE_WAVE][LEFT]))
 			returnSpell = 11;
-		if (returnSpell == 9 && (egmFlamCount > facing[G_ENERGY_BEAM][DOWN] + facing[G_ENERGY_BEAM][RIGHT] + facing[G_ENERGY_BEAM][UP] + facing[G_ENERGY_BEAM][LEFT]))		
+		if (returnSpell == 9 && (egmFlamCount > facing[G_ENERGY_BEAM][DOWN] + facing[G_ENERGY_BEAM][RIGHT] + facing[G_ENERGY_BEAM][UP] + facing[G_ENERGY_BEAM][LEFT]))
 			returnSpell = 11;
-		if (returnSpell == 7 && (egmFlamCount > facing[ENERGY_WAVE][DOWN] + facing[ENERGY_WAVE][RIGHT] + facing[ENERGY_WAVE][UP] + facing[ENERGY_WAVE][LEFT]))		
+		if (returnSpell == 7 && (egmFlamCount > facing[ENERGY_WAVE][DOWN] + facing[ENERGY_WAVE][RIGHT] + facing[ENERGY_WAVE][UP] + facing[ENERGY_WAVE][LEFT]))
 			returnSpell = 11;
-		if (returnSpell == 10 && egmFlamCount > egmVisCount)		
+		if (returnSpell == 10 && egmFlamCount > egmVisCount)
 			returnSpell = 11;
 	}
 	if (config->exevoGranMasTera) {
@@ -1304,10 +1304,10 @@ int aoeShouldFire(CConfigData *config) {
 
 	switch (returnSpell) {
 		case 4:
-			turnForAOEFiring(facing[FIRE_WAVE]);			
+			turnForAOEFiring(facing[FIRE_WAVE]);
 			break;
 		case 5:
-			turnForAOEFiring(facing[ICE_WAVE]);			
+			turnForAOEFiring(facing[ICE_WAVE]);
 			break;
 		case 6:
 			turnForAOEFiring(facing[EARTH_WAVE]);
@@ -1331,7 +1331,7 @@ int aoeShouldFire(CConfigData *config) {
 void CMod_spellcasterApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

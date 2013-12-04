@@ -75,23 +75,23 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
@@ -115,7 +115,7 @@ void CConfigDialog::disableControls()
 	m_pickupSpears.EnableWindow(false);
 	m_throwableTo.EnableWindow(false);
 	m_throwableAt.EnableWindow(false);
-	m_throwableType.EnableWindow(false);	
+	m_throwableType.EnableWindow(false);
 	m_ammoTo.EnableWindow(false);
 	m_ammoAt.EnableWindow(false);
 	m_ammoType.EnableWindow(false);
@@ -141,7 +141,7 @@ void CConfigDialog::enableControls()
 	m_pickupSpears.EnableWindow(true);
 	m_throwableTo.EnableWindow(true);
 	m_throwableAt.EnableWindow(true);
-	m_throwableType.EnableWindow(true);	
+	m_throwableType.EnableWindow(true);
 	m_ammoTo.EnableWindow(true);
 	m_ammoAt.EnableWindow(true);
 	m_ammoType.EnableWindow(true);
@@ -170,10 +170,10 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_pickupBC.SetCheck(configData->pickupBC);
 	m_pickupSpears.SetCheck(configData->pickupSpears);
 	sprintf(buf,"%d",configData->throwableTo);m_throwableTo.SetWindowText(buf);
-	sprintf(buf,"%d",configData->throwableAt);m_throwableAt.SetWindowText(buf);	
+	sprintf(buf,"%d",configData->throwableAt);m_throwableAt.SetWindowText(buf);
 	m_throwableType.SelectString(-1,itemProxy.getItemName(configData->throwableType));
 	sprintf(buf,"%d",configData->ammoTo);m_ammoTo.SetWindowText(buf);
-	sprintf(buf,"%d",configData->ammoAt);m_ammoAt.SetWindowText(buf);	
+	sprintf(buf,"%d",configData->ammoAt);m_ammoAt.SetWindowText(buf);
 	m_ammoType.SelectString(-1,itemProxy.getItemName(configData->ammoType));
 	m_moveCovering.SetCheck(configData->moveCovering);
 	m_restackToRight.SetCheck(configData->restackToRight);
@@ -224,18 +224,18 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
-{	
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_enable);		
+	skin.SetButtonSkin(	m_enable);
 	skin.SetButtonSkin(	m_OK);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -274,7 +274,7 @@ BOOL CConfigDialog::OnInitDialog()
 
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }

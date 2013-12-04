@@ -27,7 +27,7 @@ CConfigData::CConfigData()
 	pickupSpears=0;
 	pickupUL=1;
 	pickupUC=1;
-	pickupUR=1;	
+	pickupUR=1;
 	pickupCL=1;
 	pickupCC=1;
 	pickupCR=1;

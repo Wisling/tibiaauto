@@ -106,7 +106,7 @@ void JFrame::OnExit(wxCommandEvent& WXUNUSED(event)) {
 
 void JFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
 //	wxDialog *f = new wxDialog();
-//	
+//
 //	wxXmlResource::Get()->LoadDialog(f, this, wxT("about_dialog"));
 //	f->Show(true);
 	wxBitmap bitmap;
@@ -182,7 +182,7 @@ bool Main::OnInit() {
 	
 	mainFrame = new JFrame();
 	
-	if (mainFrame->loadedOk()) {	
+	if (mainFrame->loadedOk()) {
 		mainFrame->Show(TRUE);
 		SetTopWindow(mainFrame);
 		

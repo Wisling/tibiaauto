@@ -32,7 +32,7 @@ static bool set_non_block(int);
 		return true;
 	}
 
-#elif defined (WIN32) 
+#elif defined (WIN32)
 	bool set_non_block(int socket){
 		u_long FAR one = 1;
 		if (ioctlsocket(socket, FIONBIO, &one) != 0) {
@@ -58,7 +58,7 @@ ServerSocket::ServerSocket(const int &port) {
 	sd = -1;
 	serverListener = NULL;
 	
-	#if defined (WIN32) 
+	#if defined (WIN32)
 		char FAR one = 1;
 	#else
 		socklen_t one = 1;

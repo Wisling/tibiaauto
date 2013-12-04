@@ -57,7 +57,7 @@ using namespace std;
 			WSACleanup();
 		}
 	}
-	#define EWOULDBLOCK WSAEWOULDBLOCK 
+	#define EWOULDBLOCK WSAEWOULDBLOCK
 #endif
 
 string RECV = "recv: ";

@@ -12,8 +12,8 @@
 #define MAX_STRING_LEN 65536
 #define MAX_MESSAGE_LEN 65536
 
-class CAutoResponderParserContext  
-{	
+class CAutoResponderParserContext
+{
 public:
 	int isPlayerIgnored(char *name);
 	char * getVariable(char *name);
@@ -37,8 +37,8 @@ private:
 
 	char **variableNames;
 	char **variableValues;
-	int variableCount;	
-	int variableSize;	
+	int variableCount;
+	int variableSize;
 
 };
 

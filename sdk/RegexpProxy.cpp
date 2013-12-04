@@ -60,17 +60,17 @@ int CRegexpProxy::match(char *string, char *regex)
 }
 
 int CRegexpProxy::regexec(const regex_t *preg, const char *string, size_t nmatch, regmatch_t pmatch[], int eflags)
-{	
+{
 	if (dllRegexp)
 	{
-		typedef int(*Proto_fun)(const regex_t *preg, const char *string, size_t nmatch, regmatch_t pmatch[], int eflags);	
+		typedef int(*Proto_fun)(const regex_t *preg, const char *string, size_t nmatch, regmatch_t pmatch[], int eflags);
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regexec");
 		if (fun)
 		{
 			return fun(preg,string,nmatch,pmatch,eflags);
 		} else {
 			return 1;
-		}	
+		}
 	} else {
 		return 1;
 	}
@@ -80,14 +80,14 @@ int CRegexpProxy::regcomp(regex_t *preg, const char *regex, int cflags)
 {
 	if (dllRegexp)
 	{
-		typedef int(*Proto_fun)(regex_t *preg, const char *regex, int cflags);	
+		typedef int(*Proto_fun)(regex_t *preg, const char *regex, int cflags);
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regcomp");
 		if (fun)
 		{
 			return fun(preg,regex,cflags);
 		} else {
 			return REG_NOMATCH;
-		}	
+		}
 	} else {
 		return REG_NOMATCH;
 	}
@@ -97,28 +97,28 @@ void CRegexpProxy::regfree(regex_t *preg)
 {
 	if (dllRegexp)
 	{
-		typedef int(*Proto_fun)(regex_t *preg);	
+		typedef int(*Proto_fun)(regex_t *preg);
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regfree");
 		if (fun)
 		{
 			fun(preg);
-		}	
+		}
 	}
 }
 
 
 int CRegexpProxy::regnexec(const regex_t *preg, const char *string, size_t len, size_t nmatch, regmatch_t pmatch[], int eflags)
-{	
+{
 	if (dllRegexp)
 	{
-		typedef int(*Proto_fun)(const regex_t *preg, const char *string, size_t len, size_t nmatch, regmatch_t pmatch[], int eflags);	
+		typedef int(*Proto_fun)(const regex_t *preg, const char *string, size_t len, size_t nmatch, regmatch_t pmatch[], int eflags);
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regnexec");
 		if (fun)
 		{
 			return fun(preg,string,len,nmatch,pmatch,eflags);
 		} else {
 			return 1;
-		}	
+		}
 	} else {
 		return 1;
 	}
@@ -128,14 +128,14 @@ int CRegexpProxy::regncomp(regex_t *preg, const char *regex, size_t len, int cfl
 {
 	if (dllRegexp)
 	{
-		typedef int(*Proto_fun)(regex_t *preg, const char *regex, size_t len, int cflags);	
+		typedef int(*Proto_fun)(regex_t *preg, const char *regex, size_t len, int cflags);
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllRegexp,"regncomp");
 		if (fun)
 		{
 			return fun(preg,regex,len,cflags);
 		} else {
 			return REG_NOMATCH;
-		}	
+		}
 	} else {
 		return REG_NOMATCH;
 	}

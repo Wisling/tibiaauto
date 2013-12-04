@@ -15,7 +15,7 @@ static char THIS_FILE[]=__FILE__;
 //////////////////////////////////////////////////////////////////////
 
 CConfigData::CConfigData()
-{	
+{
 	mana=0;
 	manaMana=0;
 	manaSpell[0]=0;

@@ -46,7 +46,7 @@ public:
 
 // Implementation
 protected:
-    CImageList m_itemImg; 
+    CImageList m_itemImg;
 
 	// Generated message map functions
 	//{{AFX_MSG(CItemAdd)
@@ -91,7 +91,7 @@ public:
 
 // Implementation
 protected:
-    CImageList m_itemImg; 
+    CImageList m_itemImg;
 
 	// Generated message map functions
 	//{{AFX_MSG(CItemEdit)

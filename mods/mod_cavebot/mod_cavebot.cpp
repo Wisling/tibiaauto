@@ -65,7 +65,7 @@ END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 
-// NOTE: those delete trampolines are used to ensure 'secure' delete operation 
+// NOTE: those delete trampolines are used to ensure 'secure' delete operation
 //       and force revealing any memory issues faster
 
 void deleteAndNull(CTibiaContainer *&ptr)
@@ -506,7 +506,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 	int depotContNr=-1;
 	int count=reader.mapGetPointItemsCount(point(x-self->x,y-self->y,0));
 	int pos=0;
-	if (count>10) count=10;// ? should have written down why I put this here 
+	if (count>10) count=10;// ? should have written down why I put this here
 	
 	int lockerId=0;
 	for (pos=0;pos<count;pos++) {
@@ -569,7 +569,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	}
 	
 	/**
-	* If container number 8 is open than we can try to deposit to it (to avoid 
+	* If container number 8 is open than we can try to deposit to it (to avoid
 	* massive close/open of containers.
 	*/
 	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
@@ -595,7 +595,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 		CTibiaItem *item = (CTibiaItem *)depotChest->items.GetAt(itemNr);
 		//look for place directly in depot if needed
 		if (tile->stackable)
-		{		
+		{
 			if (item->objectId==objectId&&
 				(item->quantity+qty<100||depotChest->itemsInside<depotChest->size))
 			{
@@ -675,7 +675,7 @@ int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup,in
 	}
 	
 	/**
-	* If container number 8 is open than we can try to take our item from it (to avoid 
+	* If container number 8 is open than we can try to take our item from it (to avoid
 	* massive close/open of containers.
 	*/
 	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
@@ -861,7 +861,7 @@ void depotDeposit(CConfigData *config) {
 						}
 					}
 					deleteAndNull(cont);
-				}			
+				}
 			}
 			if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon) {
 				// pickup from depot
@@ -890,7 +890,7 @@ void depotDeposit(CConfigData *config) {
 						qtyToPickup=qtyToPickup/2;
 					else
 						qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-				} // while picking up 
+				} // while picking up
 			} // if pickup from depot
 		}
 	}
@@ -947,8 +947,8 @@ DPfinish:
 					}
 				}
 				deleteAndNull(cont);
-			}			
-		}		
+			}
+		}
 	}
 DPfinish2:
 
@@ -1073,12 +1073,12 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 		deleteAndNull(itemSlot);
 		itemSlot = reader.readItem(locationAddress);
 	}
-	deleteAndNull(itemSlot); 
+	deleteAndNull(itemSlot);
 	return 1;
 }
 
 /**
-* Check the training related things, like: 
+* Check the training related things, like:
 * 1. Check whether we should be in fight or training mode (and switch weapons).
 * 2. Check whether we should be full attack/def/dont touch (if blood control is active).
 * 3. Switch weapon if needed.
@@ -1216,8 +1216,8 @@ void quickSort(CUIntArray& arr,int s,int e){
 	}
 	quickSort(arr,s,pivot);
 	quickSort(arr,pivot+1,e);
-	return;   
-}	
+	return;
+}
 void sortArray(CUIntArray& arr){
 	quickSort(arr,0,arr.GetSize());
 }
@@ -1298,7 +1298,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 					isTopItem = pos==reader.itemOnTopIndex(x,y);
 					break;
 				}
-			}				
+			}
 
 			if(!foundLootedObjectId) continue;
 			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,reader.getItemIndex(x,y,f1),ModuleUtil::getItemIndex(x,y,f2),x,y);
@@ -1362,7 +1362,7 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 				for (offsetX=-1;offsetX<=1;offsetX++) {
 					for (offsetY=-1;offsetY<=1;offsetY++) {
 						// double loop break!
-						if (self2->x+offsetX!=self->x+x&&self2->y+offsetY!=self->y+y&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)&&reader.mapGetPointItemsCount(point(offsetX,offsetY,0))<9) 
+						if (self2->x+offsetX!=self->x+x&&self2->y+offsetY!=self->y+y&&tibiaMap.isPointAvailable(self2->x+offsetX,self2->y+offsetY,self2->z)&&reader.mapGetPointItemsCount(point(offsetX,offsetY,0))<9)
 						{
 							//force loop break;
 							foundSpace=1;
@@ -1894,7 +1894,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int waypointsCount=0;
 	for (i=0;i<100;i++) {
 		if (config->waypointList[i].x || config->waypointList[i].y || config->waypointList[i].z) {//y==z==-1 if a delay
-			waypointsCount++; 
+			waypointsCount++;
 		}
 		else {
 			break;
@@ -1971,7 +1971,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				memcpy(msgBuf,mess.payload+4,msgLen);
 				
 				if (!strncmp("%ta pause",msgBuf,9))
-				{				
+				{
 					pauseInvoked=!pauseInvoked;
 					if (pauseInvoked) sender.sendTAMessage("Paused Cavebot");
 					else sender.sendTAMessage("Cavebot Unpaused");
@@ -2575,10 +2575,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (config->dontAttackPlayers && creatureList[crNr].tibiaId<0x40000000) {
 				if (config->debug && modRuns%10==0) registerDebug("Quit Case:No attack player");
 				continue;}
-			if (config->attackOnlyAttacking && !creatureList[crNr].isAttacking){ 
-				if (config->debug && modRuns%10==0) registerDebug("Quit Case:only attack attacking"); 
+			if (config->attackOnlyAttacking && !creatureList[crNr].isAttacking){
+				if (config->debug && modRuns%10==0) registerDebug("Quit Case:only attack attacking");
 				continue;}
-			if ((!creatureList[crNr].isAttacking || creatureList[crNr].hpPercLeft==100) && maxDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>config->attackRange){	
+			if ((!creatureList[crNr].isAttacking || creatureList[crNr].hpPercLeft==100) && maxDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>config->attackRange){
 				if (config->debug && modRuns%10==0) registerDebug("Quit Case:out of range");
 				continue;}
 			if (creatureList[crNr].isIgnoredUntil){
@@ -2614,7 +2614,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					bestCreatureNr=crNr;}
 			}else if (!isFarther){
 				//If force attack prioritize creature not on list with lowest health
-				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
+				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) &&
 					(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
 					if (config->debug) registerDebug("Attacker: Better because alien creature.");
 					bestCreatureNr=crNr;}
@@ -2630,7 +2630,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					canGetToPoint(creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z)) {
 					if (config->debug) registerDebug("Attacker: Better because attacking and higher priority.");
 					bestCreatureNr=crNr;
-				}	
+				}
 			}
 
 /*
@@ -2641,7 +2641,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 			}else{
 				//If force attack prioritize creature not on list with lowest health
-				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) && 
+				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) &&
 					(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
 					if (config->debug) registerDebug("Better:alien creature");
 					bestCreatureNr=crNr;}
@@ -3017,7 +3017,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							//For short paths TA map method proves best especially near rope spots and teleporters
 							int pathSize;
 							for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-							if (pathSize||self->x==actualTargetX&&actualTargetY==self->y&&self->z==actualTargetZ) {							
+							if (pathSize||self->x==actualTargetX&&actualTargetY==self->y&&self->z==actualTargetZ) {
 								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 								globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 								if (config->debug) registerDebug("Walking: execute walk");
@@ -3030,7 +3030,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								waypointTargetX=waypointTargetY=waypointTargetZ=0;
 								globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
 							}
-						}						
+						}
 						//Did we find a pathPoint on our level?
 						else if (pathPoint.z == self->z) {
 							//Found it! Let's try "clicking" there (Attempt 2)
@@ -3086,7 +3086,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									char whiteText[15];				//Stores white text.
 									for (int j = 0; j<15; j++) {	//Long enough to store "There is no way"
 										whiteText[j] = reader.getMemIntValue(itemProxy.getValueForConst("addrWhiteMessage")+j);
-									}				
+									}
 									if (strstr(whiteText, "There is no way") != 0 || strstr(whiteText, "Destination") != 0 || (startPoint.x == self->x && startPoint.y == self->y)) {
 										//Since Tibia merely times out the white text not delete it, we need to change the text for subsequent iterations.
 										//Let's have fun and give the users hope.  :P
@@ -3102,7 +3102,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										int ticksEnd = GetTickCount();
 										int pathSize;
 										for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
-										if (pathSize||self->x==destPoint.x&&destPoint.y==self->y&&self->z==destPoint.z) {							
+										if (pathSize||self->x==destPoint.x&&destPoint.y==self->y&&self->z==destPoint.z) {
 											CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 											globalAutoAttackStateWalker=CToolAutoAttackStateWalker_ok;
 											if (config->debug) registerDebug("Walking: execute walk");
@@ -3143,7 +3143,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								globalAutoAttackStateWalker=CToolAutoAttackStateWalker_noPathFound;
 							}
 						}
-					}					
+					}
 					}// default
 					break;
 				}
@@ -3270,7 +3270,7 @@ void CMod_cavebotApp::stop() {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_cavebotApp::showConfigDialog() {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -3623,7 +3623,7 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
 void CMod_cavebotApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

@@ -76,14 +76,14 @@ void ManaDialog::controlsToConfig(CConfigData *newConfigData) {
 	m_manaSpell.GetWindowText(newConfigData->manaSpell,127);
 }
 
-void ManaDialog::OnToolSpellcasterMana() 
+void ManaDialog::OnToolSpellcasterMana()
 {
 	int val = m_mana.GetCheck();
 	m_manaMana.EnableWindow(val);
 	m_manaSpell.EnableWindow(val);
 }
 
-BOOL ManaDialog::OnInitDialog() 
+BOOL ManaDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	

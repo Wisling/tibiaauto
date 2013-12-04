@@ -42,12 +42,12 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 
 		if (config->queue.size()>0)
 		{
-			EnterCriticalSection(&QueueCriticalSection); 
+			EnterCriticalSection(&QueueCriticalSection);
 
 			CToolAutoResponderMessage *msg = config->queue.front();
 			config->queue.pop();
 
-			LeaveCriticalSection(&QueueCriticalSection); 
+			LeaveCriticalSection(&QueueCriticalSection);
 			if (!config->context->isPlayerIgnored(msg->nick))
 			{
 				// double check for player ignore (to not overload the queue
@@ -62,7 +62,7 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 			delete msg;
 		}
 	}
-	toolThreadAutoResponderShouldStop--;	
+	toolThreadAutoResponderShouldStop--;
 	config->status=CToolAutoResponderThreadStatus_notRunning;
 	return 0;
 }
@@ -79,9 +79,9 @@ CToolAutoRespond::CToolAutoRespond(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 	threadCount=0;
 	// enabling
-	XMLPlatformUtils::Initialize();		
+	XMLPlatformUtils::Initialize();
 			 
-	parser = new XercesDOMParser();	
+	parser = new XercesDOMParser();
 
 	
 	InitializeCriticalSection(&QueueCriticalSection);
@@ -112,7 +112,7 @@ BEGIN_MESSAGE_MAP(CToolAutoRespond, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_CTLCOLOR()
 	ON_WM_CLOSE()
-	ON_WM_TIMER()	
+	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_AUTORESPOND_ENABLE, OnAutorespondEnable)
 	ON_BN_CLICKED(IDC_AUTORESPOND_CLEAR, OnAutorespondClear)
 	//}}AFX_MSG_MAP
@@ -121,17 +121,17 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CToolAutoRespond message handlers
 
-void CToolAutoRespond::OnOK() 
+void CToolAutoRespond::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CToolAutoRespond::OnClose() 
+void CToolAutoRespond::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CToolAutoRespond::OnTimer(UINT nIDEvent) 
+void CToolAutoRespond::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -154,13 +154,13 @@ void CToolAutoRespond::OnTimer(UINT nIDEvent)
 			for (i=0;i<threadCount;i++)
 			{
 				delete threadConfig[i].context;
-				EnterCriticalSection(&QueueCriticalSection); 
+				EnterCriticalSection(&QueueCriticalSection);
 				while (!threadConfig[i].queue.empty())
 				{
 					delete threadConfig[i].queue.front();
 					threadConfig[i].queue.pop();
 				}
-				LeaveCriticalSection(&QueueCriticalSection); 
+				LeaveCriticalSection(&QueueCriticalSection);
 			}
 			m_script.SetWindowText("");
 			m_threadStatus.DeleteAllItems();
@@ -169,7 +169,7 @@ void CToolAutoRespond::OnTimer(UINT nIDEvent)
 
 			toolThreadAutoResponderShouldStopWaiting=0;
 			
-		}		
+		}
 		
 
 		SetTimer(1001,100,NULL);
@@ -181,9 +181,9 @@ void CToolAutoRespond::OnTimer(UINT nIDEvent)
 void CToolAutoRespond::readInfo()
 {
 	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;	
+	struct ipcMessage mess;
 	if (backPipe.readFromPipe(&mess,1001))
-	{				
+	{
 		int infoType;
 		int nickLen;
 		int msgLen;
@@ -232,17 +232,17 @@ void CToolAutoRespond::readInfo()
 			m_msgHistory.DeleteItem(500);
 								
 		for (i=0;i<threadCount;i++)
-		{										
+		{
 			if (!threadConfig[i].context->isPlayerIgnored(nickBuf))
 			{
-				EnterCriticalSection(&QueueCriticalSection); 
+				EnterCriticalSection(&QueueCriticalSection);
 				threadConfig[i].queue.push(new CToolAutoResponderMessage(chanBuf,msgBuf,nickBuf));
 				LeaveCriticalSection(&QueueCriticalSection);
 			}
 		}
 		
-	}	
-} 
+	}
+}
 
 void CToolAutoRespond::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
@@ -250,7 +250,7 @@ void CToolAutoRespond::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 }
 
-BOOL CToolAutoRespond::OnInitDialog() 
+BOOL CToolAutoRespond::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -278,19 +278,19 @@ BOOL CToolAutoRespond::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CToolAutoRespond::OnAutorespondEnable() 
+void CToolAutoRespond::OnAutorespondEnable()
 {
 	if (m_enable.GetCheck())
-	{		
+	{
 		start();
 	} else {
 		stop();
-	}		
+	}
 }
 
 
 
-void CToolAutoRespond::OnAutorespondClear() 
+void CToolAutoRespond::OnAutorespondClear()
 {
 	m_actionLog.DeleteAllItems();
 }
@@ -360,9 +360,9 @@ void CToolAutoRespond::start()
 	m_enable.SetCheck(1);
 	threadCount=0;
 	try
-	{		
+	{
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-responder.xml",installPath);
-		parser->parse(pathBuf);	
+		parser->parse(pathBuf);
 		doc = parser->getDocument();
 		for (int rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
 		{
@@ -371,7 +371,7 @@ void CToolAutoRespond::start()
 				continue;
 			for (int threadNr=0;threadNr<root->getChildNodes()->getLength();threadNr++)
 			{
-				DOMNode *threadNode = root->getChildNodes()->item(threadNr);			
+				DOMNode *threadNode = root->getChildNodes()->item(threadNr);
 				if (wcscmp(threadNode->getNodeName(),_L("thread")))
 					continue;
 				
@@ -382,12 +382,12 @@ void CToolAutoRespond::start()
 					sprintf(buf,"Responder parse error: unknown tag '%s'",_T(threadNode->getNodeName()));
 					AfxMessageBox(buf);
 					continue;
-				}					
+				}
 				
-				threadConfig[threadCount].threadNode=threadNode;					
+				threadConfig[threadCount].threadNode=threadNode;
 				threadConfig[threadCount].context=new CAutoResponderParserContext(m_debug.GetCheck()?&m_actionLog:NULL,m_localEcho.GetCheck());
 				
-				threadCount++;					
+				threadCount++;
 				if (threadCount>MAX_THREADS+5)
 				{
 					AfxMessageBox("Auto responder: too many threads!");
@@ -402,7 +402,7 @@ void CToolAutoRespond::start()
 		FILE *f = fopen(pathBuf,"rb");
 		fread(scriptBuf,1,1024*200-1,f);
 		fclose(f);
-		m_script.SetWindowText(scriptBuf);						
+		m_script.SetWindowText(scriptBuf);
 		
 		
 	} catch (...)
@@ -416,9 +416,9 @@ void CToolAutoRespond::start()
 		int i;
 		for (i=0;i<threadCount;i++)
 		{
-			CToolAutoResponderThreadConfig *config = &threadConfig[i];				
+			CToolAutoResponderThreadConfig *config = &threadConfig[i];
 			
-			DWORD threadId;					
+			DWORD threadId;
 			CreateThread(NULL,0,toolThreadAutoResponderProc,config,0,&threadId);
 		}
 		toolAutoResponderRunning=1;
@@ -429,9 +429,9 @@ void CToolAutoRespond::start()
 void CToolAutoRespond::stop()
 {
 	m_enable.SetCheck(0);
-	// disabling		
-	// step 1 -> uninitialised everything		
-	toolThreadAutoResponderShouldStop=threadCount;		
+	// disabling
+	// step 1 -> uninitialised everything
+	toolThreadAutoResponderShouldStop=threadCount;
 	toolThreadAutoResponderShouldStopWaiting=1;
 
 	m_enable.EnableWindow(true);

@@ -34,7 +34,7 @@ HMODULE CTAMiniMapProxy::dllModule=NULL;
 
 CTAMiniMapProxy::CTAMiniMapProxy()
 {
-	// load module	
+	// load module
 	if (dllModule==NULL)
 	{
 		char installPath[1024];
@@ -68,39 +68,39 @@ int CTAMiniMapProxy::isPointInMiniMap(int x,int y,int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
-	{			
+	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapIsPointInMiniMap");
 		if (fun)
 		{
 			return fun(x,y,z);
 		}
-	} 
+	}
 	return 0;
 }
 CTibiaMiniMapPoint * CTAMiniMapProxy::getMiniMapPoint(int x,int y,int z)
 {
 	typedef CTibiaMiniMapPoint * (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
-	{			
+	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetMiniMapPoint");
 		if (fun)
 		{
 			return fun(x,y,z);
 		}
-	} 
+	}
 	return 0;
 }
 void CTAMiniMapProxy::setMiniMapPoint(int x,int y,int z,int col,int spd)
 {
 	typedef void(*Proto_fun)(int x,int y,int z,int col,int spd);
 	if (dllModule)
-	{			
+	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetMiniMapPoint");
 		if (fun)
 		{
 			fun(x,y,z,col,spd);
 		}
-	} 
+	}
 }
 CUIntArray * CTAMiniMapProxy::findPathOnMiniMap(int x,int y,int z,int x2,int y2,int z2)
 {
@@ -112,7 +112,7 @@ CUIntArray * CTAMiniMapProxy::findPathOnMiniMap(int x,int y,int z,int x2,int y2,
 		{
 			return fun(x, y, z, x2, y2, z2);
 		}
-	} 
+	}
 	return NULL;
 }
 
@@ -126,7 +126,7 @@ void CTAMiniMapProxy::findPathStop()
 		{
 			fun();
 		}
-	} 
+	}
 }
 bool CTAMiniMapProxy::isFindPathStopped()
 {
@@ -138,7 +138,7 @@ bool CTAMiniMapProxy::isFindPathStopped()
 		{
 			return fun();
 		}
-	} 
+	}
 	return NULL;
 }
 int CTAMiniMapProxy::getCurrentDistance()
@@ -151,7 +151,7 @@ int CTAMiniMapProxy::getCurrentDistance()
 		{
 			return fun();
 		}
-	} 
+	}
 	return NULL;
 }
 void CTAMiniMapProxy::unloadMiniMaps()
@@ -164,5 +164,5 @@ void CTAMiniMapProxy::unloadMiniMaps()
 		{
 			fun();
 		}
-	} 
+	}
 }

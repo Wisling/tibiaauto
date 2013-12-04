@@ -67,7 +67,7 @@ void CToolMonsterShow::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 }
 
-BOOL CToolMonsterShow::OnInitDialog() 
+BOOL CToolMonsterShow::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -87,7 +87,7 @@ BOOL CToolMonsterShow::OnInitDialog()
 			rect.right=rect.left+14;
 			rect.bottom=rect.top+14;
 			
-			but->Create("test",WS_CHILD|WS_VISIBLE|BS_RADIOBUTTON|BS_FLAT|BS_3STATE,rect,this,IDC_MONSTERSHOW_FIRSTBUTTON);				
+			but->Create("test",WS_CHILD|WS_VISIBLE|BS_RADIOBUTTON|BS_FLAT|BS_3STATE,rect,this,IDC_MONSTERSHOW_FIRSTBUTTON);
 						
 			m_monsterButtons[x][y]=but;
 		}
@@ -97,34 +97,34 @@ BOOL CToolMonsterShow::OnInitDialog()
 
 	SetTimer(1001,500,NULL);
 	
-	return TRUE;  
+	return TRUE;
 }
 
-void CToolMonsterShow::OnMouseMove(UINT nFlags, CPoint point) 
+void CToolMonsterShow::OnMouseMove(UINT nFlags, CPoint point)
 {
 	showMonsterDetails(-1,-1);
 
 	CDialog::OnMouseMove(nFlags, point);
 }
 
-void CToolMonsterShow::OnOK() 
-{		
+void CToolMonsterShow::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-BOOL CToolMonsterShow::PreTranslateMessage(MSG* pMsg) 
-{	
+BOOL CToolMonsterShow::PreTranslateMessage(MSG* pMsg)
+{
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-BOOL CToolMonsterShow::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL CToolMonsterShow::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	return CDialog::OnCommand(wParam, lParam);
 }
 
 void CToolMonsterShow::showMonsterDetails(int x, int y)
 {
-	CMemReaderProxy reader;	
+	CMemReaderProxy reader;
 	char buf[1024];
 	char buf2[1024];
 	
@@ -181,7 +181,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 	sprintf(listBufSame,"");
 	sprintf(listBufAbove,"");
 
-	for (x=0;x<2*10+1;x++)	
+	for (x=0;x<2*10+1;x++)
 	{
 		for (y=0;y<2*8+1;y++)
 		{
@@ -206,7 +206,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 			
 			if (x<0||y<0||x>20||y>16)
 			{
-				// monster out of range - it might happen sometimes				
+				// monster out of range - it might happen sometimes
 				delete ch;
 				continue;
 			};
@@ -243,7 +243,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 	delete self;
 }
 
-void CToolMonsterShow::OnTimer(UINT nIDEvent) 
+void CToolMonsterShow::OnTimer(UINT nIDEvent)
 {
 	CMemReaderProxy reader;
 	if (nIDEvent==1001)
@@ -284,23 +284,23 @@ void CToolMonsterShow::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CToolMonsterShow::OnMonstershowFreeze() 
+void CToolMonsterShow::OnMonstershowFreeze()
 {
 	if (m_freeze.GetCheck())
 		KillTimer(1001); else
 		SetTimer(1001,500,NULL);
 }
 
-void CToolMonsterShow::OnClose() 
+void CToolMonsterShow::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CToolMonsterShow::OnMonstershowRevealslime() 
+void CToolMonsterShow::OnMonstershowRevealslime()
 {
 	if (m_revealSlime.GetCheck())
 	{
-		SetTimer(1002,200,NULL);	
+		SetTimer(1002,200,NULL);
 	} else {
 		KillTimer(1002);
 	}

@@ -59,22 +59,22 @@ extern "C" void EXPORT showConfigDialog()
 	module.showConfigDialog();
 }
 
-extern "C"  void EXPORT configToControls() 
+extern "C"  void EXPORT configToControls()
 {
 	module.configToControls();
 }
 
-extern "C"  void EXPORT controlsToConfig() 
+extern "C"  void EXPORT controlsToConfig()
 {
 	module.controlsToConfig();
 }
 
-extern "C"  void EXPORT disableControls() 
+extern "C"  void EXPORT disableControls()
 {
 	module.disableControls();
 }
 
-extern "C"  void EXPORT enableControls() 
+extern "C"  void EXPORT enableControls()
 {
 	module.enableControls();
 }

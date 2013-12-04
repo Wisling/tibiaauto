@@ -77,23 +77,23 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
@@ -111,7 +111,7 @@ void CConfigDialog::disableControls()
 	m_lootGp.EnableWindow(false);
 	m_lootFood.EnableWindow(false);
 	m_lootCustom.EnableWindow(false);
-	m_autoOpen.EnableWindow(false);	
+	m_autoOpen.EnableWindow(false);
 	m_mode10.EnableWindow(false);
 	m_mode9.EnableWindow(false);
 	m_mode8.EnableWindow(false);
@@ -132,7 +132,7 @@ void CConfigDialog::enableControls()
 	m_lootGp.EnableWindow(true);
 	m_lootFood.EnableWindow(true);
 	m_lootCustom.EnableWindow(true);
-	m_autoOpen.EnableWindow(true);	
+	m_autoOpen.EnableWindow(true);
 	m_mode10.EnableWindow(true);
 	m_mode9.EnableWindow(true);
 	m_mode8.EnableWindow(true);
@@ -194,7 +194,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -213,7 +213,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -281,10 +281,10 @@ void CConfigDialog::refreshContainerStatus()
 	cont = reader.readContainer(9);
 	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
 	m_status10.SetWindowText(buf);
-	delete cont;	
+	delete cont;
 }
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }

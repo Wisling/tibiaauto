@@ -29,9 +29,9 @@
 
 XERCES_CPP_NAMESPACE_USE
 
-class CAutoResponderParser  
+class CAutoResponderParser
 {
-public:		 
+public:
 
 
 
@@ -51,7 +51,7 @@ private:
 	void processNodeRandom(DOMNode *node,CAutoResponderParserContext *context);
 	void processNodeIf(DOMNode *node,CAutoResponderParserContext *context);
 	void processNodeSleep(DOMNode *node,CAutoResponderParserContext *context);
-	void processNodeSay(DOMNode *node,CAutoResponderParserContext *context);	
+	void processNodeSay(DOMNode *node,CAutoResponderParserContext *context);
 	void processNodeSequence(DOMNode *node, CAutoResponderParserContext *context);
 	int processNodeBoolTestvariable(DOMNode *node,CAutoResponderParserContext *context);
 	int processNodeBoolPlayername(DOMNode *node,CAutoResponderParserContext *context);

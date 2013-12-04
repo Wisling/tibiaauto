@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CConfigData  
+class CConfigData
 {
 public:
 	CConfigData();
@@ -23,7 +23,7 @@ public:
 	int throwableTo;
 	int pickupSpears;
 	int pickupToHand;
-	int pickupUL,pickupUC,pickupUR;	
+	int pickupUL,pickupUC,pickupUR;
 	int pickupCL,pickupCC,pickupCR;
 	int pickupBL,pickupBC,pickupBR;
 	int moveCovering;

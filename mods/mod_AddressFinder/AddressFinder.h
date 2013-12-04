@@ -14,7 +14,7 @@
 
 using namespace std;
 
-class AddressFinder  
+class AddressFinder
 {
 public:
 	long getFlagsAddress();

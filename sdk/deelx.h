@@ -663,7 +663,7 @@ template <class CHART> inline int CBoundaryElxT <CHART> :: IsWordChar(CHART ch)
 //
 // Bracket
 //
-template <class CHART> class CBracketElxT : public ElxInterface  
+template <class CHART> class CBracketElxT : public ElxInterface
 {
 public:
 	int Match    (CContext * pContext) const;
@@ -768,7 +768,7 @@ template <class CHART> int CBracketElxT <CHART> :: MatchNext(CContext * pContext
 //
 // Deletage
 //
-template <class CHART> class CDelegateElxT : public ElxInterface  
+template <class CHART> class CDelegateElxT : public ElxInterface
 {
 public:
 	int Match    (CContext * pContext) const;
@@ -2889,7 +2889,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 		m_grouplist[nThisBackref] = pList;
 
 		// right
-		MoveNext(); // skip ')' 
+		MoveNext(); // skip ')'
 
 		return pList;
 	}

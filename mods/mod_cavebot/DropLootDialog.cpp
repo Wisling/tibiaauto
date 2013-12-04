@@ -127,7 +127,7 @@ void CDropLootDialog::OnDroplistDropOnlyLooted(){
 	m_add.EnableWindow(enableList);
 	m_delete.EnableWindow(enableList);
 }
-BOOL CDropLootDialog::OnInitDialog() 
+BOOL CDropLootDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_add);

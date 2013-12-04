@@ -63,9 +63,9 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	
 	CTibiaContainer *container = reader.readContainer(containerNr);
 	if (container->flagOnOff&&container->itemsInside>0)
-	{		
+	{
         for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)
-		{			
+		{
 			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
 			
 			int pos;
@@ -82,7 +82,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 					return retItem;
 				}
 			};
-		};				
+		};
 	}
 	
 	delete container;
@@ -118,7 +118,7 @@ int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR){
 }
 
 CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty)
-{	
+{
 	CMemReaderProxy reader;
 	int foodContNr=-1;
 	 
@@ -127,9 +127,9 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 	
 	CTibiaContainer *container = reader.readContainer(containerNr);
 	if (container->flagOnOff&&container->itemsInside>0)
-	{				
-		for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)		
-		{			
+	{
+		for (itemNr=container->itemsInside-1;itemNr>=0;itemNr--)
+		{
 			CTibiaItem *item = (CTibiaItem *)container->items.GetAt(itemNr);
 			
 			int pos;
@@ -141,14 +141,14 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 					
 					retItem->pos=itemNr;
 					retItem->objectId=item->objectId;
-					retItem->quantity=item->quantity;				
+					retItem->quantity=item->quantity;
 					
 					delete container;
 					return retItem;
 				}
 			};
-		};	
-	}			
+		};
+	}
 	
 	delete container;
 	return retItem;
@@ -314,7 +314,7 @@ int CModuleUtil::findFreeSpace(int &x, int &y, int z,int r /* =1 */){
 }
 
 void inline mapDebug(char *s)
-{	
+{
 #ifndef MAPDEBUG
 	return;
 #endif
@@ -325,14 +325,14 @@ void inline mapDebug(char *s)
 		char timeStr [15];
 		_strdate( dateStr);
 		_strtime( timeStr );
-		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);		
+		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);
 		fclose(f);
 	}
 }
 
 
 void inline testDebug(char *s)
-{	
+{
 	char installPath[2048];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
@@ -344,7 +344,7 @@ void inline testDebug(char *s)
 		char timeStr [15];
 		_strdate( dateStr);
 		_strtime( timeStr );
-		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);		
+		fprintf(f,"%s %s: %s\n",dateStr,timeStr,s);
 		fclose(f);
 	}
 }
@@ -402,7 +402,7 @@ int CModuleUtil::GetPathTabCount() {
 	return count;
 }
 
-class pointNode 
+class pointNode
 {
 public:
 	int x;
@@ -471,7 +471,7 @@ int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ){
 }
 
 struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15], int radius/*=1*/)
-{		
+{
 	CPackSenderProxy sender;
 	CTibiaMapProxy tibiaMap;
 #ifdef MAPDEBUG
@@ -552,7 +552,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	point endPoint;
 	int pqcountiter=0;
 	while (pQueue.GetCount() && gotToEndPoint!=1)
-	{	
+	{
 		pqcountiter++;
 		pointNode* currentPoint = (pointNode*)pQueue.Remove();
 
@@ -614,7 +614,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		/**
 		 * For each direction - check whether the next point is available on the map
 		 * and whether it has not been visited before.
-		 */		
+		 */
 
 		/**
 		 * 101 - open hole
@@ -636,7 +636,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 		// we directly go up using rope, magic rope, ladder, stairs
 		if (currentUpDown>=200&&currentUpDown<300)
-		{					
+		{
 			if(tibiaMap.isPointAvailableNoProh(x,y,z-1)){
 				pointsToAdd.Add(point(x,y,z-1));
 #ifdef MAPDEBUG
@@ -711,7 +711,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			findPathAllDirection(pointsToAdd,x,y,z);
 
 			int xShift=-2,yShift=-2;
-			while (!(xShift==1 && yShift==1)){//simply goes in a 3x3 square 
+			while (!(xShift==1 && yShift==1)){//simply goes in a 3x3 square
 				if (xShift==-2 && yShift==-2) {xShift=-1;yShift=-1;}
 				else xShift++;
 				if (xShift>1) {xShift=-1;yShift++;}
@@ -753,13 +753,13 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 	//sprintf(buf,"%d",pqcountiter);
 	//AfxMessageBox(buf);
 	if (gotToEndPoint)
-	{				
+	{
 		int pathPos=0;
 		point currPoint=endPoint;
 		point tmpPoint;
 
 		while (currPoint.x!=startX||currPoint.y!=startY||currPoint.z!=startZ)
-		{				
+		{
 			tmpPoint.x=currPoint.x;
 			tmpPoint.y=currPoint.y;
 			tmpPoint.z=currPoint.z;
@@ -809,7 +809,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		mapDebug(buf);
 #endif
 		int pos=0;
-		for (pos=0;pos<10&&pos<pathPos-1;pos++)			
+		for (pos=0;pos<10&&pos<pathPos-1;pos++)
 		{
 			int curX = pathTab[pathPos-pos-1].x;
 			int curY = pathTab[pathPos-pos-1].y;
@@ -836,13 +836,13 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			{
 				// up
 				if (pos==0)
-				{		
+				{
 				
 					if (curX==nextX&&curY==nextY)
 					{
 						path[pos]=0xD0;
-					} 
-					else 
+					}
+					else
 					{
 						path[pos]+=0xE0;
 					}
@@ -861,7 +861,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 					{
 						path[pos]=0xD1;
 					}
-					else 
+					else
 					{
 						path[pos]+=0xF0;
 					}
@@ -891,7 +891,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		int i;
 		for (i=0;i<pos;i++)
 		{
-			char buf2[128];				
+			char buf2[128];
 			sprintf(buf2," (%d)",path[i]);
 			if (strlen(buf2)<100)
 			{
@@ -965,7 +965,7 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 	{
 		int itemNr;
 		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)
-		{			
+		{
 			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
 			int i;
 			for (i=0;i<acceptedItems->GetSize();i++)
@@ -979,7 +979,7 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 					CTibiaTile *tile = reader.getTibiaTile(item->objectId);
 					int stackedItemPos=-1;
 					if (tile->stackable)
-					{						
+					{
 						// if item is stackable then try to find a suitable stack for it
 						for (stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
 						{
@@ -1001,8 +1001,8 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 								item->quantity -= moved;
 								break;
 							}
-						}	
-					} 
+						}
+					}
 					// If not full or we found a spot inside the container for a stackable item move item
 					if(contCarrying->itemsInside!=contCarrying->size || stackedItemPos!=-1 && stackedItemPos<contCarrying->itemsInside){
 						sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+containerCarrying,targetPos,moved);
@@ -1017,7 +1017,7 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr,CUIntArray *acce
 				}
 			}
 		}
-	}	
+	}
 
 	delete cont;
 	delete contCarrying;
@@ -1038,7 +1038,7 @@ int CModuleUtil::lootItemsToSpecifiedContainers(int containerNr,CUIntArray *acce
 	{
 		int itemNr;
 		for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--)
-		{			
+		{
 			CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
 			int i;
 			for (i=0;i<acceptedItems->GetSize();i++)
@@ -1060,7 +1060,7 @@ int CModuleUtil::lootItemsToSpecifiedContainers(int containerNr,CUIntArray *acce
 						CTibiaTile *tile = reader.getTibiaTile(item->objectId);
 						int stackedItemPos=-1;
 						if (tile->stackable)
-						{						
+						{
 							// if item is stackable then try to find a suitable stack for it
 							for (stackedItemPos=0;stackedItemPos<contCarrying->itemsInside;stackedItemPos++)
 							{
@@ -1082,8 +1082,8 @@ int CModuleUtil::lootItemsToSpecifiedContainers(int containerNr,CUIntArray *acce
 									item->quantity -= moved;
 									break;
 								}
-							}	
-						} 
+							}
+						}
 						// If not full or we found a spot inside the container for a stackable item move item
 						if(contCarrying->itemsInside!=contCarrying->size || stackedItemPos!=-1 && stackedItemPos<contCarrying->itemsInside){
 							sender.moveObjectBetweenContainers(item->objectId,0x40+containerNr,item->pos,0x40+contNr,targetPos,moved);
@@ -1107,19 +1107,19 @@ gotoNextItem:;
 }
 
 void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems,int ignoreCont1/*=-1*/,int ignoreCont2/*=-1*/)
-{	
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	
 	// find first free container
 	int qtyLooted=0;
 	for (int openCont=0;openCont<memConstData.m_memMaxContainers;openCont++)
-	{	
+	{
 		if (openCont==contNr || openCont==ignoreCont1 || openCont==ignoreCont2) continue;
 
 		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
-		{			
+		{
 			CTibiaContainer *sourceCont = reader.readContainer(contNr);
 			qtyLooted = (int)(CModuleUtil::lootItemFromSpecifiedContainer(contNr,acceptedItems,openCont));//Akilez: loot items and get # of items returned
 			if (qtyLooted)
@@ -1146,7 +1146,7 @@ void CModuleUtil::sleepWithStop(int ms,int *stopFlag)
 {
 	while (ms>50&&!(*stopFlag))
 	{
-		Sleep(50);		
+		Sleep(50);
 		ms-=50;
 	}
 	if (*stopFlag) return;
@@ -1154,7 +1154,7 @@ void CModuleUtil::sleepWithStop(int ms,int *stopFlag)
 }
 
 void CModuleUtil::eatItemFromContainer(int contNr)
-{	
+{
 	CTibiaItemProxy itemProxy;
 	
 	CMemReaderProxy reader;
@@ -1270,7 +1270,7 @@ int CModuleUtil::waitForCreatureDisappear(int creatureNr)//ranges from near inst
 		{
 			delete ch;
 			return 1;
-		} 
+		}
 		delete ch;
 		Sleep(50);
 	}
@@ -1338,7 +1338,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 	for (pathSize=0;pathSize<15&&path[pathSize];pathSize++){}
 #ifdef MAPDEBUG
 	char buf[512];
-	sprintf(buf,"pathsize=%d assumed=(%d,%d,%d) now=(%d,%d,%d) delta=(%d,%d,%d)=%d",pathSize,startX,startY,startZ,self->x,self->y,self->z,self->x-startX,self->y-startY,self->z-startZ,abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ));	
+	sprintf(buf,"pathsize=%d assumed=(%d,%d,%d) now=(%d,%d,%d) delta=(%d,%d,%d)=%d",pathSize,startX,startY,startZ,self->x,self->y,self->z,self->x-startX,self->y-startY,self->z-startZ,abs(self->x-startX)+abs(self->y-startY)+abs(self->z-startZ));
 	mapDebug(buf);
 #endif
 
@@ -1348,7 +1348,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 		lastStartY=startY;
 		lastStartZ=startZ;
 		lastStartChangeTm=0;
-	}else if (lastStartX!=startX||lastStartY!=startY||lastStartZ!=startZ) 
+	}else if (lastStartX!=startX||lastStartY!=startY||lastStartZ!=startZ)
 	{
 		//movedDiagonally=(lastStartX!=startX) && (lastStartY!=startY);
 		lastStartX=startX;
@@ -1453,7 +1453,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 								break;
 							}
 							delete item;
-						}									
+						}
 						if (shovel)
 						{
 							// shovel found, so proceed with opening hole
@@ -1474,11 +1474,11 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							sender.stepMulti(path,1);
 							Sleep(CModuleUtil::randomFormula(1100,300));
 							CTibiaCharacter *self2 = reader.readSelfCharacter();
-							int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));							
+							int count=reader.mapGetPointItemsCount(point(self->x-self2->x,self->y-self2->y,0));
 							int holeId=0;
 							int i;
 							for (i=0;i<count;i++)
-							{						
+							{
 								int tileId = reader.mapGetPointItemId(point(self->x-self2->x,self->y-self2->y,0),i);
 								//char buf[128];
 								//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
@@ -1515,7 +1515,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 								case 2: path[0]=5;break;
 								case 1: path[0]=1;break;
 								case 4: path[0]=3;break;
-								case 3: path[0]=7;break;						
+								case 3: path[0]=7;break;
 								}
 								sender.stepMulti(path,1);
 								Sleep(CModuleUtil::randomFormula(1100,300));
@@ -1530,7 +1530,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 					for (int x=-1;x<=1;x++){
 						for (int y=-1;y<=1;y++){
 							if (x||y){
-								if (tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z)){ 
+								if (tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z)){
 									freeX=x;
 									freeY=y;
 									x=999;//exit both loops
@@ -1543,7 +1543,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 					int grateId=0;
 					int i;
 					for (i=0;i<count;i++)
-					{						
+					{
 						int tileId = reader.mapGetPointItemId(point(0,0,0),i);
 						//char buf[128];
 						//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
@@ -1573,10 +1573,10 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 
 					if (grateId){
 						sender.useItemOnFloor(grateId,self->x,self->y,self->z);
-					}					
+					}
 					break;
 				} // switch updown
-			} // case 0xD1	
+			} // case 0xD1
 		case 0xD2:
 			{
 				// teleporter it will have walked onto it
@@ -1603,7 +1603,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 				if (path[0]==0xE7) modY++;
 				if (path[0]==0xE8) {modX++;modY++;}
 				switch (tibiaMap.getPointUpDownNoProh(modX,modY,self->z))
-				{		
+				{
 				case 201:
 					// rope
 					{
@@ -1624,19 +1624,19 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						}
 					}
 					break;
-				case 203:					
+				case 203:
 					{
 						//buf[111];
 						//sprintf(buf,"self %d,%d, mod %d %d",self->x,self->y,modX,modY);
 						//sender.sendTAMessage(buf);
 						// ladder
-						// fix 02.02.2008: ladder code needs to be evaluated on the fly					
+						// fix 02.02.2008: ladder code needs to be evaluated on the fly
 						int count=reader.mapGetPointItemsCount(point(modX-self->x,modY-self->y,0));
 						int ladderCode=0;
 						int i;
 						
 						for (i=0;i<count;i++)
-						{						
+						{
 							int tileId = reader.mapGetPointItemId(point(modX-self->x,modY-self->y,0),i);
 							CTibiaTile *tileData = reader.getTibiaTile(tileId);
 							if (tileId!=99&&tileData->goUp&&tileData->requireUse)
@@ -1652,8 +1652,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 					}
 
 					// ladder
-					break;				
-				}		
+					break;
+				}
 				break;
 			} // case 0xE1-E4
 		case 0xF1:
@@ -1693,9 +1693,9 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							{
 								shovel=item;
 								break;
-							}			
+							}
 							delete item;
-						}									
+						}
 						if (shovel)
 						{
 							// shovel found, so proceed with opening hole
@@ -1705,7 +1705,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 							int movePlayer=0;
 							int i;
 							for (i=0;i<count;i++)
-							{						
+							{
 								int tileId = reader.mapGetPointItemId(point(modX-self->x,modY-self->y,0),i);
 								//char buf[128];
 								//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
@@ -1735,7 +1735,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 								for (int x=-1;x<=1;x++){
 									for (int y=-1;y<=1;y++){
 										if (x||y){
-											if (tibiaMap.isPointAvailable(modX+x,modY+y,self->z)){ 
+											if (tibiaMap.isPointAvailable(modX+x,modY+y,self->z)){
 												freeX=x;
 												freeY=y;
 												x=999;//exit both loops
@@ -1767,7 +1767,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 									case 2: path[0]=1;path[1]=3;break;
 									case 8: path[0]=1;path[1]=7;break;
 									case 4: path[0]=5;path[1]=3;break;
-									case 6: path[0]=5;path[1]=7;break;						
+									case 6: path[0]=5;path[1]=7;break;
 										}
 									}
 									else if (modY&&tibiaMap.isPointAvailable(self->x,modY,self->z)){
@@ -1776,7 +1776,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 									case 2: path[0]=7;path[1]=5;break;
 									case 8: path[0]=7;path[1]=1;break;
 									case 4: path[0]=3;path[1]=5;break;
-									case 6: path[0]=3;path[1]=1;break;	
+									case 6: path[0]=3;path[1]=1;break;
 										}
 									}
 									path[2]=0;
@@ -1799,7 +1799,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						int grateId=0;
 						int i;
 						for (i=0;i<count;i++)
-						{						
+						{
 							int tileId = reader.mapGetPointItemId(point(modX-self->x,modY-self->y,0),i);
 							//char buf[128];
 							//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
@@ -1827,8 +1827,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ,int path[15])
 						if(grateId)
 							sender.useItemOnFloor(grateId,modX,modY,self->z);
 					}
-					break;													
-				}		
+					break;
+				}
 				break;
 			} // case 0xF1-F4
 			

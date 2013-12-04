@@ -12,7 +12,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CConnectedNodes  
+class CConnectedNodes
 {
 public:
 	void clearDisconnectedNodes();

@@ -60,7 +60,7 @@ BEGIN_MESSAGE_MAP(LifeDialog, CDialog)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXURA, OnToolSpellcasterExura)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_GRAN, OnToolSpellcasterGran)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VITA, OnToolSpellcasterVita)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SIO, OnToolSpellcasterSio)	
+	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SIO, OnToolSpellcasterSio)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CUSTOM, OnToolSpellcasterCustom)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_LIST, OnToolSpellcasterHealList)
 	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HEAL_POISON, OnToolSpellcasterPoison)
@@ -73,7 +73,7 @@ END_MESSAGE_MAP()
 // LifeDialog message handlers
 /////////////////////////////////////////////////////////////////////////////
 
-void LifeDialog::OnToolSpellcasterLife() 
+void LifeDialog::OnToolSpellcasterLife()
 {
 	int val = m_life.GetCheck();
 	int exuraVal = m_exuraSpell.GetCheck();
@@ -102,7 +102,7 @@ void LifeDialog::OnToolSpellcasterLife()
 	m_paralysisSpell.EnableWindow(val);
 	m_paralysisIco.EnableWindow(val);
 	m_poisonSpell.EnableWindow(val);
-	m_minPoisonDmg.EnableWindow(val && poisonVal?true:false);	
+	m_minPoisonDmg.EnableWindow(val && poisonVal?true:false);
 }
 
 void LifeDialog::OnToolSpellcasterExura() {
@@ -152,10 +152,10 @@ void LifeDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_healList);
 }
 
-BOOL LifeDialog::OnInitDialog() 
+BOOL LifeDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	DoSetButtonSkin();	
+	DoSetButtonSkin();
 	
 	OnToolSpellcasterLife();
 	
@@ -213,7 +213,7 @@ void LifeDialog::configToControls(CConfigData *configData) {
 	m_life.SetCheck(configData->life);
 	m_customSpell.SetCheck(configData->customSpell);
 	sprintf(buf,"%d",configData->lifeHp);			m_lifeHp.SetWindowText(buf);
-	sprintf(buf,"%s",configData->lifeSpell);		m_lifeSpell.SetWindowText(buf);	
+	sprintf(buf,"%s",configData->lifeSpell);		m_lifeSpell.SetWindowText(buf);
 	sprintf(buf,"%d",configData->lifeSpellMana);	m_lifeSpellMana.SetWindowText(buf);
 	m_exuraSpell.SetCheck(configData->exuraSpell);
 	sprintf(buf,"%d",configData->exuraHp);			m_exuraHp.SetWindowText(buf);

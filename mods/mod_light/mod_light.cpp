@@ -52,7 +52,7 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ){		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 
@@ -64,7 +64,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 	AfxMessageBox(buff,MB_OK);*/
 
 	while (!toolThreadShouldStop)
-	{			
+	{
 		Sleep(500);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		
@@ -87,7 +87,7 @@ Cmod_lightApp::Cmod_lightApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 Cmod_lightApp::~Cmod_lightApp()
@@ -96,7 +96,7 @@ Cmod_lightApp::~Cmod_lightApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * Cmod_lightApp::getName()
@@ -112,7 +112,7 @@ int Cmod_lightApp::isStarted()
 
 
 void Cmod_lightApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -123,7 +123,7 @@ void Cmod_lightApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -140,11 +140,11 @@ void Cmod_lightApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void Cmod_lightApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -162,7 +162,7 @@ void Cmod_lightApp::showConfigDialog()
 void Cmod_lightApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -234,7 +234,7 @@ char *Cmod_lightApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "lightPower";	
+	case 0: return "lightPower";
 	case 1: return "lightColor";
 	default:
 		return NULL;
@@ -244,7 +244,7 @@ char *Cmod_lightApp::getConfigParamName(int nr)
 void Cmod_lightApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

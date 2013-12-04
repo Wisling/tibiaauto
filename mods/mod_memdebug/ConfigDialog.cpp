@@ -64,32 +64,32 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnTest() 
+void CConfigDialog::OnTest()
 {
 	UpdateData(FALSE);
 	
 	CMemReaderProxy reader;
 
-	reader.setMemIntValue(0x00400000+m_address,m_val);	
+	reader.setMemIntValue(0x00400000+m_address,m_val);
 	
 }
 
-void CConfigDialog::OnTest2() 
-{	
+void CConfigDialog::OnTest2()
+{
 	
 }
 
-void CConfigDialog::OnScan() 
+void CConfigDialog::OnScan()
 {
 	UpdateData(true);
 	
@@ -97,19 +97,19 @@ void CConfigDialog::OnScan()
 	{
 		m_valueScanIter=0;
 		
-		RegisterDebug("memory scanning started");		
-		SetTimer(1000,100,NULL);		
+		RegisterDebug("memory scanning started");
+		SetTimer(1000,100,NULL);
 	} else {
 		RegisterDebug("memory scanning stopped");
 		this->KillTimer(1000);
-	}	
+	}
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1000)
 	{
-		CMemReaderProxy reader;		
+		CMemReaderProxy reader;
 		
 		char buf[128];
 		
@@ -118,13 +118,13 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		int value=reader.getMemIntValue(0x00400000+m_address);
 		
 		
-		m_addressResDec=value;	
+		m_addressResDec=value;
 			
 		sprintf(buf,"0x%x",value);
-		m_addressResHex=buf;				
+		m_addressResHex=buf;
 		
 		UpdateData(false);
-	}	
+	}
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -144,7 +144,7 @@ void CConfigDialog::RegisterDebug(char *msg)
 	UpdateData(false);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
@@ -154,7 +154,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }

@@ -61,14 +61,14 @@ void CXTabCtrl::SetTopLeftCorner(CPoint pt)
 	m_ptTabs.y = pt.y;
 }
 
-void CXTabCtrl::SetMouseOverColor(COLORREF cr) 
+void CXTabCtrl::SetMouseOverColor(COLORREF cr)
 {
 	m_bColorMouseOver = true;
 	m_crMouseOver = cr;
 }
 
 
-void CXTabCtrl::SetDisabledColor(COLORREF cr) 
+void CXTabCtrl::SetDisabledColor(COLORREF cr)
 {
 	m_bColorDisabled = true;
 	m_crDisabled = cr;
@@ -190,7 +190,7 @@ BOOL CXTabCtrl::SelectTab(int iIndex)
 	return FALSE;
 }
 
-void CXTabCtrl::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult) 
+void CXTabCtrl::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// TODO: Add your control notification handler code here
 	int iNewTab = GetCurSel();
@@ -222,7 +222,7 @@ void CXTabCtrl::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CXTabCtrl::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult) 
+void CXTabCtrl::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	// TODO: Add your control notification handler code here
 	m_iSelectedTab = GetCurSel();
@@ -232,7 +232,7 @@ void CXTabCtrl::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)
 
 
 
-void CXTabCtrl::PreSubclassWindow() 
+void CXTabCtrl::PreSubclassWindow()
 {
 	// TODO: Add your specialized code here and/or call the base class
 	CTabCtrl::PreSubclassWindow();
@@ -240,8 +240,8 @@ void CXTabCtrl::PreSubclassWindow()
 }
 
 
-void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
-{	
+void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
+{
 	CRect rect;
 	CDC* pDC = CDC::FromHandle(lpDrawItemStruct->hDC);
 	if (!pDC)
@@ -265,8 +265,8 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	char label[64];
 	TC_ITEM item;
 	item.mask = TCIF_TEXT|TCIF_IMAGE;
-	item.pszText = label;     
-	item.cchTextMax = 63;    	
+	item.pszText = label;
+	item.cchTextMax = 63;
 	if (!GetItem(nTabIndex, &item))
 		return;
 
@@ -289,7 +289,7 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 	//**  Draw the image
 	CImageList* pImageList = GetImageList();
-	if (pImageList && item.iImage >= 0) 
+	if (pImageList && item.iImage >= 0)
 	{
 
 		rect.left += pDC->GetTextExtent(_T(" ")).cx;
@@ -316,9 +316,9 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 			pDC->SetTextColor(crSelected);
 		else //** other item ---
 		{
-			if (m_bColorMouseOver && nTabIndex == m_iIndexMouseOver) 
+			if (m_bColorMouseOver && nTabIndex == m_iIndexMouseOver)
 			{
-				pDC->SetTextColor(m_crMouseOver);	
+				pDC->SetTextColor(m_crMouseOver);
 			}
 			else
 			{
@@ -333,7 +333,7 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	pDC->RestoreDC(nSavedDC);
 }
 
-void CXTabCtrl::OnMouseMove(UINT nFlags, CPoint point) 
+void CXTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	
@@ -378,7 +378,7 @@ void CXTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	CTabCtrl::OnMouseMove(nFlags, point);
 }
 
-void CXTabCtrl::OnTimer(UINT nIDEvent) 
+void CXTabCtrl::OnTimer(UINT nIDEvent)
 {
 	// TODO: Add your message handler code here and/or call default
 	POINT pt;
@@ -390,7 +390,7 @@ void CXTabCtrl::OnTimer(UINT nIDEvent)
 	ClientToScreen(rectScreen);
 	
 	// If mouse leaves, show normal
-	if (!rectScreen.PtInRect(pt)) 
+	if (!rectScreen.PtInRect(pt))
 	{
 		KillTimer (1);
 		m_bMouseOver = false;
@@ -412,7 +412,7 @@ void CXTabCtrl::ChangeTab(int iIndex, CWnd *pNewTab, LPTSTR lpszCaption, int iIm
 	item.pszText = lpszCaption;
 	item.iImage = iImage;
 
-	//** update item 
+	//** update item
 	VERIFY(SetItem(iIndex, &item));
 
 	pNewTab->SetWindowPos(NULL, m_ptTabs.x, m_ptTabs.y , 0, 0,
@@ -421,7 +421,7 @@ void CXTabCtrl::ChangeTab(int iIndex, CWnd *pNewTab, LPTSTR lpszCaption, int iIm
 	pNewTab->ShowWindow(SW_HIDE);
 
 	//** the initial status is enabled
-	m_arrayStatusTab[iIndex] = TRUE; 
+	m_arrayStatusTab[iIndex] = TRUE;
 
 	//** updates the screen
 	GetItem(GetCurSel(), &item);

@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CMemConstData  
+class CMemConstData
 {
 public:
 	CMemConstData();
@@ -39,8 +39,8 @@ public:
 	int m_memAddressSelfPosZ;
 	int m_memAddressBattleMin;
 	int m_memAddressBattleMax;
-	int m_memAddressAttackedCreature;	
-	int m_memAddressFollowedCreature;	
+	int m_memAddressAttackedCreature;
+	int m_memAddressFollowedCreature;
 	int m_memAddressSkillSword;
 	int m_memAddressSkillAxe;
 	int m_memAddressSkillShield;

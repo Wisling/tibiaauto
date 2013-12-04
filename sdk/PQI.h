@@ -12,7 +12,7 @@
 
 using namespace std;
 
-class pointNode 
+class pointNode
 {
 public:
 	int x;
@@ -63,14 +63,14 @@ struct pComp {
 };
 
 AFX_INLINE UINT AFXAPI HashKey<pointNode> (pointNode key)
-{	
+{
 	return key.x*191+key.y*257+key.z*317;
 }
 
 typedef pointNode LNode;
-AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode> 
+AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode>
      (const LNode* v1d, const LNode* v2d)
-{	
+{
 	if (v1d&&v2d&&v1d->x==v2d->x&&v1d->y==v2d->y&&v1d->z==v2d->z&&v1d->px==v2d->px&&v1d->py==v2d->py&&v1d->pz==v2d->pz) return true;
 	return false;
 }

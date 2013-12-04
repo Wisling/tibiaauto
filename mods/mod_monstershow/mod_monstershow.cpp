@@ -54,14 +54,14 @@ END_MESSAGE_MAP()
 // CMod_monstershowApp construction
 
 CMod_monstershowApp::CMod_monstershowApp()
-{	
+{
 	m_infoDialog=NULL;
 }
 
 CMod_monstershowApp::~CMod_monstershowApp()
 {
 	
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_monstershowApp::getName()
@@ -75,9 +75,9 @@ char * CMod_monstershowApp::getName()
 void CMod_monstershowApp::showConfigDialog()
 {
 	
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CToolMonsterShow();
 		m_infoDialog->Create(IDD_TOOL_MONSTERSHOW);
 	}
@@ -105,7 +105,7 @@ void CMod_monstershowApp::resetConfig()
 
 
 char *CMod_monstershowApp::getConfigParamName(int nr)
-{	
+{
 	return NULL;
 }
 
@@ -115,7 +115,7 @@ char *CMod_monstershowApp::getConfigParamName(int nr)
 void CMod_monstershowApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_infoDialog){
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();

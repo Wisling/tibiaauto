@@ -34,11 +34,11 @@ private:
 	map<char *, Nodemaster *> children;
 //	vector<Template> templates;
 	Template *templates;
-//	Template *templates;	
+//	Template *templates;
 //	unsigned int lastIndex;
 	friend class NodeWalker;
 };
 
 typedef map<char *, Nodemaster *> childrenMap;
 
-#endif  
+#endif

@@ -51,7 +51,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -78,7 +78,7 @@ END_MESSAGE_MAP()
 // CMod_showmapApp construction
 
 CMod_showmapApp::CMod_showmapApp()
-{	
+{
 	m_infoDialog=NULL;
 	currentPointNr=0;
 	m_configData = new CConfigData();
@@ -103,7 +103,7 @@ int CMod_showmapApp::isStarted()
 
 
 void CMod_showmapApp::start()
-{	
+{
 	superStart();
 }
 
@@ -115,7 +115,7 @@ void CMod_showmapApp::showConfigDialog()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CToolMapShow();
 		m_infoDialog->Create(IDD_TOOL_MAPSHOW);
 	} else {
@@ -125,7 +125,7 @@ void CMod_showmapApp::showConfigDialog()
 
 
 void CMod_showmapApp::configToControls()
-{	
+{
 	m_infoDialog->m_extendedResearch.SetCheck(m_configData->extendedResearch);
 	m_infoDialog->RefreshExtendedResearchMap();
 }
@@ -171,7 +171,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName,char *paramValue)
 	{
 		CTibiaMapProxy tibiaMap;
 		if (currentPointNr==0)
-		{			
+		{
 			// first call - reset map
 			tibiaMap.clear();
 		}
@@ -194,7 +194,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName,char *paramValue)
 		m_configData->extendedResearch = atoi(paramValue);
 		if(m_configData->extendedResearch){
 			if (!m_infoDialog)
-			{ 
+			{
 				m_infoDialog=new CToolMapShow();
 				m_infoDialog->Create(IDD_TOOL_MAPSHOW);
 				m_infoDialog->ShowWindow(SW_HIDE);
@@ -253,7 +253,7 @@ void CMod_showmapApp::resetMultiParamAccess(char *paramName)
 void CMod_showmapApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_infoDialog){
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();

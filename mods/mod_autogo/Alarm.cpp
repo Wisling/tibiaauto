@@ -259,7 +259,7 @@ bool Alarm::getPermanent() {
 //////////////////////////////////////////////////////////////////////
 
 void Alarm::initializeCharacter() {
-	//Initialize the character's starting info 
+	//Initialize the character's starting info
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	lvlInit = self->lvl;
@@ -350,7 +350,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 				break;
 			}
 			break;
-		case PERCLVLACHIEVED: 
+		case PERCLVLACHIEVED:
 			{
 			int lvlExp=(50*pow(self->lvl-1,3)-150*pow(self->lvl-1,2)+400*(self->lvl-1))/3;
 			switch (attribute) {
@@ -467,7 +467,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			case SPACE:
 				retval=spaceAvailable() == trigger.getIntTrigger();
 				break;
-			} 
+			}
 			break;
 		case LESS:
 			switch(attribute) {
@@ -620,7 +620,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		case ABSENT:
 			retval = (reader.getSelfEventFlags() & (int)pow(2,attribute))==0;
 			break;
-		}		
+		}
 		break;
 	case MESSAGE: {
 		int isSpell = msg && (options & OPTIONS_IGNORE_SPELLS) && isSpellMessage(msg->msg);
@@ -744,16 +744,16 @@ bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut) {
 //////////////////////////////////////////////////////////////////////
 
 int Alarm::spaceAvailable() {
-	CTibiaItemProxy itemProxy;	
+	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	int space = 0;
 	
-	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {		
+	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->flagOnOff)
 			space += cont->size - cont->itemsInside;
 		delete cont;
-	}	
+	}
 	return space;
 }
 
@@ -764,12 +764,12 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 	
 	int retval=0;
 	for (int creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++) {
-		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);		
+		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->tibiaId == 0){
 			delete ch;
 			break;
 		}
-		if (ch->visible) {		
+		if (ch->visible) {
 			if (ch->tibiaId != self->tibiaId && (!OnList(whiteList, (char*)ch->name) ^ ((options & OPTIONS_MAKE_BLACKLIST)!=0))) {
 				if (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)) {
 					if (unsigned int(ch->tibiaId) < 0x40000000) {
@@ -778,18 +778,18 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 						{
 							retval |= 1<<ATTACKINGPLAYER;
 						}
-					}					
-					if (ch->name[0] == 'G' && ch->name[1] == 'M' || ch->name[0] == 'C' && ch->name[1] == 'M') { // this is GM						
+					}
+					if (ch->name[0] == 'G' && ch->name[1] == 'M' || ch->name[0] == 'C' && ch->name[1] == 'M') { // this is GM
 						retval |= 1<<GM;
-					}					
+					}
 					if (ch->tibiaId >= 0x40000000) { // this is monster/npc
 						retval |= 1<<MONSTER;
-					}					
+					}
 				}
 				if (ch->z == self->z && abs(ch->x - self->x)<=7 && abs(ch->y - self->y)<=5){
 					retval |= 1<<BATTLELIST;
 				}
-			}			
+			}
 			if (ch->tibiaId != self->tibiaId && (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1))) {
 				switch(ch->skulls){
 				case YELLOW_SKULL: retval |= 1<<YELLOWSKULL; break;
@@ -844,13 +844,13 @@ bool Alarm::vipNameOnline(CString name, bool checkOnline/*=true*/) {
 //////////////////////////////////////////////////////////////////////
 
 int Alarm::countAllItemsOfType(int objectId) {
-	CTibiaItemProxy itemProxy;	
+	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	int itemCount = 0;
 
 	for (int contNr = 0; contNr < itemProxy.getValueForConst("maxContainers"); contNr++) {
-		CTibiaContainer *cont = reader.readContainer(contNr);		
+		CTibiaContainer *cont = reader.readContainer(contNr);
 		if (cont->flagOnOff)
 			itemCount += cont->countItemsOfType(objectId);
 		delete cont;

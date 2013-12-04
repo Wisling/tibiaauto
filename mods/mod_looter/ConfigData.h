@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CConfigData  
+class CConfigData
 {
 public:
 	CConfigData();
@@ -21,7 +21,7 @@ public:
 	int	m_lootFood;
 	int m_eatFromCorpse;
 	int	m_lootCustom;
-	int	m_autoOpen;	
+	int	m_autoOpen;
 	int m_mode10;
 	int	m_mode9;
 	int	m_mode8;

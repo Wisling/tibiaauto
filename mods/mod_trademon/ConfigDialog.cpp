@@ -60,35 +60,35 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
 void CConfigDialog::disableControls()
 {
-	m_tradeTalker.EnableWindow(false);	
+	m_tradeTalker.EnableWindow(false);
 	m_message.EnableWindow(false);
 	m_channel.EnableWindow(false);
 	m_channelInterval.EnableWindow(false);
@@ -156,7 +156,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -175,7 +175,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -185,25 +185,25 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::OnTradetoolChannel() 
+void CConfigDialog::OnTradetoolChannel()
 {
 	// TODO: Add your control notification handler code here
 	
 }
 
-void CConfigDialog::OnTradetoolSay() 
+void CConfigDialog::OnTradetoolSay()
 {
 	// TODO: Add your control notification handler code here
 	
 }
 
-void CConfigDialog::OnTradetoolYell() 
+void CConfigDialog::OnTradetoolYell()
 {
 	// TODO: Add your control notification handler code here
 	
 }
 
-void CConfigDialog::OnTradetoolTradetalk() 
+void CConfigDialog::OnTradetoolTradetalk()
 {
 	if (m_tradeTalker.GetCheck())
 	{

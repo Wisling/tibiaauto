@@ -24,8 +24,8 @@ public:
  * 100 - attacked creature
  * 101 - hmm rune location
  * 102 - gfb rune location
- * 103 - sd rune location 
- * 104 - explo rune location 
+ * 103 - sd rune location
+ * 104 - explo rune location
  * 105 - self UH
  * 106 - fluid mana
  * 107 - fluid life

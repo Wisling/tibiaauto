@@ -39,7 +39,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CRepeatButton message handlers
 
-void CRepeatButton::OnLButtonDown(UINT nFlags, CPoint point) 
+void CRepeatButton::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// Set up for notifying parent window
 	int ControlID = GetDlgCtrlID();
@@ -64,7 +64,7 @@ void CRepeatButton::OnLButtonDown(UINT nFlags, CPoint point)
 	CButton::SetState(TRUE);
 }
 
-void CRepeatButton::OnLButtonUp(UINT nFlags, CPoint point) 
+void CRepeatButton::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	ReleaseCapture();
     if(TimerStep) {	// We're done with this button
@@ -77,7 +77,7 @@ void CRepeatButton::OnLButtonUp(UINT nFlags, CPoint point)
 	CButton::SetState(FALSE);	// clear the depressed pushbutton appearence
 }
 
-void CRepeatButton::OnTimer(UINT nIDEvent) 
+void CRepeatButton::OnTimer(UINT nIDEvent)
 {
 	// We may have moved the mouse during the timer interval so double-check it first!
 	if(!IsOverClient()) {

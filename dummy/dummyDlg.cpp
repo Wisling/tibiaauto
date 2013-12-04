@@ -137,7 +137,7 @@ void CDummyDlg::OnSysCommand(UINT nID, LPARAM lParam)
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CDummyDlg::OnPaint() 
+void CDummyDlg::OnPaint()
 {
 	if (IsIconic())
 	{

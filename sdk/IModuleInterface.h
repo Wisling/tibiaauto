@@ -11,7 +11,7 @@
 
 #include "Skin.h"
 
-class IModuleInterface  
+class IModuleInterface
 {
 public:
 	virtual char * getName()
@@ -22,7 +22,7 @@ public:
 	{
 		return 0;
 	}
-	virtual void start()	
+	virtual void start()
 	{
 	}
 	virtual void stop()
@@ -31,40 +31,40 @@ public:
 	virtual void getNewSkin(CSkin newSkin)
 	{
 	}
-	virtual void showConfigDialog() 
+	virtual void showConfigDialog()
 	{
 	}
-	virtual void configToControls() 
-	{
-	}	
-	virtual void controlsToConfig() 
+	virtual void configToControls()
 	{
 	}
-	virtual void disableControls() 
-	{	
-	}
-	virtual void enableControls() 
+	virtual void controlsToConfig()
 	{
 	}
-	virtual char *getVersion() 
+	virtual void disableControls()
+	{
+	}
+	virtual void enableControls()
+	{
+	}
+	virtual char *getVersion()
 	{
 		return "-";
 	}
-	virtual int validateConfig(int showAlerts) 
+	virtual int validateConfig(int showAlerts)
 	{
 		return 1;
 	}
-	virtual void resetConfig() 
+	virtual void resetConfig()
 	{
 	}
-	virtual void loadConfigParam(char *paramName,char *paramValue) 
+	virtual void loadConfigParam(char *paramName,char *paramValue)
 	{
 	}
-	virtual char *saveConfigParam(char *paramName) 
+	virtual char *saveConfigParam(char *paramName)
 	{
 		return "";
 	}
-	virtual char *getConfigParamName(int nr) 
+	virtual char *getConfigParamName(int nr)
 	{
 		return NULL;
 	}

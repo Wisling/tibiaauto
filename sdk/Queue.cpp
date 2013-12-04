@@ -67,7 +67,7 @@ struct point CQueue::getFirst()
 }
 
 void CQueue::enlarge()
-{	
+{
 	tabSize*=2;
 	tab=(struct point *)realloc(tab,sizeof(struct point)*tabSize);
 	if (start<end)

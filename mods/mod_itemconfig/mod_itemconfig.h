@@ -41,13 +41,13 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-public:	
+public:
 	void getNewSkin(CSkin);
 	// functions from IModuleInterface
 	char * getName();
 	int isStarted();
 	void showConfigDialog();
-	void enableControls();	
+	void enableControls();
 	void configToControls();
 	void controlsToConfig();
 	void loadConfigParam(char *paramName,char *paramValue);
@@ -56,7 +56,7 @@ public:
 	int isMultiParam(char *paramName);
 	void resetMultiParamAccess(char *paramName);
 	char *getVersion();
-private:	
+private:
 	CConfigData *m_configData;
 	CToolItemConfig *m_infoDialog;
 	int currentPos;

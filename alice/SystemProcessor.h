@@ -1,5 +1,5 @@
 /**
- * SystemProcessor - Launches shell commands and 
+ * SystemProcessor - Launches shell commands and
  * captures their output
  *
  * @author	Taras Glek

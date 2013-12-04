@@ -100,7 +100,7 @@ void CMapConfig::Mem2Config() {
 		tileId[i] = 0;
 	
 	if (xMem < -8 || xMem > 9 || yMem < -6 || yMem > 7) outOfRange = 1;
-	if (!outOfRange) {		
+	if (!outOfRange) {
 		int count=reader.mapGetPointItemsCount(point(xMem, yMem, 0));
 		if (count > 10) count = 10;
 		for (int pos = 0; pos < count; pos++) {
@@ -111,7 +111,7 @@ void CMapConfig::Mem2Config() {
 	}
 	currentStackPos = 0;
 	loadTile(tileId[currentStackPos], currentStackPos);
-	if (!currentStackPos) 
+	if (!currentStackPos)
 		m_Previous.EnableWindow(false);
 	else
 		m_Previous.EnableWindow(true);
@@ -190,7 +190,7 @@ void CMapConfig::OnPreviousTile() {
 		loadTile(tileId[currentStackPos], currentStackPos);
 	}
 	else return;
-	if (!currentStackPos) 
+	if (!currentStackPos)
 		m_Previous.EnableWindow(false);
 	else
 		m_Previous.EnableWindow(true);
@@ -207,7 +207,7 @@ void CMapConfig::OnNextTile() {
 		loadTile(tileId[currentStackPos], currentStackPos);
 	}
 	else return;
-	if (!currentStackPos) 
+	if (!currentStackPos)
 		m_Previous.EnableWindow(false);
 	else
 		m_Previous.EnableWindow(true);

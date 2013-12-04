@@ -55,7 +55,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -83,7 +83,7 @@ int RandomEaterWaitTime(int digestTime){
 	digestTime * .2					:: 20% of digestTime
 	rand() % (int)(digestTime * .2)	:: Pseudo-random number between 0 and 20% of digestTime
 	digestTime * .9					:: 90% of digestTime...
-									   When added to a random number from 0 to 20% of digestTime, 
+									   When added to a random number from 0 to 20% of digestTime,
 									   this creates a uniform random number from 90 to 110% (+/- 10%)
 	***************************/
 	return rand() % (int)(digestTime * .2) + (int)(digestTime * .9);//randomFormula creates a non-uniform distribution weighted towards an average
@@ -100,7 +100,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{			
+{
 	srand(time(NULL));				//Seed the random number generation
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -111,7 +111,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 									
 
 	while (!toolThreadShouldStop)
-	{			
+	{
 		int contNr;
 		if (digestTime==-1) digestTime=0;
 		else {
@@ -133,7 +133,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				CTibiaItem *tempFoodItem=new CTibiaItem();
 
-									//We haven't found a food item yet! 
+									//We haven't found a food item yet!
 				if (foodItem->objectId==0) {
 					delete foodItem;
 					foodItem = CModuleUtil::lookupItem(contNr,foods);
@@ -184,7 +184,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			delete foodItem;
 		}
-	}	
+	}
 
 	toolThreadShouldStop=0;
 	return 0;
@@ -194,14 +194,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 // CMod_eaterApp construction
 
 CMod_eaterApp::CMod_eaterApp()
-{	
-	m_started=0;	
+{
+	m_started=0;
 }
 
 CMod_eaterApp::~CMod_eaterApp()
 {
 	
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_eaterApp::getName()
@@ -215,12 +215,12 @@ int CMod_eaterApp::isStarted()
 }
 
 void CMod_eaterApp::start()
-{	
+{
 	superStart();
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -230,8 +230,8 @@ void CMod_eaterApp::stop()
 	while (toolThreadShouldStop) {
 		Sleep(50);
 	};
-	m_started=0;		
-} 
+	m_started=0;
+}
 
 char *CMod_eaterApp::getVersion()
 {

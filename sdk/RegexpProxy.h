@@ -11,7 +11,7 @@
 
 #include "regex.h"
 
-class CRegexpProxy  
+class CRegexpProxy
 {
 public:
 	int regcomp(regex_t *preg, const char *regex, int cflags);

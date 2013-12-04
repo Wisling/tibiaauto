@@ -76,7 +76,7 @@ void CToolMapShow::OnClose()
 	ShowWindow(SW_HIDE);
 }
 
-void CToolMapShow::OnOK() 
+void CToolMapShow::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
@@ -86,7 +86,7 @@ void CToolMapShow::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_OK);
 }
 
-BOOL CToolMapShow::OnInitDialog() 
+BOOL CToolMapShow::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -102,7 +102,7 @@ BOOL CToolMapShow::OnInitDialog()
 		{
 
 			
-			CMapButton *but = new CMapButton(x,y);			
+			CMapButton *but = new CMapButton(x,y);
 			
 			rect.top=20+y*20;
 			rect.left=((rect.right - rect.left) / 2) - (20 * (10 - x)) - 10;
@@ -112,8 +112,8 @@ BOOL CToolMapShow::OnInitDialog()
 			but->Create("test",WS_CHILD|WS_VISIBLE|BS_FLAT|BS_PUSHLIKE|BS_OWNERDRAW,rect,this,IDC_MAPSHOW_FIRSTBUTTON);
 			but->LoadBitmaps(IDB_MAP_EMPTY);
 			but->m_value=-1;
-			m_mapButtonImage[x][y]=IDB_MAP_EMPTY;						
-			m_mapButtons[x][y]=but;			
+			m_mapButtonImage[x][y]=IDB_MAP_EMPTY;
+			m_mapButtons[x][y]=but;
 			
 			GetClientRect(&rect);
 			
@@ -124,13 +124,13 @@ BOOL CToolMapShow::OnInitDialog()
 
 	SetTimer(1001,250,NULL);
 
-	OnToolMapshowExtendedResearch();	
+	OnToolMapshowExtendedResearch();
 		
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC) 
+BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 {
 	CRect rect;
 	GetClientRect(&rect);
@@ -188,10 +188,10 @@ void CToolMapShow::refreshVisibleMap()
 				int avail=tibiaMap.isPointAvailableNoProh(x+self->x-10,y+self->y-10,self->z);
 				if (avail)
 				{
-					int updownSel=tibiaMap.getPointUpDown(x+self->x-10,y+self->y-10,self->z);					
+					int updownSel=tibiaMap.getPointUpDown(x+self->x-10,y+self->y-10,self->z);
 					switch (updownSel)
 					{
-					case 0:						
+					case 0:
 						if (m_mapButtonImage[x][y]!=IDB_MAP_SAMEFLOOR)
 						{
 							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_SAMEFLOOR,IDB_MAP_SAMEFLOOR,IDB_MAP_SAMEFLOOR,IDB_MAP_SAMEFLOOR);
@@ -201,14 +201,14 @@ void CToolMapShow::refreshVisibleMap()
 						}
 						break;
 					case 101:
-						// open hole						
+						// open hole
 						if (m_mapButtonImage[x][y]!=IDB_MAP_OPENHOLE)
 						{
 							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_OPENHOLE,IDB_MAP_OPENHOLE,IDB_MAP_OPENHOLE,IDB_MAP_OPENHOLE);
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_OPENHOLE;
 							m_mapButtons[x][y]->m_value=101;
-						}												
+						}
 						break;
 					case 102:
 						// closed hole
@@ -218,7 +218,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_CLOSEDHOLE;
 							m_mapButtons[x][y]->m_value=102;
-						}												
+						}
 						break;
 					case 103:
 						// crate
@@ -228,7 +228,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_CRATE;
 							m_mapButtons[x][y]->m_value=103;
-						}												
+						}
 						break;
 					case 201:
 						// rope
@@ -239,7 +239,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_ROPE;
 							m_mapButtons[x][y]->m_value=201;
-						}							
+						}
 						
 						break;
 					case 202:
@@ -251,7 +251,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_MAGICROPE;
 							m_mapButtons[x][y]->m_value=202;
-						}							
+						}
 						
 						break;
 					case 203:
@@ -263,7 +263,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_LADDER;
 							m_mapButtons[x][y]->m_value=203;
-						}							
+						}
 						
 						break;
 					case 204:
@@ -275,7 +275,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_STAIRS;
 							m_mapButtons[x][y]->m_value=204;
-						}							
+						}
 						
 						break;
 					case 301:
@@ -287,7 +287,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_DEPOT;
 							m_mapButtons[x][y]->m_value=301;
-						}							
+						}
 						
 						break;
 					case 302:
@@ -302,7 +302,7 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=tilePic;
 							m_mapButtons[x][y]->m_value=302;
-						}							
+						}
 						
 						break;
 					case 303:
@@ -313,14 +313,14 @@ void CToolMapShow::refreshVisibleMap()
 							m_mapButtons[x][y]->RedrawWindow();
 							m_mapButtonImage[x][y]=IDB_MAP_BLOCK;
 							m_mapButtons[x][y]->m_value=303;
-						}							
+						}
 						
 						break;
 					}
 				} else {
 					if (m_mapButtonImage[x][y]!=IDB_MAP_EMPTY)
 					{
-						m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_EMPTY,IDB_MAP_EMPTY,IDB_MAP_EMPTY,IDB_MAP_EMPTY);					
+						m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_EMPTY,IDB_MAP_EMPTY,IDB_MAP_EMPTY,IDB_MAP_EMPTY);
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]=IDB_MAP_EMPTY;
 						m_mapButtons[x][y]->m_value=-1;
@@ -338,7 +338,7 @@ int mod(int i,int m){
 	return ans;
 }
 
-void CToolMapShow::OnTimer(UINT nIDEvent) 
+void CToolMapShow::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -374,7 +374,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 		iter++;//increases every 0.5 secs
 		if (self->x!=prevX||self->y!=prevY||self->z!=prevZ||iter%6==0)//reading takes about 100ms +- 100
-		{			
+		{
 
 			int x,y;
 			int tileArrAvail[18][14];
@@ -397,7 +397,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					int ground=0;
 					int speed=0;
 					for (i=0;i<count;i++)
-					{						
+					{
 						int tileId = reader.mapGetPointItemId(point(x,y,0),i,relToCell);
 						if (tileId!=99)
 						{
@@ -463,7 +463,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					// if tile is depot chest or teleporter then treat it in a special way
 					if (updown==301 || updown==302) blocked=0;
 					// if there is not a single walkable tile then one cannot pass
-					if (ground==0&&!updown) 
+					if (ground==0&&!updown)
 					{
 						blocked=1;
 					}
@@ -616,7 +616,7 @@ void CToolMapShow::mapPointClicked(int posX, int posY, int pos)
 	int realY=self->y+posY-10;
 	int realZ=self->z;
 
-	delete self;	
+	delete self;
 
 	if (pos>=0)
 	{
@@ -633,18 +633,18 @@ void CToolMapShow::mapPointClicked(int posX, int posY, int pos)
 	refreshVisibleMap();
 }
 
-BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam) 
+BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 
 	return CDialog::OnCommand(wParam, lParam);
 }
 
 void CToolMapShow::showTileDetails(int x, int y)
-{		
+{
 	CMemReaderProxy reader;
 	CTibiaMapProxy tibiaMap;
 	int outOfRange=0;
-	char buf[2560];	
+	char buf[2560];
 
 	CTibiaCharacter* self=reader.readSelfCharacter();
 	// make (x,y) relative to the center
@@ -653,7 +653,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 
 	if (x<-8||x>9||y<-6||y>7) outOfRange=1;
 	if (!outOfRange)
-	{		
+	{
 		char subbuf[256];
 		int count=reader.mapGetPointItemsCount(point(x,y,0));
 		int pos=0;
@@ -661,7 +661,7 @@ void CToolMapShow::showTileDetails(int x, int y)
 		
 		sprintf(buf,"Tile info: %d [x=%d y=%d]",tibiaMap.getPointSpeed(self->x+x,self->y+y,self->z),x,y);
 		for (pos=0;pos<count;pos++)
-		{			
+		{
 			sprintf(subbuf," id=%d[%d:%d,%d]",reader.mapGetPointStackIndex(point(x,y,0),pos),reader.mapGetPointItemId(point(x,y,0),pos),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,1),reader.mapGetPointItemExtraInfo(point(x,y,0),pos,2));
 			strcat(buf,subbuf);
 		}
@@ -674,8 +674,8 @@ void CToolMapShow::showTileDetails(int x, int y)
 	
 }
 
-void CToolMapShow::setTileDetails(int x, int y, int setOption) {		
-	try {	
+void CToolMapShow::setTileDetails(int x, int y, int setOption) {
+	try {
 	}
 	catch (...) {
 		AfxMessageBox("Failed During setTileDetails");

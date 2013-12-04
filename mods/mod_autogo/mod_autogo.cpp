@@ -127,15 +127,15 @@ void actionTerminate(){
 
 int actionShutdownSystem(){
 	masterDebug("actionShutdownSystem");
-	HANDLE hToken; 
-	TOKEN_PRIVILEGES tkp; 
+	HANDLE hToken;
+	TOKEN_PRIVILEGES tkp;
  
 	//T4: Privilages are needed for XP & 2000
     if (OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES|TOKEN_QUERY, &hToken)){
-        LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid); 
+        LookupPrivilegeValue(NULL, SE_SHUTDOWN_NAME, &tkp.Privileges[0].Luid);
 		
-        tkp.PrivilegeCount = 1; 
-        tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED; 
+        tkp.PrivilegeCount = 1;
+        tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
         if(AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES)NULL, 0)){
 			ExitWindowsEx(EWX_SHUTDOWN|EWX_POWEROFF|EWX_FORCEIFHUNG,0);
@@ -265,17 +265,17 @@ CString* alarmStatus(CString alarm) {
 
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 	static extra = 0;
-	BITMAP bmp; 
-	PBITMAPINFO pbmi; 
-	WORD cClrBits; 
-	HANDLE hf; // file handle 
-	BITMAPFILEHEADER hdr; // bitmap file-header 
-	PBITMAPINFOHEADER pbih; // bitmap info-header 
-	LPBYTE lpBits; // memory pointer 
-	DWORD dwTotal; // total count of bytes 
-	DWORD cb; // incremental count of bytes 
-	BYTE *hp; // byte pointer 
-	DWORD dwTmp; 
+	BITMAP bmp;
+	PBITMAPINFO pbmi;
+	WORD cClrBits;
+	HANDLE hf; // file handle
+	BITMAPFILEHEADER hdr; // bitmap file-header
+	PBITMAPINFOHEADER pbih; // bitmap info-header
+	LPBYTE lpBits; // memory pointer
+	DWORD dwTotal; // total count of bytes
+	DWORD cb; // incremental count of bytes
+	BYTE *hp; // byte pointer
+	DWORD dwTmp;
 	
 	// create the bitmapinfo header information
 	
@@ -284,48 +284,48 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 		return;
 	}
 	
-	// Convert the color format to a count of bits. 
-	cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel); 
-	if (cClrBits == 1) 
-		cClrBits = 1; 
-	else if (cClrBits <= 4) 
-		cClrBits = 4; 
-	else if (cClrBits <= 8) 
-		cClrBits = 8; 
-	else if (cClrBits <= 16) 
-		cClrBits = 16; 
-	else if (cClrBits <= 24) 
-		cClrBits = 24; 
-	else cClrBits = 32; 
+	// Convert the color format to a count of bits.
+	cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
+	if (cClrBits == 1)
+		cClrBits = 1;
+	else if (cClrBits <= 4)
+		cClrBits = 4;
+	else if (cClrBits <= 8)
+		cClrBits = 8;
+	else if (cClrBits <= 16)
+		cClrBits = 16;
+	else if (cClrBits <= 24)
+		cClrBits = 24;
+	else cClrBits = 32;
 	// Allocate memory for the BITMAPINFO structure.
-	if (cClrBits != 24) 
-		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, 
-		sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<< cClrBits)); 
-	else 
-		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER)); 
+	if (cClrBits != 24)
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
+		sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<< cClrBits));
+	else
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER));
 	
-	// Initialize the fields in the BITMAPINFO structure. 
+	// Initialize the fields in the BITMAPINFO structure.
 	
-	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER); 
-	pbmi->bmiHeader.biWidth = bmp.bmWidth; 
-	pbmi->bmiHeader.biHeight = bmp.bmHeight; 
-	pbmi->bmiHeader.biPlanes = bmp.bmPlanes; 
-	pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel; 
-	if (cClrBits < 24) 
-		pbmi->bmiHeader.biClrUsed = (1<<cClrBits); 
+	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	pbmi->bmiHeader.biWidth = bmp.bmWidth;
+	pbmi->bmiHeader.biHeight = bmp.bmHeight;
+	pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
+	pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel;
+	if (cClrBits < 24)
+		pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
 	
-	// If the bitmap is not compressed, set the BI_RGB flag. 
-	pbmi->bmiHeader.biCompression = BI_RGB; 
+	// If the bitmap is not compressed, set the BI_RGB flag.
+	pbmi->bmiHeader.biCompression = BI_RGB;
 	
-	// Compute the number of bytes in the array of color 
-	// indices and store the result in biSizeImage. 
-	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) /8 * pbmi->bmiHeader.biHeight * cClrBits; 
-	// Set biClrImportant to 0, indicating that all of the 
-	// device colors are important. 
-	pbmi->bmiHeader.biClrImportant = 0; 
+	// Compute the number of bytes in the array of color
+	// indices and store the result in biSizeImage.
+	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) /8 * pbmi->bmiHeader.biHeight * cClrBits;
+	// Set biClrImportant to 0, indicating that all of the
+	// device colors are important.
+	pbmi->bmiHeader.biClrImportant = 0;
 	
 	// now open file and save the data
-	pbih = (PBITMAPINFOHEADER) pbmi; 
+	pbih = (PBITMAPINFOHEADER) pbmi;
 	lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
 	
 	if (!lpBits) {
@@ -333,72 +333,72 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 		return;
 	}
 	
-	// Retrieve the color table (RGBQUAD array) and the bits 
-	if (!GetDIBits(hDC, HBITMAP(bitmap), 0, (WORD) pbih->biHeight, lpBits, pbmi, 
+	// Retrieve the color table (RGBQUAD array) and the bits
+	if (!GetDIBits(hDC, HBITMAP(bitmap), 0, (WORD) pbih->biHeight, lpBits, pbmi,
 		DIB_RGB_COLORS)) {
 		AfxMessageBox("writeBMP::GetDIB error");
 		return;
 	}
 	
-	// Create the .BMP file. 
-	hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0, 
-		NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 
+	// Create the .BMP file.
+	hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0,
+		NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL,
 		(HANDLE) NULL);
 	if (hf == INVALID_HANDLE_VALUE) {
 		CString postfix;
 		postfix.Format("%d.bmp", extra++);
 		filename.Replace(".bmp", postfix);
-		hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0, 
-			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, 
-			(HANDLE) NULL); 
+		hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0,
+			NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL,
+			(HANDLE) NULL);
 		if (hf == INVALID_HANDLE_VALUE) {
 			AfxMessageBox("Could not create file for writing");
 			return;
 		}
 	}
-	hdr.bfType = 0x4d42; // 0x42 = "B" 0x4d = "M" 
-	// Compute the size of the entire file. 
-	hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) + 
-		pbih->biSize + pbih->biClrUsed 
-		* sizeof(RGBQUAD) + pbih->biSizeImage); 
-	hdr.bfReserved1 = 0; 
-	hdr.bfReserved2 = 0; 
+	hdr.bfType = 0x4d42; // 0x42 = "B" 0x4d = "M"
+	// Compute the size of the entire file.
+	hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) +
+		pbih->biSize + pbih->biClrUsed
+		* sizeof(RGBQUAD) + pbih->biSizeImage);
+	hdr.bfReserved1 = 0;
+	hdr.bfReserved2 = 0;
 	
-	// Compute the offset to the array of color indices. 
-	hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) + 
-		pbih->biSize + pbih->biClrUsed 
-		* sizeof (RGBQUAD); 
+	// Compute the offset to the array of color indices.
+	hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) +
+		pbih->biSize + pbih->biClrUsed
+		* sizeof (RGBQUAD);
 	
-	// Copy the BITMAPFILEHEADER into the .BMP file. 
-	if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER), 
+	// Copy the BITMAPFILEHEADER into the .BMP file.
+	if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
 		(LPDWORD) &dwTmp, NULL)) {
 		AfxMessageBox("Could not write in to file");
 		return;
 	}
 	
-	// Copy the BITMAPINFOHEADER and RGBQUAD array into the file. 
-	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER) 
-		+ pbih->biClrUsed * sizeof (RGBQUAD), 
+	// Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
+	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
+		+ pbih->biClrUsed * sizeof (RGBQUAD),
 		(LPDWORD) &dwTmp, ( NULL))){
 		AfxMessageBox("Could not write in to file");
 		return;
-	}	
+	}
 	
-	// Copy the array of color indices into the .BMP file. 
-	dwTotal = cb = pbih->biSizeImage; 
-	hp = lpBits; 
+	// Copy the array of color indices into the .BMP file.
+	dwTotal = cb = pbih->biSizeImage;
+	hp = lpBits;
 	if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL)) {
 		AfxMessageBox("Could not write in to file");
 		return;
 	}
 	
-	// Close the .BMP file. 
+	// Close the .BMP file.
 	if (!CloseHandle(hf)){
 		AfxMessageBox("Could not close file");
 		return;
 	}
 
-	// Free memory. 
+	// Free memory.
 	GlobalFree((HGLOBAL)lpBits);
 }
 
@@ -454,7 +454,7 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		HDC hDDC = GetDC(GetDesktopWindow());
 		HDC hCDC = CreateCompatibleDC(hDDC);
 		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,nWidth,mHeight);
-		SelectObject(hCDC,hBitmap); 
+		SelectObject(hCDC,hBitmap);
 		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,rect.left,rect.top,SRCCOPY);
 		WriteBMPFile(hBitmap, filePath, hCDC);
 		ReleaseDC(GetDesktopWindow(), hDDC);
@@ -542,7 +542,7 @@ int doneAttackingAndLooting(){
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	masterDebug("toolThreadProc");
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -653,7 +653,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 						break;
 					}
-				}// **************************** 
+				}// ****************************
 
 				// Suspend Modules  ************
 				if (alarmItr->getStopModules().size()) {
@@ -711,7 +711,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 						break;
 					}
-				}// **************************** 
+				}// ****************************
 							
 				// Cast spell ******************
 				if (alarmItr->getCastSpell().GetLength()) {
@@ -728,32 +728,32 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					case 0:
 						if (!alarmItr->screenshotsTaken) {
 							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
 					case 1:
 						if (alarmItr->screenshotsTaken < 3 && time(NULL) - timeLastSS >= 1) {
 							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
 					case 2:
 						if (time(NULL) - timeLastSS >= 5) {
 							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
 					case 3:
 						if (time(NULL) - timeLastSS >= 10) {
 							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
-					}				
+					}
 				}// ****************************
 				
 				// Logout **********************
@@ -771,7 +771,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					DWORD threadId;
 					if (alarmItr->screenshotsTaken < 3) {
 						timeLastSS = time(NULL);
-						::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);				
+						::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
 						alarmItr->screenshotsTaken++;
 					}
 					if (alarmItr->screenshotsTaken >= 3) alarmItr->screenshotsTaken = 0;
@@ -787,7 +787,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// *****************************
 
 				//Start and Suspend modules MUST be done in reverse order to before to prevent thread dead-lock
-				// Start Modules *************** 
+				// Start Modules ***************
 				if (alarmItr->getStartModules().size()) {
 					list<CString> temp = alarmItr->getStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
@@ -824,7 +824,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 				}// ****************************
 
-				// Clean up 
+				// Clean up
 				if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
 					statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
 				config->status[0]='\0';
@@ -880,13 +880,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					int pathSize = 0;
 					int path[15];
 					
-					if (abs(self->x-maintainX)>1 || abs(self->y-maintainY)>1 || self->z!=maintainZ) {						
+					if (abs(self->x-maintainX)>1 || abs(self->y-maintainY)>1 || self->z!=maintainZ) {
 						if (shouldKeepWalking()) {
 							// proceed with path searching
 							delete self;
 							self=reader.readSelfCharacter();
 							CModuleUtil::findPathOnMap(self->x, self->y, self->z, maintainX, maintainY, maintainZ, 0, path, 1);
-							for (; pathSize < 15 && path[pathSize]; pathSize++);										
+							for (; pathSize < 15 && path[pathSize]; pathSize++);
 							if (pathSize){
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 							}else if(self->z==maintainZ && abs(self->x-maintainX)<50 && abs(self->y-maintainY)<50) {
@@ -906,7 +906,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					const char* var=reader.getGlobalVariable("autolooterTm");
 
 
-					if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {						
+					if (abs(self->x-config->actX)>1 || abs(self->y-config->actY)>1 || self->z!=config->actZ) {
 						if (shouldKeepWalking()){
 							// proceed with path searching
 							delete self;
@@ -943,12 +943,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					int path[15];
 					
 					if (abs(self->x-config->runawayX)>1 || abs(self->y-config->runawayY)>1 || self->z!=config->runawayZ) {
-						// proceed with path searching									
+						// proceed with path searching
 						if (shouldKeepWalking()){
 							delete self;
 							self=reader.readSelfCharacter();
 							CModuleUtil::findPathOnMap(self->x, self->y, self->z, config->runawayX, config->runawayY, config->runawayZ, 0, path, 1);
-							for (; pathSize < 15 && path[pathSize]; pathSize++);										
+							for (; pathSize < 15 && path[pathSize]; pathSize++);
 							if (pathSize){
 								CModuleUtil::executeWalk(self->x,self->y,self->z,path);
 							}else if(!sentMessagePathnotfound){
@@ -962,7 +962,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 						}
 					break;
-				case 4: {// Depot (Reasoned as, the safest position [because you are protected from attack])  
+				case 4: {// Depot (Reasoned as, the safest position [because you are protected from attack])
 					int pathSize = 0;
 					int path[15];
 					struct point p = CModuleUtil::findPathOnMap(self->x,self->y,self->z,0,0,0,301,path);
@@ -1043,7 +1043,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 		}// ****************************
 
-		// Clean up 
+		// Clean up
 		if (statusBuf.Find(alarmItr->getDescriptor()) > 0)
 			statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
 		config->status[0]='\0';
@@ -1079,7 +1079,7 @@ CMod_autogoApp::CMod_autogoApp() {
 CMod_autogoApp::~CMod_autogoApp() {
 	if (m_configDialog)
 		delete m_configDialog;
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_autogoApp::getName() {
@@ -1090,7 +1090,7 @@ int CMod_autogoApp::isStarted() {
 	if (!m_started) {
 		// if not started then regularly consume 1003 messages from the queue
 		CIPCBackPipeProxy backPipe;
-		struct ipcMessage mess;	
+		struct ipcMessage mess;
 
 		backPipe.readFromPipe(&mess,1003);
 	}
@@ -1108,7 +1108,7 @@ void CMod_autogoApp::start() {
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle = ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle = ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -1122,10 +1122,10 @@ void CMod_autogoApp::stop() {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_autogoApp::showConfigDialog() {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog) {
 		m_configDialog = new CConfigDialog(this);
@@ -1155,20 +1155,20 @@ void CMod_autogoApp::controlsToConfig() {
 
 
 void CMod_autogoApp::disableControls() {
-	if (m_configDialog) 
+	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
 void CMod_autogoApp::enableControls() {
-	if (m_configDialog) 
+	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-char *CMod_autogoApp::getVersion() {	
+char *CMod_autogoApp::getVersion() {
 	return "4.11";
 }
 
-int CMod_autogoApp::validateConfig(int showAlerts) {	
+int CMod_autogoApp::validateConfig(int showAlerts) {
 	return 1;
 }
 
@@ -1288,10 +1288,10 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"modPriority")) strncpy(buf,m_configData->modPriorityStr,2);
 	if (!strcmp(paramName,"whiteList/List")){
 		if (currentPos<100){
-			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){				
+			if (IsCharAlphaNumeric(m_configData->whiteList[currentPos][0])){
 				lstrcpyn(buf,m_configData->whiteList[currentPos++],32);
 			}
-		}		
+		}
 	}
 	if (!strcmp(paramName,"alarmList")) {
 		if (currentAlarmPos == m_configData->alarmList.end())
@@ -1386,7 +1386,7 @@ void CMod_autogoApp::resetMultiParamAccess(char *paramName) {
 void CMod_autogoApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

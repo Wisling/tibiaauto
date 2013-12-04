@@ -52,7 +52,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTest();
 	afx_msg void OnTest2();
-	afx_msg void OnScan();	
+	afx_msg void OnScan();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

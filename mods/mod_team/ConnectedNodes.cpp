@@ -52,8 +52,8 @@ void CConnectedNodes::setMasterNode(char *charName)
 }
 
 int CConnectedNodes::isCharConnected(char *charName)
-{	
-	int i;	
+{
+	int i;
 	for (i=0;i<MAX_CONNECTED_NODES;i++)
 	{
 		if (!strcmp(connectedNodes[i].charName,charName)&&connectedNodes[i].connected)
@@ -86,7 +86,7 @@ int CConnectedNodes::isConnected()
 
 void CConnectedNodes::refreshNodeInfo(char *charName, int hp, int mana, int maxHp, int maxMana, int x, int y, int z, int isSlave, int distance)
 {
-	int nodeNr=findNodeForChar(charName);	
+	int nodeNr=findNodeForChar(charName);
 
 	if (connectedNodes[nodeNr].connected&&connectedNodes[nodeNr].distance<distance)
 	{
@@ -151,8 +151,8 @@ int CConnectedNodes::shouldAcceptMessage(char *charName)
 {
 	char lowerCharName[33];
 	char lowerCompareNode[33];
-	int i;	
-	for (i=0;i<33;i++) 
+	int i;
+	for (i=0;i<33;i++)
 	{
 		lowerCharName[i]=tolower(charName[i]);
 		lowerCompareNode[i]=tolower(currentMasterNode[i]);
@@ -160,16 +160,16 @@ int CConnectedNodes::shouldAcceptMessage(char *charName)
 	if (!strcmp(lowerCharName,lowerCompareNode)) return 1;
 	
 	for (i=0;i<MAX_CONNECTED_NODES;i++)
-	{		
+	{
 		if (connectedNodes[i].connected&&connectedNodes[i].isSlave)
 		{
 			int len=strlen(connectedNodes[i].charName);
 			int j;
 			for (j=0;j<len;j++)
-			{				
+			{
 				lowerCompareNode[j]=tolower(connectedNodes[i].charName[j]);
 			}
-			if (!strcmp(lowerCharName,lowerCompareNode)) return 1;			
+			if (!strcmp(lowerCharName,lowerCompareNode)) return 1;
 		}
 	}
 	return 0;

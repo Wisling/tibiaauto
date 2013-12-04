@@ -54,7 +54,7 @@ class creatureData
 {
 public:
 	int tm;
-	int tibiaId;	
+	int tibiaId;
 	creatureData()
 	{
 		clear();
@@ -69,7 +69,7 @@ public:
 		tm=time(NULL);
 		tibiaId=0;
 	}
-	operator=(const creatureData p1) 
+	operator=(const creatureData p1)
 	{
 		tm=p1.tm;
 		tibiaId=p1.tibiaId;
@@ -306,7 +306,7 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 		}
 
 	}else if (data && !strcmpi(tagName,"type")){
-		Creature_TypeToText(data->type,svalue);	
+		Creature_TypeToText(data->type,svalue);
 	}else if (!strcmpi(tagName,"relz")){
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
@@ -338,7 +338,7 @@ void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCha
 		sprintf(svalue,"%d",data->level);
 
 	}else if (!strcmpi(tagName,"voc")){
-		Player_VocID2Vocation(data->vocId,svalue,1);				
+		Player_VocID2Vocation(data->vocId,svalue,1);
 
 	}else if (!strcmpi(tagName,"vocation")){
 		Player_VocID2Vocation(data->vocId,svalue,0);
@@ -685,7 +685,7 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		sprintf(crStatCreature,"<none>");
 		
 		
-		char **crList = cReader.findCreatureStatInArea(self->x,self->y,self->z,config->rangeXY,config->rangeZ);			
+		char **crList = cReader.findCreatureStatInArea(self->x,self->y,self->z,config->rangeXY,config->rangeZ);
 		
 		int pos;
 		for (pos=0;crList[pos];pos++)
@@ -722,7 +722,7 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		sprintf(crStatCreature,"<none>");
 		
 		
-		char **crList = cReader.findCreatureStatInArea(self->x,self->y,self->z,config->rangeXY,config->rangeZ);			
+		char **crList = cReader.findCreatureStatInArea(self->x,self->y,self->z,config->rangeXY,config->rangeZ);
 		
 		int pos;
 		for (pos=0;crList[pos];pos++)
@@ -843,32 +843,32 @@ int Player_CalcHp(int vocId, int lvl){
 	return 145+lvl*5;
 }
 
-void CreatureList_Init(){   
+void CreatureList_Init(){
 	
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 
-	char pathBuf[2048];	
+	char pathBuf[2048];
 	
 	
 	
     XMLPlatformUtils::Initialize();
     XercesDOMParser *parser = new XercesDOMParser();
-    try{   
-        int itemNr,rootNr;       
+    try{
+        int itemNr,rootNr;
 
         monstersCount=0;
                
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-creatures.xml",installPath);
         parser->parse(pathBuf);
        
-        DOMNode  *doc = parser->getDocument();       
+        DOMNode  *doc = parser->getDocument();
         for (rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
-        {           
+        {
             DOMNode *root = doc->getChildNodes()->item(rootNr);
                
             if (wcscmp(root->getNodeName(),_L("creatures-definitions")))
-                continue;                              
+                continue;
             for (itemNr=0;itemNr<root->getChildNodes()->getLength();itemNr++)
             {
                 int attrNr;
@@ -952,7 +952,7 @@ void CreatureList_Init(){
 						objectDescription=CUtil::wc2c(attrNode->getNodeValue());
 
 					}
-                }                       
+                }
                 if (!objectName||!strlen(objectName)){
 					if (objectDescription)
 						free(objectDescription);
@@ -981,7 +981,7 @@ void CreatureList_Init(){
 
 				free(objectName);
             }
-        }       
+        }
     } catch (...)
     {
         AfxMessageBox("Unable to load creatures definitions!");
@@ -1070,15 +1070,15 @@ void ReadPipeInfo(){
 	CPackSenderProxy sender;
 	CRegexpProxy regexpProxy;
 	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;	
+	struct ipcMessage mess;
 
-	while (backPipe.readFromPipe(&mess,1002)){			
+	while (backPipe.readFromPipe(&mess,1002)){
 		int len;
 		char msgBuf[16384];
 				
 		memset(msgBuf,0,16384);
-		memcpy(&len,mess.payload,sizeof(int));						
-		memcpy(msgBuf,mess.payload+4,len);						
+		memcpy(&len,mess.payload,sizeof(int));
+		memcpy(msgBuf,mess.payload+4,len);
 		
 		// parse 'see' info'
 		regex_t preg;
@@ -1091,7 +1091,7 @@ void ReadPipeInfo(){
 		if (!regexpProxy.regcomp(&preg,"You see ([a-z' -]+)..Level ([0-9]+).. (he|she) (is an?|has) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(s?he is ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?",REG_EXTENDED|REG_ICASE)){
 			if (!regexpProxy.regexec(&preg,msgBuf,20,pmatch,0)){
 				//T4: This is a player
-				char resNick[128]; 
+				char resNick[128];
 				char resLvl[128];
 				char resVoc[128];
 				char resGuildName[128];
@@ -1174,7 +1174,7 @@ void ReadPipeInfo(){
 								//sprintf(resNick,"Registered Monsters: %d",monstersCount);
 								//sender.sendTAMessage(resNick);
 							}
-							regexpProxy.regfree(&preg2);									
+							regexpProxy.regfree(&preg2);
 						}
 					}
 					regexpProxy.regfree(&preg3);
@@ -1183,7 +1183,7 @@ void ReadPipeInfo(){
 			regexpProxy.regfree(&preg);
 		}
 		
-	}	
+	}
 }
 
 int PlayerInfo_Init(){
@@ -1231,7 +1231,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{			
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -1275,7 +1275,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	
 	
 	while (!toolThreadShouldStop)
-	{			
+	{
 		Sleep(500);
 
 		//T4: Parse info messages
@@ -1304,14 +1304,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// if not we refresh data about it every 30 seconds
 					creatureData crData = crMap[creatureKey(ch->tibiaId)];
 					if (!crData.tibiaId || (crData.tibiaId&&curTime-crData.tm>30))
-					{										
+					{
 						char installPath[1024];
 						CModuleUtil::getInstallPath(installPath);
 						char pathBuf[2048];
 						sprintf(pathBuf,"%s\\tibiaauto-stats-creatures.txt",installPath);
 						FILE *f = fopen(pathBuf,"a+");
-						if (f) 
-						{	
+						if (f)
+						{
 							char statChName[128];
 							int i,len;
 							for (i=0,strcpy(statChName,ch->name),len=strlen(statChName);i<len;i++)
@@ -1491,10 +1491,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 // CMod_creatureinfoApp construction
 
 CMod_creatureinfoApp::CMod_creatureinfoApp()
-{	
+{
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_creatureinfoApp::~CMod_creatureinfoApp()
@@ -1502,8 +1502,8 @@ CMod_creatureinfoApp::~CMod_creatureinfoApp()
 	if (m_configDialog)
 	{
 		delete m_configDialog;
-	}	
-	delete m_configData;	
+	}
+	delete m_configData;
 }
 
 char * CMod_creatureinfoApp::getName()
@@ -1519,7 +1519,7 @@ int CMod_creatureinfoApp::isStarted()
 
  
 void CMod_creatureinfoApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -1541,12 +1541,12 @@ void CMod_creatureinfoApp::start()
 		fseek(f,0,SEEK_END);
 
 		int flen=ftell(f);
-		fclose(f);		
+		fclose(f);
 		if (flen>1024*500 && m_configDialog)
 		{
 			CSendStats info;
-			info.DoModal();				
-		}		
+			info.DoModal();
+		}
 	}
 
 	//T4: Reset counters
@@ -1555,7 +1555,7 @@ void CMod_creatureinfoApp::start()
 	CreatureList_Init();
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -1571,8 +1571,8 @@ void CMod_creatureinfoApp::stop()
 	{
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
-	}	
-} 
+	}
+}
 
 
 char *CMod_creatureinfoApp::getVersion()
@@ -1582,7 +1582,7 @@ char *CMod_creatureinfoApp::getVersion()
 
 void CMod_creatureinfoApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -1600,7 +1600,7 @@ void CMod_creatureinfoApp::showConfigDialog()
 void CMod_creatureinfoApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -1635,7 +1635,7 @@ void CMod_creatureinfoApp::enableControls()
 
 
 int CMod_creatureinfoApp::validateConfig(int showAlerts)
-{	
+{
 	if (m_configData->rangeXY<0||m_configData->rangeXY>100)
 	{
 		if (showAlerts) AfxMessageBox("RangeXY must be beween 0 and 100!");
@@ -1670,7 +1670,7 @@ void CMod_creatureinfoApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"self/tray"))	lstrcpyn(m_configData->selfTray,paramValue,MAX_LINE_LEN);
 	//LOCKED
 	//if (!strcmp(paramName,"allFloorInfo"))		m_configData->allFloorInfo = atoi(paramValue);
-	if (!strcmp(paramName,"addRequest"))		m_configData->addRequest = atoi(paramValue);	
+	if (!strcmp(paramName,"addRequest"))		m_configData->addRequest = atoi(paramValue);
 	if (!strcmp(paramName,"area/collectStats"))		m_configData->collectStats = 1;
 	if (!strcmp(paramName,"area/rangeXY"))		m_configData->rangeXY = atoi(paramValue);
 	if (!strcmp(paramName,"area/rangeZ"))		m_configData->rangeZ = atoi(paramValue);
@@ -1710,10 +1710,10 @@ char *CMod_creatureinfoApp::getConfigParamName(int nr)
 	{
 	case 0: return "player/active";
 	case 1: return "player/first";
-	case 2: return "player/second";	
+	case 2: return "player/second";
 	case 3: return "monster/active";
 	case 4: return "monster/first";
-	case 5: return "monster/second";	
+	case 5: return "monster/second";
 	case 6: return "monster/uniqueMonsterNames";
 	case 7: return "self/active";
 	case 8: return "self/first";
@@ -1734,7 +1734,7 @@ char *CMod_creatureinfoApp::getConfigParamName(int nr)
 void CMod_creatureinfoApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

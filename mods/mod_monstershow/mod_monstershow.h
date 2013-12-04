@@ -34,7 +34,7 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-public:	
+public:
 	void getNewSkin(CSkin);
 	// functions from IModuleInterface
 	char * getName();
@@ -42,8 +42,8 @@ public:
 	char *getVersion();
 	void resetConfig();
 	char *getConfigParamName(int nr);
-private:	
-	CConfigData *m_configData;	
+private:
+	CConfigData *m_configData;
 	CToolMonsterShow *m_infoDialog;
 };
 

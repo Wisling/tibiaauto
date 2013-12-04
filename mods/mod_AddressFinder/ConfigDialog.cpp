@@ -123,13 +123,13 @@ void CConfigDialog::OnClose() {
 void CConfigDialog::OnEnable() {
 	if (m_enable.GetCheck()) {
 		m_app->controlsToConfig();
-		if (m_app->validateConfig(1))			
+		if (m_app->validateConfig(1))
 			m_app->start();
 		else
 			m_enable.SetCheck(0);
-	} 
+	}
 	else
-		m_app->stop(); 
+		m_app->stop();
 }
 
 void CConfigDialog::disableControls() {
@@ -149,7 +149,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	sprintf(buf, "0x%x", configData->experienceAddress); m_experienceAddress.SetWindowText(buf);
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {	
+CConfigData * CConfigDialog::controlsToConfig() {
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 	m_experience.GetWindowText(buf,127);newConfigData->experience=atoi(buf);
@@ -185,8 +185,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 		sprintf(buf, "%d", reader.getMemIntValue(m_addressFinder.addresses.fishSkillAddress));
 		m_fishSkill.SetWindowText(buf);
 		
-	SetTimer(nIDEvent, 500, NULL);	
-	}	
+	SetTimer(nIDEvent, 500, NULL);
+	}
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -227,7 +227,7 @@ BOOL CConfigDialog::OnInitDialog() {
 	m_addressFinder.addresses.battleListMinAddress = m_addressFinder.addresses.flagsAddress + 212;
 	m_addressFinder.addresses.firstCreatureAddress = m_addressFinder.addresses.flagsAddress + 216;
 
-	SetTimer(1001,250,NULL);	
+	SetTimer(1001,250,NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -242,7 +242,7 @@ void CConfigDialog::activateEnableButton(int enable) {
 }
 
 
-void CConfigDialog::OnBeginOutput() 
+void CConfigDialog::OnBeginOutput()
 {
 	CMemReaderProxy reader;
 	char buf[128];
@@ -312,7 +312,7 @@ void CConfigDialog::OnCreateSearchString()
 		int lastfile=1;
 		int ver=0;
 		while(lastfile)
-		{									
+		{
 			sprintf(fname,"%s%s",filepath,data.cFileName);
 			FILE* f = fopen(fname,"rb");
 			if (f){

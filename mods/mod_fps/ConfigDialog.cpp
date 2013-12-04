@@ -60,29 +60,29 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -137,11 +137,11 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1000)
 	{
-		CMemReaderProxy reader;	
+		CMemReaderProxy reader;
 		CTibiaItemProxy itemProxy;
 		//CPackSenderProxy sender;
 		
@@ -194,7 +194,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -213,7 +213,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -223,15 +223,15 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::OnFpstoolInactive() 
+void CConfigDialog::OnFpstoolInactive()
 {
 	int val = m_inactive.GetCheck();
 	m_inactiveVal.EnableWindow(val);
 	
 }
 
-void CConfigDialog::OnFpstoolMinimized() 
+void CConfigDialog::OnFpstoolMinimized()
 {
 	int val = m_minimized.GetCheck();
-	m_minimizedVal.EnableWindow(val);	
+	m_minimizedVal.EnableWindow(val);
 }

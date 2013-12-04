@@ -17,7 +17,7 @@ public:
 
 class Socket {
 public:
-	/** constructor for use by creating a class for existing sockets 
+	/** constructor for use by creating a class for existing sockets
 	this expects u to allocate mem for the char* name since this socket is getting
 	created from a predefined thing*/
 	Socket(int socket = -1,  const char* name=NULL, int port=0);

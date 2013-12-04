@@ -61,7 +61,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CKnownInfo message handlers
 
-void CKnownInfo::OnToolcreaturinfoInfoPlayers() 
+void CKnownInfo::OnToolcreaturinfoInfoPlayers()
 {
 	m_monsters.SetCheck(0);
 
@@ -74,11 +74,11 @@ void CKnownInfo::OnToolcreaturinfoInfoPlayers()
 	OnSelendokToolcreaturinfoInfoCombo();
 }
 
-void CKnownInfo::OnToolcreaturinfoInfoMonsters() 
+void CKnownInfo::OnToolcreaturinfoInfoMonsters()
 {
 	m_players.SetCheck(0);
 
-	m_txtLevel.SetWindowText("Exp:");	
+	m_txtLevel.SetWindowText("Exp:");
 	m_txtVoc.SetWindowText("Description:");
 
 	Fill_Monster();
@@ -91,7 +91,7 @@ void CKnownInfo::Fill_Player(){
 	int i;
 
 	m_combo.ResetContent();
-	for (i=0;i<playersCount;i++){		
+	for (i=0;i<playersCount;i++){
 		m_combo.InsertString(i,playersInfo[i].name);
 	}
 }
@@ -100,12 +100,12 @@ void CKnownInfo::Fill_Monster(){
 	int i;
 
 	m_combo.ResetContent();
-	for (i=0;i<monstersCount;i++){		
+	for (i=0;i<monstersCount;i++){
 		m_combo.InsertString(i,monstersInfo[i].name);
 	}
 }
 
-BOOL CKnownInfo::OnInitDialog() 
+BOOL CKnownInfo::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
@@ -116,7 +116,7 @@ BOOL CKnownInfo::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CKnownInfo::OnEditchangeToolcreaturinfoInfoCombo() 
+void CKnownInfo::OnEditchangeToolcreaturinfoInfoCombo()
 {
 //T4: Someone changed Combo to DropList and now my briliant code is useless ;(
 
@@ -175,7 +175,7 @@ void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo() {
 		}
 		m_name.SetWindowText(playersInfo[iSel].name);
 		Creature_TypeToText(playersInfo[iSel].type,buffer);
-		m_type.SetWindowText(buffer);		
+		m_type.SetWindowText(buffer);
 		Player_VocID2Vocation(playersInfo[iSel].vocId,buffer,false);
 		m_voc.SetWindowText(buffer);
 		sprintf(buffer,"%d",playersInfo[iSel].level);

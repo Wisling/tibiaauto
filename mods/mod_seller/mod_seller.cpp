@@ -42,7 +42,7 @@ static char THIS_FILE[] = __FILE__;
 #define NOGO 0
 #define SELLONLY 1
 #define BUYONLY 2
-#define DOBOTH 3 
+#define DOBOTH 3
 
 #define MAX_BUYSELL_ITEMS 100
 
@@ -99,7 +99,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {		
+DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 
@@ -112,7 +112,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	while (!toolThreadShouldStop) {
 /*		for (int i=0;i<MAX_SELLERS;i++) {
 			char buf[2048];
-			sprintf(buf, "Seller: %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d", i, 
+			sprintf(buf, "Seller: %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d\nTrigger: %s %d %d", i,
 				config->sellItem[i].tradeItem[0].itemName, config->sellItem[i].tradeItem[0].quantityBuySell, config->sellItem[i].tradeItem[0].salePrice,
 				config->sellItem[i].tradeItem[1].itemName, config->sellItem[i].tradeItem[1].quantityBuySell, config->sellItem[i].tradeItem[1].salePrice,
 				config->sellItem[i].tradeItem[2].itemName, config->sellItem[i].tradeItem[2].quantityBuySell, config->sellItem[i].tradeItem[2].salePrice,
@@ -125,7 +125,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				config->sellItem[i].tradeItem[9].itemName, config->sellItem[i].tradeItem[9].quantityBuySell, config->sellItem[i].tradeItem[9].salePrice);
 			AfxMessageBox(buf);
 
-			sprintf(buf, "Buyer: %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\n", i, 
+			sprintf(buf, "Buyer: %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\nTrigger: %s %d %d %d\n", i,
 				config->buyItem[i].tradeItem[0].itemName, config->buyItem[i].tradeItem[0].quantityBuySell, config->buyItem[i].tradeItem[0].salePrice, config->buyItem[i].tradeItem[0].triggerQuantity,
 				config->buyItem[i].tradeItem[1].itemName, config->buyItem[i].tradeItem[1].quantityBuySell, config->buyItem[i].tradeItem[1].salePrice, config->buyItem[i].tradeItem[1].triggerQuantity,
 				config->buyItem[i].tradeItem[2].itemName, config->buyItem[i].tradeItem[2].quantityBuySell, config->buyItem[i].tradeItem[2].salePrice, config->buyItem[i].tradeItem[2].triggerQuantity,
@@ -235,13 +235,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 CMod_SellerApp::CMod_SellerApp() {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_SellerApp::~CMod_SellerApp() {
 	if (m_configDialog)
 		delete m_configDialog;
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_SellerApp::getName() {
@@ -252,7 +252,7 @@ int CMod_SellerApp::isStarted() {
 	return m_started;
 }
 
-void CMod_SellerApp::start() {	
+void CMod_SellerApp::start() {
 	superStart();
 	if (m_configDialog) {
 		m_configDialog->disableControls();
@@ -262,7 +262,7 @@ void CMod_SellerApp::start() {
 	DWORD threadId;
 	
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -277,10 +277,10 @@ void CMod_SellerApp::stop() {
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_SellerApp::showConfigDialog() {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_configDialog) {
 		m_configDialog = new CConfigDialog(this);
 		
@@ -294,7 +294,7 @@ void CMod_SellerApp::showConfigDialog() {
 }
 
 void CMod_SellerApp::configToControls() {
-	if (m_configDialog)		
+	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
@@ -491,7 +491,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 // Seller 1
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(buf,"%s",m_configData->sellerList[0].sellerName);
 	if (!strcmp(paramName,"Seller1/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[0].sellerX,m_configData->sellerList[0].sellerY,m_configData->sellerList[0].sellerZ);
-	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {		
+	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[0].tradeItem[currentPos++].itemName);
@@ -503,7 +503,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 				sprintf(buf, "%d", m_configData->sellItem[0].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
-	if (!strcmp(paramName,"Seller1/BuyItems/Name")) {		
+	if (!strcmp(paramName,"Seller1/BuyItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[0].tradeItem[currentPos++].itemName);
@@ -530,7 +530,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 // Seller 2
 	if (!strcmp(paramName,"Seller2/Name")) sprintf(buf,"%s",m_configData->sellerList[1].sellerName);
 	if (!strcmp(paramName,"Seller2/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[1].sellerX,m_configData->sellerList[1].sellerY,m_configData->sellerList[1].sellerZ);
-	if (!strcmp(paramName,"Seller2/SaleItems/Name")) {		
+	if (!strcmp(paramName,"Seller2/SaleItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[1].tradeItem[currentPos++].itemName);
@@ -542,7 +542,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 				sprintf(buf, "%d", m_configData->sellItem[1].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
-	if (!strcmp(paramName,"Seller2/BuyItems/Name")) {		
+	if (!strcmp(paramName,"Seller2/BuyItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[1].tradeItem[currentPos++].itemName);
@@ -569,7 +569,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 // Seller 3
 	if (!strcmp(paramName,"Seller3/Name")) sprintf(buf,"%s",m_configData->sellerList[2].sellerName);
 	if (!strcmp(paramName,"Seller3/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[2].sellerX,m_configData->sellerList[2].sellerY,m_configData->sellerList[2].sellerZ);
-	if (!strcmp(paramName,"Seller3/SaleItems/Name")) {		
+	if (!strcmp(paramName,"Seller3/SaleItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[2].tradeItem[currentPos++].itemName);
@@ -581,7 +581,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 				sprintf(buf, "%d", m_configData->sellItem[2].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
-	if (!strcmp(paramName,"Seller3/BuyItems/Name")) {		
+	if (!strcmp(paramName,"Seller3/BuyItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[2].tradeItem[currentPos++].itemName);
@@ -608,7 +608,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 // Seller 4
 	if (!strcmp(paramName,"Seller4/Name")) sprintf(buf,"%s",m_configData->sellerList[3].sellerName);
 	if (!strcmp(paramName,"Seller4/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[3].sellerX,m_configData->sellerList[3].sellerY,m_configData->sellerList[3].sellerZ);
-	if (!strcmp(paramName,"Seller4/SaleItems/Name")) {		
+	if (!strcmp(paramName,"Seller4/SaleItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[3].tradeItem[currentPos++].itemName);
@@ -620,7 +620,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 				sprintf(buf, "%d", m_configData->sellItem[3].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
-	if (!strcmp(paramName,"Seller4/BuyItems/Name")) {		
+	if (!strcmp(paramName,"Seller4/BuyItems/Name")) {
 		if (currentPos<32) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[3].tradeItem[currentPos++].itemName);
@@ -893,7 +893,7 @@ int sellItems(CConfigData *config, int traderNum) {
 				}
 			}
 			delete cont;
-		}		
+		}
 	}
 	return done;
 }
@@ -922,7 +922,7 @@ int buyItems(CConfigData *config, int traderNum) {
 		//AfxMessageBox(buf);
 		if (objectId)
 			itemCount = countAllItemsOfType(objectId,true);
-		else 
+		else
 			break;
 		goldCount = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
 		goldCount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
@@ -967,7 +967,7 @@ int isCavebotOn() {
 						return 0;
 				}
 			}
-		}while (Module32Next(hSnap,&lpModule));		
+		}while (Module32Next(hSnap,&lpModule));
 		CloseHandle(hSnap);
 	}
 	return -1;
@@ -1013,7 +1013,7 @@ bool shouldGo(CConfigData *config) {
 	int count = 0;
 	bool should = false;
 	for (int i = 0; i < MAX_SELLERS; i++) {
-		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i)) 
+		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i))
 			{delete self; return true;}
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 			{delete self; return true;}
@@ -1053,7 +1053,7 @@ bool canGo(CConfigData *config) {
 
 	int count = 0;
 	for (int i = 0; i < MAX_SELLERS; i++) {
-		//see if there's anything to 
+		//see if there's anything to
 		for (int j = 0; j < 32; j++) {
 			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId) {
@@ -1135,7 +1135,7 @@ int spaceAvailable() {
 		
 		if (cont->flagOnOff && cont->itemsInside < cont->size)
 			hasSpace = 1;
-		delete cont;		
+		delete cont;
 	}
 	return hasSpace;
 }
@@ -1145,7 +1145,7 @@ int spaceAvailable() {
 void CMod_SellerApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

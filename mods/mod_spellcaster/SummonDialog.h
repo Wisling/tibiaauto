@@ -45,7 +45,7 @@ public:
 
 // Implementation
 protected:
-	CImageList m_LargeImg; 
+	CImageList m_LargeImg;
 	// Generated message map functions
 	//{{AFX_MSG(SummonDialog)
 	afx_msg void OnToolSpellcasterSummon();

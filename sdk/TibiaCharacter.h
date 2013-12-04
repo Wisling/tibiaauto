@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CTibiaCharacter  
+class CTibiaCharacter
 {
 public:
 	CTibiaCharacter();
@@ -33,8 +33,8 @@ public:
 	int maxMana;
 	int exp;
 	int lvl;
-	int mlvl;	
-	int mlvlPercLeft;		
+	int mlvl;
+	int mlvlPercLeft;
 	int soulPoints;
 	int skillSword;
 	int skillAxe;

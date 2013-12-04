@@ -87,8 +87,8 @@ private:
 	int threadCount;
 	CToolAutoResponderThreadConfig threadConfig[MAX_THREADS];
 	
-	DOMNode  *doc;	
-	XercesDOMParser *parser;	
+	DOMNode  *doc;
+	XercesDOMParser *parser;
 };
 
 //{{AFX_INSERT_LOCATION}}

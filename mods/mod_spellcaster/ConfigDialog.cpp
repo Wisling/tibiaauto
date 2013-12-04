@@ -42,7 +42,7 @@ CConfigDialog::CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent /*=NULL*/)
 	m_Dialog[4] = new AOEDialog;
 	m_Dialog[5] = new TimedDialog;
 	
-	m_nPageCount = 6;	
+	m_nPageCount = 6;
 }
 
 void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
@@ -80,15 +80,15 @@ void CConfigDialog::OnClose() {
 void CConfigDialog::OnEnable() {
 	if (m_enable.GetCheck()) {
 		m_app->controlsToConfig();
-		if (m_app->validateConfig(1)) {			
+		if (m_app->validateConfig(1)) {
 			m_app->start();
-		} 
+		}
 		else {
 			m_enable.SetCheck(0);
 		}
-	} 
+	}
 	else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -144,7 +144,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {	
+void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -243,6 +243,6 @@ LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp){
 		}
 		
 		return FALSE; //do nothing
-	}	
+	}
 	return MyDialog::WindowProc(msg, wp, lp);
 }

@@ -77,29 +77,29 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -199,7 +199,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	CTibiaItemProxy itemProxy;
 	switch (nIDEvent)
@@ -229,22 +229,22 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					for (j=0;j<m_safe.GetItemCount();j++)
 					{
 						if (int(m_safe.GetItemData(j))==i)
-						{						
-							foundContainer=1;							
+						{
+							foundContainer=1;
 														
 							updateListItem(&m_safe,container,j);
-							// we have found, but refresh is needed							
+							// we have found, but refresh is needed
 						}
-					}				
+					}
 					if (!foundContainer)
 					{
 						int c=m_safe.GetItemCount();
 
 						sprintf(buf,"%d",i+1);
-						m_safe.InsertItem(c,buf);			
+						m_safe.InsertItem(c,buf);
 						m_safe.SetItemData(c,i);
 
-						updateListItem(&m_safe,container,c);						
+						updateListItem(&m_safe,container,c);
 					};
 				};
 				delete container;
@@ -263,7 +263,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					
 					if (!container->flagOnOff)
 					{
-						m_safe.DeleteItem(i);					
+						m_safe.DeleteItem(i);
 						mustRun=1;
 						delete container;
 						break;
@@ -271,12 +271,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					
 					delete container;
 				};
-			}					
+			}
 			
 
 			// now refresh info fields
 			int blanksCount=0;
-			int foodFishCount=0;			
+			int foodFishCount=0;
 			for (i=0;i<memConstData.m_memMaxContainers;i++)
 			{
 				CTibiaContainer *container = reader.readContainer(i);
@@ -297,7 +297,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			sprintf(buf,"Food for: %dh %dmin %ds",fishTimeH,fishTimeMin,fishTimeSec);
 			m_infoFood.SetWindowText(buf);
 
-			m_mana.GetWindowText(buf,127);			
+			m_mana.GetWindowText(buf,127);
 			int blanksTime = int(blanksCount * atoi(buf)*(m_premium.GetCheck()?1:1.5));
 			int blanksTimeH = blanksTime/3600;
 			int blanksTimeMin = (blanksTime/60)%60;
@@ -339,7 +339,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -354,7 +354,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -370,28 +370,28 @@ void CConfigDialog::initialiseContainers()
 	CMemConstData memConstData = reader.getMemConstData();
 	int i;
 	
-	m_safe.InsertColumn(0,"Nr",LVCFMT_LEFT,25);	
+	m_safe.InsertColumn(0,"Nr",LVCFMT_LEFT,25);
 	m_safe.InsertColumn(1,"Name",LVCFMT_LEFT,80);
 	m_safe.InsertColumn(2,"Items",LVCFMT_LEFT,40);
 	m_safe.InsertColumn(3,"Size",LVCFMT_LEFT,40);
 	m_safe.InsertColumn(4,"Blanks",LVCFMT_LEFT,50);
 	
-	m_safe.SetExtendedStyle(m_safe.GetExtendedStyle()|LVS_EX_FULLROWSELECT);	
+	m_safe.SetExtendedStyle(m_safe.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 
 	for (i=0;i<memConstData.m_memMaxContainers;i++)
 	{
 		char buf[256];
-		CTibiaContainer *container = reader.readContainer(i);		
+		CTibiaContainer *container = reader.readContainer(i);
 		
 		if (container->flagOnOff)
 		{
 			int itemNr=m_safe.GetItemCount();
 
 			sprintf(buf,"%d",i+1);
-			m_safe.InsertItem(itemNr,buf);	
+			m_safe.InsertItem(itemNr,buf);
 			m_safe.SetItemData(itemNr,i);
 
-			updateListItem(&m_safe,container,itemNr);												
+			updateListItem(&m_safe,container,itemNr);
 		}
 		
 
@@ -399,12 +399,12 @@ void CConfigDialog::initialiseContainers()
 	}
 	
 
-	m_spells.InsertColumn(0,"Nr",LVCFMT_LEFT,30);	
+	m_spells.InsertColumn(0,"Nr",LVCFMT_LEFT,30);
 	m_spells.InsertColumn(1,"Words",LVCFMT_LEFT,160);
 	m_spells.InsertColumn(2,"SP",LVCFMT_LEFT,35);
 	m_spells.InsertColumn(3,"Mana",LVCFMT_LEFT,50);
 
-	m_spells.SetExtendedStyle(m_spells.GetExtendedStyle()|LVS_EX_FULLROWSELECT);	
+	m_spells.SetExtendedStyle(m_spells.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 
 }
 
@@ -424,11 +424,11 @@ void CConfigDialog::updateListItem(CListCtrl *list, CTibiaContainer *container, 
 
 }
 
-void CConfigDialog::OnDblclkToolRunemakerCont(NMHDR* pNMHDR, LRESULT* pResult) 
+void CConfigDialog::OnDblclkToolRunemakerCont(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	POSITION pos = m_safe.GetFirstSelectedItemPosition();
 	int itemNr;
-	if (pos) 
+	if (pos)
 	{
 		itemNr=m_safe.GetNextSelectedItem(pos);
 
@@ -441,7 +441,7 @@ void CConfigDialog::OnDblclkToolRunemakerCont(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CConfigDialog::OnAddspelltolist() 
+void CConfigDialog::OnAddspelltolist()
 {
 	char buf[1025];
 
@@ -464,7 +464,7 @@ void CConfigDialog::OnAddspelltolist()
 	
 }
 
-void CConfigDialog::OnLoadspellfromlist() 
+void CConfigDialog::OnLoadspellfromlist()
 {
 
 	char buf[1025];
@@ -482,14 +482,14 @@ void CConfigDialog::OnLoadspellfromlist()
 
 }
 
-void CConfigDialog::OnDeletefromlist() 
+void CConfigDialog::OnDeletefromlist()
 {
 	
 	m_spells.DeleteItem(m_spells.GetSelectionMark());
 	
 }
 
-void CConfigDialog::OnMakenow() 
+void CConfigDialog::OnMakenow()
 {
 
 	int enable=m_makeNow.GetCheck();

@@ -238,7 +238,7 @@ void CToolItemConfig::ConfigToControls(){
 		m_foodList.SetItemData(ind,itemProxy.getFoodTimeAtIndex(i));
 	}
 
-	//Create Item Tree 
+	//Create Item Tree
 	m_itemsTree.ModifyStyle(TVS_DISABLEDRAGDROP,TVS_HASLINES | TVS_HASBUTTONS | TVS_LINESATROOT | TVS_TRACKSELECT);
 	CTibiaTree* itemsTree=(CTibiaTree*)itemProxy.getItemsTree();
 	DeleteGUITreeItem(&m_itemsTree,TVI_ROOT);
@@ -251,7 +251,7 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 {
 	CTibiaItemProxy itemProxy;
 	itemProxy.refreshItemLists();
-	ConfigToControls();	
+	ConfigToControls();
 }
 
 
@@ -271,7 +271,7 @@ void CToolItemConfig::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_selectedToBranch);
 }
 
-BOOL CToolItemConfig::OnInitDialog() 
+BOOL CToolItemConfig::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -321,7 +321,7 @@ void CToolItemConfig::OnFoodDelete() {
 	m_foodList.SetCurSel(index);
 }
 
-void CToolItemConfig::OnAddItem() 
+void CToolItemConfig::OnAddItem()
 {
 	CancelTwoStepOperations();
 	HTREEITEM item=m_itemsTree.GetSelectedItem();
@@ -442,7 +442,7 @@ void SetParentsCheck(CTreeCtrl* treeCtrl,HTREEITEM treeItem,int check){
 	}
 }
 
-void CToolItemConfig::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult) 
+void CToolItemConfig::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	//If tree is clicked, check the location of the click and see if it was on a checkbox
 	POINT pt;
@@ -480,7 +480,7 @@ void CToolItemConfig::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CToolItemConfig::OnBegindragTree(NMHDR* pNMHDR, LRESULT* pResult) 
+void CToolItemConfig::OnBegindragTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	CancelTwoStepOperations();
 	//Disabled Drag and Drop image as it was problematic
@@ -525,7 +525,7 @@ void CToolItemConfig::OnBegindragTree(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CToolItemConfig::OnMouseMove(UINT nFlags, CPoint point) 
+void CToolItemConfig::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	TVHITTESTINFO tvht;
@@ -614,7 +614,7 @@ HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,
 	return parent;
 }
 
-void CToolItemConfig::OnLButtonUp(UINT nFlags, CPoint point) 
+void CToolItemConfig::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
 	
@@ -655,7 +655,7 @@ void CToolItemConfig::OnLButtonUp(UINT nFlags, CPoint point)
 }
 
 
-void CToolItemConfig::OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult) 
+void CToolItemConfig::OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
 	// TODO: Add your control notification handler code here
@@ -682,7 +682,7 @@ void CToolItemConfig::CancelTwoStepOperations(){
 	}
 }
 
-void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult) 
+void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	TV_KEYDOWN* pTVKeyDown = (TV_KEYDOWN*)pNMHDR;
 	// TODO: Add your control notification handler code here
@@ -795,7 +795,7 @@ void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-void CToolItemConfig::OnHelpInfo() 
+void CToolItemConfig::OnHelpInfo()
 {
 	AfxMessageBox("Currently Implemented Features:\nPress Spacebar to check/uncheck\nUse arrow keys to browse tree\nClick on +- sign for expanding\nDrag and drop to move items and branches.\nButton actions are performed on selected items\nCopying, cutting and pasting items\n(Clicking in bottom whitespace clears selection/selects root)");
 
@@ -839,7 +839,7 @@ void CToolItemConfig::OnSelectedToBranch()
 	if (parentItem==NULL) parentItem=TVI_ROOT;
 	HTREEITEM destItem = m_itemsTree.InsertItem("New Branch",parentItem, TVI_FIRST);
 
-	addChildrenToTreeItem(&m_itemsTree,TVI_ROOT,destItem); 
+	addChildrenToTreeItem(&m_itemsTree,TVI_ROOT,destItem);
 	SetParentsCheck(&m_itemsTree,destItem,0);
 	m_itemsTree.SetItemState(destItem,TVIS_BOLD,TVIS_BOLD);
 	m_itemsTree.SelectItem(destItem);

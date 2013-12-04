@@ -228,7 +228,7 @@ long AddressFinder::getExpAddress()
 	return expAddress;
 }
 
-bool AddressFinder::getFlagsComp() 
+bool AddressFinder::getFlagsComp()
 {
 	bool result = false;
 	Comparison.clear();

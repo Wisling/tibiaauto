@@ -161,14 +161,14 @@ int tryDrinking(int itemId,int itemType,int drink,int hotkey, int hpBelow,int ma
 }
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop)
-	{			
+	{
 
 		Sleep(100);
 		//Send message if at 10 fails
@@ -211,11 +211,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (drank) RandomVariableHp(config->hpBelowS,MAKE,config);
 		}
 		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowN&&config->drinkHpN)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLife"),0,config->drinkHpN,config->useHotkey, hpBelowN,-1);			
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLife"),0,config->drinkHpN,config->useHotkey, hpBelowN,-1);
 			if (drank) RandomVariableHp(config->hpBelowN,MAKE,config);
 		}
 		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelowH&&config->drinkHpH)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeH"),0,config->drinkHpH,config->useHotkey, hpBelowH,-1);			
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidLifeH"),0,config->drinkHpH,config->useHotkey, hpBelowH,-1);
 			if (drank) RandomVariableHp(config->hpBelowH,MAKE,config);
 		}
 		if (!drank&&(self->hp<self->maxHp&&self->hp<hpBelow&&config->drinkHp)){
@@ -238,7 +238,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (drank) RandomVariableMana(config->manaBelowS,MAKE,config);
 		}
 		if (!drank&&(self->mana<self->maxMana&&self->mana<manaBelowN&&config->drinkManaN)){
-			drank|=tryDrinking(itemProxy.getValueForConst("fluidMana"),0,config->drinkManaN,config->useHotkey, -1, manaBelowN);			
+			drank|=tryDrinking(itemProxy.getValueForConst("fluidMana"),0,config->drinkManaN,config->useHotkey, -1, manaBelowN);
 			if (drank) RandomVariableMana(config->manaBelowN,MAKE,config);
 		}
 		if (!drank&&(self->mana<self->maxMana&&self->mana<manaBelow&&config->drinkMana)){
@@ -277,13 +277,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray);
 					if (item->objectId)
-					{						
+					{
 						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,self->x,self->y,self->z,item->quantity);
 						Sleep(CModuleUtil::randomFormula(config->sleep,200,0));
 						delete item;
 						delete cont;
 						break;
-					}		
+					}
 					delete item;
 				}
 				
@@ -334,7 +334,7 @@ int CMod_fluidApp::isStarted()
 
 
 void CMod_fluidApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -345,7 +345,7 @@ void CMod_fluidApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -362,11 +362,11 @@ void CMod_fluidApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_fluidApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -384,7 +384,7 @@ void CMod_fluidApp::showConfigDialog()
 void CMod_fluidApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -521,7 +521,7 @@ char *CMod_fluidApp::getConfigParamName(int nr)
 	case 2: return "other/dropEmpty";
 	case 3: return "drink/hpBelow";
 	case 4: return "drink/manaBelow";
-	case 5: return "other/sleepAfter";	
+	case 5: return "other/sleepAfter";
 	case 6: return "drink/hpN";
 	case 7: return "drink/hpS";
 	case 8: return "drink/hpG";
@@ -554,7 +554,7 @@ char *CMod_fluidApp::getConfigParamName(int nr)
 void CMod_fluidApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

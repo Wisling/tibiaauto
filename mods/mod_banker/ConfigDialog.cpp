@@ -80,13 +80,13 @@ void CConfigDialog::OnClose() {
 void CConfigDialog::OnEnable() {
 	if (m_enable.GetCheck()) {
 		m_app->controlsToConfig();
-		if (m_app->validateConfig(1))			
+		if (m_app->validateConfig(1))
 			m_app->start();
 		else
 			m_enable.SetCheck(0);
-	} 
+	}
 	else
-		m_app->stop(); 
+		m_app->stop();
 }
 
 void CConfigDialog::disableControls() {
@@ -180,7 +180,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 			break;
 		}
 		SetTimer(1001,250,NULL);
-	}	
+	}
 	CDialog::OnTimer(nIDEvent);
 }
 

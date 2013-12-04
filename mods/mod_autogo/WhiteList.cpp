@@ -59,23 +59,23 @@ void CWhiteList::OnWhitelistMkBlack()
 {
 	if (m_mkblack.GetCheck())
 		m_WhiteListFrame.SetWindowText("Black List");
-	else 
+	else
 		m_WhiteListFrame.SetWindowText("White List");
 	Invalidate();
 	*mkBlack=(m_mkblack.GetCheck()?1:0);
 }
 
-void CWhiteList::OnWhitelistAdd() 
+void CWhiteList::OnWhitelistAdd()
 {
 	char lpBuffer[32];
 	if (m_name.GetWindowText(lpBuffer,32)){
-		m_list.AddString(lpBuffer);		
+		m_list.AddString(lpBuffer);
 		m_name.SetWindowText("");
 	}
 	ListToMem();
 }
 
-void CWhiteList::OnWhitelistDelete() 
+void CWhiteList::OnWhitelistDelete()
 {
 	int iCurSel = m_list.GetCurSel();
 	if (iCurSel > -1){
@@ -112,7 +112,7 @@ void CWhiteList::Mem2List()
 	}
 }
 
-BOOL CWhiteList::OnInitDialog() 
+BOOL CWhiteList::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(	m_delete);
@@ -123,7 +123,7 @@ BOOL CWhiteList::OnInitDialog()
 	m_mkblack.SetCheck(*mkBlack);
 	if (m_mkblack.GetCheck())
 		m_WhiteListFrame.SetWindowText("Black List");
-	else 
+	else
 		m_WhiteListFrame.SetWindowText("White List");
 	Mem2List();
 	

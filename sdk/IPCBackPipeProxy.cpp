@@ -28,8 +28,8 @@ HMODULE CIPCBackPipeProxy::dllModule=NULL;
 
 CIPCBackPipeProxy::CIPCBackPipeProxy()
 {
-	// load module	
-	if (dllModule==NULL)	
+	// load module
+	if (dllModule==NULL)
 	{
 		char installPath[1024];
 		unsigned long installPathLen=1023;
@@ -62,13 +62,13 @@ int CIPCBackPipeProxy::readFromPipe(struct ipcMessage *mess,int expectedType)
 {
 	typedef int (*Proto_fun)(struct ipcMessage *mess,int expectedType);
 	if (dllModule)
-	{			
+	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeReadFromPipe");
 		if (fun)
 		{
 			return fun(mess,expectedType);
 		}
-	} 
+	}
 	return 0;
 }
 
@@ -77,12 +77,12 @@ void CIPCBackPipeProxy::InitialiseIPC()
 {
 	typedef void (*Proto_fun)();
 	if (dllModule)
-	{			
+	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeInitialiseIPC");
 		if (fun)
 		{
 			fun();
 		}
-	} 
+	}
 }
 

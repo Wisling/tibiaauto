@@ -38,10 +38,10 @@ BEGIN_MESSAGE_MAP(CComboBoxSuper, CComboBox)
 END_MESSAGE_MAP()
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
-void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct) 
+void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	if (GetCount() == 0 || lpDrawItemStruct->itemID > GetCount()) return;
 	CRect rect(lpDrawItemStruct->rcItem);
@@ -63,7 +63,7 @@ void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	COLORREF crOldTextColor = dc.GetTextColor();
 	COLORREF crOldBkColor = dc.GetBkColor();
 
-	// If this item is selected, set the background color and the text color to appropriate 
+	// If this item is selected, set the background color and the text color to appropriate
 	// values. Erase the rect by filling it with the background color.
 	if ((lpDrawItemStruct->itemAction | ODA_SELECT) &&
 		(lpDrawItemStruct->itemState & ODS_SELECTED))
@@ -177,7 +177,7 @@ void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetItemBold(int nItemIndex,  BOOL bBold)
@@ -191,7 +191,7 @@ void CComboBoxSuper::SetItemBold(int nItemIndex,  BOOL bBold)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 CString CComboBoxSuper::GetItemText(int nItemIndex,int nColumn)
@@ -215,7 +215,7 @@ CString CComboBoxSuper::GetItemText(int nItemIndex,int nColumn)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetItemImage(int nItemIndex, int nImageIndex)
@@ -229,7 +229,7 @@ void CComboBoxSuper::SetItemImage(int nItemIndex, int nImageIndex)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetItemColor(int nItemIndex, COLORREF rcTextColor)
@@ -243,7 +243,7 @@ void CComboBoxSuper::SetItemColor(int nItemIndex, COLORREF rcTextColor)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetItemText(int nItemIndex, int nColumn, CString str)
@@ -256,7 +256,7 @@ void CComboBoxSuper::SetItemText(int nItemIndex, int nColumn, CString str)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetColumnWidth(int nColumnIndex, int nWidth)
@@ -269,7 +269,7 @@ void CComboBoxSuper::SetColumnWidth(int nColumnIndex, int nWidth)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::OnDeleteItem(int nIDCtl, LPDELETEITEMSTRUCT lpDeleteItemStruct)
@@ -285,7 +285,7 @@ void CComboBoxSuper::OnDeleteItem(int nIDCtl, LPDELETEITEMSTRUCT lpDeleteItemStr
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 CComboBoxSuper::ItemData* CComboBoxSuper::GetOrCreateItemData(int nItemIndex)
@@ -304,7 +304,7 @@ CComboBoxSuper::ItemData* CComboBoxSuper::GetOrCreateItemData(int nItemIndex)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetItemData(int nItemIndex, DWORD dwData)
@@ -317,7 +317,7 @@ void CComboBoxSuper::SetItemData(int nItemIndex, DWORD dwData)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 DWORD CComboBoxSuper::GetItemData(int nItemIndex)
@@ -332,7 +332,7 @@ DWORD CComboBoxSuper::GetItemData(int nItemIndex)
 }
 
 /*********************************************************************************************
- * 
+ *
  * @ChangesHistory
  ********************************************************************************************/
 void CComboBoxSuper::SetColumnCount(int nColumnCount )

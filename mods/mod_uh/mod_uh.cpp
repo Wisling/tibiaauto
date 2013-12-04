@@ -54,7 +54,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -84,7 +84,7 @@ HANDLE toolThreadHandle;
 
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{			
+{
 	CConfigData *config = (CConfigData *)lpParam;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -93,17 +93,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CUIntArray  acceptedItems;
 	int uhFallbackNeeded=0;
 	int grpUhFallbackNeeded=0;
-	int i;	
+	int i;
 
 	while (!toolThreadShouldStop)
-	{			
-		Sleep(200);		
+	{
+		Sleep(200);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 			
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
 		if (self->hp<=config->m_uhBorderline||config->m_hotkeySelf)
-		{	
+		{
 			int uhContainer;
 			
 			acceptedItems.RemoveAll();
@@ -113,7 +113,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 				case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH"));break;
 				case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH"));break;
-				}				
+				}
 			} else {
 				acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
 				acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
@@ -129,7 +129,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CTibiaContainer *cont = reader.readContainer(contNr);
 
 				if (cont->flagOnOff)
-				{		
+				{
 					delete uhItem;
 					uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 					uhContainer = contNr;
@@ -154,17 +154,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					sender.useWithObjectFromContainerOnFloor(
 						uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
-						self->x,self->y,self->z,105);				
+						self->x,self->y,self->z,105);
 				}
 			} else {
 				if (config->m_fallback)
 				{
 					uhFallbackNeeded=1;
 				}
-			}			
+			}
 			delete uhItem;
 		}
-		else 
+		else
 			reader.setGlobalVariable("UH_needed","false");
 
 		
@@ -172,7 +172,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		int crNr;
 		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++)
-		{						
+		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
 			if (ch->tibiaId == 0){
 				delete ch;
@@ -182,7 +182,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				char chName[128];
 				memset(chName,0,128);
-				memcpy(chName,ch->name,strlen(ch->name));												
+				memcpy(chName,ch->name,strlen(ch->name));
 
 				int chToHeal=0;
 				
@@ -193,8 +193,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{
 						
 						chToHeal=1;
-					}										
-				}				
+					}
+				}
 				if (chToHeal&&ch->hpPercLeft<config->m_grpBorderline&&self->z==ch->z)
 				{
 					CTibiaItem *uhItem=new CTibiaItem();
@@ -227,14 +227,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						};
 						
 						delete cont;
-					}										
+					}
 					
 					if (uhItem->objectId)
-					{						
+					{
 						sender.useWithObjectFromContainerOnFloor(
 							uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
-							ch->x,ch->y,ch->z);					
-						Sleep(config->m_sleepAfter);						
+							ch->x,ch->y,ch->z);
+						Sleep(config->m_sleepAfter);
 
 					} else {
 						if (config->m_grpFallback)
@@ -245,9 +245,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 
 			delete ch;
-		}						
+		}
 
-		delete self;		
+		delete self;
 				
 	}
 	reader.setGlobalVariable("UH_needed","false");
@@ -263,7 +263,7 @@ CMod_uhApp::CMod_uhApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_uhApp::~CMod_uhApp()
@@ -272,7 +272,7 @@ CMod_uhApp::~CMod_uhApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_uhApp::getName()
@@ -288,7 +288,7 @@ int CMod_uhApp::isStarted()
 
 
 void CMod_uhApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -299,7 +299,7 @@ void CMod_uhApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -316,11 +316,11 @@ void CMod_uhApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_uhApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -338,7 +338,7 @@ void CMod_uhApp::showConfigDialog()
 void CMod_uhApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -382,28 +382,28 @@ int CMod_uhApp::validateConfig(int showAlerts)
 {
 	if (m_configData)
 	{
-		if (m_configData->m_uhBorderline<0) 
-		{			
+		if (m_configData->m_uhBorderline<0)
+		{
 			if (showAlerts) AfxMessageBox("UH borderline for player must be >= 0!");
 			return 0;
 		}
-		if (m_configData->m_grpBorderline<0) 
+		if (m_configData->m_grpBorderline<0)
 		{
 			if (showAlerts) AfxMessageBox("UH borderline for group must be >= 0!");
 			return 0;
 		}
-		if (m_configData->m_grpBorderline>100) 
+		if (m_configData->m_grpBorderline>100)
 		{
 			if (showAlerts) AfxMessageBox("UH borderline for group must be <= 100!");
 			return 0;
 		}
-		if (m_configData->m_sleepAfter<0) 
+		if (m_configData->m_sleepAfter<0)
 		{
 			if (showAlerts) AfxMessageBox("Sleep after case must be >=0!");
 			return 0;
 		}
 	}
-	return 1;	
+	return 1;
 }
 
 void CMod_uhApp::resetConfig()
@@ -412,16 +412,16 @@ void CMod_uhApp::resetConfig()
 }
 
 void CMod_uhApp::loadConfigParam(char *paramName,char *paramValue)
-{	
+{
 	if (!strcmp(paramName,"self/fallback")) m_configData->m_fallback=atoi(paramValue);
 	if (!strcmp(paramName,"self/hotkey")) m_configData->m_hotkeySelf=atoi(paramValue);
 	if (!strcmp(paramName,"self/runetype")) m_configData->m_runetype=atoi(paramValue);
 	if (!strcmp(paramName,"self/borderline")) m_configData->m_uhBorderline=atoi(paramValue);
 	if (!strcmp(paramName,"grp/fallback")) m_configData->m_grpFallback=atoi(paramValue);
 	if (!strcmp(paramName,"grp/borderline")) m_configData->m_grpBorderline=atoi(paramValue);
-	if (!strcmp(paramName,"grp/runetype")) m_configData->m_grpRunetype=atoi(paramValue);	
-	if (!strcmp(paramName,"other/sleepAfter")) m_configData->m_sleepAfter=atoi(paramValue);	
-	if (!strcmp(paramName,"grp/member")) 
+	if (!strcmp(paramName,"grp/runetype")) m_configData->m_grpRunetype=atoi(paramValue);
+	if (!strcmp(paramName,"other/sleepAfter")) m_configData->m_sleepAfter=atoi(paramValue);
+	if (!strcmp(paramName,"grp/member"))
 	{
 		if (currentMemberPos>900)
 			return;
@@ -429,7 +429,7 @@ void CMod_uhApp::loadConfigParam(char *paramName,char *paramValue)
 
 		strcpy(m_configData->m_grpMemberList[currentMemberPos++],paramValue);
 		
-		m_configData->m_grpMemberCount=currentMemberPos;		
+		m_configData->m_grpMemberCount=currentMemberPos;
 	}
 }
 
@@ -444,15 +444,15 @@ char *CMod_uhApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName,"self/borderline")) sprintf(buf,"%d",m_configData->m_uhBorderline);
 	if (!strcmp(paramName,"grp/fallback")) sprintf(buf,"%d",m_configData->m_grpFallback);
 	if (!strcmp(paramName,"grp/borderline")) sprintf(buf,"%d",m_configData->m_grpBorderline);
-	if (!strcmp(paramName,"grp/runetype")) sprintf(buf,"%d",m_configData->m_grpRunetype);	
+	if (!strcmp(paramName,"grp/runetype")) sprintf(buf,"%d",m_configData->m_grpRunetype);
 	if (!strcmp(paramName,"other/sleepAfter")) sprintf(buf,"%d",m_configData->m_sleepAfter);
-	if (!strcmp(paramName,"grp/member")) 
-	{		
+	if (!strcmp(paramName,"grp/member"))
+	{
 		
 		if (currentMemberPos<m_configData->m_grpMemberCount)
-		{					
-			sprintf(buf,"%s",m_configData->m_grpMemberList[currentMemberPos++]);			
-		}		
+		{
+			sprintf(buf,"%s",m_configData->m_grpMemberList[currentMemberPos++]);
+		}
 	}
 
 	return buf;
@@ -470,7 +470,7 @@ char *CMod_uhApp::getConfigParamName(int nr)
 	case 5: return "grp/borderline";
 	case 6: return "grp/fallback";
 	case 7: return "grp/runetype";
-	case 8: return "grp/member";	
+	case 8: return "grp/member";
 	default:
 		return NULL;
 	}
@@ -490,7 +490,7 @@ void CMod_uhApp::resetMultiParamAccess(char *paramName)
 void CMod_uhApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

@@ -34,7 +34,7 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-public:	
+public:
 	void getNewSkin(CSkin);
 	void stop();
 	void start();
@@ -42,10 +42,10 @@ public:
 	char * getName();
 	int isStarted();
 	void showConfigDialog();
-	void enableControls();	
+	void enableControls();
 	char *getVersion();
-private:	
-	CConfigData *m_configData;	
+private:
+	CConfigData *m_configData;
 	CToolAutoRespond *m_infoDialog;
 	int currentPointNr;
 };

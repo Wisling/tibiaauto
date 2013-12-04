@@ -20,7 +20,7 @@ CAutoResponderParserContext::CAutoResponderParserContext(CListCtrl *actionLog, i
 {
 	memset(channel,0,1024);
 	memset(playerName,0,1024);
-	memset(message,0,1024);	
+	memset(message,0,1024);
 	
 	variableCount=0;
 	variableSize=0;
@@ -80,11 +80,11 @@ void CAutoResponderParserContext::setVariable(char *name, char *value)
 	if (variableCount>=variableSize-2)
 	{
 		variableSize=variableSize*2+2;
-		variableNames=(char **)realloc(variableNames,variableSize*sizeof(char *));		
-		variableValues=(char **)realloc(variableValues,variableSize*sizeof(char *));		
+		variableNames=(char **)realloc(variableNames,variableSize*sizeof(char *));
+		variableValues=(char **)realloc(variableValues,variableSize*sizeof(char *));
 	}
-	variableNames[variableCount]=(char *)malloc(sizeof(char)*MAX_STRING_LEN);	
-	variableValues[variableCount]=(char *)malloc(sizeof(char)*MAX_STRING_LEN);	
+	variableNames[variableCount]=(char *)malloc(sizeof(char)*MAX_STRING_LEN);
+	variableValues[variableCount]=(char *)malloc(sizeof(char)*MAX_STRING_LEN);
 	strcpy(variableNames[variableCount],name);
 	strcpy(variableValues[variableCount],value);
 	variableCount++;
@@ -97,7 +97,7 @@ char * CAutoResponderParserContext::getVariable(char *name)
 	{
 		if (!strcmp(variableNames[i],name))
 		{
-			return variableValues[i];			
+			return variableValues[i];
 		}
 	}
 	return "";

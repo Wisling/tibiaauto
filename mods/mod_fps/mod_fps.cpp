@@ -67,7 +67,7 @@ void SetFPS(double iFps){
 
 	(*fpsVal) = 1000/iFps;
 
-	//T4: Fps value can be set to almost 0 
+	//T4: Fps value can be set to almost 0
 
 	 reader.setMemIntValue(addrFps+88,ifpsVal[0],0);//this address comes from Tibia itself and need not be shifted
 	 reader.setMemIntValue(addrFps+88+4,ifpsVal[1],0);//this address comes from Tibia itself and need not be shifted
@@ -91,7 +91,7 @@ double GetFPS(){
 }
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ){	
+DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 
@@ -102,7 +102,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 
 
 	while (!toolThreadShouldStop)
-	{	
+	{
 		if(config->minimized && (IsIconic(hTibiaWnd) || !IsWindowVisible(hTibiaWnd))){
 			SetFPS(config->minimizedVal);
 		}else if (config->inactive && GetForegroundWindow() != hTibiaWnd){
@@ -128,7 +128,7 @@ Cmod_fpsApp::Cmod_fpsApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 Cmod_fpsApp::~Cmod_fpsApp()
@@ -137,7 +137,7 @@ Cmod_fpsApp::~Cmod_fpsApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * Cmod_fpsApp::getName()
@@ -153,7 +153,7 @@ int Cmod_fpsApp::isStarted()
 
 
 void Cmod_fpsApp::start()
-{	
+{
 	if (m_configDialog)
 	{
 		m_configDialog->disableControls();
@@ -163,7 +163,7 @@ void Cmod_fpsApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -180,11 +180,11 @@ void Cmod_fpsApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void Cmod_fpsApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -202,7 +202,7 @@ void Cmod_fpsApp::showConfigDialog()
 void Cmod_fpsApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -280,7 +280,7 @@ char *Cmod_fpsApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "activeVal";	
+	case 0: return "activeVal";
 	case 1: return "inactive";
 	case 2: return "inactiveVal";
 	case 3: return "minimized";
@@ -293,7 +293,7 @@ char *Cmod_fpsApp::getConfigParamName(int nr)
 void Cmod_fpsApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

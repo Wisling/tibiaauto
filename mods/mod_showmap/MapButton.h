@@ -30,14 +30,14 @@ public:
 	//}}AFX_VIRTUAL
 
 // Implementation
-public:	
+public:
 	virtual ~CMapButton();
 	int m_value;
 
 private:
 	static CMenu * mapActionsMenu;
 	int m_x;
-	int m_y;	
+	int m_y;
 
 	// Generated message map functions
 protected:

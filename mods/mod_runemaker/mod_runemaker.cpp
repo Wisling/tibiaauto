@@ -90,7 +90,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -98,7 +98,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CConfigData *config = (CConfigData *)lpParam;
 
 	while (!toolThreadShouldStop)
-	{			
+	{
 		Sleep(900);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		CTibiaCharacter *myself = reader.readSelfCharacter();
@@ -112,7 +112,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if(config->useSpear){
 					blanksCount+=container->countItemsOfType(itemProxy.getValueForConst("spear"));
 				} else {
-					blanksCount+=container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));					
+					blanksCount+=container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
 				}
 			};
 			delete container;
@@ -146,7 +146,7 @@ CMod_runemakerApp::CMod_runemakerApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_runemakerApp::~CMod_runemakerApp()
@@ -155,7 +155,7 @@ CMod_runemakerApp::~CMod_runemakerApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_runemakerApp::getName()
@@ -171,7 +171,7 @@ int CMod_runemakerApp::isStarted()
 
 
 void CMod_runemakerApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -182,7 +182,7 @@ void CMod_runemakerApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -199,11 +199,11 @@ void CMod_runemakerApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_runemakerApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -221,7 +221,7 @@ void CMod_runemakerApp::showConfigDialog()
 void CMod_runemakerApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -300,7 +300,7 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"randomCast")) m_configData->randomCast=atoi(paramValue);
 	if (!strcmp(paramName,"useSpear")) m_configData->useSpear=atoi(paramValue);
 
-	if (!strcmp(paramName,"spells/spell")) 
+	if (!strcmp(paramName,"spells/spell"))
 	{
 		if (m_currentSpellNr==0)
 		{
@@ -314,10 +314,10 @@ void CMod_runemakerApp::loadConfigParam(char *paramName,char *paramValue)
 			&m_configData->listSpells[m_currentSpellNr].mana,
 			&m_configData->listSpells[m_currentSpellNr].soulPoints,
 			&m_configData->listSpells[m_currentSpellNr].words);
-		m_currentSpellNr++;	
+		m_currentSpellNr++;
 		
 	}
-}	
+}
 
 char *CMod_runemakerApp::saveConfigParam(char *paramName)
 {
@@ -374,7 +374,7 @@ void CMod_runemakerApp::resetMultiParamAccess(char *paramName)
 void CMod_runemakerApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

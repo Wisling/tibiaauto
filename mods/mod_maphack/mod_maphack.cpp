@@ -60,7 +60,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTAMiniMapProxy taMiniMap;
@@ -73,13 +73,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 	sender.enableCName(1);
 	while (!toolThreadShouldStop)
-	{			
+	{
 		iter++;
-		Sleep(200);	
+		Sleep(200);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		
 		if (config->revealNoFish&&iter%4==0)//Checks every 0.8 seconds
-		{			
+		{
 			CTibiaCharacter* self=reader.readSelfCharacter();
 
 			static int lastFishX=0,lastFishY=0,lastFishZ=0;
@@ -199,7 +199,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								mapColour=0; mapSpeed=100; continue;
 							}
 							sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
-							//AfxMessageBox(buf); 
+							//AfxMessageBox(buf);
 							mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
 							mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
 						}
@@ -230,7 +230,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								mapColour=0; mapSpeed=100; continue;
 							}
 							sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
-							//AfxMessageBox(buf); 
+							//AfxMessageBox(buf);
 							mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
 							mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
 						}
@@ -261,7 +261,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								mapColour=0; mapSpeed=100; continue;
 							}
 							sprintf(buf,"Drawing (%d,%d,%d) %d %d",self->x+x,self->y+y,self->z+z,mapColour,mapSpeed);
-							//AfxMessageBox(buf); 
+							//AfxMessageBox(buf);
 							mapArrCol[x-minX][y-minY][z-minZ]=mapColour;
 							mapArrSpd[x-minX][y-minY][z-minZ]=mapSpeed;
 						}
@@ -323,7 +323,7 @@ CMod_maphackApp::CMod_maphackApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_maphackApp::~CMod_maphackApp()
@@ -332,7 +332,7 @@ CMod_maphackApp::~CMod_maphackApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_maphackApp::getName()
@@ -348,7 +348,7 @@ int CMod_maphackApp::isStarted()
 
 
 void CMod_maphackApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -359,7 +359,7 @@ void CMod_maphackApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -376,11 +376,11 @@ void CMod_maphackApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_maphackApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -398,7 +398,7 @@ void CMod_maphackApp::showConfigDialog()
 void CMod_maphackApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -452,7 +452,7 @@ void CMod_maphackApp::resetConfig()
 void CMod_maphackApp::loadConfigParam(char *paramName,char *paramValue)
 {
 	if (!strcmp(paramName,"reveal/noFish")) m_configData->revealNoFish=atoi(paramValue);
-	if (!strcmp(paramName,"reveal/cName")) m_configData->revealCName=atoi(paramValue);	
+	if (!strcmp(paramName,"reveal/cName")) m_configData->revealCName=atoi(paramValue);
 	if (!strcmp(paramName,"reveal/invisible")) m_configData->revealInvisible=atoi(paramValue);
 	if (!strcmp(paramName,"reveal/minimap")) m_configData->minimapResearch=atoi(paramValue);
 	if (!strcmp(paramName,"autoMount")) m_configData->autoMount=atoi(paramValue);
@@ -464,7 +464,7 @@ char *CMod_maphackApp::saveConfigParam(char *paramName)
 	buf[0]=0;
 	
 	if (!strcmp(paramName,"reveal/noFish")) sprintf(buf,"%d",m_configData->revealNoFish);
-	if (!strcmp(paramName,"reveal/cName")) sprintf(buf,"%d",m_configData->revealCName);	
+	if (!strcmp(paramName,"reveal/cName")) sprintf(buf,"%d",m_configData->revealCName);
 	if (!strcmp(paramName,"reveal/invisible")) sprintf(buf,"%d",m_configData->revealInvisible);
 	if (!strcmp(paramName,"reveal/minimap")) sprintf(buf,"%d",m_configData->minimapResearch);
 	if (!strcmp(paramName,"autoMount")) sprintf(buf,"%d",m_configData->autoMount);
@@ -489,7 +489,7 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 void CMod_maphackApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

@@ -52,7 +52,7 @@ extern int toolAutoResponderRunning;
 // CMod_responderApp construction
 
 CMod_responderApp::CMod_responderApp()
-{	
+{
 	m_infoDialog=NULL;
 	currentPointNr=0;
 }
@@ -62,7 +62,7 @@ CMod_responderApp::~CMod_responderApp()
 	if (m_infoDialog){
 		delete m_infoDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_responderApp::getName()
@@ -75,7 +75,7 @@ int CMod_responderApp::isStarted()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CToolAutoRespond();
 		m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 	}
@@ -85,9 +85,9 @@ int CMod_responderApp::isStarted()
 void CMod_responderApp::showConfigDialog()
 {
 	
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CToolAutoRespond();
 		m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 	}
@@ -113,7 +113,7 @@ void CMod_responderApp::start()
 	{
 		if (!m_infoDialog)
 		{
-			AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+			AFX_MANAGE_STATE(AfxGetStaticModuleState());
 			m_infoDialog=new CToolAutoRespond();
 			m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 		}
@@ -132,7 +132,7 @@ void CMod_responderApp::stop()
 void CMod_responderApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_infoDialog){
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();

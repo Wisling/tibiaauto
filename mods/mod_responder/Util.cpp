@@ -48,7 +48,7 @@ char *CUtil::wc2c(const unsigned short *src)
 }
 
 char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
-{	
+{
 	
 	int attrNr;
 	for (attrNr=0;attrNr<node->getAttributes()->getLength();attrNr++)
@@ -58,7 +58,7 @@ char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 		if (!strcmp(attrNameWide,attrName))
 		{
 			free(attrNameWide);
-			return CUtil::wc2c(attrNode->getNodeValue());			
+			return CUtil::wc2c(attrNode->getNodeValue());
 		}
 		free(attrNameWide);
 	}

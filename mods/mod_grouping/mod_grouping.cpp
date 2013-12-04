@@ -55,7 +55,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -84,7 +84,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{			
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -99,7 +99,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	}
 	int movedSomething=0;
 	while (!toolThreadShouldStop)
-	{			
+	{
 		if (!movedSomething) Sleep(CModuleUtil::randomFormula(500,200)); //movedSomething==1 has it's own sleep timer
 		movedSomething=0;
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
@@ -164,7 +164,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 		
 		
-	}	
+	}
 
 	toolThreadShouldStop=0;
 	return 0;
@@ -175,14 +175,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 // CMod_groupingApp construction
 
 CMod_groupingApp::CMod_groupingApp()
-{	
-	m_started=0;	
+{
+	m_started=0;
 }
 
 CMod_groupingApp::~CMod_groupingApp()
 {
 	
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_groupingApp::getName()
@@ -198,12 +198,12 @@ int CMod_groupingApp::isStarted()
 
  
 void CMod_groupingApp::start()
-{	
+{
 	superStart();
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -213,8 +213,8 @@ void CMod_groupingApp::stop()
 	while (toolThreadShouldStop) {
 		Sleep(50);
 	};
-	m_started=0;		
-} 
+	m_started=0;
+}
 
 
 char *CMod_groupingApp::getVersion()

@@ -12,7 +12,7 @@
 
 #include "BtnST.h"
 
-class CSkin  
+class CSkin
 {
 	
 public:

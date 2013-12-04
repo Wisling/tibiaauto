@@ -74,7 +74,7 @@ void StrikeDialog::OnToolSpellcasterStrike() {
 		OnToolSpellcasterKnightStrike();
 		m_manaStrike.EnableWindow(val);
 		m_defaultStrikeSpell.EnableWindow(val);
-		m_strikeSpellHpMin.EnableWindow(val);	
+		m_strikeSpellHpMin.EnableWindow(val);
 }
 
 void StrikeDialog::disableControls() {

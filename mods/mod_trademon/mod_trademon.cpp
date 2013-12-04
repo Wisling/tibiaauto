@@ -60,7 +60,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{			
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -115,7 +115,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 				char *strbuf=(char *)malloc(65536);
 				memset(strbuf,0,65536);
-				int *itemsCount=(int *)malloc(sizeof(int)*65536);			
+				int *itemsCount=(int *)malloc(sizeof(int)*65536);
 				int i;
 
 				memset(itemsCount,0,65536*sizeof(int));
@@ -124,7 +124,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				for (i=0;i<offeredItems;i++)
 				{
 					CTibiaItem *item = reader.getTradeItemPartner(i);
-					itemsCount[item->objectId]+=item->quantity?item->quantity:1;				
+					itemsCount[item->objectId]+=item->quantity?item->quantity:1;
 					delete item;
 				}
 				sprintf(strbuf,"[trade] ");
@@ -138,13 +138,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							strcat(strbuf,", ");
 						strcat(strbuf,buf);
 						strbuf[1000]=0;
-					}				
-				}			
-				sender.sendTAMessage(strbuf);			
+					}
+				}
+				sender.sendTAMessage(strbuf);
 				free(strbuf);
 				free(itemsCount);
 			}
-		}		
+		}
 	}
 	
 	toolThreadShouldStop=0;
@@ -156,10 +156,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 // CMod_trademonApp construction
 
 CMod_trademonApp::CMod_trademonApp()
-{	
+{
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();		
+	m_configData = new CConfigData();
 }
 
 CMod_trademonApp::~CMod_trademonApp()
@@ -167,8 +167,8 @@ CMod_trademonApp::~CMod_trademonApp()
 	if (m_configDialog)
 	{
 		delete m_configDialog;
-	}	
-	delete m_configData;	
+	}
+	delete m_configData;
 }
 
 char * CMod_trademonApp::getName()
@@ -184,7 +184,7 @@ int CMod_trademonApp::isStarted()
 
  
 void CMod_trademonApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -195,7 +195,7 @@ void CMod_trademonApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -212,11 +212,11 @@ void CMod_trademonApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_trademonApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -234,7 +234,7 @@ void CMod_trademonApp::showConfigDialog()
 void CMod_trademonApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -286,24 +286,24 @@ int CMod_trademonApp::validateConfig(int showAlerts)
 				if (showAlerts) AfxMessageBox("You have to select at least one way of showing your message");
 				return 0;
 			}
-			if (m_configData->channel && m_configData->channelInterval<1) 
-			{			
+			if (m_configData->channel && m_configData->channelInterval<1)
+			{
 				if (showAlerts) AfxMessageBox("Channel interval must be >= 1!");
 				return 0;
 			}
-			if (m_configData->yell && m_configData->yellInterval<1) 
+			if (m_configData->yell && m_configData->yellInterval<1)
 			{
 				if (showAlerts) AfxMessageBox("Yell interaval must be >= 1!");
 				return 0;
 			}
-			if (m_configData->say && m_configData->sayInterval<1) 
+			if (m_configData->say && m_configData->sayInterval<1)
 			{
 				if (showAlerts) AfxMessageBox("Say interval must be >= 1!");
 				return 0;
 			}
 		}
 	}
-	return 1;	
+	return 1;
 }
 
 void CMod_trademonApp::resetConfig()
@@ -312,7 +312,7 @@ void CMod_trademonApp::resetConfig()
 }
 
 void CMod_trademonApp::loadConfigParam(char *paramName,char *paramValue)
-{	
+{
 	if (!strcmp(paramName,"tradeTalker")) m_configData->tradeTalk=atoi(paramValue);
 	if (!strcmp(paramName,"message")){ lstrcpyn(m_configData->message,paramValue,255);m_configData->message[255]=0;}
 	if (!strcmp(paramName,"channel")) m_configData->channel=atoi(paramValue);
@@ -354,7 +354,7 @@ char *CMod_trademonApp::getConfigParamName(int nr)
 	case 5: return "yellInterval";
 	case 6: return "say";
 	case 7: return "sayInterval";
-	case 8: return "tradeMon";	
+	case 8: return "tradeMon";
 	default:
 		return NULL;
 	}
@@ -363,7 +363,7 @@ char *CMod_trademonApp::getConfigParamName(int nr)
 void CMod_trademonApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

@@ -78,7 +78,7 @@ public:
 
 
 
-public:	
+public:
 
 	// functions from IModuleInterface
 
@@ -92,7 +92,7 @@ public:
 
 	char *getVersion();
 
-private:	
+private:
 
 	int m_started;
 

@@ -50,7 +50,7 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
-public:		
+public:
 	void getNewSkin(CSkin);
 	void resetMultiParamAccess(char *paramName);
 	int isMultiParam(char *paramName);
@@ -64,13 +64,13 @@ public:
 	void configToControls();
 	void controlsToConfig();
 	void disableControls();
-	void enableControls();		
+	void enableControls();
 	char *getVersion();
 	void resetConfig();
 	void loadConfigParam(char *paramName,char *paramValue);
 	char *saveConfigParam(char *paramName);
 	char *getConfigParamName(int nr);
-private:	
+private:
 	int m_started;
 	int currentPos;
 	CConfigDialog * m_configDialog;

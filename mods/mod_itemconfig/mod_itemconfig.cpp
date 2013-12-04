@@ -52,7 +52,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -77,7 +77,7 @@ END_MESSAGE_MAP()
 // CMod_itemconfigApp construction
 
 CMod_itemconfigApp::CMod_itemconfigApp()
-{	
+{
 	m_infoDialog=NULL;
 }
 
@@ -103,9 +103,9 @@ int CMod_itemconfigApp::isStarted()
 void CMod_itemconfigApp::showConfigDialog()
 {
 	
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CToolItemConfig();
 		m_infoDialog->Create(IDD_TOOL_ITEMCONFIG);
 	}
@@ -125,7 +125,7 @@ char *CMod_itemconfigApp::getVersion()
 void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_infoDialog){
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();

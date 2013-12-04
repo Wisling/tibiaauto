@@ -56,7 +56,7 @@ END_MESSAGE_MAP()
 
 int getNewPeriod(CConfigData *config)
 {
-	return ((rand()%(config->periodTo-config->periodFrom+1))+config->periodFrom);	
+	return ((rand()%(config->periodTo-config->periodFrom+1))+config->periodFrom);
 }
 
 void pickupItemFromFloor(int itemId,int x,int y,int z,int contNr,int slotNr,int qty){
@@ -76,7 +76,7 @@ int toolThreadShouldStop=0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
-{		
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -92,7 +92,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	memset(TIMING_TOTALS,0,100*sizeof(int));
 
 	while (!toolThreadShouldStop)
-	{					
+	{
 		Sleep(200);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 		int beginningS = GetTickCount();
@@ -102,7 +102,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		CUIntArray itemsAccepted;
 
 		if (periodRemaining)
-		{			
+		{
 			periodRemaining--;
 		} else {
 			periodRemaining=getNewPeriod(config);
@@ -145,7 +145,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		delete item;
 
 		// check throwable to restack
-		int throwableItemId=config->throwableType;		
+		int throwableItemId=config->throwableType;
 		if (!config->restackToRight)
 		{
 			item=reader.readItem(memConstData.m_memAddressLeftHand);
@@ -154,7 +154,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 
 		if (throwableItemId&&(item->objectId==0||item->objectId==throwableItemId))
-		{ 
+		{
 			if (item->quantity<=config->throwableAt)
 			{
 				int contNr;
@@ -165,8 +165,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
-					{ 
-						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);					
+					{
+						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);
 						if (itemAccepted->objectId)
 						{
 							if (itemAccepted->quantity<qtyToRestack)
@@ -181,7 +181,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							delete itemAccepted;
 							delete cont;
 							break;
-						}	
+						}
 						delete itemAccepted;
 					}
 					delete cont;
@@ -208,12 +208,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 			if ((offsetX!=-2||offsetY!=-2)&&config->pickupSpears)
 			{
-				int contNr;						
+				int contNr;
 				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff&&cont->itemsInside<cont->size)
-					{	
+					{
 						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,reader.itemOnTopQty(offsetX,offsetY));
 						// reset offsetXY to avoid pickup up same item to hand
 						offsetX=offsetY=-2;
@@ -226,7 +226,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			} // if (offsetX||offsetY)
 
 			if (config->pickupToHand)
-			{				
+			{
 				CTibiaItem *itemLeftHand=reader.readItem(memConstData.m_memAddressLeftHand);
 				CTibiaItem *itemRightHand=reader.readItem(memConstData.m_memAddressRightHand);
 				if ((itemLeftHand->objectId==throwableItemId||(itemLeftHand->objectId==0&&itemRightHand->objectId!=throwableItemId))&&(offsetX!=-2||offsetY!=-2))
@@ -248,7 +248,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x5,0,reader.itemOnTopQty(offsetX,offsetY));
 						offsetX=offsetY=-2;
 					}
-				}	
+				}
 				delete itemLeftHand;
 				delete itemRightHand;
 
@@ -269,7 +269,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->pickupCR&&reader.isItemCovered(1,0,throwableItemId)) offsetX=1,offsetY=0;
 			if (config->pickupBL&&reader.isItemCovered(-1,1,throwableItemId)) offsetX=-1,offsetY=1;
 			if (config->pickupBC&&reader.isItemCovered(0,1,throwableItemId)) offsetX=0,offsetY=1;
-			if (config->pickupBR&&reader.isItemCovered(1,1,throwableItemId)) offsetX=1,offsetY=1;			
+			if (config->pickupBR&&reader.isItemCovered(1,1,throwableItemId)) offsetX=1,offsetY=1;
 
 			if (offsetX!=-2||offsetY!=-2)
 			{
@@ -311,7 +311,7 @@ CMod_restackApp::CMod_restackApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_restackApp::~CMod_restackApp()
@@ -320,7 +320,7 @@ CMod_restackApp::~CMod_restackApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_restackApp::getName()
@@ -336,7 +336,7 @@ int CMod_restackApp::isStarted()
 
 
 void CMod_restackApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -347,7 +347,7 @@ void CMod_restackApp::start()
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -364,11 +364,11 @@ void CMod_restackApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_restackApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -386,7 +386,7 @@ void CMod_restackApp::showConfigDialog()
 void CMod_restackApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -551,7 +551,7 @@ char *CMod_restackApp::getConfigParamName(int nr)
 	case 11: return "pickup/place/CR";
 	case 12: return "pickup/place/BL";
 	case 13: return "pickup/place/BC";
-	case 14: return "pickup/place/BR";	
+	case 14: return "pickup/place/BR";
 	case 15: return "throwable/moveCovering";
 	case 16: return "ammo/restackToRight";
 	case 17: return "pickup/toHand";
@@ -567,7 +567,7 @@ char *CMod_restackApp::getConfigParamName(int nr)
 void CMod_restackApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();

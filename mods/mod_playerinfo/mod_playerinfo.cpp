@@ -51,7 +51,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -81,8 +81,8 @@ END_MESSAGE_MAP()
 // CMod_playerinfoApp construction
 
 CMod_playerinfoApp::CMod_playerinfoApp() {
-	m_infoDialog=NULL;	
-	m_configData = new CConfigData();	
+	m_infoDialog=NULL;
+	m_configData = new CConfigData();
 }
 
 CMod_playerinfoApp::~CMod_playerinfoApp()
@@ -102,9 +102,9 @@ char * CMod_playerinfoApp::getName()
 
 int CMod_playerinfoApp::isStarted()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 	}
@@ -113,12 +113,12 @@ int CMod_playerinfoApp::isStarted()
 
 
 void CMod_playerinfoApp::start()
-{	
+{
 	superStart();
 	// this is here just to force starting counter when the client starts
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog=new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 	}
@@ -126,14 +126,14 @@ void CMod_playerinfoApp::start()
 
 void CMod_playerinfoApp::stop()
 {
-} 
+}
 
 void CMod_playerinfoApp::showConfigDialog()
 {
 	
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
-	{ 
+	{
 		m_infoDialog = new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 		configToControls();
@@ -143,7 +143,7 @@ void CMod_playerinfoApp::showConfigDialog()
 
 
 void CMod_playerinfoApp::configToControls() {
-	if (m_infoDialog)	{		
+	if (m_infoDialog)	{
 		m_infoDialog->configToControls(m_configData);
 	}
 }
@@ -208,7 +208,7 @@ char *CMod_playerinfoApp::getConfigParamName(int nr) {
 
 void* CMod_playerinfoApp::GetPlayerInfo()
 {
-	return &playerInfo;	
+	return &playerInfo;
 }
 
 
@@ -218,7 +218,7 @@ void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
 	
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if(m_infoDialog){
-		m_infoDialog->DoSetButtonSkin();			
+		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();
 	}
 }

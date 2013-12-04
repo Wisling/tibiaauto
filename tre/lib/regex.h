@@ -28,22 +28,22 @@
 #else
 # define __DLL_IMPORT__  __attribute__((dllimport)) extern
 # define __DLL_EXPORT__  __attribute__((dllexport)) extern
-#endif 
+#endif
 
 #if (defined __WIN32__) || (defined _WIN32)
 # if defined BUILD_LIBTRE_DLL || defined TRE_EXPORTS
 #  define LIBTRE_DLL_IMPEXP     __DLL_EXPORT__
 # elif defined(LIBTRE_STATIC)
-#  define LIBTRE_DLL_IMPEXP      
+#  define LIBTRE_DLL_IMPEXP
 # elif defined (USE_LIBTRE_DLL)
 #  define LIBTRE_DLL_IMPEXP     __DLL_IMPORT__
 # elif defined (USE_LIBTRE_STATIC)
-#  define LIBTRE_DLL_IMPEXP      
+#  define LIBTRE_DLL_IMPEXP
 # else /* assume USE_LIBTRE_DLL */
 #  define LIBTRE_DLL_IMPEXP     __DLL_IMPORT__
 # endif
 #else /* __WIN32__ */
-# define LIBTRE_DLL_IMPEXP  
+# define LIBTRE_DLL_IMPEXP
 #endif
 
 #include "tre-config.h"

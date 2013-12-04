@@ -8,7 +8,7 @@
 	#define SOCK_FLAGS ( SO_REUSEADDR | SO_NONBLOCK)
 	//should this be unsigned int?
 	typedef int socklen_t;
-#elif defined (WIN32) 
+#elif defined (WIN32)
 	typedef int FAR socklen_t;
 #elif defined (MACOS)	//	c++ -DMACOS ... defines MACOS on commandline
 	typedef int socklen_t;

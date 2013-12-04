@@ -11,7 +11,7 @@
 
 #define MAX_LINE_LEN		256
 
-class CConfigData  
+class CConfigData
 {
 public:
 	CConfigData();

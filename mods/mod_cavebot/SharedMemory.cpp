@@ -1,14 +1,14 @@
 /********************************************************************************************
 * MOD-NAME      : SharedMemory.cpp
-* LONG-NAME     : 
+* LONG-NAME     :
 *
 * AUTHOR        : Martin Ziacek
-* DEPARTMENT    : 
-* TELEPHONE     : 
+* DEPARTMENT    :
+* TELEPHONE     :
 * CREATION-DATE : 09/05/2001 18:00:00
-* SP-NO         : 
-* FUNCTION      : 
-* 
+* SP-NO         :
+* FUNCTION      :
+*
 *********************************************************************************************/
 
 #include "stdafx.h"
@@ -29,11 +29,11 @@ IMPLEMENT_DYNAMIC(CSharedMemory, CObject)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::SetLastError
- * DESCRIPTION          : 
- * RETURN TYPE          : void 
+ * DESCRIPTION          :
+ * RETURN TYPE          : void
  * ARGUMENT             : DWORD dwErrCode
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:17:44
@@ -55,11 +55,11 @@ void CSharedMemory::SetLastError(DWORD dwErrCode)			//this method and following 
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::CSharedMemory
- * DESCRIPTION          : 
- * RETURN TYPE          : 
+ * DESCRIPTION          :
+ * RETURN TYPE          :
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD dwSize
  * ARGUMENT             : PINITMEMORY InitMemoryProcedure
@@ -172,16 +172,16 @@ CSharedMemory::CSharedMemory(const TCHAR *szName, DWORD dwSize, PINITMEMORY Init
 
 	} while (FALSE);
 
-	if (m_pLock) m_pLock->Unlock();	
+	if (m_pLock) m_pLock->Unlock();
 }
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::~CSharedMemory
- * DESCRIPTION          : 
- * RETURN TYPE          : 
+ * DESCRIPTION          :
+ * RETURN TYPE          :
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:17:55
  * GLOBAL READ          :
@@ -204,11 +204,11 @@ CSharedMemory::~CSharedMemory()
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetMemName
- * DESCRIPTION          : 
- * RETURN TYPE          : CString 
+ * DESCRIPTION          :
+ * RETURN TYPE          : CString
  * ARGUMENT             : void
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:17:58
@@ -231,11 +231,11 @@ CString CSharedMemory::GetMemName(void)
 #ifdef _DEBUG
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::AssertValid
- * DESCRIPTION          : 
- * RETURN TYPE          : void 
+ * DESCRIPTION          :
+ * RETURN TYPE          : void
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:02
  * GLOBAL READ          :
@@ -257,11 +257,11 @@ void CSharedMemory::AssertValid()
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::Dump
- * DESCRIPTION          : 
- * RETURN TYPE          : void 
+ * DESCRIPTION          :
+ * RETURN TYPE          : void
  * ARGUMENT             : CDumpContext & dc
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:07
@@ -280,11 +280,11 @@ void CSharedMemory::Dump(CDumpContext & dc)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetLastError
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:11
  * GLOBAL READ          :
@@ -300,11 +300,11 @@ DWORD CSharedMemory::GetLastError()
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetMemSize
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:15
  * GLOBAL READ          :
@@ -325,11 +325,11 @@ DWORD CSharedMemory::GetMemSize()
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::AmIFirst
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : void
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:18
@@ -346,11 +346,11 @@ BOOL CSharedMemory::AmIFirst(void)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::SetSdMem
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : SECURITY_INFORMATION SecurityInformation
  * ARGUMENT             : PSECURITY_DESCRIPTOR SecurityDescriptor
  * AUTHOR               : Martin Ziacek
@@ -381,11 +381,11 @@ BOOL CSharedMemory::SetSdMem(SECURITY_INFORMATION SecurityInformation, PSECURITY
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetSdMem
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : SECURITY_INFORMATION RequestedInformation
  * ARGUMENT             : PSECURITY_DESCRIPTOR pSecurityDescriptor
  * ARGUMENT             : DWORD nLength
@@ -418,11 +418,11 @@ BOOL CSharedMemory::GetSdMem(SECURITY_INFORMATION RequestedInformation, PSECURIT
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::SetSdSem
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : SECURITY_INFORMATION SecurityInformation
  * ARGUMENT             : PSECURITY_DESCRIPTOR SecurityDescriptor
  * AUTHOR               : Martin Ziacek
@@ -453,11 +453,11 @@ BOOL CSharedMemory::SetSdSem(SECURITY_INFORMATION SecurityInformation, PSECURITY
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetSdSem
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : SECURITY_INFORMATION RequestedInformation
  * ARGUMENT             : PSECURITY_DESCRIPTOR pSecurityDescriptor
  * ARGUMENT             : DWORD nLength
@@ -490,11 +490,11 @@ BOOL CSharedMemory::GetSdSem(SECURITY_INFORMATION RequestedInformation, PSECURIT
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::CreateSa
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:39
  * GLOBAL READ          :
@@ -530,7 +530,7 @@ BOOL CSharedMemory::CreateSa()
 			break;
 		}
 
-		cbAcl = GetLengthSid (m_pLogSid) + GetLengthSid (m_pSysSid) + GetLengthSid (m_pEvrSid) + 
+		cbAcl = GetLengthSid (m_pLogSid) + GetLengthSid (m_pSysSid) + GetLengthSid (m_pEvrSid) +
 				sizeof(ACL) + (3 * (sizeof(ACCESS_ALLOWED_ACE) - sizeof(DWORD)));
 		m_pNewAcl = (PACL) HeapAlloc(GetProcessHeap(), 0, cbAcl);
 
@@ -546,8 +546,8 @@ BOOL CSharedMemory::CreateSa()
 		// allow everything to interractive user, system and services
 		if (!AddAccessAllowedAce(	m_pNewAcl,
 									ACL_REVISION,
-									STANDARD_RIGHTS_ALL | 
-									SPECIFIC_RIGHTS_ALL | 
+									STANDARD_RIGHTS_ALL |
+									SPECIFIC_RIGHTS_ALL |
 									EVENT_ALL_ACCESS,
 									m_pLogSid)) {
 			SetLastError(::GetLastError());
@@ -555,8 +555,8 @@ BOOL CSharedMemory::CreateSa()
 		}
 		if (!AddAccessAllowedAce(	m_pNewAcl,
 									ACL_REVISION,
-									STANDARD_RIGHTS_ALL | 
-									SPECIFIC_RIGHTS_ALL | 
+									STANDARD_RIGHTS_ALL |
+									SPECIFIC_RIGHTS_ALL |
 									EVENT_ALL_ACCESS,
 									m_pSysSid)) {
 			SetLastError(::GetLastError());
@@ -564,8 +564,8 @@ BOOL CSharedMemory::CreateSa()
 		}
 		if (!AddAccessAllowedAce(	m_pNewAcl,
 									ACL_REVISION,
-									STANDARD_RIGHTS_ALL | 
-									SPECIFIC_RIGHTS_ALL | 
+									STANDARD_RIGHTS_ALL |
+									SPECIFIC_RIGHTS_ALL |
 									EVENT_ALL_ACCESS,
 									m_pEvrSid)) {
 			SetLastError(::GetLastError());
@@ -595,11 +595,11 @@ BOOL CSharedMemory::CreateSa()
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::SetSa
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : LPSECURITY_ATTRIBUTES lpsaAttributes
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:18:48
@@ -692,11 +692,11 @@ BOOL CSharedMemory::SetSa(LPSECURITY_ATTRIBUTES lpsaAttributes)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::AddValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD size
  * AUTHOR               : Martin Ziacek, Angela Aremu
@@ -811,11 +811,11 @@ BOOL CSharedMemory::AddValue(const TCHAR *szName, DWORD size, void *pDefaultData
 }
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::AddDwordValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD dwDefault
  * AUTHOR               : Angela Aremu
@@ -832,11 +832,11 @@ BOOL CSharedMemory::AddDwordValue(const TCHAR *szName, DWORD dwDefault)
 }
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::DeleteValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:00
@@ -941,11 +941,11 @@ BOOL CSharedMemory::DeleteValue(const TCHAR *szName)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetVariablesCount
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * ARGUMENT             : void
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:05
@@ -977,11 +977,11 @@ DWORD CSharedMemory::GetVariablesCount(void)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetValueInfo
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : DWORD dwIndex
  * ARGUMENT             : ValueHeader *pVarInfo
  * AUTHOR               : Martin Ziacek
@@ -1035,11 +1035,11 @@ BOOL CSharedMemory::GetValueInfo(DWORD dwIndex, ValueHeader *pVarInfo)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::FindValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const WCHAR *wszName
  * ARGUMENT             : LPBYTE *pData
  * ARGUMENT             : ValueHeader **pTmp
@@ -1079,11 +1079,11 @@ BOOL CSharedMemory::FindValue(const WCHAR *wszName,LPBYTE *pData, ValueHeader **
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : *CSharedMemory::AllocateUnicodeStr
- * DESCRIPTION          : 
- * RETURN TYPE          : WCHAR 
+ * DESCRIPTION          :
+ * RETURN TYPE          : WCHAR
  * ARGUMENT             : const char *szStr
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:17
@@ -1110,11 +1110,11 @@ WCHAR *CSharedMemory::AllocateUnicodeStr(const char *szStr)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::SetValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : void *bData
  * ARGUMENT             : DWORD dwLength
@@ -1185,11 +1185,11 @@ BOOL CSharedMemory::SetValue(const TCHAR *szName, void *bData, DWORD dwLength)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : void *bData
  * ARGUMENT             : LPDWORD dwLength
@@ -1234,7 +1234,7 @@ BOOL CSharedMemory::GetValue(const TCHAR *szName, void *bData, LPDWORD dwLength)
 			*dwLength = pTmp->dwLength;
 			rc = TRUE;
 			break;
-		} 
+		}
 
 		if (*dwLength < pTmp->dwLength) {
 			*dwLength = pTmp->dwLength;
@@ -1260,11 +1260,11 @@ BOOL CSharedMemory::GetValue(const TCHAR *szName, void *bData, LPDWORD dwLength)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::SetDwordValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD dwVal
  * AUTHOR               : Martin Ziacek
@@ -1282,11 +1282,11 @@ BOOL CSharedMemory::SetDwordValue(const TCHAR *szName, DWORD dwVal)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::GetDwordValue
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD dwDefVal
  * AUTHOR               : Martin Ziacek
@@ -1314,11 +1314,11 @@ DWORD CSharedMemory::GetDwordValue(const TCHAR *szName, DWORD dwDefVal)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : *CSharedMemory::GetPointer
- * DESCRIPTION          : 
- * RETURN TYPE          : void 
+ * DESCRIPTION          :
+ * RETURN TYPE          : void
  * ARGUMENT             : const TCHAR *szName
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:37
@@ -1372,11 +1372,11 @@ void *CSharedMemory::GetPointer(const TCHAR *szName)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::ExistValue
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:45
@@ -1425,11 +1425,11 @@ BOOL CSharedMemory::ExistValue(const TCHAR *szName)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::IsCreated
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : void
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:49
@@ -1446,11 +1446,11 @@ BOOL CSharedMemory::IsCreated(void)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::WaitForValueChange
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD dwMilliseconds
  * AUTHOR               : Martin Ziacek
@@ -1477,14 +1477,14 @@ DWORD CSharedMemory::WaitForValueChange(const TCHAR *szName, DWORD dwMillisecond
 }
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::WaitForMultipleValuesChanges
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : DWORD dwMilliseconds
- * AUTHOR               : Angela Aremu	
+ * AUTHOR               : Angela Aremu
  * DATE OF LAST UPDATE  : 24/09/2002 10:53:00
  * GLOBAL READ          :
  * GLOBAL WRITE         :
@@ -1534,11 +1534,11 @@ DWORD CSharedMemory::WaitForMultipleValuesChanges(CStringArray & str,BOOL bWaitF
 }
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::WaitForMemChange
- * DESCRIPTION          : 
- * RETURN TYPE          : DWORD 
+ * DESCRIPTION          :
+ * RETURN TYPE          : DWORD
  * ARGUMENT             : DWORD dwMilliseconds
  * AUTHOR               : Martin Ziacek
  * DATE OF LAST UPDATE  : 13/11/2001 10:19:56
@@ -1565,11 +1565,11 @@ DWORD CSharedMemory::WaitForMemChange(DWORD dwMilliseconds)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::InterlockedIncrement
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : LPLONG plNewVal
  * AUTHOR               : Martin Ziacek
@@ -1614,7 +1614,7 @@ BOOL CSharedMemory::InterlockedIncrement(const TCHAR *szName, LPLONG plNewVal)
 		if (pTmp->dwLength != sizeof(LONG)) {
 			SetLastError(ERROR_INVALID_DATA);
 			break;
-		} 
+		}
 
 		CopyMemory(&lValue,pData - pTmp->dwLength,pTmp->dwLength);
 		lValue++;
@@ -1639,11 +1639,11 @@ BOOL CSharedMemory::InterlockedIncrement(const TCHAR *szName, LPLONG plNewVal)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::InterlockedDecrement
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szName
  * ARGUMENT             : LPLONG plNewVal
  * AUTHOR               : Martin Ziacek
@@ -1713,11 +1713,11 @@ BOOL CSharedMemory::InterlockedDecrement(const TCHAR *szName, LPLONG plNewVal)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::InterlockedExchange
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szTargetName
  * ARGUMENT             : LONG lNewVal
  * ARGUMENT             : LPLONG plPrevValue
@@ -1787,11 +1787,11 @@ BOOL CSharedMemory::InterlockedExchange(const TCHAR *szTargetName, LONG lNewVal,
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::InterlockedTestExchange
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szTargetName
  * ARGUMENT             : LONG lOldValue
  * ARGUMENT             : LONG lNewValue
@@ -1811,11 +1811,11 @@ BOOL CSharedMemory::InterlockedTestExchange(const TCHAR *szTargetName,LONG lOldV
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::InterlockedCompareExchange
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szTargetName
  * ARGUMENT             : LONG lExchange
  * ARGUMENT             : LONG lComperand
@@ -1890,11 +1890,11 @@ BOOL CSharedMemory::InterlockedCompareExchange(const TCHAR *szTargetName, LONG l
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::InterlockedExchangeAdd
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : const TCHAR *szTargetName
  * ARGUMENT             : LONG lIncrement
  * ARGUMENT             : LPLONG plIntiVal
@@ -1967,11 +1967,11 @@ BOOL CSharedMemory::InterlockedExchangeAdd(const TCHAR *szTargetName, LONG lIncr
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::Write
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : BYTE *pbData
  * ARGUMENT             : DWORD dwLength
  * ARGUMENT             : DWORD dwOffset
@@ -2028,11 +2028,11 @@ BOOL CSharedMemory::Write(BYTE *pbData, DWORD dwLength, DWORD dwOffset)
 
 
 /**************************************************************************************
- * PROG-NAME            : 
- * LONG-NAME            : 
+ * PROG-NAME            :
+ * LONG-NAME            :
  * FUNCTION             : CSharedMemory::Read
- * DESCRIPTION          : 
- * RETURN TYPE          : BOOL 
+ * DESCRIPTION          :
+ * RETURN TYPE          : BOOL
  * ARGUMENT             : BYTE *pbData
  * ARGUMENT             : DWORD dwLength
  * ARGUMENT             : DWORD dwOffset

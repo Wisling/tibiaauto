@@ -73,7 +73,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
@@ -83,13 +83,13 @@ void CConfigDialog::OnClose()
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
@@ -144,9 +144,9 @@ void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
 
-	sprintf(buf,"%s",configData->accountNumber);m_accountNumber.SetWindowText(buf);	
-	sprintf(buf,"%s",configData->password);m_password.SetWindowText(buf);	
-	sprintf(buf,"%d",configData->charPos);m_charPos.SetWindowText(buf);	
+	sprintf(buf,"%s",configData->accountNumber);m_accountNumber.SetWindowText(buf);
+	sprintf(buf,"%s",configData->password);m_password.SetWindowText(buf);
+	sprintf(buf,"%d",configData->charPos);m_charPos.SetWindowText(buf);
 	m_openMain.SetCheck(configData->openMain);
 	m_openCont1.SetCheck(configData->openCont1);
 	m_openCont2.SetCheck(configData->openCont2);
@@ -188,7 +188,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -196,7 +196,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		CMemReaderProxy reader;
 		switch (reader.getConnectionState())
 		{
-		case 0: 
+		case 0:
 				if (loginTime){
 					char buf[128];
 					if (loginTime-time(NULL)>=0) sprintf(buf,"Connection status: waiting to log in %d seconds.",loginTime-time(NULL));

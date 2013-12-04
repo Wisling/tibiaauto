@@ -108,13 +108,13 @@ END_MESSAGE_MAP()
 
 void CCharInfoDialog::resetCounters()
 {
-	CMemReaderProxy reader;	
+	CMemReaderProxy reader;
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
 	playerInfo.timeStart	= time(NULL);
 
 	long lvl;
-	long expForLvl=0;	
+	long expForLvl=0;
 	long expLeft=0;
 	long percForLvl=0;
 	long expForLvlDiff=0;
@@ -176,7 +176,7 @@ BOOL CCharInfoDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CCharInfoDialog::OnTimer(UINT nIDEvent) 
+void CCharInfoDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001){
 		dataCalc();
@@ -186,18 +186,18 @@ void CCharInfoDialog::OnTimer(UINT nIDEvent)
 	
 }
 
-void CCharInfoDialog::OnResetCounters() 
+void CCharInfoDialog::OnResetCounters()
 {
-	resetCounters();	
+	resetCounters();
 }
 
 void CCharInfoDialog::dataCalc(){
-	CMemReaderProxy reader;	
+	CMemReaderProxy reader;
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
 	//T4: Exp calculation
 	long lvl;
-	long expForLvl=0;	
+	long expForLvl=0;
 	long expLeft=0;
 	long percForLvl=0;
 	long expForLvlDiff=0;
@@ -274,10 +274,10 @@ void CCharInfoDialog::dataCalc(){
 
 	//detect spell spell casting and record time
 	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;	
+	struct ipcMessage mess;
 
 	if (backPipe.readFromPipe(&mess,1004))
-	{				
+	{
 		int infoType;
 		int nickLen;
 		int msgLen;
@@ -312,7 +312,7 @@ void CCharInfoDialog::dataCalc(){
 			}
 		}
 
-	}	
+	}
 
 	CPackSenderProxy sender;
 	char spellName[4][32]={"Invisible","Haste","Strong Haste","Magic Shield"};
@@ -400,7 +400,7 @@ CConfigData * CCharInfoDialog::controlsToConfig() {
 	return newConfigData;
 }
 
-void CCharInfoDialog::OnEnabletimers() 
+void CCharInfoDialog::OnEnabletimers()
 {
 	m_hasteRemaining.EnableWindow(m_EnableTimer.GetCheck());
 	m_stronghasteRemaining.EnableWindow(m_EnableTimer.GetCheck());

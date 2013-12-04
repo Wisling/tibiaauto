@@ -17,7 +17,7 @@
 
 using namespace std;
 
-class Alarm  
+class Alarm
 {
 public:
 	CTrigger getTrigger();

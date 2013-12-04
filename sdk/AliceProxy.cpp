@@ -12,7 +12,7 @@
 HMODULE CAliceProxy::dllAlice=NULL;
 
 CAliceProxy::CAliceProxy()
-{	
+{
 	if (dllAlice==NULL)
 	{
 		char installPath[1024];
@@ -46,14 +46,14 @@ char * CAliceProxy::respond(char *text, char *id)
 {
 	if (dllAlice)
 	{
-		typedef char *(*Proto_fun)(char *text, char *id);	
+		typedef char *(*Proto_fun)(char *text, char *id);
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllAlice,"kernelRespond");
 		if (fun)
 		{
 			return fun(text,id);
 		} else {
 			return "Alice::respond not found";
-		}	
+		}
 	} else {
 		return "Alice not loaded";
 	}

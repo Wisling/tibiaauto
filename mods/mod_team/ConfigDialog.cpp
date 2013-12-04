@@ -51,29 +51,29 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{			
+		{
 			m_app->start();
 		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
-		m_app->stop(); 
+		m_app->stop();
 	}
 }
 
@@ -91,7 +91,7 @@ void CConfigDialog::enableControls()
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf,"%s",configData->masterChar);m_masterChar.SetWindowText(buf);	
+	sprintf(buf,"%s",configData->masterChar);m_masterChar.SetWindowText(buf);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -104,7 +104,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent==1001)
 	{
@@ -139,8 +139,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				sprintf(buf,"%s",connectedNode->isSlave?"yes":"no");
 				m_slaveList.SetItemText(i,6,buf);
 				sprintf(buf,"%d",connectedNode->distance);
-				m_slaveList.SetItemText(i,7,buf);				
-			} else {				
+				m_slaveList.SetItemText(i,7,buf);
+			} else {
 				m_slaveList.DeleteItem(i);
 				count--;
 			}
@@ -162,11 +162,11 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				sprintf(buf,"%d",GetTickCount()-connectedNode->lastMessageTm);
 				m_slaveList.SetItemText(0,5,buf);
 				sprintf(buf,"%s",connectedNode->isSlave?"yes":"no");
-				m_slaveList.SetItemText(0,6,buf);				
+				m_slaveList.SetItemText(0,6,buf);
 				sprintf(buf,"%d",connectedNode->distance);
-				m_slaveList.SetItemText(0,7,buf);				
+				m_slaveList.SetItemText(0,7,buf);
 
-				m_slaveList.SetItemData(0,i);				
+				m_slaveList.SetItemData(0,i);
 			}
 		}
 		delete self;
@@ -178,18 +178,18 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
 	m_slaveList.InsertColumn(0,"Player name",LVCFMT_LEFT,100);
-	m_slaveList.InsertColumn(1,"Last message [ms]",LVCFMT_LEFT,50);	
+	m_slaveList.InsertColumn(1,"Last message [ms]",LVCFMT_LEFT,50);
 	m_slaveList.InsertColumn(2,"Distance",LVCFMT_LEFT,80);
 	m_slaveList.InsertColumn(3,"HP",LVCFMT_LEFT,80);
 	m_slaveList.InsertColumn(4,"Mana",LVCFMT_LEFT,80);
-	m_slaveList.InsertColumn(5,"Ping",LVCFMT_LEFT,50);	
-	m_slaveList.InsertColumn(6,"Slave",LVCFMT_LEFT,30);	
-	m_slaveList.InsertColumn(7,"Dist",LVCFMT_LEFT,30);	
+	m_slaveList.InsertColumn(5,"Ping",LVCFMT_LEFT,50);
+	m_slaveList.InsertColumn(6,"Slave",LVCFMT_LEFT,30);
+	m_slaveList.InsertColumn(7,"Dist",LVCFMT_LEFT,30);
 	
 	m_slaveList.SetExtendedStyle(m_slaveList.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 
@@ -200,7 +200,7 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }

@@ -64,25 +64,25 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() 
+void CConfigDialog::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() 
+void CConfigDialog::OnClose()
 {
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() 
+void CConfigDialog::OnEnable()
 {
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{						
+		{
 			m_app->start();
-		} else {			
+		} else {
 			m_enable.SetCheck(0);
 		}
 	} else {
@@ -139,7 +139,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->m_sleepAfter);m_sleepAfter.SetWindowText(buf);
 
 	int i;
-	while (m_memberList.GetCount())	
+	while (m_memberList.GetCount())
 		m_memberList.DeleteString(0);
 	for (i=0;i<configData->m_grpMemberCount;i++)
 	{
@@ -162,24 +162,24 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_selfBorderline.GetWindowText(buf,120);
 	newConfigData->m_uhBorderline=atoi(buf);
 	newConfigData->m_fallback=m_selfFallback.GetCheck();
-	newConfigData->m_runetype=m_selfRunetype.GetCurSel();	
-	newConfigData->m_hotkeySelf=m_selfHotkey.GetCheck();	
+	newConfigData->m_runetype=m_selfRunetype.GetCurSel();
+	newConfigData->m_hotkeySelf=m_selfHotkey.GetCheck();
 	
 	m_sleepAfter.GetWindowText(buf,120);
 	newConfigData->m_sleepAfter=atoi(buf);
 
-	sprintf(buf,"%d",m_memberList.GetCount());	
+	sprintf(buf,"%d",m_memberList.GetCount());
 	newConfigData->m_grpMemberCount=m_memberList.GetCount();
 	for (i=0;i<newConfigData->m_grpMemberCount;i++)
 	{
-		m_memberList.GetText(i,newConfigData->m_grpMemberList[i]);		
+		m_memberList.GetText(i,newConfigData->m_grpMemberList[i]);
 	}
 	
 
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) 
+void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	
 	CDialog::OnTimer(nIDEvent);
@@ -192,7 +192,7 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(	m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() 
+BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -203,7 +203,7 @@ BOOL CConfigDialog::OnInitDialog()
 
 
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) 
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
@@ -214,7 +214,7 @@ void CConfigDialog::activateEnableButton(int enable)
 }
  
 
-void CConfigDialog::OnToolAutouhGrpMemberAdd() 
+void CConfigDialog::OnToolAutouhGrpMemberAdd()
 {
 	char buf[64];
 	m_member.GetWindowText(buf,63);
@@ -222,7 +222,7 @@ void CConfigDialog::OnToolAutouhGrpMemberAdd()
 	m_member.SetWindowText("");
 }
 
-void CConfigDialog::OnToolAutouhGrpMemberRemove() 
+void CConfigDialog::OnToolAutouhGrpMemberRemove()
 {
 	int curSel=m_memberList.GetCurSel();
 	if (curSel!=LB_ERR)

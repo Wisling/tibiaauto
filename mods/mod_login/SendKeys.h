@@ -36,21 +36,21 @@ private:
 
   /*
   Reference: VkKeyScan() / MSDN
-  Bit Meaning 
+  Bit Meaning
   --- --------
-  1   Either SHIFT key is pressed. 
-  2   Either CTRL key is pressed. 
-  4   Either ALT key is pressed. 
-  8   The Hankaku key is pressed 
-  16  Reserved (defined by the keyboard layout driver). 
-  32  Reserved (defined by the keyboard layout driver). 
+  1   Either SHIFT key is pressed.
+  2   Either CTRL key is pressed.
+  4   Either ALT key is pressed.
+  8   The Hankaku key is pressed
+  16  Reserved (defined by the keyboard layout driver).
+  32  Reserved (defined by the keyboard layout driver).
   */
   static const WORD VKKEYSCANSHIFTON;
   static const WORD VKKEYSCANCTRLON;
   static const WORD VKKEYSCANALTON;
   static const WORD INVALIDKEY;
 
-  static key_desc_t KeyNames[MaxSendKeysRecs]; 
+  static key_desc_t KeyNames[MaxSendKeysRecs];
   static const BYTE ExtendedVKeys[MaxExtendedVKeys];
 
   static bool BitSet(BYTE BitTable, UINT BitMask);

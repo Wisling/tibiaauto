@@ -19,7 +19,7 @@ class CMod_uhApp;
 // CConfigDialog dialog
 
 class CConfigDialog : public MyDialog
-{ 
+{
 // Construction
 public:
 	void activateEnableButton(int enable);

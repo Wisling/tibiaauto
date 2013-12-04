@@ -21,7 +21,7 @@ class CMod_restackApp;
 class CConfigDialog : public MyDialog
 {
 // Construction
-public: 
+public:
 	void activateEnableButton(int enable);
 	CConfigData * controlsToConfig();
 	void configToControls(CConfigData *configData);
@@ -55,11 +55,11 @@ public:
 	CButton	m_pickupSpears;
 	CEdit	m_throwableTo;
 	CEdit	m_throwableAt;
-	CComboBox	m_throwableType;	
+	CComboBox	m_throwableType;
 	CEdit	m_ammoTo;
 	CEdit	m_ammoAt;
 	CComboBox	m_ammoType;
-	CButtonST	m_enable;		
+	CButtonST	m_enable;
 	CButtonST	m_OK;
 	//}}AFX_DATA
 

@@ -17,7 +17,7 @@ static char THIS_FILE[] = __FILE__;
 CMonsterButton::CMonsterButton(int x,int y)
 {
 	m_x=x;
-	m_y=y;	
+	m_y=y;
 }
 
 CMonsterButton::~CMonsterButton()
@@ -35,21 +35,21 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMonsterButton message handlers
 
-void CMonsterButton::OnMouseMove(UINT nFlags, CPoint point) 
+void CMonsterButton::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CToolMonsterShow *parent = (CToolMonsterShow *)GetParent();	
+	CToolMonsterShow *parent = (CToolMonsterShow *)GetParent();
 
 	parent->showMonsterDetails(m_x,m_y);
 	
 	CButton::OnMouseMove(nFlags, point);
 }
 
-BOOL CMonsterButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext) 
+BOOL CMonsterButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext)
 {
 	return CWnd::Create(lpszClassName, lpszWindowName, dwStyle, rect, pParentWnd, nID, pContext);
 }
 
-void CMonsterButton::OnClicked() 
-{	
+void CMonsterButton::OnClicked()
+{
 	
 }

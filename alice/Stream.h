@@ -8,8 +8,8 @@ using namespace std;
 class Stream
 {
 public:
-	virtual void Read(const char *str);	
-	virtual void Write(const char *str);	
+	virtual void Read(const char *str);
+	virtual void Write(const char *str);
 };
 
 class StreamProvider

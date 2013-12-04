@@ -5,7 +5,7 @@
 #define IDP_SOCKETS_INIT_FAILED			101
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 

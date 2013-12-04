@@ -36,7 +36,7 @@
 #include "UppercaseProcessor.h"
 #include "HTTPProcessor.h"
 #include "SecureProcessor.h"	//	Contains AuthenticateProcessor too
-#if defined(ENABLE_JAVASCRIPT) 
+#if defined(ENABLE_JAVASCRIPT)
 	#include "JavaScriptProcessor.h"
 #endif
 #include "XmlSocketResponder.h"
@@ -77,7 +77,7 @@ void Handler::init() {
 	processors["http"] = new HTTPProcessor();
 	processors["secure"] = new SecureProcessor();
 	processors["system"] = new SystemProcessor();
-#if defined(ENABLE_JAVASCRIPT) 
+#if defined(ENABLE_JAVASCRIPT)
 	processors["javascript"] = new JavaScriptProcessor();
 #endif
 	processors["authenticate"] = new AuthenticateProcessor();

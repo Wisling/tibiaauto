@@ -90,9 +90,9 @@ void TimedDialog::configToControls(CConfigData *configData) {
 		m_timedSpellList.InsertItem(i, "");
 		m_timedSpellList.SetItemText(0, 0, temp.spell);
 		sprintf(lpBuffer, "%d", temp.mana);
-		m_timedSpellList.SetItemText(0, 1, lpBuffer);		
+		m_timedSpellList.SetItemText(0, 1, lpBuffer);
 		sprintf(lpBuffer, "%d", temp.delay);
-		m_timedSpellList.SetItemText(0, 2, lpBuffer);		
+		m_timedSpellList.SetItemText(0, 2, lpBuffer);
 		m_timedSpellList.SetItemText(0, 3, temp.usePotions?"Yes":"No");
 	}
 	OnToolSpellcasterTimed();
@@ -132,10 +132,10 @@ void TimedDialog::OnTimedSpellAdd() {
 	int delayLen = m_timedSpellDelay.GetWindowText(lpDelayBuffer, 8);
 	if (spellLen && manaLen && delayLen) {
 		m_timedSpellList.InsertItem(spellList.size(), "");
-		m_timedSpellList.SetItemText(0, 0, lpSpellBuffer);		
-		m_timedSpellList.SetItemText(0, 1, lpManaBuffer);		
-		m_timedSpellList.SetItemText(0, 2, lpDelayBuffer);		
-		m_timedSpellList.SetItemText(0, 3, m_UsePotions.GetCheck()?"Yes":"No");		
+		m_timedSpellList.SetItemText(0, 0, lpSpellBuffer);
+		m_timedSpellList.SetItemText(0, 1, lpManaBuffer);
+		m_timedSpellList.SetItemText(0, 2, lpDelayBuffer);
+		m_timedSpellList.SetItemText(0, 3, m_UsePotions.GetCheck()?"Yes":"No");
 		m_timedSpellWords.SetWindowText("");
 		m_timedSpellMana.SetWindowText("");
 		m_timedSpellDelay.SetWindowText("");
@@ -169,7 +169,7 @@ void TimedDialog::OnTimedSpellDelete() {
 	
 	while (i != -1) {
 		int find = i;
-		nTemp = nTemp-1; 
+		nTemp = nTemp-1;
 		pnArrayOfSelRows[nTemp] = i;
 		i = m_timedSpellList.GetNextSelectedItem(pos);
 		for(int k = 0; k < spellList.size(); k++) {
@@ -178,7 +178,7 @@ void TimedDialog::OnTimedSpellDelete() {
 		}
 	}
 	
-	for(int j=0; j < nSelRows; j++) 
+	for(int j=0; j < nSelRows; j++)
 		m_timedSpellList.DeleteItem(pnArrayOfSelRows[j]);
 	
 	delete(pnArrayOfSelRows);

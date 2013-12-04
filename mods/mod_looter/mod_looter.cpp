@@ -55,7 +55,7 @@ static char THIS_FILE[] = __FILE__;
 //
 //		It is very important that this macro appear in each
 //		function, prior to any calls into MFC.  This means that
-//		it must appear as the first statement within the 
+//		it must appear as the first statement within the
 //		function, even before any object variable declarations
 //		as their constructors may generate calls into the MFC
 //		DLL.
@@ -104,7 +104,7 @@ HANDLE toolThreadHandle;
 CUIntArray lootCreatures;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
-{		
+{
 
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
@@ -117,7 +117,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int lootCorpseTime = 1;
 
 	while (!toolThreadShouldStop)
-	{		
+	{
 		Sleep(50);
 		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
 
@@ -139,16 +139,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		/*** killed monster opening part ***/
 		if (config->m_autoOpen&&lastAttackedMonster&&(!attackedCh || attackedCh->hpPercLeft==0))
-		{		
-			//::MessageBox(NULL,"x 1","x",0);			
+		{
+			//::MessageBox(NULL,"x 1","x",0);
 
 			if (attackedCh)
 			{
 												
 				if (!attackedCh->hpPercLeft&&abs(self->x-attackedCh->x)<=1&&abs(self->y-attackedCh->y)<=1&&self->z==attackedCh->z)
-				{									
+				{
 					//Sleep(1000);
-					// the creature is dead and we can try to open its corpse					
+					// the creature is dead and we can try to open its corpse
 					int corpseId = reader.itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
 					
 				
@@ -168,7 +168,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 					CTibiaContainer *cont[3]={NULL,NULL,NULL};
 					
-					// now open corpse and all its containers 
+					// now open corpse and all its containers
 
 					delete self;
 					self = reader.readSelfCharacter();
@@ -197,10 +197,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									{
 										sender.openContainerFromContainer(item->objectId,0x40+lastLootContNr[0],itemNr,lastLootContNr[currentExtraContainerNr]);
 										CModuleUtil::waitForOpenContainer(lastLootContNr[currentExtraContainerNr],1);
-										cont[currentExtraContainerNr]=reader.readContainer(lastLootContNr[currentExtraContainerNr]);										
+										cont[currentExtraContainerNr]=reader.readContainer(lastLootContNr[currentExtraContainerNr]);
 										currentExtraContainerNr++;
 										
-									} 
+									}
 								} // for itemNr (open extra containers)
 								
 								if (corpseId&&cont[0]->flagOnOff)
@@ -260,7 +260,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											lootCont = cont[2];
 											int itemNr;
 											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++)
-											{												
+											{
 												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
 												
 												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(attackedCh->name),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),2,attackedCh->x,attackedCh->y,attackedCh->z);
@@ -270,7 +270,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										}
 										
 										fclose(lootStatsFile);
-									}												
+									}
 								}
 								
 								
@@ -365,7 +365,7 @@ CMod_looterApp::CMod_looterApp()
 {
 	m_configDialog =NULL;
 	m_started=0;
-	m_configData = new CConfigData();	
+	m_configData = new CConfigData();
 }
 
 CMod_looterApp::~CMod_looterApp()
@@ -374,7 +374,7 @@ CMod_looterApp::~CMod_looterApp()
 	{
 		delete m_configDialog;
 	}
-	delete m_configData;	
+	delete m_configData;
 }
 
 char * CMod_looterApp::getName()
@@ -390,7 +390,7 @@ int CMod_looterApp::isStarted()
 
 
 void CMod_looterApp::start()
-{	
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -411,19 +411,19 @@ void CMod_looterApp::start()
 		fseek(f,0,SEEK_END);
 
 		int flen=ftell(f);
-		fclose(f);		
+		fclose(f);
 		if (flen>1024*800 && m_configDialog)
 		{
 			CSendStats info;
-			info.DoModal();				
-		}		
+			info.DoModal();
+		}
 	}
 	
 
 	DWORD threadId;
 		
 	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);				
+	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
 	m_started=1;
 }
 
@@ -440,11 +440,11 @@ void CMod_looterApp::stop()
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
-} 
+}
 
 void CMod_looterApp::showConfigDialog()
 {
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());	
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
 	{
@@ -462,7 +462,7 @@ void CMod_looterApp::showConfigDialog()
 void CMod_looterApp::configToControls()
 {
 	if (m_configDialog)
-	{		
+	{
 		
 		m_configDialog->configToControls(m_configData);
 	}
@@ -530,8 +530,8 @@ void CMod_looterApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"loot/inDepot")) m_configData->m_lootInDepot=atoi(paramValue);
 	if (!strcmp(paramName,"loot/gp")) m_configData->m_lootGp=atoi(paramValue);
 	if (!strcmp(paramName,"loot/food")) m_configData->m_lootFood=atoi(paramValue);
-	if (!strcmp(paramName,"loot/custom")) m_configData->m_lootCustom=atoi(paramValue);	
-	if (!strcmp(paramName,"other/autoOpen")) m_configData->m_autoOpen=atoi(paramValue);	
+	if (!strcmp(paramName,"loot/custom")) m_configData->m_lootCustom=atoi(paramValue);
+	if (!strcmp(paramName,"other/autoOpen")) m_configData->m_autoOpen=atoi(paramValue);
 	if (!strcmp(paramName,"loot/eatFromCorpse")) m_configData->m_eatFromCorpse=atoi(paramValue);
 }
 
@@ -581,7 +581,7 @@ char *CMod_looterApp::getConfigParamName(int nr)
 	case 11: return "loot/gp";
 	case 12: return "loot/food";
 	case 13: return "loot/custom";
-	case 14: return "other/autoOpen";	
+	case 14: return "other/autoOpen";
 	case 15: return "loot/inDepot";
 	case 16: return "loot/eatFromCorpse";
 	default:
@@ -592,7 +592,7 @@ char *CMod_looterApp::getConfigParamName(int nr)
 void CMod_looterApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
-	AFX_MANAGE_STATE(AfxGetStaticModuleState());			
+	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (m_configDialog){
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
