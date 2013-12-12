@@ -82,7 +82,7 @@ public:
 	char modPriorityStr[2];
 	char depotModPriorityStr[2];
 	int stopByDepot;
-	int depositLooted;
+	int depositLootedItemList;
 
 
 };

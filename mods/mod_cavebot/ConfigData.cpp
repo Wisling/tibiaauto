@@ -87,7 +87,7 @@ CConfigData::CConfigData()
 	strcpy(modPriorityStr,"1");
 	strcpy(depotModPriorityStr,"2");
 	stopByDepot=0;
-	depositLooted=0;
+	depositLootedItemList=0;
 
 }
 

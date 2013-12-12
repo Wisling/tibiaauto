@@ -138,7 +138,7 @@
 #define IDC_DROPLOOT                    3066
 #define IDC_DEPOT_MODPRIORITY           3068
 #define IDC_DEPOT_STOPBYDEPOT           3069
-#define IDC_DEPOT_DEPOSIT_LOOTED        3070
+#define IDC_DEPOT_DEPOSIT_LOOTED_ITEM_LIST        3070
 
 // Next default values for new objects
 //

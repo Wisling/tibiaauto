@@ -148,7 +148,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_DROPLOOTLIST, m_dropLootList);
 	DDX_Control(pDX, IDC_DEPOT_MODPRIORITY,m_depotModPriority);
 	DDX_Control(pDX, IDC_DEPOT_STOPBYDEPOT,m_stopByDepot);
-	DDX_Control(pDX, IDC_DEPOT_DEPOSIT_LOOTED,m_depositLooted);
+	DDX_Control(pDX, IDC_DEPOT_DEPOSIT_LOOTED_ITEM_LIST,m_depositLootedItemList);
 	//}}AFX_DATA_MAP
 }
 
@@ -269,7 +269,7 @@ void CConfigDialog::disableControls()
 	m_dropNotLooted.EnableWindow(false);
 	m_depotModPriority.EnableWindow(false);
 	m_stopByDepot.EnableWindow(false);
-	m_depositLooted.EnableWindow(false);
+	m_depositLootedItemList.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
@@ -332,7 +332,7 @@ void CConfigDialog::enableControls()
 	m_dropNotLooted.EnableWindow(true);
 	m_depotModPriority.EnableWindow(true);
 	m_stopByDepot.EnableWindow(true);
-	m_depositLooted.EnableWindow(true);
+	m_depositLootedItemList.EnableWindow(true);
 
 	OnDropLoot();
 }
@@ -430,7 +430,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	virDropOnlyLooted=configData->dropOnlyLooted;
 	m_depotModPriority.SetCurSel(atoi(configData->depotModPriorityStr)-1);
 	m_stopByDepot.SetCheck(configData->stopByDepot);
-	m_depositLooted.SetCheck(configData->depositLooted);
+	m_depositLootedItemList.SetCheck(configData->depositLootedItemList);
 
 	OnDropLoot();
 
@@ -566,7 +566,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->dropOnlyLooted=virDropOnlyLooted;
 	sprintf(newConfigData->depotModPriorityStr,"%d",m_depotModPriority.GetCurSel()+1);
 	newConfigData->stopByDepot=m_stopByDepot.GetCheck();
-	newConfigData->depositLooted=m_depositLooted.GetCheck();
+	newConfigData->depositLootedItemList=m_depositLootedItemList.GetCheck();
 
 	return newConfigData;
 }

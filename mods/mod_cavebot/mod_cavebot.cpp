@@ -260,7 +260,7 @@ int depotCheckCanGo(CConfigData *config){
 			goto exitDCG;
 		}
 	}
-	if(config->depositLooted){
+	if(config->depositLootedItemList){
 	// If not returned yet then find another looted item not already checked in the depot list
 		int contNr;
 		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
@@ -895,7 +895,7 @@ void depotDeposit(CConfigData *config) {
 		}
 	}
 DPfinish:
-	if(config->depositLooted){
+	if(config->depositLootedItemList){
 		//deposit all of every looted item to save from having to add them individually to the list
 		CUIntArray* lootedItems = itemProxy.getLootItemIdArrayPtr();
 		CUIntArray depositList;
@@ -3461,7 +3461,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"loot/other/dropOnlyLooted")) m_configData->dropOnlyLooted=atoi(paramValue);
 	if (!strcmp(paramName,"depot/depotModPriority")) sprintf(m_configData->depotModPriorityStr,"%s",paramValue);
 	if (!strcmp(paramName,"depot/stopByDepot")) m_configData->stopByDepot=atoi(paramValue);
-	if (!strcmp(paramName,"depot/depositLooted")) m_configData->depositLooted=atoi(paramValue);
+	if (!strcmp(paramName,"depot/depositLootedItemList")) m_configData->depositLootedItemList=atoi(paramValue);
 }
 
 char *CMod_cavebotApp::saveConfigParam(char *paramName) {
@@ -3541,7 +3541,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"loot/other/dropOnlyLooted")) sprintf(buf,"%d",m_configData->dropOnlyLooted);
 	if (!strcmp(paramName,"depot/depotModPriority")) sprintf(buf,"%s",m_configData->depotModPriorityStr);
 	if (!strcmp(paramName,"depot/stopByDepot")) sprintf(buf,"%d",m_configData->stopByDepot);
-	if (!strcmp(paramName,"depot/depositLooted")) sprintf(buf,"%d",m_configData->depositLooted);
+	if (!strcmp(paramName,"depot/depositLootedItemList")) sprintf(buf,"%d",m_configData->depositLootedItemList);
 	return buf;
 }
 
@@ -3596,7 +3596,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 46: return "loot/other/dropOnlyLooted";
 	case 47: return "depot/depotModPriority";
 	case 48: return "depot/stopByDepot";
-	case 49: return "depot/depositLooted";
+	case 49: return "depot/depositLootedItemList";
 		
 	default:
 		return NULL;
