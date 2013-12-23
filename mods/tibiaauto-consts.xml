@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.30 -->
+<!-- Tibia constants for Tibia 10.31 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -94,14 +94,14 @@
 		<const code="addrHPMax" value="0x95602C"/>
 		<const code="addrGoX" value="0x956030"/>
 		<const code="addrSelfId" value="0x956034"/>
-		<const code="addrFps" value="0x968858"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrVocation" value="0x968EE8"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrPacketCount" value="0x9A4D64"/> <!-- cat0 -->
-		<const code="addrFirstCreature" value="0x9AB890"/> <!-- cat1 -->
-		<const code="addrSlotArrow" value="0x9E88DC"/> <!-- cat2 -->
-		<const code="addrMapStart" value="0x9E8A5C"/> <!-- is a pointer to visible map -->
-		<const code="addrFirstContainer" value="0x9E97EC"/> <!-- cat2 -->
-		<const code="addrCurrentTm" value="0x9E9D6C"/> <!-- cat2 -->
+		<const code="addrFps" value="0x968810"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrVocation" value="0x968EA0"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrPacketCount" value="0x9A47CC"/> <!-- cat0 -->
+		<const code="addrFirstCreature" value="0x9AB298"/> <!-- cat1 -->
+		<const code="addrSlotArrow" value="0x9E82E4"/> <!-- cat2 -->
+		<const code="addrMapStart" value="0x9E8464"/> <!-- is a pointer to visible map -->
+		<const code="addrFirstContainer" value="0x9E91F4"/> <!-- cat2 -->
+		<const code="addrCurrentTm" value="0x9E975C"/> <!-- cat2 -->
 
 
 		<!-- structure lengths -->
