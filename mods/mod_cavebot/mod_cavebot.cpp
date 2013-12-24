@@ -2523,9 +2523,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				//update environmental variables
 
-				//changed to exclude the criteria of attacking
+				//changed to exclude the criteria of attacking, do not count oneself, count players only if they are attacking you
 				//if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
-				if (taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1)	monstersSurrounding++;
+				if ((creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking) && creatureList[crNr].tibiaId!=self->tibiaId && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
 
 				if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isWithinMargins) playersOnScreen++;
 				//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
