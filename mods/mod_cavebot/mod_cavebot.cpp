@@ -1668,6 +1668,37 @@ void SendAttackMode(int attack,int follow,int attLock,int PVPMode, int refreshCu
 	curPVPMode = PVPMode;
 }
 
+int messageThereIsNoWay(int creatureNr){
+	if (creatureNr==-1) return 0;
+	CIPCBackPipeProxy backPipe;
+	CMemReaderProxy reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+	int x = self->x;
+	int y = self->y;
+	delete self;
+	self = NULL;
+	
+	for(int t=0;t<30;t++){
+		struct ipcMessage mess;
+		CTibiaCharacter *creature = reader.readVisibleCreature(creatureNr);
+		self = reader.readSelfCharacter();
+		if(backPipe.readFromPipe(&mess,1103)){
+			delete self;
+			delete creature;
+			return 1;
+		}else if((self->x!=x || self->y!=y) || taxiDist(self->x,self->y,creature->x,creature->y)==0){
+			delete self;
+			delete creature;
+			return 0;
+		}
+		delete self;
+		delete creature;
+		Sleep(50);
+	}
+	return 0;
+}
+
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -1953,6 +1984,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			// flush IPC communication if not logged in or we do not pay attention to pauses
 			while (backPipe.readFromPipe(&mess,1009)) {};
 			while (backPipe.readFromPipe(&mess,2002)) {};
+			while (backPipe.readFromPipe(&mess,1103)) {};
 		}
 		
 		if (loggedOut) continue; // do not proceed if not connected
@@ -2711,9 +2743,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		CTibiaCharacter *attackCh=reader.readVisibleCreature(currentlyAttackedCreatureNr);
 		//perform server visible tasks if we have something to attack
 		if (currentlyAttackedCreatureNr!=-1&&attackCh->hpPercLeft){//uses most recent hpPercLeft to prevent crash??
+			CIPCBackPipeProxy backPipe;
+			struct ipcMessage mess;
+			while(backPipe.readFromPipe(&mess,1103)){};
 			if (AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId)){
 				firstCreatureAttackTM=time(NULL);
 				reachedAttackedCreature=0;
+				if(config->autoFollow && messageThereIsNoWay(currentlyAttackedCreatureNr)){
+					creatureList[currentlyAttackedCreatureNr].isIgnoredUntil=time(NULL)+config->suspendAfterUnreachable;
+				}
 			}
 
 			// if we are backattacking alien then maybe fire runes at them

@@ -261,6 +261,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 				delete ch;
 			}
+		}else{
+			//clean up pipe messages
+			CIPCBackPipeProxy backPipe;
+			struct ipcMessage mess;
+			while(backPipe.readFromPipe(&mess,1101)){};
 		}
 		int spell = 0;
 		if (config->aoe)//Akilez: allow other spell to cast if AOE doesn't want to
