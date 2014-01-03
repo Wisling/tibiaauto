@@ -20,7 +20,6 @@
 #include "regex.h"
 #include "RegexpProxy.h"
 #include "psapi.h"
-#include "IPCPipeBack.h"
 #include "ipcm.h"
 
 int myInterceptEncrypt(int v1, int v2);
@@ -82,7 +81,6 @@ int revealCNameActive=0;
 char lastConnectName[16];
 
 HANDLE hPipe=INVALID_HANDLE_VALUE;
-static CIPCPipeBack ipcPipeBack;
 
 HHOOK hook;
 
@@ -162,6 +160,7 @@ struct tibiaState
 * Located within protocol.cpp to send messages based on incoming packets
 * 1101: for poison cure; the number of hp lost from damage caused without monster "You lose x hitpoints."
 * 1102: not in use.  for gathering data on damaging creatures
+* 1103: detecting "There is no way" when following
 
 * 2001: hooks -> xray
 * 2002: hooks -> cavebot pausing
@@ -2982,7 +2981,7 @@ int myShouldParseRecv(){
 		}
 		int actionLen = actionEnd - actionStart + 1;
 		//Parse packet and perform any needed actions
-		Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen),ipcPipeBack);
+		Protocol::parsePacketIn(NetworkMessage((char*)(prevRecvStream+actionStart),actionLen));
 		/*
 		int packtype = ((char*)prevRecvStream+actionStart)[0]&0xff;
 		int wanted = 0xb4;

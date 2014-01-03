@@ -6,11 +6,14 @@
 #include "ModuleUtil.h"
 #include "ModuleProxy.h"
 #include "MemReaderProxy.h"
+#include "IPCPipeBack.h"
 #include <fstream>
 #include "time.h"
 #include "ipcm.h"
 #include "deelx.h"
 #include <string>
+
+extern CIPCPipeBack ipcPipeBack;
 
 //NetworkMessage is a message buffer that can read and write out a NetworkMessage
 //the first two bytes indicate the length of the remaining bytes
@@ -399,7 +402,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 }
 
 
-void Protocol::parsePacketIn(NetworkMessage &msg,CIPCPipeBack &ipcPipeBack){
+void Protocol::parsePacketIn(NetworkMessage &msg){
 	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.GetByte();
 	switch(recvbyte)
@@ -437,6 +440,18 @@ void Protocol::parsePacketIn(NetworkMessage &msg,CIPCPipeBack &ipcPipeBack){
 						ipcPipeBack.send(mess);
 					}
 					*/
+					}
+					break;
+				case 0x13:
+					{
+					std::string text = msg.GetString();
+					static CRegexpT <char> reFollowNoWay("There is no way\\.", IGNORECASE);
+					MatchResult res2 = reFollowNoWay.Match(text.c_str());
+					if(res2.IsMatched()){
+						struct ipcMessage mess;
+						mess.messageType=1103;
+						ipcPipeBack.send(mess);
+					}
 					}
 					break;
 				default: break;

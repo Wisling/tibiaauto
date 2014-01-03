@@ -1,10 +1,13 @@
+#if !defined(AFX_PROTOCOL_H__D1220A19_D7FC_4B51_900D_224C75834004__INCLUDED_)
+#define AFX_PROTOCOL_H__D1220A19_D7FC_4B51_900D_224C75834004__INCLUDED_
+
 // protocol.h : Defines the entry point for the DLL application.
 //
 
 #include <string>
 #include <iostream>
 #include <fstream>
-#include "IPCPipeBack.h"
+
 
 #define NETWORKMESSAGE_MAXSIZE 65536
 
@@ -49,6 +52,8 @@ public:
 	virtual ~Protocol(){}
 
 	static void Protocol::outputPacket(NetworkMessage &msg);
-	static void Protocol::parsePacketIn(NetworkMessage &msg,CIPCPipeBack &ipcPipeBack);
+	static void Protocol::parsePacketIn(NetworkMessage &msg);
 	static void Protocol::parsePacketOut(NetworkMessage &msg);
 };
+
+#endif //AFX_PROTOCOL_H__D1220A19_D7FC_4B51_900D_224C75834004__INCLUDED_
