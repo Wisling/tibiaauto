@@ -23,7 +23,7 @@ public:
 	static int waitForManaDecrease(int oldMana);
 	static int waitForCapsChange(float origCaps);
 	static int waitForItemChange(int locationAddress, int origItemId);
-	static int waitForItemChange(int contNr, int slotNr, int origItemId);
+	static int waitForItemChange(int contNr, int slotNr, int origItemId, int quantity);
 	static int waitForItemsInsideChange(int contNr, int origItemsCount);
 	static int waitForItemsInsideChange(int contNr, int origItemSlot, int origItemQuantity, int origItemsCount);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);

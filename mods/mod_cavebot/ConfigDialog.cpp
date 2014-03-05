@@ -80,7 +80,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ATTACK_HP_ABOVE, m_attackHpAbove);
 	DDX_Control(pDX, IDC_LOOTFROMFLOOR, m_lootFromFloor);
 	DDX_Control(pDX, IDC_DROPNOTLOOTED, m_dropNotLooted);
-	DDX_Control(pDX, IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT, m_depotDropInsteadOfDepositon);
+	DDX_Control(pDX, IDC_DEPOT_DROP_INSTEAD_OF_DEPOSIT, m_depotDropInsteadOfDeposit);
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_TRAIN, m_weaponTrain);
 	DDX_Control(pDX, IDC_TRAINING_WEAPON_FIGHT, m_weaponFight);
 	DDX_Control(pDX, IDC_TRAINING_STATE, m_trainingState);
@@ -249,7 +249,7 @@ void CConfigDialog::disableControls()
 	m_trainingMode.EnableWindow(false);
 	m_bloodHit.EnableWindow(false);
 	m_activate.EnableWindow(false);
-	m_depotDropInsteadOfDepositon.EnableWindow(false);
+	m_depotDropInsteadOfDeposit.EnableWindow(false);
 	m_dropNotLooted.EnableWindow(false);
 	m_lootFromFloor.EnableWindow(false);
 	m_attackHpAbove.EnableWindow(false);
@@ -312,7 +312,7 @@ void CConfigDialog::enableControls()
 	m_trainingMode.EnableWindow(true);
 	m_bloodHit.EnableWindow(true);
 	m_activate.EnableWindow(true);
-	m_depotDropInsteadOfDepositon.EnableWindow(true);
+	m_depotDropInsteadOfDeposit.EnableWindow(true);
 	m_dropNotLooted.EnableWindow(true);
 	m_lootFromFloor.EnableWindow(true);
 	m_attackHpAbove.EnableWindow(true);
@@ -415,7 +415,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	if (m_weaponTrain.GetCurSel()==-1) m_weaponTrain.SetCurSel(0);
 	m_weaponFight.SetCurSel(m_weaponFight.FindStringExact(-1,itemProxy.getItemName(configData->weaponFight)));
 	if (m_weaponFight.GetCurSel()==-1) m_weaponFight.SetCurSel(0);
-	m_depotDropInsteadOfDepositon.SetCheck(configData->depotDropInsteadOfDepositon);
+	m_depotDropInsteadOfDeposit.SetCheck(configData->depotDropInsteadOfDeposit);
 	m_dropNotLooted.SetCheck(configData->dropNotLooted);
 	m_lootFromFloor.SetCheck(configData->lootFromFloor);
 	m_backattackRunes.SetCheck(configData->backattackRunes);
@@ -549,7 +549,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->trainingActivate=m_activate.GetCheck();
 	newConfigData->weaponTrain=m_weaponTrain.GetItemData(m_weaponTrain.GetCurSel());
 	newConfigData->weaponFight=m_weaponFight.GetItemData(m_weaponFight.GetCurSel());
-	newConfigData->depotDropInsteadOfDepositon=m_depotDropInsteadOfDepositon.GetCheck();
+	newConfigData->depotDropInsteadOfDeposit=m_depotDropInsteadOfDeposit.GetCheck();
 	newConfigData->dropNotLooted=m_dropNotLooted.GetCheck();
 	newConfigData->lootFromFloor=m_lootFromFloor.GetCheck();
 	newConfigData->backattackRunes=m_backattackRunes.GetCheck();

@@ -278,7 +278,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemArray);
 					if (item->objectId)
 					{
-						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,self->x,self->y,self->z,item->quantity);
+						sender.moveObjectFromContainerToFloor(item->objectId,0x40+contNr,item->pos,self->x,self->y,self->z,item->quantity?item->quantity:1);
 						Sleep(CModuleUtil::randomFormula(config->sleep,200,0));
 						delete item;
 						delete cont;

@@ -541,7 +541,7 @@ int depotDepositOpenChest(int x,int y,int z) {
 		}
 		if (depotId){
 			sender.openContainerFromContainer(depotId,depotContNr+0x40,depotSlotNr,depotContNr);
-			CModuleUtil::waitForItemChange(depotContNr, depotSlotNr, depotId);
+			CModuleUtil::waitForItemChange(depotContNr, depotSlotNr, depotId,((CTibiaItem*)cont->items.GetAt(depotSlotNr))->quantity);
 		} else {
 			depotContNr = -1;
 		}
@@ -551,6 +551,87 @@ int depotDepositOpenChest(int x,int y,int z) {
 	return depotContNr;
 }
 
+// returns quantity actually moved, tries to move as much of the item as possible.
+// can be used for more than just depot
+int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos, int qty, int destContNr, int shouldCheckCaps = 0){
+	CMemReaderProxy reader;
+	CPackSenderProxy sender;
+
+	CTibiaTile *tile=reader.getTibiaTile(objectId);
+	if(tile == NULL) return 0;
+
+	CTibiaContainer *destCont = reader.readContainer(destContNr);
+	CTibiaContainer *srcCont = reader.readContainer(sourceContNr);
+	if(!destCont->flagOnOff || !srcCont->flagOnOff){
+		deleteAndNull(destCont);
+		deleteAndNull(srcCont);
+		return 0;
+	}
+	int qtyToMove = qty;
+	int destPos = destCont->size-1;
+	if(destCont->itemsInside>=destCont->size){//if no space, find location of a stack in the container
+		qtyToMove = 0;
+		if (tile->stackable){ //
+			for (int itemNr=0;itemNr<destCont->itemsInside;itemNr++) {
+				CTibiaItem *item = (CTibiaItem *)destCont->items.GetAt(itemNr);
+				if (item->objectId==objectId){
+					qtyToMove = min(qty,100-item->quantity);
+					destPos=itemNr;
+					if(qtyToMove) break;
+				}
+			}
+		}
+	}
+	if(qtyToMove){
+		if(shouldCheckCaps){// do more checking and retries in case we do not have enough caps
+			CTibiaCharacter* self = reader.readSelfCharacter();
+			sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+destContNr,destPos,qtyToMove);
+			if(CModuleUtil::waitForCapsChange(self->cap)){
+				Sleep(CModuleUtil::randomFormula(300,100));
+			}else{// if caps not changed, then move 1 item and get weight
+				if(qtyToMove!=1){
+					sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+destContNr,destPos,1);
+					if(CModuleUtil::waitForCapsChange(self->cap)){
+						Sleep(CModuleUtil::randomFormula(300,100));
+					}else{// exit if fails to move even 1 item
+						deleteAndNull(self);
+						qtyToMove = 0;
+						goto exitTryMoving;
+					}
+					CTibiaCharacter* selfAfter = reader.readSelfCharacter();
+					float weight = self->cap - selfAfter->cap;
+					if(weight > 0){ // if we have a valid weight, 
+						qtyToMove = min(qtyToMove,int(selfAfter->cap / (weight+.01)));
+						sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+destContNr,destPos,qtyToMove);
+						if(CModuleUtil::waitForCapsChange(selfAfter->cap)){
+							Sleep(CModuleUtil::randomFormula(300,100));
+						}else{
+							deleteAndNull(self);
+							deleteAndNull(selfAfter);
+							qtyToMove = 0;
+							goto exitTryMoving;
+						}
+					}
+					deleteAndNull(selfAfter);
+				}else{
+					deleteAndNull(self);
+					qtyToMove = 0;
+					goto exitTryMoving;
+				}
+			}
+			deleteAndNull(self);
+		}else{
+			sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+destContNr,destPos,qtyToMove);
+			CModuleUtil::waitForItemChange(sourceContNr,sourcePos,objectId,((CTibiaItem *)srcCont->items.GetAt(sourcePos))->quantity);
+			Sleep(CModuleUtil::randomFormula(300,100));
+		}
+	}
+exitTryMoving:
+	deleteAndNull(destCont);
+	deleteAndNull(srcCont);
+	return qtyToMove;
+
+}
 /**
 * Move the item to some container in the chest.
 */
@@ -569,27 +650,21 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	}
 	
 	/**
-	* If container number 8 is open than we can try to deposit to it (to avoid
+	* If secondary depot container is open than we can try to deposit to it (to avoid
 	* massive close/open of containers.
 	*/
-	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
-	if (cont8->flagOnOff&&cont8->itemsInside<cont8->size) {
-		// found container in which we can do deposit!
-		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr2,cont8->size-1,qty);
-		CModuleUtil::waitForItemsInsideChange(depotContNr2,cont8->itemsInside);
-		Sleep(CModuleUtil::randomFormula(300,100));
-		deleteAndNull(cont8);
+	qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr2);
+	if(qty==0){
 		deleteAndNull(depotChest);
 		return;
 	}
-	deleteAndNull(cont8);
+	
 	
 	/**
 	* Scan through all containers in the depot chest to look for an empty one
 	*/
 	int itemNr;
 	int count=depotChest->itemsInside;
-	int targetPosDirect=-1;
 	CTibiaTile *tile = reader.getTibiaTile(objectId);
 	for (itemNr=0;itemNr<count;itemNr++) {
 		CTibiaItem *item = (CTibiaItem *)depotChest->items.GetAt(itemNr);
@@ -599,8 +674,11 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 			if (item->objectId==objectId&&
 				(item->quantity+qty<100||depotChest->itemsInside<depotChest->size))
 			{
-				targetPosDirect=itemNr;
-				break;
+				qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr);
+				if(qty==0){
+					deleteAndNull(depotChest);
+					return;
+				}
 			}
 		}
 
@@ -610,142 +688,46 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 			CModuleUtil::waitForOpenContainer(depotContNr2,false);
 			sender.openContainerFromContainer(item->objectId,0x40+depotContNr,itemNr,depotContNr2);
 			CModuleUtil::waitForOpenContainer(depotContNr2,true);
-			CTibiaContainer *newContainer = reader.readContainer(depotContNr2);
-			if (newContainer->flagOnOff) {
-				int targetPos=-1;
-				if (tile->stackable)
-				{
-					// if item is stackable then try to find a suitable stack for it
-					for (int stackedItemPos=0;stackedItemPos<newContainer->itemsInside;stackedItemPos++)
-					{
-						CTibiaItem *stackedItem=(CTibiaItem *)newContainer->items.GetAt(stackedItemPos);
-						if (stackedItem->objectId==objectId&&
-							(stackedItem->quantity+qty<100||newContainer->itemsInside<newContainer->size))
-						{
-							targetPos=stackedItemPos;
-							break;
-						}
-					}
-				}
-				if(targetPos==-1 && newContainer->itemsInside<newContainer->size){
-					targetPos=newContainer->size-1;
-				}
-				if (targetPos!=-1){
-					// found container in which we can do deposit!
-					sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr2,targetPos,qty);
-					CModuleUtil::waitForItemsInsideChange(depotContNr2,newContainer->itemsInside);
-					Sleep(CModuleUtil::randomFormula(300,100));
-					deleteAndNull(newContainer);
-					deleteAndNull(depotChest);
-					return;
-				}
+			
+			qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr2);
+			if(qty==0){
+				deleteAndNull(depotChest);
+				return;
 			}
-			deleteAndNull(newContainer);
 		}
 	}
-	if (targetPosDirect==-1&&depotChest->itemsInside<depotChest->size){
-		targetPosDirect=depotChest->size-1;
-	}
-	if (targetPosDirect!=-1){
-		sender.moveObjectBetweenContainers(objectId,0x40+sourceContNr,sourcePos,0x40+depotContNr,targetPosDirect,qty);
-		CModuleUtil::waitForItemsInsideChange(depotContNr,depotChest->itemsInside);
-		Sleep(CModuleUtil::randomFormula(300,100));
+	qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr);
+	if(qty==0){
 		deleteAndNull(depotChest);
 		return;
 	}
 
-	
 	deleteAndNull(depotChest);
 	
 	// if we are here this means that the depot is full
 	globalAutoAttackStateDepot=CToolAutoAttackStateDepot_noSpace;
 }
 
-// take items from depot chest and move to my backpacks (contnr,pos)
-int depotDepositTakeFromChest(int objectId,int contNr,int pos,int qtyToPickup,int depotContNr,int depotContNr2) {
+// take item from depot chest at (contNr,pos) and find empty space in my backpacks
+int depotDepositTakeFromChest(int objectId,int srcContNr,int srcPos,int qtyToPickup,int depotContNr,int depotContNr2) {
+	if(globalAutoAttackStateDepot==CToolAutoAttackStateDepot_noSpace) return 0;
+
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
-	CTibiaContainer *depotChest = reader.readContainer(depotContNr);
-	int itemNr;
-	
-	if (!depotChest->flagOnOff) {
-		// shouldn't happen...
-		deleteAndNull(depotChest);
-		return 0;
+	CMemConstData memConstData = reader.getMemConstData();
+	CTibiaTile* tile = reader.getTibiaTile(objectId);
+	int qtyToPickupOrig = qtyToPickup;
+	for (int contNr=0;contNr<memConstData.m_memMaxContainers && qtyToPickup;contNr++) {
+		if (contNr==depotContNr || contNr==depotContNr2) continue; //only scan through carried containers
+		qtyToPickup -= depotTryMovingItemToContainer(objectId, srcContNr, srcPos, qtyToPickup, contNr, 1);
 	}
-	
-	/**
-	* If container number 8 is open than we can try to take our item from it (to avoid
-	* massive close/open of containers.
-	*/
-	CTibiaContainer *cont8 = reader.readContainer(depotContNr2);
-	if (cont8->flagOnOff) {
-		for (itemNr=0;itemNr<cont8->itemsInside;itemNr++) {
-			CTibiaItem *item=((CTibiaItem *)cont8->items.GetAt(itemNr));
-			if (item->objectId==objectId) {
-				// that's this item - pick it up
-				if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
-				sender.moveObjectBetweenContainers(objectId,0x40+depotContNr2,itemNr,0x40+contNr,pos,qtyToPickup);
-				CModuleUtil::waitForItemsInsideChange(depotContNr2,cont8->itemsInside);
-				Sleep(CModuleUtil::randomFormula(300,100));
-				deleteAndNull(cont8);
-				deleteAndNull(depotChest);
-				return qtyToPickup;
-			}
-		}
+	if(qtyToPickupOrig == qtyToPickup){
+		globalAutoAttackStateDepot=CToolAutoAttackStateDepot_noSpace;
 	}
-	deleteAndNull(cont8);
-	
-	/**
-	* Scan through all containers in the depot chest to look for some matching one
-	*/
-	int count=depotChest->itemsInside;
-	for (itemNr=0;itemNr<count;itemNr++) {
-		CTibiaItem *item = (CTibiaItem*)depotChest->items.GetAt(itemNr);
-		if (item->objectId==objectId) {
-			// that's this item - pick it up
-			if (qtyToPickup>item->quantity) qtyToPickup=item->quantity;
-			sender.moveObjectBetweenContainers(objectId,0x40+depotContNr,itemNr,0x40+contNr,pos,qtyToPickup);
-			CModuleUtil::waitForItemsInsideChange(depotContNr,depotChest->itemsInside);
-			Sleep(CModuleUtil::randomFormula(300,100));
-			deleteAndNull(depotChest);
-			
-			return qtyToPickup;
-		}
-		if (reader.getTibiaTile(item->objectId)->isContainer) {
-			// that object is a container, so open it
-			sender.closeContainer(depotContNr2);
-			CModuleUtil::waitForOpenContainer(depotContNr2,false);
-			sender.openContainerFromContainer(item->objectId,0x40+depotContNr,itemNr,depotContNr2);
-			CModuleUtil::waitForOpenContainer(depotContNr2,true);
-			CTibiaContainer *newContainer = reader.readContainer(depotContNr2);
-			if (newContainer->flagOnOff) {
-				for (int itemNr2=0;itemNr2<newContainer->itemsInside;itemNr2++) {
-					CTibiaItem *item2=((CTibiaItem *)newContainer->items.GetAt(itemNr2));
-					if (item2->objectId==objectId) {
-						// that's this item - pick it up
-						if (qtyToPickup>item2->quantity) qtyToPickup=item2->quantity;
-						sender.moveObjectBetweenContainers(objectId,0x40+depotContNr2,itemNr2,0x40+contNr,pos,qtyToPickup);
-						CModuleUtil::waitForItemsInsideChange(depotContNr2,newContainer->itemsInside);
-						Sleep(CModuleUtil::randomFormula(300,100));
-						deleteAndNull(newContainer);
-						deleteAndNull(depotChest);
-						
-						return qtyToPickup;
-					}
-				}
-			}
-			deleteAndNull(newContainer);
-		}
-	}
-	
-	deleteAndNull(depotChest);
-	
-	// our item to move not found;
-	return 0;
+	return qtyToPickupOrig - qtyToPickup;
 }
 
-int countAllItemsOfType(int objectId,int depotContNr,int depotContNr2) {
+int countAllItemsOfType(int objectId,int depotContNr,int depotContNr2) { // excludes depotCont containers from search
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
@@ -781,7 +763,7 @@ void depotDeposit(CConfigData *config) {
 	* 3. deposit items
 	*/
 	//In Tibia 9.40 depot container changed to having no slots available in the "Locker"
-	if (!config->depotDropInsteadOfDepositon) {
+	if (!config->depotDropInsteadOfDeposit) {
 		globalAutoAttackStateDepot=CToolAutoAttackStateDepot_opening;
 		for (int x=-1;x<=1;x++){
 			for (int y=-1;y<=1;y++){
@@ -819,11 +801,10 @@ void depotDeposit(CConfigData *config) {
 			int contNr;
 			int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
 			
-			if (config->depotTrigger[i].when>config->depotTrigger[i].remain) {
+			if (config->depotTrigger[i].when>config->depotTrigger[i].remain && totalQty > config->depotTrigger[i].remain) {
 				// deposit to depot
-				int qtyToMove=totalQty-config->depotTrigger[i].remain;
 				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-					if (contNr==depotContNr || contNr==depotContNr2) continue;
+					if (contNr==depotContNr || contNr==depotContNr2) continue; //only scan through carried containers
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					
 					if (cont->flagOnOff) {
@@ -843,7 +824,7 @@ void depotDeposit(CConfigData *config) {
 									itemQty=totalQty-config->depotTrigger[i].remain;
 								}
 								if (itemQty>0) {
-									if (!config->depotDropInsteadOfDepositon) {
+									if (!config->depotDropInsteadOfDeposit) {
 										// move to the depot chest
 										depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty,depotContNr,depotContNr2);
 									}
@@ -863,34 +844,76 @@ void depotDeposit(CConfigData *config) {
 					deleteAndNull(cont);
 				}
 			}
-			if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDepositon) {
+			if (config->depotTrigger[i].when<config->depotTrigger[i].remain&&!config->depotDropInsteadOfDeposit && config->depotTrigger[i].remain > totalQty) {
 				// pickup from depot
-				int currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-				int qtyToPickup=config->depotTrigger[i].remain-currentQty;
-				int movesInItemation=1;
-				while (qtyToPickup>0&&movesInItemation>0) {
-					movesInItemation=0;
-					for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-						if (contNr==depotContNr || contNr==depotContNr2) continue;
+				int qtyToPickup = config->depotTrigger[i].remain - totalQty;
 
-						CTibiaContainer *cont = reader.readContainer(contNr);
-						if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-							int movedQty=depotDepositTakeFromChest(objectToMove,contNr,cont->size-1,qtyToPickup,depotContNr,depotContNr2);
-							if (movedQty) {
-								movesInItemation++;
-								deleteAndNull(cont);
-								break;
-							}// else exits while since movesInItemation==0
-						}
-						deleteAndNull(cont);
+				CTibiaContainer *depotChest = reader.readContainer(depotContNr);
+				int itemNr;
+				
+				if (!depotChest->flagOnOff) {
+					// shouldn't happen...
+					deleteAndNull(depotChest);
+					goto DPfinish;
+				}
+				/**
+				* If main depot container is open then we can try to take our item from it (to avoid
+				* massive close/open of containers)
+				*/
+				for(itemNr=depotChest->itemsInside-1;itemNr>=0 && qtyToPickup>0;itemNr--){
+					CTibiaItem *item=((CTibiaItem *)depotChest->items.GetAt(itemNr));
+					if (item->objectId==objectToMove) {
+						int qty = min(qtyToPickup,item->quantity?item->quantity:1);
+						qtyToPickup -= depotDepositTakeFromChest(objectToMove, depotContNr, itemNr, qty, depotContNr, depotContNr2);
 					}
-					currentQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-					// halves amount to take each time it fails to pick up any
-					if (config->depotTrigger[i].remain-currentQty>=qtyToPickup && movesInItemation)
-						qtyToPickup=qtyToPickup/2;
-					else
-						qtyToPickup=config->depotTrigger[i].remain-countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-				} // while picking up
+				}
+				deleteAndNull(depotChest);
+
+				//Try the same for currently open sub container
+				CTibiaContainer *subCont = reader.readContainer(depotContNr2);
+				if (subCont->flagOnOff) {
+					for(itemNr=subCont->itemsInside-1;itemNr>=0 && qtyToPickup>0;itemNr--){
+						CTibiaItem *item=((CTibiaItem *)subCont->items.GetAt(itemNr));
+						if (item->objectId==objectToMove) {
+							int qty = min(qtyToPickup,item->quantity?item->quantity:1);
+							qtyToPickup -= depotDepositTakeFromChest(objectToMove, depotContNr2, itemNr, qty, depotContNr, depotContNr2);
+						}
+					}
+				}
+				deleteAndNull(subCont);
+				
+				depotChest = reader.readContainer(depotContNr);
+				/**
+				* Scan through all containers in the depot chest to look for some matching one
+				*/
+				int count=depotChest->itemsInside;
+				for (int itemNrChest=0;itemNrChest<count && qtyToPickup>0;itemNrChest++) {
+					CTibiaItem *item = (CTibiaItem*)depotChest->items.GetAt(itemNrChest);
+					if (reader.getTibiaTile(item->objectId)->isContainer) {
+						// that object is a container, so open it
+						subCont = reader.readContainer(depotContNr2);
+						if(subCont->flagOnOff){
+							sender.closeContainer(depotContNr2);
+							CModuleUtil::waitForOpenContainer(depotContNr2,false);
+						}
+						deleteAndNull(subCont);
+						sender.openContainerFromContainer(item->objectId,0x40+depotContNr,itemNrChest,depotContNr2);
+						CModuleUtil::waitForOpenContainer(depotContNr2,true);
+						subCont = reader.readContainer(depotContNr2);
+						if (subCont->flagOnOff) {
+							for(itemNr=subCont->itemsInside-1;itemNr>=0 && qtyToPickup>0;itemNr--){
+								CTibiaItem *item=((CTibiaItem *)subCont->items.GetAt(itemNr));
+								if (item->objectId==objectToMove) {
+									int qty = min(qtyToPickup,item->quantity?item->quantity:1);
+									qtyToPickup -= depotDepositTakeFromChest(objectToMove, depotContNr2, itemNr, qty, depotContNr, depotContNr2);
+								}
+							}
+						}
+						deleteAndNull(subCont);
+					}
+				}
+				
+				deleteAndNull(depotChest);
 			} // if pickup from depot
 		}
 	}
@@ -929,7 +952,7 @@ DPfinish:
 						if (item->objectId==objectToMove) {
 							int itemQty = item->quantity?item->quantity:1;
 							if (itemQty>0) {
-								if (!config->depotDropInsteadOfDepositon) {
+								if (!config->depotDropInsteadOfDeposit) {
 									// move to the depot chest
 									depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty,depotContNr,depotContNr2);
 								}
@@ -957,7 +980,7 @@ DPfinish2:
 
 	
 	// all is finished :) - we can go back to the hunting area
-	if (!config->depotDropInsteadOfDepositon) {
+	if (!config->depotDropInsteadOfDeposit) {
 		CTibiaContainer *cont=reader.readContainer(depotContNr2);
 		if (cont->flagOnOff){
 			sender.closeContainer(depotContNr2);
@@ -3426,7 +3449,7 @@ void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"training/fightWhenAlien")) m_configData->fightWhenAlien=atoi(paramValue);
 	if (!strcmp(paramName,"training/bloodHit")) m_configData->bloodHit=atoi(paramValue);
 	if (!strcmp(paramName,"training/activate")) m_configData->trainingActivate=atoi(paramValue);
-	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) m_configData->depotDropInsteadOfDepositon=atoi(paramValue);
+	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) m_configData->depotDropInsteadOfDeposit=atoi(paramValue);
 	if (!strcmp(paramName,"depot/depotCap")) m_configData->depotCap=atoi(paramValue);
 	if (!strcmp(paramName,"walker/radius")) m_configData->radius=atoi(paramValue);
 	if (!strcmp(paramName,"loot/other/whilekilling")) m_configData->lootWhileKill=atoi(paramValue);
@@ -3562,7 +3585,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"training/fightWhenAlien")) sprintf(buf,"%d",m_configData->fightWhenAlien);
 	if (!strcmp(paramName,"training/bloodHit")) sprintf(buf,"%d",m_configData->bloodHit);
 	if (!strcmp(paramName,"training/activate")) sprintf(buf,"%d",m_configData->trainingActivate);
-	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) sprintf(buf,"%d",m_configData->depotDropInsteadOfDepositon);
+	if (!strcmp(paramName,"depot/depotDropInsteadOfDepositon")) sprintf(buf,"%d",m_configData->depotDropInsteadOfDeposit);
 	if (!strcmp(paramName,"depot/depotCap")) sprintf(buf,"%d",m_configData->depotCap);
 	if (!strcmp(paramName,"walker/radius")) sprintf(buf,"%d",m_configData->radius);
 	if (!strcmp(paramName,"loot/other/whilekilling")) sprintf(buf,"%d",m_configData->lootWhileKill);

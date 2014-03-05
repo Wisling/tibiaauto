@@ -115,7 +115,7 @@ public:
 	CEdit	m_attackHpAbove;
 	CButton	m_lootFromFloor;
 	CButton	m_dropNotLooted;
-	CButton	m_depotDropInsteadOfDepositon;
+	CButton	m_depotDropInsteadOfDeposit;
 	CComboBox	m_weaponTrain;
 	CComboBox	m_weaponFight;
 	CStatic	m_trainingState;

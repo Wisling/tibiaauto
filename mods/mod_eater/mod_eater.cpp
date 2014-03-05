@@ -146,7 +146,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				}
 									//Free up space in BPs by eating items with smaller quantities until they are gone
 									//Incomplete algorithim!!!! (only finds smaller quantity items if they exist in another BP)
-				if (tempFoodItem->objectId && tempFoodItem->quantity < foodItem->quantity) {
+				if (tempFoodItem->objectId && (tempFoodItem->quantity?tempFoodItem->quantity:1) < (foodItem->quantity?foodItem->quantity:1)) {
 					delete foodItem;
 					foodItem = CModuleUtil::lookupItem(contNr,foods);
 					foodContainer = contNr;

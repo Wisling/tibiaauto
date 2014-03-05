@@ -155,10 +155,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (throwableItemId&&(item->objectId==0||item->objectId==throwableItemId))
 		{
-			if (item->quantity<=config->throwableAt)
+			if ((item->quantity?item->quantity:1)<=config->throwableAt)
 			{
 				int contNr;
-				int qtyToRestack=config->throwableTo-item->quantity;
+				int qtyToRestack=config->throwableTo-(item->quantity?item->quantity:1);
 				itemsAccepted.RemoveAll();
 				itemsAccepted.Add(throwableItemId);
 				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
@@ -169,8 +169,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);
 						if (itemAccepted->objectId)
 						{
-							if (itemAccepted->quantity<qtyToRestack)
-								qtyToRestack=itemAccepted->quantity;
+							if ((itemAccepted->quantity?itemAccepted->quantity:1)<qtyToRestack)
+								qtyToRestack=itemAccepted->quantity?itemAccepted->quantity:1;
 							if (!config->restackToRight)
 							{
 								sender.moveObjectBetweenContainers(throwableItemId,0x40+contNr,itemAccepted->pos,0x6,0,qtyToRestack?qtyToRestack:1);

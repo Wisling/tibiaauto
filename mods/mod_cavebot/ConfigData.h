@@ -61,7 +61,7 @@ public:
 	int bloodHit;
 	int trainingActivate;
 
-	int depotDropInsteadOfDepositon;
+	int depotDropInsteadOfDeposit;
 	int lootFromFloor;
 	int attackHpAbove;
 	int backattackRunes;

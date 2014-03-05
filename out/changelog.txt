@@ -1,3 +1,17 @@
+2.37.0 25.2.2014
+Enhancements:
+ Tibia Auto: updated to Tibia 10.35
+Defects:
+ Cavebot: Fixed the depot walker for depositing and retrieving.
+Accidental Removals:
+ Removed TA's reaction to "there is no way" message when ignoring unreachable creatures.
+
+2.36.0 31.1.2014
+Enhancements:
+ Tibia Auto: updated to Tibia 10.34
+Defects:
+ tibiauto-tiles.xml: Fixed some holes appearing as rope spots
+
 2.35.1 18.12.2013
 Enhancements:
  Tibia Auto: updated to Tibia 10.31

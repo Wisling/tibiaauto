@@ -117,7 +117,7 @@ int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR){
 		return randomFormula(average, halfrange, minR);
 }
 
-CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,int qty)
+CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,int fluidType)
 {
 	CMemReaderProxy reader;
 	int foodContNr=-1;
@@ -135,7 +135,7 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 			int pos;
 			for (pos=0;pos<itemsAccepted->GetSize();pos++)
 			{
-				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos)&&item->quantity==qty)
+				if ((int)item->objectId==(int)itemsAccepted->GetAt(pos)&&item->quantity==fluidType)
 				{
 					// item found!
 					
@@ -267,7 +267,7 @@ int CModuleUtil::waitForItemChange(int locationAddress, int origItemId)//takes a
 	return 0;
 }
 
-int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId)//takes about a max of .5 secs
+int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId, int quantity)//takes about a max of .5 secs
 {
 	CMemReaderProxy reader;
 	int t;
@@ -280,7 +280,7 @@ int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId)//take
 			return 1;
 		}
 		CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
-		if (item->objectId!=origItemId)
+		if (item->objectId!=origItemId || item->quantity!=quantity)
 		{
 			delete cont;
 			return 1;
@@ -1164,7 +1164,7 @@ void CModuleUtil::eatItemFromContainer(int contNr)
 	CTibiaItem* item=lookupItem(contNr,acceptedItems);
 	if (item->objectId)
 	{
-		for (int i=0;i<3&&i<item->quantity;i++){
+		for (int i=0;i<3&&i<(item->quantity?item->quantity:1);i++){
 			sender.useItemInContainer(item->objectId,0x40+contNr,item->pos);
 			Sleep(CModuleUtil::randomFormula(400,100));
 		}
