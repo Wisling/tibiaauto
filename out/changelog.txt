@@ -1,3 +1,15 @@
+2.38.0 6.3.2014
+Enhancements:
+ Tibia Auto: Updated for Tibia 10.36
+Defects:
+
+2.37.1 4.3.2014
+Enhancements:
+Defects:
+ Eater: Fixed eater item count error
+ Cavebot: Fixed packet sending errors.
+ Cavebot: Added back reaction to "there is no way" message when ignoring unreachable creatures.
+
 2.37.0 25.2.2014
 Enhancements:
  Tibia Auto: updated to Tibia 10.35
