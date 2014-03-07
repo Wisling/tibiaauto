@@ -317,8 +317,10 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	//ch->??=CMemUtil::GetMemIntValue(offset+168);357?
 	//ch->??=CMemUtil::GetMemIntValue(offset+172);
 	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+176);
-	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+182);
-	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+186);
+	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+180);
+	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+184);
+	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+188);
+	//ch->NPCbubble=CMemUtil::GetMemIntValue(offset+192); //0-none,1-talk,2-quest,3-trade,4-quest trade,
 
 
 	ch->nr=nr;

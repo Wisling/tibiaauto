@@ -799,7 +799,7 @@ void CPackSender::sayNPC(char *buf)
 	retbuf[0]=strlen(buf)+4;
 	retbuf[1]=(strlen(buf)+4)>>8;
 	retbuf[2]=0x96;
-	retbuf[3]=0x0b;
+	retbuf[3]=0x0c;
 	retbuf[4]=strlen(buf);
 	retbuf[5]=0;
 	sprintf(retbuf+6,"%s",buf);
