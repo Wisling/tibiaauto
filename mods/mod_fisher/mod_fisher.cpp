@@ -79,11 +79,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			CTibiaContainer *cont;
 			if (item->objectId==itemProxy.getValueForConst("fish")) {
 				// fish in left hand - move to first open container
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 					cont = reader.readContainer(contNr);
-					if (cont->flagOnOff && cont->itemsInside < cont->size) {
-						sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
-						contNr=memConstData.m_memMaxContainers;
+					if (cont->flagOnOff){
+						openContNr++;
+						if(cont->itemsInside < cont->size) {
+							sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
+							contNr=memConstData.m_memMaxContainers;
+						}
 					}
 					delete cont;
 				}
@@ -94,11 +99,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			item = reader.readItem(memConstData.m_memAddressRightHand);
 			if (item->objectId==itemProxy.getValueForConst("fish")) {
 				// fish in right hand - move to first open container
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 					cont = reader.readContainer(contNr);
-					if (cont->flagOnOff && cont->itemsInside < cont->size) {
-						sender.moveObjectBetweenContainers(item->objectId,0x05,0,0x40+contNr,0,item->quantity?item->quantity:1);
-						contNr=memConstData.m_memMaxContainers;
+					if (cont->flagOnOff){
+						openContNr++;
+						if(cont->itemsInside < cont->size) {
+							sender.moveObjectBetweenContainers(item->objectId,0x05,0,0x40+contNr,0,item->quantity?item->quantity:1);
+							contNr=memConstData.m_memMaxContainers;
+						}
 					}
 					delete cont;
 				}

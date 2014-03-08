@@ -869,9 +869,12 @@ int sellItems(CConfigData *config, int traderNum) {
 	Sleep (RandomTimeSeller());
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
-		for (int contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (int contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr<openContMax; contNr++) {
 			cont = reader.readContainer(contNr);
 			if (cont->flagOnOff) {
+				openContNr++;
 				int count = cont->itemsInside;
 				for (int slotNr = count - 1; slotNr >= 0; slotNr--) {
 					CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(slotNr);
@@ -984,11 +987,15 @@ int countAllItemsOfType(int objectId,bool includeSlots) {
 	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
 	int ret=0;
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr<openContMax; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
-		if (cont->flagOnOff)
+		if (cont->flagOnOff){
+			openContNr++;
 			ret+=cont->countItemsOfType(objectId);
+		}
 		delete cont;
 	}
 	if (includeSlots){
@@ -1025,6 +1032,8 @@ bool shouldGo(CConfigData *config) {
 				count = countAllItemsOfType(objectId);
 				if (count && count >= config->sellItem[i].tradeItem[j].quantityBuySell)
 					should = true;
+			} else {
+				break;
 			}
 
 		}
@@ -1037,8 +1046,10 @@ bool shouldGo(CConfigData *config) {
 				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
 				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
 			
-			if (countAllItemsOfType(objectId,true) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
-				should = true;
+				if (countAllItemsOfType(objectId,true) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
+					should = true;
+			} else {
+				break;
 			}
 		}
 	}
@@ -1091,17 +1102,20 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 	int ret = NOGO;
 	for (int j = 0; j < 32; j++) {
 		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
-		if (!objectId) break;
-
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
-		if (objectId && countAllItemsOfType(objectId) > 0)
-			ret = SELLONLY;
+		if (objectId){
+			if(countAllItemsOfType(objectId) > 0){
+				ret = SELLONLY;
+				break;
+			}
+		}else{
+			break;
+		}
 	}
 	int count = -1;
 	for (j = 0; j < 32; j++) {
 		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
-		if (!objectId) break;
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
 		if (count==-1){
@@ -1109,12 +1123,17 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 			count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
 			count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
 		}
-
-		if (objectId && countAllItemsOfType(objectId,true) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice) {
-			if (ret == SELLONLY)
-				ret = DOBOTH;
-			else
-				ret = BUYONLY;
+		if(objectId){
+			if (countAllItemsOfType(objectId,true) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice) {
+				if (ret == SELLONLY){
+					ret = DOBOTH;
+				}else{
+					ret = BUYONLY;
+				}
+				break;
+			}
+		}else{
+			break;
 		}
 	}
 //	if (ret == NOGO) AfxMessageBox("No business for this seller.");
@@ -1130,11 +1149,19 @@ int spaceAvailable() {
 
 	int contNr;
 	int hasSpace=0;
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr<openContMax; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
-		if (cont->flagOnOff && cont->itemsInside < cont->size)
-			hasSpace = 1;
+		if (cont->flagOnOff){
+			openContNr++;
+			if(cont->itemsInside < cont->size){
+				hasSpace = 1;
+				delete cont;
+				break;
+			}
+		}
 		delete cont;
 	}
 	return hasSpace;

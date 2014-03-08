@@ -104,11 +104,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		CTibiaCharacter *myself = reader.readSelfCharacter();
 
 		int blanksCount=0;
-		for (int i=0;i<memConstData.m_memMaxContainers;i++)
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (int i=0;i<memConstData.m_memMaxContainers && openContNr<openContMax;i++)
 		{
 			CTibiaContainer *container = reader.readContainer(i);
 			if (container->flagOnOff)
 			{
+				openContNr++;
 				if(config->useSpear){
 					blanksCount+=container->countItemsOfType(itemProxy.getValueForConst("spear"));
 				} else {

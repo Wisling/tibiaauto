@@ -238,10 +238,13 @@ int depotCheckCanGo(CConfigData *config){
 		depotListObjects.Add(objectId);
 		int contNr;
 		int totalQty=0;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
 			if (cont->flagOnOff){
+				openContNr++;
 				totalQty+=cont->countItemsOfType(objectId);
 			}
 			
@@ -263,9 +266,12 @@ int depotCheckCanGo(CConfigData *config){
 	if(config->depositLootedItemList){
 	// If not returned yet then find another looted item not already checked in the depot list
 		int contNr;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			if (cont->flagOnOff){
+				openContNr++;
 				int itemNr;
 				for(itemNr=0;itemNr<cont->itemsInside;itemNr++){
 					CTibiaItem* item = (CTibiaItem *)cont->items.GetAt(itemNr);
@@ -313,10 +319,13 @@ int depotCheckShouldGo(CConfigData *config) {
 		int contNr;
 		int totalQty=0;
 		//Count number of this item in open containers
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
 			if (cont->flagOnOff){
+				openContNr++;
 				totalQty+=cont->countItemsOfType(objectId);
 			}
 			
@@ -732,12 +741,16 @@ int countAllItemsOfType(int objectId,int depotContNr,int depotContNr2) { // excl
 	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
 	int ret=0;
-	for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 		if (contNr==depotContNr || contNr==depotContNr2) continue;
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
-		if (cont->flagOnOff)
+		if (cont->flagOnOff){
+			openContNr++;
 			ret+=cont->countItemsOfType(objectId);
+		}
 		
 		deleteAndNull(cont);
 	}
@@ -803,11 +816,14 @@ void depotDeposit(CConfigData *config) {
 			
 			if (config->depotTrigger[i].when>config->depotTrigger[i].remain && totalQty > config->depotTrigger[i].remain) {
 				// deposit to depot
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 					if (contNr==depotContNr || contNr==depotContNr2) continue; //only scan through carried containers
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					
 					if (cont->flagOnOff) {
+						openContNr++;
 						int itemNr;
 						for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--) {
 							CTibiaContainer *contCheck = reader.readContainer(contNr);
@@ -934,11 +950,14 @@ DPfinish:
 			int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
 			// deposit to depot
 			int qtyToMove=totalQty;
-			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+			int openContNr=0;
+			int openContMax=reader.readOpenContainerCount();
+			for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 				if (contNr==depotContNr || contNr==depotContNr2) continue;
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				
 				if (cont->flagOnOff) {
+					openContNr++;
 					int itemNr;
 					for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--) {
 						CTibiaContainer *contCheck = reader.readContainer(contNr);
@@ -978,7 +997,7 @@ DPfinish2:
 	reader.setGlobalVariable("walking_control","depotwalker");
 	reader.setGlobalVariable("walking_priority",config->depotModPriorityStr);
 
-	
+
 	// all is finished :) - we can go back to the hunting area
 	if (!config->depotDropInsteadOfDeposit) {
 		CTibiaContainer *cont=reader.readContainer(depotContNr2);
@@ -1028,28 +1047,36 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 		CUIntArray itemsAccepted;
 		int contNr;
 		itemsAccepted.Add(objectId);
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 			CTibiaItem *itemWear = CModuleUtil::lookupItem(contNr,&itemsAccepted);
 			if (itemWear->objectId) {
 				CTibiaContainer *cont = reader.readContainer(contNr);
 				if (cont->flagOnOff) {
+					openContNr++;
 					if (cont->itemsInside>=cont->size && itemSlot->objectId!=0 || time(NULL)-containerTimes[contNr]<CONTAINER_TIME_CUTOFF) {
 						// container with desired item is full or not a carried container and we need a place to put the item occupying the slot
 						int hasSpace=0;
-						for (int contNrSpace=0;contNrSpace<memConstData.m_memMaxContainers;contNrSpace++) {
+						int openContNr=0;
+						int openContMax=reader.readOpenContainerCount();
+						for (int contNrSpace=0;contNrSpace<memConstData.m_memMaxContainers && openContNr<openContMax;contNrSpace++) {
 							if  (time(NULL)-containerTimes[contNrSpace]<CONTAINER_TIME_CUTOFF) continue; //skip if not carried
 
 							CTibiaContainer *contSpace = reader.readContainer(contNrSpace);
-							if (contSpace->flagOnOff&&contSpace->itemsInside<contSpace->size) {
-								// container has some free places
-								sender.moveObjectBetweenContainers(itemSlot->objectId,location,0,0x40+contNrSpace,contSpace->size-1,itemSlot->quantity?itemSlot->quantity:1);
-								if (!CModuleUtil::waitForItemChange(locationAddress,itemSlot->objectId)){
-									//Failed to move object out of hand
-									return 0;
+							if (contSpace->flagOnOff){
+								openContNr++;
+								if(contSpace->itemsInside<contSpace->size) {
+									// container has some free places
+									sender.moveObjectBetweenContainers(itemSlot->objectId,location,0,0x40+contNrSpace,contSpace->size-1,itemSlot->quantity?itemSlot->quantity:1);
+									if (!CModuleUtil::waitForItemChange(locationAddress,itemSlot->objectId)){
+										//Failed to move object out of hand
+										return 0;
+									}
+									Sleep(CModuleUtil::randomFormula(300,100));
+									hasSpace=1;
+									contNrSpace=10000; // stop the loop
 								}
-								Sleep(CModuleUtil::randomFormula(300,100));
-								hasSpace=1;
-								contNrSpace=10000; // stop the loop
 							}
 							deleteAndNull(contSpace);
 						}
@@ -1264,13 +1291,18 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 		
 		// lookup a free place in any container
 		int contNr;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 			CTibiaContainer *cont = reader.readContainer(contNr);
-			if (cont->flagOnOff&&cont->itemsInside<cont->size) {
-				freeContNr=contNr;
-				freeContPos=cont->size-1;
-				deleteAndNull(cont);
-				break;
+			if (cont->flagOnOff){
+				openContNr++;
+				if(cont->itemsInside<cont->size) {
+					freeContNr=contNr;
+					freeContPos=cont->size-1;
+					deleteAndNull(cont);
+					break;
+				}
 			}
 			deleteAndNull(cont);
 		}
@@ -1935,14 +1967,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	lootFromFloorArr.RemoveAll();
 	
 	int i;
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
 	for (i=0;i<memConstData.m_memMaxContainers;i++){
-		CTibiaContainer* cont=reader.readContainer(i);
-		if (cont->flagOnOff){
-			containerTimes[i]=time(NULL)-CONTAINER_TIME_CUTOFF;
+		if(openContNr<openContMax){
+			CTibiaContainer* cont=reader.readContainer(i);
+			if (cont->flagOnOff){
+				openContNr++;
+				containerTimes[i]=time(NULL)-CONTAINER_TIME_CUTOFF;
+			} else {
+				containerTimes[i]=0;
+			}
+			delete cont;
 		} else {
 			containerTimes[i]=0;
 		}
-		delete cont;
 	}
 
 	int waypointsCount=0;
@@ -2097,14 +2136,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		// if in a full sleep mode then just do nothing
 		if (isInFullSleep()) continue;
 		
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
 		for (i=0;i<memConstData.m_memMaxContainers;i++){
-			CTibiaContainer* cont=reader.readContainer(i);
-			if (cont->flagOnOff){
-				if (containerTimes[i] == 0) containerTimes[i]=time(NULL);
+			if(openContNr<openContMax){
+				CTibiaContainer* cont=reader.readContainer(i);
+				if (cont->flagOnOff){
+					openContNr++;
+					if (containerTimes[i] == 0) containerTimes[i]=time(NULL);
+				} else {
+					containerTimes[i]=0;
+				}
+				delete cont;
 			} else {
 				containerTimes[i]=0;
 			}
-			delete cont;
 		}
 
 		modRuns++;//for performing actions once every 10 iterations

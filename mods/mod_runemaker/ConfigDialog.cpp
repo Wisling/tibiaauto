@@ -216,13 +216,16 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			
 			
 			// check whether some container should be added
-			for (i=0;i<memConstData.m_memMaxContainers;i++)
+			int openContNr=0;
+			int openContMax=reader.readOpenContainerCount();
+			for (i=0;i<memConstData.m_memMaxContainers && openContNr<openContMax;i++)
 			{
 				
 				CTibiaContainer *container = reader.readContainer(i);
 
 				if (container->flagOnOff)
 				{
+					openContNr++;
 					int j;
 					int foundContainer=0;
 					
@@ -277,9 +280,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			// now refresh info fields
 			int blanksCount=0;
 			int foodFishCount=0;
-			for (i=0;i<memConstData.m_memMaxContainers;i++)
+			for (i=m_safe.GetItemCount();i>=0;i--)
 			{
-				CTibiaContainer *container = reader.readContainer(i);
+				int containerNr=m_safe.GetItemData(i);
+				CTibiaContainer *container = reader.readContainer(containerNr);
 				if (container->flagOnOff)
 				{
 					blanksCount+=container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
@@ -378,13 +382,16 @@ void CConfigDialog::initialiseContainers()
 	
 	m_safe.SetExtendedStyle(m_safe.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 
-	for (i=0;i<memConstData.m_memMaxContainers;i++)
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (i=0;i<memConstData.m_memMaxContainers && openContNr<openContMax;i++)
 	{
 		char buf[256];
 		CTibiaContainer *container = reader.readContainer(i);
 		
 		if (container->flagOnOff)
 		{
+			openContNr++;
 			int itemNr=m_safe.GetItemCount();
 
 			sprintf(buf,"%d",i+1);

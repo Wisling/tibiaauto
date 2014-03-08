@@ -548,11 +548,15 @@ int countAllItemsOfType(int objectId,bool includeSlots) {
 	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
 	int ret=0;
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr<openContMax; contNr++) {
 		CTibiaContainer *cont = reader.readContainer(contNr);
 		
-		if (cont->flagOnOff)
+		if (cont->flagOnOff){
+			openContNr++;
 			ret+=cont->countItemsOfType(objectId);
+		}
 		delete cont;
 	}
 	if (includeSlots){

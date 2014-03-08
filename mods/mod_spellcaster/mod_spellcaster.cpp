@@ -78,7 +78,7 @@ static map<int*,int> setMana;
 static map<int*,int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
-int RandomVariableMana(int pt,int command,CConfigData *config){
+int RandomVariableMana(int& pt,int command,CConfigData *config){
 	CMemReaderProxy reader;
 	CTibiaCharacter* self=reader.readSelfCharacter();
 	int val=pt<0?max(self->maxMana+pt,self->maxMana/10):pt;
@@ -189,7 +189,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int lifeHp = RandomVariableHp(config->lifeHp,GET,config);
 		int manaMana = RandomVariableMana(config->manaMana,GET,config);
 		for (int loop = 0; loop < config->timedSpellList.size(); loop++)
-			config->timedSpellList[loop].randMana = RandomVariableMana(config->timedSpellList[loop].mana,GET,config);
+			config->timedSpellList[loop].randMana = config->timedSpellList[loop].mana;
 		for (loop = 0; loop < config->healList.size(); loop++)
 			config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP,config->healList[loop].maxHP,MAKE,config);
 		if (config->life && (config->customSpell && self->hp<=lifeHp || config->vitaSpell && self->hp<=vitaHp || config->granSpell && self->hp<=granHp || config->exuraSpell && self->hp<=exuraHp || ((config->paralysisSpell || config->paralysisIco) && (flags & 32) == 32 && self->mana >= config->exuraSpellMana))) {
@@ -475,9 +475,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (self->lvl > 50)
 						itemArray.Add(itemProxy.getValueForConst("fluidManaS"));
 					itemArray.Add(itemProxy.getValueForConst("fluidMana"));
-					for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++) {
+					int openContNr=0;
+					int openContMax=reader.readOpenContainerCount();
+					for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr<openContMax; contNr++) {
 						CTibiaContainer *cont = reader.readContainer(contNr);
 						if (cont->flagOnOff) {
+							openContNr++;
 							CTibiaItem *item=CModuleUtil::lookupItem(contNr, &itemArray);
 							if (item->objectId) {
 								sender.useItemFromContainerOnCreature(item->objectId,0x40+contNr,item->pos,self->tibiaId);

@@ -111,12 +111,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				
 				//T4: Check containers for the same rune as in hand
 				int contNr;
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 
 					if (cont->flagOnOff)
 					{
+						openContNr++;
 
 						CUIntArray acceptedItems;
 						//T4: If default rune has been choosen then cast it every time creature is attacked
@@ -131,6 +134,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							{
 								sender.castRuneAgainstCreature(0x40+contNr,runeItem->pos,
 									config->RuneType,attackedCreature);
+								delete runeItem;
+								delete cont;
+								break;
 							}
 							delete runeItem;
 						}

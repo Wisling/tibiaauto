@@ -101,8 +101,14 @@ int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
 	//cutoff always included
 	//95% chance of exit within 3 iterations
 	int sample = randomFormula(average,halfrange);
+	int iter=0;
 	while ((sample>=cutoff) == (cutoff>average)){
+		if(iter >= 2 || average == cutoff && sample<cutoff){
+			sample = average+(average-sample); // put sample on opposite side of average
+			break;
+		}
 		sample = randomFormula(average,halfrange);
+		iter ++;
 	}
 	return sample;
 }
@@ -1113,13 +1119,16 @@ void CModuleUtil::lootItemFromContainer(int contNr, CUIntArray *acceptedItems,in
 	
 	// find first free container
 	int qtyLooted=0;
-	for (int openCont=0;openCont<memConstData.m_memMaxContainers;openCont++)
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (int openCont=0;openCont<memConstData.m_memMaxContainers && openContNr<openContMax;openCont++)
 	{
 		if (openCont==contNr || openCont==ignoreCont1 || openCont==ignoreCont2) continue;
 
 		CTibiaContainer *targetCont = reader.readContainer(openCont);
 		if (targetCont->flagOnOff)
 		{
+			openContNr++;
 			CTibiaContainer *sourceCont = reader.readContainer(contNr);
 			qtyLooted = (int)(CModuleUtil::lootItemFromSpecifiedContainer(contNr,acceptedItems,openCont));//Akilez: loot items and get # of items returned
 			if (qtyLooted)

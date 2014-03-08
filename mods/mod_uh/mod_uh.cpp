@@ -124,12 +124,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			uhContainer=-1;
 			
 			int contNr;
-			for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId;contNr++)
+			int openContNr=0;
+			int openContMax=reader.readOpenContainerCount();
+			for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId && openContNr<openContMax;contNr++)
 			{
 				CTibiaContainer *cont = reader.readContainer(contNr);
 
 				if (cont->flagOnOff)
 				{
+					openContNr++;
 					delete uhItem;
 					uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 					uhContainer = contNr;
@@ -215,12 +218,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					}
 					
 					int contNr;
-					for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId;contNr++)
+					int openContNr=0;
+					int openContMax=reader.readOpenContainerCount();
+					for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId && openContNr<openContMax;contNr++)
 					{
 						CTibiaContainer *cont = reader.readContainer(contNr);
 
 						if (cont->flagOnOff)
 						{
+							openContNr++;
 							delete uhItem;
 							uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
 							uhContainer = contNr;

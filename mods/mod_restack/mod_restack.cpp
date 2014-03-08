@@ -120,11 +120,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int qtyToRestack=config->ammoTo-item->quantity;
 				itemsAccepted.RemoveAll();
 				itemsAccepted.Add(ammoItemId);
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
 					{
+						openContNr++;
 						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);
 						if (itemAccepted->objectId)
 						{
@@ -161,11 +164,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int qtyToRestack=config->throwableTo-(item->quantity?item->quantity:1);
 				itemsAccepted.RemoveAll();
 				itemsAccepted.Add(throwableItemId);
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
 					{
+						openContNr++;
 						CTibiaItem *itemAccepted=CModuleUtil::lookupItem(contNr,&itemsAccepted);
 						if (itemAccepted->objectId)
 						{
@@ -209,18 +215,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if ((offsetX!=-2||offsetY!=-2)&&config->pickupSpears)
 			{
 				int contNr;
-				for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
-					if (cont->flagOnOff&&cont->itemsInside<cont->size)
-					{
-						pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,reader.itemOnTopQty(offsetX,offsetY));
-						// reset offsetXY to avoid pickup up same item to hand
-						offsetX=offsetY=-2;
+					if (cont->flagOnOff){
+						openContNr++;
+						if(cont->itemsInside<cont->size)
+						{
+							pickupItemFromFloor(throwableItemId,self->x+offsetX,self->y+offsetY,self->z,0x40+contNr,cont->size-1,reader.itemOnTopQty(offsetX,offsetY));
+							// reset offsetXY to avoid pickup up same item to hand
+							offsetX=offsetY=-2;
 
-						delete cont;
-						break;
-					} // if
+							delete cont;
+							break;
+						} // if
+					}
 					delete cont;
 				} // for
 			} // if (offsetX||offsetY)

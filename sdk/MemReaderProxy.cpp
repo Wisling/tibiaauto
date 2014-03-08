@@ -90,6 +90,21 @@ CTibiaVIPEntry * CMemReaderProxy::readVIPEntry(int vipNr)
 	return NULL;
 }
 
+int CMemReaderProxy::readOpenContainerCount()
+{
+
+	typedef int (*Proto_fun)();
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadOpenContainerCount");
+		if (fun)
+		{
+			return fun();
+		}
+	}
+	return NULL;
+}
+
 CTibiaContainer * CMemReaderProxy::readContainer(int containerNr)
 {
 

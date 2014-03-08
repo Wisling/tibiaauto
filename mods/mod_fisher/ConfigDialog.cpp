@@ -172,12 +172,15 @@ void CConfigDialog::refreshFishStatus()
 	int totalFishQty=0;
 	
 	int contNr;
-	for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+	int openContNr=0;
+	int openContMax=reader.readOpenContainerCount();
+	for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
 	{
 		CTibiaContainer *container = reader.readContainer(contNr);
 		
 		if (container->flagOnOff)
 		{
+			openContNr++;
 			totalFishQty+=container->countItemsOfType(itemProxy.getValueForConst("fish"));
 		}
 		

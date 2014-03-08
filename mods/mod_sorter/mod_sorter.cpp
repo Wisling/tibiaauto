@@ -79,11 +79,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				int sortItem = itemProxy.getItemId(config->sortBags[i].slotNr[j].itemName);
 				//sprintf(buf, "ObjectID: %d",  sortItem);
 				//AfxMessageBox(buf);
-				for (int contNr = 0; contNr < memConstData.m_memMaxContainers;contNr++) {
+				int openContNr=0;
+				int openContMax=reader.readOpenContainerCount();
+				for (int contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
 					if (contNr == i) contNr++;
 					CTibiaContainer *sortCont = reader.readContainer(contNr);
 					CTibiaContainer *destCont = reader.readContainer(i);
 					if (sortCont->flagOnOff) {
+						openContNr++;
 						int count = sortCont->itemsInside;
 						//sprintf(buf, "Items inside bag %d: %d", contNr, count);
 						//AfxMessageBox(buf);

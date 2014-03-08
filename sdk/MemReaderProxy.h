@@ -25,6 +25,7 @@ class CMemReaderProxy
 {
 public:
 	void setProcessId(int processId);
+	int readOpenContainerCount();
 	CTibiaContainer * readContainer(int containerNr);
 	void writeSelfLightPower(int value);
 	void writeSelfLightColor(int value);
