@@ -1880,12 +1880,15 @@ void autoAimAttack(int runeId)
 		int chY=ch->y;
 		int chZ=ch->z;
 		int contNr;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++)
+		int openContNr=0;
+		int openContMax=reader.readOpenContainerCount();
+		for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			
 			if (cont->flagOnOff)
 			{
+				openContNr++;
 				CUIntArray acceptedItems;
 				CTibiaItem *runeItem;
 				
@@ -1899,6 +1902,10 @@ void autoAimAttack(int runeId)
 					} else {
 						castRuneAgainstHuman(0x40+contNr,runeItem->pos,runeId,ch->x,ch->y,ch->z);
 					}
+					delete runeItem;
+					delete cont;
+					delete ch;
+					return;
 				}
 				delete runeItem;
 			};
@@ -3215,14 +3222,14 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	//13-
 	//14-
 	//15-
-	//16-rule report messages
-	//17-white client messages, login, permanent ignore,
-	//18-white game info messages, attack, experience, depot volume
-	//19-all green message
-	//20-
-	//21-to myself in dark blue
-	//22-hitpoint loss message
-	//23-
+	//16-
+	//17-rule report messages
+	//18-white client messages, login, permanent ignore,
+	//19-white game info messages, attack, experience, depot volume
+	//20-all green message
+	//21-
+	//22-to myself in dark blue
+	//23-hitpoint loss message
 	//AfxMessageBox(buf);
 	//OUTmyInterceptInfoMessageBox(v1, v2, (int)buf, 4, (int)"Tibia Auto", v6, v7, 0, v9);
 	//if (v9!=0 && privChanBufferPtr) OUTmyInterceptInfoMessageBox(privChanBufferPtr,0,(int)buf,4,(int)"Tibia Auto", v6, v7, 0, v9);

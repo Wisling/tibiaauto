@@ -412,7 +412,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 			unsigned char infoType = msg.GetByte();
 			switch(infoType)
 			{
-				case 0x16://22
+				case 0x17://23
 					{
 					msg.GetString(15);
 					std::string text = msg.GetString();
@@ -442,7 +442,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 					*/
 					}
 					break;
-				case 0x13:
+				case 0x14://20
 					{
 					std::string text = msg.GetString();
 					static CRegexpT <char> reFollowNoWay("There is no way\\.", IGNORECASE);

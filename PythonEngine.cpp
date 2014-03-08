@@ -234,6 +234,7 @@ static PyMethodDef Methods_tibiaauto[] = {
 static PyMethodDef Methods_tareader[] = {
     {"setProcessId", tibiaauto_reader_setProcessId, METH_VARARGS},
 	{"readSelfCharacter", tibiaauto_reader_readSelfCharacter, METH_VARARGS},
+	{"readOpenContainerCount", tibiaauto_reader_readOpenContainerCount, METH_VARARGS},
 	{"readContainer", tibiaauto_reader_readContainer, METH_VARARGS},
 	{"readContainerItem", tibiaauto_reader_readContainerItem,METH_VARARGS},
 	{"writeSelfLightPower", tibiaauto_reader_writeSelfLightPower, METH_VARARGS},

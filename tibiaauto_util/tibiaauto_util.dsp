@@ -95,67 +95,213 @@ LINK32=link.exe
 # Begin Source File
 
 SOURCE="..\..\tibiaauto-pub\sdk\BtnST.cpp"
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\CreaturesReader.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\IPCBackPipe.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=..\md5c.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=..\md5class.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\MemConstData.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\MemReader.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\MemUtil.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\PackSender.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\proxy.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\Queue.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE="..\..\tibiaauto-pub\sdk\Skin.cpp"
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\SkinLoader.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\StdAfx.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
 # ADD CPP /Yc"stdafx.h"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+# ADD CPP /Yc"stdafx.h"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TAMiniMap.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\tibiaauto_util.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
@@ -167,52 +313,155 @@ SOURCE=.\tibiaauto_util.def
 
 !ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
 
+# PROP Intermediate_Dir "Debug"
+
 !ENDIF 
 
 # End Source File
 # Begin Source File
 
 SOURCE=.\tibiaauto_util.rc
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+# ADD BASE RSC /l 0x409
+# ADD RSC /l 0x409
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaCharacter.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaContainer.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaItem.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaMap.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaMapTile.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaMapTileItem.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TibiaVIPEntry.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\TileReader.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\Util.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # Begin Source File
 
 SOURCE=.\VariableStore.cpp
+
+!IF  "$(CFG)" == "tibiaauto_util - Win32 Release"
+
+!ELSEIF  "$(CFG)" == "tibiaauto_util - Win32 Debug"
+
+# PROP Intermediate_Dir "Debug"
+
+!ENDIF 
+
 # End Source File
 # End Group
 # Begin Group "Header Files"

@@ -279,4 +279,5 @@ EXPORTS
 	memReadFindNextClosedContainer @271
 	memReadGetPlayerModePVP @272
 	memReadIsLoggedIn @273
+	memReadOpenContainerCount @274
 

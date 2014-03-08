@@ -105,6 +105,12 @@ void setPipeHandle(HANDLE hPipePar)
 	hPipe=hPipePar;
 }
 
+int memReadOpenContainerCount()
+{
+	startMemReader();
+	return reader->readOpenContainerCount();
+};
+
 CTibiaContainer *memReadContainer(int containerNr)
 {
 	startMemReader();

@@ -118,6 +118,10 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 	return NULL;
 }
 
+int CMemReader::readOpenContainerCount(){
+	return CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+0xC,0);
+}
+
 CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	//triply linked list
 	//container number
@@ -125,7 +129,6 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	
 	CTibiaContainer *container = new CTibiaContainer();
 	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+8,0);
-	int maxContainer = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+0xC,0);
 	long addrIndCont = 0;
 	try {
 		addrIndCont = findContainer(containerNr,addrHead,addrHead);
@@ -268,59 +271,62 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
 	int offset = m_memAddressFirstCreature+nr*m_memLengthCreature;
+	char memcharinfo[1024];
+	memset(memcharinfo,0,1024);
+	CMemUtil::GetMemRange(offset,offset+m_memLengthCreature,memcharinfo,1);
 
 	ch->hp=-1;
 	ch->mana=-1;
-	ch->tibiaId=CMemUtil::GetMemIntValue(offset+0);
-	ch->z=CMemUtil::GetMemIntValue(offset+36);
-	ch->y=CMemUtil::GetMemIntValue(offset+40);
-	ch->x=CMemUtil::GetMemIntValue(offset+44);
-	ch->outfitId=CMemUtil::GetMemIntValue(offset+72);
+	ch->tibiaId=*((int*)memcharinfo);
+	ch->z=*((int*)(memcharinfo+36));
+	ch->y=*((int*)(memcharinfo+40));
+	ch->x=*((int*)(memcharinfo+44));
+	ch->outfitId=*((int*)(memcharinfo+72));
 
-	//ch->vertShift=CMemUtil::GetMemIntValue(offset+48);
-	//ch->horizShift=CMemUtil::GetMemIntValue(offset+52);
-	ch->lookDirection=CMemUtil::GetMemIntValue(offset+56);
-	//ch->timeFinishMove=CMemUtil::GetMemIntValue(offset+60);
+	//ch->vertShift=*((int*)(memcharinfo+48));
+	//ch->horizShift=*((int*)(memcharinfo+52));
+	ch->lookDirection=*((int*)(memcharinfo+56));
+	//ch->timeFinishMove=*((int*)(memcharinfo+60));
 
-	//ch->timeTillCanMoveAgain=CMemUtil::GetMemIntValue(offset+64);
-	//ch->totVertIncrement=CMemUtil::GetMemIntValue(offset+68);
-	//ch->totHorizIncement=CMemUtil::GetMemIntValue(offset+72);
-	//ch->tileSpeed=CMemUtil::GetMemIntValue(offset+76);
+	//ch->timeTillCanMoveAgain=*((int*)(memcharinfo+64));
+	//ch->totVertIncrement=*((int*)(memcharinfo+68));
+	//ch->totHorizIncement=*((int*)(memcharinfo+72));
+	//ch->tileSpeed=*((int*)(memcharinfo+76));
 
-	ch->moving=CMemUtil::GetMemIntValue(offset+80);
-	//ch->lastMovedLookDirection=CMemUtil::GetMemIntValue(offset+84);
-	//ch->???min=CMemUtil::GetMemIntValue(offset+88);
-	//ch->???max=CMemUtil::GetMemIntValue(offset+92);
+	ch->moving=*((int*)(memcharinfo+80));
+	//ch->lastMovedLookDirection=*((int*)(memcharinfo+84));
+	//ch->???min=*((int*)(memcharinfo+88));
+	//ch->???max=*((int*)(memcharinfo+92));
 
-	ch->monsterType=CMemUtil::GetMemIntValue(offset+96);
-	ch->colorHead=CMemUtil::GetMemIntValue(offset+100);
-	ch->colorBody=CMemUtil::GetMemIntValue(offset+104);
-	ch->colorLegs=CMemUtil::GetMemIntValue(offset+108);
+	ch->monsterType=*((int*)(memcharinfo+96));
+	ch->colorHead=*((int*)(memcharinfo+100));
+	ch->colorBody=*((int*)(memcharinfo+104));
+	ch->colorLegs=*((int*)(memcharinfo+108));
 
-	ch->colorFoot=CMemUtil::GetMemIntValue(offset+112);
-	//ch->addon=CMemUtil::GetMemIntValue(offset+116);
-	ch->mountId=CMemUtil::GetMemIntValue(offset+120);
-	//ch->lightPower=CMemUtil::GetMemIntValue(offset+124);
+	ch->colorFoot=*((int*)(memcharinfo+112));
+	//ch->addon=*((int*)(memcharinfo+116));
+	ch->mountId=*((int*)(memcharinfo+120));
+	//ch->lightPower=*((int*)(memcharinfo+124));
 
-	//ch->lightColour=CMemUtil::GetMemIntValue(offset+128);
-	//ch->offenderboxcolour=CMemUtil::GetMemIntValue(offset+132);
-	ch->lastAttackTm=CMemUtil::GetMemIntValue(offset+136);
-	ch->hpPercLeft=CMemUtil::GetMemIntValue(offset+140);
+	//ch->lightColour=*((int*)(memcharinfo+128));
+	//ch->offenderboxcolour=*((int*)(memcharinfo+132));
+	ch->lastAttackTm=*((int*)(memcharinfo+136));
+	ch->hpPercLeft=*((int*)(memcharinfo+140));
 
-	ch->walkSpeed=CMemUtil::GetMemIntValue(offset+144);
-	ch->visible=CMemUtil::GetMemIntValue(offset+m_offsetCreatureVisible);
-	ch->skulls=CMemUtil::GetMemIntValue(offset+152);
-	ch->shields=CMemUtil::GetMemIntValue(offset+156);
+	ch->walkSpeed=*((int*)(memcharinfo+144));
+	ch->visible=*((int*)(memcharinfo+m_offsetCreatureVisible));
+	ch->skulls=*((int*)(memcharinfo+152));
+	ch->shields=*((int*)(memcharinfo+156));
 
-	ch->warIcon=CMemUtil::GetMemIntValue(offset+160);
-	ch->blocking=CMemUtil::GetMemIntValue(offset+148);
-	//ch->??=CMemUtil::GetMemIntValue(offset+168);357?
-	//ch->??=CMemUtil::GetMemIntValue(offset+172);
-	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+176);
-	//ch->helpercolour=CMemUtil::GetMemIntValue(offset+180);
-	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+184);
-	//ch->lightningbolt=CMemUtil::GetMemIntValue(offset+188);
-	//ch->NPCbubble=CMemUtil::GetMemIntValue(offset+192); //0-none,1-talk,2-quest,3-trade,4-quest trade,
+	ch->warIcon=*((int*)(memcharinfo+160));
+	ch->blocking=*((int*)(memcharinfo+148));
+	//ch->??=*((int*)(memcharinfo+168));357?
+	//ch->??=*((int*)(memcharinfo+172));
+	//ch->helpercolour=*((int*)(memcharinfo+176));
+	//ch->helpercolour=*((int*)(memcharinfo+180));
+	//ch->lightningbolt=*((int*)(memcharinfo+184));
+	//ch->lightningbolt=*((int*)(memcharinfo+188));
+	//ch->NPCbubble=*((int*)(memcharinfo+192)); //0-none,1-talk,2-quest,3-trade,4-quest trade,
 
 
 	ch->nr=nr;

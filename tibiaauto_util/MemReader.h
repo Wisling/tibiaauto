@@ -81,6 +81,7 @@ public:
 	int readBattleListMax();
 	int readBattleListMin();
 	CTibiaCharacter * readVisibleCreature(int nr);
+	int readOpenContainerCount();
 	CTibiaContainer *readContainer(int containerNr);
 	CTibiaItem * readItem(int locationAddress);
 	CTibiaCharacter *readSelfCharacter();

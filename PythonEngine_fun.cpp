@@ -72,6 +72,15 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	delete selfCh;
 	return ret;
 }
+static PyObject *tibiaauto_reader_readOpenContainerCount(PyObject *self, PyObject *args)
+{
+	CMemReaderProxy reader;
+	
+	int arg1 = reader.readOpenContainerCount();
+	PyObject *ret = Py_BuildValue("i",arg1);
+	return ret;
+}
+
 static PyObject *tibiaauto_reader_readContainer(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
