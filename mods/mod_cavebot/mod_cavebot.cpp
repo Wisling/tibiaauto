@@ -2626,7 +2626,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 				//changed to exclude the criteria of attacking, do not count oneself, count players only if they are attacking you
 				//if (creatureList[crNr].isAttacking && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
-				if ((creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking) && creatureList[crNr].tibiaId!=self->tibiaId && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
+				if ((creatureList[crNr].tibiaId>0x40000000 || creatureList[crNr].isAttacking) && creatureList[crNr].tibiaId!=self->tibiaId && self->z==creatureList[crNr].z && taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)<=1) monstersSurrounding++;
 
 				if (crNr!=self->nr && creatureList[crNr].tibiaId<0x40000000 && creatureList[crNr].isWithinMargins) playersOnScreen++;
 				//Edit: Alien creature if monster or attacking player to avoid switching weapons when interrupted by player
@@ -2666,9 +2666,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		int bestCreatureNr=-1;
 		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++) {
 			if (creatureList[crNr].tibiaId==0) break;
-			
 			//If cannot attack, don't
-			if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr==self->nr) continue;
+			if (!creatureList[crNr].isOnscreen || creatureList[crNr].isInvisible || creatureList[crNr].isDead || crNr==self->nr || (reader.getSelfEventFlags() & 16384/*PZ zone*/)!=0) continue;
 			//If shouldn't attack, don't
 			if (creatureList[crNr].hpPercLeft < config->attackHpAbove) {
 				if (config->debug && modRuns%10==0) registerDebug("Quit Case:hp above value");
@@ -2703,7 +2702,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			//if bestCreatureNr is not picked yet switch to first reasonable option
 			if(bestCreatureNr==-1) bestCreatureNr=crNr;
 			int isCloser = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)+1<taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
-			int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
+			int isFarther = taxiDist(self->x,self->y,creatureList[crNr].x,creatureList[crNr].y)-1>taxiDist(self->x,self->y,creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y);
 			if(isCloser){
 				if (creatureList[bestCreatureNr].isAttacking &&
 					(creatureList[bestCreatureNr].listPriority>creatureList[crNr].listPriority && creatureList[bestCreatureNr].listPriority ||

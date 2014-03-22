@@ -280,7 +280,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			// now refresh info fields
 			int blanksCount=0;
 			int foodFishCount=0;
-			for (i=m_safe.GetItemCount();i>=0;i--)
+			for (i=m_safe.GetItemCount()-1;i>=0;i--)
 			{
 				int containerNr=m_safe.GetItemData(i);
 				CTibiaContainer *container = reader.readContainer(containerNr);

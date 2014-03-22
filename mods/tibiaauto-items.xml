@@ -3436,6 +3436,331 @@
       <item id="0x28ad" looted="1" name="Zaogun Flag" type="131072"/>
       <item id="0x28ae" looted="1" name="Zaogun's Shoulderplates" type="131072"/>
     </branch>
+    <branch name="Rook Sellables">
+      <item id="0xd78" looted="1" name="Poison Arrow" type="64"/>
+      <item id="0xbee" looted="1" name="Silver Amulet" type="128"/>
+      <item id="0xbf0" looted="1" name="Bronze Amulet" type="128"/>
+      <item id="0xd1e" looted="1" name="Chain Armor" type="256"/>
+      <item id="0xd33" looted="1" name="Doublet" type="256"/>
+      <item id="0xd21" looted="1" name="Leather Armor" type="256"/>
+      <item id="0xd32" looted="1" name="Studded Armor" type="256"/>
+      <item id="0xcc4" looted="1" name="Hand Axe" type="1"/>
+      <item id="0xcca" looted="1" name="Axe" type="1"/>
+      <item id="0xccc" looted="1" name="Hatchet" type="1"/>
+      <item id="0xcdd" looted="1" name="Sickle" type="1"/>
+      <item id="0xd09" looted="1" name="Bone Club" type="2"/>
+      <item id="0xcd6" looted="1" name="Mace" type="2"/>
+      <item id="0xd7d" looted="1" name="Scythe" type="2"/>
+      <item id="0x18c" looted="1" name="Technomancer Beard" type="131072"/>
+      <item id="0x3ac" looted="1" name="Natural Soil" type="131072"/>
+      <item id="0x3ad" looted="1" name="Glimmering Soil" type="131072"/>
+      <item id="0x3ae" looted="1" name="Flawless Ice Crystal" type="131072"/>
+      <item id="0x3af" looted="1" name="Holy Soil" type="131072"/>
+      <item id="0x3b0" looted="1" name="Iced Soil" type="131072"/>
+      <item id="0x3b1" looted="1" name="Energy Soil" type="131072"/>
+      <item id="0x3b2" looted="1" name="Eternal Flames" type="131072"/>
+      <item id="0x3b9" looted="1" name="Nail" type="131072"/>
+      <item id="0x3ba" looted="1" name="Mossy Soil" type="131072"/>
+      <item id="0xbd0" looted="1" name="Holy Falcon" type="131072"/>
+      <item id="0xbe4" looted="1" name="Elephant Tusk" type="131072"/>
+      <item id="0xcb6" looted="1" name="Roc Feather" type="131072"/>
+      <item id="0x12e7" looted="1" name="Hydra Egg" type="131072"/>
+      <item id="0x1624" looted="1" name="Mysterious Voodoo Skull" type="131072"/>
+      <item id="0x1625" looted="1" name="Mysterious Voodoo Skull (2)" type="131072"/>
+      <item id="0x16ac" looted="1" name="Nose Ring" type="131072"/>
+      <item id="0x16b0" looted="1" name="Orshabaal's Brain" type="131072"/>
+      <item id="0x16b1" looted="1" name="Soul Stone" type="131072"/>
+      <item id="0x16b2" looted="1" name="Pirate Voodoo Doll" type="131072"/>
+      <item id="0x16f3" looted="1" name="Sniper Gloves" type="131072"/>
+      <item id="0x16f4" looted="1" name="Lizard Leather" type="131072"/>
+      <item id="0x16f5" looted="1" name="Green Dragon Leather" type="131072"/>
+      <item id="0x16f6" looted="1" name="Minotaur Leather" type="131072"/>
+      <item id="0x16f7" looted="1" name="Giant Spider Silk" type="131072"/>
+      <item id="0x16f8" looted="1" name="Iron Ore" type="131072"/>
+      <item id="0x16f9" looted="1" name="Lizard Scale" type="131072"/>
+      <item id="0x16fa" looted="1" name="Red Dragon Scale" type="131072"/>
+      <item id="0x16fb" looted="1" name="Ape Fur" type="131072"/>
+      <item id="0x16fe" looted="1" name="Spider Silk Yarn" type="131072"/>
+      <item id="0x16ff" looted="1" name="Piece of Royal Steel" type="131072"/>
+      <item id="0x1700" looted="1" name="Piece of Hell Steel" type="131072"/>
+      <item id="0x1701" looted="1" name="Piece of Draconian Steel" type="131072"/>
+      <item id="0x1702" looted="1" name="Chicken Feather" type="131072"/>
+      <item id="0x1703" looted="1" name="Enchanted Chicken Wing" type="131072"/>
+      <item id="0x1704" looted="1" name="Huge Chunk of Crude Iron" type="131072"/>
+      <item id="0x1705" looted="1" name="Perfect Behemoth Fang" type="131072"/>
+      <item id="0x1706" looted="1" name="Bat Wing" type="131072"/>
+      <item id="0x1707" looted="1" name="Fish Fin" type="131072"/>
+      <item id="0x1708" looted="1" name="Bear Paw" type="131072"/>
+      <item id="0x1709" looted="1" name="Wolf Paw" type="131072"/>
+      <item id="0x170a" looted="1" name="Beholder Eye" type="131072"/>
+      <item id="0x170b" looted="1" name="Turtle Shell" type="131072"/>
+      <item id="0x170c" looted="1" name="Dwarven Beard" type="131072"/>
+      <item id="0x170d" looted="1" name="Wood" type="131072"/>
+      <item id="0x170e" looted="1" name="Honeycomb" type="131072"/>
+      <item id="0x170f" looted="1" name="Ferumbra's Hat" type="131072"/>
+      <item id="0x1710" looted="1" name="Magic Sulphur" type="131072"/>
+      <item id="0x1711" looted="1" name="Vampire Dust" type="131072"/>
+      <item id="0x1712" looted="1" name="Demon Dust" type="131072"/>
+      <item id="0x1715" looted="1" name="White Piece of Cloth" type="131072"/>
+      <item id="0x1716" looted="1" name="Green Piece of Cloth" type="131072"/>
+      <item id="0x1717" looted="1" name="Red Piece of Cloth" type="131072"/>
+      <item id="0x1718" looted="1" name="Blue Piece of Cloth" type="131072"/>
+      <item id="0x1719" looted="1" name="Brown Piece of Cloth" type="131072"/>
+      <item id="0x171a" looted="1" name="Yellow Piece of Cloth" type="131072"/>
+      <item id="0x171f" looted="1" name="Dragon Claw" type="131072"/>
+      <item id="0x1720" looted="1" name="Green Dragon Scale" type="131072"/>
+      <item id="0x1721" looted="1" name="Heaven Blossom" type="131072"/>
+      <item id="0x1722" looted="1" name="Holy Orchid" type="131072"/>
+      <item id="0x1725" looted="1" name="Hardened Bone" type="131072"/>
+      <item id="0x172a" looted="1" name="Behemoth Claw" type="131072"/>
+      <item id="0x1737" looted="1" name="Morgaroth's Heart" type="131072"/>
+      <item id="0x173c" looted="1" name="Red Dragon Leather" type="131072"/>
+      <item id="0x1742" looted="1" name="Demon Horn" type="131072"/>
+      <item id="0x17c7" looted="1" name="First Verse of the Cult Hymn" type="131072"/>
+      <item id="0x17c8" looted="1" name="Second Verse of the Cult Hymn" type="131072"/>
+      <item id="0x17c9" looted="1" name="Third Verse of the Cult Hymn" type="131072"/>
+      <item id="0x17ca" looted="1" name="Fourth Verse of the Cult Hymn" type="131072"/>
+      <item id="0x17d0" looted="1" name="Pirate Hat" type="131072"/>
+      <item id="0x17d1" looted="1" name="Hook" type="131072"/>
+      <item id="0x17d2" looted="1" name="Eyepatch" type="131072"/>
+      <item id="0x17d3" looted="1" name="Brutus Bloodbeard's Hat" type="131072"/>
+      <item id="0x17d4" looted="1" name="Lethal Lissy's Shirt" type="131072"/>
+      <item id="0x17d5" looted="1" name="Ron the Ripper's Sabre" type="131072"/>
+      <item id="0x17d6" looted="1" name="Deadeye Devious' Eye Patch" type="131072"/>
+      <item id="0x17ee" looted="1" name="Peg Leg" type="131072"/>
+      <item id="0x1963" looted="1" name="Demonic Essence" type="131072"/>
+      <item id="0x1986" looted="1" name="Imperor's Trident" type="131072"/>
+      <item id="0x1987" looted="1" name="Plasmother's Remains" type="131072"/>
+      <item id="0x1989" looted="1" name="Mr. Punish's Handcuffs" type="131072"/>
+      <item id="0x198b" looted="1" name="Handmaiden's Protector" type="131072"/>
+      <item id="0x198c" looted="1" name="Piece of Massacre's Shell" type="131072"/>
+      <item id="0x1992" looted="1" name="Dracola's Eye" type="131072"/>
+      <item id="0x1c7a" looted="1" name="Shard" type="131072"/>
+      <item id="0x1d11" looted="1" name="Ice Cube" type="131072"/>
+      <item id="0x1e6a" looted="1" name="Orc Tusk" type="131072"/>
+      <item id="0x1eca" looted="1" name="Cockroach Leg" type="131072"/>
+      <item id="0x1f5f" looted="1" name="Spider Fangs" type="131072"/>
+      <item id="0x1fcf" looted="1" name="Gland" type="131072"/>
+      <item id="0x2247" looted="1" name="Gear Wheel" type="131072"/>
+      <item id="0x235d" looted="1" name="Glob of Mercury" type="131072"/>
+      <item id="0x235e" looted="1" name="Glob of Acid Slime" type="131072"/>
+      <item id="0x235f" looted="1" name="Glob of Tar" type="131072"/>
+      <item id="0x2360" looted="1" name="Black Skull" type="131072"/>
+      <item id="0x2411" looted="1" name="Golem Part" type="131072"/>
+      <item id="0x2586" looted="1" name="Egg of the Many" type="131072"/>
+      <item id="0x259f" looted="1" name="Scarab Pincers" type="131072"/>
+      <item id="0x25a0" looted="1" name="Ancient Stone" type="131072"/>
+      <item id="0x25a1" looted="1" name="Bloody Pincers" type="131072"/>
+      <item id="0x25a2" looted="1" name="Cobra Tongue" type="131072"/>
+      <item id="0x25a3" looted="1" name="Elvish Talisman" type="131072"/>
+      <item id="0x25a4" looted="1" name="Fiery Heart" type="131072"/>
+      <item id="0x25a5" looted="1" name="Hellhound Slobber" type="131072"/>
+      <item id="0x25a6" looted="1" name="Cultish Mask" type="131072"/>
+      <item id="0x25a7" looted="1" name="Cultish Robe" type="131072"/>
+      <item id="0x25a8" looted="1" name="Poisonous Slime" type="131072"/>
+      <item id="0x25a9" looted="1" name="Piece of Scarab Shell" type="131072"/>
+      <item id="0x25aa" looted="1" name="Spookey Blue Eye" type="131072"/>
+      <item id="0x25ab" looted="1" name="Thorn" type="131072"/>
+      <item id="0x25ac" looted="1" name="Wyvern Talisman" type="131072"/>
+      <item id="0x25ad" looted="1" name="Black Hood" type="131072"/>
+      <item id="0x25ae" looted="1" name="Book of Prayers" type="131072"/>
+      <item id="0x25af" looted="1" name="Demonic Skeletal Hand" type="131072"/>
+      <item id="0x25b0" looted="1" name="Frosty Ear of a Troll" type="131072"/>
+      <item id="0x25b1" looted="1" name="Gauze Bandage" type="131072"/>
+      <item id="0x25b2" looted="1" name="Polar Bear Paw" type="131072"/>
+      <item id="0x25b3" looted="1" name="Scorpion Tail" type="131072"/>
+      <item id="0x25b4" looted="1" name="Witch Broom" type="131072"/>
+      <item id="0x25b6" looted="1" name="War Crystal" type="131072"/>
+      <item id="0x25b7" looted="1" name="Gear Crystal" type="131072"/>
+      <item id="0x25b8" looted="1" name="Broken Gladiator Shield" type="131072"/>
+      <item id="0x25b9" looted="1" name="Cyclops Toe" type="131072"/>
+      <item id="0x25ba" looted="1" name="Frost Giant Pelt" type="131072"/>
+      <item id="0x25bb" looted="1" name="Half-Eaten Brain" type="131072"/>
+      <item id="0x25bc" looted="1" name="Mystical Hourglass" type="131072"/>
+      <item id="0x25bd" looted="1" name="Frosty Heart" type="131072"/>
+      <item id="0x25be" looted="1" name="Mutated Bat Ear" type="131072"/>
+      <item id="0x25bf" looted="1" name="Piece of Dead Brain" type="131072"/>
+      <item id="0x25c0" looted="1" name="Piece of Hellfire Armor" type="131072"/>
+      <item id="0x25c1" looted="1" name="Wyrm Scale" type="131072"/>
+      <item id="0x25c2" looted="1" name="Sea Serpent Scale" type="131072"/>
+      <item id="0x25c3" looted="1" name="Boggy Dreads" type="131072"/>
+      <item id="0x25c4" looted="1" name="Mutated Rat Tail" type="131072"/>
+      <item id="0x25d3" looted="1" name="Haunted Piece of Wood" type="131072"/>
+      <item id="0x25d4" looted="1" name="Tattered Piece of Robe" type="131072"/>
+      <item id="0x25d5" looted="1" name="Vampire Teeth" type="131072"/>
+      <item id="0x25d6" looted="1" name="Swamp Grass" type="131072"/>
+      <item id="0x25d8" looted="1" name="Bundle of Cursed Straw" type="131072"/>
+      <item id="0x25d9" looted="1" name="Bunch of Troll Hair" type="131072"/>
+      <item id="0x25da" looted="1" name="Ghostly Tissue" type="131072"/>
+      <item id="0x25db" looted="1" name="Lion's Mane" type="131072"/>
+      <item id="0x25dc" looted="1" name="Lump of Dirt" type="131072"/>
+      <item id="0x25dd" looted="1" name="Pig Foot" type="131072"/>
+      <item id="0x25de" looted="1" name="Snake Skin" type="131072"/>
+      <item id="0x27d4" looted="1" name="Orc Tooth" type="131072"/>
+      <item id="0x2820" looted="1" name="Crab Pincers" type="131072"/>
+      <item id="0x2821" looted="1" name="Terrorbird Beak" type="131072"/>
+      <item id="0x2822" looted="1" name="Skunk Tail" type="131072"/>
+      <item id="0x2823" looted="1" name="Carrion Worm Fang" type="131072"/>
+      <item id="0x2824" looted="1" name="Elder Beholder Tentacle" type="131072"/>
+      <item id="0x2825" looted="1" name="Bony Tail" type="131072"/>
+      <item id="0x2826" looted="1" name="Stone Wing" type="131072"/>
+      <item id="0x2827" looted="1" name="Piece of Crocodile Leather" type="131072"/>
+      <item id="0x2828" looted="1" name="Giant Eye" type="131072"/>
+      <item id="0x2829" looted="1" name="Tarantula Egg" type="131072"/>
+      <item id="0x282a" looted="1" name="Hydra Head" type="131072"/>
+      <item id="0x282b" looted="1" name="Half-Digested Piece of Meat" type="131072"/>
+      <item id="0x2831" looted="1" name="Red Lantern" type="131072"/>
+      <item id="0x2833" looted="1" name="Rotten Piece of Cloth" type="131072"/>
+      <item id="0x2834" looted="1" name="Silky Fur" type="131072"/>
+      <item id="0x2835" looted="1" name="Striped Fur" type="131072"/>
+      <item id="0x2836" looted="1" name="Stuffed Toad" type="131072"/>
+      <item id="0x2837" looted="1" name="Winter Wolf Fur" type="131072"/>
+      <item id="0x2838" looted="1" name="Acorn" type="131072"/>
+      <item id="0x2839" looted="1" name="Antlers" type="131072"/>
+      <item id="0x283a" looted="1" name="Metal Spike" type="131072"/>
+      <item id="0x283b" looted="1" name="Badger Fur" type="131072"/>
+      <item id="0x283c" looted="1" name="Carniphila Seeds" type="131072"/>
+      <item id="0x283d" looted="1" name="Centipede Leg" type="131072"/>
+      <item id="0x283e" looted="1" name="Compass" type="131072"/>
+      <item id="0x283f" looted="1" name="Dark Rosary" type="131072"/>
+      <item id="0x2840" looted="1" name="Hellspawn Tail" type="131072"/>
+      <item id="0x2841" looted="1" name="Lump of Earth" type="131072"/>
+      <item id="0x2842" looted="1" name="Essence of a Bad Dream" type="131072"/>
+      <item id="0x2843" looted="1" name="Thick Fur" type="131072"/>
+      <item id="0x2844" looted="1" name="Mutated Flesh" type="131072"/>
+      <item id="0x2845" looted="1" name="Strand of Medusa Hair" type="131072"/>
+      <item id="0x2846" looted="1" name="Shiny Stone" type="131072"/>
+      <item id="0x2847" looted="1" name="Sabretooth" type="131072"/>
+      <item id="0x2848" looted="1" name="Scythe Leg" type="131072"/>
+      <item id="0x2849" looted="1" name="Winged Tail" type="131072"/>
+      <item id="0x284a" looted="1" name="Nettle Blossom" type="131072"/>
+      <item id="0x284b" looted="1" name="Sulphurous Stone" type="131072"/>
+      <item id="0x284c" looted="1" name="Unholy Bone" type="131072"/>
+      <item id="0x284d" looted="1" name="Werewolf Fur" type="131072"/>
+      <item id="0x284e" looted="1" name="Warwolf Fur" type="131072"/>
+      <item id="0x284f" looted="1" name="Wool" type="131072"/>
+      <item id="0x2850" looted="1" name="Book of Necromantic Rituals" type="131072"/>
+      <item id="0x2851" looted="1" name="Mammoth Tusk" type="131072"/>
+      <item id="0x2858" looted="1" name="Bunch of Ripe Rice" type="131072"/>
+      <item id="0x289d" looted="1" name="Weaver's Wandtip" type="131072"/>
+      <item id="0x28a4" looted="1" name="Bone Shoulderplate" type="131072"/>
+      <item id="0x28a5" looted="1" name="Warmaster's Wristguards" type="131072"/>
+      <item id="0x28a7" looted="1" name="Shaggy Tail" type="131072"/>
+      <item id="0x28a8" looted="1" name="Spiked Iron Ball" type="131072"/>
+      <item id="0x28a9" looted="1" name="Corrupted Flag" type="131072"/>
+      <item id="0x28aa" looted="1" name="Cursed Shoulder Spikes" type="131072"/>
+      <item id="0x28ab" looted="1" name="Widow's Mandibles" type="131072"/>
+      <item id="0x28ad" looted="1" name="Zaogun Flag" type="131072"/>
+      <item id="0x28ae" looted="1" name="Zaogun's Shoulderplates" type="131072"/>
+      <item id="0x28af" looted="1" name="High Guard Flag" type="131072"/>
+      <item id="0x28b0" looted="1" name="High Guard's Shoulderplates" type="131072"/>
+      <item id="0x28b1" looted="1" name="Legionnaire Flags" type="131072"/>
+      <item id="0x28b2" looted="1" name="Broken Halberd" type="131072"/>
+      <item id="0x28b4" looted="1" name="Petrified Scream" type="131072"/>
+      <item id="0x28cc" looted="1" name="Dragon Priest's Wandtip" type="131072"/>
+      <item id="0x28d1" looted="1" name="Ghastly Dragon Head" type="131072"/>
+      <item id="0x28d2" looted="1" name="Undead Heart" type="131072"/>
+      <item id="0x28d4" looted="1" name="Terramite Shell" type="131072"/>
+      <item id="0x28d5" looted="1" name="Terramite Eggs" type="131072"/>
+      <item id="0x28d6" looted="1" name="Terramite Legs" type="131072"/>
+      <item id="0x28d7" looted="1" name="Lancer Beetle Shell" type="131072"/>
+      <item id="0x28d8" looted="1" name="Sandcrawler Shell" type="131072"/>
+      <item id="0x2cb3" looted="1" name="Girlish Hair Decoration" type="131072"/>
+      <item id="0x2cb4" looted="1" name="Protective Charm" type="131072"/>
+      <item id="0x2cb5" looted="1" name="Bamboo Stick" type="131072"/>
+      <item id="0x2cb6" looted="1" name="Hair of a Banshee" type="131072"/>
+      <item id="0x2cb7" looted="1" name="Battle Stone" type="131072"/>
+      <item id="0x2cb8" looted="1" name="Black Wool" type="131072"/>
+      <item id="0x2cb9" looted="1" name="Blood Preservation" type="131072"/>
+      <item id="0x2cba" looted="1" name="Small Notebook" type="131072"/>
+      <item id="0x2cbb" looted="1" name="Broken Crossbow" type="131072"/>
+      <item id="0x2cbc" looted="1" name="Broken Shamanic Staff" type="131072"/>
+      <item id="0x2cbd" looted="1" name="Broken Helmet" type="131072"/>
+      <item id="0x2cbe" looted="1" name="Luminous Orb" type="131072"/>
+      <item id="0x2cbf" looted="1" name="Cultish Symbol" type="131072"/>
+      <item id="0x2cc0" looted="1" name="Dirty Turban" type="131072"/>
+      <item id="0x2cc1" looted="1" name="Dragon's Tail" type="131072"/>
+      <item id="0x2cc2" looted="1" name="Geomancer's Robe" type="131072"/>
+      <item id="0x2cc7" looted="1" name="Geomancer's Staff" type="131072"/>
+      <item id="0x2cc8" looted="1" name="Elven Scouting Glass" type="131072"/>
+      <item id="0x2cc9" looted="1" name="Elven Astral Observer" type="131072"/>
+      <item id="0x2cca" looted="1" name="Flask of Embalming Fluid" type="131072"/>
+      <item id="0x2ccb" looted="1" name="Ghoul Snack" type="131072"/>
+      <item id="0x2ccd" looted="1" name="Hunter's Quiver" type="131072"/>
+      <item id="0x2cce" looted="1" name="Jewelled Belt" type="131072"/>
+      <item id="0x2ccf" looted="1" name="Kongra's Shoulderpad" type="131072"/>
+      <item id="0x2cd0" looted="1" name="Minotaur Horn" type="131072"/>
+      <item id="0x2cd1" looted="1" name="Purple Robe" type="131072"/>
+      <item id="0x2cd2" looted="1" name="Miraculum" type="131072"/>
+      <item id="0x2cd3" looted="1" name="Necromantic Robe" type="131072"/>
+      <item id="0x2cd4" looted="1" name="Nettle Spit" type="131072"/>
+      <item id="0x2cd5" looted="1" name="Orcish Gear" type="131072"/>
+      <item id="0x2cd6" looted="1" name="Shamanic Hood" type="131072"/>
+      <item id="0x2cd7" looted="1" name="Orc Leather" type="131072"/>
+      <item id="0x2cd8" looted="1" name="Skull Belt" type="131072"/>
+      <item id="0x2cd9" looted="1" name="Pelvis Bone" type="131072"/>
+      <item id="0x2cda" looted="1" name="Piece of Warrior Armor" type="131072"/>
+      <item id="0x2cdb" looted="1" name="Piece of Archer Armor" type="131072"/>
+      <item id="0x2cdc" looted="1" name="Pile of Grave Earth" type="131072"/>
+      <item id="0x2cdd" looted="1" name="Poison Spider Shell" type="131072"/>
+      <item id="0x2cde" looted="1" name="Noble Turban" type="131072"/>
+      <item id="0x2cdf" looted="1" name="Quara Tentacle" type="131072"/>
+      <item id="0x2ce0" looted="1" name="Quara Eye" type="131072"/>
+      <item id="0x2ce1" looted="1" name="Mantassin Tail" type="131072"/>
+      <item id="0x2ce2" looted="1" name="Quara Pincers" type="131072"/>
+      <item id="0x2ce3" looted="1" name="Quara Bone" type="131072"/>
+      <item id="0x2ce4" looted="1" name="Rope Belt" type="131072"/>
+      <item id="0x2ce5" looted="1" name="Safety Pin" type="131072"/>
+      <item id="0x2cf6" looted="1" name="Scroll of Heroic Deeds" type="131072"/>
+      <item id="0x2cf7" looted="1" name="Banana Sash" type="131072"/>
+      <item id="0x2cf8" looted="1" name="Small Flask of Eyedrops" type="131072"/>
+      <item id="0x2cf9" looted="1" name="Small Pitchfork" type="131072"/>
+      <item id="0x2cfa" looted="1" name="Colourful Feather" type="131072"/>
+      <item id="0x2cfb" looted="1" name="Trollroot" type="131072"/>
+      <item id="0x2d13" looted="1" name="Goblin Ear" type="131072"/>
+      <item id="0x2d84" looted="1" name="Broken Key Ring" type="131072"/>
+      <item id="0x2d8a" looted="1" name="Draken Sulphur" type="131072"/>
+      <item id="0x2d8b" looted="1" name="Draken Wristbands" type="131072"/>
+      <item id="0x2d8c" looted="1" name="Broken Draken Mail" type="131072"/>
+      <item id="0x2d8d" looted="1" name="Broken Slicer" type="131072"/>
+      <item id="0x2d92" looted="1" name="Tentacle Piece" type="131072"/>
+      <item id="0x2d97" looted="1" name="Eye of Corruption" type="131072"/>
+      <item id="0x2d98" looted="1" name="Tail of Corruption" type="131072"/>
+      <item id="0x2d99" looted="1" name="Scale of Corruption" type="131072"/>
+      <item id="0x2da0" looted="1" name="Lizard Essence" type="131072"/>
+      <item id="0x2da4" looted="1" name="Downy Feather" type="131072"/>
+      <item id="0x2db6" looted="1" name="Brimstone Fangs" type="131072"/>
+      <item id="0x2db7" looted="1" name="Brimstone Shell" type="131072"/>
+      <item id="0xd18" looted="1" name="Chain Helmet" type="1024"/>
+      <item id="0xd1a" looted="1" name="Brass Helmet" type="1024"/>
+      <item id="0xd1b" looted="1" name="Leather Helmet" type="1024"/>
+      <item id="0xd27" looted="1" name="Viking Helmet" type="1024"/>
+      <item id="0xd2e" looted="1" name="Legion Helmet" type="1024"/>
+      <item id="0xd30" looted="1" name="Studded Helmet" type="1024"/>
+      <item id="0xd22" looted="1" name="Studded Legs" type="2048"/>
+      <item id="0xde7" looted="1" name="Leather Legs" type="2048"/>
+      <item id="0xd52" looted="1" name="Plate Shield" type="4096"/>
+      <item id="0xd53" looted="1" name="Brass Shield" type="4096"/>
+      <item id="0xd54" looted="1" name="Wooden Shield" type="4096"/>
+      <item id="0xd62" looted="1" name="Studded Shield" type="4096"/>
+      <item id="0xd66" looted="1" name="Copper Shield" type="4096"/>
+      <item id="0xcc0" looted="1" name="Sword" type="4"/>
+      <item id="0xcc3" looted="1" name="Dagger" type="4"/>
+      <item id="0xcc8" looted="1" name="Rapier" type="4"/>
+      <item id="0xcc9" looted="1" name="Sabre" type="4"/>
+      <item id="0xcde" looted="1" name="Short Sword" type="4"/>
+      <item id="0xcec" looted="1" name="Machete" type="4"/>
+      <item id="0xd9b" looted="1" name="Fishing Rod" type="8388608"/>
+      <item id="0xbe7" looted="1" name="Magic Light Wand (On)" type="16"/>
+      <item id="0xe10" looted="1" name="Bread" type="67108864"/>
+      <item id="0xe0b" looted="1" name="Carrot" type="67108864"/>
+      <item id="0xe17" looted="1" name="Cheese" type="67108864"/>
+      <item id="0xe06" looted="1" name="Cherry" type="67108864"/>
+      <item id="0xe16" looted="1" name="Egg" type="67108864"/>
+      <item id="0xdfe" looted="1" name="Ham" type="67108864"/>
+      <item id="0xdf9" looted="1" name="Meat" type="67108864"/>
+      <item id="0xdfb" looted="1" name="Salmon" type="67108864"/>
+    </branch>
   </items>
 
   <foods>

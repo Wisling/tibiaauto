@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.36 -->
+<!-- Tibia constants for Tibia 10.37 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -101,7 +101,7 @@
 		<const code="addrSlotArrow" value="0x9ECB2C"/> <!-- cat2 -->
 		<const code="addrMapStart" value="0x9ECCAC"/> <!-- is a pointer to visible map -->
 		<const code="addrFirstContainer" value="0x9EDA40"/> <!-- cat2 pointer to cont number -0xC-->
-		<const code="addrCurrentTm" value="0x9EDE9C"/> <!-- cat2 -->
+		<const code="addrCurrentTm" value="0x9EDEA4"/> <!-- cat2 -->
 
 		<!-- structure lengths -->
 		<const code="lengthContainer" value="492"/>
