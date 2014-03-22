@@ -569,7 +569,12 @@ void CMemReader::writeSelfLightColor(int value)
 CTibiaMapTile *CMemReader::readMapTile(int tileNr){
 	CTibiaMapTile *maptile = new CTibiaMapTile();
 	DWORD tileStart = getMapTileStart(tileNr);
-	CMemUtil::GetMemRange(tileStart,tileStart+m_memLengthMapTile,(char*)maptile,0);//this address comes from Tibia itself and need not be shifted
+	DWORD TESTtileStart = tileStart;
+	do{
+		CMemUtil::GetMemRange(tileStart,tileStart+m_memLengthMapTile,(char*)maptile,0);//this address comes from Tibia itself and need not be shifted
+		tileStart=TESTtileStart;
+		TESTtileStart = getMapTileStart(tileNr); // Check that reference hasn't changed
+	}while(tileStart!=TESTtileStart);//Tibia's map is a very large area of memory. Ensure that pointer is still same afterward in case we read from deallocated space.
 	return maptile;
 }
 
@@ -790,7 +795,7 @@ int CMemReader::dereference(int addr, int addBaseAddr/*=1*/)
 {
 	static int lastAddrReq=0;
 	static int lastAddrResp=0;
-	if (lastAddrReq==addr)
+	if (0 && lastAddrReq==addr)//Bad idea to return outdated address since Tibia now uses many variable memory addresses.
 		return lastAddrResp;
 	lastAddrResp=CMemUtil::GetMemIntValue(addr,addBaseAddr);
 	lastAddrReq=addr;
@@ -1154,18 +1159,12 @@ int CMemReader::getCreatureDeltaY(int creatureNr)
 int CMemReader::itemOnTopIndex(int x,int y,int z/*=0*/)//Now uses Tibia's own indexing system found in memory to determine this
 {
 	CMemReader reader;
+	CPackSender sender;
 	CTileReader tileReader;
 	int pos;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,z));
-	int immoveableItems=0;//count the number of items Tibia is using for decorations and made immovable
-	for (pos=0;pos<stackCount;pos++)
-	{
-		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
-		CTibiaTile *tile=tileReader.getTile(tileId);
-		if (tile && tileId!=99 && tile->notMoveable && !tile->ground && !tile->alwaysOnTop && !tile->isContainer)
-			immoveableItems++;
-	}
+	int immoveableItems=0;//count the number of items placed in middle of array but aren't top
 	int newCount=stackCount;
 	for (pos=0;pos<stackCount;pos++)
 	{
@@ -1173,19 +1172,11 @@ int CMemReader::itemOnTopIndex(int x,int y,int z/*=0*/)//Now uses Tibia's own in
 		int stackInd=reader.mapGetPointStackIndex(point(x,y,z),pos);
 		int tileId = reader.mapGetPointItemId(point(x,y,z),pos);
 		CTibiaTile *tile=tileReader.getTile(tileId);
-		//If a movable tile is found then pretend as if the immoveableItems are not in the stack(they are at the end)
-		//If a movable tile is never found, then keep things the way they are
-		//Edit: check if it is a container, since recently killed creatures are immovable(10 second rule)
-		if (immoveableItems && (tileId==99 || !tile->notMoveable || tile->isContainer)) {
-			stackCount-=immoveableItems;
-			newCount-=immoveableItems;
-			immoveableItems=0;
-		}
 		//decrease the index we want to find by 1 if we found a creature or an overhanging object
 		if (tile) newCount-=(tileId==99 || tile->moreAlwaysOnTop==3)?1:0;
-
-		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1)
+		if (stackInd==newCount-1 && tileId!=99 || pos==stackCount-1){
 			return pos;
+		}
 	}
 	return -1;
 }
@@ -1276,7 +1267,7 @@ int CMemReader::getItemIndex(int x,int y,int itemId)
 {
 	CMemReader reader;
 
-	int topPos=itemOnTopIndex(x,y);
+	int topPos=itemOnTopIndex(x,y);	
 	if (topPos==-1) return -1;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
