@@ -46,14 +46,14 @@ RSC=rc.exe
 # ADD CPP /nologo /MD /W3 /GX /O2 /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /I "C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src" /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR /Yu"stdafx.h" /FD /c
 # ADD BASE MTL /nologo /D "NDEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "NDEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x415 /D "NDEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x415 /D "NDEBUG" /d "_AFXDLL"
+# ADD BASE RSC /l 0x415 /d "NDEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x415 /d "NDEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /machine:I386
-# ADD LINK32 WINMM.LIB xerces.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../mod_autogo.dll" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub"
+# ADD LINK32 xerces.lib WINMM.LIB libjpeg.lib libpng.lib zlibpng.lib /nologo /subsystem:windows /dll /machine:I386 /out:"../mod_autogo.dll" /libpath:"C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel" /libpath:"e:\projects\tibiaauto-pub"
 # SUBTRACT LINK32 /nodefaultlib
 
 !ELSEIF  "$(CFG)" == "mod_autogo - Win32 Debug"
@@ -73,14 +73,14 @@ LINK32=link.exe
 # ADD CPP /nologo /MDd /W3 /Gm /GX /ZI /Od /I "..\..\sdk" /I "E:\Program Files\Microsoft Visual Studio 8\PlatformSDK\Include" /D "WINVER 0x600" /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_WINDLL" /D "_AFXDLL" /D "_MBCS" /D "_USRDLL" /FR /Yu"stdafx.h" /FD /GZ /c
 # ADD BASE MTL /nologo /D "_DEBUG" /mktyplib203 /win32
 # ADD MTL /nologo /D "_DEBUG" /mktyplib203 /win32
-# ADD BASE RSC /l 0x415 /D "_DEBUG" /d "_AFXDLL"
-# ADD RSC /l 0x415 /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /D "_DEBUG" /d "_AFXDLL"
+# ADD BASE RSC /l 0x415 /d "_DEBUG" /d "_AFXDLL"
+# ADD RSC /l 0x415 /i "C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src" /d "_DEBUG" /d "_AFXDLL"
 BSC32=bscmake.exe
 # ADD BASE BSC32 /nologo
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 /nologo /subsystem:windows /dll /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 WINMM.LIB /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
+# ADD LINK32 zlib.lib WINMM.LIB libjpeg.lib libpng.lib zlibpng.lib /nologo /subsystem:windows /dll /debug /machine:I386 /out:"E:\Tibia\Tibia\Tibia Auto\mods/mod_autogo.dll" /pdbtype:sept
 
 !ENDIF 
 
@@ -226,7 +226,27 @@ SOURCE=.\ImageButtonWithStyle.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\jconfig.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\jmorecfg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\jpeglib.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\mod_autogo.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\png.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\pngconf.h
 # End Source File
 # Begin Source File
 
@@ -259,6 +279,14 @@ SOURCE=.\WhiteList.h
 # Begin Source File
 
 SOURCE=..\..\sdk\XTabCtrl.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\zconf.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\zlib.h
 # End Source File
 # End Group
 # Begin Group "Resource Files"

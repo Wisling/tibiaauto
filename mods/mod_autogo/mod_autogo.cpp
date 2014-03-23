@@ -41,6 +41,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <time.h>
 #include <math.h>
 
+#define JPEGLIB_USE_STDIO
+#include "mods/mod_autogo/jpeglib.h"
+#include "mods/mod_autogo/zlib.h"
+#include "mods/mod_autogo/png.h"
+
 using namespace std;
 
 
@@ -73,6 +78,8 @@ HANDLE toolThreadHandle;
 HANDLE soundThreadHandle;
 char soundPath[2048];
 HWND tibiaHWND = NULL;
+unsigned int timeLastSS = 0;
+unsigned int isTakingScreenshot = 0;
 
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
 
@@ -263,6 +270,253 @@ CString* alarmStatus(CString alarm) {
 	return ret;
 }
 
+void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
+	static extra = 0;
+	BITMAP bmp;
+	PBITMAPINFO pbmi;
+	WORD cClrBits;
+	PBITMAPINFOHEADER pbih; // bitmap info-header
+	LPBYTE lpBits; // memory pointer
+	BYTE *hp; // byte pointer
+	
+	// create the bitmapinfo header information
+	
+	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp)) {
+		AfxMessageBox("Could not retrieve bitmap info");
+		return;
+	}
+	
+	// Specify the color format to a count of bits.
+	cClrBits = 24;
+	// Allocate memory for the BITMAPINFO structure.
+	if (cClrBits != 24)
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
+		sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<< cClrBits));
+	else
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER));
+	
+	// Initialize the fields in the BITMAPINFO structure.
+	
+	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	pbmi->bmiHeader.biWidth = bmp.bmWidth;
+	pbmi->bmiHeader.biHeight = bmp.bmHeight;
+	pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
+	pbmi->bmiHeader.biBitCount = cClrBits;
+	if (cClrBits < 24)
+		pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
+	
+	// If the bitmap is not compressed, set the BI_RGB flag.
+	pbmi->bmiHeader.biCompression = BI_RGB;
+	// Compute the number of bytes in the array of color
+	// indices and store the result in biSizeImage.
+	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) /8 * pbmi->bmiHeader.biHeight * cClrBits;
+	// Set biClrImportant to 0, indicating that all of the
+	// device colors are important.
+	pbmi->bmiHeader.biClrImportant = 0;
+	
+	// now open file and save the data
+	pbih = (PBITMAPINFOHEADER) pbmi;
+	lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
+	
+	if (!lpBits) {
+		AfxMessageBox("writeBMP::Could not allocate memory");
+		return;
+	}
+	
+	// Retrieve the color table (RGBQUAD array) and the bits
+	if (!GetDIBits(hDC, HBITMAP(bitmap), 0, (WORD) pbih->biHeight, lpBits, pbmi,
+		DIB_RGB_COLORS)) {
+		AfxMessageBox("writeBMP::GetDIB error");
+		return;
+	}
+	
+	hp = lpBits;
+
+	FILE* outfile = fopen(filename, "wb");
+	if (!outfile){
+		char errormsg[4096];
+		sprintf(errormsg,"Could not open file for writing: %s",filename);
+		AfxMessageBox(errormsg);
+		return;
+	}
+	struct jpeg_compress_struct cinfo;
+	struct jpeg_error_mgr       jerr;
+
+	cinfo.err = jpeg_std_error(&jerr);
+	jpeg_CreateCompress(&cinfo,JPEG_LIB_VERSION,sizeof(jpeg_compress_struct));
+	jpeg_stdio_dest(&cinfo, outfile);
+
+	cinfo.image_width      = pbih->biWidth;
+	cinfo.image_height     = pbih->biHeight;
+	cinfo.input_components = 3;
+	cinfo.in_color_space   = (J_COLOR_SPACE)2;
+	jpeg_set_defaults(&cinfo);
+	/*set the quality [0..100]  */
+	jpeg_set_quality (&cinfo, 60, true);
+	jpeg_start_compress(&cinfo, true);
+
+
+	JSAMPROW row_pointer;          /* pointer to a single row */
+	 
+	while (cinfo.next_scanline < pbih->biHeight) {
+		unsigned int linesize = pbih->biSizeImage/pbih->biHeight;
+		unsigned int linestart = pbih->biSizeImage-(cinfo.next_scanline+1)*linesize;
+		row_pointer = (JSAMPROW) &(hp[linestart]);
+		for(int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RGB
+			hp[linestart+i] ^= hp[linestart+i+2];
+			hp[linestart+i+2] ^= hp[linestart+i];
+			hp[linestart+i] ^= hp[linestart+i+2];
+		}
+		jpeg_write_scanlines(&cinfo, &row_pointer, 1);
+	}
+	jpeg_finish_compress(&cinfo);
+	fclose( outfile );
+	// Free memory.
+	GlobalFree((HGLOBAL)lpBits);
+}
+
+void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
+	//vc++6.0 lib from http://pngwriter.sourceforge.net/howto_msvc.php
+	static extra = 0;
+	BITMAP bmp;
+	PBITMAPINFO pbmi;
+	WORD cClrBits;
+	PBITMAPINFOHEADER pbih; // bitmap info-header
+	LPBYTE lpBits; // memory pointer
+	BYTE *hp; // byte pointer
+	
+	// create the bitmapinfo header information
+	
+	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp)) {
+		AfxMessageBox("Could not retrieve bitmap info");
+		return;
+	}
+	
+	// Specify the color format to a count of bits.
+	cClrBits = 24;
+	// Allocate memory for the BITMAPINFO structure.
+	if (cClrBits != 24)
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
+		sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<< cClrBits));
+	else
+		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER));
+	
+	// Initialize the fields in the BITMAPINFO structure.
+	
+	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
+	pbmi->bmiHeader.biWidth = bmp.bmWidth;
+	pbmi->bmiHeader.biHeight = bmp.bmHeight;
+	pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
+	pbmi->bmiHeader.biBitCount = cClrBits;
+	if (cClrBits < 24)
+		pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
+	
+	// If the bitmap is not compressed, set the BI_RGB flag.
+	pbmi->bmiHeader.biCompression = BI_RGB;
+	// Compute the number of bytes in the array of color
+	// indices and store the result in biSizeImage.
+	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) /8 * pbmi->bmiHeader.biHeight * cClrBits;
+	// Set biClrImportant to 0, indicating that all of the
+	// device colors are important.
+	pbmi->bmiHeader.biClrImportant = 0;
+	
+	// now open file and save the data
+	pbih = (PBITMAPINFOHEADER) pbmi;
+	lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
+	
+	if (!lpBits) {
+		AfxMessageBox("writeBMP::Could not allocate memory");
+		return;
+	}
+	
+	// Retrieve the color table (RGBQUAD array) and the bits
+	if (!GetDIBits(hDC, HBITMAP(bitmap), 0, (WORD) pbih->biHeight, lpBits, pbmi,
+		DIB_RGB_COLORS)) {
+		AfxMessageBox("writeBMP::GetDIB error");
+		return;
+	}
+	
+	hp = lpBits;
+
+	FILE* outfile = fopen(filename, "wb");
+	if (!outfile){
+		char errormsg[4096];
+		sprintf(errormsg,"Could not open file for writing: %s",filename);
+		AfxMessageBox(errormsg);
+		return;
+	}
+	//wiz:
+	png_structp png_ptr;
+	png_infop info_ptr;
+
+    /* initialize stuff */
+    png_ptr = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+
+    if (!png_ptr){
+        AfxMessageBox("[write_png_file] png_create_write_struct failed");
+		return;
+	}
+
+
+    info_ptr = png_create_info_struct(png_ptr);
+    if (!info_ptr){
+        AfxMessageBox("[write_png_file] png_create_info_struct failed");
+		return;
+	}
+
+    if (setjmp(png_jmpbuf(png_ptr))){
+         AfxMessageBox("[write_png_file] Error during init_io");
+		 return;
+	}
+
+    png_init_io(png_ptr, outfile);
+
+
+    /* write header */
+    if (setjmp(png_jmpbuf(png_ptr))){
+        AfxMessageBox("[write_png_file] Error during writing header");
+		return;
+	}
+
+    png_set_IHDR(png_ptr, info_ptr, pbmi->bmiHeader.biWidth, pbmi->bmiHeader.biHeight,
+                 (png_byte)8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
+                 PNG_COMPRESSION_TYPE_BASE, PNG_FILTER_TYPE_BASE);
+
+    png_write_info(png_ptr, info_ptr);
+
+
+    /* write bytes */
+    if (setjmp(png_jmpbuf(png_ptr))){
+        AfxMessageBox("[write_png_file] Error during writing bytes");
+		return;
+	}
+
+	png_bytep* row_pointers = (png_bytep*)malloc(pbmi->bmiHeader.biHeight*sizeof(png_bytep));
+    for (int k = 0; k < pbmi->bmiHeader.biHeight; k++){
+		unsigned int linesize = pbih->biSizeImage/pbih->biHeight;
+		unsigned int linestart = pbih->biSizeImage-(k+1)*linesize;
+		for(int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RBG
+			hp[linestart+i] ^= hp[linestart+i+2];
+			hp[linestart+i+2] ^= hp[linestart+i];
+			hp[linestart+i] ^= hp[linestart+i+2];
+		}
+        row_pointers[k] = (png_bytep) &(hp[linestart]);
+	}
+    png_write_image(png_ptr, row_pointers);
+	free(row_pointers);
+
+    /* end write */
+    if (setjmp(png_jmpbuf(png_ptr))){
+        AfxMessageBox("[write_png_file] Error during end of write");
+		return;
+	}
+    png_write_end(png_ptr, NULL);
+
+    /* cleanup heap allocation */
+
+    fclose(outfile);
+}
+
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 	static extra = 0;
 	BITMAP bmp;
@@ -402,8 +656,15 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 	GlobalFree((HGLOBAL)lpBits);
 }
 
+enum PicFileType{
+	BMPFILE,PNGFILE,JPGFILE
+};
+struct TS_param{
+	PicFileType fileType;
+};
+
 DWORD WINAPI takeScreenshot(LPVOID lpParam) {
-	int* screenshotTime=(int*)lpParam;
+	TS_param* params = (TS_param*) lpParam;
 
 	CMemReaderProxy reader;
 	if (!tibiaHWND) InitTibiaHandle();
@@ -418,11 +679,18 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	char timeBuf[64];
 		strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
 	CString filePath;
-	filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
+	if(params->fileType==PNGFILE){
+		filePath.Format("%s\\screenshots\\Screenshot%s.png", path, timeBuf);
+	}else if(params->fileType==JPGFILE){
+		filePath.Format("%s\\screenshots\\Screenshot%s.jpg", path, timeBuf);
+	}else if(params->fileType==BMPFILE){
+		filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
+	}else{
+		AfxMessageBox("takeScreenshot: Unknown file type.");
+	}
 	int tr=50;
 	while (tr>=0) {//attempt to take screenshot for 5 seconds
 		tr--;
-		*screenshotTime=time(NULL); // keep time updated so it does not take another screenshot
 		Sleep (100);
 		if (!reader.isLoggedIn())
 			continue;
@@ -456,16 +724,27 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,nWidth,mHeight);
 		SelectObject(hCDC,hBitmap);
 		BitBlt(hCDC,0,0,nWidth,mHeight,hDDC,rect.left,rect.top,SRCCOPY);
-		WriteBMPFile(hBitmap, filePath, hCDC);
+		if(params->fileType==PNGFILE){
+			WritePNGFile(hBitmap, filePath, hCDC);
+		}else if(params->fileType==JPGFILE){
+			WriteJPGFile(hBitmap, filePath, hCDC);
+		}else if(params->fileType==BMPFILE){
+			WriteBMPFile(hBitmap, filePath, hCDC);
+		}else{
+			AfxMessageBox("takeScreenshot: Unknown file type.");
+		}
+		
 		ReleaseDC(GetDesktopWindow(), hDDC);
 		DeleteDC(hCDC);
-		*screenshotTime=time(NULL); // Final update for when it has finished
+		timeLastSS = time(NULL);
 		break;
 	}
 	if (minimized)
 		ShowWindow(tibiaHWND, SW_MINIMIZE);
 	if (trayed)
 		ShowWindow(tibiaHWND, SW_HIDE);
+	isTakingScreenshot = 0;
+	delete(params); // delete here as owner process has no indication of when this should be removed
 	return NULL;
 }
 
@@ -568,7 +847,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CString statusBuf = "";
 	soundPath[0]=0;
 	int modRuns=0;
-	int timeLastSS=0;
+	timeLastSS = 0;
 	
 	delete self;
 
@@ -722,34 +1001,36 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}// *****************************
 				
 				// Take Screenshot **************
-				if (alarmItr->getTakeScreenshot() > -1) {
+				if (alarmItr->getTakeScreenshot() > -1 && (time(NULL)-isTakingScreenshot)>10) { // give takeScreenshot thread 10 seconds to finish
 					DWORD threadId;
+					TS_param* params = new TS_param;
+					params->fileType=(PicFileType)(config->screenshotType);
 					switch (alarmItr->getTakeScreenshot()) {
 					case 0:
 						if (!alarmItr->screenshotsTaken) {
-							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
+							isTakingScreenshot = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,params, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
 					case 1:
 						if (alarmItr->screenshotsTaken < 3 && time(NULL) - timeLastSS >= 1) {
-							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
+							isTakingScreenshot = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,params, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
 					case 2:
 						if (time(NULL) - timeLastSS >= 5) {
-							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
+							isTakingScreenshot = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,params, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
 					case 3:
 						if (time(NULL) - timeLastSS >= 10) {
-							timeLastSS = time(NULL);
-							::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
+							isTakingScreenshot = time(NULL);
+							::CreateThread(NULL, 0, takeScreenshot,params, 0, &threadId);
 							alarmItr->screenshotsTaken++;
 						}
 						break;
@@ -767,11 +1048,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (!shouldAlarm){ //Alarm is OFF
 
 				// Take Screenshot **************  //Finishes taking screenshots then resets to 0
-				if (alarmItr->getTakeScreenshot() == 1 && alarmItr->screenshotsTaken > 0 && time(NULL) - timeLastSS >= 1){
+				if (alarmItr->getTakeScreenshot() == 1 && alarmItr->screenshotsTaken > 0 && time(NULL) - timeLastSS >= 1 && time(NULL)-isTakingScreenshot>10){ // give takeScreenshot thread 10 seconds to finish
 					DWORD threadId;
+					TS_param* params = new TS_param;
+					params->fileType=(PicFileType)(config->screenshotType);
 					if (alarmItr->screenshotsTaken < 3) {
-						timeLastSS = time(NULL);
-						::CreateThread(NULL, 0, takeScreenshot,&timeLastSS, 0, &threadId);
+						isTakingScreenshot = time(NULL);
+						::CreateThread(NULL, 0, takeScreenshot,params, 0, &threadId);
 						alarmItr->screenshotsTaken++;
 					}
 					if (alarmItr->screenshotsTaken >= 3) alarmItr->screenshotsTaken = 0;
@@ -1048,7 +1331,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			statusBuf.Replace("  ******  " + alarmItr->getDescriptor(), "");
 		config->status[0]='\0';
 				
-		//timeLastSS = 0; keep time from last SS
 		alarmItr++;
 	}
 	// clear current status
@@ -1186,6 +1468,7 @@ void CMod_autogoApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"runaway/y"))					m_configData->runawayY				= atoi(paramValue);
 	if (!strcmp(paramName,"runaway/z"))					m_configData->runawayZ				= atoi(paramValue);
 	if (!strcmp(paramName,"triggerMessage"))			m_configData->triggerMessage		= atoi(paramValue);
+	if (!strcmp(paramName,"screenshotType"))			m_configData->screenshotType		= atoi(paramValue);
 	if (!strcmp(paramName,"whiteList/mkBlack"))			m_configData->options |= OPTIONS_MAKE_BLACKLIST*atoi(paramValue);
 	if (!strcmp(paramName,"options"))			m_configData->options = atoi(paramValue);
 	if (!strcmp(paramName,"modPriority")) strncpy(m_configData->modPriorityStr,paramValue,2);
@@ -1284,6 +1567,7 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"runaway/y"))					sprintf(buf,"%d",m_configData->runawayY);
 	if (!strcmp(paramName,"runaway/z"))					sprintf(buf,"%d",m_configData->runawayZ);
 	if (!strcmp(paramName,"triggerMessage"))			sprintf(buf,"%d",m_configData->triggerMessage);
+	if (!strcmp(paramName,"screenshotType"))			sprintf(buf,"%d",m_configData->screenshotType);
 	if (!strcmp(paramName,"options"))			sprintf(buf,"%d",m_configData->options);
 	if (!strcmp(paramName,"modPriority")) strncpy(buf,m_configData->modPriorityStr,2);
 	if (!strcmp(paramName,"whiteList/List")){
@@ -1364,6 +1648,7 @@ char *CMod_autogoApp::getConfigParamName(int nr) {
 	case 10: return "alarmList";
 	case 11: return "options";
 	case 12: return "modPriority";
+	case 13: return "screenshotType";
 
 	default:
 		return NULL;

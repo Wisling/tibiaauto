@@ -1,3 +1,12 @@
+2.39.1 3.22.2014
+Enhancements:
+Defects:
+	Cavebot: Changed attack so as to avoid switching quickly between creatures the same distance apart
+	Runemaker: Fixed bug preventing it from looping through containers
+	Showmap: Fixed bug that occasionally caused crashing when enabled for long periods of time.
+	Cavebot: Fixed incorrect container opening when looting in certain areas.
+	Tibia Auto: sendTAMessage messages are displayed whenever Tibia decrypts a packet(not ideal)
+
 2.39.0 12.3.2014
 Enhancements:
  Tibia Auto: Updated to 10.37

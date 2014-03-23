@@ -56,6 +56,7 @@ public:
 	int		lastZ;
 	CButton	m_flashOnAlarm;
 	CComboBox m_modPriority;
+	CComboBox m_screenshotType;
 	//}}AFX_DATA
 
 

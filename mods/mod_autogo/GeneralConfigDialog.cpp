@@ -266,6 +266,7 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Text(pDX, IDC_AUTOGO_CUR_Z, lastZ);
 	DDX_Control(pDX, IDC_FLASHONALARM, m_flashOnAlarm);
 	DDX_Control(pDX, IDC_AUTOGO_MODPRIORITY, m_modPriority);
+	DDX_Control(pDX, IDC_AUTOGO_SCREENSHOT_TYPE, m_screenshotType);
 	//}}AFX_DATA_MAP
 }
 
@@ -312,6 +313,7 @@ void GeneralConfigDialog::disableControls() {
 	m_maintainPos.EnableWindow(false);
 	m_flashOnAlarm.EnableWindow(false);
 	m_modPriority.EnableWindow(false);
+	m_screenshotType.EnableWindow(false);
 }
 
 void GeneralConfigDialog::DoSetButtonSkin(){
@@ -357,6 +359,7 @@ void GeneralConfigDialog::enableControls() {
 	m_maintainPos.EnableWindow(true);
 	m_flashOnAlarm.EnableWindow(true);
 	m_modPriority.EnableWindow(true);
+	m_screenshotType.EnableWindow(true);
 }
 
 void GeneralConfigDialog::configToControls(CConfigData *configData) {
@@ -376,6 +379,7 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	m_flashOnAlarm.SetCheck(configData->options & OPTIONS_FLASHONALARM);
 	m_maintainPos.SetCheck(configData->maintainPos);
 	m_modPriority.SetCurSel(atoi(configData->modPriorityStr) - 1);
+	m_screenshotType.SetCurSel(configData->screenshotType);
 }
 
 void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
@@ -397,6 +401,7 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
 	newConfigData->maintainPos = m_maintainPos.GetCheck()!=0;
 	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
+	newConfigData->screenshotType=m_screenshotType.GetCurSel();
 }
 
 void GeneralConfigDialog::OnAutogoBattleparanoia() {

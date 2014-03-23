@@ -386,7 +386,7 @@
 #define IDC_GENERAL_CONFIG_MESSAGE_OPTIONS_FRAME 3153
 #define IDC_GENERAL_CONFIG_PROXIMITY_OPTIONS_FRAME 3154
 #define IDC_GENERAL_CONFIG_POSITION_OPTIONS_FRAME 3155
-#define IDC_MAINTAIN_POS              3156
+#define IDC_MAINTAIN_POS                3156
 #define IDC_RUNAWAY_PICTURE             3158
 #define IDC_START_PICTURE               3159
 #define IDC_SPELLWORDS                  3160
@@ -400,12 +400,13 @@
 #define IDC_ACTION_PERMANENT            3168
 #define IDB_PERSISTENT                  3169
 #define IDB_PERMANENT                   3170
+#define IDC_AUTOGO_SCREENSHOT_TYPE      3171
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        3056
+#define _APS_NEXT_RESOURCE_VALUE        3057
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         3168
 #define _APS_NEXT_SYMED_VALUE           3000
