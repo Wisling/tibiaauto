@@ -418,9 +418,9 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 					std::string text = msg.GetString();
 					//AfxMessageBox(text);
 					static CRegexpT <char> reHitpointsNoAttacker("You lose (\\d+) hitpoints?\\.", IGNORECASE);
-					MatchResult res1 = reHitpointsNoAttacker.Match(text.c_str());
-					if(res1.IsMatched()){
-						int hpLost=atoi(text.substr(res1.GetGroupStart(1),res1.GetGroupEnd(1)-res1.GetGroupStart(1)).c_str());
+					MatchResult res = reHitpointsNoAttacker.Match(text.c_str());
+					if(res.IsMatched()){
+						int hpLost=atoi(text.substr(res.GetGroupStart(1),res.GetGroupEnd(1)-res.GetGroupStart(1)).c_str());
 						struct ipcMessage mess;
 						memcpy(mess.payload,&hpLost,sizeof(int));
 						mess.messageType=1101;
@@ -428,10 +428,10 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 					}
 					/* not yet useful
 					static CRegexpT <char> reHitpointsWithAttacker("You lose (\\d+) hitpoints? due to an attack by an? (.*)\\.", IGNORECASE);
-					MatchResult res2 = reHitpointsNoAttacker.Match(text.c_str());
-					if(res2.IsMatched()){
-						int hpLost=atoi(text.substr(res2.GetGroupStart(1),res2.GetGroupEnd(1)-res2.GetGroupStart(1)).c_str());
-						std::string attackerName = text.substr(res2.GetGroupStart(2),res2.GetGroupEnd(2)-res2.GetGroupStart(2));
+					MatchResult res = reHitpointsNoAttacker.Match(text.c_str());
+					if(res.IsMatched()){
+						int hpLost=atoi(text.substr(res.GetGroupStart(1),res.GetGroupEnd(1)-res.GetGroupStart(1)).c_str());
+						std::string attackerName = text.substr(res.GetGroupStart(2),res.GetGroupEnd(2)-res.GetGroupStart(2));
 						struct ipcMessage mess;
 						memcpy(mess.payload,&hpLost,sizeof(int));
 						strncpy(mess.payload+4,attackerName.c_str(),min(attackerName.length()+1,sizeof(mess.payload)-4));
@@ -446,10 +446,32 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 					{
 					std::string text = msg.GetString();
 					static CRegexpT <char> reFollowNoWay("There is no way\\.", IGNORECASE);
-					MatchResult res2 = reFollowNoWay.Match(text.c_str());
-					if(res2.IsMatched()){
+					MatchResult res = reFollowNoWay.Match(text.c_str());
+					if(res.IsMatched()){
 						struct ipcMessage mess;
 						mess.messageType=1103;
+						ipcPipeBack.send(mess);
+					}
+					}
+					break;
+				case 0x1E:// 30
+					break; //disable since ipcMessage is too slow
+					{
+					std::string text = msg.GetString();
+					static CRegexpT <char> reLootMessage("Loot of (.*): (.*)", IGNORECASE);
+					MatchResult res = reLootMessage.Match(text.c_str());
+					if(res.IsMatched()){
+
+						char lootCreatureName[400];
+						char lootString[400];
+						_snprintf(lootCreatureName,399,"%s",text.substr(res.GetGroupStart(1),res.GetGroupEnd(1)-res.GetGroupStart(1)).c_str());
+						_snprintf(lootString,399,"%s",text.substr(res.GetGroupStart(2),res.GetGroupEnd(2)-res.GetGroupStart(2)).c_str());
+						struct ipcMessage mess;
+						unsigned int tm = reader.getCurrentTm();
+						memcpy(mess.payload,&tm,4);
+						memcpy(mess.payload+4,lootCreatureName,400);
+						memcpy(mess.payload+4+400,lootString,400);
+						mess.messageType=1104;
 						ipcPipeBack.send(mess);
 					}
 					}

@@ -1117,7 +1117,12 @@ int CMemReader::getConnectionState()
 int CMemReader::isLoggedIn()
 {
 	CTibiaItemProxy itemProxy;
-	return CMemUtil::GetMemIntValue(itemProxy.getValueForConst("addrConnectionState"))==11;
+	DWORD addr = itemProxy.getValueForConst("addrConnectionState");
+	if(addr<0x99999){
+		int a=0;
+		int b=1/a;
+	}
+	return CMemUtil::GetMemIntValue(addr)==11;
 }
 
 void CMemReader::setXRayValues(int v1, int v2)

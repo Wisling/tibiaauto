@@ -147,13 +147,33 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		}
 		if (::GetLastError()==ERROR_PARTIAL_COPY){
 			//Possibly Tibia has been killed
-			DWORD terminatedStatus=9999;
-			if (GetExitCodeProcess(dwHandle,&terminatedStatus)){
-				if (terminatedStatus!=STILL_ACTIVE){ //If Tibia is no longer active then close TA
-					ExitProcess(0);
+			dwHandle = NULL;
+			for(int iter = 1000;iter>0;iter--){
+				dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, m_prevProcessId);
+				if(dwHandle){
+					char buf[111];
+					sprintf(buf,"iter %d",iter);
+					if(iter!=1000)
+						MessageBox(NULL,buf,"",0);
+					break;
 				}
+				Sleep(10);
 			}
-			return ERROR_PARTIAL_COPY;
+
+			//fprintf(f,"new %d\n",dwHandle);
+			//fclose(f);
+			m_prevProcessHandle=dwHandle;
+			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {
+				return 0;
+			}else{
+				DWORD terminatedStatus=9999;
+				if (GetExitCodeProcess(dwHandle,&terminatedStatus)){
+					if (terminatedStatus!=STILL_ACTIVE){ //If Tibia is no longer active then close TA
+						//ExitProcess(0);
+					}
+				}
+				return ERROR_PARTIAL_COPY;
+			}
 		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
