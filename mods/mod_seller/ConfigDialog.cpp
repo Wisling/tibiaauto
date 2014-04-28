@@ -62,6 +62,8 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_LISTFRAME, m_listFrame);
 	DDX_Control(pDX, IDC_SELLER_STOPBY, m_stopBySeller);
 	DDX_Control(pDX, IDC_SELLER_STATE,m_stateSeller);
+	DDX_Control(pDX, IDC_SELLER_SUGGEST_BANKER, m_suggestBanker);
+	DDX_Control(pDX, IDC_SELLER_SUGGESTION,m_bankerSuggestion);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SELLER_SELLER1, m_Seller[0]);
@@ -165,6 +167,7 @@ void CConfigDialog::disableControls() {
 	m_sellWhen.EnableWindow(false);
 	m_stopBySeller.EnableWindow(false);
 	m_sellOnCap.EnableWindow(false);
+	m_suggestBanker.EnableWindow(false);
 
 }
 
@@ -188,6 +191,7 @@ void CConfigDialog::enableControls() {
 	m_sellWhen.EnableWindow(true);
 	m_stopBySeller.EnableWindow(true);
 	m_sellOnCap.EnableWindow(true);
+	m_suggestBanker.EnableWindow(true);
 
 	onSellOnCap();
 }
@@ -226,6 +230,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	m_tradeItemList.SetCurSel(0);
 	m_modPriority.SetCurSel(atoi(configData->modPriorityStr) - 1);
 	m_stopBySeller.SetCheck(configData->stopBySeller);
+	m_suggestBanker.SetCheck(configData->suggestBanker);
 }
 
 CConfigData * CConfigDialog::controlsToConfig() {
@@ -278,6 +283,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	m_sellWhen.GetWindowText(buf,127);newConfigData->sellWhen=atoi(buf);
 	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
 	newConfigData->stopBySeller=m_stopBySeller.GetCheck();
+	newConfigData->suggestBanker= m_suggestBanker.GetCheck();
 	
 	return newConfigData;
 }
@@ -310,6 +316,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 		default:
 			m_stateSeller.SetWindowText("Unknown state");
 			break;
+		}
+		if(atoi(reader.getGlobalVariable("banker_suggestion"))){
+			sprintf(buf,"(%s gold)",reader.getGlobalVariable("banker_suggestion"));
+			m_bankerSuggestion.SetWindowText(buf);
+		}else{
+			m_bankerSuggestion.SetWindowText("(none)");
 		}
 		SetTimer(1001,250,NULL);
 	}

@@ -18,7 +18,7 @@ extern int loginTime;
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
-char* queue2Message=NULL;
+char* queue2Message="Starting Log";
 
 CConfigDialog::CConfigDialog(CMod_loginApp *app,CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)

@@ -44,6 +44,7 @@ public:
 	int sellOnSpace;
 	char modPriorityStr[2];
 	int stopBySeller;
+	int suggestBanker;
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

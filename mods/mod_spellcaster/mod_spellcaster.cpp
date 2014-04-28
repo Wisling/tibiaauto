@@ -177,6 +177,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{
 		Sleep(200);
+		if(!reader.isLoggedIn()) continue;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int attackedCreature = reader.getAttackedCreature();
 		int flags = reader.getSelfEventFlags();

@@ -64,7 +64,7 @@ int moveToBanker(CConfigData *);
 void getBalance();
 int depositGold();
 int changeGold();
-int withdrawGold(CConfigData *config);
+int withdrawGold(CConfigData *config,int suggestedWithdrawAmount);
 int isDepositing();
 int isCavebotOn();
 int countAllItemsOfType(int,bool);
@@ -74,7 +74,7 @@ int canBank(CConfigData *);
 // Required to be run more often than the return value is expected to change
 int doneAttackingAndLooting(){
 	CMemReaderProxy reader;
-	static int lastAttackTm=0;
+	static unsigned int lastAttackTm=0;
 	int ret = GetTickCount()-lastAttackTm>3*1000 && !reader.getAttackedCreature();
 	if (reader.getAttackedCreature()){
 		lastAttackTm=GetTickCount();
@@ -94,8 +94,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 	int persistentShouldGo=0;
 	int lastPathNotFoundTm=0;
+	unsigned int lastBankerSuccessTm=0;
+	int bankerPauseAfterSuccess=5;
+	int modRuns = 0;
 	while (!toolThreadShouldStop) {
 		Sleep(400);
+		modRuns++;
+		if (time(NULL)-lastBankerSuccessTm<=bankerPauseAfterSuccess) continue;
 
 		if (!persistentShouldGo && shouldBank(config)){
 			persistentShouldGo=1;
@@ -107,7 +112,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			&& canBank(config)){
 			persistentShouldGo=1;
 		}
-
+		if (persistentShouldGo && modRuns % 5==0 && !canBank(config)) {//do not go to bank if can't go anymore
+			persistentShouldGo = 0;
+		}
+		
 		bool control= strcmp(reader.getGlobalVariable("walking_control"),"banker")==0;
 		int modpriority=atoi(reader.getGlobalVariable("walking_priority"));
 		// if wants control
@@ -146,20 +154,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					globalBankerState=CToolBankerState_talking;
 					//AfxMessageBox("Yup, found the banker!");
 					if (config->changeGold){
-						changeGold();
+						if(changeGold()){
+							lastBankerSuccessTm=time(NULL);
+						}
 					} else {
 						if (depositGold()) {
 							// High Priority Task
 							reader.setGlobalVariable("walking_control","banker");
 							reader.setGlobalVariable("walking_priority","9");
+							int suggestedWithdrawAmount = atoi(reader.getGlobalVariable("banker_suggestion"));
 
-							if (config->cashOnHand) {
-								withdrawGold(config);
+							if (config->cashOnHand || suggestedWithdrawAmount>0) {
+								withdrawGold(config,suggestedWithdrawAmount);
 							}
 							getBalance();
-
 							reader.setGlobalVariable("walking_control","banker");
 							reader.setGlobalVariable("walking_priority",config->modPriorityStr);
+							lastBankerSuccessTm=time(NULL);
 						}
 					}
 					persistentShouldGo=0;
@@ -423,6 +434,7 @@ void getBalance() {
 }
 
 int depositGold() {
+	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 
@@ -430,6 +442,9 @@ int depositGold() {
 	float origcaps=self->cap;
 	delete self;
 
+	int moneycount = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+	moneycount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+	moneycount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
 	Sleep (RandomTimeBankerSay(strlen("hi")));
 	sender.say("hi");
 	Sleep(500);//Give time for NPC window to open
@@ -437,20 +452,20 @@ int depositGold() {
 	sender.sayNPC("deposit all");
 	Sleep (RandomTimeBankerSay(strlen("yes")));
 	sender.sayNPC("yes");
-	if (CModuleUtil::waitForCapsChange(origcaps)) {
+	if (CModuleUtil::waitForCapsChange(origcaps) || moneycount==0) {//return success if caps changed or if we might have had no money to begin with
 		return 1;
 	}
 	return 0;
 }
 
-int withdrawGold(CConfigData *config) {
+int withdrawGold(CConfigData *config,int suggestedWithdrawAmount) {
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	char withdrawBuf[32];
 
-	sprintf(withdrawBuf, "withdraw %d", config->cashOnHand);
+	sprintf(withdrawBuf, "withdraw %d", config->cashOnHand+suggestedWithdrawAmount);
 	Sleep (RandomTimeBankerSay(strlen(withdrawBuf)));
 	sender.sayNPC(withdrawBuf);
 	Sleep (RandomTimeBankerSay(strlen("yes")));
@@ -596,7 +611,7 @@ int shouldBank(CConfigData *config) {
 			return 1;
 	}
 	if (!config->changeGold){
-		if (totalCash >= config->minimumGoldToBank){
+		if (totalCash >= config->minimumGoldToBank || totalCash < config->cashOnHand && config->drawUpTo){
 			return 1;
 		} else {
 			return 0;

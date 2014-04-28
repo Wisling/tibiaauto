@@ -79,7 +79,6 @@ protected:
 	virtual void OnOK();
 	afx_msg void OnClose();
 	afx_msg void OnChangeGold();
-	afx_msg void OnStopBy();
 	afx_msg void OnEnable();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual BOOL OnInitDialog();

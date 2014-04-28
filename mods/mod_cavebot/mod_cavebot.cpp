@@ -116,6 +116,7 @@ int actualTargetX=0,actualTargetY=0,actualTargetZ=0;
 int depotX=0,depotY=0,depotZ=0;
 int lastDepotPathNotFoundTm=0;
 int persistentShouldGo=0;
+unsigned int lastSendAttackTm = 0;
 
 unsigned int currentPosTM=0;
 int creatureAttackDist=0;
@@ -133,9 +134,6 @@ CTibiaQueue<Corpse> corpseQueue;
 
 const int CONTAINER_TIME_CUTOFF=10;
 int containerTimes[32];//used to differentiate between carried containers and other containers
-
-CUIntArray lootFromFloorArr;
-
 
 CTibiaMapProxy tibiaMap;
 
@@ -1234,19 +1232,16 @@ void quickSort(CUIntArray& arr,int s,int e){
 	int ASCENDING=1;
 	if (e-s<=1) return;
 	int size = arr.GetSize();
-	if (s<0 || e<0 || s>size || e>size){
-		s=0;
-		e=size;
-	}
+	ASSERT(s>=0 && e<=size);
 	int rotator=e-1;
 
 	//select random pivot
-	int pivot = s+rand()%(e-s);
+	int pivot = s+1+rand()%(e-s-1);
 
 	//switch pivot to start
 	int tmp = arr[s];
 	arr[s]=arr[pivot];
-	arr[pivot]=arr[s];
+	arr[pivot]=tmp;
 
 	//set index
 	pivot=s;
@@ -1272,7 +1267,7 @@ void sortArray(CUIntArray& arr){
 	quickSort(arr,0,arr.GetSize());
 }
 /////////////////////////////////////////////////////////////////////////////
-void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
+int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius=7) {
 	char buf[256];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -1280,7 +1275,6 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 	CTibiaMapProxy tibiaMap;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	if (lootFromFloorArr.GetSize() == 0) lootFromFloorArr.Copy(lootedArr);
 
 	if (config->lootFromFloor&&self->cap>config->capacityLimit) {
 
@@ -1311,13 +1305,13 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 			if (config->debug) registerDebug("Loot from floor: no free container found");
 			// no free place in container found - exit
 			deleteAndNull(self);
-			return;
+			return 0;
 		}else{
 			sprintf(buf,"Container Found: Cont %d Slot%d)",freeContNr,freeContPos);
 			if (config->debug) registerDebug(buf);
 		}
 		
-		sortArray(lootFromFloorArr);
+		
 
 		int foundLootedObjectId=0;
 		int isTopItem=0;
@@ -1325,13 +1319,16 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 		int xSwitch=0;
 		int ySwitch=0;
 		int count=0;
-		while (x!=8 && y!=8){
+		while (x!=radius+1 && y!=radius+1){
 			//manage x and y coords for spiraling
 			if (xSwitch==0 && ySwitch==0){xSwitch=1;}
 			else if (x==y && x>=0 && xSwitch==1 && ySwitch==0) {x++; xSwitch=0;ySwitch=-1;}
 			else if (!xSwitch && !(x==y && x>=0) && abs(x)==abs(y)){xSwitch=ySwitch;ySwitch=0;x+=xSwitch;y+=ySwitch;}
 			else if (!ySwitch && abs(x)==abs(y)){ySwitch=-xSwitch;xSwitch=0;x+=xSwitch;y+=ySwitch;}
 			else {x+=xSwitch;y+=ySwitch;}
+			//char buf[1111];
+			//sprintf(buf,"looter spiral %d %d",x,y);
+			//sender.sendTAMessage(buf);
 			
 			if (abs(x)>7 || abs(y)>5) continue;
 
@@ -1347,9 +1344,9 @@ void droppedLootCheck(CConfigData *config, CUIntArray& lootedArr) {
 			{
 				count++;
 				int tileId = reader.mapGetPointItemId(point(x,y,0),pos);
-				int ind = binarySearch(tileId,lootFromFloorArr);
+				int ind = binarySearch(tileId,lootedArr);
 				if (ind!=-1){
-					foundLootedObjectId=(lootFromFloorArr)[ind];
+					foundLootedObjectId=(lootedArr)[ind];
 					isTopItem = pos==reader.itemOnTopIndex(x,y);
 					break;
 				}
@@ -1468,7 +1465,11 @@ exitLoop:
 				int qty=reader.itemOnTopQty(itemX,itemY);
 				sender.moveObjectFromFloorToContainer(foundLootedObjectId,self->x+x,self->y+y,self->z,0x40+freeContNr,freeContPos,qty?qty:1);
 				Sleep(CModuleUtil::randomFormula(400,200));
-				CModuleUtil::waitForItemsInsideChange(freeContNr,freeContPos);
+				if(CModuleUtil::waitForCapsChange(self->cap)){
+					return 1;
+				}else{
+					return 0; //Item could not be picked up for some reason.
+				}
 			}
 			else {
 				if (config->debug) registerDebug("Loot from floor: tough luck - item is not on top. Please wait and try again.");
@@ -1479,8 +1480,7 @@ exitLoop:
 		}
 	} // if (config->lootFromFloor&&self->cap>config->capacityLimit) {
 	deleteAndNull(self);
-
-
+	return 0;
 }
 
 void fireRunesAgainstCreature(CConfigData *config,int creatureId) {
@@ -1607,16 +1607,17 @@ int AttackCreature(CConfigData *config,int id){
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(id);
-	int old = reader.getAttackedCreature();
+	int oldId = reader.getAttackedCreature();
 	if (attackedCh){
-		if (reader.getAttackedCreature()!=id){
+		if (oldId!=id){
 			reader.cancelAttackCoords();
 			Sleep(200);
 			sender.attack(id);
+			if(id) lastSendAttackTm = time(NULL);
 			currentPosTM=time(NULL);
 			if (config->debug&&id){
 				char buf[128];
-				sprintf(buf,"used to be=%d, set to=%d, now attacking=%d,hp=%d",old,id,reader.getAttackedCreature(),attackedCh->hpPercLeft);
+				sprintf(buf,"used to be=%d, set to=%d, now attacking=%d,hp=%d",oldId,id,reader.getAttackedCreature(),attackedCh->hpPercLeft);
 				registerDebug(buf);
 			}
 			deleteAndNull(self);
@@ -1763,13 +1764,13 @@ HANDLE lootThreadHandle;
 HANDLE queueThreadHandle;
 
 //helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
-//Looting corpses takes a long time and lootThreadProc may miss changes in autolooterTm
+//Looting corpses takes a long time and lootThreadProc may miss changes in autolooterTm, so this thread collects them
 DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	int a =0;
 	int myID=queueThreadId;
-	while (!toolThreadShouldStop && myID == queueThreadId) {
+	while (!toolThreadShouldStop && myID == queueThreadId) {//If cavebot starts new queueThreadProc then quit
 		Sleep(200);
 		if (shouldLoot()){
 			const char* var=reader.getGlobalVariable("autolooterTm");
@@ -1784,9 +1785,12 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 			}
 		}
 	}
-	while(corpseQueue.GetCount()){
-		corpseQueue.Remove();
+	if(toolThreadShouldStop || !queueThreadId){ // only remove corpses from queue when stopping
+		while(corpseQueue.GetCount()){
+			corpseQueue.Remove();
+		}
 	}
+	queueThreadId=0;
 	return 0;
 }
 
@@ -1940,7 +1944,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 	unsigned int lastAttackedCreatureBloodHit=0;
 	int reachedAttackedCreature=0;//true if 1 sqm away or hp dropped while attacking
-	unsigned int lastResetAttack = time(NULL);
 	int shareAlienBackattack=0;
 	int alienCreatureForTrainerFound=0;
 	
@@ -1958,14 +1961,29 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	walkerStandingEndTm=0;
 	firstCreatureAttackTM=0;
 	currentPosTM=time(NULL);
+	lastSendAttackTm = 0;
 
 	int loggedOut=0;
 	int wasLoggedOut=0;
 	int attackTimeoutOnLogin=10; //used for disabling attack for first 10 seconds after logging in
 	int loginTm=0;
 
-	lootFromFloorArr.RemoveAll();
-	
+	CUIntArray lootFromFloorArr;
+
+	if (config->lootFood) {
+		lootFromFloorArr.Append(*itemProxy.getFoodIdArrayPtr());
+	}
+	if (config->lootGp) {
+		lootFromFloorArr.Add(itemProxy.getValueForConst("GP"));
+	}
+	if (config->lootWorms) {
+		lootFromFloorArr.Add(itemProxy.getValueForConst("worms"));
+	}
+	if (config->lootCustom) {
+		lootFromFloorArr.Append(*itemProxy.getLootItemIdArrayPtr());
+	}
+	sortArray(lootFromFloorArr);
+
 	int i;
 	int openContNr=0;
 	int openContMax=reader.readOpenContainerCount();
@@ -2073,7 +2091,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						globalAutoAttackStateAttack=CToolAutoAttackStateAttack_macroPause;
 						globalAutoAttackStateWalker=CToolAutoAttackStateWalker_macroPause;
 						globalAutoAttackStateDepot=CToolAutoAttackStateDepot_macroPause;
-						sender.attack(0);
+						AttackCreature(config,0);
 						reader.setAttackedCreature(0);
 						reader.cancelAttackCoords();
 						//restore attack mode
@@ -2155,7 +2173,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		modRuns++;//for performing actions once every 10 iterations
 		if (modRuns == 1000000000) modRuns=0;
-		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
 		int depotS = GetTickCount();
@@ -2163,7 +2180,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		* Check whether we should go to a depot
 		*/
 		if (modRuns%10==0 || depotX!=0) depotCheck(config);
-		if (modRuns%(30*4)==10) lootFromFloorArr.RemoveAll();
+		if (modRuns%(30*4)==10 && config->lootFromFloor){
+			lootFromFloorArr.RemoveAll();
+			if (config->lootFood) {
+				lootFromFloorArr.Append(*itemProxy.getFoodIdArrayPtr());
+			}
+			if (config->lootGp) {
+				lootFromFloorArr.Add(itemProxy.getValueForConst("GP"));
+			}
+			if (config->lootWorms) {
+				lootFromFloorArr.Add(itemProxy.getValueForConst("worms"));
+			}
+			if (config->lootCustom) {
+				lootFromFloorArr.Append(*itemProxy.getLootItemIdArrayPtr());
+			}
+			sortArray(lootFromFloorArr);
+		}
 		if (globalAutoAttackStateDepot==CToolAutoAttackStateDepot_notRunning){
 			depotX=depotY=depotZ=0;
 		}
@@ -2190,24 +2222,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		* 2. we are not in a half sleep (no walking) mode
 		* 3. there is something to loot
 		*/
-		CUIntArray droppedLootArray;
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
-		if (config->lootFromFloor && currentlyAttackedCreatureNr==-1&&!isInHalfSleep() && !moving && isLooterDone(config)) {
-			if (config->lootFood) {
-				droppedLootArray.Append(*itemProxy.getFoodIdArrayPtr());
-			}
-			if (config->lootGp) {
-				droppedLootArray.Add(itemProxy.getValueForConst("GP"));
-			}
-			if (config->lootWorms) {
-				droppedLootArray.Add(itemProxy.getValueForConst("worms"));
-			}
-			if (config->lootCustom) {
-				droppedLootArray.Append(*itemProxy.getLootItemIdArrayPtr());
-			}
-			if (droppedLootArray.GetSize()) {
-
-				droppedLootCheck(config,droppedLootArray);
+		if (config->lootFromFloor && lootFromFloorArr.GetSize() && !isInHalfSleep() && isLooterDone(config)) {
+			static unsigned int lastFullDroppedLootCheckTm = 0;
+			static unsigned int lastSmallDroppedLootCheckTm = 0;
+			if(currentlyAttackedCreatureNr==-1 && moving<=2 && time(NULL)-lastFullDroppedLootCheckTm>6){
+				if(!droppedLootCheck(config,lootFromFloorArr)){ // if no dropped loot found, wait 6 seconds before trying again.
+					lastFullDroppedLootCheckTm = time(NULL);
+				}
+			}else if(time(NULL)-lastSmallDroppedLootCheckTm>1){
+				if(!droppedLootCheck(config,lootFromFloorArr,1)){// wait 1 second between unsuccessful loot from floors
+					lastSmallDroppedLootCheckTm = time(NULL);
+				}
 			}
 		}
 		
@@ -2237,9 +2263,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	******/
 		//if (!reader.getAttackedCreature()) currentlyAttackedCreatureNr = -1;//this is not needed yet(but may be)
 		CTibiaCharacter *attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
-		
-		
-
 
 		// keep track of how long standing in same place for info to user
 		if (lastStandingX!=self->x||lastStandingY!=self->y||lastStandingZ!=self->z){
@@ -2259,209 +2282,236 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			if (!attackedCh->hpPercLeft&&
 				abs(attackedCh->x-self->x)+abs(attackedCh->y-self->y)<=10&&
 				attackedCh->z==self->z) {
-
 				if (config->debug) registerDebug("Looter: Creature is dead.");
-				if (config->lootWhileKill){
-					
-					if (!lootThreadId){
-						lootThreadHandle = ::CreateThread(NULL,0,lootThreadProc,config,0,&lootThreadId);
-						char buf [111];
-						sprintf(buf,"%d",lootThreadId);
-						//AFXMessageBox(buf);
-						//sender.sendTAMessage(buf);
-						queueThreadHandle = ::CreateThread(NULL,0,queueThreadProc,0,0,&queueThreadId);
-					}
-
-					char buf[30];
-					autolooterTm=time(NULL)+10;
-					sprintf(buf,"%d %d",autolooterTm,attackedCh->tibiaId);
-					reader.setGlobalVariable("autolooterTm",buf);
-
-					if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
-					currentlyAttackedCreatureNr=-1;
-					reader.setAttackedCreature(0);
-					deleteAndNull(attackedCh);
-					attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
-				} else {
-					FILE *lootStatsFile = NULL;
-					// time,rand,creature,name,pos,objectId,count,bagopen,checksum
-					int killNr=rand();
-
-					int lootContNr[2];
-					lootContNr[0] = reader.findNextClosedContainer();
-					if (config->lootInBags)
-						lootContNr[1] = reader.findNextClosedContainer(lootContNr[0]);
-
-					if (config->gatherLootStats) {
-						char installPath[1024];
-						CModuleUtil::getInstallPath(installPath);
-						char pathBuf[2048];
-						sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
-						lootStatsFile=fopen(pathBuf,"a+");
-					}
-					
-					// first make sure all needed containers are closed
-					
-					// attacked creature dead, near me, same floor
-					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
-
-					CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
-					deleteAndNull(self);
-					self = reader.readSelfCharacter();
-
-					int corpseId = reader.itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
-					if (corpseId && reader.getTibiaTile(corpseId)->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
-						// Open corpse to container, wait to get to corpse on ground and wait for open
-						sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
-
-						if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
-							//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
-							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
-							CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
+				
+//				// disabled since ipcMessage is slow
+//				//check loot message for creature we killed
+//				struct ipcMessage mess;
+//				unsigned int lootMessageTm;
+//				CString lootCreatureName;
+//				CString lootString;
+//				CString attackChreatureName=attackedCh->name;
+//				attackChreatureName.MakeLower();
+//				while(backPipe.readFromPipe(&mess,1104)){
+//					unsigned int _lootMessageTm = *(unsigned int*)(mess.payload);
+//					CString _lootCreatureName = (char*)(mess.payload+4);
+//					CString _lootString = (char*)(mess.payload+4+400);
+//					if(_lootCreatureName.Find(attackChreatureName)!=-1){
+//						lootMessageTm = _lootMessageTm;
+//						lootCreatureName = _lootCreatureName[0];
+//						lootString = _lootString[0];
+//					}
+//				}
+//
+//				int msSinceKill = reader.getCurrentTm()-lootMessageTm;
+//				if(msSinceKill < 1500 && lootString.Compare("nothing")==0){ // if recent creature contains nothing then don't loot
+//					char buf[1024];
+//					sprintf(buf,"Looter: Loot message says creature contains nothing. For %s piped info:%d, %s, %s",attackedCh->name,msSinceKill,lootCreatureName[0],lootString[0]);
+//					if (config->debug) registerDebug(buf);
+//				}else{
+				if(1){
+					if (config->lootWhileKill){
+						
+						if (!lootThreadId){
+							if (config->debug) registerDebug("Running lootThreadProc");
+							lootThreadHandle = ::CreateThread(NULL,0,lootThreadProc,config,0,&lootThreadId);
+						}
+						if(!queueThreadId){
+							if (config->debug) registerDebug("Running queueThreadProc");
+							queueThreadHandle = ::CreateThread(NULL,0,queueThreadProc,0,0,&queueThreadId);
 						}
 
-						//Normal looting if autolooter not enabled
-						if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
-							//sender.sendTAMessage("[debug] opened container");
-							if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
-							if (config->lootInBags) {
-								if (config->debug) registerDebug("Looter: Opening bag (second container)");
-								CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
-								int itemNr;
-								for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
-									CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
-									CTibiaTile* tile=reader.getTibiaTile(insideItem->objectId);
-									if (insideItem->objectId && tile && tile->isContainer) {
-										globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
-										sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
-										if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
-											if (config->debug) registerDebug("Failed opening bag");
-										break;
-									}
-								}
-								deleteAndNull(cont);
+						char buf[30];
+						autolooterTm=time(NULL)+10;
+						sprintf(buf,"%d %d",autolooterTm,attackedCh->tibiaId);
+						reader.setGlobalVariable("autolooterTm",buf);
+
+						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
+						currentlyAttackedCreatureNr=-1;
+						reader.setAttackedCreature(0);
+						deleteAndNull(attackedCh);
+						attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+					} else {
+						FILE *lootStatsFile = NULL;
+						// time,rand,creature,name,pos,objectId,count,bagopen,checksum
+						int killNr=rand();
+
+						int lootContNr[2];
+						lootContNr[0] = reader.findNextClosedContainer();
+						if (config->lootInBags)
+							lootContNr[1] = reader.findNextClosedContainer(lootContNr[0]);
+
+						if (config->gatherLootStats) {
+							char installPath[1024];
+							CModuleUtil::getInstallPath(installPath);
+							char pathBuf[2048];
+							sprintf(pathBuf,"%s\\tibiaauto-stats-loot.txt",installPath);
+							lootStatsFile=fopen(pathBuf,"a+");
+						}
+						
+						// first make sure all needed containers are closed
+						
+						// attacked creature dead, near me, same floor
+						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_opening;
+
+						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
+						deleteAndNull(self);
+						self = reader.readSelfCharacter();
+
+						int corpseId = reader.itemOnTopCode(attackedCh->x-self->x,attackedCh->y-self->y);
+						if (corpseId && reader.getTibiaTile(corpseId)->isContainer){//If there is no corpse ID, TA has "lost" the body. No sense in trying to open something that won't be there.
+							// Open corpse to container, wait to get to corpse on ground and wait for open
+							sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
+
+							if(!CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y)){
+								//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
+								sender.openContainerFromFloor(corpseId,attackedCh->x,attackedCh->y,attackedCh->z,lootContNr[0]);
+								CModuleUtil::waitToApproachSquare(attackedCh->x,attackedCh->y);
 							}
-							if (lootStatsFile) {
-								int checksum;
-								int tm=time(NULL);
-								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
-									int contNr=lootContNr[contNrInd];
-									//sender.sendTAMessage("[debug] stats from conts");
-									CTibiaContainer *lootCont = reader.readContainer(contNr);
-									if(lootCont->flagOnOff){
-										if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
-										int itemNr;
-										for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
-											int i,len;
-											char statChName[128];
-											for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
-												if (statChName[i]=='[')
-													statChName[i]='\0';
-											}
-											
-											CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
-											checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
-											if (checksum<0) checksum*=-1;
-											fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+
+							//Normal looting if autolooter not enabled
+							if (CModuleUtil::waitForOpenContainer(lootContNr[0],true)) {
+								//sender.sendTAMessage("[debug] opened container");
+								if (config->debug) registerDebug("Looter: Opening dead creature corpse (first container)");
+								if (config->lootInBags) {
+									if (config->debug) registerDebug("Looter: Opening bag (second container)");
+									CTibiaContainer *cont = reader.readContainer(lootContNr[0]);
+									int itemNr;
+									for (itemNr=0;itemNr<cont->itemsInside;itemNr++) {
+										CTibiaItem *insideItem = (CTibiaItem *)cont->items.GetAt(itemNr);
+										CTibiaTile* tile=reader.getTibiaTile(insideItem->objectId);
+										if (insideItem->objectId && tile && tile->isContainer) {
+											globalAutoAttackStateLoot=CToolAutoAttackStateLoot_openingBag;
+											sender.openContainerFromContainer(insideItem->objectId,0x40+lootContNr[0],insideItem->pos,lootContNr[1]);
+											if (!CModuleUtil::waitForOpenContainer(lootContNr[1],true))
+												if (config->debug) registerDebug("Failed opening bag");
+											break;
 										}
+									}
+									deleteAndNull(cont);
+								}
+								if (lootStatsFile) {
+									int checksum;
+									int tm=time(NULL);
+									for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
+										int contNr=lootContNr[contNrInd];
+										//sender.sendTAMessage("[debug] stats from conts");
+										CTibiaContainer *lootCont = reader.readContainer(contNr);
+										if(lootCont->flagOnOff){
+											if (config->debug) registerDebug("Recording Stats for Container Number",intstr(contNr).c_str());
+											int itemNr;
+											for (itemNr=0;itemNr<lootCont->itemsInside;itemNr++) {
+												int i,len;
+												char statChName[128];
+												for (i=0,strcpy(statChName,attackedCh->name),len=strlen(statChName);i<len;i++) {
+													if (statChName[i]=='[')
+														statChName[i]='\0';
+												}
+												
+												CTibiaItem *lootItem = (CTibiaItem *)lootCont->items.GetAt(itemNr);
+												checksum = CModuleUtil::calcLootChecksum(tm,killNr,strlen(statChName),100+itemNr,lootItem->objectId,(lootItem->quantity?lootItem->quantity:1),config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z);
+												if (checksum<0) checksum*=-1;
+												fprintf(lootStatsFile,"%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n",tm,killNr,statChName,100+itemNr,lootItem->objectId,lootItem->quantity?lootItem->quantity:1,config->lootInBags&&contNr==lootContNr[1],attackedCh->x,attackedCh->y,attackedCh->z,checksum);
+											}
+										}
+										deleteAndNull(lootCont);
+									}
+									//free(lootCont);
+									if (config->debug) registerDebug("Container data registered.");
+								}
+								
+								CUIntArray acceptedItems;
+
+								if (config->lootGp){
+									acceptedItems.Add(itemProxy.getValueForConst("GP"));
+									acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
+									acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
+								}
+								if (config->lootWorms)
+									acceptedItems.Add(itemProxy.getValueForConst("worms"));
+								if (config->lootCustom) {
+									acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
+								}
+								if (config->lootFood) {
+									acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
+								}
+								int lootTakeItem;
+								for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
+									int contNr=lootContNr[contNrInd];
+
+									globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
+									CTibiaContainer *lootCont = reader.readContainer(contNr);
+									//sender.sendTAMessage("[debug] looting");
+									if(lootCont->flagOnOff){
+										if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
+										for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
+											if (self->cap>config->capacityLimit) {
+												CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
+											}
+											if (config->eatFromCorpse) {
+												CModuleUtil::eatItemFromContainer(contNr);
+												CModuleUtil::eatItemFromContainer(contNr);
+											}
+										}
+										if (config->dropNotLooted) {
+											CTibiaCharacter *self=reader.readSelfCharacter();
+											if (attackedCh->z != self->z){
+												dumpCreatureInfo("XXXYYYZZZ Creature replaced??",attackedCh->tibiaId);
+												char buf[1111];
+												sprintf(buf,"Drop looted?? %x,%d (%d,%d,%d)",attackedCh->tibiaId,attackedCh->nr,attackedCh->x,attackedCh->y,attackedCh->z);
+												//AfxMessageBox(buf);
+											}
+											if (config->dropWhenCapacityLimitReached
+												&& self->cap < config->capacityLimit
+												&& !config->dropOnlyLooted
+												|| !config->dropWhenCapacityLimitReached
+												&& config->dropListCount != 0)
+											{
+												CUIntArray droppedItems;
+												droppedItems.SetSize(config->dropListCount);
+												for (int i=0; i<config->dropListCount;i++){
+													int itemid=itemProxy.getItemId(config->dropList[i]);
+													if (itemid) droppedItems.Add(itemid);
+												}
+												dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z,&droppedItems);
+												if (config->debug) registerDebug("Dropping custom items from container:",intstr(contNrInd).c_str());
+											} else if (self->cap < config->capacityLimit && config->dropOnlyLooted){
+												dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z,&acceptedItems);
+												if (config->debug) registerDebug("Dropping loot items from container:",intstr(contNrInd).c_str());
+											} else if(!config->dropWhenCapacityLimitReached && config->dropListCount == 0) {
+												dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
+												if (config->debug) registerDebug("Dropping all items from container:",intstr(contNrInd).c_str());
+											}
+											delete self;
+										}
+										
+										//sender.sendTAMessage("[debug] closing bag");
+										Sleep(CModuleUtil::randomFormula(250,50)); //Add short delay for autostacker to take items
+										sender.closeContainer(contNr);
+										CModuleUtil::waitForOpenContainer(contNr,false);
 									}
 									deleteAndNull(lootCont);
 								}
-								//free(lootCont);
-								if (config->debug) registerDebug("Container data registered.");
+								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+								if (config->debug) registerDebug("End of looting");
+							} // if waitForContainer(9)
+							else{
+								char buf[128];
+								sprintf(buf,"Failed to open Item ID:%d",corpseId);
+								if (config->debug) registerDebug(buf);
 							}
-							
-							CUIntArray acceptedItems;
-
-							if (config->lootGp){
-								acceptedItems.Add(itemProxy.getValueForConst("GP"));
-								acceptedItems.Add(itemProxy.getValueForConst("PlatinumCoin"));
-								acceptedItems.Add(itemProxy.getValueForConst("CrystalCoin"));
+							if (lootStatsFile)  {
+								fclose(lootStatsFile);
 							}
-							if (config->lootWorms)
-								acceptedItems.Add(itemProxy.getValueForConst("worms"));
-							if (config->lootCustom) {
-								acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
-							}
-							if (config->lootFood) {
-								acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
-							}
-							int lootTakeItem;
-							for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// loot from first, then last if lootInBags
-								int contNr=lootContNr[contNrInd];
-
-								globalAutoAttackStateLoot=CToolAutoAttackStateLoot_moveing;
-								CTibiaContainer *lootCont = reader.readContainer(contNr);
-								//sender.sendTAMessage("[debug] looting");
-								if(lootCont->flagOnOff){
-									if (config->debug) registerDebug("Looting from container number",intstr(contNrInd).c_str());
-									for (lootTakeItem=0;lootTakeItem<1;lootTakeItem++) {
-										if (self->cap>config->capacityLimit) {
-											CModuleUtil::lootItemFromContainer(contNr,&acceptedItems,lootContNr[0],lootContNr[1]);
-										}
-										if (config->eatFromCorpse) {
-											CModuleUtil::eatItemFromContainer(contNr);
-											CModuleUtil::eatItemFromContainer(contNr);
-										}
-									}
-									if (config->dropNotLooted) {
-										CTibiaCharacter *self=reader.readSelfCharacter();
-										if (attackedCh->z != self->z){
-											dumpCreatureInfo("XXXYYYZZZ Creature replaced??",attackedCh->tibiaId);
-											char buf[1111];
-											sprintf(buf,"Drop looted?? %x,%d (%d,%d,%d)",attackedCh->tibiaId,attackedCh->nr,attackedCh->x,attackedCh->y,attackedCh->z);
-											//AfxMessageBox(buf);
-										}
-										if (config->dropWhenCapacityLimitReached
-											&& self->cap < config->capacityLimit
-											&& !config->dropOnlyLooted
-											|| !config->dropWhenCapacityLimitReached
-											&& config->dropListCount != 0)
-										{
-											CUIntArray droppedItems;
-											droppedItems.SetSize(config->dropListCount);
-											for (int i=0; i<config->dropListCount;i++){
-												int itemid=itemProxy.getItemId(config->dropList[i]);
-												if (itemid) droppedItems.Add(itemid);
-											}
-											dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z,&droppedItems);
-											if (config->debug) registerDebug("Dropping custom items from container:",intstr(contNrInd).c_str());
-										} else if (self->cap < config->capacityLimit && config->dropOnlyLooted){
-											dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z,&acceptedItems);
-											if (config->debug) registerDebug("Dropping loot items from container:",intstr(contNrInd).c_str());
-										} else if(!config->dropWhenCapacityLimitReached && config->dropListCount == 0) {
-											dropItemsFromContainer(contNr,attackedCh->x,attackedCh->y,attackedCh->z);
-											if (config->debug) registerDebug("Dropping all items from container:",intstr(contNrInd).c_str());
-										}
-										delete self;
-									}
-									
-									//sender.sendTAMessage("[debug] closing bag");
-									Sleep(CModuleUtil::randomFormula(250,50)); //Add short delay for autostacker to take items
-									sender.closeContainer(contNr);
-									CModuleUtil::waitForOpenContainer(contNr,false);
-								}
-								deleteAndNull(lootCont);
-							}
-							globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-							if (config->debug) registerDebug("End of looting");
-						} // if waitForContainer(9)
-						else{
-							char buf[128];
-							sprintf(buf,"Failed to open Item ID:%d",corpseId);
-							if (config->debug) registerDebug(buf);
 						}
-						if (lootStatsFile)  {
-							fclose(lootStatsFile);
-						}
-					}
-					globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
-					if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
-					currentlyAttackedCreatureNr=-1;
-					reader.setAttackedCreature(0);
-					deleteAndNull(attackedCh);
-					attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
-				}
+						globalAutoAttackStateLoot=CToolAutoAttackStateLoot_notRunning;
+						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
+						currentlyAttackedCreatureNr=-1;
+						reader.setAttackedCreature(0);
+						deleteAndNull(attackedCh);
+						attackedCh = reader.readVisibleCreature(currentlyAttackedCreatureNr);
+					}//if lootWhileKilling enabled
+				}//if loot msg is "nothing"
 			}
 			else {// if creatureIsNotDead
 				char debugBuf[256];
@@ -2476,13 +2526,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			reader.setAttackedCreature(0);
 		}
 
-		// if client thinks we are not attacking anything, then
-		// send "attack new target" to it and increment failed attack for creatureNr by 1
 		if (config->debug) {
 			char buf[128];
 			sprintf(buf,"Tmp:currentlyAttackedCreatureNr=%d",currentlyAttackedCreatureNr);
 			registerDebug(buf);
 		}
+		// if client thinks we are not attacking anything, then
+		// send "attack new target" to it and increment failed attack for creatureNr by 1
 		if (reader.getAttackedCreature()==0&&currentlyAttackedCreatureNr!=-1&&(attackedCh&&attackedCh->hpPercLeft)) {
 			char buf[256];
 			sprintf(buf,"Resetting attacked creature to %d,%d,%d [1]",currentlyAttackedCreatureNr,reader.getAttackedCreature(),attackedCh->hpPercLeft);
@@ -2513,7 +2563,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		else if (currentlyAttackedCreatureNr!=-1&&config->autoFollow&&creatureList[currentlyAttackedCreatureNr].distance(self->x,self->y)>1&&time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks)){
 			if (creatureList[currentlyAttackedCreatureNr].tibiaId){
 				creatureList[currentlyAttackedCreatureNr].failedAttacks++;
-				sender.attack(creatureList[currentlyAttackedCreatureNr].tibiaId);
+				AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId);
 				char buf[256];
 				sprintf(buf,"Incrementing failed attempts for not reaching target in time. time:%d lastPosChange:%d, %d",time(NULL),currentPosTM,time(NULL)-currentPosTM>(2.5+.5*creatureList[currentlyAttackedCreatureNr].failedAttacks));
 				if (config->debug) registerDebug(buf);
@@ -2710,25 +2760,33 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					canGetToPoint(creatureList[bestCreatureNr].x,creatureList[bestCreatureNr].y,creatureList[bestCreatureNr].z)){
 					//distance creature has higher priority and can be reached
 				} else{
-					if (config->debug) registerDebug("Attacker: Better because closer.");
+					char buf[256];
+					sprintf(buf,"Attacker: CrNr %d Better because closer.",crNr);
+					if (config->debug) registerDebug(buf);
 					bestCreatureNr=crNr;}
 			}else if (!isFarther){
 				//If force attack prioritize creature not on list with lowest health
 				if ((config->forceAttackAfterAttack && creatureList[crNr].listPriority==0 && !isFarther && creatureList[crNr].isAttacking) &&
 					(creatureList[crNr].hpPercLeft<creatureList[bestCreatureNr].hpPercLeft || creatureList[bestCreatureNr].listPriority!=0)){
-					if (config->debug) registerDebug("Attacker: Better because alien creature.");
+					char buf[256];
+					sprintf(buf,"Attacker: CrNr %d Better because alien creature.",crNr);
+					if (config->debug) registerDebug(buf);
 					bestCreatureNr=crNr;}
 				//If attack only if attacked prioritize creature not on list or creatures attacking us with highest priority
 				if ((!config->attackOnlyAttacking || creatureList[crNr].isAttacking) && creatureList[crNr].listPriority!=0  &&
 					(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority!=0)){
-					if (config->debug) registerDebug("Attacker: Better because higher priority");
+					char buf[256];
+					sprintf(buf,"Attacker: CrNr %d Better because higher priority.",crNr);
+					if (config->debug) registerDebug(buf);
 					bestCreatureNr=crNr;}
 			} else if (isFarther){
 				if (creatureList[crNr].isAttacking &&
 					(creatureList[crNr].listPriority>creatureList[bestCreatureNr].listPriority && creatureList[bestCreatureNr].listPriority ||
 					creatureList[crNr].listPriority==0 && creatureList[bestCreatureNr].listPriority!=0)&&
 					canGetToPoint(creatureList[crNr].x,creatureList[crNr].y,creatureList[crNr].z)) {
-					if (config->debug) registerDebug("Attacker: Better because attacking and higher priority.");
+					char buf[256];
+					sprintf(buf,"Attacker: CrNr %d Better because attacking and higher priority.",crNr);
+					if (config->debug) registerDebug(buf);
 					bestCreatureNr=crNr;
 				}
 			}
@@ -2791,12 +2849,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		}
 		// If attack packet never reached destination, then the red attack box is meaningless and we need to attack again
 		if(currentlyAttackedCreatureNr!=-1 && reader.getAttackedCreature() && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId){
-			int tmTmp = RandomVariableTime((int&)lastResetAttack,10,200,GET);
-			if((lastAttackedCreatureBloodHit==0 || time(NULL)-lastAttackedCreatureBloodHit>tmTmp) && time(NULL)-lastResetAttack>tmTmp){
+			int tmTmp = RandomVariableTime((int&)lastSendAttackTm,10,200,GET);
+			if((lastAttackedCreatureBloodHit==0 || time(NULL)-lastAttackedCreatureBloodHit>tmTmp) && time(NULL)-lastSendAttackTm>tmTmp){
 				reader.setAttackedCreature(0);
 				AttackCreature(config,creatureList[currentlyAttackedCreatureNr].tibiaId);
-				RandomVariableTime((int&)lastResetAttack,10,200,MAKE);
-				lastResetAttack = time(NULL);
+				RandomVariableTime((int&)lastSendAttackTm,10,200,MAKE);
+				registerDebug("Resetting attack box as creature has not lost health in a while.");
 			}
 		}
 		if (config->debug) registerDebug("Entering attack execution area");
@@ -3294,6 +3352,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	globalAutoAttackStateTraining=CToolAutoAttackStateTraining_notRunning;
 	toolThreadShouldStop=0;
 	lootThreadId=0;
+	queueThreadId=0;
 
 	if (strcmp(reader.getGlobalVariable("walking_control"),"cavebot")==0){
 		reader.setGlobalVariable("walking_control","");

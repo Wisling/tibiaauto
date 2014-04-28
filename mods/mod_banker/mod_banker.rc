@@ -88,9 +88,9 @@ BEGIN
                     BS_AUTOCHECKBOX | WS_TABSTOP,11,80,57,10
     CONTROL         "Stop by when going to depot/seller",
                     IDC_BANKER_STOPBYBANKER,"Button",BS_AUTOCHECKBOX | 
-                    WS_TABSTOP,11,92,126,10
-    CONTROL         "Withdraw up to Keep on Hand",IDC_BANKER_DRAWUPTO,"Button",
-                    BS_AUTOCHECKBOX | WS_TABSTOP,23,104,112,10
+                    WS_TABSTOP,11,104,126,10
+    CONTROL         "Always have Keep on Hand",IDC_BANKER_DRAWUPTO,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,11,92,104,10
     CONTROL         "Enable Banking",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
                     BS_PUSHLIKE | WS_TABSTOP,6,131,136,14
 END

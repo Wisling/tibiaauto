@@ -64,7 +64,7 @@ END
 // Dialog
 //
 
-IDD_CONFIG DIALOGEX 0, 0, 540, 316
+IDD_CONFIG DIALOGEX 0, 0, 540, 327
 STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "Module: Seller"
 FONT 8, "MS Sans Serif"
@@ -74,9 +74,9 @@ BEGIN
     GROUPBOX        "Seller 3",IDC_FRAME_SELLER3,271,7,262,85
     GROUPBOX        "Seller 4",IDC_FRAME_SELLER4,271,94,262,85
     GROUPBOX        "Buy/Sell Options",IDC_FRAME_BUYSELL_CONTROLS,14,179,292,
-                    94
+                    107
     GROUPBOX        "Buy Controls",IDC_FRAME_BUY_CONTROLS,187,191,113,38
-    GROUPBOX        "Seller List",IDC_SELLER_LISTFRAME,315,179,218,94
+    GROUPBOX        "Seller List",IDC_SELLER_LISTFRAME,315,179,218,107
     LTEXT           "Items to sell:",IDC_STATIC,14,35,75,8
     LTEXT           "Items to buy:",IDC_STATIC,141,35,75,8
     LTEXT           "Items to sell:",IDC_STATIC,14,122,75,8
@@ -94,8 +94,8 @@ BEGIN
     LTEXT           "Name:",IDC_STATIC,332,216,22,8
     LTEXT           "The name entered can be ended by a space and a descriptive label.  Other changes can be done by opening the tibiaauto-selllers.csv file.",
                     IDC_STATIC,331,232,148,29
-    LTEXT           "None",IDC_SELLER_STATE,17,260,282,10
-    DEFPUSHBUTTON   "OK",IDOK,244,295,50,14
+    LTEXT           "None",IDC_SELLER_STATE,17,273,282,10
+    DEFPUSHBUTTON   "OK",IDOK,244,306,50,14
     COMBOBOX        IDC_SELLER_SELLER1,14,19,127,130,CBS_DROPDOWN | 
                     WS_VSCROLL | WS_TABSTOP
     LISTBOX         IDC_SELLER_SELL1,14,46,92,40,LBS_SORT | 
@@ -152,10 +152,14 @@ BEGIN
     COMBOBOX        IDC_SELLER_ITEM_LIST,150,232,100,128,CBS_DROPDOWN | 
                     CBS_SORT | WS_VSCROLL | WS_TABSTOP
     EDITTEXT        IDC_SELLER_QUANTITY,252,247,48,12,ES_AUTOHSCROLL
+    CONTROL         "If banker withdraws, withdraw enough to buy all items",
+                    IDC_SELLER_SUGGEST_BANKER,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,14,261,183,10
     PUSHBUTTON      "Add Recently Seen Seller",IDC_SELLER_ADD,332,195,90,14
     EDITTEXT        IDC_SELLER_ADD_NAME,355,214,121,14,ES_AUTOHSCROLL
     CONTROL         "Enable Selling",IDC_ENABLE,"Button",BS_AUTOCHECKBOX | 
-                    BS_PUSHLIKE | WS_TABSTOP,6,275,527,14
+                    BS_PUSHLIKE | WS_TABSTOP,6,288,527,14
+    LTEXT           "None",IDC_SELLER_SUGGESTION,197,262,94,10
 END
 
 
@@ -173,7 +177,7 @@ BEGIN
         RIGHTMARGIN, 533
         VERTGUIDE, 14
         TOPMARGIN, 7
-        BOTTOMMARGIN, 309
+        BOTTOMMARGIN, 320
     END
 END
 #endif    // APSTUDIO_INVOKED

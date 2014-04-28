@@ -64,19 +64,20 @@ HANDLE toolThreadHandle;
 
 void registerDebug(char *msg)
 {
-	//set up a short & simple threading lock until msg has been read
-	queue2Message = msg;
-	int sleeptime = 10;
-	int waitcount = 1000*5/sleeptime;
-	int count = 0;
-	while(queue2Message){
-		Sleep(10);
-		if(++count>=waitcount || toolThreadShouldStop){
-			queue2Message=NULL;
-			break;
+	if(queue2Message==NULL || strcmp(queue2Message,"Starting Log")!=0){//wait for GUI to read default message before giving it new messages
+		//set up a short & simple threading lock until msg has been read
+		queue2Message = msg;
+		int sleeptime = 10;
+		int waitcount = 1000*5/sleeptime;
+		int count = 0;
+		while(queue2Message){
+			Sleep(sleeptime);
+			if(++count>=waitcount || toolThreadShouldStop){
+				queue2Message=NULL;
+				break;
+			}
 		}
 	}
-
 }
 
 // wait on "Please wait" and "" windows up to 60 seconds
@@ -185,6 +186,15 @@ int getSelfHealth()
 	return retHealth;
 }
 
+//bool IsMutexOwned(HANDLE key){
+//qw	try{
+//		OpenExisting(key);
+//		return true;
+//	}catch (WaitHandleCannotBeOpenedException){
+//		return false;
+//	}
+//}/
+
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {
 	int i;
@@ -194,6 +204,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 
+	char accNum[33];
+	char pass[33];
+	accNum[0]=0;
+	pass[0]=0;
+	int neverLogInAgain = 0;
 	int shouldBeOpenedContainers=0;
 	if (config->openMain) shouldBeOpenedContainers++;
 	if (config->openCont1) shouldBeOpenedContainers++;
@@ -211,7 +226,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		MYMOUSE_UP = MOUSEEVENTF_RIGHTUP;
 	}
 
-	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS,false,"TibiaAuto_modLogin_semaphore");
+	HANDLE hMutex = OpenMutex(MUTEX_ALL_ACCESS,false,"TibiaAuto_modLogin_mutex");
 	if (hMutex==NULL)
 	{
 		hMutex = CreateMutex(NULL,false,"TibiaAuto_modLogin_mutex");
@@ -219,7 +234,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{
 		Sleep(100);
-		
+		ReleaseMutex(hMutex);
+
+		if(neverLogInAgain) continue;
 		int loggedIn = reader.isLoggedIn();
 		
 		if (!loggedIn)
@@ -229,7 +246,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			registerDebug(buf);
 
 			registerDebug("No connection: entering wait area");
-			if (!loginTime) loginTime = time(NULL)+config->loginDelay;
+			if (!loginTime){
+				loginTime = time(NULL)+config->loginDelay;
+				CTibiaItemProxy itemProxy;
+				int addr=itemProxy.getValueForConst("addrVIP");
+				reader.getMemRange(addr-0x64,addr-0x64+32,accNum);
+				reader.getMemRange(addr-0x48,addr-0x48+32,pass);
+			}
 			while (loginTime>time(NULL) && !reader.isLoggedIn()){
 				if (toolThreadShouldStop){
 					goto exitFunction;
@@ -292,8 +315,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			CSendKeys sk;
 			HWND  hwnd=getTibiaWindow(reader.getProcessId());
 			
-			
-			
 			reader.setGlobalVariable("walking_control","login");
 			reader.setGlobalVariable("walking_priority","10");
 
@@ -325,12 +346,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					registerDebug("ERROR: tibia window is still not maximized but it should be");
 					ReleaseMutex(hMutex);
+					Sleep(2000);
 					continue;
 				}
 			}
 			if (toolThreadShouldStop)
 			{
 				ReleaseMutex(hMutex);
+				Sleep(2000);
 				continue;
 			}
 
@@ -342,6 +365,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (ensureForeground(hwnd))
 			{
 				ReleaseMutex(hMutex);
+				Sleep(2000);
 				continue;
 			}
 			if (toolThreadShouldStop)
@@ -363,28 +387,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (ensureForeground(hwnd))
 			{
 				ReleaseMutex(hMutex);
+				Sleep(2000);
 				continue;
 			}
-			SetCursorPos(wndRect.left+91,wndRect.bottom-181);
+			SetCursorPos(wndRect.left+91,wndRect.bottom-211);
 			mouse_event(MYMOUSE_DOWN,0,0,0,0);
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			if (waitOnConnecting() || waitForWindow("Enter Game",5) || ensureForeground(hwnd))
 			{
 				ReleaseMutex(hMutex);
+				Sleep(2000);
 				continue;
 			}
 			
 			// STEP2: enter user and pass
-			char accNum[33];
-			char pass[33];
-			accNum[32]=0;
-			pass[32]=0;
-			if (config->autopass){
-				CTibiaItemProxy itemProxy;
-				int addr=itemProxy.getValueForConst("addrVIP");
-				reader.getMemRange(addr-0x64,addr-0x64+32,accNum);
-				reader.getMemRange(addr-0x48,addr-0x48+32,pass);
-			} else {
+			if (!config->autopass){
 				strncpy(accNum,config->accountNumber,32);
 				strncpy(pass,config->password,32);
 			}
@@ -404,7 +421,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// STEP3: select char
 			if (waitForWindow("Select Character",5) || ensureForeground(hwnd))
 			{
+				//If we receive a "Sorry" window it is likely that we do not have a good password. 
+				if(strcmp(reader.getOpenWindowName(),"Sorry")==0){
+					registerDebug("ERROR: Bad account name or password. Quitting Auto Login.");
+					neverLogInAgain = 1;
+				}
 				ReleaseMutex(hMutex);
+				Sleep(2000);
 				continue;
 			}
 
@@ -424,14 +447,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (toolThreadShouldStop) break;
 				Sleep(100);
 			}
-			//SetCursorPos(prevCursorPos.x,prevCursorPos.y);
+			if(toolThreadShouldStop){
+				ReleaseMutex(hMutex);
+				continue;
+			}
 
 			//Click on the X of Possibly open skills/battle windows
 			for (i=0;i<4;i++){
-				SetCursorPos(wndRect.right-15,wndRect.top+387);//inventory maximized
+				SetCursorPos(wndRect.right-15,wndRect.top+387+39);//inventory maximized
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
-				SetCursorPos(wndRect.right-15,wndRect.top+382);//inventory minimized
+				SetCursorPos(wndRect.right-15,wndRect.top+382+39);//inventory minimized
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
 				Sleep(100);
@@ -476,13 +502,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				CModuleUtil::waitForOpenContainer(0,1);
 
 				//Double click on the main bar of the container
-				int dblClickXOffset = 87;
-				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387);
+				int dblClickXOffset = 87+69;
+				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387+39);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
-				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282);
+				SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282+39);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
@@ -514,12 +540,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								CModuleUtil::waitForOpenContainer(foundContOpenNr,1);
 
 								//Double click on main bar of open container(each container heign =19
-								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387+19*foundContOpenNr);
+								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+387+39+19*foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
 								mouse_event(MYMOUSE_UP,0,0,0,0);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
 								mouse_event(MYMOUSE_UP,0,0,0,0);
-								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282+19*foundContOpenNr);
+								SetCursorPos(wndRect.right-dblClickXOffset,wndRect.top+282+39+19*foundContOpenNr);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
 								mouse_event(MYMOUSE_UP,0,0,0,0);
 								mouse_event(MYMOUSE_DOWN,0,0,0,0);
@@ -581,7 +607,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				reader.setGlobalVariable("walking_priority","0");
 			}
 
-		} // if (connectionState!=10)
+		} // if (connectionState!=11)
 		else{
 			loginTime=0;
 			if(strcmp(reader.getGlobalVariable("walking_control"),"login")==0){

@@ -689,13 +689,13 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		case CHARACTERNOTMOVED:
 			switch (condition) {
 			case EQUAL:
-				retval=time(NULL)-movedTime == trigger.getIntTrigger();
+				retval=reader.isLoggedIn() && time(NULL)-movedTime == trigger.getIntTrigger();
 				break;
 			case LESS:
-				retval=time(NULL)-movedTime < trigger.getIntTrigger();
+				retval=reader.isLoggedIn() && time(NULL)-movedTime < trigger.getIntTrigger();
 				break;
 			case MORE:
-				retval=time(NULL)-movedTime > trigger.getIntTrigger();
+				retval=reader.isLoggedIn() && time(NULL)-movedTime > trigger.getIntTrigger();
 				break;
 			}
 			break;

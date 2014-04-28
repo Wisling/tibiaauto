@@ -68,6 +68,8 @@ public:
 	CButtonST	m_OK;
 	CButtonST	m_enable;
 	CStatic m_stateSeller;
+	CButton m_suggestBanker;
+	CStatic m_bankerSuggestion;
 	//}}AFX_DATA
 	CButtonST m_BuyBoxAdd[MAX_SELLERS];
 	CButtonST m_BuyBoxRemove[MAX_SELLERS];

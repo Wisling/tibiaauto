@@ -58,7 +58,6 @@ BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 	//{{AFX_MSG_MAP(CConfigDialog)
 	ON_WM_CLOSE()
 	ON_BN_CLICKED(IDC_BANKER_CHANGEGOLD, OnChangeGold)
-	ON_BN_CLICKED(IDC_BANKER_STOPBYBANKER,OnStopBy)
 	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
 	ON_WM_TIMER()
 	ON_WM_ERASEBKGND()
@@ -111,7 +110,6 @@ void CConfigDialog::enableControls() {
 	m_drawUpTo.EnableWindow(true);
 
 	OnChangeGold();
-	OnStopBy();
 }
 
 void CConfigDialog::configToControls(CConfigData *configData) {
@@ -221,11 +219,6 @@ void CConfigDialog::OnChangeGold(){
 	int val=m_changeGold.GetCheck();
 	m_MinGold.EnableWindow(!val);
 	m_OnHand.EnableWindow(!val);
-}
-
-void CConfigDialog::OnStopBy(){
-	int val=m_stopByBanker.GetCheck();
-	m_drawUpTo.EnableWindow(val);
 }
 
 int initalizeBankers() {

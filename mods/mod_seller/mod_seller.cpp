@@ -81,6 +81,7 @@ int countAllItemsOfType(int objectId,bool includeSlots=0);
 bool shouldGo(CConfigData *);
 int individualShouldGo(CConfigData *, int);
 bool canGo(CConfigData *config);
+int sumAllExpenses(CConfigData *config);
 
 // Required to be run more often than the return value is expected to change
 int donaAttackingAndLooting(){
@@ -108,6 +109,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int buyOrSell = 0;
 	int persistentShouldGo=0;
 	int lastPathNotFoundTm=0;
+	unsigned int modRuns = 0;
+	reader.setGlobalVariable("banker_suggestion","");
+	unsigned int lastSellerSuccessTm=0;
+	int sellerPauseAfterSuccess=5;
 
 	while (!toolThreadShouldStop) {
 /*		for (int i=0;i<MAX_SELLERS;i++) {
@@ -141,9 +146,20 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 */
 		static int tStart=0;
 		Sleep(400);
+		if(time(NULL)-lastSellerSuccessTm<=sellerPauseAfterSuccess) continue;
+		modRuns++;
 		tStart=GetTickCount();
-		if (buyOrSell == MAX_SELLERS)
+		if (buyOrSell == MAX_SELLERS){
 			buyOrSell = allAtOnce = persistentShouldGo = 0;
+			lastSellerSuccessTm = time(NULL);
+		}
+
+		if(modRuns%10==0 && config->suggestBanker){
+			int goldNeeded = sumAllExpenses(config);
+			char buf[128];
+			sprintf(buf,"%d",goldNeeded);
+			reader.setGlobalVariable("banker_suggestion",buf);
+		}
 
 		const char* controller=reader.getGlobalVariable("walking_control");
 		if (!persistentShouldGo && shouldGo(config)){
@@ -154,6 +170,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			&& (!strcmp(controller,"banker") || !strcmp(controller,"depotwalker"))
 			&& canGo(config)){
 			persistentShouldGo=1;
+		}
+		if (persistentShouldGo && modRuns % 5==0 && !canGo(config)) {//do not go to seller if can't go anymore
+			persistentShouldGo = 0;
 		}
 
 		bool control= strcmp(controller,"seller")==0;
@@ -223,6 +242,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		reader.setGlobalVariable("walking_control","");
 		reader.setGlobalVariable("walking_priority","0");
 	}
+	reader.setGlobalVariable("banker_suggestion","");
 	globalSellerState=CToolSellerState_notRunning;
 	toolThreadShouldStop=0;
 	return 0;
@@ -370,6 +390,7 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName, "SellOnCap")) m_configData->sellOnCap = atoi(paramValue);
 	if (!strcmp(paramName, "SellOnSpace")) m_configData->sellOnSpace = atoi(paramValue);
 	if (!strcmp(paramName, "SellWhen")) m_configData->sellWhen = atoi(paramValue);
+	if (!strcmp(paramName, "SuggestBanker")) m_configData->suggestBanker = atoi(paramValue);
 // Seller 1
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(m_configData->sellerList[0].sellerName, "%s", paramValue);
 	if (!strcmp(paramName,"Seller1/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[0].sellerX),&(m_configData->sellerList[0].sellerY),&(m_configData->sellerList[0].sellerZ));
@@ -488,6 +509,7 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName, "SellOnCap")) sprintf(buf, "%d", m_configData->sellOnCap);
 	if (!strcmp(paramName, "SellOnSpace")) sprintf(buf, "%d", m_configData->sellOnSpace);
 	if (!strcmp(paramName, "SellWhen")) sprintf(buf,"%d",m_configData->sellWhen);
+	if (!strcmp(paramName, "SuggestBanker")) sprintf(buf, "%d", m_configData->suggestBanker);
 // Seller 1
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(buf,"%s",m_configData->sellerList[0].sellerName);
 	if (!strcmp(paramName,"Seller1/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[0].sellerX,m_configData->sellerList[0].sellerY,m_configData->sellerList[0].sellerZ);
@@ -687,6 +709,7 @@ char *CMod_SellerApp::getConfigParamName(int nr) {
 	case 34: return "SellOnSpace";
 	case 35: return "ModPriority";
 	case 36: return "StopBySeller";
+	case 37: return "SuggestBanker";
 
 	default:
 		return NULL;
@@ -982,6 +1005,23 @@ int isDepositing() {
 	return strcmp(var,"true")==0;
 }
 
+int sumAllExpenses(CConfigData *config) {
+	CTibiaItemProxy itemProxy;
+	CMemReaderProxy reader;
+	int totalCost = 0;
+	for (int i = 0; i < MAX_SELLERS; i++) {
+		for (int j = 0; j < 32; j++) {
+			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
+			if (objectId) {
+				totalCost += max(0,(config->buyItem[i].tradeItem[j].quantityBuySell-countAllItemsOfType(objectId,true))*config->buyItem[i].tradeItem[j].salePrice);
+			}else{
+				break;
+			}
+		}
+	}
+	return totalCost;
+}
+
 int countAllItemsOfType(int objectId,bool includeSlots) {
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -1018,6 +1058,7 @@ bool shouldGo(CConfigData *config) {
 
 
 	int count = 0;
+	int moneycount = -1;
 	bool should = false;
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i))
@@ -1042,11 +1083,13 @@ bool shouldGo(CConfigData *config) {
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
-				count = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
-				count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
-				count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
+				if(moneycount==-1){
+					moneycount = countAllItemsOfType(itemProxy.getValueForConst("GP"),true);
+					moneycount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"),true) * 100;
+					moneycount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"),true) * 10000;
+				}
 			
-				if (countAllItemsOfType(objectId,true) < config->buyItem[i].tradeItem[j].triggerQuantity && count >= config->buyItem[i].tradeItem[j].salePrice)
+				if (countAllItemsOfType(objectId,true) < config->buyItem[i].tradeItem[j].triggerQuantity && moneycount >= config->buyItem[i].tradeItem[j].salePrice)
 					should = true;
 			} else {
 				break;

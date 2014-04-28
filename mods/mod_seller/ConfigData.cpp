@@ -42,6 +42,7 @@ CConfigData::CConfigData() {
 	sellWhen = 50;
 	strcpy(modPriorityStr,"2");
 	stopBySeller=0;
+	suggestBanker=1;
 }
 
 CConfigData::~CConfigData() {

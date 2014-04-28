@@ -380,6 +380,11 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 			int tileArrAvail[18][14];
 			int tileArrUpDown[18][14];
 			int tileArrSpd[18][14];
+			int tileArrMvbl[18][14];
+			memset(tileArrAvail,0,sizeof(int[18][14]));
+			memset(tileArrUpDown,0,sizeof(int[18][14]));
+			memset(tileArrSpd,0,sizeof(int[18][14]));
+			memset(tileArrMvbl,0,sizeof(int[18][14]));
 			int relToCell=reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
 //			char buf[111];
 //			sprintf(buf,"%d-%d %d",relToCell,relToCell%18,relToCell%(14*18)/18);
@@ -396,6 +401,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					int updown=0;
 					int ground=0;
 					int speed=0;
+					int moveableblock=1;
 					for (i=0;i<count;i++)
 					{
 						int tileId = reader.mapGetPointItemId(point(x,y,0),i,relToCell);
@@ -405,6 +411,9 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							if (tileData->blocking)
 							{
 								blocked=1;
+							}
+							if(tileData->blocking && tileData->notMoveable){
+								moveableblock=0;
 							}
 							if (tileData->ground)
 							{
@@ -476,6 +485,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					}
 
 					//303 is handled as blocking in the pathfind algorithm
+					tileArrMvbl[x+8][y+6]=moveableblock;
 					if (!blocked)
 					{
 						tileArrSpd[x+8][y+6]=speed;
@@ -515,7 +525,21 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 						} else {
 							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
 							tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,0);
-							tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+							if(tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z) && tileArrMvbl[x+8][y+6]){
+								//To avoid removing a tile that could be made available again too quickly
+								//Make it less likely that it will happen, 90% chance of updating after 20 seconds.
+								//Better implementation is to track these across iterations and make not available after 10 seconds
+								if(rand()%100 < 5){
+									tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+								}else{
+									tibiaMap.prohPointAdd(self->x+x,self->y+y,self->z);
+								}
+							}else{
+								if(x==1 && y==0){
+									int a =0;
+								}
+								tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+							}
 						}
 					}
 				}

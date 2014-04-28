@@ -51,9 +51,11 @@
 #define IDC_SELLER_LISTFRAME            3065
 #define IDC_SELLER_STOPBY               3066
 #define IDC_SELLER_STATE                3067
+#define IDC_SELLER_SUGGEST_BANKER       3068
+#define IDC_SELLER_SUGGESTION           3069
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3003
