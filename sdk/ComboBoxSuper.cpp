@@ -206,7 +206,7 @@ CString CComboBoxSuper::GetItemText(int nItemIndex,int nColumn)
 	ItemData* pItemData = GetOrCreateItemData(nItemIndex);
 	if (pItemData)
 	{
-		return pItemData->mapStrings[nColumn];
+		return pItemData->mapStrings[nColumn];	
 	}
 	else
 	{

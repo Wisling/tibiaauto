@@ -979,7 +979,7 @@ void CConfigDialog::OnDepotEntryadd()
 	if (depotWhen==depotRemain) return;
 		
 	sprintf(buf,"%s %d->%d",itemName,depotWhen,depotRemain);
-	m_depotEntryList.AddString(buf);
+	m_depotEntryList.SetCurSel(m_depotEntryList.AddString(buf));
 	m_depotItemList.DeleteString(m_depotItemList.FindStringExact(-1,itemName));
 	m_depotItemList.SetCurSel(0);
 	m_depotWhen.SetWindowText("");

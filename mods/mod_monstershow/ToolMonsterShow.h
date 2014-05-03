@@ -22,6 +22,7 @@ class CToolMonsterShow : public MyDialog
 public:
 	void showMonsterDetails(int x,int y);
 	CToolMonsterShow(CWnd* pParent = NULL);   // standard constructor
+	~CToolMonsterShow();
 	void DoSetButtonSkin();
 
 // Dialog Data

@@ -1501,6 +1501,7 @@ CMod_creatureinfoApp::~CMod_creatureinfoApp()
 {
 	if (m_configDialog)
 	{
+		m_configDialog->DestroyWindow();
 		delete m_configDialog;
 	}
 	delete m_configData;

@@ -200,8 +200,10 @@ CMod_bankerApp::CMod_bankerApp() {
 }
 
 CMod_bankerApp::~CMod_bankerApp() {
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DestroyWindow();
 		delete m_configDialog;
+	}
 	delete m_configData;
 }
 

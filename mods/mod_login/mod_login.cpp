@@ -644,7 +644,9 @@ CMod_loginApp::~CMod_loginApp()
 {
 	if (m_configDialog)
 	{
-		delete m_configDialog; m_configDialog=NULL;
+		m_configDialog->DestroyWindow();
+		delete m_configDialog;
+		m_configDialog=NULL;
 	}
 	delete m_configData; m_configData=NULL;
 }

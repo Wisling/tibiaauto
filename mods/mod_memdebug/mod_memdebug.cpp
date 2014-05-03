@@ -46,6 +46,7 @@ CMod_memdebugApp::~CMod_memdebugApp()
 {
 	if (m_configDialog)
 	{
+		m_configDialog->DestroyWindow();
 		delete m_configDialog;
 	}
 }

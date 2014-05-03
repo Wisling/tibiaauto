@@ -43,11 +43,17 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 		if (config->queue.size()>0)
 		{
 			EnterCriticalSection(&QueueCriticalSection);
+			CToolAutoResponderMessage *msg;
+			if(config->queue.size()>0){ //first check is to prevent continual locking, this check is to make sure it still has items
 
-			CToolAutoResponderMessage *msg = config->queue.front();
-			config->queue.pop();
-
+				msg = config->queue.front();
+				config->queue.pop();
+			}else{
+				LeaveCriticalSection(&QueueCriticalSection);
+				continue;
+			}
 			LeaveCriticalSection(&QueueCriticalSection);
+
 			if (!config->context->isPlayerIgnored(msg->nick))
 			{
 				// double check for player ignore (to not overload the queue

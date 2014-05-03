@@ -60,7 +60,10 @@ CMod_monstershowApp::CMod_monstershowApp()
 
 CMod_monstershowApp::~CMod_monstershowApp()
 {
-	
+	if(m_infoDialog){
+		m_infoDialog->DestroyWindow();
+		delete m_infoDialog;
+	}
 	delete m_configData;
 }
 

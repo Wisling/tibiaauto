@@ -491,9 +491,9 @@ void CConfigDialog::OnLoadspellfromlist()
 
 void CConfigDialog::OnDeletefromlist()
 {
-	
-	m_spells.DeleteItem(m_spells.GetSelectionMark());
-	
+	int sel = m_spells.GetSelectionMark();
+	m_spells.DeleteItem(sel);
+	m_spells.SetSelectionMark(max(sel-1,0));
 }
 
 void CConfigDialog::OnMakenow()

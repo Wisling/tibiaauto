@@ -259,8 +259,10 @@ CMod_SellerApp::CMod_SellerApp() {
 }
 
 CMod_SellerApp::~CMod_SellerApp() {
-	if (m_configDialog)
+	if (m_configDialog){
+		m_configDialog->DestroyWindow();
 		delete m_configDialog;
+	}
 	delete m_configData;
 }
 

@@ -340,6 +340,7 @@ int mod(int i,int m){
 
 void CToolMapShow::OnTimer(UINT nIDEvent)
 {
+	if(!::IsWindow(m_hWnd)) return;
 	if (nIDEvent==1001)
 	{
 		KillTimer(1001);
@@ -595,6 +596,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 		SetTimer(1004,200,NULL);
 	}
 	
+	//New timers must be killed in destructor
 	CDialog::OnTimer(nIDEvent);
 }
 

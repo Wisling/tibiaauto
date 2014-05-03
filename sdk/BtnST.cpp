@@ -600,6 +600,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	// Clean up
 	bm.DeleteObject();
 	dcMem->DeleteDC();
+	delete(dcMem);
 	dcMem=NULL;
 	pDC->SetBkMode(oldBkMode);
 

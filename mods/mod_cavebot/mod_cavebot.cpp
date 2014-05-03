@@ -1782,6 +1782,7 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 			if (attackedCh){
 				CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
 				corpseQueue.Add(Corpse(attackedCh->x,attackedCh->y,attackedCh->z,GetTickCount()));
+				deleteAndNull(attackedCh);
 			}
 		}
 	}

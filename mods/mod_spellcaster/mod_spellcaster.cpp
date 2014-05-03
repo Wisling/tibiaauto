@@ -520,6 +520,7 @@ CMod_spellcasterApp::CMod_spellcasterApp()
 CMod_spellcasterApp::~CMod_spellcasterApp()
 {
 	if (m_configDialog)	{
+		m_configDialog->DestroyWindow();
 		delete m_configDialog;
 	}
 	delete m_configData;

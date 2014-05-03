@@ -330,6 +330,7 @@ CMod_maphackApp::~CMod_maphackApp()
 {
 	if (m_configDialog)
 	{
+		m_configDialog->DestroyWindow();
 		delete m_configDialog;
 	}
 	delete m_configData;

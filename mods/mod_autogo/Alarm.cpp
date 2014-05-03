@@ -819,6 +819,7 @@ bool Alarm::vipOnline(int iconIndex, bool checkOnline/*=true*/) {
 		}
 		delete vip;
 	}
+	delete vip;
 	return false;
 }
 
@@ -835,6 +836,7 @@ bool Alarm::vipNameOnline(CString name, bool checkOnline/*=true*/) {
 		}
 		delete vip;
 	}
+	delete vip;
 	return false;
 }
 

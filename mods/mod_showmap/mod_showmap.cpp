@@ -116,6 +116,8 @@ void CMod_showmapApp::showConfigDialog()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{
+		// ShowMap has no toolthreadproc and infinite loop is set up in OnTimer() which requires a window
+		// This function is called when TA starts to create the window to prevent the load log window from creating, and thus owning, the window.
 		m_infoDialog=new CToolMapShow();
 		m_infoDialog->Create(IDD_TOOL_MAPSHOW);
 	} else {
@@ -192,15 +194,8 @@ void CMod_showmapApp::loadConfigParam(char *paramName,char *paramValue)
 	else if (!strcmp(paramName,"extendedResearch"))
 	{
 		m_configData->extendedResearch = atoi(paramValue);
-		if(m_configData->extendedResearch){
-			if (!m_infoDialog)
-			{
-				m_infoDialog=new CToolMapShow();
-				m_infoDialog->Create(IDD_TOOL_MAPSHOW);
-				m_infoDialog->ShowWindow(SW_HIDE);
-			}
-		}
 	}
+	configToControls(); // showmap is always on so any changes in the config parameters need to be made to the GUI
 }
 
 char *CMod_showmapApp::saveConfigParam(char *paramName)

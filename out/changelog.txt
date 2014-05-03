@@ -1,3 +1,20 @@
+2.41.1 5.?.2014
+Enhancements:
+Defects:
+ Responder: Fixed bug causing a crash at a random time after enabling many talk threads
+
+2.41.0 4.30.2014
+Enhancements:
+ Tibia Auto: Updated to 10.39
+ Auto Go/Log: Added automatic selection of alarm when adding and deleting
+ Cavebot: Added automatic selection of depot item when adding and deleting
+Defects:
+ Tibia Auto: Fixed a bunch of memory leaks
+ Auto Go/Log: Made default spell list in 'Cast Spell' box lower case
+ 
+ Auto Go/Log: Made default spell list in 'Cast Spell' box variables instead of being hardcoded
+ Load Script: load script dialog is now destroyed every time it is needed again.  ShowMap no longer has this window as a parent.
+
 2.40.0 3.31.2014
 Enhancements:
  Tibia Auto: updated for Tibia 10.38

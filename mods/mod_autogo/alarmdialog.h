@@ -15,8 +15,14 @@
 using namespace std;
 
 struct SpellInfo {
+	char text[256];
 	int manaCost;
 	int spellDelay;
+	SpellInfo(const char* a_text, int a_manaCost,int a_spellDelay){
+		_snprintf(text,255,"%s",a_text);
+		manaCost = a_manaCost;
+		spellDelay = a_spellDelay;
+	}
 };
 
 /////////////////////////////////////////////////////////////////////////////
@@ -121,7 +127,8 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
-	SpellInfo * m_spellInfo[50];
+	SpellInfo * spellInfo[50];
+	int spellInfoCount;
 	bool triggerMessage;
 };
 

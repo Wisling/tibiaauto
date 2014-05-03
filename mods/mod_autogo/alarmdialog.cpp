@@ -26,15 +26,25 @@ CAlarmDialog::CAlarmDialog(CWnd* pParent /*=NULL*/)
 	: MyDialog(CAlarmDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CAlarmDialog)
 	//}}AFX_DATA_INIT
+	spellInfoCount = 0;
+	spellInfo[spellInfoCount++] = new SpellInfo("<Add Custom Spell...>",0,0);
+	spellInfo[spellInfoCount++] = new SpellInfo("utani hur",60,33);
+	spellInfo[spellInfoCount++] = new SpellInfo("utani gran hur",100,22);
+	spellInfo[spellInfoCount++] = new SpellInfo("utamo vita",100,200);
 }
 
 CAlarmDialog::~CAlarmDialog() {
-	int count = m_spellList.GetCount() - 1;
-	SpellInfo *spellData;
-	for (int loop = 1; loop < count; loop++) {
-		spellData = (SpellInfo *)m_spellList.GetItemData(loop);
-		delete spellData;
+	while(spellInfoCount){
+		delete spellInfo[--spellInfoCount];
 	}
+	m_spellList.ResetContent();
+	m_screenshotOptions.ResetContent();
+	m_audioFile.ResetContent();
+	m_windowActionList.ResetContent();
+	m_condition.ResetContent();
+	m_attribute.ResetContent();
+	m_alarmType.ResetContent();
+
 }
 
 void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
@@ -566,18 +576,10 @@ BOOL CAlarmDialog::OnInitDialog() {
 		CloseHandle(hSnap);
 	}
 	// Spell List Mana Costs
-	m_spellInfo[1]  = new SpellInfo();
-		m_spellInfo[1]->manaCost = 60;
-		m_spellInfo[1]->spellDelay = 33;
-	m_spellList.SetItemData(1, (long)m_spellInfo[1]);
-	m_spellInfo[2] = new SpellInfo();
-		m_spellInfo[2]->manaCost = 100;
-		m_spellInfo[2]->spellDelay = 22;
-	m_spellList.SetItemData(2, (long)m_spellInfo[2]);
-	m_spellInfo[3] = new SpellInfo();
-		m_spellInfo[3]->manaCost = 100;
-		m_spellInfo[3]->spellDelay = 200;
-	m_spellList.SetItemData(3, (long)m_spellInfo[3]);
+	for(int i=0;i<spellInfoCount;i++){
+		m_spellList.AddString(spellInfo[i]->text);
+		m_spellList.SetItemData(i, (long)spellInfo[i]);
+	}
 
 	// Attribute Combo Box...
 	m_attributeImg.Create(14, 14, ILC_COLOR32 | ILC_MASK, 0, 0);
@@ -1434,15 +1436,18 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionStart.SetCheck(listItr->getGoToStart());
 		m_actionDepot.SetCheck(listItr->getGoToDepot());
 		m_actionSpell.SetCheck(listItr->getCastSpell().GetLength());
-		int index = m_spellList.FindStringExact(-1,listItr->getCastSpell());
-		if (index == CB_ERR && strcmp(listItr->getCastSpell(),""))
-			m_spellList.SetCurSel(m_spellList.AddString(listItr->getCastSpell()));
-		else
-			m_spellList.SetCurSel(index);
-		SpellInfo *info = new SpellInfo();
-			info->manaCost = listItr->getManaCost();
-			info->spellDelay = listItr->getSpellDelay();
-		m_spellList.SetItemData(index, (long)info);
+		if(strcmp(listItr->getCastSpell(),"")!=0){
+			int index = m_spellList.FindStringExact(-1,listItr->getCastSpell());
+			if (index == CB_ERR){
+				index = spellInfoCount++;
+				m_spellList.SetCurSel(m_spellList.AddString(listItr->getCastSpell()));
+			}else{
+				m_spellList.SetCurSel(index);
+				delete spellInfo[index];
+			}
+			spellInfo[index] = new SpellInfo(listItr->getCastSpell(),listItr->getManaCost(),listItr->getSpellDelay());
+			m_spellList.SetItemData(index, (long)spellInfo[index]);
+		}
 		m_actionScreenshot.SetCheck(listItr->getTakeScreenshot()+1);
 			m_screenshotOptions.SetCurSel(listItr->getTakeScreenshot());
 		m_actionLogout.SetCheck(listItr->getLogout());
@@ -1567,6 +1572,8 @@ void CAlarmDialog::OnAlarmAdd() {
 			m_actionPersistent.EnableWindow(false);
 		m_actionPermanent.SetCheck(false);
 			m_actionPermanent.EnableWindow();
+		m_alarmList.SetItemState(m_alarmList.GetItemCount()-1, LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
+		delete temp;
 	}
 }
 
@@ -1598,7 +1605,7 @@ Alarm* CAlarmDialog::addToList() {
 			instructionText.LoadString(IDS_TRIGGER_ERROR);
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
+			return NULL;
 		}
 	}else{
 		temp->setTrigger(0, "");//UNDEFINED
@@ -1609,7 +1616,8 @@ Alarm* CAlarmDialog::addToList() {
 		instructionText.LoadString(IDS_ALARM_TYPE_ERROR);
 		m_instructionText.SetWindowText(instructionText);
 		PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-		return false;
+		delete temp;
+		return NULL;
 	}
 
 	if (m_attribute.GetCurSel() != -1)
@@ -1622,7 +1630,8 @@ Alarm* CAlarmDialog::addToList() {
 		m_instructionText.SetWindowText(instructionText);
 		PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
 		m_alarmType.GetCurSel();
-		return false;
+		delete temp;
+		return NULL;
 	}
 
 	if (m_condition.IsWindowEnabled()) {
@@ -1632,7 +1641,8 @@ Alarm* CAlarmDialog::addToList() {
 			instructionText.LoadString(IDS_CONDITION_ERROR);
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
+			delete temp;
+			return NULL;
 		}
 	}
 
@@ -1652,7 +1662,8 @@ Alarm* CAlarmDialog::addToList() {
 			instructionText.LoadString(IDS_SPELLWORDS_ERROR);
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
+			delete temp;
+			return NULL;
 		}
 	}
 	if (m_actionScreenshot.GetCheck()) {
@@ -1662,7 +1673,8 @@ Alarm* CAlarmDialog::addToList() {
 			instructionText.LoadString(IDS_SCREENSHOT_ERROR);
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
+			delete temp;
+			return NULL;
 		}
 	}
 	else
@@ -1679,7 +1691,8 @@ Alarm* CAlarmDialog::addToList() {
 			instructionText.LoadString(IDS_WINDOWACTION_ERROR);
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
+			delete temp;
+			return NULL;
 		}
 	}
 	else
@@ -1693,7 +1706,8 @@ Alarm* CAlarmDialog::addToList() {
 			instructionText.LoadString(IDS_SOUNDFILE_ERROR);
 			m_instructionText.SetWindowText(instructionText);
 			PlaySound((LPCSTR)IDR_UHOH, AfxGetResourceHandle(), SND_RESOURCE | SND_ASYNC);
-			return false;
+			delete temp;
+			return NULL;
 		}
 	}
 	temp->setLogEvents(m_actionLogEvents.GetCheck());
@@ -1748,13 +1762,10 @@ void CAlarmDialog::OnAlarmDelete() {
 	if (pos) {
 		int index =	m_alarmList.GetNextSelectedItem(pos);
 		m_alarmList.DeleteItem(index);
-		for (; index != 0; index--, alarmItr++);
-		
+		for (int i = 0; i < index; i++){alarmItr++;}
 		memAlarmList.erase(alarmItr);
-		m_alarmList.SetItemState(min(index,m_alarmList.GetItemCount()-1), LVIS_SELECTED, LVIS_SELECTED);
-		m_alarmList.SetSelectionMark(min(index,m_alarmList.GetItemCount()-1));
+		m_alarmList.SetItemState(min(max(index-1,0),m_alarmList.GetItemCount()-1), LVIS_SELECTED | LVIS_FOCUSED, LVIS_SELECTED | LVIS_FOCUSED);
 	}
-
 }
 
 void CAlarmDialog::OnAlarmEdit() {
@@ -1792,15 +1803,18 @@ void CAlarmDialog::OnAlarmEdit() {
 		m_actionDepot.SetCheck(alarmItr->getGoToDepot());
 		m_actionSpell.SetCheck(alarmItr->getCastSpell().GetLength());
 		m_spellList.EnableWindow(m_actionSpell.GetCheck());
-		index = m_spellList.FindString(-1, alarmItr->getCastSpell());
-		if (index == CB_ERR && strcmp(alarmItr->getCastSpell(),""))
-			m_spellList.SetCurSel(m_spellList.AddString(alarmItr->getCastSpell()));
-		else
-			m_spellList.SetCurSel(index);
-		SpellInfo *info = new SpellInfo();
-		info->manaCost = alarmItr->getManaCost();
-		info->spellDelay = alarmItr->getSpellDelay();
-		m_spellList.SetItemData(index, (long)info);
+		index = m_spellList.FindStringExact(-1,alarmItr->getCastSpell());
+		if(strcmp(alarmItr->getCastSpell(),"")){
+			if (index == CB_ERR){
+				index = spellInfoCount++;
+				m_spellList.SetCurSel(m_spellList.AddString(alarmItr->getCastSpell()));
+			}else{
+				m_spellList.SetCurSel(index);
+				delete spellInfo[index];
+			}
+			spellInfo[index] = new SpellInfo(alarmItr->getCastSpell(),alarmItr->getManaCost(),alarmItr->getSpellDelay());
+			m_spellList.SetItemData(index, (long)spellInfo[index]);
+		}
 		m_actionScreenshot.SetCheck(alarmItr->getTakeScreenshot()+1);
 		m_screenshotOptions.EnableWindow(m_actionScreenshot.GetCheck());
 		m_screenshotOptions.SetCurSel(alarmItr->getTakeScreenshot());
@@ -1855,11 +1869,9 @@ void CAlarmDialog::OnSelchangeSpellList() {
 		CCustomSpellDialog temp;
 		if (temp.DoModal() == IDOK) {
 			int index = m_spellList.AddString(temp.m_spellWords);
-			m_spellInfo[index] = new SpellInfo();
-				m_spellInfo[index]->manaCost = temp.m_manaCost;
-				m_spellInfo[index]->spellDelay = temp.m_castingDelay;
-			m_spellList.SetItemData(index, (long)m_spellInfo[index]);
-			m_spellList.SetCurSel(-1);
+			spellInfo[spellInfoCount++] = new SpellInfo(temp.m_spellWords,temp.m_manaCost,temp.m_castingDelay);
+			m_spellList.SetItemData(index, (long)spellInfo[index]);
+			m_spellList.SetCurSel(index);
 		}
 		break;
 	}
@@ -1888,8 +1900,5 @@ void CAlarmDialog::OnSelchangeModulesList2()
 void CAlarmDialog::OnDestroy()
 {
 	MyDialog::OnDestroy();
-	for (int loop = 1; loop < m_spellList.GetCount(); loop++) {
-		delete(m_spellInfo[loop]);
-	}
 }
 

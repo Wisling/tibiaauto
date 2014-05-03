@@ -29,6 +29,13 @@ CToolMonsterShow::CToolMonsterShow(CWnd* pParent /*=NULL*/)
 	memConstData = reader.getMemConstData();
 }
 
+CToolMonsterShow::~CToolMonsterShow(){
+	for (int x=0;x<2*10+1;x++){
+		for (int y=0;y<2*8+1;y++){
+			delete m_monsterButtons[x][y];
+		}
+	}
+}
 
 void CToolMonsterShow::DoDataExchange(CDataExchange* pDX)
 {
