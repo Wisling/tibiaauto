@@ -169,15 +169,15 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 				DWORD terminatedStatus=9999;
 				if (GetExitCodeProcess(dwHandle,&terminatedStatus)){
 					if (terminatedStatus!=STILL_ACTIVE){ //If Tibia is no longer active then close TA
-						//ExitProcess(0);
+						ExitProcess(0);
 					}
 				}
-				return ERROR_PARTIAL_COPY;
 			}
 		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
+		ExitProcess(0);
 		return err;
     }
 }

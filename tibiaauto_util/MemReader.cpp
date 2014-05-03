@@ -157,7 +157,10 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 				item->quantity = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+4,0);
 				CTileReader tileReader;
 				CTibiaTile *tile=tileReader.getTile(item->objectId);
-				if(!tile) throw "Error invalid container item.";
+				if(!tile){
+					delete item;
+					throw "Error invalid container item.";
+				}
 				if (!tile->stackable&&item->quantity>1) item->quantity=1;//handles vials and other special uses of "quantity" variable
 				item->pos = i;
 				container->items.Add(item);

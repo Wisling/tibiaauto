@@ -135,6 +135,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
+		ExitProcess(0);
 		return err;
     }
 }

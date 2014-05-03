@@ -29,6 +29,7 @@ CLoadedModules::CLoadedModules(CWnd* pParent /*=NULL*/)
 }
 
 CLoadedModules::~CLoadedModules(){
+	KillTimer(1001);
 	if (moduleActionsMenu) delete moduleActionsMenu;
 }
 void CLoadedModules::DoDataExchange(CDataExchange* pDX)
@@ -146,6 +147,7 @@ void CLoadedModules::OnTimer(UINT nIDEvent)
 		SetTimer(1001,500,NULL);
 	}
 	
+	//New timers must be killed in destructor
 	CDialog::OnTimer(nIDEvent);
 }
 

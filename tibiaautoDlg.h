@@ -183,6 +183,7 @@ private:
 	int m_lightPower;
 	CLoadedModules *m_loadedModules;
 	CPythonScriptsDialog *m_pythonScriptsDialog;
+	CConfigDialogStatus * configDialogStatus;
 
 
 	IModuleInterface *m_moduleLooter;

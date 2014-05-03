@@ -288,6 +288,7 @@ void CTibiaautoDlg::DoSetButtonSkin(){
 
 BOOL CTibiaautoDlg::OnInitDialog()
 {
+	configDialogStatus = NULL;
 	srand(time(NULL));
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
@@ -467,6 +468,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 		}
 	}
 	
+	m_moduleMapShow->showConfigDialog(); // As showmap modules runs its calculations in the window instead of a non-window thread, loading requires this to already be created.
+
 	if (CModuleUtil::getTASetting("LoadScriptOnStartup")){
 		char fName[128];
 		char *charName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
@@ -492,7 +495,6 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetTimer(1006,5000,NULL);//refresh tray icon name if changed
 
 
-	m_moduleMapShow->showConfigDialog();
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -623,8 +625,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		free(loggedCharName);
 	}
 
-	
-	
+	//New timers must be killed in OnExit
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -1022,7 +1023,6 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	XercesDOMParser *parser;
 	parser = new XercesDOMParser();
 	CConfigDialogStatus * m_configDialogStatus = ((struct loadThreadParam *)lpParam)->configDialogStatus;
-	
 
 	CMemReaderProxy reader;
 	CConfigCreatorUtil configCreator;
@@ -1195,7 +1195,6 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	m_configDialogStatus->msgAddToLog(logBuf);
 	
 	delete []restartedModulesTab;
-
 	delete (struct loadThreadParam *)lpParam;
 	return 0;
 }
@@ -1207,8 +1206,13 @@ void CTibiaautoDlg::loadConfig(CString pathName){
 	if (f)
 	{
 		fclose(f);
+
+		if(configDialogStatus){
+			configDialogStatus->DestroyWindow();
+			delete configDialogStatus;
+		}
 		
-		CConfigDialogStatus * configDialogStatus = new CConfigDialogStatus();
+		configDialogStatus = new CConfigDialogStatus();
 		configDialogStatus->Create(IDD_CONFIGSTATUS);
 		configDialogStatus->ShowWindow(SW_SHOW);
 		
@@ -1293,6 +1297,8 @@ void CTibiaautoDlg::OnToolSpellcaster()
 
 void CTibiaautoDlg::OnExit()
 {
+	for(int i=1001;i<=1006;KillTimer(i++));
+
 	DisconnectNamedPipe(hPipe);
 	Shell_NotifyIcon(NIM_DELETE,&currentIconData);
 
@@ -1341,6 +1347,10 @@ void CTibiaautoDlg::OnExit()
 	delete m_moduleBanker;
 	delete m_moduleSorter;
 	delete m_moduleSeller;
+	if(configDialogStatus){
+		configDialogStatus->DestroyWindow();
+		delete configDialogStatus;
+	}
 	
 	if (hhookKeyb)
 	{
@@ -1644,7 +1654,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.40.0 tm=%d,",tm);
+		fprintf(f,"version=2.41.0 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];
