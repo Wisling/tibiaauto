@@ -328,6 +328,10 @@ int CMod_xrayApp::validateConfig(int showAlerts)
 
 void CMod_xrayApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

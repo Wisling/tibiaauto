@@ -12,7 +12,6 @@
 	#error include 'stdafx.h' before including this file for PCH
 #endif
 
-#define MAX_SELLERS 4
 #define MAX_NPCS 200
 
 #include "resource.h"		// main symbols

@@ -344,6 +344,10 @@ int CMod_addressfinderApp::validateConfig(int showAlerts) {
 }
 
 void CMod_addressfinderApp::resetConfig() {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

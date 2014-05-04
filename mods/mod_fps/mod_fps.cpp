@@ -251,6 +251,10 @@ int Cmod_fpsApp::validateConfig(int showAlerts)
 
 void Cmod_fpsApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

@@ -8,6 +8,8 @@
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
+#define MAX_SELLERS 4
+#define MAX_SELLER_ITEMS 300
 
 struct Item {
 	char itemName[64];
@@ -17,7 +19,7 @@ struct Item {
 };
 
 struct ItemList {
-	Item tradeItem[32];
+	Item tradeItem[MAX_SELLER_ITEMS];
 };
 
 struct Seller {

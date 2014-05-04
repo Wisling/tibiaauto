@@ -211,6 +211,10 @@ int Cmod_lightApp::validateConfig(int showAlerts)
 
 void Cmod_lightApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

@@ -732,6 +732,10 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 }
 
 void CMod_spellcasterApp::resetConfig() {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

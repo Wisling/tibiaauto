@@ -510,6 +510,10 @@ int CMod_looterApp::validateConfig(int showAlerts)
 
 void CMod_looterApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

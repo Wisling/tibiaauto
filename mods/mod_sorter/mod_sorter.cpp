@@ -291,6 +291,10 @@ int CMod_sorterApp::validateConfig(int showAlerts) {
 }
 
 void CMod_sorterApp::resetConfig() {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

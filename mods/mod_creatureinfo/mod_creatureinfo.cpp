@@ -1652,6 +1652,10 @@ int CMod_creatureinfoApp::validateConfig(int showAlerts)
 
 void CMod_creatureinfoApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

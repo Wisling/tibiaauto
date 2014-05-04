@@ -3519,6 +3519,10 @@ int CMod_cavebotApp::validateConfig(int showAlerts) {
 }
 
 void CMod_cavebotApp::resetConfig() {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

@@ -289,6 +289,10 @@ int CMod_aimApp::validateConfig(int showAlerts)
 
 void CMod_aimApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

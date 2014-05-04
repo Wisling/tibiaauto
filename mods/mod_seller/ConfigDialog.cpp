@@ -206,7 +206,7 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	}
 	for (int i = 0;i < MAX_SELLERS; i++) {
 		m_Seller[i].SelectString(0, configData->sellerList[i].sellerName);
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			if (strlen(configData->sellItem[i].tradeItem[j].itemName)) {
 				sprintf(buf, "%s->%d", configData->sellItem[i].tradeItem[j].itemName, configData->sellItem[i].tradeItem[j].quantityBuySell);
 				m_SellBox[i].AddString(buf);
@@ -239,7 +239,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	char paramString[128];
 	for (int i = 0; i < MAX_SELLERS;i++) {
 
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			newConfigData->sellItem[i].tradeItem[j].itemName[0] = '\0';
 			newConfigData->sellItem[i].tradeItem[j].quantityBuySell = 0;
 			newConfigData->sellItem[i].tradeItem[j].salePrice = 0;
@@ -436,7 +436,7 @@ void CConfigDialog::reloadSaleItems() {
 	m_tradeItemList.SetCurSel(0);
 }
 
-void CConfigDialog::sellBoxAdd0() {
+void CConfigDialog::sellBoxAdd(int index) {
 	char amount[16];
 	int sel=m_tradeItemList.GetCurSel();
 	m_quantityBuySell.GetWindowText(amount,15);
@@ -445,55 +445,39 @@ void CConfigDialog::sellBoxAdd0() {
 	m_tradeItemList.GetLBText(sel,itemName);
 	if (sel==-1) return;
 	sprintf(itemSaleTag, "%s->%s", itemName, amount);
-	m_SellBox[0].AddString(itemSaleTag);
+	m_SellBox[index].SetCurSel(m_SellBox[index].AddString(itemSaleTag));
 	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
 	m_buyPrice.SetWindowText("0");
 	m_quantityBuySell.SetWindowText("0");
 	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
+}
+void CConfigDialog::sellBoxAdd0() {
+	sellBoxAdd(0);
 }
 void CConfigDialog::sellBoxAdd1() {
-	char amount[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount,15);
-	char itemSaleTag[256];
-	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%s", itemName, amount);
-	m_SellBox[1].AddString(itemSaleTag);
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
-	m_buyPrice.SetWindowText("0");
-	m_quantityBuySell.SetWindowText("0");
-	m_buyTriggerQuantity.SetWindowText("0");
-	m_tradeItemList.SetCurSel(0);
+	sellBoxAdd(1);
 }
 void CConfigDialog::sellBoxAdd2() {
-	char amount[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount,15);
-	char itemSaleTag[256];
-	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%s", itemName, amount);
-	m_SellBox[2].AddString(itemSaleTag);
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
-	m_buyPrice.SetWindowText("0");
-	m_quantityBuySell.SetWindowText("0");
-	m_buyTriggerQuantity.SetWindowText("0");
-	m_tradeItemList.SetCurSel(0);
+	sellBoxAdd(2);
 }
 void CConfigDialog::sellBoxAdd3() {
+	sellBoxAdd(3);
+}
+void CConfigDialog::buyBoxAdd(int index) {
 	char amount[16];
+	char salePrice[16];
+	char quantity[16];
 	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount,15);
+	m_quantityBuySell.GetWindowText(amount, 15);
+	m_buyPrice.GetWindowText(salePrice, 15);
+	m_buyTriggerQuantity.GetWindowText(quantity, 15);
 	char itemSaleTag[256];
 	char itemName[128];
 	m_tradeItemList.GetLBText(sel,itemName);
 	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%s", itemName, amount);
-	m_SellBox[3].AddString(itemSaleTag);
+	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
+	m_BuyBox[index].SetCurSel(m_BuyBox[index].AddString(itemSaleTag));
 	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
 	m_buyPrice.SetWindowText("0");
 	m_quantityBuySell.SetWindowText("0");
@@ -501,151 +485,58 @@ void CConfigDialog::sellBoxAdd3() {
 	m_tradeItemList.SetCurSel(0);
 }
 void CConfigDialog::buyBoxAdd0() {
-	char amount[16];
-	char salePrice[16];
-	char quantity[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount, 15);
-	m_buyPrice.GetWindowText(salePrice, 15);
-	m_buyTriggerQuantity.GetWindowText(quantity, 15);
-	char itemSaleTag[256];
-	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
-	m_BuyBox[0].AddString(itemSaleTag);
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
-	m_buyPrice.SetWindowText("0");
-	m_quantityBuySell.SetWindowText("0");
-	m_buyTriggerQuantity.SetWindowText("0");
-	m_tradeItemList.SetCurSel(0);
+	buyBoxAdd(0);
 }
 void CConfigDialog::buyBoxAdd1() {
-	char amount[16];
-	char salePrice[16];
-	char quantity[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount, 15);
-	m_buyPrice.GetWindowText(salePrice, 15);
-	m_buyTriggerQuantity.GetWindowText(quantity, 15);
-	char itemSaleTag[256];
-	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
-	m_BuyBox[1].AddString(itemSaleTag);
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
-	m_buyPrice.SetWindowText("0");
-	m_quantityBuySell.SetWindowText("0");
-	m_buyTriggerQuantity.SetWindowText("0");
-	m_tradeItemList.SetCurSel(0);
+	buyBoxAdd(1);
 }
 void CConfigDialog::buyBoxAdd2() {
-	char amount[16];
-	char salePrice[16];
-	char quantity[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount, 15);
-	m_buyPrice.GetWindowText(salePrice, 15);
-	m_buyTriggerQuantity.GetWindowText(quantity, 15);
-	char itemSaleTag[256];
-	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
-	m_BuyBox[2].AddString(itemSaleTag);
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
-	m_buyPrice.SetWindowText("0");
-	m_quantityBuySell.SetWindowText("0");
-	m_buyTriggerQuantity.SetWindowText("0");
-	m_tradeItemList.SetCurSel(0);
+	buyBoxAdd(2);
 }
 void CConfigDialog::buyBoxAdd3() {
-	char amount[16];
-	char salePrice[16];
-	char quantity[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount,15);
-	m_buyPrice.GetWindowText(salePrice,15);
-	m_buyTriggerQuantity.GetWindowText(quantity,15);
-	char itemSaleTag[256];
+	buyBoxAdd(3);
+}
+void CConfigDialog::sellBoxRemove(int index) {
+	char paramString[128];
 	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
+	int sel=m_SellBox[index].GetCurSel();
 	if (sel==-1) return;
-	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
-	m_BuyBox[3].AddString(itemSaleTag);
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
+	m_SellBox[index].GetText(sel,itemName);
+	int j;
+	for (j=strlen(itemName)-1;j>0;j--) {
+		if (itemName[j]=='-' && itemName[j + 1]=='>') {
+			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
+			itemName[j]='\0';
+			break;
+		}
+	}
+	m_tradeItemList.AddString(itemName);
+	m_quantityBuySell.SetWindowText(paramString);
 	m_buyPrice.SetWindowText("0");
-	m_quantityBuySell.SetWindowText("0");
-	m_buyTriggerQuantity.SetWindowText("0");
-	m_tradeItemList.SetCurSel(0);
+	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
+	m_SellBox[index].DeleteString(sel);
+	m_SellBox[index].SetCurSel(min(m_SellBox[index].GetCount()-1,max(0,sel-1)));
 }
 void CConfigDialog::sellBoxRemove0() {
-	char paramString[128];
-	char itemName[128];
-	int sel=m_SellBox[0].GetCurSel();
-	if (sel==-1) return;
-	m_SellBox[0].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	m_tradeItemList.AddString(itemName);
-	m_quantityBuySell.SetWindowText(paramString);
-	m_buyPrice.SetWindowText("0");
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_SellBox[0].DeleteString(sel);
+	sellBoxRemove(0);
 }
 void CConfigDialog::sellBoxRemove1() {
-	char paramString[128];
-	char itemName[128];
-	int sel=m_SellBox[1].GetCurSel();
-	if (sel==-1) return;
-	m_SellBox[1].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	m_tradeItemList.AddString(itemName);
-	m_quantityBuySell.SetWindowText(paramString);
-	m_buyPrice.SetWindowText("0");
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_SellBox[1].DeleteString(sel);
+	sellBoxRemove(1);
 }
 void CConfigDialog::sellBoxRemove2() {
-	char paramString[128];
-	char itemName[128];
-	int sel=m_SellBox[2].GetCurSel();
-	if (sel==-1) return;
-	m_SellBox[2].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	m_tradeItemList.AddString(itemName);
-	m_quantityBuySell.SetWindowText(paramString);
-	m_buyPrice.SetWindowText("0");
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_SellBox[2].DeleteString(sel);
+	sellBoxRemove(2);
 }
 void CConfigDialog::sellBoxRemove3() {
+	sellBoxRemove(3);
+}
+void CConfigDialog::buyBoxRemove(int index) {
+	char buf[64];
 	char paramString[128];
 	char itemName[128];
-	int sel=m_SellBox[3].GetCurSel();
+	int quantity, price, trigger;
+	int sel=m_BuyBox[index].GetCurSel();
 	if (sel==-1) return;
-	m_SellBox[3].GetText(sel,itemName);
+	m_BuyBox[index].GetText(sel,itemName);
 	int j;
 	for (j=strlen(itemName)-1;j>0;j--) {
 		if (itemName[j]=='-' && itemName[j + 1]=='>') {
@@ -654,119 +545,29 @@ void CConfigDialog::sellBoxRemove3() {
 			break;
 		}
 	}
+	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
 	m_tradeItemList.AddString(itemName);
-	m_quantityBuySell.SetWindowText(paramString);
-	m_buyPrice.SetWindowText("0");
+	sprintf(buf, "%d", quantity);
+	m_quantityBuySell.SetWindowText(buf);
+	sprintf(buf, "%d", price);
+	m_buyPrice.SetWindowText(buf);
+	sprintf(buf, "%d", trigger);
+	m_buyTriggerQuantity.SetWindowText(buf);
 	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_SellBox[3].DeleteString(sel);
+	m_BuyBox[index].DeleteString(sel);
+	m_BuyBox[index].SetCurSel(min(m_BuyBox[index].GetCount()-1,max(0,sel-1)));
 }
 void CConfigDialog::buyBoxRemove0() {
-	char buf[64];
-	char paramString[128];
-	char itemName[128];
-	int quantity, price, trigger;
-	int sel=m_BuyBox[0].GetCurSel();
-	if (sel==-1) return;
-	m_BuyBox[0].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
-	m_tradeItemList.AddString(itemName);
-	sprintf(buf, "%d", quantity);
-	m_quantityBuySell.SetWindowText(buf);
-	sprintf(buf, "%d", price);
-	m_buyPrice.SetWindowText(buf);
-	sprintf(buf, "%d", trigger);
-	m_buyTriggerQuantity.SetWindowText(buf);
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_BuyBox[0].DeleteString(sel);
+	buyBoxRemove(0);
 }
 void CConfigDialog::buyBoxRemove1() {
-	char buf[64];
-	char paramString[128];
-	char itemName[128];
-	int quantity, price, trigger;
-	int sel=m_BuyBox[1].GetCurSel();
-	if (sel==-1) return;
-	m_BuyBox[1].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
-	m_tradeItemList.AddString(itemName);
-	sprintf(buf, "%d", quantity);
-	m_quantityBuySell.SetWindowText(buf);
-	sprintf(buf, "%d", price);
-	m_buyPrice.SetWindowText(buf);
-	sprintf(buf, "%d", trigger);
-	m_buyTriggerQuantity.SetWindowText(buf);
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_BuyBox[1].DeleteString(sel);
+	buyBoxRemove(1);
 }
 void CConfigDialog::buyBoxRemove2() {
-	char buf[64];
-	char paramString[128];
-	char itemName[128];
-	int quantity, price, trigger;
-	int sel=m_BuyBox[2].GetCurSel();
-	if (sel==-1) return;
-	m_BuyBox[2].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
-	m_tradeItemList.AddString(itemName);
-	sprintf(buf, "%d", quantity);
-	m_quantityBuySell.SetWindowText(buf);
-	sprintf(buf, "%d", price);
-	m_buyPrice.SetWindowText(buf);
-	sprintf(buf, "%d", trigger);
-	m_buyTriggerQuantity.SetWindowText(buf);
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_BuyBox[2].DeleteString(sel);
+	buyBoxRemove(2);
 }
 void CConfigDialog::buyBoxRemove3() {
-	char buf[64];
-	char paramString[128];
-	char itemName[128];
-	int quantity, price, trigger;
-	int sel=m_BuyBox[3].GetCurSel();
-	if (sel==-1) return;
-	m_BuyBox[3].GetText(sel,itemName);
-	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
-			break;
-		}
-	}
-	sscanf(paramString, "%d:%d@%dgp", &trigger, &quantity, &price);
-	m_tradeItemList.AddString(itemName);
-	sprintf(buf, "%d", quantity);
-	m_quantityBuySell.SetWindowText(buf);
-	sprintf(buf, "%d", price);
-	m_buyPrice.SetWindowText(buf);
-	sprintf(buf, "%d", trigger);
-	m_buyTriggerQuantity.SetWindowText(buf);
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
-	m_BuyBox[3].DeleteString(sel);
+	buyBoxRemove(3);
 }
 
 void CConfigDialog::onSellOnCap() {

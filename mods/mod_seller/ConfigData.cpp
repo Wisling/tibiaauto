@@ -26,7 +26,7 @@ CConfigData::CConfigData() {
 		sellerList[i].sellerX = 0;
 		sellerList[i].sellerY = 0;
 		sellerList[i].sellerZ = 0;
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			sellItem[i].tradeItem[j].itemName[0] = 0;
 			sellItem[i].tradeItem[j].salePrice = 0;
 			sellItem[i].tradeItem[j].quantityBuySell = 0;

@@ -181,6 +181,10 @@ int CMod_playerinfoApp::validateConfig(int showAlerts)
 
 
 void CMod_playerinfoApp::resetConfig() {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

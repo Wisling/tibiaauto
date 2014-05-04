@@ -349,7 +349,7 @@ int CMod_SellerApp::validateConfig(int showAlerts) {
 		return 0;
 	}
 	for (int i = 0; i < MAX_SELLERS; i++) {
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			if (m_configData->buyItem[i].tradeItem[j].quantityBuySell < m_configData->buyItem[i].tradeItem[j].triggerQuantity) {
 				sprintf(buf, "Trigger Quantity must be < Quantity to buy up to:\nPlease correct: Item entry: %s under Seller %d", m_configData->buyItem[i].tradeItem[j].itemName, i);
 				if (showAlerts) AfxMessageBox(buf);
@@ -383,6 +383,10 @@ int CMod_SellerApp::validateConfig(int showAlerts) {
 }
 
 void CMod_SellerApp::resetConfig() {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 
@@ -397,108 +401,108 @@ void CMod_SellerApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(m_configData->sellerList[0].sellerName, "%s", paramValue);
 	if (!strcmp(paramName,"Seller1/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[0].sellerX),&(m_configData->sellerList[0].sellerY),&(m_configData->sellerList[0].sellerZ));
 	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->sellItem[0].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller1/SaleItems/SaleTriggerQuantity")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->sellItem[0].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/Name")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->buyItem[0].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/BuyQuantity")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[0].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/BuyTriggerQuantity")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[0].tradeItem[currentPos++].triggerQuantity = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/BuyPrice")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[0].tradeItem[currentPos++].salePrice = atoi(paramValue);
 	}
 // Seller 2
 	if (!strcmp(paramName,"Seller2/Name")) sprintf(m_configData->sellerList[1].sellerName, "%s", paramValue);
 	if (!strcmp(paramName,"Seller2/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[1].sellerX),&(m_configData->sellerList[1].sellerY),&(m_configData->sellerList[1].sellerZ));
 	if (!strcmp(paramName,"Seller2/SaleItems/Name")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->sellItem[1].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/Name")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->buyItem[1].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/BuyQuantity")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[1].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/BuyTriggerQuantity")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[1].tradeItem[currentPos++].triggerQuantity = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/BuyPrice")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[1].tradeItem[currentPos++].salePrice = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller2/SaleItems/SaleTriggerQuantity")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->sellItem[1].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 // Seller 3
 	if (!strcmp(paramName,"Seller3/Name")) sprintf(m_configData->sellerList[2].sellerName, "%s", paramValue);
 	if (!strcmp(paramName,"Seller3/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[2].sellerX),&(m_configData->sellerList[2].sellerY),&(m_configData->sellerList[2].sellerZ));
 	if (!strcmp(paramName,"Seller3/SaleItems/Name")) {
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->sellItem[2].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller3/SaleItems/SaleTriggerQuantity")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->sellItem[2].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/Name")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->buyItem[2].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/BuyQuantity")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[2].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/BuyTriggerQuantity")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[2].tradeItem[currentPos++].triggerQuantity = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/BuyPrice")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[2].tradeItem[currentPos++].salePrice = atoi(paramValue);
 	}
 // Seller 4
 	if (!strcmp(paramName,"Seller4/Name")) sprintf(m_configData->sellerList[3].sellerName, "%s", paramValue);
 	if (!strcmp(paramName,"Seller4/Pos")) sscanf(paramValue, "(%d,%d,%d)",&(m_configData->sellerList[3].sellerX),&(m_configData->sellerList[3].sellerY),&(m_configData->sellerList[3].sellerZ));
 	if (!strcmp(paramName,"Seller4/SaleItems/Name")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->sellItem[3].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller4/SaleItems/SaleTriggerQuantity")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->sellItem[3].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/Name")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		sprintf(m_configData->buyItem[3].tradeItem[currentPos++].itemName, "%s", paramValue);
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/BuyQuantity")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[3].tradeItem[currentPos++].quantityBuySell = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/BuyTriggerQuantity")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[3].tradeItem[currentPos++].triggerQuantity = atoi(paramValue);
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/BuyPrice")){
-		if (currentPos>32) return;
+		if (currentPos>MAX_SELLER_ITEMS) return;
 		m_configData->buyItem[3].tradeItem[currentPos++].salePrice = atoi(paramValue);
 	}
 }
@@ -516,37 +520,37 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"Seller1/Name")) sprintf(buf,"%s",m_configData->sellerList[0].sellerName);
 	if (!strcmp(paramName,"Seller1/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[0].sellerX,m_configData->sellerList[0].sellerY,m_configData->sellerList[0].sellerZ);
 	if (!strcmp(paramName,"Seller1/SaleItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[0].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller1/SaleItems/SaleTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->sellItem[0].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[0].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/BuyQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[0].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/BuyTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[0].tradeItem[currentPos++].triggerQuantity);
 		}
 	}
 	if (!strcmp(paramName,"Seller1/BuyItems/BuyPrice")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[0].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[0].tradeItem[currentPos++].salePrice);
 		}
@@ -555,37 +559,37 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"Seller2/Name")) sprintf(buf,"%s",m_configData->sellerList[1].sellerName);
 	if (!strcmp(paramName,"Seller2/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[1].sellerX,m_configData->sellerList[1].sellerY,m_configData->sellerList[1].sellerZ);
 	if (!strcmp(paramName,"Seller2/SaleItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[1].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller2/SaleItems/SaleTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->sellItem[1].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[1].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/BuyQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[1].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/BuyTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[1].tradeItem[currentPos++].triggerQuantity);
 		}
 	}
 	if (!strcmp(paramName,"Seller2/BuyItems/BuyPrice")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[1].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[1].tradeItem[currentPos++].salePrice);
 		}
@@ -594,37 +598,37 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"Seller3/Name")) sprintf(buf,"%s",m_configData->sellerList[2].sellerName);
 	if (!strcmp(paramName,"Seller3/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[2].sellerX,m_configData->sellerList[2].sellerY,m_configData->sellerList[2].sellerZ);
 	if (!strcmp(paramName,"Seller3/SaleItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[2].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller3/SaleItems/SaleTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->sellItem[2].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[2].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/BuyQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[2].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/BuyTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[2].tradeItem[currentPos++].triggerQuantity);
 		}
 	}
 	if (!strcmp(paramName,"Seller3/BuyItems/BuyPrice")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[2].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[2].tradeItem[currentPos++].salePrice);
 		}
@@ -633,42 +637,41 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	if (!strcmp(paramName,"Seller4/Name")) sprintf(buf,"%s",m_configData->sellerList[3].sellerName);
 	if (!strcmp(paramName,"Seller4/Pos")) sprintf(buf,"(%d,%d,%d)",m_configData->sellerList[3].sellerX,m_configData->sellerList[3].sellerY,m_configData->sellerList[3].sellerZ);
 	if (!strcmp(paramName,"Seller4/SaleItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->sellItem[3].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller4/SaleItems/SaleTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->sellItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->sellItem[3].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/Name")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%s", m_configData->buyItem[3].tradeItem[currentPos++].itemName);
 		}
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/BuyQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[3].tradeItem[currentPos++].quantityBuySell);
 		}
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/BuyTriggerQuantity")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[3].tradeItem[currentPos++].triggerQuantity);
 		}
 	}
 	if (!strcmp(paramName,"Seller4/BuyItems/BuyPrice")) {
-		if (currentPos<32) {
+		if (currentPos<MAX_SELLER_ITEMS) {
 			if (IsCharAlphaNumeric(m_configData->buyItem[3].tradeItem[currentPos].itemName[0]))
 				sprintf(buf, "%d", m_configData->buyItem[3].tradeItem[currentPos++].salePrice);
 		}
 	}
-
 	return buf;
 }
 
@@ -892,7 +895,7 @@ int sellItems(CConfigData *config, int traderNum) {
 	Sleep (RandomTimeSellerSay(strlen("trade")));
 	sender.sayNPC("trade");
 	Sleep (RandomTimeSeller());
-	for (int j = 0; j < 32; j++) {
+	for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
 		int openContNr=0;
 		int openContMax=reader.readOpenContainerCount();
@@ -944,7 +947,7 @@ int buyItems(CConfigData *config, int traderNum) {
 	Sleep (RandomTimeSellerSay(strlen("trade")));
 	sender.sayNPC("trade");
 	Sleep (RandomTimeSeller());
-	for (int j = 0; j < 32; j++) {
+	for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 		objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Item Name: %s", config->buyItem[traderNum].tradeItem[j].itemName);
 		//AfxMessageBox(buf);
@@ -1012,7 +1015,7 @@ int sumAllExpenses(CConfigData *config) {
 	CMemReaderProxy reader;
 	int totalCost = 0;
 	for (int i = 0; i < MAX_SELLERS; i++) {
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				totalCost += max(0,(config->buyItem[i].tradeItem[j].quantityBuySell-countAllItemsOfType(objectId,true))*config->buyItem[i].tradeItem[j].salePrice);
@@ -1067,7 +1070,7 @@ bool shouldGo(CConfigData *config) {
 			{delete self; return true;}
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 			{delete self; return true;}
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1080,7 +1083,7 @@ bool shouldGo(CConfigData *config) {
 			}
 
 		}
-		for (j = 0; j < 32; j++) {
+		for (j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1110,7 +1113,7 @@ bool canGo(CConfigData *config) {
 	int count = 0;
 	for (int i = 0; i < MAX_SELLERS; i++) {
 		//see if there's anything to
-		for (int j = 0; j < 32; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->sellItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1122,7 +1125,7 @@ bool canGo(CConfigData *config) {
 			}
 
 		}
-		for (j = 0; j < 32; j++) {
+		for (j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1145,7 +1148,7 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	int ret = NOGO;
-	for (int j = 0; j < 32; j++) {
+	for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 		int objectId = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);
@@ -1159,7 +1162,7 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		}
 	}
 	int count = -1;
-	for (j = 0; j < 32; j++) {
+	for (j = 0; j < MAX_SELLER_ITEMS; j++) {
 		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);

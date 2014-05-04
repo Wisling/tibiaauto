@@ -289,6 +289,10 @@ int CMod_runemakerApp::validateConfig(int showAlerts)
 
 void CMod_runemakerApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

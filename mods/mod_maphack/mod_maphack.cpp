@@ -447,6 +447,10 @@ int CMod_maphackApp::validateConfig(int showAlerts)
 
 void CMod_maphackApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 

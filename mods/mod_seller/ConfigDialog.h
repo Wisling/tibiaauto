@@ -123,6 +123,10 @@ protected:
 private:
 	void reloadSellers();
 	CMod_SellerApp * m_app;
+	void sellBoxAdd(int index);
+	void buyBoxAdd(int index);
+	void sellBoxRemove(int index);
+	void buyBoxRemove(int index);
 };
 
 //{{AFX_INSERT_LOCATION}}

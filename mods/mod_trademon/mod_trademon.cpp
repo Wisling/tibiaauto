@@ -309,6 +309,10 @@ int CMod_trademonApp::validateConfig(int showAlerts)
 
 void CMod_trademonApp::resetConfig()
 {
+	if(m_configData){
+		delete m_configData;
+		m_configData = NULL;
+	}
 	m_configData = new CConfigData();
 }
 
