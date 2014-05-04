@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#define MAX_MULTIPARAMS 20
+#define MAX_MULTIPARAMS 50
 
 class CConfigCreatorUtilMultiParams
 {

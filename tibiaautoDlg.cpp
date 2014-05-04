@@ -1079,6 +1079,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 			if (moduleConfig)
 			{
 				sprintf(logBuf,"Loading config for module %s ...",module->getModuleName());
+				module->resetConfig();
 				m_configDialogStatus->msgAddToLog(logBuf);
 				configCreator.parseConfigFromNode(module,moduleConfig,"");
 				module->configToControls();
