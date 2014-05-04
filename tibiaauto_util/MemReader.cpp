@@ -150,6 +150,9 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x4C,0);
 		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x54,0);
 		try{//if returns error then addrItems is most likely not a valid address anymore
+			if(!addrItems){
+				throw "Error invalid container address.";
+			}
 			for (i=0;i<container->itemsInside;i++)
 			{
 				CTibiaItem *item = new CTibiaItem();
