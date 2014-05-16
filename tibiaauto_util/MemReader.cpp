@@ -123,11 +123,11 @@ int CMemReader::readOpenContainerCount(){
 }
 
 CTibiaContainer *CMemReader::readContainer(int containerNr) {
+	CTibiaContainer *container = new CTibiaContainer();
 	//triply linked list
 	//container number
 	int i;
 	
-	CTibiaContainer *container = new CTibiaContainer();
 	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+8,0);
 	long addrIndCont = 0;
 	try {
@@ -149,28 +149,31 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		container->size=CMemUtil::GetMemIntValue(addrCont+0x48,0);
 		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x4C,0);
 		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x54,0);
+
 		try{//if returns error then addrItems is most likely not a valid address anymore
-			if(!addrItems){
-				throw "Error invalid container address.";
-			}
-			for (i=0;i<container->itemsInside;i++)
-			{
-				CTibiaItem *item = new CTibiaItem();
-				item->objectId = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+8,0);
-				item->quantity = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+4,0);
-				CTileReader tileReader;
-				CTibiaTile *tile=tileReader.getTile(item->objectId);
-				if(!tile){
-					delete item;
-					throw "Error invalid container item.";
+			if(addrItems){ // if addrItems == NULL then there are no items in the container
+				for (i=0;i<container->itemsInside;i++)
+				{
+					CTibiaItem *item = new CTibiaItem();
+					item->objectId = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+8,0);
+					item->quantity = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+4,0);
+					CTileReader tileReader;
+					CTibiaTile *tile=tileReader.getTile(item->objectId);
+					if(!tile){
+						delete item;
+						throw "Error invalid container item.";
+					}
+					if (!tile->stackable&&item->quantity>1) item->quantity=1;//handles vials and other special uses of "quantity" variable
+					item->pos = i;
+					container->items.Add(item);
 				}
-				if (!tile->stackable&&item->quantity>1) item->quantity=1;//handles vials and other special uses of "quantity" variable
-				item->pos = i;
-				container->items.Add(item);
+			}else{
+				container->itemsInside = 0;
 			}
 		} catch(const char* e) {
 			delete container;
 			container = new CTibiaContainer(); //return blank container
+			return container;
 		}
 	}//else: return container as is if it is not found to be open
 	return container;
@@ -1124,10 +1127,6 @@ int CMemReader::isLoggedIn()
 {
 	CTibiaItemProxy itemProxy;
 	DWORD addr = itemProxy.getValueForConst("addrConnectionState");
-	if(addr<0x99999){
-		int a=0;
-		int b=1/a;
-	}
 	return CMemUtil::GetMemIntValue(addr)==11;
 }
 
