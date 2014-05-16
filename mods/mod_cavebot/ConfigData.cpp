@@ -35,6 +35,7 @@ CConfigData::CConfigData()
 	monsterCount=0;
 	ignoreCount=0;
 	autoFollow=1;
+	attackAllMonsters=0;
 	lootFood=0;
 	lootGp=0;
 	lootWorms=0;

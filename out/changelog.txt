@@ -1,7 +1,10 @@
 2.41.1 5.?.2014
 Enhancements:
+ Cavebot: Ability to set all unlisted monsters as lowest priority in attack list. This will still not attack ignored creatures.
 Defects:
  Responder: Fixed bug causing a crash at a random time after enabling many talk threads
+ Tibia Auto: Fixed occasional crash when reading empty container.
+ 
 
 2.41.0 4.30.2014
 Enhancements:

@@ -123,6 +123,7 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_CURX, m_curX);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_WAYPOINTLIST, m_waypointList);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_AUTOFOLLOW, m_autoFollow);
+	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_ALL_MONSTERS, m_attackAllMonsters);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTERLIST, m_monsterList);
 	DDX_Control(pDX, IDC_TOOL_AUTOATTACK_MONSTER, m_monster);
 	DDX_Control(pDX, IDC_DONT_ATTACK_PLAYERS, m_dontAttackPlayers);
@@ -224,6 +225,7 @@ void CConfigDialog::disableControls()
 	m_lootFood.EnableWindow(false);
 	m_waypointList.EnableWindow(false);
 	m_autoFollow.EnableWindow(false);
+	m_attackAllMonsters.EnableWindow(false);
 	m_monsterList.EnableWindow(false);
 	m_monster.EnableWindow(false);
 	m_stickToMonster.EnableWindow(false);
@@ -288,6 +290,7 @@ void CConfigDialog::enableControls()
 	m_lootFood.EnableWindow(true);
 	m_waypointList.EnableWindow(true);
 	m_autoFollow.EnableWindow(true);
+	m_attackAllMonsters.EnableWindow(true);
 	m_monsterList.EnableWindow(true);
 	m_monster.EnableWindow(true);
 	m_stickToMonster.EnableWindow(true);
@@ -356,6 +359,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_eatFromCorpse.SetCheck(configData->eatFromCorpse);
 	sprintf(buf,"%d",configData->attackRange);m_attackRange.SetWindowText(buf);
 	m_autoFollow.SetCheck(configData->autoFollow);
+	m_attackAllMonsters.SetCheck(configData->attackAllMonsters);
 	m_lootFood.SetCheck(configData->lootFood);
 	m_lootGp.SetCheck(configData->lootGp);
 	m_lootWorms.SetCheck(configData->lootWorms);
@@ -457,6 +461,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	m_attackRange.GetWindowText(buf,127);
 	newConfigData->attackRange=atoi(buf);
 	newConfigData->autoFollow=m_autoFollow.GetCheck();
+	newConfigData->attackAllMonsters=m_attackAllMonsters.GetCheck();
 	newConfigData->lootFood=m_lootFood.GetCheck();
 	newConfigData->lootGp=m_lootGp.GetCheck();
 	newConfigData->lootWorms=m_lootWorms.GetCheck();
@@ -944,7 +949,7 @@ void CConfigDialog::OnToolAutoattackRemoveMonster()
 	m_monsterList.GetText(sel,currentMonster);
 	m_monsterList.DeleteString(sel);
 	m_monster.SetWindowText(currentMonster);
-	m_monsterList.SetCurSel(min(sel,m_monsterList.GetCount()-1));
+	m_monsterList.SetCurSel(min(max(sel-1,0),m_monsterList.GetCount()-1));
 }
 
 void CConfigDialog::OnToolAutoattackAddMonster()
@@ -953,10 +958,9 @@ void CConfigDialog::OnToolAutoattackAddMonster()
 	m_monster.GetWindowText(buf,128);
 	if (strlen(buf)&&m_monsterList.GetCount()<32)
 	{
-		m_monsterList.AddString(buf);
+		m_monsterList.SetCurSel(m_monsterList.AddString(buf));
 	}
 	m_monster.SetWindowText("");
-	m_monsterList.SetCurSel(m_monsterList.GetCount()-1);
 }
 
 void CConfigDialog::OnDepotEntryadd()

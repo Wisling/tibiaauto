@@ -29,6 +29,7 @@ public:
 	char ignoreList[1000][64];
 	int ignoreCount;
 	int autoFollow;
+	int attackAllMonsters;
 	int lootFood;
 	int lootGp;
 	int lootWorms;

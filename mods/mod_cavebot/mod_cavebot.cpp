@@ -2607,10 +2607,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 				strcpy(creatureList[crNr].name,statChName);
 
+				// if attackAllMonsters set default priority to lowest and overwrite with actual priority
+				if(config->attackAllMonsters && ch->tibiaId >= 0x40001000) creatureList[crNr].listPriority = 1;
 				// scan creature list to find its priority
 				for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++) {
-					if (!strcmpi(config->monsterList[monstListNr],creatureList[crNr].name))
-						creatureList[crNr].listPriority=config->monsterCount-monstListNr;//1 is lowest, 0 means not in attack list
+					if (!strcmpi(config->monsterList[monstListNr],creatureList[crNr].name)){
+						creatureList[crNr].listPriority=config->monsterCount-monstListNr + 1;//2 is last item in list, 1 is for 'attackAllMonster' monsters, 0 means not in attack list
+						break;
+					}
 				}
 
 				// scan ignore list
@@ -3529,6 +3533,7 @@ void CMod_cavebotApp::resetConfig() {
 void CMod_cavebotApp::loadConfigParam(char *paramName,char *paramValue) {
 	if (!strcmp(paramName,"attack/follow")) m_configData->autoFollow=(atoi(paramValue)?1:0);
 	if (!strcmp(paramName,"attack/mode")) m_configData->mode=atoi(paramValue);
+	if (!strcmp(paramName,"attack/attackAllMonsters")) m_configData->attackAllMonsters=(atoi(paramValue)?1:0);
 	if (!strcmp(paramName,"attack/suspendOnEnemey")) m_configData->suspendOnEnemy=atoi(paramValue);
 	if (!strcmp(paramName,"attack/suspendOnNoMove")) m_configData->suspendOnNoMove=atoi(paramValue);
 	if (!strcmp(paramName,"attack/range")) m_configData->attackRange=atoi(paramValue);
@@ -3640,6 +3645,7 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	
 	if (!strcmp(paramName,"attack/follow")) sprintf(buf,"%d",m_configData->autoFollow);
 	if (!strcmp(paramName,"attack/mode")) sprintf(buf,"%d",m_configData->mode);
+	if (!strcmp(paramName,"attack/attackAllMonsters")) sprintf(buf,"%d",m_configData->attackAllMonsters);
 	if (!strcmp(paramName,"attack/suspendOnEnemey")) sprintf(buf,"%d",m_configData->suspendOnEnemy);
 	if (!strcmp(paramName,"attack/suspendOnNoMove")) sprintf(buf,"%d",m_configData->suspendOnNoMove);
 	if (!strcmp(paramName,"attack/range")) sprintf(buf,"%d",m_configData->attackRange);
@@ -3767,6 +3773,7 @@ char *CMod_cavebotApp::getConfigParamName(int nr) {
 	case 47: return "depot/depotModPriority";
 	case 48: return "depot/stopByDepot";
 	case 49: return "depot/depositLootedItemList";
+	case 50: return "attack/attackAllMonsters";
 		
 	default:
 		return NULL;

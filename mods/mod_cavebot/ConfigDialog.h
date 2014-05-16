@@ -160,6 +160,7 @@ public:
 	CEdit	m_curX;
 	CListBox	m_waypointList;
 	CButton		m_autoFollow;
+	CButton		m_attackAllMonsters;
 	CListBox	m_monsterList;
 	CEdit		m_monster;
 	CButton		m_dontAttackPlayers;

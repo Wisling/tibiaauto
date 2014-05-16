@@ -198,30 +198,30 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (config->customSpell && self->hp<=lifeHp && self->mana >= config->lifeSpellMana){
 				RandomVariableHp(config->lifeHp,MAKE,config);
 				sender.say(config->lifeSpell);
-				Sleep(800);
+				Sleep(820);;
 			}
 			else if(config->vitaSpell && self->hp<vitaHp && self->mana >= config->vitaSpellMana){
 				RandomVariableHp(config->vitaHp,MAKE,config);
 				sender.say("exura vita");
-				Sleep(800);
+				Sleep(820);;
 			}
 			else if(config->granSpell && self->hp<=granHp && self->mana >= config->granSpellMana){
 				RandomVariableHp(config->granHp,MAKE,config);
 				sender.say("exura gran");
-				Sleep(800);
+				Sleep(820);;
 			}
 			else if(config->exuraSpell && self->hp<=exuraHp && self->mana >= config->exuraSpellMana) {
 				RandomVariableHp(config->exuraHp,MAKE,config);
 				sender.say("exura");
-				Sleep(800);
+				Sleep(820);;
 			}
 			else if(config->paralysisSpell && (flags & 32) == 32){
 				sender.say("exura");
-				Sleep(800);
+				Sleep(820);;
 			}
 			else if(config->paralysisIco && (flags & 32) == 32){
 				sender.say("exura ico");
-				Sleep(800);
+				Sleep(820);;
 			}
 			else if (!config->disableWarning) {
 				//sprintf(text, "Time since warning: %dseconds\nLast Warning: %d\nCurrent Time: %d", time(NULL) - lastWarning/1000, lastWarning, time(NULL));
@@ -257,7 +257,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						char buf[256];
 						sprintf(buf,"exura sio \"%s\"",ch->name);
 						sender.say(buf);
-						Sleep(700);
+						Sleep(820);;
 					}
 				}
 				delete ch;
@@ -353,7 +353,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				if (strlen(spellname)>0) {
 					sender.say(spellname);
 					lastCastTime = time(NULL);
-					Sleep(500);
+					Sleep(820);;
 				}
 			}
 		}
@@ -438,7 +438,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							if (strlen(spellname)>0) {
 								sender.say(spellname);
 								lastCastTime = time(NULL);
-								Sleep(500);
+								Sleep(820);;
 							}
 						}
 					}
@@ -452,13 +452,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			char buf[256];
 			sprintf(buf,"utevo res \"%s\"",config->summonName);
 			sender.say(buf);
-			Sleep(700);
+			Sleep(820);;
 		}
 		//T4: Use mana in other purpose otherwise
 		else if(config->mana && self->mana>=manaMana){
 			RandomVariableMana(config->manaMana,MAKE,config);
 			sender.say(config->manaSpell);
-			Sleep(700);
+			Sleep(820);
 		}
 		else if(config->timedSpell) {
 			for (loop = 0; loop < config->timedSpellList.size(); loop ++) {
@@ -466,7 +466,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					RandomVariableMana(config->timedSpellList[loop].randMana,MAKE,config);
 					config->timedSpellList[loop].triggerTime = time(NULL) + config->timedSpellList[loop].delay;
 					sender.say(config->timedSpellList[loop].spell);
-					Sleep(700);
+					Sleep(820);;
 				}
 				else if(config->timedSpellList[loop].usePotions && self->mana < config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime + 10) {
 					int contNr;
@@ -493,7 +493,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						}
 						delete cont;
 					}
-					Sleep(700);
+					Sleep(820);;
 				}
 			}
 		}
