@@ -47,6 +47,8 @@ public:
 	int getPointDistance(int x,int y, int z);
 	void setPointDistance(int x, int y, int z,int dist);
 	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
+	int isPointLocked(int x,int y, int z);
+	void setPointLocked(int x, int y, int z,int locked);
 
 	CTibiaMapProxy();
 	virtual ~CTibiaMapProxy();

@@ -179,7 +179,7 @@ void SummonDialog::OnItemchangingCreatureList(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 	
 	*pResult = 0;
-	if((pNMListView->uNewState & LVIS_SELECTED)) 	{
+	if((pNMListView->uNewState & LVIS_SELECTED)){
 		m_summonName.SetWindowText(m_creatureList.GetItemText(pNMListView->iItem, 0));
 		m_summonMana.SetWindowText(m_creatureList.GetItemText(pNMListView->iItem, 1));
 

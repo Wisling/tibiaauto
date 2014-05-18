@@ -51,6 +51,7 @@
 #define IDB_MAP_UNKTELE                 4000
 #define IDB_MAP_TELE                    4001
 #define IDB_MAP_BLOCK                   4002
+#define IDB_MAP_LOCK					4003
 #define ID_SHOWMAPOPTIONS_AVAILABLE     32770
 #define ID_SHOWMAPOPTIONS_STAIRS        32771
 #define ID_SHOWMAPOPTIONS_MAGICROPE     32772
@@ -67,13 +68,14 @@
 #define ID_SHOWMAPOPTIONS_TELE          32783
 #define ID_SHOWMAPOPTIONS_SET_AS_GROUND 32784
 #define ID_SHOWMAPOPTIONS_BLOCK         32785
+#define ID_SHOWMAPOPTIONS_LOCKTILE      32786
 
 // Next default values for new objects
-//
+// 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3018
-#define _APS_NEXT_COMMAND_VALUE         32786
+#define _APS_NEXT_COMMAND_VALUE         32787
 #define _APS_NEXT_CONTROL_VALUE         3054
 #define _APS_NEXT_SYMED_VALUE           3000
 #endif

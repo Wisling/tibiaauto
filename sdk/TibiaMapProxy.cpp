@@ -304,6 +304,31 @@ int CTibiaMapProxy::isPointAvailableNoProh(int x,int y,int z)
 	}
 	return 0;
 }
+int CTibiaMapProxy::isPointLocked(int x,int y,int z)
+{
+	typedef int (*Proto_fun)(int x,int y,int z);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapIsPointLocked");
+		if (fun)
+		{
+			return fun(x,y,z);
+		}
+	}
+	return 0;
+}
+void CTibiaMapProxy::setPointLocked(int x,int y,int z,int locked)
+{
+	typedef void (*Proto_fun)(int x,int y,int z, int locked);
+	if (dllModule)
+	{
+		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointLocked");
+		if (fun)
+		{
+			fun(x,y,z,locked);
+		}
+	}
+}
 
 
 int CTibiaMapProxy::size()

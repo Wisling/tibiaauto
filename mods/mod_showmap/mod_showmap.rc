@@ -122,6 +122,7 @@ IDB_MAP_BLOCK           BITMAP  DISCARDABLE     "res\\map_blocked.bmp"
 IDB_MAP_DEPOT           BITMAP  DISCARDABLE     "res\\map_depot.bmp"
 IDB_MAP_UNKTELE         BITMAP  DISCARDABLE     "res\\map_unktele.bmp"
 IDB_MAP_TELE            BITMAP  DISCARDABLE     "res\\map_tele.bmp"
+IDB_MAP_LOCK            BITMAP  DISCARDABLE     "res\\map_lock.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -134,11 +135,11 @@ BEGIN
     BEGIN
         MENUITEM "Clear",                       ID_SHOWMAPOPTIONS_CLEAR
         MENUITEM "Available",                   ID_SHOWMAPOPTIONS_AVAILABLE
+        MENUITEM "Lock Tile",                   ID_SHOWMAPOPTIONS_LOCKTILE
         MENUITEM SEPARATOR
-        MENUITEM "Permanent Depot",             ID_SHOWMAPOPTIONS_DEPOT
-        MENUITEM SEPARATOR
-        MENUITEM "Permanent Teleporter",        ID_SHOWMAPOPTIONS_TELE
-        MENUITEM "Permanent Block",             ID_SHOWMAPOPTIONS_BLOCK
+        MENUITEM "Depot",                       ID_SHOWMAPOPTIONS_DEPOT
+        MENUITEM "Teleporter",                  ID_SHOWMAPOPTIONS_TELE
+        MENUITEM "Blocked Tile",                ID_SHOWMAPOPTIONS_BLOCK
         MENUITEM SEPARATOR
         POPUP "Go Up One Level"
         BEGIN

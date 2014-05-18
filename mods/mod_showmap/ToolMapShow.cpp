@@ -112,6 +112,7 @@ BOOL CToolMapShow::OnInitDialog()
 			but->Create("test",WS_CHILD|WS_VISIBLE|BS_FLAT|BS_PUSHLIKE|BS_OWNERDRAW,rect,this,IDC_MAPSHOW_FIRSTBUTTON);
 			but->LoadBitmaps(IDB_MAP_EMPTY);
 			but->m_value=-1;
+			but->m_locked=0;
 			m_mapButtonImage[x][y]=IDB_MAP_EMPTY;
 			m_mapButtons[x][y]=but;
 			
@@ -185,9 +186,13 @@ void CToolMapShow::refreshVisibleMap()
 		{
 			if (x!=10||y!=10)
 			{
+				CBitmap bmp;
+				bmp
 				int avail=tibiaMap.isPointAvailableNoProh(x+self->x-10,y+self->y-10,self->z);
 				if (avail)
 				{
+					int locked = tibiaMap.isPointLocked(x+self->x-10,y+self->y-10,self->z);
+					m_mapButtons[x][y]->m_locked = locked;
 					int updownSel=tibiaMap.getPointUpDown(x+self->x-10,y+self->y-10,self->z);
 					switch (updownSel)
 					{
@@ -324,6 +329,7 @@ void CToolMapShow::refreshVisibleMap()
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]=IDB_MAP_EMPTY;
 						m_mapButtons[x][y]->m_value=-1;
+						m_mapButtons[x][y]->m_locked=0;
 					}
 				}
 			}
@@ -467,9 +473,6 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 					int prevUpDown=tibiaMap.getPointUpDown(self->x+x,self->y+y,self->z);
 
-					//blocking tiles and teleporters are marked permanently until changed manually
-					if (prevUpDown==302 || prevUpDown==301 || prevUpDown==303) updown=prevUpDown;
-
 					// if tile is depot chest or teleporter then treat it in a special way
 					if (updown==301 || updown==302) blocked=0;
 					// if there is not a single walkable tile then one cannot pass
@@ -516,30 +519,38 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 				{
 					for (y=-6+max(0,newSelf->y-self->y);y<=7+min(0,newSelf->y-self->y);y++)
 					{
+						if(!tibiaMap.isPointLocked(self->x+x,self->y+y,self->z)){
 
-						if (tileArrAvail[x+8][y+6])
-						{
-							tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
-							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
-							if (tileArrSpd[x+8][y+6]==0) tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,130);//130 default( is >255/2 and <70*2)
-							else tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,tileArrSpd[x+8][y+6]);
-						} else {
-							tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
-							tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,0);
-							if(tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z) && tileArrMvbl[x+8][y+6]){
-								//To avoid removing a tile that could be made available again too quickly
-								//Make it less likely that it will happen, 90% chance of updating after 20 seconds.
-								//Better implementation is to track these across iterations and make not available after 10 seconds
-								if(rand()%100 < 5){
-									tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+							if (tileArrAvail[x+8][y+6])
+							{
+								if(!tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z)){
+									//blocking tiles and teleporters are marked permanently until changed manually
+									if (tileArrUpDown[x+8][y+6]==302 || tileArrUpDown[x+8][y+6]==301 || tileArrUpDown[x+8][y+6]==303){
+										tibiaMap.setPointLocked(self->x+x,self->y+y,self->z,1);
+									}
+								}
+								tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
+								tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
+								if (tileArrSpd[x+8][y+6]==0) tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,130);//130 default( is >255/2 and <70*2)
+								else tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,tileArrSpd[x+8][y+6]);
+							} else {
+								tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,0);
+								tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,0);
+								if(tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z) && tileArrMvbl[x+8][y+6]){
+									//To avoid removing a tile that could be made available again too quickly
+									//Make it less likely that it will happen, 90% chance of updating after 20 seconds.
+									//Better implementation is to track these across iterations and make not available after 10 seconds
+									if(rand()%100 < 5){
+										tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
+									}else{
+										tibiaMap.prohPointAdd(self->x+x,self->y+y,self->z);
+									}
 								}else{
-									tibiaMap.prohPointAdd(self->x+x,self->y+y,self->z);
+									if(x==1 && y==0){
+										int a =0;
+									}
+									tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
 								}
-							}else{
-								if(x==1 && y==0){
-									int a =0;
-								}
-								tibiaMap.removePointAvailable(self->x+x,self->y+y,self->z);
 							}
 						}
 					}
@@ -631,29 +642,25 @@ void CToolMapShow::OnToolMapshowExtendedResearch()
 {
 	RefreshExtendedResearchMap();
 }
-
-void CToolMapShow::mapPointClicked(int posX, int posY, int pos)
+void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ){
+	if(tibiaMap.isPointAvailableNoProh(realX,realY,realZ) && tibiaMap.getPointUpDown(realX,realY,realZ)>=0){
+		int prev = tibiaMap.isPointLocked(realX,realY,realZ);
+		tibiaMap.setPointLocked(realX,realY,realZ,!prev);
+	}
+}
+void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, int tileVal)
 {
-	CMemReaderProxy reader;
-	
-	CTibiaCharacter *self = reader.readSelfCharacter();
-
-	int realX=self->x+posX-10;
-	int realY=self->y+posY-10;
-	int realZ=self->z;
-
-	delete self;
-
-	if (pos>=0)
+	if (tileVal>=0)
 	{
 		// point added/updated
 		tibiaMap.setPointAsAvailable(realX,realY,realZ);
-		tibiaMap.setPointUpDown(realX,realY,realZ,pos);
+		tibiaMap.setPointUpDown(realX,realY,realZ,tileVal);
 		tibiaMap.setPointSpeed(realX,realY,realZ,130);//130 default( is >255/2 and <70*2)
+		tibiaMap.setPointLocked(realX,realY,realZ,1);//set all manually change tiles as locked
 	} else {
 		// point removed
-		tibiaMap.removePointAvailable(realX,realY,realZ);
 		tibiaMap.setPointSpeed(realX,realY,realZ,0);
+		tibiaMap.removePointAvailable(realX,realY,realZ);
 	}
 	
 	refreshVisibleMap();

@@ -22,11 +22,12 @@ class CToolMapShow : public MyDialog
 public:
 	void setTileDetails(int, int, int);
 	void showTileDetails(int x,int y);
-	void mapPointClicked(int posX, int posY, int pos);
+	void mapPointClicked(int realX, int realY, int realZ, int tileVal);
 	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
 	void DoSetButtonSkin();
 	void RefreshExtendedResearchMap();
+	void mapPointToggleLock(int realX, int realY, int realZ);
 	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
 	~CToolMapShow();
 

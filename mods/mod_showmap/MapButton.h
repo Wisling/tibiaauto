@@ -33,11 +33,13 @@ public:
 public:
 	virtual ~CMapButton();
 	int m_value;
+	int m_locked;
 
 private:
 	static CMenu * mapActionsMenu;
 	int m_x;
 	int m_y;
+	int realX,realY,realZ;
 
 	// Generated message map functions
 protected:
