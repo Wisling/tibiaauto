@@ -27,6 +27,7 @@ public:
 	int speed;
 	int dist;
 	point destPoint;
+	int locked;
 
 	pointData()
 	{
@@ -42,6 +43,7 @@ public:
 		dist=0;
 		speed=130;//130 default( is >255/2 and <70*2)
 		destPoint=point(0,0,0);
+		locked=0;
 	}
 };
  
@@ -78,6 +80,8 @@ public:
 	int getPointDistance(int x, int y, int z);
 	void setPointDistance(int x, int y, int z, int dist);
 	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
+	void setPointLocked(int x, int y, int z, int locked);
+	int isPointLocked(int x, int y, int z);
 	CTibiaMap();
 	virtual ~CTibiaMap();
 	

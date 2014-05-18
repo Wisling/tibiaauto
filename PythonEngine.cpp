@@ -396,6 +396,8 @@ static PyMethodDef Methods_tamap[] = {
 	{"size", tibiaauto_map_size, METH_VARARGS},
 	{"isPointInMiniMap", tibiaauto_map_isPointInMiniMap, METH_VARARGS},
 	{"getMiniMapPoint", tibiaauto_map_getMiniMapPoint, METH_VARARGS},
+	{"isPointLocked", tibiaauto_map_isPointLocked, METH_VARARGS},
+	{"setPointLocked", tibiaauto_map_setPointLocked, METH_VARARGS},
 	
 	
     {NULL,      NULL}        /* Sentinel */

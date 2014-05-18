@@ -617,6 +617,14 @@ void tibiaMapSetPointDistance(int x,int y, int z, int dist)
 {
 	tibiaMap.setPointDistance(x, y, z, dist);
 }
+void tibiaMapSetPointLocked(int x,int y,int z, int locked)
+{
+	tibiaMap.setPointLocked(x,y,z,locked);
+}
+int tibiaMapIsPointLocked(int x,int y,int z)
+{
+	return tibiaMap.isPointLocked(x,y,z);
+}
 
 int tibiaMapCalcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {

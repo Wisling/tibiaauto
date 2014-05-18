@@ -280,4 +280,6 @@ EXPORTS
 	memReadGetPlayerModePVP @272
 	memReadIsLoggedIn @273
 	memReadOpenContainerCount @274
+	tibiaMapSetPointLocked @275
+	tibiaMapIsPointLocked @276
 

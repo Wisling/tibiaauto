@@ -483,3 +483,25 @@ void CTibiaMap::setDestPoint(int x,int y,int z,int destX, int destY, int destZ){
 		pd->destPoint=dest;
 	}
 }
+
+void CTibiaMap::setPointLocked(int x, int y, int z, int locked)
+{
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+	if (tibiaMap2.Lookup(&p,pd))
+	{
+		pd->locked=locked;
+	}
+}
+
+int CTibiaMap::isPointLocked(int x, int y, int z)
+{
+	struct point p=point(x,y,z);
+	struct pointData *pd=NULL;
+	if (tibiaMap2.Lookup(&p,pd))
+	{
+		if (isPointAvailableNoProh(x,y,z)) return pd->locked;
+	}
+	return 0;
+}
+

@@ -1707,6 +1707,27 @@ static PyObject *tibiaauto_map_getMiniMapPoint(PyObject *self, PyObject *args)
 	delete retPoint;
 	return ret;
 }
+static PyObject *tibiaauto_map_setPointLocked(PyObject *self, PyObject *args)
+{
+	CTibiaMapProxy tibiaMap;
+
+	int arg1,arg2,arg3,arg4;
+   	 if (!PyArg_ParseTuple(args, "iiii", &arg1,&arg2,&arg3,&arg4)) return NULL;
+	tibiaMap.setPointLocked(arg1,arg2,arg3,arg4);
+	Py_INCREF(Py_None);
+	return Py_None;
+}
+static PyObject *tibiaauto_map_isPointLocked(PyObject *self, PyObject *args)
+{
+	CTibiaMapProxy tibiaMap;
+
+	int arg1,arg2,arg3;
+   	 if (!PyArg_ParseTuple(args, "iii", &arg1,&arg2,&arg3)) return NULL;
+	int ret1=tibiaMap.isPointLocked(arg1,arg2,arg3);
+	PyObject *ret = Py_BuildValue("i",ret1);
+	
+	return ret;
+}
 static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
 {
 	CRegexpProxy regexpProxy;
