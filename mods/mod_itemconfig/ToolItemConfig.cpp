@@ -673,6 +673,14 @@ void CToolItemConfig::OnItemSort()
 	CancelTwoStepOperations();
 	HTREEITEM item= m_itemsTree.GetSelectedItem();
 	if (item==NULL) item=TVI_ROOT;
+	//If has no children then sort parent
+	HTREEITEM child=m_itemsTree.GetNextItem(item,TVGN_CHILD);
+	if(child==NULL){
+		HTREEITEM parent=m_itemsTree.GetNextItem(item,TVGN_PARENT);
+		if(parent!=NULL){
+			item = parent;
+		}
+	}
 	m_itemsTree.SortChildren(item);
 }
 

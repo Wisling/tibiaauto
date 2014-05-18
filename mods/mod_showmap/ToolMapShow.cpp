@@ -186,8 +186,6 @@ void CToolMapShow::refreshVisibleMap()
 		{
 			if (x!=10||y!=10)
 			{
-				CBitmap bmp;
-				bmp
 				int avail=tibiaMap.isPointAvailableNoProh(x+self->x-10,y+self->y-10,self->z);
 				if (avail)
 				{

@@ -214,14 +214,6 @@ SOURCE=.\res\bmp00003.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\res\map_bloced.bmp
-# End Source File
-# Begin Source File
-
-SOURCE=.\res\map_block.bmp
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\map_blocked.bmp
 # End Source File
 # Begin Source File
@@ -243,6 +235,10 @@ SOURCE=.\res\map_empty.bmp
 # Begin Source File
 
 SOURCE=.\res\map_ladder.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_lock.bmp
 # End Source File
 # Begin Source File
 
