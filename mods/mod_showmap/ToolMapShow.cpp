@@ -171,13 +171,14 @@ void CToolMapShow::refreshVisibleMap()
 	if (!IsWindowVisible()) return;
 		
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	
+
 	if (m_mapButtonImage[10][10]!=IDB_MAP_SELF)
 	{
 		m_mapButtons[10][10]->LoadBitmaps(IDB_MAP_SELF,IDB_MAP_SELF,IDB_MAP_SELF,IDB_MAP_SELF);
 		m_mapButtons[10][10]->RedrawWindow();
 		m_mapButtonImage[10][10]=IDB_MAP_SELF;
 		m_mapButtons[10][10]->m_value=-2;
+		m_mapButtons[10][10]->m_locked = 0;
 	}
 	
 	for (x=0;x<=20;x++)
@@ -190,136 +191,64 @@ void CToolMapShow::refreshVisibleMap()
 				if (avail)
 				{
 					int locked = tibiaMap.isPointLocked(x+self->x-10,y+self->y-10,self->z);
-					m_mapButtons[x][y]->m_locked = locked;
 					int updownSel=tibiaMap.getPointUpDown(x+self->x-10,y+self->y-10,self->z);
+					int changedToImage = -1;
+
 					switch (updownSel)
 					{
 					case 0:
-						if (m_mapButtonImage[x][y]!=IDB_MAP_SAMEFLOOR)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_SAMEFLOOR,IDB_MAP_SAMEFLOOR,IDB_MAP_SAMEFLOOR,IDB_MAP_SAMEFLOOR);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_SAMEFLOOR;
-							m_mapButtons[x][y]->m_value=0;
-						}
+						changedToImage = locked?IDB_MAP_SAMEFLOOR_LOCK:IDB_MAP_SAMEFLOOR;
 						break;
 					case 101:
 						// open hole
-						if (m_mapButtonImage[x][y]!=IDB_MAP_OPENHOLE)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_OPENHOLE,IDB_MAP_OPENHOLE,IDB_MAP_OPENHOLE,IDB_MAP_OPENHOLE);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_OPENHOLE;
-							m_mapButtons[x][y]->m_value=101;
-						}
+						changedToImage = locked?IDB_MAP_OPENHOLE_LOCK:IDB_MAP_OPENHOLE;
 						break;
 					case 102:
 						// closed hole
-						if (m_mapButtonImage[x][y]!=IDB_MAP_CLOSEDHOLE)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_CLOSEDHOLE,IDB_MAP_CLOSEDHOLE,IDB_MAP_CLOSEDHOLE,IDB_MAP_CLOSEDHOLE);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_CLOSEDHOLE;
-							m_mapButtons[x][y]->m_value=102;
-						}
+						changedToImage = locked?IDB_MAP_CLOSEDHOLE_LOCK:IDB_MAP_CLOSEDHOLE;
 						break;
 					case 103:
 						// crate
-						if (m_mapButtonImage[x][y]!=IDB_MAP_CRATE)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_CRATE,IDB_MAP_CRATE,IDB_MAP_CRATE,IDB_MAP_CRATE);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_CRATE;
-							m_mapButtons[x][y]->m_value=103;
-						}
+						changedToImage = locked?IDB_MAP_CRATE_LOCK:IDB_MAP_CRATE;
 						break;
 					case 201:
 						// rope
-						
-						if (m_mapButtonImage[x][y]!=IDB_MAP_ROPE)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_ROPE,IDB_MAP_ROPE,IDB_MAP_ROPE,IDB_MAP_ROPE);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_ROPE;
-							m_mapButtons[x][y]->m_value=201;
-						}
-						
+						changedToImage = locked?IDB_MAP_ROPE_LOCK:IDB_MAP_ROPE;
 						break;
 					case 202:
 						// magic rope
-						
-						if (m_mapButtonImage[x][y]!=IDB_MAP_MAGICROPE)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_MAGICROPE,IDB_MAP_MAGICROPE,IDB_MAP_MAGICROPE,IDB_MAP_MAGICROPE);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_MAGICROPE;
-							m_mapButtons[x][y]->m_value=202;
-						}
-						
+						changedToImage = locked?IDB_MAP_MAGICROPE_LOCK:IDB_MAP_MAGICROPE;
 						break;
 					case 203:
 						// ladder
-						
-						if (m_mapButtonImage[x][y]!=IDB_MAP_LADDER)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_LADDER,IDB_MAP_LADDER,IDB_MAP_LADDER,IDB_MAP_LADDER);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_LADDER;
-							m_mapButtons[x][y]->m_value=203;
-						}
-						
+						changedToImage = locked?IDB_MAP_LADDER_LOCK:IDB_MAP_LADDER;
 						break;
 					case 204:
 						// stairs
-						
-						if (m_mapButtonImage[x][y]!=IDB_MAP_STAIRS)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_STAIRS,IDB_MAP_STAIRS,IDB_MAP_STAIRS,IDB_MAP_STAIRS);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_STAIRS;
-							m_mapButtons[x][y]->m_value=204;
-						}
-						
+						changedToImage = locked?IDB_MAP_STAIRS_LOCK:IDB_MAP_STAIRS;
 						break;
 					case 301:
 						// depot
-						
-						if (m_mapButtonImage[x][y]!=IDB_MAP_DEPOT)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_DEPOT,IDB_MAP_DEPOT,IDB_MAP_DEPOT,IDB_MAP_DEPOT);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_DEPOT;
-							m_mapButtons[x][y]->m_value=301;
-						}
-						
+						changedToImage = locked?IDB_MAP_DEPOT_LOCK:IDB_MAP_DEPOT;
 						break;
 					case 302:
 						// teleporter
-						int tilePic;
-						if(tibiaMap.getDestPoint(x+self->x-10,y+self->y-10,self->z).x==0) tilePic=IDB_MAP_UNKTELE;
-						else tilePic=IDB_MAP_TELE;
-
-						if (m_mapButtonImage[x][y]!=tilePic)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(tilePic,tilePic,tilePic,tilePic);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=tilePic;
-							m_mapButtons[x][y]->m_value=302;
-						}
-						
+						if(tibiaMap.getDestPoint(x+self->x-10,y+self->y-10,self->z).x==0) changedToImage= locked?IDB_MAP_UNKTELE_LOCK:IDB_MAP_UNKTELE;
+						else changedToImage= locked?IDB_MAP_TELE_LOCK:IDB_MAP_TELE;
 						break;
 					case 303:
 						// permanent block
-						if (m_mapButtonImage[x][y]!=IDB_MAP_BLOCK)
-						{
-							m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_BLOCK,IDB_MAP_BLOCK,IDB_MAP_BLOCK,IDB_MAP_BLOCK);
-							m_mapButtons[x][y]->RedrawWindow();
-							m_mapButtonImage[x][y]=IDB_MAP_BLOCK;
-							m_mapButtons[x][y]->m_value=303;
-						}
-						
+						changedToImage = locked?IDB_MAP_BLOCK_LOCK:IDB_MAP_BLOCK;
 						break;
 					}
+					if(changedToImage != m_mapButtonImage[x][y]){
+						m_mapButtons[x][y]->LoadBitmaps(changedToImage,changedToImage,changedToImage,changedToImage);
+						m_mapButtons[x][y]->RedrawWindow();
+						m_mapButtonImage[x][y]=changedToImage;
+						m_mapButtons[x][y]->m_value=updownSel;
+					}
+					m_mapButtons[x][y]->m_locked = locked;
+
 				} else {
 					if (m_mapButtonImage[x][y]!=IDB_MAP_EMPTY)
 					{
@@ -327,7 +256,7 @@ void CToolMapShow::refreshVisibleMap()
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]=IDB_MAP_EMPTY;
 						m_mapButtons[x][y]->m_value=-1;
-						m_mapButtons[x][y]->m_locked=0;
+						m_mapButtons[x][y]->m_locked = 0;
 					}
 				}
 			}
@@ -521,12 +450,6 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 							if (tileArrAvail[x+8][y+6])
 							{
-								if(!tibiaMap.isPointAvailableNoProh(self->x+x,self->y+y,self->z)){
-									//blocking tiles and teleporters are marked permanently until changed manually
-									if (tileArrUpDown[x+8][y+6]==302 || tileArrUpDown[x+8][y+6]==301 || tileArrUpDown[x+8][y+6]==303){
-										tibiaMap.setPointLocked(self->x+x,self->y+y,self->z,1);
-									}
-								}
 								tibiaMap.setPointAsAvailable(self->x+x,self->y+y,self->z);
 								tibiaMap.setPointUpDown(self->x+x,self->y+y,self->z,tileArrUpDown[x+8][y+6]);
 								if (tileArrSpd[x+8][y+6]==0) tibiaMap.setPointSpeed(self->x+x,self->y+y,self->z,130);//130 default( is >255/2 and <70*2)

@@ -218,7 +218,15 @@ SOURCE=.\res\map_blocked.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_blocked_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_closedhole.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_closedhole_lock.bmp
 # End Source File
 # Begin Source File
 
@@ -226,7 +234,15 @@ SOURCE=.\res\map_crate.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_crate_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_depot.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_depot_lock.bmp
 # End Source File
 # Begin Source File
 
@@ -238,6 +254,10 @@ SOURCE=.\res\map_ladder.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_ladder_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_lock.bmp
 # End Source File
 # Begin Source File
@@ -246,7 +266,15 @@ SOURCE=.\res\map_magicrope.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_magicrope_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_openhole.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_openhole_lock.bmp
 # End Source File
 # Begin Source File
 
@@ -254,7 +282,15 @@ SOURCE=.\res\map_rope.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_rope_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_samefloor.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_samefloor_lock.bmp
 # End Source File
 # Begin Source File
 
@@ -266,11 +302,23 @@ SOURCE=.\res\map_stairs.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_stairs_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_tele.bmp
 # End Source File
 # Begin Source File
 
+SOURCE=.\res\map_tele_lock.bmp
+# End Source File
+# Begin Source File
+
 SOURCE=.\res\map_unktele.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\res\map_unktele_lock.bmp
 # End Source File
 # Begin Source File
 

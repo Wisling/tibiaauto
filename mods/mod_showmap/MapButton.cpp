@@ -110,7 +110,6 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 		}
 
 		mapActionsMenu->GetSubMenu(0)->TrackPopupMenu(0,pt.x,pt.y,this);
-		
 	}
 	CButton::OnRButtonDown(nFlags, point);
 }
@@ -187,7 +186,7 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		if (parent->m_extendedResearch.GetCheck()) {
-			if (m_value!=-1 || reader.mapGetPointItemId(point(m_x, m_y, 0),0))
+			if (reader.mapGetPointItemId(point(m_x, m_y, 0),0))
 				parent->ShowMapConfig(m_x,m_y);
 			else
 				AfxMessageBox("You can only configure tiles that have been researched!");
@@ -195,6 +194,9 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 		else
 			AfxMessageBox("You must enable Extended Research first!");
 	}
+	CToolMapShow *parent = (CToolMapShow *)GetParent();
+	parent->refreshVisibleMap();
+
 	return CButton::OnCommand(wParam, lParam);
 }
 
