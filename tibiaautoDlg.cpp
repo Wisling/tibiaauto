@@ -1438,31 +1438,79 @@ void CTibiaautoDlg::OnToolTrademon()
 	m_moduleTradeMon->showConfigDialog();
 }
 
+int copyFile(CString inpath, CString outpath){
+	//inpath and outpath cannot be the same
+	// returns 0 if it did not succeed, non-zero if it succeeded
+	int MAXREAD = 10000;
+	if(inpath.CompareNoCase(outpath)!=0){
+		char* filedata;
+		FILE* fin = fopen(inpath,"rb");
+		if(!fin){
+			AfxMessageBox("Cannot read input file!");
+			return 0;
+		}
+		fseek(fin,0,SEEK_END);
+		int size = ftell(fin);
+		fseek(fin,0,SEEK_SET);
+		filedata = (char*)malloc(size);
+		int loc = 0;
+		while(1){
+			int readlength = fread((char*)(filedata+loc),1,MAXREAD,fin);
+			loc += readlength;
+			if(!readlength){
+				break;
+			}
+		}
+		fclose(fin);
+		if(!loc){
+			AfxMessageBox("Cannot read input file!");
+			delete filedata;
+			return 0;
+		}
+
+		FILE* fout = fopen(outpath,"wb");
+		if(!fout){
+			AfxMessageBox("Cannot write new file!");
+			delete filedata;
+			return 0;
+		}
+		fwrite(filedata,1,size,fout);
+
+		fclose(fout);
+		delete filedata;
+	}else{
+		AfxMessageBox("Input file and output file cannot be the same file.");
+		return 0;
+	}
+	return 1;
+}
 void CTibiaautoDlg::OnToolInjectmc()
 {
 	CTibiaItemProxy itemProxy;
 	char szFilters[]=
       "Tibia client (tibia.exe)|tibia.exe|All Files (*.*)|*.*||";
+	char szFiltersSave[]=
+      "Executable Files (*.exe)|*.exe|All Files (*.*)|*.*||";
 
 	CFileDialog fd(true,"tibia","tibia.exe",OFN_FILEMUSTEXIST| OFN_HIDEREADONLY, szFilters, this);
 	if (fd.DoModal()==IDOK)
 	{
 		CString pathName = fd.GetPathName();
-						
-		FILE *f = fopen(pathName,"r+b");
-		if (f)
-		{
-			if (!fseek(f,itemProxy.getValueForConst("addrMCInject"),SEEK_SET))
-			{
+		CFileDialog fdSave(false,"*.exe","Tibia MC.exe",OFN_OVERWRITEPROMPT|OFN_PATHMUSTEXIST|OFN_HIDEREADONLY, szFiltersSave, this);
+		if(fdSave.DoModal()==IDOK){
+			CString pathDestName = fdSave.GetPathName();
+			if(copyFile(pathName, pathDestName)){
+				FILE* fout = fopen(pathDestName,"r+b");
+				fseek(fout,itemProxy.getValueForConst("addrMCInject"),SEEK_SET);
 				unsigned char val=0xff;
-				fwrite(&val,1,1,f);
-				AfxMessageBox("Tibia client has been successfully modified to MC mode!");
-			} else {
-				AfxMessageBox("Unable to seek correct position in file!");
+				fwrite(&val,1,1,fout);
+				fclose(fout);
+				char buf[1024];
+				sprintf(buf,"The modified multi-client version of Tibia has been successfully saved to \n%s",pathDestName);
+				AfxMessageBox(buf);
+			}else{
+				AfxMessageBox("Unable to modify client to MC mode!");
 			}
-			fclose(f);
-		} else {
-			AfxMessageBox("Unable to open file for writting!");
 		}
 	}
 }
@@ -1655,7 +1703,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.41.0 tm=%d,",tm);
+		fprintf(f,"version=2.41.1 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

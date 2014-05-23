@@ -175,7 +175,7 @@ int outSelfUHAvail=0;
 int outFluidManaAvail=0;
 int outFluidLifeAvail=0;
 
-//10.39
+//10.39 & 10.40
 int funAddr_tibiaPrintText =			0x4D7FC0;
 int funAddr_tibiaPlayerNameText =		0x4D7310;
 int funAddr_tibiaInfoMiddleScreen =		0x580630;
