@@ -78,17 +78,17 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 		}
 		vip->name[vip->nameLen]=0;
 
-		vip->descrLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x44,0);
+		vip->descrLen = CMemUtil::GetMemIntValue(vipEntryAddr+0x40,0);
 		if (vip->descrLen >= 16){
-			int descrAddr = CMemUtil::GetMemIntValue(vipEntryAddr+0x34,0);
+			int descrAddr = CMemUtil::GetMemIntValue(vipEntryAddr+0x30,0);
 			CMemUtil::GetMemRange(descrAddr,descrAddr+vip->descrLen,vip->descr,0);
 		}else{
-			CMemUtil::GetMemRange(vipEntryAddr+0x34,vipEntryAddr+0x34+vip->descrLen,vip->descr,0);
+			CMemUtil::GetMemRange(vipEntryAddr+0x30,vipEntryAddr+0x30+vip->descrLen,vip->descr,0);
 		}
 		vip->descr[vip->descrLen]=0;
 
-		vip->status = CMemUtil::GetMemIntValue(vipEntryAddr+0x50,0) & 0xff;
-		vip->loginTm = CMemUtil::GetMemIntValue(vipEntryAddr+0x58,0);//64bit
+		vip->status = CMemUtil::GetMemIntValue(vipEntryAddr+0x48,0) & 0xff;
+		vip->loginTm = CMemUtil::GetMemIntValue(vipEntryAddr+0x50,0);//64bit
 		
 		return vip;
 	}
@@ -103,7 +103,7 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 		sprintf(buf,"%d",depth);
 		sender.sendTAMessage(buf);
 	}
-	if(addrCurr!=addrHead && CMemUtil::GetMemIntValue(addrCurr+0xC,0)==i){
+	if(addrCurr!=addrHead && CMemUtil::GetMemIntValue(addrCurr+0x10,0)==i){
 		return addrCurr;
 	}
 	if(depth<5){//binary structure is guaranteed to reach all 16 containers after 4 iterations
@@ -119,7 +119,7 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 }
 
 int CMemReader::readOpenContainerCount(){
-	return CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+0xC,0);
+	return CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+0x8,0);
 }
 
 CTibiaContainer *CMemReader::readContainer(int containerNr) {
@@ -128,7 +128,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	//container number
 	int i;
 	
-	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+8,0);
+	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+4,0);
 	long addrIndCont = 0;
 	try {
 		addrIndCont = findContainer(containerNr,addrHead,addrHead);
@@ -136,7 +136,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		addrIndCont = 0;
 	}
 	if(addrIndCont){ // return container as is if not found
-		long addrCont = CMemUtil::GetMemIntValue(addrIndCont+0x10,0);
+		long addrCont = CMemUtil::GetMemIntValue(addrIndCont+0x14,0);
 		container->flagOnOff=1;
 		container->number=CMemUtil::GetMemIntValue(addrCont,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+4,0); // extraInfo
@@ -146,9 +146,9 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x34,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x38,0);
 		//container->???=CMemUtil::GetMemIntValue(addrCont+0x3C,0);
-		container->size=CMemUtil::GetMemIntValue(addrCont+0x48,0);
-		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x4C,0);
-		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x54,0);
+		container->size=CMemUtil::GetMemIntValue(addrCont+0x40,0);
+		container->itemsInside=CMemUtil::GetMemIntValue(addrCont+0x44,0);
+		long addrItems = CMemUtil::GetMemIntValue(addrCont+0x4C,0);
 
 		try{//if returns error then addrItems is most likely not a valid address anymore
 			if(addrItems){ // if addrItems == NULL then there are no items in the container
@@ -581,6 +581,9 @@ CTibiaMapTile *CMemReader::readMapTile(int tileNr){
 	DWORD TESTtileStart = tileStart;
 	do{
 		CMemUtil::GetMemRange(tileStart,tileStart+m_memLengthMapTile,(char*)maptile,0);//this address comes from Tibia itself and need not be shifted
+		if(maptile->count){
+			int a=0;
+		}
 		tileStart=TESTtileStart;
 		TESTtileStart = getMapTileStart(tileNr); // Check that reference hasn't changed
 	}while(tileStart!=TESTtileStart);//Tibia's map is a very large area of memory. Ensure that pointer is still same afterward in case we read from deallocated space.

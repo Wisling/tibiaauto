@@ -21,7 +21,7 @@ CTibiaMapTile::CTibiaMapTile()
 	count=0;
 	memset(stackind,0,sizeof(int)*10);
 	memset(items,0,sizeof(CTibiaMapTileItem)*10);
-	tileEnd=0;
+	tileEnd = 0;
 }
 
 CTibiaMapTileAddress::CTibiaMapTileAddress()
@@ -42,8 +42,5 @@ CTibiaMapTileAddress::CTibiaMapTileAddress(int initAddr=0)
 		items[i] = CTibiaMapTileItemAddress(int(&dummy[offset]));
 		offset += sizeof(CTibiaMapTileItemAddress)/sizeof(int);
 	}
-	tileEnd=int(&dummy[offset++]);
-	if (items[1].extra-items[0].extra>12){
-		int a=0;
-	}
+	tileEnd = int(&dummy[offset++]);
 }

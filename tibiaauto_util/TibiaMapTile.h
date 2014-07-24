@@ -20,7 +20,6 @@ public:
 	int stackind[10];
 	CTibiaMapTileItem items[10];
 	int tileEnd;
-
 };
 
 class CTibiaMapTileAddress

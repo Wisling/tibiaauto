@@ -26,7 +26,6 @@ CTibiaMapTileItem::CTibiaMapTileItem()
 	val3 = 0;
 	val4 = 0;
 	val5 = 0;
-	val6 = 0;
 }
 
 
@@ -44,5 +43,4 @@ CTibiaMapTileItemAddress::CTibiaMapTileItemAddress(int initAddr=0)
 	val3 = initAddr+20;
 	val4 = initAddr+24;
 	val5 = initAddr+28;
-	val6 = initAddr+32;
 }

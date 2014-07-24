@@ -736,6 +736,7 @@ void CPythonEngine::backpipeMsgTick()
 
 	if (backPipe.readFromPipe(&mess,1006)){
 		int infoType;
+		int chanType;
 		int nickLen;
 		int msgLen;
 		char nickBuf[16384];
@@ -745,10 +746,11 @@ void CPythonEngine::backpipeMsgTick()
 		memset(nickBuf,0,16384);
 		memset(msgBuf,0,16384);
 		memcpy(&infoType,mess.payload,sizeof(int));
-		memcpy(&nickLen,mess.payload+4,sizeof(int));
-		memcpy(&msgLen,mess.payload+8,sizeof(int));
-		memcpy(nickBuf,mess.payload+12,nickLen);
-		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
+		memcpy(&chanType,mess.payload+4,sizeof(int));
+		memcpy(&nickLen,mess.payload+8,sizeof(int));
+		memcpy(&msgLen,mess.payload+12,sizeof(int));
+		memcpy(nickBuf,mess.payload+16,nickLen);
+		memcpy(msgBuf,mess.payload+16+nickLen,msgLen);
 		switch (infoType)
 		{
 		case 1: sprintf(chanBuf,"say");break;
