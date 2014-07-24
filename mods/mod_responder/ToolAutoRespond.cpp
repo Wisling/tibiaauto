@@ -191,6 +191,7 @@ void CToolAutoRespond::readInfo()
 	if (backPipe.readFromPipe(&mess,1001))
 	{
 		int infoType;
+		int chanType;
 		int nickLen;
 		int msgLen;
 		char nickBuf[16384];
@@ -202,18 +203,19 @@ void CToolAutoRespond::readInfo()
 		memset(nickBuf,0,16384);
 		memset(msgBuf,0,16384);
 		memcpy(&infoType,mess.payload,sizeof(int));
-		memcpy(&nickLen,mess.payload+4,sizeof(int));
-		memcpy(&msgLen,mess.payload+8,sizeof(int));
-		memcpy(nickBuf,mess.payload+12,nickLen);
-		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
+		memcpy(&chanType,mess.payload+4,sizeof(int));
+		memcpy(&nickLen,mess.payload+8,sizeof(int));
+		memcpy(&msgLen,mess.payload+12,sizeof(int));
+		memcpy(nickBuf,mess.payload+16,nickLen);
+		memcpy(msgBuf,mess.payload+16+nickLen,msgLen);
 		switch (infoType)//received message types
 		{
-		case 1: sprintf(chanBuf,"say");break;
-		case 2: sprintf(chanBuf,"whisper");break;
-		case 3: sprintf(chanBuf,"yell");break;
-		case 5: sprintf(chanBuf,"NPC");break;
-		case 6: sprintf(chanBuf,"private");break;
-		case 7: sprintf(chanBuf,"channel");break;
+		case 1: sprintf(chanBuf,"say[%d]",infoType);break;
+		case 2: sprintf(chanBuf,"whisper[%d]",infoType);break;
+		case 3: sprintf(chanBuf,"yell[%d]",infoType);break;
+		case 5: sprintf(chanBuf,"NPC[%d]",infoType);break;
+		case 6: sprintf(chanBuf,"private[%d]",infoType);break;
+		case 7: sprintf(chanBuf,"channel[%d,%d]",infoType,chanType);break;
 		default: sprintf(chanBuf,"other[%d]",infoType);break;
 		}
 		//Channel IDs

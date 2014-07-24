@@ -226,6 +226,7 @@ struct tibiaMessage * triggerMessage(){
 
 	if (backPipe.readFromPipe(&mess,1003)){
 		int infoType;
+		int chanType;
 		int nickLen;
 		int msgLen;
 		char nickBuf[16384];
@@ -234,10 +235,11 @@ struct tibiaMessage * triggerMessage(){
 		memset(nickBuf,0,16384);
 		memset(msgBuf,0,16384);
 		memcpy(&infoType,mess.payload,sizeof(int));
-		memcpy(&nickLen,mess.payload+4,sizeof(int));
-		memcpy(&msgLen,mess.payload+8,sizeof(int));
-		memcpy(nickBuf,mess.payload+12,nickLen);
-		memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
+		memcpy(&chanType,mess.payload+4,sizeof(int));
+		memcpy(&nickLen,mess.payload+8,sizeof(int));
+		memcpy(&msgLen,mess.payload+12,sizeof(int));
+		memcpy(nickBuf,mess.payload+16,nickLen);
+		memcpy(msgBuf,mess.payload+16+nickLen,msgLen);
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -245,6 +247,7 @@ struct tibiaMessage * triggerMessage(){
 			delete self;
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type=infoType;
+			newMsg->chanType=chanType;
 			strcpy(newMsg->nick,nickBuf);
 			strcpy(newMsg->msg,msgBuf);
 			masterDebug("triggerMessage Exit");

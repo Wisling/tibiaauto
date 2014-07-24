@@ -136,6 +136,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		// now read messages from the master
 		while (backPipe.readFromPipe(&mess,1005)){
 			int infoType;
+			int chanType;
 			int nickLen;
 			int msgLen;
 			char nickBuf[16384];
@@ -144,10 +145,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			memset(nickBuf,0,16384);
 			memset(msgBuf,0,16384);
 			memcpy(&infoType,mess.payload,sizeof(int));
-			memcpy(&nickLen,mess.payload+4,sizeof(int));
-			memcpy(&msgLen,mess.payload+8,sizeof(int));
-			memcpy(nickBuf,mess.payload+12,nickLen);
-			memcpy(msgBuf,mess.payload+12+nickLen,msgLen);
+			memcpy(&chanType,mess.payload+4,sizeof(int));
+			memcpy(&nickLen,mess.payload+8,sizeof(int));
+			memcpy(&msgLen,mess.payload+12,sizeof(int));
+			memcpy(nickBuf,mess.payload+16,nickLen);
+			memcpy(msgBuf,mess.payload+16+nickLen,msgLen);
 						
 			if (msgBuf[0]=='`'&&msgBuf[1]=='T'&&msgBuf[2]=='A'&&(connectedNodes.shouldAcceptMessage(nickBuf)||!strncmp(msgBuf,"`TA login",strlen("`TA login"))))
 			{

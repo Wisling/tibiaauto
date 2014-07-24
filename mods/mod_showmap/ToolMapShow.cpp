@@ -282,7 +282,6 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1002)
 	{
-		
 		KillTimer(1002);
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();

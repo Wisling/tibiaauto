@@ -114,10 +114,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (ammoItemId&&(item->objectId==0||item->objectId==ammoItemId))
 		{
-			if (item->quantity<=config->ammoAt)
+			int currentQty = item->objectId?max(item->quantity,1):0;
+			if (currentQty<=config->ammoAt)
 			{
 				int contNr;
-				int qtyToRestack=config->ammoTo-item->quantity;
+				int qtyToRestack=config->ammoTo-currentQty;
 				itemsAccepted.RemoveAll();
 				itemsAccepted.Add(ammoItemId);
 				int openContNr=0;
@@ -158,10 +159,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 		if (throwableItemId&&(item->objectId==0||item->objectId==throwableItemId))
 		{
-			if ((item->quantity?item->quantity:1)<=config->throwableAt)
+			int currentQty = item->objectId?max(item->quantity,1):0;
+			if (currentQty<=config->throwableAt)
 			{
 				int contNr;
-				int qtyToRestack=config->throwableTo-(item->quantity?item->quantity:1);
+				int qtyToRestack=config->throwableTo-currentQty;
 				itemsAccepted.RemoveAll();
 				itemsAccepted.Add(throwableItemId);
 				int openContNr=0;

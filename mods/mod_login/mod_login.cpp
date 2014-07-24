@@ -250,7 +250,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				loginTime = time(NULL)+config->loginDelay;
 				CTibiaItemProxy itemProxy;
 				int addr=itemProxy.getValueForConst("addrVIP");
-				reader.getMemRange(addr-0x64,addr-0x64+32,accNum);
+				reader.getMemRange(addr-0x60,addr-0x60+32,accNum);
 				reader.getMemRange(addr-0x48,addr-0x48+32,pass);
 			}
 			while (loginTime>time(NULL) && !reader.isLoggedIn()){

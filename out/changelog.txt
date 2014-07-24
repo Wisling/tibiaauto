@@ -1,10 +1,19 @@
-2.41.1 5.?.2014
+2.43.0 7.23.2014
 Enhancements:
+ Tibia Auto: Updated for Tibia 10.51
+ Auto Go/Log: Fixed detecting private messages
+Defects:
+
+Changed size of packet for pipe messages of text spoken in Tibia to include the channel number if it is said on a channel
+
+2.42.0 7.13.2014
+Enhancements:
+ Tibia Auto: Updated for Tibia 10.50
  Cavebot: Ability to set all unlisted monsters as lowest priority in attack list. This will still not attack ignored creatures.
 Defects:
  Responder: Fixed bug causing a crash at a random time after enabling many talk threads
  Tibia Auto: Fixed occasional crash when reading empty container.
- 
+ Auto Go/Log: Fixed bug in detecting online players
 
 2.41.0 4.30.2014
 Enhancements:

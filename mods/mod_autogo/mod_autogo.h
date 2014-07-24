@@ -24,6 +24,7 @@
 struct tibiaMessage
 {
 	int type;
+	int chanType;
 	char nick[128];
 	char msg[1000];
 };

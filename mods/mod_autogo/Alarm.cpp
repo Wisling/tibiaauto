@@ -626,7 +626,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		int isSpell = msg && (options & OPTIONS_IGNORE_SPELLS) && isSpellMessage(msg->msg);
 		switch (attribute) {
 		case ALLMESSAGES:
-			retval = !isSpell && msg && (msg->type == 1 || msg->type == 2 || msg->type == 6 || msg->type == 4);
+			retval = !isSpell && msg && (msg->type == 1 || msg->type == 2 || (msg->type == 7 && msg->chanType == -1));
 			if (retval) {
 				if (condition == FROM) {
 					if (strcmp(msg->nick, trigger.getTriggerText()))
@@ -652,7 +652,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			}
 			break;
 		case PRIVATEMESSAGES:
-			retval = !isSpell && msg && (msg->type == 6 || msg->type == 4);
+			retval = !isSpell && msg && (msg->type == 7 && msg->chanType == -1);
 			if (retval) {
 				if (condition == FROM) {
 					if (strcmp(msg->nick, trigger.getTriggerText()))
