@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.51 -->
+<!-- Tibia constants for Tibia 10.52 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -43,10 +43,10 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x145621"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x50672C"/> <!-- 07000000????????02000000-->
-		<const code="addrXRay2" value="0x506734"/>
-		<const code="addrFunRevealCName1" value="0x5224FA"/> <!-- search (84 C0) 75 (?0A?) to EB17-->
+		<const code="addrMCInject" value="0x1454F1"/> <!--D7 3D B7 -->
+		<const code="addrXRay1" value="0x5065DC"/> <!-- 07000000????????02000000-->
+		<const code="addrXRay2" value="0x5065E4"/>
+		<const code="addrFunRevealCName1" value="0x5223CE"/> <!-- search (84 C0) 75 (?0A?) to EB17-->
 		<const code="addrFunRevealCName2" value="0"/>
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
@@ -102,6 +102,7 @@
 		<const code="addrMapStart" value="0xA370F0"/> <!-- is a pointer to visible map -->
 		<const code="addrFirstContainer" value="0xA3C974"/> <!-- cat2 pointer to cont number -0xC-->
 		<const code="addrCurrentTm" value="0xA3CE8C"/> <!-- cat2 -->
+
 
 
 		<!-- structure lengths -->
