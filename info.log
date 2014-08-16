@@ -1,0 +1,58 @@
+This is e-TeX, Version 3.141592-2.1 (MiKTeX 2.4) (preloaded format=latex 2005.4.26)  23 JUL 2005 18:10
+entering extended mode
+**info.tex
+(info.tex
+LaTeX2e <2003/12/01>
+Babel <v3.8a> and hyphenation patterns for english, french, german, ngerman, du
+mylang, nohyphenation, loaded.
+(E:\texmf2\tex\latex\base\article.cls
+Document Class: article 2004/02/16 v1.4f Standard LaTeX document class
+(E:\texmf2\tex\latex\base\size10.clo
+File: size10.clo 2004/02/16 v1.4f Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+) (E:\texmf2\tex\latex\base\latexsym.sty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 47.
+)
+(E:\texmf2\tex\latex\base\inputenc.sty
+Package: inputenc 2004/02/05 v1.0d Input encoding file
+ (E:\texmf2\tex\latex\base\cp1250.def
+File: cp1250.def 2004/02/05 v1.0d Input encoding file
+))
+(E:\texmf2\tex\latex\platex\polski.sty
+Package: polski 2003/05/09 v1.3.1 Polish language package
+
+Document Language Style `polski' v1.3.1 <2003/05/09>
+   Inputenc package detected. Catcodes not changed.
+
+! Package polski Error: No hyphenation patterns for language `polish'.
+
+See the polski package documentation for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.94   \selecthyphenation{polish}
+                                 
+? 
+   Switching to Polish text encoding and Polish maths fonts.
+(E:\texmf2\tex\latex\base\ot4enc.def
+File: ot4enc.def 2004/02/22 v1.99f Standard LaTeX file
+)
+LaTeX Font Info:    Try loading font information for OT4+cmr on input line 346.
+
+ (E:\texmf2\tex\latex\platex\ot4cmr.fd
+File: ot4cmr.fd 2000/10/09 v1.2 Font defs for fonts PL (MW)
+)

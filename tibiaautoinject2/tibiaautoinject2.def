@@ -1,0 +1,9 @@
+;------------------------------------------
+; D3D9 module definition file for Windows
+;------------------------------------------
+
+LIBRARY
+DESCRIPTION "Tibia Auto communication library"
+
+EXPORTS  
+	

@@ -1,0 +1,555 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "alice"="..\tibiaauto-pub\alice\alice.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_aim"="..\tibiaauto-pub\mods\mod_aim\mod_aim.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_antylogout"="..\tibiaauto-pub\mods\mod_antylogout\mod_antylogout.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_autogo"="..\tibiaauto-pub\mods\mod_autogo\mod_autogo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_banker"="..\tibiaauto-pub\mods\mod_banker\mod_banker.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_cavebot"="..\tibiaauto-pub\mods\mod_cavebot\mod_cavebot.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_creatureinfo"="..\tibiaauto-pub\mods\mod_creatureinfo\mod_creatureinfo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_eater"="..\tibiaauto-pub\mods\mod_eater\mod_eater.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_fisher"="..\tibiaauto-pub\mods\mod_fisher\mod_fisher.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_fluid"="..\tibiaauto-pub\mods\mod_fluid\mod_fluid.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_fps"="..\tibiaauto-pub\mods\mod_fps\mod_fps.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_grouping"="..\tibiaauto-pub\mods\mod_grouping\mod_grouping.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_itemconfig"="..\tibiaauto-pub\mods\mod_itemconfig\mod_itemconfig.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_light"="..\tibiaauto-pub\mods\mod_light\mod_light.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_login"="..\tibiaauto-pub\mods\mod_login\mod_login.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_looter"="..\tibiaauto-pub\mods\mod_looter\mod_looter.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_maphack"="..\tibiaauto-pub\mods\mod_maphack\mod_maphack.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_memdebug"="..\tibiaauto-pub\mods\mod_memdebug\mod_memdebug.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_monstershow"="..\tibiaauto-pub\mods\mod_monstershow\mod_monstershow.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_playerinfo"="..\tibiaauto-pub\mods\mod_playerinfo\mod_playerinfo.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_responder"="..\tibiaauto-pub\mods\mod_responder\mod_responder.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_restack"="..\tibiaauto-pub\mods\mod_restack\mod_restack.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_runemaker"="..\tibiaauto-pub\mods\mod_runemaker\mod_runemaker.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_seller"="..\tibiaauto-pub\mods\mod_seller\mod_seller.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_showmap"="..\tibiaauto-pub\mods\mod_showmap\mod_showmap.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_sorter"="..\tibiaauto-pub\mods\mod_sorter\mod_sorter.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_spellcaster"="..\tibiaauto-pub\mods\mod_spellcaster\mod_spellcaster.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_team"="..\tibiaauto-pub\mods\mod_team\mod_team.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_trademon"="..\tibiaauto-pub\mods\mod_trademon\mod_trademon.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_uh"="..\tibiaauto-pub\mods\mod_uh\mod_uh.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "mod_xray"="..\tibiaauto-pub\mods\mod_xray\mod_xray.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaauto"=".\tibiaauto.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name alice
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_aim
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_autogo
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_cavebot
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_creatureinfo
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_eater
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_fisher
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_fluid
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_grouping
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_itemconfig
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_light
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_looter
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_maphack
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_memdebug
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_monstershow
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_playerinfo
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_responder
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_restack
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_runemaker
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_showmap
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_spellcaster
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_trademon
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_uh
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tibiaauto_util
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tibiaautoinject2
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tre
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_team
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_antylogout
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_fps
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_login
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_xray
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name tibiaautoinject3
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_banker
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_sorter
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name mod_seller
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "tibiaauto_util"=".\tibiaauto_util\tibiaauto_util.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaautoinject2"=".\tibiaautoinject2\tibiaautoinject2.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tibiaautoinject3"=".\tibiaautoinject3\tibiaautoinject3.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "tre"="..\tibiaauto-pub\tre\win32\tre.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+    {8856F961-340A-11D0-A96B-00C04FD705A2}
+}}}
+
+###############################################################################
+

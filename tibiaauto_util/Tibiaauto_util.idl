@@ -1,0 +1,37 @@
+
+	// Tibiaauto_util.idl : IDL source for Tibiaauto_util.exe
+//
+// This file will be processed by the MIDL tool to
+// produce the type library (Tibiaauto_util.tlb) and marshalling code.
+import "oaidl.idl";
+import "ocidl.idl";
+	[
+		object,
+		uuid(BDC4423E-D3E9-4547-8881-C2D6AF0790FF),
+		dual,
+		helpstring("IMemReader2 Interface"),
+		pointer_default(unique)
+	]
+	interface IMemReader2 : IDispatch
+	{
+	};
+[
+	uuid(823F8A18-2C5B-41EE-AF5A-EBB5EF03C408),
+	version(1.0),
+	helpstring("Tibiaauto_util 1.0 Type Library")
+]
+library Tibiaauto_utilLib
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+	[
+		uuid(4C3C708B-60D0-4BC3-8A67-FDD91DC662DC),
+		helpstring("MemReader2 Class")
+	]
+	coclass MemReader2
+	{
+		[default] interface IMemReader2;
+	};
+};
+
+	
