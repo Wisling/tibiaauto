@@ -26,13 +26,14 @@ using namespace std;
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-
+template<>
 AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
 {
 	return key->x*191+key->y*257+key->z*317;
 }
 
 typedef point* LPpoint;
+template<>
 AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint>
      (const LPpoint *v1, const LPpoint *v2)
 {
@@ -287,6 +288,7 @@ public:
 
 //typedef priority_queue<PathFinderNode *, vector<PathFinderNode *>, pComp> PriorityQueue;
 // Get access to the underlying container.
+template<>
 AFX_INLINE UINT AFXAPI HashKey<PathFinderNode> (PathFinderNode key)
 {
 	return key.x*191+key.y*257+key.z*317;
@@ -299,6 +301,7 @@ void DebugPrint(const char* s,int a,int b=0,int c=0,int d=0){
 }
 
 typedef PathFinderNode LNode;
+template<>
 AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode>
      (const LNode* v1d, const LNode* v2d)
 {

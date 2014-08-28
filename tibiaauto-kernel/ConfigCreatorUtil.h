@@ -18,7 +18,9 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
+#if XERCES_VERSION_MAJOR < 3
 #include <xercesc/dom/DOMWriter.hpp>
+#endif
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -43,7 +45,7 @@ public:
 
 	CConfigCreatorUtilMultiParams *multiParams;
 private:
-	static void addParamFromNode(DOMDocument *doc,DOMNode *modConfig, char *paramName, char *paramValue);
+	static void addParamFromNode(xercesc::DOMDocument *doc,DOMNode *modConfig, char *paramName, char *paramValue);
 };
 
 #endif // !defined(AFX_CONFIGCREATORUTIL_H__9BC2F130_36AF_43E2_B3CB_C27073E3FCED__INCLUDED_)

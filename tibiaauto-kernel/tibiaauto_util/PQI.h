@@ -64,12 +64,14 @@ struct pComp {
 	}
 };
 
+template<>
 AFX_INLINE UINT AFXAPI HashKey<pointNode> (pointNode key)
 {
 	return key.x*191+key.y*257+key.z*317;
 }
 
 typedef pointNode LNode;
+template<>
 AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode>
      (const LNode* v1d, const LNode* v2d)
 {

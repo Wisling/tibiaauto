@@ -13,7 +13,9 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
+#if XERCES_VERSION_MAJOR < 3
 #include <xercesc/dom/DOMWriter.hpp>
+#endif
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -109,37 +111,37 @@ void CTileReader::loadTiles() {
 		int rootCount=doc->getChildNodes()->getLength();
 		for (rootNr=0;rootNr<rootCount;rootNr++) {
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
-			if (wcscmp(root->getNodeName(),_L("tiles")))
+			if (wcscmp(root->getNodeName(),L"tiles"))
 				continue;
 			DOMNode *item = root->getFirstChild();
 			if (item) {
 				do 	{
-					if (!wcscmp(item->getNodeName(),_L("tile"))) {
-						int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
+					if (!wcscmp(item->getNodeName(),L"tile")) {
+						int tileId = CUtil::getNodeIntAttribute(item,L"id");
 						
-						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,_L("blocking"));
-						tiles[tileId]->canWalkThrough=CUtil::getNodeIntAttribute(item,_L("canWalkThrough"));
-						tiles[tileId]->goDown=CUtil::getNodeIntAttribute(item,_L("goDown"));
-						tiles[tileId]->goUp=CUtil::getNodeIntAttribute(item,_L("goUp"));
-						tiles[tileId]->ground=CUtil::getNodeIntAttribute(item,_L("ground"));
-						tiles[tileId]->isContainer=CUtil::getNodeIntAttribute(item,_L("isContainer"));
-						tiles[tileId]->isDepot=CUtil::getNodeIntAttribute(item,_L("isDepot"));
-						tiles[tileId]->requireRope=CUtil::getNodeIntAttribute(item,_L("requireRope"));
-						tiles[tileId]->requireShovel=CUtil::getNodeIntAttribute(item,_L("requireShovel"));
-						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,_L("requireUse"));
-						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,_L("speed"));
-						tiles[tileId]->minimapColor=CUtil::getNodeIntAttribute(item,_L("minimapColor"));
-						tiles[tileId]->notMoveable=CUtil::getNodeIntAttribute(item,_L("notMoveable"));
-						tiles[tileId]->stackable=CUtil::getNodeIntAttribute(item,_L("stackable"));
-						tiles[tileId]->alwaysOnTop=CUtil::getNodeIntAttribute(item,_L("alwaysOnTop"));
-						tiles[tileId]->moreAlwaysOnTop=CUtil::getNodeIntAttribute(item,_L("moreAlwaysOnTop"));
-						tiles[tileId]->isTeleporter=CUtil::getNodeIntAttribute(item,_L("isTeleporter"));
-						tiles[tileId]->isReadable=CUtil::getNodeIntAttribute(item,_L("isReadable"));
-						tiles[tileId]->isFluid=CUtil::getNodeIntAttribute(item,_L("isFluid"));
-						tiles[tileId]->isRune=CUtil::getNodeIntAttribute(item,_L("isRune"));
-						tiles[tileId]->isUseable=CUtil::getNodeIntAttribute(item,_L("isUseableWith"));
-						tiles[tileId]->isUseableImmobile=CUtil::getNodeIntAttribute(item,_L("isUseableImmobile"));
-						tiles[tileId]->blockPathFind=CUtil::getNodeIntAttribute(item,_L("blockPathFind"));
+						tiles[tileId]->blocking=CUtil::getNodeIntAttribute(item,L"blocking");
+						tiles[tileId]->canWalkThrough=CUtil::getNodeIntAttribute(item,L"canWalkThrough");
+						tiles[tileId]->goDown=CUtil::getNodeIntAttribute(item,L"goDown");
+						tiles[tileId]->goUp=CUtil::getNodeIntAttribute(item,L"goUp");
+						tiles[tileId]->ground=CUtil::getNodeIntAttribute(item,L"ground");
+						tiles[tileId]->isContainer=CUtil::getNodeIntAttribute(item,L"isContainer");
+						tiles[tileId]->isDepot=CUtil::getNodeIntAttribute(item,L"isDepot");
+						tiles[tileId]->requireRope=CUtil::getNodeIntAttribute(item,L"requireRope");
+						tiles[tileId]->requireShovel=CUtil::getNodeIntAttribute(item,L"requireShovel");
+						tiles[tileId]->requireUse=CUtil::getNodeIntAttribute(item,L"requireUse");
+						tiles[tileId]->speed=CUtil::getNodeIntAttribute(item,L"speed");
+						tiles[tileId]->minimapColor=CUtil::getNodeIntAttribute(item,L"minimapColor");
+						tiles[tileId]->notMoveable=CUtil::getNodeIntAttribute(item,L"notMoveable");
+						tiles[tileId]->stackable=CUtil::getNodeIntAttribute(item,L"stackable");
+						tiles[tileId]->alwaysOnTop=CUtil::getNodeIntAttribute(item,L"alwaysOnTop");
+						tiles[tileId]->moreAlwaysOnTop=CUtil::getNodeIntAttribute(item,L"moreAlwaysOnTop");
+						tiles[tileId]->isTeleporter=CUtil::getNodeIntAttribute(item,L"isTeleporter");
+						tiles[tileId]->isReadable=CUtil::getNodeIntAttribute(item,L"isReadable");
+						tiles[tileId]->isFluid=CUtil::getNodeIntAttribute(item,L"isFluid");
+						tiles[tileId]->isRune=CUtil::getNodeIntAttribute(item,L"isRune");
+						tiles[tileId]->isUseable=CUtil::getNodeIntAttribute(item,L"isUseableWith");
+						tiles[tileId]->isUseableImmobile=CUtil::getNodeIntAttribute(item,L"isUseableImmobile");
+						tiles[tileId]->blockPathFind=CUtil::getNodeIntAttribute(item,L"blockPathFind");
 					}
 				} while ((item=item->getNextSibling())!=NULL);
 			}
@@ -173,36 +175,36 @@ void CTileReader::saveTiles() {
 	int rootCount=doc->getChildNodes()->getLength();
 	for (rootNr=0;rootNr<rootCount;rootNr++) {
 		DOMNode *root = doc->getChildNodes()->item(rootNr);
-		if (wcscmp(root->getNodeName(),_L("tiles")))
+		if (wcscmp(root->getNodeName(),L"tiles"))
 			continue;
 		DOMNode *item = root->getFirstChild();
 		if (item) {
 			do {
-				if (!wcscmp(item->getNodeName(),_L("tile"))) {
-					int tileId = CUtil::getNodeIntAttribute(item,_L("id"));
-					CUtil::setNodeIntAttribute(item,_L("blocking"), tiles[tileId]->blocking);
-					CUtil::setNodeIntAttribute(item,_L("canWalkThrough"),tiles[tileId]->canWalkThrough);
-					CUtil::setNodeIntAttribute(item,_L("goDown"), tiles[tileId]->goDown);
-					CUtil::setNodeIntAttribute(item,_L("goUp"), tiles[tileId]->goUp);
-					CUtil::setNodeIntAttribute(item,_L("ground"),tiles[tileId]->ground);
-					CUtil::setNodeIntAttribute(item,_L("isContainer"), tiles[tileId]->isContainer);
-					CUtil::setNodeIntAttribute(item,_L("isDepot"), tiles[tileId]->isDepot);
-					CUtil::setNodeIntAttribute(item,_L("requireRope"), tiles[tileId]->requireRope);
-					CUtil::setNodeIntAttribute(item,_L("requireShovel"), tiles[tileId]->requireShovel);
-					CUtil::setNodeIntAttribute(item,_L("requireUse"), tiles[tileId]->requireUse);
-					CUtil::setNodeIntAttribute(item,_L("speed"), tiles[tileId]->speed);
-					CUtil::setNodeIntAttribute(item,_L("minimapColor"), tiles[tileId]->minimapColor);
-					CUtil::setNodeIntAttribute(item,_L("notMoveable"), tiles[tileId]->notMoveable);
-					CUtil::setNodeIntAttribute(item,_L("stackable"),  tiles[tileId]->stackable);
-					CUtil::setNodeIntAttribute(item,_L("alwaysOnTop"), tiles[tileId]->alwaysOnTop);
-					CUtil::setNodeIntAttribute(item,_L("moreAlwaysOnTop"), tiles[tileId]->moreAlwaysOnTop);
-					CUtil::setNodeIntAttribute(item,_L("isTeleporter"), tiles[tileId]->isTeleporter);
-					CUtil::setNodeIntAttribute(item,_L("isReadable"), tiles[tileId]->isReadable);
-					CUtil::setNodeIntAttribute(item,_L("isFluid"), tiles[tileId]->isFluid);
-					CUtil::setNodeIntAttribute(item,_L("isRune"), tiles[tileId]->isRune);
-					CUtil::setNodeIntAttribute(item,_L("isUseableWith"), tiles[tileId]->isUseable);
-					CUtil::setNodeIntAttribute(item,_L("isUseableImmobile"), tiles[tileId]->isUseableImmobile);
-					CUtil::setNodeIntAttribute(item,_L("blockPathFind"), tiles[tileId]->blockPathFind);
+				if (!wcscmp(item->getNodeName(),L"tile")) {
+					int tileId = CUtil::getNodeIntAttribute(item,L"id");
+					CUtil::setNodeIntAttribute(item,L"blocking", tiles[tileId]->blocking);
+					CUtil::setNodeIntAttribute(item,L"canWalkThrough",tiles[tileId]->canWalkThrough);
+					CUtil::setNodeIntAttribute(item,L"goDown", tiles[tileId]->goDown);
+					CUtil::setNodeIntAttribute(item,L"goUp", tiles[tileId]->goUp);
+					CUtil::setNodeIntAttribute(item,L"ground",tiles[tileId]->ground);
+					CUtil::setNodeIntAttribute(item,L"isContainer", tiles[tileId]->isContainer);
+					CUtil::setNodeIntAttribute(item,L"isDepot", tiles[tileId]->isDepot);
+					CUtil::setNodeIntAttribute(item,L"requireRope", tiles[tileId]->requireRope);
+					CUtil::setNodeIntAttribute(item,L"requireShovel", tiles[tileId]->requireShovel);
+					CUtil::setNodeIntAttribute(item,L"requireUse", tiles[tileId]->requireUse);
+					CUtil::setNodeIntAttribute(item,L"speed", tiles[tileId]->speed);
+					CUtil::setNodeIntAttribute(item,L"minimapColor", tiles[tileId]->minimapColor);
+					CUtil::setNodeIntAttribute(item,L"notMoveable", tiles[tileId]->notMoveable);
+					CUtil::setNodeIntAttribute(item,L"stackable",  tiles[tileId]->stackable);
+					CUtil::setNodeIntAttribute(item,L"alwaysOnTop", tiles[tileId]->alwaysOnTop);
+					CUtil::setNodeIntAttribute(item,L"moreAlwaysOnTop", tiles[tileId]->moreAlwaysOnTop);
+					CUtil::setNodeIntAttribute(item,L"isTeleporter", tiles[tileId]->isTeleporter);
+					CUtil::setNodeIntAttribute(item,L"isReadable", tiles[tileId]->isReadable);
+					CUtil::setNodeIntAttribute(item,L"isFluid", tiles[tileId]->isFluid);
+					CUtil::setNodeIntAttribute(item,L"isRune", tiles[tileId]->isRune);
+					CUtil::setNodeIntAttribute(item,L"isUseableWith", tiles[tileId]->isUseable);
+					CUtil::setNodeIntAttribute(item,L"isUseableImmobile", tiles[tileId]->isUseableImmobile);
+					CUtil::setNodeIntAttribute(item,L"blockPathFind", tiles[tileId]->blockPathFind);
 				}
 			} while ((item=item->getNextSibling())!=NULL);
 		}
@@ -210,14 +212,17 @@ void CTileReader::saveTiles() {
 	XMLCh tempStr[100];
 	XMLString::transcode("LS", tempStr, 99);
 	DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-	DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-	if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
-		theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
+	DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
+	DOMConfiguration* dc = theSerializer->getDomConfig();
+	if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true)){
+		dc->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
 	}
-	xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-	theSerializer->writeNode(outfile, *doc);
+	XMLFormatTarget *outFile = new LocalFileFormatTarget(pathBuf);
+	DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+	lsOut->setByteStream(outFile);
+	theSerializer->write(doc, lsOut);
 	theSerializer->release();
-	theSerializer=NULL;
-	delete outfile;
+	lsOut->release();
+	delete outFile;
 	delete parser;
 }

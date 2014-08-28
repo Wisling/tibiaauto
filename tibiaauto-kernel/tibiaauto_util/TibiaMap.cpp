@@ -27,6 +27,7 @@ static int pointCacheSize=0;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
+template<>
 AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
 {
 	return key->x*191+key->y*257+key->z*317;
@@ -34,6 +35,7 @@ AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
 
 
 typedef point* LPpoint;
+template<>
 AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint>
      (const LPpoint *v1, const LPpoint *v2)
 {

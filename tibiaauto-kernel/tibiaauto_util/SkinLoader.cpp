@@ -13,7 +13,9 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
+#if XERCES_VERSION_MAJOR < 3
 #include <xercesc/dom/DOMWriter.hpp>
+#endif
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -45,7 +47,7 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 	
 	try {
 		parser->parse(currentPathBuf);
-		DOMDocument  *doc = parser->getDocument();
+		xercesc::DOMDocument *doc = parser->getDocument();
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
@@ -111,7 +113,7 @@ CSkin CSkinLoader::loadSkin(CString pathBuf) {
 	XercesDOMParser *parser = new XercesDOMParser();
 	try {
 		parser->parse(pathBuf);
-		DOMDocument  *doc = parser->getDocument();
+		xercesc::DOMDocument *doc = parser->getDocument();
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
@@ -193,7 +195,7 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		sprintf(currentPathBuf,"%s\\skins\\CurrentSkin.skin",installPath);
 		
 		parser->parse(pathBuf);
-		DOMDocument* doc = NULL;
+		xercesc::DOMDocument* doc = NULL;
 		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(L"Core");
 		DOMElement* root = NULL;
 		DOMElement* child = NULL;
@@ -317,19 +319,27 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		
 		XMLString::transcode("LS", tempStr, 99);
 		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-		DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
-			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
+		DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
+		DOMConfiguration* dc = theSerializer->getDomConfig();
+		if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true)){
+			dc->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
 		}
 		fclose(f);
-		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-		theSerializer->writeNode(outfile, *doc);
-
-		outfile = new xercesc::LocalFileFormatTarget(currentPathBuf) ;
-		theSerializer->writeNode(outfile, *doc);
-		doc->release();
+		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf);
+		DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		lsOut->setByteStream(outfile);
+		theSerializer->write(doc, lsOut);
+		lsOut->release();
 		delete outfile;
-		delete theSerializer;
+
+		outfile = new xercesc::LocalFileFormatTarget(currentPathBuf);
+		lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		lsOut->setByteStream(outfile);
+		theSerializer->write(doc, lsOut);
+		lsOut->release();
+		doc->release();
+		theSerializer->release();
+		delete outfile;
 	}
 	catch (...) {
 		AfxMessageBox("Unable to save .skin file!");

@@ -30,7 +30,7 @@ CUtil::~CUtil()
 
 }
 
-char *CUtil::wc2c(const unsigned short *src)
+char *CUtil::wc2c(const XMLCh *src)
 {
 	char *dest=(char *)malloc(MAX_STRING_LEN);
 	memset(dest,0,MAX_STRING_LEN);
@@ -65,7 +65,7 @@ char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 
 char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
 {
-	DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+	DOMNode *attrNode = node->getAttributes()->getNamedItem(attrName);
 	if (attrNode)
 	{
 		return CUtil::wc2c(attrNode->getNodeValue());
@@ -87,7 +87,7 @@ int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
 
 int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 {
-	DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+	DOMNode *attrNode = node->getAttributes()->getNamedItem(attrName);
 	if (attrNode)
 	{
 		char buf[128];
@@ -98,27 +98,27 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 		return 0;
 	}
 }
-
+/*
 void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
 	try {
 		char buf[32];
 		sprintf(buf, "%d", attr);
 		XMLCh xmlStr[100];
-		DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+		DOMNode *attrNode = node->getAttributes()->getNamedItem(attrName);
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
-	catch(...) {
+	catch (...) {
 		AfxMessageBox("Failed in setNodeIntAttribute");
 	}
-}
+}*/
 
 void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr) {
 	try {
 		char buf[32];
 		sprintf(buf, "%d", attr);
 		XMLCh xmlStr[100];
-		DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+		DOMNode *attrNode = node->getAttributes()->getNamedItem(attrName);
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}

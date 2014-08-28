@@ -78,11 +78,9 @@ BOOL CTibiaauto_utilApp::InitInstance()
 
 }
 
- CTibiaauto_utilApp::ExitInstance()
+int CTibiaauto_utilApp::ExitInstance()
 {
-
 	return CWinApp::ExitInstance();
-
 }
 
 void setProcessId(int processId)

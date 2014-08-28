@@ -14,8 +14,6 @@
 
 extern CTibiaMap tibiaMap;
 
-#define _L(c)   L##c
-
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
@@ -39,7 +37,7 @@ CUtil::~CUtil()
 
 
 
-char *CUtil::wc2c(const unsigned short *src)
+char *CUtil::wc2c(const XMLCh *src)
 {
 	char *dest=(char *)malloc(MAX_STRING_LEN);
 	memset(dest,0,MAX_STRING_LEN);
@@ -74,7 +72,7 @@ char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 
 char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
 {
-	DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+	DOMNode *attrNode = node->getAttributes()->getNamedItem(attrName);
 	if (attrNode)
 	{
 		return CUtil::wc2c(attrNode->getNodeValue());
@@ -96,7 +94,7 @@ int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
 
 int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 {
-	DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+	DOMNode *attrNode = node->getAttributes()->getNamedItem((XMLCh*)attrName);
 	if (attrNode)
 	{
 		char buf[128];
@@ -113,7 +111,7 @@ void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
 		char buf[32];
 		sprintf(buf, "%d", attr);
 		XMLCh xmlStr[100];
-		DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+		DOMNode *attrNode = node->getAttributes()->getNamedItem((XMLCh*)attrName);
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
@@ -127,11 +125,11 @@ void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int att
 		char buf[32];
 		sprintf(buf, "%d", attr);
 		XMLCh xmlStr[100];
-		DOMNode *attrNode = node->getAttributes()->getNamedItem((const unsigned short *)attrName);
+		DOMNode *attrNode = node->getAttributes()->getNamedItem((XMLCh*)attrName);
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
-	catch(...) {
+	catch (...) {
 		AfxMessageBox("Failed in setNodeIntAttribute");
 	}
 }

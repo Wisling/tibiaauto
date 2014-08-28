@@ -52,7 +52,9 @@ CTibiaMapProxy tibiaMap;
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
+#if XERCES_VERSION_MAJOR < 3
 #include <xercesc/dom/DOMWriter.hpp>
+#endif
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -1066,7 +1068,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	
 	parser->parse(((struct loadThreadParam *)lpParam)->fName);
 	
-	DOMDocument *doc = parser->getDocument();
+	xercesc::DOMDocument *doc = parser->getDocument();
 	DOMElement *root = doc->getDocumentElement();
 	
 	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)

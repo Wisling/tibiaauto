@@ -14,7 +14,9 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
+#if XERCES_VERSION_MAJOR < 3
 #include <xercesc/dom/DOMWriter.hpp>
+#endif
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -33,10 +35,10 @@ public:
 	static char * getNodeAttribute(DOMNode *node,char *attrName);
 	static int getNodeIntAttribute(DOMNode *node,char *attrName);
 	static char * getNodeAttribute(DOMNode *node,unsigned short *attrName);
-	static int getNodeIntAttribute(DOMNode *node,unsigned short *attrName);
+	static int getNodeIntAttribute(DOMNode *node, unsigned short *attrName);
 	static void setNodeIntAttribute(DOMNode *node,char *attrName, int attr);
-	static void setNodeIntAttribute(DOMNode *node,unsigned short *attrName, int attr);
-	static char *CUtil::wc2c(const unsigned short *src);
+	static void setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr);
+	static char *CUtil::wc2c(const XMLCh *src);
 
 	CUtil();
 	virtual ~CUtil();

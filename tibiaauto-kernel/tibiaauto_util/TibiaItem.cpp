@@ -10,15 +10,17 @@
 #include <xercesc/util/PlatformUtils.hpp>
 
 #include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
+#if XERCES_VERSION_MAJOR < 3
 #include <xercesc/dom/DOMWriter.hpp>
+#endif
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/util/XMLUni.hpp>
-
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -46,7 +48,7 @@ CTibiaList CTibiaItem::typedList;
 CTibiaList CTibiaItem::constCodeList;
 
 void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent);
-void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument* doc);
+void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument* doc);
 void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list);
 void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list);
 
@@ -501,9 +503,6 @@ void CTibiaItem::refreshItemLists()
 		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
 		exit(1);
 	}
-	
-	
-	
 
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
@@ -761,7 +760,7 @@ void CTibiaItem::refreshItemLists()
 	LeaveCriticalSection(&ItemsInitCriticalSection);
 }
 
-void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument  *doc){
+void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *doc){
 	int size=parent->children.size();
 	for (int i=0;i<size;i++){
 		CTibiaTree* child=parent->children[i];
@@ -817,7 +816,7 @@ void CTibiaItem::saveItemLists() {
 
 		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(XMLString::transcode("Core"));
 
-		DOMDocument  *doc = impl->createDocument (0, XMLString::transcode("item-definitions"), 0);
+		xercesc::DOMDocument *doc = impl->createDocument(0, XMLString::transcode("item-definitions"), 0);
 		doc->createComment((const unsigned short *)"<!-- Tibia Items for Tibia -->");
 		
 		DOMElement *root = doc->getDocumentElement();
@@ -872,18 +871,20 @@ void CTibiaItem::saveItemLists() {
 
 		XMLCh tempStr[100];
 		XMLString::transcode("LS", tempStr, 99);
-		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-		DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
-			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
-		}
-		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-		theSerializer->writeNode(outfile, *doc);
-		theSerializer->release();
-		doc->release();
-		delete outfile;
-		//delete theSerializer; //  Equivalent to the theSerializer->release() statement
 
+		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
+		DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
+		DOMConfiguration* dc = theSerializer->getDomConfig();
+		if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true)){
+			dc->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
+		}
+		XMLFormatTarget *outFile = new LocalFileFormatTarget(pathBuf);
+		DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		lsOut->setByteStream(outFile);
+		theSerializer->write(doc, lsOut);
+		theSerializer->release();
+		lsOut->release();
+		delete outFile;
 	} catch (...) {
 		AfxMessageBox("Unable to save item definitions!");
 	}

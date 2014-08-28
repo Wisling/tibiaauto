@@ -64,7 +64,7 @@ struct actionRegexData{
 	}
 };
 
-const RECV_REGEX_MAX = 500;
+const int RECV_REGEX_MAX = 500;
 actionRegexData recvRegex[RECV_REGEX_MAX];
 int recvRegexCount = 0;
 

@@ -1,0 +1,267 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName />
+    <SccLocalPath />
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{EC3640A4-2B98-4ADC-A671-05DD06F60B15}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Program Files Remote\Microsoft Visual Studio\VC98\INCLUDE;C:\Program Files Remote\Microsoft Visual Studio\VC98\MFC\INCLUDE;C:\Program Files Remote\Microsoft Visual Studio\VC98\ATL\INCLUDE;C:\MARK\SOFTWARE\CYGWIN\HOME\MARK THE MIGHTY\TIBIA\TIBIAAUTO-PUB;C:\MARK\SOFTWARE\CYGWIN\HOME\MARK THE MIGHTY\TIBIA\TIBIAAUTO-KERNEL;C:\Program Files Remote\Microsoft Platform SDK\include;C:\MARK\SOFTWARE\PYTHON24\INCLUDE</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);C:\Program Files Remote\Microsoft Visual Studio\VC98\LIB;C:\Program Files Remote\Microsoft Visual Studio\VC98\MFC\LIB;C:\MARK\SOFTWARE\CYGWIN\HOME\MARK THE MIGHTY\TIBIA\TIBIAAUTO-PUB\LIBS</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <AdditionalIncludeDirectories>C:\Documents and Settings\Owner\My Documents\Xerces\xerces-c-src_2_8_0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Release\</AssemblerListingLocation>
+      <PrecompiledHeaderOutputFile>.\Release\alice.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Release\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\alice.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0415</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\alice.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <OutputFile>../../tibiaauto-pub/mods/alice.dll</OutputFile>
+      <ImportLibrary>.\Release\alice.lib</ImportLibrary>
+      <AdditionalLibraryDirectories>C:\Documents and Settings\Owner\My Documents\TibiaAuto\tibiaauto-kernel;e:\projects\tibiaauto-pub;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>xerces.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>.\alice.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;WINVER 0x600;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AssemblerListingLocation>.\Debug\</AssemblerListingLocation>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\alice.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <ObjectFileName>.\Debug\</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug\</ProgramDataBaseFileName>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\alice.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0415</Culture>
+      <AdditionalIncludeDirectories>C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\alice.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>E:\Tibia\Tibia\Tibia Auto\mods/alice.dll</OutputFile>
+      <ImportLibrary>.\Debug\alice.lib</ImportLibrary>
+      <ModuleDefinitionFile>.\alice.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AimlWriter.cpp" />
+    <ClCompile Include="alice.cpp" />
+    <ClCompile Include="Element.cpp" />
+    <ClCompile Include="FlashResponder.cpp" />
+    <ClCompile Include="Handler.cpp" />
+    <ClCompile Include="HTTPProcessor.cpp" />
+    <ClCompile Include="IrcResponder.cpp" />
+    <ClCompile Include="Kernel.cpp" />
+    <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Match.cpp" />
+    <ClCompile Include="Nodemaster.cpp" />
+    <ClCompile Include="NodeWalker.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="PredicateEngine.cpp" />
+    <ClCompile Include="PreParser.cpp" />
+    <ClCompile Include="SaxParser.cpp" />
+    <ClCompile Include="ServerSocket.cpp" />
+    <ClCompile Include="Socket.cpp" />
+    <ClCompile Include="SocketHandler.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Stream.cpp" />
+    <ClCompile Include="StringTokenizer.cpp" />
+    <ClCompile Include="Substituter.cpp" />
+    <ClCompile Include="Template.cpp" />
+    <ClCompile Include="TemplateProcessor.cpp" />
+    <ClCompile Include="TimeKeeper.cpp" />
+    <ClCompile Include="TokenProxyListener.cpp" />
+    <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="wxwindows.cpp" />
+    <ClCompile Include="XmlSocketResponder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="alice.def" />
+    <CustomBuild Include="res\alice.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="alice.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AimlProcessor.h" />
+    <ClInclude Include="AimlWriter.h" />
+    <ClInclude Include="alice.h" />
+    <ClInclude Include="BotProcessor.h" />
+    <ClInclude Include="Compat.h" />
+    <ClInclude Include="ConditionProcessor.h" />
+    <ClInclude Include="Config.h" />
+    <ClInclude Include="Element.h" />
+    <ClInclude Include="FlashResponder.h" />
+    <ClInclude Include="FormalProcessor.h" />
+    <ClInclude Include="GetProcessor.h" />
+    <ClInclude Include="Handler.h" />
+    <ClInclude Include="HTTPProcessor.h" />
+    <ClInclude Include="IdProcessor.h" />
+    <ClInclude Include="ImpExpProcessor.h" />
+    <ClInclude Include="InputProcessor.h" />
+    <ClInclude Include="IrcProcessor.h" />
+    <ClInclude Include="IrcResponder.h" />
+    <ClInclude Include="JavaScriptProcessor.h" />
+    <ClInclude Include="Kernel.h" />
+    <ClInclude Include="LearnProcessor.h" />
+    <ClInclude Include="Logger.h" />
+    <ClInclude Include="LowercaseProcessor.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="Match.h" />
+    <ClInclude Include="NameProcessor.h" />
+    <ClInclude Include="Nodemapper.h" />
+    <ClInclude Include="Nodemaster.h" />
+    <ClInclude Include="NodeWalker.h" />
+    <ClInclude Include="NormalizeProcessor.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="PersonProcessor.h" />
+    <ClInclude Include="Pointer.h" />
+    <ClInclude Include="PredicateEngine.h" />
+    <ClInclude Include="PreParser.h" />
+    <ClInclude Include="RandomProcessor.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Responder.h" />
+    <ClInclude Include="SaxParser.h" />
+    <ClInclude Include="SecureProcessor.h" />
+    <ClInclude Include="SentenceProcessor.h" />
+    <ClInclude Include="ServerSocket.h" />
+    <ClInclude Include="SetProcessor.h" />
+    <ClInclude Include="Socket.h" />
+    <ClInclude Include="SocketHandler.h" />
+    <ClInclude Include="SraiProcessor.h" />
+    <ClInclude Include="SrProcessor.h" />
+    <ClInclude Include="StarProcessor.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="Stream.h" />
+    <ClInclude Include="StringTokenizer.h" />
+    <ClInclude Include="SubstituteProcessor.h" />
+    <ClInclude Include="Substituter.h" />
+    <ClInclude Include="SystemProcessor.h" />
+    <ClInclude Include="Template.h" />
+    <ClInclude Include="TemplateProcessor.h" />
+    <ClInclude Include="ThatProcessor.h" />
+    <ClInclude Include="ThatstarProcessor.h" />
+    <ClInclude Include="ThinkProcessor.h" />
+    <ClInclude Include="TimeKeeper.h" />
+    <ClInclude Include="TokenProxyListener.h" />
+    <ClInclude Include="TopicstarProcessor.h" />
+    <ClInclude Include="UppercaseProcessor.h" />
+    <ClInclude Include="Utils.h" />
+    <ClInclude Include="VersionProcessor.h" />
+    <ClInclude Include="wxwindows.h" />
+    <ClInclude Include="XmlSocketResponder.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

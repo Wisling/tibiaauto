@@ -21,7 +21,6 @@ static char THIS_FILE[]=__FILE__;
 #include <xercesc/framework/MemBufFormatTarget.hpp>
  
 
-
 XERCES_CPP_NAMESPACE_USE
 
 
@@ -74,7 +73,7 @@ DOMNode * CConfigCreatorUtil::getEmptyConfigForModule(char *moduleName)
 		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(X("Core"));
 		if (impl)
 		{
-			 DOMDocument* doc = impl->createDocument(
+			xercesc::DOMDocument* doc = impl->createDocument(
                            NULL,                    // root element namespace URI.
                            X("module"),         // root element name
                            NULL);                   // document type object (DTD).
@@ -95,21 +94,21 @@ void CConfigCreatorUtil::serializeConfigForModule(DOMNode *modConfig,FILE *f)
 	if (!modConfig)
 		return;
 
-	DOMElement* root = ((DOMDocument *)modConfig)->getDocumentElement();
+	xercesc::DOMElement* root = ((xercesc::DOMDocument *)modConfig)->getDocumentElement();
 
 	DOMImplementation *impl          = DOMImplementationRegistry::getDOMImplementation(X("Core"));
-    DOMWriter         *theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-
+	DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
 	MemBufFormatTarget *myFormTarget = new MemBufFormatTarget();
-
-	theSerializer->writeNode(myFormTarget, *root);
+	DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+	lsOut->setByteStream(myFormTarget);
+	theSerializer->write(root, lsOut);
 
 	const unsigned char *buffer = myFormTarget->getRawBuffer();
 	fprintf(f,"%s\n",buffer);
 
 	delete myFormTarget;
-	delete theSerializer;
-
+	theSerializer->release();
+	lsOut->release();
 }
 
 void CConfigCreatorUtil::addParamToConfig(DOMNode *modConfig, char *paramName, char *paramValue)
@@ -117,9 +116,9 @@ void CConfigCreatorUtil::addParamToConfig(DOMNode *modConfig, char *paramName, c
 	if (!modConfig)
 		return;
 
-	DOMElement* root = ((DOMDocument *)modConfig)->getDocumentElement();
+	DOMElement* root = ((xercesc::DOMDocument *)modConfig)->getDocumentElement();
 
-	addParamFromNode((DOMDocument *)modConfig,root,paramName,paramValue);
+	addParamFromNode((xercesc::DOMDocument *)modConfig, root, paramName, paramValue);
 }
 
 void CConfigCreatorUtil::releaseConfig(DOMNode *modConfig)
@@ -129,7 +128,7 @@ void CConfigCreatorUtil::releaseConfig(DOMNode *modConfig)
 	modConfig->release();
 }
 
-void CConfigCreatorUtil::addParamFromNode(DOMDocument *doc,DOMNode *node, char *paramName, char *paramValue)
+void CConfigCreatorUtil::addParamFromNode(xercesc::DOMDocument *doc, DOMNode *node, char *paramName, char *paramValue)
 {
 	if (!strstr(paramName,"/"))
 	{

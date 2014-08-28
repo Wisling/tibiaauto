@@ -61,7 +61,8 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 	DWORD vipEntryAddr = dereference(linkedListAddr,0);
 	//0x0 next entry; 0x4 prev entry; 0x8 E68B6C; 0x10 playerId; 0x14 icon; 0x18 name/pointer to name; 0x28 namelen;
 	//0x28 namemaxlen; 0x34 description/desc pointer; 0x44 desclen; 0x48 descmaxlen; 0x50 status; 0x58 loginTm
-	for (int iNR=0; iNR!=nr && vipEntryAddr!=linkedListAddr; iNR++){
+	int iNR;
+	for (iNR=0; iNR!=nr && vipEntryAddr!=linkedListAddr; iNR++){
 		vipEntryAddr = dereference(vipEntryAddr,0);
 	}
 	if (iNR==nr && vipEntryAddr!=linkedListAddr){
@@ -188,7 +189,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	// note: since 8.31 capacity has accuracy to 2 decimal places
-	ch->cap = (CMemUtil::GetMemIntValue(m_memAddressCap)^CMemUtil::GetMemIntValue(m_memAddressXor))/100.0;
+	ch->cap = (CMemUtil::GetMemIntValue(m_memAddressCap)^CMemUtil::GetMemIntValue(m_memAddressXor))/100.f;
 	ch->stamina = CMemUtil::GetMemIntValue(m_memAddressStamina);
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	//ch->exp += (__int64)CMemUtil::GetMemIntValue(m_memAddressExp+4) << 32; //Note Experience became 64 bits since 8.7
@@ -650,9 +651,10 @@ int CMemReader::mapGetSelfCellNr()
 		}
 	}
 */
+	int tileNr;
 	//there are 8 stages, if above ground each floor 7 to 0 always has the same stage
 	//if underground player is always on stage 2 and only stages 0,1,2,3,4 are relevant
-	for (int tileNr=tileNrLowest;tileNr<tileNrHighest;tileNr++)
+	for (tileNr=tileNrLowest;tileNr<tileNrHighest;tileNr++)
 	{
 		CTibiaMapTile *maptile = readMapTile(tileNr);
 		int pos;
@@ -1284,11 +1286,12 @@ int CMemReader::getItemIndex(int x,int y,int itemId)
 	if (topPos==-1) return -1;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
-
-	for (int pos=topPos;stackCount && pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
+	int pos;
+	for (pos=topPos;stackCount && pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
 	{
 		if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
 	}
+	pos = 0; //TODO: Check it. Added pos=0 to make at least some sense. Not sure about it.
 	if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
 	return -1;
 }
