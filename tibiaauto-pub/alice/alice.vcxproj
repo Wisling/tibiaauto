@@ -50,8 +50,8 @@
     <OutDir>.\Debug\</OutDir>
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);C:\Program Files Remote\Microsoft Visual Studio\VC98\INCLUDE;C:\Program Files Remote\Microsoft Visual Studio\VC98\MFC\INCLUDE;C:\Program Files Remote\Microsoft Visual Studio\VC98\ATL\INCLUDE;C:\MARK\SOFTWARE\CYGWIN\HOME\MARK THE MIGHTY\TIBIA\TIBIAAUTO-PUB;C:\MARK\SOFTWARE\CYGWIN\HOME\MARK THE MIGHTY\TIBIA\TIBIAAUTO-KERNEL;C:\Program Files Remote\Microsoft Platform SDK\include;C:\MARK\SOFTWARE\PYTHON24\INCLUDE</IncludePath>
-    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);C:\Program Files Remote\Microsoft Visual Studio\VC98\LIB;C:\Program Files Remote\Microsoft Visual Studio\VC98\MFC\LIB;C:\MARK\SOFTWARE\CYGWIN\HOME\MARK THE MIGHTY\TIBIA\TIBIAAUTO-PUB\LIBS</LibraryPath>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);.;../TIBIAAUTO-KERNEL;C:\Program Files Remote\Microsoft Platform SDK\include;C:\MARK\SOFTWARE\PYTHON24\INCLUDE</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x86);$(WindowsSDK_LibraryPath_x86);.\LIBS</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -70,6 +70,8 @@
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <ObjectFileName>.\Release\</ObjectFileName>
       <ProgramDataBaseFileName>.\Release\</ProgramDataBaseFileName>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Midl>
       <SuppressStartupBanner>true</SuppressStartupBanner>
