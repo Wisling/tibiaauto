@@ -2946,6 +2946,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				// normal waypoint reached
 				waypointTargetX=waypointTargetY=waypointTargetZ=0;
 				walkerStandingEndTm=time(NULL)+config->standStill;
+				globalAutoAttackStateWalker=CToolAutoAttackStateWalker_standing;
 				actualTargetX=0;
 				actualTargetY=0;
 				actualTargetZ=0;
