@@ -1,4 +1,4 @@
-2.45.1 9.7.2014
+2.46.0 9.9.2014
 Enhancements:
+ Tibia Auto: Updated for Tibia 10.54
 Defects:
- Auto Login: Fixed invalid password entry

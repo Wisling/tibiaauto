@@ -1,3 +1,8 @@
+2.46.0 9.9.2014
+Enhancements:
+ Tibia Auto: Updated for Tibia 10.54
+Defects:
+
 2.45.1 9.7.2014
 Enhancements:
 Defects:
