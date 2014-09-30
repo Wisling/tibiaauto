@@ -315,8 +315,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
 	buf[0]=buf[1]=0;
 	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf,1);
-	if (buf[0]==0xEB&&buf[1]==0x17) versionOk=1;
-	if (buf[0]==0x75&&(buf[1]==0x0A||buf[1]==0x10)) versionOk=1;
+	if (buf[0]==0x90&&buf[1]==0x90) versionOk=1;
+	if (buf[0]==0x75&&(buf[1]==0x0A||buf[1]==0x10||buf[1]==0x0E)) versionOk=1;
 		
 	if (!versionOk)
 	{
@@ -1703,7 +1703,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.47.0 tm=%d,",tm);
+		fprintf(f,"version=2.48.0 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

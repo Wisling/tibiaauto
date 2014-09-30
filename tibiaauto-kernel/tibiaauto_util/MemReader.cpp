@@ -848,28 +848,26 @@ long CMemReader::getCurrentTm()
 
 void CMemReader::writeEnableRevealCName()
 {
-	unsigned char *buf=(unsigned char *)malloc(3);
-	// replace jump with own jump
-	buf[0]=0xEB;
-	buf[1]=0x17;
-	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
-	
-
+	unsigned char *buf=(unsigned char *)malloc(1);
+	//always jump over exclusion check
+	buf[0]=0xBE;
+	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+1,(char *)buf);
+	//always go through draw sequence
+	buf[0]=0x90;
+	CMemUtil::SetMemRange(m_memAddressRevealCName2,m_memAddressRevealCName2+1,(char *)buf);
 	free(buf);
-
-	// INVISIBLE - 0x419450!!!
 }
 
 void CMemReader::writeDisableRevealCName()
 {
-	unsigned char *buf=(unsigned char *)malloc(2);
+	unsigned char *buf=(unsigned char *)malloc(2);\
+	//always jump over exclusion check
 	buf[0]=0x75;
-	buf[1]=0x0A;
-	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf);
-	/*
-	buf[0]=0x46;
+	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+1,(char *)buf);
+	//always go through draw sequence
+	buf[0]=0x34;
 	CMemUtil::SetMemRange(m_memAddressRevealCName2,m_memAddressRevealCName2+1,(char *)buf);
-	// extend reveal horizon
+	/*
 	buf[0]=7;
 	CMemUtil::SetMemRange(m_memAddressRevealCName3,m_memAddressRevealCName3+1,(char *)buf);
 	buf[0]=5;
