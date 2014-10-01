@@ -336,6 +336,13 @@ CTibiaCharacter * CMemReader::readVisibleCreature(int nr)
 	//ch->lightningbolt=*((int*)(memcharinfo+184));
 	//ch->lightningbolt=*((int*)(memcharinfo+188));
 	//ch->NPCbubble=*((int*)(memcharinfo+192)); //0-none,1-talk,2-quest,3-trade,4-quest trade,
+	//ch->walkphase=*((int*)(memcharinfo+196));
+	//ch->treepointer1=*((int*)(memcharinfo+200));
+	//ch->alwaysone=*((int*)(memcharinfo+204));
+	//ch->alwayszero=*((int*)(memcharinfo+208));
+	//ch->treepointer2=*((int*)(memcharinfo+212));
+	//ch->alwayszero=*((int*)(memcharinfo+216));
+
 
 
 	ch->nr=nr;
@@ -850,17 +857,17 @@ void CMemReader::writeEnableRevealCName()
 {
 	unsigned char *buf=(unsigned char *)malloc(1);
 	//always jump over exclusion check
-	buf[0]=0xBE;
+	buf[0]=0xEB;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+1,(char *)buf);
 	//always go through draw sequence
-	buf[0]=0x90;
+	buf[0]=0x00;
 	CMemUtil::SetMemRange(m_memAddressRevealCName2,m_memAddressRevealCName2+1,(char *)buf);
 	free(buf);
 }
 
 void CMemReader::writeDisableRevealCName()
 {
-	unsigned char *buf=(unsigned char *)malloc(2);\
+	unsigned char *buf=(unsigned char *)malloc(1);\
 	//always jump over exclusion check
 	buf[0]=0x75;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+1,(char *)buf);

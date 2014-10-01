@@ -1,4 +1,4 @@
-<!-- Tibia constants for Tibia 10.56 -->
+<!-- Tibia constants for Tibia 10.57 -->
 <const-definitions>
 	<consts>
 		<!-- item codes -->
@@ -43,11 +43,11 @@
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
 
-		<const code="addrMCInject" value="0x14DD91"/> <!--D7 3D B7 -->
-		<const code="addrXRay1" value="0x50F05C"/> <!-- 07000000????????02000000-->
-		<const code="addrXRay2" value="0x50F064"/>
-		<const code="addrFunRevealCName1" value="0x52AC3A"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
-		<const code="addrFunRevealCName2" value="0x52AC58"/> <!-- replace 1 -->
+		<const code="addrMCInject" value="0x151901"/> <!--D7 3D B7 -->
+		<const code="addrXRay1" value="0x510E4C"/> <!-- 07000000????????02000000 -->
+		<const code="addrXRay2" value="0x510E54"/>
+		<const code="addrFunRevealCName1" value="0x52CA49"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
+		<const code="addrFunRevealCName2" value="0x52CA67"/> <!-- replace 1 -->
 		<const code="addrFunRevealCName3" value="0"/>
 		<const code="addrFunRevealCName4" value="0"/>
 		<const code="addrSelfPosX" value="0"/>
@@ -55,57 +55,57 @@
 		<const code="addrSelfPosZ" value="0"/>
 		<const code="addrBattleMin" value="0"/><!-- Tibia now assumes this to be 0 -->
 
-		<const code="addrCurrentTileToGo" value="0x827968"/><!--counts up to addrTileToGo-->
-		<const code="addrSelfFlags" value="0x82796C"/> <!-- cat1 -->
-		<const code="addrPathToGo" value="0x827980"/>
-		<const code="addrFollowedCreature" value="0x8279A8"/>
-		<const code="addrXor" value="0x8279B0"/>
-		<const code="addrManaMax" value="0x8279B4"/>
-		<const code="addrExp" value="0x8279C0"/>
-		<const code="addrBattleMax" value="0x8279C8"/>
-		<const code="addrLvl" value="0x8279CC"/>
-		<const code="addrSoulPoints" value="0x8279F0"/>
-		<const code="addrMlvl" value="0x8279F4"/>
-		<const code="addrMlvlPercLeft" value="0x8279FC"/>
-		<const code="addrAttackedCreature" value="0x827A00"/>
-		<const code="addrMana" value="0x827A04"/>
-		<const code="addrTilesToGo" value="0x827A08"/>
-		<const code="addrSkillFistPercLeft" value="0x827A0C"/>
-		<const code="addrStamina" value="0x827A38"/>
-		<const code="addrCurrentWindow" value="0x827FCC"/> <!-- cat2 -->
-		<const code="addrModeFollow" value="0x82EE5C"/>
-		<const code="addrModePVP" value="0x82EF6C"/>
-		<const code="addrModeAttackPlayers" value="0x82EF8F"/> <!-- cat3 -->
-		<const code="addrModeAttackType" value="0x82EF98"/> <!-- cat3 -->
-		<const code="addrConnectionState" value="0x82F7F8"/> <!-- cat4 -->
-		<const code="addrWhiteMessage" value="0x871440"/>
-		<const code="addrTradeCountSelf" value="0x874E20"/>
-		<const code="addrTradeFirstItemSelf" value="0x874E24"/>
-		<const code="addrTradeCountPartner" value="0x875AD0"/>
-		<const code="addrTradeFirstItemPartner" value="0x875AD4"/> <!-- cat2 -->
-		<const code="addrMiniMapStart" value="0x876760"/> <!-- begins at x,y map tile cat2 -->
-		<const code="addrVIP" value="0x9B7B50"/> <!-- cat0 -->
-		<const code="addrHP" value="0x9BA000"/>
-		<const code="addrGoZ" value="0x9BA004"/>
-		<const code="addrSkillFist" value="0x9BA008"/>
-		<const code="addrSkillFish" value="0x9BA020"/>
-		<const code="addrCap" value="0x9BA024"/>
-		<const code="addrGoY" value="0x9BA028"/>
-		<const code="addrHPMax" value="0x9BA02C"/>
-		<const code="addrGoX" value="0x9BA030"/>
-		<const code="addrSelfId" value="0x9BA034"/>
-		<const code="addrFps" value="0xA007BC"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrVocation" value="0x9F5ADC"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
-		<const code="addrPacketCount" value="0x9BA7C8"/> <!-- cat0 -->
-		<const code="addrFirstCreature" value="0xA0E5F0"/> <!-- cat1 -->
-		<const code="addrSlotArrow" value="0xA4CAA0"/> <!-- cat2 -->
-		<const code="addrMapStart" value="0xA4CBE8"/> <!-- is a pointer to visible map -->
-		<const code="addrFirstContainer" value="0xA5248C"/> <!-- cat2 pointer to cont number -0xC-->
-		<const code="addrCurrentTm" value="0xA52A2C"/> <!-- cat2 -->
+		<const code="addrCurrentTileToGo" value="0x82C9C8"/><!--counts up to addrTileToGo-->
+		<const code="addrSelfFlags" value="0x82C9CC"/> <!-- cat1 -->
+		<const code="addrPathToGo" value="0x82C9E0"/>
+		<const code="addrFollowedCreature" value="0x82CA08"/>
+		<const code="addrXor" value="0x82CA10"/>
+		<const code="addrManaMax" value="0x82CA14"/>
+		<const code="addrExp" value="0x82CA20"/>
+		<const code="addrBattleMax" value="0x82CA28"/>
+		<const code="addrLvl" value="0x82CA2C"/>
+		<const code="addrSoulPoints" value="0x82CA50"/>
+		<const code="addrMlvl" value="0x82CA54"/>
+		<const code="addrMlvlPercLeft" value="0x82CA5C"/>
+		<const code="addrAttackedCreature" value="0x82CA60"/>
+		<const code="addrMana" value="0x82CA64"/>
+		<const code="addrTilesToGo" value="0x82CA68"/>
+		<const code="addrSkillFistPercLeft" value="0x82CA6C"/>
+		<const code="addrStamina" value="0x82CA98"/>
+		<const code="addrCurrentWindow" value="0x82D02C"/> <!-- cat2 -->
+		<const code="addrModeFollow" value="0x83DFCC"/>
+		<const code="addrModePVP" value="0x83DFD8"/>
+		<const code="addrModeAttackPlayers" value="0x83E001"/> <!-- cat3 -->
+		<const code="addrModeAttackType" value="0x83E008"/> <!-- cat3 -->
+		<const code="addrConnectionState" value="0x83E86C"/> <!-- cat4 -->
+		<const code="addrWhiteMessage" value="0x8804A0"/>
+		<const code="addrTradeCountSelf" value="0x883E90"/>
+		<const code="addrTradeFirstItemSelf" value="0x883E94"/>
+		<const code="addrTradeCountPartner" value="0x884B40"/>
+		<const code="addrTradeFirstItemPartner" value="0x884B44"/> <!-- cat2 -->
+		<const code="addrMiniMapStart" value="0x8857D0"/> <!-- begins at x,y map tile cat2 -->
+		<const code="addrVIP" value="0x9C6BD0"/> <!-- cat0 -->
+		<const code="addrHP" value="0x9C9000"/>
+		<const code="addrGoZ" value="0x9C9004"/>
+		<const code="addrSkillFist" value="0x9C9008"/>
+		<const code="addrSkillFish" value="0x9C9020"/>
+		<const code="addrCap" value="0x9C9024"/>
+		<const code="addrGoY" value="0x9C9028"/>
+		<const code="addrHPMax" value="0x9C902C"/>
+		<const code="addrGoX" value="0x9C9030"/>
+		<const code="addrSelfId" value="0x9C9034"/>
+		<const code="addrFps" value="0xA0F8FC"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrVocation" value="0xA04B38"/> <!-- pointer-like value preceeding changing bytes. Search for 1000/(setFPS) and go back 0x58. 00 00 00 00 00 00 24 40=100,00 00 00 00 00 00 34 40 = 50--> <!-- cat4 -->
+		<const code="addrPacketCount" value="0x9CAEC8"/> <!-- cat0 -->
+		<const code="addrFirstCreature" value="0xA1D730"/> <!-- cat1 -->
+		<const code="addrSlotArrow" value="0xA635E0"/> <!-- cat2 -->
+		<const code="addrMapStart" value="0xA63730"/> <!-- is a pointer to visible map -->
+		<const code="addrFirstContainer" value="0xA690A8"/> <!-- cat2 pointer to cont number -0xC-->
+		<const code="addrCurrentTm" value="0xA69574"/> <!-- cat2 -->
 
 		<const code="lengthContainer" value="492"/>
 		<const code="lengthItem" value="32"/>
-		<const code="lengthCreature" value="196"/>
+		<const code="lengthCreature" value="220"/>
 		<const code="lengthMapTile" value="368"/>
 		<const code="lengthVIP" value="96"/><!--no longer used-->
 		<const code="lengthMiniMap" value="131240"/>
