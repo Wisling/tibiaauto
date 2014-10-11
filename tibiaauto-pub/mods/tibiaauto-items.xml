@@ -783,6 +783,9 @@
       <item id="0x45bf" looted="0" name="Red Hair Dye" type="131072"/>
       <item id="0x45c0" looted="0" name="Basalt Fetish" type="131072"/>
       <item id="0x45c1" looted="0" name="Basalt Figurine" type="131072"/>
+      <item id="0x4a34" looted="0" name="Rorc Egg" type="131072"/>
+      <item id="0x4a31" looted="0" name="Rorc Feather" type="131072"/>
+      <item id="0x4a35" looted="0" name="Hatched Rorc Egg" type="131072"/>
     </branch>
     <branch name="DISTANCE WEAPONS:">
       <item id="0xd15" looted="0" name="Crossbow" type="8"/>
@@ -3433,6 +3436,9 @@
       <item id="0x2896" looted="1" name="Zaoan Sword" type="4"/>
       <item id="0x28ad" looted="1" name="Zaogun Flag" type="131072"/>
       <item id="0x28ae" looted="1" name="Zaogun's Shoulderplates" type="131072"/>
+      <item id="0x4a34" looted="1" name="Rorc Egg" type="131072"/>
+      <item id="0x4a31" looted="1" name="Rorc Feather" type="131072"/>
+      <item id="0x4a35" looted="1" name="Hatched Rorc Egg" type="131072"/>
     </branch>
   </items>
 

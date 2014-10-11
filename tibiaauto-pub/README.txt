@@ -1,6 +1,7 @@
-2.49.0 9.30.2014
+2.51.0 10.10.2014
 Enhancements:
- Tibia Auto: Updated for Tibia 10.57
- tiles.xml: added all new items
+ Tibia Auto: Updated for Tibia 10.59
+ bankers.csv: Added Dawnport banker
+ sellers.csv: Added and correction some seller locations(thanks to community)
+ items.xml: Added Rorc loot(thanks to community)
 Defects:
- Map Hacks: Fixed "always show creature name" option
