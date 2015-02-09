@@ -42,9 +42,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <math.h>
 
 #define JPEGLIB_USE_STDIO
-#include "mods/mod_autogo/jpeglib.h"
-#include "mods/mod_autogo/zlib.h"
-#include "mods/mod_autogo/png.h"
+#include <jpeglib.h>
+#include <zlib.h>
+#include <png.h>
 
 using namespace std;
 
