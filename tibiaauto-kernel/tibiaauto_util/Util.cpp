@@ -16,7 +16,7 @@ extern CTibiaMap tibiaMap;
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif
 
@@ -39,35 +39,35 @@ CUtil::~CUtil()
 
 char *CUtil::wc2c(const XMLCh *src)
 {
-	char *dest=(char *)malloc(MAX_STRING_LEN);
-	memset(dest,0,MAX_STRING_LEN);
-	if (src==NULL)
+	char *dest = (char *)malloc(MAX_STRING_LEN);
+	memset(dest, 0, MAX_STRING_LEN);
+	if (src == NULL)
 		return dest;
-	WideCharToMultiByte( CP_ACP, 0, src, -1,dest, MAX_STRING_LEN/2-10, NULL, NULL );
+	WideCharToMultiByte(CP_ACP, 0, src, -1, dest, MAX_STRING_LEN / 2 - 10, NULL, NULL);
 	return dest;
 }
 
 char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 {
 	int attrNr;
-	int attrCount=node->getAttributes()->getLength();
-	
+	int attrCount = node->getAttributes()->getLength();
 
-	for (attrNr=0;attrNr<attrCount;attrNr++)
+
+	for (attrNr = 0; attrNr < attrCount; attrNr++)
 	{
 		DOMNode *attrNode = node->getAttributes()->item(attrNr);
-		char *attrNameWide=CUtil::wc2c(attrNode->getNodeName());
-		if (!strcmp(attrNameWide,attrName))
+		char *attrNameWide = CUtil::wc2c(attrNode->getNodeName());
+		if (!strcmp(attrNameWide, attrName))
 		{
 			//free(attrNameWide);
 			return CUtil::wc2c(attrNode->getNodeValue());
 		}
 		//free(attrNameWide);
 	}
-	char *emptyRet=(char *)malloc(MAX_STRING_LEN);
-	memset(emptyRet,0,MAX_STRING_LEN);
+	char *emptyRet = (char *)malloc(MAX_STRING_LEN);
+	memset(emptyRet, 0, MAX_STRING_LEN);
 	return emptyRet;
-	
+
 }
 
 char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
@@ -76,20 +76,21 @@ char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
 	if (attrNode)
 	{
 		return CUtil::wc2c(attrNode->getNodeValue());
-	} else {
-		char *emptyRet=(char *)malloc(1);
-		memset(emptyRet,0,1);
+	}
+	else {
+		char *emptyRet = (char *)malloc(1);
+		memset(emptyRet, 0, 1);
 		return emptyRet;
 	}
 }
 
 int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
 {
-	char *attrValue=getNodeAttribute(node,attrName);
-	int ret=atoi(attrValue);
+	char *attrValue = getNodeAttribute(node, attrName);
+	int ret = atoi(attrValue);
 	//free(attrValue);
 	return ret;
-	
+
 }
 
 int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
@@ -98,10 +99,11 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 	if (attrNode)
 	{
 		char buf[128];
-		buf[0]=0;
-		wcstombs(buf,attrNode->getNodeValue(),60);
+		buf[0] = 0;
+		wcstombs(buf, attrNode->getNodeValue(), 60);
 		return atoi(buf);
-	} else {
+	}
+	else {
 		return 0;
 	}
 }
@@ -115,7 +117,7 @@ void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
-	catch(...) {
+	catch (...) {
 		AfxMessageBox("Failed in setNodeIntAttribute");
 	}
 }

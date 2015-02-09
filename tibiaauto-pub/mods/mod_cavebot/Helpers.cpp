@@ -76,8 +76,9 @@ void UsrDump(TCHAR *msg,BYTE *pData, int len)
 		CString str;
 
 		int c = len / 16;
+		int i;
 
-		for (int i = 0; i < c; i++) {
+		for (i = 0; i < c; i++) {
 			str.Format(_T("0x%.8x\t%.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c\n"),
 				i*16,
 				pData[0],pData[1],pData[2],pData[3],pData[4],pData[5],pData[6],pData[7],
@@ -107,7 +108,7 @@ void UsrDump(TCHAR *msg,BYTE *pData, int len)
 		CString spaces;
 		if (c != 0) {
 			int k = c*3;
-			for (j = k; j < 47; j++) {
+			for (int j = k; j < 47; j++) {
 				//TRACE(_T(" "));
 				spaces += _T(" ");
 			}
@@ -117,7 +118,7 @@ void UsrDump(TCHAR *msg,BYTE *pData, int len)
 		//TRACE(numbers+spaces);
 
 		CString chars;
-		for (j = 0; j < c; j++) {
+		for (int j = 0; j < c; j++) {
 			str.Format(_T("%c"),GetPrintCharOrDot(pData[j]));
 			//TRACE(str);
 			chars += str;
@@ -164,7 +165,7 @@ CString GetDumpString(BYTE *pData, int len)
 
 		CString numbers;
 		if (c != 0) {
-			str.Format(_T("0x%.8x     "),i*16);
+			str.Format(_T("0x%.8x     "),c*16);
 			numbers += str;
 		}
 
@@ -176,14 +177,14 @@ CString GetDumpString(BYTE *pData, int len)
 		CString spaces;
 		if (c != 0) {
 			int k = c*3;
-			for (j = k; j < 47; j++) {
+			for (int j = k; j < 47; j++) {
 				spaces += _T(" ");
 			}
 			spaces += _T("  ");
 		}
 
 		CString chars;
-		for (j = 0; j < c; j++) {
+		for (int j = 0; j < c; j++) {
 			str.Format(_T("%c"),GetPrintCharOrDot(pData[j]));
 			chars += str;
 		}

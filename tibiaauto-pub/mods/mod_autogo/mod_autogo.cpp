@@ -16,8 +16,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 
-// mod_autogo.cpp : Defines the initialization routines
- for the DLL.
+// mod_autogo.cpp : Defines the initialization routines for the DLL.
 //
 
 #include "stdafx.h"
@@ -274,7 +273,7 @@ CString* alarmStatus(CString alarm) {
 }
 
 void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
-	static extra = 0;
+	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -379,8 +378,7 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 }
 
 void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
-	//vc++6.0 lib from http://pngwriter.sourceforge.net/howto_msvc.php
-	static extra = 0;
+	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -521,7 +519,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
 }
 
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
-	static extra = 0;
+	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -795,7 +793,7 @@ int getGoPriority(list<Alarm> test, bool isGoingToRunaway, int maintainPos){
 }
 int shouldKeepWalking() {
 	//considers whether we are attacking and done looting
-	static lastAttackTime=0;
+	static time_t lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");
@@ -1042,7 +1040,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				// Logout **********************
 				if (alarmItr->getLogout()) {
-					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.isLoggedIn()) {
+					if (!(reader.getSelfEventFlags() & (1L << LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (1L << PZBLOCK)) && reader.isLoggedIn()) {
 						sender.logout();
 					}
 				}// ****************************

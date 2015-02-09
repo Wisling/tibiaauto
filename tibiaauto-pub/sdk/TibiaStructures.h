@@ -330,13 +330,15 @@ private:
 ////////////////////////////// CTibiaHashMap Implementation INCOMPLETE //////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////
 typedef map<int, CTibiaListData*> IntMap;
+typedef map<int, StrMap::iterator> StrIterMap;
+typedef map<int, IntMap::iterator> IntIterMap;
 class CTibiaHashMap{
 private:
 	StrMap strMap;
 	IntMap intMap;
 	int counter;
-	map<int,StrMap::iterator> iterSetS;
-	map<int,IntMap::iterator> iterSetI;
+	StrIterMap iterSetS;
+	IntIterMap iterSetI;
 	map<int,int> isNewIter;
 	int count;
 	bool uniqueInt;
@@ -374,70 +376,83 @@ public:
 	bool IncrementIter(int code){
 		int* isNew=&isNewIter[code];
 		if (uniqueStr){
-			StrMap::iterator iter=iterSetS[code];
+			StrIterMap::iterator _iter = iterSetS.find(code);
+			StrMap::iterator iter;
 			if (*isNew==1){
 				iter=strMap.begin();
 				iterSetS[code] = iter;
-			} else if (iter!=NULL){
+			} else if (_iter != iterSetS.end()){
+				iter = _iter->second;
 				iter++;
-			} else { return 0;}
+			}
+			else { return false; }
 			*isNew=0;
 			if (iter!=strMap.end()){
-				return 1;
+				return true;
 			} else {
 				iterSetS.erase(iterSetS.find(code));
 				isNewIter.erase(isNewIter.find(code));
-				return 0;
+				return false;
 			}
-		} else {
-			IntMap::iterator iter=iterSetI[code];
-			if (*isNew==1){
-				iter=intMap.begin();
+		}
+		else {
+			IntIterMap::iterator _iter = iterSetI.find(code);
+			IntMap::iterator iter;
+			if (*isNew == 1){
+				iter = intMap.begin();
 				iterSetI[code] = iter;
-			} else if (iter!=NULL){
+			} else if (_iter != iterSetI.end()){
+				iter = _iter->second;
 				iter++;
-			} else { return 0;}
+			}
+			else { return 0; }
 			*isNew=0;
 			if (iter!=intMap.end()){
-				return 1;
+				return true;
 			} else {
 				iterSetI.erase(iterSetI.find(code));
 				isNewIter.erase(isNewIter.find(code));
-				return 0;
+				return false;
 			}
 		}
 	}
 	int GetValueAtIter(int code){
 		if (uniqueStr){
-			StrMap::iterator iter=iterSetS[code];
-			if (iter==NULL || iter==strMap.end()) return 0;
-			return iter->second->GetValue();
+			StrIterMap::iterator iter=iterSetS.find(code);
+			if (iter == iterSetS.end())
+				return 0;
+			return iter->second->second->GetValue();
 		} else {
-			IntMap::iterator iter=iterSetI[code];
-			if (iter==NULL || iter==intMap.end()) return 0;
-			return iter->second->GetValue();
+			IntIterMap::iterator iter=iterSetI.find(code);
+			if (iter == iterSetI.end())
+				return 0;
+			return iter->second->second->GetValue();
 		}
 	}
 	char* GetTextAtIter(int code){
 		if (uniqueStr){
-			StrMap::iterator iter=iterSetS[code];
-			if (iter==NULL || iter==strMap.end()) return NULL;
-			return iter->second->GetText();
+			StrIterMap::iterator iter = iterSetS.find(code);
+			if (iter == iterSetS.end())
+				return NULL;
+			return iter->second->second->GetText();
 		} else {
-			IntMap::iterator iter=iterSetI[code];
-			if (iter==NULL || iter==intMap.end()) return NULL;
-			return iter->second->GetText();
+			IntIterMap::iterator iter = iterSetI.find(code);
+			if (iter == iterSetI.end())
+				return NULL;
+			return iter->second->second->GetText();
 		}
 	}
 	int GetExtraInfoAtIter(int code){
 		if (uniqueStr){
-			StrMap::iterator iter=iterSetS[code];
-			if (iter==NULL || iter==strMap.end()) return 0;
-			return iter->second->GetExtraInfo();
+			StrIterMap::iterator iter = iterSetS.find(code);
+			if (iter == iterSetS.end())
+				return 0;
+			return iter->second->second->GetExtraInfo();
 		} else {
-			IntMap::iterator iter=iterSetI[code];
-			if (iter==NULL || iter==intMap.end()) return 0;
-			return iter->second->GetExtraInfo();
+			IntIterMap::iterator iter = iterSetI.find(code);
+			if (iter == iterSetI.end())
+				return 0;
+			return iter->second->second->GetExtraInfo();
 		}
 	}
 	bool Add(int a_val,char* a_s,int a_val2, int a_val3 = 0){
@@ -1058,7 +1073,8 @@ private:
 		//cout<<toString();
 	}
 	void CTibiaPriorityQueue::testManyRemove(){
-		for (int i=0;i<15;i++){
+		int i;
+		for (i=0;i<15;i++){
 			Add (rand()%100,i);
 		}
 		for (i=0;i<15;i++){

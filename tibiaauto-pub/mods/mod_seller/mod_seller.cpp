@@ -803,7 +803,7 @@ int findSeller(CConfigData *config, int traderNum) {
 }
 
 int shouldKeepWalking() {
-	static lastAttackTime=0;
+	static time_t lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");
@@ -1083,7 +1083,7 @@ bool shouldGo(CConfigData *config) {
 			}
 
 		}
-		for (j = 0; j < MAX_SELLER_ITEMS; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1125,7 +1125,7 @@ bool canGo(CConfigData *config) {
 			}
 
 		}
-		for (j = 0; j < MAX_SELLER_ITEMS; j++) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 			int objectId = itemProxy.getItemId(config->buyItem[i].tradeItem[j].itemName);
 			if (objectId) {
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
@@ -1162,7 +1162,7 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		}
 	}
 	int count = -1;
-	for (j = 0; j < MAX_SELLER_ITEMS; j++) {
+	for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
 		int objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
 		//sprintf(buf, "Seller: %d\nObjectID: %d", traderNum+1, objectId);
 		//AfxMessageBox(buf);

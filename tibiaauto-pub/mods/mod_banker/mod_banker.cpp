@@ -365,7 +365,7 @@ int findBanker(CConfigData *config) {
 }
 
 int shouldKeepWalking() {
-	static lastAttackTime=0;
+	static time_t lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");

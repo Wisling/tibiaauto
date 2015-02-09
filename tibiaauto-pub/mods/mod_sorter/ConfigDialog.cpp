@@ -171,7 +171,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 			newConfigData->sortBags[i].slotNr[0].itemName[0] = '\0';
 		}
 	}
-	for (i = 0; i < 8;i++) {
+	for (int i = 0; i < 8;i++) {
 		for (int j =0; j < 32; j++) {
 			m_Bag[i].GetText(j,newConfigData->sortBags[i].slotNr[j].itemName);
 		}
@@ -189,7 +189,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 				firstOpenSlot = i;
 				break;}
 		}
-		for (i = 0, i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
 			if (firstOpenSlot != i && !m_Bag[i].GetCount()) {
 				m_Bag[i].EnableWindow(false);
 				m_BagIn[i].ShowWindow(false);

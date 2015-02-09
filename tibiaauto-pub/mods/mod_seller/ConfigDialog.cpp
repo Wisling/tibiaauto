@@ -263,7 +263,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 			newConfigData->buyItem[i].tradeItem[j].quantityBuySell = 0;
 			newConfigData->buyItem[i].tradeItem[j].salePrice = 0;
 		}
-		for (j = 0; j < m_SellBox[i].GetCount(); j++) {
+		for (int j = 0; j < m_SellBox[i].GetCount(); j++) {
 			m_SellBox[i].GetText(j,newConfigData->sellItem[i].tradeItem[j].itemName);
 			for (int k = strlen(newConfigData->sellItem[i].tradeItem[j].itemName)-1;k>0;k--) {
 				if (newConfigData->sellItem[i].tradeItem[j].itemName[k]=='-' && newConfigData->sellItem[i].tradeItem[j].itemName[k + 1]=='>') {
@@ -274,7 +274,7 @@ CConfigData * CConfigDialog::controlsToConfig() {
 			}
 			newConfigData->sellItem[i].tradeItem[j].quantityBuySell = atoi(paramString);
 		}
-		for (j = 0; j < m_BuyBox[i].GetCount(); j++) {
+		for (int j = 0; j < m_BuyBox[i].GetCount(); j++) {
 			m_BuyBox[i].GetText(j,newConfigData->buyItem[i].tradeItem[j].itemName);
 			for (int k = strlen(newConfigData->buyItem[i].tradeItem[j].itemName)-1;k>0;k--)	{
 				if (newConfigData->buyItem[i].tradeItem[j].itemName[k]=='-' && newConfigData->buyItem[i].tradeItem[j].itemName[k + 1]=='>') {

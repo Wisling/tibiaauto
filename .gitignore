@@ -1,0 +1,13 @@
+*.pdb
+*.idb
+*.obj
+*.tlog*
+*.log
+*.sbr
+*.ipch
+*.pch
+*.sbr
+*.suo
+*.sdf
+*.opensdf
+*.res

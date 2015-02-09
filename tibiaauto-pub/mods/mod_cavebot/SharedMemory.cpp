@@ -1497,10 +1497,11 @@ DWORD CSharedMemory::WaitForMultipleValuesChanges(CStringArray & str,BOOL bWaitF
 	DWORD dwRet = WAIT_FAILED;
 
 	if (m_bCreated) {
+		int i;
 
 		HANDLE *hEvHndl = new HANDLE[str.GetSize()];
 
-		for (int i = 0; i < str.GetSize(); i++) {
+		for (i = 0; i < str.GetSize(); i++) {
 			hEvHndl[i] = CreateEvent(m_bSecPres ? &m_SecAtr : NULL,FALSE,FALSE,str[i]+_T("_Event"));
 
 			if (hEvHndl[i] == NULL) {

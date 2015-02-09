@@ -12,8 +12,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const CComboBoxSuper::DEFAULT_COLUMN_COUNT = 100;
-const CComboBoxSuper::DEFAULT_COLUMN_WIDTH = 50;
+const int CComboBoxSuper::DEFAULT_COLUMN_COUNT = 100;
+const int CComboBoxSuper::DEFAULT_COLUMN_WIDTH = 50;
 
 CComboBoxSuper::CComboBoxSuper()
 : m_pImageList(NULL)

@@ -69,10 +69,11 @@ public:
 		tm=time(NULL);
 		tibiaId=0;
 	}
-	operator=(const creatureData p1)
+	creatureData& operator=(const creatureData& p1)
 	{
-		tm=p1.tm;
-		tibiaId=p1.tibiaId;
+		tm = p1.tm;
+		tibiaId = p1.tibiaId;
+		return *this;
 	}
 };
 
@@ -1283,7 +1284,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		int curTime=time(NULL);
+		time_t curTime=time(NULL);
 
 		int chNr;
 		for (chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
@@ -1320,7 +1321,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 									statChName[i]='\0';
 							}
 							
-							int tm=time(NULL);
+							time_t tm = time(NULL);
 							int r = rand();
 							int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13+ch->walkSpeed*17;
 							//int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;

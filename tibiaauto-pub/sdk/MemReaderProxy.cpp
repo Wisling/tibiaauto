@@ -521,7 +521,7 @@ int CMemReaderProxy::mapGetSelfCellNr()
 }
 int CMemReaderProxy::mapGetPointItemsCount(point p,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int relToCell=-1);
+	typedef int (*Proto_fun)(point p,int relToCell);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemsCount");
@@ -535,7 +535,7 @@ int CMemReaderProxy::mapGetPointItemsCount(point p,int relToCell/*=-1*/)
 }
 int CMemReaderProxy::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr,int relToCell=-1);
+	typedef int (*Proto_fun)(point p,int stackNr,int relToCell);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemId");
@@ -550,7 +550,7 @@ int CMemReaderProxy::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/
 
 int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr, int extraPos,int relToCell=-1);
+	typedef int (*Proto_fun)(point p,int stackNr, int extraPos,int relToCell);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemExtraInfo");
@@ -565,7 +565,7 @@ int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos
 
 int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr,int relToCell=-1);
+	typedef int (*Proto_fun)(point p,int stackNr,int relToCell);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointStackIndex");
@@ -580,7 +580,7 @@ int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr,int relToCell/*=
 
 void  CMemReaderProxy::mapSetPointItemsCount(point p, int count,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p, int count,int relToCell=-1);
+	typedef int (*Proto_fun)(point p, int count,int relToCell);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapSetPointItemsCount");
@@ -593,7 +593,7 @@ void  CMemReaderProxy::mapSetPointItemsCount(point p, int count,int relToCell/*=
 }
 void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId,int relToCell/*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr, int tileId,int relToCell=-1);
+	typedef int (*Proto_fun)(point p,int stackNr, int tileId,int relToCell);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapSetPointItemId");
@@ -1174,7 +1174,7 @@ int CMemReaderProxy::getCreatureDeltaY(int creatureNr)
 
 int CMemReaderProxy::itemOnTopIndex(int x,int y,int z/*=0*/)
 {
-	typedef int (*Proto_fun)(int x,int y,int z=0);
+	typedef int (*Proto_fun)(int x,int y,int z);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopIndex");
@@ -1300,7 +1300,7 @@ int CMemReaderProxy::itemOnTopCode(int x,int y)
 
 int CMemReaderProxy::itemSeenOnTopIndex(int x,int y,int z/*=0*/)
 {
-	typedef int (*Proto_fun)(int x,int y,int z=0);
+	typedef int (*Proto_fun)(int x,int y,int z);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemSeenOnTopIndex");
@@ -1342,7 +1342,7 @@ int CMemReaderProxy::itemOnTopQty(int x,int y)
 
 int CMemReaderProxy::findNextClosedContainer(int afterCont/*=-1*/)
 {
-	typedef int (*Proto_fun)(int afterCont=-1);
+	typedef int (*Proto_fun)(int afterCont);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadFindNextClosedContainer");

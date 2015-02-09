@@ -37,7 +37,7 @@ CUtil::~CUtil()
 
 }
 
-char *CUtil::wc2c(const unsigned short *src)
+char *CUtil::wc2c(const XMLCh *src)
 {
 	char *dest=(char *)malloc(MAX_STRING_LEN);
 	memset(dest,0,MAX_STRING_LEN);

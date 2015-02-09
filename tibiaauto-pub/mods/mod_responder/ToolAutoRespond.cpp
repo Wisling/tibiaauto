@@ -375,16 +375,16 @@ void CToolAutoRespond::start()
 		for (int rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
 		{
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
-			if (wcscmp(root->getNodeName(),_L("responder")))
+			if (wcscmp(root->getNodeName(),L"responder"))
 				continue;
 			for (int threadNr=0;threadNr<root->getChildNodes()->getLength();threadNr++)
 			{
 				DOMNode *threadNode = root->getChildNodes()->item(threadNr);
-				if (wcscmp(threadNode->getNodeName(),_L("thread")))
+				if (wcscmp(threadNode->getNodeName(),L"thread"))
 					continue;
 				
 				
-				if (wcscmp(threadNode->getNodeName(),_L("thread")))
+				if (wcscmp(threadNode->getNodeName(),L"thread"))
 				{
 					char buf[1024];
 					sprintf(buf,"Responder parse error: unknown tag '%s'",_T(threadNode->getNodeName()));

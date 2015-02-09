@@ -78,7 +78,7 @@ void CPackSenderProxy::setPipeHandle(HANDLE hPipe)
 
 void CPackSenderProxy::useWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method/*=2*/)
 {
-	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromFloorOnFloor");
@@ -90,7 +90,7 @@ void CPackSenderProxy::useWithObjectFromFloorOnFloor(int sourceObjectId,int sour
 }
 void CPackSenderProxy::useWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method/*=2*/)
 {
-	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2);
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromFloorInContainer");
@@ -102,7 +102,7 @@ void CPackSenderProxy::useWithObjectFromFloorInContainer(int sourceObjectId,int 
 }
 void CPackSenderProxy::useWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method/*=2*/)
 {
-	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method=2);
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromContainerInContainer");
@@ -114,7 +114,7 @@ void CPackSenderProxy::useWithObjectFromContainerInContainer(int sourceObjectId,
 }
 void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method/*=2*/)
 {
-	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	typedef void (*Proto_fun)(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectFromContainerOnFloor");
@@ -126,7 +126,7 @@ void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId,int 
 }
 void CPackSenderProxy::useWithObjectOnFloor(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method/*=2*/)
 {
-	typedef void (*Proto_fun)(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method=2);
+	typedef void (*Proto_fun)(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectOnFloor");
@@ -138,7 +138,7 @@ void CPackSenderProxy::useWithObjectOnFloor(int sourceObjectId,int targetObjectI
 }
 void CPackSenderProxy::useWithObjectInContainer(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method/*=2*/)
 {
-	typedef void (*Proto_fun)(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method=2);
+	typedef void (*Proto_fun)(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderUseWithObjectInContainer");

@@ -10,7 +10,7 @@
 //ugly hack-around to prevent conflict of always-included by mfc oledb.h with berkeley's db.h
 #define DBTYPE ORACLE_DBTYPE
 #undef DB_UNKNOWN
-#include <db_cxx.h>
+#include <berkeleydb/db_cxx.h>
 #undef DBTYPE
 
 #if _MSC_VER > 1000

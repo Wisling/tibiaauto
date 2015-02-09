@@ -167,8 +167,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	double minCastTime = 0.7;
 	char whiteText[32] = {0};
 	int best = 0;
+	int loop;
 	CTibiaItemProxy itemProxy;
-	for (int loop = 0; loop < config->timedSpellList.size(); loop++)
+	for (loop = 0; loop < config->timedSpellList.size(); loop++)
 		config->timedSpellList[loop].triggerTime = config->timedSpellList[loop].delay + time(NULL);
 
 	if (isInitializedCreatures() == 0)
