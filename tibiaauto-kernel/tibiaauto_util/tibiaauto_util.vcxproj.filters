@@ -95,14 +95,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\tibiaauto_util.rc2">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Tibiaauto_util.rgs">
-      <Filter>Resource Files</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="tibiaauto_util.rc">
       <Filter>Source Files</Filter>
     </ResourceCompile>
