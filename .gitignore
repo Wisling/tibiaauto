@@ -11,3 +11,5 @@
 *.sdf
 *.opensdf
 *.res
+*.exp
+*.bsc

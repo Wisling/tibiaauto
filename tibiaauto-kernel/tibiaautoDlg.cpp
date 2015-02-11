@@ -681,9 +681,9 @@ void CTibiaautoDlg::InitialiseIPC()
 	
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS,true,m_processId);
 	
-	char *injectDll="tibiaautoinject2.dll";
+	LPCSTR injectDll = "tibiaautoinject2.dll";
 	
-	if (!DetourContinueProcessWithDll(procHandle, injectDll)) {
+	if (!DetourUpdateProcessWithDll(procHandle, &injectDll, 1)) {
 		sprintf(buf,"dll injection failed: %d",GetLastError());
 		AfxMessageBox(buf);
 		ExitProcess(1);

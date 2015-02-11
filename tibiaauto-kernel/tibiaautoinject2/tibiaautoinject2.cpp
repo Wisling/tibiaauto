@@ -1771,49 +1771,10 @@ int callAddr_ShouldParseRecv01 =		0x463130;
 */
 
 
-//int recv2 = (void (*)())(*DetourFindFunction("wsock32.dll","recv"));
-DETOUR_TRAMPOLINE(int WINAPI Real_send(SOCKET s,char* buf,int len,int flags),send);
-//DETOUR_TRAMPOLINE(int WINAPI Real_recv(SOCKET s,char* buf,int len,int flags),recv);
-DETOUR_TRAMPOLINE(int WINAPI Real_connect(SOCKET s,const struct sockaddr* name,int namelen),connect);
-DETOUR_TRAMPOLINE(SOCKET WINAPI Real_socket(int af,int type,int protocol),socket);
-DETOUR_TRAMPOLINE(int Real_select(int nfds,fd_set* readfds,fd_set* writefds,fd_set* exceptfds,const struct timeval* timeout),select);
-
-//there are two recv functions and "recv" specifies the wrong one
-static PVOID __fastcall _Detours_GetVA_recv(VOID)
-{
-    return (PVOID)DetourFindFunction("wsock32.dll","recv");
-}
-
-__declspec(naked) int WINAPI Real_recv(SOCKET s,char* buf,int len,int flags)
-{
-    __asm { nop };
-    __asm { nop };
-    __asm { call _Detours_GetVA_recv };
-    __asm { jmp eax };
-    __asm { ret };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-    __asm { nop };
-}
+int (WINAPI *Real_send)(SOCKET s, char* buf, int len, int flags) = NULL;
+int (WINAPI *Real_recv)(SOCKET s, char* buf, int len, int flags) = NULL;
+int (WINAPI *Real_connect)(SOCKET s, const struct sockaddr* name, int namelen) = NULL;
+SOCKET(WINAPI *Real_socket)(int af, int type, int protocol) = NULL;
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags);
 char*  adler(char *data, size_t len);
@@ -2589,15 +2550,9 @@ void ActivateHookCallback()
 		return;
 	}
 		
-	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));
-	
-	
-	
-	
-	
+	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));	
 	
 }
-
 
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
@@ -2735,23 +2690,6 @@ int WINAPI Mine_connect(SOCKET s,const struct sockaddr* name,int namelen)
 	return ret;
 };
 
-int WINAPI Mine_select(
-					   int nfds,
-					   fd_set* readfds,
-					   fd_set* writefds,
-					   fd_set* exceptfds,
-					   const struct timeval* timeout
-					   )
-{
-	if (debugFile&&COMPLEX)
-	{
-		WriteOutDebug("select: %x, %x, %x\r\n",readfds,writefds,exceptfds);
-	}
-	return Real_select(nfds,readfds,writefds,exceptfds,timeout);
-}
-
-
-
 
 void InitialiseIPC()
 {
@@ -2820,22 +2758,21 @@ void InitialiseIPC()
 	}
 }
 
-
-
-
-
-
 void InitialiseHooks()
 {
-	DetourFunctionWithTrampoline((PBYTE)Real_send,(PBYTE)Mine_send);
-	DetourFunctionWithTrampoline((PBYTE)Real_recv,(PBYTE)Mine_recv);
-	DetourFunctionWithTrampoline((PBYTE)Real_connect,(PBYTE)Mine_connect);
-	DetourFunctionWithTrampoline((PBYTE)Real_socket,(PBYTE)Mine_socket);
-	//DetourFunctionWithTrampoline((PBYTE)Real_select,(PBYTE)Mine_select);
+	Real_send = (int (WINAPI *)(SOCKET, char*, int, int))DetourFindFunction("wsock32.dll", "send");
+	Real_recv = (int (WINAPI *)(SOCKET, char*, int, int))DetourFindFunction("wsock32.dll", "recv");
+	Real_connect = (int (WINAPI *)(SOCKET, const struct sockaddr*, int))DetourFindFunction("wsock32.dll", "connect");
+	Real_socket = (SOCKET(WINAPI *)(int, int, int))DetourFindFunction("wsock32.dll", "socket");
+	DetourTransactionBegin();
+	DetourUpdateThread(GetCurrentThread());
+
+	DetourAttach(&(PVOID&)Real_send, Mine_send);
+	DetourAttach(&(PVOID&)Real_recv, Mine_recv);
+	DetourAttach(&(PVOID&)Real_connect, Mine_connect);
+	DetourAttach(&(PVOID&)Real_socket, Mine_socket);
+	DetourTransactionCommit();
 };
-
-
-
 
 
 void InitialiseDebugFile()
@@ -4002,7 +3939,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 				HUDisplay[found].redColor = red;
 				HUDisplay[found].greenColor = green;
 				HUDisplay[found].blueColor = blue;
-				memcpy(HUDisplay[loop].message, message, messLen);
+				memcpy(HUDisplay[found].message, message, messLen);
 				//AfxMessageBox("add");
 			}
 			break;
