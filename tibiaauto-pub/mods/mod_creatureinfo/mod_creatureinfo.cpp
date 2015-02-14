@@ -53,7 +53,7 @@ using namespace std;
 class creatureData
 {
 public:
-	int tm;
+	time_t tm;
 	int tibiaId;
 	creatureData()
 	{
@@ -207,61 +207,61 @@ void Expression_PreParse(char *expression, expressionInfo *expInfo){
 }
 
 void Expression_Tags_Internals(char* tagName, char* svalue, CTibiaCharacter *ch){
-	if(!strcmpi(tagName,"tibiaid")){
+	if(!_strcmpi(tagName,"tibiaid")){
 		sprintf(svalue,"%d",ch->tibiaId);
 
-	}else if(!strcmpi(tagName,"x")){
+	}else if(!_strcmpi(tagName,"x")){
 		sprintf(svalue,"%d",ch->x);
 
-	}else if(!strcmpi(tagName,"y")){
+	}else if(!_strcmpi(tagName,"y")){
 		sprintf(svalue,"%d",ch->y);
 
-	}else if(!strcmpi(tagName,"z")){
+	}else if(!_strcmpi(tagName,"z")){
 		sprintf(svalue,"%d",ch->z);
 
-	}else if(!strcmpi(tagName,"outfitid")){
+	}else if(!_strcmpi(tagName,"outfitid")){
 		sprintf(svalue,"%d",ch->outfitId);
 
-	}else if(!strcmpi(tagName,"mountid")){
+	}else if(!_strcmpi(tagName,"mountid")){
 		sprintf(svalue,"%d",ch->mountId);
 
-	}else if(!strcmpi(tagName,"moving")){
+	}else if(!_strcmpi(tagName,"moving")){
 		sprintf(svalue,"%d",ch->moving);
 
-	}else if(!strcmpi(tagName,"monstertype")){
+	}else if(!_strcmpi(tagName,"monstertype")){
 		sprintf(svalue,"%d",ch->monsterType);
 
-	}else if(!strcmpi(tagName,"hppercleft")){
+	}else if(!_strcmpi(tagName,"hppercleft")){
 		sprintf(svalue,"%d",ch->hpPercLeft);
 
-	}else if(!strcmpi(tagName,"lookdir")){
+	}else if(!_strcmpi(tagName,"lookdir")){
 		sprintf(svalue,"%d",ch->lookDirection);
 
-	}else if(!strcmpi(tagName,"colorhead")){
+	}else if(!_strcmpi(tagName,"colorhead")){
 		sprintf(svalue,"%d",ch->colorHead);
 
-	}else if(!strcmpi(tagName,"colorbody")){
+	}else if(!_strcmpi(tagName,"colorbody")){
 		sprintf(svalue,"%d",ch->colorBody);
 
-	}else if(!strcmpi(tagName,"colorlegs")){
+	}else if(!_strcmpi(tagName,"colorlegs")){
 		sprintf(svalue,"%d",ch->colorLegs);
 
-	}else if(!strcmpi(tagName,"colorfoot")){
+	}else if(!_strcmpi(tagName,"colorfoot")){
 		sprintf(svalue,"%d",ch->colorFoot);
 
-	}else if(!strcmpi(tagName,"walkspeed")){
+	}else if(!_strcmpi(tagName,"walkspeed")){
 		sprintf(svalue,"%d",ch->walkSpeed);
 
-	}else if(!strcmpi(tagName,"skulls")){
+	}else if(!_strcmpi(tagName,"skulls")){
 		sprintf(svalue,"%d",ch->skulls);
 
-	}else if(!strcmpi(tagName,"shields")){
+	}else if(!_strcmpi(tagName,"shields")){
 		sprintf(svalue,"%d",ch->shields);
 
-	}else if(!strcmpi(tagName,"waricon")){
+	}else if(!_strcmpi(tagName,"waricon")){
 		sprintf(svalue,"%d",ch->warIcon);
 
-	}else if(!strcmpi(tagName,"blocking")){
+	}else if(!_strcmpi(tagName,"blocking")){
 		sprintf(svalue,"%d",ch->blocking);
 
 	}
@@ -284,7 +284,7 @@ void Creature_TypeToText(int type, char* svalue){
 }
 
 void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaCharacter *ch){
-	if (!strcmpi(tagName,"hp")){
+	if (!_strcmpi(tagName,"hp")){
 		if (data && data->type == TYPE_SELF){
 			sprintf(svalue,"%d",ch->hp);
 		}else if (data && data->maxHp){
@@ -293,22 +293,22 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 			sprintf(svalue,"%d%%",ch->hpPercLeft);
 		}
 
-	}else if(!strcmpi(tagName,"maxhp")){
+	}else if(!_strcmpi(tagName,"maxhp")){
 		if (data && data->maxHp){
 			sprintf(svalue,"%d",data->maxHp);
 		}else{
 			lstrcpy(svalue,"");
 		}
-	}else if(!strcmpi(tagName,"name")){
+	}else if(!_strcmpi(tagName,"name")){
 		if (data){
 			sprintf(svalue,"%s",data->name);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (data && !strcmpi(tagName,"type")){
+	}else if (data && !_strcmpi(tagName,"type")){
 		Creature_TypeToText(data->type,svalue);
-	}else if (!strcmpi(tagName,"relz")){
+	}else if (!_strcmpi(tagName,"relz")){
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int relz = self->z - ch->z;
@@ -326,32 +326,32 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 }
 
 void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCharacter *ch){
-	if (!strcmpi(tagName,"guildname")){
+	if (!_strcmpi(tagName,"guildname")){
 		lstrcpy(svalue,data->guildName);
 
-	}else if (!strcmpi(tagName,"guildrank")){
+	}else if (!_strcmpi(tagName,"guildrank")){
 		lstrcpy(svalue,data->guildRank);
 
-	}else if (!strcmpi(tagName,"guilddescription")){
+	}else if (!_strcmpi(tagName,"guilddescription")){
 		lstrcpy(svalue,data->guildDescription);
 
-	}else if (!strcmpi(tagName,"level")){
+	}else if (!_strcmpi(tagName,"level")){
 		sprintf(svalue,"%d",data->level);
 
-	}else if (!strcmpi(tagName,"voc")){
+	}else if (!_strcmpi(tagName,"voc")){
 		Player_VocID2Vocation(data->vocId,svalue,1);
 
-	}else if (!strcmpi(tagName,"vocation")){
+	}else if (!_strcmpi(tagName,"vocation")){
 		Player_VocID2Vocation(data->vocId,svalue,0);
-	}else if (!strcmpi(tagName,"speedmodif")){
+	}else if (!_strcmpi(tagName,"speedmodif")){
 		int base = 218 + 2*(data->level);
 		int modif = ch->walkSpeed - base;
 
-		int haste = floorf(float(base)*0.3-24);
+		int haste = (int)floorf((float)(base*0.3 - 24));
 		if (haste%2){
 			haste--;
 		}
-		int shaste = floorf(float(base)*0.7-56);
+		int shaste = (int)floorf((float)(base*0.7 - 56));
 		if (shaste%2){
 			shaste--;
 		}
@@ -388,54 +388,54 @@ void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCha
 
 void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 	//T4: Char info
-	if (!strcmpi(tagName,"mana")){
+	if (!_strcmpi(tagName,"mana")){
 		sprintf(svalue,"%d",playerInfo->mana);
 
-	}else if (!strcmpi(tagName,"maxmana")){
+	}else if (!_strcmpi(tagName,"maxmana")){
 		sprintf(svalue,"%d",playerInfo->maxMana);
 
-	}else if (!strcmpi(tagName,"voc")){
+	}else if (!_strcmpi(tagName,"voc")){
 		sprintf(svalue,"%s",playerInfo->voc);
 		for(int i=strlen(svalue)-1;i>=0;i--) svalue[i] = toupper(svalue[i]);
-	}else if (!strcmpi(tagName,"capacity")){
+	}else if (!_strcmpi(tagName,"capacity")){
 		sprintf(svalue,"%d.%02d",(int)playerInfo->capacity,(int)((playerInfo->capacity-(int)playerInfo->capacity)*100));
 
-	}else if (!strcmpi(tagName,"stamina")){
+	}else if (!_strcmpi(tagName,"stamina")){
 		sprintf(svalue,"%d:%02d",(int)(playerInfo->stamina/60),(int)(playerInfo->stamina%60));
 
-	}else if (!strcmpi(tagName,"maxcapacity")){
+	}else if (!_strcmpi(tagName,"maxcapacity")){
 		sprintf(svalue,"%d",playerInfo->maxCapacity);
 
-	}else if (!strcmpi(tagName,"soulpoints")){
+	}else if (!_strcmpi(tagName,"soulpoints")){
 		sprintf(svalue,"%d",playerInfo->soulPoints);
 
 	//T4: Char stats
-	}else if (!strcmpi(tagName,"exp")){
+	}else if (!_strcmpi(tagName,"exp")){
 		sprintf(svalue,"%d",playerInfo->expCurrent);
 
-	}else if (!strcmpi(tagName,"expleft")){
+	}else if (!_strcmpi(tagName,"expleft")){
 		sprintf(svalue,"%d",playerInfo->expLeft);
 
-	}else if (!strcmpi(tagName,"expperh")){
+	}else if (!_strcmpi(tagName,"expperh")){
 		if (playerInfo->expPerHour){
 			sprintf(svalue,"%d",playerInfo->expPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"level")){
+	}else if (!_strcmpi(tagName,"level")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_LEVEL].lvl);
 
-	}else if (!strcmpi(tagName,"level%")){
+	}else if (!_strcmpi(tagName,"level%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_LEVEL].percLeft);
 
-	}else if (!strcmpi(tagName,"levelperh")){
+	}else if (!_strcmpi(tagName,"levelperh")){
 		if (playerInfo->skill[SKILL_LEVEL].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_LEVEL].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
-	}else if (!strcmpi(tagName,"levelupin")){
+	}else if (!_strcmpi(tagName,"levelupin")){
 		if (playerInfo->skill[SKILL_LEVEL].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_LEVEL].percLeft)/float(playerInfo->skill[SKILL_LEVEL].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -447,19 +447,19 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"magiclevel")){
+	}else if (!_strcmpi(tagName,"magiclevel")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_MAGICLEVEL].lvl);
 
-	}else if (!strcmpi(tagName,"magiclevel%")){
+	}else if (!_strcmpi(tagName,"magiclevel%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_MAGICLEVEL].percLeft);
 
-	}else if (!strcmpi(tagName,"magiclevelperh")){
+	}else if (!_strcmpi(tagName,"magiclevelperh")){
 		if (playerInfo->skill[SKILL_MAGICLEVEL].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_MAGICLEVEL].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
-	}else if (!strcmpi(tagName,"magiclevelupin")){
+	}else if (!_strcmpi(tagName,"magiclevelupin")){
 		if (playerInfo->skill[SKILL_MAGICLEVEL].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_MAGICLEVEL].percLeft)/float(playerInfo->skill[SKILL_MAGICLEVEL].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -472,38 +472,38 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		}
 
 	//T4: Skills stats
-	}else if (!strcmpi(tagName,"skillsword")){
+	}else if (!_strcmpi(tagName,"skillsword")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_SWORD].lvl);
 
-	}else if (!strcmpi(tagName,"skillaxe")){
+	}else if (!_strcmpi(tagName,"skillaxe")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_AXE].lvl);
 
-	}else if (!strcmpi(tagName,"skillclub")){
+	}else if (!_strcmpi(tagName,"skillclub")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_CLUB].lvl);
 
-	}else if (!strcmpi(tagName,"skillshield")){
+	}else if (!_strcmpi(tagName,"skillshield")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_SHIELD].lvl);
 
-	}else if (!strcmpi(tagName,"skilldistance")){
+	}else if (!_strcmpi(tagName,"skilldistance")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_DIST].lvl);
 
-	}else if (!strcmpi(tagName,"skillfishing")){
+	}else if (!_strcmpi(tagName,"skillfishing")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_FISH].lvl);
 
-	}else if (!strcmpi(tagName,"skillfist")){
+	}else if (!_strcmpi(tagName,"skillfist")){
 		sprintf(svalue,"%d",playerInfo->skill[SKILL_FIST].lvl);
 
-	}else if (!strcmpi(tagName,"skillsword%")){
+	}else if (!_strcmpi(tagName,"skillsword%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_SWORD].percLeft);
 
-	}else if (!strcmpi(tagName,"skillswordperh")){
+	}else if (!_strcmpi(tagName,"skillswordperh")){
 		if (playerInfo->skill[SKILL_SWORD].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_SWORD].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"skillswordupin")){
+	}else if (!_strcmpi(tagName,"skillswordupin")){
 		if (playerInfo->skill[SKILL_SWORD].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_SWORD].percLeft)/float(playerInfo->skill[SKILL_SWORD].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -515,17 +515,17 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"skillaxe%")){
+	}else if (!_strcmpi(tagName,"skillaxe%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_AXE].percLeft);
 
-	}else if (!strcmpi(tagName,"skillaxeperh")){
+	}else if (!_strcmpi(tagName,"skillaxeperh")){
 		if (playerInfo->skill[SKILL_AXE].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_AXE].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"skillaxeupin")){
+	}else if (!_strcmpi(tagName,"skillaxeupin")){
 		if (playerInfo->skill[SKILL_AXE].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_AXE].percLeft)/float(playerInfo->skill[SKILL_AXE].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -537,17 +537,17 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"skillclub%")){
+	}else if (!_strcmpi(tagName,"skillclub%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_CLUB].percLeft);
 
-	}else if (!strcmpi(tagName,"skillclubperh")){
+	}else if (!_strcmpi(tagName,"skillclubperh")){
 		if (playerInfo->skill[SKILL_CLUB].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_CLUB].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"skillclubupin")){
+	}else if (!_strcmpi(tagName,"skillclubupin")){
 		if (playerInfo->skill[SKILL_CLUB].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_CLUB].percLeft)/float(playerInfo->skill[SKILL_CLUB].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -559,17 +559,17 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"skillshield%")){
+	}else if (!_strcmpi(tagName,"skillshield%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_SHIELD].percLeft);
 
-	}else if (!strcmpi(tagName,"skillshieldperh")){
+	}else if (!_strcmpi(tagName,"skillshieldperh")){
 		if (playerInfo->skill[SKILL_SHIELD].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_SHIELD].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"skillshieldupin")){
+	}else if (!_strcmpi(tagName,"skillshieldupin")){
 		if (playerInfo->skill[SKILL_SHIELD].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_SHIELD].percLeft)/float(playerInfo->skill[SKILL_SHIELD].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -581,17 +581,17 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"skilldistance%")){
+	}else if (!_strcmpi(tagName,"skilldistance%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_DIST].percLeft);
 
-	}else if (!strcmpi(tagName,"skilldistanceperh")){
+	}else if (!_strcmpi(tagName,"skilldistanceperh")){
 		if (playerInfo->skill[SKILL_DIST].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_DIST].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"skilldistanceupin")){
+	}else if (!_strcmpi(tagName,"skilldistanceupin")){
 		if (playerInfo->skill[SKILL_DIST].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_DIST].percLeft)/float(playerInfo->skill[SKILL_DIST].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -603,17 +603,17 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"skillfishing%")){
+	}else if (!_strcmpi(tagName,"skillfishing%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_FISH].percLeft);
 
-	}else if (!strcmpi(tagName,"skillfishingperh")){
+	}else if (!_strcmpi(tagName,"skillfishingperh")){
 		if (playerInfo->skill[SKILL_FISH].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_FISH].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"skillfishingupin")){
+	}else if (!_strcmpi(tagName,"skillfishingupin")){
 		if (playerInfo->skill[SKILL_FISH].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_FISH].percLeft)/float(playerInfo->skill[SKILL_FISH].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -625,16 +625,16 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 
 		}
 
-	}else if (!strcmpi(tagName,"skillfist%")){
+	}else if (!_strcmpi(tagName,"skillfist%")){
 		sprintf(svalue,"%d%%",playerInfo->skill[SKILL_FIST].percLeft);
 
-	}else if (!strcmpi(tagName,"skillfistperh")){
+	}else if (!_strcmpi(tagName,"skillfistperh")){
 		if (playerInfo->skill[SKILL_FIST].percPerHour > 0.001){
 			sprintf(svalue,"%.02f%%/h",playerInfo->skill[SKILL_FIST].percPerHour);
 		}else{
 			lstrcpy(svalue,"");
 		}
-	}else if (!strcmpi(tagName,"skillfistupin")){
+	}else if (!_strcmpi(tagName,"skillfistupin")){
 		if (playerInfo->skill[SKILL_FIST].percPerHour > 0.001){
 			float fHour = float(float(playerInfo->skill[SKILL_FIST].percLeft)/float(playerInfo->skill[SKILL_FIST].percPerHour));
 			unsigned long hour = long(floor(fHour));
@@ -647,35 +647,35 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		}
 
 	//T4: Spell Timers
-	}else if (!strcmpi(tagName,"timehaste")){
+	}else if (!_strcmpi(tagName,"timehaste")){
 		if (playerInfo->spell[SPELL_HASTE].remaining > 0){
 			sprintf(svalue,"%d",playerInfo->spell[SPELL_HASTE].remaining);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"timestronghaste")){
+	}else if (!_strcmpi(tagName,"timestronghaste")){
 		if (playerInfo->spell[SPELL_STRONGHASTE].remaining > 0){
 			sprintf(svalue,"%d",playerInfo->spell[SPELL_STRONGHASTE].remaining);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"timeinvisible")){
+	}else if (!_strcmpi(tagName,"timeinvisible")){
 		if (playerInfo->spell[SPELL_INVISIBLE].remaining > 0){
 			sprintf(svalue,"%d",playerInfo->spell[SPELL_INVISIBLE].remaining);
 		}else{
 			lstrcpy(svalue,"");
 		}
 
-	}else if (!strcmpi(tagName,"timeshield")){
+	}else if (!_strcmpi(tagName,"timeshield")){
 		if (playerInfo->spell[SPELL_SHIELD].remaining > 0){
 			sprintf(svalue,"%d",playerInfo->spell[SPELL_SHIELD].remaining);
 		}else{
 			lstrcpy(svalue,"");
 		}
 	//V: creature statisticsx
-	} else if (!strcmpi(tagName,"crstatMostHp")) {
+	} else if (!_strcmpi(tagName,"crstatMostHp")) {
 		
 		CCreaturesReaderProxy cReader;
 		CMemReaderProxy reader;
@@ -711,7 +711,7 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 		
 		delete self;
 		
-	} else if (!strcmpi(tagName,"crstatMostExp")) {
+	} else if (!_strcmpi(tagName,"crstatMostExp")) {
 		
 		CCreaturesReaderProxy cReader;
 		CMemReaderProxy reader;
@@ -753,27 +753,27 @@ void Expression_Tags_Self(char* tagName, char* svalue,CConfigData *config){
 }
 
 void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
-	if (!strcmpi(tagName,"exp")){
+	if (!_strcmpi(tagName,"exp")){
 		if (data->exp>0){
 			sprintf(svalue,"%d",data->exp);
 		}else{
 			strcpy(svalue,"");
 		}
-	}else if (!strcmpi(tagName,"maxHp")){
+	}else if (!_strcmpi(tagName,"maxHp")){
 		if (data->maxHp>0){
 			sprintf(svalue,"%d",data->maxHp);
 		}else{
 			strcpy(svalue,"");
 		}
-	}else if (!strcmpi(tagName,"weakness") || !strcmpi(tagName,"strength") || !strcmpi(tagName,"immunity") || !strcmpi(tagName,"noneffect")){
+	}else if (!_strcmpi(tagName,"weakness") || !_strcmpi(tagName,"strength") || !_strcmpi(tagName,"immunity") || !_strcmpi(tagName,"noneffect")){
 		int amt;
-		if (!strcmpi(tagName,"weakness")){
+		if (!_strcmpi(tagName,"weakness")){
 			amt = 5;
-		}else if (!strcmpi(tagName,"strength")){
+		}else if (!_strcmpi(tagName,"strength")){
 			amt = 1;
-		}else if (!strcmpi(tagName,"immunity")){
+		}else if (!_strcmpi(tagName,"immunity")){
 			amt = 0;
-		}else if (!strcmpi(tagName,"noneffect")){
+		}else if (!_strcmpi(tagName,"noneffect")){
 			amt = 2;
 		}
 		if (data->physical==amt)
@@ -791,7 +791,7 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 		if (data->death==amt)
 			sprintf(svalue,"Dt,");
 		svalue[strlen(svalue)-1] = '\0';
-	}else if (!strcmpi(tagName,"description")){
+	}else if (!_strcmpi(tagName,"description")){
 		if (lstrlen(data->description)){
 			sprintf(svalue,"%s",data->description);
 		}else{
@@ -856,7 +856,7 @@ void CreatureList_Init(){
     XMLPlatformUtils::Initialize();
     XercesDOMParser *parser = new XercesDOMParser();
     try{
-        int itemNr,rootNr;
+		size_t itemNr, rootNr, attrNr;
 
         monstersCount=0;
                
@@ -872,7 +872,6 @@ void CreatureList_Init(){
                 continue;
             for (itemNr=0;itemNr<root->getChildNodes()->getLength();itemNr++)
             {
-                int attrNr;
                 DOMNode *item = root->getChildNodes()->item(itemNr);
                 if (wcscmp(item->getNodeName(),L"creature"))
                     continue;
@@ -993,7 +992,7 @@ void CreatureList_Init(){
 
 int Monster_GetHp(char *name){
 	for(int i=0;i<monstersCount;i++){
-		if(!strcmpi(monstersInfo[i].name,name)){
+		if(!_strcmpi(monstersInfo[i].name,name)){
 			return monstersInfo[i].maxHp;
 		}
 	}
@@ -1002,7 +1001,7 @@ int Monster_GetHp(char *name){
 
 int Monster_GetExp(char *name){
 	for(int i=0;i<monstersCount;i++){
-		if(!strcmpi(monstersInfo[i].name,name)){
+		if(!_strcmpi(monstersInfo[i].name,name)){
 			return monstersInfo[i].exp;
 		}
 	}
@@ -1012,7 +1011,7 @@ int Monster_GetExp(char *name){
 void Player_Register(char *name,int vocId,int lvl,char *guildName,char *guildRank,char *guildDescription){
 	int i;
 	for (i=0;i<playersCount;i++){
-		if (!strcmpi(playersInfo[i].name,name)){
+		if (!_strcmpi(playersInfo[i].name,name)){
 			//T4: Player found in known list - so just refresh
 			playersInfo[i].vocId = vocId;
 			playersInfo[i].level = lvl;
@@ -1041,7 +1040,7 @@ void Monster_Register(char *name,int type,int maxHp, int exp, int physical, int 
 	//T4 This is called monster but lot of other objects info will be added here
 	int i;
 	for (i=0;i<monstersCount;i++){
-		if (!strcmpi(monstersInfo[i].name,name)){
+		if (!_strcmpi(monstersInfo[i].name,name)){
 			//T4: Monster found - do nothing
 			return;
 		}
@@ -1323,9 +1322,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							
 							time_t tm = time(NULL);
 							int r = rand();
-							int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13+ch->walkSpeed*17;
+							int checksum = (int)(r * 15 + tm + ch->tibiaId * 3 + ch->x * 5 + ch->y * 7 + ch->z * 11 + strlen(statChName) * 13 + ch->walkSpeed * 17);
 							//int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;
-							fprintf(f,"%d,%d,%d,%d,%d,'%s',%d,%d,%d\n",tm,ch->tibiaId,ch->x,ch->y,ch->z,statChName,ch->walkSpeed,r,checksum);
+							fprintf(f, "%d,%d,%d,%d,%d,'%s',%d,%d,%d\n", tm, ch->tibiaId, ch->x, ch->y, ch->z, statChName, ch->walkSpeed, r, checksum);
 							fclose(f);
 														
 						}
@@ -1345,7 +1344,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				//T4: Apply custom text only to creatures on same z
 				if (ch->tibiaId==self->tibiaId){
 					//T4: Self
-					if (!strcmpi(playersInfo[0].name,ch->name)){
+					if (!_strcmpi(playersInfo[0].name,ch->name)){
 						//T4: Sending info msg is needed to know guild info
 						found=1;
 					}else{
@@ -1377,7 +1376,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (config->player){
 							//T4: This is a player
 							for (i=1;i<playersCount;i++){
-								if (!strcmpi(playersInfo[i].name,ch->name)){
+								if (!_strcmpi(playersInfo[i].name,ch->name)){
 									//T4: Player found in Known list
 									found=1;
 									break;
@@ -1407,7 +1406,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							//T4: Extract name from BattleList string;
 							Monster_GetName(ch->name,name);
 							for (i=0;i<monstersCount;i++){
-								if (!strcmpi(monstersInfo[i].name,name)){
+								if (!_strcmpi(monstersInfo[i].name,name)){
 									//T4: Monster found in Known list
 									if (config->uniqueMonsterNames){
 										//T4: We have to add number to name because we need unique names

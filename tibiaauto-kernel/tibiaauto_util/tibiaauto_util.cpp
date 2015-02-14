@@ -958,7 +958,7 @@ void packSenderLook(int x,int y, int z,int objectId)
 	sender.look(x,y,z,objectId);
 }
 
-void packSenderIgnoreLook(int end)
+void packSenderIgnoreLook(time_t end)
 {
 	CPackSender sender;
 	sender.ignoreLook(end);

@@ -5,7 +5,7 @@ struct ipcMessage
 {
 	int messageType;
 	char payload[1024];
-	UINT tm;
+	time_t tm;
 public:
 	ipcMessage(){
 		messageType = 0;

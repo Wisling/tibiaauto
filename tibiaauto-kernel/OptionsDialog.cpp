@@ -13,7 +13,6 @@
 
 
 #include <afxinet.h>
-#include <afxtempl.h>
 #include <queue>
 #include <vector>
 
@@ -270,8 +269,8 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		delete ftpConnection;
 		
 		
-		unlink(fname);
-		unlink(fnameGz);
+		_unlink(fname);
+		_unlink(fnameGz);
 
 		fileSendingProgress=1;
 	} catch (CInternetException *e)
@@ -295,7 +294,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 		{
 			CInternetSession session;
 			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
-			int t=time(NULL);
+			time_t t = time(NULL);
 			int r=rand();
 			int lastfile=1;
 			while(lastfile)
@@ -310,7 +309,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 								
 				ftpConnection->PutFile(fnameGz,remoteFileName);
 								
-				unlink(fnameGz);
+				_unlink(fnameGz);
 				lastfile=FindNextFile(hFind,&data);
 			}
 			ftpConnection->Close();
@@ -485,7 +484,7 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 			while(lastfile)
 			{
 				sprintf(fname,"%s\\tascripts\\%s",path,data.cFileName);
-				unlink(fname);
+				_unlink(fname);
 				lastfile=FindNextFile(hFind,&data);
 			}
 		}
@@ -505,7 +504,7 @@ sendFiles:
 		{
 			CInternetSession session;
 			CFtpConnection *ftpConnection = session.GetFtpConnection("upload.tibiaauto.net","anonymous","tibiaauto@tibiaauto.net",21,true);
-			int t=time(NULL);
+			time_t t = time(NULL);
 			unsigned long serialNumber;
 			GetVolumeInformation(NULL,NULL,0,&serialNumber,NULL,NULL,NULL,0);
 			unsigned int r=serialNumber%0x1000000;
@@ -522,9 +521,9 @@ sendFiles:
 								
 				ftpConnection->PutFile(fnameGz,remoteFileName);
 								
-				unlink(fnameGz);
+				_unlink(fnameGz);
 				lastfile=FindNextFile(hFind,&data);
-				unlink(fname);
+				_unlink(fname);
 			}
 			ftpConnection->Close();
 			delete ftpConnection;

@@ -65,7 +65,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop) {
-		int loop = 0;
+		size_t loop = 0;
 		list <byte> tibiaFile;
 		list<byte>::iterator fileIterator;
 		list <byte> comparison;

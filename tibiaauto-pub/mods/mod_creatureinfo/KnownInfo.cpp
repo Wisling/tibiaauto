@@ -152,7 +152,7 @@ void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo() {
 				delete ch;
 				break;
 			}
-			if (!lstrcmpi(ch->name,playersInfo[iSel].name)){
+			if (!_strcmpi(ch->name, playersInfo[iSel].name)){
 				found = chNr;
 				delete ch;
 				break;

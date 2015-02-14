@@ -72,7 +72,7 @@ public:
 	char *getConfigParamName(int nr);
 private:
 	int m_started;
-	int currentPos;
+	size_t currentPos;
 	CConfigDialog * m_configDialog;
 	CConfigData *m_configData;
 };

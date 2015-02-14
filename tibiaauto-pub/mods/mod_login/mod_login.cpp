@@ -42,7 +42,7 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 
-int loginTime=0;
+time_t loginTime = 0;
 /////////////////////////////////////////////////////////////////////////////
 // CMod_loginApp
 
@@ -197,7 +197,6 @@ int getSelfHealth()
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {
-	int i;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -324,7 +323,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (wndTrayed){
 				::ShowWindow(hwnd,SW_SHOW);
 				// wait 5s for the window to show
-				for (i=0;i<50;i++)
+				for (int i = 0; i<50; i++)
 				{
 					if (::IsWindowVisible(hwnd)) break;
 					if (toolThreadShouldStop) break;
@@ -336,7 +335,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				::ShowWindow(hwnd,SW_SHOWMAXIMIZED);
 				
 				// wait 5s for the window to restore
-				for (i=0;i<50;i++)
+				for (int i = 0; i<50; i++)
 				{
 					if (!::IsIconic(hwnd) && wndIconic || ::IsZoomed(hwnd) && wndMaximized) break;
 					if (toolThreadShouldStop) break;
@@ -441,7 +440,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			
 			registerDebug("Waiting for establishing connection up to 15s");
-			for (i=0;i<150;i++)
+			for (int i=0;i<150;i++)
 			{
 				if (reader.isLoggedIn()) break;
 				if (toolThreadShouldStop) break;
@@ -453,7 +452,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 
 			//Click on the X of Possibly open skills/battle windows
-			for (i=0;i<4;i++){
+			for (int i = 0; i<4; i++){
 				SetCursorPos(wndRect.right-15,wndRect.top+387+39);//inventory maximized
 				mouse_event(MYMOUSE_DOWN,0,0,0,0);
 				mouse_event(MYMOUSE_UP,0,0,0,0);
@@ -571,7 +570,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				::ShowWindow(hwnd,SW_MINIMIZE);
 				// wait 5s for the window to minimize
-				for (i=0;i<50;i++)
+				for (int i = 0; i<50; i++)
 				{
 					if (::IsIconic(hwnd)) break;
 					if (toolThreadShouldStop) break;
@@ -580,7 +579,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			} else if (!wndMaximized){
 				::ShowWindow(hwnd,SW_RESTORE);
 				// wait 5s for the window to minimize
-				for (i=0;i<50;i++)
+				for (int i = 0; i<50; i++)
 				{
 					if (!::IsZoomed(hwnd)) break;
 					if (toolThreadShouldStop) break;
@@ -591,7 +590,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				::ShowWindow(hwnd,SW_HIDE);
 				// wait 5s for the window to minimize
-				for (i=0;i<50;i++)
+				for (int i = 0; i<50; i++)
 				{
 					if (!::IsWindowVisible(hwnd)) break;
 					if (toolThreadShouldStop) break;

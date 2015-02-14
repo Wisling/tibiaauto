@@ -215,7 +215,7 @@ void CCharInfoDialog::dataCalc(){
 	}
 
 	playerInfo.timeCurrent = time(NULL);
-	unsigned long timeDiff = playerInfo.timeCurrent-playerInfo.timeStart;
+	time_t timeDiff = playerInfo.timeCurrent-playerInfo.timeStart;
 
 	playerInfo.hp			= ch->hp;
 	playerInfo.maxHp		= ch->maxHp;
@@ -239,7 +239,7 @@ void CCharInfoDialog::dataCalc(){
 	playerInfo.expLvl		= expForLvlDiff;
 	playerInfo.expLeft		= expLeft;
 	if (timeDiff){
-		playerInfo.expPerHour	= MulDiv(playerInfo.expCurrent-playerInfo.expStart,3600,timeDiff);
+		playerInfo.expPerHour = MulDiv(playerInfo.expCurrent - playerInfo.expStart, 3600, (int)timeDiff);
 	}
 	
 	//Skills
@@ -299,16 +299,17 @@ void CCharInfoDialog::dataCalc(){
 //			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch->name, infoType);
 //			sender.sendTAMessage(buf);
 
-			if ((strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf,"test invis") == 0)) { //invisible
+			if ((_strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf,"test invis") == 0)) { //invisible
 				playerInfo.spell[SPELL_INVISIBLE].start		= time(NULL);
 				playerInfo.spell[SPELL_INVISIBLE].warning	= 0;
-			} else if ((strcmpi(msgBuf, "utani hur ") == 0) || (strcmp(msgBuf,"test haste") == 0)) { //haste
+			} else if ((_strcmpi(msgBuf, "utani hur ") == 0) || (strcmp(msgBuf,"test haste") == 0)) { //haste
 				playerInfo.spell[SPELL_HASTE].start			= time(NULL);
 				playerInfo.spell[SPELL_HASTE].warning		= 0;
-			} else if ((strcmpi(msgBuf, "utani gran hur ") == 0) || (strcmp(msgBuf,"test strong haste") == 0)) { //strong haste
+			} else if ((_strcmpi(msgBuf, "utani gran hur ") == 0) || (strcmp(msgBuf,"test strong haste") == 0)) { //strong haste
 				playerInfo.spell[SPELL_STRONGHASTE].start	= time(NULL);
 				playerInfo.spell[SPELL_STRONGHASTE].warning	= 0x01; //0x01 cuz it lasts less then warnin1
-			} else if ((lstrcmpi(msgBuf, "utamo vita ") == 0) || (strcmp(msgBuf,"test magic shield") == 0)) { //magic shield
+			}
+			else if ((_strcmpi(msgBuf, "utamo vita ") == 0) || (strcmp(msgBuf, "test magic shield") == 0)) { //magic shield
 				playerInfo.spell[SPELL_SHIELD].start		= time(NULL);
 				playerInfo.spell[SPELL_SHIELD].warning		= 0;
 			}
@@ -341,12 +342,12 @@ void CCharInfoDialog::dataShow(){
 	CStatic *skillUpInCtrl[9]		= {&m_lvlUpin,&m_mLvlUpin,&m_fistUpin,&m_clubUpin,&m_swordUpin,&m_axeUpin,&m_distUpin,&m_shieldUpin,&m_fishUpin};
 	char buffer[128];
 
-	unsigned long timeDiff = playerInfo.timeCurrent-playerInfo.timeStart;
+	time_t timeDiff = playerInfo.timeCurrent-playerInfo.timeStart;
 	unsigned long sec	= timeDiff%60;
 	timeDiff -= sec;
 	unsigned long min	= (timeDiff%3600)/60;
 	timeDiff -= min*60;
-	unsigned long hour	= timeDiff/3600;
+	unsigned long hour	= (unsigned long)(timeDiff/3600);
 	sprintf(buffer,"Running for %dh%dm%ds",hour,min,sec);				m_time.SetWindowText(buffer);
 
 	sprintf(buffer,"%d/%d",playerInfo.hp,playerInfo.maxHp);				m_hp.SetWindowText(buffer);

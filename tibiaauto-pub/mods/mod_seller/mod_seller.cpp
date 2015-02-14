@@ -108,10 +108,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int allAtOnce = 0;
 	int buyOrSell = 0;
 	int persistentShouldGo=0;
-	int lastPathNotFoundTm=0;
+	time_t lastPathNotFoundTm = 0;
 	unsigned int modRuns = 0;
 	reader.setGlobalVariable("banker_suggestion","");
-	unsigned int lastSellerSuccessTm=0;
+	time_t lastSellerSuccessTm=0;
 	int sellerPauseAfterSuccess=5;
 
 	while (!toolThreadShouldStop) {
@@ -988,7 +988,7 @@ int isCavebotOn() {
 		
 		Module32First(hSnap,&lpModule);
 		do {
-			if (strcmpi(lpModule.szModule,"mod_cavebot.dll") == 0){
+			if (_strcmpi(lpModule.szModule,"mod_cavebot.dll") == 0){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
 				if (isStarted) {

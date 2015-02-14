@@ -129,13 +129,13 @@ HUD HUDisplay[100];
 struct tibiaState
 {
 	int attackedCreature;
-	char outbufHmm[100];
-	char outbufGfb[100];
-	char outbufSd[100];
-	char outbufExplo[100];
-	char outbufSelfUH[100];
-	char outbufFluidMana[100];
-	char outbufFluidLife[100];
+	unsigned char outbufHmm[100];
+	unsigned char outbufGfb[100];
+	unsigned char outbufSd[100];
+	unsigned char outbufExplo[100];
+	unsigned char outbufSelfUH[100];
+	unsigned char outbufFluidMana[100];
+	unsigned char outbufFluidLife[100];
 }tibiaState;
 
 /*
@@ -1777,7 +1777,7 @@ int (WINAPI *Real_connect)(SOCKET s, const struct sockaddr* name, int namelen) =
 SOCKET(WINAPI *Real_socket)(int af, int type, int protocol) = NULL;
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags);
-char*  adler(char *data, size_t len);
+unsigned char* adler(unsigned char *data, size_t len);
 
 void InitialiseCommunication();
 void InitialiseHooks();
@@ -1813,7 +1813,7 @@ int payloadLen(char buf[])
 	return len;
 }
 
-void bufToHexString(char *buf,int len)
+void bufToHexString(unsigned char *buf,int len)
 {
 	if (len>STRBUFLEN/8)
 	{
@@ -1829,6 +1829,11 @@ void bufToHexString(char *buf,int len)
 		sprintf(localBuf," %02X",val);
 		strcat(bufToHexStringRet,localBuf);
 	};
+}
+
+void bufToHexString(char *buf, int len)
+{
+	bufToHexString((unsigned char*)buf, len);
 }
 
 int GetProcessBaseAddr()
@@ -1850,9 +1855,9 @@ int GetProcessBaseAddr()
 		HMODULE *modules=(HMODULE*)calloc(moduleCount,sizeof(HMODULE));
 		char moduleName[64];
 		EnumProcessModules(dwHandle,modules,moduleCount*sizeof(HMODULE),NULL);
-		for (int i=0;i<moduleCount;i++){
+		for (size_t i=0;i<moduleCount;i++){
 			GetModuleBaseName(dwHandle,modules[i],moduleName,sizeof(moduleName));
-			if(strcmpi(moduleName,"Tibia.exe")==0){
+			if(_strcmpi(moduleName,"Tibia.exe")==0){
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
 				isNotFromNormalScan=0; // commented to see if Tibia.exe in sometimes not first
@@ -1878,8 +1883,8 @@ int baseAdjust(int addr){
 }
 
 #define MOD_ADLER 65521
-char outCheck[5];
-char*  adler(char *data, size_t len) /* data: Pointer to the data to be summed; len is in bytes */
+unsigned char outCheck[5];
+unsigned char* adler(unsigned char *data, size_t len)
 {
 	/*
 	The is the CRC algorithim. I could not nor would I try to find the actual one Tibia
@@ -2009,15 +2014,15 @@ void parseMessage(char *buf,int realRecvLen,FILE *debugFile, int direction, int 
 };
 
 int lastAction=0;
-void sendBufferViaSocket(char *buffer)
+void sendBufferViaSocket(unsigned char *buffer)
 {
 	// if we don't yet have key pointer then don't do anything
 	if (!encryptKeyPtr){
 		return;
 	}
 	int i;
-	char outbufHeader[1006];
-	char* outbuf = outbufHeader+6;
+	unsigned char outbufHeader[1006];
+	unsigned char* outbuf = outbufHeader + 6;
 	int len= (((int)buffer[0])&0xFF) + (((int)buffer[1])&0xFF<<8) + 2;
 
 	int outbuflen=len;
@@ -2036,7 +2041,7 @@ void sendBufferViaSocket(char *buffer)
 	for (i=0;i<outbuflen;i+=8)
 	{
 		memcpy(outbuf+i,buffer+i,8);
-		myInterceptEncrypt((int)(outbuf+i),encryptKeyPtr);// wiz: was repeated 3 times. 2 Removed!
+		myInterceptEncrypt((int)(outbuf + i), encryptKeyPtr);// wiz: was repeated 3 times. 2 Removed!
 	}
 	//after encryption
 	if (debugFile && COMPLEX){
@@ -2046,7 +2051,7 @@ void sendBufferViaSocket(char *buffer)
 		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
 	}
 	int test = outbuflen;
-	char *check = adler(outbuf, outbuflen);
+	unsigned char *check = adler(outbuf, outbuflen);
 	memcpy(outbufHeader + 2 , check, 4);
 	outbufHeader[0] += 4;
 	test += 4;
@@ -2066,7 +2071,7 @@ void sendBufferViaSocket(char *buffer)
 	lastAction=GetTickCount();
 	
 	
-	int ret=Mine_send(tibiaSocket, outbufHeader,test+2,0); //wiz:changed from "send"
+	int ret = Mine_send(tibiaSocket, (char*)outbufHeader, test + 2, 0); //wiz:changed from "send"
 	
 	if (debugFile&&COMPLEX)
 	{
@@ -2080,7 +2085,7 @@ void sendBufferViaSocket(char *buffer)
 
 void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ)
 {
-	char sendbuf[19];
+	unsigned char sendbuf[19];
 	//int targetObjectId=CTibiaItem::m_itemTypeRopespot;
 	int targetObjectId=0x63;
 	
@@ -2112,7 +2117,7 @@ void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX
 }
 void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId)
 {
-	char sendbuf[15];
+	unsigned char sendbuf[15];
 	sendbuf[0]=13;
 	sendbuf[1]=0;
 	sendbuf[2]=0x84;
@@ -2133,8 +2138,6 @@ void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int crea
 	
 	//Mine_send(tibiaSocket,sendbuf,17,lastSendFlags);
 	sendBufferViaSocket(sendbuf);
-	
-	
 }
 
 void autoAimAttack(int runeId)
@@ -2577,7 +2580,7 @@ int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags)
 	
 	if (debugFile&&!SENTONLY)
 	{
-		bufToHexString(buf,len);
+		//bufToHexString(buf,len);
 		//WriteOutDebug("E> [%x] %s\r\n",socket,bufToHexStringRet);
 	}
 	if (identical)
@@ -3747,7 +3750,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 	case 2:
 		if (tibiaSocket!=NULL)
 		{
-			sendBufferViaSocket(mess.payload);
+			sendBufferViaSocket((unsigned char*)mess.payload);
 			
 		};
 		break;

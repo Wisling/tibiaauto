@@ -18,7 +18,7 @@ public:
 	int isPlayerIgnored(char *name);
 	char * getVariable(char *name);
 	void setVariable(char *name, char *value);
-	void setIgnoredPlayer(char *name,int deadline);
+	void setIgnoredPlayer(char *name,time_t deadline);
 	CAutoResponderParserContext(CListCtrl *actionLog, int localEcho);
 	virtual ~CAutoResponderParserContext();
 	char channel[MAX_STRING_LEN];
@@ -31,7 +31,7 @@ public:
 
 private:
 	char **ignorePlayers;
-	int *ignorePlayersDeadline;
+	time_t *ignorePlayersDeadline;
 	int ignorePlayersCount;
 	int ignorePlayersSize;
 

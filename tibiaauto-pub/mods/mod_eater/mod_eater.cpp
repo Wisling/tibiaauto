@@ -101,7 +101,7 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
 {
-	srand(time(NULL));				//Seed the random number generation
+	srand((unsigned int)time(NULL));				//Seed the random number generation
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();

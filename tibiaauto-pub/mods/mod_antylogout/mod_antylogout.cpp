@@ -98,7 +98,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	int iter=0;
 	int randomSeconds=RandomTimeAntylogout();
 	int lastRandomAction = -1;
-	int sameActionTm = 0;
+	time_t sameActionTm = 0;
 	int timeLimit = 60*10; //10 minutes before it guarantees a new action
 	int numActions = 2;
 	

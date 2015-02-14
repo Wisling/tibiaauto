@@ -203,7 +203,7 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 		EnumProcessModules(dwHandle, modules, moduleCount*sizeof(HMODULE), &moduleCount);
 		for (int i=0;i<moduleCount;i++){
 			GetModuleBaseName(dwHandle,modules[i],moduleName,sizeof(moduleName));
-			if(strcmpi(moduleName,"Tibia.exe")==0){
+			if(_strcmpi(moduleName,"Tibia.exe")==0){
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
 				//isNotFromNormalScan=0; // commented to see if Tibia.exe in sometimes not first

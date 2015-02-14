@@ -31,7 +31,7 @@ int toolThreadAutoResponderShouldStop=0;
 
 DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 {
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	CMemReaderProxy reader;
 	CToolAutoResponderThreadConfig *config = (CToolAutoResponderThreadConfig *)lpParam;
 	while (!toolThreadAutoResponderShouldStop)
@@ -372,12 +372,12 @@ void CToolAutoRespond::start()
 		sprintf(pathBuf,"%s\\mods\\tibiaauto-responder.xml",installPath);
 		parser->parse(pathBuf);
 		doc = parser->getDocument();
-		for (int rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
+		for (size_t rootNr=0;rootNr<doc->getChildNodes()->getLength();rootNr++)
 		{
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
 			if (wcscmp(root->getNodeName(),L"responder"))
 				continue;
-			for (int threadNr=0;threadNr<root->getChildNodes()->getLength();threadNr++)
+			for (size_t threadNr = 0; threadNr<root->getChildNodes()->getLength(); threadNr++)
 			{
 				DOMNode *threadNode = root->getChildNodes()->item(threadNr);
 				if (wcscmp(threadNode->getNodeName(),L"thread"))

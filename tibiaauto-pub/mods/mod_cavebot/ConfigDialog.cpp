@@ -30,12 +30,12 @@ extern CToolAutoAttackStateDepot globalAutoAttackStateDepot;
 extern CToolAutoAttackStateTraining globalAutoAttackStateTraining;
 extern int actualTargetX,actualTargetY,actualTargetZ;
 extern int depotX,depotY,depotZ;
-extern unsigned int currentPosTM;
+extern time_t currentPosTM;
 extern int creatureAttackDist;
-extern unsigned int firstCreatureAttackTM;
+extern time_t firstCreatureAttackTM;
 extern int currentWaypointNr;
 extern int pathfindDistance;
-extern unsigned int walkerStandingEndTm;
+extern time_t walkerStandingEndTm;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
@@ -624,8 +624,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			break;
 		case CToolAutoAttackStateAttack_attackingCreature:
 			{
-				int t1=time(NULL)-firstCreatureAttackTM;
-				int t2=time(NULL)-currentPosTM;
+				time_t t1=time(NULL)-firstCreatureAttackTM;
+				time_t t2 = time(NULL) - currentPosTM;
 				sprintf(buf,"State: attacking [since %d, distance %d; standing since %ds]",t1,creatureAttackDist,t2);
 				m_stateAttack.SetWindowText(buf);
 			}
@@ -769,7 +769,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 		DWORD exitCode=0;
 		static int failedOnce=0;
-		static int startTime=0;
+		static time_t startTime=0;
 		if (hThread) GetExitCodeThread(hThread,&exitCode);
 		if (exitCode==1){//errors finding path
 			failedOnce=1;

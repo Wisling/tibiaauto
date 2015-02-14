@@ -312,10 +312,10 @@ void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree){
 
 void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 {
-	for (int itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+	for (size_t itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 	{
 
-		int attrNr;
+		size_t attrNr;
 		DOMNode *item = listNode->getChildNodes()->item(itemNr);
 		
 		if (item->getNodeType()!=1) continue;
@@ -505,7 +505,7 @@ void CTibiaItem::refreshItemLists()
 	try
 	{
 
-		int listNr,itemNr,rootNr;
+		size_t listNr, itemNr, rootNr;
 
 		//reset all lists
 		constCodeList.RemoveAll();

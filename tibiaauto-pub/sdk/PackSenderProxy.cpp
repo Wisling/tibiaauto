@@ -705,9 +705,9 @@ void CPackSenderProxy::look(int x,int y, int z,int objectId)
 	}
 }
 
-void CPackSenderProxy::ignoreLook(int end)
+void CPackSenderProxy::ignoreLook(time_t end)
 {
-	typedef void (*Proto_fun)(int end);
+	typedef void(*Proto_fun)(time_t end);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"packSenderIgnoreLook");

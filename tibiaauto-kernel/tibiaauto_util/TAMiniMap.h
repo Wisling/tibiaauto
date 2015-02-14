@@ -19,7 +19,7 @@ public:
 	unsigned char colour[65536];
 	unsigned char speed[65536];
 	struct point* mapLoc;
-	int timeUsed;
+	time_t timeUsed;
 	
 	MiniMapSection(int x,int y,int z){
 		mapLoc=new point(x,y,z);

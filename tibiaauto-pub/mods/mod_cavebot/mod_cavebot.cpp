@@ -114,26 +114,26 @@ CToolAutoAttackStateTraining globalAutoAttackStateTraining=CToolAutoAttackStateT
 int waypointTargetX=0,waypointTargetY=0,waypointTargetZ=0;
 int actualTargetX=0,actualTargetY=0,actualTargetZ=0;
 int depotX=0,depotY=0,depotZ=0;
-int lastDepotPathNotFoundTm=0;
+time_t lastDepotPathNotFoundTm=0;
 int persistentShouldGo=0;
-unsigned int lastSendAttackTm = 0;
+time_t lastSendAttackTm = 0;
 
-unsigned int currentPosTM=0;
+time_t currentPosTM = 0;
 int creatureAttackDist=0;
-unsigned int firstCreatureAttackTM=0;
+time_t firstCreatureAttackTM = 0;
 int currentWaypointNr=0;
-unsigned int walkerStandingEndTm=0;
+time_t walkerStandingEndTm = 0;
 
-unsigned int lastTAMessageTm=0;
+time_t lastTAMessageTm = 0;
 int taMessageDelay=4;
 int forwardBackDir=1;//forward and back direction
-unsigned int autolooterTm=0;
+time_t autolooterTm = 0;
 DWORD lootThreadId;
 DWORD queueThreadId;
 CTibiaQueue<Corpse> corpseQueue;
 
 const int CONTAINER_TIME_CUTOFF=10;
-int containerTimes[32];//used to differentiate between carried containers and other containers
+time_t containerTimes[32];//used to differentiate between carried containers and other containers
 
 CTibiaMapProxy tibiaMap;
 
@@ -1131,7 +1131,7 @@ int ensureItemInPlace(int outputDebug,int location, int locationAddress, int obj
 * 2. Check whether we should be full attack/def/dont touch (if blood control is active).
 * 3. Switch weapon if needed.
 */
-void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, int lastAttackedCreatureBloodHit,int *attackMode) {
+void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, time_t lastAttackedCreatureBloodHit,int *attackMode) {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -1157,7 +1157,7 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 		if (config->fightWhenAlien&&alienFound) canTrain=0;
 		if (config->fightWhenSurrounded&&attackingCreatures>2) canTrain=0;
 
-		static int lastFightModeTm=0;
+		static time_t lastFightModeTm = 0;
 
 		if (canTrain && time(NULL)-lastFightModeTm>5) {//and has been more than 5 seconds since fight mode
 			lastFightModeTm=0;
@@ -1215,7 +1215,7 @@ void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropIte
 	}
 	deleteAndNull(dropCont);
 }
-int binarySearch(int f,CUIntArray& arr){
+int binarySearch(unsigned int f,CUIntArray& arr){
 	int ASCENDING=1;
 	int e=arr.GetSize();
 	int s=0;
@@ -1562,7 +1562,7 @@ int getAttackPriority(CConfigData *config,char *monsterName) {
 		}
 	}
 	for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++) {
-		if (!strcmpi(config->monsterList[monstListNr],buf)) {
+		if (!_strcmpi(config->monsterList[monstListNr],buf)) {
 			return config->monsterCount-monstListNr;
 		}
 	}
@@ -1943,7 +1943,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 	int lastStandingX=0,lastStandingY=0,lastStandingZ=0;
 
-	unsigned int lastAttackedCreatureBloodHit=0;
+	time_t lastAttackedCreatureBloodHit=0;
 	int reachedAttackedCreature=0;//true if 1 sqm away or hp dropped while attacking
 	int shareAlienBackattack=0;
 	int alienCreatureForTrainerFound=0;
@@ -1967,7 +1967,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int loggedOut=0;
 	int wasLoggedOut=0;
 	int attackTimeoutOnLogin=10; //used for disabling attack for first 10 seconds after logging in
-	int loginTm=0;
+	time_t loginTm=0;
 
 	CUIntArray lootFromFloorArr;
 
@@ -2225,8 +2225,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		*/
 		int moving = reader.getMemIntValue(memConstData.m_memAddressTilesToGo);
 		if (config->lootFromFloor && lootFromFloorArr.GetSize() && !isInHalfSleep() && isLooterDone(config)) {
-			static unsigned int lastFullDroppedLootCheckTm = 0;
-			static unsigned int lastSmallDroppedLootCheckTm = 0;
+			static time_t lastFullDroppedLootCheckTm = 0;
+			static time_t lastSmallDroppedLootCheckTm = 0;
 			if(currentlyAttackedCreatureNr==-1 && moving<=2 && time(NULL)-lastFullDroppedLootCheckTm>6){
 				if(!droppedLootCheck(config,lootFromFloorArr)){ // if no dropped loot found, wait 6 seconds before trying again.
 					lastFullDroppedLootCheckTm = time(NULL);
@@ -2393,7 +2393,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								}
 								if (lootStatsFile) {
 									int checksum;
-									int tm=time(NULL);
+									time_t tm=time(NULL);
 									for (int contNrInd=0; contNrInd <1+config->lootInBags;contNrInd++){// get stats from first, then last if lootInBags
 										int contNr=lootContNr[contNrInd];
 										//sender.sendTAMessage("[debug] stats from conts");
@@ -2592,7 +2592,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			* so new creature is occupying the slot already
 			*/
 			if (creatureList[crNr].tibiaId!=ch->tibiaId&&currentlyAttackedCreatureNr!=crNr) {
-				int keepAttackTm =creatureList[crNr].lastAttackTm;
+				time_t keepAttackTm =creatureList[crNr].lastAttackTm;
 				creatureList[crNr]= Creature();
 				creatureList[crNr].lastAttackTm=keepAttackTm;
 				creatureList[crNr].tibiaId=ch->tibiaId;
@@ -2611,7 +2611,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if(config->attackAllMonsters && ch->tibiaId >= 0x40001000) creatureList[crNr].listPriority = 1;
 				// scan creature list to find its priority
 				for (monstListNr=0;monstListNr<config->monsterCount;monstListNr++) {
-					if (!strcmpi(config->monsterList[monstListNr],creatureList[crNr].name)){
+					if (!_strcmpi(config->monsterList[monstListNr],creatureList[crNr].name)){
 						creatureList[crNr].listPriority=config->monsterCount-monstListNr + 1;//2 is last item in list, 1 is for 'attackAllMonster' monsters, 0 means not in attack list
 						break;
 					}
@@ -2619,7 +2619,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 				// scan ignore list
 				for (monstListNr=0;monstListNr<config->ignoreCount;monstListNr++) {
-					if (!strcmpi(config->ignoreList[monstListNr],creatureList[crNr].name)) {
+					if (!_strcmpi(config->ignoreList[monstListNr],creatureList[crNr].name)) {
 						if (config->debug&&creatureList[crNr].isIgnoredUntil-time(NULL)<9999) registerDebug("Creature found on ignore list");
 						creatureList[crNr].isIgnoredUntil=1555555555;//ignore forever
 					}

@@ -65,7 +65,7 @@ public:
 	void stopAll();
 	void sendCreatureInfo(char *name, char *info1, char *info2);
 	void look(int x,int y, int z,int objectId);
-	void ignoreLook(int ignoreLookEnd);
+	void ignoreLook(time_t ignoreLookEnd);
 	void sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle);
 	void sendClearCreatureInfo();
 	void enableCName(int enable);

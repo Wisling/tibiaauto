@@ -77,8 +77,8 @@ HANDLE toolThreadHandle;
 HANDLE soundThreadHandle;
 char soundPath[2048];
 HWND tibiaHWND = NULL;
-unsigned int timeLastSS = 0;
-unsigned int isTakingScreenshot = 0;
+time_t timeLastSS = 0;
+time_t isTakingScreenshot = 0;
 
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
 
@@ -208,7 +208,7 @@ int OnList(char whiteList[100][32],char name[]){
 	masterDebug("OnList");
 	int i=0;
 	while (IsCharAlphaNumeric(whiteList[i][0])){
-		if (!strcmpi(whiteList[i],name)){
+		if (!_strcmpi(whiteList[i],name)){
 			return 1;
 		}
 		i++;
@@ -242,7 +242,7 @@ struct tibiaMessage * triggerMessage(){
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		if (strcmpi(nickBuf,self->name)!=0 && strcmpi(nickBuf,"Tibia Auto") != 0) {
+		if (_strcmpi(nickBuf,self->name)!=0 && _strcmpi(nickBuf,"Tibia Auto") != 0) {
 			delete self;
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type=infoType;
@@ -360,14 +360,14 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 
 	JSAMPROW row_pointer;          /* pointer to a single row */
 	 
-	while (cinfo.next_scanline < pbih->biHeight) {
+	while ((LONG)cinfo.next_scanline < pbih->biHeight) {
 		unsigned int linesize = pbih->biSizeImage/pbih->biHeight;
 		unsigned int linestart = pbih->biSizeImage-(cinfo.next_scanline+1)*linesize;
 		row_pointer = (JSAMPROW) &(hp[linestart]);
-		for(int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RGB
-			hp[linestart+i] ^= hp[linestart+i+2];
-			hp[linestart+i+2] ^= hp[linestart+i];
-			hp[linestart+i] ^= hp[linestart+i+2];
+		for (unsigned int i = 0; i < linesize; i += 3){//output from GetDIBits is BGR, switch to RGB
+			hp[linestart + i] ^= hp[linestart + i + 2];
+			hp[linestart + i + 2] ^= hp[linestart + i];
+			hp[linestart + i] ^= hp[linestart + i + 2];
 		}
 		jpeg_write_scanlines(&cinfo, &row_pointer, 1);
 	}
@@ -496,7 +496,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
     for (int k = 0; k < pbmi->bmiHeader.biHeight; k++){
 		unsigned int linesize = pbih->biSizeImage/pbih->biHeight;
 		unsigned int linestart = pbih->biSizeImage-(k+1)*linesize;
-		for(int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RBG
+		for(unsigned int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RBG
 			hp[linestart+i] ^= hp[linestart+i+2];
 			hp[linestart+i+2] ^= hp[linestart+i];
 			hp[linestart+i] ^= hp[linestart+i+2];

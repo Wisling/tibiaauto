@@ -100,7 +100,7 @@ void CHealList::OnHealListDelete()
 		nTemp = nTemp-1;
 		pnArrayOfSelRows[nTemp] = i;
 		i = m_list.GetNextSelectedItem(pos);
-		for(int k = 0; k < healList.size(); k++) {
+		for (size_t k = 0; k < healList.size(); k++) {
 			if(healList[k].name == m_list.GetItemText(find, 0))
 				healList.erase(healList.begin() + k);
 		}
@@ -115,9 +115,8 @@ void CHealList::OnHealListDelete()
 
 void CHealList::Mem2List()
 {
-	int i = 0;
 	char lpBuffer[32];
-	for (; i < healList.size(); i++) {
+	for (size_t i = 0; i < healList.size(); i++) {
 		Player temp = healList[i];
 		m_list.InsertItem(i, "");
 		m_list.SetItemText(0, 0, temp.name);

@@ -1319,9 +1319,9 @@ int CModuleUtil::waitForCreatureDisappear(int x,int y, int tibiaId, int &xReturn
 	return 0;
 }
 
-int CModuleUtil::calcLootChecksum(int tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ)
+int CModuleUtil::calcLootChecksum(time_t tm, int killNr, int nameLen, int itemNr, int objectId, int qty, int lootInBags,int creatX,int creatY,int creatZ)
 {
-	return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71+creatX*23+creatY*31+creatZ*59;
+	return (int)tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71+creatX*23+creatY*31+creatZ*59;
 	//Old checksum return tm*3+killNr*17+nameLen*3+itemNr*15+objectId*19+qty*13+lootInBags*71;
 }
 

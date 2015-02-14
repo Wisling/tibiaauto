@@ -222,7 +222,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											if (statChName[i]=='[')
 												statChName[i]='\0';
 										}
-										int tm=time(NULL);
+										time_t tm = time(NULL);
 										int killNr=rand();
 										int checksum;
 										

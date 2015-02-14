@@ -352,7 +352,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			break;
 		case PERCLVLACHIEVED:
 			{
-			int lvlExp=(50*pow(self->lvl-1,3)-150*pow(self->lvl-1,2)+400*(self->lvl-1))/3;
+			int lvlExp=(int)((50*pow(self->lvl-1,3)-150*pow(self->lvl-1,2)+400*(self->lvl-1))/3);
 			switch (attribute) {
 			case ALL:
 				retval |= (100 - (self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) >= trigger.getIntTrigger());
@@ -397,7 +397,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			}
 		case PERCLVLREMAINING:
 			{
-			int lvlExp=(50 * pow(self->lvl-1,3)-150 * pow(self->lvl-1,2)+400*(self->lvl-1))/3;
+			int lvlExp=(int)((50 * pow(self->lvl-1,3)-150 * pow(self->lvl-1,2)+400*(self->lvl-1))/3);
 			switch (attribute) {
 			case ALL:
 				retval |= ((self->exp-lvlExp)/((self->lvl-1)*(self->lvl-2)*50+100) <= trigger.getIntTrigger());
@@ -587,7 +587,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		case LOGON:
 			switch (attribute) {
 			case CURRENTPLAYERONLINE:
-				retval=reader.isLoggedIn();
+				retval=(reader.isLoggedIn() != 0);
 				break;
 			case VIPPLAYERONLINE:
 				retval=vipNameOnline(trigger.getTriggerText());
@@ -829,7 +829,7 @@ bool Alarm::vipNameOnline(CString name, bool checkOnline/*=true*/) {
 	CTibiaVIPEntry *vip;
 
 	for (int vipNr = 0; strcmp((vip = reader.readVIPEntry(vipNr))->name, ""); vipNr++) {
-		if (strcmpi(vip->name, name)==0 && (vip->status!=0) == checkOnline) {
+		if (_strcmpi(vip->name, name)==0 && (vip->status!=0) == checkOnline) {
 			// return true if online status is of the type we are trying to find
 			delete vip;
 			return true;
@@ -882,7 +882,7 @@ int Alarm::countAllFood() {
 bool Alarm::OnList(char whiteList[100][32],char name[]) {
 	int i=0;
 	while (IsCharAlphaNumeric(whiteList[i][0])) {
-		if (!strcmpi(whiteList[i],name))
+		if (!_strcmpi(whiteList[i],name))
 			return true;
 		i++;
 	}
@@ -908,14 +908,14 @@ bool Alarm::isSpellMessage(char *msg) {
 
 	//if string starts with prefix and is = prefix+suffix, return 1
 	for (int pos = 0; spellPre[pos]; pos++) {
-		if (strnicmp(newmsg, spellPre[pos], 2) == 0) {
+		if (_strnicmp(newmsg, spellPre[pos], 2) == 0) {
 			for (int pos2 = 0; spellSuf[pos2]; pos2++) {
 				char tmp[10];
 				tmp[0]=0;
 				strcat(tmp,spellPre[pos]);
 				strcat(tmp,spellSuf[pos2]);
 				tmp[5]='\0';
-				if (strnicmp(newmsg, tmp, 5) == 0) {
+				if (_strnicmp(newmsg, tmp, 5) == 0) {
 					return true;
 				}
 			}

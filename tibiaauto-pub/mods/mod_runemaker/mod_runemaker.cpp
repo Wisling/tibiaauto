@@ -74,7 +74,7 @@ int RandomVariableMana(int &pt,int command,CConfigData *config){
 	if (command==MAKE){
 		CPackSenderProxy sender;
 		// within 10% of number with a cutoff at maxMana
-		setMana[&pt]=CModuleUtil::randomFormula(val,val * 0.1,val,max(self->maxMana,val+1));
+		setMana[&pt] = (int)(CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self->maxMana, val + 1)));
 		char buf[111];
 		sprintf(buf,"%d",setMana[&pt]);
 		sender.sendTAMessage(buf);

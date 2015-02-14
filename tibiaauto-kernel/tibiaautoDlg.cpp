@@ -288,7 +288,7 @@ void CTibiaautoDlg::DoSetButtonSkin(){
 BOOL CTibiaautoDlg::OnInitDialog()
 {
 	configDialogStatus = NULL;
-	srand(time(NULL));
+	srand((unsigned int)time(NULL));
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 	
@@ -608,7 +608,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			char pathBuf[2048];
 			sprintf(pathBuf,"%s\\tascripts\\module %d statistics.txt",path,reader.getProcessId());
 			std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
-			int tm=time(NULL);
+			time_t tm = time(NULL);
 			fout.write((char*)&tm,4);
 			fout.write((char*)&enabledModules,4);
 			fout.close();
@@ -1698,7 +1698,7 @@ void CTibiaautoDlg::reportUsage()
 	FILE *f = fopen(pathBuf,"a+");
 	if (f)
 	{
-		int tm=time(NULL);
+		time_t tm = time(NULL);
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;

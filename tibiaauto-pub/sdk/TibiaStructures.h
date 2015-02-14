@@ -966,7 +966,7 @@ public:
 		if (pq.size()==0) return 0;
 		DWORD ret=pq[0].data;
 		pq[0].data=0;
-		int ind=0;
+		size_t ind=0;
 		while (true){
 			if (ind*2+2<pq.size() && pq.back().val>pq[ind*2+2].val){
 				if (pq[ind*2+2].val<pq[ind*2+1].val){
@@ -999,7 +999,7 @@ public:
 		char* tmp=ret;
 		ret[0]='-';
 		ret[1]=0;
-		for (int i=0;i<pq.size();i++){
+		for (size_t i = 0; i<pq.size(); i++){
 			tmp=tmp+strlen(tmp);
 			sprintf(tmp,"%d,",pq[i].val);
 		}
@@ -1011,7 +1011,7 @@ public:
 		char* tmp=ret;
 		ret[0]='-';
 		ret[1]=0;
-		int ind=0;
+		size_t ind=0;
 		int wentBack=0;
 		while (true && pq.size()!=0){
 			if (!wentBack){

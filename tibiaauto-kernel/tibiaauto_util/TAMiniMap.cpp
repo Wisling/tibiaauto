@@ -403,9 +403,9 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 	delete endPt;
 	//DebugPrint("endBlocked",endBlocked);
 	int mHEstimate = 1;
-	int maxDistBreak = 1.7*(abs(startX-endX)+abs(startY-endY))+50*abs(startZ-endZ);//will stop if looking farther away than 1.5x original distance
+	int maxDistBreak = (int)(1.7*(abs(startX-endX)+abs(startY-endY))+50*abs(startZ-endZ));//will stop if looking farther away than 1.5x original distance
 	int minTimeBreak = 5;//always allows this much time before breaking 5 secs ~ radius of 50 sqm
-	int timeStart=time(NULL);
+	time_t timeStart=time(NULL);
 
 	bool found = false;
 	mStop = false;
@@ -450,7 +450,7 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 
 		//Lets calculate each successors
 		CTibiaMiniMapPoint* mpPar=getMiniMapPoint(parentNode.x,parentNode.y,parentNode.z);
-		for (int i = 0; i < 10; i++)//0=down 1-8=surroundings 9=up
+		for (size_t i = 0; i < 10; i++)//0=down 1-8=surroundings 9=up
 		{
 			PathFinderNode newNode=PathFinderNode();
 			newNode.x = parentNode.x + direction[i][0];
@@ -481,11 +481,11 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			//DebugPrint("newNode",newNode.x,newNode.y,newNode.z);
 
 			vector<PathFinderNode>* mOpenIter=mOpen.Container();
-			for (int i=0;i<mOpenIter->size();i++){
-				if (newNode.x==mOpenIter->at(i).x && newNode.y==mOpenIter->at(i).y && newNode.z==mOpenIter->at(i).z) break;
+			for (size_t j = 0; j < mOpenIter->size(); j++){
+				if (newNode.x == mOpenIter->at(j).x && newNode.y == mOpenIter->at(j).y && newNode.z == mOpenIter->at(j).z) break;
 			}
-			if (i<mOpenIter->size()) {
-				if (newG<mOpenIter->at(i).g){
+			if (i < mOpenIter->size()) {
+				if (newG < mOpenIter->at(i).g){
 					mOpenIter->at(i).copy(newNode);
 				}
 				continue;

@@ -73,7 +73,7 @@ void CItemAdd::OnCommit() {
 		sscanf(buf,"0x%x",&itemId);
 		if (!itemId) sscanf(buf,"%d",&itemId);
 
-		itemType=pow(2, m_ItemType.GetCurSel());
+		itemType=(int)pow(2, m_ItemType.GetCurSel());
 
 		m_ItemName.GetWindowText(name,1023);
 		char* txt=(char*)malloc(strlen(name)+10);
@@ -159,12 +159,12 @@ CItemEdit::CItemEdit(CTreeCtrl* treeIn, HTREEITEM itemIn)
 		itemId=itemData->id;
 		itemType=itemData->type;
 		CString cText=tree->GetItemText(item);
-		int ind=min(cText.GetLength(),min(1023,(unsigned int)cText.ReverseFind('[')));
+		int ind = min(cText.GetLength(), min(1023, cText.ReverseFind('[')));
 		memcpy(name,cText,ind);
 		name[ind]=0;
 	} else {//Branch node
 		CString cText=tree->GetItemText(item);
-		int ind=min(cText.GetLength(),min(1023,(unsigned int)cText.ReverseFind('[')));
+		int ind = min(cText.GetLength(), min(1023, cText.ReverseFind('[')));
 		memcpy(name,cText,ind);
 		name[ind]=0;
 		itemId=0;
@@ -212,7 +212,7 @@ void CItemEdit::OnCommit() {
 		char* txt=(char*)malloc(strlen(name)+10);
 		sprintf(txt,"%s[%d]",name,itemId);
 
-		itemType=pow(2, m_ItemType.GetCurSel());
+		itemType=(int)pow(2, m_ItemType.GetCurSel());
 
 		CGUITreeItemData* itemData = (CGUITreeItemData*)tree->GetItemData(item);
 		itemData->id=itemId;
@@ -277,7 +277,7 @@ BOOL CItemEdit::OnInitDialog() {
 		char buf[64];
 		sprintf(buf, "%d", itemId);
 		m_ItemID.SetWindowText(buf);
-        int index = log10((double)itemType)/log10(2);
+        int index = (int)(log10((double)itemType)/log10(2));
         m_ItemType.SetCurSel(index);
 	} else{ //Branch node
 		m_ItemID.EnableWindow(FALSE);

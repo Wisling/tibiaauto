@@ -57,7 +57,6 @@ using namespace std;
 			WSACleanup();
 		}
 	}
-	#define EWOULDBLOCK WSAEWOULDBLOCK
 #endif
 
 string RECV = "recv: ";
@@ -132,7 +131,7 @@ void Socket::connect() {
 	
 	sa.sin_family = he->h_addrtype;
 	memcpy((char *)&sa.sin_addr.s_addr, he->h_addr_list[0], he->h_length);
-	sa.sin_port = htons(port);
+	sa.sin_port = (u_short)htons(port);
 	memset(sa.sin_zero, 0, sizeof(sa.sin_zero));
 	
 	if (::connect(sd, (struct sockaddr *)&sa, sizeof(sa)) < 0) {

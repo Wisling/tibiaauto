@@ -142,7 +142,7 @@ void prettyPrintHeader(const string &filename, int size, int totalSize, long tim
 	if (fn.length() >= 20) {
 		cout << endl << "                            ";
 	} else {
-		for (int ix = 0; ix < 20 - fn.length(); ++ix) {
+		for (size_t ix = 0; ix < 20 - fn.length(); ++ix) {
 			cout << " ";
 		}
 	}
@@ -343,9 +343,9 @@ void Kernel::loadTemporaryData() {
 		getline(fin, pattern, ',');
 		getline(fin, that, ',');
 		getline(fin, topic, ',');
-		int startIndex = fin.tellg();
+		streamoff startIndex = fin.tellg();
 		getline(fin, _template);
-		int endIndex = fin.tellg();
+		streamoff endIndex = fin.tellg();
 		
 		Nodemaster *node = add("*", pattern, that, topic);
 		if (node != NULL) {

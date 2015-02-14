@@ -13,7 +13,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern int loginTime;
+extern time_t loginTime;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog

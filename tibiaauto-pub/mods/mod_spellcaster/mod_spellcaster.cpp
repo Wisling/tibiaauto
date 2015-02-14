@@ -148,7 +148,7 @@ int getcurrentMonsterNumberFromName(char *);
 int aoeShouldFire(CConfigData *);
 
 int OnList(char whiteList[32],char name[]){
-	if (!strcmpi(whiteList,name)){
+	if (!_strcmpi(whiteList,name)){
 		return 1;
 	}
 	
@@ -162,12 +162,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	int currentMonsterNumber = 0;
-	int lastCastTime = 0;
-	int lastWarning = 0;
+	time_t lastCastTime = 0;
+	time_t lastWarning = 0;
 	double minCastTime = 0.7;
 	char whiteText[32] = {0};
 	int best = 0;
-	int loop;
+	size_t loop;
 	CTibiaItemProxy itemProxy;
 	for (loop = 0; loop < config->timedSpellList.size(); loop++)
 		config->timedSpellList[loop].triggerTime = config->timedSpellList[loop].delay + time(NULL);
@@ -190,7 +190,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		int vitaHp = RandomVariableHp(config->vitaHp,GET,config);
 		int lifeHp = RandomVariableHp(config->lifeHp,GET,config);
 		int manaMana = RandomVariableMana(config->manaMana,GET,config);
-		for (int loop = 0; loop < config->timedSpellList.size(); loop++)
+		for (loop = 0; loop < config->timedSpellList.size(); loop++)
 			config->timedSpellList[loop].randMana = config->timedSpellList[loop].mana;
 		for (loop = 0; loop < config->healList.size(); loop++)
 			config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP,config->healList[loop].maxHP,MAKE,config);
@@ -252,7 +252,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					delete ch;
 					break;
 				}
-				for (int loop = 0; loop < config->healList.size(); loop++) {
+				for (size_t loop = 0; loop < config->healList.size(); loop++) {
 					if (OnList(config->healList[loop].name,ch->name) && ch->hpPercLeft <= config->healList[loop].randTriggerHP && ch->visible == 1 && abs(ch->x-self->x)<=7 && abs(ch->y-self->y)<=5 && ch->z == self->z) {
 						config->healList[loop].randTriggerHP = RandomVariableHpPercent(config->healList[loop].triggerHP,config->healList[loop].maxHP,MAKE,config);
 						char buf[256];
@@ -282,7 +282,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					delete ch;
 					break;
 				}
-				if (ch->z==self->z&&ch->visible&&!strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
+				if (ch->z==self->z&&ch->visible&&!_strcmpi(_strlwr(config->summonName),_strlwr(ch->name)))
 					summonCount++;
 				delete ch;
 			}
@@ -645,7 +645,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		}
 		if (m_configData->sioSpell) {
 			char buf[64];
-			for(int loop = 0; loop < m_configData->healList.size(); loop++ ) {
+			for(size_t loop = 0; loop < m_configData->healList.size(); loop++ ) {
 			if (m_configData->healList[loop].triggerHP == 0) {
 				sprintf(buf, "%s: 'Cast when life below' cannot be 0!", m_configData->healList[loop].name);
 				if (showAlerts) AfxMessageBox(buf);
@@ -1025,46 +1025,46 @@ int initalizeCreatures() {
 		creatureFile.getline(monstersInfo[crNum].name, 128, ',');
 		//AfxMessageBox(monstersInfo[crNum].name);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Earth")==0) monstersInfo[crNum].weakEarth = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakEarth = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakEarth = 0;
+		if (_strcmpi(buf, "Earth")==0) monstersInfo[crNum].weakEarth = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakEarth = 1;
+		else if (_strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakEarth = 0;
 		else  monstersInfo[crNum].weakEarth = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Fire")==0) monstersInfo[crNum].weakFire = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakFire = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakFire = 0;
+		if (_strcmpi(buf, "Fire")==0) monstersInfo[crNum].weakFire = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakFire = 1;
+		else if (_strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakFire = 0;
 		else  monstersInfo[crNum].weakFire = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Energy")==0) monstersInfo[crNum].weakEnergy = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakEnergy = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakEnergy = 0;
+		if (_strcmpi(buf, "Energy")==0) monstersInfo[crNum].weakEnergy = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakEnergy = 1;
+		else if (_strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakEnergy = 0;
 		else  monstersInfo[crNum].weakEnergy = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Ice")==0) monstersInfo[crNum].weakIce = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakIce = 1;
-		else if (strcmpi(buf,
+		if (_strcmpi(buf, "Ice")==0) monstersInfo[crNum].weakIce = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakIce = 1;
+		else if (_strcmpi(buf,
 			"Immune")==0) monstersInfo[crNum].weakIce = 0;
 		else  monstersInfo[crNum].weakIce = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Death")==0) monstersInfo[crNum].weakDeath = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakDeath = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakDeath = 0;
+		if (_strcmpi(buf, "Death")==0) monstersInfo[crNum].weakDeath = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakDeath = 1;
+		else if (_strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakDeath = 0;
 		else  monstersInfo[crNum].weakDeath = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Holy")==0) monstersInfo[crNum].weakHoly = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakHoly = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakHoly = 0;
+		if (_strcmpi(buf, "Holy")==0) monstersInfo[crNum].weakHoly = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakHoly = 1;
+		else if (_strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakHoly = 0;
 		else  monstersInfo[crNum].weakHoly = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, ',');
-		if (strcmpi(buf, "Physical")==0) monstersInfo[crNum].weakPhysical = 5;
-		else if (strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakPhysical = 1;
-		else if (strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakPhysical = 0;
+		if (_strcmpi(buf, "Physical")==0) monstersInfo[crNum].weakPhysical = 5;
+		else if (_strcmpi(buf, "Strong")==0) monstersInfo[crNum].weakPhysical = 1;
+		else if (_strcmpi(buf, "Immune")==0) monstersInfo[crNum].weakPhysical = 0;
 		else  monstersInfo[crNum].weakPhysical = 2;
 		//AfxMessageBox(buf);
 		creatureFile.getline(buf, 128, '\n');
@@ -1077,14 +1077,14 @@ int initalizeCreatures() {
 }
 
 int isInitializedCreatures() {
-	if (strcmpi(monstersInfo[0].name, "Initialized") == 0) return 1;
+	if (_strcmpi(monstersInfo[0].name, "Initialized") == 0) return 1;
 	return 0;
 }
 
 int getcurrentMonsterNumberFromName(char *match) {
 	int foundNone = -1, max = 0;
 	while (true) {
-		if (strcmpi(monstersInfo[max].name, match)==0) {
+		if (_strcmpi(monstersInfo[max].name, match)==0) {
 			return max;
 		}
 		if (max++ == numSpellcasterCreatures) return foundNone;;
@@ -1137,7 +1137,7 @@ int aoeShouldFire(CConfigData *config) {
 			break;
 		}
 		int monster = getcurrentMonsterNumberFromName(ch->name);
-		if (monster>-1 && strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1 && ch->tibiaId > 0x40000000) {
+		if (monster>-1 && _strcmpi(_strlwr(self->name),_strlwr(ch->name)) != 0 && self->z == ch->z && ch->visible == 1 && ch->tibiaId > 0x40000000) {
 			deltaX = ch->x - self->x;
 			deltaY = ch->y - self->y;
 			

@@ -161,7 +161,7 @@ void NodeWalker::dumpAiml(Nodemaster *root) {
 	
 	cout << "Created document roots" << endl;
 	
-	for (int ix = 0; ix < fChildren.size(); ++ix) {
+	for (size_t ix = 0; ix < fChildren.size(); ++ix) {
 		//	Can NEVER have a <template> here :)
 		//	non-const reference initialized to temporary...
 		string fWord = toUpper(fChildren[ix].first);
@@ -203,7 +203,7 @@ void NodeWalker::dumpAiml(Nodemaster *root, const string &path, PElement doc) {
 	walkingVec children = getChildren(root->children);
 	sort(children.begin(), children.end(), lessKey());
 	
-	for (int ix = 0; ix < children.size(); ++ix) {
+	for (size_t ix = 0; ix < children.size(); ++ix) {
 		Nodemaster *node = children[ix].second;
 		
 		if (node->hasTemplate()) {

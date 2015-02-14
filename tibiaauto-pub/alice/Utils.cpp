@@ -89,7 +89,7 @@ string trim(const string &text, const string &remove) {
 string toLower(const string &text) {
 	string result = text;
 	for (unsigned int ix = 0; ix < text.length(); ++ix) {
-		result[ix] = tolower(text[ix]);
+		result[ix] = (char)tolower(text[ix]);
 	}
 	return result;
 }
@@ -97,7 +97,7 @@ string toLower(const string &text) {
 string toUpper(const string &text) {
 	string result = text;
 	for (unsigned int ix = 0; ix < text.length(); ++ix) {
-		result[ix] = toupper(text[ix]);
+		result[ix] = (char)toupper(text[ix]);
 	}
 	return result;
 }
@@ -164,7 +164,7 @@ string intToHex(int i) {
 }
 
 int hexToInt(char ch) {
-	ch = tolower(ch);
+	ch = (char)tolower(ch);
 	switch (ch) {
 		case 'f': return 15;
 		case 'e': return 14;
@@ -174,7 +174,6 @@ int hexToInt(char ch) {
 		case 'a': return 10;
 		default: return (int)(ch - '0');
 	}
-	return -1;
 }
 
 string urlencode(const string &in) {

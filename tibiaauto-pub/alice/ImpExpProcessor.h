@@ -16,7 +16,7 @@ public:
 		
 		string rs = "";
 		
-		for (int i = 0; i < s.length(); i += 2) {
+		for (size_t i = 0; i < s.length(); i += 2) {
 			rs += s[i];
 		}
 		
@@ -32,7 +32,7 @@ public:
 		
 		string rs = "";
 		
-		for (int i = 0; i < s.length(); ++i) {
+		for (size_t i = 0; i < s.length(); ++i) {
 			rs += s[i] + " ";
 		}
 		
