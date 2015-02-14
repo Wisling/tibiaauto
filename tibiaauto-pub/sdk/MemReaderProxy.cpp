@@ -805,7 +805,7 @@ void CMemReaderProxy::cleanupTibiaTiles()
 }
 
 CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
-	typedef CSkin (__stdcall *Proto_fun)(CString);
+	typedef CSkin (*Proto_fun)(CString);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"loadSkin");
@@ -817,7 +817,7 @@ CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
 	return skin;
 }
 CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf) {
-	typedef CSkin (__stdcall *Proto_fun)(CString);
+	typedef CSkin(*Proto_fun)(CString);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"loadCurrentSkin");
@@ -829,7 +829,7 @@ CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf) {
 	return skin;
 }
 bool CMemReaderProxy::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
-	typedef bool (__stdcall *Proto_fun)(CString, CSkin, bool);
+	typedef bool (*Proto_fun)(CString, CSkin, bool);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"saveSkin");

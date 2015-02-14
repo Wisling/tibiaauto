@@ -28,29 +28,23 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
-CSkinLoader::CSkinLoader() {
-}
-
-CSkinLoader::~CSkinLoader() {
-}
-
-CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
+CSkin loadCurrentSkin(CString currentPathBuf) {
 	XMLPlatformUtils::Initialize();
+	CSkin loadedSkin;
 	XercesDOMParser *parser = new XercesDOMParser();
 	
 	try {
 		parser->parse(currentPathBuf);
 		xercesc::DOMDocument *doc = parser->getDocument();
+		if (!doc || !doc->getChildNodes())
+			throw exception();
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,L"Red");
 		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
-			throw;
+			throw exception();
 		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
 		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
@@ -106,17 +100,20 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 	return loadedSkin;
 }
 
-CSkin CSkinLoader::loadSkin(CString pathBuf) {
+CSkin loadSkin(CString pathBuf) {
+	CSkin loadedSkin;
 	XercesDOMParser *parser = new XercesDOMParser();
 	try {
 		parser->parse(pathBuf);
 		xercesc::DOMDocument *doc = parser->getDocument();
+		if (!doc || !doc->getChildNodes())
+			throw exception();
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,L"Red");
 		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
-			throw;
+			throw exception();
 		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
 		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
@@ -170,7 +167,7 @@ CSkin CSkinLoader::loadSkin(CString pathBuf) {
 	return loadedSkin;
 }
 
-bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
+bool saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 	CUtil util;
 	XercesDOMParser *parser = new XercesDOMParser();
 	

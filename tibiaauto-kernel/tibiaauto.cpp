@@ -63,16 +63,9 @@ BOOL CTibiaautoApp::InitInstance()
 	//  of your final executable, you should remove from the following
 	//  the specific initialization routines you do not need.
 
-#ifdef _AFXDLL
-	Enable3dControls();			// Call this when using MFC in a shared DLL
-#else
-	Enable3dControlsStatic();	// Call this when linking to MFC statically
-#endif
-
 	CTibiaautoDlg dlg;
 	m_pMainWnd = &dlg;
 	dlg.DoModal();
-	dlg.~CTibiaautoDlg();
 	// Since the dialog has been closed, return FALSE so that we exit the
 	//  application, rather than start the application's message pump.
 	return FALSE;
