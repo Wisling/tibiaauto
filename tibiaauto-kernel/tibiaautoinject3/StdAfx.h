@@ -1,10 +1,8 @@
-#if !defined(AFX_STDAFX_H__C6B227AC_1097_4412_9E25_644ACCCD2283__INCLUDED_)
-#define AFX_STDAFX_H__C6B227AC_1097_4412_9E25_644ACCCD2283__INCLUDED_
+// stdafx.h : include file for standard system include files,
+// or project specific include files that are used frequently,
+// but are changed infrequently
 
-#if _MSC_VER > 1000
-#pragma warning( disable : 4786 503 )
 #pragma once
-#endif // _MSC_VER > 1000
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
@@ -53,9 +51,3 @@
 #include <afxtempl.h>
 #include <queue>
 #include <vector>
-
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__C6B227AC_1097_4412_9E25_644ACCCD2283__INCLUDED_)

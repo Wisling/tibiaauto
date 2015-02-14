@@ -205,7 +205,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module,DOMNode *node,
 	};
 	if (isLeaf)
 	{
-		DOMNode *attrNode=node->getAttributes()->getNamedItem(_L("value"));
+		DOMNode *attrNode=node->getAttributes()->getNamedItem(L"value");
 			
 		if (strlen(paramName+1)&&attrNode)
 		{
@@ -244,7 +244,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNod
 	};
 	if (isLeaf)
 	{
-		DOMNode *attrNode=node->getAttributes()->getNamedItem(_L("value"));
+		DOMNode *attrNode=node->getAttributes()->getNamedItem(L"value");
 			
 		if (strlen(paramName+1)&&attrNode)
 		{

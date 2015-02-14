@@ -1,19 +1,9 @@
 // stdafx.h : include file for standard system include files,
-//  or project specific include files that are used frequently, but
-//      are changed infrequently
-//
+// or project specific include files that are used frequently,
+// but are changed infrequently
 
-#if !defined(AFX_STDAFX_H__149DCA14_1990_4BD0_A449_BA6EC636DABE__INCLUDED_)
-#define AFX_STDAFX_H__149DCA14_1990_4BD0_A449_BA6EC636DABE__INCLUDED_
-
-#define MAX_STRING_LEN 65536
-
-#if _MSC_VER > 1000
-#pragma warning( disable : 4786 503 )
 #pragma once
-#endif // _MSC_VER > 1000
-
-#define _L(a) L##a
+#define MAX_STRING_LEN 65536
 
 #ifndef VC_EXTRALEAN
 #define VC_EXTRALEAN		// Exclude rarely-used stuff from Windows headers
@@ -64,9 +54,4 @@
 #include <afxtempl.h>
 #include <queue>
 #include <vector>
-
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Visual C++ will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_STDAFX_H__149DCA14_1990_4BD0_A449_BA6EC636DABE__INCLUDED_)
 

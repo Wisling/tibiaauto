@@ -868,13 +868,13 @@ void CreatureList_Init(){
         {
             DOMNode *root = doc->getChildNodes()->item(rootNr);
                
-            if (wcscmp(root->getNodeName(),_L("creatures-definitions")))
+            if (wcscmp(root->getNodeName(),L"creatures-definitions"))
                 continue;
             for (itemNr=0;itemNr<root->getChildNodes()->getLength();itemNr++)
             {
                 int attrNr;
                 DOMNode *item = root->getChildNodes()->item(itemNr);
-                if (wcscmp(item->getNodeName(),_L("creature")))
+                if (wcscmp(item->getNodeName(),L"creature"))
                     continue;
                
                 int creatureHp=0;
@@ -895,61 +895,61 @@ void CreatureList_Init(){
                 for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
                 {
                     DOMNode *attrNode = item->getAttributes()->item(attrNr);
-                    if (!wcscmp(attrNode->getNodeName(),_L("name"))){
+                    if (!wcscmp(attrNode->getNodeName(),L"name")){
 						objectName=CUtil::wc2c(attrNode->getNodeValue());
 
-					}else if (!wcscmp(attrNode->getNodeName(),_L("hp"))){
+					}else if (!wcscmp(attrNode->getNodeName(),L"hp")){
 
 						char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureHp = atoi(idTmp);
                         free(idTmp);
 
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("exp"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"exp")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureExp = atoi(idTmp);
                         free(idTmp);
 
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("type"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"type")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureType = atoi(idTmp);
                         free(idTmp);
-					}else if (!wcscmp(attrNode->getNodeName(),_L("physical"))){
+					}else if (!wcscmp(attrNode->getNodeName(),L"physical")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creaturePhysical = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("earth"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"earth")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureEarth = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("fire"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"fire")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureFire = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("energy"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"energy")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureEnergy = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("ice"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"ice")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureIce = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("holy"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"holy")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureHoly = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("death"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"death")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureDeath = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("see_invisible"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"see_invisible")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureSeeInvisible = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("paralysis_immune"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"paralysis_immune")){
                         char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
                         creatureParalysisImmune = atoi(idTmp);
                         free(idTmp);
-                    }else if (!wcscmp(attrNode->getNodeName(),_L("description"))){
+                    }else if (!wcscmp(attrNode->getNodeName(),L"description")){
 						objectDescription=CUtil::wc2c(attrNode->getNodeValue());
 
 					}

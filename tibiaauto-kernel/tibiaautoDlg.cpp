@@ -1120,7 +1120,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 						char subNodeName[1024];
 						wcstombs(subNodeName,subNode->getNodeName(),1024);
 
-						DOMNode *attrNode=subNode->getAttributes()->getNamedItem(_L("name"));
+						DOMNode *attrNode=subNode->getAttributes()->getNamedItem(L"name");
 						if (!strcmp(subNodeName,"module")&&attrNode)
 						{
 							char nodeValue[1024];
@@ -1152,7 +1152,7 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 							char subNodeName[1024];
 							wcstombs(subNodeName,subNode->getNodeName(),1024);
 
-							DOMNode *attrNode=subNode->getAttributes()->getNamedItem(_L("name"));
+							DOMNode *attrNode=subNode->getAttributes()->getNamedItem(L"name");
 								
 							if (!strcmp(subNodeName,"module")&&attrNode)
 							{
