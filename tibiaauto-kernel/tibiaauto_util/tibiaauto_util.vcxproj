@@ -92,7 +92,6 @@
       <ImportLibrary>.\Release\tibiaauto_util.lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>xerces-c_3.lib;libdb61.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

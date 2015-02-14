@@ -135,7 +135,6 @@
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>msvcrt.lib;odbc32.lib;odbccp32.lib;msvcprt.lib;xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tre.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

@@ -94,7 +94,6 @@
       <ImportLibrary>.\Release\mod_runemaker.lib</ImportLibrary>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <ModuleDefinitionFile>.\mod_runemaker.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

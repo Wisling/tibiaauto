@@ -61,7 +61,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeaderOutputFile>.\Release\alice.pch</PrecompiledHeaderOutputFile>
@@ -95,7 +95,6 @@
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\alice.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -105,7 +104,7 @@
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <Optimization>Disabled</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>

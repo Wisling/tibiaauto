@@ -139,7 +139,6 @@
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>xerces-c_3.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\mod_uh.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

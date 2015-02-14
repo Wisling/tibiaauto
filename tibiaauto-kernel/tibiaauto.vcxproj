@@ -59,7 +59,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <WarningLevel>Level4</WarningLevel>
+      <WarningLevel>Level3</WarningLevel>
       <AdditionalIncludeDirectories>C:\Python24\include;$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
@@ -89,7 +89,6 @@
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/;C:\Python24\libs</AdditionalLibraryDirectories>
       <AdditionalDependencies>detours.lib;zdll.lib;ws2_32.lib;xerces-c_3.lib;zdll.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

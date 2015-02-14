@@ -93,7 +93,6 @@
       <AdditionalDependencies>zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\mod_cavebot.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

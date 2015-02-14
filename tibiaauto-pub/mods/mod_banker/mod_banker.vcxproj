@@ -138,7 +138,6 @@
       <ImportLibrary>.\Release\mod_banker.lib</ImportLibrary>
       <ModuleDefinitionFile>.\mod_banker.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

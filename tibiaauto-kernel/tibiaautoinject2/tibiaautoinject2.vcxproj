@@ -139,7 +139,6 @@
       <AdditionalDependencies>ws2_32.lib;detours.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tibiaautoinject2.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

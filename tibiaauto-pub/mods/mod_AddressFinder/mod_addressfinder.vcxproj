@@ -93,7 +93,6 @@
       <ImportLibrary>.\Release\mod_addressfinder.lib</ImportLibrary>
       <ModuleDefinitionFile>.\mod_addressfinder.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

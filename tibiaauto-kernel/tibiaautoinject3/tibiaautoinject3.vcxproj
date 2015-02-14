@@ -136,7 +136,6 @@
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
       <AdditionalDependencies>ws2_32.lib;xerces-c_3.lib;detours.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tibiaautoinject3.def</ModuleDefinitionFile>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

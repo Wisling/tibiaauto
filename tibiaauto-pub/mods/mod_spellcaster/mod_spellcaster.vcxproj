@@ -92,7 +92,6 @@
       <ImportLibrary>.\Release\mod_spellcaster.lib</ImportLibrary>
       <ModuleDefinitionFile>.\mod_spellcaster.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
