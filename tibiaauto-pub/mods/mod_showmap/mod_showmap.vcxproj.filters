@@ -188,9 +188,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_showmap.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

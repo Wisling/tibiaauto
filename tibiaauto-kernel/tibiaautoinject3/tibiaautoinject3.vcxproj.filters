@@ -31,9 +31,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="tibiaautoinject3.def">
       <Filter>Header Files</Filter>
     </CustomBuild>

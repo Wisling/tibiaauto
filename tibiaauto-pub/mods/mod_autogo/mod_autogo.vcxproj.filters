@@ -329,9 +329,6 @@
     <Media Include="sound\incorrec.wav" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_autogo.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

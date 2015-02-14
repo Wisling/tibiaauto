@@ -86,9 +86,6 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="tibiaautoinject2.def">
       <Filter>Header Files</Filter>
     </CustomBuild>

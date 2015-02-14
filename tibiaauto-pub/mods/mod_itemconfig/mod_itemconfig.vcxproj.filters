@@ -125,9 +125,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_itemconfig.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

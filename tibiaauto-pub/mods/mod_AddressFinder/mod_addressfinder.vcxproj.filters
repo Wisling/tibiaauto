@@ -90,9 +90,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_addressfinder.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

@@ -318,9 +318,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="alice.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

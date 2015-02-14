@@ -78,9 +78,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_light.def">
       <Filter>Source Files</Filter>
     </CustomBuild>
