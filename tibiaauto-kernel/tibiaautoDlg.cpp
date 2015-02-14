@@ -316,7 +316,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf,1);
 	if (buf[0]==0xEB&&buf[1]==0x17) versionOk=1;
 	if (buf[0]==0x75&&(buf[1]==0x0A||buf[1]==0x10)) versionOk=1;
-		
+	versionOk = 1;
 	if (!versionOk)
 	{
 		char outBuf[32];
@@ -651,6 +651,30 @@ void CTibiaautoDlg::setShellTray(){
 
 }
 
+int CTibiaautoDlg::injectDll(HANDLE process, char* path)
+{
+	LPVOID addr = (LPVOID)GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
+	if (addr == NULL) {
+		return -1;
+	}
+
+	LPVOID arg = (LPVOID)VirtualAllocEx(process, NULL, strlen(path), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
+	if (arg == NULL) {
+		return -1;
+	}
+
+	int n = WriteProcessMemory(process, arg, path, strlen(path), NULL);
+	if (n == 0) {
+		return -1;
+	}
+
+	HANDLE threadID = CreateRemoteThread(process, NULL, 0, (LPTHREAD_START_ROUTINE)addr, arg, NULL, NULL);
+	if (threadID == NULL) {
+		return -1;
+	}
+	return 0;
+}
+
 void CTibiaautoDlg::InitialiseIPC()
 {
 	char buf[128];
@@ -680,10 +704,26 @@ void CTibiaautoDlg::InitialiseIPC()
 
 	
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS,true,m_processId);
-	
-	LPCSTR injectDll = "tibiaautoinject2.dll";
-	
-	if (!DetourUpdateProcessWithDll(procHandle, &injectDll, 1)) {
+
+	char installPath[1024];
+	char path[1024];
+	unsigned long installPathLen = 1023;
+	installPath[0] = '\0';
+	HKEY hkey = NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_ALL_ACCESS, &hkey))
+	{
+		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
+		RegCloseKey(hkey);
+	}
+	if (!strlen(installPath))
+	{
+		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
+		exit(1);
+	}
+
+	sprintf(path, "%s\\%s", installPath, "tibiaautoinject2.dll");
+	const char* pathPtr = path;
+	if (injectDll(procHandle, path) != 0) {
 		sprintf(buf,"dll injection failed: %d",GetLastError());
 		AfxMessageBox(buf);
 		ExitProcess(1);
@@ -696,8 +736,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	
 	CloseHandle(procHandle);
 	
-	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ?
-TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
 	
 
 	if (!fConnected)

@@ -162,6 +162,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
+	int injectDll(HANDLE process, char* path);
 	void InitialiseIPC();
 
 	long m_processId;
