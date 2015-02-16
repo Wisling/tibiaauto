@@ -481,12 +481,13 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 			//DebugPrint("newNode",newNode.x,newNode.y,newNode.z);
 
 			vector<PathFinderNode>* mOpenIter=mOpen.Container();
-			for (size_t j = 0; j < mOpenIter->size(); j++){
+			size_t j;
+			for (j = 0; j < mOpenIter->size(); j++){
 				if (newNode.x == mOpenIter->at(j).x && newNode.y == mOpenIter->at(j).y && newNode.z == mOpenIter->at(j).z) break;
 			}
-			if (i < mOpenIter->size()) {
-				if (newG < mOpenIter->at(i).g){
-					mOpenIter->at(i).copy(newNode);
+			if (j < mOpenIter->size()) {
+				if (newG < mOpenIter->at(j).g){
+					mOpenIter->at(j).copy(newNode);
 				}
 				continue;
 			}

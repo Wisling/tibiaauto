@@ -37,14 +37,16 @@ CSkin loadCurrentSkin(CString currentPathBuf) {
 	try {
 		parser->parse(currentPathBuf);
 		xercesc::DOMDocument *doc = parser->getDocument();
-		if (!doc || !doc->getChildNodes())
+		if (!doc || !doc->getChildNodes()){
 			throw exception();
+		}
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,L"Red");
-		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
+		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255){
 			throw exception();
+		}
 		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
 		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
@@ -106,14 +108,16 @@ CSkin loadSkin(CString pathBuf) {
 	try {
 		parser->parse(pathBuf);
 		xercesc::DOMDocument *doc = parser->getDocument();
-		if (!doc || !doc->getChildNodes())
+		if (!doc || !doc->getChildNodes()){
 			throw exception();
+		}
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
 		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,L"Red");
-		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
+		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255){
 			throw exception();
+		}
 		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
 		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
