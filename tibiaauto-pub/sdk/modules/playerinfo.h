@@ -7,8 +7,8 @@ struct skillstruct{
 };
 
 struct spellstruct{
-	time_t start;
-	time_t remaining;
+	int start;
+	int remaining;
 	long lasts;
 	long warning;
 };

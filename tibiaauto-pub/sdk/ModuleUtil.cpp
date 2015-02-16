@@ -745,6 +745,14 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				tibiaMap.setPrevPoint(addPoint.x,addPoint.y,addPoint.z,x,y,z);
 				tibiaMap.setPointDistance(addPoint.x,addPoint.y,addPoint.z,newDist);
 				pointNode* pn=new pointNode(addPoint.x,addPoint.y,addPoint.z,x,y,z,newDist,0,0);
+#ifdef MAPDEBUG
+				if(pn->x==-858993460){
+					char buf2[1111];
+					sprintf(buf2,"%d\n",pQueue.GetCount());
+					mapDebug(buf2);
+					int a = 0;
+				}
+#endif
 				pQueue.Add(pn->g,(DWORD)pn);
 			}
 		}

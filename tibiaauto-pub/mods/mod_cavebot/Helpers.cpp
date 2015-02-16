@@ -145,8 +145,8 @@ CString GetDumpString(BYTE *pData, int len)
 		CString str;
 
 		int c = len / 16;
-
-		for (int i = 0; i < c; i++) {
+		int i;
+		for (i = 0; i < c; i++) {
 			str.Format(_T("0x%.8x     %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x %.2x  %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"),
 				i*16,
 				pData[0],pData[1],pData[2],pData[3],pData[4],pData[5],pData[6],pData[7],
@@ -165,7 +165,7 @@ CString GetDumpString(BYTE *pData, int len)
 
 		CString numbers;
 		if (c != 0) {
-			str.Format(_T("0x%.8x     "),c*16);
+			str.Format(_T("0x%.8x     "),i*16);
 			numbers += str;
 		}
 
