@@ -239,7 +239,7 @@ void CCharInfoDialog::dataCalc(){
 	playerInfo.expLvl		= expForLvlDiff;
 	playerInfo.expLeft		= expLeft;
 	if (timeDiff){
-		playerInfo.expPerHour = MulDiv(playerInfo.expCurrent - playerInfo.expStart, 3600, timeDiff);
+		playerInfo.expPerHour = MulDiv(playerInfo.expCurrent - playerInfo.expStart, 3600, (int)timeDiff);
 	}
 	
 	//Skills

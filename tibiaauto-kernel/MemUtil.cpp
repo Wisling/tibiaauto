@@ -201,7 +201,7 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 		HMODULE *modules=(HMODULE*)calloc(moduleCount,sizeof(HMODULE));
 		char moduleName[64];
 		EnumProcessModules(dwHandle,modules,moduleCount*sizeof(HMODULE),NULL);
-		for (int i=0;i<moduleCount;i++){
+		for (unsigned long i=0;i<moduleCount;i++){
 			GetModuleBaseName(dwHandle,modules[i],moduleName,sizeof(moduleName));
 			if(_strcmpi(moduleName,"Tibia.exe")==0){
 				MODULEINFO moduleInfo;

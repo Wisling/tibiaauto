@@ -688,7 +688,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			break;
 		case CToolAutoAttackStateWalker_standing:
 			if (walkerStandingEndTm-time(NULL)<0) break;
-			sprintf(buf,"State: standing for %d more seconds",max(walkerStandingEndTm-time(NULL),0));
+			sprintf(buf,"State: standing for %d more seconds",walkerStandingEndTm-time(NULL));
 			m_stateWalker.SetWindowText(buf);
 			if (currentWaypointNr!=m_waypointList.GetCurSel())
 				m_waypointList.SetCurSel(currentWaypointNr);
