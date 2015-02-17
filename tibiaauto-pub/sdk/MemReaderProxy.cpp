@@ -62,8 +62,7 @@ CMemReaderProxy::CMemReaderProxy()
 		if (!dllModule)
 		{
 			char buf[256];
-			sprintf(buf,"Loading tibiaauto_util.dll failed [1]! (%d)",GetLastError());
-			sprintf(buf,"%s",pathBuf);
+			sprintf(buf, "Loading tibiaauto_util.dll failed [1]! (%d) %s", GetLastError(), pathBuf);
 			MessageBox(0,buf,"ERROR",0);
 			exit(0);
 		}
