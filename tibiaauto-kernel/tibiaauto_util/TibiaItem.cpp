@@ -543,7 +543,7 @@ void CTibiaItem::refreshItemLists()
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
-						int attrNr;
+						size_t attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
 						if (wcscmp(item->getNodeName(),L"item"))
 							continue;
@@ -589,7 +589,7 @@ void CTibiaItem::refreshItemLists()
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
-						int attrNr;
+						size_t attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
 						if (wcscmp(item->getNodeName(),L"const"))
 							continue;
@@ -634,7 +634,7 @@ void CTibiaItem::refreshItemLists()
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
-						int attrNr;
+						size_t attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
 						if (wcscmp(item->getNodeName(),L"item"))
 							continue;
@@ -696,7 +696,7 @@ void CTibiaItem::refreshItemLists()
 						
 						for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 						{
-							int attrNr;
+							size_t attrNr;
 							DOMNode *item = listNode->getChildNodes()->item(itemNr);
 							if (wcscmp(item->getNodeName(),L"const"))
 								continue;

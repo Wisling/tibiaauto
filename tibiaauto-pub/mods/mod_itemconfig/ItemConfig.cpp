@@ -159,12 +159,12 @@ CItemEdit::CItemEdit(CTreeCtrl* treeIn, HTREEITEM itemIn)
 		itemId=itemData->id;
 		itemType=itemData->type;
 		CString cText=tree->GetItemText(item);
-		int ind = min(cText.GetLength(), min(1023, (unsigned int)cText.ReverseFind('[')));
+		int ind = min(cText.GetLength(), (int)min(1023, (unsigned int)cText.ReverseFind('[')));
 		memcpy(name,cText,ind);
 		name[ind]=0;
 	} else {//Branch node
 		CString cText=tree->GetItemText(item);
-		int ind = min(cText.GetLength(), min(1023, (unsigned int)cText.ReverseFind('[')));
+		int ind = min(cText.GetLength(), (int)min(1023, (unsigned int)cText.ReverseFind('[')));
 		memcpy(name,cText,ind);
 		name[ind]=0;
 		itemId=0;
