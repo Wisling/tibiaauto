@@ -3,7 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdafx.h"
-#include "tibiaauto.h"
 #include "Skin.h"
 #include "BtnST.h"
 

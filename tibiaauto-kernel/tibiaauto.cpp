@@ -50,25 +50,16 @@ CTibiaautoApp theApp;
 
 BOOL CTibiaautoApp::InitInstance()
 {
-
-
+	CWinApp::InitInstance();
 	AfxEnableControlContainer();
-
 	if(!AfxSocketInit())
-      AfxMessageBox("Failed to Initialize Sockets",MB_OK| MB_ICONSTOP);
+		AfxMessageBox("Failed to Initialize Sockets",MB_OK| MB_ICONSTOP);
+	CTibiaautoDlg* dlg = new CTibiaautoDlg();
+	m_pMainWnd = dlg;
+	dlg->Create(CTibiaautoDlg::IDD);
+	// No need to show the window as it shows itself.
 
-
-	// Standard initialization
-	// If you are not using these features and wish to reduce the size
-	//  of your final executable, you should remove from the following
-	//  the specific initialization routines you do not need.
-
-	CTibiaautoDlg dlg;
-	m_pMainWnd = &dlg;
-	dlg.DoModal();
-	// Since the dialog has been closed, return FALSE so that we exit the
-	//  application, rather than start the application's message pump.
-	return FALSE;
+	return TRUE;
 }
 
 

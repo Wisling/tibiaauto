@@ -53,9 +53,6 @@
     <ClInclude Include="IPCPipeBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="madCHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MyMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>

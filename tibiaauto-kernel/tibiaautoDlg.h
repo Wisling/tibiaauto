@@ -110,8 +110,6 @@ public:
 protected:
 	HICON m_hIcon;
 
-	// Generated message map functions
-	//{{AFX_MSG(CTibiaautoDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
@@ -159,7 +157,7 @@ protected:
 	afx_msg void OnToolBanker();
 	afx_msg void OnToolSeller();
 	afx_msg void OnButton1();
-	//}}AFX_MSG
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 private:
 	int injectDll(HANDLE process, char* path);

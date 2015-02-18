@@ -2488,7 +2488,8 @@ int GetProcessBaseAddr()
 
 		HMODULE *modules=(HMODULE*)calloc(moduleCount,sizeof(HMODULE));
 		char moduleName[64];
-		EnumProcessModules(dwHandle,modules,moduleCount*sizeof(HMODULE),NULL);
+		unsigned long dummy;
+		EnumProcessModules(dwHandle,modules,moduleCount*sizeof(HMODULE),&dummy);
 		for (size_t i=0;i<moduleCount;i++){
 			GetModuleBaseName(dwHandle,modules[i],moduleName,sizeof(moduleName));
 			if(_strcmpi(moduleName,"Tibia.exe")==0){

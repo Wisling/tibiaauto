@@ -325,8 +325,9 @@ static PyObject *tibiaauto_reader_GetLoggedChar(PyObject *self, PyObject *args)
 	CMemReaderProxy reader;
 	int arg1;
     if (!PyArg_ParseTuple(args, "i", &arg1)) return NULL;
-	char *name=reader.GetLoggedChar(arg1);
-	PyObject *ret = Py_BuildValue("s",name);
+	char name[65];
+	reader.GetLoggedChar(arg1, name, sizeof(name));
+	PyObject *ret = Py_BuildValue("s", name);
 	
 	return ret;
 }

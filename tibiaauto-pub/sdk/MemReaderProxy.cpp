@@ -359,15 +359,16 @@ int CMemReaderProxy::getNextPacketCount()
 	}
 	return 0;
 }
-char * CMemReaderProxy::GetLoggedChar(int processId)
+void CMemReaderProxy::GetLoggedChar(int processId, char* buf, int bufLen)
 {
-	typedef char * (*Proto_fun)(int);
+	typedef char * (*Proto_fun)(int, char*, int);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetLoggedChar");
 		if (fun)
 		{
-			return fun(processId);
+			fun(processId, buf, bufLen);
+			return;
 		} else {
 			::MessageBox(0,"Loading memReadGetLoggedChar failed!","ERROR",0);
 			exit(0);
@@ -376,8 +377,6 @@ char * CMemReaderProxy::GetLoggedChar(int processId)
 		MessageBox(0,"Loading tibiaauto_util.dll failed [2]!","ERROR",0);
 		exit(0);
 	}
-	return NULL;
-
 }
 int CMemReaderProxy::readBattleListMax()
 {

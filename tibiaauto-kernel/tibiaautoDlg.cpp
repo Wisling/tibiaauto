@@ -127,22 +127,17 @@ LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam
 CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
 	: MyDialog(CTibiaautoDlg::IDD, pParent)
 {
-	//{{AFX_DATA_INIT(CTibiaautoDlg)
-	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	XMLPlatformUtils::Initialize();
 		 
 	parser = new XercesDOMParser();
-
-	
 }
 
 void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
-	//{{AFX_DATA_MAP(CTibiaautoDlg)
 	DDX_Control(pDX, IDC_EXIT, m_exit);
 	DDX_Control(pDX, IDC_LOADED_MODULES, m_LoadedModules);
 	DDX_Control(pDX, IDC_OPTIONS, m_Options);
@@ -186,11 +181,9 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_SELLER, m_seller);
 	DDX_Control(pDX, IDC_LOGINNAME, m_loginName);
 	DDX_Control(pDX, IDC_BROWSER_ADS, m_browserAds);
-	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
-	//{{AFX_MSG_MAP(CTibiaautoDlg)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_EN_CHANGE(IDC_EDIT_ADDRESS, OnChangeEditAddress)
@@ -240,7 +233,7 @@ BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_DRAWITEM()
 	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
@@ -297,15 +290,13 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);			// Set big icon
 	SetIcon(m_hIcon, FALSE);		// Set small icon
 		
-
-
-
 	CCharDialog *charDialog = new CCharDialog();
 	m_processId=charDialog->DoModal();
 	globalProcessId=m_processId;
 	delete charDialog;
 	if (m_processId==-1){
-		ExitProcess(0);
+		EndDialog(IDCANCEL);
+		return TRUE;
 	}
 
 	unsigned char buf[5];
@@ -323,13 +314,14 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%x  %x)", buf[0], buf[1]);
 		AfxMessageBox(outBuf);
-		ExitProcess(0);
+
+		EndDialog(IDCANCEL);
+		return TRUE;
 	}
 	
 
 	CMemUtil::setGlobalProcessId(m_processId);
 	
-				
 	InitialiseIPC();
 
 	CMemReaderProxy reader;
@@ -344,7 +336,10 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	int res=enterCode->DoModal();
 	delete enterCode;
 
-	if (res!=IDOK) ExitProcess(0);
+	if (res != IDOK){
+		EndDialog(IDCANCEL);
+		return TRUE;
+	}
 #else
 	shutdownCounter=-rand();
 #endif
@@ -471,9 +466,9 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	if (CModuleUtil::getTASetting("LoadScriptOnStartup")){
 		char fName[128];
-		char *charName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+		char charName[65];
+		reader.GetLoggedChar(CMemUtil::m_globalProcessId, charName, sizeof(charName));
 		sprintf(fName,"tibiaAuto.cfg.%s.xml",charName);
-		free(charName);
 		char pathbuf[2048];
 		CModuleUtil::getInstallPath(pathbuf);
 		CString pathName=pathbuf;
@@ -492,8 +487,6 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (CModuleUtil::getTASetting("GatherBotStats"))
 		SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
 	SetTimer(1006,5000,NULL);//refresh tray icon name if changed
-
-
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -556,9 +549,9 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 		KillTimer(1001);
 		refreshToolInfo();
 		char buf[1024];
-		char *loggedCharName = reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+		char loggedCharName[65];
+		reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
 		sprintf(buf,"Logged as: %s",loggedCharName);
-		free(loggedCharName);
 		CString currentDisplay;
 		m_loginName.GetWindowText(currentDisplay);
 		if (currentDisplay != buf)
@@ -616,12 +609,12 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	}
 	if (nIDEvent==1006)
 	{
-		char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+		char loggedCharName[65];
+		reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
 		if (strcmp(loggedCharName,currentIconData.szTip)!=0){
 			snprintf(currentIconData.szTip,60,"%s",loggedCharName);
 			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
 		}
-		free(loggedCharName);
 	}
 
 	//New timers must be killed in OnExit
@@ -641,14 +634,13 @@ void CTibiaautoDlg::setShellTray(){
 	currentIconData.cbSize=sizeof(NOTIFYICONDATA);
 	currentIconData.hWnd=GetSafeHwnd();
 	currentIconData.uID=1;
-	currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
-	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+	currentIconData.hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+	char loggedCharName[65];
+	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
 	snprintf(currentIconData.szTip,60,"%s",loggedCharName);
-	free(loggedCharName);
 	currentIconData.uCallbackMessage=WM_APP+1;
 	currentIconData.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
 	Shell_NotifyIcon(NIM_ADD,&currentIconData);
-
 }
 
 int CTibiaautoDlg::injectDll(HANDLE process, char* path)
@@ -900,14 +892,14 @@ void CTibiaautoDlg::OnSave()
 {
 	CMemReaderProxy reader;
 	char fName[128];
-	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+	char loggedCharName[65];
+	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
 	FILE *f=NULL;
 
 	char szFilters[]=
       "Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
 
 	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
-	free(loggedCharName);
 	CFileDialog fd(false,"",fName,OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY, szFilters, this);
 	
 	if (fd.DoModal()==IDOK)
@@ -1076,8 +1068,9 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 		restartedModulesTab[modNr]=module->isStarted();
 	}
 	
-	
-	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+
+	char loggedCharName[65];
+	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
 	sprintf(logBuf,"Loading character '%s' ... started",loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 	
@@ -1230,7 +1223,6 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	doc->release();
 	
 	sprintf(logBuf,"Loading character '%s' finished.",loggedCharName);
-	free(loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
 	
 	delete []restartedModulesTab;
@@ -1286,14 +1278,13 @@ void CTibiaautoDlg::OnLoad()
 	CMemReaderProxy reader;
 	
 	char fName[128];
-	char *loggedCharName=reader.GetLoggedChar(CMemUtil::m_globalProcessId);
+	char loggedCharName[65];
+	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));	
 	
-	
-	char szFilters[]=
+	char szFilters[] =
 		"Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
 	
 	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
-	free(loggedCharName);
 	CFileDialog fd(true,"",fName,OFN_FILEMUSTEXIST, szFilters, NULL);
 	if (fd.DoModal()==IDOK){
 		CString pathName;
@@ -1809,4 +1800,11 @@ BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 		}
 	}
 	return CDialog::OnNotify(wParam, lParam, pResult);
+}
+
+int CTibiaautoDlg::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CDialog::OnCreate(lpCreateStruct) != 0)
+		return -1;
+	return 0;
 }

@@ -363,9 +363,8 @@ int CMemReader::readBattleListMax()
 	return CMemUtil::GetMemIntValue(m_memAddressBattleMax);
 }
 
-char * CMemReader::GetLoggedChar(int processId)
+void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 {
-	char *ret;
 	long selfId;
 	int i;
 	
@@ -379,18 +378,14 @@ char * CMemReader::GetLoggedChar(int processId)
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{
-			char buf[33];
-			buf[32]='\0';
-			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,buf,1);
-			ret=(char *)malloc(strlen(buf)+1);
-			strcpy(ret,buf);
-			return ret;
+			char readBuf[33];
+			readBuf[32] = '\0';
+			CMemUtil::GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
+			strncpy(buf, readBuf, bufLen);
+			return;
 		};
 	};
-		
-	ret=(char*)malloc(strlen("unknown")+1);
-	sprintf(ret,"unknown");
-	return ret;
+	strncpy(buf, "unknown", bufLen);
 }
 
 int CMemReader::getAttackedCreature()
@@ -869,7 +864,7 @@ void CMemReader::writeEnableRevealCName()
 
 void CMemReader::writeDisableRevealCName()
 {
-	unsigned char *buf=(unsigned char *)malloc(1);\
+	unsigned char *buf=(unsigned char *)malloc(1);
 	//always jump over exclusion check
 	buf[0]=0x75;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+1,(char *)buf);
