@@ -85,7 +85,7 @@
 		<const code="addrTradeFirstItemPartner" value="0x88F2A4"/> <!-- cat2 -->
 		<const code="addrMiniMapStart" value="0x88FF30"/> <!-- begins at x,y map tile cat2 -->
 		<const code="addrVIP" value="0x9D1410"/> <!-- cat0 -->
-		<const code="addrHP" value="0x9D0000"/>
+		<const code="addrHP" value="0x9D4000"/>
 		<const code="addrGoZ" value="0x9D4004"/>
 		<const code="addrSkillFist" value="0x9D4008"/>
 		<const code="addrSkillFish" value="0x9D4020"/>
