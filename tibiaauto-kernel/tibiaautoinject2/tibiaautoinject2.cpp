@@ -2411,7 +2411,7 @@ int (WINAPI *Real_connect)(SOCKET s, const struct sockaddr* name, int namelen) =
 SOCKET(WINAPI *Real_socket)(int af, int type, int protocol) = NULL;
 
 int WINAPI Mine_send(SOCKET s,char* buf,int len,int flags);
-unsigned char* adler(unsigned char *data, size_t len);
+void adler(unsigned char *data, size_t len, unsigned char* outBuf);
 
 void InitialiseCommunication();
 void InitialiseHooks();
@@ -2518,8 +2518,7 @@ int baseAdjust(int addr){
 }
 
 #define MOD_ADLER 65521
-unsigned char outCheck[5];
-unsigned char* adler(unsigned char *data, size_t len)
+void adler(unsigned char *data, size_t len, unsigned char *outBuf)
 {
 	/*
 	The is the CRC algorithim. I could not nor would I try to find the actual one Tibia
@@ -2543,14 +2542,10 @@ unsigned char* adler(unsigned char *data, size_t len)
         a %= MOD_ADLER;
         b %= MOD_ADLER;
     }
-	outCheck[0] = a&0xff;
-	outCheck[1] = (a>>8)&0xff;
-	outCheck[2] = b&0xff;
-	outCheck[3] = (b>>8)&0xff;
-	outCheck[4] = '\0';
-	
-	return outCheck;
-	
+	outBuf[0] = a & 0xff;
+	outBuf[1] = (a >> 8) & 0xff;
+	outBuf[2] = b & 0xff;
+	outBuf[3] = (b >> 8) & 0xff;	
 }
 
 void sendTAMessage(char* message){
@@ -2652,69 +2647,62 @@ int lastAction=0;
 void sendBufferViaSocket(unsigned char *buffer)
 {
 	// if we don't yet have key pointer then don't do anything
-	if (!encryptKeyPtr){
+	if (!encryptKeyPtr) {
 		return;
 	}
 	int i;
-	unsigned char outbufHeader[1006];
-	unsigned char* outbuf = outbufHeader + 6;
-	int len= (((int)buffer[0])&0xFF) + (((int)buffer[1])&0xFF<<8) + 2;
+	unsigned char outBuf[1006];
+	unsigned char* outBufHeader = outBuf;
+	unsigned char* outBufPayload = outBuf + 6;
+	int payloadLen = *((unsigned short*)buffer) + 2; // length stored on first 2 bytes of payload doesn't include these 2 bytes
 
-	int outbuflen=len;
-	if (len%8!=0) outbuflen+=8-(len%8); // packet length is now 8-btye encryptions + 4 CRC bytes + 2 byes packet header
-	outbufHeader[0]=outbuflen%256;
-	outbufHeader[1]=outbuflen/256;
+	memcpy(outBufPayload, buffer, payloadLen);
+	int outBufLen = payloadLen;
+	if (payloadLen % 8 != 0) {
+		outBufLen += 8 - (payloadLen % 8); // packet length is now 8-byte encryptions + 4 CRC bytes + 2 bytes packet header, align payload to encryption size
+	}
 
 	//before encryption
 	if (debugFile && COMPLEX) {
-		bufToHexString(buffer,len);
+		bufToHexString(buffer, payloadLen);
 		WriteOutDebug("Before Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
 		WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);
-		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
+		WriteOutDebug("outBufLen = %d\r\n", outBufLen);
 	}
 
-	for (i=0;i<outbuflen;i+=8)
-	{
-		memcpy(outbuf+i,buffer+i,8);
-		myInterceptEncrypt((int)(outbuf + i), encryptKeyPtr);// wiz: was repeated 3 times. 2 Removed!
+	for (i = 0; i < outBufLen; i += 8) {
+		myInterceptEncrypt((int)(outBufPayload + i), encryptKeyPtr);
 	}
 	//after encryption
-	if (debugFile && COMPLEX){
+	if (debugFile && COMPLEX) {
 		WriteOutDebug("After Encryption: ~~~~~~~~~~~~~~~~~~~~~~\r\n");
-		bufToHexString(outbuf, outbuflen);
-		WriteOutDebug("-> [%x] %s\r\n",socket,bufToHexStringRet);
-		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
+		bufToHexString(outBufPayload, outBufLen);
+		WriteOutDebug("-> [%x] %s\r\n", socket, bufToHexStringRet);
+		WriteOutDebug("outBufLen = %d\r\n", outBufLen);
 	}
-	int test = outbuflen;
-	unsigned char *check = adler(outbuf, outbuflen);
-	memcpy(outbufHeader + 2 , check, 4);
-	outbufHeader[0] += 4;
-	test += 4;
+	adler(outBufPayload, outBufLen, outBufHeader + 2);
+	int lengthWithChecksum = outBufLen + 4;
+	*((unsigned short*)outBufHeader) = lengthWithChecksum;
 
 	// make sure that packets go at most once every minDistance ms
 	int minDistance=175;
 	minDistance=1;
 	int nowAction=GetTickCount();
-	if (nowAction-lastAction<minDistance && nowAction-lastAction>0){
-		Sleep(minDistance-(nowAction-lastAction));
+	if (nowAction - lastAction < minDistance && nowAction - lastAction>0) {
+		Sleep(minDistance - (nowAction - lastAction));
 	}
-	if (debugFile&&COMPLEX)
-	{
-		WriteOutDebug("sending; waited %dms delta=%dms [%d]\r\n",minDistance-(nowAction-lastAction),nowAction-lastAction,time(NULL));
-		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
+	if (debugFile && COMPLEX) {
+		WriteOutDebug("sending; waited %dms delta=%dms [%d]\r\n", minDistance - (nowAction - lastAction), nowAction - lastAction, time(NULL));
+		WriteOutDebug("outBufLen = %d\r\n", outBufLen);
 	}
-	lastAction=GetTickCount();
+	lastAction = GetTickCount();
+		
+	int ret = Mine_send(tibiaSocket, (char*)outBuf, lengthWithChecksum + 2, 0);
 	
-	
-	int ret = Mine_send(tibiaSocket, (char*)outbufHeader, test + 2, 0); //wiz:changed from "send"
-	
-	if (debugFile&&COMPLEX)
-	{
-		WriteOutDebug("sent %d bytes, ret=%d, lastSendFlags=%d\r\n",outbuflen+2,ret,lastSendFlags);
-		WriteOutDebug("outbuflen = %d\r\n", outbuflen);
+	if (debugFile && COMPLEX) {
+		WriteOutDebug("sent %d bytes, ret=%d, lastSendFlags=%d\r\n", lengthWithChecksum + 2, ret, lastSendFlags);
+		WriteOutDebug("outBufLen = %d\r\n", outBufLen);
 	}
-	//delete check;
-
 }
 
 
