@@ -1775,7 +1775,7 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 		if (shouldLoot()){
 			const char* var=reader.getGlobalVariable("autolooterTm");
 			unsigned int endTime,tibiaId;
-			sscanf(var,"%d %d",&endTime,&tibiaId);
+			sscanf(var, "%d %d", &tibiaId, &endTime);
 			reader.setGlobalVariable("autolooterTm","wait");
 
 			CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(tibiaId);
@@ -2323,8 +2323,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						}
 
 						char buf[30];
+						memset(buf, 0, 30);
 						autolooterTm=time(NULL)+10;
-						sprintf(buf,"%d %d",autolooterTm,attackedCh->tibiaId);
+						sprintf(buf, "%d %d", attackedCh->tibiaId, autolooterTm);
 						reader.setGlobalVariable("autolooterTm",buf);
 
 						if (config->debug) registerDebug("Tmp:Setting currentlyAttackedCreatureNr = -1 & changing attackedCh");
