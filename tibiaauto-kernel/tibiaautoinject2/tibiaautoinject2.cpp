@@ -189,7 +189,7 @@ int funAddr_tibiaInfoMessageBox =		0x59F8F0;
 int callAddr_PrintText01 =				0x474C3D;//...<addr>.*
 int callAddr_PrintText02 =				0x474C82;
 int callAddr_PrintText03 =				0x47E229;
-int callAddr_PrintText04 =				0x72E8E9;
+int callAddr_PrintText04 =				0x52EE09;
 int callAddr_PrintText05 =				0x53016C;
 int callAddr_PlayerNameText01 =			0x438D65;
 int callAddr_PlayerNameText02 =			0x4ED678;
@@ -201,7 +201,7 @@ int callAddr_PlayerNameText07 =			0x4EE07A;
 int callAddr_PlayerNameText08 =			0x52FC3F;
 int callAddr_InfoMiddleScreen01 =		0x42CE59;
 int callAddr_InfoMiddleScreen02 =		0x479CD9;
-int callAddr_InfoMiddleScreen03 =		0x9D4353;
+int callAddr_InfoMiddleScreen03 =		0x4B5A9D;
 int callAddr_InfoMiddleScreen04 =		0x52CB1B;
 int callAddr_InfoMessageBox01 =			0x42C784;
 int callAddr_InfoMessageBox02 =			0x445FEF;
@@ -2545,7 +2545,7 @@ void adler(unsigned char *data, size_t len, unsigned char *outBuf)
 	outBuf[0] = a & 0xff;
 	outBuf[1] = (a >> 8) & 0xff;
 	outBuf[2] = b & 0xff;
-	outBuf[3] = (b >> 8) & 0xff;	
+	outBuf[3] = (b >> 8) & 0xff;
 }
 
 void sendTAMessage(char* message){
@@ -2655,7 +2655,10 @@ void sendBufferViaSocket(unsigned char *buffer)
 	unsigned char* outBufHeader = outBuf;
 	unsigned char* outBufPayload = outBuf + 6;
 	int payloadLen = *((unsigned short*)buffer) + 2; // length stored on first 2 bytes of payload doesn't include these 2 bytes
-
+	if (payloadLen > 8*125){ // this is to check to see if outBuf is long enough
+		//this should never be reached, but just in case 1000 is not arbitrarily high enough we can catch this error
+		MessageBox(NULL, "Trying to send packet > 1000 characters!", "", 0);
+	}
 	memcpy(outBufPayload, buffer, payloadLen);
 	int outBufLen = payloadLen;
 	if (payloadLen % 8 != 0) {

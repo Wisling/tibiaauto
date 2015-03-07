@@ -254,7 +254,7 @@ int memReadGetNextPacketCount()
 void memReadGetLoggedChar(int processId, char* buf, int bufLen)
 {
 	startMemReader();
-	return reader->GetLoggedChar(processId, buf, bufLen);
+	reader->GetLoggedChar(processId, buf, bufLen);
 }
 int memReadReadBattleListMax()
 {

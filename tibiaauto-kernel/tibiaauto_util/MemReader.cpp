@@ -378,8 +378,8 @@ void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{
-			char readBuf[33];
-			readBuf[32] = '\0';
+			char readBuf[32];
+			readBuf[31] = '\0';
 			CMemUtil::GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
 			strncpy(buf, readBuf, bufLen);
 			return;

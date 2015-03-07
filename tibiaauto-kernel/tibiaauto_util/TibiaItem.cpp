@@ -312,10 +312,10 @@ void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree){
 
 void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 {
-	for (size_t itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
+	for (int itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 	{
 
-		size_t attrNr;
+		int attrNr;
 		DOMNode *item = listNode->getChildNodes()->item(itemNr);
 		
 		if (item->getNodeType()!=1) continue;
@@ -505,7 +505,7 @@ void CTibiaItem::refreshItemLists()
 	try
 	{
 
-		size_t listNr, itemNr, rootNr;
+		int listNr, itemNr, rootNr;
 
 		//reset all lists
 		constCodeList.RemoveAll();
@@ -543,7 +543,7 @@ void CTibiaItem::refreshItemLists()
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
-						size_t attrNr;
+						int attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
 						if (wcscmp(item->getNodeName(),L"item"))
 							continue;
@@ -589,7 +589,7 @@ void CTibiaItem::refreshItemLists()
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
-						size_t attrNr;
+						int attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
 						if (wcscmp(item->getNodeName(),L"const"))
 							continue;
@@ -634,7 +634,7 @@ void CTibiaItem::refreshItemLists()
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
-						size_t attrNr;
+						int attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
 						if (wcscmp(item->getNodeName(),L"item"))
 							continue;
@@ -696,7 +696,7 @@ void CTibiaItem::refreshItemLists()
 						
 						for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 						{
-							size_t attrNr;
+							int attrNr;
 							DOMNode *item = listNode->getChildNodes()->item(itemNr);
 							if (wcscmp(item->getNodeName(),L"const"))
 								continue;

@@ -58,6 +58,7 @@ CMemReaderProxy::CMemReaderProxy()
 		sprintf(pathBuf,"%s\\mods\\tibiaauto_util.dll",installPath);
 
 		dllModule=LoadLibrary(pathBuf);
+		//dllModule = (HMODULE)1;
 
 		if (!dllModule)
 		{
@@ -361,7 +362,7 @@ int CMemReaderProxy::getNextPacketCount()
 }
 void CMemReaderProxy::GetLoggedChar(int processId, char* buf, int bufLen)
 {
-	typedef char * (*Proto_fun)(int, char*, int);
+	typedef void(*Proto_fun)(int, char*, int);
 	if (dllModule)
 	{
 		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetLoggedChar");
