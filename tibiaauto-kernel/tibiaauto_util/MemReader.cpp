@@ -98,7 +98,7 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 }
 
 long findContainer(int i, long addrCurr, long addrHead, int depth=0){
-	if(depth>0&& 0){
+	if(depth>0 && 0){
 		CPackSender sender;
 		char buf[111];
 		sprintf(buf,"%d",depth);
@@ -110,9 +110,17 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 	if(depth<5){//binary structure is guaranteed to reach all 16 containers after 4 iterations
 		for(int adj=0;adj<12;adj+=4){
 			long addrNext = CMemUtil::GetMemIntValue(addrCurr+adj,0);
-			if(addrNext != addrHead){
+			if (addrNext != addrHead && addrCurr != addrHead && abs(addrNext - addrCurr) > 0x1000000){ // High likelihood that this pointer is no longer being used, return and retry
+				return (long)-1;
+			}
+			if (addrNext != addrHead){
 				long ret = findContainer(i, addrNext, addrHead, depth+1);
-				if(ret) return ret;
+				if (ret == (long)-1){ // re-read previous pointer an it has likely changed
+					adj -= 4;
+					continue;
+				}else if (ret!=NULL){
+					return ret;
+				}
 			}
 		}
 	}

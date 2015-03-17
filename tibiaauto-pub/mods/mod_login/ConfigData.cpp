@@ -25,7 +25,7 @@ CConfigData::CConfigData()
 	openCont5=openCont6=openCont7=openCont8=0;
 	loginAfterKilled=0;
 	loginDelay=600;
-	autopass=1;
+	autopass=0;
 }
 
 CConfigData::~CConfigData()

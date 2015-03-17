@@ -398,18 +398,22 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				Sleep(2000);
 				continue;
 			}
-			
+			// click "No Auth button if it is on the screen
+			SetCursorPos(wndRect.left + (wndRect.right - wndRect.left) / 2 - 29, wndRect.top + (wndRect.bottom - wndRect.top) / 2 + 110);
+			mouse_event(MYMOUSE_DOWN, 0, 0, 0, 0);
+			mouse_event(MYMOUSE_UP, 0, 0, 0, 0);
+			Sleep(300);
 			// STEP2: enter user and pass
 			if (!config->autopass){
 				strncpy(accNum,config->accountNumber,32);
 				strncpy(pass,config->password,32);
 			}
 			sk.SendKeys(accNum,true);
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-15);
+			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50,wndRect.top+(wndRect.bottom-wndRect.top)/2-25);
 			mouse_event(MYMOUSE_DOWN,0,0,0,0);
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			sk.SendKeys(pass,true);
-			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-15+90);
+			SetCursorPos(wndRect.left+(wndRect.right-wndRect.left)/2+50-20,wndRect.top+(wndRect.bottom-wndRect.top)/2-25+125);
 			mouse_event(MYMOUSE_DOWN,0,0,0,0);
 			mouse_event(MYMOUSE_UP,0,0,0,0);
 			waitOnConnecting();
@@ -810,7 +814,7 @@ void CMod_loginApp::loadConfigParam(char *paramName,char *paramValue)
 	if (!strcmp(paramName,"open/cont7")) m_configData->openCont7=atoi(paramValue);
 	if (!strcmp(paramName,"open/cont8")) m_configData->openCont8=atoi(paramValue);
 	if (!strcmp(paramName,"loginDelay")) m_configData->loginDelay=atoi(paramValue);
-	if (!strcmp(paramName,"autopass")) m_configData->autopass=atoi(paramValue);
+	if (!strcmp(paramName,"autopass")) m_configData->autopass=0;//atoi(paramValue);
 	if (!strcmp(paramName,"accountname")) strncpy(m_configData->accountNumber,paramValue,64);
 	if (!strcmp(paramName,"accountpass")) strncpy(m_configData->password,paramValue,64);
 	if (!strcmp(paramName,"loginAfterKilled")) m_configData->loginAfterKilled=atoi(paramValue);

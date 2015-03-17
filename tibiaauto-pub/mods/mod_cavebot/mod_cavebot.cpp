@@ -176,6 +176,57 @@ int RandomVariableTime(int &pt, int minTime, int maxTime,int command){
 	}
 	return setTime[&pt];
 }
+int binarySearch(unsigned int f, CUIntArray& arr){
+	int ASCENDING = 1;
+	int e = arr.GetSize();
+	int s = 0;
+	while (s<e){
+		int m = (e + s) / 2; //m==s iff e-s==1
+		if (arr[m] == f) return m;
+		else if ((arr[m]>f) == ASCENDING) e = m;
+		else if ((arr[m]<f) == ASCENDING) s = m + 1;
+	}
+	return -1;
+}
+
+void quickSort(CUIntArray& arr, int s, int e){
+	int ASCENDING = 1;
+	if (e - s <= 1) return;
+	int size = arr.GetSize();
+	ASSERT(s >= 0 && e <= size);
+	int rotator = e - 1;
+
+	//select random pivot
+	int pivot = s + 1 + rand() % (e - s - 1);
+
+	//switch pivot to start
+	int tmp = arr[s];
+	arr[s] = arr[pivot];
+	arr[pivot] = tmp;
+
+	//set index
+	pivot = s;
+	while (pivot != rotator){
+		//check if should switch rotator and pivot
+		if ((arr[pivot] >= arr[rotator] == (pivot<rotator)) == ASCENDING){
+			tmp = arr[rotator];
+			arr[rotator] = arr[pivot];
+			arr[pivot] = tmp;
+
+			tmp = rotator;
+			rotator = pivot;
+			pivot = tmp;
+		}
+		//moves rotator 1 closer to pivot
+		rotator += (pivot - rotator) / abs(pivot - rotator);
+	}
+	quickSort(arr, s, pivot);
+	quickSort(arr, pivot + 1, e);
+	return;
+}
+void sortArray(CUIntArray& arr){
+	quickSort(arr, 0, arr.GetSize());
+}
 
 /**
 * Dump full info about a creature (for debuging purposes)
@@ -742,8 +793,13 @@ int countAllItemsOfType(int objectId,int depotContNr,int depotContNr2) { // excl
 	int openContNr=0;
 	int openContMax=reader.readOpenContainerCount();
 	for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
-		if (contNr==depotContNr || contNr==depotContNr2) continue;
 		CTibiaContainer *cont = reader.readContainer(contNr);
+		if (contNr == depotContNr || contNr == depotContNr2){
+			if (cont->flagOnOff) openContNr++;
+			deleteAndNull(cont);
+			continue;
+		}
+			
 		
 		if (cont->flagOnOff){
 			openContNr++;
@@ -754,12 +810,55 @@ int countAllItemsOfType(int objectId,int depotContNr,int depotContNr2) { // excl
 	}
 	return ret;
 }
+void listAllItemsInContainers(CUIntArray& sortedObjectIDs, CUIntArray& outObjectIDs, int depotContNr = -1, int depotContNr2 = -1) { // excludes depotCont containers from search
+	//If objectIDs is empty, then list all objects
+	CMemReaderProxy reader;
+	CMemConstData memConstData = reader.getMemConstData();
+	bool listAll = FALSE;
+	if (sortedObjectIDs.IsEmpty()) listAll = TRUE;
+	// Gather all item IDs from all open containers
+	int contNr;
+	int ret = 0;
+	int openContNr = 0;
+	int openContMax = reader.readOpenContainerCount();
+	for (contNr = 0; contNr<memConstData.m_memMaxContainers && openContNr<openContMax; contNr++) {
+		CTibiaContainer *cont = reader.readContainer(contNr);
+		if (contNr == depotContNr || contNr == depotContNr2){
+			if (cont->flagOnOff) openContNr++;
+			deleteAndNull(cont);
+			continue;
+		}
+		if (cont->flagOnOff){
+			openContNr++;
+			for (int itemNr = 0; itemNr < cont->itemsInside; itemNr++){
+				CTibiaItem* item = (CTibiaItem*)(cont->items.GetAt(itemNr));
+				outObjectIDs.Add(item->objectId);
+			}
+		}
+		deleteAndNull(cont);
+	}
+	// Remove duplicate IDs and IDs not in sortedObjectIDs
+	sortArray(outObjectIDs);
+	unsigned int lastVal;
+	if (outObjectIDs.GetSize()>0) lastVal = ~outObjectIDs.GetAt(outObjectIDs.GetSize() - 1); //ensure lastVal is different
+	for (int i = outObjectIDs.GetSize() - 1; i >= 0; i--){
+		if (lastVal == outObjectIDs.GetAt(i)){
+			outObjectIDs.RemoveAt(i);
+		} else {
+			lastVal = outObjectIDs.GetAt(i);
+			if (!listAll){
+				if (binarySearch(lastVal,sortedObjectIDs) == -1){
+					outObjectIDs.RemoveAt(i);
+				}
+			}
+		}
+	}
+}
 
 /**
 * We are nearby a depot, so do the depositing.
 */
 void depotDeposit(CConfigData *config) {
-	int i;
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -804,7 +903,7 @@ void depotDeposit(CConfigData *config) {
 	reader.setGlobalVariable("walking_control","depotwalker");
 	reader.setGlobalVariable("walking_priority","9");
 	CUIntArray alreadyManagedList; //save itemIDs for later use
-	for (i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
+	for (int i=0;i<100&&strlen(config->depotTrigger[i].itemName);i++) {
 
 		int objectToMove = itemProxy.getItemId(config->depotTrigger[i].itemName);
 		if(objectToMove){
@@ -936,57 +1035,68 @@ DPfinish:
 		//deposit all of every looted item to save from having to add them individually to the list
 		CUIntArray* lootedItems = itemProxy.getLootItemIdArrayPtr();
 		CUIntArray depositList;
-		for(i=0;i<lootedItems->GetSize();i++){
+		for(int i=0;i<lootedItems->GetSize();i++){
 			int itemId=lootedItems->GetAt(i);
 			if (findInIntArray(itemId,alreadyManagedList)==-1 && findInIntArray(itemId,depositList)==-1){
 				depositList.Add(itemId);
 			}
 		}
-		for(i = 0;i<depositList.GetSize();i++){
-			int objectToMove = depositList.GetAt(i);
+		sortArray(depositList);
+		CUIntArray lootableItems;
+		listAllItemsInContainers(lootableItems, lootableItems, depotContNr, depotContNr2);
+		listAllItemsInContainers(depositList, lootableItems, depotContNr, depotContNr2);
+		size_t lootableItemCount = lootableItems.GetSize();
+		for (unsigned int i = 0; i<lootableItemCount; i++){
+			int objectToMove = lootableItems.GetAt(i);
 			int contNr;
 			int totalQty=countAllItemsOfType(objectToMove,depotContNr,depotContNr2);
-			// deposit to depot
-			int qtyToMove=totalQty;
-			int openContNr=0;
-			int openContMax=reader.readOpenContainerCount();
-			for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
-				if (contNr==depotContNr || contNr==depotContNr2) continue;
-				CTibiaContainer *cont = reader.readContainer(contNr);
-				
-				if (cont->flagOnOff) {
-					openContNr++;
-					int itemNr;
-					for (itemNr=cont->itemsInside-1;itemNr>=0;itemNr--) {
-						CTibiaContainer *contCheck = reader.readContainer(contNr);
-						if (!contCheck->flagOnOff){
-							deleteAndNull(contCheck);
-							deleteAndNull(cont);
-							goto DPfinish2;
-						}
-						delete contCheck;
-						CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
-						if (item->objectId==objectToMove) {
-							int itemQty = item->quantity?item->quantity:1;
-							if (itemQty>0) {
-								if (!config->depotDropInsteadOfDeposit) {
-									// move to the depot chest
-									depotDepositMoveToChest(objectToMove,contNr,item->pos,itemQty,depotContNr,depotContNr2);
-								}
-								else {
-									// move onto the floor
-									CTibiaCharacter *selftmp = reader.readSelfCharacter();
-									sender.moveObjectFromContainerToFloor(objectToMove,0x40+contNr,item->pos,self->x,self->y,self->z,itemQty?itemQty:1);
-									CModuleUtil::waitForCapsChange(selftmp->cap);
-									Sleep(CModuleUtil::randomFormula(300,100));
-									deleteAndNull(selftmp);
-								}
+			if (totalQty){
+				// deposit to depot
+				int qtyToMove = totalQty;
+				int openContNr = 0;
+				int openContMax = reader.readOpenContainerCount();
+				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++) {
+					CTibiaContainer *cont = reader.readContainer(contNr);
+					if (contNr == depotContNr || contNr == depotContNr2){
+						if (cont->flagOnOff) openContNr++;
+						deleteAndNull(cont);
+						continue;
+					}
+
+					if (cont->flagOnOff) {
+						openContNr++;
+						int itemNr;
+						for (itemNr = cont->itemsInside - 1; itemNr >= 0; itemNr--) {
+							CTibiaContainer *contCheck = reader.readContainer(contNr);
+							if (!contCheck->flagOnOff){
+								deleteAndNull(contCheck);
+								deleteAndNull(cont);
+								goto DPfinish2;
 							}
-							totalQty-=itemQty;
+							delete contCheck;
+							CTibiaItem *item = (CTibiaItem *)cont->items.GetAt(itemNr);
+							if (item->objectId == objectToMove) {
+								int itemQty = item->quantity ? item->quantity : 1;
+								if (itemQty > 0) {
+									if (!config->depotDropInsteadOfDeposit) {
+										// move to the depot chest
+										depotDepositMoveToChest(objectToMove, contNr, item->pos, itemQty, depotContNr, depotContNr2);
+									}
+									else {
+										// move onto the floor
+										CTibiaCharacter *selftmp = reader.readSelfCharacter();
+										sender.moveObjectFromContainerToFloor(objectToMove, 0x40 + contNr, item->pos, self->x, self->y, self->z, itemQty ? itemQty : 1);
+										CModuleUtil::waitForCapsChange(selftmp->cap);
+										Sleep(CModuleUtil::randomFormula(300, 100));
+										deleteAndNull(selftmp);
+									}
+								}
+								totalQty -= itemQty;
+							}
 						}
 					}
+					deleteAndNull(cont);
 				}
-				deleteAndNull(cont);
 			}
 		}
 	}
@@ -1215,57 +1325,7 @@ void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropIte
 	}
 	deleteAndNull(dropCont);
 }
-int binarySearch(unsigned int f,CUIntArray& arr){
-	int ASCENDING=1;
-	int e=arr.GetSize();
-	int s=0;
-	while (s<e){
-		int m=(e+s)/2; //m==s iff e-s==1
-		if (arr[m]==f) return m;
-		else if ((arr[m]>f)==ASCENDING) e=m;
-		else if ((arr[m]<f)==ASCENDING) s=m+1;
-	}
-	return -1;
-}
 
-void quickSort(CUIntArray& arr,int s,int e){
-	int ASCENDING=1;
-	if (e-s<=1) return;
-	int size = arr.GetSize();
-	ASSERT(s>=0 && e<=size);
-	int rotator=e-1;
-
-	//select random pivot
-	int pivot = s+1+rand()%(e-s-1);
-
-	//switch pivot to start
-	int tmp = arr[s];
-	arr[s]=arr[pivot];
-	arr[pivot]=tmp;
-
-	//set index
-	pivot=s;
-	while (pivot!=rotator){
-		//check if should switch rotator and pivot
-		if ((arr[pivot]>=arr[rotator] == (pivot<rotator))==ASCENDING){
-			tmp=arr[rotator];
-			arr[rotator]=arr[pivot];
-			arr[pivot]=tmp;
-
-			tmp=rotator;
-			rotator=pivot;
-			pivot=tmp;
-		}
-		//moves rotator 1 closer to pivot
-		rotator+= (pivot-rotator)/abs(pivot-rotator);
-	}
-	quickSort(arr,s,pivot);
-	quickSort(arr,pivot+1,e);
-	return;
-}
-void sortArray(CUIntArray& arr){
-	quickSort(arr,0,arr.GetSize());
-}
 /////////////////////////////////////////////////////////////////////////////
 int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius=7) {
 	char buf[256];
