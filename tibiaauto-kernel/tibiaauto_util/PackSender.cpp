@@ -22,7 +22,7 @@ struct ipcMessage
 {
 	int messageType;
 	char payload[1024];
-	UINT tm;
+	time_t tm;
 public:
 	ipcMessage(){
 		messageType = 0;
@@ -996,12 +996,13 @@ void CPackSender::look(int x, int y, int z, int objectId)
 	sendPacket(retbuf);
 }
 
-void CPackSender::ignoreLook(int end)
+void CPackSender::ignoreLook(time_t end)
 {
+	unsigned int truncEnd = (unsigned int)end;
 	struct ipcMessage mess;
 
 	mess.messageType=302;
-	memcpy(mess.payload,&end,4);
+	memcpy(mess.payload, &truncEnd, 4);
 	
 	mess.send();
 }

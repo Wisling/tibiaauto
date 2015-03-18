@@ -70,10 +70,10 @@ void CCharDialog::OnCharRefresh()
 			procEntry.szExeFile[pos]=(char)tolower(procEntry.szExeFile[pos]);
 		if (!strcmp(procEntry.szExeFile,"tibia.exe"))
 		{
-			char *loggedCharName=reader.GetLoggedChar(procEntry.th32ProcessID);
+			char loggedCharName[65];
+			reader.GetLoggedChar(procEntry.th32ProcessID, loggedCharName, sizeof(loggedCharName));
 
 			sprintf(buf,"[%5d] %s",procEntry.th32ProcessID,loggedCharName);
-			free(loggedCharName);
 			if (m_charList.FindStringExact(-1,buf)==-1)
 			{
 				m_charList.AddString(buf);

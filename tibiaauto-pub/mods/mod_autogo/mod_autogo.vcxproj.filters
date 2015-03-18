@@ -1,0 +1,339 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0e924625-e7bb-4d0f-a9d1-7dd2853e58d9}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{c1dfb570-14bb-44f0-a7f1-374f74d2d335}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{641cf4d1-579a-476f-9d1d-2e691327d6c9}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Alarm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alarmdialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\BtnST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\ComboBoxSuper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomSpellDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exports.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneralConfigDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageButtonWithStyle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mod_autogo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\MyDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Skin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TibiaItem_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Trigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VisualStylesXP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WhiteList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\XTabCtrl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mod_autogo.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Alarm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alarmdialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\ComboBoxSuper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomSpellDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enumerations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GeneralConfigDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageButtonWithStyle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jmorecfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="jpeglib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mod_autogo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="png.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="pngconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tmschema.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trigger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="uxtheme.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VisualStylesXP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\XTabCtrl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zconf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="zlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Attack.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Attack.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Audio.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Audio.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Blank.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Blank.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="CastSpell.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\CastSpell.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Columns.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Columns.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="condition_burning.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\condition_burning.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\condition_electrified.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\condition_logoutblock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\condition_poisoned.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Depot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Depot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="general.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\general.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Items.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Items.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="KillTibia.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\KillTibia.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LogEvents.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\LogEvents.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="LogOut.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\LogOut.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="MaximizeWindow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\MaximizeWindow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="proximity.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\proximity.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Runaway.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Runaway.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\ShutdownComputer.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ShutdownComputer.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\skull_black.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\skull_green.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\skull_red.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\skull_white.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\skull_yellow.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\speaker.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\speaker2.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Start.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Start.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\StartModule.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="StartModule.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\Stop.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Stop.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\SuspendModule.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="SuspendModule.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\TakeScreenshot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="TakeScreenshot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\vip.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="vip.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\incorrec.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="mod_autogo.def">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\mod_autogo.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

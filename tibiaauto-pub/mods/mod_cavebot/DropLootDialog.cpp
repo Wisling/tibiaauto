@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // DropLootDialog  dialog
-const MAX_DROP_ITEMS = 100;
+const int MAX_DROP_ITEMS = 100;
 
 CDropLootDialog::CDropLootDialog(char dropListParam[MAX_DROP_ITEMS][64],int& dropListCountParam,int& dropWhenCapacityLimitReachedParam,int& dropOnlyLootedParam, CWnd* pParent /*= NULL*/)
 	: MyDialog(CDropLootDialog::IDD, pParent)

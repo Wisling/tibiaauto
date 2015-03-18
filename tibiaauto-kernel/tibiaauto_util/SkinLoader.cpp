@@ -13,7 +13,6 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/dom/DOMWriter.hpp>
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -29,71 +28,67 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
-CSkinLoader::CSkinLoader() {
-}
-
-CSkinLoader::~CSkinLoader() {
-}
-
-CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
+CSkin loadCurrentSkin(CString currentPathBuf) {
 	XMLPlatformUtils::Initialize();
+	CSkin loadedSkin;
 	XercesDOMParser *parser = new XercesDOMParser();
 	
 	try {
 		parser->parse(currentPathBuf);
-		DOMDocument  *doc = parser->getDocument();
+		xercesc::DOMDocument *doc = parser->getDocument();
+		if (!doc || !doc->getChildNodes()){
+			throw exception();
+		}
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
-			throw;
-		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255){
+			throw exception();
+		}
+		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonDSRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonDSGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonDSBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonDSRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonDSGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonDSBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonLSRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonLSGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonLSBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonLSRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonLSGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonLSBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonHighLightRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonHighLightGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonHighLightBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonHighLightRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonHighLightGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonHighLightBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonLightRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonLightGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonLightBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonLightRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonLightGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonLightBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_TextRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_TextGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_TextBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_TextRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_TextGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_TextBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_EditboxRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_EditboxGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_EditboxBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_EditboxRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_EditboxGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_EditboxBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_PrimaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_PrimaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_PrimaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_PrimaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_PrimaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_PrimaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_SecondaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_SecondaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_SecondaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_SecondaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_SecondaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_SecondaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 
 	}
 	catch (...) {
@@ -107,59 +102,64 @@ CSkin CSkinLoader::loadCurrentSkin(CString currentPathBuf) {
 	return loadedSkin;
 }
 
-CSkin CSkinLoader::loadSkin(CString pathBuf) {
+CSkin loadSkin(CString pathBuf) {
+	CSkin loadedSkin;
 	XercesDOMParser *parser = new XercesDOMParser();
 	try {
 		parser->parse(pathBuf);
-		DOMDocument  *doc = parser->getDocument();
+		xercesc::DOMDocument *doc = parser->getDocument();
+		if (!doc || !doc->getChildNodes()){
+			throw exception();
+		}
 		DOMNode *root = doc->getChildNodes()->item(0);
 		DOMNode *item = root->getFirstChild();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255)
-			throw;
-		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonFaceRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		if (loadedSkin.m_ButtonFaceRedValue < 0 || loadedSkin.m_ButtonFaceRedValue > 255){
+			throw exception();
+		}
+		loadedSkin.m_ButtonFaceGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonFaceBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonDSRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonDSGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonDSBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonDSRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonDSGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonDSBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonLSRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonLSGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonLSBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonLSRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonLSGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonLSBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonHighLightRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonHighLightGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonHighLightBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonHighLightRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonHighLightGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonHighLightBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_ButtonLightRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_ButtonLightGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_ButtonLightBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_ButtonLightRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_ButtonLightGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_ButtonLightBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_TextRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_TextGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_TextBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_TextRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_TextGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_TextBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_EditboxRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_EditboxGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_EditboxBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_EditboxRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_EditboxGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_EditboxBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_PrimaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_PrimaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_PrimaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_PrimaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_PrimaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_PrimaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 		item=item->getNextSibling();
 		item=item->getNextSibling();
-		loadedSkin.m_SecondaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,_L("Red"));
-		loadedSkin.m_SecondaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,_L("Green"));
-		loadedSkin.m_SecondaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,_L("Blue"));
+		loadedSkin.m_SecondaryBackgroundRedValue = CUtil::getNodeIntAttribute(item,L"Red");
+		loadedSkin.m_SecondaryBackgroundGreenValue = CUtil::getNodeIntAttribute(item,L"Green");
+		loadedSkin.m_SecondaryBackgroundBlueValue = CUtil::getNodeIntAttribute(item,L"Blue");
 
 	}
 	catch (...) {
@@ -171,7 +171,7 @@ CSkin CSkinLoader::loadSkin(CString pathBuf) {
 	return loadedSkin;
 }
 
-bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
+bool saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 	CUtil util;
 	XercesDOMParser *parser = new XercesDOMParser();
 	
@@ -193,7 +193,7 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		sprintf(currentPathBuf,"%s\\skins\\CurrentSkin.skin",installPath);
 		
 		parser->parse(pathBuf);
-		DOMDocument* doc = NULL;
+		xercesc::DOMDocument* doc = NULL;
 		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(L"Core");
 		DOMElement* root = NULL;
 		DOMElement* child = NULL;
@@ -317,19 +317,27 @@ bool CSkinLoader::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		
 		XMLString::transcode("LS", tempStr, 99);
 		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-		DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
-			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
+		DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
+		DOMConfiguration* dc = theSerializer->getDomConfig();
+		if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true)){
+			dc->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
 		}
 		fclose(f);
-		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-		theSerializer->writeNode(outfile, *doc);
-
-		outfile = new xercesc::LocalFileFormatTarget(currentPathBuf) ;
-		theSerializer->writeNode(outfile, *doc);
-		doc->release();
+		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf);
+		DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		lsOut->setByteStream(outfile);
+		theSerializer->write(doc, lsOut);
+		lsOut->release();
 		delete outfile;
-		delete theSerializer;
+
+		outfile = new xercesc::LocalFileFormatTarget(currentPathBuf);
+		lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		lsOut->setByteStream(outfile);
+		theSerializer->write(doc, lsOut);
+		lsOut->release();
+		doc->release();
+		theSerializer->release();
+		delete outfile;
 	}
 	catch (...) {
 		AfxMessageBox("Unable to save .skin file!");

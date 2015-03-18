@@ -192,7 +192,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 				for (i=0;i<config->m_grpMemberCount;i++)
 				{
-					if (!strcmpi(config->m_grpMemberList[i],chName))
+					if (!_strcmpi(config->m_grpMemberList[i],chName))
 					{
 						
 						chToHeal=1;

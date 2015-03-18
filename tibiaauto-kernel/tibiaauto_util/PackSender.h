@@ -14,7 +14,7 @@ class CPackSender
 public:
 	void stopAll();
 	void enableCName(int enable);
-	void ignoreLook(int end);
+	void ignoreLook(time_t end);
 	void look(int x,int y,int z,int objectId);
 	void sendCreatureInfo(char *name,char *info1,char *info2);
 	void moveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity);

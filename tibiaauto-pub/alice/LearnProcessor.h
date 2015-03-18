@@ -114,7 +114,7 @@ public:
 private:
 	string removeNewlines(const string &input) {
 		string output = "";
-		for (int ix = 0; ix < input.length(); ++ix) {
+		for (size_t ix = 0; ix < input.length(); ++ix) {
 			if (input[ix] == '\n' || input[ix] == '\r') {
 				continue;
 			}

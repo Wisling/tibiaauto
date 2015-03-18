@@ -1,7 +1,6 @@
 ; tibiaauto_util.def : Declares the module parameters for the DLL.
 
 LIBRARY      "tibiaauto_util"
-DESCRIPTION  'tibiaauto_util Windows Dynamic Link Library'
 
 EXPORTS
 	setProcessId @1

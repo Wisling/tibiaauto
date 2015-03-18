@@ -1,0 +1,198 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{e5cdbcd5-56a1-4887-9026-e78951dd1cb2}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{1d20e4e7-519b-480c-b4b5-2f868bea81cf}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{1fc3ea1d-433d-4567-a0b8-f21bc8dbf6ca}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sdk\BtnST.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConfigWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="exports.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MapButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mod_showmap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\MyDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="proxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\sdk\Skin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TibiaItem_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolMapShow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mod_showmap.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ConfigData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\GroupBoxEx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MapButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mod_showmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\sdk\MyDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolMapShow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00001.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00002.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bmp00003.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_blocked.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_blocked_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_closedhole.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_closedhole_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_crate.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_crate_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_depot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_depot_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_empty.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_ladder.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_ladder_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_magicrope.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_magicrope_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_openhole.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_openhole_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_rope.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_rope_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_samefloor.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_samefloor_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_self.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_stairs.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_stairs_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_tele.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_tele_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_unktele.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\map_unktele_lock.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="thumbnailCARAJ88G.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="mod_showmap.def">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="res\mod_showmap.rc2">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

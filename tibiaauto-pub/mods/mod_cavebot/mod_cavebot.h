@@ -50,7 +50,7 @@ struct Item{
 struct Creature: public Item
 {
 	int failedAttacks;
-	int isIgnoredUntil;
+	time_t isIgnoredUntil;
 	int listPriority;//1 is lowest, 0 means not in attack list
 	int hpPercLeft;
 	int isAttacking;
@@ -60,9 +60,10 @@ struct Creature: public Item
 	int isDead;
 	int number;
 	unsigned int tibiaId;
-	int lastAttackTm;
+	time_t lastAttackTm;
 	Creature() {
-		failedAttacks=isIgnoredUntil=isInvisible=isOnscreen=isWithinMargins=isAttacking=lastAttackTm=listPriority=isDead=number=tibiaId=x=y=z=0;
+		lastAttackTm = isIgnoredUntil = 0;
+		failedAttacks = isInvisible = isOnscreen = isWithinMargins = isAttacking = listPriority = isDead = number = tibiaId = x = y = z = 0;
 		hpPercLeft=100;
 		memset(name,0,40);
 	}

@@ -116,7 +116,7 @@ public:
 			//	reregister and change nicks
 			if (in.find("JOIN") == 0) {
 				string channel = in.substr(5);
-				for (int ix = 0; ix < bot->config.channels.size(); ++ix) {
+				for (size_t ix = 0; ix < bot->config.channels.size(); ++ix) {
 					if (toLower(channel) == toLower(bot->config.channels[ix])) {
 						//	Fake the join...hopefully works
 						client->write(":" + bot->nick + " JOIN :" + channel + "\r\n");
@@ -132,7 +132,7 @@ public:
 			else if (in.find("PART") == 0) {
 				string channel = in.substr(5);
 				vector<string>::iterator itr = bot->config.channels.begin();
-				for (int ix = 0; ix < bot->config.channels.size(); ++ix) {
+				for (size_t ix = 0; ix < bot->config.channels.size(); ++ix) {
 					if (toLower(channel) == toLower(bot->config.channels[ix])) {
 						bot->config.channels.erase(itr);
 					}
@@ -345,7 +345,7 @@ void IrcResponder::disconnect() {
 
 void IrcResponder::disconnected(const string &msg) {
 	SocketHandler::removeSocket(config.description);
-	if (!config.autoReconnect || ++retryCount >= config.maxRetries) {
+	if (!config.autoReconnect || ++retryCount >= (unsigned int)config.maxRetries) {
 		cout << "Disconnected from " << config.description << " (" << msg << ")" << endl;
 		if (ipt != NULL) {
 			ipt->shutdown("IRC Client disconnected");

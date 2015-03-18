@@ -57,6 +57,7 @@ string TemplateProcessor::process(Match *m, PElement e, Responder *r, const stri
 			child = child->getNextSibling();
 		}
 	} catch (int &ex) {
+		ex = ex; //force referencing
 	}
 	return buffer;
 }

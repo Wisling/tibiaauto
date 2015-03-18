@@ -14,7 +14,7 @@
 //	request on to the actual Template .. somehow :P
 
 vector<string> Template::filenames;
-vector<long> Template::filesizes;
+vector<unsigned long> Template::filesizes;
 
 string Template::fetch() {
 	//	Get the filename ..
@@ -23,9 +23,9 @@ string Template::fetch() {
 	if (end <= start) {
 		return "";
 	}
-	int length = end - start;
+	streamsize length = end - start;
 	ifstream fin(filename, ios::in | ios::binary);
-	char *input = new char[length+1];
+	char *input = new char[(unsigned int)(length)+1];
 	if(!fin.is_open())
 		return "Error reading file";
 	fin.seekg(start);
@@ -55,11 +55,11 @@ void Template::reloadFile(int index) {
 		return;
 	}
 	fin.seekg(0, ios::end);
-	int s = fin.tellg();
+	streamoff s = fin.tellg();
 	fin.close();
 	if (s != fs) {
 		//	Reload .. return true
-		filesizes[index] = s;
+		filesizes[index] = (unsigned long)s;
 		Kernel::load(fn);
 	}
 }

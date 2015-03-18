@@ -91,7 +91,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 
-	int groupTime[16] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};//max containers = 16
+	time_t groupTime[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//max containers = 16
 	int minOpenTime = 5;
 
 	for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++){

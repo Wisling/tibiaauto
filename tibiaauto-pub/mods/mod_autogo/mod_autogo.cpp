@@ -16,8 +16,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 */
 
 
-// mod_autogo.cpp : Defines the initialization routines
- for the DLL.
+// mod_autogo.cpp : Defines the initialization routines for the DLL.
 //
 
 #include "stdafx.h"
@@ -42,9 +41,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include <math.h>
 
 #define JPEGLIB_USE_STDIO
-#include "mods/mod_autogo/jpeglib.h"
-#include "mods/mod_autogo/zlib.h"
-#include "mods/mod_autogo/png.h"
+#include <jpeglib.h>
+#include <zlib.h>
+#include <png.h>
 
 using namespace std;
 
@@ -78,8 +77,8 @@ HANDLE toolThreadHandle;
 HANDLE soundThreadHandle;
 char soundPath[2048];
 HWND tibiaHWND = NULL;
-unsigned int timeLastSS = 0;
-unsigned int isTakingScreenshot = 0;
+time_t timeLastSS = 0;
+time_t isTakingScreenshot = 0;
 
 void masterDebug(const char* buf1,const char* buf2="",const char* buf3="",const char* buf4="",const char* buf5="",const char* buf6="",const char* buf7=""){
 
@@ -209,7 +208,7 @@ int OnList(char whiteList[100][32],char name[]){
 	masterDebug("OnList");
 	int i=0;
 	while (IsCharAlphaNumeric(whiteList[i][0])){
-		if (!strcmpi(whiteList[i],name)){
+		if (!_strcmpi(whiteList[i],name)){
 			return 1;
 		}
 		i++;
@@ -243,7 +242,7 @@ struct tibiaMessage * triggerMessage(){
 		
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		if (strcmpi(nickBuf,self->name)!=0 && strcmpi(nickBuf,"Tibia Auto") != 0) {
+		if (_strcmpi(nickBuf,self->name)!=0 && _strcmpi(nickBuf,"Tibia Auto") != 0) {
 			delete self;
 			struct tibiaMessage *newMsg = new tibiaMessage();
 			newMsg->type=infoType;
@@ -274,7 +273,7 @@ CString* alarmStatus(CString alarm) {
 }
 
 void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
-	static extra = 0;
+	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -361,14 +360,14 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 
 	JSAMPROW row_pointer;          /* pointer to a single row */
 	 
-	while (cinfo.next_scanline < pbih->biHeight) {
+	while ((LONG)cinfo.next_scanline < pbih->biHeight) {
 		unsigned int linesize = pbih->biSizeImage/pbih->biHeight;
 		unsigned int linestart = pbih->biSizeImage-(cinfo.next_scanline+1)*linesize;
 		row_pointer = (JSAMPROW) &(hp[linestart]);
-		for(int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RGB
-			hp[linestart+i] ^= hp[linestart+i+2];
-			hp[linestart+i+2] ^= hp[linestart+i];
-			hp[linestart+i] ^= hp[linestart+i+2];
+		for (unsigned int i = 0; i < linesize; i += 3){//output from GetDIBits is BGR, switch to RGB
+			hp[linestart + i] ^= hp[linestart + i + 2];
+			hp[linestart + i + 2] ^= hp[linestart + i];
+			hp[linestart + i] ^= hp[linestart + i + 2];
 		}
 		jpeg_write_scanlines(&cinfo, &row_pointer, 1);
 	}
@@ -379,8 +378,7 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 }
 
 void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
-	//vc++6.0 lib from http://pngwriter.sourceforge.net/howto_msvc.php
-	static extra = 0;
+	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -498,7 +496,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
     for (int k = 0; k < pbmi->bmiHeader.biHeight; k++){
 		unsigned int linesize = pbih->biSizeImage/pbih->biHeight;
 		unsigned int linestart = pbih->biSizeImage-(k+1)*linesize;
-		for(int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RBG
+		for(unsigned int i=0;i<linesize;i+=3){//output from GetDIBits is BGR, switch to RBG
 			hp[linestart+i] ^= hp[linestart+i+2];
 			hp[linestart+i+2] ^= hp[linestart+i];
 			hp[linestart+i] ^= hp[linestart+i+2];
@@ -521,7 +519,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
 }
 
 void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
-	static extra = 0;
+	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -795,7 +793,7 @@ int getGoPriority(list<Alarm> test, bool isGoingToRunaway, int maintainPos){
 }
 int shouldKeepWalking() {
 	//considers whether we are attacking and done looting
-	static lastAttackTime=0;
+	static time_t lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");
@@ -1042,7 +1040,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				
 				// Logout **********************
 				if (alarmItr->getLogout()) {
-					if (!(reader.getSelfEventFlags() & (int)pow(2, LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (int)pow(2, PZBLOCK)) && reader.isLoggedIn()) {
+					if (!(reader.getSelfEventFlags() & (1L << LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (1L << PZBLOCK)) && reader.isLoggedIn()) {
 						sender.logout();
 					}
 				}// ****************************

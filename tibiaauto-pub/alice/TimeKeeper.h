@@ -24,7 +24,7 @@ extern long tMinute();
 extern long tHour();
 extern long tDay();
 extern long tWeek();
-extern long tNow();
+extern time_t tNow();
 
 class Event
 {
@@ -37,18 +37,18 @@ public:
 class TimedEvent
 {
 public:
-	TimedEvent(long t, Event *e) {
+	TimedEvent(time_t t, Event *e) {
 		time = t;
 		event = e;
 	}
-	long getTime() const {
+	time_t getTime() const {
 		return time;
 	}
 	void run() {
 		event->run();
 	}
 private:
-	long time;
+	time_t time;
 	Event *event;
 };
 
@@ -66,7 +66,7 @@ public:
 	Timer();
 	
 	void addEvent(TimedEvent *);
-	void addEvent(long, Event *);
+	void addEvent(time_t, Event *);
 	
 	void processPending();
 private:

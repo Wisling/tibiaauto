@@ -46,7 +46,7 @@ public:
 	int getFollowedCreature();
 	void setFollowedCreature(int tibiaId);
 	int getNextPacketCount();
-	char * GetLoggedChar(int processId);
+	void GetLoggedChar(int processId, char* buf, int bufLen);
 	int readBattleListMax();
 	int readBattleListMin();
 	CTibiaCharacter * readVisibleCreature(int nr);

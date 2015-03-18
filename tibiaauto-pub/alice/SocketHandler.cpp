@@ -33,7 +33,7 @@ void SocketHandler::runLoop() {
 	alreadyRunning = true;
 	
 	Socket *sock;
-	int socket, result;
+	int result, socket;
 	
 	while (!sockets.empty() && serverRunning) {
 		

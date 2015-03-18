@@ -4,7 +4,6 @@
 #pragma once
 
 #include <uxtheme.h>
-#include <tmschema.h>
 //Missing filles, check out this:
 //http://www.microsoft.com/downloads/details.aspx?FamilyId=A55B6B43-E24F-4EA3-A93E-40C0EC4F68E5&displaylang=en
 

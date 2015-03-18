@@ -17,7 +17,7 @@ struct TimedSpell {
 	char spell[64];
 	int mana;
 	int delay;
-	int triggerTime;
+	time_t triggerTime;
 	int randMana;
 	bool usePotions;
 };

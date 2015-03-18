@@ -94,7 +94,7 @@ bool ServerSocket::init() {
 	struct sockaddr_in sa;
 	
 	sa.sin_family = AF_INET;
-	sa.sin_port = htons(port);
+	sa.sin_port = (u_short)htons(port);
 	sa.sin_addr.s_addr = htonl(INADDR_ANY);
 	memset(sa.sin_zero, 0, sizeof(sa.sin_zero));
 	

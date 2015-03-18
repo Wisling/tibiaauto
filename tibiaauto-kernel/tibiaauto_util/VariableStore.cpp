@@ -70,7 +70,7 @@ int CVariableStore::findVariableIndex(char *name)
 	int i;
 	for (i=0;i<MAX_VARIABLES;i++)
 	{
-		if (!strcmpi(name,variableStore[i]))
+		if (!_strcmpi(name,variableStore[i]))
 			return i;
 	}
 	return -1;

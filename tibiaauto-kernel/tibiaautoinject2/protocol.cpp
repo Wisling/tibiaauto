@@ -51,8 +51,8 @@ NetworkMessage::NetworkMessage(char* rawMsg, int len){
 	msgSize = len+2;
 	if (rawMsg!=NULL){
 		if (msgSize<=NETWORKMESSAGE_MAXSIZE){
-			msgBuf[0] = len%256;
-			msgBuf[1] = (len<<256)%256;
+			msgBuf[0] = (unsigned char)(len & 0xFF);
+			msgBuf[1] = (unsigned char)((len >> 8) & 0xFF);
 			memcpy(msgBuf+2,rawMsg,len);
 		} else {
 			msgSize=0;
@@ -101,14 +101,14 @@ int isSpellMessage(const char *msg)
 	if (strlen(newmsg)!=5) return 0;
 	//if string starts with prefix and is = prefix+suffix, return 1
 	for (pos=0;spellPre[pos];pos++){
-		if (strnicmp(newmsg,spellPre[pos],2)==0){
+		if (_strnicmp(newmsg,spellPre[pos],2)==0){
 			for (int pos2=0;spellSuf[pos2];pos2++){
 				char tmp[10];
 				tmp[0]=0;
 				strcat(tmp,spellPre[pos]);
 				strcat(tmp,spellSuf[pos2]);
 				tmp[5]='\0';
-				if (strnicmp(newmsg,tmp,5)==0){
+				if (_strnicmp(newmsg,tmp,5)==0){
 					return 1;
 				}
 			}
@@ -394,7 +394,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 	char pathBuf[2048];
 	sprintf(pathBuf,"%s\\tascripts\\botting %d statistics.txt",path,reader.getProcessId());
 	std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
-	int tm=time(NULL);
+	time_t tm = time(NULL);
 	fout.write((char*)&tm,4);
 	fout.write((char*)msg.msgBuf,msg.msgSize);
 	fout.write("\xff\xff",2);

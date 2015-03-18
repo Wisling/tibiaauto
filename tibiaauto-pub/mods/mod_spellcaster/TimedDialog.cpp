@@ -86,7 +86,7 @@ void TimedDialog::configToControls(CConfigData *configData) {
 	spellList = configData->timedSpellList;
 	m_timedSpellList.DeleteAllItems();
 	char lpBuffer[32];
-	for (	int i = 0; i < spellList.size(); i++) {
+	for (size_t i = 0; i < spellList.size(); i++) {
 		TimedSpell temp = spellList[i];
 		m_timedSpellList.InsertItem(i, "");
 		m_timedSpellList.SetItemText(0, 0, temp.spell);
@@ -173,7 +173,7 @@ void TimedDialog::OnTimedSpellDelete() {
 		nTemp = nTemp-1;
 		pnArrayOfSelRows[nTemp] = i;
 		i = m_timedSpellList.GetNextSelectedItem(pos);
-		for(int k = 0; k < spellList.size(); k++) {
+		for (size_t k = 0; k < spellList.size(); k++) {
 			if(spellList[k].spell == m_timedSpellList.GetItemText(find, 0))
 				spellList.erase(spellList.begin() + k);
 		}

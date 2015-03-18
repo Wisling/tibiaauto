@@ -21,11 +21,11 @@ public:
 	
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string nick = Kernel::process(m, e->getChild("nick"), r, id);
-		string server = Kernel::process(m, e->getChild("server"), r, id);
+		/*string server = Kernel::process(m, e->getChild("server"), r, id);
 		int port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());
 		string channel = Kernel::process(m, e->getChild("channel"), r, id);
 		string pass = Kernel::process(m, e->getChild("pass"), r, id);
-		string server_port = Kernel::process(m, e->getChild("server_port"), r, id);
+		string server_port = Kernel::process(m, e->getChild("server_port"), r, id);*/
 //		new IrcResponder(server, port, nick, channel, pass, server_port);
 		
 	/*	static IrcClient *ic = NULL;

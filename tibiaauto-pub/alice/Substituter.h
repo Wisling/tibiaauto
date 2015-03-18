@@ -40,8 +40,8 @@ public:
 	void addChild(string find, string replace) {
 		char ch;
 		Node *n = root;
-		for (int ix = 0; ix < find.length(); ++ix) {
-			ch = toupper(find[ix]);
+		for (size_t ix = 0; ix < find.length(); ++ix) {
+			ch = (char)toupper(find[ix]);
 			if (n->children.find(ch) == n->children.end()) {
 				n->children[ch] = new Node();
 			}

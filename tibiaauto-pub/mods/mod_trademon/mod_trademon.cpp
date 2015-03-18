@@ -68,10 +68,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 	int offeredItems=0;
 
-	int channelTime=0;
-	int yellTime=0;
-	int sayTime=0;
-	srand(time(NULL));
+	time_t channelTime = 0;
+	time_t yellTime = 0;
+	time_t sayTime = 0;
+	srand((unsigned int)time(NULL));
 
 	while (!toolThreadShouldStop){
 

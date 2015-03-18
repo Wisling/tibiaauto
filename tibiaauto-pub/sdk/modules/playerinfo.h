@@ -7,15 +7,15 @@ struct skillstruct{
 };
 
 struct spellstruct{
-	long start;
-	long remaining;
+	time_t start;
+	time_t remaining;
 	long lasts;
 	long warning;
 };
 
 struct mod_playerinfo{
-	unsigned long timeStart;
-	unsigned long timeCurrent;
+	time_t timeStart;
+	time_t timeCurrent;
 	unsigned short hp;
 	unsigned short maxHp;
 	unsigned short mana;

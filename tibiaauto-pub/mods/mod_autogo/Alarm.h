@@ -24,11 +24,11 @@ public:
 	int getSpellDelay();
 	void setSpellDelay(int);
 	struct point currentLoc;
-	int movedTime;
+	time_t movedTime;
 	void setDescriptor(CString);
 	CString getDescriptor();
 	int screenshotsTaken;
-	int spellCast;
+	time_t spellCast;
 	void setManaCost(int);
 	int getManaCost();
 	int getCondition();
@@ -140,7 +140,7 @@ private:
 	int healthInit;
 
 	// Specific Needs Variables
-	int onScreenAt;
+	time_t onScreenAt;
 
 public:
 	//Alarm variables

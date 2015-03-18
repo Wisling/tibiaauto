@@ -13,7 +13,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-extern int loginTime;
+extern time_t loginTime;
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
@@ -133,7 +133,7 @@ void CConfigDialog::enableControls()
 	m_loginDelay.EnableWindow(true);
 	m_loginAfterKilled.EnableWindow(true);
 
-	m_autopass.EnableWindow(true);
+	m_autopass.EnableWindow(false);
 	OnAutopass();
 
 }
@@ -159,7 +159,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	sprintf(buf,"%d",configData->loginDelay);m_loginDelay.SetWindowText(buf);
 	m_loginAfterKilled.SetCheck(configData->loginAfterKilled);
 
-	m_autopass.SetCheck(configData->autopass);
+	m_autopass.SetCheck(0);// configData->autopass);
+	m_autopass.EnableWindow(false);
 	OnAutopass();
 
 }
@@ -182,7 +183,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->openCont7=m_openCont7.GetCheck();
 	newConfigData->openCont8=m_openCont8.GetCheck();
 	m_loginDelay.GetWindowText(buf,63);newConfigData->loginDelay=atoi(buf);
-	newConfigData->autopass=m_autopass.GetCheck();
+	newConfigData->autopass = 0;// m_autopass.GetCheck();
 	newConfigData->loginAfterKilled=m_loginAfterKilled.GetCheck();
 
 	return newConfigData;

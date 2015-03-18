@@ -10,15 +10,14 @@
 #include <xercesc/util/PlatformUtils.hpp>
 
 #include <xercesc/dom/DOM.hpp>
+#include <xercesc/dom/DOMDocument.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/dom/DOMWriter.hpp>
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
 #include <xercesc/parsers/XercesDOMParser.hpp>
 #include <xercesc/util/XMLUni.hpp>
-
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -46,7 +45,7 @@ CTibiaList CTibiaItem::typedList;
 CTibiaList CTibiaItem::constCodeList;
 
 void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent);
-void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument* doc);
+void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument* doc);
 void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list);
 void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list);
 
@@ -320,7 +319,7 @@ void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 		DOMNode *item = listNode->getChildNodes()->item(itemNr);
 		
 		if (item->getNodeType()!=1) continue;
-		if (!wcscmp(item->getNodeName(),_L("item"))){
+		if (!wcscmp(item->getNodeName(),L"item")){
 
 			
 			int objectId=0;
@@ -332,9 +331,9 @@ void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 			{
 				DOMNode *attrNode = item->getAttributes()->item(attrNr);
 
-				if (!wcscmp(attrNode->getNodeName(),_L("name")))
+				if (!wcscmp(attrNode->getNodeName(),L"name"))
 					objectName=CUtil::wc2c(attrNode->getNodeValue());
-				if (!wcscmp(attrNode->getNodeName(),_L("id")))
+				if (!wcscmp(attrNode->getNodeName(),L"id"))
 				{
 					char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 					sscanf(idTmp,"0x%x",&objectId);
@@ -342,13 +341,13 @@ void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 						sscanf(idTmp,"%d",&objectId);
 					free(idTmp);
 				}
-				if (!wcscmp(attrNode->getNodeName(),_L("looted")))
+				if (!wcscmp(attrNode->getNodeName(),L"looted"))
 				{
 					char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 					sscanf(idTmp,"%d",&objectLoot);
 					free(idTmp);
 				}
-				if (!wcscmp(attrNode->getNodeName(),_L("type")))
+				if (!wcscmp(attrNode->getNodeName(),L"type"))
 				{
 					char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 					sscanf(idTmp,"%d",&type);
@@ -363,13 +362,13 @@ void parseItemsBranch(DOMNode* listNode,CTibiaTree* parent)
 			parent->AddChild(new CTibiaTreeItemData(objectName,objectId,objectLoot!=0, type));
 			if (objectName) free(objectName);
 		}
-		if (!wcscmp(item->getNodeName(),_L("branch"))){
+		if (!wcscmp(item->getNodeName(),L"branch")){
 			char *branchName=NULL;
 			
 			for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
 			{
 				DOMNode *attrNode = item->getAttributes()->item(attrNr);
-				if (!wcscmp(attrNode->getNodeName(),_L("name")))
+				if (!wcscmp(attrNode->getNodeName(),L"name"))
 					branchName=CUtil::wc2c(attrNode->getNodeValue());
 			}
 			if (!branchName||!strlen(branchName))
@@ -501,15 +500,12 @@ void CTibiaItem::refreshItemLists()
 		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
 		exit(1);
 	}
-	
-	
-	
 
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
 	{
 
-		int listNr,itemNr,rootNr;
+		int listNr, itemNr, rootNr;
 
 		//reset all lists
 		constCodeList.RemoveAll();
@@ -528,14 +524,14 @@ void CTibiaItem::refreshItemLists()
 		{
 			DOMNode *root = doc->getChildNodes()->item(rootNr);
 
-			if (wcscmp(root->getNodeName(),_L("item-definitions")))
+			if (wcscmp(root->getNodeName(),L"item-definitions"))
 				continue;
 			for (listNr=0;listNr<root->getChildNodes()->getLength();listNr++)
 			{
 				DOMNode *listNode = root->getChildNodes()->item(listNr);
 
 				//ITEMS
-				if (!wcscmp(listNode->getNodeName(),_L("items"))) {
+				if (!wcscmp(listNode->getNodeName(),L"items")) {
 
 					//recursively add to itemTree from XML tree, works with older versions
 					parseItemsBranch(listNode,itemTree);
@@ -543,13 +539,13 @@ void CTibiaItem::refreshItemLists()
 				}
 
 				//FOOD
-				if (!wcscmp(listNode->getNodeName(),_L("foods"))) {
+				if (!wcscmp(listNode->getNodeName(),L"foods")) {
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
 						int attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
-						if (wcscmp(item->getNodeName(),_L("item")))
+						if (wcscmp(item->getNodeName(),L"item"))
 							continue;
 						
 						int objectId=0;
@@ -559,9 +555,9 @@ void CTibiaItem::refreshItemLists()
 						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
 						{
 							DOMNode *attrNode = item->getAttributes()->item(attrNr);
-							if (!wcscmp(attrNode->getNodeName(),_L("name")))
+							if (!wcscmp(attrNode->getNodeName(),L"name"))
 								objectName=CUtil::wc2c(attrNode->getNodeValue());
-							if (!wcscmp(attrNode->getNodeName(),_L("id")))
+							if (!wcscmp(attrNode->getNodeName(),L"id"))
 							{
 								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 								sscanf(idTmp,"0x%x",&objectId);
@@ -569,7 +565,7 @@ void CTibiaItem::refreshItemLists()
 									sscanf(idTmp,"%d",&objectId);
 								free(idTmp);
 							}
-							if (!wcscmp(attrNode->getNodeName(),_L("time"))) {
+							if (!wcscmp(attrNode->getNodeName(),L"time")) {
 								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 								sscanf(idTmp,"%d",&eatTime);
 								free(idTmp);
@@ -589,13 +585,13 @@ void CTibiaItem::refreshItemLists()
 
 				//CONSTS
 				//SECTION IS UNUSED, FOR CURRENT TIBIA see next section for loading from const file
-				if (!wcscmp(listNode->getNodeName(),_L("consts"))) {
+				if (!wcscmp(listNode->getNodeName(),L"consts")) {
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
 						int attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
-						if (wcscmp(item->getNodeName(),_L("const")))
+						if (wcscmp(item->getNodeName(),L"const"))
 							continue;
 						
 						int constValue=0;
@@ -604,9 +600,9 @@ void CTibiaItem::refreshItemLists()
 						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
 						{
 							DOMNode *attrNode = item->getAttributes()->item(attrNr);
-							if (!wcscmp(attrNode->getNodeName(),_L("code")))
+							if (!wcscmp(attrNode->getNodeName(),L"code"))
 								constCode=CUtil::wc2c(attrNode->getNodeValue());
-							if (!wcscmp(attrNode->getNodeName(),_L("value")))
+							if (!wcscmp(attrNode->getNodeName(),L"value"))
 							{
 								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 								sscanf(idTmp,"0x%x",&constValue);
@@ -634,13 +630,13 @@ void CTibiaItem::refreshItemLists()
 
 				//LOOT
 				//SECTION IS UNUSED, FOR CURRENT TIBIA
-				if (!wcscmp(listNode->getNodeName(),_L("looted"))) {
+				if (!wcscmp(listNode->getNodeName(),L"looted")) {
 					
 					for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 					{
 						int attrNr;
 						DOMNode *item = listNode->getChildNodes()->item(itemNr);
-						if (wcscmp(item->getNodeName(),_L("item")))
+						if (wcscmp(item->getNodeName(),L"item"))
 							continue;
 						
 						int objectId=0;
@@ -649,9 +645,9 @@ void CTibiaItem::refreshItemLists()
 						for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
 						{
 							DOMNode *attrNode = item->getAttributes()->item(attrNr);
-							if (!wcscmp(attrNode->getNodeName(),_L("name")))
+							if (!wcscmp(attrNode->getNodeName(),L"name"))
 								objectName=CUtil::wc2c(attrNode->getNodeValue());
-							if (!wcscmp(attrNode->getNodeName(),_L("id")))
+							if (!wcscmp(attrNode->getNodeName(),L"id"))
 							{
 								char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 								sscanf(idTmp,"0x%x",&objectId);
@@ -688,7 +684,7 @@ void CTibiaItem::refreshItemLists()
 			{
 				DOMNode *root = doc->getChildNodes()->item(rootNr);
 					
-				if (wcscmp(root->getNodeName(),_L("const-definitions")))
+				if (wcscmp(root->getNodeName(),L"const-definitions"))
 					continue;
 				for (listNr=0;listNr<root->getChildNodes()->getLength();listNr++)
 				{
@@ -696,13 +692,13 @@ void CTibiaItem::refreshItemLists()
 
 
 					//CONSTS
-					if (!wcscmp(listNode->getNodeName(),_L("consts"))) {
+					if (!wcscmp(listNode->getNodeName(),L"consts")) {
 						
 						for (itemNr=0;itemNr<listNode->getChildNodes()->getLength();itemNr++)
 						{
 							int attrNr;
 							DOMNode *item = listNode->getChildNodes()->item(itemNr);
-							if (wcscmp(item->getNodeName(),_L("const")))
+							if (wcscmp(item->getNodeName(),L"const"))
 								continue;
 							
 							int constValue=0;
@@ -711,9 +707,9 @@ void CTibiaItem::refreshItemLists()
 							for (attrNr=0;attrNr<item->getAttributes()->getLength();attrNr++)
 							{
 								DOMNode *attrNode = item->getAttributes()->item(attrNr);
-								if (!wcscmp(attrNode->getNodeName(),_L("code")))
+								if (!wcscmp(attrNode->getNodeName(),L"code"))
 									constCode=CUtil::wc2c(attrNode->getNodeValue());
-								if (!wcscmp(attrNode->getNodeName(),_L("value")))
+								if (!wcscmp(attrNode->getNodeName(),L"value"))
 								{
 									char *idTmp=CUtil::wc2c(attrNode->getNodeValue());
 									sscanf(idTmp,"0x%x",&constValue);
@@ -761,7 +757,7 @@ void CTibiaItem::refreshItemLists()
 	LeaveCriticalSection(&ItemsInitCriticalSection);
 }
 
-void saveItemsBranch(DOMNode* node, CTibiaTree* parent, DOMDocument  *doc){
+void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *doc){
 	int size=parent->children.size();
 	for (int i=0;i<size;i++){
 		CTibiaTree* child=parent->children[i];
@@ -817,7 +813,7 @@ void CTibiaItem::saveItemLists() {
 
 		DOMImplementation* impl =  DOMImplementationRegistry::getDOMImplementation(XMLString::transcode("Core"));
 
-		DOMDocument  *doc = impl->createDocument (0, XMLString::transcode("item-definitions"), 0);
+		xercesc::DOMDocument *doc = impl->createDocument(0, XMLString::transcode("item-definitions"), 0);
 		doc->createComment((const unsigned short *)"<!-- Tibia Items for Tibia -->");
 		
 		DOMElement *root = doc->getDocumentElement();
@@ -872,18 +868,20 @@ void CTibiaItem::saveItemLists() {
 
 		XMLCh tempStr[100];
 		XMLString::transcode("LS", tempStr, 99);
-		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
-		DOMWriter* theSerializer = ((DOMImplementationLS*)impl)->createDOMWriter();
-		if( theSerializer->canSetFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint, true ) ){
-			theSerializer->setFeature( xercesc::XMLUni::fgDOMWRTFormatPrettyPrint , true );
-		}
-		xercesc::XMLFormatTarget *outfile = new xercesc::LocalFileFormatTarget(pathBuf) ;
-		theSerializer->writeNode(outfile, *doc);
-		theSerializer->release();
-		doc->release();
-		delete outfile;
-		//delete theSerializer; //  Equivalent to the theSerializer->release() statement
 
+		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
+		DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
+		DOMConfiguration* dc = theSerializer->getDomConfig();
+		if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true)){
+			dc->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
+		}
+		XMLFormatTarget *outFile = new LocalFileFormatTarget(pathBuf);
+		DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		lsOut->setByteStream(outFile);
+		theSerializer->write(doc, lsOut);
+		theSerializer->release();
+		lsOut->release();
+		delete outFile;
 	} catch (...) {
 		AfxMessageBox("Unable to save item definitions!");
 	}

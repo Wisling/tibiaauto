@@ -54,7 +54,7 @@ long tWeek() {
 	return 7 * tDay();
 }
 
-long tNow() {
+time_t tNow() {
 	return time(NULL);
 }
 
@@ -66,7 +66,7 @@ void Timer::addEvent(TimedEvent *te) {
 	tq.push(te);
 }
 
-void Timer::addEvent(long t, Event *e) {
+void Timer::addEvent(time_t t, Event *e) {
 	tq.push(new TimedEvent(t, e));
 	//cout << "Event will run " << ((t - time(NULL)) / tSecond()) << " seconds from now" << endl;
 }

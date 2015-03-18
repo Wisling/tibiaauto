@@ -37,7 +37,7 @@ CUtil::~CUtil()
 
 }
 
-char *CUtil::wc2c(const unsigned short *src)
+char *CUtil::wc2c(const XMLCh *src)
 {
 	char *dest=(char *)malloc(MAX_STRING_LEN);
 	memset(dest,0,MAX_STRING_LEN);
@@ -50,12 +50,12 @@ char *CUtil::wc2c(const unsigned short *src)
 char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 {
 	
-	int attrNr;
-	for (attrNr=0;attrNr<node->getAttributes()->getLength();attrNr++)
+	size_t attrNr;
+	for (attrNr = 0; attrNr < node->getAttributes()->getLength(); attrNr++)
 	{
 		DOMNode *attrNode = node->getAttributes()->item(attrNr);
-		char *attrNameWide=CUtil::wc2c(attrNode->getNodeName());
-		if (!strcmp(attrNameWide,attrName))
+		char *attrNameWide = CUtil::wc2c(attrNode->getNodeName());
+		if (!strcmp(attrNameWide, attrName))
 		{
 			free(attrNameWide);
 			return CUtil::wc2c(attrNode->getNodeValue());

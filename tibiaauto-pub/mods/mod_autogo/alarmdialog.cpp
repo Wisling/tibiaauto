@@ -352,7 +352,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			CTibiaItemProxy itemProxy;
 			CMemReaderProxy reader;
 			for (int j = 0; j < 26; j++) {
-				itemProxy.fillTypedItemIdArray(pow(2, j));
+				itemProxy.fillTypedItemIdArray((int)pow(2, j));
 				int count = itemProxy.getTypedItemCount();
 				int index;
 				for (int i = 0; i < count; i++) {
@@ -564,8 +564,8 @@ BOOL CAlarmDialog::OnInitDialog() {
 		
 		Module32First(hSnap,&lpModule);
 		do {
-			if (strcmpi(lpModule.szModule,"mod_autogo.dll")!=0 && strcmpi(lpModule.szModule,"mod_playerinfo.dll")!=0) {
-				if (!strcmpi(strtok(lpModule.szModule, "_."), "mod")) {
+			if (_strcmpi(lpModule.szModule,"mod_autogo.dll")!=0 && _strcmpi(lpModule.szModule,"mod_playerinfo.dll")!=0) {
+				if (!_strcmpi(strtok(lpModule.szModule, "_."), "mod")) {
 					char *buf;
 					buf = strtok(NULL, "_.");
 					buf[0] = toupper(buf[0]);

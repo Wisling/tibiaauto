@@ -41,8 +41,8 @@ public:
 	CImageList* m_pImageList;
 	BOOL m_bUseImage;
 
-	static const DEFAULT_COLUMN_COUNT;
-	static const DEFAULT_COLUMN_WIDTH;
+	static const int DEFAULT_COLUMN_COUNT;
+	static const int DEFAULT_COLUMN_WIDTH;
 
 
 	// Operations

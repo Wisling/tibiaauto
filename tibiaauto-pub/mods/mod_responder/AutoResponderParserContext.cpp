@@ -41,7 +41,7 @@ CAutoResponderParserContext::~CAutoResponderParserContext()
 
 }
 
-void CAutoResponderParserContext::setIgnoredPlayer(char *name, int deadline)
+void CAutoResponderParserContext::setIgnoredPlayer(char *name, time_t deadline)
 {
 	int i;
 	for (i=0;i<ignorePlayersCount;i++)
@@ -58,7 +58,7 @@ void CAutoResponderParserContext::setIgnoredPlayer(char *name, int deadline)
 	{
 		ignorePlayersSize=ignorePlayersSize*2+2;
 		ignorePlayers=(char **)realloc(ignorePlayers,ignorePlayersSize*sizeof(char *));
-		ignorePlayersDeadline=(int *)realloc(ignorePlayersDeadline,ignorePlayersSize*sizeof(int));
+		ignorePlayersDeadline = (time_t *)realloc(ignorePlayersDeadline, ignorePlayersSize*sizeof(time_t));
 	}
 	ignorePlayers[ignorePlayersCount]=(char *)malloc(sizeof(char)*MAX_STRING_LEN);
 	sprintf(ignorePlayers[ignorePlayersCount],"%s",name);
@@ -106,7 +106,7 @@ char * CAutoResponderParserContext::getVariable(char *name)
 int CAutoResponderParserContext::isPlayerIgnored(char *name)
 {
 	int i;
-	int t=time(NULL);
+	time_t t = time(NULL);
 	for (i=0;i<ignorePlayersCount;i++)
 	{
 		if (!strcmp(ignorePlayers[i],name)&&ignorePlayersDeadline[i]>=t)

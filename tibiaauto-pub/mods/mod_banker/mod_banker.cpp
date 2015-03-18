@@ -93,8 +93,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CConfigData *config = (CConfigData *)lpParam;
 
 	int persistentShouldGo=0;
-	int lastPathNotFoundTm=0;
-	unsigned int lastBankerSuccessTm=0;
+	time_t lastPathNotFoundTm = 0;
+	time_t lastBankerSuccessTm=0;
 	int bankerPauseAfterSuccess=5;
 	int modRuns = 0;
 	while (!toolThreadShouldStop) {
@@ -365,7 +365,7 @@ int findBanker(CConfigData *config) {
 }
 
 int shouldKeepWalking() {
-	static lastAttackTime=0;
+	static time_t lastAttackTime=0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature()){
 		const char *var=reader.getGlobalVariable("autolooterTm");
@@ -542,7 +542,7 @@ int isCavebotOn() {
 		
 		Module32First(hSnap,&lpModule);
 		do {
-			if (strcmpi(lpModule.szModule,"mod_cavebot.dll") == 0){
+			if (_strcmpi(lpModule.szModule,"mod_cavebot.dll") == 0){
 				FARPROC isStarted;
 				isStarted = GetProcAddress(lpModule.hModule,"isStarted");
 				if (isStarted) {

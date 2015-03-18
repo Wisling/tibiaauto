@@ -61,7 +61,8 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 	DWORD vipEntryAddr = dereference(linkedListAddr,0);
 	//0x0 next entry; 0x4 prev entry; 0x8 E68B6C; 0x10 playerId; 0x14 icon; 0x18 name/pointer to name; 0x28 namelen;
 	//0x28 namemaxlen; 0x34 description/desc pointer; 0x44 desclen; 0x48 descmaxlen; 0x50 status; 0x58 loginTm
-	for (int iNR=0; iNR!=nr && vipEntryAddr!=linkedListAddr; iNR++){
+	int iNR;
+	for (iNR=0; iNR!=nr && vipEntryAddr!=linkedListAddr; iNR++){
 		vipEntryAddr = dereference(vipEntryAddr,0);
 	}
 	if (iNR==nr && vipEntryAddr!=linkedListAddr){
@@ -97,7 +98,7 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 }
 
 long findContainer(int i, long addrCurr, long addrHead, int depth=0){
-	if(depth>0&& 0){
+	if(depth>0 && 0){
 		CPackSender sender;
 		char buf[111];
 		sprintf(buf,"%d",depth);
@@ -109,9 +110,17 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 	if(depth<5){//binary structure is guaranteed to reach all 16 containers after 4 iterations
 		for(int adj=0;adj<12;adj+=4){
 			long addrNext = CMemUtil::GetMemIntValue(addrCurr+adj,0);
-			if(addrNext != addrHead){
+			if (addrNext != addrHead && addrCurr != addrHead && abs(addrNext - addrCurr) > 0x1000000){ // High likelihood that this pointer is no longer being used, return and retry
+				return (long)-1;
+			}
+			if (addrNext != addrHead){
 				long ret = findContainer(i, addrNext, addrHead, depth+1);
-				if(ret) return ret;
+				if (ret == (long)-1){ // re-read previous pointer an it has likely changed
+					adj -= 4;
+					continue;
+				}else if (ret!=NULL){
+					return ret;
+				}
 			}
 		}
 	}
@@ -188,7 +197,7 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 	ch->maxHp = CMemUtil::GetMemIntValue(m_memAddressHPMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	ch->maxMana = CMemUtil::GetMemIntValue(m_memAddressManaMax)^CMemUtil::GetMemIntValue(m_memAddressXor);
 	// note: since 8.31 capacity has accuracy to 2 decimal places
-	ch->cap = (CMemUtil::GetMemIntValue(m_memAddressCap)^CMemUtil::GetMemIntValue(m_memAddressXor))/100.0;
+	ch->cap = (CMemUtil::GetMemIntValue(m_memAddressCap)^CMemUtil::GetMemIntValue(m_memAddressXor))/100.f;
 	ch->stamina = CMemUtil::GetMemIntValue(m_memAddressStamina);
 	ch->exp = CMemUtil::GetMemIntValue(m_memAddressExp);
 	//ch->exp += (__int64)CMemUtil::GetMemIntValue(m_memAddressExp+4) << 32; //Note Experience became 64 bits since 8.7
@@ -362,9 +371,8 @@ int CMemReader::readBattleListMax()
 	return CMemUtil::GetMemIntValue(m_memAddressBattleMax);
 }
 
-char * CMemReader::GetLoggedChar(int processId)
+void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 {
-	char *ret;
 	long selfId;
 	int i;
 	
@@ -378,18 +386,14 @@ char * CMemReader::GetLoggedChar(int processId)
 		if (creatureId == 0) break;
 		if (selfId==creatureId&&visible)
 		{
-			char buf[33];
-			buf[32]='\0';
-			CMemUtil::GetMemRange(processId,offset+4,offset+4+31,buf,1);
-			ret=(char *)malloc(strlen(buf)+1);
-			strcpy(ret,buf);
-			return ret;
+			char readBuf[32];
+			readBuf[31] = '\0';
+			CMemUtil::GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
+			strncpy(buf, readBuf, bufLen);
+			return;
 		};
 	};
-		
-	ret=(char*)malloc(strlen("unknown")+1);
-	sprintf(ret,"unknown");
-	return ret;
+	strncpy(buf, "unknown", bufLen);
 }
 
 int CMemReader::getAttackedCreature()
@@ -657,9 +661,10 @@ int CMemReader::mapGetSelfCellNr()
 		}
 	}
 */
+	int tileNr;
 	//there are 8 stages, if above ground each floor 7 to 0 always has the same stage
 	//if underground player is always on stage 2 and only stages 0,1,2,3,4 are relevant
-	for (int tileNr=tileNrLowest;tileNr<tileNrHighest;tileNr++)
+	for (tileNr=tileNrLowest;tileNr<tileNrHighest;tileNr++)
 	{
 		CTibiaMapTile *maptile = readMapTile(tileNr);
 		int pos;
@@ -867,7 +872,7 @@ void CMemReader::writeEnableRevealCName()
 
 void CMemReader::writeDisableRevealCName()
 {
-	unsigned char *buf=(unsigned char *)malloc(1);\
+	unsigned char *buf=(unsigned char *)malloc(1);
 	//always jump over exclusion check
 	buf[0]=0x75;
 	CMemUtil::SetMemRange(m_memAddressRevealCName1,m_memAddressRevealCName1+1,(char *)buf);
@@ -1289,8 +1294,8 @@ int CMemReader::getItemIndex(int x,int y,int itemId)
 	if (topPos==-1) return -1;
 
 	int stackCount=reader.mapGetPointItemsCount(point(x,y,0));
-
-	for (int pos=topPos;stackCount && pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
+	int pos;
+	for (pos=topPos;stackCount && pos!=(topPos-1)%stackCount;pos=(pos+1)%stackCount)
 	{
 		if (itemId == reader.mapGetPointItemId(point(x,y,0),pos)) return pos;
 	}

@@ -13,7 +13,6 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/dom/DOMWriter.hpp>
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -30,7 +29,7 @@ class CUtil
 {
 public:
 	static char * getNodeAttribute(DOMNode *node,char *attrName);
-	static char *wc2c(const unsigned short *src);
+	static char *wc2c(const XMLCh *src);
 	CUtil();
 	virtual ~CUtil();
 

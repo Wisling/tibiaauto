@@ -36,7 +36,7 @@ CToolItemConfig::CToolItemConfig(CWnd* pParent /*=NULL*/)
 	actionIndicator=0;
 }
 
-CToolItemConfig::cleanup()
+void CToolItemConfig::cleanup()
 {
 	DeleteGUITreeItem(&m_itemsTree,TVI_ROOT);
 	delete checkImgList;

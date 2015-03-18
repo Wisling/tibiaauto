@@ -177,8 +177,8 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		delete ftpConnection;
 		
 		
-		unlink(fname);
-		unlink(fnameGz);
+		_unlink(fname);
+		_unlink(fnameGz);
 
 		fileSendingProgress=1;
 	} catch (CInternetException *e)

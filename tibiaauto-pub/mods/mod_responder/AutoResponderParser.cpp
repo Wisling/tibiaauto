@@ -58,7 +58,7 @@ void CAutoResponderParser::parseThread(DOMNode *node,CAutoResponderParserContext
 	}
 	free(selfNodeName);
 
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -169,7 +169,7 @@ void CAutoResponderParser::processNodeSleep(DOMNode *node, CAutoResponderParserC
 
 void CAutoResponderParser::processNodeIf(DOMNode *node, CAutoResponderParserContext *context)
 {
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -228,7 +228,7 @@ void CAutoResponderParser::processNodeRandom(DOMNode *node, CAutoResponderParser
 {
 	registerDebug("DEBUG: action: random",context);
 	int childNodesCount=0;
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -276,7 +276,7 @@ void CAutoResponderParser::processNodeRepeat(DOMNode *node, CAutoResponderParser
 	{
 		sprintf(buf,"DEBUG: repeating %d/%d",countTotal-countLeft+1,countTotal);
 		registerDebug(buf,context);
-		int nodeNr;
+		size_t nodeNr;
 		for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 		{
 			DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -296,7 +296,7 @@ void CAutoResponderParser::processNodeIgnoreplayer(DOMNode *node, CAutoResponder
 	char *nameText=CUtil::getNodeAttribute(node,"name");
 	replaceSpecialStrings(nameText,context);
 	char *timeText=CUtil::getNodeAttribute(node,"time");
-	context->setIgnoredPlayer(nameText,time(NULL)+atoi(timeText));
+	context->setIgnoredPlayer(nameText, time(NULL) + atoi(timeText));
 	free(nameText);
 	free(timeText);
 }
@@ -334,7 +334,7 @@ void CAutoResponderParser::processNodeDance(DOMNode *node, CAutoResponderParserC
 int CAutoResponderParser::processNodeBoolCondition(DOMNode *node, CAutoResponderParserContext *context)
 {
 	int processResult=1;
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -377,7 +377,7 @@ int CAutoResponderParser::processNodeBoolCondition(DOMNode *node, CAutoResponder
 int CAutoResponderParser::processNodeBoolAnd(DOMNode *node, CAutoResponderParserContext *context)
 {
 	int processResult=1;
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -420,7 +420,7 @@ int CAutoResponderParser::processNodeBoolAnd(DOMNode *node, CAutoResponderParser
 int CAutoResponderParser::processNodeBoolOr(DOMNode *node, CAutoResponderParserContext *context)
 {
 	int processResult=0;
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -686,7 +686,7 @@ void CAutoResponderParser::registerWarn(char *msg, CAutoResponderParserContext *
 int CAutoResponderParser::processNodeBoolNot(DOMNode *node, CAutoResponderParserContext *context)
 {
 	int processResult=1;
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
@@ -729,7 +729,7 @@ int CAutoResponderParser::processNodeBoolNot(DOMNode *node, CAutoResponderParser
 void CAutoResponderParser::processNodeSequence(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: sequence",context);
-	int nodeNr;
+	size_t nodeNr;
 	for (nodeNr=0;nodeNr<node->getChildNodes()->getLength()&&!autoResponderStop;nodeNr++)
 	{
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);

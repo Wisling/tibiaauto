@@ -76,7 +76,7 @@ int RandomVariableHp(int &pt,int command,CConfigData *config,CTibiaCharacter* se
 	if (!setHp[&pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a min of pt and a max of maxHp
-		setHp[&pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxHp,val+1));
+		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val*0.05), max(self->maxHp, val + 1));
 	}
 	if(selfIn!=self) delete self;
 	return setHp[&pt];
@@ -96,7 +96,7 @@ int RandomVariableMana(int &pt,int command,CConfigData *config,CTibiaCharacter* 
 	if (!setMana[&pt]) command=MAKE;
 	if (command==MAKE){
 		// within 10% of number with a cutoff at maxMana
-		setMana[&pt]=CModuleUtil::randomFormula(val,val*0.05,max(self->maxMana,val+1));
+		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val*0.05), max(self->maxMana, val + 1));
 	}
 	if(selfIn!=self) delete self;
 	return setMana[&pt];

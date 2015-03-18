@@ -12,8 +12,8 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-const CComboBoxSuper::DEFAULT_COLUMN_COUNT = 100;
-const CComboBoxSuper::DEFAULT_COLUMN_WIDTH = 50;
+const int CComboBoxSuper::DEFAULT_COLUMN_COUNT = 100;
+const int CComboBoxSuper::DEFAULT_COLUMN_WIDTH = 50;
 
 CComboBoxSuper::CComboBoxSuper()
 : m_pImageList(NULL)
@@ -43,7 +43,7 @@ END_MESSAGE_MAP()
  ********************************************************************************************/
 void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
-	if (GetCount() == 0 || lpDrawItemStruct->itemID > GetCount()) return;
+	if (GetCount() == 0 || (int)lpDrawItemStruct->itemID > GetCount()) return;
 	CRect rect(lpDrawItemStruct->rcItem);
 	ItemData* pItemData = NULL;
 
@@ -123,7 +123,7 @@ void CComboBoxSuper::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		CPen linePen(PS_SOLID, 0, RGB(192,192,192));
 		CPen* pOldPen = dc.SelectObject(&linePen);
 		int nCurX=0;
-		for (int i=0; i<m_vecColumnWidth.size(); i++)
+		for (size_t i=0; i<m_vecColumnWidth.size(); i++)
 		{
 			if (i!=m_vecColumnWidth.size()-1)
 			{
@@ -261,7 +261,7 @@ void CComboBoxSuper::SetItemText(int nItemIndex, int nColumn, CString str)
  ********************************************************************************************/
 void CComboBoxSuper::SetColumnWidth(int nColumnIndex, int nWidth)
 {
-	if (nColumnIndex<0 || nColumnIndex>=m_vecColumnWidth.size()) return;
+	if (nColumnIndex<0 || (size_t)nColumnIndex>=m_vecColumnWidth.size()) return;
 
 	m_vecColumnWidth[nColumnIndex] = nWidth;
 
@@ -340,7 +340,7 @@ void CComboBoxSuper::SetColumnCount(int nColumnCount )
 	int nPrevColumnCount = m_vecColumnWidth.size();
 	m_vecColumnWidth.resize(nColumnCount);
 
-	for (int i=nPrevColumnCount; i<m_vecColumnWidth.size(); i++)
+	for (size_t i = nPrevColumnCount; i<m_vecColumnWidth.size(); i++)
 	{
 		m_vecColumnWidth[i] = DEFAULT_COLUMN_WIDTH;
 	}

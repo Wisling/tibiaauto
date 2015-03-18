@@ -78,11 +78,9 @@ BOOL CTibiaauto_utilApp::InitInstance()
 
 }
 
- CTibiaauto_utilApp::ExitInstance()
+int CTibiaauto_utilApp::ExitInstance()
 {
-
 	return CWinApp::ExitInstance();
-
 }
 
 void setProcessId(int processId)
@@ -253,17 +251,16 @@ int memReadGetNextPacketCount()
 	startMemReader();
 	return reader->getNextPacketCount();
 }
-char * memReadGetLoggedChar(int processId)
+void memReadGetLoggedChar(int processId, char* buf, int bufLen)
 {
 	startMemReader();
-	return reader->GetLoggedChar(processId);
+	reader->GetLoggedChar(processId, buf, bufLen);
 }
 int memReadReadBattleListMax()
 {
 	startMemReader();
 	return reader->readBattleListMax();
 }
-
 
 int memReadReadBattleListMin()
 {
@@ -960,7 +957,7 @@ void packSenderLook(int x,int y, int z,int objectId)
 	sender.look(x,y,z,objectId);
 }
 
-void packSenderIgnoreLook(int end)
+void packSenderIgnoreLook(time_t end)
 {
 	CPackSender sender;
 	sender.ignoreLook(end);

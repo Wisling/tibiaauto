@@ -68,7 +68,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemConstData memConstData = reader.getMemConstData();
 	CConfigData *config = (CConfigData *)lpParam;
 	int iter=0;
-	int mountTm = 0;
+	time_t mountTm = 0;
 	int mountStarted = 0;
 
 	sender.enableCName(1);
@@ -179,14 +179,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				for (x=minNewX;x*sigX<maxNewX*sigX;x+=sigX){
 					for (y=minY;y<=maxY;y++){
 						for(z=minZ;z<=maxZ;z++){
-							int i;
 							int mapColour=-1;
 							int mapSpeed=-1;
 							int count=reader.mapGetPointItemsCount(point(x,y,z),relToCell);
-							sprintf(buf,"Looking (%d,%d,%d) i=%d count=%d",x,y,z,i,count);
+							sprintf(buf,"Looking (%d,%d,%d) count=%d",x,y,z,count);
 							//AfxMessageBox(buf);
 							//start from top and go to bottom until found both a speed and a colour
-							for (i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
+							for (int i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
 								int tileId = reader.mapGetPointItemId(point(x,y,z),i,relToCell);
 								if (tileId==99) {mapSpeed=255; continue;}//reached top of relevant tiles
 
@@ -209,14 +208,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					for (y=minNewY;y*sigY<maxNewY*sigY;y+=sigY){
 						for(z=minZ;z<=maxZ;z++){
 							if(x>=minNewX && x<maxNewX) continue;//already did these points
-							int i;
 							int mapColour=-1;
 							int mapSpeed=-1;
 							int count=reader.mapGetPointItemsCount(point(x,y,z),relToCell);
-							sprintf(buf,"Looking (%d,%d,%d) i=%d count=%d",x,y,z,i,count);
+							sprintf(buf,"Looking (%d,%d,%d) count=%d",x,y,z,count);
 							//AfxMessageBox(buf);
 							//start from top and go to bottom until found both a speed and a colour
-							for (i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
+							for (int i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
 								int tileId = reader.mapGetPointItemId(point(x,y,z),i,relToCell);
 								if (tileId==99) {mapSpeed=255; continue;}//reached top of relevant tiles
 
@@ -241,14 +239,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						for(z=minNewZ;z*sigZ<maxNewZ*sigZ;z+=sigZ){
 							if(x>=minNewX && x<maxNewX) continue;//already did these points
 							if(y>=minNewY && y<maxNewY) continue;//already did these points
-							int i;
 							int mapColour=-1;
 							int mapSpeed=-1;
 							int count=reader.mapGetPointItemsCount(point(x,y,z),relToCell);
-							sprintf(buf,"Looking (%d,%d,%d) i=%d count=%d",x,y,z,i,count);
+							sprintf(buf,"Looking (%d,%d,%d) count=%d",x,y,z,count);
 							//AfxMessageBox(buf);
 							//start from top and go to bottom until found both a speed and a colour
-							for (i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
+							for (int i=count-1;i>=0 && (mapColour==-1 || mapSpeed==-1);i--){
 								int tileId = reader.mapGetPointItemId(point(x,y,z),i,relToCell);
 								if (tileId==99) {mapSpeed=255; continue;}//reached top of relevant tiles
 

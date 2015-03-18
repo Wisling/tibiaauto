@@ -1,0 +1,271 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <Keyword>MFCProj</Keyword>
+    <ProjectGuid>{EDABCEB2-7D10-409A-AE19-DC122C4BAF3F}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v120_xp</PlatformToolset>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.Cpp.UpgradeFromVC60.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\mods\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)$(Configuration)\mods\</OutDir>
+    <IntDir>$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <FunctionLevelLinking>false</FunctionLevelLinking>
+      <Optimization>Disabled</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <MinimalRebuild>true</MinimalRebuild>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Debug\mod_autogo.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Debug\mod_autogo.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0415</Culture>
+      <AdditionalIncludeDirectories>C:\Documents and Settings\Owner\Desktop\xercesc\xerces-c-src_2_8_0\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Debug\mod_autogo.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ImportLibrary>.\Debug\mod_autogo.lib</ImportLibrary>
+      <AdditionalDependencies>xerces-c_3.lib;WINMM.LIB;libjpeg.lib;libpng.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>.\mod_autogo.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <StringPooling>true</StringPooling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <Optimization>MaxSpeed</Optimization>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <WarningLevel>Level3</WarningLevel>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BrowseInformation>true</BrowseInformation>
+      <PrecompiledHeaderOutputFile>.\Release\mod_autogo.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+    </ClCompile>
+    <Midl>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <TypeLibraryName>.\Release\mod_autogo.tlb</TypeLibraryName>
+      <MkTypLibCompatible>true</MkTypLibCompatible>
+      <TargetEnvironment>Win32</TargetEnvironment>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0415</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <OutputFile>.\Release\mod_autogo.bsc</OutputFile>
+    </Bscmake>
+    <Link>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <LinkDLL>true</LinkDLL>
+      <SubSystem>Windows</SubSystem>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+      <ImportLibrary>.\Release\mod_autogo.lib</ImportLibrary>
+      <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
+      <AdditionalDependencies>xerces-c_3.lib;WINMM.LIB;libjpeg.lib;libpng.lib;zdll.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>.\mod_autogo.def</ModuleDefinitionFile>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Alarm.cpp" />
+    <ClCompile Include="alarmdialog.cpp" />
+    <ClCompile Include="..\..\sdk\BtnST.cpp" />
+    <ClCompile Include="..\..\sdk\ComboBoxSuper.cpp" />
+    <ClCompile Include="ConfigData.cpp" />
+    <ClCompile Include="ConfigDialog.cpp" />
+    <ClCompile Include="CustomSpellDialog.cpp" />
+    <ClCompile Include="exports.cpp" />
+    <ClCompile Include="GeneralConfigDialog.cpp" />
+    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
+    <ClCompile Include="ImageButtonWithStyle.cpp" />
+    <ClCompile Include="mod_autogo.cpp" />
+    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
+    <ClCompile Include="proxy.cpp" />
+    <ClCompile Include="..\..\sdk\Skin.cpp" />
+    <ClCompile Include="StdAfx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="TibiaItem_impl.cpp" />
+    <ClCompile Include="Trigger.cpp" />
+    <ClCompile Include="VisualStylesXP.cpp" />
+    <ClCompile Include="WhiteList.cpp" />
+    <ClCompile Include="..\..\sdk\XTabCtrl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="mod_autogo.def" />
+    <CustomBuild Include="res\mod_autogo.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="mod_autogo.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Alarm.h" />
+    <ClInclude Include="alarmdialog.h" />
+    <ClInclude Include="..\..\sdk\ComboBoxSuper.h" />
+    <ClInclude Include="ConfigData.h" />
+    <ClInclude Include="ConfigDialog.h" />
+    <ClInclude Include="CustomSpellDialog.h" />
+    <ClInclude Include="Enumerations.h" />
+    <ClInclude Include="GeneralConfigDialog.h" />
+    <ClInclude Include="ImageButtonWithStyle.h" />
+    <ClInclude Include="jconfig.h" />
+    <ClInclude Include="jmorecfg.h" />
+    <ClInclude Include="jpeglib.h" />
+    <ClInclude Include="mod_autogo.h" />
+    <ClInclude Include="png.h" />
+    <ClInclude Include="pngconf.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="tmschema.h" />
+    <ClInclude Include="Trigger.h" />
+    <ClInclude Include="uxtheme.h" />
+    <ClInclude Include="VisualStylesXP.h" />
+    <ClInclude Include="WhiteList.h" />
+    <ClInclude Include="..\..\sdk\XTabCtrl.h" />
+    <ClInclude Include="zconf.h" />
+    <ClInclude Include="zlib.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Attack.bmp" />
+    <Image Include="res\Attack.bmp" />
+    <Image Include="Audio.bmp" />
+    <Image Include="res\Audio.bmp" />
+    <Image Include="Blank.bmp" />
+    <Image Include="res\Blank.bmp" />
+    <Image Include="CastSpell.bmp" />
+    <Image Include="res\CastSpell.bmp" />
+    <Image Include="Columns.bmp" />
+    <Image Include="res\Columns.bmp" />
+    <Image Include="condition_burning.bmp" />
+    <Image Include="res\condition_burning.bmp" />
+    <Image Include="res\condition_electrified.bmp" />
+    <Image Include="res\condition_logoutblock.bmp" />
+    <Image Include="res\condition_poisoned.bmp" />
+    <Image Include="Depot.bmp" />
+    <Image Include="res\Depot.bmp" />
+    <Image Include="general.bmp" />
+    <Image Include="res\general.bmp" />
+    <Image Include="Items.bmp" />
+    <Image Include="res\Items.bmp" />
+    <Image Include="KillTibia.bmp" />
+    <Image Include="res\KillTibia.bmp" />
+    <Image Include="LogEvents.bmp" />
+    <Image Include="res\LogEvents.bmp" />
+    <Image Include="LogOut.bmp" />
+    <Image Include="res\LogOut.bmp" />
+    <Image Include="MaximizeWindow.bmp" />
+    <Image Include="res\MaximizeWindow.bmp" />
+    <Image Include="proximity.bmp" />
+    <Image Include="res\proximity.bmp" />
+    <Image Include="res\Runaway.bmp" />
+    <Image Include="Runaway.bmp" />
+    <Image Include="res\ShutdownComputer.bmp" />
+    <Image Include="ShutdownComputer.bmp" />
+    <Image Include="res\skull_black.bmp" />
+    <Image Include="res\skull_green.bmp" />
+    <Image Include="res\skull_red.bmp" />
+    <Image Include="res\skull_white.bmp" />
+    <Image Include="res\skull_yellow.bmp" />
+    <Image Include="res\speaker.ico" />
+    <Image Include="res\speaker2.ico" />
+    <Image Include="res\Start.bmp" />
+    <Image Include="Start.bmp" />
+    <Image Include="res\StartModule.bmp" />
+    <Image Include="StartModule.bmp" />
+    <Image Include="res\Stop.bmp" />
+    <Image Include="Stop.bmp" />
+    <Image Include="res\SuspendModule.bmp" />
+    <Image Include="SuspendModule.bmp" />
+    <Image Include="res\TakeScreenshot.bmp" />
+    <Image Include="TakeScreenshot.bmp" />
+    <Image Include="res\vip.bmp" />
+    <Image Include="vip.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sound\incorrec.wav" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -20,7 +20,6 @@
 #include <xercesc/dom/DOM.hpp>
 #include <xercesc/dom/DOMImplementation.hpp>
 #include <xercesc/dom/DOMImplementationLS.hpp>
-#include <xercesc/dom/DOMWriter.hpp>
 
 #include <xercesc/framework/StdOutFormatTarget.hpp>
 #include <xercesc/framework/LocalFileFormatTarget.hpp>
@@ -111,8 +110,6 @@ public:
 protected:
 	HICON m_hIcon;
 
-	// Generated message map functions
-	//{{AFX_MSG(CTibiaautoDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
@@ -160,9 +157,10 @@ protected:
 	afx_msg void OnToolBanker();
 	afx_msg void OnToolSeller();
 	afx_msg void OnButton1();
-	//}}AFX_MSG
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	DECLARE_MESSAGE_MAP()
 private:
+	int injectDll(HANDLE process, char* path);
 	void InitialiseIPC();
 
 	long m_processId;

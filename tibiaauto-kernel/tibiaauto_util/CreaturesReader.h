@@ -6,7 +6,12 @@
 #define AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_
 
 // error here means: download berkley db
-#include "db_cxx.h"
+
+//ugly hack-around to prevent conflict of always-included by mfc oledb.h with berkeley's db.h
+#define DBTYPE ORACLE_DBTYPE
+#undef DB_UNKNOWN
+#include <berkeleydb/db_cxx.h>
+#undef DBTYPE
 
 #if _MSC_VER > 1000
 #pragma once
