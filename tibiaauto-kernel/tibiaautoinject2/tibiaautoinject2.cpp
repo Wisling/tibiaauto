@@ -3479,27 +3479,26 @@ void InitialiseCreatureInfo()
 //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8<ecx>, int v9)
 int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9)
 {
-	int ret;
+	int retvar;
 	typedef void (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9);
 
 	Proto_fun fun = (Proto_fun)baseAdjust(funAddr_tibiaPrintText);
-	
 
 	__asm{
-		push [ebp + 0x28]
-		mov ecx, [ebp + 0x24]
-		push [ebp + 0x20]
-		push [ebp + 0x1C]
-		push [ebp + 0x18]
-		push [ebp + 0x14]
-		push [ebp + 0x10]
-		push [ebp + 0x0C]
-		push [ebp + 0x08]
+		push v9 //[ebp + 0x28]
+		mov ecx, v8 //[ebp + 0x24]
+		push v7 //[ebp + 0x20]
+		push v6 //[ebp + 0x1C]
+		push v5 //[ebp + 0x18]
+		push v4 //[ebp + 0x14]
+		push v3 //[ebp + 0x10]
+		push v2 //[ebp + 0x0C]
+		push v1 //[ebp + 0x08]
 		call fun
 		add esp, 0x20
-		mov [ebp - 4],eax
+		mov retvar, eax
 	}
-	return ret;
+	return retvar;
 }
 int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
 {
@@ -3547,36 +3546,36 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 
 
 //(int align<ecx>, char *str<edx>, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16<ebx>, int v17<edi>)
-int OUTmyPlayerNameText(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *str, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
+int OUTmyPlayerNameText(int alignvar, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *strvar, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
 {
-	int ret;
+	int retvar;
 	typedef int (*Proto_fun)(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *str, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17);
 
 	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaPlayerNameText);
 	
 	__asm{
-		mov edi, [ebp + 0x48]
-		mov ebx, [ebp + 0x44]
-		push [ebp + 0x40]
-		push [ebp + 0x3C]
-		push [ebp + 0x38]
-		push [ebp + 0x34]
-		push [ebp + 0x30]
-		push [ebp + 0x2C]
-		push [ebp + 0x28]
-		push [ebp + 0x24]
-		push [ebp + 0x20]
-		push [ebp + 0x1C]
-		push [ebp + 0x18]
-		push [ebp + 0x14]
-		push [ebp + 0x10]
-		mov edx, [ebp + 0x0C]
-		mov ecx, [ebp + 0x08]
+		mov edi, v17 //[ebp + 0x48]
+		mov ebx, v16 //[ebp + 0x44]
+		push cropHeight //[ebp + 0x40]
+		push cropWidth //[ebp + 0x3C]
+		push cropTop //[ebp + 0x38]
+		push cropLeft //[ebp + 0x34]
+		push charCut //[ebp + 0x30]
+		push strvar //[ebp + 0x2C]
+		push colB //[ebp + 0x28]
+		push colG //[ebp + 0x24]
+		push colR //[ebp + 0x20]
+		push showFormatting //[ebp + 0x1C]
+		push y //[ebp + 0x18]
+		push x //[ebp + 0x14]
+		push visible //[ebp + 0x10]
+		mov edx, fontNumber //[ebp + 0x0C]
+		mov ecx, alignvar //[ebp + 0x08]
 		call fun
 		add esp, 0x34
-		mov [ebp - 4],eax
+		mov retvar, eax
 	}
-	return ret;
+	return retvar;
 }
 
 int myPlayerNameText(int align, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char* str , int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
@@ -3669,15 +3668,15 @@ __declspec(naked) void INmyPlayerNameText() //()
 }}
 
 
-void OUTmyInterceptInfoMiddleScreen(int type, char* s)
+void OUTmyInterceptInfoMiddleScreen(int typevar, char* s)
 {
-	typedef void (*Proto_fun)(int type,char *s);
+	typedef void(*Proto_fun)(int typevar, char *s);
 
 	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaInfoMiddleScreen);
 
 	__asm{
-		mov edx, [ebp + 0x0C]
-		mov ecx, [ebp + 0x08]
+		mov edx, s //[ebp + 0x0C]
+		mov ecx, typevar //[ebp + 0x08]
 		call fun
 	}
 }
@@ -3794,18 +3793,18 @@ int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 
 int OUTmyInterceptEncrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
-	int ret;
+	int retvar;
 	typedef void (*Proto_fun)(int v1, int v2);
 
 	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaEncrypt);
 
 	__asm{
-		mov edx, [ebp + 0x0C] // move v2 to edx
-		mov ecx, [ebp + 0x08] // move v1 to ecx
-		call fun
-		mov [ebp - 4],eax
+		mov edx, v2 // move v2 to edx
+		mov ecx, v1 // move v1 to ecx
+		call fun // jump to the real Tibia function
+		mov retvar, eax //store value returned from real function in ret
 	}
-	return ret;
+	return retvar;
 }
 int myInterceptEncrypt(int v1, int v2)
 {
@@ -3849,18 +3848,18 @@ __declspec(naked) void INmyInterceptEncrypt() //<eax>(int v1<ecx>, int v2<edx>)
 
 int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
-	int ret; //create [ebp - 4] variable
+	int retvar; //create [ebp - 4] variable
 	typedef void (*Proto_fun)();
 
 	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaDecrypt);
 
 	__asm{
-		mov edx, [ebp + 0x0C] // move v2 to edx
-		mov ecx, [ebp + 0x08] // move v1 to ecx
+		mov edx, v2 // move v2 to edx
+		mov ecx, v1 // move v1 to ecx
 		call fun // jump to the real Tibia function
-		mov [ebp - 4],eax //store value returned from real function in ret
+		mov retvar, eax //store value returned from real function in ret
 	}
-	return ret;
+	return retvar;
 }
 int myInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
@@ -4035,26 +4034,26 @@ int myShouldParseRecv(){
 //<eax>(int v1, int v2, int v3<ecx>, int v4, int v5, int v6, int v7, int v8<edx>, int v9)
 int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
 {
-	int ret;
+	int retval;
 	typedef int (*Proto_fun)(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9);
 
 	Proto_fun fun=(Proto_fun)baseAdjust(funAddr_tibiaInfoMessageBox);
 
 	__asm{
-		push [ebp + 0x28]
-		push [ebp + 0x24]
-		push [ebp + 0x20]
-		push [ebp + 0x1C]
-		push [ebp + 0x18]
-		push [ebp + 0x14]
-		push [ebp + 0x10]
-		mov edx, [ebp + 0x0C]
-		mov ecx, [ebp + 0x08]
+		push v9 //[ebp + 0x28]
+		push v8 //[ebp + 0x24]
+		push v7 //[ebp + 0x20]
+		push v6 //[ebp + 0x1C]
+		push v5 //[ebp + 0x18]
+		push v4 //[ebp + 0x14]
+		push v3 //[ebp + 0x10]
+		mov edx, v2 //[ebp + 0x0C]
+		mov ecx, v1 //[ebp + 0x08]
 		call fun
 		add esp, 0x1C
-		mov [ebp - 4],eax
+		mov retval, eax
 	}
-	return ret;
+	return retval;
 
 }
 //<eax>(int v1, int v2, int v3<ecx>, int v4, int v5, int v6, int v7, int v8<edx>, int v9)
