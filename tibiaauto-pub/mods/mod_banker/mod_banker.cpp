@@ -645,7 +645,7 @@ int canBank(CConfigData *config){
 	int totalCash=goldCount+platCount*100+crystalCount*10000;
 	int canChange=goldCount>=100 || platCount>=100;
 
-	if (!config->changeGold && totalCash > config->cashOnHand || config->changeGold && canChange || totalCash < config->cashOnHand && config->drawUpTo)
+	if (!config->changeGold && (totalCash > config->cashOnHand || totalCash < config->cashOnHand && config->drawUpTo) || config->changeGold && canChange)
 		return 1;
 	return 0;
 }

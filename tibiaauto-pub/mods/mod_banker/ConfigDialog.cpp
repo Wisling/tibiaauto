@@ -107,7 +107,6 @@ void CConfigDialog::enableControls() {
 	m_changeGold.EnableWindow(true);
 	m_capsLimit.EnableWindow(true);
 	m_stopByBanker.EnableWindow(true);
-	m_drawUpTo.EnableWindow(true);
 
 	OnChangeGold();
 }
@@ -219,6 +218,7 @@ void CConfigDialog::OnChangeGold(){
 	int val=m_changeGold.GetCheck();
 	m_MinGold.EnableWindow(!val);
 	m_OnHand.EnableWindow(!val);
+	m_drawUpTo.EnableWindow(!val);
 }
 
 int initalizeBankers() {
