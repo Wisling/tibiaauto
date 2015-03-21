@@ -108,6 +108,7 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 		return addrCurr;
 	}
 	if(depth<5){//binary structure is guaranteed to reach all 16 containers after 4 iterations
+		int retryCount = 0;
 		for(int adj=0;adj<12;adj+=4){
 			long addrNext = CMemUtil::GetMemIntValue(addrCurr+adj,0);
 			if (addrNext != addrHead && addrCurr != addrHead && abs(addrNext - addrCurr) > 0x1000000){ // High likelihood that this pointer is no longer being used, return and retry
@@ -115,7 +116,8 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 			}
 			if (addrNext != addrHead){
 				long ret = findContainer(i, addrNext, addrHead, depth+1);
-				if (ret == (long)-1){ // re-read previous pointer an it has likely changed
+				if (retryCount < 1 && ret == (long)-1){ // re-read previous pointer an it has likely changed
+					retryCount++;
 					adj -= 4;
 					continue;
 				}else if (ret!=NULL){
