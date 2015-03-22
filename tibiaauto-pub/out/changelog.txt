@@ -1,4 +1,19 @@
-2.56.0 12.24.2014
+2.57.1 3.22.2015
+Enhancements:
+ sellers.csv: Added Dawnport NPCs
+Defects:
+ Installer: added error messages and download links for all required dll files.
+ Cavebot: Fixed TA freezing when opening some containers
+
+2.57.0 3.17.2015
+Enhancements:
+ Tibia Auto: Updated for Tibia 10.76
+ Cavebot: Made depot depositer more efficient when "Deposit Item Config items" is checked
+Defects:
+ Cavebot: Made opening containers crash TA less frequently
+ Auto Login: Removed no longer available "Login with last account" option
+
+ 2.56.0 12.24.2014
 Enhancements:
  Tibia Auto: Updated for Tibia 10.71
 Defects:
