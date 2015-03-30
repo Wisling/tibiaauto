@@ -789,7 +789,6 @@ void CTibiaautoDlg::InitialiseIPC()
 			// associated with the specified process
 			do
 			{
-				
 				if( te32.th32OwnerProcessID == m_processId )
 				{
 					hhookKeyb=SetWindowsHookEx(WH_KEYBOARD,fun,hinstDLL,te32.th32ThreadID);
