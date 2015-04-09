@@ -100,9 +100,9 @@ HANDLE CMemUtil::gethandle(long processId)
 
 int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, int addBaseAddress){
 	HANDLE dwHandle = gethandle(processId);
-	if(dwHandle==NULL)
+	if (dwHandle == NULL){
 		return 1;
-
+	}
     void *ptr;
 	if(addBaseAddress){
 		ptr=(void *)(memAddress-0x400000+GetProcessBaseAddr(processId));
@@ -147,32 +147,42 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		}
 		if (::GetLastError()==ERROR_PARTIAL_COPY){
 			//Possibly Tibia has been killed
-			dwHandle = NULL;
-			for(int iter = 1000;iter>0;iter--){
-				dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, m_prevProcessId);
-				if(dwHandle){
-					char buf[111];
-					sprintf(buf,"iter %d",iter);
-					if(iter!=1000)
-						MessageBox(NULL,buf,"",0);
-					break;
+			//Test valid address; tareader.getMemIntValue(-1)
+			void *ptrTest = (void*)( 0x0410000 + GetProcessBaseAddr(processId));
+			int resultTest;
+			if (!ReadProcessMemory(dwHandle, ptrTest, &resultTest, 4, NULL)){
+				//try getting new handle
+				dwHandle = NULL;
+				for (int iter = 1000; iter > 0; iter--){
+					dwHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, m_prevProcessId);
+					if (dwHandle){
+						char buf[111];
+						sprintf(buf, "iter %d", iter);
+						if (iter != 1000)
+							MessageBox(NULL, buf, "", 0);
+						break;
+					}
+					Sleep(10);
 				}
-				Sleep(10);
+				m_prevProcessHandle = dwHandle;
+				if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {
+					return 0;
+				} else{
+					DWORD terminatedStatus = 9999;
+					if (GetExitCodeProcess(dwHandle, &terminatedStatus)){
+						if (terminatedStatus != STILL_ACTIVE){ //If Tibia is no longer active then close TA
+							ExitProcess(0);
+						}
+					}
+				}
+			} else{
+				//Tibia is still running but a bad memory address was given
+				return 1;
 			}
+
 
 			//fprintf(f,"new %d\n",dwHandle);
 			//fclose(f);
-			m_prevProcessHandle=dwHandle;
-			if (ReadProcessMemory(dwHandle, ptr, result, size, NULL)) {
-				return 0;
-			}else{
-				DWORD terminatedStatus=9999;
-				if (GetExitCodeProcess(dwHandle,&terminatedStatus)){
-					if (terminatedStatus!=STILL_ACTIVE){ //If Tibia is no longer active then close TA
-						ExitProcess(0);
-					}
-				}
-			}
 		}
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
