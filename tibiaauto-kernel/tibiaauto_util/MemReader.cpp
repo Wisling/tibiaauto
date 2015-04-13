@@ -98,6 +98,9 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 }
 
 long findContainer(int i, long addrCurr, long addrHead, int depth=0){
+	//Manages the parsing of the open container data object within Tibia memory
+	//Returns NULL if container is closed which is only determined by not finding it
+	//Returns 1 if the object has restructured itself and needs to be re-read
 	if(depth>0 && 0){
 		CPackSender sender;
 		char buf[111];
@@ -108,24 +111,20 @@ long findContainer(int i, long addrCurr, long addrHead, int depth=0){
 		return addrCurr;
 	}
 	if(depth<5){//binary structure is guaranteed to reach all 16 containers after 4 iterations
-		int retryCount = 0;
 		for(int adj=0;adj<12;adj+=4){
-			long addrNext = CMemUtil::GetMemIntValue(addrCurr+adj,0);
-			if (addrNext != addrHead && addrCurr != addrHead && abs(addrNext - addrCurr) > 0x1000000){ // High likelihood that this pointer is no longer being used, return and retry
-				return (long)-1;
-			}
+			long addrNext = CMemUtil::GetMemIntValue(addrCurr + adj, 0);
 			if (addrNext != addrHead){
 				long ret = findContainer(i, addrNext, addrHead, depth+1);
-				if (retryCount < 1 && ret == (long)-1){ // re-read previous pointer an it has likely changed
-					retryCount++;
-					adj -= 4;
-					continue;
-				}else if (ret!=NULL){
+				// verify pointer is the same after reading. if not return 1 to retry
+				if (ret == 1 || addrNext != CMemUtil::GetMemIntValue(addrCurr + adj, 0)){
+					return 1;
+				} else if (ret > 1){
 					return ret;
 				}
 			}
 		}
 	}
+	//container is closed as it is not one of the open containers
 	return NULL;
 }
 
@@ -137,16 +136,17 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	CTibiaContainer *container = new CTibiaContainer();
 	//triply linked list
 	//container number
-	int i;
 	
 	long addrHead = CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer)+4,0);
-	long addrIndCont = 0;
-	try {
-		addrIndCont = findContainer(containerNr,addrHead,addrHead);
-	} catch(const char* e) {
-		addrIndCont = 0;
+	long addrIndCont = 1;
+	for (int triesCount = 0; triesCount < 3 && addrIndCont == 1; triesCount++){
+		try {
+			addrIndCont = findContainer(containerNr, addrHead, addrHead);
+		} catch (const char* e) {
+			addrIndCont = 1;
+		}
 	}
-	if(addrIndCont){ // return container as is if not found
+	if(addrIndCont>1){ // return container
 		long addrCont = CMemUtil::GetMemIntValue(addrIndCont+0x14,0);
 		container->flagOnOff=1;
 		container->number=CMemUtil::GetMemIntValue(addrCont,0);
@@ -163,7 +163,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 
 		try{//if returns error then addrItems is most likely not a valid address anymore
 			if(addrItems){ // if addrItems == NULL then there are no items in the container
-				for (i=0;i<container->itemsInside;i++)
+				for (int i=0;i<container->itemsInside;i++)
 				{
 					CTibiaItem *item = new CTibiaItem();
 					item->objectId = CMemUtil::GetMemIntValue(addrItems+i*m_memLengthItem+8,0);
