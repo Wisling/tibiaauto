@@ -180,16 +180,10 @@
     <ClInclude Include="ToolItemConfig.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bitmap1.bmp" />
-    <Image Include="res\bitmap1.bmp" />
-    <Image Include="res\bmp00001.bmp" />
-    <Image Include="res\bmp00002.bmp" />
-    <Image Include="res\bmp00003.bmp" />
     <Image Include="check.bmp" />
     <Image Include="res\checks.bmp" />
     <Image Include="halfchec.bmp" />
     <Image Include="res\Items.bmp" />
-    <Image Include="res\map_self.bmp" />
     <Image Include="uncheck.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

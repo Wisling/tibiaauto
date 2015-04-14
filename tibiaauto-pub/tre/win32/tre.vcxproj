@@ -157,7 +157,6 @@
     <ClInclude Include="..\lib\tre-ast.h" />
     <ClInclude Include="..\lib\tre-compile.h" />
     <ClInclude Include="tre-config.h" />
-    <ClInclude Include="..\lib\tre-filter.h" />
     <ClInclude Include="..\lib\tre-internal.h" />
     <ClInclude Include="..\lib\tre-match-utils.h" />
     <ClInclude Include="..\lib\tre-mem.h" />

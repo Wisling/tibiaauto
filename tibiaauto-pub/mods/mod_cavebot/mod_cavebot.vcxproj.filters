@@ -102,11 +102,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bitmap1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_cavebot.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

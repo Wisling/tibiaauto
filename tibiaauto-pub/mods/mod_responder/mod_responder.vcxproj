@@ -175,19 +175,11 @@
     <ClInclude Include="AutoResponderParserContext.h" />
     <ClInclude Include="ConfigData.h" />
     <ClInclude Include="mod_responder.h" />
-    <ClInclude Include="regex.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="ToolAutoRespond.h" />
     <ClInclude Include="ToolAutoResponderMessage.h" />
     <ClInclude Include="ToolAutoResponderThreadConfig.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\bitmap1.bmp" />
-    <Image Include="res\bmp00001.bmp" />
-    <Image Include="res\bmp00002.bmp" />
-    <Image Include="res\bmp00003.bmp" />
-    <Image Include="res\map_self.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

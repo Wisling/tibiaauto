@@ -179,10 +179,6 @@
     <ClInclude Include="ToolMapShow.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\bitmap1.bmp" />
-    <Image Include="res\bmp00001.bmp" />
-    <Image Include="res\bmp00002.bmp" />
-    <Image Include="res\bmp00003.bmp" />
     <Image Include="res\map_blocked.bmp" />
     <Image Include="res\map_blocked_lock.bmp" />
     <Image Include="res\map_closedhole.bmp" />

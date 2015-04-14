@@ -112,22 +112,7 @@
     <ClInclude Include="ImageButtonWithStyle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="jconfig.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jmorecfg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="jpeglib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mod_autogo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="png.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="pngconf.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
@@ -136,13 +121,7 @@
     <ClInclude Include="StdAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="tmschema.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Trigger.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uxtheme.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="VisualStylesXP.h">
@@ -154,45 +133,21 @@
     <ClInclude Include="..\..\sdk\XTabCtrl.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="zconf.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zlib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Attack.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\Attack.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Audio.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Audio.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Blank.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\Blank.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="CastSpell.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\CastSpell.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Columns.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\Columns.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="condition_burning.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\condition_burning.bmp">
@@ -207,49 +162,25 @@
     <Image Include="res\condition_poisoned.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Depot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\Depot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="general.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\general.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Items.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\Items.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="KillTibia.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\KillTibia.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="LogEvents.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\LogEvents.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="LogOut.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\LogOut.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="MaximizeWindow.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\MaximizeWindow.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="proximity.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\proximity.bmp">
@@ -258,13 +189,7 @@
     <Image Include="res\Runaway.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Runaway.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\ShutdownComputer.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="ShutdownComputer.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\skull_black.bmp">
@@ -291,37 +216,19 @@
     <Image Include="res\Start.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Start.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\StartModule.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="StartModule.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Stop.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Stop.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\SuspendModule.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="SuspendModule.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="res\TakeScreenshot.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="TakeScreenshot.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\vip.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="vip.bmp">
+    <Image Include="res\SuspendModule.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

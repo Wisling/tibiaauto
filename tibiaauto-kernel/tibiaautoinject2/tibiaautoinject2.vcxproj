@@ -171,9 +171,6 @@
     <CustomBuild Include="tibiaautoinject2.def" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\testproj.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="tibiaautoinject2.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

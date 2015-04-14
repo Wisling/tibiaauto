@@ -63,9 +63,6 @@
     <ClInclude Include="tre-config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\lib\tre-filter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\lib\tre-internal.h">
       <Filter>Header Files</Filter>
     </ClInclude>
