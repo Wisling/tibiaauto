@@ -438,7 +438,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (ffBoxDisplay)
 	{
 		// now check for firefox
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_ALL_ACCESS,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_READ,&hkey))
 		{
 			RegCloseKey(hkey);
 			ffBoxDisplay=0;
@@ -447,7 +447,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (ffBoxDisplay)
 	{
 		// now check for firefox
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_ALL_ACCESS,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_READ,&hkey))
 		{
 			RegCloseKey(hkey);
 			ffBoxDisplay=0;
@@ -702,7 +702,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	unsigned long installPathLen = 1023;
 	installPath[0] = '\0';
 	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_ALL_ACCESS, &hkey))
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 	{
 		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 		RegCloseKey(hkey);
@@ -710,7 +710,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	if (!strlen(installPath))
 	{
 		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		exit(1);
+		PostQuitMessage(-1); return;
 	}
 
 	sprintf(path, "%s\\%s", installPath, "tibiaautoinject2.dll");
@@ -718,7 +718,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	if (injectDll(procHandle, path) != 0) {
 		sprintf(buf,"dll injection failed: %d",GetLastError());
 		AfxMessageBox(buf);
-		ExitProcess(1);
+		PostQuitMessage(1);
 	}
 	
 	//injectDll="tibiaauto_develtest.dll";
@@ -735,7 +735,7 @@ void CTibiaautoDlg::InitialiseIPC()
 	{
 		sprintf(buf,"client not connected via pipe: %d",GetLastError());
 		AfxMessageBox(buf);
-		ExitProcess(1);
+		PostQuitMessage(1);
 	}
 
 	m_lightPower=-1;
@@ -1393,7 +1393,7 @@ void CTibiaautoDlg::OnExit()
 	}
 
 
-	ExitProcess(0);
+	PostQuitMessage(0);
 }
 
 void CTibiaautoDlg::OnClose()

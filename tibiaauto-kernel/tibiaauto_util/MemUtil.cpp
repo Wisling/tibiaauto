@@ -46,7 +46,7 @@ BOOL CMemUtil::AdjustPrivileges()
 	if (!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
 	{
 		AfxMessageBox("ERROR: Unable to open process token");
-		ExitProcess(0);
+		PostQuitMessage(0);
 		return 0;
 	}
 
@@ -54,7 +54,7 @@ BOOL CMemUtil::AdjustPrivileges()
 	{
 		AfxMessageBox("ERROR: Unable to lookup debug privilege");
 		CloseHandle(hToken);
-		ExitProcess(0);
+		PostQuitMessage(0);
 		return 0;
 	}
 
@@ -68,7 +68,7 @@ BOOL CMemUtil::AdjustPrivileges()
 	{
 		AfxMessageBox("ERROR: Unable to adjust token privileges");
 		CloseHandle(hToken);
-		ExitProcess(0);
+		PostQuitMessage(0);
 		return 0;
 	}
 
@@ -171,7 +171,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 					DWORD terminatedStatus = 9999;
 					if (GetExitCodeProcess(dwHandle, &terminatedStatus)){
 						if (terminatedStatus != STILL_ACTIVE){ //If Tibia is no longer active then close TA
-							ExitProcess(0);
+							PostQuitMessage(0);
 						}
 					}
 				}
@@ -187,7 +187,7 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 		DWORD err = ::GetLastError();
 		CloseHandle(dwHandle);
 		m_prevProcessId=-1;
-		ExitProcess(0);
+		PostQuitMessage(0);
 		return err;
     }
 }
@@ -302,7 +302,7 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress/*=1*/)
 	{
 		char buf[128];
 		sprintf(buf,"ERROR: read memory failed; error=%d",ret);
-		throw "Error reading Tibia memory.";//ExitProcess(0);
+		throw "Error reading Tibia memory.";//PostQuitMessage(0);
 		return 0;
 	}
 	return value;

@@ -49,7 +49,8 @@
 	{
 		//user has entered an invalid password
 		cout << "Incorrect password!";
-		exit(1);
+		PostQuitMessage(-1);
+		return;
 	}
 	
     //if we get here, then the user entered a valid password

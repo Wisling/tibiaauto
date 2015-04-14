@@ -93,7 +93,7 @@ public:
 		if (active!=12345)
 		{
 			AfxMessageBox("Some module comes from an incorrect version of TA! Terminating.");
-			ExitProcess(0);
+			PostQuitMessage(0);
 		}
 	}
 protected:
