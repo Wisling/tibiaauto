@@ -142,7 +142,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	for (int triesCount = 0; triesCount < 3 && addrIndCont == 1; triesCount++){
 		try {
 			addrIndCont = findContainer(containerNr, addrHead, addrHead);
-		} catch (const char* e) {
+		} catch (const char*) {
 			addrIndCont = 1;
 		}
 	}
@@ -181,7 +181,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 			}else{
 				container->itemsInside = 0;
 			}
-		} catch(const char* e) {
+		} catch(const char*) {
 			delete container;
 			container = new CTibiaContainer(); //return blank container
 			return container;

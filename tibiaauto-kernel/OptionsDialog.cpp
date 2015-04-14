@@ -273,7 +273,7 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		_unlink(fnameGz);
 
 		fileSendingProgress=1;
-	} catch (CInternetException *e)
+	} catch (CInternetException*)
 	{
 		fileSendingProgress=-1;
 	}
@@ -317,7 +317,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 		}
 		
 		fileSendingProgress=1;
-	} catch (CInternetException *e)
+	} catch (CInternetException*)
 	{
 		fileSendingProgress=-1;
 	}
@@ -534,7 +534,7 @@ sendFiles:
 			AfxMessageBox("Thank you for submitting \"botting statistics.txt\" and \"module statistics.txt\".\n\nNo personally identifiable information was sent.\nThis botting information will be analysed and used to help prevent CIPSoft from automatically detecting TA in the future. You can change this setting in \"General Options and Statistics\".\n\nTA users thank you for helping us towards this end.\n~TA Team");
 		}
 
-	} catch (CInternetException *e)
+	} catch (CInternetException*)
 	{
 		if(!CModuleUtil::getTASetting("RemoveBotStatsMessage")){
 			AfxMessageBox("Failed to send file. Check your connection to the internet.");
