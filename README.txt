@@ -1,6 +1,4 @@
-2.57.1 3.22.2015
+2.58.0 4.15.2015
 Enhancements:
- sellers.csv: Added Dawnport NPCs
+ Tibia Auto: Updated for Tibia 10.77
 Defects:
- Installer: added error messages and download links for all required dll files.
- Cavebot: Fixed TA freezing when opening some containers
