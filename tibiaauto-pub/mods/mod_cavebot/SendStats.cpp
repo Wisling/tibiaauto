@@ -74,7 +74,8 @@ void gz_compress(FILE *in, gzFile out)
         len = (int)fread(buf, 1, sizeof(buf), in);
         if (ferror(in)) {
             perror("fread");
-            exit(1);
+			PostQuitMessage(-1);
+			return;
         }
         if (len == 0) break;
 
@@ -111,7 +112,8 @@ void file_compress(char *file, char *mode)
     in = fopen(file, "rb");
     if (in == NULL) {
         perror(file);
-        exit(1);
+		PostQuitMessage(-1);
+		return;
     }
     out = gzopen(outfile, mode);
     if (out == NULL) {

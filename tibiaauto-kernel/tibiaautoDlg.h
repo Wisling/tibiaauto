@@ -178,7 +178,6 @@ private:
 	void sendStats();
 	void setShellTray();
 	XercesDOMParser *parser;
-	int m_lightPower;
 	CLoadedModules *m_loadedModules;
 	CPythonScriptsDialog *m_pythonScriptsDialog;
 	CConfigDialogStatus * configDialogStatus;

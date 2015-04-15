@@ -43,7 +43,7 @@ CMemReaderProxy::CMemReaderProxy()
 		unsigned long installPathLen=1023;
 		installPath[0]='\0';
 		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
 		{
 			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
 			RegCloseKey(hkey);
@@ -51,7 +51,8 @@ CMemReaderProxy::CMemReaderProxy()
 		if (!strlen(installPath))
 		{
 			::MessageBox(0,"ERROR! Unable to read TA install directory! Please reinstall!","ERROR",0);
-			exit(1);
+			PostQuitMessage(-1);
+			return;
 		}
 
 		char pathBuf[2048];
@@ -65,7 +66,8 @@ CMemReaderProxy::CMemReaderProxy()
 			char buf[256];
 			sprintf(buf, "Loading %s failed [1]! (%d)", pathBuf, GetLastError());
 			MessageBox(0,buf,"ERROR",0);
-			exit(0);
+			PostQuitMessage(-1);
+			return;
 		}
 	}
 }
@@ -372,11 +374,13 @@ void CMemReaderProxy::GetLoggedChar(int processId, char* buf, int bufLen)
 			return;
 		} else {
 			::MessageBox(0,"Loading memReadGetLoggedChar failed!","ERROR",0);
-			exit(0);
+			PostQuitMessage(-1);
+			return;
 		}
 	} else {
 		MessageBox(0,"Loading tibiaauto_util.dll failed [2]!","ERROR",0);
-		exit(0);
+		PostQuitMessage(-1);
+		return;
 	}
 }
 int CMemReaderProxy::readBattleListMax()

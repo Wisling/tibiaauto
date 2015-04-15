@@ -2053,7 +2053,7 @@ void CModuleUtil::getInstallPath(char path[2048]){
 		unsigned long installPathLen=2047;
 		installPath[0]='\0';
 		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
 		{
 			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
 			RegCloseKey(hkey);
@@ -2061,7 +2061,8 @@ void CModuleUtil::getInstallPath(char path[2048]){
 		if (!strlen(installPath))
 		{
 			AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-			exit(1);
+			PostQuitMessage(-1);
+			return;
 		}
 	}
 	strcpy(path,installPath);
@@ -2071,7 +2072,7 @@ int CModuleUtil::getTASetting(const char* name){
 	HKEY hkey=NULL;
 	int value=0;
 	unsigned long valueLen=4;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
 	{
 		RegQueryValueEx(hkey,TEXT(name),NULL,NULL,(unsigned char *)&value,&valueLen);
 		RegCloseKey(hkey);
@@ -2082,7 +2083,7 @@ int CModuleUtil::getTASetting(const char* name){
 void CModuleUtil::setTASetting(const char* name,int value){
 	HKEY hkey=NULL;
 	unsigned long valueLen=4;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_SET_VALUE,&hkey))
 	{
 		RegSetValueEx(hkey,TEXT(name),NULL,REG_DWORD,(unsigned char *)&value,valueLen);
 		RegCloseKey(hkey);

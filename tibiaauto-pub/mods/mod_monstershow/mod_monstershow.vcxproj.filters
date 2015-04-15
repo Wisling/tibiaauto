@@ -84,23 +84,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\bitmap1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00001.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00002.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00003.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\map_self.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <CustomBuild Include="mod_monstershow.def">
       <Filter>Source Files</Filter>
     </CustomBuild>

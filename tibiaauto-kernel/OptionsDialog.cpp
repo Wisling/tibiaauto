@@ -273,7 +273,7 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 		_unlink(fnameGz);
 
 		fileSendingProgress=1;
-	} catch (CInternetException *e)
+	} catch (CInternetException*)
 	{
 		fileSendingProgress=-1;
 	}
@@ -317,7 +317,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 		}
 		
 		fileSendingProgress=1;
-	} catch (CInternetException *e)
+	} catch (CInternetException*)
 	{
 		fileSendingProgress=-1;
 	}
@@ -394,7 +394,7 @@ void COptionsDialog::OnSendMaps()
 	tibiaPath[0]='\0';
 	/* Maps now stored in absolute directory
 	HKEY hkey=NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
 	{
 		RegQueryValueEx(hkey,TEXT("TibiaClientHome"),NULL,NULL,(unsigned char *)tibiaPath,&tibiaPathLen);
 		RegCloseKey(hkey);
@@ -403,7 +403,8 @@ void COptionsDialog::OnSendMaps()
 	if (!strlen(tibiaPath))
 	{
 		AfxMessageBox("ERROR! Unable to read Tibia client directory! Please reinstall!");
-		exit(1);
+		PostQuitMessage(-1);
+		return;
 	}
 
 	sendMaps(tibiaPath);
@@ -534,7 +535,7 @@ sendFiles:
 			AfxMessageBox("Thank you for submitting \"botting statistics.txt\" and \"module statistics.txt\".\n\nNo personally identifiable information was sent.\nThis botting information will be analysed and used to help prevent CIPSoft from automatically detecting TA in the future. You can change this setting in \"General Options and Statistics\".\n\nTA users thank you for helping us towards this end.\n~TA Team");
 		}
 
-	} catch (CInternetException *e)
+	} catch (CInternetException*)
 	{
 		if(!CModuleUtil::getTASetting("RemoveBotStatsMessage")){
 			AfxMessageBox("Failed to send file. Check your connection to the internet.");

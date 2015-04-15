@@ -135,9 +135,6 @@
     <Image Include="Icons\Creatures.bmp">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Demon_Skeleton.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mod_spellcaster.def">

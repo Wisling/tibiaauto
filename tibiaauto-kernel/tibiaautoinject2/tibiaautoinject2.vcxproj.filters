@@ -73,11 +73,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\testproj.ico">
-      <Filter>Resource Files</Filter>
-    </Image>
-  </ItemGroup>
-  <ItemGroup>
     <ResourceCompile Include="tibiaautoinject2.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>

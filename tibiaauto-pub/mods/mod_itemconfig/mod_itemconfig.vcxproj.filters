@@ -90,21 +90,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="bitmap1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bitmap1.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00001.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00002.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\bmp00003.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="check.bmp">
       <Filter>Resource Files</Filter>
     </Image>
@@ -115,9 +100,6 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="res\Items.bmp">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="res\map_self.bmp">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="uncheck.bmp">

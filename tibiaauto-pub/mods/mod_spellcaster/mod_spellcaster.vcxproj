@@ -194,7 +194,6 @@
   <ItemGroup>
     <Image Include="creature.bmp" />
     <Image Include="Icons\Creatures.bmp" />
-    <Image Include="Demon_Skeleton.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

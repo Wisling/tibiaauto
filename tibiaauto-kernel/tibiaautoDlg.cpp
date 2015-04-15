@@ -310,7 +310,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 		
 	if (!versionOk)
 	{
-		char outBuf[32];
+		char outBuf[100];
 
 		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%x  %x)", buf[0], buf[1]);
 		AfxMessageBox(outBuf);
@@ -438,7 +438,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (ffBoxDisplay)
 	{
 		// now check for firefox
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_ALL_ACCESS,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_READ,&hkey))
 		{
 			RegCloseKey(hkey);
 			ffBoxDisplay=0;
@@ -447,7 +447,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	if (ffBoxDisplay)
 	{
 		// now check for firefox
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_ALL_ACCESS,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_READ,&hkey))
 		{
 			RegCloseKey(hkey);
 			ffBoxDisplay=0;
@@ -671,38 +671,36 @@ void CTibiaautoDlg::InitialiseIPC()
 {
 	char buf[128];
 	char lpszPipename[128];
-	sprintf(lpszPipename,"\\\\.\\pipe\\tibiaAutoPipe-%d",m_processId);
-	
+	sprintf(lpszPipename, "\\\\.\\pipe\\tibiaAutoPipe-%d", m_processId);
 
-	 hPipe = CreateNamedPipe(
-          lpszPipename,             // pipe name
-          PIPE_ACCESS_DUPLEX,       // read/write access
-          PIPE_TYPE_MESSAGE |       // message type pipe
-          PIPE_READMODE_MESSAGE |   // message-read mode
-          PIPE_WAIT,                // blocking mode
-          PIPE_UNLIMITED_INSTANCES, // max. instances
-          163840,                  // output buffer size
-          163840,                  // input buffer size
-          1000,                        // client time-out
-          NULL);                    // no security attribute
+
+	hPipe = CreateNamedPipe(
+		lpszPipename,             // pipe name
+		PIPE_ACCESS_DUPLEX,       // read/write access
+		PIPE_TYPE_MESSAGE |       // message type pipe
+		PIPE_READMODE_MESSAGE |   // message-read mode
+		PIPE_NOWAIT,              // initially non-blocking mode
+		PIPE_UNLIMITED_INSTANCES, // max. instances
+		163840,                  // output buffer size
+		163840,                  // input buffer size
+		1000,                        // client time-out
+		NULL);                    // no security attribute
 
 
 	if (hPipe == INVALID_HANDLE_VALUE)
 	{
-		sprintf(buf,"Invalid pipe handle: %d",GetLastError());
-        AfxMessageBox(buf);
-	}
-	
+		sprintf(buf, "Invalid pipe handle: %d", GetLastError());
+		AfxMessageBox(buf);
+	}	
 
-	
-	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS,true,m_processId);
+	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, true, m_processId);
 
 	char installPath[1024];
 	char path[1024];
 	unsigned long installPathLen = 1023;
 	installPath[0] = '\0';
 	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_ALL_ACCESS, &hkey))
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 	{
 		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 		RegCloseKey(hkey);
@@ -710,36 +708,47 @@ void CTibiaautoDlg::InitialiseIPC()
 	if (!strlen(installPath))
 	{
 		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
-		exit(1);
+		PostQuitMessage(-1);
+		return;
 	}
 
 	sprintf(path, "%s\\%s", installPath, "tibiaautoinject2.dll");
-	const char* pathPtr = path;
 	if (injectDll(procHandle, path) != 0) {
-		sprintf(buf,"dll injection failed: %d",GetLastError());
+		sprintf(buf, "dll injection failed: %d", GetLastError());
 		AfxMessageBox(buf);
-		ExitProcess(1);
+		PostQuitMessage(1);
+		return;
 	}
-	
-	//injectDll="tibiaauto_develtest.dll";
-	
-	//DetourContinueProcessWithDll(procHandle, injectDll);
-	
-	
+
 	CloseHandle(procHandle);
-	
-	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-	
-
-	if (!fConnected)
+	BOOL pipeConnected = FALSE;
+	int pipeRetries = 0;
+	do
 	{
-		sprintf(buf,"client not connected via pipe: %d",GetLastError());
+		pipeConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+		if (pipeConnected)
+		{
+			continue;
+		}
+		Sleep(1000);
+		pipeRetries++;
+	} while (!pipeConnected && pipeRetries < 5);
+	if (!pipeConnected)
+	{
+		sprintf(buf, "Cannot connect properly to Tibia client: %d",GetLastError());
 		AfxMessageBox(buf);
-		ExitProcess(1);
+		PostQuitMessage(1);
+		return;
 	}
-
-	m_lightPower=-1;
-
+	// Set pipe back into blocking mode
+	if (SetNamedPipeHandleState(hPipe, (LPDWORD)(PIPE_READMODE_MESSAGE | PIPE_WAIT), NULL, NULL) != 0)
+	{
+		sprintf(buf, "Cannot setup pipe back to blocking mode: %d", GetLastError());
+		AfxMessageBox(buf);
+		PostQuitMessage(1);
+		return;
+	}
+	
 	// send my pid to the dll
 	int myProcessId=GetCurrentProcessId();
 	struct ipcMessage mess;
@@ -789,7 +798,6 @@ void CTibiaautoDlg::InitialiseIPC()
 			// associated with the specified process
 			do
 			{
-				
 				if( te32.th32OwnerProcessID == m_processId )
 				{
 					hhookKeyb=SetWindowsHookEx(WH_KEYBOARD,fun,hinstDLL,te32.th32ThreadID);
@@ -1392,9 +1400,7 @@ void CTibiaautoDlg::OnExit()
 		if (!pythonScript) break;
 		delete pythonScript;
 	}
-
-
-	ExitProcess(0);
+	PostQuitMessage(0);
 }
 
 void CTibiaautoDlg::OnClose()

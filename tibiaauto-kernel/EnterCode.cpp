@@ -56,11 +56,11 @@ void CEnterCode::OnOK()
 	
 	if (!auth())
 	{
-		ExitProcess(0);
+		PostQuitMessage(0);
 		CMemUtil::setGlobalProcessId(GetCurrentProcessId());
 		CMemReaderProxy reader;
 		reader.setProcessId(GetCurrentProcessId());
-		ExitProcess(0);
+		PostQuitMessage(0);
 	} else {
 		parent->shutdownCounter=-rand();
 		ok=1;
