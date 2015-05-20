@@ -679,7 +679,7 @@ void CTibiaautoDlg::InitialiseIPC()
 		PIPE_ACCESS_DUPLEX,       // read/write access
 		PIPE_TYPE_MESSAGE |       // message type pipe
 		PIPE_READMODE_MESSAGE |   // message-read mode
-		PIPE_NOWAIT,              // initially non-blocking mode
+          PIPE_WAIT,                // blocking mode
 		PIPE_UNLIMITED_INSTANCES, // max. instances
 		163840,                  // output buffer size
 		163840,                  // input buffer size
@@ -721,34 +721,19 @@ void CTibiaautoDlg::InitialiseIPC()
 	}
 
 	CloseHandle(procHandle);
-	BOOL pipeConnected = FALSE;
-	int pipeRetries = 0;
-	do
-	{
-		pipeConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-		if (pipeConnected)
-		{
-			continue;
-		}
-		Sleep(1000);
-		pipeRetries++;
-	} while (!pipeConnected && pipeRetries < 5);
-	if (!pipeConnected)
+	
+	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
+	
+
+	if (!fConnected)
 	{
 		sprintf(buf, "Cannot connect properly to Tibia client: %d",GetLastError());
 		AfxMessageBox(buf);
 		PostQuitMessage(1);
 		return;
 	}
-	// Set pipe back into blocking mode
-	if (SetNamedPipeHandleState(hPipe, (LPDWORD)(PIPE_READMODE_MESSAGE | PIPE_WAIT), NULL, NULL) != 0)
-	{
-		sprintf(buf, "Cannot setup pipe back to blocking mode: %d", GetLastError());
-		AfxMessageBox(buf);
-		PostQuitMessage(1);
-		return;
-	}
-	
+
+
 	// send my pid to the dll
 	int myProcessId=GetCurrentProcessId();
 	struct ipcMessage mess;
@@ -1738,7 +1723,7 @@ void CTibiaautoDlg::reportUsage()
 		int count=CModuleProxy::allModulesCount;
 		int pos;
 		int checksum=tm%177;
-		fprintf(f,"version=2.58.0 tm=%d,",tm);
+		fprintf(f,"version=2.59.0 tm=%d,",tm);
 		for (pos=0;pos<count;pos++)
 		{
 			CModuleProxy *mod=CModuleProxy::allModules[pos];

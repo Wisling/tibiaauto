@@ -23,7 +23,7 @@ XERCES_CPP_NAMESPACE_USE
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+	static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
@@ -305,8 +305,7 @@ void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree){
 	if (itemTree) delete CTibiaItem::itemTree;
 	if (!tibiaTree){
 		itemTree = new CTibiaTree(new CTibiaTreeBranchData("Root"));
-	}
-	else{
+	} else{
 		itemTree = tibiaTree;
 	}
 }
@@ -402,8 +401,7 @@ void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 				trunc_name[len] = '\0';
 				sprintf(buf, "Item already added under different name or ID. Failed to add item 0x%x:%s", data->GetId(), trunc_name);
 			}
-		}
-		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
 			//recurse for all children
 			traverseTreeForItemList(child, list);
 		}
@@ -418,8 +416,7 @@ void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
 			if (data->IsLooted()){
 				list->Add(data->GetId(), data->GetName(), data->GetItemType());
 			}
-		}
-		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
 			//recurse for all children
 			traverseTreeForLootList(child, list);
 		}
@@ -435,8 +432,7 @@ void traverseTreeToClearLootItems(CTibiaTree* parent, CTibiaList* list){
 			if (data->IsLooted()){
 				data->SetIsLooted(false);
 			}
-		}
-		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
 			//recurse for all children
 			traverseTreeToClearLootItems(child, list);
 		}
@@ -459,8 +455,7 @@ bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list, int objectI
 				list->Add(data->GetId(), data->GetName(), data->GetItemType());
 				return true;
 			}
-		}
-		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
 			//recurse for all children
 			if (traverseTreeToSetAsLooted(child, list, objectId)) return true;
 		}
@@ -742,8 +737,7 @@ void CTibiaItem::refreshItemLists()
 				}
 			}
 		}//if file tibiaauto-consts.xml exists
-	}
-	catch (...)
+	} catch (...)
 	{
 		AfxMessageBox("Unable to load const/item definitions!");
 		/*
@@ -775,8 +769,7 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *do
 			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(data->GetName()));
 			node->appendChild(itemElem);
 			saveItemsBranch(itemElem, child, doc);
-		}
-		else if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
+		} else if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
 			char buf[512];
 
@@ -891,8 +884,7 @@ void CTibiaItem::saveItemLists() {
 		theSerializer->release();
 		lsOut->release();
 		delete outFile;
-	}
-	catch (...) {
+	} catch (...) {
 		AfxMessageBox("Unable to save item definitions!");
 	}
 
