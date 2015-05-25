@@ -28,6 +28,9 @@ public:
 	void DoSetButtonSkin();
 	void RefreshExtendedResearchMap();
 	void mapPointToggleLock(int realX, int realY, int realZ);
+	void MapResearchTick();
+	void ExtendedMapResearchTick();
+	void ExtendedMapResearchTeleportCheckTick();	
 	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
 	~CToolMapShow();
 

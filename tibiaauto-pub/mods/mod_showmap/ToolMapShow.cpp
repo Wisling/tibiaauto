@@ -280,276 +280,24 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 {
 	if(!::IsWindow(m_hWnd))
 		return;
-	if (nIDEvent == 1001)
+	else if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
 		refreshVisibleMap();
 		SetTimer(1001, 1000, NULL);
 	}
-	if (nIDEvent == 1002)
+	else if (nIDEvent == 1002)
 	{
-		KillTimer(1002);
-		CMemReaderProxy reader;
-		CTibiaCharacter *self = reader.readSelfCharacter();
+		MapResearchTick();
 
-		if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == 0)
-		{
-			tibiaMap.setPointAsAvailable(self->x, self->y, self->z);
-			tibiaMap.setPointSpeed(self->x, self->y, self->z, 130);//130 default( is >255/2 and <70*2)
-		}
-
-
-		delete self;
-		SetTimer(1002, 25, NULL);
 	}
-	if (nIDEvent == 1003)
+	else if (nIDEvent == 1003)
 	{
-		static int prevX = 0, prevY = 0, prevZ = 0, iter = 0;
-		KillTimer(1003);
-		CMemReaderProxy reader;
-		// get tile 0 to make sure that the framework is initialised
-		reader.getTibiaTile(0);
-		CTibiaCharacter *self = reader.readSelfCharacter();
-
-		iter++;//increases every 0.5 secs
-		if (self->x != prevX || self->y != prevY || self->z != prevZ || iter % 6 == 0)//reading takes about 100ms +- 100
-		{
-			int x, y;
-			int tileArrAvail[18][14];
-			int tileArrUpDown[18][14];
-			int tileArrSpd[18][14];
-			int tileArrMvbl[18][14];
-			memset(tileArrAvail, 0, sizeof(int[18][14]));
-			memset(tileArrUpDown, 0, sizeof(int[18][14]));
-			memset(tileArrSpd, 0, sizeof(int[18][14]));
-			memset(tileArrMvbl, 0, sizeof(int[18][14]));
-			int relToCell = reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
-//			char buf[111];
-//			sprintf(buf,"%d-%d %d",relToCell,relToCell%18,relToCell%(14*18)/18);
-//			AfxMessageBox(buf);
-
-			for (x = -8; x <= 9; x++)
-			{
-				for (y = -6; y <= 7; y++)
-				{
-					int i;
-					int count = reader.mapGetPointItemsCount(point(x, y, 0), relToCell);
-
-					int blocked       = 0;
-					int tileType        = 0;
-					int ground        = 0;
-					int speed         = 0;
-					int moveableblock = 1;
-					for (i = 0; i < count; i++)
-					{
-						int tileId = reader.mapGetPointItemId(point(x, y, 0), i, relToCell);
-						if (tileId != 99)
-						{
-							CTibiaTile *tileData = reader.getTibiaTile(tileId);
-							if (tileData->blocking)
-								blocked = 1;
-							if(tileData->blocking && tileData->notMoveable)
-								moveableblock = 0;
-							if (tileData->ground)
-								ground = 1;
-							if (tileData->speed)
-								speed = tileData->speed;
-							if (tileData->goDown)
-							{
-								if (tileData->requireShovel)
-								{
-									tileType = 102;
-								}
-								else
-								{
-									if (tileData->requireUse)
-										tileType = 103;
-									else
-										tileType = 101;
-								}
-							}
-							if (tileData->goUp)
-							{
-								if (tileData->requireRope)
-								{
-									tileType = 201;
-								}
-								else
-								{
-									if (tileData->requireUse)
-										tileType = 203;
-									else
-										tileType = 204;
-									;
-								}
-							}
-							if (tileData->isDepot)
-								tileType = 301;
-							if (tileData->isTeleporter)
-								tileType = 302;
-						}
-						else if (x != 0 || y != 0)
-						{
-							tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
-						}
-					} // for i
-					
-					// if tile is depot chest or teleporter then treat it in a special way
-					if (tileType == MAP_POINT_TYPE_DEPOT || tileType == MAP_POINT_TYPE_TELEPORT)
-						blocked = 0;
-					// if there is not a single walkable tile then one cannot pass
-					if (ground == 0 && !tileType)
-						blocked = 1;
-
-					// if count==0 then override "blocked" and "no updown"
-					if (count == 0)
-					{
-						blocked = 1;
-						tileType  = 0;
-					}
-
-					//303 is handled as blocking in the pathfind algorithm
-					tileArrMvbl[x + 8][y + 6] = moveableblock;
-					if (!blocked)
-					{
-						tileArrSpd[x + 8][y + 6]    = speed;
-						tileArrAvail[x + 8][y + 6]  = 1;
-						tileArrUpDown[x + 8][y + 6] = tileType;
-					}
-					else
-					{
-						tileArrSpd[x + 8][y + 6]    = 0;
-						tileArrAvail[x + 8][y + 6]  = 0;
-						tileArrUpDown[x + 8][y + 6] = 0;
-					}
-				} // for y
-			} // for x
-			CTibiaCharacter *newSelf = reader.readSelfCharacter();
-
-			int cellNr = reader.mapGetSelfCellNr();
-			//if change in cellNr does not match with change in (x,y) then teleported  ( mod func returns >= 0 )
-			int wasTeleported = (cellNr % 18 != mod((relToCell % 18 + (newSelf->x - self->x)), 18)) || (cellNr % (14 * 18) / 18 != mod((relToCell % (14 * 18) / 18 + (newSelf->y - self->y)), 14));
-
-			//since we used relToCell only changing floors and teleports while reading drastically matter
-			if (newSelf->z == self->z && !wasTeleported)
-			{
-				prevX = self->x;
-				prevY = self->y;
-				prevZ = self->z;
-				// tiles changed between read from tibia and write to map are excluded
-				for (x = -8 + max(0, newSelf->x - self->x); x <= 9 + min(0, newSelf->x - self->x); x++)
-				{
-					for (y = -6 + max(0, newSelf->y - self->y); y <= 7 + min(0, newSelf->y - self->y); y++)
-					{
-						if(!tibiaMap.isPointLocked(self->x + x, self->y + y, self->z))
-						{
-							if (tileArrAvail[x + 8][y + 6])
-							{
-								tibiaMap.setPointAsAvailable(self->x + x, self->y + y, self->z);
-								tibiaMap.setPointType(self->x + x, self->y + y, self->z, tileArrUpDown[x + 8][y + 6]);
-								if (tileArrSpd[x + 8][y + 6] == 0)
-									tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 130);              //130 default( is >255/2 and <70*2)
-								else
-									tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, tileArrSpd[x + 8][y + 6]);
-							}
-							else
-							{
-								tibiaMap.setPointType(self->x + x, self->y + y, self->z, 0);
-								tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 0);
-								if(tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z) && tileArrMvbl[x + 8][y + 6])
-								{
-									//To avoid removing a tile that could be made available again too quickly
-									//Make it less likely that it will happen, 90% chance of updating after 20 seconds.
-									//Better implementation is to track these across iterations and make not available after 10 seconds
-									if(rand() % 100 < 5)
-										tibiaMap.removePointAvailable(self->x + x, self->y + y, self->z);
-									else
-										tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
-								}
-								else
-								{
-									if(x == 1 && y == 0)
-										int a = 0;
-									tibiaMap.removePointAvailable(self->x + x, self->y + y, self->z);
-								}
-							}
-						}
-					}
-				}
-			}
-			delete newSelf;
-		}
-
-
-		delete self;
-		SetTimer(1003, 500, NULL);
+		ExtendedMapResearchTick();
 	}
-	if (nIDEvent == 1004)
+	else if (nIDEvent == 1004)
 	{
-		static int prevXTele = 0, prevYTele = 0, prevZTele = 0;
-		KillTimer(1004);
-		CMemReaderProxy reader;
-		// get tile 0 to make sure that the framework is initialised
-		reader.getTibiaTile(0);
-		CTibiaCharacter *self = reader.readSelfCharacter();
-
-		int sensitivity = 2;//sqm to check for teleporter and #sqm travellable between checks
-		if (self->x != prevXTele || self->y != prevYTele || self->z != prevZTele)
-		{
-			if (abs(self->x - prevXTele) > sensitivity || abs(self->y - prevYTele) > sensitivity || abs(self->z - prevZTele) > 0)
-			{
-				int x       = 0, y = 0;
-				int xSwitch = 0;
-				int ySwitch = 0;
-				while (x != sensitivity + 1 && y != sensitivity + 1)
-				{
-					//manage x and y coords for spiraling
-					if (xSwitch == 0 && ySwitch == 0)
-					{
-						xSwitch = 1;
-					}
-					else if (x == y && x >= 0 && xSwitch == 1 && ySwitch == 0)
-					{
-						x++; xSwitch = 0; ySwitch = -1;
-					}
-					else if (!xSwitch && !(x == y && x >= 0) && abs(x) == abs(y))
-					{
-						xSwitch = ySwitch; ySwitch = 0; x += xSwitch; y += ySwitch;
-					}
-					else if (!ySwitch && abs(x) == abs(y))
-					{
-						ySwitch = -xSwitch; xSwitch = 0; x += xSwitch; y += ySwitch;
-					}
-					else
-					{
-						x += xSwitch; y += ySwitch;
-					}
-
-					MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
-					if(type == MAP_POINT_TYPE_TELEPORT)//teleporter
-					{
-						CPackSenderProxy sender;
-						if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
-						{
-							tibiaMap.setDestPoint(prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
-							char buf[128];
-							sprintf(buf, "Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)", prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
-							sender.sendTAMessage(buf);
-							break;
-						}
-					}
-					else if(type > 0)
-					{
-						break;           //other updown is closer and probably used
-					}
-				}
-			}
-			prevXTele = self->x;
-			prevYTele = self->y;
-			prevZTele = self->z;
-		}
-		delete self;
-		SetTimer(1004, 200, NULL);
+		ExtendedMapResearchTeleportCheckTick();
 	}
 
 	//New timers must be killed in destructor
@@ -594,6 +342,289 @@ void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ){
 		tibiaMap.setPointLocked(realX, realY, realZ, !prev);
 	}
 }
+
+void CToolMapShow::MapResearchTick()
+{
+	KillTimer(1002);
+	CMemReaderProxy reader;
+	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	if (self->x == 0xCDCDCDCD || self->y == 0xCDCDCDCD || self->z < -20 || self->z > 20)
+	{
+		delete self;
+		SetTimer(1002, 25, NULL);
+		return;
+	}
+	if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == 0)
+	{
+		tibiaMap.setPointAsAvailable(self->x, self->y, self->z);
+		tibiaMap.setPointSpeed(self->x, self->y, self->z, 130);//130 default( is >255/2 and <70*2)
+	}
+	delete self;
+	SetTimer(1002, 25, NULL);
+}
+
+void CToolMapShow::ExtendedMapResearchTick()
+{
+	static int prevX = 0, prevY = 0, prevZ = 0, iter = 0;
+	KillTimer(1003);
+	CMemReaderProxy reader;
+	// get tile 0 to make sure that the framework is initialised
+	reader.getTibiaTile(0);
+	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	if (self->x == 0xCDCDCDCD || self->y == 0xCDCDCDCD || self->z < -20 || self->z > 20)
+	{
+		delete self;
+		SetTimer(1003, 500, NULL);
+		return;
+	}
+	iter++;//increases every 0.5 secs
+	if (self->x != prevX || self->y != prevY || self->z != prevZ || iter % 6 == 0)//reading takes about 100ms +- 100
+	{
+		int x, y;
+		int tileArrAvail[18][14];
+		int tileArrUpDown[18][14];
+		int tileArrSpd[18][14];
+		int tileArrMvbl[18][14];
+		memset(tileArrAvail, 0, sizeof(int[18][14]));
+		memset(tileArrUpDown, 0, sizeof(int[18][14]));
+		memset(tileArrSpd, 0, sizeof(int[18][14]));
+		memset(tileArrMvbl, 0, sizeof(int[18][14]));
+		int relToCell = reader.mapGetSelfCellNr();// the present location of self in map memory range 0-2016
+		//			char buf[111];
+		//			sprintf(buf,"%d-%d %d",relToCell,relToCell%18,relToCell%(14*18)/18);
+		//			AfxMessageBox(buf);
+
+		for (x = -8; x <= 9; x++)
+		{
+			for (y = -6; y <= 7; y++)
+			{
+				int i;
+				int count = reader.mapGetPointItemsCount(point(x, y, 0), relToCell);
+
+				int blocked = 0;
+				int tileType = 0;
+				int ground = 0;
+				int speed = 0;
+				int moveableblock = 1;
+				for (i = 0; i < count; i++)
+				{
+					int tileId = reader.mapGetPointItemId(point(x, y, 0), i, relToCell);
+					if (tileId != 99)
+					{
+						CTibiaTile *tileData = reader.getTibiaTile(tileId);
+						if (tileData->blocking)
+							blocked = 1;
+						if (tileData->blocking && tileData->notMoveable)
+							moveableblock = 0;
+						if (tileData->ground)
+							ground = 1;
+						if (tileData->speed)
+							speed = tileData->speed;
+						if (tileData->goDown)
+						{
+							if (tileData->requireShovel)
+							{
+								tileType = 102;
+							}
+							else
+							{
+								if (tileData->requireUse)
+									tileType = 103;
+								else
+									tileType = 101;
+							}
+						}
+						if (tileData->goUp)
+						{
+							if (tileData->requireRope)
+							{
+								tileType = 201;
+							}
+							else
+							{
+								if (tileData->requireUse)
+									tileType = 203;
+								else
+									tileType = 204;
+								;
+							}
+						}
+						if (tileData->isDepot)
+							tileType = 301;
+						if (tileData->isTeleporter)
+							tileType = 302;
+					}
+					else if (x != 0 || y != 0)
+					{
+						tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
+					}
+				} // for i
+
+				// if tile is depot chest or teleporter then treat it in a special way
+				if (tileType == MAP_POINT_TYPE_DEPOT || tileType == MAP_POINT_TYPE_TELEPORT)
+					blocked = 0;
+				// if there is not a single walkable tile then one cannot pass
+				if (ground == 0 && !tileType)
+					blocked = 1;
+
+				// if count==0 then override "blocked" and "no updown"
+				if (count == 0)
+				{
+					blocked = 1;
+					tileType = 0;
+				}
+
+				//303 is handled as blocking in the pathfind algorithm
+				tileArrMvbl[x + 8][y + 6] = moveableblock;
+				if (!blocked)
+				{
+					tileArrSpd[x + 8][y + 6] = speed;
+					tileArrAvail[x + 8][y + 6] = 1;
+					tileArrUpDown[x + 8][y + 6] = tileType;
+				}
+				else
+				{
+					tileArrSpd[x + 8][y + 6] = 0;
+					tileArrAvail[x + 8][y + 6] = 0;
+					tileArrUpDown[x + 8][y + 6] = 0;
+				}
+			} // for y
+		} // for x
+		CTibiaCharacter *newSelf = reader.readSelfCharacter();
+
+		int cellNr = reader.mapGetSelfCellNr();
+		//if change in cellNr does not match with change in (x,y) then teleported  ( mod func returns >= 0 )
+		int wasTeleported = (cellNr % 18 != mod((relToCell % 18 + (newSelf->x - self->x)), 18)) || (cellNr % (14 * 18) / 18 != mod((relToCell % (14 * 18) / 18 + (newSelf->y - self->y)), 14));
+
+		//since we used relToCell only changing floors and teleports while reading drastically matter
+		if (newSelf->z == self->z && !wasTeleported)
+		{
+			prevX = self->x;
+			prevY = self->y;
+			prevZ = self->z;
+			// tiles changed between read from tibia and write to map are excluded
+			for (x = -8 + max(0, newSelf->x - self->x); x <= 9 + min(0, newSelf->x - self->x); x++)
+			{
+				for (y = -6 + max(0, newSelf->y - self->y); y <= 7 + min(0, newSelf->y - self->y); y++)
+				{
+					if (!tibiaMap.isPointLocked(self->x + x, self->y + y, self->z))
+					{
+						if (tileArrAvail[x + 8][y + 6])
+						{
+							tibiaMap.setPointAsAvailable(self->x + x, self->y + y, self->z);
+							tibiaMap.setPointType(self->x + x, self->y + y, self->z, tileArrUpDown[x + 8][y + 6]);
+							if (tileArrSpd[x + 8][y + 6] == 0)
+								tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 130);              //130 default( is >255/2 and <70*2)
+							else
+								tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, tileArrSpd[x + 8][y + 6]);
+						}
+						else
+						{
+							tibiaMap.setPointType(self->x + x, self->y + y, self->z, 0);
+							tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 0);
+							if (tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z) && tileArrMvbl[x + 8][y + 6])
+							{
+								//To avoid removing a tile that could be made available again too quickly
+								//Make it less likely that it will happen, 90% chance of updating after 20 seconds.
+								//Better implementation is to track these across iterations and make not available after 10 seconds
+								if (rand() % 100 < 5)
+									tibiaMap.removePointAvailable(self->x + x, self->y + y, self->z);
+								else
+									tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
+							}
+							else
+							{
+								if (x == 1 && y == 0)
+									int a = 0;
+								tibiaMap.removePointAvailable(self->x + x, self->y + y, self->z);
+							}
+						}
+					}
+				}
+			}
+		}
+		delete newSelf;
+	}
+	delete self;
+	SetTimer(1003, 500, NULL);
+}
+
+void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
+{
+	static int prevXTele = 0, prevYTele = 0, prevZTele = 0;
+	KillTimer(1004);
+	CMemReaderProxy reader;
+	// get tile 0 to make sure that the framework is initialised
+	reader.getTibiaTile(0);
+	CTibiaCharacter *self = reader.readSelfCharacter();
+
+	if (self->x == 0xCDCDCDCD || self->y == 0xCDCDCDCD || self->z < -20 || self->z > 20)
+	{
+		delete self;
+		SetTimer(1004, 200, NULL);
+		return;
+	}
+	int sensitivity = 2;//sqm to check for teleporter and #sqm travellable between checks
+	if (self->x != prevXTele || self->y != prevYTele || self->z != prevZTele)
+	{
+		if (abs(self->x - prevXTele) > sensitivity || abs(self->y - prevYTele) > sensitivity || abs(self->z - prevZTele) > 0)
+		{
+			int x = 0, y = 0;
+			int xSwitch = 0;
+			int ySwitch = 0;
+			while (x != sensitivity + 1 && y != sensitivity + 1)
+			{
+				//manage x and y coords for spiraling
+				if (xSwitch == 0 && ySwitch == 0)
+				{
+					xSwitch = 1;
+				}
+				else if (x == y && x >= 0 && xSwitch == 1 && ySwitch == 0)
+				{
+					x++; xSwitch = 0; ySwitch = -1;
+				}
+				else if (!xSwitch && !(x == y && x >= 0) && abs(x) == abs(y))
+				{
+					xSwitch = ySwitch; ySwitch = 0; x += xSwitch; y += ySwitch;
+				}
+				else if (!ySwitch && abs(x) == abs(y))
+				{
+					ySwitch = -xSwitch; xSwitch = 0; x += xSwitch; y += ySwitch;
+				}
+				else
+				{
+					x += xSwitch; y += ySwitch;
+				}
+
+				MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
+				if (type == MAP_POINT_TYPE_TELEPORT)//teleporter
+				{
+					CPackSenderProxy sender;
+					if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
+					{
+						tibiaMap.setDestPoint(prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
+						char buf[128];
+						sprintf(buf, "Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)", prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
+						sender.sendTAMessage(buf);
+						break;
+					}
+				}
+				else if (type > 0)
+				{
+					break;           //other updown is closer and probably used
+				}
+			}
+		}
+		prevXTele = self->x;
+		prevYTele = self->y;
+		prevZTele = self->z;
+	}
+	delete self;
+	SetTimer(1004, 200, NULL);
+}
+
 void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, int tileVal)
 {
 	if (tileVal >= 0)
