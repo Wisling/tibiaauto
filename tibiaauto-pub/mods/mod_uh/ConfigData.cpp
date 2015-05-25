@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,18 +18,17 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	m_sleepAfter=2000;
-	m_uhBorderline=0;
-	m_runetype=0;
-	m_fallback=1;
-	m_hotkeySelf=0;
-	m_grpBorderline=0;
-	m_grpFallback=1;
-	m_grpRunetype=0;
-	m_grpMemberCount=0;
+	m_sleepAfter     = 2000;
+	m_uhBorderline   = 0;
+	m_runetype       = 0;
+	m_fallback       = 1;
+	m_hotkeySelf     = 0;
+	m_grpBorderline  = 0;
+	m_grpFallback    = 1;
+	m_grpRunetype    = 0;
+	m_grpMemberCount = 0;
 }
 
 CConfigData::~CConfigData()
 {
-
 }

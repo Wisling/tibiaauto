@@ -28,28 +28,28 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_maphackApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_maphackApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_MapOptionFrame;
-	CButton	m_revealCName;
-	CButton	m_revealNoFish;
-	CButton	m_revealInvisible;
-	CButton	m_minimapResearch;
-	CButton	m_autoMount;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CGroupBoxEx m_MapOptionFrame;
+	CButton m_revealCName;
+	CButton m_revealNoFish;
+	CButton m_revealInvisible;
+	CButton m_minimapResearch;
+	CButton m_autoMount;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

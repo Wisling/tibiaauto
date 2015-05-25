@@ -3,11 +3,9 @@
 #include "mod_osv.h"
 
 
-
 #include "ConfigData.h"
 
 #include "TibiaContainer.h"
-
 
 
 #include "MemReaderProxy.h"
@@ -25,7 +23,6 @@
 #include <time.h>
 
 
-
 #ifdef _DEBUG
 
 #define new DEBUG_NEW
@@ -34,4 +31,4 @@
 
 static char THIS_FILE[] = __FILE__;
 
-#endif
+#endif // ifdef _DEBUG

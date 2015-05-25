@@ -5,12 +5,12 @@
 
 #ifdef WIN32
 // #include <winsock2.h>
-#else
+#else // ifdef WIN32
  #include <sys/types.h>
  #include <sys/socket.h>
  #include <sys/time.h>
  #include <netdb.h>
-#endif
+#endif // ifdef WIN32
 //#include <unistd.h>
 #include <stdio.h>
 
@@ -27,65 +27,63 @@ bool SocketHandler::alreadyRunning = false;
 map<string, Socket *> SocketHandler::sockets;
 
 void SocketHandler::runLoop() {
-	if (alreadyRunning) {
+	if (alreadyRunning)
 		return;
-	}
 	alreadyRunning = true;
-	
+
 	Socket *sock;
 	int result, socket;
-	
-	while (!sockets.empty() && serverRunning) {
-		
+
+	while (!sockets.empty() && serverRunning)
+	{
 		//	Do timing stuff..
 		timer->processPending();
-		
+
 		fd_set input_sockets;
 
 		FD_ZERO(&input_sockets);
 		map<string, Socket *>::iterator s;
-		for (s = sockets.begin(); s != sockets.end(); ++s) {
+		for (s = sockets.begin(); s != sockets.end(); ++s)
+		{
 			sock = (*s).second;
-			if (sock != NULL) {
+			if (sock != NULL)
 				socket = sock->getSD();
-			} else {
+			else
 				socket = -1;
-			}
-			if (socket != -1) {
+			if (socket != -1)
 				FD_SET(socket, &input_sockets);
-			}
 		}
-		
+
 		struct timeval timeout;
-		
-		timeout.tv_sec = 2;
+
+		timeout.tv_sec  = 2;
 		timeout.tv_usec = 500 * 1000;
-		
+
 		#ifdef WIN32
-			result = select(FD_SETSIZE, (fd_set FAR *)&input_sockets, NULL, NULL, (const struct timeval FAR *)&timeout);
-		#else
-			result = select(FD_SETSIZE, &input_sockets, NULL, NULL, &timeout);
-		#endif
-		
-		switch (result) {
-			case 0:		//	Timeout on the sockets
-				continue;
-			case -1:	//	Select error, so stop
-				perror("select");
-				alreadyRunning = false;
-				return;
+		result = select(FD_SETSIZE, (fd_set FAR *)&input_sockets, NULL, NULL, (const struct timeval FAR *)&timeout);
+		#else // ifdef WIN32
+		result = select(FD_SETSIZE, &input_sockets, NULL, NULL, &timeout);
+		#endif // ifdef WIN32
+
+		switch (result)
+		{
+		case 0:                 //	Timeout on the sockets
+			continue;
+		case -1:                //	Select error, so stop
+			perror("select");
+			alreadyRunning = false;
+			return;
 		}
-		for (map<string, Socket *>::iterator s2 = sockets.begin(); s != sockets.end(); ++s) {
+		for (map<string, Socket *>::iterator s2 = sockets.begin(); s != sockets.end(); ++s)
+		{
 			sock = (*s2).second;
-			if (sock != NULL) {
+			if (sock != NULL)
 				socket = sock->getSD();
-			} else {
+			else
 				socket = -1;
-				//removeSocket((*s).first);	???
-			}
-			if (socket != -1 && FD_ISSET(socket, &input_sockets)) {
+			//removeSocket((*s).first);	???
+			if (socket != -1 && FD_ISSET(socket, &input_sockets))
 				sock->process();
-			}
 		}
 	}
 	alreadyRunning = false;
@@ -98,7 +96,8 @@ void SocketHandler::addSocket(string uid, Socket *socket) {
 void SocketHandler::removeSocket(string uid) {
 	Socket *del = sockets[uid];
 	sockets.erase(uid);
-	if (del != NULL) {
+	if (del != NULL)
+	{
 		delete del;
 		del = NULL;
 	}

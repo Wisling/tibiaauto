@@ -29,22 +29,22 @@ public:
 // Dialog Data
 	//{{AFX_DATA(TimedDialog)
 	enum { IDD = IDD_TIMED_DIALOG };
-	CListCtrl	m_timedSpellList;
-	CButtonST	m_timedSpellDelete;
-	CButtonST	m_timedSpellAdd;
-	CButton	m_UsePotions;
-	CEdit	m_timedSpellMana;
-	CEdit	m_timedSpellDelay;
-	CEdit	m_timedSpellWords;
-	CButton	m_timedSpell;
-	CGroupBoxEx	m_timedSpellFrame;
+	CListCtrl m_timedSpellList;
+	CButtonST m_timedSpellDelete;
+	CButtonST m_timedSpellAdd;
+	CButton m_UsePotions;
+	CEdit m_timedSpellMana;
+	CEdit m_timedSpellDelay;
+	CEdit m_timedSpellWords;
+	CButton m_timedSpell;
+	CGroupBoxEx m_timedSpellFrame;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(TimedDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -7,19 +7,20 @@
 
 #ifndef DATE_BUILT
 #define DATE_BUILT __DATE__
-#endif
-#define VERSION_STRING "J-Alice AIML Interpreter v0.5 (built: "DATE_BUILT")"
+#endif // ifndef DATE_BUILT
+#define VERSION_STRING "J-Alice AIML Interpreter v0.5 (built: "DATE_BUILT ")"
 
 using namespace std;
 
 class VersionProcessor : public AimlProcessor
 {
 public:
-	~VersionProcessor() { }
-	
+	~VersionProcessor() {
+	}
+
 	string process(Match *, PElement, Responder *, const string &) {
 		return VERSION_STRING;
 	}
 };
 
-#endif
+#endif // ifndef VERSION_PROCESSOR_H

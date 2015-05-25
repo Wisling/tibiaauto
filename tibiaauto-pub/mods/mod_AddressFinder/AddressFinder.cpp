@@ -10,9 +10,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -20,12 +20,10 @@ static char THIS_FILE[]=__FILE__;
 
 AddressFinder::AddressFinder()
 {
-	
 }
 
 AddressFinder::~AddressFinder()
 {
-	
 }
 
 bool AddressFinder::getExpComp()
@@ -33,7 +31,7 @@ bool AddressFinder::getExpComp()
 	bool result = false;
 	Comparison.clear();
 	Mask.clear();
-	
+
 	Comparison.push_back(0xa1);
 	Mask.push_back(1);
 	Comparison.push_back(0x00);
@@ -168,7 +166,7 @@ bool AddressFinder::getExpComp()
 	Mask.push_back(1);
 	Comparison.push_back(0x05);
 	Mask.push_back(1);
-	
+
 	result = true;
 	return result;
 }
@@ -177,14 +175,15 @@ bool AddressFinder::getTibiaFileChunk(int size)
 {
 	bool result = false;
 	CMemReaderProxy reader;
-	
-	for (int loop = 0; loop < size; loop++) {
+
+	for (int loop = 0; loop < size; loop++)
+	{
 		TibiaFile.push_back(reader.getMemIntValue(0x401000 + loop));
 	}
-	
+
 	if (TibiaFile.size() == size)
 		result = true;
-	
+
 	return result;
 }
 
@@ -193,23 +192,26 @@ long AddressFinder::doComparison()
 	long foundAddress;
 	int index = 0x401000 + TibiaFile.size();
 	CMemReaderProxy reader;
-	while(index < 0x5b0ffe) {
-		FileIterator = TibiaFile.begin();
+	while(index < 0x5b0ffe)
+	{
+		FileIterator       = TibiaFile.begin();
 		ComparisonIterator = Comparison.begin();
-		MaskIterator = Mask.begin();
+		MaskIterator       = Mask.begin();
 		int countSuccess = 0;
-		while (FileIterator != TibiaFile.end() && ComparisonIterator != Comparison.end() && MaskIterator != Mask.end() && *MaskIterator * *FileIterator == *MaskIterator * *ComparisonIterator){
+		while (FileIterator != TibiaFile.end() && ComparisonIterator != Comparison.end() && MaskIterator != Mask.end() && *MaskIterator * *FileIterator == *MaskIterator * *ComparisonIterator)
+		{
 			countSuccess++;
 			FileIterator++;
 			ComparisonIterator++;
 			MaskIterator++;
 		}
-		if (countSuccess == Comparison.size()) {
+		if (countSuccess == Comparison.size())
+		{
 			foundAddress = index + 1;
 			break;
 		}
-		else {
-
+		else
+		{
 			TibiaFile.pop_front();
 			TibiaFile.push_back(reader.getMemIntValue(++index));
 		}
@@ -220,11 +222,11 @@ long AddressFinder::doComparison()
 long AddressFinder::getExpAddress()
 {
 	long expAddress = 0;
-	
+
 	getExpComp();
 	getTibiaFileChunk(Comparison.size());
 	expAddress = doComparison();
-	
+
 	return expAddress;
 }
 
@@ -233,7 +235,7 @@ bool AddressFinder::getFlagsComp()
 	bool result = false;
 	Comparison.clear();
 	Mask.clear();
-	
+
 	Comparison.push_back(0x55);
 	Mask.push_back(1);
 	Comparison.push_back(0x8b);
@@ -639,7 +641,7 @@ bool AddressFinder::getFlagsComp()
 	Mask.push_back(1);
 	Comparison.push_back(0x35);
 	Mask.push_back(1);
-	
+
 	result = true;
 	return result;
 }
@@ -647,10 +649,10 @@ bool AddressFinder::getFlagsComp()
 long AddressFinder::getFlagsAddress()
 {
 	long flagsAddress = 0;
-	
+
 	getFlagsComp();
 	getTibiaFileChunk(Comparison.size());
 	flagsAddress = doComparison();
-	
+
 	return flagsAddress;
 }

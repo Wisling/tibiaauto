@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CCustomSpellDialog dialog
@@ -18,9 +18,9 @@ static char THIS_FILE[] = __FILE__;
 CCustomSpellDialog::CCustomSpellDialog(CWnd* pParent /*=NULL*/)
 	: MyDialog(CCustomSpellDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CCustomSpellDialog)
-	m_spellWords = _T("");
+	m_spellWords   = _T("");
 	m_castingDelay = 0;
-	m_manaCost = 0;
+	m_manaCost     = 0;
 	//}}AFX_DATA_INIT
 }
 
@@ -41,10 +41,10 @@ void CCustomSpellDialog::DoDataExchange(CDataExchange* pDX) {
 
 
 BEGIN_MESSAGE_MAP(CCustomSpellDialog, CDialog)
-	//{{AFX_MSG_MAP(CCustomSpellDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CCustomSpellDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////

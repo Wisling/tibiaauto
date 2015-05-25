@@ -7,9 +7,9 @@
 
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
-#endif
+#endif // ifndef __AFXWIN_H__
 
-#include "resource.h"		// main symbols
+#include "resource.h"           // main symbols
 #include <IModuleInterface.h>
 #include "ConfigData.h"
 #include "ToolItemConfig.h"
@@ -17,12 +17,12 @@
 /////////////////////////////////////////////////////////////////////////////
 //
 
-struct CGUITreeItemData{
+struct CGUITreeItemData {
 	int id;
 	int type;
-	CGUITreeItemData(int a_id,int a_type){
-		id=a_id;
-		type=a_type;
+	CGUITreeItemData(int a_id, int a_type){
+		id   = a_id;
+		type = a_type;
 	}
 };
 
@@ -50,7 +50,7 @@ public:
 	void enableControls();
 	void configToControls();
 	void controlsToConfig();
-	void loadConfigParam(char *paramName,char *paramValue);
+	void loadConfigParam(char *paramName, char *paramValue);
 	char *saveConfigParam(char *paramName);
 	char *getConfigParamName(int nr);
 	int isMultiParam(char *paramName);

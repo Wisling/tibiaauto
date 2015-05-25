@@ -11,18 +11,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_aimApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_aimApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -38,14 +38,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	ON_WM_ERASEBKGND()
-	ON_WM_DRAWITEM()
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+ON_WM_ERASEBKGND()
+ON_WM_DRAWITEM()
+ON_WM_CTLCOLOR()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,37 +67,33 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
 
 void CConfigDialog::disableControls()
 {
-
 	m_RuneType.EnableWindow(false);
 }
 
 void CConfigDialog::enableControls()
 {
-
 	m_RuneType.EnableWindow(true);
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-
-	for (int i=0;i<m_RuneType.GetCount();i++){
-		if (int(m_RuneType.GetItemData(i)) == int(configData->RuneType)){
+	for (int i = 0; i < m_RuneType.GetCount(); i++)
+	{
+		if (int(m_RuneType.GetItemData(i)) == int(configData->RuneType))
 			m_RuneType.SetCurSel(i);
-		}
 	}
 }
 
@@ -105,15 +101,13 @@ CConfigData * CConfigDialog::controlsToConfig()
 {
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->RuneType=m_RuneType.GetItemData(m_RuneType.GetCurSel());
+	newConfigData->RuneType = m_RuneType.GetItemData(m_RuneType.GetCurSel());
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-
-	
 	CDialog::OnTimer(nIDEvent);
 }
 
@@ -129,22 +123,22 @@ BOOL CConfigDialog::OnInitDialog()
 
 	CTibiaItemProxy itemProxy;
 
-	m_RuneType.InsertString(0,"(none)");
-	m_RuneType.SetItemData(0,0);
-	m_RuneType.InsertString(1,"LMM");
-	m_RuneType.SetItemData(1,itemProxy.getValueForConst("runeLMM"));
-	m_RuneType.InsertString(2,"HMM");
-	m_RuneType.SetItemData(2,itemProxy.getValueForConst("runeHMM"));
-	m_RuneType.InsertString(3,"GFB");
-	m_RuneType.SetItemData(3,itemProxy.getValueForConst("runeGFB"));
-	m_RuneType.InsertString(4,"EXPLO");
-	m_RuneType.SetItemData(4,itemProxy.getValueForConst("runeExplo"));
-	m_RuneType.InsertString(5,"SoulFire");
-	m_RuneType.SetItemData(5,itemProxy.getValueForConst("runeSoulFire"));
-	m_RuneType.InsertString(6,"SD");
-	m_RuneType.SetItemData(6,itemProxy.getValueForConst("runeSD"));
-	
-	
+	m_RuneType.InsertString(0, "(none)");
+	m_RuneType.SetItemData(0, 0);
+	m_RuneType.InsertString(1, "LMM");
+	m_RuneType.SetItemData(1, itemProxy.getValueForConst("runeLMM"));
+	m_RuneType.InsertString(2, "HMM");
+	m_RuneType.SetItemData(2, itemProxy.getValueForConst("runeHMM"));
+	m_RuneType.InsertString(3, "GFB");
+	m_RuneType.SetItemData(3, itemProxy.getValueForConst("runeGFB"));
+	m_RuneType.InsertString(4, "EXPLO");
+	m_RuneType.SetItemData(4, itemProxy.getValueForConst("runeExplo"));
+	m_RuneType.InsertString(5, "SoulFire");
+	m_RuneType.SetItemData(5, itemProxy.getValueForConst("runeSoulFire"));
+	m_RuneType.InsertString(6, "SD");
+	m_RuneType.SetItemData(6, itemProxy.getValueForConst("runeSD"));
+
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

@@ -1,19 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
-
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // MemReaderProxy.cpp: implementation of the CMemReaderProxy class.
@@ -25,10 +24,9 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #include "MemConstData.h"
 
 
-
 //////////////////////////////////////////////////////////////////////
 
-HMODULE CMemReaderProxy::dllModule=NULL;
+HMODULE CMemReaderProxy::dllModule = NULL;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -37,35 +35,35 @@ HMODULE CMemReaderProxy::dllModule=NULL;
 CMemReaderProxy::CMemReaderProxy()
 {
 	// load module
-	if (dllModule==NULL)
+	if (dllModule == NULL)
 	{
 		char installPath[1024];
-		unsigned long installPathLen=1023;
-		installPath[0]='\0';
-		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
+		unsigned long installPathLen = 1023;
+		installPath[0] = '\0';
+		HKEY hkey = NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
 		{
-			::MessageBox(0,"ERROR! Unable to read TA install directory! Please reinstall!","ERROR",0);
+			::MessageBox(0, "ERROR! Unable to read TA install directory! Please reinstall!", "ERROR", 0);
 			PostQuitMessage(-1);
 			return;
 		}
 
 		char pathBuf[2048];
-		sprintf(pathBuf,"%s\\mods\\tibiaauto_util.dll",installPath);
+		sprintf(pathBuf, "%s\\mods\\tibiaauto_util.dll", installPath);
 
-		dllModule=LoadLibrary(pathBuf);
+		dllModule = LoadLibrary(pathBuf);
 		//dllModule = (HMODULE)1;
 
 		if (!dllModule)
 		{
 			char buf[256];
 			sprintf(buf, "Loading %s failed [1]! (%d)", pathBuf, GetLastError());
-			MessageBox(0,buf,"ERROR",0);
+			MessageBox(0, buf, "ERROR", 0);
 			PostQuitMessage(-1);
 			return;
 		}
@@ -74,50 +72,40 @@ CMemReaderProxy::CMemReaderProxy()
 
 CMemReaderProxy::~CMemReaderProxy()
 {
-	
 }
 
 CTibiaVIPEntry * CMemReaderProxy::readVIPEntry(int vipNr)
 {
-
 	typedef CTibiaVIPEntry * (*Proto_fun)(int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadVIPEntry");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadVIPEntry");
 		if (fun)
-		{
 			return fun(vipNr);
-		}
 	}
 	return NULL;
 }
 
 int CMemReaderProxy::readOpenContainerCount()
 {
-
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadOpenContainerCount");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadOpenContainerCount");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return NULL;
 }
 
 CTibiaContainer * CMemReaderProxy::readContainer(int containerNr)
 {
-
 	typedef CTibiaContainer * (*Proto_fun)(int containerNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadContainer");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadContainer");
 		if (fun)
-		{
 			return fun(containerNr);
-		}
 	}
 	return NULL;
 }
@@ -127,11 +115,9 @@ void CMemReaderProxy::writeSelfLightPower(int value)
 	typedef void (*Proto_fun)(int value);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteSelfLightPower");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteSelfLightPower");
 		if (fun)
-		{
 			fun(value);
-		}
 	}
 }
 
@@ -140,11 +126,9 @@ void CMemReaderProxy::writeSelfLightColor(int value)
 	typedef void (*Proto_fun)(int value);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteSelfLightColor");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteSelfLightColor");
 		if (fun)
-		{
 			fun(value);
-		}
 	}
 }
 
@@ -153,11 +137,9 @@ int CMemReaderProxy::readSelfLightPower()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadSelfLightPower");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadSelfLightPower");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -167,11 +149,9 @@ int CMemReaderProxy::readSelfLightColor()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadSelfLightColor");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadSelfLightColor");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -182,24 +162,20 @@ void CMemReaderProxy::cancelAttackCoords()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadCancelAttackCoords");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadCancelAttackCoords");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
 
-void CMemReaderProxy::writeGotoCoords(int x,int y,int z)
+void CMemReaderProxy::writeGotoCoords(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteGotoCoords");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteGotoCoords");
 		if (fun)
-		{
-			fun(x,y,z);
-		}
+			fun(x, y, z);
 	}
 }
 int CMemReaderProxy::getLoggedCharNr()
@@ -207,39 +183,31 @@ int CMemReaderProxy::getLoggedCharNr()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetLoggedCharNr");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetLoggedCharNr");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 int CMemReaderProxy::getSelfEventFlags()
 {
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetSelfEventFlags");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetSelfEventFlags");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
-void CMemReaderProxy::writeVisibleCreatureName(int chNr,char *name)
+void CMemReaderProxy::writeVisibleCreatureName(int chNr, char *name)
 {
-	typedef void (*Proto_fun)(int,char *);
+	typedef void (*Proto_fun)(int, char *);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteVisibleCreatureName");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteVisibleCreatureName");
 		if (fun)
-		{
-			fun(chNr,name);
-		}
+			fun(chNr, name);
 	}
 }
 CTibiaItem * CMemReaderProxy::getTradeItemPartner(int nr)
@@ -247,25 +215,20 @@ CTibiaItem * CMemReaderProxy::getTradeItemPartner(int nr)
 	typedef CTibiaItem * (*Proto_fun)(int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetTradeItemPartner");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetTradeItemPartner");
 		if (fun)
-		{
 			return fun(nr);
-		}
 	}
 	return new CTibiaItem();
-
 }
 CTibiaItem * CMemReaderProxy::getTradeItemSelf(int nr)
 {
 	typedef CTibiaItem * (*Proto_fun)(int nr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetTradeItemSelf");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetTradeItemSelf");
 		if (fun)
-		{
 			return fun(nr);
-		}
 	}
 	return new CTibiaItem();
 }
@@ -274,53 +237,42 @@ int CMemReaderProxy::getTradeCountPartner()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetTradeCountPartner");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetTradeCountPartner");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 int CMemReaderProxy::getTradeCountSelf()
 {
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetTradeCountSelf");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetTradeCountSelf");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 int CMemReaderProxy::getAttackedCreature()
 {
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetAttackedCreature");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetAttackedCreature");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 void CMemReaderProxy::setAttackedCreature(int tibiaId)
 {
 	typedef void (*Proto_fun)(int v1);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetAttackedCreature");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetAttackedCreature");
 		if (fun)
-		{
 			fun(tibiaId);
-		}
 	}
 }
 int CMemReaderProxy::getFollowedCreature()
@@ -328,25 +280,20 @@ int CMemReaderProxy::getFollowedCreature()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetFollowedCreature");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetFollowedCreature");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 void CMemReaderProxy::setFollowedCreature(int tibiaId)
 {
 	typedef void (*Proto_fun)(int v1);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetFollowedCreature");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetFollowedCreature");
 		if (fun)
-		{
 			fun(tibiaId);
-		}
 	}
 }
 int CMemReaderProxy::getNextPacketCount()
@@ -354,31 +301,33 @@ int CMemReaderProxy::getNextPacketCount()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetNextPacketCount");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetNextPacketCount");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
 void CMemReaderProxy::GetLoggedChar(int processId, char* buf, int bufLen)
 {
-	typedef void(*Proto_fun)(int, char*, int);
+	typedef void (*Proto_fun)(int, char*, int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetLoggedChar");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetLoggedChar");
 		if (fun)
 		{
 			fun(processId, buf, bufLen);
 			return;
-		} else {
-			::MessageBox(0,"Loading memReadGetLoggedChar failed!","ERROR",0);
+		}
+		else
+		{
+			::MessageBox(0, "Loading memReadGetLoggedChar failed!", "ERROR", 0);
 			PostQuitMessage(-1);
 			return;
 		}
-	} else {
-		MessageBox(0,"Loading tibiaauto_util.dll failed [2]!","ERROR",0);
+	}
+	else
+	{
+		MessageBox(0, "Loading tibiaauto_util.dll failed [2]!", "ERROR", 0);
 		PostQuitMessage(-1);
 		return;
 	}
@@ -388,54 +337,42 @@ int CMemReaderProxy::readBattleListMax()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadBattleListMax");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadBattleListMax");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 int CMemReaderProxy::readBattleListMin()
 {
-
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadBattleListMin");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadBattleListMin");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
 CTibiaCharacter * CMemReaderProxy::readVisibleCreature(int nr)
 {
 	typedef CTibiaCharacter * (*Proto_fun)(int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadVisibleCreature");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadVisibleCreature");
 		if (fun)
-		{
 			return fun(nr);
-		}
 	}
 	return NULL;
-
 }
 CTibiaItem * CMemReaderProxy::readItem(int locationAddress)
 {
 	typedef CTibiaItem * (*Proto_fun)(int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadItem");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadItem");
 		if (fun)
-		{
 			return fun(locationAddress);
-		}
 	}
 	return new CTibiaItem();
 }
@@ -444,11 +381,9 @@ CTibiaCharacter *CMemReaderProxy::readSelfCharacter()
 	typedef CTibiaCharacter * (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadSelfCharacter");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadSelfCharacter");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return NULL;
 }
@@ -457,11 +392,9 @@ CTibiaCharacter *CMemReaderProxy::getCharacterByTibiaId(int tibiaId)
 	typedef CTibiaCharacter *(*Proto_fun)(int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetCharacterByTibiaId");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetCharacterByTibiaId");
 		if (fun)
-		{
 			return fun(tibiaId);
-		}
 	}
 	return NULL;
 }
@@ -472,38 +405,32 @@ CMemConstData CMemReaderProxy::getMemConstData()
 	typedef CMemConstData (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getMemConstData");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "getMemConstData");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return CMemConstData();
 }
 
-void CMemReaderProxy::setMemIntValue(int address,int value,int addBaseAddr/*=1*/)
+void CMemReaderProxy::setMemIntValue(int address, int value, int addBaseAddr /*=1*/)
 {
-	typedef void (*Proto_fun)(int address,int value,int addBaseAddr);
+	typedef void (*Proto_fun)(int address, int value, int addBaseAddr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetMemIntValue");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetMemIntValue");
 		if (fun)
-		{
-			fun(address,value,addBaseAddr);
-		}
+			fun(address, value, addBaseAddr);
 	}
 }
 
-int CMemReaderProxy::getMemIntValue(int address,int addBaseAddr/*=1*/)
+int CMemReaderProxy::getMemIntValue(int address, int addBaseAddr /*=1*/)
 {
 	typedef int (*Proto_fun)(int address, int addBaseAddr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetMemIntValue");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetMemIntValue");
 		if (fun)
-		{
-			return fun(address,addBaseAddr);
-		}
+			return fun(address, addBaseAddr);
 	}
 	return 0;
 }
@@ -513,97 +440,77 @@ int CMemReaderProxy::mapGetSelfCellNr()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetSelfCellNr");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapGetSelfCellNr");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
-
 }
-int CMemReaderProxy::mapGetPointItemsCount(point p,int relToCell/*=-1*/)
+int CMemReaderProxy::mapGetPointItemsCount(point p, int relToCell /*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int relToCell);
+	typedef int (*Proto_fun)(point p, int relToCell);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemsCount");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapGetPointItemsCount");
 		if (fun)
-		{
 			return fun(p, relToCell);
-		}
 	}
 	return 0;
-
 }
-int CMemReaderProxy::mapGetPointItemId(point p, int stackNr,int relToCell/*=-1*/)
+int CMemReaderProxy::mapGetPointItemId(point p, int stackNr, int relToCell /*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr,int relToCell);
+	typedef int (*Proto_fun)(point p, int stackNr, int relToCell);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemId");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapGetPointItemId");
 		if (fun)
-		{
-			return fun(p,stackNr, relToCell);
-		}
+			return fun(p, stackNr, relToCell);
 	}
 	return 0;
-
 }
 
-int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos,int relToCell/*=-1*/)
+int CMemReaderProxy::mapGetPointItemExtraInfo(point p, int stackNr, int extraPos, int relToCell /*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr, int extraPos,int relToCell);
+	typedef int (*Proto_fun)(point p, int stackNr, int extraPos, int relToCell);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointItemExtraInfo");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapGetPointItemExtraInfo");
 		if (fun)
-		{
-			return fun(p,stackNr,extraPos, relToCell);
-		}
+			return fun(p, stackNr, extraPos, relToCell);
 	}
 	return 0;
-
 }
 
-int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr,int relToCell/*=-1*/)
+int CMemReaderProxy::mapGetPointStackIndex(point p, int stackNr, int relToCell /*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr,int relToCell);
+	typedef int (*Proto_fun)(point p, int stackNr, int relToCell);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapGetPointStackIndex");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapGetPointStackIndex");
 		if (fun)
-		{
-			return fun(p,stackNr, relToCell);
-		}
+			return fun(p, stackNr, relToCell);
 	}
 	return 0;
-
 }
 
-void  CMemReaderProxy::mapSetPointItemsCount(point p, int count,int relToCell/*=-1*/)
+void CMemReaderProxy::mapSetPointItemsCount(point p, int count, int relToCell /*=-1*/)
 {
-	typedef int (*Proto_fun)(point p, int count,int relToCell);
+	typedef int (*Proto_fun)(point p, int count, int relToCell);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapSetPointItemsCount");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapSetPointItemsCount");
 		if (fun)
-		{
-			fun(p,count, relToCell);
-		}
+			fun(p, count, relToCell);
 	}
-
 }
-void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId,int relToCell/*=-1*/)
+void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId, int relToCell /*=-1*/)
 {
-	typedef int (*Proto_fun)(point p,int stackNr, int tileId,int relToCell);
+	typedef int (*Proto_fun)(point p, int stackNr, int tileId, int relToCell);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadMapSetPointItemId");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadMapSetPointItemId");
 		if (fun)
-		{
-			fun(p,stackNr, tileId, relToCell);
-		}
+			fun(p, stackNr, tileId, relToCell);
 	}
 }
 
@@ -613,11 +520,9 @@ long CMemReaderProxy::getCurrentTm()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetCurrenTm");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetCurrenTm");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -628,11 +533,9 @@ void CMemReaderProxy::writeEnableRevealCName()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteEnableRevealCName");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteEnableRevealCName");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
 
@@ -641,25 +544,21 @@ void CMemReaderProxy::writeDisableRevealCName()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteDisableRevealCName");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteDisableRevealCName");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
 
-	
+
 int CMemReaderProxy::getProcessId()
 {
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getProcessId");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "getProcessId");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -668,11 +567,9 @@ void CMemReaderProxy::setProcessId(int processId)
 	typedef void (*Proto_fun)(int processId);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"setProcessId");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "setProcessId");
 		if (fun)
-		{
 			fun(processId);
-		}
 	}
 }
 
@@ -681,11 +578,9 @@ int CMemReaderProxy::getBaseAddr()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getBaseAddr");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "getBaseAddr");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -695,11 +590,9 @@ int CMemReaderProxy::getKernelMainVersion()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getKernelMainVersion");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "getKernelMainVersion");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -708,36 +601,30 @@ int CMemReaderProxy::getKernelPatchVersion()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getKernelPatchVersion");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "getKernelPatchVersion");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
-void CMemReaderProxy::writeCreatureLightPower(int creatureNr,int value)
+void CMemReaderProxy::writeCreatureLightPower(int creatureNr, int value)
 {
-	typedef int (*Proto_fun)(int creatureNr,int value);
+	typedef int (*Proto_fun)(int creatureNr, int value);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteCreatureLightPower");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteCreatureLightPower");
 		if (fun)
-		{
-			fun(creatureNr,value);
-		}
+			fun(creatureNr, value);
 	}
 }
-void CMemReaderProxy::writeCreatureLightColor(int creatureNr,int value)
+void CMemReaderProxy::writeCreatureLightColor(int creatureNr, int value)
 {
-	typedef int (*Proto_fun)(int creatureNr,int value);
+	typedef int (*Proto_fun)(int creatureNr, int value);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteCreatureLightColor");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteCreatureLightColor");
 		if (fun)
-		{
-			fun(creatureNr,value);
-		}
+			fun(creatureNr, value);
 	}
 }
 int CMemReaderProxy::readCreatureLightPower(int creatureNr)
@@ -745,11 +632,9 @@ int CMemReaderProxy::readCreatureLightPower(int creatureNr)
 	typedef int (*Proto_fun)(int creatureNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadCreatureLightPower");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadCreatureLightPower");
 		if (fun)
-		{
 			return fun(creatureNr);
-		}
 	}
 	return 0;
 }
@@ -758,11 +643,9 @@ int CMemReaderProxy::readCreatureLightColor(int creatureNr)
 	typedef int (*Proto_fun)(int creatureNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadCreatureLightColor");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadCreatureLightColor");
 		if (fun)
-		{
 			return fun(creatureNr);
-		}
 	}
 	return 0;
 }
@@ -772,11 +655,9 @@ CTibiaTile *CMemReaderProxy::getTibiaTile(int tileNr)
 	typedef CTibiaTile * (*Proto_fun)(int tileNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"getTibiaTile");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "getTibiaTile");
 		if (fun)
-		{
 			return fun(tileNr);
-		}
 	}
 	return NULL;
 }
@@ -786,11 +667,9 @@ void CMemReaderProxy::setTibiaTile(int tileNr, CTibiaTile *newTile)
 	typedef void (*Proto_fun)(int tileNr, CTibiaTile *newTile);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"setTibiaTile");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "setTibiaTile");
 		if (fun)
-		{
 			fun(tileNr, newTile);
-		}
 	}
 }
 
@@ -799,11 +678,9 @@ void CMemReaderProxy::cleanupTibiaTiles()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"cleanupTibiaTiles");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "cleanupTibiaTiles");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
 
@@ -811,23 +688,19 @@ CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
 	typedef CSkin (*Proto_fun)(CString);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"loadSkin");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "loadSkin");
 		if (fun)
-		{
 			return fun(pathBuf);
-		}
 	}
 	return skin;
 }
 CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf) {
-	typedef CSkin(*Proto_fun)(CString);
+	typedef CSkin (*Proto_fun)(CString);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"loadCurrentSkin");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "loadCurrentSkin");
 		if (fun)
-		{
 			return fun(pathBuf);
-		}
 	}
 	return skin;
 }
@@ -835,7 +708,7 @@ bool CMemReaderProxy::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperat
 	typedef bool (*Proto_fun)(CString, CSkin, bool);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"saveSkin");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "saveSkin");
 		if (fun)
 		{
 			if (fun(pathBuf, saveSkin, saveSeperate))
@@ -852,38 +725,31 @@ void CMemReaderProxy::setRemainingTilesToGo(int val)
 	typedef void (*Proto_fun)(int);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetRemainingTilesToGo");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetRemainingTilesToGo");
 		if (fun)
-		{
 			fun(val);
-		}
-	}
-
-}
-
-void CMemReaderProxy::setMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr/*=1*/)
-{
-	typedef void (*Proto_fun)(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr);
-	if (dllModule)
-	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetMemRange");
-		if (fun)
-		{
-			fun(memAddressStart,memAddressEnd,data,addBaseAddr);
-		}
 	}
 }
 
-void CMemReaderProxy::getMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr/*=1*/)
+void CMemReaderProxy::setMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr /*=1*/)
 {
-	typedef void (*Proto_fun)(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr);
+	typedef void (*Proto_fun)(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetMemRange");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetMemRange");
 		if (fun)
-		{
-			fun(memAddressStart,memAddressEnd,data,addBaseAddr);
-		}
+			fun(memAddressStart, memAddressEnd, data, addBaseAddr);
+	}
+}
+
+void CMemReaderProxy::getMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr /*=1*/)
+{
+	typedef void (*Proto_fun)(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr);
+	if (dllModule)
+	{
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetMemRange");
+		if (fun)
+			fun(memAddressStart, memAddressEnd, data, addBaseAddr);
 	}
 }
 
@@ -892,25 +758,21 @@ const char *CMemReaderProxy::getGlobalVariable(char *name)
 	typedef const char * (*Proto_fun)(char *name);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"variableStoreGetVariable");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "variableStoreGetVariable");
 		if (fun)
-		{
 			return fun(name);
-		}
 	}
 	return NULL;
 }
 
-void CMemReaderProxy::setGlobalVariable(char *name,char *value)
+void CMemReaderProxy::setGlobalVariable(char *name, char *value)
 {
-	typedef void (*Proto_fun)(char *name,char *value);
+	typedef void (*Proto_fun)(char *name, char *value);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"variableStoreSetVariable");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "variableStoreSetVariable");
 		if (fun)
-		{
-			fun(name,value);
-		}
+			fun(name, value);
 	}
 }
 
@@ -919,25 +781,21 @@ CTibiaMiniMap *CMemReaderProxy::readMiniMap(int nr)
 	typedef CTibiaMiniMap * (*Proto_fun)(int nr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMap");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadMiniMap");
 		if (fun)
-		{
 			return fun(nr);
-		}
 	}
 	return NULL;
 }
 
-CTibiaMiniMapLabel *CMemReaderProxy::readMiniMapLabel(int mapNr,int pointNr)
+CTibiaMiniMapLabel *CMemReaderProxy::readMiniMapLabel(int mapNr, int pointNr)
 {
-	typedef CTibiaMiniMapLabel * (*Proto_fun)(int mapNr,int pointNr);
+	typedef CTibiaMiniMapLabel * (*Proto_fun)(int mapNr, int pointNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMapLabel");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadMiniMapLabel");
 		if (fun)
-		{
-			return fun(mapNr,pointNr);
-		}
+			return fun(mapNr, pointNr);
 	}
 	return NULL;
 }
@@ -947,25 +805,21 @@ CTibiaMiniMapPoint *CMemReaderProxy::readMiniMapPoint(int x, int y, int z)
 	typedef CTibiaMiniMapPoint * (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadReadMiniMapPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadReadMiniMapPoint");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return NULL;
 }
 
-void CMemReaderProxy::writeMiniMapPoint(int x, int y, int z,int col,int spd)
+void CMemReaderProxy::writeMiniMapPoint(int x, int y, int z, int col, int spd)
 {
-	typedef void (*Proto_fun)(int x, int y, int z,int col,int spd);
+	typedef void (*Proto_fun)(int x, int y, int z, int col, int spd);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteMiniMapPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteMiniMapPoint");
 		if (fun)
-		{
-			fun(x,y,z,col,spd);
-		}
+			fun(x, y, z, col, spd);
 	}
 }
 
@@ -974,11 +828,9 @@ void CMemReaderProxy::setMainWindowText(char *text)
 	typedef char * (*Proto_fun)(char *text);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetMainWindowText");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetMainWindowText");
 		if (fun)
-		{
 			fun(text);
-		}
 	}
 }
 
@@ -987,11 +839,9 @@ void CMemReaderProxy::setMainTrayText(char *text)
 	typedef char * (*Proto_fun)(char *text);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetMainTrayText");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetMainTrayText");
 		if (fun)
-		{
 			fun(text);
-		}
 	}
 }
 
@@ -1000,11 +850,9 @@ int CMemReaderProxy::getPlayerModeAttackPlayers()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModeAttackPlayers");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetPlayerModeAttackPlayers");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1014,11 +862,9 @@ int CMemReaderProxy::getPlayerModeAttackType()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModeAttackType");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetPlayerModeAttackType");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1028,11 +874,9 @@ int CMemReaderProxy::getPlayerModeFollow()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModeFollow");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetPlayerModeFollow");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1042,11 +886,9 @@ int CMemReaderProxy::getPlayerModePVP()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetPlayerModePVP");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetPlayerModePVP");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1056,11 +898,9 @@ char * CMemReaderProxy::getOpenWindowName()
 	typedef char *(*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetOpenWindowName");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetOpenWindowName");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return "";
 }
@@ -1070,11 +910,9 @@ int CMemReaderProxy::getConnectionState()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetConnectionState");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetConnectionState");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1084,11 +922,9 @@ int CMemReaderProxy::isLoggedIn()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsLoggedIn");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsLoggedIn");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1098,11 +934,9 @@ void CMemReaderProxy::setXRayValues(int v1, int v2)
 	typedef void (*Proto_fun)(int v1, int v2);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadSetXRayValues");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadSetXRayValues");
 		if (fun)
-		{
-			fun(v1,v2);
-		}
+			fun(v1, v2);
 	}
 }
 
@@ -1111,11 +945,9 @@ int CMemReaderProxy::getXRayValue1()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetXRayValue1");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetXRayValue1");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1125,11 +957,9 @@ int CMemReaderProxy::getXRayValue2()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetXRayValue2");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetXRayValue2");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -1139,11 +969,9 @@ void CMemReaderProxy::writeCreatureDeltaXY(int creatureNr, int deltaX, int delta
 	typedef void (*Proto_fun)(int v1, int v2, int v3);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadWriteCreatureDeltaXY");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadWriteCreatureDeltaXY");
 		if (fun)
-		{
-			fun(creatureNr,deltaX,deltaY);
-		}
+			fun(creatureNr, deltaX, deltaY);
 	}
 }
 
@@ -1152,11 +980,9 @@ int CMemReaderProxy::getCreatureDeltaX(int creatureNr)
 	typedef int (*Proto_fun)(int creatureNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetCreatureDeltaX");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetCreatureDeltaX");
 		if (fun)
-		{
 			return fun(creatureNr);
-		}
 	}
 	return 0;
 }
@@ -1166,193 +992,165 @@ int CMemReaderProxy::getCreatureDeltaY(int creatureNr)
 	typedef int (*Proto_fun)(int creatureNr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetCreatureDeltaY");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetCreatureDeltaY");
 		if (fun)
-		{
 			return fun(creatureNr);
-		}
 	}
 	return 0;
 }
 
-int CMemReaderProxy::itemOnTopIndex(int x,int y,int z/*=0*/)
+int CMemReaderProxy::itemOnTopIndex(int x, int y, int z /*=0*/)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopIndex");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadItemOnTopIndex");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::isItemOnTop(int x,int y,int *itemArr,int itemArrSize)
+int CMemReaderProxy::isItemOnTop(int x, int y, int *itemArr, int itemArrSize)
 {
-	typedef int (*Proto_fun)(int x,int y,int *itemArr,int itemArrSize);
+	typedef int (*Proto_fun)(int x, int y, int *itemArr, int itemArrSize);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemOnTop3");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsItemOnTop3");
 		if (fun)
-		{
-			return fun(x,y,itemArr,itemArrSize);
-		}
+			return fun(x, y, itemArr, itemArrSize);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::isItemCovered(int x,int y,int *itemArr,int itemArrSize)
+int CMemReaderProxy::isItemCovered(int x, int y, int *itemArr, int itemArrSize)
 {
-	typedef int (*Proto_fun)(int x,int y,int *itemArr,int itemArrSize);
+	typedef int (*Proto_fun)(int x, int y, int *itemArr, int itemArrSize);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemCovered3");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsItemCovered3");
 		if (fun)
-		{
-			return fun(x,y,itemArr,itemArrSize);
-		}
+			return fun(x, y, itemArr, itemArrSize);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::isItemOnTop(int x,int y,CUIntArray& itemArr)
+int CMemReaderProxy::isItemOnTop(int x, int y, CUIntArray& itemArr)
 {
-	typedef int (*Proto_fun)(int x,int y,CUIntArray& itemArr);
+	typedef int (*Proto_fun)(int x, int y, CUIntArray& itemArr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemOnTop2");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsItemOnTop2");
 		if (fun)
-		{
-			return fun(x,y,itemArr);
-		}
+			return fun(x, y, itemArr);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::isItemCovered(int x,int y,CUIntArray& itemArr)
+int CMemReaderProxy::isItemCovered(int x, int y, CUIntArray& itemArr)
 {
-	typedef int (*Proto_fun)(int x,int y,CUIntArray& itemArr);
+	typedef int (*Proto_fun)(int x, int y, CUIntArray& itemArr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemCovered2");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsItemCovered2");
 		if (fun)
-		{
-			return fun(x,y,itemArr);
-		}
+			return fun(x, y, itemArr);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::isItemOnTop(int x,int y,int itemId)
+int CMemReaderProxy::isItemOnTop(int x, int y, int itemId)
 {
-	typedef int (*Proto_fun)(int x,int y,int itemId);
+	typedef int (*Proto_fun)(int x, int y, int itemId);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemOnTop");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsItemOnTop");
 		if (fun)
-		{
-			return fun(x,y,itemId);
-		}
+			return fun(x, y, itemId);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::isItemCovered(int x,int y,int itemId)
+int CMemReaderProxy::isItemCovered(int x, int y, int itemId)
 {
-	typedef int (*Proto_fun)(int x,int y,int itemId);
+	typedef int (*Proto_fun)(int x, int y, int itemId);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadIsItemCovered");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadIsItemCovered");
 		if (fun)
-		{
-			return fun(x,y,itemId);
-		}
+			return fun(x, y, itemId);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::getItemIndex(int x,int y,int itemId)
+int CMemReaderProxy::getItemIndex(int x, int y, int itemId)
 {
-	typedef int (*Proto_fun)(int x,int y,int itemId);
+	typedef int (*Proto_fun)(int x, int y, int itemId);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadGetItemIndex");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadGetItemIndex");
 		if (fun)
-		{
-			return fun(x,y,itemId);
-		}
+			return fun(x, y, itemId);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::itemOnTopCode(int x,int y)
+int CMemReaderProxy::itemOnTopCode(int x, int y)
 {
-	typedef int (*Proto_fun)(int x,int y);
+	typedef int (*Proto_fun)(int x, int y);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopCode");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadItemOnTopCode");
 		if (fun)
-		{
-			return fun(x,y);
-		}
+			return fun(x, y);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::itemSeenOnTopIndex(int x,int y,int z/*=0*/)
+int CMemReaderProxy::itemSeenOnTopIndex(int x, int y, int z /*=0*/)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemSeenOnTopIndex");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadItemSeenOnTopIndex");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::itemSeenOnTopCode(int x,int y)
+int CMemReaderProxy::itemSeenOnTopCode(int x, int y)
 {
-	typedef int (*Proto_fun)(int x,int y);
+	typedef int (*Proto_fun)(int x, int y);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemSeenOnTopCode");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadItemSeenOnTopCode");
 		if (fun)
-		{
-			return fun(x,y);
-		}
+			return fun(x, y);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::itemOnTopQty(int x,int y)
+int CMemReaderProxy::itemOnTopQty(int x, int y)
 {
-	typedef int (*Proto_fun)(int x,int y);
+	typedef int (*Proto_fun)(int x, int y);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadItemOnTopQty");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadItemOnTopQty");
 		if (fun)
-		{
-			return fun(x,y);
-		}
+			return fun(x, y);
 	}
 	return 0;
 }
 
-int CMemReaderProxy::findNextClosedContainer(int afterCont/*=-1*/)
+int CMemReaderProxy::findNextClosedContainer(int afterCont /*=-1*/)
 {
 	typedef int (*Proto_fun)(int afterCont);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"memReadFindNextClosedContainer");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "memReadFindNextClosedContainer");
 		if (fun)
-		{
 			return fun(afterCont);
-		}
 	}
 	return 0;
 }

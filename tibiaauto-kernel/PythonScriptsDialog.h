@@ -21,18 +21,18 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CPythonScriptsDialog)
 	enum { IDD = IDD_PYTHON_SCRIPTS };
-	CButtonST	m_OK;
-	CButtonST	m_Interpreter;
-	CButtonST	m_LoadScript;
-	CListCtrl	m_funlist;
-	CListCtrl	m_list;
+	CButtonST m_OK;
+	CButtonST m_Interpreter;
+	CButtonST m_LoadScript;
+	CListCtrl m_funlist;
+	CListCtrl m_list;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPythonScriptsDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL

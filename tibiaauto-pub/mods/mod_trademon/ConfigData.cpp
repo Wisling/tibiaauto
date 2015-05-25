@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,18 +18,17 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	message[0]=0;
-	tradeTalk = 0;
-	channel = 1;
+	message[0]      = 0;
+	tradeTalk       = 0;
+	channel         = 1;
 	channelInterval = 123;
-	yell = 0;
-	yellInterval = 33;
-	say = 0;
-	sayInterval = 2;
-	tradeMon = 1;
+	yell            = 0;
+	yellInterval    = 33;
+	say             = 0;
+	sayInterval     = 2;
+	tradeMon        = 1;
 }
 
 CConfigData::~CConfigData()
 {
-
 }

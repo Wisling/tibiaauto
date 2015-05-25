@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // mod_uh.cpp : Defines the initialization routines for the DLL.
@@ -34,7 +34,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 //
 //	Note!
@@ -67,20 +67,18 @@ static char THIS_FILE[] = __FILE__;
 // CMod_uhApp
 
 BEGIN_MESSAGE_MAP(CMod_uhApp, CWinApp)
-	//{{AFX_MSG_MAP(CMod_uhApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMod_uhApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
 
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-int toolThreadShouldStop=0;
+int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
-
 
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
@@ -90,43 +88,46 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	CUIntArray  acceptedItems;
-	int uhFallbackNeeded=0;
-	int grpUhFallbackNeeded=0;
+	CUIntArray acceptedItems;
+	int uhFallbackNeeded    = 0;
+	int grpUhFallbackNeeded = 0;
 	int i;
 
 	while (!toolThreadShouldStop)
 	{
 		Sleep(200);
-		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
-			
+		if (!reader.isLoggedIn())
+			continue;                   // do not proceed if not connected
+
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		if (self->hp<=config->m_uhBorderline||config->m_hotkeySelf)
+		if (self->hp <= config->m_uhBorderline || config->m_hotkeySelf)
 		{
 			int uhContainer;
-			
+
 			acceptedItems.RemoveAll();
 			if (!uhFallbackNeeded)
 			{
 				switch (config->m_runetype)
 				{
-				case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH"));break;
-				case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH"));break;
+				case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH")); break;
+				case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH")); break;
 				}
-			} else {
+			}
+			else
+			{
 				acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
 				acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
-				uhFallbackNeeded=0;
+				uhFallbackNeeded = 0;
 			}
-			
-			CTibiaItem *uhItem=new CTibiaItem();
-			uhContainer=-1;
-			
+
+			CTibiaItem *uhItem = new CTibiaItem();
+			uhContainer = -1;
+
 			int contNr;
-			int openContNr=0;
-			int openContMax=reader.readOpenContainerCount();
-			for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId && openContNr<openContMax;contNr++)
+			int openContNr  = 0;
+			int openContMax = reader.readOpenContainerCount();
+			for (contNr = 0; contNr < memConstData.m_memMaxContainers && !uhItem->objectId && openContNr < openContMax; contNr++)
 			{
 				CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -134,93 +135,96 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					openContNr++;
 					delete uhItem;
-					uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
+					uhItem      = CModuleUtil::lookupItem(contNr, &acceptedItems);
 					uhContainer = contNr;
-				};
+				}
+				;
 
 				delete cont;
 			}
 
-										
-			
+
 			if (uhItem->objectId)
 			{
-				reader.setGlobalVariable("UH_needed","true");
-				if (self->hp<=config->m_uhBorderline)
+				reader.setGlobalVariable("UH_needed", "true");
+				if (self->hp <= config->m_uhBorderline)
 				{
 					sender.useWithObjectFromContainerOnFloor(
-						uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
-						self->x,self->y,self->z);
+					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
+					        self->x, self->y, self->z);
 					Sleep(config->m_sleepAfter);
 				}
 				if (config->m_hotkeySelf)
 				{
 					sender.useWithObjectFromContainerOnFloor(
-						uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
-						self->x,self->y,self->z,105);
+					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
+					        self->x, self->y, self->z, 105);
 				}
-			} else {
+			}
+			else
+			{
 				if (config->m_fallback)
-				{
-					uhFallbackNeeded=1;
-				}
+					uhFallbackNeeded = 1;
 			}
 			delete uhItem;
 		}
 		else
-			reader.setGlobalVariable("UH_needed","false");
+		{
+			reader.setGlobalVariable("UH_needed", "false");
+		}
 
-		
+
 		// grp heal
 
 		int crNr;
-		for (crNr=0;crNr<memConstData.m_memMaxCreatures;crNr++)
+		for (crNr = 0; crNr < memConstData.m_memMaxCreatures; crNr++)
 		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(crNr);
-			if (ch->tibiaId == 0){
+			if (ch->tibiaId == 0)
+			{
 				delete ch;
 				break;
 			}
 			if (ch->visible)
 			{
 				char chName[128];
-				memset(chName,0,128);
-				memcpy(chName,ch->name,strlen(ch->name));
+				memset(chName, 0, 128);
+				memcpy(chName, ch->name, strlen(ch->name));
 
-				int chToHeal=0;
-				
+				int chToHeal = 0;
 
-				for (i=0;i<config->m_grpMemberCount;i++)
+
+				for (i = 0; i < config->m_grpMemberCount; i++)
 				{
-					if (!_strcmpi(config->m_grpMemberList[i],chName))
-					{
-						
-						chToHeal=1;
-					}
+					if (!_strcmpi(config->m_grpMemberList[i], chName))
+
+						chToHeal = 1;
 				}
-				if (chToHeal&&ch->hpPercLeft<config->m_grpBorderline&&self->z==ch->z)
+				if (chToHeal && ch->hpPercLeft < config->m_grpBorderline && self->z == ch->z)
 				{
-					CTibiaItem *uhItem=new CTibiaItem();
-					int uhContainer=-1;
+					CTibiaItem *uhItem = new CTibiaItem();
+					int uhContainer    = -1;
 
 					acceptedItems.RemoveAll();
 					if (!grpUhFallbackNeeded)
 					{
 						switch (config->m_grpRunetype)
 						{
-						case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH"));break;
-						case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH"));break;
+						case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH")); break;
+						case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH")); break;
 						}
-					} else {
+					}
+					else
+					{
 						acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
 						acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
-						grpUhFallbackNeeded=0;
+						grpUhFallbackNeeded = 0;
 					}
-					
+
 					int contNr;
-					int openContNr=0;
-					int openContMax=reader.readOpenContainerCount();
-					for (contNr=0;contNr<memConstData.m_memMaxContainers&&!uhItem->objectId && openContNr<openContMax;contNr++)
+					int openContNr  = 0;
+					int openContMax = reader.readOpenContainerCount();
+					for (contNr = 0; contNr < memConstData.m_memMaxContainers && !uhItem->objectId && openContNr < openContMax; contNr++)
 					{
 						CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -228,23 +232,25 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						{
 							openContNr++;
 							delete uhItem;
-							uhItem = CModuleUtil::lookupItem(contNr,&acceptedItems);
+							uhItem      = CModuleUtil::lookupItem(contNr, &acceptedItems);
 							uhContainer = contNr;
-						};
-						
+						}
+						;
+
 						delete cont;
 					}
-					
+
 					if (uhItem->objectId)
 					{
 						sender.useWithObjectFromContainerOnFloor(
-							uhItem->objectId,0x40+uhContainer,uhItem->pos,0x63,
-							ch->x,ch->y,ch->z);
+						        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
+						        ch->x, ch->y, ch->z);
 						Sleep(config->m_sleepAfter);
-
-					} else {
+					}
+					else
+					{
 						if (config->m_grpFallback)
-							grpUhFallbackNeeded=1;
+							grpUhFallbackNeeded = 1;
 					}
 					delete uhItem;
 				}
@@ -254,10 +260,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		}
 
 		delete self;
-				
 	}
-	reader.setGlobalVariable("UH_needed","false");
-	toolThreadShouldStop=0;
+	reader.setGlobalVariable("UH_needed", "false");
+	toolThreadShouldStop = 0;
 	return 0;
 }
 
@@ -267,9 +272,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 CMod_uhApp::CMod_uhApp()
 {
-	m_configDialog =NULL;
-	m_started=0;
-	m_configData = new CConfigData();
+	m_configDialog = NULL;
+	m_started      = 0;
+	m_configData   = new CConfigData();
 }
 
 CMod_uhApp::~CMod_uhApp()
@@ -304,20 +309,22 @@ void CMod_uhApp::start()
 	}
 
 	DWORD threadId;
-		
-	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
-	m_started=1;
+
+	toolThreadShouldStop = 0;
+	toolThreadHandle     = ::CreateThread(NULL, 0, toolThreadProc, m_configData, 0, &threadId);
+	m_started            = 1;
 }
 
 void CMod_uhApp::stop()
 {
-	toolThreadShouldStop=1;
-	while (toolThreadShouldStop) {
+	toolThreadShouldStop = 1;
+	while (toolThreadShouldStop)
+	{
 		Sleep(50);
-	};
-	m_started=0;
-	
+	}
+	;
+	m_started = 0;
+
 	if (m_configDialog)
 	{
 		m_configDialog->enableControls();
@@ -334,8 +341,10 @@ void CMod_uhApp::showConfigDialog()
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
-		if (m_started) disableControls();
-		else enableControls();
+		if (m_started)
+			disableControls();
+		else
+			enableControls();
 		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
@@ -345,10 +354,8 @@ void CMod_uhApp::showConfigDialog()
 void CMod_uhApp::configToControls()
 {
 	if (m_configDialog)
-	{
-		
+
 		m_configDialog->configToControls(m_configData);
-	}
 }
 
 
@@ -365,17 +372,13 @@ void CMod_uhApp::controlsToConfig()
 void CMod_uhApp::disableControls()
 {
 	if (m_configDialog)
-	{
 		m_configDialog->disableControls();
-	}
 }
 
 void CMod_uhApp::enableControls()
 {
 	if (m_configDialog)
-	{
 		m_configDialog->enableControls();
-	}
 }
 
 
@@ -389,24 +392,28 @@ int CMod_uhApp::validateConfig(int showAlerts)
 {
 	if (m_configData)
 	{
-		if (m_configData->m_uhBorderline<0)
+		if (m_configData->m_uhBorderline < 0)
 		{
-			if (showAlerts) AfxMessageBox("UH borderline for player must be >= 0!");
+			if (showAlerts)
+				AfxMessageBox("UH borderline for player must be >= 0!");
 			return 0;
 		}
-		if (m_configData->m_grpBorderline<0)
+		if (m_configData->m_grpBorderline < 0)
 		{
-			if (showAlerts) AfxMessageBox("UH borderline for group must be >= 0!");
+			if (showAlerts)
+				AfxMessageBox("UH borderline for group must be >= 0!");
 			return 0;
 		}
-		if (m_configData->m_grpBorderline>100)
+		if (m_configData->m_grpBorderline > 100)
 		{
-			if (showAlerts) AfxMessageBox("UH borderline for group must be <= 100!");
+			if (showAlerts)
+				AfxMessageBox("UH borderline for group must be <= 100!");
 			return 0;
 		}
-		if (m_configData->m_sleepAfter<0)
+		if (m_configData->m_sleepAfter < 0)
 		{
-			if (showAlerts) AfxMessageBox("Sleep after case must be >=0!");
+			if (showAlerts)
+				AfxMessageBox("Sleep after case must be >=0!");
 			return 0;
 		}
 	}
@@ -415,55 +422,70 @@ int CMod_uhApp::validateConfig(int showAlerts)
 
 void CMod_uhApp::resetConfig()
 {
-	if(m_configData){
+	if(m_configData)
+	{
 		delete m_configData;
 		m_configData = NULL;
 	}
 	m_configData = new CConfigData();
 }
 
-void CMod_uhApp::loadConfigParam(char *paramName,char *paramValue)
+void CMod_uhApp::loadConfigParam(char *paramName, char *paramValue)
 {
-	if (!strcmp(paramName,"self/fallback")) m_configData->m_fallback=atoi(paramValue);
-	if (!strcmp(paramName,"self/hotkey")) m_configData->m_hotkeySelf=atoi(paramValue);
-	if (!strcmp(paramName,"self/runetype")) m_configData->m_runetype=atoi(paramValue);
-	if (!strcmp(paramName,"self/borderline")) m_configData->m_uhBorderline=atoi(paramValue);
-	if (!strcmp(paramName,"grp/fallback")) m_configData->m_grpFallback=atoi(paramValue);
-	if (!strcmp(paramName,"grp/borderline")) m_configData->m_grpBorderline=atoi(paramValue);
-	if (!strcmp(paramName,"grp/runetype")) m_configData->m_grpRunetype=atoi(paramValue);
-	if (!strcmp(paramName,"other/sleepAfter")) m_configData->m_sleepAfter=atoi(paramValue);
-	if (!strcmp(paramName,"grp/member"))
+	if (!strcmp(paramName, "self/fallback"))
+		m_configData->m_fallback = atoi(paramValue);
+	if (!strcmp(paramName, "self/hotkey"))
+		m_configData->m_hotkeySelf = atoi(paramValue);
+	if (!strcmp(paramName, "self/runetype"))
+		m_configData->m_runetype = atoi(paramValue);
+	if (!strcmp(paramName, "self/borderline"))
+		m_configData->m_uhBorderline = atoi(paramValue);
+	if (!strcmp(paramName, "grp/fallback"))
+		m_configData->m_grpFallback = atoi(paramValue);
+	if (!strcmp(paramName, "grp/borderline"))
+		m_configData->m_grpBorderline = atoi(paramValue);
+	if (!strcmp(paramName, "grp/runetype"))
+		m_configData->m_grpRunetype = atoi(paramValue);
+	if (!strcmp(paramName, "other/sleepAfter"))
+		m_configData->m_sleepAfter = atoi(paramValue);
+	if (!strcmp(paramName, "grp/member"))
 	{
-		if (currentMemberPos>900)
+		if (currentMemberPos > 900)
 			return;
-		if (!currentMemberPos) m_configData->m_grpMemberCount=0;
+		if (!currentMemberPos)
+			m_configData->m_grpMemberCount = 0;
 
-		strcpy(m_configData->m_grpMemberList[currentMemberPos++],paramValue);
-		
-		m_configData->m_grpMemberCount=currentMemberPos;
+		strcpy(m_configData->m_grpMemberList[currentMemberPos++], paramValue);
+
+		m_configData->m_grpMemberCount = currentMemberPos;
 	}
 }
 
 char *CMod_uhApp::saveConfigParam(char *paramName)
 {
 	static char buf[1024];
-	buf[0]=0;
-	
-	if (!strcmp(paramName,"self/fallback")) sprintf(buf,"%d",m_configData->m_fallback);
-	if (!strcmp(paramName,"self/hotkey")) sprintf(buf,"%d",m_configData->m_hotkeySelf);
-	if (!strcmp(paramName,"self/runetype")) sprintf(buf,"%d",m_configData->m_runetype);
-	if (!strcmp(paramName,"self/borderline")) sprintf(buf,"%d",m_configData->m_uhBorderline);
-	if (!strcmp(paramName,"grp/fallback")) sprintf(buf,"%d",m_configData->m_grpFallback);
-	if (!strcmp(paramName,"grp/borderline")) sprintf(buf,"%d",m_configData->m_grpBorderline);
-	if (!strcmp(paramName,"grp/runetype")) sprintf(buf,"%d",m_configData->m_grpRunetype);
-	if (!strcmp(paramName,"other/sleepAfter")) sprintf(buf,"%d",m_configData->m_sleepAfter);
-	if (!strcmp(paramName,"grp/member"))
+	buf[0] = 0;
+
+	if (!strcmp(paramName, "self/fallback"))
+		sprintf(buf, "%d", m_configData->m_fallback);
+	if (!strcmp(paramName, "self/hotkey"))
+		sprintf(buf, "%d", m_configData->m_hotkeySelf);
+	if (!strcmp(paramName, "self/runetype"))
+		sprintf(buf, "%d", m_configData->m_runetype);
+	if (!strcmp(paramName, "self/borderline"))
+		sprintf(buf, "%d", m_configData->m_uhBorderline);
+	if (!strcmp(paramName, "grp/fallback"))
+		sprintf(buf, "%d", m_configData->m_grpFallback);
+	if (!strcmp(paramName, "grp/borderline"))
+		sprintf(buf, "%d", m_configData->m_grpBorderline);
+	if (!strcmp(paramName, "grp/runetype"))
+		sprintf(buf, "%d", m_configData->m_grpRunetype);
+	if (!strcmp(paramName, "other/sleepAfter"))
+		sprintf(buf, "%d", m_configData->m_sleepAfter);
+	if (!strcmp(paramName, "grp/member"))
 	{
-		
-		if (currentMemberPos<m_configData->m_grpMemberCount)
-		{
-			sprintf(buf,"%s",m_configData->m_grpMemberList[currentMemberPos++]);
-		}
+		if (currentMemberPos < m_configData->m_grpMemberCount)
+			sprintf(buf, "%s", m_configData->m_grpMemberList[currentMemberPos++]);
 	}
 
 	return buf;
@@ -489,20 +511,23 @@ char *CMod_uhApp::getConfigParamName(int nr)
 
 int CMod_uhApp::isMultiParam(char *paramName)
 {
-	if (!strcmp(paramName,"grp/member")) return 1;
+	if (!strcmp(paramName, "grp/member"))
+		return 1;
 	return 0;
 }
 
 void CMod_uhApp::resetMultiParamAccess(char *paramName)
 {
-	if (!strcmp(paramName,"grp/member")) currentMemberPos=0;
+	if (!strcmp(paramName, "grp/member"))
+		currentMemberPos = 0;
 }
 
 void CMod_uhApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (m_configDialog){
+	if (m_configDialog)
+	{
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
 	}

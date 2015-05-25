@@ -18,15 +18,15 @@ using namespace std;
 class StarProcessor : public AimlProcessor
 {
 public:
-	~StarProcessor() { }
-	
+	~StarProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *, const string &) {
 		string index = e->getAttribute("index");
-		if (index.empty()) {
+		if (index.empty())
 			index = "1";
-		}
 		return m->getInputStar(atoi(index.c_str()));
 	}
 };
 
-#endif
+#endif // ifndef STAR_PROCESSOR_H

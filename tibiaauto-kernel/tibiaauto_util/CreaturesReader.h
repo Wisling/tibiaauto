@@ -20,16 +20,15 @@
 class CCreaturesReader
 {
 public:
-	char ** findCreatureStatInArea(int x,int y,int z,int rangeXY,int rangeZ);
-	int findCreatureStatForLocationTibiaId(int x,int y,int z,int pos);
-	char * findCreatureStatForLocationName(int x,int y,int z,int pos);
-	int findCreatureStatForLocationCount(int x,int y,int z);
+	char ** findCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ);
+	int findCreatureStatForLocationTibiaId(int x, int y, int z, int pos);
+	char * findCreatureStatForLocationName(int x, int y, int z, int pos);
+	int findCreatureStatForLocationCount(int x, int y, int z);
 	CCreaturesReader();
 	virtual ~CCreaturesReader();
 private:
-	char ** addCreatureToList(char **list,char *name,int *size);
+	char ** addCreatureToList(char **list, char *name, int *size);
 	static Db *db;
-
 };
 
 #endif // !defined(AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_)

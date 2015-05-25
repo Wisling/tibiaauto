@@ -18,25 +18,23 @@ using namespace std;
 class GetProcessor : public AimlProcessor
 {
 public:
-	~GetProcessor() { }
-	
+	~GetProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string conjunction = e->getAttribute("conjunction");
-		bool global = e->getAttribute("global") == "true";
-		if (conjunction.empty()) {
+		bool global        = e->getAttribute("global") == "true";
+		if (conjunction.empty())
 			conjunction = " and ";
-		}
 		string result;
-		if (global) {
+		if (global)
 			result = Kernel::predicates->getValue(toLower(e->getAttribute("name")), "*");
-		} else {
+		else
 			result = Kernel::predicates->getValue(toLower(e->getAttribute("name")), id);
-		}
-		if (result.empty()) {
+		if (result.empty())
 			result = Kernel::process(m, e, r, id);
-		}
 		return result;
 	}
 };
 
-#endif
+#endif // ifndef GET_PROCESSOR_H

@@ -12,18 +12,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_xrayApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_xrayApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -40,13 +40,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -68,12 +68,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -82,16 +82,13 @@ void CConfigDialog::disableControls()
 {
 	m_autoreset.EnableWindow(false);
 	m_extrahotkeys.EnableWindow(false);
-
 }
 
 void CConfigDialog::enableControls()
 {
 	m_autoreset.EnableWindow(true);
 	m_extrahotkeys.EnableWindow(true);
-
 }
-
 
 
 void CConfigDialog::configToControls(CConfigData *configData)
@@ -99,7 +96,6 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	//char buf[128];
 	m_autoreset.SetCheck(configData->autoreset);
 	m_extrahotkeys.SetCheck(configData->extrahotkeys);
-	
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -107,22 +103,20 @@ CConfigData * CConfigDialog::controlsToConfig()
 	//char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->autoreset=m_autoreset.GetCheck();
-	newConfigData->extrahotkeys=m_extrahotkeys.GetCheck();
+	newConfigData->autoreset    = m_autoreset.GetCheck();
+	newConfigData->extrahotkeys = m_extrahotkeys.GetCheck();
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-
-	
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(     m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -147,5 +141,4 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::refreshFishStatus()
 {
-	
 }

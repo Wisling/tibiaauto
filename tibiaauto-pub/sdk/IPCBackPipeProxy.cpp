@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 #include "stdafx.h"
@@ -20,7 +20,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 //////////////////////////////////////////////////////////////////////
 
-HMODULE CIPCBackPipeProxy::dllModule=NULL;
+HMODULE CIPCBackPipeProxy::dllModule = NULL;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -29,15 +29,15 @@ HMODULE CIPCBackPipeProxy::dllModule=NULL;
 CIPCBackPipeProxy::CIPCBackPipeProxy()
 {
 	// load module
-	if (dllModule==NULL)
+	if (dllModule == NULL)
 	{
 		char installPath[1024];
-		unsigned long installPathLen=1023;
-		installPath[0]='\0';
-		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
+		unsigned long installPathLen = 1023;
+		installPath[0] = '\0';
+		HKEY hkey = NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -48,27 +48,24 @@ CIPCBackPipeProxy::CIPCBackPipeProxy()
 		}
 
 		char pathBuf[2048];
-		sprintf(pathBuf,"%s\\mods\\tibiaauto_util.dll",installPath);
+		sprintf(pathBuf, "%s\\mods\\tibiaauto_util.dll", installPath);
 
-		dllModule=LoadLibrary(pathBuf);
+		dllModule = LoadLibrary(pathBuf);
 	}
 }
 
 CIPCBackPipeProxy::~CIPCBackPipeProxy()
 {
-	
 }
 
-int CIPCBackPipeProxy::readFromPipe(struct ipcMessage *mess,int expectedType)
+int CIPCBackPipeProxy::readFromPipe(struct ipcMessage *mess, int expectedType)
 {
-	typedef int (*Proto_fun)(struct ipcMessage *mess,int expectedType);
+	typedef int (*Proto_fun)(struct ipcMessage *mess, int expectedType);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeReadFromPipe");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "ipcBackPipeReadFromPipe");
 		if (fun)
-		{
-			return fun(mess,expectedType);
-		}
+			return fun(mess, expectedType);
 	}
 	return 0;
 }
@@ -79,11 +76,8 @@ void CIPCBackPipeProxy::InitialiseIPC()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"ipcBackPipeInitialiseIPC");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "ipcBackPipeInitialiseIPC");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
-

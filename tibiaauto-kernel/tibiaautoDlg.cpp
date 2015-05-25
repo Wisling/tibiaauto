@@ -32,7 +32,7 @@
 #include <fstream>
 
 
-HANDLE hPipe=INVALID_HANDLE_VALUE;
+HANDLE hPipe   = INVALID_HANDLE_VALUE;
 HWND tibiaHWND = NULL;
 
 
@@ -62,31 +62,31 @@ XERCES_CPP_NAMESPACE_USE
 
 class XStr
 {
-public :
-    XStr(const char* const toTranscode)
-    {
-        // Call the private transcoding method
-        fUnicodeForm = XMLString::transcode(toTranscode);
-    }
+public:
+	XStr(const char* const toTranscode)
+	{
+		// Call the private transcoding method
+		fUnicodeForm = XMLString::transcode(toTranscode);
+	}
 
-    ~XStr()
-    {
-        XMLString::release(&fUnicodeForm);
-    }
+	~XStr()
+	{
+		XMLString::release(&fUnicodeForm);
+	}
 
-    const XMLCh* unicodeForm() const
-    {
-        return fUnicodeForm;
-    }
+	const XMLCh* unicodeForm() const
+	{
+		return fUnicodeForm;
+	}
 private:
-    XMLCh*   fUnicodeForm;
+	XMLCh*   fUnicodeForm;
 };
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 #define X(str) XStr(str).unicodeForm()
 
@@ -94,7 +94,8 @@ static char THIS_FILE[] = __FILE__;
 void InitTibiaHandle(){
 	CMemReaderProxy reader;
 	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
-	while (tibiaHWND) {
+	while (tibiaHWND)
+	{
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
@@ -108,20 +109,22 @@ void InitTibiaHandle(){
 // CTibiaautoDlg dialog
 
 LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam){
-    static UINT s_uTaskbarRestart;
+	static UINT s_uTaskbarRestart;
 
-	if (uMessage==WM_CREATE){
-            s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
-	}else{
-        if(uMessage == s_uTaskbarRestart)
-        {
+	if (uMessage == WM_CREATE)
+	{
+		s_uTaskbarRestart = RegisterWindowMessage(TEXT("TaskbarCreated"));
+	}
+	else
+	{
+		if(uMessage == s_uTaskbarRestart)
+		{
 			CMemReaderProxy reader;
 			setShellTray();
 		}
-    }
+	}
 
 	return CWnd::DefWindowProc(uMessage, wParam, lParam);
-
 }
 
 CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
@@ -131,7 +134,7 @@ CTibiaautoDlg::CTibiaautoDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 
 	XMLPlatformUtils::Initialize();
-		 
+
 	parser = new XercesDOMParser();
 }
 
@@ -184,98 +187,98 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CTibiaautoDlg, CDialog)
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
-	ON_EN_CHANGE(IDC_EDIT_ADDRESS, OnChangeEditAddress)
-	ON_EN_CHANGE(IDC_EDIT_VALUE, OnChangeEditValue)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_LIGHT, OnLight)
-	ON_BN_CLICKED(IDC_TOOL_RUNEMAKER, OnToolRunemaker)
-	ON_BN_CLICKED(IDC_TOOL_CHARINFO, OnToolCharinfo)
-	ON_BN_CLICKED(IDC_TOOL_MONSERSHOW, OnToolMonsershow)
-	ON_BN_CLICKED(IDC_TOOL_AUTOGO, OnToolAutogo)
-	ON_BN_CLICKED(IDC_TOOL_AUTOFISH, OnToolAutofish)
-	ON_BN_CLICKED(IDC_SAVE, OnSave)
-	ON_BN_CLICKED(IDC_LOAD, OnLoad)
-	ON_BN_CLICKED(IDC_TOOL_AUTOGROUP, OnToolAutogroup)
-	ON_BN_CLICKED(IDC_TOOL_AUTOUH, OnToolAutouh)
-	ON_BN_CLICKED(IDC_TOOL_MAPSHOW, OnToolMapshow)
-	ON_BN_CLICKED(IDC_TOOL_AUTOATTACK, OnToolAutoattack)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER, OnToolSpellcaster)
-	ON_BN_CLICKED(IDC_EXIT, OnExit)
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_TOOL_AUTOAIM, OnToolAutoaim)
-	ON_BN_CLICKED(IDC_TOOL_MEMDEBUG, OnMemdebug)
-	ON_BN_CLICKED(IDC_TOOL_FLUIDDRINKER, OnToolFluiddrinker)
-	ON_BN_CLICKED(IDC_TOOL_TRADEMON, OnToolTrademon)
-	ON_BN_CLICKED(IDC_TOOL_INJECTMC, OnToolInjectmc)
-	ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG, OnToolItemconfig)
-	ON_BN_CLICKED(IDC_TOOL_AMMORESTACK, OnToolAmmorestack)
-	ON_BN_CLICKED(IDC_TOOL_AUTORESPOND, OnToolAutorespond)
-	ON_BN_CLICKED(IDC_LOADED_MODULES, OnLoadedModules)
-	ON_BN_CLICKED(IDC_TOOL_AUTOLOOTER, OnToolAutolooter)
-	ON_BN_CLICKED(IDC_TOOL_EATER, OnToolEater)
-	ON_BN_CLICKED(IDC_TOOL_CREATUREINFO, OnToolCreatureinfo)
-	ON_BN_CLICKED(IDC_TOOL_MAPHACK, OnToolMaphack)
-	ON_BN_CLICKED(IDC_TOOL_TEAM, OnToolTeam)
-	ON_BN_CLICKED(IDC_TOOL_ANTILOG, OnToolAntilog)
-	ON_BN_CLICKED(IDC_FPS, OnFps)
-	ON_BN_CLICKED(IDC_PYTHON_SCRIPTS, OnPythonScripts)
-	ON_BN_CLICKED(IDC_OPTIONS, OnOptions)
-	ON_BN_CLICKED(IDC_TOOL_LOGIN, OnToolLogin)
-	ON_WM_SHOWWINDOW()
-	ON_WM_SIZE()
-	ON_BN_CLICKED(IDC_TOOL_XRAY, OnToolXray)
-	ON_BN_CLICKED(IDC_TOOL_SORTER, OnToolSorter)
-	ON_BN_CLICKED(IDC_TOOL_BANKER, OnToolBanker)
-	ON_BN_CLICKED(IDC_TOOL_SELLER, OnToolSeller)
-	ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
-	ON_WM_ERASEBKGND()
-	ON_WM_DRAWITEM()
-	ON_WM_CTLCOLOR()
-	ON_WM_CREATE()
+ON_WM_PAINT()
+ON_WM_QUERYDRAGICON()
+ON_EN_CHANGE(IDC_EDIT_ADDRESS, OnChangeEditAddress)
+ON_EN_CHANGE(IDC_EDIT_VALUE, OnChangeEditValue)
+ON_WM_TIMER()
+ON_BN_CLICKED(IDC_LIGHT, OnLight)
+ON_BN_CLICKED(IDC_TOOL_RUNEMAKER, OnToolRunemaker)
+ON_BN_CLICKED(IDC_TOOL_CHARINFO, OnToolCharinfo)
+ON_BN_CLICKED(IDC_TOOL_MONSERSHOW, OnToolMonsershow)
+ON_BN_CLICKED(IDC_TOOL_AUTOGO, OnToolAutogo)
+ON_BN_CLICKED(IDC_TOOL_AUTOFISH, OnToolAutofish)
+ON_BN_CLICKED(IDC_SAVE, OnSave)
+ON_BN_CLICKED(IDC_LOAD, OnLoad)
+ON_BN_CLICKED(IDC_TOOL_AUTOGROUP, OnToolAutogroup)
+ON_BN_CLICKED(IDC_TOOL_AUTOUH, OnToolAutouh)
+ON_BN_CLICKED(IDC_TOOL_MAPSHOW, OnToolMapshow)
+ON_BN_CLICKED(IDC_TOOL_AUTOATTACK, OnToolAutoattack)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER, OnToolSpellcaster)
+ON_BN_CLICKED(IDC_EXIT, OnExit)
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_TOOL_AUTOAIM, OnToolAutoaim)
+ON_BN_CLICKED(IDC_TOOL_MEMDEBUG, OnMemdebug)
+ON_BN_CLICKED(IDC_TOOL_FLUIDDRINKER, OnToolFluiddrinker)
+ON_BN_CLICKED(IDC_TOOL_TRADEMON, OnToolTrademon)
+ON_BN_CLICKED(IDC_TOOL_INJECTMC, OnToolInjectmc)
+ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG, OnToolItemconfig)
+ON_BN_CLICKED(IDC_TOOL_AMMORESTACK, OnToolAmmorestack)
+ON_BN_CLICKED(IDC_TOOL_AUTORESPOND, OnToolAutorespond)
+ON_BN_CLICKED(IDC_LOADED_MODULES, OnLoadedModules)
+ON_BN_CLICKED(IDC_TOOL_AUTOLOOTER, OnToolAutolooter)
+ON_BN_CLICKED(IDC_TOOL_EATER, OnToolEater)
+ON_BN_CLICKED(IDC_TOOL_CREATUREINFO, OnToolCreatureinfo)
+ON_BN_CLICKED(IDC_TOOL_MAPHACK, OnToolMaphack)
+ON_BN_CLICKED(IDC_TOOL_TEAM, OnToolTeam)
+ON_BN_CLICKED(IDC_TOOL_ANTILOG, OnToolAntilog)
+ON_BN_CLICKED(IDC_FPS, OnFps)
+ON_BN_CLICKED(IDC_PYTHON_SCRIPTS, OnPythonScripts)
+ON_BN_CLICKED(IDC_OPTIONS, OnOptions)
+ON_BN_CLICKED(IDC_TOOL_LOGIN, OnToolLogin)
+ON_WM_SHOWWINDOW()
+ON_WM_SIZE()
+ON_BN_CLICKED(IDC_TOOL_XRAY, OnToolXray)
+ON_BN_CLICKED(IDC_TOOL_SORTER, OnToolSorter)
+ON_BN_CLICKED(IDC_TOOL_BANKER, OnToolBanker)
+ON_BN_CLICKED(IDC_TOOL_SELLER, OnToolSeller)
+ON_BN_CLICKED(IDC_BUTTON1, OnButton1)
+ON_WM_ERASEBKGND()
+ON_WM_DRAWITEM()
+ON_WM_CTLCOLOR()
+ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg message handlers
- 
+
 void CTibiaautoDlg::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_exit);
-	skin.SetButtonSkin(	m_LoadedModules);
-	skin.SetButtonSkin(	m_Options);
-	skin.SetButtonSkin(	m_PythonScripts);
-	skin.SetButtonSkin(	m_MonsterShow);
-	skin.SetButtonSkin(	m_MapShow);
-	skin.SetButtonSkin(	m_ItemConfig);
-	skin.SetButtonSkin(	m_InjectMC);
-	skin.SetButtonSkin(	m_CharInfo);
-	skin.SetButtonSkin(	m_xray);
-	skin.SetButtonSkin(	m_autoAttack);
-	skin.SetButtonSkin(	m_login);
-	skin.SetButtonSkin(	m_ammoRestack);
-	skin.SetButtonSkin(	m_autoAim);
-	skin.SetButtonSkin(	m_autoFish);
-	skin.SetButtonSkin(	m_autoGo);
-	skin.SetButtonSkin(	m_autoLooter);
-	skin.SetButtonSkin(	m_autoRespond);
-	skin.SetButtonSkin(	m_autoUh);
-	skin.SetButtonSkin(	m_fluidDrinker);
-	skin.SetButtonSkin(	m_runeMaker);
-	skin.SetButtonSkin(	m_spellCaster);
-	skin.SetButtonSkin(	m_fps);
-	skin.SetButtonSkin(	m_antilogout);
-	skin.SetButtonSkin(	m_mapHack);
-	skin.SetButtonSkin(	m_creatureInfo);
-	skin.SetButtonSkin(	m_save);
-	skin.SetButtonSkin(	m_load);
-	skin.SetButtonSkin(	m_eater);
-	skin.SetButtonSkin(	m_tradeMon);
-	skin.SetButtonSkin(	m_grouping);
-	skin.SetButtonSkin(	m_light);
-	skin.SetButtonSkin(	m_banker);
-	skin.SetButtonSkin(	m_sorter);
-	skin.SetButtonSkin(	m_seller);
+	skin.SetButtonSkin(     m_exit);
+	skin.SetButtonSkin(     m_LoadedModules);
+	skin.SetButtonSkin(     m_Options);
+	skin.SetButtonSkin(     m_PythonScripts);
+	skin.SetButtonSkin(     m_MonsterShow);
+	skin.SetButtonSkin(     m_MapShow);
+	skin.SetButtonSkin(     m_ItemConfig);
+	skin.SetButtonSkin(     m_InjectMC);
+	skin.SetButtonSkin(     m_CharInfo);
+	skin.SetButtonSkin(     m_xray);
+	skin.SetButtonSkin(     m_autoAttack);
+	skin.SetButtonSkin(     m_login);
+	skin.SetButtonSkin(     m_ammoRestack);
+	skin.SetButtonSkin(     m_autoAim);
+	skin.SetButtonSkin(     m_autoFish);
+	skin.SetButtonSkin(     m_autoGo);
+	skin.SetButtonSkin(     m_autoLooter);
+	skin.SetButtonSkin(     m_autoRespond);
+	skin.SetButtonSkin(     m_autoUh);
+	skin.SetButtonSkin(     m_fluidDrinker);
+	skin.SetButtonSkin(     m_runeMaker);
+	skin.SetButtonSkin(     m_spellCaster);
+	skin.SetButtonSkin(     m_fps);
+	skin.SetButtonSkin(     m_antilogout);
+	skin.SetButtonSkin(     m_mapHack);
+	skin.SetButtonSkin(     m_creatureInfo);
+	skin.SetButtonSkin(     m_save);
+	skin.SetButtonSkin(     m_load);
+	skin.SetButtonSkin(     m_eater);
+	skin.SetButtonSkin(     m_tradeMon);
+	skin.SetButtonSkin(     m_grouping);
+	skin.SetButtonSkin(     m_light);
+	skin.SetButtonSkin(     m_banker);
+	skin.SetButtonSkin(     m_sorter);
+	skin.SetButtonSkin(     m_seller);
 }
 
 BOOL CTibiaautoDlg::OnInitDialog()
@@ -284,44 +287,47 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	srand((unsigned int)time(NULL));
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
-	
+
 	// Set the icon for this dialog.  The framework does this automatically
 	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);			// Set big icon
-	SetIcon(m_hIcon, FALSE);		// Set small icon
-		
+	SetIcon(m_hIcon, TRUE);                 // Set big icon
+	SetIcon(m_hIcon, FALSE);                // Set small icon
+
 	CCharDialog *charDialog = new CCharDialog();
-	m_processId=charDialog->DoModal();
-	globalProcessId=m_processId;
+	m_processId     = charDialog->DoModal();
+	globalProcessId = m_processId;
 	delete charDialog;
-	if (m_processId==-1){
+	if (m_processId == -1)
+	{
 		EndDialog(IDCANCEL);
 		return TRUE;
 	}
 
 	unsigned char buf[5];
-	int versionOk=0;
+	int versionOk = 0;
 	CTibiaItemProxy itemProxy;
-	int m_memAddressRevealCName1=itemProxy.getValueForConst("addrFunRevealCName1");
-	buf[0]=buf[1]=0;
-	CMemUtil::GetMemRange(m_processId,m_memAddressRevealCName1,m_memAddressRevealCName1+2,(char *)buf,1);
-	if (buf[0]==0x90&&buf[1]==0x90) versionOk=1;
-	if (buf[0]==0x75&&(buf[1]==0x0A||buf[1]==0x10||buf[1]==0x0E)) versionOk=1;
-		
+	int m_memAddressRevealCName1 = itemProxy.getValueForConst("addrFunRevealCName1");
+	buf[0] = buf[1] = 0;
+	CMemUtil::GetMemRange(m_processId, m_memAddressRevealCName1, m_memAddressRevealCName1 + 2, (char *)buf, 1);
+	if (buf[0] == 0x90 && buf[1] == 0x90)
+		versionOk = 1;
+	if (buf[0] == 0x75 && (buf[1] == 0x0A || buf[1] == 0x10 || buf[1] == 0x0E))
+		versionOk = 1;
+
 	if (!versionOk)
 	{
 		char outBuf[100];
 
-		sprintf(outBuf,"tibia.exe version mismatch! Terminating Tibia Auto! (%x  %x)", buf[0], buf[1]);
+		sprintf(outBuf, "tibia.exe version mismatch! Terminating Tibia Auto! (%x  %x)", buf[0], buf[1]);
 		AfxMessageBox(outBuf);
 
 		EndDialog(IDCANCEL);
 		return TRUE;
 	}
-	
+
 
 	CMemUtil::setGlobalProcessId(m_processId);
-	
+
 	InitialiseIPC();
 
 	CMemReaderProxy reader;
@@ -330,19 +336,20 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	sender.setPipeHandle(hPipe);
 
 	// shutdownCounter is anti-hack protection
-	shutdownCounter=rand()%100;
+	shutdownCounter = rand() % 100;
 #ifndef _DEBUG
 	CEnterCode *enterCode = new CEnterCode(this);
-	int res=enterCode->DoModal();
+	int res               = enterCode->DoModal();
 	delete enterCode;
 
-	if (res != IDOK){
+	if (res != IDOK)
+	{
 		EndDialog(IDCANCEL);
 		return TRUE;
 	}
-#else
-	shutdownCounter=-rand();
-#endif
+#else // ifndef _DEBUG
+	shutdownCounter = -rand();
+#endif // ifndef _DEBUG
 
 
 	m_loadedModules = new CLoadedModules();
@@ -350,130 +357,125 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	m_pythonScriptsDialog = new CPythonScriptsDialog();
 	m_pythonScriptsDialog->Create(IDD_PYTHON_SCRIPTS);
-	
-	m_moduleLooter = new CModuleProxy("mod_looter",0);
-	m_moduleLight = new CModuleProxy("mod_light",0);
-	m_modulePlayerInfo = new CModuleProxy("mod_playerinfo",0);
+
+	m_moduleLooter     = new CModuleProxy("mod_looter", 0);
+	m_moduleLight      = new CModuleProxy("mod_light", 0);
+	m_modulePlayerInfo = new CModuleProxy("mod_playerinfo", 0);
 	m_modulePlayerInfo->start();
-	m_moduleUH = new CModuleProxy("mod_uh",0);
-	m_moduleGrouping = new CModuleProxy("mod_grouping",0);
-	m_moduleRestack = new CModuleProxy("mod_restack",0);
-	m_moduleFluid = new CModuleProxy("mod_fluid",0);
-	m_moduleAim = new CModuleProxy("mod_aim",0);
-	m_moduleFisher = new CModuleProxy("mod_fisher",0);
-	m_moduleSpellCaster = new CModuleProxy("mod_spellcaster",0);
-	m_moduleTradeMon = new CModuleProxy("mod_trademon",0);
-	m_moduleMemDebug = new CModuleProxy("mod_memdebug",0);
-	m_moduleMapShow = new CModuleProxy("mod_showmap",0);
-	m_moduleMonsterShow = new CModuleProxy("mod_monstershow",0);
-	m_moduleItemConfig = new CModuleProxy("mod_itemconfig",0);
-	m_moduleAutoGo = new CModuleProxy("mod_autogo",0);
-	m_moduleAutoAttack = new CModuleProxy("mod_cavebot",0);
-	m_moduleRuneMaker = new CModuleProxy("mod_runemaker",0);
-	m_moduleEater = new CModuleProxy("mod_eater",0);
-	m_moduleCreatureInfo = new CModuleProxy("mod_creatureinfo",0);
-	m_moduleResponder = new CModuleProxy("mod_responder",0);
-	m_moduleMapHack = new CModuleProxy("mod_maphack",0);
-	m_moduleTeam = new CModuleProxy("mod_team",0);
-	m_moduleAntylogout = new CModuleProxy("mod_antylogout",0);
-	m_moduleFps = new CModuleProxy("mod_fps",0);
-	m_moduleLogin = new CModuleProxy("mod_login",0);
-	m_moduleXRay = new CModuleProxy("mod_xray",0);
-	m_moduleSorter = new CModuleProxy("mod_sorter",0);
-	m_moduleBanker = new CModuleProxy("mod_banker",0);
-	m_moduleSeller = new CModuleProxy("mod_seller",0);
+	m_moduleUH           = new CModuleProxy("mod_uh", 0);
+	m_moduleGrouping     = new CModuleProxy("mod_grouping", 0);
+	m_moduleRestack      = new CModuleProxy("mod_restack", 0);
+	m_moduleFluid        = new CModuleProxy("mod_fluid", 0);
+	m_moduleAim          = new CModuleProxy("mod_aim", 0);
+	m_moduleFisher       = new CModuleProxy("mod_fisher", 0);
+	m_moduleSpellCaster  = new CModuleProxy("mod_spellcaster", 0);
+	m_moduleTradeMon     = new CModuleProxy("mod_trademon", 0);
+	m_moduleMemDebug     = new CModuleProxy("mod_memdebug", 0);
+	m_moduleMapShow      = new CModuleProxy("mod_showmap", 0);
+	m_moduleMonsterShow  = new CModuleProxy("mod_monstershow", 0);
+	m_moduleItemConfig   = new CModuleProxy("mod_itemconfig", 0);
+	m_moduleAutoGo       = new CModuleProxy("mod_autogo", 0);
+	m_moduleAutoAttack   = new CModuleProxy("mod_cavebot", 0);
+	m_moduleRuneMaker    = new CModuleProxy("mod_runemaker", 0);
+	m_moduleEater        = new CModuleProxy("mod_eater", 0);
+	m_moduleCreatureInfo = new CModuleProxy("mod_creatureinfo", 0);
+	m_moduleResponder    = new CModuleProxy("mod_responder", 0);
+	m_moduleMapHack      = new CModuleProxy("mod_maphack", 0);
+	m_moduleTeam         = new CModuleProxy("mod_team", 0);
+	m_moduleAntylogout   = new CModuleProxy("mod_antylogout", 0);
+	m_moduleFps          = new CModuleProxy("mod_fps", 0);
+	m_moduleLogin        = new CModuleProxy("mod_login", 0);
+	m_moduleXRay         = new CModuleProxy("mod_xray", 0);
+	m_moduleSorter       = new CModuleProxy("mod_sorter", 0);
+	m_moduleBanker       = new CModuleProxy("mod_banker", 0);
+	m_moduleSeller       = new CModuleProxy("mod_seller", 0);
 	refreshToolInfo();
 
-	
-	if (!CModuleUtil::getTASetting("SeenMapMessage")){ // Disabled Dec 19/11 until these map files will actually be used
-		//AfxMessageBox("Please consider submitting your map files to TibiaAuto.net to help us with the new system in place to create a complete Tibia map. \n\nYou will only receive this reminder once. Thank you for any contribution you make.");
+
+	if (!CModuleUtil::getTASetting("SeenMapMessage"))  // Disabled Dec 19/11 until these map files will actually be used
+	{       //AfxMessageBox("Please consider submitting your map files to TibiaAuto.net to help us with the new system in place to create a complete Tibia map. \n\nYou will only receive this reminder once. Thank you for any contribution you make.");
 		//CModuleUtil::setTASetting("SeenMapMessage",1);
 		//OnOptions();
 	}
-	if(CModuleUtil::getTASetting("GatherBotStats")){
+	if(CModuleUtil::getTASetting("GatherBotStats"))
+	{
 		COptionsDialog dlg;
 		//dlg.Create(IDD_OPTIONS);
 		dlg.sendStats();
 	}
 
-	
 
-	SetTimer(1001,100,NULL);
-	SetTimer(1002,100,NULL);
+	SetTimer(1001, 100, NULL);
+	SetTimer(1002, 100, NULL);
 
 
 	// this is needed to force loading tibiaauto_util.dll
-	CTibiaCharacter *self=reader.readSelfCharacter();
+	CTibiaCharacter *self = reader.readSelfCharacter();
 	delete self;
 
 
-	
 	CPythonEngine pythonEngine;
 	pythonEngine.init();
 
-	int ffBoxDisplay=1;
+	int ffBoxDisplay = 1;
 
 	char ffCheckString[1024];
-	unsigned long ffCheckLen=1023;
-	ffCheckString[0]='\0';
-	HKEY hkey=NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_ALL_ACCESS,&hkey))
+	unsigned long ffCheckLen = 1023;
+	ffCheckString[0] = '\0';
+	HKEY hkey = NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_ALL_ACCESS, &hkey))
 	{
-		RegQueryValueEx(hkey,TEXT("FFcheck"),NULL,NULL,(unsigned char *)ffCheckString,&ffCheckLen);
-		
+		RegQueryValueEx(hkey, TEXT("FFcheck"), NULL, NULL, (unsigned char *)ffCheckString, &ffCheckLen);
+
 		if (strlen(ffCheckString))
 		{
 			// found
-			if (time(NULL)-atoi(ffCheckString)<60*60*24*3)
-			{
-				ffBoxDisplay=0;
-			}
+			if (time(NULL) - atoi(ffCheckString) < 60 * 60 * 24 * 3)
+				ffBoxDisplay = 0;
 		}
 		char buf[128];
-		sprintf(buf,"%d",time(NULL));
-		RegSetValueEx(hkey,TEXT("FFcheck"),0,REG_SZ,(const unsigned char *)buf,strlen(buf)+1);
+		sprintf(buf, "%d", time(NULL));
+		RegSetValueEx(hkey, TEXT("FFcheck"), 0, REG_SZ, (const unsigned char *)buf, strlen(buf) + 1);
 		RegCloseKey(hkey);
 	}
 
 	if (ffBoxDisplay)
 	{
 		// now check for firefox
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox\\",0,KEY_READ,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Mozilla\\Mozilla Firefox\\", 0, KEY_READ, &hkey))
 		{
 			RegCloseKey(hkey);
-			ffBoxDisplay=0;
+			ffBoxDisplay = 0;
 		}
 	}
 	if (ffBoxDisplay)
 	{
 		// now check for firefox
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Mozilla\\Mozilla Firefox 2.0\\",0,KEY_READ,&hkey))
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Mozilla\\Mozilla Firefox 2.0\\", 0, KEY_READ, &hkey))
 		{
 			RegCloseKey(hkey);
-			ffBoxDisplay=0;
+			ffBoxDisplay = 0;
 		}
 	}
-	
+
 	if (ffBoxDisplay)
-	{
-		if (AfxMessageBox("Tibia Auto has detected that you are not using Mozilla Firefox. It is recommend that you install it. Do you want to proceed with installation?",MB_YESNO)==IDYES)
-		{
+		if (AfxMessageBox("Tibia Auto has detected that you are not using Mozilla Firefox. It is recommend that you install it. Do you want to proceed with installation?", MB_YESNO) == IDYES)
 			::ShellExecute(NULL, NULL, "http://tibiaauto.net/firefox.html", NULL, NULL, SW_SHOWNORMAL);
-		}
-	}
-	
+
 	m_moduleMapShow->showConfigDialog(); // As showmap modules runs its calculations in the window instead of a non-window thread, loading requires this to already be created.
 
-	if (CModuleUtil::getTASetting("LoadScriptOnStartup")){
+	if (CModuleUtil::getTASetting("LoadScriptOnStartup"))
+	{
 		char fName[128];
 		char charName[65];
 		reader.GetLoggedChar(CMemUtil::m_globalProcessId, charName, sizeof(charName));
-		sprintf(fName,"tibiaAuto.cfg.%s.xml",charName);
+		sprintf(fName, "tibiaAuto.cfg.%s.xml", charName);
 		char pathbuf[2048];
 		CModuleUtil::getInstallPath(pathbuf);
-		CString pathName=pathbuf;
-		if (pathName.Right(1)!="\\") pathName+="\\";
-		pathName+=fName;
+		CString pathName = pathbuf;
+		if (pathName.Right(1) != "\\")
+			pathName += "\\";
+		pathName += fName;
 		loadConfig(pathName);
 	}
 
@@ -481,12 +483,12 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	// set shell tray
 	setShellTray();
-	
-	SetTimer(1003,1000*60*15,NULL); // once every 15 minutes refresh ads
-	SetTimer(1004,1000*60*5,NULL); // once every 5 minutes refresh ads
+
+	SetTimer(1003, 1000 * 60 * 15, NULL); // once every 15 minutes refresh ads
+	SetTimer(1004, 1000 * 60 * 5, NULL); // once every 5 minutes refresh ads
 	if (CModuleUtil::getTASetting("GatherBotStats"))
-		SetTimer(1005,5000,NULL);//every 5 seconds check and record module stats
-	SetTimer(1006,5000,NULL);//refresh tray icon name if changed
+		SetTimer(1005, 5000, NULL);//every 5 seconds check and record module stats
+	SetTimer(1006, 5000, NULL);//refresh tray icon name if changed
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -530,43 +532,41 @@ HCURSOR CTibiaautoDlg::OnQueryDragIcon()
 
 void CTibiaautoDlg::OnChangeEditAddress()
 {
-
 }
 
 void CTibiaautoDlg::OnChangeEditValue()
 {
-	
-	
 }
 
 
 void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 {
 	CMemReaderProxy reader;
-	
-	if (nIDEvent==1001)
+
+	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
 		refreshToolInfo();
 		char buf[1024];
 		char loggedCharName[65];
 		reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
-		sprintf(buf,"Logged as: %s",loggedCharName);
+		sprintf(buf, "Logged as: %s", loggedCharName);
 		CString currentDisplay;
 		m_loginName.GetWindowText(currentDisplay);
 		if (currentDisplay != buf)
 			m_loginName.SetWindowText(buf);
 		shutdownCounter--;
-		if (shutdownCounter<-100000) shutdownCounter=-123;
-		if (shutdownCounter==0)
+		if (shutdownCounter < -100000)
+			shutdownCounter = -123;
+		if (shutdownCounter == 0)
 		{
 			// ups ops some's hacking TA :/
 			shutdownCounter++;
 			delete this;
 		}
-		SetTimer(1001,150,NULL);
+		SetTimer(1001, 150, NULL);
 	}
-	if (nIDEvent==1002)
+	if (nIDEvent == 1002)
 	{
 		KillTimer(1002);
 
@@ -577,50 +577,48 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 
 		CPythonEngine::threadGILAcquire(1); // allows python bound threads to still have cycles to run or terminate on when module is disabled
 
-		SetTimer(1002,25,NULL);
+		SetTimer(1002, 25, NULL);
 	}
-	if (nIDEvent==1003)
-	{
+	if (nIDEvent == 1003)
 		refreshAds();
-	}
-	if (nIDEvent==1004)
-	{
+	if (nIDEvent == 1004)
 		reportUsage();
-	}
-	if (nIDEvent==1005)
+	if (nIDEvent == 1005)
 	{
-		static unsigned int enabledModules=0xffffffff;
-		unsigned int modCheck=0;
-		for (int i=0;i<CModuleProxy::allModulesCount && i<32;i++){
-			modCheck|=CModuleProxy::allModules[i]->isStarted()<<i;
+		static unsigned int enabledModules = 0xffffffff;
+		unsigned int modCheck              = 0;
+		for (int i = 0; i < CModuleProxy::allModulesCount && i < 32; i++)
+		{
+			modCheck |= CModuleProxy::allModules[i]->isStarted() << i;
 		}
-		if (modCheck!=enabledModules){
-			enabledModules=modCheck;
+		if (modCheck != enabledModules)
+		{
+			enabledModules = modCheck;
 			char path[1024];
 			CModuleUtil::getInstallPath(path);
 			char pathBuf[2048];
-			sprintf(pathBuf,"%s\\tascripts\\module %d statistics.txt",path,reader.getProcessId());
-			std::ofstream fout(pathBuf,std::ios::out|std::ios::app|std::ios::binary);
+			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, reader.getProcessId());
+			std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 			time_t tm = time(NULL);
-			fout.write((char*)&tm,4);
-			fout.write((char*)&enabledModules,4);
+			fout.write((char*)&tm, 4);
+			fout.write((char*)&enabledModules, 4);
 			fout.close();
 		}
 	}
-	if (nIDEvent==1006)
+	if (nIDEvent == 1006)
 	{
 		char loggedCharName[65];
 		reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
-		if (strcmp(loggedCharName,currentIconData.szTip)!=0){
-			snprintf(currentIconData.szTip,60,"%s",loggedCharName);
-			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
+		if (strcmp(loggedCharName, currentIconData.szTip) != 0)
+		{
+			snprintf(currentIconData.szTip, 60, "%s", loggedCharName);
+			Shell_NotifyIcon(NIM_MODIFY, &currentIconData);
 		}
 	}
 
 	//New timers must be killed in OnExit
 	CDialog::OnTimer(nIDEvent);
 }
-
 
 
 void CTibiaautoDlg::OnLight()
@@ -630,40 +628,36 @@ void CTibiaautoDlg::OnLight()
 
 void CTibiaautoDlg::setShellTray(){
 	CMemReaderProxy reader;
-	ZeroMemory(&currentIconData,sizeof(NOTIFYICONDATA));
-	currentIconData.cbSize=sizeof(NOTIFYICONDATA);
-	currentIconData.hWnd=GetSafeHwnd();
-	currentIconData.uID=1;
-	currentIconData.hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+	ZeroMemory(&currentIconData, sizeof(NOTIFYICONDATA));
+	currentIconData.cbSize = sizeof(NOTIFYICONDATA);
+	currentIconData.hWnd   = GetSafeHwnd();
+	currentIconData.uID    = 1;
+	currentIconData.hIcon  = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
 	char loggedCharName[65];
 	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
-	snprintf(currentIconData.szTip,60,"%s",loggedCharName);
-	currentIconData.uCallbackMessage=WM_APP+1;
-	currentIconData.uFlags=NIF_ICON|NIF_TIP|NIF_MESSAGE;
-	Shell_NotifyIcon(NIM_ADD,&currentIconData);
+	snprintf(currentIconData.szTip, 60, "%s", loggedCharName);
+	currentIconData.uCallbackMessage = WM_APP + 1;
+	currentIconData.uFlags           = NIF_ICON | NIF_TIP | NIF_MESSAGE;
+	Shell_NotifyIcon(NIM_ADD, &currentIconData);
 }
 
 int CTibiaautoDlg::injectDll(HANDLE process, char* path)
 {
 	LPVOID addr = (LPVOID)GetProcAddress(GetModuleHandle("kernel32.dll"), "LoadLibraryA");
-	if (addr == NULL) {
+	if (addr == NULL)
 		return -1;
-	}
 
 	LPVOID arg = (LPVOID)VirtualAllocEx(process, NULL, strlen(path), MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE);
-	if (arg == NULL) {
+	if (arg == NULL)
 		return -1;
-	}
 
 	int n = WriteProcessMemory(process, arg, path, strlen(path), NULL);
-	if (n == 0) {
+	if (n == 0)
 		return -1;
-	}
 
 	HANDLE threadID = CreateRemoteThread(process, NULL, 0, (LPTHREAD_START_ROUTINE)addr, arg, NULL, NULL);
-	if (threadID == NULL) {
+	if (threadID == NULL)
 		return -1;
-	}
 	return 0;
 }
 
@@ -675,23 +669,23 @@ void CTibiaautoDlg::InitialiseIPC()
 
 
 	hPipe = CreateNamedPipe(
-		lpszPipename,             // pipe name
-		PIPE_ACCESS_DUPLEX,       // read/write access
-		PIPE_TYPE_MESSAGE |       // message type pipe
-		PIPE_READMODE_MESSAGE |   // message-read mode
-          PIPE_WAIT,                // blocking mode
-		PIPE_UNLIMITED_INSTANCES, // max. instances
-		163840,                  // output buffer size
-		163840,                  // input buffer size
-		1000,                        // client time-out
-		NULL);                    // no security attribute
+	        lpszPipename,             // pipe name
+	        PIPE_ACCESS_DUPLEX,       // read/write access
+	        PIPE_TYPE_MESSAGE |       // message type pipe
+	        PIPE_READMODE_MESSAGE |   // message-read mode
+	        PIPE_WAIT,          // blocking mode
+	        PIPE_UNLIMITED_INSTANCES, // max. instances
+	        163840,                  // output buffer size
+	        163840,                  // input buffer size
+	        1000,                        // client time-out
+	        NULL);                    // no security attribute
 
 
 	if (hPipe == INVALID_HANDLE_VALUE)
 	{
 		sprintf(buf, "Invalid pipe handle: %d", GetLastError());
 		AfxMessageBox(buf);
-	}	
+	}
 
 	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, true, m_processId);
 
@@ -713,7 +707,8 @@ void CTibiaautoDlg::InitialiseIPC()
 	}
 
 	sprintf(path, "%s\\%s", installPath, "tibiaautoinject2.dll");
-	if (injectDll(procHandle, path) != 0) {
+	if (injectDll(procHandle, path) != 0)
+	{
 		sprintf(buf, "dll injection failed: %d", GetLastError());
 		AfxMessageBox(buf);
 		PostQuitMessage(1);
@@ -721,13 +716,13 @@ void CTibiaautoDlg::InitialiseIPC()
 	}
 
 	CloseHandle(procHandle);
-	
+
 	BOOL fConnected = ConnectNamedPipe(hPipe, NULL) ? TRUE : (GetLastError() == ERROR_PIPE_CONNECTED);
-	
+
 
 	if (!fConnected)
 	{
-		sprintf(buf, "Cannot connect properly to Tibia client: %d",GetLastError());
+		sprintf(buf, "Cannot connect properly to Tibia client: %d", GetLastError());
 		AfxMessageBox(buf);
 		PostQuitMessage(1);
 		return;
@@ -735,41 +730,40 @@ void CTibiaautoDlg::InitialiseIPC()
 
 
 	// send my pid to the dll
-	int myProcessId=GetCurrentProcessId();
+	int myProcessId = GetCurrentProcessId();
 	struct ipcMessage mess;
-	mess.messageType=4;
-	memcpy(mess.payload,&myProcessId,sizeof(int));
+	mess.messageType = 4;
+	memcpy(mess.payload, &myProcessId, sizeof(int));
 	mess.send(hPipe);
 
 	// wait for incoming IPC connection from the dll
-	
+
 	CIPCBackPipeProxy backPipe;
 	backPipe.InitialiseIPC();
-	
+
 	// now hook keys
-	HINSTANCE hinstDLL=NULL;
-	hhookKeyb=NULL;
-	
+	HINSTANCE hinstDLL = NULL;
+	hhookKeyb = NULL;
+
 	hinstDLL = LoadLibrary((LPCTSTR) "tibiaautoinject3.dll");
-	
+
 	if (hinstDLL)
 	{
-		typedef LRESULT (CALLBACK *KeyboardProc_fun)(int nCode, WPARAM wParam, LPARAM lParam);
-		static KeyboardProc_fun fun=(KeyboardProc_fun)GetProcAddress(hinstDLL,"KeyboardProc");
+		typedef LRESULT (CALLBACK * KeyboardProc_fun)(int nCode, WPARAM wParam, LPARAM lParam);
+		static KeyboardProc_fun fun = (KeyboardProc_fun)GetProcAddress(hinstDLL, "KeyboardProc");
 		if (fun)
 		{
-			
 			HANDLE hThreadSnap = INVALID_HANDLE_VALUE;
 			THREADENTRY32 te32;
-			
+
 			// Take a snapshot of all running threads
 			hThreadSnap = CreateToolhelp32Snapshot( TH32CS_SNAPTHREAD, 0 );
 			if( hThreadSnap == INVALID_HANDLE_VALUE )
 				goto noKeybHook;
-			
+
 			// Fill in the size of the structure before using it.
 			te32.dwSize = sizeof(THREADENTRY32 );
-			
+
 			// Retrieve information about the first thread,
 			// and exit if unsuccessful
 			if( !Thread32First( hThreadSnap, &te32 ) )
@@ -777,7 +771,7 @@ void CTibiaautoDlg::InitialiseIPC()
 				CloseHandle( hThreadSnap ); // Must clean up the snapshot object!
 				goto noKeybHook;
 			}
-			
+
 			// Now walk the thread list of the system,
 			// and display information about each thread
 			// associated with the specified process
@@ -785,11 +779,12 @@ void CTibiaautoDlg::InitialiseIPC()
 			{
 				if( te32.th32OwnerProcessID == m_processId )
 				{
-					hhookKeyb=SetWindowsHookEx(WH_KEYBOARD,fun,hinstDLL,te32.th32ThreadID);
+					hhookKeyb = SetWindowsHookEx(WH_KEYBOARD, fun, hinstDLL, te32.th32ThreadID);
 					break;
 				}
-			} while( Thread32Next(hThreadSnap, &te32 ) );
-			
+			}
+			while( Thread32Next(hThreadSnap, &te32 ) );
+
 			// Don't forget to clean up the snapshot object.
 			CloseHandle( hThreadSnap );
 			// initialise hooks
@@ -798,10 +793,7 @@ void CTibiaautoDlg::InitialiseIPC()
 noKeybHook:
 	{
 	}
-	
-	
 }
-
 
 
 void CTibiaautoDlg::OnToolRunemaker()
@@ -887,150 +879,156 @@ void CTibiaautoDlg::OnSave()
 	char fName[128];
 	char loggedCharName[65];
 	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
-	FILE *f=NULL;
+	FILE *f = NULL;
 
-	char szFilters[]=
-      "Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
+	char szFilters[] =
+	        "Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
 
-	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
-	CFileDialog fd(false,"",fName,OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY, szFilters, this);
-	
-	if (fd.DoModal()==IDOK)
+	sprintf(fName, "tibiaAuto.cfg.%s.xml", loggedCharName);
+	CFileDialog fd(false, "", fName, OFN_OVERWRITEPROMPT | OFN_HIDEREADONLY, szFilters, this);
+
+	if (fd.DoModal() == IDOK)
 	{
 		CString pathName = fd.GetPathName();
-		f=fopen(pathName.GetBuffer(200),"wb");
+		f = fopen(pathName.GetBuffer(200), "wb");
 	}
-		
+
 	if (f)
 	{
-		fprintf(f,"<configfile>\n");
+		fprintf(f, "<configfile>\n");
 		int modNr;
-		int someModuleRunning=0;
-		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+		int someModuleRunning = 0;
+		for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
 			if (module->isStarted())
 			{
-				someModuleRunning=1;
+				someModuleRunning = 1;
 				break;
 			}
 		}
 		//Save a list of started scripts so they can be started on load
-		if (someModuleRunning){
-			if (AfxMessageBox("Some modules are running.\nWould you like to save a list of running modules?",MB_YESNO)==IDYES){
-				fprintf(f,"<startedModules>\n");
-				for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+		if (someModuleRunning)
+		{
+			if (AfxMessageBox("Some modules are running.\nWould you like to save a list of running modules?", MB_YESNO) == IDYES)
+			{
+				fprintf(f, "<startedModules>\n");
+				for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 				{
 					CModuleProxy * module = CModuleProxy::allModules[modNr];
 					if (module->isStarted())
-					{
-						fprintf(f,"<module name = \"%s\"/>",module->getModuleName());
-					}
+						fprintf(f, "<module name = \"%s\"/>", module->getModuleName());
 				}
-				fprintf(f,"</startedModules>\n");
-				fprintf(f,"<startedScripts>\n");
-				for (modNr=0;modNr<CPythonScript::getScriptCount();modNr++)
+				fprintf(f, "</startedModules>\n");
+				fprintf(f, "<startedScripts>\n");
+				for (modNr = 0; modNr < CPythonScript::getScriptCount(); modNr++)
 				{
 					CPythonScript * script = CPythonScript::getScriptByNr(modNr);
 					if (script->isEnabled())
-					{
-						fprintf(f,"<module name = \"%s\"/>",script->getName());
-					}
+						fprintf(f, "<module name = \"%s\"/>", script->getName());
 				}
-				fprintf(f,"</startedScripts>\n");
+				fprintf(f, "</startedScripts>\n");
 			}
 		}
 
 		// save "normal" modules
-		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+		for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
-			char* nme=module->getName();
+			char* nme             = module->getName();
 			if (module->isLoaded())
 			{
 				CConfigCreatorUtil configCreator;
 				if (!module->isStarted())
-				{
 					module->controlsToConfig();
-				}
 				DOMNode *moduleConfig = configCreator.getEmptyConfigForModule(module->getModuleName());
 
 				int paramNr;
-				for (paramNr=0;module->getConfigParamName(paramNr);paramNr++)
+				for (paramNr = 0; module->getConfigParamName(paramNr); paramNr++)
 				{
-					char *paramName=module->getConfigParamName(paramNr);
+					char *paramName = module->getConfigParamName(paramNr);
 					if (module->isMultiParam(paramName))
 					{
 						module->resetMultiParamAccess(paramName);
-						char *paramValue=module->saveConfigParam(paramName);
+						char *paramValue = module->saveConfigParam(paramName);
 						while (strlen(paramValue))
 						{
 							char realParamName[1024];
-							sprintf(realParamName,"config/%s",paramName);
-							configCreator.addParamToConfig(moduleConfig,realParamName,paramValue);
-							paramValue=module->saveConfigParam(paramName);
-						};
-					} else {
-						char *paramValue=module->saveConfigParam(paramName);
-						
+							sprintf(realParamName, "config/%s", paramName);
+							configCreator.addParamToConfig(moduleConfig, realParamName, paramValue);
+							paramValue = module->saveConfigParam(paramName);
+						}
+						;
+					}
+					else
+					{
+						char *paramValue = module->saveConfigParam(paramName);
+
 						if (!paramValue)
 							break;
 						char realParamName[1024];
-						sprintf(realParamName,"config/%s",paramName);
-						configCreator.addParamToConfig(moduleConfig,realParamName,paramValue);
+						sprintf(realParamName, "config/%s", paramName);
+						configCreator.addParamToConfig(moduleConfig, realParamName, paramValue);
 					}
 				}
-				configCreator.serializeConfigForModule(moduleConfig,f);
+				configCreator.serializeConfigForModule(moduleConfig, f);
 				configCreator.releaseConfig(moduleConfig);
 			}
 		} // saving normal modules config
 
 		// python scripts
-		int scriptNr=0;
-		for (;;)
+		int scriptNr = 0;
+		for (;; )
 		{
 			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr++);
-			if (!pythonScript) break;
-			
+			if (!pythonScript)
+				break;
+
 			char scriptModuleName[128];
-			snprintf(scriptModuleName,127,"Script: %s",pythonScript->getName());
-			if (!strcmp("Script: Stub",scriptModuleName))
-				int a=1;
+			snprintf(scriptModuleName, 127, "Script: %s", pythonScript->getName());
+			if (!strcmp("Script: Stub", scriptModuleName))
+				int a = 1;
 			CConfigCreatorUtil configCreator;
 			DOMNode *moduleConfig;
-			try {
+			try
+			{
 				moduleConfig = configCreator.getEmptyConfigForModule(scriptModuleName);
-			} catch (...){
+			}
+			catch (...)
+			{
 				char buf [1024];
-				sprintf(buf,"The python module name \"%s\" is invalid", pythonScript->getName());
+				sprintf(buf, "The python module name \"%s\" is invalid", pythonScript->getName());
 				AfxMessageBox(buf);
 				continue;
 			}
-			
-			int paramNr=0;
-			for (;;)
+
+			int paramNr = 0;
+			for (;; )
 			{
 				struct paramType *param = pythonScript->getParamDef(paramNr++);
-				if (!param) break;
-								
+				if (!param)
+					break;
+
 				char realParamName[1024];
-				sprintf(realParamName,"config/%s",param->name);
-				try {
-					configCreator.addParamToConfig(moduleConfig,realParamName,param->value);
-				} catch (...){
+				sprintf(realParamName, "config/%s", param->name);
+				try
+				{
+					configCreator.addParamToConfig(moduleConfig, realParamName, param->value);
+				}
+				catch (...)
+				{
 					char buf [1024];
-					sprintf(buf,"Parameter name \"%s\" for the python module \"%s\" is invalid", param->name,pythonScript->getName());
+					sprintf(buf, "Parameter name \"%s\" for the python module \"%s\" is invalid", param->name, pythonScript->getName());
 					AfxMessageBox(buf);
 					continue;
 				}
-				
 			}
-			configCreator.serializeConfigForModule(moduleConfig,f);
+			configCreator.serializeConfigForModule(moduleConfig, f);
 			configCreator.releaseConfig(moduleConfig);
 		} // saving python scripts config
-		
 
-		fprintf(f,"\n</configfile>\n");
+
+		fprintf(f, "\n</configfile>\n");
 		fclose(f);
 	}
 }
@@ -1049,120 +1047,123 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 
 	CMemReaderProxy reader;
 	CConfigCreatorUtil configCreator;
-	
-	
+
+
 	char logBuf[16384];
-	
+
 	int modNr;
 	int *restartedModulesTab = new int[CModuleProxy::allModulesCount];
-	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 	{
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
-		restartedModulesTab[modNr]=module->isStarted();
+		restartedModulesTab[modNr] = module->isStarted();
 	}
-	
+
 
 	char loggedCharName[65];
 	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
-	sprintf(logBuf,"Loading character '%s' ... started",loggedCharName);
+	sprintf(logBuf, "Loading character '%s' ... started", loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
-	
+
 	//Modules
-	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 	{
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
 		if (restartedModulesTab[modNr])
 		{
-			sprintf(logBuf,"Stopping module %s ...",module->getModuleName());
+			sprintf(logBuf, "Stopping module %s ...", module->getModuleName());
 			m_configDialogStatus->msgAddToLog(logBuf);
 			module->stop();
 		}
 	}
 
 	//Scripts
-	for (modNr = 0; modNr < CPythonScript::getScriptCount(); modNr++) {
+	for (modNr = 0; modNr < CPythonScript::getScriptCount(); modNr++)
+	{
 		CPythonScript * script = CPythonScript::getScriptByNr(modNr);
-		if (script->isEnabled()) {
+		if (script->isEnabled())
 			script->setEnabled(0);
-		}
 	}
-				
-	
+
+
 	parser->parse(((struct loadThreadParam *)lpParam)->fName);
-	
+
 	xercesc::DOMDocument *doc = parser->getDocument();
-	DOMElement *root = doc->getDocumentElement();
-	
-	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+	DOMElement *root          = doc->getDocumentElement();
+
+	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 	{
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
 		if (module->isLoaded())
 		{
-			char *moduleName = module->getModuleName();
-			DOMNode *moduleConfig = configCreator.getConfigForModule(root,moduleName);
+			char *moduleName      = module->getModuleName();
+			DOMNode *moduleConfig = configCreator.getConfigForModule(root, moduleName);
 			if (moduleConfig)
 			{
-				sprintf(logBuf,"Loading config for module %s ...",module->getModuleName());
+				sprintf(logBuf, "Loading config for module %s ...", module->getModuleName());
 				module->resetConfig();
 				m_configDialogStatus->msgAddToLog(logBuf);
-				configCreator.parseConfigFromNode(module,moduleConfig,"");
+				configCreator.parseConfigFromNode(module, moduleConfig, "");
 				module->configToControls();
 			}
 		}
 	}
 
-	int scriptNr=0;
-	for (;;)
+	int scriptNr = 0;
+	for (;; )
 	{
 		CConfigCreatorUtil configCreator;
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr++);
-		if (!pythonScript) break;
+		if (!pythonScript)
+			break;
 
 		char scriptConfigName[128];
-		snprintf(scriptConfigName,127,"Script: %s",pythonScript->getName());
-		DOMNode *scriptConfig = configCreator.getConfigForModule(root,scriptConfigName);
+		snprintf(scriptConfigName, 127, "Script: %s", pythonScript->getName());
+		DOMNode *scriptConfig = configCreator.getConfigForModule(root, scriptConfigName);
 		if (scriptConfig)
 		{
-			sprintf(logBuf,"Loading config for script %s",pythonScript->getName());
+			sprintf(logBuf, "Loading config for script %s", pythonScript->getName());
 			m_configDialogStatus->msgAddToLog(logBuf);
-			configCreator.parseConfigFromNode(pythonScript,scriptConfig,"");
+			configCreator.parseConfigFromNode(pythonScript, scriptConfig, "");
 		}
 	}
-	int otherModulesLoaded=0;
+	int otherModulesLoaded  = 0;
 	DOMNodeList *childNodes = root->getElementsByTagName(X("startedModules"));
 	DOMNode *moduleConfig;
 	if (childNodes->getLength() && (moduleConfig = childNodes->item(0)))
 	{
-		int startOnLoad=CModuleUtil::getTASetting("StartModulesOnLoad");
-		if (startOnLoad!=2 && (startOnLoad==1 || AfxMessageBox("This config contains saved started modules. Do you wish to start them?",MB_YESNO)==IDYES))
+		int startOnLoad = CModuleUtil::getTASetting("StartModulesOnLoad");
+		if (startOnLoad != 2 && (startOnLoad == 1 || AfxMessageBox("This config contains saved started modules. Do you wish to start them?", MB_YESNO) == IDYES))
 		{
 			DOMNode *subNode = moduleConfig->getFirstChild();
 			if (subNode)
 			{
-				do {
-					if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
+				do
+				{
+					if (subNode->getNodeType() == DOMNode::ELEMENT_NODE)
 					{
 						char subNodeName[1024];
-						wcstombs(subNodeName,subNode->getNodeName(),1024);
+						wcstombs(subNodeName, subNode->getNodeName(), 1024);
 
-						DOMNode *attrNode=subNode->getAttributes()->getNamedItem(L"name");
-						if (!strcmp(subNodeName,"module")&&attrNode)
+						DOMNode *attrNode = subNode->getAttributes()->getNamedItem(L"name");
+						if (!strcmp(subNodeName, "module") && attrNode)
 						{
 							char nodeValue[1024];
-							wcstombs(nodeValue,attrNode->getNodeValue(),1024);
-							for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+							wcstombs(nodeValue, attrNode->getNodeValue(), 1024);
+							for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 							{
 								CModuleProxy * module = CModuleProxy::allModules[modNr];
-								if (!strcmp(nodeValue,module->getModuleName()))
+								if (!strcmp(nodeValue, module->getModuleName()))
 								{
-									sprintf(logBuf,"Starting module %s ...",module->getModuleName());
+									sprintf(logBuf, "Starting module %s ...", module->getModuleName());
 									m_configDialogStatus->msgAddToLog(logBuf);
 									module->start();
 								}
 							}
 						}
 					}
-				} while ((subNode=subNode->getNextSibling())!=NULL);
+				}
+				while ((subNode = subNode->getNextSibling()) != NULL);
 			}
 			childNodes = root->getElementsByTagName(X("startedScripts"));
 			DOMNode *scriptConfig;
@@ -1171,115 +1172,112 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 				DOMNode *subNode = scriptConfig->getFirstChild();
 				if (subNode)
 				{
-					do {
-						if (subNode->getNodeType()==DOMNode::ELEMENT_NODE)
+					do
+					{
+						if (subNode->getNodeType() == DOMNode::ELEMENT_NODE)
 						{
 							char subNodeName[1024];
-							wcstombs(subNodeName,subNode->getNodeName(),1024);
+							wcstombs(subNodeName, subNode->getNodeName(), 1024);
 
-							DOMNode *attrNode=subNode->getAttributes()->getNamedItem(L"name");
-								
-							if (!strcmp(subNodeName,"module")&&attrNode)
+							DOMNode *attrNode = subNode->getAttributes()->getNamedItem(L"name");
+
+							if (!strcmp(subNodeName, "module") && attrNode)
 							{
 								char nodeValue[1024];
-								wcstombs(nodeValue,attrNode->getNodeValue(),1024);
-								for (modNr=0;modNr<CPythonScript::getScriptCount();modNr++)
+								wcstombs(nodeValue, attrNode->getNodeValue(), 1024);
+								for (modNr = 0; modNr < CPythonScript::getScriptCount(); modNr++)
 								{
 									CPythonScript * script = CPythonScript::getScriptByNr(modNr);
-									if (!strcmp(nodeValue,script->getName()))
+									if (!strcmp(nodeValue, script->getName()))
 									{
-										sprintf(logBuf,"Starting script %s ...",script->getName());
+										sprintf(logBuf, "Starting script %s ...", script->getName());
 										m_configDialogStatus->msgAddToLog(logBuf);
 										script->setEnabled(1);
 									}
 								}
 							}
 						}
-					} while ((subNode=subNode->getNextSibling())!=NULL);
+					}
+					while ((subNode = subNode->getNextSibling()) != NULL);
 				}
 			}
-			otherModulesLoaded=1;
+			otherModulesLoaded = 1;
 		}
 	}
-	if (!otherModulesLoaded){
-		for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+	if (!otherModulesLoaded)
+	{
+		for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 		{
 			CModuleProxy * module = CModuleProxy::allModules[modNr];
 			if (restartedModulesTab[modNr])
 			{
-				sprintf(logBuf,"Starting module %s ...",module->getModuleName());
+				sprintf(logBuf, "Starting module %s ...", module->getModuleName());
 				m_configDialogStatus->msgAddToLog(logBuf);
 				module->start();
 			}
 		}
 	}
 	doc->release();
-	
-	sprintf(logBuf,"Loading character '%s' finished.",loggedCharName);
+
+	sprintf(logBuf, "Loading character '%s' finished.", loggedCharName);
 	m_configDialogStatus->msgAddToLog(logBuf);
-	
+
 	delete []restartedModulesTab;
 	delete (struct loadThreadParam *)lpParam;
 	return 0;
 }
-	
-void CTibiaautoDlg::loadConfig(CString pathName){
 
-	FILE *f=fopen(pathName.GetBuffer(1024),"rb");
-	
+void CTibiaautoDlg::loadConfig(CString pathName){
+	FILE *f = fopen(pathName.GetBuffer(1024), "rb");
+
 	if (f)
 	{
 		fclose(f);
 
-		if(configDialogStatus){
+		if(configDialogStatus)
+		{
 			configDialogStatus->DestroyWindow();
 			delete configDialogStatus;
 		}
-		
+
 		configDialogStatus = new CConfigDialogStatus();
 		configDialogStatus->Create(IDD_CONFIGSTATUS);
 		configDialogStatus->ShowWindow(SW_SHOW);
-		
-		struct loadThreadParam *ltp = new struct loadThreadParam();
-		strncpy(ltp->fName,pathName.GetBuffer(1023),1023);
-		ltp->configDialogStatus=configDialogStatus;
+
+		struct loadThreadParam *ltp = new struct loadThreadParam ();
+		strncpy(ltp->fName, pathName.GetBuffer(1023), 1023);
+		ltp->configDialogStatus = configDialogStatus;
 		DWORD threadId;
-		::CreateThread(NULL,0,loadThread,ltp,0,&threadId);
-		
+		::CreateThread(NULL, 0, loadThread, ltp, 0, &threadId);
 	}
 }
 
 void CTibiaautoDlg::OnLoad()
 {
-	int someModuleRunning=0;
+	int someModuleRunning = 0;
 	int modNr;
-	for (modNr=0;modNr<CModuleProxy::allModulesCount;modNr++)
+	for (modNr = 0; modNr < CModuleProxy::allModulesCount; modNr++)
 	{
 		CModuleProxy * module = CModuleProxy::allModules[modNr];
 		if (module->isStarted())
-		{
-			someModuleRunning=1;
-		}
+			someModuleRunning = 1;
 	}
 	if (someModuleRunning)
-	{
-		if (AfxMessageBox("Some modules are running. Are you sure you want to load new configuration?",MB_YESNO)==IDNO)
-		{
+		if (AfxMessageBox("Some modules are running. Are you sure you want to load new configuration?", MB_YESNO) == IDNO)
 			return;
-		}
-	}
 	CMemReaderProxy reader;
-	
+
 	char fName[128];
 	char loggedCharName[65];
-	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));	
-	
+	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
+
 	char szFilters[] =
-		"Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
-	
-	sprintf(fName,"tibiaAuto.cfg.%s.xml",loggedCharName);
-	CFileDialog fd(true,"",fName,OFN_FILEMUSTEXIST, szFilters, NULL);
-	if (fd.DoModal()==IDOK){
+	        "Tibia Auto config (*.xml)|*.xml|All Files (*.*)|*.*||";
+
+	sprintf(fName, "tibiaAuto.cfg.%s.xml", loggedCharName);
+	CFileDialog fd(true, "", fName, OFN_FILEMUSTEXIST, szFilters, NULL);
+	if (fd.DoModal() == IDOK)
+	{
 		CString pathName;
 		pathName = fd.GetPathName();
 		loadConfig(pathName);
@@ -1289,11 +1287,9 @@ void CTibiaautoDlg::OnLoad()
 void CTibiaautoDlg::OnToolAutogroup()
 {
 	if (m_grouping.GetCheck())
-	{
 		m_moduleGrouping->start();
-	} else {
+	else
 		m_moduleGrouping->stop();
-	}
 }
 
 void CTibiaautoDlg::OnToolAutouh()
@@ -1312,7 +1308,6 @@ void CTibiaautoDlg::OnToolAutoattack()
 }
 
 
-
 void CTibiaautoDlg::OnToolSpellcaster()
 {
 	m_moduleSpellCaster->showConfigDialog();
@@ -1320,10 +1315,11 @@ void CTibiaautoDlg::OnToolSpellcaster()
 
 void CTibiaautoDlg::OnExit()
 {
-	for(int i=1001;i<=1006;KillTimer(i++));
+	for(int i = 1001; i <= 1006; KillTimer(i++))
+		;
 
 	DisconnectNamedPipe(hPipe);
-	Shell_NotifyIcon(NIM_DELETE,&currentIconData);
+	Shell_NotifyIcon(NIM_DELETE, &currentIconData);
 
 	CTAMiniMapProxy taMiniMap;
 	taMiniMap.unloadMiniMaps();
@@ -1370,19 +1366,20 @@ void CTibiaautoDlg::OnExit()
 	delete m_moduleBanker;
 	delete m_moduleSorter;
 	delete m_moduleSeller;
-	if(configDialogStatus){
+	if(configDialogStatus)
+	{
 		configDialogStatus->DestroyWindow();
 		delete configDialogStatus;
 	}
-	
-	if (hhookKeyb)
-	{
-		UnhookWindowsHookEx(hhookKeyb);
-	}
 
-	for (int scriptNr=0;;scriptNr++){
+	if (hhookKeyb)
+		UnhookWindowsHookEx(hhookKeyb);
+
+	for (int scriptNr = 0;; scriptNr++)
+	{
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
-		if (!pythonScript) break;
+		if (!pythonScript)
+			break;
 		delete pythonScript;
 	}
 	PostQuitMessage(0);
@@ -1407,45 +1404,52 @@ const UINT RWM_PRETRANSLATEMSG = ::RegisterWindowMessage(_T("RWM_PRETRANSLATEMSG
 // We want this as modal windows do not send all messages to their child modeless windows
 HWND AppGetTopParent(HWND hWnd)
 {
-    if(hWnd == NULL)
-        return NULL;
-	int isModeless = CWnd::FromHandlePermanent(hWnd)==NULL;
+	if(hWnd == NULL)
+		return NULL;
+	int isModeless = CWnd::FromHandlePermanent(hWnd) == NULL;
 
-    HWND hWndParent = hWnd;
-	while(::GetParent(hWndParent) != NULL && !(isModeless && CWnd::FromHandlePermanent(::GetParent(hWndParent))!=NULL)){
-		isModeless = CWnd::FromHandlePermanent(hWndParent)==NULL;
+	HWND hWndParent = hWnd;
+	while(::GetParent(hWndParent) != NULL && !(isModeless && CWnd::FromHandlePermanent(::GetParent(hWndParent)) != NULL))
+	{
+		isModeless = CWnd::FromHandlePermanent(hWndParent) == NULL;
 		hWndParent = ::GetParent(hWndParent);
 	}
-    return hWndParent;
+	return hWndParent;
 }
 BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//read http://www.codeproject.com/Articles/211862/PreTranslateMessage-support-in-modeless-dialogs-in
 	//Modeless dialogs used for modules need special call to be able to send 'tab key' to them
-	int eventStop=0;
-	HWND hWnd = AppGetTopParent(pMsg->hwnd);
-	if (this->m_hWnd!=hWnd && hWnd && pMsg->message==0x100){
-		if (::SendMessage(hWnd, RWM_PRETRANSLATEMSG, 0, (LPARAM)pMsg)==TRUE) return TRUE;
-		return ::IsDialogMessage(hWnd,pMsg);
-	} else if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_ESCAPE){
+	int eventStop = 0;
+	HWND hWnd     = AppGetTopParent(pMsg->hwnd);
+	if (this->m_hWnd != hWnd && hWnd && pMsg->message == 0x100)
+	{
+		if (::SendMessage(hWnd, RWM_PRETRANSLATEMSG, 0, (LPARAM)pMsg) == TRUE)
+			return TRUE;
+		return ::IsDialogMessage(hWnd, pMsg);
+	}
+	else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE)
+	{
 		ShowWindow(SW_HIDE);
-		eventStop=1;
-	} else if (pMsg->message==WM_KEYDOWN&&pMsg->wParam==VK_RETURN){
-		eventStop=1;
-	} else if (pMsg->message==WM_CHAR){
-		eventStop=1;
+		eventStop = 1;
 	}
-	if (!eventStop){
+	else if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_RETURN)
+	{
+		eventStop = 1;
+	}
+	else if (pMsg->message == WM_CHAR)
+	{
+		eventStop = 1;
+	}
+	if (!eventStop)
 		return CDialog::PreTranslateMessage(pMsg);
-	} else {
+	else
 		return 0;
-	}
 }
 
 void CTibiaautoDlg::OnFinalRelease()
 {
 	CDialog::OnFinalRelease();
-
 }
 
 void CTibiaautoDlg::OnToolFluiddrinker()
@@ -1462,43 +1466,49 @@ int copyFile(CString inpath, CString outpath){
 	//inpath and outpath cannot be the same
 	// returns 0 if it did not succeed, non-zero if it succeeded
 	int MAXREAD = 10000;
-	if(inpath.CompareNoCase(outpath)!=0){
+	if(inpath.CompareNoCase(outpath) != 0)
+	{
 		char* filedata;
-		FILE* fin = fopen(inpath,"rb");
-		if(!fin){
+		FILE* fin = fopen(inpath, "rb");
+		if(!fin)
+		{
 			AfxMessageBox("Cannot read input file!");
 			return 0;
 		}
-		fseek(fin,0,SEEK_END);
+		fseek(fin, 0, SEEK_END);
 		int size = ftell(fin);
-		fseek(fin,0,SEEK_SET);
+		fseek(fin, 0, SEEK_SET);
 		filedata = (char*)malloc(size);
 		int loc = 0;
-		while(1){
-			int readlength = fread((char*)(filedata+loc),1,MAXREAD,fin);
+		while(1)
+		{
+			int readlength = fread((char*)(filedata + loc), 1, MAXREAD, fin);
 			loc += readlength;
-			if(!readlength){
+			if(!readlength)
 				break;
-			}
 		}
 		fclose(fin);
-		if(!loc){
+		if(!loc)
+		{
 			AfxMessageBox("Cannot read input file!");
 			delete filedata;
 			return 0;
 		}
 
-		FILE* fout = fopen(outpath,"wb");
-		if(!fout){
+		FILE* fout = fopen(outpath, "wb");
+		if(!fout)
+		{
 			AfxMessageBox("Cannot write new file!");
 			delete filedata;
 			return 0;
 		}
-		fwrite(filedata,1,size,fout);
+		fwrite(filedata, 1, size, fout);
 
 		fclose(fout);
 		delete filedata;
-	}else{
+	}
+	else
+	{
 		AfxMessageBox("Input file and output file cannot be the same file.");
 		return 0;
 	}
@@ -1507,28 +1517,32 @@ int copyFile(CString inpath, CString outpath){
 void CTibiaautoDlg::OnToolInjectmc()
 {
 	CTibiaItemProxy itemProxy;
-	char szFilters[]=
-      "Tibia client (tibia.exe)|tibia.exe|All Files (*.*)|*.*||";
-	char szFiltersSave[]=
-      "Executable Files (*.exe)|*.exe|All Files (*.*)|*.*||";
+	char szFilters[] =
+	        "Tibia client (tibia.exe)|tibia.exe|All Files (*.*)|*.*||";
+	char szFiltersSave[] =
+	        "Executable Files (*.exe)|*.exe|All Files (*.*)|*.*||";
 
-	CFileDialog fd(true,"tibia","tibia.exe",OFN_FILEMUSTEXIST| OFN_HIDEREADONLY, szFilters, this);
-	if (fd.DoModal()==IDOK)
+	CFileDialog fd(true, "tibia", "tibia.exe", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
+	if (fd.DoModal() == IDOK)
 	{
 		CString pathName = fd.GetPathName();
-		CFileDialog fdSave(false,"*.exe","Tibia MC.exe",OFN_OVERWRITEPROMPT|OFN_PATHMUSTEXIST|OFN_HIDEREADONLY, szFiltersSave, this);
-		if(fdSave.DoModal()==IDOK){
+		CFileDialog fdSave(false, "*.exe", "Tibia MC.exe", OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY, szFiltersSave, this);
+		if(fdSave.DoModal() == IDOK)
+		{
 			CString pathDestName = fdSave.GetPathName();
-			if(copyFile(pathName, pathDestName)){
-				FILE* fout = fopen(pathDestName,"r+b");
-				fseek(fout,itemProxy.getValueForConst("addrMCInject"),SEEK_SET);
-				unsigned char val=0xff;
-				fwrite(&val,1,1,fout);
+			if(copyFile(pathName, pathDestName))
+			{
+				FILE* fout = fopen(pathDestName, "r+b");
+				fseek(fout, itemProxy.getValueForConst("addrMCInject"), SEEK_SET);
+				unsigned char val = 0xff;
+				fwrite(&val, 1, 1, fout);
 				fclose(fout);
 				char buf[1024];
-				sprintf(buf,"The modified multi-client version of Tibia has been successfully saved to \n%s",pathDestName);
+				sprintf(buf, "The modified multi-client version of Tibia has been successfully saved to \n%s", pathDestName);
 				AfxMessageBox(buf);
-			}else{
+			}
+			else
+			{
 				AfxMessageBox("Unable to modify client to MC mode!");
 			}
 		}
@@ -1563,11 +1577,9 @@ void CTibiaautoDlg::OnToolAutolooter()
 void CTibiaautoDlg::OnToolEater()
 {
 	if (m_eater.GetCheck())
-	{
 		m_moduleEater->start();
-	} else {
+	else
 		m_moduleEater->stop();
-	}
 }
 
 //void CTibiaautoDlg::OnDonation()
@@ -1594,11 +1606,9 @@ void CTibiaautoDlg::OnToolTeam()
 void CTibiaautoDlg::OnToolAntilog()
 {
 	if (m_antilogout.GetCheck())
-	{
 		m_moduleAntylogout->start();
-	} else {
+	else
 		m_moduleAntylogout->stop();
-	}
 }
 
 void CTibiaautoDlg::OnFps()
@@ -1609,9 +1619,7 @@ void CTibiaautoDlg::OnFps()
 void CTibiaautoDlg::passSecurityInfo(int value)
 {
 	if (!value)
-	{
 		delete this;
-	}
 }
 
 void CTibiaautoDlg::OnPythonScripts()
@@ -1627,11 +1635,12 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {
-	if(time(NULL)<132882315+3600*24*14){
-		m_browserAds.Navigate("127.0.0.1",NULL,NULL,NULL,NULL);
+	if(time(NULL) < 132882315 + 3600 * 24 * 14)
+	{
+		m_browserAds.Navigate("127.0.0.1", NULL, NULL, NULL, NULL);
 		return;
 	}
-	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.19.1",NULL,NULL,NULL,NULL);
+	m_browserAds.Navigate("http://ads.tibiaauto.net/showad.php?version=1.19.1", NULL, NULL, NULL, NULL);
 }
 
 void CTibiaautoDlg::OnToolLogin()
@@ -1672,40 +1681,40 @@ void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy)
 LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
 	CMemReaderProxy reader;
-	if (message==WM_APP+1&&lParam==WM_LBUTTONDOWN)
+	if (message == WM_APP + 1 && lParam == WM_LBUTTONDOWN)
 	{
-		if (!tibiaHWND) InitTibiaHandle();
+		if (!tibiaHWND)
+			InitTibiaHandle();
 		if (IsWindowVisible())
 		{
-			if (!CModuleUtil::getTASetting("SeenHideTibiaMessage")){
-				CModuleUtil::setTASetting("SeenHideTibiaMessage",1);
-				if (AfxMessageBox("Both Tibia and TA can be hidden by clicking on the Tray icon.  Would you like to enable this?\nThis setting can be changed in \"General Options and Statistics\"",MB_YESNO)==IDYES)
-				{
-					CModuleUtil::setTASetting("HideTibiaWithTA",1);
-				} else {
-					CModuleUtil::setTASetting("HideTibiaWithTA",0);
-				}
+			if (!CModuleUtil::getTASetting("SeenHideTibiaMessage"))
+			{
+				CModuleUtil::setTASetting("SeenHideTibiaMessage", 1);
+				if (AfxMessageBox("Both Tibia and TA can be hidden by clicking on the Tray icon.  Would you like to enable this?\nThis setting can be changed in \"General Options and Statistics\"", MB_YESNO) == IDYES)
+					CModuleUtil::setTASetting("HideTibiaWithTA", 1);
+				else
+					CModuleUtil::setTASetting("HideTibiaWithTA", 0);
 			}
-			currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME_HIDDEN));
-			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
+			currentIconData.hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME_HIDDEN));
+			Shell_NotifyIcon(NIM_MODIFY, &currentIconData);
 			ShowWindow(SW_HIDE);
-			if(CModuleUtil::getTASetting("HideTibiaWithTA")){
-				::ShowWindow(tibiaHWND,SW_HIDE);
-			}
-		} else {
-			currentIconData.hIcon=AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
-			Shell_NotifyIcon(NIM_MODIFY,&currentIconData);
+			if(CModuleUtil::getTASetting("HideTibiaWithTA"))
+				::ShowWindow(tibiaHWND, SW_HIDE);
+		}
+		else
+		{
+			currentIconData.hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME));
+			Shell_NotifyIcon(NIM_MODIFY, &currentIconData);
 			ShowWindow(SW_SHOW);
 			SetForegroundWindow();
-			if(!::IsWindowVisible(tibiaHWND) && CModuleUtil::getTASetting("HideTibiaWithTA")){
-				::ShowWindow(tibiaHWND,SW_SHOW);
-				if(::IsIconic(tibiaHWND)) {
+			if(!::IsWindowVisible(tibiaHWND) && CModuleUtil::getTASetting("HideTibiaWithTA"))
+			{
+				::ShowWindow(tibiaHWND, SW_SHOW);
+				if(::IsIconic(tibiaHWND))
 					::ShowWindow(tibiaHWND, SW_RESTORE);
-				}
 				::SetForegroundWindow(tibiaHWND);
 			}
 		}
-		
 	}
 	return CDialog::WindowProc(message, wParam, lParam);
 }
@@ -1715,22 +1724,22 @@ void CTibiaautoDlg::reportUsage()
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\tibiaauto-stats-usage.txt",installPath);
-	FILE *f = fopen(pathBuf,"a+");
+	sprintf(pathBuf, "%s\\tibiaauto-stats-usage.txt", installPath);
+	FILE *f = fopen(pathBuf, "a+");
 	if (f)
 	{
 		time_t tm = time(NULL);
-		int count=CModuleProxy::allModulesCount;
+		int count = CModuleProxy::allModulesCount;
 		int pos;
-		int checksum=tm%177;
-		fprintf(f,"version=2.59.0 tm=%d,",tm);
-		for (pos=0;pos<count;pos++)
+		int checksum = tm % 177;
+		fprintf(f, "version=2.59.0 tm=%d,", tm);
+		for (pos = 0; pos < count; pos++)
 		{
-			CModuleProxy *mod=CModuleProxy::allModules[pos];
-			fprintf(f,"%s=%d,",mod->getName(),mod->isStarted());
-			checksum=checksum*3+strlen(mod->getName())*9+mod->isStarted()*13;
+			CModuleProxy *mod = CModuleProxy::allModules[pos];
+			fprintf(f, "%s=%d,", mod->getName(), mod->isStarted());
+			checksum = checksum * 3 + strlen(mod->getName()) * 9 + mod->isStarted() * 13;
 		}
-		fprintf(f,"checksum=%d\n",checksum%1000000);
+		fprintf(f, "checksum=%d\n", checksum % 1000000);
 		fclose(f);
 	}
 }
@@ -1745,48 +1754,45 @@ void CTibiaautoDlg::OnButton1()
 	CMemReaderProxy reader;
 
 	int i;
-	for (i=0;i<100000;i++)
+	for (i = 0; i < 100000; i++)
 	{
-		CTibiaCharacter *self=reader.readSelfCharacter();
+		CTibiaCharacter *self = reader.readSelfCharacter();
 		delete self;
 	}
 }
 
 BOOL CTibiaautoDlg::DestroyWindow()
 {
-
-	
 	return CDialog::DestroyWindow();
 }
 
 void CTibiaautoDlg::PostNcDestroy()
 {
-	
 	CDialog::PostNcDestroy();
 }
 
 CTibiaautoDlg::~CTibiaautoDlg()
 {
-
 	CDialog::~CDialog();
 }
 
 BOOL CTibiaautoDlg::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
 {
 	// TODO: Add your specialized code here and/or call the base class
-	if (((LPNMHDR) lParam)->code == 123456) {
+	if (((LPNMHDR) lParam)->code == 123456)
+	{
 		Invalidate();
 		m_browserAds.Refresh();
 		DoSetButtonSkin();
-		
+
 		m_pythonScriptsDialog->Invalidate();
 		m_loadedModules->Invalidate();
-		
-		int count=CModuleProxy::allModulesCount;
+
+		int count = CModuleProxy::allModulesCount;
 		int pos;
-		for (pos=0;pos<count;pos++)
+		for (pos = 0; pos < count; pos++)
 		{
-			CModuleProxy *mod=CModuleProxy::allModules[pos];
+			CModuleProxy *mod = CModuleProxy::allModules[pos];
 			mod->getNewSkin(skin);
 		}
 	}

@@ -9,15 +9,15 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CMonsterButton
 
-CMonsterButton::CMonsterButton(int x,int y)
+CMonsterButton::CMonsterButton(int x, int y)
 {
-	m_x=x;
-	m_y=y;
+	m_x = x;
+	m_y = y;
 }
 
 CMonsterButton::~CMonsterButton()
@@ -26,10 +26,10 @@ CMonsterButton::~CMonsterButton()
 
 
 BEGIN_MESSAGE_MAP(CMonsterButton, CButton)
-	//{{AFX_MSG_MAP(CMonsterButton)
-	ON_WM_MOUSEMOVE()
-	ON_CONTROL_REFLECT(BN_CLICKED, OnClicked)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMonsterButton)
+ON_WM_MOUSEMOVE()
+ON_CONTROL_REFLECT(BN_CLICKED, OnClicked)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -39,8 +39,8 @@ void CMonsterButton::OnMouseMove(UINT nFlags, CPoint point)
 {
 	CToolMonsterShow *parent = (CToolMonsterShow *)GetParent();
 
-	parent->showMonsterDetails(m_x,m_y);
-	
+	parent->showMonsterDetails(m_x, m_y);
+
 	CButton::OnMouseMove(nFlags, point);
 }
 
@@ -51,5 +51,4 @@ BOOL CMonsterButton::Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD
 
 void CMonsterButton::OnClicked()
 {
-	
 }

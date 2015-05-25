@@ -28,34 +28,34 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_sorterApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_sorterApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_Bag8Frame;
-	CGroupBoxEx	m_Bag7Frame;
-	CGroupBoxEx	m_Bag6Frame;
-	CGroupBoxEx	m_Bag5Frame;
-	CGroupBoxEx	m_Bag4Frame;
-	CGroupBoxEx	m_Bag3Frame;
-	CGroupBoxEx	m_Bag2Frame;
-	CGroupBoxEx	m_Bag1Frame;
-	CComboBox	m_sortItemList;
-	CButtonST		m_enable;
-	CButtonST	m_OK;
+	CGroupBoxEx m_Bag8Frame;
+	CGroupBoxEx m_Bag7Frame;
+	CGroupBoxEx m_Bag6Frame;
+	CGroupBoxEx m_Bag5Frame;
+	CGroupBoxEx m_Bag4Frame;
+	CGroupBoxEx m_Bag3Frame;
+	CGroupBoxEx m_Bag2Frame;
+	CGroupBoxEx m_Bag1Frame;
+	CComboBox m_sortItemList;
+	CButtonST m_enable;
+	CButtonST m_OK;
 	//}}AFX_DATA
-	CButtonST		m_BagIn[8];
-	CButtonST		m_BagOut[8];
-	CListBox	m_Bag[8];
+	CButtonST m_BagIn[8];
+	CButtonST m_BagOut[8];
+	CListBox m_Bag[8];
 
 	void reloadSortItems();
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

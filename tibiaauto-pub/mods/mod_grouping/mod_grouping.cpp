@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // mod_grouping.cpp : Defines the initialization routines for the DLL.
@@ -35,7 +35,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 //
 //	Note!
@@ -68,10 +68,10 @@ static char THIS_FILE[] = __FILE__;
 // CMod_groupingApp
 
 BEGIN_MESSAGE_MAP(CMod_groupingApp, CWinApp)
-	//{{AFX_MSG_MAP(CMod_groupingApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMod_groupingApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-int toolThreadShouldStop=0;
+int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
@@ -89,84 +89,85 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	CConfigData *config = (CConfigData *)lpParam;
+	CConfigData *config        = (CConfigData *)lpParam;
 
 	time_t groupTime[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//max containers = 16
-	int minOpenTime = 5;
+	int minOpenTime      = 5;
 
-	for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++){
-		groupTime[contNr]=time(NULL);
+	for (int contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+	{
+		groupTime[contNr] = time(NULL);
 	}
-	int movedSomething=0;
+	int movedSomething = 0;
 	while (!toolThreadShouldStop)
 	{
-		if (!movedSomething) Sleep(CModuleUtil::randomFormula(500,200)); //movedSomething==1 has it's own sleep timer
-		movedSomething=0;
-		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
-		
+		if (!movedSomething)
+			Sleep(CModuleUtil::randomFormula(500, 200));             //movedSomething==1 has it's own sleep timer
+		movedSomething = 0;
+		if (!reader.isLoggedIn())
+			continue;                   // do not proceed if not connected
+
 		int contNr;
-		for (contNr=0;contNr<memConstData.m_memMaxContainers && !movedSomething;contNr++)
+		for (contNr = 0; contNr < memConstData.m_memMaxContainers && !movedSomething; contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
-			if (cont->flagOnOff && !groupTime[contNr]) groupTime[contNr]=time(NULL)+minOpenTime;
-			else if (!cont->flagOnOff) groupTime[contNr] = 0;
+			if (cont->flagOnOff && !groupTime[contNr])
+				groupTime[contNr] = time(NULL) + minOpenTime;
+			else if (!cont->flagOnOff)
+				groupTime[contNr] = 0;
 
-			if (!groupTime[contNr] || time(NULL)<=groupTime[contNr]){
+			if (!groupTime[contNr] || time(NULL) <= groupTime[contNr])
+			{
 				delete cont;
 				continue;
 			}
 			int itemNrMoved;
-			for (itemNrMoved=cont->itemsInside-1;itemNrMoved>=0&&!movedSomething;itemNrMoved--)//Search backwards for a stackable item to move
+			for (itemNrMoved = cont->itemsInside - 1; itemNrMoved >= 0 && !movedSomething; itemNrMoved--)//Search backwards for a stackable item to move
 			{
 				CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
 
-				int nonGroupable=0;
-				if (itemMoved->objectId==itemProxy.getValueForConst("fluid"))
-					nonGroupable=1;
+				int nonGroupable = 0;
+				if (itemMoved->objectId == itemProxy.getValueForConst("fluid"))
+					nonGroupable = 1;
 				CTibiaTile *tile = reader.getTibiaTile(itemMoved->objectId);
 				if (tile && !tile->stackable)
-					nonGroupable=1;
+					nonGroupable = 1;
 
-				if (itemMoved->quantity&&itemMoved->quantity<100&&!nonGroupable)//If items should be stacked
+				if (itemMoved->quantity && itemMoved->quantity < 100 && !nonGroupable)//If items should be stacked
 				{
 					int itemNr;
-					for (itemNr=0;itemNr<itemNrMoved&&!movedSomething;itemNr++)//Look for match in rest of container
+					for (itemNr = 0; itemNr < itemNrMoved && !movedSomething; itemNr++)//Look for match in rest of container
 					{
 						CTibiaItem *item = (CTibiaItem *)cont->items[itemNr];
 
-						if (itemMoved->objectId==item->objectId&&
-							item->quantity&&item->quantity<100)
+						if (itemMoved->objectId == item->objectId &&
+						    item->quantity && item->quantity < 100)
 						{
-						/**
-						* items match, are groupable, and not in a full group
-						**/
-							int qtyToMove=0;
-							if (itemMoved->quantity+item->quantity<=100)
-							{
-								qtyToMove=itemMoved->quantity;
-							} else {
-								qtyToMove=100-item->quantity;
-							}
+							/**
+							 * items match, are groupable, and not in a full group
+							 **/
+							int qtyToMove = 0;
+							if (itemMoved->quantity + item->quantity <= 100)
+								qtyToMove = itemMoved->quantity;
+							else
+								qtyToMove = 100 - item->quantity;
 							// do the moving
 							sender.moveObjectBetweenContainers(
-								item->objectId,0x40+contNr,itemNrMoved,
-								0x40+contNr,itemNr,	qtyToMove);
-							movedSomething=1;
+							        item->objectId, 0x40 + contNr, itemNrMoved,
+							        0x40 + contNr, itemNr, qtyToMove);
+							movedSomething = 1;
 							CModuleUtil::waitForItemsInsideChange(contNr, itemNrMoved, itemMoved->quantity, cont->itemsInside);
-							Sleep(CModuleUtil::randomFormula(200,100));
-							
+							Sleep(CModuleUtil::randomFormula(200, 100));
 						}
 					}
 				}
 			}
-			
+
 			delete cont;
 		}
-		
-		
 	}
 
-	toolThreadShouldStop=0;
+	toolThreadShouldStop = 0;
 	return 0;
 }
 
@@ -176,12 +177,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 CMod_groupingApp::CMod_groupingApp()
 {
-	m_started=0;
+	m_started = 0;
 }
 
 CMod_groupingApp::~CMod_groupingApp()
 {
-	
 	delete m_configData;
 }
 
@@ -196,24 +196,26 @@ int CMod_groupingApp::isStarted()
 	return m_started;
 }
 
- 
+
 void CMod_groupingApp::start()
 {
 	superStart();
 	DWORD threadId;
-		
-	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
-	m_started=1;
+
+	toolThreadShouldStop = 0;
+	toolThreadHandle     = ::CreateThread(NULL, 0, toolThreadProc, m_configData, 0, &threadId);
+	m_started            = 1;
 }
 
 void CMod_groupingApp::stop()
 {
-	toolThreadShouldStop=1;
-	while (toolThreadShouldStop) {
+	toolThreadShouldStop = 1;
+	while (toolThreadShouldStop)
+	{
 		Sleep(50);
-	};
-	m_started=0;
+	}
+	;
+	m_started = 0;
 }
 
 
@@ -221,5 +223,3 @@ char *CMod_groupingApp::getVersion()
 {
 	return "1.2";
 }
-
-

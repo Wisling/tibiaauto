@@ -20,16 +20,16 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CCharDialog)
 	enum { IDD = IDD_CHAR_DIALOG };
-	CButtonST	m_Exit;
-	CButtonST	m_OK;
-	CComboBox	m_charList;
+	CButtonST m_Exit;
+	CButtonST m_OK;
+	CComboBox m_charList;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CCharDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

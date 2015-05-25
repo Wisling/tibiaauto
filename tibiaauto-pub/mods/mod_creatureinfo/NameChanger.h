@@ -20,19 +20,19 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CNameChanger)
 	enum { IDD = IDD_NAME };
-	CButtonST	m_OK;
-	CButtonST	m_battleOnly;
-	CButtonST	m_advanced;
-	CButtonST	m_relpos;
-	CButtonST	m_refresh;
-	CListCtrl	m_list;
+	CButtonST m_OK;
+	CButtonST m_battleOnly;
+	CButtonST m_advanced;
+	CButtonST m_relpos;
+	CButtonST m_refresh;
+	CListCtrl m_list;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CNameChanger)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

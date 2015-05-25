@@ -46,8 +46,8 @@
 #define MADCHOOK_H
 
 #ifdef __cplusplus
-  extern "C" {
-#endif
+extern "C" {
+#endif // ifdef __cplusplus
 
 #define madCHookApi(rt) __declspec(dllimport) rt WINAPI
 
@@ -85,42 +85,42 @@
 
 // hook any code or a specific API
 madCHookApi(BOOL) HookCode(
-  PVOID  pCode,
-  PVOID  pCallbackFunc,
-  PVOID  *pNextHook,
+        PVOID pCode,
+        PVOID pCallbackFunc,
+        PVOID * pNextHook,
   #ifdef __cplusplus
-    DWORD  dwFlags = 0
-  #else
-    DWORD  dwFlags
-  #endif
-);
+        DWORD dwFlags = 0
+  #else // ifdef __cplusplus
+        DWORD dwFlags
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) HookAPI(
-  LPCSTR pszModule,
-  LPCSTR pszFuncName,
-  PVOID  pCallbackFunc,
-  PVOID  *pNextHook,
+        LPCSTR pszModule,
+        LPCSTR pszFuncName,
+        PVOID pCallbackFunc,
+        PVOID * pNextHook,
   #ifdef __cplusplus
-    DWORD  dwFlags = 0
-  #else
-    DWORD  dwFlags
-  #endif
-);
+        DWORD dwFlags = 0
+  #else // ifdef __cplusplus
+        DWORD dwFlags
+  #endif // ifdef __cplusplus
+        );
 
 // some firewall/antivirus programs kill our hooks, so we need to renew them
 madCHookApi(BOOL) RenewHook(
-  PVOID  *pNextHook
-);
+        PVOID * pNextHook
+        );
 
 // is the hook callback function of the specified hook currently in use?
 // 0: the hook callback function is not in use
 // x: the hook callback function is in use x times
 madCHookApi(DWORD) IsHookInUse(
-  PVOID  *pNextHook
-);
+        PVOID * pNextHook
+        );
 
 // unhook again
-madCHookApi(BOOL) UnhookCode( PVOID  *pNextHook );
-madCHookApi(BOOL) UnhookAPI ( PVOID  *pNextHook );
+madCHookApi(BOOL) UnhookCode( PVOID * pNextHook );
+madCHookApi(BOOL) UnhookAPI ( PVOID * pNextHook );
 
 // putting all your "HookCode/API" calls into a "CollectHooks".."FlushHooks"
 // frame can eventually speed up the installation of the hooks
@@ -133,31 +133,31 @@ madCHookApi(VOID)   FlushHooks ();
 // the dll is loaded right before the entry point of the exe module is called
 
 madCHookApi(BOOL) CreateProcessExA(
-  LPCSTR                lpApplicationName,
-  LPSTR                 lpCommandLine,
-  LPSECURITY_ATTRIBUTES lpProcessAttributes,
-  LPSECURITY_ATTRIBUTES lpThreadAttributes,
-  BOOL                  bInheritHandles,
-  DWORD                 dwCreationFlags,
-  LPVOID                lpEnvironment,
-  LPCSTR                lpCurrentDirectory,
-  LPSTARTUPINFOA        lpStartupInfo,
-  LPPROCESS_INFORMATION lpProcessInformation,
-  LPCSTR                lpLoadLibrary
-);
+        LPCSTR lpApplicationName,
+        LPSTR lpCommandLine,
+        LPSECURITY_ATTRIBUTES lpProcessAttributes,
+        LPSECURITY_ATTRIBUTES lpThreadAttributes,
+        BOOL bInheritHandles,
+        DWORD dwCreationFlags,
+        LPVOID lpEnvironment,
+        LPCSTR lpCurrentDirectory,
+        LPSTARTUPINFOA lpStartupInfo,
+        LPPROCESS_INFORMATION lpProcessInformation,
+        LPCSTR lpLoadLibrary
+        );
 madCHookApi(BOOL) CreateProcessExW(
-  LPCWSTR               lpApplicationName,
-  LPWSTR                lpCommandLine,
-  LPSECURITY_ATTRIBUTES lpProcessAttributes,
-  LPSECURITY_ATTRIBUTES lpThreadAttributes,
-  BOOL                  bInheritHandles,
-  DWORD                 dwCreationFlags,
-  LPVOID                lpEnvironment,
-  LPCWSTR               lpCurrentDirectory,
-  LPSTARTUPINFOW        lpStartupInfo,
-  LPPROCESS_INFORMATION lpProcessInformation,
-  LPCWSTR               lpLoadLibrary
-);
+        LPCWSTR lpApplicationName,
+        LPWSTR lpCommandLine,
+        LPSECURITY_ATTRIBUTES lpProcessAttributes,
+        LPSECURITY_ATTRIBUTES lpThreadAttributes,
+        BOOL bInheritHandles,
+        DWORD dwCreationFlags,
+        LPVOID lpEnvironment,
+        LPCWSTR lpCurrentDirectory,
+        LPSTARTUPINFOW lpStartupInfo,
+        LPPROCESS_INFORMATION lpProcessInformation,
+        LPCWSTR lpLoadLibrary
+        );
 
 // ***************************************************************
 // memory allocation in the specified processes (shared memory in win9x)
@@ -165,21 +165,21 @@ madCHookApi(BOOL) CreateProcessExW(
 // area (in win9x) or in our own process (in winNT)
 
 madCHookApi(PVOID) AllocMemEx(
-  DWORD  dwSize,
+        DWORD dwSize,
   #ifdef __cplusplus
-    HANDLE hProcess = 0
-  #else
-    HANDLE hProcess
-  #endif
-);
+        HANDLE hProcess = 0
+  #else // ifdef __cplusplus
+        HANDLE hProcess
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) FreeMemEx(
-  PVOID  pMem,
+        PVOID pMem,
   #ifdef __cplusplus
-    HANDLE hProcess = 0
-  #else
-    HANDLE hProcess
-  #endif
-);
+        HANDLE hProcess = 0
+  #else // ifdef __cplusplus
+        HANDLE hProcess
+  #endif // ifdef __cplusplus
+        );
 
 // ***************************************************************
 // copy (and relocate) any function to a new location in any process
@@ -188,17 +188,17 @@ madCHookApi(BOOL) FreeMemEx(
 // don't forget to free the function with FreeMemEx, if you don't it anymore
 
 madCHookApi(PVOID) CopyFunction(
-  PVOID  pFunction,
+        PVOID pFunction,
   #ifdef __cplusplus
-    HANDLE hProcess              = 0,
-    BOOL   bAcceptUnknownTargets = FALSE,
-    PVOID  *pBuffer              = NULL
-  #else
-    HANDLE hProcess,
-    BOOL   bAcceptUnknownTargets,
-    PVOID  *pBuffer
-  #endif
-);
+        HANDLE hProcess = 0,
+        BOOL bAcceptUnknownTargets = FALSE,
+        PVOID * pBuffer = NULL
+  #else // ifdef __cplusplus
+        HANDLE hProcess,
+        BOOL bAcceptUnknownTargets,
+        PVOID * pBuffer
+  #endif // ifdef __cplusplus
+        );
 
 // ***************************************************************
 // like CreateRemoteThread, but 3 changes:
@@ -207,19 +207,19 @@ madCHookApi(PVOID) CopyFunction(
 // (3) the DACL of the current thread is copied in winNt (if threadAttr = nil)
 
 madCHookApi(HANDLE) CreateRemoteThreadEx(
-  HANDLE                 hProcess,
-  LPSECURITY_ATTRIBUTES  lpThreadAttributes,
-  DWORD                  dwStackSize,
-  LPTHREAD_START_ROUTINE lpStartAddress,
-  LPVOID                 lpParameter,
-  DWORD                  dwCreationFlags,
-  LPDWORD                lpThreadId
-);
+        HANDLE hProcess,
+        LPSECURITY_ATTRIBUTES lpThreadAttributes,
+        DWORD dwStackSize,
+        LPTHREAD_START_ROUTINE lpStartAddress,
+        LPVOID lpParameter,
+        DWORD dwCreationFlags,
+        LPDWORD lpThreadId
+        );
 
 // ***************************************************************
 
 // this is how your remote function must look like
-typedef DWORD (WINAPI *PREMOTE_EXECUTE_ROUTINE)( LPVOID pParams );
+typedef DWORD (WINAPI * PREMOTE_EXECUTE_ROUTINE)( LPVOID pParams );
 
 // executes the specified function in the context of another process
 // this works only if the function follows some specific rules
@@ -230,17 +230,17 @@ typedef DWORD (WINAPI *PREMOTE_EXECUTE_ROUTINE)( LPVOID pParams );
 // so you can use the "pParams" block for both "in" and "out" parameters
 // if "dwSize" = 0, the "pParams" value is just given into the remote function
 madCHookApi(BOOL) RemoteExecute(
-  HANDLE                  hProcess,
-  PREMOTE_EXECUTE_ROUTINE pFunc,
-  DWORD                   *dwFuncResult,
+        HANDLE hProcess,
+        PREMOTE_EXECUTE_ROUTINE pFunc,
+        DWORD * dwFuncResult,
   #ifdef __cplusplus
-    PVOID                   pParams = NULL,
-    DWORD                   dwSize  = 0
-  #else
-    PVOID                   pParams,
-    DWORD                   dwSize
-  #endif
-);
+        PVOID pParams = NULL,
+        DWORD dwSize = 0
+  #else // ifdef __cplusplus
+        PVOID pParams,
+        DWORD dwSize
+  #endif // ifdef __cplusplus
+        );
 
 // ***************************************************************
 
@@ -256,105 +256,105 @@ madCHookApi(BOOL) RemoteExecute(
 
 // same as LoadLibrary, but is able to load the library in any process
 madCHookApi(BOOL) InjectLibraryA(
-  DWORD   dwProcessHandleOrSpecialFlags,
-  LPCSTR  pLibFileName,
+        DWORD dwProcessHandleOrSpecialFlags,
+        LPCSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) InjectLibraryW(
-  DWORD   dwProcessHandleOrSpecialFlags,
-  LPCWSTR pLibFileName,
+        DWORD dwProcessHandleOrSpecialFlags,
+        LPCWSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 
 // same as InjectLibrary(CURRENT_SESSION, ...), but you can choose the session
 madCHookApi(BOOL) InjectLibrarySessionA(
-  DWORD   dwSession,
-  BOOL    bSystemProcesses,
-  LPCSTR  pLibFileName,
+        DWORD dwSession,
+        BOOL bSystemProcesses,
+        LPCSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) InjectLibrarySessionW(
-  DWORD   dwSession,
-  BOOL    bSystemProcesses,
-  LPCWSTR pLibFileName,
+        DWORD dwSession,
+        BOOL bSystemProcesses,
+        LPCWSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 
 // stop the "virus" injection effect (can be used for UninjectLibrary only)
 #define STOP_VIRUS (HANDLE) 0xFFFFFFFA
 
 // same as FreeLibrary, but is able to free the library from any process
 madCHookApi(BOOL) UninjectLibraryA(
-  DWORD   dwProcessHandleOrSpecialFlags,
-  LPCSTR  pLibFileName,
+        DWORD dwProcessHandleOrSpecialFlags,
+        LPCSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) UninjectLibraryW(
-  DWORD   dwProcessHandleOrSpecialFlags,
-  LPCWSTR pLibFileName,
+        DWORD dwProcessHandleOrSpecialFlags,
+        LPCWSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 
 // same as UninjectLibrary(CURRENT_SESSION, ...), but you can choose the session
 madCHookApi(BOOL) UninjectLibrarySessionA(
-  DWORD   dwSession,
-  BOOL    bSystemProcesses,
-  LPCSTR  pLibFileName,
+        DWORD dwSession,
+        BOOL bSystemProcesses,
+        LPCSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) UninjectLibrarySessionW(
-  DWORD   dwSession,
-  BOOL    bSystemProcesses,
-  LPCWSTR pLibFileName,
+        DWORD dwSession,
+        BOOL bSystemProcesses,
+        LPCWSTR pLibFileName,
   #ifdef __cplusplus
-    DWORD   dwTimeOut = 7000
-  #else
-    DWORD   dwTimeOut
-  #endif
-);
+        DWORD dwTimeOut = 7000
+  #else // ifdef __cplusplus
+        DWORD dwTimeOut
+  #endif // ifdef __cplusplus
+        );
 
 // ***************************************************************
 
 // which processId belongs to the specified process handle?
 // undocumented function, works in all windows 32 bit systems
 madCHookApi(DWORD) ProcessHandleToId(
-  HANDLE dwProcessHandle
-);
+        HANDLE dwProcessHandle
+        );
 
 // find out what file the specified process was executed from
 // the file name buffer must have a size of MAX_PATH characters (or more)
 madCHookApi(BOOL) ProcessIdToFileName(
-  DWORD  dwProcessId,
-  LPSTR  pFileName
-);
+        DWORD dwProcessId,
+        LPSTR pFileName
+        );
 
 // ***************************************************************
 
@@ -385,27 +385,27 @@ madCHookApi(HMODULE) GetCallingModule (VOID);
 // global  =  normal  +  "access for everyone"  +  "non session specific"
 
 madCHookApi(HANDLE) CreateGlobalMutex(
-  LPCSTR  pName
-);
+        LPCSTR pName
+        );
 madCHookApi(HANDLE) OpenGlobalMutex(
-  LPCSTR  pName
-);
+        LPCSTR pName
+        );
 madCHookApi(HANDLE) CreateGlobalEvent(
-  LPCSTR  pName,
-  BOOL    bManual,
-  BOOL    bInitialState
-);
+        LPCSTR pName,
+        BOOL bManual,
+        BOOL bInitialState
+        );
 madCHookApi(HANDLE) OpenGlobalEvent(
-  LPCSTR  pName
-);
+        LPCSTR pName
+        );
 madCHookApi(HANDLE) CreateGlobalFileMapping(
-  LPCSTR  pName,
-  DWORD   dwSize
-);
+        LPCSTR pName,
+        DWORD dwSize
+        );
 madCHookApi(HANDLE) OpenGlobalFileMapping(
-  LPCSTR  pName,
-  BOOL    bWrite
-);
+        LPCSTR pName,
+        BOOL bWrite
+        );
 
 // ***************************************************************
 
@@ -414,13 +414,13 @@ madCHookApi(HANDLE) OpenGlobalFileMapping(
 // please use these functions in nt wide API hook callback functions
 // because the OS' own functions seem to confuse nt in hook callback functions
 madCHookApi(VOID) AnsiToWide(
-  LPCSTR  pAnsi,
-  LPWSTR  pWide
-);
+        LPCSTR pAnsi,
+        LPWSTR pWide
+        );
 madCHookApi(VOID) WideToAnsi(
-  LPCWSTR pWide,
-  LPSTR   pAnsi
-);
+        LPCWSTR pWide,
+        LPSTR pAnsi
+        );
 
 // ***************************************************************
 // ipc (inter process communication) message services
@@ -432,13 +432,13 @@ madCHookApi(VOID) WideToAnsi(
 // your callback function will then be called for each incoming message
 // CAUTION: each ipc message is handled by a seperate thread, as a result
 //          your callback will be called by a different thread each time
-typedef VOID (WINAPI *PIPC_CALLBACK_ROUTINE)(
-  LPCSTR  pIpc,
-  PVOID   pMessageBuf,
-  DWORD   dwMessageLen,
-  PVOID   pAnswerBuf,
-  DWORD   dwAnswerLen
-);
+typedef VOID (WINAPI * PIPC_CALLBACK_ROUTINE)(
+        LPCSTR pIpc,
+        PVOID pMessageBuf,
+        DWORD dwMessageLen,
+        PVOID pAnswerBuf,
+        DWORD dwAnswerLen
+        );
 
 // create an ipc queue
 // please choose a unique ipc name to avoid conflicts with other programs
@@ -449,20 +449,20 @@ typedef VOID (WINAPI *PIPC_CALLBACK_ROUTINE)(
 // in its current implementation "maxThreadCount" only supports "1" or unlimited
 // the parameter "maxQueueLen" is not yet implemented at all
 madCHookApi(BOOL) CreateIpcQueueEx(
-  LPCSTR                pIpc,
-  PIPC_CALLBACK_ROUTINE pCallback,
+        LPCSTR pIpc,
+        PIPC_CALLBACK_ROUTINE pCallback,
   #ifdef __cplusplus
-    DWORD                 dwMaxThreadCount = 16,
-    DWORD                 dwMaxQueueLen    = 0x1000
-  #else
-    DWORD                 dwMaxThreadCount,
-    DWORD                 dwMaxQueueLen
-  #endif
-);
+        DWORD dwMaxThreadCount = 16,
+        DWORD dwMaxQueueLen = 0x1000
+  #else // ifdef __cplusplus
+        DWORD dwMaxThreadCount,
+        DWORD dwMaxQueueLen
+  #endif // ifdef __cplusplus
+        );
 madCHookApi(BOOL) CreateIpcQueue(
-  LPCSTR                pIpc,
-  PIPC_CALLBACK_ROUTINE pCallback
-);
+        LPCSTR pIpc,
+        PIPC_CALLBACK_ROUTINE pCallback
+        );
 
 // send an ipc message to whomever has created the ipc queue (doesn't matter)
 // if you only fill the first 3 parameters, SendIpcMessage returns at once
@@ -471,45 +471,47 @@ madCHookApi(BOOL) CreateIpcQueue(
 // you can further specify how long you're willing to wait for the answer
 // and whether you want SendIpcMessage to handle messages while waiting
 madCHookApi(BOOL) SendIpcMessage(
-  LPCSTR  pIpc,
-  PVOID   pMessageBuf,
-  DWORD   dwMessageLen,
+        LPCSTR pIpc,
+        PVOID pMessageBuf,
+        DWORD dwMessageLen,
   #ifdef __cplusplus
-    PVOID   pAnswerBuf      = NULL,
-    DWORD   dwAnswerLen     = 0,
-    DWORD   dwAnswerTimeOut = INFINITE,
-    BOOL    bHandleMessage  = TRUE
-  #else
-    PVOID   pAnswerBuf,
-    DWORD   dwAnswerLen,
-    DWORD   dwAnswerTimeOut,
-    BOOL    bHandleMessage
-  #endif
-);
+        PVOID pAnswerBuf = NULL,
+        DWORD dwAnswerLen = 0,
+        DWORD dwAnswerTimeOut = INFINITE,
+        BOOL bHandleMessage = TRUE
+  #else // ifdef __cplusplus
+        PVOID pAnswerBuf,
+        DWORD dwAnswerLen,
+        DWORD dwAnswerTimeOut,
+        BOOL bHandleMessage
+  #endif // ifdef __cplusplus
+        );
 
 // destroy the ipc queue again
 // when the queue owning process quits, the ipc queue is automatically deleted
 // only the queue owning process can destroy the queue
 madCHookApi(BOOL) DestroyIpcQueue(
-  LPCSTR  pIpc
-);
+        LPCSTR pIpc
+        );
 
 // ***************************************************************
 // this function adds some access rights to the specified target
 // the target can either be a process handle or a service handle
 
 madCHookApi(BOOL) AddAccessForEveryone(
-  HANDLE  hProcessOrService,
-  DWORD   dwAccess
-);
+        HANDLE hProcessOrService,
+        DWORD dwAccess
+        );
 
 // ***************************************************************
 // this is the header for the dynamic lib
 // you don't need to use InitializeMadCHook + FinalizeMadCHook
 // so the functions are just empty stubs
 
-VOID InitializeMadCHook() {}
-VOID   FinalizeMadCHook() {}
+VOID InitializeMadCHook() {
+}
+VOID   FinalizeMadCHook() {
+}
 
 // ***************************************************************
 
@@ -519,16 +521,16 @@ VOID   FinalizeMadCHook() {}
   #define UninjectLibrary UninjectLibraryW
   #define   InjectLibrarySession   InjectLibrarySessionW
   #define UninjectLibrarySession UninjectLibrarySessionW
-#else
+#else // ifdef UNICODE
   #define CreateProcessEx CreateProcessExA
   #define   InjectLibrary   InjectLibraryA
   #define UninjectLibrary UninjectLibraryA
   #define   InjectLibrarySession   InjectLibrarySessionA
   #define UninjectLibrarySession UninjectLibrarySessionA
-#endif
+#endif // ifdef UNICODE
 
 #ifdef __cplusplus
 }
-#endif
+#endif // ifdef __cplusplus
 
-#endif
+#endif // if !defined(MADCHOOK_H)

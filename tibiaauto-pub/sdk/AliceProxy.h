@@ -12,7 +12,7 @@
 class CAliceProxy
 {
 public:
-	char * respond(char *text,char *id);
+	char * respond(char *text, char *id);
 	CAliceProxy();
 	virtual ~CAliceProxy();
 

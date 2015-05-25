@@ -12,7 +12,7 @@
 class CIPCBackPipe
 {
 public:
-	int readFromPipe(struct ipcMessage *mess,int expectedType);
+	int readFromPipe(struct ipcMessage *mess, int expectedType);
 	CIPCBackPipe();
 	virtual ~CIPCBackPipe();
 

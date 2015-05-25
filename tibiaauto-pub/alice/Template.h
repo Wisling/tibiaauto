@@ -13,8 +13,10 @@ class Template
 public:
 	Template(const string &fn, streamsize st, streamsize ed)
 		: start(st), end(ed) {
-		for (size_t ix = 0; ix < filenames.size(); ++ix) {
-			if (filenames[ix] == fn) {
+		for (size_t ix = 0; ix < filenames.size(); ++ix)
+		{
+			if (filenames[ix] == fn)
+			{
 				filenameIx = ix;
 				return;
 			}
@@ -30,15 +32,14 @@ public:
 	string getFilename();
 	static void reloadFile(int index);
 	int filenameIx;
-	
+
 	string fetch();
 private:
 	static const char *getFilename(int index);
-	
+
 	static vector<string> filenames;
 	static vector<unsigned long> filesizes;
 	streamsize start, end;
 //	string contents;
 };
-#endif
-
+#endif // ifndef TEMPLATE_H

@@ -18,21 +18,21 @@ private:
 	int m_containerNr;
 // Construction
 public:
-	CToolContainerContent(int containerNr,CWnd* pParent = NULL);   // standard constructor
+	CToolContainerContent(int containerNr, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CToolContainerContent)
 	enum { IDD = IDD_TOOL_CONTAINERCONTENT };
-	CButtonST	m_OK;
-	CGroupBoxEx	m_BackpackContainerFrame;
-	CListCtrl	m_list;
+	CButtonST m_OK;
+	CGroupBoxEx m_BackpackContainerFrame;
+	CListCtrl m_list;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CToolContainerContent)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

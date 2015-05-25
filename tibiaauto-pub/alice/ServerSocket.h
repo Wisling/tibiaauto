@@ -19,7 +19,7 @@ public:
 	virtual ~ServerSocket();
 
 	bool init();
-	
+
 	void setServerListener(ServerSocketListener *);
 	ServerSocketListener *getServerListener();
 
@@ -28,4 +28,4 @@ protected:
 	ServerSocketListener *serverListener;
 };
 
-#endif
+#endif // ifndef SERVER_SOCKET_H

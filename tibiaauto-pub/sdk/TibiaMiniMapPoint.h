@@ -13,7 +13,7 @@ class CTibiaMiniMapPoint
 {
 public:
 	CTibiaMiniMapPoint();
-	CTibiaMiniMapPoint(int x,int y,int z,int colour,int speed);
+	CTibiaMiniMapPoint(int x, int y, int z, int colour, int speed);
 	virtual ~CTibiaMiniMapPoint();
 	int x;
 	int y;

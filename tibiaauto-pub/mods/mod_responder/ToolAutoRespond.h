@@ -45,23 +45,23 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolAutoRespond)
 	enum { IDD = IDD_TOOL_AUTORESPOND };
-	CGroupBoxEx	m_ResponderLogsFrame;
-	CButton	m_localEcho;
-	CButton	m_debug;
-	CListCtrl	m_threadStatus;
-	CEdit	m_script;
-	CButtonST	m_enable;
-	CButtonST	m_ClearLogs;
-	CButtonST	m_OK;
-	CListCtrl	m_actionLog;
-	CListCtrl	m_msgHistory;
+	CGroupBoxEx m_ResponderLogsFrame;
+	CButton m_localEcho;
+	CButton m_debug;
+	CListCtrl m_threadStatus;
+	CEdit m_script;
+	CButtonST m_enable;
+	CButtonST m_ClearLogs;
+	CButtonST m_OK;
+	CListCtrl m_actionLog;
+	CListCtrl m_msgHistory;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CToolAutoRespond)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -85,7 +85,7 @@ private:
 
 	int threadCount;
 	CToolAutoResponderThreadConfig threadConfig[MAX_THREADS];
-	
+
 	DOMNode  *doc;
 	XercesDOMParser *parser;
 };

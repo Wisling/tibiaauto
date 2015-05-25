@@ -5,7 +5,7 @@
 #if !defined(AFX_TOOLAUTORESPONDERTHREADCONFIG_H__80B5E409_9D57_48A8_B8AB_D417A100FF8A__INCLUDED_)
 #define AFX_TOOLAUTORESPONDERTHREADCONFIG_H__80B5E409_9D57_48A8_B8AB_D417A100FF8A__INCLUDED_
 
-#include "AutoResponderParserContext.h"	// Added by ClassView
+#include "AutoResponderParserContext.h" // Added by ClassView
 #if _MSC_VER > 1000
 #pragma once
 #endif // _MSC_VER > 1000
@@ -46,7 +46,6 @@ public:
 	DOMNode *threadNode;
 	std::queue<CToolAutoResponderMessage *> queue;
 	CToolAutoResponderThreadStatus status;
-
 };
 
 #endif // !defined(AFX_TOOLAUTORESPONDERTHREADCONFIG_H__80B5E409_9D57_48A8_B8AB_D417A100FF8A__INCLUDED_)

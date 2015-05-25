@@ -18,7 +18,6 @@ public:
 	int y;
 	int type;
 	char desc[100];
-
 };
 
 #endif // !defined(AFX_TIBIAMiniMapLabel_H__8571B5CD_B0D8_4F43_B4A0_D523C9730686__INCLUDED_)

@@ -14,20 +14,20 @@ class CScriptConfigDialg : public MyDialog
 {
 // Construction
 public:
-	CScriptConfigDialg(int scriptNr,CWnd* pParent = NULL);   // standard constructor
+	CScriptConfigDialg(int scriptNr, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CScriptConfigDialg)
 	enum { IDD = IDD_SCRIPT_CONFIG };
-	CListCtrl	m_list;
-	CEdit	m_edit;
+	CListCtrl m_list;
+	CEdit m_edit;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CScriptConfigDialg)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

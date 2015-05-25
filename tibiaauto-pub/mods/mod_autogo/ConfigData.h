@@ -22,8 +22,8 @@ public:
 	virtual ~CConfigData();
 
 	list<Alarm> alarmList;
-	int actX,actY,actZ,actDirection;
-	int runawayX,runawayY,runawayZ;
+	int actX, actY, actZ, actDirection;
+	int runawayX, runawayY, runawayZ;
 
 	bool triggerMessage;
 	bool maintainPos;

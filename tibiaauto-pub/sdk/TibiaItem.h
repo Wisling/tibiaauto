@@ -22,8 +22,6 @@ public:
 	int objectId;
 	int quantity;
 	int pos;
-
-	
 };
 
 #endif // !defined(AFX_TIBIAITEM_H__65F1AF50_58EE_4C63_8E79_E5BC61BD74C9__INCLUDED_)

@@ -3,16 +3,16 @@
 
 /*
 
-	TimeKeeper
-	
-	Author: Jonathan Roewen
-	
-	Description: Maintains a priority queue of pending events that are
-	             to be triggered at a particular time. Currently, it is
-	             quite inaccurate, with a 3-second precision, due to
-	             the need of interleaving it within the socket code.
+        TimeKeeper
 
-*/
+        Author: Jonathan Roewen
+
+        Description: Maintains a priority queue of pending events that are
+                     to be triggered at a particular time. Currently, it is
+                     quite inaccurate, with a 3-second precision, due to
+                     the need of interleaving it within the socket code.
+
+ */
 
 #include <queue>
 #include <vector>
@@ -29,8 +29,9 @@ extern time_t tNow();
 class Event
 {
 public:
-	virtual ~Event() { }
-	
+	virtual ~Event() {
+	}
+
 	virtual void run() = 0;
 };
 
@@ -38,7 +39,7 @@ class TimedEvent
 {
 public:
 	TimedEvent(time_t t, Event *e) {
-		time = t;
+		time  = t;
 		event = e;
 	}
 	time_t getTime() const {
@@ -64,10 +65,10 @@ class Timer
 {
 public:
 	Timer();
-	
+
 	void addEvent(TimedEvent *);
 	void addEvent(time_t, Event *);
-	
+
 	void processPending();
 private:
 	TimeQueue tq;
@@ -75,4 +76,4 @@ private:
 
 extern Timer *timer;
 
-#endif	//	TIME_KEEPER_H
+#endif  //	TIME_KEEPER_H

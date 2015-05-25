@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 #include "stdafx.h"
@@ -31,7 +31,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 //
 //	Note!
@@ -67,10 +67,10 @@ static char THIS_FILE[] = __FILE__;
 // CMod_playerinfoApp
 
 BEGIN_MESSAGE_MAP(CMod_playerinfoApp, CWinApp)
-	//{{AFX_MSG_MAP(CMod_playerinfoApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMod_playerinfoApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -81,16 +81,14 @@ END_MESSAGE_MAP()
 // CMod_playerinfoApp construction
 
 CMod_playerinfoApp::CMod_playerinfoApp() {
-	m_infoDialog=NULL;
+	m_infoDialog = NULL;
 	m_configData = new CConfigData();
 }
 
 CMod_playerinfoApp::~CMod_playerinfoApp()
 {
 	if (m_infoDialog)
-	{
 		delete m_infoDialog;
-	}
 	delete m_configData;
 }
 
@@ -105,7 +103,7 @@ int CMod_playerinfoApp::isStarted()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{
-		m_infoDialog=new CCharInfoDialog(m_configData);
+		m_infoDialog = new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 	}
 	return 0;
@@ -119,7 +117,7 @@ void CMod_playerinfoApp::start()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{
-		m_infoDialog=new CCharInfoDialog(m_configData);
+		m_infoDialog = new CCharInfoDialog(m_configData);
 		m_infoDialog->Create(IDD_CHARINFO);
 	}
 }
@@ -130,7 +128,6 @@ void CMod_playerinfoApp::stop()
 
 void CMod_playerinfoApp::showConfigDialog()
 {
-	
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{
@@ -143,14 +140,14 @@ void CMod_playerinfoApp::showConfigDialog()
 
 
 void CMod_playerinfoApp::configToControls() {
-	if (m_infoDialog)	{
+	if (m_infoDialog)
 		m_infoDialog->configToControls(m_configData);
-	}
 }
 
 
 void CMod_playerinfoApp::controlsToConfig() {
-	if (m_infoDialog) {
+	if (m_infoDialog)
+	{
 		delete m_configData;
 		m_configData = m_infoDialog->controlsToConfig();
 	}
@@ -159,12 +156,10 @@ void CMod_playerinfoApp::controlsToConfig() {
 
 void CMod_playerinfoApp::disableControls()
 {
-	
 }
 
 void CMod_playerinfoApp::enableControls()
 {
-	
 }
 
 
@@ -181,29 +176,33 @@ int CMod_playerinfoApp::validateConfig(int showAlerts)
 
 
 void CMod_playerinfoApp::resetConfig() {
-	if(m_configData){
+	if(m_configData)
+	{
 		delete m_configData;
 		m_configData = NULL;
 	}
 	m_configData = new CConfigData();
 }
 
-void CMod_playerinfoApp::loadConfigParam(char *paramName,char *paramValue) {
-	if (!strcmp(paramName,"enableTimer")) m_configData->enableTimers = atoi(paramValue)!=0;
+void CMod_playerinfoApp::loadConfigParam(char *paramName, char *paramValue) {
+	if (!strcmp(paramName, "enableTimer"))
+		m_configData->enableTimers = atoi(paramValue) != 0;
 }
 
 char *CMod_playerinfoApp::saveConfigParam(char *paramName)
 {
 	static char buf[1024];
-	buf[0]=0;
-	
-	if (!strcmp(paramName,"enableTimer")) sprintf(buf,"%d",m_configData->enableTimers);
+	buf[0] = 0;
+
+	if (!strcmp(paramName, "enableTimer"))
+		sprintf(buf, "%d", m_configData->enableTimers);
 
 	return buf;
 }
 
 char *CMod_playerinfoApp::getConfigParamName(int nr) {
-	switch (nr)	{
+	switch (nr)
+	{
 	case 0: return "enableTimer";
 	default:
 		return NULL;
@@ -219,9 +218,10 @@ void* CMod_playerinfoApp::GetPlayerInfo()
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
 {
 	skin = newSkin;
-	
+
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if(m_infoDialog){
+	if(m_infoDialog)
+	{
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();
 	}

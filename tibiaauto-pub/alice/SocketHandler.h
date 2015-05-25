@@ -19,4 +19,4 @@ private:
 	friend class Socket;
 };
 
-#endif
+#endif // ifndef SOCKET_HANDLER_H

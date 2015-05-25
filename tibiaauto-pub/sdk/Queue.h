@@ -14,7 +14,7 @@
 class CQueue
 {
 public:
-	void add(int x,int y,int z);
+	void add(int x, int y, int z);
 	struct point getFirst();
 	int size();
 	void add(struct point p);
@@ -28,7 +28,6 @@ private:
 	int start;
 	int end;
 	struct point *tab;
-
 };
 
 #endif // !defined(AFX_QUEUE_H__D521BBEB_1AB6_4737_8ECD_BB910B8DAD37__INCLUDED_)

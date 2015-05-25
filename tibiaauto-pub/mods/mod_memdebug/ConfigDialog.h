@@ -18,26 +18,26 @@ class CConfigDialog : public CDialog
 {
 // Construction
 public:
-	CConfigDialog(CMod_memdebugApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_memdebugApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	BOOL	m_scan;
-	CString	m_error;
-	int		m_addressResDec;
-	int		m_address;
-	CString	m_addressResHex;
-	int		m_val;
+	BOOL m_scan;
+	CString m_error;
+	int m_addressResDec;
+	int m_address;
+	CString m_addressResHex;
+	int m_val;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -62,7 +62,6 @@ private:
 	int m_errorCount;
 	void RegisterDebug(char *msg);
 	void RegisterError(char *msg);
-
 };
 
 //{{AFX_INSERT_LOCATION}}

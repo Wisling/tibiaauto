@@ -17,12 +17,12 @@ public:
 	}
 	virtual ~SaxListener() {
 	}
-	
-	virtual void elementStarted(const string &, int) = 0;
-	virtual void elementFinished(const string &, int) = 0;
+
+	virtual void elementStarted(const string &, int)                 = 0;
+	virtual void elementFinished(const string &, int)                = 0;
 	virtual void elementStarted(const string &, attributeMap *, int) = 0;
-	virtual void elementText(const string &, int) = 0;
-	virtual void elementCData(const string &, int) = 0;
+	virtual void elementText(const string &, int)                    = 0;
+	virtual void elementCData(const string &, int)                   = 0;
 };
 
 class SaxParser
@@ -41,8 +41,8 @@ public:
 private:
 	void addElement(string &, int);
 	void addElement(vector<char> &, int);
-	
+
 	SaxListener *listener;
 };
 
-#endif
+#endif // ifndef SAX_PARSER_H

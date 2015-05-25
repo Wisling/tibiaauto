@@ -14,4 +14,4 @@ public:
 	static string prettyAiml(PElement);
 };
 
-#endif
+#endif // ifndef AIML_WRITER_H

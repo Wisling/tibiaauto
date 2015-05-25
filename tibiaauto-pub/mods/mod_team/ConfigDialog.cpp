@@ -12,7 +12,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 extern CConnectedNodes connectedNodes;
 
@@ -20,12 +20,12 @@ extern CConnectedNodes connectedNodes;
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_teamApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_teamApp *app, CWnd* pParent /*=NULL*/)
 	: CDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -41,11 +41,11 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,19 +67,18 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
 
 void CConfigDialog::disableControls()
 {
-
 }
 
 void CConfigDialog::enableControls()
@@ -87,18 +86,17 @@ void CConfigDialog::enableControls()
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf,"%s",configData->masterChar);m_masterChar.SetWindowText(buf);
+	sprintf(buf, "%s", configData->masterChar); m_masterChar.SetWindowText(buf);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
 {
 	//char buf[128];
 	CConfigData *newConfigData = new CConfigData();
-	m_masterChar.GetWindowText(newConfigData->masterChar,127);
+	m_masterChar.GetWindowText(newConfigData->masterChar, 127);
 
 
 	return newConfigData;
@@ -106,95 +104,97 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	if (nIDEvent==1001)
+	if (nIDEvent == 1001)
 	{
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int i;
 		KillTimer(1001);
 
-		int count=m_slaveList.GetItemCount();
+		int count = m_slaveList.GetItemCount();
 
 		int refreshedNodes[1000];
-		memset(refreshedNodes,0x0,sizeof(int)*1000);
+		memset(refreshedNodes, 0x0, sizeof(int) * 1000);
 
 
-		for (i=0;i<count;i++)
+		for (i = 0; i < count; i++)
 		{
 			int nodeNr = m_slaveList.GetItemData(i);
-			refreshedNodes[nodeNr]=1;
+			refreshedNodes[nodeNr] = 1;
 			if (connectedNodes.getNodeByNr(nodeNr)->connected)
 			{
 				char buf[256];
 				CConnectedNode *connectedNode = connectedNodes.getNodeByNr(nodeNr);
-				m_slaveList.SetItemText(i,0,connectedNode->charName);
-				sprintf(buf,"(%d,%d,%d)",self->x-connectedNode->x,self->y-connectedNode->y,self->z-connectedNode->z);
-				m_slaveList.SetItemText(i,2,buf);
-				sprintf(buf,"%d/%d",connectedNode->hp,connectedNode->maxHp);
-				m_slaveList.SetItemText(i,3,buf);
-				sprintf(buf,"%d/%d",connectedNode->mana,connectedNode->maxMana);
-				m_slaveList.SetItemText(i,4,buf);
-				sprintf(buf,"%d",GetTickCount()-connectedNode->lastMessageTm);
-				m_slaveList.SetItemText(i,5,buf);
-				sprintf(buf,"%s",connectedNode->isSlave?"yes":"no");
-				m_slaveList.SetItemText(i,6,buf);
-				sprintf(buf,"%d",connectedNode->distance);
-				m_slaveList.SetItemText(i,7,buf);
-			} else {
+				m_slaveList.SetItemText(i, 0, connectedNode->charName);
+				sprintf(buf, "(%d,%d,%d)", self->x - connectedNode->x, self->y - connectedNode->y, self->z - connectedNode->z);
+				m_slaveList.SetItemText(i, 2, buf);
+				sprintf(buf, "%d/%d", connectedNode->hp, connectedNode->maxHp);
+				m_slaveList.SetItemText(i, 3, buf);
+				sprintf(buf, "%d/%d", connectedNode->mana, connectedNode->maxMana);
+				m_slaveList.SetItemText(i, 4, buf);
+				sprintf(buf, "%d", GetTickCount() - connectedNode->lastMessageTm);
+				m_slaveList.SetItemText(i, 5, buf);
+				sprintf(buf, "%s", connectedNode->isSlave ? "yes" : "no");
+				m_slaveList.SetItemText(i, 6, buf);
+				sprintf(buf, "%d", connectedNode->distance);
+				m_slaveList.SetItemText(i, 7, buf);
+			}
+			else
+			{
 				m_slaveList.DeleteItem(i);
 				count--;
 			}
 		}
-		
-		for (i=0;i<connectedNodes.getMaxNodeCount();i++)
+
+		for (i = 0; i < connectedNodes.getMaxNodeCount(); i++)
 		{
 			CConnectedNode *connectedNode = connectedNodes.getNodeByNr(i);
-			if (connectedNode->connected&&!refreshedNodes[i])
+			if (connectedNode->connected && !refreshedNodes[i])
 			{
 				char buf[256];
-				m_slaveList.InsertItem(0,connectedNode->charName);
-				sprintf(buf,"(%d,%d,%d)",self->x-connectedNode->x,self->y-connectedNode->y,self->z-connectedNode->z);
-				m_slaveList.SetItemText(0,2,buf);
-				sprintf(buf,"%d/%d",connectedNode->hp,connectedNode->maxHp);
-				m_slaveList.SetItemText(0,3,buf);
-				sprintf(buf,"%d/%d",connectedNode->mana,connectedNode->maxMana);
-				m_slaveList.SetItemText(0,4,buf);
-				sprintf(buf,"%d",GetTickCount()-connectedNode->lastMessageTm);
-				m_slaveList.SetItemText(0,5,buf);
-				sprintf(buf,"%s",connectedNode->isSlave?"yes":"no");
-				m_slaveList.SetItemText(0,6,buf);
-				sprintf(buf,"%d",connectedNode->distance);
-				m_slaveList.SetItemText(0,7,buf);
+				m_slaveList.InsertItem(0, connectedNode->charName);
+				sprintf(buf, "(%d,%d,%d)", self->x - connectedNode->x, self->y - connectedNode->y, self->z - connectedNode->z);
+				m_slaveList.SetItemText(0, 2, buf);
+				sprintf(buf, "%d/%d", connectedNode->hp, connectedNode->maxHp);
+				m_slaveList.SetItemText(0, 3, buf);
+				sprintf(buf, "%d/%d", connectedNode->mana, connectedNode->maxMana);
+				m_slaveList.SetItemText(0, 4, buf);
+				sprintf(buf, "%d", GetTickCount() - connectedNode->lastMessageTm);
+				m_slaveList.SetItemText(0, 5, buf);
+				sprintf(buf, "%s", connectedNode->isSlave ? "yes" : "no");
+				m_slaveList.SetItemText(0, 6, buf);
+				sprintf(buf, "%d", connectedNode->distance);
+				m_slaveList.SetItemText(0, 7, buf);
 
-				m_slaveList.SetItemData(0,i);
+				m_slaveList.SetItemData(0, i);
 			}
 		}
 		delete self;
 
 
-		SetTimer(1001,500,NULL);
+		SetTimer(1001, 500, NULL);
 	}
-	
+
 	CDialog::OnTimer(nIDEvent);
 }
 
 BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	m_slaveList.InsertColumn(0,"Player name",LVCFMT_LEFT,100);
-	m_slaveList.InsertColumn(1,"Last message [ms]",LVCFMT_LEFT,50);
-	m_slaveList.InsertColumn(2,"Distance",LVCFMT_LEFT,80);
-	m_slaveList.InsertColumn(3,"HP",LVCFMT_LEFT,80);
-	m_slaveList.InsertColumn(4,"Mana",LVCFMT_LEFT,80);
-	m_slaveList.InsertColumn(5,"Ping",LVCFMT_LEFT,50);
-	m_slaveList.InsertColumn(6,"Slave",LVCFMT_LEFT,30);
-	m_slaveList.InsertColumn(7,"Dist",LVCFMT_LEFT,30);
-	
-	m_slaveList.SetExtendedStyle(m_slaveList.GetExtendedStyle()|LVS_EX_FULLROWSELECT);
 
-	SetTimer(1001,500,NULL);
-	
+	m_slaveList.InsertColumn(0, "Player name", LVCFMT_LEFT, 100);
+	m_slaveList.InsertColumn(1, "Last message [ms]", LVCFMT_LEFT, 50);
+	m_slaveList.InsertColumn(2, "Distance", LVCFMT_LEFT, 80);
+	m_slaveList.InsertColumn(3, "HP", LVCFMT_LEFT, 80);
+	m_slaveList.InsertColumn(4, "Mana", LVCFMT_LEFT, 80);
+	m_slaveList.InsertColumn(5, "Ping", LVCFMT_LEFT, 50);
+	m_slaveList.InsertColumn(6, "Slave", LVCFMT_LEFT, 30);
+	m_slaveList.InsertColumn(7, "Dist", LVCFMT_LEFT, 30);
+
+	m_slaveList.SetExtendedStyle(m_slaveList.GetExtendedStyle() | LVS_EX_FULLROWSELECT);
+
+	SetTimer(1001, 500, NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

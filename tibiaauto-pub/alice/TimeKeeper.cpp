@@ -13,36 +13,36 @@ Timer *timer = new Timer();
 long tSecond() {
 	time_t t;
 	struct tm *now;
-	
+
 	time(&t);
 	now = localtime(&t);
 
 	now->tm_sec++;
-	
+
 	return (long)difftime(mktime(now), t);
 }
 
 long tMinute() {
 	time_t t;
 	struct tm *now;
-	
+
 	time(&t);
 	now = localtime(&t);
 
 	now->tm_min++;
-	
+
 	return (long)difftime(mktime(now), t);
 }
 
 long tHour() {
 	time_t t;
 	struct tm *now;
-	
+
 	time(&t);
 	now = localtime(&t);
 
 	now->tm_hour++;
-	
+
 	return (long)difftime(mktime(now), t);
 }
 
@@ -73,9 +73,10 @@ void Timer::addEvent(time_t t, Event *e) {
 
 void Timer::processPending() {
 	time_t t;
-	
+
 	t = time(NULL);
-	while (!tq.empty() && t >= tq.top()->getTime()) {
+	while (!tq.empty() && t >= tq.top()->getTime())
+	{
 		tq.top()->run();
 		tq.pop();
 	}

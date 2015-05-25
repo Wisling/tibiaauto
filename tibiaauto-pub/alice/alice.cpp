@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 //
 //	Note!
@@ -42,10 +42,10 @@ static char THIS_FILE[] = __FILE__;
 // CAliceApp
 
 BEGIN_MESSAGE_MAP(CAliceApp, CWinApp)
-	//{{AFX_MSG_MAP(CAliceApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CAliceApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -79,30 +79,30 @@ BOOL CAliceApp::InitInstance()
 /////////////////////////////////////////////////////////////////////////////
 
 
-int kernelInitDone=0;
+int kernelInitDone = 0;
 
 void kernelInit()
 {
 	Kernel *kernel = new Kernel();
-	
+
 	kernel->bootstrap();
 }
 
 
 /////////////////////////////////////////////////////////////////////////////
 
-char *kernelRespond(char *text,char *id)
+char *kernelRespond(char *text, char *id)
 {
 	if (!kernelInitDone)
 	{
 		kernelInit();
-		kernelInitDone=1;
+		kernelInitDone = 1;
 	}
-		
 
-	char *ret=(char *)malloc(65536);
-	memset(ret,0,65536);
-	string aliceString = Kernel::respond(text,id);
-	sprintf(ret,"%s",aliceString.c_str());
+
+	char *ret = (char *)malloc(65536);
+	memset(ret, 0, 65536);
+	string aliceString = Kernel::respond(text, id);
+	sprintf(ret, "%s", aliceString.c_str());
 	return ret;
 }

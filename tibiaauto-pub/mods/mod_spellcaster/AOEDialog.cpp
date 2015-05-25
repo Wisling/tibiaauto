@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // AOEDialog dialog
@@ -53,25 +53,25 @@ void AOEDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(AOEDialog, CDialog)
-	//{{AFX_MSG_MAP(AOEDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_AOE, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_GRAN, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_MAS, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, OnToolSpellcasterAOE)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, OnToolSpellcasterAOE)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(AOEDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_AOE, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_GRAN, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXORI_MAS, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_MAS_SAN, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FLAM_HUR, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_FRIGO_HUR, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_TERA_HUR, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_HUR, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_VIS_LUX, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_VIS_LUX, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_VIS, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FLAM, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_TERA, OnToolSpellcasterAOE)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_EXEVO_GRAN_MAS_FRIGO, OnToolSpellcasterAOE)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -98,15 +98,14 @@ void AOEDialog::disableControls() {
 
 void AOEDialog::enableControls() {
 	m_aoe.EnableWindow(true);
-	if (m_aoe.GetCheck()) {
+	if (m_aoe.GetCheck())
 		OnToolSpellcasterAOE();
-	}
 }
 
 void AOEDialog::configToControls(CConfigData *configData) {
 	char buf[128];
 	m_aoe.SetCheck(configData->aoe);
-	sprintf(buf,"%d",configData->aoeAffect);		m_aoeAffect.SetWindowText(buf);
+	sprintf(buf, "%d", configData->aoeAffect);                m_aoeAffect.SetWindowText(buf);
 	m_exori.SetCheck(configData->exori);
 	m_exoriGran.SetCheck(configData->exoriGran);
 	m_exoriMas.SetCheck(configData->exoriMas);
@@ -126,29 +125,29 @@ void AOEDialog::configToControls(CConfigData *configData) {
 
 void AOEDialog::controlsToConfig(CConfigData *newConfigData) {
 	char buf[128];
-	newConfigData->aoe = m_aoe.GetCheck();
-	m_aoeAffect.GetWindowText(buf,127);newConfigData->aoeAffect=atoi(buf);
-	newConfigData->exori = m_exori.GetCheck();
-	newConfigData->exoriGran = m_exoriGran.GetCheck();
-	newConfigData->exoriMas = m_exoriMas.GetCheck();
-	newConfigData->exevoMasSan = m_exevoMasSan.GetCheck();
-	newConfigData->exevoFlamHur = m_exevoFlamHur.GetCheck();
-	newConfigData->exevoFrigoHur = m_exevoFrigoHur.GetCheck();
-	newConfigData->exevoTeraHur = m_exevoTeraHur.GetCheck();
-	newConfigData->exevoVisHur = m_exevoVisHur.GetCheck();
-	newConfigData->exevoVisLux = m_exevoVisLux.GetCheck();
-	newConfigData->exevoGranVisLux = m_exevoGranVisLux.GetCheck();
-	newConfigData->exevoGranMasVis = m_exevoGranMasVis.GetCheck();
-	newConfigData->exevoGranMasFlam = m_exevoGranMasFlam.GetCheck();
-	newConfigData->exevoGranMasTera = m_exevoGranMasTera.GetCheck();
-	newConfigData->exevoGranMasFrigo = m_exevoGranMasFrigo.GetCheck();
+	newConfigData->aoe                                            = m_aoe.GetCheck();
+	m_aoeAffect.GetWindowText(buf, 127); newConfigData->aoeAffect = atoi(buf);
+	newConfigData->exori                                          = m_exori.GetCheck();
+	newConfigData->exoriGran                                      = m_exoriGran.GetCheck();
+	newConfigData->exoriMas                                       = m_exoriMas.GetCheck();
+	newConfigData->exevoMasSan                                    = m_exevoMasSan.GetCheck();
+	newConfigData->exevoFlamHur                                   = m_exevoFlamHur.GetCheck();
+	newConfigData->exevoFrigoHur                                  = m_exevoFrigoHur.GetCheck();
+	newConfigData->exevoTeraHur                                   = m_exevoTeraHur.GetCheck();
+	newConfigData->exevoVisHur                                    = m_exevoVisHur.GetCheck();
+	newConfigData->exevoVisLux                                    = m_exevoVisLux.GetCheck();
+	newConfigData->exevoGranVisLux                                = m_exevoGranVisLux.GetCheck();
+	newConfigData->exevoGranMasVis                                = m_exevoGranMasVis.GetCheck();
+	newConfigData->exevoGranMasFlam                               = m_exevoGranMasFlam.GetCheck();
+	newConfigData->exevoGranMasTera                               = m_exevoGranMasTera.GetCheck();
+	newConfigData->exevoGranMasFrigo                              = m_exevoGranMasFrigo.GetCheck();
 }
 
 BOOL AOEDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
 
 	OnToolSpellcasterAOE();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -161,7 +160,6 @@ void AOEDialog::OnToolSpellcasterAOE()
 	OnToolSpellcasterDruidAOE();
 	OnToolSpellcasterPaladinAOE();
 	OnToolSpellcasterKnightAOE();
-
 }
 
 void AOEDialog::OnToolSpellcasterSorcererAOE()

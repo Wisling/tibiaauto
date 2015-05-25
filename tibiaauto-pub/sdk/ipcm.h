@@ -9,7 +9,7 @@ struct ipcMessage
 public:
 	ipcMessage(){
 		messageType = 0;
-		memset(payload,0,1024);
+		memset(payload, 0, 1024);
 		tm = 0;
 	}
 	void send(HANDLE pipeHandle);
@@ -34,4 +34,4 @@ public:
  */
 
 
-#endif
+#endif // ifndef _IPCM_H

@@ -27,7 +27,6 @@ public:
 
 	CConnectedNode();
 	virtual ~CConnectedNode();
-
 };
 
 #endif // !defined(AFX_CONNECTEDNODE_H__489748D1_6F01_4898_855F_B20056B25768__INCLUDED_)

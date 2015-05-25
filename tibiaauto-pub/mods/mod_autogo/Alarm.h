@@ -89,10 +89,10 @@ private:
 	CString alarmDescriptor;
 	int manaCost;
 	// Trigger Functions
-	bool vipOnline(int, bool=true);
-	bool vipNameOnline(CString,bool=true);
+	bool vipOnline(int, bool = true);
+	bool vipNameOnline(CString, bool = true);
 	int onScreenCheck(char whiteList[100][32], int);
-	
+
 	// Helper Functions
 	int spaceAvailable();
 	bool isSpellMessage(char *);
@@ -123,7 +123,6 @@ private:
 	bool permanent;
 
 
-
 	// Initial Character State
 	int lvlInit;
 	int mlvlInit;
@@ -146,7 +145,6 @@ public:
 	//Alarm variables
 	int alarmState;
 	int runCycle;
-
 };
 
 #endif // !defined(AFX_ALARM_H__514125AB_2BAC_490F_9367_E72C0A92DAF0__INCLUDED_)

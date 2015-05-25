@@ -13,10 +13,9 @@
 
 using namespace std;
 
-Element::Element(const string &name = ""):text(""),tname(""),nspace("") {
-	if (!name.empty()) {
+Element::Element(const string &name = "") : text(""), tname(""), nspace("") {
+	if (!name.empty())
 		setName(name);
-	}
 	child = next = last = NULL;
 }
 
@@ -32,27 +31,28 @@ string Element::getNamespace() const {
 }
 
 string Element::getText(bool resolve) const {
-	if (!resolve) {
+	if (!resolve)
 		return text;
-	} else {
+	else
 		return resolveEntities(text);
-	}
 }
 //	add bool
 string Element::getAttribute(const string &key) const {
 	map<string, string>::const_iterator itr = attributes.find(key);
-	if (itr == attributes.end()) {
+	if (itr == attributes.end())
 		return "";
-	}
 	return resolveEntities((*itr).second);
 }
 
 void Element::setName(const string &str) {
 	string::size_type ix = str.find(':');
-	if (ix != string::npos) {
+	if (ix != string::npos)
+	{
 		setNamespace(str.substr(0, ix));
 		setTagname(str.substr(ix + 1));
-	} else {
+	}
+	else
+	{
 		setTagname(str);
 		setNamespace("");
 	}
@@ -75,7 +75,7 @@ void Element::setAttribute(const string &key, const string &value) {
 }
 
 bool Element::hasNamespace() const {
-	return strlen(nspace)!=0;
+	return strlen(nspace) != 0;
 }
 
 bool Element::hasAttributes() const {
@@ -92,10 +92,10 @@ PElement Element::getChild() const {
 
 PElement Element::getChild(const string &tagname) const {
 	PElement ch = child;
-	while (ch != NULL) {
-		if (ch->tname == tagname) {
+	while (ch != NULL)
+	{
+		if (ch->tname == tagname)
 			return ch;
-		}
 		ch = ch->next;
 	}
 	return PElement(NULL);
@@ -106,28 +106,32 @@ PElement Element::getNextSibling() const {
 }
 
 void Element::addChild(PElement element) {
-	if (child == NULL) {
+	if (child == NULL)
+	{
 		child = element;
-		last = child;
-	} else {
+		last  = child;
+	}
+	else
+	{
 		last->next = element;
-		last = last->next;
+		last       = last->next;
 	}
 }
 
 void Element::getChildren(velement *ve) {
 	PElement ch = child;
-	while (ch != NULL) {
+	while (ch != NULL)
+	{
 		ve->push_back(ch);
 	}
 }
 
 void Element::getChildren(const string &tagname, velement *ve) {
 	PElement ch = child;
-	while (ch != NULL) {
-		if (ch->tname == tagname) {
+	while (ch != NULL)
+	{
+		if (ch->tname == tagname)
 			ve->push_back(ch);
-		}
 		ch = ch->next;
 	}
 }
@@ -138,34 +142,41 @@ map<string, string> Element::getAttributes() const {
 
 string Element::resolveEntities(const string &input) {
 	string output = input;
-	int ix = output.find("&");
-	int iy = output.find(";", ix);
-	
-	while (ix != string::npos && iy != string::npos) {
+	int ix        = output.find("&");
+	int iy        = output.find(";", ix);
+
+	while (ix != string::npos && iy != string::npos)
+	{
 		string head = output.substr(0, ix);
 		string tail = output.substr(iy + 1);
-		string mid = output.substr(ix, iy + 1 - ix);
-		if (mid == "&lt;") {
+		string mid  = output.substr(ix, iy + 1 - ix);
+		if (mid == "&lt;")
+		{
 			output = head + "<" + tail;
-			iy -= 3;
+			iy    -= 3;
 		}
-		else if (mid == "&gt;") {
+		else if (mid == "&gt;")
+		{
 			output = head + ">" + tail;
-			iy -= 3;
+			iy    -= 3;
 		}
-		else if (mid == "&amp;") {
+		else if (mid == "&amp;")
+		{
 			output = head + "&" + tail;
-			iy -= 4;
+			iy    -= 4;
 		}
-		else if (mid == "&quot;") {
+		else if (mid == "&quot;")
+		{
 			output = head + "\"" + tail;
-			iy -= 5;
+			iy    -= 5;
 		}
-		else if (mid == "&apos;") {
+		else if (mid == "&apos;")
+		{
 			output = head + "'" + tail;
-			iy -= 5;
+			iy    -= 5;
 		}
-		else {
+		else
+		{
 			iy = ix + 1;
 		}
 		ix = output.find("&", iy);

@@ -9,19 +9,19 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-HMODULE CAliceProxy::dllAlice=NULL;
+HMODULE CAliceProxy::dllAlice = NULL;
 
 CAliceProxy::CAliceProxy()
 {
-	if (dllAlice==NULL)
+	if (dllAlice == NULL)
 	{
 		char installPath[1024];
-		unsigned long installPathLen=1023;
-		installPath[0]='\0';
-		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
+		unsigned long installPathLen = 1023;
+		installPath[0] = '\0';
+		HKEY hkey = NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -32,15 +32,14 @@ CAliceProxy::CAliceProxy()
 		}
 
 		char pathBuf[2048];
-		sprintf(pathBuf,"%s\\mods\\alice.dll",installPath);
+		sprintf(pathBuf, "%s\\mods\\alice.dll", installPath);
 
-		dllAlice=LoadLibrary(pathBuf);
+		dllAlice = LoadLibrary(pathBuf);
 	}
 }
 
 CAliceProxy::~CAliceProxy()
 {
-
 }
 
 char * CAliceProxy::respond(char *text, char *id)
@@ -48,14 +47,14 @@ char * CAliceProxy::respond(char *text, char *id)
 	if (dllAlice)
 	{
 		typedef char *(*Proto_fun)(char *text, char *id);
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllAlice,"kernelRespond");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllAlice, "kernelRespond");
 		if (fun)
-		{
-			return fun(text,id);
-		} else {
+			return fun(text, id);
+		else
 			return "Alice::respond not found";
-		}
-	} else {
+	}
+	else
+	{
 		return "Alice not loaded";
 	}
 }

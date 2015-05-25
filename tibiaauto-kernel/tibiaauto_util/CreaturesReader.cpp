@@ -10,9 +10,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////
@@ -22,58 +22,58 @@ static char THIS_FILE[]=__FILE__;
 struct dbKey
 {
 private:
-        unsigned short int x;
-        unsigned short int y;
-        unsigned char z;
-        unsigned short int creatureNr;
+	unsigned short int x;
+	unsigned short int y;
+	unsigned char z;
+	unsigned short int creatureNr;
 public:
-        dbKey(unsigned short int x,unsigned short int y,unsigned char z,unsigned short int creatureNr)
-        {
-                this->x=((x&0xff)<<8)+(x>>8);
-                this->y=((y&0xff)<<8)+(y>>8);
-                this->z=z;
-                this->creatureNr=creatureNr;
-        }
-        unsigned short int getX()
-        {
-                return ((x&0xff)<<8)+(x>>8);
-        }
-        unsigned short int getY()
-        {
-                return ((y&0xff)<<8)+(y>>8);
-        }
-        unsigned char getZ()
-        {
-                return z;
-        }
-        unsigned short int getCreatureNr()
-        {
-                return creatureNr;
-        }
+	dbKey(unsigned short int x, unsigned short int y, unsigned char z, unsigned short int creatureNr)
+	{
+		this->x          = ((x & 0xff) << 8) + (x >> 8);
+		this->y          = ((y & 0xff) << 8) + (y >> 8);
+		this->z          = z;
+		this->creatureNr = creatureNr;
+	}
+	unsigned short int getX()
+	{
+		return ((x & 0xff) << 8) + (x >> 8);
+	}
+	unsigned short int getY()
+	{
+		return ((y & 0xff) << 8) + (y >> 8);
+	}
+	unsigned char getZ()
+	{
+		return z;
+	}
+	unsigned short int getCreatureNr()
+	{
+		return creatureNr;
+	}
 };
 
 #pragma pack(pop)   /* restore original alignment from stack */
 
 
-Db *CCreaturesReader::db=NULL;
+Db *CCreaturesReader::db = NULL;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-  
+
 CCreaturesReader::CCreaturesReader()
 {
 	// open database (but for the first time only)
 	// the database is ro and stays open forever
-	if (db==NULL)
+	if (db == NULL)
 	{
 		char installPath[1024];
-		unsigned long installPathLen=1023;
-		installPath[0]='\0';
-		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
+		unsigned long installPathLen = 1023;
+		installPath[0] = '\0';
+		HKEY hkey = NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -82,41 +82,37 @@ CCreaturesReader::CCreaturesReader()
 			PostQuitMessage(-1);
 			return;
 		}
-		db=new Db(NULL,0);
+		db = new Db(NULL, 0);
 		u_int32_t oFlags = DB_RDONLY;
 		char path[1024];
-		sprintf(path,"%s\\ta_creatures_c.db",installPath);
-		db->open(NULL,path,NULL,DB_BTREE,oFlags,0);
+		sprintf(path, "%s\\ta_creatures_c.db", installPath);
+		db->open(NULL, path, NULL, DB_BTREE, oFlags, 0);
 	}
 }
 
 CCreaturesReader::~CCreaturesReader()
 {
-	
 }
 
 int CCreaturesReader::findCreatureStatForLocationCount(int x, int y, int z)
 {
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x,y,z,0);
+	dbKey dbK(x, y, z, 0);
 
 	Dbt key(&dbK, sizeof(dbKey));
-    Dbt data(NULL,0);
-	int c=0;
-	int flag=DB_SET_RANGE;
+	Dbt data(NULL, 0);
+	int c    = 0;
+	int flag = DB_SET_RANGE;
 	while (!cursorp->get(&key, &data, flag))
 	{
-		memcpy(&dbK,key.get_data(),sizeof(dbKey));
-		
-		if (dbK.getX()==x&&dbK.getY()==y&&dbK.getZ()==z)
-		{
-			c++;
-		} else {
-			break;
-		}
-		flag=DB_NEXT;
+		memcpy(&dbK, key.get_data(), sizeof(dbKey));
 
+		if (dbK.getX() == x && dbK.getY() == y && dbK.getZ() == z)
+			c++;
+		else
+			break;
+		flag = DB_NEXT;
 	}
 
 	cursorp->close();
@@ -127,34 +123,33 @@ char * CCreaturesReader::findCreatureStatForLocationName(int x, int y, int z, in
 {
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x,y,z,0);
+	dbKey dbK(x, y, z, 0);
 
 	Dbt key(&dbK, sizeof(dbKey));
-    Dbt data(NULL, 0);
-	int c=0;
-	int flag=DB_SET_RANGE;
+	Dbt data(NULL, 0);
+	int c    = 0;
+	int flag = DB_SET_RANGE;
 	while (!cursorp->get(&key, &data, flag))
 	{
-		memcpy(&dbK,key.get_data(),sizeof(dbKey));
+		memcpy(&dbK, key.get_data(), sizeof(dbKey));
 
-		if (dbK.getX()==x&&dbK.getY()==y&&dbK.getZ()==z)
+		if (dbK.getX() == x && dbK.getY() == y && dbK.getZ() == z)
 		{
-			if (c==pos)
+			if (c == pos)
 			{
-				char *ret=(char *)malloc(64);
-				sprintf(ret,"%s",dbCreatureTab[dbK.getCreatureNr()]);
-				
+				char *ret = (char *)malloc(64);
+				sprintf(ret, "%s", dbCreatureTab[dbK.getCreatureNr()]);
+
 				cursorp->close();
 				return ret;
 			}
-			if (c>pos)
+			if (c > pos)
 			{
 				cursorp->close();
 				return NULL;
 			}
-			flag=DB_NEXT;
+			flag = DB_NEXT;
 			c++;
-			
 		}
 	}
 	return NULL;
@@ -164,29 +159,29 @@ int CCreaturesReader::findCreatureStatForLocationTibiaId(int x, int y, int z, in
 {
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x,y,z,0);
+	dbKey dbK(x, y, z, 0);
 
 	Dbt key(&dbK, sizeof(dbKey));
-    Dbt data(NULL,0);
-	int c=0;
-	int flag=DB_SET_RANGE;
+	Dbt data(NULL, 0);
+	int c    = 0;
+	int flag = DB_SET_RANGE;
 	while (!cursorp->get(&key, &data, flag))
 	{
-		memcpy(&dbK,key.get_data(),sizeof(dbKey));
+		memcpy(&dbK, key.get_data(), sizeof(dbKey));
 
-		if (dbK.getX()==x&&dbK.getY()==y&&dbK.getZ()==z)
+		if (dbK.getX() == x && dbK.getY() == y && dbK.getZ() == z)
 		{
-			if (c==pos)
+			if (c == pos)
 			{
 				cursorp->close();
 				return 1;
 			}
-			if (c>pos)
+			if (c > pos)
 			{
 				cursorp->close();
 				return NULL;
 			}
-			flag=DB_NEXT;
+			flag = DB_NEXT;
 			c++;
 		}
 	}
@@ -194,78 +189,71 @@ int CCreaturesReader::findCreatureStatForLocationTibiaId(int x, int y, int z, in
 }
 
 
-
 char ** CCreaturesReader::findCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ)
 {
-	
-	int retSize=8;
-	char **ret = (char **)malloc(sizeof(char *)*retSize);
-	
+	int retSize = 8;
+	char **ret  = (char **)malloc(sizeof(char *) * retSize);
+
 	int i;
-	for (i=0;i<retSize;i++)
+	for (i = 0; i < retSize; i++)
 	{
-		ret[i]=NULL;
+		ret[i] = NULL;
 	}
-	
+
 	Dbc *cursorp;
 	db->cursor(NULL, &cursorp, 0);
-	dbKey dbK(x-rangeXY,y-rangeXY,z-rangeZ,0);
+	dbKey dbK(x - rangeXY, y - rangeXY, z - rangeZ, 0);
 
 	Dbt key(&dbK, sizeof(dbKey));
-    Dbt data(&dbK, sizeof(dbKey));
-	int flag=DB_SET_RANGE;
-	
+	Dbt data(&dbK, sizeof(dbKey));
+	int flag = DB_SET_RANGE;
+
 	while (!cursorp->get(&key, &data, flag))
 	{
-		
-		memcpy(&dbK,key.get_data(),sizeof(dbKey));
-		
+		memcpy(&dbK, key.get_data(), sizeof(dbKey));
 
-		if (dbK.getX()>=x-rangeXY&&dbK.getX()<=x+rangeXY&&
-			dbK.getY()>=y-rangeXY&&dbK.getY()<=y+rangeXY&&
-			dbK.getZ()>=z-rangeZ&&dbK.getZ()<=z+rangeZ)
+
+		if (dbK.getX() >= x - rangeXY && dbK.getX() <= x + rangeXY &&
+		    dbK.getY() >= y - rangeXY && dbK.getY() <= y + rangeXY &&
+		    dbK.getZ() >= z - rangeZ && dbK.getZ() <= z + rangeZ)
 		{
-			
 			// point in range - add it
-			ret=addCreatureToList(ret,dbCreatureTab[dbK.getCreatureNr()],&retSize);
+			ret = addCreatureToList(ret, dbCreatureTab[dbK.getCreatureNr()], &retSize);
 		}
-		
 
-		if (dbK.getX()>x+rangeXY)
-		{
+
+		if (dbK.getX() > x + rangeXY)
 			// finished looking for data
 			break;
-		}
-		flag=DB_NEXT;
+		flag = DB_NEXT;
 	}
-	
+
 	cursorp->close();
 	return ret;
 }
 
-char ** CCreaturesReader::addCreatureToList(char **list, char *name,int *size)
+char ** CCreaturesReader::addCreatureToList(char **list, char *name, int *size)
 {
-	int pos=0;
-	for (pos=0;pos<*size&&list[pos];pos++)
+	int pos = 0;
+	for (pos = 0; pos < *size && list[pos]; pos++)
 	{
-		if (!strcmp(list[pos],name))
-		{
+		if (!strcmp(list[pos], name))
 			// already in the list; return;
 			return list;
-		}
 	}
 	// resize check
-	if (pos>*size-3) {
+	if (pos > *size - 3)
+	{
 		int i;
-		(*size)=(*size)*2;
-		list=(char **)realloc(list,sizeof(char *)*(*size));
-		for (i=pos;i<*size;i++)
+		(*size) = (*size) * 2;
+		list    = (char **)realloc(list, sizeof(char *) * (*size));
+		for (i = pos; i < *size; i++)
 		{
-			list[i]=NULL;
+			list[i] = NULL;
 		}
 	}
 	// new entry
-	list[pos]=(char *)malloc(64);
-	strcpy(list[pos],name);
+	list[pos] = (char *)malloc(64);
+	strcpy(list[pos], name);
 	return list;
 }

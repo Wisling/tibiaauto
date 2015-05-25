@@ -11,9 +11,9 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
-int iLastLen=0;
+int iLastLen = 0;
 
 /////////////////////////////////////////////////////////////////////////////
 // CKnownInfo dialog
@@ -50,12 +50,12 @@ void CKnownInfo::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CKnownInfo, CDialog)
-	//{{AFX_MSG_MAP(CKnownInfo)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_INFO_PLAYERS, OnToolcreaturinfoInfoPlayers)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_INFO_MONSTERS, OnToolcreaturinfoInfoMonsters)
-	ON_CBN_EDITCHANGE(IDC_TOOLCREATURINFO_INFO_COMBO, OnEditchangeToolcreaturinfoInfoCombo)
-	ON_CBN_SELENDOK(IDC_TOOLCREATURINFO_INFO_COMBO, OnSelendokToolcreaturinfoInfoCombo)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CKnownInfo)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_INFO_PLAYERS, OnToolcreaturinfoInfoPlayers)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_INFO_MONSTERS, OnToolcreaturinfoInfoMonsters)
+ON_CBN_EDITCHANGE(IDC_TOOLCREATURINFO_INFO_COMBO, OnEditchangeToolcreaturinfoInfoCombo)
+ON_CBN_SELENDOK(IDC_TOOLCREATURINFO_INFO_COMBO, OnSelendokToolcreaturinfoInfoCombo)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -91,8 +91,9 @@ void CKnownInfo::Fill_Player(){
 	int i;
 
 	m_combo.ResetContent();
-	for (i=0;i<playersCount;i++){
-		m_combo.InsertString(i,playersInfo[i].name);
+	for (i = 0; i < playersCount; i++)
+	{
+		m_combo.InsertString(i, playersInfo[i].name);
 	}
 }
 
@@ -100,18 +101,19 @@ void CKnownInfo::Fill_Monster(){
 	int i;
 
 	m_combo.ResetContent();
-	for (i=0;i<monstersCount;i++){
-		m_combo.InsertString(i,monstersInfo[i].name);
+	for (i = 0; i < monstersCount; i++)
+	{
+		m_combo.InsertString(i, monstersInfo[i].name);
 	}
 }
 
 BOOL CKnownInfo::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	m_players.SetCheck(1);
 	OnToolcreaturinfoInfoPlayers();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -121,19 +123,19 @@ void CKnownInfo::OnEditchangeToolcreaturinfoInfoCombo()
 //T4: Someone changed Combo to DropList and now my briliant code is useless ;(
 
 /*	char buffer[128];
-	char iLen = m_combo.GetWindowText(buffer,127);
+        char iLen = m_combo.GetWindowText(buffer,127);
 
-	int iItem = m_combo.FindString(-1,buffer);
-	if (iItem ==CB_ERR){
-		MessageBeep(MB_OK);
-	}else{
-		if (iLastLen<iLen){
-			m_combo.SetCurSel(iItem);
-			m_combo.SetEditSel(iLen,128);
-			OnSelendokToolcreaturinfoInfoCombo();
-		}
-	}
-	iLastLen = iLen;*/
+        int iItem = m_combo.FindString(-1,buffer);
+        if (iItem ==CB_ERR){
+                MessageBeep(MB_OK);
+        }else{
+                if (iLastLen<iLen){
+                        m_combo.SetCurSel(iItem);
+                        m_combo.SetEditSel(iLen,128);
+                        OnSelendokToolcreaturinfoInfoCombo();
+                }
+        }
+        iLastLen = iLen;*/
 }
 
 void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo() {
@@ -141,57 +143,66 @@ void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo() {
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
 	char buffer[260];
-	int iSel = m_combo.GetCurSel();
+	int iSel  = m_combo.GetCurSel();
 	int found = -1;
 
-	if (m_players.GetCheck()){
+	if (m_players.GetCheck())
+	{
 		//T4: Try to find player in BattleList
-		for (int chNr=0;chNr<memConstData.m_memMaxCreatures;chNr++){
+		for (int chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
-			if (ch->tibiaId == 0){
+			if (ch->tibiaId == 0)
+			{
 				delete ch;
 				break;
 			}
-			if (!_strcmpi(ch->name, playersInfo[iSel].name)){
+			if (!_strcmpi(ch->name, playersInfo[iSel].name))
+			{
 				found = chNr;
 				delete ch;
 				break;
 			}
 			delete ch;
 		}
-		if (found != -1){
+		if (found != -1)
+		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(found);
 
-			sprintf(buffer,"%d/%d",MulDiv(ch->hpPercLeft,playersInfo[iSel].maxHp,100),playersInfo[iSel].maxHp);
+			sprintf(buffer, "%d/%d", MulDiv(ch->hpPercLeft, playersInfo[iSel].maxHp, 100), playersInfo[iSel].maxHp);
 			m_hp.SetWindowText(buffer);
-			sprintf(buffer,"%d,%d,%d",ch->x,ch->y,ch->z);
+			sprintf(buffer, "%d,%d,%d", ch->x, ch->y, ch->z);
 			m_lastSeen.SetWindowText(buffer);
 
 			delete ch;
-		}else{
-			sprintf(buffer,"%d",playersInfo[iSel].maxHp);
+		}
+		else
+		{
+			sprintf(buffer, "%d", playersInfo[iSel].maxHp);
 			m_hp.SetWindowText(buffer);
 			m_lastSeen.SetWindowText("N/A");
 		}
 		m_name.SetWindowText(playersInfo[iSel].name);
-		Creature_TypeToText(playersInfo[iSel].type,buffer);
+		Creature_TypeToText(playersInfo[iSel].type, buffer);
 		m_type.SetWindowText(buffer);
-		Player_VocID2Vocation(playersInfo[iSel].vocId,buffer,false);
+		Player_VocID2Vocation(playersInfo[iSel].vocId, buffer, false);
 		m_voc.SetWindowText(buffer);
-		sprintf(buffer,"%d",playersInfo[iSel].level);
+		sprintf(buffer, "%d", playersInfo[iSel].level);
 		m_level.SetWindowText(buffer);
 
 		m_guildName.SetWindowText(playersInfo[iSel].guildName);
 		m_guildRank.SetWindowText(playersInfo[iSel].guildRank);
 		m_guildDesc.SetWindowText(playersInfo[iSel].guildDescription);
-	}else{
+	}
+	else
+	{
 		m_name.SetWindowText(monstersInfo[iSel].name);
-		Creature_TypeToText(monstersInfo[iSel].type,buffer);
+		Creature_TypeToText(monstersInfo[iSel].type, buffer);
 		m_type.SetWindowText(buffer);
-		sprintf(buffer,"%d",monstersInfo[iSel].maxHp);
+		sprintf(buffer, "%d", monstersInfo[iSel].maxHp);
 		m_hp.SetWindowText(buffer);
 		m_voc.SetWindowText(monstersInfo[iSel].description);
-		sprintf(buffer,"%d",monstersInfo[iSel].exp);
+		sprintf(buffer, "%d", monstersInfo[iSel].exp);
 		m_level.SetWindowText(buffer);
 		m_lastSeen.SetWindowText("N/A");
 

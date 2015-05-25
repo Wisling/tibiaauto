@@ -22,17 +22,17 @@ public:
 	//{{AFX_DATA(CLoadWaypointsInfo)
 	enum { IDD = IDD_LOADWAYPOINTSINFO };
 	CGroupBoxEx m_frame;
-	CEdit	m_prefix;
-	CButtonST	m_CANCEL;
-	CButtonST	m_YES;
-	CButtonST	m_NO;
+	CEdit m_prefix;
+	CButtonST m_CANCEL;
+	CButtonST m_YES;
+	CButtonST m_NO;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CLoadWaypointsInfo)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

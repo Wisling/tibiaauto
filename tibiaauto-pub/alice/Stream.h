@@ -14,7 +14,6 @@ public:
 
 class StreamProvider
 {
-
 public:
 	virtual Stream *getStream(const char *str);
 };
@@ -22,5 +21,4 @@ public:
 Stream* getStream(const char *szName);
 void setStreamProvider(StreamProvider *streamProvider);
 
-#endif
-
+#endif // ifndef STREAM_H

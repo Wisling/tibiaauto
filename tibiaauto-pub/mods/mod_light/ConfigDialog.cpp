@@ -10,18 +10,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(Cmod_lightApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(Cmod_lightApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -40,14 +40,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	ON_CBN_SELCHANGE(IDC_TOOLLIGHT_COMBO, OnSelchangeToollightCombo)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+ON_CBN_SELCHANGE(IDC_TOOLLIGHT_COMBO, OnSelchangeToollightCombo)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -69,12 +69,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -89,27 +89,31 @@ void CConfigDialog::disableControls()
 void CConfigDialog::enableControls()
 {
 	m_combo.EnableWindow(true);
-	if (m_combo.GetItemData(m_combo.GetCurSel()) == 0xFFFFFFFF){
+	if (m_combo.GetItemData(m_combo.GetCurSel()) == 0xFFFFFFFF)
+	{
 		m_power.EnableWindow(true);
 		m_color.EnableWindow(true);
 	}
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buff[128];
-	sprintf(buff,"%d",configData->lightPower);	m_power.SetWindowText(buff);
-	sprintf(buff,"%d",configData->lightColor);	m_color.SetWindowText(buff);
+	sprintf(buff, "%d", configData->lightPower);      m_power.SetWindowText(buff);
+	sprintf(buff, "%d", configData->lightColor);      m_color.SetWindowText(buff);
 
-	DWORD dwData = MAKEWPARAM(configData->lightPower,configData->lightColor);
+	DWORD dwData = MAKEWPARAM(configData->lightPower, configData->lightColor);
 
-	for (int i=0;i<m_combo.GetCount();i++){
-		if (dwData == m_combo.GetItemData(i)){
+	for (int i = 0; i < m_combo.GetCount(); i++)
+	{
+		if (dwData == m_combo.GetItemData(i))
+		{
 			m_combo.SetCurSel(i);
 			break;
-		}else{
+		}
+		else
+		{
 			m_combo.SetCurSel(4);
 		}
 	}
@@ -120,22 +124,20 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	char buff[128];
-	m_power.GetWindowText(buff,128);	newConfigData->lightPower	= atoi(buff);
-	m_color.GetWindowText(buff,128);	newConfigData->lightColor	= atoi(buff);
+	m_power.GetWindowText(buff, 128);        newConfigData->lightPower = atoi(buff);
+	m_color.GetWindowText(buff, 128);        newConfigData->lightColor = atoi(buff);
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-
-	
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(     m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -143,17 +145,17 @@ BOOL CConfigDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
-	m_combo.InsertString(0,"LightHack");
-	m_combo.SetItemData(0,MAKEWPARAM(100,209));
-	m_combo.InsertString(1,"Utevo Lux");
-	m_combo.SetItemData(1,MAKEWPARAM(6,215));
-	m_combo.InsertString(2,"Torch");
-	m_combo.SetItemData(2,MAKEWPARAM(7,206));
-	m_combo.InsertString(3,"Light Wand");
-	m_combo.SetItemData(3,MAKEWPARAM(8,209));
-	m_combo.InsertString(4,"Custom...");
-	m_combo.SetItemData(4,0xFFFFFFFF);
-	
+	m_combo.InsertString(0, "LightHack");
+	m_combo.SetItemData(0, MAKEWPARAM(100, 209));
+	m_combo.InsertString(1, "Utevo Lux");
+	m_combo.SetItemData(1, MAKEWPARAM(6, 215));
+	m_combo.InsertString(2, "Torch");
+	m_combo.SetItemData(2, MAKEWPARAM(7, 206));
+	m_combo.InsertString(3, "Light Wand");
+	m_combo.SetItemData(3, MAKEWPARAM(8, 209));
+	m_combo.InsertString(4, "Custom...");
+	m_combo.SetItemData(4, 0xFFFFFFFF);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -178,19 +180,22 @@ void CConfigDialog::OnSelchangeToollightCombo()
 	WORD color;
 
 	dwData = m_combo.GetItemData(iCurSel);
-	if (dwData == 0xFFFFFFFF){
+	if (dwData == 0xFFFFFFFF)
+	{
 		m_color.EnableWindow(true);
 		m_power.EnableWindow(true);
-	}else{
-		color = WORD((dwData&0xFFFF0000)>>16);
-		power = WORD(dwData&0xFFFF);
+	}
+	else
+	{
+		color = WORD((dwData & 0xFFFF0000) >> 16);
+		power = WORD(dwData & 0xFFFF);
 
 		char buffer[128];
-		sprintf(buffer,"%d",color);
+		sprintf(buffer, "%d", color);
 		m_color.SetWindowText(buffer);
 		m_color.EnableWindow(false);
 
-		sprintf(buffer,"%d",power);
+		sprintf(buffer, "%d", power);
 		m_power.SetWindowText(buffer);
 		m_power.EnableWindow(false);
 	}

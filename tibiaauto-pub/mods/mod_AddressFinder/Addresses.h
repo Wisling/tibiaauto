@@ -39,7 +39,6 @@ public:
 	int firstCreatureAddress;
 	Addresses();
 	virtual ~Addresses();
-
 };
 
 #endif // !defined(AFX_ADDRESSES_H__C7002022_36E7_4B55_A797_A94CCC908FE1__INCLUDED_)

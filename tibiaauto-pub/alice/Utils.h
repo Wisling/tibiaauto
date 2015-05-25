@@ -22,4 +22,4 @@ long timerMillis();
 string urlencode(const string &);
 string urldecode(const string &);
 
-#endif
+#endif // ifndef UTILS_H

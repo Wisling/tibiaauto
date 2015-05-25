@@ -35,39 +35,39 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CColorChooser)
 	enum { IDD = IDD_COLORCHOOSER_DIALOG };
-	CEdit	m_ExampleEditbox;
-	CButton	m_ExampleCheckbox;
-	CGroupBoxEx	m_SecondaryBackground;
-	CComboBox	m_DetailPicker;
-	CRepeatButton	m_GreenSliderUp;
-	CRepeatButton	m_RedSliderUp;
-	CRepeatButton	m_GreenSliderDown;
-	CRepeatButton	m_BlueSliderUp;
-	CRepeatButton	m_BlueSliderDown;
-	CButtonST		m_Example;
-	CRepeatButton	m_RedSliderDown;
-	CSliderCtrlEx	m_GreenSlider;
-	CSliderCtrlEx	m_BlueSlider;
-	CSliderCtrlEx	m_RedSlider;
-	int		m_DetailRedValue;
-	int		m_DetailGreenValue;
-	int		m_DetailBlueValue;
+	CEdit m_ExampleEditbox;
+	CButton m_ExampleCheckbox;
+	CGroupBoxEx m_SecondaryBackground;
+	CComboBox m_DetailPicker;
+	CRepeatButton m_GreenSliderUp;
+	CRepeatButton m_RedSliderUp;
+	CRepeatButton m_GreenSliderDown;
+	CRepeatButton m_BlueSliderUp;
+	CRepeatButton m_BlueSliderDown;
+	CButtonST m_Example;
+	CRepeatButton m_RedSliderDown;
+	CSliderCtrlEx m_GreenSlider;
+	CSliderCtrlEx m_BlueSlider;
+	CSliderCtrlEx m_RedSlider;
+	int m_DetailRedValue;
+	int m_DetailGreenValue;
+	int m_DetailBlueValue;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CColorChooser)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
-	
+
 // Implementation
 protected:
 	CSkin loadedSkin;
-	void	UpdateDisplay(int, int, int, int);
-	CRect	m_ExampleRect;
-	CSkin	originalSkin;
+	void    UpdateDisplay(int, int, int, int);
+	CRect m_ExampleRect;
+	CSkin originalSkin;
 
 	// Generated message map functions
 	//{{AFX_MSG(CColorChooser)

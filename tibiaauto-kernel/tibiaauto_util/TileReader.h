@@ -26,7 +26,6 @@ private:
 	void saveTiles();
 	static int xmlInitialised;
 	static CTibiaTile *tiles[MAX_TILES];
-
 };
 
 #endif // !defined(AFX_TILEREADER_H__D5B45C88_FF5F_4F3C_8978_7A12D58F2DDC__INCLUDED_)

@@ -18,9 +18,9 @@ struct SpellInfo {
 	char text[256];
 	int manaCost;
 	int spellDelay;
-	SpellInfo(const char* a_text, int a_manaCost,int a_spellDelay){
-		_snprintf(text,255,"%s",a_text);
-		manaCost = a_manaCost;
+	SpellInfo(const char* a_text, int a_manaCost, int a_spellDelay){
+		_snprintf(text, 255, "%s", a_text);
+		manaCost   = a_manaCost;
 		spellDelay = a_spellDelay;
 	}
 };
@@ -44,46 +44,46 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CAlarmDialog)
 	enum { IDD = IDD_ALARM_DIALOG };
-	CButtonST	m_actionStopWalking;
-	CListBox	m_modules2;
-	CStatic	m_instructionText;
-	CListBox	m_modules;
-	CEdit	m_trigger;
-	CComboBox	m_spellList;
-	CComboBox	m_screenshotOptions;
-	CComboBox	m_audioFile;
-	CComboBoxSuper	m_condition;
-	CComboBoxSuper	m_attribute;
-	CComboBoxSuper	m_alarmType;
-	CListCtrl	m_alarmList;
-	CGroupBoxEx	m_actionFrame;
-	CGroupBoxEx	m_alarmFrame;
-	CButtonST	m_windowAction;
-	CComboBox	m_windowActionList;
-	CButtonST	m_actionSound;
-	CButtonST	m_actionEnable;
-	CButtonST	m_actionLogEvents;
-	CButtonST	m_alarmEdit;
-	CButtonST	m_alarmDelete;
-	CButtonST	m_alarmAdd;
-	CButtonST	m_actionSuspend;
-	CButtonST	m_actionStart;
-	CButtonST	m_actionSpell;
-	CButtonST	m_actionShutdown;
-	CButtonST	m_actionScreenshot;
-	CButtonST	m_actionRunaway;
-	CButtonST	m_actionLogout;
-	CButtonST	m_actionKill;
-	CButtonST	m_actionDepot;
-	CButtonST	m_actionPersistent;
-	CButtonST	m_actionPermanent;
+	CButtonST m_actionStopWalking;
+	CListBox m_modules2;
+	CStatic m_instructionText;
+	CListBox m_modules;
+	CEdit m_trigger;
+	CComboBox m_spellList;
+	CComboBox m_screenshotOptions;
+	CComboBox m_audioFile;
+	CComboBoxSuper m_condition;
+	CComboBoxSuper m_attribute;
+	CComboBoxSuper m_alarmType;
+	CListCtrl m_alarmList;
+	CGroupBoxEx m_actionFrame;
+	CGroupBoxEx m_alarmFrame;
+	CButtonST m_windowAction;
+	CComboBox m_windowActionList;
+	CButtonST m_actionSound;
+	CButtonST m_actionEnable;
+	CButtonST m_actionLogEvents;
+	CButtonST m_alarmEdit;
+	CButtonST m_alarmDelete;
+	CButtonST m_alarmAdd;
+	CButtonST m_actionSuspend;
+	CButtonST m_actionStart;
+	CButtonST m_actionSpell;
+	CButtonST m_actionShutdown;
+	CButtonST m_actionScreenshot;
+	CButtonST m_actionRunaway;
+	CButtonST m_actionLogout;
+	CButtonST m_actionKill;
+	CButtonST m_actionDepot;
+	CButtonST m_actionPersistent;
+	CButtonST m_actionPermanent;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CAlarmDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

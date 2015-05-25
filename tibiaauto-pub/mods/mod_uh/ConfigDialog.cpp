@@ -10,18 +10,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_uhApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_uhApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -50,16 +50,16 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_TOOL_AUTOUH_GRP_MEMBER_ADD, OnToolAutouhGrpMemberAdd)
-	ON_BN_CLICKED(IDC_TOOL_AUTOUH_GRP_MEMBER_REMOVE, OnToolAutouhGrpMemberRemove)
-	ON_BN_DOUBLECLICKED(IDC_TOOL_AUTOUH_GRP_MEMBER_REMOVE, OnToolAutouhGrpMemberRemove)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+ON_BN_CLICKED(IDC_TOOL_AUTOUH_GRP_MEMBER_ADD, OnToolAutouhGrpMemberAdd)
+ON_BN_CLICKED(IDC_TOOL_AUTOUH_GRP_MEMBER_REMOVE, OnToolAutouhGrpMemberRemove)
+ON_BN_DOUBLECLICKED(IDC_TOOL_AUTOUH_GRP_MEMBER_REMOVE, OnToolAutouhGrpMemberRemove)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -81,12 +81,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -124,25 +124,24 @@ void CConfigDialog::enableControls()
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf,"%d",configData->m_grpBorderline);m_grpBorderline.SetWindowText(buf);
+	sprintf(buf, "%d", configData->m_grpBorderline); m_grpBorderline.SetWindowText(buf);
 	m_grpFallback.SetCheck(configData->m_grpFallback);
 	m_grpRunetype.SetCurSel(configData->m_grpRunetype);
-	
-	sprintf(buf,"%d",configData->m_uhBorderline);m_selfBorderline.SetWindowText(buf);
+
+	sprintf(buf, "%d", configData->m_uhBorderline); m_selfBorderline.SetWindowText(buf);
 	m_selfFallback.SetCheck(configData->m_fallback);
 	m_selfRunetype.SetCurSel(configData->m_runetype);
 	m_selfHotkey.SetCheck(configData->m_hotkeySelf);
-	
-	sprintf(buf,"%d",configData->m_sleepAfter);m_sleepAfter.SetWindowText(buf);
+
+	sprintf(buf, "%d", configData->m_sleepAfter); m_sleepAfter.SetWindowText(buf);
 
 	int i;
 	while (m_memberList.GetCount())
 		m_memberList.DeleteString(0);
-	for (i=0;i<configData->m_grpMemberCount;i++)
+	for (i = 0; i < configData->m_grpMemberCount; i++)
 	{
 		m_memberList.AddString(configData->m_grpMemberList[i]);
 	}
@@ -155,42 +154,41 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	char buf[128];
 
-	m_grpBorderline.GetWindowText(buf,120);
-	newConfigData->m_grpBorderline=atoi(buf);
-	newConfigData->m_grpFallback=m_grpFallback.GetCheck();
-	newConfigData->m_grpRunetype=m_grpRunetype.GetCurSel();
+	m_grpBorderline.GetWindowText(buf, 120);
+	newConfigData->m_grpBorderline = atoi(buf);
+	newConfigData->m_grpFallback   = m_grpFallback.GetCheck();
+	newConfigData->m_grpRunetype   = m_grpRunetype.GetCurSel();
 
-	m_selfBorderline.GetWindowText(buf,120);
-	newConfigData->m_uhBorderline=atoi(buf);
-	newConfigData->m_fallback=m_selfFallback.GetCheck();
-	newConfigData->m_runetype=m_selfRunetype.GetCurSel();
-	newConfigData->m_hotkeySelf=m_selfHotkey.GetCheck();
-	
-	m_sleepAfter.GetWindowText(buf,120);
-	newConfigData->m_sleepAfter=atoi(buf);
+	m_selfBorderline.GetWindowText(buf, 120);
+	newConfigData->m_uhBorderline = atoi(buf);
+	newConfigData->m_fallback     = m_selfFallback.GetCheck();
+	newConfigData->m_runetype     = m_selfRunetype.GetCurSel();
+	newConfigData->m_hotkeySelf   = m_selfHotkey.GetCheck();
 
-	sprintf(buf,"%d",m_memberList.GetCount());
-	newConfigData->m_grpMemberCount=m_memberList.GetCount();
-	for (i=0;i<newConfigData->m_grpMemberCount;i++)
+	m_sleepAfter.GetWindowText(buf, 120);
+	newConfigData->m_sleepAfter = atoi(buf);
+
+	sprintf(buf, "%d", m_memberList.GetCount());
+	newConfigData->m_grpMemberCount = m_memberList.GetCount();
+	for (i = 0; i < newConfigData->m_grpMemberCount; i++)
 	{
-		m_memberList.GetText(i,newConfigData->m_grpMemberList[i]);
+		m_memberList.GetText(i, newConfigData->m_grpMemberList[i]);
 	}
-	
+
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_memberRemove);
-	skin.SetButtonSkin(	m_memberAdd);
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(     m_memberRemove);
+	skin.SetButtonSkin(     m_memberAdd);
+	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(     m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -203,7 +201,6 @@ BOOL CConfigDialog::OnInitDialog()
 }
 
 
-
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
@@ -213,23 +210,23 @@ void CConfigDialog::activateEnableButton(int enable)
 {
 	m_enable.SetCheck(enable);
 }
- 
+
 
 void CConfigDialog::OnToolAutouhGrpMemberAdd()
 {
 	char buf[64];
-	m_member.GetWindowText(buf,63);
+	m_member.GetWindowText(buf, 63);
 	m_memberList.AddString(buf);
 	m_member.SetWindowText("");
 }
 
 void CConfigDialog::OnToolAutouhGrpMemberRemove()
 {
-	int curSel=m_memberList.GetCurSel();
-	if (curSel!=LB_ERR)
+	int curSel = m_memberList.GetCurSel();
+	if (curSel != LB_ERR)
 	{
 		char buf[64];
-		m_memberList.GetText(curSel,buf);
+		m_memberList.GetText(curSel, buf);
 		m_memberList.DeleteString(curSel);
 		m_member.SetWindowText(buf);
 	}

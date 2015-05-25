@@ -43,81 +43,80 @@
 //#include "BCMenu.h"
 
 // Uncomment the following line to enable support for sound effects
-#define	BTNST_USE_SOUND
+#define BTNST_USE_SOUND
 
 #if _MSC_VER >= 1000
 #pragma once
 #endif // _MSC_VER >= 1000
 
 // Return values
-#ifndef	BTNST_OK
-#define	BTNST_OK						0
-#endif
-#ifndef	BTNST_INVALIDRESOURCE
-#define	BTNST_INVALIDRESOURCE			1
-#endif
-#ifndef	BTNST_FAILEDMASK
-#define	BTNST_FAILEDMASK				2
-#endif
-#ifndef	BTNST_INVALIDINDEX
-#define	BTNST_INVALIDINDEX				3
-#endif
-#ifndef	BTNST_INVALIDALIGN
-#define	BTNST_INVALIDALIGN				4
-#endif
-#ifndef	BTNST_BADPARAM
-#define	BTNST_BADPARAM					5
-#endif
-#ifndef	BTNST_INVALIDPRESSEDSTYLE
-#define	BTNST_INVALIDPRESSEDSTYLE		6
-#endif
+#ifndef BTNST_OK
+#define BTNST_OK                                                0
+#endif // ifndef BTNST_OK
+#ifndef BTNST_INVALIDRESOURCE
+#define BTNST_INVALIDRESOURCE                   1
+#endif // ifndef BTNST_INVALIDRESOURCE
+#ifndef BTNST_FAILEDMASK
+#define BTNST_FAILEDMASK                                2
+#endif // ifndef BTNST_FAILEDMASK
+#ifndef BTNST_INVALIDINDEX
+#define BTNST_INVALIDINDEX                              3
+#endif // ifndef BTNST_INVALIDINDEX
+#ifndef BTNST_INVALIDALIGN
+#define BTNST_INVALIDALIGN                              4
+#endif // ifndef BTNST_INVALIDALIGN
+#ifndef BTNST_BADPARAM
+#define BTNST_BADPARAM                                  5
+#endif // ifndef BTNST_BADPARAM
+#ifndef BTNST_INVALIDPRESSEDSTYLE
+#define BTNST_INVALIDPRESSEDSTYLE               6
+#endif // ifndef BTNST_INVALIDPRESSEDSTYLE
 
 // Dummy identifier for grayscale icon
-#ifndef	BTNST_AUTO_GRAY
-#define	BTNST_AUTO_GRAY					(HICON)(0xffffffff - 1L)
-#endif
+#ifndef BTNST_AUTO_GRAY
+#define BTNST_AUTO_GRAY                                 (HICON)(0xffffffff - 1L)
+#endif // ifndef BTNST_AUTO_GRAY
 // Dummy identifier for 15% darker icon
-#ifndef	BTNST_AUTO_DARKER
-#define	BTNST_AUTO_DARKER				(HICON)(0xffffffff - 2L)
-#endif
+#ifndef BTNST_AUTO_DARKER
+#define BTNST_AUTO_DARKER                               (HICON)(0xffffffff - 2L)
+#endif // ifndef BTNST_AUTO_DARKER
 
 class CButtonST : public CButton
 {
-friend class CModuleProxy;
+	friend class CModuleProxy;
 public:
-    CButtonST();
+	CButtonST();
 	~CButtonST();
 
-    enum	{	ST_ALIGN_HORIZ	= 0,			// Icon/bitmap on the left, text on the right
-				ST_ALIGN_VERT,					// Icon/bitmap on the top, text on the bottom
-				ST_ALIGN_HORIZ_RIGHT,			// Icon/bitmap on the right, text on the left
-				ST_ALIGN_OVERLAP				// Icon/bitmap on the same space as text
-			};
+	enum        {       ST_ALIGN_HORIZ = 0,                 // Icon/bitmap on the left, text on the right
+		            ST_ALIGN_VERT,                                      // Icon/bitmap on the top, text on the bottom
+		            ST_ALIGN_HORIZ_RIGHT,                       // Icon/bitmap on the right, text on the left
+		            ST_ALIGN_OVERLAP                                    // Icon/bitmap on the same space as text
+	};
 
-	enum	{	BTNST_COLOR_BK_IN	= 0,		// Background color when mouse is INside
-				BTNST_COLOR_FG_IN,				// Text color when mouse is INside
-				BTNST_COLOR_BK_OUT,				// Background color when mouse is OUTside
-				BTNST_COLOR_FG_OUT,				// Text color when mouse is OUTside
-				BTNST_COLOR_BK_FOCUS,			// Background color when the button is focused
-				BTNST_COLOR_FG_FOCUS,			// Text color when the button is focused
-				BTNST_COLOR_3DLIGHT,			// Border Light color
-				BTNST_COLOR_HILIGHT,			// Border HiLight color
-				BTNST_COLOR_SHADOW,				// Border Shadow color
-				BTNST_COLOR_DKSHADOW,			// Border Dark Shadow color
+	enum    {       BTNST_COLOR_BK_IN = 0,                  // Background color when mouse is INside
+		        BTNST_COLOR_FG_IN,                                      // Text color when mouse is INside
+		        BTNST_COLOR_BK_OUT,                                     // Background color when mouse is OUTside
+		        BTNST_COLOR_FG_OUT,                                     // Text color when mouse is OUTside
+		        BTNST_COLOR_BK_FOCUS,                           // Background color when the button is focused
+		        BTNST_COLOR_FG_FOCUS,                           // Text color when the button is focused
+		        BTNST_COLOR_3DLIGHT,                            // Border Light color
+		        BTNST_COLOR_HILIGHT,                            // Border HiLight color
+		        BTNST_COLOR_SHADOW,                                     // Border Shadow color
+		        BTNST_COLOR_DKSHADOW,                           // Border Dark Shadow color
 
-				BTNST_MAX_COLORS
-			};
+		        BTNST_MAX_COLORS};
 
-    enum	{	BTNST_PRESSED_LEFTRIGHT = 0,	// Pressed style from left to right (as usual)
-				BTNST_PRESSED_TOPBOTTOM			// Pressed style from top to bottom
-			};
+	enum        {       BTNST_PRESSED_LEFTRIGHT = 0,// Pressed style from left to right (as usual)
+		            BTNST_PRESSED_TOPBOTTOM                     // Pressed style from top to bottom
+	};
 
 	// ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CButtonST)
-	public:
+	//{{AFX_VIRTUAL(CButtonST)
+public:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
 
@@ -160,26 +159,30 @@ public:
 
 	void SizeToContent();
 
-#ifdef	BTNST_USE_BCMENU
+#ifdef  BTNST_USE_BCMENU
 	DWORD SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle = TRUE, UINT nToolbarID = NULL, CSize sizeToolbarIcon = CSize(16, 16), COLORREF crToolbarBk = RGB(255, 0, 255), BOOL bRepaint = TRUE);
-#else
+#else // ifdef  BTNST_USE_BCMENU
 	DWORD SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint = TRUE);
-#endif
+#endif // ifdef  BTNST_USE_BCMENU
 	DWORD SetMenuCallback(HWND hWnd, UINT nMessage, LPARAM lParam = 0);
 
-#ifdef	BTNST_USE_SOUND
+#ifdef  BTNST_USE_SOUND
 	DWORD SetSound(LPCTSTR lpszSound, HMODULE hMod = NULL, BOOL bPlayOnClick = FALSE, BOOL bPlayAsync = TRUE);
-#endif
+#endif // ifdef  BTNST_USE_SOUND
 
-	static short GetVersionI()		{return 39;}
-	static LPCTSTR GetVersionC()	{return (LPCTSTR)_T("3.9");}
+	static short GetVersionI()              {
+		return 39;
+	}
+	static LPCTSTR GetVersionC()    {
+		return (LPCTSTR)_T("3.9");
+	}
 
-	BOOL	m_bShowDisabledBitmap;
-	POINT	m_ptImageOrg;
-	POINT	m_ptPressedOffset;
+	BOOL m_bShowDisabledBitmap;
+	POINT m_ptImageOrg;
+	POINT m_ptPressedOffset;
 
 protected:
-    //{{AFX_MSG(CButtonST)
+	//{{AFX_MSG(CButtonST)
 	afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message);
 	afx_msg void OnKillFocus(CWnd* pNewWnd);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
@@ -191,10 +194,10 @@ protected:
 	afx_msg UINT OnGetDlgCode();
 	//}}AFX_MSG
 
-#ifdef	BTNST_USE_BCMENU
+#ifdef  BTNST_USE_BCMENU
 	afx_msg LRESULT OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu);
 	afx_msg void OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruct);
-#endif
+#endif // ifdef  BTNST_USE_BCMENU
 
 	afx_msg HBRUSH CtlColor(CDC* pDC, UINT nCtlColor);
 	HICON CreateGrayscaleIcon(HICON hIcon);
@@ -205,26 +208,26 @@ protected:
 	virtual DWORD OnDrawBackground(CDC* pDC, CRect* pRect);
 	virtual DWORD OnDrawBorder(CDC* pDC, CRect* pRect);
 
-	BOOL		m_bIsFlat;			// Is a flat button?
-	BOOL		m_bMouseOnButton;	// Is mouse over the button?
-	BOOL		m_bDrawTransparent;	// Draw transparent?
-	BOOL		m_bIsPressed;		// Is button pressed?
-	BOOL		m_bIsFocused;		// Is button focused?
-	BOOL		m_bIsDisabled;		// Is button disabled?
-	BOOL		m_bIsDefault;		// Is default button?
-	BOOL		m_bIsCheckBox;		// Is the button a checkbox?
-	BYTE		m_byAlign;			// Align mode
-	BOOL		m_bDrawBorder;		// Draw border?
-	BOOL		m_bDrawFlatFocus;	// Draw focus rectangle for flat button?
-	COLORREF	m_crColors[BTNST_MAX_COLORS];	// Colors to be used
-	HWND		m_hParentWndMenu;	// Handle to window for menu selection
-	BOOL		m_bMenuDisplayed;	// Is menu displayed ?
+	BOOL m_bIsFlat;                                 // Is a flat button?
+	BOOL m_bMouseOnButton;                  // Is mouse over the button?
+	BOOL m_bDrawTransparent;                // Draw transparent?
+	BOOL m_bIsPressed;                      // Is button pressed?
+	BOOL m_bIsFocused;                      // Is button focused?
+	BOOL m_bIsDisabled;                     // Is button disabled?
+	BOOL m_bIsDefault;                      // Is default button?
+	BOOL m_bIsCheckBox;                     // Is the button a checkbox?
+	BYTE m_byAlign;                                 // Align mode
+	BOOL m_bDrawBorder;                     // Draw border?
+	BOOL m_bDrawFlatFocus;                  // Draw focus rectangle for flat button?
+	COLORREF m_crColors[BTNST_MAX_COLORS];          // Colors to be used
+	HWND m_hParentWndMenu;                  // Handle to window for menu selection
+	BOOL m_bMenuDisplayed;                  // Is menu displayed ?
 
-#ifdef	BTNST_USE_BCMENU
-	BCMenu		m_menuPopup;		// BCMenu class instance
-#else
-	HMENU		m_hMenu;			// Handle to associated menu
-#endif
+#ifdef  BTNST_USE_BCMENU
+	BCMenu m_menuPopup;                     // BCMenu class instance
+#else // ifdef  BTNST_USE_BCMENU
+	HMENU m_hMenu;                                  // Handle to associated menu
+#endif // ifdef  BTNST_USE_BCMENU
 
 private:
 	LRESULT OnSetCheck(WPARAM wParam, LPARAM lParam);
@@ -243,68 +246,68 @@ private:
 
 	void InitToolTip();
 
-	HCURSOR		m_hCursor;			// Handle to cursor
-	CToolTipCtrl m_ToolTip;			// Tooltip
+	HCURSOR m_hCursor;                              // Handle to cursor
+	CToolTipCtrl m_ToolTip;                 // Tooltip
 
-	CDC			m_dcBk;
-	CBitmap		m_bmpBk;
-	CBitmap*	m_pbmpOldBk;
+	CDC m_dcBk;
+	CBitmap m_bmpBk;
+	CBitmap*        m_pbmpOldBk;
 
-	BOOL		m_bAlwaysTrack;		// Always hilight button?
-	int			m_nCheck;			// Current value for checkbox
-	UINT		m_nTypeStyle;		// Button style
-	DWORD		m_dwToolTipStyle;	// Style of tooltip control
+	BOOL m_bAlwaysTrack;                    // Always hilight button?
+	int m_nCheck;                                           // Current value for checkbox
+	UINT m_nTypeStyle;                      // Button style
+	DWORD m_dwToolTipStyle;                 // Style of tooltip control
 
-	TCHAR		m_szURL[_MAX_PATH];	// URL to open when clicked
+	TCHAR m_szURL[_MAX_PATH];               // URL to open when clicked
 
 #pragma pack(1)
 	typedef struct _STRUCT_ICONS
 	{
-		HICON		hIcon;			// Handle to icon
-		DWORD		dwWidth;		// Width of icon
-		DWORD		dwHeight;		// Height of icon
+		HICON hIcon;                            // Handle to icon
+		DWORD dwWidth;                          // Width of icon
+		DWORD dwHeight;                         // Height of icon
 	} STRUCT_ICONS;
 #pragma pack()
 
 #pragma pack(1)
 	typedef struct _STRUCT_BITMAPS
 	{
-		HBITMAP		hBitmap;		// Handle to bitmap
-		DWORD		dwWidth;		// Width of bitmap
-		DWORD		dwHeight;		// Height of bitmap
-		HBITMAP		hMask;			// Handle to mask bitmap
-		COLORREF	crTransparent;	// Transparent color
+		HBITMAP hBitmap;                        // Handle to bitmap
+		DWORD dwWidth;                          // Width of bitmap
+		DWORD dwHeight;                         // Height of bitmap
+		HBITMAP hMask;                          // Handle to mask bitmap
+		COLORREF crTransparent;         // Transparent color
 	} STRUCT_BITMAPS;
 #pragma pack()
 
 #pragma pack(1)
 	typedef struct _STRUCT_CALLBACK
 	{
-		HWND		hWnd;			// Handle to window
-		UINT		nMessage;		// Message identifier
-		WPARAM		wParam;
-		LPARAM		lParam;
+		HWND hWnd;                              // Handle to window
+		UINT nMessage;                          // Message identifier
+		WPARAM wParam;
+		LPARAM lParam;
 	} STRUCT_CALLBACK;
 #pragma pack()
 
-	STRUCT_ICONS	m_csIcons[2];
-	STRUCT_BITMAPS	m_csBitmaps[2];
+	STRUCT_ICONS m_csIcons[2];
+	STRUCT_BITMAPS m_csBitmaps[2];
 
-	STRUCT_CALLBACK	m_csCallbacks;
+	STRUCT_CALLBACK m_csCallbacks;
 
-#ifdef	BTNST_USE_SOUND
+#ifdef  BTNST_USE_SOUND
 #pragma pack(1)
 	typedef struct _STRUCT_SOUND
 	{
-		TCHAR		szSound[_MAX_PATH];
-		LPCTSTR		lpszSound;
-		HMODULE		hMod;
-		DWORD		dwFlags;
+		TCHAR szSound[_MAX_PATH];
+		LPCTSTR lpszSound;
+		HMODULE hMod;
+		DWORD dwFlags;
 	} STRUCT_SOUND;
 #pragma pack()
 
-	STRUCT_SOUND	m_csSounds[2];	// Index 0 = Over	1 = Clicked
-#endif
+	STRUCT_SOUND m_csSounds[2];     // Index 0 = Over	1 = Clicked
+#endif // ifdef  BTNST_USE_SOUND
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -312,4 +315,4 @@ private:
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Developer Studio will insert additional declarations immediately before the previous line.
 
-#endif
+#endif // ifndef _BTNST_H

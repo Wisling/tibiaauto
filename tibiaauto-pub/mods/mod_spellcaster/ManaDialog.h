@@ -27,17 +27,17 @@ public:
 // Dialog Data
 	//{{AFX_DATA(ManaDialog)
 	enum { IDD = IDD_MANA_DIALOG };
-	CEdit	m_manaSpell;
-	CEdit	m_manaMana;
-	CButton	m_mana;
-	CGroupBoxEx	m_ManaFrame;
+	CEdit m_manaSpell;
+	CEdit m_manaMana;
+	CButton m_mana;
+	CGroupBoxEx m_ManaFrame;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(ManaDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

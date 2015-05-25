@@ -12,10 +12,9 @@
 
 CTibiaMiniMap::CTibiaMiniMap()
 {
-	x=y=z=segmentPrev=segmentNext=pointsAttached=0;
+	x = y = z = segmentPrev = segmentNext = pointsAttached = 0;
 }
 
 CTibiaMiniMap::~CTibiaMiniMap()
 {
-
 }

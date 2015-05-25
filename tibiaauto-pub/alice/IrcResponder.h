@@ -22,25 +22,25 @@ class IrcResponder : public Responder, SocketListener
 public:
 	IrcResponder(IrcConfig &);
 	~IrcResponder();
-	
+
 	string respond(Match *, PElement, const string &);
-	
+
 	void execute();
 	void processAlias(const string &);
 	bool changeNick();
-	
+
 	void connected();
 	void disconnected(const string &);
 	void processLine(string &);
 	void sendCommand(const string &);
-	void recv(string &);	//	From SocketListener
+	void recv(string &);    //	From SocketListener
 	void send(const string &, bool fromIPT = false);
 	void connect();
 	void disconnect();
 	void disconnected();
 private:
 	string nick, buffer, mNick, mChannel, pass;
-	Socket *sock;	//	connects to remote server
+	Socket *sock;   //	connects to remote server
 	queue<string> q;
 	IrcConfig config;
 	int nickIndex;
@@ -48,12 +48,12 @@ private:
 	string serverHost;
 	bool botControl;
 	bool gotMotd;
-	
+
 	void start(int delay);
-	
+
 	friend class IrcPassThru;
-	
+
 	IrcPassThru *ipt;
 };
 
-#endif
+#endif // ifndef IRC_RESPONDER_H

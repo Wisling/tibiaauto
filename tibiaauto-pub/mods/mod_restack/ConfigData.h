@@ -23,12 +23,12 @@ public:
 	int throwableTo;
 	int pickupSpears;
 	int pickupToHand;
-	int pickupUL,pickupUC,pickupUR;
-	int pickupCL,pickupCC,pickupCR;
-	int pickupBL,pickupBC,pickupBR;
+	int pickupUL, pickupUC, pickupUR;
+	int pickupCL, pickupCC, pickupCR;
+	int pickupBL, pickupBC, pickupBR;
 	int moveCovering;
 	int restackToRight;
-	int periodFrom,periodTo;
+	int periodFrom, periodTo;
 	int capLimit;
 };
 

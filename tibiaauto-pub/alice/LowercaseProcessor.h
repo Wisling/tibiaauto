@@ -17,12 +17,13 @@ using namespace std;
 class LowercaseProcessor : public AimlProcessor
 {
 public:
-	~LowercaseProcessor() { }
-	
+	~LowercaseProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string result = Kernel::process(m, e, r, id);
 		return toLower(result);
 	}
 };
 
-#endif
+#endif // ifndef LOWERCASE_PROCESSOR_H

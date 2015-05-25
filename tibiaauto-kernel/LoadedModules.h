@@ -20,15 +20,15 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CLoadedModules)
 	enum { IDD = IDD_LOADED_MODULES };
-	CButtonST	m_ok;
-	CListCtrl	m_list;
+	CButtonST m_ok;
+	CListCtrl m_list;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CLoadedModules)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL

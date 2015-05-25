@@ -41,65 +41,65 @@ class CTibiaautoDlg : public MyDialog
 public:
 	void DoSetButtonSkin();
 	void refreshToolInfo();
-	CTibiaautoDlg(CWnd* pParent = NULL);	// standard constructor
+	CTibiaautoDlg(CWnd* pParent = NULL);    // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CTibiaautoDlg)
 	enum { IDD = IDD_TIBIAAUTO_DIALOG };
-	CGroupBoxEx	m_OtherTools;
-	CGroupBoxEx	m_InformationTools;
-	CGroupBoxEx	m_FightTools;
-	CGroupBoxEx	m_Config;
-	CGroupBoxEx	m_CavebotTools;
-	CGroupBoxEx	m_AFKTools;
-	CButtonST	m_exit;
-	CButtonST	m_LoadedModules;
-	CButtonST	m_Options;
-	CButtonST	m_PythonScripts;
-	CButtonST	m_MonsterShow;
-	CButtonST	m_MapShow;
-	CButtonST	m_ItemConfig;
-	CButtonST	m_InjectMC;
-	CButtonST	m_CharInfo;
-	CButtonST	m_xray;
-	CButtonST	m_autoAttack;
-	CButtonST	m_login;
-	CButtonST	m_ammoRestack;
-	CButtonST	m_autoAim;
-	CButtonST	m_autoFish;
-	CButtonST	m_autoGo;
-	CButtonST	m_autoLooter;
-	CButtonST	m_autoRespond;
-	CButtonST	m_autoUh;
-	CButtonST	m_fluidDrinker;
-	CButtonST	m_runeMaker;
-	CButtonST	m_spellCaster;
-	CButtonST	m_fps;
-	CButtonST	m_antilogout;
-	CButtonST	m_mapHack;
-	CButtonST	m_creatureInfo;
-	CButtonST	m_save;
-	CButtonST	m_load;
-	CButtonST	m_eater;
-	CButtonST	m_tradeMon;
-	CButtonST	m_grouping;
-	CButtonST	m_light;
-	CButtonST	m_banker;
-	CButtonST	m_sorter;
-	CButtonST	m_seller;
-	CStatic	m_infoMapShow;
-	CStatic	m_loginName;
-	CWebBrowser2	m_browserAds;
+	CGroupBoxEx m_OtherTools;
+	CGroupBoxEx m_InformationTools;
+	CGroupBoxEx m_FightTools;
+	CGroupBoxEx m_Config;
+	CGroupBoxEx m_CavebotTools;
+	CGroupBoxEx m_AFKTools;
+	CButtonST m_exit;
+	CButtonST m_LoadedModules;
+	CButtonST m_Options;
+	CButtonST m_PythonScripts;
+	CButtonST m_MonsterShow;
+	CButtonST m_MapShow;
+	CButtonST m_ItemConfig;
+	CButtonST m_InjectMC;
+	CButtonST m_CharInfo;
+	CButtonST m_xray;
+	CButtonST m_autoAttack;
+	CButtonST m_login;
+	CButtonST m_ammoRestack;
+	CButtonST m_autoAim;
+	CButtonST m_autoFish;
+	CButtonST m_autoGo;
+	CButtonST m_autoLooter;
+	CButtonST m_autoRespond;
+	CButtonST m_autoUh;
+	CButtonST m_fluidDrinker;
+	CButtonST m_runeMaker;
+	CButtonST m_spellCaster;
+	CButtonST m_fps;
+	CButtonST m_antilogout;
+	CButtonST m_mapHack;
+	CButtonST m_creatureInfo;
+	CButtonST m_save;
+	CButtonST m_load;
+	CButtonST m_eater;
+	CButtonST m_tradeMon;
+	CButtonST m_grouping;
+	CButtonST m_light;
+	CButtonST m_banker;
+	CButtonST m_sorter;
+	CButtonST m_seller;
+	CStatic m_infoMapShow;
+	CStatic m_loginName;
+	CWebBrowser2 m_browserAds;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CTibiaautoDlg)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	virtual void OnFinalRelease();
 	virtual BOOL DestroyWindow();
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);        // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
 	virtual void PostNcDestroy();
@@ -164,12 +164,12 @@ private:
 	void InitialiseIPC();
 
 	long m_processId;
-	
+
 
 public:
 	~CTibiaautoDlg();
 	void passSecurityInfo(int value);
-		int shutdownCounter;
+	int shutdownCounter;
 	LRESULT DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam);
 private:
 	void reportUsage();
@@ -221,4 +221,3 @@ private:
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
 
 #endif // !defined(AFX_TIBIAAUTODLG_H__27D9EDA8_C837_406F_9952_9B3288BD9A18__INCLUDED_)
-

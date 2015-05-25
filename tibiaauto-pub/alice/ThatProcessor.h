@@ -16,16 +16,16 @@ using namespace std;
 class ThatProcessor : public AimlProcessor
 {
 public:
-	~ThatProcessor() { }
-	
+	~ThatProcessor() {
+	}
+
 	string process(Match *, PElement e, Responder *, const string &id) {
 		string index = e->getAttribute("index");
-		if (index.empty()) {
+		if (index.empty())
 			index = "1";
-		}
 		int i = atoi(index.c_str());
 		return Kernel::predicates->getHistory("that", id, i);
 	}
 };
 
-#endif
+#endif // ifndef THAT_PROCESSOR_H

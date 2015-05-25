@@ -8,7 +8,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CXTabCtrl
@@ -16,20 +16,20 @@ static char THIS_FILE[] = __FILE__;
 CXTabCtrl::CXTabCtrl()
 {
 	m_iSelectedTab = 0;
-	m_ptTabs.x = 0;
-	m_ptTabs.y = 0;
+	m_ptTabs.x     = 0;
+	m_ptTabs.y     = 0;
 
-	m_crSelected = 0;
-	m_crDisabled = 0;
-	m_crNormal = 0;
+	m_crSelected  = 0;
+	m_crDisabled  = 0;
+	m_crNormal    = 0;
 	m_crMouseOver = 0;
-	m_crTab = 0;
+	m_crTab       = 0;
 
 	m_bColorSelected  = false;
 	m_bColorDisabled  = false;
 	m_bColorNormal    = false;
 	m_bColorMouseOver = false;
-	m_bColorTab = false;
+	m_bColorTab       = false;
 
 
 	m_iIndexMouseOver = -1;
@@ -44,12 +44,12 @@ CXTabCtrl::~CXTabCtrl()
 
 
 BEGIN_MESSAGE_MAP(CXTabCtrl, CTabCtrl)
-	//{{AFX_MSG_MAP(CXTabCtrl)
-	ON_NOTIFY_REFLECT(TCN_SELCHANGE, OnSelchange)
-	ON_NOTIFY_REFLECT(TCN_SELCHANGING, OnSelchanging)
-	ON_WM_MOUSEMOVE()
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CXTabCtrl)
+ON_NOTIFY_REFLECT(TCN_SELCHANGE, OnSelchange)
+ON_NOTIFY_REFLECT(TCN_SELCHANGING, OnSelchanging)
+ON_WM_MOUSEMOVE()
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -64,33 +64,33 @@ void CXTabCtrl::SetTopLeftCorner(CPoint pt)
 void CXTabCtrl::SetMouseOverColor(COLORREF cr)
 {
 	m_bColorMouseOver = true;
-	m_crMouseOver = cr;
+	m_crMouseOver     = cr;
 }
 
 
 void CXTabCtrl::SetDisabledColor(COLORREF cr)
 {
 	m_bColorDisabled = true;
-	m_crDisabled = cr;
+	m_crDisabled     = cr;
 }
 
 void CXTabCtrl::SetSelectedColor(COLORREF cr)
 {
 	m_bColorSelected = true;
-	m_crSelected = cr;
+	m_crSelected     = cr;
 }
 
 
 void CXTabCtrl::SetNormalColor(COLORREF cr)
 {
 	m_bColorNormal = true;
-	m_crNormal = cr;
+	m_crNormal     = cr;
 }
 
 void CXTabCtrl::SetTabColor(COLORREF cr)
 {
 	m_bColorTab = true;
-	m_crTab = cr;
+	m_crTab     = cr;
 }
 
 void CXTabCtrl::AddTab(CWnd* pWnd, LPTSTR lpszCaption, int iImage)
@@ -98,17 +98,17 @@ void CXTabCtrl::AddTab(CWnd* pWnd, LPTSTR lpszCaption, int iImage)
 	ASSERT_VALID(pWnd);
 
 	TCITEM item;
-	item.mask = TCIF_TEXT|TCIF_PARAM|TCIF_IMAGE;
-	item.lParam = (LPARAM) pWnd;
+	item.mask    = TCIF_TEXT | TCIF_PARAM | TCIF_IMAGE;
+	item.lParam  = (LPARAM) pWnd;
 	item.pszText = lpszCaption;
-	item.iImage = iImage;
+	item.iImage  = iImage;
 
 	int iIndex = m_arrayStatusTab.GetSize();
 	InsertItem(iIndex, &item);
 
-	pWnd->SetWindowPos(NULL, m_ptTabs.x, m_ptTabs.y , 0, 0,
-						SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER);
-	
+	pWnd->SetWindowPos(NULL, m_ptTabs.x, m_ptTabs.y, 0, 0,
+	                   SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER);
+
 	pWnd->ShowWindow(iIndex ? SW_HIDE : SW_SHOW);
 
 	//** the initial status is enabled
@@ -135,9 +135,8 @@ void CXTabCtrl::EnableTab(int iIndex, BOOL bEnable)
 void CXTabCtrl::DeleteAllTabs()
 {
 	m_arrayStatusTab.RemoveAll();
-	
-	DeleteAllItems();
 
+	DeleteAllItems();
 }
 
 void CXTabCtrl::DeleteTab(int iIndex)
@@ -147,14 +146,13 @@ void CXTabCtrl::DeleteTab(int iIndex)
 	m_arrayStatusTab.RemoveAt(iIndex);
 
 	DeleteItem(iIndex);
-
 }
 
 
 BOOL CXTabCtrl::IsTabEnabled(int iIndex)
 {
 	ASSERT(iIndex < m_arrayStatusTab.GetSize());
-	
+
 	return m_arrayStatusTab[iIndex];
 }
 
@@ -205,7 +203,7 @@ void CXTabCtrl::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult)
 		CWnd* pWnd;
 
 		item.mask = TCIF_PARAM;
-		
+
 		//** hide the current tab ---------
 		GetItem(m_iSelectedTab, &item);
 		pWnd = reinterpret_cast<CWnd*> (item.lParam);
@@ -217,7 +215,6 @@ void CXTabCtrl::OnSelchange(NMHDR* pNMHDR, LRESULT* pResult)
 		pWnd = reinterpret_cast<CWnd*> (item.lParam);
 		ASSERT_VALID(pWnd);
 		pWnd->ShowWindow(SW_SHOW);
-
 	}
 	*pResult = 0;
 }
@@ -229,7 +226,6 @@ void CXTabCtrl::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)
 
 	*pResult = 0;
 }
-
 
 
 void CXTabCtrl::PreSubclassWindow()
@@ -247,25 +243,26 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	if (!pDC)
 		return;
 
-	rect = lpDrawItemStruct->rcItem;
+	rect      = lpDrawItemStruct->rcItem;
 	rect.top += ::GetSystemMetrics(SM_CYEDGE);
 
 	int nTabIndex = lpDrawItemStruct->itemID;
-	
-	if (nTabIndex < 0) return;
+
+	if (nTabIndex < 0)
+		return;
 
 	BOOL bSelected = (nTabIndex == GetCurSel());
 
 	COLORREF crSelected = m_bColorSelected ? m_crSelected : GetSysColor(COLOR_BTNTEXT);
-	COLORREF crNormal  = m_bColorNormal   ? m_crNormal   : GetSysColor(COLOR_BTNTEXT);
+	COLORREF crNormal   = m_bColorNormal   ? m_crNormal   : GetSysColor(COLOR_BTNTEXT);
 	COLORREF crDisabled = m_bColorDisabled ? m_crDisabled : GetSysColor(COLOR_GRAYTEXT);
-	COLORREF crTab = m_bColorTab ? m_crTab : GetSysColor(COLOR_BTNFACE);
+	COLORREF crTab      = m_bColorTab ? m_crTab : GetSysColor(COLOR_BTNFACE);
 
 
 	char label[64];
 	TC_ITEM item;
-	item.mask = TCIF_TEXT|TCIF_IMAGE;
-	item.pszText = label;
+	item.mask       = TCIF_TEXT | TCIF_IMAGE;
+	item.pszText    = label;
 	item.cchTextMax = 63;
 	if (!GetItem(nTabIndex, &item))
 		return;
@@ -283,7 +280,6 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		m_iIndexMouseOver = nTabIndex;
 
 
-
 	pDC->SetBkMode(TRANSPARENT);
 	pDC->FillSolidRect(rect, crTab);
 
@@ -291,7 +287,6 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	CImageList* pImageList = GetImageList();
 	if (pImageList && item.iImage >= 0)
 	{
-
 		rect.left += pDC->GetTextExtent(_T(" ")).cx;
 
 		IMAGEINFO info;
@@ -307,27 +302,25 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	{
 		pDC->SetTextColor(crDisabled);
 		rect.top -= ::GetSystemMetrics(SM_CYEDGE);
-		pDC->DrawText(label, rect, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+		pDC->DrawText(label, rect, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 	}
 	else
 	{
 		//** selected item -----
 		if (bSelected)
+		{
 			pDC->SetTextColor(crSelected);
+		}
 		else //** other item ---
 		{
 			if (m_bColorMouseOver && nTabIndex == m_iIndexMouseOver)
-			{
 				pDC->SetTextColor(m_crMouseOver);
-			}
 			else
-			{
 				pDC->SetTextColor(crNormal);
-			}
 		}
 
 		rect.top -= ::GetSystemMetrics(SM_CYEDGE);
-		pDC->DrawText(label, rect, DT_SINGLELINE|DT_VCENTER|DT_CENTER);
+		pDC->DrawText(label, rect, DT_SINGLELINE | DT_VCENTER | DT_CENTER);
 	}
 
 	pDC->RestoreDC(nSavedDC);
@@ -336,11 +329,11 @@ void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 void CXTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
-	
+
 	//** if we should change the color of the tab ctrl ---
 	if (m_bColorMouseOver)
 	{
-		SetTimer(1,10,NULL);
+		SetTimer(1, 10, NULL);
 
 		if (m_iIndexMouseOver != -1)
 		{
@@ -355,14 +348,14 @@ void CXTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 				return;
 			}
 		}
-	
+
 
 		if (!m_bMouseOver)
 		{
 			TCHITTESTINFO hitTest;
 
 			m_bMouseOver = true;
-			hitTest.pt = point;
+			hitTest.pt   = point;
 
 			int iItem = HitTest(&hitTest);
 			if (iItem != -1 && m_arrayStatusTab[iItem])
@@ -374,7 +367,7 @@ void CXTabCtrl::OnMouseMove(UINT nFlags, CPoint point)
 			}
 		}
 	}
-	
+
 	CTabCtrl::OnMouseMove(nFlags, point);
 }
 
@@ -388,12 +381,12 @@ void CXTabCtrl::OnTimer(UINT nIDEvent)
 	GetItemRect(m_iIndexMouseOver, rectItem);
 	rectScreen = rectItem;
 	ClientToScreen(rectScreen);
-	
+
 	// If mouse leaves, show normal
 	if (!rectScreen.PtInRect(pt))
 	{
 		KillTimer (1);
-		m_bMouseOver = false;
+		m_bMouseOver      = false;
 		m_iIndexMouseOver = -1;
 		InvalidateRect(rectItem);
 	}
@@ -407,17 +400,17 @@ void CXTabCtrl::ChangeTab(int iIndex, CWnd *pNewTab, LPTSTR lpszCaption, int iIm
 	ASSERT_VALID(pNewTab);
 
 	TCITEM item;
-	item.mask = TCIF_TEXT|TCIF_PARAM|TCIF_IMAGE;
-	item.lParam = (LPARAM) pNewTab;
+	item.mask    = TCIF_TEXT | TCIF_PARAM | TCIF_IMAGE;
+	item.lParam  = (LPARAM) pNewTab;
 	item.pszText = lpszCaption;
-	item.iImage = iImage;
+	item.iImage  = iImage;
 
 	//** update item
 	VERIFY(SetItem(iIndex, &item));
 
-	pNewTab->SetWindowPos(NULL, m_ptTabs.x, m_ptTabs.y , 0, 0,
-						SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER);
-	
+	pNewTab->SetWindowPos(NULL, m_ptTabs.x, m_ptTabs.y, 0, 0,
+	                      SWP_FRAMECHANGED | SWP_NOSIZE | SWP_NOZORDER);
+
 	pNewTab->ShowWindow(SW_HIDE);
 
 	//** the initial status is enabled
@@ -432,14 +425,14 @@ BOOL CXTabCtrl::SelectTabByName(LPCTSTR lpszTabCaption)
 {
 	TCHAR szName[64];
 	TCITEM item;
-	
+
 	memset(&item, 0, sizeof(item));
 
 	item.mask       = TCIF_TEXT;
 	item.cchTextMax = sizeof(szName);
 	item.pszText    = szName;
 
-	for (int i=0; i < GetItemCount(); i++)
+	for (int i = 0; i < GetItemCount(); i++)
 	{
 		GetItem(i, &item);
 
@@ -475,9 +468,8 @@ BOOL CXTabCtrl::SelectNextTab(BOOL bForward)
 
 			return FALSE;
 		}
-
 	}
 	while (iCurSel != iCurSelSave);
-	
+
 	return FALSE;
 }

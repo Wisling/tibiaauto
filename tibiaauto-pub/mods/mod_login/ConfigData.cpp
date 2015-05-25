@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,17 +18,16 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	accountNumber[0]=password[0]='\0';
-	charPos=1;
-	openMain=1;
-	openCont1=openCont2=openCont3=openCont4=0;
-	openCont5=openCont6=openCont7=openCont8=0;
-	loginAfterKilled=0;
-	loginDelay=600;
-	autopass=0;
+	accountNumber[0] = password[0] = '\0';
+	charPos          = 1;
+	openMain         = 1;
+	openCont1        = openCont2 = openCont3 = openCont4 = 0;
+	openCont5        = openCont6 = openCont7 = openCont8 = 0;
+	loginAfterKilled = 0;
+	loginDelay       = 600;
+	autopass         = 0;
 }
 
 CConfigData::~CConfigData()
 {
-
 }

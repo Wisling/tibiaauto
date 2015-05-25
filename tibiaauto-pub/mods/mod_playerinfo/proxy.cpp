@@ -10,4 +10,3 @@
 #include "TibiaItemProxy.cpp"
 #include "IPCBackPipeProxy.h"
 #include "Queue.cpp"
-

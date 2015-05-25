@@ -28,12 +28,10 @@ XERCES_CPP_NAMESPACE_USE
 class CUtil
 {
 public:
-	static char * getNodeAttribute(DOMNode *node,char *attrName);
+	static char * getNodeAttribute(DOMNode *node, char *attrName);
 	static char *wc2c(const XMLCh *src);
 	CUtil();
 	virtual ~CUtil();
-
-
 };
 
 #endif // !defined(AFX_UTIL_H__79D8A6EB_5316_41E0_BA36_717AF72A873E__INCLUDED_)

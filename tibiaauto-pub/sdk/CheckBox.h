@@ -46,55 +46,55 @@
 class CCheckBox : public CButton
 {
 public:
-	CCheckBox	  ();	// rcID		  : bitmap resource ID;
-												// nDimension : bitmap dimension;
-	static bool drawFocus;	  // draw focus rectangle?
+	CCheckBox         ();   // rcID		  : bitmap resource ID;
+	// nDimension : bitmap dimension;
+	static bool drawFocus;    // draw focus rectangle?
 	virtual ~CCheckBox();
 
 protected:
 	enum {
-		BOX_ON = 0,			// Column 0 : checked state
-		BOX_OFF = 1,		// Column 1 : unchecked state
-		BOX_LDOWN_1	 = 2,	// Column 2 : mouse down in checked state
-		BOX_LDOWN_2	 = 3,	// Column 3 : mouse down in unchecked state
-		BOX_DISABLED_1 = 4,	// Column 4 : CB disabled in checked state
-		BOX_DISABLED_2 = 5	// Column 5 : CB disabled in unchecked state
+		BOX_ON         = 0,             // Column 0 : checked state
+		BOX_OFF        = 1,     // Column 1 : unchecked state
+		BOX_LDOWN_1    = 2,     // Column 2 : mouse down in checked state
+		BOX_LDOWN_2    = 3,     // Column 3 : mouse down in unchecked state
+		BOX_DISABLED_1 = 4,     // Column 4 : CB disabled in checked state
+		BOX_DISABLED_2 = 5      // Column 5 : CB disabled in unchecked state
 	};
 
-	bool m_bLeftText;		// BS_LEFTTEXT || BS_RIGHTBUTTON || WS_EX_RIGHT ??
+	bool m_bLeftText;               // BS_LEFTTEXT || BS_RIGHTBUTTON || WS_EX_RIGHT ??
 	bool m_bDisabled;
 	bool m_bChecked;
-	int  m_nState;			// state of check box: BOX_ON, BOX_OFF,...
+	int m_nState;                   // state of check box: BOX_ON, BOX_OFF,...
 
-	int  BOX_SIZE;		    // size of bitmaps (BOX_SIZE X BOX_SIZE)
-	int  m_rcID;			// resource ID (m_bSrc)
+	int BOX_SIZE;               // size of bitmaps (BOX_SIZE X BOX_SIZE)
+	int m_rcID;                     // resource ID (m_bSrc)
 
-	DWORD  m_clr;			// background color == COLOR_3DFACE
-	HBRUSH m_brush;			// background brush
+	DWORD m_clr;                    // background color == COLOR_3DFACE
+	HBRUSH m_brush;                 // background brush
 
 //	HBITMAP m_bSrc;			// source bitmap
 //	HBITMAP m_bitmaps [6];  // bitmaps for all states BOX_ON, BOX_OFF,...BOX_DISABLED_2
-	
-	bool inRect;			// mouse cursor over CB?
-	bool spaceDown;			// space button pressed?
-	bool mouseDown;			// mouse button pressed?
+
+	bool inRect;                    // mouse cursor over CB?
+	bool spaceDown;                 // space button pressed?
+	bool mouseDown;                 // mouse button pressed?
 
 
-	HFONT m_font;			// control font
-	char  m_text [64];		// control text
-	
+	HFONT m_font;                   // control font
+	char m_text [64];               // control text
+
 	int mHeight;
-	int GetMinHeight (HDC);	// calculates the minimal height 'mHeight'
-							// based on m_font
+	int GetMinHeight (HDC); // calculates the minimal height 'mHeight'
+	// based on m_font
 
 //	bool prepare_bitmaps;
 
 	void SetState     (int nState);         // set state (BOX_ON,BOX_OFF,...BOX_DISABLED_2)
 
-	bool hasFocus;							// has focus?
-	RECT rcFocus;							// focus rectangle
-	void DrawFocus (bool forceDraw=false);
-	
+	bool hasFocus;                                                  // has focus?
+	RECT rcFocus;                                                   // focus rectangle
+	void DrawFocus (bool forceDraw = false);
+
 
 	//{{AFX_VIRTUAL(CCheckBox)
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

@@ -28,48 +28,48 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_restackApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_restackApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_ThrowablesFrame;
-	CGroupBoxEx	m_PickupAreaFrame;
-	CGroupBoxEx	m_OptionsFrame;
-	CGroupBoxEx	m_AmmunitionFrame;
-	CEdit	m_capLimit;
-	CButton	m_pickupCC;
-	CEdit	m_periodTo;
-	CEdit	m_periodFrom;
-	CButton	m_pickupToHand;
-	CButton	m_restackToRight;
-	CButton	m_moveCovering;
-	CButton	m_pickupUR;
-	CButton	m_pickupUL;
-	CButton	m_pickupUC;
-	CButton	m_pickupCR;
-	CButton	m_pickupCL;
-	CButton	m_pickupBR;
-	CButton	m_pickupBL;
-	CButton	m_pickupBC;
-	CButton	m_pickupSpears;
-	CEdit	m_throwableTo;
-	CEdit	m_throwableAt;
-	CComboBox	m_throwableType;
-	CEdit	m_ammoTo;
-	CEdit	m_ammoAt;
-	CComboBox	m_ammoType;
-	CButtonST	m_enable;
-	CButtonST	m_OK;
+	CGroupBoxEx m_ThrowablesFrame;
+	CGroupBoxEx m_PickupAreaFrame;
+	CGroupBoxEx m_OptionsFrame;
+	CGroupBoxEx m_AmmunitionFrame;
+	CEdit m_capLimit;
+	CButton m_pickupCC;
+	CEdit m_periodTo;
+	CEdit m_periodFrom;
+	CButton m_pickupToHand;
+	CButton m_restackToRight;
+	CButton m_moveCovering;
+	CButton m_pickupUR;
+	CButton m_pickupUL;
+	CButton m_pickupUC;
+	CButton m_pickupCR;
+	CButton m_pickupCL;
+	CButton m_pickupBR;
+	CButton m_pickupBL;
+	CButton m_pickupBC;
+	CButton m_pickupSpears;
+	CEdit m_throwableTo;
+	CEdit m_throwableAt;
+	CComboBox m_throwableType;
+	CEdit m_ammoTo;
+	CEdit m_ammoAt;
+	CComboBox m_ammoType;
+	CButtonST m_enable;
+	CButtonST m_OK;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -30,13 +30,13 @@ public:
 	void enableControls();
 	char *getVersion();
 	void resetConfig();
-	void loadConfigParam(char *paramName,char *paramValue);
+	void loadConfigParam(char *paramName, char *paramValue);
 	char *saveConfigParam(char *paramName);
 	char *getConfigParamName(int nr);
 	int isMultiParam(char *paramName);
 	void resetMultiParamAccess(char *paramName);
 
- 
+
 	int isLoaded();
 
 public:
@@ -50,7 +50,6 @@ public:
 private:
 	HMODULE dllModule;
 	static int allModulesSize;
-	
 };
 
 #endif // !defined(AFX_MODULEPROXY_H__466E0961_7FC2_412F_968C_048EC6D2A8C0__INCLUDED_)

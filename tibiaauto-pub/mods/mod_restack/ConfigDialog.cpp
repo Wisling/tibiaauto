@@ -11,18 +11,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_restackApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_restackApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -63,13 +63,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -91,12 +91,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -154,7 +154,6 @@ void CConfigDialog::enableControls()
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	CTibiaItemProxy itemProxy;
@@ -169,18 +168,18 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_pickupBL.SetCheck(configData->pickupBL);
 	m_pickupBC.SetCheck(configData->pickupBC);
 	m_pickupSpears.SetCheck(configData->pickupSpears);
-	sprintf(buf,"%d",configData->throwableTo);m_throwableTo.SetWindowText(buf);
-	sprintf(buf,"%d",configData->throwableAt);m_throwableAt.SetWindowText(buf);
-	m_throwableType.SelectString(-1,itemProxy.getItemName(configData->throwableType));
-	sprintf(buf,"%d",configData->ammoTo);m_ammoTo.SetWindowText(buf);
-	sprintf(buf,"%d",configData->ammoAt);m_ammoAt.SetWindowText(buf);
-	m_ammoType.SelectString(-1,itemProxy.getItemName(configData->ammoType));
+	sprintf(buf, "%d", configData->throwableTo); m_throwableTo.SetWindowText(buf);
+	sprintf(buf, "%d", configData->throwableAt); m_throwableAt.SetWindowText(buf);
+	m_throwableType.SelectString(-1, itemProxy.getItemName(configData->throwableType));
+	sprintf(buf, "%d", configData->ammoTo); m_ammoTo.SetWindowText(buf);
+	sprintf(buf, "%d", configData->ammoAt); m_ammoAt.SetWindowText(buf);
+	m_ammoType.SelectString(-1, itemProxy.getItemName(configData->ammoType));
 	m_moveCovering.SetCheck(configData->moveCovering);
 	m_restackToRight.SetCheck(configData->restackToRight);
 	m_pickupToHand.SetCheck(configData->pickupToHand);
-	sprintf(buf,"%d",configData->periodFrom);m_periodFrom.SetWindowText(buf);
-	sprintf(buf,"%d",configData->periodTo);m_periodTo.SetWindowText(buf);
-	sprintf(buf,"%d",configData->capLimit);m_capLimit.SetWindowText(buf);
+	sprintf(buf, "%d", configData->periodFrom); m_periodFrom.SetWindowText(buf);
+	sprintf(buf, "%d", configData->periodTo); m_periodTo.SetWindowText(buf);
+	sprintf(buf, "%d", configData->capLimit); m_capLimit.SetWindowText(buf);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -189,76 +188,77 @@ CConfigData * CConfigDialog::controlsToConfig()
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->pickupUR=m_pickupUR.GetCheck();
-	newConfigData->pickupUL=m_pickupUL.GetCheck();
-	newConfigData->pickupUC=m_pickupUC.GetCheck();
-	newConfigData->pickupCR=m_pickupCR.GetCheck();
-	newConfigData->pickupCC=m_pickupCC.GetCheck();
-	newConfigData->pickupCL=m_pickupCL.GetCheck();
-	newConfigData->pickupBR=m_pickupBR.GetCheck();
-	newConfigData->pickupBL=m_pickupBL.GetCheck();
-	newConfigData->pickupBC=m_pickupBC.GetCheck();
-	newConfigData->pickupSpears=m_pickupSpears.GetCheck();
-	m_throwableTo.GetWindowText(buf,127);newConfigData->throwableTo=atoi(buf);
-	m_throwableAt.GetWindowText(buf,127);newConfigData->throwableAt=atoi(buf);
-	
-	buf[0]='\0';
-	m_throwableType.GetLBText(m_throwableType.GetCurSel(),buf);
-	newConfigData->throwableType=itemProxy.getItemId(buf);
+	newConfigData->pickupUR                                           = m_pickupUR.GetCheck();
+	newConfigData->pickupUL                                           = m_pickupUL.GetCheck();
+	newConfigData->pickupUC                                           = m_pickupUC.GetCheck();
+	newConfigData->pickupCR                                           = m_pickupCR.GetCheck();
+	newConfigData->pickupCC                                           = m_pickupCC.GetCheck();
+	newConfigData->pickupCL                                           = m_pickupCL.GetCheck();
+	newConfigData->pickupBR                                           = m_pickupBR.GetCheck();
+	newConfigData->pickupBL                                           = m_pickupBL.GetCheck();
+	newConfigData->pickupBC                                           = m_pickupBC.GetCheck();
+	newConfigData->pickupSpears                                       = m_pickupSpears.GetCheck();
+	m_throwableTo.GetWindowText(buf, 127); newConfigData->throwableTo = atoi(buf);
+	m_throwableAt.GetWindowText(buf, 127); newConfigData->throwableAt = atoi(buf);
 
-	m_ammoTo.GetWindowText(buf,127);newConfigData->ammoTo=atoi(buf);
-	m_ammoAt.GetWindowText(buf,127);newConfigData->ammoAt=atoi(buf);
-	buf[0]='\0';
-	m_ammoType.GetLBText(m_ammoType.GetCurSel(),buf);
-	newConfigData->ammoType=itemProxy.getItemId(buf);
+	buf[0] = '\0';
+	m_throwableType.GetLBText(m_throwableType.GetCurSel(), buf);
+	newConfigData->throwableType = itemProxy.getItemId(buf);
 
-	
-	newConfigData->moveCovering=m_moveCovering.GetCheck();
-	newConfigData->restackToRight=m_restackToRight.GetCheck();
-	newConfigData->pickupToHand=m_pickupToHand.GetCheck();
-	m_periodFrom.GetWindowText(buf,127);newConfigData->periodFrom=atoi(buf);
-	m_periodTo.GetWindowText(buf,127);newConfigData->periodTo=atoi(buf);
-	m_capLimit.GetWindowText(buf,127);newConfigData->capLimit=atoi(buf);
-	
+	m_ammoTo.GetWindowText(buf, 127); newConfigData->ammoTo = atoi(buf);
+	m_ammoAt.GetWindowText(buf, 127); newConfigData->ammoAt = atoi(buf);
+	buf[0]                                                  = '\0';
+	m_ammoType.GetLBText(m_ammoType.GetCurSel(), buf);
+	newConfigData->ammoType = itemProxy.getItemId(buf);
+
+
+	newConfigData->moveCovering                                     = m_moveCovering.GetCheck();
+	newConfigData->restackToRight                                   = m_restackToRight.GetCheck();
+	newConfigData->pickupToHand                                     = m_pickupToHand.GetCheck();
+	m_periodFrom.GetWindowText(buf, 127); newConfigData->periodFrom = atoi(buf);
+	m_periodTo.GetWindowText(buf, 127); newConfigData->periodTo     = atoi(buf);
+	m_capLimit.GetWindowText(buf, 127); newConfigData->capLimit     = atoi(buf);
+
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_enable);
-	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(     m_enable);
+	skin.SetButtonSkin(     m_OK);
 }
 
 BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
-	
+
 	// reload ammo and throwable combo boxes
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
-	
-	while (m_ammoType.GetCount()>0) m_ammoType.DeleteString(0);
-	while (m_throwableType.GetCount()>0) m_throwableType.DeleteString(0);
-	
+
+	while (m_ammoType.GetCount() > 0)
+		m_ammoType.DeleteString(0);
+	while (m_throwableType.GetCount() > 0)
+		m_throwableType.DeleteString(0);
+
 	// load items for depot item combo
 	int count = itemProxy.getItemCount();
 	int i;
 	m_ammoType.AddString("<disabled>");
 	m_throwableType.AddString("<disabled>");
-	
-	for (i=0;i<count;i++)
+
+	for (i = 0; i < count; i++)
 	{
-		char* name=itemProxy.getItemNameAtIndex(i);
-		int objectId=itemProxy.getItemIdAtIndex(i);
+		char* name       = itemProxy.getItemNameAtIndex(i);
+		int objectId     = itemProxy.getItemIdAtIndex(i);
 		CTibiaTile *tile = reader.getTibiaTile(objectId);
-		if (tile&&tile->stackable)
+		if (tile && tile->stackable)
 		{
 			m_ammoType.AddString(name);
 			m_throwableType.AddString(name);
@@ -266,12 +266,11 @@ BOOL CConfigDialog::OnInitDialog()
 	}
 	m_ammoType.SetCurSel(0);
 	m_throwableType.SetCurSel(0);
-	
-	
+
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)

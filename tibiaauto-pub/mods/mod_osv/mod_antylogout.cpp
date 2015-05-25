@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // mod_antylogout.cpp : Defines the initialization routines for the DLL.
@@ -36,7 +36,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 //
 //	Note!
@@ -69,25 +69,24 @@ static char THIS_FILE[] = __FILE__;
 // CMod_antylogoutApp
 
 BEGIN_MESSAGE_MAP(CMod_antylogoutApp, CWinApp)
-	//{{AFX_MSG_MAP(CMod_antylogoutApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMod_antylogoutApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
 int RandomTimeAntylogout(){
-	return CModuleUtil::randomFormula(300,200);
+	return CModuleUtil::randomFormula(300, 200);
 }
 
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-int toolThreadShouldStop=0;
+int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
-
 
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
@@ -95,39 +94,39 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CConfigData *config = (CConfigData *)lpParam;
-	int iter=0;
-	int randomSeconds=RandomTimeAntylogout();
-	
+	int iter            = 0;
+	int randomSeconds   = RandomTimeAntylogout();
+
 	while (!toolThreadShouldStop)
 	{
 		Sleep(1000);
-		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
+		if (!reader.isLoggedIn())
+			continue;                   // do not proceed if not connected
 
 		iter++;
 
-		if (iter%(randomSeconds)==1){
-			randomSeconds=RandomTimeAntylogout();
+		if (iter % (randomSeconds) == 1)
+		{
+			randomSeconds = RandomTimeAntylogout();
 
 			CTibiaCharacter *self = reader.readSelfCharacter();
 //			sender.ignoreLook(time(NULL)+1);
 //			sender.look(self->x+rand()%15-7,self->y+rand()%11-5,self->z,0);
 
-			
-			if (self->lookDirection==0){
+
+			if (self->lookDirection == 0)
 				sender.turnUp();
-			}else if(self->lookDirection==1){
+			else if(self->lookDirection == 1)
 				sender.turnRight();
-			}else if(self->lookDirection==2){
+			else if(self->lookDirection == 2)
 				sender.turnDown();
-			}else if(self->lookDirection==3){
+			else if(self->lookDirection == 3)
 				sender.turnLeft();
-			}
 			delete self;
 		}
-		
 	}
 
-	toolThreadShouldStop=0;
+	toolThreadShouldStop = 0;
 	return 0;
 }
 
@@ -137,12 +136,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 CMod_antylogoutApp::CMod_antylogoutApp()
 {
-	m_started=0;
+	m_started = 0;
 }
 
 CMod_antylogoutApp::~CMod_antylogoutApp()
 {
-	
 	delete m_configData;
 }
 
@@ -157,24 +155,26 @@ int CMod_antylogoutApp::isStarted()
 	return m_started;
 }
 
- 
+
 void CMod_antylogoutApp::start()
 {
 	superStart();
 	DWORD threadId;
-		
-	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
-	m_started=1;
+
+	toolThreadShouldStop = 0;
+	toolThreadHandle     = ::CreateThread(NULL, 0, toolThreadProc, m_configData, 0, &threadId);
+	m_started            = 1;
 }
 
 void CMod_antylogoutApp::stop()
 {
-	toolThreadShouldStop=1;
-	while (toolThreadShouldStop) {
+	toolThreadShouldStop = 1;
+	while (toolThreadShouldStop)
+	{
 		Sleep(50);
-	};
-	m_started=0;
+	}
+	;
+	m_started = 0;
 }
 
 
@@ -182,5 +182,3 @@ char *CMod_antylogoutApp::getVersion()
 {
 	return "1.1";
 }
-
-

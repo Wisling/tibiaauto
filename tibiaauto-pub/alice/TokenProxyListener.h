@@ -7,22 +7,21 @@ class TokenProxyListener : public SocketListener
 {
 public:
 	TokenProxyListener(SocketListener *, const string &token = "\n");
-	virtual ~TokenProxyListener() { }
-	
+	virtual ~TokenProxyListener() {
+	}
+
 	void recv(string &);
 	void disconnected(const string &msg) {
-		if (forward != NULL) {
+		if (forward != NULL)
 			forward->disconnected(msg);
-		}
 	}
 	void connected() {
-		if (forward != NULL) {
+		if (forward != NULL)
 			forward->connected();
-		}
 	}
 private:
 	string separator, buffer;
 	SocketListener *forward;
 };
 
-#endif
+#endif // ifndef TOKEN_PROXY_LISTENER_H

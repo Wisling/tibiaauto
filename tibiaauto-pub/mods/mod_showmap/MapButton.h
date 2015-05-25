@@ -14,7 +14,7 @@ class CMapButton : public CBitmapButton
 {
 // Construction
 public:
-	CMapButton(int x,int y);
+	CMapButton(int x, int y);
 
 // Attributes
 public:
@@ -25,7 +25,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMapButton)
-	protected:
+protected:
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
 
@@ -39,7 +39,7 @@ private:
 	static CMenu * mapActionsMenu;
 	int m_x;
 	int m_y;
-	int realX,realY,realZ;
+	int realX, realY, realZ;
 
 	// Generated message map functions
 protected:

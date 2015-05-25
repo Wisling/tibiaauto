@@ -31,10 +31,11 @@ public:
 	HTTPListener(Socket *s) {
 		client = s;
 		int n = ++numClients * 25;
-		while (n > 0) {
+		while (n > 0)
+		{
 			char ch = (char)(n % 10) + '0';
 			uid = ch + uid;
-			n /= 10;
+			n  /= 10;
 		}
 		uid = "http client " + uid;
 		SocketHandler::addSocket(uid, client);
@@ -47,16 +48,18 @@ public:
 		SocketHandler::removeSocket(uid);
 		--HTTPListener::numClients;
 	}
-	Socket *getSocket(){ return client;}
+	Socket *getSocket(){
+		return client;
+	}
 	void connected() {
 		;//cout << "Client connected" << endl;
 	}
 	string respond(Match *, PElement e, const string &) {
-		if (e->getNamespace() == "http") {
+		if (e->getNamespace() == "http")
+		{
 			string tag = e->getTagname();
-			if (tag == "quit") {
-				serverRunning = false;	//	Natural quit
-			}
+			if (tag == "quit")
+				serverRunning = false;  //	Natural quit
 		}
 		return "";
 	}
@@ -68,11 +71,11 @@ private:
 
 string HTTPProcessor::process(Match *, PElement, Responder *, const string &){
 /*	string name = Kernel::process(m, e->getChild("name"), r, id);
-	int port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());
-	
-	ServerSocket *server = new ServerSocket(port);
-	SocketHandler::addSocket(name, server);
-	(new HTTPServer(server))->setUID(name);*/
+        int port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());
+
+        ServerSocket *server = new ServerSocket(port);
+        SocketHandler::addSocket(name, server);
+        (new HTTPServer(server))->setUID(name);*/
 	return "starting web server from AIML is currently unsupported";
 }
 
@@ -80,20 +83,23 @@ HTTPServer::HTTPServer() {
 	server = new ServerSocket(httpConfig.port);
 	SocketHandler::addSocket("Web Server", server);
 	ifstream fin(httpConfig.templateFile.c_str());
-	if (fin.is_open()) {
+	if (fin.is_open())
+	{
 		string line;
-		while (!fin.eof()) {
+		while (!fin.eof())
+		{
 			getline(fin, line);
 			templateContents += line + "\n";
 		}
 		fin.close();
 	}
 	server->setServerListener(this);
-	if (server->init()) {
+	if (server->init())
+	{
 		char str[1024];
 		sprintf(str, "Starting up web server (listening on port %d)\n", httpConfig.port);
 		getStream("Console")->Write(str);
-	}	//	No else - will display a shutdown message via server->init()
+	}       //	No else - will display a shutdown message via server->init()
 }
 
 void HTTPServer::shutdown(const string &msg) {
@@ -117,33 +123,38 @@ void HTTPListener::recv(string &s) {
 	//--	client's IP/Hostname.
 	string input;
 	string id;
-	if (s.find("GET") == 0) {
+	if (s.find("GET") == 0)
+	{
 		//--	This is the GET header
 		string::size_type ix = s.find("?");
 		string::size_type iy = s.find(" ", ++ix);
-		string request = s.substr(ix,iy-ix);
+		string request       = s.substr(ix, iy - ix);
 		StringTokenizer st(request, "&");
-		while (st.hasMoreTokens()) {
+		while (st.hasMoreTokens())
+		{
 			string tok = st.nextToken();
-			if (tok.find("input=") == 0) {
+			if (tok.find("input=") == 0)
+			{
 				tok.erase(0, 6);
 				input = tok;
-			} else if (tok.find("id=") == 0) {
-				tok.erase(0,3);
+			}
+			else if (tok.find("id=") == 0)
+			{
+				tok.erase(0, 3);
 				id = tok;
 			}
 		}
-		if (input.empty()) {
+		if (input.empty())
 			input = "CONNECT";
-		} else {
+		else
 			input = urldecode(input);
-		}
-		if (id.empty()) {
+		if (id.empty())
 			id = client->getPeerName();
-		} else {
+		else
 			id = urldecode(id);
-		}
-	} else {
+	}
+	else
+	{
 		return;
 	}
 	client->write("HTTP/1.0 200 OK\r\n");
@@ -152,8 +163,9 @@ void HTTPListener::recv(string &s) {
 	client->write("\r\n");
 	string response = Kernel::respond(input, id, this);
 	string str;
-	if (templateContents.length() == 0) {
-		str = "<html>";
+	if (templateContents.length() == 0)
+	{
+		str  = "<html>";
 		str += "<head><title>I am J-Alice!</title></head>";
 		str += "<body>";
 		str += "<h1>J-Alice Web Server</h1><br>";
@@ -168,18 +180,21 @@ void HTTPListener::recv(string &s) {
 		str += "</body>";
 		str += "</html>";
 		str += "\r\n";
-	} else {
+	}
+	else
+	{
 		str = templateContents;
-		const string tag = "<bot output>";
+		const string tag     = "<bot output>";
 		string::size_type ix = str.find(tag);
-		while (ix != string::npos) {
+		while (ix != string::npos)
+		{
 			string tail = str.substr(ix + tag.length());
 			str = str.substr(0, ix) + response + tail;
-			ix = str.find(tag);
+			ix  = str.find(tag);
 		}
 	}
 	client->write(str.c_str());
-	
+
 	Logger::log(id + " > " + input + "\nbot > " + response, "http-server");
 	SocketHandler::removeSocket(uid);
 	--HTTPListener::numClients;

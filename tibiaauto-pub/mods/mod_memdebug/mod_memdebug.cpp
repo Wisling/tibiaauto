@@ -16,22 +16,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_memdebugApp
 
 BEGIN_MESSAGE_MAP(CMod_memdebugApp, CWinApp)
-	//{{AFX_MSG_MAP(CMod_memdebugApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMod_memdebugApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
-
-
-
-
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -39,7 +35,7 @@ END_MESSAGE_MAP()
 
 CMod_memdebugApp::CMod_memdebugApp()
 {
-	m_started=0;
+	m_started = 0;
 }
 
 CMod_memdebugApp::~CMod_memdebugApp()
@@ -76,10 +72,7 @@ void CMod_memdebugApp::showConfigDialog()
 }
 
 
-
 char *CMod_memdebugApp::getVersion()
 {
 	return "1.0";
 }
-
-

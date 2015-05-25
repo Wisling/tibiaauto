@@ -29,55 +29,55 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_fluidApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_fluidApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_GeneralOptionsFrame;
-	CGroupBoxEx	m_ManaRecoveryFrame;
-	CGroupBoxEx	m_HealthRecoveryFrame;
-	CEdit	m_manaBelowS;
-	CEdit	m_manaBelowN;
-	CEdit	m_manaBelowG;
-	CEdit	m_hpBelowH;
-	CEdit	m_hpBelowS;
-	CEdit	m_hpBelowN;
-	CEdit	m_hpBelowG;
-	CEdit	m_hpBelowU;
-	CButton	m_drinkManaS;
-	CButton	m_drinkManaN;
-	CButton	m_drinkManaG;
-	CButton	m_drinkHpH;
-	CButton	m_drinkHpS;
-	CButton	m_drinkHpN;
-	CButton	m_drinkHpG;
-	CButton	m_drinkHpU;
-	CButton	m_customItem2Use;
-	CEdit	m_customItem2Below;
-	CComboBox	m_customItem2List;
-	CButton	m_customItem1Use;
-	CEdit	m_customItem1Below;
-	CComboBox	m_customItem1List;
-	CButton	m_dropEmpty;
-	CEdit	m_sleep;
-	CEdit	m_manaBelow;
-	CEdit	m_hpBelow;
-	CButton	m_drinkMana;
-	CButton	m_drinkHp;
-	CButton	m_randomCast;
-	CButton	m_useHotkey;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CGroupBoxEx m_GeneralOptionsFrame;
+	CGroupBoxEx m_ManaRecoveryFrame;
+	CGroupBoxEx m_HealthRecoveryFrame;
+	CEdit m_manaBelowS;
+	CEdit m_manaBelowN;
+	CEdit m_manaBelowG;
+	CEdit m_hpBelowH;
+	CEdit m_hpBelowS;
+	CEdit m_hpBelowN;
+	CEdit m_hpBelowG;
+	CEdit m_hpBelowU;
+	CButton m_drinkManaS;
+	CButton m_drinkManaN;
+	CButton m_drinkManaG;
+	CButton m_drinkHpH;
+	CButton m_drinkHpS;
+	CButton m_drinkHpN;
+	CButton m_drinkHpG;
+	CButton m_drinkHpU;
+	CButton m_customItem2Use;
+	CEdit m_customItem2Below;
+	CComboBox m_customItem2List;
+	CButton m_customItem1Use;
+	CEdit m_customItem1Below;
+	CComboBox m_customItem1List;
+	CButton m_dropEmpty;
+	CEdit m_sleep;
+	CEdit m_manaBelow;
+	CEdit m_hpBelow;
+	CButton m_drinkMana;
+	CButton m_drinkHp;
+	CButton m_randomCast;
+	CButton m_useHotkey;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

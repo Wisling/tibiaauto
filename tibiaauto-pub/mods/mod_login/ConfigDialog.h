@@ -28,32 +28,32 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_loginApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_loginApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_LoginSettingsFrame;
-	CGroupBoxEx	m_DebugLogFrame;
-	CGroupBoxEx	m_BackpackControlFrame;
-	CButton	m_openCont8;
-	CButton	m_openCont7;
-	CButton	m_openCont6;
-	CButton	m_openCont5;
-	CButton	m_openCont4;
-	CButton	m_openCont3;
-	CButton	m_openCont2;
-	CButton	m_openCont1;
-	CButton	m_openMain;
-	CEdit	m_charPos;
-	CStatic	m_status;
-	CEdit	m_password;
-	CListCtrl	m_debug;
-	CEdit	m_accountNumber;
+	CGroupBoxEx m_LoginSettingsFrame;
+	CGroupBoxEx m_DebugLogFrame;
+	CGroupBoxEx m_BackpackControlFrame;
+	CButton m_openCont8;
+	CButton m_openCont7;
+	CButton m_openCont6;
+	CButton m_openCont5;
+	CButton m_openCont4;
+	CButton m_openCont3;
+	CButton m_openCont2;
+	CButton m_openCont1;
+	CButton m_openMain;
+	CEdit m_charPos;
+	CStatic m_status;
+	CEdit m_password;
+	CListCtrl m_debug;
+	CEdit m_accountNumber;
 	CEdit m_loginDelay;
-	CButtonST	m_enable;
-	CButtonST	m_OK;
-	CButton	m_autopass;
+	CButtonST m_enable;
+	CButtonST m_OK;
+	CButton m_autopass;
 	CButton m_loginAfterKilled;
 	//}}AFX_DATA
 
@@ -61,9 +61,9 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

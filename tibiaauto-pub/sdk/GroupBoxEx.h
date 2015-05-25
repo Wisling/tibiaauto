@@ -25,7 +25,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CGroupBoxEx)
-	protected:
+protected:
 	//}}AFX_VIRTUAL
 
 // Implementation

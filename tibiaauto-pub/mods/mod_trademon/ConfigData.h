@@ -16,7 +16,7 @@ public:
 	virtual ~CConfigData();
 
 	char message[256];
-	
+
 	int tradeTalk;
 	int channel;
 	int channelInterval;

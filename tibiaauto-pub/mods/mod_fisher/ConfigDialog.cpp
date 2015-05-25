@@ -11,18 +11,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_fisherApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_fisherApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -45,13 +45,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -73,12 +73,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -98,14 +98,12 @@ void CConfigDialog::enableControls()
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf,"%d",configData->fishOnlyWhenCap);m_fishOnlyWhenCap.SetWindowText(buf);
+	sprintf(buf, "%d", configData->fishOnlyWhenCap); m_fishOnlyWhenCap.SetWindowText(buf);
 	m_moveFromHandToCont.SetCheck(configData->moveFromHandToCont);
 	m_fishOnlyWhenWorms.SetCheck(configData->fishOnlyWhenWorms);
-	
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -113,30 +111,30 @@ CConfigData * CConfigDialog::controlsToConfig()
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	m_fishOnlyWhenCap.GetWindowText(buf,127);newConfigData->fishOnlyWhenCap=atoi(buf);
-	newConfigData->moveFromHandToCont=m_moveFromHandToCont.GetCheck();
-	newConfigData->fishOnlyWhenWorms=m_fishOnlyWhenWorms.GetCheck();
+	m_fishOnlyWhenCap.GetWindowText(buf, 127); newConfigData->fishOnlyWhenCap = atoi(buf);
+	newConfigData->moveFromHandToCont                                         = m_moveFromHandToCont.GetCheck();
+	newConfigData->fishOnlyWhenWorms                                          = m_fishOnlyWhenWorms.GetCheck();
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	if (nIDEvent==1001)
+	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
 
 		refreshFishStatus();
 
-		SetTimer(1001,250,NULL);
+		SetTimer(1001, 250, NULL);
 	}
-	
+
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(     m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -146,8 +144,8 @@ BOOL CConfigDialog::OnInitDialog()
 
 	refreshFishStatus();
 
-	SetTimer(1001,250,NULL);
-	
+	SetTimer(1001, 250, NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -169,48 +167,46 @@ void CConfigDialog::refreshFishStatus()
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaItemProxy itemProxy;
 
-	int totalFishQty=0;
-	
+	int totalFishQty = 0;
+
 	int contNr;
-	int openContNr=0;
-	int openContMax=reader.readOpenContainerCount();
-	for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++)
+	int openContNr  = 0;
+	int openContMax = reader.readOpenContainerCount();
+	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
 	{
 		CTibiaContainer *container = reader.readContainer(contNr);
-		
+
 		if (container->flagOnOff)
 		{
 			openContNr++;
-			totalFishQty+=container->countItemsOfType(itemProxy.getValueForConst("fish"));
+			totalFishQty += container->countItemsOfType(itemProxy.getValueForConst("fish"));
 		}
-		
+
 		delete container;
 	}
-	
-	int fishTimeH = totalFishQty*144/3600;
-	int fishTimeMin = (totalFishQty*144/60)%60;
-	int fishTimeSec = totalFishQty*144%60;
-	
+
+	int fishTimeH   = totalFishQty * 144 / 3600;
+	int fishTimeMin = (totalFishQty * 144 / 60) % 60;
+	int fishTimeSec = totalFishQty * 144 % 60;
+
 	char buf[256];
-	sprintf(buf,"%d",totalFishQty);
+	sprintf(buf, "%d", totalFishQty);
 	m_quantity.SetWindowText(buf);
-	sprintf(buf,"%dh %dmin %ds",fishTimeH,fishTimeMin,fishTimeSec);
+	sprintf(buf, "%dh %dmin %ds", fishTimeH, fishTimeMin, fishTimeSec);
 	m_time.SetWindowText(buf);
 
 	// now count fishy water fields
-	int x,y,fishyWaterCount;
-	fishyWaterCount=0;
-	for (x=-7;x<=7;x++)
+	int x, y, fishyWaterCount;
+	fishyWaterCount = 0;
+	for (x = -7; x <= 7; x++)
 	{
-		for (y=-5;y<=5;y++)
+		for (y = -5; y <= 5; y++)
 		{
-			int tileId = reader.mapGetPointItemId(point(x,y,0),0);
-			if (tileId>=itemProxy.getValueForConst("waterWithFishStart")&&tileId<=itemProxy.getValueForConst("waterWithFishEnd"))
-			{
+			int tileId = reader.mapGetPointItemId(point(x, y, 0), 0);
+			if (tileId >= itemProxy.getValueForConst("waterWithFishStart") && tileId <= itemProxy.getValueForConst("waterWithFishEnd"))
 				fishyWaterCount++;
-			}
 		}
 	}
-	sprintf(buf,"%d",fishyWaterCount);
+	sprintf(buf, "%d", fishyWaterCount);
 	m_fishyWater.SetWindowText(buf);
 }

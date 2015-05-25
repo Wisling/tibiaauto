@@ -10,7 +10,7 @@
 #include "MyDialog.h"
 #include "GroupBoxEx.h"
 #include "BtnST.h"
-#include "ConfigData.h"	// Added by ClassView
+#include "ConfigData.h" // Added by ClassView
 
 /////////////////////////////////////////////////////////////////////////////
 // CCharInfoDialog dialog
@@ -28,52 +28,52 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CCharInfoDialog)
 	enum { IDD = IDD_CHARINFO };
-	CStatic	m_magicShieldText;
-	CStatic	m_strongHasteText;
-	CStatic	m_invisText;
-	CStatic	m_hasteText;
-	CButton	m_EnableTimer;
-	CButtonST	m_ResetCounters;
-	CButtonST	m_OK;
-	CGroupBoxEx	m_SpellStats;
-	CGroupBoxEx	m_CharStats;
-	CStatic	m_expUpin;
-	CStatic	m_lvlUpin;
-	CStatic	m_lvlSpeed;
-	CStatic	m_mLvlUpin;
-	CStatic	m_mLvlSpeed;
-	CStatic	m_mLvl;
-	CStatic	m_fistUpin;
-	CStatic	m_fistSpeed;
-	CStatic	m_fist;
-	CStatic	m_time;
-	CStatic	m_swordUpin;
-	CStatic	m_shieldUpin;
-	CStatic	m_fishUpin;
-	CStatic	m_fishSpeed;
-	CStatic	m_fish;
-	CStatic	m_distUpin;
-	CStatic	m_distSpeed;
-	CStatic	m_axeUpin;
-	CStatic	m_clubUpin;
-	CStatic	m_dist;
-	CStatic	m_shield;
-	CStatic	m_sword;
-	CStatic	m_swordSpeed;
-	CStatic	m_shieldSpeed;
-	CStatic	m_expSpeed;
-	CStatic	m_clubSpeed;
-	CStatic	m_axeSpeed;
-	CStatic	m_axe;
-	CStatic	m_club;
-	CStatic	m_exp;
+	CStatic m_magicShieldText;
+	CStatic m_strongHasteText;
+	CStatic m_invisText;
+	CStatic m_hasteText;
+	CButton m_EnableTimer;
+	CButtonST m_ResetCounters;
+	CButtonST m_OK;
+	CGroupBoxEx m_SpellStats;
+	CGroupBoxEx m_CharStats;
+	CStatic m_expUpin;
+	CStatic m_lvlUpin;
+	CStatic m_lvlSpeed;
+	CStatic m_mLvlUpin;
+	CStatic m_mLvlSpeed;
+	CStatic m_mLvl;
+	CStatic m_fistUpin;
+	CStatic m_fistSpeed;
+	CStatic m_fist;
+	CStatic m_time;
+	CStatic m_swordUpin;
+	CStatic m_shieldUpin;
+	CStatic m_fishUpin;
+	CStatic m_fishSpeed;
+	CStatic m_fish;
+	CStatic m_distUpin;
+	CStatic m_distSpeed;
+	CStatic m_axeUpin;
+	CStatic m_clubUpin;
+	CStatic m_dist;
+	CStatic m_shield;
+	CStatic m_sword;
+	CStatic m_swordSpeed;
+	CStatic m_shieldSpeed;
+	CStatic m_expSpeed;
+	CStatic m_clubSpeed;
+	CStatic m_axeSpeed;
+	CStatic m_axe;
+	CStatic m_club;
+	CStatic m_exp;
 	CStatic m_lvl;
 	CStatic m_invisRemaining;
 	CStatic m_hasteRemaining;
 	CStatic m_stronghasteRemaining;
 	CStatic m_magicshieldRemaining;
-	CStatic	m_mana;
-	CStatic	m_hp;
+	CStatic m_mana;
+	CStatic m_hp;
 	CStatic m_sp;
 	CStatic m_cap;
 	//}}AFX_DATA
@@ -82,7 +82,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CCharInfoDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

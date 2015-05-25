@@ -17,7 +17,8 @@ void Parser::elementStarted(const string &name, attributeMap *am, int) {
 	PElement element(new Element(name));
 	//	add attributes
 	attributeMap::const_iterator itr = am->begin();
-	while (itr != am->end()) {
+	while (itr != am->end())
+	{
 		element->setAttribute((*itr).first, (*itr).second);
 		itr++;
 	}
@@ -27,7 +28,8 @@ void Parser::elementStarted(const string &name, attributeMap *am, int) {
 }
 
 void Parser::elementFinished(const string &, int) {
-	if (current != NULL && recurser.size() > 1) {
+	if (current != NULL && recurser.size() > 1)
+	{
 		recurser.pop();
 		current = recurser.top();
 	}

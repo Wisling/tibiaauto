@@ -16,11 +16,12 @@ using namespace std;
 class IdProcessor : public AimlProcessor
 {
 public:
-	~IdProcessor() { }
-	
+	~IdProcessor() {
+	}
+
 	string process(Match *, PElement, Responder *, const string &id) {
 		return id;
 	}
 };
 
-#endif
+#endif // ifndef ID_PROCESSOR_H

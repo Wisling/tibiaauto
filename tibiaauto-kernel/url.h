@@ -23,7 +23,7 @@ public:
 			HKEY hKey = NULL;
 			// Open the registry
 			if (::RegOpenKeyEx(HKEY_CLASSES_ROOT, _T("http\\shell\\open\\command"), 0,
-					KEY_READ, &hKey) == ERROR_SUCCESS)
+			                   KEY_READ, &hKey) == ERROR_SUCCESS)
 			{
 				// Data size
 				DWORD cbData = 0;
@@ -36,12 +36,10 @@ public:
 					if (psz != NULL)
 					{
 						if (::RegQueryValueEx(hKey, NULL, NULL,
-							NULL, (LPBYTE)psz, &cbData) ==
-							ERROR_SUCCESS)
-						{
+						                      NULL, (LPBYTE)psz, &cbData) ==
+						    ERROR_SUCCESS)
 							// Success!
 							m_strBrowser = psz;
-						}
 						delete [] psz;
 					}
 				}
@@ -52,17 +50,15 @@ public:
 			{
 				// Strip the full path from the string
 				int nStart = m_strBrowser.Find('"');
-				int nEnd = m_strBrowser.ReverseFind('"');
+				int nEnd   = m_strBrowser.ReverseFind('"');
 				// Do we have either quote?
 				// If so, then the path contains spaces
 				if (nStart >= 0 && nEnd >= 0)
 				{
 					// Are they the same?
 					if (nStart != nEnd)
-					{
 						// Get the full path
 						m_strBrowser = m_strBrowser.Mid(nStart + 1, nEnd - nStart - 1);
-					}
 				}
 				else
 				{

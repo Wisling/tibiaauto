@@ -22,20 +22,20 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CWhiteList)
 	enum { IDD = IDD_WHITELIST };
-	CGroupBoxEx	m_WhiteListFrame;
-	CEdit	m_name;
-	CListBox	m_list;
-	CButton	m_mkblack;
-	CButtonST	m_delete;
-	CButtonST	m_add;
-	CButtonST	m_OK;
+	CGroupBoxEx m_WhiteListFrame;
+	CEdit m_name;
+	CListBox m_list;
+	CButton m_mkblack;
+	CButtonST m_delete;
+	CButtonST m_add;
+	CButtonST m_OK;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWhiteList)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -28,16 +28,16 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = "C:/temp/testfdkls.txt";
-#endif
+#endif // ifdef _DEBUG
 
 CTibiaMap tibiaMap;
 CTAMiniMap taMiniMap;
-CMemReader *reader=NULL;
+CMemReader *reader = NULL;
 
 void startMemReader()
 {
-	if (reader==NULL)
-		reader=new CMemReader();
+	if (reader == NULL)
+		reader = new CMemReader();
 }
 
 extern HANDLE hPipe;
@@ -47,10 +47,10 @@ extern HANDLE hPipe;
 // CTibiaauto_utilApp
 
 BEGIN_MESSAGE_MAP(CTibiaauto_utilApp, CWinApp)
-	//{{AFX_MSG_MAP(CTibiaauto_utilApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CTibiaauto_utilApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -67,15 +67,11 @@ CTibiaauto_utilApp::CTibiaauto_utilApp()
 CTibiaauto_utilApp theApp;
 CRITICAL_SECTION ItemsInitCriticalSection;
 
-	
-
-
 
 BOOL CTibiaauto_utilApp::InitInstance()
 {
 	InitializeCriticalSection(&ItemsInitCriticalSection);
 	return CWinApp::InitInstance();
-
 }
 
 int CTibiaauto_utilApp::ExitInstance()
@@ -100,7 +96,7 @@ void getBaseAddr()
 
 void setPipeHandle(HANDLE hPipePar)
 {
-	hPipe=hPipePar;
+	hPipe = hPipePar;
 }
 
 int memReadOpenContainerCount()
@@ -140,17 +136,16 @@ int memReadReadSelfLightColor()
 }
 
 
-
-void memReadWriteCreatureLightPower(int creatureNr,int value)
+void memReadWriteCreatureLightPower(int creatureNr, int value)
 {
 	startMemReader();
-	reader->writeCreatureLightPower(creatureNr,value);
+	reader->writeCreatureLightPower(creatureNr, value);
 }
 
-void memReadWriteCreatureLightColor(int creatureNr,int value)
+void memReadWriteCreatureLightColor(int creatureNr, int value)
 {
 	startMemReader();
-	reader->writeCreatureLightColor(creatureNr,value);
+	reader->writeCreatureLightColor(creatureNr, value);
 }
 
 int memReadReadCreatureLightPower(int creatureNr)
@@ -166,16 +161,15 @@ int memReadReadCreatureLightColor(int creatureNr)
 }
 
 
-
 void memReadCancelAttackCoords()
 {
 	startMemReader();
 	reader->cancelAttackCoords();
 }
-void memReadWriteGotoCoords(int x,int y,int z)
+void memReadWriteGotoCoords(int x, int y, int z)
 {
 	startMemReader();
-	reader->writeGotoCoords(x,y,z);
+	reader->writeGotoCoords(x, y, z);
 }
 int memReadGetLoggedCharNr()
 {
@@ -187,23 +181,11 @@ int memReadGetSelfEventFlags()
 	startMemReader();
 	return reader->getSelfEventFlags();
 }
-void memReadWriteVisibleCreatureName(int chNr,char *name)
+void memReadWriteVisibleCreatureName(int chNr, char *name)
 {
 	startMemReader();
-	reader->writeVisibleCreatureName(chNr,name);
+	reader->writeVisibleCreatureName(chNr, name);
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 CTibiaItem * memReadGetTradeItemPartner(int nr)
@@ -289,40 +271,40 @@ CTibiaCharacter *memReadGetCharacterByTibiaId(int tibiaId)
 }
 
 
-void packSenderUseWithObjectFromFloorOnFloor(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetX,int targetY,int targetZ, int method=2)
+void packSenderUseWithObjectFromFloorOnFloor(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2)
 {
 	CPackSender sender;
-	sender.useWithObjectFromFloorOnFloor(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetX, targetY, targetZ,  method);
+	sender.useWithObjectFromFloorOnFloor(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetX, targetY, targetZ, method);
 }
 
-void packSenderUseWithObjectFromFloorInContainer(int sourceObjectId,int sourceX,int sourceY,int sourceZ,int targetObjectId,int targetContNr,int targetPos, int method=2)
+void packSenderUseWithObjectFromFloorInContainer(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetContNr, int targetPos, int method = 2)
 {
 	CPackSender sender;
-	sender.useWithObjectFromFloorInContainer(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetContNr, targetPos,  method);
+	sender.useWithObjectFromFloorInContainer(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetContNr, targetPos, method);
 }
 
-void packSenderUseWithObjectFromContainerInContainer(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetContNr,int targetPos, int method=2)
+void packSenderUseWithObjectFromContainerInContainer(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetContNr, int targetPos, int method = 2)
 {
 	CPackSender sender;
-	sender.useWithObjectFromContainerInContainer(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetContNr, targetPos,  method);
+	sender.useWithObjectFromContainerInContainer(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetContNr, targetPos, method);
 }
 
-void packSenderUseWithObjectFromContainerOnFloor(int sourceObjectId,int sourceContNr,int sourcePos,int targetObjectId,int targetX,int targetY,int targetZ, int method=2)
+void packSenderUseWithObjectFromContainerOnFloor(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2)
 {
 	CPackSender sender;
-	sender.useWithObjectFromContainerOnFloor(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetX, targetY, targetZ,  method);
+	sender.useWithObjectFromContainerOnFloor(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetX, targetY, targetZ, method);
 }
 
-void packSenderUseWithObjectOnFloor(int sourceObjectId,int targetObjectId,int targetX,int targetY,int targetZ, int method=2)
+void packSenderUseWithObjectOnFloor(int sourceObjectId, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2)
 {
 	CPackSender sender;
-	sender.useWithObjectOnFloor(sourceObjectId,targetObjectId,targetX,targetY,targetZ, method);
+	sender.useWithObjectOnFloor(sourceObjectId, targetObjectId, targetX, targetY, targetZ, method);
 }
 
-void packSenderUseWithObjectInContainer(int sourceObjectId,int targetObjectId,int contNr,int itemPos, int method=2)
+void packSenderUseWithObjectInContainer(int sourceObjectId, int targetObjectId, int contNr, int itemPos, int method = 2)
 {
 	CPackSender sender;
-	sender.useWithObjectInContainer(sourceObjectId,targetObjectId,contNr,itemPos, method);
+	sender.useWithObjectInContainer(sourceObjectId, targetObjectId, contNr, itemPos, method);
 }
 
 CMemConstData getMemConstData()
@@ -330,38 +312,38 @@ CMemConstData getMemConstData()
 	return CMemConstData();
 }
 
-void packSenderMoveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ,int quantity)
+void packSenderMoveObjectFromFloorToFloor(int objectId, int srcX, int srcY, int srcZ, int destX, int destY, int destZ, int quantity)
 {
 	CPackSender sender;
-	sender.moveObjectFromFloorToFloor(objectId, srcX, srcY, srcZ, destX, destY, destZ,quantity);
+	sender.moveObjectFromFloorToFloor(objectId, srcX, srcY, srcZ, destX, destY, destZ, quantity);
 }
 
-void packSenderMoveObjectFromFloorToContainer(int objectId,int sourceX,int sourceY,int sourceZ,int targetContNr,int targetPos,int quantity)
+void packSenderMoveObjectFromFloorToContainer(int objectId, int sourceX, int sourceY, int sourceZ, int targetContNr, int targetPos, int quantity)
 {
 	CPackSender sender;
-	sender.moveObjectFromFloorToContainer(objectId,sourceX,sourceY,sourceZ,targetContNr,targetPos,quantity);
+	sender.moveObjectFromFloorToContainer(objectId, sourceX, sourceY, sourceZ, targetContNr, targetPos, quantity);
 }
 
-void packSenderMoveObjectBetweenContainers(int objectId,int  sourceContNr,int  sourcePos, int targetContNr, int targetPos,int  qty)
+void packSenderMoveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty)
 {
 	CPackSender sender;
 	sender.moveObjectBetweenContainers(objectId, sourceContNr, sourcePos, targetContNr, targetPos, qty);
 }
 
-void packSenderMoveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x, int y, int z,int quantity)
+void packSenderMoveObjectFromContainerToFloor(int objectId, int contNr, int pos, int x, int y, int z, int quantity)
 {
 	CPackSender sender;
-	sender.moveObjectFromContainerToFloor(objectId,contNr,pos,x,y,z,quantity);
+	sender.moveObjectFromContainerToFloor(objectId, contNr, pos, x, y, z, quantity);
 }
 void packSenderCastRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method)
 {
 	CPackSender sender;
-	sender.castRuneAgainstCreature(contNr,itemPos,runeObjectId,creatureId,method);
+	sender.castRuneAgainstCreature(contNr, itemPos, runeObjectId, creatureId, method);
 }
 void packSenderCastRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method)
 {
 	CPackSender sender;
-	sender.castRuneAgainstHuman(contNr,itemPos,runeObjectId,targetX,targetY,targetZ, method);
+	sender.castRuneAgainstHuman(contNr, itemPos, runeObjectId, targetX, targetY, targetZ, method);
 }
 
 void packSenderUseItemOnCreature(int objectId, int creatureId)
@@ -394,33 +376,33 @@ void packSenderUseItem(int objectId)
 void packSenderUseItemOnFloor(int objectId, int x, int y, int z)
 {
 	CPackSender sender;
-	sender.useItemOnFloor(objectId,x,y,z);
+	sender.useItemOnFloor(objectId, x, y, z);
 }
 void packSenderUseItemInContainer(int objectId, int contNr, int pos)
 {
 	CPackSender sender;
-	sender.useItemInContainer(objectId,contNr,pos);
+	sender.useItemInContainer(objectId, contNr, pos);
 }
-void packSenderOpenContainerFromFloor(int objectId,int x,int y,int z,int targetBag)
+void packSenderOpenContainerFromFloor(int objectId, int x, int y, int z, int targetBag)
 {
 	CPackSender sender;
-	sender.openContainerFromFloor(objectId,x,y,z,targetBag);
+	sender.openContainerFromFloor(objectId, x, y, z, targetBag);
 }
-int packSenderOpenAutoContainerFromFloor(int objectId,int x,int y,int z)
+int packSenderOpenAutoContainerFromFloor(int objectId, int x, int y, int z)
 {
 	CPackSender sender;
-	return sender.openAutoContainerFromFloor(objectId,x,y,z);
+	return sender.openAutoContainerFromFloor(objectId, x, y, z);
 }
 void packSenderOpenContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
 {
 	CPackSender sender;
-	sender.openContainerFromContainer(objectId,contNrFrom,contPosFrom,targetBag);
+	sender.openContainerFromContainer(objectId, contNrFrom, contPosFrom, targetBag);
 }
 
 int packSenderOpenAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
 {
 	CPackSender sender;
-	return sender.openAutoContainerFromContainer(objectId,contNrFrom,contPosFrom);
+	return sender.openAutoContainerFromContainer(objectId, contNrFrom, contPosFrom);
 }
 
 void packSenderSendAttackedCreatureToAutoAim(int attackedCreature)
@@ -450,13 +432,13 @@ void packSenderSayYell(char *msg)
 void packSenderTell(char *msg, char *playerName)
 {
 	CPackSender sender;
-	sender.tell(msg,playerName);
+	sender.tell(msg, playerName);
 }
 
-void packSenderSayOnChan(char *msg, int channelId1,int channelId2)
+void packSenderSayOnChan(char *msg, int channelId1, int channelId2)
 {
 	CPackSender sender;
-	sender.sayOnChan(msg,channelId1,channelId2);
+	sender.sayOnChan(msg, channelId1, channelId2);
 }
 
 void packSenderSayNPC(char *msg)
@@ -465,41 +447,41 @@ void packSenderSayNPC(char *msg)
 	sender.sayNPC(msg);
 }
 
-void packSenderNpcSell(int objectId,int qty)
+void packSenderNpcSell(int objectId, int qty)
 {
 	CPackSender sender;
 	sender.npcSell(objectId, qty);
 }
 
-void packSenderNpcBuy(int objectId,int qty, int ignoreCap, int withBackpack)
+void packSenderNpcBuy(int objectId, int qty, int ignoreCap, int withBackpack)
 {
 	CPackSender sender;
-	sender.npcBuy(objectId,qty, ignoreCap, withBackpack);
+	sender.npcBuy(objectId, qty, ignoreCap, withBackpack);
 }
 
-void memReadSetMemIntValue(int address,int value,int addBaseAddr=1)
+void memReadSetMemIntValue(int address, int value, int addBaseAddr = 1)
 {
-	CMemUtil::SetMemIntValue(address,value,addBaseAddr);
+	CMemUtil::SetMemIntValue(address, value, addBaseAddr);
 }
 
-int memReadGetMemIntValue(int address,int addBaseAddr=1)
+int memReadGetMemIntValue(int address, int addBaseAddr = 1)
 {
-	return CMemUtil::GetMemIntValue(address,addBaseAddr);
+	return CMemUtil::GetMemIntValue(address, addBaseAddr);
 }
 
-void memReadSetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr=1)
+void memReadSetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr = 1)
 {
-	CMemUtil::SetMemRange(memAddressStart,memAddressEnd,data,addBaseAddr);
+	CMemUtil::SetMemRange(memAddressStart, memAddressEnd, data, addBaseAddr);
 }
 
-void memReadGetMemRange(DWORD memAddressStart,DWORD memAddressEnd, char *data,int addBaseAddr=1)
+void memReadGetMemRange(DWORD memAddressStart, DWORD memAddressEnd, char *data, int addBaseAddr = 1)
 {
-	CMemUtil::GetMemRange(memAddressStart,memAddressEnd,data,addBaseAddr);
+	CMemUtil::GetMemRange(memAddressStart, memAddressEnd, data, addBaseAddr);
 }
 
-void tibiaMapRemovePointAvailable(int x,int y,int z)
+void tibiaMapRemovePointAvailable(int x, int y, int z)
 {
-	tibiaMap.removePointAvailable(x,y,z);
+	tibiaMap.removePointAvailable(x, y, z);
 }
 void tibiaMapProhPointClear()
 {
@@ -507,31 +489,31 @@ void tibiaMapProhPointClear()
 }
 void tibiaMapProhPointAdd(int x, int y, int z)
 {
-	tibiaMap.prohPointAdd(x,y,z);
+	tibiaMap.prohPointAdd(x, y, z);
 }
-int tibiaMapGetPointUpDown(int x,int y,int z)
+int tibiaMapGetPointUpDown(int x, int y, int z)
 {
-	return tibiaMap.getPointUpDown(x,y,z);
+	return tibiaMap.getPointUpDown(x, y, z);
 }
-int tibiaMapGetPointUpDownNoProh(int x,int y,int z)
+int tibiaMapGetPointUpDownNoProh(int x, int y, int z)
 {
-	return tibiaMap.getPointUpDownNoProh(x,y,z);
+	return tibiaMap.getPointUpDownNoProh(x, y, z);
 }
-void tibiaMapSetPointUpDown(int x,int y,int z,int updown)
+void tibiaMapSetPointUpDown(int x, int y, int z, int updown)
 {
-	tibiaMap.setPointUpDown(x,y,z,updown);
+	tibiaMap.setPointUpDown(x, y, z, updown);
 }
-int tibiaMapGetPrevPointZ(int x,int y, int z)
+int tibiaMapGetPrevPointZ(int x, int y, int z)
 {
-	return tibiaMap.getPrevPointZ(x,y,z);
+	return tibiaMap.getPrevPointZ(x, y, z);
 }
-int tibiaMapGetPrevPointY(int x,int y, int z)
+int tibiaMapGetPrevPointY(int x, int y, int z)
 {
-	return tibiaMap.getPrevPointY(x,y,z);
+	return tibiaMap.getPrevPointY(x, y, z);
 }
-int tibiaMapGetPrevPointX(int x,int y, int z)
+int tibiaMapGetPrevPointX(int x, int y, int z)
 {
-	return tibiaMap.getPrevPointX(x,y,z);
+	return tibiaMap.getPrevPointX(x, y, z);
 }
 void tibiaMapClearPrevPoint()
 {
@@ -541,17 +523,17 @@ void tibiaMapClearDistance()
 {
 	tibiaMap.clearDistance();
 }
-void tibiaMapClearLocalPrevPoint(int x,int y,int z,int radius)
+void tibiaMapClearLocalPrevPoint(int x, int y, int z, int radius)
 {
-	tibiaMap.clearLocalPrevPoint(x,y,z,radius);
+	tibiaMap.clearLocalPrevPoint(x, y, z, radius);
 }
-void tibiaMapSetPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
+void tibiaMapSetPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	tibiaMap.setPrevPoint(x,y,z,prevX,prevY,prevZ);
+	tibiaMap.setPrevPoint(x, y, z, prevX, prevY, prevZ);
 }
-void tibiaMapSetBestPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
+void tibiaMapSetBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	tibiaMap.setBestPrevPoint(x,y,z,prevX,prevY,prevZ);
+	tibiaMap.setBestPrevPoint(x, y, z, prevX, prevY, prevZ);
 }
 struct point tibiaMapGetRandomPoint()
 {
@@ -561,18 +543,18 @@ void tibiaMapClear()
 {
 	tibiaMap.clear();
 }
-void tibiaMapSetPointAsAvailable(int x,int y,int z)
+void tibiaMapSetPointAsAvailable(int x, int y, int z)
 {
-	tibiaMap.setPointAsAvailable(x,y,z);
+	tibiaMap.setPointAsAvailable(x, y, z);
 }
-int tibiaMapIsPointAvailable(int x,int y,int z)
+int tibiaMapIsPointAvailable(int x, int y, int z)
 {
-	return tibiaMap.isPointAvailable(x,y,z);
+	return tibiaMap.isPointAvailable(x, y, z);
 }
 
-int tibiaMapIsPointAvailableNoProh(int x,int y,int z)
+int tibiaMapIsPointAvailableNoProh(int x, int y, int z)
 {
-	return tibiaMap.isPointAvailableNoProh(x,y,z);
+	return tibiaMap.isPointAvailableNoProh(x, y, z);
 }
 
 int tibiaMapSize()
@@ -585,42 +567,42 @@ struct point tibiaMapGetPointByNr(int nr)
 	return tibiaMap.getPointByNr(nr);
 }
 
-point tibiaMapGetDestPoint(int x,int y, int z)
+point tibiaMapGetDestPoint(int x, int y, int z)
 {
-	return tibiaMap.getDestPoint(x,y,z);
+	return tibiaMap.getDestPoint(x, y, z);
 }
 
-void tibiaMapSetDestPoint(int x,int y, int z, int destX, int destY, int destZ)
+void tibiaMapSetDestPoint(int x, int y, int z, int destX, int destY, int destZ)
 {
 	tibiaMap.setDestPoint(x, y, z, destX, destY, destZ);
 }
 
-int tibiaMapGetPointSpeed(int x,int y, int z)
+int tibiaMapGetPointSpeed(int x, int y, int z)
 {
-	return tibiaMap.getPointSpeed(x,y,z);
+	return tibiaMap.getPointSpeed(x, y, z);
 }
 
-void tibiaMapSetPointSpeed(int x,int y, int z, int speed)
+void tibiaMapSetPointSpeed(int x, int y, int z, int speed)
 {
 	tibiaMap.setPointSpeed(x, y, z, speed);
 }
 
-int tibiaMapGetPointDistance(int x,int y, int z)
+int tibiaMapGetPointDistance(int x, int y, int z)
 {
-	return tibiaMap.getPointDistance(x,y,z);
+	return tibiaMap.getPointDistance(x, y, z);
 }
 
-void tibiaMapSetPointDistance(int x,int y, int z, int dist)
+void tibiaMapSetPointDistance(int x, int y, int z, int dist)
 {
 	tibiaMap.setPointDistance(x, y, z, dist);
 }
-void tibiaMapSetPointLocked(int x,int y,int z, int locked)
+void tibiaMapSetPointLocked(int x, int y, int z, int locked)
 {
-	tibiaMap.setPointLocked(x,y,z,locked);
+	tibiaMap.setPointLocked(x, y, z, locked);
 }
-int tibiaMapIsPointLocked(int x,int y,int z)
+int tibiaMapIsPointLocked(int x, int y, int z)
 {
-	return tibiaMap.isPointLocked(x,y,z);
+	return tibiaMap.isPointLocked(x, y, z);
 }
 
 int tibiaMapCalcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
@@ -628,22 +610,22 @@ int tibiaMapCalcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 	return tibiaMap.calcDistance(x, y, z, prevX, prevY, prevZ);
 }
 
-int tibiaMapIsPointInMiniMap(int x,int y,int z)
+int tibiaMapIsPointInMiniMap(int x, int y, int z)
 {
-	return taMiniMap.isPointInMiniMap(x,y,z);
+	return taMiniMap.isPointInMiniMap(x, y, z);
 }
 
-CTibiaMiniMapPoint* tibiaMapGetMiniMapPoint(int x,int y,int z)
+CTibiaMiniMapPoint* tibiaMapGetMiniMapPoint(int x, int y, int z)
 {
-	return taMiniMap.getMiniMapPoint(x,y,z);
+	return taMiniMap.getMiniMapPoint(x, y, z);
 }
 
-void tibiaMapSetMiniMapPoint(int x,int y,int z,int col,int spd)
+void tibiaMapSetMiniMapPoint(int x, int y, int z, int col, int spd)
 {
-	taMiniMap.setMiniMapPoint(x,y,z,col,spd);
+	taMiniMap.setMiniMapPoint(x, y, z, col, spd);
 }
 
-CUIntArray * tibiaMapFindPathOnMiniMap(int x,int y,int z,int x2,int y2,int z2)
+CUIntArray * tibiaMapFindPathOnMiniMap(int x, int y, int z, int x2, int y2, int z2)
 {
 	return taMiniMap.findPathOnMiniMap(x, y, z, x2, y2, z2);
 }
@@ -745,16 +727,16 @@ void tibiaItemClearLootItems(){
 }
 
 void tibiaItemAddItem(char *name, int objectId){
-	CTibiaItem::addItem(name,objectId);
+	CTibiaItem::addItem(name, objectId);
 }
 void tibiaItemAddTypedItem(char *name, int objectId, int type){
-	CTibiaItem::addTypedItem(name,objectId, type);
+	CTibiaItem::addTypedItem(name, objectId, type);
 }
 void tibiaItemAddFood(char *name, int objectId, int extraInfo){
-	CTibiaItem::addFood(name,objectId,extraInfo);
+	CTibiaItem::addFood(name, objectId, extraInfo);
 }
 void tibiaItemAddLootItem(char *name, int objectId) {
-	CTibiaItem::addLootItem(name,objectId);
+	CTibiaItem::addLootItem(name, objectId);
 }
 void tibiaItemRemoveItem(int ind) {
 	CTibiaItem::removeItem(ind);
@@ -793,7 +775,7 @@ void tibiaItemSetItemsTree(CTibiaTree * tibiaTree){
 	CTibiaItem::setItemsTree(tibiaTree);
 }
 void tibiaItemRefreshItemLists(){
-	CTibiaItem::itemListsFresh=0;
+	CTibiaItem::itemListsFresh = 0;
 	CTibiaItem::refreshItemLists();
 }
 void tibiaItemSaveItemLists(){
@@ -809,10 +791,10 @@ void packSenderLogout()
 	sender.logout();
 }
 
-void packSenderStepMulti(int *direction,int size)
+void packSenderStepMulti(int *direction, int size)
 {
 	CPackSender sender;
-	sender.stepMulti(direction,size);
+	sender.stepMulti(direction, size);
 }
 
 void packSenderCloseContainer(int contNr)
@@ -821,10 +803,10 @@ void packSenderCloseContainer(int contNr)
 	sender.closeContainer(contNr);
 }
 
-void packSenderAttackMode(int attack,int follow,int attlock,int PVPMode)
+void packSenderAttackMode(int attack, int follow, int attlock, int PVPMode)
 {
 	CPackSender sender;
-	sender.attackMode(attack,follow,attlock,PVPMode);
+	sender.attackMode(attack, follow, attlock, PVPMode);
 }
 
 void packSenderAttack(int tibiaCharId)
@@ -844,38 +826,38 @@ int memReadMapGetSelfCellNr()
 	startMemReader();
 	return reader->mapGetSelfCellNr();
 }
-int memReadMapGetPointItemsCount(point p,int relToCell=-1)
+int memReadMapGetPointItemsCount(point p, int relToCell = -1)
 {
 	startMemReader();
-	return reader->mapGetPointItemsCount(p,relToCell);
+	return reader->mapGetPointItemsCount(p, relToCell);
 }
-int memReadMapGetPointItemId(point p, int stackNr,int relToCell=-1)
+int memReadMapGetPointItemId(point p, int stackNr, int relToCell = -1)
 {
 	startMemReader();
-	return reader->mapGetPointItemId(p,stackNr,relToCell);
-}
-
-int memReadMapGetPointItemExtraInfo(point p, int stackNr,int extraPos,int relToCell=-1)
-{
-	startMemReader();
-	return reader->mapGetPointItemExtraInfo(p,stackNr,extraPos,relToCell);
+	return reader->mapGetPointItemId(p, stackNr, relToCell);
 }
 
-int memReadMapGetPointStackIndex(point p, int stackNr,int relToCell=-1)
+int memReadMapGetPointItemExtraInfo(point p, int stackNr, int extraPos, int relToCell = -1)
 {
 	startMemReader();
-	return reader->mapGetPointStackIndex(p,stackNr,relToCell);
+	return reader->mapGetPointItemExtraInfo(p, stackNr, extraPos, relToCell);
 }
 
-void memReadMapSetPointItemsCount(point p, int count,int relToCell=-1)
+int memReadMapGetPointStackIndex(point p, int stackNr, int relToCell = -1)
 {
 	startMemReader();
-	reader->mapSetPointItemsCount(p,count,relToCell);
+	return reader->mapGetPointStackIndex(p, stackNr, relToCell);
 }
-void memReadMapSetPointItemId(point p, int stackNr, int tileId,int relToCell=-1)
+
+void memReadMapSetPointItemsCount(point p, int count, int relToCell = -1)
 {
 	startMemReader();
-	reader->mapSetPointItemId(p,stackNr,tileId,relToCell);
+	reader->mapSetPointItemsCount(p, count, relToCell);
+}
+void memReadMapSetPointItemId(point p, int stackNr, int tileId, int relToCell = -1)
+{
+	startMemReader();
+	reader->mapSetPointItemId(p, stackNr, tileId, relToCell);
 }
 
 void packSenderTurnLeft()
@@ -915,10 +897,10 @@ long memReadGetCurrentTm()
 }
 
 
-int ipcBackPipeReadFromPipe(struct ipcMessage *mess,int expectedType)
+int ipcBackPipeReadFromPipe(struct ipcMessage *mess, int expectedType)
 {
 	CIPCBackPipe backPipe;
-	return backPipe.readFromPipe(mess,expectedType);
+	return backPipe.readFromPipe(mess, expectedType);
 }
 
 void ipcBackPipeInitialiseIPC()
@@ -930,7 +912,7 @@ void ipcBackPipeInitialiseIPC()
 void packSenderSendCreatureInfo(char *name, char *info1, char *info2)
 {
 	CPackSender sender;
-	sender.sendCreatureInfo(name,info1,info2);
+	sender.sendCreatureInfo(name, info1, info2);
 }
 
 void packSenderPrintText(CPoint pos, int red, int green, int blue, char* text)
@@ -951,10 +933,10 @@ void packSenderUnregisterInpacketRegex(int handle)
 	sender.unregisterInpacketRegex(handle);
 }
 
-void packSenderLook(int x,int y, int z,int objectId)
+void packSenderLook(int x, int y, int z, int objectId)
 {
 	CPackSender sender;
-	sender.look(x,y,z,objectId);
+	sender.look(x, y, z, objectId);
 }
 
 void packSenderIgnoreLook(time_t end)
@@ -972,7 +954,7 @@ long memReadGetCurrenTm()
 void packSenderSendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle)
 {
 	CPackSender sender;
-	sender.sendAutoAimConfig(active,onlyCreatures,aimPlayersFromBattle);
+	sender.sendAutoAimConfig(active, onlyCreatures, aimPlayersFromBattle);
 }
 
 
@@ -1042,10 +1024,10 @@ void packSenderSendDismount()
 	sender.sendDismount();
 }
 
-void packSenderSendDirectPacket(const char* buf,int len)
+void packSenderSendDirectPacket(const char* buf, int len)
 {
 	CPackSender sender;
-	sender.sendDirectPacket(buf,len);
+	sender.sendDirectPacket(buf, len);
 }
 
 
@@ -1103,7 +1085,7 @@ void packSenderEnableCName(int enable)
 
 void variableStoreSetVariable(char *name, char *value)
 {
-	CVariableStore::setVariable(name,value);
+	CVariableStore::setVariable(name, value);
 }
 
 const char *variableStoreGetVariable(char *name)
@@ -1117,47 +1099,47 @@ CTibiaMiniMap *memReadReadMiniMap(int nr)
 	return reader->readMiniMap(nr);
 }
 
-CTibiaMiniMapLabel *memReadReadMiniMapLabel(int mapNr,int pointNr)
+CTibiaMiniMapLabel *memReadReadMiniMapLabel(int mapNr, int pointNr)
 {
 	startMemReader();
-	return reader->readMiniMapLabel(mapNr,pointNr);
+	return reader->readMiniMapLabel(mapNr, pointNr);
 }
 
-CTibiaMiniMapPoint *memReadReadMiniMapPoint(int x,int y,int z)
+CTibiaMiniMapPoint *memReadReadMiniMapPoint(int x, int y, int z)
 {
 	startMemReader();
-	return reader->readMiniMapPoint(x,y,z);
+	return reader->readMiniMapPoint(x, y, z);
 }
 
-void memReadWriteMiniMapPoint(int x, int y, int z,int col,int spd)
+void memReadWriteMiniMapPoint(int x, int y, int z, int col, int spd)
 {
 	startMemReader();
-	reader->writeMiniMapPoint(x,y,z,col,spd);
+	reader->writeMiniMapPoint(x, y, z, col, spd);
 }
 
 int crFindCreatureStatForLocationTibiaId(int x, int y, int z, int pos)
 {
 	CCreaturesReader cReader;
-	return cReader.findCreatureStatForLocationTibiaId(x,y,z,pos);
+	return cReader.findCreatureStatForLocationTibiaId(x, y, z, pos);
 }
 
 int crFindCreatureStatForLocationCount(int x, int y, int z)
 {
 	CCreaturesReader cReader;
-	return cReader.findCreatureStatForLocationCount(x,y,z);
+	return cReader.findCreatureStatForLocationCount(x, y, z);
 }
 
 char *crFindCreatureStatForLocationName(int x, int y, int z, int pos)
 {
 	CCreaturesReader cReader;
-	return cReader.findCreatureStatForLocationName(x,y,z,pos);
+	return cReader.findCreatureStatForLocationName(x, y, z, pos);
 }
 
 
 char ** crFindCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ)
 {
 	CCreaturesReader cReader;
-	return cReader.findCreatureStatInArea(x,y,z,rangeXY,rangeZ);
+	return cReader.findCreatureStatInArea(x, y, z, rangeXY, rangeZ);
 }
 
 void memReadSetMainWindowText(char *text)
@@ -1214,10 +1196,10 @@ int memReadIsLoggedIn()
 	return reader->isLoggedIn();
 }
 
-void memReadSetXRayValues(int v1,int v2)
+void memReadSetXRayValues(int v1, int v2)
 {
 	startMemReader();
-	reader->setXRayValues(v1,v2);
+	reader->setXRayValues(v1, v2);
 }
 
 int memReadGetXRayValue1()
@@ -1235,7 +1217,7 @@ int memReadGetXRayValue2()
 void memReadWriteCreatureDeltaXY(int creatureNr, int deltaX, int deltaY)
 {
 	startMemReader();
-	reader->writeCreatureDeltaXY(creatureNr,deltaX,deltaY);
+	reader->writeCreatureDeltaXY(creatureNr, deltaX, deltaY);
 }
 
 int memReadGetCreatureDeltaX(int creatureNr)
@@ -1255,79 +1237,79 @@ CTibiaVIPEntry *memReadReadVIPEntry(int nr)
 	return reader->readVIPEntry(nr);
 }
 
-int memReadItemOnTopIndex(int x,int y,int z=0)
+int memReadItemOnTopIndex(int x, int y, int z = 0)
 {
 	startMemReader();
-	return reader->itemOnTopIndex(x,y,z);
+	return reader->itemOnTopIndex(x, y, z);
 }
 
-int memReadIsItemOnTop3(int x,int y,int *itemArr,int itemArrSize)
+int memReadIsItemOnTop3(int x, int y, int *itemArr, int itemArrSize)
 {
 	startMemReader();
-	return reader->isItemOnTop(x,y,itemArr,itemArrSize);
+	return reader->isItemOnTop(x, y, itemArr, itemArrSize);
 }
 
-int memReadIsItemCovered3(int x,int y,int *itemArr,int itemArrSize)
+int memReadIsItemCovered3(int x, int y, int *itemArr, int itemArrSize)
 {
 	startMemReader();
-	return reader->isItemCovered(x,y,itemArr,itemArrSize);
+	return reader->isItemCovered(x, y, itemArr, itemArrSize);
 }
 
-int memReadIsItemOnTop2(int x,int y,CUIntArray& itemArr)
+int memReadIsItemOnTop2(int x, int y, CUIntArray& itemArr)
 {
 	startMemReader();
-	return reader->isItemOnTop(x,y,itemArr);
+	return reader->isItemOnTop(x, y, itemArr);
 }
 
-int memReadIsItemCovered2(int x,int y,CUIntArray& itemArr)
+int memReadIsItemCovered2(int x, int y, CUIntArray& itemArr)
 {
 	startMemReader();
-	return reader->isItemCovered(x,y,itemArr);
+	return reader->isItemCovered(x, y, itemArr);
 }
 
-int memReadIsItemOnTop(int x,int y,int itemId)
+int memReadIsItemOnTop(int x, int y, int itemId)
 {
 	startMemReader();
-	return reader->isItemOnTop(x,y,itemId);
+	return reader->isItemOnTop(x, y, itemId);
 }
 
-int memReadIsItemCovered(int x,int y,int itemId)
+int memReadIsItemCovered(int x, int y, int itemId)
 {
 	startMemReader();
-	return reader->isItemCovered(x,y,itemId);
+	return reader->isItemCovered(x, y, itemId);
 }
 
-int memReadGetItemIndex(int x,int y,int itemId)
+int memReadGetItemIndex(int x, int y, int itemId)
 {
 	startMemReader();
-	return reader->getItemIndex(x,y,itemId);
+	return reader->getItemIndex(x, y, itemId);
 }
 
-int memReadItemOnTopCode(int x,int y)
+int memReadItemOnTopCode(int x, int y)
 {
 	startMemReader();
-	return reader->itemOnTopCode(x,y);
+	return reader->itemOnTopCode(x, y);
 }
 
-int memReadItemSeenOnTopIndex(int x,int y,int z=0)
+int memReadItemSeenOnTopIndex(int x, int y, int z = 0)
 {
 	startMemReader();
-	return reader->itemSeenOnTopIndex(x,y,z);
+	return reader->itemSeenOnTopIndex(x, y, z);
 }
 
-int memReadItemSeenOnTopCode(int x,int y)
+int memReadItemSeenOnTopCode(int x, int y)
 {
 	startMemReader();
-	return reader->itemSeenOnTopCode(x,y);
+	return reader->itemSeenOnTopCode(x, y);
 }
 
-int memReadItemOnTopQty(int x,int y)
+int memReadItemOnTopQty(int x, int y)
 {
 	startMemReader();
-	return reader->itemOnTopQty(x,y);
+	return reader->itemOnTopQty(x, y);
 }
 
-int memReadFindNextClosedContainer(int afterCont/*=-1*/)
+int memReadFindNextClosedContainer(int afterCont /*=-1*/)
 {
 	startMemReader();
 	return reader->findNextClosedContainer(afterCont);
@@ -1339,7 +1321,8 @@ int memReadFindNextClosedContainer(int afterCont/*=-1*/)
 /* Deprecated function START*/
 int tibiaItemGetIndex(int objectId, int type)
 {
-	switch (type){
+	switch (type)
+	{
 	case 1:
 		return tibiaItemGetItemIndex(objectId);
 	case 2:
@@ -1356,28 +1339,31 @@ int tibiaItemGetObjectId(char *name){
 	return tibiaItemGetItemId(name);
 }
 int tibiaItemGetFoodId(char *name){
-	int size=tibiaItemGetFoodCount();
-	for (int i=0;i<size;i++){
-		if(!strcmp(tibiaItemGetFoodNameAtIndex(i),name)) return tibiaItemGetFoodIdAtIndex(i);
+	int size = tibiaItemGetFoodCount();
+	for (int i = 0; i < size; i++)
+	{
+		if(!strcmp(tibiaItemGetFoodNameAtIndex(i), name))
+			return tibiaItemGetFoodIdAtIndex(i);
 	}
 	return 0;
 }
 //Deprecated Functions Section
 int tibiaItemGetLootItemId(char *name){
-	int size=tibiaItemGetLootItemCount();
-	for (int i=0;i<size;i++){
-		if(!strcmp(tibiaItemGetLootItemNameAtIndex(i),name)) return tibiaItemGetLootItemIdAtIndex(i);
+	int size = tibiaItemGetLootItemCount();
+	for (int i = 0; i < size; i++)
+	{
+		if(!strcmp(tibiaItemGetLootItemNameAtIndex(i), name))
+			return tibiaItemGetLootItemIdAtIndex(i);
 	}
 	return 0;
 }
 void tibiaItemSetItemName(int index, char *name){
-	tibiaItemAddItem(name,tibiaItemGetItemIdAtIndex(index));
+	tibiaItemAddItem(name, tibiaItemGetItemIdAtIndex(index));
 	tibiaItemRemoveItem(index);
 }
 int tibiaItemGetExtraInfo(int index, int type){
-	if (type==2){
+	if (type == 2)
 		return tibiaItemGetFoodTimeAtIndex(index);
-	}
 	return 0;
 }
 void tibiaItemAddLoot (char *name, int objectId){
@@ -1385,45 +1371,46 @@ void tibiaItemAddLoot (char *name, int objectId){
 }
 //Deprecated Functions Section
 void tibiaItemSetFoodName(int index, char *name){
-	tibiaItemAddFood(name,tibiaItemGetFoodIdAtIndex(index),tibiaItemGetFoodTimeAtIndex(index));
+	tibiaItemAddFood(name, tibiaItemGetFoodIdAtIndex(index), tibiaItemGetFoodTimeAtIndex(index));
 	tibiaItemRemoveFood(index);
 }
 void tibiaItemSetLootName(int index, char *name){
-	tibiaItemAddLootItem(name,tibiaItemGetLootItemIdAtIndex(index));
+	tibiaItemAddLootItem(name, tibiaItemGetLootItemIdAtIndex(index));
 	tibiaItemRemoveLootItem(index);
 }
 void tibiaItemSetExtraInfo(int index, int info, int type){
-	if (type==2){
-		char* name=tibiaItemGetFoodNameAtIndex(index);
-		char* name2=(char*)malloc(strlen(name)+1);
+	if (type == 2)
+	{
+		char* name  = tibiaItemGetFoodNameAtIndex(index);
+		char* name2 = (char*)malloc(strlen(name) + 1);
 		tibiaItemRemoveFood(index);
-		tibiaItemAddFood(name2,tibiaItemGetFoodIdAtIndex(index),info);
+		tibiaItemAddFood(name2, tibiaItemGetFoodIdAtIndex(index), info);
 		free(name2);
 	}
 }
 void tibiaItemSetItemObjectId(int index, int objectId){
-	char* name=tibiaItemGetItemNameAtIndex(index);
-	char* name2=(char*)malloc(strlen(name)+1);
-	strcpy(name2,name);
+	char* name  = tibiaItemGetItemNameAtIndex(index);
+	char* name2 = (char*)malloc(strlen(name) + 1);
+	strcpy(name2, name);
 	tibiaItemRemoveItem(index);
-	tibiaItemAddItem(name2,objectId);
+	tibiaItemAddItem(name2, objectId);
 	free(name2);
 }
 //Deprecated Functions Section
 void tibiaItemSetFoodObjectId(int index, int objectId){
-	char* name=tibiaItemGetFoodNameAtIndex(index);
-	char* name2=(char*)malloc(strlen(name)+1);
-	strcpy(name2,name);
+	char* name  = tibiaItemGetFoodNameAtIndex(index);
+	char* name2 = (char*)malloc(strlen(name) + 1);
+	strcpy(name2, name);
 	tibiaItemRemoveFood(index);
-	tibiaItemAddFood(name2,objectId,tibiaItemGetFoodTimeAtIndex(index));
+	tibiaItemAddFood(name2, objectId, tibiaItemGetFoodTimeAtIndex(index));
 	free(name2);
 }
 void tibiaItemSetLootObjectId(int index, int objectId){
-	char* name=tibiaItemGetLootItemNameAtIndex(index);
-	char* name2=(char*)malloc(strlen(name)+1);
-	strcpy(name2,name);
+	char* name  = tibiaItemGetLootItemNameAtIndex(index);
+	char* name2 = (char*)malloc(strlen(name) + 1);
+	strcpy(name2, name);
 	tibiaItemRemoveLootItem(index);
-	tibiaItemAddLootItem(name2,objectId);
+	tibiaItemAddLootItem(name2, objectId);
 	free(name2);
 }
 int tibiaItemGetCorpseIdByCreatureName(char *name){

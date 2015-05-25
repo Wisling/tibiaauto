@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // mod_addressfinder.cpp : Defines the initialization routines for the DLL.
@@ -38,7 +38,7 @@ of the License, or (at your option) any later version.
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 using namespace std;
 
@@ -58,13 +58,14 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-int toolThreadShouldStop=0;
+int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
-	while (!toolThreadShouldStop) {
+	while (!toolThreadShouldStop)
+	{
 		size_t loop = 0;
 		list <byte> tibiaFile;
 		list<byte>::iterator fileIterator;
@@ -72,7 +73,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		list<byte>::iterator comparisonIterator;
 		list <int> mask;
 		list<int>::iterator maskIterator;
-		
+
 		comparison.push_back(0xa1);
 		mask.push_back(1);
 		comparison.push_back(0x00);
@@ -208,30 +209,35 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		comparison.push_back(0x05);
 		mask.push_back(1);
 
-		for (; loop < comparison.size(); loop++) {
+		for (; loop < comparison.size(); loop++)
+		{
 			tibiaFile.push_back(reader.getMemIntValue(0x401000 + loop));
 		}
 
-		while(loop < 0x5b0ffe) {
-			fileIterator = tibiaFile.begin();
+		while(loop < 0x5b0ffe)
+		{
+			fileIterator       = tibiaFile.begin();
 			comparisonIterator = comparison.begin();
-			maskIterator = mask.begin();
+			maskIterator       = mask.begin();
 			int countSuccess = 0;
-			while (fileIterator != tibiaFile.end() && comparisonIterator != comparison.end() && maskIterator != mask.end() && *maskIterator * *fileIterator == *comparisonIterator){
+			while (fileIterator != tibiaFile.end() && comparisonIterator != comparison.end() && maskIterator != mask.end() && *maskIterator * *fileIterator == *comparisonIterator)
+			{
 				countSuccess++;
 				fileIterator++;
 				comparisonIterator++;
 				maskIterator++;
 			}
-			
-			if (countSuccess == comparison.size()) {
+
+			if (countSuccess == comparison.size())
+			{
 				AfxMessageBox("Success");
 				config->experienceAddress = reader.getMemIntValue(0x401000 + loop + 1);
-				config->experience = reader.getMemIntValue(config->experienceAddress);
-				toolThreadShouldStop=1;
+				config->experience        = reader.getMemIntValue(config->experienceAddress);
+				toolThreadShouldStop      = 1;
 				break;
 			}
-			else {
+			else
+			{
 				tibiaFile.pop_front();
 				tibiaFile.push_back(reader.getMemIntValue(0x401000 + ++loop));
 			}
@@ -240,7 +246,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		sprintf(buf, "Xp Address: 0x%x", 0x401000 + loop);
 		AfxMessageBox(buf);
 	}
-	toolThreadShouldStop=0;
+	toolThreadShouldStop = 0;
 	return 0;
 }
 
@@ -249,13 +255,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 // CMod_addressfinderApp construction
 
 CMod_addressfinderApp::CMod_addressfinderApp() {
-	m_configDialog =NULL;
-	m_started=0;
-	m_configData = new CConfigData();
+	m_configDialog = NULL;
+	m_started      = 0;
+	m_configData   = new CConfigData();
 }
 
 CMod_addressfinderApp::~CMod_addressfinderApp() {
-	if (m_configDialog){
+	if (m_configDialog)
+	{
 		m_configDialog->DestroyWindow();
 		delete m_configDialog;
 	}
@@ -272,26 +279,30 @@ int CMod_addressfinderApp::isStarted() {
 
 void CMod_addressfinderApp::start() {
 	superStart();
-	if (m_configDialog) 	{
+	if (m_configDialog)
+	{
 		m_configDialog->disableControls();
 		m_configDialog->activateEnableButton(true);
 	}
-	
+
 	DWORD threadId;
-	
-	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
-	m_started=1;
+
+	toolThreadShouldStop = 0;
+	toolThreadHandle     = ::CreateThread(NULL, 0, toolThreadProc, m_configData, 0, &threadId);
+	m_started            = 1;
 }
 
 void CMod_addressfinderApp::stop() {
-	toolThreadShouldStop=1;
-	while (toolThreadShouldStop) {
+	toolThreadShouldStop = 1;
+	while (toolThreadShouldStop)
+	{
 		Sleep(50);
-	};
-	m_started=0;
-	
-	if (m_configDialog)	{
+	}
+	;
+	m_started = 0;
+
+	if (m_configDialog)
+	{
 		m_configDialog->enableControls();
 		m_configDialog->activateEnableButton(false);
 	}
@@ -299,26 +310,29 @@ void CMod_addressfinderApp::stop() {
 
 void CMod_addressfinderApp::showConfigDialog() {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	
-	if (!m_configDialog) {
+
+	if (!m_configDialog)
+	{
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
-		if (m_started) disableControls();
-		else enableControls();
+		if (m_started)
+			disableControls();
+		else
+			enableControls();
 		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
 void CMod_addressfinderApp::configToControls() {
-	if (m_configDialog) {
+	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
-	}
 }
 
 void CMod_addressfinderApp::controlsToConfig() {
-	if (m_configDialog)	{
+	if (m_configDialog)
+	{
 		delete m_configData;
 		m_configData = m_configDialog->controlsToConfig();
 	}
@@ -344,29 +358,35 @@ int CMod_addressfinderApp::validateConfig(int showAlerts) {
 }
 
 void CMod_addressfinderApp::resetConfig() {
-	if(m_configData){
+	if(m_configData)
+	{
 		delete m_configData;
 		m_configData = NULL;
 	}
 	m_configData = new CConfigData();
 }
 
-void CMod_addressfinderApp::loadConfigParam(char *paramName,char *paramValue) {
-	if (!strcmp(paramName, "ExperienceAddress")) m_configData->experienceAddress = atoi(paramValue);
-	if (!strcmp(paramName, "Experience")) m_configData->experience = atoi(paramValue);
+void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue) {
+	if (!strcmp(paramName, "ExperienceAddress"))
+		m_configData->experienceAddress = atoi(paramValue);
+	if (!strcmp(paramName, "Experience"))
+		m_configData->experience = atoi(paramValue);
 }
 
 char *CMod_addressfinderApp::saveConfigParam(char *paramName) {
 	static char buf[1024];
-	buf[0]='\0';
-	if (!strcmp(paramName, "ExperienceAddress")) sprintf(buf,"%d",m_configData->experienceAddress);
-	if (!strcmp(paramName, "Experience")) sprintf(buf,"%d",m_configData->experience);
+	buf[0] = '\0';
+	if (!strcmp(paramName, "ExperienceAddress"))
+		sprintf(buf, "%d", m_configData->experienceAddress);
+	if (!strcmp(paramName, "Experience"))
+		sprintf(buf, "%d", m_configData->experience);
 
 	return buf;
 }
 
 char *CMod_addressfinderApp::getConfigParamName(int nr) {
-	switch (nr) {
+	switch (nr)
+	{
 	case 0: return "ExperienceAddress";
 	case 1: return "Experience";
 	default:
@@ -376,8 +396,9 @@ char *CMod_addressfinderApp::getConfigParamName(int nr) {
 
 void CMod_addressfinderApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
-	
-	if (m_configDialog){
+
+	if (m_configDialog)
+	{
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
 	}

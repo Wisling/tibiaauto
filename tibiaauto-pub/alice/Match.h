@@ -50,4 +50,4 @@ private:
 	Nodemaster *node;
 };
 
-#endif
+#endif // ifndef MATCH_H

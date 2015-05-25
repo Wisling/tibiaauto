@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,9 +18,9 @@ static char THIS_FILE[]=__FILE__;
 
 CTibiaMapTile::CTibiaMapTile()
 {
-	count=0;
-	memset(stackind,0,sizeof(int)*10);
-	memset(items,0,sizeof(CTibiaMapTileItem)*10);
+	count = 0;
+	memset(stackind, 0, sizeof(int) * 10);
+	memset(items, 0, sizeof(CTibiaMapTileItem) * 10);
 	tileEnd = 0;
 }
 
@@ -29,18 +29,20 @@ CTibiaMapTileAddress::CTibiaMapTileAddress()
 	CTibiaMapTileAddress(0);
 }
 
-CTibiaMapTileAddress::CTibiaMapTileAddress(int initAddr=0)
+CTibiaMapTileAddress::CTibiaMapTileAddress(int initAddr = 0)
 {
-	int *dummy=(int*)initAddr;
-	int offset=0;
-	count=int(&dummy[offset++]);
+	int *dummy = (int*)initAddr;
+	int offset = 0;
+	count = int(&dummy[offset++]);
 	int i;
-	for (i=0;i<10;i++){
-		stackind[i]=int(&dummy[offset++]);
+	for (i = 0; i < 10; i++)
+	{
+		stackind[i] = int(&dummy[offset++]);
 	}
-	for (i=0;i<10;i++){
+	for (i = 0; i < 10; i++)
+	{
 		items[i] = CTibiaMapTileItemAddress(int(&dummy[offset]));
-		offset += sizeof(CTibiaMapTileItemAddress)/sizeof(int);
+		offset  += sizeof(CTibiaMapTileItemAddress) / sizeof(int);
 	}
 	tileEnd = int(&dummy[offset++]);
 }

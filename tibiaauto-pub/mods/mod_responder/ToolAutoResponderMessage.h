@@ -12,7 +12,7 @@
 class CToolAutoResponderMessage
 {
 public:
-	CToolAutoResponderMessage(char chan[16384],char mess[16384],char nick[16384]);
+	CToolAutoResponderMessage(char chan[16384], char mess[16384], char nick[16384]);
 	CToolAutoResponderMessage();
 	virtual ~CToolAutoResponderMessage();
 	char nick[16384];

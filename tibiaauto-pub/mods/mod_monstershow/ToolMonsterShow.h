@@ -20,7 +20,7 @@ class CToolMonsterShow : public MyDialog
 {
 // Construction
 public:
-	void showMonsterDetails(int x,int y);
+	void showMonsterDetails(int x, int y);
 	CToolMonsterShow(CWnd* pParent = NULL);   // standard constructor
 	~CToolMonsterShow();
 	void DoSetButtonSkin();
@@ -28,25 +28,25 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolMonsterShow)
 	enum { IDD = IDD_TOOL_MONSTERSHOW };
-	CGroupBoxEx	m_OptionsFrame;
-	CButtonST	m_OK;
-	CGroupBoxEx	m_MonsterMapFrame;
-	CButton	m_revealSlime;
-	CButton	m_freeze;
-	CButton	m_showOneRelLvl;
-	CEdit	m_monsterInfo;
-	CEdit   m_monsterInfoBelow;
-	CEdit   m_monsterInfoSame;
-	CEdit   m_monsterInfoAbove;
+	CGroupBoxEx m_OptionsFrame;
+	CButtonST m_OK;
+	CGroupBoxEx m_MonsterMapFrame;
+	CButton m_revealSlime;
+	CButton m_freeze;
+	CButton m_showOneRelLvl;
+	CEdit m_monsterInfo;
+	CEdit m_monsterInfoBelow;
+	CEdit m_monsterInfoSame;
+	CEdit m_monsterInfoAbove;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CToolMonsterShow)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL

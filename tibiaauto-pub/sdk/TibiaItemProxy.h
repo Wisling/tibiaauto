@@ -59,7 +59,7 @@ public:
 
 	CTibiaItemProxy();
 	virtual ~CTibiaItemProxy();
-	
+
 	/*Deprecated Function Start*/
 	int getIndex(int objectId, int type);
 	char *getName(int objectId);

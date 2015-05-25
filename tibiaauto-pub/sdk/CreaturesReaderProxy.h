@@ -13,9 +13,9 @@
 class CCreaturesReaderProxy
 {
 public:
-	int findCreatureStatForLocationTibiaId(int x,int y,int z,int pos);
-	char * findCreatureStatForLocationName(int x,int y,int z,int pos);
-	int findCreatureStatForLocationCount(int x,int y,int z);
+	int findCreatureStatForLocationTibiaId(int x, int y, int z, int pos);
+	char * findCreatureStatForLocationName(int x, int y, int z, int pos);
+	int findCreatureStatForLocationCount(int x, int y, int z);
 	char ** findCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ);
 	CCreaturesReaderProxy();
 	virtual ~CCreaturesReaderProxy();

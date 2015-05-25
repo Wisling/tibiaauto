@@ -12,18 +12,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_creatureinfoApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_creatureinfoApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -61,17 +61,17 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_NAMECHANGER, OnToolcreaturinfoNamechanger)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_PLAYER, OnToolcreaturinfoPlayer)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_MONSTER, OnToolcreaturinfoMonster)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_SELF, OnToolcreaturinfoSelf)
-	ON_BN_CLICKED(IDC_TOOLCREATURINFO_KNOWNINFO, OnToolcreaturinfoKnowninfo)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_NAMECHANGER, OnToolcreaturinfoNamechanger)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_PLAYER, OnToolcreaturinfoPlayer)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_MONSTER, OnToolcreaturinfoMonster)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_SELF, OnToolcreaturinfoSelf)
+ON_BN_CLICKED(IDC_TOOLCREATURINFO_KNOWNINFO, OnToolcreaturinfoKnowninfo)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -93,13 +93,13 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
 		m_knownInfo.EnableWindow(true);
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 		m_knownInfo.EnableWindow(false);
 	}
@@ -128,18 +128,21 @@ void CConfigDialog::disableControls()
 void CConfigDialog::enableControls()
 {
 	m_player.EnableWindow(true);
-	if (m_player.GetCheck()){
+	if (m_player.GetCheck())
+	{
 		m_player1.EnableWindow(true);
 		m_player2.EnableWindow(true);
 	}
 	m_monster.EnableWindow(true);
-	if (m_monster.GetCheck()){
+	if (m_monster.GetCheck())
+	{
 		m_monster1.EnableWindow(true);
 		m_monster2.EnableWindow(true);
 		m_uniqueMonsterNames.EnableWindow(true);
 	}
 	m_self.EnableWindow(true);
-	if (m_self.GetCheck()){
+	if (m_self.GetCheck())
+	{
 		m_self1.EnableWindow(true);
 		m_self2.EnableWindow(true);
 		m_selfWindow.EnableWindow(true);
@@ -150,7 +153,6 @@ void CConfigDialog::enableControls()
 	m_rangeXY.EnableWindow(true);
 	m_rangeZ.EnableWindow(true);
 }
-
 
 
 void CConfigDialog::configToControls(CConfigData *configData)
@@ -176,8 +178,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_addRequest.SetCheck(configData->allFloorInfo);
 	m_collectStats.SetCheck(configData->collectStats);
 
-	sprintf(buf,"%d",configData->rangeXY);m_rangeXY.SetWindowText(buf);
-	sprintf(buf,"%d",configData->rangeZ);m_rangeZ.SetWindowText(buf);
+	sprintf(buf, "%d", configData->rangeXY); m_rangeXY.SetWindowText(buf);
+	sprintf(buf, "%d", configData->rangeZ); m_rangeZ.SetWindowText(buf);
 
 	OnToolcreaturinfoPlayer();
 	OnToolcreaturinfoMonster();
@@ -190,25 +192,25 @@ CConfigData * CConfigDialog::controlsToConfig()
 	char buf[128];
 
 	newConfigData->player = m_player.GetCheck();
-	m_player1.GetWindowText(newConfigData->player1,260);
-	m_player2.GetWindowText(newConfigData->player2,260);
+	m_player1.GetWindowText(newConfigData->player1, 260);
+	m_player2.GetWindowText(newConfigData->player2, 260);
 	newConfigData->monster = m_monster.GetCheck();
-	m_monster1.GetWindowText(newConfigData->monster1,260);
-	m_monster2.GetWindowText(newConfigData->monster2,260);
+	m_monster1.GetWindowText(newConfigData->monster1, 260);
+	m_monster2.GetWindowText(newConfigData->monster2, 260);
 	newConfigData->uniqueMonsterNames = m_uniqueMonsterNames.GetCheck();
-	newConfigData->self = m_self.GetCheck();
-	m_self1.GetWindowText(newConfigData->self1,260);
-	m_self2.GetWindowText(newConfigData->self2,260);
-	m_selfWindow.GetWindowText(newConfigData->selfWindow,260);
-	m_selfTray.GetWindowText(newConfigData->selfTray,260);
+	newConfigData->self               = m_self.GetCheck();
+	m_self1.GetWindowText(newConfigData->self1, 260);
+	m_self2.GetWindowText(newConfigData->self2, 260);
+	m_selfWindow.GetWindowText(newConfigData->selfWindow, 260);
+	m_selfTray.GetWindowText(newConfigData->selfTray, 260);
 	newConfigData->allFloorInfo = m_allFloorInfo.GetCheck();
-	newConfigData->addRequest = m_addRequest.GetCheck();
+	newConfigData->addRequest   = m_addRequest.GetCheck();
 	//newConfigData->collectStats = m_collectStats.GetCheck();
 	newConfigData->collectStats = 1;
-	m_rangeXY.GetWindowText(buf,127);
-	newConfigData->rangeXY=atoi(buf);
-	m_rangeZ.GetWindowText(buf,127);
-	newConfigData->rangeZ=atoi(buf);
+	m_rangeXY.GetWindowText(buf, 127);
+	newConfigData->rangeXY = atoi(buf);
+	m_rangeZ.GetWindowText(buf, 127);
+	newConfigData->rangeZ = atoi(buf);
 
 	return newConfigData;
 }
@@ -219,17 +221,17 @@ void CConfigDialog::activateEnableButton(int enable)
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_knownInfo);
-	skin.SetButtonSkin(	m_enable);
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_NameChanger);
+	skin.SetButtonSkin(     m_knownInfo);
+	skin.SetButtonSkin(     m_enable);
+	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(     m_NameChanger);
 }
 
 BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -241,7 +243,6 @@ void CConfigDialog::OnToolcreaturinfoNamechanger()
 	nameChanger = new CNameChanger(this);
 	nameChanger->Create(IDD_NAME);
 	nameChanger->ShowWindow(SW_SHOW);
-	
 }
 
 void CConfigDialog::OnToolcreaturinfoPlayer()

@@ -11,10 +11,8 @@
 
 CMyMenuData::CMyMenuData()
 {
-
 }
 
 CMyMenuData::~CMyMenuData()
 {
-
 }

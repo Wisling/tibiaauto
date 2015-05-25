@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -22,56 +22,66 @@ CTrigger::CTrigger() {
 }
 
 int parseDurationMinutes(CString s){
-	int days=0,hours=0,mins=0;
-	int indDay = s.Find("d");
+	int days    = 0, hours = 0, mins = 0;
+	int indDay  = s.Find("d");
 	int indHour = s.Find("h");
-	int indMin= s.Find("m");
-	if(indDay==-1){
-		days = 0;
-		indDay=0;
-	}else{
+	int indMin  = s.Find("m");
+	if(indDay == -1)
+	{
+		days   = 0;
+		indDay = 0;
+	}
+	else
+	{
 		days = atoi(s.Right(indDay));
 		indDay++;
 	}
-	if(indHour==-1){
-		hours = 0;
-		indHour=indDay;
-	}else{
-		hours = atoi(s.Mid(indDay,indHour-indDay));
+	if(indHour == -1)
+	{
+		hours   = 0;
+		indHour = indDay;
+	}
+	else
+	{
+		hours = atoi(s.Mid(indDay, indHour - indDay));
 		indHour++;
 	}
-	if(indMin==-1){
-		mins = atoi(s.Mid(indHour,999));
-	}else{
-		mins = atoi(s.Mid(indHour,indMin-indHour));
-	}
-	return days*24*60+hours*60+mins;
+	if(indMin == -1)
+		mins = atoi(s.Mid(indHour, 999));
+	else
+		mins = atoi(s.Mid(indHour, indMin - indHour));
+	return days * 24 * 60 + hours * 60 + mins;
 }
 int parseDurationSeconds(CString s){
-	int hours=0,mins=0,secs=0;
+	int hours   = 0, mins = 0, secs = 0;
 	int indHour = s.Find("h");
-	int indMin= s.Find("m");
-	int indSec = s.Find("s");
-	if(indHour==-1){
-		hours = 0;
+	int indMin  = s.Find("m");
+	int indSec  = s.Find("s");
+	if(indHour == -1)
+	{
+		hours   = 0;
 		indHour = 0;
-	}else{
+	}
+	else
+	{
 		hours = atoi(s.Right(indHour));
 		indHour++;
 	}
-	if(indMin==-1){
-		mins = 0;
+	if(indMin == -1)
+	{
+		mins   = 0;
 		indMin = indHour;
-	}else{
-		mins = atoi(s.Mid(indHour,indMin-indHour));
+	}
+	else
+	{
+		mins = atoi(s.Mid(indHour, indMin - indHour));
 		indMin++;
 	}
-	if(indSec==-1){
-		secs = atoi(s.Mid(indMin,999));
-	}else{
-		secs = atoi(s.Mid(indMin,indSec-indMin));
-	}
-	return hours*60*60+mins*60+secs;
+	if(indSec == -1)
+		secs = atoi(s.Mid(indMin, 999));
+	else
+		secs = atoi(s.Mid(indMin, indSec - indMin));
+	return hours * 60 * 60 + mins * 60 + secs;
 }
 CTrigger::CTrigger(int typeIn, CString textIn) {
 	setType(typeIn);
@@ -84,7 +94,6 @@ CTrigger::CTrigger(CTrigger *triggerPtrIn) {
 }
 
 CTrigger::~CTrigger() {
-
 }
 
 int CTrigger::getType() {
@@ -101,7 +110,8 @@ static ostream &operator<<(ostream &out, CTrigger &t) {
 }
 
 void CTrigger::setTriggerText(CString textIn) {
-	switch (type) {
+	switch (type)
+	{
 	case UNDEFINED:
 		triggerText = "";
 		break;
@@ -109,59 +119,69 @@ void CTrigger::setTriggerText(CString textIn) {
 		triggerText = textIn;
 		break;
 	case INTEGER:
-		{
+	{
 		int val = atoi(textIn);
 		setIntTrigger(val);
-		sprintf(triggerText.GetBuffer(128),"%d",val);
+		sprintf(triggerText.GetBuffer(128), "%d", val);
 		triggerText.ReleaseBuffer();
 		break;
-		}
+	}
 	case PointTRIGGER:
-		{
-		int x,y,z,r;
+	{
+		int x, y, z, r;
 		int index, index2;
 		index = textIn.Find(',');
 
-		if(index!=-1) x=atoi(textIn.Mid(1, index));
-		else x=0;
+		if(index != -1)
+			x = atoi(textIn.Mid(1, index));
+		else
+			x = 0;
 
 		index2 = textIn.Find(',', ++index);
-		if(index2!=-1) y=atoi(textIn.Mid(index, index2 - index));
-		else y=0;
+		if(index2 != -1)
+			y = atoi(textIn.Mid(index, index2 - index));
+		else
+			y = 0;
 
 		index = textIn.Find(')', ++index2);
-		if (index!=-1) z=atoi(textIn.Mid(index2, index - index2));
-		else z=0;
+		if (index != -1)
+			z = atoi(textIn.Mid(index2, index - index2));
+		else
+			z = 0;
 
-		r=atoi(textIn.Right(textIn.GetLength() - ++index));
+		r = atoi(textIn.Right(textIn.GetLength() - ++index));
 		setIntTrigger(x);
 		setIntTrigger(y);
 		setIntTrigger(z);
 		setIntTrigger(r);
-		sprintf(triggerText.GetBuffer(128),"(%d,%d,%d)%d",x,y,z,r);
+		sprintf(triggerText.GetBuffer(128), "(%d,%d,%d)%d", x, y, z, r);
 		triggerText.ReleaseBuffer();
 		break;
-		}
+	}
 	case DURATIONMIN:
-		{
+	{
 		int mins = parseDurationMinutes(textIn);
 		setIntTrigger(mins);
 		char* buf = triggerText.GetBuffer(128);
-		if (mins>=60) sprintf(buf,"%dh%dm",mins/60,mins%60);
-		else sprintf(buf,"%dm",mins);
+		if (mins >= 60)
+			sprintf(buf, "%dh%dm", mins / 60, mins % 60);
+		else
+			sprintf(buf, "%dm", mins);
 		triggerText.ReleaseBuffer();
 		break;
-		}
+	}
 	case DURATIONSEC:
-		{
+	{
 		int secs = parseDurationSeconds(textIn);
 		setIntTrigger(secs);
 		char* buf = triggerText.GetBuffer(128);
-		if (secs>=60) sprintf(buf,"%dm%ds",secs/60,secs%60);
-		else sprintf(buf,"%ds",secs);
+		if (secs >= 60)
+			sprintf(buf, "%dm%ds", secs / 60, secs % 60);
+		else
+			sprintf(buf, "%ds", secs);
 		triggerText.ReleaseBuffer();
 		break;
-		}
+	}
 	default:
 		triggerText = "Error:Unknown Trigger Type";
 		break;
@@ -173,7 +193,8 @@ CString CTrigger::getTriggerText() {
 }
 
 void CTrigger::setIntTrigger(int intIn) {
-	switch (type) {
+	switch (type)
+	{
 	case PointTRIGGER:
 		if (intTriggerList.size() > 4)
 			intTriggerList.clear();

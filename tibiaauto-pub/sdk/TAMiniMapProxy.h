@@ -15,10 +15,10 @@
 class CTAMiniMapProxy
 {
 public:
-	int isPointInMiniMap(int x,int y,int z);
-	CUIntArray * findPathOnMiniMap(int x,int y,int z,int x2,int y2,int z2);
-	CTibiaMiniMapPoint * getMiniMapPoint(int x,int y,int z);
-	void setMiniMapPoint(int x,int y,int z,int col,int spd);
+	int isPointInMiniMap(int x, int y, int z);
+	CUIntArray * findPathOnMiniMap(int x, int y, int z, int x2, int y2, int z2);
+	CTibiaMiniMapPoint * getMiniMapPoint(int x, int y, int z);
+	void setMiniMapPoint(int x, int y, int z, int col, int spd);
 	void findPathStop();
 	bool isFindPathStopped();
 	int getCurrentDistance();
@@ -28,7 +28,7 @@ public:
 	CTAMiniMapProxy();
 	virtual ~CTAMiniMapProxy();
 
-	
+
 private:
 	static HMODULE dllModule;
 };

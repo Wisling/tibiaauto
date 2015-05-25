@@ -29,11 +29,12 @@ private:
 };
 
 class XmlSocketProcessor : public AimlProcessor,
-		public ServerSocketListener
+	public ServerSocketListener
 {
 public:
 	XmlSocketProcessor();
-	virtual ~XmlSocketProcessor() { }
+	virtual ~XmlSocketProcessor() {
+	}
 	//	Inherited from AimlProcessor
 	string getName() const {
 		return "xmlsocket";
@@ -50,4 +51,4 @@ private:
 	ServerSocket *server;
 };
 
-#endif	//	XML_SOCKET_RESPONDER_H
+#endif  //	XML_SOCKET_RESPONDER_H

@@ -29,44 +29,44 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_runemakerApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_runemakerApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_StatisticsFrame;
-	CGroupBoxEx	m_RuneOptionsFrame;
-	CGroupBoxEx	m_GeneralOptionsFrame;
-	CGroupBoxEx	m_BackpackViewerFrame;
-	CButton	m_maxUse;
-	CButton	m_premium;
-	CButton	m_randomCast;
-	CEdit	m_manaLimit;
-	CEdit	m_mana;
-	CListCtrl	m_safe;
-	CListCtrl	m_spells;
-	CEdit	m_soulPoints;
-	CEdit	m_spell;
-	CStatic	m_infoRuneTime;
-	CStatic	m_infoSoulpointsTime;
-	CStatic	m_infoFood;
-	CStatic	m_infoBlanks;
+	CGroupBoxEx m_StatisticsFrame;
+	CGroupBoxEx m_RuneOptionsFrame;
+	CGroupBoxEx m_GeneralOptionsFrame;
+	CGroupBoxEx m_BackpackViewerFrame;
+	CButton m_maxUse;
+	CButton m_premium;
+	CButton m_randomCast;
+	CEdit m_manaLimit;
+	CEdit m_mana;
+	CListCtrl m_safe;
+	CListCtrl m_spells;
+	CEdit m_soulPoints;
+	CEdit m_spell;
+	CStatic m_infoRuneTime;
+	CStatic m_infoSoulpointsTime;
+	CStatic m_infoFood;
+	CStatic m_infoBlanks;
 	CButtonST m_addSpell;
 	CButtonST m_deleteSpell;
 	CButtonST m_loadSpell;
 	CButtonST m_makeNow;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
-	CButton	m_useSpear;
+	CButtonST m_OK;
+	CButtonST m_enable;
+	CButton m_useSpear;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

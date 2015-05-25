@@ -18,7 +18,7 @@ public:
 	int isPlayerIgnored(char *name);
 	char * getVariable(char *name);
 	void setVariable(char *name, char *value);
-	void setIgnoredPlayer(char *name,time_t deadline);
+	void setIgnoredPlayer(char *name, time_t deadline);
 	CAutoResponderParserContext(CListCtrl *actionLog, int localEcho);
 	virtual ~CAutoResponderParserContext();
 	char channel[MAX_STRING_LEN];
@@ -39,7 +39,6 @@ private:
 	char **variableValues;
 	int variableCount;
 	int variableSize;
-
 };
 
 #endif // !defined(AFX_AUTORESPONDERPARSERCONTEXT_H__492CF6EC_7EC5_48D6_AFA2_D106D799D43C__INCLUDED_)

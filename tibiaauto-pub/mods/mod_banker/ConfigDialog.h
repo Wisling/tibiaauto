@@ -13,14 +13,14 @@
 #include "GroupBoxEx.h"
 #include "BtnSt.h"
 
-struct banker{
+struct banker {
 	char name[40];
 	int xPos;
 	int yPos;
 	int zPos;
 };
 
-enum CToolBankerState{
+enum CToolBankerState {
 	CToolBankerState_notRunning,
 	CToolBankerState_halfSleep,
 	CToolBankerState_noPathFound,
@@ -42,12 +42,12 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_bankerApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_bankerApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_BankerFrame;
+	CGroupBoxEx m_BankerFrame;
 	CComboBox m_Banker;
 	CEdit m_MinGold;
 	CEdit m_OnHand;
@@ -56,8 +56,8 @@ public:
 	CEdit m_capsLimit;
 	CButton m_stopByBanker;
 	CButton m_drawUpTo;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	CStatic m_stateBanker;
 	//}}AFX_DATA
 
@@ -65,9 +65,9 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

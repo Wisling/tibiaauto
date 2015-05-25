@@ -18,7 +18,7 @@ extern CTibiaMap tibiaMap;
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 
 //////////////////////////////////////////////////////////////////////
@@ -27,14 +27,11 @@ static char THIS_FILE[] = __FILE__;
 
 CUtil::CUtil()
 {
-
 }
 
 CUtil::~CUtil()
 {
-
 }
-
 
 
 char *CUtil::wc2c(const XMLCh *src)
@@ -55,19 +52,16 @@ char * CUtil::getNodeAttribute(DOMNode *node, char *attrName)
 
 	for (attrNr = 0; attrNr < attrCount; attrNr++)
 	{
-		DOMNode *attrNode = node->getAttributes()->item(attrNr);
+		DOMNode *attrNode  = node->getAttributes()->item(attrNr);
 		char *attrNameWide = CUtil::wc2c(attrNode->getNodeName());
 		if (!strcmp(attrNameWide, attrName))
-		{
 			//free(attrNameWide);
 			return CUtil::wc2c(attrNode->getNodeValue());
-		}
 		//free(attrNameWide);
 	}
 	char *emptyRet = (char *)malloc(MAX_STRING_LEN);
 	memset(emptyRet, 0, MAX_STRING_LEN);
 	return emptyRet;
-
 }
 
 char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
@@ -77,7 +71,8 @@ char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
 	{
 		return CUtil::wc2c(attrNode->getNodeValue());
 	}
-	else {
+	else
+	{
 		char *emptyRet = (char *)malloc(1);
 		memset(emptyRet, 0, 1);
 		return emptyRet;
@@ -87,10 +82,9 @@ char *CUtil::getNodeAttribute(DOMNode *node, unsigned short *attrName)
 int CUtil::getNodeIntAttribute(DOMNode *node, char *attrName)
 {
 	char *attrValue = getNodeAttribute(node, attrName);
-	int ret = atoi(attrValue);
+	int ret         = atoi(attrValue);
 	//free(attrValue);
 	return ret;
-
 }
 
 int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
@@ -103,13 +97,15 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 		wcstombs(buf, attrNode->getNodeValue(), 60);
 		return atoi(buf);
 	}
-	else {
+	else
+	{
 		return 0;
 	}
 }
 
 void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
-	try {
+	try
+	{
 		char buf[32];
 		sprintf(buf, "%d", attr);
 		XMLCh xmlStr[100];
@@ -117,13 +113,15 @@ void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
-	catch (...) {
+	catch (...)
+	{
 		AfxMessageBox("Failed in setNodeIntAttribute");
 	}
 }
 
 void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr) {
-	try {
+	try
+	{
 		char buf[32];
 		sprintf(buf, "%d", attr);
 		XMLCh xmlStr[100];
@@ -131,7 +129,8 @@ void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int att
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
-	catch (...) {
+	catch (...)
+	{
 		AfxMessageBox("Failed in setNodeIntAttribute");
 	}
 }

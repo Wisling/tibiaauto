@@ -27,7 +27,7 @@ public:
 
 // Operations
 public:
-	void AddTab(CWnd* pWnd, LPTSTR lpszCaption, int iImage =0);
+	void AddTab(CWnd* pWnd, LPTSTR lpszCaption, int iImage = 0);
 	void EnableTab(int iIndex, BOOL bEnable = TRUE);
 	BOOL SelectTab(int iIndex);
 	void DeleteAllTabs();
@@ -43,7 +43,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CXTabCtrl)
-	protected:
+protected:
 	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	virtual void PreSubclassWindow();
 	//}}AFX_VIRTUAL
@@ -69,14 +69,14 @@ protected:
 	COLORREF m_crMouseOver;
 
 	int m_iIndexMouseOver;
-	
+
 	bool m_bMouseOver;
 	bool m_bColorMouseOver;
 	bool m_bColorNormal;
 	bool m_bColorDisabled;
 	bool m_bColorSelected;
 	bool m_bColorTab;
-	
+
 	//{{AFX_MSG(CXTabCtrl)
 	afx_msg void OnSelchange(NMHDR* pNMHDR, LRESULT* pResult);
 	afx_msg void OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult);

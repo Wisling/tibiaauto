@@ -9,17 +9,17 @@ class PreParser : public SaxListener
 {
 public:
 	PreParser(const string &fn = "") {
-		filename = fn;
-		context = "*";
-		topic = "*";
-		that = "*";
-		pattern = "";
+		filename      = fn;
+		context       = "*";
+		topic         = "*";
+		that          = "*";
+		pattern       = "";
 		templateBegin = -1;
 	}
-	
+
 	virtual ~PreParser() {
 	}
-	
+
 	void elementStarted(const string &, int);
 	void elementFinished(const string &, int);
 	void elementStarted(const string &, attributeMap *, int);
@@ -31,4 +31,4 @@ private:
 	int templateBegin;
 };
 
-#endif
+#endif // ifndef PRE_PARSER_H

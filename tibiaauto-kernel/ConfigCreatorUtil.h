@@ -30,19 +30,19 @@ XERCES_CPP_NAMESPACE_USE
 class CConfigCreatorUtil
 {
 public:
-	void parseConfigFromNode(CPythonScript *pythonScript,DOMNode *node, char *paramName);
-	void parseConfigFromNode(CModuleProxy *module,DOMNode *node, char *paramName);
-	DOMNode * getConfigForModule(DOMElement *root,char *moduleName);
+	void parseConfigFromNode(CPythonScript *pythonScript, DOMNode *node, char *paramName);
+	void parseConfigFromNode(CModuleProxy *module, DOMNode *node, char *paramName);
+	DOMNode * getConfigForModule(DOMElement *root, char *moduleName);
 	void releaseConfig(DOMNode *modConfig);
-	void addParamToConfig(DOMNode *node,char *paramName, char *paramValue);
-	void serializeConfigForModule(DOMNode *modNode,FILE *f);
+	void addParamToConfig(DOMNode *node, char *paramName, char *paramValue);
+	void serializeConfigForModule(DOMNode *modNode, FILE *f);
 	DOMNode * getEmptyConfigForModule(char *moduleName);
 	CConfigCreatorUtil();
 	virtual ~CConfigCreatorUtil();
 
 	CConfigCreatorUtilMultiParams *multiParams;
 private:
-	static void addParamFromNode(xercesc::DOMDocument *doc,DOMNode *modConfig, char *paramName, char *paramValue);
+	static void addParamFromNode(xercesc::DOMDocument *doc, DOMNode *modConfig, char *paramName, char *paramValue);
 };
 
 #endif // !defined(AFX_CONFIGCREATORUTIL_H__9BC2F130_36AF_43E2_B3CB_C27073E3FCED__INCLUDED_)

@@ -24,23 +24,23 @@ public:
 	void configToControls(CConfigData *configData);
 	void enableControls();
 	void disableControls();
-	CConfigDialog(CMod_teamApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_teamApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CListCtrl	m_slaveList;
-	CEdit	m_masterChar;
-	CButton	m_enable;
+	CListCtrl m_slaveList;
+	CEdit m_masterChar;
+	CButton m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -11,20 +11,20 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CMapConfig dialog
 
 
 CMapConfig::CMapConfig(CTibiaTile *memTilesForConfig[10], int x, int y, CWnd* pParent /*=NULL*/)
-: MyDialog(CMapConfig::IDD, pParent)
+	: MyDialog(CMapConfig::IDD, pParent)
 {
-	xMem = x;
-	yMem = y;
+	xMem            = x;
+	yMem            = y;
 	currentStackPos = 0;
 	//{{AFX_DATA_INIT(CMapConfig)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -61,18 +61,18 @@ void CMapConfig::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CMapConfig, CDialog)
-	//{{AFX_MSG_MAP(CMapConfig)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_COMMIT, OnCommit)
-	ON_BN_CLICKED(IDC_PREVIOUS_CONFIG_TILE, OnPreviousTile)
-	ON_BN_CLICKED(IDC_NEXT_CONFIG_TILE, OnNextTile)
-	ON_BN_CLICKED(IDC_GO_DOWN, OnGoDown)
-	ON_BN_CLICKED(IDC_GO_UP, OnGoUp)
-	ON_BN_CLICKED(IDC_ROPE, OnRope)
-	ON_BN_CLICKED(IDC_USE_TILE, OnClick)
-	ON_BN_CLICKED(IDC_SHOVEL, OnShovel)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMapConfig)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_BN_CLICKED(IDC_COMMIT, OnCommit)
+ON_BN_CLICKED(IDC_PREVIOUS_CONFIG_TILE, OnPreviousTile)
+ON_BN_CLICKED(IDC_NEXT_CONFIG_TILE, OnNextTile)
+ON_BN_CLICKED(IDC_GO_DOWN, OnGoDown)
+ON_BN_CLICKED(IDC_GO_UP, OnGoUp)
+ON_BN_CLICKED(IDC_ROPE, OnRope)
+ON_BN_CLICKED(IDC_USE_TILE, OnClick)
+ON_BN_CLICKED(IDC_SHOVEL, OnShovel)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -81,10 +81,10 @@ END_MESSAGE_MAP()
 void CMapConfig::OnCommit() {
 	CMemReaderProxy reader;
 	saveTile();
-	for (int pos = 0; pos < 10; pos++) {
-		if (tileId[pos]) {
+	for (int pos = 0; pos < 10; pos++)
+	{
+		if (tileId[pos])
 			reader.setTibiaTile(tileId[pos], memTilesForConfig[pos]);
-		}
 	}
 	this->EndDialog(IDOK);
 }
@@ -98,16 +98,19 @@ void CMapConfig::Mem2Config() {
 
 	for (int i = 0; i < 10; i++)
 		tileId[i] = 0;
-	
-	if (xMem < -8 || xMem > 9 || yMem < -6 || yMem > 7) outOfRange = 1;
-	if (!outOfRange) {
-		int count=reader.mapGetPointItemsCount(point(xMem, yMem, 0));
-		if (count > 10) count = 10;
-		for (int pos = 0; pos < count; pos++) {
-			tileId[pos] = reader.mapGetPointItemId(point(xMem, yMem, 0),pos);
+
+	if (xMem < -8 || xMem > 9 || yMem < -6 || yMem > 7)
+		outOfRange = 1;
+	if (!outOfRange)
+	{
+		int count = reader.mapGetPointItemsCount(point(xMem, yMem, 0));
+		if (count > 10)
+			count = 10;
+		for (int pos = 0; pos < count; pos++)
+		{
+			tileId[pos]            = reader.mapGetPointItemId(point(xMem, yMem, 0), pos);
 			memTilesForConfig[pos] = reader.getTibiaTile(tileId[pos]);
 		}
-	
 	}
 	currentStackPos = 0;
 	loadTile(tileId[currentStackPos], currentStackPos);
@@ -136,7 +139,7 @@ void CMapConfig::loadTile(int tileId, int pos) {
 	m_Ground.SetCheck(memTilesForConfig[pos]->ground);
 	m_Container.SetCheck(memTilesForConfig[pos]->isContainer);
 	m_Depot.SetCheck(memTilesForConfig[pos]->isDepot);
-	m_Moveable.SetCheck(memTilesForConfig[pos]->notMoveable?0:1);
+	m_Moveable.SetCheck(memTilesForConfig[pos]->notMoveable ? 0 : 1);
 	m_RequireRope.SetCheck(memTilesForConfig[pos]->requireRope);
 	m_RequireShovel.SetCheck(memTilesForConfig[pos]->requireShovel);
 	m_RequireUse.SetCheck(memTilesForConfig[pos]->requireUse);
@@ -146,38 +149,38 @@ void CMapConfig::loadTile(int tileId, int pos) {
 
 void CMapConfig::saveTile() {
 	char buf[32];
-	m_TileId.GetWindowText(buf,31); tileId[currentStackPos] = atoi(buf);
+	m_TileId.GetWindowText(buf, 31); tileId[currentStackPos]                  = atoi(buf);
 	m_Speed.GetWindowText(buf, 31); memTilesForConfig[currentStackPos]->speed = atoi(buf);
-	
 
-	memTilesForConfig[currentStackPos]->alwaysOnTop = m_AlwaysOnTop.GetCheck();
-	memTilesForConfig[currentStackPos]->blocking = m_Blocking.GetCheck();
+
+	memTilesForConfig[currentStackPos]->alwaysOnTop    = m_AlwaysOnTop.GetCheck();
+	memTilesForConfig[currentStackPos]->blocking       = m_Blocking.GetCheck();
 	memTilesForConfig[currentStackPos]->canWalkThrough = m_Walkable.GetCheck();
-	memTilesForConfig[currentStackPos]->goDown = m_GoDown.GetCheck();
-	memTilesForConfig[currentStackPos]->goUp = m_GoUp.GetCheck();
-	memTilesForConfig[currentStackPos]->ground = m_Ground.GetCheck();
-	memTilesForConfig[currentStackPos]->isContainer = m_Container.GetCheck();
-	memTilesForConfig[currentStackPos]->isDepot = m_Depot.GetCheck();
-	memTilesForConfig[currentStackPos]->notMoveable = m_Moveable.GetCheck()?0:1;
-	memTilesForConfig[currentStackPos]->requireRope = m_RequireRope.GetCheck();
-	memTilesForConfig[currentStackPos]->requireShovel = m_RequireShovel.GetCheck();
-	memTilesForConfig[currentStackPos]->requireUse = m_RequireUse.GetCheck();
-	memTilesForConfig[currentStackPos]->stackable = m_Stackable.GetCheck();
-	memTilesForConfig[currentStackPos]->isTeleporter = m_Teleporter.GetCheck();
+	memTilesForConfig[currentStackPos]->goDown         = m_GoDown.GetCheck();
+	memTilesForConfig[currentStackPos]->goUp           = m_GoUp.GetCheck();
+	memTilesForConfig[currentStackPos]->ground         = m_Ground.GetCheck();
+	memTilesForConfig[currentStackPos]->isContainer    = m_Container.GetCheck();
+	memTilesForConfig[currentStackPos]->isDepot        = m_Depot.GetCheck();
+	memTilesForConfig[currentStackPos]->notMoveable    = m_Moveable.GetCheck() ? 0 : 1;
+	memTilesForConfig[currentStackPos]->requireRope    = m_RequireRope.GetCheck();
+	memTilesForConfig[currentStackPos]->requireShovel  = m_RequireShovel.GetCheck();
+	memTilesForConfig[currentStackPos]->requireUse     = m_RequireUse.GetCheck();
+	memTilesForConfig[currentStackPos]->stackable      = m_Stackable.GetCheck();
+	memTilesForConfig[currentStackPos]->isTeleporter   = m_Teleporter.GetCheck();
 }
 
 void CMapConfig::DoSetButtonSkin(){
 	skin.SetButtonSkin( m_Previous);
-	skin.SetButtonSkin(	m_Commit);
+	skin.SetButtonSkin(     m_Commit);
 	skin.SetButtonSkin( m_Next);
 }
 
 BOOL CMapConfig::OnInitDialog() {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
-	
+
 	Mem2Config();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -185,11 +188,15 @@ BOOL CMapConfig::OnInitDialog() {
 
 void CMapConfig::OnPreviousTile() {
 	saveTile();
-	if (currentStackPos) {
+	if (currentStackPos)
+	{
 		currentStackPos--;
 		loadTile(tileId[currentStackPos], currentStackPos);
 	}
-	else return;
+	else
+	{
+		return;
+	}
 	if (!currentStackPos)
 		m_Previous.EnableWindow(false);
 	else
@@ -202,11 +209,15 @@ void CMapConfig::OnPreviousTile() {
 
 void CMapConfig::OnNextTile() {
 	saveTile();
-	if (currentStackPos < 9) {
+	if (currentStackPos < 9)
+	{
 		currentStackPos++;
 		loadTile(tileId[currentStackPos], currentStackPos);
 	}
-	else return;
+	else
+	{
+		return;
+	}
 	if (!currentStackPos)
 		m_Previous.EnableWindow(false);
 	else
@@ -219,41 +230,46 @@ void CMapConfig::OnNextTile() {
 
 
 void CMapConfig::OnRope() {
-	if (m_RequireRope.GetCheck()) {
-			m_GoUp.SetCheck(true);
-			m_RequireShovel.SetCheck(false);
-			m_RequireUse.SetCheck(false);
+	if (m_RequireRope.GetCheck())
+	{
+		m_GoUp.SetCheck(true);
+		m_RequireShovel.SetCheck(false);
+		m_RequireUse.SetCheck(false);
 	}
 }
 
 void CMapConfig::OnClick() {
-	if (m_GoDown.GetCheck()) {
-			m_GoUp.SetCheck(true);
-			m_RequireRope.SetCheck(false);
-			m_RequireShovel.SetCheck(false);
+	if (m_GoDown.GetCheck())
+	{
+		m_GoUp.SetCheck(true);
+		m_RequireRope.SetCheck(false);
+		m_RequireShovel.SetCheck(false);
 	}
 }
 
 void CMapConfig::OnShovel() {
-	if (m_GoDown.GetCheck()) {
-			m_GoDown.SetCheck(true);
-			m_RequireRope.SetCheck(false);
-			m_RequireUse.SetCheck(false);
+	if (m_GoDown.GetCheck())
+	{
+		m_GoDown.SetCheck(true);
+		m_RequireRope.SetCheck(false);
+		m_RequireUse.SetCheck(false);
 	}
 }
 
 void CMapConfig::OnGoDown() {
-	if (m_GoDown.GetCheck()) {
-			m_GoUp.SetCheck(false);
-			m_RequireRope.SetCheck(false);
-			m_RequireUse.SetCheck(false);
+	if (m_GoDown.GetCheck())
+	{
+		m_GoUp.SetCheck(false);
+		m_RequireRope.SetCheck(false);
+		m_RequireUse.SetCheck(false);
 	}
 }
 
 
 void CMapConfig::OnGoUp() {
-	if (m_GoUp.GetCheck()) {
-			m_GoDown.SetCheck(false);
-			m_RequireShovel.SetCheck(false);
+	if (m_GoUp.GetCheck())
+	{
+		m_GoDown.SetCheck(false);
+		m_RequireShovel.SetCheck(false);
 	}
 }

@@ -13,14 +13,14 @@
 #include "BtnST.h"
 #include "GroupBoxEx.h"
 
-struct seller{
+struct seller {
 	char name[64];
 	int xPos;
 	int yPos;
 	int zPos;
 };
 
-enum CToolSellerState{
+enum CToolSellerState {
 	CToolSellerState_notRunning,
 	CToolSellerState_halfSleep,
 	CToolSellerState_noPathFound,
@@ -42,18 +42,18 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_SellerApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_SellerApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_BuySellControlsFrame;
-	CGroupBoxEx	m_listFrame;
-	CGroupBoxEx	m_BuyControlsFrame;
-	CGroupBoxEx	m_Seller4Frame;
-	CGroupBoxEx	m_Seller3Frame;
-	CGroupBoxEx	m_Seller2Frame;
-	CGroupBoxEx	m_Seller1Frame;
+	CGroupBoxEx m_BuySellControlsFrame;
+	CGroupBoxEx m_listFrame;
+	CGroupBoxEx m_BuyControlsFrame;
+	CGroupBoxEx m_Seller4Frame;
+	CGroupBoxEx m_Seller3Frame;
+	CGroupBoxEx m_Seller2Frame;
+	CGroupBoxEx m_Seller1Frame;
 	CComboBox m_tradeItemList;
 	CButton m_sellOnCap;
 	CButton m_sellOnSpace;
@@ -65,8 +65,8 @@ public:
 	CButtonST m_addSeller;
 	CEdit m_addName;
 	CButton m_stopBySeller;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	CStatic m_stateSeller;
 	CButton m_suggestBanker;
 	CStatic m_bankerSuggestion;
@@ -83,9 +83,9 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

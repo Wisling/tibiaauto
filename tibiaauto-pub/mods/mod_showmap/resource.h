@@ -84,12 +84,12 @@
 #define ID_SHOWMAPOPTIONS_LOCKTILE      32786
 
 // Next default values for new objects
-// 
+//
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        3018
 #define _APS_NEXT_COMMAND_VALUE         32787
 #define _APS_NEXT_CONTROL_VALUE         3054
 #define _APS_NEXT_SYMED_VALUE           3000
-#endif
-#endif
+#endif // ifndef APSTUDIO_READONLY_SYMBOLS
+#endif // ifdef APSTUDIO_INVOKED

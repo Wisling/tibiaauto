@@ -17,13 +17,14 @@ using namespace std;
 class SubstituteProcessor : public AimlProcessor
 {
 public:
-	~SubstituteProcessor() { }
-	
+	~SubstituteProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string value = Kernel::process(m, e, r, id);
-		string sub = e->getAttribute("sub");
+		string sub   = e->getAttribute("sub");
 		return Substituter::substitute(value, sub);
 	}
 };
 
-#endif
+#endif // ifndef SUBSTITUTE_PROCESSOR_H

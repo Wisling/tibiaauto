@@ -78,30 +78,26 @@ string Match::getTemplate() const {
 }
 
 string Match::getContextStar(unsigned int i) const {
-	if (i < 1 || i > contextStar.size()) {
+	if (i < 1 || i > contextStar.size())
 		return "";
-	}
 	return contextStar[contextStar.size() - i];
 }
 
 string Match::getInputStar(unsigned int i) const {
-	if (i < 1 || i > inputStar.size()) {
+	if (i < 1 || i > inputStar.size())
 		return "";
-	}
 	return inputStar[inputStar.size() - i];
 }
 
 string Match::getThatStar(unsigned int i) const {
-	if (i < 1 || i > thatStar.size()) {
+	if (i < 1 || i > thatStar.size())
 		return "";
-	}
 	return thatStar[thatStar.size() - i];
 }
 
 string Match::getTopicStar(unsigned int i) const {
-	if (i < 1 || i > topicStar.size()) {
+	if (i < 1 || i > topicStar.size())
 		return "";
-	}
 	return topicStar[topicStar.size() - i];
 }
 

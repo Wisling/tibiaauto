@@ -19,14 +19,14 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CSendStats)
 	enum { IDD = IDD_SENDSTATS };
-		// NOTE: the ClassWizard will add data members here
+	// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CSendStats)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -35,7 +35,7 @@ protected:
 
 	// Generated message map functions
 	//{{AFX_MSG(CSendStats)
-		// NOTE: the ClassWizard will add member functions here
+	// NOTE: the ClassWizard will add member functions here
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

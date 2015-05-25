@@ -11,24 +11,24 @@
 #define new DEBUG_NEW
 //#undef THIS_FILE
 //static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
-int tprogrammingEdition=0;
+int tprogrammingEdition = 0;
 /*
-#include "c:\temp\HookAlloc\MemoryTracking.h"
-USE_MEMORYTRACKING("c:\\temp\\Tibia_Tibia.log",true)
-#pragma warning(disable:4073)
-#pragma init_seg(lib)
-*/
+   #include "c:\temp\HookAlloc\MemoryTracking.h"
+   USE_MEMORYTRACKING("c:\\temp\\Tibia_Tibia.log",true)
+   #pragma warning(disable:4073)
+   #pragma init_seg(lib)
+ */
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoApp
 
 BEGIN_MESSAGE_MAP(CTibiaautoApp, CWinApp)
-	//{{AFX_MSG_MAP(CTibiaautoApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+//{{AFX_MSG_MAP(CTibiaautoApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG
+ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,7 +53,7 @@ BOOL CTibiaautoApp::InitInstance()
 	CWinApp::InitInstance();
 	AfxEnableControlContainer();
 	if(!AfxSocketInit())
-		AfxMessageBox("Failed to Initialize Sockets",MB_OK| MB_ICONSTOP);
+		AfxMessageBox("Failed to Initialize Sockets", MB_OK | MB_ICONSTOP);
 	CTibiaautoDlg* dlg = new CTibiaautoDlg();
 	m_pMainWnd = dlg;
 	dlg->Create(CTibiaautoDlg::IDD);
@@ -61,5 +61,3 @@ BOOL CTibiaautoApp::InitInstance()
 
 	return TRUE;
 }
-
-

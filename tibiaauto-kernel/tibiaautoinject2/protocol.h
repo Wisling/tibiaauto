@@ -12,14 +12,14 @@
 #define NETWORKMESSAGE_MAXSIZE 65536
 
 
-
 class NetworkMessage
 {
 public:
 	NetworkMessage();
 	NetworkMessage(char* rawMsg);
 	NetworkMessage(char* rawMsg, int len);
-	virtual ~NetworkMessage(){};
+	virtual ~NetworkMessage(){
+	};
 
 	unsigned char GetByte();
 	unsigned int GetInt();
@@ -33,8 +33,8 @@ public:
 
 	void RefreshSize();
 	void ResetPos();
-	std::string GetString(int stringLen=0);
-	std::string GetHex(int len=0);
+	std::string GetString(int stringLen = 0);
+	std::string GetHex(int len = 0);
 	void AddByte(unsigned char c);
 	void AddInt(unsigned int i);
 	void AddShort(unsigned short s);
@@ -42,14 +42,16 @@ public:
 	void AddBytes(const char* bytes, int size);
 
 	unsigned char msgBuf[NETWORKMESSAGE_MAXSIZE];
-	int msgSize,readPos;
+	int msgSize, readPos;
 };
 
 class Protocol
 {
 public:
-	Protocol(){}
-	virtual ~Protocol(){}
+	Protocol(){
+	}
+	virtual ~Protocol(){
+	}
 
 	static void Protocol::outputPacket(NetworkMessage &msg);
 	static void Protocol::parsePacketIn(NetworkMessage &msg);

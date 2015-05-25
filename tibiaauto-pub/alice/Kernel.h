@@ -37,19 +37,19 @@ public:
 	static string respond(const string &input, const string &id, Responder *, bool srai = false, const string &prefix = "");
 	static string respond(const string &input, const string &id, int depth, bool srai, const string &prefix = "");
 	static string respond(const string &input, const string &id, Responder *, int depth, bool srai, const string &prefix = "");
-	
+
 	static void convertTempAiml();
-	
+
 	static PredicateEngine *predicates;
 private:
 	static void addStar(Match *, const string &, int);
 	static void addPath(Match *, const string &, int);
 	static bool lookup(const string &, const string &);
 	static void loadTemporaryData();
-	
+
 	static Nodemaster *root;
 	static const int CONTEXT, INPUT, THAT, TOPIC;
 	static const string constants;
 };
 
-#endif
+#endif // ifndef KERNEL_H

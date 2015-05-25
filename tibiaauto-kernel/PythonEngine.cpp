@@ -16,53 +16,53 @@
 #include "AliceProxy.h"
 #include "RegexpProxy.h"
 #include "ModuleUtil.h"
-  
-  
+
+
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 
-int CPythonEngine::initialised=0;
+int CPythonEngine::initialised = 0;
 
 CRITICAL_SECTION ScriptEngineCriticalSection;
 #define MAX_PAYLOAD_LEN 1024
 
-struct parcelRecvActionData{
+struct parcelRecvActionData {
 	int handle; //the pointer to the PyObject fun is used as a unique handle.
 	int totalCount;
 	int countLeft;
 	int len;
-	char actionData[MAX_PAYLOAD_LEN-sizeof(int)*4];
+	char actionData[MAX_PAYLOAD_LEN - sizeof(int) * 4];
 	parcelRecvActionData(){
-		memset(actionData,0,sizeof(actionData));
+		memset(actionData, 0, sizeof(actionData));
 	}
 };
 //////////////////////////////////////////////////////////////////////
 // Python tibiaauto
 //////////////////////////////////////////////////////////////////////
 
-int registerPluginCount=0;
- 
+int registerPluginCount = 0;
+
 static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *args)
 {
-	
 	registerPluginCount++;
 
 	CPythonScript *pythonScript = new CPythonScript();
 	CPythonEngine pythonEngine;
 
-	
-	PyObject *pluginClass=NULL;
-	if (!PyArg_ParseTuple(args,"O",&pluginClass)) return NULL;
-		
+
+	PyObject *pluginClass = NULL;
+	if (!PyArg_ParseTuple(args, "O", &pluginClass))
+		return NULL;
+
 	Py_XINCREF(pluginClass);
 	pythonScript->setPluginClass(pluginClass);
-	
-	PyObject *pluginObject = PyInstance_New(pluginClass,NULL,NULL);
-	if (pluginObject==NULL)
+
+	PyObject *pluginObject = PyInstance_New(pluginClass, NULL, NULL);
+	if (pluginObject == NULL)
 	{
 		AfxMessageBox("registerObject() takes class as an argument");
 		Py_XDECREF(pluginClass);
@@ -70,155 +70,155 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 	}
 	Py_XINCREF(pluginObject);
 	pythonScript->setPluginObject(pluginObject);
-	
+
 	// getName
-    PyObject *result = PyObject_CallMethod(pluginObject, "getName","()");
+	PyObject *result = PyObject_CallMethod(pluginObject, "getName", "()");
 	pythonScript->setName(PyString_AsString(result));
 	Py_XDECREF(result);
 
 	// getVersion
-    result = PyObject_CallMethod(pluginObject, "getVersion","()");
+	result = PyObject_CallMethod(pluginObject, "getVersion", "()");
 	pythonScript->setVersion(PyString_AsString(result));
 	Py_XDECREF(result);
 
 
 	// getFunDef
 	int nr;
-	for (nr=0;;nr++)
+	for (nr = 0;; nr++)
 	{
-		int type,interval;
-		char *matchExpr=NULL;
+		int type, interval;
+		char *matchExpr = NULL;
 		int regLen;
 		PyObject *periodicalFun;
-		
-		result = PyObject_CallMethod(pluginObject, "getFunDef","(i)",nr);
-		if (result==NULL)
+
+		result = PyObject_CallMethod(pluginObject, "getFunDef", "(i)", nr);
+		if (result == NULL)
 		{
 			AfxMessageBox("getFunDef() call failed");
 			return NULL;
 		}
-		
+
 		//nested if statements are for trying to read the two possible sets of parameters
-		type=-255;
-		if (PyArg_ParseTuple(result,"|iiO",&type,&interval,&periodicalFun))
+		type = -255;
+		if (PyArg_ParseTuple(result, "|iiO", &type, &interval, &periodicalFun))
 		{
-			if (type!=-255)
-			{
-				pythonScript->addFunDef(type,interval,periodicalFun);
-			} else {
+			if (type != -255)
+				pythonScript->addFunDef(type, interval, periodicalFun);
+			else
 				break;
-			}
-		} else {
+		}
+		else
+		{
 			PyErr_Clear();
-			if (PyArg_ParseTuple(result,"|is#O",&type,&matchExpr,&regLen,&periodicalFun)) {
-				if (type!=-255)
-				{
-					pythonScript->addFunDef(type,matchExpr,regLen,periodicalFun);
-				} else {
+			if (PyArg_ParseTuple(result, "|is#O", &type, &matchExpr, &regLen, &periodicalFun))
+			{
+				if (type != -255)
+					pythonScript->addFunDef(type, matchExpr, regLen, periodicalFun);
+				else
 					break;
-				}
-			} else {
+			}
+			else
+			{
 				Py_XDECREF(result);
 				return NULL;
 			}
 		}
-		
-		
+
+
 		Py_XDECREF(result);
 	}
 	// getConfigParam
-	for (nr=0;;nr++)
+	for (nr = 0;; nr++)
 	{
-		char *name=NULL,*description=NULL;
-		result = PyObject_CallMethod(pluginObject,"getConfigParam","(i)",nr);
-		if (result==NULL)
+		char *name = NULL, *description = NULL;
+		result = PyObject_CallMethod(pluginObject, "getConfigParam", "(i)", nr);
+		if (result == NULL)
 		{
 			AfxMessageBox("getConfigParam() call failed");
 			return NULL;
 		}
-		if (PyArg_ParseTuple(result,"|ss",&name,&description))
+		if (PyArg_ParseTuple(result, "|ss", &name, &description))
 		{
-			if (name!=NULL&&description!=NULL)
-			{
-				pythonScript->addParamDef(name,description);
-			} else {
+			if (name != NULL && description != NULL)
+				pythonScript->addParamDef(name, description);
+			else
 				break;
-			}
-		} else {
+		}
+		else
+		{
 			Py_XDECREF(result);
 			return NULL;
 		}
 		Py_XDECREF(result);
 	}
-	
-	
-	
+
+
 	Py_XDECREF(pluginObject);
 	Py_XDECREF(pluginClass);
-		
+
 	Py_INCREF(Py_None);
-	
+
 	return Py_None;
 }
 
 /*
-//////////////////////////////////////////////////////////////////////
-// Python tareader
-//////////////////////////////////////////////////////////////////////
+   //////////////////////////////////////////////////////////////////////
+   // Python tareader
+   //////////////////////////////////////////////////////////////////////
 
 
-static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
-{
-	CMemReaderProxy reader;
+   static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
+   {
+        CMemReaderProxy reader;
 
-	int processId;
+        int processId;
 
     if (!PyArg_ParseTuple(args, "i", &processId)) return NULL;
-	reader.setProcessId(processId);
-	Py_INCREF(Py_None);
-	return Py_None;
-}
+        reader.setProcessId(processId);
+        Py_INCREF(Py_None);
+        return Py_None;
+   }
 
-static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
-{
-	CMemReaderProxy reader;
-	
-	CTibiaCharacter *selfCh = reader.readSelfCharacter();
-	PyObject *ret =
-		Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
-		"hp",selfCh->hp,
-		"mana",selfCh->mana,
-		"x",selfCh->x,
-		"y",selfCh->y,
-		"z",selfCh->z);
+   static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
+   {
+        CMemReaderProxy reader;
 
-	delete selfCh;
-	return ret;
-}
+        CTibiaCharacter *selfCh = reader.readSelfCharacter();
+        PyObject *ret =
+                Py_BuildValue("{s:i,s:i,s:i,s:i,s:i}",
+                "hp",selfCh->hp,
+                "mana",selfCh->mana,
+                "x",selfCh->x,
+                "y",selfCh->y,
+                "z",selfCh->z);
 
-//////////////////////////////////////////////////////////////////////
-// Python tasender
-//////////////////////////////////////////////////////////////////////
+        delete selfCh;
+        return ret;
+   }
 
-static PyObject *tibiaauto_sender_turnUp(PyObject *self, PyObject *args)
-{
-	CPackSenderProxy sender;
+   //////////////////////////////////////////////////////////////////////
+   // Python tasender
+   //////////////////////////////////////////////////////////////////////
+
+   static PyObject *tibiaauto_sender_turnUp(PyObject *self, PyObject *args)
+   {
+        CPackSenderProxy sender;
 
     sender.turnUp();
-	Py_INCREF(Py_None);
-	return Py_None;
-}
+        Py_INCREF(Py_None);
+        return Py_None;
+   }
 
-static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
-{
-	CPackSenderProxy sender;
+   static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
+   {
+        CPackSenderProxy sender;
 
     sender.turnDown();
-	Py_INCREF(Py_None);
-	return Py_None;
-}
-*/
- 
+        Py_INCREF(Py_None);
+        return Py_None;
+   }
+ */
+
 #include "PythonEngine_fun.cpp"
 
 //////////////////////////////////////////////////////////////////////
@@ -228,15 +228,15 @@ static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
 
 static PyMethodDef Methods_tibiaauto[] = {
 	{"registerPlugin", tibiaauto_tibiaauto_registerPlugin, METH_VARARGS},
-    {NULL,      NULL}        /* Sentinel */
+	{NULL, NULL}         /* Sentinel */
 };
 
 static PyMethodDef Methods_tareader[] = {
-    {"setProcessId", tibiaauto_reader_setProcessId, METH_VARARGS},
+	{"setProcessId", tibiaauto_reader_setProcessId, METH_VARARGS},
 	{"readSelfCharacter", tibiaauto_reader_readSelfCharacter, METH_VARARGS},
 	{"readOpenContainerCount", tibiaauto_reader_readOpenContainerCount, METH_VARARGS},
 	{"readContainer", tibiaauto_reader_readContainer, METH_VARARGS},
-	{"readContainerItem", tibiaauto_reader_readContainerItem,METH_VARARGS},
+	{"readContainerItem", tibiaauto_reader_readContainerItem, METH_VARARGS},
 	{"writeSelfLightPower", tibiaauto_reader_writeSelfLightPower, METH_VARARGS},
 	{"writeSelfLightColor", tibiaauto_reader_writeSelfLightColor, METH_VARARGS},
 	{"readSelfLightPower", tibiaauto_reader_readSelfLightPower, METH_VARARGS},
@@ -305,7 +305,7 @@ static PyMethodDef Methods_tareader[] = {
 	{"mapGetPointTopPos", tibiaauto_reader_mapGetPointTopPos, METH_VARARGS},
 	{"mapGetPointSeenOnTopPos", tibiaauto_reader_mapGetPointSeenOnTopPos, METH_VARARGS},
 	{"getBaseAddr", tibiaauto_reader_getBaseAddr, METH_VARARGS},
-    {NULL,      NULL}        /* Sentinel */
+	{NULL, NULL}         /* Sentinel */
 };
 
 static PyMethodDef Methods_tasender[] = {
@@ -372,8 +372,8 @@ static PyMethodDef Methods_tasender[] = {
 	{"sendDirectPacket", tibiaauto_sender_sendDirectPacket, METH_VARARGS},
 	{"printText", tibiaauto_sender_printText, METH_VARARGS},
 
-	
-    {NULL,      NULL}        /* Sentinel */
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 
@@ -398,31 +398,31 @@ static PyMethodDef Methods_tamap[] = {
 	{"getMiniMapPoint", tibiaauto_map_getMiniMapPoint, METH_VARARGS},
 	{"isPointLocked", tibiaauto_map_isPointLocked, METH_VARARGS},
 	{"setPointLocked", tibiaauto_map_setPointLocked, METH_VARARGS},
-	
-	
-    {NULL,      NULL}        /* Sentinel */
+
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 
 static PyMethodDef Methods_taregexp[] = {
 	{"match", tibiaauto_regexp_match, METH_VARARGS},
-    {NULL,      NULL}        /* Sentinel */
+	{NULL, NULL}         /* Sentinel */
 };
 
 
 static PyMethodDef Methods_taalice[] = {
 	{"respond", tibiaauto_alice_respond, METH_VARARGS},
-		
-    {NULL,      NULL}        /* Sentinel */
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 static PyMethodDef Methods_tacrstat[] = {
 	{"findCreatureStatForLocationTibiaId", tibiaauto_crstat_tibiaId, METH_VARARGS},
 	{"findCreatureStatForLocationCount", tibiaauto_crstat_count, METH_VARARGS},
 	{"findCreatureStatForLocationName", tibiaauto_crstat_name, METH_VARARGS},
-	{"findCreatureStatInArea", tibiaauto_crstat_inarea,METH_VARARGS},
-		
-    {NULL,      NULL}        /* Sentinel */
+	{"findCreatureStatInArea", tibiaauto_crstat_inarea, METH_VARARGS},
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 static PyMethodDef Methods_taitem[] = {
@@ -451,7 +451,7 @@ static PyMethodDef Methods_taitem[] = {
 	{"getValueForConst", tibiaauto_item_getValueForConst, METH_VARARGS},
 	{"refreshItemLists", tibiaauto_item_refreshItemLists, METH_VARARGS},
 	{"saveItemLists", tibiaauto_item_saveItemLists, METH_VARARGS},
-	
+
 	/* Deprecated Section Start*/
 	{"getName", tibiaauto_item_getName, METH_VARARGS},
 	{"getObjectId", tibiaauto_item_getObjectId, METH_VARARGS},
@@ -464,13 +464,13 @@ static PyMethodDef Methods_taitem[] = {
 	{"getItemsCorpsesCount", tibiaauto_item_getItemsCorpsesCount, METH_VARARGS},
 	{"getItemsLooted", tibiaauto_item_getItemsLooted, METH_VARARGS},
 	{"getItemsLootedId", tibiaauto_item_getItemsLootedId, METH_VARARGS},
-	{"getItemsItemsCount",tibiaauto_item_getItemsItemsCount, METH_VARARGS},
-	{"getItemsFoodCount",tibiaauto_item_getItemsFoodCount, METH_VARARGS},
-	{"getItemsLootedCount",tibiaauto_item_getItemsLootedCount, METH_VARARGS},
+	{"getItemsItemsCount", tibiaauto_item_getItemsItemsCount, METH_VARARGS},
+	{"getItemsFoodCount", tibiaauto_item_getItemsFoodCount, METH_VARARGS},
+	{"getItemsLootedCount", tibiaauto_item_getItemsLootedCount, METH_VARARGS},
 	/* Deprecated Section End*/
-	
-	
-    {NULL,      NULL}        /* Sentinel */
+
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 
@@ -491,15 +491,15 @@ static PyMethodDef Methods_takernel[] = {
 	{"getPythonModuleDesc", tibiaauto_kernel_getPythonModuleDesc, METH_VARARGS},
 	{"getPythonModuleVersion", tibiaauto_kernel_getPythonModuleVersion, METH_VARARGS},
 
-		
-    {NULL,      NULL}        /* Sentinel */
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 static PyMethodDef Methods_tapacket[] = {
 	{"first", tibiaauto_packet_first, METH_VARARGS},// create a regex to recieve from
 
-		
-    {NULL,      NULL}        /* Sentinel */
+
+	{NULL, NULL}         /* Sentinel */
 };
 
 //////////////////////////////////////////////////////////////////////
@@ -524,16 +524,16 @@ void CPythonEngine::init()
 {
 	if (!initialised)
 	{
-		initialised=1;
-		
+		initialised = 1;
+
 		/* Initialize the Python interpreter.*/
- 		Py_Initialize();
+		Py_Initialize();
 		PyEval_InitThreads();
-  
-				 
+
+
 		PyGILState_STATE gstate;
 		gstate = PyGILState_Ensure();
-		
+
 		/* Initialize TA Python env. */
 		Py_InitModule("tibiaauto", Methods_tibiaauto);
 		Py_InitModule("tareader", Methods_tareader);
@@ -557,68 +557,68 @@ void CPythonEngine::init()
 		PyRun_SimpleString("import sys");
 		PyRun_SimpleString("import time");
 
-		
-		
+
 		char installPath[1024];
-		unsigned long installPathLen=1023;
-		installPath[0]='\0';
-		HKEY hkey=NULL;
-		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
+		unsigned long installPathLen = 1023;
+		installPath[0] = '\0';
+		HKEY hkey = NULL;
+		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
 		{
-			::MessageBox(0,"ERROR! Unable to read TA install directory! Please reinstall!","ERROR",0);
+			::MessageBox(0, "ERROR! Unable to read TA install directory! Please reinstall!", "ERROR", 0);
 			PostQuitMessage(-1);
 			return;
 		}
 
 		char pathBuf[2048];
-		sprintf(pathBuf,"%s\\tascripts\\tautil.py",installPath);
+		sprintf(pathBuf, "%s\\tascripts\\tautil.py", installPath);
 
 		// load tautil.py
-		FILE *f=fopen(pathBuf,"r");
+		FILE *f = fopen(pathBuf, "r");
 		if (f)
 		{
-			fseek(f,0,SEEK_END);
+			fseek(f, 0, SEEK_END);
 			int fileSize = ftell(f);
-			fseek(f,0,SEEK_SET);
-			char *fileBuf = (char *)malloc(fileSize+1);
-			memset(fileBuf,0,fileSize+1);
-			fread(fileBuf,1,fileSize,f);
-									
-			int ret=PyRun_SimpleString(fileBuf);
-			if (ret==-1) AfxMessageBox("Loading tautil.py script failed!");
+			fseek(f, 0, SEEK_SET);
+			char *fileBuf = (char *)malloc(fileSize + 1);
+			memset(fileBuf, 0, fileSize + 1);
+			fread(fileBuf, 1, fileSize, f);
+
+			int ret = PyRun_SimpleString(fileBuf);
+			if (ret == -1)
+				AfxMessageBox("Loading tautil.py script failed!");
 			fclose(f);
-		} else {
+		}
+		else
+		{
 			AfxMessageBox("Unable to find tascripts\\tautil.py!");
 		}
-		
+
 		PyGILState_Release(gstate);
 
 		InitializeCriticalSection(&ScriptEngineCriticalSection);
-						
 
-		
+
 		// now load all scripts from 'tascripts' subdirectory
-		sprintf(pathBuf,"%s\\tascripts\\*.py",installPath);
+		sprintf(pathBuf, "%s\\tascripts\\*.py", installPath);
 		WIN32_FIND_DATA findFileData;
-		HANDLE hFind = FindFirstFile(pathBuf,&findFileData);
-		if (hFind!=INVALID_HANDLE_VALUE)
+		HANDLE hFind = FindFirstFile(pathBuf, &findFileData);
+		if (hFind != INVALID_HANDLE_VALUE)
 		{
 			char buf[1024];
 
 			do
 			{
-				snprintf(buf,1023,"%s\\tascripts\\%s",installPath,findFileData.cFileName);
+				snprintf(buf, 1023, "%s\\tascripts\\%s", installPath, findFileData.cFileName);
 				// tautil.py will be loaded in a special way
-				if (!strstr(buf,"tascripts\\tautil.py"))
-				{
+				if (!strstr(buf, "tascripts\\tautil.py"))
 					loadScript(buf);
-				}
-			} while (FindNextFile(hFind,&findFileData));
+			}
+			while (FindNextFile(hFind, &findFileData));
 			FindClose(hFind);
 		}
 	}
@@ -629,59 +629,65 @@ void CPythonEngine::loadScript(char *path)
 	init();
 	PyGILState_STATE gstate;
 	gstate = PyGILState_Ensure();
-	
-	FILE *f=fopen(path,"rb");
+
+	FILE *f = fopen(path, "rb");
 	if (f)
 	{
-		int oldRegisterPluginCount=registerPluginCount;
+		int oldRegisterPluginCount = registerPluginCount;
 		char buf[1024];
-		sprintf(buf,"execfile('%s')",path);
-		int pos,len;
-		len=strlen(buf);
-		for (pos=0;pos<len;pos++){if (buf[pos]=='\\') buf[pos]='/';	}
+		sprintf(buf, "execfile('%s')", path);
+		int pos, len;
+		len = strlen(buf);
+		for (pos = 0; pos < len; pos++)
+		{
+			if (buf[pos] == '\\')
+				buf[pos] = '/';
+		}
 		//AfxMessageBox(buf);
 		PyRun_SimpleString(buf);
 		//AfxMessageBox("2");
 		/*
-		AfxMessageBox("1");
-		fseek(f,0,SEEK_END);
-		int fileSize = ftell(f);
-		fseek(f,0,SEEK_SET);
-		char *fileBuf = (char *)malloc(fileSize+1);
-		memset(fileBuf,0,fileSize+1);
-		AfxMessageBox("2");
-		int l=fread(fileBuf,1,fileSize,f);
-		char bbb[128];
-		sprintf(bbb,"len=%d/fileSize=%d/delta=%d",l,fileSize,fileSize-l);
-		AfxMessageBox(bbb);
-		FILE *ff=fopen("a.txt","a+");
-		fwrite(fileBuf,1,fileSize,ff);
-		fclose(ff);
+		   AfxMessageBox("1");
+		   fseek(f,0,SEEK_END);
+		   int fileSize = ftell(f);
+		   fseek(f,0,SEEK_SET);
+		   char *fileBuf = (char *)malloc(fileSize+1);
+		   memset(fileBuf,0,fileSize+1);
+		   AfxMessageBox("2");
+		   int l=fread(fileBuf,1,fileSize,f);
+		   char bbb[128];
+		   sprintf(bbb,"len=%d/fileSize=%d/delta=%d",l,fileSize,fileSize-l);
+		   AfxMessageBox(bbb);
+		   FILE *ff=fopen("a.txt","a+");
+		   fwrite(fileBuf,1,fileSize,ff);
+		   fclose(ff);
 
-		AfxMessageBox("3");
-		
-		
-		int ret=PyRun_SimpleString(fileBuf);
-		AfxMessageBox("4");
-		if (ret==-1)
+		   AfxMessageBox("3");
+
+
+		   int ret=PyRun_SimpleString(fileBuf);
+		   AfxMessageBox("4");
+		   if (ret==-1)
+		   {
+		        char buf[1024];
+		        sprintf(buf,"Loading script failed: python error (%s)!",path);
+		        AfxMessageBox(buf);
+		   }
+
+		   free(fileBuf);
+		   fclose(f);
+		 */
+
+		if (registerPluginCount == oldRegisterPluginCount)
 		{
 			char buf[1024];
-			sprintf(buf,"Loading script failed: python error (%s)!",path);
+			sprintf(buf, "Loading script failed: there must be a call to tibiaauto.registerPlugin() (%d/%d)!", registerPluginCount, oldRegisterPluginCount);
 			AfxMessageBox(buf);
 		}
-		
-		free(fileBuf);
-		fclose(f);
-		*/
-
-		if (registerPluginCount==oldRegisterPluginCount)
+		else
 		{
-			char buf[1024];
-			sprintf(buf,"Loading script failed: there must be a call to tibiaauto.registerPlugin() (%d/%d)!",registerPluginCount,oldRegisterPluginCount);
-			AfxMessageBox(buf);
-		} else {
 			// set the just loaded script file name
-			CPythonScript::getScriptByNr(CPythonScript::getScriptCount()-1)->setFileName(path);
+			CPythonScript::getScriptByNr(CPythonScript::getScriptCount() - 1)->setFileName(path);
 		}
 	}
 	PyGILState_Release(gstate);
@@ -691,36 +697,37 @@ void CPythonEngine::periodicalTick()
 {
 	init();
 	enterCriticalSection();
-	long int tm=GetTickCount();
+	long int tm = GetTickCount();
 	int scriptNr;
-	for (scriptNr=0;;scriptNr++)
+	for (scriptNr = 0;; scriptNr++)
 	{
 		CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
-		if (!pythonScript) break;
-		if (!pythonScript->isEnabled()) continue;
+		if (!pythonScript)
+			break;
+		if (!pythonScript->isEnabled())
+			continue;
 		int funNr;
-		for (funNr=0;;funNr++)
+		for (funNr = 0;; funNr++)
 		{
-			struct funType *fun=pythonScript->getFunDef(funNr);
-			if (!fun) break;
+			struct funType *fun = pythonScript->getFunDef(funNr);
+			if (!fun)
+				break;
 
-			if (fun->type==FUNTYPE_PERIODICAL&&tm>=fun->tmNextExec)
+			if (fun->type == FUNTYPE_PERIODICAL && tm >= fun->tmNextExec)
 			{
 				CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
-				
+
 				PyGILState_STATE gstate;
 				gstate = PyGILState_Ensure();
 				PyObject *params = pythonScript->getParamsDic();
-				PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(O)",params);
+				PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name, "(O)", params);
 				Py_XDECREF(params);
 				Py_XDECREF(result);
-				
+
 				fun->call();
-				
+
 				PyGILState_Release(gstate);
 			}
-
-			
 		}
 	}
 	leaveCriticalSection();
@@ -730,12 +737,13 @@ void CPythonEngine::backpipeMsgTick()
 {
 	init();
 	enterCriticalSection();
-	long int tm=GetTickCount();
+	long int tm = GetTickCount();
 	CMemReaderProxy reader;
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
-	if (backPipe.readFromPipe(&mess,1006)){
+	if (backPipe.readFromPipe(&mess, 1006))
+	{
 		int infoType;
 		int chanType;
 		int nickLen;
@@ -743,24 +751,24 @@ void CPythonEngine::backpipeMsgTick()
 		char nickBuf[16384];
 		char msgBuf[16384];
 		char chanBuf[16384];
-		
-		memset(nickBuf,0,16384);
-		memset(msgBuf,0,16384);
-		memcpy(&infoType,mess.payload,sizeof(int));
-		memcpy(&chanType,mess.payload+4,sizeof(int));
-		memcpy(&nickLen,mess.payload+8,sizeof(int));
-		memcpy(&msgLen,mess.payload+12,sizeof(int));
-		memcpy(nickBuf,mess.payload+16,nickLen);
-		memcpy(msgBuf,mess.payload+16+nickLen,msgLen);
+
+		memset(nickBuf, 0, 16384);
+		memset(msgBuf, 0, 16384);
+		memcpy(&infoType, mess.payload, sizeof(int));
+		memcpy(&chanType, mess.payload + 4, sizeof(int));
+		memcpy(&nickLen, mess.payload + 8, sizeof(int));
+		memcpy(&msgLen, mess.payload + 12, sizeof(int));
+		memcpy(nickBuf, mess.payload + 16, nickLen);
+		memcpy(msgBuf, mess.payload + 16 + nickLen, msgLen);
 		switch (infoType)
 		{
-		case 1: sprintf(chanBuf,"say");break;
-		case 2: sprintf(chanBuf,"whisper");break;
-		case 3: sprintf(chanBuf,"yell");break;
-		case 11: sprintf(chanBuf,"NPC");break;
-		case 6: sprintf(chanBuf,"private");break;
-		case 7: sprintf(chanBuf,"channel");break;
-		default: sprintf(chanBuf,"other[%d]",infoType);break;
+		case 1: sprintf(chanBuf, "say"); break;
+		case 2: sprintf(chanBuf, "whisper"); break;
+		case 3: sprintf(chanBuf, "yell"); break;
+		case 11: sprintf(chanBuf, "NPC"); break;
+		case 6: sprintf(chanBuf, "private"); break;
+		case 7: sprintf(chanBuf, "channel"); break;
+		default: sprintf(chanBuf, "other[%d]", infoType); break;
 		}
 		//Channel IDs
 		//1-Party
@@ -770,34 +778,34 @@ void CPythonEngine::backpipeMsgTick()
 		//5-Trade
 		//6-Rook Trade
 		//7-Help
-						
+
 		int scriptNr;
-		for (scriptNr=0;;scriptNr++)
+		for (scriptNr = 0;; scriptNr++)
 		{
 			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
-			if (!pythonScript) break;
-			if (!pythonScript->isEnabled()) continue;
+			if (!pythonScript)
+				break;
+			if (!pythonScript->isEnabled())
+				continue;
 			int funNr;
-			for (funNr=0;;funNr++)
+			for (funNr = 0;; funNr++)
 			{
-				struct funType *fun=pythonScript->getFunDef(funNr);
-				if (!fun) break;
-				
-				if (fun->type==FUNTYPE_MSG)
-				{
+				struct funType *fun = pythonScript->getFunDef(funNr);
+				if (!fun)
+					break;
 
+				if (fun->type == FUNTYPE_MSG)
+				{
 					PyGILState_STATE gstate;
 					gstate = PyGILState_Ensure();
 					PyObject *params = pythonScript->getParamsDic();
-					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(O(isss))",params,infoType,chanBuf,nickBuf,msgBuf);
+					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name, "(O(isss))", params, infoType, chanBuf, nickBuf, msgBuf);
 					Py_XDECREF(params);
 					Py_XDECREF(result);
 					fun->call();
 					PyGILState_Release(gstate);
 				}
-				
 			}
-			
 		}
 	}
 	leaveCriticalSection();
@@ -812,12 +820,13 @@ void CPythonEngine::unloadScript(int scriptNr)
 	CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
 	pythonScript->setEnabled(false);
 	struct funType *fun = NULL;
-	for (int funNr=0;(fun=pythonScript->getFunDef(funNr));funNr++)
+	for (int funNr = 0; (fun = pythonScript->getFunDef(funNr)); funNr++)
 	{
-		if (fun->type == FUNTYPE_INPACKET) sender.unregisterInpacketRegex(fun->matchExprHandle);
+		if (fun->type == FUNTYPE_INPACKET)
+			sender.unregisterInpacketRegex(fun->matchExprHandle);
 	}
 
-	CPythonScript::pythonScriptTab[scriptNr]=CPythonScript::pythonScriptTab[CPythonScript::pythonScriptCount-1];
+	CPythonScript::pythonScriptTab[scriptNr] = CPythonScript::pythonScriptTab[CPythonScript::pythonScriptCount - 1];
 	CPythonScript::pythonScriptCount--;
 	registerPluginCount--;
 	// this is commented out by purpose - there would be too much threads
@@ -842,39 +851,41 @@ void CPythonEngine::backpipeTamsgTick()
 {
 	init();
 	enterCriticalSection();
-	long int tm=GetTickCount();
+	long int tm = GetTickCount();
 	CMemReaderProxy reader;
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
-	if (backPipe.readFromPipe(&mess,1007)){
+	if (backPipe.readFromPipe(&mess, 1007))
+	{
 		int msgLen;
 		char msgBuf[16384];
-		
-		memset(msgBuf,0,16384);
-		memcpy(&msgLen,mess.payload,sizeof(int));
-		memcpy(msgBuf,mess.payload+4,msgLen);
-						
+
+		memset(msgBuf, 0, 16384);
+		memcpy(&msgLen, mess.payload, sizeof(int));
+		memcpy(msgBuf, mess.payload + 4, msgLen);
+
 		int scriptNr;
-		for (scriptNr=0;;scriptNr++)
+		for (scriptNr = 0;; scriptNr++)
 		{
-
 			CPythonScript *pythonScript = CPythonScript::getScriptByNr(scriptNr);
-			if (!pythonScript) break;
-			if (!pythonScript->isEnabled()) continue;
+			if (!pythonScript)
+				break;
+			if (!pythonScript->isEnabled())
+				continue;
 			int funNr;
-			for (funNr=0;;funNr++)
+			for (funNr = 0;; funNr++)
 			{
-				struct funType *fun=pythonScript->getFunDef(funNr);
-				if (!fun) break;
-				
-				if (fun->type==FUNTYPE_TAMSG)
-				{
+				struct funType *fun = pythonScript->getFunDef(funNr);
+				if (!fun)
+					break;
 
+				if (fun->type == FUNTYPE_TAMSG)
+				{
 					PyGILState_STATE gstate;
 					gstate = PyGILState_Ensure();
 					PyObject *params = pythonScript->getParamsDic();
-					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(Os)",params,msgBuf);
+					PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name, "(Os)", params, msgBuf);
 					Py_XDECREF(params);
 					Py_XDECREF(result);
 					fun->call();
@@ -897,50 +908,58 @@ void CPythonEngine::backpipeInpacketTick()
 	struct parcelRecvActionData* pd;
 
 	//runs at most 'maxtimes' python functions each tick
-	for (int maxtimes = 5; backPipe.readFromPipe(&mess, 1010) && maxtimes>0; maxtimes--){
+	for (int maxtimes = 5; backPipe.readFromPipe(&mess, 1010) && maxtimes > 0; maxtimes--)
+	{
 		char buf[1024];
 
-		long int tm=GetTickCount();
+		long int tm = GetTickCount();
 		pd = (parcelRecvActionData*)&(mess.payload);
 
-		int discardIncompletePacket = pd->countLeft+1 != pd->totalCount; //the initial packets were too old and were discarded
+		int discardIncompletePacket = pd->countLeft + 1 != pd->totalCount; //the initial packets were too old and were discarded
 
 		int countLeft = pd->countLeft;
-		int msgLen = pd->len;
-		int handle = pd->handle;
-		char* msgBuf = (char*)malloc(sizeof(pd->actionData)*(countLeft+1));
-		memcpy(msgBuf,pd->actionData,pd->len);
-		while (countLeft && GetTickCount() - tm < 200){ // wait for remaining sections to come in for up to 200ms(they should always be on their way)
-			if (backPipe.readFromPipe(&mess, 1010)){
-				if (pd->handle != handle || pd->countLeft != countLeft-1){
-					sprintf(buf,"ERROR in backpipeInpacketTick: handle %d should be %d and count %d should be %d",pd->handle,handle,pd->countLeft,countLeft-1);
-					//AfxMessageBox(buf);
-				}
-				memcpy(msgBuf+msgLen,pd->actionData,pd->len);
-				msgLen += pd->len;
+		int msgLen    = pd->len;
+		int handle    = pd->handle;
+		char* msgBuf  = (char*)malloc(sizeof(pd->actionData) * (countLeft + 1));
+		memcpy(msgBuf, pd->actionData, pd->len);
+		while (countLeft && GetTickCount() - tm < 200)  // wait for remaining sections to come in for up to 200ms(they should always be on their way)
+		{
+			if (backPipe.readFromPipe(&mess, 1010))
+			{
+				if (pd->handle != handle || pd->countLeft != countLeft - 1)
+					sprintf(buf, "ERROR in backpipeInpacketTick: handle %d should be %d and count %d should be %d", pd->handle, handle, pd->countLeft, countLeft - 1);
+				//AfxMessageBox(buf);
+				memcpy(msgBuf + msgLen, pd->actionData, pd->len);
+				msgLen   += pd->len;
 				countLeft = pd->countLeft;
 			}
 		}
-		if (countLeft){
-			sprintf(buf,"ERROR in backpipeInpacketTick: did not finish reading data");
+		if (countLeft)
+		{
+			sprintf(buf, "ERROR in backpipeInpacketTick: did not finish reading data");
 			//AfxMessageBox(buf);
-		} else if (discardIncompletePacket){
-			int a=0;// discard data and continue
-		} else { //everything is OK
-			sprintf(buf,"One packet took %dms",GetTickCount() - tm);
+		}
+		else if (discardIncompletePacket)
+		{
+			int a = 0;// discard data and continue
+		}
+		else     //everything is OK
+		{
+			sprintf(buf, "One packet took %dms", GetTickCount() - tm);
 			//if (GetTickCount() - tm>20) MessageBox(NULL, buf,"huaeotnre",0);
 			CPythonScript *pythonScript = NULL;
-			for (int scriptNr=0;(pythonScript = CPythonScript::getScriptByNr(scriptNr));scriptNr++)
+			for (int scriptNr = 0; (pythonScript = CPythonScript::getScriptByNr(scriptNr)); scriptNr++)
 			{
-				if (!pythonScript->isEnabled()) continue;
+				if (!pythonScript->isEnabled())
+					continue;
 				struct funType *fun = NULL;
-				for (int funNr=0;(fun=pythonScript->getFunDef(funNr));funNr++)
+				for (int funNr = 0; (fun = pythonScript->getFunDef(funNr)); funNr++)
 				{
 					if (fun->type == FUNTYPE_INPACKET && fun->matchExprHandle == pd->handle)
 					{
 						PyGILState_STATE gstate;
 						gstate = PyGILState_Ensure();
-						PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name,"(s#)",msgBuf,msgLen);
+						PyObject *result = PyObject_CallMethod(pythonScript->getPluginObject(), fun->name, "(s#)", msgBuf, msgLen);
 						Py_XDECREF(result);
 						fun->call();
 						PyGILState_Release(gstate);
@@ -950,7 +969,7 @@ void CPythonEngine::backpipeInpacketTick()
 			}
 		}
 inpacketTickCleanup:
-		msgBuf[0]=0;
+		msgBuf[0] = 0;
 		free(msgBuf);
 	}
 	leaveCriticalSection();
@@ -959,11 +978,11 @@ void CPythonEngine::threadGILAcquire(int ms)
 {
 	init();
 	enterCriticalSection();
-	
+
 	PyGILState_STATE gstate;
 	gstate = PyGILState_Ensure();
 	char buf[128];
-	sprintf(buf,"time.sleep(%d.%03d)",ms/1000,ms%1000);
+	sprintf(buf, "time.sleep(%d.%03d)", ms / 1000, ms % 1000);
 	PyRun_SimpleString(buf);
 
 	PyGILState_Release(gstate);

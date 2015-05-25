@@ -13,25 +13,25 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_memdebugApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_memdebugApp *app, CWnd* pParent /*=NULL*/)
 	: CDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
-	m_scan = FALSE;
-	m_error = _T("");
+	m_scan          = FALSE;
+	m_error         = _T("");
 	m_addressResDec = 0;
-	m_address = 0;
+	m_address       = 0;
 	m_addressResHex = _T("");
-	m_val = 0;
+	m_val           = 0;
 	//}}AFX_DATA_INIT
-	m_app=app;
-	m_errorCount=0;
+	m_app        = app;
+	m_errorCount = 0;
 }
 
 
@@ -51,14 +51,14 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_CLOSE()
-	ON_WM_TIMER()
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_CLOSE()
+ON_WM_TIMER()
 ON_BN_CLICKED(IDC_TEST, OnTest)
 ON_BN_CLICKED(IDC_TEST2, OnTest2)
 ON_BN_CLICKED(IDC_SCAN, OnScan)
 
-	//}}AFX_MSG_MAP
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -77,29 +77,29 @@ void CConfigDialog::OnClose()
 void CConfigDialog::OnTest()
 {
 	UpdateData(FALSE);
-	
+
 	CMemReaderProxy reader;
 
-	reader.setMemIntValue(0x00400000+m_address,m_val);
-	
+	reader.setMemIntValue(0x00400000 + m_address, m_val);
 }
 
 void CConfigDialog::OnTest2()
 {
-	
 }
 
 void CConfigDialog::OnScan()
 {
 	UpdateData(true);
-	
+
 	if (m_scan)
 	{
-		m_valueScanIter=0;
-		
+		m_valueScanIter = 0;
+
 		RegisterDebug("memory scanning started");
-		SetTimer(1000,100,NULL);
-	} else {
+		SetTimer(1000, 100, NULL);
+	}
+	else
+	{
 		RegisterDebug("memory scanning stopped");
 		this->KillTimer(1000);
 	}
@@ -107,22 +107,22 @@ void CConfigDialog::OnScan()
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	if (nIDEvent==1000)
+	if (nIDEvent == 1000)
 	{
 		CMemReaderProxy reader;
-		
+
 		char buf[128];
-		
+
 		UpdateData(true);
-				
-		int value=reader.getMemIntValue(0x00400000+m_address);
-		
-		
-		m_addressResDec=value;
-			
-		sprintf(buf,"0x%x",value);
-		m_addressResHex=buf;
-		
+
+		int value = reader.getMemIntValue(0x00400000 + m_address);
+
+
+		m_addressResDec = value;
+
+		sprintf(buf, "0x%x", value);
+		m_addressResHex = buf;
+
 		UpdateData(false);
 	}
 	CDialog::OnTimer(nIDEvent);
@@ -131,24 +131,24 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 void CConfigDialog::RegisterError(char *msg)
 {
 	char buf[1024];
-	sprintf(buf,"[%d] ERROR: %s",++m_errorCount,msg);
-	m_error=buf;
+	sprintf(buf, "[%d] ERROR: %s", ++m_errorCount, msg);
+	m_error = buf;
 	UpdateData(false);
 }
 
 void CConfigDialog::RegisterDebug(char *msg)
 {
 	char buf[1024];
-	sprintf(buf,"[%d] INFO: %s",++m_errorCount,msg);
-	m_error=buf;
+	sprintf(buf, "[%d] INFO: %s", ++m_errorCount, msg);
+	m_error = buf;
 	UpdateData(false);
 }
 
 BOOL CConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	
+
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -158,5 +158,3 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
 }
-
-

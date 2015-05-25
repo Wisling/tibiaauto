@@ -9,14 +9,14 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // ManaDialog dialog
 
 
 ManaDialog::ManaDialog(CWnd* pParent /*=NULL*/)
-: MyDialog(ManaDialog::IDD, pParent)
+	: MyDialog(ManaDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(ManaDialog)
 	// NOTE: the ClassWizard will add member initialization here
@@ -37,11 +37,11 @@ void ManaDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(ManaDialog, CDialog)
-	//{{AFX_MSG_MAP(ManaDialog)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MANA, OnToolSpellcasterMana)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(ManaDialog)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MANA, OnToolSpellcasterMana)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -55,7 +55,8 @@ void ManaDialog::disableControls() {
 
 void ManaDialog::enableControls() {
 	m_mana.EnableWindow(true);
-	if (m_mana.GetCheck()){
+	if (m_mana.GetCheck())
+	{
 		m_manaMana.EnableWindow(true);
 		m_manaSpell.EnableWindow(true);
 	}
@@ -64,16 +65,16 @@ void ManaDialog::enableControls() {
 void ManaDialog::configToControls(CConfigData *configData) {
 	char buf[128];
 	m_mana.SetCheck(configData->mana);
-	sprintf(buf,"%d",configData->manaMana);			m_manaMana.SetWindowText(buf);
-	sprintf(buf,"%s",configData->manaSpell);		m_manaSpell.SetWindowText(buf);
+	sprintf(buf, "%d", configData->manaMana);                 m_manaMana.SetWindowText(buf);
+	sprintf(buf, "%s", configData->manaSpell);                m_manaSpell.SetWindowText(buf);
 	OnToolSpellcasterMana();
 }
 
 void ManaDialog::controlsToConfig(CConfigData *newConfigData) {
 	char buf[128];
-	newConfigData->mana = m_mana.GetCheck();
-	m_manaMana.GetWindowText(buf,127);newConfigData->manaMana=atoi(buf);
-	m_manaSpell.GetWindowText(newConfigData->manaSpell,127);
+	newConfigData->mana                                         = m_mana.GetCheck();
+	m_manaMana.GetWindowText(buf, 127); newConfigData->manaMana = atoi(buf);
+	m_manaSpell.GetWindowText(newConfigData->manaSpell, 127);
 }
 
 void ManaDialog::OnToolSpellcasterMana()
@@ -86,9 +87,9 @@ void ManaDialog::OnToolSpellcasterMana()
 BOOL ManaDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
+
 	OnToolSpellcasterMana();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

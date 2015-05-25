@@ -14,7 +14,7 @@ class CTibiaCharacter
 public:
 	CTibiaCharacter();
 	virtual ~CTibiaCharacter();
-	
+
 	int hp;
 	int mana;
 	int x;
@@ -64,7 +64,6 @@ public:
 	int warIcon;
 	int blocking;
 	char voc[3];
-
 };
 
 #endif // !defined(AFX_TIBIACHARACTER_H__AFC25758_9E59_4EA5_92A9_83E2907E04DD__INCLUDED_)

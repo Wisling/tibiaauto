@@ -28,30 +28,30 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(Cmod_fpsApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(Cmod_fpsApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_OptionsFrame;
-	CStatic	m_state;
-	CEdit	m_minimizedVal;
-	CButton	m_minimized;
-	CEdit	m_inactiveVal;
-	CButton	m_inactive;
-	CStatic	m_fpsRate;
-	CEdit	m_activeVal;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CGroupBoxEx m_OptionsFrame;
+	CStatic m_state;
+	CEdit m_minimizedVal;
+	CButton m_minimized;
+	CEdit m_inactiveVal;
+	CButton m_inactive;
+	CStatic m_fpsRate;
+	CEdit m_activeVal;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

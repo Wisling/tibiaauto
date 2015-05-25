@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,12 +18,11 @@ static char THIS_FILE[]=__FILE__;
 
 CConnectedNode::CConnectedNode()
 {
-	connected=0;
-	charName[0]=0;
-	lastMessageTm=0;
+	connected     = 0;
+	charName[0]   = 0;
+	lastMessageTm = 0;
 }
 
 CConnectedNode::~CConnectedNode()
 {
-
 }

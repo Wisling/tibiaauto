@@ -29,51 +29,51 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_looterApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_looterApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButton	m_lootInDepot;
-	CGroupBoxEx	m_LootOptionsFrame;
-	CGroupBoxEx	m_ContainerSetupFrame;
-	CStatic	m_status10;
-	CComboBox	m_mode10;
-	CButton	m_lootWorms;
-	CButton	m_lootGp;
-	CButton	m_lootFood;
+	CButton m_lootInDepot;
+	CGroupBoxEx m_LootOptionsFrame;
+	CGroupBoxEx m_ContainerSetupFrame;
+	CStatic m_status10;
+	CComboBox m_mode10;
+	CButton m_lootWorms;
+	CButton m_lootGp;
+	CButton m_lootFood;
 	CButton m_eatFromCorpse;
-	CButton	m_lootCustom;
-	CButton	m_autoOpen;
-	CStatic	m_status9;
-	CStatic	m_status8;
-	CStatic	m_status7;
-	CStatic	m_status6;
-	CStatic	m_status5;
-	CStatic	m_status4;
-	CStatic	m_status3;
-	CStatic	m_status2;
-	CStatic	m_status1;
-	CComboBox	m_mode9;
-	CComboBox	m_mode8;
-	CComboBox	m_mode7;
-	CComboBox	m_mode6;
-	CComboBox	m_mode5;
-	CComboBox	m_mode4;
-	CComboBox	m_mode3;
-	CComboBox	m_mode2;
-	CComboBox	m_mode1;
-	CButtonST	m_enable;
-	CButtonST	m_OK;
+	CButton m_lootCustom;
+	CButton m_autoOpen;
+	CStatic m_status9;
+	CStatic m_status8;
+	CStatic m_status7;
+	CStatic m_status6;
+	CStatic m_status5;
+	CStatic m_status4;
+	CStatic m_status3;
+	CStatic m_status2;
+	CStatic m_status1;
+	CComboBox m_mode9;
+	CComboBox m_mode8;
+	CComboBox m_mode7;
+	CComboBox m_mode6;
+	CComboBox m_mode5;
+	CComboBox m_mode4;
+	CComboBox m_mode3;
+	CComboBox m_mode2;
+	CComboBox m_mode1;
+	CButtonST m_enable;
+	CButtonST m_OK;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

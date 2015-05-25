@@ -6,24 +6,23 @@
 
 /////////////////////////////////////////////////////////////////////////////
 // debug functions
-void UsrDump(TCHAR *msg,BYTE *pData, int len);
+void UsrDump(TCHAR *msg, BYTE *pData, int len);
 CString GetDumpString(BYTE *pData, int len);
-void DumpErrorCode(DWORD dwErrCode, DWORD dwLine , char *szFileName);
+void DumpErrorCode(DWORD dwErrCode, DWORD dwLine, char *szFileName);
 BOOL GetErrorDescription( DWORD error_code, CString& error_string );
 
 inline TCHAR GetPrintCharOrDot(TCHAR c)
 {
-	if (_istprint(c)) {
+	if (_istprint(c))
 		return c;
-	} else {
+	else
 		return (TCHAR)'.';
-	}
 }
 
 #ifdef _DEBUG
-#define DUMP				::UsrDump
-#else
+#define DUMP                            ::UsrDump
+#else // ifdef _DEBUG
 #define DUMP              1 ? (void)0 : ::UsrDump
-#endif
+#endif // ifdef _DEBUG
 
 #endif // HELPERS_H__INCLUDED

@@ -9,19 +9,19 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CWhiteList dialog
 
 
-CWhiteList::CWhiteList(char whiteListParam[100][32],int * mkBlackParam, CWnd* pParent /*=NULL*/)
+CWhiteList::CWhiteList(char whiteListParam[100][32], int * mkBlackParam, CWnd* pParent /*=NULL*/)
 	: MyDialog(CWhiteList::IDD, pParent)
 {
 	whiteList = (char*)whiteListParam;
-	mkBlack = mkBlackParam;
+	mkBlack   = mkBlackParam;
 	//{{AFX_DATA_INIT(CWhiteList)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -42,15 +42,15 @@ void CWhiteList::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CWhiteList, CDialog)
-	//{{AFX_MSG_MAP(CWhiteList)
-	ON_BN_CLICKED(IDC_WHITELIST_ADD, OnWhitelistAdd)
-	ON_BN_CLICKED(IDC_WHITELIST_DELETE, OnWhitelistDelete)
-	ON_BN_DOUBLECLICKED(IDC_WHITELIST_DELETE, OnWhitelistDelete)
-	ON_BN_CLICKED(IDC_WHITELIST_MKBLACK, OnWhitelistMkBlack)
-	ON_WM_ERASEBKGND()
-	ON_WM_DRAWITEM()
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CWhiteList)
+ON_BN_CLICKED(IDC_WHITELIST_ADD, OnWhitelistAdd)
+ON_BN_CLICKED(IDC_WHITELIST_DELETE, OnWhitelistDelete)
+ON_BN_DOUBLECLICKED(IDC_WHITELIST_DELETE, OnWhitelistDelete)
+ON_BN_CLICKED(IDC_WHITELIST_MKBLACK, OnWhitelistMkBlack)
+ON_WM_ERASEBKGND()
+ON_WM_DRAWITEM()
+ON_WM_CTLCOLOR()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -63,13 +63,14 @@ void CWhiteList::OnWhitelistMkBlack()
 	else
 		m_WhiteListFrame.SetWindowText("White List");
 	Invalidate();
-	*mkBlack=(m_mkblack.GetCheck()?1:0);
+	*mkBlack = (m_mkblack.GetCheck() ? 1 : 0);
 }
 
 void CWhiteList::OnWhitelistAdd()
 {
 	char lpBuffer[32];
-	if (m_name.GetWindowText(lpBuffer,32)){
+	if (m_name.GetWindowText(lpBuffer, 32))
+	{
 		m_list.AddString(lpBuffer);
 		m_name.SetWindowText("");
 	}
@@ -79,11 +80,9 @@ void CWhiteList::OnWhitelistAdd()
 void CWhiteList::OnWhitelistDelete()
 {
 	int iCurSel = m_list.GetCurSel();
-	if (iCurSel > -1){
+	if (iCurSel > -1)
 		m_list.DeleteString(iCurSel);
-	}
 	ListToMem();
-	
 }
 
 void CWhiteList::ListToMem()
@@ -91,34 +90,35 @@ void CWhiteList::ListToMem()
 	int iCount = m_list.GetCount();
 	int i;
 	char lpBuffer[32];
-	for (i=0;i<iCount;i++){
-		m_list.GetText(i,lpBuffer);
-		memcpy(whiteList+i*32,lpBuffer,32);
+	for (i = 0; i < iCount; i++)
+	{
+		m_list.GetText(i, lpBuffer);
+		memcpy(whiteList + i * 32, lpBuffer, 32);
 	}
-	memset(whiteList+(iCount)*32,0,32);
+	memset(whiteList + (iCount) * 32, 0, 32);
 }
 
 void CWhiteList::Mem2List()
 {
 	int i;
 	char lpBuffer[32];
-	for (i=0;i<100;i++){
-		memcpy(lpBuffer,whiteList+i*32,32);
-		lpBuffer[31]=0;
-		if (IsCharAlphaNumeric(lpBuffer[0])){
+	for (i = 0; i < 100; i++)
+	{
+		memcpy(lpBuffer, whiteList + i * 32, 32);
+		lpBuffer[31] = 0;
+		if (IsCharAlphaNumeric(lpBuffer[0]))
 			m_list.AddString(lpBuffer);
-		}else{
+		else
 			break;
-		}
 	}
 }
 
 BOOL CWhiteList::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(	m_delete);
-	skin.SetButtonSkin(	m_add);
-	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(     m_delete);
+	skin.SetButtonSkin(     m_add);
+	skin.SetButtonSkin(     m_OK);
 
 
 	m_mkblack.SetCheck(*mkBlack);
@@ -127,7 +127,7 @@ BOOL CWhiteList::OnInitDialog()
 	else
 		m_WhiteListFrame.SetWindowText("White List");
 	Mem2List();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }

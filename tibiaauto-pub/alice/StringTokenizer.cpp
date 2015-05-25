@@ -14,20 +14,19 @@ bool StringTokenizer::hasMoreTokens() {
 
 string StringTokenizer::nextToken() {
 	skipDelimiters();
-	
-	if (currentPosition >= maxPosition) {
+
+	if (currentPosition >= maxPosition)
 		return "";
-	}
-	
+
 	int start = currentPosition;
 	while ((currentPosition < maxPosition) &&
-			(delim.find(str[currentPosition]) == string::npos)) {
+	       (delim.find(str[currentPosition]) == string::npos))
+	{
 		currentPosition++;
 	}
 	if (retTok && (start == currentPosition) &&
-			(delim.find(str[currentPosition]) != string::npos)) {
+	    (delim.find(str[currentPosition]) != string::npos))
 		currentPosition++;
-	}
 	return str.substr(start, currentPosition - start);
 }
 
@@ -37,27 +36,28 @@ string StringTokenizer::nextToken(const string &d) {
 }
 
 int StringTokenizer::countTokens() {
-	int count = 0;
+	int count   = 0;
 	int currpos = currentPosition;
-	
-	while (currpos < maxPosition) {
+
+	while (currpos < maxPosition)
+	{
 		while (!retTok &&
-				(currpos < maxPosition) &&
-				(delim.find(str[currpos]) != string::npos)) {
+		       (currpos < maxPosition) &&
+		       (delim.find(str[currpos]) != string::npos))
+		{
 			currpos++;
 		}
-		if (currpos >= maxPosition) {
+		if (currpos >= maxPosition)
 			break;
-		}
 		int start = currpos;
 		while ((currpos < maxPosition) &&
-				(delim.find(str[currpos]) == string::npos)) {
+		       (delim.find(str[currpos]) == string::npos))
+		{
 			currpos++;
 		}
 		if (retTok && (start == currpos) &&
-				(delim.find(str[currpos]) != string::npos)) {
+		    (delim.find(str[currpos]) != string::npos))
 			currpos++;
-		}
 		count++;
 	}
 	return count;
@@ -65,8 +65,9 @@ int StringTokenizer::countTokens() {
 
 void StringTokenizer::skipDelimiters() {
 	while (!retTok &&
-			(currentPosition < maxPosition) &&
-			(delim.find(str[currentPosition]) != string::npos)) {
+	       (currentPosition < maxPosition) &&
+	       (delim.find(str[currentPosition]) != string::npos))
+	{
 		currentPosition++;
 	}
 }

@@ -51,7 +51,7 @@ public:
 // Content
 protected:
 	const ELT * m_pRef;
-	int         m_nSize;
+	int m_nSize;
 };
 
 //
@@ -68,12 +68,14 @@ template <class ELT> CBufferRefT <ELT> :: CBufferRefT(const ELT * pcsz)
 	m_pRef  = pcsz;
 	m_nSize = 0;
 
-	if(pcsz != 0) while(m_pRef[m_nSize] != 0) m_nSize ++;
+	if(pcsz != 0)
+		while(m_pRef[m_nSize] != 0)
+			m_nSize++;
 }
 
 template <class ELT> int CBufferRefT <ELT> :: nCompare(const ELT * pcsz) const
 {
-	for(int i=0; i<m_nSize; i++)
+	for(int i = 0; i < m_nSize; i++)
 	{
 		if(m_pRef[i] != pcsz[i])
 			return m_pRef[i] - pcsz[i];
@@ -84,13 +86,11 @@ template <class ELT> int CBufferRefT <ELT> :: nCompare(const ELT * pcsz) const
 
 template <class ELT> int CBufferRefT <ELT> :: nCompareNoCase(const ELT * pcsz) const
 {
-	for(int i=0; i<m_nSize; i++)
+	for(int i = 0; i < m_nSize; i++)
 	{
 		if(m_pRef[i] != pcsz[i])
-		{
 			if(toupper((int)m_pRef[i]) != toupper((int)pcsz[i]))
 				return m_pRef[i] - pcsz[i];
-		}
 	}
 
 	return 0;
@@ -157,7 +157,7 @@ public:
 	void  Append(ELT el, int eol = 0);
 
 public:
-	void  Push(ELT   el);
+	void  Push(ELT el);
 	int   Pop (ELT & el);
 	int   Peek(ELT & el) const;
 
@@ -175,7 +175,7 @@ public:
 // Content
 protected:
 	ELT * m_pBuffer;
-	int   m_nMaxLength;
+	int m_nMaxLength;
 };
 
 //
@@ -187,7 +187,7 @@ template <class ELT> CBufferT <ELT> :: CBufferT(const ELT * pcsz, int length) : 
 
 	CBufferRefT <ELT> :: m_pRef = m_pBuffer = new ELT[m_nMaxLength];
 	memcpy(m_pBuffer, pcsz, sizeof(ELT) * CBufferRefT <ELT> :: m_nSize);
-	m_pBuffer[CBufferRefT <ELT> :: m_nSize] = 0;
+	m_pBuffer[CBufferRefT < ELT > :: m_nSize] = 0;
 }
 
 template <class ELT> CBufferT <ELT> :: CBufferT(const ELT * pcsz) : CBufferRefT <ELT> (pcsz)
@@ -196,7 +196,7 @@ template <class ELT> CBufferT <ELT> :: CBufferT(const ELT * pcsz) : CBufferRefT 
 
 	CBufferRefT <ELT> :: m_pRef = m_pBuffer = new ELT[m_nMaxLength];
 	memcpy(m_pBuffer, pcsz, sizeof(ELT) * CBufferRefT <ELT> :: m_nSize);
-	m_pBuffer[CBufferRefT <ELT> :: m_nSize] = 0;
+	m_pBuffer[CBufferRefT < ELT > :: m_nSize] = 0;
 }
 
 template <class ELT> CBufferT <ELT> :: CBufferT() : CBufferRefT <ELT> (0, 0)
@@ -244,14 +244,15 @@ template <class ELT> void CBufferT <ELT> :: Append(const ELT * pcsz, int length,
 		}
 
 		CBufferRefT <ELT> :: m_pRef = m_pBuffer = pNewBuffer;
-		m_nMaxLength = nNewLength;
+		m_nMaxLength                = nNewLength;
 	}
 
 	// Append
 	memcpy(m_pBuffer + CBufferRefT <ELT> :: m_nSize, pcsz, sizeof(ELT) * length);
 	CBufferRefT <ELT> :: m_nSize += length;
 
-	if(eol > 0) m_pBuffer[CBufferRefT <ELT> :: m_nSize] = 0;
+	if(eol > 0)
+		m_pBuffer[CBufferRefT < ELT > :: m_nSize] = 0;
 }
 
 template <class ELT> inline void CBufferT <ELT> :: Append(ELT el, int eol)
@@ -265,7 +266,8 @@ template <class ELT> void CBufferT <ELT> :: Push(ELT el)
 	if(CBufferRefT <ELT> :: m_nSize >= m_nMaxLength)
 	{
 		int nNewLength = m_nMaxLength * 2;
-		if( nNewLength < 8 ) nNewLength = 8;
+		if( nNewLength < 8 )
+			nNewLength = 8;
 
 		ELT * pNewBuffer = new ELT[nNewLength];
 
@@ -276,18 +278,18 @@ template <class ELT> void CBufferT <ELT> :: Push(ELT el)
 		}
 
 		CBufferRefT <ELT> :: m_pRef = m_pBuffer = pNewBuffer;
-		m_nMaxLength = nNewLength;
+		m_nMaxLength                = nNewLength;
 	}
 
 	// Append
-	m_pBuffer[CBufferRefT <ELT> :: m_nSize++] = el;
+	m_pBuffer[CBufferRefT < ELT > :: m_nSize++] = el;
 }
 
 template <class ELT> inline int CBufferT <ELT> :: Pop(ELT & el)
 {
 	if(CBufferRefT <ELT> :: m_nSize > 0)
 	{
-		el = m_pBuffer[--CBufferRefT <ELT> :: m_nSize];
+		el = m_pBuffer[--CBufferRefT < ELT > :: m_nSize];
 		return 1;
 	}
 	else
@@ -300,7 +302,7 @@ template <class ELT> inline int CBufferT <ELT> :: Peek(ELT & el) const
 {
 	if(CBufferRefT <ELT> :: m_nSize > 0)
 	{
-		el = m_pBuffer[CBufferRefT <ELT> :: m_nSize - 1];
+		el = m_pBuffer[CBufferRefT < ELT > :: m_nSize - 1];
 		return 1;
 	}
 	else
@@ -323,7 +325,7 @@ template <class ELT> ELT * CBufferT <ELT> :: Detach()
 {
 	ELT * pBuffer = m_pBuffer;
 
-	CBufferRefT <ELT> :: m_pRef  = m_pBuffer    = 0;
+	CBufferRefT <ELT> :: m_pRef  = m_pBuffer = 0;
 	CBufferRefT <ELT> :: m_nSize = m_nMaxLength = 0;
 
 	return pBuffer;
@@ -333,7 +335,8 @@ template <class ELT> void CBufferT <ELT> :: Release()
 {
 	ELT * pBuffer = Detach();
 
-	if(pBuffer != 0) delete [] pBuffer;
+	if(pBuffer != 0)
+		delete [] pBuffer;
 }
 
 template <class ELT> void CBufferT <ELT> :: Prepare(int index, int fill)
@@ -366,7 +369,7 @@ template <class ELT> void CBufferT <ELT> :: Prepare(int index, int fill)
 		}
 
 		CBufferRefT <ELT> :: m_pRef = m_pBuffer = pNewBuffer;
-		m_nMaxLength = nNewLength;
+		m_nMaxLength                = nNewLength;
 	}
 
 	// size
@@ -384,7 +387,8 @@ template <class ELT> inline void CBufferT <ELT> :: Restore(int size)
 
 template <class ELT> CBufferT <ELT> :: ~CBufferT()
 {
-	if(m_pBuffer != 0) delete [] m_pBuffer;
+	if(m_pBuffer != 0)
+		delete [] m_pBuffer;
 }
 
 //
@@ -397,13 +401,13 @@ public:
 	CBufferT <int> m_capturestack, m_captureindex;
 
 public:
-	int    m_nCurrentPos;
-	int    m_nBeginPos;
-	int    m_nLastBeginPos;
-	int    m_nParenZindex;
+	int m_nCurrentPos;
+	int m_nBeginPos;
+	int m_nLastBeginPos;
+	int m_nParenZindex;
 
 	void * m_pMatchString;
-	int    m_pMatchStringLength;
+	int m_pMatchStringLength;
 };
 
 //
@@ -416,7 +420,8 @@ public:
 	virtual int MatchNext(CContext * pContext) const = 0;
 
 public:
-	virtual ~ElxInterface() {};
+	virtual ~ElxInterface() {
+	};
 };
 
 //
@@ -489,16 +494,19 @@ template <class CHART> CBackrefElxT <CHART> :: CBackrefElxT(int nnumber, int bri
 template <class CHART> int CBackrefElxT <CHART> :: Match(CContext * pContext) const
 {
 	// check number, for named
-	if( m_nnumber < 0 || m_nnumber >= pContext->m_captureindex.GetSize() ) return 0;
+	if( m_nnumber < 0 || m_nnumber >= pContext->m_captureindex.GetSize() )
+		return 0;
 
 	int index = pContext->m_captureindex[m_nnumber];
-	if( index < 0 ) return 0;
+	if( index < 0 )
+		return 0;
 
 	// check enclosed
 	int pos1 = pContext->m_capturestack[index + 1];
 	int pos2 = pContext->m_capturestack[index + 2];
 
-	if( pos2 < 0 ) pos2 = pContext->m_nCurrentPos;
+	if( pos2 < 0 )
+		pos2 = pContext->m_nCurrentPos;
 
 	// info
 	int lpos = pos1 < pos2 ? pos1 : pos2;
@@ -506,8 +514,8 @@ template <class CHART> int CBackrefElxT <CHART> :: Match(CContext * pContext) co
 	int slen = rpos - lpos;
 
 	const CHART * pcsz = (const CHART *)pContext->m_pMatchString;
-	int npos = pContext->m_nCurrentPos;
-	int tlen = pContext->m_pMatchStringLength;
+	int npos           = pContext->m_nCurrentPos;
+	int tlen           = pContext->m_pMatchStringLength;
 
 	// compare
 	int bsucc;
@@ -519,9 +527,9 @@ template <class CHART> int CBackrefElxT <CHART> :: Match(CContext * pContext) co
 			return 0;
 
 		if(m_bignorecase)
-			bsucc = ! refstr.nCompareNoCase(pcsz + (npos - slen));
+			bsucc = !refstr.nCompareNoCase(pcsz + (npos - slen));
 		else
-			bsucc = ! refstr.nCompare      (pcsz + (npos - slen));
+			bsucc = !refstr.nCompare      (pcsz + (npos - slen));
 
 		if( bsucc )
 		{
@@ -535,9 +543,9 @@ template <class CHART> int CBackrefElxT <CHART> :: Match(CContext * pContext) co
 			return 0;
 
 		if(m_bignorecase)
-			bsucc = ! refstr.nCompareNoCase(pcsz + npos);
+			bsucc = !refstr.nCompareNoCase(pcsz + npos);
 		else
-			bsucc = ! refstr.nCompare      (pcsz + npos);
+			bsucc = !refstr.nCompare      (pcsz + npos);
 
 		if( bsucc )
 		{
@@ -562,18 +570,18 @@ template <class CHART> int CBackrefElxT <CHART> :: MatchNext(CContext * pContext
 // RCHART
 #ifndef RCHART
 	#define RCHART(ch) ((CHART)ch)
-#endif
+#endif // ifndef RCHART
 
 // BOUNDARY_TYPE
 enum BOUNDARY_TYPE
 {
 	BOUNDARY_FILE_BEGIN, // begin of whole text
-	BOUNDARY_FILE_END  , // end of whole text
+	BOUNDARY_FILE_END,   // end of whole text
 	BOUNDARY_LINE_BEGIN, // begin of line
-	BOUNDARY_LINE_END  , // end of line
+	BOUNDARY_LINE_END,   // end of line
 	BOUNDARY_WORD_BEGIN, // begin of word
-	BOUNDARY_WORD_END  , // end of word
-	BOUNDARY_WORD_EDGE ,
+	BOUNDARY_WORD_END,   // end of word
+	BOUNDARY_WORD_EDGE,
 };
 
 //
@@ -607,9 +615,9 @@ template <class CHART> CBoundaryElxT <CHART> :: CBoundaryElxT(int ntype, int bye
 
 template <class CHART> int CBoundaryElxT <CHART> :: Match(CContext * pContext) const
 {
-	const CHART * pcsz  = (const CHART *)pContext->m_pMatchString;
-	int npos = pContext->m_nCurrentPos;
-	int tlen = pContext->m_pMatchStringLength;
+	const CHART * pcsz = (const CHART *)pContext->m_pMatchString;
+	int npos           = pContext->m_nCurrentPos;
+	int tlen           = pContext->m_pMatchStringLength;
 
 	CHART chL = npos > 0    ? pcsz[npos - 1] : 0;
 	CHART chR = npos < tlen ? pcsz[npos    ] : 0;
@@ -635,15 +643,15 @@ template <class CHART> int CBoundaryElxT <CHART> :: Match(CContext * pContext) c
 		break;
 
 	case BOUNDARY_WORD_BEGIN:
-		bsucc = ! IsWordChar(chL) &&   IsWordChar(chR);
+		bsucc = !IsWordChar(chL) && IsWordChar(chR);
 		break;
 
 	case BOUNDARY_WORD_END:
-		bsucc =   IsWordChar(chL) && ! IsWordChar(chR);
+		bsucc = IsWordChar(chL) && !IsWordChar(chR);
 		break;
 
 	case BOUNDARY_WORD_EDGE:
-		bsucc =   IsWordChar(chL) ?  ! IsWordChar(chR) : IsWordChar(chR);
+		bsucc = IsWordChar(chL) ?  !IsWordChar(chR) : IsWordChar(chR);
 		break;
 	}
 
@@ -688,17 +696,18 @@ template <class CHART> CBracketElxT <CHART> :: CBracketElxT(int nnumber, int bri
 template <class CHART> int CBracketElxT <CHART> :: Match(CContext * pContext) const
 {
 	// check, for named
-	if(m_nnumber < 0) return 0;
+	if(m_nnumber < 0)
+		return 0;
 
-	if( ! m_bright )
+	if( !m_bright )
 	{
 		pContext->m_captureindex.Prepare(m_nnumber, -1);
 		int index = pContext->m_captureindex[m_nnumber];
 
 		// check
-		if(index > 0 && index < pContext->m_capturestack.GetSize() && pContext->m_capturestack[index+2] < 0)
+		if(index > 0 && index < pContext->m_capturestack.GetSize() && pContext->m_capturestack[index + 2] < 0)
 		{
-			pContext->m_capturestack[index+3] --;
+			pContext->m_capturestack[index + 3]--;
 			return 1;
 		}
 
@@ -717,13 +726,13 @@ template <class CHART> int CBracketElxT <CHART> :: Match(CContext * pContext) co
 
 		if(pContext->m_capturestack[index + 3] < 0)
 		{
-			pContext->m_capturestack[index + 3] ++;
+			pContext->m_capturestack[index + 3]++;
 			return 1;
 		}
 
 		// save
 		pContext->m_capturestack[index + 2] = pContext->m_nCurrentPos;
-		pContext->m_capturestack[index + 3] = pContext->m_nParenZindex ++;
+		pContext->m_capturestack[index + 3] = pContext->m_nParenZindex++;
 	}
 
 	return 1;
@@ -733,11 +742,11 @@ template <class CHART> int CBracketElxT <CHART> :: MatchNext(CContext * pContext
 {
 	int index = pContext->m_captureindex[m_nnumber];
 
-	if( ! m_bright )
+	if( !m_bright )
 	{
 		if(pContext->m_capturestack[index + 3] < 0)
 		{
-			pContext->m_capturestack[index + 3] ++;
+			pContext->m_capturestack[index + 3]++;
 			return 0;
 		}
 
@@ -745,7 +754,8 @@ template <class CHART> int CBracketElxT <CHART> :: MatchNext(CContext * pContext
 
 		// to find
 		index = pContext->m_capturestack.GetSize() - 4;
-		while(index >= 0 && pContext->m_capturestack[index] != m_nnumber) index -= 4;
+		while(index >= 0 && pContext->m_capturestack[index] != m_nnumber)
+			index -= 4;
 
 		// new index
 		pContext->m_captureindex[m_nnumber] = index;
@@ -754,12 +764,12 @@ template <class CHART> int CBracketElxT <CHART> :: MatchNext(CContext * pContext
 	{
 		if(pContext->m_capturestack[index + 3] < 0)
 		{
-			pContext->m_capturestack[index + 3] --;
+			pContext->m_capturestack[index + 3]--;
 			return 0;
 		}
 
 		pContext->m_capturestack[index + 2] = -1;
-		pContext->m_capturestack[index + 3] =  0;
+		pContext->m_capturestack[index + 3] = 0;
 	}
 
 	return 0;
@@ -958,20 +968,34 @@ template <class CHART> CPosixElxT <CHART> :: CPosixElxT(const char * posix, int 
 		posix += 1;
 	}
 
-	if     (!strncmp(posix, "alnum:", 6)) m_posixfun = ::isalnum ;
-	else if(!strncmp(posix, "alpha:", 6)) m_posixfun = ::isalpha ;
-	else if(!strncmp(posix, "ascii:", 6)) m_posixfun = ::isascii ;
-	else if(!strncmp(posix, "cntrl:", 6)) m_posixfun = ::iscntrl ;
-	else if(!strncmp(posix, "digit:", 6)) m_posixfun = ::isdigit ;
-	else if(!strncmp(posix, "graph:", 6)) m_posixfun = ::isgraph ;
-	else if(!strncmp(posix, "lower:", 6)) m_posixfun = ::islower ;
-	else if(!strncmp(posix, "print:", 6)) m_posixfun = ::isprint ;
-	else if(!strncmp(posix, "punct:", 6)) m_posixfun = ::ispunct ;
-	else if(!strncmp(posix, "space:", 6)) m_posixfun = ::isspace ;
-	else if(!strncmp(posix, "upper:", 6)) m_posixfun = ::isupper ;
-	else if(!strncmp(posix, "xdigit:",7)) m_posixfun = ::isxdigit;
-	else if(!strncmp(posix, "blank:", 6)) m_posixfun = m_isblank ;
-	else                                  m_posixfun = 0         ;
+	if     (!strncmp(posix, "alnum:", 6))
+		m_posixfun = ::isalnum;
+	else if(!strncmp(posix, "alpha:", 6))
+		m_posixfun = ::isalpha;
+	else if(!strncmp(posix, "ascii:", 6))
+		m_posixfun = ::isascii;
+	else if(!strncmp(posix, "cntrl:", 6))
+		m_posixfun = ::iscntrl;
+	else if(!strncmp(posix, "digit:", 6))
+		m_posixfun = ::isdigit;
+	else if(!strncmp(posix, "graph:", 6))
+		m_posixfun = ::isgraph;
+	else if(!strncmp(posix, "lower:", 6))
+		m_posixfun = ::islower;
+	else if(!strncmp(posix, "print:", 6))
+		m_posixfun = ::isprint;
+	else if(!strncmp(posix, "punct:", 6))
+		m_posixfun = ::ispunct;
+	else if(!strncmp(posix, "space:", 6))
+		m_posixfun = ::isspace;
+	else if(!strncmp(posix, "upper:", 6))
+		m_posixfun = ::isupper;
+	else if(!strncmp(posix, "xdigit:", 7))
+		m_posixfun = ::isxdigit;
+	else if(!strncmp(posix, "blank:", 6))
+		m_posixfun = m_isblank;
+	else
+		m_posixfun = 0;
 }
 
 template <class CHART> int CPosixElxT <CHART> :: m_isblank(int c)
@@ -981,13 +1005,14 @@ template <class CHART> int CPosixElxT <CHART> :: m_isblank(int c)
 
 template <class CHART> int CPosixElxT <CHART> :: Match(CContext * pContext) const
 {
-	if(m_posixfun == 0) return 0;
+	if(m_posixfun == 0)
+		return 0;
 
 	int tlen = pContext->m_pMatchStringLength;
 	int npos = pContext->m_nCurrentPos;
 
 	// check
-	int at   = m_brightleft ? npos - 1 : npos;
+	int at = m_brightleft ? npos - 1 : npos;
 	if( at < 0 || at >= tlen )
 		return 0;
 
@@ -995,8 +1020,8 @@ template <class CHART> int CPosixElxT <CHART> :: Match(CContext * pContext) cons
 
 	int bsucc = (*m_posixfun)(ch);
 
-	if( ! m_byes )
-		bsucc = ! bsucc;
+	if( !m_byes )
+		bsucc = !bsucc;
 
 	if( bsucc )
 		pContext->m_nCurrentPos += m_brightleft ? -1 : 1;
@@ -1062,35 +1087,37 @@ template <class CHART> int CRangeElxT <CHART> :: Match(CContext * pContext) cons
 	int npos = pContext->m_nCurrentPos;
 
 	// check
-	int at   = m_brightleft ? npos - 1 : npos;
+	int at = m_brightleft ? npos - 1 : npos;
 	if( at < 0 || at >= tlen )
 		return 0;
 
-	CHART ch = ((const CHART *)pContext->m_pMatchString)[at];
+	CHART ch  = ((const CHART *)pContext->m_pMatchString)[at];
 	int bsucc = 0, i;
 
 	// compare
-	for(i=0; !bsucc && i<m_ranges.GetSize(); i+=2)
+	for(i = 0; !bsucc && i < m_ranges.GetSize(); i += 2)
 	{
-		if(m_ranges[i] <= ch && ch <= m_ranges[i+1]) bsucc = 1;
+		if(m_ranges[i] <= ch && ch <= m_ranges[i + 1])
+			bsucc = 1;
 	}
 
-	for(i=0; !bsucc && i<m_chars.GetSize(); i++)
+	for(i = 0; !bsucc && i < m_chars.GetSize(); i++)
 	{
-		if(m_chars[i] == ch) bsucc = 1;
+		if(m_chars[i] == ch)
+			bsucc = 1;
 	}
 
-	for(i=0; !bsucc && i<m_embeds.GetSize(); i++)
+	for(i = 0; !bsucc && i < m_embeds.GetSize(); i++)
 	{
 		if(m_embeds[i]->Match(pContext))
 		{
 			pContext->m_nCurrentPos = npos;
-			bsucc = 1;
+			bsucc                   = 1;
 		}
 	}
 
-	if( ! m_byes )
-		bsucc = ! bsucc;
+	if( !m_byes )
+		bsucc = !bsucc;
 
 	if( bsucc )
 		pContext->m_nCurrentPos += m_brightleft ? -1 : 1;
@@ -1155,10 +1182,10 @@ template <class CHART> CStringElxT <CHART> :: CStringElxT(const CHART * fixed, i
 
 template <class CHART> int CStringElxT <CHART> :: Match(CContext * pContext) const
 {
-	const CHART * pcsz  = (const CHART *)pContext->m_pMatchString;
-	int npos = pContext->m_nCurrentPos;
-	int tlen = pContext->m_pMatchStringLength;
-	int slen = m_szPattern.GetSize();
+	const CHART * pcsz = (const CHART *)pContext->m_pMatchString;
+	int npos           = pContext->m_nCurrentPos;
+	int tlen           = pContext->m_pMatchStringLength;
+	int slen           = m_szPattern.GetSize();
 
 	int bsucc;
 
@@ -1168,9 +1195,9 @@ template <class CHART> int CStringElxT <CHART> :: Match(CContext * pContext) con
 			return 0;
 
 		if(m_bignorecase)
-			bsucc = ! m_szPattern.nCompareNoCase(pcsz + (npos - slen));
+			bsucc = !m_szPattern.nCompareNoCase(pcsz + (npos - slen));
 		else
-			bsucc = ! m_szPattern.nCompare      (pcsz + (npos - slen));
+			bsucc = !m_szPattern.nCompare      (pcsz + (npos - slen));
 
 		if( bsucc )
 			pContext->m_nCurrentPos -= slen;
@@ -1181,9 +1208,9 @@ template <class CHART> int CStringElxT <CHART> :: Match(CContext * pContext) con
 			return 0;
 
 		if(m_bignorecase)
-			bsucc = ! m_szPattern.nCompareNoCase(pcsz + npos);
+			bsucc = !m_szPattern.nCompareNoCase(pcsz + npos);
 		else
-			bsucc = ! m_szPattern.nCompare      (pcsz + npos);
+			bsucc = !m_szPattern.nCompare      (pcsz + npos);
 
 		if( bsucc )
 			pContext->m_nCurrentPos += slen;
@@ -1248,10 +1275,12 @@ template <class CHART> int CConditionElxT <CHART> :: Match(CContext * pContext) 
 	{
 		do
 		{
-			if(m_nnumber >= pContext->m_captureindex.GetSize()) break;
+			if(m_nnumber >= pContext->m_captureindex.GetSize())
+				break;
 
 			int index = pContext->m_captureindex[m_nnumber];
-			if( index < 0) break;
+			if( index < 0)
+				break;
 
 			// else valid
 			condition_yes = 1;
@@ -1274,7 +1303,7 @@ template <class CHART> int CConditionElxT <CHART> :: Match(CContext * pContext) 
 	if( condition_yes )
 		bsucc = m_pelxyes == 0 ? 1 : m_pelxyes->Match(pContext);
 	else
-		bsucc = m_pelxno  == 0 ? 1 : m_pelxno ->Match(pContext);
+		bsucc = m_pelxno == 0 ? 1 : m_pelxno->Match(pContext);
 
 	if( bsucc )
 	{
@@ -1302,7 +1331,7 @@ template <class CHART> int CConditionElxT <CHART> :: MatchNext(CContext * pConte
 	if( condition_yes )
 		bsucc = m_pelxyes == 0 ? 0 : m_pelxyes->MatchNext(pContext);
 	else
-		bsucc = m_pelxno  == 0 ? 0 : m_pelxno ->MatchNext(pContext);
+		bsucc = m_pelxno == 0 ? 0 : m_pelxno->MatchNext(pContext);
 
 	if( bsucc )
 	{
@@ -1337,7 +1366,9 @@ public:
 public:
 	MatchResultT(CContext * pContext, int nMaxNumber = -1);
 	MatchResultT <x> & operator = (const MatchResultT <x> &);
-	inline operator int() const { return IsMatched(); }
+	inline operator int() const {
+		return IsMatched();
+	}
 
 public:
 	CBufferT <int> m_result;
@@ -1385,18 +1416,18 @@ enum STOCKELX_ID_DEFINES
 
 // REGEX_FLAGS
 #ifndef _REGEX_FLAGS_DEFINED
-	enum REGEX_FLAGS
-	{
-		NO_FLAG        = 0,
-		SINGLELINE     = 0x01,
-		MULTILINE      = 0x02,
-		GLOBAL         = 0x04,
-		IGNORECASE     = 0x08,
-		RIGHTTOLEFT    = 0x10,
-		EXTENDED       = 0x20,
-	};
+enum REGEX_FLAGS
+{
+	NO_FLAG     = 0,
+	SINGLELINE  = 0x01,
+	MULTILINE   = 0x02,
+	GLOBAL      = 0x04,
+	IGNORECASE  = 0x08,
+	RIGHTTOLEFT = 0x10,
+	EXTENDED    = 0x20,
+};
 	#define _REGEX_FLAGS_DEFINED
-#endif
+#endif // ifndef _REGEX_FLAGS_DEFINED
 
 //
 // Builder T
@@ -1416,16 +1447,16 @@ public:
 	void Clear();
 
 public:
-	 CBuilderT();
+	CBuilderT();
 	~CBuilderT();
 
 // Public Attributes
 public:
 	ElxInterface * m_pTopElx;
-	int            m_nFlags;
-	int            m_nMaxNumber;
-	int            m_nNextNamed;
-	int            m_nGroupCount;
+	int m_nFlags;
+	int m_nMaxNumber;
+	int m_nNextNamed;
+	int m_nGroupCount;
 
 	CBufferT <ElxInterface  *> m_objlist;
 	CBufferT <ElxInterface  *> m_grouplist;
@@ -1438,16 +1469,22 @@ public:
 protected:
 	struct CHART_INFO
 	{
-	public:
+public:
 		CHART ch;
-		int   type;
-		int   pos;
-		int   len;
+		int type;
+		int pos;
+		int len;
 
-	public:
-		CHART_INFO(CHART c, int t, int p = 0, int l = 0) { ch = c; type = t; pos = p; len = l;    }
-		inline int operator == (const CHART_INFO & ci)   { return ch == ci.ch && type == ci.type; }
-		inline int operator != (const CHART_INFO & ci)   { return ! operator == (ci);             }
+public:
+		CHART_INFO(CHART c, int t, int p = 0, int l = 0) {
+			ch = c; type = t; pos = p; len = l;
+		}
+		inline int operator == (const CHART_INFO & ci)   {
+			return ch == ci.ch && type == ci.type;
+		}
+		inline int operator != (const CHART_INFO & ci)   {
+			return !operator == (ci);
+		}
 	};
 
 protected:
@@ -1495,9 +1532,9 @@ template <class CHART> CBuilderT <CHART> :: ~CBuilderT()
 
 template <class CHART> int CBuilderT <CHART> :: GetNamedNumber(const CBufferRefT <CHART> & named) const
 {
-	for(int i=0; i<m_namedlist.GetSize(); i++)
+	for(int i = 0; i < m_namedlist.GetSize(); i++)
 	{
-		if( ! ((CBracketElx *)m_namedlist[i]->m_elxlist[0])->m_szNamed.CompareNoCase(named) )
+		if( !((CBracketElx *)m_namedlist[i]->m_elxlist[0])->m_szNamed.CompareNoCase(named) )
 			return ((CBracketElx *)m_namedlist[i]->m_elxlist[0])->m_nnumber;
 	}
 
@@ -1516,14 +1553,15 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: Build(const CBufferRe
 	m_bQuoted       = 0;
 	m_quote_fun     = 0;
 
-	m_grouplist         .Restore(0);
-	m_recursivelist     .Restore(0);
-	m_namedlist         .Restore(0);
-	m_namedbackreflist  .Restore(0);
+	m_grouplist.Restore(0);
+	m_recursivelist.Restore(0);
+	m_namedlist.Restore(0);
+	m_namedbackreflist.Restore(0);
 	m_namedconditionlist.Restore(0);
 
 	int i;
-	for(i=0; i<3; i++) MoveNext();
+	for(i = 0; i < 3; i++)
+		MoveNext();
 
 	// build
 	m_pTopElx = BuildAlternative(flags);
@@ -1537,13 +1575,13 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: Build(const CBufferRe
 
 	m_grouplist.Prepare(m_nMaxNumber + m_namedlist.GetSize());
 
-	for(i=0; i<m_namedlist.GetSize(); i++)
+	for(i = 0; i < m_namedlist.GetSize(); i++)
 	{
 		CBracketElx * pleft  = (CBracketElx *)m_namedlist[i]->m_elxlist[0];
 		CBracketElx * pright = (CBracketElx *)m_namedlist[i]->m_elxlist[2];
 
 		// append
-		m_grouplist[m_nGroupCount ++] = m_namedlist[i];
+		m_grouplist[m_nGroupCount++] = m_namedlist[i];
 
 		if( pleft->m_nnumber > 0 )
 			continue;
@@ -1552,19 +1590,19 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: Build(const CBufferRe
 		int find_same_name = GetNamedNumber(pleft->m_szNamed);
 		if( find_same_name >= 0 )
 		{
-			pleft ->m_nnumber = find_same_name;
+			pleft->m_nnumber  = find_same_name;
 			pright->m_nnumber = find_same_name;
 		}
 		else
 		{
-			m_nMaxNumber ++;
+			m_nMaxNumber++;
 
-			pleft ->m_nnumber = m_nMaxNumber;
+			pleft->m_nnumber  = m_nMaxNumber;
 			pright->m_nnumber = m_nMaxNumber;
 		}
 	}
 
-	for(i=1; i<m_nGroupCount; i++)
+	for(i = 1; i < m_nGroupCount; i++)
 	{
 		CBracketElx * pleft = (CBracketElx *)((CListElx*)m_grouplist[i])->m_elxlist[0];
 
@@ -1573,7 +1611,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: Build(const CBufferRe
 	}
 
 	// connect recursive
-	for(i=0; i<m_recursivelist.GetSize(); i++)
+	for(i = 0; i < m_recursivelist.GetSize(); i++)
 	{
 		if( m_recursivelist[i]->m_ndata == -3 )
 			m_recursivelist[i]->m_ndata = GetNamedNumber(m_recursivelist[i]->m_szNamed);
@@ -1583,13 +1621,13 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: Build(const CBufferRe
 	}
 
 	// named backref
-	for(i=0; i<m_namedbackreflist.GetSize(); i++)
+	for(i = 0; i < m_namedbackreflist.GetSize(); i++)
 	{
 		m_namedbackreflist[i]->m_nnumber = GetNamedNumber(m_namedbackreflist[i]->m_szNamed);
 	}
 
 	// named condition
-	for(i=0; i<m_namedconditionlist.GetSize(); i++)
+	for(i = 0; i < m_namedconditionlist.GetSize(); i++)
 	{
 		int nn = GetNamedNumber(m_namedconditionlist[i]->m_szNamed);
 		if( nn >= 0 )
@@ -1604,7 +1642,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: Build(const CBufferRe
 
 template <class CHART> void CBuilderT <CHART> :: Clear()
 {
-	for(int i=0; i<m_objlist.GetSize(); i++)
+	for(int i = 0; i < m_objlist.GetSize(); i++)
 	{
 		delete m_objlist[i];
 	}
@@ -1621,9 +1659,9 @@ template <class CHART> void CBuilderT <CHART> :: Clear()
 template <class CHART> unsigned int CBuilderT <CHART> :: Hex2Int(const CHART * pcsz, int length, int & used)
 {
 	unsigned int result = 0;
-	int & i = used;
+	int & i             = used;
 
-	for(i=0; i<length; i++)
+	for(i = 0; i < length; i++)
 	{
 		if(pcsz[i] >= RCHART('0') && pcsz[i] <= RCHART('9'))
 			result = (result << 4) + (pcsz[i] - RCHART('0'));
@@ -1652,7 +1690,10 @@ template <class CHART> void CBuilderT <CHART> :: MoveNext()
 	next = nex2;
 
 	// get nex2
-	while( ! GetNext2() ) {};
+	while( !GetNext2() )
+	{
+	}
+	;
 }
 
 template <class CHART> int CBuilderT <CHART> :: GetNext2()
@@ -1664,8 +1705,8 @@ template <class CHART> int CBuilderT <CHART> :: GetNext2()
 		return 1;
 	}
 
-	int   delta = 1;
-	CHART ch    = m_pattern[m_nNextPos];
+	int delta = 1;
+	CHART ch  = m_pattern[m_nNextPos];
 
 	// if quoted
 	if(m_bQuoted)
@@ -1695,154 +1736,158 @@ template <class CHART> int CBuilderT <CHART> :: GetNext2()
 	switch(ch)
 	{
 	case RCHART('\\'):
-		{
-			CHART ch1 = m_pattern[m_nNextPos+1];
+	{
+		CHART ch1 = m_pattern[m_nNextPos + 1];
 
-			// backref
-			if(ch1 >= RCHART('0') && ch1 <= RCHART('9'))
+		// backref
+		if(ch1 >= RCHART('0') && ch1 <= RCHART('9'))
+		{
+			nex2 = CHART_INFO(ch, 1, m_nNextPos, delta);
+			break;
+		}
+
+		// escape
+		delta = 2;
+
+		switch(ch1)
+		{
+		case RCHART('A'):
+		case RCHART('Z'):
+		case RCHART('w'):
+		case RCHART('W'):
+		case RCHART('s'):
+		case RCHART('S'):
+		case RCHART('B'):
+		case RCHART('d'):
+		case RCHART('D'):
+		case RCHART('k'):
+		case RCHART('g'):
+			nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
+			break;
+
+		case RCHART('b'):
+			if(m_nCharsetDepth > 0)
+				nex2 = CHART_INFO('\b', 0, m_nNextPos, delta);
+			else
+				nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
+			break;
+
+		/*
+		   case RCHART('<'):
+		   case RCHART('>'):
+		        if(m_nCharsetDepth > 0)
+		                nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
+		        else
+		                nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
+		        break;
+		 */
+
+		case RCHART('x'):
+			if(m_pattern[m_nNextPos + 2] != '{')
 			{
-				nex2 = CHART_INFO(ch, 1, m_nNextPos, delta);
+				int red          = 0;
+				unsigned int ch2 = Hex2Int(m_pattern.GetBuffer() + m_nNextPos + 2, 2, red);
+
+				delta += red;
+
+				if(red > 0)
+					nex2 = CHART_INFO(RCHART(ch2), 0, m_nNextPos, delta);
+				else
+					nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
+
 				break;
 			}
 
-			// escape
-			delta     = 2;
-
-			switch(ch1)
+		case RCHART('u'):
+			if(m_pattern[m_nNextPos + 2] != '{')
 			{
-			case RCHART('A'):
-			case RCHART('Z'):
-			case RCHART('w'):
-			case RCHART('W'):
-			case RCHART('s'):
-			case RCHART('S'):
-			case RCHART('B'):
-			case RCHART('d'):
-			case RCHART('D'):
-			case RCHART('k'):
-			case RCHART('g'):
+				int red          = 0;
+				unsigned int ch2 = Hex2Int(m_pattern.GetBuffer() + m_nNextPos + 2, 4, red);
+
+				delta += red;
+
+				if(red > 0)
+					nex2 = CHART_INFO(RCHART(ch2), 0, m_nNextPos, delta);
+				else
+					nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
+			}
+			else
+			{
+				int red          = 0;
+				unsigned int ch2 = Hex2Int(m_pattern.GetBuffer() + m_nNextPos + 3, sizeof(int) * 2, red);
+
+				delta += red;
+
+				while(m_nNextPos + delta < m_pattern.GetSize() && m_pattern.At(m_nNextPos + delta) != RCHART('}'))
+					delta++;
+
+				delta++;          // skip '}'
+
+				nex2 = CHART_INFO(RCHART(ch2), 0, m_nNextPos, delta);
+			}
+			break;
+
+		case RCHART('a'): nex2 = CHART_INFO(RCHART('\a'), 0, m_nNextPos, delta); break;
+		case RCHART('f'): nex2 = CHART_INFO(RCHART('\f'), 0, m_nNextPos, delta); break;
+		case RCHART('n'): nex2 = CHART_INFO(RCHART('\n'), 0, m_nNextPos, delta); break;
+		case RCHART('r'): nex2 = CHART_INFO(RCHART('\r'), 0, m_nNextPos, delta); break;
+		case RCHART('t'): nex2 = CHART_INFO(RCHART('\t'), 0, m_nNextPos, delta); break;
+		case RCHART('v'): nex2 = CHART_INFO(RCHART('\v'), 0, m_nNextPos, delta); break;
+		case RCHART('e'): nex2 = CHART_INFO(RCHART( 27 ), 0, m_nNextPos, delta); break;
+
+		case RCHART('G'):          // skip '\G'
+			if(m_nCharsetDepth > 0)
+			{
+				m_nNextPos += 2;
+				return 0;
+			}
+			else
+			{
 				nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
 				break;
-
-			case RCHART('b'):
-				if(m_nCharsetDepth > 0)
-					nex2 = CHART_INFO('\b', 0, m_nNextPos, delta);
-				else
-					nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
-				break;
-
-			/*
-			case RCHART('<'):
-			case RCHART('>'):
-				if(m_nCharsetDepth > 0)
-					nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
-				else
-					nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
-				break;
-			*/
-
-			case RCHART('x'):
-				if(m_pattern[m_nNextPos+2] != '{')
-				{
-					int red = 0;
-					unsigned int ch2 = Hex2Int(m_pattern.GetBuffer() + m_nNextPos + 2, 2, red);
-
-					delta += red;
-
-					if(red > 0)
-						nex2 = CHART_INFO(RCHART(ch2), 0, m_nNextPos, delta);
-					else
-						nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
-
-				break;
-				}
-
-			case RCHART('u'):
-				if(m_pattern[m_nNextPos+2] != '{')
-				{
-					int red = 0;
-					unsigned int ch2 = Hex2Int(m_pattern.GetBuffer() + m_nNextPos + 2, 4, red);
-
-					delta += red;
-
-					if(red > 0)
-						nex2 = CHART_INFO(RCHART(ch2), 0, m_nNextPos, delta);
-					else
-						nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
-				}
-				else
-				{
-					int red = 0;
-					unsigned int ch2 = Hex2Int(m_pattern.GetBuffer() + m_nNextPos + 3, sizeof(int) * 2, red);
-
-					delta += red;
-
-					while(m_nNextPos + delta < m_pattern.GetSize() && m_pattern.At(m_nNextPos + delta) != RCHART('}'))
-						delta ++;
-
-					delta ++; // skip '}'
-
-					nex2 = CHART_INFO(RCHART(ch2), 0, m_nNextPos, delta);
-				}
-				break;
-
-			case RCHART('a'): nex2 = CHART_INFO(RCHART('\a'), 0, m_nNextPos, delta); break;
-			case RCHART('f'): nex2 = CHART_INFO(RCHART('\f'), 0, m_nNextPos, delta); break;
-			case RCHART('n'): nex2 = CHART_INFO(RCHART('\n'), 0, m_nNextPos, delta); break;
-			case RCHART('r'): nex2 = CHART_INFO(RCHART('\r'), 0, m_nNextPos, delta); break;
-			case RCHART('t'): nex2 = CHART_INFO(RCHART('\t'), 0, m_nNextPos, delta); break;
-			case RCHART('v'): nex2 = CHART_INFO(RCHART('\v'), 0, m_nNextPos, delta); break;
-			case RCHART('e'): nex2 = CHART_INFO(RCHART( 27 ), 0, m_nNextPos, delta); break;
-
-			case RCHART('G'):  // skip '\G'
-				if(m_nCharsetDepth > 0)
-				{
-					m_nNextPos += 2;
-					return 0;
-				}
-				else
-				{
-					nex2 = CHART_INFO(ch1, 1, m_nNextPos, delta);
-					break;
-				}
-
-			case RCHART('L'):
-				if( ! m_quote_fun ) m_quote_fun = ::tolower;
-
-			case RCHART('U'):
-				if( ! m_quote_fun ) m_quote_fun = ::toupper;
-
-			case RCHART('Q'):
-				{
-					m_bQuoted   = 1;
-					m_nNextPos += 2;
-					return 0;
-				}
-
-			case RCHART('E'):
-				{
-					m_quote_fun = 0;
-					m_bQuoted   = 0;
-					m_nNextPos += 2;
-					return 0;
-				}
-
-			case 0:
-				if(m_nNextPos+1 >= m_pattern.GetSize())
-				{
-					delta = 1;
-					nex2 = CHART_INFO(ch , 0, m_nNextPos, delta);
-				}
-				else
-					nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta); // common '\0' char
-				break;
-
-			default:
-				nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
-				break;
 			}
+
+		case RCHART('L'):
+			if( !m_quote_fun )
+				m_quote_fun = ::tolower;
+
+		case RCHART('U'):
+			if( !m_quote_fun )
+				m_quote_fun = ::toupper;
+
+		case RCHART('Q'):
+		{
+			m_bQuoted   = 1;
+			m_nNextPos += 2;
+			return 0;
+		}
+
+		case RCHART('E'):
+		{
+			m_quote_fun = 0;
+			m_bQuoted   = 0;
+			m_nNextPos += 2;
+			return 0;
+		}
+
+		case 0:
+			if(m_nNextPos + 1 >= m_pattern.GetSize())
+			{
+				delta = 1;
+				nex2  = CHART_INFO(ch, 0, m_nNextPos, delta);
+			}
+			else
+			{
+				nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);         // common '\0' char
+			}
+			break;
+
+		default:
+			nex2 = CHART_INFO(ch1, 0, m_nNextPos, delta);
+			break;
 		}
 		break;
+	}
 
 	case RCHART('*'):
 	case RCHART('+'):
@@ -1867,52 +1912,52 @@ template <class CHART> int CBuilderT <CHART> :: GetNext2()
 		break;
 
 	case RCHART('('):
+	{
+		CHART ch1 = m_pattern[m_nNextPos + 1];
+		CHART ch2 = m_pattern[m_nNextPos + 2];
+
+		// skip remark
+		if(ch1 == RCHART('?') && ch2 == RCHART('#'))
 		{
-			CHART ch1 = m_pattern[m_nNextPos+1];
-			CHART ch2 = m_pattern[m_nNextPos+2];
-
-			// skip remark
-			if(ch1 == RCHART('?') && ch2 == RCHART('#'))
+			m_nNextPos += 2;
+			while(m_nNextPos < m_pattern.GetSize())
 			{
-				m_nNextPos += 2;
-				while(m_nNextPos < m_pattern.GetSize())
-				{
-					if(m_pattern[m_nNextPos] == RCHART(')'))
-						break;
-
-					m_nNextPos ++;
-				}
-
 				if(m_pattern[m_nNextPos] == RCHART(')'))
-				{
-					m_nNextPos ++;
+					break;
 
-					// get next nex2
-					return 0;
-				}
+				m_nNextPos++;
 			}
-			else
+
+			if(m_pattern[m_nNextPos] == RCHART(')'))
 			{
-				if(m_nCharsetDepth > 0)
-					nex2 = CHART_INFO(ch, 0, m_nNextPos, delta);
-				else
-					nex2 = CHART_INFO(ch, 1, m_nNextPos, delta);
+				m_nNextPos++;
+
+				// get next nex2
+				return 0;
 			}
 		}
+		else
+		{
+			if(m_nCharsetDepth > 0)
+				nex2 = CHART_INFO(ch, 0, m_nNextPos, delta);
+			else
+				nex2 = CHART_INFO(ch, 1, m_nNextPos, delta);
+		}
 		break;
+	}
 
 	case RCHART('#'):
 		if(m_nFlags & EXTENDED)
 		{
 			// skip remark
-			m_nNextPos ++;
+			m_nNextPos++;
 
 			while(m_nNextPos < m_pattern.GetSize())
 			{
 				if(m_pattern[m_nNextPos] == RCHART('\n') || m_pattern[m_nNextPos] == RCHART('\r'))
 					break;
 
-				m_nNextPos ++;
+				m_nNextPos++;
 			}
 
 			// get next nex2
@@ -1932,7 +1977,7 @@ template <class CHART> int CBuilderT <CHART> :: GetNext2()
 	case RCHART('\v'):
 		if(m_nFlags & EXTENDED)
 		{
-			m_nNextPos ++;
+			m_nNextPos++;
 
 			// get next nex2
 			return 0;
@@ -1944,14 +1989,14 @@ template <class CHART> int CBuilderT <CHART> :: GetNext2()
 		break;
 
 	case RCHART('['):
-		m_nCharsetDepth ++;
+		m_nCharsetDepth++;
 		nex2 = CHART_INFO(ch, 1, m_nNextPos, delta);
 		break;
 
 	case RCHART(']'):
 		if(m_nCharsetDepth > 0)
 		{
-			m_nCharsetDepth --;
+			m_nCharsetDepth--;
 			nex2 = CHART_INFO(ch, 1, m_nNextPos, delta);
 		}
 		else
@@ -2009,180 +2054,180 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: GetStockElx(int nStoc
 			break;
 
 		case STOCKELX_WORD:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 1));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 1));
 
-				pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
-				pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
-				pRange->m_chars .Push(RCHART('_'));
+			pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
+			pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_chars.Push(RCHART('_'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_WORD_NOT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
 
-				pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
-				pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
-				pRange->m_chars .Push(RCHART('_'));
+			pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
+			pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_chars.Push(RCHART('_'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_DOT_ALL:
 			pStockElxs[nStockId] = Keep(new CRangeElxT <CHART> (0, 0));
 			break;
 
 		case STOCKELX_DOT_NOT_ALL:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
 
-				pRange->m_chars .Push(RCHART('\n'));
+			pRange->m_chars.Push(RCHART('\n'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_SPACE:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 1));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 1));
 
-				pRange->m_chars .Push(RCHART(' '));
-				pRange->m_chars .Push(RCHART('\t'));
-				pRange->m_chars .Push(RCHART('\r'));
-				pRange->m_chars .Push(RCHART('\n'));
+			pRange->m_chars.Push(RCHART(' '));
+			pRange->m_chars.Push(RCHART('\t'));
+			pRange->m_chars.Push(RCHART('\r'));
+			pRange->m_chars.Push(RCHART('\n'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_SPACE_NOT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
 
-				pRange->m_chars .Push(RCHART(' '));
-				pRange->m_chars .Push(RCHART('\t'));
-				pRange->m_chars .Push(RCHART('\r'));
-				pRange->m_chars .Push(RCHART('\n'));
+			pRange->m_chars.Push(RCHART(' '));
+			pRange->m_chars.Push(RCHART('\t'));
+			pRange->m_chars.Push(RCHART('\r'));
+			pRange->m_chars.Push(RCHART('\n'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_DIGITAL:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 1));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 1));
 
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_DIGITAL_NOT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (0, 0));
 
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_WORD_RIGHTLEFT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 1));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 1));
 
-				pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
-				pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
-				pRange->m_chars .Push(RCHART('_'));
+			pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
+			pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_chars.Push(RCHART('_'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_WORD_RIGHTLEFT_NOT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
 
-				pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
-				pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
-				pRange->m_chars .Push(RCHART('_'));
+			pRange->m_ranges.Push(RCHART('A')); pRange->m_ranges.Push(RCHART('Z'));
+			pRange->m_ranges.Push(RCHART('a')); pRange->m_ranges.Push(RCHART('z'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_chars.Push(RCHART('_'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_DOT_ALL_RIGHTLEFT:
 			pStockElxs[nStockId] = Keep(new CRangeElxT <CHART> (1, 0));
 			break;
 
 		case STOCKELX_DOT_NOT_ALL_RIGHTLEFT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
 
-				pRange->m_chars .Push(RCHART('\n'));
+			pRange->m_chars.Push(RCHART('\n'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_SPACE_RIGHTLEFT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 1));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 1));
 
-				pRange->m_chars .Push(RCHART(' '));
-				pRange->m_chars .Push(RCHART('\t'));
-				pRange->m_chars .Push(RCHART('\r'));
-				pRange->m_chars .Push(RCHART('\n'));
-				pRange->m_chars .Push(RCHART('\f'));
-				pRange->m_chars .Push(RCHART('\v'));
+			pRange->m_chars.Push(RCHART(' '));
+			pRange->m_chars.Push(RCHART('\t'));
+			pRange->m_chars.Push(RCHART('\r'));
+			pRange->m_chars.Push(RCHART('\n'));
+			pRange->m_chars.Push(RCHART('\f'));
+			pRange->m_chars.Push(RCHART('\v'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_SPACE_RIGHTLEFT_NOT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
 
-				pRange->m_chars .Push(RCHART(' '));
-				pRange->m_chars .Push(RCHART('\t'));
-				pRange->m_chars .Push(RCHART('\r'));
-				pRange->m_chars .Push(RCHART('\n'));
-				pRange->m_chars .Push(RCHART('\f'));
-				pRange->m_chars .Push(RCHART('\v'));
+			pRange->m_chars.Push(RCHART(' '));
+			pRange->m_chars.Push(RCHART('\t'));
+			pRange->m_chars.Push(RCHART('\r'));
+			pRange->m_chars.Push(RCHART('\n'));
+			pRange->m_chars.Push(RCHART('\f'));
+			pRange->m_chars.Push(RCHART('\v'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_DIGITAL_RIGHTLEFT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 1));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 1));
 
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 
 		case STOCKELX_DIGITAL_RIGHTLEFT_NOT:
-			{
-				CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
+		{
+			CRangeElxT <CHART> * pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (1, 0));
 
-				pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
+			pRange->m_ranges.Push(RCHART('0')); pRange->m_ranges.Push(RCHART('9'));
 
-				pStockElxs[nStockId] = pRange;
-			}
+			pStockElxs[nStockId] = pRange;
 			break;
+		}
 		}
 	}
 
@@ -2255,7 +2300,8 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRepeat(int & fla
 	// simple
 	ElxInterface * pSimple = BuildSimple(flags);
 
-	if(curr.type == 0) return pSimple;
+	if(curr.type == 0)
+		return pSimple;
 
 	// is quantifier or not
 	int bIsQuantifier = 1;
@@ -2266,46 +2312,53 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRepeat(int & fla
 	switch(curr.ch)
 	{
 	case RCHART('{'):
+	{
+		CBufferT <char> re;
+
+		// skip '{'
+		MoveNext();
+
+		// copy
+		while(curr != CHART_INFO(0, 1) && curr != CHART_INFO(RCHART('}'), 1))
 		{
-			CBufferT <char> re;
-
-			// skip '{'
+			re.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
 			MoveNext();
-
-			// copy
-			while(curr != CHART_INFO(0, 1) && curr != CHART_INFO(RCHART('}'), 1))
-			{
-				re.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
-				MoveNext();
-			}
-
-			// skip '}'
-			MoveNext();
-
-			// read
-			int red;
-			char * str = re.GetBuffer();
-
-			if( ! ReadDec(str, nMin) )
-				red = 0;
-			else if( *str != ',' )
-				red = 1;
-			else
-			{
-				str ++;
-
-				if( ! ReadDec(str, nMax) )
-					red = 2;
-				else
-					red = 3;
-			}
-
-			// check
-			if(red  <=  1 ) nMax = nMin;
-			if(red  ==  2 ) nMax = INT_MAX;
-			if(nMax < nMin) nMax = nMin;
 		}
+
+		// skip '}'
+		MoveNext();
+
+		// read
+		int red;
+		char * str = re.GetBuffer();
+
+		if( !ReadDec(str, nMin) )
+		{
+			red = 0;
+		}
+		else if( *str != ',' )
+		{
+			red = 1;
+		}
+		else
+		{
+			str++;
+
+			if( !ReadDec(str, nMax) )
+				red = 2;
+			else
+				red = 3;
+		}
+
+		// check
+		if(red <= 1 )
+			nMax = nMin;
+		if(red == 2 )
+			nMax = INT_MAX;
+		if(nMax < nMin)
+			nMax = nMin;
 		break;
+	}
 
 	case RCHART('?'):
 		nMin = 0;
@@ -2410,31 +2463,23 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildSimple(int & fla
 
 			// left parentheses
 			if(vch == RCHART('('))
-			{
 				return BuildRecursive(flags);
-			}
 
 			// char set
 			if( vch == RCHART('[') || vch == RCHART('.') || vch == RCHART('w') || vch == RCHART('W') ||
-				vch == RCHART('s') || vch == RCHART('S') || vch == RCHART('d') || vch == RCHART('D')
-			)
-			{
+			    vch == RCHART('s') || vch == RCHART('S') || vch == RCHART('d') || vch == RCHART('D')
+			    )
 				return BuildCharset(flags);
-			}
 
 			// boundary
 			if( vch == RCHART('^') || vch == RCHART('$') || vch == RCHART('A') || vch == RCHART('Z') ||
-				vch == RCHART('b') || vch == RCHART('B') || vch == RCHART('G') // vch == RCHART('<') || vch == RCHART('>')
-			)
-			{
+			    vch == RCHART('b') || vch == RCHART('B') || vch == RCHART('G')     // vch == RCHART('<') || vch == RCHART('>')
+			    )
 				return BuildBoundary(flags);
-			}
 
 			// backref
 			if(vch == RCHART('\\') || vch == RCHART('k') || vch == RCHART('g'))
-			{
 				return BuildBackref(flags);
-			}
 
 			// treat vchar as char
 			fixed.Append(curr.ch, 1);
@@ -2460,10 +2505,10 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildCharset(int & fl
 	{
 	case RCHART('.'):
 		return GetStockElx(
-			flags & RIGHTTOLEFT ?
-			((flags & SINGLELINE) ? STOCKELX_DOT_ALL_RIGHTLEFT : STOCKELX_DOT_NOT_ALL_RIGHTLEFT) :
-			((flags & SINGLELINE) ? STOCKELX_DOT_ALL : STOCKELX_DOT_NOT_ALL)
-		);
+		        flags & RIGHTTOLEFT ?
+		        ((flags & SINGLELINE) ? STOCKELX_DOT_ALL_RIGHTLEFT : STOCKELX_DOT_NOT_ALL_RIGHTLEFT) :
+		        ((flags & SINGLELINE) ? STOCKELX_DOT_ALL : STOCKELX_DOT_NOT_ALL)
+		        );
 
 	case RCHART('w'):
 		return GetStockElx(flags & RIGHTTOLEFT ? STOCKELX_WORD_RIGHTLEFT : STOCKELX_WORD);
@@ -2484,70 +2529,71 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildCharset(int & fl
 		return GetStockElx(flags & RIGHTTOLEFT ? STOCKELX_DIGITAL_RIGHTLEFT_NOT : STOCKELX_DIGITAL_NOT);
 
 	case RCHART('['):
+	{
+		CRangeElxT <CHART> * pRange;
+
+		// create
+		if(curr == CHART_INFO(RCHART(':'), 1))
 		{
-			CRangeElxT <CHART> * pRange;
+			CBufferT <char> posix;
 
-			// create
-			if(curr == CHART_INFO(RCHART(':'), 1))
+			do
 			{
-				CBufferT <char> posix;
-
-				do {
-					posix.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
-					MoveNext();
-				}
-				while(curr.ch != RCHART(0) && curr != CHART_INFO(RCHART(']'), 1));
-
-				MoveNext(); // skip ']'
-
-				// posix
-				return Keep(new CPosixElxT <CHART> (posix.GetBuffer(), flags & RIGHTTOLEFT));
+				posix.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
+				MoveNext();
 			}
-			else if(curr == CHART_INFO(RCHART('^'), 1))
+			while(curr.ch != RCHART(0) && curr != CHART_INFO(RCHART(']'), 1));
+
+			MoveNext();         // skip ']'
+
+			// posix
+			return Keep(new CPosixElxT <CHART> (posix.GetBuffer(), flags & RIGHTTOLEFT));
+		}
+		else if(curr == CHART_INFO(RCHART('^'), 1))
+		{
+			MoveNext();         // skip '^'
+			pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (flags & RIGHTTOLEFT, 0));
+		}
+		else
+		{
+			pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (flags & RIGHTTOLEFT, 1));
+		}
+
+		// parse
+		while(curr != CHART_INFO(0, 1) && curr != CHART_INFO(RCHART(']'), 1))
+		{
+			ch = curr.ch;
+
+			if(curr.type == 1 && (
+			           ch == RCHART('.') || ch == RCHART('w') || ch == RCHART('W') || ch == RCHART('s') || ch == RCHART('S') || ch == RCHART('d') || ch == RCHART('D') ||
+			           (ch == RCHART('[') && next == CHART_INFO(RCHART(':'), 1))
+			           ))
 			{
-				MoveNext(); // skip '^'
-				pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (flags & RIGHTTOLEFT, 0));
+				pRange->m_embeds.Push(BuildCharset(flags));
+			}
+			else if(next == CHART_INFO(RCHART('-'), 1) && nex2.type == 0)
+			{
+				pRange->m_ranges.Push(ch); pRange->m_ranges.Push(nex2.ch);
+
+				// next
+				MoveNext();
+				MoveNext();
+				MoveNext();
 			}
 			else
 			{
-				pRange = (CRangeElxT <CHART> *)Keep(new CRangeElxT <CHART> (flags & RIGHTTOLEFT, 1));
+				pRange->m_chars.Push(ch);
+
+				// next
+				MoveNext();
 			}
-
-			// parse
-			while(curr != CHART_INFO(0, 1) && curr != CHART_INFO(RCHART(']'), 1))
-			{
-				ch = curr.ch;
-
-				if(curr.type == 1 && (
-					ch == RCHART('.') || ch == RCHART('w') || ch == RCHART('W') || ch == RCHART('s') || ch == RCHART('S') || ch == RCHART('d') || ch == RCHART('D') ||
-					(ch == RCHART('[') && next == CHART_INFO(RCHART(':'), 1))
-				))
-				{
-					pRange->m_embeds.Push(BuildCharset(flags));
-				}
-				else if(next == CHART_INFO(RCHART('-'), 1) && nex2.type == 0)
-				{
-					pRange->m_ranges.Push(ch); pRange->m_ranges.Push(nex2.ch);
-
-					// next
-					MoveNext();
-					MoveNext();
-					MoveNext();
-				}
-				else
-				{
-					pRange->m_chars.Push(ch);
-
-					// next
-					MoveNext();
-				}
-			}
-
-			// skip ']'
-			MoveNext();
-
-			return pRange;
 		}
+
+		// skip ']'
+		MoveNext();
+
+		return pRange;
+	}
 	}
 
 	return GetStockElx(STOCKELX_EMPTY);
@@ -2565,7 +2611,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 		// skip '?'
 		MoveNext();
 
-		int bNegative = 0;
+		int bNegative   = 0;
 		CHART named_end = RCHART('>');
 
 		switch(curr.ch)
@@ -2574,11 +2620,11 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 			bNegative = 1;
 
 		case RCHART('='):
-			{
-				MoveNext(); // skip '!' or '='
-				pElx = Keep(new CAssertElx(BuildAlternative(flags & ~RIGHTTOLEFT), !bNegative));
-			}
+		{
+			MoveNext();         // skip '!' or '='
+			pElx = Keep(new CAssertElx(BuildAlternative(flags & ~RIGHTTOLEFT), !bNegative));
 			break;
+		}
 
 		case RCHART('<'):
 			switch(next.ch)
@@ -2598,18 +2644,22 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 				break;
 			}
 			// break if assertion // else named
-			if(pElx != 0) break;
+			if(pElx != 0)
+				break;
 
 		case RCHART('P'):
-			if(curr.ch == RCHART('P')) MoveNext(); // skip 'P'
+			if(curr.ch == RCHART('P'))
+				MoveNext();                    // skip 'P'
 
 		case RCHART('\''):
-			if     (curr.ch == RCHART('<' )) named_end = RCHART('>' );
-			else if(curr.ch == RCHART('\'')) named_end = RCHART('\'');
+			if     (curr.ch == RCHART('<' ))
+				named_end = RCHART('>' );
+			else if(curr.ch == RCHART('\''))
+				named_end = RCHART('\'');
 			MoveNext(); // skip '<' or '\''
 			{
 				// named number
-				int nThisBackref = m_nNextNamed ++;
+				int nThisBackref = m_nNextNamed++;
 
 				CListElx    * pList  = (CListElx    *)Keep(new CListElx(flags & RIGHTTOLEFT));
 				CBracketElx * pleft  = (CBracketElx *)Keep(new CBracketElx(-1, flags & RIGHTTOLEFT ? 1 : 0));
@@ -2622,7 +2672,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 				while(curr.ch != RCHART(0) && curr.ch != named_end)
 				{
 					name.Append(curr.ch, 1);
-					num .Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
+					num.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
 					MoveNext();
 				}
 				MoveNext(); // skip '>' or '\''
@@ -2633,7 +2683,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 
 				if( ReadDec(str, number) ? ( *str == '\0') : 0 )
 				{
-					pleft ->m_nnumber = number;
+					pleft->m_nnumber  = number;
 					pright->m_nnumber = number;
 
 					name.Release();
@@ -2653,15 +2703,16 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 			break;
 
 		case RCHART('>'):
-			{
-				MoveNext(); // skip '>'
-				pElx = Keep(new CIndependentElx(BuildAlternative(flags)));
-			}
+		{
+			MoveNext();         // skip '>'
+			pElx = Keep(new CIndependentElx(BuildAlternative(flags)));
 			break;
+		}
 
 		case RCHART('R'):
 			MoveNext(); // skip 'R'
-			while(curr.ch != RCHART(0) && isspace(curr.ch)) MoveNext(); // skip space
+			while(curr.ch != RCHART(0) && isspace(curr.ch))
+				MoveNext();                                         // skip space
 
 			if(curr.ch == RCHART('<') || curr.ch == RCHART('\''))
 			{
@@ -2677,7 +2728,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 				while(curr.ch != RCHART(0) && curr.ch != named_end)
 				{
 					name.Append(curr.ch, 1);
-					num .Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
+					num.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
 					MoveNext();
 				}
 				MoveNext(); // skip '>' or '\''
@@ -2705,7 +2756,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 				}
 
 				unsigned int rtono = 0;
-				char * str = rto.GetBuffer();
+				char * str         = rto.GetBuffer();
 				ReadDec(str, rtono);
 
 				CDelegateElx * pDelegate = (CDelegateElx *)Keep(new CDelegateElx(rtono));
@@ -2716,78 +2767,79 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 			break;
 
 		case RCHART('('):
+		{
+			CConditionElx * pConditionElx = (CConditionElx *)Keep(new CConditionElx());
+
+			// condition
+			ElxInterface * & pCondition = pConditionElx->m_pelxask;
+
+			if(next == CHART_INFO(RCHART('?'), 1))
 			{
-				CConditionElx * pConditionElx = (CConditionElx *)Keep(new CConditionElx());
-
-				// condition
-				ElxInterface * & pCondition = pConditionElx->m_pelxask;
-
-				if(next == CHART_INFO(RCHART('?'), 1))
-				{
-					pCondition = BuildRecursive(flags);
-				}
-				else // named, assert or number
-				{
-					MoveNext(); // skip '('
-					int pos0 = curr.pos;
-
-					// save elx condition
-					pCondition = Keep(new CAssertElx(BuildAlternative(flags), 1));
-
-					// save name
-					pConditionElx->m_szNamed.Append(m_pattern.GetBuffer() + pos0, curr.pos - pos0, 1);
-
-					// save number
-					CBufferT <char> numstr;
-					while(pos0 < curr.pos)
-					{
-						CHART ch = m_pattern[pos0];
-						numstr.Append(((ch & (CHART)0xff) == ch) ? (char)ch : 0, 1);
-						pos0 ++;
-					}
-
-					unsigned int number;
-					char * str = numstr.GetBuffer();
-
-					// valid group number
-					if( ReadDec(str, number) ? ( *str == '\0') : 0 )
-					{
-						pConditionElx->m_nnumber = number;
-						pCondition = 0;
-					}
-					else // maybe elx, maybe named
-					{
-						pConditionElx->m_nnumber = -1;
-						m_namedconditionlist.Push(pConditionElx);
-					}
-
-					MoveNext(); // skip ')'
-				}
-
-				// alternative
-				{
-					int newflags = flags;
-
-					pConditionElx->m_pelxyes = BuildList(newflags);
-				}
-
-				if(curr.ch == RCHART('|'))
-				{
-					MoveNext(); // skip '|'
-
-					pConditionElx->m_pelxno = BuildAlternative(flags);
-				}
-				else
-				{
-					pConditionElx->m_pelxno = 0;
-				}
-
-				pElx = pConditionElx;
+				pCondition = BuildRecursive(flags);
 			}
+			else         // named, assert or number
+			{
+				MoveNext();         // skip '('
+				int pos0 = curr.pos;
+
+				// save elx condition
+				pCondition = Keep(new CAssertElx(BuildAlternative(flags), 1));
+
+				// save name
+				pConditionElx->m_szNamed.Append(m_pattern.GetBuffer() + pos0, curr.pos - pos0, 1);
+
+				// save number
+				CBufferT <char> numstr;
+				while(pos0 < curr.pos)
+				{
+					CHART ch = m_pattern[pos0];
+					numstr.Append(((ch & (CHART)0xff) == ch) ? (char)ch : 0, 1);
+					pos0++;
+				}
+
+				unsigned int number;
+				char * str = numstr.GetBuffer();
+
+				// valid group number
+				if( ReadDec(str, number) ? ( *str == '\0') : 0 )
+				{
+					pConditionElx->m_nnumber = number;
+					pCondition               = 0;
+				}
+				else         // maybe elx, maybe named
+				{
+					pConditionElx->m_nnumber = -1;
+					m_namedconditionlist.Push(pConditionElx);
+				}
+
+				MoveNext();         // skip ')'
+			}
+
+			// alternative
+			{
+				int newflags = flags;
+
+				pConditionElx->m_pelxyes = BuildList(newflags);
+			}
+
+			if(curr.ch == RCHART('|'))
+			{
+				MoveNext();         // skip '|'
+
+				pConditionElx->m_pelxno = BuildAlternative(flags);
+			}
+			else
+			{
+				pConditionElx->m_pelxno = 0;
+			}
+
+			pElx = pConditionElx;
 			break;
+		}
 
 		default:
-			while(curr.ch != RCHART(0) && isspace(curr.ch)) MoveNext(); // skip space
+			while(curr.ch != RCHART(0) && isspace(curr.ch))
+				MoveNext();                                         // skip space
 
 			if(curr.ch >= RCHART('0') && curr.ch <= RCHART('9')) // recursive (?1) => (?R1)
 			{
@@ -2799,7 +2851,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 				}
 
 				unsigned int rtono = 0;
-				char * str = rto.GetBuffer();
+				char * str         = rto.GetBuffer();
 				ReadDec(str, rtono);
 
 				CDelegateElx * pDelegate = (CDelegateElx *)Keep(new CDelegateElx(rtono));
@@ -2845,7 +2897,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 					if(bNegative)
 						newflags &= ~tochange;
 					else
-						newflags |=  tochange;
+						newflags |= tochange;
 
 					// move to next char
 					MoveNext();
@@ -2854,7 +2906,8 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 				if(curr.ch == RCHART(':') || curr == CHART_INFO(RCHART('('), 1))
 				{
 					// skip ':'
-					if(curr.ch == RCHART(':')) MoveNext();
+					if(curr.ch == RCHART(':'))
+						MoveNext();
 
 					pElx = BuildAlternative(newflags);
 				}
@@ -2877,7 +2930,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildRecursive(int & 
 	{
 		// group and number
 		CListElx * pList = (CListElx *)Keep(new CListElx(flags & RIGHTTOLEFT));
-		int nThisBackref = ++ m_nMaxNumber;
+		int nThisBackref = ++m_nMaxNumber;
 
 		// left, center, right
 		pList->m_elxlist.Push(Keep(new CBracketElx(nThisBackref, flags & RIGHTTOLEFT ? 1 : 0)));
@@ -2941,7 +2994,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildBackref(int & fl
 
 	if(curr.ch == RCHART('<') || curr.ch == RCHART('\''))
 	{
-		CHART named_end = curr.ch == RCHART('<') ? RCHART('>') : RCHART('\'');
+		CHART named_end                 = curr.ch == RCHART('<') ? RCHART('>') : RCHART('\'');
 		CBackrefElxT <CHART> * pbackref = (CBackrefElxT <CHART> *)Keep(new CBackrefElxT <CHART> (-1, flags & RIGHTTOLEFT, flags & IGNORECASE));
 
 		MoveNext(); // skip '<' or '\''
@@ -2953,7 +3006,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildBackref(int & fl
 		while(curr.ch != RCHART(0) && curr.ch != named_end)
 		{
 			name.Append(curr.ch, 1);
-			num .Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
+			num.Append(((curr.ch & (CHART)0xff) == curr.ch) ? (char)curr.ch : 0, 1);
 			MoveNext();
 		}
 		MoveNext(); // skip '>' or '\''
@@ -2978,7 +3031,7 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildBackref(int & fl
 	{
 		unsigned int nbackref = 0;
 
-		for(int i=0; i<3; i++)
+		for(int i = 0; i < 3; i++)
 		{
 			if(curr.ch >= RCHART('0') && curr.ch <= RCHART('9'))
 				nbackref = nbackref * 10 + (curr.ch - RCHART('0'));
@@ -2995,14 +3048,16 @@ template <class CHART> ElxInterface * CBuilderT <CHART> :: BuildBackref(int & fl
 template <class CHART> int CBuilderT <CHART> :: ReadDec(char * & str, unsigned int & dec)
 {
 	int s = 0;
-	while(str[s] != 0 && isspace(str[s])) s++;
+	while(str[s] != 0 && isspace(str[s]))
+		s++;
 
-	if(str[s] < '0' || str[s] > '9') return 0;
+	if(str[s] < '0' || str[s] > '9')
+		return 0;
 
 	dec = 0;
 	unsigned int i;
 
-	for(i = s; i<sizeof(CHART)*3 + s; i++)
+	for(i = s; i < sizeof(CHART) * 3 + s; i++)
 	{
 		if(str[i] >= '0' && str[i] <= '9')
 			dec = dec * 10 + (str[i] - '0');
@@ -3010,7 +3065,8 @@ template <class CHART> int CBuilderT <CHART> :: ReadDec(char * & str, unsigned i
 			break;
 	}
 
-	while(str[i] != 0 && isspace(str[i])) i++;
+	while(str[i] != 0 && isspace(str[i]))
+		i++;
 	str += i;
 
 	return 1;
@@ -3068,7 +3124,8 @@ template <class CHART> inline void CRegexpT <CHART> :: Compile(const CHART * pat
 template <class CHART> void CRegexpT <CHART> :: Compile(const CHART * pattern, int length, int flags)
 {
 	m_builder.Clear();
-	if(pattern != 0) m_builder.Build(CBufferRefT<CHART>(pattern, length), flags);
+	if(pattern != 0)
+		m_builder.Build(CBufferRefT<CHART>(pattern, length), flags);
 }
 
 template <class CHART> inline MatchResult CRegexpT <CHART> :: MatchExact(const CHART * tstring, CContext * pContext) const
@@ -3085,28 +3142,29 @@ template <class CHART> MatchResult CRegexpT <CHART> :: MatchExact(const CHART * 
 	int endpos = 0;
 
 	CContext context;
-	if(pContext == 0) pContext = &context;
+	if(pContext == 0)
+		pContext = &context;
 
 	pContext->m_stack.Restore(0);
 	pContext->m_capturestack.Restore(0);
 	pContext->m_captureindex.Restore(0);
 
-	pContext->m_nParenZindex  = 0;
-	pContext->m_nLastBeginPos = -1;
-	pContext->m_pMatchString  = (void*)tstring;
+	pContext->m_nParenZindex       = 0;
+	pContext->m_nLastBeginPos      = -1;
+	pContext->m_pMatchString       = (void*)tstring;
 	pContext->m_pMatchStringLength = length;
 
 	if(m_builder.m_nFlags & RIGHTTOLEFT)
 	{
 		pContext->m_nBeginPos   = length;
 		pContext->m_nCurrentPos = length;
-		endpos = 0;
+		endpos                  = 0;
 	}
 	else
 	{
 		pContext->m_nBeginPos   = 0;
 		pContext->m_nCurrentPos = 0;
-		endpos = length;
+		endpos                  = length;
 	}
 
 	pContext->m_captureindex.Prepare(m_builder.m_nMaxNumber, -1);
@@ -3117,14 +3175,18 @@ template <class CHART> MatchResult CRegexpT <CHART> :: MatchExact(const CHART * 
 	pContext->m_capturestack.Push(-1);
 
 	// match
-	if( ! m_builder.m_pTopElx->Match( pContext ) )
+	if( !m_builder.m_pTopElx->Match( pContext ) )
+	{
 		return 0;
+	}
 	else
 	{
 		while( pContext->m_nCurrentPos != endpos )
 		{
-			if( ! m_builder.m_pTopElx->MatchNext( pContext ) )
+			if( !m_builder.m_pTopElx->MatchNext( pContext ) )
+			{
 				return 0;
+			}
 			else
 			{
 				if( pContext->m_nLastBeginPos == pContext->m_nBeginPos && pContext->m_nBeginPos == pContext->m_nCurrentPos )
@@ -3152,11 +3214,12 @@ template <class CHART> MatchResult CRegexpT <CHART> :: Match(const CHART * tstri
 		return 0;
 
 	CContext context;
-	if(pContext == 0) pContext = &context;
+	if(pContext == 0)
+		pContext = &context;
 
-	pContext->m_nParenZindex  =  0;
-	pContext->m_nLastBeginPos = -1;
-	pContext->m_pMatchString  = (void*)tstring;
+	pContext->m_nParenZindex       = 0;
+	pContext->m_nLastBeginPos      = -1;
+	pContext->m_pMatchString       = (void*)tstring;
 	pContext->m_pMatchStringLength = length;
 
 	if(start < 0)
@@ -3202,7 +3265,7 @@ template <class CHART> MatchResult CRegexpT <CHART> :: Match(CContext * pContext
 	while(pContext->m_nCurrentPos != endpos)
 	{
 		pContext->m_captureindex.Restore(0);
-		pContext->m_stack       .Restore(0);
+		pContext->m_stack.Restore(0);
 		pContext->m_capturestack.Restore(0);
 
 		pContext->m_captureindex.Prepare(m_builder.m_nMaxNumber, -1);
@@ -3248,11 +3311,12 @@ template <class CHART> CContext * CRegexpT <CHART> :: PrepareMatch(const CHART *
 	if(m_builder.m_pTopElx == 0)
 		return 0;
 
-	if(pContext == 0) pContext = new CContext();
+	if(pContext == 0)
+		pContext = new CContext();
 
-	pContext->m_nParenZindex  =  0;
-	pContext->m_nLastBeginPos = -1;
-	pContext->m_pMatchString  = (void*)tstring;
+	pContext->m_nParenZindex       = 0;
+	pContext->m_nLastBeginPos      = -1;
+	pContext->m_pMatchString       = (void*)tstring;
 	pContext->m_pMatchStringLength = length;
 
 	if(start < 0)
@@ -3292,9 +3356,10 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 {
 	typedef CBufferRefT <CHART> StringRef;
 
-	MatchResult local_result(0), * result = remote_result ? remote_result : & local_result;
+	MatchResult local_result(0), *result = remote_result ? remote_result : &local_result;
 
-	if(m_builder.m_pTopElx == 0) return 0;
+	if(m_builder.m_pTopElx == 0)
+		return 0;
 
 	// Prepare
 	CContext * pContext = PrepareMatch(tstring, string_length, start, oContext);
@@ -3308,15 +3373,15 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 	CBufferT <StringRef *> buffer, buf;
 
 	static const CHART rtoptn[] = { RCHART('\\'), RCHART('$' ), RCHART('('), RCHART('?'), RCHART(':'), RCHART('[' ), RCHART('$' ), RCHART('&' ), RCHART('`' ), RCHART('\''), RCHART('+'), RCHART('_' ), RCHART('\\'), RCHART('d'), RCHART(']'), RCHART('|'), RCHART('\\'), RCHART('{'), RCHART('.'), RCHART('*'), RCHART('?'), RCHART('\\'), RCHART('}'), RCHART(')' ), RCHART('\0') };
-	static int   rtoptnlen      = StringRef(rtoptn).GetSize();
+	static int rtoptnlen        = StringRef(rtoptn).GetSize();
 	static CRegexpT <CHART> rtoreg(rtoptn, rtoptnlen, 0);
 
 	// Match
-	for(ntime = 0; ntimes < 0 || ntime < ntimes; ntime ++)
+	for(ntime = 0; ntimes < 0 || ntime < ntimes; ntime++)
 	{
 		(*result) = Match(pContext);
 
-		if( ! result->IsMatched() )
+		if( !result->IsMatched() )
 			break;
 
 		toIndex = toLastIndex;
@@ -3347,7 +3412,7 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 
 		// middle
 		CContext * pCtx = rtoreg.PrepareMatch(replaceto, to_length, -1);
-		int lastI = 0;
+		int lastI       = 0;
 
 		buf.Restore(0);
 
@@ -3355,15 +3420,13 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 		{
 			MatchResult res = rtoreg.Match(pCtx);
 
-			if( ! res.IsMatched() )
+			if( !res.IsMatched() )
 				break;
 
 			// before
 			int distance = res.GetStart() - lastI;
 			if( distance )
-			{
 				buf.Push(new StringRef(replaceto + lastI, distance));
-			}
 			lastI = res.GetStart();
 
 			// middle
@@ -3388,9 +3451,10 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 				break;
 
 			case RCHART('+'):
-				for(nmatch = result->MaxGroupNumber(); nmatch >= 0; nmatch --)
+				for(nmatch = result->MaxGroupNumber(); nmatch >= 0; nmatch--)
 				{
-					if(result->GetGroupStart(nmatch) >= 0) break;
+					if(result->GetGroupStart(nmatch) >= 0)
+						break;
 				}
 				buf.Push(new StringRef(tstring + result->GetGroupStart(nmatch), result->GetGroupEnd(nmatch) - result->GetGroupStart(nmatch)));
 				break;
@@ -3411,7 +3475,7 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 
 			default:
 				nmatch = 0;
-				for(delta=1; delta<=3; delta++)
+				for(delta = 1; delta <= 3; delta++)
 				{
 					CHART ch = replaceto[lastI + delta];
 
@@ -3426,13 +3490,11 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 					while(nmatch > m_builder.m_nMaxNumber)
 					{
 						nmatch /= 10;
-						delta --;
+						delta--;
 					}
 
 					if(nmatch == 0)
-					{
 						delta = 1;
-					}
 				}
 
 				if(delta == 1)
@@ -3452,7 +3514,7 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 		// append to buffer
 		if(flags & RIGHTTOLEFT)
 		{
-			for(i=buf.GetSize()-1; i>=0; i--)
+			for(i = buf.GetSize() - 1; i >= 0; i--)
 			{
 				buffer.Push(buf[i]);
 				toLastIndex -= buf[i]->GetSize();
@@ -3460,7 +3522,7 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 		}
 		else
 		{
-			for(i=0; i<buf.GetSize(); i++)
+			for(i = 0; i < buf.GetSize(); i++)
 			{
 				buffer.Push(buf[i]);
 				toLastIndex += buf[i]->GetSize();
@@ -3473,18 +3535,22 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 	// after
 	if(flags & RIGHTTOLEFT)
 	{
-		if(endpos < lastIndex) buffer.Push(new StringRef(tstring + endpos, lastIndex - endpos));
+		if(endpos < lastIndex)
+			buffer.Push(new StringRef(tstring + endpos, lastIndex - endpos));
 	}
 	else
 	{
-		if(lastIndex < endpos) buffer.Push(new StringRef(tstring + lastIndex, endpos - lastIndex));
+		if(lastIndex < endpos)
+			buffer.Push(new StringRef(tstring + lastIndex, endpos - lastIndex));
 	}
 
-	if(oContext == 0) ReleaseContext(pContext);
+	if(oContext == 0)
+		ReleaseContext(pContext);
 
 	// join string
 	result_length = 0;
-	for(i=0; i<buffer.GetSize(); i++) result_length += buffer[i]->GetSize();
+	for(i = 0; i < buffer.GetSize(); i++)
+		result_length += buffer[i]->GetSize();
 
 	CBufferT <CHART> result_string;
 	result_string.Prepare(result_length);
@@ -3492,7 +3558,7 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 
 	if(flags & RIGHTTOLEFT)
 	{
-		for(i=buffer.GetSize()-1; i>=0; i--)
+		for(i = buffer.GetSize() - 1; i >= 0; i--)
 		{
 			result_string.Append(buffer[i]->GetBuffer(), buffer[i]->GetSize());
 			delete buffer[i];
@@ -3500,7 +3566,7 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 	}
 	else
 	{
-		for(i=0; i<buffer.GetSize(); i++)
+		for(i = 0; i < buffer.GetSize(); i++)
 		{
 			result_string.Append(buffer[i]->GetBuffer(), buffer[i]->GetSize());
 			delete buffer[i];
@@ -3518,12 +3584,14 @@ template <class CHART> CHART * CRegexpT <CHART> :: Replace(const CHART * tstring
 
 template <class CHART> inline void CRegexpT <CHART> :: ReleaseString(CHART * tstring)
 {
-	if(tstring != 0) delete [] tstring;
+	if(tstring != 0)
+		delete [] tstring;
 }
 
 template <class CHART> inline void CRegexpT <CHART> :: ReleaseContext(CContext * pContext)
 {
-	if(pContext != 0) delete pContext;
+	if(pContext != 0)
+		delete pContext;
 }
 
 //
@@ -3600,9 +3668,9 @@ template <int x> int CAssertElxT <x> :: Match(CContext * pContext) const
 
 	// match
 	if( m_byes )
-		bsucc =   m_pelx->Match(pContext);
+		bsucc = m_pelx->Match(pContext);
 	else
-		bsucc = ! m_pelx->Match(pContext);
+		bsucc = !m_pelx->Match(pContext);
 
 	// status
 	pContext->m_stack.Restore(nsize);
@@ -3667,12 +3735,12 @@ template <int x> CGreedyElxT <x> :: CGreedyElxT(ElxInterface * pelx, int nmin, i
 
 template <int x> int CGreedyElxT <x> :: Match(CContext * pContext) const
 {
-	if( ! CRepeatElxT <x> :: MatchFixed(pContext) )
+	if( !CRepeatElxT <x> :: MatchFixed(pContext) )
 		return 0;
 
-	while( ! MatchVart(pContext) )
+	while( !MatchVart(pContext) )
 	{
-		if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+		if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 			return 0;
 	}
 
@@ -3684,12 +3752,12 @@ template <int x> int CGreedyElxT <x> :: MatchNext(CContext * pContext) const
 	if( MatchNextVart(pContext) )
 		return 1;
 
-	if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+	if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 		return 0;
 
-	while( ! MatchVart(pContext) )
+	while( !MatchVart(pContext) )
 	{
-		if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+		if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 			return 0;
 	}
 
@@ -3705,12 +3773,14 @@ template <int x> int CGreedyElxT <x> :: MatchVart(CContext * pContext) const
 	{
 		while(pContext->m_nCurrentPos == nbegin)
 		{
-			if( ! CRepeatElxT <x> :: m_pelx->MatchNext(pContext) ) break;
+			if( !CRepeatElxT <x> :: m_pelx->MatchNext(pContext) )
+				break;
 		}
 
-		if(pContext->m_nCurrentPos == nbegin) break;
+		if(pContext->m_nCurrentPos == nbegin)
+			break;
 
-		n ++;
+		n++;
 		nbegin = pContext->m_nCurrentPos;
 	}
 
@@ -3724,12 +3794,11 @@ template <int x> int CGreedyElxT <x> :: MatchNextVart(CContext * pContext) const
 	int n = 0;
 	pContext->m_stack.Pop(n);
 
-	if(n == 0) return 0;
+	if(n == 0)
+		return 0;
 
-	if( ! CRepeatElxT <x> :: m_pelx->MatchNext(pContext) )
-	{
-		n --;
-	}
+	if( !CRepeatElxT <x> :: m_pelx->MatchNext(pContext) )
+		n--;
 
 	pContext->m_stack.Push(n);
 
@@ -3750,7 +3819,7 @@ template <int x> int CIndependentElxT <x> :: Match(CContext * pContext) const
 	int ncsize = pContext->m_capturestack.GetSize();
 
 	// match
-	int bsucc  = m_pelx->Match(pContext);
+	int bsucc = m_pelx->Match(pContext);
 
 	// status
 	pContext->m_stack.Restore(nsize);
@@ -3808,7 +3877,7 @@ template <int x> int CListElxT <x> :: Match(CContext * pContext) const
 		{
 			n -= stp;
 
-			while(n != bol && ! m_elxlist[n]->MatchNext(pContext))
+			while(n != bol && !m_elxlist[n]->MatchNext(pContext))
 				n -= stp;
 
 			if(n != bol)
@@ -3834,7 +3903,7 @@ template <int x> int CListElxT <x> :: MatchNext(CContext * pContext) const
 	// from last
 	int n = eol - stp;
 
-	while(n != bol && ! m_elxlist[n]->MatchNext(pContext))
+	while(n != bol && !m_elxlist[n]->MatchNext(pContext))
 		n -= stp;
 
 	if(n != bol)
@@ -3853,7 +3922,7 @@ template <int x> int CListElxT <x> :: MatchNext(CContext * pContext) const
 		{
 			n -= stp;
 
-			while(n != bol && ! m_elxlist[n]->MatchNext(pContext))
+			while(n != bol && !m_elxlist[n]->MatchNext(pContext))
 				n -= stp;
 
 			if(n != bol)
@@ -3881,15 +3950,16 @@ template <int x> MatchResultT <x> :: MatchResultT(CContext * pContext, int nMaxN
 		for(int n = 0; n <= nMaxNumber; n++)
 		{
 			int index = pContext->m_captureindex[n];
-			if( index < 0 ) continue;
+			if( index < 0 )
+				continue;
 
 			// check enclosed
 			int pos1 = pContext->m_capturestack[index + 1];
 			int pos2 = pContext->m_capturestack[index + 2];
 
 			// info
-			m_result[n*2 + 2] = pos1 < pos2 ? pos1 : pos2;
-			m_result[n*2 + 3] = pos1 < pos2 ? pos2 : pos1;
+			m_result[n * 2 + 2] = pos1 < pos2 ? pos1 : pos2;
+			m_result[n * 2 + 3] = pos1 < pos2 ? pos2 : pos1;
 		}
 	}
 }
@@ -3927,7 +3997,8 @@ template <int x> inline int MatchResultT <x> :: GetGroupEnd(int nGroupNumber) co
 template <int x> MatchResultT <x> & MatchResultT <x> :: operator = (const MatchResultT <x> & result)
 {
 	m_result.Restore(0);
-	if(result.m_result.GetSize() > 0) m_result.Append(result.m_result.GetBuffer(), result.m_result.GetSize());
+	if(result.m_result.GetSize() > 0)
+		m_result.Append(result.m_result.GetBuffer(), result.m_result.GetSize());
 
 	return *this;
 }
@@ -3946,15 +4017,15 @@ template <int x> int CPossessiveElxT <x> :: Match(CContext * pContext) const
 	int bsucc  = 1;
 
 	// match
-	if( ! CRepeatElxT <x> :: MatchFixed(pContext) )
+	if( !CRepeatElxT <x> :: MatchFixed(pContext) )
 	{
 		bsucc = 0;
 	}
 	else
 	{
-		while( ! CGreedyElxT <x> :: MatchVart(pContext) )
+		while( !CGreedyElxT <x> :: MatchVart(pContext) )
 		{
-			if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+			if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 			{
 				bsucc = 0;
 				break;
@@ -3996,12 +4067,12 @@ template <int x> CReluctantElxT <x> :: CReluctantElxT(ElxInterface * pelx, int n
 
 template <int x> int CReluctantElxT <x> :: Match(CContext * pContext) const
 {
-	if( ! CRepeatElxT <x> :: MatchFixed(pContext) )
+	if( !CRepeatElxT <x> :: MatchFixed(pContext) )
 		return 0;
 
-	while( ! MatchVart(pContext) )
+	while( !MatchVart(pContext) )
 	{
-		if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+		if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 			return 0;
 	}
 
@@ -4013,12 +4084,12 @@ template <int x> int CReluctantElxT <x> :: MatchNext(CContext * pContext) const
 	if( MatchNextVart(pContext) )
 		return 1;
 
-	if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+	if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 		return 0;
 
-	while( ! MatchVart(pContext) )
+	while( !MatchVart(pContext) )
 	{
-		if( ! CRepeatElxT <x> :: MatchNextFixed(pContext) )
+		if( !CRepeatElxT <x> :: MatchNextFixed(pContext) )
 			return 0;
 	}
 
@@ -4042,12 +4113,13 @@ template <int x> int CReluctantElxT <x> :: MatchNextVart(CContext * pContext) co
 	{
 		while(pContext->m_nCurrentPos == nbegin)
 		{
-			if( ! CRepeatElxT <x> :: m_pelx->MatchNext(pContext) ) break;
+			if( !CRepeatElxT <x> :: m_pelx->MatchNext(pContext) )
+				break;
 		}
 
 		if(pContext->m_nCurrentPos != nbegin)
 		{
-			n ++;
+			n++;
 
 			pContext->m_stack.Push(nbegin);
 			pContext->m_stack.Push(n);
@@ -4071,7 +4143,7 @@ template <int x> int CReluctantElxT <x> :: MatchNextVart(CContext * pContext) co
 			}
 		}
 
-		n --;
+		n--;
 	}
 
 	return 0;
@@ -4106,17 +4178,17 @@ template <int x> int CRepeatElxT <x> :: MatchFixed(CContext * pContext) const
 	{
 		if(m_pelx->Match(pContext))
 		{
-			n ++;
+			n++;
 		}
 		else
 		{
-			n --;
+			n--;
 
-			while(n >= 0 && ! m_pelx->MatchNext(pContext))
-				n --;
+			while(n >= 0 && !m_pelx->MatchNext(pContext))
+				n--;
 
 			if(n >= 0)
-				n ++;
+				n++;
 			else
 				return 0;
 		}
@@ -4133,11 +4205,11 @@ template <int x> int CRepeatElxT <x> :: MatchNextFixed(CContext * pContext) cons
 	// from last
 	int n = m_nfixed - 1;
 
-	while(n >= 0 && ! m_pelx->MatchNext(pContext))
-		n --;
+	while(n >= 0 && !m_pelx->MatchNext(pContext))
+		n--;
 
 	if(n >= 0)
-		n ++;
+		n++;
 	else
 		return 0;
 
@@ -4146,17 +4218,17 @@ template <int x> int CRepeatElxT <x> :: MatchNextFixed(CContext * pContext) cons
 	{
 		if(m_pelx->Match(pContext))
 		{
-			n ++;
+			n++;
 		}
 		else
 		{
-			n --;
+			n--;
 
-			while(n >= 0 && ! m_pelx->MatchNext(pContext))
-				n --;
+			while(n >= 0 && !m_pelx->MatchNext(pContext))
+				n--;
 
 			if(n >= 0)
-				n ++;
+				n++;
 			else
 				return 0;
 		}
@@ -4170,9 +4242,9 @@ typedef CRegexpT <char> CRegexpA;
 typedef CRegexpT <unsigned short> CRegexpW;
 
 #if defined(_UNICODE) || defined(UNICODE)
-	typedef CRegexpW CRegexp;
-#else
-	typedef CRegexpA CRegexp;
-#endif
+typedef CRegexpW CRegexp;
+#else // if defined(_UNICODE) || defined(UNICODE)
+typedef CRegexpA CRegexp;
+#endif // if defined(_UNICODE) || defined(UNICODE)
 
 #endif//__DEELX_REGEXP__H__

@@ -26,13 +26,12 @@ class CTibiaMapTileAddress
 {
 public:
 	CTibiaMapTileAddress();
-	CTibiaMapTileAddress(int initAddr/*=0*/);
+	CTibiaMapTileAddress(int initAddr /*=0*/);
 
 	int count;
 	int stackind[10];
 	CTibiaMapTileItemAddress items[10];
 	int tileEnd;
-
 };
 
 #endif // !defined(AFX_TIBIAMAPTILE_H__AB1816E6_41B9_4651_ABD6_631D17C385BD__INCLUDED_)

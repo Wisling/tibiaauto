@@ -30,33 +30,33 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_spellcasterApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_spellcasterApp *app, CWnd* pParent = NULL);   // standard constructor
 	//Array to hold the list of dialog boxes/tab pages for CTabCtrl
 	int m_DialogID[6];
-	
+
 	//CDialog Array Variable to hold the dialogs
 	MyDialog *m_Dialog[6];
-	
+
 	int m_nPageCount;
 	virtual LRESULT WindowProc(UINT msg, WPARAM wp, LPARAM lp);
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CXTabCtrl	m_tabCtrl;
-	CButton	m_disableWarning;
+	CXTabCtrl m_tabCtrl;
+	CButton m_disableWarning;
 	CButton m_randomCast;
-	CButtonST	m_enable;
-	CButtonST	m_OK;
+	CButtonST m_enable;
+	CButtonST m_OK;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

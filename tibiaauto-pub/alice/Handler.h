@@ -18,8 +18,8 @@ class Handler
 public:
 	static void init();
 	static bool hasProcessor(const string &name);
-	
+
 	static map<string, AimlProcessor *> processors;
 };
 
-#endif
+#endif // ifndef HANDLER_H

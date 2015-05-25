@@ -28,43 +28,43 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_creatureinfoApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_creatureinfoApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_SelfInfoFrame;
-	CGroupBoxEx	m_CreatureDetectionFrame;
-	CGroupBoxEx	m_MonstersInfoFrame;
-	CGroupBoxEx	m_PlayerInfoFrame;
-	CEdit	m_selfWindow;
-	CEdit	m_selfTray;
-	CEdit	m_rangeZ;
-	CEdit	m_rangeXY;
-	CButton	m_collectStats;
-	CButton	m_addRequest;
-	CButton	m_self;
-	CButton	m_player;
-	CButton	m_monster;
-	CButton	m_allFloorInfo;
-	CButton	m_uniqueMonsterNames;
-	CEdit	m_self2;
-	CEdit	m_self1;
-	CEdit	m_player2;
-	CEdit	m_player1;
-	CEdit	m_monster2;
-	CEdit	m_monster1;
-	CButtonST	m_knownInfo;
-	CButtonST	m_enable;
-	CButtonST	m_OK;
-	CButtonST	m_NameChanger;
+	CGroupBoxEx m_SelfInfoFrame;
+	CGroupBoxEx m_CreatureDetectionFrame;
+	CGroupBoxEx m_MonstersInfoFrame;
+	CGroupBoxEx m_PlayerInfoFrame;
+	CEdit m_selfWindow;
+	CEdit m_selfTray;
+	CEdit m_rangeZ;
+	CEdit m_rangeXY;
+	CButton m_collectStats;
+	CButton m_addRequest;
+	CButton m_self;
+	CButton m_player;
+	CButton m_monster;
+	CButton m_allFloorInfo;
+	CButton m_uniqueMonsterNames;
+	CEdit m_self2;
+	CEdit m_self1;
+	CEdit m_player2;
+	CEdit m_player1;
+	CEdit m_monster2;
+	CEdit m_monster1;
+	CButtonST m_knownInfo;
+	CButtonST m_enable;
+	CButtonST m_OK;
+	CButtonST m_NameChanger;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

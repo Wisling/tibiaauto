@@ -53,7 +53,7 @@ public:
 	int paralysisIco;
 	int minPoisonDmg;
 	std::vector<Player> healList;
-	
+
 	int summon;
 	int summonLessThan;
 	char summonName[128];
@@ -94,7 +94,6 @@ public:
 
 	int disableWarning;
 	int randomCast;
-
 };
 
 #endif // !defined(AFX_CONFIGDATA_H__3C69E44D_D036_45EB_BCE8_5358CF410631__INCLUDED_)

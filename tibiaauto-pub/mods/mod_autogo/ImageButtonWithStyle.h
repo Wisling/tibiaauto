@@ -35,4 +35,3 @@ protected:
 	void draw_bitmap (HDC hDC, const CRect& Rect, DWORD style);
 	void draw_icon (HDC hDC, const CRect& Rect, DWORD style);
 };
-

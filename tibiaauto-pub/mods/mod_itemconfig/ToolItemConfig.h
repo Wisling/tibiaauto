@@ -44,30 +44,30 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolItemConfig)
 	enum { IDD = IDD_TOOL_ITEMCONFIG };
-	CTreeCtrl	m_itemsTree;
-	CButtonST	m_AddChild;
-	CGroupBoxEx	m_ItemsFrame;
-	CGroupBoxEx	m_FoodFrame;
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
-	CButtonST	m_RefreshItems;
-	CButtonST	m_DeleteFood;
-	CButtonST	m_EditFood;
-	CButtonST	m_AddFood;
-	CButtonST	m_DeleteItem;
-	CButtonST	m_EditItem;
-	CButtonST	m_AddItem;
-	CButtonST	m_itemSort;
-	CButtonST	m_helpInfo;
-	CButtonST	m_selectedToBranch;
-	CListBox	m_foodList;
+	CTreeCtrl m_itemsTree;
+	CButtonST m_AddChild;
+	CGroupBoxEx m_ItemsFrame;
+	CGroupBoxEx m_FoodFrame;
+	CButtonST m_OK;
+	CButtonST m_Cancel;
+	CButtonST m_RefreshItems;
+	CButtonST m_DeleteFood;
+	CButtonST m_EditFood;
+	CButtonST m_AddFood;
+	CButtonST m_DeleteItem;
+	CButtonST m_EditItem;
+	CButtonST m_AddItem;
+	CButtonST m_itemSort;
+	CButtonST m_helpInfo;
+	CButtonST m_selectedToBranch;
+	CListBox m_foodList;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CToolItemConfig)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

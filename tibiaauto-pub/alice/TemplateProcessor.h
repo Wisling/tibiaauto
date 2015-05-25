@@ -17,7 +17,7 @@ class TemplateProcessor : public AimlProcessor
 {
 public:
 	~TemplateProcessor();
-	
+
 	string process(Match *, PElement, Responder *, const string &);
 	static AimlProcessor *getProcessor(const string &name);
 	static string processTemplate(Match *, PElement, Responder *, const string &id);
@@ -26,4 +26,4 @@ private:
 	static PElement checkCompatibility(PElement);
 };
 
-#endif
+#endif // ifndef TEMPLATE_PROCESSOR_H

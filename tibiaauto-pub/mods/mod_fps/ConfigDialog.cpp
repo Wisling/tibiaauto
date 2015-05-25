@@ -12,18 +12,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(Cmod_fpsApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(Cmod_fpsApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -46,15 +46,15 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_FPSTOOL_INACTIVE, OnFpstoolInactive)
-	ON_BN_CLICKED(IDC_FPSTOOL_MINIMIZED, OnFpstoolMinimized)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+ON_BN_CLICKED(IDC_FPSTOOL_INACTIVE, OnFpstoolInactive)
+ON_BN_CLICKED(IDC_FPSTOOL_MINIMIZED, OnFpstoolMinimized)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -76,12 +76,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -99,25 +99,22 @@ void CConfigDialog::enableControls()
 {
 	m_activeVal.EnableWindow(true);
 	m_inactive.EnableWindow(true);
-	if (m_inactive.GetCheck()){
+	if (m_inactive.GetCheck())
 		m_inactiveVal.EnableWindow(true);
-	}
 	m_minimized.EnableWindow(true);
-	if (m_minimized.GetCheck()){
+	if (m_minimized.GetCheck())
 		m_minimizedVal.EnableWindow(true);
-	}
 }
-
 
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buff[128];
-	sprintf(buff,"%.2f",configData->activeVal);	m_activeVal.SetWindowText(buff);
+	sprintf(buff, "%.2f", configData->activeVal);     m_activeVal.SetWindowText(buff);
 	m_inactive.SetCheck(configData->inactive);
-	sprintf(buff,"%.2f",configData->inactiveVal);	m_inactiveVal.SetWindowText(buff);
+	sprintf(buff, "%.2f", configData->inactiveVal);   m_inactiveVal.SetWindowText(buff);
 	m_minimized.SetCheck(configData->minimized);
-	sprintf(buff,"%.2f",configData->minimizedVal);m_minimizedVal.SetWindowText(buff);
+	sprintf(buff, "%.2f", configData->minimizedVal); m_minimizedVal.SetWindowText(buff);
 
 	OnFpstoolInactive();
 	OnFpstoolMinimized();
@@ -128,70 +125,75 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	char buff[128];
-	m_activeVal.GetWindowText(buff,128);	newConfigData->activeVal = atof(buff);
-	newConfigData->inactive = m_inactive.GetCheck();
-	m_inactiveVal.GetWindowText(buff,128);	newConfigData->inactiveVal = atof(buff);
-	newConfigData->minimized = m_minimized.GetCheck();
-	m_minimizedVal.GetWindowText(buff,128);	newConfigData->minimizedVal = atof(buff);
+	m_activeVal.GetWindowText(buff, 128);    newConfigData->activeVal    = atof(buff);
+	newConfigData->inactive                                              = m_inactive.GetCheck();
+	m_inactiveVal.GetWindowText(buff, 128);  newConfigData->inactiveVal  = atof(buff);
+	newConfigData->minimized                                             = m_minimized.GetCheck();
+	m_minimizedVal.GetWindowText(buff, 128); newConfigData->minimizedVal = atof(buff);
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	if (nIDEvent==1000)
+	if (nIDEvent == 1000)
 	{
 		CMemReaderProxy reader;
 		CTibiaItemProxy itemProxy;
 		//CPackSenderProxy sender;
-		
+
 		char buf[128];
 		unsigned long ifpsCur[2];
 
 		addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
 
-		ifpsCur[0] = reader.getMemIntValue(addrFps+0x60,0);//this address comes from Tibia itself and need not be shifted
-		ifpsCur[1] = reader.getMemIntValue(addrFps+0x60+4,0);//this address comes from Tibia itself and need not be shifted
-		sprintf(buf,"Current FPS rate: %f",ifpsCur[0],ifpsCur[1]);
+		ifpsCur[0] = reader.getMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
+		ifpsCur[1] = reader.getMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
+		sprintf(buf, "Current FPS rate: %f", ifpsCur[0], ifpsCur[1]);
 		m_fpsRate.SetWindowText(buf);
 
-		if (hTibiaWnd){
-			if (::IsIconic(hTibiaWnd)){
+		if (hTibiaWnd)
+		{
+			if (::IsIconic(hTibiaWnd))
+			{
 				m_state.SetWindowText("Tibia state: Minimized");
-			}else{
-				if (::GetForegroundWindow() != hTibiaWnd){
-					m_state.SetWindowText("Tibia state: Inactive");
-				}else{
-					m_state.SetWindowText("Tibia state: Active");
-				}
 			}
-		}else{
+			else
+			{
+				if (::GetForegroundWindow() != hTibiaWnd)
+					m_state.SetWindowText("Tibia state: Inactive");
+				else
+					m_state.SetWindowText("Tibia state: Active");
+			}
+		}
+		else
+		{
 			m_state.SetWindowText("Tibia state: Unknown");
 		}
-
 	}
-	
+
 	CDialog::OnTimer(nIDEvent);
 }
 
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam){
 	DWORD procId;
-	GetWindowThreadProcessId(hwnd,&procId);
-	if (procId == (DWORD)lParam){
+	GetWindowThreadProcessId(hwnd, &procId);
+	if (procId == (DWORD)lParam)
+	{
 		char szClass[128];
-		::GetClassName(hwnd,szClass,128);
-		if (lstrcmp(szClass,"TibiaClient")==0){
+		::GetClassName(hwnd, szClass, 128);
+		if (lstrcmp(szClass, "TibiaClient") == 0)
+		{
 			hTibiaWnd = hwnd;
 			return false;
 		}
-		
 	}
 	return true;
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_OK);
-	skin.SetButtonSkin(	m_enable);
+	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(     m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -204,10 +206,10 @@ BOOL CConfigDialog::OnInitDialog()
 
 	addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
 
-	EnumWindows(EnumWindowsProc,reader.getProcessId());
+	EnumWindows(EnumWindowsProc, reader.getProcessId());
 
-	SetTimer(1000,500,NULL);
-	
+	SetTimer(1000, 500, NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -227,7 +229,6 @@ void CConfigDialog::OnFpstoolInactive()
 {
 	int val = m_inactive.GetCheck();
 	m_inactiveVal.EnableWindow(val);
-	
 }
 
 void CConfigDialog::OnFpstoolMinimized()

@@ -10,18 +10,18 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_looterApp *app,CWnd* pParent /*=NULL*/)
+CConfigDialog::CConfigDialog(CMod_looterApp *app, CWnd* pParent /*=NULL*/)
 	: MyDialog(CConfigDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -65,13 +65,13 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -93,12 +93,12 @@ void CConfigDialog::OnEnable()
 	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
-		{
 			m_app->start();
-		} else {
+		else
 			m_enable.SetCheck(0);
-		}
-	} else {
+	}
+	else
+	{
 		m_app->stop();
 	}
 }
@@ -146,7 +146,6 @@ void CConfigDialog::enableControls()
 }
 
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	m_lootCustom.SetCheck(configData->m_lootCustom);
@@ -172,45 +171,45 @@ CConfigData * CConfigDialog::controlsToConfig()
 {
 	CConfigData *newConfigData = new CConfigData();
 
-	newConfigData->m_lootCustom=m_lootCustom.GetCheck();
-	newConfigData->m_lootGp=m_lootGp.GetCheck();
-	newConfigData->m_lootFood=m_lootFood.GetCheck();
-	newConfigData->m_eatFromCorpse=m_eatFromCorpse.GetCheck();
-	newConfigData->m_lootWorms=m_lootWorms.GetCheck();
-	newConfigData->m_lootInDepot=m_lootInDepot.GetCheck();
-	newConfigData->m_autoOpen=m_autoOpen.GetCheck();
-	newConfigData->m_mode1=m_mode1.GetCurSel();
-	newConfigData->m_mode2=m_mode2.GetCurSel();
-	newConfigData->m_mode3=m_mode3.GetCurSel();
-	newConfigData->m_mode4=m_mode4.GetCurSel();
-	newConfigData->m_mode5=m_mode5.GetCurSel();
-	newConfigData->m_mode6=m_mode6.GetCurSel();
-	newConfigData->m_mode7=m_mode7.GetCurSel();
-	newConfigData->m_mode8=m_mode8.GetCurSel();
-	newConfigData->m_mode9=m_mode9.GetCurSel();
-	newConfigData->m_mode10=m_mode10.GetCurSel();
-	
+	newConfigData->m_lootCustom    = m_lootCustom.GetCheck();
+	newConfigData->m_lootGp        = m_lootGp.GetCheck();
+	newConfigData->m_lootFood      = m_lootFood.GetCheck();
+	newConfigData->m_eatFromCorpse = m_eatFromCorpse.GetCheck();
+	newConfigData->m_lootWorms     = m_lootWorms.GetCheck();
+	newConfigData->m_lootInDepot   = m_lootInDepot.GetCheck();
+	newConfigData->m_autoOpen      = m_autoOpen.GetCheck();
+	newConfigData->m_mode1         = m_mode1.GetCurSel();
+	newConfigData->m_mode2         = m_mode2.GetCurSel();
+	newConfigData->m_mode3         = m_mode3.GetCurSel();
+	newConfigData->m_mode4         = m_mode4.GetCurSel();
+	newConfigData->m_mode5         = m_mode5.GetCurSel();
+	newConfigData->m_mode6         = m_mode6.GetCurSel();
+	newConfigData->m_mode7         = m_mode7.GetCurSel();
+	newConfigData->m_mode8         = m_mode8.GetCurSel();
+	newConfigData->m_mode9         = m_mode9.GetCurSel();
+	newConfigData->m_mode10        = m_mode10.GetCurSel();
+
 
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	if (nIDEvent==1001)
+	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		
+
 		refreshContainerStatus();
 
-		SetTimer(1001,250,NULL);
+		SetTimer(1001, 250, NULL);
 	}
-	
+
 	CDialog::OnTimer(nIDEvent);
 }
 
 void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_enable);
-	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(     m_enable);
+	skin.SetButtonSkin(     m_OK);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -220,8 +219,8 @@ BOOL CConfigDialog::OnInitDialog()
 
 	refreshContainerStatus();
 
-	SetTimer(1001,250,NULL);
-	
+	SetTimer(1001, 250, NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -234,52 +233,52 @@ void CConfigDialog::refreshContainerStatus()
 	CTibiaContainer *cont;
 
 	cont = reader.readContainer(0);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status1.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(1);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status2.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(2);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status3.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(3);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status4.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(4);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status5.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(5);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status6.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(6);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status7.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(7);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status8.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(8);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status9.SetWindowText(buf);
 	delete cont;
 
 	cont = reader.readContainer(9);
-	sprintf(buf,"Status: %s",cont->flagOnOff?"opened":"closed");
+	sprintf(buf, "Status: %s", cont->flagOnOff ? "opened" : "closed");
 	m_status10.SetWindowText(buf);
 	delete cont;
 }

@@ -10,9 +10,9 @@
 
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
-#endif
+#endif // ifndef __AFXWIN_H__
 
-#include "resource.h"		// main symbols
+#include "resource.h"           // main symbols
 #include <IModuleInterface.h>
 #include "ConfigDialog.h"
 
@@ -21,7 +21,7 @@
 // See mod_looter.cpp for the implementation of this class
 //
 
-struct Item{
+struct Item {
 	Item(){
 	}
 };
@@ -29,7 +29,7 @@ struct Item{
 struct Corpse
 {
 	char name[40];
-	int x,y,z;
+	int x, y, z;
 	int timeOfDeath;
 	int itemId;
 	int pos;//position from end of array as this is usually static
@@ -43,18 +43,19 @@ struct Corpse
 		prev->nxt = nxt;
 		nxt->prev = prev;
 		//insert node
-		nxt = pred->nxt;
-		prev = pred;
+		nxt       = pred->nxt;
+		prev      = pred;
 		pred->nxt = this;
-		if (pred->nxt != NULL) pred->nxt->prev = this;
+		if (pred->nxt != NULL)
+			pred->nxt->prev = this;
 	}
-	int distance(int x,int y){
-		return max(abs(this->x-x),abs(this->y-y));
+	int distance(int x, int y){
+		return max(abs(this->x - x), abs(this->y - y));
 	}
 	Corpse() {
-		timeOfDeath=itemId=x=y=z=pos=0;
-		memset(name,0,40);
-		nxt=prev=this;
+		timeOfDeath = itemId = x = y = z = pos = 0;
+		memset(name, 0, 40);
+		nxt = prev = this;
 	}
 };
 
@@ -70,8 +71,8 @@ public:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CMod_looterApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 
@@ -91,7 +92,7 @@ public:
 	void enableControls();
 	char *getVersion();
 	void resetConfig();
-	void loadConfigParam(char *paramName,char *paramValue);
+	void loadConfigParam(char *paramName, char *paramValue);
 	char *saveConfigParam(char *paramName);
 	char *getConfigParamName(int nr);
 private:

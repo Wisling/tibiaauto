@@ -11,11 +11,10 @@
 
 CTibiaMiniMapLabel::CTibiaMiniMapLabel()
 {
-	x=y=type=0;
-	desc[0]='\0';
+	x       = y = type = 0;
+	desc[0] = '\0';
 }
 
 CTibiaMiniMapLabel::~CTibiaMiniMapLabel()
 {
-
 }

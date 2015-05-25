@@ -20,12 +20,11 @@ string Template::fetch() {
 	//	Get the filename ..
 	const char *filename = Template::getFilename(filenameIx);
 	//	When have <template/>
-	if (end <= start) {
+	if (end <= start)
 		return "";
-	}
 	streamsize length = end - start;
 	ifstream fin(filename, ios::in | ios::binary);
-	char *input = new char[(unsigned int)(length)+1];
+	char *input = new char[(unsigned int)(length) + 1];
 	if(!fin.is_open())
 		return "Error reading file";
 	fin.seekg(start);
@@ -47,17 +46,19 @@ const char *Template::getFilename(int index) {
 
 void Template::reloadFile(int index) {
 	string fn = filenames[index];
-	long fs = filesizes[index];
+	long fs   = filesizes[index];
 	ifstream fin;
 	fin.open(fn.c_str(), ios::in | ios::binary);
-	if (!fin.is_open()) {
+	if (!fin.is_open())
+	{
 		cerr << "Severe internal error" << endl;
 		return;
 	}
 	fin.seekg(0, ios::end);
 	streamoff s = fin.tellg();
 	fin.close();
-	if (s != fs) {
+	if (s != fs)
+	{
 		//	Reload .. return true
 		filesizes[index] = (unsigned long)s;
 		Kernel::load(fn);

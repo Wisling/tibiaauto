@@ -27,13 +27,13 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_aimApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_aimApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	CComboBox m_RuneType;
 	//}}AFX_DATA
 
@@ -41,9 +41,9 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

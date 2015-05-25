@@ -28,35 +28,35 @@ public:
 // Dialog Data
 	//{{AFX_DATA(LifeDialog)
 	enum { IDD = IDD_LIFE_DIALOG };
-	CGroupBoxEx	m_lifeFrame;
-	CButton	m_customSpell;
-	CEdit	m_vitaSpellMana;
-	CEdit	m_vitaHp;
-	CButton	m_vitaSpell;
-	CEdit	m_sioSpellMana;
-	CButton	m_sioSpell;
-	CEdit	m_minPoisonDmg;
-	CEdit	m_lifeSpellMana;
-	CEdit	m_lifeSpell;
-	CButton	m_life;
-	CEdit	m_lifeHp;
-	CButton	m_exuraSpell;
-	CEdit	m_exuraHp;
-	CEdit	m_exuraSpellMana;
-	CButton	m_paralysisSpell;
-	CButton	m_paralysisIco;
-	CButton	m_poisonSpell;
-	CButtonST	m_healList;
-	CButton	m_granSpell;
-	CEdit	m_granHp;
-	CEdit	m_granSpellMana;
+	CGroupBoxEx m_lifeFrame;
+	CButton m_customSpell;
+	CEdit m_vitaSpellMana;
+	CEdit m_vitaHp;
+	CButton m_vitaSpell;
+	CEdit m_sioSpellMana;
+	CButton m_sioSpell;
+	CEdit m_minPoisonDmg;
+	CEdit m_lifeSpellMana;
+	CEdit m_lifeSpell;
+	CButton m_life;
+	CEdit m_lifeHp;
+	CButton m_exuraSpell;
+	CEdit m_exuraHp;
+	CEdit m_exuraSpellMana;
+	CButton m_paralysisSpell;
+	CButton m_paralysisIco;
+	CButton m_poisonSpell;
+	CButtonST m_healList;
+	CButton m_granSpell;
+	CEdit m_granHp;
+	CEdit m_granSpellMana;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(LifeDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

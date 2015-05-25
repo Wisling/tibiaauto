@@ -17,24 +17,23 @@ using namespace std;
 class SetProcessor : public AimlProcessor
 {
 public:
-	~SetProcessor() { }
-	
+	~SetProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string property = toLower(e->getAttribute("name"));
-		bool global = e->getAttribute("global") == "true";
-		string value = "";
-		if (!e->hasChildren()) {
+		bool global     = e->getAttribute("global") == "true";
+		string value    = "";
+		if (!e->hasChildren())
 			value = m->getInputStar(1);
-		} else {
+		else
 			value = Kernel::process(m, e, r, id);
-		}
-		if (global) {
+		if (global)
 			Kernel::predicates->setValue(property, "*", value);
-		} else {
+		else
 			Kernel::predicates->setValue(property, id, value);
-		}
 		return value;
 	}
 };
 
-#endif
+#endif // ifndef SET_PROCESSOR_H

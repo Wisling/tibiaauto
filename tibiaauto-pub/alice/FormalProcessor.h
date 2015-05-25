@@ -19,13 +19,15 @@ using namespace std;
 class FormalProcessor : public AimlProcessor
 {
 public:
-	~FormalProcessor() { }
-	
+	~FormalProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string formal = Kernel::process(m, e, r, id);
 		StringTokenizer st(formal, " \n\r\t", true);
 		string result = "";
-		while (st.hasMoreTokens()) {
+		while (st.hasMoreTokens())
+		{
 			string word = st.nextToken();
 			word[0] = toupper(word[0]);
 			result += word;
@@ -34,4 +36,4 @@ public:
 	}
 };
 
-#endif
+#endif // ifndef FORMAL_PROCESSOR_H

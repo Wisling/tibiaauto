@@ -57,7 +57,7 @@ public:
 	virtual void resetConfig()
 	{
 	}
-	virtual void loadConfigParam(char *paramName,char *paramValue)
+	virtual void loadConfigParam(char *paramName, char *paramValue)
 	{
 	}
 	virtual char *saveConfigParam(char *paramName)
@@ -68,7 +68,7 @@ public:
 	{
 		return NULL;
 	}
-	
+
 	virtual int isMultiParam(char *paramName)
 	{
 		return 0;
@@ -79,18 +79,16 @@ public:
 	}
 	virtual void activate(int kernelVersion)
 	{
-		if (kernelVersion==30)
-		{
-			active=12345;
-		}
+		if (kernelVersion == 30)
+			active = 12345;
 	}
 	virtual void init()
 	{
-		active=0;
+		active = 0;
 	}
 	virtual void superStart()
 	{
-		if (active!=12345)
+		if (active != 12345)
 		{
 			AfxMessageBox("Some module comes from an incorrect version of TA! Terminating.");
 			PostQuitMessage(0);

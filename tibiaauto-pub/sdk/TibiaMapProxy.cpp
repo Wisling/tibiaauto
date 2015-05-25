@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // TibiaMapProxy.cpp: implementation of the CTibiaMapProxy class.
@@ -26,7 +26,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 //////////////////////////////////////////////////////////////////////
 
-HMODULE CTibiaMapProxy::dllModule=NULL;
+HMODULE CTibiaMapProxy::dllModule = NULL;
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -35,48 +35,44 @@ HMODULE CTibiaMapProxy::dllModule=NULL;
 CTibiaMapProxy::CTibiaMapProxy()
 {
 	// load module
-	if (dllModule==NULL)
+	if (dllModule == NULL)
 	{
 		char installPath[1024];
-		unsigned long installPathLen=1023;
-		installPath[0]='\0';
-		HKEY hkey=NULL;
+		unsigned long installPathLen = 1023;
+		installPath[0] = '\0';
+		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey,TEXT("Install_Dir"),NULL,NULL,(unsigned char *)installPath,&installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
 		{
-			::MessageBox(0,"ERROR! Unable to read TA install directory! Please reinstall!","ERROR",0);
+			::MessageBox(0, "ERROR! Unable to read TA install directory! Please reinstall!", "ERROR", 0);
 			PostQuitMessage(-1);
 			return;
 		}
 
 		char pathBuf[2048];
-		sprintf(pathBuf,"%s\\mods\\tibiaauto_util.dll",installPath);
+		sprintf(pathBuf, "%s\\mods\\tibiaauto_util.dll", installPath);
 
-		dllModule=LoadLibrary(pathBuf);
+		dllModule = LoadLibrary(pathBuf);
 	}
 }
 
 CTibiaMapProxy::~CTibiaMapProxy()
 {
-	
 }
 
 
-
-void CTibiaMapProxy::removePointAvailable(int x,int y,int z)
+void CTibiaMapProxy::removePointAvailable(int x, int y, int z)
 {
-	typedef void (*Proto_fun)(int x,int y,int z);
+	typedef void (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapRemovePointAvailable");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapRemovePointAvailable");
 		if (fun)
-		{
-			fun(x,y,z);
-		}
+			fun(x, y, z);
 	}
 }
 void CTibiaMapProxy::prohPointClear()
@@ -84,100 +80,84 @@ void CTibiaMapProxy::prohPointClear()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapProhPointClear");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapProhPointClear");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
 void CTibiaMapProxy::prohPointAdd(int x, int y, int z)
 {
-	typedef void (*Proto_fun)(int x,int y,int z);
+	typedef void (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapProhPointAdd");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapProhPointAdd");
 		if (fun)
-		{
-			fun(x,y,z);
-		}
+			fun(x, y, z);
 	}
 }
-int CTibiaMapProxy::getPointUpDown(int x,int y,int z)
+int CTibiaMapProxy::getPointUpDown(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointUpDown");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPointUpDown");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
-int CTibiaMapProxy::getPointUpDownNoProh(int x,int y,int z)
+int CTibiaMapProxy::getPointUpDownNoProh(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointUpDownNoProh");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPointUpDownNoProh");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
-void CTibiaMapProxy::setPointUpDown(int x,int y,int z,int updown)
+void CTibiaMapProxy::setPointUpDown(int x, int y, int z, int updown)
 {
-	typedef void (*Proto_fun)(int x,int y,int z, int updown);
+	typedef void (*Proto_fun)(int x, int y, int z, int updown);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointUpDown");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetPointUpDown");
 		if (fun)
-		{
-			fun(x,y,z,updown);
-		}
+			fun(x, y, z, updown);
 	}
 }
 
-int CTibiaMapProxy::getPrevPointZ(int x,int y, int z)
+int CTibiaMapProxy::getPrevPointZ(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPrevPointZ");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPrevPointZ");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
-int CTibiaMapProxy::getPrevPointY(int x,int y, int z)
+int CTibiaMapProxy::getPrevPointY(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPrevPointY");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPrevPointY");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
-int CTibiaMapProxy::getPrevPointX(int x,int y, int z)
+int CTibiaMapProxy::getPrevPointX(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPrevPointX");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPrevPointX");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
@@ -186,11 +166,9 @@ void CTibiaMapProxy::clearDistance()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapClearDistance");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapClearDistance");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
 void CTibiaMapProxy::clearPrevPoint()
@@ -198,47 +176,39 @@ void CTibiaMapProxy::clearPrevPoint()
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapClearPrevPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapClearPrevPoint");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
-void CTibiaMapProxy::clearLocalPrevPoint(int x,int y,int z,int radius)
+void CTibiaMapProxy::clearLocalPrevPoint(int x, int y, int z, int radius)
 {
-	typedef void (*Proto_fun)(int x,int y,int z,int radius);
+	typedef void (*Proto_fun)(int x, int y, int z, int radius);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapClearLocalPrevPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapClearLocalPrevPoint");
 		if (fun)
-		{
-			fun(x,y,z,radius);
-		}
+			fun(x, y, z, radius);
 	}
 }
-void CTibiaMapProxy::setPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
+void CTibiaMapProxy::setPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	typedef void (*Proto_fun)(int x,int y,int z, int prevX, int prevY, int prevZ);
+	typedef void (*Proto_fun)(int x, int y, int z, int prevX, int prevY, int prevZ);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPrevPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetPrevPoint");
 		if (fun)
-		{
-			fun(x,y,z,prevX,prevY,prevZ);
-		}
+			fun(x, y, z, prevX, prevY, prevZ);
 	}
 }
-void CTibiaMapProxy::setBestPrevPoint(int x,int y,int z,int prevX, int prevY, int prevZ)
+void CTibiaMapProxy::setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	typedef void (*Proto_fun)(int x,int y,int z, int prevX, int prevY, int prevZ);
+	typedef void (*Proto_fun)(int x, int y, int z, int prevX, int prevY, int prevZ);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetBestPrevPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetBestPrevPoint");
 		if (fun)
-		{
-			fun(x,y,z,prevX,prevY,prevZ);
-		}
+			fun(x, y, z, prevX, prevY, prevZ);
 	}
 }
 struct point CTibiaMapProxy::getRandomPoint()
@@ -246,88 +216,74 @@ struct point CTibiaMapProxy::getRandomPoint()
 	typedef struct point (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetRandomPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetRandomPoint");
 		if (fun)
-		{
 			return fun();
-		}
 	}
-	return struct point();
+	return struct point ();
 }
 void CTibiaMapProxy::clear()
 {
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapClear");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapClear");
 		if (fun)
-		{
 			fun();
-		}
 	}
 }
-void CTibiaMapProxy::setPointAsAvailable(int x,int y,int z)
+void CTibiaMapProxy::setPointAsAvailable(int x, int y, int z)
 {
-	typedef void (*Proto_fun)(int x,int y,int z);
+	typedef void (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointAsAvailable");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetPointAsAvailable");
 		if (fun)
-		{
-			fun(x,y,z);
-		}
+			fun(x, y, z);
 	}
 }
-int CTibiaMapProxy::isPointAvailable(int x,int y,int z)
+int CTibiaMapProxy::isPointAvailable(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapIsPointAvailable");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapIsPointAvailable");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
 
-int CTibiaMapProxy::isPointAvailableNoProh(int x,int y,int z)
+int CTibiaMapProxy::isPointAvailableNoProh(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapIsPointAvailableNoProh");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapIsPointAvailableNoProh");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
-int CTibiaMapProxy::isPointLocked(int x,int y,int z)
+int CTibiaMapProxy::isPointLocked(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y,int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapIsPointLocked");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapIsPointLocked");
 		if (fun)
-		{
-			return fun(x,y,z);
-		}
+			return fun(x, y, z);
 	}
 	return 0;
 }
-void CTibiaMapProxy::setPointLocked(int x,int y,int z,int locked)
+void CTibiaMapProxy::setPointLocked(int x, int y, int z, int locked)
 {
-	typedef void (*Proto_fun)(int x,int y,int z, int locked);
+	typedef void (*Proto_fun)(int x, int y, int z, int locked);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointLocked");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetPointLocked");
 		if (fun)
-		{
-			fun(x,y,z,locked);
-		}
+			fun(x, y, z, locked);
 	}
 }
 
@@ -337,11 +293,9 @@ int CTibiaMapProxy::size()
 	typedef int (*Proto_fun)();
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSize");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSize");
 		if (fun)
-		{
 			return fun();
-		}
 	}
 	return 0;
 }
@@ -350,88 +304,74 @@ struct point CTibiaMapProxy::getPointByNr(int nr)
 	typedef struct point (*Proto_fun)(int nr);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointByNr");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPointByNr");
 		if (fun)
-		{
 			return fun(nr);
-		}
 	}
-	return struct point();
+	return struct point ();
 }
-point CTibiaMapProxy::getDestPoint(int x,int y, int z)
+point CTibiaMapProxy::getDestPoint(int x, int y, int z)
 {
-	typedef point (*Proto_fun)(int x,int y, int z);
+	typedef point (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetDestPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetDestPoint");
 		if (fun)
-		{
 			return fun(x, y, z);
-		}
 	}
-	return struct point();
+	return struct point ();
 }
-void CTibiaMapProxy::setDestPoint(int x,int y, int z, int destX, int destY, int destZ)
+void CTibiaMapProxy::setDestPoint(int x, int y, int z, int destX, int destY, int destZ)
 {
-	typedef void (*Proto_fun)(int x,int y, int z, int destX, int destY, int destZ);
+	typedef void (*Proto_fun)(int x, int y, int z, int destX, int destY, int destZ);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetDestPoint");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetDestPoint");
 		if (fun)
-		{
 			fun(x, y, z, destX, destY, destZ);
-		}
 	}
 }
-int CTibiaMapProxy::getPointSpeed(int x,int y, int z)
+int CTibiaMapProxy::getPointSpeed(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y, int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointSpeed");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPointSpeed");
 		if (fun)
-		{
 			return fun(x, y, z);
-		}
 	}
 	return 0;
 }
-void CTibiaMapProxy::setPointSpeed(int x,int y, int z, int speed)
+void CTibiaMapProxy::setPointSpeed(int x, int y, int z, int speed)
 {
-	typedef void (*Proto_fun)(int x,int y, int z, int speed);
+	typedef void (*Proto_fun)(int x, int y, int z, int speed);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointSpeed");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetPointSpeed");
 		if (fun)
-		{
 			fun(x, y, z, speed);
-		}
 	}
 }
 
-int CTibiaMapProxy::getPointDistance(int x,int y, int z)
+int CTibiaMapProxy::getPointDistance(int x, int y, int z)
 {
-	typedef int (*Proto_fun)(int x,int y, int z);
+	typedef int (*Proto_fun)(int x, int y, int z);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapGetPointDistance");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapGetPointDistance");
 		if (fun)
-		{
 			return fun(x, y, z);
-		}
 	}
 	return 0;
 }
-void CTibiaMapProxy::setPointDistance(int x,int y, int z, int dist)
+void CTibiaMapProxy::setPointDistance(int x, int y, int z, int dist)
 {
-	typedef void (*Proto_fun)(int x,int y, int z, int dist);
+	typedef void (*Proto_fun)(int x, int y, int z, int dist);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapSetPointDistance");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapSetPointDistance");
 		if (fun)
-		{
 			fun(x, y, z, dist);
-		}
 	}
 }
 
@@ -440,11 +380,9 @@ int CTibiaMapProxy::calcDistance(int x, int y, int z, int prevX, int prevY, int 
 	typedef int (*Proto_fun)(int x, int y, int z, int prevX, int prevY, int prevZ);
 	if (dllModule)
 	{
-		static Proto_fun fun=(Proto_fun)GetProcAddress(dllModule,"tibiaMapCalcDistance");
+		static Proto_fun fun = (Proto_fun)GetProcAddress(dllModule, "tibiaMapCalcDistance");
 		if (fun)
-		{
 			return fun(x, y, z, prevX, prevY, prevZ);
-		}
 	}
 	return 0;
 }

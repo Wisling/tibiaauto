@@ -21,7 +21,7 @@ class CToolMapShow : public MyDialog
 // Construction
 public:
 	void setTileDetails(int, int, int);
-	void showTileDetails(int x,int y);
+	void showTileDetails(int x, int y);
 	void mapPointClicked(int realX, int realY, int realZ, int tileVal);
 	void ShowMapConfig(int, int);
 	void refreshVisibleMap();
@@ -34,10 +34,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CToolMapShow)
 	enum { IDD = IDD_TOOL_MAPSHOW };
-	CButtonST	m_ClearMap;
-	CButtonST	m_OK;
-	CGroupBoxEx	m_MappingOptionFrame;
-	CButton	m_research;
+	CButtonST m_ClearMap;
+	CButtonST m_OK;
+	CGroupBoxEx m_MappingOptionFrame;
+	CButton m_research;
 	CButton m_extendedResearch;
 	CStatic m_tileInfo;
 	//}}AFX_DATA
@@ -46,7 +46,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CToolMapShow)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//}}AFX_VIRTUAL
@@ -67,7 +67,7 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 private:
-	
+
 	CMapButton * m_mapButtons[21][21];
 	int m_mapButtonImage[21][21];
 	CTibiaTile *memTilesForConfig[10];

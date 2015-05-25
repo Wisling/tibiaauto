@@ -7,16 +7,16 @@
 
 #ifndef __AFXWIN_H__
 	#error include 'stdafx.h' before including this file for PCH
-#endif
+#endif // ifndef __AFXWIN_H__
 
-#include "resource.h"		// main symbols
+#include "resource.h"           // main symbols
 #include <IModuleInterface.h>
 #include "ConfigData.h"
 #include "ToolAutoRespond.h"
 
 /////////////////////////////////////////////////////////////////////////////
 //
- 
+
 class CMod_responderApp : public CWinApp, public IModuleInterface
 {
 public:
@@ -29,8 +29,8 @@ public:
 	//}}AFX_VIRTUAL
 
 	//{{AFX_MSG(CMod_responderApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
+	// NOTE - the ClassWizard will add and remove member functions here.
+	//    DO NOT EDIT what you see in these blocks of generated code !
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 

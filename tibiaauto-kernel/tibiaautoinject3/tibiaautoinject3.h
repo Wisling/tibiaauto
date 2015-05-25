@@ -7,7 +7,6 @@
 // defined with this macro as being exported.
 #ifdef TIBIAAUTOINJECT3_EXPORTS
 #define TIBIAAUTOINJECT3_API __declspec(dllexport)
-#else
+#else // ifdef TIBIAAUTOINJECT3_EXPORTS
 #define TIBIAAUTOINJECT3_API __declspec(dllimport)
-#endif
-
+#endif // ifdef TIBIAAUTOINJECT3_EXPORTS

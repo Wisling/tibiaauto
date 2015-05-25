@@ -21,19 +21,19 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CCustomSpellDialog)
 	enum { IDD = IDD_ADD_CUSTOM_SPELL };
-	CGroupBoxEx	m_spellConfigFrame;
-	CButtonST	m_OK;
-	CButtonST	m_cancel;
-	CString	m_spellWords;
-	int		m_castingDelay;
-	int		m_manaCost;
+	CGroupBoxEx m_spellConfigFrame;
+	CButtonST m_OK;
+	CButtonST m_cancel;
+	CString m_spellWords;
+	int m_castingDelay;
+	int m_manaCost;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CCustomSpellDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

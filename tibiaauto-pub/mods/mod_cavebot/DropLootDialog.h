@@ -16,27 +16,27 @@ class CDropLootDialog : public MyDialog
 {
 // Construction
 public:
-	CDropLootDialog(char dropListParam[100][64],int& dropListCountParam,int& dropWhenCapacityLimitReachedParam,int& dropOnlyLootedParam, CWnd* pParent = NULL);
+	CDropLootDialog(char dropListParam[100][64], int& dropListCountParam, int& dropWhenCapacityLimitReachedParam, int& dropOnlyLootedParam, CWnd* pParent = NULL);
 
 // Dialog Data
 	//{{AFX_DATA(DropLootDialog)
 	enum { IDD = IDD_DROPLIST };
-	CGroupBoxEx	m_DropLootFrame;
-	CComboBox	m_itemList;
-	CListBox	m_dropList;
-	CButton	m_dropWhenCapacityLimitReached;
-	CButton	m_dropOnlyLooted;
-	CButtonST	m_add;
-	CButtonST	m_delete;
-	CButtonST	m_OK;
-	CButtonST	m_cancel;
+	CGroupBoxEx m_DropLootFrame;
+	CComboBox m_itemList;
+	CListBox m_dropList;
+	CButton m_dropWhenCapacityLimitReached;
+	CButton m_dropOnlyLooted;
+	CButtonST m_add;
+	CButtonST m_delete;
+	CButtonST m_OK;
+	CButtonST m_cancel;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(DropLootDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -33,10 +33,7 @@ Stream* getStream(const char *szName)
 }
 
 void setStreamProvider(
-StreamProvider *newStreamProvider)
+        StreamProvider *newStreamProvider)
 {
 	streamProvider = newStreamProvider;
 }
-
-
-

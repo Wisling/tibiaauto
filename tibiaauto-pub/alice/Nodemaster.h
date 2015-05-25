@@ -22,8 +22,9 @@ public:
 	Nodemaster() {
 		templates = NULL;
 	}
-	~Nodemaster() { }
-	
+	~Nodemaster() {
+	}
+
 	Nodemaster *getChild(const string &);
 	void addChild(const string &, Nodemaster *);
 	string getTemplate(bool reload = true);
@@ -41,4 +42,4 @@ private:
 
 typedef map<char *, Nodemaster *> childrenMap;
 
-#endif
+#endif // ifndef NODEMASTER_H

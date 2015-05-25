@@ -30,10 +30,10 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CMapConfig)
 	enum { IDD = IDD_TOOL_MAPSHOW_CONFIG };
-	CGroupBoxEx	m_UseFrame;
-	CGroupBoxEx	m_TileTypeFrame;
-	CGroupBoxEx	m_MovementFrame;
-	CGroupBoxEx	m_CharacteristicsFrame;
+	CGroupBoxEx m_UseFrame;
+	CGroupBoxEx m_TileTypeFrame;
+	CGroupBoxEx m_MovementFrame;
+	CGroupBoxEx m_CharacteristicsFrame;
 	CEdit m_TileId;
 	CEdit m_Speed;
 	CButton m_AlwaysOnTop;
@@ -51,7 +51,7 @@ public:
 	CButton m_Stackable;
 	CButton m_Teleporter;
 	CButtonST m_Previous;
-	CButtonST	m_Commit;
+	CButtonST m_Commit;
 	CButtonST m_Next;
 	//}}AFX_DATA
 
@@ -59,7 +59,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMapConfig)
-	protected:
+protected:
 	virtual void OnCommit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL

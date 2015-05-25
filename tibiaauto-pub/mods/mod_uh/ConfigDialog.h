@@ -28,36 +28,36 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_uhApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_uhApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_SelfHealingFrame;
-	CGroupBoxEx	m_GroupHealingFrame;
-	CListBox	m_memberList;
-	CEdit	m_member;
-	CComboBox	m_grpRunetype;
-	CEdit	m_selfBorderline;
-	CEdit	m_sleepAfter;
-	CComboBox	m_selfRunetype;
-	CButton	m_selfHotkey;
-	CEdit	m_grpBorderline;
-	CButton	m_grpFallback;
-	CButton	m_selfFallback;
-	CButtonST	m_memberRemove;
-	CButtonST	m_memberAdd;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CGroupBoxEx m_SelfHealingFrame;
+	CGroupBoxEx m_GroupHealingFrame;
+	CListBox m_memberList;
+	CEdit m_member;
+	CComboBox m_grpRunetype;
+	CEdit m_selfBorderline;
+	CEdit m_sleepAfter;
+	CComboBox m_selfRunetype;
+	CButton m_selfHotkey;
+	CEdit m_grpBorderline;
+	CButton m_grpFallback;
+	CButton m_selfFallback;
+	CButtonST m_memberRemove;
+	CButtonST m_memberAdd;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

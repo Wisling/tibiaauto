@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER > 1000
 
-#define MAX_LINE_LEN		256
+#define MAX_LINE_LEN            256
 
 class CConfigData
 {

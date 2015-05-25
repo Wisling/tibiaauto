@@ -26,15 +26,15 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CConfigDialogStatus)
 	enum { IDD = IDD_CONFIGSTATUS };
-	CButton	m_ok;
-	CListCtrl	m_log;
+	CButton m_ok;
+	CListCtrl m_log;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialogStatus)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -45,7 +45,7 @@ protected:
 	//{{AFX_MSG(CConfigDialogStatus)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnClose();
-    afx_msg LRESULT OnMyMessageAddToLog(UINT wParam, LONG lParam);
+	afx_msg LRESULT OnMyMessageAddToLog(UINT wParam, LONG lParam);
 	virtual void OnOK();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

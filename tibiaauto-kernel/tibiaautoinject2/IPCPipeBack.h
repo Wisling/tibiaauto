@@ -21,11 +21,10 @@ public:
 public:
 	CIPCPipeBack();
 	virtual ~CIPCPipeBack();
-	void InitialiseIPCback(int partnerProcessId,FILE* debugFile,int COMPLEX);
+	void InitialiseIPCback(int partnerProcessId, FILE* debugFile, int COMPLEX);
 	int hasInvalidHandle();
 	void closePipe();
 	void send(ipcMessage mess);
-
 };
 
 

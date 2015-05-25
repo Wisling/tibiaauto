@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CGroupBoxEx
@@ -23,9 +23,9 @@ CGroupBoxEx::~CGroupBoxEx()
 
 
 BEGIN_MESSAGE_MAP(CGroupBoxEx, CWnd)
-	//{{AFX_MSG_MAP(CGroupBoxEx)
-	ON_WM_PAINT()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CGroupBoxEx)
+ON_WM_PAINT()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ END_MESSAGE_MAP()
 void CGroupBoxEx::OnPaint()
 {
 	CPaintDC dc(this); // device context for painting
-	
+
 	// TODO: Add your message handler code here
 
 	CPen newPen;
@@ -46,12 +46,13 @@ void CGroupBoxEx::OnPaint()
 	this->GetWindowText(text);
 
 	int textSize = 0;
-	for (int loop = 0; loop < text.GetLength(); loop++) {
+	for (int loop = 0; loop < text.GetLength(); loop++)
+	{
 		int buffer = 0;
 		dc.GetCharWidth(text[loop], text[loop], &buffer);
 		textSize += buffer;
 	}
-	
+
 	LOGFONT logFont;
 	dc.GetCurrentFont()->GetLogFont(&logFont);
 
@@ -83,26 +84,26 @@ void CGroupBoxEx::OnPaint()
 	newPen.DeleteObject();
 
 /*	newPen.CreatePen(PS_SOLID, 1, RGB(skin.m_SecondaryBackgroundRedValue,skin.m_SecondaryBackgroundGreenValue,skin.m_SecondaryBackgroundBlueValue));
-	oldPen = dc.SelectObject(&newPen);
+        oldPen = dc.SelectObject(&newPen);
 
-	dc.MoveTo(11, rc.top);
-	dc.LineTo(16 + (logFont.lfWidth * text.GetLength()), rc.top);
-	dc.LineTo(16 + (logFont.lfWidth * text.GetLength()), rc.top - 1);
-	dc.LineTo(11, rc.top - 1);
+        dc.MoveTo(11, rc.top);
+        dc.LineTo(16 + (logFont.lfWidth * text.GetLength()), rc.top);
+        dc.LineTo(16 + (logFont.lfWidth * text.GetLength()), rc.top - 1);
+        dc.LineTo(11, rc.top - 1);
 
-	dc.SelectObject(oldPen);
-	newPen.DeleteObject();*/
+        dc.SelectObject(oldPen);
+        newPen.DeleteObject();*/
 
-	rc.top += 1;
+	rc.top  += 1;
 	rc.left += 1;
 	CBrush myBrush;
-	myBrush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue,skin.m_SecondaryBackgroundGreenValue,skin.m_SecondaryBackgroundBlueValue));
+	myBrush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue));
 	dc.FillRect(rc, &myBrush);
 
-	rc.top = -1;
-	rc.left = 12;
-	rc.right = 13 + textSize;
-	rc.bottom = 16;
+	rc.top           = -1;
+	rc.left          = 12;
+	rc.right         = 13 + textSize;
+	rc.bottom        = 16;
 	logFont.lfWeight = FW_BOLD;
 	CFont font;
 	font.CreateFontIndirect(&logFont);

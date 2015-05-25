@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialogStatus dialog
@@ -19,7 +19,7 @@ CConfigDialogStatus::CConfigDialogStatus(CWnd* pParent /*=NULL*/)
 	: CDialog(CConfigDialogStatus::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(CConfigDialogStatus)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -35,10 +35,10 @@ void CConfigDialogStatus::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CConfigDialogStatus, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialogStatus)
-	ON_WM_CLOSE()
-	ON_MESSAGE(MY_WM_MESSAGE_ADDTOLOG, OnMyMessageAddToLog)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialogStatus)
+ON_WM_CLOSE()
+ON_MESSAGE(MY_WM_MESSAGE_ADDTOLOG, OnMyMessageAddToLog)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -51,15 +51,15 @@ void CConfigDialogStatus::resetLog()
 
 void CConfigDialogStatus::addToLog(char *message)
 {
-	m_log.InsertItem(0,message);
+	m_log.InsertItem(0, message);
 }
 
 BOOL CConfigDialogStatus::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	
-	m_log.InsertColumn(0,"Log message",LVCFMT_LEFT,299);
-	
+
+	m_log.InsertColumn(0, "Log message", LVCFMT_LEFT, 299);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -76,7 +76,6 @@ void CConfigDialogStatus::enableOk()
 
 void CConfigDialogStatus::OnClose()
 {
-		
 }
 
 void CConfigDialogStatus::OnOK()
@@ -93,5 +92,5 @@ LRESULT CConfigDialogStatus::OnMyMessageAddToLog(UINT wParam, LONG lParam)
 
 void CConfigDialogStatus::msgAddToLog(char *message)
 {
-	SendMessage(MY_WM_MESSAGE_ADDTOLOG,(unsigned int)message,NULL);
+	SendMessage(MY_WM_MESSAGE_ADDTOLOG, (unsigned int)message, NULL);
 }

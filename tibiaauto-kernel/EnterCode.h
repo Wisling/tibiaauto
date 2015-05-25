@@ -22,16 +22,16 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CEnterCode)
 	enum { IDD = IDD_ENTERCODE };
-	CButtonST	m_OK;
-	CEdit	m_runtimeId;
-	CEdit	m_code;
+	CButtonST m_OK;
+	CEdit m_runtimeId;
+	CEdit m_code;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CEnterCode)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
@@ -49,7 +49,6 @@ private:
 	CTibiaautoDlg * parent;
 	int randTab[8];
 	int testsum;
-	
 };
 
 //{{AFX_INSERT_LOCATION}}

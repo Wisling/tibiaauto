@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,10 +18,9 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	RuneType=0;
+	RuneType = 0;
 }
 
 CConfigData::~CConfigData()
 {
-
 }

@@ -69,15 +69,15 @@ enum CToolAutoAttackStateTraining
 	CToolAutoAttackStateTraining_switchingWeapon
 };
 
-struct PathfindParams{
+struct PathfindParams {
 	int x, y, z, x2, y2, z2;
-	PathfindParams(int x,int y,int z,int x2,int y2,int z2){
-		this->x=x;
-		this->y=y;
-		this->z=z;
-		this->x2=x2;
-		this->y2=y2;
-		this->z2=z2;
+	PathfindParams(int x, int y, int z, int x2, int y2, int z2){
+		this->x  = x;
+		this->y  = y;
+		this->z  = z;
+		this->x2 = x2;
+		this->y2 = y2;
+		this->z2 = z2;
 	}
 };
 
@@ -95,94 +95,94 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_cavebotApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_cavebotApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButton	m_addDelay;
-	CGroupBoxEx	m_WaypointWalker;
-	CGroupBoxEx	m_Training;
-	CGroupBoxEx	m_MonsterAttacking;
-	CGroupBoxEx	m_DepotWalker;
-	CGroupBoxEx	m_Debugging;
-	CGroupBoxEx	m_CorpseLooting;
-	CEdit	m_depotCap;
-	CButton	m_shareAlienBackattack;
-	CEdit	m_ignore;
-	CListBox	m_ignoreList;
-	CButton	m_backattackRunes;
-	CEdit	m_attackHpAbove;
-	CButton	m_lootFromFloor;
-	CButton	m_dropNotLooted;
-	CButton	m_depotDropInsteadOfDeposit;
-	CComboBox	m_weaponTrain;
-	CComboBox	m_weaponFight;
-	CStatic	m_trainingState;
-	CButton	m_fightWhenSurrounded;
-	CButton	m_fightWhenAlien;
-	CComboBox	m_trainingMode;
-	CButton	m_bloodHit;
-	CButton	m_activate;
-	CButton	m_debug;
-	CEdit	m_depotWhen;
-	CEdit	m_depotRemain;
-	CComboBox	m_depotItemList;
-	CListBox	m_depotEntryList;
-	CStatic	m_stateDepot;
-	CButton	m_gatherLootStats;
-	CEdit	m_unreachableAfter;
-	CEdit	m_suspendAfterUnreachable;
-	CButton	m_attackOnlyAttacking;
-	CEdit	m_standStill;
-	CButton	m_forceAttackAfterAttack;
-	CButton	m_stickToMonster;
-	CButton	m_eatFromCorpse;
-	CEdit	m_attackRange;
-	CButton	m_lootCustom;
-	CComboBox	m_waypointSelMode;
-	CStatic	m_stateWalker;
-	CStatic	m_stateLoot;
-	CStatic	m_stateAttack;
-	CButton	m_nomoveSuspended;
-	CComboBox	m_mapUsed;
-	CButton	m_lootinBags;
-	CButton	m_lootWhileKill;
-	CEdit	m_lootCapLimit;
-	CButton	m_suspendOnEnemy;
-	CButton	m_lootWorms;
-	CComboBox	m_mode;
-	CButton	m_lootGp;
-	CButton	m_lootFood;
-	CButton	m_logoutOnLevelChange;
-	CEdit	m_curZ;
-	CEdit	m_curY;
-	CEdit	m_curX;
-	CListBox	m_waypointList;
-	CButton		m_autoFollow;
-	CButton		m_attackAllMonsters;
-	CListBox	m_monsterList;
-	CEdit		m_monster;
-	CButton		m_dontAttackPlayers;
-	CButton	m_pausingEnable;
-	CButtonST	m_autoResearch;
-	CButtonST	m_enable;
-	CButtonST	m_depotEntryRemove;
-	CButtonST	m_depotEntryAdd;
-	CButtonST	m_OK;
-	CButtonST	m_RemoveWaypoint;
-	CButtonST	m_RemoveMonster;
-	CButtonST	m_RemoveIgnore;
-	CButtonST	m_AddWaypoint;
-	CButtonST	m_AddMonster;
-	CButtonST	m_AddIgnore;
-	CButtonST	m_LoadMinimap;
-	CButtonST	m_MonsterDown;
-	CButtonST	m_MonsterUp;
-	CEdit	m_radius;
-	CButtonST	m_AddDelay;
-	CEdit	m_delay;
-	CButtonST	m_dropLootList;
+	CButton m_addDelay;
+	CGroupBoxEx m_WaypointWalker;
+	CGroupBoxEx m_Training;
+	CGroupBoxEx m_MonsterAttacking;
+	CGroupBoxEx m_DepotWalker;
+	CGroupBoxEx m_Debugging;
+	CGroupBoxEx m_CorpseLooting;
+	CEdit m_depotCap;
+	CButton m_shareAlienBackattack;
+	CEdit m_ignore;
+	CListBox m_ignoreList;
+	CButton m_backattackRunes;
+	CEdit m_attackHpAbove;
+	CButton m_lootFromFloor;
+	CButton m_dropNotLooted;
+	CButton m_depotDropInsteadOfDeposit;
+	CComboBox m_weaponTrain;
+	CComboBox m_weaponFight;
+	CStatic m_trainingState;
+	CButton m_fightWhenSurrounded;
+	CButton m_fightWhenAlien;
+	CComboBox m_trainingMode;
+	CButton m_bloodHit;
+	CButton m_activate;
+	CButton m_debug;
+	CEdit m_depotWhen;
+	CEdit m_depotRemain;
+	CComboBox m_depotItemList;
+	CListBox m_depotEntryList;
+	CStatic m_stateDepot;
+	CButton m_gatherLootStats;
+	CEdit m_unreachableAfter;
+	CEdit m_suspendAfterUnreachable;
+	CButton m_attackOnlyAttacking;
+	CEdit m_standStill;
+	CButton m_forceAttackAfterAttack;
+	CButton m_stickToMonster;
+	CButton m_eatFromCorpse;
+	CEdit m_attackRange;
+	CButton m_lootCustom;
+	CComboBox m_waypointSelMode;
+	CStatic m_stateWalker;
+	CStatic m_stateLoot;
+	CStatic m_stateAttack;
+	CButton m_nomoveSuspended;
+	CComboBox m_mapUsed;
+	CButton m_lootinBags;
+	CButton m_lootWhileKill;
+	CEdit m_lootCapLimit;
+	CButton m_suspendOnEnemy;
+	CButton m_lootWorms;
+	CComboBox m_mode;
+	CButton m_lootGp;
+	CButton m_lootFood;
+	CButton m_logoutOnLevelChange;
+	CEdit m_curZ;
+	CEdit m_curY;
+	CEdit m_curX;
+	CListBox m_waypointList;
+	CButton m_autoFollow;
+	CButton m_attackAllMonsters;
+	CListBox m_monsterList;
+	CEdit m_monster;
+	CButton m_dontAttackPlayers;
+	CButton m_pausingEnable;
+	CButtonST m_autoResearch;
+	CButtonST m_enable;
+	CButtonST m_depotEntryRemove;
+	CButtonST m_depotEntryAdd;
+	CButtonST m_OK;
+	CButtonST m_RemoveWaypoint;
+	CButtonST m_RemoveMonster;
+	CButtonST m_RemoveIgnore;
+	CButtonST m_AddWaypoint;
+	CButtonST m_AddMonster;
+	CButtonST m_AddIgnore;
+	CButtonST m_LoadMinimap;
+	CButtonST m_MonsterDown;
+	CButtonST m_MonsterUp;
+	CEdit m_radius;
+	CButtonST m_AddDelay;
+	CEdit m_delay;
+	CButtonST m_dropLootList;
 	CComboBox m_depotModPriority;
 	CButton m_stopByDepot;
 	CButton m_depositLootedItemList;
@@ -193,9 +193,9 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -11,7 +11,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 #include "ModuleUtil.h"
 #include "MemReaderProxy.h"
@@ -30,14 +30,15 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 	DWORD cb; // incremental count of bytes
 	BYTE *hp; // byte pointer
 	DWORD dwTmp;
-	
+
 	// create the bitmapinfo header information
-	
-	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp)) {
+
+	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp))
+	{
 		AfxMessageBox("Could not retrieve bitmap info");
 		return;
 	}
-	
+
 	// Convert the color format to a count of bits.
 	cClrBits = (WORD)(bmp.bmPlanes * bmp.bmBitsPixel);
 	if (cClrBits == 1)
@@ -50,96 +51,104 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 		cClrBits = 16;
 	else if (cClrBits <= 24)
 		cClrBits = 24;
-	else cClrBits = 32;
+	else
+		cClrBits = 32;
 	// Allocate memory for the BITMAPINFO structure.
 	if (cClrBits != 24)
 		pbmi = (PBITMAPINFO) LocalAlloc(LPTR,
-		sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1<< cClrBits));
+		                                sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * (1 << cClrBits));
 	else
 		pbmi = (PBITMAPINFO) LocalAlloc(LPTR, sizeof(BITMAPINFOHEADER));
-	
+
 	// Initialize the fields in the BITMAPINFO structure.
-	
-	pbmi->bmiHeader.biSize = sizeof(BITMAPINFOHEADER);
-	pbmi->bmiHeader.biWidth = bmp.bmWidth;
-	pbmi->bmiHeader.biHeight = bmp.bmHeight;
-	pbmi->bmiHeader.biPlanes = bmp.bmPlanes;
+
+	pbmi->bmiHeader.biSize     = sizeof(BITMAPINFOHEADER);
+	pbmi->bmiHeader.biWidth    = bmp.bmWidth;
+	pbmi->bmiHeader.biHeight   = bmp.bmHeight;
+	pbmi->bmiHeader.biPlanes   = bmp.bmPlanes;
 	pbmi->bmiHeader.biBitCount = bmp.bmBitsPixel;
 	if (cClrBits < 24)
-		pbmi->bmiHeader.biClrUsed = (1<<cClrBits);
-	
+		pbmi->bmiHeader.biClrUsed = (1 << cClrBits);
+
 	// If the bitmap is not compressed, set the BI_RGB flag.
 	pbmi->bmiHeader.biCompression = BI_RGB;
-	
+
 	// Compute the number of bytes in the array of color
 	// indices and store the result in biSizeImage.
-	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) /8 * pbmi->bmiHeader.biHeight * cClrBits;
+	pbmi->bmiHeader.biSizeImage = (pbmi->bmiHeader.biWidth + 7) / 8 * pbmi->bmiHeader.biHeight * cClrBits;
 	// Set biClrImportant to 0, indicating that all of the
 	// device colors are important.
 	pbmi->bmiHeader.biClrImportant = 0;
-	
+
 	// now open file and save the data
-	pbih = (PBITMAPINFOHEADER) pbmi;
+	pbih   = (PBITMAPINFOHEADER) pbmi;
 	lpBits = (LPBYTE) GlobalAlloc(GMEM_FIXED, pbih->biSizeImage);
-	
-	if (!lpBits) {
+
+	if (!lpBits)
+	{
 		AfxMessageBox("writeBMP::Could not allocate memory");
 		return;
 	}
-	
+
 	// Retrieve the color table (RGBQUAD array) and the bits
 	if (!GetDIBits(hDC, HBITMAP(bitmap), 0, (WORD) pbih->biHeight, lpBits, pbmi,
-		DIB_RGB_COLORS)) {
+	               DIB_RGB_COLORS))
+	{
 		AfxMessageBox("writeBMP::GetDIB error");
 		return;
 	}
-	
+
 	// Create the .BMP file.
 	hf = CreateFile(filename, GENERIC_READ | GENERIC_WRITE, (DWORD) 0,
-		NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL,
-		(HANDLE) NULL);
-	if (hf == INVALID_HANDLE_VALUE){
+	                NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL,
+	                (HANDLE) NULL);
+	if (hf == INVALID_HANDLE_VALUE)
+	{
 		AfxMessageBox("Could not create file for writing");
 		return;
 	}
 	hdr.bfType = 0x4d42; // 0x42 = "B" 0x4d = "M"
 	// Compute the size of the entire file.
 	hdr.bfSize = (DWORD) (sizeof(BITMAPFILEHEADER) +
-		pbih->biSize + pbih->biClrUsed
-		* sizeof(RGBQUAD) + pbih->biSizeImage);
+	                      pbih->biSize + pbih->biClrUsed
+	                      * sizeof(RGBQUAD) + pbih->biSizeImage);
 	hdr.bfReserved1 = 0;
 	hdr.bfReserved2 = 0;
-	
+
 	// Compute the offset to the array of color indices.
 	hdr.bfOffBits = (DWORD) sizeof(BITMAPFILEHEADER) +
-		pbih->biSize + pbih->biClrUsed
-		* sizeof (RGBQUAD);
-	
+	                pbih->biSize + pbih->biClrUsed
+	                * sizeof (RGBQUAD);
+
 	// Copy the BITMAPFILEHEADER into the .BMP file.
 	if (!WriteFile(hf, (LPVOID) &hdr, sizeof(BITMAPFILEHEADER),
-		(LPDWORD) &dwTmp, NULL)) {
+	               (LPDWORD) &dwTmp, NULL))
+	{
 		AfxMessageBox("Could not write in to file");
 		return;
 	}
-	
+
 	// Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
 	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
-		+ pbih->biClrUsed * sizeof (RGBQUAD),
-		(LPDWORD) &dwTmp, ( NULL))){
+	               + pbih->biClrUsed * sizeof (RGBQUAD),
+	               (LPDWORD) &dwTmp, ( NULL)))
+	{
 		AfxMessageBox("Could not write in to file");
 		return;
 	}
-	
+
 	// Copy the array of color indices into the .BMP file.
 	dwTotal = cb = pbih->biSizeImage;
-	hp = lpBits;
-	if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp,NULL)) {
+	hp      = lpBits;
+	if (!WriteFile(hf, (LPSTR) hp, (int) cb, (LPDWORD) &dwTmp, NULL))
+	{
 		AfxMessageBox("Could not write in to file");
 		return;
 	}
-	
+
 	// Close the .BMP file.
-	if (!CloseHandle(hf)){
+	if (!CloseHandle(hf))
+	{
 		AfxMessageBox("Could not close file");
 		return;
 	}
@@ -150,9 +159,11 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 
 CString capturePosition(CString name) {
 	CMemReaderProxy reader;
-	if (!tibiaHwnd) {
+	if (!tibiaHwnd)
+	{
 		tibiaHwnd = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
-		while (tibiaHwnd) {
+		while (tibiaHwnd)
+		{
 			DWORD pid;
 			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHwnd, &pid);
 
@@ -162,30 +173,34 @@ CString capturePosition(CString name) {
 		}
 	}
 	RECT rect;
-	bool captured = false;
-	bool minimized = IsIconic(tibiaHwnd)!=0;
-	bool trayed = IsWindowVisible(tibiaHwnd)==0;
+	bool captured  = false;
+	bool minimized = IsIconic(tibiaHwnd) != 0;
+	bool trayed    = IsWindowVisible(tibiaHwnd) == 0;
 
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 	time_t lTime;
 	time(&lTime);
 	char timeBuf[64];
-		strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
+	strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
 	CString filePath;
 	filePath.Format("%s\\screenshots\\%s%s.bmp", path, name, timeBuf);
-	
-	while (!captured) {
+
+	while (!captured)
+	{
 		Sleep (100);
-		if(!IsWindowVisible(tibiaHwnd)) {
+		if(!IsWindowVisible(tibiaHwnd))
+		{
 			ShowWindow(tibiaHwnd, SW_SHOW);
 			continue;
 		}
-		if(IsIconic(tibiaHwnd)) {
+		if(IsIconic(tibiaHwnd))
+		{
 			ShowWindow(tibiaHwnd, SW_RESTORE);
 			continue;
 		}
-		if(tibiaHwnd != GetForegroundWindow()) {
+		if(tibiaHwnd != GetForegroundWindow())
+		{
 			SetForegroundWindow(tibiaHwnd);
 			continue;
 		}
@@ -196,15 +211,15 @@ CString capturePosition(CString name) {
 
 		rect.right -= 200;
 		int width = rect.right - rect.left;
-		int posx = (width/2) - 102 + rect.left;
+		int posx  = (width / 2) - 102 + rect.left;
 		rect.bottom -= 200;
-		int height = rect.bottom - rect.top;
-		int posy = (height/2) - 85 + rect.top;
-		HDC hDDC = GetDC(GetDesktopWindow());
-		HDC hCDC = CreateCompatibleDC(hDDC);
-		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC,205,175);
-		SelectObject(hCDC,hBitmap);
-		BitBlt(hCDC,0,0,205,175,hDDC,posx,posy,SRCCOPY);
+		int height      = rect.bottom - rect.top;
+		int posy        = (height / 2) - 85 + rect.top;
+		HDC hDDC        = GetDC(GetDesktopWindow());
+		HDC hCDC        = CreateCompatibleDC(hDDC);
+		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC, 205, 175);
+		SelectObject(hCDC, hBitmap);
+		BitBlt(hCDC, 0, 0, 205, 175, hDDC, posx, posy, SRCCOPY);
 		WriteBMPFileLoc(hBitmap, filePath, hCDC);
 		captured = true;
 		ReleaseDC(GetDesktopWindow(), hDDC);
@@ -224,8 +239,8 @@ CString capturePosition(CString name) {
 GeneralConfigDialog::GeneralConfigDialog(CWnd* pParent /*=NULL*/)
 	: MyDialog(GeneralConfigDialog::IDD, pParent)
 {
-	memset(memWhiteList,0,3200);
-	memMkBlack=0;
+	memset(memWhiteList, 0, 3200);
+	memMkBlack = 0;
 	//{{AFX_DATA_INIT(GeneralConfigDialog)
 	lastX = 0;
 	lastY = 0;
@@ -272,23 +287,23 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(GeneralConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(GeneralConfigDialog)
-	ON_BN_CLICKED(IDC_AUTOGO_WHITELIST, OnAutogoWhitelist)
-	ON_BN_CLICKED(IDC_AUTOGO_BATTLEPARANOIA, OnAutogoBattleparanoia)
-	ON_BN_CLICKED(IDC_AUTOGO_BATTLEANXIETY, OnAutogoBattleanxiety)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_AUTOGO_TORUNAWAY, OnAutogoTorunaway)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_BN_CLICKED(IDC_AUTOGO_TOSTART, OnAutogoTostart)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(GeneralConfigDialog)
+ON_BN_CLICKED(IDC_AUTOGO_WHITELIST, OnAutogoWhitelist)
+ON_BN_CLICKED(IDC_AUTOGO_BATTLEPARANOIA, OnAutogoBattleparanoia)
+ON_BN_CLICKED(IDC_AUTOGO_BATTLEANXIETY, OnAutogoBattleanxiety)
+ON_WM_TIMER()
+ON_BN_CLICKED(IDC_AUTOGO_TORUNAWAY, OnAutogoTorunaway)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_BN_CLICKED(IDC_AUTOGO_TOSTART, OnAutogoTostart)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // GeneralConfigDialog message handlers
 
 void GeneralConfigDialog::OnAutogoWhitelist() {
-	CWhiteList *dialog = new CWhiteList(memWhiteList,&memMkBlack);
+	CWhiteList *dialog = new CWhiteList(memWhiteList, &memMkBlack);
 	dialog->DoModal();
 	delete dialog;
 }
@@ -317,23 +332,23 @@ void GeneralConfigDialog::disableControls() {
 }
 
 void GeneralConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_battleWhiteList);
-	skin.SetButtonSkin(	m_SetStart);
-	skin.SetButtonSkin(	m_SetRunaway);
+	skin.SetButtonSkin(     m_battleWhiteList);
+	skin.SetButtonSkin(     m_SetStart);
+	skin.SetButtonSkin(     m_SetRunaway);
 }
 
 BOOL GeneralConfigDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
-	
-	m_actDirection.InsertString(0,"<None>");
-	m_actDirection.InsertString(DIR_LEFT,"Left");
-	m_actDirection.InsertString(DIR_RIGHT,"Right");
-	m_actDirection.InsertString(DIR_UP,"Up");
-	m_actDirection.InsertString(DIR_DOWN,"Down");
 
-	SetTimer(1001,250,NULL);
+	m_actDirection.InsertString(0, "<None>");
+	m_actDirection.InsertString(DIR_LEFT, "Left");
+	m_actDirection.InsertString(DIR_RIGHT, "Right");
+	m_actDirection.InsertString(DIR_UP, "Up");
+	m_actDirection.InsertString(DIR_DOWN, "Down");
+
+	SetTimer(1001, 250, NULL);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -365,13 +380,13 @@ void GeneralConfigDialog::enableControls() {
 void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	CString buf;
 	memcpy(memWhiteList, configData->whiteList, 3200);
-	buf.Format("%d",configData->actX);		m_actX.SetWindowText(buf);
-	buf.Format("%d",configData->actY);		m_actY.SetWindowText(buf);
-	buf.Format("%d",configData->actZ);		m_actZ.SetWindowText(buf);
+	buf.Format("%d", configData->actX);              m_actX.SetWindowText(buf);
+	buf.Format("%d", configData->actY);              m_actY.SetWindowText(buf);
+	buf.Format("%d", configData->actZ);              m_actZ.SetWindowText(buf);
 	m_actDirection.SetCurSel(configData->actDirection);
-	buf.Format("%d",configData->runawayX);	m_runawayX.SetWindowText(buf);
-	buf.Format("%d",configData->runawayY);	m_runawayY.SetWindowText(buf);
-	buf.Format("%d",configData->runawayZ);	m_runawayZ.SetWindowText(buf);
+	buf.Format("%d", configData->runawayX);  m_runawayX.SetWindowText(buf);
+	buf.Format("%d", configData->runawayY);  m_runawayY.SetWindowText(buf);
+	buf.Format("%d", configData->runawayZ);  m_runawayZ.SetWindowText(buf);
 	m_ignoreSpells.SetCheck(configData->options & OPTIONS_IGNORE_SPELLS);
 	m_battleParanoia.SetCheck(configData->options & OPTIONS_BATTLE_PARANOIA);
 	m_battleAnxiety.SetCheck(configData->options & OPTIONS_BATTLE_ANXIETY);
@@ -385,23 +400,28 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	CString buf;
 	memcpy(newConfigData->whiteList, memWhiteList, 3200);
-	m_actX.GetWindowText(buf);		newConfigData->actX=atoi(buf);
-	m_actY.GetWindowText(buf);		newConfigData->actY=atoi(buf);
-	m_actZ.GetWindowText(buf);		newConfigData->actZ=atoi(buf);
-	newConfigData->actDirection = m_actDirection.GetCurSel();
-	m_runawayX.GetWindowText(buf);	newConfigData->runawayX=atoi(buf);
-	m_runawayY.GetWindowText(buf);	newConfigData->runawayY=atoi(buf);
-	m_runawayZ.GetWindowText(buf);	newConfigData->runawayZ=atoi(buf);
+	m_actX.GetWindowText(buf);              newConfigData->actX = atoi(buf);
+	m_actY.GetWindowText(buf);              newConfigData->actY = atoi(buf);
+	m_actZ.GetWindowText(buf);              newConfigData->actZ = atoi(buf);
+	newConfigData->actDirection                                 = m_actDirection.GetCurSel();
+	m_runawayX.GetWindowText(buf);  newConfigData->runawayX     = atoi(buf);
+	m_runawayY.GetWindowText(buf);  newConfigData->runawayY     = atoi(buf);
+	m_runawayZ.GetWindowText(buf);  newConfigData->runawayZ     = atoi(buf);
 
-	newConfigData->options=0;
-	if (m_ignoreSpells.GetCheck())	newConfigData->options |= OPTIONS_IGNORE_SPELLS;
-	if (m_battleParanoia.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_PARANOIA;
-	if (m_battleAnxiety.GetCheck())	newConfigData->options |= OPTIONS_BATTLE_ANXIETY;
-	if (memMkBlack) newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
-	if (m_flashOnAlarm.GetCheck())	newConfigData->options |= OPTIONS_FLASHONALARM;
-	newConfigData->maintainPos = m_maintainPos.GetCheck()!=0;
-	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
-	newConfigData->screenshotType=m_screenshotType.GetCurSel();
+	newConfigData->options = 0;
+	if (m_ignoreSpells.GetCheck())
+		newConfigData->options |= OPTIONS_IGNORE_SPELLS;
+	if (m_battleParanoia.GetCheck())
+		newConfigData->options |= OPTIONS_BATTLE_PARANOIA;
+	if (m_battleAnxiety.GetCheck())
+		newConfigData->options |= OPTIONS_BATTLE_ANXIETY;
+	if (memMkBlack)
+		newConfigData->options |= OPTIONS_MAKE_BLACKLIST;
+	if (m_flashOnAlarm.GetCheck())
+		newConfigData->options |= OPTIONS_FLASHONALARM;
+	newConfigData->maintainPos = m_maintainPos.GetCheck() != 0;
+	sprintf(newConfigData->modPriorityStr, "%d", m_modPriority.GetCurSel() + 1);
+	newConfigData->screenshotType = m_screenshotType.GetCurSel();
 }
 
 void GeneralConfigDialog::OnAutogoBattleparanoia() {
@@ -413,16 +433,18 @@ void GeneralConfigDialog::OnAutogoBattleanxiety() {
 }
 
 void GeneralConfigDialog::OnTimer(UINT nIDEvent) {
-	if (nIDEvent==1001) {
+	if (nIDEvent == 1001)
+	{
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CString buf;
-		if (lastX != self->x || lastY != self->y || lastZ != self->z) {
-			buf.Format("%d",self->x);
+		if (lastX != self->x || lastY != self->y || lastZ != self->z)
+		{
+			buf.Format("%d", self->x);
 			m_curX.SetWindowText(buf);
-			buf.Format("%d",self->y);
+			buf.Format("%d", self->y);
 			m_curY.SetWindowText(buf);
-			buf.Format("%d",self->z);
+			buf.Format("%d", self->z);
 			m_curZ.SetWindowText(buf);
 		}
 		delete self;
@@ -441,9 +463,8 @@ void GeneralConfigDialog::OnAutogoTorunaway() {
 	if (RunawayBMP.GetLength())
 		remove(RunawayBMP);
 	RunawayBMP = capturePosition("RunawayPosition");
-	m_runawayPicture.SetBitmap((HBITMAP)::LoadImage(NULL, RunawayBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION));
+	m_runawayPicture.SetBitmap((HBITMAP)::LoadImage(NULL, RunawayBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 	m_runawayPicture.Invalidate();
-	
 }
 
 void GeneralConfigDialog::OnAutogoTostart() {
@@ -457,6 +478,6 @@ void GeneralConfigDialog::OnAutogoTostart() {
 	if (StartBMP.GetLength())
 		remove(StartBMP);
 	StartBMP = capturePosition("StartPosition");
-	m_startPicture.SetBitmap((HBITMAP)::LoadImage(NULL, StartBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE|LR_CREATEDIBSECTION));
+	m_startPicture.SetBitmap((HBITMAP)::LoadImage(NULL, StartBMP, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE | LR_CREATEDIBSECTION));
 	m_startPicture.Invalidate();
 }

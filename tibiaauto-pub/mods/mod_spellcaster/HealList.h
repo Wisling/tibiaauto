@@ -21,21 +21,21 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CHealList)
 	enum { IDD = IDD_HEALLIST };
-	CListCtrl	m_list;
-	CEdit	m_triggerHP;
-	CGroupBoxEx	m_healListFrame;
-	CButtonST	m_OK;
-	CEdit	m_name;
-	CEdit	m_maxHP;
-	CButtonST	m_delete;
-	CButtonST	m_add;
+	CListCtrl m_list;
+	CEdit m_triggerHP;
+	CGroupBoxEx m_healListFrame;
+	CButtonST m_OK;
+	CEdit m_name;
+	CEdit m_maxHP;
+	CButtonST m_delete;
+	CButtonST m_add;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CHealList)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

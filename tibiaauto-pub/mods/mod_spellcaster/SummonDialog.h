@@ -27,19 +27,19 @@ public:
 // Dialog Data
 	//{{AFX_DATA(SummonDialog)
 	enum { IDD = IDD_SUMMON_DIALOG };
-	CListCtrl	m_creatureList;
-	CEdit	m_summonName;
-	CEdit	m_summonMana;
-	CButton	m_summon;
-	CEdit	m_summonLessThan;
-	CGroupBoxEx	m_SummonFrame;
+	CListCtrl m_creatureList;
+	CEdit m_summonName;
+	CEdit m_summonMana;
+	CButton m_summon;
+	CEdit m_summonLessThan;
+	CGroupBoxEx m_SummonFrame;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(SummonDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -18,9 +18,9 @@
 enum FUNTYPE
 {
 	FUNTYPE_PERIODICAL = 0,
-	FUNTYPE_MSG = 1,
-	FUNTYPE_TAMSG = 2,
-	FUNTYPE_INPACKET = 3
+	FUNTYPE_MSG        = 1,
+	FUNTYPE_TAMSG      = 2,
+	FUNTYPE_INPACKET   = 3
 };
 
 struct paramType
@@ -44,34 +44,29 @@ struct funType
 	int scriptNr;
 public:
 	~funType(){
-		
 	}
 	funType(){
-		matchExpr = NULL;
+		matchExpr       = NULL;
 		matchExprHandle = 0;
 	}
 	void call()
 	{
-		long int tm=GetTickCount();
-		tmLastExec=tm;
-		if (type==FUNTYPE_PERIODICAL)
-		{
-			tmNextExec=tm+interval;
-		}
+		long int tm = GetTickCount();
+		tmLastExec = tm;
+		if (type == FUNTYPE_PERIODICAL)
+			tmNextExec = tm + interval;
 	}
 };
-
-
 
 
 class CPythonScript
 {
 	friend class CPythonEngine;
 public:
-	void setParamValue(char *name,char *value);
+	void setParamValue(char *name, char *value);
 	PyObject * getParamsDic();
 	struct paramType *getParamDef(int nr);
-	void addParamDef(char *name,char *desc);
+	void addParamDef(char *name, char *desc);
 	void setFileName(char *newFileName);
 	char * getFileName();
 	static int getScriptCount();
@@ -80,8 +75,8 @@ public:
 	PyObject * getPluginObject();
 	struct funType * getFunDef(int nr);
 	static CPythonScript * getScriptByNr(int nr);
-	void addFunDef(int type,int interval,PyObject *fun);
-	void addFunDef(int type,char *interval, int regLen, PyObject *fun);
+	void addFunDef(int type, int interval, PyObject *fun);
+	void addFunDef(int type, char *interval, int regLen, PyObject *fun);
 	CPythonScript();
 	virtual ~CPythonScript();
 	void setName(char *name);
@@ -109,12 +104,11 @@ private:
 
 	int scriptNr;
 	int enabled;
-	
+
 	static int pythonScriptCount;
 	static int pythonScriptSize;
 	static CPythonScript **pythonScriptTab;
 	static void reallocPythonScript();
-	
 };
 
 #endif // !defined(AFX_PYTHONSCRIPT_H__72796954_565E_4E4B_B8EA_B58B799CA4A0__INCLUDED_)

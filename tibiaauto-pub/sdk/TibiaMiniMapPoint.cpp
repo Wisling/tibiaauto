@@ -11,19 +11,18 @@
 
 CTibiaMiniMapPoint::CTibiaMiniMapPoint()
 {
-	x=y=z=colour=speed=0;
+	x = y = z = colour = speed = 0;
 }
 
-CTibiaMiniMapPoint::CTibiaMiniMapPoint(int x,int y,int z,int colour,int speed)
+CTibiaMiniMapPoint::CTibiaMiniMapPoint(int x, int y, int z, int colour, int speed)
 {
-	this->x=x;
-	this->y=y;
-	this->z=z;
-	this->colour=colour;
-	this->speed=speed;
+	this->x      = x;
+	this->y      = y;
+	this->z      = z;
+	this->colour = colour;
+	this->speed  = speed;
 }
 
 CTibiaMiniMapPoint::~CTibiaMiniMapPoint()
 {
-
 }

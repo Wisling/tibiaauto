@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // SummonDialog dialog
@@ -38,12 +38,12 @@ void SummonDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(SummonDialog, CDialog)
-	//{{AFX_MSG_MAP(SummonDialog)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_NOTIFY(LVN_ITEMCHANGING, IDC_CREATURE_LIST, OnItemchangingCreatureList)
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(SummonDialog)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_NOTIFY(LVN_ITEMCHANGING, IDC_CREATURE_LIST, OnItemchangingCreatureList)
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,8 @@ void SummonDialog::disableControls() {
 
 void SummonDialog::enableControls() {
 	m_summon.EnableWindow(true);
-	if (m_summon.GetCheck()){
+	if (m_summon.GetCheck())
+	{
 		m_summonLessThan.EnableWindow(true);
 		m_summonMana.EnableWindow(true);
 		m_summonName.EnableWindow(true);
@@ -75,18 +76,18 @@ void SummonDialog::enableControls() {
 void SummonDialog::configToControls(CConfigData *configData) {
 	char buf[128];
 	m_summon.SetCheck(configData->summon);
-	sprintf(buf,"%d",configData->summonLessThan);	m_summonLessThan.SetWindowText(buf);
-	sprintf(buf,"%s",configData->summonName);		m_summonName.SetWindowText(buf);
-	sprintf(buf,"%d",configData->summonMana);		m_summonMana.SetWindowText(buf);
+	sprintf(buf, "%d", configData->summonLessThan);   m_summonLessThan.SetWindowText(buf);
+	sprintf(buf, "%s", configData->summonName);               m_summonName.SetWindowText(buf);
+	sprintf(buf, "%d", configData->summonMana);               m_summonMana.SetWindowText(buf);
 	OnToolSpellcasterSummon();
 }
 
 void SummonDialog::controlsToConfig(CConfigData *newConfigData) {
 	char buf[128];
-	newConfigData->summon = m_summon.GetCheck();
-	m_summonLessThan.GetWindowText(buf,127);newConfigData->summonLessThan=atoi(buf);
-	m_summonMana.GetWindowText(buf,127);newConfigData->summonMana=atoi(buf);
-	m_summonName.GetWindowText(newConfigData->summonName,127);
+	newConfigData->summon                                                   = m_summon.GetCheck();
+	m_summonLessThan.GetWindowText(buf, 127); newConfigData->summonLessThan = atoi(buf);
+	m_summonMana.GetWindowText(buf, 127); newConfigData->summonMana         = atoi(buf);
+	m_summonName.GetWindowText(newConfigData->summonName, 127);
 }
 
 BOOL SummonDialog::OnInitDialog()
@@ -103,9 +104,9 @@ BOOL SummonDialog::OnInitDialog()
 	m_creatureList.SetImageList(&m_LargeImg, LVSIL_NORMAL);
 
 	LV_COLUMN lvColumn;
-	lvColumn.mask = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
-	lvColumn.fmt = LVCFMT_LEFT;
-	lvColumn.cx = 120;
+	lvColumn.mask    = LVCF_FMT | LVCF_WIDTH | LVCF_TEXT | LVCF_SUBITEM;
+	lvColumn.fmt     = LVCFMT_LEFT;
+	lvColumn.cx      = 120;
 	lvColumn.pszText = "Name";
 	m_creatureList.InsertColumn(0, &lvColumn);
 
@@ -113,63 +114,63 @@ BOOL SummonDialog::OnInitDialog()
 	m_creatureList.InsertColumn(1, &lvColumn);
 
 	LVITEM lvItem;
-	lvItem.mask = LVIF_IMAGE | LVIF_TEXT;
-	lvItem.iItem = 0;
+	lvItem.mask     = LVIF_IMAGE | LVIF_TEXT;
+	lvItem.iItem    = 0;
 	lvItem.iSubItem = 0;
-	lvItem.pszText = "Dwarf Guard";
-	lvItem.iImage = 0;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.pszText  = "Dwarf Guard";
+	lvItem.iImage   = 0;
+	nItem           = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(0, 1, "650");
 
-	lvItem.iItem = 1;
+	lvItem.iItem   = 1;
 	lvItem.pszText = "Fire Elemental";
-	lvItem.iImage = 1;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 1;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(1, 1, "690");
 
-	lvItem.iItem = 2;
+	lvItem.iItem   = 2;
 	lvItem.pszText = "Orc Leader";
-	lvItem.iImage = 2;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 2;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(2, 1, "640");
 
-	lvItem.iItem = 3;
+	lvItem.iItem   = 3;
 	lvItem.pszText = "Fire Devil";
-	lvItem.iImage = 3;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 3;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(3, 1, "530");
 
-	lvItem.iItem = 4;
+	lvItem.iItem   = 4;
 	lvItem.pszText = "Monk";
-	lvItem.iImage = 4;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 4;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(4, 1, "600");
 
-	lvItem.iItem = 5;
+	lvItem.iItem   = 5;
 	lvItem.pszText = "Orc Berserker";
-	lvItem.iImage = 5;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 5;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(5, 1, "590");
 
-	lvItem.iItem = 6;
+	lvItem.iItem   = 6;
 	lvItem.pszText = "Stone Golem";
-	lvItem.iImage = 6;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 6;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(6, 1, "590");
 
-	lvItem.iItem = 7;
+	lvItem.iItem   = 7;
 	lvItem.pszText = "Gozzler";
-	lvItem.iImage = 7;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 7;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(7, 1, "800");
 
-	lvItem.iItem = 8;
+	lvItem.iItem   = 8;
 	lvItem.pszText = "Demon Skeleton";
-	lvItem.iImage = 8;
-	nItem = m_creatureList.InsertItem(&lvItem);
+	lvItem.iImage  = 8;
+	nItem          = m_creatureList.InsertItem(&lvItem);
 	m_creatureList.SetItemText(8, 1, "620");
 	OnToolSpellcasterSummon();
-		
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -177,9 +178,10 @@ BOOL SummonDialog::OnInitDialog()
 void SummonDialog::OnItemchangingCreatureList(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
-	
+
 	*pResult = 0;
-	if((pNMListView->uNewState & LVIS_SELECTED)){
+	if((pNMListView->uNewState & LVIS_SELECTED))
+	{
 		m_summonName.SetWindowText(m_creatureList.GetItemText(pNMListView->iItem, 0));
 		m_summonMana.SetWindowText(m_creatureList.GetItemText(pNMListView->iItem, 1));
 

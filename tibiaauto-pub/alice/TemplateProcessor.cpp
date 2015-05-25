@@ -17,7 +17,8 @@ AimlProcessor *TemplateProcessor::hook = new TemplateProcessor();
 
 TemplateProcessor::~TemplateProcessor() {
 	map<string, AimlProcessor *>::iterator itr = Handler::processors.begin();
-	while (itr != Handler::processors.end()) {
+	while (itr != Handler::processors.end())
+	{
 		delete (*itr).second;
 		*itr++;
 	}
@@ -25,49 +26,57 @@ TemplateProcessor::~TemplateProcessor() {
 
 string TemplateProcessor::process(Match *m, PElement e, Responder *r, const string &id) {
 	string buffer = "";
-	if (e == NULL) {
+	if (e == NULL)
 		return buffer;
-	}
-	try {
+	try
+	{
 		PElement child = e->getChild();
-		while (child != NULL) {
-			if (child->getTagname() == "#text") {
+		while (child != NULL)
+		{
+			if (child->getTagname() == "#text")
+			{
 				buffer += child->getText();
-			} else if (child->getTagname() == "#cdata") {
+			}
+			else if (child->getTagname() == "#cdata")
+			{
 				buffer += child->getText(false);
-			} else {
-				if (child->hasNamespace()) {
-					if (r == NULL) {
+			}
+			else
+			{
+				if (child->hasNamespace())
+				{
+					if (r == NULL)
 						;
-					} else {
+					else
 						buffer += r->respond(m, child, id);
-					}
-				} else {
+				}
+				else
+				{
 					child = checkCompatibility(child);
 
 					AimlProcessor *p = TemplateProcessor::getProcessor(child->getTagname());
-					if (p == NULL) {
+					if (p == NULL)
 						//	Then nothing to process this tag with
 						buffer += process(m, child, r, id);
-					} else {
+					else
 						buffer += p->process(m, child, r, id);
-					}
 				}
 			}
 			child = child->getNextSibling();
 		}
-	} catch (int &ex) {
+	}
+	catch (int &ex)
+	{
 		ex = ex; //force referencing
 	}
 	return buffer;
 }
 
 AimlProcessor *TemplateProcessor::getProcessor(const string &name) {
-	if(Handler::hasProcessor(name)) {
+	if(Handler::hasProcessor(name))
 		return (*Handler::processors.find(name)).second;
-	} else {
+	else
 		return NULL;
-	}
 }
 
 string TemplateProcessor::processTemplate(Match *m, PElement e, Responder *r, const string &id) {
@@ -77,13 +86,13 @@ string TemplateProcessor::processTemplate(Match *m, PElement e, Responder *r, co
 
 PElement TemplateProcessor::checkCompatibility(PElement e) {
 	string elementName = e->getTagname();
-	if (elementName.find("_") != string::npos) {
+	if (elementName.find("_") != string::npos)
+	{
 		StringTokenizer st(elementName, "_");
-		string action = st.nextToken();
+		string action   = st.nextToken();
 		string property = st.nextToken();
 		e->setTagname(action);
 		e->setAttribute("name", property);
 	}
 	return e;
 }
-	

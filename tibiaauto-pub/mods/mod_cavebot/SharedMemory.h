@@ -1,15 +1,15 @@
 /********************************************************************************************
-* MOD-NAME      : SharedMemory.h
-* LONG-NAME     :
-*
-* AUTHOR        : Martin Ziacek
-* DEPARTMENT    :
-* TELEPHONE     :
-* CREATION-DATE : 09/05/2001 18:00:00
-* SP-NO         :
-* FUNCTION      :
-*
-*********************************************************************************************/
+ * MOD-NAME      : SharedMemory.h
+ * LONG-NAME     :
+ *
+ * AUTHOR        : Martin Ziacek
+ * DEPARTMENT    :
+ * TELEPHONE     :
+ * CREATION-DATE : 09/05/2001 18:00:00
+ * SP-NO         :
+ * FUNCTION      :
+ *
+ *********************************************************************************************/
 #ifndef __MEMMAPFILE_H__
 #define __MEMMAPFILE_H__
 
@@ -19,13 +19,13 @@
 // SharedMemory.h : header file
 //
 
-#define DEF_SHARED_SIZE		128
-#define VAR_NAME_LENGTH		40
+#define DEF_SHARED_SIZE         128
+#define VAR_NAME_LENGTH         40
 
 //structure creates header for a variable
 typedef struct _tagValueHeader {
-	WCHAR wszValueName[VAR_NAME_LENGTH];		//name of the variable
-	DWORD dwLength;								//variable size
+	WCHAR wszValueName[VAR_NAME_LENGTH];            //name of the variable
+	DWORD dwLength;                                                         //variable size
 } ValueHeader;
 
 class CSharedMemory;
@@ -51,7 +51,7 @@ class CSharedMemory : public CObject
 public:
 	DECLARE_DYNAMIC(CSharedMemory)
 
-	CSharedMemory(const TCHAR *szName, DWORD dwSize = DEF_SHARED_SIZE, PINITMEMORY InitMemoryProcedure = NULL,LPSECURITY_ATTRIBUTES lpsaAttributes = NULL);
+	CSharedMemory(const TCHAR *szName, DWORD dwSize = DEF_SHARED_SIZE, PINITMEMORY InitMemoryProcedure = NULL, LPSECURITY_ATTRIBUTES lpsaAttributes = NULL);
 	~CSharedMemory();
 
 	CString GetMemName(void);
@@ -97,7 +97,7 @@ public:
 #ifdef _DEBUG
 	virtual void AssertValid(void);
 	virtual void Dump(CDumpContext & dc);
-#endif
+#endif // ifdef _DEBUG
 
 	DWORD GetLastError(void);
 	DWORD GetMemSize(void);
@@ -106,26 +106,26 @@ public:
 protected:
 	void SetLastError(DWORD dwErrCode);
 	BOOL CreateSa(void);
-	BOOL FindValue(const WCHAR *wszName,LPBYTE *pData, ValueHeader **pTmp);
+	BOOL FindValue(const WCHAR *wszName, LPBYTE *pData, ValueHeader **pTmp);
 	WCHAR *AllocateUnicodeStr(const char *szStr);
 
-	CString m_CsName;			//name of shared memory
+	CString m_CsName;                       //name of shared memory
 
-	DWORD m_dwLastError;		//last error issued from system by method of class
+	DWORD m_dwLastError;            //last error issued from system by method of class
 
-	CSemaphore *m_pSync;		//synchronization of shared memory - across processes
-	CSingleLock *m_pLock;		//is made by these two objects
+	CSemaphore *m_pSync;            //synchronization of shared memory - across processes
+	CSingleLock *m_pLock;           //is made by these two objects
 
-	BOOL m_bFirst;				//TRUE, if this is first reference to sm
+	BOOL m_bFirst;                          //TRUE, if this is first reference to sm
 
-	BOOL m_bCreated;			//TRUE, if shared memory was created
+	BOOL m_bCreated;                        //TRUE, if shared memory was created
 
-	DWORD m_dwMemSize;			//size of allocated shared memory
+	DWORD m_dwMemSize;                      //size of allocated shared memory
 
-	LPBYTE m_lpView;			//pointer to the begining of shared memory
-	HANDLE m_hFileMap;			//handle of shared memory (mapped file)
+	LPBYTE m_lpView;                        //pointer to the begining of shared memory
+	HANDLE m_hFileMap;                      //handle of shared memory (mapped file)
 
-	BOOL m_bSecPres;			//TRUE, if OS support security
+	BOOL m_bSecPres;                        //TRUE, if OS support security
 
 	UCHAR m_SdEvent[SECURITY_DESCRIPTOR_MIN_LENGTH];
 	SECURITY_ATTRIBUTES m_SecAtr;

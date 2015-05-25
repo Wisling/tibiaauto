@@ -13,7 +13,7 @@ class CMemConstData
 {
 public:
 	CMemConstData();
-	
+
 	int m_memAddressXor;
 	int m_memAddressPacketCount;
 	int m_memAddressVIP;
@@ -77,7 +77,6 @@ public:
 	int m_memAddressSkillFistPercLeft;
 
 
-	
 	int m_memLengthContainer;
 	int m_memLengthItem;
 	int m_memLengthCreature;

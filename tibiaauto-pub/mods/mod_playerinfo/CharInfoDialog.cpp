@@ -16,11 +16,10 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
-#define WARNING1	20
-#define WARNING2	5
-
+#define WARNING1        20
+#define WARNING2        5
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -93,14 +92,14 @@ void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CCharInfoDialog, MyDialog)
-	//{{AFX_MSG_MAP(CCharInfoDialog)
-	ON_WM_TIMER()
-	ON_BN_CLICKED(IDC_RESET_COUNTERS, OnResetCounters)
-	ON_BN_CLICKED(IDC_ENABLETIMERS, OnEnabletimers)
-	ON_WM_ERASEBKGND()
-	ON_WM_DRAWITEM()
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CCharInfoDialog)
+ON_WM_TIMER()
+ON_BN_CLICKED(IDC_RESET_COUNTERS, OnResetCounters)
+ON_BN_CLICKED(IDC_ENABLETIMERS, OnEnabletimers)
+ON_WM_ERASEBKGND()
+ON_WM_DRAWITEM()
+ON_WM_CTLCOLOR()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -111,54 +110,56 @@ void CCharInfoDialog::resetCounters()
 	CMemReaderProxy reader;
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
-	playerInfo.timeStart	= time(NULL);
+	playerInfo.timeStart = time(NULL);
 
 	long lvl;
-	long expForLvl=0;
-	long expLeft=0;
-	long percForLvl=0;
-	long expForLvlDiff=0;
+	long expForLvl     = 0;
+	long expLeft       = 0;
+	long percForLvl    = 0;
+	long expForLvlDiff = 0;
 
 	//=((1+A1)*(2+A1)/2-4*A1+3)*100
-	for (lvl=1;lvl<250;lvl++){
-		expForLvlDiff	=  ((2+lvl)*(3+lvl)/2-4*(lvl+1)+3)*100;
-		expForLvl		+= expForLvlDiff;
+	for (lvl = 1; lvl < 250; lvl++)
+	{
+		expForLvlDiff = ((2 + lvl) * (3 + lvl) / 2 - 4 * (lvl + 1) + 3) * 100;
+		expForLvl    += expForLvlDiff;
 
-		if (expForLvl>ch->exp){
-			expLeft		= expForLvl-ch->exp;
-			percForLvl	= MulDiv(expLeft,100,expForLvlDiff);
+		if (expForLvl > ch->exp)
+		{
+			expLeft    = expForLvl - ch->exp;
+			percForLvl = MulDiv(expLeft, 100, expForLvlDiff);
 			break;
 		}
 	}
 
-	playerInfo.expStart	= ch->exp;
-	playerInfo.skill[SKILL_LEVEL].start		= ch->lvl*100+(100-percForLvl);
-	playerInfo.skill[SKILL_MAGICLEVEL].start= ch->mlvl*100+(100-ch->mlvlPercLeft);
-	playerInfo.skill[SKILL_FIST].start		= ch->skillFist*100+(100-ch->skillFistPercLeft);
-	playerInfo.skill[SKILL_CLUB].start		= ch->skillClub*100+(100-ch->skillClubPercLeft);
-	playerInfo.skill[SKILL_SWORD].start		= ch->skillSword*100+(100-ch->skillSwordPercLeft);
-	playerInfo.skill[SKILL_AXE].start		= ch->skillAxe*100+(100-ch->skillAxePercLeft);
-	playerInfo.skill[SKILL_DIST].start		= ch->skillDist*100+(100-ch->skillDistPercLeft);
-	playerInfo.skill[SKILL_SHIELD].start	= ch->skillShield*100+(100-ch->skillShieldPercLeft);
-	playerInfo.skill[SKILL_FISH].start		= ch->skillFish*100+(100-ch->skillFishPercLeft);
+	playerInfo.expStart                      = ch->exp;
+	playerInfo.skill[SKILL_LEVEL].start      = ch->lvl * 100 + (100 - percForLvl);
+	playerInfo.skill[SKILL_MAGICLEVEL].start = ch->mlvl * 100 + (100 - ch->mlvlPercLeft);
+	playerInfo.skill[SKILL_FIST].start       = ch->skillFist * 100 + (100 - ch->skillFistPercLeft);
+	playerInfo.skill[SKILL_CLUB].start       = ch->skillClub * 100 + (100 - ch->skillClubPercLeft);
+	playerInfo.skill[SKILL_SWORD].start      = ch->skillSword * 100 + (100 - ch->skillSwordPercLeft);
+	playerInfo.skill[SKILL_AXE].start        = ch->skillAxe * 100 + (100 - ch->skillAxePercLeft);
+	playerInfo.skill[SKILL_DIST].start       = ch->skillDist * 100 + (100 - ch->skillDistPercLeft);
+	playerInfo.skill[SKILL_SHIELD].start     = ch->skillShield * 100 + (100 - ch->skillShieldPercLeft);
+	playerInfo.skill[SKILL_FISH].start       = ch->skillFish * 100 + (100 - ch->skillFishPercLeft);
 
-	playerInfo.spell[SPELL_INVISIBLE].lasts = 200;
-	playerInfo.spell[SPELL_HASTE].lasts		= 30;
-	playerInfo.spell[SPELL_STRONGHASTE].lasts= 20;
-	playerInfo.spell[SPELL_SHIELD].lasts	= 200;
+	playerInfo.spell[SPELL_INVISIBLE].lasts   = 200;
+	playerInfo.spell[SPELL_HASTE].lasts       = 30;
+	playerInfo.spell[SPELL_STRONGHASTE].lasts = 20;
+	playerInfo.spell[SPELL_SHIELD].lasts      = 200;
 
 	delete ch;
 }
 
 void CCharInfoDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(	m_ResetCounters);
-	skin.SetButtonSkin(	m_OK);
+	skin.SetButtonSkin(     m_ResetCounters);
+	skin.SetButtonSkin(     m_OK);
 }
 
 BOOL CCharInfoDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
-	
+
 	configToControls(config);
 	resetCounters();
 	m_hasteRemaining.EnableWindow(config->enableTimers);
@@ -170,20 +171,20 @@ BOOL CCharInfoDialog::OnInitDialog() {
 	m_invisText.EnableWindow(config->enableTimers);
 	m_hasteText.EnableWindow(config->enableTimers);
 
-	SetTimer(1001,500,NULL);
-	
+	SetTimer(1001, 500, NULL);
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void CCharInfoDialog::OnTimer(UINT nIDEvent)
 {
-	if (nIDEvent==1001){
+	if (nIDEvent == 1001)
+	{
 		dataCalc();
 		dataShow();
 	}
 	//CDialog::OnTimer(nIDEvent);
-	
 }
 
 void CCharInfoDialog::OnResetCounters()
@@ -197,78 +198,77 @@ void CCharInfoDialog::dataCalc(){
 
 	//T4: Exp calculation
 	long lvl;
-	long expForLvl=0;
-	long expLeft=0;
-	long percForLvl=0;
-	long expForLvlDiff=0;
+	long expForLvl     = 0;
+	long expLeft       = 0;
+	long percForLvl    = 0;
+	long expForLvlDiff = 0;
 
 	//=((1+A1)*(2+A1)/2-4*A1+3)*100
-	for (lvl=1;lvl<250;lvl++){
-		expForLvlDiff	=  ((2+lvl)*(3+lvl)/2-4*(lvl+1)+3)*100;
-		expForLvl		+= expForLvlDiff;
+	for (lvl = 1; lvl < 250; lvl++)
+	{
+		expForLvlDiff = ((2 + lvl) * (3 + lvl) / 2 - 4 * (lvl + 1) + 3) * 100;
+		expForLvl    += expForLvlDiff;
 
-		if (expForLvl>ch->exp){
-			expLeft		= expForLvl-ch->exp;
-			percForLvl	= MulDiv(expLeft,100,expForLvlDiff);
+		if (expForLvl > ch->exp)
+		{
+			expLeft    = expForLvl - ch->exp;
+			percForLvl = MulDiv(expLeft, 100, expForLvlDiff);
 			break;
 		}
 	}
 
 	playerInfo.timeCurrent = time(NULL);
-	time_t timeDiff = playerInfo.timeCurrent-playerInfo.timeStart;
+	time_t timeDiff = playerInfo.timeCurrent - playerInfo.timeStart;
 
-	playerInfo.hp			= ch->hp;
-	playerInfo.maxHp		= ch->maxHp;
-	playerInfo.mana			= ch->mana;
-	playerInfo.maxMana		= ch->maxMana;
-	playerInfo.soulPoints	= ch->soulPoints;
-	playerInfo.stamina		= ch->stamina;
-	playerInfo.capacity		= ch->cap;
-	strncpy(playerInfo.voc,ch->voc,3);
+	playerInfo.hp         = ch->hp;
+	playerInfo.maxHp      = ch->maxHp;
+	playerInfo.mana       = ch->mana;
+	playerInfo.maxMana    = ch->maxMana;
+	playerInfo.soulPoints = ch->soulPoints;
+	playerInfo.stamina    = ch->stamina;
+	playerInfo.capacity   = ch->cap;
+	strncpy(playerInfo.voc, ch->voc, 3);
 
-	if (!strcmp(ch->voc,"k") || !strcmp(ch->voc,"ek")){ //Knight
-		playerInfo.maxCapacity	= 270+ch->lvl*25;
-	}else if (!strcmp(ch->voc,"p") || !strcmp(ch->voc,"rp")){ //Pall
-		playerInfo.maxCapacity	= 310+ch->lvl*20;
-	}else{ //Rest
-		playerInfo.maxCapacity	= 390+ch->lvl*10;
-	}
+	if (!strcmp(ch->voc, "k") || !strcmp(ch->voc, "ek")) //Knight
+		playerInfo.maxCapacity = 270 + ch->lvl * 25;
+	else if (!strcmp(ch->voc, "p") || !strcmp(ch->voc, "rp")) //Pall
+		playerInfo.maxCapacity = 310 + ch->lvl * 20;
+	else   //Rest
+		playerInfo.maxCapacity = 390 + ch->lvl * 10;
 
 	//Exp stats
-	playerInfo.expCurrent	= ch->exp;
-	playerInfo.expLvl		= expForLvlDiff;
-	playerInfo.expLeft		= expLeft;
-	if (timeDiff){
+	playerInfo.expCurrent = ch->exp;
+	playerInfo.expLvl     = expForLvlDiff;
+	playerInfo.expLeft    = expLeft;
+	if (timeDiff)
 		playerInfo.expPerHour = MulDiv(playerInfo.expCurrent - playerInfo.expStart, 3600, (int)timeDiff);
-	}
-	
+
 	//Skills
-	unsigned long skillLvl[9]		= {ch->lvl,ch->mlvl,ch->skillFist,ch->skillClub,ch->skillSword,ch->skillAxe,ch->skillDist,ch->skillShield,ch->skillFish};
-	unsigned long skillPercLeft[9]	= {percForLvl,ch->mlvlPercLeft,ch->skillFistPercLeft,ch->skillClubPercLeft,ch->skillSwordPercLeft,ch->skillAxePercLeft,ch->skillDistPercLeft,ch->skillShieldPercLeft,ch->skillFishPercLeft};
+	unsigned long skillLvl[9]      = {ch->lvl, ch->mlvl, ch->skillFist, ch->skillClub, ch->skillSword, ch->skillAxe, ch->skillDist, ch->skillShield, ch->skillFish};
+	unsigned long skillPercLeft[9] = {percForLvl, ch->mlvlPercLeft, ch->skillFistPercLeft, ch->skillClubPercLeft, ch->skillSwordPercLeft, ch->skillAxePercLeft, ch->skillDistPercLeft, ch->skillShieldPercLeft, ch->skillFishPercLeft};
 
 	//Lvl
-	playerInfo.skill[SKILL_LEVEL].lvl		= skillLvl[SKILL_LEVEL];
-	playerInfo.skill[SKILL_LEVEL].percLeft	= skillPercLeft[SKILL_LEVEL];
-	playerInfo.skill[SKILL_LEVEL].current	= skillLvl[SKILL_LEVEL]*100+(100-skillPercLeft[SKILL_LEVEL]);
-	if (timeDiff){
-		playerInfo.skill[SKILL_LEVEL].percPerHour = float(float(playerInfo.expPerHour)*100./float(playerInfo.expLvl));
-	}
+	playerInfo.skill[SKILL_LEVEL].lvl      = skillLvl[SKILL_LEVEL];
+	playerInfo.skill[SKILL_LEVEL].percLeft = skillPercLeft[SKILL_LEVEL];
+	playerInfo.skill[SKILL_LEVEL].current  = skillLvl[SKILL_LEVEL] * 100 + (100 - skillPercLeft[SKILL_LEVEL]);
+	if (timeDiff)
+		playerInfo.skill[SKILL_LEVEL].percPerHour = float(float(playerInfo.expPerHour) * 100. / float(playerInfo.expLvl));
 
 	//Mlvl & skills stats
-	for (int i=1;i<9;i++){
-		playerInfo.skill[i].lvl		= skillLvl[i];
-		playerInfo.skill[i].percLeft= skillPercLeft[i];
-		playerInfo.skill[i].current = skillLvl[i]*100+(100-skillPercLeft[i]);
-		if (timeDiff){
-			playerInfo.skill[i].percPerHour = float(float(playerInfo.skill[i].current-playerInfo.skill[i].start)*3600./float(timeDiff));
-		}
+	for (int i = 1; i < 9; i++)
+	{
+		playerInfo.skill[i].lvl      = skillLvl[i];
+		playerInfo.skill[i].percLeft = skillPercLeft[i];
+		playerInfo.skill[i].current  = skillLvl[i] * 100 + (100 - skillPercLeft[i]);
+		if (timeDiff)
+			playerInfo.skill[i].percPerHour = float(float(playerInfo.skill[i].current - playerInfo.skill[i].start) * 3600. / float(timeDiff));
 	}
 
 	int warn1Time = 20;
 	int warn2Time = 5;
 
-	int secRemainingInvisible = 0;
-	int secRemainingHaste = 0;
+	int secRemainingInvisible   = 0;
+	int secRemainingHaste       = 0;
 	int secRemainingStrongHaste = 0;
 	int secRemainingMagicShield = 0;
 
@@ -276,7 +276,7 @@ void CCharInfoDialog::dataCalc(){
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
-	if (backPipe.readFromPipe(&mess,1004))
+	if (backPipe.readFromPipe(&mess, 1004))
 	{
 		int infoType;
 		int chanType;
@@ -285,46 +285,54 @@ void CCharInfoDialog::dataCalc(){
 		char nickBuf[16384];
 		char msgBuf[16384];
 
-		memset(nickBuf,0,16384);
-		memset(msgBuf,0,16384);
-		memcpy(&infoType,mess.payload,sizeof(int));
-		memcpy(&chanType,mess.payload+4,sizeof(int));
-		memcpy(&nickLen,mess.payload+8,sizeof(int));
-		memcpy(&msgLen,mess.payload+12,sizeof(int));
-		memcpy(nickBuf,mess.payload+16,nickLen);
-		memcpy(msgBuf,mess.payload+16+nickLen,msgLen);
+		memset(nickBuf, 0, 16384);
+		memset(msgBuf, 0, 16384);
+		memcpy(&infoType, mess.payload, sizeof(int));
+		memcpy(&chanType, mess.payload + 4, sizeof(int));
+		memcpy(&nickLen, mess.payload + 8, sizeof(int));
+		memcpy(&msgLen, mess.payload + 12, sizeof(int));
+		memcpy(nickBuf, mess.payload + 16, nickLen);
+		memcpy(msgBuf, mess.payload + 16 + nickLen, msgLen);
 
 
-		if ((infoType == 1) && (strcmp(nickBuf, ch->name) == 0) && (strcmp(nickBuf,"Tibia Auto") != 0)) {
+		if ((infoType == 1) && (strcmp(nickBuf, ch->name) == 0) && (strcmp(nickBuf, "Tibia Auto") != 0))
+		{
 //			sprintf(buf,"nick: '%s', msg: '%s', name: '%s', type: '%d'", nickBuf, msgBuf, ch->name, infoType);
 //			sender.sendTAMessage(buf);
 
-			if ((_strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf,"test invis") == 0)) { //invisible
-				playerInfo.spell[SPELL_INVISIBLE].start		= time(NULL);
-				playerInfo.spell[SPELL_INVISIBLE].warning	= 0;
-			} else if ((_strcmpi(msgBuf, "utani hur ") == 0) || (strcmp(msgBuf,"test haste") == 0)) { //haste
-				playerInfo.spell[SPELL_HASTE].start			= time(NULL);
-				playerInfo.spell[SPELL_HASTE].warning		= 0;
-			} else if ((_strcmpi(msgBuf, "utani gran hur ") == 0) || (strcmp(msgBuf,"test strong haste") == 0)) { //strong haste
-				playerInfo.spell[SPELL_STRONGHASTE].start	= time(NULL);
-				playerInfo.spell[SPELL_STRONGHASTE].warning	= 0x01; //0x01 cuz it lasts less then warnin1
+			if ((_strcmpi(msgBuf, "utana vid ") == 0) || (strcmp(msgBuf, "test invis") == 0))  //invisible
+			{
+				playerInfo.spell[SPELL_INVISIBLE].start   = time(NULL);
+				playerInfo.spell[SPELL_INVISIBLE].warning = 0;
 			}
-			else if ((_strcmpi(msgBuf, "utamo vita ") == 0) || (strcmp(msgBuf, "test magic shield") == 0)) { //magic shield
-				playerInfo.spell[SPELL_SHIELD].start		= time(NULL);
-				playerInfo.spell[SPELL_SHIELD].warning		= 0;
+			else if ((_strcmpi(msgBuf, "utani hur ") == 0) || (strcmp(msgBuf, "test haste") == 0))    //haste
+			{
+				playerInfo.spell[SPELL_HASTE].start   = time(NULL);
+				playerInfo.spell[SPELL_HASTE].warning = 0;
+			}
+			else if ((_strcmpi(msgBuf, "utani gran hur ") == 0) || (strcmp(msgBuf, "test strong haste") == 0))    //strong haste
+			{
+				playerInfo.spell[SPELL_STRONGHASTE].start   = time(NULL);
+				playerInfo.spell[SPELL_STRONGHASTE].warning = 0x01;     //0x01 cuz it lasts less then warnin1
+			}
+			else if ((_strcmpi(msgBuf, "utamo vita ") == 0) || (strcmp(msgBuf, "test magic shield") == 0))   //magic shield
+			{
+				playerInfo.spell[SPELL_SHIELD].start   = time(NULL);
+				playerInfo.spell[SPELL_SHIELD].warning = 0;
 			}
 		}
-
 	}
 
 	CPackSenderProxy sender;
-	char spellName[4][32]={"Invisible","Haste","Strong Haste","Magic Shield"};
+	char spellName[4][32] = {"Invisible", "Haste", "Strong Haste", "Magic Shield"};
 	char buffer[260];
 
-	for (int i=0;i<4;i++){
-		playerInfo.spell[i].remaining = max(playerInfo.spell[i].lasts - (time(NULL) - playerInfo.spell[i].start),0);
-		if (playerInfo.spell[i].remaining > 0 && ((playerInfo.spell[i].remaining <= WARNING1 && !(playerInfo.spell[i].warning&0x01)) || (playerInfo.spell[i].remaining <= WARNING2 && !(playerInfo.spell[i].warning&0x02)))){
-			sprintf(buffer,"%s will wear off in %d seconds.",spellName[i],playerInfo.spell[i].remaining);
+	for (int i = 0; i < 4; i++)
+	{
+		playerInfo.spell[i].remaining = max(playerInfo.spell[i].lasts - (time(NULL) - playerInfo.spell[i].start), 0);
+		if (playerInfo.spell[i].remaining > 0 && ((playerInfo.spell[i].remaining <= WARNING1 && !(playerInfo.spell[i].warning & 0x01)) || (playerInfo.spell[i].remaining <= WARNING2 && !(playerInfo.spell[i].warning & 0x02))))
+		{
+			sprintf(buffer, "%s will wear off in %d seconds.", spellName[i], playerInfo.spell[i].remaining);
 			if (config->enableTimers)
 				sender.sendTAMessage(buffer);
 			if (playerInfo.spell[i].remaining <= WARNING1)
@@ -337,54 +345,59 @@ void CCharInfoDialog::dataCalc(){
 }
 
 void CCharInfoDialog::dataShow(){
-	CStatic *skillCtrl[9]			= {&m_lvl,&m_mLvl,&m_fist,&m_club,&m_sword,&m_axe,&m_dist,&m_shield,&m_fish};
-	CStatic *skillPerHourCtrl[9]	= {&m_lvlSpeed,&m_mLvlSpeed,&m_fistSpeed,&m_clubSpeed,&m_swordSpeed,&m_axeSpeed,&m_distSpeed,&m_shieldSpeed,&m_fishSpeed};
-	CStatic *skillUpInCtrl[9]		= {&m_lvlUpin,&m_mLvlUpin,&m_fistUpin,&m_clubUpin,&m_swordUpin,&m_axeUpin,&m_distUpin,&m_shieldUpin,&m_fishUpin};
+	CStatic *skillCtrl[9]        = {&m_lvl, &m_mLvl, &m_fist, &m_club, &m_sword, &m_axe, &m_dist, &m_shield, &m_fish};
+	CStatic *skillPerHourCtrl[9] = {&m_lvlSpeed, &m_mLvlSpeed, &m_fistSpeed, &m_clubSpeed, &m_swordSpeed, &m_axeSpeed, &m_distSpeed, &m_shieldSpeed, &m_fishSpeed};
+	CStatic *skillUpInCtrl[9]    = {&m_lvlUpin, &m_mLvlUpin, &m_fistUpin, &m_clubUpin, &m_swordUpin, &m_axeUpin, &m_distUpin, &m_shieldUpin, &m_fishUpin};
 	char buffer[128];
 
-	time_t timeDiff = playerInfo.timeCurrent-playerInfo.timeStart;
-	unsigned long sec	= timeDiff%60;
+	time_t timeDiff   = playerInfo.timeCurrent - playerInfo.timeStart;
+	unsigned long sec = timeDiff % 60;
 	timeDiff -= sec;
-	unsigned long min	= (timeDiff%3600)/60;
-	timeDiff -= min*60;
-	unsigned long hour	= (unsigned long)(timeDiff/3600);
-	sprintf(buffer,"Running for %dh%dm%ds",hour,min,sec);				m_time.SetWindowText(buffer);
+	unsigned long min = (timeDiff % 3600) / 60;
+	timeDiff -= min * 60;
+	unsigned long hour = (unsigned long)(timeDiff / 3600);
+	sprintf(buffer, "Running for %dh%dm%ds", hour, min, sec);                           m_time.SetWindowText(buffer);
 
-	sprintf(buffer,"%d/%d",playerInfo.hp,playerInfo.maxHp);				m_hp.SetWindowText(buffer);
-	sprintf(buffer,"%d/%d",playerInfo.mana,playerInfo.maxMana);			m_mana.SetWindowText(buffer);
-	sprintf(buffer,"%d",playerInfo.soulPoints);							m_sp.SetWindowText(buffer);
-	sprintf(buffer,"%d.%02d/%d",(int)playerInfo.capacity,(int)((playerInfo.capacity-(int)playerInfo.capacity)*100),playerInfo.maxCapacity);	m_cap.SetWindowText(buffer);
+	sprintf(buffer, "%d/%d", playerInfo.hp, playerInfo.maxHp);                         m_hp.SetWindowText(buffer);
+	sprintf(buffer, "%d/%d", playerInfo.mana, playerInfo.maxMana);                     m_mana.SetWindowText(buffer);
+	sprintf(buffer, "%d", playerInfo.soulPoints);                                                     m_sp.SetWindowText(buffer);
+	sprintf(buffer, "%d.%02d/%d", (int)playerInfo.capacity, (int)((playerInfo.capacity - (int)playerInfo.capacity) * 100), playerInfo.maxCapacity); m_cap.SetWindowText(buffer);
 
-	sprintf(buffer,"%d",playerInfo.expCurrent);		m_exp.SetWindowText(buffer);
-	sprintf(buffer,"%d/h",playerInfo.expPerHour);	m_expSpeed.SetWindowText(buffer);
-	sprintf(buffer,"%d to go",playerInfo.expLeft);	m_expUpin.SetWindowText(buffer);
+	sprintf(buffer, "%d", playerInfo.expCurrent);             m_exp.SetWindowText(buffer);
+	sprintf(buffer, "%d/h", playerInfo.expPerHour);   m_expSpeed.SetWindowText(buffer);
+	sprintf(buffer, "%d to go", playerInfo.expLeft);  m_expUpin.SetWindowText(buffer);
 
-	for (int i=0;i<9;i++){
+	for (int i = 0; i < 9; i++)
+	{
 		//T4: Skill lvl and perc left
-		sprintf(buffer,"%d [%d%%]",playerInfo.skill[i].lvl,playerInfo.skill[i].percLeft);
+		sprintf(buffer, "%d [%d%%]", playerInfo.skill[i].lvl, playerInfo.skill[i].percLeft);
 		skillCtrl[i]->SetWindowText(buffer);
 		//T4: Skill per hour
-		if (skillPerHourCtrl[i]){
-			sprintf(buffer,"%.02f%%/h",playerInfo.skill[i].percPerHour);
+		if (skillPerHourCtrl[i])
+		{
+			sprintf(buffer, "%.02f%%/h", playerInfo.skill[i].percPerHour);
 			skillPerHourCtrl[i]->SetWindowText(buffer);
 
-			if (playerInfo.skill[i].percPerHour){
-				float fHour = float(float(playerInfo.skill[i].percLeft)/float(playerInfo.skill[i].percPerHour));
+			if (playerInfo.skill[i].percPerHour)
+			{
+				float fHour        = float(float(playerInfo.skill[i].percLeft) / float(playerInfo.skill[i].percPerHour));
 				unsigned long hour = long(floor(fHour));
-				unsigned long min = long(60*(fHour-hour));
+				unsigned long min  = long(60 * (fHour - hour));
 
-				sprintf(buffer,"%dh%dmin",hour,min);
-			}else{
-				sprintf(buffer,"n/a");
-
+				sprintf(buffer, "%dh%dmin", hour, min);
+			}
+			else
+			{
+				sprintf(buffer, "n/a");
 			}
 			skillUpInCtrl[i]->SetWindowText(buffer);
 		}
 	}
 
-	CStatic *spellCtrl[4] = {&m_invisRemaining,&m_hasteRemaining,&m_stronghasteRemaining,&m_magicshieldRemaining};
+	CStatic *spellCtrl[4] = {&m_invisRemaining, &m_hasteRemaining, &m_stronghasteRemaining, &m_magicshieldRemaining};
 
-	for (int i=0;i<4;i++){
+	for (int i = 0; i < 4; i++)
+	{
 		sprintf(buffer, "%d seconds remaining", playerInfo.spell[i].remaining);
 		if (config->enableTimers)
 			spellCtrl[i]->SetWindowText(buffer);
@@ -413,13 +426,15 @@ void CCharInfoDialog::OnEnabletimers()
 	m_strongHasteText.EnableWindow(m_EnableTimer.GetCheck());
 	m_invisText.EnableWindow(m_EnableTimer.GetCheck());
 	m_hasteText.EnableWindow(m_EnableTimer.GetCheck());
-	if (!m_EnableTimer.GetCheck()) {
+	if (!m_EnableTimer.GetCheck())
+	{
 		m_hasteRemaining.SetWindowText("DISABLED");
 		m_stronghasteRemaining.SetWindowText("DISABLED");
 		m_invisRemaining.SetWindowText("DISABLED");
 		m_magicshieldRemaining.SetWindowText("DISABLED");
 	}
-	else {
+	else
+	{
 		m_hasteRemaining.SetWindowText("ENABLED");
 		m_stronghasteRemaining.SetWindowText("ENABLED");
 		m_invisRemaining.SetWindowText("ENABLED");
@@ -427,4 +442,3 @@ void CCharInfoDialog::OnEnabletimers()
 	}
 	config = controlsToConfig();
 }
-

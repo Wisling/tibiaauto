@@ -19,18 +19,18 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CKnownInfo)
 	enum { IDD = IDD_INFO };
-	CStatic	m_txtLevel;
-	CEdit	m_voc;
-	CEdit	m_type;
-	CStatic	m_txtVoc;
-	CEdit	m_name;
-	CEdit	m_level;
-	CEdit	m_lastSeen;
-	CEdit	m_hp;
-	CEdit	m_guildRank;
-	CEdit	m_guildName;
-	CEdit	m_guildDesc;
-	CComboBox	m_combo;
+	CStatic m_txtLevel;
+	CEdit m_voc;
+	CEdit m_type;
+	CStatic m_txtVoc;
+	CEdit m_name;
+	CEdit m_level;
+	CEdit m_lastSeen;
+	CEdit m_hp;
+	CEdit m_guildRank;
+	CEdit m_guildName;
+	CEdit m_guildDesc;
+	CComboBox m_combo;
 	CButton m_players;
 	CButton m_monsters;
 	//}}AFX_DATA
@@ -39,7 +39,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CKnownInfo)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -78,7 +78,7 @@ private:
 	static CTibiaList typedList;
 	static CTibiaList constCodeList;
 	static int xmlInitialised;
-	
+
 
 public:
 	static int itemListsFresh;

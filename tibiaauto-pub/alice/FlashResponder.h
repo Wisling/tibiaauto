@@ -12,8 +12,8 @@ class FlashResponder : public Responder
 {
 public:
 	FlashResponder();
-	
+
 	string respond(Match *, PElement, const string &);
 };
 
-#endif	//	FLASH_RESPONDER_H
+#endif  //	FLASH_RESPONDER_H

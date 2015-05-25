@@ -26,29 +26,29 @@ public:
 // Dialog Data
 	//{{AFX_DATA(StrikeDialog)
 	enum { IDD = IDD_STRIKE_DIALOG };
-	CEdit	m_defaultStrikeSpell;
-	CButton	m_vis;
-	CButton	m_tera;
-	CEdit	m_strikeSpellHpMin;
-	CEdit	m_manaStrike;
-	CButton	m_strike;
-	CButton	m_san;
-	CButton	m_mort;
-	CButton	m_hur;
-	CButton	m_frigo;
-	CButton	m_flam;
-	CButton	m_con;
-	CGroupBoxEx	m_StrikeSpellsFrame;
-	CGroupBoxEx	m_PaladinStrikeFrame;
+	CEdit m_defaultStrikeSpell;
+	CButton m_vis;
+	CButton m_tera;
+	CEdit m_strikeSpellHpMin;
+	CEdit m_manaStrike;
+	CButton m_strike;
+	CButton m_san;
+	CButton m_mort;
+	CButton m_hur;
+	CButton m_frigo;
+	CButton m_flam;
+	CButton m_con;
+	CGroupBoxEx m_StrikeSpellsFrame;
+	CGroupBoxEx m_PaladinStrikeFrame;
 	CGroupBoxEx m_MageStrikeFrame;
-	CGroupBoxEx	m_KnightStrikeFrame;
+	CGroupBoxEx m_KnightStrikeFrame;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(StrikeDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

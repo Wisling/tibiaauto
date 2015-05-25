@@ -8,9 +8,9 @@
 
 #ifdef _DEBUG
 #undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -18,19 +18,18 @@ static char THIS_FILE[]=__FILE__;
 
 CConfigData::CConfigData()
 {
-	options = OPTIONS_FLASHONALARM;
-	actX = actY = actZ = actDirection = 0;
+	options  = OPTIONS_FLASHONALARM;
+	actX     = actY = actZ = actDirection = 0;
 	runawayX = runawayY = runawayZ = 0;
 
 	triggerMessage = 0;
-	maintainPos = 0;
-	status[0] = 0;
-	memset(whiteList,0,3200);
-	strcpy(modPriorityStr,"2");
-	screenshotType=1;
+	maintainPos    = 0;
+	status[0]      = 0;
+	memset(whiteList, 0, 3200);
+	strcpy(modPriorityStr, "2");
+	screenshotType = 1;
 }
 
 CConfigData::~CConfigData()
 {
-
 }

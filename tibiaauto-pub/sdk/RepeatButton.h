@@ -58,8 +58,8 @@ private:
 
 	// To minimize churn, get the ControlID and construct the message parameters
 	// upon LBDOWN and save them for each time the timer fires.
-	WPARAM wParam;	// combined ControlID and BN_CLICKED message
-	HWND lParam;	// handle to control's window
+	WPARAM wParam;  // combined ControlID and BN_CLICKED message
+	HWND lParam;    // handle to control's window
 
 
 // Operations
@@ -69,13 +69,13 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CRepeatButton)
-	public:
-	protected:
+public:
+protected:
 	//}}AFX_VIRTUAL
 
 // Implementation
 public:
-	BOOL IsOverClient(void);	// See if mouse is hovering over the button's client window.
+	BOOL IsOverClient(void);        // See if mouse is hovering over the button's client window.
 	virtual ~CRepeatButton();
 
 	// Generated message map functions

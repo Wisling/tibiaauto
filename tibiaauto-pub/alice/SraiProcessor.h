@@ -18,19 +18,19 @@ using namespace std;
 class SraiProcessor : public AimlProcessor
 {
 public:
-	~SraiProcessor() { }
-	
+	~SraiProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string srai;
-		if (e->hasChildren()) {
+		if (e->hasChildren())
 			srai = Kernel::process(m, e, r, id), id;
-		} else {
+		else
 			srai = e->getText();
-		}
 		//	Need to lowercase the <srai> input as getting some
 		//	funky output (uppercase text in <star/> etc).
 		return Kernel::respond(toLower(srai), id, r, true);
 	}
 };
 
-#endif
+#endif // ifndef SRAI_PROCESSOR_H

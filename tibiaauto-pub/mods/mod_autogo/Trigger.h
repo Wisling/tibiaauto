@@ -16,7 +16,7 @@ using namespace std;
 
 class CTrigger
 {
-friend static ostream &operator<<(ostream &out, const CTrigger &t);
+	friend static ostream &operator<<(ostream &out, const CTrigger &t);
 public:
 	int getMultiIntTrigger(int);
 	int getIntTrigger();

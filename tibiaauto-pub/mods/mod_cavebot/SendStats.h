@@ -20,16 +20,16 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CSendStats)
 	enum { IDD = IDD_SENDSTATS };
-	CButtonST	m_send2;
-	CButtonST	m_send1;
-	CButtonST	m_ok;
+	CButtonST m_send2;
+	CButtonST m_send1;
+	CButtonST m_ok;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CSendStats)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

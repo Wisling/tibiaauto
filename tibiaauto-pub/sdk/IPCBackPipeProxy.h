@@ -10,12 +10,12 @@
 class CIPCBackPipeProxy
 {
 public:
-	int readFromPipe(struct ipcMessage *mess,int expectedType);
+	int readFromPipe(struct ipcMessage *mess, int expectedType);
 	void InitialiseIPC();
 
 	CIPCBackPipeProxy();
 	virtual ~CIPCBackPipeProxy();
-	
+
 private:
 	static HMODULE dllModule;
 };

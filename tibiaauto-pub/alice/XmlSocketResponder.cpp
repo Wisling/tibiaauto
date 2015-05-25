@@ -23,7 +23,7 @@ XmlSocketProcessor::XmlSocketProcessor() {
 
 string XmlSocketProcessor::process(Match *m, PElement e, Responder *r, const string &id) {
 	port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());
-	
+
 	server = new ServerSocket(port);
 	server->setServerListener(this);
 	server->init();
@@ -45,7 +45,7 @@ void XmlSocketProcessor::awaitingClient(Socket *client) {
 }
 
 XmlSocketResponder::XmlSocketResponder(Socket *c) {
-	client = c;
+	client  = c;
 	botName = Kernel::respond("BOT NAME", "system");
 }
 
@@ -59,18 +59,15 @@ void XmlSocketResponder::recv(string &s) {
 	SaxParser *parser = new SaxParser(new Parser());
 	parser->parse(strs);
 	PElement root = ((Parser *)parser->getListener())->getRoot();
-	if (root == NULL) {
+	if (root == NULL)
 		return;
-	}
-	if (root->getTagname() != "message") {
-	//	send("<message>Error processing message</message>");
+	if (root->getTagname() != "message")
+		//	send("<message>Error processing message</message>");
 		return;
-	}
-	if (root->getChild("#text") == NULL) {
+	if (root->getChild("#text") == NULL)
 		return;
-	}
 	delete parser;
-	string text = root->getChild("#text")->getText();
+	string text  = root->getChild("#text")->getText();
 	string reply = Kernel::respond(text, "xmlsocket");
 	send("<message>" + reply + "</message>");
 }
@@ -86,8 +83,7 @@ void XmlSocketResponder::disconnected(const string &msg) {
 }
 
 void XmlSocketResponder::send(const string &s) {
-	if (client == NULL) {
+	if (client == NULL)
 		return;
-	}
 	client->write(s, true);
 }

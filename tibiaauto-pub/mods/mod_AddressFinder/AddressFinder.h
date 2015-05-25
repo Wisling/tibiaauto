@@ -28,10 +28,10 @@ public:
 	Addresses addresses;
 
 private:
-	
+
 	list <byte> TibiaFile;
 	list <byte> Comparison;
-	list <int>	Mask;
+	list <int>      Mask;
 	list<byte>::iterator FileIterator;
 	list<byte>::iterator ComparisonIterator;
 	list<int>::iterator MaskIterator;

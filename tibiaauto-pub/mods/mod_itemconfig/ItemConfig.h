@@ -19,7 +19,7 @@ class CItemAdd : public MyDialog {
 public:
 	char name[1024];
 	int itemId;
-    int itemType;
+	int itemType;
 	CTreeCtrl* tree;
 	HTREEITEM item;
 	CItemAdd(CTreeCtrl* treeIn, HTREEITEM itemIn);   // standard constructor
@@ -27,9 +27,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CItemAdd)
 	enum { IDD = IDD_ITEM_ADD };
-    CComboBoxSuper   m_ItemType;
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
+	CComboBoxSuper m_ItemType;
+	CButtonST m_OK;
+	CButtonST m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	CButton m_ItemBranch;
@@ -39,14 +39,14 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CItemAdd)
-	protected:
+protected:
 	virtual void OnCommit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    CImageList m_itemImg;
+	CImageList m_itemImg;
 
 	// Generated message map functions
 	//{{AFX_MSG(CItemAdd)
@@ -73,9 +73,9 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CItemEdit)
 	enum { IDD = IDD_ITEM_EDIT };
-    CComboBoxSuper   m_ItemType;
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
+	CComboBoxSuper m_ItemType;
+	CButtonST m_OK;
+	CButtonST m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	//}}AFX_DATA
@@ -84,14 +84,14 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CItemEdit)
-	protected:
+protected:
 	virtual void OnCommit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation
 protected:
-    CImageList m_itemImg;
+	CImageList m_itemImg;
 
 	// Generated message map functions
 	//{{AFX_MSG(CItemEdit)
@@ -117,8 +117,8 @@ public:
 // Dialog Data
 	//{{AFX_DATA(CFoodAdd)
 	enum { IDD = IDD_FOOD_ADD };
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
+	CButtonST m_OK;
+	CButtonST m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	CEdit m_EatTime;
@@ -128,7 +128,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CFoodAdd)
-	protected:
+protected:
 	virtual void OnCommit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
@@ -156,13 +156,13 @@ public:
 	int eatTime;
 	CListBox* list;
 	int index;
-	CFoodEdit(int, char*, int,CListBox*,int);   // standard constructor
+	CFoodEdit(int, char*, int, CListBox*, int);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CFoodEdit)
 	enum { IDD = IDD_FOOD_EDIT };
-	CButtonST	m_OK;
-	CButtonST	m_Cancel;
+	CButtonST m_OK;
+	CButtonST m_Cancel;
 	CEdit m_ItemName;
 	CEdit m_ItemID;
 	CEdit m_EatTime;
@@ -172,7 +172,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CFoodEdit)
-	protected:
+protected:
 	virtual void OnCommit();
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL

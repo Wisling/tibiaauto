@@ -26,4 +26,4 @@ public:
 	static void dumpAiml(Nodemaster *, const string &, PElement);
 };
 
-#endif
+#endif // ifndef NODE_WALKER_H

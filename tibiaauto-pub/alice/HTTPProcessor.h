@@ -8,16 +8,16 @@
 #include "ServerSocket.h"
 #include "Socket.h"
 
-class HTTPProcessor : public AimlProcessor{
+class HTTPProcessor : public AimlProcessor {
 public:
 	string process(Match *, PElement, Responder *, const string &);
-
 };
 
 class HTTPServer : ServerSocketListener {
 public:
 	HTTPServer();
-	virtual ~HTTPServer() { }
+	virtual ~HTTPServer() {
+	}
 	void shutdown(const string &);
 	void awaitingClient(Socket *);
 private:
@@ -25,4 +25,3 @@ private:
 };
 
 #endif //HTTPPRCCESSOR_H
-

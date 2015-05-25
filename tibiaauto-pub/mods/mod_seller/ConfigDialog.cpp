@@ -17,13 +17,13 @@ using namespace std;
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 seller sellersInfo[MAX_NPCS];
 int sellerNum;
 
 extern CToolSellerState globalSellerState;
-extern int GUIx,GUIy,GUIz,GUINum;
+extern int GUIx, GUIy, GUIz, GUINum;
 
 int initalizeSellers();
 void saveSellers();
@@ -31,11 +31,11 @@ void saveSellers();
 // CConfigDialog dialog
 
 
-CConfigDialog::CConfigDialog(CMod_SellerApp *app,CWnd* pParent /*=NULL*/)
-: MyDialog(CConfigDialog::IDD, pParent) {
+CConfigDialog::CConfigDialog(CMod_SellerApp *app, CWnd* pParent /*=NULL*/)
+	: MyDialog(CConfigDialog::IDD, pParent) {
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
-	m_app=app;
+	m_app = app;
 }
 
 
@@ -61,9 +61,9 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_ADD_NAME, m_addName);
 	DDX_Control(pDX, IDC_SELLER_LISTFRAME, m_listFrame);
 	DDX_Control(pDX, IDC_SELLER_STOPBY, m_stopBySeller);
-	DDX_Control(pDX, IDC_SELLER_STATE,m_stateSeller);
+	DDX_Control(pDX, IDC_SELLER_STATE, m_stateSeller);
 	DDX_Control(pDX, IDC_SELLER_SUGGEST_BANKER, m_suggestBanker);
-	DDX_Control(pDX, IDC_SELLER_SUGGESTION,m_bankerSuggestion);
+	DDX_Control(pDX, IDC_SELLER_SUGGESTION, m_bankerSuggestion);
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 	DDX_Control(pDX, IDC_SELLER_SELLER1, m_Seller[0]);
@@ -98,47 +98,47 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
-	//{{AFX_MSG_MAP(CConfigDialog)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	ON_WM_CLOSE()
-	ON_BN_CLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
-	ON_BN_CLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
-	ON_BN_CLICKED(IDC_SELLER_SELL3_ADD, sellBoxAdd2)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL3_ADD, sellBoxAdd2)
-	ON_BN_CLICKED(IDC_SELLER_SELL4_ADD, sellBoxAdd3)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL4_ADD, sellBoxAdd3)
-	ON_BN_CLICKED(IDC_SELLER_BUY1_ADD, buyBoxAdd0)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY1_ADD, buyBoxAdd0)
-	ON_BN_CLICKED(IDC_SELLER_BUY2_ADD, buyBoxAdd1)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY2_ADD, buyBoxAdd1)
-	ON_BN_CLICKED(IDC_SELLER_BUY3_ADD, buyBoxAdd2)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY3_ADD, buyBoxAdd2)
-	ON_BN_CLICKED(IDC_SELLER_BUY4_ADD, buyBoxAdd3)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY4_ADD, buyBoxAdd3)
-	ON_BN_CLICKED(IDC_SELLER_SELL1_REMOVE, sellBoxRemove0)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL1_REMOVE, sellBoxRemove0)
-	ON_BN_CLICKED(IDC_SELLER_SELL2_REMOVE, sellBoxRemove1)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL2_REMOVE, sellBoxRemove1)
-	ON_BN_CLICKED(IDC_SELLER_SELL3_REMOVE, sellBoxRemove2)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL3_REMOVE, sellBoxRemove2)
-	ON_BN_CLICKED(IDC_SELLER_SELL4_REMOVE, sellBoxRemove3)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_SELL4_REMOVE, sellBoxRemove3)
-	ON_BN_CLICKED(IDC_SELLER_BUY1_REMOVE, buyBoxRemove0)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY1_REMOVE, buyBoxRemove0)
-	ON_BN_CLICKED(IDC_SELLER_BUY2_REMOVE, buyBoxRemove1)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY2_REMOVE, buyBoxRemove1)
-	ON_BN_CLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
-	ON_BN_CLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
-	ON_BN_DOUBLECLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
-	ON_BN_CLICKED(IDC_SELLER_RETURN_ON_CAP, onSellOnCap)
-	ON_BN_CLICKED(IDC_SELLER_ADD, OnAddSeller)
-	ON_BN_CLICKED(IDC_ENABLE, OnEnable)
-	ON_WM_TIMER()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CConfigDialog)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+ON_WM_CLOSE()
+ON_BN_CLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL1_ADD, sellBoxAdd0)
+ON_BN_CLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL2_ADD, sellBoxAdd1)
+ON_BN_CLICKED(IDC_SELLER_SELL3_ADD, sellBoxAdd2)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL3_ADD, sellBoxAdd2)
+ON_BN_CLICKED(IDC_SELLER_SELL4_ADD, sellBoxAdd3)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL4_ADD, sellBoxAdd3)
+ON_BN_CLICKED(IDC_SELLER_BUY1_ADD, buyBoxAdd0)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY1_ADD, buyBoxAdd0)
+ON_BN_CLICKED(IDC_SELLER_BUY2_ADD, buyBoxAdd1)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY2_ADD, buyBoxAdd1)
+ON_BN_CLICKED(IDC_SELLER_BUY3_ADD, buyBoxAdd2)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY3_ADD, buyBoxAdd2)
+ON_BN_CLICKED(IDC_SELLER_BUY4_ADD, buyBoxAdd3)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY4_ADD, buyBoxAdd3)
+ON_BN_CLICKED(IDC_SELLER_SELL1_REMOVE, sellBoxRemove0)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL1_REMOVE, sellBoxRemove0)
+ON_BN_CLICKED(IDC_SELLER_SELL2_REMOVE, sellBoxRemove1)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL2_REMOVE, sellBoxRemove1)
+ON_BN_CLICKED(IDC_SELLER_SELL3_REMOVE, sellBoxRemove2)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL3_REMOVE, sellBoxRemove2)
+ON_BN_CLICKED(IDC_SELLER_SELL4_REMOVE, sellBoxRemove3)
+ON_BN_DOUBLECLICKED(IDC_SELLER_SELL4_REMOVE, sellBoxRemove3)
+ON_BN_CLICKED(IDC_SELLER_BUY1_REMOVE, buyBoxRemove0)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY1_REMOVE, buyBoxRemove0)
+ON_BN_CLICKED(IDC_SELLER_BUY2_REMOVE, buyBoxRemove1)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY2_REMOVE, buyBoxRemove1)
+ON_BN_CLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY3_REMOVE, buyBoxRemove2)
+ON_BN_CLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
+ON_BN_DOUBLECLICKED(IDC_SELLER_BUY4_REMOVE, buyBoxRemove3)
+ON_BN_CLICKED(IDC_SELLER_RETURN_ON_CAP, onSellOnCap)
+ON_BN_CLICKED(IDC_SELLER_ADD, OnAddSeller)
+ON_BN_CLICKED(IDC_ENABLE, OnEnable)
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -153,7 +153,8 @@ void CConfigDialog::OnClose() {
 }
 
 void CConfigDialog::OnEnable() {
-	if (m_enable.GetCheck()) {
+	if (m_enable.GetCheck())
+	{
 		m_app->controlsToConfig();
 		if (m_app->validateConfig(1))
 			m_app->start();
@@ -161,11 +162,14 @@ void CConfigDialog::OnEnable() {
 			m_enable.SetCheck(0);
 	}
 	else
+	{
 		m_app->stop();
+	}
 }
 
 void CConfigDialog::disableControls() {
-	for (int x = 0; x < MAX_SELLERS; x++) {
+	for (int x = 0; x < MAX_SELLERS; x++)
+	{
 		m_Seller[x].EnableWindow(false);
 		m_SellBox[x].EnableWindow(false);
 		m_BuyBox[x].EnableWindow(false);
@@ -184,11 +188,11 @@ void CConfigDialog::disableControls() {
 	m_stopBySeller.EnableWindow(false);
 	m_sellOnCap.EnableWindow(false);
 	m_suggestBanker.EnableWindow(false);
-
 }
 
 void CConfigDialog::enableControls() {
-	for (int x = 0; x < MAX_SELLERS; x++) {
+	for (int x = 0; x < MAX_SELLERS; x++)
+	{
 		m_Seller[x].EnableWindow(true);
 		m_SellBox[x].EnableWindow(true);
 		m_BuyBox[x].EnableWindow(true);
@@ -216,26 +220,33 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	char buf[128];
 	reloadSaleItems();
 	reloadSellers();
-	for (int x = 0; x < MAX_SELLERS; x++) {
-		while (m_SellBox[x].GetCount()) m_SellBox[x].DeleteString(0);
-		while (m_BuyBox[x].GetCount()) m_BuyBox[x].DeleteString(0);
+	for (int x = 0; x < MAX_SELLERS; x++)
+	{
+		while (m_SellBox[x].GetCount())
+			m_SellBox[x].DeleteString(0);
+		while (m_BuyBox[x].GetCount())
+			m_BuyBox[x].DeleteString(0);
 	}
-	for (int i = 0;i < MAX_SELLERS; i++) {
+	for (int i = 0; i < MAX_SELLERS; i++)
+	{
 		m_Seller[i].SelectString(0, configData->sellerList[i].sellerName);
-		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
-			if (strlen(configData->sellItem[i].tradeItem[j].itemName)) {
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
+		{
+			if (strlen(configData->sellItem[i].tradeItem[j].itemName))
+			{
 				sprintf(buf, "%s->%d", configData->sellItem[i].tradeItem[j].itemName, configData->sellItem[i].tradeItem[j].quantityBuySell);
 				m_SellBox[i].AddString(buf);
-				m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,configData->sellItem[i].tradeItem[j].itemName));
+				m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1, configData->sellItem[i].tradeItem[j].itemName));
 			}
-			if (strlen(configData->buyItem[i].tradeItem[j].itemName)) {
+			if (strlen(configData->buyItem[i].tradeItem[j].itemName))
+			{
 				sprintf(buf, "%s->%d:%d@%dgp", configData->buyItem[i].tradeItem[j].itemName, configData->buyItem[i].tradeItem[j].triggerQuantity, configData->buyItem[i].tradeItem[j].quantityBuySell, configData->buyItem[i].tradeItem[j].salePrice);
 				m_BuyBox[i].AddString(buf);
-				m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,configData->buyItem[i].tradeItem[j].itemName));
+				m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1, configData->buyItem[i].tradeItem[j].itemName));
 			}
 		}
 	}
-	sprintf(buf,"%d",configData->sellWhen);		m_sellWhen.SetWindowText(buf);
+	sprintf(buf, "%d", configData->sellWhen);         m_sellWhen.SetWindowText(buf);
 	m_sellOnCap.SetCheck(configData->sellOnCap);
 	m_sellOnSpace.SetCheck(configData->sellOnSpace);
 
@@ -253,77 +264,88 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 	char paramString[128];
-	for (int i = 0; i < MAX_SELLERS;i++) {
-
-		for (int j = 0; j < MAX_SELLER_ITEMS; j++) {
-			newConfigData->sellItem[i].tradeItem[j].itemName[0] = '\0';
+	for (int i = 0; i < MAX_SELLERS; i++)
+	{
+		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
+		{
+			newConfigData->sellItem[i].tradeItem[j].itemName[0]     = '\0';
 			newConfigData->sellItem[i].tradeItem[j].quantityBuySell = 0;
-			newConfigData->sellItem[i].tradeItem[j].salePrice = 0;
-			newConfigData->buyItem[i].tradeItem[j].itemName[0] = '\0';
-			newConfigData->buyItem[i].tradeItem[j].quantityBuySell = 0;
-			newConfigData->buyItem[i].tradeItem[j].salePrice = 0;
+			newConfigData->sellItem[i].tradeItem[j].salePrice       = 0;
+			newConfigData->buyItem[i].tradeItem[j].itemName[0]      = '\0';
+			newConfigData->buyItem[i].tradeItem[j].quantityBuySell  = 0;
+			newConfigData->buyItem[i].tradeItem[j].salePrice        = 0;
 		}
-		for (int j = 0; j < m_SellBox[i].GetCount(); j++) {
-			m_SellBox[i].GetText(j,newConfigData->sellItem[i].tradeItem[j].itemName);
-			for (int k = strlen(newConfigData->sellItem[i].tradeItem[j].itemName)-1;k>0;k--) {
-				if (newConfigData->sellItem[i].tradeItem[j].itemName[k]=='-' && newConfigData->sellItem[i].tradeItem[j].itemName[k + 1]=='>') {
-					memcpy(paramString,newConfigData->sellItem[i].tradeItem[j].itemName+k+2,strlen(newConfigData->sellItem[i].tradeItem[j].itemName)-k);
-					newConfigData->sellItem[i].tradeItem[j].itemName[k]='\0';
+		for (int j = 0; j < m_SellBox[i].GetCount(); j++)
+		{
+			m_SellBox[i].GetText(j, newConfigData->sellItem[i].tradeItem[j].itemName);
+			for (int k = strlen(newConfigData->sellItem[i].tradeItem[j].itemName) - 1; k > 0; k--)
+			{
+				if (newConfigData->sellItem[i].tradeItem[j].itemName[k] == '-' && newConfigData->sellItem[i].tradeItem[j].itemName[k + 1] == '>')
+				{
+					memcpy(paramString, newConfigData->sellItem[i].tradeItem[j].itemName + k + 2, strlen(newConfigData->sellItem[i].tradeItem[j].itemName) - k);
+					newConfigData->sellItem[i].tradeItem[j].itemName[k] = '\0';
 					break;
 				}
 			}
 			newConfigData->sellItem[i].tradeItem[j].quantityBuySell = atoi(paramString);
 		}
-		for (int j = 0; j < m_BuyBox[i].GetCount(); j++) {
-			m_BuyBox[i].GetText(j,newConfigData->buyItem[i].tradeItem[j].itemName);
-			for (int k = strlen(newConfigData->buyItem[i].tradeItem[j].itemName)-1;k>0;k--)	{
-				if (newConfigData->buyItem[i].tradeItem[j].itemName[k]=='-' && newConfigData->buyItem[i].tradeItem[j].itemName[k + 1]=='>') {
-					memcpy(paramString,newConfigData->buyItem[i].tradeItem[j].itemName+k+2,strlen(newConfigData->buyItem[i].tradeItem[j].itemName)-k);
-					newConfigData->buyItem[i].tradeItem[j].itemName[k]='\0';
+		for (int j = 0; j < m_BuyBox[i].GetCount(); j++)
+		{
+			m_BuyBox[i].GetText(j, newConfigData->buyItem[i].tradeItem[j].itemName);
+			for (int k = strlen(newConfigData->buyItem[i].tradeItem[j].itemName) - 1; k > 0; k--)
+			{
+				if (newConfigData->buyItem[i].tradeItem[j].itemName[k] == '-' && newConfigData->buyItem[i].tradeItem[j].itemName[k + 1] == '>')
+				{
+					memcpy(paramString, newConfigData->buyItem[i].tradeItem[j].itemName + k + 2, strlen(newConfigData->buyItem[i].tradeItem[j].itemName) - k);
+					newConfigData->buyItem[i].tradeItem[j].itemName[k] = '\0';
 					break;
 				}
 			}
 			sscanf(paramString, "%d:%d@%dgp", &newConfigData->buyItem[i].tradeItem[j].triggerQuantity, &newConfigData->buyItem[i].tradeItem[j].quantityBuySell, &newConfigData->buyItem[i].tradeItem[j].salePrice);
 		}
 		int index = m_Seller[i].GetCurSel();
-		m_Seller[i].GetLBText(index,buf);
-		
-		for (index=0;index<sellerNum && strcmp(sellersInfo[index].name,buf);index++){}
+		m_Seller[i].GetLBText(index, buf);
+
+		for (index = 0; index < sellerNum && strcmp(sellersInfo[index].name, buf); index++)
+		{
+		}
 		strcpy(newConfigData->sellerList[i].sellerName, sellersInfo[index].name);
 		newConfigData->sellerList[i].sellerX = sellersInfo[index].xPos;
 		newConfigData->sellerList[i].sellerY = sellersInfo[index].yPos;
 		newConfigData->sellerList[i].sellerZ = sellersInfo[index].zPos;
 	}
-	newConfigData->sellOnCap = m_sellOnCap.GetCheck();
-	newConfigData->sellOnSpace = m_sellOnSpace.GetCheck();
-	m_sellWhen.GetWindowText(buf,127);newConfigData->sellWhen=atoi(buf);
-	sprintf(newConfigData->modPriorityStr,"%d",m_modPriority.GetCurSel()+1);
-	newConfigData->stopBySeller=m_stopBySeller.GetCheck();
-	newConfigData->suggestBanker= m_suggestBanker.GetCheck();
-	
+	newConfigData->sellOnCap                                    = m_sellOnCap.GetCheck();
+	newConfigData->sellOnSpace                                  = m_sellOnSpace.GetCheck();
+	m_sellWhen.GetWindowText(buf, 127); newConfigData->sellWhen = atoi(buf);
+	sprintf(newConfigData->modPriorityStr, "%d", m_modPriority.GetCurSel() + 1);
+	newConfigData->stopBySeller  = m_stopBySeller.GetCheck();
+	newConfigData->suggestBanker = m_suggestBanker.GetCheck();
+
 	return newConfigData;
 }
 
 void CConfigDialog::OnTimer(UINT nIDEvent) {
-	if (nIDEvent==1001) {
+	if (nIDEvent == 1001)
+	{
 		KillTimer(1001);
 		CMemReaderProxy reader;
 
 		char buf[256];
-		switch(globalSellerState){
+		switch(globalSellerState)
+		{
 		case CToolSellerState_notRunning:
 			m_stateSeller.SetWindowText("Not running");
 			break;
 		case CToolSellerState_halfSleep:
-			sprintf(buf,"Module sleep by %s:%s",reader.getGlobalVariable("walking_control"),reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "Module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_noPathFound:
-			sprintf(buf,"Path not found (%d,%d,%d)",GUIx,GUIy,GUIz);
+			sprintf(buf, "Path not found (%d,%d,%d)", GUIx, GUIy, GUIz);
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_walking:
-			sprintf(buf,"Walking to Seller %d (%d,%d,%d)",GUINum,GUIx,GUIy,GUIz);
+			sprintf(buf, "Walking to Seller %d (%d,%d,%d)", GUINum, GUIx, GUIy, GUIz);
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_talking:
@@ -333,13 +355,16 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 			m_stateSeller.SetWindowText("Unknown state");
 			break;
 		}
-		if(atoi(reader.getGlobalVariable("banker_suggestion"))){
-			sprintf(buf,"(%s gold)",reader.getGlobalVariable("banker_suggestion"));
+		if(atoi(reader.getGlobalVariable("banker_suggestion")))
+		{
+			sprintf(buf, "(%s gold)", reader.getGlobalVariable("banker_suggestion"));
 			m_bankerSuggestion.SetWindowText(buf);
-		}else{
+		}
+		else
+		{
 			m_bankerSuggestion.SetWindowText("(none)");
 		}
-		SetTimer(1001,250,NULL);
+		SetTimer(1001, 250, NULL);
 	}
 	CDialog::OnTimer(nIDEvent);
 }
@@ -348,14 +373,14 @@ void CConfigDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_enable);
 	skin.SetButtonSkin(m_addSeller);
-	for (int loop = 0; loop < MAX_SELLERS; loop++) {
+	for (int loop = 0; loop < MAX_SELLERS; loop++)
+	{
 		skin.SetButtonSkin( m_BuyBoxAdd[loop]);
 		skin.SetButtonSkin( m_BuyBoxRemove[loop]);
 		skin.SetButtonSkin( m_SellBoxAdd[loop]);
 		skin.SetButtonSkin( m_SellBoxRemove[loop]);
 		m_Seller[loop].LimitText(127);
 	}
-
 }
 
 BOOL CConfigDialog::OnInitDialog() {
@@ -363,7 +388,7 @@ BOOL CConfigDialog::OnInitDialog() {
 	DoSetButtonSkin();
 
 	initalizeSellers();
-	SetTimer(1001,250,NULL);
+	SetTimer(1001, 250, NULL);
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
@@ -379,11 +404,16 @@ void CConfigDialog::activateEnableButton(int enable) {
 
 void CConfigDialog::reloadSellers() {
 	CTibiaItemProxy itemProxy;
-	while (m_Seller[0].GetCount()>0) m_Seller[0].DeleteString(0);
-	while (m_Seller[1].GetCount()>0) m_Seller[1].DeleteString(0);
-	while (m_Seller[2].GetCount()>0) m_Seller[2].DeleteString(0);
-	while (m_Seller[3].GetCount()>0) m_Seller[3].DeleteString(0);
-	for (int count = 0; count < sellerNum; count++) {
+	while (m_Seller[0].GetCount() > 0)
+		m_Seller[0].DeleteString(0);
+	while (m_Seller[1].GetCount() > 0)
+		m_Seller[1].DeleteString(0);
+	while (m_Seller[2].GetCount() > 0)
+		m_Seller[2].DeleteString(0);
+	while (m_Seller[3].GetCount() > 0)
+		m_Seller[3].DeleteString(0);
+	for (int count = 0; count < sellerNum; count++)
+	{
 		m_Seller[0].AddString(sellersInfo[count].name);
 		m_Seller[1].AddString(sellersInfo[count].name);
 		m_Seller[2].AddString(sellersInfo[count].name);
@@ -399,17 +429,22 @@ int initalizeSellers() {
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\mods\\tibiaauto-sellers.csv",installPath);
-	
+	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
+
 	ifstream sellerFile (pathBuf, ios::in);
-	if (!sellerFile.is_open()) {	AfxMessageBox("File TibiaAuto-Sellers.csv Not found!"); sellerFile.close(); return 0;}
+	if (!sellerFile.is_open())
+	{
+		AfxMessageBox("File TibiaAuto-Sellers.csv Not found!"); sellerFile.close(); return 0;
+	}
 	char buf[128] = {0};
-	
+
 	sellerNum = 0;
-	while (!sellerFile.eof() && sellerNum<MAX_NPCS) {
+	while (!sellerFile.eof() && sellerNum < MAX_NPCS)
+	{
 		sellerFile.getline(buf, 128, ',');
-		if (strlen(buf) == 0) break;
-		strcpy(sellersInfo[sellerNum].name,buf);
+		if (strlen(buf) == 0)
+			break;
+		strcpy(sellersInfo[sellerNum].name, buf);
 		sellerFile.getline(buf, 128, ',');
 		sellersInfo[sellerNum].xPos = atoi(buf);
 		sellerFile.getline(buf, 128, ',');
@@ -418,7 +453,7 @@ int initalizeSellers() {
 		sellersInfo[sellerNum++].zPos = atoi(buf);
 	}
 	sellerFile.close();
-	
+
 	return 1;
 }
 
@@ -426,26 +461,29 @@ void saveSellers(){
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf,"%s\\mods\\tibiaauto-sellers.csv",installPath);
-	
+	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
+
 	ofstream sellerFile (pathBuf, ios::out);
-	if (!sellerFile.is_open()) {
+	if (!sellerFile.is_open())
+	{
 		AfxMessageBox("File TibiaAuto-Sellers.csv Not found!");
 		sellerFile.close();
 		return;
 	}
 	char buf[256];
-	for (int num=0;num<sellerNum;num++) {
-		sprintf(buf,"%s,%d,%d,%d\n",sellersInfo[num].name,sellersInfo[num].xPos,sellersInfo[num].yPos,sellersInfo[num].zPos);
-		sellerFile.write(buf,strlen(buf));
+	for (int num = 0; num < sellerNum; num++)
+	{
+		sprintf(buf, "%s,%d,%d,%d\n", sellersInfo[num].name, sellersInfo[num].xPos, sellersInfo[num].yPos, sellersInfo[num].zPos);
+		sellerFile.write(buf, strlen(buf));
 	}
 	sellerFile.close();
 }
 
-	
+
 void CConfigDialog::reloadSaleItems() {
 	CTibiaItemProxy itemProxy;
-	while (m_tradeItemList.GetCount()>0) m_tradeItemList.DeleteString(0);
+	while (m_tradeItemList.GetCount() > 0)
+		m_tradeItemList.DeleteString(0);
 	int count = itemProxy.getItemCount();
 	for (int i = 0; i < count; i++)
 		m_tradeItemList.AddString(itemProxy.getItemNameAtIndex(i));
@@ -454,15 +492,16 @@ void CConfigDialog::reloadSaleItems() {
 
 void CConfigDialog::sellBoxAdd(int index) {
 	char amount[16];
-	int sel=m_tradeItemList.GetCurSel();
-	m_quantityBuySell.GetWindowText(amount,15);
+	int sel = m_tradeItemList.GetCurSel();
+	m_quantityBuySell.GetWindowText(amount, 15);
 	char itemSaleTag[256];
 	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
+	m_tradeItemList.GetLBText(sel, itemName);
+	if (sel == -1)
+		return;
 	sprintf(itemSaleTag, "%s->%s", itemName, amount);
 	m_SellBox[index].SetCurSel(m_SellBox[index].AddString(itemSaleTag));
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
+	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1, itemName));
 	m_buyPrice.SetWindowText("0");
 	m_quantityBuySell.SetWindowText("0");
 	m_buyTriggerQuantity.SetWindowText("0");
@@ -484,17 +523,18 @@ void CConfigDialog::buyBoxAdd(int index) {
 	char amount[16];
 	char salePrice[16];
 	char quantity[16];
-	int sel=m_tradeItemList.GetCurSel();
+	int sel = m_tradeItemList.GetCurSel();
 	m_quantityBuySell.GetWindowText(amount, 15);
 	m_buyPrice.GetWindowText(salePrice, 15);
 	m_buyTriggerQuantity.GetWindowText(quantity, 15);
 	char itemSaleTag[256];
 	char itemName[128];
-	m_tradeItemList.GetLBText(sel,itemName);
-	if (sel==-1) return;
+	m_tradeItemList.GetLBText(sel, itemName);
+	if (sel == -1)
+		return;
 	sprintf(itemSaleTag, "%s->%d:%d@%dgp", itemName, atoi(quantity), atoi(amount), atoi(salePrice));
 	m_BuyBox[index].SetCurSel(m_BuyBox[index].AddString(itemSaleTag));
-	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1,itemName));
+	m_tradeItemList.DeleteString(m_tradeItemList.FindStringExact(-1, itemName));
 	m_buyPrice.SetWindowText("0");
 	m_quantityBuySell.SetWindowText("0");
 	m_buyTriggerQuantity.SetWindowText("0");
@@ -515,23 +555,26 @@ void CConfigDialog::buyBoxAdd3() {
 void CConfigDialog::sellBoxRemove(int index) {
 	char paramString[128];
 	char itemName[128];
-	int sel=m_SellBox[index].GetCurSel();
-	if (sel==-1) return;
-	m_SellBox[index].GetText(sel,itemName);
+	int sel = m_SellBox[index].GetCurSel();
+	if (sel == -1)
+		return;
+	m_SellBox[index].GetText(sel, itemName);
 	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
+	for (j = strlen(itemName) - 1; j > 0; j--)
+	{
+		if (itemName[j] == '-' && itemName[j + 1] == '>')
+		{
+			memcpy(paramString, itemName + j + 2, strlen(itemName) - j);
+			itemName[j] = '\0';
 			break;
 		}
 	}
 	m_tradeItemList.AddString(itemName);
 	m_quantityBuySell.SetWindowText(paramString);
 	m_buyPrice.SetWindowText("0");
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
+	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1, itemName));
 	m_SellBox[index].DeleteString(sel);
-	m_SellBox[index].SetCurSel(min(m_SellBox[index].GetCount()-1,max(0,sel-1)));
+	m_SellBox[index].SetCurSel(min(m_SellBox[index].GetCount() - 1, max(0, sel - 1)));
 }
 void CConfigDialog::sellBoxRemove0() {
 	sellBoxRemove(0);
@@ -550,14 +593,17 @@ void CConfigDialog::buyBoxRemove(int index) {
 	char paramString[128];
 	char itemName[128];
 	int quantity, price, trigger;
-	int sel=m_BuyBox[index].GetCurSel();
-	if (sel==-1) return;
-	m_BuyBox[index].GetText(sel,itemName);
+	int sel = m_BuyBox[index].GetCurSel();
+	if (sel == -1)
+		return;
+	m_BuyBox[index].GetText(sel, itemName);
 	int j;
-	for (j=strlen(itemName)-1;j>0;j--) {
-		if (itemName[j]=='-' && itemName[j + 1]=='>') {
-			memcpy(paramString,itemName+j+2,strlen(itemName)-j);
-			itemName[j]='\0';
+	for (j = strlen(itemName) - 1; j > 0; j--)
+	{
+		if (itemName[j] == '-' && itemName[j + 1] == '>')
+		{
+			memcpy(paramString, itemName + j + 2, strlen(itemName) - j);
+			itemName[j] = '\0';
 			break;
 		}
 	}
@@ -569,9 +615,9 @@ void CConfigDialog::buyBoxRemove(int index) {
 	m_buyPrice.SetWindowText(buf);
 	sprintf(buf, "%d", trigger);
 	m_buyTriggerQuantity.SetWindowText(buf);
-	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1,itemName));
+	m_tradeItemList.SetCurSel(m_tradeItemList.FindStringExact(-1, itemName));
 	m_BuyBox[index].DeleteString(sel);
-	m_BuyBox[index].SetCurSel(min(m_BuyBox[index].GetCount()-1,max(0,sel-1)));
+	m_BuyBox[index].SetCurSel(min(m_BuyBox[index].GetCount() - 1, max(0, sel - 1)));
 }
 void CConfigDialog::buyBoxRemove0() {
 	buyBoxRemove(0);
@@ -595,45 +641,48 @@ void CConfigDialog::OnAddSeller(){
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	char buf[128];
-	m_addName.GetWindowText(buf,127);
-	int sellerFound=0;
+	m_addName.GetWindowText(buf, 127);
+	int sellerFound = 0;
 	int i;
-	for (i=0;i<memConstData.m_memMaxCreatures;i++){
-		CTibiaCharacter* mon=reader.readVisibleCreature(i);
-		if (mon->tibiaId == 0){
+	for (i = 0; i < memConstData.m_memMaxCreatures; i++)
+	{
+		CTibiaCharacter* mon = reader.readVisibleCreature(i);
+		if (mon->tibiaId == 0)
+		{
 			delete mon;
 			break;
 		}
-		int lenName=strlen(mon->name);
-		if (strncmp(buf,mon->name,lenName)==0 && (buf[lenName]==0 || buf[lenName]==' ')){
-			sellerFound=1;
+		int lenName = strlen(mon->name);
+		if (strncmp(buf, mon->name, lenName) == 0 && (buf[lenName] == 0 || buf[lenName] == ' '))
+		{
+			sellerFound = 1;
 			break;
 		}
 		delete mon;
 	}
-	if (!sellerFound){
+	if (!sellerFound)
+	{
 		AfxMessageBox("NPC not found in recently seen creatures list.");
 		return;
 	}
 
-	CTibiaCharacter* NPCSeller=reader.readVisibleCreature(i);
-	if (sellerNum>=MAX_NPCS){
+	CTibiaCharacter* NPCSeller = reader.readVisibleCreature(i);
+	if (sellerNum >= MAX_NPCS)
+	{
 		AfxMessageBox("NPC list is full.");
 		return;
 	}
-	strcpy(sellersInfo[sellerNum].name,buf);
-	sellersInfo[sellerNum].xPos=NPCSeller->x;
-	sellersInfo[sellerNum].yPos=NPCSeller->y;
-	sellersInfo[sellerNum].zPos=NPCSeller->z;
+	strcpy(sellersInfo[sellerNum].name, buf);
+	sellersInfo[sellerNum].xPos = NPCSeller->x;
+	sellersInfo[sellerNum].yPos = NPCSeller->y;
+	sellersInfo[sellerNum].zPos = NPCSeller->z;
 	delete NPCSeller;
 
-	sprintf(buf,"Added %s sucessfully to the list at position (%d,%d,%d)",sellersInfo[sellerNum].name,sellersInfo[sellerNum].xPos,sellersInfo[sellerNum].yPos,sellersInfo[sellerNum].zPos);
+	sprintf(buf, "Added %s sucessfully to the list at position (%d,%d,%d)", sellersInfo[sellerNum].name, sellersInfo[sellerNum].xPos, sellersInfo[sellerNum].yPos, sellersInfo[sellerNum].zPos);
 	AfxMessageBox(buf);
 	sellerNum++;
 
 	saveSellers();
 	reloadSellers();
 	return;
-
-	
 }

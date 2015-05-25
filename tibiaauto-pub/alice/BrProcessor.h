@@ -16,11 +16,12 @@ using namespace std;
 class BrProcessor : public AimlProcessor
 {
 public:
-	~BrProcessor() { }
-	
+	~BrProcessor() {
+	}
+
 	string process(Match *, PElement, Responder *, const string &) {
 		return "\n";
 	}
 };
 
-#endif
+#endif // ifndef BR_PROCESSOR_H

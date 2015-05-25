@@ -24,34 +24,34 @@ public:
 // Dialog Data
 	//{{AFX_DATA(COptionsDialog)
 	enum { IDD = IDD_OPTIONS };
-	CButtonST	m_Skin;
-	CGroupBoxEx	m_UsageStatistics;
-	CGroupBoxEx	m_TibiaMaps;
-	CGroupBoxEx	m_LootStatistics;
-	CGroupBoxEx	m_CreatureStatistics;
-	CGroupBoxEx	m_loadingScriptOptions;
-	CStatic	m_sizeUsagestats;
-	CButtonST	m_send4;
-	CButtonST	m_send3;
-	CButtonST	m_send2;
-	CButtonST	m_send1;
-	CProgressCtrl	m_progress;
+	CButtonST m_Skin;
+	CGroupBoxEx m_UsageStatistics;
+	CGroupBoxEx m_TibiaMaps;
+	CGroupBoxEx m_LootStatistics;
+	CGroupBoxEx m_CreatureStatistics;
+	CGroupBoxEx m_loadingScriptOptions;
+	CStatic m_sizeUsagestats;
+	CButtonST m_send4;
+	CButtonST m_send3;
+	CButtonST m_send2;
+	CButtonST m_send1;
+	CProgressCtrl m_progress;
 	CButton m_gatherBotStats;
 	CButton m_loadOnStartup;
 	CButton m_hideTibia;
 	CButton m_scriptLoadAsk;
 	CButton m_scriptLoadStart;
 	CButton m_scriptLoadNoStart;
-	CButtonST	m_ok;
-	CStatic	m_sizeCreatureStats;
-	CStatic	m_sizeLootstats;
+	CButtonST m_ok;
+	CStatic m_sizeCreatureStats;
+	CStatic m_sizeLootstats;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(COptionsDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

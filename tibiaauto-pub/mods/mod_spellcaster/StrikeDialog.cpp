@@ -9,7 +9,7 @@
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // StrikeDialog dialog
@@ -19,7 +19,7 @@ StrikeDialog::StrikeDialog(CWnd* pParent /*=NULL*/)
 	: MyDialog(StrikeDialog::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(StrikeDialog)
-		// NOTE: the ClassWizard will add member initialization here
+	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 }
 
@@ -49,19 +49,19 @@ void StrikeDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(StrikeDialog, CDialog)
-	//{{AFX_MSG_MAP(StrikeDialog)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_STRIKE, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FRIGO, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MORT, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_TERA, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VIS, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CON, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterStrike)
-	ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HUR, OnToolSpellcasterStrike)
-	ON_WM_ERASEBKGND()
-	ON_WM_CTLCOLOR()
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(StrikeDialog)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_STRIKE, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FLAM, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_FRIGO, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_MORT, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_TERA, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_VIS, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_CON, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SAN, OnToolSpellcasterStrike)
+ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_HUR, OnToolSpellcasterStrike)
+ON_WM_ERASEBKGND()
+ON_WM_CTLCOLOR()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -69,12 +69,12 @@ END_MESSAGE_MAP()
 
 void StrikeDialog::OnToolSpellcasterStrike() {
 	int val = m_strike.GetCheck();
-		OnToolSpellcasterMageStrike();
-		OnToolSpellcasterPaladinStrike();
-		OnToolSpellcasterKnightStrike();
-		m_manaStrike.EnableWindow(val);
-		m_defaultStrikeSpell.EnableWindow(val);
-		m_strikeSpellHpMin.EnableWindow(val);
+	OnToolSpellcasterMageStrike();
+	OnToolSpellcasterPaladinStrike();
+	OnToolSpellcasterKnightStrike();
+	m_manaStrike.EnableWindow(val);
+	m_defaultStrikeSpell.EnableWindow(val);
+	m_strikeSpellHpMin.EnableWindow(val);
 }
 
 void StrikeDialog::disableControls() {
@@ -94,7 +94,8 @@ void StrikeDialog::disableControls() {
 
 void StrikeDialog::enableControls() {
 	m_strike.EnableWindow(true);
-	if (m_strike.GetCheck()){
+	if (m_strike.GetCheck())
+	{
 		OnToolSpellcasterMageStrike();
 		OnToolSpellcasterPaladinStrike();
 		OnToolSpellcasterKnightStrike();
@@ -115,46 +116,48 @@ void StrikeDialog::configToControls(CConfigData *configData) {
 	m_con.SetCheck(configData->con);
 	m_san.SetCheck(configData->san);
 	m_hur.SetCheck(configData->hur);
-	sprintf(buf,"%d",configData->manaStrike);		m_manaStrike.SetWindowText(buf);
-	sprintf(buf,"%s",configData->defaultStrikeSpell);		m_defaultStrikeSpell.SetWindowText(buf);
-	sprintf(buf,"%d",configData->strikeSpellHpMin);		m_strikeSpellHpMin.SetWindowText(buf);
+	sprintf(buf, "%d", configData->manaStrike);               m_manaStrike.SetWindowText(buf);
+	sprintf(buf, "%s", configData->defaultStrikeSpell);               m_defaultStrikeSpell.SetWindowText(buf);
+	sprintf(buf, "%d", configData->strikeSpellHpMin);         m_strikeSpellHpMin.SetWindowText(buf);
 	OnToolSpellcasterStrike();
 }
 
 void StrikeDialog::controlsToConfig(CConfigData *newConfigData) {
 	char buf[128];
-	newConfigData->strike = m_strike.GetCheck();
-	newConfigData->flam = m_flam.GetCheck();
-	newConfigData->frigo = m_frigo.GetCheck();
-	newConfigData->mort = m_mort.GetCheck();
-	newConfigData->tera = m_tera.GetCheck();
-	newConfigData->vis = m_vis.GetCheck();
-	newConfigData->con = m_con.GetCheck();
-	newConfigData->san = m_san.GetCheck();
-	newConfigData->hur = m_hur.GetCheck();
-	m_manaStrike.GetWindowText(buf,127);newConfigData->manaStrike=atoi(buf);
-	m_defaultStrikeSpell.GetWindowText(newConfigData->defaultStrikeSpell,127);
-	m_strikeSpellHpMin.GetWindowText(buf,127);newConfigData->strikeSpellHpMin=atoi(buf);
+	newConfigData->strike                                           = m_strike.GetCheck();
+	newConfigData->flam                                             = m_flam.GetCheck();
+	newConfigData->frigo                                            = m_frigo.GetCheck();
+	newConfigData->mort                                             = m_mort.GetCheck();
+	newConfigData->tera                                             = m_tera.GetCheck();
+	newConfigData->vis                                              = m_vis.GetCheck();
+	newConfigData->con                                              = m_con.GetCheck();
+	newConfigData->san                                              = m_san.GetCheck();
+	newConfigData->hur                                              = m_hur.GetCheck();
+	m_manaStrike.GetWindowText(buf, 127); newConfigData->manaStrike = atoi(buf);
+	m_defaultStrikeSpell.GetWindowText(newConfigData->defaultStrikeSpell, 127);
+	m_strikeSpellHpMin.GetWindowText(buf, 127); newConfigData->strikeSpellHpMin = atoi(buf);
 }
 
 BOOL StrikeDialog::OnInitDialog() {
 	CDialog::OnInitDialog();
-	
+
 	OnToolSpellcasterStrike();
-	
+
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
 void StrikeDialog::OnToolSpellcasterMageStrike() {
-	if (m_con.GetCheck() || m_san.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck()) {
+	if (m_con.GetCheck() || m_san.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck())
+	{
 		m_flam.EnableWindow(false);
 		m_frigo.EnableWindow(false);
 		m_mort.EnableWindow(false);
 		m_tera.EnableWindow(false);
 		m_vis.EnableWindow(false);
 	}
-	else if (!m_flam.GetCheck() && !m_frigo.GetCheck() && !m_mort.GetCheck() && !m_tera.GetCheck() && !m_vis.GetCheck()) {
+	else if (!m_flam.GetCheck() && !m_frigo.GetCheck() && !m_mort.GetCheck() && !m_tera.GetCheck() && !m_vis.GetCheck())
+	{
 		m_hur.EnableWindow(true);
 		m_flam.EnableWindow(true);
 		m_frigo.EnableWindow(true);
@@ -164,7 +167,8 @@ void StrikeDialog::OnToolSpellcasterMageStrike() {
 		m_san.EnableWindow(true);
 		m_con.EnableWindow(true);
 	}
-	else {
+	else
+	{
 		m_flam.EnableWindow(true);
 		m_frigo.EnableWindow(true);
 		m_mort.EnableWindow(true);
@@ -177,12 +181,14 @@ void StrikeDialog::OnToolSpellcasterMageStrike() {
 }
 
 void StrikeDialog::OnToolSpellcasterPaladinStrike() {
-	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck()){
+	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_hur.GetCheck() || !m_strike.GetCheck())
+	{
 		m_san.EnableWindow(false);
 		m_con.EnableWindow(false);
 		m_hur.EnableWindow(false);
 	}
-	else if (!m_san.GetCheck() && !m_con.GetCheck()) {
+	else if (!m_san.GetCheck() && !m_con.GetCheck())
+	{
 		m_hur.EnableWindow(true);
 		m_flam.EnableWindow(true);
 		m_frigo.EnableWindow(true);
@@ -192,7 +198,8 @@ void StrikeDialog::OnToolSpellcasterPaladinStrike() {
 		m_san.EnableWindow(true);
 		m_con.EnableWindow(true);
 	}
-	else {
+	else
+	{
 		m_san.EnableWindow(true);
 		m_con.EnableWindow(true);
 		m_flam.EnableWindow(false);
@@ -205,10 +212,12 @@ void StrikeDialog::OnToolSpellcasterPaladinStrike() {
 }
 
 void StrikeDialog::OnToolSpellcasterKnightStrike() {
-	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck()){
+	if (m_flam.GetCheck() || m_frigo.GetCheck() || m_mort.GetCheck() || m_tera.GetCheck() || m_vis.GetCheck() || m_con.GetCheck() || m_san.GetCheck() || !m_strike.GetCheck())
+	{
 		m_hur.EnableWindow(false);
 	}
-	else if (!m_hur.GetCheck()) {
+	else if (!m_hur.GetCheck())
+	{
 		m_hur.EnableWindow(true);
 		m_flam.EnableWindow(true);
 		m_frigo.EnableWindow(true);
@@ -218,7 +227,8 @@ void StrikeDialog::OnToolSpellcasterKnightStrike() {
 		m_san.EnableWindow(true);
 		m_con.EnableWindow(true);
 	}
-	else {
+	else
+	{
 		m_hur.EnableWindow(true);
 		m_flam.EnableWindow(false);
 		m_frigo.EnableWindow(false);

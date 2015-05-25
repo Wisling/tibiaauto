@@ -41,7 +41,7 @@ CImageButtonWithStyle::~CImageButtonWithStyle()
 
 
 BEGIN_MESSAGE_MAP(CImageButtonWithStyle, CButton)
-	ON_NOTIFY_REFLECT (NM_CUSTOMDRAW, OnNotifyCustomDraw)
+ON_NOTIFY_REFLECT (NM_CUSTOMDRAW, OnNotifyCustomDraw)
 END_MESSAGE_MAP()
 
 
@@ -66,10 +66,8 @@ CImageButtonWithStyle::OnNotifyCustomDraw ( NMHDR * pNotifyStruct, LRESULT* resu
 	}
 
 	if (pCustomDraw->dwDrawStage == CDDS_PREERASE)
-	{
 		// erase background (according to parent window's themed background
 		g_xpStyle.DrawThemeParentBackground (m_hWnd, pCustomDraw->hdc, &pCustomDraw->rc);
-	}
 
 	if (pCustomDraw->dwDrawStage == CDDS_PREERASE || pCustomDraw->dwDrawStage == CDDS_PREPAINT)
 	{
@@ -100,17 +98,17 @@ CImageButtonWithStyle::OnNotifyCustomDraw ( NMHDR * pNotifyStruct, LRESULT* resu
 
 		// draw themed button background appropriate to button state
 		g_xpStyle.DrawThemeBackground (hTheme,
-			pCustomDraw->hdc, BP_PUSHBUTTON,
-			state_id,
-			&pCustomDraw->rc, NULL);
+		                               pCustomDraw->hdc, BP_PUSHBUTTON,
+		                               state_id,
+		                               &pCustomDraw->rc, NULL);
 
 		// get content rectangle (space inside button for image)
 		CRect content_rect (pCustomDraw->rc);
 		g_xpStyle.GetThemeBackgroundContentRect (hTheme,
-			pCustomDraw->hdc, BP_PUSHBUTTON,
-			state_id,
-			&pCustomDraw->rc,
-			&content_rect);
+		                                         pCustomDraw->hdc, BP_PUSHBUTTON,
+		                                         state_id,
+		                                         &pCustomDraw->rc,
+		                                         &content_rect);
 		// we're done with the theme
 		g_xpStyle.CloseThemeData(hTheme);
 
@@ -121,17 +119,17 @@ CImageButtonWithStyle::OnNotifyCustomDraw ( NMHDR * pNotifyStruct, LRESULT* resu
 		}
 		else
 		{
-			ASSERT (style & BS_ICON);		// since we bailed out at top otherwise
+			ASSERT (style & BS_ICON);               // since we bailed out at top otherwise
 			draw_icon (pCustomDraw->hdc, &content_rect, style);
 		}
 
 		// finally, draw the focus rectangle if needed
 		//T4: We don't need focus here
 		/*if (pCustomDraw->uItemState & CDIS_FOCUS)
-		{
-			// draw focus rectangle
-			DrawFocusRect (pCustomDraw->hdc, &content_rect);
-		}*/
+		   {
+		        // draw focus rectangle
+		        DrawFocusRect (pCustomDraw->hdc, &content_rect);
+		   }*/
 
 		*result = CDRF_SKIPDEFAULT;
 		return;
@@ -162,7 +160,7 @@ CImageButtonWithStyle::draw_bitmap (HDC hDC, const CRect& Rect, DWORD style)
 
 	// Draw the bitmap
 	DrawState(hDC, NULL, NULL, (LPARAM) hBitmap, 0, x, y, bmi.bmiHeader.biWidth, bmi.bmiHeader.biHeight,
-		(style & WS_DISABLED) != 0 ? (DST_BITMAP | DSS_DISABLED) : (DST_BITMAP | DSS_NORMAL));
+	          (style & WS_DISABLED) != 0 ? (DST_BITMAP | DSS_DISABLED) : (DST_BITMAP | DSS_NORMAL));
 }
 
 // draw_icon () - Draw an icon
@@ -193,7 +191,7 @@ CImageButtonWithStyle::draw_icon (HDC hDC, const CRect& Rect, DWORD style)
 		// icon has singel mask bitmap which is twice as high as icon
 		GetDIBits(hDC, ii.hbmMask, 0, 0, NULL, &bmi, DIB_RGB_COLORS);
 		cx = bmi.bmiHeader.biWidth;
-		cy = bmi.bmiHeader.biHeight/2;
+		cy = bmi.bmiHeader.biHeight / 2;
 	}
 
 	// determine position of top-left corner of icon
@@ -202,7 +200,7 @@ CImageButtonWithStyle::draw_icon (HDC hDC, const CRect& Rect, DWORD style)
 
 	// Draw the icon
 	DrawState(hDC, NULL, NULL, (LPARAM) hIcon, 0, x, y, cx, cy,
-		(style & WS_DISABLED) != 0 ? (DST_ICON | DSS_DISABLED) : (DST_ICON | DSS_NORMAL));
+	          (style & WS_DISABLED) != 0 ? (DST_ICON | DSS_DISABLED) : (DST_ICON | DSS_NORMAL));
 }
 
 // calcultate the left position of the image so it is drawn on left, right or centred (the default)
@@ -218,7 +216,7 @@ image_left (int cx, const CRect& Rect, DWORD style)
 	else if ((style & BS_CENTER) == BS_RIGHT)
 		x = Rect.right - cx;
 	else
-		x = Rect.left + (Rect.Width () - cx)/2;
+		x = Rect.left + (Rect.Width () - cx) / 2;
 	return (x);
 }
 
@@ -235,6 +233,6 @@ image_top (int cy, const CRect& Rect, DWORD style)
 	else if ((style & BS_VCENTER) == BS_BOTTOM)
 		y = Rect.bottom - cy;
 	else
-		y = Rect.top + (Rect.Height () - cy)/2;
+		y = Rect.top + (Rect.Height () - cy) / 2;
 	return (y);
 }

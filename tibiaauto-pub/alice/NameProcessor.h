@@ -12,11 +12,12 @@
 class NameProcessor : public AimlProcessor
 {
 public:
-	~NameProcessor() { }
-	
+	~NameProcessor() {
+	}
+
 	string process(Match *, PElement, Responder *, const string &id) {
 		return Kernel::respond("BOT NAME", id);
 	}
 };
 
-#endif
+#endif // ifndef NAME_PROCESSOR_H

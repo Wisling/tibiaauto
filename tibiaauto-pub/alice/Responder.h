@@ -17,12 +17,13 @@ extern bool serverRunning;
 
 class Responder {
 public:
-	virtual ~Responder() { };
-	
+	virtual ~Responder() {
+	};
+
 	/**
 	 * Do we need the match element as well?
 	 */
 	virtual string respond(Match *, PElement, const string &) = 0;
 };
 
-#endif
+#endif // ifndef RESPONDER_H

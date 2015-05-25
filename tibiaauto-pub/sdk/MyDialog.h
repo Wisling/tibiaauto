@@ -16,22 +16,26 @@ class MyDialog : public CDialog
 {
 // Construction
 public:
-	virtual void configToControls(CConfigData *){};
-	virtual void controlsToConfig(CConfigData *){};
-	virtual void enableControls(){};
-	virtual void disableControls(){};
+	virtual void configToControls(CConfigData *){
+	};
+	virtual void controlsToConfig(CConfigData *){
+	};
+	virtual void enableControls(){
+	};
+	virtual void disableControls(){
+	};
 	MyDialog(UINT nIDTemplate, CWnd* pParent = NULL);   // standard constructor
 	~MyDialog();   // standard constructor
 // Dialog Data
 	//{{AFX_DATA(MyDialog)
-		// NOTE: the ClassWizard will add data members here
+	// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(MyDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

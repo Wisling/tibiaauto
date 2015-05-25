@@ -23,9 +23,9 @@ XERCES_CPP_NAMESPACE_USE
 
 #ifdef _DEBUG
 #undef THIS_FILE
-	static char THIS_FILE[]=__FILE__;
+static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
-#endif
+#endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -56,7 +56,7 @@ CTibiaItem::CTibiaItem()
 {
 	objectId = 0;
 	quantity = 0;
-	pos = 0;
+	pos      = 0;
 }
 
 //Run when closing down
@@ -70,7 +70,8 @@ char * CTibiaItem::getItemName(int objectId)
 	refreshItemLists();
 
 	char * ret = itemList.GetText(objectId);
-	if (ret != NULL) return ret;
+	if (ret != NULL)
+		return ret;
 
 	return "unknown";
 }
@@ -81,7 +82,8 @@ char * CTibiaItem::getTypedItemName(int objectId)
 	refreshItemLists();
 
 	char * ret = typedList.GetText(objectId);
-	if (ret != NULL) return ret;
+	if (ret != NULL)
+		return ret;
 
 	return "unknown";
 }
@@ -192,7 +194,8 @@ CUIntArray* CTibiaItem::getTypedItemIdArrayPtr(int ind) {
 void CTibiaItem::fillTypedItemIdArray(int ind) {
 	refreshItemLists();
 	typedList.RemoveAll();
-	for (int loop = 0; loop < getItemCount(); loop++) {
+	for (int loop = 0; loop < getItemCount(); loop++)
+	{
 		if (itemList.GetTypeAtIndex(loop) & ind)
 			typedList.Add(itemList.GetValueAtIndex(loop), itemList.GetTextAtIndex(loop), itemList.GetExtraInfoAtIndex(loop), itemList.GetTypeAtIndex(loop));
 	}
@@ -274,13 +277,15 @@ int CTibiaItem::getLootItemCount()
 int CTibiaItem::getValueForConst(char *code)
 {
 	refreshItemLists();
-	int len = strlen(code) + 1;
+	int len     = strlen(code) + 1;
 	char* lcode = (char*)malloc(len);
-	for (int i = 0; i < len; i++){
+	for (int i = 0; i < len; i++)
+	{
 		lcode[i] = tolower(code[i]);
 	}
 	int ret = constCodeList.GetValue(lcode);
-	if (ret == 0 && !constCodeList.HasText(lcode)){
+	if (ret == 0 && !constCodeList.HasText(lcode))
+	{
 		free(lcode);
 		char msgBuf[128];
 		sprintf(msgBuf, "ERROR: Unable to find value for const code='%s'!", code);
@@ -295,36 +300,33 @@ CTibiaTree * CTibiaItem::getItemsTree()
 {
 	refreshItemLists();
 	if (!itemTree)
-	{
 		itemTree = new CTibiaTree(new CTibiaTreeBranchData("Root"));
-	}
 	return itemTree;
 }
 
 void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree){
-	if (itemTree) delete CTibiaItem::itemTree;
-	if (!tibiaTree){
+	if (itemTree)
+		delete CTibiaItem::itemTree;
+	if (!tibiaTree)
 		itemTree = new CTibiaTree(new CTibiaTreeBranchData("Root"));
-	} else{
+	else
 		itemTree = tibiaTree;
-	}
 }
 
 void parseItemsBranch(DOMNode* listNode, CTibiaTree* parent)
 {
 	for (int itemNr = 0; itemNr < (int)listNode->getChildNodes()->getLength(); itemNr++)
 	{
-
 		int attrNr;
 		DOMNode *item = listNode->getChildNodes()->item(itemNr);
 
-		if (item->getNodeType() != 1) continue;
-		if (!wcscmp(item->getNodeName(), L"item")){
-
-
-			int objectId = 0;
-			int objectLoot = 0;
-			int type = 0;
+		if (item->getNodeType() != 1)
+			continue;
+		if (!wcscmp(item->getNodeName(), L"item"))
+		{
+			int objectId     = 0;
+			int objectLoot   = 0;
+			int type         = 0;
 			char *objectName = NULL;
 
 			for (attrNr = 0; attrNr < (int)item->getAttributes()->getLength(); attrNr++)
@@ -356,13 +358,16 @@ void parseItemsBranch(DOMNode* listNode, CTibiaTree* parent)
 			}
 			if (!objectId || !objectName || !strlen(objectName))
 			{
-				if (objectName) free(objectName);
+				if (objectName)
+					free(objectName);
 				continue;
 			}
 			parent->AddChild(new CTibiaTreeItemData(objectName, objectId, objectLoot != 0, type));
-			if (objectName) free(objectName);
+			if (objectName)
+				free(objectName);
 		}
-		if (!wcscmp(item->getNodeName(), L"branch")){
+		if (!wcscmp(item->getNodeName(), L"branch"))
+		{
 			char *branchName = NULL;
 
 			for (attrNr = 0; attrNr < (int)item->getAttributes()->getLength(); attrNr++)
@@ -373,27 +378,32 @@ void parseItemsBranch(DOMNode* listNode, CTibiaTree* parent)
 			}
 			if (!branchName || !strlen(branchName))
 			{
-				if (branchName) free(branchName);
+				if (branchName)
+					free(branchName);
 				continue;
 			}
 
 			CTibiaTree* child = parent->AddChild(new CTibiaTreeBranchData(branchName));
 			parseItemsBranch(item, child);
-			if (branchName) free(branchName);
+			if (branchName)
+				free(branchName);
 		}
 	}
 }
 
 void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 	int size = parent->children.size();
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i < size; i++)
+	{
 		CTibiaTree* child = parent->children[i];
-		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
+		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE)
+		{
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
 
 			char* name = data->GetName();
 			//Add to list, but if failed, display item info
-			if (!list->Add(data->GetId(), data->GetName(), 0, data->GetItemType())){
+			if (!list->Add(data->GetId(), data->GetName(), 0, data->GetItemType()))
+			{
 				char buf[1024];
 				char trunc_name[500];
 				int len = min(strlen(name), 500);
@@ -401,7 +411,9 @@ void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 				trunc_name[len] = '\0';
 				sprintf(buf, "Item already added under different name or ID. Failed to add item 0x%x:%s", data->GetId(), trunc_name);
 			}
-		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		}
+		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)
+		{
 			//recurse for all children
 			traverseTreeForItemList(child, list);
 		}
@@ -409,14 +421,17 @@ void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 }
 void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
 	int size = parent->children.size();
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i < size; i++)
+	{
 		CTibiaTree* child = parent->children[i];
-		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
+		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE)
+		{
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
-			if (data->IsLooted()){
+			if (data->IsLooted())
 				list->Add(data->GetId(), data->GetName(), data->GetItemType());
-			}
-		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		}
+		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)
+		{
 			//recurse for all children
 			traverseTreeForLootList(child, list);
 		}
@@ -425,14 +440,17 @@ void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
 
 void traverseTreeToClearLootItems(CTibiaTree* parent, CTibiaList* list){
 	int size = parent->children.size();
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i < size; i++)
+	{
 		CTibiaTree* child = parent->children[i];
-		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
+		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE)
+		{
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
-			if (data->IsLooted()){
+			if (data->IsLooted())
 				data->SetIsLooted(false);
-			}
-		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		}
+		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)
+		{
 			//recurse for all children
 			traverseTreeToClearLootItems(child, list);
 		}
@@ -446,18 +464,24 @@ void CTibiaItem::clearLootItems(){
 
 bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list, int objectId){
 	int size = parent->children.size();
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i < size; i++)
+	{
 		CTibiaTree* child = parent->children[i];
-		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
+		if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE)
+		{
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
-			if (data->GetId() == objectId){
+			if (data->GetId() == objectId)
+			{
 				data->SetIsLooted(true);
 				list->Add(data->GetId(), data->GetName(), data->GetItemType());
 				return true;
 			}
-		} else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		}
+		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)
+		{
 			//recurse for all children
-			if (traverseTreeToSetAsLooted(child, list, objectId)) return true;
+			if (traverseTreeToSetAsLooted(child, list, objectId))
+				return true;
 		}
 	}
 	return false;
@@ -468,7 +492,8 @@ void CTibiaItem::setItemAsLooted(int objectId){
 	char tempName[32];
 	sprintf(tempName, "%d", objectId);
 
-	if (!traverseTreeToSetAsLooted(itemTree, &lootList, objectId)) lootList.Add(objectId, tempName, 0);
+	if (!traverseTreeToSetAsLooted(itemTree, &lootList, objectId))
+		lootList.Add(objectId, tempName, 0);
 }
 
 void CTibiaItem::refreshItemLists()
@@ -505,7 +530,6 @@ void CTibiaItem::refreshItemLists()
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
 	{
-
 		int listNr, itemNr, rootNr;
 
 		//reset all lists
@@ -513,7 +537,8 @@ void CTibiaItem::refreshItemLists()
 		foodList.RemoveAll();
 		lootList.RemoveAll();
 		itemList.RemoveAll();
-		if (itemTree) delete itemTree;
+		if (itemTree)
+			delete itemTree;
 
 		itemTree = new CTibiaTree(new CTibiaTreeBranchData("Root"));
 
@@ -532,16 +557,15 @@ void CTibiaItem::refreshItemLists()
 				DOMNode *listNode = root->getChildNodes()->item(listNr);
 
 				//ITEMS
-				if (!wcscmp(listNode->getNodeName(), L"items")) {
-
+				if (!wcscmp(listNode->getNodeName(), L"items"))
+				{
 					//recursively add to itemTree from XML tree, works with older versions
 					parseItemsBranch(listNode, itemTree);
-
 				}
 
 				//FOOD
-				if (!wcscmp(listNode->getNodeName(), L"foods")) {
-
+				if (!wcscmp(listNode->getNodeName(), L"foods"))
+				{
 					for (itemNr = 0; itemNr < (int)listNode->getChildNodes()->getLength(); itemNr++)
 					{
 						int attrNr;
@@ -549,8 +573,8 @@ void CTibiaItem::refreshItemLists()
 						if (wcscmp(item->getNodeName(), L"item"))
 							continue;
 
-						int objectId = 0;
-						int eatTime = 0;
+						int objectId     = 0;
+						int eatTime      = 0;
 						char *objectName = NULL;
 
 						for (attrNr = 0; attrNr < (int)item->getAttributes()->getLength(); attrNr++)
@@ -566,7 +590,8 @@ void CTibiaItem::refreshItemLists()
 									sscanf(idTmp, "%d", &objectId);
 								free(idTmp);
 							}
-							if (!wcscmp(attrNode->getNodeName(), L"time")) {
+							if (!wcscmp(attrNode->getNodeName(), L"time"))
+							{
 								char *idTmp = CUtil::wc2c(attrNode->getNodeValue());
 								sscanf(idTmp, "%d", &eatTime);
 								free(idTmp);
@@ -574,20 +599,22 @@ void CTibiaItem::refreshItemLists()
 						}
 						if (!objectId || !objectName || !strlen(objectName))
 						{
-							if (objectName) free(objectName);
+							if (objectName)
+								free(objectName);
 							continue;
 						}
 
 						foodList.Add(objectId, objectName, eatTime);
-						if (objectName) free(objectName);
+						if (objectName)
+							free(objectName);
 						//delete item;//wis
 					}
 				}
 
 				//CONSTS
 				//SECTION IS UNUSED, FOR CURRENT TIBIA see next section for loading from const file
-				if (!wcscmp(listNode->getNodeName(), L"consts")) {
-
+				if (!wcscmp(listNode->getNodeName(), L"consts"))
+				{
 					for (itemNr = 0; itemNr < (int)listNode->getChildNodes()->getLength(); itemNr++)
 					{
 						int attrNr;
@@ -595,7 +622,7 @@ void CTibiaItem::refreshItemLists()
 						if (wcscmp(item->getNodeName(), L"const"))
 							continue;
 
-						int constValue = 0;
+						int constValue  = 0;
 						char *constCode = NULL;
 
 						for (attrNr = 0; attrNr < (int)item->getAttributes()->getLength(); attrNr++)
@@ -614,7 +641,8 @@ void CTibiaItem::refreshItemLists()
 						}
 						if (!constCode || !strlen(constCode))
 						{
-							if (constCode) free(constCode);
+							if (constCode)
+								free(constCode);
 							continue;
 						}
 
@@ -624,15 +652,16 @@ void CTibiaItem::refreshItemLists()
 							constCode[i] = tolower(constCode[i]);
 
 						constCodeList.Add(constValue, constCode, 0);
-						if (constCode) free(constCode);
+						if (constCode)
+							free(constCode);
 						//delete item;//wis
 					}
 				}
 
 				//LOOT
 				//SECTION IS UNUSED, FOR CURRENT TIBIA
-				if (!wcscmp(listNode->getNodeName(), L"looted")) {
-
+				if (!wcscmp(listNode->getNodeName(), L"looted"))
+				{
 					for (itemNr = 0; itemNr < (int)listNode->getChildNodes()->getLength(); itemNr++)
 					{
 						int attrNr;
@@ -640,7 +669,7 @@ void CTibiaItem::refreshItemLists()
 						if (wcscmp(item->getNodeName(), L"item"))
 							continue;
 
-						int objectId = 0;
+						int objectId     = 0;
 						char *objectName = NULL;
 
 						for (attrNr = 0; attrNr < (int)item->getAttributes()->getLength(); attrNr++)
@@ -657,11 +686,13 @@ void CTibiaItem::refreshItemLists()
 						}
 						if (!objectId || !objectName || !strlen(objectName))
 						{
-							if (objectName) free(objectName);
+							if (objectName)
+								free(objectName);
 							continue;
 						}
 						lootList.Add(objectId, objectName, 0);
-						if (objectName) free(objectName);
+						if (objectName)
+							free(objectName);
 					}
 				}
 			}
@@ -669,12 +700,13 @@ void CTibiaItem::refreshItemLists()
 
 		//Create data lists from tree structure loaded by XML
 		traverseTreeForItemList(itemTree, &itemList);
-		if (lootList.GetCount() == 0) traverseTreeForLootList(itemTree, &lootList);// get loot from tree if not loaded from file
+		if (lootList.GetCount() == 0)
+			traverseTreeForLootList(itemTree, &lootList);                      // get loot from tree if not loaded from file
 
 		sprintf(pathBuf, "%s\\mods\\tibiaauto-consts.xml", installPath);
 		OFSTRUCT lpOpen;
-		if (OpenFile(pathBuf, &lpOpen, OF_EXIST) != HFILE_ERROR){
-
+		if (OpenFile(pathBuf, &lpOpen, OF_EXIST) != HFILE_ERROR)
+		{
 			constCodeList.RemoveAll();
 
 			delete parser;
@@ -693,8 +725,8 @@ void CTibiaItem::refreshItemLists()
 
 
 					//CONSTS
-					if (!wcscmp(listNode->getNodeName(), L"consts")) {
-
+					if (!wcscmp(listNode->getNodeName(), L"consts"))
+					{
 						for (itemNr = 0; itemNr < (int)listNode->getChildNodes()->getLength(); itemNr++)
 						{
 							int attrNr;
@@ -702,7 +734,7 @@ void CTibiaItem::refreshItemLists()
 							if (wcscmp(item->getNodeName(), L"const"))
 								continue;
 
-							int constValue = 0;
+							int constValue  = 0;
 							char *constCode = NULL;
 
 							for (attrNr = 0; attrNr < (int)item->getAttributes()->getLength(); attrNr++)
@@ -721,7 +753,8 @@ void CTibiaItem::refreshItemLists()
 							}
 							if (!constCode || !strlen(constCode))
 							{
-								if (constCode) free(constCode);
+								if (constCode)
+									free(constCode);
 								continue;
 							}
 
@@ -731,27 +764,29 @@ void CTibiaItem::refreshItemLists()
 								constCode[i] = tolower(constCode[i]);
 
 							constCodeList.Add(constValue, constCode, 0);
-							if (constCode) free(constCode);
+							if (constCode)
+								free(constCode);
 						}
 					}
 				}
 			}
 		}//if file tibiaauto-consts.xml exists
-	} catch (...)
+	}
+	catch (...)
 	{
 		AfxMessageBox("Unable to load const/item definitions!");
 		/*
-		AfxMessageBox("Debug Item Tree");
-		char buf[11111];
-		itemTree->toString(buf);
-		AfxMessageBox(buf);
-		AfxMessageBox("Debug Food");
-		foodList.toString(buf);
-		AfxMessageBox(buf);
-		AfxMessageBox("Debug Consts");
-		constCodeList.toString(buf);
-		AfxMessageBox(buf);
-		*/
+		   AfxMessageBox("Debug Item Tree");
+		   char buf[11111];
+		   itemTree->toString(buf);
+		   AfxMessageBox(buf);
+		   AfxMessageBox("Debug Food");
+		   foodList.toString(buf);
+		   AfxMessageBox(buf);
+		   AfxMessageBox("Debug Consts");
+		   constCodeList.toString(buf);
+		   AfxMessageBox(buf);
+		 */
 	}
 
 	delete parser;
@@ -760,22 +795,26 @@ void CTibiaItem::refreshItemLists()
 
 void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *doc){
 	int size = parent->children.size();
-	for (int i = 0; i < size; i++){
+	for (int i = 0; i < size; i++)
+	{
 		CTibiaTree* child = parent->children[i];
-		if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE){
+		if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)
+		{
 			CTibiaTreeBranchData* data = (CTibiaTreeBranchData*)(child->data);
 
 			DOMElement* itemElem = doc->createElement(XMLString::transcode("branch"));
 			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(data->GetName()));
 			node->appendChild(itemElem);
 			saveItemsBranch(itemElem, child, doc);
-		} else if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE){
+		}
+		else if (!child->HasChildren() && child->data->GetType() == TT_ITEM_NODE)
+		{
 			CTibiaTreeItemData* data = (CTibiaTreeItemData*)(child->data);
 			char buf[512];
 
-			int id = data->GetId();
-			int type = data->GetItemType();
-			bool looted = data->IsLooted();
+			int id                = data->GetId();
+			int type              = data->GetItemType();
+			bool looted           = data->IsLooted();
 			DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
 			itemElem->setAttribute(XMLString::transcode("name"), XMLString::transcode(data->GetName()));
 			sprintf(buf, "0x%x", id);
@@ -790,25 +829,29 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *do
 }
 
 void CTibiaItem::saveItemLists() {
-	if (!xmlInitialised) {
+	if (!xmlInitialised)
+	{
 		XMLPlatformUtils::Initialize();
 		xmlInitialised = 1;
 	}
 
-	char installPath[1024] = { '\0' };
+	char installPath[1024]       = { '\0' };
 	unsigned long installPathLen = 1023;
-	HKEY hkey = NULL;
-	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey)) {
+	HKEY hkey                    = NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
+	{
 		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 		RegCloseKey(hkey);
 	}
-	if (!strlen(installPath)) {
+	if (!strlen(installPath))
+	{
 		AfxMessageBox("ERROR! Unable to read TA install directory! Please reinstall!");
 		PostQuitMessage(-1);
 		return;
 	}
 	XercesDOMParser *parser = new XercesDOMParser();
-	try{
+	try
+	{
 		//int itemNr;
 		char pathBuf[2048];
 		sprintf(pathBuf, "%s\\mods\\tibiaauto-items.xml", installPath);
@@ -831,13 +874,14 @@ void CTibiaItem::saveItemLists() {
 		root->appendChild(foodNode);
 		{
 			int size = foodList.GetCount();
-			for (int i = 0; i < size; i++) {
+			for (int i = 0; i < size; i++)
+			{
 				char buf[512];
 				DOMElement*  itemElem = doc->createElement(XMLString::transcode("item"));
 				foodNode->appendChild(itemElem);
 				char* name = foodList.GetTextAtIndex(i);
-				int id = foodList.GetValueAtIndex(i);
-				int time = foodList.GetExtraInfoAtIndex(i);
+				int id     = foodList.GetValueAtIndex(i);
+				int time   = foodList.GetExtraInfoAtIndex(i);
 
 				sprintf(buf, "0x%x", id);
 				itemElem->setAttribute(XMLString::transcode("id"), XMLString::transcode(buf));
@@ -846,45 +890,45 @@ void CTibiaItem::saveItemLists() {
 
 				sprintf(buf, "%d", time);
 				itemElem->setAttribute(XMLString::transcode("time"), XMLString::transcode(buf));
-
 			}
 		}
 		//CONSTS
 		/* never any need to save constants anymore
-		DOMNode *constsNode = doc->createElement(XMLString::transcode("consts"));
-		root->appendChild(constsNode);
-		int size = constCodeList.GetCount();
-		for (int i=0;i<size;i++){
-		char buf[512];
-		DOMElement*  itemElem = doc->createElement(XMLString::transcode("const"));
-		constsNode->appendChild(itemElem);
-		char* code=constCodeList.GetTextAtIndex(i);
-		int value=constCodeList.GetValueAtIndex(i);
+		   DOMNode *constsNode = doc->createElement(XMLString::transcode("consts"));
+		   root->appendChild(constsNode);
+		   int size = constCodeList.GetCount();
+		   for (int i=0;i<size;i++){
+		   char buf[512];
+		   DOMElement*  itemElem = doc->createElement(XMLString::transcode("const"));
+		   constsNode->appendChild(itemElem);
+		   char* code=constCodeList.GetTextAtIndex(i);
+		   int value=constCodeList.GetValueAtIndex(i);
 
-		sprintf(buf, "0x%x", value);
-		itemElem->setAttribute(XMLString::transcode("value"), XMLString::transcode(buf));
+		   sprintf(buf, "0x%x", value);
+		   itemElem->setAttribute(XMLString::transcode("value"), XMLString::transcode(buf));
 
-		itemElem->setAttribute(XMLString::transcode("code"), XMLString::transcode(code));
-		}
-		*/
+		   itemElem->setAttribute(XMLString::transcode("code"), XMLString::transcode(code));
+		   }
+		 */
 
 		XMLCh tempStr[100];
 		XMLString::transcode("LS", tempStr, 99);
 
 		impl = DOMImplementationRegistry::getDOMImplementation(tempStr);
 		DOMLSSerializer* theSerializer = ((DOMImplementationLS*)impl)->createLSSerializer();
-		DOMConfiguration* dc = theSerializer->getDomConfig();
-		if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true)){
+		DOMConfiguration* dc           = theSerializer->getDomConfig();
+		if (dc->canSetParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true))
 			dc->setParameter(XMLUni::fgDOMWRTFormatPrettyPrint, true);
-		}
 		XMLFormatTarget *outFile = new LocalFileFormatTarget(pathBuf);
-		DOMLSOutput *lsOut = ((DOMImplementationLS*)impl)->createLSOutput();
+		DOMLSOutput *lsOut       = ((DOMImplementationLS*)impl)->createLSOutput();
 		lsOut->setByteStream(outFile);
 		theSerializer->write(doc, lsOut);
 		theSerializer->release();
 		lsOut->release();
 		delete outFile;
-	} catch (...) {
+	}
+	catch (...)
+	{
 		AfxMessageBox("Unable to save item definitions!");
 	}
 

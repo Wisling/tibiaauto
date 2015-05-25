@@ -17,19 +17,18 @@ using namespace std;
 class PersonProcessor : public AimlProcessor
 {
 public:
-	~PersonProcessor() { }
-	
+	~PersonProcessor() {
+	}
+
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string result = "";
-		string index = e->getAttribute("index");
-		if (index.empty()) {
+		string index  = e->getAttribute("index");
+		if (index.empty())
 			index = "1";
-		}
-		if (e->hasChildren()) {
+		if (e->hasChildren())
 			result = Kernel::process(m, e, r, id);
-		} else {
+		else
 			result = m->getInputStar(index[0] - '0');
-		}
 		return Substituter::substitute(result, "person");
 	}
 };
@@ -37,8 +36,9 @@ public:
 class Person2Processor : public AimlProcessor
 {
 public:
-	~Person2Processor() { }
-	
+	~Person2Processor() {
+	}
+
 	string getName() const {
 		return "person2";
 	}
@@ -47,15 +47,13 @@ public:
 	}
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string result = "";
-		string index = e->getAttribute("index");
-		if (index.empty()) {
+		string index  = e->getAttribute("index");
+		if (index.empty())
 			index = "1";
-		}
-		if (e->hasChildren()) {
+		if (e->hasChildren())
 			result = Kernel::process(m, e, r, id);
-		} else {
+		else
 			result = m->getInputStar(index[0] - '0');
-		}
 		return Substituter::substitute(result, "person2");
 	}
 };
@@ -63,8 +61,9 @@ public:
 class GenderProcessor : public AimlProcessor
 {
 public:
-	~GenderProcessor() { }
-	
+	~GenderProcessor() {
+	}
+
 	string getName() const {
 		return "gender";
 	}
@@ -73,17 +72,15 @@ public:
 	}
 	string process(Match *m, PElement e, Responder *r, const string &id) {
 		string result = "";
-		string index = e->getAttribute("index");
-		if (index.empty()) {
+		string index  = e->getAttribute("index");
+		if (index.empty())
 			index = "1";
-		}
-		if (e->hasChildren()) {
+		if (e->hasChildren())
 			result = Kernel::process(m, e, r, id);
-		} else {
+		else
 			result = m->getInputStar(index[0] - '0');
-		}
 		return Substituter::substitute(result, "gender");
 	}
 };
 
-#endif
+#endif // ifndef PERSON_PROCESSOR_H

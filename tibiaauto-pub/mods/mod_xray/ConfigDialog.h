@@ -28,24 +28,24 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_xrayApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_xrayApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CButton	m_extrahotkeys;
-	CButton	m_autoreset;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CButton m_extrahotkeys;
+	CButton m_autoreset;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -16,14 +16,15 @@ public:
 	StringTokenizer(const string &s, const string &d = " \t\n\r", bool rt = false) :
 		currentPosition(0), str(s), delim(d), retTok(rt) {
 		maxPosition = str.length();
-
 	}
-	
+
 	bool hasMoreTokens();
 	string nextToken();
 	string nextToken(const string &d);
 	int countTokens();
-	void reset() { currentPosition = 0; }
+	void reset() {
+		currentPosition = 0;
+	}
 	string tail() {
 		skipDelimiters();
 		int cp = currentPosition;
@@ -40,4 +41,4 @@ private:
 	void skipDelimiters();
 };
 
-#endif
+#endif // ifndef STRING_TOKENIZER_H

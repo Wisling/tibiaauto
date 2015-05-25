@@ -1,4 +1,4 @@
-char *dbCreatureTab[]={
+char *dbCreatureTab[] = {
 	"Orc Spearman",
 	"Orc",
 	"Bug",

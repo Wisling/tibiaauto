@@ -14,7 +14,7 @@ class CMonsterButton : public CButton
 {
 // Construction
 public:
-	CMonsterButton(int x,int y);
+	CMonsterButton(int x, int y);
 
 // Attributes
 public:
@@ -25,7 +25,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMonsterButton)
-	public:
+public:
 	virtual BOOL Create(LPCTSTR lpszClassName, LPCTSTR lpszWindowName, DWORD dwStyle, const RECT& rect, CWnd* pParentWnd, UINT nID, CCreateContext* pContext = NULL);
 	//}}AFX_VIRTUAL
 

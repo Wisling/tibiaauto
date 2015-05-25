@@ -28,32 +28,32 @@ public:
 	void enableControls();
 	void disableControls();
 	void DoSetButtonSkin();
-	CConfigDialog(CMod_trademonApp *app,CWnd* pParent = NULL);   // standard constructor
+	CConfigDialog(CMod_trademonApp *app, CWnd* pParent = NULL);   // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CConfigDialog)
 	enum { IDD = IDD_CONFIG };
-	CGroupBoxEx	m_TradeTalkerFrame;
-	CButton	m_channel;
-	CEdit	m_channelInterval;
-	CButton	m_tradeTalker;
-	CEdit	m_yellInterval;
-	CButton	m_yell;
-	CButton	m_tradeMon;
-	CEdit	m_sayInterval;
-	CButton	m_say;
-	CEdit	m_message;
-	CButtonST	m_OK;
-	CButtonST	m_enable;
+	CGroupBoxEx m_TradeTalkerFrame;
+	CButton m_channel;
+	CEdit m_channelInterval;
+	CButton m_tradeTalker;
+	CEdit m_yellInterval;
+	CButton m_yell;
+	CButton m_tradeMon;
+	CEdit m_sayInterval;
+	CButton m_say;
+	CEdit m_message;
+	CButtonST m_OK;
+	CButtonST m_enable;
 	//}}AFX_DATA
 
 
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CConfigDialog)
-	public:
+public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 #include "stdafx.h"
@@ -31,16 +31,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_responderApp
 
 BEGIN_MESSAGE_MAP(CMod_responderApp, CWinApp)
-	//{{AFX_MSG_MAP(CMod_responderApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CMod_responderApp)
+// NOTE - the ClassWizard will add and remove mapping macros here.
+//    DO NOT EDIT what you see in these blocks of generated code!
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -53,15 +53,14 @@ extern int toolAutoResponderRunning;
 
 CMod_responderApp::CMod_responderApp()
 {
-	m_infoDialog=NULL;
-	currentPointNr=0;
+	m_infoDialog   = NULL;
+	currentPointNr = 0;
 }
 
 CMod_responderApp::~CMod_responderApp()
 {
-	if (m_infoDialog){
+	if (m_infoDialog)
 		delete m_infoDialog;
-	}
 	delete m_configData;
 }
 
@@ -76,7 +75,7 @@ int CMod_responderApp::isStarted()
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{
-		m_infoDialog=new CToolAutoRespond();
+		m_infoDialog = new CToolAutoRespond();
 		m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 	}
 	return toolAutoResponderRunning;
@@ -84,11 +83,10 @@ int CMod_responderApp::isStarted()
 
 void CMod_responderApp::showConfigDialog()
 {
-	
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_infoDialog)
 	{
-		m_infoDialog=new CToolAutoRespond();
+		m_infoDialog = new CToolAutoRespond();
 		m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 	}
 	m_infoDialog->ShowWindow(SW_SHOW);
@@ -97,7 +95,6 @@ void CMod_responderApp::showConfigDialog()
 
 void CMod_responderApp::enableControls()
 {
-	
 }
 
 
@@ -114,7 +111,7 @@ void CMod_responderApp::start()
 		if (!m_infoDialog)
 		{
 			AFX_MANAGE_STATE(AfxGetStaticModuleState());
-			m_infoDialog=new CToolAutoRespond();
+			m_infoDialog = new CToolAutoRespond();
 			m_infoDialog->Create(IDD_TOOL_AUTORESPOND);
 		}
 		m_infoDialog->start();
@@ -123,17 +120,16 @@ void CMod_responderApp::start()
 
 void CMod_responderApp::stop()
 {
-	if (toolAutoResponderRunning&&m_infoDialog)
-	{
+	if (toolAutoResponderRunning && m_infoDialog)
 		m_infoDialog->stop();
-	}
 }
 
 void CMod_responderApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (m_infoDialog){
+	if (m_infoDialog)
+	{
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();
 	}

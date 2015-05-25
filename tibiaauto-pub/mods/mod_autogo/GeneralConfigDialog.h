@@ -28,33 +28,33 @@ public:
 // Dialog Data
 	//{{AFX_DATA(GeneralConfigDialog)
 	enum { IDD = IDD_GENERAL_CONFIG_DIALOG };
-	CStatic	m_runawayPicture;
-	CStatic	m_startPicture;
-	CButton	m_maintainPos;
-	CEdit	m_curY;
-	CButton	m_proximityFrame;
-	CButton	m_postionFrame;
-	CButton	m_messageFrame;
-	CButtonST	m_SetStart;
-	CButtonST	m_SetRunaway;
-	CEdit	m_runawayZ;
-	CEdit	m_runawayY;
-	CEdit	m_runawayX;
-	CEdit	m_curZ;
-	CEdit	m_curX;
-	CEdit	m_actZ;
-	CEdit	m_actY;
-	CEdit	m_actX;
-	CComboBox	m_actDirection;
-	CButton	m_ignoreSpells;
-	CButton	m_battleParanoia;
-	CButton	m_battleAnxiety;
+	CStatic m_runawayPicture;
+	CStatic m_startPicture;
+	CButton m_maintainPos;
+	CEdit m_curY;
+	CButton m_proximityFrame;
+	CButton m_postionFrame;
+	CButton m_messageFrame;
+	CButtonST m_SetStart;
+	CButtonST m_SetRunaway;
+	CEdit m_runawayZ;
+	CEdit m_runawayY;
+	CEdit m_runawayX;
+	CEdit m_curZ;
+	CEdit m_curX;
+	CEdit m_actZ;
+	CEdit m_actY;
+	CEdit m_actX;
+	CComboBox m_actDirection;
+	CButton m_ignoreSpells;
+	CButton m_battleParanoia;
+	CButton m_battleAnxiety;
 	CGroupBoxEx m_GeneralConfigFrame;
-	CButtonST	m_battleWhiteList;
-	int		lastX;
-	int		lastY;
-	int		lastZ;
-	CButton	m_flashOnAlarm;
+	CButtonST m_battleWhiteList;
+	int lastX;
+	int lastY;
+	int lastZ;
+	CButton m_flashOnAlarm;
 	CComboBox m_modPriority;
 	CComboBox m_screenshotType;
 	//}}AFX_DATA
@@ -63,7 +63,7 @@ public:
 // Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(GeneralConfigDialog)
-	protected:
+protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV support
 	//}}AFX_VIRTUAL
 

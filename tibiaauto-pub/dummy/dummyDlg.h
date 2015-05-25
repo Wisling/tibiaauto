@@ -15,18 +15,18 @@ class CDummyDlg : public CDialog
 {
 // Construction
 public:
-	CDummyDlg(CWnd* pParent = NULL);	// standard constructor
+	CDummyDlg(CWnd* pParent = NULL);        // standard constructor
 
 // Dialog Data
 	//{{AFX_DATA(CDummyDlg)
 	enum { IDD = IDD_DUMMY_DIALOG };
-		// NOTE: the ClassWizard will add data members here
+	// NOTE: the ClassWizard will add data members here
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDummyDlg)
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV support
+protected:
+	virtual void DoDataExchange(CDataExchange* pDX);        // DDX/DDV support
 	//}}AFX_VIRTUAL
 
 // Implementation

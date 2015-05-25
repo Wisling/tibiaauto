@@ -1,18 +1,18 @@
 /*
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation; either version 2
-of the License, or (at your option) any later version.
+   This program is free software; you can redistribute it and/or
+   modify it under the terms of the GNU General Public License
+   as published by the Free Software Foundation; either version 2
+   of the License, or (at your option) any later version.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-  
-	You should have received a copy of the GNU General Public License
-	along with this program; if not, write to the Free Software
-	Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
-*/
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with this program; if not, write to the Free Software
+        Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA
+ */
 
 
 // mod_fisher.cpp : Defines the initialization routines for the DLL.
@@ -35,7 +35,7 @@ of the License, or (at your option) any later version.
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
-#endif
+#endif // ifdef _DEBUG
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -49,12 +49,10 @@ BEGIN_MESSAGE_MAP(CMod_fisherApp, CWinApp)
 END_MESSAGE_MAP()
 
 
-
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-int toolThreadShouldStop=0;
+int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc( LPVOID lpParam )
@@ -63,31 +61,37 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
 	CMemConstData memConstData = reader.getMemConstData();
-	CConfigData *config = (CConfigData *)lpParam;
-	
+	CConfigData *config        = (CConfigData *)lpParam;
+
 	while (!toolThreadShouldStop)
 	{
-		Sleep(CModuleUtil::randomFormula(500,200));
-		if (!reader.isLoggedIn()) continue; // do not proceed if not connected
-		int continueFishing = 1;
+		Sleep(CModuleUtil::randomFormula(500, 200));
+		if (!reader.isLoggedIn())
+			continue;                   // do not proceed if not connected
+		int continueFishing   = 1;
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		
-		if (config->moveFromHandToCont) {
+
+		if (config->moveFromHandToCont)
+		{
 			// left hand
 			CTibiaItem *item = reader.readItem(memConstData.m_memAddressLeftHand);
 			int contNr;
 			CTibiaContainer *cont;
-			if (item->objectId==itemProxy.getValueForConst("fish")) {
+			if (item->objectId == itemProxy.getValueForConst("fish"))
+			{
 				// fish in left hand - move to first open container
-				int openContNr=0;
-				int openContMax=reader.readOpenContainerCount();
-				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
+				int openContNr  = 0;
+				int openContMax = reader.readOpenContainerCount();
+				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				{
 					cont = reader.readContainer(contNr);
-					if (cont->flagOnOff){
+					if (cont->flagOnOff)
+					{
 						openContNr++;
-						if(cont->itemsInside < cont->size) {
-							sender.moveObjectBetweenContainers(item->objectId,0x06,0,0x40+contNr,0,item->quantity?item->quantity:1);
-							contNr=memConstData.m_memMaxContainers;
+						if(cont->itemsInside < cont->size)
+						{
+							sender.moveObjectBetweenContainers(item->objectId, 0x06, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
+							contNr = memConstData.m_memMaxContainers;
 						}
 					}
 					delete cont;
@@ -97,17 +101,21 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			// right hand
 			delete item;
 			item = reader.readItem(memConstData.m_memAddressRightHand);
-			if (item->objectId==itemProxy.getValueForConst("fish")) {
+			if (item->objectId == itemProxy.getValueForConst("fish"))
+			{
 				// fish in right hand - move to first open container
-				int openContNr=0;
-				int openContMax=reader.readOpenContainerCount();
-				for (contNr=0;contNr<memConstData.m_memMaxContainers && openContNr<openContMax;contNr++) {
+				int openContNr  = 0;
+				int openContMax = reader.readOpenContainerCount();
+				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				{
 					cont = reader.readContainer(contNr);
-					if (cont->flagOnOff){
+					if (cont->flagOnOff)
+					{
 						openContNr++;
-						if(cont->itemsInside < cont->size) {
-							sender.moveObjectBetweenContainers(item->objectId,0x05,0,0x40+contNr,0,item->quantity?item->quantity:1);
-							contNr=memConstData.m_memMaxContainers;
+						if(cont->itemsInside < cont->size)
+						{
+							sender.moveObjectBetweenContainers(item->objectId, 0x05, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
+							contNr = memConstData.m_memMaxContainers;
 						}
 					}
 					delete cont;
@@ -115,83 +123,86 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			}
 			delete item;
 		}
-		
+
 		delete self;
 		// refresh self to have correct cap
 		self = reader.readSelfCharacter();
 		// if cap check enabled,
 		if (self->cap < config->fishOnlyWhenCap)
 			continueFishing = 0;
-		
+
 		//New only fish when worms available
-		if (config->fishOnlyWhenWorms) {
+		if (config->fishOnlyWhenWorms)
+		{
 			CUIntArray itemsAccepted;
 			itemsAccepted.Add(itemProxy.getValueForConst("worms"));
-			for (int contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (item->objectId) {
+			for (int contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+			{
+				CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemsAccepted);
+				if (item->objectId)
+				{
 					delete item;
 					break;
 				}
 				delete item;
-				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
+				if (contNr == memConstData.m_memMaxContainers - 1)
+					continueFishing = 0;
 			}
 		}
 
-		int fishingRodCont=0xa;
-		int fishingRodPos=0;
-		CTibiaItem *itemArrow=reader.readItem(memConstData.m_memAddressSlotArrow);
-		if (itemArrow->objectId != itemProxy.getValueForConst("fishingRod")) {
+		int fishingRodCont    = 0xa;
+		int fishingRodPos     = 0;
+		CTibiaItem *itemArrow = reader.readItem(memConstData.m_memAddressSlotArrow);
+		if (itemArrow->objectId != itemProxy.getValueForConst("fishingRod"))
+		{
 			CUIntArray itemsAccepted;
 			int contNr;
 			itemsAccepted.Add(itemProxy.getValueForConst("fishingRod"));
-			for (contNr=0;contNr<memConstData.m_memMaxContainers;contNr++) {
-				CTibiaItem *item = CModuleUtil::lookupItem(contNr,&itemsAccepted);
-				if (item->objectId) {
-					fishingRodCont=0x40+contNr;
-					fishingRodPos=item->pos;
+			for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+			{
+				CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemsAccepted);
+				if (item->objectId)
+				{
+					fishingRodCont = 0x40 + contNr;
+					fishingRodPos  = item->pos;
 					delete item;
 					break;
 				}
 				delete item;
-				if (contNr==memConstData.m_memMaxContainers-1) continueFishing = 0;
+				if (contNr == memConstData.m_memMaxContainers - 1)
+					continueFishing = 0;
 			}
 		}
 		delete itemArrow;
 		// now find "random" water field with a fish
-		if (continueFishing){
-			int offsetX,offsetY=0;
-			int randLoopCount=20;
-			int randomMiss = rand()%100<20;// 20% chance it looks for a tile without fish
+		if (continueFishing)
+		{
+			int offsetX, offsetY = 0;
+			int randLoopCount = 20;
+			int randomMiss    = rand() % 100 < 20;// 20% chance it looks for a tile without fish
 			while (randLoopCount--)
 			{
-				offsetX=rand()%15-7;
-				offsetY=rand()%11-5;
-				int tileId = reader.mapGetPointItemId(point(offsetX,offsetY,0),0);
+				offsetX = rand() % 15 - 7;
+				offsetY = rand() % 11 - 5;
+				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
 
-				if (randomMiss && tileId>=itemProxy.getValueForConst("waterWithFishStart")+12&&tileId<=itemProxy.getValueForConst("waterWithFishEnd")+12)
+				if (randomMiss && tileId >= itemProxy.getValueForConst("waterWithFishStart") + 12 && tileId <= itemProxy.getValueForConst("waterWithFishEnd") + 12)
 					break;
-				else if (!randomMiss && tileId>=itemProxy.getValueForConst("waterWithFishStart")&&tileId<=itemProxy.getValueForConst("waterWithFishEnd"))
+				else if (!randomMiss && tileId >= itemProxy.getValueForConst("waterWithFishStart") && tileId <= itemProxy.getValueForConst("waterWithFishEnd"))
 					break;
-
 			}
-			if (randLoopCount>0) {
-				
-				
-				int tileId = reader.mapGetPointItemId(point(offsetX,offsetY,0),0);
+			if (randLoopCount > 0)
+			{
+				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
 				sender.useWithObjectFromContainerOnFloor(
-					itemProxy.getValueForConst("fishingRod"),fishingRodCont,fishingRodPos,tileId,self->x+offsetX,self->y+offsetY,self->z);
+				        itemProxy.getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self->x + offsetX, self->y + offsetY, self->z);
 			}
 		}
-		
-		
-		
+
+
 		delete self;
-		
-		
-		
 	}
-	toolThreadShouldStop=0;
+	toolThreadShouldStop = 0;
 	return 0;
 }
 
@@ -201,9 +212,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 CMod_fisherApp::CMod_fisherApp()
 {
-	m_configDialog =NULL;
-	m_started=0;
-	m_configData = new CConfigData();
+	m_configDialog = NULL;
+	m_started      = 0;
+	m_configData   = new CConfigData();
 }
 
 CMod_fisherApp::~CMod_fisherApp()
@@ -236,22 +247,24 @@ void CMod_fisherApp::start()
 		m_configDialog->disableControls();
 		m_configDialog->activateEnableButton(true);
 	}
-	
+
 	DWORD threadId;
-	
-	toolThreadShouldStop=0;
-	toolThreadHandle =  ::CreateThread(NULL,0,toolThreadProc,m_configData,0,&threadId);
-	m_started=1;
+
+	toolThreadShouldStop = 0;
+	toolThreadHandle     = ::CreateThread(NULL, 0, toolThreadProc, m_configData, 0, &threadId);
+	m_started            = 1;
 }
 
 void CMod_fisherApp::stop()
 {
-	toolThreadShouldStop=1;
-	while (toolThreadShouldStop) {
+	toolThreadShouldStop = 1;
+	while (toolThreadShouldStop)
+	{
 		Sleep(50);
-	};
-	m_started=0;
-	
+	}
+	;
+	m_started = 0;
+
 	if (m_configDialog)
 	{
 		m_configDialog->enableControls();
@@ -262,14 +275,16 @@ void CMod_fisherApp::stop()
 void CMod_fisherApp::showConfigDialog()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	
+
 	if (!m_configDialog)
 	{
 		m_configDialog = new CConfigDialog(this);
 		m_configDialog->Create(IDD_CONFIG);
 		configToControls();
-		if (m_started) disableControls();
-		else enableControls();
+		if (m_started)
+			disableControls();
+		else
+			enableControls();
 		m_configDialog->m_enable.SetCheck(m_started);
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
@@ -279,10 +294,8 @@ void CMod_fisherApp::showConfigDialog()
 void CMod_fisherApp::configToControls()
 {
 	if (m_configDialog)
-	{
-		
+
 		m_configDialog->configToControls(m_configData);
-	}
 }
 
 
@@ -299,17 +312,13 @@ void CMod_fisherApp::controlsToConfig()
 void CMod_fisherApp::disableControls()
 {
 	if (m_configDialog)
-	{
 		m_configDialog->disableControls();
-	}
 }
 
 void CMod_fisherApp::enableControls()
 {
 	if (m_configDialog)
-	{
 		m_configDialog->enableControls();
-	}
 }
 
 
@@ -321,41 +330,49 @@ char *CMod_fisherApp::getVersion()
 
 int CMod_fisherApp::validateConfig(int showAlerts)
 {
-	if (m_configData->fishOnlyWhenCap<0)
+	if (m_configData->fishOnlyWhenCap < 0)
 	{
-		if (showAlerts) AfxMessageBox("Minimum fishing capacity must be >=0!");
+		if (showAlerts)
+			AfxMessageBox("Minimum fishing capacity must be >=0!");
 		return 0;
 	}
-	
+
 	return 1;
 }
 
 void CMod_fisherApp::resetConfig()
 {
-	if(m_configData){
+	if(m_configData)
+	{
 		delete m_configData;
 		m_configData = NULL;
 	}
 	m_configData = new CConfigData();
 }
 
-void CMod_fisherApp::loadConfigParam(char *paramName,char *paramValue)
+void CMod_fisherApp::loadConfigParam(char *paramName, char *paramValue)
 {
-	if (!strcmp(paramName,"other/fishOnlyWhenCap")) m_configData->fishOnlyWhenCap=atoi(paramValue);
-	if (!strcmp(paramName,"move/fromHandToCont")) m_configData->moveFromHandToCont=atoi(paramValue);
-	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) m_configData->fishOnlyWhenWorms=atoi(paramValue);
+	if (!strcmp(paramName, "other/fishOnlyWhenCap"))
+		m_configData->fishOnlyWhenCap = atoi(paramValue);
+	if (!strcmp(paramName, "move/fromHandToCont"))
+		m_configData->moveFromHandToCont = atoi(paramValue);
+	if (!strcmp(paramName, "other/fishOnlyWhenWorms"))
+		m_configData->fishOnlyWhenWorms = atoi(paramValue);
 }
 
 char *CMod_fisherApp::saveConfigParam(char *paramName)
 {
 	static char buf[1024];
-	buf[0]=0;
-	
-	if (!strcmp(paramName,"other/fishOnlyWhenCap")) sprintf(buf,"%d",m_configData->fishOnlyWhenCap);
-	if (!strcmp(paramName,"move/fromHandToCont")) sprintf(buf,"%d",m_configData->moveFromHandToCont);
-	if (!strcmp(paramName,"other/fishOnlyWhenWorms")) sprintf(buf,"%d",m_configData->fishOnlyWhenWorms);
-	
-	
+	buf[0] = 0;
+
+	if (!strcmp(paramName, "other/fishOnlyWhenCap"))
+		sprintf(buf, "%d", m_configData->fishOnlyWhenCap);
+	if (!strcmp(paramName, "move/fromHandToCont"))
+		sprintf(buf, "%d", m_configData->moveFromHandToCont);
+	if (!strcmp(paramName, "other/fishOnlyWhenWorms"))
+		sprintf(buf, "%d", m_configData->fishOnlyWhenWorms);
+
+
 	return buf;
 }
 
@@ -375,7 +392,8 @@ void CMod_fisherApp::getNewSkin(CSkin newSkin) {
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if (m_configDialog){
+	if (m_configDialog)
+	{
 		m_configDialog->DoSetButtonSkin();
 		m_configDialog->Invalidate();
 	}
