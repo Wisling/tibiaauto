@@ -1328,8 +1328,8 @@ void PathfindThread(LPVOID lpParam){
 			//add level change point
 			tibiaMap.setPointAsAvailable(startX, startY, startZ - direction[dir][2]);
 			tibiaMap.setPointAsAvailable(startX, startY, startZ);
-			tibiaMap.setPointUpDown(startX, startY, startZ - direction[dir][2], setPrev);
-			tibiaMap.setPointUpDown(startX, startY, startZ, setCur);
+			tibiaMap.setPointType(startX, startY, startZ - direction[dir][2], setPrev);
+			tibiaMap.setPointType(startX, startY, startZ, setCur);
 			tibiaMap.setPointSpeed(startX, startY, startZ - direction[dir][2], 130);//130 default( is >255/2 and <70*2)
 			tibiaMap.setPointSpeed(startX, startY, startZ, 130);
 		}

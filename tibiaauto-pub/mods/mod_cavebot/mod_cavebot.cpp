@@ -999,7 +999,7 @@ void depotDeposit(CConfigData *config) {
 			{
 				if (x || y)
 				{
-					if(tibiaMap.getPointUpDown(self->x + x, self->y + y, self->z) == 301)//is depot spot
+					if (tibiaMap.getPointType(self->x + x, self->y + y, self->z) == 301)//is depot spot
 					{
 						depotContNr = depotDepositOpenChest(self->x + x, self->y + y, self->z);
 						if (depotContNr != -1)

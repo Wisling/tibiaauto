@@ -179,7 +179,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 		int locked  = 0;
 		int numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &locked, &altX, &altY, &altZ);
 		tibiaMap.setPointAsAvailable(x, y, z);
-		tibiaMap.setPointUpDown(x, y, z, updown);
+		tibiaMap.setPointType(x, y, z, updown);
 
 		//is new point for 2.0
 		if (numData >= 5)
@@ -222,9 +222,9 @@ getNextCurrentPoint:
 			{
 				point dest = tibiaMap.getDestPoint(p.x, p.y, p.z);
 				if (dest.x == 0)
-					sprintf(buf, "%d,%d,%d,%d,%d,%d", p.x, p.y, p.z, tibiaMap.getPointUpDown(p.x, p.y, p.z), tibiaMap.getPointSpeed(p.x, p.y, p.z), tibiaMap.isPointLocked(p.x, p.y, p.z));
+					sprintf(buf, "%d,%d,%d,%d,%d,%d", p.x, p.y, p.z, tibiaMap.getPointType(p.x, p.y, p.z), tibiaMap.getPointSpeed(p.x, p.y, p.z), tibiaMap.isPointLocked(p.x, p.y, p.z));
 				else
-					sprintf(buf, "%d,%d,%d,%d,%d,%d,%d,%d,%d", p.x, p.y, p.z, tibiaMap.getPointUpDown(p.x, p.y, p.z), tibiaMap.getPointSpeed(p.x, p.y, p.z), tibiaMap.isPointLocked(p.x, p.y, p.z), dest.x, dest.y, dest.z);
+					sprintf(buf, "%d,%d,%d,%d,%d,%d,%d,%d,%d", p.x, p.y, p.z, tibiaMap.getPointType(p.x, p.y, p.z), tibiaMap.getPointSpeed(p.x, p.y, p.z), tibiaMap.isPointLocked(p.x, p.y, p.z), dest.x, dest.y, dest.z);
 			}
 			else
 			{

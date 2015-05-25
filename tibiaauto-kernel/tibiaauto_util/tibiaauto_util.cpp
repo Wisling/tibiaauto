@@ -491,17 +491,17 @@ void tibiaMapProhPointAdd(int x, int y, int z)
 {
 	tibiaMap.prohPointAdd(x, y, z);
 }
-int tibiaMapGetPointUpDown(int x, int y, int z)
+int tibiaMapGetPointType(int x, int y, int z)
 {
-	return tibiaMap.getPointUpDown(x, y, z);
+	return tibiaMap.getPointType(x, y, z);
 }
-int tibiaMapGetPointUpDownNoProh(int x, int y, int z)
+int tibiaMapGetPointTypeNoProh(int x, int y, int z)
 {
-	return tibiaMap.getPointUpDownNoProh(x, y, z);
+	return tibiaMap.getPointTypeNoProh(x, y, z);
 }
-void tibiaMapSetPointUpDown(int x, int y, int z, int updown)
+void tibiaMapSetPointType(int x, int y, int z, int updown)
 {
-	tibiaMap.setPointUpDown(x, y, z, updown);
+	tibiaMap.setPointType(x, y, z, updown);
 }
 int tibiaMapGetPrevPointZ(int x, int y, int z)
 {

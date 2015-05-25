@@ -66,8 +66,8 @@ HBRUSH CMapButton::CtlColor(CDC* pDC, UINT nCtlColor)
 void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	CMemReaderProxy reader;
-	// m_value == -2 is self point
-	if (m_value != -2)
+	// m_value == MAP_POINT_TYPE_SELF is self point
+	if (m_value != MAP_POINT_TYPE_SELF)
 	{
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -90,18 +90,18 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 		int itemNum;
 		switch(m_value)
 		{
-		case -1: itemNum  = 0; break;
-		case 0: itemNum   = 1; break;
-		case 301: itemNum = 4; break;
-		case 302: itemNum = 5; break;
-		case 303: itemNum = 6; break;
-		case 201:
-		case 202:
-		case 203:
-		case 204: itemNum = 8; break;
-		case 101:
-		case 102:
-		case 103: itemNum = 10; break;
+		case MAP_POINT_TYPE_CLEAR: itemNum  = 0; break;
+		case MAP_POINT_TYPE_AVAILABLE: itemNum = 1; break;
+		case MAP_POINT_TYPE_DEPOT: itemNum = 4; break;
+		case MAP_POINT_TYPE_TELEPORT: itemNum = 5; break;
+		case MAP_POINT_TYPE_BLOCK: itemNum = 6; break;
+		case MAP_POINT_TYPE_ROPE:
+		case MAP_POINT_TYPE_MAGICROPE:
+		case MAP_POINT_TYPE_LADDER:
+		case MAP_POINT_TYPE_STAIRS:itemNum = 8; break;
+		case MAP_POINT_TYPE_OPEN_HOLE:
+		case MAP_POINT_TYPE_CLOSED_HOLE:
+		case MAP_POINT_TYPE_CRATE: itemNum = 10; break;
 		}
 
 		mapActionsMenu->GetSubMenu(0)->CheckMenuItem(itemNum, MF_BYPOSITION | MF_CHECKED);

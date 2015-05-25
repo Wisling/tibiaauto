@@ -7,6 +7,23 @@
 // MapButton.h : header file
 //
 
+enum MapPointType
+{
+	MAP_POINT_TYPE_SELF = -2,
+	MAP_POINT_TYPE_CLEAR = -1,
+	MAP_POINT_TYPE_AVAILABLE = 0,
+	MAP_POINT_TYPE_OPEN_HOLE = 101,
+	MAP_POINT_TYPE_CLOSED_HOLE = 102,
+	MAP_POINT_TYPE_CRATE = 103,
+	MAP_POINT_TYPE_ROPE = 201,
+	MAP_POINT_TYPE_MAGICROPE = 202,
+	MAP_POINT_TYPE_LADDER = 203,
+	MAP_POINT_TYPE_STAIRS = 204,
+	MAP_POINT_TYPE_DEPOT = 301,
+	MAP_POINT_TYPE_TELEPORT = 302,
+	MAP_POINT_TYPE_BLOCK = 303,
+};
+
 /////////////////////////////////////////////////////////////////////////////
 // CMapButton window
 
@@ -32,7 +49,7 @@ protected:
 // Implementation
 public:
 	virtual ~CMapButton();
-	int m_value;
+	MapPointType m_value;
 	int m_locked;
 
 private:

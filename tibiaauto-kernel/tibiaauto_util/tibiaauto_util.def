@@ -47,8 +47,8 @@ EXPORTS
 	tibiaMapRemovePointAvailable @42
 	tibiaMapProhPointClear @43
 	tibiaMapProhPointAdd @44
-	tibiaMapGetPointUpDown @45
-	tibiaMapSetPointUpDown @46
+	tibiaMapGetPointType @45
+	tibiaMapSetPointType @46
 	tibiaMapGetPrevPointZ @47
 	tibiaMapGetPrevPointY @48
 	tibiaMapGetPrevPointX @49
@@ -148,7 +148,7 @@ EXPORTS
 	memReadGetPlayerModeAttackPlayers @141
 	memReadGetPlayerModeFollow @142
 	memReadGetPlayerModeAttackType @143
-	tibiaMapGetPointUpDownNoProh @144
+	tibiaMapGetPointTypeNoProh @144
 	memReadGetOpenWindowName @145
 	memReadGetConnectionState @146
 	memReadSetXRayValues @147

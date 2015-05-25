@@ -49,15 +49,15 @@ public:
 class CTibiaMap
 {
 public:
-	int getPointUpDownNoProh(int x, int y, int z);
+	int getPointTypeNoProh(int x, int y, int z);
 	int isPointAvailableNoProh(int x, int y, int z);
 	struct point getPointByNr(int nr);
 	int size();
 	void removePointAvailable(int x, int y, int z);
 	void prohPointClear();
 	void prohPointAdd(int x, int y, int z);
-	int getPointUpDown(int x, int y, int z);
-	void setPointUpDown(int x, int y, int z, int updown);
+	int getPointType(int x, int y, int z);
+	void setPointType(int x, int y, int z, int updown);
 	void loadFromDisk(FILE *f);
 	void saveToDisk(FILE *f);
 	int getPrevPointZ(int x, int y, int z);

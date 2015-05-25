@@ -263,7 +263,7 @@ void CTibiaMap::setPointDistance(int x, int y, int z, int dist)
 
 int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	int currentUpDown     = getPointUpDown(x, y, z);
+	int currentUpDown     = getPointType(x, y, z);
 	int forcedLevelChange = 0;
 	if (currentUpDown == 101 || currentUpDown == 204 || currentUpDown == 302 || currentUpDown == 303)
 		forcedLevelChange = 1;
@@ -359,7 +359,7 @@ void CTibiaMap::loadFromDisk(FILE *f)
 {
 }
 
-void CTibiaMap::setPointUpDown(int x, int y, int z, int updown)
+void CTibiaMap::setPointType(int x, int y, int z, int updown)
 {
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;
@@ -367,7 +367,7 @@ void CTibiaMap::setPointUpDown(int x, int y, int z, int updown)
 		pd->updown = updown;
 }
 
-int CTibiaMap::getPointUpDown(int x, int y, int z)
+int CTibiaMap::getPointType(int x, int y, int z)
 {
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;
@@ -446,7 +446,7 @@ int CTibiaMap::isPointAvailableNoProh(int x, int y, int z)
 	return 0;
 }
 
-int CTibiaMap::getPointUpDownNoProh(int x, int y, int z)
+int CTibiaMap::getPointTypeNoProh(int x, int y, int z)
 {
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;

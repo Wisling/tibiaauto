@@ -1667,38 +1667,38 @@ static PyObject *tibiaauto_map_prohPointAdd(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
-static PyObject *tibiaauto_map_getPointUpDown(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_map_getPointType(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
 
 	int arg1, arg2, arg3;
 	if (!PyArg_ParseTuple(args, "iii", &arg1, &arg2, &arg3))
 		return NULL;
-	int ret1      = tibiaMap.getPointUpDown(arg1, arg2, arg3);
+	int ret1      = tibiaMap.getPointType(arg1, arg2, arg3);
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;
 }
-static PyObject *tibiaauto_map_getPointUpDownNoProh(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_map_getPointTypeNoProh(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
 
 	int arg1, arg2, arg3;
 	if (!PyArg_ParseTuple(args, "iii", &arg1, &arg2, &arg3))
 		return NULL;
-	int ret1      = tibiaMap.getPointUpDownNoProh(arg1, arg2, arg3);
+	int ret1      = tibiaMap.getPointTypeNoProh(arg1, arg2, arg3);
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;
 }
-static PyObject *tibiaauto_map_setPointUpDown(PyObject *self, PyObject *args)
+static PyObject *tibiaauto_map_setPointType(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
 
 	int arg1, arg2, arg3, arg4;
 	if (!PyArg_ParseTuple(args, "iiii", &arg1, &arg2, &arg3, &arg4))
 		return NULL;
-	tibiaMap.setPointUpDown(arg1, arg2, arg3, arg4);
+	tibiaMap.setPointType(arg1, arg2, arg3, arg4);
 	Py_INCREF(Py_None);
 	return Py_None;
 }

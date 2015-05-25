@@ -618,10 +618,10 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			}
 			// standing by the depot
 			if (endSpecialLocation &&
-			    (tibiaMap.getPointUpDown(x + 1, y, z) == endSpecialLocation ||
-			     tibiaMap.getPointUpDown(x - 1, y, z) == endSpecialLocation ||
-			     tibiaMap.getPointUpDown(x, y + 1, z) == endSpecialLocation ||
-			     tibiaMap.getPointUpDown(x, y - 1, z) == endSpecialLocation))
+			    (tibiaMap.getPointType(x + 1, y, z) == endSpecialLocation ||
+			     tibiaMap.getPointType(x - 1, y, z) == endSpecialLocation ||
+			     tibiaMap.getPointType(x, y + 1, z) == endSpecialLocation ||
+			     tibiaMap.getPointType(x, y - 1, z) == endSpecialLocation))
 			{
 				// endSpecialLocation found - where we stand is our "end point"
 				gotToEndPoint = 1;//max(pQueueIter->size(),200);
@@ -664,7 +664,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		int forcedLevelChange = 0, usedLevelChange = 0; // if set to 1 then going north, south, east, west is forbidden
 		CTibiaQueue<point> pointsToAdd;
 
-		int currentUpDown = tibiaMap.getPointUpDown(x, y, z);
+		int currentUpDown = tibiaMap.getPointType(x, y, z);
 
 		// we directly go up using rope, magic rope, ladder, stairs
 		if (currentUpDown >= 200 && currentUpDown < 300)
@@ -684,7 +684,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 					{
 						if (xl ^ yl)
 						{
-							int ud = tibiaMap.getPointUpDown(x + xl, y + yl, z - 1);
+							int ud = tibiaMap.getPointType(x + xl, y + yl, z - 1);
 							if (ud >= 100 && ud < 200)
 							{
 								pointsToAdd.Add(point(x + xl, y + yl, z - 1));
@@ -717,7 +717,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 					{
 						if (xl ^ yl)
 						{
-							int ud = tibiaMap.getPointUpDown(x + xl, y + yl, z + 1);
+							int ud = tibiaMap.getPointType(x + xl, y + yl, z + 1);
 							if (ud >= 200 && ud < 300)
 							{
 								pointsToAdd.Add(point(x + xl, y + yl, z + 1));
@@ -772,7 +772,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				if (xShift == 0 && yShift == 0)
 					xShift++;                    //skip middle
 
-				int updown = tibiaMap.getPointUpDownNoProh(x + xShift, y + yShift, z);
+				int updown = tibiaMap.getPointTypeNoProh(x + xShift, y + yShift, z);
 
 				// special going up if ladder busy
 				if ((updown == 201 || updown == 203) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z - 1))
@@ -1456,7 +1456,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 		case 0xD0:
 		{
 			// // go up standard (201-299 slots)
-			switch (tibiaMap.getPointUpDown(self->x, self->y, self->z))
+			switch (tibiaMap.getPointType(self->x, self->y, self->z))
 			{
 			case 201:
 				// rope
@@ -1513,7 +1513,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 		case 0xD1:
 		{
 			// go down (101-199 slots)
-			switch (tibiaMap.getPointUpDown(self->x, self->y, self->z))
+			switch (tibiaMap.getPointType(self->x, self->y, self->z))
 			{
 			case 101:
 				// open hole [do nothing]
@@ -1703,7 +1703,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 			{
 				modX++; modY++;
 			}
-			switch (tibiaMap.getPointUpDownNoProh(modX, modY, self->z))
+			switch (tibiaMap.getPointTypeNoProh(modX, modY, self->z))
 			{
 			case 201:
 				// rope
@@ -1792,7 +1792,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				modX++; modY++;
 			}
 
-			switch (tibiaMap.getPointUpDownNoProh(modX, modY, self->z))
+			switch (tibiaMap.getPointTypeNoProh(modX, modY, self->z))
 			{
 			case 102:
 				// closed hole - use shovel to open

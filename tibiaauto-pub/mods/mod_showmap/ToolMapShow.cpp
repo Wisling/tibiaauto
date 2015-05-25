@@ -111,7 +111,7 @@ BOOL CToolMapShow::OnInitDialog()
 
 			but->Create("test", WS_CHILD | WS_VISIBLE | BS_FLAT | BS_PUSHLIKE | BS_OWNERDRAW, rect, this, IDC_MAPSHOW_FIRSTBUTTON);
 			but->LoadBitmaps(IDB_MAP_EMPTY);
-			but->m_value           = -1;
+			but->m_value = MAP_POINT_TYPE_CLEAR;
 			but->m_locked          = 0;
 			m_mapButtonImage[x][y] = IDB_MAP_EMPTY;
 			m_mapButtons[x][y]     = but;
@@ -177,7 +177,7 @@ void CToolMapShow::refreshVisibleMap()
 		m_mapButtons[10][10]->LoadBitmaps(IDB_MAP_SELF, IDB_MAP_SELF, IDB_MAP_SELF, IDB_MAP_SELF);
 		m_mapButtons[10][10]->RedrawWindow();
 		m_mapButtonImage[10][10]       = IDB_MAP_SELF;
-		m_mapButtons[10][10]->m_value  = -2;
+		m_mapButtons[10][10]->m_value = MAP_POINT_TYPE_SELF;
 		m_mapButtons[10][10]->m_locked = 0;
 	}
 
@@ -191,54 +191,54 @@ void CToolMapShow::refreshVisibleMap()
 				if (avail)
 				{
 					int locked         = tibiaMap.isPointLocked(x + self->x - 10, y + self->y - 10, self->z);
-					int updownSel      = tibiaMap.getPointUpDown(x + self->x - 10, y + self->y - 10, self->z);
+					MapPointType updownSel = (MapPointType)tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
 					int changedToImage = -1;
 
 					switch (updownSel)
 					{
-					case 0:
+					case MAP_POINT_TYPE_AVAILABLE:
 						changedToImage = locked ? IDB_MAP_SAMEFLOOR_LOCK : IDB_MAP_SAMEFLOOR;
 						break;
-					case 101:
+					case MAP_POINT_TYPE_OPEN_HOLE:
 						// open hole
 						changedToImage = locked ? IDB_MAP_OPENHOLE_LOCK : IDB_MAP_OPENHOLE;
 						break;
-					case 102:
+					case MAP_POINT_TYPE_CLOSED_HOLE:
 						// closed hole
 						changedToImage = locked ? IDB_MAP_CLOSEDHOLE_LOCK : IDB_MAP_CLOSEDHOLE;
 						break;
-					case 103:
+					case MAP_POINT_TYPE_CRATE:
 						// crate
 						changedToImage = locked ? IDB_MAP_CRATE_LOCK : IDB_MAP_CRATE;
 						break;
-					case 201:
+					case MAP_POINT_TYPE_ROPE:
 						// rope
 						changedToImage = locked ? IDB_MAP_ROPE_LOCK : IDB_MAP_ROPE;
 						break;
-					case 202:
+					case MAP_POINT_TYPE_MAGICROPE:
 						// magic rope
 						changedToImage = locked ? IDB_MAP_MAGICROPE_LOCK : IDB_MAP_MAGICROPE;
 						break;
-					case 203:
+					case MAP_POINT_TYPE_LADDER:
 						// ladder
 						changedToImage = locked ? IDB_MAP_LADDER_LOCK : IDB_MAP_LADDER;
 						break;
-					case 204:
+					case MAP_POINT_TYPE_STAIRS:
 						// stairs
 						changedToImage = locked ? IDB_MAP_STAIRS_LOCK : IDB_MAP_STAIRS;
 						break;
-					case 301:
+					case MAP_POINT_TYPE_DEPOT:
 						// depot
 						changedToImage = locked ? IDB_MAP_DEPOT_LOCK : IDB_MAP_DEPOT;
 						break;
-					case 302:
+					case MAP_POINT_TYPE_TELEPORT:
 						// teleporter
 						if(tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
 							changedToImage = locked ? IDB_MAP_UNKTELE_LOCK : IDB_MAP_UNKTELE;
 						else
 							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
 						break;
-					case 303:
+					case MAP_POINT_TYPE_BLOCK:
 						// permanent block
 						changedToImage = locked ? IDB_MAP_BLOCK_LOCK : IDB_MAP_BLOCK;
 						break;
@@ -259,7 +259,7 @@ void CToolMapShow::refreshVisibleMap()
 						m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_EMPTY, IDB_MAP_EMPTY, IDB_MAP_EMPTY, IDB_MAP_EMPTY);
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]       = IDB_MAP_EMPTY;
-						m_mapButtons[x][y]->m_value  = -1;
+						m_mapButtons[x][y]->m_value = MAP_POINT_TYPE_CLEAR;
 						m_mapButtons[x][y]->m_locked = 0;
 					}
 				}
@@ -292,7 +292,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 		CMemReaderProxy reader;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
-		if (tibiaMap.getPointUpDownNoProh(self->x, self->y, self->z) == 0)
+		if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == 0)
 		{
 			tibiaMap.setPointAsAvailable(self->x, self->y, self->z);
 			tibiaMap.setPointSpeed(self->x, self->y, self->z, 130);//130 default( is >255/2 and <70*2)
@@ -336,7 +336,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					int count = reader.mapGetPointItemsCount(point(x, y, 0), relToCell);
 
 					int blocked       = 0;
-					int updown        = 0;
+					int tileType        = 0;
 					int ground        = 0;
 					int speed         = 0;
 					int moveableblock = 1;
@@ -358,56 +358,54 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							{
 								if (tileData->requireShovel)
 								{
-									updown = 102;
+									tileType = 102;
 								}
 								else
 								{
 									if (tileData->requireUse)
-										updown = 103;
+										tileType = 103;
 									else
-										updown = 101;
+										tileType = 101;
 								}
 							}
 							if (tileData->goUp)
 							{
 								if (tileData->requireRope)
 								{
-									updown = 201;
+									tileType = 201;
 								}
 								else
 								{
 									if (tileData->requireUse)
-										updown = 203;
+										tileType = 203;
 									else
-										updown = 204;
+										tileType = 204;
 									;
 								}
 							}
 							if (tileData->isDepot)
-								updown = 301;
+								tileType = 301;
 							if (tileData->isTeleporter)
-								updown = 302;
+								tileType = 302;
 						}
 						else if (x != 0 || y != 0)
 						{
 							tibiaMap.prohPointAdd(self->x + x, self->y + y, self->z);
 						}
 					} // for i
-
-					int prevUpDown = tibiaMap.getPointUpDown(self->x + x, self->y + y, self->z);
-
+					
 					// if tile is depot chest or teleporter then treat it in a special way
-					if (updown == 301 || updown == 302)
+					if (tileType == MAP_POINT_TYPE_DEPOT || tileType == MAP_POINT_TYPE_TELEPORT)
 						blocked = 0;
 					// if there is not a single walkable tile then one cannot pass
-					if (ground == 0 && !updown)
+					if (ground == 0 && !tileType)
 						blocked = 1;
 
 					// if count==0 then override "blocked" and "no updown"
 					if (count == 0)
 					{
 						blocked = 1;
-						updown  = 0;
+						tileType  = 0;
 					}
 
 					//303 is handled as blocking in the pathfind algorithm
@@ -416,7 +414,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 					{
 						tileArrSpd[x + 8][y + 6]    = speed;
 						tileArrAvail[x + 8][y + 6]  = 1;
-						tileArrUpDown[x + 8][y + 6] = updown;
+						tileArrUpDown[x + 8][y + 6] = tileType;
 					}
 					else
 					{
@@ -448,7 +446,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							if (tileArrAvail[x + 8][y + 6])
 							{
 								tibiaMap.setPointAsAvailable(self->x + x, self->y + y, self->z);
-								tibiaMap.setPointUpDown(self->x + x, self->y + y, self->z, tileArrUpDown[x + 8][y + 6]);
+								tibiaMap.setPointType(self->x + x, self->y + y, self->z, tileArrUpDown[x + 8][y + 6]);
 								if (tileArrSpd[x + 8][y + 6] == 0)
 									tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 130);              //130 default( is >255/2 and <70*2)
 								else
@@ -456,7 +454,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							}
 							else
 							{
-								tibiaMap.setPointUpDown(self->x + x, self->y + y, self->z, 0);
+								tibiaMap.setPointType(self->x + x, self->y + y, self->z, 0);
 								tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 0);
 								if(tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z) && tileArrMvbl[x + 8][y + 6])
 								{
@@ -527,8 +525,8 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 						x += xSwitch; y += ySwitch;
 					}
 
-					int upDown = tibiaMap.getPointUpDown(prevXTele + x, prevYTele + y, prevZTele);
-					if(upDown == 302)//teleporter
+					MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
+					if(type == MAP_POINT_TYPE_TELEPORT)//teleporter
 					{
 						CPackSenderProxy sender;
 						if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
@@ -540,7 +538,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 							break;
 						}
 					}
-					else if(upDown > 0)
+					else if(type > 0)
 					{
 						break;           //other updown is closer and probably used
 					}
@@ -590,7 +588,7 @@ void CToolMapShow::OnToolMapshowExtendedResearch()
 	RefreshExtendedResearchMap();
 }
 void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ){
-	if(tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointUpDown(realX, realY, realZ) >= 0)
+	if(tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= 0)
 	{
 		int prev = tibiaMap.isPointLocked(realX, realY, realZ);
 		tibiaMap.setPointLocked(realX, realY, realZ, !prev);
@@ -602,7 +600,7 @@ void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, int tileVal)
 	{
 		// point added/updated
 		tibiaMap.setPointAsAvailable(realX, realY, realZ);
-		tibiaMap.setPointUpDown(realX, realY, realZ, tileVal);
+		tibiaMap.setPointType(realX, realY, realZ, tileVal);
 		tibiaMap.setPointSpeed(realX, realY, realZ, 130);//130 default( is >255/2 and <70*2)
 		tibiaMap.setPointLocked(realX, realY, realZ, 1);//set all manually change tiles as locked
 	}
