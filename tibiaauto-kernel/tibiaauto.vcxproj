@@ -204,8 +204,6 @@
     <ClInclude Include="tibiaautoDlg.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="webbrowser2.h" />
-    <ClInclude Include="zconf.h" />
-    <ClInclude Include="zlib.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\TA LowFi version Hidden.ico" />
