@@ -928,7 +928,6 @@
       <item id="0x28d3" looted="0" name="Jade Hat" type="1024"/>
       <item id="0x2d41" looted="0" name="Helmet of the Deep" type="1024"/>
       <item id="0x2da9" looted="0" name="Elite Draken Helmet" type="1024"/>
-      <item id="0x2db4" looted="0" name="Coolie Hat" type="1024"/>
       <item id="0x8b" looted="0" name="Mining Helmet" type="1024"/>
       <item id="0xc9a" looted="0" name="Damaged Helmet" type="1024"/>
       <item id="0xc9d" looted="0" name="Helmet of the Ancients (Inactive)" type="1024"/>
@@ -1950,7 +1949,6 @@
       <item id="0x24aa" looted="1" name="Farmer's Avenger" type="4"/>
       <item id="0xd4e" looted="1" name="Feather Headdress" type="1024"/>
       <item id="0x170f" looted="1" name="Ferumbras' Hat" type="1024"/>
-      <item id="0x170f" looted="1" name="Ferumbra's Hat" type="131072"/>
       <item id="0x25a4" looted="1" name="Fiery Heart" type="131072"/>
       <item id="0x1f8e" looted="1" name="Fiery Rainbow Shield" type="4096"/>
       <item id="0xcf8" looted="1" name="Fire Axe" type="1"/>
@@ -2702,7 +2700,7 @@
       <item id="0x283e" looted="1" name="Compass" type="131072"/>
       <item id="0x1f5b" looted="1" name="Composite Hornbow" type="8"/>
       <item id="0xca2" looted="1" name="Cookbook" type="2097152"/>
-      <item id="0x2db4" looted="1" name="Coolie Hat" type="1024"/>
+      <item id="0x2db4" looted="1" name="Sedge Hat" type="1024"/>
       <item id="0xb9a" looted="1" name="Copper Key" type="1048576"/>
       <item id="0x28a9" looted="1" name="Corrupted Flag" type="131072"/>
       <item id="0x1988" looted="1" name="Countess Sorrow's Frozen Tear" type="33554432"/>
@@ -2833,7 +2831,7 @@
       <item id="0xc85" looted="1" name="Family Brooch(Windtrouser)" type="33554432"/>
       <item id="0x24aa" looted="1" name="Farmer's Avenger" type="4"/>
       <item id="0xd4e" looted="1" name="Feather Headdress" type="1024"/>
-      <item id="0x170f" looted="1" name="Ferumbra's Hat" type="131072"/>
+      <item id="0x170f" looted="1" name="Ferumbras' Hat" type="1024"/>
       <item id="0x25a4" looted="1" name="Fiery Heart" type="131072"/>
       <item id="0x1f8e" looted="1" name="Fiery Rainbow Shield" type="4096"/>
       <item id="0xcf8" looted="1" name="Fire Axe" type="1"/>
@@ -2967,10 +2965,10 @@
       <item id="0x1cfe" looted="1" name="Jade Hammer" type="2"/>
       <item id="0x28d3" looted="1" name="Jade Hat" type="1024"/>
       <item id="0x1e5e" looted="1" name="Jagged Sword" type="4"/>
-      <item id="0x37e" looted="1" name="Jester Hat" type="1024"/>
+      <item id="0x37e" looted="1" name="Jester Hat" type="1024"/>	  
+      <item id="0x16a9" looted="1" name="Jewelled Backpack" type="65536"/>
       <item id="0x2cce" looted="1" name="Jewelled Belt" type="131072"/>
       <item id="0x1cde" looted="1" name="Justice Seeker" type="4"/>
-      <item id="0x16a9" looted="1" name="Key Ring" type="65536"/>
       <item id="0xd2a" looted="1" name="Knight Armor" type="256"/>
       <item id="0xcf6" looted="1" name="Knight Axe" type="1"/>
       <item id="0xd2b" looted="1" name="Knight Legs" type="2048"/>
