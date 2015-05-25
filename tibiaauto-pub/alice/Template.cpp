@@ -16,7 +16,8 @@
 vector<string> Template::filenames;
 vector<unsigned long> Template::filesizes;
 
-string Template::fetch() {
+string Template::fetch()
+{
 	//	Get the filename ..
 	const char *filename = Template::getFilename(filenameIx);
 	//	When have <template/>
@@ -25,7 +26,7 @@ string Template::fetch() {
 	streamsize length = end - start;
 	ifstream fin(filename, ios::in | ios::binary);
 	char *input = new char[(unsigned int)(length) + 1];
-	if(!fin.is_open())
+	if (!fin.is_open())
 		return "Error reading file";
 	fin.seekg(start);
 	fin.read(input, length);
@@ -36,15 +37,18 @@ string Template::fetch() {
 	return ret;
 }
 
-string Template::getFilename() {
+string Template::getFilename()
+{
 	return filenames[filenameIx];
 }
 
-const char *Template::getFilename(int index) {
+const char *Template::getFilename(int index)
+{
 	return filenames[index].c_str();
 }
 
-void Template::reloadFile(int index) {
+void Template::reloadFile(int index)
+{
 	string fn = filenames[index];
 	long fs   = filesizes[index];
 	ifstream fin;

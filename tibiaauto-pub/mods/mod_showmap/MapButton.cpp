@@ -17,7 +17,6 @@ static char THIS_FILE[] = __FILE__;
 // CMapButton
 
 CMenu *CMapButton::mapActionsMenu = NULL;
-
 CMapButton::CMapButton(int x, int y)
 {
 	m_x   = x;
@@ -40,7 +39,6 @@ CMapButton::~CMapButton()
 	}
 }
 
-
 BEGIN_MESSAGE_MAP(CMapButton, CButton)
 //{{AFX_MSG_MAP(CMapButton)
 ON_CONTROL_REFLECT(BN_CLICKED, OnClicked)
@@ -62,7 +60,6 @@ HBRUSH CMapButton::CtlColor(CDC* pDC, UINT nCtlColor)
 	return NULL;
 }
 
-
 void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 {
 	CMemReaderProxy reader;
@@ -81,31 +78,45 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 		DWORD dwPos = GetMessagePos();
 
 		/* Convert the co-ords into a CPoint structure */
-		CPoint pt( dwPos & 0xffff, (dwPos >> 16) & 0xffff );
+		CPoint pt(dwPos & 0xffff, (dwPos >> 16) & 0xffff);
 
 		for (i = 0; i < 13; i++)
 		{
 			mapActionsMenu->GetSubMenu(0)->CheckMenuItem(i, MF_BYPOSITION | MF_UNCHECKED);
 		}
 		int itemNum;
-		switch(m_value)
+		switch (m_value)
 		{
-		case MAP_POINT_TYPE_CLEAR: itemNum  = 0; break;
-		case MAP_POINT_TYPE_AVAILABLE: itemNum = 1; break;
-		case MAP_POINT_TYPE_DEPOT: itemNum = 4; break;
-		case MAP_POINT_TYPE_TELEPORT: itemNum = 5; break;
-		case MAP_POINT_TYPE_BLOCK: itemNum = 6; break;
+		case MAP_POINT_TYPE_CLEAR:
+			itemNum = 0;
+			break;
+		case MAP_POINT_TYPE_AVAILABLE:
+			itemNum = 1;
+			break;
+		case MAP_POINT_TYPE_DEPOT:
+			itemNum = 4;
+			break;
+		case MAP_POINT_TYPE_TELEPORT:
+			itemNum = 5;
+			break;
+		case MAP_POINT_TYPE_BLOCK:
+			itemNum = 6;
+			break;
 		case MAP_POINT_TYPE_ROPE:
 		case MAP_POINT_TYPE_MAGICROPE:
 		case MAP_POINT_TYPE_LADDER:
-		case MAP_POINT_TYPE_STAIRS:itemNum = 8; break;
+		case MAP_POINT_TYPE_STAIRS:
+			itemNum = 8;
+			break;
 		case MAP_POINT_TYPE_OPEN_HOLE:
 		case MAP_POINT_TYPE_CLOSED_HOLE:
-		case MAP_POINT_TYPE_CRATE: itemNum = 10; break;
+		case MAP_POINT_TYPE_CRATE:
+			itemNum = 10;
+			break;
 		}
 
 		mapActionsMenu->GetSubMenu(0)->CheckMenuItem(itemNum, MF_BYPOSITION | MF_CHECKED);
-		if(m_locked)
+		if (m_locked)
 			mapActionsMenu->GetSubMenu(0)->CheckMenuItem(2, MF_BYPOSITION | MF_CHECKED);
 
 		mapActionsMenu->GetSubMenu(0)->TrackPopupMenu(0, pt.x, pt.y, this);

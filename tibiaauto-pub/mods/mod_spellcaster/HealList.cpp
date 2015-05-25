@@ -23,7 +23,6 @@ CHealList::CHealList(std::vector<Player> healListParam, CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CHealList::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -38,7 +37,6 @@ void CHealList::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_HEALLIST_ADD, m_add);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CHealList, CDialog)
 //{{AFX_MSG_MAP(CHealList)
@@ -86,11 +84,11 @@ void CHealList::OnHealListAdd()
 void CHealList::OnHealListDelete()
 {
 	int nSelRows = m_list.GetSelectedCount();
-	if(!nSelRows)
+	if (!nSelRows)
 		return;
 
 	int* pnArrayOfSelRows = new int[nSelRows];
-	if(!pnArrayOfSelRows)
+	if (!pnArrayOfSelRows)
 		return;
 
 	int nTemp    = nSelRows;
@@ -106,12 +104,12 @@ void CHealList::OnHealListDelete()
 		i                       = m_list.GetNextSelectedItem(pos);
 		for (size_t k = 0; k < healList.size(); k++)
 		{
-			if(healList[k].name == m_list.GetItemText(find, 0))
+			if (healList[k].name == m_list.GetItemText(find, 0))
 				healList.erase(healList.begin() + k);
 		}
 	}
 
-	for(int j = 0; j < nSelRows; j++)
+	for (int j = 0; j < nSelRows; j++)
 		m_list.DeleteItem(pnArrayOfSelRows[j]);
 
 	delete(pnArrayOfSelRows);
@@ -133,11 +131,12 @@ void CHealList::Mem2List()
 	}
 }
 
-BOOL CHealList::OnInitDialog() {
+BOOL CHealList::OnInitDialog()
+{
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_delete);
-	skin.SetButtonSkin(     m_add);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_delete);
+	skin.SetButtonSkin(m_add);
 
 	m_list.InsertColumn(0, "Name", LVCFMT_LEFT, 66);
 	m_list.InsertColumn(1, "Max HP", LVCFMT_LEFT, 50);

@@ -131,7 +131,7 @@ public:
 			FILE *f = popen(cmd.c_str(), "r");
 			char s[500];
 			int read;
-			while(read = (fread(s, 1, sizeof(s) / sizeof(s[0]) - 1, f)))
+			while (read = (fread(s, 1, sizeof(s) / sizeof(s[0]) - 1, f)))
 			{
 				s[read] = 0;
 				str    += s;
@@ -144,6 +144,7 @@ public:
 #endif // if defined(WIN32)
 		return str;
 	}
+
 //	~SystemProcessor() { }
 };
 

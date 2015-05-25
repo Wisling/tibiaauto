@@ -68,7 +68,6 @@ HRESULT CVisualStylesXP::DrawThemeBackground(HTHEME hTheme, HDC hdc,
 	return (*pfnDrawThemeBackground)(hTheme, hdc, iPartId, iStateId, pRect, pClipRect);
 }
 
-
 HRESULT CVisualStylesXP::DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId,
                                        int iStateId, LPCWSTR pszText, int iCharCount, DWORD dwTextFlags,
                                        DWORD dwTextFlags2, const RECT *pRect)
@@ -76,6 +75,7 @@ HRESULT CVisualStylesXP::DrawThemeText(HTHEME hTheme, HDC hdc, int iPartId,
 	PFNDRAWTHEMETEXT pfn = (PFNDRAWTHEMETEXT)GetProc("DrawThemeText", (void*)DrawThemeTextFail);
 	return (*pfn)(hTheme, hdc, iPartId, iStateId, pszText, iCharCount, dwTextFlags, dwTextFlags2, pRect);
 }
+
 HRESULT CVisualStylesXP::GetThemeBackgroundContentRect(HTHEME hTheme, HDC hdc,
                                                        int iPartId, int iStateId, const RECT *pBoundingRect,
                                                        RECT *pContentRect)
@@ -83,6 +83,7 @@ HRESULT CVisualStylesXP::GetThemeBackgroundContentRect(HTHEME hTheme, HDC hdc,
 	PFNGETTHEMEBACKGROUNDCONTENTRECT pfn = (PFNGETTHEMEBACKGROUNDCONTENTRECT)GetProc("GetThemeBackgroundContentRect", (void*)GetThemeBackgroundContentRectFail);
 	return (*pfn)(hTheme, hdc, iPartId, iStateId, pBoundingRect, pContentRect);
 }
+
 HRESULT CVisualStylesXP::GetThemeBackgroundExtent(HTHEME hTheme, HDC hdc,
                                                   int iPartId, int iStateId, const RECT *pContentRect,
                                                   RECT *pExtentRect)
@@ -90,6 +91,7 @@ HRESULT CVisualStylesXP::GetThemeBackgroundExtent(HTHEME hTheme, HDC hdc,
 	PFNGETTHEMEBACKGROUNDEXTENT pfn = (PFNGETTHEMEBACKGROUNDEXTENT)GetProc("GetThemeBackgroundExtent", (void*)GetThemeBackgroundExtentFail);
 	return (*pfn)(hTheme, hdc, iPartId, iStateId, pContentRect, pExtentRect);
 }
+
 HRESULT CVisualStylesXP::GetThemePartSize(HTHEME hTheme, HDC hdc,
                                           int iPartId, int iStateId, RECT * pRect, enum THEMESIZE eSize, SIZE *psz)
 {
@@ -355,7 +357,6 @@ HRESULT CVisualStylesXP::GetThemeDocumentationProperty(LPCWSTR pszThemeName,
 	PFNGETTHEMEDOCUMENTATIONPROPERTY pfn = (PFNGETTHEMEDOCUMENTATIONPROPERTY)GetProc("GetThemeDocumentationProperty", (void*)GetThemeDocumentationPropertyFail);
 	return (*pfn)(pszThemeName, pszPropertyName, pszValueBuff, cchMaxValChars);
 }
-
 
 HRESULT CVisualStylesXP::DrawThemeParentBackground(HWND hwnd, HDC hdc, RECT* prc)
 {

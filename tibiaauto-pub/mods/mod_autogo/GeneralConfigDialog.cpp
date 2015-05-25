@@ -18,7 +18,8 @@ static char THIS_FILE[] = __FILE__;
 
 static HWND tibiaHwnd = NULL;
 
-void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
+void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC)
+{
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
 	WORD cClrBits;
@@ -33,7 +34,7 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 
 	// create the bitmapinfo header information
 
-	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp))
+	if (!GetObject(bitmap, sizeof(BITMAP), (LPSTR)&bmp))
 	{
 		AfxMessageBox("Could not retrieve bitmap info");
 		return;
@@ -131,7 +132,7 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 	// Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
 	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
 	               + pbih->biClrUsed * sizeof (RGBQUAD),
-	               (LPDWORD) &dwTmp, ( NULL)))
+	               (LPDWORD) &dwTmp, (NULL)))
 	{
 		AfxMessageBox("Could not write in to file");
 		return;
@@ -157,7 +158,8 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC) {
 	GlobalFree((HGLOBAL)lpBits);
 }
 
-CString capturePosition(CString name) {
+CString capturePosition(CString name)
+{
 	CMemReaderProxy reader;
 	if (!tibiaHwnd)
 	{
@@ -188,23 +190,23 @@ CString capturePosition(CString name) {
 
 	while (!captured)
 	{
-		Sleep (100);
-		if(!IsWindowVisible(tibiaHwnd))
+		Sleep(100);
+		if (!IsWindowVisible(tibiaHwnd))
 		{
 			ShowWindow(tibiaHwnd, SW_SHOW);
 			continue;
 		}
-		if(IsIconic(tibiaHwnd))
+		if (IsIconic(tibiaHwnd))
 		{
 			ShowWindow(tibiaHwnd, SW_RESTORE);
 			continue;
 		}
-		if(tibiaHwnd != GetForegroundWindow())
+		if (tibiaHwnd != GetForegroundWindow())
 		{
 			SetForegroundWindow(tibiaHwnd);
 			continue;
 		}
-		Sleep (500);
+		Sleep(500);
 		GetClientRect(tibiaHwnd, &rect);
 		ClientToScreen(tibiaHwnd, (LPPOINT)&rect.left);
 		ClientToScreen(tibiaHwnd, (LPPOINT)&rect.right);
@@ -232,6 +234,7 @@ CString capturePosition(CString name) {
 	//CWnd::SetForegroundWindow();
 	return filePath;
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // GeneralConfigDialog dialog
 
@@ -247,7 +250,6 @@ GeneralConfigDialog::GeneralConfigDialog(CWnd* pParent /*=NULL*/)
 	lastZ = 0;
 	//}}AFX_DATA_INIT
 }
-
 
 void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
@@ -285,7 +287,6 @@ void GeneralConfigDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(GeneralConfigDialog, CDialog)
 //{{AFX_MSG_MAP(GeneralConfigDialog)
 ON_BN_CLICKED(IDC_AUTOGO_WHITELIST, OnAutogoWhitelist)
@@ -302,13 +303,15 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // GeneralConfigDialog message handlers
 
-void GeneralConfigDialog::OnAutogoWhitelist() {
+void GeneralConfigDialog::OnAutogoWhitelist()
+{
 	CWhiteList *dialog = new CWhiteList(memWhiteList, &memMkBlack);
 	dialog->DoModal();
 	delete dialog;
 }
 
-void GeneralConfigDialog::disableControls() {
+void GeneralConfigDialog::disableControls()
+{
 	m_battleWhiteList.EnableWindow(false);
 	m_curX.EnableWindow(false);
 	m_curY.EnableWindow(false);
@@ -331,10 +334,11 @@ void GeneralConfigDialog::disableControls() {
 	m_screenshotType.EnableWindow(false);
 }
 
-void GeneralConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_battleWhiteList);
-	skin.SetButtonSkin(     m_SetStart);
-	skin.SetButtonSkin(     m_SetRunaway);
+void GeneralConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_battleWhiteList);
+	skin.SetButtonSkin(m_SetStart);
+	skin.SetButtonSkin(m_SetRunaway);
 }
 
 BOOL GeneralConfigDialog::OnInitDialog()
@@ -354,7 +358,8 @@ BOOL GeneralConfigDialog::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void GeneralConfigDialog::enableControls() {
+void GeneralConfigDialog::enableControls()
+{
 	m_battleWhiteList.EnableWindow(true);
 	m_curX.EnableWindow(true);
 	m_curY.EnableWindow(true);
@@ -377,16 +382,23 @@ void GeneralConfigDialog::enableControls() {
 	m_screenshotType.EnableWindow(true);
 }
 
-void GeneralConfigDialog::configToControls(CConfigData *configData) {
+void GeneralConfigDialog::configToControls(CConfigData *configData)
+{
 	CString buf;
 	memcpy(memWhiteList, configData->whiteList, 3200);
-	buf.Format("%d", configData->actX);              m_actX.SetWindowText(buf);
-	buf.Format("%d", configData->actY);              m_actY.SetWindowText(buf);
-	buf.Format("%d", configData->actZ);              m_actZ.SetWindowText(buf);
+	buf.Format("%d", configData->actX);
+	m_actX.SetWindowText(buf);
+	buf.Format("%d", configData->actY);
+	m_actY.SetWindowText(buf);
+	buf.Format("%d", configData->actZ);
+	m_actZ.SetWindowText(buf);
 	m_actDirection.SetCurSel(configData->actDirection);
-	buf.Format("%d", configData->runawayX);  m_runawayX.SetWindowText(buf);
-	buf.Format("%d", configData->runawayY);  m_runawayY.SetWindowText(buf);
-	buf.Format("%d", configData->runawayZ);  m_runawayZ.SetWindowText(buf);
+	buf.Format("%d", configData->runawayX);
+	m_runawayX.SetWindowText(buf);
+	buf.Format("%d", configData->runawayY);
+	m_runawayY.SetWindowText(buf);
+	buf.Format("%d", configData->runawayZ);
+	m_runawayZ.SetWindowText(buf);
 	m_ignoreSpells.SetCheck(configData->options & OPTIONS_IGNORE_SPELLS);
 	m_battleParanoia.SetCheck(configData->options & OPTIONS_BATTLE_PARANOIA);
 	m_battleAnxiety.SetCheck(configData->options & OPTIONS_BATTLE_ANXIETY);
@@ -397,16 +409,23 @@ void GeneralConfigDialog::configToControls(CConfigData *configData) {
 	m_screenshotType.SetCurSel(configData->screenshotType);
 }
 
-void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
+void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData)
+{
 	CString buf;
 	memcpy(newConfigData->whiteList, memWhiteList, 3200);
-	m_actX.GetWindowText(buf);              newConfigData->actX = atoi(buf);
-	m_actY.GetWindowText(buf);              newConfigData->actY = atoi(buf);
-	m_actZ.GetWindowText(buf);              newConfigData->actZ = atoi(buf);
-	newConfigData->actDirection                                 = m_actDirection.GetCurSel();
-	m_runawayX.GetWindowText(buf);  newConfigData->runawayX     = atoi(buf);
-	m_runawayY.GetWindowText(buf);  newConfigData->runawayY     = atoi(buf);
-	m_runawayZ.GetWindowText(buf);  newConfigData->runawayZ     = atoi(buf);
+	m_actX.GetWindowText(buf);
+	newConfigData->actX = atoi(buf);
+	m_actY.GetWindowText(buf);
+	newConfigData->actY = atoi(buf);
+	m_actZ.GetWindowText(buf);
+	newConfigData->actZ         = atoi(buf);
+	newConfigData->actDirection = m_actDirection.GetCurSel();
+	m_runawayX.GetWindowText(buf);
+	newConfigData->runawayX = atoi(buf);
+	m_runawayY.GetWindowText(buf);
+	newConfigData->runawayY = atoi(buf);
+	m_runawayZ.GetWindowText(buf);
+	newConfigData->runawayZ = atoi(buf);
 
 	newConfigData->options = 0;
 	if (m_ignoreSpells.GetCheck())
@@ -424,15 +443,18 @@ void GeneralConfigDialog::controlsToConfig(CConfigData *newConfigData) {
 	newConfigData->screenshotType = m_screenshotType.GetCurSel();
 }
 
-void GeneralConfigDialog::OnAutogoBattleparanoia() {
+void GeneralConfigDialog::OnAutogoBattleparanoia()
+{
 	m_battleAnxiety.EnableWindow(!m_battleParanoia.GetCheck());
 }
 
-void GeneralConfigDialog::OnAutogoBattleanxiety() {
+void GeneralConfigDialog::OnAutogoBattleanxiety()
+{
 	m_battleParanoia.EnableWindow(!m_battleAnxiety.GetCheck());
 }
 
-void GeneralConfigDialog::OnTimer(UINT nIDEvent) {
+void GeneralConfigDialog::OnTimer(UINT nIDEvent)
+{
 	if (nIDEvent == 1001)
 	{
 		CMemReaderProxy reader;
@@ -452,7 +474,8 @@ void GeneralConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-void GeneralConfigDialog::OnAutogoTorunaway() {
+void GeneralConfigDialog::OnAutogoTorunaway()
+{
 	CString buf;
 	m_curX.GetWindowText(buf);
 	m_runawayX.SetWindowText(buf);
@@ -467,7 +490,8 @@ void GeneralConfigDialog::OnAutogoTorunaway() {
 	m_runawayPicture.Invalidate();
 }
 
-void GeneralConfigDialog::OnAutogoTostart() {
+void GeneralConfigDialog::OnAutogoTostart()
+{
 	CString buf;
 	m_curX.GetWindowText(buf);
 	m_actX.SetWindowText(buf);

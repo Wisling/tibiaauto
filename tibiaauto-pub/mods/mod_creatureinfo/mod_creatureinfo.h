@@ -45,7 +45,8 @@ struct creature {
 	char name[40];
 	int type;
 	int maxHp;
-	creature() {
+	creature()
+	{
 		type = maxHp = 0;
 		memset(name, 0, 40);
 	}
@@ -66,7 +67,8 @@ struct monster {
 	int seeInvisible;
 	int paralysisImmune;
 	char description[MAX_LINE_LEN];
-	monster() {
+	monster()
+	{
 		type     = maxHp = exp = seeInvisible = paralysisImmune = 0;
 		physical = earth = fire = energy = ice = holy = death = MON_NORMAL;
 		memset(description, 0, MAX_LINE_LEN);
@@ -83,7 +85,8 @@ struct player {
 	char guildName[32];
 	char guildRank[32];
 	char guildDescription[32];
-	player() {
+	player()
+	{
 		type = maxHp = vocId = level = 0;
 		memset(name, 0, 40);
 		memset(guildName, 0, 32);
@@ -97,7 +100,8 @@ struct expressionTag {
 	char prefix[40];
 	char suffix[40];
 	char value[MAX_LINE_LEN];
-	expressionTag() {
+	expressionTag()
+	{
 		memset(name, 0, 40);
 		memset(prefix, 0, 40);
 		memset(suffix, 0, 40);
@@ -109,7 +113,8 @@ struct expressionInfo {
 	int tagCount;
 	char mask[MAX_LINE_LEN];
 	expressionTag tag[MAX_LINE_TOKENS];
-	expressionInfo() {
+	expressionInfo()
+	{
 		tagCount = 0;
 		memset(mask, 0, MAX_LINE_LEN);
 	}

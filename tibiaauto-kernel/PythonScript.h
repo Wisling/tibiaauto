@@ -43,12 +43,16 @@ struct funType
 	int tmLastExec;
 	int scriptNr;
 public:
-	~funType(){
+	~funType()
+	{
 	}
-	funType(){
+
+	funType()
+	{
 		matchExpr       = NULL;
 		matchExprHandle = 0;
 	}
+
 	void call()
 	{
 		long int tm = GetTickCount();

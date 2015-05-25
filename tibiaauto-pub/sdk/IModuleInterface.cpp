@@ -103,7 +103,6 @@ extern "C"  char * EXPORT saveConfigParam(char *paramName)
 	return module.saveConfigParam(paramName);
 }
 
-
 extern "C"  char * EXPORT getConfigParamName(int nr)
 {
 	return module.getConfigParamName(nr);

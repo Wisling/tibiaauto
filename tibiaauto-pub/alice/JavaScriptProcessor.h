@@ -97,7 +97,8 @@ static struct {
 } JSP_Vars;
 
 //	Functions for the botClass
-static JSBool botGet(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval) {
+static JSBool botGet(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval)
+{
 	JSString *predicate, *result;
 
 	if (!(predicate = JS_ValueToString(cx, argv[0])))
@@ -113,7 +114,8 @@ static JSBool botGet(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval)
 	return JS_TRUE;
 }
 
-static JSBool botSet(JSContext *cx, JSObject *, uintN argc, jsval *argv, jsval *rval) {
+static JSBool botSet(JSContext *cx, JSObject *, uintN argc, jsval *argv, jsval *rval)
+{
 	JSString *property, *value;
 
 	if (argc != 2)
@@ -130,7 +132,8 @@ static JSBool botSet(JSContext *cx, JSObject *, uintN argc, jsval *argv, jsval *
 	return JS_TRUE;
 }
 
-static JSBool botStar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval) {
+static JSBool botStar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval)
+{
 	JSString *result;
 	jsint index;
 
@@ -147,7 +150,8 @@ static JSBool botStar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval
 	return JS_TRUE;
 }
 
-static JSBool botThatstar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval) {
+static JSBool botThatstar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval)
+{
 	JSString *result;
 	jsint index;
 
@@ -161,7 +165,8 @@ static JSBool botThatstar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *
 	return JS_TRUE;
 }
 
-static JSBool botTopicstar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval) {
+static JSBool botTopicstar(JSContext *cx, JSObject *, uintN, jsval *argv, jsval *rval)
+{
 	JSString *result;
 	jsint index;
 
@@ -187,14 +192,17 @@ static JSFunctionSpec botFunctions[] = {
 class JavaScriptProcessor : public AimlProcessor
 {
 public:
-	~JavaScriptProcessor() {
+	~JavaScriptProcessor()
+	{
 		if (initialised)
 		{
 			JS_DestroyContext(context);
 			JS_DestroyRuntime(runtime);
 		}
 	}
-	JavaScriptProcessor() {
+
+	JavaScriptProcessor()
+	{
 		initialised = false;
 		//	Initialise the JavaScript Runtime (give it 8MB)
 		runtime = JS_NewRuntime(8L * 1024L * 1024L);
@@ -228,7 +236,8 @@ public:
 		initialised = true;
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		if (!initialised)
 			return "javascript not initialised";
 		//	Set the variables
@@ -257,6 +266,7 @@ public:
 
 		return result;
 	}
+
 private:
 	JSRuntime *runtime;
 	JSContext *context;

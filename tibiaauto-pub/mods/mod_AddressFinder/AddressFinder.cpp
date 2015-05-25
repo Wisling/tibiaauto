@@ -192,7 +192,7 @@ long AddressFinder::doComparison()
 	long foundAddress;
 	int index = 0x401000 + TibiaFile.size();
 	CMemReaderProxy reader;
-	while(index < 0x5b0ffe)
+	while (index < 0x5b0ffe)
 	{
 		FileIterator       = TibiaFile.begin();
 		ComparisonIterator = Comparison.begin();

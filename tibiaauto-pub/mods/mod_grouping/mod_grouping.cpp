@@ -83,7 +83,7 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -171,7 +171,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_groupingApp construction
 
@@ -190,12 +189,10 @@ char * CMod_groupingApp::getName()
 	return "Auto grouping";
 }
 
-
 int CMod_groupingApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_groupingApp::start()
 {
@@ -217,7 +214,6 @@ void CMod_groupingApp::stop()
 	;
 	m_started = 0;
 }
-
 
 char *CMod_groupingApp::getVersion()
 {

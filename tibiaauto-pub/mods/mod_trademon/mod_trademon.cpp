@@ -49,7 +49,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
-int RandomTimeTrademon(int interval){
+int RandomTimeTrademon(int interval)
+{
 	return interval + rand() % max((int)(.1 * interval), 5);
 }
 
@@ -59,7 +60,7 @@ int RandomTimeTrademon(int interval){
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -160,7 +161,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_trademonApp construction
 
@@ -186,12 +186,10 @@ char * CMod_trademonApp::getName()
 	return "Trade tool";
 }
 
-
 int CMod_trademonApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_trademonApp::start()
 {
@@ -244,14 +242,12 @@ void CMod_trademonApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_trademonApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_trademonApp::controlsToConfig()
 {
@@ -261,7 +257,6 @@ void CMod_trademonApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_trademonApp::disableControls()
 {
@@ -323,7 +318,7 @@ int CMod_trademonApp::validateConfig(int showAlerts)
 
 void CMod_trademonApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -337,7 +332,8 @@ void CMod_trademonApp::loadConfigParam(char *paramName, char *paramValue)
 		m_configData->tradeTalk = atoi(paramValue);
 	if (!strcmp(paramName, "message"))
 	{
-		lstrcpyn(m_configData->message, paramValue, 255); m_configData->message[255] = 0;
+		lstrcpyn(m_configData->message, paramValue, 255);
+		m_configData->message[255] = 0;
 	}
 	if (!strcmp(paramName, "channel"))
 		m_configData->channel = atoi(paramValue);
@@ -386,21 +382,31 @@ char *CMod_trademonApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "tradeTalker";
-	case 1: return "message";
-	case 2: return "channel";
-	case 3: return "channelInterval";
-	case 4: return "yell";
-	case 5: return "yellInterval";
-	case 6: return "say";
-	case 7: return "sayInterval";
-	case 8: return "tradeMon";
+	case 0:
+		return "tradeTalker";
+	case 1:
+		return "message";
+	case 2:
+		return "channel";
+	case 3:
+		return "channelInterval";
+	case 4:
+		return "yell";
+	case 5:
+		return "yellInterval";
+	case 6:
+		return "say";
+	case 7:
+		return "sayInterval";
+	case 8:
+		return "tradeMon";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_trademonApp::getNewSkin(CSkin newSkin) {
+void CMod_trademonApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

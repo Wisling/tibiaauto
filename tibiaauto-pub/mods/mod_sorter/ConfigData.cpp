@@ -17,7 +17,8 @@ static char THIS_FILE[] = __FILE__;
 //////////////////////////////////////////////////////////////////////
 
 
-CConfigData::CConfigData() {
+CConfigData::CConfigData()
+{
 	for (int i = 0; i < 8; i++)
 	{
 		for (int j = 0; j < 32; j++)
@@ -27,5 +28,6 @@ CConfigData::CConfigData() {
 	}
 }
 
-CConfigData::~CConfigData() {
+CConfigData::~CConfigData()
+{
 }

@@ -23,7 +23,6 @@ CSendStats::CSendStats(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CSendStats::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -31,7 +30,6 @@ void CSendStats::DoDataExchange(CDataExchange* pDX)
 	// NOTE: the ClassWizard will add DDX and DDV calls here
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CSendStats, CDialog)
 //{{AFX_MSG_MAP(CSendStats)

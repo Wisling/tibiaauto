@@ -22,9 +22,12 @@ public:
 	int py;
 	int pz;
 	int dist;
-	pointNode(){
+	pointNode()
+	{
 	}
-	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1) {
+
+	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1)
+	{
 		x    = x1;
 		y    = y1;
 		z    = z1;
@@ -33,7 +36,9 @@ public:
 		pz   = pz1;
 		dist = 0;
 	}
-	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1, int dist1) {
+
+	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1, int dist1)
+	{
 		x    = x1;
 		y    = y1;
 		z    = z1;
@@ -42,7 +47,9 @@ public:
 		pz   = pz1;
 		dist = dist1;
 	}
-	void copy(pointNode c){
+
+	void copy(pointNode c)
+	{
 		x    = c.x;
 		y    = c.y;
 		z    = c.z;
@@ -51,13 +58,16 @@ public:
 		pz   = c.pz;
 		dist = c.dist;
 	}
-	pointNode copy(){
+
+	pointNode copy()
+	{
 		return pointNode(x, y, z, px, py, pz, dist);
 	}
 };
 
 struct pComp {
-	bool operator() (const pointNode lhs, const pointNode rhs) {
+	bool operator() (const pointNode lhs, const pointNode rhs)
+	{
 		return lhs.dist > rhs.dist;
 	}
 };
@@ -80,7 +90,8 @@ AFX_INLINE BOOL AFXAPI CompareElements<LNode, LNode>
 
 class PQI : public priority_queue<pointNode, vector<pointNode>, pComp> {
 public:
-	vector<pointNode>* Container() {
+	vector<pointNode>* Container()
+	{
 		return &c;
 	}
 };

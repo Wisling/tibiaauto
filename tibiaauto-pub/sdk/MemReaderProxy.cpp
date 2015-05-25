@@ -43,7 +43,7 @@ CMemReaderProxy::CMemReaderProxy()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -156,7 +156,6 @@ int CMemReaderProxy::readSelfLightColor()
 	return 0;
 }
 
-
 void CMemReaderProxy::cancelAttackCoords()
 {
 	typedef void (*Proto_fun)();
@@ -178,6 +177,7 @@ void CMemReaderProxy::writeGotoCoords(int x, int y, int z)
 			fun(x, y, z);
 	}
 }
+
 int CMemReaderProxy::getLoggedCharNr()
 {
 	typedef int (*Proto_fun)();
@@ -189,6 +189,7 @@ int CMemReaderProxy::getLoggedCharNr()
 	}
 	return 0;
 }
+
 int CMemReaderProxy::getSelfEventFlags()
 {
 	typedef int (*Proto_fun)();
@@ -200,6 +201,7 @@ int CMemReaderProxy::getSelfEventFlags()
 	}
 	return 0;
 }
+
 void CMemReaderProxy::writeVisibleCreatureName(int chNr, char *name)
 {
 	typedef void (*Proto_fun)(int, char *);
@@ -210,6 +212,7 @@ void CMemReaderProxy::writeVisibleCreatureName(int chNr, char *name)
 			fun(chNr, name);
 	}
 }
+
 CTibiaItem * CMemReaderProxy::getTradeItemPartner(int nr)
 {
 	typedef CTibiaItem * (*Proto_fun)(int);
@@ -221,6 +224,7 @@ CTibiaItem * CMemReaderProxy::getTradeItemPartner(int nr)
 	}
 	return new CTibiaItem();
 }
+
 CTibiaItem * CMemReaderProxy::getTradeItemSelf(int nr)
 {
 	typedef CTibiaItem * (*Proto_fun)(int nr);
@@ -232,6 +236,7 @@ CTibiaItem * CMemReaderProxy::getTradeItemSelf(int nr)
 	}
 	return new CTibiaItem();
 }
+
 int CMemReaderProxy::getTradeCountPartner()
 {
 	typedef int (*Proto_fun)();
@@ -243,6 +248,7 @@ int CMemReaderProxy::getTradeCountPartner()
 	}
 	return 0;
 }
+
 int CMemReaderProxy::getTradeCountSelf()
 {
 	typedef int (*Proto_fun)();
@@ -254,6 +260,7 @@ int CMemReaderProxy::getTradeCountSelf()
 	}
 	return 0;
 }
+
 int CMemReaderProxy::getAttackedCreature()
 {
 	typedef int (*Proto_fun)();
@@ -265,6 +272,7 @@ int CMemReaderProxy::getAttackedCreature()
 	}
 	return 0;
 }
+
 void CMemReaderProxy::setAttackedCreature(int tibiaId)
 {
 	typedef void (*Proto_fun)(int v1);
@@ -275,6 +283,7 @@ void CMemReaderProxy::setAttackedCreature(int tibiaId)
 			fun(tibiaId);
 	}
 }
+
 int CMemReaderProxy::getFollowedCreature()
 {
 	typedef int (*Proto_fun)();
@@ -286,6 +295,7 @@ int CMemReaderProxy::getFollowedCreature()
 	}
 	return 0;
 }
+
 void CMemReaderProxy::setFollowedCreature(int tibiaId)
 {
 	typedef void (*Proto_fun)(int v1);
@@ -296,6 +306,7 @@ void CMemReaderProxy::setFollowedCreature(int tibiaId)
 			fun(tibiaId);
 	}
 }
+
 int CMemReaderProxy::getNextPacketCount()
 {
 	typedef int (*Proto_fun)();
@@ -307,6 +318,7 @@ int CMemReaderProxy::getNextPacketCount()
 	}
 	return 0;
 }
+
 void CMemReaderProxy::GetLoggedChar(int processId, char* buf, int bufLen)
 {
 	typedef void (*Proto_fun)(int, char*, int);
@@ -332,6 +344,7 @@ void CMemReaderProxy::GetLoggedChar(int processId, char* buf, int bufLen)
 		return;
 	}
 }
+
 int CMemReaderProxy::readBattleListMax()
 {
 	typedef int (*Proto_fun)();
@@ -343,6 +356,7 @@ int CMemReaderProxy::readBattleListMax()
 	}
 	return 0;
 }
+
 int CMemReaderProxy::readBattleListMin()
 {
 	typedef int (*Proto_fun)();
@@ -354,6 +368,7 @@ int CMemReaderProxy::readBattleListMin()
 	}
 	return 0;
 }
+
 CTibiaCharacter * CMemReaderProxy::readVisibleCreature(int nr)
 {
 	typedef CTibiaCharacter * (*Proto_fun)(int);
@@ -365,6 +380,7 @@ CTibiaCharacter * CMemReaderProxy::readVisibleCreature(int nr)
 	}
 	return NULL;
 }
+
 CTibiaItem * CMemReaderProxy::readItem(int locationAddress)
 {
 	typedef CTibiaItem * (*Proto_fun)(int);
@@ -376,6 +392,7 @@ CTibiaItem * CMemReaderProxy::readItem(int locationAddress)
 	}
 	return new CTibiaItem();
 }
+
 CTibiaCharacter *CMemReaderProxy::readSelfCharacter()
 {
 	typedef CTibiaCharacter * (*Proto_fun)();
@@ -387,6 +404,7 @@ CTibiaCharacter *CMemReaderProxy::readSelfCharacter()
 	}
 	return NULL;
 }
+
 CTibiaCharacter *CMemReaderProxy::getCharacterByTibiaId(int tibiaId)
 {
 	typedef CTibiaCharacter *(*Proto_fun)(int);
@@ -398,7 +416,6 @@ CTibiaCharacter *CMemReaderProxy::getCharacterByTibiaId(int tibiaId)
 	}
 	return NULL;
 }
-
 
 CMemConstData CMemReaderProxy::getMemConstData()
 {
@@ -446,6 +463,7 @@ int CMemReaderProxy::mapGetSelfCellNr()
 	}
 	return 0;
 }
+
 int CMemReaderProxy::mapGetPointItemsCount(point p, int relToCell /*=-1*/)
 {
 	typedef int (*Proto_fun)(point p, int relToCell);
@@ -457,6 +475,7 @@ int CMemReaderProxy::mapGetPointItemsCount(point p, int relToCell /*=-1*/)
 	}
 	return 0;
 }
+
 int CMemReaderProxy::mapGetPointItemId(point p, int stackNr, int relToCell /*=-1*/)
 {
 	typedef int (*Proto_fun)(point p, int stackNr, int relToCell);
@@ -503,6 +522,7 @@ void CMemReaderProxy::mapSetPointItemsCount(point p, int count, int relToCell /*
 			fun(p, count, relToCell);
 	}
 }
+
 void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId, int relToCell /*=-1*/)
 {
 	typedef int (*Proto_fun)(point p, int stackNr, int tileId, int relToCell);
@@ -513,7 +533,6 @@ void CMemReaderProxy::mapSetPointItemId(point p, int stackNr, int tileId, int re
 			fun(p, stackNr, tileId, relToCell);
 	}
 }
-
 
 long CMemReaderProxy::getCurrentTm()
 {
@@ -526,7 +545,6 @@ long CMemReaderProxy::getCurrentTm()
 	}
 	return 0;
 }
-
 
 void CMemReaderProxy::writeEnableRevealCName()
 {
@@ -550,7 +568,6 @@ void CMemReaderProxy::writeDisableRevealCName()
 	}
 }
 
-
 int CMemReaderProxy::getProcessId()
 {
 	typedef int (*Proto_fun)();
@@ -562,6 +579,7 @@ int CMemReaderProxy::getProcessId()
 	}
 	return 0;
 }
+
 void CMemReaderProxy::setProcessId(int processId)
 {
 	typedef void (*Proto_fun)(int processId);
@@ -596,6 +614,7 @@ int CMemReaderProxy::getKernelMainVersion()
 	}
 	return 0;
 }
+
 int CMemReaderProxy::getKernelPatchVersion()
 {
 	typedef int (*Proto_fun)();
@@ -607,6 +626,7 @@ int CMemReaderProxy::getKernelPatchVersion()
 	}
 	return 0;
 }
+
 void CMemReaderProxy::writeCreatureLightPower(int creatureNr, int value)
 {
 	typedef int (*Proto_fun)(int creatureNr, int value);
@@ -617,6 +637,7 @@ void CMemReaderProxy::writeCreatureLightPower(int creatureNr, int value)
 			fun(creatureNr, value);
 	}
 }
+
 void CMemReaderProxy::writeCreatureLightColor(int creatureNr, int value)
 {
 	typedef int (*Proto_fun)(int creatureNr, int value);
@@ -627,6 +648,7 @@ void CMemReaderProxy::writeCreatureLightColor(int creatureNr, int value)
 			fun(creatureNr, value);
 	}
 }
+
 int CMemReaderProxy::readCreatureLightPower(int creatureNr)
 {
 	typedef int (*Proto_fun)(int creatureNr);
@@ -638,6 +660,7 @@ int CMemReaderProxy::readCreatureLightPower(int creatureNr)
 	}
 	return 0;
 }
+
 int CMemReaderProxy::readCreatureLightColor(int creatureNr)
 {
 	typedef int (*Proto_fun)(int creatureNr);
@@ -684,7 +707,8 @@ void CMemReaderProxy::cleanupTibiaTiles()
 	}
 }
 
-CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
+CSkin CMemReaderProxy::loadSkin(CString pathBuf)
+{
 	typedef CSkin (*Proto_fun)(CString);
 	if (dllModule)
 	{
@@ -694,7 +718,9 @@ CSkin CMemReaderProxy::loadSkin(CString pathBuf) {
 	}
 	return skin;
 }
-CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf) {
+
+CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf)
+{
 	typedef CSkin (*Proto_fun)(CString);
 	if (dllModule)
 	{
@@ -704,7 +730,9 @@ CSkin CMemReaderProxy::loadCurrentSkin(CString pathBuf) {
 	}
 	return skin;
 }
-bool CMemReaderProxy::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
+
+bool CMemReaderProxy::saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate)
+{
 	typedef bool (*Proto_fun)(CString, CSkin, bool);
 	if (dllModule)
 	{

@@ -17,11 +17,13 @@
 
 using namespace std;
 
-XmlSocketProcessor::XmlSocketProcessor() {
+XmlSocketProcessor::XmlSocketProcessor()
+{
 	;
 }
 
-string XmlSocketProcessor::process(Match *m, PElement e, Responder *r, const string &id) {
+string XmlSocketProcessor::process(Match *m, PElement e, Responder *r, const string &id)
+{
 	port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());
 
 	server = new ServerSocket(port);
@@ -32,28 +34,33 @@ string XmlSocketProcessor::process(Match *m, PElement e, Responder *r, const str
 	return "";
 }
 
-void XmlSocketProcessor::shutdown(const string &msg) {
+void XmlSocketProcessor::shutdown(const string &msg)
+{
 	cout << "Shutting down XML Socket Server on port " << port << endl;
 	cout << "Reason: " << msg << endl;
 }
 
-void XmlSocketProcessor::awaitingClient(Socket *client) {
+void XmlSocketProcessor::awaitingClient(Socket *client)
+{
 	//	Temporary measure...
 	client->setListener(new XmlSocketResponder(client));
 //?	client->process();
 	client->getListener()->connected();
 }
 
-XmlSocketResponder::XmlSocketResponder(Socket *c) {
+XmlSocketResponder::XmlSocketResponder(Socket *c)
+{
 	client  = c;
 	botName = Kernel::respond("BOT NAME", "system");
 }
 
-string XmlSocketResponder::respond(Match *, PElement, const string &) {
+string XmlSocketResponder::respond(Match *, PElement, const string &)
+{
 	return "";
 }
 
-void XmlSocketResponder::recv(string &s) {
+void XmlSocketResponder::recv(string &s)
+{
 	strstream strs;
 	strs << s << endl;
 	SaxParser *parser = new SaxParser(new Parser());
@@ -72,17 +79,20 @@ void XmlSocketResponder::recv(string &s) {
 	send("<message>" + reply + "</message>");
 }
 
-void XmlSocketResponder::connected() {
+void XmlSocketResponder::connected()
+{
 	string connectString = "<connect><botname>" + botName + "</botname>";
 	connectString += "<message>" + Kernel::respond("CONNECT", client->getPeerName()) + "</message></connect>";
 	send(connectString);
 }
 
-void XmlSocketResponder::disconnected(const string &msg) {
+void XmlSocketResponder::disconnected(const string &msg)
+{
 	cout << "Notice: " << client->getPeerName() << " disconnected (" << msg << ")" << endl;
 }
 
-void XmlSocketResponder::send(const string &s) {
+void XmlSocketResponder::send(const string &s)
+{
 	if (client == NULL)
 		return;
 	client->write(s, true);

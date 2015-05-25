@@ -34,18 +34,22 @@ public:
 		this->z          = z;
 		this->creatureNr = creatureNr;
 	}
+
 	unsigned short int getX()
 	{
 		return ((x & 0xff) << 8) + (x >> 8);
 	}
+
 	unsigned short int getY()
 	{
 		return ((y & 0xff) << 8) + (y >> 8);
 	}
+
 	unsigned char getZ()
 	{
 		return z;
 	}
+
 	unsigned short int getCreatureNr()
 	{
 		return creatureNr;
@@ -73,7 +77,7 @@ CCreaturesReader::CCreaturesReader()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -188,7 +192,6 @@ int CCreaturesReader::findCreatureStatForLocationTibiaId(int x, int y, int z, in
 	return 0;
 }
 
-
 char ** CCreaturesReader::findCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ)
 {
 	int retSize = 8;
@@ -216,10 +219,8 @@ char ** CCreaturesReader::findCreatureStatInArea(int x, int y, int z, int rangeX
 		if (dbK.getX() >= x - rangeXY && dbK.getX() <= x + rangeXY &&
 		    dbK.getY() >= y - rangeXY && dbK.getY() <= y + rangeXY &&
 		    dbK.getZ() >= z - rangeZ && dbK.getZ() <= z + rangeZ)
-		{
 			// point in range - add it
 			ret = addCreatureToList(ret, dbCreatureTab[dbK.getCreatureNr()], &retSize);
-		}
 
 
 		if (dbK.getX() > x + rangeXY)

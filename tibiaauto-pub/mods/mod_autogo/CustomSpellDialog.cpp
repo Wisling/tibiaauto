@@ -16,7 +16,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 CCustomSpellDialog::CCustomSpellDialog(CWnd* pParent /*=NULL*/)
-	: MyDialog(CCustomSpellDialog::IDD, pParent) {
+	: MyDialog(CCustomSpellDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CCustomSpellDialog)
 	m_spellWords   = _T("");
 	m_castingDelay = 0;
@@ -24,8 +25,8 @@ CCustomSpellDialog::CCustomSpellDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
-void CCustomSpellDialog::DoDataExchange(CDataExchange* pDX) {
+void CCustomSpellDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CCustomSpellDialog)
 	DDX_Control(pDX, IDC_SPELL_CONFIGURATION_FRAME, m_spellConfigFrame);
@@ -39,7 +40,6 @@ void CCustomSpellDialog::DoDataExchange(CDataExchange* pDX) {
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CCustomSpellDialog, CDialog)
 //{{AFX_MSG_MAP(CCustomSpellDialog)
 ON_WM_ERASEBKGND()
@@ -50,7 +50,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CCustomSpellDialog message handlers
 
-BOOL CCustomSpellDialog::OnInitDialog() {
+BOOL CCustomSpellDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_cancel);

@@ -42,7 +42,8 @@ using namespace std;
 
 map<string, SubTree> Substituter::substituters;
 
-Substituter::Substituter() {
+Substituter::Substituter()
+{
 	//	Init the output substitutions (internal entitities)
 	addSubstitute("output", "&lt;", "<");
 	addSubstitute("output", "&gt;", ">");
@@ -53,7 +54,8 @@ Substituter::Substituter() {
 
 //	It could possibly still be slightly more efficient
 //	However, it does work :) wiki
-string Substituter::replace(SubTree tree, const string &input) {
+string Substituter::replace(SubTree tree, const string &input)
+{
 //	cerr << "start: '" << input << "'" << endl;
 	string result = input;
 	char ch;
@@ -85,7 +87,8 @@ string Substituter::replace(SubTree tree, const string &input) {
 	return result;
 }
 
-string Substituter::substitute(const string &input, const string &subs) {
+string Substituter::substitute(const string &input, const string &subs)
+{
 	string result = Substituter::replace(getSubstituter(subs), " " + input + " ").substr(1);
 	if (!result.empty())
 	{
@@ -103,13 +106,15 @@ string Substituter::substitute(const string &input, const string &subs) {
 	}
 }
 
-SubTree Substituter::getSubstituter(const string &name) {
+SubTree Substituter::getSubstituter(const string &name)
+{
 	if (substituters.find(name) == substituters.end())
 		substituters[name] = SubTree();
 	return (*substituters.find(name)).second;
 }
 
-void Substituter::addSubstitute(const string &name, const string &find, const string &replace) {
+void Substituter::addSubstitute(const string &name, const string &find, const string &replace)
+{
 	SubTree tree = getSubstituter(name);
 	tree.addChild(find, replace);
 	substituters[name] = tree;

@@ -1,4 +1,3 @@
-
 // IPCPipeBack.cpp: implementation of the CIPCPipeBack class.
 //
 //////////////////////////////////////////////////////////////////////
@@ -11,7 +10,8 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-void ipcMessage::send(HANDLE pipeHandle){
+void ipcMessage::send(HANDLE pipeHandle)
+{
 	this->tm = time(NULL);
 	DWORD cbWritten;
 	BOOL fSuccess = WriteFile(
@@ -26,8 +26,11 @@ CIPCPipeBack::CIPCPipeBack()
 {
 	hPipeBack = INVALID_HANDLE_VALUE;
 }
-CIPCPipeBack::~CIPCPipeBack(){
+
+CIPCPipeBack::~CIPCPipeBack()
+{
 }
+
 void CIPCPipeBack::InitialiseIPCback(int partnerProcessId, FILE* debugFile, int COMPLEX)
 {
 	char buf[1024];
@@ -80,13 +83,19 @@ void CIPCPipeBack::InitialiseIPCback(int partnerProcessId, FILE* debugFile, int 
 		fflush(debugFile);
 	}
 }
-int CIPCPipeBack::hasInvalidHandle(){
+
+int CIPCPipeBack::hasInvalidHandle()
+{
 	return hPipeBack == INVALID_HANDLE_VALUE;
 }
-void CIPCPipeBack::closePipe(){
+
+void CIPCPipeBack::closePipe()
+{
 	DisconnectNamedPipe(hPipeBack);
 	hPipeBack = INVALID_HANDLE_VALUE;
 }
-void CIPCPipeBack::send(ipcMessage mess){
+
+void CIPCPipeBack::send(ipcMessage mess)
+{
 	mess.send(hPipeBack);
 }

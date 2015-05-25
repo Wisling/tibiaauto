@@ -8,7 +8,8 @@ using namespace std;
 class PreParser : public SaxListener
 {
 public:
-	PreParser(const string &fn = "") {
+	PreParser(const string &fn = "")
+	{
 		filename      = fn;
 		context       = "*";
 		topic         = "*";
@@ -17,7 +18,8 @@ public:
 		templateBegin = -1;
 	}
 
-	virtual ~PreParser() {
+	virtual ~PreParser()
+	{
 	}
 
 	void elementStarted(const string &, int);

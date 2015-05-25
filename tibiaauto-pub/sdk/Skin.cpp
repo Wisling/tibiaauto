@@ -16,7 +16,8 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CSkin::CSkin() {
+CSkin::CSkin()
+{
 	m_ButtonFaceRedValue            = 0x72;
 	m_ButtonFaceGreenValue          = 0;
 	m_ButtonFaceBlueValue           = 0;
@@ -46,10 +47,12 @@ CSkin::CSkin() {
 	m_EditboxBlueValue              = 0;
 }
 
-CSkin::~CSkin() {
+CSkin::~CSkin()
+{
 }
 
-bool CSkin::operator==(const CSkin &other) const {
+bool CSkin::operator==(const CSkin &other) const
+{
 	bool result = false;
 	if (other.m_ButtonDSBlueValue == this->m_ButtonDSBlueValue && other.m_ButtonDSGreenValue == this->m_ButtonDSGreenValue && other.m_ButtonDSRedValue == this->m_ButtonDSRedValue)
 	{
@@ -78,7 +81,8 @@ bool CSkin::operator==(const CSkin &other) const {
 	return result;
 }
 
-bool CSkin::operator!=(const CSkin &other) const {
+bool CSkin::operator!=(const CSkin &other) const
+{
 	return !(*this == other);
 }
 

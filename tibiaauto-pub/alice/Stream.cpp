@@ -1,4 +1,3 @@
-
 #include <stdafx.h>
 #include <iostream>
 #include <map>
@@ -24,10 +23,9 @@ Stream *StreamProvider::getStream(const char *strName)
 	return &streams[strName];
 }
 
-
 Stream* getStream(const char *szName)
 {
-	if(streamProvider == NULL)
+	if (streamProvider == NULL)
 		setStreamProvider(new StreamProvider());
 	return streamProvider->getStream(szName);
 }

@@ -34,7 +34,6 @@ CCharInfoDialog::CCharInfoDialog(CConfigData *configIn, CWnd* pParent /*=NULL*/)
 	config = configIn;
 }
 
-
 void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -89,7 +88,6 @@ void CCharInfoDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHARINFO_CAP, m_cap);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CCharInfoDialog, MyDialog)
 //{{AFX_MSG_MAP(CCharInfoDialog)
@@ -151,12 +149,14 @@ void CCharInfoDialog::resetCounters()
 	delete ch;
 }
 
-void CCharInfoDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_ResetCounters);
-	skin.SetButtonSkin(     m_OK);
+void CCharInfoDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_ResetCounters);
+	skin.SetButtonSkin(m_OK);
 }
 
-BOOL CCharInfoDialog::OnInitDialog() {
+BOOL CCharInfoDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
@@ -192,7 +192,8 @@ void CCharInfoDialog::OnResetCounters()
 	resetCounters();
 }
 
-void CCharInfoDialog::dataCalc(){
+void CCharInfoDialog::dataCalc()
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
@@ -344,7 +345,8 @@ void CCharInfoDialog::dataCalc(){
 	delete ch;
 }
 
-void CCharInfoDialog::dataShow(){
+void CCharInfoDialog::dataShow()
+{
 	CStatic *skillCtrl[9]        = {&m_lvl, &m_mLvl, &m_fist, &m_club, &m_sword, &m_axe, &m_dist, &m_shield, &m_fish};
 	CStatic *skillPerHourCtrl[9] = {&m_lvlSpeed, &m_mLvlSpeed, &m_fistSpeed, &m_clubSpeed, &m_swordSpeed, &m_axeSpeed, &m_distSpeed, &m_shieldSpeed, &m_fishSpeed};
 	CStatic *skillUpInCtrl[9]    = {&m_lvlUpin, &m_mLvlUpin, &m_fistUpin, &m_clubUpin, &m_swordUpin, &m_axeUpin, &m_distUpin, &m_shieldUpin, &m_fishUpin};
@@ -356,16 +358,24 @@ void CCharInfoDialog::dataShow(){
 	unsigned long min = (timeDiff % 3600) / 60;
 	timeDiff -= min * 60;
 	unsigned long hour = (unsigned long)(timeDiff / 3600);
-	sprintf(buffer, "Running for %dh%dm%ds", hour, min, sec);                           m_time.SetWindowText(buffer);
+	sprintf(buffer, "Running for %dh%dm%ds", hour, min, sec);
+	m_time.SetWindowText(buffer);
 
-	sprintf(buffer, "%d/%d", playerInfo.hp, playerInfo.maxHp);                         m_hp.SetWindowText(buffer);
-	sprintf(buffer, "%d/%d", playerInfo.mana, playerInfo.maxMana);                     m_mana.SetWindowText(buffer);
-	sprintf(buffer, "%d", playerInfo.soulPoints);                                                     m_sp.SetWindowText(buffer);
-	sprintf(buffer, "%d.%02d/%d", (int)playerInfo.capacity, (int)((playerInfo.capacity - (int)playerInfo.capacity) * 100), playerInfo.maxCapacity); m_cap.SetWindowText(buffer);
+	sprintf(buffer, "%d/%d", playerInfo.hp, playerInfo.maxHp);
+	m_hp.SetWindowText(buffer);
+	sprintf(buffer, "%d/%d", playerInfo.mana, playerInfo.maxMana);
+	m_mana.SetWindowText(buffer);
+	sprintf(buffer, "%d", playerInfo.soulPoints);
+	m_sp.SetWindowText(buffer);
+	sprintf(buffer, "%d.%02d/%d", (int)playerInfo.capacity, (int)((playerInfo.capacity - (int)playerInfo.capacity) * 100), playerInfo.maxCapacity);
+	m_cap.SetWindowText(buffer);
 
-	sprintf(buffer, "%d", playerInfo.expCurrent);             m_exp.SetWindowText(buffer);
-	sprintf(buffer, "%d/h", playerInfo.expPerHour);   m_expSpeed.SetWindowText(buffer);
-	sprintf(buffer, "%d to go", playerInfo.expLeft);  m_expUpin.SetWindowText(buffer);
+	sprintf(buffer, "%d", playerInfo.expCurrent);
+	m_exp.SetWindowText(buffer);
+	sprintf(buffer, "%d/h", playerInfo.expPerHour);
+	m_expSpeed.SetWindowText(buffer);
+	sprintf(buffer, "%d to go", playerInfo.expLeft);
+	m_expUpin.SetWindowText(buffer);
 
 	for (int i = 0; i < 9; i++)
 	{
@@ -403,12 +413,15 @@ void CCharInfoDialog::dataShow(){
 			spellCtrl[i]->SetWindowText(buffer);
 	}
 }
-void CCharInfoDialog::configToControls(CConfigData *configData) {
+
+void CCharInfoDialog::configToControls(CConfigData *configData)
+{
 	//Something here
 	m_EnableTimer.SetCheck(configData->enableTimers);
 }
 
-CConfigData * CCharInfoDialog::controlsToConfig() {
+CConfigData * CCharInfoDialog::controlsToConfig()
+{
 	CConfigData *newConfigData = new CConfigData();
 
 	newConfigData->enableTimers = m_EnableTimer.GetCheck() != 0;

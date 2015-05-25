@@ -62,15 +62,16 @@ int drinkFails = 0;
 static map<int*, int> setHp;
 static map<int*, int> setMana;
 
-int RandomVariableHp(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL){
+int RandomVariableHp(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL)
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter* self = selfIn;
-	if(selfIn == NULL)
+	if (selfIn == NULL)
 		self = reader.readSelfCharacter();
 	int val = pt < 0 ? max(self->maxHp + pt, self->maxHp / 10) : pt;
 	if (!config->randomCast)
 	{
-		if(selfIn != self)
+		if (selfIn != self)
 			delete self;
 		return val;
 	}
@@ -79,20 +80,21 @@ int RandomVariableHp(int &pt, int command, CConfigData *config, CTibiaCharacter*
 	if (command == MAKE)
 		// within 10% of number with a min of pt and a max of maxHp
 		setHp[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.05), max(self->maxHp, val + 1));
-	if(selfIn != self)
+	if (selfIn != self)
 		delete self;
 	return setHp[&pt];
 }
 
-int RandomVariableMana(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL){
+int RandomVariableMana(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL)
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter* self = selfIn;
-	if(selfIn == NULL)
+	if (selfIn == NULL)
 		self = reader.readSelfCharacter();
 	int val = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
 	if (!config->randomCast)
 	{
-		if(selfIn != self)
+		if (selfIn != self)
 			delete self;
 		return val;
 	}
@@ -101,7 +103,7 @@ int RandomVariableMana(int &pt, int command, CConfigData *config, CTibiaCharacte
 	if (command == MAKE)
 		// within 10% of number with a cutoff at maxMana
 		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.05), max(self->maxMana, val + 1));
-	if(selfIn != self)
+	if (selfIn != self)
 		delete self;
 	return setMana[&pt];
 }
@@ -176,7 +178,7 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 	return drank;
 }
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -187,7 +189,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	{
 		Sleep(100);
 		//Send message if at 10 fails
-		if((drinkFails + 1) % 10 == 0)
+		if ((drinkFails + 1) % 10 == 0)
 			sender.sendTAMessage("Health or Mana failed to change when using healing item.");
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
@@ -292,7 +294,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		if (drank)
 		{
 			int stopSleepTime = reader.getCurrentTm() + CModuleUtil::randomFormula(config->sleep, 200, config->sleep);
-			while(reader.getCurrentTm() < stopSleepTime)
+			while (reader.getCurrentTm() < stopSleepTime)
 			{
 				Sleep(50);
 			}
@@ -341,7 +343,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_fluidApp construction
 
@@ -367,12 +368,10 @@ char * CMod_fluidApp::getName()
 	return "Fluid drinker";
 }
 
-
 int CMod_fluidApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_fluidApp::start()
 {
@@ -425,14 +424,12 @@ void CMod_fluidApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_fluidApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_fluidApp::controlsToConfig()
 {
@@ -442,7 +439,6 @@ void CMod_fluidApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_fluidApp::disableControls()
 {
@@ -456,12 +452,10 @@ void CMod_fluidApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_fluidApp::getVersion()
 {
 	return "2.0";
 }
-
 
 int CMod_fluidApp::validateConfig(int showAlerts)
 {
@@ -476,7 +470,7 @@ int CMod_fluidApp::validateConfig(int showAlerts)
 
 void CMod_fluidApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -621,42 +615,73 @@ char *CMod_fluidApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "drink/hp";
-	case 1: return "drink/mana";
-	case 2: return "other/dropEmpty";
-	case 3: return "drink/hpBelow";
-	case 4: return "drink/manaBelow";
-	case 5: return "other/sleepAfter";
-	case 6: return "drink/hpN";
-	case 7: return "drink/hpS";
-	case 8: return "drink/hpG";
-	case 9: return "drink/manaN";
-	case 10: return "drink/manaS";
-	case 11: return "drink/manaG";
-	case 12: return "drink/hpBelowN";
-	case 13: return "drink/hpBelowS";
-	case 14: return "drink/hpBelowG";
-	case 15: return "drink/manaBelowN";
-	case 16: return "drink/manaBelowS";
-	case 17: return "drink/manaBelowG";
-	case 18: return "custom/item1Below";
-	case 19: return "custom/item1Item";
-	case 20: return "custom/item1Use";
-	case 21: return "custom/item2Below";
-	case 22: return "custom/item2Item";
-	case 23: return "custom/item2Use";
-	case 24: return "drink/hpH";
-	case 25: return "drink/hpU";
-	case 26: return "drink/hpBelowH";
-	case 27: return "drink/hpBelowU";
-	case 28: return "other/randomCast";
-	case 29: return "other/useHotkey";
+	case 0:
+		return "drink/hp";
+	case 1:
+		return "drink/mana";
+	case 2:
+		return "other/dropEmpty";
+	case 3:
+		return "drink/hpBelow";
+	case 4:
+		return "drink/manaBelow";
+	case 5:
+		return "other/sleepAfter";
+	case 6:
+		return "drink/hpN";
+	case 7:
+		return "drink/hpS";
+	case 8:
+		return "drink/hpG";
+	case 9:
+		return "drink/manaN";
+	case 10:
+		return "drink/manaS";
+	case 11:
+		return "drink/manaG";
+	case 12:
+		return "drink/hpBelowN";
+	case 13:
+		return "drink/hpBelowS";
+	case 14:
+		return "drink/hpBelowG";
+	case 15:
+		return "drink/manaBelowN";
+	case 16:
+		return "drink/manaBelowS";
+	case 17:
+		return "drink/manaBelowG";
+	case 18:
+		return "custom/item1Below";
+	case 19:
+		return "custom/item1Item";
+	case 20:
+		return "custom/item1Use";
+	case 21:
+		return "custom/item2Below";
+	case 22:
+		return "custom/item2Item";
+	case 23:
+		return "custom/item2Use";
+	case 24:
+		return "drink/hpH";
+	case 25:
+		return "drink/hpU";
+	case 26:
+		return "drink/hpBelowH";
+	case 27:
+		return "drink/hpBelowU";
+	case 28:
+		return "other/randomCast";
+	case 29:
+		return "other/useHotkey";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_fluidApp::getNewSkin(CSkin newSkin) {
+void CMod_fluidApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

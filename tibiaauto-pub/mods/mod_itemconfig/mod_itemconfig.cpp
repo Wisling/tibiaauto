@@ -121,7 +121,8 @@ char *CMod_itemconfigApp::getVersion()
 	return "2.1";
 }
 
-void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
+void CMod_itemconfigApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -132,15 +133,20 @@ void CMod_itemconfigApp::getNewSkin(CSkin newSkin) {
 	}
 }
 
-void CMod_itemconfigApp::configToControls() {
+void CMod_itemconfigApp::configToControls()
+{
 	if (m_infoDialog)
 		m_infoDialog->ConfigToControls();
 }
-void CMod_itemconfigApp::controlsToConfig() {
+
+void CMod_itemconfigApp::controlsToConfig()
+{
 	if (m_infoDialog)
 		m_infoDialog->ControlsToConfig();
 }
-void CMod_itemconfigApp::loadConfigParam(char *paramName, char *paramValue) {
+
+void CMod_itemconfigApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	CTibiaItemProxy itemProxy;
 	if (!strcmp(paramName, "lootedItems"))
 	{
@@ -151,7 +157,8 @@ void CMod_itemconfigApp::loadConfigParam(char *paramName, char *paramValue) {
 	}
 }
 
-char *CMod_itemconfigApp::saveConfigParam(char *paramName) {
+char *CMod_itemconfigApp::saveConfigParam(char *paramName)
+{
 	CTibiaItemProxy itemProxy;
 	static char buf[1024];
 	buf[0] = 0;
@@ -160,23 +167,30 @@ char *CMod_itemconfigApp::saveConfigParam(char *paramName) {
 		sprintf(buf, "%d", itemProxy.getLootItemIdAtIndex(currentPos++));
 	return buf;
 }
-char *CMod_itemconfigApp::getConfigParamName(int nr) {
+
+char *CMod_itemconfigApp::getConfigParamName(int nr)
+{
 	//Removed since config can be changed even when not opened
 	//if (!m_infoDialog) return NULL;//special case where user has not opened the itemConfig
 
 	switch (nr)
 	{
-	case 0: return "lootedItems";
+	case 0:
+		return "lootedItems";
 	default:
 		return NULL;
 	}
 }
-int CMod_itemconfigApp::isMultiParam(char *paramName) {
+
+int CMod_itemconfigApp::isMultiParam(char *paramName)
+{
 	if (!strcmp(paramName, "lootedItems"))
 		return 1;
 	return 0;
 }
-void CMod_itemconfigApp::resetMultiParamAccess(char *paramName) {
+
+void CMod_itemconfigApp::resetMultiParamAccess(char *paramName)
+{
 	if (!strcmp(paramName, "lootedItems"))
 		currentPos = 0;
 }

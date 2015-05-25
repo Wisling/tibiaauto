@@ -33,7 +33,6 @@ CUtil::~CUtil()
 {
 }
 
-
 char *CUtil::wc2c(const XMLCh *src)
 {
 	char *dest = (char *)malloc(MAX_STRING_LEN);
@@ -103,7 +102,8 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 	}
 }
 
-void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
+void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr)
+{
 	try
 	{
 		char buf[32];
@@ -119,7 +119,8 @@ void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
 	}
 }
 
-void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr) {
+void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr)
+{
 	try
 	{
 		char buf[32];

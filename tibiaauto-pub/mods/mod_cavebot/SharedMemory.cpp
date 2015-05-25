@@ -72,7 +72,7 @@ void CSharedMemory::SetLastError(DWORD dwErrCode)                       //this m
 * ERROR-EXITS          :
 * SIDE-EFFECTS         :
 **************************************************************************************/
-CSharedMemory::CSharedMemory(const TCHAR *szName, DWORD dwSize, PINITMEMORY InitMemoryProcedure, LPSECURITY_ATTRIBUTES lpsaAttributes )
+CSharedMemory::CSharedMemory(const TCHAR *szName, DWORD dwSize, PINITMEMORY InitMemoryProcedure, LPSECURITY_ATTRIBUTES lpsaAttributes)
 	:       m_dwLastError(0),
 	m_pNewAcl(NULL),
 	m_pLogSid(NULL),
@@ -184,7 +184,6 @@ CSharedMemory::CSharedMemory(const TCHAR *szName, DWORD dwSize, PINITMEMORY Init
 		m_pLock->Unlock();
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -218,7 +217,6 @@ CSharedMemory::~CSharedMemory()
 	if (m_pSync)
 		delete m_pSync;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -275,7 +273,6 @@ void CSharedMemory::AssertValid()
 	ASSERT(m_pLock != NULL);
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -296,6 +293,7 @@ void CSharedMemory::Dump(CDumpContext & dc)
 	CObject::Dump(dc);                                                                              //dump memory content, be carefull,
 	DUMP((TCHAR *)LPCTSTR(m_CsName), m_lpView, m_dwMemSize);  //this could take a longer time
 }
+
 #endif // ifdef _DEBUG
 
 
@@ -317,7 +315,6 @@ DWORD CSharedMemory::GetLastError()
 {
 	return m_dwLastError;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -346,7 +343,6 @@ DWORD CSharedMemory::GetMemSize()
 	}
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -366,7 +362,6 @@ BOOL CSharedMemory::AmIFirst(void)
 {
 	return m_bFirst;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -402,7 +397,6 @@ BOOL CSharedMemory::SetSdMem(SECURITY_INFORMATION SecurityInformation, PSECURITY
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -441,7 +435,6 @@ BOOL CSharedMemory::GetSdMem(SECURITY_INFORMATION RequestedInformation, PSECURIT
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -476,7 +469,6 @@ BOOL CSharedMemory::SetSdSem(SECURITY_INFORMATION SecurityInformation, PSECURITY
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -514,7 +506,6 @@ BOOL CSharedMemory::GetSdSem(SECURITY_INFORMATION RequestedInformation, PSECURIT
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -561,7 +552,7 @@ BOOL CSharedMemory::CreateSa()
 			break;
 		}
 
-		cbAcl = GetLengthSid (m_pLogSid) + GetLengthSid (m_pSysSid) + GetLengthSid (m_pEvrSid) +
+		cbAcl = GetLengthSid(m_pLogSid) + GetLengthSid(m_pSysSid) + GetLengthSid(m_pEvrSid) +
 		        sizeof(ACL) + (3 * (sizeof(ACCESS_ALLOWED_ACE) - sizeof(DWORD)));
 		m_pNewAcl = (PACL) HeapAlloc(GetProcessHeap(), 0, cbAcl);
 
@@ -577,32 +568,32 @@ BOOL CSharedMemory::CreateSa()
 			break;
 		}
 		// allow everything to interractive user, system and services
-		if (!AddAccessAllowedAce(       m_pNewAcl,
-		                                ACL_REVISION,
-		                                STANDARD_RIGHTS_ALL |
-		                                SPECIFIC_RIGHTS_ALL |
-		                                EVENT_ALL_ACCESS,
-		                                m_pLogSid))
+		if (!AddAccessAllowedAce(m_pNewAcl,
+		                         ACL_REVISION,
+		                         STANDARD_RIGHTS_ALL |
+		                         SPECIFIC_RIGHTS_ALL |
+		                         EVENT_ALL_ACCESS,
+		                         m_pLogSid))
 		{
 			SetLastError(::GetLastError());
 			break;
 		}
-		if (!AddAccessAllowedAce(       m_pNewAcl,
-		                                ACL_REVISION,
-		                                STANDARD_RIGHTS_ALL |
-		                                SPECIFIC_RIGHTS_ALL |
-		                                EVENT_ALL_ACCESS,
-		                                m_pSysSid))
+		if (!AddAccessAllowedAce(m_pNewAcl,
+		                         ACL_REVISION,
+		                         STANDARD_RIGHTS_ALL |
+		                         SPECIFIC_RIGHTS_ALL |
+		                         EVENT_ALL_ACCESS,
+		                         m_pSysSid))
 		{
 			SetLastError(::GetLastError());
 			break;
 		}
-		if (!AddAccessAllowedAce(       m_pNewAcl,
-		                                ACL_REVISION,
-		                                STANDARD_RIGHTS_ALL |
-		                                SPECIFIC_RIGHTS_ALL |
-		                                EVENT_ALL_ACCESS,
-		                                m_pEvrSid))
+		if (!AddAccessAllowedAce(m_pNewAcl,
+		                         ACL_REVISION,
+		                         STANDARD_RIGHTS_ALL |
+		                         SPECIFIC_RIGHTS_ALL |
+		                         EVENT_ALL_ACCESS,
+		                         m_pEvrSid))
 		{
 			SetLastError(::GetLastError());
 			break;
@@ -630,7 +621,6 @@ BOOL CSharedMemory::CreateSa()
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -728,7 +718,6 @@ BOOL CSharedMemory::SetSa(LPSECURITY_ATTRIBUTES lpsaAttributes)
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -992,7 +981,6 @@ BOOL CSharedMemory::DeleteValue(const TCHAR *szName)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1029,7 +1017,6 @@ DWORD CSharedMemory::GetVariablesCount(void)
 
 	return dwCount;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -1093,7 +1080,6 @@ BOOL CSharedMemory::GetValueInfo(DWORD dwIndex, ValueHeader *pVarInfo)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1139,7 +1125,6 @@ BOOL CSharedMemory::FindValue(const WCHAR *wszName, LPBYTE *pData, ValueHeader *
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1161,7 +1146,7 @@ WCHAR *CSharedMemory::AllocateUnicodeStr(const char *szStr)
 
 	DWORD dwLn = strlen(szStr) + 2;
 	wszStr = new WCHAR[dwLn];
-	if (!MultiByteToWideChar (CP_ACP, 0, szStr, -1, wszStr, dwLn))
+	if (!MultiByteToWideChar(CP_ACP, 0, szStr, -1, wszStr, dwLn))
 	{
 		SetLastError(::GetLastError());
 		if (wszStr)
@@ -1171,7 +1156,6 @@ WCHAR *CSharedMemory::AllocateUnicodeStr(const char *szStr)
 
 	return wszStr;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -1254,7 +1238,6 @@ BOOL CSharedMemory::SetValue(const TCHAR *szName, void *bData, DWORD dwLength)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1336,7 +1319,6 @@ BOOL CSharedMemory::GetValue(const TCHAR *szName, void *bData, LPDWORD dwLength)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1357,7 +1339,6 @@ BOOL CSharedMemory::SetDwordValue(const TCHAR *szName, DWORD dwVal)
 {
 	return SetValue(szName, &dwVal, sizeof(DWORD));
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -1388,7 +1369,6 @@ DWORD CSharedMemory::GetDwordValue(const TCHAR *szName, DWORD dwDefVal)
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -1452,7 +1432,6 @@ void *CSharedMemory::GetPointer(const TCHAR *szName)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1508,7 +1487,6 @@ BOOL CSharedMemory::ExistValue(const TCHAR *szName)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1528,7 +1506,6 @@ BOOL CSharedMemory::IsCreated(void)
 {
 	return m_bCreated;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -1660,7 +1637,6 @@ DWORD CSharedMemory::WaitForMemChange(DWORD dwMilliseconds)
 	return dwRet;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1740,7 +1716,6 @@ BOOL CSharedMemory::InterlockedIncrement(const TCHAR *szName, LPLONG plNewVal)
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -1822,7 +1797,6 @@ BOOL CSharedMemory::InterlockedDecrement(const TCHAR *szName, LPLONG plNewVal)
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1903,7 +1877,6 @@ BOOL CSharedMemory::InterlockedExchange(const TCHAR *szTargetName, LONG lNewVal,
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -1926,7 +1899,6 @@ BOOL CSharedMemory::InterlockedTestExchange(const TCHAR *szTargetName, LONG lOld
 {
 	return InterlockedCompareExchange(szTargetName, lNewValue, lOldValue, plPrevValue);
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :
@@ -2012,7 +1984,6 @@ BOOL CSharedMemory::InterlockedCompareExchange(const TCHAR *szTargetName, LONG l
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -2096,7 +2067,6 @@ BOOL CSharedMemory::InterlockedExchangeAdd(const TCHAR *szTargetName, LONG lIncr
 	return rc;
 }
 
-
 /**************************************************************************************
 * PROG-NAME            :
 * LONG-NAME            :
@@ -2161,7 +2131,6 @@ BOOL CSharedMemory::Write(BYTE *pbData, DWORD dwLength, DWORD dwOffset)
 
 	return rc;
 }
-
 
 /**************************************************************************************
 * PROG-NAME            :

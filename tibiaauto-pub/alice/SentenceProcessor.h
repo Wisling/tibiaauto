@@ -18,10 +18,12 @@ using namespace std;
 class SentenceProcessor : public AimlProcessor
 {
 public:
-	~SentenceProcessor() {
+	~SentenceProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string result = Kernel::process(m, e, r, id);
 		result[0] = toupper(result[0]);
 		return result;

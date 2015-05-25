@@ -26,7 +26,6 @@ CConfigDialog::CConfigDialog(CMod_creatureinfoApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -58,7 +57,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -154,7 +152,6 @@ void CConfigDialog::enableControls()
 	m_rangeZ.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
@@ -178,8 +175,10 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_addRequest.SetCheck(configData->allFloorInfo);
 	m_collectStats.SetCheck(configData->collectStats);
 
-	sprintf(buf, "%d", configData->rangeXY); m_rangeXY.SetWindowText(buf);
-	sprintf(buf, "%d", configData->rangeZ); m_rangeZ.SetWindowText(buf);
+	sprintf(buf, "%d", configData->rangeXY);
+	m_rangeXY.SetWindowText(buf);
+	sprintf(buf, "%d", configData->rangeZ);
+	m_rangeZ.SetWindowText(buf);
 
 	OnToolcreaturinfoPlayer();
 	OnToolcreaturinfoMonster();
@@ -220,11 +219,12 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_knownInfo);
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_NameChanger);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_knownInfo);
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_NameChanger);
 }
 
 BOOL CConfigDialog::OnInitDialog()

@@ -18,9 +18,12 @@ public:
 		T *datum;
 		unsigned count;
 
-		Holder(T *t) : datum(t), count(1) {
+		Holder(T *t) : datum(t), count(1)
+		{
 		}
-		~Holder() {
+
+		~Holder()
+		{
 			delete datum;
 		}
 	};
@@ -28,12 +31,14 @@ public:
 	Holder *value;
 
 	//	I'm just curious .. how does this cope with NULL?
-	void unbind() {
+	void unbind()
+	{
 		if (--value->count == 0)
 			delete value;
 	}
 
-	void bind(const Pointer<T> &rhs) {
+	void bind(const Pointer<T> &rhs)
+	{
 		if (rhs.value != value)
 		{
 			unbind();
@@ -42,24 +47,32 @@ public:
 		}
 	}
 
-	void bind(T *t) {
+	void bind(T *t)
+	{
 		if (value->datum != t)
 		{
 			unbind();
 			value = new Holder(t);
 		}
 	}
+
 public:
-	explicit Pointer(T *t = NULL) : value(new Holder(t)) {
+	explicit Pointer(T *t = NULL) : value(new Holder(t))
+	{
 	}
-	Pointer(const Pointer<T> &rhs) : value(rhs.value) {
+
+	Pointer(const Pointer<T> &rhs) : value(rhs.value)
+	{
 		value->count++;
 	}
-	~Pointer() {
+
+	~Pointer()
+	{
 		unbind();
 	}
 
-	Pointer<T> &operator=(const Pointer<T> &rhs) {
+	Pointer<T> &operator=(const Pointer<T> &rhs)
+	{
 		//	Keep getting *bus error* for value->datum
 		//	if (value->datum != NULL) {
 		bind(rhs);
@@ -69,7 +82,8 @@ public:
 		return *this;
 	}
 
-	Pointer<T> &operator=(T *t) {
+	Pointer<T> &operator=(T *t)
+	{
 		//	if (t != NULL) {
 		bind(t);
 		//	} else {
@@ -78,35 +92,43 @@ public:
 		return *this;
 	}
 
-	T *operator->() {
+	T *operator->()
+	{
 		return value->datum;
 	}
 
-	T &operator*() {
+	T &operator*()
+	{
 		return *(value->datum);
 	}
 
-	const T *operator->() const {
+	const T *operator->() const
+	{
 		return value->datum;
 	}
 
-	const T &operator*() const {
+	const T &operator*() const
+	{
 		return *(value->datum);
 	}
 
-	bool operator==(const Pointer<T> &rhs) const {
+	bool operator==(const Pointer<T> &rhs) const
+	{
 		return (value->datum) == (rhs.value->datum);
 	}
 
-	bool operator!=(const Pointer<T> &rhs) const {
+	bool operator!=(const Pointer<T> &rhs) const
+	{
 		return (value->datum) != (rhs.value->datum);
 	}
 
-	bool operator==(T *t) const {
+	bool operator==(T *t) const
+	{
 		return (value->datum) == t;
 	}
 
-	bool operator!=(T *t) const {
+	bool operator!=(T *t) const
+	{
 		return (value->datum) != t;
 	}
 };

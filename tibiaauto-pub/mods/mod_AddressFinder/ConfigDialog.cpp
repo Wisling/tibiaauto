@@ -23,7 +23,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_addressfinderApp *app, CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CConfigDialog)
 	m_outputStartByte = 0;
 	m_outputEndByte   = 0;
@@ -31,8 +32,8 @@ CConfigDialog::CConfigDialog(CMod_addressfinderApp *app, CWnd* pParent /*=NULL*/
 	m_app = app;
 }
 
-
-void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
+void CConfigDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDC_STAMINA_ADDRESS, m_staminaAddress);
@@ -96,7 +97,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
 ON_WM_CLOSE()
@@ -112,15 +112,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() {
+void CConfigDialog::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() {
+void CConfigDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {
+void CConfigDialog::OnEnable()
+{
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
@@ -135,32 +138,41 @@ void CConfigDialog::OnEnable() {
 	}
 }
 
-void CConfigDialog::disableControls() {
+void CConfigDialog::disableControls()
+{
 	m_experience.EnableWindow(false);
 	m_experienceAddress.EnableWindow(false);
 }
 
-void CConfigDialog::enableControls() {
+void CConfigDialog::enableControls()
+{
 	m_experience.EnableWindow(true);
 	m_experienceAddress.EnableWindow(true);
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {
+void CConfigDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
-	sprintf(buf, "%d", configData->experience); m_experience.SetWindowText(buf);
-	sprintf(buf, "0x%x", configData->experienceAddress); m_experienceAddress.SetWindowText(buf);
+	sprintf(buf, "%d", configData->experience);
+	m_experience.SetWindowText(buf);
+	sprintf(buf, "0x%x", configData->experienceAddress);
+	m_experienceAddress.SetWindowText(buf);
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {
+CConfigData * CConfigDialog::controlsToConfig()
+{
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
-	m_experience.GetWindowText(buf, 127); newConfigData->experience               = atoi(buf);
-	m_experienceAddress.GetWindowText(buf, 127); newConfigData->experienceAddress = atoi(buf);
+	m_experience.GetWindowText(buf, 127);
+	newConfigData->experience = atoi(buf);
+	m_experienceAddress.GetWindowText(buf, 127);
+	newConfigData->experienceAddress = atoi(buf);
 
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	CMemReaderProxy reader;
 	KillTimer(nIDEvent);
 
@@ -193,13 +205,15 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_beginOutput);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_beginOutput);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
+BOOL CConfigDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 	CMemReaderProxy reader;
@@ -235,15 +249,15 @@ BOOL CConfigDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
+{
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CConfigDialog::activateEnableButton(int enable) {
+void CConfigDialog::activateEnableButton(int enable)
+{
 	m_enable.SetCheck(enable);
 }
-
 
 void CConfigDialog::OnBeginOutput()
 {
@@ -315,7 +329,7 @@ void CConfigDialog::OnCreateSearchString()
 		char fname[128];
 		int lastfile = 1;
 		int ver      = 0;
-		while(lastfile)
+		while (lastfile)
 		{
 			sprintf(fname, "%s%s", filepath, data.cFileName);
 			FILE* f = fopen(fname, "rb");

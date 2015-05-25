@@ -34,7 +34,6 @@ CConfigDialog::CConfigDialog(CMod_memdebugApp *app, CWnd* pParent /*=NULL*/)
 	m_errorCount = 0;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -48,7 +47,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -152,7 +150,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

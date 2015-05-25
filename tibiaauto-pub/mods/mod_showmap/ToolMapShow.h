@@ -30,7 +30,7 @@ public:
 	void mapPointToggleLock(int realX, int realY, int realZ);
 	void MapResearchTick();
 	void ExtendedMapResearchTick();
-	void ExtendedMapResearchTeleportCheckTick();	
+	void ExtendedMapResearchTeleportCheckTick();
 	CToolMapShow(CWnd* pParent = NULL);   // standard constructor
 	~CToolMapShow();
 

@@ -58,7 +58,8 @@ DWORD addrFps;
 extern BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam); //in ConfigDialog.cpp
 
 
-void SetFPS(double iFps){
+void SetFPS(double iFps)
+{
 	CMemReaderProxy reader;
 	double *fpsVal;
 	int ifpsVal[2];
@@ -73,7 +74,8 @@ void SetFPS(double iFps){
 	reader.setMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
 }
 
-double GetFPS(){
+double GetFPS()
+{
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	if (!addrFps)
@@ -91,8 +93,8 @@ double GetFPS(){
 	return 1000 / (*fpsVal);
 }
 
-
-DWORD WINAPI toolThreadProc( LPVOID lpParam ){
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 
@@ -105,7 +107,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 
 	while (!toolThreadShouldStop)
 	{
-		if(config->minimized && (IsIconic(hTibiaWnd) || !IsWindowVisible(hTibiaWnd)))
+		if (config->minimized && (IsIconic(hTibiaWnd) || !IsWindowVisible(hTibiaWnd)))
 			SetFPS(config->minimizedVal);
 		else if (config->inactive && GetForegroundWindow() != hTibiaWnd)
 			SetFPS(config->inactiveVal);
@@ -120,7 +122,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 	toolThreadShouldStop = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // Cmod_fpsApp construction
@@ -147,12 +148,10 @@ char * Cmod_fpsApp::getName()
 	return "FPS";
 }
 
-
 int Cmod_fpsApp::isStarted()
 {
 	return m_started;
 }
-
 
 void Cmod_fpsApp::start()
 {
@@ -204,14 +203,12 @@ void Cmod_fpsApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void Cmod_fpsApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void Cmod_fpsApp::controlsToConfig()
 {
@@ -221,7 +218,6 @@ void Cmod_fpsApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void Cmod_fpsApp::disableControls()
 {
@@ -235,12 +231,10 @@ void Cmod_fpsApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *Cmod_fpsApp::getVersion()
 {
 	return "1.0";
 }
-
 
 int Cmod_fpsApp::validateConfig(int showAlerts)
 {
@@ -249,7 +243,7 @@ int Cmod_fpsApp::validateConfig(int showAlerts)
 
 void Cmod_fpsApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -294,17 +288,23 @@ char *Cmod_fpsApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "activeVal";
-	case 1: return "inactive";
-	case 2: return "inactiveVal";
-	case 3: return "minimized";
-	case 4: return "minimizedVal";
+	case 0:
+		return "activeVal";
+	case 1:
+		return "inactive";
+	case 2:
+		return "inactiveVal";
+	case 3:
+		return "minimized";
+	case 4:
+		return "minimizedVal";
 	default:
 		return NULL;
 	}
 }
 
-void Cmod_fpsApp::getNewSkin(CSkin newSkin) {
+void Cmod_fpsApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

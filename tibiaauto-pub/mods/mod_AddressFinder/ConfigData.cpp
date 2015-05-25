@@ -16,10 +16,12 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CConfigData::CConfigData() {
+CConfigData::CConfigData()
+{
 	experience        = 0;
 	experienceAddress = 0;
 }
 
-CConfigData::~CConfigData() {
+CConfigData::~CConfigData()
+{
 }

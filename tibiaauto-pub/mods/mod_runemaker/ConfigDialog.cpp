@@ -26,7 +26,6 @@ CConfigDialog::CConfigDialog(CMod_runemakerApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -57,7 +56,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_USESPEAR, m_useSpear);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -136,15 +134,17 @@ void CConfigDialog::enableControls()
 	m_randomCast.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[1024];
 
 	m_spell.SetWindowText(configData->spell);
-	sprintf(buf, "%d", configData->mana); m_mana.SetWindowText(buf);
-	sprintf(buf, "%d", configData->manaLimit); m_manaLimit.SetWindowText(buf);
-	sprintf(buf, "%d", configData->soulPoints); m_soulPoints.SetWindowText(buf);
+	sprintf(buf, "%d", configData->mana);
+	m_mana.SetWindowText(buf);
+	sprintf(buf, "%d", configData->manaLimit);
+	m_manaLimit.SetWindowText(buf);
+	sprintf(buf, "%d", configData->soulPoints);
+	m_soulPoints.SetWindowText(buf);
 	m_premium.SetCheck(configData->premium);
 	m_maxUse.SetCheck(configData->maxUse);
 	m_randomCast.SetCheck(configData->randomCast);
@@ -180,13 +180,16 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	m_spell.GetWindowText(newConfigData->spell, 127);
-	m_mana.GetWindowText(buf, 127); newConfigData->mana             = atoi(buf);
-	m_manaLimit.GetWindowText(buf, 127); newConfigData->manaLimit   = atoi(buf);
-	m_soulPoints.GetWindowText(buf, 127); newConfigData->soulPoints = atoi(buf);
-	newConfigData->premium                                          = m_premium.GetCheck();
-	newConfigData->maxUse                                           = m_maxUse.GetCheck();
-	newConfigData->randomCast                                       = m_randomCast.GetCheck();
-	newConfigData->useSpear                                         = m_useSpear.GetCheck();
+	m_mana.GetWindowText(buf, 127);
+	newConfigData->mana = atoi(buf);
+	m_manaLimit.GetWindowText(buf, 127);
+	newConfigData->manaLimit = atoi(buf);
+	m_soulPoints.GetWindowText(buf, 127);
+	newConfigData->soulPoints = atoi(buf);
+	newConfigData->premium    = m_premium.GetCheck();
+	newConfigData->maxUse     = m_maxUse.GetCheck();
+	newConfigData->randomCast = m_randomCast.GetCheck();
+	newConfigData->useSpear   = m_useSpear.GetCheck();
 
 	for (int i = 0; i < 15; i++)
 	{
@@ -344,13 +347,14 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin( m_addSpell);
-	skin.SetButtonSkin( m_deleteSpell);
-	skin.SetButtonSkin( m_loadSpell);
-	skin.SetButtonSkin( m_makeNow);
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_addSpell);
+	skin.SetButtonSkin(m_deleteSpell);
+	skin.SetButtonSkin(m_loadSpell);
+	skin.SetButtonSkin(m_makeNow);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -366,7 +370,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

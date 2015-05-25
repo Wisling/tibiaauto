@@ -135,7 +135,6 @@ int memReadReadSelfLightColor()
 	return reader->readSelfLightColor();
 }
 
-
 void memReadWriteCreatureLightPower(int creatureNr, int value)
 {
 	startMemReader();
@@ -160,84 +159,96 @@ int memReadReadCreatureLightColor(int creatureNr)
 	return reader->readCreatureLightColor(creatureNr);
 }
 
-
 void memReadCancelAttackCoords()
 {
 	startMemReader();
 	reader->cancelAttackCoords();
 }
+
 void memReadWriteGotoCoords(int x, int y, int z)
 {
 	startMemReader();
 	reader->writeGotoCoords(x, y, z);
 }
+
 int memReadGetLoggedCharNr()
 {
 	startMemReader();
 	return reader->getLoggedCharNr();
 }
+
 int memReadGetSelfEventFlags()
 {
 	startMemReader();
 	return reader->getSelfEventFlags();
 }
+
 void memReadWriteVisibleCreatureName(int chNr, char *name)
 {
 	startMemReader();
 	reader->writeVisibleCreatureName(chNr, name);
 }
 
-
 CTibiaItem * memReadGetTradeItemPartner(int nr)
 {
 	startMemReader();
 	return reader->getTradeItemPartner(nr);
 }
+
 CTibiaItem * memReadGetTradeItemSelf(int nr)
 {
 	startMemReader();
 	return reader->getTradeItemSelf(nr);
 }
+
 int memReadGetTradeCountPartner()
 {
 	startMemReader();
 	return reader->getTradeCountPartner();
 }
+
 int memReadGetTradeCountSelf()
 {
 	startMemReader();
 	return reader->getTradeCountSelf();
 }
+
 int memReadGetAttackedCreature()
 {
 	startMemReader();
 	return reader->getAttackedCreature();
 }
+
 void memReadSetAttackedCreature(int tibiaId)
 {
 	startMemReader();
 	reader->setAttackedCreature(tibiaId);
 }
+
 int memReadGetFollowedCreature()
 {
 	startMemReader();
 	return reader->getFollowedCreature();
 }
+
 void memReadSetFollowedCreature(int tibiaId)
 {
 	startMemReader();
 	reader->setFollowedCreature(tibiaId);
 }
+
 int memReadGetNextPacketCount()
 {
 	startMemReader();
 	return reader->getNextPacketCount();
 }
+
 void memReadGetLoggedChar(int processId, char* buf, int bufLen)
 {
 	startMemReader();
 	reader->GetLoggedChar(processId, buf, bufLen);
 }
+
 int memReadReadBattleListMax()
 {
 	startMemReader();
@@ -249,27 +260,30 @@ int memReadReadBattleListMin()
 	startMemReader();
 	return reader->readBattleListMin();
 }
+
 CTibiaCharacter * memReadReadVisibleCreature(int nr)
 {
 	startMemReader();
 	return reader->readVisibleCreature(nr);
 }
+
 CTibiaItem * memReadReadItem(int locationAddress)
 {
 	startMemReader();
 	return reader->readItem(locationAddress);
 }
+
 CTibiaCharacter *memReadReadSelfCharacter()
 {
 	startMemReader();
 	return reader->readSelfCharacter();
 }
+
 CTibiaCharacter *memReadGetCharacterByTibiaId(int tibiaId)
 {
 	startMemReader();
 	return reader->getCharacterByTibiaId(tibiaId);
 }
-
 
 void packSenderUseWithObjectFromFloorOnFloor(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetX, int targetY, int targetZ, int method = 2)
 {
@@ -335,11 +349,13 @@ void packSenderMoveObjectFromContainerToFloor(int objectId, int contNr, int pos,
 	CPackSender sender;
 	sender.moveObjectFromContainerToFloor(objectId, contNr, pos, x, y, z, quantity);
 }
+
 void packSenderCastRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId, int method)
 {
 	CPackSender sender;
 	sender.castRuneAgainstCreature(contNr, itemPos, runeObjectId, creatureId, method);
 }
+
 void packSenderCastRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method)
 {
 	CPackSender sender;
@@ -351,11 +367,13 @@ void packSenderUseItemOnCreature(int objectId, int creatureId)
 	CPackSender sender;
 	sender.useItemOnCreature(objectId, creatureId);
 }
+
 void packSenderUseItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId)
 {
 	CPackSender sender;
 	sender.useItemFromContainerOnCreature(objectId, contNr, itemPos, creatureId);
 }
+
 void packSenderUseItemFromFloorOnCreature(int objectId, int x, int y, int z, int creatureId)
 {
 	CPackSender sender;
@@ -373,26 +391,31 @@ void packSenderUseItem(int objectId)
 	CPackSender sender;
 	sender.useItem(objectId);
 }
+
 void packSenderUseItemOnFloor(int objectId, int x, int y, int z)
 {
 	CPackSender sender;
 	sender.useItemOnFloor(objectId, x, y, z);
 }
+
 void packSenderUseItemInContainer(int objectId, int contNr, int pos)
 {
 	CPackSender sender;
 	sender.useItemInContainer(objectId, contNr, pos);
 }
+
 void packSenderOpenContainerFromFloor(int objectId, int x, int y, int z, int targetBag)
 {
 	CPackSender sender;
 	sender.openContainerFromFloor(objectId, x, y, z, targetBag);
 }
+
 int packSenderOpenAutoContainerFromFloor(int objectId, int x, int y, int z)
 {
 	CPackSender sender;
 	return sender.openAutoContainerFromFloor(objectId, x, y, z);
 }
+
 void packSenderOpenContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
 {
 	CPackSender sender;
@@ -483,70 +506,87 @@ void tibiaMapRemovePointAvailable(int x, int y, int z)
 {
 	tibiaMap.removePointAvailable(x, y, z);
 }
+
 void tibiaMapProhPointClear()
 {
 	tibiaMap.prohPointClear();
 }
+
 void tibiaMapProhPointAdd(int x, int y, int z)
 {
 	tibiaMap.prohPointAdd(x, y, z);
 }
+
 int tibiaMapGetPointType(int x, int y, int z)
 {
 	return tibiaMap.getPointType(x, y, z);
 }
+
 int tibiaMapGetPointTypeNoProh(int x, int y, int z)
 {
 	return tibiaMap.getPointTypeNoProh(x, y, z);
 }
+
 void tibiaMapSetPointType(int x, int y, int z, int updown)
 {
 	tibiaMap.setPointType(x, y, z, updown);
 }
+
 int tibiaMapGetPrevPointZ(int x, int y, int z)
 {
 	return tibiaMap.getPrevPointZ(x, y, z);
 }
+
 int tibiaMapGetPrevPointY(int x, int y, int z)
 {
 	return tibiaMap.getPrevPointY(x, y, z);
 }
+
 int tibiaMapGetPrevPointX(int x, int y, int z)
 {
 	return tibiaMap.getPrevPointX(x, y, z);
 }
+
 void tibiaMapClearPrevPoint()
 {
 	tibiaMap.clearPrevPoint();
 }
+
 void tibiaMapClearDistance()
 {
 	tibiaMap.clearDistance();
 }
+
 void tibiaMapClearLocalPrevPoint(int x, int y, int z, int radius)
 {
 	tibiaMap.clearLocalPrevPoint(x, y, z, radius);
 }
+
 void tibiaMapSetPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
 	tibiaMap.setPrevPoint(x, y, z, prevX, prevY, prevZ);
 }
+
 void tibiaMapSetBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
 	tibiaMap.setBestPrevPoint(x, y, z, prevX, prevY, prevZ);
 }
+
 struct point tibiaMapGetRandomPoint()
 {
 	return tibiaMap.getRandomPoint();
 }
+
 void tibiaMapClear()
 {
 	tibiaMap.clear();
 }
+
 void tibiaMapSetPointAsAvailable(int x, int y, int z)
 {
 	tibiaMap.setPointAsAvailable(x, y, z);
 }
+
 int tibiaMapIsPointAvailable(int x, int y, int z)
 {
 	return tibiaMap.isPointAvailable(x, y, z);
@@ -596,10 +636,12 @@ void tibiaMapSetPointDistance(int x, int y, int z, int dist)
 {
 	tibiaMap.setPointDistance(x, y, z, dist);
 }
+
 void tibiaMapSetPointLocked(int x, int y, int z, int locked)
 {
 	tibiaMap.setPointLocked(x, y, z, locked);
 }
+
 int tibiaMapIsPointLocked(int x, int y, int z)
 {
 	return tibiaMap.isPointLocked(x, y, z);
@@ -650,138 +692,224 @@ void tibiaMapUnloadMiniMaps()
 	taMiniMap.unloadMiniMaps();
 }
 
-void tibiaItemfillTypedItemIdArray(int ind){
+void tibiaItemfillTypedItemIdArray(int ind)
+{
 	CTibiaItem::fillTypedItemIdArray(ind);
 }
-char * tibiaItemGetItemName(int objectId){
+
+char * tibiaItemGetItemName(int objectId)
+{
 	return CTibiaItem::getItemName(objectId);
 }
-char * tibiaItemGetTypedItemName(int objectId){
+
+char * tibiaItemGetTypedItemName(int objectId)
+{
 	return CTibiaItem::getTypedItemName(objectId);
 }
-int tibiaItemGetItemId(char *name){
+
+int tibiaItemGetItemId(char *name)
+{
 	return CTibiaItem::getItemId(name);
 }
-int tibiaItemGetTypedItemId(char *name){
+
+int tibiaItemGetTypedItemId(char *name)
+{
 	return CTibiaItem::getTypedItemId(name);
 }
-int tibiaItemGetItemIndex(int objectId){
+
+int tibiaItemGetItemIndex(int objectId)
+{
 	return CTibiaItem::getItemIndex(objectId);
 }
-int tibiaItemGetTypedItemIndex(int objectId){
+
+int tibiaItemGetTypedItemIndex(int objectId)
+{
 	return CTibiaItem::getTypedItemIndex(objectId);
 }
-int tibiaItemGetFoodIndex(int objectId){
+
+int tibiaItemGetFoodIndex(int objectId)
+{
 	return CTibiaItem::getFoodIndex(objectId);
 }
-int tibiaItemGetLootItemIndex(int objectId){
+
+int tibiaItemGetLootItemIndex(int objectId)
+{
 	return CTibiaItem::getLootItemIndex(objectId);
 }
-int tibiaItemGetItemIdAtIndex(int ind){
+
+int tibiaItemGetItemIdAtIndex(int ind)
+{
 	return CTibiaItem::getItemIdAtIndex(ind);
 }
-int tibiaItemGetItemTypeAtIndex(int ind){
+
+int tibiaItemGetItemTypeAtIndex(int ind)
+{
 	return CTibiaItem::getItemTypeAtIndex(ind);
 }
-int tibiaItemGetTypedItemIdAtIndex(int ind){
+
+int tibiaItemGetTypedItemIdAtIndex(int ind)
+{
 	return CTibiaItem::getTypedItemIdAtIndex(ind);
 }
-int tibiaItemGetFoodIdAtIndex(int ind){
+
+int tibiaItemGetFoodIdAtIndex(int ind)
+{
 	return CTibiaItem::getFoodIdAtIndex(ind);
 }
-int tibiaItemGetLootItemIdAtIndex(int ind){
+
+int tibiaItemGetLootItemIdAtIndex(int ind)
+{
 	return CTibiaItem::getLootItemIdAtIndex(ind);
 }
-char* tibiaItemGetItemNameAtIndex(int ind){
+
+char* tibiaItemGetItemNameAtIndex(int ind)
+{
 	return CTibiaItem::getItemNameAtIndex(ind);
 }
-char* tibiaItemGetTypedItemNameAtIndex(int ind){
+
+char* tibiaItemGetTypedItemNameAtIndex(int ind)
+{
 	return CTibiaItem::getTypedItemNameAtIndex(ind);
 }
-char* tibiaItemGetFoodNameAtIndex(int ind){
+
+char* tibiaItemGetFoodNameAtIndex(int ind)
+{
 	return CTibiaItem::getFoodNameAtIndex(ind);
 }
-char* tibiaItemGetLootItemNameAtIndex(int ind){
+
+char* tibiaItemGetLootItemNameAtIndex(int ind)
+{
 	return CTibiaItem::getLootItemNameAtIndex(ind);
 }
-int tibiaItemGetFoodTimeAtIndex(int ind){
+
+int tibiaItemGetFoodTimeAtIndex(int ind)
+{
 	return CTibiaItem::getFoodTimeAtIndex(ind);
 }
-CUIntArray* tibiaItemGetItemIdArrayPtr(){
+
+CUIntArray* tibiaItemGetItemIdArrayPtr()
+{
 	return CTibiaItem::getItemIdArrayPtr();
 }
-CUIntArray* tibiaItemGetTypedItemIdArrayPtr(int ind){
+
+CUIntArray* tibiaItemGetTypedItemIdArrayPtr(int ind)
+{
 	return CTibiaItem::getTypedItemIdArrayPtr(ind);
 }
-CUIntArray* tibiaItemGetFoodIdArrayPtr(){
+
+CUIntArray* tibiaItemGetFoodIdArrayPtr()
+{
 	return CTibiaItem::getFoodIdArrayPtr();
 }
-CUIntArray* tibiaItemGetLootItemIdArrayPtr(){
+
+CUIntArray* tibiaItemGetLootItemIdArrayPtr()
+{
 	return CTibiaItem::getLootItemIdArrayPtr();
 }
-void tibiaItemSetItemAsLooted(int objectId){
+
+void tibiaItemSetItemAsLooted(int objectId)
+{
 	CTibiaItem::setItemAsLooted(objectId);
 }
-void tibiaItemClearLootItems(){
+
+void tibiaItemClearLootItems()
+{
 	CTibiaItem::clearLootItems();
 }
 
-void tibiaItemAddItem(char *name, int objectId){
+void tibiaItemAddItem(char *name, int objectId)
+{
 	CTibiaItem::addItem(name, objectId);
 }
-void tibiaItemAddTypedItem(char *name, int objectId, int type){
+
+void tibiaItemAddTypedItem(char *name, int objectId, int type)
+{
 	CTibiaItem::addTypedItem(name, objectId, type);
 }
-void tibiaItemAddFood(char *name, int objectId, int extraInfo){
+
+void tibiaItemAddFood(char *name, int objectId, int extraInfo)
+{
 	CTibiaItem::addFood(name, objectId, extraInfo);
 }
-void tibiaItemAddLootItem(char *name, int objectId) {
+
+void tibiaItemAddLootItem(char *name, int objectId)
+{
 	CTibiaItem::addLootItem(name, objectId);
 }
-void tibiaItemRemoveItem(int ind) {
+
+void tibiaItemRemoveItem(int ind)
+{
 	CTibiaItem::removeItem(ind);
 }
-void tibiaItemRemoveTypedItem(int ind) {
+
+void tibiaItemRemoveTypedItem(int ind)
+{
 	CTibiaItem::removeTypedItem(ind);
 }
-void tibiaItemRemoveFood(int ind) {
+
+void tibiaItemRemoveFood(int ind)
+{
 	CTibiaItem::removeFood(ind);
 }
-void tibiaItemRemoveLootItem(int ind) {
+
+void tibiaItemRemoveLootItem(int ind)
+{
 	CTibiaItem::removeLootItem(ind);
 }
-void tibiaItemClearFoodList(){
+
+void tibiaItemClearFoodList()
+{
 	CTibiaItem::clearFoodList();
 }
-int tibiaItemGetItemCount(){
+
+int tibiaItemGetItemCount()
+{
 	return CTibiaItem::getItemCount();
 }
-int tibiaItemGetTypedItemCount() {
+
+int tibiaItemGetTypedItemCount()
+{
 	return CTibiaItem::getTypedItemCount();
 }
-int tibiaItemGetFoodCount(){
+
+int tibiaItemGetFoodCount()
+{
 	return CTibiaItem::getFoodCount();
 }
-int tibiaItemGetLootItemCount(){
+
+int tibiaItemGetLootItemCount()
+{
 	return CTibiaItem::getLootItemCount();
 }
-int tibiaItemGetValueForConst(char *code){
+
+int tibiaItemGetValueForConst(char *code)
+{
 	return CTibiaItem::getValueForConst(code);
 }
-CTibiaTree * tibiaItemGetItemsTree(){
+
+CTibiaTree * tibiaItemGetItemsTree()
+{
 	return CTibiaItem::getItemsTree();
 }
-void tibiaItemSetItemsTree(CTibiaTree * tibiaTree){
+
+void tibiaItemSetItemsTree(CTibiaTree * tibiaTree)
+{
 	CTibiaItem::setItemsTree(tibiaTree);
 }
-void tibiaItemRefreshItemLists(){
+
+void tibiaItemRefreshItemLists()
+{
 	CTibiaItem::itemListsFresh = 0;
 	CTibiaItem::refreshItemLists();
 }
-void tibiaItemSaveItemLists(){
+
+void tibiaItemSaveItemLists()
+{
 	CTibiaItem::saveItemLists();
 }
-void tibiaItemCleanup(){
+
+void tibiaItemCleanup()
+{
 	CTibiaItem::cleanup();
 }
 
@@ -826,11 +954,13 @@ int memReadMapGetSelfCellNr()
 	startMemReader();
 	return reader->mapGetSelfCellNr();
 }
+
 int memReadMapGetPointItemsCount(point p, int relToCell = -1)
 {
 	startMemReader();
 	return reader->mapGetPointItemsCount(p, relToCell);
 }
+
 int memReadMapGetPointItemId(point p, int stackNr, int relToCell = -1)
 {
 	startMemReader();
@@ -854,6 +984,7 @@ void memReadMapSetPointItemsCount(point p, int count, int relToCell = -1)
 	startMemReader();
 	reader->mapSetPointItemsCount(p, count, relToCell);
 }
+
 void memReadMapSetPointItemId(point p, int stackNr, int tileId, int relToCell = -1)
 {
 	startMemReader();
@@ -895,7 +1026,6 @@ long memReadGetCurrentTm()
 	startMemReader();
 	return reader->getCurrentTm();
 }
-
 
 int ipcBackPipeReadFromPipe(struct ipcMessage *mess, int expectedType)
 {
@@ -956,7 +1086,6 @@ void packSenderSendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFr
 	CPackSender sender;
 	sender.sendAutoAimConfig(active, onlyCreatures, aimPlayersFromBattle);
 }
-
 
 void packSenderSendClearCreatureInfo()
 {
@@ -1029,7 +1158,6 @@ void packSenderSendDirectPacket(const char* buf, int len)
 	CPackSender sender;
 	sender.sendDirectPacket(buf, len);
 }
-
 
 void memReadWriteEnableRevealCName ()
 {
@@ -1135,7 +1263,6 @@ char *crFindCreatureStatForLocationName(int x, int y, int z, int pos)
 	return cReader.findCreatureStatForLocationName(x, y, z, pos);
 }
 
-
 char ** crFindCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ)
 {
 	CCreaturesReader cReader;
@@ -1160,6 +1287,7 @@ int memReadGetPlayerModeAttackPlayers()
 	startMemReader();
 	return reader->getPlayerModeAttackPlayers();
 }
+
 int memReadGetPlayerModeFollow()
 {
 	startMemReader();
@@ -1231,6 +1359,7 @@ int memReadGetCreatureDeltaY(int creatureNr)
 	startMemReader();
 	return reader->getCreatureDeltaY(creatureNr);
 }
+
 CTibiaVIPEntry *memReadReadVIPEntry(int nr)
 {
 	startMemReader();
@@ -1332,53 +1461,73 @@ int tibiaItemGetIndex(int objectId, int type)
 	}
 	return -1;
 }
-char * tibiaItemGetName(int objectId){
+
+char * tibiaItemGetName(int objectId)
+{
 	return tibiaItemGetItemName(objectId);
 }
-int tibiaItemGetObjectId(char *name){
+
+int tibiaItemGetObjectId(char *name)
+{
 	return tibiaItemGetItemId(name);
 }
-int tibiaItemGetFoodId(char *name){
+
+int tibiaItemGetFoodId(char *name)
+{
 	int size = tibiaItemGetFoodCount();
 	for (int i = 0; i < size; i++)
 	{
-		if(!strcmp(tibiaItemGetFoodNameAtIndex(i), name))
+		if (!strcmp(tibiaItemGetFoodNameAtIndex(i), name))
 			return tibiaItemGetFoodIdAtIndex(i);
 	}
 	return 0;
 }
+
 //Deprecated Functions Section
-int tibiaItemGetLootItemId(char *name){
+int tibiaItemGetLootItemId(char *name)
+{
 	int size = tibiaItemGetLootItemCount();
 	for (int i = 0; i < size; i++)
 	{
-		if(!strcmp(tibiaItemGetLootItemNameAtIndex(i), name))
+		if (!strcmp(tibiaItemGetLootItemNameAtIndex(i), name))
 			return tibiaItemGetLootItemIdAtIndex(i);
 	}
 	return 0;
 }
-void tibiaItemSetItemName(int index, char *name){
+
+void tibiaItemSetItemName(int index, char *name)
+{
 	tibiaItemAddItem(name, tibiaItemGetItemIdAtIndex(index));
 	tibiaItemRemoveItem(index);
 }
-int tibiaItemGetExtraInfo(int index, int type){
+
+int tibiaItemGetExtraInfo(int index, int type)
+{
 	if (type == 2)
 		return tibiaItemGetFoodTimeAtIndex(index);
 	return 0;
 }
-void tibiaItemAddLoot (char *name, int objectId){
+
+void tibiaItemAddLoot (char *name, int objectId)
+{
 	tibiaItemAddLootItem(name, objectId);
 }
+
 //Deprecated Functions Section
-void tibiaItemSetFoodName(int index, char *name){
+void tibiaItemSetFoodName(int index, char *name)
+{
 	tibiaItemAddFood(name, tibiaItemGetFoodIdAtIndex(index), tibiaItemGetFoodTimeAtIndex(index));
 	tibiaItemRemoveFood(index);
 }
-void tibiaItemSetLootName(int index, char *name){
+
+void tibiaItemSetLootName(int index, char *name)
+{
 	tibiaItemAddLootItem(name, tibiaItemGetLootItemIdAtIndex(index));
 	tibiaItemRemoveLootItem(index);
 }
-void tibiaItemSetExtraInfo(int index, int info, int type){
+
+void tibiaItemSetExtraInfo(int index, int info, int type)
+{
 	if (type == 2)
 	{
 		char* name  = tibiaItemGetFoodNameAtIndex(index);
@@ -1388,7 +1537,9 @@ void tibiaItemSetExtraInfo(int index, int info, int type){
 		free(name2);
 	}
 }
-void tibiaItemSetItemObjectId(int index, int objectId){
+
+void tibiaItemSetItemObjectId(int index, int objectId)
+{
 	char* name  = tibiaItemGetItemNameAtIndex(index);
 	char* name2 = (char*)malloc(strlen(name) + 1);
 	strcpy(name2, name);
@@ -1396,8 +1547,10 @@ void tibiaItemSetItemObjectId(int index, int objectId){
 	tibiaItemAddItem(name2, objectId);
 	free(name2);
 }
+
 //Deprecated Functions Section
-void tibiaItemSetFoodObjectId(int index, int objectId){
+void tibiaItemSetFoodObjectId(int index, int objectId)
+{
 	char* name  = tibiaItemGetFoodNameAtIndex(index);
 	char* name2 = (char*)malloc(strlen(name) + 1);
 	strcpy(name2, name);
@@ -1405,7 +1558,9 @@ void tibiaItemSetFoodObjectId(int index, int objectId){
 	tibiaItemAddFood(name2, objectId, tibiaItemGetFoodTimeAtIndex(index));
 	free(name2);
 }
-void tibiaItemSetLootObjectId(int index, int objectId){
+
+void tibiaItemSetLootObjectId(int index, int objectId)
+{
 	char* name  = tibiaItemGetLootItemNameAtIndex(index);
 	char* name2 = (char*)malloc(strlen(name) + 1);
 	strcpy(name2, name);
@@ -1413,54 +1568,89 @@ void tibiaItemSetLootObjectId(int index, int objectId){
 	tibiaItemAddLootItem(name2, objectId);
 	free(name2);
 }
-int tibiaItemGetCorpseIdByCreatureName(char *name){
+
+int tibiaItemGetCorpseIdByCreatureName(char *name)
+{
 	return 0;
 }
-CUIntArray * tibiaItemGetItemsFoodArray(){
+
+CUIntArray * tibiaItemGetItemsFoodArray()
+{
 	return tibiaItemGetFoodIdArrayPtr();
 }
-char *tibiaItemGetItemsItems(int nr){
+
+char *tibiaItemGetItemsItems(int nr)
+{
 	return tibiaItemGetItemNameAtIndex(nr);
 }
-int tibiaItemGetItemsItemsId(int nr){
+
+int tibiaItemGetItemsItemsId(int nr)
+{
 	return tibiaItemGetItemIdAtIndex(nr);
 }
+
 //Deprecated Functions Section
-int tibiaItemGetItemsItemsCount(){
+int tibiaItemGetItemsItemsCount()
+{
 	return tibiaItemGetItemCount();
 }
-void tibiaItemSetItemsItemsCount(int newCount){
+
+void tibiaItemSetItemsItemsCount(int newCount)
+{
 }
-void tibiaItemSetItemsFoodCount(int newCount){
+
+void tibiaItemSetItemsFoodCount(int newCount)
+{
 }
-void tibiaItemSetItemsLootCount(int newCount){
+
+void tibiaItemSetItemsLootCount(int newCount)
+{
 }
-char *tibiaItemGetItemsFood(int nr){
+
+char *tibiaItemGetItemsFood(int nr)
+{
 	return tibiaItemGetFoodNameAtIndex(nr);
 }
-int tibiaItemGetItemsFoodId(int nr){
+
+int tibiaItemGetItemsFoodId(int nr)
+{
 	return tibiaItemGetFoodIdAtIndex(nr);
 }
-int tibiaItemGetItemsFoodCount(){
+
+int tibiaItemGetItemsFoodCount()
+{
 	return tibiaItemGetFoodCount();
 }
-char *tibiaItemGetItemsCorpses(int nr){
+
+char *tibiaItemGetItemsCorpses(int nr)
+{
 	return "not implemented";
 }
+
 //Deprecated Functions Section
-int tibiaItemGetItemsCorpsesId(int nr){
+int tibiaItemGetItemsCorpsesId(int nr)
+{
 	return 0;
 }
-int tibiaItemGetItemsCorpsesCount(){
+
+int tibiaItemGetItemsCorpsesCount()
+{
 	return 0;
 }
-char *tibiaItemGetItemsLooted(int nr){
+
+char *tibiaItemGetItemsLooted(int nr)
+{
 	return tibiaItemGetLootItemNameAtIndex(nr);
 }
-int tibiaItemGetItemsLootedId(int nr){
+
+int tibiaItemGetItemsLootedId(int nr)
+{
 	return tibiaItemGetLootItemIdAtIndex(nr);
 }
-int tibiaItemGetItemsLootedCount(){
+
+int tibiaItemGetItemsLootedCount()
+{
 	return tibiaItemGetLootItemCount();
 }
+
 /* Deprecated Function END */

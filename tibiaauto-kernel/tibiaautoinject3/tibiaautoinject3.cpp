@@ -22,13 +22,13 @@ void setCallbackFun()
 	        FALSE,                        // do not inherit the name
 	        mapFileBuf);                      // name of mapping object
 
-	if(hMapFile == NULL)
+	if (hMapFile == NULL)
 		return;
 
 	pBuf = (LPTSTR) MapViewOfFile(hMapFile, // handle to map object
 	                              FILE_MAP_ALL_ACCESS,  // read/write permission
 	                              0, 0, size);
-	if(pBuf == NULL)
+	if (pBuf == NULL)
 		return;
 
 	CopyMemory((PVOID)&hookCallbackFun, (PVOID)pBuf, sizeof(void *));
@@ -37,35 +37,34 @@ void setCallbackFun()
 	CloseHandle(hMapFile);
 }
 
-
 LRESULT CALLBACK KeyboardProc(int nCode, WPARAM wParam, LPARAM lParam)
 {
-	if(nCode < 0)
+	if (nCode < 0)
 		return CallNextHookEx(hhookKeyb, nCode,
 		                      wParam, lParam);
 
-	if((lParam & 0x80000000) == 0)
+	if ((lParam & 0x80000000) == 0)
 		return CallNextHookEx(hhookKeyb, nCode,
 		                      wParam, lParam);
-	if(nCode == HC_ACTION)
+	if (nCode == HC_ACTION)
 	{
-		if(wParam == VK_PRIOR)  // Page Up
+		if (wParam == VK_PRIOR)  // Page Up
 		{
-			if(!hookCallbackFun)
+			if (!hookCallbackFun)
 				setCallbackFun();
 			else
 				hookCallbackFun(VK_PRIOR);
 		}
-		if(wParam == VK_NEXT)  // Page Down
+		if (wParam == VK_NEXT)  // Page Down
 		{
-			if(!hookCallbackFun)
+			if (!hookCallbackFun)
 				setCallbackFun();
 			else
 				hookCallbackFun(VK_NEXT);
 		}
-		if(wParam == VK_PAUSE)  // Pause/Break
+		if (wParam == VK_PAUSE)  // Pause/Break
 		{
-			if(!hookCallbackFun)
+			if (!hookCallbackFun)
 				setCallbackFun();
 			else
 				hookCallbackFun(VK_PAUSE);

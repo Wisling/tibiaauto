@@ -17,10 +17,12 @@ using namespace std;
 class SetProcessor : public AimlProcessor
 {
 public:
-	~SetProcessor() {
+	~SetProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string property = toLower(e->getAttribute("name"));
 		bool global     = e->getAttribute("global") == "true";
 		string value    = "";

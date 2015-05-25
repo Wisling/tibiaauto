@@ -43,7 +43,7 @@ CTibiaMapProxy::CTibiaMapProxy()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -64,7 +64,6 @@ CTibiaMapProxy::~CTibiaMapProxy()
 {
 }
 
-
 void CTibiaMapProxy::removePointAvailable(int x, int y, int z)
 {
 	typedef void (*Proto_fun)(int x, int y, int z);
@@ -75,6 +74,7 @@ void CTibiaMapProxy::removePointAvailable(int x, int y, int z)
 			fun(x, y, z);
 	}
 }
+
 void CTibiaMapProxy::prohPointClear()
 {
 	typedef void (*Proto_fun)();
@@ -85,6 +85,7 @@ void CTibiaMapProxy::prohPointClear()
 			fun();
 	}
 }
+
 void CTibiaMapProxy::prohPointAdd(int x, int y, int z)
 {
 	typedef void (*Proto_fun)(int x, int y, int z);
@@ -95,6 +96,7 @@ void CTibiaMapProxy::prohPointAdd(int x, int y, int z)
 			fun(x, y, z);
 	}
 }
+
 int CTibiaMapProxy::getPointType(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -106,6 +108,7 @@ int CTibiaMapProxy::getPointType(int x, int y, int z)
 	}
 	return 0;
 }
+
 int CTibiaMapProxy::getPointTypeNoProh(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -117,6 +120,7 @@ int CTibiaMapProxy::getPointTypeNoProh(int x, int y, int z)
 	}
 	return 0;
 }
+
 void CTibiaMapProxy::setPointType(int x, int y, int z, int updown)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int updown);
@@ -139,6 +143,7 @@ int CTibiaMapProxy::getPrevPointZ(int x, int y, int z)
 	}
 	return 0;
 }
+
 int CTibiaMapProxy::getPrevPointY(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -150,6 +155,7 @@ int CTibiaMapProxy::getPrevPointY(int x, int y, int z)
 	}
 	return 0;
 }
+
 int CTibiaMapProxy::getPrevPointX(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -161,6 +167,7 @@ int CTibiaMapProxy::getPrevPointX(int x, int y, int z)
 	}
 	return 0;
 }
+
 void CTibiaMapProxy::clearDistance()
 {
 	typedef void (*Proto_fun)();
@@ -171,6 +178,7 @@ void CTibiaMapProxy::clearDistance()
 			fun();
 	}
 }
+
 void CTibiaMapProxy::clearPrevPoint()
 {
 	typedef void (*Proto_fun)();
@@ -181,6 +189,7 @@ void CTibiaMapProxy::clearPrevPoint()
 			fun();
 	}
 }
+
 void CTibiaMapProxy::clearLocalPrevPoint(int x, int y, int z, int radius)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int radius);
@@ -191,6 +200,7 @@ void CTibiaMapProxy::clearLocalPrevPoint(int x, int y, int z, int radius)
 			fun(x, y, z, radius);
 	}
 }
+
 void CTibiaMapProxy::setPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int prevX, int prevY, int prevZ);
@@ -201,6 +211,7 @@ void CTibiaMapProxy::setPrevPoint(int x, int y, int z, int prevX, int prevY, int
 			fun(x, y, z, prevX, prevY, prevZ);
 	}
 }
+
 void CTibiaMapProxy::setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int prevX, int prevY, int prevZ);
@@ -211,6 +222,7 @@ void CTibiaMapProxy::setBestPrevPoint(int x, int y, int z, int prevX, int prevY,
 			fun(x, y, z, prevX, prevY, prevZ);
 	}
 }
+
 struct point CTibiaMapProxy::getRandomPoint()
 {
 	typedef struct point (*Proto_fun)();
@@ -222,6 +234,7 @@ struct point CTibiaMapProxy::getRandomPoint()
 	}
 	return struct point ();
 }
+
 void CTibiaMapProxy::clear()
 {
 	typedef void (*Proto_fun)();
@@ -232,6 +245,7 @@ void CTibiaMapProxy::clear()
 			fun();
 	}
 }
+
 void CTibiaMapProxy::setPointAsAvailable(int x, int y, int z)
 {
 	typedef void (*Proto_fun)(int x, int y, int z);
@@ -242,6 +256,7 @@ void CTibiaMapProxy::setPointAsAvailable(int x, int y, int z)
 			fun(x, y, z);
 	}
 }
+
 int CTibiaMapProxy::isPointAvailable(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -265,6 +280,7 @@ int CTibiaMapProxy::isPointAvailableNoProh(int x, int y, int z)
 	}
 	return 0;
 }
+
 int CTibiaMapProxy::isPointLocked(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -276,6 +292,7 @@ int CTibiaMapProxy::isPointLocked(int x, int y, int z)
 	}
 	return 0;
 }
+
 void CTibiaMapProxy::setPointLocked(int x, int y, int z, int locked)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int locked);
@@ -286,7 +303,6 @@ void CTibiaMapProxy::setPointLocked(int x, int y, int z, int locked)
 			fun(x, y, z, locked);
 	}
 }
-
 
 int CTibiaMapProxy::size()
 {
@@ -299,6 +315,7 @@ int CTibiaMapProxy::size()
 	}
 	return 0;
 }
+
 struct point CTibiaMapProxy::getPointByNr(int nr)
 {
 	typedef struct point (*Proto_fun)(int nr);
@@ -310,6 +327,7 @@ struct point CTibiaMapProxy::getPointByNr(int nr)
 	}
 	return struct point ();
 }
+
 point CTibiaMapProxy::getDestPoint(int x, int y, int z)
 {
 	typedef point (*Proto_fun)(int x, int y, int z);
@@ -321,6 +339,7 @@ point CTibiaMapProxy::getDestPoint(int x, int y, int z)
 	}
 	return struct point ();
 }
+
 void CTibiaMapProxy::setDestPoint(int x, int y, int z, int destX, int destY, int destZ)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int destX, int destY, int destZ);
@@ -331,6 +350,7 @@ void CTibiaMapProxy::setDestPoint(int x, int y, int z, int destX, int destY, int
 			fun(x, y, z, destX, destY, destZ);
 	}
 }
+
 int CTibiaMapProxy::getPointSpeed(int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int x, int y, int z);
@@ -342,6 +362,7 @@ int CTibiaMapProxy::getPointSpeed(int x, int y, int z)
 	}
 	return 0;
 }
+
 void CTibiaMapProxy::setPointSpeed(int x, int y, int z, int speed)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int speed);
@@ -364,6 +385,7 @@ int CTibiaMapProxy::getPointDistance(int x, int y, int z)
 	}
 	return 0;
 }
+
 void CTibiaMapProxy::setPointDistance(int x, int y, int z, int dist)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int dist);

@@ -27,7 +27,6 @@ CToolContainerContent::CToolContainerContent(int containerNr, CWnd* pParent /*=N
 	m_containerNr = containerNr;
 }
 
-
 void CToolContainerContent::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -37,7 +36,6 @@ void CToolContainerContent::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CONTAINERCONTENT_LIST, m_list);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CToolContainerContent, CDialog)
 //{{AFX_MSG_MAP(CToolContainerContent)
@@ -54,7 +52,7 @@ BOOL CToolContainerContent::OnInitDialog()
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(m_OK);
 	int i;
 	char buf[256];
 

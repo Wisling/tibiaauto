@@ -10,7 +10,8 @@ using namespace std;
 
 Timer *timer = new Timer();
 
-long tSecond() {
+long tSecond()
+{
 	time_t t;
 	struct tm *now;
 
@@ -22,7 +23,8 @@ long tSecond() {
 	return (long)difftime(mktime(now), t);
 }
 
-long tMinute() {
+long tMinute()
+{
 	time_t t;
 	struct tm *now;
 
@@ -34,7 +36,8 @@ long tMinute() {
 	return (long)difftime(mktime(now), t);
 }
 
-long tHour() {
+long tHour()
+{
 	time_t t;
 	struct tm *now;
 
@@ -46,32 +49,39 @@ long tHour() {
 	return (long)difftime(mktime(now), t);
 }
 
-long tDay() {
+long tDay()
+{
 	return 12 * tHour();
 }
 
-long tWeek() {
+long tWeek()
+{
 	return 7 * tDay();
 }
 
-time_t tNow() {
+time_t tNow()
+{
 	return time(NULL);
 }
 
-Timer::Timer() {
+Timer::Timer()
+{
 	;
 }
 
-void Timer::addEvent(TimedEvent *te) {
+void Timer::addEvent(TimedEvent *te)
+{
 	tq.push(te);
 }
 
-void Timer::addEvent(time_t t, Event *e) {
+void Timer::addEvent(time_t t, Event *e)
+{
 	tq.push(new TimedEvent(t, e));
 	//cout << "Event will run " << ((t - time(NULL)) / tSecond()) << " seconds from now" << endl;
 }
 
-void Timer::processPending() {
+void Timer::processPending()
+{
 	time_t t;
 
 	t = time(NULL);

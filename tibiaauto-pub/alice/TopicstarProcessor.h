@@ -16,10 +16,12 @@ using namespace std;
 class TopicstarProcessor : public AimlProcessor
 {
 public:
-	~TopicstarProcessor() {
+	~TopicstarProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *, const string &) {
+	string process(Match *m, PElement e, Responder *, const string &)
+	{
 		string index = e->getAttribute("index");
 		if (index.empty())
 			index = "1";

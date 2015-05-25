@@ -46,7 +46,6 @@ COptionsDialog::COptionsDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -74,7 +73,6 @@ void COptionsDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SIZE_LOOTSTATS, m_sizeLootstats);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(COptionsDialog, CDialog)
 //{{AFX_MSG_MAP(COptionsDialog)
@@ -243,8 +241,7 @@ void COptionsDialog::OnSendCreaturestats()
 	sendFile("tibiaauto-stats-creatures.txt");
 }
 
-
-DWORD WINAPI sendFileThread( LPVOID lpParam )
+DWORD WINAPI sendFileThread(LPVOID lpParam)
 {
 	char *filename = (char *)lpParam;
 	try
@@ -278,7 +275,7 @@ DWORD WINAPI sendFileThread( LPVOID lpParam )
 	return 0;
 }
 
-DWORD WINAPI sendMapsThread( LPVOID lpParam )
+DWORD WINAPI sendMapsThread(LPVOID lpParam)
 {
 	char *path = (char *)lpParam;
 
@@ -295,7 +292,7 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 			time_t t                      = time(NULL);
 			int r                         = rand();
 			int lastfile                  = 1;
-			while(lastfile)
+			while (lastfile)
 			{
 				char fname[128];
 				char fnameGz[128];
@@ -324,7 +321,6 @@ DWORD WINAPI sendMapsThread( LPVOID lpParam )
 	free(path);
 	return 0;
 }
-
 
 void COptionsDialog::sendFile(char *fname)
 {
@@ -447,7 +443,7 @@ void COptionsDialog::OnSkin()
 	delete dlg;
 }
 
-DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
+DWORD WINAPI sendPacketLogThread(LPVOID lpParam)
 {
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
@@ -459,7 +455,7 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 	{
 		char fname[128];
 		int lastfile = 1;
-		while(lastfile)
+		while (lastfile)
 		{
 			sprintf(fname, "%s\\tascripts\\%s", path, data.cFileName);
 			FILE* f = fopen(fname, "a+");
@@ -480,7 +476,7 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 		{
 			char fname[128];
 			int lastfile = 1;
-			while(lastfile)
+			while (lastfile)
 			{
 				sprintf(fname, "%s\\tascripts\\%s", path, data.cFileName);
 				_unlink(fname);
@@ -492,7 +488,7 @@ DWORD WINAPI sendPacketLogThread( LPVOID lpParam )
 	}
 sendFiles:
 	int msgboxID = -1;
-	if(!CModuleUtil::getTASetting("RemoveBotStatsMessage"))
+	if (!CModuleUtil::getTASetting("RemoveBotStatsMessage"))
 		msgboxID = MessageBox(NULL, "TA is about to send your botting statistics to TA.net. You can edit this option in \"General options and statistics\".\n\nWould you like to receive this message every time before TA sends this data?\nUse cancel to stop the operation.", "Submit Botting Data", MB_YESNOCANCEL);
 	if (msgboxID == IDCANCEL)
 		return 0;
@@ -508,7 +504,7 @@ sendFiles:
 			GetVolumeInformation(NULL, NULL, 0, &serialNumber, NULL, NULL, NULL, 0);
 			unsigned int r = serialNumber % 0x1000000;
 			int lastfile   = 1;
-			while(lastfile)
+			while (lastfile)
 			{
 				char fname[128];
 				char fnameGz[128];
@@ -529,16 +525,16 @@ sendFiles:
 		}
 
 		fileSendingProgress = 1;
-		if(!CModuleUtil::getTASetting("RemoveBotStatsMessage"))
+		if (!CModuleUtil::getTASetting("RemoveBotStatsMessage"))
 			AfxMessageBox("Thank you for submitting \"botting statistics.txt\" and \"module statistics.txt\".\n\nNo personally identifiable information was sent.\nThis botting information will be analysed and used to help prevent CIPSoft from automatically detecting TA in the future. You can change this setting in \"General Options and Statistics\".\n\nTA users thank you for helping us towards this end.\n~TA Team");
 	}
 	catch (CInternetException*)
 	{
-		if(!CModuleUtil::getTASetting("RemoveBotStatsMessage"))
+		if (!CModuleUtil::getTASetting("RemoveBotStatsMessage"))
 			AfxMessageBox("Failed to send file. Check your connection to the internet.");
 		fileSendingProgress = -1;
 	}
-	if(msgboxID == IDNO)
+	if (msgboxID == IDNO)
 		CModuleUtil::setTASetting("RemoveBotStatsMessage", 1);
 	return 0;
 }

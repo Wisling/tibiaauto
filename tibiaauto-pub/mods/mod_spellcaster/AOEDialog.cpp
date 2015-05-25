@@ -22,7 +22,6 @@ AOEDialog::AOEDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void AOEDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -51,7 +50,6 @@ void AOEDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(AOEDialog, CDialog)
 //{{AFX_MSG_MAP(AOEDialog)
 ON_WM_ERASEBKGND()
@@ -77,7 +75,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // AOEDialog message handlers
 
-void AOEDialog::disableControls() {
+void AOEDialog::disableControls()
+{
 	m_aoe.EnableWindow(false);
 	m_aoeAffect.EnableWindow(false);
 	m_exori.EnableWindow(false);
@@ -96,16 +95,19 @@ void AOEDialog::disableControls() {
 	m_exevoGranMasFrigo.EnableWindow(false);
 }
 
-void AOEDialog::enableControls() {
+void AOEDialog::enableControls()
+{
 	m_aoe.EnableWindow(true);
 	if (m_aoe.GetCheck())
 		OnToolSpellcasterAOE();
 }
 
-void AOEDialog::configToControls(CConfigData *configData) {
+void AOEDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
 	m_aoe.SetCheck(configData->aoe);
-	sprintf(buf, "%d", configData->aoeAffect);                m_aoeAffect.SetWindowText(buf);
+	sprintf(buf, "%d", configData->aoeAffect);
+	m_aoeAffect.SetWindowText(buf);
 	m_exori.SetCheck(configData->exori);
 	m_exoriGran.SetCheck(configData->exoriGran);
 	m_exoriMas.SetCheck(configData->exoriMas);
@@ -123,27 +125,30 @@ void AOEDialog::configToControls(CConfigData *configData) {
 	OnToolSpellcasterAOE();
 }
 
-void AOEDialog::controlsToConfig(CConfigData *newConfigData) {
+void AOEDialog::controlsToConfig(CConfigData *newConfigData)
+{
 	char buf[128];
-	newConfigData->aoe                                            = m_aoe.GetCheck();
-	m_aoeAffect.GetWindowText(buf, 127); newConfigData->aoeAffect = atoi(buf);
-	newConfigData->exori                                          = m_exori.GetCheck();
-	newConfigData->exoriGran                                      = m_exoriGran.GetCheck();
-	newConfigData->exoriMas                                       = m_exoriMas.GetCheck();
-	newConfigData->exevoMasSan                                    = m_exevoMasSan.GetCheck();
-	newConfigData->exevoFlamHur                                   = m_exevoFlamHur.GetCheck();
-	newConfigData->exevoFrigoHur                                  = m_exevoFrigoHur.GetCheck();
-	newConfigData->exevoTeraHur                                   = m_exevoTeraHur.GetCheck();
-	newConfigData->exevoVisHur                                    = m_exevoVisHur.GetCheck();
-	newConfigData->exevoVisLux                                    = m_exevoVisLux.GetCheck();
-	newConfigData->exevoGranVisLux                                = m_exevoGranVisLux.GetCheck();
-	newConfigData->exevoGranMasVis                                = m_exevoGranMasVis.GetCheck();
-	newConfigData->exevoGranMasFlam                               = m_exevoGranMasFlam.GetCheck();
-	newConfigData->exevoGranMasTera                               = m_exevoGranMasTera.GetCheck();
-	newConfigData->exevoGranMasFrigo                              = m_exevoGranMasFrigo.GetCheck();
+	newConfigData->aoe = m_aoe.GetCheck();
+	m_aoeAffect.GetWindowText(buf, 127);
+	newConfigData->aoeAffect         = atoi(buf);
+	newConfigData->exori             = m_exori.GetCheck();
+	newConfigData->exoriGran         = m_exoriGran.GetCheck();
+	newConfigData->exoriMas          = m_exoriMas.GetCheck();
+	newConfigData->exevoMasSan       = m_exevoMasSan.GetCheck();
+	newConfigData->exevoFlamHur      = m_exevoFlamHur.GetCheck();
+	newConfigData->exevoFrigoHur     = m_exevoFrigoHur.GetCheck();
+	newConfigData->exevoTeraHur      = m_exevoTeraHur.GetCheck();
+	newConfigData->exevoVisHur       = m_exevoVisHur.GetCheck();
+	newConfigData->exevoVisLux       = m_exevoVisLux.GetCheck();
+	newConfigData->exevoGranVisLux   = m_exevoGranVisLux.GetCheck();
+	newConfigData->exevoGranMasVis   = m_exevoGranMasVis.GetCheck();
+	newConfigData->exevoGranMasFlam  = m_exevoGranMasFlam.GetCheck();
+	newConfigData->exevoGranMasTera  = m_exevoGranMasTera.GetCheck();
+	newConfigData->exevoGranMasFrigo = m_exevoGranMasFrigo.GetCheck();
 }
 
-BOOL AOEDialog::OnInitDialog() {
+BOOL AOEDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 
 	OnToolSpellcasterAOE();

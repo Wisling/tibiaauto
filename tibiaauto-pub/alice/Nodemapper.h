@@ -13,7 +13,8 @@
 class Nodemapper
 {
 public:
-	virtual ~Nodemapper() {
+	virtual ~Nodemapper()
+	{
 	}
 
 	virtual Nodemapper *getChild(const string &)        = 0;

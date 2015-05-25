@@ -21,16 +21,19 @@ public:
 	struct point* mapLoc;
 	time_t timeUsed;
 
-	MiniMapSection(int x, int y, int z){
+	MiniMapSection(int x, int y, int z)
+	{
 		mapLoc   = new point(x, y, z);
 		timeUsed = 0;
 	}
 
-	~MiniMapSection(){
+	~MiniMapSection()
+	{
 		delete mapLoc;
 	}
 
-	unsigned char setColourSpeed(char* col, char* spd){
+	unsigned char setColourSpeed(char* col, char* spd)
+	{
 		for (int i = 0; i < 65536; i++)
 		{
 			colour[i] = col[i];
@@ -38,10 +41,13 @@ public:
 		}
 	}
 
-	unsigned char getColour(int x, int y){
+	unsigned char getColour(int x, int y)
+	{
 		return colour[x * 256 + y];
 	}
-	unsigned char getSpeed(int x, int y){
+
+	unsigned char getSpeed(int x, int y)
+	{
 		return speed[x * 256 + y];
 	}
 };

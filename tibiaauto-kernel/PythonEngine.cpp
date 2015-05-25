@@ -36,7 +36,8 @@ struct parcelRecvActionData {
 	int countLeft;
 	int len;
 	char actionData[MAX_PAYLOAD_LEN - sizeof(int) * 4];
-	parcelRecvActionData(){
+	parcelRecvActionData()
+	{
 		memset(actionData, 0, sizeof(actionData));
 	}
 };
@@ -567,7 +568,7 @@ void CPythonEngine::init()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -765,13 +766,27 @@ void CPythonEngine::backpipeMsgTick()
 		memcpy(msgBuf, mess.payload + 16 + nickLen, msgLen);
 		switch (infoType)
 		{
-		case 1: sprintf(chanBuf, "say"); break;
-		case 2: sprintf(chanBuf, "whisper"); break;
-		case 3: sprintf(chanBuf, "yell"); break;
-		case 11: sprintf(chanBuf, "NPC"); break;
-		case 6: sprintf(chanBuf, "private"); break;
-		case 7: sprintf(chanBuf, "channel"); break;
-		default: sprintf(chanBuf, "other[%d]", infoType); break;
+		case 1:
+			sprintf(chanBuf, "say");
+			break;
+		case 2:
+			sprintf(chanBuf, "whisper");
+			break;
+		case 3:
+			sprintf(chanBuf, "yell");
+			break;
+		case 11:
+			sprintf(chanBuf, "NPC");
+			break;
+		case 6:
+			sprintf(chanBuf, "private");
+			break;
+		case 7:
+			sprintf(chanBuf, "channel");
+			break;
+		default:
+			sprintf(chanBuf, "other[%d]", infoType);
+			break;
 		}
 		//Channel IDs
 		//1-Party
@@ -977,6 +992,7 @@ inpacketTickCleanup:
 	}
 	leaveCriticalSection();
 }
+
 void CPythonEngine::threadGILAcquire(int ms)
 {
 	init();

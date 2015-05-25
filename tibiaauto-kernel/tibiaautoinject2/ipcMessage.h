@@ -22,6 +22,7 @@ public:
 	{
 		hPipeBack = INVALID_HANDLE_VALUE
 	}
+
 	virtual ~CIPCPipeBack();
 	void send(ipcMessage mess)
 	{
@@ -34,6 +35,7 @@ public:
 		        &cbWritten,
 		        NULL);
 	}
+
 	void InitialiseIPCback(pipepath, partnerProcessId)
 	{
 		char buf[1024];

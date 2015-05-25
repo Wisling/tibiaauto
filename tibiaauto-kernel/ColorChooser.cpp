@@ -21,7 +21,6 @@ CColorChooser::CColorChooser(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CColorChooser::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -48,7 +47,6 @@ void CColorChooser::DoDataExchange(CDataExchange* pDX)
 	DDV_MinMaxInt(pDX, m_DetailBlueValue, 0, 255);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CColorChooser, CDialog)
 //{{AFX_MSG_MAP(CColorChooser)
@@ -89,7 +87,7 @@ BOOL CColorChooser::OnInitDialog()
 	m_GreenSlider.SetRange(0, 255, true);
 	m_BlueSlider.SetRange(0, 255, true);
 	m_DetailPicker.SetCurSel(0);
-	switch(m_DetailPicker.GetCurSel())
+	switch (m_DetailPicker.GetCurSel())
 	{
 	case 0:
 		UpdateDisplay(6, skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue);
@@ -132,7 +130,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 	switch (nSBCode)
 	{
 	case TB_THUMBTRACK:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
@@ -209,7 +207,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		}
 		break;
 	case TB_BOTTOM:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
@@ -286,7 +284,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		}
 		break;
 	case TB_TOP:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
@@ -363,7 +361,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		}
 		break;
 	case TB_LINEDOWN:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER && m_DetailRedValue < 255)
@@ -440,7 +438,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		}
 		break;
 	case TB_LINEUP:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER && m_DetailRedValue > 0)
@@ -517,7 +515,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		}
 		break;
 	case TB_PAGEDOWN:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
@@ -729,12 +727,12 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		}
 		break;
 	case TB_PAGEUP:
-		switch(m_DetailPicker.GetCurSel())
+		switch (m_DetailPicker.GetCurSel())
 		{
 		case 0:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_ButtonFaceRedValue -= 16;
 				else
 					skin.m_ButtonFaceRedValue = 0;
@@ -757,7 +755,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 1:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_ButtonDSRedValue -= 16;
 				else
 					skin.m_ButtonDSRedValue = 0;
@@ -780,7 +778,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 2:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_ButtonLSRedValue -= 16;
 				else
 					skin.m_ButtonLSRedValue = 0;
@@ -803,7 +801,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 3:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_ButtonLightRedValue -= 16;
 				else
 					skin.m_ButtonLightRedValue = 0;
@@ -826,7 +824,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 4:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_ButtonHighLightRedValue -= 16;
 				else
 					skin.m_ButtonHighLightRedValue = 0;
@@ -849,7 +847,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 5:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_TextRedValue -= 16;
 				else
 					skin.m_TextRedValue = 0;
@@ -872,7 +870,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 6:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_PrimaryBackgroundRedValue -= 16;
 				else
 					skin.m_PrimaryBackgroundRedValue = 0;
@@ -895,7 +893,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 7:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_SecondaryBackgroundRedValue -= 16;
 				else
 					skin.m_SecondaryBackgroundRedValue = 0;
@@ -917,7 +915,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		case 8:
 			if (pScrollBar->GetDlgCtrlID() == IDC_RED_SLIDER)
 			{
-				if(m_DetailRedValue > 16)
+				if (m_DetailRedValue > 16)
 					skin.m_EditboxRedValue -= 16;
 				else
 					skin.m_EditboxRedValue = 0;
@@ -941,7 +939,7 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 		break;
 	}
 
-	switch(m_DetailPicker.GetCurSel())
+	switch (m_DetailPicker.GetCurSel())
 	{
 	case 0:
 		UpdateDisplay(0, skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue);
@@ -974,7 +972,6 @@ void CColorChooser::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
 }
-
 
 void CColorChooser::OnRedSliderDown()
 {
@@ -1021,7 +1018,7 @@ HBRUSH CColorChooser::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 	pWnd->GetClientRect(&rect);
 	CBrush brush;
 	brush.CreateSolidBrush(RGB(skin.m_SecondaryBackgroundRedValue, skin.m_SecondaryBackgroundGreenValue, skin.m_SecondaryBackgroundBlueValue));
-	if(pWnd->GetDlgCtrlID() == 9999)
+	if (pWnd->GetDlgCtrlID() == 9999)
 	{
 		rect.top    += 6;
 		rect.right  -= 2;
@@ -1087,7 +1084,7 @@ void CColorChooser::UpdateDisplay(int updateID, int redValue, int greenValue, in
 void CColorChooser::OnSelchangeDetailPicker()
 {
 	// TODO: Add your control notification handler code here
-	switch(m_DetailPicker.GetCurSel())
+	switch (m_DetailPicker.GetCurSel())
 	{
 	case 0:
 		UpdateDisplay(0, skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue);

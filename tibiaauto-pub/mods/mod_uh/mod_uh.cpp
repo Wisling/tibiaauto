@@ -81,7 +81,7 @@ int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CConfigData *config = (CConfigData *)lpParam;
 	CMemReaderProxy reader;
@@ -110,8 +110,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				switch (config->m_runetype)
 				{
-				case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH")); break;
-				case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH")); break;
+				case 0:
+					acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
+					break;
+				case 1:
+					acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
+					break;
 				}
 			}
 			else
@@ -210,8 +214,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					{
 						switch (config->m_grpRunetype)
 						{
-						case 0: acceptedItems.Add(itemProxy.getValueForConst("runeUH")); break;
-						case 1: acceptedItems.Add(itemProxy.getValueForConst("runeIH")); break;
+						case 0:
+							acceptedItems.Add(itemProxy.getValueForConst("runeUH"));
+							break;
+						case 1:
+							acceptedItems.Add(itemProxy.getValueForConst("runeIH"));
+							break;
 						}
 					}
 					else
@@ -266,7 +274,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_uhApp construction
 
@@ -292,12 +299,10 @@ char * CMod_uhApp::getName()
 	return "Auto UH";
 }
 
-
 int CMod_uhApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_uhApp::start()
 {
@@ -350,14 +355,12 @@ void CMod_uhApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_uhApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_uhApp::controlsToConfig()
 {
@@ -367,7 +370,6 @@ void CMod_uhApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_uhApp::disableControls()
 {
@@ -381,12 +383,10 @@ void CMod_uhApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_uhApp::getVersion()
 {
 	return "1.2";
 }
-
 
 int CMod_uhApp::validateConfig(int showAlerts)
 {
@@ -422,7 +422,7 @@ int CMod_uhApp::validateConfig(int showAlerts)
 
 void CMod_uhApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -483,10 +483,8 @@ char *CMod_uhApp::saveConfigParam(char *paramName)
 	if (!strcmp(paramName, "other/sleepAfter"))
 		sprintf(buf, "%d", m_configData->m_sleepAfter);
 	if (!strcmp(paramName, "grp/member"))
-	{
 		if (currentMemberPos < m_configData->m_grpMemberCount)
 			sprintf(buf, "%s", m_configData->m_grpMemberList[currentMemberPos++]);
-	}
 
 	return buf;
 }
@@ -495,15 +493,24 @@ char *CMod_uhApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "self/fallback";
-	case 1: return "self/hotkey";
-	case 2: return "self/runetype";
-	case 3: return "other/sleepAfter";
-	case 4: return "self/borderline";
-	case 5: return "grp/borderline";
-	case 6: return "grp/fallback";
-	case 7: return "grp/runetype";
-	case 8: return "grp/member";
+	case 0:
+		return "self/fallback";
+	case 1:
+		return "self/hotkey";
+	case 2:
+		return "self/runetype";
+	case 3:
+		return "other/sleepAfter";
+	case 4:
+		return "self/borderline";
+	case 5:
+		return "grp/borderline";
+	case 6:
+		return "grp/fallback";
+	case 7:
+		return "grp/runetype";
+	case 8:
+		return "grp/member";
 	default:
 		return NULL;
 	}
@@ -522,7 +529,8 @@ void CMod_uhApp::resetMultiParamAccess(char *paramName)
 		currentMemberPos = 0;
 }
 
-void CMod_uhApp::getNewSkin(CSkin newSkin) {
+void CMod_uhApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

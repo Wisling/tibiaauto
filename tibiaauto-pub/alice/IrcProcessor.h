@@ -17,10 +17,12 @@ using namespace std;
 class IrcProcessor : public AimlProcessor
 {
 public:
-	~IrcProcessor() {
+	~IrcProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string nick = Kernel::process(m, e->getChild("nick"), r, id);
 		/*string server = Kernel::process(m, e->getChild("server"), r, id);
 		   int port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());

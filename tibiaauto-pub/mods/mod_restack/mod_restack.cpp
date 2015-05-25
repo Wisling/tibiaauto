@@ -58,7 +58,8 @@ int getNewPeriod(CConfigData *config)
 	return ((rand() % (config->periodTo - config->periodFrom + 1)) + config->periodFrom);
 }
 
-void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr, int qty){
+void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr, int qty)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -75,7 +76,7 @@ void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -229,7 +230,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (cont->flagOnOff)
 					{
 						openContNr++;
-						if(cont->itemsInside < cont->size)
+						if (cont->itemsInside < cont->size)
 						{
 							pickupItemFromFloor(throwableItemId, self->x + offsetX, self->y + offsetY, self->z, 0x40 + contNr, cont->size - 1, reader.itemOnTopQty(offsetX, offsetY));
 							// reset offsetXY to avoid pickup up same item to hand
@@ -336,7 +337,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_restackApp construction
 
@@ -362,12 +362,10 @@ char * CMod_restackApp::getName()
 	return "Ammo restacker";
 }
 
-
 int CMod_restackApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_restackApp::start()
 {
@@ -420,14 +418,12 @@ void CMod_restackApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_restackApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_restackApp::controlsToConfig()
 {
@@ -437,7 +433,6 @@ void CMod_restackApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_restackApp::disableControls()
 {
@@ -451,12 +446,10 @@ void CMod_restackApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_restackApp::getVersion()
 {
 	return "2.6";
 }
-
 
 int CMod_restackApp::validateConfig(int showAlerts)
 {
@@ -513,7 +506,7 @@ int CMod_restackApp::validateConfig(int showAlerts)
 
 void CMod_restackApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -625,34 +618,57 @@ char *CMod_restackApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "ammo/type";
-	case 1: return "ammo/at";
-	case 2: return "ammo/to";
-	case 3: return "throwable/type";
-	case 4: return "throwable/at";
-	case 5: return "throwable/to";
-	case 6: return "pickup/spears";
-	case 7: return "pickup/place/UL";
-	case 8: return "pickup/place/UC";
-	case 9: return "pickup/place/UR";
-	case 10: return "pickup/place/CL";
-	case 11: return "pickup/place/CR";
-	case 12: return "pickup/place/BL";
-	case 13: return "pickup/place/BC";
-	case 14: return "pickup/place/BR";
-	case 15: return "throwable/moveCovering";
-	case 16: return "ammo/restackToRight";
-	case 17: return "pickup/toHand";
-	case 18: return "pickup/place/CC";
-	case 19: return "pickup/periodFrom";
-	case 20: return "pickup/periodTo";
-	case 21: return "pickup/capLimit";
+	case 0:
+		return "ammo/type";
+	case 1:
+		return "ammo/at";
+	case 2:
+		return "ammo/to";
+	case 3:
+		return "throwable/type";
+	case 4:
+		return "throwable/at";
+	case 5:
+		return "throwable/to";
+	case 6:
+		return "pickup/spears";
+	case 7:
+		return "pickup/place/UL";
+	case 8:
+		return "pickup/place/UC";
+	case 9:
+		return "pickup/place/UR";
+	case 10:
+		return "pickup/place/CL";
+	case 11:
+		return "pickup/place/CR";
+	case 12:
+		return "pickup/place/BL";
+	case 13:
+		return "pickup/place/BC";
+	case 14:
+		return "pickup/place/BR";
+	case 15:
+		return "throwable/moveCovering";
+	case 16:
+		return "ammo/restackToRight";
+	case 17:
+		return "pickup/toHand";
+	case 18:
+		return "pickup/place/CC";
+	case 19:
+		return "pickup/periodFrom";
+	case 20:
+		return "pickup/periodTo";
+	case 21:
+		return "pickup/capLimit";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_restackApp::getNewSkin(CSkin newSkin) {
+void CMod_restackApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

@@ -65,12 +65,11 @@ void CMD5::setPlainText(const char* plainText)
 
 const char* CMD5::getMD5Digest()
 {       //access message digest (aka hash), return 0 if plaintext has not been set
-	if(m_digestValid)
+	if (m_digestValid)
 		return m_digestString;
 	else
 		return 0;
 }
-
 
 bool CMD5::calcDigest()
 {

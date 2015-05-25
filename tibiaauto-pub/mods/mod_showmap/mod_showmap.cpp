@@ -95,12 +95,10 @@ char * CMod_showmapApp::getName()
 	return "Show map";
 }
 
-
 int CMod_showmapApp::isStarted()
 {
 	return 0;
 }
-
 
 void CMod_showmapApp::start()
 {
@@ -127,19 +125,16 @@ void CMod_showmapApp::showConfigDialog()
 	}
 }
 
-
 void CMod_showmapApp::configToControls()
 {
 	m_infoDialog->m_extendedResearch.SetCheck(m_configData->extendedResearch);
 	m_infoDialog->RefreshExtendedResearchMap();
 }
 
-
 void CMod_showmapApp::controlsToConfig()
 {
 	m_configData->extendedResearch = m_infoDialog->m_extendedResearch.GetCheck();
 }
-
 
 void CMod_showmapApp::disableControls()
 {
@@ -149,18 +144,15 @@ void CMod_showmapApp::enableControls()
 {
 }
 
-
 char *CMod_showmapApp::getVersion()
 {
 	return "1.0";
 }
 
-
 int CMod_showmapApp::validateConfig(int showAlerts)
 {
 	return 1;
 }
-
 
 void CMod_showmapApp::resetConfig()
 {
@@ -188,7 +180,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 			//has destination data
 			if (numData >= 8)
 			{
-				if(numData == 8)
+				if (numData == 8)
 				{
 					//has no "locked" property
 					numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &altX, &altY, &altZ);
@@ -261,7 +253,8 @@ void CMod_showmapApp::resetMultiParamAccess(char *paramName)
 	currentPointNr = 0;
 }
 
-void CMod_showmapApp::getNewSkin(CSkin newSkin) {
+void CMod_showmapApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

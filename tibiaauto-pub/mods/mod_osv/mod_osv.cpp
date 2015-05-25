@@ -11,7 +11,8 @@ int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	HWND tibiaHWND  = NULL;
@@ -48,19 +49,19 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		if (!reader.isLoggedIn())
 			continue;
 
-		if(tibiaHWND == NULL)
+		if (tibiaHWND == NULL)
 		{
 			GetWindowThreadProcessId(GetForegroundWindow(), &procID);
-			if((int)procID == reader.getProcessId())
+			if ((int)procID == reader.getProcessId())
 				tibiaHWND = GetForegroundWindow();
 		}
 		else
 		{
-			if(tibiaHWND != GetForegroundWindow())
+			if (tibiaHWND != GetForegroundWindow())
 				wait = true;
 			else
 				wait = false;
-			if(wait)
+			if (wait)
 				continue;
 
 			GetWindowRect(tibiaHWND, &rect);
@@ -69,7 +70,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			{
 				int nWidth      = rect.right - rect.left;
 				int mHeight     = rect.bottom - rect.top;
-				HDC hDDC        = GetDC( tibiaHWND );
+				HDC hDDC        = GetDC(tibiaHWND);
 				HDC hCDC        = CreateCompatibleDC(hDDC);
 				HBITMAP hBitmap = CreateCompatibleBitmap(hDDC, nWidth, mHeight);
 				SelectObject(hCDC, hBitmap);
@@ -167,7 +168,7 @@ void WriteBMPFile(HBITMAP bitmap, LPTSTR filename, HDC hDC)
 
 // create the bitmapinfo header information
 
-	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp))
+	if (!GetObject(bitmap, sizeof(BITMAP), (LPSTR)&bmp))
 	{
 		AfxMessageBox("Could not retrieve bitmap info");
 		return;
@@ -265,7 +266,7 @@ void WriteBMPFile(HBITMAP bitmap, LPTSTR filename, HDC hDC)
 // Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
 	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
 	               + pbih->biClrUsed * sizeof (RGBQUAD),
-	               (LPDWORD) &dwTmp, ( NULL)))
+	               (LPDWORD) &dwTmp, (NULL)))
 	{
 		AfxMessageBox("Could not write in to file");
 		return;

@@ -9,7 +9,8 @@
 const int Logger::ERRORconst = 1;
 const int Logger::DEBUGconst = 2;
 
-void Logger::log(const string &msg, int logType) {
+void Logger::log(const string &msg, int logType)
+{
 	switch (logType)
 	{
 	case ERRORconst:
@@ -23,7 +24,8 @@ void Logger::log(const string &msg, int logType) {
 	}
 }
 
-void Logger::log(const string &msg, const string &file, bool header) {
+void Logger::log(const string &msg, const string &file, bool header)
+{
 	fstream f;
 	if (openLog(f, file + ".log"))
 	{
@@ -34,7 +36,8 @@ void Logger::log(const string &msg, const string &file, bool header) {
 	}
 }
 
-string Logger::timestamp() {
+string Logger::timestamp()
+{
 	//	FORMAT: 16-12-2002 01:32 PM
 	time_t t;
 	struct tm *now;
@@ -48,7 +51,8 @@ string Logger::timestamp() {
 	return toUpper(string(buffer));
 }
 
-bool Logger::openLog(fstream &file, const string &name) {
+bool Logger::openLog(fstream &file, const string &name)
+{
 	file.open(name.c_str(), ios::out | ios::app);
 	if (file.is_open())
 	{
@@ -58,7 +62,8 @@ bool Logger::openLog(fstream &file, const string &name) {
 	return false;
 }
 
-void Logger::closeLog(fstream &file) {
+void Logger::closeLog(fstream &file)
+{
 	if (file.is_open())
 		file.close();
 }

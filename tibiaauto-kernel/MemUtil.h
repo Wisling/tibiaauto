@@ -27,14 +27,17 @@ public:
 	virtual ~CMemUtil();
 
 
-	static void setGlobalProcessId(int procId) {
+	static void setGlobalProcessId(int procId)
+	{
 		m_globalProcessId = procId;
 		m_globalBaseAddr  = CMemUtil::GetProcessBaseAddr(procId);
 	};
-	static int getGlobalProcessId() {
+	static int getGlobalProcessId()
+	{
 		return m_globalProcessId;
 	};
-	static int getGlobalBaseAddr() {
+	static int getGlobalBaseAddr()
+	{
 		return m_globalBaseAddr;
 	};
 

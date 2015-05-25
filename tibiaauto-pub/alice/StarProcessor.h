@@ -18,10 +18,12 @@ using namespace std;
 class StarProcessor : public AimlProcessor
 {
 public:
-	~StarProcessor() {
+	~StarProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *, const string &) {
+	string process(Match *m, PElement e, Responder *, const string &)
+	{
 		string index = e->getAttribute("index");
 		if (index.empty())
 			index = "1";

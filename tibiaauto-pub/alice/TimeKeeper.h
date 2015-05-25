@@ -29,7 +29,8 @@ extern time_t tNow();
 class Event
 {
 public:
-	virtual ~Event() {
+	virtual ~Event()
+	{
 	}
 
 	virtual void run() = 0;
@@ -38,23 +39,30 @@ public:
 class TimedEvent
 {
 public:
-	TimedEvent(time_t t, Event *e) {
+	TimedEvent(time_t t, Event *e)
+	{
 		time  = t;
 		event = e;
 	}
-	time_t getTime() const {
+
+	time_t getTime() const
+	{
 		return time;
 	}
-	void run() {
+
+	void run()
+	{
 		event->run();
 	}
+
 private:
 	time_t time;
 	Event *event;
 };
 
 struct tComp {
-	bool operator() (const TimedEvent *lhs, const TimedEvent *rhs) {
+	bool operator() (const TimedEvent *lhs, const TimedEvent *rhs)
+	{
 		return lhs->getTime() > rhs->getTime();
 	}
 };

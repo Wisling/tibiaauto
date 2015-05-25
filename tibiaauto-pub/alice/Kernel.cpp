@@ -53,7 +53,8 @@ string toString(PElement);
 void prettyPrintHeader(const string &, int, int, long);
 string getSentence(string &input);
 
-string toString(PElement element) {
+string toString(PElement element)
+{
 	if (element == NULL)
 		return "*";
 	string result;
@@ -87,7 +88,8 @@ string toString(PElement element) {
 	return trim(toUpper(result));//Substituter::normalize(result);
 }
 
-string templateString(PElement element) {
+string templateString(PElement element)
+{
 	if (element == NULL)
 		return "";
 	string result;
@@ -137,7 +139,8 @@ string templateString(PElement element) {
 	return result;
 }
 
-void prettyPrintHeader(const string &filename, int size, int totalSize, long time) {
+void prettyPrintHeader(const string &filename, int size, int totalSize, long time)
+{
 	totalTime += time;
 	string fn           = filename;
 	string::size_type f = fn.find_last_of("\\/:");
@@ -202,7 +205,8 @@ void prettyPrintHeader(const string &filename, int size, int totalSize, long tim
 
 Nodemaster *Kernel::root = new Nodemaster();
 
-Kernel::Kernel() {
+Kernel::Kernel()
+{
 	char installPath[1024];
 	unsigned long installPathLen = 1023;
 	installPath[0] = '\0';
@@ -232,11 +236,13 @@ Kernel::Kernel() {
 	Kernel::loadTemporaryData();
 }
 
-Kernel::~Kernel() {
+Kernel::~Kernel()
+{
 	;
 }
 
-string Kernel::bootstrap() {
+string Kernel::bootstrap()
+{
 	trimming = false;
 	string result = Kernel::respond("bootstrap", "localhost");
 	trimming = true;
@@ -244,7 +250,8 @@ string Kernel::bootstrap() {
 	return result;
 }
 
-bool Kernel::load(const string &file) {
+bool Kernel::load(const string &file)
+{
 	SaxParser p(new PreParser(file));
 	bool loadedOk = true;
 	int total     = totalCategories;
@@ -267,7 +274,8 @@ bool Kernel::load(const string &file) {
 	return loadedOk;
 }
 
-void Kernel::convertTempAiml() {
+void Kernel::convertTempAiml()
+{
 	PElement eAiml(new Element("aiml"));
 	PElement eCategory,
 	         eContext,
@@ -354,7 +362,8 @@ void Kernel::convertTempAiml() {
 	fout.close();
 }
 
-void Kernel::loadTemporaryData() {
+void Kernel::loadTemporaryData()
+{
 	//	Format: <pattern>,<that>,<topic>,<template><eol>
 	ifstream fin("temporary.data", ios::in | ios::binary);
 	if (!fin.is_open())
@@ -382,14 +391,15 @@ void Kernel::loadTemporaryData() {
 	fin.close();
 }
 
-void Kernel::loadSubstitutions() {
+void Kernel::loadSubstitutions()
+{
 	char installPath[1024];
 	unsigned long installPathLen = 1023;
 	installPath[0] = '\0';
 	HKEY hkey = NULL;
 	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 		RegCloseKey(hkey);
 	}
 	if (!strlen(installPath))
@@ -441,7 +451,8 @@ void Kernel::loadSubstitutions() {
         I think this & match() are the only places where Nodemaster's
         addChild() and getChild() functions are used... hopefully.
  */
-Nodemaster *Kernel::add(const string &context, const string &pattern, const string &that, const string &topic) {
+Nodemaster *Kernel::add(const string &context, const string &pattern, const string &that, const string &topic)
+{
 	if (context.empty() || pattern.empty() || that.empty() || topic.empty())
 		return NULL;
 	string path = context + " <pattern> " + pattern + " <that> " + that + " <topic> " + topic;
@@ -466,7 +477,8 @@ Nodemaster *Kernel::add(const string &context, const string &pattern, const stri
 	return node;
 }
 
-Match *Kernel::match(const string &context, const string &input, const string &that, const string &topic) {
+Match *Kernel::match(const string &context, const string &input, const string &that, const string &topic)
+{
 	Match *m    = NULL;
 	string path = context + " <pattern> " + input + " <that> " + that + " <topic> " + topic;
 	getStream("Match")->Read(string("Input: " + path + "\n").c_str());
@@ -483,7 +495,8 @@ Match *Kernel::match(const string &context, const string &input, const string &t
 	return m;
 }
 
-Match *Kernel::match(Nodemaster *node, Nodemaster *parent, int state, const string &input, const string &star, const string &path) {
+Match *Kernel::match(Nodemaster *node, Nodemaster *parent, int state, const string &input, const string &star, const string &path)
+{
 	StringTokenizer st(input);
 
 	if (st.countTokens() == 0)
@@ -568,7 +581,8 @@ Match *Kernel::match(Nodemaster *node, Nodemaster *parent, int state, const stri
 	return NULL;
 }
 
-void Kernel::addStar(Match *m, const string &value, int state) {
+void Kernel::addStar(Match *m, const string &value, int state)
+{
 	if (value.empty())
 		return;
 	switch (state)
@@ -588,7 +602,8 @@ void Kernel::addStar(Match *m, const string &value, int state) {
 	}
 }
 
-void Kernel::addPath(Match *m, const string &value, int state) {
+void Kernel::addPath(Match *m, const string &value, int state)
+{
 	if (value.empty())
 		return;
 	switch (state)
@@ -608,7 +623,8 @@ void Kernel::addPath(Match *m, const string &value, int state) {
 	}
 }
 
-bool Kernel::lookup(const string &, const string &) {
+bool Kernel::lookup(const string &, const string &)
+{
 	//Object o = querySets.get(type);
 	//if (o == null) {
 	//return false;
@@ -635,23 +651,28 @@ bool Kernel::lookup(const string &, const string &) {
 	return false;
 }
 
-string Kernel::process(Match *m, PElement e, Responder *r, const string &id) {
+string Kernel::process(Match *m, PElement e, Responder *r, const string &id)
+{
 	return TemplateProcessor::processTemplate(m, e, r, id);
 }
 
-string Kernel::respond(const string &input, const string &id, const string &prefix) {
+string Kernel::respond(const string &input, const string &id, const string &prefix)
+{
 	return respond(input, id, 1, false, prefix);
 }
 
-string Kernel::respond(const string &input, const string &id, bool srai, const string &prefix) {
+string Kernel::respond(const string &input, const string &id, bool srai, const string &prefix)
+{
 	return respond(input, id, 1, srai, prefix);
 }
 
-string Kernel::respond(const string &input, const string &id, Responder *r, bool srai, const string &prefix) {
+string Kernel::respond(const string &input, const string &id, Responder *r, bool srai, const string &prefix)
+{
 	return respond(input, id, r, 1, srai, prefix);
 }
 
-string Kernel::respond(const string &input, const string &id, int depth, bool srai, const string &prefix) {
+string Kernel::respond(const string &input, const string &id, int depth, bool srai, const string &prefix)
+{
 	/**
 	 * Instead of NULL, should be: new TextResponder() or something.
 	 * NULL isn't going to work later on
@@ -661,7 +682,8 @@ string Kernel::respond(const string &input, const string &id, int depth, bool sr
 
 static int recursionDepth = 0;
 
-string getSentence(string &input) {
+string getSentence(string &input)
+{
 	string output           = "";
 	string::size_type index = 0, length = input.length();
 	char ch;
@@ -696,7 +718,8 @@ string getSentence(string &input) {
 
 static long timingResponse = 0;
 
-string Kernel::respond(const string &input, const string &id, Responder *r, int, bool srai, const string &prefix) {
+string Kernel::respond(const string &input, const string &id, Responder *r, int, bool srai, const string &prefix)
+{
 	if (!srai)
 	{
 		recursionDepth = 0;

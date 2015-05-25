@@ -48,7 +48,8 @@
 
 map<string, AimlProcessor *> Handler::processors;
 
-void Handler::init() {
+void Handler::init()
+{
 	processors["br"]        = new BrProcessor();
 	processors["id"]        = new IdProcessor();
 	processors["sr"]        = new SrProcessor();
@@ -92,6 +93,7 @@ void Handler::init() {
 	processors["explode"]    = new ExplodeProcessor();
 }
 
-bool Handler::hasProcessor(const string &name) {
+bool Handler::hasProcessor(const string &name)
+{
 	return processors.find(name) != processors.end();
 }

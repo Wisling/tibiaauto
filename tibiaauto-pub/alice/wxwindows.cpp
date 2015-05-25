@@ -35,7 +35,8 @@ using namespace std;
 
 static JFrame *mainFrame = NULL;
 
-JFrame::JFrame(wxWindow *parent) {
+JFrame::JFrame(wxWindow *parent)
+{
 	init = wxXmlResource::Get()->LoadFrame(this, parent, wxT("main_frame"));
 
 	SetIcon(wxICON(j_alice));
@@ -51,7 +52,8 @@ JFrame::JFrame(wxWindow *parent) {
 /*
         Adds a new tab to the notebook.
  */
-void JFrame::addTabbedPane(wxEvent &evt) {
+void JFrame::addTabbedPane(wxEvent &evt)
+{
 	//--	get the notebook control
 	wxNotebook *notebook = XRCCTRL(*this, "notebook", wxNotebook);
 
@@ -75,7 +77,8 @@ void JFrame::addTabbedPane(wxEvent &evt) {
         Adds a line of text to the contents of
         a tab in the notebook.
  */
-void JFrame::appendText(wxEvent &evt) {
+void JFrame::appendText(wxEvent &evt)
+{
 	UpdateTabEvent *ute = (UpdateTabEvent *)(&evt);
 	const string &name  = ute->name;
 	const string &text  = ute->text;
@@ -92,16 +95,19 @@ void JFrame::appendText(wxEvent &evt) {
 		tc->SetDefaultStyle(attr);
 }
 
-void JFrame::onClose(wxCloseEvent &) {
+void JFrame::onClose(wxCloseEvent &)
+{
 	cleanup_jalice();
 	Destroy();
 }
 
-void JFrame::OnExit(wxCommandEvent& WXUNUSED(event)) {
+void JFrame::OnExit(wxCommandEvent& WXUNUSED(event))
+{
 	Close();
 }
 
-void JFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
+void JFrame::OnAbout(wxCommandEvent& WXUNUSED(event))
+{
 //	wxDialog *f = new wxDialog();
 //
 //	wxXmlResource::Get()->LoadDialog(f, this, wxT("about_dialog"));
@@ -116,7 +122,8 @@ void JFrame::OnAbout(wxCommandEvent& WXUNUSED(event)) {
 	}
 }
 
-Stream *JThread::getStream(const char *cs) {
+Stream *JThread::getStream(const char *cs)
+{
 	const string name(cs);
 	map<string, GuiStream *>::iterator itr = streams.find(name);
 
@@ -138,7 +145,8 @@ Stream *JThread::getStream(const char *cs) {
 	return streams[name];
 }
 
-void JThread::Output(const char *csn, const char *csm, bool read) {
+void JThread::Output(const char *csn, const char *csm, bool read)
+{
 	string name(csn);
 	string text(csm);
 
@@ -148,7 +156,8 @@ void JThread::Output(const char *csn, const char *csm, bool read) {
 	->AddPendingEvent(ute);
 }
 
-void *JThread::Entry() {
+void *JThread::Entry()
+{
 	//register self as the *offical* output displayer :)..as opposed to console
 	setStreamProvider(this);
 	//run the core
@@ -170,7 +179,8 @@ private:
 
 IMPLEMENT_APP(Main)
 
-bool Main::OnInit() {
+bool Main::OnInit()
+{
 	wxImage::AddHandler(new wxGIFHandler);
 	wxXmlResource::Get()->InitAllHandlers();
 	wxXmlResource::Get()->Load(wxT("resdata/j-alice.xrc"));

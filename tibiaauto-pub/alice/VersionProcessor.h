@@ -15,10 +15,12 @@ using namespace std;
 class VersionProcessor : public AimlProcessor
 {
 public:
-	~VersionProcessor() {
+	~VersionProcessor()
+	{
 	}
 
-	string process(Match *, PElement, Responder *, const string &) {
+	string process(Match *, PElement, Responder *, const string &)
+	{
 		return VERSION_STRING;
 	}
 };

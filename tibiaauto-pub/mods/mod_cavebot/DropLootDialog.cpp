@@ -29,7 +29,6 @@ CDropLootDialog::CDropLootDialog(char dropListParam[MAX_DROP_ITEMS][64], int& dr
 	//}}AFX_DATA_INIT
 }
 
-
 void CDropLootDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -45,7 +44,6 @@ void CDropLootDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DROPLIST_DELETE, m_delete);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CDropLootDialog, CDialog)
 //{{AFX_MSG_MAP(CDropLootDialog)
@@ -65,7 +63,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // DropLootDialog  message handlers
 
-void CDropLootDialog::OnOK(){
+void CDropLootDialog::OnOK()
+{
 	*dropListCount = 0;
 	for (int i = 0; i < m_dropList.GetCount(); i++)
 	{
@@ -81,7 +80,9 @@ void CDropLootDialog::OnOK(){
 
 	CDialog::OnOK();
 }
-void CDropLootDialog::OnDroplistAdd(){
+
+void CDropLootDialog::OnDroplistAdd()
+{
 	if (m_dropList.GetCount() >= MAX_DROP_ITEMS)
 	{
 		AfxMessageBox("Limit Reached");
@@ -101,7 +102,9 @@ void CDropLootDialog::OnDroplistAdd(){
 		m_itemList.SetCurSel(min(m_itemList.GetCount() - 1, ind));
 	}
 }
-void CDropLootDialog::OnDroplistDelete(){
+
+void CDropLootDialog::OnDroplistDelete()
+{
 	int ind = m_dropList.GetCurSel();
 	if (ind >= 0 && ind < m_dropList.GetCount())
 	{
@@ -116,7 +119,9 @@ void CDropLootDialog::OnDroplistDelete(){
 		m_dropList.SetCurSel(min(m_dropList.GetCount() - 1, ind));
 	}
 }
-void CDropLootDialog::OnDroplistDropWhenCapacityLimitReached(){
+
+void CDropLootDialog::OnDroplistDropWhenCapacityLimitReached()
+{
 	int check1 = m_dropWhenCapacityLimitReached.GetCheck();
 	int check2 = m_dropOnlyLooted.GetCheck();
 	m_dropOnlyLooted.EnableWindow(check1);
@@ -126,7 +131,9 @@ void CDropLootDialog::OnDroplistDropWhenCapacityLimitReached(){
 	m_add.EnableWindow(enableList);
 	m_delete.EnableWindow(enableList);
 }
-void CDropLootDialog::OnDroplistDropOnlyLooted(){
+
+void CDropLootDialog::OnDroplistDropOnlyLooted()
+{
 	int check1     = m_dropWhenCapacityLimitReached.GetCheck();
 	int check2     = m_dropOnlyLooted.GetCheck();
 	int enableList = !(check1 && check2);
@@ -135,6 +142,7 @@ void CDropLootDialog::OnDroplistDropOnlyLooted(){
 	m_add.EnableWindow(enableList);
 	m_delete.EnableWindow(enableList);
 }
+
 BOOL CDropLootDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
@@ -150,7 +158,9 @@ BOOL CDropLootDialog::OnInitDialog()
 
 	return TRUE;
 }
-void CDropLootDialog::LoadItemList(){
+
+void CDropLootDialog::LoadItemList()
+{
 	CTibiaItemProxy itemProxy;
 
 	// load items for item list combo box

@@ -26,7 +26,6 @@ CEnterCode::CEnterCode(CWnd* pParent /*=NULL*/)
 	parent = (CTibiaautoDlg *)pParent;
 }
 
-
 void CEnterCode::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -36,7 +35,6 @@ void CEnterCode::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CODE, m_code);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CEnterCode, CDialog)
 //{{AFX_MSG_MAP(CEnterCode)

@@ -28,7 +28,6 @@ CConfigDialog::CConfigDialog(CMod_loginApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -57,7 +56,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOGIN_AFTER_KILLED, m_loginAfterKilled);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -137,14 +135,16 @@ void CConfigDialog::enableControls()
 	OnAutopass();
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
 
-	sprintf(buf, "%s", configData->accountNumber); m_accountNumber.SetWindowText(buf);
-	sprintf(buf, "%s", configData->password); m_password.SetWindowText(buf);
-	sprintf(buf, "%d", configData->charPos); m_charPos.SetWindowText(buf);
+	sprintf(buf, "%s", configData->accountNumber);
+	m_accountNumber.SetWindowText(buf);
+	sprintf(buf, "%s", configData->password);
+	m_password.SetWindowText(buf);
+	sprintf(buf, "%d", configData->charPos);
+	m_charPos.SetWindowText(buf);
 	m_openMain.SetCheck(configData->openMain);
 	m_openCont1.SetCheck(configData->openCont1);
 	m_openCont2.SetCheck(configData->openCont2);
@@ -154,7 +154,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_openCont6.SetCheck(configData->openCont6);
 	m_openCont7.SetCheck(configData->openCont7);
 	m_openCont8.SetCheck(configData->openCont8);
-	sprintf(buf, "%d", configData->loginDelay); m_loginDelay.SetWindowText(buf);
+	sprintf(buf, "%d", configData->loginDelay);
+	m_loginDelay.SetWindowText(buf);
 	m_loginAfterKilled.SetCheck(configData->loginAfterKilled);
 
 	m_autopass.SetCheck(0);// configData->autopass);
@@ -169,19 +170,21 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	m_accountNumber.GetWindowText(newConfigData->accountNumber, 63);
 	m_password.GetWindowText(newConfigData->password, 63);
-	m_charPos.GetWindowText(buf, 63); newConfigData->charPos       = atoi(buf);
-	newConfigData->openMain                                        = m_openMain.GetCheck();
-	newConfigData->openCont1                                       = m_openCont1.GetCheck();
-	newConfigData->openCont2                                       = m_openCont2.GetCheck();
-	newConfigData->openCont3                                       = m_openCont3.GetCheck();
-	newConfigData->openCont4                                       = m_openCont4.GetCheck();
-	newConfigData->openCont5                                       = m_openCont5.GetCheck();
-	newConfigData->openCont6                                       = m_openCont6.GetCheck();
-	newConfigData->openCont7                                       = m_openCont7.GetCheck();
-	newConfigData->openCont8                                       = m_openCont8.GetCheck();
-	m_loginDelay.GetWindowText(buf, 63); newConfigData->loginDelay = atoi(buf);
-	newConfigData->autopass                                        = 0;// m_autopass.GetCheck();
-	newConfigData->loginAfterKilled                                = m_loginAfterKilled.GetCheck();
+	m_charPos.GetWindowText(buf, 63);
+	newConfigData->charPos   = atoi(buf);
+	newConfigData->openMain  = m_openMain.GetCheck();
+	newConfigData->openCont1 = m_openCont1.GetCheck();
+	newConfigData->openCont2 = m_openCont2.GetCheck();
+	newConfigData->openCont3 = m_openCont3.GetCheck();
+	newConfigData->openCont4 = m_openCont4.GetCheck();
+	newConfigData->openCont5 = m_openCont5.GetCheck();
+	newConfigData->openCont6 = m_openCont6.GetCheck();
+	newConfigData->openCont7 = m_openCont7.GetCheck();
+	newConfigData->openCont8 = m_openCont8.GetCheck();
+	m_loginDelay.GetWindowText(buf, 63);
+	newConfigData->loginDelay       = atoi(buf);
+	newConfigData->autopass         = 0;                               // m_autopass.GetCheck();
+	newConfigData->loginAfterKilled = m_loginAfterKilled.GetCheck();
 
 	return newConfigData;
 }
@@ -202,25 +205,49 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					sprintf(buf, "Connection status: waiting to log in %d seconds.", loginTime - time(NULL));
 				else
 					sprintf(buf, "Connection status: trying to log in for %d seconds.", time(NULL) - loginTime);
-				m_status.SetWindowText(buf); break;
+				m_status.SetWindowText(buf);
+				break;
 			}
-			m_status.SetWindowText("Connection status: not connected"); break;
-		case 1: m_status.SetWindowText("Connection status: opening to login server"); break;
-		case 2: m_status.SetWindowText("Connection status: connecting to login server"); break;
-		case 3: m_status.SetWindowText("Connection status: disconnecting from login server"); break;
-		case 4: m_status.SetWindowText("Connection status: connected to login server"); break;
-		case 5: m_status.SetWindowText("Connection status: opening"); break;
-		case 6: m_status.SetWindowText("Connection status: connecting"); break;
-		case 7: m_status.SetWindowText("Connection status: disconnecting"); break;
-		case 9: m_status.SetWindowText("Connection status: pending"); break;
-		case 10: m_status.SetWindowText("Connection status: state 10"); break;
-		case 11: m_status.SetWindowText("Connection status: connected"); break;
-		default: m_status.SetWindowText("Connection status: unknown"); break;
+			m_status.SetWindowText("Connection status: not connected");
+			break;
+		case 1:
+			m_status.SetWindowText("Connection status: opening to login server");
+			break;
+		case 2:
+			m_status.SetWindowText("Connection status: connecting to login server");
+			break;
+		case 3:
+			m_status.SetWindowText("Connection status: disconnecting from login server");
+			break;
+		case 4:
+			m_status.SetWindowText("Connection status: connected to login server");
+			break;
+		case 5:
+			m_status.SetWindowText("Connection status: opening");
+			break;
+		case 6:
+			m_status.SetWindowText("Connection status: connecting");
+			break;
+		case 7:
+			m_status.SetWindowText("Connection status: disconnecting");
+			break;
+		case 9:
+			m_status.SetWindowText("Connection status: pending");
+			break;
+		case 10:
+			m_status.SetWindowText("Connection status: state 10");
+			break;
+		case 11:
+			m_status.SetWindowText("Connection status: connected");
+			break;
+		default:
+			m_status.SetWindowText("Connection status: unknown");
+			break;
 		}
 		;
 
 
-		if(queue2Message)
+		if (queue2Message)
 		{
 			char timeBuf[256];
 			m_debug.InsertItem(0, "");
@@ -239,9 +266,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_OK);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_OK);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -258,7 +286,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

@@ -58,7 +58,7 @@ CMod_monstershowApp::CMod_monstershowApp()
 
 CMod_monstershowApp::~CMod_monstershowApp()
 {
-	if(m_infoDialog)
+	if (m_infoDialog)
 	{
 		m_infoDialog->DestroyWindow();
 		delete m_infoDialog;
@@ -71,7 +71,6 @@ char * CMod_monstershowApp::getName()
 	return "Monster show";
 }
 
-
 void CMod_monstershowApp::showConfigDialog()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -83,25 +82,22 @@ void CMod_monstershowApp::showConfigDialog()
 	m_infoDialog->ShowWindow(SW_SHOW);
 }
 
-
 char *CMod_monstershowApp::getVersion()
 {
 	return "1.1";
 }
 
-
 void CMod_monstershowApp::resetConfig()
 {
 }
-
 
 char *CMod_monstershowApp::getConfigParamName(int nr)
 {
 	return NULL;
 }
 
-
-void CMod_monstershowApp::getNewSkin(CSkin newSkin) {
+void CMod_monstershowApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

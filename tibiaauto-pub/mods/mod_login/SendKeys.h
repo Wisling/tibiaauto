@@ -69,9 +69,11 @@ public:
 	bool SendKeys(LPCTSTR KeysString, bool Wait = false);
 	static bool AppActivate(HWND wnd);
 	static bool AppActivate(LPCTSTR WindowTitle, LPCTSTR WindowClass = 0);
-	void SetDelay(const DWORD delay) {
+	void SetDelay(const DWORD delay)
+	{
 		m_nDelayAlways = delay;
 	}
+
 	CSendKeys();
 };
 

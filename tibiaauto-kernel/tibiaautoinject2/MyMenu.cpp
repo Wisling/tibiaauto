@@ -16,6 +16,7 @@ CMyMenu::CMyMenu()
 CMyMenu::~CMyMenu()
 {
 }
+
 void CMyMenu::LoadOwnerDrawMenu(CMenu *baseMenu)
 {
 	/*
@@ -78,7 +79,6 @@ void CMyMenu::LoadOwnerDrawMenu(CMenu *baseMenu)
 		}
 	}
 }
-
 
 void CMyMenu::MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct)
 {

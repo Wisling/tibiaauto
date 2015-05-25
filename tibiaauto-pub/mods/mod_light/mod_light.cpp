@@ -52,7 +52,8 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ){
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 
@@ -80,7 +81,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ){
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Cmod_lightApp construction
 
@@ -106,12 +106,10 @@ char * Cmod_lightApp::getName()
 	return "LightHack";
 }
 
-
 int Cmod_lightApp::isStarted()
 {
 	return m_started;
 }
-
 
 void Cmod_lightApp::start()
 {
@@ -164,14 +162,12 @@ void Cmod_lightApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void Cmod_lightApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void Cmod_lightApp::controlsToConfig()
 {
@@ -181,7 +177,6 @@ void Cmod_lightApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void Cmod_lightApp::disableControls()
 {
@@ -195,12 +190,10 @@ void Cmod_lightApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *Cmod_lightApp::getVersion()
 {
 	return "1.1";
 }
-
 
 int Cmod_lightApp::validateConfig(int showAlerts)
 {
@@ -209,7 +202,7 @@ int Cmod_lightApp::validateConfig(int showAlerts)
 
 void Cmod_lightApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -242,14 +235,17 @@ char *Cmod_lightApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "lightPower";
-	case 1: return "lightColor";
+	case 0:
+		return "lightPower";
+	case 1:
+		return "lightColor";
 	default:
 		return NULL;
 	}
 }
 
-void Cmod_lightApp::getNewSkin(CSkin newSkin) {
+void Cmod_lightApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

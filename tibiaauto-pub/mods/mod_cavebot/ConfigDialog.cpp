@@ -59,7 +59,6 @@ CConfigDialog::CConfigDialog(CMod_cavebotApp *app, CWnd* pParent /*=NULL*/)
 	virDropOnlyLooted               = 0;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -151,7 +150,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_DEPOT_DEPOSIT_LOOTED_ITEM_LIST, m_depositLootedItemList);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -348,7 +346,6 @@ void CConfigDialog::enableControls()
 	OnDropLoot();
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	CTibiaItemProxy itemProxy;
@@ -356,15 +353,20 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	char buf[128];
 
 
-	sprintf(buf, "%d", configData->unreachableAfter); m_unreachableAfter.SetWindowText(buf);
-	sprintf(buf, "%d", configData->suspendAfterUnreachable); m_suspendAfterUnreachable.SetWindowText(buf);
-	sprintf(buf, "%d", configData->standStill); m_standStill.SetWindowText(buf);
-	sprintf(buf, "%d", configData->attackHpAbove); m_attackHpAbove.SetWindowText(buf);
+	sprintf(buf, "%d", configData->unreachableAfter);
+	m_unreachableAfter.SetWindowText(buf);
+	sprintf(buf, "%d", configData->suspendAfterUnreachable);
+	m_suspendAfterUnreachable.SetWindowText(buf);
+	sprintf(buf, "%d", configData->standStill);
+	m_standStill.SetWindowText(buf);
+	sprintf(buf, "%d", configData->attackHpAbove);
+	m_attackHpAbove.SetWindowText(buf);
 	m_attackOnlyAttacking.SetCheck(configData->attackOnlyAttacking);
 	m_forceAttackAfterAttack.SetCheck(configData->forceAttackAfterAttack);
 	m_stickToMonster.SetCheck(configData->stickToMonster);
 	m_eatFromCorpse.SetCheck(configData->eatFromCorpse);
-	sprintf(buf, "%d", configData->attackRange); m_attackRange.SetWindowText(buf);
+	sprintf(buf, "%d", configData->attackRange);
+	m_attackRange.SetWindowText(buf);
 	m_autoFollow.SetCheck(configData->autoFollow);
 	m_attackAllMonsters.SetCheck(configData->attackAllMonsters);
 	m_lootFood.SetCheck(configData->lootFood);
@@ -380,8 +382,10 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_lootinBags.SetCheck(configData->lootInBags);
 	m_gatherLootStats.SetCheck(configData->gatherLootStats);
 	m_debug.SetCheck(configData->debug);
-	sprintf(buf, "%d", configData->capacityLimit); m_lootCapLimit.SetWindowText(buf);
-	sprintf(buf, "%d", configData->depotCap); m_depotCap.SetWindowText(buf);
+	sprintf(buf, "%d", configData->capacityLimit);
+	m_lootCapLimit.SetWindowText(buf);
+	sprintf(buf, "%d", configData->depotCap);
+	m_depotCap.SetWindowText(buf);
 	while (m_waypointList.GetCount())
 		m_waypointList.DeleteString(0);
 	for (i = 0; i < 1000; i++)
@@ -393,7 +397,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 			sprintf(buf, "Delay %d sec", delay);
 			m_waypointList.AddString(buf);
 		}
-		else if(configData->waypointList[i].x != 0 && configData->waypointList[i].y != 0)
+		else if (configData->waypointList[i].x != 0 && configData->waypointList[i].y != 0)
 		{
 			sprintf(buf, "(%d,%d,%d)", configData->waypointList[i].x, configData->waypointList[i].y, configData->waypointList[i].z);
 			m_waypointList.AddString(buf);
@@ -440,7 +444,8 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_shareAlienBackattack.SetCheck(configData->shareAlienBackattack);
 	m_dontAttackPlayers.SetCheck(configData->dontAttackPlayers);
 	m_pausingEnable.SetCheck(configData->pausingEnable);
-	sprintf(buf, "%d", configData->radius); m_radius.SetWindowText(buf);
+	sprintf(buf, "%d", configData->radius);
+	m_radius.SetWindowText(buf);
 
 	memcpy(virDropList, configData->dropList, 64 * 100);
 	virDropListCount                = configData->dropListCount;
@@ -594,6 +599,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	return newConfigData;
 }
+
 HANDLE hThread = 0;
 
 static int lastX = 0, lastY = 0, lastZ = 0;
@@ -683,7 +689,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			break;
 		case CToolAutoAttackStateWalker_ok:
 		{
-			if(globalAutoAttackStateDepot != CToolAutoAttackStateDepot_walking)
+			if (globalAutoAttackStateDepot != CToolAutoAttackStateDepot_walking)
 			{
 				int tilesAway = abs(self->x - actualTargetX) + abs(self->y - actualTargetY) + abs(self->z - actualTargetZ);
 				sprintf(buf, "State: walking to (%d,%d,%d) %d tiles away", actualTargetX, actualTargetY, actualTargetZ, tilesAway);
@@ -773,7 +779,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		}
 
 		CTAMiniMapProxy taMiniMap;
-		if(!taMiniMap.isFindPathStopped())
+		if (!taMiniMap.isFindPathStopped())
 		{
 			char buf[128];
 			sprintf(buf, "Auto Research Map Distance to %d:%d", cavebotFindpathStartedWaypoint, taMiniMap.getCurrentDistance());
@@ -837,13 +843,13 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				}
 			}
 		}
-		else if(!m_autoResearch.GetCheck() && cavebotFindpathStartedWaypoint)
+		else if (!m_autoResearch.GetCheck() && cavebotFindpathStartedWaypoint)
 		{
 			hThread                        = 0;
 			startTime                      = 0;
 			failedOnce                     = 0;
 			cavebotFindpathStartedWaypoint = 0;
-			if(!taMiniMap.isFindPathStopped())
+			if (!taMiniMap.isFindPathStopped())
 				taMiniMap.findPathStop();
 			while (!pathfindPoints.empty())
 			{
@@ -863,23 +869,24 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_autoResearch);
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_depotEntryRemove);
-	skin.SetButtonSkin(     m_depotEntryAdd);
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_RemoveWaypoint);
-	skin.SetButtonSkin(     m_RemoveMonster);
-	skin.SetButtonSkin(     m_RemoveIgnore);
-	skin.SetButtonSkin(     m_AddWaypoint);
-	skin.SetButtonSkin(     m_AddMonster);
-	skin.SetButtonSkin(     m_AddIgnore);
-	skin.SetButtonSkin(     m_LoadMinimap);
-	skin.SetButtonSkin(     m_MonsterDown);
-	skin.SetButtonSkin(     m_MonsterUp);
-	skin.SetButtonSkin(     m_AddDelay);
-	skin.SetButtonSkin(     m_dropLootList);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_autoResearch);
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_depotEntryRemove);
+	skin.SetButtonSkin(m_depotEntryAdd);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_RemoveWaypoint);
+	skin.SetButtonSkin(m_RemoveMonster);
+	skin.SetButtonSkin(m_RemoveIgnore);
+	skin.SetButtonSkin(m_AddWaypoint);
+	skin.SetButtonSkin(m_AddMonster);
+	skin.SetButtonSkin(m_AddIgnore);
+	skin.SetButtonSkin(m_LoadMinimap);
+	skin.SetButtonSkin(m_MonsterDown);
+	skin.SetButtonSkin(m_MonsterUp);
+	skin.SetButtonSkin(m_AddDelay);
+	skin.SetButtonSkin(m_dropLootList);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -899,7 +906,6 @@ BOOL CConfigDialog::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
@@ -909,7 +915,6 @@ void CConfigDialog::activateEnableButton(int enable)
 {
 	m_enable.SetCheck(enable);
 }
-
 
 void CConfigDialog::OnToolAutoattackRemoveWaypoint()
 {
@@ -1132,7 +1137,7 @@ void CConfigDialog::OnToolAutoattackRemoveIgnore()
 }
 
 /* Compare two points for qsort */
-int pointTabCompare( const void *arg1, const void *arg2 )
+int pointTabCompare(const void *arg1, const void *arg2)
 {
 	CTibiaMiniMapLabel *point1 = *(CTibiaMiniMapLabel **)arg1;
 	CTibiaMiniMapLabel *point2 = *(CTibiaMiniMapLabel **)arg2;
@@ -1249,7 +1254,8 @@ void CConfigDialog::OnMonsterAttackDown()
 	m_monsterList.SetCurSel(curSel + 1);
 }
 
-void PathfindThread(LPVOID lpParam){
+void PathfindThread(LPVOID lpParam)
+{
 	CTAMiniMapProxy taMiniMap;
 	CTibiaMapProxy tibiaMap;
 
@@ -1278,11 +1284,11 @@ void PathfindThread(LPVOID lpParam){
 	   AfxMessageBox(buf);
 	 */
 	//map all squares around currrent point
-	for(x = startX - radius; x <= startX + radius; x++)
+	for (x = startX - radius; x <= startX + radius; x++)
 	{
 		for (y = startY - radius; y <= startY + radius; y++)
 		{
-			if(!tibiaMap.isPointAvailableNoProh(x, y, startZ))
+			if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 			{
 				CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
 				if (mp->speed != 255 && mp->colour != 0)
@@ -1307,11 +1313,11 @@ void PathfindThread(LPVOID lpParam){
 		startZ += direction[dir][2];
 		if (dir == 0 || dir == 9)//floor change
 		{       //map all new squares around currrent point
-			for(x = startX - radius; x <= startX + radius; x++)
+			for (x = startX - radius; x <= startX + radius; x++)
 			{
 				for (y = startY - radius; y <= startY + radius; y++)
 				{
-					if(!tibiaMap.isPointAvailableNoProh(x, y, startZ))
+					if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 					{
 						CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
 						if (mp->speed != 255 && mp->colour != 0)
@@ -1339,7 +1345,7 @@ void PathfindThread(LPVOID lpParam){
 			//explore one row of map in direction of travel
 			for (x = startX - radius; x <= startX + radius && direction[dir][1]; x++)
 			{
-				if(!tibiaMap.isPointAvailableNoProh(x, y, startZ))
+				if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 				{
 					CTibiaMiniMapPoint* mp = taMiniMap.getMiniMapPoint(x, y, startZ);
 					if (mp->speed != 255 && mp->colour != 0)
@@ -1355,7 +1361,7 @@ void PathfindThread(LPVOID lpParam){
 			//explore one column of map in direction of travel
 			for (y = startY - radius; y <= startY + radius && direction[dir][0]; y++)
 			{
-				if(!tibiaMap.isPointAvailableNoProh(x, y, startZ))
+				if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 				{
 					CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
 					if (mp->speed != 255 && mp->colour != 0)
@@ -1376,7 +1382,8 @@ void PathfindThread(LPVOID lpParam){
 		ExitThread(NULL);
 }
 
-void CConfigDialog::OnAutoResearch(){
+void CConfigDialog::OnAutoResearch()
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter* ch = reader.readSelfCharacter();
 	int curX            = ch->x, curY = ch->y, curZ = ch->z;
@@ -1384,8 +1391,12 @@ void CConfigDialog::OnAutoResearch(){
 	int nextX = 0, nextY = 0, nextZ = 0;
 	if (!reader.isLoggedIn())
 	{
-		curX  = 32333; curY = 31782; curZ = 7;
-		nextX = 32333; nextY = 32222; nextZ = 6;
+		curX  = 32333;
+		curY  = 31782;
+		curZ  = 7;
+		nextX = 32333;
+		nextY = 32222;
+		nextZ = 6;
 		PathfindParams* myData = new PathfindParams(curX, curY, curZ, nextX, nextY, nextZ);
 		pathfindPoints.push(myData);
 	}
@@ -1415,6 +1426,7 @@ void CConfigDialog::OnDropLootList()
 	delete dialog;
 }
 
-void CConfigDialog::OnDropLoot(){
+void CConfigDialog::OnDropLoot()
+{
 	m_dropLootList.EnableWindow(m_dropNotLooted.GetCheck());
 }

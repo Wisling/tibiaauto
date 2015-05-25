@@ -23,7 +23,8 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-Alarm::Alarm() {
+Alarm::Alarm()
+{
 	alarmDescriptor = "<none>";
 	spell           = "";
 	spellDelay      = 0;
@@ -59,8 +60,8 @@ Alarm::Alarm() {
 	runCycle   = 1;
 }
 
-
-Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm, CString desc) {
+Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool run, bool sta, bool dep, CString spe, int cost, int delay, int scr, bool stopwalk, bool log, bool kill, bool shut, int winAct, CString audio, bool event, list<CString> beginModules, list<CString> endModules, bool pers, bool perm, CString desc)
+{
 	alarmDescriptor = desc;
 	startModules    = beginModules;
 	stopModules     = endModules;
@@ -97,91 +98,112 @@ Alarm::Alarm(int type, int attr, int cond, int trigType, CString strTrig, bool r
 	runCycle   = 1;
 }
 
-Alarm::~Alarm(){
+Alarm::~Alarm()
+{
 }
 
 //////////////////////////////////////////////////////////////////////
 // Setters
 //////////////////////////////////////////////////////////////////////
 
-void Alarm::setType(int type) {
+void Alarm::setType(int type)
+{
 	alarmType = type;
 }
 
-void Alarm::setAttribute(int attrib) {
+void Alarm::setAttribute(int attrib)
+{
 	attribute = attrib;
 }
 
-void Alarm::setCondition(int cond) {
+void Alarm::setCondition(int cond)
+{
 	condition = cond;
 }
 
-void Alarm::setTrigger(int triggerType, CString trig) {
+void Alarm::setTrigger(int triggerType, CString trig)
+{
 	trigger.setType(triggerType);
 	trigger.setTriggerText(trig);
 }
 
-void Alarm::setStartModules(list<CString> beginModules) {
+void Alarm::setStartModules(list<CString> beginModules)
+{
 	startModules = beginModules;
 }
 
-void Alarm::setStopModules(list<CString> endModules) {
+void Alarm::setStopModules(list<CString> endModules)
+{
 	stopModules = endModules;
 }
 
-void Alarm::setGoToRunaway(bool onOff) {
+void Alarm::setGoToRunaway(bool onOff)
+{
 	runaway = onOff;
 }
 
-void Alarm::setGoToStart(bool onOff) {
+void Alarm::setGoToStart(bool onOff)
+{
 	start = onOff;
 }
 
-void Alarm::setGoToDepot(bool onOff) {
+void Alarm::setGoToDepot(bool onOff)
+{
 	depot = onOff;
 }
 
-void Alarm::setCastSpell(CString spellToCast) {
+void Alarm::setCastSpell(CString spellToCast)
+{
 	spell = spellToCast;
 }
 
-void Alarm::setTakeScreenshot(int screenshotOption) {
+void Alarm::setTakeScreenshot(int screenshotOption)
+{
 	screenshot = screenshotOption;
 }
 
-void Alarm::setStopWalking(bool onOff) {
+void Alarm::setStopWalking(bool onOff)
+{
 	stopWalking = onOff;
 }
 
-void Alarm::setLogout(bool onOff) {
+void Alarm::setLogout(bool onOff)
+{
 	logout = onOff;
 }
 
-void Alarm::setKillClient(bool onOff) {
+void Alarm::setKillClient(bool onOff)
+{
 	killTibia = onOff;
 }
 
-void Alarm::setShutdownComputer(bool onOff) {
+void Alarm::setShutdownComputer(bool onOff)
+{
 	shutdown = onOff;
 }
 
-void Alarm::setWindowAction(int windowActionOpt) {
+void Alarm::setWindowAction(int windowActionOpt)
+{
 	windowAction = windowActionOpt;
 }
 
-void Alarm::setAudioAlarm(CString waveToPlay) {
+void Alarm::setAudioAlarm(CString waveToPlay)
+{
 	sound = waveToPlay;
 }
 
-void Alarm::setLogEvents(bool onOff) {
+void Alarm::setLogEvents(bool onOff)
+{
 	logEvents = onOff;
 }
 
-void Alarm::setPersistent(bool onOff) {
+void Alarm::setPersistent(bool onOff)
+{
 	persistent = onOff;
 }
 
-void Alarm::setPermanent(bool onOff) {
+void Alarm::setPermanent(bool onOff)
+{
 	permanent = onOff;
 }
 
@@ -189,67 +211,83 @@ void Alarm::setPermanent(bool onOff) {
 // Actions/Accessors
 //////////////////////////////////////////////////////////////////////
 
-list<CString> Alarm::getStopModules() {
+list<CString> Alarm::getStopModules()
+{
 	return stopModules;
 }
 
-list<CString> Alarm::getStartModules() {
+list<CString> Alarm::getStartModules()
+{
 	return startModules;
 }
 
-bool Alarm::getLogout() {
+bool Alarm::getLogout()
+{
 	return logout;
 }
 
-bool Alarm::getKillClient() {
+bool Alarm::getKillClient()
+{
 	return killTibia;
 }
 
-bool Alarm::getShutdownComputer() {
+bool Alarm::getShutdownComputer()
+{
 	return shutdown;
 }
 
-int Alarm::getWindowAction() {
+int Alarm::getWindowAction()
+{
 	return windowAction;
 }
 
-CString Alarm::getAlarm() {
+CString Alarm::getAlarm()
+{
 	return sound;
 }
 
-bool Alarm::getLogEvents() {
+bool Alarm::getLogEvents()
+{
 	return logEvents;
 }
 
-int Alarm::getTakeScreenshot() {
+int Alarm::getTakeScreenshot()
+{
 	return screenshot;
 }
 
-bool Alarm::getGoToRunaway() {
+bool Alarm::getGoToRunaway()
+{
 	return runaway;
 }
 
-bool Alarm::getGoToStart() {
+bool Alarm::getGoToStart()
+{
 	return start;
 }
 
-bool Alarm::getGoToDepot() {
+bool Alarm::getGoToDepot()
+{
 	return depot;
 }
 
-CString Alarm::getCastSpell() {
+CString Alarm::getCastSpell()
+{
 	return spell;
 }
 
-bool Alarm::getStopWalking() {
+bool Alarm::getStopWalking()
+{
 	return stopWalking;
 }
 
-bool Alarm::getPersistent() {
+bool Alarm::getPersistent()
+{
 	return persistent;
 }
 
-bool Alarm::getPermanent() {
+bool Alarm::getPermanent()
+{
 	return permanent;
 }
 
@@ -257,7 +295,8 @@ bool Alarm::getPermanent() {
 // Methods
 //////////////////////////////////////////////////////////////////////
 
-void Alarm::initializeCharacter() {
+void Alarm::initializeCharacter()
+{
 	//Initialize the character's starting info
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -277,7 +316,8 @@ void Alarm::initializeCharacter() {
 	delete self;
 }
 
-bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) {
+bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg)
+{
 	bool retval = false;
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -451,7 +491,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		switch (condition)
 		{
 		case EQUAL:
-			switch(attribute)
+			switch (attribute)
 			{
 			case HP:
 				retval = self->hp == trigger.getIntTrigger();
@@ -477,7 +517,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			}
 			break;
 		case LESS:
-			switch(attribute)
+			switch (attribute)
 			{
 			case HP:
 				retval = self->hp < trigger.getIntTrigger();
@@ -503,7 +543,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			}
 			break;
 		case MORE:
-			switch(attribute)
+			switch (attribute)
 			{
 			case HP:
 				retval = self->hp > trigger.getIntTrigger();
@@ -534,7 +574,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		switch (condition)
 		{
 		case EQUAL:
-			switch(attribute)
+			switch (attribute)
 			{
 			case 0:
 				retval = countAllFood() == trigger.getIntTrigger();
@@ -545,7 +585,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			}
 			break;
 		case LESS:
-			switch(attribute)
+			switch (attribute)
 			{
 			case 0:
 				retval = countAllFood() < trigger.getIntTrigger();
@@ -556,7 +596,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			}
 			break;
 		case MORE:
-			switch(attribute)
+			switch (attribute)
 			{
 			case 0:
 				retval = countAllFood() > trigger.getIntTrigger();
@@ -582,7 +622,7 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 		case ISONSCREENFOR:
 		{
 			bool onscreen = (bitarray & (1 << attribute)) != 0;
-			if(onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
+			if (onscreen && onScreenAt != 0 && time(NULL) - onScreenAt >= trigger.getIntTrigger())
 			{
 				retval = true;
 			}
@@ -644,7 +684,8 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 			break;
 		}
 		break;
-	case MESSAGE: {
+	case MESSAGE:
+	{
 		int isSpell = msg && (options & OPTIONS_IGNORE_SPELLS) && isSpellMessage(msg->msg);
 		switch (attribute)
 		{
@@ -741,14 +782,15 @@ bool Alarm::checkAlarm(char whiteList[100][32], int options, tibiaMessage* msg) 
 // This tells TA to finish it even after the alarm criteria is no longer met
 // Input: all state variables used to determine whether we should keep any alarm on
 // Output: whether, for the current alarm, we should keep it on
-bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut) {
+bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut)
+{
 	//walking to a destination
-	if(Alarm::getGoToDepot() || Alarm::getGoToStart() || Alarm::getGoToRunaway())
-		if(!isDestinationReached)
+	if (Alarm::getGoToDepot() || Alarm::getGoToStart() || Alarm::getGoToRunaway())
+		if (!isDestinationReached)
 			return true;
 	//logging out
-	if(Alarm::getLogout())
-		if(!isLoggedOut)
+	if (Alarm::getLogout())
+		if (!isLoggedOut)
 			return true;
 	//taking screenshots
 	//Not needed - the alarm always finishes screenshots anyway by default
@@ -757,12 +799,12 @@ bool Alarm::keepPersistent(bool isDestinationReached, bool isLoggedOut) {
 	return false;
 }
 
-
 //////////////////////////////////////////////////////////////////////
 // Triggers
 //////////////////////////////////////////////////////////////////////
 
-int Alarm::spaceAvailable() {
+int Alarm::spaceAvailable()
+{
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	int space = 0;
@@ -777,7 +819,8 @@ int Alarm::spaceAvailable() {
 	return space;
 }
 
-int Alarm::onScreenCheck(char whiteList[100][32], int options) {
+int Alarm::onScreenCheck(char whiteList[100][32], int options)
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaCharacter *self      = reader.readSelfCharacter();
@@ -814,13 +857,23 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 			}
 			if (ch->tibiaId != self->tibiaId && (ch->z == self->z || (options & OPTIONS_BATTLE_PARANOIA) || ((options & OPTIONS_BATTLE_ANXIETY) && abs(ch->z - self->z) <= 1)))
 			{
-				switch(ch->skulls)
+				switch (ch->skulls)
 				{
-				case YELLOW_SKULL: retval |= 1 << YELLOWSKULL; break;
-				case GREEN_SKULL: retval  |= 1 << GREENSKULL; break;
-				case WHITE_SKULL: retval  |= 1 << WHITESKULL; break;
-				case RED_SKULL: retval    |= 1 << REDSKULL; break;
-				case BLACK_SKULL: retval  |= 1 << BLACKSKULL; break;
+				case YELLOW_SKULL:
+					retval |= 1 << YELLOWSKULL;
+					break;
+				case GREEN_SKULL:
+					retval |= 1 << GREENSKULL;
+					break;
+				case WHITE_SKULL:
+					retval |= 1 << WHITESKULL;
+					break;
+				case RED_SKULL:
+					retval |= 1 << REDSKULL;
+					break;
+				case BLACK_SKULL:
+					retval |= 1 << BLACKSKULL;
+					break;
 				}
 			}
 		}
@@ -830,7 +883,8 @@ int Alarm::onScreenCheck(char whiteList[100][32], int options) {
 	return retval;
 }
 
-bool Alarm::vipOnline(int iconIndex, bool checkOnline /*=true*/) {
+bool Alarm::vipOnline(int iconIndex, bool checkOnline /*=true*/)
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaVIPEntry *vip;
@@ -849,7 +903,8 @@ bool Alarm::vipOnline(int iconIndex, bool checkOnline /*=true*/) {
 	return false;
 }
 
-bool Alarm::vipNameOnline(CString name, bool checkOnline /*=true*/) {
+bool Alarm::vipNameOnline(CString name, bool checkOnline /*=true*/)
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	CTibiaVIPEntry *vip;
@@ -868,12 +923,12 @@ bool Alarm::vipNameOnline(CString name, bool checkOnline /*=true*/) {
 	return false;
 }
 
-
 //////////////////////////////////////////////////////////////////////
 // Helper Functions
 //////////////////////////////////////////////////////////////////////
 
-int Alarm::countAllItemsOfType(int objectId) {
+int Alarm::countAllItemsOfType(int objectId)
+{
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -896,7 +951,8 @@ int Alarm::countAllItemsOfType(int objectId) {
 	return itemCount;
 }
 
-int Alarm::countAllFood() {
+int Alarm::countAllFood()
+{
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
 	int foodCount = 0;
@@ -910,7 +966,8 @@ int Alarm::countAllFood() {
 	return foodCount;
 }
 
-bool Alarm::OnList(char whiteList[100][32], char name[]) {
+bool Alarm::OnList(char whiteList[100][32], char name[])
+{
 	int i = 0;
 	while (IsCharAlphaNumeric(whiteList[i][0]))
 	{
@@ -921,7 +978,8 @@ bool Alarm::OnList(char whiteList[100][32], char name[]) {
 	return false;
 }
 
-bool Alarm::isSpellMessage(char *msg) {
+bool Alarm::isSpellMessage(char *msg)
+{
 	const char *spellPre[] = {"ex", "ad", "ut", "al", NULL};
 	const char *spellSuf[] = {"ana", "eta", "evo", "ito", "ori", "ura", "ani", "iva", "amo", NULL};
 	char newmsg[128]       = {'\0'};
@@ -961,42 +1019,52 @@ bool Alarm::isSpellMessage(char *msg) {
 	return false;
 }
 
-int Alarm::getAlarmType() {
+int Alarm::getAlarmType()
+{
 	return alarmType;
 }
 
-int Alarm::getAttribute() {
+int Alarm::getAttribute()
+{
 	return attribute;
 }
 
-int Alarm::getCondition() {
+int Alarm::getCondition()
+{
 	return condition;
 }
 
-int Alarm::getManaCost() {
+int Alarm::getManaCost()
+{
 	return manaCost;
 }
 
-void Alarm::setManaCost(int cost) {
+void Alarm::setManaCost(int cost)
+{
 	manaCost = cost;
 }
 
-CString Alarm::getDescriptor() {
+CString Alarm::getDescriptor()
+{
 	return alarmDescriptor;
 }
 
-void Alarm::setDescriptor(CString descriptor) {
+void Alarm::setDescriptor(CString descriptor)
+{
 	alarmDescriptor = descriptor; // copies entire CString
 }
 
-void Alarm::setSpellDelay(int delay) {
+void Alarm::setSpellDelay(int delay)
+{
 	spellDelay = delay;
 }
 
-int Alarm::getSpellDelay() {
+int Alarm::getSpellDelay()
+{
 	return spellDelay;
 }
 
-CTrigger Alarm::getTrigger() {
+CTrigger Alarm::getTrigger()
+{
 	return trigger;
 }

@@ -24,11 +24,13 @@ struct ipcMessage
 	char payload[1024];
 	time_t tm;
 public:
-	ipcMessage(){
+	ipcMessage()
+	{
 		messageType = 0;
 		memset(payload, 0, 1024);
 		tm = 0;
 	}
+
 	void send()
 	{
 		this->tm = time(NULL);
@@ -54,7 +56,6 @@ CPackSender::CPackSender()
 CPackSender::~CPackSender()
 {
 }
-
 
 void CPackSender::sendPacket(char *buf)
 {
@@ -173,6 +174,7 @@ void CPackSender::useItemInContainer(int objectId, int contNr, int pos)
 
 	sendPacket(retbuf);
 }
+
 int CPackSender::openAutoContainerFromFloor(int objectId, int x, int y, int z)
 {
 	CMemReader reader;
@@ -180,6 +182,7 @@ int CPackSender::openAutoContainerFromFloor(int objectId, int x, int y, int z)
 	openContainerFromFloor(objectId, x, y, z, targetBag);
 	return targetBag;
 }
+
 void CPackSender::openContainerFromFloor(int objectId, int x, int y, int z, int targetBag)
 {
 	char retbuf[256];
@@ -268,12 +271,13 @@ void CPackSender::useWithObjectSend(int sourceObjectId, int sourceX, int sourceY
 	sendbuf[1] = 0;
 	sendbuf[2] = 0x83;
 
-	sendbuf[3]  = sourceX & 0xff;
-	sendbuf[4]  = (sourceX >> 8) & 0xff;
-	sendbuf[5]  = sourceY_Cont & 0xff;
-	sendbuf[6]  = (sourceY_Cont >> 8) & 0xff;
-	sendbuf[7]  = sourceZ_Pos;
-	sendbuf[8]  = sourceObjectId & 0xff;;
+	sendbuf[3] = sourceX & 0xff;
+	sendbuf[4] = (sourceX >> 8) & 0xff;
+	sendbuf[5] = sourceY_Cont & 0xff;
+	sendbuf[6] = (sourceY_Cont >> 8) & 0xff;
+	sendbuf[7] = sourceZ_Pos;
+	sendbuf[8] = sourceObjectId & 0xff;
+	;
 	sendbuf[9]  = (sourceObjectId >> 8) & 0xff;
 	sendbuf[10] = max(0, sourceInd_Pos);
 
@@ -294,42 +298,48 @@ void CPackSender::stepRight()
 	int i[1] = {1};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepUpRight()
 {
 	int i[1] = {2};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepUp()
 {
 	int i[1] = {3};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepUpLeft()
 {
 	int i[1] = {4};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepLeft()
 {
 	int i[1] = {5};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepDownLeft()
 {
 	int i[1] = {6};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepDown()
 {
 	int i[1] = {7};
 	stepMulti(i, 1);
 }
+
 void CPackSender::stepDownRight()
 {
 	int i[1] = {8};
 	stepMulti(i, 1);
 }
-
 
 // Tibia client sends single steps instead of multisteps of distance 1
 void CPackSender::stepMulti(int *direction, int size)
@@ -355,16 +365,32 @@ void CPackSender::stepMulti(int *direction, int size)
 	{
 		sendbuf[0] = 1;
 		sendbuf[1] = 0;
-		switch(direction[0])
+		switch (direction[0])
 		{
-		case 3: sendbuf[2] = 0x65; break;
-		case 1: sendbuf[2] = 0x66; break;
-		case 7: sendbuf[2] = 0x67; break;
-		case 5: sendbuf[2] = 0x68; break;
-		case 2: sendbuf[2] = 0x6A; break;
-		case 8: sendbuf[2] = 0x6B; break;
-		case 6: sendbuf[2] = 0x6C; break;
-		case 4: sendbuf[2] = 0x6D; break;
+		case 3:
+			sendbuf[2] = 0x65;
+			break;
+		case 1:
+			sendbuf[2] = 0x66;
+			break;
+		case 7:
+			sendbuf[2] = 0x67;
+			break;
+		case 5:
+			sendbuf[2] = 0x68;
+			break;
+		case 2:
+			sendbuf[2] = 0x6A;
+			break;
+		case 8:
+			sendbuf[2] = 0x6B;
+			break;
+		case 6:
+			sendbuf[2] = 0x6C;
+			break;
+		case 4:
+			sendbuf[2] = 0x6D;
+			break;
 		}
 	}
 	else
@@ -428,7 +454,6 @@ void CPackSender::follow(int tibiaCharId)
 	sendPacket(sendbuf);
 }
 
-
 void CPackSender::closeContainer(int contNr)
 {
 	char sendbuf[4];
@@ -452,12 +477,13 @@ void CPackSender::castRuneAgainstCreature(int contNr, int itemPos, int runeObjec
 	sendbuf[1] = 0;
 	sendbuf[2] = 0x84;
 
-	sendbuf[3]  = 0xff;
-	sendbuf[4]  = 0xff;
-	sendbuf[5]  = contNr & 0xff;
-	sendbuf[6]  = (contNr >> 8) & 0xff;
-	sendbuf[7]  = itemPos;
-	sendbuf[8]  = runeObjectId & 0xff;;
+	sendbuf[3] = 0xff;
+	sendbuf[4] = 0xff;
+	sendbuf[5] = contNr & 0xff;
+	sendbuf[6] = (contNr >> 8) & 0xff;
+	sendbuf[7] = itemPos;
+	sendbuf[8] = runeObjectId & 0xff;
+	;
 	sendbuf[9]  = (runeObjectId >> 8) & 0xff;
 	sendbuf[10] = itemPos;
 
@@ -484,12 +510,13 @@ void CPackSender::castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId
 	sendbuf[1] = 0;
 	sendbuf[2] = 0x83;
 
-	sendbuf[3]  = 0xff;
-	sendbuf[4]  = 0xff;
-	sendbuf[5]  = contNr & 0xff;
-	sendbuf[6]  = (contNr >> 8) & 0xff;
-	sendbuf[7]  = itemPos;
-	sendbuf[8]  = runeObjectId & 0xff;;
+	sendbuf[3] = 0xff;
+	sendbuf[4] = 0xff;
+	sendbuf[5] = contNr & 0xff;
+	sendbuf[6] = (contNr >> 8) & 0xff;
+	sendbuf[7] = itemPos;
+	sendbuf[8] = runeObjectId & 0xff;
+	;
 	sendbuf[9]  = (runeObjectId >> 8) & 0xff;
 	sendbuf[10] = itemPos;
 
@@ -550,26 +577,29 @@ void CPackSender::useItemOnCreatureSend(int objectId, int x, int y_Cont, int z_P
 	sendPacket(retbuf);
 }
 
-
 void CPackSender::attackMode(int attack, int follow, int attLock, int PVPMode)
 {
 	char sendbuf[7];
 
-	if(attack != 1 && attack != 2 && attack != 3)
+	if (attack != 1 && attack != 2 && attack != 3)
 	{
-		sendTAMessage("Packet error attack"); return;
+		sendTAMessage("Packet error attack");
+		return;
 	}
-	if(follow != 0 && follow != 1)
+	if (follow != 0 && follow != 1)
 	{
-		sendTAMessage("Packet error follow"); return;
+		sendTAMessage("Packet error follow");
+		return;
 	}
-	if(attLock != 0 && attLock != 1)
+	if (attLock != 0 && attLock != 1)
 	{
-		sendTAMessage("Packet error attklock"); return;
+		sendTAMessage("Packet error attklock");
+		return;
 	}
-	if(PVPMode != 0 && PVPMode != 1 && PVPMode != 2 && PVPMode != 3)
+	if (PVPMode != 0 && PVPMode != 1 && PVPMode != 2 && PVPMode != 3)
 	{
-		sendTAMessage("Packet error PVPMode"); return;
+		sendTAMessage("Packet error PVPMode");
+		return;
 	}
 
 	sendbuf[0] = 5;
@@ -593,7 +623,6 @@ void CPackSender::revealFish(int enable)
 	else
 		sendPacket(sendbuf, 202);
 }
-
 
 void CPackSender::sendTAMessage(char *msg)
 {
@@ -788,7 +817,6 @@ void CPackSender::useItemOnFloor(int objectId, int x, int y, int z)
 	sendPacket(retbuf);
 }
 
-
 void CPackSender::tell(char *msg, char *playerName)
 {
 	char retbuf[65536];
@@ -924,7 +952,6 @@ void CPackSender::turnDown()
 	sendPacket(retbuf);
 }
 
-
 void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 {
 	struct ipcMessage mess;
@@ -977,6 +1004,7 @@ void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen)
 	memcpy(mess.payload + 12, regExp, regLen);
 	mess.send();
 }
+
 void CPackSender::unregisterInpacketRegex(int handle)
 {
 	struct ipcMessage mess;
@@ -1022,7 +1050,6 @@ void CPackSender::ignoreLook(time_t end)
 
 	mess.send();
 }
-
 
 void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle)
 {

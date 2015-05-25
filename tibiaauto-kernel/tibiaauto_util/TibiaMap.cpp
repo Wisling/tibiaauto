@@ -33,7 +33,6 @@ AFX_INLINE UINT AFXAPI HashKey<point*> (point* key)
 	return key->x * 191 + key->y * 257 + key->z * 317;
 }
 
-
 typedef point* LPpoint;
 template<>
 AFX_INLINE BOOL AFXAPI CompareElements<LPpoint, LPpoint>
@@ -71,7 +70,6 @@ CTibiaMap::~CTibiaMap()
 {
 	free(prohList);
 }
-
 
 int CTibiaMap::isPointAvailable(int x, int y, int z)
 {
@@ -119,7 +117,7 @@ void CTibiaMap::clear()
 	POSITION pos = tibiaMap2.GetStartPosition();
 	point *p;
 	pointData *pd;
-	while(pos != NULL)
+	while (pos != NULL)
 	{
 		tibiaMap2.GetNextAssoc(pos, p, pd);
 		delete p;
@@ -134,7 +132,8 @@ void CTibiaMap::enlarge()
 {
 }
 
-int CTibiaMap::isPointLonger(int x, int y, int z, int prevX, int prevY, int prevZ){
+int CTibiaMap::isPointLonger(int x, int y, int z, int prevX, int prevY, int prevZ)
+{
 	return x != prevX && y != prevY || z != prevZ;
 }
 
@@ -181,7 +180,7 @@ void CTibiaMap::setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int 
 //			myfile <<"skip"<<pd->prevX<<"\n";
 //			myfile.close();
 		}
-		else if(!(x == pd->prevX && y == pd->prevY && z == pd->prevZ))
+		else if (!(x == pd->prevX && y == pd->prevY && z == pd->prevZ))
 		{
 			//return;
 //			ofstream myfile;
@@ -195,13 +194,14 @@ void CTibiaMap::setBestPrevPoint(int x, int y, int z, int prevX, int prevY, int 
 			//setPointDistance(x,y,z,min(newDist,oldDist));
 
 			//return is new point less distance than old point
-			if(newDist < oldDist)
+			if (newDist < oldDist)
 				setPrevPoint(x, y, z, prevX, prevY, prevZ);
 		}
 	}
 }
 
-int CTibiaMap::intPoint(point p) {
+int CTibiaMap::intPoint(point p)
+{
 	return p.x * 1000000 + p.y * 10 + p.z;
 }
 
@@ -233,7 +233,6 @@ int CTibiaMap::getPointSpeed(int x, int y, int z)
 
 	return 0;
 }
-
 
 void CTibiaMap::setPointSpeed(int x, int y, int z, int speed)
 {
@@ -286,7 +285,7 @@ void CTibiaMap::clearPrevPoint()
 	{
 		point *p      = NULL;
 		pointData *pd = NULL;
-		tibiaMap2.GetNextAssoc( pos, p, pd );
+		tibiaMap2.GetNextAssoc(pos, p, pd);
 		pd->prevX = 0;
 		pd->prevY = 0;
 		pd->prevZ = 0;
@@ -300,11 +299,10 @@ void CTibiaMap::clearDistance()
 	{
 		point *p      = NULL;
 		pointData *pd = NULL;
-		tibiaMap2.GetNextAssoc( pos, p, pd );
+		tibiaMap2.GetNextAssoc(pos, p, pd);
 		pd->dist = 0;
 	}
 }
-
 
 void CTibiaMap::clearLocalPrevPoint(int x, int y, int z, int radius)
 {
@@ -313,7 +311,7 @@ void CTibiaMap::clearLocalPrevPoint(int x, int y, int z, int radius)
 	{
 		point *p      = NULL;
 		pointData *pd = NULL;
-		tibiaMap2.GetNextAssoc( pos, p, pd );
+		tibiaMap2.GetNextAssoc(pos, p, pd);
 		if (abs(x - pd->prevX) <= radius && abs(y - pd->prevY) <= radius && z == pd->prevZ)
 		{
 			pd->prevX = 0;
@@ -403,7 +401,6 @@ int CTibiaMap::size()
 	return tibiaMap2.GetCount();
 }
 
-
 struct point CTibiaMap::getPointByNr(int nr)
 {
 	if (tibiaMap2.GetCount() != pointCacheSize)
@@ -426,7 +423,7 @@ struct point CTibiaMap::getPointByNr(int nr)
 		{
 			point *p      = NULL;
 			pointData *pd = NULL;
-			tibiaMap2.GetNextAssoc( pos, p, pd );
+			tibiaMap2.GetNextAssoc(pos, p, pd);
 			pointCache[pointCachePos++] = point(p->x, p->y, p->z);
 		}
 	}
@@ -456,7 +453,8 @@ int CTibiaMap::getPointTypeNoProh(int x, int y, int z)
 	return 0;
 }
 
-point CTibiaMap::getDestPoint(int x, int y, int z){
+point CTibiaMap::getDestPoint(int x, int y, int z)
+{
 	if (isPointAvailableNoProh(x, y, z))
 	{
 		struct point p       = point(x, y, z);
@@ -468,7 +466,8 @@ point CTibiaMap::getDestPoint(int x, int y, int z){
 	return point(0, 0, 0);
 }
 
-void CTibiaMap::setDestPoint(int x, int y, int z, int destX, int destY, int destZ){
+void CTibiaMap::setDestPoint(int x, int y, int z, int destX, int destY, int destZ)
+{
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;
 	if (tibiaMap2.Lookup(&p, pd))

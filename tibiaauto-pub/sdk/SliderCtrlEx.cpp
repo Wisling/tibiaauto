@@ -30,20 +30,19 @@ CSliderCtrlEx::CSliderCtrlEx()
 	m_dumpBitmaps = FALSE;  // TRUE if we should dump intermediate bitmaps to file for debugging
 
 	// Try and get GradientFill from this library (which may not be available)
-	hinst_msimg32 = LoadLibrary( "msimg32.dll" );
+	hinst_msimg32 = LoadLibrary("msimg32.dll");
 	GradientFill  = NULL;
-	if(hinst_msimg32)
-		GradientFill = ((LPFNDLLFUNC1) GetProcAddress( hinst_msimg32, "GradientFill" ));
+	if (hinst_msimg32)
+		GradientFill = ((LPFNDLLFUNC1) GetProcAddress(hinst_msimg32, "GradientFill"));
 
 	m_extendColors = TRUE;  // extend colors set at min and max to edge of control window
 }
 
 CSliderCtrlEx::~CSliderCtrlEx()
 {
-	if(hinst_msimg32)
-		FreeLibrary( hinst_msimg32 );
+	if (hinst_msimg32)
+		FreeLibrary(hinst_msimg32);
 }
-
 
 BEGIN_MESSAGE_MAP(CSliderCtrlEx, CSliderCtrl)
 //{{AFX_MSG_MAP(CSliderCtrlEx)
@@ -69,18 +68,18 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	// If we want to be notified about subcontrol painting, we have to say so when
 	// we get the initial PREPAINT message.
 	////////////////////////////////////////////////////////////////////////////////
-	if(lpCustDraw->dwDrawStage == CDDS_PREPAINT)
+	if (lpCustDraw->dwDrawStage == CDDS_PREPAINT)
 	{
 		// should we report slider's position?
 		int curVal = GetPos();
-		if((m_Callback != NULL) && (curVal != m_oldPosition))
+		if ((m_Callback != NULL) && (curVal != m_oldPosition))
 		{
 			m_oldPosition = curVal;
 			m_Callback(m_p2Object, m_data1, curVal, m_IsDragging);
 		}
 
 		// If we don't have any special coloring to do, skip all the silliness...
-		if(loopMax <= 0)
+		if (loopMax <= 0)
 		{
 			*pResult = CDRF_DODEFAULT;
 		}
@@ -133,7 +132,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	// everything when we get to the THUMB.
 	/////////////////////////////////////////////////////////////////////////////////
 
-	if((lpCustDraw->dwDrawStage == CDDS_ITEMPREPAINT) && (lpCustDraw->dwItemSpec != TBCD_THUMB))
+	if ((lpCustDraw->dwDrawStage == CDDS_ITEMPREPAINT) && (lpCustDraw->dwItemSpec != TBCD_THUMB))
 	{
 		*pResult = CDRF_DODEFAULT;
 		return;
@@ -181,7 +180,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	CBitmap* SaveCBmpOld = (CBitmap *)SaveCDC.SelectObject(SaveCBmp);
 	SaveCDC.BitBlt(0, 0, iWidth, iHeight, pDC, crect.left, crect.top, SRCCOPY);
 
-	if(m_dumpBitmaps)       // debugging stuff
+	if (m_dumpBitmaps)       // debugging stuff
 
 		SaveBitmap("MonoTicsMask.bmp", SaveCBmp);
 
@@ -201,7 +200,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	////////////////////////////////////////////////////////////////////////////////
 	memDC.BitBlt(0, 0, iWidth, iHeight, pDC, 0, 0, SRCCOPY);
 
-	if(m_dumpBitmaps)       // debugging
+	if (m_dumpBitmaps)       // debugging
 
 		SaveBitmap("ScrnStart.bmp", memBM);
 
@@ -210,7 +209,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	// don't get notifications unless there are colors to print, but we may have
 	// a race condition and it is best to check.
 	/////////////////////////////////////////////////////////////////////////////
-	if(loopMax)
+	if (loopMax)
 	{
 		/////////////////////////////////////////////////////////////////////////////////
 		// We need to draw colors over the subrange of the channel that the center of the
@@ -225,7 +224,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 
 		// For unknown reasons, GetChannelRect() returns a rectangle
 		// as though it were a horizonally oriented slider, even if it isn't!
-		if(IsVertical)
+		if (IsVertical)
 		{
 			CRect n;        // could probably just change chanRect directly
 			n.left   = chanRect.top;
@@ -238,7 +237,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 
 		// Offset into client rectangle for beginning of coloring range
 		int Offset = chanRect.left + thmbRect.Width() / 2;
-		if(IsVertical)
+		if (IsVertical)
 			Offset = chanRect.top + thmbRect.Height() / 2;
 
 		// Range for center of thumb on the channel
@@ -255,7 +254,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 		COLORREF startColor = 0, endColor = 0;
 
 		int loop;       // Loop through the array of color ranges
-		for(loop = 0; loop < loopMax; loop++)
+		for (loop = 0; loop < loopMax; loop++)
 		{
 			clrRange clr;
 			clr = colorList[loop];
@@ -263,17 +262,17 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			// Get the good values. If not set, then entire range is good
 			int lval = clr.lval;
 			int hval = clr.hval;
-			if((lval < min) || (lval > max))
+			if ((lval < min) || (lval > max))
 				lval = min;
-			if((hval > max) || (hval < min))
+			if ((hval > max) || (hval < min))
 				hval = max;
 
-			if(lval == min)
+			if (lval == min)
 			{
 				gotStartColor = TRUE;
 				startColor    = clr.strColor;
 			}
-			if(hval == max)
+			if (hval == max)
 			{
 				gotEndColor = TRUE;
 				endColor    = clr.endColor;
@@ -295,7 +294,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			sB = GetBValue(clr.strColor);
 			eB = GetBValue(clr.endColor);
 
-			if(GradientFill != NULL)
+			if (GradientFill != NULL)
 			{
 				TRIVERTEX vert[2];      // for specifying range to gradient fill
 				GRADIENT_RECT gRect;
@@ -318,7 +317,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 				gRect.LowerRight = 1;
 
 				BOOL retval;
-				if(IsVertical)  // vertically oriented?
+				if (IsVertical)  // vertically oriented?
 				{
 					vert[0].x = 0;
 					vert[0].y = Offset + minVal;
@@ -339,19 +338,19 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			{
 				// Homebrew version of GradientFill for rectangles -- works pretty well, sort of.
 				int i;
-				for(i = 0; i < widthVal; i++)   // for each pixel column in bitmap color range
+				for (i = 0; i < widthVal; i++)   // for each pixel column in bitmap color range
 				{
 					int R = sR;
 					int G = sG;
 					int B = sB;
-					if(widthVal)
+					if (widthVal)
 					{
 						R += ::MulDiv(eR - sR, i, widthVal);
 						G += ::MulDiv(eG - sG, i, widthVal);
 						B += ::MulDiv(eB - sB, i, widthVal);
 					}
 
-					if(IsVertical)
+					if (IsVertical)
 					{
 						// widthVal really refers to height
 						//memDC.FillSolidRect(0,minVal+i,iWidth,widthVal-i,GetNearestColor(memDC,RGB(R,G,B)));
@@ -376,7 +375,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			}
 		}
 
-		if(m_extendColors)
+		if (m_extendColors)
 		{
 			// If we have put in colors at the slider ends, then extend those same
 			// colors to the rest of the background. We could try to determine the
@@ -386,18 +385,18 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 			// If you want to see why this is done, just set m_extendColors to FALSE
 			// and take a look at the control. Ugly. But there might be a legitimate
 			// reason for it so leave the option to suppress.
-			if(IsVertical)
+			if (IsVertical)
 			{
-				if(gotStartColor)
+				if (gotStartColor)
 					memDC.FillSolidRect(0, 0, iWidth, Offset, startColor);
-				if(gotEndColor)
+				if (gotEndColor)
 					memDC.FillSolidRect(0, iHeight - Offset - 1, iWidth, Offset, endColor);
 			}
 			else
 			{
-				if(gotStartColor)
+				if (gotStartColor)
 					memDC.FillSolidRect(0, 0, Offset, iHeight, startColor);
-				if(gotEndColor)
+				if (gotEndColor)
 					memDC.FillSolidRect(iWidth - Offset - 1, 0, Offset, iHeight, endColor);
 			}
 		}
@@ -405,7 +404,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 
 	// The screen bitmap should now have only the color ranges filled in, no tic
 	// marks should be visible.
-	if(m_dumpBitmaps)       // debugging
+	if (m_dumpBitmaps)       // debugging
 
 		SaveBitmap("ScrnColors.bmp", memBM);
 
@@ -430,7 +429,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	memDC.SetTextColor(pDC->GetTextColor());
 	memDC.BitBlt(0, 0, iWidth, iHeight, &SaveCDC, 0, 0, SRCINVERT);
 
-	if(m_dumpBitmaps)       // debugging
+	if (m_dumpBitmaps)       // debugging
 
 		SaveBitmap("ScrnInvert.bmp", memBM);
 
@@ -439,7 +438,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	// rest alone. The tic marks wind up black.
 	memDC.BitBlt(0, 0, iWidth, iHeight, &SaveCDC, 0, 0, SRCAND);
 
-	if(m_dumpBitmaps)       // debugging
+	if (m_dumpBitmaps)       // debugging
 
 		SaveBitmap("ScrnAnd.bmp", memBM);
 
@@ -447,7 +446,7 @@ void CSliderCtrlEx::OnCustomDraw(NMHDR* pNMHDR, LRESULT* pResult)
 	// marks in the SaveCDC bitmap are white, they get inverted to black.
 	memDC.BitBlt(0, 0, iWidth, iHeight, &SaveCDC, 0, 0, SRCINVERT);
 
-	if(m_dumpBitmaps)       // debugging
+	if (m_dumpBitmaps)       // debugging
 
 		SaveBitmap("ScrnFinal.bmp", memBM);
 
@@ -479,15 +478,15 @@ BOOL CSliderCtrlEx::AddColor(int nLow, int nHigh, COLORREF strColor, COLORREF en
 	int l, h;
 	GetRange(l, h);
 
-	if((nLow < l) || (nHigh > h))   // sanity check
+	if ((nLow < l) || (nHigh > h))   // sanity check
 	{
-		if(!errResponse)
+		if (!errResponse)
 			return FALSE;   // merely indicate failure
-		if(errResponse > 0)     // force in range and continue (but indicate a problem)
+		if (errResponse > 0)     // force in range and continue (but indicate a problem)
 		{
-			if(nLow < l)
+			if (nLow < l)
 				nLow = l;
-			if(nHigh > h)
+			if (nHigh > h)
 				nHigh = h;
 			retval = FALSE; // there was an error, but it has been sort-of corrected
 		}
@@ -526,7 +525,7 @@ int CSliderCtrlEx::setErrResponse(int resp)
 void CSliderCtrlEx::SetRangeMin(int nMin, BOOL bRedraw)
 {
 	int l = GetRangeMin();
-	if(nMin < l)
+	if (nMin < l)
 		clearColors();  // old color ranges are almost certainly bogus
 	CSliderCtrl::SetRangeMin(nMin, bRedraw);
 }
@@ -535,7 +534,7 @@ void CSliderCtrlEx::SetRange(int nMin, int nMax, BOOL bRedraw)
 {
 	int l, h;
 	GetRange(l, h);
-	if((nMin < l) || (nMax > h))
+	if ((nMin < l) || (nMax > h))
 		clearColors();
 	CSliderCtrl::SetRange(nMin, nMax, bRedraw);
 }
@@ -543,7 +542,7 @@ void CSliderCtrlEx::SetRange(int nMin, int nMax, BOOL bRedraw)
 void CSliderCtrlEx::SetRangeMax(int nMax, BOOL bRedraw)
 {
 	int h = GetRangeMax();
-	if(nMax < h)
+	if (nMax < h)
 		clearColors();
 	CSliderCtrl::SetRangeMax(nMax, bRedraw);
 }
@@ -602,34 +601,34 @@ BOOL CSliderCtrlEx::SaveBitmap(LPCSTR lpFileName, CBitmap &hBitmap, HPALETTE hPa
 	stPictDesc.bmp.hpal       = hPal;
 
 	LPPICTURE pPicture;
-	HRESULT hr = OleCreatePictureIndirect( &stPictDesc, IID_IPicture, FALSE,
-	                                       reinterpret_cast<void**>(&pPicture) );
-	if ( SUCCEEDED(hr) )
+	HRESULT hr = OleCreatePictureIndirect(&stPictDesc, IID_IPicture, FALSE,
+	                                      reinterpret_cast<void**>(&pPicture));
+	if (SUCCEEDED(hr))
 	{
 		LPSTREAM pStream;
-		hr = CreateStreamOnHGlobal( NULL, TRUE, &pStream );
-		if ( SUCCEEDED(hr) )
+		hr = CreateStreamOnHGlobal(NULL, TRUE, &pStream);
+		if (SUCCEEDED(hr))
 		{
 			long lBytesStreamed = 0;
-			hr = pPicture->SaveAsFile( pStream, TRUE, &lBytesStreamed );
-			if ( SUCCEEDED(hr) )
+			hr = pPicture->SaveAsFile(pStream, TRUE, &lBytesStreamed);
+			if (SUCCEEDED(hr))
 			{
-				HANDLE hFile = CreateFile( lpFileName,
-				                           GENERIC_WRITE,
-				                           FILE_SHARE_READ,
-				                           NULL,
-				                           CREATE_ALWAYS,
-				                           FILE_ATTRIBUTE_NORMAL,
-				                           NULL );
-				if ( hFile )
+				HANDLE hFile = CreateFile(lpFileName,
+				                          GENERIC_WRITE,
+				                          FILE_SHARE_READ,
+				                          NULL,
+				                          CREATE_ALWAYS,
+				                          FILE_ATTRIBUTE_NORMAL,
+				                          NULL);
+				if (hFile)
 				{
 					HGLOBAL hMem = NULL;
-					GetHGlobalFromStream( pStream, &hMem );
-					LPVOID lpData = GlobalLock( hMem );
+					GetHGlobalFromStream(pStream, &hMem);
+					LPVOID lpData = GlobalLock(hMem);
 
 					DWORD dwBytesWritten;
-					bResult  = WriteFile( hFile, lpData, lBytesStreamed, &dwBytesWritten, NULL );
-					bResult &= ( dwBytesWritten == (DWORD)lBytesStreamed );
+					bResult  = WriteFile(hFile, lpData, lBytesStreamed, &dwBytesWritten, NULL);
+					bResult &= (dwBytesWritten == (DWORD)lBytesStreamed);
 
 					// clean up
 					GlobalUnlock(hMem);

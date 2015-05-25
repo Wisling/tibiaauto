@@ -48,7 +48,8 @@ void run();
 void clean(string &);
 void process(string &, int, string &, string &);
 
-int init_jalice(int argc, char **argv) {
+int init_jalice(int argc, char **argv)
+{
 	getStream("Console")->Write("Initializing J-Alice\n");
 	bool bootstrap = true;
 	bool convert   = false;
@@ -86,14 +87,15 @@ int init_jalice(int argc, char **argv) {
 		return 0;
 	}
 	char str[1024];
-	sprintf(str, "Total time to startup: %dms\n", totalTime );
+	sprintf(str, "Total time to startup: %dms\n", totalTime);
 	getStream("Console")->Write(str);
 
 	return 0;
 }
 
 #ifndef GUI
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
 	init_jalice(argc, argv);
 
 	run_jalice();
@@ -101,9 +103,11 @@ int main(int argc, char **argv) {
 
 	cout << "\nJ-Alice has been shutdown" << endl;
 }
+
 #endif // ifndef GUI
 
-void clean(string &input) {
+void clean(string &input)
+{
 	string::size_type ix = input.find_first_of(";\n\t\r");
 	if (ix == string::npos)
 		return;
@@ -112,7 +116,8 @@ void clean(string &input) {
 	input = input.erase(ix + 1);
 }
 
-void loadConfig() {
+void loadConfig()
+{
 	ifstream fin("j-alice.ini", ios::binary | ios::in);
 	if (!fin.is_open())
 		return;
@@ -150,7 +155,8 @@ void loadConfig() {
 	fin.close();
 }
 
-void process(string &s, int ss, string &p, string &v) {
+void process(string &s, int ss, string &p, string &v)
+{
 	if (p == "MaxRecursiveDepth")
 	{
 		maxRecursiveDepth = atoi(v.c_str());
@@ -211,7 +217,8 @@ void process(string &s, int ss, string &p, string &v) {
 	}
 	else if (p == "Nicks")
 	{
-		strstream nicks; nicks << v;
+		strstream nicks;
+		nicks << v;
 		string str;
 		while (!nicks.eof())
 		{
@@ -221,7 +228,8 @@ void process(string &s, int ss, string &p, string &v) {
 	}
 	else if (p == "Channels")
 	{
-		strstream channels; channels << v;
+		strstream channels;
+		channels << v;
 		string str;
 		while (!channels.eof())
 		{
@@ -276,7 +284,8 @@ void process(string &s, int ss, string &p, string &v) {
 	}
 }
 
-void run_jalice() {
+void run_jalice()
+{
 	//	All enabled IRC Clients:
 	for (unsigned int ix = 0; ix < ircConfigs.size(); ++ix)
 	{
@@ -301,7 +310,8 @@ void run_jalice() {
 	//	Once this loop has finished, bot will shutdown
 }
 
-void cleanup_jalice() {
+void cleanup_jalice()
+{
 	serverRunning = false;
 	getStream("Console")->Write("Please wait while J-Alice terminates...");
 	if (kernel != NULL)

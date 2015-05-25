@@ -62,9 +62,8 @@ CCheckBox::CCheckBox ()
 //-----------------------------------------------------------------------------
 CCheckBox::~CCheckBox()
 {
-	DeleteObject (m_font);
+	DeleteObject(m_font);
 }
-
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // //
@@ -79,20 +78,20 @@ void CCheckBox::PreSubclassWindow()
 {
 	// text on left side?
 	//
-	unsigned style    = GetStyle   ();
-	unsigned ex_style = GetExStyle ();
+	unsigned style    = GetStyle();
+	unsigned ex_style = GetExStyle();
 
 	if ((style & BS_LEFTTEXT) ||
 	    (style & BS_RIGHTBUTTON) ||
-	    (ex_style & WS_EX_RIGHT) )
+	    (ex_style & WS_EX_RIGHT))
 		m_bLeftText = true;
 
 
-	GetWindowText (m_text, 64);                                                                             // get text
-	m_font = (HFONT) GetParent()->SendMessage (WM_GETFONT, 0, 0);   // get font
+	GetWindowText(m_text, 64);                                                                              // get text
+	m_font = (HFONT) GetParent()->SendMessage(WM_GETFONT, 0, 0);    // get font
 
 
-	if (!IsWindowEnabled ())
+	if (!IsWindowEnabled())
 	{
 		m_bDisabled = true;
 		m_nState    = BOX_DISABLED_2;
@@ -100,7 +99,7 @@ void CCheckBox::PreSubclassWindow()
 
 	// prevent any drawing by the control itself
 	//
-	ModifyStyle (0, BS_OWNERDRAW, 0);
+	ModifyStyle(0, BS_OWNERDRAW, 0);
 
 
 	CButton::PreSubclassWindow();
@@ -121,7 +120,6 @@ BOOL CCheckBox::PreTranslateMessage(MSG* pMsg)
 	return CButton::PreTranslateMessage(pMsg);
 }
 
-
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // //
 // CCheckBox message handlers
@@ -138,8 +136,8 @@ ON_WM_LBUTTONUP()
 ON_WM_SETFOCUS()
 ON_WM_KILLFOCUS()
 //}}AFX_MSG_MAP
-ON_MESSAGE (BM_GETCHECK, OnGetCheck)
-ON_MESSAGE (BM_SETCHECK, OnSetCheck)
+ON_MESSAGE(BM_GETCHECK, OnGetCheck)
+ON_MESSAGE(BM_SETCHECK, OnSetCheck)
 END_MESSAGE_MAP()
 
 
@@ -154,23 +152,22 @@ void CCheckBox::OnEnable(BOOL bEnable)
 		m_bDisabled = false;
 
 		if (m_nState == BOX_DISABLED_1)
-			SetState (BOX_ON);
+			SetState(BOX_ON);
 		else
-			SetState (BOX_OFF);
+			SetState(BOX_OFF);
 	}
 	else
 	{
 		m_bDisabled = true;
 
 		if (m_bChecked)
-			SetState (BOX_DISABLED_1);
+			SetState(BOX_DISABLED_1);
 		else
-			SetState (BOX_DISABLED_2);
+			SetState(BOX_DISABLED_2);
 	}
 
 	CButton::OnEnable(bEnable);
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnKeyDown
@@ -184,9 +181,9 @@ void CCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (!mouseDown)
 		{
 			if (m_bChecked)
-				SetState (BOX_LDOWN_1);
+				SetState(BOX_LDOWN_1);
 			else
-				SetState (BOX_LDOWN_2);
+				SetState(BOX_LDOWN_2);
 		}
 	}
 	else if (nChar != VK_SPACE && spaceDown)        // if any other key pressed
@@ -196,15 +193,14 @@ void CCheckBox::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		if (!mouseDown)
 		{
 			if (m_bChecked)
-				SetState (BOX_ON);
+				SetState(BOX_ON);
 			else
-				SetState (BOX_OFF);
+				SetState(BOX_OFF);
 		}
 	}
 
 	CButton::OnKeyDown(nChar, nRepCnt, nFlags);
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnKeyUp
@@ -220,15 +216,14 @@ void CCheckBox::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 			m_bChecked = (m_bChecked == true ? false : true);
 
 			if (m_bChecked)
-				SetState (BOX_ON);
+				SetState(BOX_ON);
 			else
-				SetState (BOX_OFF);
+				SetState(BOX_OFF);
 		}
 	}
 
 	CButton::OnKeyUp(nChar, nRepCnt, nFlags);
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnLButtonDown
@@ -239,13 +234,12 @@ void CCheckBox::OnLButtonDown(UINT nFlags, CPoint point)
 	inRect    = true;
 
 	if (m_bChecked)
-		SetState (BOX_LDOWN_1);
+		SetState(BOX_LDOWN_1);
 	else
-		SetState (BOX_LDOWN_2);
+		SetState(BOX_LDOWN_2);
 
 	CButton::OnLButtonDown(nFlags, point);  // also calls "SetCapture" & "SetFocus"
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnMouseMove
@@ -253,16 +247,16 @@ void CCheckBox::OnLButtonDown(UINT nFlags, CPoint point)
 void CCheckBox::OnMouseMove(UINT nFlags, CPoint pt)
 {
 	RECT rc;
-	GetClientRect (&rc);
+	GetClientRect(&rc);
 
 	if (mouseDown)
 	{
-		if (!PtInRect (&rc, pt))
+		if (!PtInRect(&rc, pt))
 		{
 			if (m_bChecked)
-				SetState (BOX_ON);
+				SetState(BOX_ON);
 			else
-				SetState (BOX_OFF);
+				SetState(BOX_OFF);
 
 			inRect = false;
 		}
@@ -271,15 +265,14 @@ void CCheckBox::OnMouseMove(UINT nFlags, CPoint pt)
 			inRect = true;
 
 			if (m_bChecked)
-				SetState (BOX_LDOWN_1);
+				SetState(BOX_LDOWN_1);
 			else
-				SetState (BOX_LDOWN_2);
+				SetState(BOX_LDOWN_2);
 		}
 	}
 
 	CButton::OnMouseMove(nFlags, pt);
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnLButtonUp
@@ -289,38 +282,37 @@ void CCheckBox::OnLButtonUp(UINT nFlags, CPoint pt)
 	mouseDown = false;
 
 	RECT rc;
-	GetClientRect (&rc);
+	GetClientRect(&rc);
 
-	if (PtInRect (&rc, pt))
+	if (PtInRect(&rc, pt))
 	{
 		m_bChecked = (m_bChecked == true ? false : true);
 
 		if (!spaceDown)
 		{
 			if (m_bChecked)
-				SetState (BOX_ON);
+				SetState(BOX_ON);
 			else
-				SetState (BOX_OFF);
+				SetState(BOX_OFF);
 		}
 		else
 		{
 			if (m_bChecked)
-				SetState (BOX_LDOWN_1);
+				SetState(BOX_LDOWN_1);
 			else
-				SetState (BOX_LDOWN_2);
+				SetState(BOX_LDOWN_2);
 		}
 	}
 	else if (spaceDown)  // mouse released outside of control, but "space" still pressed
 	{
 		if (m_bChecked)
-			SetState (BOX_LDOWN_1);
+			SetState(BOX_LDOWN_1);
 		else
-			SetState (BOX_LDOWN_2);
+			SetState(BOX_LDOWN_2);
 	}
 
 	CButton::OnLButtonUp(nFlags, pt);       // also calls "ReleaseCapture"
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnSetFocus
@@ -328,11 +320,10 @@ void CCheckBox::OnLButtonUp(UINT nFlags, CPoint pt)
 void CCheckBox::OnSetFocus(CWnd* pOldWnd)
 {
 	hasFocus = drawFocus;
-	DrawFocus ();
+	DrawFocus();
 
 	CButton::OnSetFocus(pOldWnd);
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnKillFocus
@@ -343,16 +334,15 @@ void CCheckBox::OnKillFocus(CWnd* pNewWnd)
 	{
 		spaceDown = false;                      // while spaceDown
 		if (m_bChecked)
-			SetState (BOX_ON);
+			SetState(BOX_ON);
 		else
-			SetState (BOX_OFF);
+			SetState(BOX_OFF);
 	}
 	hasFocus = false;
-	DrawFocus ();
+	DrawFocus();
 
 	CButton::OnKillFocus(pNewWnd);
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		OnGetCheck
@@ -368,7 +358,6 @@ LRESULT CCheckBox::OnGetCheck(WPARAM wParam, LPARAM lParam)
 		return BST_UNCHECKED;
 }
 
-
 //-----------------------------------------------------------------------------
 // Name:		OnSetCheck
 // Description:	recieved BM_SETCHECK - either directly or through
@@ -382,24 +371,24 @@ LRESULT CCheckBox::OnSetCheck(WPARAM wParam, LPARAM lParam)
 
 		if (m_bDisabled)                // the state of a disabled CB
 		{
-			SetState (BOX_DISABLED_1);  // can also be changed
+			SetState(BOX_DISABLED_1);   // can also be changed
 			return 0;
 		}
 
 		if (mouseDown)                                  // if mouse down => space doesn't matter
 		{
 			if (inRect)
-				SetState (BOX_LDOWN_1);
+				SetState(BOX_LDOWN_1);
 			else
-				SetState (BOX_ON);
+				SetState(BOX_ON);
 		}
 		else if (spaceDown)
 		{
-			SetState (BOX_LDOWN_1);
+			SetState(BOX_LDOWN_1);
 		}
 		else
 		{
-			SetState (BOX_ON);
+			SetState(BOX_ON);
 		}
 	}
 	else
@@ -408,30 +397,29 @@ LRESULT CCheckBox::OnSetCheck(WPARAM wParam, LPARAM lParam)
 
 		if (m_bDisabled)
 		{
-			SetState (BOX_DISABLED_2);
+			SetState(BOX_DISABLED_2);
 			return 0;
 		}
 
 		if (mouseDown)
 		{
 			if (inRect)
-				SetState (BOX_LDOWN_2);
+				SetState(BOX_LDOWN_2);
 			else
-				SetState (BOX_OFF);
+				SetState(BOX_OFF);
 		}
 		else if (spaceDown)
 		{
-			SetState (BOX_LDOWN_2);
+			SetState(BOX_LDOWN_2);
 		}
 		else
 		{
-			SetState (BOX_OFF);
+			SetState(BOX_OFF);
 		}
 	}
 
 	return 0;
 }
-
 
 //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 // //
@@ -461,12 +449,11 @@ void CCheckBox::DrawFocus (bool forceDraw)
 	{
 		prev = hasFocus;
 
-		CDC* pdc = GetDC ();
-		DrawFocusRect (pdc->m_hDC, &rcFocus);
-		ReleaseDC (pdc);
+		CDC* pdc = GetDC();
+		DrawFocusRect(pdc->m_hDC, &rcFocus);
+		ReleaseDC(pdc);
 	}
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		SetState
@@ -492,10 +479,9 @@ void CCheckBox::SetState (int state)
 //		ReleaseDC (pdc);
 
 		if (hasFocus)
-			DrawFocus (true);
+			DrawFocus(true);
 	}
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		BlitToScreen
@@ -553,13 +539,13 @@ void CCheckBox::SetState (int state)
 //-----------------------------------------------------------------------------
 int CCheckBox::GetMinHeight (HDC hdc)
 {
-	HFONT oFont = (HFONT) SelectObject (hdc, m_font);
-	SIZE sz; GetTextExtentPoint32 (hdc, "Dummy", 5, &sz);
-	SelectObject (hdc, oFont);
+	HFONT oFont = (HFONT) SelectObject(hdc, m_font);
+	SIZE sz;
+	GetTextExtentPoint32(hdc, "Dummy", 5, &sz);
+	SelectObject(hdc, oFont);
 
 	return sz.cy + 1;
 }
-
 
 //-----------------------------------------------------------------------------
 // Name:		PrepareBitmaps & PrepareState

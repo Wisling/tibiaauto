@@ -5,7 +5,7 @@
 #define SOCK_FLAGS SO_REUSEADDR
 #if defined (__BEOS__)
 	#undef SOCK_FLAGS
-	#define SOCK_FLAGS ( SO_REUSEADDR | SO_NONBLOCK)
+	#define SOCK_FLAGS (SO_REUSEADDR | SO_NONBLOCK)
 //should this be unsigned int?
 typedef int socklen_t;
 #elif defined (WIN32)

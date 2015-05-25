@@ -1,4 +1,5 @@
 #include "stdafx.h"
 
-void EXPORT a(){
+void EXPORT a()
+{
 }

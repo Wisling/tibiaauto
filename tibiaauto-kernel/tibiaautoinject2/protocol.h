@@ -18,7 +18,8 @@ public:
 	NetworkMessage();
 	NetworkMessage(char* rawMsg);
 	NetworkMessage(char* rawMsg, int len);
-	virtual ~NetworkMessage(){
+	virtual ~NetworkMessage()
+	{
 	};
 
 	unsigned char GetByte();
@@ -48,9 +49,12 @@ public:
 class Protocol
 {
 public:
-	Protocol(){
+	Protocol()
+	{
 	}
-	virtual ~Protocol(){
+
+	virtual ~Protocol()
+	{
 	}
 
 	static void Protocol::outputPacket(NetworkMessage &msg);

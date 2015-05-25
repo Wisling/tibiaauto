@@ -1,4 +1,3 @@
-
 /*
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -90,13 +89,15 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 	return retItem;
 }
 
-int CModuleUtil::randomFormula(int average, int halfrange){// average-|halfrange| <= ans <= average+|halfrange|
+int CModuleUtil::randomFormula(int average, int halfrange) // average-|halfrange| <= ans <= average+|halfrange|
+{
 	srand(GetTickCount() * (average + 47328) * (halfrange + 23939));
 	halfrange = abs(halfrange) + 1;
 	return (average - (halfrange - 1)) + (rand() % halfrange) + (rand() % halfrange);
 }
 
-int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
+int CModuleUtil::randomFormula(int average, int halfrange, int cutoff)
+{
 	//if cutoff>average returns [average-halfrange,cutoff-1] else [cutoff,average+halfrange]
 	//cutoff always included
 	//95% chance of exit within 3 iterations
@@ -104,7 +105,7 @@ int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
 	int iter   = 0;
 	while ((sample >= cutoff) == (cutoff > average))
 	{
-		if(iter >= 2 || average == cutoff && sample < cutoff)
+		if (iter >= 2 || average == cutoff && sample < cutoff)
 		{
 			sample = average + (average - sample); // put sample on opposite side of average
 			break;
@@ -115,7 +116,8 @@ int CModuleUtil::randomFormula(int average, int halfrange, int cutoff){
 	return sample;
 }
 
-int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR){
+int CModuleUtil::randomFormula(int average, int halfrange, int minR, int maxR)
+{
 	//returns between max and min inclusive
 	if (minR > average || maxR < average)
 		return average;
@@ -165,8 +167,8 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 	return retItem;
 }
 
-
-int CModuleUtil::waitForHpManaIncrease(int oldHp, int oldMana){//max about 0.45s
+int CModuleUtil::waitForHpManaIncrease(int oldHp, int oldMana) //max about 0.45s
+{
 	CMemReaderProxy reader;
 	int t;
 	for (t = 0; t < 15; t++)
@@ -183,7 +185,8 @@ int CModuleUtil::waitForHpManaIncrease(int oldHp, int oldMana){//max about 0.45s
 	return 0;
 }
 
-int CModuleUtil::waitForManaDecrease(int oldMana){//max about 0.45s
+int CModuleUtil::waitForManaDecrease(int oldMana) //max about 0.45s
+{
 	CMemReaderProxy reader;
 	int t;
 	for (t = 0; t < 15; t++)
@@ -304,7 +307,8 @@ int CModuleUtil::waitForItemChange(int contNr, int slotNr, int origItemId, int q
 
 //Input: x,y absolute position around which to search
 //Output: returns 0 if unsucessful, otherwise returns 1 and changes x and y to location
-int CModuleUtil::findFreeSpace(int &x, int &y, int z, int r /* =1 */){
+int CModuleUtil::findFreeSpace(int &x, int &y, int z, int r /* =1 */)
+{
 	CMemReaderProxy reader;
 	CTibiaMapProxy tibiaMap;
 	int count    = 0;
@@ -336,13 +340,12 @@ void inline mapDebug(char *s)
 	{
 		char dateStr [15];
 		char timeStr [15];
-		_strdate( dateStr);
-		_strtime( timeStr );
+		_strdate(dateStr);
+		_strtime(timeStr);
 		fprintf(f, "%s %s: %s\n", dateStr, timeStr, s);
 		fclose(f);
 	}
 }
-
 
 void inline testDebug(char *s)
 {
@@ -355,8 +358,8 @@ void inline testDebug(char *s)
 	{
 		char dateStr [15];
 		char timeStr [15];
-		_strdate( dateStr);
-		_strtime( timeStr );
+		_strdate(dateStr);
+		_strtime(timeStr);
 		fprintf(f, "%s %s: %s\n", dateStr, timeStr, s);
 		fclose(f);
 	}
@@ -365,7 +368,7 @@ void inline testDebug(char *s)
 void CModuleUtil::findPathOnMapProcessPoint(CTibiaQueue<point> &pointsToAdd, int prevX, int prevY, int prevZ, int newX, int newY, int newZ)
 {
 	CTibiaMapProxy tibiaMap;
-	if(tibiaMap.isPointAvailable(newX, newY, newZ))
+	if (tibiaMap.isPointAvailable(newX, newY, newZ))
 		pointsToAdd.Add(point(newX, newY, newZ));
 }
 
@@ -375,12 +378,20 @@ void CModuleUtil::findPathAllDirection(CTibiaQueue<point> &pointsToAdd, int x, i
 	//First piority points(sides)
 	for (int i = randDir; i < randDir + 4; i++)
 	{
-		switch(i % 4)
+		switch (i % 4)
 		{
-		case 0: findPathOnMapProcessPoint(pointsToAdd, x, y, z, x + 1, y, z); break;
-		case 1: findPathOnMapProcessPoint(pointsToAdd, x, y, z, x - 1, y, z); break;
-		case 2: findPathOnMapProcessPoint(pointsToAdd, x, y, z, x, y + 1, z); break;
-		case 3: findPathOnMapProcessPoint(pointsToAdd, x, y, z, x, y - 1, z); break;
+		case 0:
+			findPathOnMapProcessPoint(pointsToAdd, x, y, z, x + 1, y, z);
+			break;
+		case 1:
+			findPathOnMapProcessPoint(pointsToAdd, x, y, z, x - 1, y, z);
+			break;
+		case 2:
+			findPathOnMapProcessPoint(pointsToAdd, x, y, z, x, y + 1, z);
+			break;
+		case 3:
+			findPathOnMapProcessPoint(pointsToAdd, x, y, z, x, y - 1, z);
+			break;
 		}
 	}
 
@@ -397,7 +408,8 @@ int pathTabLen;
 
 int lastDestX      = -1, lastDestY = -1, lastDestZ = -1, lastSpecLoc = -1;
 point lastEndPoint = point(-1, -1, -1);
-void resetPathfinderData(){
+void resetPathfinderData()
+{
 	lastDestX    = -1;
 	lastDestY    = -1;
 	lastDestZ    = -1;
@@ -405,11 +417,13 @@ void resetPathfinderData(){
 	lastSpecLoc  = -1;
 }
 
-struct point CModuleUtil::GetPathTab(int index) {
+struct point CModuleUtil::GetPathTab(int index)
+{
 	return pathTab[index];
 }
 
-int CModuleUtil::GetPathTabCount() {
+int CModuleUtil::GetPathTabCount()
+{
 	int index = 0;
 	int count = 0;
 	while (pathTab[index++].x != 0 && pathTab[index].y != 0 && pathTab[index].z != 0)
@@ -429,9 +443,12 @@ public:
 	int g;
 	int h;
 	int f;
-	pointNode(){
+	pointNode()
+	{
 	}
-	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1) {
+
+	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1)
+	{
 		x  = x1;
 		y  = y1;
 		z  = z1;
@@ -442,7 +459,9 @@ public:
 		h  = 0;
 		f  = 0;
 	}
-	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1, int g1, int h1, int f1) {
+
+	pointNode(int x1, int y1, int z1, int px1, int py1, int pz1, int g1, int h1, int f1)
+	{
 		x  = x1;
 		y  = y1;
 		z  = z1;
@@ -453,7 +472,9 @@ public:
 		h  = h1;
 		f  = f1;
 	}
-	void copy(pointNode c){
+
+	void copy(pointNode c)
+	{
 		x  = c.x;
 		y  = c.y;
 		z  = c.z;
@@ -464,20 +485,27 @@ public:
 		h  = c.h;
 		f  = c.f;
 	}
-	pointNode copy(){
+
+	pointNode copy()
+	{
 		return pointNode(x, y, z, px, py, pz, g, h, f);
 	}
-	char* toString(){
+
+	char* toString()
+	{
 		char* ret = (char*)malloc(100);
 		sprintf(ret, "(%d,%d,%d)", x, y, z);
 		return ret;
 	}
-	bool equals(pointNode* a){
+
+	bool equals(pointNode* a)
+	{
 		return a->x == x && a->y == y && a->z == z;
 	}
 };
 
-int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ){
+int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ)
+{
 	if (endX == 0 && endY == 0 && endZ == 0)
 		return 0;
 	return (abs(startX - endX) + abs(startY - endY) + abs(startZ - endZ)) * 100;
@@ -630,13 +658,13 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				endPoint.z    = z;
 			}
 		}
-		else if(x == pathFindX && y == pathFindY && z == pathFindZ)
+		else if (x == pathFindX && y == pathFindY && z == pathFindZ)
 		{
 			gotToEndPoint = 1;
 			endPoint      = lastEndPoint;
 		}
 
-		if(gotToEndPoint)
+		if (gotToEndPoint)
 		{
 			break;
 			//tibiaMap.setPrevPoint(endPoint.x,endPoint.y,endPoint.z,px,py,pz);
@@ -669,7 +697,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		// we directly go up using rope, magic rope, ladder, stairs
 		if (currentUpDown >= 200 && currentUpDown < 300)
 		{
-			if(tibiaMap.isPointAvailableNoProh(x, y, z - 1))
+			if (tibiaMap.isPointAvailableNoProh(x, y, z - 1))
 			{
 				pointsToAdd.Add(point(x, y, z - 1));
 #ifdef MAPDEBUG
@@ -747,7 +775,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		if ((currentUpDown == 101 || currentUpDown == 204 || currentUpDown == 302 || currentUpDown == 303) && !(startX == x && startY == y && startZ == z))
 			forcedLevelChange = 1;
 
-		if(abs(x - px) > 1 || abs(y - py) > 1 || z != pz)
+		if (abs(x - px) > 1 || abs(y - py) > 1 || z != pz)
 			usedLevelChange = 1;
 
 		if (!forcedLevelChange || usedLevelChange)
@@ -759,7 +787,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			{
 				if (xShift == -2 && yShift == -2)
 				{
-					xShift = -1; yShift = -1;
+					xShift = -1;
+					yShift = -1;
 				}
 				else
 				{
@@ -767,7 +796,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				}
 				if (xShift > 1)
 				{
-					xShift = -1; yShift++;
+					xShift = -1;
+					yShift++;
 				}
 				if (xShift == 0 && yShift == 0)
 					xShift++;                    //skip middle
@@ -793,7 +823,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				tibiaMap.setPointDistance(addPoint.x, addPoint.y, addPoint.z, newDist);
 				pointNode* pn = new pointNode(addPoint.x, addPoint.y, addPoint.z, x, y, z, newDist, 0, 0);
 #ifdef MAPDEBUG
-				if(pn->x == -858993460)
+				if (pn->x == -858993460)
 				{
 					char buf2[1111];
 					sprintf(buf2, "%d\n", pQueue.GetCount());
@@ -1010,7 +1040,6 @@ int CModuleUtil::waitForOpenContainer(int contNr, int open)//max about 0.7s
 	return 0;
 }
 
-
 int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr, CUIntArray *acceptedItems, int containerCarrying)
 {
 	CMemReaderProxy reader;
@@ -1061,7 +1090,7 @@ int CModuleUtil::lootItemFromSpecifiedContainer(int containerNr, CUIntArray *acc
 						}
 					}
 					// If not full or we found a spot inside the container for a stackable item move item
-					if(contCarrying->itemsInside != contCarrying->size || stackedItemPos != -1 && stackedItemPos < contCarrying->itemsInside)
+					if (contCarrying->itemsInside != contCarrying->size || stackedItemPos != -1 && stackedItemPos < contCarrying->itemsInside)
 					{
 						sender.moveObjectBetweenContainers(item->objectId, 0x40 + containerNr, item->pos, 0x40 + containerCarrying, targetPos, moved);
 						Sleep(CModuleUtil::randomFormula(300, 150));
@@ -1144,7 +1173,7 @@ int CModuleUtil::lootItemsToSpecifiedContainers(int containerNr, CUIntArray *acc
 							}
 						}
 						// If not full or we found a spot inside the container for a stackable item move item
-						if(contCarrying->itemsInside != contCarrying->size || stackedItemPos != -1 && stackedItemPos < contCarrying->itemsInside)
+						if (contCarrying->itemsInside != contCarrying->size || stackedItemPos != -1 && stackedItemPos < contCarrying->itemsInside)
 						{
 							sender.moveObjectBetweenContainers(item->objectId, 0x40 + containerNr, item->pos, 0x40 + contNr, targetPos, moved);
 							Sleep(CModuleUtil::randomFormula(300, 150));
@@ -1243,7 +1272,7 @@ int CModuleUtil::waitToApproachSquare(int x, int y)// depends on speed of charac
 
 	int spaceCount = 15;
 	//wait until square reached and return if more than 15 steps
-	while(spaceCount-- > 0)
+	while (spaceCount-- > 0)
 	{
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		static int newX       = self->x;
@@ -1291,7 +1320,7 @@ int CModuleUtil::waitToStandOnSquare(int x, int y)// depends on speed of charact
 
 	int spaceCount = 15;
 	//wait until square reached and return if more than 15 steps
-	while(spaceCount-- > 0)
+	while (spaceCount-- > 0)
 	{
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		static int newX       = self->x;
@@ -1357,7 +1386,8 @@ int CModuleUtil::waitForCreatureDisappear(int x, int y, int tibiaId)
 	return waitForCreatureDisappear(x, y, tibiaId, xReturn, yReturn);
 }
 
-int CModuleUtil::waitForCreatureDisappear(int x, int y, int tibiaId, int &xReturn, int &yReturn) {
+int CModuleUtil::waitForCreatureDisappear(int x, int y, int tibiaId, int &xReturn, int &yReturn)
+{
 	CMemReaderProxy reader;
 	int iterCount = 20;
 	while (iterCount-- > 0)
@@ -1551,10 +1581,18 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 					path[1] = 0;
 					switch (mode)
 					{
-					case 1: path[0] = 5; break;
-					case 2: path[0] = 1; break;
-					case 3: path[0] = 3; break;
-					case 4: path[0] = 7; break;
+					case 1:
+						path[0] = 5;
+						break;
+					case 2:
+						path[0] = 1;
+						break;
+					case 3:
+						path[0] = 3;
+						break;
+					case 4:
+						path[0] = 7;
+						break;
 					}
 					sender.stepMulti(path, 1);
 					Sleep(CModuleUtil::randomFormula(1100, 300));
@@ -1575,7 +1613,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 							if (tile->requireShovel)
 								holeId = tileId;
 							//remove an item if it is on top of hole
-							if(!tile->notMoveable)
+							if (!tile->notMoveable)
 							{
 								int qty = reader.mapGetPointItemExtraInfo(point(self->x - self2->x, self->y - self2->y, 0), i, 1);
 								sender.moveObjectFromFloorToFloor(tileId, self->x, self->y, self->z, self2->x, self2->y, self2->z, qty ? qty : 1);
@@ -1596,10 +1634,18 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 
 						switch (mode)
 						{
-						case 2: path[0] = 5; break;
-						case 1: path[0] = 1; break;
-						case 4: path[0] = 3; break;
-						case 3: path[0] = 7; break;
+						case 2:
+							path[0] = 5;
+							break;
+						case 1:
+							path[0] = 1;
+							break;
+						case 4:
+							path[0] = 3;
+							break;
+						case 3:
+							path[0] = 7;
+							break;
 						}
 						sender.stepMulti(path, 1);
 						Sleep(CModuleUtil::randomFormula(1100, 300));
@@ -1643,7 +1689,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 						if (tile->requireUse)
 							grateId = tileId;
 						//remove an item if it is on top of grate
-						if(!tile->notMoveable)
+						if (!tile->notMoveable)
 						{
 							int qty = reader.mapGetPointItemExtraInfo(point(0, 0, 0), i, 1);
 							sender.moveObjectFromFloorToFloor(tileId, self->x, self->y, self->z, self->x + freeX, self->y + freeY, self->z, qty ? qty : 1);
@@ -1683,25 +1729,29 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				modX++;
 			if (path[0] == 0xE2)
 			{
-				modX++; modY--;
+				modX++;
+				modY--;
 			}
 			if (path[0] == 0xE3)
 				modY--;
 			if (path[0] == 0xE4)
 			{
-				modX--; modY--;
+				modX--;
+				modY--;
 			}
 			if (path[0] == 0xE5)
 				modX--;
 			if (path[0] == 0xE6)
 			{
-				modX--; modY++;
+				modX--;
+				modY++;
 			}
 			if (path[0] == 0xE7)
 				modY++;
 			if (path[0] == 0xE8)
 			{
-				modX++; modY++;
+				modX++;
+				modY++;
 			}
 			switch (tibiaMap.getPointTypeNoProh(modX, modY, self->z))
 			{
@@ -1771,25 +1821,29 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				modX++;
 			if (path[0] == 0xF2)
 			{
-				modX++; modY--;
+				modX++;
+				modY--;
 			}
 			if (path[0] == 0xF3)
 				modY--;
 			if (path[0] == 0xF4)
 			{
-				modX--; modY--;
+				modX--;
+				modY--;
 			}
 			if (path[0] == 0xF5)
 				modX--;
 			if (path[0] == 0xF6)
 			{
-				modX--; modY++;
+				modX--;
+				modY++;
 			}
 			if (path[0] == 0xF7)
 				modY++;
 			if (path[0] == 0xF8)
 			{
-				modX++; modY++;
+				modX++;
+				modY++;
 			}
 
 			switch (tibiaMap.getPointTypeNoProh(modX, modY, self->z))
@@ -1832,7 +1886,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 							if (tile->requireShovel)
 								holeId = tileId;
 							//remove an item if it is on top of hole
-							if(!tile->notMoveable)
+							if (!tile->notMoveable)
 							{
 								int qty = reader.mapGetPointItemExtraInfo(point(modX - self->x, modY - self->y, 0), i, 1);
 								sender.moveObjectFromFloorToFloor(tileId, modX, modY, self->z, self->x, self->y, self->z, qty ? qty : 1);
@@ -1846,7 +1900,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 							movePlayer = 1;
 						}
 					}
-					if(movePlayer)
+					if (movePlayer)
 					{
 						int freeX = 0, freeY = 0;
 						for (int x = -1; x <= 1; x++)
@@ -1887,20 +1941,44 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 							{
 								switch (mode)
 								{
-								case 2: path[0] = 1; path[1] = 3; break;
-								case 8: path[0] = 1; path[1] = 7; break;
-								case 4: path[0] = 5; path[1] = 3; break;
-								case 6: path[0] = 5; path[1] = 7; break;
+								case 2:
+									path[0] = 1;
+									path[1] = 3;
+									break;
+								case 8:
+									path[0] = 1;
+									path[1] = 7;
+									break;
+								case 4:
+									path[0] = 5;
+									path[1] = 3;
+									break;
+								case 6:
+									path[0] = 5;
+									path[1] = 7;
+									break;
 								}
 							}
 							else if (modY && tibiaMap.isPointAvailable(self->x, modY, self->z))
 							{
 								switch (mode)
 								{
-								case 2: path[0] = 7; path[1] = 5; break;
-								case 8: path[0] = 7; path[1] = 1; break;
-								case 4: path[0] = 3; path[1] = 5; break;
-								case 6: path[0] = 3; path[1] = 1; break;
+								case 2:
+									path[0] = 7;
+									path[1] = 5;
+									break;
+								case 8:
+									path[0] = 7;
+									path[1] = 1;
+									break;
+								case 4:
+									path[0] = 3;
+									path[1] = 5;
+									break;
+								case 6:
+									path[0] = 3;
+									path[1] = 1;
+									break;
 								}
 							}
 							path[2] = 0;
@@ -1908,7 +1986,8 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 						}
 						if (path[1] == 0)
 						{
-							path[0] = mode; size = 1;
+							path[0] = mode;
+							size    = 1;
 						}
 
 						sender.stepMulti(path, size);
@@ -1938,7 +2017,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 						if (tile->requireUse)
 							grateId = tileId;
 						//remove an item if it is on top of grate
-						if(!tile->notMoveable)
+						if (!tile->notMoveable)
 						{
 							int qty = reader.mapGetPointItemExtraInfo(point(modX - self->x, modY - self->y, 0), i, 1);
 							sender.moveObjectFromFloorToFloor(tileId, modX, modY, self->z, self->x, self->y, self->z, qty ? qty : 1);
@@ -1948,9 +2027,9 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 						}
 					}
 				}
-				if(!grateId && count)
+				if (!grateId && count)
 					grateId = reader.itemOnTopCode(modX - self->x, modY - self->y);
-				if(grateId)
+				if (grateId)
 					sender.useItemOnFloor(grateId, modX, modY, self->z);
 				break;
 			}
@@ -2032,14 +2111,34 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 					offset++;
 					switch (path[i])
 					{
-					case 1: x1++; break;
-					case 5: x1--; break;
-					case 7: y1++; break;
-					case 3: y1--; break;
-					case 8: y1++; x1++; break;
-					case 6: y1++; x1--; break;
-					case 2: y1--; x1++; break;
-					case 4: y1--; x1--; break;
+					case 1:
+						x1++;
+						break;
+					case 5:
+						x1--;
+						break;
+					case 7:
+						y1++;
+						break;
+					case 3:
+						y1--;
+						break;
+					case 8:
+						y1++;
+						x1++;
+						break;
+					case 6:
+						y1++;
+						x1--;
+						break;
+					case 2:
+						y1--;
+						x1++;
+						break;
+					case 4:
+						y1--;
+						x1--;
+						break;
 					}
 				}
 
@@ -2047,14 +2146,34 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				int prevlastEndX = lastEndX, prevlastEndY = lastEndY;
 				switch (path[i])
 				{
-				case 1: lastEndX++; break;
-				case 5: lastEndX--; break;
-				case 7: lastEndY++; break;
-				case 3: lastEndY--; break;
-				case 8: lastEndY++; lastEndX++; break;
-				case 6: lastEndY++; lastEndX--; break;
-				case 2: lastEndY--; lastEndX++; break;
-				case 4: lastEndY--; lastEndX--; break;
+				case 1:
+					lastEndX++;
+					break;
+				case 5:
+					lastEndX--;
+					break;
+				case 7:
+					lastEndY++;
+					break;
+				case 3:
+					lastEndY--;
+					break;
+				case 8:
+					lastEndY++;
+					lastEndX++;
+					break;
+				case 6:
+					lastEndY++;
+					lastEndX--;
+					break;
+				case 2:
+					lastEndY--;
+					lastEndX++;
+					break;
+				case 4:
+					lastEndY--;
+					lastEndX--;
+					break;
 				}
 				if (abs(x1 - lastEndX) > 8 || abs(y1 - lastEndY) > 6)
 				{
@@ -2099,7 +2218,7 @@ void CModuleUtil::prepareProhPointList()
 		}
 		if (ch->visible && (ch->x != self->x || ch->y != self->y || ch->z != self->z))
 		{
-			if(ch->blocking)
+			if (ch->blocking)
 			{
 				tibiaMap.prohPointAdd(ch->x, ch->y, ch->z);
 			}
@@ -2163,8 +2282,8 @@ int CModuleUtil::findNextClosedContainer(int afterCont /*=-1*/)
 	return targetBag;
 }
 
-
-void CModuleUtil::getInstallPath(char path[2048]){
+void CModuleUtil::getInstallPath(char path[2048])
+{
 	static char installPath[2048] = "";
 	if (installPath[0] == 0)
 	{
@@ -2173,7 +2292,7 @@ void CModuleUtil::getInstallPath(char path[2048]){
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -2186,7 +2305,8 @@ void CModuleUtil::getInstallPath(char path[2048]){
 	strcpy(path, installPath);
 }
 
-int CModuleUtil::getTASetting(const char* name){
+int CModuleUtil::getTASetting(const char* name)
+{
 	HKEY hkey              = NULL;
 	int value              = 0;
 	unsigned long valueLen = 4;
@@ -2198,7 +2318,8 @@ int CModuleUtil::getTASetting(const char* name){
 	return value;
 }
 
-void CModuleUtil::setTASetting(const char* name, int value){
+void CModuleUtil::setTASetting(const char* name, int value)
+{
 	HKEY hkey              = NULL;
 	unsigned long valueLen = 4;
 	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_SET_VALUE, &hkey))
@@ -2208,7 +2329,8 @@ void CModuleUtil::setTASetting(const char* name, int value){
 	}
 }
 
-void CModuleUtil::masterDebug(const char* fname, const char* buf1, const char* buf2, const char* buf3, const char* buf4, const char* buf5, const char* buf6){
+void CModuleUtil::masterDebug(const char* fname, const char* buf1, const char* buf2, const char* buf3, const char* buf4, const char* buf5, const char* buf6)
+{
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
@@ -2224,8 +2346,8 @@ void CModuleUtil::masterDebug(const char* fname, const char* buf1, const char* b
 	}
 	char dateStr [15];
 	char timeStr [15];
-	_strdate( dateStr);
-	_strtime( timeStr );
+	_strdate(dateStr);
+	_strtime(timeStr);
 	FILE *f = fopen(pathBuf, "a+");
 	if (f)
 	{

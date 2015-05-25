@@ -29,7 +29,8 @@ static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
 
-CSkin loadCurrentSkin(CString currentPathBuf) {
+CSkin loadCurrentSkin(CString currentPathBuf)
+{
 	XMLPlatformUtils::Initialize();
 	CSkin loadedSkin;
 	XercesDOMParser *parser = new XercesDOMParser();
@@ -101,7 +102,8 @@ CSkin loadCurrentSkin(CString currentPathBuf) {
 	return loadedSkin;
 }
 
-CSkin loadSkin(CString pathBuf) {
+CSkin loadSkin(CString pathBuf)
+{
 	CSkin loadedSkin;
 	XercesDOMParser *parser = new XercesDOMParser();
 	try
@@ -169,7 +171,8 @@ CSkin loadSkin(CString pathBuf) {
 	return loadedSkin;
 }
 
-bool saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
+bool saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate)
+{
 	CUtil util;
 	XercesDOMParser *parser = new XercesDOMParser();
 
@@ -182,7 +185,7 @@ bool saveSkin(CString pathBuf, CSkin saveSkin, bool saveSeperate) {
 		HKEY hkey                    = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))

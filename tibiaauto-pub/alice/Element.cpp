@@ -13,38 +13,46 @@
 
 using namespace std;
 
-Element::Element(const string &name = "") : text(""), tname(""), nspace("") {
+Element::Element(const string &name = "") : text(""), tname(""), nspace("")
+{
 	if (!name.empty())
 		setName(name);
 	child = next = last = NULL;
 }
 
-Element::~Element() {
+Element::~Element()
+{
 }
 
-string Element::getTagname() const {
+string Element::getTagname() const
+{
 	return tname;
 }
 
-string Element::getNamespace() const {
+string Element::getNamespace() const
+{
 	return nspace;
 }
 
-string Element::getText(bool resolve) const {
+string Element::getText(bool resolve) const
+{
 	if (!resolve)
 		return text;
 	else
 		return resolveEntities(text);
 }
+
 //	add bool
-string Element::getAttribute(const string &key) const {
+string Element::getAttribute(const string &key) const
+{
 	map<string, string>::const_iterator itr = attributes.find(key);
 	if (itr == attributes.end())
 		return "";
 	return resolveEntities((*itr).second);
 }
 
-void Element::setName(const string &str) {
+void Element::setName(const string &str)
+{
 	string::size_type ix = str.find(':');
 	if (ix != string::npos)
 	{
@@ -58,39 +66,48 @@ void Element::setName(const string &str) {
 	}
 }
 
-void Element::setTagname(const string &str) {
+void Element::setTagname(const string &str)
+{
 	tname = get_string(str);
 }
 
-void Element::setNamespace(const string &str) {
+void Element::setNamespace(const string &str)
+{
 	nspace = get_string(str);
 }
 
-void Element::setText(const string &str) {
+void Element::setText(const string &str)
+{
 	text = str;
 }
 
-void Element::setAttribute(const string &key, const string &value) {
+void Element::setAttribute(const string &key, const string &value)
+{
 	attributes[key] = value;
 }
 
-bool Element::hasNamespace() const {
+bool Element::hasNamespace() const
+{
 	return strlen(nspace) != 0;
 }
 
-bool Element::hasAttributes() const {
+bool Element::hasAttributes() const
+{
 	return !attributes.empty();
 }
 
-bool Element::hasChildren() const {
+bool Element::hasChildren() const
+{
 	return !(child == NULL);
 }
 
-PElement Element::getChild() const {
+PElement Element::getChild() const
+{
 	return child;
 }
 
-PElement Element::getChild(const string &tagname) const {
+PElement Element::getChild(const string &tagname) const
+{
 	PElement ch = child;
 	while (ch != NULL)
 	{
@@ -101,11 +118,13 @@ PElement Element::getChild(const string &tagname) const {
 	return PElement(NULL);
 }
 
-PElement Element::getNextSibling() const {
+PElement Element::getNextSibling() const
+{
 	return next;
 }
 
-void Element::addChild(PElement element) {
+void Element::addChild(PElement element)
+{
 	if (child == NULL)
 	{
 		child = element;
@@ -118,7 +137,8 @@ void Element::addChild(PElement element) {
 	}
 }
 
-void Element::getChildren(velement *ve) {
+void Element::getChildren(velement *ve)
+{
 	PElement ch = child;
 	while (ch != NULL)
 	{
@@ -126,7 +146,8 @@ void Element::getChildren(velement *ve) {
 	}
 }
 
-void Element::getChildren(const string &tagname, velement *ve) {
+void Element::getChildren(const string &tagname, velement *ve)
+{
 	PElement ch = child;
 	while (ch != NULL)
 	{
@@ -136,11 +157,13 @@ void Element::getChildren(const string &tagname, velement *ve) {
 	}
 }
 
-map<string, string> Element::getAttributes() const {
+map<string, string> Element::getAttributes() const
+{
 	return attributes;
 }
 
-string Element::resolveEntities(const string &input) {
+string Element::resolveEntities(const string &input)
+{
 	string output = input;
 	int ix        = output.find("&");
 	int iy        = output.find(";", ix);

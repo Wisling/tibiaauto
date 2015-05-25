@@ -23,7 +23,8 @@ static char THIS_FILE[] = __FILE__;
 
 
 CAlarmDialog::CAlarmDialog(CWnd* pParent /*=NULL*/)
-	: MyDialog(CAlarmDialog::IDD, pParent) {
+	: MyDialog(CAlarmDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CAlarmDialog)
 	//}}AFX_DATA_INIT
 	spellInfoCount              = 0;
@@ -33,8 +34,9 @@ CAlarmDialog::CAlarmDialog(CWnd* pParent /*=NULL*/)
 	spellInfo[spellInfoCount++] = new SpellInfo("utamo vita", 100, 200);
 }
 
-CAlarmDialog::~CAlarmDialog() {
-	while(spellInfoCount)
+CAlarmDialog::~CAlarmDialog()
+{
+	while (spellInfoCount)
 	{
 		delete spellInfo[--spellInfoCount];
 	}
@@ -47,7 +49,8 @@ CAlarmDialog::~CAlarmDialog() {
 	m_alarmType.ResetContent();
 }
 
-void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
+void CAlarmDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CAlarmDialog)
 	DDX_Control(pDX, IDC_ACTION_STOP_WALKING, m_actionStopWalking);
@@ -85,7 +88,6 @@ void CAlarmDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_ACTION_PERMANENT, m_actionPermanent);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CAlarmDialog, CDialog)
 //{{AFX_MSG_MAP(CAlarmDialog)
@@ -125,9 +127,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CAlarmDialog message handlers
 
-void CAlarmDialog::UpdateDependentButtons() {
+void CAlarmDialog::UpdateDependentButtons()
+{
 	m_actionPersistent.EnableWindow(!m_actionPermanent.GetCheck() && (m_actionRunaway.GetCheck() || m_actionStart.GetCheck() || m_actionDepot.GetCheck() || m_actionLogout.GetCheck()));
-	if(m_actionPersistent.GetCheck())
+	if (m_actionPersistent.GetCheck())
 		m_actionPersistent.SetCheck(m_actionPersistent.IsWindowEnabled());
 	m_actionPermanent.EnableWindow(!m_actionPersistent.GetCheck());
 	m_actionShutdown.EnableWindow(!m_actionKill.GetCheck());
@@ -136,37 +139,44 @@ void CAlarmDialog::UpdateDependentButtons() {
 	m_actionStart.EnableWindow(!m_actionDepot.GetCheck());
 	m_actionRunaway.EnableWindow(!m_actionDepot.GetCheck());
 }
-void CAlarmDialog::OnActionPersistent() {
+
+void CAlarmDialog::OnActionPersistent()
+{
 	instructionText.LoadString(IDS_PERSISTENT);
 	m_instructionText.SetWindowText(instructionText);
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionPermanent() {
+void CAlarmDialog::OnActionPermanent()
+{
 	instructionText.LoadString(IDS_PERMANENT);
 	m_instructionText.SetWindowText(instructionText);
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionKill() {
+void CAlarmDialog::OnActionKill()
+{
 	instructionText.LoadString(IDS_KILL);
 	m_instructionText.SetWindowText(instructionText);
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionShutdown() {
+void CAlarmDialog::OnActionShutdown()
+{
 	instructionText.LoadString(IDS_SHUTDOWN);
 	m_instructionText.SetWindowText(instructionText);
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionLogout() {
+void CAlarmDialog::OnActionLogout()
+{
 	instructionText.LoadString(IDS_LOGOUT);
 	m_instructionText.SetWindowText(instructionText);
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionRunaway() {
+void CAlarmDialog::OnActionRunaway()
+{
 	if (m_actionStart.GetCheck() && m_actionRunaway.GetCheck())
 		instructionText.LoadString(IDS_START_RUNAWAY);
 	else
@@ -175,7 +185,8 @@ void CAlarmDialog::OnActionRunaway() {
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionStart() {
+void CAlarmDialog::OnActionStart()
+{
 	if (m_actionStart.GetCheck() && m_actionRunaway.GetCheck())
 		instructionText.LoadString(IDS_START_RUNAWAY);
 	else
@@ -184,63 +195,73 @@ void CAlarmDialog::OnActionStart() {
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionDepot() {
+void CAlarmDialog::OnActionDepot()
+{
 	instructionText.LoadString(IDS_DEPOT);
 	m_instructionText.SetWindowText(instructionText);
 	UpdateDependentButtons();
 }
 
-void CAlarmDialog::OnActionSpell() {
+void CAlarmDialog::OnActionSpell()
+{
 	instructionText.LoadString(IDS_SPELL);
 	m_instructionText.SetWindowText(instructionText);
 	m_spellList.EnableWindow(m_actionSpell.GetCheck());
 	m_spellList.SetCurSel(m_actionSpell.GetCheck() ? 0 : -1);
 }
 
-void CAlarmDialog::OnActionScreenshot() {
+void CAlarmDialog::OnActionScreenshot()
+{
 	instructionText.LoadString(IDS_SCREENSHOT);
 	m_instructionText.SetWindowText(instructionText);
 	m_screenshotOptions.EnableWindow(m_actionScreenshot.GetCheck());
 	m_screenshotOptions.SetCurSel(m_actionScreenshot.GetCheck() ? 0 : -1);
 }
 
-void CAlarmDialog::OnActionSuspendModules() {
+void CAlarmDialog::OnActionSuspendModules()
+{
 	instructionText.LoadString(IDS_SUSPEND_MODULES);
 	m_instructionText.SetWindowText(instructionText);
 	m_modules.EnableWindow(m_actionSuspend.GetCheck());
 }
 
-void CAlarmDialog::OnActionStartModules() {
+void CAlarmDialog::OnActionStartModules()
+{
 	instructionText.LoadString(IDS_START_MODULES);
 	m_instructionText.SetWindowText(instructionText);
 	m_modules2.EnableWindow(m_actionEnable.GetCheck());
 }
 
-void CAlarmDialog::OnActionSound() {
+void CAlarmDialog::OnActionSound()
+{
 	instructionText.LoadString(IDS_SOUND);
 	m_instructionText.SetWindowText(instructionText);
 	m_audioFile.EnableWindow(m_actionSound.GetCheck());
 	m_audioFile.SetCurSel(m_actionSound.GetCheck() ? 0 : -1);
 }
 
-void CAlarmDialog::OnActionStopWalking() {
+void CAlarmDialog::OnActionStopWalking()
+{
 	instructionText.LoadString(IDS_STOPWALKING);
 	m_instructionText.SetWindowText(instructionText);
 }
 
-void CAlarmDialog::OnWindowAction() {
+void CAlarmDialog::OnWindowAction()
+{
 	instructionText.LoadString(IDS_WINDOW_ACTION);
 	m_instructionText.SetWindowText(instructionText);
 	m_windowActionList.EnableWindow(m_windowAction.GetCheck());
 	m_windowActionList.SetCurSel(m_windowAction.GetCheck() ? 0 : -1);
 }
 
-void CAlarmDialog::OnActionLogEvents() {
+void CAlarmDialog::OnActionLogEvents()
+{
 	instructionText.LoadString(IDS_LOG_EVENTS);
 	m_instructionText.SetWindowText(instructionText);
 }
 
-void CAlarmDialog::OnSelchangeAlarmType() {
+void CAlarmDialog::OnSelchangeAlarmType()
+{
 	CString text;
 	int selected = m_alarmType.GetCurSel();
 	char itemText[128];
@@ -248,7 +269,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 	switch (selected)
 	{
 	case SKILL:
-		if(strcmp(itemText, "Any"))
+		if (strcmp(itemText, "Any"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.AddString("Any");
@@ -275,7 +296,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case RESOURCE:
-		if(strcmp(itemText, "Hit Points"))
+		if (strcmp(itemText, "Hit Points"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.AddString("Hit Points");
@@ -299,7 +320,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case PROXIMITY:
-		if(strcmp(itemText, "Player"))
+		if (strcmp(itemText, "Player"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Player"), 0);
@@ -326,7 +347,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case ONLINE:
-		if(strcmp(itemText, "Current Player"))
+		if (strcmp(itemText, "Current Player"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Current Player"), 0);
@@ -355,7 +376,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case ITEMS:
-		if(strcmp(itemText, "Food"))
+		if (strcmp(itemText, "Food"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Food"), 39);
@@ -442,11 +463,12 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 			m_trigger.EnableWindow(true);
 		}
 		instructionText.LoadString(IDS_ITEM);
-		{int a = GetLastError(); }
+		{int a = GetLastError();
+		}
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case CHARACTER_STATUS:
-		if(strcmp(itemText, "Poisoned"))
+		if (strcmp(itemText, "Poisoned"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Poisoned"), 24);
@@ -478,7 +500,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case EVENT:
-		if(strcmp(itemText, "Character Moved"))
+		if (strcmp(itemText, "Character Moved"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("Character Moved"), 0);
@@ -498,7 +520,7 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 		m_instructionText.SetWindowText(instructionText);
 		break;
 	case MESSAGE:
-		if(strcmp(itemText, "All Messages"))
+		if (strcmp(itemText, "All Messages"))
 		{
 			m_attribute.ResetContent();
 			m_attribute.SetItemImage(m_attribute.AddString("All Messages"), 21);
@@ -522,7 +544,8 @@ void CAlarmDialog::OnSelchangeAlarmType() {
 	}
 }
 
-void CAlarmDialog::DoSetButtonSkin(){
+void CAlarmDialog::DoSetButtonSkin()
+{
 	skin.SetButtonSkin(m_actionRunaway);
 	skin.SetButtonSkin(m_actionStart);
 	skin.SetButtonSkin(m_actionDepot);
@@ -544,7 +567,8 @@ void CAlarmDialog::DoSetButtonSkin(){
 	skin.SetButtonSkin(m_alarmAdd);
 }
 
-BOOL CAlarmDialog::OnInitDialog() {
+BOOL CAlarmDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
@@ -565,7 +589,7 @@ BOOL CAlarmDialog::OnInitDialog() {
 	while (bWorking)
 	{
 		bWorking = finder.FindNextFile();
-		if(!finder.IsDirectory() && !finder.IsDots())
+		if (!finder.IsDirectory() && !finder.IsDots())
 			m_audioFile.AddString(finder.GetFileName());
 	}
 
@@ -599,7 +623,7 @@ BOOL CAlarmDialog::OnInitDialog() {
 		CloseHandle(hSnap);
 	}
 	// Spell List Mana Costs
-	for(int i = 0; i < spellInfoCount; i++)
+	for (int i = 0; i < spellInfoCount; i++)
 	{
 		m_spellList.AddString(spellInfo[i]->text);
 		m_spellList.SetItemData(i, (long)spellInfo[i]);
@@ -779,7 +803,8 @@ BOOL CAlarmDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CAlarmDialog::OnSelchangeAttribute(){
+void CAlarmDialog::OnSelchangeAttribute()
+{
 	CMemReaderProxy reader;
 
 	int selected = m_alarmType.GetCurSel();
@@ -1188,7 +1213,8 @@ void CAlarmDialog::OnSelchangeAttribute(){
 	}
 }
 
-void CAlarmDialog::OnSelchangeCondition() {
+void CAlarmDialog::OnSelchangeCondition()
+{
 	int selected = m_alarmType.GetCurSel();
 	char itemText[128];
 	m_attribute.GetLBText(0, itemText);
@@ -1251,7 +1277,7 @@ void CAlarmDialog::OnSelchangeCondition() {
 			break;
 		}
 		selected = m_attribute.GetCurSel();
-		switch(selected)
+		switch (selected)
 		{
 		case STAMINA:
 			m_trigger.SetWindowText("<eg. 1h50m>");
@@ -1431,7 +1457,8 @@ void CAlarmDialog::OnSelchangeCondition() {
 	}
 }
 
-void CAlarmDialog::OnSetfocusTrigger() {
+void CAlarmDialog::OnSetfocusTrigger()
+{
 	CString text;
 	m_trigger.GetWindowText(text);
 	if (strncmp("Not ", text, 4) == 0)
@@ -1440,19 +1467,22 @@ void CAlarmDialog::OnSetfocusTrigger() {
 		m_trigger.SetWindowText("");
 }
 
-void CAlarmDialog::disableControls() {
+void CAlarmDialog::disableControls()
+{
 	m_alarmAdd.EnableWindow(false);
 	m_alarmEdit.EnableWindow(false);
 	m_alarmDelete.EnableWindow(false);
 }
 
-void CAlarmDialog::enableControls() {
+void CAlarmDialog::enableControls()
+{
 	m_alarmAdd.EnableWindow();
 	m_alarmEdit.EnableWindow();
 	m_alarmDelete.EnableWindow();
 }
 
-void CAlarmDialog::configToControls(CConfigData *config) {
+void CAlarmDialog::configToControls(CConfigData *config)
+{
 	CString text;
 
 	list<Alarm>::iterator listItr = config->alarmList.begin();
@@ -1486,7 +1516,7 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionStart.SetCheck(listItr->getGoToStart());
 		m_actionDepot.SetCheck(listItr->getGoToDepot());
 		m_actionSpell.SetCheck(listItr->getCastSpell().GetLength());
-		if(strcmp(listItr->getCastSpell(), "") != 0)
+		if (strcmp(listItr->getCastSpell(), "") != 0)
 		{
 			int index = m_spellList.FindStringExact(-1, listItr->getCastSpell());
 			if (index == CB_ERR)
@@ -1519,7 +1549,7 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 		m_actionPermanent.SetCheck(listItr->getPermanent());
 		int size = memAlarmList.size();
 		OnAlarmAdd();
-		if(memAlarmList.size() == size + 1)
+		if (memAlarmList.size() == size + 1)
 		{
 			list<CString> tmpl = listItr->getStartModules();
 			memAlarmList.rbegin()->setStartModules(tmpl);
@@ -1531,12 +1561,14 @@ void CAlarmDialog::configToControls(CConfigData *config) {
 	}
 }
 
-void CAlarmDialog::controlsToConfig(CConfigData *config) {
+void CAlarmDialog::controlsToConfig(CConfigData *config)
+{
 	config->triggerMessage = triggerMessage;
 	config->alarmList      = memAlarmList;
 }
 
-void CAlarmDialog::OnAlarmAdd() {
+void CAlarmDialog::OnAlarmAdd()
+{
 	CString strBuffer;
 
 	//Parses all GUI states and creates a new alarm
@@ -1637,7 +1669,8 @@ void CAlarmDialog::OnAlarmAdd() {
 	}
 }
 
-Alarm* CAlarmDialog::addToList() {
+Alarm* CAlarmDialog::addToList()
+{
 	Alarm *temp = new Alarm();
 	CString text;
 	if (m_trigger.IsWindowEnabled())
@@ -1651,9 +1684,9 @@ Alarm* CAlarmDialog::addToList() {
 			else if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() == WAYPOINTREACHED)
 				temp->setTrigger(3, text);//PointTRIGGER
 			//convert to standard format
-			else if(m_alarmType.GetCurSel() == RESOURCE && m_attribute.GetCurSel() == STAMINA)
+			else if (m_alarmType.GetCurSel() == RESOURCE && m_attribute.GetCurSel() == STAMINA)
 				temp->setTrigger(4, text);//DURATIONMIN
-			else if(m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() == CHARACTERNOTMOVED)
+			else if (m_alarmType.GetCurSel() == EVENT && m_attribute.GetCurSel() == CHARACTERNOTMOVED)
 				temp->setTrigger(5, text);//DURATIONSEC
 			else
 				temp->setTrigger(2, text);//INTEGER
@@ -1851,7 +1884,8 @@ Alarm* CAlarmDialog::addToList() {
 	return temp;
 }
 
-void CAlarmDialog::OnAlarmDelete() {
+void CAlarmDialog::OnAlarmDelete()
+{
 	list<Alarm>::iterator alarmItr = memAlarmList.begin();
 	POSITION pos                   = m_alarmList.GetFirstSelectedItemPosition();
 	if (pos)
@@ -1867,7 +1901,8 @@ void CAlarmDialog::OnAlarmDelete() {
 	}
 }
 
-void CAlarmDialog::OnAlarmEdit() {
+void CAlarmDialog::OnAlarmEdit()
+{
 	CString text;
 	list<Alarm>::iterator alarmItr = memAlarmList.begin();
 	POSITION pos                   = m_alarmList.GetFirstSelectedItemPosition();
@@ -1910,7 +1945,7 @@ void CAlarmDialog::OnAlarmEdit() {
 		m_actionSpell.SetCheck(alarmItr->getCastSpell().GetLength());
 		m_spellList.EnableWindow(m_actionSpell.GetCheck());
 		index = m_spellList.FindStringExact(-1, alarmItr->getCastSpell());
-		if(strcmp(alarmItr->getCastSpell(), ""))
+		if (strcmp(alarmItr->getCastSpell(), ""))
 		{
 			if (index == CB_ERR)
 			{
@@ -1976,7 +2011,8 @@ void CAlarmDialog::OnAlarmEdit() {
 	}
 }
 
-void CAlarmDialog::OnSelchangeSpellList() {
+void CAlarmDialog::OnSelchangeSpellList()
+{
 	switch (m_spellList.GetCurSel())
 	{
 	case 0:

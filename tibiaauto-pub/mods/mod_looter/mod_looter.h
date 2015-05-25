@@ -22,7 +22,8 @@
 //
 
 struct Item {
-	Item(){
+	Item()
+	{
 	}
 };
 
@@ -35,10 +36,13 @@ struct Corpse
 	int pos;//position from end of array as this is usually static
 	Corpse *prev;
 	Corpse *nxt;
-	void push(Corpse *pred){
+	void push(Corpse *pred)
+	{
 		pred->insertNodeAfter(prev);
 	}
-	void insertNodeAfter(Corpse *pred){
+
+	void insertNodeAfter(Corpse *pred)
+	{
 		//remove node
 		prev->nxt = nxt;
 		nxt->prev = prev;
@@ -49,10 +53,14 @@ struct Corpse
 		if (pred->nxt != NULL)
 			pred->nxt->prev = this;
 	}
-	int distance(int x, int y){
+
+	int distance(int x, int y)
+	{
 		return max(abs(this->x - x), abs(this->y - y));
 	}
-	Corpse() {
+
+	Corpse()
+	{
 		timeOfDeath = itemId = x = y = z = pos = 0;
 		memset(name, 0, 40);
 		nxt = prev = this;

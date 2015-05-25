@@ -58,7 +58,8 @@ struct actionRegexData {
 	int handle;
 	int inUse;
 	regex_t preg;
-	actionRegexData(){
+	actionRegexData()
+	{
 		inUse  = 0;
 		handle = NULL;
 	}
@@ -116,7 +117,8 @@ struct HUD {
 	int greenColor;
 	char message[1024];
 public:
-	HUD() {
+	HUD()
+	{
 		CPoint pos;
 		redColor   = 0;
 		blueColor  = 0;
@@ -2540,10 +2542,10 @@ int callAddr_ShouldParseRecv01     = 0x4813A2;
  */
 
 
-int (WINAPI * Real_send)(SOCKET s, char* buf, int len, int flags)               = NULL;
-int (WINAPI * Real_recv)(SOCKET s, char* buf, int len, int flags)               = NULL;
-int (WINAPI * Real_connect)(SOCKET s, const struct sockaddr* name, int namelen) = NULL;
-SOCKET(WINAPI * Real_socket)(int af, int type, int protocol)                    = NULL;
+int(WINAPI * Real_send)(SOCKET s, char* buf, int len, int flags)               = NULL;
+int(WINAPI * Real_recv)(SOCKET s, char* buf, int len, int flags)               = NULL;
+int(WINAPI * Real_connect)(SOCKET s, const struct sockaddr* name, int namelen) = NULL;
+SOCKET(WINAPI * Real_socket)(int af, int type, int protocol)                   = NULL;
 
 int WINAPI Mine_send(SOCKET s, char* buf, int len, int flags);
 void adler(unsigned char *data, size_t len, unsigned char* outBuf);
@@ -2552,8 +2554,9 @@ void InitialiseCommunication();
 void InitialiseHooks();
 void InitialiseDebugFile();
 
-void WriteOutDebug(const char * format, ...){
-	if(debugFile)
+void WriteOutDebug(const char * format, ...)
+{
+	if (debugFile)
 	{
 		va_list args;
 		va_start(args, format);
@@ -2632,7 +2635,7 @@ int GetProcessBaseAddr()
 		for (size_t i = 0; i < moduleCount; i++)
 		{
 			GetModuleBaseName(dwHandle, modules[i], moduleName, sizeof(moduleName));
-			if(_strcmpi(moduleName, "Tibia.exe") == 0)
+			if (_strcmpi(moduleName, "Tibia.exe") == 0)
 			{
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
@@ -2640,7 +2643,7 @@ int GetProcessBaseAddr()
 				ret                 = (int)moduleInfo.lpBaseOfDll;
 				break;
 			}
-			if(i == 0) // catches first module in case Tibia.exe does not exist
+			if (i == 0) // catches first module in case Tibia.exe does not exist
 			{
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
@@ -2648,14 +2651,16 @@ int GetProcessBaseAddr()
 				ret                 = (int)moduleInfo.lpBaseOfDll;
 			}
 		}
-		free(modules); modules = NULL;
+		free(modules);
+		modules = NULL;
 	}
-	if(isNotFromNormalScan)
+	if (isNotFromNormalScan)
 		AfxMessageBox("While finding base address, main module was no first or was not named \"Tibia.exe\".");
 	return ret;
 }
 
-int baseAdjust(int addr){
+int baseAdjust(int addr)
+{
 	CMemReaderProxy reader;
 	return addr - 0x400000 + GetProcessBaseAddr();
 }
@@ -2692,8 +2697,9 @@ void adler(unsigned char *data, size_t len, unsigned char *outBuf)
 	outBuf[3] = (b >> 8) & 0xff;
 }
 
-void sendTAMessage(char* message){
-	if(privChanBufferPtr)
+void sendTAMessage(char* message)
+{
+	if (privChanBufferPtr)
 	{
 		WriteOutDebug("sendTAMessage %X %s", privChanBufferPtr, message);
 		OUTmyInterceptInfoMessageBox(privChanBufferPtr, 0, (int)message, 4, (int)"Tibia Auto", 0, 0, 0, 0);
@@ -2845,7 +2851,6 @@ void sendBufferViaSocket(unsigned char *buffer)
 	}
 }
 
-
 void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ)
 {
 	unsigned char sendbuf[19];
@@ -2856,12 +2861,13 @@ void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX
 	sendbuf[1] = 0;
 	sendbuf[2] = 0x83;
 
-	sendbuf[3]  = 0xff;
-	sendbuf[4]  = 0xff;
-	sendbuf[5]  = contNr & 0xff;
-	sendbuf[6]  = (contNr >> 8) & 0xff;
-	sendbuf[7]  = itemPos;
-	sendbuf[8]  = runeObjectId & 0xff;;
+	sendbuf[3] = 0xff;
+	sendbuf[4] = 0xff;
+	sendbuf[5] = contNr & 0xff;
+	sendbuf[6] = (contNr >> 8) & 0xff;
+	sendbuf[7] = itemPos;
+	sendbuf[8] = runeObjectId & 0xff;
+	;
 	sendbuf[9]  = (runeObjectId >> 8) & 0xff;
 	sendbuf[10] = itemPos;
 
@@ -2877,6 +2883,7 @@ void castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX
 	//Mine_send(tibiaSocket,sendbuf,19,lastSendFlags);
 	sendBufferViaSocket(sendbuf);
 }
+
 void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId)
 {
 	unsigned char sendbuf[15];
@@ -2884,12 +2891,13 @@ void castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int crea
 	sendbuf[1] = 0;
 	sendbuf[2] = 0x84;
 
-	sendbuf[3]  = 0xff;
-	sendbuf[4]  = 0xff;
-	sendbuf[5]  = contNr & 0xff;
-	sendbuf[6]  = (contNr >> 8) & 0xff;
-	sendbuf[7]  = itemPos;
-	sendbuf[8]  = runeObjectId & 0xff;;
+	sendbuf[3] = 0xff;
+	sendbuf[4] = 0xff;
+	sendbuf[5] = contNr & 0xff;
+	sendbuf[6] = (contNr >> 8) & 0xff;
+	sendbuf[7] = itemPos;
+	sendbuf[8] = runeObjectId & 0xff;
+	;
 	sendbuf[9]  = (runeObjectId >> 8) & 0xff;
 	sendbuf[10] = itemPos;
 
@@ -2956,12 +2964,14 @@ struct parcelRecvActionData {
 	int countLeft;
 	int len;
 	char actionData[MAX_PAYLOAD_LEN - sizeof(int) * 4];
-	parcelRecvActionData(){
+	parcelRecvActionData()
+	{
 		memset(actionData, 0, sizeof(actionData));
 	}
 };
 
-void parseRecvActionData(int handle, char* data, int len){
+void parseRecvActionData(int handle, char* data, int len)
+{
 #ifdef _DEBUG
 	if (len == 0)
 		AfxMessageBox("parseRecvActionData: length is 0.");
@@ -3024,25 +3034,17 @@ void parseMessageSay(char *sayBuf)
 
 
 	if (!strcmp(sayBuf, "%ta hmm") && autoAimActive)
-	{
 		if (reader.getAttackedCreature())
 			autoAimAttack(itemProxy.getValueForConst("runeHMM"));
-	}
 	if (!strcmp(sayBuf, "%ta gfb") && autoAimActive)
-	{
 		if (reader.getAttackedCreature())
 			autoAimAttack(itemProxy.getValueForConst("runeGFB"));
-	}
 	if (!strcmp(sayBuf, "%ta sd") && autoAimActive)
-	{
 		if (reader.getAttackedCreature())
 			autoAimAttack(itemProxy.getValueForConst("runeSD"));
-	}
 	if (!strcmp(sayBuf, "%ta explo") && autoAimActive)
-	{
 		if (reader.getAttackedCreature())
 			autoAimAttack(itemProxy.getValueForConst("runeExplo"));
-	}
 	if (!strcmp(sayBuf, "%ta selfuh") && outSelfUHAvail)
 		//Mine_send(tibiaSocket,tibiaState.outbufSelfUH,payloadLen(tibiaState.outbufSelfUH)+2,lastSendFlags);
 		sendBufferViaSocket(tibiaState.outbufSelfUH);
@@ -3061,7 +3063,7 @@ int parseMessageForTibiaAction(char *buf, int len)
 	//AfxMessageBox(buf2);
 	static int gatherStats        = CModuleUtil::getTASetting("GatherBotStats");
 	static int removeStatsMessage = CModuleUtil::getTASetting("RemoveBotStatsMessage");
-	if(gatherStats)
+	if (gatherStats)
 		Protocol::outputPacket(NetworkMessage(buf));
 	else if (removeStatsMessage)
 		CModuleUtil::setTASetting("RemoveBotStatsMessage", 0);
@@ -3241,7 +3243,6 @@ int parseMessageForTibiaAction(char *buf, int len)
 	return 0;
 }
 
-
 void hookCallback(int value)
 {
 	struct ipcMessage mess;
@@ -3269,6 +3270,7 @@ void hookCallback(int value)
 		}
 	}
 }
+
 typedef void (*Proto_callback)(int value);
 volatile Proto_callback hookCallbackFun = hookCallback;
 
@@ -3305,7 +3307,6 @@ void ActivateHookCallback()
 
 	CopyMemory((PVOID)hooksFile, (PVOID)&hookCallbackFun, sizeof(void *));
 }
-
 
 int WINAPI Mine_send(SOCKET s, char* buf, int len, int flags)
 {
@@ -3359,7 +3360,6 @@ int WINAPI Mine_send(SOCKET s, char* buf, int len, int flags)
 
 	return ret;
 }
-
 
 int WINAPI Mine_recv(SOCKET s, char* buf, int len, int flags)
 {
@@ -3463,7 +3463,7 @@ void InitialiseIPC()
 
 		// All pipe instances are busy, so wait for 10 seconds.
 
-		if (!WaitNamedPipe(lpszPipename, 1000) )
+		if (!WaitNamedPipe(lpszPipename, 1000))
 		{
 			sprintf(buf, "Could not open pipe (busy too long): %d", GetLastError());
 			//MessageBox(NULL,buf,"error",0);
@@ -3480,16 +3480,15 @@ void InitialiseIPC()
 	        NULL);    // don't set maximum time
 	if (!fSuccess)
 		InitialiseIPC();
-	else
-		if (debugFile && COMPLEX)
-			WriteOutDebug("[debug] straight IPC initialised ok\r\n");
+	else if (debugFile && COMPLEX)
+		WriteOutDebug("[debug] straight IPC initialised ok\r\n");
 }
 
 void InitialiseHooks()
 {
-	Real_send    = (int (WINAPI *)(SOCKET, char*, int, int))DetourFindFunction("wsock32.dll", "send");
-	Real_recv    = (int (WINAPI *)(SOCKET, char*, int, int))DetourFindFunction("wsock32.dll", "recv");
-	Real_connect = (int (WINAPI *)(SOCKET, const struct sockaddr*, int))DetourFindFunction("wsock32.dll", "connect");
+	Real_send    = (int(WINAPI *)(SOCKET, char*, int, int))DetourFindFunction("wsock32.dll", "send");
+	Real_recv    = (int(WINAPI *)(SOCKET, char*, int, int))DetourFindFunction("wsock32.dll", "recv");
+	Real_connect = (int(WINAPI *)(SOCKET, const struct sockaddr*, int))DetourFindFunction("wsock32.dll", "connect");
 	Real_socket  = (SOCKET(WINAPI *)(int, int, int))DetourFindFunction("wsock32.dll", "socket");
 	DetourTransactionBegin();
 	DetourUpdateThread(GetCurrentThread());
@@ -3528,7 +3527,6 @@ void InitialiseCreatureInfo()
 	}
 }
 
-
 //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8<ecx>, int v9)
 int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8, int v9)
 {
@@ -3553,6 +3551,7 @@ int OUTmyPrintText(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char*
 	}
 	return retvar;
 }
+
 int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, int nBlue, char* lpText, int nAlign)
 {
 	//myPrintText runs continuously, so this is a good place to check if the TA Message pipe has anything for us
@@ -3570,13 +3569,14 @@ int myPrintText(int nSurface, int nX, int nY, int nFont, int nRed, int nGreen, i
 	int titleOffset = 0;
 
 	int ret = OUTmyPrintText(nSurface, nX, nY, nFont, nRed, nGreen, nBlue, lpText, nAlign);
-	for (int loop = 0; loop < 100; loop++ )
+	for (int loop = 0; loop < 100; loop++)
 	{
 		if (HUDisplay[loop].pos.x && HUDisplay[loop].pos.y && HUDisplay[loop].message != NULL && HUDisplay[loop].message[0] != '\0')
 			OUTmyPrintText(1, HUDisplay[loop].pos.x, HUDisplay[loop].pos.y, nFont, HUDisplay[loop].redColor, HUDisplay[loop].greenColor, HUDisplay[loop].blueColor, HUDisplay[loop].message, 0);
 	}
 	return ret;
 }
+
 __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5, int v6, int v7, char* v8<ecx>, int v9)
 {
 	__asm {
@@ -3596,7 +3596,6 @@ __declspec(naked) void INmyPrintText() //(int v1, int v2, int v3, int v4, int v5
 		ret
 	}
 }
-
 
 //(int align<ecx>, char *str<edx>, int visible, int x, int y, int fontNumber, int colR, int colG, int colB, int showFormatting, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, int v16<ebx>, int v17<edi>)
 int OUTmyPlayerNameText(int alignvar, int fontNumber, int visible, int x, int y, int showFormatting, int colR, int colG, int colB, char *strvar, int charCut, int cropLeft, int cropTop, int cropWidth, int cropHeight, char* v16, int v17)
@@ -3724,7 +3723,6 @@ __declspec(naked) void INmyPlayerNameText() //()
 	}
 }
 
-
 void OUTmyInterceptInfoMiddleScreen(int typevar, char* s)
 {
 	typedef void (*Proto_fun)(int typevar, char *s);
@@ -3737,6 +3735,7 @@ void OUTmyInterceptInfoMiddleScreen(int typevar, char* s)
 		call fun
 	}
 }
+
 void myInterceptInfoMiddleScreen(int type, char *s)
 {
 	if (debugFile && COMPLEX)
@@ -3782,10 +3781,10 @@ void myInterceptInfoMiddleScreen(int type, char *s)
 		        }
 		   }*/
 		OUTmyInterceptInfoMiddleScreen(type, s);
-	else
-		if (debugFile && COMPLEX)
-			WriteOutDebug("ignoring look");
+	else if (debugFile && COMPLEX)
+		WriteOutDebug("ignoring look");
 }
+
 // void(int type<ecx>, char* text<edx>)
 __declspec(naked) void INmyInterceptInfoMiddleScreen() //()
 {
@@ -3799,7 +3798,6 @@ __declspec(naked) void INmyInterceptInfoMiddleScreen() //()
 		    ret
 	}
 }
-
 
 int myIsCreatureVisible(int *creaturePtr) //Should Draw Creature(not used)
 {
@@ -3859,6 +3857,7 @@ int OUTmyInterceptEncrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 	}
 	return retvar;
 }
+
 int myInterceptEncrypt(int v1, int v2)
 {
 	encryptKeyPtr = v2;
@@ -3889,6 +3888,7 @@ int myInterceptEncrypt(int v1, int v2)
 	memcpy(encryptAfterBuf + encryptPos, (void *)v1, 8);
 	return ret;
 }
+
 __declspec(naked) void INmyInterceptEncrypt() //<eax>(int v1<ecx>, int v2<edx>)
 {
 	__asm {
@@ -3901,7 +3901,6 @@ __declspec(naked) void INmyInterceptEncrypt() //<eax>(int v1<ecx>, int v2<edx>)
 		    ret
 	}
 }
-
 
 int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
@@ -3918,6 +3917,7 @@ int OUTmyInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 	}
 	return retvar;
 }
+
 int myInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 {
 	if (taMessageStart != taMessageEnd)
@@ -3933,6 +3933,7 @@ int myInterceptDecrypt(int v1, int v2) //<eax>(int v1<ecx>, int v2<edx>)
 	encryptKeyPtr = v2;
 	return OUTmyInterceptDecrypt(v1, v2);
 }
+
 __declspec(naked) void INmyInterceptDecrypt() //<eax>(int v1<ecx>, int v2<edx>)
 {
 	__asm {
@@ -4015,7 +4016,8 @@ int prevRecvStreamPos = 0;
 int prevRecvStreamLen = 0;
 int prevNextRet       = 0;
 char prevRecvStream[32768];
-int myShouldParseRecv(){
+int myShouldParseRecv()
+{
 	CMemReaderProxy reader;
 	CRegexpProxy regexpProxy;
 
@@ -4116,6 +4118,7 @@ int OUTmyInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6,
 	}
 	return retval;
 }
+
 //<eax>(int v1, int v2, int v3<ecx>, int v4, int v5, int v6, int v7, int v8<edx>, int v9)
 int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, int v7, int v8, int v9)
 {
@@ -4198,6 +4201,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	}
 	return 2;
 }
+
 __declspec(naked) void INmyInterceptInfoMessageBox() //<eax>(int v1, int v2, int v3<ecx>, int v4, int v5, int v6, int v7, int v8<edx>, int v9)
 {
 	__asm {
@@ -4297,7 +4301,6 @@ void InitialisePlayerInfoHack()
 	CloseHandle(dwHandle);
 }
 
-
 void InitialiseProxyClasses()
 {
 	CMemReaderProxy reader;
@@ -4324,17 +4327,17 @@ void GetDebugPrivs()
 
 	if (::OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, &hToken))
 	{
-		if ( !::LookupPrivilegeValue( NULL, SE_DEBUG_NAME, &sedebugnameValue ) )
-			::CloseHandle( hToken );
+		if (!::LookupPrivilegeValue(NULL, SE_DEBUG_NAME, &sedebugnameValue))
+			::CloseHandle(hToken);
 
 		tp.PrivilegeCount           = 1;
 		tp.Privileges[0].Luid       = sedebugnameValue;
 		tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-		if ( !::AdjustTokenPrivileges( hToken, FALSE, &tp, sizeof(tp), NULL, NULL ) )
-			::CloseHandle( hToken );
+		if (!::AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(tp), NULL, NULL))
+			::CloseHandle(hToken);
 
-		::CloseHandle( hToken );
+		::CloseHandle(hToken);
 	}
 }
 
@@ -4376,7 +4379,7 @@ BOOL CALLBACK EnumWindowsProc(
 
 		wnd->SetMenu(menu);
 		wndProcOriginal = (WNDPROC)SetWindowLong(hwnd, GWL_WNDPROC, (LONG)(WNDPROC)FilterProc);
-		if(wndProcOriginal)
+		if (wndProcOriginal)
 			AfxMessageBox("Window Procedure hijacked!");
 		//GetDebugPrivs();
 		/*
@@ -4396,11 +4399,10 @@ void InitialiseTibiaMenu()
 	EnumWindows(&EnumWindowsProc, NULL);
 }
 
-
-BOOL APIENTRY DllMain( HINSTANCE hModule,
-                       DWORD ul_reason_for_call,
-                       LPVOID lpReserved
-                       )
+BOOL APIENTRY DllMain(HINSTANCE hModule,
+                      DWORD ul_reason_for_call,
+                      LPVOID lpReserved
+                      )
 {
 	static HINSTANCE hinstDLL = hModule;
 
@@ -4656,7 +4658,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 	}
 	case 308: // adds given regex to list
 	{
-		switch(*(int*)mess.payload)
+		switch (*(int*)mess.payload)
 		{
 		case 1:
 		{
@@ -4679,7 +4681,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 				memcpy(regExp, mess.payload + 12, regLen);
 
 				recvRegex[i].handle = handle;
-				if(regexpProxy.regncomp(&(recvRegex[i].preg), regExp, regLen, REG_NOSUB | REG_EXTENDED))
+				if (regexpProxy.regncomp(&(recvRegex[i].preg), regExp, regLen, REG_NOSUB | REG_EXTENDED))
 				{
 					//Failed to compile expression, send one message back to user
 					char base[]    = "Error: Failed to compile regular expression ";
@@ -4706,7 +4708,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			memcpy(&handle, mess.payload + 4, sizeof(int));
 			for (int i = 0; i < recvRegexCount && recvRegex[i].inUse != 0; i++)
 			{
-				if(recvRegex[i].handle == handle)
+				if (recvRegex[i].handle == handle)
 					recvRegex[i].inUse = 0;
 			}
 			break;
@@ -4761,8 +4763,7 @@ int ReadFromPipe()
 	return 1;
 }
 
-
-DWORD WINAPI CommunicationThread( LPVOID lpParam )
+DWORD WINAPI CommunicationThread(LPVOID lpParam)
 {
 	InitialiseIPC();
 	for (;; )

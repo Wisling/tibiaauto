@@ -26,7 +26,6 @@ CScriptConfigDialg::CScriptConfigDialg(int scriptNr, CWnd* pParent /*=NULL*/)
 	lastParamNr    = -1;
 }
 
-
 void CScriptConfigDialg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -35,7 +34,6 @@ void CScriptConfigDialg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SCRIPT_CONFIG_PARAM_EDIT, m_edit);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CScriptConfigDialg, CDialog)
 //{{AFX_MSG_MAP(CScriptConfigDialg)

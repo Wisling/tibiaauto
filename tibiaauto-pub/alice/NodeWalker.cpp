@@ -60,14 +60,16 @@ typedef vector<vecPair> walkingVec;
 //
 
 struct lessKey : public binary_function<vecPair, vecPair, bool> {
-	bool operator() (vecPair lhs, vecPair rhs) {
+	bool operator() (vecPair lhs, vecPair rhs)
+	{
 		return strcmp(lhs.first, rhs.first) < 0;
 	}
 };
 
 walkingVec getChildren(childrenMap &);
 
-walkingVec getChildren(childrenMap &children) {
+walkingVec getChildren(childrenMap &children)
+{
 	childrenMap::const_iterator itr = children.begin();
 	walkingVec vec;
 	while (itr != children.end())
@@ -149,7 +151,8 @@ walkingVec getChildren(childrenMap &children) {
    //	cout << endl;
    }*/
 
-void NodeWalker::dumpAiml(Nodemaster *root) {
+void NodeWalker::dumpAiml(Nodemaster *root)
+{
 	walkingVec fChildren = getChildren(root->children);
 	sort(fChildren.begin(), fChildren.end(), lessKey());
 
@@ -206,7 +209,8 @@ void NodeWalker::dumpAiml(Nodemaster *root) {
 	}
 }
 
-void NodeWalker::dumpAiml(Nodemaster *root, const string &path, PElement doc) {
+void NodeWalker::dumpAiml(Nodemaster *root, const string &path, PElement doc)
+{
 	walkingVec children = getChildren(root->children);
 	sort(children.begin(), children.end(), lessKey());
 

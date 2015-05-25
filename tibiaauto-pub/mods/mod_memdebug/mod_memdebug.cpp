@@ -52,12 +52,10 @@ char * CMod_memdebugApp::getName()
 	return "Mem debug";
 }
 
-
 int CMod_memdebugApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_memdebugApp::showConfigDialog()
 {
@@ -70,7 +68,6 @@ void CMod_memdebugApp::showConfigDialog()
 	}
 	m_configDialog->ShowWindow(SW_SHOW);
 }
-
 
 char *CMod_memdebugApp::getVersion()
 {

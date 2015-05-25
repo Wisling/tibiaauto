@@ -231,7 +231,7 @@ void CSendKeys::SendKeyDown(BYTE VKey, WORD NumTimes, bool GenUpMsg, bool bDelay
 			else
 			{
 				// Win98 and later
-				if ( ((DWORD)(HIBYTE(LOWORD(dwVersion))) >= 10) )
+				if (((DWORD)(HIBYTE(LOWORD(dwVersion))) >= 10))
 				{
 					// Define _WIN32_WINNT > 0x0400
 					// to compile

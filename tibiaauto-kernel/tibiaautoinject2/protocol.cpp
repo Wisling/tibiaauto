@@ -1,4 +1,3 @@
-
 // protocol.cpp : Defines the entry point for the DLL application.
 //
 #include "stdafx.h"
@@ -20,14 +19,16 @@ extern CIPCPipeBack ipcPipeBack;
 //the remaining bytes compose the NetworkMessage
 //readPos is the absolute position within msgBuf
 //msgSize is the length of msgBuf (the first two bytes are msgBuf-2)
-NetworkMessage::NetworkMessage(){
+NetworkMessage::NetworkMessage()
+{
 	readPos = 2;
 	msgSize = 2;
 	NetworkMessage::RefreshSize();
 }
 
 //Copies rawMsg into our msgBuf using the first two bytes as the length
-NetworkMessage::NetworkMessage(char* rawMsg){
+NetworkMessage::NetworkMessage(char* rawMsg)
+{
 	msgBuf[0] = 0;
 	readPos   = 2;
 	msgSize   = 2;
@@ -51,7 +52,8 @@ NetworkMessage::NetworkMessage(char* rawMsg){
 }
 
 //Copies rawMsg into our msgBuf using len as the length
-NetworkMessage::NetworkMessage(char* rawMsg, int len){
+NetworkMessage::NetworkMessage(char* rawMsg, int len)
+{
 	msgBuf[0] = 0;
 	readPos   = 2;
 	msgSize   = len + 2;
@@ -134,73 +136,85 @@ int isSpellMessage(const char *msg)
 	return 0;
 }
 
-bool NetworkMessage::canAdd(int size) {
+bool NetworkMessage::canAdd(int size)
+{
 	return (size + readPos <= NETWORKMESSAGE_MAXSIZE);
 }
 
-bool NetworkMessage::canTake(int size) {
+bool NetworkMessage::canTake(int size)
+{
 	return (size + readPos <= msgSize);
 }
 
-void NetworkMessage::sizeError(const char* funcname, int readsize){
+void NetworkMessage::sizeError(const char* funcname, int readsize)
+{
 	char buf[256];
 	sprintf(buf, "TibiaautoInject2: NetworkMessage %s trying to read %d from buffer of size %d.", funcname, readsize, msgSize - readPos);
 	AfxMessageBox(buf);
 }
 
-void NetworkMessage::RefreshSize(){
+void NetworkMessage::RefreshSize()
+{
 	msgBuf[0] = (unsigned char)(msgSize - 2);
 	msgBuf[1] = (unsigned char)((msgSize - 2) << 8);
 }
 
-void NetworkMessage::ResetPos(){
+void NetworkMessage::ResetPos()
+{
 	readPos = 2;
 }
 
-unsigned char NetworkMessage::GetByte(){
-	if(!canTake(1))
+unsigned char NetworkMessage::GetByte()
+{
+	if (!canTake(1))
 		sizeError("GetByte", 1);
 	return msgBuf[readPos++];
 }
 
-unsigned int NetworkMessage::GetInt(){
-	if(!canTake(4))
+unsigned int NetworkMessage::GetInt()
+{
+	if (!canTake(4))
 		sizeError("GetInt", 4);
 	unsigned int ans = *(int*)(msgBuf + readPos);
 	readPos += 4;
 	return ans;
 }
 
-unsigned short NetworkMessage::GetShort(){
-	if(!canTake(2))
+unsigned short NetworkMessage::GetShort()
+{
+	if (!canTake(2))
 		sizeError("GetShort", 2);
 	unsigned short ans = *(short*)(msgBuf + readPos);
 	readPos += 2;
 	return ans;
 }
 
-unsigned char NetworkMessage::PeekByte(){
-	if(!canTake(1))
+unsigned char NetworkMessage::PeekByte()
+{
+	if (!canTake(1))
 		sizeError("PeekByte", 1);
 	return msgBuf[readPos];
 }
 
-unsigned int NetworkMessage::PeekInt(){
-	if(!canTake(4))
+unsigned int NetworkMessage::PeekInt()
+{
+	if (!canTake(4))
 		sizeError("PeekInt", 4);
 	return *(int*)(msgBuf + readPos);
 }
 
-unsigned short NetworkMessage::PeekShort(){
-	if(!canTake(2))
+unsigned short NetworkMessage::PeekShort()
+{
+	if (!canTake(2))
 		sizeError("PeekShort", 2);
 	return *(short*)(msgBuf + readPos);
 }
 
-std::string NetworkMessage::GetString(int stringLen /*=0*/){
-	if(!stringLen)
+std::string NetworkMessage::GetString(int stringLen /*=0*/)
+{
+	if (!stringLen)
 		stringLen = GetShort();
-	if(!canTake(stringLen))
+	if (!canTake(stringLen))
 	{
 		sizeError("GetString", stringLen);
 		return std::string();
@@ -210,24 +224,25 @@ std::string NetworkMessage::GetString(int stringLen /*=0*/){
 	return std::string(v, stringLen);
 }
 
-std::string NetworkMessage::GetHex(int len /*=0*/){
-	if(!len)
+std::string NetworkMessage::GetHex(int len /*=0*/)
+{
+	if (!len)
 		len = msgSize - readPos;
-	if(!canTake(len))
+	if (!canTake(len))
 	{
 		sizeError("GetHex", len);
 		return std::string();
 	}
 	char ret[1000];
 	char *reti = ret;
-	{for(int i = readPos; i < readPos + len; i++)
+	{for (int i = readPos; i < readPos + len; i++)
 	 {
 		 char c = msgBuf[i];
 		 sprintf(reti, "%02X ", (int)c & 0xFF);
 		 reti += strlen(reti);
 	 }
 	}
-	for(int i = readPos; i < readPos + len; i++)
+	for (int i = readPos; i < readPos + len; i++)
 	{
 		char c = msgBuf[i];
 		sprintf(reti, "%c", c ? c : '_');
@@ -238,32 +253,36 @@ std::string NetworkMessage::GetHex(int len /*=0*/){
 	return std::string(ret);
 }
 
-void NetworkMessage::AddByte(unsigned char c){
-	if(!canAdd(1))
+void NetworkMessage::AddByte(unsigned char c)
+{
+	if (!canAdd(1))
 		return;
 	msgBuf[readPos++] = c;
 	msgSize++;
 }
 
-void NetworkMessage::AddInt(unsigned int i){
-	if(!canAdd(4))
+void NetworkMessage::AddInt(unsigned int i)
+{
+	if (!canAdd(4))
 		return;
 	*(unsigned int*)(msgBuf + readPos) = i;
 	readPos                           += 4;
 	msgSize                           += 4;
 }
 
-void NetworkMessage::AddShort(unsigned short s){
-	if(!canAdd(2))
+void NetworkMessage::AddShort(unsigned short s)
+{
+	if (!canAdd(2))
 		return;
 	*(unsigned short*)(msgBuf + readPos) = s;
 	readPos                             += 2;
 	msgSize                             += 2;
 }
 
-void NetworkMessage::AddString(const char* value){
+void NetworkMessage::AddString(const char* value)
+{
 	int stringLen = strlen(value);
-	if(!canAdd(stringLen + 2) || stringLen > 8192)
+	if (!canAdd(stringLen + 2) || stringLen > 8192)
 		return;
 
 	AddShort(stringLen);
@@ -272,8 +291,9 @@ void NetworkMessage::AddString(const char* value){
 	msgSize += stringLen;
 }
 
-void NetworkMessage::AddBytes(const char* bytes, int size){
-	if(!canAdd(size) || size > 8192)
+void NetworkMessage::AddBytes(const char* bytes, int size)
+{
+	if (!canAdd(size) || size > 8192)
 		return;
 
 	memcpy(msgBuf + readPos, bytes, size);
@@ -281,11 +301,12 @@ void NetworkMessage::AddBytes(const char* bytes, int size){
 	msgSize += size;
 }
 
-void Protocol::outputPacket(NetworkMessage &msg){
+void Protocol::outputPacket(NetworkMessage &msg)
+{
 	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.PeekByte();
 	NetworkMessage msgNew  = NetworkMessage();
-	switch(recvbyte)
+	switch (recvbyte)
 	{
 	case 0x89:         //parseTextWindow(msg);
 		msgNew.AddByte(msg.GetByte());
@@ -306,7 +327,7 @@ void Protocol::outputPacket(NetworkMessage &msg){
 		unsigned short channelId = 0;
 		unsigned char type       = msg.GetByte();
 		msgNew.AddByte(type);
-		switch(type)
+		switch (type)
 		{
 		case 0x05:                //SPEAK_PRIVATE
 		case 0x0E:                //SPEAK_PRIVATE_RED
@@ -438,16 +459,16 @@ void Protocol::outputPacket(NetworkMessage &msg){
 	fout.close();
 }
 
-
-void Protocol::parsePacketIn(NetworkMessage &msg){
+void Protocol::parsePacketIn(NetworkMessage &msg)
+{
 	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.GetByte();
-	switch(recvbyte)
+	switch (recvbyte)
 	{
 	case 0xB4:
 	{
 		unsigned char infoType = msg.GetByte();
-		switch(infoType)
+		switch (infoType)
 		{
 		case 0x17:                //23
 		{
@@ -456,7 +477,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 			//AfxMessageBox(text);
 			static CRegexpT <char> reHitpointsNoAttacker("You lose (\\d+) hitpoints?\\.", IGNORECASE);
 			MatchResult res = reHitpointsNoAttacker.Match(text.c_str());
-			if(res.IsMatched())
+			if (res.IsMatched())
 			{
 				int hpLost = atoi(text.substr(res.GetGroupStart(1), res.GetGroupEnd(1) - res.GetGroupStart(1)).c_str());
 				struct ipcMessage mess;
@@ -485,7 +506,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 			std::string text = msg.GetString();
 			static CRegexpT <char> reFollowNoWay("There is no way\\.", IGNORECASE);
 			MatchResult res = reFollowNoWay.Match(text.c_str());
-			if(res.IsMatched())
+			if (res.IsMatched())
 			{
 				struct ipcMessage mess;
 				mess.messageType = 1103;
@@ -499,7 +520,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 				std::string text = msg.GetString();
 				static CRegexpT <char> reLootMessage("Loot of (.*): (.*)", IGNORECASE);
 				MatchResult res = reLootMessage.Match(text.c_str());
-				if(res.IsMatched())
+				if (res.IsMatched())
 				{
 					char lootCreatureName[400];
 					char lootString[400];
@@ -515,22 +536,26 @@ void Protocol::parsePacketIn(NetworkMessage &msg){
 				}
 			}
 			break;
-		default: break;
+		default:
+			break;
 		}
 		break;
 	}
-	default: break;
+	default:
+		break;
 	}
 }
+
 extern void sendTAMessage(char* message);
-void Protocol::parsePacketOut(NetworkMessage &msg){
+void Protocol::parsePacketOut(NetworkMessage &msg)
+{
 	CMemReaderProxy reader;
 	unsigned char recvbyte = msg.GetByte();
 	CString description    = "";
 	char tmpbuf[2048];
 	sprintf(tmpbuf, "%X ", recvbyte);
 	description += tmpbuf;
-	switch(recvbyte)
+	switch (recvbyte)
 	{
 	case 0x89:         //parseTextWindow(msg);
 		description += "parseTextWindow";
@@ -550,7 +575,7 @@ void Protocol::parsePacketOut(NetworkMessage &msg){
 		unsigned char type       = msg.GetByte();
 		sprintf(tmpbuf, "%d", type);
 		description += tmpbuf;
-		switch(type)
+		switch (type)
 		{
 		case 0x01:                //SPEAK_PRIVATE
 			description += " Speak";
@@ -624,19 +649,23 @@ void Protocol::parsePacketOut(NetworkMessage &msg){
 	case 0x64:         // move with steps
 		description += "StepMove";
 		{int stepcount = msg.GetByte();
-		 for(int i = 0; i < stepcount; i++)
+		 for (int i = 0; i < stepcount; i++)
 		 {
 			 int dir = msg.GetByte();
-			 switch(dir)
+			 switch (dir)
 			 {
 			 case 1:
-				 description += " R"; break;
+				 description += " R";
+				 break;
 			 case 3:
-				 description += " U"; break;
+				 description += " U";
+				 break;
 			 case 5:
-				 description += " L"; break;
+				 description += " L";
+				 break;
 			 case 7:
-				 description += " D"; break;
+				 description += " D";
+				 break;
 			 default:
 				 sprintf(tmpbuf, " %d", dir);
 				 description += tmpbuf;

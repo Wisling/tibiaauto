@@ -36,7 +36,6 @@ CTibiaContainer::CTibiaContainer()
 	size      = 0;
 }
 
-
 CTibiaContainer::~CTibiaContainer()
 {
 	int pos;
@@ -48,7 +47,6 @@ CTibiaContainer::~CTibiaContainer()
 	}
 	;
 }
-
 
 int CTibiaContainer::countItemsOfType(int objectId)
 {

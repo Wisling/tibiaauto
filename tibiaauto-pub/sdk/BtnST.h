@@ -170,10 +170,13 @@ public:
 	DWORD SetSound(LPCTSTR lpszSound, HMODULE hMod = NULL, BOOL bPlayOnClick = FALSE, BOOL bPlayAsync = TRUE);
 #endif // ifdef  BTNST_USE_SOUND
 
-	static short GetVersionI()              {
+	static short GetVersionI()
+	{
 		return 39;
 	}
-	static LPCTSTR GetVersionC()    {
+
+	static LPCTSTR GetVersionC()
+	{
 		return (LPCTSTR)_T("3.9");
 	}
 

@@ -28,7 +28,6 @@ CSendStats::CSendStats(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CSendStats::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -38,7 +37,6 @@ void CSendStats::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_ok);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CSendStats, CDialog)
 //{{AFX_MSG_MAP(CSendStats)
@@ -93,7 +91,6 @@ void gz_compress(FILE *in, gzFile out)
 		AfxMessageBox("failed gzclose");
 }
 
-
 /* ===========================================================================
  * Compress the given file: create a corresponding .gz file and remove the
  * original.
@@ -123,7 +120,6 @@ void file_compress(char *file, char *mode)
 	gz_compress(in, out);
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CSendStats message handlers
 
@@ -139,9 +135,9 @@ void CSendStats::OnSendLootstats()
 BOOL CSendStats::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(     m_send2);
-	skin.SetButtonSkin(     m_send1);
-	skin.SetButtonSkin(     m_ok);
+	skin.SetButtonSkin(m_send2);
+	skin.SetButtonSkin(m_send1);
+	skin.SetButtonSkin(m_ok);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
@@ -156,8 +152,7 @@ void CSendStats::OnSendCreaturestats()
 	sendFile(pathBuf);
 }
 
-
-DWORD WINAPI sendFileThread( LPVOID lpParam )
+DWORD WINAPI sendFileThread(LPVOID lpParam)
 {
 	char *fname = (char *)lpParam;
 

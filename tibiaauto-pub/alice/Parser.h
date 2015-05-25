@@ -11,7 +11,8 @@ using namespace std;
 class Parser : public SaxListener
 {
 public:
-	Parser() {
+	Parser()
+	{
 		root = current = PElement(new Element("root"));
 	}
 

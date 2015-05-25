@@ -89,13 +89,15 @@ int containerNotFull(int containerNr)
 
 //returns the smallest radius of a square centred at x1,y1 and covers x2,y2
 //same equation as finding distance for rods or wands
-int maxDist(int x1, int y1, int x2, int y2){
+int maxDist(int x1, int y1, int x2, int y2)
+{
 	return max(abs(x2 - x1), abs(y2 - y1));
 }
 
 //returns the smallest number of steps needed to stand beside x2,y2 starting from x1,y1
 //same distance ideally travelled by "Auto Follow"
-int taxiDist(int x1, int y1, int x2, int y2){
+int taxiDist(int x1, int y1, int x2, int y2)
+{
 	return abs(x2 - x1) + abs(y2 - y1) - 2 + (x1 == x2) + (y1 == y2);
 }
 
@@ -133,14 +135,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		CTibiaCharacter *attackedCh = reader.getCharacterByTibiaId(lastAttackedMonster);
 
 		//Check if container is closed, then no need to close it
-		if(config->m_autoOpen)
+		if (config->m_autoOpen)
 		{
 			for (int i = 0; i < 3; i++)
 			{
 				if (lastLootContNr[i] != -1)
 				{
 					CTibiaContainer *cont = reader.readContainer(lastLootContNr[i]);
-					if(!cont->flagOnOff)
+					if (!cont->flagOnOff)
 						lastLootContNr[i] = -1;
 					delete cont;
 				}
@@ -289,7 +291,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					} // if (attackedCh)
 
 
-					for(i = 0; i < 3; i++)
+					for (i = 0; i < 3; i++)
 					{
 						if (cont[i])
 						{
@@ -373,7 +375,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_looterApp construction
 
@@ -399,12 +400,10 @@ char * CMod_looterApp::getName()
 	return "Auto looter";
 }
 
-
 int CMod_looterApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_looterApp::start()
 {
@@ -479,14 +478,12 @@ void CMod_looterApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_looterApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_looterApp::controlsToConfig()
 {
@@ -496,7 +493,6 @@ void CMod_looterApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_looterApp::disableControls()
 {
@@ -510,12 +506,10 @@ void CMod_looterApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_looterApp::getVersion()
 {
 	return "1.5";
 }
-
 
 int CMod_looterApp::validateConfig(int showAlerts)
 {
@@ -524,7 +518,7 @@ int CMod_looterApp::validateConfig(int showAlerts)
 
 void CMod_looterApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -621,29 +615,47 @@ char *CMod_looterApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "mode/cont1";
-	case 1: return "mode/cont2";
-	case 2: return "mode/cont3";
-	case 3: return "mode/cont4";
-	case 4: return "mode/cont5";
-	case 5: return "mode/cont6";
-	case 6: return "mode/cont7";
-	case 7: return "mode/cont8";
-	case 8: return "mode/cont9";
-	case 9: return "mode/cont10";
-	case 10: return "loot/worms";
-	case 11: return "loot/gp";
-	case 12: return "loot/food";
-	case 13: return "loot/custom";
-	case 14: return "other/autoOpen";
-	case 15: return "loot/inDepot";
-	case 16: return "loot/eatFromCorpse";
+	case 0:
+		return "mode/cont1";
+	case 1:
+		return "mode/cont2";
+	case 2:
+		return "mode/cont3";
+	case 3:
+		return "mode/cont4";
+	case 4:
+		return "mode/cont5";
+	case 5:
+		return "mode/cont6";
+	case 6:
+		return "mode/cont7";
+	case 7:
+		return "mode/cont8";
+	case 8:
+		return "mode/cont9";
+	case 9:
+		return "mode/cont10";
+	case 10:
+		return "loot/worms";
+	case 11:
+		return "loot/gp";
+	case 12:
+		return "loot/food";
+	case 13:
+		return "loot/custom";
+	case 14:
+		return "other/autoOpen";
+	case 15:
+		return "loot/inDepot";
+	case 16:
+		return "loot/eatFromCorpse";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_looterApp::getNewSkin(CSkin newSkin) {
+void CMod_looterApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

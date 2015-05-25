@@ -39,7 +39,7 @@ CTibiaItemProxy::CTibiaItemProxy()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -59,7 +59,9 @@ CTibiaItemProxy::CTibiaItemProxy()
 CTibiaItemProxy::~CTibiaItemProxy()
 {
 }
-void CTibiaItemProxy::fillTypedItemIdArray(int ind) {
+
+void CTibiaItemProxy::fillTypedItemIdArray(int ind)
+{
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule)
 	{
@@ -168,6 +170,7 @@ int CTibiaItemProxy::getFoodIndex(int objectId)
 	}
 	return 0;
 }
+
 int CTibiaItemProxy::getLootItemIndex(int objectId)
 {
 	typedef int (*Proto_fun)(int objectId);
@@ -237,6 +240,7 @@ int CTibiaItemProxy::getFoodIdAtIndex(int ind)
 	}
 	return 0;
 }
+
 int CTibiaItemProxy::getLootItemIdAtIndex(int ind)
 {
 	typedef int (*Proto_fun)(int ind);
@@ -292,6 +296,7 @@ char* CTibiaItemProxy::getFoodNameAtIndex(int ind)
 	}
 	return "not implemented";
 }
+
 char* CTibiaItemProxy::getLootItemNameAtIndex(int ind)
 {
 	typedef char* (*Proto_fun)(int ind);
@@ -361,6 +366,7 @@ CUIntArray* CTibiaItemProxy::getFoodIdArrayPtr()
 	}
 	return NULL;
 }
+
 CUIntArray* CTibiaItemProxy::getLootItemIdArrayPtr()
 {
 	typedef CUIntArray* (*Proto_fun)();
@@ -374,7 +380,9 @@ CUIntArray* CTibiaItemProxy::getLootItemIdArrayPtr()
 	}
 	return NULL;
 }
-void CTibiaItemProxy::setItemAsLooted(int objectId) {
+
+void CTibiaItemProxy::setItemAsLooted(int objectId)
+{
 	typedef void (*Proto_fun)(int objectId);
 	if (dllModule)
 	{
@@ -385,7 +393,9 @@ void CTibiaItemProxy::setItemAsLooted(int objectId) {
 			AfxMessageBox("Error: function not loaded");
 	}
 }
-void CTibiaItemProxy::clearLootItems() {
+
+void CTibiaItemProxy::clearLootItems()
+{
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
@@ -397,7 +407,8 @@ void CTibiaItemProxy::clearLootItems() {
 	}
 }
 
-void CTibiaItemProxy::addItem(char *name, int objectId) {
+void CTibiaItemProxy::addItem(char *name, int objectId)
+{
 	typedef void (*Proto_fun)(char *name, int objectId);
 	if (dllModule)
 	{
@@ -409,7 +420,8 @@ void CTibiaItemProxy::addItem(char *name, int objectId) {
 	}
 }
 
-void CTibiaItemProxy::addTypedItem(char *name, int objectId, int type) {
+void CTibiaItemProxy::addTypedItem(char *name, int objectId, int type)
+{
 	typedef void (*Proto_fun)(char *name, int objectId, int type);
 	if (dllModule)
 	{
@@ -421,7 +433,8 @@ void CTibiaItemProxy::addTypedItem(char *name, int objectId, int type) {
 	}
 }
 
-void CTibiaItemProxy::addFood(char *name, int objectId, int time) {
+void CTibiaItemProxy::addFood(char *name, int objectId, int time)
+{
 	typedef void (*Proto_fun)(char *name, int objectId, int time);
 	if (dllModule)
 	{
@@ -432,7 +445,9 @@ void CTibiaItemProxy::addFood(char *name, int objectId, int time) {
 			AfxMessageBox("Error: function not loaded");
 	}
 }
-void CTibiaItemProxy::addLootItem(char *name, int objectId) {
+
+void CTibiaItemProxy::addLootItem(char *name, int objectId)
+{
 	typedef void (*Proto_fun)(char *name, int objectId);
 	if (dllModule)
 	{
@@ -444,7 +459,8 @@ void CTibiaItemProxy::addLootItem(char *name, int objectId) {
 	}
 }
 
-void CTibiaItemProxy::removeItem(int ind) {
+void CTibiaItemProxy::removeItem(int ind)
+{
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule)
 	{
@@ -456,7 +472,8 @@ void CTibiaItemProxy::removeItem(int ind) {
 	}
 }
 
-void CTibiaItemProxy::removeTypedItem(int ind) {
+void CTibiaItemProxy::removeTypedItem(int ind)
+{
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule)
 	{
@@ -468,7 +485,8 @@ void CTibiaItemProxy::removeTypedItem(int ind) {
 	}
 }
 
-void CTibiaItemProxy::removeFood(int ind) {
+void CTibiaItemProxy::removeFood(int ind)
+{
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule)
 	{
@@ -479,7 +497,9 @@ void CTibiaItemProxy::removeFood(int ind) {
 			AfxMessageBox("Error: function not loaded");
 	}
 }
-void CTibiaItemProxy::removeLootItem(int ind) {
+
+void CTibiaItemProxy::removeLootItem(int ind)
+{
 	typedef void (*Proto_fun)(int ind);
 	if (dllModule)
 	{
@@ -490,7 +510,9 @@ void CTibiaItemProxy::removeLootItem(int ind) {
 			AfxMessageBox("Error: function not loaded");
 	}
 }
-void CTibiaItemProxy::clearFoodList() {
+
+void CTibiaItemProxy::clearFoodList()
+{
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
@@ -501,6 +523,7 @@ void CTibiaItemProxy::clearFoodList() {
 			AfxMessageBox("Error: function not loaded");
 	}
 }
+
 CTibiaTree * CTibiaItemProxy::getItemsTree()
 {
 	typedef CTibiaTree * (*Proto_fun)();
@@ -569,6 +592,7 @@ int CTibiaItemProxy::getFoodCount()
 	}
 	return 0;
 }
+
 int CTibiaItemProxy::getLootItemCount()
 {
 	typedef int (*Proto_fun)();
@@ -609,7 +633,9 @@ void CTibiaItemProxy::refreshItemLists()
 			AfxMessageBox("Error: function not loaded");
 	}
 }
-void CTibiaItemProxy::saveItemLists() {
+
+void CTibiaItemProxy::saveItemLists()
+{
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{
@@ -621,7 +647,8 @@ void CTibiaItemProxy::saveItemLists() {
 	}
 }
 
-void CTibiaItemProxy::cleanup() {
+void CTibiaItemProxy::cleanup()
+{
 	typedef void (*Proto_fun)();
 	if (dllModule)
 	{

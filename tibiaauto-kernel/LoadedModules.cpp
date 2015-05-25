@@ -26,11 +26,13 @@ CLoadedModules::CLoadedModules(CWnd* pParent /*=NULL*/)
 	moduleActionsMenu = NULL;
 }
 
-CLoadedModules::~CLoadedModules(){
+CLoadedModules::~CLoadedModules()
+{
 	KillTimer(1001);
 	if (moduleActionsMenu)
 		delete moduleActionsMenu;
 }
+
 void CLoadedModules::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -39,7 +41,6 @@ void CLoadedModules::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LOADEDMODULES_LIST, m_list);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CLoadedModules, CDialog)
 //{{AFX_MSG_MAP(CLoadedModules)
@@ -66,7 +67,8 @@ void CLoadedModules::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
-void CLoadedModules::DoSetButtonSkin(){
+void CLoadedModules::DoSetButtonSkin()
+{
 	skin.SetButtonSkin(m_ok);
 }
 
@@ -160,7 +162,7 @@ void CLoadedModules::OnRclickLoadedmodulesList(NMHDR* pNMHDR, LRESULT* pResult)
 	DWORD dwPos = GetMessagePos();
 
 	/* Convert the co-ords into a CPoint structure */
-	CPoint pt( dwPos & 0xffff, (dwPos >> 16) & 0xffff );
+	CPoint pt(dwPos & 0xffff, (dwPos >> 16) & 0xffff);
 
 	moduleActionsMenu->GetSubMenu(0)->TrackPopupMenu(0, pt.x, pt.y, this);
 
@@ -218,7 +220,6 @@ BOOL CLoadedModules::OnCommand(WPARAM wParam, LPARAM lParam)
 
 	return CDialog::OnCommand(wParam, lParam);
 }
-
 
 void CLoadedModules::OnPaint()
 {

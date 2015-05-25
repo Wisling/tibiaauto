@@ -55,7 +55,7 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -155,7 +155,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_aimApp construction
 
@@ -181,12 +180,10 @@ char * CMod_aimApp::getName()
 	return "Auto Aim";
 }
 
-
 int CMod_aimApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_aimApp::start()
 {
@@ -240,14 +237,12 @@ void CMod_aimApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_aimApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_aimApp::controlsToConfig()
 {
@@ -257,7 +252,6 @@ void CMod_aimApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_aimApp::disableControls()
 {
@@ -271,12 +265,10 @@ void CMod_aimApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_aimApp::getVersion()
 {
 	return "2.0";
 }
-
 
 int CMod_aimApp::validateConfig(int showAlerts)
 {
@@ -285,7 +277,7 @@ int CMod_aimApp::validateConfig(int showAlerts)
 
 void CMod_aimApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -313,13 +305,15 @@ char *CMod_aimApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "RuneType";
+	case 0:
+		return "RuneType";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_aimApp::getNewSkin(CSkin newSkin) {
+void CMod_aimApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	if (m_configDialog)

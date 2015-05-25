@@ -47,7 +47,8 @@ CPythonScript::CPythonScript()
 CPythonScript::~CPythonScript()
 {
 	int i;
-	Py_XDECREF(pluginObject);       Py_XDECREF(pluginClass);
+	Py_XDECREF(pluginObject);
+	Py_XDECREF(pluginClass);
 
 	for (i = 0; i < funDefCount; i++)
 	{
@@ -57,7 +58,6 @@ CPythonScript::~CPythonScript()
 	if (paramDefTab)
 		delete paramDefTab;
 }
-
 
 void CPythonScript::setName(char *name)
 {
@@ -73,7 +73,6 @@ char * CPythonScript::getVersion()
 {
 	return version;
 }
-
 
 char * CPythonScript::getName()
 {
@@ -244,7 +243,6 @@ PyObject * CPythonScript::getParamsDic()
 	}
 	return dict;
 }
-
 
 void CPythonScript::setParamValue(char *name, char *value)
 {

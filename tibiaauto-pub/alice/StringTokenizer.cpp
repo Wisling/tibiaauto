@@ -7,12 +7,14 @@
  */
 #include "StringTokenizer.h"
 
-bool StringTokenizer::hasMoreTokens() {
+bool StringTokenizer::hasMoreTokens()
+{
 	skipDelimiters();
 	return (currentPosition < maxPosition);
 }
 
-string StringTokenizer::nextToken() {
+string StringTokenizer::nextToken()
+{
 	skipDelimiters();
 
 	if (currentPosition >= maxPosition)
@@ -30,12 +32,14 @@ string StringTokenizer::nextToken() {
 	return str.substr(start, currentPosition - start);
 }
 
-string StringTokenizer::nextToken(const string &d) {
+string StringTokenizer::nextToken(const string &d)
+{
 	delim = d;
 	return nextToken();
 }
 
-int StringTokenizer::countTokens() {
+int StringTokenizer::countTokens()
+{
 	int count   = 0;
 	int currpos = currentPosition;
 
@@ -63,7 +67,8 @@ int StringTokenizer::countTokens() {
 	return count;
 }
 
-void StringTokenizer::skipDelimiters() {
+void StringTokenizer::skipDelimiters()
+{
 	while (!retTok &&
 	       (currentPosition < maxPosition) &&
 	       (delim.find(str[currentPosition]) != string::npos))

@@ -34,7 +34,7 @@ char *CUtil::wc2c(const XMLCh *src)
 	memset(dest, 0, MAX_STRING_LEN);
 	if (src == NULL)
 		return dest;
-	WideCharToMultiByte( CP_ACP, 0, src, -1, dest, MAX_STRING_LEN / 2 - 10, NULL, NULL );
+	WideCharToMultiByte(CP_ACP, 0, src, -1, dest, MAX_STRING_LEN / 2 - 10, NULL, NULL);
 	return dest;
 }
 
@@ -98,6 +98,7 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
 		return 0;
 	}
 }
+
 /*
    void CUtil::setNodeIntAttribute(DOMNode *node, char *attrName, int attr) {
         try {
@@ -113,7 +114,8 @@ int CUtil::getNodeIntAttribute(DOMNode *node, unsigned short *attrName)
         }
    }*/
 
-void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr) {
+void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int attr)
+{
 	try
 	{
 		char buf[32];
@@ -123,7 +125,7 @@ void CUtil::setNodeIntAttribute(DOMNode *node, unsigned short *attrName, int att
 		XMLString::transcode(buf, xmlStr, 99);
 		attrNode->setNodeValue(xmlStr);
 	}
-	catch(...)
+	catch (...)
 	{
 		AfxMessageBox("Failed in setNodeIntAttribute");
 	}

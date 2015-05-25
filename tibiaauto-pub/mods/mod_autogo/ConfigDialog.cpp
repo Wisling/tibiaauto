@@ -24,7 +24,8 @@ const UINT RWM_PRETRANSLATEMSG = ::RegisterWindowMessage(_T("RWM_PRETRANSLATEMSG
 
 
 CConfigDialog::CConfigDialog(CMod_autogoApp *app, CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app         = app;
@@ -38,7 +39,8 @@ CConfigDialog::CConfigDialog(CMod_autogoApp *app, CWnd* pParent /*=NULL*/)
 	m_nPageCount = 2;
 }
 
-void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
+void CConfigDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDC_TAB_CONTROL, m_tabCtrl);
@@ -47,7 +49,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDOK, m_OK);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -64,15 +65,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() {
+void CConfigDialog::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() {
+void CConfigDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {
+void CConfigDialog::OnEnable()
+{
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
@@ -87,24 +91,28 @@ void CConfigDialog::OnEnable() {
 	}
 }
 
-void CConfigDialog::disableControls() {
+void CConfigDialog::disableControls()
+{
 	m_Dialog[0]->disableControls();
 	m_Dialog[1]->disableControls();
 }
 
-void CConfigDialog::enableControls() {
+void CConfigDialog::enableControls()
+{
 	m_Dialog[0]->enableControls();
 	m_Dialog[1]->enableControls();
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {
+void CConfigDialog::configToControls(CConfigData *configData)
+{
 	CTibiaItemProxy itemProxy;
 	m_Dialog[0]->configToControls(configData);
 	m_Dialog[1]->configToControls(configData);
 	statusPrinted = configData->status;
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {
+CConfigData * CConfigDialog::controlsToConfig()
+{
 	CTibiaItemProxy itemProxy;
 	CConfigData *newConfigData = new CConfigData();
 	m_Dialog[0]->controlsToConfig(newConfigData);
@@ -115,7 +123,8 @@ CConfigData * CConfigDialog::controlsToConfig() {
 
 static int lastX = 0, lastY = 0, lastZ = 0;
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	if (nIDEvent == 1001)
 	{
 		CMemReaderProxy reader;
@@ -133,16 +142,18 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_OK);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_OK);
 	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
 	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
 	((CAlarmDialog*) m_Dialog[0])->DoSetButtonSkin();
 	((GeneralConfigDialog*) m_Dialog[1])->DoSetButtonSkin();
 }
 
-BOOL CConfigDialog::OnInitDialog() {
+BOOL CConfigDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 
 	m_Dialog[0]->Create(m_DialogID[0], &m_tabCtrl);
@@ -163,11 +174,13 @@ BOOL CConfigDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
+{
 	return MyDialog::PreTranslateMessage(pMsg);
 }
 
-void CConfigDialog::activateEnableButton(int enable) {
+void CConfigDialog::activateEnableButton(int enable)
+{
 	m_enable.SetCheck(enable);
 }
 
@@ -178,15 +191,16 @@ void CConfigDialog::OnCaptureChanged(CWnd *pWnd)
 	CDialog::OnCaptureChanged(pWnd);
 }
 
-void CConfigDialog::OnDestroy() {
+void CConfigDialog::OnDestroy()
+{
 	delete(m_Dialog[0]);
 	delete(m_Dialog[1]);
 	MyDialog::OnDestroy();
 }
 
-
-LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp){
-	if(msg == RWM_PRETRANSLATEMSG)
+LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
+{
+	if (msg == RWM_PRETRANSLATEMSG)
 	{
 		MSG* pMsg = (MSG*)lp;
 		ASSERT(pMsg);

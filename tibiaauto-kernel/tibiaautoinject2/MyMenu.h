@@ -19,8 +19,8 @@ public:
 	CMyMenu();
 	virtual ~CMyMenu();
 	void LoadOwnerDrawMenu(CMenu *baseMenu);
-	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
-	virtual void MeasureItem( LPMEASUREITEMSTRUCT lpMeasureItemStruct );
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
+	virtual void MeasureItem(LPMEASUREITEMSTRUCT lpMeasureItemStruct);
 private:
 	vector<CMyMenu*> rgpMyMenu;
 	vector<CMyMenuData*> rgpMyMenuData;

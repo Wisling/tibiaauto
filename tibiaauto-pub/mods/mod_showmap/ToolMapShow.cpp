@@ -34,7 +34,9 @@ CToolMapShow::CToolMapShow(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CToolMapShow)
 	//}}AFX_DATA_INIT
 }
-CToolMapShow::~CToolMapShow() {
+
+CToolMapShow::~CToolMapShow()
+{
 	for (int x = 0; x < 21; x++)
 	{
 		for (int y = 0; y < 21; y++)
@@ -56,7 +58,6 @@ void CToolMapShow::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TILE_INFO, m_tileInfo);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CToolMapShow, CDialog)
 //{{AFX_MSG_MAP(CToolMapShow)
@@ -83,9 +84,10 @@ void CToolMapShow::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
-void CToolMapShow::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_ClearMap);
-	skin.SetButtonSkin(     m_OK);
+void CToolMapShow::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_ClearMap);
+	skin.SetButtonSkin(m_OK);
 }
 
 BOOL CToolMapShow::OnInitDialog()
@@ -111,7 +113,7 @@ BOOL CToolMapShow::OnInitDialog()
 
 			but->Create("test", WS_CHILD | WS_VISIBLE | BS_FLAT | BS_PUSHLIKE | BS_OWNERDRAW, rect, this, IDC_MAPSHOW_FIRSTBUTTON);
 			but->LoadBitmaps(IDB_MAP_EMPTY);
-			but->m_value = MAP_POINT_TYPE_CLEAR;
+			but->m_value           = MAP_POINT_TYPE_CLEAR;
 			but->m_locked          = 0;
 			m_mapButtonImage[x][y] = IDB_MAP_EMPTY;
 			m_mapButtons[x][y]     = but;
@@ -152,7 +154,7 @@ BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 	{
 		for (xo = 0; xo < rect.Width(); xo += bmw)
 		{
-			pDC->BitBlt (xo, yo, rect.Width(), rect.Height(), &dcBuffer, 0, 0, SRCCOPY);
+			pDC->BitBlt(xo, yo, rect.Width(), rect.Height(), &dcBuffer, 0, 0, SRCCOPY);
 		}
 	}
 	BitBlt(dc, 0, 0, rect.Width(), rect.Height(), dcBuffer, 0, 0, SRCCOPY);
@@ -177,7 +179,7 @@ void CToolMapShow::refreshVisibleMap()
 		m_mapButtons[10][10]->LoadBitmaps(IDB_MAP_SELF, IDB_MAP_SELF, IDB_MAP_SELF, IDB_MAP_SELF);
 		m_mapButtons[10][10]->RedrawWindow();
 		m_mapButtonImage[10][10]       = IDB_MAP_SELF;
-		m_mapButtons[10][10]->m_value = MAP_POINT_TYPE_SELF;
+		m_mapButtons[10][10]->m_value  = MAP_POINT_TYPE_SELF;
 		m_mapButtons[10][10]->m_locked = 0;
 	}
 
@@ -190,9 +192,9 @@ void CToolMapShow::refreshVisibleMap()
 				int avail = tibiaMap.isPointAvailableNoProh(x + self->x - 10, y + self->y - 10, self->z);
 				if (avail)
 				{
-					int locked         = tibiaMap.isPointLocked(x + self->x - 10, y + self->y - 10, self->z);
+					int locked             = tibiaMap.isPointLocked(x + self->x - 10, y + self->y - 10, self->z);
 					MapPointType updownSel = (MapPointType)tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
-					int changedToImage = -1;
+					int changedToImage     = -1;
 
 					switch (updownSel)
 					{
@@ -233,7 +235,7 @@ void CToolMapShow::refreshVisibleMap()
 						break;
 					case MAP_POINT_TYPE_TELEPORT:
 						// teleporter
-						if(tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
+						if (tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
 							changedToImage = locked ? IDB_MAP_UNKTELE_LOCK : IDB_MAP_UNKTELE;
 						else
 							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
@@ -243,7 +245,7 @@ void CToolMapShow::refreshVisibleMap()
 						changedToImage = locked ? IDB_MAP_BLOCK_LOCK : IDB_MAP_BLOCK;
 						break;
 					}
-					if(changedToImage != m_mapButtonImage[x][y])
+					if (changedToImage != m_mapButtonImage[x][y])
 					{
 						m_mapButtons[x][y]->LoadBitmaps(changedToImage, changedToImage, changedToImage, changedToImage);
 						m_mapButtons[x][y]->RedrawWindow();
@@ -259,7 +261,7 @@ void CToolMapShow::refreshVisibleMap()
 						m_mapButtons[x][y]->LoadBitmaps(IDB_MAP_EMPTY, IDB_MAP_EMPTY, IDB_MAP_EMPTY, IDB_MAP_EMPTY);
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]       = IDB_MAP_EMPTY;
-						m_mapButtons[x][y]->m_value = MAP_POINT_TYPE_CLEAR;
+						m_mapButtons[x][y]->m_value  = MAP_POINT_TYPE_CLEAR;
 						m_mapButtons[x][y]->m_locked = 0;
 					}
 				}
@@ -269,7 +271,8 @@ void CToolMapShow::refreshVisibleMap()
 	delete self;
 }
 
-int mod(int i, int m){
+int mod(int i, int m)
+{
 	int ans = i % m;
 	if (ans < 0)
 		ans += m;
@@ -278,8 +281,10 @@ int mod(int i, int m){
 
 void CToolMapShow::OnTimer(UINT nIDEvent)
 {
-	if(!::IsWindow(m_hWnd))
+	if (!::IsWindow(m_hWnd))
+	{
 		return;
+	}
 	else if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
@@ -289,7 +294,6 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 	else if (nIDEvent == 1002)
 	{
 		MapResearchTick();
-
 	}
 	else if (nIDEvent == 1003)
 	{
@@ -319,7 +323,8 @@ void CToolMapShow::OnToolMapshowResearch()
 		KillTimer(1002);
 }
 
-void CToolMapShow::RefreshExtendedResearchMap(){
+void CToolMapShow::RefreshExtendedResearchMap()
+{
 	if (m_extendedResearch.GetCheck())
 	{
 		SetTimer(1003, 1000, NULL);
@@ -331,12 +336,15 @@ void CToolMapShow::RefreshExtendedResearchMap(){
 		KillTimer(1004);
 	}
 }
+
 void CToolMapShow::OnToolMapshowExtendedResearch()
 {
 	RefreshExtendedResearchMap();
 }
-void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ){
-	if(tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= 0)
+
+void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
+{
+	if (tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= 0)
 	{
 		int prev = tibiaMap.isPointLocked(realX, realY, realZ);
 		tibiaMap.setPointLocked(realX, realY, realZ, !prev);
@@ -403,10 +411,10 @@ void CToolMapShow::ExtendedMapResearchTick()
 				int i;
 				int count = reader.mapGetPointItemsCount(point(x, y, 0), relToCell);
 
-				int blocked = 0;
-				int tileType = 0;
-				int ground = 0;
-				int speed = 0;
+				int blocked       = 0;
+				int tileType      = 0;
+				int ground        = 0;
+				int speed         = 0;
 				int moveableblock = 1;
 				for (i = 0; i < count; i++)
 				{
@@ -472,7 +480,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 				// if count==0 then override "blocked" and "no updown"
 				if (count == 0)
 				{
-					blocked = 1;
+					blocked  = 1;
 					tileType = 0;
 				}
 
@@ -480,14 +488,14 @@ void CToolMapShow::ExtendedMapResearchTick()
 				tileArrMvbl[x + 8][y + 6] = moveableblock;
 				if (!blocked)
 				{
-					tileArrSpd[x + 8][y + 6] = speed;
-					tileArrAvail[x + 8][y + 6] = 1;
+					tileArrSpd[x + 8][y + 6]    = speed;
+					tileArrAvail[x + 8][y + 6]  = 1;
 					tileArrUpDown[x + 8][y + 6] = tileType;
 				}
 				else
 				{
-					tileArrSpd[x + 8][y + 6] = 0;
-					tileArrAvail[x + 8][y + 6] = 0;
+					tileArrSpd[x + 8][y + 6]    = 0;
+					tileArrAvail[x + 8][y + 6]  = 0;
 					tileArrUpDown[x + 8][y + 6] = 0;
 				}
 			} // for y
@@ -571,7 +579,7 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 	{
 		if (abs(self->x - prevXTele) > sensitivity || abs(self->y - prevYTele) > sensitivity || abs(self->z - prevZTele) > 0)
 		{
-			int x = 0, y = 0;
+			int x       = 0, y = 0;
 			int xSwitch = 0;
 			int ySwitch = 0;
 			while (x != sensitivity + 1 && y != sensitivity + 1)
@@ -583,19 +591,28 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 				}
 				else if (x == y && x >= 0 && xSwitch == 1 && ySwitch == 0)
 				{
-					x++; xSwitch = 0; ySwitch = -1;
+					x++;
+					xSwitch = 0;
+					ySwitch = -1;
 				}
 				else if (!xSwitch && !(x == y && x >= 0) && abs(x) == abs(y))
 				{
-					xSwitch = ySwitch; ySwitch = 0; x += xSwitch; y += ySwitch;
+					xSwitch = ySwitch;
+					ySwitch = 0;
+					x      += xSwitch;
+					y      += ySwitch;
 				}
 				else if (!ySwitch && abs(x) == abs(y))
 				{
-					ySwitch = -xSwitch; xSwitch = 0; x += xSwitch; y += ySwitch;
+					ySwitch = -xSwitch;
+					xSwitch = 0;
+					x      += xSwitch;
+					y      += ySwitch;
 				}
 				else
 				{
-					x += xSwitch; y += ySwitch;
+					x += xSwitch;
+					y += ySwitch;
 				}
 
 				MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
@@ -688,7 +705,8 @@ void CToolMapShow::showTileDetails(int x, int y)
 	delete self;
 }
 
-void CToolMapShow::setTileDetails(int x, int y, int setOption) {
+void CToolMapShow::setTileDetails(int x, int y, int setOption)
+{
 	try
 	{
 	}
@@ -698,7 +716,8 @@ void CToolMapShow::setTileDetails(int x, int y, int setOption) {
 	}
 }
 
-void CToolMapShow::ShowMapConfig(int x, int y) {
+void CToolMapShow::ShowMapConfig(int x, int y)
+{
 	CMapConfig *dialog = new CMapConfig(memTilesForConfig, x, y);
 	dialog->DoModal();
 	delete dialog;

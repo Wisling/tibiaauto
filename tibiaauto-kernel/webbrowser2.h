@@ -23,6 +23,7 @@ public:
 		        = { 0x8856f961, 0x340a, 0x11d0, { 0xa9, 0x6b, 0x0, 0xc0, 0x4f, 0xd7, 0x5, 0xa2 } };
 		return clsid;
 	}
+
 	virtual BOOL Create(LPCTSTR lpszClassName,
 	                    LPCTSTR lpszWindowName, DWORD dwStyle,
 	                    const RECT& rect,

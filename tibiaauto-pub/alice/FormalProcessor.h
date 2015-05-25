@@ -19,10 +19,12 @@ using namespace std;
 class FormalProcessor : public AimlProcessor
 {
 public:
-	~FormalProcessor() {
+	~FormalProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string formal = Kernel::process(m, e, r, id);
 		StringTokenizer st(formal, " \n\r\t", true);
 		string result = "";

@@ -69,7 +69,6 @@ char * CMod_responderApp::getName()
 	return "Auto responder";
 }
 
-
 int CMod_responderApp::isStarted()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -92,11 +91,9 @@ void CMod_responderApp::showConfigDialog()
 	m_infoDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_responderApp::enableControls()
 {
 }
-
 
 char *CMod_responderApp::getVersion()
 {
@@ -124,7 +121,8 @@ void CMod_responderApp::stop()
 		m_infoDialog->stop();
 }
 
-void CMod_responderApp::getNewSkin(CSkin newSkin) {
+void CMod_responderApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

@@ -27,7 +27,6 @@ CRepeatButton::~CRepeatButton()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CRepeatButton, CButton)
 //{{AFX_MSG_MAP(CRepeatButton)
 ON_WM_LBUTTONDOWN()
@@ -67,7 +66,7 @@ void CRepeatButton::OnLButtonDown(UINT nFlags, CPoint point)
 void CRepeatButton::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	ReleaseCapture();
-	if(TimerStep)   // We're done with this button
+	if (TimerStep)   // We're done with this button
 	{
 		KillTimer(TimerID);
 		TimerStep = 0;
@@ -81,7 +80,7 @@ void CRepeatButton::OnLButtonUp(UINT nFlags, CPoint point)
 void CRepeatButton::OnTimer(UINT nIDEvent)
 {
 	// We may have moved the mouse during the timer interval so double-check it first!
-	if(!IsOverClient())
+	if (!IsOverClient())
 	{
 		KillTimer(TimerID);
 		TimerStep = 0;  // No longer doing auto-repeat
@@ -89,7 +88,7 @@ void CRepeatButton::OnTimer(UINT nIDEvent)
 	}
 	else
 	{
-		if(TimerStep == 1)      // initial delay before auto-repeat?
+		if (TimerStep == 1)      // initial delay before auto-repeat?
 		{
 			KillTimer(TimerID);     // set up new timer interval
 
@@ -101,13 +100,12 @@ void CRepeatButton::OnTimer(UINT nIDEvent)
 			TimerStep = 2;  // Now we are in auto-repeat mode
 		}
 
-		if(TimerStep > 1)
+		if (TimerStep > 1)
 			GetParent()->PostMessage(WM_COMMAND, wParam, (LPARAM)lParam);
 	}
 
 	CButton::OnTimer(nIDEvent);
 }
-
 
 // Want to ensure that we are not repeating if the mouse has wandered off the
 // button.

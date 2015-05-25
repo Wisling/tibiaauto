@@ -35,10 +35,8 @@ END_MESSAGE_MAP()
 // CTibiaautoApp construction
 
 CTibiaautoApp::CTibiaautoApp()
-
 {
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // The one and only CTibiaautoApp object
@@ -52,7 +50,7 @@ BOOL CTibiaautoApp::InitInstance()
 {
 	CWinApp::InitInstance();
 	AfxEnableControlContainer();
-	if(!AfxSocketInit())
+	if (!AfxSocketInit())
 		AfxMessageBox("Failed to Initialize Sockets", MB_OK | MB_ICONSTOP);
 	CTibiaautoDlg* dlg = new CTibiaautoDlg();
 	m_pMainWnd = dlg;

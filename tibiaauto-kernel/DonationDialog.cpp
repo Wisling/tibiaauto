@@ -23,7 +23,6 @@ CDonationDialog::CDonationDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CDonationDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -31,7 +30,6 @@ void CDonationDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_OK);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CDonationDialog, CDialog)
 //{{AFX_MSG_MAP(CDonationDialog)

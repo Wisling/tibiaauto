@@ -11,11 +11,13 @@ int templateDepth = 0;
 extern int totalCategories;
 extern string botName;
 
-void PreParser::elementStarted(const string &name, int index) {
+void PreParser::elementStarted(const string &name, int index)
+{
 	elementStarted(name, NULL, index);
 }
 
-void PreParser::elementStarted(const string &name, attributeMap *attr, int index) {
+void PreParser::elementStarted(const string &name, attributeMap *attr, int index)
+{
 	if (name == "context" && templateDepth < 1)
 	{
 		if (attr != NULL)
@@ -89,7 +91,8 @@ void PreParser::elementStarted(const string &name, attributeMap *attr, int index
 	currentTag = name;
 }
 
-void PreParser::elementFinished(const string &name, int index) {
+void PreParser::elementFinished(const string &name, int index)
+{
 	if (name == "context" && templateDepth < 1)
 	{
 		context = "*";
@@ -130,7 +133,8 @@ void PreParser::elementFinished(const string &name, int index) {
 	currentTag.erase();
 }
 
-void PreParser::elementText(const string &text, int) {
+void PreParser::elementText(const string &text, int)
+{
 	if (currentTag == "pattern" && templateDepth == 0)
 		pattern += text;
 	else if (currentTag == "that" && templateDepth < 1)
@@ -138,6 +142,7 @@ void PreParser::elementText(const string &text, int) {
 			that = text;
 }
 
-void PreParser::elementCData(const string &, int) {
+void PreParser::elementCData(const string &, int)
+{
 	;
 }

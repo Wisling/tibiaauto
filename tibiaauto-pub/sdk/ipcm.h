@@ -7,11 +7,13 @@ struct ipcMessage
 	char payload[1024];
 	time_t tm;
 public:
-	ipcMessage(){
+	ipcMessage()
+	{
 		messageType = 0;
 		memset(payload, 0, 1024);
 		tm = 0;
 	}
+
 	void send(HANDLE pipeHandle);
 };
 

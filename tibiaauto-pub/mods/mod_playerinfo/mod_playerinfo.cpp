@@ -80,7 +80,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMod_playerinfoApp construction
 
-CMod_playerinfoApp::CMod_playerinfoApp() {
+CMod_playerinfoApp::CMod_playerinfoApp()
+{
 	m_infoDialog = NULL;
 	m_configData = new CConfigData();
 }
@@ -97,7 +98,6 @@ char * CMod_playerinfoApp::getName()
 	return "Player info";
 }
 
-
 int CMod_playerinfoApp::isStarted()
 {
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
@@ -108,7 +108,6 @@ int CMod_playerinfoApp::isStarted()
 	}
 	return 0;
 }
-
 
 void CMod_playerinfoApp::start()
 {
@@ -138,21 +137,20 @@ void CMod_playerinfoApp::showConfigDialog()
 	m_infoDialog->ShowWindow(SW_SHOW);
 }
 
-
-void CMod_playerinfoApp::configToControls() {
+void CMod_playerinfoApp::configToControls()
+{
 	if (m_infoDialog)
 		m_infoDialog->configToControls(m_configData);
 }
 
-
-void CMod_playerinfoApp::controlsToConfig() {
+void CMod_playerinfoApp::controlsToConfig()
+{
 	if (m_infoDialog)
 	{
 		delete m_configData;
 		m_configData = m_infoDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_playerinfoApp::disableControls()
 {
@@ -162,21 +160,19 @@ void CMod_playerinfoApp::enableControls()
 {
 }
 
-
 char *CMod_playerinfoApp::getVersion()
 {
 	return "1.5";
 }
-
 
 int CMod_playerinfoApp::validateConfig(int showAlerts)
 {
 	return 1;
 }
 
-
-void CMod_playerinfoApp::resetConfig() {
-	if(m_configData)
+void CMod_playerinfoApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -184,7 +180,8 @@ void CMod_playerinfoApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_playerinfoApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_playerinfoApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	if (!strcmp(paramName, "enableTimer"))
 		m_configData->enableTimers = atoi(paramValue) != 0;
 }
@@ -200,10 +197,12 @@ char *CMod_playerinfoApp::saveConfigParam(char *paramName)
 	return buf;
 }
 
-char *CMod_playerinfoApp::getConfigParamName(int nr) {
+char *CMod_playerinfoApp::getConfigParamName(int nr)
+{
 	switch (nr)
 	{
-	case 0: return "enableTimer";
+	case 0:
+		return "enableTimer";
 	default:
 		return NULL;
 	}
@@ -214,13 +213,12 @@ void* CMod_playerinfoApp::GetPlayerInfo()
 	return &playerInfo;
 }
 
-
 void CMod_playerinfoApp::getNewSkin(CSkin newSkin)
 {
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
-	if(m_infoDialog)
+	if (m_infoDialog)
 	{
 		m_infoDialog->DoSetButtonSkin();
 		m_infoDialog->Invalidate();

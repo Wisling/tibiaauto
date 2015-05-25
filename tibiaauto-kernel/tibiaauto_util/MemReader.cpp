@@ -22,7 +22,8 @@ static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif // ifdef _DEBUG
 
-int mod(int i, int m){
+int mod(int i, int m)
+{
 	int ans = i % m;
 	if (ans < 0)
 		ans += m;
@@ -33,11 +34,13 @@ int mod(int i, int m){
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CMemReader::CMemReader() {
+CMemReader::CMemReader()
+{
 	CMemConstData();
 }
 
-CMemReader::~CMemReader() {
+CMemReader::~CMemReader()
+{
 }
 
 // Reads circularly linked list of VIP entries stored in Tibia memory
@@ -45,13 +48,14 @@ CMemReader::~CMemReader() {
 // Output: returns valid CTibiaVIPEntry with name == "" if 'nr' is the first empty entry
 // returns NULL if 'nr' is out of bounds
 // returns complete CTibiaVIPEntry if 'nr'
-CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
+CTibiaVIPEntry *CMemReader::readVIPEntry(int nr)
+{
 	int vipCount = CMemUtil::GetMemIntValue(m_memAddressVIP + 4);
 	if (nr < 0 || nr > vipCount)
 		return NULL;
 	CTibiaVIPEntry *vip = new CTibiaVIPEntry();
 
-	if(nr == vipCount)
+	if (nr == vipCount)
 	{
 		vip->name[0] = 0;
 		return vip;
@@ -105,22 +109,23 @@ CTibiaVIPEntry *CMemReader::readVIPEntry(int nr) {
 	return NULL;
 }
 
-long findContainer(int i, long addrCurr, long addrHead, int depth = 0){
+long findContainer(int i, long addrCurr, long addrHead, int depth = 0)
+{
 	//Manages the parsing of the open container data object within Tibia memory
 	//Returns NULL if container is closed which is only determined by not finding it
 	//Returns 1 if the object has restructured itself and needs to be re-read
-	if(depth > 0 && 0)
+	if (depth > 0 && 0)
 	{
 		CPackSender sender;
 		char buf[111];
 		sprintf(buf, "%d", depth);
 		sender.sendTAMessage(buf);
 	}
-	if(addrCurr != addrHead && CMemUtil::GetMemIntValue(addrCurr + 0x10, 0) == i)
+	if (addrCurr != addrHead && CMemUtil::GetMemIntValue(addrCurr + 0x10, 0) == i)
 		return addrCurr;
-	if(depth < 5)//binary structure is guaranteed to reach all 16 containers after 4 iterations
+	if (depth < 5)//binary structure is guaranteed to reach all 16 containers after 4 iterations
 	{
-		for(int adj = 0; adj < 12; adj += 4)
+		for (int adj = 0; adj < 12; adj += 4)
 		{
 			long addrNext = CMemUtil::GetMemIntValue(addrCurr + adj, 0);
 			if (addrNext != addrHead)
@@ -138,11 +143,13 @@ long findContainer(int i, long addrCurr, long addrHead, int depth = 0){
 	return NULL;
 }
 
-int CMemReader::readOpenContainerCount(){
+int CMemReader::readOpenContainerCount()
+{
 	return CMemUtil::GetMemIntValue(CMemUtil::GetMemIntValue(m_memAddressFirstContainer) + 0x8, 0);
 }
 
-CTibiaContainer *CMemReader::readContainer(int containerNr) {
+CTibiaContainer *CMemReader::readContainer(int containerNr)
+{
 	CTibiaContainer *container = new CTibiaContainer();
 	//triply linked list
 	//container number
@@ -160,7 +167,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 			addrIndCont = 1;
 		}
 	}
-	if(addrIndCont > 1) // return container
+	if (addrIndCont > 1) // return container
 	{
 		long addrCont = CMemUtil::GetMemIntValue(addrIndCont + 0x14, 0);
 		container->flagOnOff = 1;
@@ -178,7 +185,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 
 		try //if returns error then addrItems is most likely not a valid address anymore
 		{
-			if(addrItems)  // if addrItems == NULL then there are no items in the container
+			if (addrItems)  // if addrItems == NULL then there are no items in the container
 			{
 				for (int i = 0; i < container->itemsInside; i++)
 				{
@@ -187,7 +194,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 					item->quantity = CMemUtil::GetMemIntValue(addrItems + i * m_memLengthItem + 4, 0);
 					CTileReader tileReader;
 					CTibiaTile *tile = tileReader.getTile(item->objectId);
-					if(!tile)
+					if (!tile)
 					{
 						delete item;
 						throw "Error invalid container item.";
@@ -203,7 +210,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 				container->itemsInside = 0;
 			}
 		}
-		catch(const char*)
+		catch (const char*)
 		{
 			delete container;
 			container = new CTibiaContainer(); //return blank container
@@ -213,8 +220,8 @@ CTibiaContainer *CMemReader::readContainer(int containerNr) {
 	return container;
 }
 
-
-CTibiaCharacter *CMemReader::readSelfCharacter() {
+CTibiaCharacter *CMemReader::readSelfCharacter()
+{
 	CTibiaCharacter *ch = new CTibiaCharacter();
 
 	ch->hp      = CMemUtil::GetMemIntValue(m_memAddressHP) ^ CMemUtil::GetMemIntValue(m_memAddressXor);
@@ -230,17 +237,35 @@ CTibiaCharacter *CMemReader::readSelfCharacter() {
 	ch->mlvl         = CMemUtil::GetMemIntValue(m_memAddressMlvl);
 	ch->mlvlPercLeft = 100 - CMemUtil::GetMemIntValue(m_memAddressMlvlPercLeft);
 	ch->soulPoints   = CMemUtil::GetMemIntValue(m_memAddressSoulPoints);
-	switch(CMemUtil::GetMemIntValue(m_memAddressVocation))
+	switch (CMemUtil::GetMemIntValue(m_memAddressVocation))
 	{
-	case 0: strncpy(ch->voc, "n", 3); break;
-	case 1: strncpy(ch->voc, "k", 3); break;
-	case 2: strncpy(ch->voc, "p", 3); break;
-	case 3: strncpy(ch->voc, "s", 3); break;
-	case 4: strncpy(ch->voc, "d", 3); break;
-	case 5: strncpy(ch->voc, "ek", 3); break;
-	case 6: strncpy(ch->voc, "rp", 3); break;
-	case 7: strncpy(ch->voc, "ms", 3); break;
-	case 8: strncpy(ch->voc, "ed", 3); break;
+	case 0:
+		strncpy(ch->voc, "n", 3);
+		break;
+	case 1:
+		strncpy(ch->voc, "k", 3);
+		break;
+	case 2:
+		strncpy(ch->voc, "p", 3);
+		break;
+	case 3:
+		strncpy(ch->voc, "s", 3);
+		break;
+	case 4:
+		strncpy(ch->voc, "d", 3);
+		break;
+	case 5:
+		strncpy(ch->voc, "ek", 3);
+		break;
+	case 6:
+		strncpy(ch->voc, "rp", 3);
+		break;
+	case 7:
+		strncpy(ch->voc, "ms", 3);
+		break;
+	case 8:
+		strncpy(ch->voc, "ed", 3);
+		break;
 	}
 
 
@@ -587,7 +612,6 @@ void CMemReader::writeCreatureLightColor(int creatureNr, int value)
 	CMemUtil::SetMemIntValue(reader.m_memAddressFirstCreature + creatureNr * reader.m_memLengthCreature + 128, value);
 }
 
-
 int CMemReader::readSelfLightPower()
 {
 	CMemReader reader;
@@ -616,23 +640,25 @@ void CMemReader::writeSelfLightColor(int value)
 	writeCreatureLightColor(loggedCharNr, value);
 }
 
-CTibiaMapTile *CMemReader::readMapTile(int tileNr){
+CTibiaMapTile *CMemReader::readMapTile(int tileNr)
+{
 	CTibiaMapTile *maptile = new CTibiaMapTile();
 	DWORD tileStart        = getMapTileStart(tileNr);
 	DWORD TESTtileStart    = tileStart;
 	do
 	{
 		CMemUtil::GetMemRange(tileStart, tileStart + m_memLengthMapTile, (char*)maptile, 0);//this address comes from Tibia itself and need not be shifted
-		if(maptile->count)
+		if (maptile->count)
 			int a = 0;
 		tileStart     = TESTtileStart;
 		TESTtileStart = getMapTileStart(tileNr); // Check that reference hasn't changed
 	}
-	while(tileStart != TESTtileStart);//Tibia's map is a very large area of memory. Ensure that pointer is still same afterward in case we read from deallocated space.
+	while (tileStart != TESTtileStart);//Tibia's map is a very large area of memory. Ensure that pointer is still same afterward in case we read from deallocated space.
 	return maptile;
 }
 
-int CMemReader::getMapTileStart(int tileNr){
+int CMemReader::getMapTileStart(int tileNr)
+{
 	return dereference(m_memAddressMapStart) + tileNr * m_memLengthMapTile;
 }
 
@@ -662,7 +688,8 @@ int CMemReader::mapGetSelfCellNr()
 			return prevSelfTileNr;
 		}
 	}
-	delete maptile; maptile = NULL;
+	delete maptile;
+	maptile = NULL;
 
 	int floorSize     = m_memMaxMapTiles / 8;
 	int tileNrLowest  = max(0, min(1768, (self->z <= 7) ? floorSize * (7 - self->z) : (floorSize * 2)));
@@ -717,7 +744,8 @@ int CMemReader::mapGetSelfCellNr()
 				}
 			}
 		}
-		delete maptile; maptile = NULL;
+		delete maptile;
+		maptile = NULL;
 	}
 
 	//just in case.  Usually only run when changing levels
@@ -742,7 +770,8 @@ int CMemReader::mapGetSelfCellNr()
 				}
 			}
 		}
-		delete maptile; maptile = NULL;
+		delete maptile;
+		maptile = NULL;
 	}
 	delete self;
 	return 0;
@@ -755,6 +784,7 @@ struct point CMemReader::mapAddPointToCoord(point coord, point p2)
 	coord.z -= p2.z;//in tile array -ve is down, in tibia map point system -ve is up
 	return coord;
 }
+
 struct point CMemReader::mapDiffCoords(point c1, point c2) // c1-c2
 {
 	// if diff is 16, it could also actually be -2, -20, 34, ... choose closest
@@ -767,6 +797,7 @@ struct point CMemReader::mapDiffCoords(point c1, point c2) // c1-c2
 		c1.y -= 14;
 	return c1;
 }
+
 struct point CMemReader::mapShiftReferencePoint(point p, point oldCoord, point newCoord)
 {
 	point delta = mapDiffCoords(oldCoord, newCoord);
@@ -775,6 +806,7 @@ struct point CMemReader::mapShiftReferencePoint(point p, point oldCoord, point n
 	p.z = p.z - delta.z;//in tile array -ve is down, in tibia map point system -ve is up
 	return p;
 }
+
 struct point CMemReader::mapGetCellCoord(int cellNr)
 {
 	int z = cellNr / (14 * 18);
@@ -801,7 +833,7 @@ int CMemReader::mapIsPointInScope(point p, int relToCell)
 {
 	int selfCell = mapGetSelfCellNr();
 	point p2     = mapShiftReferencePoint(p, mapGetCellCoord(relToCell), mapGetCellCoord(selfCell));
-	if(!mapIsPointInTileArray(p, selfCell))
+	if (!mapIsPointInTileArray(p, selfCell))
 		return 0;
 	return 1; // improve on this by detecting when underground and entire tile array is not used
 }
@@ -816,7 +848,7 @@ int CMemReader::mapGetPointItemsCount(point p, int relToCell /*=-1*/)
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.count;
 	int count               = CMemUtil::GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
-	if(!mapIsPointInScope(p, relToCell))
+	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return count;
 }
@@ -831,7 +863,7 @@ int CMemReader::mapGetPointItemId(point p, int stackNr, int relToCell /*=-1*/)
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.items[stackNr].itemId;
 	int itemId              = CMemUtil::GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
-	if(!mapIsPointInScope(p, relToCell))
+	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return itemId;
 }
@@ -887,7 +919,7 @@ int CMemReader::mapGetPointItemExtraInfo(point p, int stackNr, int extraType, in
 		extraInfo = CMemUtil::GetMemIntValue(mt.items[stackNr].quantity, 0);
 	if (extraType == 2)
 		extraInfo = CMemUtil::GetMemIntValue(mt.items[stackNr].extra, 0);
-	if(!mapIsPointInScope(p, relToCell))
+	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return extraInfo;
 }
@@ -902,7 +934,7 @@ int CMemReader::mapGetPointStackIndex(point p, int stackNr, int relToCell /*=-1*
 	CTibiaMapTileAddress mt = CTibiaMapTileAddress(getMapTileStart(itemCell));
 	int addr                = mt.stackind[stackNr];
 	int data                = CMemUtil::GetMemIntValue(addr, 0);//this address comes from Tibia itself and need not be shifted
-	if(!mapIsPointInScope(p, relToCell))
+	if (!mapIsPointInScope(p, relToCell))
 		return 0;
 	return data;
 }
@@ -1047,7 +1079,8 @@ CTibiaMiniMapPoint * CMemReader::readMiniMapPoint(int x, int y, int z)
 	return bogusPoint;
 }
 
-void CMemReader::writeMiniMapPoint(int x, int y, int z, int col, int spd){
+void CMemReader::writeMiniMapPoint(int x, int y, int z, int col, int spd)
+{
 	//AfxMessageBox("write started");
 	CTibiaItemProxy itemProxy;
 
@@ -1104,7 +1137,7 @@ void CMemReader::writeMiniMapPoint(int x, int y, int z, int col, int spd){
 	{
 		fstream g;
 		g.open(filename, ifstream::out);
-		if(g.good())
+		if (g.good())
 		{
 			char colour[65536], speed[65536];
 			for (int i = 0; i < 65536; i++)
@@ -1124,7 +1157,6 @@ void CMemReader::writeMiniMapPoint(int x, int y, int z, int col, int spd){
 		}
 	}
 }
-
 
 BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
 {
@@ -1242,7 +1274,6 @@ int CMemReader::getCreatureDeltaY(int creatureNr)
 {
 	return CMemUtil::GetMemIntValue(m_memAddressFirstCreature + creatureNr * m_memLengthCreature + 48);
 }
-
 
 int CMemReader::itemOnTopIndex(int x, int y, int z /*=0*/)//Now uses Tibia's own indexing system found in memory to determine this
 {

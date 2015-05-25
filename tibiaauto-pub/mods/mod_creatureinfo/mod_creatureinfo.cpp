@@ -59,16 +59,19 @@ public:
 	{
 		clear();
 	}
+
 	creatureData(int tibiaId)
 	{
 		clear();
 		this->tibiaId = tibiaId;
 	}
+
 	void clear()
 	{
 		tm      = time(NULL);
 		tibiaId = 0;
 	}
+
 	creatureData& operator=(const creatureData& p1)
 	{
 		tm      = p1.tm;
@@ -120,7 +123,8 @@ int monstersCount;
 monster monstersInfo[MAX_MONSTERS];
 mod_playerinfo *playerInfo;
 
-int Player_Vocation2VocID(char* resVoc){
+int Player_Vocation2VocID(char* resVoc)
+{
 	int voc = -1;
 	if (!strcmp(resVoc, "no vocation"))
 		voc = VOCID_NONE;
@@ -144,24 +148,45 @@ int Player_Vocation2VocID(char* resVoc){
 	return voc;
 }
 
-int Player_VocID2Vocation(int vocId, char* vocation, int lShort){
+int Player_VocID2Vocation(int vocId, char* vocation, int lShort)
+{
 	switch (vocId)
 	{
-	case VOCID_NONE:                                        strcpy(vocation, (lShort ? "NV" : "No vocation")); break;
-	case VOCID_KNIGHT:                                      strcpy(vocation, (lShort ? "K" : "Knight")); break;
-	case VOCID_KNIGHT | VOCID_PREMIUM:        strcpy(vocation, (lShort ? "EK" : "Elite knight")); break;
-	case VOCID_PALLADIN:                            strcpy(vocation, (lShort ? "P" : "Paladin")); break;
-	case VOCID_PALLADIN | VOCID_PREMIUM:      strcpy(vocation, (lShort ? "RP" : "Royal paladin")); break;
-	case VOCID_DRUID:                                       strcpy(vocation, (lShort ? "D" : "Druid")); break;
-	case VOCID_DRUID | VOCID_PREMIUM:         strcpy(vocation, (lShort ? "ED" : "Elder druid")); break;
-	case VOCID_SORCERER:                            strcpy(vocation, (lShort ? "S" : "Sorcerer")); break;
-	case VOCID_SORCERER | VOCID_PREMIUM:      strcpy(vocation, (lShort ? "MS" : "Master sorcerer")); break;
-	default: return 0;
+	case VOCID_NONE:
+		strcpy(vocation, (lShort ? "NV" : "No vocation"));
+		break;
+	case VOCID_KNIGHT:
+		strcpy(vocation, (lShort ? "K" : "Knight"));
+		break;
+	case VOCID_KNIGHT | VOCID_PREMIUM:
+		strcpy(vocation, (lShort ? "EK" : "Elite knight"));
+		break;
+	case VOCID_PALLADIN:
+		strcpy(vocation, (lShort ? "P" : "Paladin"));
+		break;
+	case VOCID_PALLADIN | VOCID_PREMIUM:
+		strcpy(vocation, (lShort ? "RP" : "Royal paladin"));
+		break;
+	case VOCID_DRUID:
+		strcpy(vocation, (lShort ? "D" : "Druid"));
+		break;
+	case VOCID_DRUID | VOCID_PREMIUM:
+		strcpy(vocation, (lShort ? "ED" : "Elder druid"));
+		break;
+	case VOCID_SORCERER:
+		strcpy(vocation, (lShort ? "S" : "Sorcerer"));
+		break;
+	case VOCID_SORCERER | VOCID_PREMIUM:
+		strcpy(vocation, (lShort ? "MS" : "Master sorcerer"));
+		break;
+	default:
+		return 0;
 	}
 	return 1;
 }
 
-void Expression_PreParse(char *expression, expressionInfo *expInfo){
+void Expression_PreParse(char *expression, expressionInfo *expInfo)
+{
 	char *current  = expression;
 	char *tagStart = 0;
 	char *tagEnd   = 0;
@@ -186,7 +211,7 @@ void Expression_PreParse(char *expression, expressionInfo *expInfo){
 				//T4: Copy negotietive prefix
 				lstrcpyn(expInfo->tag[expInfo->tagCount].prefix, negStart + 1, min(current - negStart, 39));
 		}
-		else if(*current == '>')
+		else if (*current == '>')
 		{
 			tagEnd = current;
 			lstrcpyn(expInfo->tag[expInfo->tagCount].name, tagStart + 1, min(tagEnd - tagStart, 39));
@@ -200,7 +225,7 @@ void Expression_PreParse(char *expression, expressionInfo *expInfo){
 				tagEnd   = 0;
 			}
 		}
-		else if(*current == '}')
+		else if (*current == '}')
 		{
 			if (negStart && tagStart && tagEnd)
 			{
@@ -212,7 +237,7 @@ void Expression_PreParse(char *expression, expressionInfo *expInfo){
 				negStart = 0;
 			}
 		}
-		else if(!tagStart && !negStart)
+		else if (!tagStart && !negStart)
 		{
 			//All other chars stay
 			*mask++ = *current;
@@ -221,66 +246,68 @@ void Expression_PreParse(char *expression, expressionInfo *expInfo){
 	}
 }
 
-void Expression_Tags_Internals(char* tagName, char* svalue, CTibiaCharacter *ch){
-	if(!_strcmpi(tagName, "tibiaid"))
+void Expression_Tags_Internals(char* tagName, char* svalue, CTibiaCharacter *ch)
+{
+	if (!_strcmpi(tagName, "tibiaid"))
 		sprintf(svalue, "%d", ch->tibiaId);
 
-	else if(!_strcmpi(tagName, "x"))
+	else if (!_strcmpi(tagName, "x"))
 		sprintf(svalue, "%d", ch->x);
 
-	else if(!_strcmpi(tagName, "y"))
+	else if (!_strcmpi(tagName, "y"))
 		sprintf(svalue, "%d", ch->y);
 
-	else if(!_strcmpi(tagName, "z"))
+	else if (!_strcmpi(tagName, "z"))
 		sprintf(svalue, "%d", ch->z);
 
-	else if(!_strcmpi(tagName, "outfitid"))
+	else if (!_strcmpi(tagName, "outfitid"))
 		sprintf(svalue, "%d", ch->outfitId);
 
-	else if(!_strcmpi(tagName, "mountid"))
+	else if (!_strcmpi(tagName, "mountid"))
 		sprintf(svalue, "%d", ch->mountId);
 
-	else if(!_strcmpi(tagName, "moving"))
+	else if (!_strcmpi(tagName, "moving"))
 		sprintf(svalue, "%d", ch->moving);
 
-	else if(!_strcmpi(tagName, "monstertype"))
+	else if (!_strcmpi(tagName, "monstertype"))
 		sprintf(svalue, "%d", ch->monsterType);
 
-	else if(!_strcmpi(tagName, "hppercleft"))
+	else if (!_strcmpi(tagName, "hppercleft"))
 		sprintf(svalue, "%d", ch->hpPercLeft);
 
-	else if(!_strcmpi(tagName, "lookdir"))
+	else if (!_strcmpi(tagName, "lookdir"))
 		sprintf(svalue, "%d", ch->lookDirection);
 
-	else if(!_strcmpi(tagName, "colorhead"))
+	else if (!_strcmpi(tagName, "colorhead"))
 		sprintf(svalue, "%d", ch->colorHead);
 
-	else if(!_strcmpi(tagName, "colorbody"))
+	else if (!_strcmpi(tagName, "colorbody"))
 		sprintf(svalue, "%d", ch->colorBody);
 
-	else if(!_strcmpi(tagName, "colorlegs"))
+	else if (!_strcmpi(tagName, "colorlegs"))
 		sprintf(svalue, "%d", ch->colorLegs);
 
-	else if(!_strcmpi(tagName, "colorfoot"))
+	else if (!_strcmpi(tagName, "colorfoot"))
 		sprintf(svalue, "%d", ch->colorFoot);
 
-	else if(!_strcmpi(tagName, "walkspeed"))
+	else if (!_strcmpi(tagName, "walkspeed"))
 		sprintf(svalue, "%d", ch->walkSpeed);
 
-	else if(!_strcmpi(tagName, "skulls"))
+	else if (!_strcmpi(tagName, "skulls"))
 		sprintf(svalue, "%d", ch->skulls);
 
-	else if(!_strcmpi(tagName, "shields"))
+	else if (!_strcmpi(tagName, "shields"))
 		sprintf(svalue, "%d", ch->shields);
 
-	else if(!_strcmpi(tagName, "waricon"))
+	else if (!_strcmpi(tagName, "waricon"))
 		sprintf(svalue, "%d", ch->warIcon);
 
-	else if(!_strcmpi(tagName, "blocking"))
+	else if (!_strcmpi(tagName, "blocking"))
 		sprintf(svalue, "%d", ch->blocking);
 }
 
-void Creature_TypeToText(int type, char* svalue){
+void Creature_TypeToText(int type, char* svalue)
+{
 	if (type == TYPE_PLAYER || type == TYPE_SELF)
 		lstrcpy(svalue, "Player");
 
@@ -294,7 +321,8 @@ void Creature_TypeToText(int type, char* svalue){
 		lstrcpy(svalue, "Unknown");
 }
 
-void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaCharacter *ch){
+void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaCharacter *ch)
+{
 	if (!_strcmpi(tagName, "hp"))
 	{
 		if (data && data->type == TYPE_SELF)
@@ -304,14 +332,14 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 		else
 			sprintf(svalue, "%d%%", ch->hpPercLeft);
 	}
-	else if(!_strcmpi(tagName, "maxhp"))
+	else if (!_strcmpi(tagName, "maxhp"))
 	{
 		if (data && data->maxHp)
 			sprintf(svalue, "%d", data->maxHp);
 		else
 			lstrcpy(svalue, "");
 	}
-	else if(!_strcmpi(tagName, "name"))
+	else if (!_strcmpi(tagName, "name"))
 	{
 		if (data)
 			sprintf(svalue, "%s", data->name);
@@ -342,7 +370,8 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 	}
 }
 
-void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCharacter *ch){
+void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCharacter *ch)
+{
 	if (!_strcmpi(tagName, "guildname"))
 	{
 		lstrcpy(svalue, data->guildName);
@@ -383,32 +412,33 @@ void Expression_Tags_Player(char* tagName, char* svalue, player* data, CTibiaCha
 			lstrcpy(svalue, "");
 		else if (modif == 40)
 			lstrcpy(svalue, "BOH");
-		else if(modif == 60)
+		else if (modif == 60)
 			lstrcpy(svalue, "TimeRing");
-		else if(modif == haste)
+		else if (modif == haste)
 			lstrcpy(svalue, "Haste");
-		else if(modif == 100)
+		else if (modif == 100)
 			lstrcpy(svalue, "BOH+TimeRing");
-		else if(modif == haste + 40)
+		else if (modif == haste + 40)
 			lstrcpy(svalue, "BOH+Haste");
-		else if(modif == haste + 60)
+		else if (modif == haste + 60)
 			lstrcpy(svalue, "Haste+TimeRing");
-		else if(modif == haste + 100)
+		else if (modif == haste + 100)
 			lstrcpy(svalue, "BOH+Haste+TimeRing");
-		else if(modif == shaste)
+		else if (modif == shaste)
 			lstrcpy(svalue, "StrongHaste");
-		else if(modif == shaste + 40)
+		else if (modif == shaste + 40)
 			lstrcpy(svalue, "BOH+StrongHaste");
-		else if(modif == shaste + 60)
+		else if (modif == shaste + 60)
 			lstrcpy(svalue, "StrongHaste+TimeRing");
-		else if(modif == shaste + 100)
+		else if (modif == shaste + 100)
 			lstrcpy(svalue, "BOH+StrongHaste+TimeRing");
 		else
 			lstrcpy(svalue, "Unknown modif");
 	}
 }
 
-void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config){
+void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
+{
 	//T4: Char info
 	if (!_strcmpi(tagName, "mana"))
 	{
@@ -421,7 +451,7 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config){
 	else if (!_strcmpi(tagName, "voc"))
 	{
 		sprintf(svalue, "%s", playerInfo->voc);
-		for(int i = strlen(svalue) - 1; i >= 0; i--)
+		for (int i = strlen(svalue) - 1; i >= 0; i--)
 			svalue[i] = toupper(svalue[i]);
 	}
 	else if (!_strcmpi(tagName, "capacity"))
@@ -831,7 +861,8 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config){
 	}
 }
 
-void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
+void Expression_Tags_Monster(char* tagName, char* svalue, monster* data)
+{
 	if (!_strcmpi(tagName, "exp"))
 	{
 		if (data->exp > 0)
@@ -882,8 +913,8 @@ void Expression_Tags_Monster(char* tagName, char* svalue, monster* data){
 	}
 }
 
-
-void Expression_GatherData(expressionInfo *expInfo, creature *data, CTibiaCharacter *ch, CConfigData *config){
+void Expression_GatherData(expressionInfo *expInfo, creature *data, CTibiaCharacter *ch, CConfigData *config)
+{
 	char svalue[128];
 	int i;
 
@@ -914,11 +945,13 @@ void Expression_GatherData(expressionInfo *expInfo, creature *data, CTibiaCharac
 	}
 }
 
-void Expression_Exec(expressionInfo *expInfo, char *out){
+void Expression_Exec(expressionInfo *expInfo, char *out)
+{
 	sprintf(out, expInfo->mask, expInfo->tag[0].value, expInfo->tag[1].value, expInfo->tag[2].value, expInfo->tag[3].value, expInfo->tag[4].value, expInfo->tag[5].value, expInfo->tag[6].value, expInfo->tag[7].value, expInfo->tag[8].value, expInfo->tag[9].value);
 }
 
-int Player_CalcHp(int vocId, int lvl){
+int Player_CalcHp(int vocId, int lvl)
+{
 	if (vocId & VOCID_KNIGHT) //T4: Kinght
 		return 65 + lvl * 15;
 	if (vocId & VOCID_PALLADIN) //T4: Palladin
@@ -927,7 +960,8 @@ int Player_CalcHp(int vocId, int lvl){
 	return 145 + lvl * 5;
 }
 
-void CreatureList_Init(){
+void CreatureList_Init()
+{
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 
@@ -1095,25 +1129,28 @@ void CreatureList_Init(){
 	delete parser;
 }
 
-int Monster_GetHp(char *name){
-	for(int i = 0; i < monstersCount; i++)
+int Monster_GetHp(char *name)
+{
+	for (int i = 0; i < monstersCount; i++)
 	{
-		if(!_strcmpi(monstersInfo[i].name, name))
+		if (!_strcmpi(monstersInfo[i].name, name))
 			return monstersInfo[i].maxHp;
 	}
 	return 0;
 }
 
-int Monster_GetExp(char *name){
-	for(int i = 0; i < monstersCount; i++)
+int Monster_GetExp(char *name)
+{
+	for (int i = 0; i < monstersCount; i++)
 	{
-		if(!_strcmpi(monstersInfo[i].name, name))
+		if (!_strcmpi(monstersInfo[i].name, name))
 			return monstersInfo[i].exp;
 	}
 	return 0;
 }
 
-void Player_Register(char *name, int vocId, int lvl, char *guildName, char *guildRank, char *guildDescription){
+void Player_Register(char *name, int vocId, int lvl, char *guildName, char *guildRank, char *guildDescription)
+{
 	int i;
 	for (i = 0; i < playersCount; i++)
 	{
@@ -1144,7 +1181,8 @@ void Player_Register(char *name, int vocId, int lvl, char *guildName, char *guil
 	}
 }
 
-void Monster_Register(char *name, int type, int maxHp, int exp, int physical, int earth, int fire, int energy, int ice, int holy, int death, int seeInvisible, int paralysisImmune, char* description){
+void Monster_Register(char *name, int type, int maxHp, int exp, int physical, int earth, int fire, int energy, int ice, int holy, int death, int seeInvisible, int paralysisImmune, char* description)
+{
 	//T4 This is called monster but lot of other objects info will be added here
 	int i;
 	for (i = 0; i < monstersCount; i++)
@@ -1174,7 +1212,8 @@ void Monster_Register(char *name, int type, int maxHp, int exp, int physical, in
 	}
 }
 
-void ReadPipeInfo(){
+void ReadPipeInfo()
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CRegexpProxy regexpProxy;
@@ -1303,7 +1342,8 @@ void ReadPipeInfo(){
 	}
 }
 
-int PlayerInfo_Init(){
+int PlayerInfo_Init()
+{
 	GPIPROC GetPlayerInfo;
 	HMODULE hPlayerInfo;
 
@@ -1320,7 +1360,8 @@ int PlayerInfo_Init(){
 	return 0;
 }
 
-void Monster_GetName(char *sCreature, char *out){
+void Monster_GetName(char *sCreature, char *out)
+{
 	int i;
 	//T4: Monster name in BattleList have brakets at the end we have to remove them
 	for (i = 0; i < 32; i++)
@@ -1332,14 +1373,17 @@ void Monster_GetName(char *sCreature, char *out){
 	if (i < 32)
 		out[i] = 0;
 }
-void Monster_SetNameNumber(char *sCreature, int nr, char *out){
+
+void Monster_SetNameNumber(char *sCreature, int nr, char *out)
+{
 	char buffer[32];
 	lstrcpyn(buffer, sCreature, 26); //T4: 26, cus 5 chars are neeede for number and 1 char for null terminator
 	sprintf(out, "%s[%02d]", buffer, nr);
 	out[32] = 0;
 }
 
-int RandomTimeCreatureInfo(CTibiaCharacter *self, CTibiaCharacter *ch){
+int RandomTimeCreatureInfo(CTibiaCharacter *self, CTibiaCharacter *ch)
+{
 	int dist = self->x - ch->x + self->y - ch->y;
 	return CModuleUtil::randomFormula(300, (7 - dist) * 30);//ranges from 220-510
 }
@@ -1348,7 +1392,7 @@ map <int, int> lookCount;
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -1594,13 +1638,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						if (ch->lookDirection == 0)
 							sender.look(ch->x, ch->y - 1, ch->z, 99);
 
-						else if(ch->lookDirection == 1)
+						else if (ch->lookDirection == 1)
 							sender.look(ch->x + 1, ch->y, ch->z, 99);
 
-						else if(ch->lookDirection == 2)
+						else if (ch->lookDirection == 2)
 							sender.look(ch->x, ch->y + 1, ch->z, 99);
 
-						else if(ch->lookDirection == 3)
+						else if (ch->lookDirection == 3)
 							sender.look(ch->x - 1, ch->y, ch->z, 99);
 					}
 					Sleep(RandomTimeCreatureInfo(self, ch));
@@ -1638,7 +1682,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_creatureinfoApp construction
 
@@ -1664,12 +1707,10 @@ char * CMod_creatureinfoApp::getName()
 	return "Creature Info";
 }
 
-
 int CMod_creatureinfoApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_creatureinfoApp::start()
 {
@@ -1729,7 +1770,6 @@ void CMod_creatureinfoApp::stop()
 	}
 }
 
-
 char *CMod_creatureinfoApp::getVersion()
 {
 	return "2.1";
@@ -1753,14 +1793,12 @@ void CMod_creatureinfoApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_creatureinfoApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_creatureinfoApp::controlsToConfig()
 {
@@ -1770,7 +1808,6 @@ void CMod_creatureinfoApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_creatureinfoApp::disableControls()
 {
@@ -1783,7 +1820,6 @@ void CMod_creatureinfoApp::enableControls()
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
-
 
 int CMod_creatureinfoApp::validateConfig(int showAlerts)
 {
@@ -1804,7 +1840,7 @@ int CMod_creatureinfoApp::validateConfig(int showAlerts)
 
 void CMod_creatureinfoApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -1897,30 +1933,49 @@ char *CMod_creatureinfoApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "player/active";
-	case 1: return "player/first";
-	case 2: return "player/second";
-	case 3: return "monster/active";
-	case 4: return "monster/first";
-	case 5: return "monster/second";
-	case 6: return "monster/uniqueMonsterNames";
-	case 7: return "self/active";
-	case 8: return "self/first";
-	case 9: return "self/second";
-	case 10: return "allFloorInfo";
-	case 11: return "addRequest";
-	case 12: return "area/collectStats";
-	case 13: return "area/showCreaturesInArea";
-	case 14: return "self/window";
-	case 15: return "self/tray";
-	case 16: return "area/rangeXY";
-	case 17: return "area/rangeZ";
+	case 0:
+		return "player/active";
+	case 1:
+		return "player/first";
+	case 2:
+		return "player/second";
+	case 3:
+		return "monster/active";
+	case 4:
+		return "monster/first";
+	case 5:
+		return "monster/second";
+	case 6:
+		return "monster/uniqueMonsterNames";
+	case 7:
+		return "self/active";
+	case 8:
+		return "self/first";
+	case 9:
+		return "self/second";
+	case 10:
+		return "allFloorInfo";
+	case 11:
+		return "addRequest";
+	case 12:
+		return "area/collectStats";
+	case 13:
+		return "area/showCreaturesInArea";
+	case 14:
+		return "self/window";
+	case 15:
+		return "self/tray";
+	case 16:
+		return "area/rangeXY";
+	case 17:
+		return "area/rangeZ";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_creatureinfoApp::getNewSkin(CSkin newSkin) {
+void CMod_creatureinfoApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

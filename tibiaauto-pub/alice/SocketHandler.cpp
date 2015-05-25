@@ -26,7 +26,8 @@ extern bool serverRunning;
 bool SocketHandler::alreadyRunning = false;
 map<string, Socket *> SocketHandler::sockets;
 
-void SocketHandler::runLoop() {
+void SocketHandler::runLoop()
+{
 	if (alreadyRunning)
 		return;
 	alreadyRunning = true;
@@ -89,11 +90,13 @@ void SocketHandler::runLoop() {
 	alreadyRunning = false;
 }
 
-void SocketHandler::addSocket(string uid, Socket *socket) {
+void SocketHandler::addSocket(string uid, Socket *socket)
+{
 	sockets[uid] = socket;
 }
 
-void SocketHandler::removeSocket(string uid) {
+void SocketHandler::removeSocket(string uid)
+{
 	Socket *del = sockets[uid];
 	sockets.erase(uid);
 	if (del != NULL)

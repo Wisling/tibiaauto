@@ -17,10 +17,12 @@ using namespace std;
 class ConditionProcessor : public AimlProcessor
 {
 public:
-	~ConditionProcessor() {
+	~ConditionProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string cond = e->getAttribute("name");
 		if (cond.empty())
 			return "";

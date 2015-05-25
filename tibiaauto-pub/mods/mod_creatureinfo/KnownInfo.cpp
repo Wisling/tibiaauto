@@ -26,7 +26,6 @@ CKnownInfo::CKnownInfo(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CKnownInfo::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -47,7 +46,6 @@ void CKnownInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_INFO_MONSTERS, m_monsters);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CKnownInfo, CDialog)
 //{{AFX_MSG_MAP(CKnownInfo)
@@ -87,7 +85,8 @@ void CKnownInfo::OnToolcreaturinfoInfoMonsters()
 	OnSelendokToolcreaturinfoInfoCombo();
 }
 
-void CKnownInfo::Fill_Player(){
+void CKnownInfo::Fill_Player()
+{
 	int i;
 
 	m_combo.ResetContent();
@@ -97,7 +96,8 @@ void CKnownInfo::Fill_Player(){
 	}
 }
 
-void CKnownInfo::Fill_Monster(){
+void CKnownInfo::Fill_Monster()
+{
 	int i;
 
 	m_combo.ResetContent();
@@ -138,7 +138,8 @@ void CKnownInfo::OnEditchangeToolcreaturinfoInfoCombo()
         iLastLen = iLen;*/
 }
 
-void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo() {
+void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo()
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();

@@ -15,7 +15,8 @@ using namespace std;
 
 AimlProcessor *TemplateProcessor::hook = new TemplateProcessor();
 
-TemplateProcessor::~TemplateProcessor() {
+TemplateProcessor::~TemplateProcessor()
+{
 	map<string, AimlProcessor *>::iterator itr = Handler::processors.begin();
 	while (itr != Handler::processors.end())
 	{
@@ -24,7 +25,8 @@ TemplateProcessor::~TemplateProcessor() {
 	}
 }
 
-string TemplateProcessor::process(Match *m, PElement e, Responder *r, const string &id) {
+string TemplateProcessor::process(Match *m, PElement e, Responder *r, const string &id)
+{
 	string buffer = "";
 	if (e == NULL)
 		return buffer;
@@ -72,19 +74,22 @@ string TemplateProcessor::process(Match *m, PElement e, Responder *r, const stri
 	return buffer;
 }
 
-AimlProcessor *TemplateProcessor::getProcessor(const string &name) {
-	if(Handler::hasProcessor(name))
+AimlProcessor *TemplateProcessor::getProcessor(const string &name)
+{
+	if (Handler::hasProcessor(name))
 		return (*Handler::processors.find(name)).second;
 	else
 		return NULL;
 }
 
-string TemplateProcessor::processTemplate(Match *m, PElement e, Responder *r, const string &id) {
+string TemplateProcessor::processTemplate(Match *m, PElement e, Responder *r, const string &id)
+{
 	string temp = hook->process(m, e, r, id);
 	return temp;
 }
 
-PElement TemplateProcessor::checkCompatibility(PElement e) {
+PElement TemplateProcessor::checkCompatibility(PElement e)
+{
 	string elementName = e->getTagname();
 	if (elementName.find("_") != string::npos)
 	{

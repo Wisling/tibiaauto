@@ -21,6 +21,7 @@ public:
 		if (!debugFile)
 			MessageBox(NULL, "Cannot open debugFile!", "", 0);
 	}
+
 	~NewIDirectDrawSurface4()
 	{
 		realIDirectDrawSurface4->Release();

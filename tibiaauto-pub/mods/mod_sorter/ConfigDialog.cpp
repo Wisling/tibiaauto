@@ -18,14 +18,15 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigDialog::CConfigDialog(CMod_sorterApp *app, CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app = app;
 }
 
-
-void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
+void CConfigDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDOK, m_OK);
@@ -65,7 +66,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SORTER_BAG8_IN, m_BagIn[7]);
 	DDX_Control(pDX, IDC_SORTER_BAG8_OUT, m_BagOut[7]);
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -112,15 +112,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() {
+void CConfigDialog::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() {
+void CConfigDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {
+void CConfigDialog::OnEnable()
+{
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
@@ -135,7 +138,8 @@ void CConfigDialog::OnEnable() {
 	}
 }
 
-void CConfigDialog::disableControls() {
+void CConfigDialog::disableControls()
+{
 	for (int x = 0; x < 8; x++)
 	{
 		m_Bag[x].EnableWindow(false);
@@ -144,7 +148,8 @@ void CConfigDialog::disableControls() {
 	}
 }
 
-void CConfigDialog::enableControls() {
+void CConfigDialog::enableControls()
+{
 	for (int x = 0; x < 8; x++)
 	{
 		m_Bag[x].EnableWindow(true);
@@ -153,7 +158,8 @@ void CConfigDialog::enableControls() {
 	}
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {
+void CConfigDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
 	for (int x = 0; x < 8; x++)
 	{
@@ -174,7 +180,8 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	reloadSortItems();
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {
+CConfigData * CConfigDialog::controlsToConfig()
+{
 	CConfigData *newConfigData = new CConfigData();
 	for (int i = 0; i < 8; i++)
 	{
@@ -194,7 +201,8 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
@@ -227,17 +235,19 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(             m_enable);
-	skin.SetButtonSkin(     m_OK);
-	for(int loop = 0; loop < 8; loop++)
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_OK);
+	for (int loop = 0; loop < 8; loop++)
 	{
-		skin.SetButtonSkin(             m_BagIn[loop]);
-		skin.SetButtonSkin(             m_BagOut[loop]);
+		skin.SetButtonSkin(m_BagIn[loop]);
+		skin.SetButtonSkin(m_BagOut[loop]);
 	}
 }
 
-BOOL CConfigDialog::OnInitDialog() {
+BOOL CConfigDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
@@ -246,16 +256,18 @@ BOOL CConfigDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
+{
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CConfigDialog::activateEnableButton(int enable) {
+void CConfigDialog::activateEnableButton(int enable)
+{
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::reloadSortItems() {
+void CConfigDialog::reloadSortItems()
+{
 	CTibiaItemProxy itemProxy;
 	while (m_sortItemList.GetCount() > 0)
 		m_sortItemList.DeleteString(0);
@@ -265,7 +277,8 @@ void CConfigDialog::reloadSortItems() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryAdd1() {
+void CConfigDialog::OnSortEntryAdd1()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 
@@ -279,7 +292,8 @@ void CConfigDialog::OnSortEntryAdd1() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove1() {
+void CConfigDialog::OnSortEntryRemove1()
+{
 	char itemName[128];
 	int sel = m_Bag[0].GetCurSel();
 	if (sel == -1)
@@ -290,7 +304,8 @@ void CConfigDialog::OnSortEntryRemove1() {
 	m_Bag[0].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd2() {
+void CConfigDialog::OnSortEntryAdd2()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -301,7 +316,8 @@ void CConfigDialog::OnSortEntryAdd2() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove2() {
+void CConfigDialog::OnSortEntryRemove2()
+{
 	char itemName[128];
 	int sel = m_Bag[1].GetCurSel();
 	if (sel == -1)
@@ -312,7 +328,8 @@ void CConfigDialog::OnSortEntryRemove2() {
 	m_Bag[1].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd3() {
+void CConfigDialog::OnSortEntryAdd3()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -323,7 +340,8 @@ void CConfigDialog::OnSortEntryAdd3() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove3() {
+void CConfigDialog::OnSortEntryRemove3()
+{
 	char itemName[128];
 	int sel = m_Bag[2].GetCurSel();
 	if (sel == -1)
@@ -334,7 +352,8 @@ void CConfigDialog::OnSortEntryRemove3() {
 	m_Bag[2].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd4() {
+void CConfigDialog::OnSortEntryAdd4()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -345,7 +364,8 @@ void CConfigDialog::OnSortEntryAdd4() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove4() {
+void CConfigDialog::OnSortEntryRemove4()
+{
 	char itemName[128];
 	int sel = m_Bag[3].GetCurSel();
 	if (sel == -1)
@@ -356,7 +376,8 @@ void CConfigDialog::OnSortEntryRemove4() {
 	m_Bag[3].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd5() {
+void CConfigDialog::OnSortEntryAdd5()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -367,7 +388,8 @@ void CConfigDialog::OnSortEntryAdd5() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove5() {
+void CConfigDialog::OnSortEntryRemove5()
+{
 	char itemName[128];
 	int sel = m_Bag[4].GetCurSel();
 	if (sel == -1)
@@ -378,7 +400,8 @@ void CConfigDialog::OnSortEntryRemove5() {
 	m_Bag[4].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd6() {
+void CConfigDialog::OnSortEntryAdd6()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -389,7 +412,8 @@ void CConfigDialog::OnSortEntryAdd6() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove6() {
+void CConfigDialog::OnSortEntryRemove6()
+{
 	char itemName[128];
 	int sel = m_Bag[5].GetCurSel();
 	if (sel == -1)
@@ -400,7 +424,8 @@ void CConfigDialog::OnSortEntryRemove6() {
 	m_Bag[5].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd7() {
+void CConfigDialog::OnSortEntryAdd7()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -411,7 +436,8 @@ void CConfigDialog::OnSortEntryAdd7() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove7() {
+void CConfigDialog::OnSortEntryRemove7()
+{
 	char itemName[128];
 	int sel = m_Bag[6].GetCurSel();
 	if (sel == -1)
@@ -422,7 +448,8 @@ void CConfigDialog::OnSortEntryRemove7() {
 	m_Bag[6].DeleteString(sel);
 }
 
-void CConfigDialog::OnSortEntryAdd8() {
+void CConfigDialog::OnSortEntryAdd8()
+{
 	int sel = m_sortItemList.GetCurSel();
 	char itemName[64];
 	m_sortItemList.GetLBText(sel, itemName);
@@ -433,7 +460,8 @@ void CConfigDialog::OnSortEntryAdd8() {
 	m_sortItemList.SetCurSel(0);
 }
 
-void CConfigDialog::OnSortEntryRemove8() {
+void CConfigDialog::OnSortEntryRemove8()
+{
 	char itemName[128];
 	int sel = m_Bag[7].GetCurSel();
 	if (sel == -1)

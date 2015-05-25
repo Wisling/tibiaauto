@@ -57,7 +57,8 @@ int isStackable(int, int);
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -139,7 +140,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 											CModuleUtil::waitForItemsInsideChange(i, destCont->itemsInside);
 										Sleep(CModuleUtil::randomFormula(300, 100));
 									}
-									else if(item->quantity == 0)
+									else if (item->quantity == 0)
 									{
 										CModuleUtil::waitForItemsInsideChange(contNr, sortCont->itemsInside);
 										CModuleUtil::waitForItemsInsideChange(i, destCont->itemsInside);
@@ -206,17 +207,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_sorterApp construction
 
-CMod_sorterApp::CMod_sorterApp() {
+CMod_sorterApp::CMod_sorterApp()
+{
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();
 }
 
-CMod_sorterApp::~CMod_sorterApp() {
+CMod_sorterApp::~CMod_sorterApp()
+{
 	if (m_configDialog)
 	{
 		m_configDialog->DestroyWindow();
@@ -225,15 +227,18 @@ CMod_sorterApp::~CMod_sorterApp() {
 	delete m_configData;
 }
 
-char * CMod_sorterApp::getName() {
+char * CMod_sorterApp::getName()
+{
 	return "Auto Sorter";
 }
 
-int CMod_sorterApp::isStarted() {
+int CMod_sorterApp::isStarted()
+{
 	return m_started;
 }
 
-void CMod_sorterApp::start() {
+void CMod_sorterApp::start()
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -248,7 +253,8 @@ void CMod_sorterApp::start() {
 	m_started            = 1;
 }
 
-void CMod_sorterApp::stop() {
+void CMod_sorterApp::stop()
+{
 	toolThreadShouldStop = 1;
 	while (toolThreadShouldStop)
 	{
@@ -264,7 +270,8 @@ void CMod_sorterApp::stop() {
 	}
 }
 
-void CMod_sorterApp::showConfigDialog() {
+void CMod_sorterApp::showConfigDialog()
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_configDialog)
 	{
@@ -280,12 +287,14 @@ void CMod_sorterApp::showConfigDialog() {
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-void CMod_sorterApp::configToControls() {
+void CMod_sorterApp::configToControls()
+{
 	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
-void CMod_sorterApp::controlsToConfig() {
+void CMod_sorterApp::controlsToConfig()
+{
 	if (m_configDialog)
 	{
 		delete m_configData;
@@ -293,21 +302,25 @@ void CMod_sorterApp::controlsToConfig() {
 	}
 }
 
-void CMod_sorterApp::disableControls() {
+void CMod_sorterApp::disableControls()
+{
 	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
-void CMod_sorterApp::enableControls() {
+void CMod_sorterApp::enableControls()
+{
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-char *CMod_sorterApp::getVersion() {
+char *CMod_sorterApp::getVersion()
+{
 	return "1.0";
 }
 
-int CMod_sorterApp::validateConfig(int showAlerts) {
+int CMod_sorterApp::validateConfig(int showAlerts)
+{
 	if (initializeLootBags() == 0)
 	{
 		AfxMessageBox("Not all bags are open!!\nPlease open all configured bags and restart!");
@@ -321,8 +334,9 @@ int CMod_sorterApp::validateConfig(int showAlerts) {
 	return 1;
 }
 
-void CMod_sorterApp::resetConfig() {
-	if(m_configData)
+void CMod_sorterApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -330,7 +344,8 @@ void CMod_sorterApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_sorterApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_sorterApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	char tempHold[64];
 	sscanf(paramValue, "%d,%d,%[^#]", &m_currentBagEntryNr, &m_currentSlotEntryNr, &tempHold);
 	if (!strcmp(paramName, "bag/entry"))
@@ -349,7 +364,8 @@ void CMod_sorterApp::loadConfigParam(char *paramName, char *paramValue) {
 	}
 }
 
-char *CMod_sorterApp::saveConfigParam(char *paramName) {
+char *CMod_sorterApp::saveConfigParam(char *paramName)
+{
 	static char buf[1024];
 	buf[0] = 0;
 	if (!strcmp(paramName, "bag/entry") && strlen(m_configData->sortBags[m_currentBagEntryNr].slotNr[m_currentSlotEntryNr].itemName) && m_currentBagEntryNr < 8 && m_currentSlotEntryNr < 32)
@@ -380,7 +396,8 @@ char *CMod_sorterApp::saveConfigParam(char *paramName) {
 	return buf;
 }
 
-char *CMod_sorterApp::getConfigParamName(int nr) {
+char *CMod_sorterApp::getConfigParamName(int nr)
+{
 	switch (nr)
 	{
 	case 0:
@@ -390,13 +407,15 @@ char *CMod_sorterApp::getConfigParamName(int nr) {
 	}
 }
 
-int CMod_sorterApp::isMultiParam(char *paramName) {
+int CMod_sorterApp::isMultiParam(char *paramName)
+{
 	if (!strcmp(paramName, "bag/entry"))
 		return 1;
 	return 0;
 }
 
-void CMod_sorterApp::resetMultiParamAccess(char *paramName) {
+void CMod_sorterApp::resetMultiParamAccess(char *paramName)
+{
 	if (!strcmp(paramName, "bag/entry"))
 	{
 		m_currentBagEntryNr  = 0;
@@ -404,7 +423,8 @@ void CMod_sorterApp::resetMultiParamAccess(char *paramName) {
 	}
 }
 
-int CMod_sorterApp::initializeLootBags() {
+int CMod_sorterApp::initializeLootBags()
+{
 	for (int i = 0; i < 8; i++)
 	{
 		if (m_configData->sortBags[i].slotNr[0].itemName[0] != '\0')
@@ -427,7 +447,8 @@ int CMod_sorterApp::initializeLootBags() {
 	return 1;
 }
 
-int isStackable(int sortItem, int contNr) {
+int isStackable(int sortItem, int contNr)
+{
 	CMemReaderProxy reader;
 	CTibiaContainer *cont = reader.readContainer(contNr);
 	CTibiaTile *tile      = reader.getTibiaTile(sortItem);
@@ -447,8 +468,8 @@ int isStackable(int sortItem, int contNr) {
 	return 0;
 }
 
-
-void CMod_sorterApp::getNewSkin(CSkin newSkin) {
+void CMod_sorterApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

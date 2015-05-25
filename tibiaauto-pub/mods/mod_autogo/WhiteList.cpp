@@ -25,7 +25,6 @@ CWhiteList::CWhiteList(char whiteListParam[100][32], int * mkBlackParam, CWnd* p
 	//}}AFX_DATA_INIT
 }
 
-
 void CWhiteList::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -39,7 +38,6 @@ void CWhiteList::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_WHITELIST_ADD, m_add);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CWhiteList, CDialog)
 //{{AFX_MSG_MAP(CWhiteList)
@@ -116,9 +114,9 @@ void CWhiteList::Mem2List()
 BOOL CWhiteList::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(     m_delete);
-	skin.SetButtonSkin(     m_add);
-	skin.SetButtonSkin(     m_OK);
+	skin.SetButtonSkin(m_delete);
+	skin.SetButtonSkin(m_add);
+	skin.SetButtonSkin(m_OK);
 
 
 	m_mkblack.SetCheck(*mkBlack);

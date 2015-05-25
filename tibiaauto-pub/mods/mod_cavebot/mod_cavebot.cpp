@@ -80,13 +80,11 @@ void deleteAndNull(CTibiaCharacter *&ptr)
 	ptr = NULL;
 }
 
-
 void deleteAndNull(CConfigDialog *&ptr)
 {
 	delete ptr;
 	ptr = NULL;
 }
-
 
 void deleteAndNull(CConfigData *&ptr)
 {
@@ -150,20 +148,23 @@ CTibiaMapProxy tibiaMap;
         }
         CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt",buf.GetBuffer(2000));
    }*/
-void registerDebug(const char* buf1, const char* buf2 = "", const char* buf3 = "", const char* buf4 = "", const char* buf5 = "", const char* buf6 = ""){
+void registerDebug(const char* buf1, const char* buf2 = "", const char* buf3 = "", const char* buf4 = "", const char* buf5 = "", const char* buf6 = "")
+{
 	CModuleUtil::masterDebug("tibiaauto-debug-cavebot.txt", buf1, buf2, buf3, buf4, buf5, buf6);
 }
 
-std::string intstr(DWORD value){
+std::string intstr(DWORD value)
+{
 	std::stringstream ss;
 	ss << value;
 	return ss.str();
 }
 
-inline int findInIntArray(int v, CUIntArray& arr){
-	for(int i = arr.GetSize() - 1; i >= 0; i--)
+inline int findInIntArray(int v, CUIntArray& arr)
+{
+	for (int i = arr.GetSize() - 1; i >= 0; i--)
 	{
-		if(arr.ElementAt(i) == v)
+		if (arr.ElementAt(i) == v)
 			return i;
 	}
 	return -1;
@@ -171,14 +172,17 @@ inline int findInIntArray(int v, CUIntArray& arr){
 
 static map<int*, int> setTime;
 //Creates a random percentage based off of another player's stats that will not change until MAKE is used(GET creates a number if none already present)
-int RandomVariableTime(int &pt, int minTime, int maxTime, int command){
+int RandomVariableTime(int &pt, int minTime, int maxTime, int command)
+{
 	if (!setTime[&pt])
 		command = MAKE;
 	if (command == MAKE)
 		setTime[&pt] = CModuleUtil::randomFormula(minTime, maxTime, minTime - 1);
 	return setTime[&pt];
 }
-int binarySearch(unsigned int f, CUIntArray& arr){
+
+int binarySearch(unsigned int f, CUIntArray& arr)
+{
 	int ASCENDING = 1;
 	int e         = arr.GetSize();
 	int s         = 0;
@@ -195,7 +199,8 @@ int binarySearch(unsigned int f, CUIntArray& arr){
 	return -1;
 }
 
-void quickSort(CUIntArray& arr, int s, int e){
+void quickSort(CUIntArray& arr, int s, int e)
+{
 	int ASCENDING = 1;
 	if (e - s <= 1)
 		return;
@@ -233,14 +238,17 @@ void quickSort(CUIntArray& arr, int s, int e){
 	quickSort(arr, pivot + 1, e);
 	return;
 }
-void sortArray(CUIntArray& arr){
+
+void sortArray(CUIntArray& arr)
+{
 	quickSort(arr, 0, arr.GetSize());
 }
 
 /**
  * Dump full info about a creature (for debuging purposes)
  */
-void dumpCreatureInfo(char *info, unsigned int tibiaId) {
+void dumpCreatureInfo(char *info, unsigned int tibiaId)
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 
@@ -256,7 +264,7 @@ void dumpCreatureInfo(char *info, unsigned int tibiaId) {
 			deleteAndNull(ch);
 			break;
 		}
-		else if(ch->tibiaId == 0)
+		else if (ch->tibiaId == 0)
 		{
 			delete ch;
 			registerDebug("dumpCreatureInfo: Creature ID not found.");
@@ -290,7 +298,8 @@ void dumpCreatureInfo(char *info, unsigned int tibiaId) {
 /*
  * Checks whether or not we can do something productive by going to the depot.
  */
-int depotCheckCanGo(CConfigData *config){
+int depotCheckCanGo(CConfigData *config)
+{
 	int ret = 0;
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
@@ -334,7 +343,7 @@ int depotCheckCanGo(CConfigData *config){
 			goto exitDCG;
 		}
 	}
-	if(config->depositLootedItemList)
+	if (config->depositLootedItemList)
 	{
 		// If not returned yet then find another looted item not already checked in the depot list
 		int contNr;
@@ -347,13 +356,13 @@ int depotCheckCanGo(CConfigData *config){
 			{
 				openContNr++;
 				int itemNr;
-				for(itemNr = 0; itemNr < cont->itemsInside; itemNr++)
+				for (itemNr = 0; itemNr < cont->itemsInside; itemNr++)
 				{
 					CTibiaItem* item  = (CTibiaItem *)cont->items.GetAt(itemNr);
 					int lootListIndex = itemProxy.getLootItemIndex(item->objectId);
-					if(lootListIndex != -1)
+					if (lootListIndex != -1)
 					{
-						if(findInIntArray(item->objectId, depotListObjects) == -1)
+						if (findInIntArray(item->objectId, depotListObjects) == -1)
 						{
 							ret = 1;
 							deleteAndNull(cont);
@@ -371,10 +380,12 @@ exitDCG:
 	deleteAndNull(self);
 	return ret;
 }
+
 /*
  * Checks whether we should go back to depot or not.
  */
-int depotCheckShouldGo(CConfigData *config) {
+int depotCheckShouldGo(CConfigData *config)
+{
 	int ret = 0;
 	CMemReaderProxy reader;
 	CTibiaItemProxy itemProxy;
@@ -382,7 +393,7 @@ int depotCheckShouldGo(CConfigData *config) {
 	CTibiaCharacter *self      = reader.readSelfCharacter();
 	if (self->cap < config->depotCap)
 	{
-		if(depotCheckCanGo(config))
+		if (depotCheckCanGo(config))
 		{
 			ret = 1;
 			goto exitDSG;
@@ -436,7 +447,8 @@ exitDSG:
 /**
  * Do checks concerning 'go to depot' functionality.
  */
-void depotCheck(CConfigData *config) {
+void depotCheck(CConfigData *config)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -531,7 +543,7 @@ void depotCheck(CConfigData *config) {
 	}
 	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_walking)
 	{
-		if(!depotCheckCanGo(config))
+		if (!depotCheckCanGo(config))
 		{
 			globalAutoAttackStateDepot = CToolAutoAttackStateDepot_notRunning;
 			persistentShouldGo         = 0;
@@ -623,7 +635,8 @@ void depotCheck(CConfigData *config) {
 	}
 }
 
-int depotDepositOpenChest(int x, int y, int z) {
+int depotDepositOpenChest(int x, int y, int z)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -683,17 +696,18 @@ int depotDepositOpenChest(int x, int y, int z) {
 
 // returns quantity actually moved, tries to move as much of the item as possible.
 // can be used for more than just depot
-int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos, int qty, int destContNr, int shouldCheckCaps = 0){
+int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos, int qty, int destContNr, int shouldCheckCaps = 0)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 
 	CTibiaTile *tile = reader.getTibiaTile(objectId);
-	if(tile == NULL)
+	if (tile == NULL)
 		return 0;
 
 	CTibiaContainer *destCont = reader.readContainer(destContNr);
 	CTibiaContainer *srcCont  = reader.readContainer(sourceContNr);
-	if(!destCont->flagOnOff || !srcCont->flagOnOff)
+	if (!destCont->flagOnOff || !srcCont->flagOnOff)
 	{
 		deleteAndNull(destCont);
 		deleteAndNull(srcCont);
@@ -701,7 +715,7 @@ int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos,
 	}
 	int qtyToMove = qty;
 	int destPos   = destCont->size - 1;
-	if(destCont->itemsInside >= destCont->size)//if no space, find location of a stack in the container
+	if (destCont->itemsInside >= destCont->size)//if no space, find location of a stack in the container
 	{
 		qtyToMove = 0;
 		if (tile->stackable)  //
@@ -713,28 +727,28 @@ int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos,
 				{
 					qtyToMove = min(qty, 100 - item->quantity);
 					destPos   = itemNr;
-					if(qtyToMove)
+					if (qtyToMove)
 						break;
 				}
 			}
 		}
 	}
-	if(qtyToMove)
+	if (qtyToMove)
 	{
-		if(shouldCheckCaps) // do more checking and retries in case we do not have enough caps
+		if (shouldCheckCaps) // do more checking and retries in case we do not have enough caps
 		{
 			CTibiaCharacter* self = reader.readSelfCharacter();
 			sender.moveObjectBetweenContainers(objectId, 0x40 + sourceContNr, sourcePos, 0x40 + destContNr, destPos, qtyToMove);
-			if(CModuleUtil::waitForCapsChange(self->cap))
+			if (CModuleUtil::waitForCapsChange(self->cap))
 			{
 				Sleep(CModuleUtil::randomFormula(300, 100));
 			}
 			else  // if caps not changed, then move 1 item and get weight
 			{
-				if(qtyToMove != 1)
+				if (qtyToMove != 1)
 				{
 					sender.moveObjectBetweenContainers(objectId, 0x40 + sourceContNr, sourcePos, 0x40 + destContNr, destPos, 1);
-					if(CModuleUtil::waitForCapsChange(self->cap))
+					if (CModuleUtil::waitForCapsChange(self->cap))
 					{
 						Sleep(CModuleUtil::randomFormula(300, 100));
 					}
@@ -746,11 +760,11 @@ int depotTryMovingItemToContainer(int objectId, int sourceContNr, int sourcePos,
 					}
 					CTibiaCharacter* selfAfter = reader.readSelfCharacter();
 					float weight               = self->cap - selfAfter->cap;
-					if(weight > 0)  // if we have a valid weight,
+					if (weight > 0)  // if we have a valid weight,
 					{
 						qtyToMove = min(qtyToMove, int(selfAfter->cap / (weight + .01)));
 						sender.moveObjectBetweenContainers(objectId, 0x40 + sourceContNr, sourcePos, 0x40 + destContNr, destPos, qtyToMove);
-						if(CModuleUtil::waitForCapsChange(selfAfter->cap))
+						if (CModuleUtil::waitForCapsChange(selfAfter->cap))
 						{
 							Sleep(CModuleUtil::randomFormula(300, 100));
 						}
@@ -785,10 +799,12 @@ exitTryMoving:
 	deleteAndNull(srcCont);
 	return qtyToMove;
 }
+
 /**
  * Move the item to some container in the chest.
  */
-void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int qty, int depotContNr, int depotContNr2) {
+void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int qty, int depotContNr, int depotContNr2)
+{
 	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_noSpace)
 		return;
 
@@ -808,7 +824,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 	 * massive close/open of containers.
 	 */
 	qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr2);
-	if(qty == 0)
+	if (qty == 0)
 	{
 		deleteAndNull(depotChest);
 		return;
@@ -831,7 +847,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 			    (item->quantity + qty < 100 || depotChest->itemsInside < depotChest->size))
 			{
 				qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr);
-				if(qty == 0)
+				if (qty == 0)
 				{
 					deleteAndNull(depotChest);
 					return;
@@ -848,7 +864,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 			CModuleUtil::waitForOpenContainer(depotContNr2, true);
 
 			qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr2);
-			if(qty == 0)
+			if (qty == 0)
 			{
 				deleteAndNull(depotChest);
 				return;
@@ -856,7 +872,7 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 		}
 	}
 	qty -= depotTryMovingItemToContainer(objectId, sourceContNr, sourcePos, qty, depotContNr);
-	if(qty == 0)
+	if (qty == 0)
 	{
 		deleteAndNull(depotChest);
 		return;
@@ -869,8 +885,9 @@ void depotDepositMoveToChest(int objectId, int sourceContNr, int sourcePos, int 
 }
 
 // take item from depot chest at (contNr,pos) and find empty space in my backpacks
-int depotDepositTakeFromChest(int objectId, int srcContNr, int srcPos, int qtyToPickup, int depotContNr, int depotContNr2) {
-	if(globalAutoAttackStateDepot == CToolAutoAttackStateDepot_noSpace)
+int depotDepositTakeFromChest(int objectId, int srcContNr, int srcPos, int qtyToPickup, int depotContNr, int depotContNr2)
+{
+	if (globalAutoAttackStateDepot == CToolAutoAttackStateDepot_noSpace)
 		return 0;
 
 	CMemReaderProxy reader;
@@ -884,12 +901,13 @@ int depotDepositTakeFromChest(int objectId, int srcContNr, int srcPos, int qtyTo
 			continue;                                          //only scan through carried containers
 		qtyToPickup -= depotTryMovingItemToContainer(objectId, srcContNr, srcPos, qtyToPickup, contNr, 1);
 	}
-	if(qtyToPickupOrig == qtyToPickup)
+	if (qtyToPickupOrig == qtyToPickup)
 		globalAutoAttackStateDepot = CToolAutoAttackStateDepot_noSpace;
 	return qtyToPickupOrig - qtyToPickup;
 }
 
-int countAllItemsOfType(int objectId, int depotContNr, int depotContNr2) { // excludes depotCont containers from search
+int countAllItemsOfType(int objectId, int depotContNr, int depotContNr2)   // excludes depotCont containers from search
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
@@ -918,8 +936,9 @@ int countAllItemsOfType(int objectId, int depotContNr, int depotContNr2) { // ex
 	}
 	return ret;
 }
-void listAllItemsInContainers(CUIntArray& sortedObjectIDs, CUIntArray& outObjectIDs, int depotContNr = -1, int depotContNr2 = -1) { // excludes depotCont containers from search
-	//If objectIDs is empty, then list all objects
+
+void listAllItemsInContainers(CUIntArray& sortedObjectIDs, CUIntArray& outObjectIDs, int depotContNr = -1, int depotContNr2 = -1)   // excludes depotCont containers from search
+{       //If objectIDs is empty, then list all objects
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	bool listAll               = FALSE;
@@ -975,7 +994,8 @@ void listAllItemsInContainers(CUIntArray& sortedObjectIDs, CUIntArray& outObject
 /**
  * We are nearby a depot, so do the depositing.
  */
-void depotDeposit(CConfigData *config) {
+void depotDeposit(CConfigData *config)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -1004,7 +1024,8 @@ void depotDeposit(CConfigData *config) {
 						depotContNr = depotDepositOpenChest(self->x + x, self->y + y, self->z);
 						if (depotContNr != -1)
 						{
-							x = 999; y = 999;
+							x = 999;
+							y = 999;
 						}                                   // exit loop
 					}
 				}
@@ -1032,7 +1053,7 @@ void depotDeposit(CConfigData *config) {
 	for (int i = 0; i < 100 && strlen(config->depotTrigger[i].itemName); i++)
 	{
 		int objectToMove = itemProxy.getItemId(config->depotTrigger[i].itemName);
-		if(objectToMove)
+		if (objectToMove)
 		{
 			alreadyManagedList.Add(objectToMove);
 			int contNr;
@@ -1111,7 +1132,7 @@ void depotDeposit(CConfigData *config) {
 				 * If main depot container is open then we can try to take our item from it (to avoid
 				 * massive close/open of containers)
 				 */
-				for(itemNr = depotChest->itemsInside - 1; itemNr >= 0 && qtyToPickup > 0; itemNr--)
+				for (itemNr = depotChest->itemsInside - 1; itemNr >= 0 && qtyToPickup > 0; itemNr--)
 				{
 					CTibiaItem *item = ((CTibiaItem *)depotChest->items.GetAt(itemNr));
 					if (item->objectId == objectToMove)
@@ -1126,7 +1147,7 @@ void depotDeposit(CConfigData *config) {
 				CTibiaContainer *subCont = reader.readContainer(depotContNr2);
 				if (subCont->flagOnOff)
 				{
-					for(itemNr = subCont->itemsInside - 1; itemNr >= 0 && qtyToPickup > 0; itemNr--)
+					for (itemNr = subCont->itemsInside - 1; itemNr >= 0 && qtyToPickup > 0; itemNr--)
 					{
 						CTibiaItem *item = ((CTibiaItem *)subCont->items.GetAt(itemNr));
 						if (item->objectId == objectToMove)
@@ -1150,7 +1171,7 @@ void depotDeposit(CConfigData *config) {
 					{
 						// that object is a container, so open it
 						subCont = reader.readContainer(depotContNr2);
-						if(subCont->flagOnOff)
+						if (subCont->flagOnOff)
 						{
 							sender.closeContainer(depotContNr2);
 							CModuleUtil::waitForOpenContainer(depotContNr2, false);
@@ -1161,7 +1182,7 @@ void depotDeposit(CConfigData *config) {
 						subCont = reader.readContainer(depotContNr2);
 						if (subCont->flagOnOff)
 						{
-							for(itemNr = subCont->itemsInside - 1; itemNr >= 0 && qtyToPickup > 0; itemNr--)
+							for (itemNr = subCont->itemsInside - 1; itemNr >= 0 && qtyToPickup > 0; itemNr--)
 							{
 								CTibiaItem *item = ((CTibiaItem *)subCont->items.GetAt(itemNr));
 								if (item->objectId == objectToMove)
@@ -1180,12 +1201,12 @@ void depotDeposit(CConfigData *config) {
 		}
 	}
 DPfinish:
-	if(config->depositLootedItemList)
+	if (config->depositLootedItemList)
 	{
 		//deposit all of every looted item to save from having to add them individually to the list
 		CUIntArray* lootedItems = itemProxy.getLootItemIdArrayPtr();
 		CUIntArray depositList;
-		for(int i = 0; i < lootedItems->GetSize(); i++)
+		for (int i = 0; i < lootedItems->GetSize(); i++)
 		{
 			int itemId = lootedItems->GetAt(i);
 			if (findInIntArray(itemId, alreadyManagedList) == -1 && findInIntArray(itemId, depositList) == -1)
@@ -1297,7 +1318,8 @@ DPfinish2:
 /**
  * Make sure that some item of type objectId is in the location (e.g. hand).
  */
-int ensureItemInPlace(int outputDebug, int location, int locationAddress, int objectId) {
+int ensureItemInPlace(int outputDebug, int location, int locationAddress, int objectId)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -1347,7 +1369,7 @@ int ensureItemInPlace(int outputDebug, int location, int locationAddress, int ob
 							if (contSpace->flagOnOff)
 							{
 								openContNr++;
-								if(contSpace->itemsInside < contSpace->size)
+								if (contSpace->itemsInside < contSpace->size)
 								{
 									// container has some free places
 									sender.moveObjectBetweenContainers(itemSlot->objectId, location, 0, 0x40 + contNrSpace, contSpace->size - 1, itemSlot->quantity ? itemSlot->quantity : 1);
@@ -1419,7 +1441,8 @@ int ensureItemInPlace(int outputDebug, int location, int locationAddress, int ob
  * 2. Check whether we should be full attack/def/dont touch (if blood control is active).
  * 3. Switch weapon if needed.
  */
-void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, time_t lastAttackedCreatureBloodHit, int *attackMode) {
+void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int alienFound, int attackingCreatures, time_t lastAttackedCreatureBloodHit, int *attackMode)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -1497,7 +1520,8 @@ void trainingCheck(CConfigData *config, int currentlyAttackedCreatureNr, int ali
 	}
 }
 
-void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropItems = NULL) {
+void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropItems = NULL)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaContainer *dropCont = reader.readContainer(contNr);
@@ -1525,7 +1549,8 @@ void dropItemsFromContainer(int contNr, int x, int y, int z, CUIntArray* dropIte
 }
 
 /////////////////////////////////////////////////////////////////////////////
-int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7) {
+int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
+{
 	char buf[256];
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -1552,7 +1577,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 			if (cont->flagOnOff)
 			{
 				openContNr++;
-				if(cont->itemsInside < cont->size)
+				if (cont->itemsInside < cont->size)
 				{
 					freeContNr  = contNr;
 					freeContPos = cont->size - 1;
@@ -1594,19 +1619,28 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 			}
 			else if (x == y && x >= 0 && xSwitch == 1 && ySwitch == 0)
 			{
-				x++; xSwitch = 0; ySwitch = -1;
+				x++;
+				xSwitch = 0;
+				ySwitch = -1;
 			}
 			else if (!xSwitch && !(x == y && x >= 0) && abs(x) == abs(y))
 			{
-				xSwitch = ySwitch; ySwitch = 0; x += xSwitch; y += ySwitch;
+				xSwitch = ySwitch;
+				ySwitch = 0;
+				x      += xSwitch;
+				y      += ySwitch;
 			}
 			else if (!ySwitch && abs(x) == abs(y))
 			{
-				ySwitch = -xSwitch; xSwitch = 0; x += xSwitch; y += ySwitch;
+				ySwitch = -xSwitch;
+				xSwitch = 0;
+				x      += xSwitch;
+				y      += ySwitch;
 			}
 			else
 			{
-				x += xSwitch; y += ySwitch;
+				x += xSwitch;
+				y += ySwitch;
 			}
 			//char buf[1111];
 			//sprintf(buf,"looter spiral %d %d",x,y);
@@ -1637,7 +1671,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				}
 			}
 
-			if(!foundLootedObjectId)
+			if (!foundLootedObjectId)
 				continue;
 			//sprintf(buf,"test:%d,%d,%d,%d,(%d,%d)",f1,f2,reader.getItemIndex(x,y,f1),ModuleUtil::getItemIndex(x,y,f2),x,y);
 			//AfxMessageBox(buf);
@@ -1664,7 +1698,8 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				//continue if farther than 10 spaces or path does not include enough info to get there(meaning floor change)
 				if (pathSize >= 10 || pathSize < x + y - 3)
 				{
-					deleteAndNull(self2); continue;
+					deleteAndNull(self2);
+					continue;
 				}
 
 				sprintf(buf, "Loot from floor: item (%d,%d,%d)", x, y, pathSize);
@@ -1702,11 +1737,11 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				registerDebug(buf);
 
 			//If failed to get within 1 square, let cavebot take over again
-			if(!(abs(itemX) <= 1 && abs(itemY) <= 1 && self2->z == self->z))
+			if (!(abs(itemX) <= 1 && abs(itemY) <= 1 && self2->z == self->z))
 				break;
 
 			//Uncover Item
-			if(!isTopItem)
+			if (!isTopItem)
 			{
 				int offsetX, offsetY;
 				int foundSpace = 0;
@@ -1776,7 +1811,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 				int qty = reader.itemOnTopQty(itemX, itemY);
 				sender.moveObjectFromFloorToContainer(foundLootedObjectId, self->x + x, self->y + y, self->z, 0x40 + freeContNr, freeContPos, qty ? qty : 1);
 				Sleep(CModuleUtil::randomFormula(400, 200));
-				if(CModuleUtil::waitForCapsChange(self->cap))
+				if (CModuleUtil::waitForCapsChange(self->cap))
 					return 1;
 				else
 					return 0; //Item could not be picked up for some reason.
@@ -1795,7 +1830,8 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 	return 0;
 }
 
-void fireRunesAgainstCreature(CConfigData *config, int creatureId) {
+void fireRunesAgainstCreature(CConfigData *config, int creatureId)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -1852,7 +1888,8 @@ void fireRunesAgainstCreature(CConfigData *config, int creatureId) {
 
 /////////////////////////////////////////////////////////////////////////////
 // shared memory initalisation
-void shMemInit(CSharedMemory *pMem) {
+void shMemInit(CSharedMemory *pMem)
+{
 	int pid = GetCurrentProcessId();
 	char varName[128];
 	sprintf(varName, "mod_cavebot_%d", pid);
@@ -1865,7 +1902,8 @@ void shMemInit(CSharedMemory *pMem) {
 // return monster priority (order on the monster list)
 // monsters out of the list have priority (0)
 // highest priority have higher numbers
-int getAttackPriority(CConfigData *config, char *monsterName) {
+int getAttackPriority(CConfigData *config, char *monsterName)
+{
 	char buf[64];
 	int monstListNr;
 	int i, len;
@@ -1888,13 +1926,15 @@ int getAttackPriority(CConfigData *config, char *monsterName) {
 	return 0;
 }
 
-int isInHalfSleep() {
+int isInHalfSleep()
+{
 	CMemReaderProxy reader;
 	const char *var = reader.getGlobalVariable("walking_control");
 	return strcmp(var, "cavebot") != 0 && strcmp(var, "depotwalker") != 0;
 }
 
-int isInFullSleep() {
+int isInFullSleep()
+{
 	CMemReaderProxy reader;
 	const char *var = reader.getGlobalVariable("cavebot_fullsleep");
 	if (strcmp(var, "true"))
@@ -1903,7 +1943,8 @@ int isInFullSleep() {
 		return 1;
 }
 
-int isLooterDone(CConfigData *config) {
+int isLooterDone(CConfigData *config)
+{
 	if (!config->lootWhileKill)
 		return 1;
 	CMemReaderProxy reader;
@@ -1913,7 +1954,9 @@ int isLooterDone(CConfigData *config) {
 		return 1;
 	return 0;
 }
-int shouldLoot() {
+
+int shouldLoot()
+{
 	CMemReaderProxy reader;
 	const char *var = reader.getGlobalVariable("autolooterTm");
 	int tmp;
@@ -1924,7 +1967,8 @@ int shouldLoot() {
 
 //returns 1 if needed to resend attack info
 //returns 0 if same creature already being attacked
-int AttackCreature(CConfigData *config, int id){
+int AttackCreature(CConfigData *config, int id)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaCharacter *self       = reader.readSelfCharacter();
@@ -1937,7 +1981,7 @@ int AttackCreature(CConfigData *config, int id){
 			reader.cancelAttackCoords();
 			Sleep(200);
 			sender.attack(id);
-			if(id)
+			if (id)
 				lastSendAttackTm = time(NULL);
 			currentPosTM = time(NULL);
 			if (config->debug && id)
@@ -1956,20 +2000,24 @@ int AttackCreature(CConfigData *config, int id){
 	//attackedCh is NULL
 	return 0;
 }
+
 //returns the smallest radius of a square centred at x1,y1 and covers x2,y2
 //same equation as finding distance for rods or wands
-int maxDist(int x1, int y1, int x2, int y2){
+int maxDist(int x1, int y1, int x2, int y2)
+{
 	return max(abs(x2 - x1), abs(y2 - y1));
 }
 
 //returns the smallest number of steps needed to stand beside x2,y2 starting from x1,y1
 //same distance ideally travelled by "Auto Follow"
-int taxiDist(int x1, int y1, int x2, int y2){
+int taxiDist(int x1, int y1, int x2, int y2)
+{
 	return abs(x2 - x1) + abs(y2 - y1) - 2 + (x1 == x2) + (y1 == y2);
 }
 
 // will eventually use the minimap to determine if path is ok
-int canGetToPoint(int X, int Y, int Z){
+int canGetToPoint(int X, int Y, int Z)
+{
 	/*
 	   CMemReaderProxy reader;
 	   int path[15];
@@ -1984,7 +2032,8 @@ int canGetToPoint(int X, int Y, int Z){
 	return 1;
 }
 
-void SendAttackMode(int attack, int follow, int attLock, int PVPMode, int refreshCur = 0){
+void SendAttackMode(int attack, int follow, int attLock, int PVPMode, int refreshCur = 0)
+{
 	//Ensures that only changes in the three values are sent, and only one at a time
 	CPackSenderProxy sender;
 	CMemReaderProxy reader;
@@ -2039,7 +2088,7 @@ void SendAttackMode(int attack, int follow, int attLock, int PVPMode, int refres
 	{
 		sender.attackMode(attack, curFollow, curAttLock, curPVPMode);
 		//if going to send another attack mode change right away then sleep
-		if(attLock != curAttLock || follow != curFollow || PVPMode != curPVPMode)
+		if (attLock != curAttLock || follow != curFollow || PVPMode != curPVPMode)
 			Sleep(CModuleUtil::randomFormula(700, 500));
 	}
 	if (follow != curFollow)
@@ -2067,7 +2116,8 @@ void SendAttackMode(int attack, int follow, int attLock, int PVPMode, int refres
 	curPVPMode = PVPMode;
 }
 
-int messageThereIsNoWay(int creatureNr){
+int messageThereIsNoWay(int creatureNr)
+{
 	if (creatureNr == -1)
 		return 0;
 	CIPCBackPipeProxy backPipe;
@@ -2078,18 +2128,18 @@ int messageThereIsNoWay(int creatureNr){
 	delete self;
 	self = NULL;
 
-	for(int t = 0; t < 30; t++)
+	for (int t = 0; t < 30; t++)
 	{
 		struct ipcMessage mess;
 		CTibiaCharacter *creature = reader.readVisibleCreature(creatureNr);
 		self = reader.readSelfCharacter();
-		if(backPipe.readFromPipe(&mess, 1103))
+		if (backPipe.readFromPipe(&mess, 1103))
 		{
 			delete self;
 			delete creature;
 			return 1;
 		}
-		else if((self->x != x || self->y != y) || taxiDist(self->x, self->y, creature->x, creature->y) == 0)
+		else if ((self->x != x || self->y != y) || taxiDist(self->x, self->y, creature->x, creature->y) == 0)
 		{
 			delete self;
 			delete creature;
@@ -2102,7 +2152,6 @@ int messageThereIsNoWay(int creatureNr){
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -2113,7 +2162,8 @@ HANDLE queueThreadHandle;
 
 //helper thread since adding to queue will still go through getGlobalVariable so the spellcaster can add to it.
 //Looting corpses takes a long time and lootThreadProc may miss changes in autolooterTm, so this thread collects them
-DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
+DWORD WINAPI queueThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	int a    = 0;
@@ -2137,9 +2187,9 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 			}
 		}
 	}
-	if(toolThreadShouldStop || !queueThreadId)  // only remove corpses from queue when stopping
+	if (toolThreadShouldStop || !queueThreadId)  // only remove corpses from queue when stopping
 	{
-		while(corpseQueue.GetCount())
+		while (corpseQueue.GetCount())
 		{
 			corpseQueue.Remove();
 		}
@@ -2148,7 +2198,8 @@ DWORD WINAPI queueThreadProc( LPVOID lpParam ) {
 	return 0;
 }
 
-DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
+DWORD WINAPI lootThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -2163,7 +2214,7 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 		while (corpseQueue.GetCount() && globalAutoAttackStateAttack != CToolAutoAttackStateAttack_macroPause)
 		{
 			Corpse corpseCh = corpseQueue.Remove();
-			if(GetTickCount() - corpseCh.tod > 1000 * 60)
+			if (GetTickCount() - corpseCh.tod > 1000 * 60)
 				continue;
 			int lootContNr[3];
 			lootContNr[0] = reader.findNextClosedContainer();
@@ -2179,7 +2230,7 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 
 				sender.openContainerFromFloor(corpseId, corpseCh.x, corpseCh.y, corpseCh.z, lootContNr[0]);
 
-				if(!CModuleUtil::waitToApproachSquare(corpseCh.x, corpseCh.y))
+				if (!CModuleUtil::waitToApproachSquare(corpseCh.x, corpseCh.y))
 				{
 					//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
 					sender.openContainerFromFloor(corpseId, corpseCh.x, corpseCh.y, corpseCh.z, lootContNr[0]);
@@ -2230,7 +2281,7 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 						int contNr = lootContNr[contNrInd];
 
 						CTibiaContainer *lootCont = reader.readContainer(contNr);
-						if(lootCont->flagOnOff)
+						if (lootCont->flagOnOff)
 						{
 							for (lootTakeItem = 0; lootTakeItem < 1; lootTakeItem++)
 							{
@@ -2266,7 +2317,7 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 								{
 									dropItemsFromContainer(contNr, corpseCh.x, corpseCh.y, corpseCh.z, &acceptedItems);
 								}
-								else if(!config->dropWhenCapacityLimitReached && config->dropListCount == 0)
+								else if (!config->dropWhenCapacityLimitReached && config->dropListCount == 0)
 								{
 									dropItemsFromContainer(contNr, corpseCh.x, corpseCh.y, corpseCh.z);
 								}
@@ -2300,7 +2351,8 @@ DWORD WINAPI lootThreadProc( LPVOID lpParam ) {
 	return 0;
 }
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -2360,7 +2412,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	int openContMax = reader.readOpenContainerCount();
 	for (i = 0; i < memConstData.m_memMaxContainers; i++)
 	{
-		if(openContNr < openContMax)
+		if (openContNr < openContMax)
 		{
 			CTibiaContainer* cont = reader.readContainer(i);
 			if (cont->flagOnOff)
@@ -2388,7 +2440,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		else
 			break;
 	}
-	if(config->selectedWaypoint != -1)
+	if (config->selectedWaypoint != -1)
 		currentWaypointNr = config->selectedWaypoint;
 	else
 		currentWaypointNr = min(0, waypointsCount - 1);
@@ -2542,11 +2594,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 
 		if (isInHalfSleep())
 			globalAutoAttackStateWalker = CToolAutoAttackStateWalker_halfSleep;
-		else if(globalAutoAttackStateWalker == CToolAutoAttackStateWalker_halfSleep)
+		else if (globalAutoAttackStateWalker == CToolAutoAttackStateWalker_halfSleep)
 			globalAutoAttackStateWalker = CToolAutoAttackStateWalker_notRunning;
 		if (isInFullSleep())
 			globalAutoAttackStateWalker = CToolAutoAttackStateWalker_fullSleep;
-		else if(globalAutoAttackStateWalker == CToolAutoAttackStateWalker_fullSleep)
+		else if (globalAutoAttackStateWalker == CToolAutoAttackStateWalker_fullSleep)
 			globalAutoAttackStateWalker = CToolAutoAttackStateWalker_notRunning;
 
 		// if in a full sleep mode then just do nothing
@@ -2557,7 +2609,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		int openContMax = reader.readOpenContainerCount();
 		for (i = 0; i < memConstData.m_memMaxContainers; i++)
 		{
-			if(openContNr < openContMax)
+			if (openContNr < openContMax)
 			{
 				CTibiaContainer* cont = reader.readContainer(i);
 				if (cont->flagOnOff)
@@ -2633,14 +2685,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		{
 			static time_t lastFullDroppedLootCheckTm  = 0;
 			static time_t lastSmallDroppedLootCheckTm = 0;
-			if(currentlyAttackedCreatureNr == -1 && moving <= 2 && time(NULL) - lastFullDroppedLootCheckTm > 6)
+			if (currentlyAttackedCreatureNr == -1 && moving <= 2 && time(NULL) - lastFullDroppedLootCheckTm > 6)
 			{
-				if(!droppedLootCheck(config, lootFromFloorArr)) // if no dropped loot found, wait 6 seconds before trying again.
+				if (!droppedLootCheck(config, lootFromFloorArr)) // if no dropped loot found, wait 6 seconds before trying again.
 					lastFullDroppedLootCheckTm = time(NULL);
 			}
-			else if(time(NULL) - lastSmallDroppedLootCheckTm > 1)
+			else if (time(NULL) - lastSmallDroppedLootCheckTm > 1)
 			{
-				if(!droppedLootCheck(config, lootFromFloorArr, 1))// wait 1 second between unsuccessful loot from floors
+				if (!droppedLootCheck(config, lootFromFloorArr, 1))// wait 1 second between unsuccessful loot from floors
 					lastSmallDroppedLootCheckTm = time(NULL);
 			}
 		}
@@ -2685,7 +2737,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		 * Check if currently attacked creature is alive still
 		 * If it is dead inform the looter it can loot
 		 */
-		if(pauseInvoked)
+		if (pauseInvoked)
 		{
 			globalAutoAttackStateLoot = CToolAutoAttackStateLoot_macroPause;
 		}
@@ -2724,7 +2776,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 //					sprintf(buf,"Looter: Loot message says creature contains nothing. For %s piped info:%d, %s, %s",attackedCh->name,msSinceKill,lootCreatureName[0],lootString[0]);
 //					if (config->debug) registerDebug(buf);
 //				}else{
-				if(1)
+				if (1)
 				{
 					if (config->lootWhileKill)
 					{
@@ -2734,7 +2786,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 								registerDebug("Running lootThreadProc");
 							lootThreadHandle = ::CreateThread(NULL, 0, lootThreadProc, config, 0, &lootThreadId);
 						}
-						if(!queueThreadId)
+						if (!queueThreadId)
 						{
 							if (config->debug)
 								registerDebug("Running queueThreadProc");
@@ -2788,7 +2840,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						{       // Open corpse to container, wait to get to corpse on ground and wait for open
 							sender.openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lootContNr[0]);
 
-							if(!CModuleUtil::waitToApproachSquare(attackedCh->x, attackedCh->y))
+							if (!CModuleUtil::waitToApproachSquare(attackedCh->x, attackedCh->y))
 							{
 								//(waitToApproachSquare returns false) => (corpse >1 sqm away and not reached yet), so try again
 								sender.openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lootContNr[0]);
@@ -2832,7 +2884,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 										int contNr = lootContNr[contNrInd];
 										//sender.sendTAMessage("[debug] stats from conts");
 										CTibiaContainer *lootCont = reader.readContainer(contNr);
-										if(lootCont->flagOnOff)
+										if (lootCont->flagOnOff)
 										{
 											if (config->debug)
 												registerDebug("Recording Stats for Container Number", intstr(contNr).c_str());
@@ -2883,7 +2935,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									globalAutoAttackStateLoot = CToolAutoAttackStateLoot_moveing;
 									CTibiaContainer *lootCont = reader.readContainer(contNr);
 									//sender.sendTAMessage("[debug] looting");
-									if(lootCont->flagOnOff)
+									if (lootCont->flagOnOff)
 									{
 										if (config->debug)
 											registerDebug("Looting from container number", intstr(contNrInd).c_str());
@@ -2931,7 +2983,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 												if (config->debug)
 													registerDebug("Dropping loot items from container:", intstr(contNrInd).c_str());
 											}
-											else if(!config->dropWhenCapacityLimitReached && config->dropListCount == 0)
+											else if (!config->dropWhenCapacityLimitReached && config->dropListCount == 0)
 											{
 												dropItemsFromContainer(contNr, attackedCh->x, attackedCh->y, attackedCh->z);
 												if (config->debug)
@@ -3081,7 +3133,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				strcpy(creatureList[crNr].name, statChName);
 
 				// if attackAllMonsters set default priority to lowest and overwrite with actual priority
-				if(config->attackAllMonsters && ch->tibiaId >= 0x40001000)
+				if (config->attackAllMonsters && ch->tibiaId >= 0x40001000)
 					creatureList[crNr].listPriority = 1;
 				// scan creature list to find its priority
 				for (monstListNr = 0; monstListNr < config->monsterCount; monstListNr++)
@@ -3123,7 +3175,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (ch->hpPercLeft < creatureList[crNr].hpPercLeft)
 						lastAttackedCreatureBloodHit = time(NULL);
 					//determine if creature reached to ignore creature if not reached in time
-					if(!reachedAttackedCreature && (time(NULL) - lastAttackedCreatureBloodHit < 1 || creatureList[crNr].distance(self->x, self->y) <= 1))
+					if (!reachedAttackedCreature && (time(NULL) - lastAttackedCreatureBloodHit < 1 || creatureList[crNr].distance(self->x, self->y) <= 1))
 						reachedAttackedCreature = 1;
 					//if attacked creature has not been reached after given time, ignore creature
 					if (!reachedAttackedCreature && time(NULL) - firstCreatureAttackTM > config->unreachableAfter)
@@ -3139,7 +3191,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					if (config->debug)
 						registerDebug(buf);
 				}
-				else if(currentTm - ch->lastAttackTm >= attackConsiderPeriod)
+				else if (currentTm - ch->lastAttackTm >= attackConsiderPeriod)
 				{
 					creatureList[crNr].isAttacking = 0;
 				}
@@ -3279,11 +3331,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			}
 
 			//if bestCreatureNr is not picked yet switch to first reasonable option
-			if(bestCreatureNr == -1)
+			if (bestCreatureNr == -1)
 				bestCreatureNr = crNr;
 			int isCloser  = taxiDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y) + 1 < taxiDist(self->x, self->y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y);
 			int isFarther = taxiDist(self->x, self->y, creatureList[crNr].x, creatureList[crNr].y) - 1 > taxiDist(self->x, self->y, creatureList[bestCreatureNr].x, creatureList[bestCreatureNr].y);
-			if(isCloser)
+			if (isCloser)
 			{
 				if (creatureList[bestCreatureNr].isAttacking &&
 				    (creatureList[bestCreatureNr].listPriority > creatureList[crNr].listPriority && creatureList[bestCreatureNr].listPriority ||
@@ -3397,16 +3449,16 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				}
 			}
 		}
-		else if(creatureList[currentlyAttackedCreatureNr].hpPercLeft != 0)
+		else if (creatureList[currentlyAttackedCreatureNr].hpPercLeft != 0)
 		{
 			//if no best creature, then something probably ran away.quickly
 			currentlyAttackedCreatureNr = -1;
 		}
 		// If attack packet never reached destination, then the red attack box is meaningless and we need to attack again
-		if(currentlyAttackedCreatureNr != -1 && reader.getAttackedCreature() && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId)
+		if (currentlyAttackedCreatureNr != -1 && reader.getAttackedCreature() && reader.getAttackedCreature() == creatureList[currentlyAttackedCreatureNr].tibiaId)
 		{
 			int tmTmp = RandomVariableTime((int&)lastSendAttackTm, 10, 200, GET);
-			if((lastAttackedCreatureBloodHit == 0 || time(NULL) - lastAttackedCreatureBloodHit > tmTmp) && time(NULL) - lastSendAttackTm > tmTmp)
+			if ((lastAttackedCreatureBloodHit == 0 || time(NULL) - lastAttackedCreatureBloodHit > tmTmp) && time(NULL) - lastSendAttackTm > tmTmp)
 			{
 				reader.setAttackedCreature(0);
 				AttackCreature(config, creatureList[currentlyAttackedCreatureNr].tibiaId);
@@ -3430,7 +3482,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		{
 			CIPCBackPipeProxy backPipe;
 			struct ipcMessage mess;
-			while(backPipe.readFromPipe(&mess, 1103))
+			while (backPipe.readFromPipe(&mess, 1103))
 			{
 			}
 			;
@@ -3438,7 +3490,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			{
 				firstCreatureAttackTM   = time(NULL);
 				reachedAttackedCreature = 0;
-				if(config->autoFollow && messageThereIsNoWay(currentlyAttackedCreatureNr))
+				if (config->autoFollow && messageThereIsNoWay(currentlyAttackedCreatureNr))
 					creatureList[currentlyAttackedCreatureNr].isIgnoredUntil = time(NULL) + config->suspendAfterUnreachable;
 			}
 
@@ -3617,7 +3669,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				switch (mapUsed)
 				{
 				// Tibia Auto map chosen
-				case 1: {
+				case 1:
+				{
 					char buf[256];
 					int path[15];
 
@@ -3699,7 +3752,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					break;
 				}                 // case 1
 				// Tibia client map chosen
-				default: {
+				default:
+				{
 					//Let's try something really new!
 					//First: Let's map our path
 					char buf[256];
@@ -3725,7 +3779,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						//Wait long enough to get a proper response from the white text
 						int timeIn  = GetTickCount();
 						int timeOut = GetTickCount();
-						while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000)
+						while (startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000)
 						{
 							timeOut = GetTickCount();
 							Sleep(50);
@@ -3828,7 +3882,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							//Wait long enough to get a proper responce from the white text
 							int timeIn  = GetTickCount();
 							int timeOut = GetTickCount();
-							while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 500)
+							while (startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 500)
 							{
 								timeOut = GetTickCount();
 							}
@@ -3874,7 +3928,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 									//Wait longer this time to get a proper responce from the white text
 									int timeIn  = GetTickCount();
 									int timeOut = GetTickCount();
-									while(startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000)
+									while (startPoint.x != self->x || startPoint.y != self->y || timeOut - timeIn < 1000)
 									{
 										timeOut = GetTickCount();
 									}
@@ -4024,27 +4078,32 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 /////////////////////////////////////////////////////////////////////////////
 // CMod_cavebotApp construction
 
-CMod_cavebotApp::CMod_cavebotApp() {
+CMod_cavebotApp::CMod_cavebotApp()
+{
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();
 }
 
-CMod_cavebotApp::~CMod_cavebotApp() {
+CMod_cavebotApp::~CMod_cavebotApp()
+{
 	if (m_configDialog)
 		deleteAndNull(m_configDialog);
 	deleteAndNull(m_configData);
 }
 
-char * CMod_cavebotApp::getName() {
+char * CMod_cavebotApp::getName()
+{
 	return "Cave bot";
 }
 
-int CMod_cavebotApp::isStarted() {
+int CMod_cavebotApp::isStarted()
+{
 	return m_started;
 }
 
-void CMod_cavebotApp::start() {
+void CMod_cavebotApp::start()
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -4081,7 +4140,8 @@ void CMod_cavebotApp::start() {
 	m_started            = 1;
 }
 
-void CMod_cavebotApp::stop() {
+void CMod_cavebotApp::stop()
+{
 	toolThreadShouldStop = 1;
 	while (toolThreadShouldStop)
 	{
@@ -4096,7 +4156,8 @@ void CMod_cavebotApp::stop() {
 	}
 }
 
-void CMod_cavebotApp::showConfigDialog() {
+void CMod_cavebotApp::showConfigDialog()
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
@@ -4113,12 +4174,14 @@ void CMod_cavebotApp::showConfigDialog() {
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-void CMod_cavebotApp::configToControls() {
+void CMod_cavebotApp::configToControls()
+{
 	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
-void CMod_cavebotApp::controlsToConfig() {
+void CMod_cavebotApp::controlsToConfig()
+{
 	if (m_configDialog)
 	{
 		deleteAndNull(m_configData);
@@ -4126,21 +4189,25 @@ void CMod_cavebotApp::controlsToConfig() {
 	}
 }
 
-void CMod_cavebotApp::disableControls() {
+void CMod_cavebotApp::disableControls()
+{
 	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
-void CMod_cavebotApp::enableControls() {
+void CMod_cavebotApp::enableControls()
+{
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-char *CMod_cavebotApp::getVersion() {
+char *CMod_cavebotApp::getVersion()
+{
 	return "3.1";
 }
 
-int CMod_cavebotApp::validateConfig(int showAlerts) {
+int CMod_cavebotApp::validateConfig(int showAlerts)
+{
 	if (m_configData->capacityLimit < 0)
 	{
 		if (showAlerts)
@@ -4193,8 +4260,9 @@ int CMod_cavebotApp::validateConfig(int showAlerts) {
 	return 1;
 }
 
-void CMod_cavebotApp::resetConfig() {
-	if(m_configData)
+void CMod_cavebotApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -4202,7 +4270,8 @@ void CMod_cavebotApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	if (!strcmp(paramName, "attack/follow"))
 		m_configData->autoFollow = (atoi(paramValue) ? 1 : 0);
 	if (!strcmp(paramName, "attack/mode"))
@@ -4366,7 +4435,8 @@ void CMod_cavebotApp::loadConfigParam(char *paramName, char *paramValue) {
 		m_configData->depositLootedItemList = atoi(paramValue);
 }
 
-char *CMod_cavebotApp::saveConfigParam(char *paramName) {
+char *CMod_cavebotApp::saveConfigParam(char *paramName)
+{
 	static char buf[1024];
 	buf[0] = 0;
 
@@ -4499,67 +4569,120 @@ char *CMod_cavebotApp::saveConfigParam(char *paramName) {
 	return buf;
 }
 
-char *CMod_cavebotApp::getConfigParamName(int nr) {
+char *CMod_cavebotApp::getConfigParamName(int nr)
+{
 	switch (nr)
 	{
-	case 0: return "attack/follow";
-	case 1: return "attack/mode";
-	case 2: return "attack/suspendOnEnemey";
-	case 3: return "attack/monster";
-	case 4: return "loot/item/gp";
-	case 5: return "loot/item/custom";
-	case 6: return "loot/item/worm";
-	case 7: return "loot/item/food";
-	case 8: return "loot/other/inbag";
-	case 9: return "loot/other/capacityLimit";
-	case 10: return "walker/waypoint";
-	case 11: return "walker/other/selectMode";
-	case 12: return "walker/other/mapUsed";
-	case 13: return "loot/stats/gather";
-	case 14: return "attack/suspendOnNoMove";
-	case 15: return "attack/range";
-	case 16: return "loot/other/eatFromCorpse";
-	case 17: return "attack/stick";
-	case 18: return "attack/unreachableAfter";
-	case 19: return "attack/suspendAfterUnreachable";
-	case 20: return "attack/attackOnlyAttacking";
-	case 21: return "attack/forceAttackAfterAttack";
-	case 22: return "walker/other/standAfterWaypointReached";
-	case 23: return "depot/entry";
-	case 24: return "general/debug";
-	case 25: return "training/weaponTrain";
-	case 26: return "training/weaponFight";
-	case 27: return "training/fightWhenSurrounded";
-	case 28: return "training/fightWhenAlien";
-	case 29: return "training/bloodHit";
-	case 30: return "training/activate";
-	case 31: return "depot/depotDropInsteadOfDepositon";
-	case 32: return "loot/other/dropNotLooted";
-	case 33: return "loot/other/lootFromFloor";
-	case 34: return "attack/hpAbove";
-	case 35: return "attack/ignore";
-	case 36: return "attack/backattackRunes";
-	case 37: return "attack/shareAlienBackattack";
-	case 38: return "depot/depotCap";
-	case 39: return "training/trainingMode";
-	case 40: return "walker/radius";
-	case 41: return "loot/other/whilekilling";
-	case 42: return "attack/dontAttackPlayers";
-	case 43: return "loot/other/dropListCount";
-	case 44: return "loot/other/dropList";
-	case 45: return "loot/other/dropWhenCapacityLimitReached";
-	case 46: return "loot/other/dropOnlyLooted";
-	case 47: return "depot/depotModPriority";
-	case 48: return "depot/stopByDepot";
-	case 49: return "depot/depositLootedItemList";
-	case 50: return "attack/attackAllMonsters";
+	case 0:
+		return "attack/follow";
+	case 1:
+		return "attack/mode";
+	case 2:
+		return "attack/suspendOnEnemey";
+	case 3:
+		return "attack/monster";
+	case 4:
+		return "loot/item/gp";
+	case 5:
+		return "loot/item/custom";
+	case 6:
+		return "loot/item/worm";
+	case 7:
+		return "loot/item/food";
+	case 8:
+		return "loot/other/inbag";
+	case 9:
+		return "loot/other/capacityLimit";
+	case 10:
+		return "walker/waypoint";
+	case 11:
+		return "walker/other/selectMode";
+	case 12:
+		return "walker/other/mapUsed";
+	case 13:
+		return "loot/stats/gather";
+	case 14:
+		return "attack/suspendOnNoMove";
+	case 15:
+		return "attack/range";
+	case 16:
+		return "loot/other/eatFromCorpse";
+	case 17:
+		return "attack/stick";
+	case 18:
+		return "attack/unreachableAfter";
+	case 19:
+		return "attack/suspendAfterUnreachable";
+	case 20:
+		return "attack/attackOnlyAttacking";
+	case 21:
+		return "attack/forceAttackAfterAttack";
+	case 22:
+		return "walker/other/standAfterWaypointReached";
+	case 23:
+		return "depot/entry";
+	case 24:
+		return "general/debug";
+	case 25:
+		return "training/weaponTrain";
+	case 26:
+		return "training/weaponFight";
+	case 27:
+		return "training/fightWhenSurrounded";
+	case 28:
+		return "training/fightWhenAlien";
+	case 29:
+		return "training/bloodHit";
+	case 30:
+		return "training/activate";
+	case 31:
+		return "depot/depotDropInsteadOfDepositon";
+	case 32:
+		return "loot/other/dropNotLooted";
+	case 33:
+		return "loot/other/lootFromFloor";
+	case 34:
+		return "attack/hpAbove";
+	case 35:
+		return "attack/ignore";
+	case 36:
+		return "attack/backattackRunes";
+	case 37:
+		return "attack/shareAlienBackattack";
+	case 38:
+		return "depot/depotCap";
+	case 39:
+		return "training/trainingMode";
+	case 40:
+		return "walker/radius";
+	case 41:
+		return "loot/other/whilekilling";
+	case 42:
+		return "attack/dontAttackPlayers";
+	case 43:
+		return "loot/other/dropListCount";
+	case 44:
+		return "loot/other/dropList";
+	case 45:
+		return "loot/other/dropWhenCapacityLimitReached";
+	case 46:
+		return "loot/other/dropOnlyLooted";
+	case 47:
+		return "depot/depotModPriority";
+	case 48:
+		return "depot/stopByDepot";
+	case 49:
+		return "depot/depositLootedItemList";
+	case 50:
+		return "attack/attackAllMonsters";
 
 	default:
 		return NULL;
 	}
 }
 
-int CMod_cavebotApp::isMultiParam(char *paramName) {
+int CMod_cavebotApp::isMultiParam(char *paramName)
+{
 	if (!strcmp(paramName, "walker/waypoint"))
 		return 1;
 	if (!strcmp(paramName, "attack/monster"))
@@ -4573,7 +4696,8 @@ int CMod_cavebotApp::isMultiParam(char *paramName) {
 	return 0;
 }
 
-void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
+void CMod_cavebotApp::resetMultiParamAccess(char *paramName)
+{
 	if (!strcmp(paramName, "walker/waypoint"))
 		m_currentWaypointNr = 0;
 	if (!strcmp(paramName, "attack/monster"))
@@ -4586,7 +4710,8 @@ void CMod_cavebotApp::resetMultiParamAccess(char *paramName) {
 		m_currentDroplistEntryNr = 0;
 }
 
-void CMod_cavebotApp::getNewSkin(CSkin newSkin) {
+void CMod_cavebotApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

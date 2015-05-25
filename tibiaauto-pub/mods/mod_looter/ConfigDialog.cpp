@@ -24,7 +24,6 @@ CConfigDialog::CConfigDialog(CMod_looterApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -62,7 +61,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDOK, m_OK);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -145,7 +143,6 @@ void CConfigDialog::enableControls()
 	m_mode1.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	m_lootCustom.SetCheck(configData->m_lootCustom);
@@ -207,9 +204,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_OK);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_OK);
 }
 
 BOOL CConfigDialog::OnInitDialog()

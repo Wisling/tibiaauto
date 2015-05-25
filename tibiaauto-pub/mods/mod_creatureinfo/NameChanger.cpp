@@ -23,7 +23,6 @@ CNameChanger::CNameChanger(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CNameChanger::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -36,7 +35,6 @@ void CNameChanger::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOLCREATURINFO_LIST, m_list);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CNameChanger, CDialog)
 //{{AFX_MSG_MAP(CNameChanger)
@@ -117,7 +115,7 @@ void CNameChanger::RefreshInfo()
 		delete ch;
 	}
 	//T4: Remove unused items
-	for(; iCount > iAdded; iCount--)
+	for (; iCount > iAdded; iCount--)
 	{
 		m_list.DeleteItem(iCount - 1);
 	}
@@ -132,11 +130,11 @@ void CNameChanger::RefreshInfo()
 BOOL CNameChanger::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_battleOnly);
-	skin.SetButtonSkin(     m_advanced);
-	skin.SetButtonSkin(     m_relpos);
-	skin.SetButtonSkin(     m_refresh);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_battleOnly);
+	skin.SetButtonSkin(m_advanced);
+	skin.SetButtonSkin(m_relpos);
+	skin.SetButtonSkin(m_refresh);
 
 	InitList();
 	RefreshInfo();
@@ -147,7 +145,8 @@ BOOL CNameChanger::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CNameChanger::InitList(){
+void CNameChanger::InitList()
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 

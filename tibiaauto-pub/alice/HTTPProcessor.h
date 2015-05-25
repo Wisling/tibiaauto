@@ -16,8 +16,10 @@ public:
 class HTTPServer : ServerSocketListener {
 public:
 	HTTPServer();
-	virtual ~HTTPServer() {
+	virtual ~HTTPServer()
+	{
 	}
+
 	void shutdown(const string &);
 	void awaitingClient(Socket *);
 private:

@@ -308,6 +308,7 @@ LRESULT CButtonST::OnMenuChar(UINT nChar, UINT nFlags, CMenu* pMenu)
 		lResult = CButton::OnMenuChar(nChar, nFlags, pMenu);
 	return lResult;
 } // End of OnMenuChar
+
 #endif // ifdef  BTNST_USE_BCMENU
 
 #ifdef  BTNST_USE_BCMENU
@@ -325,6 +326,7 @@ void CButtonST::OnMeasureItem(int nIDCtl, LPMEASUREITEMSTRUCT lpMeasureItemStruc
 	if (!bSetFlag)
 		CButton::OnMeasureItem(nIDCtl, lpMeasureItemStruct);
 } // End of OnMeasureItem
+
 #endif // ifdef  BTNST_USE_BCMENU
 
 void CButtonST::OnEnable(BOOL bEnable)
@@ -539,7 +541,7 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	m_bIsDisabled = (lpDIS->itemState & ODS_DISABLED);
 
 	//Never redraw when selection state is changing to 0 when check is 0 as this means nothing for a checkbox and simply causes flicker
-	if(m_bIsCheckBox && (lpDIS->itemAction & ODA_SELECT) && !(lpDIS->itemState & ODS_SELECTED))
+	if (m_bIsCheckBox && (lpDIS->itemAction & ODA_SELECT) && !(lpDIS->itemState & ODS_SELECTED))
 		return;
 
 	CRect itemRect = lpDIS->rcItem;
@@ -786,11 +788,11 @@ void CButtonST::DrawTheIcon(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCap
 	PrepareImageRect(bHasTitle, rpItem, rpCaption, bIsPressed, m_csIcons[byIndex].dwWidth, m_csIcons[byIndex].dwHeight, &rImage);
 
 	// Ole'!
-	pDC->DrawState( rImage.TopLeft(),
-	                rImage.Size(),
-	                m_csIcons[byIndex].hIcon,
-	                (bIsDisabled ? DSS_DISABLED : DSS_NORMAL),
-	                (CBrush*)NULL);
+	pDC->DrawState(rImage.TopLeft(),
+	               rImage.Size(),
+	               m_csIcons[byIndex].hIcon,
+	               (bIsDisabled ? DSS_DISABLED : DSS_NORMAL),
+	               (CBrush*)NULL);
 } // End of DrawTheIcon
 
 void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpCaption, BOOL bIsPressed, BOOL bIsDisabled)
@@ -844,9 +846,9 @@ void CButtonST::DrawTheBitmap(CDC* pDC, BOOL bHasTitle, RECT* rpItem, CRect* rpC
 		::SelectObject(hDC, hOldBmp2);
 		::DeleteDC(hDC);
 
-		pDC->DrawState( CPoint(rImage.left /*+1*/, rImage.top),
-		                CSize(m_csBitmaps[byIndex].dwWidth, m_csBitmaps[byIndex].dwHeight),
-		                hBitmap, DST_BITMAP | DSS_DISABLED);
+		pDC->DrawState(CPoint(rImage.left /*+1*/, rImage.top),
+		               CSize(m_csBitmaps[byIndex].dwWidth, m_csBitmaps[byIndex].dwHeight),
+		               hBitmap, DST_BITMAP | DSS_DISABLED);
 
 		::DeleteObject(hBitmap);
 	} // if
@@ -896,7 +898,7 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 	{
 		rpCaption->OffsetRect(1, 1);
 		pDC->SetTextColor(::GetSysColor(COLOR_3DHILIGHT));
-		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK );
+		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK);
 		rpCaption->OffsetRect(-1, -1);
 		pDC->SetTextColor(::GetSysColor(COLOR_3DSHADOW));
 		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK);
@@ -921,7 +923,7 @@ void CButtonST::DrawTheText(CDC* pDC, LPCTSTR lpszText, RECT* rpItem, CRect* rpC
 				pDC->SetBkColor(m_crColors[BTNST_COLOR_BK_OUT]);
 			} // else
 		} // else
-		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK );
+		pDC->DrawText(lpszText, -1, rpCaption, DT_WORDBREAK);
 	} // if
 } // End of DrawTheText
 
@@ -2240,6 +2242,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bRepaint)
 
 	return BTNST_OK;
 } // End of SetMenu
+
 #endif // ifndef BTNST_USE_BCMENU
 
 // This function associates a menu to the button.
@@ -2320,6 +2323,7 @@ DWORD CButtonST::SetMenu(UINT nMenu, HWND hParentWnd, BOOL bWinXPStyle, UINT nTo
 
 	return BTNST_OK;
 } // End of SetMenu
+
 #endif // ifdef  BTNST_USE_BCMENU
 
 // This function sets the callback message that will be sent to the
@@ -2366,15 +2370,15 @@ void CButtonST::SizeToContent()
 	{
 		m_ptImageOrg.x = 0;
 		m_ptImageOrg.y = 0;
-		SetWindowPos(       NULL, -1, -1, m_csIcons[0].dwWidth, m_csIcons[0].dwHeight,
-		                    SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
+		SetWindowPos(NULL, -1, -1, m_csIcons[0].dwWidth, m_csIcons[0].dwHeight,
+		             SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
 	} // if
 	else if (m_csBitmaps[0].hBitmap)
 	{
 		m_ptImageOrg.x = 0;
 		m_ptImageOrg.y = 0;
-		SetWindowPos(       NULL, -1, -1, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight,
-		                    SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
+		SetWindowPos(NULL, -1, -1, m_csBitmaps[0].dwWidth, m_csBitmaps[0].dwHeight,
+		             SWP_NOMOVE | SWP_NOZORDER | SWP_NOREDRAW | SWP_NOACTIVATE);
 	} // if
 } // End of SizeToContent
 
@@ -2432,6 +2436,7 @@ DWORD CButtonST::SetSound(LPCTSTR lpszSound, HMODULE hMod, BOOL bPlayOnClick, BO
 
 	return BTNST_OK;
 } // End of SetSound
+
 #endif // ifdef  BTNST_USE_SOUND
 
 // This function is called every time the button background needs to be painted.

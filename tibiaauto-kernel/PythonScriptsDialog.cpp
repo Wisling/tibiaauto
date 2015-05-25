@@ -30,7 +30,8 @@ CPythonScriptsDialog::CPythonScriptsDialog(CWnd* pParent /*=NULL*/)
 	modListMenu = NULL;
 }
 
-CPythonScriptsDialog::~CPythonScriptsDialog(){
+CPythonScriptsDialog::~CPythonScriptsDialog()
+{
 	if (funListMenu)
 		delete funListMenu;
 	if (modListMenu)
@@ -48,7 +49,6 @@ void CPythonScriptsDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST, m_list);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CPythonScriptsDialog, CDialog)
 //{{AFX_MSG_MAP(CPythonScriptsDialog)
@@ -97,7 +97,8 @@ void CPythonScriptsDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CPythonScriptsDialog::DoSetButtonSkin(){
+void CPythonScriptsDialog::DoSetButtonSkin()
+{
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_Interpreter);
 	skin.SetButtonSkin(m_LoadScript);
@@ -304,10 +305,18 @@ void CPythonScriptsDialog::refreshModuleFunctions(int scriptNr)
 
 		switch (fun->type)
 		{
-		case FUNTYPE_PERIODICAL: sprintf(buf, "period"); break;
-		case FUNTYPE_MSG: sprintf(buf, "msg"); break;
-		case FUNTYPE_TAMSG: sprintf(buf, "%%ta"); break;
-		default: sprintf(buf, "unknown"); break;
+		case FUNTYPE_PERIODICAL:
+			sprintf(buf, "period");
+			break;
+		case FUNTYPE_MSG:
+			sprintf(buf, "msg");
+			break;
+		case FUNTYPE_TAMSG:
+			sprintf(buf, "%%ta");
+			break;
+		default:
+			sprintf(buf, "unknown");
+			break;
 		}
 		m_funlist.SetItemText(funNr, 0, buf);
 
@@ -348,7 +357,7 @@ void CPythonScriptsDialog::OnRclickFunlist(NMHDR* pNMHDR, LRESULT* pResult)
 		DWORD dwPos = GetMessagePos();
 
 		/* Convert the co-ords into a CPoint structure */
-		CPoint pt( dwPos & 0xffff, (dwPos >> 16) & 0xffff );
+		CPoint pt(dwPos & 0xffff, (dwPos >> 16) & 0xffff);
 
 		funListMenu->GetSubMenu(0)->TrackPopupMenu(0, pt.x, pt.y, this);
 
@@ -480,7 +489,7 @@ void CPythonScriptsDialog::OnRclickList(NMHDR* pNMHDR, LRESULT* pResult)
 		DWORD dwPos = GetMessagePos();
 
 		/* Convert the co-ords into a CPoint structure */
-		CPoint pt( dwPos & 0xffff, (dwPos >> 16) & 0xffff );
+		CPoint pt(dwPos & 0xffff, (dwPos >> 16) & 0xffff);
 
 		if (pythonScript->isEnabled())
 			modListMenu->GetSubMenu(0)->CheckMenuItem(ID_MENU_ENABLE, MF_BYCOMMAND | MF_CHECKED);

@@ -28,7 +28,8 @@ string templateContents;
 
 class HTTPListener : public SocketListener, Responder {
 public:
-	HTTPListener(Socket *s) {
+	HTTPListener(Socket *s)
+	{
 		client = s;
 		int n = ++numClients * 25;
 		while (n > 0)
@@ -40,21 +41,31 @@ public:
 		uid = "http client " + uid;
 		SocketHandler::addSocket(uid, client);
 	}
-	virtual ~HTTPListener() {
+
+	virtual ~HTTPListener()
+	{
 	}
+
 	void recv(string &s);
-	void disconnected(const string &) {
+	void disconnected(const string &)
+	{
 		//	Needed here as well, for cases when recv() doesn't get called...
 		SocketHandler::removeSocket(uid);
 		--HTTPListener::numClients;
 	}
-	Socket *getSocket(){
+
+	Socket *getSocket()
+	{
 		return client;
 	}
-	void connected() {
+
+	void connected()
+	{
 		;//cout << "Client connected" << endl;
 	}
-	string respond(Match *, PElement e, const string &) {
+
+	string respond(Match *, PElement e, const string &)
+	{
 		if (e->getNamespace() == "http")
 		{
 			string tag = e->getTagname();
@@ -63,13 +74,15 @@ public:
 		}
 		return "";
 	}
+
 private:
 	Socket *client;
 	string uid;
 	static int numClients;
 };
 
-string HTTPProcessor::process(Match *, PElement, Responder *, const string &){
+string HTTPProcessor::process(Match *, PElement, Responder *, const string &)
+{
 /*	string name = Kernel::process(m, e->getChild("name"), r, id);
         int port = atoi(Kernel::process(m, e->getChild("port"), r, id).c_str());
 
@@ -79,7 +92,8 @@ string HTTPProcessor::process(Match *, PElement, Responder *, const string &){
 	return "starting web server from AIML is currently unsupported";
 }
 
-HTTPServer::HTTPServer() {
+HTTPServer::HTTPServer()
+{
 	server = new ServerSocket(httpConfig.port);
 	SocketHandler::addSocket("Web Server", server);
 	ifstream fin(httpConfig.templateFile.c_str());
@@ -102,13 +116,15 @@ HTTPServer::HTTPServer() {
 	}       //	No else - will display a shutdown message via server->init()
 }
 
-void HTTPServer::shutdown(const string &msg) {
+void HTTPServer::shutdown(const string &msg)
+{
 	cout << "Shutting down server: " << msg << endl;
 	string err = "Shutting down server: " + msg + "\n";
 	getStream("Console")->Write(err.c_str());
 }
 
-void HTTPServer::awaitingClient(Socket* socket) {
+void HTTPServer::awaitingClient(Socket* socket)
+{
 	//cout << "HTTPServer::awaitingClient(" << socket->getSD() <<  ")" << endl << flush;
 	socket->setListener(new TokenProxyListener(new HTTPListener(socket)));
 //	socket->process();
@@ -116,7 +132,8 @@ void HTTPServer::awaitingClient(Socket* socket) {
 
 int HTTPListener::numClients = 0;
 
-void HTTPListener::recv(string &s) {
+void HTTPListener::recv(string &s)
+{
 	//--	A proper GET request for J-Alice:
 	//--	MUST have an "input" field.
 	//--	Optionally, an "id" field to use instead of the

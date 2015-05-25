@@ -43,7 +43,7 @@ CTAMiniMapProxy::CTAMiniMapProxy()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -75,6 +75,7 @@ int CTAMiniMapProxy::isPointInMiniMap(int x, int y, int z)
 	}
 	return 0;
 }
+
 CTibiaMiniMapPoint * CTAMiniMapProxy::getMiniMapPoint(int x, int y, int z)
 {
 	typedef CTibiaMiniMapPoint * (*Proto_fun)(int x, int y, int z);
@@ -86,6 +87,7 @@ CTibiaMiniMapPoint * CTAMiniMapProxy::getMiniMapPoint(int x, int y, int z)
 	}
 	return 0;
 }
+
 void CTAMiniMapProxy::setMiniMapPoint(int x, int y, int z, int col, int spd)
 {
 	typedef void (*Proto_fun)(int x, int y, int z, int col, int spd);
@@ -96,6 +98,7 @@ void CTAMiniMapProxy::setMiniMapPoint(int x, int y, int z, int col, int spd)
 			fun(x, y, z, col, spd);
 	}
 }
+
 CUIntArray * CTAMiniMapProxy::findPathOnMiniMap(int x, int y, int z, int x2, int y2, int z2)
 {
 	typedef CUIntArray*(*Proto_fun)(int x, int y, int z, int x2, int y2, int z2);
@@ -118,6 +121,7 @@ void CTAMiniMapProxy::findPathStop()
 			fun();
 	}
 }
+
 bool CTAMiniMapProxy::isFindPathStopped()
 {
 	typedef bool (*Proto_fun)();
@@ -129,6 +133,7 @@ bool CTAMiniMapProxy::isFindPathStopped()
 	}
 	return NULL;
 }
+
 int CTAMiniMapProxy::getCurrentDistance()
 {
 	typedef int (*Proto_fun)();
@@ -140,6 +145,7 @@ int CTAMiniMapProxy::getCurrentDistance()
 	}
 	return NULL;
 }
+
 void CTAMiniMapProxy::unloadMiniMaps()
 {
 	typedef void (*Proto_fun)();

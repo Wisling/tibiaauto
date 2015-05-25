@@ -18,10 +18,12 @@ extern string botName;
 class BotProcessor : public AimlProcessor
 {
 public:
-	~BotProcessor() {
+	~BotProcessor()
+	{
 	}
 
-	string process(Match *, PElement e, Responder *, const string &id) {
+	string process(Match *, PElement e, Responder *, const string &id)
+	{
 		string property = e->getAttribute("name");
 		if (property == "name")
 			return botName;

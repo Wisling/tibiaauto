@@ -60,7 +60,8 @@ CTibiaItem::CTibiaItem()
 }
 
 //Run when closing down
-void CTibiaItem::cleanup(){
+void CTibiaItem::cleanup()
+{
 	delete CTibiaItem::itemTree;
 }
 
@@ -94,6 +95,7 @@ int CTibiaItem::getItemId(char *name)
 	refreshItemLists();
 	return itemList.GetValue(name);
 }
+
 int CTibiaItem::getTypedItemId(char *name)
 {
 	refreshItemLists();
@@ -147,6 +149,7 @@ int CTibiaItem::getFoodIdAtIndex(int ind)
 	refreshItemLists();
 	return foodList.GetValueAtIndex(ind);
 }
+
 int CTibiaItem::getLootItemIdAtIndex(int ind)
 {
 	refreshItemLists();
@@ -170,28 +173,33 @@ char* CTibiaItem::getFoodNameAtIndex(int ind)
 	refreshItemLists();
 	return foodList.GetTextAtIndex(ind);
 }
+
 char* CTibiaItem::getLootItemNameAtIndex(int ind)
 {
 	refreshItemLists();
 	return lootList.GetTextAtIndex(ind);
 }
 
-int CTibiaItem::getFoodTimeAtIndex(int ind){
+int CTibiaItem::getFoodTimeAtIndex(int ind)
+{
 	refreshItemLists();
 	return foodList.GetExtraInfoAtIndex(ind);
 }
 
-CUIntArray* CTibiaItem::getItemIdArrayPtr(){
+CUIntArray* CTibiaItem::getItemIdArrayPtr()
+{
 	refreshItemLists();
 	return itemList.GetArrayPtr();
 }
 
-CUIntArray* CTibiaItem::getTypedItemIdArrayPtr(int ind) {
+CUIntArray* CTibiaItem::getTypedItemIdArrayPtr(int ind)
+{
 	refreshItemLists();
 	return typedList.GetArrayPtr();
 }
 
-void CTibiaItem::fillTypedItemIdArray(int ind) {
+void CTibiaItem::fillTypedItemIdArray(int ind)
+{
 	refreshItemLists();
 	typedList.RemoveAll();
 	for (int loop = 0; loop < getItemCount(); loop++)
@@ -201,52 +209,68 @@ void CTibiaItem::fillTypedItemIdArray(int ind) {
 	}
 }
 
-CUIntArray* CTibiaItem::getFoodIdArrayPtr(){
+CUIntArray* CTibiaItem::getFoodIdArrayPtr()
+{
 	refreshItemLists();
 	return foodList.GetArrayPtr();
 }
 
-CUIntArray* CTibiaItem::getLootItemIdArrayPtr(){
+CUIntArray* CTibiaItem::getLootItemIdArrayPtr()
+{
 	refreshItemLists();
 	return lootList.GetArrayPtr();
 }
 
-void CTibiaItem::addItem(char *name, int objectId) {
+void CTibiaItem::addItem(char *name, int objectId)
+{
 	refreshItemLists();
 	itemList.Add(objectId, name, 0);
 }
-void CTibiaItem::addTypedItem(char *name, int objectId, int type) {
+
+void CTibiaItem::addTypedItem(char *name, int objectId, int type)
+{
 	refreshItemLists();
 	typedList.Add(objectId, name, 0, type);
 }
-void CTibiaItem::addFood(char *name, int objectId, int extraInfo) {
+
+void CTibiaItem::addFood(char *name, int objectId, int extraInfo)
+{
 	refreshItemLists();
 	foodList.Add(objectId, name, extraInfo);
 }
-void CTibiaItem::addLootItem(char *name, int objectId) {
+
+void CTibiaItem::addLootItem(char *name, int objectId)
+{
 	refreshItemLists();
 	lootList.Add(objectId, name, 0);
 }
 
-void CTibiaItem::removeItem(int ind) {
+void CTibiaItem::removeItem(int ind)
+{
 	refreshItemLists();
 	itemList.RemoveAtIndex(ind);
 }
 
-void CTibiaItem::removeTypedItem(int ind) {
+void CTibiaItem::removeTypedItem(int ind)
+{
 	refreshItemLists();
 	typedList.RemoveAtIndex(ind);
 }
-void CTibiaItem::removeFood(int ind) {
+
+void CTibiaItem::removeFood(int ind)
+{
 	refreshItemLists();
 	foodList.RemoveAtIndex(ind);
 }
-void CTibiaItem::removeLootItem(int ind) {
+
+void CTibiaItem::removeLootItem(int ind)
+{
 	refreshItemLists();
 	lootList.RemoveAtIndex(ind);
 }
 
-void CTibiaItem::clearFoodList(){
+void CTibiaItem::clearFoodList()
+{
 	refreshItemLists();
 	foodList.RemoveAll();
 }
@@ -268,6 +292,7 @@ int CTibiaItem::getFoodCount()
 	refreshItemLists();
 	return foodList.GetCount();
 }
+
 int CTibiaItem::getLootItemCount()
 {
 	refreshItemLists();
@@ -304,7 +329,8 @@ CTibiaTree * CTibiaItem::getItemsTree()
 	return itemTree;
 }
 
-void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree){
+void CTibiaItem::setItemsTree(CTibiaTree * tibiaTree)
+{
 	if (itemTree)
 		delete CTibiaItem::itemTree;
 	if (!tibiaTree)
@@ -391,7 +417,8 @@ void parseItemsBranch(DOMNode* listNode, CTibiaTree* parent)
 	}
 }
 
-void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
+void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list)
+{
 	int size = parent->children.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -419,7 +446,9 @@ void traverseTreeForItemList(CTibiaTree* parent, CTibiaList* list){
 		}
 	}
 }
-void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
+
+void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list)
+{
 	int size = parent->children.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -438,7 +467,8 @@ void traverseTreeForLootList(CTibiaTree* parent, CTibiaList* list){
 	}
 }
 
-void traverseTreeToClearLootItems(CTibiaTree* parent, CTibiaList* list){
+void traverseTreeToClearLootItems(CTibiaTree* parent, CTibiaList* list)
+{
 	int size = parent->children.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -456,13 +486,16 @@ void traverseTreeToClearLootItems(CTibiaTree* parent, CTibiaList* list){
 		}
 	}
 }
-void CTibiaItem::clearLootItems(){
+
+void CTibiaItem::clearLootItems()
+{
 	refreshItemLists();
 	lootList.RemoveAll();
 	traverseTreeToClearLootItems(itemTree, &lootList);
 }
 
-bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list, int objectId){
+bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list, int objectId)
+{
 	int size = parent->children.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -487,7 +520,8 @@ bool traverseTreeToSetAsLooted(CTibiaTree* parent, CTibiaList* list, int objectI
 	return false;
 }
 
-void CTibiaItem::setItemAsLooted(int objectId){
+void CTibiaItem::setItemAsLooted(int objectId)
+{
 	refreshItemLists();
 	char tempName[32];
 	sprintf(tempName, "%d", objectId);
@@ -558,10 +592,8 @@ void CTibiaItem::refreshItemLists()
 
 				//ITEMS
 				if (!wcscmp(listNode->getNodeName(), L"items"))
-				{
 					//recursively add to itemTree from XML tree, works with older versions
 					parseItemsBranch(listNode, itemTree);
-				}
 
 				//FOOD
 				if (!wcscmp(listNode->getNodeName(), L"foods"))
@@ -793,7 +825,8 @@ void CTibiaItem::refreshItemLists()
 	LeaveCriticalSection(&ItemsInitCriticalSection);
 }
 
-void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *doc){
+void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *doc)
+{
 	int size = parent->children.size();
 	for (int i = 0; i < size; i++)
 	{
@@ -828,7 +861,8 @@ void saveItemsBranch(DOMNode* node, CTibiaTree* parent, xercesc::DOMDocument *do
 	}
 }
 
-void CTibiaItem::saveItemLists() {
+void CTibiaItem::saveItemLists()
+{
 	if (!xmlInitialised)
 	{
 		XMLPlatformUtils::Initialize();

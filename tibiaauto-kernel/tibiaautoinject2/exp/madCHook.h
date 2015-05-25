@@ -119,13 +119,13 @@ madCHookApi(DWORD) IsHookInUse(
         );
 
 // unhook again
-madCHookApi(BOOL) UnhookCode( PVOID * pNextHook );
-madCHookApi(BOOL) UnhookAPI ( PVOID * pNextHook );
+madCHookApi(BOOL) UnhookCode(PVOID * pNextHook);
+madCHookApi(BOOL) UnhookAPI(PVOID * pNextHook);
 
 // putting all your "HookCode/API" calls into a "CollectHooks".."FlushHooks"
 // frame can eventually speed up the installation of the hooks
-madCHookApi(VOID) CollectHooks ();
-madCHookApi(VOID)   FlushHooks ();
+madCHookApi(VOID) CollectHooks();
+madCHookApi(VOID)   FlushHooks();
 
 // ***************************************************************
 // same as CreateProcess
@@ -219,7 +219,7 @@ madCHookApi(HANDLE) CreateRemoteThreadEx(
 // ***************************************************************
 
 // this is how your remote function must look like
-typedef DWORD (WINAPI * PREMOTE_EXECUTE_ROUTINE)( LPVOID pParams );
+typedef DWORD (WINAPI * PREMOTE_EXECUTE_ROUTINE)(LPVOID pParams);
 
 // executes the specified function in the context of another process
 // this works only if the function follows some specific rules
@@ -359,7 +359,7 @@ madCHookApi(BOOL) ProcessIdToFileName(
 // ***************************************************************
 
 // is the current process a service/system process?  (win9x -> always false)
-madCHookApi(BOOL) AmSystemProcess (VOID);
+madCHookApi(BOOL) AmSystemProcess(VOID);
 
 // is the current thread's desktop the input desktop?  (win9x -> always true)
 // only in that case you should show messages boxes or other GUI stuff
@@ -367,19 +367,19 @@ madCHookApi(BOOL) AmSystemProcess (VOID);
 // return true, although the current session is currently not visible
 // XP fast user switching is implemented by using terminal server logic
 // so each fast user session has its own window station and input desktop
-madCHookApi(BOOL) AmUsingInputDesktop (VOID);
+madCHookApi(BOOL) AmUsingInputDesktop(VOID);
 
 // the following two functions can be used to get the session id of the
 // current session and of the input session
 // each terminal server (or XP fast user switching) session has its own id
 // the "input session" is the one currently shown on the physical screen
-madCHookApi(DWORD) GetCurrentSessionId (VOID);
-madCHookApi(DWORD) GetInputSessionId   (VOID);
+madCHookApi(DWORD) GetCurrentSessionId(VOID);
+madCHookApi(DWORD) GetInputSessionId(VOID);
 
 // ***************************************************************
 
 // which module called me? works only if your function has a stack frame
-madCHookApi(HMODULE) GetCallingModule (VOID);
+madCHookApi(HMODULE) GetCallingModule(VOID);
 
 // ***************************************************************
 // global  =  normal  +  "access for everyone"  +  "non session specific"
@@ -508,9 +508,12 @@ madCHookApi(BOOL) AddAccessForEveryone(
 // you don't need to use InitializeMadCHook + FinalizeMadCHook
 // so the functions are just empty stubs
 
-VOID InitializeMadCHook() {
+VOID InitializeMadCHook()
+{
 }
-VOID   FinalizeMadCHook() {
+
+VOID   FinalizeMadCHook()
+{
 }
 
 // ***************************************************************

@@ -27,13 +27,15 @@ using namespace std;
 //should this become a macro?
 static bool set_non_block(int);
 #if defined (__BEOS__)
-bool set_non_block(int socket){
+bool set_non_block(int socket)
+{
 	//gets set in SOCK_FLAGS
 	return true;
 }
 
 #elif defined (WIN32)
-bool set_non_block(int socket){
+bool set_non_block(int socket)
+{
 	u_long FAR one = 1;
 	if (ioctlsocket(socket, FIONBIO, &one) != 0)
 	{
@@ -42,8 +44,10 @@ bool set_non_block(int socket){
 	}
 	return true;
 }
+
 #else // if defined (__BEOS__)
-bool set_non_block(int socket){
+bool set_non_block(int socket)
+{
 	//heh nice & messy, but now i dont have to declare a variable
 	if (fcntl(socket, F_SETFL, fcntl(socket, F_GETFL) | O_NONBLOCK) < 0)
 	{
@@ -55,7 +59,8 @@ bool set_non_block(int socket){
 
 #endif // if defined (__BEOS__)
 
-ServerSocket::ServerSocket(const int &port) {
+ServerSocket::ServerSocket(const int &port)
+{
 	this->port     = port;
 	sd             = -1;
 	serverListener = NULL;
@@ -72,24 +77,26 @@ ServerSocket::ServerSocket(const int &port) {
 		return;
 	}
 	//	Perhaps have to set as asynchronous?
-	if(setsockopt(sd, SOL_SOCKET, SOCK_FLAGS, &one, sizeof(one)) < 0)
+	if (setsockopt(sd, SOL_SOCKET, SOCK_FLAGS, &one, sizeof(one)) < 0)
 	{
 		perror("setsockopt");
 		disconnect("Can't create a nonblocking server socket");
 		return;
 	}
-	if(!set_non_block(sd))
+	if (!set_non_block(sd))
 	{
 		disconnect("Can't create a nonblocking server socket");
 		return;
 	}
 }
 
-ServerSocket::~ServerSocket() {
+ServerSocket::~ServerSocket()
+{
 	//	Should clean up the socket in Socket dtor
 }
 
-bool ServerSocket::init() {
+bool ServerSocket::init()
+{
 	if (sd < 0)
 	{
 		if (serverListener != NULL)
@@ -131,15 +138,18 @@ bool ServerSocket::init() {
 	return true;
 }
 
-void ServerSocket::setServerListener(ServerSocketListener *serverListener) {
+void ServerSocket::setServerListener(ServerSocketListener *serverListener)
+{
 	this->serverListener = serverListener;
 }
 
-ServerSocketListener *ServerSocket::getServerListener() {
+ServerSocketListener *ServerSocket::getServerListener()
+{
 	return serverListener;
 }
 
-void ServerSocket::process() {
+void ServerSocket::process()
+{
 	//	This gets called from SocketHandler when we
 	//	have something waiting for us (client connect)
 	struct sockaddr_in peer_addr;

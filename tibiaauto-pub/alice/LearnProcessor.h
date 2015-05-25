@@ -23,13 +23,17 @@ extern int totalCategories;
 class LearnProcessor : public AimlProcessor
 {
 public:
-	LearnProcessor() {
+	LearnProcessor()
+	{
 		init = false;
 	}
-	~LearnProcessor() {
+
+	~LearnProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		PElement pattern = e->getChild("pattern");
 		if (pattern == PElement())
 		{
@@ -110,8 +114,10 @@ public:
 		}
 		return "";
 	}
+
 private:
-	string removeNewlines(const string &input) {
+	string removeNewlines(const string &input)
+	{
 		string output = "";
 		for (size_t ix = 0; ix < input.length(); ++ix)
 		{
@@ -122,7 +128,8 @@ private:
 		return output;
 	}
 
-	void openFile() {
+	void openFile()
+	{
 		learnFile.open("temporary.data", ios::out | ios::binary | ios::app);
 		if (learnFile.is_open())
 		{
@@ -131,7 +138,8 @@ private:
 		}
 	}
 
-	void closeFile() {
+	void closeFile()
+	{
 		if (init)
 			learnFile.close();
 		init = false;

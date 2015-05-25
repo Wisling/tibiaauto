@@ -61,7 +61,7 @@ BOOL CMemUtil::AdjustPrivileges()
 	tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
 	/* Adjust Token Privileges */
-	if (!AdjustTokenPrivileges (hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &oldtp, &dwSize))
+	if (!AdjustTokenPrivileges(hToken, FALSE, &tp, sizeof(TOKEN_PRIVILEGES), &oldtp, &dwSize))
 	{
 		AfxMessageBox("ERROR: Unable to adjust token privileges");
 		CloseHandle(hToken);
@@ -96,13 +96,14 @@ HANDLE CMemUtil::gethandle(long processId)
 	return dwHandle;
 }
 
-int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, int addBaseAddress){
+int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, int addBaseAddress)
+{
 	HANDLE dwHandle = gethandle(processId);
-	if(dwHandle == NULL)
+	if (dwHandle == NULL)
 		return 1;
 
 	void *ptr;
-	if(addBaseAddress)
+	if (addBaseAddress)
 		ptr = (void *)(memAddress - 0x400000 + GetProcessBaseAddr(processId));
 	else
 		ptr = (void *)memAddress;
@@ -139,13 +140,14 @@ int CMemUtil::readmemory(int processId, int memAddress, int* result, int size, i
 	}
 }
 
-int CMemUtil::writememory(int processId, int memAddress, int* value, int size, int addBaseAddress){
+int CMemUtil::writememory(int processId, int memAddress, int* value, int size, int addBaseAddress)
+{
 	HANDLE dwHandle = gethandle(processId);
-	if(dwHandle == NULL)
+	if (dwHandle == NULL)
 		return 1;
 
 	void *ptr;
-	if(addBaseAddress)
+	if (addBaseAddress)
 		ptr = (void *)(memAddress - 0x400000 + GetProcessBaseAddr(processId));
 	else
 		ptr = (void *)memAddress;
@@ -209,7 +211,7 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 		for (unsigned long i = 0; i < moduleCount; i++)
 		{
 			GetModuleBaseName(dwHandle, modules[i], moduleName, sizeof(moduleName));
-			if(_strcmpi(moduleName, "Tibia.exe") == 0)
+			if (_strcmpi(moduleName, "Tibia.exe") == 0)
 			{
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
@@ -217,7 +219,7 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 				ret = (int)moduleInfo.lpBaseOfDll;
 				break;
 			}
-			if(i == 0) // catches first module in case Tibia.exe does not exist
+			if (i == 0) // catches first module in case Tibia.exe does not exist
 			{
 				MODULEINFO moduleInfo;
 				GetModuleInformation(dwHandle, modules[i], &moduleInfo, sizeof(moduleInfo));
@@ -225,11 +227,12 @@ int CMemUtil::GetProcessBaseAddr(int processId)
 				ret                 = (int)moduleInfo.lpBaseOfDll;
 			}
 		}
-		free(modules); modules = NULL;
+		free(modules);
+		modules = NULL;
 	}
-	if(isNotFromNormalScan)
+	if (isNotFromNormalScan)
 		AfxMessageBox("While finding base address, main module was no first or was not named \"Tibia.exe\".");
-	if(ret)
+	if (ret)
 	{
 		m_prevBaseAddr      = ret;
 		m_prevProcessIdBase = processId;

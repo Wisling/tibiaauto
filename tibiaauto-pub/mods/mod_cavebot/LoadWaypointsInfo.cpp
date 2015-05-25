@@ -24,7 +24,6 @@ CLoadWaypointsInfo::CLoadWaypointsInfo(char* a_prefix, CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CLoadWaypointsInfo::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -36,7 +35,6 @@ void CLoadWaypointsInfo::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDNO, m_NO);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CLoadWaypointsInfo, CDialog)
 //{{AFX_MSG_MAP(CLoadWaypointsInfo)
@@ -66,9 +64,9 @@ void CLoadWaypointsInfo::OnNO()
 BOOL CLoadWaypointsInfo::OnInitDialog()
 {
 	CDialog::OnInitDialog();
-	skin.SetButtonSkin(     m_YES);
-	skin.SetButtonSkin(     m_NO);
-	skin.SetButtonSkin(     m_CANCEL);
+	skin.SetButtonSkin(m_YES);
+	skin.SetButtonSkin(m_NO);
+	skin.SetButtonSkin(m_CANCEL);
 	m_prefix.SetWindowText("");
 
 	return TRUE;  // return TRUE unless you set the focus to a control

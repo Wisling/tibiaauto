@@ -104,9 +104,9 @@ public:
 	void clearCallback(void);       // clear out the callback function
 
 	// Overrides for standard CSliderCtrl
-	void SetRangeMax( int nMax, BOOL bRedraw = FALSE);                      // set max value for slider
-	void SetRange( int nMin, int nMax, BOOL bRedraw = FALSE);       // set min and max value for slider
-	void SetRangeMin( int nMin, BOOL bRedraw = FALSE);                      // min min value for slider
+	void SetRangeMax(int nMax, BOOL bRedraw = FALSE);                       // set max value for slider
+	void SetRange(int nMin, int nMax, BOOL bRedraw = FALSE);        // set min and max value for slider
+	void SetRangeMin(int nMin, BOOL bRedraw = FALSE);                       // min min value for slider
 
 	BOOL AddColor(int nLow, int nHigh, COLORREF color);     // add a new range and color (TRUE if no errors)
 	BOOL AddColor(int nLow, int nHigh, COLORREF strColor, COLORREF endColor); // add a new range and color gradient

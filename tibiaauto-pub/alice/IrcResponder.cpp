@@ -19,15 +19,20 @@ using namespace std;
 class Reconnecter : public Event
 {
 public:
-	Reconnecter(Socket *s) {
+	Reconnecter(Socket *s)
+	{
 		sock = s;
 	}
-	virtual ~Reconnecter() {
+
+	virtual ~Reconnecter()
+	{
 	}
 
-	virtual void run() {
+	virtual void run()
+	{
 		sock->connect();
 	}
+
 private:
 	Socket *sock;
 };
@@ -36,7 +41,8 @@ private:
 class IrcPassThru : public SocketListener, ServerSocketListener
 {
 public:
-	IrcPassThru(IrcResponder *ir) {
+	IrcPassThru(IrcResponder *ir)
+	{
 		bot = ir;
 
 		client = NULL;
@@ -47,14 +53,17 @@ public:
 		if (server->init())
 			cout << "Starting up passthrough server (" << bot->config.ptPort << ")" << endl;
 	}
-	~IrcPassThru() {
+
+	~IrcPassThru()
+	{
 		SocketHandler::removeSocket(bot->config.description + " passthru");
 		if (client != NULL)
 			SocketHandler::removeSocket("passthru client");
 	}
 
 	//	ServerSocketListener
-	void awaitingClient(Socket *s) {
+	void awaitingClient(Socket *s)
+	{
 		user = nick = false;
 		cout << "Pass Through User connected" << endl;
 		if (client != NULL)
@@ -67,19 +76,27 @@ public:
 		bot->botControl = false;
 		SocketHandler::addSocket("passthru client", client);
 	}
-	void shutdown(const string &reason) {
+
+	void shutdown(const string &reason)
+	{
 		cout << "Pass Through Server shutdown (" << reason << ")" << endl;
 	}
+
 	//	SocketListener
-	void connected() {
+	void connected()
+	{
 		;
 	}
-	void disconnected(const string &reason) {
+
+	void disconnected(const string &reason)
+	{
 		cout << "Pass Through User disconnected (" << reason << ")" << endl;
 		user            = nick = false;
 		bot->botControl = true;
 	}
-	void recv(string &in) {
+
+	void recv(string &in)
+	{
 		if (in.find("QUIT :") == 0)
 		{
 			//	Don't let bot quit when user quits
@@ -105,11 +122,11 @@ public:
 				sendWelcome();
 			}
 		}
-		else if(nick && in.find("AITOGGLE") == 0)
+		else if (nick && in.find("AITOGGLE") == 0)
 		{
 			bot->botControl = !bot->botControl;
 			client->write(":GOD 372 " + bot->nick + " :- AI mode is now ");
-			if(bot->botControl)
+			if (bot->botControl)
 				client->write("on\r\n");
 			else
 				client->write("off\r\n");
@@ -152,7 +169,9 @@ public:
 			bot->send(in, true);
 		}
 	}
-	void send(const string &out) {
+
+	void send(const string &out)
+	{
 		string n = ":" + bot->nick;
 		if (out.find(n) == 0)
 		{
@@ -166,6 +185,7 @@ public:
 		}
 		client->write(out + "\r\n");
 	}
+
 private:
 	Socket *client;
 	ServerSocket *server;
@@ -173,7 +193,8 @@ private:
 	bool user, nick;
 
 	//	FIXME: Make this a bit cooler later :)
-	void sendWelcome() {
+	void sendWelcome()
+	{
 		string welcome = "";
 		string head    = ":" + bot->serverHost + " ";
 		welcome += head + "001 " + bot->nick + " :Welcome to the J-Alice IRC PassThru Server " + bot->nick + "\r\n";
@@ -188,7 +209,8 @@ private:
 };
 
 
-IrcResponder::IrcResponder(IrcConfig &ic) {
+IrcResponder::IrcResponder(IrcConfig &ic)
+{
 	config = ic;
 
 	nickIndex = -1;
@@ -201,16 +223,19 @@ IrcResponder::IrcResponder(IrcConfig &ic) {
 	start(0);
 }
 
-void IrcResponder::connected() {
+void IrcResponder::connected()
+{
 	retryCount = 0;
 	connect();
 }
 
-IrcResponder::~IrcResponder() {
+IrcResponder::~IrcResponder()
+{
 	disconnect();
 }
 
-string IrcResponder::respond(Match *m, PElement element, const string &id) {
+string IrcResponder::respond(Match *m, PElement element, const string &id)
+{
 	if (element->getNamespace() != "irc")
 	{
 		return "";
@@ -247,7 +272,8 @@ string IrcResponder::respond(Match *m, PElement element, const string &id) {
 	return "";
 }
 
-void IrcResponder::processAlias(const string &cmd) {
+void IrcResponder::processAlias(const string &cmd)
+{
 	string::size_type index = cmd.find(" ");
 	string alias;
 	string irc = "";
@@ -285,7 +311,8 @@ void IrcResponder::processAlias(const string &cmd) {
 		q.push(irc);
 }
 
-void IrcResponder::execute() {
+void IrcResponder::execute()
+{
 	while (!q.empty())
 	{
 		sendCommand(q.front());
@@ -293,14 +320,16 @@ void IrcResponder::execute() {
 	}
 }
 
-bool IrcResponder::changeNick() {
+bool IrcResponder::changeNick()
+{
 	if (++nickIndex == config.nicks.size())
 		return false;
 	nick = config.nicks[nickIndex];
 	return true;
 }
 
-void IrcResponder::recv(string &recv) {
+void IrcResponder::recv(string &recv)
+{
 	if (ipt != NULL && ipt->client != NULL)
 		ipt->send(recv);
 	if (botControl)
@@ -320,7 +349,8 @@ void IrcResponder::recv(string &recv) {
 	}
 }
 
-void IrcResponder::send(const string &send, bool fromIPT) {
+void IrcResponder::send(const string &send, bool fromIPT)
+{
 	if (sock == NULL)
 		return;
 	if (!fromIPT && ipt != NULL && ipt->client != NULL)
@@ -329,7 +359,8 @@ void IrcResponder::send(const string &send, bool fromIPT) {
 	sock->write(send + "\r\n");
 }
 
-void IrcResponder::connect() {
+void IrcResponder::connect()
+{
 	botControl = true;
 	gotMotd    = true; //	Hack
 	//	Order as recommended in RFC1459
@@ -352,7 +383,8 @@ void IrcResponder::connect() {
 	cout << "Connected to " << config.description << endl;
 }
 
-void IrcResponder::disconnect() {
+void IrcResponder::disconnect()
+{
 	send("QUIT :bing!");
 	sock->disconnect();
 
@@ -367,7 +399,8 @@ void IrcResponder::disconnect() {
 	cout << "Disconnected from " << config.description << " (software)" << endl;
 }
 
-void IrcResponder::disconnected(const string &msg) {
+void IrcResponder::disconnected(const string &msg)
+{
 	SocketHandler::removeSocket(config.description);
 	if (!config.autoReconnect || ++retryCount >= (unsigned int)config.maxRetries)
 	{
@@ -386,7 +419,8 @@ void IrcResponder::disconnected(const string &msg) {
 	}
 }
 
-void IrcResponder::start(int delay) {
+void IrcResponder::start(int delay)
+{
 	sock = new Socket(config.host, config.port);
 	SocketHandler::addSocket(config.description, sock);
 	sock->setListener(new TokenProxyListener(this));
@@ -397,7 +431,8 @@ void IrcResponder::start(int delay) {
 
 //	sendCommand(string)
 
-void IrcResponder::sendCommand(const string &command) {
+void IrcResponder::sendCommand(const string &command)
+{
 	string::size_type pos = command.find(" ");
 	if (pos != string::npos)
 		send(toUpper(command.substr(0, pos)) + command.substr(pos));
@@ -440,7 +475,8 @@ void IrcResponder::sendCommand(const string &command) {
                      (0xd), and LF (0xa)>
  */
 
-void IrcResponder::processLine(string &line) {
+void IrcResponder::processLine(string &line)
+{
 	string sender, command, params;
 	if (line[0] == ':')
 	{

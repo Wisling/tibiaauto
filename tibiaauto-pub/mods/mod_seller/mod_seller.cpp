@@ -62,11 +62,13 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
-int RandomTimeSellerSay(int length){
+int RandomTimeSellerSay(int length)
+{
 	return CModuleUtil::randomFormula(300 + min(length * 100, 1200), 200);//ranges from 300 to 1700
 }
 
-int RandomTimeSeller(){
+int RandomTimeSeller()
+{
 	return CModuleUtil::randomFormula(1500, 400);
 }
 
@@ -84,7 +86,8 @@ bool canGo(CConfigData *config);
 int sumAllExpenses(CConfigData *config);
 
 // Required to be run more often than the return value is expected to change
-int donaAttackingAndLooting(){
+int donaAttackingAndLooting()
+{
 	CMemReaderProxy reader;
 	static int lastAttackTm = 0;
 	int ret                 = GetTickCount() - lastAttackTm > 3 * 1000 && !reader.getAttackedCreature();
@@ -92,6 +95,7 @@ int donaAttackingAndLooting(){
 		lastAttackTm = GetTickCount();
 	return ret;
 }
+
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -99,7 +103,8 @@ int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 
@@ -146,7 +151,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
  */
 		static int tStart = 0;
 		Sleep(400);
-		if(time(NULL) - lastSellerSuccessTm <= sellerPauseAfterSuccess)
+		if (time(NULL) - lastSellerSuccessTm <= sellerPauseAfterSuccess)
 			continue;
 		modRuns++;
 		tStart = GetTickCount();
@@ -156,7 +161,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			lastSellerSuccessTm = time(NULL);
 		}
 
-		if(modRuns % 10 == 0 && config->suggestBanker)
+		if (modRuns % 10 == 0 && config->suggestBanker)
 		{
 			int goldNeeded = sumAllExpenses(config);
 			char buf[128];
@@ -274,17 +279,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_SellerApp construction
 
-CMod_SellerApp::CMod_SellerApp() {
+CMod_SellerApp::CMod_SellerApp()
+{
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();
 }
 
-CMod_SellerApp::~CMod_SellerApp() {
+CMod_SellerApp::~CMod_SellerApp()
+{
 	if (m_configDialog)
 	{
 		m_configDialog->DestroyWindow();
@@ -293,15 +299,18 @@ CMod_SellerApp::~CMod_SellerApp() {
 	delete m_configData;
 }
 
-char * CMod_SellerApp::getName() {
+char * CMod_SellerApp::getName()
+{
 	return "Auto seller";
 }
 
-int CMod_SellerApp::isStarted() {
+int CMod_SellerApp::isStarted()
+{
 	return m_started;
 }
 
-void CMod_SellerApp::start() {
+void CMod_SellerApp::start()
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -316,7 +325,8 @@ void CMod_SellerApp::start() {
 	m_started            = 1;
 }
 
-void CMod_SellerApp::stop() {
+void CMod_SellerApp::stop()
+{
 	toolThreadShouldStop = 1;
 	while (toolThreadShouldStop)
 	{
@@ -332,7 +342,8 @@ void CMod_SellerApp::stop() {
 	}
 }
 
-void CMod_SellerApp::showConfigDialog() {
+void CMod_SellerApp::showConfigDialog()
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 	if (!m_configDialog)
 	{
@@ -349,12 +360,14 @@ void CMod_SellerApp::showConfigDialog() {
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-void CMod_SellerApp::configToControls() {
+void CMod_SellerApp::configToControls()
+{
 	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
-void CMod_SellerApp::controlsToConfig() {
+void CMod_SellerApp::controlsToConfig()
+{
 	if (m_configDialog)
 	{
 		delete m_configData;
@@ -362,22 +375,25 @@ void CMod_SellerApp::controlsToConfig() {
 	}
 }
 
-void CMod_SellerApp::disableControls() {
+void CMod_SellerApp::disableControls()
+{
 	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
-void CMod_SellerApp::enableControls() {
+void CMod_SellerApp::enableControls()
+{
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-
-char *CMod_SellerApp::getVersion() {
+char *CMod_SellerApp::getVersion()
+{
 	return "1.1";
 }
 
-int CMod_SellerApp::validateConfig(int showAlerts) {
+int CMod_SellerApp::validateConfig(int showAlerts)
+{
 	char buf[256];
 	if (m_configData->sellOnCap && m_configData->sellWhen < 1)
 	{
@@ -431,8 +447,9 @@ int CMod_SellerApp::validateConfig(int showAlerts) {
 	return 1;
 }
 
-void CMod_SellerApp::resetConfig() {
-	if(m_configData)
+void CMod_SellerApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -440,7 +457,8 @@ void CMod_SellerApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	if (!strcmp(paramName, "StopBySeller"))
 		m_configData->stopBySeller = atoi(paramValue);
 	if (!strcmp(paramName, "ModPriority"))
@@ -619,7 +637,8 @@ void CMod_SellerApp::loadConfigParam(char *paramName, char *paramValue) {
 	}
 }
 
-char *CMod_SellerApp::saveConfigParam(char *paramName) {
+char *CMod_SellerApp::saveConfigParam(char *paramName)
+{
 	static char buf[1024];
 	buf[0] = '\0';
 	if (!strcmp(paramName, "StopBySeller"))
@@ -801,54 +820,94 @@ char *CMod_SellerApp::saveConfigParam(char *paramName) {
 	return buf;
 }
 
-char *CMod_SellerApp::getConfigParamName(int nr) {
+char *CMod_SellerApp::getConfigParamName(int nr)
+{
 	switch (nr)
 	{
-	case 0: return "Seller1/Name";
-	case 1: return "Seller1/Pos";
-	case 2: return "Seller1/SaleItems/Name";
-	case 3: return "Seller1/SaleItems/SaleTriggerQuantity";
-	case 4: return "Seller2/Name";
-	case 5: return "Seller2/Pos";
-	case 6: return "Seller2/SaleItems/Name";
-	case 7: return "Seller2/SaleItems/SaleTriggerQuantity";
-	case 8: return "Seller3/Name";
-	case 9: return "Seller3/Pos";
-	case 10: return "Seller3/SaleItems/Name";
-	case 11: return "Seller3/SaleItems/SaleTriggerQuantity";
-	case 12: return "Seller4/Name";
-	case 13: return "Seller4/Pos";
-	case 14: return "Seller4/SaleItems/Name";
-	case 15: return "Seller4/SaleItems/SaleTriggerQuantity";
-	case 16: return "Seller1/BuyItems/Name";
-	case 17: return "Seller1/BuyItems/BuyQuantity";
-	case 18: return "Seller1/BuyItems/BuyTriggerQuantity";
-	case 19: return "Seller1/BuyItems/BuyPrice";
-	case 20: return "Seller2/BuyItems/Name";
-	case 21: return "Seller2/BuyItems/BuyQuantity";
-	case 22: return "Seller2/BuyItems/BuyTriggerQuantity";
-	case 23: return "Seller2/BuyItems/BuyPrice";
-	case 24: return "Seller3/BuyItems/Name";
-	case 25: return "Seller3/BuyItems/BuyQuantity";
-	case 26: return "Seller3/BuyItems/BuyTriggerQuantity";
-	case 27: return "Seller3/BuyItems/BuyPrice";
-	case 28: return "Seller4/BuyItems/Name";
-	case 29: return "Seller4/BuyItems/BuyQuantity";
-	case 30: return "Seller4/BuyItems/BuyTriggerQuantity";
-	case 31: return "Seller4/BuyItems/BuyPrice";
-	case 32: return "SellOnCap";
-	case 33: return "SellWhen";
-	case 34: return "SellOnSpace";
-	case 35: return "ModPriority";
-	case 36: return "StopBySeller";
-	case 37: return "SuggestBanker";
+	case 0:
+		return "Seller1/Name";
+	case 1:
+		return "Seller1/Pos";
+	case 2:
+		return "Seller1/SaleItems/Name";
+	case 3:
+		return "Seller1/SaleItems/SaleTriggerQuantity";
+	case 4:
+		return "Seller2/Name";
+	case 5:
+		return "Seller2/Pos";
+	case 6:
+		return "Seller2/SaleItems/Name";
+	case 7:
+		return "Seller2/SaleItems/SaleTriggerQuantity";
+	case 8:
+		return "Seller3/Name";
+	case 9:
+		return "Seller3/Pos";
+	case 10:
+		return "Seller3/SaleItems/Name";
+	case 11:
+		return "Seller3/SaleItems/SaleTriggerQuantity";
+	case 12:
+		return "Seller4/Name";
+	case 13:
+		return "Seller4/Pos";
+	case 14:
+		return "Seller4/SaleItems/Name";
+	case 15:
+		return "Seller4/SaleItems/SaleTriggerQuantity";
+	case 16:
+		return "Seller1/BuyItems/Name";
+	case 17:
+		return "Seller1/BuyItems/BuyQuantity";
+	case 18:
+		return "Seller1/BuyItems/BuyTriggerQuantity";
+	case 19:
+		return "Seller1/BuyItems/BuyPrice";
+	case 20:
+		return "Seller2/BuyItems/Name";
+	case 21:
+		return "Seller2/BuyItems/BuyQuantity";
+	case 22:
+		return "Seller2/BuyItems/BuyTriggerQuantity";
+	case 23:
+		return "Seller2/BuyItems/BuyPrice";
+	case 24:
+		return "Seller3/BuyItems/Name";
+	case 25:
+		return "Seller3/BuyItems/BuyQuantity";
+	case 26:
+		return "Seller3/BuyItems/BuyTriggerQuantity";
+	case 27:
+		return "Seller3/BuyItems/BuyPrice";
+	case 28:
+		return "Seller4/BuyItems/Name";
+	case 29:
+		return "Seller4/BuyItems/BuyQuantity";
+	case 30:
+		return "Seller4/BuyItems/BuyTriggerQuantity";
+	case 31:
+		return "Seller4/BuyItems/BuyPrice";
+	case 32:
+		return "SellOnCap";
+	case 33:
+		return "SellWhen";
+	case 34:
+		return "SellOnSpace";
+	case 35:
+		return "ModPriority";
+	case 36:
+		return "StopBySeller";
+	case 37:
+		return "SuggestBanker";
 
 	default:
 		return NULL;
 	}
 }
 
-int CMod_SellerApp::isMultiParam(char *paramName) {
+int CMod_SellerApp::isMultiParam(char *paramName)
+{
 	if (!strcmp(paramName, "Seller1/SaleItems/Name"))
 		return 1;
 	if (!strcmp(paramName, "Seller1/SaleItems/SaleTriggerQuantity"))
@@ -900,7 +959,8 @@ int CMod_SellerApp::isMultiParam(char *paramName) {
 	return 0;
 }
 
-void CMod_SellerApp::resetMultiParamAccess(char *paramName) {
+void CMod_SellerApp::resetMultiParamAccess(char *paramName)
+{
 	if (!strcmp(paramName, "Seller1/SaleItems/Name"))
 		currentPos = 0;
 	if (!strcmp(paramName, "Seller1/SaleItems/SaleTriggerQuantity"))
@@ -951,7 +1011,8 @@ void CMod_SellerApp::resetMultiParamAccess(char *paramName) {
 		currentPos = 0;
 }
 
-int findSeller(CConfigData *config, int traderNum) {
+int findSeller(CConfigData *config, int traderNum)
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z)
@@ -979,7 +1040,8 @@ int findSeller(CConfigData *config, int traderNum) {
 	return 0;
 }
 
-int shouldKeepWalking() {
+int shouldKeepWalking()
+{
 	static time_t lastAttackTime = 0;
 	CMemReaderProxy reader;
 	if (!reader.getAttackedCreature())
@@ -997,7 +1059,8 @@ int shouldKeepWalking() {
 	return 0;
 }
 
-int moveToSeller(CConfigData *config, int traderNum) {
+int moveToSeller(CConfigData *config, int traderNum)
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 
@@ -1067,7 +1130,8 @@ int moveToSeller(CConfigData *config, int traderNum) {
 	return 0;
 }
 
-int sellItems(CConfigData *config, int traderNum) {
+int sellItems(CConfigData *config, int traderNum)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -1079,12 +1143,12 @@ int sellItems(CConfigData *config, int traderNum) {
 	if (itemProxy.getItemId(config->sellItem[traderNum].tradeItem[0].itemName) == 0)
 		return 1;
 
-	Sleep (RandomTimeSellerSay(strlen("hi")));
+	Sleep(RandomTimeSellerSay(strlen("hi")));
 	sender.say("hi");
-	Sleep (800);//Give time for NPC window to open
-	Sleep (RandomTimeSellerSay(strlen("trade")));
+	Sleep(800); //Give time for NPC window to open
+	Sleep(RandomTimeSellerSay(strlen("trade")));
 	sender.sayNPC("trade");
-	Sleep (RandomTimeSeller());
+	Sleep(RandomTimeSeller());
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
 		int objectId    = itemProxy.getItemId(config->sellItem[traderNum].tradeItem[j].itemName);
@@ -1108,7 +1172,7 @@ int sellItems(CConfigData *config, int traderNum) {
 							CTibiaCharacter *self = reader.readSelfCharacter();
 							sender.npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
 							itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
-							Sleep (RandomTimeSeller());
+							Sleep(RandomTimeSeller());
 							if (CModuleUtil::waitForCapsChange(self->cap))
 							{
 								if (done != 0)
@@ -1129,7 +1193,8 @@ int sellItems(CConfigData *config, int traderNum) {
 	return done;
 }
 
-int buyItems(CConfigData *config, int traderNum) {
+int buyItems(CConfigData *config, int traderNum)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CTibiaItemProxy itemProxy;
@@ -1141,12 +1206,12 @@ int buyItems(CConfigData *config, int traderNum) {
 
 	int objectId;
 	//char buf[64];
-	Sleep (RandomTimeSellerSay(strlen("hi")));
+	Sleep(RandomTimeSellerSay(strlen("hi")));
 	sender.say("hi");
-	Sleep (800);//Give time for NPC window to open
-	Sleep (RandomTimeSellerSay(strlen("trade")));
+	Sleep(800); //Give time for NPC window to open
+	Sleep(RandomTimeSellerSay(strlen("trade")));
 	sender.sayNPC("trade");
-	Sleep (RandomTimeSeller());
+	Sleep(RandomTimeSeller());
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
 		objectId = itemProxy.getItemId(config->buyItem[traderNum].tradeItem[j].itemName);
@@ -1169,7 +1234,7 @@ int buyItems(CConfigData *config, int traderNum) {
 			CTibiaCharacter *self = reader.readSelfCharacter();
 			sender.npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
 			itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
-			Sleep (RandomTimeSeller());
+			Sleep(RandomTimeSeller());
 			if (CModuleUtil::waitForCapsChange(self->cap))
 			{
 				if (done != 0)
@@ -1185,7 +1250,8 @@ int buyItems(CConfigData *config, int traderNum) {
 	return done == 1 ? 1 : 0;
 }
 
-int isCavebotOn() {
+int isCavebotOn()
+{
 	HANDLE hSnap;
 	hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPMODULE, GetCurrentProcessId());
 	if (hSnap)
@@ -1215,13 +1281,15 @@ int isCavebotOn() {
 	return -1;
 }
 
-int isDepositing() {
+int isDepositing()
+{
 	CMemReaderProxy reader;
 	const char *var = reader.getGlobalVariable("cavebot_depositing");
 	return strcmp(var, "true") == 0;
 }
 
-int sumAllExpenses(CConfigData *config) {
+int sumAllExpenses(CConfigData *config)
+{
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 	int totalCost = 0;
@@ -1239,7 +1307,8 @@ int sumAllExpenses(CConfigData *config) {
 	return totalCost;
 }
 
-int countAllItemsOfType(int objectId, bool includeSlots) {
+int countAllItemsOfType(int objectId, bool includeSlots)
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	int contNr;
@@ -1271,7 +1340,8 @@ int countAllItemsOfType(int objectId, bool includeSlots) {
 	return ret;
 }
 
-bool shouldGo(CConfigData *config) {
+bool shouldGo(CConfigData *config)
+{
 	//char buf[64];
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
@@ -1285,11 +1355,13 @@ bool shouldGo(CConfigData *config) {
 	{
 		if (config->sellOnCap && self->cap < config->sellWhen && individualShouldGo(config, i))
 		{
-			delete self; return true;
+			delete self;
+			return true;
 		}
 		if (config->sellOnSpace && !spaceAvailable() && individualShouldGo(config, i))
 		{
-			delete self; return true;
+			delete self;
+			return true;
 		}
 		for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 		{
@@ -1314,7 +1386,7 @@ bool shouldGo(CConfigData *config) {
 			{
 				//sprintf(buf, "%s\nItem count: %d\nTrigger Quantity: %d", config->sellItem[i].tradeItem[j].itemName, countAllItemsOfType(objectId), config->sellItem[i].tradeItem[j].quantityBuySell);
 				//AfxMessageBox(buf);
-				if(moneycount == -1)
+				if (moneycount == -1)
 				{
 					moneycount  = countAllItemsOfType(itemProxy.getValueForConst("GP"), true);
 					moneycount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
@@ -1335,7 +1407,8 @@ bool shouldGo(CConfigData *config) {
 	return should;
 }
 
-bool canGo(CConfigData *config) {
+bool canGo(CConfigData *config)
+{
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
 
@@ -1375,7 +1448,8 @@ bool canGo(CConfigData *config) {
 	return false;
 }
 
-int individualShouldGo(CConfigData *config, int traderNum) {
+int individualShouldGo(CConfigData *config, int traderNum)
+{
 	//char buf[64];
 	CTibiaItemProxy itemProxy;
 	CMemReaderProxy reader;
@@ -1387,7 +1461,7 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 		//AfxMessageBox(buf);
 		if (objectId)
 		{
-			if(countAllItemsOfType(objectId) > 0)
+			if (countAllItemsOfType(objectId) > 0)
 			{
 				ret = SELLONLY;
 				break;
@@ -1410,7 +1484,7 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 			count += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
 			count += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"), true) * 10000;
 		}
-		if(objectId)
+		if (objectId)
 		{
 			if (countAllItemsOfType(objectId, true) < config->buyItem[traderNum].tradeItem[j].quantityBuySell && count >= config->buyItem[traderNum].tradeItem[j].salePrice)
 			{
@@ -1433,7 +1507,8 @@ int individualShouldGo(CConfigData *config, int traderNum) {
 	return ret;
 }
 
-int spaceAvailable() {
+int spaceAvailable()
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 
@@ -1448,7 +1523,7 @@ int spaceAvailable() {
 		if (cont->flagOnOff)
 		{
 			openContNr++;
-			if(cont->itemsInside < cont->size)
+			if (cont->itemsInside < cont->size)
 			{
 				hasSpace = 1;
 				delete cont;
@@ -1460,8 +1535,8 @@ int spaceAvailable() {
 	return hasSpace;
 }
 
-
-void CMod_SellerApp::getNewSkin(CSkin newSkin) {
+void CMod_SellerApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

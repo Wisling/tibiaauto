@@ -14,7 +14,8 @@ class StringTokenizer
 {
 public:
 	StringTokenizer(const string &s, const string &d = " \t\n\r", bool rt = false) :
-		currentPosition(0), str(s), delim(d), retTok(rt) {
+		currentPosition(0), str(s), delim(d), retTok(rt)
+	{
 		maxPosition = str.length();
 	}
 
@@ -22,15 +23,19 @@ public:
 	string nextToken();
 	string nextToken(const string &d);
 	int countTokens();
-	void reset() {
+	void reset()
+	{
 		currentPosition = 0;
 	}
-	string tail() {
+
+	string tail()
+	{
 		skipDelimiters();
 		int cp = currentPosition;
 		currentPosition = maxPosition;
 		return str.substr(cp);
 	}
+
 private:
 	int currentPosition;
 	string str;

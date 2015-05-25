@@ -18,7 +18,8 @@ struct SpellInfo {
 	char text[256];
 	int manaCost;
 	int spellDelay;
-	SpellInfo(const char* a_text, int a_manaCost, int a_spellDelay){
+	SpellInfo(const char* a_text, int a_manaCost, int a_spellDelay)
+	{
 		_snprintf(text, 255, "%s", a_text);
 		manaCost   = a_manaCost;
 		spellDelay = a_spellDelay;

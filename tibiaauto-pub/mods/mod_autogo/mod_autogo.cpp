@@ -1,4 +1,3 @@
-
 /*
    This program is free software; you can redistribute it and/or
    modify it under the terms of the GNU General Public License
@@ -80,12 +79,13 @@ HWND tibiaHWND            = NULL;
 time_t timeLastSS         = 0;
 time_t isTakingScreenshot = 0;
 
-void masterDebug(const char* buf1, const char* buf2 = "", const char* buf3 = "", const char* buf4 = "", const char* buf5 = "", const char* buf6 = "", const char* buf7 = ""){
+void masterDebug(const char* buf1, const char* buf2 = "", const char* buf3 = "", const char* buf4 = "", const char* buf5 = "", const char* buf6 = "", const char* buf7 = "")
+{
 #ifdef MASTER_DEBUG
 	char dateStr [15];
 	char timeStr [15];
-	_strdate( dateStr);
-	_strtime( timeStr );
+	_strdate(dateStr);
+	_strtime(timeStr);
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
@@ -99,13 +99,15 @@ void masterDebug(const char* buf1, const char* buf2 = "", const char* buf3 = "",
 #endif // ifdef MASTER_DEBUG
 }
 
-std::string intstr(int value){
+std::string intstr(int value)
+{
 	stringstream ss;// from ModuleUtil.h import
 	ss << value;
 	return ss.str();
 }
 
-void InitTibiaHandle(){
+void InitTibiaHandle()
+{
 	CMemReaderProxy reader;
 	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
 	while (tibiaHWND)
@@ -119,7 +121,8 @@ void InitTibiaHandle(){
 	}
 }
 
-void actionTerminate(){
+void actionTerminate()
+{
 	masterDebug("ActionTerminate");
 	CMemReaderProxy reader;
 	HANDLE hTibiaProc;
@@ -131,7 +134,8 @@ void actionTerminate(){
 	CloseHandle(hTibiaProc);
 }
 
-int actionShutdownSystem(){
+int actionShutdownSystem()
+{
 	masterDebug("actionShutdownSystem");
 	HANDLE hToken;
 	TOKEN_PRIVILEGES tkp;
@@ -144,7 +148,7 @@ int actionShutdownSystem(){
 		tkp.PrivilegeCount           = 1;
 		tkp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
 
-		if(AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES)NULL, 0))
+		if (AdjustTokenPrivileges(hToken, FALSE, &tkp, 0, (PTOKEN_PRIVILEGES)NULL, 0))
 		{
 			ExitWindowsEx(EWX_SHUTDOWN | EWX_POWEROFF | EWX_FORCEIFHUNG, 0);
 			return 1;
@@ -153,7 +157,8 @@ int actionShutdownSystem(){
 	return 0;
 }
 
-bool actionSuspend(CString module) {
+bool actionSuspend(CString module)
+{
 	bool retval = false;
 	masterDebug("actionSuspend");
 	masterDebug("actionSuspend", "Time to stop module");
@@ -185,7 +190,8 @@ bool actionSuspend(CString module) {
 	return retval;
 }
 
-bool actionStart(CString module) {
+bool actionStart(CString module)
+{
 	bool retval = false;
 	masterDebug("actionStart");
 	masterDebug("actionStart", "Time to start module", module);
@@ -216,7 +222,8 @@ bool actionStart(CString module) {
 	return retval;
 }
 
-int OnList(char whiteList[100][32], char name[]){
+int OnList(char whiteList[100][32], char name[])
+{
 	masterDebug("OnList");
 	int i = 0;
 	while (IsCharAlphaNumeric(whiteList[i][0]))
@@ -229,7 +236,8 @@ int OnList(char whiteList[100][32], char name[]){
 	return 0;
 }
 
-struct tibiaMessage * triggerMessage(){
+struct tibiaMessage * triggerMessage()
+{
 	masterDebug("triggerMessage");
 	CMemReaderProxy reader;
 	CIPCBackPipeProxy backPipe;
@@ -272,7 +280,8 @@ struct tibiaMessage * triggerMessage(){
 	return NULL;
 }
 
-CString* alarmStatus(CString alarm) {
+CString* alarmStatus(CString alarm)
+{
 	static int index = 0;
 	if (alarm.GetLength() < 75)
 	{
@@ -287,7 +296,8 @@ CString* alarmStatus(CString alarm) {
 	return ret;
 }
 
-void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
+void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC)
+{
 	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
@@ -298,7 +308,7 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 
 	// create the bitmapinfo header information
 
-	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp))
+	if (!GetObject(bitmap, sizeof(BITMAP), (LPSTR)&bmp))
 	{
 		AfxMessageBox("Could not retrieve bitmap info");
 		return;
@@ -373,7 +383,7 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 	cinfo.in_color_space   = (J_COLOR_SPACE)2;
 	jpeg_set_defaults(&cinfo);
 	/*set the quality [0..100]  */
-	jpeg_set_quality (&cinfo, 60, true);
+	jpeg_set_quality(&cinfo, 60, true);
 	jpeg_start_compress(&cinfo, true);
 
 
@@ -393,12 +403,13 @@ void WriteJPGFile(HBITMAP bitmap, CString filename, HDC hDC){
 		jpeg_write_scanlines(&cinfo, &row_pointer, 1);
 	}
 	jpeg_finish_compress(&cinfo);
-	fclose( outfile );
+	fclose(outfile);
 	// Free memory.
 	GlobalFree((HGLOBAL)lpBits);
 }
 
-void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
+void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC)
+{
 	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
@@ -409,7 +420,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
 
 	// create the bitmapinfo header information
 
-	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp))
+	if (!GetObject(bitmap, sizeof(BITMAP), (LPSTR)&bmp))
 	{
 		AfxMessageBox("Could not retrieve bitmap info");
 		return;
@@ -527,7 +538,7 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
 	{
 		unsigned int linesize  = pbih->biSizeImage / pbih->biHeight;
 		unsigned int linestart = pbih->biSizeImage - (k + 1) * linesize;
-		for(unsigned int i = 0; i < linesize; i += 3)//output from GetDIBits is BGR, switch to RBG
+		for (unsigned int i = 0; i < linesize; i += 3)//output from GetDIBits is BGR, switch to RBG
 		{
 			hp[linestart + i]     ^= hp[linestart + i + 2];
 			hp[linestart + i + 2] ^= hp[linestart + i];
@@ -551,7 +562,8 @@ void WritePNGFile(HBITMAP bitmap, CString filename, HDC hDC){
 	fclose(outfile);
 }
 
-void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
+void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC)
+{
 	static int extra = 0;
 	BITMAP bmp;
 	PBITMAPINFO pbmi;
@@ -567,7 +579,7 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 
 	// create the bitmapinfo header information
 
-	if (!GetObject( bitmap, sizeof(BITMAP), (LPSTR)&bmp))
+	if (!GetObject(bitmap, sizeof(BITMAP), (LPSTR)&bmp))
 	{
 		AfxMessageBox("Could not retrieve bitmap info");
 		return;
@@ -674,7 +686,7 @@ void WriteBMPFile(HBITMAP bitmap, CString filename, HDC hDC) {
 	// Copy the BITMAPINFOHEADER and RGBQUAD array into the file.
 	if (!WriteFile(hf, (LPVOID) pbih, sizeof(BITMAPINFOHEADER)
 	               + pbih->biClrUsed * sizeof (RGBQUAD),
-	               (LPDWORD) &dwTmp, ( NULL)))
+	               (LPDWORD) &dwTmp, (NULL)))
 	{
 		AfxMessageBox("Could not write in to file");
 		return;
@@ -707,7 +719,8 @@ struct TS_param {
 	PicFileType fileType;
 };
 
-DWORD WINAPI takeScreenshot(LPVOID lpParam) {
+DWORD WINAPI takeScreenshot(LPVOID lpParam)
+{
 	TS_param* params = (TS_param*) lpParam;
 
 	CMemReaderProxy reader;
@@ -724,11 +737,11 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	char timeBuf[64];
 	strftime(timeBuf, 64, " %a %d %b-%H%M(%S)", localtime(&lTime));
 	CString filePath;
-	if(params->fileType == PNGFILE)
+	if (params->fileType == PNGFILE)
 		filePath.Format("%s\\screenshots\\Screenshot%s.png", path, timeBuf);
-	else if(params->fileType == JPGFILE)
+	else if (params->fileType == JPGFILE)
 		filePath.Format("%s\\screenshots\\Screenshot%s.jpg", path, timeBuf);
-	else if(params->fileType == BMPFILE)
+	else if (params->fileType == BMPFILE)
 		filePath.Format("%s\\screenshots\\Screenshot%s.bmp", path, timeBuf);
 	else
 		AfxMessageBox("takeScreenshot: Unknown file type.");
@@ -736,20 +749,20 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	while (tr >= 0)//attempt to take screenshot for 5 seconds
 	{
 		tr--;
-		Sleep (100);
+		Sleep(100);
 		if (!reader.isLoggedIn())
 			continue;
-		if(!IsWindowVisible(tibiaHWND))
+		if (!IsWindowVisible(tibiaHWND))
 		{
 			ShowWindow(tibiaHWND, SW_SHOW);
 			continue;
 		}
-		if(IsIconic(tibiaHWND))
+		if (IsIconic(tibiaHWND))
 		{
 			ShowWindow(tibiaHWND, SW_RESTORE);
 			continue;
 		}
-		if(tibiaHWND != GetForegroundWindow())
+		if (tibiaHWND != GetForegroundWindow())
 		{
 			SetForegroundWindow(tibiaHWND);
 			continue;
@@ -757,7 +770,7 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		if (trayed)
 			Sleep(1000);
 		else if (minimized)
-			Sleep (500);
+			Sleep(500);
 		else
 			Sleep(100);
 		GetClientRect(tibiaHWND, &rect);
@@ -771,11 +784,11 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 		HBITMAP hBitmap = CreateCompatibleBitmap(hDDC, nWidth, mHeight);
 		SelectObject(hCDC, hBitmap);
 		BitBlt(hCDC, 0, 0, nWidth, mHeight, hDDC, rect.left, rect.top, SRCCOPY);
-		if(params->fileType == PNGFILE)
+		if (params->fileType == PNGFILE)
 			WritePNGFile(hBitmap, filePath, hCDC);
-		else if(params->fileType == JPGFILE)
+		else if (params->fileType == JPGFILE)
 			WriteJPGFile(hBitmap, filePath, hCDC);
-		else if(params->fileType == BMPFILE)
+		else if (params->fileType == BMPFILE)
 			WriteBMPFile(hBitmap, filePath, hCDC);
 		else
 			AfxMessageBox("takeScreenshot: Unknown file type.");
@@ -794,7 +807,8 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam) {
 	return NULL;
 }
 
-bool shouldStopWalking(list<Alarm> test) {
+bool shouldStopWalking(list<Alarm> test)
+{
 	bool retVal                    = false;
 	list<Alarm>::iterator alarmItr = test.begin();
 	while (alarmItr != test.end() && !retVal)
@@ -804,12 +818,14 @@ bool shouldStopWalking(list<Alarm> test) {
 	}
 	return retVal;
 }
-int getGoPriority(list<Alarm> test, bool isGoingToRunaway, int maintainPos){
+
+int getGoPriority(list<Alarm> test, bool isGoingToRunaway, int maintainPos)
+{
 	int retVal                     = 0;
 	list<Alarm>::iterator alarmItr = test.begin();
 	while (alarmItr != test.end() && retVal != 3)
 	{
-		if(alarmItr->alarmState == 0)
+		if (alarmItr->alarmState == 0)
 		{
 			alarmItr++;
 			continue;
@@ -834,7 +850,9 @@ int getGoPriority(list<Alarm> test, bool isGoingToRunaway, int maintainPos){
 	}
 	return retVal;
 }
-int shouldKeepWalking() {
+
+int shouldKeepWalking()
+{
 	//considers whether we are attacking and done looting
 	static time_t lastAttackTime = 0;
 	CMemReaderProxy reader;
@@ -854,7 +872,8 @@ int shouldKeepWalking() {
 }
 
 // Required to be run at least every 3 seconds to be useful since it updates lastAttackTm
-int doneAttackingAndLooting(){
+int doneAttackingAndLooting()
+{
 	CMemReaderProxy reader;
 	static int lastAttackTm = 0;
 	int ret                 = GetTickCount() - lastAttackTm > 3 * 1000 && !reader.getAttackedCreature();
@@ -866,7 +885,8 @@ int doneAttackingAndLooting(){
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	masterDebug("toolThreadProc");
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -947,7 +967,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->getLogEvents())
 				{
 					time_t rawtime;
-					time(&rawtime );
+					time(&rawtime);
 					char filename[64];
 					strftime(filename, 63, "%d%b%y.txt", localtime(&rawtime));
 					char timestamp[64];
@@ -971,17 +991,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						if (!tibiaHWND)
 							InitTibiaHandle();
 						ShowWindow(tibiaHWND, SW_MAXIMIZE);
-						if(tibiaHWND != GetForegroundWindow())
+						if (tibiaHWND != GetForegroundWindow())
 							SetForegroundWindow(tibiaHWND);
 						break;
 					case 1://restore
 						if (!tibiaHWND)
 							InitTibiaHandle();
-						if(!IsWindowVisible(tibiaHWND))
+						if (!IsWindowVisible(tibiaHWND))
 							ShowWindow(tibiaHWND, SW_SHOW);
-						if(IsIconic(tibiaHWND))
+						if (IsIconic(tibiaHWND))
 							ShowWindow(tibiaHWND, SW_RESTORE);
-						else if(tibiaHWND != GetForegroundWindow())
+						else if (tibiaHWND != GetForegroundWindow())
 							SetForegroundWindow(tibiaHWND);
 						break;
 					case 2://flash once
@@ -1000,7 +1020,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				{
 					list<CString> temp                 = alarmItr->getStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
-					while(modulesItr != temp.end())
+					while (modulesItr != temp.end())
 					{
 						actionSuspend(*modulesItr);
 						modulesItr++;
@@ -1012,7 +1032,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				{
 					list<CString> temp                 = alarmItr->getStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
-					while(modulesItr != temp.end())
+					while (modulesItr != temp.end())
 					{
 						actionStart(*modulesItr);
 						modulesItr++;
@@ -1153,7 +1173,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				{
 					list<CString> temp                 = alarmItr->getStartModules();
 					list<CString>::iterator modulesItr = temp.begin();
-					while(modulesItr != temp.end())
+					while (modulesItr != temp.end())
 					{
 						actionSuspend(*modulesItr);
 						modulesItr++;
@@ -1165,7 +1185,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				{
 					list<CString> temp                 = alarmItr->getStopModules();
 					list<CString>::iterator modulesItr = temp.begin();
-					while(modulesItr != temp.end())
+					while (modulesItr != temp.end())
 					{
 						actionStart(*modulesItr);
 						modulesItr++;
@@ -1176,7 +1196,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 				if (alarmItr->getLogEvents())
 				{
 					time_t rawtime;
-					time(&rawtime );
+					time(&rawtime);
 					char filename[64];
 					strftime(filename, 64, "%d%b%y.txt", localtime(&rawtime));
 					char timestamp[64];
@@ -1248,7 +1268,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			{
 				switch (goPriority)
 				{
-				case 1: { // Stay in one place
+				case 1:
+				{         // Stay in one place
 					keepMaintainPos = 1;
 					if (maintainX == 0)  //Sets position here. Unsets position if not reached here.
 					{
@@ -1273,12 +1294,12 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							{
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 							}
-							else if(self->z == maintainZ && abs(self->x - maintainX) < 50 && abs(self->y - maintainY) < 50)
+							else if (self->z == maintainZ && abs(self->x - maintainX) < 50 && abs(self->y - maintainY) < 50)
 							{
 								//Since we should already be close to the position, try to mapclick when map not researched
 								reader.writeGotoCoords(maintainX, maintainY, maintainZ);
 							}
-							else if(!sentMessagePathnotfound)
+							else if (!sentMessagePathnotfound)
 							{
 								sentMessagePathnotfound = 1;
 								sender.sendTAMessage("Auto go/log: No path found to maintained position");
@@ -1287,7 +1308,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 					break;
 				}
-				case 2: {// Start position (By definition, the least safe place to be)
+				case 2:
+				{        // Start position (By definition, the least safe place to be)
 					int pathSize = 0;
 					int path[15];
 					const char* var = reader.getGlobalVariable("autolooterTm");
@@ -1307,7 +1329,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							{
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 							}
-							else if(!sentMessagePathnotfound)
+							else if (!sentMessagePathnotfound)
 							{
 								sentMessagePathnotfound = 1;
 								sender.sendTAMessage("Auto go/log: No path found to start position");
@@ -1322,17 +1344,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 						{
 							if (config->actDirection == DIR_LEFT)
 								sender.turnLeft();
-							else if(config->actDirection == DIR_RIGHT)
+							else if (config->actDirection == DIR_RIGHT)
 								sender.turnRight();
-							else if(config->actDirection == DIR_UP)
+							else if (config->actDirection == DIR_UP)
 								sender.turnUp();
-							else if(config->actDirection == DIR_DOWN)
+							else if (config->actDirection == DIR_DOWN)
 								sender.turnDown();
 						}
 					}
 					break;
 				}
-				case 3: {// Runaway Position (By definition, the relatively safe spot chosen by the user)
+				case 3:
+				{        // Runaway Position (By definition, the relatively safe spot chosen by the user)
 					int pathSize = 0;
 					CTibiaMapProxy tibiaMap;
 
@@ -1352,7 +1375,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 							{
 								CModuleUtil::executeWalk(self->x, self->y, self->z, path);
 							}
-							else if(!sentMessagePathnotfound)
+							else if (!sentMessagePathnotfound)
 							{
 								sentMessagePathnotfound = 1;
 								sender.sendTAMessage("Auto go/log: No path found to Runaway position");
@@ -1366,7 +1389,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 					break;
 				}
-				case 4: {// Depot (Reasoned as, the safest position [because you are protected from attack])
+				case 4:
+				{        // Depot (Reasoned as, the safest position [because you are protected from attack])
 					int pathSize = 0;
 					int path[15];
 					struct point p = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
@@ -1381,11 +1405,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 					}
 					if (pathSize == 0)
 					{
-						if(p.x || p.y || p.z)
+						if (p.x || p.y || p.z)
 						{
 							isDestinationReached = true;
 						}
-						else if(!sentMessagePathnotfound)
+						else if (!sentMessagePathnotfound)
 						{
 							sentMessagePathnotfound = 1;
 							sender.sendTAMessage("Auto go/log: No path found to depot position");
@@ -1424,7 +1448,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		{
 			list<CString> temp                 = alarmItr->getStopModules();
 			list<CString>::iterator modulesItr = temp.begin();
-			while(modulesItr != temp.end())
+			while (modulesItr != temp.end())
 			{
 				actionStart(*modulesItr);
 				modulesItr++;
@@ -1436,7 +1460,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		{
 			list<CString> temp                 = alarmItr->getStartModules();
 			list<CString>::iterator modulesItr = temp.begin();
-			while(modulesItr != temp.end())
+			while (modulesItr != temp.end())
 			{
 				actionSuspend(*modulesItr);
 				modulesItr++;
@@ -1447,7 +1471,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 		if (alarmItr->getLogEvents())
 		{
 			time_t rawtime;
-			time(&rawtime );
+			time(&rawtime);
 			char filename[64];
 			strftime(filename, 64, "%d%b%y.txt", localtime(&rawtime));
 			char timestamp[64];
@@ -1485,17 +1509,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_autogoApp construction
 
-CMod_autogoApp::CMod_autogoApp() {
+CMod_autogoApp::CMod_autogoApp()
+{
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();
 }
 
-CMod_autogoApp::~CMod_autogoApp() {
+CMod_autogoApp::~CMod_autogoApp()
+{
 	if (m_configDialog)
 	{
 		m_configDialog->DestroyWindow();
@@ -1504,11 +1529,13 @@ CMod_autogoApp::~CMod_autogoApp() {
 	delete m_configData;
 }
 
-char * CMod_autogoApp::getName() {
+char * CMod_autogoApp::getName()
+{
 	return "Auto go/logout";
 }
 
-int CMod_autogoApp::isStarted() {
+int CMod_autogoApp::isStarted()
+{
 	if (!m_started)
 	{
 		// if not started then regularly consume 1003 messages from the queue
@@ -1520,8 +1547,8 @@ int CMod_autogoApp::isStarted() {
 	return m_started;
 }
 
-
-void CMod_autogoApp::start() {
+void CMod_autogoApp::start()
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -1536,7 +1563,8 @@ void CMod_autogoApp::start() {
 	m_started            = 1;
 }
 
-void CMod_autogoApp::stop() {
+void CMod_autogoApp::stop()
+{
 	toolThreadShouldStop = 1;
 	while (toolThreadShouldStop)
 		Sleep(50);
@@ -1549,7 +1577,8 @@ void CMod_autogoApp::stop() {
 	}
 }
 
-void CMod_autogoApp::showConfigDialog() {
+void CMod_autogoApp::showConfigDialog()
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
@@ -1566,14 +1595,14 @@ void CMod_autogoApp::showConfigDialog() {
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
-void CMod_autogoApp::configToControls() {
+void CMod_autogoApp::configToControls()
+{
 	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
-
-void CMod_autogoApp::controlsToConfig() {
+void CMod_autogoApp::controlsToConfig()
+{
 	if (m_configDialog)
 	{
 		delete m_configData;
@@ -1581,27 +1610,31 @@ void CMod_autogoApp::controlsToConfig() {
 	}
 }
 
-
-void CMod_autogoApp::disableControls() {
+void CMod_autogoApp::disableControls()
+{
 	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
-void CMod_autogoApp::enableControls() {
+void CMod_autogoApp::enableControls()
+{
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-char *CMod_autogoApp::getVersion() {
+char *CMod_autogoApp::getVersion()
+{
 	return "4.11";
 }
 
-int CMod_autogoApp::validateConfig(int showAlerts) {
+int CMod_autogoApp::validateConfig(int showAlerts)
+{
 	return 1;
 }
 
-void CMod_autogoApp::resetConfig() {
-	if(m_configData)
+void CMod_autogoApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -1609,7 +1642,8 @@ void CMod_autogoApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue)
+{
 #pragma warning(disable: 4800)
 	if (!strcmp(paramName, "act/x"))
 		m_configData->actX = atoi(paramValue);
@@ -1651,32 +1685,38 @@ void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue) {
 		char* startModules = sep;
 		if ((sep = strstr(sep, "|")) == NULL)
 			return;
-		sep[0] = '\0'; sep = sep + 1;
+		sep[0] = '\0';
+		sep    = sep + 1;
 
 		char* stopModules = sep;
 		if ((sep = strstr(sep, "|")) == NULL)
 			return;
-		sep[0] = '\0'; sep = sep + 1;
+		sep[0] = '\0';
+		sep    = sep + 1;
 
 		char* selections = sep;
 		if ((sep = strstr(sep, "|")) == NULL)
 			return;
-		sep[0] = '\0'; sep = sep + 1;
+		sep[0] = '\0';
+		sep    = sep + 1;
 
 		char* strTrigger = sep;
 		if ((sep = strstr(sep, "|")) == NULL)
 			return;
-		sep[0] = '\0'; sep = sep + 1;
+		sep[0] = '\0';
+		sep    = sep + 1;
 
 		char* castSpell = sep;
 		if ((sep = strstr(sep, "|")) == NULL)
 			return;
-		sep[0] = '\0'; sep = sep + 1;
+		sep[0] = '\0';
+		sep    = sep + 1;
 
 		char* alarmName = sep;
 		if ((sep = strstr(sep, "|")) == NULL)
 			return;
-		sep[0] = '\0'; sep = sep + 1;
+		sep[0] = '\0';
+		sep    = sep + 1;
 
 		char* params = sep;
 
@@ -1688,7 +1728,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue) {
 		}
 		else
 		{
-			sep[0]   = '\0'; sep = sep + 1;
+			sep[0]   = '\0';
+			sep      = sep + 1;
 			descript = sep;
 		}
 
@@ -1731,7 +1772,8 @@ void CMod_autogoApp::loadConfigParam(char *paramName, char *paramValue) {
 #pragma warning(default: 4800)
 }
 
-char *CMod_autogoApp::saveConfigParam(char *paramName) {
+char *CMod_autogoApp::saveConfigParam(char *paramName)
+{
 	static char buf[1024];
 	buf[0] = 0;
 
@@ -1825,30 +1867,46 @@ char *CMod_autogoApp::saveConfigParam(char *paramName) {
 	return buf;
 }
 
-char *CMod_autogoApp::getConfigParamName(int nr) {
+char *CMod_autogoApp::getConfigParamName(int nr)
+{
 	switch (nr)
 	{
-	case 0: return "act/x";
-	case 1: return "act/y";
-	case 2: return "act/z";
-	case 3: return "act/direction";
-	case 4: return "runaway/x";
-	case 5: return "runaway/y";
-	case 6: return "runaway/z";
-	case 7: return "triggerMessage";
-	case 8: return "whiteList/List";
-	case 9: return "whiteList/mkBlack";
-	case 10: return "alarmList";
-	case 11: return "options";
-	case 12: return "modPriority";
-	case 13: return "screenshotType";
+	case 0:
+		return "act/x";
+	case 1:
+		return "act/y";
+	case 2:
+		return "act/z";
+	case 3:
+		return "act/direction";
+	case 4:
+		return "runaway/x";
+	case 5:
+		return "runaway/y";
+	case 6:
+		return "runaway/z";
+	case 7:
+		return "triggerMessage";
+	case 8:
+		return "whiteList/List";
+	case 9:
+		return "whiteList/mkBlack";
+	case 10:
+		return "alarmList";
+	case 11:
+		return "options";
+	case 12:
+		return "modPriority";
+	case 13:
+		return "screenshotType";
 
 	default:
 		return NULL;
 	}
 }
 
-int CMod_autogoApp::isMultiParam(char *paramName) {
+int CMod_autogoApp::isMultiParam(char *paramName)
+{
 	if (!strcmp(paramName, "whiteList/List"))
 		return 1;
 	if (!strcmp(paramName, "alarmList"))
@@ -1856,14 +1914,16 @@ int CMod_autogoApp::isMultiParam(char *paramName) {
 	return 0;
 }
 
-void CMod_autogoApp::resetMultiParamAccess(char *paramName) {
+void CMod_autogoApp::resetMultiParamAccess(char *paramName)
+{
 	if (!strcmp(paramName, "whiteList/List"))
 		currentPos = 0;
 	if (!strcmp(paramName, "alarmList"))
 		currentAlarmPos = m_configData->alarmList.begin();
 }
 
-void CMod_autogoApp::getNewSkin(CSkin newSkin) {
+void CMod_autogoApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

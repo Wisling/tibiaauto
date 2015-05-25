@@ -29,7 +29,8 @@ CToolMonsterShow::CToolMonsterShow(CWnd* pParent /*=NULL*/)
 	memConstData = reader.getMemConstData();
 }
 
-CToolMonsterShow::~CToolMonsterShow(){
+CToolMonsterShow::~CToolMonsterShow()
+{
 	for (int x = 0; x < 2 * 10 + 1; x++)
 	{
 		for (int y = 0; y < 2 * 8 + 1; y++)
@@ -56,7 +57,6 @@ void CToolMonsterShow::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CToolMonsterShow, CDialog)
 //{{AFX_MSG_MAP(CToolMonsterShow)
 ON_WM_ERASEBKGND()
@@ -72,8 +72,9 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CToolMonsterShow message handlers
 
-void CToolMonsterShow::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
+void CToolMonsterShow::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
 }
 
 BOOL CToolMonsterShow::OnInitDialog()

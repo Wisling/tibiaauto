@@ -78,7 +78,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
-int RandomTimeAntylogout(){
+int RandomTimeAntylogout()
+{
 	return CModuleUtil::randomFormula(300, 200);
 }
 
@@ -89,7 +90,7 @@ int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -115,15 +116,15 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 			CTibiaCharacter *self = reader.readSelfCharacter();
 			int r                 = rand() % numActions;
-			if(lastRandomAction == r && time(NULL) - sameActionTm > timeLimit)
+			if (lastRandomAction == r && time(NULL) - sameActionTm > timeLimit)
 				while (r != lastRandomAction)
 					r = rand() % numActions;
-			if(lastRandomAction != r)
+			if (lastRandomAction != r)
 			{
 				lastRandomAction = r;
 				sameActionTm     = time(NULL);
 			}
-			switch(r)
+			switch (r)
 			{
 			case 0:
 				sender.ignoreLook(time(NULL) + 1);
@@ -132,11 +133,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			case 1:
 				if (self->lookDirection == 0)
 					sender.turnUp();
-				else if(self->lookDirection == 1)
+				else if (self->lookDirection == 1)
 					sender.turnRight();
-				else if(self->lookDirection == 2)
+				else if (self->lookDirection == 2)
 					sender.turnDown();
-				else if(self->lookDirection == 3)
+				else if (self->lookDirection == 3)
 					sender.turnLeft();
 				break;
 				//case 2:
@@ -154,7 +155,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	toolThreadShouldStop = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_antylogoutApp construction
@@ -174,12 +174,10 @@ char * CMod_antylogoutApp::getName()
 	return "Anty logout";
 }
 
-
 int CMod_antylogoutApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_antylogoutApp::start()
 {
@@ -201,7 +199,6 @@ void CMod_antylogoutApp::stop()
 	;
 	m_started = 0;
 }
-
 
 char *CMod_antylogoutApp::getVersion()
 {

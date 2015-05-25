@@ -26,7 +26,6 @@ CCharDialog::CCharDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CCharDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -36,7 +35,6 @@ void CCharDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_CHAR_LIST, m_charList);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CCharDialog, CDialog)
 //{{AFX_MSG_MAP(CCharDialog)
@@ -144,7 +142,6 @@ void CCharDialog::OnTimer(UINT nIDEvent)
 	}
 	CDialog::OnTimer(nIDEvent);
 }
-
 
 void CCharDialog::OnCancel()
 {

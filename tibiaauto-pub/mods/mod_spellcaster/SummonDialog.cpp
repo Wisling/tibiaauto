@@ -22,7 +22,6 @@ SummonDialog::SummonDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void SummonDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -36,7 +35,6 @@ void SummonDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(SummonDialog, CDialog)
 //{{AFX_MSG_MAP(SummonDialog)
 ON_BN_CLICKED(IDC_TOOL_SPELLCASTER_SUMMON, OnToolSpellcasterSummon)
@@ -49,21 +47,24 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // SummonDialog message handlers
 
-void SummonDialog::OnToolSpellcasterSummon() {
+void SummonDialog::OnToolSpellcasterSummon()
+{
 	int val = m_summon.GetCheck();
 	m_summonLessThan.EnableWindow(val);
 	m_summonMana.EnableWindow(val);
 	m_summonName.EnableWindow(val);
 }
 
-void SummonDialog::disableControls() {
+void SummonDialog::disableControls()
+{
 	m_summon.EnableWindow(false);
 	m_summonLessThan.EnableWindow(false);
 	m_summonMana.EnableWindow(false);
 	m_summonName.EnableWindow(false);
 }
 
-void SummonDialog::enableControls() {
+void SummonDialog::enableControls()
+{
 	m_summon.EnableWindow(true);
 	if (m_summon.GetCheck())
 	{
@@ -73,20 +74,27 @@ void SummonDialog::enableControls() {
 	}
 }
 
-void SummonDialog::configToControls(CConfigData *configData) {
+void SummonDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
 	m_summon.SetCheck(configData->summon);
-	sprintf(buf, "%d", configData->summonLessThan);   m_summonLessThan.SetWindowText(buf);
-	sprintf(buf, "%s", configData->summonName);               m_summonName.SetWindowText(buf);
-	sprintf(buf, "%d", configData->summonMana);               m_summonMana.SetWindowText(buf);
+	sprintf(buf, "%d", configData->summonLessThan);
+	m_summonLessThan.SetWindowText(buf);
+	sprintf(buf, "%s", configData->summonName);
+	m_summonName.SetWindowText(buf);
+	sprintf(buf, "%d", configData->summonMana);
+	m_summonMana.SetWindowText(buf);
 	OnToolSpellcasterSummon();
 }
 
-void SummonDialog::controlsToConfig(CConfigData *newConfigData) {
+void SummonDialog::controlsToConfig(CConfigData *newConfigData)
+{
 	char buf[128];
-	newConfigData->summon                                                   = m_summon.GetCheck();
-	m_summonLessThan.GetWindowText(buf, 127); newConfigData->summonLessThan = atoi(buf);
-	m_summonMana.GetWindowText(buf, 127); newConfigData->summonMana         = atoi(buf);
+	newConfigData->summon = m_summon.GetCheck();
+	m_summonLessThan.GetWindowText(buf, 127);
+	newConfigData->summonLessThan = atoi(buf);
+	m_summonMana.GetWindowText(buf, 127);
+	newConfigData->summonMana = atoi(buf);
 	m_summonName.GetWindowText(newConfigData->summonName, 127);
 }
 
@@ -180,7 +188,7 @@ void SummonDialog::OnItemchangingCreatureList(NMHDR* pNMHDR, LRESULT* pResult)
 	NM_LISTVIEW* pNMListView = (NM_LISTVIEW*)pNMHDR;
 
 	*pResult = 0;
-	if((pNMListView->uNewState & LVIS_SELECTED))
+	if ((pNMListView->uNewState & LVIS_SELECTED))
 	{
 		m_summonName.SetWindowText(m_creatureList.GetItemText(pNMListView->iItem, 0));
 		m_summonMana.SetWindowText(m_creatureList.GetItemText(pNMListView->iItem, 1));

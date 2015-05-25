@@ -16,13 +16,17 @@ class MyDialog : public CDialog
 {
 // Construction
 public:
-	virtual void configToControls(CConfigData *){
+	virtual void configToControls(CConfigData *)
+	{
 	};
-	virtual void controlsToConfig(CConfigData *){
+	virtual void controlsToConfig(CConfigData *)
+	{
 	};
-	virtual void enableControls(){
+	virtual void enableControls()
+	{
 	};
-	virtual void disableControls(){
+	virtual void disableControls()
+	{
 	};
 	MyDialog(UINT nIDTemplate, CWnd* pParent = NULL);   // standard constructor
 	~MyDialog();   // standard constructor

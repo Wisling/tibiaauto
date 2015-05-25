@@ -13,9 +13,12 @@ typedef map<string, string> attributeMap;
 class SaxListener
 {
 public:
-	SaxListener() {
+	SaxListener()
+	{
 	}
-	virtual ~SaxListener() {
+
+	virtual ~SaxListener()
+	{
 	}
 
 	virtual void elementStarted(const string &, int)                 = 0;
@@ -28,16 +31,22 @@ public:
 class SaxParser
 {
 public:
-	SaxParser(SaxListener *sl) {
+	SaxParser(SaxListener *sl)
+	{
 		listener = sl;
 	}
-	~SaxParser() {
+
+	~SaxParser()
+	{
 		delete listener;
 	}
+
 	void parse(istream &);
-	SaxListener *getListener() {
+	SaxListener *getListener()
+	{
 		return listener;
 	}
+
 private:
 	void addElement(string &, int);
 	void addElement(vector<char> &, int);

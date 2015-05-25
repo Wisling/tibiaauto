@@ -12,7 +12,8 @@ class Template
 {
 public:
 	Template(const string &fn, streamsize st, streamsize ed)
-		: start(st), end(ed) {
+		: start(st), end(ed)
+	{
 		for (size_t ix = 0; ix < filenames.size(); ++ix)
 		{
 			if (filenames[ix] == fn)
@@ -29,6 +30,7 @@ public:
 		filesizes.push_back((unsigned long)s);
 		filenameIx = filenames.size() - 1;
 	}
+
 	string getFilename();
 	static void reloadFile(int index);
 	int filenameIx;

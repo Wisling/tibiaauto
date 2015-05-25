@@ -28,11 +28,11 @@ CTibiaMapTileItem::CTibiaMapTileItem()
 	val5     = 0;
 }
 
-
 CTibiaMapTileItemAddress::CTibiaMapTileItemAddress()
 {
 	CTibiaMapTileItemAddress(0);
 }
+
 CTibiaMapTileItemAddress::CTibiaMapTileItemAddress(int initAddr = 0)
 {
 	extra    = initAddr;

@@ -19,10 +19,13 @@ class NodeWalker;
 class Nodemaster
 {
 public:
-	Nodemaster() {
+	Nodemaster()
+	{
 		templates = NULL;
 	}
-	~Nodemaster() {
+
+	~Nodemaster()
+	{
 	}
 
 	Nodemaster *getChild(const string &);

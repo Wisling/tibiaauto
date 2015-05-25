@@ -88,7 +88,6 @@ void kernelInit()
 	kernel->bootstrap();
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 
 char *kernelRespond(char *text, char *id)

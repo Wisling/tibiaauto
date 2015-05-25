@@ -37,7 +37,6 @@ CAutoResponderParser::~CAutoResponderParser()
 {
 }
 
-
 void CAutoResponderParser::parseThread(DOMNode *node, CAutoResponderParserContext *context)
 {
 	char *selfNodeNameTmp = CUtil::wc2c(node->getNodeName());
@@ -320,7 +319,6 @@ void CAutoResponderParser::processNodeDance(DOMNode *node, CAutoResponderParserC
 		Sleep(250);
 	}
 }
-
 
 int CAutoResponderParser::processNodeBoolCondition(DOMNode *node, CAutoResponderParserContext *context)
 {
@@ -628,7 +626,6 @@ int CAutoResponderParser::processNodeBoolMessage(DOMNode *node, CAutoResponderPa
 		return 0;
 	}
 }
-
 
 void CAutoResponderParser::registerDebug(char *msg, CAutoResponderParserContext *context)
 {

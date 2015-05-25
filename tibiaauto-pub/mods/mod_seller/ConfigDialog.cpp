@@ -32,14 +32,15 @@ void saveSellers();
 
 
 CConfigDialog::CConfigDialog(CMod_SellerApp *app, CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app = app;
 }
 
-
-void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
+void CConfigDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDC_FRAME_BUYSELL_CONTROLS, m_BuySellControlsFrame);
@@ -96,7 +97,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	DDX_Control(pDX, IDC_SELLER_BUY4_REMOVE, m_BuyBoxRemove[3]);
 }
 
-
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
 ON_WM_ERASEBKGND()
@@ -144,15 +144,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() {
+void CConfigDialog::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() {
+void CConfigDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {
+void CConfigDialog::OnEnable()
+{
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
@@ -167,7 +170,8 @@ void CConfigDialog::OnEnable() {
 	}
 }
 
-void CConfigDialog::disableControls() {
+void CConfigDialog::disableControls()
+{
 	for (int x = 0; x < MAX_SELLERS; x++)
 	{
 		m_Seller[x].EnableWindow(false);
@@ -190,7 +194,8 @@ void CConfigDialog::disableControls() {
 	m_suggestBanker.EnableWindow(false);
 }
 
-void CConfigDialog::enableControls() {
+void CConfigDialog::enableControls()
+{
 	for (int x = 0; x < MAX_SELLERS; x++)
 	{
 		m_Seller[x].EnableWindow(true);
@@ -216,7 +221,8 @@ void CConfigDialog::enableControls() {
 	onSellOnCap();
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {
+void CConfigDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
 	reloadSaleItems();
 	reloadSellers();
@@ -246,7 +252,8 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 			}
 		}
 	}
-	sprintf(buf, "%d", configData->sellWhen);         m_sellWhen.SetWindowText(buf);
+	sprintf(buf, "%d", configData->sellWhen);
+	m_sellWhen.SetWindowText(buf);
 	m_sellOnCap.SetCheck(configData->sellOnCap);
 	m_sellOnSpace.SetCheck(configData->sellOnSpace);
 
@@ -260,7 +267,8 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	m_suggestBanker.SetCheck(configData->suggestBanker);
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {
+CConfigData * CConfigDialog::controlsToConfig()
+{
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 	char paramString[128];
@@ -314,9 +322,10 @@ CConfigData * CConfigDialog::controlsToConfig() {
 		newConfigData->sellerList[i].sellerY = sellersInfo[index].yPos;
 		newConfigData->sellerList[i].sellerZ = sellersInfo[index].zPos;
 	}
-	newConfigData->sellOnCap                                    = m_sellOnCap.GetCheck();
-	newConfigData->sellOnSpace                                  = m_sellOnSpace.GetCheck();
-	m_sellWhen.GetWindowText(buf, 127); newConfigData->sellWhen = atoi(buf);
+	newConfigData->sellOnCap   = m_sellOnCap.GetCheck();
+	newConfigData->sellOnSpace = m_sellOnSpace.GetCheck();
+	m_sellWhen.GetWindowText(buf, 127);
+	newConfigData->sellWhen = atoi(buf);
 	sprintf(newConfigData->modPriorityStr, "%d", m_modPriority.GetCurSel() + 1);
 	newConfigData->stopBySeller  = m_stopBySeller.GetCheck();
 	newConfigData->suggestBanker = m_suggestBanker.GetCheck();
@@ -324,14 +333,15 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
 		CMemReaderProxy reader;
 
 		char buf[256];
-		switch(globalSellerState)
+		switch (globalSellerState)
 		{
 		case CToolSellerState_notRunning:
 			m_stateSeller.SetWindowText("Not running");
@@ -355,7 +365,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 			m_stateSeller.SetWindowText("Unknown state");
 			break;
 		}
-		if(atoi(reader.getGlobalVariable("banker_suggestion")))
+		if (atoi(reader.getGlobalVariable("banker_suggestion")))
 		{
 			sprintf(buf, "(%s gold)", reader.getGlobalVariable("banker_suggestion"));
 			m_bankerSuggestion.SetWindowText(buf);
@@ -369,21 +379,23 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
+void CConfigDialog::DoSetButtonSkin()
+{
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_enable);
 	skin.SetButtonSkin(m_addSeller);
 	for (int loop = 0; loop < MAX_SELLERS; loop++)
 	{
-		skin.SetButtonSkin( m_BuyBoxAdd[loop]);
-		skin.SetButtonSkin( m_BuyBoxRemove[loop]);
-		skin.SetButtonSkin( m_SellBoxAdd[loop]);
-		skin.SetButtonSkin( m_SellBoxRemove[loop]);
+		skin.SetButtonSkin(m_BuyBoxAdd[loop]);
+		skin.SetButtonSkin(m_BuyBoxRemove[loop]);
+		skin.SetButtonSkin(m_SellBoxAdd[loop]);
+		skin.SetButtonSkin(m_SellBoxRemove[loop]);
 		m_Seller[loop].LimitText(127);
 	}
 }
 
-BOOL CConfigDialog::OnInitDialog() {
+BOOL CConfigDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
@@ -393,16 +405,18 @@ BOOL CConfigDialog::OnInitDialog() {
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
+{
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CConfigDialog::activateEnableButton(int enable) {
+void CConfigDialog::activateEnableButton(int enable)
+{
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::reloadSellers() {
+void CConfigDialog::reloadSellers()
+{
 	CTibiaItemProxy itemProxy;
 	while (m_Seller[0].GetCount() > 0)
 		m_Seller[0].DeleteString(0);
@@ -425,16 +439,19 @@ void CConfigDialog::reloadSellers() {
 	m_Seller[3].SetCurSel(3);
 }
 
-int initalizeSellers() {
+int initalizeSellers()
+{
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
 	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
 
-	ifstream sellerFile (pathBuf, ios::in);
+	ifstream sellerFile(pathBuf, ios::in);
 	if (!sellerFile.is_open())
 	{
-		AfxMessageBox("File TibiaAuto-Sellers.csv Not found!"); sellerFile.close(); return 0;
+		AfxMessageBox("File TibiaAuto-Sellers.csv Not found!");
+		sellerFile.close();
+		return 0;
 	}
 	char buf[128] = {0};
 
@@ -457,13 +474,14 @@ int initalizeSellers() {
 	return 1;
 }
 
-void saveSellers(){
+void saveSellers()
+{
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
 	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
 
-	ofstream sellerFile (pathBuf, ios::out);
+	ofstream sellerFile(pathBuf, ios::out);
 	if (!sellerFile.is_open())
 	{
 		AfxMessageBox("File TibiaAuto-Sellers.csv Not found!");
@@ -479,8 +497,8 @@ void saveSellers(){
 	sellerFile.close();
 }
 
-
-void CConfigDialog::reloadSaleItems() {
+void CConfigDialog::reloadSaleItems()
+{
 	CTibiaItemProxy itemProxy;
 	while (m_tradeItemList.GetCount() > 0)
 		m_tradeItemList.DeleteString(0);
@@ -490,7 +508,8 @@ void CConfigDialog::reloadSaleItems() {
 	m_tradeItemList.SetCurSel(0);
 }
 
-void CConfigDialog::sellBoxAdd(int index) {
+void CConfigDialog::sellBoxAdd(int index)
+{
 	char amount[16];
 	int sel = m_tradeItemList.GetCurSel();
 	m_quantityBuySell.GetWindowText(amount, 15);
@@ -507,19 +526,29 @@ void CConfigDialog::sellBoxAdd(int index) {
 	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
-void CConfigDialog::sellBoxAdd0() {
+
+void CConfigDialog::sellBoxAdd0()
+{
 	sellBoxAdd(0);
 }
-void CConfigDialog::sellBoxAdd1() {
+
+void CConfigDialog::sellBoxAdd1()
+{
 	sellBoxAdd(1);
 }
-void CConfigDialog::sellBoxAdd2() {
+
+void CConfigDialog::sellBoxAdd2()
+{
 	sellBoxAdd(2);
 }
-void CConfigDialog::sellBoxAdd3() {
+
+void CConfigDialog::sellBoxAdd3()
+{
 	sellBoxAdd(3);
 }
-void CConfigDialog::buyBoxAdd(int index) {
+
+void CConfigDialog::buyBoxAdd(int index)
+{
 	char amount[16];
 	char salePrice[16];
 	char quantity[16];
@@ -540,19 +569,29 @@ void CConfigDialog::buyBoxAdd(int index) {
 	m_buyTriggerQuantity.SetWindowText("0");
 	m_tradeItemList.SetCurSel(0);
 }
-void CConfigDialog::buyBoxAdd0() {
+
+void CConfigDialog::buyBoxAdd0()
+{
 	buyBoxAdd(0);
 }
-void CConfigDialog::buyBoxAdd1() {
+
+void CConfigDialog::buyBoxAdd1()
+{
 	buyBoxAdd(1);
 }
-void CConfigDialog::buyBoxAdd2() {
+
+void CConfigDialog::buyBoxAdd2()
+{
 	buyBoxAdd(2);
 }
-void CConfigDialog::buyBoxAdd3() {
+
+void CConfigDialog::buyBoxAdd3()
+{
 	buyBoxAdd(3);
 }
-void CConfigDialog::sellBoxRemove(int index) {
+
+void CConfigDialog::sellBoxRemove(int index)
+{
 	char paramString[128];
 	char itemName[128];
 	int sel = m_SellBox[index].GetCurSel();
@@ -576,19 +615,29 @@ void CConfigDialog::sellBoxRemove(int index) {
 	m_SellBox[index].DeleteString(sel);
 	m_SellBox[index].SetCurSel(min(m_SellBox[index].GetCount() - 1, max(0, sel - 1)));
 }
-void CConfigDialog::sellBoxRemove0() {
+
+void CConfigDialog::sellBoxRemove0()
+{
 	sellBoxRemove(0);
 }
-void CConfigDialog::sellBoxRemove1() {
+
+void CConfigDialog::sellBoxRemove1()
+{
 	sellBoxRemove(1);
 }
-void CConfigDialog::sellBoxRemove2() {
+
+void CConfigDialog::sellBoxRemove2()
+{
 	sellBoxRemove(2);
 }
-void CConfigDialog::sellBoxRemove3() {
+
+void CConfigDialog::sellBoxRemove3()
+{
 	sellBoxRemove(3);
 }
-void CConfigDialog::buyBoxRemove(int index) {
+
+void CConfigDialog::buyBoxRemove(int index)
+{
 	char buf[64];
 	char paramString[128];
 	char itemName[128];
@@ -619,25 +668,34 @@ void CConfigDialog::buyBoxRemove(int index) {
 	m_BuyBox[index].DeleteString(sel);
 	m_BuyBox[index].SetCurSel(min(m_BuyBox[index].GetCount() - 1, max(0, sel - 1)));
 }
-void CConfigDialog::buyBoxRemove0() {
+
+void CConfigDialog::buyBoxRemove0()
+{
 	buyBoxRemove(0);
 }
-void CConfigDialog::buyBoxRemove1() {
+
+void CConfigDialog::buyBoxRemove1()
+{
 	buyBoxRemove(1);
 }
-void CConfigDialog::buyBoxRemove2() {
+
+void CConfigDialog::buyBoxRemove2()
+{
 	buyBoxRemove(2);
 }
-void CConfigDialog::buyBoxRemove3() {
+
+void CConfigDialog::buyBoxRemove3()
+{
 	buyBoxRemove(3);
 }
 
-void CConfigDialog::onSellOnCap() {
+void CConfigDialog::onSellOnCap()
+{
 	m_sellWhen.EnableWindow(m_sellOnCap.GetCheck());
 }
 
-
-void CConfigDialog::OnAddSeller(){
+void CConfigDialog::OnAddSeller()
+{
 	CMemReaderProxy reader;
 	CMemConstData memConstData = reader.getMemConstData();
 	char buf[128];

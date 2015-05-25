@@ -65,7 +65,6 @@ void CToolItemConfig::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CToolItemConfig, CDialog)
 //{{AFX_MSG_MAP(CToolItemConfig)
 ON_WM_CLOSE()
@@ -107,7 +106,8 @@ void CToolItemConfig::OnOK()
 	ShowWindow(SW_HIDE);
 }
 
-void CToolItemConfig::ControlsToConfig(){
+void CToolItemConfig::ControlsToConfig()
+{
 	CTibiaItemProxy itemProxy;
 	itemProxy.setItemsTree(NULL);//deletes old tree and makes blank one
 	CTibiaTree* dataTree = itemProxy.getItemsTree();
@@ -127,7 +127,8 @@ void CToolItemConfig::ControlsToConfig(){
 	}
 }
 
-void CToolItemConfig::OnCancel(){
+void CToolItemConfig::OnCancel()
+{
 	ConfigToControls();
 	CDialog::OnCancel();
 }
@@ -137,7 +138,8 @@ void CToolItemConfig::OnClose()
 	ShowWindow(SW_HIDE);
 }
 
-static void DeleteGUITreeItem(CTreeCtrl* treeCtrl, HTREEITEM treeItem, HTREEITEM rootItem /*=0*/){
+static void DeleteGUITreeItem(CTreeCtrl* treeCtrl, HTREEITEM treeItem, HTREEITEM rootItem /*=0*/)
+{
 	if (!rootItem)
 		rootItem = treeItem;     //sets the root item for rest of recursive calls
 	HTREEITEM child = treeCtrl->GetChildItem(treeItem);
@@ -162,7 +164,8 @@ static void DeleteGUITreeItem(CTreeCtrl* treeCtrl, HTREEITEM treeItem, HTREEITEM
 	}
 }
 
-static int CreateGUITree(CTreeCtrl* treeCtrl, HTREEITEM guiTree, CTibiaTree* dataTree){
+static int CreateGUITree(CTreeCtrl* treeCtrl, HTREEITEM guiTree, CTibiaTree* dataTree)
+{
 	//recirsively ensures all children of dataTree are added as children of guiTree
 	int size = dataTree->children.size();
 
@@ -186,7 +189,7 @@ static int CreateGUITree(CTreeCtrl* treeCtrl, HTREEITEM guiTree, CTibiaTree* dat
 			val = data->IsLooted() ? 2 : 0;
 			treeCtrl->SetItemImage(newItem, val, val);
 		}
-		else if(child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)//Branch node
+		else if (child->HasChildren() && child->data->GetType() == TT_BRANCH_NODE)//Branch node
 		{
 			CTibiaTreeBranchData* data = (CTibiaTreeBranchData*)child->data;
 
@@ -211,7 +214,8 @@ static int CreateGUITree(CTreeCtrl* treeCtrl, HTREEITEM guiTree, CTibiaTree* dat
 	return ret;
 }
 
-static void CreateDataTree(CTibiaTree* dataTree, CTreeCtrl* treeCtrl, HTREEITEM guiTree){
+static void CreateDataTree(CTibiaTree* dataTree, CTreeCtrl* treeCtrl, HTREEITEM guiTree)
+{
 	//recirsively ensures all children of guiTree are added as children of dataTree
 	HTREEITEM child = treeCtrl->GetChildItem(guiTree);
 	while (child != NULL)
@@ -250,7 +254,8 @@ static void CreateDataTree(CTibiaTree* dataTree, CTreeCtrl* treeCtrl, HTREEITEM 
 	}
 }
 
-void CToolItemConfig::ConfigToControls(){
+void CToolItemConfig::ConfigToControls()
+{
 	CancelTwoStepOperations();
 	char buf[16384];
 	CTibiaItemProxy itemProxy;
@@ -282,20 +287,20 @@ void CToolItemConfig::OnToolItemconfigRefresh()
 	ConfigToControls();
 }
 
-
-void CToolItemConfig::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_Cancel);
-	skin.SetButtonSkin(     m_RefreshItems);
-	skin.SetButtonSkin(     m_EditFood);
-	skin.SetButtonSkin(     m_DeleteFood);
-	skin.SetButtonSkin(     m_AddFood);
-	skin.SetButtonSkin(     m_AddItem);
-	skin.SetButtonSkin(     m_EditItem);
-	skin.SetButtonSkin(     m_DeleteItem);
-	skin.SetButtonSkin(     m_itemSort);
-	skin.SetButtonSkin(     m_helpInfo);
-	skin.SetButtonSkin(     m_selectedToBranch);
+void CToolItemConfig::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_Cancel);
+	skin.SetButtonSkin(m_RefreshItems);
+	skin.SetButtonSkin(m_EditFood);
+	skin.SetButtonSkin(m_DeleteFood);
+	skin.SetButtonSkin(m_AddFood);
+	skin.SetButtonSkin(m_AddItem);
+	skin.SetButtonSkin(m_EditItem);
+	skin.SetButtonSkin(m_DeleteItem);
+	skin.SetButtonSkin(m_itemSort);
+	skin.SetButtonSkin(m_helpInfo);
+	skin.SetButtonSkin(m_selectedToBranch);
 }
 
 BOOL CToolItemConfig::OnInitDialog()
@@ -318,13 +323,16 @@ BOOL CToolItemConfig::OnInitDialog()
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void CToolItemConfig::OnFoodAdd() {
+void CToolItemConfig::OnFoodAdd()
+{
 	CancelTwoStepOperations();
 	CFoodAdd *dialog = new CFoodAdd(&m_foodList);
 	dialog->DoModal();
 	delete dialog;
 }
-void CToolItemConfig::OnFoodEdit() {
+
+void CToolItemConfig::OnFoodEdit()
+{
 	CancelTwoStepOperations();
 	int index = m_foodList.GetCurSel();
 
@@ -341,7 +349,9 @@ void CToolItemConfig::OnFoodEdit() {
 
 	free(name);
 }
-void CToolItemConfig::OnFoodDelete() {
+
+void CToolItemConfig::OnFoodDelete()
+{
 	CancelTwoStepOperations();
 	int index = m_foodList.GetCurSel();
 	m_foodList.DeleteString(index);
@@ -364,7 +374,8 @@ void CToolItemConfig::OnAddItem()
 	SetParentsCheck(&m_itemsTree, item, 0);
 }
 
-void CToolItemConfig::OnItemEdit() {
+void CToolItemConfig::OnItemEdit()
+{
 	CancelTwoStepOperations();
 	HTREEITEM item = m_itemsTree.GetSelectedItem();
 	if (item == NULL)
@@ -375,7 +386,8 @@ void CToolItemConfig::OnItemEdit() {
 	delete dialog;
 }
 
-void CToolItemConfig::OnItemDelete(){
+void CToolItemConfig::OnItemDelete()
+{
 	CancelTwoStepOperations();
 	HTREEITEM item = m_itemsTree.GetSelectedItem();
 	if (item == NULL)
@@ -385,7 +397,7 @@ void CToolItemConfig::OnItemDelete(){
 		selItem = m_itemsTree.GetParentItem(item);
 	if (m_itemsTree.ItemHasChildren(item) && m_itemsTree.GetItemData(item) == 0)//Branch node
 
-		if(AfxMessageBox("Are you sure you want to delete this branch and all its items?", MB_OKCANCEL) != IDOK)
+		if (AfxMessageBox("Are you sure you want to delete this branch and all its items?", MB_OKCANCEL) != IDOK)
 			return;
 	DeleteGUITreeItem(&m_itemsTree, item);
 
@@ -393,7 +405,8 @@ void CToolItemConfig::OnItemDelete(){
 		m_itemsTree.SelectItem(selItem);
 }
 
-char *CToolItemConfig::parseName(char* name) {
+char *CToolItemConfig::parseName(char* name)
+{
 	char *buf = NULL;
 	int len   = strlen(name);
 	buf    = (char*)malloc(len + 1);
@@ -410,7 +423,9 @@ char *CToolItemConfig::parseName(char* name) {
 	}
 	return buf;
 }
-int CToolItemConfig::parseId(char* name) {
+
+int CToolItemConfig::parseId(char* name)
+{
 	int len = strlen(name);
 	for (int k = len; k >= 0; k--)
 	{
@@ -420,7 +435,8 @@ int CToolItemConfig::parseId(char* name) {
 	return 0;
 }
 
-void SetChildrenCheck(CTreeCtrl* treeCtrl, HTREEITEM treeItem, BOOL check){
+void SetChildrenCheck(CTreeCtrl* treeCtrl, HTREEITEM treeItem, BOOL check)
+{
 	//Recursively sets children as checked if check or not checked !check
 	int val = check ? 2 : 0;
 	treeCtrl->SetItemImage(treeItem, val, val);
@@ -432,17 +448,18 @@ void SetChildrenCheck(CTreeCtrl* treeCtrl, HTREEITEM treeItem, BOOL check){
 	}
 }
 
-void SetParentsCheck(CTreeCtrl* treeCtrl, HTREEITEM treeItem, int check){
+void SetParentsCheck(CTreeCtrl* treeCtrl, HTREEITEM treeItem, int check)
+{
 	//Recursively looks at the parents of treeItem and check if all children are checked
 	if (check)
 	{
 		//At least one child is checked so no need to consider unchecked
 		HTREEITEM parent = treeCtrl->GetNextItem(treeItem, TVGN_PARENT);
-		if(parent == NULL)
+		if (parent == NULL)
 			return;
 		int keepFullCheck = check == 2;
 		HTREEITEM item    = treeCtrl->GetNextItem(parent, TVGN_CHILD);
-		while(item != NULL && keepFullCheck)
+		while (item != NULL && keepFullCheck)
 		{
 			int curCheck;
 			treeCtrl->GetItemImage(item, curCheck, curCheck);
@@ -461,11 +478,11 @@ void SetParentsCheck(CTreeCtrl* treeCtrl, HTREEITEM treeItem, int check){
 	{
 		//At least one child is unchecked so no need to consider full check
 		HTREEITEM parent = treeCtrl->GetNextItem(treeItem, TVGN_PARENT);
-		if(parent == NULL)
+		if (parent == NULL)
 			return;
 		int keepCheck  = 0;
 		HTREEITEM item = treeCtrl->GetNextItem(parent, TVGN_CHILD);
-		while(item != NULL && !keepCheck)
+		while (item != NULL && !keepCheck)
 		{
 			int curCheck;
 			treeCtrl->GetItemImage(item, curCheck, curCheck);
@@ -507,7 +524,7 @@ void CToolItemConfig::OnClickTree(NMHDR* pNMHDR, LRESULT* pResult)
 
 		m_itemsTree.SelectItem(treeItem);
 
-		if(isChecked) //Uncheck
+		if (isChecked) //Uncheck
 		{
 			SetChildrenCheck(&m_itemsTree, treeItem, FALSE);
 			SetParentsCheck(&m_itemsTree, treeItem, 0);
@@ -633,7 +650,7 @@ HTREEITEM moveTree(CTreeCtrl* treeDst, TV_INSERTSTRUCT dest, CTreeCtrl* treeSrc,
 	if (itemData)
 		treeDst->SetItemData(parent, (long)new CGUITreeItemData(itemData->id, itemData->type));
 
-	if(recursiveStop == NULL)
+	if (recursiveStop == NULL)
 		recursiveStop = parent;
 	HTREEITEM child = treeSrc->GetChildItem(src);
 	while (child != NULL)
@@ -717,7 +734,6 @@ void CToolItemConfig::OnLButtonUp(UINT nFlags, CPoint point)
 	}
 }
 
-
 void CToolItemConfig::OnSelchangingTree(NMHDR* pNMHDR, LRESULT* pResult)
 {
 	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
@@ -737,17 +753,18 @@ void CToolItemConfig::OnItemSort()
 		item = TVI_ROOT;
 	//If has no children then sort parent
 	HTREEITEM child = m_itemsTree.GetNextItem(item, TVGN_CHILD);
-	if(child == NULL)
+	if (child == NULL)
 	{
 		HTREEITEM parent = m_itemsTree.GetNextItem(item, TVGN_PARENT);
-		if(parent != NULL)
+		if (parent != NULL)
 			item = parent;
 	}
 	m_itemsTree.SortChildren(item);
 }
 
-void CToolItemConfig::CancelTwoStepOperations(){
-	if(actionIndicator)
+void CToolItemConfig::CancelTwoStepOperations()
+{
+	if (actionIndicator)
 	{
 		m_itemsTree.SetItemState(actionItem, 0, TVIS_CUT);
 		actionItem      = NULL;
@@ -776,7 +793,7 @@ void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 
 		m_itemsTree.SelectItem(treeItem);
 
-		if(isChecked) //Uncheck
+		if (isChecked) //Uncheck
 		{
 			SetChildrenCheck(&m_itemsTree, treeItem, FALSE);
 			SetParentsCheck(&m_itemsTree, treeItem, 0);
@@ -794,12 +811,12 @@ void CToolItemConfig::OnKeydownTree(NMHDR* pNMHDR, LRESULT* pResult)
 			return;
 		if (m_itemsTree.ItemHasChildren(treeItem) && m_itemsTree.GetItemData(treeItem) == 0)//Branch node
 		{
-			if(AfxMessageBox("Are you sure you want to delete this branch and all its items?", MB_OKCANCEL) != IDOK)
+			if (AfxMessageBox("Are you sure you want to delete this branch and all its items?", MB_OKCANCEL) != IDOK)
 				return;
 		}
 		else
 		{
-			if(AfxMessageBox("Are you sure you want to delete this item?", MB_OKCANCEL) != IDOK)
+			if (AfxMessageBox("Are you sure you want to delete this item?", MB_OKCANCEL) != IDOK)
 				return;
 		}
 		DeleteGUITreeItem(&m_itemsTree, treeItem);
@@ -891,7 +908,8 @@ void CToolItemConfig::OnHelpInfo()
 	AfxMessageBox("Currently Implemented Features:\nPress Spacebar to check/uncheck\nUse arrow keys to browse tree\nClick on +- sign for expanding\nDrag and drop to move items and branches.\nButton actions are performed on selected items\nCopying, cutting and pasting items\n(Clicking in bottom whitespace clears selection/selects root)");
 }
 
-void addChildrenToTreeItem(CTreeCtrl* treeCtrl, HTREEITEM parentItem, HTREEITEM destItem){
+void addChildrenToTreeItem(CTreeCtrl* treeCtrl, HTREEITEM parentItem, HTREEITEM destItem)
+{
 	HTREEITEM child = treeCtrl->GetChildItem(parentItem);
 	while (child != NULL)
 	{
@@ -899,7 +917,7 @@ void addChildrenToTreeItem(CTreeCtrl* treeCtrl, HTREEITEM parentItem, HTREEITEM 
 		{
 			addChildrenToTreeItem(treeCtrl, child, destItem);
 		}
-		else if(!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child) != 0)
+		else if (!treeCtrl->ItemHasChildren(child) && treeCtrl->GetItemData(child) != 0)
 		{
 			int check;
 			treeCtrl->GetItemImage(child, check, check);

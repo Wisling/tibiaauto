@@ -23,7 +23,6 @@ CConfigDialogStatus::CConfigDialogStatus(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void CConfigDialogStatus::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -32,7 +31,6 @@ void CConfigDialogStatus::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDD_CONFIGSTATUS_LOG, m_log);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialogStatus, CDialog)
 //{{AFX_MSG_MAP(CConfigDialogStatus)
@@ -82,7 +80,6 @@ void CConfigDialogStatus::OnOK()
 {
 	ShowWindow(SW_HIDE);
 }
-
 
 LRESULT CConfigDialogStatus::OnMyMessageAddToLog(UINT wParam, LONG lParam)
 {

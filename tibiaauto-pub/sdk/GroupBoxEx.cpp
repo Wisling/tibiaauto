@@ -14,13 +14,13 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CGroupBoxEx
 
-CGroupBoxEx::CGroupBoxEx(){
+CGroupBoxEx::CGroupBoxEx()
+{
 }
 
 CGroupBoxEx::~CGroupBoxEx()
 {
 }
-
 
 BEGIN_MESSAGE_MAP(CGroupBoxEx, CWnd)
 //{{AFX_MSG_MAP(CGroupBoxEx)

@@ -23,7 +23,6 @@ CConfigDialog::CConfigDialog(CMod_trademonApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -42,7 +41,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -116,18 +114,20 @@ void CConfigDialog::enableControls()
 	m_tradeMon.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
 	m_tradeTalker.SetCheck(configData->tradeTalk);
 	m_message.SetWindowText(configData->message);
 	m_channel.SetCheck(configData->channel);
-	sprintf(buf, "%d", configData->channelInterval);  m_channelInterval.SetWindowText(buf);
+	sprintf(buf, "%d", configData->channelInterval);
+	m_channelInterval.SetWindowText(buf);
 	m_yell.SetCheck(configData->yell);
-	sprintf(buf, "%d", configData->yellInterval);     m_yellInterval.SetWindowText(buf);
+	sprintf(buf, "%d", configData->yellInterval);
+	m_yellInterval.SetWindowText(buf);
 	m_say.SetCheck(configData->say);
-	sprintf(buf, "%d", configData->sayInterval);      m_sayInterval.SetWindowText(buf);
+	sprintf(buf, "%d", configData->sayInterval);
+	m_sayInterval.SetWindowText(buf);
 	m_tradeMon.SetCheck(configData->tradeMon);
 }
 
@@ -138,21 +138,25 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	newConfigData->tradeTalk = m_tradeTalker.GetCheck();
 	m_message.GetWindowText(newConfigData->message, 255);
-	newConfigData->message[255]                                               = 0;
-	newConfigData->channel                                                    = m_channel.GetCheck();
-	m_channelInterval.GetWindowText(buf, 128); newConfigData->channelInterval = atoi(buf);
-	newConfigData->yell                                                       = m_yell.GetCheck();
-	m_yellInterval.GetWindowText(buf, 128); newConfigData->yellInterval       = atoi(buf);
-	newConfigData->say                                                        = m_say.GetCheck();
-	m_sayInterval.GetWindowText(buf, 128); newConfigData->sayInterval         = atoi(buf);
-	newConfigData->tradeMon                                                   = m_tradeMon.GetCheck();
+	newConfigData->message[255] = 0;
+	newConfigData->channel      = m_channel.GetCheck();
+	m_channelInterval.GetWindowText(buf, 128);
+	newConfigData->channelInterval = atoi(buf);
+	newConfigData->yell            = m_yell.GetCheck();
+	m_yellInterval.GetWindowText(buf, 128);
+	newConfigData->yellInterval = atoi(buf);
+	newConfigData->say          = m_say.GetCheck();
+	m_sayInterval.GetWindowText(buf, 128);
+	newConfigData->sayInterval = atoi(buf);
+	newConfigData->tradeMon    = m_tradeMon.GetCheck();
 
 	return newConfigData;
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -172,7 +176,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

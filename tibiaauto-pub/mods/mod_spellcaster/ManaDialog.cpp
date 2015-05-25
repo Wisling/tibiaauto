@@ -23,7 +23,6 @@ ManaDialog::ManaDialog(CWnd* pParent /*=NULL*/)
 	//}}AFX_DATA_INIT
 }
 
-
 void ManaDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -34,7 +33,6 @@ void ManaDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_FRAME_MANA, m_ManaFrame);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(ManaDialog, CDialog)
 //{{AFX_MSG_MAP(ManaDialog)
@@ -47,13 +45,15 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // ManaDialog message handlers
 
-void ManaDialog::disableControls() {
+void ManaDialog::disableControls()
+{
 	m_mana.EnableWindow(false);
 	m_manaMana.EnableWindow(false);
 	m_manaSpell.EnableWindow(false);
 }
 
-void ManaDialog::enableControls() {
+void ManaDialog::enableControls()
+{
 	m_mana.EnableWindow(true);
 	if (m_mana.GetCheck())
 	{
@@ -62,18 +62,23 @@ void ManaDialog::enableControls() {
 	}
 }
 
-void ManaDialog::configToControls(CConfigData *configData) {
+void ManaDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
 	m_mana.SetCheck(configData->mana);
-	sprintf(buf, "%d", configData->manaMana);                 m_manaMana.SetWindowText(buf);
-	sprintf(buf, "%s", configData->manaSpell);                m_manaSpell.SetWindowText(buf);
+	sprintf(buf, "%d", configData->manaMana);
+	m_manaMana.SetWindowText(buf);
+	sprintf(buf, "%s", configData->manaSpell);
+	m_manaSpell.SetWindowText(buf);
 	OnToolSpellcasterMana();
 }
 
-void ManaDialog::controlsToConfig(CConfigData *newConfigData) {
+void ManaDialog::controlsToConfig(CConfigData *newConfigData)
+{
 	char buf[128];
-	newConfigData->mana                                         = m_mana.GetCheck();
-	m_manaMana.GetWindowText(buf, 127); newConfigData->manaMana = atoi(buf);
+	newConfigData->mana = m_mana.GetCheck();
+	m_manaMana.GetWindowText(buf, 127);
+	newConfigData->manaMana = atoi(buf);
 	m_manaSpell.GetWindowText(newConfigData->manaSpell, 127);
 }
 

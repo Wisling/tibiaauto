@@ -6,12 +6,14 @@
 
 using namespace std;
 
-TokenProxyListener::TokenProxyListener(SocketListener *sl, const string &token) {
+TokenProxyListener::TokenProxyListener(SocketListener *sl, const string &token)
+{
 	separator = token;
 	forward   = sl;
 }
 
-void TokenProxyListener::recv(string &str) {
+void TokenProxyListener::recv(string &str)
+{
 	//	This overrides SocketListener::recv(string &);
 	string::size_type index;
 	buffer += str;

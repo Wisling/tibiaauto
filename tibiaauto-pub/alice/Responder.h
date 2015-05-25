@@ -17,7 +17,8 @@ extern bool serverRunning;
 
 class Responder {
 public:
-	virtual ~Responder() {
+	virtual ~Responder()
+	{
 	};
 
 	/**

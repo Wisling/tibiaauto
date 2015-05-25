@@ -41,11 +41,12 @@ static cstr_hashset sh;
 #endif // ifdef FANCY_COMPILER
 
 //should probly get rid of this function
-char *mystrdup(const char *str){
+char *mystrdup(const char *str)
+{
 /*#ifdef FANCY_COMPILER
         return strdup(str);
  #else*/
-	if(!str)
+	if (!str)
 		return NULL;
 	char *ret = new char[strlen(str) + 1];
 	strcpy(ret, str);
@@ -54,11 +55,11 @@ char *mystrdup(const char *str){
 //#endif
 }
 
-
-char *get_string(const string &str){
+char *get_string(const string &str)
+{
 #ifdef FANCY_COMPILER
 	cstr_hashset::const_iterator itr = sh.find(str.c_str());
-	if(itr == sh.end())
+	if (itr == sh.end())
 	{
 		char *c = mystrdup(str.c_str());
 		sh.insert(c);
@@ -71,11 +72,13 @@ char *get_string(const string &str){
 #endif // ifdef FANCY_COMPILER
 }
 
-string trim(const string &text) {
+string trim(const string &text)
+{
 	return trim(text, " \t\n\r");
 }
 
-string trim(const string &text, const string &remove) {
+string trim(const string &text, const string &remove)
+{
 	string result           = text;
 	string::size_type index = result.find_first_not_of(remove);
 	if (index > 0)
@@ -86,7 +89,8 @@ string trim(const string &text, const string &remove) {
 	return result;
 }
 
-string toLower(const string &text) {
+string toLower(const string &text)
+{
 	string result = text;
 	for (unsigned int ix = 0; ix < text.length(); ++ix)
 	{
@@ -95,7 +99,8 @@ string toLower(const string &text) {
 	return result;
 }
 
-string toUpper(const string &text) {
+string toUpper(const string &text)
+{
 	string result = text;
 	for (unsigned int ix = 0; ix < text.length(); ++ix)
 	{
@@ -104,7 +109,8 @@ string toUpper(const string &text) {
 	return result;
 }
 
-string replace(const string &text, char a, char b) {
+string replace(const string &text, char a, char b)
+{
 	string result = "";
 	for (unsigned int ix = 0; ix < text.length(); ++ix)
 	{
@@ -116,7 +122,8 @@ string replace(const string &text, char a, char b) {
 	return result;
 }
 
-string remove(const string &text, char r) {
+string remove(const string &text, char r)
+{
 	string result = "";
 	for (unsigned int ix = 0; ix < text.length(); ++ix)
 	{
@@ -132,7 +139,8 @@ string remove(const string &text, char r) {
         Linux: result in microseconds
         Unsure about other platforms
  */
-long timerMillis() {
+long timerMillis()
+{
 	clock_t time = clock();
 #if !defined(WIN32)
 	return (long)time / 1000;
@@ -144,7 +152,8 @@ long timerMillis() {
 string intToHex(int);
 int hexToInt(char);
 
-string intToHex(int i) {
+string intToHex(int i)
+{
 	string hex = "";
 	if (i == 0)
 		return "0";
@@ -153,34 +162,56 @@ string intToHex(int i) {
 		int j = i % 16;
 		switch (j)
 		{
-		case 15: hex = 'F' + hex; break;
-		case 14: hex = 'E' + hex; break;
-		case 13: hex = 'D' + hex; break;
-		case 12: hex = 'C' + hex; break;
-		case 11: hex = 'B' + hex; break;
-		case 10: hex = 'A' + hex; break;
-		default: hex = ((char)(j + '0')) + hex;
+		case 15:
+			hex = 'F' + hex;
+			break;
+		case 14:
+			hex = 'E' + hex;
+			break;
+		case 13:
+			hex = 'D' + hex;
+			break;
+		case 12:
+			hex = 'C' + hex;
+			break;
+		case 11:
+			hex = 'B' + hex;
+			break;
+		case 10:
+			hex = 'A' + hex;
+			break;
+		default:
+			hex = ((char)(j + '0')) + hex;
 		}
 		i /= 16;
 	}
 	return hex;
 }
 
-int hexToInt(char ch) {
+int hexToInt(char ch)
+{
 	ch = (char)tolower(ch);
 	switch (ch)
 	{
-	case 'f': return 15;
-	case 'e': return 14;
-	case 'd': return 13;
-	case 'c': return 12;
-	case 'b': return 11;
-	case 'a': return 10;
-	default: return (int)(ch - '0');
+	case 'f':
+		return 15;
+	case 'e':
+		return 14;
+	case 'd':
+		return 13;
+	case 'c':
+		return 12;
+	case 'b':
+		return 11;
+	case 'a':
+		return 10;
+	default:
+		return (int)(ch - '0');
 	}
 }
 
-string urlencode(const string &in) {
+string urlencode(const string &in)
+{
 	string e;
 	char ch;
 	for (unsigned int ix = 0; ix < in.length(); ++ix)
@@ -206,7 +237,8 @@ string urlencode(const string &in) {
 	return e;
 }
 
-string urldecode(const string &in) {
+string urldecode(const string &in)
+{
 	string d;
 	int code = 0;
 	char ch;

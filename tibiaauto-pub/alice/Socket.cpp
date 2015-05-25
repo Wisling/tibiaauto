@@ -30,7 +30,8 @@ extern "C" {
 void win32_init_sockets(void);
 void win32_cleanup_sockets(void);
 
-void win32_init_sockets(void) {
+void win32_init_sockets(void)
+{
 	WSADATA d;
 	int err;
 
@@ -55,7 +56,8 @@ void win32_init_sockets(void) {
 	//	Otherwise Winsock2 DLL is fine
 }
 
-void win32_cleanup_sockets(void) {
+void win32_cleanup_sockets(void)
+{
 	WSACleanup();
 }
 }
@@ -65,7 +67,8 @@ string RECV = "recv: ";
 string SEND = "sent: ";
 
 Socket::Socket(int socket, const char* name, int p) : listener(NULL), sd(socket),
-	port(p) {
+	port(p)
+{
 	//	Needed for inheritance
 	this->host = mystrdup(name);
 	#ifdef WIN32
@@ -73,7 +76,8 @@ Socket::Socket(int socket, const char* name, int p) : listener(NULL), sd(socket)
 	#endif // ifdef WIN32
 }
 
-Socket::Socket(const string &host, const int &port) {
+Socket::Socket(const string &host, const int &port)
+{
 	this->host = mystrdup(host.c_str());
 	this->port = port;
 	#ifdef WIN32
@@ -101,7 +105,8 @@ Socket::Socket(const string &host, const int &port) {
 		perror("bind");
 }
 
-Socket::~Socket() {
+Socket::~Socket()
+{
 	disconnect();
 	//delete [] host;
 	host     = NULL;
@@ -113,7 +118,8 @@ Socket::~Socket() {
 
 const int buffer_size = 5000;
 
-void Socket::connect() {
+void Socket::connect()
+{
 	if (sd < 0)
 	{
 		//	Constructing the socket failed previously
@@ -149,7 +155,8 @@ void Socket::connect() {
 		listener->connected();
 }
 
-void Socket::disconnect(const char *reason) {
+void Socket::disconnect(const char *reason)
+{
 	string out = "";
 	if (reason != NULL)
 		out = reason;
@@ -167,26 +174,31 @@ void Socket::disconnect(const char *reason) {
 	listener = NULL;
 }
 
-void Socket::setListener(SocketListener *listener) {
+void Socket::setListener(SocketListener *listener)
+{
 	this->listener = listener;
 }
 
-SocketListener *Socket::getListener() {
+SocketListener *Socket::getListener()
+{
 	return listener;
 }
 
-int Socket::getSD() {
+int Socket::getSD()
+{
 	return sd;
 }
 
-void Socket::process() {
+void Socket::process()
+{
 	//	This gets called from SocketHandler when we
 	//	have something waiting for us (data)
 	string str;
 	read(str);
 }
 
-int Socket::read(string &str) {
+int Socket::read(string &str)
+{
 	int n        = 0;
 	int buf_size = buffer_size;
 	if (buf_size > 1)
@@ -211,7 +223,8 @@ int Socket::read(string &str) {
 	return n;
 }
 
-int Socket::write(const string &str, bool appendNullByte) {
+int Socket::write(const string &str, bool appendNullByte)
+{
 	int n = write_raw(str.c_str(), str.length());
 	//Logger::log(SEND + str, "sio.log", false);
 	#ifdef GUI
@@ -225,7 +238,8 @@ int Socket::write(const string &str, bool appendNullByte) {
 	return n;
 }
 
-int Socket::read_raw(void *buffer, int buf_size) {
+int Socket::read_raw(void *buffer, int buf_size)
+{
 	int n = 0;
 	if (sd < 0)
 		return n;
@@ -250,7 +264,8 @@ int Socket::read_raw(void *buffer, int buf_size) {
 	return n;
 }
 
-int Socket::write_raw(const void *data, int len) {
+int Socket::write_raw(const void *data, int len)
+{
 	int ret;
 	if (sd == -1)
 		return 0;

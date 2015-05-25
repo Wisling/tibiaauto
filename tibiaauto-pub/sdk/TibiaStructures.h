@@ -22,7 +22,8 @@ class CTibiaListData {
 	int val2;
 	int type;
 public:
-	CTibiaListData(int a_val, char* a_s){
+	CTibiaListData(int a_val, char* a_s)
+	{
 		s = (char*)malloc(strlen(a_s) + 1);
 		strcpy(s, a_s);
 
@@ -30,7 +31,9 @@ public:
 		val2 = 0;
 		SetType(0);
 	}
-	CTibiaListData(int a_val, char* a_s, int a_val2, int a_val3){
+
+	CTibiaListData(int a_val, char* a_s, int a_val2, int a_val3)
+	{
 		s = (char*)malloc(strlen(a_s) + 1);
 		strcpy(s, a_s);
 
@@ -38,36 +41,56 @@ public:
 		val2 = a_val2;
 		SetType(a_val3);
 	}
-	char* GetText(){
+
+	char* GetText()
+	{
 		return s;
 	}
-	int GetValue(){
+
+	int GetValue()
+	{
 		return val;
 	}
-	int GetType(){
+
+	int GetType()
+	{
 		return type;
 	}
-	int GetExtraInfo(){
+
+	int GetExtraInfo()
+	{
 		return val2;
 	}
-	void SetExtraInfo(int a_val2){
+
+	void SetExtraInfo(int a_val2)
+	{
 		val2 = a_val2;
 	}
-	void SetValue(int a_val){
+
+	void SetValue(int a_val)
+	{
 		val = a_val;
 	}
-	void SetType(int a_val){
+
+	void SetType(int a_val)
+	{
 		type = a_val;
 	}
-	void SetText(char* a_s){
+
+	void SetText(char* a_s)
+	{
 		free(s);
 		s = (char*)malloc(strlen(a_s) + 1);
 		strcpy(s, a_s);
 	}
-	~CTibiaListData(){
+
+	~CTibiaListData()
+	{
 		free(s);
 	}
-	void toString(char* outStr){
+
+	void toString(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr + ind, "(%d,%s,%d)\n", val, s, val2);
 	}
@@ -81,21 +104,27 @@ public:
 	CTypedPtrArray<CPtrArray, CTibiaListData*> dataList;
 	CUIntArray valList;
 	int memSize;
-	CTibiaList(){
+	CTibiaList()
+	{
 		SetMemSize(8);
 	}
-	~CTibiaList(){
+
+	~CTibiaList()
+	{
 		RemoveAll();
 	}
 
-	bool Add(int a_val, char* a_s, int a_val2 = 0, int a_val3 = 0) {
+	bool Add(int a_val, char* a_s, int a_val2 = 0, int a_val3 = 0)
+	{
 		CTibiaListData* data = new CTibiaListData(a_val, a_s, a_val2, a_val3);
 		if (Add(data))
 			return TRUE;
 		delete data;
 		return FALSE;
 	}
-	bool Add(CTibiaListData* data){
+
+	bool Add(CTibiaListData* data)
+	{
 		if (data == NULL)
 			return FALSE;
 		int a_val = data->GetValue();
@@ -107,11 +136,13 @@ public:
 		dataList.Add(data);
 		valList.Add(a_val);
 		strMap[a_s] = data;
-		if(GetCount() > memSize * 1.5)
+		if (GetCount() > memSize * 1.5)
 			SetMemSize(memSize * 2);
 		return TRUE;
 	}
-	bool HasValue(int val){
+
+	bool HasValue(int val)
+	{
 		int size = dataList.GetSize();
 		for (int i = 0; i < size; i++)
 		{
@@ -120,13 +151,19 @@ public:
 		}
 		return FALSE;
 	}
-	bool HasText(char* s){
+
+	bool HasText(char* s)
+	{
 		return strMap.find(s) != strMap.end();
 	}
-	int GetCount(){
+
+	int GetCount()
+	{
 		return dataList.GetSize();
 	}
-	int GetIndex(int val){
+
+	int GetIndex(int val)
+	{
 		int size = dataList.GetSize();
 		for (int i = 0; i < size; i++)
 		{
@@ -135,7 +172,9 @@ public:
 		}
 		return -1;
 	}
-	char* GetText(int val){
+
+	char* GetText(int val)
+	{
 		int size = dataList.GetSize();
 		for (int i = 0; i < size; i++)
 		{
@@ -144,19 +183,25 @@ public:
 		}
 		return NULL;
 	}
-	int GetValue(char* s){
+
+	int GetValue(char* s)
+	{
 		StrMap::iterator iter = strMap.find(s);
-		if(iter == strMap.end())
+		if (iter == strMap.end())
 			return 0;
 		return iter->second->GetValue();
 	}
-	int GetExtraInfo(char* s){
+
+	int GetExtraInfo(char* s)
+	{
 		StrMap::iterator iter = strMap.find(s);
-		if(iter == strMap.end())
+		if (iter == strMap.end())
 			return 0;
 		return iter->second->GetExtraInfo();
 	}
-	int GetExtraInfo(int val){
+
+	int GetExtraInfo(int val)
+	{
 		int size = dataList.GetSize();
 		for (int i = 0; i < size; i++)
 		{
@@ -165,87 +210,111 @@ public:
 		}
 		return 0;
 	}
-	int GetValueAtIndex(int ind){
+
+	int GetValueAtIndex(int ind)
+	{
 		if (ind >= 0 && ind < dataList.GetSize())
 			return valList[ind];
 		return 0;
 	}
-	char* GetTextAtIndex(int ind){
+
+	char* GetTextAtIndex(int ind)
+	{
 		if (ind >= 0 && ind < dataList.GetSize())
 			return dataList[ind]->GetText();
 		return NULL;
 	}
 
-	int GetTypeAtIndex(int ind) {
+	int GetTypeAtIndex(int ind)
+	{
 		if (ind >= 0 && ind < dataList.GetSize())
 			return dataList[ind]->GetType();
 		return NULL;
 	}
 
-	int GetExtraInfoAtIndex(int ind){
+	int GetExtraInfoAtIndex(int ind)
+	{
 		if (ind >= 0 && ind < dataList.GetSize())
 			return dataList[ind]->GetExtraInfo();
 		return 0;
 	}
-	void SetValueAtIndex(int ind, int val){
+
+	void SetValueAtIndex(int ind, int val)
+	{
 		if (!(ind >= 0 && ind < dataList.GetSize()))
 			AfxMessageBox("CTibiaList index out of bounds!");
 		dataList[ind]->SetValue(val);
 		valList[ind] = val;
 	}
-	void SetTextAtIndex(int ind, char* s){
+
+	void SetTextAtIndex(int ind, char* s)
+	{
 		if (!(ind >= 0 && ind < dataList.GetSize()))
 			AfxMessageBox("CTibiaList index out of bounds!");
 		if (HasText(s))
 			return;
 		CTibiaListData* data  = dataList[ind];
 		StrMap::iterator iter = strMap.find(data->GetText());
-		if(iter == strMap.end())
+		if (iter == strMap.end())
 			AfxMessageBox("Internal Error, strMap missing entry!");
 		//free(iter->first);  string key is same as string within data
 		strMap.erase(iter);
 		data->SetText(s);
 		strMap[data->GetText()] = data;
 	}
-	void SetExtraInfoAtIndex(int ind, int val2){
+
+	void SetExtraInfoAtIndex(int ind, int val2)
+	{
 		if (!(ind >= 0 && ind < dataList.GetSize()))
 			AfxMessageBox("CTibiaList index out of bounds!");
 		dataList[ind]->SetExtraInfo(val2);
 	}
-	bool SetExtraInfo(char* s, int val2){
+
+	bool SetExtraInfo(char* s, int val2)
+	{
 		StrMap::iterator iter = strMap.find(s);
-		if(iter == strMap.end())
+		if (iter == strMap.end())
 			return FALSE;
 		iter->second->SetExtraInfo(val2);
 		return TRUE;
 	}
-	bool SetExtraInfo(int val, int val2){
+
+	bool SetExtraInfo(int val, int val2)
+	{
 		int ind = GetIndex(val);
 		if (ind == -1)
 			return FALSE;
 		dataList[ind]->SetExtraInfo(val2);
 		return TRUE;
 	}
-	void SetTypeAtIndex(int ind, int val2){
+
+	void SetTypeAtIndex(int ind, int val2)
+	{
 		if (!(ind >= 0 && ind < dataList.GetSize()))
 			AfxMessageBox("CTibiaList index out of bounds!");
 		dataList[ind]->SetType(val2);
 	}
-	bool SetType(char* s, int val2){
+
+	bool SetType(char* s, int val2)
+	{
 		StrMap::iterator iter = strMap.find(s);
-		if(iter == strMap.end())
+		if (iter == strMap.end())
 			return FALSE;
 		iter->second->SetType(val2);
 		return TRUE;
 	}
-	bool SetType(int val, int val2){
+
+	bool SetType(int val, int val2)
+	{
 		int ind = GetIndex(val);
 		if (ind == -1)
 			return FALSE;
 		dataList[ind]->SetType(val2);
 		return TRUE;
 	}
-	bool Remove(char* s){
+
+	bool Remove(char* s)
+	{
 		StrMap::iterator iter = strMap.find(s);
 		if (iter == strMap.end())
 			return FALSE;
@@ -267,7 +336,9 @@ public:
 			SetMemSize(memSize / 2);
 		return TRUE;
 	}
-	bool Remove(int val){
+
+	bool Remove(int val)
+	{
 		int i;
 		int size = dataList.GetSize();
 		for (i = 0; i < size; i++)
@@ -288,7 +359,9 @@ public:
 			SetMemSize(memSize / 2);
 		return TRUE;
 	}
-	bool RemoveAtIndex(int ind){
+
+	bool RemoveAtIndex(int ind)
+	{
 		if (!(ind >= 0 && ind < dataList.GetSize()))
 			AfxMessageBox("CTibiaList index out of bounds!");
 		StrMap::iterator iter = strMap.find(dataList[ind]->GetText());
@@ -303,11 +376,13 @@ public:
 		return TRUE;
 	}
 
-	CUIntArray* GetArrayPtr(){
+	CUIntArray* GetArrayPtr()
+	{
 		return &valList;
 	}
 
-	void RemoveAll(){
+	void RemoveAll()
+	{
 		StrMap::iterator iter = strMap.begin();
 		while (iter != strMap.end())
 		{
@@ -320,7 +395,9 @@ public:
 		valList.RemoveAll();
 		SetMemSize(8);
 	}
-	void toString2(char* outStr){
+
+	void toString2(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr + ind, "List:");
 		StrMap::iterator iter = strMap.begin();
@@ -331,7 +408,9 @@ public:
 			iter++;
 		}
 	}
-	void toString(char* outStr){
+
+	void toString(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr, "List:");
 		int size = GetCount();
@@ -347,13 +426,16 @@ public:
 			iter++;
 		}
 	}
+
 private:
 	void Free(StrMap::iterator it)
 	{
 		delete it->second;//data contains same char* as map key
 		strMap.erase(it);
 	}
-	void SetMemSize(int new_size){
+
+	void SetMemSize(int new_size)
+	{
 		memSize = max(new_size, 1);
 		valList.SetSize(GetCount(), memSize);
 		dataList.SetSize(GetCount(), memSize);
@@ -377,24 +459,30 @@ private:
 	bool uniqueInt;
 	bool uniqueStr;
 public:
-	CTibiaHashMap(){
+	CTibiaHashMap()
+	{
 		counter   = 0x10000;
 		count     = 0;
 		uniqueInt = TRUE;
 		uniqueStr = TRUE;
 	}
+
 	// At least one should be true in order to use the map properly
-	CTibiaHashMap(bool a_uniqueInt, bool a_uniqueStr){
+	CTibiaHashMap(bool a_uniqueInt, bool a_uniqueStr)
+	{
 		counter   = 0x10000;
 		count     = 0;
 		uniqueInt = a_uniqueInt;
 		uniqueStr = a_uniqueStr;
 	}
-	~CTibiaHashMap(){
+
+	~CTibiaHashMap()
+	{
 		RemoveAll();
 	}
 
-	int InitIter(){
+	int InitIter()
+	{
 		int code = counter++;
 		//Used to prevent race condition ;P
 		if (isNewIter.find(code) == isNewIter.end())
@@ -407,7 +495,8 @@ public:
 	}
 
 	//Must iterate through all elements in order for iterator to be cleaned.
-	bool IncrementIter(int code){
+	bool IncrementIter(int code)
+	{
 		int* isNew = &isNewIter[code];
 		if (uniqueStr)
 		{
@@ -470,7 +559,9 @@ public:
 			}
 		}
 	}
-	int GetValueAtIter(int code){
+
+	int GetValueAtIter(int code)
+	{
 		if (uniqueStr)
 		{
 			StrIterMap::iterator iter = iterSetS.find(code);
@@ -486,7 +577,9 @@ public:
 			return iter->second->second->GetValue();
 		}
 	}
-	char* GetTextAtIter(int code){
+
+	char* GetTextAtIter(int code)
+	{
 		if (uniqueStr)
 		{
 			StrIterMap::iterator iter = iterSetS.find(code);
@@ -502,7 +595,9 @@ public:
 			return iter->second->second->GetText();
 		}
 	}
-	int GetExtraInfoAtIter(int code){
+
+	int GetExtraInfoAtIter(int code)
+	{
 		if (uniqueStr)
 		{
 			StrIterMap::iterator iter = iterSetS.find(code);
@@ -518,14 +613,18 @@ public:
 			return iter->second->second->GetExtraInfo();
 		}
 	}
-	bool Add(int a_val, char* a_s, int a_val2, int a_val3 = 0){
+
+	bool Add(int a_val, char* a_s, int a_val2, int a_val3 = 0)
+	{
 		CTibiaListData* data = new CTibiaListData(a_val, a_s, a_val2, a_val3);
 		if (Add(data))
 			return TRUE;
 		delete data;
 		return FALSE;
 	}
-	bool Add(CTibiaListData* data){
+
+	bool Add(CTibiaListData* data)
+	{
 		if (data == NULL)
 			return FALSE;
 		int a_val = data->GetValue();
@@ -544,54 +643,74 @@ public:
 		count++;
 		return TRUE;
 	}
-	bool HasValue(int val){
+
+	bool HasValue(int val)
+	{
 		return intMap.find(val) != intMap.end();
 	}
-	bool HasText(char* s){
+
+	bool HasText(char* s)
+	{
 		return strMap.find(s) != strMap.end();
 	}
-	int GetCount(){
+
+	int GetCount()
+	{
 		return count;
 	}
-	char* GetText(int val){
+
+	char* GetText(int val)
+	{
 		if (!HasValue(val))
 			return NULL;
 		CTibiaListData* data = intMap[val];
 		return data->GetText();
 	}
-	int GetValue(char* s){
+
+	int GetValue(char* s)
+	{
 		if (!HasText(s))
 			return 0;
 		CTibiaListData* data = strMap[s];
 		return data->GetValue();
 	}
-	int GetExtraInfo(char* s){
+
+	int GetExtraInfo(char* s)
+	{
 		if (!HasText(s))
 			return 0;
 		CTibiaListData* data = strMap[s];
 		return data->GetExtraInfo();
 	}
-	int GetExtraInfo(int val){
+
+	int GetExtraInfo(int val)
+	{
 		if (!HasValue(val))
 			return 0;
 		CTibiaListData* data = intMap[val];
 		return data->GetExtraInfo();
 	}
-	bool SetExtraInfo(char* s, int val2){
+
+	bool SetExtraInfo(char* s, int val2)
+	{
 		if (!HasText(s))
 			return FALSE;
 		CTibiaListData* data = strMap[s];
 		data->SetExtraInfo(val2);
 		return TRUE;
 	}
-	bool SetExtraInfo(int val, int val2){
+
+	bool SetExtraInfo(int val, int val2)
+	{
 		if (!HasValue(val))
 			return FALSE;
 		CTibiaListData* data = intMap[val];
 		data->SetExtraInfo(val2);
 		return TRUE;
 	}
-	bool Remove(char* s){
+
+	bool Remove(char* s)
+	{
 		StrMap::iterator iter1 = strMap.find(s);
 		CTibiaListData* data   = iter1->second;
 		if (data == NULL)
@@ -607,7 +726,9 @@ public:
 		count--;
 		return TRUE;
 	}
-	bool Remove(int val){
+
+	bool Remove(int val)
+	{
 		IntMap::iterator iter1 = intMap.find(val);
 		CTibiaListData* data   = iter1->second;
 		if (data == NULL)
@@ -623,7 +744,8 @@ public:
 		return TRUE;
 	}
 
-	CTibiaListData** GetAll(){
+	CTibiaListData** GetAll()
+	{
 		CTibiaListData** ret        = (CTibiaListData**)malloc(sizeof(CTibiaListData*) * (count + 1));
 		IntMap::const_iterator iter = intMap.begin();
 		int i                       = 0;
@@ -635,7 +757,9 @@ public:
 		ret[i] = NULL;
 		return ret;
 	}
-	void RemoveAll(){
+
+	void RemoveAll()
+	{
 		StrMap::iterator iter1 = strMap.begin();
 		while (iter1 != strMap.end())
 		{
@@ -652,7 +776,9 @@ public:
 		strMap.clear();
 		intMap.clear();
 	}
-	void toString(char* outStr){
+
+	void toString(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr + ind, "Map:");
 		IntMap::const_iterator iter = intMap.begin();
@@ -663,6 +789,7 @@ public:
 			iter++;
 		}
 	}
+
 private:
 	void Free(StrMap::iterator it)
 	{
@@ -670,6 +797,7 @@ private:
 		free(it->first);
 		delete it->second;
 	}
+
 	void Free(IntMap::iterator it)
 	{
 		intMap.erase(it);
@@ -689,19 +817,28 @@ class CTibiaTreeData {
 protected:
 	CTibiaTreeDataType nodeType;
 public:
-	CTibiaTreeData(){
+	CTibiaTreeData()
+	{
 		nodeType = TT_ITEM_NODE;
 	}
-	CTibiaTreeData(CTibiaTreeDataType a_type){
+
+	CTibiaTreeData(CTibiaTreeDataType a_type)
+	{
 		nodeType = a_type;
 	}
-	CTibiaTreeDataType GetType(){
+
+	CTibiaTreeDataType GetType()
+	{
 		return nodeType;
 	}
-	virtual ~CTibiaTreeData(){
+
+	virtual ~CTibiaTreeData()
+	{
 		//gets called after inherited class' destructor
 	}
-	virtual void toString(char* outStr){
+
+	virtual void toString(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr + ind, "\n");
 	}
@@ -711,24 +848,33 @@ class CTibiaTreeBranchData : public CTibiaTreeData
 {
 	char *name;
 public:
-	CTibiaTreeBranchData(char *a_name){
+	CTibiaTreeBranchData(char *a_name)
+	{
 		nodeType = TT_BRANCH_NODE;
 
 		int len = strlen(a_name) + 1;
 		name = (char*)malloc(len);
 		memcpy(name, a_name, len);
 	}
-	static CTibiaTreeBranchData* newCTibiaTreeBranchData(char *a_name){
+
+	static CTibiaTreeBranchData* newCTibiaTreeBranchData(char *a_name)
+	{
 		return new CTibiaTreeBranchData(a_name);
 	}
-	virtual ~CTibiaTreeBranchData(){
+
+	virtual ~CTibiaTreeBranchData()
+	{
 		free(name);
 		name = NULL;
 	}
-	char* GetName(){
+
+	char* GetName()
+	{
 		return name;
 	}
-	virtual void CTibiaTreeBranchData::toString(char* outStr){
+
+	virtual void CTibiaTreeBranchData::toString(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr + ind, "(Branch:%s)\n", this->name);
 	}
@@ -737,7 +883,8 @@ public:
 class CTibiaTreeItemData : public CTibiaTreeData
 {
 public:
-	CTibiaTreeItemData(char *a_name, int a_id, bool a_looted, int i_type = 0){
+	CTibiaTreeItemData(char *a_name, int a_id, bool a_looted, int i_type = 0)
+	{
 		if (!strcmp(a_name, "Wooden Doll"))
 			int a = 0;
 		nodeType = TT_ITEM_NODE;
@@ -749,41 +896,64 @@ public:
 		name = (char*)malloc(len);
 		memcpy(name, a_name, len);
 	}
-	static CTibiaTreeItemData* newCTibiaTreeItemData(char *a_name, int a_id, bool a_looted, int i_type = 0){
+
+	static CTibiaTreeItemData* newCTibiaTreeItemData(char *a_name, int a_id, bool a_looted, int i_type = 0)
+	{
 		return new CTibiaTreeItemData(a_name, a_id, a_looted, i_type);
 	}
-	virtual ~CTibiaTreeItemData(){
+
+	virtual ~CTibiaTreeItemData()
+	{
 		free(name);
 		name = NULL;
 	}
-	void SetId(int idIn){
+
+	void SetId(int idIn)
+	{
 		id = idIn;
 	}
-	int GetId(){
+
+	int GetId()
+	{
 		return id;
 	}
-	int GetItemType(){
+
+	int GetItemType()
+	{
 		return type;
 	}
-	void SetType(int typeIn){
+
+	void SetType(int typeIn)
+	{
 		type = typeIn;
 	}
-	bool IsLooted(){
+
+	bool IsLooted()
+	{
 		return looted;
 	}
-	void SetIsLooted(bool b_looted){
+
+	void SetIsLooted(bool b_looted)
+	{
 		looted = b_looted;
 	}
-	char* GetName(){
+
+	char* GetName()
+	{
 		return name;
 	}
-	void SetName(char* nameIn){
+
+	void SetName(char* nameIn)
+	{
 		memcpy(name, nameIn, strlen(nameIn) + 1);
 	}
-	virtual void CTibiaTreeItemData::toString(char* outStr){
+
+	virtual void CTibiaTreeItemData::toString(char* outStr)
+	{
 		int ind = strlen(outStr);
 		sprintf(outStr + ind, "(Item:%s,%d,%d)\n", this->name, this->id, this->looted);
 	}
+
 private:
 	int type;
 	char *name;
@@ -795,10 +965,13 @@ class CTibiaTree {
 public:
 	CTibiaTreeData* data;
 	vector<CTibiaTree*> children;
-	CTibiaTree(CTibiaTreeData* a_data){
+	CTibiaTree(CTibiaTreeData* a_data)
+	{
 		data = a_data;
 	}
-	~CTibiaTree(){
+
+	~CTibiaTree()
+	{
 		delete data;
 		data = NULL;
 		int size = children.size();
@@ -809,20 +982,27 @@ public:
 			delete ptTree;
 		}
 	}
-	CTibiaTree* AddChild(CTibiaTreeData* a_data){
+
+	CTibiaTree* AddChild(CTibiaTreeData* a_data)
+	{
 		CTibiaTree* ret = new CTibiaTree(a_data);
 		children.push_back(ret);
 		return ret;
 	}
 
-	bool HasChildren(){
+	bool HasChildren()
+	{
 		return children.size() > 0;
 	}
-	void toString(char* outStr){
+
+	void toString(char* outStr)
+	{
 		sprintf(outStr, "Tree:");
 		toString(outStr, 0);
 	}
-	void toString(char* outStr, int level){
+
+	void toString(char* outStr, int level)
+	{
 		int ind = strlen(outStr);
 		memset(outStr + ind, '-', level);
 		memset(outStr + ind + level, 0, 1);
@@ -848,7 +1028,8 @@ private:
 public:
 	int tabSize;
 	T*tab;
-	CTibiaQueue(){
+	CTibiaQueue()
+	{
 		origTabSize = 15;
 		tabSize     = origTabSize;
 		count       = 0;
@@ -857,16 +1038,22 @@ public:
 		start = 0;
 		end   = 0;
 	}
-	~CTibiaQueue(){
+
+	~CTibiaQueue()
+	{
 		free(tab);
 	}
-	void Add(T ptr){
+
+	void Add(T ptr)
+	{
 		growCheck();
 		tab[end] = ptr;
 		end      = (end + 1) % tabSize;
 		count++;
 	}
-	T Remove(){
+
+	T Remove()
+	{
 		if (!count)
 			return T();
 		T ret = tab[start];
@@ -876,19 +1063,27 @@ public:
 		shrinkCheck();
 		return ret;
 	}
-	T Peek(){
+
+	T Peek()
+	{
 		if (!count)
 			return T();
 		return tab[start];
 	}
-	int GetCount(){
+
+	int GetCount()
+	{
 		return count;
 	}
-	char* toString(){
+
+	char* toString()
+	{
 		return toString(tab, tabSize);
 	}
+
 private:
-	char* toString(T* tab, int tabSize){
+	char* toString(T* tab, int tabSize)
+	{
 		char * ret = (char*)malloc(tabSize * 10 + 100);
 		ret[0] = 0;
 		sprintf(ret + strlen(ret), "[s:%d,e:%d,c:%d,sz:%d][", start, end, count, tabSize);
@@ -900,7 +1095,9 @@ private:
 		sprintf(ret + strlen(ret), "]");
 		return ret;
 	}
-	void growCheck(){
+
+	void growCheck()
+	{
 		if (count == tabSize)//start==end
 		{
 			int tmpTabSize = tabSize * 2;
@@ -917,7 +1114,9 @@ private:
 			end     = count;
 		}
 	}
-	void shrinkCheck(){
+
+	void shrinkCheck()
+	{
 		if (tabSize > origTabSize && count == tabSize / 4)//start!=end
 		{
 			int tmpTabSize = tabSize / 2;
@@ -934,6 +1133,7 @@ private:
 			end     = count;
 		}
 	}
+
 	/*
 	   void testAddUntilFull(){
 	        for (int i=0;i<origTabSize;i++){
@@ -1018,11 +1218,14 @@ class PQitem {
 public:
 	int val;
 	DWORD data;
-	PQitem(){
+	PQitem()
+	{
 		val  = 0;
 		data = NULL;
 	}
-	PQitem(int a_val, DWORD a_data){
+
+	PQitem(int a_val, DWORD a_data)
+	{
 		val  = a_val;
 		data = a_data;
 	}
@@ -1030,11 +1233,16 @@ public:
 class CTibiaPriorityQueue {
 	vector<PQitem> pq;
 public:
-	CTibiaPriorityQueue(){
+	CTibiaPriorityQueue()
+	{
 	}
-	~CTibiaPriorityQueue(){
+
+	~CTibiaPriorityQueue()
+	{
 	}
-	void CTibiaPriorityQueue::Add(int val, DWORD ptr){
+
+	void CTibiaPriorityQueue::Add(int val, DWORD ptr)
+	{
 		int ind = pq.size();
 		pq.push_back(PQitem(val, ptr));
 		int ind2 = (ind - 1) / 2;
@@ -1049,7 +1257,9 @@ public:
 			pq[ind] = PQitem(val, ptr);
 		}
 	}
-	DWORD CTibiaPriorityQueue::Remove(){
+
+	DWORD CTibiaPriorityQueue::Remove()
+	{
 		if (pq.size() == 0)
 			return 0;
 		DWORD ret = pq[0].data;
@@ -1070,7 +1280,7 @@ public:
 					ind     = ind * 2 + 1;
 				}
 			}
-			else if(ind * 2 + 1 < pq.size() && pq.back().val > pq[ind * 2 + 1].val)
+			else if (ind * 2 + 1 < pq.size() && pq.back().val > pq[ind * 2 + 1].val)
 			{
 				pq[ind] = pq[ind * 2 + 1];
 				ind     = ind * 2 + 1;
@@ -1084,15 +1294,21 @@ public:
 		pq.pop_back();
 		return ret;
 	}
-	DWORD CTibiaPriorityQueue::Peek(){
+
+	DWORD CTibiaPriorityQueue::Peek()
+	{
 		if (pq.size() == 0)
 			return 0;
 		return pq[0].data;
 	}
-	int CTibiaPriorityQueue::GetCount(){
+
+	int CTibiaPriorityQueue::GetCount()
+	{
 		return pq.size();
 	}
-	char* CTibiaPriorityQueue::toString2(){
+
+	char* CTibiaPriorityQueue::toString2()
+	{
 		char* ret = (char*)malloc(pq.size() * 10 + 100);
 		char* tmp = ret;
 		ret[0] = '-';
@@ -1105,7 +1321,8 @@ public:
 		return ret;
 	}
 
-	char* CTibiaPriorityQueue::toString(){
+	char* CTibiaPriorityQueue::toString()
+	{
 		char* ret = (char*)malloc(pq.size() * 10 + 100);
 		char* tmp = ret;
 		ret[0] = '-';
@@ -1125,14 +1342,14 @@ public:
 				sprintf(tmp, " [");
 				ind = ind * 2 + 1;
 			}
-			else if(ind % 2 == 1 && ind + 1 < pq.size())
+			else if (ind % 2 == 1 && ind + 1 < pq.size())
 			{
 				tmp = tmp + strlen(tmp);
 				sprintf(tmp, ",");
 				ind      = ind + 1;
 				wentBack = 0;
 			}
-			else if(ind % 2 == 0 && ind != 0)
+			else if (ind % 2 == 0 && ind != 0)
 			{
 				tmp = tmp + strlen(tmp);
 				sprintf(tmp, "] ");
@@ -1146,50 +1363,62 @@ public:
 		}
 		return ret;
 	}
+
 private:
-	void CTibiaPriorityQueue::testAddBack(){
+	void CTibiaPriorityQueue::testAddBack()
+	{
 		for (int i = 15; i > 0; i--)
 		{
-			Add (i, i);
+			Add(i, i);
 		}
 		//cout<<toString();
 	}
-	void CTibiaPriorityQueue::testAddFor(){
+
+	void CTibiaPriorityQueue::testAddFor()
+	{
 		for (int i = 0; i < 15; i++)
 		{
-			Add (i, i);
+			Add(i, i);
 		}
 		//cout<<toString2();
 	}
-	void CTibiaPriorityQueue::testAddAlt(){
+
+	void CTibiaPriorityQueue::testAddAlt()
+	{
 		int n = 1;
 		for (int i = 0; i < 15; i++)
 		{
-			Add (i * n + 20, i * n + 20);
+			Add(i * n + 20, i * n + 20);
 			n = -n;
 		}
 		//cout<<toString();
 	}
-	void CTibiaPriorityQueue::testAddRandom(){
+
+	void CTibiaPriorityQueue::testAddRandom()
+	{
 		for (int i = 0; i < 15; i++)
 		{
-			Add (rand() % 100, i);
+			Add(rand() % 100, i);
 		}
 		//cout<<toString();
 	}
-	void CTibiaPriorityQueue::testRemove(){
+
+	void CTibiaPriorityQueue::testRemove()
+	{
 		for (int i = 7; i > 0; i--)
 		{
-			Add (i, i);
+			Add(i, i);
 		}
 		Remove();
 		//cout<<toString();
 	}
-	void CTibiaPriorityQueue::testManyRemove(){
+
+	void CTibiaPriorityQueue::testManyRemove()
+	{
 		int i;
 		for (i = 0; i < 15; i++)
 		{
-			Add (rand() % 100, i);
+			Add(rand() % 100, i);
 		}
 		for (i = 0; i < 15; i++)
 		{
@@ -1198,11 +1427,13 @@ private:
 		}
 		//cout<<toString2()<<endl;
 	}
-	void CTibiaPriorityQueue::testRemoveRandom(){
+
+	void CTibiaPriorityQueue::testRemoveRandom()
+	{
 		for (int i = 0; i < 10000; i++)
 		{
 			if (rand() % 100 < 49)
-				Add (rand() % 100, i);
+				Add(rand() % 100, i);
 			else
 				Remove();
 			//cout<<toString2()<<endl;
@@ -1217,7 +1448,8 @@ template <class T>
 struct CTibiaPipeItem {
 	UINT handle;
 	T data;
-	CTibiaPipeItem(UINT a, T b){
+	CTibiaPipeItem(UINT a, T b)
+	{
 		handle = a;
 		data   = b;
 	}
@@ -1232,7 +1464,8 @@ class CTibiaPipe {
 	int pipeCacheStart;
 	int MAX_PIPE_SIZE;
 public:
-	CTibiaPipe(int max_size = 0){
+	CTibiaPipe(int max_size = 0)
+	{
 		pipeCache     = NULL;
 		MAX_PIPE_SIZE = max_size;
 		InitializeCriticalSection(&PipeCriticalSection);
@@ -1241,11 +1474,15 @@ public:
 		pipeCacheCount = 0;
 		pipeCache      = (PItem *)calloc(sizeof(PItem), pipeCacheSize);
 	}
-	~CTibiaPipe(){
+
+	~CTibiaPipe()
+	{
 		DeleteCriticalSection(&PipeCriticalSection);
 		free(pipeCache);
 	}
-	bool Add(UINT handle, T data){
+
+	bool Add(UINT handle, T data)
+	{
 		EnterCriticalSection(&PipeCriticalSection);
 		bool ret = false;
 		if (growCheck())
@@ -1257,7 +1494,9 @@ public:
 		LeaveCriticalSection(&PipeCriticalSection);
 		return ret;
 	}
-	bool RemoveNext(UINT handle, T* data){
+
+	bool RemoveNext(UINT handle, T* data)
+	{
 		EnterCriticalSection(&PipeCriticalSection);
 		bool ret = false;
 		if (pipeCacheCount)
@@ -1307,7 +1546,9 @@ public:
 		LeaveCriticalSection(&PipeCriticalSection);
 		return ret;
 	}
-	bool RemoveNext(UINT* handle, T* data){
+
+	bool RemoveNext(UINT* handle, T* data)
+	{
 		EnterCriticalSection(&PipeCriticalSection);
 		bool ret = false;
 		if (pipeCacheCount)
@@ -1322,7 +1563,9 @@ public:
 		LeaveCriticalSection(&PipeCriticalSection);
 		return ret;
 	}
-	void CleanOutHandle(UINT handle){
+
+	void CleanOutHandle(UINT handle)
+	{
 		EnterCriticalSection(&PipeCriticalSection);
 		int locMove, locFill;
 		if (pipeCacheCount)
@@ -1352,15 +1595,21 @@ public:
 		LeaveCriticalSection(&PipeCriticalSection);
 		return;
 	}
-	void CleanFirstHandle(){
+
+	void CleanFirstHandle()
+	{
 		if (pipeCacheCount)
 			CleanOutHandle(pipeCache[pipeCacheStart].handle);
 	}
+
 private:
-	int getEndSlot(){
+	int getEndSlot()
+	{
 		return (pipeCacheStart + pipeCacheCount) % pipeCacheSize;
 	}
-	bool growCheck(){
+
+	bool growCheck()
+	{
 		if (MAX_PIPE_SIZE && MAX_PIPE_SIZE == pipeCacheSize)
 			return false;                                              // no change
 		if (pipeCacheCount == pipeCacheSize)
@@ -1381,7 +1630,9 @@ private:
 		}
 		return true;
 	}
-	char* toString(){
+
+	char* toString()
+	{
 		char *ret = (char*)malloc(pipeCacheSize * 25 + 100);
 		ret[0] = 0;
 		sprintf(ret + strlen(ret), "[s:%d,c:%d,sz:%d]", pipeCacheStart, pipeCacheCount, pipeCacheSize);
@@ -1393,13 +1644,15 @@ private:
 		return ret;
 	}
 
-	void ShowTest(const char *s, int value, int requiredValue){
+	void ShowTest(const char *s, int value, int requiredValue)
+	{
 		cout << s << " " << value << " " << requiredValue;
 		if (value == requiredValue)
 			cout << endl;
 		else
 			cout << " ***FAILED***" << endl;
 	}
+
 /*
         void testAddOne(){
                 Add(rand(),T(1));
@@ -1533,26 +1786,31 @@ public:
 	friend class TestCTibiaPercentile;
 	int* sample;
 	unsigned int size, MAX_SIZE, totalAdds, MAX_ADDS;
-	CTibiaPercentile(unsigned int MAX_SIZE, unsigned int MAX_ADDS = int(0x7FFFFFF / 100)){
+	CTibiaPercentile(unsigned int MAX_SIZE, unsigned int MAX_ADDS = int(0x7FFFFFF / 100))
+	{
 		this->MAX_SIZE = MAX_SIZE;
 		this->MAX_ADDS = MAX_ADDS;
 		sample         = (int*)calloc(this->MAX_SIZE, sizeof(int));
 		size           = 0;
 		totalAdds      = 0;
 	}
-	~CTibiaPercentile(){
+
+	~CTibiaPercentile()
+	{
 		free(sample);
 	}
-	void add(int val){
-		if(totalAdds < MAX_ADDS)
+
+	void add(int val)
+	{
+		if (totalAdds < MAX_ADDS)
 			totalAdds++;
-		if(size < MAX_SIZE)
+		if (size < MAX_SIZE)
 		{
 			sample[size] = val;
 			size++;
 			shiftIntoPosition(size - 1);
 		}
-		else if(rand() % totalAdds < MAX_SIZE)   //has 100/totalAdds chance of being added to sample
+		else if (rand() % totalAdds < MAX_SIZE)   //has 100/totalAdds chance of being added to sample
 		{
 			int replacedPos = rand() % MAX_SIZE; //each value has equal chance of being replaced
 			sample[replacedPos] = val;
@@ -1562,29 +1820,37 @@ public:
 		{
 		}        // Do not add to sample
 	}
-	int getPercentile(int p){
-		if(size == 0 || !(p >= 0 && p <= 99))
+
+	int getPercentile(int p)
+	{
+		if (size == 0 || !(p >= 0 && p <= 99))
 			return 0;
 		return sample[size * p / 100];
 	}
-	void verify(char* a, char* b){
+
+	void verify(char* a, char* b)
+	{
 	}
+
 private:
-	void shiftIntoPosition(unsigned int index){
-		while(index != 0 && sample[index - 1] > sample[index])
+	void shiftIntoPosition(unsigned int index)
+	{
+		while (index != 0 && sample[index - 1] > sample[index])
 		{
 			SWAP(sample[index - 1], sample[index]);
 			index--;
 		}
-		while(index + 1 < size && sample[index + 1] < sample[index])
+		while (index + 1 < size && sample[index + 1] < sample[index])
 		{
 			SWAP(sample[index + 1], sample[index]);
 			index++;
 		}
 	}
-	void strSample(char* buf){
+
+	void strSample(char* buf)
+	{
 		buf[0] = 0;
-		for(unsigned int i = 0; i < size; i++)
+		for (unsigned int i = 0; i < size; i++)
 		{
 			sprintf(&buf[strlen(buf)], "%d,", sample[i]);
 		}
@@ -1595,7 +1861,8 @@ class TestCTibiaPercentile {
 	char buf[10000];
 	char buf2[10000];
 public:
-	TestCTibiaPercentile(){
+	TestCTibiaPercentile()
+	{
 		testAdd1();
 		testAdd3();
 		testAdd100();
@@ -1605,7 +1872,9 @@ public:
 		testUniformSample1000();
 		testActualData();
 	}
-	void testAdd1(){
+
+	void testAdd1()
+	{
 		CTibiaPercentile p = CTibiaPercentile(3);
 		p.add(10);
 		p.strSample(buf);
@@ -1613,25 +1882,30 @@ public:
 		verify("testAdd1Perc0", 10, p.getPercentile(0));
 		verify("testAdd1Perc99", 10, p.getPercentile(99));
 	}
-	void testAdd3(){
+
+	void testAdd3()
+	{
 		{CTibiaPercentile p = CTibiaPercentile(3);
 		 p.add(20);
 		 p.add(15);
 		 p.add(10);
 		 p.strSample(buf);
-		 verify("testAdd3Reverse", buf, "10,15,20,"); }
+		 verify("testAdd3Reverse", buf, "10,15,20,");
+		}
 		{CTibiaPercentile p = CTibiaPercentile(3);
 		 p.add(10);
 		 p.add(15);
 		 p.add(20);
 		 p.strSample(buf);
-		 verify("testAdd3Forward", buf, "10,15,20,"); }
+		 verify("testAdd3Forward", buf, "10,15,20,");
+		}
 		{CTibiaPercentile p = CTibiaPercentile(3);
 		 p.add(15);
 		 p.add(10);
 		 p.add(20);
 		 p.strSample(buf);
-		 verify("testAdd3Mix1", buf, "10,15,20,"); }
+		 verify("testAdd3Mix1", buf, "10,15,20,");
+		}
 		CTibiaPercentile p = CTibiaPercentile(3);
 		p.add(20);
 		p.add(10);
@@ -1645,9 +1919,11 @@ public:
 		verify("testAdd3Perc67", 20, p.getPercentile(67));
 		verify("testAdd3Perc99", 20, p.getPercentile(99));
 	}
-	void testAdd100(){
+
+	void testAdd100()
+	{
 		CTibiaPercentile p = CTibiaPercentile(100);
-		{for(int i = 0; i < 100; i++)
+		{for (int i = 0; i < 100; i++)
 		 {
 			 p.add(i);
 		 }
@@ -1655,7 +1931,7 @@ public:
 		p.strSample(buf);
 		verify("testAdd100Sequence", buf);
 		CTibiaPercentile q = CTibiaPercentile(100);
-		{for(int i = 0; i < 100; i++)
+		{for (int i = 0; i < 100; i++)
 		 {
 			 q.add(p.getPercentile(i));
 		 }
@@ -1665,33 +1941,45 @@ public:
 		verify("testAdd100Percs", buf, buf2, 0);
 	}
 
-	void testAddMore(){
+	void testAddMore()
+	{
 		{CTibiaPercentile p = CTibiaPercentile(3);
-		 p.add(20); p.add(15); p.add(10);
+		 p.add(20);
+		 p.add(15);
+		 p.add(10);
 		 for (int i = 0; i < 100; i++)
 		 {
 			 p.add(17);
 		 }
 		 p.strSample(buf);
-		 verify("testAddMoreInnerPos", buf, "17,17,17,"); }
+		 verify("testAddMoreInnerPos", buf, "17,17,17,");
+		}
 		{CTibiaPercentile p = CTibiaPercentile(3);
-		 p.add(20); p.add(15); p.add(10);
+		 p.add(20);
+		 p.add(15);
+		 p.add(10);
 		 for (int i = 0; i < 100; i++)
 		 {
 			 p.add(22);
 		 }
 		 p.strSample(buf);
-		 verify("testAddMoreBegPos", buf, "22,22,22,"); }
+		 verify("testAddMoreBegPos", buf, "22,22,22,");
+		}
 		{CTibiaPercentile p = CTibiaPercentile(3);
-		 p.add(20); p.add(15); p.add(10);
+		 p.add(20);
+		 p.add(15);
+		 p.add(10);
 		 for (int i = 0; i < 100; i++)
 		 {
 			 p.add(7);
 		 }
 		 p.strSample(buf);
-		 verify("testAddMoreEndPos", buf, "7,7,7,"); }
+		 verify("testAddMoreEndPos", buf, "7,7,7,");
+		}
 	}
-	void testUniformSample10(){
+
+	void testUniformSample10()
+	{
 		CTibiaPercentile p = CTibiaPercentile(10);
 		for (int i = 0; i < 1000; i++)
 		{
@@ -1700,7 +1988,9 @@ public:
 		p.strSample(buf);
 		verify("testUniformSample10Seq", buf);
 	}
-	void testUniformSample100(){
+
+	void testUniformSample100()
+	{
 		int samp           = 100;
 		CTibiaPercentile p = CTibiaPercentile(samp);
 		{for (int i = 0; i < samp * 100; i++)
@@ -1718,7 +2008,9 @@ public:
 		}
 		verify("testUniformSample100Var", sumSq / 100);
 	}
-	void testUniformSample1000(){
+
+	void testUniformSample1000()
+	{
 		int samp           = 1000;
 		CTibiaPercentile p = CTibiaPercentile(samp);
 		{for (int i = 0; i < samp * 100; i++)
@@ -1734,7 +2026,9 @@ public:
 		}
 		verify("testUniformSample1000Var", sumSq / 100);
 	}
-	void testActualData(){
+
+	void testActualData()
+	{
 		int diceNum        = 4;
 		CTibiaPercentile p = CTibiaPercentile(1000);
 		{for (int i = 0; i < 10000; i++)
@@ -1753,7 +2047,7 @@ public:
 		{for (int i = step; i < 100 - step; i = i + step)
 		 {
 			 int avgslope = 0;
-			 for(int s = 0; s < step; s++)
+			 for (int s = 0; s < step; s++)
 				 avgslope += 1000 / (p.getPercentile(i + s) - p.getPercentile(i + s - step)) / step;
 			 max = max < avgslope ? avgslope : max;
 		 }
@@ -1761,7 +2055,7 @@ public:
 		{for (int i = step; i < 100; i = i + step)
 		 {
 			 int avgslope = 0;
-			 for(int s = 0; s < step; s++)
+			 for (int s = 0; s < step; s++)
 				 avgslope += ASTERISK_LEN * 1000 / max / (p.getPercentile(i + s) - p.getPercentile(i + s - step)) / step;
 			 for (int j = 0; j < avgslope; j++)
 				 printf("*");
@@ -1769,11 +2063,13 @@ public:
 		 }
 		}
 	}
+
 private:
-	bool verify(const char* name, const char* a, const char* b, int printLong = 1){
-		if(strcmp(a, b) == 0)
+	bool verify(const char* name, const char* a, const char* b, int printLong = 1)
+	{
+		if (strcmp(a, b) == 0)
 		{
-			if(printLong)
+			if (printLong)
 				printf("PASSED %s %s == %s\n", name, a, b);
 			else
 				printf("PASSED %s\n", name);
@@ -1782,8 +2078,10 @@ private:
 		printf("*****FAILED***** %s %s != %s\n", name, a, b);
 		return 0;
 	}
-	bool verify(const char* name, int a, int b, int printLong = 1){
-		if(a == b)
+
+	bool verify(const char* name, int a, int b, int printLong = 1)
+	{
+		if (a == b)
 		{
 			if (printLong)
 				printf("PASSED %s %d == %d\n", name, a, b);
@@ -1794,11 +2092,15 @@ private:
 		printf("*****FAILED***** %s %d != %d\n", name, a, b);
 		return 0;
 	}
-	bool verify(const char* name, const char* a){
+
+	bool verify(const char* name, const char* a)
+	{
 		printf("VERIFY %s %s\n", name, a);
 		return 1;
 	}
-	bool verify(const char* name, int a){
+
+	bool verify(const char* name, int a)
+	{
 		printf("VERIFY %s %d\n", name, a);
 		return 1;
 	}

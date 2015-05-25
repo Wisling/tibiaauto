@@ -26,7 +26,6 @@ CConfigDialog::CConfigDialog(Cmod_fpsApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -43,7 +42,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -106,15 +104,17 @@ void CConfigDialog::enableControls()
 		m_minimizedVal.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buff[128];
-	sprintf(buff, "%.2f", configData->activeVal);     m_activeVal.SetWindowText(buff);
+	sprintf(buff, "%.2f", configData->activeVal);
+	m_activeVal.SetWindowText(buff);
 	m_inactive.SetCheck(configData->inactive);
-	sprintf(buff, "%.2f", configData->inactiveVal);   m_inactiveVal.SetWindowText(buff);
+	sprintf(buff, "%.2f", configData->inactiveVal);
+	m_inactiveVal.SetWindowText(buff);
 	m_minimized.SetCheck(configData->minimized);
-	sprintf(buff, "%.2f", configData->minimizedVal); m_minimizedVal.SetWindowText(buff);
+	sprintf(buff, "%.2f", configData->minimizedVal);
+	m_minimizedVal.SetWindowText(buff);
 
 	OnFpstoolInactive();
 	OnFpstoolMinimized();
@@ -125,11 +125,14 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	char buff[128];
-	m_activeVal.GetWindowText(buff, 128);    newConfigData->activeVal    = atof(buff);
-	newConfigData->inactive                                              = m_inactive.GetCheck();
-	m_inactiveVal.GetWindowText(buff, 128);  newConfigData->inactiveVal  = atof(buff);
-	newConfigData->minimized                                             = m_minimized.GetCheck();
-	m_minimizedVal.GetWindowText(buff, 128); newConfigData->minimizedVal = atof(buff);
+	m_activeVal.GetWindowText(buff, 128);
+	newConfigData->activeVal = atof(buff);
+	newConfigData->inactive  = m_inactive.GetCheck();
+	m_inactiveVal.GetWindowText(buff, 128);
+	newConfigData->inactiveVal = atof(buff);
+	newConfigData->minimized   = m_minimized.GetCheck();
+	m_minimizedVal.GetWindowText(buff, 128);
+	newConfigData->minimizedVal = atof(buff);
 
 	return newConfigData;
 }
@@ -175,7 +178,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam){
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
+{
 	DWORD procId;
 	GetWindowThreadProcessId(hwnd, &procId);
 	if (procId == (DWORD)lParam)
@@ -191,9 +195,10 @@ BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam){
 	return true;
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -213,7 +218,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

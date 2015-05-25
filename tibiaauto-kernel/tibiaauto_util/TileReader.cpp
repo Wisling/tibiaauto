@@ -69,21 +69,22 @@ void CTileReader::cleanup()
 	}
 }
 
-
 CTibiaTile *CTileReader::getTile(int tileNr)
 {
-	if(tileNr < 0 || tileNr >= MAX_TILES)
+	if (tileNr < 0 || tileNr >= MAX_TILES)
 		return (CTibiaTile*)NULL;
 	CTibiaTile* ret = tiles[tileNr];
 	return ret;
 }
 
-void CTileReader::setTile(int tileNr, CTibiaTile *newTile) {
+void CTileReader::setTile(int tileNr, CTibiaTile *newTile)
+{
 	tiles[tileNr] = newTile;
 	saveTiles();
 }
 
-void CTileReader::loadTiles() {
+void CTileReader::loadTiles()
+{
 	int i;
 	for (i = 0; i < MAX_TILES; i++)
 	{
@@ -98,7 +99,7 @@ void CTileReader::loadTiles() {
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -164,14 +165,15 @@ void CTileReader::loadTiles() {
 	delete parser;
 }
 
-void CTileReader::saveTiles() {
+void CTileReader::saveTiles()
+{
 	XercesDOMParser *parser      = new XercesDOMParser();
 	char installPath[1024]       = {'\0'};
 	unsigned long installPathLen = 1023;
 	HKEY hkey                    = NULL;
 	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 	{
-		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+		RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 		RegCloseKey(hkey);
 	}
 	if (!strlen(installPath))

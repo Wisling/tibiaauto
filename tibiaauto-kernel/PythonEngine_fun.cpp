@@ -13,6 +13,7 @@ static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -74,6 +75,7 @@ static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *ar
 	delete selfCh;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readOpenContainerCount(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -143,6 +145,7 @@ static PyObject *tibiaauto_reader_readContainerItem(PyObject *self, PyObject *ar
 	delete cont;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_writeSelfLightPower(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -154,6 +157,7 @@ static PyObject *tibiaauto_reader_writeSelfLightPower(PyObject *self, PyObject *
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_writeSelfLightColor(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -165,6 +169,7 @@ static PyObject *tibiaauto_reader_writeSelfLightColor(PyObject *self, PyObject *
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_readSelfLightPower(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -174,6 +179,7 @@ static PyObject *tibiaauto_reader_readSelfLightPower(PyObject *self, PyObject *a
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readSelfLightColor(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -183,6 +189,7 @@ static PyObject *tibiaauto_reader_readSelfLightColor(PyObject *self, PyObject *a
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_cancelAttackCoords(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -191,6 +198,7 @@ static PyObject *tibiaauto_reader_cancelAttackCoords(PyObject *self, PyObject *a
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_writeGotoCoords(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -202,6 +210,7 @@ static PyObject *tibiaauto_reader_writeGotoCoords(PyObject *self, PyObject *args
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_getLoggedCharNr(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -211,6 +220,7 @@ static PyObject *tibiaauto_reader_getLoggedCharNr(PyObject *self, PyObject *args
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getSelfEventFlags(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -220,6 +230,7 @@ static PyObject *tibiaauto_reader_getSelfEventFlags(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_writeVisibleCreatureName(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -232,6 +243,7 @@ static PyObject *tibiaauto_reader_writeVisibleCreatureName(PyObject *self, PyObj
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_getTradeItemPartner(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -250,6 +262,7 @@ static PyObject *tibiaauto_reader_getTradeItemPartner(PyObject *self, PyObject *
 	delete item;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getTradeItemSelf(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -268,6 +281,7 @@ static PyObject *tibiaauto_reader_getTradeItemSelf(PyObject *self, PyObject *arg
 	delete item;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getTradeCountPartner(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -277,6 +291,7 @@ static PyObject *tibiaauto_reader_getTradeCountPartner(PyObject *self, PyObject 
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getTradeCountSelf(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -286,6 +301,7 @@ static PyObject *tibiaauto_reader_getTradeCountSelf(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getAttackedCreature(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -295,6 +311,7 @@ static PyObject *tibiaauto_reader_getAttackedCreature(PyObject *self, PyObject *
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_setAttackedCreature(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -307,6 +324,7 @@ static PyObject *tibiaauto_reader_setAttackedCreature(PyObject *self, PyObject *
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_getFollowedCreature(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -316,6 +334,7 @@ static PyObject *tibiaauto_reader_getFollowedCreature(PyObject *self, PyObject *
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_setFollowedCreature(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -328,6 +347,7 @@ static PyObject *tibiaauto_reader_setFollowedCreature(PyObject *self, PyObject *
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_GetLoggedChar(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -340,6 +360,7 @@ static PyObject *tibiaauto_reader_GetLoggedChar(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readBattleListMax(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -349,6 +370,7 @@ static PyObject *tibiaauto_reader_readBattleListMax(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readBattleListMin(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -358,6 +380,7 @@ static PyObject *tibiaauto_reader_readBattleListMin(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -423,6 +446,7 @@ static PyObject *tibiaauto_reader_readVisibleCreature(PyObject *self, PyObject *
 	delete ch;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readItem(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -441,6 +465,7 @@ static PyObject *tibiaauto_reader_readItem(PyObject *self, PyObject *args)
 	delete item;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getCharacterByTibiaId(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -526,6 +551,7 @@ static PyObject *tibiaauto_reader_mapGetPointItemsCount(PyObject *self, PyObject
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_mapGetPointItemId(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -543,6 +569,7 @@ static PyObject *tibiaauto_reader_mapGetPointItemId(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_mapSetPointItemsCount(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -560,6 +587,7 @@ static PyObject *tibiaauto_reader_mapSetPointItemsCount(PyObject *self, PyObject
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_mapSetPointItemId(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -577,6 +605,7 @@ static PyObject *tibiaauto_reader_mapSetPointItemId(PyObject *self, PyObject *ar
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_mapGetPointItemExtraInfo(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -594,6 +623,7 @@ static PyObject *tibiaauto_reader_mapGetPointItemExtraInfo(PyObject *self, PyObj
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_mapGetPointStackIndex(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -611,6 +641,7 @@ static PyObject *tibiaauto_reader_mapGetPointStackIndex(PyObject *self, PyObject
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getCurrentTm(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -620,6 +651,7 @@ static PyObject *tibiaauto_reader_getCurrentTm(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_setRemainingTilesToGo(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -651,6 +683,7 @@ static PyObject *tibiaauto_reader_setMemIntValue(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_getMemIntValue(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -671,6 +704,7 @@ static PyObject *tibiaauto_reader_getMemIntValue(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_writeEnableRevealCName(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -679,6 +713,7 @@ static PyObject *tibiaauto_reader_writeEnableRevealCName(PyObject *self, PyObjec
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_writeDisableRevealCName(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -687,6 +722,7 @@ static PyObject *tibiaauto_reader_writeDisableRevealCName(PyObject *self, PyObje
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_getProcessId(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -696,6 +732,7 @@ static PyObject *tibiaauto_reader_getProcessId(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getBaseAddr(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -705,6 +742,7 @@ static PyObject *tibiaauto_reader_getBaseAddr(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getKernelMainVersion(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -714,6 +752,7 @@ static PyObject *tibiaauto_reader_getKernelMainVersion(PyObject *self, PyObject 
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getKernelPatchVersion(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -723,6 +762,7 @@ static PyObject *tibiaauto_reader_getKernelPatchVersion(PyObject *self, PyObject
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_writeCreatureLightPower(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -734,6 +774,7 @@ static PyObject *tibiaauto_reader_writeCreatureLightPower(PyObject *self, PyObje
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_writeCreatureLightColor(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -745,6 +786,7 @@ static PyObject *tibiaauto_reader_writeCreatureLightColor(PyObject *self, PyObje
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_readCreatureLightPower(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -757,6 +799,7 @@ static PyObject *tibiaauto_reader_readCreatureLightPower(PyObject *self, PyObjec
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_readCreatureLightColor(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -769,6 +812,7 @@ static PyObject *tibiaauto_reader_readCreatureLightColor(PyObject *self, PyObjec
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -806,6 +850,7 @@ static PyObject *tibiaauto_reader_getTibiaTile(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_setGlobalVariable(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -817,6 +862,7 @@ static PyObject *tibiaauto_reader_setGlobalVariable(PyObject *self, PyObject *ar
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_reader_getGlobalVariable(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -829,6 +875,7 @@ static PyObject *tibiaauto_reader_getGlobalVariable(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_sender_useWithObjectFromFloorOnFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -850,6 +897,7 @@ static PyObject *tibiaauto_sender_useWithObjectFromFloorOnFloor(PyObject *self, 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useWithObjectFromFloorInContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -870,6 +918,7 @@ static PyObject *tibiaauto_sender_useWithObjectFromFloorInContainer(PyObject *se
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useWithObjectFromContainerInContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -892,6 +941,7 @@ static PyObject *tibiaauto_sender_useWithObjectFromContainerInContainer(PyObject
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useWithObjectFromContainerOnFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -912,6 +962,7 @@ static PyObject *tibiaauto_sender_useWithObjectFromContainerOnFloor(PyObject *se
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useWithObjectOnFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -934,6 +985,7 @@ static PyObject *tibiaauto_sender_useWithObjectOnFloor(PyObject *self, PyObject 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useWithObjectInContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -967,6 +1019,7 @@ static PyObject *tibiaauto_sender_moveObjectFromFloorToFloor(PyObject *self, PyO
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_moveObjectFromFloorToContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -978,6 +1031,7 @@ static PyObject *tibiaauto_sender_moveObjectFromFloorToContainer(PyObject *self,
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_moveObjectBetweenContainers(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1001,6 +1055,7 @@ static PyObject *tibiaauto_sender_moveObjectFromContainerToFloor(PyObject *self,
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_castRuneAgainstCreature(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1024,6 +1079,7 @@ static PyObject *tibiaauto_sender_castRuneAgainstHuman(PyObject *self, PyObject 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useItemOnCreature(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1035,6 +1091,7 @@ static PyObject *tibiaauto_sender_useItemOnCreature(PyObject *self, PyObject *ar
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useItemFromContainerOnCreature(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1046,6 +1103,7 @@ static PyObject *tibiaauto_sender_useItemFromContainerOnCreature(PyObject *self,
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useItemFromFloorOnCreature(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1069,6 +1127,7 @@ static PyObject *tibiaauto_sender_sendTAMessage(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useItem(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1080,6 +1139,7 @@ static PyObject *tibiaauto_sender_useItem(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useItemOnFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1091,6 +1151,7 @@ static PyObject *tibiaauto_sender_useItemOnFloor(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_useItemInContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1102,6 +1163,7 @@ static PyObject *tibiaauto_sender_useItemInContainer(PyObject *self, PyObject *a
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_openAutoContainerFromFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1113,6 +1175,7 @@ static PyObject *tibiaauto_sender_openAutoContainerFromFloor(PyObject *self, PyO
 	PyObject *ret = Py_BuildValue("i", ret1);
 	return ret;
 }
+
 static PyObject *tibiaauto_sender_openContainerFromFloor(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1124,6 +1187,7 @@ static PyObject *tibiaauto_sender_openContainerFromFloor(PyObject *self, PyObjec
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_openAutoContainerFromContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1135,6 +1199,7 @@ static PyObject *tibiaauto_sender_openAutoContainerFromContainer(PyObject *self,
 	PyObject *ret = Py_BuildValue("i", ret1);
 	return ret;
 }
+
 static PyObject *tibiaauto_sender_openContainerFromContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1146,6 +1211,7 @@ static PyObject *tibiaauto_sender_openContainerFromContainer(PyObject *self, PyO
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_say(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1157,6 +1223,7 @@ static PyObject *tibiaauto_sender_say(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sayWhisper(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1168,6 +1235,7 @@ static PyObject *tibiaauto_sender_sayWhisper(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sayYell(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1179,6 +1247,7 @@ static PyObject *tibiaauto_sender_sayYell(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sayNPC(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1190,6 +1259,7 @@ static PyObject *tibiaauto_sender_sayNPC(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_tell(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1201,6 +1271,7 @@ static PyObject *tibiaauto_sender_tell(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sayOnChan(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1214,6 +1285,7 @@ static PyObject *tibiaauto_sender_sayOnChan(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_npcBuy(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1228,6 +1300,7 @@ static PyObject *tibiaauto_sender_npcBuy(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_npcSell(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1240,6 +1313,7 @@ static PyObject *tibiaauto_sender_npcSell(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_logout(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1248,6 +1322,7 @@ static PyObject *tibiaauto_sender_logout(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1278,6 +1353,7 @@ static PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_closeContainer(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1289,6 +1365,7 @@ static PyObject *tibiaauto_sender_closeContainer(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_attackMode(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1311,6 +1388,7 @@ static PyObject *tibiaauto_sender_attackMode(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_attack(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1322,6 +1400,7 @@ static PyObject *tibiaauto_sender_attack(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_follow(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1333,6 +1412,7 @@ static PyObject *tibiaauto_sender_follow(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_turnLeft(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1341,6 +1421,7 @@ static PyObject *tibiaauto_sender_turnLeft(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_turnRight(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1349,6 +1430,7 @@ static PyObject *tibiaauto_sender_turnRight(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_turnUp(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1357,6 +1439,7 @@ static PyObject *tibiaauto_sender_turnUp(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1365,6 +1448,7 @@ static PyObject *tibiaauto_sender_turnDown(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stopAll(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1373,6 +1457,7 @@ static PyObject *tibiaauto_sender_stopAll(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1381,67 +1466,67 @@ static PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 	if (!PyArg_ParseTuple(args, "iiiiiiiiiiiiiii", &arg1, &arg2, &arg3, &arg4, &arg5, &arg6, &arg7, &arg8, &arg9, &arg10, &arg11, &arg12, &arg13, &arg14, &arg15))
 		return NULL;
 	int size = 15;
-	if(arg15 == 0)
+	if (arg15 == 0)
 		size = 14;
-	if(arg14 == 0)
+	if (arg14 == 0)
 		size = 13;
-	if(arg13 == 0)
+	if (arg13 == 0)
 		size = 12;
-	if(arg12 == 0)
+	if (arg12 == 0)
 		size = 11;
-	if(arg11 == 0)
+	if (arg11 == 0)
 		size = 10;
-	if(arg10 == 0)
+	if (arg10 == 0)
 		size = 9;
-	if(arg9 == 0)
+	if (arg9 == 0)
 		size = 8;
-	if(arg8 == 0)
+	if (arg8 == 0)
 		size = 7;
-	if(arg7 == 0)
+	if (arg7 == 0)
 		size = 6;
-	if(arg6 == 0)
+	if (arg6 == 0)
 		size = 5;
-	if(arg5 == 0)
+	if (arg5 == 0)
 		size = 4;
-	if(arg4 == 0)
+	if (arg4 == 0)
 		size = 3;
-	if(arg3 == 0)
+	if (arg3 == 0)
 		size = 2;
-	if(arg2 == 0)
+	if (arg2 == 0)
 		size = 1;
-	if(arg1 == 0)
+	if (arg1 == 0)
 		size = 0;
 
 	int *path = new int[size];
-	if(arg1 != 0)
+	if (arg1 != 0)
 		path[0] = arg1;
-	if(arg2 != 0)
+	if (arg2 != 0)
 		path[1] = arg2;
-	if(arg3 != 0)
+	if (arg3 != 0)
 		path[2] = arg3;
-	if(arg4 != 0)
+	if (arg4 != 0)
 		path[3] = arg4;
-	if(arg5 != 0)
+	if (arg5 != 0)
 		path[4] = arg5;
-	if(arg6 != 0)
+	if (arg6 != 0)
 		path[5] = arg6;
-	if(arg7 != 0)
+	if (arg7 != 0)
 		path[6] = arg7;
-	if(arg8 != 0)
+	if (arg8 != 0)
 		path[7] = arg8;
-	if(arg9 != 0)
+	if (arg9 != 0)
 		path[8] = arg9;
-	if(arg10 != 0)
+	if (arg10 != 0)
 		path[9] = arg10;
-	if(arg11 != 0)
+	if (arg11 != 0)
 		path[10] = arg11;
-	if(arg12 != 0)
+	if (arg12 != 0)
 		path[11] = arg12;
-	if(arg13 != 0)
+	if (arg13 != 0)
 		path[12] = arg13;
-	if(arg14 != 0)
+	if (arg14 != 0)
 		path[13] = arg14;
-	if(arg15 != 0)
+	if (arg15 != 0)
 		path[14] = arg15;
 
 	sender.stepMulti(path, size);
@@ -1458,6 +1543,7 @@ static PyObject *tibiaauto_sender_stepLeft(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepRight(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1466,6 +1552,7 @@ static PyObject *tibiaauto_sender_stepRight(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepUp(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1474,6 +1561,7 @@ static PyObject *tibiaauto_sender_stepUp(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepDown(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1482,6 +1570,7 @@ static PyObject *tibiaauto_sender_stepDown(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepUpRight(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1490,6 +1579,7 @@ static PyObject *tibiaauto_sender_stepUpRight(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepDownRight(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1498,6 +1588,7 @@ static PyObject *tibiaauto_sender_stepDownRight(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepUpLeft(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1506,6 +1597,7 @@ static PyObject *tibiaauto_sender_stepUpLeft(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_stepDownLeft(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1574,6 +1666,7 @@ static PyObject *tibiaauto_sender_sendCreatureInfo(PyObject *self, PyObject *arg
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_look(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1585,6 +1678,7 @@ static PyObject *tibiaauto_sender_look(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_ignoreLook(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1596,6 +1690,7 @@ static PyObject *tibiaauto_sender_ignoreLook(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sendAutoAimConfig(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1607,6 +1702,7 @@ static PyObject *tibiaauto_sender_sendAutoAimConfig(PyObject *self, PyObject *ar
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sendClearCreatureInfo(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1615,6 +1711,7 @@ static PyObject *tibiaauto_sender_sendClearCreatureInfo(PyObject *self, PyObject
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_enableCName(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1626,6 +1723,7 @@ static PyObject *tibiaauto_sender_enableCName(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_sender_sendAttackedCreatureToAutoAim(PyObject *self, PyObject *args)
 {
 	CPackSenderProxy sender;
@@ -1637,6 +1735,7 @@ static PyObject *tibiaauto_sender_sendAttackedCreatureToAutoAim(PyObject *self, 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_removePointAvailable(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1648,6 +1747,7 @@ static PyObject *tibiaauto_map_removePointAvailable(PyObject *self, PyObject *ar
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_prohPointClear(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1656,6 +1756,7 @@ static PyObject *tibiaauto_map_prohPointClear(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_prohPointAdd(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1667,6 +1768,7 @@ static PyObject *tibiaauto_map_prohPointAdd(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_getPointType(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1679,6 +1781,7 @@ static PyObject *tibiaauto_map_getPointType(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_getPointTypeNoProh(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1691,6 +1794,7 @@ static PyObject *tibiaauto_map_getPointTypeNoProh(PyObject *self, PyObject *args
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_setPointType(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1702,6 +1806,7 @@ static PyObject *tibiaauto_map_setPointType(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_getPrevPointZ(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1714,6 +1819,7 @@ static PyObject *tibiaauto_map_getPrevPointZ(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_getPrevPointY(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1726,6 +1832,7 @@ static PyObject *tibiaauto_map_getPrevPointY(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_getPrevPointX(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1738,6 +1845,7 @@ static PyObject *tibiaauto_map_getPrevPointX(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_clearPrevPoint(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1746,6 +1854,7 @@ static PyObject *tibiaauto_map_clearPrevPoint(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_setPrevPoint(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1766,6 +1875,7 @@ static PyObject *tibiaauto_map_clear(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_setPointAsAvailable(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1777,6 +1887,7 @@ static PyObject *tibiaauto_map_setPointAsAvailable(PyObject *self, PyObject *arg
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_isPointAvailable(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1789,6 +1900,7 @@ static PyObject *tibiaauto_map_isPointAvailable(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_isPointAvailableNoProh(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1801,6 +1913,7 @@ static PyObject *tibiaauto_map_isPointAvailableNoProh(PyObject *self, PyObject *
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_size(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1810,6 +1923,7 @@ static PyObject *tibiaauto_map_size(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_isPointInMiniMap(PyObject *self, PyObject *args)
 {
 	CTAMiniMapProxy taMiniMap;
@@ -1822,6 +1936,7 @@ static PyObject *tibiaauto_map_isPointInMiniMap(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_map_getMiniMapPoint(PyObject *self, PyObject *args)
 {
 	CTAMiniMapProxy taMiniMap;
@@ -1841,6 +1956,7 @@ static PyObject *tibiaauto_map_getMiniMapPoint(PyObject *self, PyObject *args)
 	delete retPoint;
 	return ret;
 }
+
 static PyObject *tibiaauto_map_setPointLocked(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1852,6 +1968,7 @@ static PyObject *tibiaauto_map_setPointLocked(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_map_isPointLocked(PyObject *self, PyObject *args)
 {
 	CTibiaMapProxy tibiaMap;
@@ -1864,6 +1981,7 @@ static PyObject *tibiaauto_map_isPointLocked(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
 {
 	CRegexpProxy regexpProxy;
@@ -1876,6 +1994,7 @@ static PyObject *tibiaauto_regexp_match(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_alice_respond(PyObject *self, PyObject *args)
 {
 	CAliceProxy alice;
@@ -1888,6 +2007,7 @@ static PyObject *tibiaauto_alice_respond(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getItemName(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1900,6 +2020,7 @@ static PyObject *tibiaauto_item_getItemName(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getItemId(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1912,6 +2033,7 @@ static PyObject *tibiaauto_item_getItemId(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getItemIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1924,6 +2046,7 @@ static PyObject *tibiaauto_item_getItemIndex(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getFoodIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1936,6 +2059,7 @@ static PyObject *tibiaauto_item_getFoodIndex(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getLootItemIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1948,6 +2072,7 @@ static PyObject *tibiaauto_item_getLootItemIndex(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getItemIdAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1960,6 +2085,7 @@ static PyObject *tibiaauto_item_getItemIdAtIndex(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getFoodIdAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1972,6 +2098,7 @@ static PyObject *tibiaauto_item_getFoodIdAtIndex(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getLootItemIdAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1984,6 +2111,7 @@ static PyObject *tibiaauto_item_getLootItemIdAtIndex(PyObject *self, PyObject *a
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getItemNameAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -1996,6 +2124,7 @@ static PyObject *tibiaauto_item_getItemNameAtIndex(PyObject *self, PyObject *arg
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getFoodNameAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2008,6 +2137,7 @@ static PyObject *tibiaauto_item_getFoodNameAtIndex(PyObject *self, PyObject *arg
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getLootItemNameAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2020,6 +2150,7 @@ static PyObject *tibiaauto_item_getLootItemNameAtIndex(PyObject *self, PyObject 
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_getFoodTimeAtIndex(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2074,6 +2205,7 @@ static PyObject *tibiaauto_item_addLootItem(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_item_removeItem(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2086,6 +2218,7 @@ static PyObject *tibiaauto_item_removeItem(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_item_removeFood(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2098,6 +2231,7 @@ static PyObject *tibiaauto_item_removeFood(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_item_removeLootItem(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2110,6 +2244,7 @@ static PyObject *tibiaauto_item_removeLootItem(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_item_clearFoodList(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2119,6 +2254,7 @@ static PyObject *tibiaauto_item_clearFoodList(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_item_getItemCount(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2161,6 +2297,7 @@ static PyObject *tibiaauto_item_getValueForConst(PyObject *self, PyObject *args)
 
 	return ret;
 }
+
 static PyObject *tibiaauto_item_refreshItemLists(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2169,6 +2306,7 @@ static PyObject *tibiaauto_item_refreshItemLists(PyObject *self, PyObject *args)
 	Py_INCREF(Py_None);
 	return Py_None;
 }
+
 static PyObject *tibiaauto_item_saveItemLists(PyObject *self, PyObject *args)
 {
 	CTibiaItemProxy itemProxy;
@@ -2184,76 +2322,91 @@ static PyObject *tibiaauto_item_getName(PyObject *self, PyObject *args)
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getName has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getObjectId(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getObjectId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getCorpseIdByCreatureName(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getCorpseIdByCreatureName has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsItems(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsItems has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsItemsId(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsItemsId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsItemsCount(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsItemsCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsFood(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsFood has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsFoodId(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsFoodId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsFoodCount(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsFoodCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsCorpses(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsCorpses has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsCorpsesId(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsCorpsesId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsCorpsesCount(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsCorpsesCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsLooted(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsLooted has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsLootedId(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsLootedId has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 static PyObject *tibiaauto_item_getItemsLootedCount(PyObject *self, PyObject *args)
 {
 	PyErr_SetString(PyExc_NameError, "Tibia Auto Function Error: tibiaauto_item_getItemsLootedCount has beed deprecated. Please see the Tibia Auto wiki for python functions.");
 	return NULL;
 }
+
 /* Deprecated Section End*/
 
 static PyObject *tibiaauto_kernel_startModule(PyObject *self, PyObject *args)
@@ -2346,7 +2499,6 @@ static PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self, PyObject *args
 	return ret;
 }
 
-
 static PyObject *tibiaauto_kernel_startPythonModule(PyObject *self, PyObject *args)
 {
 	int arg1;
@@ -2424,7 +2576,6 @@ static PyObject *tibiaauto_kernel_getPythonModuleVersion(PyObject *self, PyObjec
 
 	return ret;
 }
-
 
 static PyObject *tibiaauto_kernel_isPythonModuleStarted(PyObject *self, PyObject *args)
 {
@@ -2508,6 +2659,7 @@ static PyObject *tibiaauto_reader_readMiniMapPoint(PyObject *self, PyObject *arg
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_writeMiniMapPoint(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2629,6 +2781,7 @@ static PyObject *tibiaauto_reader_getPlayerModeAttackPlayers(PyObject *self, PyO
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getPlayerModeAttackType(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2638,6 +2791,7 @@ static PyObject *tibiaauto_reader_getPlayerModeAttackType(PyObject *self, PyObje
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2647,6 +2801,7 @@ static PyObject *tibiaauto_reader_getPlayerModeFollow(PyObject *self, PyObject *
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_getPlayerModePVP(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2700,7 +2855,6 @@ static PyObject *tibiaauto_reader_setXRayValues(PyObject *self, PyObject *args)
 	return Py_None;
 }
 
-
 static PyObject *tibiaauto_reader_getXRayValue1(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2711,7 +2865,6 @@ static PyObject *tibiaauto_reader_getXRayValue1(PyObject *self, PyObject *args)
 	return ret;
 }
 
-
 static PyObject *tibiaauto_reader_getXRayValue2(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2721,7 +2874,6 @@ static PyObject *tibiaauto_reader_getXRayValue2(PyObject *self, PyObject *args)
 
 	return ret;
 }
-
 
 static PyObject *tibiaauto_reader_writeCreatureDeltaXY(PyObject *self, PyObject *args)
 {
@@ -2735,7 +2887,6 @@ static PyObject *tibiaauto_reader_writeCreatureDeltaXY(PyObject *self, PyObject 
 	Py_INCREF(Py_None);
 	return Py_None;
 }
-
 
 static PyObject *tibiaauto_reader_getCreatureDeltaX(PyObject *self, PyObject *args)
 {
@@ -2787,6 +2938,7 @@ static PyObject *tibiaauto_reader_readVIPEntry(PyObject *self, PyObject *args)
 	delete vip;
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_mapGetPointTopPos(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;
@@ -2800,6 +2952,7 @@ static PyObject *tibiaauto_reader_mapGetPointTopPos(PyObject *self, PyObject *ar
 
 	return ret;
 }
+
 static PyObject *tibiaauto_reader_mapGetPointSeenOnTopPos(PyObject *self, PyObject *args)
 {
 	CMemReaderProxy reader;

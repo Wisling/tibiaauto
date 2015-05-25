@@ -28,7 +28,6 @@ CConfigDialog::CConfigDialog(CMod_teamApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -38,7 +37,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -85,11 +83,11 @@ void CConfigDialog::enableControls()
 {
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf, "%s", configData->masterChar); m_masterChar.SetWindowText(buf);
+	sprintf(buf, "%s", configData->masterChar);
+	m_masterChar.SetWindowText(buf);
 }
 
 CConfigData * CConfigDialog::controlsToConfig()
@@ -198,7 +196,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

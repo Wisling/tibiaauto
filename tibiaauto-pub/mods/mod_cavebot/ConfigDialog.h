@@ -71,7 +71,8 @@ enum CToolAutoAttackStateTraining
 
 struct PathfindParams {
 	int x, y, z, x2, y2, z2;
-	PathfindParams(int x, int y, int z, int x2, int y2, int z2){
+	PathfindParams(int x, int y, int z, int x2, int y2, int z2)
+	{
 		this->x  = x;
 		this->y  = y;
 		this->z  = z;

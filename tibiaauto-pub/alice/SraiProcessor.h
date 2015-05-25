@@ -18,10 +18,12 @@ using namespace std;
 class SraiProcessor : public AimlProcessor
 {
 public:
-	~SraiProcessor() {
+	~SraiProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string srai;
 		if (e->hasChildren())
 			srai = Kernel::process(m, e, r, id), id;

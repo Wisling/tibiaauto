@@ -15,7 +15,8 @@ class GuiStream;
 class JThread : public wxThread, public StreamProvider
 {
 public:
-	JThread() : wxThread() {
+	JThread() : wxThread()
+	{
 	}
 
 	Stream *getStream(const char *cs);
@@ -29,29 +30,35 @@ private:
 class GuiStream : public Stream
 {
 public:
-	GuiStream() {
+	GuiStream()
+	{
 		thread = NULL;
 	}
 
-	void Read(const char *cs) {
+	void Read(const char *cs)
+	{
 		if (thread != NULL)
 			((JThread *)thread)
 			->Output(name.c_str(), cs, true);
 	}
 
-	void Write(const char *cs) {
+	void Write(const char *cs)
+	{
 		if (thread != NULL)
 			((JThread *)thread)
 			->Output(name.c_str(), cs, false);
 	}
 
-	void setThread(wxThread *t) {
+	void setThread(wxThread *t)
+	{
 		thread = t;
 	}
 
-	void setName(const string &s) {
+	void setName(const string &s)
+	{
 		name = s;
 	}
+
 private:
 	wxThread *thread;
 	string name;
@@ -63,7 +70,8 @@ class JFrame : public wxFrame
 public:
 	JFrame(wxWindow *parent = NULL);
 
-	bool loadedOk() {
+	bool loadedOk()
+	{
 		return init;
 	}
 
@@ -87,30 +95,39 @@ class NewTabEvent : public wxEvent
 {
 public:
 	NewTabEvent(const string &name, int size)
-		: wxEvent(0, ADD_TAB) {
-		this->name = name; this->size = size;
+		: wxEvent(0, ADD_TAB)
+	{
+		this->name = name;
+		this->size = size;
 	}
 
-	virtual wxEvent *Clone() const {
+	virtual wxEvent *Clone() const
+	{
 		return new NewTabEvent(name, size);
 	}
 
-	string name; int size;
+	string name;
+	int size;
 };
 
 class UpdateTabEvent : public wxEvent
 {
 public:
 	UpdateTabEvent(const string &name, const string &text, bool read)
-		: wxEvent(0, UPDATE_TAB) {
-		this->name = name; this->text = text; this->read = read;
+		: wxEvent(0, UPDATE_TAB)
+	{
+		this->name = name;
+		this->text = text;
+		this->read = read;
 	}
 
-	virtual wxEvent *Clone() const {
+	virtual wxEvent *Clone() const
+	{
 		return new UpdateTabEvent(name, text, read);
 	}
 
-	string name, text; bool read;
+	string name, text;
+	bool read;
 };
 
 

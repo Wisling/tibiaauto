@@ -14,7 +14,7 @@ private:
 	void* GetProc(LPCSTR szProc, void* pfnFail);
 
 	typedef HTHEME (__stdcall * PFNOPENTHEMEDATA)(HWND hwnd, LPCWSTR pszClassList);
-	static HTHEME OpenThemeDataFail(HWND, LPCWSTR )
+	static HTHEME OpenThemeDataFail(HWND, LPCWSTR)
 	{
 		return NULL;
 	}
@@ -49,6 +49,7 @@ private:
 	{
 		return E_FAIL;
 	}
+
 	typedef HRESULT (__stdcall * PFNGETTHEMEBACKGROUNDEXTENT)(HTHEME hTheme, HDC hdc,
 	                                                          int iPartId, int iStateId, const RECT *pContentRect,
 	                                                          RECT *pExtentRect);
@@ -365,6 +366,7 @@ private:
 	{
 		return E_FAIL;
 	}
+
 public:
 	HTHEME OpenThemeData(HWND hwnd, LPCWSTR pszClassList);
 	HRESULT CloseThemeData(HTHEME hTheme);

@@ -14,6 +14,7 @@ public:
 
 		sprintf(this->subtype, "%s", subtype);
 	}
+
 	~NewIDirectDraw()
 	{
 		realIDirectDraw->Release();
@@ -81,14 +82,14 @@ public:
 		MessageBox(NULL, buf, "", 0);
 		return realIDirectDraw->CreateSurface(p1, p2, p3);
 	}
-	STDMETHOD(DuplicateSurface)( THIS_ LPDIRECTDRAWSURFACE p1, LPDIRECTDRAWSURFACE FAR * p2)
+	STDMETHOD(DuplicateSurface)(THIS_ LPDIRECTDRAWSURFACE p1, LPDIRECTDRAWSURFACE FAR * p2)
 	{
 		char buf[1024];
 		sprintf(buf, "[%s] DuplicateSurface", subtype);
 		MessageBox(NULL, buf, "", 0);
 		return realIDirectDraw->DuplicateSurface(p1, p2);
 	}
-	STDMETHOD(EnumDisplayModes)( THIS_ DWORD p1, LPDDSURFACEDESC p2, LPVOID p3, LPDDENUMMODESCALLBACK p4)
+	STDMETHOD(EnumDisplayModes)(THIS_ DWORD p1, LPDDSURFACEDESC p2, LPVOID p3, LPDDENUMMODESCALLBACK p4)
 	{
 		char buf[1024];
 		sprintf(buf, "[%s] EnumDisplayModes", subtype);
@@ -109,14 +110,14 @@ public:
 		MessageBox(NULL, buf, "", 0);
 		return realIDirectDraw->FlipToGDISurface();
 	}
-	STDMETHOD(GetCaps)( THIS_ LPDDCAPS p1, LPDDCAPS p2)
+	STDMETHOD(GetCaps)(THIS_ LPDDCAPS p1, LPDDCAPS p2)
 	{
 		char buf[1024];
 		sprintf(buf, "[%s] GetCaps", subtype);
 		MessageBox(NULL, buf, "", 0);
 		return realIDirectDraw->GetCaps(p1, p2);
 	}
-	STDMETHOD(GetDisplayMode)( THIS_ LPDDSURFACEDESC p1)
+	STDMETHOD(GetDisplayMode)(THIS_ LPDDSURFACEDESC p1)
 	{
 		char buf[1024];
 		sprintf(buf, "[%s] GetDisplayMode", subtype);

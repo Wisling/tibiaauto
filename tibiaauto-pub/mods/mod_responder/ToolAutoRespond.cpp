@@ -45,7 +45,7 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 		{
 			EnterCriticalSection(&QueueCriticalSection);
 			CToolAutoResponderMessage *msg;
-			if(config->queue.size() > 0) //first check is to prevent continual locking, this check is to make sure it still has items
+			if (config->queue.size() > 0) //first check is to prevent continual locking, this check is to make sure it still has items
 
 			{
 				msg = config->queue.front();
@@ -77,7 +77,6 @@ DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CToolAutoRespond dialog
 
@@ -97,7 +96,6 @@ CToolAutoRespond::CToolAutoRespond(CWnd* pParent /*=NULL*/)
 	InitializeCriticalSection(&QueueCriticalSection);
 }
 
-
 void CToolAutoRespond::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -114,7 +112,6 @@ void CToolAutoRespond::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_AUTORESPOND_MSGHISTORY, m_msgHistory);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CToolAutoRespond, CDialog)
 //{{AFX_MSG_MAP(CToolAutoRespond)
@@ -212,13 +209,27 @@ void CToolAutoRespond::readInfo()
 		memcpy(msgBuf, mess.payload + 16 + nickLen, msgLen);
 		switch (infoType)//received message types
 		{
-		case 1: sprintf(chanBuf, "say[%d]", infoType); break;
-		case 2: sprintf(chanBuf, "whisper[%d]", infoType); break;
-		case 3: sprintf(chanBuf, "yell[%d]", infoType); break;
-		case 5: sprintf(chanBuf, "NPC[%d]", infoType); break;
-		case 6: sprintf(chanBuf, "private[%d]", infoType); break;
-		case 7: sprintf(chanBuf, "channel[%d,%d]", infoType, chanType); break;
-		default: sprintf(chanBuf, "other[%d]", infoType); break;
+		case 1:
+			sprintf(chanBuf, "say[%d]", infoType);
+			break;
+		case 2:
+			sprintf(chanBuf, "whisper[%d]", infoType);
+			break;
+		case 3:
+			sprintf(chanBuf, "yell[%d]", infoType);
+			break;
+		case 5:
+			sprintf(chanBuf, "NPC[%d]", infoType);
+			break;
+		case 6:
+			sprintf(chanBuf, "private[%d]", infoType);
+			break;
+		case 7:
+			sprintf(chanBuf, "channel[%d,%d]", infoType, chanType);
+			break;
+		default:
+			sprintf(chanBuf, "other[%d]", infoType);
+			break;
 		}
 		//Channel IDs
 		//1-Party
@@ -253,10 +264,11 @@ void CToolAutoRespond::readInfo()
 	}
 }
 
-void CToolAutoRespond::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_ClearLogs);
-	skin.SetButtonSkin(     m_OK);
+void CToolAutoRespond::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_ClearLogs);
+	skin.SetButtonSkin(m_OK);
 }
 
 BOOL CToolAutoRespond::OnInitDialog()
@@ -294,7 +306,6 @@ void CToolAutoRespond::OnAutorespondEnable()
 	else
 		stop();
 }
-
 
 void CToolAutoRespond::OnAutorespondClear()
 {

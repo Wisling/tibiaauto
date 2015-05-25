@@ -11,7 +11,8 @@ using namespace std;
 class ImplodeProcessor : public AimlProcessor
 {
 public:
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string s = Kernel::process(m, e, r, id);
 
 		string rs = "";
@@ -28,7 +29,8 @@ public:
 class ExplodeProcessor : public AimlProcessor
 {
 public:
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string s = Kernel::process(m, e, r, id);
 
 		string rs = "";

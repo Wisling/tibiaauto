@@ -30,7 +30,7 @@ public:
 protected:
 	DECLARE_MESSAGE_MAP()
 
-	afx_msg void OnNotifyCustomDraw ( NMHDR * pNotifyStruct, LRESULT* result );
+	afx_msg void OnNotifyCustomDraw (NMHDR * pNotifyStruct, LRESULT* result);
 
 	void draw_bitmap (HDC hDC, const CRect& Rect, DWORD style);
 	void draw_icon (HDC hDC, const CRect& Rect, DWORD style);

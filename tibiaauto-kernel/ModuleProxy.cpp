@@ -38,7 +38,7 @@ CModuleProxy::CModuleProxy(char *moduleName, int pathIsAbsolute)
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -181,6 +181,7 @@ void CModuleProxy::controlsToConfig()
 			fun();
 	}
 }
+
 void CModuleProxy::disableControls()
 {
 	typedef void (*Proto_fun)();
@@ -247,7 +248,6 @@ int CModuleProxy::validateConfig(int showAlerts)
 	}
 }
 
-
 void CModuleProxy::resetConfig()
 {
 	typedef void (*Proto_fun)();
@@ -258,7 +258,6 @@ void CModuleProxy::resetConfig()
 			fun();
 	}
 }
-
 
 void CModuleProxy::loadConfigParam(char *paramName, char *paramValue)
 {

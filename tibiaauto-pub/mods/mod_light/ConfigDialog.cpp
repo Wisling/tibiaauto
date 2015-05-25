@@ -24,7 +24,6 @@ CConfigDialog::CConfigDialog(Cmod_lightApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -37,7 +36,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -96,12 +94,13 @@ void CConfigDialog::enableControls()
 	}
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buff[128];
-	sprintf(buff, "%d", configData->lightPower);      m_power.SetWindowText(buff);
-	sprintf(buff, "%d", configData->lightColor);      m_color.SetWindowText(buff);
+	sprintf(buff, "%d", configData->lightPower);
+	m_power.SetWindowText(buff);
+	sprintf(buff, "%d", configData->lightColor);
+	m_color.SetWindowText(buff);
 
 	DWORD dwData = MAKEWPARAM(configData->lightPower, configData->lightColor);
 
@@ -124,8 +123,10 @@ CConfigData * CConfigDialog::controlsToConfig()
 	CConfigData *newConfigData = new CConfigData();
 
 	char buff[128];
-	m_power.GetWindowText(buff, 128);        newConfigData->lightPower = atoi(buff);
-	m_color.GetWindowText(buff, 128);        newConfigData->lightColor = atoi(buff);
+	m_power.GetWindowText(buff, 128);
+	newConfigData->lightPower = atoi(buff);
+	m_color.GetWindowText(buff, 128);
+	newConfigData->lightColor = atoi(buff);
 
 	return newConfigData;
 }
@@ -135,9 +136,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -159,7 +161,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

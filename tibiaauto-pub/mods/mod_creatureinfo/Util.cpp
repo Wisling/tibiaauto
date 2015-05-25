@@ -41,7 +41,7 @@ char *CUtil::wc2c(const XMLCh *src)
 	memset(dest, 0, MAX_STRING_LEN);
 	if (src == NULL)
 		return dest;
-	WideCharToMultiByte( CP_ACP, 0, src, -1, dest, MAX_STRING_LEN / 2 - 10, NULL, NULL );
+	WideCharToMultiByte(CP_ACP, 0, src, -1, dest, MAX_STRING_LEN / 2 - 10, NULL, NULL);
 	return dest;
 }
 

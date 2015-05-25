@@ -28,7 +28,6 @@ CMapConfig::CMapConfig(CTibiaTile *memTilesForConfig[10], int x, int y, CWnd* pP
 	//}}AFX_DATA_INIT
 }
 
-
 void CMapConfig::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -59,7 +58,6 @@ void CMapConfig::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CMapConfig, CDialog)
 //{{AFX_MSG_MAP(CMapConfig)
 ON_WM_ERASEBKGND()
@@ -78,7 +76,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CMapConfig message handlers
 
-void CMapConfig::OnCommit() {
+void CMapConfig::OnCommit()
+{
 	CMemReaderProxy reader;
 	saveTile();
 	for (int pos = 0; pos < 10; pos++)
@@ -89,7 +88,8 @@ void CMapConfig::OnCommit() {
 	this->EndDialog(IDOK);
 }
 
-void CMapConfig::Mem2Config() {
+void CMapConfig::Mem2Config()
+{
 	CMemReaderProxy reader;
 	int outOfRange = 0;
 	// make (x,y) relative to the center
@@ -124,7 +124,8 @@ void CMapConfig::Mem2Config() {
 		m_Next.EnableWindow(true);
 }
 
-void CMapConfig::loadTile(int tileId, int pos) {
+void CMapConfig::loadTile(int tileId, int pos)
+{
 	char buf[32];
 
 	sprintf(buf, "%d", tileId);
@@ -147,10 +148,13 @@ void CMapConfig::loadTile(int tileId, int pos) {
 	m_Teleporter.SetCheck(memTilesForConfig[pos]->isTeleporter);
 }
 
-void CMapConfig::saveTile() {
+void CMapConfig::saveTile()
+{
 	char buf[32];
-	m_TileId.GetWindowText(buf, 31); tileId[currentStackPos]                  = atoi(buf);
-	m_Speed.GetWindowText(buf, 31); memTilesForConfig[currentStackPos]->speed = atoi(buf);
+	m_TileId.GetWindowText(buf, 31);
+	tileId[currentStackPos] = atoi(buf);
+	m_Speed.GetWindowText(buf, 31);
+	memTilesForConfig[currentStackPos]->speed = atoi(buf);
 
 
 	memTilesForConfig[currentStackPos]->alwaysOnTop    = m_AlwaysOnTop.GetCheck();
@@ -169,13 +173,15 @@ void CMapConfig::saveTile() {
 	memTilesForConfig[currentStackPos]->isTeleporter   = m_Teleporter.GetCheck();
 }
 
-void CMapConfig::DoSetButtonSkin(){
-	skin.SetButtonSkin( m_Previous);
-	skin.SetButtonSkin(     m_Commit);
-	skin.SetButtonSkin( m_Next);
+void CMapConfig::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_Previous);
+	skin.SetButtonSkin(m_Commit);
+	skin.SetButtonSkin(m_Next);
 }
 
-BOOL CMapConfig::OnInitDialog() {
+BOOL CMapConfig::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
@@ -185,8 +191,8 @@ BOOL CMapConfig::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
-void CMapConfig::OnPreviousTile() {
+void CMapConfig::OnPreviousTile()
+{
 	saveTile();
 	if (currentStackPos)
 	{
@@ -207,7 +213,8 @@ void CMapConfig::OnPreviousTile() {
 		m_Next.EnableWindow(true);
 }
 
-void CMapConfig::OnNextTile() {
+void CMapConfig::OnNextTile()
+{
 	saveTile();
 	if (currentStackPos < 9)
 	{
@@ -228,8 +235,8 @@ void CMapConfig::OnNextTile() {
 		m_Next.EnableWindow(true);
 }
 
-
-void CMapConfig::OnRope() {
+void CMapConfig::OnRope()
+{
 	if (m_RequireRope.GetCheck())
 	{
 		m_GoUp.SetCheck(true);
@@ -238,7 +245,8 @@ void CMapConfig::OnRope() {
 	}
 }
 
-void CMapConfig::OnClick() {
+void CMapConfig::OnClick()
+{
 	if (m_GoDown.GetCheck())
 	{
 		m_GoUp.SetCheck(true);
@@ -247,7 +255,8 @@ void CMapConfig::OnClick() {
 	}
 }
 
-void CMapConfig::OnShovel() {
+void CMapConfig::OnShovel()
+{
 	if (m_GoDown.GetCheck())
 	{
 		m_GoDown.SetCheck(true);
@@ -256,7 +265,8 @@ void CMapConfig::OnShovel() {
 	}
 }
 
-void CMapConfig::OnGoDown() {
+void CMapConfig::OnGoDown()
+{
 	if (m_GoDown.GetCheck())
 	{
 		m_GoUp.SetCheck(false);
@@ -265,8 +275,8 @@ void CMapConfig::OnGoDown() {
 	}
 }
 
-
-void CMapConfig::OnGoUp() {
+void CMapConfig::OnGoUp()
+{
 	if (m_GoUp.GetCheck())
 	{
 		m_GoDown.SetCheck(false);

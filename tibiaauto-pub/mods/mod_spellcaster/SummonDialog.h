@@ -18,7 +18,7 @@ class SummonDialog : public MyDialog
 {
 // Construction
 public:
-	void controlsToConfig(CConfigData * );
+	void controlsToConfig(CConfigData *);
 	void configToControls(CConfigData *);
 	void enableControls();
 	void disableControls();

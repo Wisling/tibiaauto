@@ -16,10 +16,12 @@ using namespace std;
 class SrProcessor : public AimlProcessor
 {
 public:
-	~SrProcessor() {
+	~SrProcessor()
+	{
 	}
 
-	string process(Match *m, PElement, Responder *, const string &id) {
+	string process(Match *m, PElement, Responder *, const string &id)
+	{
 		string star = m->getInputStar(1);
 		return Kernel::respond(star, id, true);
 	}

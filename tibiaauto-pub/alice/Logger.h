@@ -9,10 +9,12 @@ using namespace std;
 class Logger
 {
 public:
-	Logger() {
+	Logger()
+	{
 	}
 
-	~Logger() {
+	~Logger()
+	{
 	}
 
 	static void log(const string &msg, int logType);

@@ -17,10 +17,12 @@ using namespace std;
 class Node
 {
 public:
-	Node() {
+	Node()
+	{
 	}
 
-	Node *getChild(char ch) {
+	Node *getChild(char ch)
+	{
 		if (children.find(ch) == children.end())
 			return NULL;
 		return (*children.find(ch)).second;
@@ -33,11 +35,13 @@ public:
 class SubTree
 {
 public:
-	SubTree() {
+	SubTree()
+	{
 		root = new Node();
 	}
 
-	void addChild(string find, string replace) {
+	void addChild(string find, string replace)
+	{
 		char ch;
 		Node *n = root;
 		for (size_t ix = 0; ix < find.length(); ++ix)

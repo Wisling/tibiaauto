@@ -7,7 +7,8 @@
 
 using namespace std;
 
-void SaxParser::parse(istream &in) {
+void SaxParser::parse(istream &in)
+{
 	char buf;
 	bool addedSpace = false;
 	bool insideTag  = false;
@@ -52,7 +53,8 @@ void SaxParser::parse(istream &in) {
 			if (vBuffer.size() == 4 && string(vBuffer.begin(), vBuffer.end()) == "<!--")
 			{
 				//	Then skip comment
-				++itr; ++i;
+				++itr;
+				++i;
 				while (itr != eos)
 				{
 					buf = *itr;
@@ -75,7 +77,8 @@ void SaxParser::parse(istream &in) {
 			        )
 			{
 				//	Then skip doctype or xml declaration
-				++itr; ++i;
+				++itr;
+				++i;
 				while (itr != eos)
 				{
 					buf = *itr;
@@ -94,7 +97,8 @@ void SaxParser::parse(istream &in) {
 			{
 				//	Then build up cdata section
 				vBuffer.clear();
-				++itr; ++i;
+				++itr;
+				++i;
 				while (itr != eos)
 				{
 					buf = *itr;
@@ -137,13 +141,15 @@ void SaxParser::parse(istream &in) {
 	}
 }
 
-void SaxParser::addElement(vector<char> &vb, int index) {
+void SaxParser::addElement(vector<char> &vb, int index)
+{
 	++index;
 	vector<char>::iterator front, back, temp;
 	front = vb.begin();
 	back  = vb.end();
 
-	front++; back--;        //	remove '<' and '>'
+	front++;
+	back--;                 //	remove '<' and '>'
 
 	if (*front == '/')
 	{

@@ -28,14 +28,15 @@ int initalizeBankers();
 
 
 CConfigDialog::CConfigDialog(CMod_bankerApp *app, CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app = app;
 }
 
-
-void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
+void CConfigDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDOK, m_OK);
@@ -53,7 +54,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
 ON_WM_CLOSE()
@@ -68,15 +68,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() {
+void CConfigDialog::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() {
+void CConfigDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {
+void CConfigDialog::OnEnable()
+{
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
@@ -91,7 +94,8 @@ void CConfigDialog::OnEnable() {
 	}
 }
 
-void CConfigDialog::disableControls() {
+void CConfigDialog::disableControls()
+{
 	m_MinGold.EnableWindow(false);
 	m_OnHand.EnableWindow(false);
 	m_Banker.EnableWindow(false);
@@ -102,7 +106,8 @@ void CConfigDialog::disableControls() {
 	m_drawUpTo.EnableWindow(false);
 }
 
-void CConfigDialog::enableControls() {
+void CConfigDialog::enableControls()
+{
 	m_OnHand.EnableWindow(true);
 	m_MinGold.EnableWindow(true);
 	m_Banker.EnableWindow(true);
@@ -114,26 +119,33 @@ void CConfigDialog::enableControls() {
 	OnChangeGold();
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {
+void CConfigDialog::configToControls(CConfigData *configData)
+{
 	char buf[128];
-	sprintf(buf, "%d", configData->minimumGoldToBank); m_MinGold.SetWindowText(buf);
-	sprintf(buf, "%d", configData->cashOnHand); m_OnHand.SetWindowText(buf);
+	sprintf(buf, "%d", configData->minimumGoldToBank);
+	m_MinGold.SetWindowText(buf);
+	sprintf(buf, "%d", configData->cashOnHand);
+	m_OnHand.SetWindowText(buf);
 	reloadBankers();
 	m_Banker.SetCurSel(m_Banker.FindStringExact(-1, configData->banker.bankerName));
 	if (m_Banker.GetCurSel() == -1)
 		m_Banker.SetCurSel(0);
 	m_modPriority.SetCurSel(atoi(configData->modPriorityStr) - 1);
 	m_changeGold.SetCheck(configData->changeGold);
-	sprintf(buf, "%d", configData->capsLimit); m_capsLimit.SetWindowText(buf);
+	sprintf(buf, "%d", configData->capsLimit);
+	m_capsLimit.SetWindowText(buf);
 	m_stopByBanker.SetCheck(configData->stopByBanker);
 	m_drawUpTo.SetCheck(configData->drawUpTo);
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {
+CConfigData * CConfigDialog::controlsToConfig()
+{
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
-	m_MinGold.GetWindowText(buf, 127); newConfigData->minimumGoldToBank = atoi(buf);
-	m_OnHand.GetWindowText(buf, 127); newConfigData->cashOnHand         = atoi(buf);
+	m_MinGold.GetWindowText(buf, 127);
+	newConfigData->minimumGoldToBank = atoi(buf);
+	m_OnHand.GetWindowText(buf, 127);
+	newConfigData->cashOnHand = atoi(buf);
 	int index = m_Banker.GetCurSel();
 	m_Banker.GetLBText(index, buf);
 	for (index = 0; index < bankerNum && strcmp(bankersInfo[index].name, buf); index++)
@@ -145,22 +157,24 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	newConfigData->banker.bankerY = bankersInfo[index].yPos;
 	newConfigData->banker.bankerZ = bankersInfo[index].zPos;
 	sprintf(newConfigData->modPriorityStr, "%d", m_modPriority.GetCurSel() + 1);
-	newConfigData->changeGold                                     = m_changeGold.GetCheck();
-	m_capsLimit.GetWindowText(buf, 127); newConfigData->capsLimit = atoi(buf);
-	newConfigData->stopByBanker                                   = m_stopByBanker.GetCheck();
-	newConfigData->drawUpTo                                       = m_drawUpTo.GetCheck();
+	newConfigData->changeGold = m_changeGold.GetCheck();
+	m_capsLimit.GetWindowText(buf, 127);
+	newConfigData->capsLimit    = atoi(buf);
+	newConfigData->stopByBanker = m_stopByBanker.GetCheck();
+	newConfigData->drawUpTo     = m_drawUpTo.GetCheck();
 
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
 		CMemReaderProxy reader;
 
 		char buf[256];
-		switch(globalBankerState)
+		switch (globalBankerState)
 		{
 		case CToolBankerState_notRunning:
 			m_stateBanker.SetWindowText("Not running");
@@ -188,12 +202,14 @@ void CConfigDialog::OnTimer(UINT nIDEvent) {
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
-BOOL CConfigDialog::OnInitDialog() {
+BOOL CConfigDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
@@ -204,16 +220,18 @@ BOOL CConfigDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
+{
 	return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CConfigDialog::activateEnableButton(int enable) {
+void CConfigDialog::activateEnableButton(int enable)
+{
 	m_enable.SetCheck(enable);
 }
 
-void CConfigDialog::reloadBankers() {
+void CConfigDialog::reloadBankers()
+{
 	while (m_Banker.GetCount() > 0)
 		m_Banker.DeleteString(0);
 	for (int count = 0; count < bankerNum; count++)
@@ -223,14 +241,16 @@ void CConfigDialog::reloadBankers() {
 	m_Banker.SetCurSel(0);
 }
 
-void CConfigDialog::OnChangeGold(){
+void CConfigDialog::OnChangeGold()
+{
 	int val = m_changeGold.GetCheck();
 	m_MinGold.EnableWindow(!val);
 	m_OnHand.EnableWindow(!val);
 	m_drawUpTo.EnableWindow(!val);
 }
 
-int initalizeBankers() {
+int initalizeBankers()
+{
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 
@@ -238,10 +258,12 @@ int initalizeBankers() {
 
 	sprintf(pathBuf, "%s\\mods\\tibiaauto-bankers.csv", installPath);
 
-	ifstream bankerFile (pathBuf, ios::in);
+	ifstream bankerFile(pathBuf, ios::in);
 	if (!bankerFile.is_open())
 	{
-		AfxMessageBox("File TibiaAuto-Bankers.csv Not found!"); bankerFile.close(); return 0;
+		AfxMessageBox("File TibiaAuto-Bankers.csv Not found!");
+		bankerFile.close();
+		return 0;
 	}
 	char buf[129] = {0};
 

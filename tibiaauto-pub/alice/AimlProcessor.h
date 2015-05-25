@@ -17,7 +17,8 @@ using namespace std;
 class AimlProcessor
 {
 public:
-	virtual ~AimlProcessor() {
+	virtual ~AimlProcessor()
+	{
 	};
 
 	virtual string process(Match *, PElement, Responder *, const string &) = 0;

@@ -17,10 +17,12 @@ using namespace std;
 class NormalizeProcessor : public AimlProcessor
 {
 public:
-	~NormalizeProcessor() {
+	~NormalizeProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		return Substituter::substitute(Kernel::process(m, e, r, id));
 	}
 };

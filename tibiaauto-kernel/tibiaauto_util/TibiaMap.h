@@ -32,6 +32,7 @@ public:
 	{
 		clear();
 	}
+
 	void clear()
 	{
 		available = 0;

@@ -9,7 +9,7 @@
 void UsrDump(TCHAR *msg, BYTE *pData, int len);
 CString GetDumpString(BYTE *pData, int len);
 void DumpErrorCode(DWORD dwErrCode, DWORD dwLine, char *szFileName);
-BOOL GetErrorDescription( DWORD error_code, CString& error_string );
+BOOL GetErrorDescription(DWORD error_code, CString& error_string);
 
 inline TCHAR GetPrintCharOrDot(TCHAR c)
 {

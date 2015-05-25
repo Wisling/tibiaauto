@@ -61,7 +61,8 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
+{
 	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop)
@@ -214,7 +215,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 			tibiaFile.push_back(reader.getMemIntValue(0x401000 + loop));
 		}
 
-		while(loop < 0x5b0ffe)
+		while (loop < 0x5b0ffe)
 		{
 			fileIterator       = tibiaFile.begin();
 			comparisonIterator = comparison.begin();
@@ -250,17 +251,18 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam ) {
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_addressfinderApp construction
 
-CMod_addressfinderApp::CMod_addressfinderApp() {
+CMod_addressfinderApp::CMod_addressfinderApp()
+{
 	m_configDialog = NULL;
 	m_started      = 0;
 	m_configData   = new CConfigData();
 }
 
-CMod_addressfinderApp::~CMod_addressfinderApp() {
+CMod_addressfinderApp::~CMod_addressfinderApp()
+{
 	if (m_configDialog)
 	{
 		m_configDialog->DestroyWindow();
@@ -269,15 +271,18 @@ CMod_addressfinderApp::~CMod_addressfinderApp() {
 	delete m_configData;
 }
 
-char * CMod_addressfinderApp::getName() {
+char * CMod_addressfinderApp::getName()
+{
 	return "Auto addressfinder";
 }
 
-int CMod_addressfinderApp::isStarted() {
+int CMod_addressfinderApp::isStarted()
+{
 	return m_started;
 }
 
-void CMod_addressfinderApp::start() {
+void CMod_addressfinderApp::start()
+{
 	superStart();
 	if (m_configDialog)
 	{
@@ -292,7 +297,8 @@ void CMod_addressfinderApp::start() {
 	m_started            = 1;
 }
 
-void CMod_addressfinderApp::stop() {
+void CMod_addressfinderApp::stop()
+{
 	toolThreadShouldStop = 1;
 	while (toolThreadShouldStop)
 	{
@@ -308,7 +314,8 @@ void CMod_addressfinderApp::stop() {
 	}
 }
 
-void CMod_addressfinderApp::showConfigDialog() {
+void CMod_addressfinderApp::showConfigDialog()
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
@@ -325,12 +332,14 @@ void CMod_addressfinderApp::showConfigDialog() {
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-void CMod_addressfinderApp::configToControls() {
+void CMod_addressfinderApp::configToControls()
+{
 	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
-void CMod_addressfinderApp::controlsToConfig() {
+void CMod_addressfinderApp::controlsToConfig()
+{
 	if (m_configDialog)
 	{
 		delete m_configData;
@@ -338,27 +347,31 @@ void CMod_addressfinderApp::controlsToConfig() {
 	}
 }
 
-void CMod_addressfinderApp::disableControls() {
+void CMod_addressfinderApp::disableControls()
+{
 	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
-void CMod_addressfinderApp::enableControls() {
+void CMod_addressfinderApp::enableControls()
+{
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-
-char *CMod_addressfinderApp::getVersion() {
+char *CMod_addressfinderApp::getVersion()
+{
 	return "1.0";
 }
 
-int CMod_addressfinderApp::validateConfig(int showAlerts) {
+int CMod_addressfinderApp::validateConfig(int showAlerts)
+{
 	return 1;
 }
 
-void CMod_addressfinderApp::resetConfig() {
-	if(m_configData)
+void CMod_addressfinderApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -366,14 +379,16 @@ void CMod_addressfinderApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_addressfinderApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	if (!strcmp(paramName, "ExperienceAddress"))
 		m_configData->experienceAddress = atoi(paramValue);
 	if (!strcmp(paramName, "Experience"))
 		m_configData->experience = atoi(paramValue);
 }
 
-char *CMod_addressfinderApp::saveConfigParam(char *paramName) {
+char *CMod_addressfinderApp::saveConfigParam(char *paramName)
+{
 	static char buf[1024];
 	buf[0] = '\0';
 	if (!strcmp(paramName, "ExperienceAddress"))
@@ -384,17 +399,21 @@ char *CMod_addressfinderApp::saveConfigParam(char *paramName) {
 	return buf;
 }
 
-char *CMod_addressfinderApp::getConfigParamName(int nr) {
+char *CMod_addressfinderApp::getConfigParamName(int nr)
+{
 	switch (nr)
 	{
-	case 0: return "ExperienceAddress";
-	case 1: return "Experience";
+	case 0:
+		return "ExperienceAddress";
+	case 1:
+		return "Experience";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_addressfinderApp::getNewSkin(CSkin newSkin) {
+void CMod_addressfinderApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	if (m_configDialog)

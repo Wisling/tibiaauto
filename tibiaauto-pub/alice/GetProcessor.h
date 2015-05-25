@@ -18,10 +18,12 @@ using namespace std;
 class GetProcessor : public AimlProcessor
 {
 public:
-	~GetProcessor() {
+	~GetProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string conjunction = e->getAttribute("conjunction");
 		bool global        = e->getAttribute("global") == "true";
 		if (conjunction.empty())

@@ -84,7 +84,7 @@ protected:
 	char m_text [64];               // control text
 
 	int mHeight;
-	int GetMinHeight (HDC); // calculates the minimal height 'mHeight'
+	int GetMinHeight(HDC);  // calculates the minimal height 'mHeight'
 	// based on m_font
 
 //	bool prepare_bitmaps;

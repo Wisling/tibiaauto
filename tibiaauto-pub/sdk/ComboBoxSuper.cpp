@@ -30,7 +30,6 @@ CComboBoxSuper::~CComboBoxSuper()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CComboBoxSuper, CComboBox)
 //{{AFX_MSG_MAP(CComboBoxSuper)
 ON_WM_DELETEITEM()
@@ -314,7 +313,7 @@ DWORD CComboBoxSuper::GetItemData(int nItemIndex)
  *
  * @ChangesHistory
  ********************************************************************************************/
-void CComboBoxSuper::SetColumnCount(int nColumnCount )
+void CComboBoxSuper::SetColumnCount(int nColumnCount)
 {
 	int nPrevColumnCount = m_vecColumnWidth.size();
 	m_vecColumnWidth.resize(nColumnCount);

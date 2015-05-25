@@ -7,7 +7,7 @@
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
-BOOL GetErrorDescription( DWORD error_code, CString& error_string )
+BOOL GetErrorDescription(DWORD error_code, CString& error_string)
 {
 	BOOL rc = TRUE;
 
@@ -18,20 +18,20 @@ BOOL GetErrorDescription( DWORD error_code, CString& error_string )
 	::FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM,
 	                NULL,
 	                error_code,
-	                MAKELANGID( LANG_NEUTRAL, SUBLANG_SYS_DEFAULT ),
+	                MAKELANGID(LANG_NEUTRAL, SUBLANG_SYS_DEFAULT),
 	                (LPTSTR) &message_buffer,
 	                0,
-	                NULL );
+	                NULL);
 
 	error_string = (LPCTSTR) message_buffer;
 
-	::LocalFree( message_buffer );
+	::LocalFree(message_buffer);
 	message_buffer = NULL;
 
-	if ( error_string.GetLength() == 0 )
+	if (error_string.GetLength() == 0)
 	{
 		CString frm = _T("Unknown error.");
-		error_string.Format(frm, error_code );
+		error_string.Format(frm, error_code);
 		rc = FALSE;
 	}
 

@@ -42,7 +42,6 @@ CXTabCtrl::~CXTabCtrl()
 	m_arrayStatusTab.RemoveAll();
 }
 
-
 BEGIN_MESSAGE_MAP(CXTabCtrl, CTabCtrl)
 //{{AFX_MSG_MAP(CXTabCtrl)
 ON_NOTIFY_REFLECT(TCN_SELCHANGE, OnSelchange)
@@ -67,7 +66,6 @@ void CXTabCtrl::SetMouseOverColor(COLORREF cr)
 	m_crMouseOver     = cr;
 }
 
-
 void CXTabCtrl::SetDisabledColor(COLORREF cr)
 {
 	m_bColorDisabled = true;
@@ -79,7 +77,6 @@ void CXTabCtrl::SetSelectedColor(COLORREF cr)
 	m_bColorSelected = true;
 	m_crSelected     = cr;
 }
-
 
 void CXTabCtrl::SetNormalColor(COLORREF cr)
 {
@@ -148,14 +145,12 @@ void CXTabCtrl::DeleteTab(int iIndex)
 	DeleteItem(iIndex);
 }
 
-
 BOOL CXTabCtrl::IsTabEnabled(int iIndex)
 {
 	ASSERT(iIndex < m_arrayStatusTab.GetSize());
 
 	return m_arrayStatusTab[iIndex];
 }
-
 
 BOOL CXTabCtrl::SelectTab(int iIndex)
 {
@@ -227,14 +222,12 @@ void CXTabCtrl::OnSelchanging(NMHDR* pNMHDR, LRESULT* pResult)
 	*pResult = 0;
 }
 
-
 void CXTabCtrl::PreSubclassWindow()
 {
 	// TODO: Add your specialized code here and/or call the base class
 	CTabCtrl::PreSubclassWindow();
 	ModifyStyle(0, TCS_OWNERDRAWFIXED);
 }
-
 
 void CXTabCtrl::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
@@ -385,7 +378,7 @@ void CXTabCtrl::OnTimer(UINT nIDEvent)
 	// If mouse leaves, show normal
 	if (!rectScreen.PtInRect(pt))
 	{
-		KillTimer (1);
+		KillTimer(1);
 		m_bMouseOver      = false;
 		m_iIndexMouseOver = -1;
 		InvalidateRect(rectItem);

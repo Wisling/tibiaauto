@@ -25,7 +25,6 @@ CConfigDialog::CConfigDialog(CMod_fisherApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -42,7 +41,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_ENABLE, m_enable);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -97,11 +95,11 @@ void CConfigDialog::enableControls()
 	m_fishOnlyWhenWorms.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf, "%d", configData->fishOnlyWhenCap); m_fishOnlyWhenCap.SetWindowText(buf);
+	sprintf(buf, "%d", configData->fishOnlyWhenCap);
+	m_fishOnlyWhenCap.SetWindowText(buf);
 	m_moveFromHandToCont.SetCheck(configData->moveFromHandToCont);
 	m_fishOnlyWhenWorms.SetCheck(configData->fishOnlyWhenWorms);
 }
@@ -111,9 +109,10 @@ CConfigData * CConfigDialog::controlsToConfig()
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
-	m_fishOnlyWhenCap.GetWindowText(buf, 127); newConfigData->fishOnlyWhenCap = atoi(buf);
-	newConfigData->moveFromHandToCont                                         = m_moveFromHandToCont.GetCheck();
-	newConfigData->fishOnlyWhenWorms                                          = m_fishOnlyWhenWorms.GetCheck();
+	m_fishOnlyWhenCap.GetWindowText(buf, 127);
+	newConfigData->fishOnlyWhenCap    = atoi(buf);
+	newConfigData->moveFromHandToCont = m_moveFromHandToCont.GetCheck();
+	newConfigData->fishOnlyWhenWorms  = m_fishOnlyWhenWorms.GetCheck();
 
 	return newConfigData;
 }
@@ -132,9 +131,10 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -149,7 +149,6 @@ BOOL CConfigDialog::OnInitDialog()
 	return TRUE;  // return TRUE unless you set the focus to a control
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
-
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {

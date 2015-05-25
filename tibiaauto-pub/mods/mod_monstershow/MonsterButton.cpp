@@ -24,7 +24,6 @@ CMonsterButton::~CMonsterButton()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CMonsterButton, CButton)
 //{{AFX_MSG_MAP(CMonsterButton)
 ON_WM_MOUSEMOVE()

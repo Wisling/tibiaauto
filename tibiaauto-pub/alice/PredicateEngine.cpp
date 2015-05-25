@@ -28,7 +28,8 @@ using namespace std;
 
  ******************************************************/
 
-PredicateEngine::PredicateEngine() {
+PredicateEngine::PredicateEngine()
+{
 	ifstream history("history.csv");
 	if (history.is_open())
 	{
@@ -60,7 +61,8 @@ PredicateEngine::PredicateEngine() {
 	}
 }
 
-PredicateEngine::~PredicateEngine() {
+PredicateEngine::~PredicateEngine()
+{
 	//	Saving of the history is incorrect, as when it reloads,
 	//	the order will not be the same
 	ofstream hout("history.csv", ios::trunc);
@@ -103,7 +105,8 @@ PredicateEngine::~PredicateEngine() {
 	}
 }
 
-void PredicateEngine::addValue(const string &property, const string &id, const string &value) {
+void PredicateEngine::addValue(const string &property, const string &id, const string &value)
+{
 	//typedef map<pair<string, string>, ARRAY> uArrayMap
 
 	map<pair<string, string>, ARRAY>::iterator itr = userPredicates.find(pair<string, string>(property, id));
@@ -112,12 +115,14 @@ void PredicateEngine::addValue(const string &property, const string &id, const s
 		array = (*itr).second;
 	else
 		array = ARRAY();
-	array.size++; array.number++;
+	array.size++;
+	array.number++;
 	array.elements[array.size]                             = value;
 	userPredicates[pair < string, string > (property, id)] = array;
 }
 
-void PredicateEngine::setValue(const string &property, const string &id, const string &value, int index) {
+void PredicateEngine::setValue(const string &property, const string &id, const string &value, int index)
+{
 	map<pair<string, string>, ARRAY>::iterator itr = userPredicates.find(pair<string, string>(property, id));
 	ARRAY array;
 	if (itr != userPredicates.end())
@@ -132,16 +137,19 @@ void PredicateEngine::setValue(const string &property, const string &id, const s
 	userPredicates[pair < string, string > (property, id)] = array;
 }
 
-void PredicateEngine::clearValue(const string &property, const string &id, int index) {
+void PredicateEngine::clearValue(const string &property, const string &id, int index)
+{
 	string s = property + id;
 	int i    = index;
 }
 
-void PredicateEngine::clearValues(const string &property, const string &id) {
+void PredicateEngine::clearValues(const string &property, const string &id)
+{
 	string s = property + id;
 }
 
-string PredicateEngine::getValue(const string &property, const string &id, int index) {
+string PredicateEngine::getValue(const string &property, const string &id, int index)
+{
 	map<pair<string, string>, ARRAY>::const_iterator itr = userPredicates.find(pair<string, string>(property, id));
 	if (itr != userPredicates.end())
 	{
@@ -153,7 +161,8 @@ string PredicateEngine::getValue(const string &property, const string &id, int i
 	return "";
 }
 
-string PredicateEngine::getValues(const string &property, const string &id, const string &conjunction) {
+string PredicateEngine::getValues(const string &property, const string &id, const string &conjunction)
+{
 	map<pair<string, string>, ARRAY>::const_iterator itr = userPredicates.find(pair<string, string>(property, id));
 	if (itr != userPredicates.end())
 	{
@@ -173,7 +182,8 @@ string PredicateEngine::getValues(const string &property, const string &id, cons
 	return "";
 }
 
-void PredicateEngine::addHistory(const string &property, const string &id, const string &value) {
+void PredicateEngine::addHistory(const string &property, const string &id, const string &value)
+{
 	map<pair<string, string>, HISTORY>::iterator itr = history.find(pair<string, string>(property, id));
 	HISTORY h;
 	if (itr != history.end())
@@ -193,7 +203,8 @@ void PredicateEngine::addHistory(const string &property, const string &id, const
 	history[pair < string, string > (property, id)] = h;
 }
 
-string PredicateEngine::getHistory(const string &property, const string &id, int index) {
+string PredicateEngine::getHistory(const string &property, const string &id, int index)
+{
 	if (index > HISTORY_SIZE || index < 1)
 		return "";
 	map<pair<string, string>, HISTORY>::iterator itr = history.find(pair<string, string>(property, id));

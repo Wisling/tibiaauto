@@ -55,7 +55,7 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -88,7 +88,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (cont->flagOnOff)
 					{
 						openContNr++;
-						if(cont->itemsInside < cont->size)
+						if (cont->itemsInside < cont->size)
 						{
 							sender.moveObjectBetweenContainers(item->objectId, 0x06, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
 							contNr = memConstData.m_memMaxContainers;
@@ -112,7 +112,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					if (cont->flagOnOff)
 					{
 						openContNr++;
-						if(cont->itemsInside < cont->size)
+						if (cont->itemsInside < cont->size)
 						{
 							sender.moveObjectBetweenContainers(item->objectId, 0x05, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
 							contNr = memConstData.m_memMaxContainers;
@@ -206,7 +206,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_fisherApp construction
 
@@ -232,12 +231,10 @@ char * CMod_fisherApp::getName()
 	return "Auto fisher";
 }
 
-
 int CMod_fisherApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_fisherApp::start()
 {
@@ -290,14 +287,12 @@ void CMod_fisherApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_fisherApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_fisherApp::controlsToConfig()
 {
@@ -307,7 +302,6 @@ void CMod_fisherApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_fisherApp::disableControls()
 {
@@ -321,12 +315,10 @@ void CMod_fisherApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_fisherApp::getVersion()
 {
 	return "2.4";
 }
-
 
 int CMod_fisherApp::validateConfig(int showAlerts)
 {
@@ -342,7 +334,7 @@ int CMod_fisherApp::validateConfig(int showAlerts)
 
 void CMod_fisherApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -380,15 +372,19 @@ char *CMod_fisherApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "other/fishOnlyWhenCap"; // old: fishCap
-	case 1: return "move/fromHandToCont";
-	case 2: return "other/fishOnlyWhenWorms";
+	case 0:
+		return "other/fishOnlyWhenCap"; // old: fishCap
+	case 1:
+		return "move/fromHandToCont";
+	case 2:
+		return "other/fishOnlyWhenWorms";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_fisherApp::getNewSkin(CSkin newSkin) {
+void CMod_fisherApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

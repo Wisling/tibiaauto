@@ -31,12 +31,9 @@ static char THIS_FILE[] = __FILE__;
 
 
 CConfigData::CConfigData()
-
 {
 }
 
-
 CConfigData::~CConfigData()
-
 {
 }

@@ -13,8 +13,10 @@ class XmlSocketResponder : public Responder, public SocketListener
 {
 public:
 	XmlSocketResponder(Socket *);
-	virtual ~XmlSocketResponder() {
+	virtual ~XmlSocketResponder()
+	{
 	}
+
 	void send(const string &);
 	//	Inherited from Responder
 	string respond(Match *, PElement, const string &);
@@ -33,15 +35,21 @@ class XmlSocketProcessor : public AimlProcessor,
 {
 public:
 	XmlSocketProcessor();
-	virtual ~XmlSocketProcessor() {
+	virtual ~XmlSocketProcessor()
+	{
 	}
+
 	//	Inherited from AimlProcessor
-	string getName() const {
+	string getName() const
+	{
 		return "xmlsocket";
 	}
-	string getVersion() const {
+
+	string getVersion() const
+	{
 		return "1.0";
 	}
+
 	string process(Match *, PElement, Responder *, const string &);
 	//	Inherited from ServerSocketListener
 	void shutdown(const string &);

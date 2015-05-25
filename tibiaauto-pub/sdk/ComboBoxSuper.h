@@ -28,8 +28,10 @@ public:
 
 	struct ItemData
 	{
-		ItemData() : crTextColor(RGB(0, 0, 0)), nImageIndex(-1), bBold(FALSE){
+		ItemData() : crTextColor(RGB(0, 0, 0)), nImageIndex(-1), bBold(FALSE)
+		{
 		}
+
 		COLORREF crTextColor;
 		int nImageIndex;
 		std::map<int, CString> mapStrings;
@@ -58,8 +60,10 @@ public:
 public:
 
 	/** Sets to TRUE for using the image list, of FALSE to disable the use of the image-list. */
-	void SetUseImage(BOOL bUseImage = TRUE) {
-		m_bUseImage = bUseImage; Invalidate();
+	void SetUseImage(BOOL bUseImage = TRUE)
+	{
+		m_bUseImage = bUseImage;
+		Invalidate();
 	}
 
 	/** Sets the number of columns to use - new columns are inserted at default width. */
@@ -69,7 +73,8 @@ public:
 	void SetColumnWidth(int nColumnIndex, int nWidth);
 
 	/** Sets the image list to use - will be show only if SetUseImage is called. */
-	void SetImageList(CImageList* pImageList) {
+	void SetImageList(CImageList* pImageList)
+	{
 		m_pImageList = pImageList;
 	}
 
@@ -101,7 +106,7 @@ protected:
 
 	ItemData* GetOrCreateItemData(int nItemIndex);
 
-	virtual void DrawItem( LPDRAWITEMSTRUCT lpDrawItemStruct );
+	virtual void DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct);
 	//{{AFX_MSG(CComboBoxSuper)
 	afx_msg void OnDeleteItem(int nIDCtl, LPDELETEITEMSTRUCT lpDeleteItemStruct);
 	//}}AFX_MSG

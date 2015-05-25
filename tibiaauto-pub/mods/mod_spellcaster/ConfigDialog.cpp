@@ -23,7 +23,8 @@ const UINT RWM_PRETRANSLATEMSG = ::RegisterWindowMessage(_T("RWM_PRETRANSLATEMSG
 
 
 CConfigDialog::CConfigDialog(CMod_spellcasterApp *app, CWnd* pParent /*=NULL*/)
-	: MyDialog(CConfigDialog::IDD, pParent) {
+	: MyDialog(CConfigDialog::IDD, pParent)
+{
 	//{{AFX_DATA_INIT(CConfigDialog)
 	//}}AFX_DATA_INIT
 	m_app = app;
@@ -45,7 +46,8 @@ CConfigDialog::CConfigDialog(CMod_spellcasterApp *app, CWnd* pParent /*=NULL*/)
 	m_nPageCount = 6;
 }
 
-void CConfigDialog::DoDataExchange(CDataExchange* pDX) {
+void CConfigDialog::DoDataExchange(CDataExchange* pDX)
+{
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(CConfigDialog)
 	DDX_Control(pDX, IDC_TAB1, m_tabCtrl);
@@ -69,15 +71,18 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CConfigDialog message handlers
 
-void CConfigDialog::OnOK() {
+void CConfigDialog::OnOK()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnClose() {
+void CConfigDialog::OnClose()
+{
 	ShowWindow(SW_HIDE);
 }
 
-void CConfigDialog::OnEnable() {
+void CConfigDialog::OnEnable()
+{
 	if (m_enable.GetCheck())
 	{
 		m_app->controlsToConfig();
@@ -92,7 +97,8 @@ void CConfigDialog::OnEnable() {
 	}
 }
 
-void CConfigDialog::disableControls() {
+void CConfigDialog::disableControls()
+{
 	m_Dialog[0]->disableControls();
 	m_Dialog[1]->disableControls();
 	m_Dialog[2]->disableControls();
@@ -104,7 +110,8 @@ void CConfigDialog::disableControls() {
 	m_randomCast.EnableWindow(false);
 }
 
-void CConfigDialog::enableControls() {
+void CConfigDialog::enableControls()
+{
 	m_Dialog[0]->enableControls();
 	m_Dialog[1]->enableControls();
 	m_Dialog[2]->enableControls();
@@ -116,7 +123,8 @@ void CConfigDialog::enableControls() {
 	m_randomCast.EnableWindow(true);
 }
 
-void CConfigDialog::configToControls(CConfigData *configData) {
+void CConfigDialog::configToControls(CConfigData *configData)
+{
 	m_Dialog[0]->configToControls(configData);
 	m_Dialog[1]->configToControls(configData);
 	m_Dialog[2]->configToControls(configData);
@@ -128,7 +136,8 @@ void CConfigDialog::configToControls(CConfigData *configData) {
 	m_randomCast.SetCheck(configData->randomCast);
 }
 
-CConfigData * CConfigDialog::controlsToConfig() {
+CConfigData * CConfigDialog::controlsToConfig()
+{
 	CConfigData *newConfigData = new CConfigData();
 
 	m_Dialog[0]->controlsToConfig(newConfigData);
@@ -144,20 +153,23 @@ CConfigData * CConfigDialog::controlsToConfig() {
 	return newConfigData;
 }
 
-void CConfigDialog::OnTimer(UINT nIDEvent) {
+void CConfigDialog::OnTimer(UINT nIDEvent)
+{
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_enable);
-	skin.SetButtonSkin(     m_OK);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_enable);
+	skin.SetButtonSkin(m_OK);
 	((LifeDialog*)m_Dialog[0])->DoSetButtonSkin();
 	((TimedDialog*)m_Dialog[5])->DoSetButtonSkin();
 	m_tabCtrl.SetTabColor(RGB(skin.m_PrimaryBackgroundRedValue, skin.m_PrimaryBackgroundGreenValue, skin.m_PrimaryBackgroundBlueValue));
 	m_tabCtrl.SetNormalColor(RGB(skin.m_TextRedValue, skin.m_TextGreenValue, skin.m_TextBlueValue));
 }
 
-BOOL CConfigDialog::OnInitDialog() {
+BOOL CConfigDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 
 	m_Dialog[0]->Create(m_DialogID[0], &m_tabCtrl);
@@ -182,14 +194,17 @@ BOOL CConfigDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-int pressed(unsigned int tm){
+int pressed(unsigned int tm)
+{
 	CPackSenderProxy tasender;
 	char buf[1111];
 	sprintf(buf, "tm %d", GetTickCount() - tm);
 	tasender.sendTAMessage(buf);
 	return GetTickCount() - tm < 300;
 }
-BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
+
+BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
+{
 	CPackSenderProxy tasender;
 	static int shift = 0, ctrl = 0, win = 0;
 	LPARAM lParam    = pMsg->lParam;
@@ -208,11 +223,13 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
 	tasender.sendTAMessage(buf);
 	if (wParam == 0x10)
 	{
-		shift = GetTickCount(); goto skip;
+		shift = GetTickCount();
+		goto skip;
 	}
 	else if (wParam == 0x11)
 	{
-		ctrl = GetTickCount(); goto skip;
+		ctrl = GetTickCount();
+		goto skip;
 	}
 	else if (wParam == 0x12)
 	{
@@ -220,9 +237,10 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg) {
 	}
 	else if (wParam == 0x5B)
 	{
-		win = GetTickCount(); goto skip;
+		win = GetTickCount();
+		goto skip;
 	}
-	if(pressed(ctrl) && wParam == 0x20)  // Ctrl+space Available
+	if (pressed(ctrl) && wParam == 0x20)  // Ctrl+space Available
 		return 1;
 skip:
 	return MyDialog::PreTranslateMessage(pMsg);
@@ -233,8 +251,9 @@ void CConfigDialog::activateEnableButton(int enable)
 	m_enable.SetCheck(enable);
 }
 
-LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp){
-	if(msg == RWM_PRETRANSLATEMSG)
+LRESULT CConfigDialog::WindowProc(UINT msg, WPARAM wp, LPARAM lp)
+{
+	if (msg == RWM_PRETRANSLATEMSG)
 	{
 		MSG* pMsg = (MSG*)lp;
 		ASSERT(pMsg);

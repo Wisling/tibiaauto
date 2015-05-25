@@ -61,7 +61,8 @@ const int minSecondsOpen = 20;
 
 
 static map<int*, int> setMana;
-int RandomVariableMana(int &pt, int command, CConfigData *config){
+int RandomVariableMana(int &pt, int command, CConfigData *config)
+{
 	CMemReaderProxy reader;
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
@@ -92,7 +93,7 @@ int RandomVariableMana(int &pt, int command, CConfigData *config){
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -116,7 +117,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (container->flagOnOff)
 			{
 				openContNr++;
-				if(config->useSpear)
+				if (config->useSpear)
 					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("spear"));
 				else
 					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
@@ -124,9 +125,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			;
 			delete container;
 		}
-		if(myself->soulPoints >= config->soulPoints)
+		if (myself->soulPoints >= config->soulPoints)
 		{
-			for(; blanksCount > 0; blanksCount--)
+			for (; blanksCount > 0; blanksCount--)
 			{
 				int manaLimit = RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, GET, config);
 				if (myself->mana >= manaLimit)
@@ -135,7 +136,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// cast spell
 					sender.say((LPCTSTR)config->spell);
 					CModuleUtil::waitForManaDecrease(myself->mana);
-					if(!config->maxUse)
+					if (!config->maxUse)
 						break; //even if we have the mana and blank runes/spears do not continue casting
 				}
 			}
@@ -146,7 +147,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	toolThreadShouldStop = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_runemakerApp construction
@@ -173,12 +173,10 @@ char * CMod_runemakerApp::getName()
 	return "Rune maker";
 }
 
-
 int CMod_runemakerApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_runemakerApp::start()
 {
@@ -231,14 +229,12 @@ void CMod_runemakerApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_runemakerApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_runemakerApp::controlsToConfig()
 {
@@ -248,7 +244,6 @@ void CMod_runemakerApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_runemakerApp::disableControls()
 {
@@ -272,7 +267,6 @@ char *CMod_runemakerApp::getVersion()
 	return "1.4";
 }
 
-
 int CMod_runemakerApp::validateConfig(int showAlerts)
 {
 	if (m_configData->soulPoints < 0)
@@ -293,7 +287,7 @@ int CMod_runemakerApp::validateConfig(int showAlerts)
 
 void CMod_runemakerApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -373,15 +367,24 @@ char *CMod_runemakerApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "spell";
-	case 1: return "mana";
-	case 2: return "manaLimit";
-	case 3: return "soulPoints";
-	case 4: return "premium";
-	case 5: return "maxUse";
-	case 6: return "spells/spell";
-	case 7: return "randomCast";
-	case 8: return "useSpear";
+	case 0:
+		return "spell";
+	case 1:
+		return "mana";
+	case 2:
+		return "manaLimit";
+	case 3:
+		return "soulPoints";
+	case 4:
+		return "premium";
+	case 5:
+		return "maxUse";
+	case 6:
+		return "spells/spell";
+	case 7:
+		return "randomCast";
+	case 8:
+		return "useSpear";
 	default:
 		return NULL;
 	}
@@ -400,7 +403,8 @@ void CMod_runemakerApp::resetMultiParamAccess(char *paramName)
 		m_currentSpellNr = 0;
 }
 
-void CMod_runemakerApp::getNewSkin(CSkin newSkin) {
+void CMod_runemakerApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

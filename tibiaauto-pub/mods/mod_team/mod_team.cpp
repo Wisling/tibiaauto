@@ -60,7 +60,7 @@ CConnectedNodes connectedNodes;
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	int i;
 	char buf[1024];
@@ -208,7 +208,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	return 0;
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // CMod_teamApp construction
 
@@ -234,12 +233,10 @@ char * CMod_teamApp::getName()
 	return "Team cooperation";
 }
 
-
 int CMod_teamApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_teamApp::start()
 {
@@ -292,14 +289,12 @@ void CMod_teamApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_teamApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_teamApp::controlsToConfig()
 {
@@ -309,7 +304,6 @@ void CMod_teamApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_teamApp::disableControls()
 {
@@ -323,12 +317,10 @@ void CMod_teamApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_teamApp::getVersion()
 {
 	return "1.0";
 }
-
 
 int CMod_teamApp::validateConfig(int showAlerts)
 {
@@ -337,7 +329,7 @@ int CMod_teamApp::validateConfig(int showAlerts)
 
 void CMod_teamApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;

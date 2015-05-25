@@ -26,16 +26,21 @@ struct Item {
 	int x, y, z;
 	Item *prev;
 	Item *nxt;
-	Item(){
+	Item()
+	{
 		prev    = this;
 		nxt     = this;
 		name[0] = 0;
 		x       = y = z = 0;
 	}
-	int distance(int x, int y){
+
+	int distance(int x, int y)
+	{
 		return max(abs(this->x - x), abs(this->y - y));
 	}
-	void InsertNodeAfter(Item *pred){
+
+	void InsertNodeAfter(Item *pred)
+	{
 		//remove node
 		if (prev != NULL)
 			prev->nxt = nxt;
@@ -64,7 +69,8 @@ struct Creature : public Item
 	int number;
 	unsigned int tibiaId;
 	time_t lastAttackTm;
-	Creature() {
+	Creature()
+	{
 		lastAttackTm  = isIgnoredUntil = 0;
 		failedAttacks = isInvisible = isOnscreen = isWithinMargins = isAttacking = listPriority = isDead = number = tibiaId = x = y = z = 0;
 		hpPercLeft    = 100;
@@ -77,10 +83,13 @@ struct Corpse
 {
 	int tod;
 	int x, y, z;
-	Corpse() {
+	Corpse()
+	{
 		tod = x = y = z = 0;
 	}
-	Corpse(int x, int y, int z, int tod) {
+
+	Corpse(int x, int y, int z, int tod)
+	{
 		this->tod = tod;
 		this->x   = x;
 		this->y   = y;

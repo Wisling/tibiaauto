@@ -24,7 +24,6 @@ CConfigDialog::CConfigDialog(CMod_uhApp *app, CWnd* pParent /*=NULL*/)
 	m_app = app;
 }
 
-
 void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -47,7 +46,6 @@ void CConfigDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_AUTOUH_FALLBACK, m_selfFallback);
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP(CConfigDialog, CDialog)
 //{{AFX_MSG_MAP(CConfigDialog)
@@ -123,20 +121,22 @@ void CConfigDialog::enableControls()
 	m_memberRemove.EnableWindow(true);
 }
 
-
 void CConfigDialog::configToControls(CConfigData *configData)
 {
 	char buf[128];
-	sprintf(buf, "%d", configData->m_grpBorderline); m_grpBorderline.SetWindowText(buf);
+	sprintf(buf, "%d", configData->m_grpBorderline);
+	m_grpBorderline.SetWindowText(buf);
 	m_grpFallback.SetCheck(configData->m_grpFallback);
 	m_grpRunetype.SetCurSel(configData->m_grpRunetype);
 
-	sprintf(buf, "%d", configData->m_uhBorderline); m_selfBorderline.SetWindowText(buf);
+	sprintf(buf, "%d", configData->m_uhBorderline);
+	m_selfBorderline.SetWindowText(buf);
 	m_selfFallback.SetCheck(configData->m_fallback);
 	m_selfRunetype.SetCurSel(configData->m_runetype);
 	m_selfHotkey.SetCheck(configData->m_hotkeySelf);
 
-	sprintf(buf, "%d", configData->m_sleepAfter); m_sleepAfter.SetWindowText(buf);
+	sprintf(buf, "%d", configData->m_sleepAfter);
+	m_sleepAfter.SetWindowText(buf);
 
 	int i;
 	while (m_memberList.GetCount())
@@ -184,11 +184,12 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-void CConfigDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_memberRemove);
-	skin.SetButtonSkin(     m_memberAdd);
-	skin.SetButtonSkin(     m_OK);
-	skin.SetButtonSkin(     m_enable);
+void CConfigDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_memberRemove);
+	skin.SetButtonSkin(m_memberAdd);
+	skin.SetButtonSkin(m_OK);
+	skin.SetButtonSkin(m_enable);
 }
 
 BOOL CConfigDialog::OnInitDialog()
@@ -200,7 +201,6 @@ BOOL CConfigDialog::OnInitDialog()
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
 	return CDialog::PreTranslateMessage(pMsg);
@@ -210,7 +210,6 @@ void CConfigDialog::activateEnableButton(int enable)
 {
 	m_enable.SetCheck(enable);
 }
-
 
 void CConfigDialog::OnToolAutouhGrpMemberAdd()
 {

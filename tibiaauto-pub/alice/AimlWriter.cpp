@@ -7,7 +7,8 @@
 
 using namespace std;
 
-string AimlWriter::parse(PElement tree, bool pretty, const string &rootName, bool addRoot) {
+string AimlWriter::parse(PElement tree, bool pretty, const string &rootName, bool addRoot)
+{
 	if (rootName.empty())
 		addRoot = false;
 	string result = "";
@@ -23,7 +24,8 @@ string AimlWriter::parse(PElement tree, bool pretty, const string &rootName, boo
 }
 
 //	Produces a formatted string of the AIML
-string AimlWriter::prettyAiml(PElement element) {
+string AimlWriter::prettyAiml(PElement element)
+{
 	if (element == NULL)
 		return "";
 	string s = "<aiml>\n\n";
@@ -84,7 +86,8 @@ string AimlWriter::prettyAiml(PElement element) {
 	return s;
 }
 
-string AimlWriter::recurse(PElement element) {
+string AimlWriter::recurse(PElement element)
+{
 	if (element == NULL)
 		return "";
 	string s       = "";

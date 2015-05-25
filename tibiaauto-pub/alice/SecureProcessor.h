@@ -25,17 +25,21 @@ static vector<string> users;
 class SecureProcessor : public AimlProcessor
 {
 public:
-	SecureProcessor() {
+	SecureProcessor()
+	{
 		//	The console user .. this does have one flaw though:
 		//	If an IRC user has nick 'localhost', then they will
 		//	be one of the authenticated users :-(
 		users.push_back("localhost");
 		users.push_back("system");
 	}
-	~SecureProcessor() {
+
+	~SecureProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		vector<string>::iterator itr = find(users.begin(), users.end(), id);
 		if (itr == users.end())
 		{
@@ -46,7 +50,9 @@ public:
 		}
 		return Kernel::process(m, e, r, id);
 	}
-	static void addAuthenticatedUser(const string &id) {
+
+	static void addAuthenticatedUser(const string &id)
+	{
 		users.push_back(id);
 	}
 };
@@ -64,10 +70,12 @@ using namespace std;
 class AuthenticateProcessor : public AimlProcessor
 {
 public:
-	~AuthenticateProcessor() {
+	~AuthenticateProcessor()
+	{
 	}
 
-	string process(Match *, PElement, Responder *, const string &id) {
+	string process(Match *, PElement, Responder *, const string &id)
+	{
 		SecureProcessor::addAuthenticatedUser(id);
 		return "authorised";
 	}

@@ -16,7 +16,8 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CConfigData::CConfigData() {
+CConfigData::CConfigData()
+{
 	memset(path, 0, 15);
 	targetX = 0;
 	targetY = 0;
@@ -47,5 +48,6 @@ CConfigData::CConfigData() {
 	suggestBanker = 1;
 }
 
-CConfigData::~CConfigData() {
+CConfigData::~CConfigData()
+{
 }

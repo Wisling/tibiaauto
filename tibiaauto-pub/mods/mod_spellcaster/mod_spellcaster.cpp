@@ -78,7 +78,8 @@ static map<int*, int> setMana;
 static map<int*, int> setHp;
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
-int RandomVariableMana(int& pt, int command, CConfigData *config){
+int RandomVariableMana(int& pt, int command, CConfigData *config)
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
@@ -97,7 +98,8 @@ int RandomVariableMana(int& pt, int command, CConfigData *config){
 }
 
 //Creates a random number that will not change until MAKE is used(GET creates a number if none already present)
-int RandomVariableHp(int &pt, int command, CConfigData *config){
+int RandomVariableHp(int &pt, int command, CConfigData *config)
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(self->maxHp + pt, self->maxHp / 10) : pt;
@@ -117,7 +119,8 @@ int RandomVariableHp(int &pt, int command, CConfigData *config){
 }
 
 //Creates a random percentage based off of another player's stats that will not change until MAKE is used(GET creates a number if none already present)
-int RandomVariableHpPercent(int &pt, int maxHp, int command, CConfigData *config){
+int RandomVariableHpPercent(int &pt, int maxHp, int command, CConfigData *config)
+{
 	CMemReaderProxy reader;
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(maxHp + pt, maxHp / 10) : pt;
@@ -139,7 +142,6 @@ int RandomVariableHpPercent(int &pt, int maxHp, int command, CConfigData *config
 	return setHp[&pt];
 }
 
-
 /////////////////////////////////////////////////////////////////////////////
 // Tool thread function
 
@@ -152,14 +154,15 @@ int isInitializedCreatures();
 int getcurrentMonsterNumberFromName(char *);
 int aoeShouldFire(CConfigData *);
 
-int OnList(char whiteList[32], char name[]){
+int OnList(char whiteList[32], char name[])
+{
 	if (!_strcmpi(whiteList, name))
 		return 1;
 
 	return 0;
 }
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -182,7 +185,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	while (!toolThreadShouldStop)
 	{
 		Sleep(200);
-		if(!reader.isLoggedIn())
+		if (!reader.isLoggedIn())
 			continue;
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int attackedCreature  = reader.getAttackedCreature();
@@ -206,35 +209,41 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			{
 				RandomVariableHp(config->lifeHp, MAKE, config);
 				sender.say(config->lifeSpell);
-				Sleep(820);;
+				Sleep(820);
+				;
 			}
-			else if(config->vitaSpell && self->hp < vitaHp && self->mana >= config->vitaSpellMana)
+			else if (config->vitaSpell && self->hp < vitaHp && self->mana >= config->vitaSpellMana)
 			{
 				RandomVariableHp(config->vitaHp, MAKE, config);
 				sender.say("exura vita");
-				Sleep(820);;
+				Sleep(820);
+				;
 			}
-			else if(config->granSpell && self->hp <= granHp && self->mana >= config->granSpellMana)
+			else if (config->granSpell && self->hp <= granHp && self->mana >= config->granSpellMana)
 			{
 				RandomVariableHp(config->granHp, MAKE, config);
 				sender.say("exura gran");
-				Sleep(820);;
+				Sleep(820);
+				;
 			}
-			else if(config->exuraSpell && self->hp <= exuraHp && self->mana >= config->exuraSpellMana)
+			else if (config->exuraSpell && self->hp <= exuraHp && self->mana >= config->exuraSpellMana)
 			{
 				RandomVariableHp(config->exuraHp, MAKE, config);
 				sender.say("exura");
-				Sleep(820);;
+				Sleep(820);
+				;
 			}
-			else if(config->paralysisSpell && (flags & 32) == 32)
+			else if (config->paralysisSpell && (flags & 32) == 32)
 			{
 				sender.say("exura");
-				Sleep(820);;
+				Sleep(820);
+				;
 			}
-			else if(config->paralysisIco && (flags & 32) == 32)
+			else if (config->paralysisIco && (flags & 32) == 32)
 			{
 				sender.say("exura ico");
-				Sleep(820);;
+				Sleep(820);
+				;
 			}
 			else if (!config->disableWarning)
 			{
@@ -249,11 +258,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			delete self;
 			self = reader.readSelfCharacter();
 		}
-		else if(config->poisonSpell && (flags & 1))
+		else if (config->poisonSpell && (flags & 1))
 		{
 			CIPCBackPipeProxy backPipe;
 			struct ipcMessage mess;
-			if(backPipe.readFromPipe(&mess, 1101))
+			if (backPipe.readFromPipe(&mess, 1101))
 			{
 				int pointLoss;
 				memcpy(&pointLoss, mess.payload, sizeof(int));
@@ -280,7 +289,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						char buf[256];
 						sprintf(buf, "exura sio \"%s\"", ch->name);
 						sender.say(buf);
-						Sleep(820);;
+						Sleep(820);
+						;
 					}
 				}
 				delete ch;
@@ -291,7 +301,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			//clean up pipe messages
 			CIPCBackPipeProxy backPipe;
 			struct ipcMessage mess;
-			while(backPipe.readFromPipe(&mess, 1101))
+			while (backPipe.readFromPipe(&mess, 1101))
 			{
 			}
 			;
@@ -301,7 +311,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			spell = aoeShouldFire(config);//Wis:Performs calculation only if needed
 
 		int summonCount = 0;//Wis: Used to determine whether or not it will summon
-		if(config->summon)
+		if (config->summon)
 		{
 			int chNr;
 			for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
@@ -388,12 +398,13 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					sender.say(spellname);
 					lastCastTime = time(NULL);
-					Sleep(820);;
+					Sleep(820);
+					;
 				}
 			}
 		}
 		//Akilez: Use mana for strike spells
-		else if(config->strike && time(NULL) - lastCastTime >= minCastTime && self->mana >= config->manaStrike && attackedCreature)
+		else if (config->strike && time(NULL) - lastCastTime >= minCastTime && self->mana >= config->manaStrike && attackedCreature)
 		{
 			attackedCreature = reader.getAttackedCreature();
 			//T4: If any creature is attacked
@@ -489,7 +500,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							{
 								sender.say(spellname);
 								lastCastTime = time(NULL);
-								Sleep(820);;
+								Sleep(820);
+								;
 							}
 						}
 					}
@@ -504,16 +516,17 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			char buf[256];
 			sprintf(buf, "utevo res \"%s\"", config->summonName);
 			sender.say(buf);
-			Sleep(820);;
+			Sleep(820);
+			;
 		}
 		//T4: Use mana in other purpose otherwise
-		else if(config->mana && self->mana >= manaMana)
+		else if (config->mana && self->mana >= manaMana)
 		{
 			RandomVariableMana(config->manaMana, MAKE, config);
 			sender.say(config->manaSpell);
 			Sleep(820);
 		}
-		else if(config->timedSpell)
+		else if (config->timedSpell)
 		{
 			for (loop = 0; loop < config->timedSpellList.size(); loop++)
 			{
@@ -522,9 +535,10 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					RandomVariableMana(config->timedSpellList[loop].randMana, MAKE, config);
 					config->timedSpellList[loop].triggerTime = time(NULL) + config->timedSpellList[loop].delay;
 					sender.say(config->timedSpellList[loop].spell);
-					Sleep(820);;
+					Sleep(820);
+					;
 				}
-				else if(config->timedSpellList[loop].usePotions && self->mana < config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime + 10)
+				else if (config->timedSpellList[loop].usePotions && self->mana < config->timedSpellList[loop].randMana && time(NULL) >= config->timedSpellList[loop].triggerTime + 10)
 				{
 					int contNr;
 					CUIntArray itemArray;
@@ -553,7 +567,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 						}
 						delete cont;
 					}
-					Sleep(820);;
+					Sleep(820);
+					;
 				}
 			}
 		}
@@ -565,7 +580,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	toolThreadShouldStop = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_spellcasterApp construction
@@ -587,13 +601,14 @@ CMod_spellcasterApp::~CMod_spellcasterApp()
 	delete m_configData;
 }
 
-char * CMod_spellcasterApp::getName() {
+char * CMod_spellcasterApp::getName()
+{
 	return "Spell Caster";
 }
 
-
-int CMod_spellcasterApp::isStarted() {
-	if(!m_started)
+int CMod_spellcasterApp::isStarted()
+{
+	if (!m_started)
 	{
 		// if not started then regularly consume standard messages from the queue
 		CIPCBackPipeProxy backPipe;
@@ -603,8 +618,8 @@ int CMod_spellcasterApp::isStarted() {
 	return m_started;
 }
 
-
-void CMod_spellcasterApp::start() {
+void CMod_spellcasterApp::start()
+{
 	if (m_configDialog)
 	{
 		m_configDialog->disableControls();
@@ -618,7 +633,8 @@ void CMod_spellcasterApp::start() {
 	m_started            = 1;
 }
 
-void CMod_spellcasterApp::stop() {
+void CMod_spellcasterApp::stop()
+{
 	toolThreadShouldStop = 1;
 	while (toolThreadShouldStop)
 	{
@@ -634,7 +650,8 @@ void CMod_spellcasterApp::stop() {
 	}
 }
 
-void CMod_spellcasterApp::showConfigDialog() {
+void CMod_spellcasterApp::showConfigDialog()
+{
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());
 
 	if (!m_configDialog)
@@ -651,13 +668,14 @@ void CMod_spellcasterApp::showConfigDialog() {
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
-void CMod_spellcasterApp::configToControls() {
+void CMod_spellcasterApp::configToControls()
+{
 	if (m_configDialog)
 		m_configDialog->configToControls(m_configData);
 }
 
-void CMod_spellcasterApp::controlsToConfig() {
+void CMod_spellcasterApp::controlsToConfig()
+{
 	if (m_configDialog)
 	{
 		delete m_configData;
@@ -665,21 +683,25 @@ void CMod_spellcasterApp::controlsToConfig() {
 	}
 }
 
-void CMod_spellcasterApp::disableControls() {
+void CMod_spellcasterApp::disableControls()
+{
 	if (m_configDialog)
 		m_configDialog->disableControls();
 }
 
-void CMod_spellcasterApp::enableControls() {
+void CMod_spellcasterApp::enableControls()
+{
 	if (m_configDialog)
 		m_configDialog->enableControls();
 }
 
-char *CMod_spellcasterApp::getVersion() {
+char *CMod_spellcasterApp::getVersion()
+{
 	return "3.0 (Beta)";
 }
 
-int CMod_spellcasterApp::validateConfig(int showAlerts) {
+int CMod_spellcasterApp::validateConfig(int showAlerts)
+{
 	if (m_configData->mana)
 	{
 		if (!strlen(m_configData->manaSpell))
@@ -724,7 +746,7 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 		if (m_configData->sioSpell)
 		{
 			char buf[64];
-			for(size_t loop = 0; loop < m_configData->healList.size(); loop++ )
+			for (size_t loop = 0; loop < m_configData->healList.size(); loop++)
 			{
 				if (m_configData->healList[loop].triggerHP == 0)
 				{
@@ -848,8 +870,9 @@ int CMod_spellcasterApp::validateConfig(int showAlerts) {
 	return 1;
 }
 
-void CMod_spellcasterApp::resetConfig() {
-	if(m_configData)
+void CMod_spellcasterApp::resetConfig()
+{
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -857,7 +880,8 @@ void CMod_spellcasterApp::resetConfig() {
 	m_configData = new CConfigData();
 }
 
-void CMod_spellcasterApp::loadConfigParam(char *paramName, char *paramValue) {
+void CMod_spellcasterApp::loadConfigParam(char *paramName, char *paramValue)
+{
 	if (!strcmp(paramName, "mana"))
 		m_configData->mana = atoi(paramValue);
 	if (!strcmp(paramName, "manaMana"))
@@ -1010,7 +1034,8 @@ void CMod_spellcasterApp::loadConfigParam(char *paramName, char *paramValue) {
 	}
 }
 
-char *CMod_spellcasterApp::saveConfigParam(char *paramName) {
+char *CMod_spellcasterApp::saveConfigParam(char *paramName)
+{
 	static char buf[1024];
 	buf[0] = 0;
 	try
@@ -1177,71 +1202,133 @@ char *CMod_spellcasterApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "mana";
-	case 1: return "manaMana";
-	case 2: return "manaSpell";
-	case 3: return "life";
-	case 4: return "lifeHp";
-	case 5: return "lifeSpell";
-	case 6: return "lifeSpellMana";
-	case 7: return "summon";
-	case 8: return "summonLessThan";
-	case 9: return "summonName";
-	case 10: return "strike";
-	case 11: return "ExoriFlam";
-	case 12: return "ExoriFrigo";
-	case 13: return "ExoriMort";
-	case 14: return "ExoriTera";
-	case 15: return "ExoriVis";
-	case 16: return "manaStrike";
-	case 17: return "customSpell";
-	case 18: return "exuraSpell";
-	case 19: return "exuraHp";
-	case 20: return "exuraSpellMana";
-	case 21: return "granSpell";
-	case 22: return "granHp";
-	case 23: return "granSpellMana";
-	case 24: return "vitaSpell";
-	case 25: return "vitaHp";
-	case 26: return "vitaSpellMana";
-	case 27: return "defaultStrikeSpell";
-	case 28: return "summonMana";
-	case 29: return "strikeSpellHpMin";
-	case 30: return "poisonSpell";
-	case 31: return "paralysisSpell";
-	case 32: return "paralysisIco";
-	case 33: return "minPoisonDmg";
-	case 34: return "ExoriCon";
-	case 35: return "ExoriSan";
-	case 36: return "ExoriHur";
-	case 37: return "aoe";
-	case 38: return "Exori";
-	case 39: return "ExoriGran";
-	case 40: return "ExoriMas";
-	case 41: return "ExoriMasSan";
-	case 42: return "ExevoFlamHur";
-	case 43: return "ExevoFrigoHur";
-	case 44: return "ExevoTeraHur";
-	case 45: return "ExevoVisHur";
-	case 46: return "ExevoVisLux";
-	case 47: return "ExevoGranVisLux";
-	case 48: return "ExevoGranMasVis";
-	case 49: return "ExevoGranMasFlam";
-	case 50: return "ExevoGranMasTera";
-	case 51: return "ExevoGranMasFrigo";
-	case 52: return "sioSpell";
-	case 53: return "sioSpellMana";
-	case 54: return "healList";
-	case 55: return "aoeAffect";
-	case 56: return "DisableWarning";
-	case 57: return "randomCast";
-	case 58: return "timedSpell";
-	case 59: return "timedSpellList";
+	case 0:
+		return "mana";
+	case 1:
+		return "manaMana";
+	case 2:
+		return "manaSpell";
+	case 3:
+		return "life";
+	case 4:
+		return "lifeHp";
+	case 5:
+		return "lifeSpell";
+	case 6:
+		return "lifeSpellMana";
+	case 7:
+		return "summon";
+	case 8:
+		return "summonLessThan";
+	case 9:
+		return "summonName";
+	case 10:
+		return "strike";
+	case 11:
+		return "ExoriFlam";
+	case 12:
+		return "ExoriFrigo";
+	case 13:
+		return "ExoriMort";
+	case 14:
+		return "ExoriTera";
+	case 15:
+		return "ExoriVis";
+	case 16:
+		return "manaStrike";
+	case 17:
+		return "customSpell";
+	case 18:
+		return "exuraSpell";
+	case 19:
+		return "exuraHp";
+	case 20:
+		return "exuraSpellMana";
+	case 21:
+		return "granSpell";
+	case 22:
+		return "granHp";
+	case 23:
+		return "granSpellMana";
+	case 24:
+		return "vitaSpell";
+	case 25:
+		return "vitaHp";
+	case 26:
+		return "vitaSpellMana";
+	case 27:
+		return "defaultStrikeSpell";
+	case 28:
+		return "summonMana";
+	case 29:
+		return "strikeSpellHpMin";
+	case 30:
+		return "poisonSpell";
+	case 31:
+		return "paralysisSpell";
+	case 32:
+		return "paralysisIco";
+	case 33:
+		return "minPoisonDmg";
+	case 34:
+		return "ExoriCon";
+	case 35:
+		return "ExoriSan";
+	case 36:
+		return "ExoriHur";
+	case 37:
+		return "aoe";
+	case 38:
+		return "Exori";
+	case 39:
+		return "ExoriGran";
+	case 40:
+		return "ExoriMas";
+	case 41:
+		return "ExoriMasSan";
+	case 42:
+		return "ExevoFlamHur";
+	case 43:
+		return "ExevoFrigoHur";
+	case 44:
+		return "ExevoTeraHur";
+	case 45:
+		return "ExevoVisHur";
+	case 46:
+		return "ExevoVisLux";
+	case 47:
+		return "ExevoGranVisLux";
+	case 48:
+		return "ExevoGranMasVis";
+	case 49:
+		return "ExevoGranMasFlam";
+	case 50:
+		return "ExevoGranMasTera";
+	case 51:
+		return "ExevoGranMasFrigo";
+	case 52:
+		return "sioSpell";
+	case 53:
+		return "sioSpellMana";
+	case 54:
+		return "healList";
+	case 55:
+		return "aoeAffect";
+	case 56:
+		return "DisableWarning";
+	case 57:
+		return "randomCast";
+	case 58:
+		return "timedSpell";
+	case 59:
+		return "timedSpellList";
 	default:
 		return NULL;
 	}
 }
-int CMod_spellcasterApp::isMultiParam(char *paramName) {
+
+int CMod_spellcasterApp::isMultiParam(char *paramName)
+{
 	if (!strcmp(paramName, "healList"))
 		return 1;
 	if (!strcmp(paramName, "timedSpellList"))
@@ -1249,14 +1336,16 @@ int CMod_spellcasterApp::isMultiParam(char *paramName) {
 	return 0;
 }
 
-void CMod_spellcasterApp::resetMultiParamAccess(char *paramName) {
+void CMod_spellcasterApp::resetMultiParamAccess(char *paramName)
+{
 	if (!strcmp(paramName, "healList"))
 		currentPos = 0;
 	if (!strcmp(paramName, "timedSpellList"))
 		currentPos = 0;
 }
 
-int initalizeCreatures() {
+int initalizeCreatures()
+{
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 
@@ -1264,10 +1353,12 @@ int initalizeCreatures() {
 
 	sprintf(pathBuf, "%s\\mods\\tibiaauto-creatureWeakness.csv", installPath);
 
-	ifstream creatureFile (pathBuf, ios::in);
+	ifstream creatureFile(pathBuf, ios::in);
 	if (!creatureFile.is_open())
 	{
-		AfxMessageBox("File tibiaauto-creatureWeakness.csv Not found!"); creatureFile.close(); return 0;
+		AfxMessageBox("File tibiaauto-creatureWeakness.csv Not found!");
+		creatureFile.close();
+		return 0;
 	}
 	char buf[128] = {0};
 	int crNum     = 0;
@@ -1356,13 +1447,15 @@ int initalizeCreatures() {
 	return 1;
 }
 
-int isInitializedCreatures() {
+int isInitializedCreatures()
+{
 	if (_strcmpi(monstersInfo[0].name, "Initialized") == 0)
 		return 1;
 	return 0;
 }
 
-int getcurrentMonsterNumberFromName(char *match) {
+int getcurrentMonsterNumberFromName(char *match)
+{
 	int foundNone = -1, max = 0;
 	while (true)
 	{
@@ -1373,7 +1466,9 @@ int getcurrentMonsterNumberFromName(char *match) {
 		;
 	}
 }
-void turnForAOEFiring(int face[4]){
+
+void turnForAOEFiring(int face[4])
+{
 	CPackSenderProxy sender;
 	int turn = DOWN;
 	if (face[RIGHT] > turn)
@@ -1402,7 +1497,8 @@ void turnForAOEFiring(int face[4]){
 	}
 }
 
-int aoeShouldFire(CConfigData *config) {
+int aoeShouldFire(CConfigData *config)
+{
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
 	CMemConstData memConstData = reader.getMemConstData();
@@ -1660,7 +1756,8 @@ int aoeShouldFire(CConfigData *config) {
 	return returnSpell;
 }
 
-void CMod_spellcasterApp::getNewSkin(CSkin newSkin) {
+void CMod_spellcasterApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

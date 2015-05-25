@@ -64,16 +64,16 @@ HANDLE toolThreadHandle;
 
 void registerDebug(char *msg)
 {
-	if(queue2Message == NULL || strcmp(queue2Message, "Starting Log") != 0)//wait for GUI to read default message before giving it new messages
+	if (queue2Message == NULL || strcmp(queue2Message, "Starting Log") != 0)//wait for GUI to read default message before giving it new messages
 	{       //set up a short & simple threading lock until msg has been read
 		queue2Message = msg;
 		int sleeptime = 10;
 		int waitcount = 1000 * 5 / sleeptime;
 		int count     = 0;
-		while(queue2Message)
+		while (queue2Message)
 		{
 			Sleep(sleeptime);
-			if(++count >= waitcount || toolThreadShouldStop)
+			if (++count >= waitcount || toolThreadShouldStop)
 			{
 				queue2Message = NULL;
 				break;
@@ -142,7 +142,7 @@ BOOL CALLBACK EnumWindowsProcTibiaWindow(
 		char classname[201];
 		GetClassName(hwnd, classname, 200);
 		//AfxMessageBox(classname);
-		if(!strcmp(classname, "TibiaClient"))
+		if (!strcmp(classname, "TibiaClient"))
 		{
 			tibiaWindowHwnd = hwnd;
 			return 0;
@@ -195,7 +195,8 @@ int getSelfHealth()
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int retHealth         = self->hp;
-	delete self; self = NULL;
+	delete self;
+	self = NULL;
 	return retHealth;
 }
 
@@ -208,7 +209,7 @@ int getSelfHealth()
 //	}
 //}/
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -256,7 +257,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		Sleep(100);
 		ReleaseMutex(hMutex);
 
-		if(neverLogInAgain)
+		if (neverLogInAgain)
 			continue;
 		int loggedIn = reader.isLoggedIn();
 
@@ -306,11 +307,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int waitcount = 1000 * 60 * 5 / itertime; // 5 mins
 				int count     = 0;
 				int retVal    = 0;
-				while(retVal = WaitForSingleObject(hMutex, itertime))
+				while (retVal = WaitForSingleObject(hMutex, itertime))
 				{
-					if(retVal == WAIT_TIMEOUT)
+					if (retVal == WAIT_TIMEOUT)
 					{
-						if(++count >= waitcount)
+						if (++count >= waitcount)
 						{
 							registerDebug("Wait timeout. Mutex is broken.");
 							CloseHandle(hMutex);
@@ -318,14 +319,14 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 							break;
 						}
 					}
-					else if(retVal == WAIT_FAILED)
+					else if (retVal == WAIT_FAILED)
 					{
 						CloseHandle(hMutex);
 						hMutex = NULL;
 						break;
 					}
 				}
-				if(!hMutex)
+				if (!hMutex)
 					continue;
 				registerDebug("Acquired mutex");
 			}
@@ -456,7 +457,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			if (waitForWindow("Select Character", 5) || ensureForeground(hwnd))
 			{
 				//If we receive a "Sorry" window it is likely that we do not have a good password.
-				if(strcmp(reader.getOpenWindowName(), "Sorry") == 0)
+				if (strcmp(reader.getOpenWindowName(), "Sorry") == 0)
 				{
 					registerDebug("ERROR: Bad account name or password. Quitting Auto Login.");
 					neverLogInAgain = 1;
@@ -485,7 +486,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					break;
 				Sleep(100);
 			}
-			if(toolThreadShouldStop)
+			if (toolThreadShouldStop)
 			{
 				ReleaseMutex(hMutex);
 				continue;
@@ -538,7 +539,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 
 				CTibiaItem *item = reader.readItem(memConstData.m_memAddressBackpack);
 				sender.openContainerFromContainer(item->objectId, 0x03, 0, 0);
-				delete item; item = NULL;
+				delete item;
+				item = NULL;
 				CModuleUtil::waitForOpenContainer(0, 1);
 
 				//Double click on the main bar of the container
@@ -610,7 +612,8 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					// something went wrong
 					sender.closeContainer(0);
 				}
-				delete cont; cont = NULL;
+				delete cont;
+				cont = NULL;
 
 				//}  Comemnted out checking number of backpacks open.
 			}
@@ -659,7 +662,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 			ReleaseMutex(hMutex);
 			registerDebug("Relogin procedure completed.");
 			loginTime = 0;
-			if(strcmp(reader.getGlobalVariable("walking_control"), "login") == 0)
+			if (strcmp(reader.getGlobalVariable("walking_control"), "login") == 0)
 			{
 				reader.setGlobalVariable("walking_control", "");
 				reader.setGlobalVariable("walking_priority", "0");
@@ -668,7 +671,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 		else
 		{
 			loginTime = 0;
-			if(strcmp(reader.getGlobalVariable("walking_control"), "login") == 0)
+			if (strcmp(reader.getGlobalVariable("walking_control"), "login") == 0)
 			{
 				reader.setGlobalVariable("walking_control", "");
 				reader.setGlobalVariable("walking_priority", "0");
@@ -682,7 +685,6 @@ exitFunction:
 	loginTime            = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_loginApp construction
@@ -704,7 +706,8 @@ CMod_loginApp::~CMod_loginApp()
 		delete m_configDialog;
 		m_configDialog = NULL;
 	}
-	delete m_configData; m_configData = NULL;
+	delete m_configData;
+	m_configData = NULL;
 }
 
 char * CMod_loginApp::getName()
@@ -712,12 +715,10 @@ char * CMod_loginApp::getName()
 	return "Auto relogin";
 }
 
-
 int CMod_loginApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_loginApp::start()
 {
@@ -770,7 +771,6 @@ void CMod_loginApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_loginApp::configToControls()
 {
 	if (m_configDialog)
@@ -778,16 +778,15 @@ void CMod_loginApp::configToControls()
 		m_configDialog->configToControls(m_configData);
 }
 
-
 void CMod_loginApp::controlsToConfig()
 {
 	if (m_configDialog)
 	{
-		delete m_configData; m_configData = NULL;
-		m_configData                      = m_configDialog->controlsToConfig();
+		delete m_configData;
+		m_configData = NULL;
+		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_loginApp::disableControls()
 {
@@ -801,12 +800,10 @@ void CMod_loginApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_loginApp::getVersion()
 {
 	return "1.0";
 }
-
 
 int CMod_loginApp::validateConfig(int showAlerts)
 {
@@ -851,7 +848,7 @@ int CMod_loginApp::validateConfig(int showAlerts)
 
 void CMod_loginApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -932,26 +929,41 @@ char *CMod_loginApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "open/main";
-	case 1: return "open/cont1";
-	case 2: return "open/cont2";
-	case 3: return "open/cont3";
-	case 4: return "open/cont4";
-	case 5: return "open/cont5";
-	case 6: return "open/cont6";
-	case 7: return "open/cont7";
-	case 8: return "open/cont8";
-	case 9: return "loginDelay";
-	case 10: return "autopass";
-	case 11: return "accountname";
-	case 12: return "accountpass";
-	case 13: return "loginAfterKilled";
+	case 0:
+		return "open/main";
+	case 1:
+		return "open/cont1";
+	case 2:
+		return "open/cont2";
+	case 3:
+		return "open/cont3";
+	case 4:
+		return "open/cont4";
+	case 5:
+		return "open/cont5";
+	case 6:
+		return "open/cont6";
+	case 7:
+		return "open/cont7";
+	case 8:
+		return "open/cont8";
+	case 9:
+		return "loginDelay";
+	case 10:
+		return "autopass";
+	case 11:
+		return "accountname";
+	case 12:
+		return "accountpass";
+	case 13:
+		return "loginAfterKilled";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_loginApp::getNewSkin(CSkin newSkin) {
+void CMod_loginApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

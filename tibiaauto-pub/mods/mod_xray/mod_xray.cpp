@@ -62,7 +62,7 @@ int lastY = 0;
 int lastZ = 0;
 
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -144,7 +144,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				// ground = 7. 6->5->4 and so are higher levels
 				// 8 -> 9 -> 10 and so are lower levels.
 
-				if(self->z <= 7)
+				if (self->z <= 7)
 				{
 					// Can only go down as many times as you are away from the 7th-1 floor
 					// prevents possible crash when looking at ground floor and you go down 1 floor
@@ -155,7 +155,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 					reader.setXRayValues(groundlevel, 2);
 				}
 
-				if(self->z > 7)
+				if (self->z > 7)
 				{
 					// Can only go down as many times as you are away from the 15th floor, but not below 0
 					undergroundlevel = max(undergroundlevel, max(0, 2 - (15 - self->z)));
@@ -177,7 +177,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	toolThreadShouldStop = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_xrayApp construction
@@ -204,7 +203,6 @@ char * CMod_xrayApp::getName()
 	return "XRay";
 }
 
-
 int CMod_xrayApp::isStarted()
 {
 	if (!m_started)
@@ -218,7 +216,6 @@ int CMod_xrayApp::isStarted()
 	}
 	return m_started;
 }
-
 
 void CMod_xrayApp::start()
 {
@@ -271,14 +268,12 @@ void CMod_xrayApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_xrayApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_xrayApp::controlsToConfig()
 {
@@ -288,7 +283,6 @@ void CMod_xrayApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_xrayApp::disableControls()
 {
@@ -302,12 +296,10 @@ void CMod_xrayApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_xrayApp::getVersion()
 {
 	return "1.0";
 }
-
 
 int CMod_xrayApp::validateConfig(int showAlerts)
 {
@@ -316,7 +308,7 @@ int CMod_xrayApp::validateConfig(int showAlerts)
 
 void CMod_xrayApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -350,14 +342,17 @@ char *CMod_xrayApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "other/autoreset";
-	case 1: return "other/extrahotkeys";
+	case 0:
+		return "other/autoreset";
+	case 1:
+		return "other/extrahotkeys";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_xrayApp::getNewSkin(CSkin newSkin) {
+void CMod_xrayApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

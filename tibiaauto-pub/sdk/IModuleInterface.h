@@ -18,52 +18,67 @@ public:
 	{
 		return "not implemented";
 	}
+
 	virtual int isStarted()
 	{
 		return 0;
 	}
+
 	virtual void start()
 	{
 	}
+
 	virtual void stop()
 	{
 	}
+
 	virtual void getNewSkin(CSkin newSkin)
 	{
 	}
+
 	virtual void showConfigDialog()
 	{
 	}
+
 	virtual void configToControls()
 	{
 	}
+
 	virtual void controlsToConfig()
 	{
 	}
+
 	virtual void disableControls()
 	{
 	}
+
 	virtual void enableControls()
 	{
 	}
+
 	virtual char *getVersion()
 	{
 		return "-";
 	}
+
 	virtual int validateConfig(int showAlerts)
 	{
 		return 1;
 	}
+
 	virtual void resetConfig()
 	{
 	}
+
 	virtual void loadConfigParam(char *paramName, char *paramValue)
 	{
 	}
+
 	virtual char *saveConfigParam(char *paramName)
 	{
 		return "";
 	}
+
 	virtual char *getConfigParamName(int nr)
 	{
 		return NULL;
@@ -77,15 +92,18 @@ public:
 	virtual void resetMultiParamAccess(char *paramName)
 	{
 	}
+
 	virtual void activate(int kernelVersion)
 	{
 		if (kernelVersion == 30)
 			active = 12345;
 	}
+
 	virtual void init()
 	{
 		active = 0;
 	}
+
 	virtual void superStart()
 	{
 		if (active != 12345)
@@ -94,6 +112,7 @@ public:
 			PostQuitMessage(0);
 		}
 	}
+
 protected:
 	int active;
 };

@@ -48,7 +48,6 @@ void TimedDialog::DoDataExchange(CDataExchange* pDX)
 	//}}AFX_DATA_MAP
 }
 
-
 BEGIN_MESSAGE_MAP(TimedDialog, CDialog)
 //{{AFX_MSG_MAP(TimedDialog)
 ON_BN_CLICKED(IDC_TIMED_SPELL_ADD, OnTimedSpellAdd)
@@ -63,7 +62,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // TimedDialog message handlers
 
-void TimedDialog::disableControls() {
+void TimedDialog::disableControls()
+{
 	m_timedSpellWords.EnableWindow(false);
 	m_timedSpellDelay.EnableWindow(false);
 	m_UsePotions.EnableWindow(false);
@@ -71,7 +71,8 @@ void TimedDialog::disableControls() {
 	m_timedSpellMana.EnableWindow(false);
 }
 
-void TimedDialog::enableControls() {
+void TimedDialog::enableControls()
+{
 	m_timedSpell.EnableWindow(true);
 	if (m_timedSpell.GetCheck())
 	{
@@ -82,7 +83,8 @@ void TimedDialog::enableControls() {
 	}
 }
 
-void TimedDialog::configToControls(CConfigData *configData) {
+void TimedDialog::configToControls(CConfigData *configData)
+{
 	m_timedSpell.SetCheck(configData->timedSpell);
 	spellList = configData->timedSpellList;
 	m_timedSpellList.DeleteAllItems();
@@ -101,16 +103,20 @@ void TimedDialog::configToControls(CConfigData *configData) {
 	OnToolSpellcasterTimed();
 }
 
-void TimedDialog::controlsToConfig(CConfigData *newConfigData) {
+void TimedDialog::controlsToConfig(CConfigData *newConfigData)
+{
 	newConfigData->timedSpell     = m_timedSpell.GetCheck();
 	newConfigData->timedSpellList = spellList;
 }
 
-void TimedDialog::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_timedSpellDelete);
-	skin.SetButtonSkin(     m_timedSpellAdd);
+void TimedDialog::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_timedSpellDelete);
+	skin.SetButtonSkin(m_timedSpellAdd);
 }
-BOOL TimedDialog::OnInitDialog() {
+
+BOOL TimedDialog::OnInitDialog()
+{
 	CDialog::OnInitDialog();
 
 	m_timedSpellList.InsertColumn(0, "Spell", LVCFMT_LEFT, 78);
@@ -126,7 +132,8 @@ BOOL TimedDialog::OnInitDialog() {
 	              // EXCEPTION: OCX Property Pages should return FALSE
 }
 
-void TimedDialog::OnTimedSpellAdd() {
+void TimedDialog::OnTimedSpellAdd()
+{
 	char lpSpellBuffer[64];
 	char lpManaBuffer[8];
 	char lpDelayBuffer[8];
@@ -159,13 +166,14 @@ void TimedDialog::OnTimedSpellAdd() {
 	}
 }
 
-void TimedDialog::OnTimedSpellDelete() {
+void TimedDialog::OnTimedSpellDelete()
+{
 	int nSelRows = m_timedSpellList.GetSelectedCount();
-	if(!nSelRows)
+	if (!nSelRows)
 		return;
 
 	int* pnArrayOfSelRows = new int[nSelRows];
-	if(!pnArrayOfSelRows)
+	if (!pnArrayOfSelRows)
 		return;
 
 	int nTemp    = nSelRows;
@@ -181,19 +189,20 @@ void TimedDialog::OnTimedSpellDelete() {
 		i                       = m_timedSpellList.GetNextSelectedItem(pos);
 		for (size_t k = 0; k < spellList.size(); k++)
 		{
-			if(spellList[k].spell == m_timedSpellList.GetItemText(find, 0))
+			if (spellList[k].spell == m_timedSpellList.GetItemText(find, 0))
 				spellList.erase(spellList.begin() + k);
 		}
 	}
 
-	for(int j = 0; j < nSelRows; j++)
+	for (int j = 0; j < nSelRows; j++)
 		m_timedSpellList.DeleteItem(pnArrayOfSelRows[j]);
 
 	delete(pnArrayOfSelRows);
 	pnArrayOfSelRows = NULL;
 }
 
-void TimedDialog::OnToolSpellcasterTimed() {
+void TimedDialog::OnToolSpellcasterTimed()
+{
 	int val = m_timedSpell.GetCheck();
 	m_timedSpellWords.EnableWindow(val);
 	m_timedSpellMana.EnableWindow(val);

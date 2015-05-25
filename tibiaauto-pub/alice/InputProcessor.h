@@ -17,10 +17,12 @@ using namespace std;
 class InputProcessor : public AimlProcessor
 {
 public:
-	~InputProcessor() {
+	~InputProcessor()
+	{
 	}
 
-	string process(Match *, PElement e, Responder *, const string &id) {
+	string process(Match *, PElement e, Responder *, const string &id)
+	{
 		string index = e->getAttribute("index");
 		if (index.empty())
 			index = "1";

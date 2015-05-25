@@ -17,10 +17,12 @@ using namespace std;
 class PersonProcessor : public AimlProcessor
 {
 public:
-	~PersonProcessor() {
+	~PersonProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string result = "";
 		string index  = e->getAttribute("index");
 		if (index.empty())
@@ -36,16 +38,22 @@ public:
 class Person2Processor : public AimlProcessor
 {
 public:
-	~Person2Processor() {
+	~Person2Processor()
+	{
 	}
 
-	string getName() const {
+	string getName() const
+	{
 		return "person2";
 	}
-	string getVersion() const {
+
+	string getVersion() const
+	{
 		return "1.0";
 	}
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string result = "";
 		string index  = e->getAttribute("index");
 		if (index.empty())
@@ -61,16 +69,22 @@ public:
 class GenderProcessor : public AimlProcessor
 {
 public:
-	~GenderProcessor() {
+	~GenderProcessor()
+	{
 	}
 
-	string getName() const {
+	string getName() const
+	{
 		return "gender";
 	}
-	string getVersion() const {
+
+	string getVersion() const
+	{
 		return "1.0";
 	}
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		string result = "";
 		string index  = e->getAttribute("index");
 		if (index.empty())

@@ -9,17 +9,21 @@
 
 #include "Utils.h"
 
-Nodemaster *Nodemaster::getChild(const string &key) {
+Nodemaster *Nodemaster::getChild(const string &key)
+{
 	if (children.find(get_string(key)) == children.end())
 		return NULL;
 	return (*children.find(get_string(key))).second;
 }
 
-void Nodemaster::addChild(const string &key, Nodemaster *value) {
+void Nodemaster::addChild(const string &key, Nodemaster *value)
+{
 	children[get_string(key)] = value;
 }
+
 //	Perhaps we do the automagic updating here?
-string Nodemaster::getTemplate(bool reload) {
+string Nodemaster::getTemplate(bool reload)
+{
 /*	if (templates.empty()) {
                 return "";
         }
@@ -43,7 +47,8 @@ string Nodemaster::getTemplate(bool reload) {
 //	return templates->fetch();
 }
 
-void Nodemaster::addTemplate(Template *t) {
+void Nodemaster::addTemplate(Template *t)
+{
 //	totalSize += (value.length() * sizeof(char)) + sizeof(string);
 	if (templates != NULL)
 		delete templates;
@@ -51,10 +56,12 @@ void Nodemaster::addTemplate(Template *t) {
 //	templates = t;
 }
 
-bool Nodemaster::hasTemplate() {
+bool Nodemaster::hasTemplate()
+{
 	return templates != NULL;
 }
 
-Template *Nodemaster::getActualTemplate() {
+Template *Nodemaster::getActualTemplate()
+{
 	return templates;
 }

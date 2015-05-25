@@ -30,9 +30,11 @@ public:
 	void setListener(SocketListener *);
 	SocketListener *getListener();
 	int getSD();
-	const char* getPeerName(){
+	const char* getPeerName()
+	{
 		return host;
 	}
+
 	virtual void process();
 
 	int read(string &);

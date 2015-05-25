@@ -78,6 +78,7 @@ public:
 	{
 		return fUnicodeForm;
 	}
+
 private:
 	XMLCh*   fUnicodeForm;
 };
@@ -91,7 +92,8 @@ static char THIS_FILE[] = __FILE__;
 #define X(str) XStr(str).unicodeForm()
 
 
-void InitTibiaHandle(){
+void InitTibiaHandle()
+{
 	CMemReaderProxy reader;
 	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
 	while (tibiaHWND)
@@ -108,7 +110,8 @@ void InitTibiaHandle(){
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg dialog
 
-LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam){
+LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam)
+{
 	static UINT s_uTaskbarRestart;
 
 	if (uMessage == WM_CREATE)
@@ -117,7 +120,7 @@ LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam
 	}
 	else
 	{
-		if(uMessage == s_uTaskbarRestart)
+		if (uMessage == s_uTaskbarRestart)
 		{
 			CMemReaderProxy reader;
 			setShellTray();
@@ -243,42 +246,43 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CTibiaautoDlg message handlers
 
-void CTibiaautoDlg::DoSetButtonSkin(){
-	skin.SetButtonSkin(     m_exit);
-	skin.SetButtonSkin(     m_LoadedModules);
-	skin.SetButtonSkin(     m_Options);
-	skin.SetButtonSkin(     m_PythonScripts);
-	skin.SetButtonSkin(     m_MonsterShow);
-	skin.SetButtonSkin(     m_MapShow);
-	skin.SetButtonSkin(     m_ItemConfig);
-	skin.SetButtonSkin(     m_InjectMC);
-	skin.SetButtonSkin(     m_CharInfo);
-	skin.SetButtonSkin(     m_xray);
-	skin.SetButtonSkin(     m_autoAttack);
-	skin.SetButtonSkin(     m_login);
-	skin.SetButtonSkin(     m_ammoRestack);
-	skin.SetButtonSkin(     m_autoAim);
-	skin.SetButtonSkin(     m_autoFish);
-	skin.SetButtonSkin(     m_autoGo);
-	skin.SetButtonSkin(     m_autoLooter);
-	skin.SetButtonSkin(     m_autoRespond);
-	skin.SetButtonSkin(     m_autoUh);
-	skin.SetButtonSkin(     m_fluidDrinker);
-	skin.SetButtonSkin(     m_runeMaker);
-	skin.SetButtonSkin(     m_spellCaster);
-	skin.SetButtonSkin(     m_fps);
-	skin.SetButtonSkin(     m_antilogout);
-	skin.SetButtonSkin(     m_mapHack);
-	skin.SetButtonSkin(     m_creatureInfo);
-	skin.SetButtonSkin(     m_save);
-	skin.SetButtonSkin(     m_load);
-	skin.SetButtonSkin(     m_eater);
-	skin.SetButtonSkin(     m_tradeMon);
-	skin.SetButtonSkin(     m_grouping);
-	skin.SetButtonSkin(     m_light);
-	skin.SetButtonSkin(     m_banker);
-	skin.SetButtonSkin(     m_sorter);
-	skin.SetButtonSkin(     m_seller);
+void CTibiaautoDlg::DoSetButtonSkin()
+{
+	skin.SetButtonSkin(m_exit);
+	skin.SetButtonSkin(m_LoadedModules);
+	skin.SetButtonSkin(m_Options);
+	skin.SetButtonSkin(m_PythonScripts);
+	skin.SetButtonSkin(m_MonsterShow);
+	skin.SetButtonSkin(m_MapShow);
+	skin.SetButtonSkin(m_ItemConfig);
+	skin.SetButtonSkin(m_InjectMC);
+	skin.SetButtonSkin(m_CharInfo);
+	skin.SetButtonSkin(m_xray);
+	skin.SetButtonSkin(m_autoAttack);
+	skin.SetButtonSkin(m_login);
+	skin.SetButtonSkin(m_ammoRestack);
+	skin.SetButtonSkin(m_autoAim);
+	skin.SetButtonSkin(m_autoFish);
+	skin.SetButtonSkin(m_autoGo);
+	skin.SetButtonSkin(m_autoLooter);
+	skin.SetButtonSkin(m_autoRespond);
+	skin.SetButtonSkin(m_autoUh);
+	skin.SetButtonSkin(m_fluidDrinker);
+	skin.SetButtonSkin(m_runeMaker);
+	skin.SetButtonSkin(m_spellCaster);
+	skin.SetButtonSkin(m_fps);
+	skin.SetButtonSkin(m_antilogout);
+	skin.SetButtonSkin(m_mapHack);
+	skin.SetButtonSkin(m_creatureInfo);
+	skin.SetButtonSkin(m_save);
+	skin.SetButtonSkin(m_load);
+	skin.SetButtonSkin(m_eater);
+	skin.SetButtonSkin(m_tradeMon);
+	skin.SetButtonSkin(m_grouping);
+	skin.SetButtonSkin(m_light);
+	skin.SetButtonSkin(m_banker);
+	skin.SetButtonSkin(m_sorter);
+	skin.SetButtonSkin(m_seller);
 }
 
 BOOL CTibiaautoDlg::OnInitDialog()
@@ -397,7 +401,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 		//CModuleUtil::setTASetting("SeenMapMessage",1);
 		//OnOptions();
 	}
-	if(CModuleUtil::getTASetting("GatherBotStats"))
+	if (CModuleUtil::getTASetting("GatherBotStats"))
 	{
 		COptionsDialog dlg;
 		//dlg.Create(IDD_OPTIONS);
@@ -487,8 +491,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	SetTimer(1003, 1000 * 60 * 15, NULL); // once every 15 minutes refresh ads
 	SetTimer(1004, 1000 * 60 * 5, NULL); // once every 5 minutes refresh ads
 	if (CModuleUtil::getTASetting("GatherBotStats"))
-		SetTimer(1005, 5000, NULL);//every 5 seconds check and record module stats
-	SetTimer(1006, 5000, NULL);//refresh tray icon name if changed
+		SetTimer(1005, 5000, NULL);  //every 5 seconds check and record module stats
+	SetTimer(1006, 5000, NULL); //refresh tray icon name if changed
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -529,7 +533,6 @@ HCURSOR CTibiaautoDlg::OnQueryDragIcon()
 	return (HCURSOR) m_hIcon;
 }
 
-
 void CTibiaautoDlg::OnChangeEditAddress()
 {
 }
@@ -537,7 +540,6 @@ void CTibiaautoDlg::OnChangeEditAddress()
 void CTibiaautoDlg::OnChangeEditValue()
 {
 }
-
 
 void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 {
@@ -620,13 +622,13 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 	CDialog::OnTimer(nIDEvent);
 }
 
-
 void CTibiaautoDlg::OnLight()
 {
 	m_moduleLight->showConfigDialog();
 }
 
-void CTibiaautoDlg::setShellTray(){
+void CTibiaautoDlg::setShellTray()
+{
 	CMemReaderProxy reader;
 	ZeroMemory(&currentIconData, sizeof(NOTIFYICONDATA));
 	currentIconData.cbSize = sizeof(NOTIFYICONDATA);
@@ -757,18 +759,18 @@ void CTibiaautoDlg::InitialiseIPC()
 			THREADENTRY32 te32;
 
 			// Take a snapshot of all running threads
-			hThreadSnap = CreateToolhelp32Snapshot( TH32CS_SNAPTHREAD, 0 );
-			if( hThreadSnap == INVALID_HANDLE_VALUE )
+			hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
+			if (hThreadSnap == INVALID_HANDLE_VALUE)
 				goto noKeybHook;
 
 			// Fill in the size of the structure before using it.
-			te32.dwSize = sizeof(THREADENTRY32 );
+			te32.dwSize = sizeof(THREADENTRY32);
 
 			// Retrieve information about the first thread,
 			// and exit if unsuccessful
-			if( !Thread32First( hThreadSnap, &te32 ) )
+			if (!Thread32First(hThreadSnap, &te32))
 			{
-				CloseHandle( hThreadSnap ); // Must clean up the snapshot object!
+				CloseHandle(hThreadSnap);   // Must clean up the snapshot object!
 				goto noKeybHook;
 			}
 
@@ -777,16 +779,16 @@ void CTibiaautoDlg::InitialiseIPC()
 			// associated with the specified process
 			do
 			{
-				if( te32.th32OwnerProcessID == m_processId )
+				if (te32.th32OwnerProcessID == m_processId)
 				{
 					hhookKeyb = SetWindowsHookEx(WH_KEYBOARD, fun, hinstDLL, te32.th32ThreadID);
 					break;
 				}
 			}
-			while( Thread32Next(hThreadSnap, &te32 ) );
+			while (Thread32Next(hThreadSnap, &te32));
 
 			// Don't forget to clean up the snapshot object.
-			CloseHandle( hThreadSnap );
+			CloseHandle(hThreadSnap);
 			// initialise hooks
 		}
 	}
@@ -794,7 +796,6 @@ noKeybHook:
 	{
 	}
 }
-
 
 void CTibiaautoDlg::OnToolRunemaker()
 {
@@ -1039,7 +1040,7 @@ struct loadThreadParam
 	char fName[1024];
 };
 
-DWORD WINAPI loadThread( LPVOID lpParam )
+DWORD WINAPI loadThread(LPVOID lpParam)
 {
 	XercesDOMParser *parser;
 	parser = new XercesDOMParser();
@@ -1227,14 +1228,15 @@ DWORD WINAPI loadThread( LPVOID lpParam )
 	return 0;
 }
 
-void CTibiaautoDlg::loadConfig(CString pathName){
+void CTibiaautoDlg::loadConfig(CString pathName)
+{
 	FILE *f = fopen(pathName.GetBuffer(1024), "rb");
 
 	if (f)
 	{
 		fclose(f);
 
-		if(configDialogStatus)
+		if (configDialogStatus)
 		{
 			configDialogStatus->DestroyWindow();
 			delete configDialogStatus;
@@ -1307,7 +1309,6 @@ void CTibiaautoDlg::OnToolAutoattack()
 	m_moduleAutoAttack->showConfigDialog();
 }
 
-
 void CTibiaautoDlg::OnToolSpellcaster()
 {
 	m_moduleSpellCaster->showConfigDialog();
@@ -1315,7 +1316,7 @@ void CTibiaautoDlg::OnToolSpellcaster()
 
 void CTibiaautoDlg::OnExit()
 {
-	for(int i = 1001; i <= 1006; KillTimer(i++))
+	for (int i = 1001; i <= 1006; KillTimer(i++))
 		;
 
 	DisconnectNamedPipe(hPipe);
@@ -1366,7 +1367,7 @@ void CTibiaautoDlg::OnExit()
 	delete m_moduleBanker;
 	delete m_moduleSorter;
 	delete m_moduleSeller;
-	if(configDialogStatus)
+	if (configDialogStatus)
 	{
 		configDialogStatus->DestroyWindow();
 		delete configDialogStatus;
@@ -1399,23 +1400,25 @@ void CTibiaautoDlg::OnMemdebug()
 {
 	m_moduleMemDebug->showConfigDialog();
 }
+
 const UINT RWM_PRETRANSLATEMSG = ::RegisterWindowMessage(_T("RWM_PRETRANSLATEMSG"));
 // If it has a Modeless parent windows then it returns the modeless window just before the parents become modal again.
 // We want this as modal windows do not send all messages to their child modeless windows
 HWND AppGetTopParent(HWND hWnd)
 {
-	if(hWnd == NULL)
+	if (hWnd == NULL)
 		return NULL;
 	int isModeless = CWnd::FromHandlePermanent(hWnd) == NULL;
 
 	HWND hWndParent = hWnd;
-	while(::GetParent(hWndParent) != NULL && !(isModeless && CWnd::FromHandlePermanent(::GetParent(hWndParent)) != NULL))
+	while (::GetParent(hWndParent) != NULL && !(isModeless && CWnd::FromHandlePermanent(::GetParent(hWndParent)) != NULL))
 	{
 		isModeless = CWnd::FromHandlePermanent(hWndParent) == NULL;
 		hWndParent = ::GetParent(hWndParent);
 	}
 	return hWndParent;
 }
+
 BOOL CTibiaautoDlg::PreTranslateMessage(MSG* pMsg)
 {
 	//read http://www.codeproject.com/Articles/211862/PreTranslateMessage-support-in-modeless-dialogs-in
@@ -1462,15 +1465,16 @@ void CTibiaautoDlg::OnToolTrademon()
 	m_moduleTradeMon->showConfigDialog();
 }
 
-int copyFile(CString inpath, CString outpath){
+int copyFile(CString inpath, CString outpath)
+{
 	//inpath and outpath cannot be the same
 	// returns 0 if it did not succeed, non-zero if it succeeded
 	int MAXREAD = 10000;
-	if(inpath.CompareNoCase(outpath) != 0)
+	if (inpath.CompareNoCase(outpath) != 0)
 	{
 		char* filedata;
 		FILE* fin = fopen(inpath, "rb");
-		if(!fin)
+		if (!fin)
 		{
 			AfxMessageBox("Cannot read input file!");
 			return 0;
@@ -1480,15 +1484,15 @@ int copyFile(CString inpath, CString outpath){
 		fseek(fin, 0, SEEK_SET);
 		filedata = (char*)malloc(size);
 		int loc = 0;
-		while(1)
+		while (1)
 		{
 			int readlength = fread((char*)(filedata + loc), 1, MAXREAD, fin);
 			loc += readlength;
-			if(!readlength)
+			if (!readlength)
 				break;
 		}
 		fclose(fin);
-		if(!loc)
+		if (!loc)
 		{
 			AfxMessageBox("Cannot read input file!");
 			delete filedata;
@@ -1496,7 +1500,7 @@ int copyFile(CString inpath, CString outpath){
 		}
 
 		FILE* fout = fopen(outpath, "wb");
-		if(!fout)
+		if (!fout)
 		{
 			AfxMessageBox("Cannot write new file!");
 			delete filedata;
@@ -1514,6 +1518,7 @@ int copyFile(CString inpath, CString outpath){
 	}
 	return 1;
 }
+
 void CTibiaautoDlg::OnToolInjectmc()
 {
 	CTibiaItemProxy itemProxy;
@@ -1527,10 +1532,10 @@ void CTibiaautoDlg::OnToolInjectmc()
 	{
 		CString pathName = fd.GetPathName();
 		CFileDialog fdSave(false, "*.exe", "Tibia MC.exe", OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY, szFiltersSave, this);
-		if(fdSave.DoModal() == IDOK)
+		if (fdSave.DoModal() == IDOK)
 		{
 			CString pathDestName = fdSave.GetPathName();
-			if(copyFile(pathName, pathDestName))
+			if (copyFile(pathName, pathDestName))
 			{
 				FILE* fout = fopen(pathDestName, "r+b");
 				fseek(fout, itemProxy.getValueForConst("addrMCInject"), SEEK_SET);
@@ -1635,7 +1640,7 @@ void CTibiaautoDlg::OnOptions()
 
 void CTibiaautoDlg::refreshAds()
 {
-	if(time(NULL) < 132882315 + 3600 * 24 * 14)
+	if (time(NULL) < 132882315 + 3600 * 24 * 14)
 	{
 		m_browserAds.Navigate("127.0.0.1", NULL, NULL, NULL, NULL);
 		return;
@@ -1698,7 +1703,7 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 			currentIconData.hIcon = AfxGetApp()->LoadIcon(MAKEINTRESOURCE(IDR_MAINFRAME_HIDDEN));
 			Shell_NotifyIcon(NIM_MODIFY, &currentIconData);
 			ShowWindow(SW_HIDE);
-			if(CModuleUtil::getTASetting("HideTibiaWithTA"))
+			if (CModuleUtil::getTASetting("HideTibiaWithTA"))
 				::ShowWindow(tibiaHWND, SW_HIDE);
 		}
 		else
@@ -1707,10 +1712,10 @@ LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 			Shell_NotifyIcon(NIM_MODIFY, &currentIconData);
 			ShowWindow(SW_SHOW);
 			SetForegroundWindow();
-			if(!::IsWindowVisible(tibiaHWND) && CModuleUtil::getTASetting("HideTibiaWithTA"))
+			if (!::IsWindowVisible(tibiaHWND) && CModuleUtil::getTASetting("HideTibiaWithTA"))
 			{
 				::ShowWindow(tibiaHWND, SW_SHOW);
-				if(::IsIconic(tibiaHWND))
+				if (::IsIconic(tibiaHWND))
 					::ShowWindow(tibiaHWND, SW_RESTORE);
 				::SetForegroundWindow(tibiaHWND);
 			}

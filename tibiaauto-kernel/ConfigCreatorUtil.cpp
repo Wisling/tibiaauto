@@ -42,6 +42,7 @@ public:
 	{
 		return fUnicodeForm;
 	}
+
 private:
 	XMLCh*   fUnicodeForm;
 };

@@ -57,7 +57,7 @@ END_MESSAGE_MAP()
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReaderProxy reader;
 	CPackSenderProxy sender;
@@ -163,11 +163,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int minX = -8;
 				int maxX = 9;
 
-				int minNewZ = max(minZ, min(maxZ, (lastZ - self->z) + (sigZ == 1 ? lastMaxZ : lastMinZ) + sigZ ));
-				int maxNewZ = minNewZ + max(minZ - maxZ - 1, min(maxZ - minZ + 1, (self->z - lastZ) + (sigZ == 1 ? maxZ - lastMaxZ : minZ - lastMinZ) ));
-				int minNewY = max(minY, min(maxY, (lastY - self->y) + (sigY == 1 ? maxY : minY) + sigY ));
+				int minNewZ = max(minZ, min(maxZ, (lastZ - self->z) + (sigZ == 1 ? lastMaxZ : lastMinZ) + sigZ));
+				int maxNewZ = minNewZ + max(minZ - maxZ - 1, min(maxZ - minZ + 1, (self->z - lastZ) + (sigZ == 1 ? maxZ - lastMaxZ : minZ - lastMinZ)));
+				int minNewY = max(minY, min(maxY, (lastY - self->y) + (sigY == 1 ? maxY : minY) + sigY));
 				int maxNewY = minNewY + max(minY - maxY - 1, min(maxY - minY + 1, self->y - lastY));
-				int minNewX = max(minX, min( maxX, (lastX - self->x) + (sigX == 1 ? maxX : minX) + sigX ));
+				int minNewX = max(minX, min(maxX, (lastX - self->x) + (sigX == 1 ? maxX : minX) + sigX));
 				int maxNewX = minNewX + max(minX - maxX - 1, min(maxX - minX + 1, self->x - lastX));
 
 
@@ -181,7 +181,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					for (y = minY; y <= maxY; y++)
 					{
-						for(z = minZ; z <= maxZ; z++)
+						for (z = minZ; z <= maxZ; z++)
 						{
 							int mapColour = -1;
 							int mapSpeed  = -1;
@@ -194,20 +194,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								int tileId = reader.mapGetPointItemId(point(x, y, z), i, relToCell);
 								if (tileId == 99)
 								{
-									mapSpeed = 255; continue;
+									mapSpeed = 255;
+									continue;
 								}                                        //reached top of relevant tiles
 
 								CTibiaTile *tileData = reader.getTibiaTile(tileId);
-								if(tileData->minimapColor && mapColour == -1)
+								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
-								if(tileData->speed && tileData->speed < 256 && mapSpeed == -1)
+								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
 									mapSpeed = tileData->speed;
-								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp)
+								if (tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp)
 									mapSpeed = 255;
 							}
 							if (mapColour == -1 || mapSpeed == -1)
 							{
-								mapColour = 0; mapSpeed = 100; continue;
+								mapColour = 0;
+								mapSpeed  = 100;
+								continue;
 							}
 							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self->x + x, self->y + y, self->z + z, mapColour, mapSpeed);
 							//AfxMessageBox(buf);
@@ -220,9 +223,9 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					for (y = minNewY; y*sigY < maxNewY * sigY; y += sigY)
 					{
-						for(z = minZ; z <= maxZ; z++)
+						for (z = minZ; z <= maxZ; z++)
 						{
-							if(x >= minNewX && x < maxNewX)
+							if (x >= minNewX && x < maxNewX)
 								continue;                    //already did these points
 							int mapColour = -1;
 							int mapSpeed  = -1;
@@ -235,20 +238,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								int tileId = reader.mapGetPointItemId(point(x, y, z), i, relToCell);
 								if (tileId == 99)
 								{
-									mapSpeed = 255; continue;
+									mapSpeed = 255;
+									continue;
 								}                                        //reached top of relevant tiles
 
 								CTibiaTile *tileData = reader.getTibiaTile(tileId);
-								if(tileData->minimapColor && mapColour == -1)
+								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
-								if(tileData->speed && tileData->speed < 256 && mapSpeed == -1)
+								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
 									mapSpeed = tileData->speed;
-								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp)
+								if (tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp)
 									mapSpeed = 255;
 							}
 							if (mapColour == -1 || mapSpeed == -1)
 							{
-								mapColour = 0; mapSpeed = 100; continue;
+								mapColour = 0;
+								mapSpeed  = 100;
+								continue;
 							}
 							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self->x + x, self->y + y, self->z + z, mapColour, mapSpeed);
 							//AfxMessageBox(buf);
@@ -261,11 +267,11 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				{
 					for (y = minY; y <= maxY; y++)
 					{
-						for(z = minNewZ; z*sigZ < maxNewZ * sigZ; z += sigZ)
+						for (z = minNewZ; z*sigZ < maxNewZ * sigZ; z += sigZ)
 						{
-							if(x >= minNewX && x < maxNewX)
+							if (x >= minNewX && x < maxNewX)
 								continue;                    //already did these points
-							if(y >= minNewY && y < maxNewY)
+							if (y >= minNewY && y < maxNewY)
 								continue;                    //already did these points
 							int mapColour = -1;
 							int mapSpeed  = -1;
@@ -278,20 +284,23 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 								int tileId = reader.mapGetPointItemId(point(x, y, z), i, relToCell);
 								if (tileId == 99)
 								{
-									mapSpeed = 255; continue;
+									mapSpeed = 255;
+									continue;
 								}                                        //reached top of relevant tiles
 
 								CTibiaTile *tileData = reader.getTibiaTile(tileId);
-								if(tileData->minimapColor && mapColour == -1)
+								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
-								if(tileData->speed && tileData->speed < 256 && mapSpeed == -1)
+								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
 									mapSpeed = tileData->speed;
-								if(tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp)
+								if (tileData->blocking || tileData->isTeleporter || tileData->goDown || tileData->goUp)
 									mapSpeed = 255;
 							}
 							if (mapColour == -1 || mapSpeed == -1)
 							{
-								mapColour = 0; mapSpeed = 100; continue;
+								mapColour = 0;
+								mapSpeed  = 100;
+								continue;
 							}
 							sprintf(buf, "Drawing (%d,%d,%d) %d %d", self->x + x, self->y + y, self->z + z, mapColour, mapSpeed);
 							//AfxMessageBox(buf);
@@ -305,7 +314,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 				int last = 0;
 				if (newSelf->z == self->z)//since we used relToCell only floorchanges drastically matter
 				{       // tiles changed between read from tibia and write to map are excluded
-					for(z = minZ; z <= maxZ; z++)
+					for (z = minZ; z <= maxZ; z++)
 					{
 						for (x = -8 + max(0, newSelf->x - self->x); x <= 9 + min(0, newSelf->x - self->x); x++)
 						{
@@ -322,7 +331,7 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
                                                                 }
  */
 								//if(mapArrSpd[x-(-8)][y-(-6)][z-minZ]!=0 && (mapArrCol[x-(-8)][y-(-6)][z-minZ]!=0 || fileExists)){
-								if(mapArrSpd[x - (-8)][y - (-6)][z - minZ] != 0)
+								if (mapArrSpd[x - (-8)][y - (-6)][z - minZ] != 0)
 									reader.writeMiniMapPoint(self->x + x - z, self->y + y - z, self->z + z, mapArrCol[x - (-8)][y - (-6)][z - minZ], mapArrSpd[x - (-8)][y - (-6)][z - minZ]);
 							}
 						}
@@ -345,7 +354,6 @@ DWORD WINAPI toolThreadProc( LPVOID lpParam )
 	toolThreadShouldStop = 0;
 	return 0;
 }
-
 
 /////////////////////////////////////////////////////////////////////////////
 // CMod_maphackApp construction
@@ -372,12 +380,10 @@ char * CMod_maphackApp::getName()
 	return "Map hack";
 }
 
-
 int CMod_maphackApp::isStarted()
 {
 	return m_started;
 }
-
 
 void CMod_maphackApp::start()
 {
@@ -430,14 +436,12 @@ void CMod_maphackApp::showConfigDialog()
 	m_configDialog->ShowWindow(SW_SHOW);
 }
 
-
 void CMod_maphackApp::configToControls()
 {
 	if (m_configDialog)
 
 		m_configDialog->configToControls(m_configData);
 }
-
 
 void CMod_maphackApp::controlsToConfig()
 {
@@ -447,7 +451,6 @@ void CMod_maphackApp::controlsToConfig()
 		m_configData = m_configDialog->controlsToConfig();
 	}
 }
-
 
 void CMod_maphackApp::disableControls()
 {
@@ -461,12 +464,10 @@ void CMod_maphackApp::enableControls()
 		m_configDialog->enableControls();
 }
 
-
 char *CMod_maphackApp::getVersion()
 {
 	return "1.4";
 }
-
 
 int CMod_maphackApp::validateConfig(int showAlerts)
 {
@@ -475,7 +476,7 @@ int CMod_maphackApp::validateConfig(int showAlerts)
 
 void CMod_maphackApp::resetConfig()
 {
-	if(m_configData)
+	if (m_configData)
 	{
 		delete m_configData;
 		m_configData = NULL;
@@ -520,17 +521,23 @@ char *CMod_maphackApp::getConfigParamName(int nr)
 {
 	switch (nr)
 	{
-	case 0: return "reveal/noFish";
-	case 1: return "reveal/cName";
-	case 2: return "reveal/invisible";
-	case 3: return "reveal/minimap";
-	case 4: return "autoMount";
+	case 0:
+		return "reveal/noFish";
+	case 1:
+		return "reveal/cName";
+	case 2:
+		return "reveal/invisible";
+	case 3:
+		return "reveal/minimap";
+	case 4:
+		return "autoMount";
 	default:
 		return NULL;
 	}
 }
 
-void CMod_maphackApp::getNewSkin(CSkin newSkin) {
+void CMod_maphackApp::getNewSkin(CSkin newSkin)
+{
 	skin = newSkin;
 
 	AFX_MANAGE_STATE(AfxGetStaticModuleState());

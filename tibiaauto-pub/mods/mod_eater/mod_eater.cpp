@@ -77,7 +77,8 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // Tool functions
 
-int RandomEaterWaitTime(int digestTime){
+int RandomEaterWaitTime(int digestTime)
+{
 	/***************************
 	   rand()							:: Random number between 0 and RAND_MAX (?32767?)
 	   digestTime * .2					:: 20% of digestTime
@@ -89,7 +90,8 @@ int RandomEaterWaitTime(int digestTime){
 	return rand() % (int)(digestTime * .2) + (int)(digestTime * .9);//randomFormula creates a non-uniform distribution weighted towards an average
 }
 
-int RandomAmountEater(){//returns how much food to eat
+int RandomAmountEater() //returns how much food to eat
+{
 	return rand() % 7 + 1;                  //Eat only 1-7 pieces of food at a time
 }
 
@@ -99,7 +101,7 @@ int RandomAmountEater(){//returns how much food to eat
 int toolThreadShouldStop = 0;
 HANDLE toolThreadHandle;
 
-DWORD WINAPI toolThreadProc( LPVOID lpParam )
+DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	srand((unsigned int)time(NULL));                                //Seed the random number generation
 	CMemReaderProxy reader;

@@ -16,10 +16,12 @@ using namespace std;
 class ThinkProcessor : public AimlProcessor
 {
 public:
-	~ThinkProcessor() {
+	~ThinkProcessor()
+	{
 	}
 
-	string process(Match *m, PElement e, Responder *r, const string &id) {
+	string process(Match *m, PElement e, Responder *r, const string &id)
+	{
 		Kernel::process(m, e, r, id);
 		return "";
 	}

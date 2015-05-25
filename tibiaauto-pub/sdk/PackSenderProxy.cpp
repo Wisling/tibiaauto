@@ -41,7 +41,7 @@ CPackSenderProxy::CPackSenderProxy()
 		HKEY hkey = NULL;
 		if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
 		{
-			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen );
+			RegQueryValueEx(hkey, TEXT("Install_Dir"), NULL, NULL, (unsigned char *)installPath, &installPathLen);
 			RegCloseKey(hkey);
 		}
 		if (!strlen(installPath))
@@ -83,6 +83,7 @@ void CPackSenderProxy::useWithObjectFromFloorOnFloor(int sourceObjectId, int sou
 			fun(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetX, targetY, targetZ, method);
 	}
 }
+
 void CPackSenderProxy::useWithObjectFromFloorInContainer(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetContNr, int targetPos, int method /*=2*/)
 {
 	typedef void (*Proto_fun)(int sourceObjectId, int sourceX, int sourceY, int sourceZ, int targetObjectId, int targetContNr, int targetPos, int method);
@@ -93,6 +94,7 @@ void CPackSenderProxy::useWithObjectFromFloorInContainer(int sourceObjectId, int
 			fun(sourceObjectId, sourceX, sourceY, sourceZ, targetObjectId, targetContNr, targetPos, method);
 	}
 }
+
 void CPackSenderProxy::useWithObjectFromContainerInContainer(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetContNr, int targetPos, int method /*=2*/)
 {
 	typedef void (*Proto_fun)(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetContNr, int targetPos, int method);
@@ -103,6 +105,7 @@ void CPackSenderProxy::useWithObjectFromContainerInContainer(int sourceObjectId,
 			fun(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetContNr, targetPos, method);
 	}
 }
+
 void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetX, int targetY, int targetZ, int method /*=2*/)
 {
 	typedef void (*Proto_fun)(int sourceObjectId, int sourceContNr, int sourcePos, int targetObjectId, int targetX, int targetY, int targetZ, int method);
@@ -113,6 +116,7 @@ void CPackSenderProxy::useWithObjectFromContainerOnFloor(int sourceObjectId, int
 			fun(sourceObjectId, sourceContNr, sourcePos, targetObjectId, targetX, targetY, targetZ, method);
 	}
 }
+
 void CPackSenderProxy::useWithObjectOnFloor(int sourceObjectId, int targetObjectId, int targetX, int targetY, int targetZ, int method /*=2*/)
 {
 	typedef void (*Proto_fun)(int sourceObjectId, int targetObjectId, int targetX, int targetY, int targetZ, int method);
@@ -123,6 +127,7 @@ void CPackSenderProxy::useWithObjectOnFloor(int sourceObjectId, int targetObject
 			fun(sourceObjectId, targetObjectId, targetX, targetY, targetZ, method);
 	}
 }
+
 void CPackSenderProxy::useWithObjectInContainer(int sourceObjectId, int targetObjectId, int contNr, int itemPos, int method /*=2*/)
 {
 	typedef void (*Proto_fun)(int sourceObjectId, int targetObjectId, int contNr, int itemPos, int method);
@@ -133,7 +138,6 @@ void CPackSenderProxy::useWithObjectInContainer(int sourceObjectId, int targetOb
 			fun(sourceObjectId, targetObjectId, contNr, itemPos, method);
 	}
 }
-
 
 void CPackSenderProxy::moveObjectBetweenContainers(int objectId, int sourceContNr, int sourcePos, int targetContNr, int targetPos, int qty)
 {
@@ -189,10 +193,12 @@ void CPackSenderProxy::castRuneAgainstCreature(int contNr, int itemPos, int rune
 			fun(contNr, itemPos, runeObjectId, creatureId, method);
 	}
 }
+
 void CPackSenderProxy::castRuneAgainstCreature(int contNr, int itemPos, int runeObjectId, int creatureId)
 {
 	castRuneAgainstCreature(contNr, itemPos, runeObjectId, creatureId, 2);
 }
+
 void CPackSenderProxy::castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method)
 {
 	typedef void (*Proto_fun)(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ, int method);
@@ -203,10 +209,12 @@ void CPackSenderProxy::castRuneAgainstHuman(int contNr, int itemPos, int runeObj
 			fun(contNr, itemPos, runeObjectId, targetX, targetY, targetZ, method);
 	}
 }
+
 void CPackSenderProxy::castRuneAgainstHuman(int contNr, int itemPos, int runeObjectId, int targetX, int targetY, int targetZ)
 {
 	castRuneAgainstHuman(contNr, itemPos, runeObjectId, targetX, targetY, targetZ, 2);
 }
+
 void CPackSenderProxy::useItemOnCreature(int objectId, int creatureId)
 {
 	typedef void (*Proto_fun)(int objectId, int creatureId);
@@ -217,6 +225,7 @@ void CPackSenderProxy::useItemOnCreature(int objectId, int creatureId)
 			fun(objectId, creatureId);
 	}
 }
+
 void CPackSenderProxy::useItemFromContainerOnCreature(int objectId, int contNr, int itemPos, int creatureId)
 {
 	typedef void (*Proto_fun)(int objectId, int contNr, int itemPos, int creatureId);
@@ -260,6 +269,7 @@ void CPackSenderProxy::useItem(int objectId)
 			fun(objectId);
 	}
 }
+
 void CPackSenderProxy::useItemOnFloor(int objectId, int x, int y, int z)
 {
 	typedef void (*Proto_fun)(int objectId, int x, int y, int z);
@@ -270,6 +280,7 @@ void CPackSenderProxy::useItemOnFloor(int objectId, int x, int y, int z)
 			fun(objectId, x, y, z);
 	}
 }
+
 void CPackSenderProxy::useItemInContainer(int objectId, int contNr, int pos)
 {
 	typedef void (*Proto_fun)(int objectId, int contNr, int pos);
@@ -280,6 +291,7 @@ void CPackSenderProxy::useItemInContainer(int objectId, int contNr, int pos)
 			fun(objectId, contNr, pos);
 	}
 }
+
 int CPackSenderProxy::openAutoContainerFromFloor(int objectId, int x, int y, int z)
 {
 	typedef int (*Proto_fun)(int objectId, int x, int y, int z);
@@ -291,6 +303,7 @@ int CPackSenderProxy::openAutoContainerFromFloor(int objectId, int x, int y, int
 	}
 	return -1;
 }
+
 void CPackSenderProxy::openContainerFromFloor(int objectId, int x, int y, int z, int targetBag)
 {
 	typedef void (*Proto_fun)(int objectId, int x, int y, int z, int targetBag);
@@ -301,6 +314,7 @@ void CPackSenderProxy::openContainerFromFloor(int objectId, int x, int y, int z,
 			fun(objectId, x, y, z, targetBag);
 	}
 }
+
 int CPackSenderProxy::openAutoContainerFromContainer(int objectId, int contNrFrom, int contPosFrom)
 {
 	typedef int (*Proto_fun)(int objectId, int contNrFrom, int contPosFrom);
@@ -312,6 +326,7 @@ int CPackSenderProxy::openAutoContainerFromContainer(int objectId, int contNrFro
 	}
 	return -1;
 }
+
 void CPackSenderProxy::openContainerFromContainer(int objectId, int contNrFrom, int contPosFrom, int targetBag)
 {
 	typedef void (*Proto_fun)(int objectId, int contNrFrom, int contPosFrom, int targetBag);
@@ -355,6 +370,7 @@ void CPackSenderProxy::sayWhisper(const char *buf)
 			fun(buf);
 	}
 }
+
 void CPackSenderProxy::sayYell(const char *buf)
 {
 	typedef void (*Proto_fun)(const char *buf);
@@ -365,6 +381,7 @@ void CPackSenderProxy::sayYell(const char *buf)
 			fun(buf);
 	}
 }
+
 void CPackSenderProxy::sayNPC(const char *buf)
 {
 	typedef void (*Proto_fun)(const char *buf);
@@ -375,6 +392,7 @@ void CPackSenderProxy::sayNPC(const char *buf)
 			fun(buf);
 	}
 }
+
 void CPackSenderProxy::tell(char *msg, char *playerName)
 {
 	typedef void (*Proto_fun)(char *msg, char *playerName);
@@ -441,7 +459,6 @@ void CPackSenderProxy::stepMulti(int *direction, int size)
 	}
 }
 
-
 void CPackSenderProxy::closeContainer(int contNr)
 {
 	typedef void (*Proto_fun)(int contNr);
@@ -452,6 +469,7 @@ void CPackSenderProxy::closeContainer(int contNr)
 			fun(contNr);
 	}
 }
+
 void CPackSenderProxy::attackMode(int attack, int follow, int attLock, int PVPMode)
 {
 	typedef void (*Proto_fun)(int attack, int follow, int attLock, int PVPMode);
@@ -462,6 +480,7 @@ void CPackSenderProxy::attackMode(int attack, int follow, int attLock, int PVPMo
 			fun(attack, follow, attLock, PVPMode);
 	}
 }
+
 void CPackSenderProxy::attack(int tibiaCharId)
 {
 	typedef void (*Proto_fun)(int tibiaCharId);
@@ -472,6 +491,7 @@ void CPackSenderProxy::attack(int tibiaCharId)
 			fun(tibiaCharId);
 	}
 }
+
 void CPackSenderProxy::follow(int tibiaCharId)
 {
 	typedef void (*Proto_fun)(int tibiaCharId);
@@ -620,6 +640,7 @@ void CPackSenderProxy::sendAutoAimConfig(int active, int onlyCreatures, int aimP
 			fun(active, onlyCreatures, aimPlayersFromBattle);
 	}
 }
+
 void CPackSenderProxy::sendClearCreatureInfo()
 {
 	typedef void (*Proto_fun)();
