@@ -177,7 +177,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 		int x, y, z, updown;
 		int speed, altX, altY, altZ;
 		int locked  = 0;
-		int numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &locked, &altX, &altY, &altZ);
+		int numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &locked, &altX, &altY, &altZ);
 		tibiaMap.setPointAsAvailable(x, y, z);
 		tibiaMap.setPointType(x, y, z, updown);
 
@@ -190,6 +190,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 			{
 				if(numData == 8)
 				{
+					//has no "locked" property
 					numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &altX, &altY, &altZ);
 					locked  = 0;
 				}
