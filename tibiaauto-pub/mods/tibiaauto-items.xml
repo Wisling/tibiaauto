@@ -423,7 +423,7 @@
       <item id="0x1707" looted="0" name="Fish Fin" type="131072"/>
       <item id="0x1708" looted="0" name="Bear Paw" type="131072"/>
       <item id="0x1709" looted="0" name="Wolf Paw" type="131072"/>
-      <item id="0x170a" looted="0" name="Beholder Eye" type="131072"/>
+      <item id="0x170a" looted="0" name="Bonelord Eye" type="131072"/>
       <item id="0x170b" looted="0" name="Turtle Shell" type="131072"/>
       <item id="0x170c" looted="0" name="Dwarven Beard" type="131072"/>
       <item id="0x170d" looted="0" name="Wood" type="131072"/>
@@ -539,7 +539,7 @@
       <item id="0x2821" looted="0" name="Terrorbird Beak" type="131072"/>
       <item id="0x2822" looted="0" name="Skunk Tail" type="131072"/>
       <item id="0x2823" looted="0" name="Carrion Worm Fang" type="131072"/>
-      <item id="0x2824" looted="0" name="Elder Beholder Tentacle" type="131072"/>
+      <item id="0x2824" looted="0" name="Elder Bonelord Tentacle" type="131072"/>
       <item id="0x2825" looted="0" name="Bony Tail" type="131072"/>
       <item id="0x2826" looted="0" name="Stone Wing" type="131072"/>
       <item id="0x2827" looted="0" name="Piece of Crocodile Leather" type="131072"/>
@@ -900,7 +900,7 @@
       <item id="0xd4d" looted="0" name="Horseman Helmet" type="1024"/>
       <item id="0xd4e" looted="0" name="Feather Headdress" type="1024"/>
       <item id="0xd4f" looted="0" name="Charmer's Tiara" type="1024"/>
-      <item id="0xd50" looted="0" name="Beholder Helmet" type="1024"/>
+      <item id="0xd50" looted="0" name="Bonelord Helmet" type="1024"/>
       <item id="0xdf5" looted="0" name="Magician Hat" type="1024"/>
       <item id="0xdf6" looted="0" name="Mystic Turban" type="1024"/>
       <item id="0xdf8" looted="0" name="Post Officer's Hat" type="1024"/>
@@ -1174,7 +1174,7 @@
       <item id="0xd57" looted="0" name="Guardian Shield" type="4096"/>
       <item id="0xd58" looted="0" name="Dragon Shield" type="4096"/>
       <item id="0xd59" looted="0" name="Shield of Honour" type="4096"/>
-      <item id="0xd5a" looted="0" name="Beholder Shield" type="4096"/>
+      <item id="0xd5a" looted="0" name="Bonelord Shield" type="4096"/>
       <item id="0xd5b" looted="0" name="Crown Shield" type="4096"/>
       <item id="0xd5c" looted="0" name="Demon Shield" type="4096"/>
       <item id="0xd5d" looted="0" name="Dark Shield" type="4096"/>
@@ -1727,9 +1727,9 @@
       <item id="0x28d9" looted="1" name="Beetle Necklace" type="128"/>
       <item id="0x172a" looted="1" name="Behemoth Claw" type="131072"/>
       <item id="0x1ce4" looted="1" name="Behemoth Trophy" type="16777216"/>
-      <item id="0x170a" looted="1" name="Beholder Eye" type="131072"/>
-      <item id="0xd50" looted="1" name="Beholder Helmet" type="1024"/>
-      <item id="0xd5a" looted="1" name="Beholder Shield" type="4096"/>
+      <item id="0x170a" looted="1" name="Bonelord Eye" type="131072"/>
+      <item id="0xd50" looted="1" name="Bonelord Helmet" type="1024"/>
+      <item id="0xd5a" looted="1" name="Bonelord Shield" type="4096"/>
       <item id="0x1f6c" looted="1" name="Belted Cape" type="256"/>
       <item id="0x1d0f" looted="1" name="Berserk Potion" type="32768"/>
       <item id="0x1ceb" looted="1" name="Berserker" type="4"/>
@@ -1916,7 +1916,7 @@
       <item id="0x306" looted="1" name="Earth Arrow" type="64"/>
       <item id="0x1f76" looted="1" name="Earthborn Titan Armor" type="256"/>
       <item id="0x2586" looted="1" name="Egg of The Many" type="131072"/>
-      <item id="0x2824" looted="1" name="Elder Beholder Tentacle" type="131072"/>
+      <item id="0x2824" looted="1" name="Elder Bonelord Tentacle" type="131072"/>
       <item id="0xbe4" looted="1" name="Elephant Tusk" type="131072"/>
       <item id="0x1f5e" looted="1" name="Elethriel's Elemental Bow" type="8"/>
       <item id="0x2da9" looted="1" name="Elite Draken Helmet" type="1024"/>
@@ -2608,9 +2608,9 @@
       <item id="0x28d9" looted="1" name="Beetle Necklace" type="128"/>
       <item id="0x172a" looted="1" name="Behemoth Claw" type="131072"/>
       <item id="0x1ce4" looted="1" name="Behemoth Trophy" type="16777216"/>
-      <item id="0x170a" looted="1" name="Beholder Eye" type="131072"/>
-      <item id="0xd50" looted="1" name="Beholder Helmet" type="1024"/>
-      <item id="0xd5a" looted="1" name="Beholder Shield" type="4096"/>
+      <item id="0x170a" looted="1" name="Bonelord Eye" type="131072"/>
+      <item id="0xd50" looted="1" name="Bonelord Helmet" type="1024"/>
+      <item id="0xd5a" looted="1" name="Bonelord Shield" type="4096"/>
       <item id="0x1f6c" looted="1" name="Belted Cape" type="256"/>
       <item id="0x1d0f" looted="1" name="Berserk Potion" type="32768"/>
       <item id="0x1ceb" looted="1" name="Berserker" type="4"/>
@@ -2799,7 +2799,7 @@
       <item id="0x306" looted="1" name="Earth Arrow" type="64"/>
       <item id="0x1f76" looted="1" name="Earthborn Titan Armor" type="256"/>
       <item id="0x2586" looted="1" name="Egg of The Many" type="131072"/>
-      <item id="0x2824" looted="1" name="Elder Beholder Tentacle" type="131072"/>
+      <item id="0x2824" looted="1" name="Elder Bonelord Tentacle" type="131072"/>
       <item id="0xbe4" looted="1" name="Elephant Tusk" type="131072"/>
       <item id="0x1f5e" looted="1" name="Elethriel's Elemental Bow" type="8"/>
       <item id="0x2da9" looted="1" name="Elite Draken Helmet" type="1024"/>
