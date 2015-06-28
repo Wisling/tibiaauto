@@ -67,32 +67,8 @@ END_MESSAGE_MAP()
 
 // NOTE: those delete trampolines are used to ensure 'secure' delete operation
 //       and force revealing any memory issues faster
-
-void deleteAndNull(CTibiaContainer *&ptr)
-{
-	delete ptr;
-	ptr = NULL;
-}
-
-void deleteAndNull(CTibiaCharacter *&ptr)
-{
-	delete ptr;
-	ptr = NULL;
-}
-
-void deleteAndNull(CConfigDialog *&ptr)
-{
-	delete ptr;
-	ptr = NULL;
-}
-
-void deleteAndNull(CConfigData *&ptr)
-{
-	delete ptr;
-	ptr = NULL;
-}
-
-void deleteAndNull(CTibiaItem *&ptr)
+template <class T>
+void deleteAndNull(T *&ptr)
 {
 	delete ptr;
 	ptr = NULL;
