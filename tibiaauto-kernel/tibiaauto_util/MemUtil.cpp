@@ -322,7 +322,7 @@ long int CMemUtil::GetMemIntValue(DWORD memAddress, int addBaseAddress /*=1*/)
 	{
 		char buf[128];
 		sprintf(buf, "ERROR: read memory failed; error=%d", ret);
-		PostQuitMessage(0);
+		throw "Error reading Tibia memory.";//PostQuitMessage(0);
 		return 0;
 	}
 	return value;

@@ -135,62 +135,62 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 	if (wParam == ID_SHOWMAPOPTIONS_CLEAR)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, -1);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CLEAR);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_AVAILABLE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 0);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_AVAILABLE);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_OPENHOLE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 101);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_OPEN_HOLE);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_CLOSEDHOLE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 102);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CLOSED_HOLE);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_CRATE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 103);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CRATE);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_ROPE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 201);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_ROPE);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_MAGICROPE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 202);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_MAGICROPE);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_LADDER)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 203);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_LADDER);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_STAIRS)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 204);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_STAIRS);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_DEPOT)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 301);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_DEPOT);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_TELE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 302);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_TELEPORT);
 	}
 	if (wParam == ID_SHOWMAPOPTIONS_BLOCK)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		parent->mapPointClicked(realX, realY, realZ, 303);
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_BLOCK);
 	}
 	if (wParam == IDD_TOOL_MAPSHOW_CONFIG)
 	{

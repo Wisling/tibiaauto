@@ -357,7 +357,7 @@ void CToolMapShow::MapResearchTick()
 	CMemReaderProxy reader;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	if (self->x == 0xCDCDCDCD || self->y == 0xCDCDCDCD || self->z < -20 || self->z > 20)
+	if (self->x - 0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
 	{
 		delete self;
 		SetTimer(1002, 25, NULL);
@@ -381,7 +381,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 	reader.getTibiaTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	if (self->x == 0xCDCDCDCD || self->y == 0xCDCDCDCD || self->z < -20 || self->z > 20)
+	if (self->x < -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
 	{
 		delete self;
 		SetTimer(1003, 500, NULL);
@@ -412,7 +412,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 				int count = reader.mapGetPointItemsCount(point(x, y, 0), relToCell);
 
 				int blocked       = 0;
-				int tileType      = 0;
+				MapPointType tileType = MAP_POINT_TYPE_AVAILABLE;
 				int ground        = 0;
 				int speed         = 0;
 				int moveableblock = 1;
@@ -434,35 +434,35 @@ void CToolMapShow::ExtendedMapResearchTick()
 						{
 							if (tileData->requireShovel)
 							{
-								tileType = 102;
+								tileType = MAP_POINT_TYPE_CLOSED_HOLE;
 							}
 							else
 							{
 								if (tileData->requireUse)
-									tileType = 103;
+									tileType = MAP_POINT_TYPE_CRATE;
 								else
-									tileType = 101;
+									tileType = MAP_POINT_TYPE_OPEN_HOLE;
 							}
 						}
 						if (tileData->goUp)
 						{
 							if (tileData->requireRope)
 							{
-								tileType = 201;
+								tileType = MAP_POINT_TYPE_ROPE;
 							}
 							else
 							{
 								if (tileData->requireUse)
-									tileType = 203;
+									tileType = MAP_POINT_TYPE_LADDER;
 								else
-									tileType = 204;
+									tileType = MAP_POINT_TYPE_STAIRS;
 								;
 							}
 						}
 						if (tileData->isDepot)
-							tileType = 301;
+							tileType = MAP_POINT_TYPE_DEPOT;
 						if (tileData->isTeleporter)
-							tileType = 302;
+							tileType = MAP_POINT_TYPE_TELEPORT;
 					}
 					else if (x != 0 || y != 0)
 					{
@@ -481,7 +481,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 				if (count == 0)
 				{
 					blocked  = 1;
-					tileType = 0;
+					tileType = MAP_POINT_TYPE_AVAILABLE;
 				}
 
 				//303 is handled as blocking in the pathfind algorithm
@@ -530,7 +530,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 						}
 						else
 						{
-							tibiaMap.setPointType(self->x + x, self->y + y, self->z, 0);
+							tibiaMap.setPointType(self->x + x, self->y + y, self->z, MAP_POINT_TYPE_AVAILABLE);
 							tibiaMap.setPointSpeed(self->x + x, self->y + y, self->z, 0);
 							if (tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z) && tileArrMvbl[x + 8][y + 6])
 							{
@@ -568,7 +568,7 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 	reader.getTibiaTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
-	if (self->x == 0xCDCDCDCD || self->y == 0xCDCDCDCD || self->z < -20 || self->z > 20)
+	if (self->x == -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
 	{
 		delete self;
 		SetTimer(1004, 200, NULL);
