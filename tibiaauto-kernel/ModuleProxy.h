@@ -40,8 +40,8 @@ public:
 	int isLoaded();
 
 public:
-	void activate(int kernelVersion);
-	void init();
+	void callModuleActivate(int kernelVersion);
+	void callModuleInit();
 	int validateConfig(int showAlerts);
 	static CModuleProxy ** allModules;
 	static int allModulesCount;

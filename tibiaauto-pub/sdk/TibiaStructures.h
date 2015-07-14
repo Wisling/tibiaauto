@@ -1644,6 +1644,7 @@ private:
 		return ret;
 	}
 
+	/*
 	void ShowTest(const char *s, int value, int requiredValue)
 	{
 		cout << s << " " << value << " " << requiredValue;
@@ -1653,7 +1654,6 @@ private:
 			cout << " ***FAILED***" << endl;
 	}
 
-/*
         void testAddOne(){
                 Add(rand(),T(1));
                 cout << toString();

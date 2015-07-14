@@ -105,11 +105,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 			if (ch)
 			{
-				//T4: cords
-				int chX = ch->x;
-				int chY = ch->y;
-				int chZ = ch->z;
-
 				//T4: Check containers for the same rune as in hand
 				int contNr;
 				int openContNr  = 0;

@@ -239,7 +239,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), -1, corpseId, 0, 2, attackedCh->x, attackedCh->y, attackedCh->z);
 										if (checksum < 0)
 											checksum *= -1;
-										fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d\n", tm, killNr, statChName, -1, corpseId, 0, 2, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+										fprintf(lootStatsFile, "%lld,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, -1, corpseId, 0, 2, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
 
 										CTibiaContainer *lootCont = cont[0];
 										int itemNr;
@@ -250,7 +250,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 											checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 0, attackedCh->x, attackedCh->y, attackedCh->z);
 											if (checksum < 0)
 												checksum *= -1;
-											fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d\n", tm, killNr, statChName, itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 0, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+											fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 0, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
 										}
 
 
@@ -265,7 +265,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(statChName), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 1, attackedCh->x, attackedCh->y, attackedCh->z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 1, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, statChName, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 1, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
 											}
 										}
 										if (cont[2])
@@ -279,7 +279,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 												checksum = CModuleUtil::calcLootChecksum(tm, killNr, strlen(attackedCh->name), 100 + itemNr, lootItem->objectId, (lootItem->quantity ? lootItem->quantity : 1), 2, attackedCh->x, attackedCh->y, attackedCh->z);
 												if (checksum < 0)
 													checksum *= -1;
-												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d\n", tm, killNr, attackedCh->name, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 2, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
+												fprintf(lootStatsFile, "%d,%d,'%s',%d,%d,%d,%d,%d,%d,%d,%d\n", tm, killNr, attackedCh->name, 100 + itemNr, lootItem->objectId, lootItem->quantity ? lootItem->quantity : 1, 2, attackedCh->x, attackedCh->y, attackedCh->z, checksum);
 											}
 										}
 

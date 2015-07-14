@@ -54,7 +54,7 @@ public:
 			cout << "Starting up passthrough server (" << bot->config.ptPort << ")" << endl;
 	}
 
-	~IrcPassThru()
+	virtual ~IrcPassThru()
 	{
 		SocketHandler::removeSocket(bot->config.description + " passthru");
 		if (client != NULL)

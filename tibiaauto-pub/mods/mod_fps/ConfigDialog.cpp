@@ -152,7 +152,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 		ifpsCur[0] = reader.getMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
 		ifpsCur[1] = reader.getMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
-		sprintf(buf, "Current FPS rate: %f", ifpsCur[0], ifpsCur[1]);
+		sprintf(buf, "Current FPS rate: %d, %d", ifpsCur[0], ifpsCur[1]);
 		m_fpsRate.SetWindowText(buf);
 
 		if (hTibiaWnd)

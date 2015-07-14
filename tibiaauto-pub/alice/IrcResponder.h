@@ -37,7 +37,6 @@ public:
 	void send(const string &, bool fromIPT = false);
 	void connect();
 	void disconnect();
-	void disconnected();
 private:
 	string nick, buffer, mNick, mChannel, pass;
 	Socket *sock;   //	connects to remote server

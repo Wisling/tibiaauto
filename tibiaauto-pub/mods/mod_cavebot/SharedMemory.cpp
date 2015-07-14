@@ -74,15 +74,15 @@ void CSharedMemory::SetLastError(DWORD dwErrCode)                       //this m
 **************************************************************************************/
 CSharedMemory::CSharedMemory(const TCHAR *szName, DWORD dwSize, PINITMEMORY InitMemoryProcedure, LPSECURITY_ATTRIBUTES lpsaAttributes)
 	:       m_dwLastError(0),
-	m_pNewAcl(NULL),
-	m_pLogSid(NULL),
-	m_pSysSid(NULL),
-	m_pEvrSid(NULL),
-	m_bCreated(FALSE),
-	m_bFirst(TRUE),
 	m_pSync(NULL),
 	m_pLock(NULL),
-	m_bSecPres(FALSE)
+	m_bFirst(TRUE),
+	m_bCreated(FALSE),
+	m_bSecPres(FALSE),
+	m_pLogSid(NULL),
+	m_pSysSid(NULL),
+	m_pNewAcl(NULL),
+	m_pEvrSid(NULL)
 {
 	do
 	{

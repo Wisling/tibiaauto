@@ -189,7 +189,7 @@ bool AddressFinder::getTibiaFileChunk(int size)
 
 long AddressFinder::doComparison()
 {
-	long foundAddress;
+	long foundAddress = -1;
 	int index = 0x401000 + TibiaFile.size();
 	CMemReaderProxy reader;
 	while (index < 0x5b0ffe)

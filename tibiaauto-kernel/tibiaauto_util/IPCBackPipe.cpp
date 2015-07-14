@@ -158,7 +158,7 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 				if (maxType == 1010)
 					sprintf(errBuf, "A python script using getFunDef function type 3(incoming packet reading) is not being read from fast enough.  Recieved %d entries in %d seconds.%d %d %d", maxType, i - j, PIPE_REMOVE_AT_SECS, i, j, GetTickCount());
 				else
-					sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Recieved %d entries in %d seconds.%d %d %d", maxType, i - j, PIPE_REMOVE_AT_SECS, i, j, GetTickCount());
+					sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Received %d entries in %d seconds.%d %d %d", maxType, i - j, PIPE_REMOVE_AT_SECS, i, j, GetTickCount());
 				CPackSender sender;
 				sender.sendTAMessage(errBuf);
 				//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);

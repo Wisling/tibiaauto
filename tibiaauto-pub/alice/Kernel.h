@@ -26,7 +26,6 @@ public:
 
 	static string bootstrap();
 	static bool load(const string &file);
-	static void load10(const string &file, PElement &root);
 	static void loadSubstitutions();
 	static Nodemaster * add(const string &context, const string &pattern, const string &that, const string &topic);
 	static Match *match(const string &context, const string &input, const string &that, const string &topic);
