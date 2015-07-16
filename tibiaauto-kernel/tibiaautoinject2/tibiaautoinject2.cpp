@@ -2645,8 +2645,7 @@ void bufToHexString(unsigned char *buf, int len)
 			val += 256;
 		sprintf(localBuf, " %02X", val);
 		strcat(bufToHexStringRet, localBuf);
-	}
-	;
+	};
 }
 
 void bufToHexString(char *buf, int len)
@@ -2994,8 +2993,7 @@ void autoAimAttack(int runeId)
 					return;
 				}
 				delete runeItem;
-			}
-			;
+			};
 			delete cont;
 		}
 		delete ch;
@@ -4498,8 +4496,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 			Mine_send(tibiaSocket, buf, 3, 0);
 
 			break;
-		}
-		;
+		};
 	case 2:
 		if (tibiaSocket != NULL)
 			sendBufferViaSocket((unsigned char*)mess.payload);
@@ -4764,8 +4761,7 @@ void ParseIPCMessage(struct ipcMessage mess)
 	}
 	default:
 		break;
-	}
-	;
+	};
 };
 
 int ReadFromPipe()
@@ -4816,8 +4812,7 @@ DWORD WINAPI CommunicationThread(LPVOID lpParam)
 			// communcation closed - reestablish communication pipe
 			InitialiseIPC();
 		Sleep(10);
-	}
-	;
+	};
 }
 
 void InitialiseCommunication()

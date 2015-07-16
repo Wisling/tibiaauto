@@ -195,8 +195,7 @@ void CMod_antylogoutApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 }
 

@@ -141,8 +141,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					delete uhItem;
 					uhItem      = CModuleUtil::lookupItem(contNr, &acceptedItems);
 					uhContainer = contNr;
-				}
-				;
+				};
 
 				delete cont;
 			}
@@ -242,8 +241,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							delete uhItem;
 							uhItem      = CModuleUtil::lookupItem(contNr, &acceptedItems);
 							uhContainer = contNr;
-						}
-						;
+						};
 
 						delete cont;
 					}
@@ -326,8 +324,7 @@ void CMod_uhApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 
 	if (m_configDialog)

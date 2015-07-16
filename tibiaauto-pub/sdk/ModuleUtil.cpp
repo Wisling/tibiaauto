@@ -78,10 +78,8 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted)
 					delete container;
 					return retItem;
 				}
-			}
-			;
-		}
-		;
+			};
+		};
 	}
 
 	delete container;
@@ -157,10 +155,8 @@ CTibiaItem * CModuleUtil::lookupItem(int containerNr, CUIntArray *itemsAccepted,
 					delete container;
 					return retItem;
 				}
-			}
-			;
-		}
-		;
+			};
+		};
 	}
 
 	delete container;
@@ -878,8 +874,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				}
 				return point(0, 0, 0);
 			}
-		}
-		;
+		};
 		pathTab[pathPos].x = startX;
 		pathTab[pathPos].y = startY;
 		pathTab[pathPos].z = startZ;

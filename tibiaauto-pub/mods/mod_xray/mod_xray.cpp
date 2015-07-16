@@ -86,12 +86,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			// flush IPC communication if not logged
 			while (backPipe.readFromPipe(&mess, 1008))
 			{
-			}
-			;
+			};
 			while (backPipe.readFromPipe(&mess, 2001))
 			{
-			}
-			;
+			};
 		}
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
@@ -239,8 +237,7 @@ void CMod_xrayApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 
 	if (m_configDialog)

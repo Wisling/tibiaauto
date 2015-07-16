@@ -355,8 +355,7 @@ void CToolAutoRespond::refreshThreadStatus()
 		m_threadStatus.GetItemText(i, 2, prevBuf, 127);
 		if (strcmp(buf, prevBuf))
 			m_threadStatus.SetItemText(i, 2, buf);
-	}
-	;
+	};
 }
 
 CToolAutoRespond::~CToolAutoRespond()

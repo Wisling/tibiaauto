@@ -258,10 +258,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 					m_safe.SetItemData(c, i);
 
 					updateListItem(&m_safe, container, c);
-				}
-				;
-			}
-			;
+				};
+			};
 			delete container;
 		}
 
@@ -285,8 +283,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				}
 
 				delete container;
-			}
-			;
+			};
 		}
 
 
@@ -301,8 +298,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			{
 				blanksCount   += container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
 				foodFishCount += container->countItemsOfType(itemProxy.getValueForConst("fish"));
-			}
-			;
+			};
 			delete container;
 		}
 		sprintf(buf, "Total blank runes: %d", blanksCount);
@@ -341,8 +337,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 		break;
 	}
-	}
-	;
+	};
 
 	CDialog::OnTimer(nIDEvent);
 }

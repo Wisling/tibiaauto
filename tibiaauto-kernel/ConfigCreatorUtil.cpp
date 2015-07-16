@@ -206,8 +206,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CModuleProxy *module, DOMNode *node
 			}
 		}
 		while ((subNode = subNode->getNextSibling()) != NULL);
-	}
-	;
+	};
 	if (isLeaf)
 	{
 		DOMNode *attrNode = node->getAttributes()->getNamedItem(L"value");
@@ -248,8 +247,7 @@ void CConfigCreatorUtil::parseConfigFromNode(CPythonScript *pythonScript, DOMNod
 			}
 		}
 		while ((subNode = subNode->getNextSibling()) != NULL);
-	}
-	;
+	};
 	if (isLeaf)
 	{
 		DOMNode *attrNode = node->getAttributes()->getNamedItem(L"value");
