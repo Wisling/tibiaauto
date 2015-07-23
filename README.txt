@@ -1,6 +1,4 @@
-2.59.0 5.19.2015
+2.61.0 7.22.2015
 Enhancements:
- Tibia Auto: Updated for Tibia 10.78
- Installer: Made more clear and helpful notes to installer for missing files
+ Tibia Auto: Updated to Tibia 10.80
 Defects:
- Tibia Auto: Fixed memory leaks
