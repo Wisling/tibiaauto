@@ -74,8 +74,7 @@ BOOL CToolContainerContent::OnInitDialog()
 		m_list.SetItemText(i, 1, buf);
 		sprintf(buf, "%d", item->quantity);
 		m_list.SetItemText(i, 2, buf);
-	}
-	;
+	};
 
 	delete container;
 

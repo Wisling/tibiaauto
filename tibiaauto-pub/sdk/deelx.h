@@ -1705,8 +1705,7 @@ template <class CHART> void CBuilderT <CHART> :: MoveNext()
 	// get nex2
 	while (!GetNext2())
 	{
-	}
-	;
+	};
 }
 
 template <class CHART> int CBuilderT <CHART> :: GetNext2()

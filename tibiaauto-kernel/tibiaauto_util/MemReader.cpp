@@ -162,7 +162,7 @@ CTibiaContainer *CMemReader::readContainer(int containerNr)
 		{
 			addrIndCont = findContainer(containerNr, addrHead, addrHead);
 		}
-		catch (const char*)
+		catch (std::runtime_error)
 		{
 			addrIndCont = 1;
 		}
@@ -443,10 +443,8 @@ void CMemReader::GetLoggedChar(int processId, char* buf, int bufLen)
 			CMemUtil::GetMemRange(processId, offset + 4, offset + 4 + 31, readBuf, 1);
 			strncpy(buf, readBuf, bufLen);
 			return;
-		}
-		;
-	}
-	;
+		};
+	};
 	strncpy(buf, "unknown", bufLen);
 }
 
@@ -560,9 +558,7 @@ int CMemReader::getLoggedCharNr()
 			break;
 		if (selfId == creatureId && visible)
 			return i;
-		;
-	}
-	;
+	};
 
 	return -1;
 }

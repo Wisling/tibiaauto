@@ -303,8 +303,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			struct ipcMessage mess;
 			while (backPipe.readFromPipe(&mess, 1101))
 			{
-			}
-			;
+			};
 		}
 		int spell = 0;
 		if (config->aoe)//Akilez: allow other spell to cast if AOE doesn't want to
@@ -639,8 +638,7 @@ void CMod_spellcasterApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 
 	if (m_configDialog)

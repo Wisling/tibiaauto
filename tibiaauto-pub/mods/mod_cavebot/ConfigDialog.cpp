@@ -497,8 +497,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 		int len = strlen(newConfigData->monsterList[i]);
 		for (j = 0; j < len; j++)
 			newConfigData->monsterList[i][j] = tolower(newConfigData->monsterList[i][j]);
-	}
-	;
+	};
 	newConfigData->ignoreCount = m_ignoreList.GetCount();
 	for (i = 0; i < 100; i++)
 		newConfigData->ignoreList[i][0] = 0;
@@ -509,8 +508,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 		int len = strlen(newConfigData->ignoreList[i]);
 		for (j = 0; j < len; j++)
 			newConfigData->ignoreList[i][j] = tolower(newConfigData->ignoreList[i][j]);
-	}
-	;
+	};
 	for (i = 0; i < 1000; i++)
 	{
 		newConfigData->waypointList[i].x = 0;
@@ -537,8 +535,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 			newConfigData->waypointList[i].y = curY;
 			newConfigData->waypointList[i].z = curZ;
 		}
-	}
-	;
+	};
 	newConfigData->suspendOnNoMove    = m_nomoveSuspended.GetCheck();
 	newConfigData->waypointSelectMode = m_waypointSelMode.GetCurSel();
 	newConfigData->mapUsed            = m_mapUsed.GetCurSel();
@@ -863,8 +860,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 
 
 		SetTimer(1001, 100, NULL);
-	}
-	;
+	};
 
 	CDialog::OnTimer(nIDEvent);
 }

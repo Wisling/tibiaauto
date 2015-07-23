@@ -395,8 +395,7 @@ void CMod_fluidApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 
 	if (m_configDialog)

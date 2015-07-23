@@ -121,8 +121,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("spear"));
 				else
 					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
-			}
-			;
+			};
 			delete container;
 		}
 		if (myself->soulPoints >= config->soulPoints)
@@ -200,8 +199,7 @@ void CMod_runemakerApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 
 	if (m_configDialog)

@@ -407,8 +407,7 @@ void CMod_maphackApp::stop()
 	while (toolThreadShouldStop)
 	{
 		Sleep(50);
-	}
-	;
+	};
 	m_started = 0;
 
 	if (m_configDialog)

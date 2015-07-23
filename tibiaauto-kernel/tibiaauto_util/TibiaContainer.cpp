@@ -33,8 +33,7 @@ CTibiaContainer::~CTibiaContainer()
 	{
 		CTibiaItem *item = (CTibiaItem *)items.GetAt(pos);
 		delete item;
-	}
-	;
+	};
 }
 
 int CTibiaContainer::countItemsOfType(int objectId)
@@ -48,7 +47,6 @@ int CTibiaContainer::countItemsOfType(int objectId)
 			int c = ((CTibiaItem *)items.GetAt(i))->quantity;
 			ret += c ? c : 1;
 		}
-	}
-	;
+	};
 	return ret;
 }

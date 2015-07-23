@@ -160,8 +160,7 @@ void CToolMonsterShow::showMonsterDetails(int x, int y)
 		{
 			sprintf(buf2, "%s [z=%d|hp=%d%%|nr=%d] ", ch->name, relZ, ch->hpPercLeft, creatureNr);
 			strcat(buf, buf2);
-		}
-		;
+		};
 
 		delete ch;
 	}
@@ -221,8 +220,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 				// monster out of range - it might happen sometimes
 				delete ch;
 				continue;
-			}
-			;
+			};
 			if (self->z == z && m_monsterButtons[x][y]->GetCheck() == 0)
 				m_monsterButtons[x][y]->SetCheck(1);
 			else
@@ -243,12 +241,10 @@ void CToolMonsterShow::refreshVisibleCreatures()
 			{
 				sprintf(listBufSame, "%s%s (%d,%d%%)\r\n", listBufSame, ch->name, relZ, ch->hpPercLeft);
 			}
-		}
-		;
+		};
 
 		delete ch;
-	}
-	;
+	};
 
 	m_monsterInfoBelow.SetWindowText(listBufBelow);
 	m_monsterInfoSame.SetWindowText(listBufSame);
@@ -266,8 +262,7 @@ void CToolMonsterShow::OnTimer(UINT nIDEvent)
 		refreshVisibleCreatures();
 		if (!m_freeze.GetCheck())
 			SetTimer(1001, 500, NULL);
-	}
-	;
+	};
 	if (nIDEvent == 1002)
 	{
 		int creatureNr;

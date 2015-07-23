@@ -2471,16 +2471,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			// flush IPC communication if not logged in or we do not pay attention to pauses
 			while (backPipe.readFromPipe(&mess, 1009))
 			{
-			}
-			;
+			};
 			while (backPipe.readFromPipe(&mess, 2002))
 			{
-			}
-			;
+			};
 			while (backPipe.readFromPipe(&mess, 1103))
 			{
-			}
-			;
+			};
 		}
 
 		if (loggedOut)
@@ -3460,8 +3457,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			struct ipcMessage mess;
 			while (backPipe.readFromPipe(&mess, 1103))
 			{
-			}
-			;
+			};
 			if (AttackCreature(config, creatureList[currentlyAttackedCreatureNr].tibiaId))
 			{
 				firstCreatureAttackTM   = time(NULL);

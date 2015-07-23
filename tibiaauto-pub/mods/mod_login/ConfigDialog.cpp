@@ -243,8 +243,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		default:
 			m_status.SetWindowText("Connection status: unknown");
 			break;
-		}
-		;
+		};
 
 
 		if (queue2Message)

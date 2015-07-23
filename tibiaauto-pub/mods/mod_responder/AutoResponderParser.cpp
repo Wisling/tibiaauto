@@ -62,8 +62,7 @@ void CAutoResponderParser::parseThread(DOMNode *node, CAutoResponderParserContex
 		DOMNode *childNode = node->getChildNodes()->item(nodeNr);
 
 		processAction(childNode, context);
-	}
-	;
+	};
 }
 
 void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserContext *context)

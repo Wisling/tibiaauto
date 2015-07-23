@@ -91,8 +91,7 @@ void CCharDialog::OnCharRefresh()
 	{
 		if (!procFound[m_charList.GetItemData(i)])
 			m_charList.DeleteString(i);
-	}
-	;
+	};
 
 	CloseHandle(procSnapshortHandle);
 	delete []procFound;
