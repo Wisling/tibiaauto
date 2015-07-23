@@ -7,6 +7,7 @@
 #include "MemUtil.h"
 #include "MemReaderProxy.h"
 #include "TibiaItemProxy.h"
+#include "windows.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,12 +34,14 @@ void CCharDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDCANCEL, m_Exit);
 	DDX_Control(pDX, IDOK, m_OK);
 	DDX_Control(pDX, IDC_CHAR_LIST, m_charList);
+	DDX_Control(pDX, IDC_TOOL_INJECTMC, m_InjectMC);
 	//}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CCharDialog, CDialog)
 //{{AFX_MSG_MAP(CCharDialog)
 ON_BN_CLICKED(IDCANCEL, OnCancel)
+ON_BN_CLICKED(IDC_TOOL_INJECTMC, OnToolInjectmc)
 ON_WM_TIMER()
 ON_WM_ERASEBKGND()
 ON_WM_DRAWITEM()
@@ -120,6 +123,7 @@ BOOL CCharDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	skin.SetButtonSkin(m_OK);
 	skin.SetButtonSkin(m_Exit);
+	skin.SetButtonSkin(m_InjectMC);
 	OnCharRefresh();
 
 	SetTimer(1001, 250, NULL);
@@ -147,4 +151,198 @@ void CCharDialog::OnCancel()
 	CTibiaItemProxy itemProxy;
 	itemProxy.cleanup();
 	EndDialog(-1);
+}
+
+int copyFile(CString inpath, CString outpath)
+{
+	//inpath and outpath cannot be the same
+	// returns 0 if it did not succeed, non-zero if it succeeded
+	int MAXREAD = 10000;
+	if (inpath.CompareNoCase(outpath) != 0)
+	{
+		char* filedata;
+		FILE* fin = fopen(inpath, "rb");
+		if (!fin)
+		{
+			AfxMessageBox("Cannot read input file!");
+			return 0;
+		}
+		fseek(fin, 0, SEEK_END);
+		int size = ftell(fin);
+		fseek(fin, 0, SEEK_SET);
+		filedata = (char*)malloc(size);
+		int loc = 0;
+		while (1)
+		{
+			int readlength = fread((char*)(filedata + loc), 1, MAXREAD, fin);
+			loc += readlength;
+			if (!readlength)
+				break;
+		}
+		fclose(fin);
+		if (!loc)
+		{
+			AfxMessageBox("Cannot read input file!");
+			delete filedata;
+			return 0;
+		}
+
+		FILE* fout = fopen(outpath, "wb");
+		if (!fout)
+		{
+			AfxMessageBox("Cannot write new file!");
+			delete filedata;
+			return 0;
+		}
+		fwrite(filedata, 1, size, fout);
+
+		fclose(fout);
+		delete filedata;
+	}
+	else
+	{
+		AfxMessageBox("Input file and output file cannot be the same file.");
+		return 0;
+	}
+	return 1;
+}
+
+void getVersion(CString& pathName, CString& versionNum)
+{
+	versionNum.SetString("Unknown Version");
+	DWORD  verHandle = NULL;
+	UINT   size = 0;
+	LPBYTE lpBuffer = NULL;
+	DWORD  verSize = GetFileVersionInfoSize(pathName, &verHandle);
+
+	if (verSize != NULL)
+	{
+		LPSTR verData = new char[verSize];
+
+		if (GetFileVersionInfo(pathName, verHandle, verSize, verData))
+		{
+			if (VerQueryValue(verData, "\\", (VOID FAR* FAR*)&lpBuffer, &size))
+			{
+				if (size)
+				{
+					VS_FIXEDFILEINFO *verInfo = (VS_FIXEDFILEINFO *)lpBuffer;
+					if (verInfo->dwSignature == 0xfeef04bd)
+					{
+
+						// Doesn't matter if you are on 32 bit or 64 bit,
+						// DWORD is always 32 bits, so first two revision numbers
+						// come from dwFileVersionMS, last two come from dwFileVersionLS
+						versionNum.Format("%d.%d%d",
+							(verInfo->dwFileVersionMS >> 16) & 0xffff,
+							(verInfo->dwFileVersionMS >> 0) & 0xffff,
+							(verInfo->dwFileVersionLS >> 16) & 0xffff
+							);
+					}
+				}
+			}
+		}
+		delete[] verData;
+	}
+}
+
+void CCharDialog::OnToolInjectmc()
+{
+	CTibiaItemProxy itemProxy;
+	char szFilters[] =
+		"Tibia client (Tibia.exe)|Tibia.exe|Executable Files (*.exe)|*.exe|All Files (*.*)|*.*||";
+
+	// Try and get Tibia Program Files path if available
+	char tibiaPath[1024];
+	unsigned long tibiaPathLen = 1023;
+	tibiaPath[0] = '\0';
+	HKEY hkey = NULL;
+	if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE, "Software\\Tibia Auto\\", 0, KEY_READ, &hkey))
+	{
+		RegQueryValueEx(hkey, TEXT("TibiaClientHome"), NULL, NULL, (unsigned char *)tibiaPath, &tibiaPathLen);
+		RegCloseKey(hkey);
+	}
+
+	//Ask for location of file to patch
+	CFileDialog fd(true, "tibia", "tibia.exe", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
+	fd.m_ofn.lpstrInitialDir = tibiaPath; // blank path defaults to current directory
+	if (fd.DoModal() == IDOK)
+	{
+		CString pathName = fd.GetPathName();
+		CString versionNum;
+		getVersion(pathName, versionNum);
+		int msgboxID = IDOK;
+
+		// Load exe file into memory
+		FILE* fout = NULL;
+		while (fout == NULL && msgboxID == IDOK)
+		{
+			fout = fopen(pathName, "r+b");
+			if(!fout)
+				msgboxID = MessageBox("The file is currently being used or cannot be edited.\nPlease check your permissions and close any applications using the file and click OK.", "Cannot edit file", MB_OKCANCEL);
+		}
+		if (fout)
+		{
+			// BYTE MCText[3] = { 0xD7, 0xD3, 0xB7 };
+			fseek(fout, 0, SEEK_END);
+			size_t filesize = ftell(fout);
+			fseek(fout, 0, SEEK_SET);
+			if (filesize < 50000000){
+				BYTE* tibiacontents = (BYTE*)malloc(filesize);
+				fread(tibiacontents, filesize, 1, fout);
+
+				// Search for MCText within file
+				BYTE* tibiacontents_ind = tibiacontents;
+				bool isFound = FALSE;
+				while (!isFound && size_t(tibiacontents_ind - tibiacontents) < filesize-3)
+				{
+					if (tibiacontents_ind[0] == (BYTE)0xD7)
+						if (tibiacontents_ind[1] == (BYTE)0x3D)
+							if (tibiacontents_ind[2] == (BYTE)0xB7 || tibiacontents_ind[2] == (BYTE)0xFF)
+							{
+								isFound = TRUE;
+								tibiacontents_ind+=2;
+								break;
+							}
+					tibiacontents_ind++;
+				}
+				if (isFound){
+					if (tibiacontents_ind[0] == (BYTE)0xFF)
+					{
+						AfxMessageBox("This file is already patched for using multiple clients.");
+					}
+					else // Patch file
+					{
+						CString outpath = pathName.Mid(0, pathName.GetLength() - 4);
+						outpath.Append(".original.exe");
+						if (copyFile(pathName, outpath))
+						{
+							unsigned char val = 0xff;
+							fseek(fout, tibiacontents_ind - tibiacontents, SEEK_SET);
+							fwrite(&val, 1, 1, fout);
+							char buf[256];
+							sprintf(buf, "This file has been successfully patched for multi-clienting.\nA backup has been saved in the same directory.");
+							AfxMessageBox(buf);
+						}
+						else
+						{
+							char buf[2048];
+							sprintf(buf, "The destination backup file cannot be accessed\n%s\nPlease close applications using the file or check that you have permissions to make edits to this folder.",outpath);
+							AfxMessageBox(buf);
+						}
+					}
+				}
+				else
+				{
+					char msg[256];
+					sprintf(msg, "The file does not seem to have a multi-clienting address.\nPlease ensure the file is a valid Tibia client.", versionNum);
+					AfxMessageBox(msg);
+				}
+				
+				delete[] tibiacontents;
+
+				fclose(fout);
+				//AfxMessageBox("Unable to modify client to MC mode!");
+			}
+		}
+	}
 }

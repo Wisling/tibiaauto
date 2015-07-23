@@ -59,7 +59,6 @@ public:
 	CButtonST m_MonsterShow;
 	CButtonST m_MapShow;
 	CButtonST m_ItemConfig;
-	CButtonST m_InjectMC;
 	CButtonST m_CharInfo;
 	CButtonST m_xray;
 	CButtonST m_autoAttack;
@@ -135,7 +134,6 @@ protected:
 	afx_msg void OnMemdebug();
 	afx_msg void OnToolFluiddrinker();
 	afx_msg void OnToolTrademon();
-	afx_msg void OnToolInjectmc();
 	afx_msg void OnToolItemconfig();
 	afx_msg void OnToolAmmorestack();
 	afx_msg void OnToolAutorespond();

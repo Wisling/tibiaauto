@@ -382,13 +382,6 @@ void COptionsDialog::OnSendMaps()
 	char *tibiaPath            = (char *)malloc(1024);
 	unsigned long tibiaPathLen = 1023;
 	tibiaPath[0] = '\0';
-	/* Maps now stored in absolute directory
-	   HKEY hkey=NULL;
-	   if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,"Software\\Tibia Auto\\",0,KEY_READ,&hkey))
-	   {
-	        RegQueryValueEx(hkey,TEXT("TibiaClientHome"),NULL,NULL,(unsigned char *)tibiaPath,&tibiaPathLen);
-	        RegCloseKey(hkey);
-	   }*/
 	sprintf(tibiaPath, "%s%s", getenv("USERPROFILE"), "/Application Data/Tibia/Automap/");
 	if (!strlen(tibiaPath))
 	{

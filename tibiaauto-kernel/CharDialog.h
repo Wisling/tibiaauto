@@ -22,6 +22,7 @@ public:
 	enum { IDD = IDD_CHAR_DIALOG };
 	CButtonST m_Exit;
 	CButtonST m_OK;
+	CButtonST m_InjectMC;
 	CComboBox m_charList;
 	//}}AFX_DATA
 
@@ -43,6 +44,7 @@ protected:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnTimer(UINT nIDEvent);
 	virtual void OnCancel();
+	afx_msg void OnToolInjectmc();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };

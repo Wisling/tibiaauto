@@ -151,7 +151,6 @@ void CTibiaautoDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TOOL_MONSERSHOW, m_MonsterShow);
 	DDX_Control(pDX, IDC_TOOL_MAPSHOW, m_MapShow);
 	DDX_Control(pDX, IDC_TOOL_ITEMCONFIG, m_ItemConfig);
-	DDX_Control(pDX, IDC_TOOL_INJECTMC, m_InjectMC);
 	DDX_Control(pDX, IDC_TOOL_CHARINFO, m_CharInfo);
 	DDX_Control(pDX, IDC_OTHER_TOOLS, m_OtherTools);
 	DDX_Control(pDX, IDC_INFORMATION_TOOLS, m_InformationTools);
@@ -214,7 +213,6 @@ ON_BN_CLICKED(IDC_TOOL_AUTOAIM, OnToolAutoaim)
 ON_BN_CLICKED(IDC_TOOL_MEMDEBUG, OnMemdebug)
 ON_BN_CLICKED(IDC_TOOL_FLUIDDRINKER, OnToolFluiddrinker)
 ON_BN_CLICKED(IDC_TOOL_TRADEMON, OnToolTrademon)
-ON_BN_CLICKED(IDC_TOOL_INJECTMC, OnToolInjectmc)
 ON_BN_CLICKED(IDC_TOOL_ITEMCONFIG, OnToolItemconfig)
 ON_BN_CLICKED(IDC_TOOL_AMMORESTACK, OnToolAmmorestack)
 ON_BN_CLICKED(IDC_TOOL_AUTORESPOND, OnToolAutorespond)
@@ -255,7 +253,6 @@ void CTibiaautoDlg::DoSetButtonSkin()
 	skin.SetButtonSkin(m_MonsterShow);
 	skin.SetButtonSkin(m_MapShow);
 	skin.SetButtonSkin(m_ItemConfig);
-	skin.SetButtonSkin(m_InjectMC);
 	skin.SetButtonSkin(m_CharInfo);
 	skin.SetButtonSkin(m_xray);
 	skin.SetButtonSkin(m_autoAttack);
@@ -1462,95 +1459,6 @@ void CTibiaautoDlg::OnToolFluiddrinker()
 void CTibiaautoDlg::OnToolTrademon()
 {
 	m_moduleTradeMon->showConfigDialog();
-}
-
-int copyFile(CString inpath, CString outpath)
-{
-	//inpath and outpath cannot be the same
-	// returns 0 if it did not succeed, non-zero if it succeeded
-	int MAXREAD = 10000;
-	if (inpath.CompareNoCase(outpath) != 0)
-	{
-		char* filedata;
-		FILE* fin = fopen(inpath, "rb");
-		if (!fin)
-		{
-			AfxMessageBox("Cannot read input file!");
-			return 0;
-		}
-		fseek(fin, 0, SEEK_END);
-		int size = ftell(fin);
-		fseek(fin, 0, SEEK_SET);
-		filedata = (char*)malloc(size);
-		int loc = 0;
-		while (1)
-		{
-			int readlength = fread((char*)(filedata + loc), 1, MAXREAD, fin);
-			loc += readlength;
-			if (!readlength)
-				break;
-		}
-		fclose(fin);
-		if (!loc)
-		{
-			AfxMessageBox("Cannot read input file!");
-			delete filedata;
-			return 0;
-		}
-
-		FILE* fout = fopen(outpath, "wb");
-		if (!fout)
-		{
-			AfxMessageBox("Cannot write new file!");
-			delete filedata;
-			return 0;
-		}
-		fwrite(filedata, 1, size, fout);
-
-		fclose(fout);
-		delete filedata;
-	}
-	else
-	{
-		AfxMessageBox("Input file and output file cannot be the same file.");
-		return 0;
-	}
-	return 1;
-}
-
-void CTibiaautoDlg::OnToolInjectmc()
-{
-	CTibiaItemProxy itemProxy;
-	char szFilters[] =
-	        "Tibia client (tibia.exe)|tibia.exe|All Files (*.*)|*.*||";
-	char szFiltersSave[] =
-	        "Executable Files (*.exe)|*.exe|All Files (*.*)|*.*||";
-
-	CFileDialog fd(true, "tibia", "tibia.exe", OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters, this);
-	if (fd.DoModal() == IDOK)
-	{
-		CString pathName = fd.GetPathName();
-		CFileDialog fdSave(false, "*.exe", "Tibia MC.exe", OFN_OVERWRITEPROMPT | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY, szFiltersSave, this);
-		if (fdSave.DoModal() == IDOK)
-		{
-			CString pathDestName = fdSave.GetPathName();
-			if (copyFile(pathName, pathDestName))
-			{
-				FILE* fout = fopen(pathDestName, "r+b");
-				fseek(fout, itemProxy.getValueForConst("addrMCInject"), SEEK_SET);
-				unsigned char val = 0xff;
-				fwrite(&val, 1, 1, fout);
-				fclose(fout);
-				char buf[1024];
-				sprintf(buf, "The modified multi-client version of Tibia has been successfully saved to \n%s", pathDestName);
-				AfxMessageBox(buf);
-			}
-			else
-			{
-				AfxMessageBox("Unable to modify client to MC mode!");
-			}
-		}
-	}
 }
 
 void CTibiaautoDlg::OnToolItemconfig()

@@ -42,7 +42,7 @@
 
 		<!-- addresses -->
 		<const code="addrOffset" value="0"/>
-		<const code="addrMCInject" value="0x19AFF1"/> <!--D7 3D B7 -->
+		<const code="addrMCInject" value="0"/> <!--D7 3D B7 -->
 		<const code="addrXRay1" value="0x56791C"/> <!-- 07000000????????02000000-->
 		<const code="addrXRay2" value="0x567924"/>
 		<const code="addrFunRevealCName1" value="0x583957"/> <!-- replace 1 search (84 C0) 75 (?0E?) and (3B F8) 75 (?34?) -->
