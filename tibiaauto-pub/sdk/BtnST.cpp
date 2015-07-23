@@ -558,9 +558,9 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	// Create memory bitmap
 	bm.CreateCompatibleBitmap(pDC, itemRect.Width(), itemRect.Height());
 	// Select bitmap into memory DC
-	// CBitmap *pOldBitmap = dcMem->SelectObject(&bm);
+	CBitmap *pOldBitmap = dcMem->SelectObject(&bm);
 	// Offset origin based on position of rectangle
-	// CPoint oldOrg = dcMem->OffsetViewportOrg(-itemRect.left, -itemRect.top);
+	CPoint oldOrg = dcMem->OffsetViewportOrg(-itemRect.left, -itemRect.top);
 	// Copy font from original device context
 	dcMem->SelectObject(pDC->GetCurrentFont());
 
