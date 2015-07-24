@@ -1,4 +1,5 @@
-2.61.0 7.22.2015
+2.61.1 7.23.2015
 Enhancements:
- Tibia Auto: Updated to Tibia 10.80
+ Tibia Auto: Added version independent Tibia.exe multi-client patcher.
 Defects:
+ Tibia Auto: Fixed some instability issues.
