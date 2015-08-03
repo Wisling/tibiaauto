@@ -78,7 +78,7 @@ END_MESSAGE_MAP()
 
 void CMapConfig::OnCommit()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	saveTile();
 	for (int pos = 0; pos < 10; pos++)
 	{
@@ -90,7 +90,7 @@ void CMapConfig::OnCommit()
 
 void CMapConfig::Mem2Config()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	int outOfRange = 0;
 	// make (x,y) relative to the center
 	xMem -= 10;

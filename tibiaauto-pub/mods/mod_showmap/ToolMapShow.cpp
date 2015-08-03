@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "ToolMapShow.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "TibiaCharacter.h"
 #include "MapButton.h"
 #include "resource.h"
@@ -165,7 +165,7 @@ BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 
 void CToolMapShow::refreshVisibleMap()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	int x;
 	int y;
 
@@ -354,7 +354,7 @@ void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
 void CToolMapShow::MapResearchTick()
 {
 	KillTimer(1002);
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	if (self->x - 0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
@@ -376,7 +376,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 {
 	static int prevX = 0, prevY = 0, prevZ = 0, iter = 0;
 	KillTimer(1003);
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	// get tile 0 to make sure that the framework is initialised
 	reader.getTibiaTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -563,7 +563,7 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 {
 	static int prevXTele = 0, prevYTele = 0, prevZTele = 0;
 	KillTimer(1004);
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	// get tile 0 to make sure that the framework is initialised
 	reader.getTibiaTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -669,7 +669,7 @@ BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam)
 
 void CToolMapShow::showTileDetails(int x, int y)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaMapProxy tibiaMap;
 	int outOfRange = 0;
 	char buf[2560];

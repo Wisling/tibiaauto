@@ -2,5 +2,8 @@
 
 #include "mod_addressfinder.h"
 
-CMod_addressfinderApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	CMod_addressfinderApp* instance = new CMod_addressfinderApp();
+	return instance;
+}

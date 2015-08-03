@@ -5,14 +5,14 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "PythonEngine.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "PythonScript.h"
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 #include "TibiaMapProxy.h"
 #include "TibiaMiniMapPoint.h"
 #include "TAMiniMapProxy.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include "AliceProxy.h"
 #include "RegexpProxy.h"
 #include "ModuleUtil.h"
@@ -170,7 +170,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 
    static PyObject *tibiaauto_reader_setProcessId(PyObject *self, PyObject *args)
    {
-        CMemReaderProxy reader;
+        CMemReader& reader = CMemReader::getMemReader();
 
         int processId;
 
@@ -182,7 +182,7 @@ static PyObject *tibiaauto_tibiaauto_registerPlugin(PyObject *self, PyObject *ar
 
    static PyObject *tibiaauto_reader_readSelfCharacter(PyObject *self, PyObject *args)
    {
-        CMemReaderProxy reader;
+        CMemReader& reader = CMemReader::getMemReader();
 
         CTibiaCharacter *selfCh = reader.readSelfCharacter();
         PyObject *ret =
@@ -742,7 +742,7 @@ void CPythonEngine::backpipeMsgTick()
 	init();
 	enterCriticalSection();
 	long int tm = GetTickCount();
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
@@ -870,7 +870,7 @@ void CPythonEngine::backpipeTamsgTick()
 	init();
 	enterCriticalSection();
 	long int tm = GetTickCount();
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
@@ -920,7 +920,7 @@ void CPythonEngine::backpipeInpacketTick()
 {
 	init();
 	enterCriticalSection();
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 	struct parcelRecvActionData* pd;

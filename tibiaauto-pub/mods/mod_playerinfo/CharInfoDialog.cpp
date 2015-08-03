@@ -4,10 +4,10 @@
 #include "stdafx.h"
 #include "mod_playerinfo.h"
 #include "CharInfoDialog.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "TibiaCharacter.h"
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 #include <math.h>
 
 #include "playerInfo.h"
@@ -105,7 +105,7 @@ END_MESSAGE_MAP()
 
 void CCharInfoDialog::resetCounters()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
 	playerInfo.timeStart = time(NULL);
@@ -194,7 +194,7 @@ void CCharInfoDialog::OnResetCounters()
 
 void CCharInfoDialog::dataCalc()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *ch = reader.readSelfCharacter();
 
 	//T4: Exp calculation

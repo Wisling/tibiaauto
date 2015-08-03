@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_creatureinfo.h"
 #include "NameChanger.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -55,8 +55,8 @@ END_MESSAGE_MAP()
 
 void CNameChanger::RefreshInfo()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	char buffer[128];
 	int chNr;
 	int iCount = m_list.GetItemCount();
@@ -66,7 +66,7 @@ void CNameChanger::RefreshInfo()
 
 	m_list.SendMessage(WM_SETREDRAW, 0, 0);
 
-	for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+	for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 	{
 		CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 		if (ch->tibiaId == 0)
@@ -147,8 +147,8 @@ BOOL CNameChanger::OnInitDialog()
 
 void CNameChanger::InitList()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
 	m_list.InsertColumn(0, "Name", LVCFMT_LEFT, 150);
 	m_list.InsertColumn(1, "HP", LVCFMT_RIGHT, 40);
@@ -158,7 +158,7 @@ void CNameChanger::InitList()
 	int aCols[4] = {3, 0, 1, 2};
 	m_list.SetColumnOrderArray(4, aCols);
 
-	m_list.SetItemCount(memConstData.m_memMaxCreatures);
+	m_list.SetItemCount(reader.m_memMaxCreatures);
 	m_list.SetExtendedStyle(LVS_EX_FULLROWSELECT | LVS_EX_GRIDLINES);
 }
 
@@ -199,7 +199,7 @@ void CNameChanger::OnEndlabeleditToolcreaturinfoList(NMHDR* pNMHDR, LRESULT* pRe
 
 	if (pDispInfo->item.pszText)
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		LVITEM pItem;
 
 		pItem.mask  = LVIF_PARAM;

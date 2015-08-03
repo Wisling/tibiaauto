@@ -20,10 +20,10 @@
 
 #include "ConfigData.h"
 #include "TibiaContainer.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 #include "TibiaMapProxy.h"
 #include "TibiaMapPoint.h"
@@ -147,24 +147,24 @@ void CMod_itemconfigApp::controlsToConfig()
 
 void CMod_itemconfigApp::loadConfigParam(char *paramName, char *paramValue)
 {
-	CTibiaItemProxy itemProxy;
+	
 	if (!strcmp(paramName, "lootedItems"))
 	{
 		if (currentPos == 0)
-			itemProxy.clearLootItems();
-		itemProxy.setItemAsLooted(atoi(paramValue));
+			CTibiaItem::clearLootItems();
+		CTibiaItem::setItemAsLooted(atoi(paramValue));
 		currentPos++;
 	}
 }
 
 char *CMod_itemconfigApp::saveConfigParam(char *paramName)
 {
-	CTibiaItemProxy itemProxy;
+	
 	static char buf[1024];
 	buf[0] = 0;
 
-	if (!strcmp(paramName, "lootedItems") && currentPos < itemProxy.getLootItemCount())
-		sprintf(buf, "%d", itemProxy.getLootItemIdAtIndex(currentPos++));
+	if (!strcmp(paramName, "lootedItems") && currentPos < CTibiaItem::getLootItemCount())
+		sprintf(buf, "%d", CTibiaItem::getLootItemIdAtIndex(currentPos++));
 	return buf;
 }
 

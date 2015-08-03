@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_team.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "ConnectedNode.h"
 #include "ConnectedNodes.h"
 
@@ -104,7 +104,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1001)
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int i;
 		KillTimer(1001);

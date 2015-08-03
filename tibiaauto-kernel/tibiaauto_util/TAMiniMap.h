@@ -1,14 +1,6 @@
-// TAMiniMap.h: interface for the CTAMiniMap class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_TAMINIMAP_H__0536B572_E292_4473_886A_38C9D6C71128__INCLUDED_)
-#define AFX_TAMINIMAP_H__0536B572_E292_4473_886A_38C9D6C71128__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
 
+#include "tibiaauto_util.h"
 #include "TibiaMapPoint.h"
 class CTibiaMap;
 class CTibiaMiniMapPoint;
@@ -52,11 +44,19 @@ public:
 	}
 };
 
-class CTAMiniMap
+class TIBIAAUTOUTIL_API CTAMiniMap
 {
-public:
+private:
 	CTAMiniMap();
 	virtual ~CTAMiniMap();
+	CTAMiniMap(CTAMiniMap const&);
+	void operator=(CTAMiniMap const&);
+public:
+	static CTAMiniMap& getTAMiniMap()
+	{
+		static CTAMiniMap singleton;
+		return singleton;
+	}
 	CMap<point *, point *, MiniMapSection *, MiniMapSection *> taMiniMap;
 
 	int isPointInMiniMap(int x, int y, int z);
@@ -78,5 +78,3 @@ private:
 	MiniMapSection* loadFromMemory(int xMap, int yMap, int zMap);
 	MiniMapSection* loadFromFile(int xMap, int yMap, int zMap);
 };
-
-#endif // !defined(AFX_TAMINIMAP_H__0536B572_E292_4473_886A_38C9D6C71128__INCLUDED_)

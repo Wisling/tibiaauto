@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_sorter.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -268,12 +268,12 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::reloadSortItems()
 {
-	CTibiaItemProxy itemProxy;
+	
 	while (m_sortItemList.GetCount() > 0)
 		m_sortItemList.DeleteString(0);
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	for (int i = 0; i < count; i++)
-		m_sortItemList.AddString(itemProxy.getItemNameAtIndex(i));
+		m_sortItemList.AddString(CTibiaItem::getItemNameAtIndex(i));
 	m_sortItemList.SetCurSel(0);
 }
 

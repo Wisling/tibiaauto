@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_creatureinfo.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "NameChanger.h"
 #include "KnownInfo.h"
 

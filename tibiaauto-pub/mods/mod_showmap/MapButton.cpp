@@ -5,7 +5,7 @@
 #include "MapButton.h"
 #include "TibiaMapPoint.h"
 #include "ToolMapShow.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -62,7 +62,7 @@ HBRUSH CMapButton::CtlColor(CDC* pDC, UINT nCtlColor)
 
 void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	// m_value == MAP_POINT_TYPE_SELF is self point
 	if (m_value != MAP_POINT_TYPE_SELF)
 	{
@@ -126,7 +126,7 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 
 BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (wParam == ID_SHOWMAPOPTIONS_LOCKTILE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();

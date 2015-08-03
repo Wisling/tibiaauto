@@ -1,11 +1,6 @@
-// CreaturesReader.h: interface for the CCreaturesReader class.
-//
-//////////////////////////////////////////////////////////////////////
+#pragma once
 
-#if !defined(AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_)
-#define AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_
-
-// error here means: download berkley db
+#include "tibiaauto_util.h"
 
 //ugly hack-around to prevent conflict of always-included by mfc oledb.h with berkeley's db.h
 #define DBTYPE ORACLE_DBTYPE
@@ -13,11 +8,7 @@
 #include <berkeleydb/db_cxx.h>
 #undef DBTYPE
 
-#if _MSC_VER > 1000
-#pragma once
-#endif // _MSC_VER > 1000
-
-class CCreaturesReader
+class TIBIAAUTOUTIL_API CCreaturesReader
 {
 public:
 	char ** findCreatureStatInArea(int x, int y, int z, int rangeXY, int rangeZ);
@@ -30,5 +21,3 @@ private:
 	char ** addCreatureToList(char **list, char *name, int *size);
 	static Db *db;
 };
-
-#endif // !defined(AFX_CREATURESREADER_H__468CF54F_40B5_41C7_9328_D27B7BB20DCA__INCLUDED_)

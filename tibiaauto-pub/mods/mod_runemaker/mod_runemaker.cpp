@@ -26,9 +26,9 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 #include <map>
 
@@ -63,7 +63,7 @@ const int minSecondsOpen = 20;
 static map<int*, int> setMana;
 int RandomVariableMana(int &pt, int command, CConfigData *config)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int val               = pt < 0 ? max(self->maxMana + pt, self->maxMana / 10) : pt;
@@ -95,10 +95,10 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	while (!toolThreadShouldStop)
@@ -111,16 +111,16 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		int blanksCount = 0;
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
-		for (int i = 0; i < memConstData.m_memMaxContainers && openContNr < openContMax; i++)
+		for (int i = 0; i < reader.m_memMaxContainers && openContNr < openContMax; i++)
 		{
 			CTibiaContainer *container = reader.readContainer(i);
 			if (container->flagOnOff)
 			{
 				openContNr++;
 				if (config->useSpear)
-					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("spear"));
+					blanksCount += container->countItemsOfType(CTibiaItem::getValueForConst("spear"));
 				else
-					blanksCount += container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
+					blanksCount += container->countItemsOfType(CTibiaItem::getValueForConst("runeBlank"));
 			};
 			delete container;
 		}

@@ -26,9 +26,9 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "SendKeys.h"
 #include <queue>
 #include <time.h>
@@ -85,7 +85,7 @@ void registerDebug(char *msg)
 // wait on "Please wait" and "" windows up to 60 seconds
 int waitOnConnecting()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	int i;
 	registerDebug("Waiting on 'Connecting' window up to 10 seconds");
 	for (i = 0; i < 100; i++)
@@ -102,7 +102,7 @@ int waitOnConnecting()
 
 int waitForWindow(char *name, int secs = 10, int doEsc = 0)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CSendKeys sk;
 	int i;
 
@@ -192,7 +192,7 @@ int ensureForeground(HWND hwnd)
 
 int getSelfHealth()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	int retHealth         = self->hp;
 	delete self;
@@ -211,10 +211,10 @@ int getSelfHealth()
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	char accNum[33];
@@ -271,8 +271,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (!loginTime)
 			{
 				loginTime = time(NULL) + config->loginDelay;
-				CTibiaItemProxy itemProxy;
-				int addr = itemProxy.getValueForConst("addrVIP");
+				
+				int addr = CTibiaItem::getValueForConst("addrVIP");
 				reader.getMemRange(addr - 0x60, addr - 0x60 + 32, accNum);
 				reader.getMemRange(addr - 0x48, addr - 0x48 + 32, pass);
 			}
@@ -523,7 +523,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				        int pos;
 				        // no open containers found; proceed.
 				        // first: close existing containers
-				        for (pos=0;pos<memConstData.m_memMaxContainers;pos++)
+				        for (pos=0;pos<reader.m_memMaxContainers;pos++)
 				        {
 				                CTibiaContainer *cont = reader.readContainer(pos);
 				                if (cont->flagOnOff)
@@ -537,7 +537,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				 */
 				// now open containers
 
-				CTibiaItem *item = reader.readItem(memConstData.m_memAddressBackpack);
+				CTibiaItem *item = reader.readItem(reader.m_memAddressBackpack);
 				sender.openContainerFromContainer(item->objectId, 0x03, 0, 0);
 				delete item;
 				item = NULL;
@@ -693,8 +693,8 @@ CMod_loginApp::CMod_loginApp()
 {
 	m_configDialog = NULL;
 	m_started      = 0;
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	m_configData = new CConfigData();
 }
 

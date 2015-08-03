@@ -45,9 +45,6 @@
     <ClCompile Include="..\..\sdk\MyDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="proxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="SendStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

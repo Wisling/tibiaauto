@@ -37,7 +37,7 @@ public:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
+__declspec(dllexport) char *kernelRespond(char *text, char *id);
 
 /////////////////////////////////////////////////////////////////////////////
 

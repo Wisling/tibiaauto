@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_fps.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 
 #ifdef _DEBUG
@@ -141,17 +141,17 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1000)
 	{
-		CMemReaderProxy reader;
-		CTibiaItemProxy itemProxy;
+		CMemReader& reader = CMemReader::getMemReader();
+		
 		//CPackSenderProxy sender;
 
 		char buf[128];
 		unsigned long ifpsCur[2];
 
-		addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
+		addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
-		ifpsCur[0] = reader.getMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
-		ifpsCur[1] = reader.getMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
+		ifpsCur[0] = CMemUtil::GetMemIntValue(addrFps + 0x60, 0);//this address comes from Tibia itself and need not be shifted
+		ifpsCur[1] = CMemUtil::GetMemIntValue(addrFps + 0x60 + 4, 0);//this address comes from Tibia itself and need not be shifted
 		sprintf(buf, "Current FPS rate: %d, %d", ifpsCur[0], ifpsCur[1]);
 		m_fpsRate.SetWindowText(buf);
 
@@ -206,10 +206,10 @@ BOOL CConfigDialog::OnInitDialog()
 	CDialog::OnInitDialog();
 	DoSetButtonSkin();
 
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
-	addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
+	addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
 	EnumWindows(EnumWindowsProc, reader.getProcessId());
 

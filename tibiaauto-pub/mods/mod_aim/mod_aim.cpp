@@ -24,10 +24,10 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 #include "MemConstData.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -57,13 +57,13 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	//sender.sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
-	CTibiaItemProxy itemProxy;
+	
 	CTibiaCharacter *sel = reader.readSelfCharacter();
 	float caps           = sel->cap;
 	FILE* f              = fopen("C:/srangp.txt", "wb");
@@ -74,10 +74,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		sel = reader.readSelfCharacter();
 		if (caps != sel->cap && sel->cap > 5000)
 		{
-			int addy = itemProxy.getValueForConst("addrCap");
+			int addy = CTibiaItem::getValueForConst("addrCap");
 			for (int i = 0; i < 20; i++)
 			{
-				int a = reader.getMemIntValue(addy + (i - 10) * 4);
+				int a = CMemUtil::GetMemIntValue(addy + (i - 10) * 4);
 				fprintf(f, "%8x", a);
 			}
 			fprintf(f, "\n");
@@ -109,7 +109,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int contNr;
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 

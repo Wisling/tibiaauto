@@ -25,11 +25,11 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 #include "MemConstData.h"
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 #include "regex.h"
 #include "RegexpProxy.h"
 #include "Util.h"
@@ -352,7 +352,7 @@ void Expression_Tags_All(char* tagName, char* svalue, creature *data, CTibiaChar
 	}
 	else if (!_strcmpi(tagName, "relz"))
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		int relz              = self->z - ch->z;
 		if (relz != 0)
@@ -793,7 +793,7 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	else if (!_strcmpi(tagName, "crstatMostHp"))
 	{
 		CCreaturesReaderProxy cReader;
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
 		char crStatCreature[128];
@@ -827,7 +827,7 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	else if (!_strcmpi(tagName, "crstatMostExp"))
 	{
 		CCreaturesReaderProxy cReader;
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
 		//int x,y;
@@ -1214,9 +1214,9 @@ void Monster_Register(char *name, int type, int maxHp, int exp, int physical, in
 
 void ReadPipeInfo()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CRegexpProxy regexpProxy;
+	
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
@@ -1237,9 +1237,9 @@ void ReadPipeInfo()
 		//You see Test (Level 30). He is a master sorcerer. He is Member of Guild.
 		//You see Test (Level 37). He is a master sorcerer. He is Member of Guild (Description).
 		//You see yourself. You are a sorcerer. You are Member of the Guild (Description).
-		if (!regexpProxy.regcomp(&preg, "You see ([a-z' -]+)..Level ([0-9]+).. (he|she) (is an?|has) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(s?he is ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?", REG_EXTENDED | REG_ICASE))
+		if (!regcomp(&preg, "You see ([a-z' -]+)..Level ([0-9]+).. (he|she) (is an?|has) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation). *(s?he is ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?", REG_EXTENDED | REG_ICASE))
 		{
-			if (!regexpProxy.regexec(&preg, msgBuf, 20, pmatch, 0))
+			if (!regexec(&preg, msgBuf, 20, pmatch, 0))
 			{
 				//T4: This is a player
 				char resNick[128];
@@ -1275,9 +1275,9 @@ void ReadPipeInfo()
 			else
 			{
 				regex_t preg3;
-				if (!regexpProxy.regcomp(&preg3, "You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation).*( You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?", REG_EXTENDED | REG_ICASE))
+				if (!regcomp(&preg3, "You see yourself. You (are an?|have) (knight|paladin|druid|sorcerer|elder druid|elite knight|master sorcerer|royal paladin|no vocation).*( You are ([a-z' -]+) of the ([a-z' -]+).(.([a-z '-]+)..)?)?", REG_EXTENDED | REG_ICASE))
 				{
-					if (!regexpProxy.regexec(&preg3, msgBuf, 20, pmatch, 0))
+					if (!regexec(&preg3, msgBuf, 20, pmatch, 0))
 					{
 						//T4: This is self
 						char resVoc[128];
@@ -1317,9 +1317,9 @@ void ReadPipeInfo()
 					{
 						// T4: No match, this is non-player info text
 						regex_t preg2;
-						if (!regexpProxy.regcomp(&preg2, "You see (an? |)([a-z '-,.]+).$", REG_EXTENDED | REG_ICASE))
+						if (!regcomp(&preg2, "You see (an? |)([a-z '-,.]+).$", REG_EXTENDED | REG_ICASE))
 						{
-							if (!regexpProxy.regexec(&preg2, msgBuf, 20, pmatch, 0))
+							if (!regexec(&preg2, msgBuf, 20, pmatch, 0))
 							{
 								char resNick[128];
 								lstrcpyn(resNick, msgBuf + pmatch[2].rm_so, min(127, pmatch[2].rm_eo - pmatch[2].rm_so + 1));
@@ -1331,13 +1331,13 @@ void ReadPipeInfo()
 								//sprintf(resNick,"Registered Monsters: %d",monstersCount);
 								//sender.sendTAMessage(resNick);
 							}
-							regexpProxy.regfree(&preg2);
+							regfree(&preg2);
 						}
 					}
-					regexpProxy.regfree(&preg3);
+					regfree(&preg3);
 				}
 			}
-			regexpProxy.regfree(&preg);
+			regfree(&preg);
 		}
 	}
 }
@@ -1394,9 +1394,9 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	//T4: Expression structures
 	expressionInfo playerLine1;
@@ -1451,7 +1451,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		time_t curTime = time(NULL);
 
 		int chNr;
-		for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+		for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 		{
 			//T4: Check all chars in BattleList
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
@@ -1663,7 +1663,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	if (config->uniqueMonsterNames)
 	{
 		int chNr;
-		for (chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+		for (chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 		{
 			char name[40];
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);

@@ -1,9 +1,5 @@
-// Util.h: interface for the CUtil class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_UTIL_H__79D8A6EB_5316_41E0_BA36_717AF72A873E__INCLUDED_)
-#define AFX_UTIL_H__79D8A6EB_5316_41E0_BA36_717AF72A873E__INCLUDED_
+#pragma once
+#include "tibiaauto_util.h"
 
 #include "TibiaItem.h"
 #include "PQI.h"
@@ -26,7 +22,7 @@ XERCES_CPP_NAMESPACE_USE
 #pragma once
 #endif // _MSC_VER > 1000
 
-class CUtil
+class TIBIAAUTOUTIL_API CUtil
 {
 public:
 	static char * getNodeAttribute(DOMNode *node, char *attrName);
@@ -40,5 +36,3 @@ public:
 	CUtil();
 	virtual ~CUtil();
 };
-
-#endif // !defined(AFX_UTIL_H__79D8A6EB_5316_41E0_BA36_717AF72A873E__INCLUDED_)

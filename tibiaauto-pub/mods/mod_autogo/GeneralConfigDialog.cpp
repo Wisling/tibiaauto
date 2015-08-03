@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_autogo.h"
 #include "GeneralConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "WhiteList.h"
 
 #ifdef _DEBUG
@@ -14,7 +14,7 @@ static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
 #include "ModuleUtil.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 
 static HWND tibiaHwnd = NULL;
 
@@ -160,7 +160,7 @@ void WriteBMPFileLoc(HBITMAP bitmap, CString filename, HDC hDC)
 
 CString capturePosition(CString name)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (!tibiaHwnd)
 	{
 		tibiaHwnd = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
@@ -457,7 +457,7 @@ void GeneralConfigDialog::OnTimer(UINT nIDEvent)
 {
 	if (nIDEvent == 1001)
 	{
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 		CString buf;
 		if (lastX != self->x || lastY != self->y || lastZ != self->z)

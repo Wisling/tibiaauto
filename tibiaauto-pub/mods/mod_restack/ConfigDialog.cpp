@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_restack.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -153,7 +153,7 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	CTibiaItemProxy itemProxy;
+	
 	char buf[128];
 	m_pickupUR.SetCheck(configData->pickupUR);
 	m_pickupUL.SetCheck(configData->pickupUL);
@@ -169,12 +169,12 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_throwableTo.SetWindowText(buf);
 	sprintf(buf, "%d", configData->throwableAt);
 	m_throwableAt.SetWindowText(buf);
-	m_throwableType.SelectString(-1, itemProxy.getItemName(configData->throwableType));
+	m_throwableType.SelectString(-1, CTibiaItem::getItemName(configData->throwableType));
 	sprintf(buf, "%d", configData->ammoTo);
 	m_ammoTo.SetWindowText(buf);
 	sprintf(buf, "%d", configData->ammoAt);
 	m_ammoAt.SetWindowText(buf);
-	m_ammoType.SelectString(-1, itemProxy.getItemName(configData->ammoType));
+	m_ammoType.SelectString(-1, CTibiaItem::getItemName(configData->ammoType));
 	m_moveCovering.SetCheck(configData->moveCovering);
 	m_restackToRight.SetCheck(configData->restackToRight);
 	m_pickupToHand.SetCheck(configData->pickupToHand);
@@ -188,7 +188,7 @@ void CConfigDialog::configToControls(CConfigData *configData)
 
 CConfigData * CConfigDialog::controlsToConfig()
 {
-	CTibiaItemProxy itemProxy;
+	
 	char buf[128];
 	CConfigData *newConfigData = new CConfigData();
 
@@ -209,7 +209,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 	buf[0] = '\0';
 	m_throwableType.GetLBText(m_throwableType.GetCurSel(), buf);
-	newConfigData->throwableType = itemProxy.getItemId(buf);
+	newConfigData->throwableType = CTibiaItem::getItemId(buf);
 
 	m_ammoTo.GetWindowText(buf, 127);
 	newConfigData->ammoTo = atoi(buf);
@@ -217,7 +217,7 @@ CConfigData * CConfigDialog::controlsToConfig()
 	newConfigData->ammoAt = atoi(buf);
 	buf[0]                = '\0';
 	m_ammoType.GetLBText(m_ammoType.GetCurSel(), buf);
-	newConfigData->ammoType = itemProxy.getItemId(buf);
+	newConfigData->ammoType = CTibiaItem::getItemId(buf);
 
 
 	newConfigData->moveCovering   = m_moveCovering.GetCheck();
@@ -251,8 +251,8 @@ BOOL CConfigDialog::OnInitDialog()
 	DoSetButtonSkin();
 
 	// reload ammo and throwable combo boxes
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 
 	while (m_ammoType.GetCount() > 0)
 		m_ammoType.DeleteString(0);
@@ -260,15 +260,15 @@ BOOL CConfigDialog::OnInitDialog()
 		m_throwableType.DeleteString(0);
 
 	// load items for depot item combo
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	int i;
 	m_ammoType.AddString("<disabled>");
 	m_throwableType.AddString("<disabled>");
 
 	for (i = 0; i < count; i++)
 	{
-		char* name       = itemProxy.getItemNameAtIndex(i);
-		int objectId     = itemProxy.getItemIdAtIndex(i);
+		char* name       = CTibiaItem::getItemNameAtIndex(i);
+		int objectId     = CTibiaItem::getItemIdAtIndex(i);
 		CTibiaTile *tile = reader.getTibiaTile(objectId);
 		if (tile && tile->stackable)
 		{

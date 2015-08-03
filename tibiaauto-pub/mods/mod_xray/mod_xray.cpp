@@ -27,11 +27,11 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -64,10 +64,10 @@ int lastZ = 0;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;

@@ -25,9 +25,9 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "MemConstData.h"
 #include "ModuleUtil.h"
 #include "TibiaTile.h"
@@ -60,7 +60,7 @@ int getNewPeriod(CConfigData *config)
 
 void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr, int qty)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	sender.moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
@@ -78,10 +78,10 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	int periodRemaining        = getNewPeriod(config);
 
@@ -110,7 +110,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		// check ammo to restack
 		int ammoItemId = config->ammoType;
-		item = reader.readItem(memConstData.m_memAddressSlotArrow);
+		item = reader.readItem(reader.m_memAddressSlotArrow);
 
 		if (ammoItemId && (item->objectId == 0 || item->objectId == ammoItemId))
 		{
@@ -123,7 +123,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				itemsAccepted.Add(ammoItemId);
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
@@ -151,9 +151,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		// check throwable to restack
 		int throwableItemId = config->throwableType;
 		if (!config->restackToRight)
-			item = reader.readItem(memConstData.m_memAddressLeftHand);
+			item = reader.readItem(reader.m_memAddressLeftHand);
 		else
-			item = reader.readItem(memConstData.m_memAddressRightHand);
+			item = reader.readItem(reader.m_memAddressRightHand);
 
 		if (throwableItemId && (item->objectId == 0 || item->objectId == throwableItemId))
 		{
@@ -166,7 +166,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				itemsAccepted.Add(throwableItemId);
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
@@ -224,7 +224,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int contNr;
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					CTibiaContainer *cont = reader.readContainer(contNr);
 					if (cont->flagOnOff)
@@ -246,8 +246,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 			if (config->pickupToHand)
 			{
-				CTibiaItem *itemLeftHand  = reader.readItem(memConstData.m_memAddressLeftHand);
-				CTibiaItem *itemRightHand = reader.readItem(memConstData.m_memAddressRightHand);
+				CTibiaItem *itemLeftHand  = reader.readItem(reader.m_memAddressLeftHand);
+				CTibiaItem *itemRightHand = reader.readItem(reader.m_memAddressRightHand);
 				if ((itemLeftHand->objectId == throwableItemId || (itemLeftHand->objectId == 0 && itemRightHand->objectId != throwableItemId)) && (offsetX != -2 || offsetY != -2))
 				{
 					CTibiaTile *itemHandTile = reader.getTibiaTile(itemLeftHand->objectId);

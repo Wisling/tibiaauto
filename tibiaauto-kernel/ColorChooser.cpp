@@ -7,7 +7,7 @@
 #include <xercesc/util/XMLString.hpp>
 #include "util.h"
 #include "Skin.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1130,7 +1130,7 @@ BOOL CColorChooser::OnEraseBkgnd(CDC* pDC)
 void CColorChooser::OnOK()
 {
 	// TODO: Add extra validation here
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (loadedSkin != skin)
 	{
 		char szFilters[] =
@@ -1152,7 +1152,7 @@ void CColorChooser::OnOK()
 void CColorChooser::OnLoad()
 {
 	// TODO: Add your control notification handler code here
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	char szFilters[] =
 	        "Tibia Auto Skin (*.skin)|*.skin|All Files (*.*)|*.*||";
 
@@ -1176,7 +1176,7 @@ void CColorChooser::OnCancel()
 void CColorChooser::OnSave()
 {
 	// TODO: Add your control notification handler code here
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	char szFilters[] =
 	        "Tibia Auto Skin (*.skin)|*.skin|All Files (*.*)|*.*||";
 

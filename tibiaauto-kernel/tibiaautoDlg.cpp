@@ -8,18 +8,18 @@
 #include "MemUtil.h"
 #include "ModuleUtil.h"
 #include "CharDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "TibiaMapProxy.h"
 #include "TAMiniMapProxy.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include "TibiaCharacter.h"
 #include "ModuleProxy.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ConfigCreatorUtil.h"
 #include "DonationDialog.h"
-#include "IPCBackPipeProxy.h"
-#include "TibiaItemProxy.h"
+#include <IPCBackPipe.h>
+#include <TibiaItem.h>
 #include "EnterCode.h"
 #include "md5class.h"
 #include "OptionsDialog.h"
@@ -94,7 +94,7 @@ static char THIS_FILE[] = __FILE__;
 
 void InitTibiaHandle()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
 	while (tibiaHWND)
 	{
@@ -122,7 +122,7 @@ LRESULT CTibiaautoDlg::DefWindowProc(UINT uMessage, WPARAM wParam, LPARAM lParam
 	{
 		if (uMessage == s_uTaskbarRestart)
 		{
-			CMemReaderProxy reader;
+			CMemReader& reader = CMemReader::getMemReader();
 			setShellTray();
 		}
 	}
@@ -306,8 +306,8 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	unsigned char buf[5];
 	int versionOk = 0;
-	CTibiaItemProxy itemProxy;
-	int m_memAddressRevealCName1 = itemProxy.getValueForConst("addrFunRevealCName1");
+	
+	int m_memAddressRevealCName1 = CTibiaItem::getValueForConst("addrFunRevealCName1");
 	buf[0] = buf[1] = 0;
 	CMemUtil::GetMemRange(m_processId, m_memAddressRevealCName1, m_memAddressRevealCName1 + 2, (char *)buf, 1);
 	if (buf[0] == 0x90 && buf[1] == 0x90)
@@ -331,7 +331,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 
 	InitialiseIPC();
 
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	reader.setProcessId(m_processId);
 	CPackSenderProxy sender;
 	sender.setPipeHandle(hPipe);
@@ -540,7 +540,7 @@ void CTibiaautoDlg::OnChangeEditValue()
 
 void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	if (nIDEvent == 1001)
 	{
@@ -626,7 +626,7 @@ void CTibiaautoDlg::OnLight()
 
 void CTibiaautoDlg::setShellTray()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	ZeroMemory(&currentIconData, sizeof(NOTIFYICONDATA));
 	currentIconData.cbSize = sizeof(NOTIFYICONDATA);
 	currentIconData.hWnd   = GetSafeHwnd();
@@ -873,7 +873,7 @@ void CTibiaautoDlg::refreshToolInfo()
 
 void CTibiaautoDlg::OnSave()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	char fName[128];
 	char loggedCharName[65];
 	reader.GetLoggedChar(CMemUtil::m_globalProcessId, loggedCharName, sizeof(loggedCharName));
@@ -1042,7 +1042,7 @@ DWORD WINAPI loadThread(LPVOID lpParam)
 	parser = new XercesDOMParser();
 	CConfigDialogStatus * m_configDialogStatus = ((struct loadThreadParam *)lpParam)->configDialogStatus;
 
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigCreatorUtil configCreator;
 
 
@@ -1263,7 +1263,7 @@ void CTibiaautoDlg::OnLoad()
 	if (someModuleRunning)
 		if (AfxMessageBox("Some modules are running. Are you sure you want to load new configuration?", MB_YESNO) == IDNO)
 			return;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	char fName[128];
 	char loggedCharName[65];
@@ -1327,7 +1327,7 @@ void CTibiaautoDlg::OnExit()
 	CTibiaMapProxy tibiaMap;
 	tibiaMap.clear();
 
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	reader.cleanupTibiaTiles();
 
 	delete m_loadedModules;
@@ -1592,7 +1592,7 @@ void CTibiaautoDlg::OnSize(UINT nType, int cx, int cy)
 
 LRESULT CTibiaautoDlg::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (message == WM_APP + 1 && lParam == WM_LBUTTONDOWN)
 	{
 		if (!tibiaHWND)
@@ -1663,7 +1663,7 @@ void CTibiaautoDlg::OnToolXray()
 
 void CTibiaautoDlg::OnButton1()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 
 	int i;
 	for (i = 0; i < 100000; i++)

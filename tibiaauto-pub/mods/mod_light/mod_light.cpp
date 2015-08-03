@@ -25,8 +25,8 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -54,7 +54,7 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigData *config = (CConfigData *)lpParam;
 
 	int initialLightPower = reader.readSelfLightPower();

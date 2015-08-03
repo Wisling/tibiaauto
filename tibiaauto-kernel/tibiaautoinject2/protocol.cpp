@@ -4,13 +4,14 @@
 #include "protocol.h"
 #include "ModuleUtil.h"
 #include "ModuleProxy.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
+#include <MemUtil.h>
 #include "IPCPipeBack.h"
 #include <fstream>
 #include "time.h"
 #include "ipcm.h"
-#include "deelx.h"
 #include <string>
+#include "deelx.h"
 
 extern CIPCPipeBack ipcPipeBack;
 
@@ -303,7 +304,7 @@ void NetworkMessage::AddBytes(const char* bytes, int size)
 
 void Protocol::outputPacket(NetworkMessage &msg)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	unsigned char recvbyte = msg.PeekByte();
 	NetworkMessage msgNew  = NetworkMessage();
 	switch (recvbyte)
@@ -450,7 +451,7 @@ void Protocol::outputPacket(NetworkMessage &msg)
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\tascripts\\botting %d statistics.txt", path, reader.getProcessId());
+	sprintf(pathBuf, "%s\\tascripts\\botting %d statistics.txt", path, CMemUtil::getGlobalProcessId());
 	std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 	time_t tm = time(NULL);
 	fout.write((char*)&tm, 4);
@@ -461,7 +462,7 @@ void Protocol::outputPacket(NetworkMessage &msg)
 
 void Protocol::parsePacketIn(NetworkMessage &msg)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	unsigned char recvbyte = msg.GetByte();
 	switch (recvbyte)
 	{
@@ -549,7 +550,7 @@ void Protocol::parsePacketIn(NetworkMessage &msg)
 extern void sendTAMessage(char* message);
 void Protocol::parsePacketOut(NetworkMessage &msg)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	unsigned char recvbyte = msg.GetByte();
 	CString description    = "";
 	char tmpbuf[2048];

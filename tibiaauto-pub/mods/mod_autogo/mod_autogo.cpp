@@ -25,9 +25,9 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "TibiaMapProxy.h"
 #include "ModuleUtil.h"
 #include <MMSystem.h>
@@ -47,7 +47,7 @@
 using namespace std;
 
 
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -108,7 +108,7 @@ std::string intstr(int value)
 
 void InitTibiaHandle()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	tibiaHWND = FindWindowEx(NULL, NULL, "TibiaClient", NULL);
 	while (tibiaHWND)
 	{
@@ -124,7 +124,7 @@ void InitTibiaHandle()
 void actionTerminate()
 {
 	masterDebug("ActionTerminate");
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	HANDLE hTibiaProc;
 
 	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, reader.getProcessId());
@@ -239,7 +239,7 @@ int OnList(char whiteList[100][32], char name[])
 struct tibiaMessage * triggerMessage()
 {
 	masterDebug("triggerMessage");
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CIPCBackPipeProxy backPipe;
 	struct ipcMessage mess;
 
@@ -723,7 +723,7 @@ DWORD WINAPI takeScreenshot(LPVOID lpParam)
 {
 	TS_param* params = (TS_param*) lpParam;
 
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (!tibiaHWND)
 		InitTibiaHandle();
 	RECT rect;
@@ -855,7 +855,7 @@ int shouldKeepWalking()
 {
 	//considers whether we are attacking and done looting
 	static time_t lastAttackTime = 0;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (!reader.getAttackedCreature())
 	{
 		const char *var = reader.getGlobalVariable("autolooterTm");
@@ -874,7 +874,7 @@ int shouldKeepWalking()
 // Required to be run at least every 3 seconds to be useful since it updates lastAttackTm
 int doneAttackingAndLooting()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	static int lastAttackTm = 0;
 	int ret                 = GetTickCount() - lastAttackTm > 3 * 1000 && !reader.getAttackedCreature();
 	if (reader.getAttackedCreature())
@@ -888,7 +888,7 @@ int doneAttackingAndLooting()
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	masterDebug("toolThreadProc");
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
 	CConfigData *config = (CConfigData *)lpParam;
 	list<Alarm>::iterator alarmItr;

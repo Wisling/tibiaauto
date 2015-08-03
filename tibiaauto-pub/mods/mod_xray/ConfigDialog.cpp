@@ -4,9 +4,9 @@
 #include "stdafx.h"
 #include "mod_xray.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
-#include "IPCBackPipeProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
+#include <IPCBackPipe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

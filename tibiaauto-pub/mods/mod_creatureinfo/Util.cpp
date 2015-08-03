@@ -7,8 +7,8 @@
 
 #include "TibiaContainer.h"
 #include "TibiaMapProxy.h"
-#include "PackSenderProxy.h"
-#include "MemReaderProxy.h"
+#include <PackSender.h>
+#include <MemReader.h>
 #include "TibiaMapPoint.h"
 
 

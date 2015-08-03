@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_fluid.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -176,7 +176,7 @@ void CConfigDialog::enableControls()
 
 void CConfigDialog::configToControls(CConfigData *configData)
 {
-	CTibiaItemProxy itemProxy;
+	
 	char buf[128];
 
 	m_dropEmpty.SetCheck(configData->dropEmpty);
@@ -216,14 +216,14 @@ void CConfigDialog::configToControls(CConfigData *configData)
 	m_customItem1Use.SetCheck(configData->customItem1Use);
 	sprintf(buf, "%d", configData->customItem1Below);
 	m_customItem1Below.SetWindowText(buf);
-	m_customItem1List.SetCurSel(m_customItem1List.FindString(-1, itemProxy.getItemName(configData->customItem1Item)));
+	m_customItem1List.SetCurSel(m_customItem1List.FindString(-1, CTibiaItem::getItemName(configData->customItem1Item)));
 	if (m_customItem1List.GetCurSel() == -1)
 		m_customItem1List.SetCurSel(0);
 
 	m_customItem2Use.SetCheck(configData->customItem2Use);
 	sprintf(buf, "%d", configData->customItem2Below);
 	m_customItem2Below.SetWindowText(buf);
-	m_customItem2List.SetCurSel(m_customItem2List.FindString(-1, itemProxy.getItemName(configData->customItem2Item)));
+	m_customItem2List.SetCurSel(m_customItem2List.FindString(-1, CTibiaItem::getItemName(configData->customItem2Item)));
 	if (m_customItem2List.GetCurSel() == -1)
 		m_customItem2List.SetCurSel(0);
 
@@ -320,7 +320,7 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::reloadCustomItems()
 {
-	CTibiaItemProxy itemProxy;
+	
 
 	while (m_customItem1List.GetCount() > 0)
 		m_customItem1List.DeleteString(0);
@@ -329,11 +329,11 @@ void CConfigDialog::reloadCustomItems()
 
 	// load items for depot item combo
 
-	int size = itemProxy.getItemCount();
+	int size = CTibiaItem::getItemCount();
 	for (int i = 0; i < size; i++)
 	{
-		char* s      = itemProxy.getItemNameAtIndex(i);
-		int objectId = itemProxy.getItemIdAtIndex(i);
+		char* s      = CTibiaItem::getItemNameAtIndex(i);
+		int objectId = CTibiaItem::getItemIdAtIndex(i);
 		int idx1     = m_customItem1List.AddString(s);
 		int idx2     = m_customItem2List.AddString(s);
 		m_customItem1List.SetItemData(idx1, objectId);

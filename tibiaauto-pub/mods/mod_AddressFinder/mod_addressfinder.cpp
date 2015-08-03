@@ -24,19 +24,17 @@
 #include "ConfigDialog.h"
 #include "ConfigData.h"
 #include "TibiaContainer.h"
-#include "MemConstData.h"
+#include "tibiaauto_util/MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
 #include "ModuleUtil.h"
-#include "TibiaMapProxy.h"
 #include <Tlhelp32.h>
 #include <List>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
+#include <tibiaauto_util/MemReader.h>
+#include <tibiaauto_util/MemUtil.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
@@ -63,7 +61,6 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
 	CConfigData *config = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop)
 	{
@@ -212,7 +209,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		for (; loop < comparison.size(); loop++)
 		{
-			tibiaFile.push_back(reader.getMemIntValue(0x401000 + loop));
+			tibiaFile.push_back(CMemUtil::GetMemIntValue(0x401000 + loop));
 		}
 
 		while (loop < 0x5b0ffe)
@@ -232,15 +229,15 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (countSuccess == comparison.size())
 			{
 				AfxMessageBox("Success");
-				config->experienceAddress = reader.getMemIntValue(0x401000 + loop + 1);
-				config->experience        = reader.getMemIntValue(config->experienceAddress);
+				config->experienceAddress = CMemUtil::GetMemIntValue(0x401000 + loop + 1);
+				config->experience        = CMemUtil::GetMemIntValue(config->experienceAddress);
 				toolThreadShouldStop      = 1;
 				break;
 			}
 			else
 			{
 				tibiaFile.pop_front();
-				tibiaFile.push_back(reader.getMemIntValue(0x401000 + ++loop));
+				tibiaFile.push_back(CMemUtil::GetMemIntValue(0x401000 + ++loop));
 			}
 		}
 		char buf[32];

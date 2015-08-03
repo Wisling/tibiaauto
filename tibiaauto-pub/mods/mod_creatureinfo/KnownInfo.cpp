@@ -3,8 +3,8 @@
 
 #include "stdafx.h"
 #include "mod_creatureinfo.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "KnownInfo.h"
 
 #ifdef _DEBUG
@@ -140,9 +140,9 @@ void CKnownInfo::OnEditchangeToolcreaturinfoInfoCombo()
 
 void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	
 	char buffer[260];
 	int iSel  = m_combo.GetCurSel();
 	int found = -1;
@@ -150,7 +150,7 @@ void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo()
 	if (m_players.GetCheck())
 	{
 		//T4: Try to find player in BattleList
-		for (int chNr = 0; chNr < memConstData.m_memMaxCreatures; chNr++)
+		for (int chNr = 0; chNr < reader.m_memMaxCreatures; chNr++)
 		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(chNr);
 			if (ch->tibiaId == 0)

@@ -26,9 +26,9 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 #include "math.h"
 #include <map>
@@ -64,7 +64,7 @@ static map<int*, int> setMana;
 
 int RandomVariableHp(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter* self = selfIn;
 	if (selfIn == NULL)
 		self = reader.readSelfCharacter();
@@ -87,7 +87,7 @@ int RandomVariableHp(int &pt, int command, CConfigData *config, CTibiaCharacter*
 
 int RandomVariableMana(int &pt, int command, CConfigData *config, CTibiaCharacter* selfIn = NULL)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter* self = selfIn;
 	if (selfIn == NULL)
 		self = reader.readSelfCharacter();
@@ -116,10 +116,10 @@ HANDLE toolThreadHandle;
 
 int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, int manaBelow)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
+	
 	int contNr;
 	CUIntArray itemArray;
 	int drank = 0;
@@ -145,7 +145,7 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 	{
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
-		for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+		for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -180,10 +180,10 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	while (!toolThreadShouldStop)
 	{
@@ -215,37 +215,37 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		// handle  potions
 		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowU && config->drinkHpU) && self->lvl >= 130)
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidLifeU"), 0, config->drinkHpU, config->useHotkey, hpBelowU, -1);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeU"), 0, config->drinkHpU, config->useHotkey, hpBelowU, -1);
 			if (drank)
 				RandomVariableHp(config->hpBelowU, MAKE, config, self);
 		}
 		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowG && config->drinkHpG) && self->lvl >= 80)
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidLifeG"), 0, config->drinkHpG, config->useHotkey, hpBelowG, -1);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeG"), 0, config->drinkHpG, config->useHotkey, hpBelowG, -1);
 			if (drank)
 				RandomVariableHp(config->hpBelowG, MAKE, config, self);
 		}
 		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowS && config->drinkHpS) && self->lvl >= 50)
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidLifeS"), 0, config->drinkHpS, config->useHotkey, hpBelowS, -1);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeS"), 0, config->drinkHpS, config->useHotkey, hpBelowS, -1);
 			if (drank)
 				RandomVariableHp(config->hpBelowS, MAKE, config, self);
 		}
 		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowN && config->drinkHpN))
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidLife"), 0, config->drinkHpN, config->useHotkey, hpBelowN, -1);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLife"), 0, config->drinkHpN, config->useHotkey, hpBelowN, -1);
 			if (drank)
 				RandomVariableHp(config->hpBelowN, MAKE, config, self);
 		}
 		if (!drank && (self->hp < self->maxHp && self->hp < hpBelowH && config->drinkHpH))
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidLifeH"), 0, config->drinkHpH, config->useHotkey, hpBelowH, -1);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidLifeH"), 0, config->drinkHpH, config->useHotkey, hpBelowH, -1);
 			if (drank)
 				RandomVariableHp(config->hpBelowH, MAKE, config, self);
 		}
 		if (!drank && (self->hp < self->maxHp && self->hp < hpBelow && config->drinkHp))
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluid"), 11, config->drinkHp, config->useHotkey, hpBelow, -1);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluid"), 11, config->drinkHp, config->useHotkey, hpBelow, -1);
 			if (drank)
 				RandomVariableHp(config->hpBelow, MAKE, config, self);
 		}
@@ -260,25 +260,25 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		if (!drank && (self->mana < self->maxMana && self->mana < manaBelowG && config->drinkManaG) && self->lvl >= 80)
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidManaG"), 0, config->drinkManaG, config->useHotkey, -1, manaBelowG);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidManaG"), 0, config->drinkManaG, config->useHotkey, -1, manaBelowG);
 			if (drank)
 				RandomVariableMana(config->manaBelowG, MAKE, config, self);
 		}
 		if (!drank && (self->mana < self->maxMana && self->mana < manaBelowS && config->drinkManaS) && self->lvl >= 50)
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidManaS"), 0, config->drinkManaS, config->useHotkey, -1, manaBelowS);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidManaS"), 0, config->drinkManaS, config->useHotkey, -1, manaBelowS);
 			if (drank)
 				RandomVariableMana(config->manaBelowS, MAKE, config, self);
 		}
 		if (!drank && (self->mana < self->maxMana && self->mana < manaBelowN && config->drinkManaN))
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluidMana"), 0, config->drinkManaN, config->useHotkey, -1, manaBelowN);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluidMana"), 0, config->drinkManaN, config->useHotkey, -1, manaBelowN);
 			if (drank)
 				RandomVariableMana(config->manaBelowN, MAKE, config, self);
 		}
 		if (!drank && (self->mana < self->maxMana && self->mana < manaBelow && config->drinkMana))
 		{
-			drank |= tryDrinking(itemProxy.getValueForConst("fluid"), 10, config->drinkMana, config->useHotkey, -1, manaBelow);
+			drank |= tryDrinking(CTibiaItem::getValueForConst("fluid"), 10, config->drinkMana, config->useHotkey, -1, manaBelow);
 			if (drank)
 				RandomVariableMana(config->manaBelow, MAKE, config, self);
 		}
@@ -304,14 +304,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			CUIntArray itemArray;
 
-			itemArray.Add(itemProxy.getValueForConst("fluid"));
-			itemArray.Add(itemProxy.getValueForConst("fluidEmpty"));
-			itemArray.Add(itemProxy.getValueForConst("fluidEmptyS"));
-			itemArray.Add(itemProxy.getValueForConst("fluidEmptyG"));
+			itemArray.Add(CTibiaItem::getValueForConst("fluid"));
+			itemArray.Add(CTibiaItem::getValueForConst("fluidEmpty"));
+			itemArray.Add(CTibiaItem::getValueForConst("fluidEmptyS"));
+			itemArray.Add(CTibiaItem::getValueForConst("fluidEmptyG"));
 			int contNr;
 			int openContNr  = 0;
 			int openContMax = reader.readOpenContainerCount();
-			for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+			for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 			{
 				CTibiaContainer *cont = reader.readContainer(contNr);
 

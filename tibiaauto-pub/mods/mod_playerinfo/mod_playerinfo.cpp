@@ -21,8 +21,8 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 
 #include "playerInfo.h"

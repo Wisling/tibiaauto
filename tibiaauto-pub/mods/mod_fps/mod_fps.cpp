@@ -25,9 +25,9 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -60,7 +60,7 @@ extern BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam); //in ConfigDialo
 
 void SetFPS(double iFps)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	double *fpsVal;
 	int ifpsVal[2];
 
@@ -76,18 +76,18 @@ void SetFPS(double iFps)
 
 double GetFPS()
 {
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	if (!addrFps)
-		addrFps = reader.getMemIntValue(itemProxy.getValueForConst("addrFps"));
+		addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
 	double *fpsVal;
 	int ifpsVal[2];
 
 	fpsVal = (double*)ifpsVal;
 
-	ifpsVal[0] = reader.getMemIntValue(addrFps + 88, 0);//this address comes from Tibia itself and need not be shifted
-	ifpsVal[1] = reader.getMemIntValue(addrFps + 88 + 4, 0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[0] = CMemUtil::GetMemIntValue(addrFps + 88, 0);//this address comes from Tibia itself and need not be shifted
+	ifpsVal[1] = CMemUtil::GetMemIntValue(addrFps + 88 + 4, 0);//this address comes from Tibia itself and need not be shifted
 
 
 	return 1000 / (*fpsVal);
@@ -95,7 +95,7 @@ double GetFPS()
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigData *config = (CConfigData *)lpParam;
 
 	double oldFps;

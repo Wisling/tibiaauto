@@ -31,9 +31,6 @@ static char THIS_FILE[] = __FILE__;
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-#include "TibiaItem_codes.cpp"
-
-
 int CTibiaItem::itemListsFresh = 0;
 int CTibiaItem::xmlInitialised = 0;
 

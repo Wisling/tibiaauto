@@ -10,8 +10,8 @@
 #include "AutoResponderParserContext.h"
 #include "ToolAutoResponderThreadConfig.h"
 #include "ToolAutoResponderMessage.h"
-#include "IPCBackPipeProxy.h"
-#include "MemReaderProxy.h"
+#include <IPCBackPipe.h>
+#include <MemReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,7 +32,7 @@ int toolThreadAutoResponderShouldStop = 0;
 DWORD WINAPI toolThreadAutoResponderProc(LPVOID lpParam)
 {
 	srand((unsigned int)time(NULL));
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CToolAutoResponderThreadConfig *config = (CToolAutoResponderThreadConfig *)lpParam;
 	while (!toolThreadAutoResponderShouldStop)
 	{

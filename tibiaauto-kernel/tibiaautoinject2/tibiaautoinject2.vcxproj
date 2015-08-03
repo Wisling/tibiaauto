@@ -61,7 +61,7 @@
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;TIBIAAUTOINJECT2_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Debug\tibiaautoinject2.pch</PrecompiledHeaderOutputFile>
@@ -91,7 +91,8 @@
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Debug\tibiaautoinject2.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalDependencies>ws2_32.lib;detours.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tibiaautoinject2.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
@@ -106,7 +107,7 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-pub\sdk\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;TIBIAAUTOINJECT2_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Release\tibiaautoinject2.pch</PrecompiledHeaderOutputFile>
@@ -134,21 +135,19 @@
       <LinkDLL>true</LinkDLL>
       <SubSystem>Console</SubSystem>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-      <ImportLibrary>.\Release\tibiaautoinject2.lib</ImportLibrary>
+      <ImportLibrary>
+      </ImportLibrary>
       <AdditionalDependencies>ws2_32.lib;detours.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>.\tibiaautoinject2.def</ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\tibiaauto-pub\sdk\BtnST.cpp" />
     <ClCompile Include="exports.cpp" />
     <ClCompile Include="IPCPipeBack.cpp" />
     <ClCompile Include="MyMenu.cpp" />
     <ClCompile Include="MyMenuData.cpp" />
     <ClCompile Include="protocol.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\tibiaauto-pub\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -159,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\tibiaauto-pub\sdk\ipcm.h" />
+    <ClInclude Include="deelx.h" />
     <ClInclude Include="IPCPipeBack.h" />
     <ClInclude Include="MyMenu.h" />
     <ClInclude Include="MyMenuData.h" />
@@ -172,6 +172,14 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tibiaautoinject2.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\tibiaauto-pub\tre\win32\tre.vcxproj">
+      <Project>{2fa575e7-e44f-46ff-b593-a90cef2323dc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

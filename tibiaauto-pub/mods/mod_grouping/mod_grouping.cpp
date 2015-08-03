@@ -24,9 +24,9 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 #include "MemConstData.h"
 #include <time.h>
@@ -85,16 +85,16 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	time_t groupTime[16] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };//max containers = 16
 	int minOpenTime      = 5;
 
-	for (int contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+	for (int contNr = 0; contNr < reader.m_memMaxContainers; contNr++)
 	{
 		groupTime[contNr] = time(NULL);
 	}
@@ -108,7 +108,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			continue;                   // do not proceed if not connected
 
 		int contNr;
-		for (contNr = 0; contNr < memConstData.m_memMaxContainers && !movedSomething; contNr++)
+		for (contNr = 0; contNr < reader.m_memMaxContainers && !movedSomething; contNr++)
 		{
 			CTibiaContainer *cont = reader.readContainer(contNr);
 			if (cont->flagOnOff && !groupTime[contNr])
@@ -127,7 +127,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				CTibiaItem *itemMoved = (CTibiaItem *)cont->items[itemNrMoved];
 
 				int nonGroupable = 0;
-				if (itemMoved->objectId == itemProxy.getValueForConst("fluid"))
+				if (itemMoved->objectId == CTibiaItem::getValueForConst("fluid"))
 					nonGroupable = 1;
 				CTibiaTile *tile = reader.getTibiaTile(itemMoved->objectId);
 				if (tile && !tile->stackable)

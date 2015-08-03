@@ -24,9 +24,9 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -62,9 +62,9 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
+	
 	CConfigData *config = (CConfigData *)lpParam;
 
 	int offeredItems = 0;
@@ -143,7 +143,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (itemsCount[i])
 					{
 						char buf[500];
-						sprintf(buf, "%s [%d]", itemProxy.getItemName(i), itemsCount[i]);
+						sprintf(buf, "%s [%d]", CTibiaItem::getItemName(i), itemsCount[i]);
 						if (i)
 							strcat(strbuf, ", ");
 						strcat(strbuf, buf);

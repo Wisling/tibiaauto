@@ -5,7 +5,7 @@
 #include "mod_banker.h"
 #include "ConfigDialog.h"
 #include "ModuleUtil.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include <fstream>
 
 using namespace std;
@@ -171,7 +171,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 
 		char buf[256];
 		switch (globalBankerState)

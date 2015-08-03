@@ -24,11 +24,11 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 #include "MemConstData.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -104,10 +104,10 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	srand((unsigned int)time(NULL));                                //Seed the random number generation
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CMemConstData memConstData = reader.getMemConstData();
-	CTibiaItemProxy itemProxy;
+	
+	
 	CConfigData *config = (CConfigData *)lpParam;
 	int digestTime      = -1;
 
@@ -132,8 +132,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CTibiaItem *foodItem = new CTibiaItem();
 			int foodContainer    = -1;
 
-			CUIntArray *foods = itemProxy.getFoodIdArrayPtr();
-			for (contNr = 0; contNr < memConstData.m_memMaxContainers; contNr++)
+			CUIntArray *foods = CTibiaItem::getFoodIdArrayPtr();
+			for (contNr = 0; contNr < reader.m_memMaxContainers; contNr++)
 			{
 				CTibiaItem *tempFoodItem = new CTibiaItem();
 
@@ -173,7 +173,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 				if (CModuleUtil::waitForCapsChange(self->cap))
 				{
-					digestTime += itemProxy.getFoodTimeAtIndex(itemProxy.getFoodIndex(foodItem->objectId));
+					digestTime += CTibiaItem::getFoodTimeAtIndex(CTibiaItem::getFoodIndex(foodItem->objectId));
 					if (i != 1)
 						Sleep(CModuleUtil::randomFormula(400, 100));
 				}
@@ -189,7 +189,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//Assume we are full and wait for however long the food we tried to eat lasts
 				if (failedTimes >= 2)
 				{
-					digestTime += itemProxy.getFoodTimeAtIndex(itemProxy.getFoodIndex(foodItem->objectId));
+					digestTime += CTibiaItem::getFoodTimeAtIndex(CTibiaItem::getFoodIndex(foodItem->objectId));
 					break;
 				}
 			}

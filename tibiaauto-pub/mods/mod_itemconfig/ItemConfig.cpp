@@ -6,7 +6,7 @@
 #include "ItemConfig.h"
 #include "TibiaTile.h"
 #include "memReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include <math.h>
 #include "TibiaStructures.h"
 

@@ -24,11 +24,11 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
 #include "MemConstData.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 #include <time.h>
 
@@ -92,7 +92,7 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
 	CConfigData *config  = (CConfigData *)lpParam;
 	int iter             = 0;

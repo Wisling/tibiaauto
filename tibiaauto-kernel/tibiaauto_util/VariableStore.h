@@ -1,17 +1,9 @@
-// VariableStore.h: interface for the CVariableStore class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_VARIABLESTORE_H__A09A3B1B_E3C8_4927_AA93_5EBEB2F8E088__INCLUDED_)
-#define AFX_VARIABLESTORE_H__A09A3B1B_E3C8_4927_AA93_5EBEB2F8E088__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#include "tibiaauto_util.h"
 
 #define MAX_VARIABLES 100
 
-class CVariableStore
+class TIBIAAUTOUTIL_API CVariableStore
 {
 public:
 	static const char * getVariable(char *name);
@@ -25,5 +17,3 @@ private:
 	static char variableStoreValues[MAX_VARIABLES][210];
 	static int variableCount;
 };
-
-#endif // !defined(AFX_VARIABLESTORE_H__A09A3B1B_E3C8_4927_AA93_5EBEB2F8E088__INCLUDED_)

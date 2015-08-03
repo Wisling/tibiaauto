@@ -4,9 +4,9 @@
 #include "stdafx.h"
 #include "mod_runemaker.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "ToolContainerContent.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -212,15 +212,15 @@ CConfigData * CConfigDialog::controlsToConfig()
 
 void CConfigDialog::OnTimer(UINT nIDEvent)
 {
-	CTibiaItemProxy itemProxy;
+	
 	switch (nIDEvent)
 	{
 	case 1001:
 	{
 		KillTimer(1001);
 		// container refresh event
-		CMemReaderProxy reader;
-		CMemConstData memConstData = reader.getMemConstData();
+		CMemReader& reader = CMemReader::getMemReader();
+		
 		CTibiaCharacter *myself    = reader.readSelfCharacter();
 		int i;
 		char buf[256];
@@ -229,7 +229,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 		// check whether some container should be added
 		int openContNr  = 0;
 		int openContMax = reader.readOpenContainerCount();
-		for (i = 0; i < memConstData.m_memMaxContainers && openContNr < openContMax; i++)
+		for (i = 0; i < reader.m_memMaxContainers && openContNr < openContMax; i++)
 		{
 			CTibiaContainer *container = reader.readContainer(i);
 
@@ -296,8 +296,8 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			CTibiaContainer *container = reader.readContainer(containerNr);
 			if (container->flagOnOff)
 			{
-				blanksCount   += container->countItemsOfType(itemProxy.getValueForConst("runeBlank"));
-				foodFishCount += container->countItemsOfType(itemProxy.getValueForConst("fish"));
+				blanksCount   += container->countItemsOfType(CTibiaItem::getValueForConst("runeBlank"));
+				foodFishCount += container->countItemsOfType(CTibiaItem::getValueForConst("fish"));
 			};
 			delete container;
 		}
@@ -378,8 +378,8 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::initialiseContainers()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	int i;
 
 	m_safe.InsertColumn(0, "Nr", LVCFMT_LEFT, 25);
@@ -392,7 +392,7 @@ void CConfigDialog::initialiseContainers()
 
 	int openContNr  = 0;
 	int openContMax = reader.readOpenContainerCount();
-	for (i = 0; i < memConstData.m_memMaxContainers && openContNr < openContMax; i++)
+	for (i = 0; i < reader.m_memMaxContainers && openContNr < openContMax; i++)
 	{
 		char buf[256];
 		CTibiaContainer *container = reader.readContainer(i);
@@ -424,16 +424,16 @@ void CConfigDialog::initialiseContainers()
 
 void CConfigDialog::updateListItem(CListCtrl *list, CTibiaContainer *container, int itemNr)
 {
-	CTibiaItemProxy itemProxy;
+	
 	char buf[256];
 
-	sprintf(buf, "%s", itemProxy.getItemName(container->objectId));
+	sprintf(buf, "%s", CTibiaItem::getItemName(container->objectId));
 	list->SetItemText(itemNr, 1, buf);
 	sprintf(buf, "%d", container->itemsInside);
 	list->SetItemText(itemNr, 2, buf);
 	sprintf(buf, "%d", container->size);
 	list->SetItemText(itemNr, 3, buf);
-	sprintf(buf, "%d", container->countItemsOfType(itemProxy.getValueForConst("runeBlank")));
+	sprintf(buf, "%d", container->countItemsOfType(CTibiaItem::getValueForConst("runeBlank")));
 	list->SetItemText(itemNr, 4, buf);
 }
 

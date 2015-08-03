@@ -36,7 +36,7 @@ public:
 	CAutoResponderParser(CToolAutoResponderThreadConfig *config);
 	virtual ~CAutoResponderParser();
 private:
-	CRegexpProxy regexpProxy;
+	
 	int processNodeBoolNot(DOMNode *node, CAutoResponderParserContext *context);
 	void breakProcessing(DOMNode *node);
 	void processAction(DOMNode *node, CAutoResponderParserContext *context);

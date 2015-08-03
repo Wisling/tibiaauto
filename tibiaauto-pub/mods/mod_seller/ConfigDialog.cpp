@@ -5,8 +5,8 @@
 #include "mod_seller.h"
 #include "ModuleUtil.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 #include <fstream>
 #include <stdio.h>
 
@@ -338,7 +338,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
-		CMemReaderProxy reader;
+		CMemReader& reader = CMemReader::getMemReader();
 
 		char buf[256];
 		switch (globalSellerState)
@@ -417,7 +417,7 @@ void CConfigDialog::activateEnableButton(int enable)
 
 void CConfigDialog::reloadSellers()
 {
-	CTibiaItemProxy itemProxy;
+	
 	while (m_Seller[0].GetCount() > 0)
 		m_Seller[0].DeleteString(0);
 	while (m_Seller[1].GetCount() > 0)
@@ -499,12 +499,12 @@ void saveSellers()
 
 void CConfigDialog::reloadSaleItems()
 {
-	CTibiaItemProxy itemProxy;
+	
 	while (m_tradeItemList.GetCount() > 0)
 		m_tradeItemList.DeleteString(0);
-	int count = itemProxy.getItemCount();
+	int count = CTibiaItem::getItemCount();
 	for (int i = 0; i < count; i++)
-		m_tradeItemList.AddString(itemProxy.getItemNameAtIndex(i));
+		m_tradeItemList.AddString(CTibiaItem::getItemNameAtIndex(i));
 	m_tradeItemList.SetCurSel(0);
 }
 
@@ -696,13 +696,13 @@ void CConfigDialog::onSellOnCap()
 
 void CConfigDialog::OnAddSeller()
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	char buf[128];
 	m_addName.GetWindowText(buf, 127);
 	int sellerFound = 0;
 	int i;
-	for (i = 0; i < memConstData.m_memMaxCreatures; i++)
+	for (i = 0; i < reader.m_memMaxCreatures; i++)
 	{
 		CTibiaCharacter* mon = reader.readVisibleCreature(i);
 		if (mon->tibiaId == 0)

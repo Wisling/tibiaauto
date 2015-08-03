@@ -159,20 +159,17 @@ int CIPCBackPipe::readFromPipe(struct ipcMessage *mess, int expectedType)
 					sprintf(errBuf, "A python script using getFunDef function type 3(incoming packet reading) is not being read from fast enough.  Recieved %d entries in %d seconds.%d %d %d", maxType, i - j, PIPE_REMOVE_AT_SECS, i, j, GetTickCount());
 				else
 					sprintf(errBuf, "Registered pipe handle %d is not being read from fast enough. Received %d entries in %d seconds.%d %d %d", maxType, i - j, PIPE_REMOVE_AT_SECS, i, j, GetTickCount());
-				CPackSender sender;
-				sender.sendTAMessage(errBuf);
+				CPackSender::sendTAMessage(errBuf);
 				//MessageBox(NULL, errBuf, "DEBUG MESSAGE", 0);
 			}
 		}
 		else
 		{
 #ifndef NDEBUG
-			CPackSender sender;
-			CMemReader reader;
-			int tibiaTm = reader.getCurrentTm();
+			int tibiaTm = CMemReader::getMemReader().getCurrentTm();
 			char errBuf[256];
 			sprintf(errBuf, "Dbg mode: Since Tibia start %d:%d:%d. Since TA start %d:%d:%d type:%d %d/%d over %d seconds", tibiaTm / 1000 / 60 / 60, (tibiaTm % 60) / 1000 / 60, (tibiaTm % (60 * 60)) / 1000, GetTickCount() / 1000 / 60 / 60, (GetTickCount() % 60) / 1000 / 60, (GetTickCount() % (60 * 60)) / 1000, maxType, i - j, i, PIPE_REMOVE_AT_SECS);
-			sender.sendTAMessage(errBuf);
+			CPackSender::sendTAMessage(errBuf);
 #endif // ifndef NDEBUG
 		}
 	}

@@ -26,9 +26,9 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 #include "TibiaMapProxy.h"
 #include <Tlhelp32.h>
@@ -75,7 +75,7 @@ int canBank(CConfigData *);
 // Required to be run more often than the return value is expected to change
 int doneAttackingAndLooting()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	static unsigned int lastAttackTm = 0;
 	int ret                          = GetTickCount() - lastAttackTm > 3 * 1000 && !reader.getAttackedCreature();
 	if (reader.getAttackedCreature())
@@ -91,7 +91,7 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CConfigData *config = (CConfigData *)lpParam;
 
 	int persistentShouldGo      = 0;
@@ -414,7 +414,7 @@ char *CMod_bankerApp::getConfigParamName(int nr)
 
 int findBanker(CConfigData *config)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	if (config->targetX == self->x && config->targetY == self->y && config->targetZ == self->z)
 	{
@@ -441,7 +441,7 @@ int findBanker(CConfigData *config)
 int shouldKeepWalking()
 {
 	static time_t lastAttackTime = 0;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (!reader.getAttackedCreature())
 	{
 		const char *var = reader.getGlobalVariable("autolooterTm");
@@ -459,8 +459,8 @@ int shouldKeepWalking()
 
 int moveToBanker(CConfigData *config)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
 	static int positionFound = 0;
 	if (shouldKeepWalking())
@@ -476,7 +476,7 @@ int moveToBanker(CConfigData *config)
 		}
 		else     //Approach NPC after finding them
 		{
-			for (int i = 0; i < memConstData.m_memMaxCreatures; i++)
+			for (int i = 0; i < reader.m_memMaxCreatures; i++)
 			{
 				CTibiaCharacter* mon = reader.readVisibleCreature(i);
 				// since banker.bankerName may include city, match first part of name
@@ -530,17 +530,17 @@ void getBalance()
 
 int depositGold()
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	float origcaps        = self->cap;
 	delete self;
 
-	int moneycount = countAllItemsOfType(itemProxy.getValueForConst("GP"), true);
-	moneycount += countAllItemsOfType(itemProxy.getValueForConst("PlatinumCoin"), true) * 100;
-	moneycount += countAllItemsOfType(itemProxy.getValueForConst("CrystalCoin"), true) * 10000;
+	int moneycount = countAllItemsOfType(CTibiaItem::getValueForConst("GP"), true);
+	moneycount += countAllItemsOfType(CTibiaItem::getValueForConst("PlatinumCoin"), true) * 100;
+	moneycount += countAllItemsOfType(CTibiaItem::getValueForConst("CrystalCoin"), true) * 10000;
 	Sleep(RandomTimeBankerSay(strlen("hi")));
 	sender.say("hi");
 	Sleep(500);//Give time for NPC window to open
@@ -555,8 +555,8 @@ int depositGold()
 
 int withdrawGold(CConfigData *config, int suggestedWithdrawAmount)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
+	
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
 	CTibiaCharacter *self = reader.readSelfCharacter();
 	char withdrawBuf[32];
@@ -578,16 +578,16 @@ int withdrawGold(CConfigData *config, int suggestedWithdrawAmount)
 
 int changeGold()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
+	
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	float origcaps        = self->cap;
 	delete self;
 	int retval = 0;
 
-	int goldId    = itemProxy.getValueForConst("GP");
+	int goldId    = CTibiaItem::getValueForConst("GP");
 	int goldCount = countAllItemsOfType(goldId, true);
 
 	char buf[128];
@@ -608,7 +608,7 @@ int changeGold()
 	if (CModuleUtil::waitForCapsChange(origcaps))
 		retval = 1;
 
-	int platId    = itemProxy.getValueForConst("PlatinumCoin");
+	int platId    = CTibiaItem::getValueForConst("PlatinumCoin");
 	int platCount = countAllItemsOfType(platId, true);
 	if (platCount >= 100)
 	{
@@ -662,20 +662,20 @@ int isCavebotOn()
 
 int isDepositing()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	const char *var = reader.getGlobalVariable("cavebot_depositing");
 	return strcmp(var, "true") == 0;
 }
 
 int countAllItemsOfType(int objectId, bool includeSlots)
 {
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	int contNr;
 	int ret         = 0;
 	int openContNr  = 0;
 	int openContMax = reader.readOpenContainerCount();
-	for (contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+	for (contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 	{
 		CTibiaContainer *cont = reader.readContainer(contNr);
 
@@ -688,10 +688,10 @@ int countAllItemsOfType(int objectId, bool includeSlots)
 	}
 	if (includeSlots)
 	{
-		CMemConstData memConstData = reader.getMemConstData();
+		
 		for (int slotNr = 0; slotNr < 10; slotNr++)   // Loops through all 10 inventory slots(backwards)
 		{
-			CTibiaItem *item = reader.readItem(memConstData.m_memAddressSlotArrow + slotNr * memConstData.m_memLengthItem);
+			CTibiaItem *item = reader.readItem(reader.m_memAddressSlotArrow + slotNr * reader.m_memLengthItem);
 			if (item->objectId == objectId)
 				ret += item->quantity ? item->quantity : 1;
 			delete item;
@@ -702,18 +702,18 @@ int countAllItemsOfType(int objectId, bool includeSlots)
 
 int shouldBank(CConfigData *config)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	int belowCaps         = self->cap < config->capsLimit;
 	delete self;
 
 
-	int goldId       = itemProxy.getValueForConst("GP");
-	int platId       = itemProxy.getValueForConst("PlatinumCoin");
-	int crystalId    = itemProxy.getValueForConst("CrystalCoin");
+	int goldId       = CTibiaItem::getValueForConst("GP");
+	int platId       = CTibiaItem::getValueForConst("PlatinumCoin");
+	int crystalId    = CTibiaItem::getValueForConst("CrystalCoin");
 	int goldCount    = countAllItemsOfType(goldId, true);
 	int platCount    = countAllItemsOfType(platId, true);
 	int crystalCount = countAllItemsOfType(crystalId, true);
@@ -736,17 +736,17 @@ int shouldBank(CConfigData *config)
 
 int canBank(CConfigData *config)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReaderProxy reader;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	CMemReader& reader = CMemReader::getMemReader();
+	
 
 	CTibiaCharacter* self = reader.readSelfCharacter();
 	delete self;
 
 
-	int goldId       = itemProxy.getValueForConst("GP");
-	int platId       = itemProxy.getValueForConst("PlatinumCoin");
-	int crystalId    = itemProxy.getValueForConst("CrystalCoin");
+	int goldId       = CTibiaItem::getValueForConst("GP");
+	int platId       = CTibiaItem::getValueForConst("PlatinumCoin");
+	int crystalId    = CTibiaItem::getValueForConst("CrystalCoin");
 	int goldCount    = countAllItemsOfType(goldId, true);
 	int platCount    = countAllItemsOfType(platId, true);
 	int crystalCount = countAllItemsOfType(crystalId, true);

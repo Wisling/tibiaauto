@@ -1,15 +1,7 @@
-// TibiaMapTileItem.h: interface for the CTibiaMapTileItem class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_TIBIAMAPTILEITEM_H__E4092406_EA42_4B13_A38A_50B55EEF0777__INCLUDED_)
-#define AFX_TIBIAMAPTILEITEM_H__E4092406_EA42_4B13_A38A_50B55EEF0777__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#include "tibiaauto_util.h"
 
-class CTibiaMapTileItem
+class TIBIAAUTOUTIL_API CTibiaMapTileItem
 {
 public:
 	CTibiaMapTileItem();
@@ -37,4 +29,4 @@ public:
 	int val4;
 	int val5;
 };
-#endif // !defined(AFX_TIBIAMAPTILEITEM_H__E4092406_EA42_4B13_A38A_50B55EEF0777__INCLUDED_)
+

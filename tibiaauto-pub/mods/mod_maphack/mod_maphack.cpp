@@ -27,10 +27,10 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "TAMiniMapProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -59,11 +59,11 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
 	CTAMiniMapProxy taMiniMap;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	int iter                   = 0;
 	time_t mountTm             = 0;
@@ -90,7 +90,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					for (y = -5; y <= 5; y++)
 					{
 						int tileId = reader.mapGetPointItemId(point(x, y, 0), 0);
-						if (tileId >= itemProxy.getValueForConst("waterWithFishStart") + 12 && tileId <= itemProxy.getValueForConst("waterWithFishEnd") + 12)
+						if (tileId >= CTibiaItem::getValueForConst("waterWithFishStart") + 12 && tileId <= CTibiaItem::getValueForConst("waterWithFishEnd") + 12)
 							reader.mapSetPointItemId(point(x, y, 0), 0, 727);
 					}
 				}
@@ -106,7 +106,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		{
 			/*
 			   int creatureNr=0;
-			   for (creatureNr=0;creatureNr<memConstData.m_memMaxCreatures;creatureNr++)
+			   for (creatureNr=0;creatureNr<reader.m_memMaxCreatures;creatureNr++)
 			   {
 			        CTibiaCharacter *cr=reader.readVisibleCreature(creatureNr);
 			        if (cr->monsterType==

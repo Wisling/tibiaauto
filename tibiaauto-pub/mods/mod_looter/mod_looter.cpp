@@ -25,10 +25,10 @@
 #include "ConfigData.h"
 #include "TibiaContainer.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "ModuleUtil.h"
-#include "TibiaItemProxy.h"
+#include <TibiaItem.h>
 #include "SendStats.h"
 
 #ifdef _DEBUG
@@ -80,7 +80,7 @@ END_MESSAGE_MAP()
 int containerNotFull(int containerNr)
 {
 	int ret;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaContainer *cont = reader.readContainer(containerNr);
 	ret = (cont->size > cont->itemsInside && cont->flagOnOff);
 	delete cont;
@@ -111,8 +111,8 @@ CUIntArray lootCreatures;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
-	CTibiaItemProxy itemProxy;
+	CMemReader& reader = CMemReader::getMemReader();
+	
 	CPackSenderProxy sender;
 	CConfigData *config     = (CConfigData *)lpParam;
 	int lastAttackedMonster = 0;
@@ -204,7 +204,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								for (itemNr = 0; itemNr < cont[0]->itemsInside && currentExtraContainerNr < 3; itemNr++)
 								{
 									CTibiaItem *item = (CTibiaItem *)cont[0]->items.GetAt(itemNr);
-									if (item->objectId == itemProxy.getValueForConst("bagbrown"))
+									if (item->objectId == CTibiaItem::getValueForConst("bagbrown"))
 									{
 										sender.openContainerFromContainer(item->objectId, 0x40 + lastLootContNr[0], itemNr, lastLootContNr[currentExtraContainerNr]);
 										CModuleUtil::waitForOpenContainer(lastLootContNr[currentExtraContainerNr], 1);
@@ -337,13 +337,13 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			CUIntArray acceptedItems;
 
 			if (config->m_lootFood)
-				acceptedItems.Append(*itemProxy.getFoodIdArrayPtr());
+				acceptedItems.Append(*CTibiaItem::getFoodIdArrayPtr());
 			if (config->m_lootGp)
-				acceptedItems.Add(itemProxy.getValueForConst("GP"));
+				acceptedItems.Add(CTibiaItem::getValueForConst("GP"));
 			if (config->m_lootWorms)
-				acceptedItems.Add(itemProxy.getValueForConst("worms"));
+				acceptedItems.Add(CTibiaItem::getValueForConst("worms"));
 			if (config->m_lootCustom)
-				acceptedItems.Append(*itemProxy.getLootItemIdArrayPtr());
+				acceptedItems.Append(*CTibiaItem::getLootItemIdArrayPtr());
 
 
 			int extraSleep = 0;

@@ -26,9 +26,9 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -59,10 +59,10 @@ HANDLE toolThreadHandle;
 
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 	char buf[256];
 	while (!toolThreadShouldStop)
@@ -80,12 +80,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//AfxMessageBox(buf);
 				if (!strlen(config->sortBags[i].slotNr[j].itemName))
 					break;
-				int sortItem = itemProxy.getItemId(config->sortBags[i].slotNr[j].itemName);
+				int sortItem = CTibiaItem::getItemId(config->sortBags[i].slotNr[j].itemName);
 				//sprintf(buf, "ObjectID: %d",  sortItem);
 				//AfxMessageBox(buf);
 				int openContNr  = 0;
 				int openContMax = reader.readOpenContainerCount();
-				for (int contNr = 0; contNr < memConstData.m_memMaxContainers && openContNr < openContMax; contNr++)
+				for (int contNr = 0; contNr < reader.m_memMaxContainers && openContNr < openContMax; contNr++)
 				{
 					if (contNr == i)
 						contNr++;
@@ -164,7 +164,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 										{
 											for (int n = 0; n < 32; n++)
 											{
-												findItem = itemProxy.getItemId(config->sortBags[m].slotNr[n].itemName);
+												findItem = CTibiaItem::getItemId(config->sortBags[m].slotNr[n].itemName);
 												if (item->objectId == findItem && findItem != sortItem && m != i)
 													found = 1;
 												//break;
@@ -448,7 +448,7 @@ int CMod_sorterApp::initializeLootBags()
 
 int isStackable(int sortItem, int contNr)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaContainer *cont = reader.readContainer(contNr);
 	CTibiaTile *tile      = reader.getTibiaTile(sortItem);
 	if (tile->stackable)

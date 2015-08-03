@@ -1,16 +1,9 @@
-// TibiaMap.h: interface for the CTibiaMap class.
-//
-//////////////////////////////////////////////////////////////////////
-
-#if !defined(AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_)
-#define AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_
-
-#if _MSC_VER > 1000
 #pragma once
-#endif // _MSC_VER > 1000
+#include "tibiaauto_util.h"
 
 #include <map>
 #include "TibiaMapPoint.h"
+#include "MemReader.h"
 
 using namespace std;
 
@@ -47,9 +40,19 @@ public:
 	}
 };
 
-class CTibiaMap
+class TIBIAAUTOUTIL_API CTibiaMap
 {
+private:
+	CTibiaMap();
+	virtual ~CTibiaMap();
+	CTibiaMap(CTibiaMap const&);
+	void operator=(CTibiaMap const&);
 public:
+	static CTibiaMap& getTibiaMap()
+	{
+		static CTibiaMap singleton;
+		return singleton;
+	}
 	int getPointTypeNoProh(int x, int y, int z);
 	int isPointAvailableNoProh(int x, int y, int z);
 	struct point getPointByNr(int nr);
@@ -82,8 +85,6 @@ public:
 	int calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ);
 	void setPointLocked(int x, int y, int z, int locked);
 	int isPointLocked(int x, int y, int z);
-	CTibiaMap();
-	virtual ~CTibiaMap();
 
 private:
 	void enlarge();
@@ -98,4 +99,3 @@ private:
 	CMap<point *, point *, pointData *, pointData *> tibiaMap2;
 };
 
-#endif // !defined(AFX_TIBIAMAP_H__D128DE5B_B472_4E61_B805_B3BF714E9099__INCLUDED_)

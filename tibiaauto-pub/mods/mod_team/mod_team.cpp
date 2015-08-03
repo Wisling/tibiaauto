@@ -26,13 +26,13 @@
 #include "TibiaContainer.h"
 #include "MemConstData.h"
 
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
+#include <TibiaItem.h>
 #include "ModuleUtil.h"
 #include "ConnectedNode.h"
 #include "ConnectedNodes.h"
-#include "IPCBackPipeProxy.h"
+#include <IPCBackPipe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -66,10 +66,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	char buf[1024];
 
 	CIPCBackPipeProxy backPipe;
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	CPackSenderProxy sender;
-	CTibiaItemProxy itemProxy;
-	CMemConstData memConstData = reader.getMemConstData();
+	
+	
 	CConfigData *config        = (CConfigData *)lpParam;
 
 	connectedNodes.disconnect();

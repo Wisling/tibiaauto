@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "mod_spellcaster.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
-#include "PackSenderProxy.h"
+#include <MemReader.h>
+#include <PackSender.h>
 #include "LifeDialog.h"
 #include "ManaDialog.h"
 #include "SummonDialog.h"

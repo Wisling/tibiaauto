@@ -5,8 +5,8 @@
 #include "tibiaauto.h"
 #include "CharDialog.h"
 #include "MemUtil.h"
-#include "MemReaderProxy.h"
-#include "TibiaItemProxy.h"
+#include <MemReader.h>
+#include <TibiaItem.h>
 #include "windows.h"
 
 #ifdef _DEBUG
@@ -54,7 +54,7 @@ END_MESSAGE_MAP()
 
 void CCharDialog::OnCharRefresh()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	char buf[256];
 	//int procFound[65536];
 	int *procFound = new int[65536];
@@ -148,8 +148,8 @@ void CCharDialog::OnTimer(UINT nIDEvent)
 
 void CCharDialog::OnCancel()
 {
-	CTibiaItemProxy itemProxy;
-	itemProxy.cleanup();
+	
+	CTibiaItem::cleanup();
 	EndDialog(-1);
 }
 
@@ -247,7 +247,7 @@ void getVersion(CString& pathName, CString& versionNum)
 
 void CCharDialog::OnToolInjectmc()
 {
-	CTibiaItemProxy itemProxy;
+	
 	char szFilters[] =
 		"Tibia client (Tibia.exe)|Tibia.exe|Executable Files (*.exe)|*.exe|All Files (*.*)|*.*||";
 

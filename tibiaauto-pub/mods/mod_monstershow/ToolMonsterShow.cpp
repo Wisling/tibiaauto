@@ -5,7 +5,7 @@
 #include "resource.h"
 #include "ToolMonsterShow.h"
 #include "MonsterButton.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 #include "TibiaCharacter.h"
 #include "MemConstData.h"
 
@@ -25,7 +25,7 @@ CToolMonsterShow::CToolMonsterShow(CWnd* pParent /*=NULL*/)
 	//{{AFX_DATA_INIT(CToolMonsterShow)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	memConstData = reader.getMemConstData();
 }
 
@@ -133,7 +133,7 @@ BOOL CToolMonsterShow::OnCommand(WPARAM wParam, LPARAM lParam)
 
 void CToolMonsterShow::showMonsterDetails(int x, int y)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	char buf[1024];
 	char buf2[1024];
 
@@ -144,7 +144,7 @@ void CToolMonsterShow::showMonsterDetails(int x, int y)
 
 	sprintf(buf, "creatures:");
 
-	for (creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++)
+	for (creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 	{
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->tibiaId == 0)
@@ -172,7 +172,7 @@ void CToolMonsterShow::showMonsterDetails(int x, int y)
 
 void CToolMonsterShow::refreshVisibleCreatures()
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	int creatureNr;
 	int x;
 	int y;
@@ -199,7 +199,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 		}
 	}
 
-	for (creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++)
+	for (creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 	{
 		CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 		if (ch->tibiaId == 0)
@@ -255,7 +255,7 @@ void CToolMonsterShow::refreshVisibleCreatures()
 
 void CToolMonsterShow::OnTimer(UINT nIDEvent)
 {
-	CMemReaderProxy reader;
+	CMemReader& reader = CMemReader::getMemReader();
 	if (nIDEvent == 1001)
 	{
 		KillTimer(1001);
@@ -268,7 +268,7 @@ void CToolMonsterShow::OnTimer(UINT nIDEvent)
 		int creatureNr;
 		KillTimer(1002);
 
-		for (creatureNr = 0; creatureNr < memConstData.m_memMaxCreatures; creatureNr++)
+		for (creatureNr = 0; creatureNr < reader.m_memMaxCreatures; creatureNr++)
 		{
 			CTibiaCharacter *ch = reader.readVisibleCreature(creatureNr);
 			if (ch->tibiaId == 0)

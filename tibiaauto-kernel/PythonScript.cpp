@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "tibiaauto.h"
 #include "PythonScript.h"
-#include "PackSenderProxy.h"
+#include <PackSender.h>
 
 #ifdef _DEBUG
 #undef THIS_FILE

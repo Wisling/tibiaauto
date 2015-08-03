@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_uh.h"
 #include "ConfigDialog.h"
-#include "MemReaderProxy.h"
+#include <MemReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

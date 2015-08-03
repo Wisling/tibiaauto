@@ -9,7 +9,6 @@
 #include "TibiaMapPoint.h"
 #include "TibiaMiniMap.h"
 #include "TibiaMiniMapPoint.h"
-#include "TibiaItemProxy.h"
 #include "PackSender.h"
 #include "MemReader.h"
 #include "MemUtil.h"
@@ -81,14 +80,10 @@ MiniMapSection* CTAMiniMap::loadFromMemory(int xMap, int yMap, int zMap)
 		unloadMiniMaps();
 	//AfxMessageBox("load memory");
 
-
-	CTibiaItemProxy itemProxy;
-	CMemReader reader;
-
 	for (int nr = 0; nr < 10; nr++)
 	{
-		int mapOffset      = itemProxy.getValueForConst("addrMiniMapStart") + itemProxy.getValueForConst("lengthMiniMap") * nr + 20;
-		CTibiaMiniMap *map = reader.readMiniMap(nr);
+		int mapOffset = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * nr + 20;
+		CTibiaMiniMap *map = CMemReader::getMemReader().readMiniMap(nr);
 
 		//char buf[1111];
 		//sprintf(buf,"cycle maps:(%d,%d,%d),(%d,%d,%d)",xMap,yMap,zMap,map->x,map->y,map->z);
@@ -221,14 +216,11 @@ CTibiaMiniMapPoint* CTAMiniMap::getMiniMapPoint(int x, int y, int z)
 
 void CTAMiniMap::setMiniMapPoint(int x, int y, int z, int col, int spd)
 {
-	CTibiaItemProxy itemProxy;
-	CMemReader reader;
-
 	int xMap = (int)(x / 256), yMap = (int)(y / 256), zMap = z;
 	for (int nr = 0; nr < 10; nr++)
 	{
-		int mapOffset      = itemProxy.getValueForConst("addrMiniMapStart") + itemProxy.getValueForConst("lengthMiniMap") * nr + 20;
-		CTibiaMiniMap *map = reader.readMiniMap(nr);
+		int mapOffset = CTibiaItem::getValueForConst("addrMiniMapStart") + CTibiaItem::getValueForConst("lengthMiniMap") * nr + 20;
+		CTibiaMiniMap *map = CMemReader::getMemReader().readMiniMap(nr);
 
 		if (xMap == map->x && yMap == map->y && zMap == map->z)
 		{
@@ -374,7 +366,6 @@ int CTAMiniMap::getCurrentDistance()
 
 bool CTAMiniMap::isUpPoint(CTibiaMiniMapPoint* lower) //return true;
 {
-	CMemReader reader;
 	bool ret = false;
 	//check if both are yellow spots
 	if (lower->colour == 210)
@@ -396,15 +387,14 @@ bool CTAMiniMap::isUpPoint(CTibiaMiniMapPoint* lower) //return true;
 			delete(mpTest3);
 		}
 		delete(upper);
-		//CTibiaMiniMapPoint* lower2=reader.readMiniMapPoint(lower->x,lower->y,lower->z+1);
-		//CTibiaMiniMapPoint* upper2=reader.readMiniMapPoint(lower->x,lower->y,lower->z-2);
+		//CTibiaMiniMapPoint* lower2=CMemReader::getMemReader().readMiniMapPoint(lower->x,lower->y,lower->z+1);
+		//CTibiaMiniMapPoint* upper2=CMemReader::getMemReader().readMiniMapPoint(lower->x,lower->y,lower->z-2);
 	}
 	return ret;
 }
 
 bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper) //return true;
 {       //DebugPrint("isDown?",upper->x,upper->y,upper->z,upper->colour);
-	CMemReader reader;
 	//DebugPrint("lower",lower->x,lower->y,lower->z,lower->colour);
 	bool ret = false;
 	//check if both are yellow spots
@@ -414,8 +404,8 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper) //return true;
 		if (lower->colour == 210)
 			ret = true;
 		delete(lower);
-		//CTibiaMiniMapPoint* lower2=reader.readMiniMapPoint(lower->x,lower->y,lower->z+1);
-		//CTibiaMiniMapPoint* upper2=reader.readMiniMapPoint(lower->x,lower->y,lower->z-2);
+		//CTibiaMiniMapPoint* lower2=CMemReader::getMemReader().readMiniMapPoint(lower->x,lower->y,lower->z+1);
+		//CTibiaMiniMapPoint* upper2=CMemReader::getMemReader().readMiniMapPoint(lower->x,lower->y,lower->z-2);
 	}
 	//check if might be able to go down light gray spot
 	else if (upper->colour == 129)
@@ -448,14 +438,13 @@ bool CTAMiniMap::isDownPoint(CTibiaMiniMapPoint* upper) //return true;
 CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, int endX, int endY, int endZ)
 {
 	//inits
-	CMemReader reader;
 	CUIntArray *path = new CUIntArray();
 	PQI mOpen;
 	int direction[10][3] = {{0, 0, 1}, {1, 0, 0}, {1, -1, 0}, {0, -1, 0}, {-1, -1, 0}, {-1, 0, 0}, {-1, 1, 0}, {0, 1, 0}, {1, 1, 0}, {0, 0, -1}};
 	CMap<PathFinderNode, PathFinderNode, PathFinderNode, PathFinderNode> mClose;
 	mClose.InitHashTable(20011);// 42,000 points used for Carlin-Thais
 
-	CTibiaMiniMapPoint* endPt = reader.readMiniMapPoint(endX, endY, endZ);
+	CTibiaMiniMapPoint* endPt = CMemReader::getMemReader().readMiniMapPoint(endX, endY, endZ);
 	int endBlocked            = endPt->speed == 255;
 	delete endPt;
 	//DebugPrint("endBlocked",endBlocked);
