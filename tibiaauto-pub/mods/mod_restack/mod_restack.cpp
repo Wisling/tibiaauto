@@ -30,7 +30,7 @@
 #include <TibiaItem.h>
 #include <TileReader.h>
 #include "MemConstData.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

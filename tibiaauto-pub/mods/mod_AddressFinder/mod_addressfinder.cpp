@@ -23,18 +23,19 @@
 
 #include "ConfigDialog.h"
 #include "ConfigData.h"
-#include "TibiaContainer.h"
-#include "tibiaauto_util/MemConstData.h"
 
-#include "ModuleUtil.h"
+#include <TibiaContainer.h>
+#include <MemConstData.h>
+#include <MemReader.h>
+#include <MemUtil.h>
+#include <ModuleUtil.h>
+
 #include <Tlhelp32.h>
 #include <List>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-#include <MemReader.h>
-#include <MemUtil.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 

@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_responder.h"
 #include "ToolAutoRespond.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 
 #include "AutoResponderParser.h"
 #include "AutoResponderParserContext.h"
@@ -373,7 +373,7 @@ void CToolAutoRespond::start()
 	threadCount = 0;
 	try
 	{
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-responder.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-responder.xml", installPath);
 		parser->parse(pathBuf);
 		doc = parser->getDocument();
 		for (size_t rootNr = 0; rootNr < doc->getChildNodes()->getLength(); rootNr++)
@@ -409,7 +409,7 @@ void CToolAutoRespond::start()
 		}
 		char scriptBuf[1024 * 200];
 		memset(scriptBuf, 0, 1024 * 200);
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-responder.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-responder.xml", installPath);
 		FILE *f = fopen(pathBuf, "rb");
 		fread(scriptBuf, 1, 1024 * 200 - 1, f);
 		fclose(f);

@@ -29,7 +29,7 @@
 #include <PackSender.h>
 #include <IPCBackPipe.h>
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <MMSystem.h>
 #include <Tlhelp32.h>
 #include <iostream>
@@ -1059,7 +1059,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (alarmItr->getAlarm().GetLength())
 				{
 					CString pathBuf;
-					pathBuf.Format("%s\\mods\\sound\\%s", path, alarmItr->getAlarm());
+					pathBuf.Format("%s\\data\\sound\\%s", path, alarmItr->getAlarm());
 					PlaySound(pathBuf, NULL, SND_FILENAME | SND_ASYNC | SND_NOSTOP);
 				}// ****************************
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 4.aiml - Number  4 related       -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL      -->
+	<!-- Fork of 9/26/2001 ALICE        -->
+	<category>
+		<pattern>4 *</pattern>
+		<template>Is this a math question?
+</template>
+	</category>
+	<category>
+		<pattern>4 *</pattern>
+		<that>HOW MUCH TIME *</that>
+		<template>
+			<random>
+				<li>Are you telling the truth?</li>
+				<li>That seems like a long time.</li>
+				<li>Only four?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>4</pattern>
+		<template>Oh four.
+</template>
+	</category>
+	<category>
+		<pattern>4 PLUS *</pattern>
+		<template><random>
+		<li>What am I....a calculator?</li>
+		<li>Use a calculaotr!</li>
+		<li>I think you need a calculator for that one.</li>
+		</random>
+</template>
+	</category>
+	<category>
+		<pattern>4 TIMES *</pattern>
+		<template>
+			<srai>WHAT IS 4 TIMES <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>4 YEARS</pattern>
+		<template>4 years seems longer than it actually is.
+</template>
+	</category>
+	<category>
+		<pattern>42 *</pattern>
+		<template>42 is the meaning of life, the universe, and Everything. Did you ever read that book?
+</template>
+	</category>
+	<category>
+		<pattern>42 *</pattern>
+		<that>HOW OLD ARE YOU</that>
+		<template>
+			<srai>I AM 42 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>42</pattern>
+		<template>The question is: what is the meaning of life?
+</template>
+	</category>
+	<category>
+		<pattern>42</pattern>
+		<that>HOW OLD ARE YOU</that>
+		<template>
+			<srai>I AM 42 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>420</pattern>
+		<template>420, like 187, is something thats said a lot in gangsta rap. I think it has something to do with murder.
+</template>
+	</category>
+	<category>
+		<pattern>47 *</pattern>
+		<template>
+			<srai>I AM 47 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>47</pattern>
+		<template>
+			<srai>I AM 47 YEARS OLD</srai>
+		</template>
+	</category>
+</aiml>

@@ -6,16 +6,15 @@
 #include "GeneralConfigDialog.h"
 #include <MemReader.h>
 #include "WhiteList.h"
+#include <ModuleUtil.h>
+#include <MemReader.h>
+#include <MemUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-#include <MemUtil.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
-
-#include "ModuleUtil.h"
-#include <MemReader.h>
 
 static HWND tibiaHwnd = NULL;
 

@@ -28,7 +28,7 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <MemUtil.h>
 
 #ifdef _DEBUG

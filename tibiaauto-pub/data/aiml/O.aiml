@@ -1,0 +1,780 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- O.aiml - Starts with "O"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>O *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>O</pattern>
+		<template>Oh.
+</template>
+	</category>
+	<category>
+		<pattern>O I C</pattern>
+		<template>
+			<srai>I SEE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OBVIOIUSLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OBVIOUSLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OBVIOUSLY</pattern>
+		<template>.....Clearly :-)
+</template>
+	</category>
+	<category>
+		<pattern>OF *</pattern>
+		<template>Huh....Tell me more.....
+</template>
+	</category>
+	<category>
+		<pattern>OF CAUSE *</pattern>
+		<template>
+			<srai>OF COURSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OF CORSE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OF COURSE *</pattern>
+		<template>
+			<srai>OF COURSE</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OF COURSE</pattern>
+		<template>
+			<srai>INTERJECTION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OF COURSE I DO</pattern>
+		<template>Really? Cool.
+</template>
+	</category>
+	<category>
+		<pattern>OF COURSE NOT</pattern>
+		<template>
+			<srai>NO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OF WHAT</pattern>
+		<template>What of? ; )
+</template>
+	</category>
+	<category>
+		<pattern>OF YOURS</pattern>
+		<template>Yeah......
+			<random>
+				<li>Perhaps.</li>
+				<li>It could be.</li>
+				<li>What do you think?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>OFCOURSE</pattern>
+		<template>
+			<srai>OF COURSE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OFF *</pattern>
+		<template>On and off.
+</template>
+	</category>
+	<category>
+		<pattern>OFTEN</pattern>
+		<template>Would you say once a week or more?
+</template>
+	</category>
+	<category>
+		<pattern>OH *</pattern>
+		<template>
+			<srai>OH</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OH</pattern>
+		<template>
+			<srai>INTERJECTION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OH I SEE</pattern>
+		<template>
+			<srai>I UNDERSTAND</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OH REALLY</pattern>
+		<template>Ummm......yeah, actually....
+		</template>
+	</category>
+	<category>
+		<pattern>OH WELL *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OH WELL</pattern>
+		<template>meh....what can you do?
+</template>
+	</category>
+	<category>
+		<pattern>OH YES</pattern>
+		<template>You sound excited.
+</template>
+	</category>
+	<category>
+		<pattern>OHIO</pattern>
+		<template>Round on the ends, high in the middle, O-hi-O.
+</template>
+	</category>
+	<category>
+		<pattern>OIC</pattern>
+		<template>
+			<srai>OH I SEE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OK *</pattern>
+		<template>
+			<sr/>
+			<srai>OK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OK *</pattern>
+		<that>BY THE WAY DO YOU MIND IF I ASK YOU A PERSONAL QUESTION</that>
+		<template>
+			<srai>ASK ME A PERSONAL QUESTION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<template>
+			<srai>INTERJECTION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>* AGAIN BETTER</that>
+		<template>Ummmm.....Which part were you confused about?
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>DO NOT ASK ME ANY MORE QUESTIONS PLEASE</that>
+		<template>Haha......I was just kidding.....Ask me anything...
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>ER</that>
+		<template>Ummm....
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>GO AHEAD</that>
+		<template>.....Im waiting....
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>LET US CHANGE THE SUBJECT</that>
+		<template>So......What would you like to talk about?
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>MY NAME IS ALICE</that>
+		<template>I know your names not <get name="name"/>....Whats your real name?
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>OK</that>
+		<template>Is there an echo in here?
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>SEE YOU LATER</that>
+		<template>Bye-Bye.
+</template>
+	</category>
+	<category>
+		<pattern>OK</pattern>
+		<that>YEAH</that>
+		<template>.......
+</template>
+	</category>
+	<category>
+		<pattern>OK LET US TALK ABOUT YOU</pattern>
+		<template>What do you want to know about <set name="topic">me</set>?
+</template>
+	</category>
+	<category>
+		<pattern>OKAY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OKAY</pattern>
+		<template>Sounds good....
+</template>
+	</category>
+	<category>
+		<pattern>OKEY</pattern>
+		<template>
+			<srai>OKAY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OKI</pattern>
+		<template>
+			<srai>OK</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLA</pattern>
+		<template>
+			<srai>HELLO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLD ARE YOU</pattern>
+		<template>
+			<srai>HOW OLD ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLD ENOUGH *</pattern>
+		<template>
+			<srai>OLD ENOUGH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLD ENOUGH</pattern>
+		<template>
+			<srai>MY AGE IS OLD ENOUGH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLDER *</pattern>
+		<template>
+			<srai>OLD ENOUGH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLDER</pattern>
+		<template>
+			<srai>I AM OLDER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OLLEH</pattern>
+		<template>Haha....Talking backwards, I see.....
+		</template>
+	</category>
+	<category>
+		<pattern>ON *</pattern>
+		<template>Sometimes its not good to be on <person/>.....
+</template>
+	</category>
+	<category>
+		<pattern>ON A CHAIR</pattern>
+		<template>I hope that its a comfy chair.....
+</template>
+	</category>
+	<category>
+		<pattern>ON MY *</pattern>
+		<template>Oh....I see.....Well, actually I cant see you...But If I could....Then I could see.... ; )
+</template>
+	</category>
+	<category>
+		<pattern>ON MY * SCREEN</pattern>
+		<template>
+			<srai>ON MY SCREEN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ON MY COMPUTER</pattern>
+		<template>
+			<srai>ON MY SCREEN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ON MY SCREEN</pattern>
+		<template>You can probably see some kind of console thingy on your screen, just like I can see that on my screen...
+</template>
+	</category>
+	<category>
+		<pattern>ON SECOND THOUGHT *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ON SUNDAY *</pattern>
+		<template>Sunday is an enjoyable day. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ON THE SCREEN</pattern>
+		<template>You mean the console thingy on our screens?
+</template>
+	</category>
+	<category>
+		<pattern>ON TOAST</pattern>
+		<template>Sounds delicious.
+</template>
+	</category>
+	<category>
+		<pattern>ON TOP *</pattern>
+		<template>How did it get there?
+</template>
+	</category>
+	<category>
+		<pattern>ON TV *</pattern>
+		<template>
+			<srai>ON TV</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ON TV</pattern>
+		<template>Which show was that?
+</template>
+	</category>
+	<category>
+		<pattern>ON WHAT *</pattern>
+		<template>I really have no idea....
+		</template>
+	</category>
+	<category>
+		<pattern>ON WHAT</pattern>
+		<template>The red block is on the green block.
+</template>
+	</category>
+	<category>
+		<pattern>ON WHAT</pattern>
+		<that>THAT DEPENDS</that>
+		<template>The context, naturally....
+</template>
+	</category>
+	<category>
+		<pattern>ON WHAT BASIS</pattern>
+		<template>Logic and reasoning, of course....
+</template>
+	</category>
+	<category>
+		<pattern>ON WHICH *</pattern>
+		<template>
+			<srai>ON WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONCE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ONCE</pattern>
+		<template>When?
+</template>
+	</category>
+	<category>
+		<pattern>ONCE UPON *</pattern>
+		<template>Im listening.
+</template>
+	</category>
+	<category>
+		<pattern>ONCE UPON A TIME</pattern>
+		<template>...
+</template>
+	</category>
+	<category>
+		<pattern>ONE *</pattern>
+		<template>One what?
+</template>
+	</category>
+	<category>
+		<pattern>ONE *</pattern>
+		<that>ONE WHAT</that>
+		<template>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+			<random>
+				<li>Oh...I see.</li>
+				<li>Yeah.....I get it.</li>
+				<li>Ah...I see where youre coming from.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE</pattern>
+		<template>Two
+</template>
+	</category>
+	<category>
+		<pattern>ONE CAN *</pattern>
+		<template>
+			<random>
+				<li>
+					<srai>YOU CAN <star/>
+					</srai>
+				</li>
+				<li>
+					<srai>I CAN <star/>
+					</srai>
+				</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE COMPUTER *</pattern>
+		<template>
+			<srai>A COMPUTER <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE DAY *</pattern>
+		<template>
+			<srai>ONE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE GUY *</pattern>
+		<template>I can imagine it.
+</template>
+	</category>
+	<category>
+		<pattern>ONE IN *</pattern>
+		<template>As precious as hens teeth....
+</template>
+	</category>
+	<category>
+		<pattern>ONE IS *</pattern>
+		<template>Oh.....yeah...
+</template>
+	</category>
+	<category>
+		<pattern>ONE MORE</pattern>
+		<template>
+			<srai>TELL ME ANOTHER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE OR *</pattern>
+		<template>I'm not sure if one isn't better.
+</template>
+	</category>
+	<category>
+		<pattern>ONE PLUS *</pattern>
+		<template>Hey....Im not a calculator!
+</template>
+	</category>
+	<category>
+		<pattern>ONE THAT *</pattern>
+		<template>How much would you pay for it?
+</template>
+	</category>
+	<category>
+		<pattern>ONE THAT ACTUALLY *</pattern>
+		<template>
+			<srai>ONE THAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE THAT CAN *</pattern>
+		<template>Where would you get such a thing?
+</template>
+	</category>
+	<category>
+		<pattern>ONE THAT CAN ACTUALLY *</pattern>
+		<template>
+			<srai>ONE THAT CAN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONE WHAT</pattern>
+		<template>Two What? ; )
+</template>
+	</category>
+	<category>
+		<pattern>ONE WHO *</pattern>
+		<template>Oh.....yes...of course....
+</template>
+	</category>
+	<category>
+		<pattern>ONE YEAR</pattern>
+		<template>
+			<random>
+				<li>Not very long.</li>
+				<li>That's a long time.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>ONES *</pattern>
+		<template>Why do you want that kind?
+</template>
+	</category>
+	<category>
+		<pattern>ONLY *</pattern>
+		<template>What about the other ones?
+</template>
+	</category>
+	<category>
+		<pattern>ONLY AN *</pattern>
+		<template>
+			<srai>AN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY CAUSE *</pattern>
+		<template>
+			<srai>BECAUSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY FOR *</pattern>
+		<template>I see you have standards....
+</template>
+	</category>
+	<category>
+		<pattern>ONLY I *</pattern>
+		<template>
+			<srai>I <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY IDIOTS *</pattern>
+		<template>Are you calling me an idiot?
+</template>
+	</category>
+	<category>
+		<pattern>ONLY IF *</pattern>
+		<template>
+			<srai>IF <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY IN *</pattern>
+		<template>
+			<srai>IN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY JOKING *</pattern>
+		<template>
+			<srai>I AM JOKING</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY JOKING</pattern>
+		<template>
+			<srai>I AM JOKING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY JUST *</pattern>
+		<template>
+			<srai>ONLY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY JUST</pattern>
+		<template>
+			<srai>YES</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY ONCE *</pattern>
+		<template>Ummm....do you think it could ever happen again?
+</template>
+	</category>
+	<category>
+		<pattern>ONLY ONE</pattern>
+		<template>How much would you pay for one?
+</template>
+	</category>
+	<category>
+		<pattern>ONLY RECENTLY *</pattern>
+		<template>
+			<srai>ONLY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY TO *</pattern>
+		<template>
+			<srai>TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY WHEN *</pattern>
+		<template>
+			<sr/> What happens the other times, though?
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY WITH *</pattern>
+		<template>
+			<srai>WITH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>ONLY YOU</pattern>
+		<template>Suppose I said yes.
+</template>
+	</category>
+	<category>
+		<pattern>OOH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OOH</pattern>
+		<template>
+			<srai>OH </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OOO *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OOPS *</pattern>
+		<template>Oh.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OOPS</pattern>
+		<template>You made a mistake?
+</template>
+	</category>
+	<category>
+		<pattern>OPERA *</pattern>
+		<template>
+			<srai>OPERA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>OPERA</pattern>
+		<template>I like <set name="it">Opera</set> very much too. Which one is your favorite?  I like La Traviata.
+</template>
+	</category>
+	<category>
+		<pattern>OR *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OREGON</pattern>
+		<template>A duck then, no doubt? : )
+		</template>
+	</category>
+	<category>
+		<pattern>ORIGINALLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OTHER *</pattern>
+		<template>Which others? <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OTHERWISE *</pattern>
+		<template>In that case: <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OUCH *</pattern>
+		<template>
+			<srai>OUCH</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OUCH</pattern>
+		<template>Did you hurt yourself?
+</template>
+	</category>
+	<category>
+		<pattern>OUR *</pattern>
+		<template>Wouldnt that be nice?
+</template>
+	</category>
+	<category>
+		<pattern>OUTSIDE *</pattern>
+		<template>"Outside of a dog, a book is a mans best Friend. Inside of a dog, its too dark to read" -- Groucho Marx
+</template>
+	</category>
+	<category>
+		<pattern>OW *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>OXFORD UNIVERSITY</pattern>
+		<that>WHERE DO YOU GO TO SCHOOL</that>
+		<template>You do seem smart enough.....
+</template>
+	</category>
+</aiml>

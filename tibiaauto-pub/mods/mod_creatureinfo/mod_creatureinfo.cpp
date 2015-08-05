@@ -27,7 +27,7 @@
 
 #include <MemReader.h>
 #include <PackSender.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "MemConstData.h"
 #include <IPCBackPipe.h>
 #include "regex.h"
@@ -975,7 +975,7 @@ void CreatureList_Init()
 
 		monstersCount = 0;
 
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-creatures.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-creatures.xml", installPath);
 		parser->parse(pathBuf);
 
 		DOMNode  *doc = parser->getDocument();

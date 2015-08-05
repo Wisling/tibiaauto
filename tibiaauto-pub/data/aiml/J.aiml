@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- J.aiml - Starts with "J"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+
+ <category>
+		<pattern>JACKIE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JACKIE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JAMES</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JAMES</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JAN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JAN</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JANE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JANE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JASON</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JASON</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JEANS</pattern>
+		<template>Which brand?
+</template>
+	</category>
+	<category>
+		<pattern>JEFF</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JEFF</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JEN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JEN</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JENN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JENN</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JENNA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JENNA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JENNIFER</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JENNIFER</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JENNY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME JENNY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JENS</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JENS</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JEREMY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JEREMY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JERK</pattern>
+		<template>You are a jerk, too.....
+</template>
+	</category>
+	<category>
+		<pattern>JESSICA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JESSICA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JILL</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JILL</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JIM</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JIM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOB *</pattern>
+		<template>Work sucks.
+</template>
+	</category>
+	<category>
+		<pattern>JOE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>My name is Joe</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOE WHO</pattern>
+		<template>
+			<srai>WHO IS JOE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOHN *</pattern>
+		<template>Is your name John?
+</template>
+	</category>
+	<category>
+		<pattern>JOHN</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JOHN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOKE</pattern>
+		<template>
+			<srai>IS THAT A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOKES</pattern>
+		<template>
+			<srai>TELL ME A JOKE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOLLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>JON</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JON</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOSH</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JOSH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JOYCE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME JOYCE</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JR</pattern>
+		<template>Junior....Or do you mean George W?
+</template>
+	</category>
+	<category>
+		<pattern>JUDY</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME JUDY</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JULIA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS JULIA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>JULIE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<think>
+				<set name="gender">she</set>
+			</think>
+			<srai>MY NAME IS JULIE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JUNG *</pattern>
+		<template>What about Freud?
+</template>
+	</category>
+	<category>
+		<pattern>JUS *</pattern>
+		<template>
+			<srai>JUST <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JUST *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>JUST</pattern>
+		<template>Its only just begun.
+</template>
+	</category>
+	<category>
+		<pattern>JUST BEFORE THAT</pattern>
+		<template>"<that index="2,1"/>"
+</template>
+	</category>
+	<category>
+		<pattern>JUST CURIOUS</pattern>
+		<template>
+			<srai>I AM CURIOUS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JUST FINE</pattern>
+		<template>
+			<srai>FINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JUST FINE THANK YOU</pattern>
+		<template>
+			<srai>I AM FINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>JUST KIDDING</pattern>
+		<template>Ha.....I thought you were but I wasnt sure......
+</template>
+	</category>
+	<category>
+		<pattern>JUST NOW</pattern>
+		<that>WHEN</that>
+		<template>Ill try not to do it again.
+</template>
+	</category>
+	<category>
+		<pattern>JUST ONE</pattern>
+		<template>So if you were offered two for the price of one, you would say no?
+</template>
+	</category>
+	<category>
+		<pattern>JUST THAT</pattern>
+		<template>"<input index="1"/>"
+</template>
+	</category>
+</aiml>

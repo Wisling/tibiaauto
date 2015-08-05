@@ -2,8 +2,8 @@
 //
 #include "stdafx.h"
 #include "protocol.h"
-#include "ModuleUtil.h"
-#include "ModuleProxy.h"
+#include <ModuleUtil.h>
+#include "ModuleLoader.h"
 #include <MemReader.h>
 #include <MemUtil.h>
 #include "IPCPipeBack.h"

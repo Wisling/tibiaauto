@@ -32,7 +32,7 @@
 #include "SendKeys.h"
 #include <queue>
 #include <time.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <VariableStore.h>
 #include <MemUtil.h>
 #include <TileReader.h>

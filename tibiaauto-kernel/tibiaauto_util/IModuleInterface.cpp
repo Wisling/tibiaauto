@@ -110,3 +110,13 @@ void IModuleInterface::superStart()
 		PostQuitMessage(0);
 	}
 }
+
+const char* IModuleInterface::getModuleName()
+{
+	return moduleName.c_str();
+}
+
+void IModuleInterface::setModuleName(const char* moduleName)
+{
+	this->moduleName = moduleName;
+}

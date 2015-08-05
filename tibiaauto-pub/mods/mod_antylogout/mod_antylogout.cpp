@@ -26,10 +26,10 @@
 
 #include <MemReader.h>
 #include <PackSender.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "MemConstData.h"
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <time.h>
 
 #ifdef _DEBUG

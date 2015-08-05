@@ -8,7 +8,7 @@
 #include <MemUtil.h>
 #include <TibiaItem.h>
 #include <PackSender.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

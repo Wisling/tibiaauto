@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "mod_cavebot.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "SendStats.h"
 #include "zlib.h"
 

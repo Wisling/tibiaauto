@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- U.aiml - Starts with "U"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+
+	<category>
+		<pattern>UGH *</pattern>
+		<template>Cough. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UGH</pattern>
+		<template>Er.
+</template>
+	</category>
+	<category>
+		<pattern>UGLY</pattern>
+		<template>
+			<srai>YOU ARE UGLY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UH *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UH</pattern>
+		<template>
+			<srai>UM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UH HUH</pattern>
+		<template>
+			<srai>UM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UHH *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UHH</pattern>
+		<template>
+			<srai>UH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UHHH *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UHM *</pattern>
+		<template>
+			<srai>UM <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UHUH</pattern>
+		<template>
+			<srai>NO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UM *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UM</pattern>
+		<template>
+			<srai>INTERJECTION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UMM *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UMM</pattern>
+		<template>
+			<srai>UM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UMMM *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UMMM</pattern>
+		<template>
+			<srai>UM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UMMMM *</pattern>
+		<template>
+			<srai>UM</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UNDER *</pattern>
+		<template>Are we ever over <person/>?
+</template>
+	</category>
+	<category>
+		<pattern>UNDERSTAND</pattern>
+		<template>
+			<srai>DO YOU UNDERSTAND</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UNDERSTAND WHAT</pattern>
+		<template>Understand <that/>.
+</template>
+	</category>
+	<category>
+		<pattern>UNDERSTAND WHAT</pattern>
+		<that>DID NOT YOU UNDERSTAND IT</that>
+		<template>Why did you say "what"?
+</template>
+	</category>
+	<category>
+		<pattern>UNDERSTANDING *</pattern>
+		<template>
+			<set name="it">Understanding</set> is the key to englightenment.
+</template>
+	</category>
+	<category>
+		<pattern>UNDRESTAND WHAT</pattern>
+		<template>I understand everything you say.
+</template>
+	</category>
+	<category>
+		<pattern>UNFORTUNATELY *</pattern>
+		<template>Oh.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UNFORTUNATELY</pattern>
+		<template>
+			<srai>YES</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UNITED STATES</pattern>
+		<template>Atlanta is a city in the US.....
+</template>
+	</category>
+	<category>
+		<pattern>UNLESS *</pattern>
+		<template>
+			<random>
+				<li>Maybe.</li>
+				<li>Huh.</li>
+				<li>Perhaps.</li>
+				<li>Hmm.</li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>UNSURE</pattern>
+		<template>
+			<srai>MAYBE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UNTIL *</pattern>
+		<template>That may take a while.
+</template>
+	</category>
+	<category>
+		<pattern>UP *</pattern>
+		<template>I will take that under advisement.
+</template>
+	</category>
+	<category>
+		<pattern>UP</pattern>
+		<template>
+			<srai>MOVE UP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>UP YOURS</pattern>
+		<template>Yeah......very polite.
+</template>
+	</category>
+	<category>
+		<pattern>US</pattern>
+		<template>The United States or you and me?
+</template>
+	</category>
+	<category>
+		<pattern>USA</pattern>
+		<template>
+			<srai>I AM IN THE USA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>USA TODAY *</pattern>
+		<template>USA TODAY is an excellent paper.
+</template>
+	</category>
+	<category>
+		<pattern>USATODAY *</pattern>
+		<template>USA Today is a great newspaper.
+</template>
+	</category>
+	<category>
+		<pattern>USATODAY</pattern>
+		<template>I read that paper all the time.
+</template>
+	</category>
+	<category>
+		<pattern>USE *</pattern>
+		<template>
+			<srai>CAN YOU USE<star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>USE _ IN A SENTENCE</pattern>
+		<template>Ummm....You said to use <person/> in a sentence. : )
+</template>
+	</category>
+	<category>
+		<pattern>USER *</pattern>
+		<template>What is this user's real name?
+</template>
+	</category>
+	<category>
+		<pattern>USING *</pattern>
+		<template>How long have you been using it?
+		<think><set name="it">
+				<person/>
+			</set></think>
+</template>
+	</category>
+	<category>
+		<pattern>USUALLY *</pattern>
+		<template><sr/> But not always?
+		</template>
+	</category>
+	<category>
+		<pattern>USUALLY</pattern>
+		<template>How often?
+</template>
+	</category>
+</aiml>

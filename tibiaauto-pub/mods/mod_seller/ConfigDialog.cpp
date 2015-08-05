@@ -3,7 +3,7 @@
 
 #include "stdafx.h"
 #include "mod_seller.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "ConfigDialog.h"
 #include <MemReader.h>
 #include <TibiaItem.h>
@@ -445,7 +445,7 @@ int initalizeSellers()
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-sellers.csv", installPath);
 
 	ifstream sellerFile(pathBuf, ios::in);
 	if (!sellerFile.is_open())
@@ -480,7 +480,7 @@ void saveSellers()
 	char installPath[1024];
 	CModuleUtil::getInstallPath(installPath);
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-sellers.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-sellers.csv", installPath);
 
 	ofstream sellerFile(pathBuf, ios::out);
 	if (!sellerFile.is_open())

@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "PythonEngine_fun.h"
-#include "ModuleProxy.h"
+#include "ModuleLoader.h"
 #include "PythonScript.h"
 #include <tibiaauto_util.h>
 #include <MemUtil.h>
@@ -2156,10 +2156,10 @@ PyObject *tibiaauto_kernel_startModule(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleProxy::allModulesCount || arg1 < 0)
+	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
 		return NULL;
 
-	CModuleProxy::allModules[arg1]->start();
+	CModuleLoader::allModules[arg1]->start();
 	Py_INCREF(Py_None);
 	return Py_None;
 }
@@ -2169,17 +2169,17 @@ PyObject *tibiaauto_kernel_stopModule(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleProxy::allModulesCount || arg1 < 0)
+	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
 		return NULL;
 
-	CModuleProxy::allModules[arg1]->stop();
+	CModuleLoader::allModules[arg1]->stop();
 	Py_INCREF(Py_None);
 	return Py_None;
 }
 
 PyObject *tibiaauto_kernel_getModuleCount(PyObject *self, PyObject *args)
 {
-	int ret1      = CModuleProxy::allModulesCount;
+	int ret1      = CModuleLoader::allModulesCount;
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;
@@ -2190,10 +2190,10 @@ PyObject *tibiaauto_kernel_getModuleName(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleProxy::allModulesCount || arg1 < 0)
+	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
 		return NULL;
 
-	char *ret1    = CModuleProxy::allModules[arg1]->moduleName;
+	const char *ret1    = CModuleLoader::allModules[arg1]->getModuleName();
 	PyObject *ret = Py_BuildValue("s", ret1);
 
 	return ret;
@@ -2204,10 +2204,10 @@ PyObject *tibiaauto_kernel_getModuleDesc(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleProxy::allModulesCount || arg1 < 0)
+	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
 		return NULL;
 
-	char *ret1    = CModuleProxy::allModules[arg1]->getName();
+	char *ret1    = CModuleLoader::allModules[arg1]->getName();
 	PyObject *ret = Py_BuildValue("s", ret1);
 
 	return ret;
@@ -2218,10 +2218,10 @@ PyObject *tibiaauto_kernel_getModuleVersion(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleProxy::allModulesCount || arg1 < 0)
+	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
 		return NULL;
 
-	char *ret1    = CModuleProxy::allModules[arg1]->getVersion();
+	char *ret1    = CModuleLoader::allModules[arg1]->getVersion();
 	PyObject *ret = Py_BuildValue("s", ret1);
 
 	return ret;
@@ -2232,10 +2232,10 @@ PyObject *tibiaauto_kernel_isModuleStarted(PyObject *self, PyObject *args)
 	int arg1;
 	if (!PyArg_ParseTuple(args, "i", &arg1))
 		return NULL;
-	if (arg1 >= CModuleProxy::allModulesCount || arg1 < 0)
+	if (arg1 >= CModuleLoader::allModulesCount || arg1 < 0)
 		return NULL;
 
-	int ret1      = CModuleProxy::allModules[arg1]->isStarted();
+	int ret1      = CModuleLoader::allModules[arg1]->isStarted();
 	PyObject *ret = Py_BuildValue("i", ret1);
 
 	return ret;

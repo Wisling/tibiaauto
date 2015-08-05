@@ -8,7 +8,7 @@
 #include "util.h"
 #include "Skin.h"
 #include <MemReader.h>
-#include <tibiaauto_util/SkinLoader.h>
+#include <SkinLoader.h>
 
 
 /////////////////////////////////////////////////////////////////////////////

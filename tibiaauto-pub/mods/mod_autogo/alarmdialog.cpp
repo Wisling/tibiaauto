@@ -4,10 +4,12 @@
 #include "stdafx.h"
 #include "mod_autogo.h"
 #include "AlarmDialog.h"
+#include "CustomSpellDialog.h"
 #include <TibiaItem.h>
 #include <MemReader.h>
-#include "ModuleUtil.h"
-#include "CustomSpellDialog.h"
+#include <ModuleUtil.h>
+#include <TibiaTile.h>
+#include <TileReader.h>
 #include <Tlhelp32.h>
 #include <MMSystem.h>
 #include <math.h>
@@ -15,8 +17,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-#include <TibiaTile.h>
-#include <TileReader.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
@@ -584,7 +584,7 @@ BOOL CAlarmDialog::OnInitDialog()
 
 	char path[1024];
 	CModuleUtil::getInstallPath(path);
-	strcat(path, "\\mods\\sound\\*.wav");
+	strcat(path, "\\data\\sound\\*.wav");
 
 	CFileFind finder;
 	BOOL bWorking = finder.FindFile(path);

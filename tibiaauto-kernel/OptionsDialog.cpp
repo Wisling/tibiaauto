@@ -19,7 +19,7 @@
 
 #include "stdafx.h"
 #include "tibiaauto.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "OptionsDialog.h"
 #include "ColorChooser.h"
 #include "zlib.h"

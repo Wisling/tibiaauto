@@ -149,7 +149,7 @@
     <ClCompile Include="LoadedModules.cpp" />
     <ClCompile Include="md5c.cpp" />
     <ClCompile Include="md5class.cpp" />
-    <ClCompile Include="ModuleProxy.cpp" />
+    <ClCompile Include="ModuleLoader.cpp" />
     <ClCompile Include="OptionsDialog.cpp" />
     <ClCompile Include="PythonEngine.cpp" />
     <ClCompile Include="PythonEngine_fun.cpp" />
@@ -182,7 +182,7 @@
     <ClInclude Include="LoadedModules.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="md5class.h" />
-    <ClInclude Include="ModuleProxy.h" />
+    <ClInclude Include="ModuleLoader.h" />
     <ClInclude Include="OptionsDialog.h" />
     <ClInclude Include="PythonEngine.h" />
     <ClInclude Include="PythonEngine_fun.h" />

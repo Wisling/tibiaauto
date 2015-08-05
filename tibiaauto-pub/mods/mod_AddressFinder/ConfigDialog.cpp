@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_addressfinder.h"
 #include "ConfigDialog.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <MemReader.h>
 #include <MemUtil.h>
 #include <TibiaItem.h>

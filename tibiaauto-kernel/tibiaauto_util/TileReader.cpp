@@ -110,7 +110,7 @@ void CTileReader::loadTiles()
 		}
 		int rootNr;
 		char pathBuf[2048];
-		sprintf(pathBuf, "%s\\mods\\tibiaauto-tiles.xml", installPath);
+		sprintf(pathBuf, "%s\\data\\tibiaauto-tiles.xml", installPath);
 		parser->parse(pathBuf);
 		DOMNode  *doc = parser->getDocument();
 		int rootCount = doc->getChildNodes()->getLength();
@@ -184,7 +184,7 @@ void CTileReader::saveTiles()
 	}
 	int rootNr;
 	char pathBuf[2048];
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-tiles.xml", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-tiles.xml", installPath);
 	parser->parse(pathBuf);
 	DOMNode  *doc = parser->getDocument();
 	int rootCount = doc->getChildNodes()->getLength();

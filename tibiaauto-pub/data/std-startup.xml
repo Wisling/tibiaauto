@@ -1,0 +1,117 @@
+<aiml version="1.0">
+
+<pattern>BOOTSTRAP</pattern>
+<template>
+Version Info: <version/><br/>
+Thanks for using J-ALICE!
+<think>
+<!-- this srai's to a category to load the main AIML content -->
+<!-- you can create another category, and srai to that to learn
+     additional content, or add additional learn statements to
+     the existing category that you are using for loading AIML
+     content -->
+<srai>LOAD AIML A</srai>
+</think>
+</template>
+</category>
+
+<!-- This category works with the Anna and Wallace AIML sets -->
+<category>
+<pattern>LOAD AIML A</pattern>
+<template>
+<secure error="You are not allowed to load this AIML set">
+<learn>mods/aiml/A.aiml</learn>
+<learn>mods/aiml/B.aiml</learn>
+<learn>mods/aiml/C.aiml</learn>
+<learn>mods/aiml/D.aiml</learn>
+<learn>mods/aiml/E.aiml</learn>
+<learn>mods/aiml/F.aiml</learn>
+<learn>mods/aiml/G.aiml</learn>
+<learn>mods/aiml/H.aiml</learn>
+<learn>mods/aiml/I.aiml</learn>
+<learn>mods/aiml/J.aiml</learn>
+<learn>mods/aiml/K.aiml</learn>
+<learn>mods/aiml/L.aiml</learn>
+<learn>mods/aiml/M.aiml</learn>
+<learn>mods/aiml/N.aiml</learn>
+<learn>mods/aiml/O.aiml</learn>
+<learn>mods/aiml/P.aiml</learn>
+<learn>mods/aiml/Q.aiml</learn>
+<learn>mods/aiml/R.aiml</learn>
+<learn>mods/aiml/S.aiml</learn>
+<learn>mods/aiml/T.aiml</learn>
+<learn>mods/aiml/U.aiml</learn>
+<learn>mods/aiml/V.aiml</learn>
+<learn>mods/aiml/W.aiml</learn>
+<learn>mods/aiml/X.aiml</learn>
+<learn>mods/aiml/Y.aiml</learn>
+<learn>mods/aiml/Z.aiml</learn>
+<learn>mods/aiml/1.aiml</learn>
+<learn>mods/aiml/2.aiml</learn>
+<learn>mods/aiml/3.aiml</learn>
+<learn>mods/aiml/4.aiml</learn>
+<learn>mods/aiml/5.aiml</learn>
+<learn>mods/aiml/6.aiml</learn>
+<learn>mods/aiml/7.aiml</learn>
+<learn>mods/aiml/8.aiml</learn>
+<learn>mods/aiml/9.aiml</learn>
+<learn>mods/aiml/star.aiml</learn>
+<learn>mods/aiml/under.aiml</learn>
+<learn>mods/aiml/topic.aiml</learn>
+</secure>
+</template>
+</category>
+
+<!-- This category works with the Standard AIML Set -->
+<category>
+<pattern>LOAD AIML B</pattern>
+<template>
+<secure>
+<learn>mods/standard/std-65percent.aiml</learn>
+<learn>mods/standard/std-atomic.aiml</learn>
+<learn>mods/standard/std-botmaster.aiml</learn>
+<learn>mods/standard/std-brain.aiml</learn>
+<learn>mods/standard/std-connect.aiml</learn>
+<learn>mods/standard/std-dictionary.aiml</learn>
+<learn>mods/standard/std-disconnect.aiml</learn>
+<learn>mods/standard/std-dont.aiml</learn>
+<learn>mods/standard/std-errors.aiml</learn>
+<learn>mods/standard/std-gender.aiml</learn>
+<learn>mods/standard/std-geography.aiml</learn>
+<learn>mods/standard/std-german.aiml</learn>
+<learn>mods/standard/std-gossip.aiml</learn>
+<learn>mods/standard/std-hello.aiml</learn>
+<learn>mods/standard/std-inactivity.aiml</learn>
+<learn>mods/standard/std-inventions.aiml</learn>
+<learn>mods/standard/std-knowledge.aiml</learn>
+<learn>mods/standard/std-lizards.aiml</learn>
+<learn>mods/standard/std-login.aiml</learn>
+<learn>mods/standard/std-numbers.aiml</learn>
+<learn>mods/standard/std-personality.aiml</learn>
+<learn>mods/standard/std-pickup.aiml</learn>
+<learn>mods/standard/std-politics.aiml</learn>
+<learn>mods/standard/std-profile.aiml</learn>
+<learn>mods/standard/std-religion.aiml</learn>
+<learn>mods/standard/std-robot.aiml</learn>
+<learn>mods/standard/std-sales.aiml</learn>
+<learn>mods/standard/std-sextalk.aiml</learn>
+<learn>mods/standard/std-sports.aiml</learn>
+<learn>mods/standard/std-srai.aiml</learn>
+<learn>mods/standard/std-suffixes.aiml</learn>
+<learn>mods/standard/std-that.aiml</learn>
+<learn>mods/standard/std-turing.aiml</learn>
+<learn>mods/standard/std-yesno.aiml</learn>
+</secure>
+</template>
+</category>
+
+<!-- Loads an AIML file while the bot is running -->
+
+<category>
+<pattern>LOAD *</pattern>
+<secure error="You are not allowed to load files.">
+<template><learn><star/>.aiml</learn></template>
+</secure>
+</category>
+
+</aiml>

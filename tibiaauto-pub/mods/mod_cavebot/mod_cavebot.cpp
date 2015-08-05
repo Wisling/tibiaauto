@@ -35,6 +35,7 @@
 #include <MemConstData.h>
 #include <MemUtil.h>
 #include <VariableStore.h>
+#include <IPCBackPipe.h>
 #include <TileReader.h>
 #include <IpcMessage.h>
 #include <time.h>
@@ -49,7 +50,6 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-#include <IPCBackPipe.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 

@@ -27,7 +27,7 @@
 
 #include <MemReader.h>
 #include <PackSender.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <TibiaItem.h>
 #include <TileReader.h>
 #include "SendStats.h"

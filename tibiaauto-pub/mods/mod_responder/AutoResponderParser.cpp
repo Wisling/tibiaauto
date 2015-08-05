@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "mod_responder.h"
 #include "AutoResponderParser.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "Util.h"
 #include <PackSender.h>
 #include <MemReader.h>

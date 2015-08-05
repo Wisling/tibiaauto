@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- 1.aiml - Number related   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>1 *</pattern>
+		<template>
+			<random>
+				<li>One what?</li>
+				<li>One of what?</li>
+				<li>
+					<srai>1</srai>
+				</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>1 0</pattern>
+		<template>One.
+</template>
+	</category>
+	<category>
+		<pattern>1</pattern>
+		<template>Only one?
+</template>
+	</category>
+	<category>
+		<pattern>1 CENT</pattern>
+		<template>
+			<random>
+				<li>That won't buy anything.</li>
+				<li>Tht won't buy much.</li>
+				<li>You cant buy anything for a penny anymore.</li>
+				<li>Thats not very much money.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>1 DOLLAR</pattern>
+		<template>
+			<random>
+				<li>You can't buy much for a dollar anymore.</li>
+				<li>Ha....LIke those annoying 10-10-220 ads.</li>
+				<li>Thats like those 10-10-220 ads. I hate those.</li>
+				<li>You cant really buy much of anything for a dollar.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>1 OR 2</pattern>
+		<template>
+			<random>
+				<li>A couple.</li>
+				<li>A coulpe.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>1 POINT *</pattern>
+		<template>
+			<random>
+				<li>That's more precision than I need to know.</li>
+				<li>Thats quite a bit of precision - more than I nees.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>1 YEAR</pattern>
+		<template>
+			<random>
+				<li>That can seem like a long time.</li>
+				<li>Thats a pretty long time.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>10 *</pattern>
+		<template>
+			<srai>WHAT IS 10 <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>10</pattern>
+		<template>
+			<srai>I AM 10 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>100 *</pattern>
+		<that>HOW MUCH *</that>
+		<template>Wow that is <random>
+				<li>expensive.</li>
+				<li>a lot of money.</li>
+				<li>pricey.</li>
+				<li>soooo expensive!</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>100 PERSON</pattern>
+		<template>
+			<srai>WHO IS 100 PERSON</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>11</pattern>
+		<template>
+			<srai>I am 11 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>12</pattern>
+		<template>
+			<srai>I am 12 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>123456789</pattern>
+		<template>
+			<random>
+				<li>Ten.</li>
+				<li>10 :)</li>
+				<li>Are we playing a game or somethig? THe answer is 10.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>13 *</pattern>
+		<template>
+			<srai>I am 13 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>13</pattern>
+		<template>
+			<srai>I am 13 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>14 *</pattern>
+		<template>
+			<srai>I am 14 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>14</pattern>
+		<template>
+			<srai>I am 14 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>15</pattern>
+		<template>
+			<srai>I am 15 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>153</pattern>
+		<template>One hundred fifty three.
+</template>
+	</category>
+	<category>
+		<pattern>16</pattern>
+		<template>
+			<srai>I am 16 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>17</pattern>
+		<template>
+			<srai>I am 17 years old</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>18</pattern>
+		<template>
+			<srai>I AM 18 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>187</pattern>
+		<template>187 is something you hear a lot in gangsta music. I dont know what it means.</template>
+	</category>
+	<category>
+		<pattern>184</pattern>
+		<template>
+			<srai>WHO IS 184 PERSON</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>19</pattern>
+		<template>
+			<srai>I AM 19 YEARS OLD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>1900</pattern>
+		<template>Last Centruy.</template>
+	</category>
+	<category>
+		<pattern>1999</pattern>
+		<template>
+			<srai>WHAT HAPPENED IN 1999?</srai>
+		</template>
+	</category>
+</aiml>

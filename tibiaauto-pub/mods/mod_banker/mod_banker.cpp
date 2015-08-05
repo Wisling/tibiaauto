@@ -29,13 +29,13 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <VariableStore.h>
+#include <ModuleUtil.h>
 #include <Tlhelp32.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-#include <VariableStore.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 

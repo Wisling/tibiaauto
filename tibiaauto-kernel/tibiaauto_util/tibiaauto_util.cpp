@@ -31,7 +31,6 @@ static char THIS_FILE[] = "C:/temp/testfdkls.txt";
 #endif // ifdef _DEBUG
 
 extern HANDLE hPipe;
-CRITICAL_SECTION ItemsInitCriticalSection;
 
 void setProcessId(int processId)
 {

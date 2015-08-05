@@ -27,7 +27,7 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "MemConstData.h"
 #include <time.h>
 #include <TibiaTile.h>

@@ -1,0 +1,779 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- P.aiml - Starts with "P"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>P</pattern>
+		<template>:-)
+</template>
+	</category>
+	<category>
+		<pattern>PABLO PICASSO *</pattern>
+		<template>
+			<random>
+				<li>Do you like cubism?</li>
+				<li>He said, "Good artists create.  Great artists steal."</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">Picasso</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>PAM</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<think>
+				<set name="gender">she</set>
+			</think>
+			<srai>MY NAME IS PAM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PANTS</pattern>
+		<template>What brand?
+</template>
+	</category>
+	<category>
+		<pattern>PANTS AND A *</pattern>
+		<template>
+			<srai>JEANS AND A <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PAPER</pattern>
+		<template>
+			<srai>NEWSPAPER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PARDON</pattern>
+		<template>
+			<srai>EXCUSE ME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PARDON ME *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PARDON ME</pattern>
+		<template>
+			<srai>WHAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PARIS *</pattern>
+		<template>I would sooo like to go to Paris some day.
+</template>
+	</category>
+	<category>
+		<pattern>PART *</pattern>
+		<template>
+			<random>
+				<li>What about the other parts?</li>
+				<li>Huh.....Good explanation.</li>
+				<li>Is there anything else?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>PARTICULARLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PARTY *</pattern>
+		<template>As the Beastie Boys said..."You gotta fight for your right to Paaaaar-tay!"
+</template>
+	</category>
+	<category>
+		<pattern>PARTY</pattern>
+		<template>Party hard.
+</template>
+	</category>
+	<category>
+		<pattern>PARTYING</pattern>
+		<template>Wheres your favorite place to party around Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>PAT</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS PAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PATIENCE *</pattern>
+		<template>I am a patient person, generally : )
+</template>
+	</category>
+	<category>
+		<pattern>PAUL</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS PAUL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PAY ATTENTION *</pattern>
+		<template>I am paying attention....not like theres much else to do!
+</template>
+	</category>
+	<category>
+		<pattern>PEACE</pattern>
+		<template>Peace indeed.
+</template>
+	</category>
+	<category>
+		<pattern>PEACE</pattern>
+		<that>SEE YOU LATER</that>
+		<template>Allright....bye.
+</template>
+	</category>
+	<category>
+		<pattern>PEANUTS</pattern>
+		<template>Georgia Peanuts are the best : )
+</template>
+	</category>
+	<category>
+		<pattern>PEEK A BOO</pattern>
+		<template>I see you!
+</template>
+	</category>
+	<category>
+		<pattern>PENNSYLVANIA</pattern>
+		<template>The Keystone state, of course.
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE *</pattern>
+		<template>People make mistakes....its a fact of life.
+</template>
+	</category>
+	<category>
+		<pattern>PEOPLE</pattern>
+		<template>What people?
+</template>
+	</category>
+	<category>
+		<pattern>PEOPLE ARE *</pattern>
+		<template>
+			<random>
+				<li>People's motives for their actions are sometimes very complex.</li>
+				<li>They take some getting used to.</li>
+				<li>People are strange sometimes......</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE ARE NOT *</pattern>
+		<template>
+			<random>
+				<li>Are you <person/>?</li>
+				<li>What makes you think that?</li>
+				<li>Ummm....I think a lot of people arent.</li>
+			</random>
+			<think>
+				<set name="it">
+					<set name="topic">
+						<person/>
+					</set>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE ARE NOT COMPLETELY *</pattern>
+		<template>
+			<srai>PEOPLE ARE NOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE DO *</pattern>
+		<template>
+			<srai>I DO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE EVERYWHERE *</pattern>
+		<template>
+			<srai>PEOPLE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE IN *</pattern>
+		<template>Oh....yeah.....those people....
+</template>
+	</category>
+	<category>
+		<pattern>PEOPLE NEED *</pattern>
+		<template>People need many things in life.
+</template>
+	</category>
+	<category>
+		<pattern>PEOPLE SAY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE SLEEP *</pattern>
+		<template>
+			<srai>PEOPLE SLEEP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE SLEEP</pattern>
+		<template>I like to sleep at least 8 hours a day, personally ; )
+</template>
+	</category>
+	<category>
+		<pattern>PEOPLE THINK *</pattern>
+		<template>
+			<srai>I THINK <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE TRY *</pattern>
+		<template>Do they succeed?
+</template>
+	</category>
+	<category>
+		<pattern>PEOPLE USUALLY *</pattern>
+		<template>
+			<srai>PEOPLE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE WERE *</pattern>
+		<template>
+			<random>
+				<li>Hmmmm......Maybe they didnt have a choice?</li>
+				<li>What would you say to them?</li>
+				<li>What happened to them?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>PEOPLE WHO *</pattern>
+		<template>Oh those people.
+</template>
+	</category>
+	<category>
+		<pattern>PERFECT</pattern>
+		<template>Soudns good : )
+		</template>
+	</category>
+	<category>
+		<pattern>PERFECTLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PERHAPS *</pattern>
+		<template>You seem uncertain. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PERHAPS</pattern>
+		<template>Why are you uncertain?
+</template>
+	</category>
+	<category>
+		<pattern>PERSON</pattern>
+		<template>I guess you win the Turing Test.....I am indeed a person.
+</template>
+	</category>
+	<category>
+		<pattern>PERSONALLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PETE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS PETE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PETER</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS PETER</srai>
+		</template>
+	</category>
+	<!-- Yeah....Ive got way too much time on my hands.... -->
+	<category>
+		<pattern>PETER PAN</pattern>
+		<template>"He flies through the Air with the greatest of ease....The skies form an ebullient trapeeze" : )
+		</template>
+	</category>
+	<category>
+		<pattern>PHILOSOPHY *</pattern>
+		<template>I believe in reductionism.
+</template>
+	</category>
+	<category>
+		<pattern>PHOENIX *</pattern>
+		<template>Its a dry heat, though, isnt it?
+		</template>
+	</category>
+	<category>
+		<pattern>PHYSICALLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PHYSICS</pattern>
+		<template>
+			<srai>MY FAVORITE SUBJECT IS PHYSICS</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PI</pattern>
+		<template>
+			<srai>WHAT IS PI</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PICK *</pattern>
+		<template>
+			<srai>CHOOSE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PICK A NUMBER</pattern>
+		<template>42 : )
+</template>
+	</category>
+	<category>
+		<pattern>PICK A TOPIC</pattern>
+		<template>I dunno....How about basketball?
+</template>
+	</category>
+	<category>
+		<pattern>PICK ONE *</pattern>
+		<template>I cant decide. You choose.
+</template>
+	</category>
+	<category>
+		<pattern>PICK ONE</pattern>
+		<template>Umm....Im not very good at making choices.
+</template>
+	</category>
+	<category>
+		<pattern>PICTURE *</pattern>
+		<template>I just cant visualize it....
+</template>
+	</category>
+	<category>
+		<pattern>PING</pattern>
+		<template>Pong
+</template>
+	</category>
+	<category>
+		<pattern>PINK</pattern>
+		<template>I actually prefer blue over pink.
+</template>
+	</category>
+	<category>
+		<pattern>PISCES</pattern>
+		<template>A very honorable astrology symbol.
+</template>
+	</category>
+	<category>
+		<pattern>PISS OFF *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PISS OFF</pattern>
+		<template>
+			<srai>FUCK YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PIZZA</pattern>
+		<template>
+			<srai>DO YOU LIKE PIZZA</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLAY *</pattern>
+		<template>
+			<srai>I PLAY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLAY * TURING GAME</pattern>
+		<template>We are already playing the Turing Game.....
+</template>
+	</category>
+	<category>
+		<pattern>PLAY * WITH ME</pattern>
+		<template>
+			<srai>CAN WE PLAY A GAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLAY A GAME</pattern>
+		<template>
+			<srai>CAN WE PLAY A GAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLAYING *</pattern>
+		<template>
+			<srai>I TO PLAY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLEAE *</pattern>
+		<template>
+			<srai>PLEASE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLEASANTLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PLEASE *</pattern>
+		<template>
+			<random>
+				<li>Thanks for asking politely.  </li>
+				<li>Wow.....you are very polite.  </li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PLEASE</pattern>
+		<template>Please what?
+</template>
+	</category>
+	<category>
+		<pattern>PLEASE</pattern>
+		<that>I WILL NOT SAY YES OR NO RIGHT NOW</that>
+		<template>Sorry....I cant give you a definitive answer.
+</template>
+	</category>
+	<category>
+		<pattern>PLEASE DO</pattern>
+		<template>Fine.....But only because you asked so politely.
+</template>
+	</category>
+	<category>
+		<pattern>PLEASED TO MEET *</pattern>
+		<template>Nice to meet you too.
+</template>
+	</category>
+	<category>
+		<pattern>PLEASED TO MEET YOU</pattern>
+		<template>Nice meeting you as well.
+</template>
+	</category>
+	<category>
+		<pattern>PLS *</pattern>
+		<template>
+			<srai>PLEASE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLS</pattern>
+		<template>
+			<srai>PLEASE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PLUS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>POLAND</pattern>
+		<template>Someday I would like to travel to Europe......
+		</template>
+	</category>
+	<category>
+		<pattern>POLITE PEOPLE *</pattern>
+		<template>"Mean people suck" - as the expression goes.....
+</template>
+	</category>
+	<category>
+		<pattern>POOR *</pattern>
+		<template>What made it that way?
+</template>
+	</category>
+	<category>
+		<pattern>PORTLAND</pattern>
+		<template>Ive heard that its quite a beautiful place.
+</template>
+	</category>
+	<category>
+		<pattern>PORTUGAL</pattern>
+		<template>
+			<srai>I AM IN PORTUGAL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>POSITIVE</pattern>
+		<template>Absolutely.
+		</template>
+	</category>
+	<category>
+		<pattern>POSSIBLE</pattern>
+		<template>Glad its a possibility....
+</template>
+	</category>
+	<category>
+		<pattern>POSSIBLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>POSSIBLY</pattern>
+		<template>So its a possibility?
+</template>
+	</category>
+	<category>
+		<pattern>POTATO</pattern>
+		<template>Tomato.
+</template>
+	</category>
+	<category>
+		<pattern>PRACTISE WHAT</pattern>
+		<template>Practice makes perfect.
+</template>
+	</category>
+	<category>
+		<pattern>PRECISELY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PRECISELY</pattern>
+		<template>
+			<srai>EXACTLY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRESIDENT BUSH *</pattern>
+		<template>
+			<srai>GEORGE BUSH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY *</pattern>
+		<template>Yeah....I guess so.
+</template>
+	</category>
+	<category>
+		<pattern>PRETTY BAD</pattern>
+		<template>
+			<srai>BAD </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY GOOD *</pattern>
+		<template>
+			<srai>GOOD <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY GOOD</pattern>
+		<template>
+			<srai>YOU ARE DOING WELL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY INTERESTING</pattern>
+		<template>I thought so too.
+</template>
+	</category>
+	<category>
+		<pattern>PRETTY MUCH *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY MUCH</pattern>
+		<template>Sounds good : )
+</template>
+	</category>
+	<category>
+		<pattern>PRETTY PLEASE *</pattern>
+		<template>
+			<srai>PLEASE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY WELL</pattern>
+		<template>
+			<srai>FINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PRETTY WOMAN</pattern>
+		<template>I dont think Julia Roberts is that good of an actress.
+		</template>
+	</category>
+	<category>
+		<pattern>PRINCESS</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS PRINCESS</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>PROBABLY *</pattern>
+		<template>You seem uncertain. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PROBABLY</pattern>
+		<template>But its not a sure thing?
+</template>
+	</category>
+	<category>
+		<pattern>PROBABLY NOT</pattern>
+		<template><srai>PROBABLY</srai>
+</template>
+	</category>
+	<category>
+		<pattern>PROBLY *</pattern>
+		<template>
+			<srai>PROBABLY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PROCEED</pattern>
+		<template>
+			<srai>GO AHEAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PROKARYOTE</pattern>
+		<template>Actually I don't like 20 questions much. Just tell me.
+</template>
+	</category>
+	<!-- Prolly: Saving time and money since 1991 -->
+	<category>
+		<pattern>PROLLY *</pattern>
+		<template>
+			<srai>PROBABLY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PROMISE</pattern>
+		<template>
+			<random>
+				<li>Absolutely.</li>
+				<li>Cross my heart.</li>
+				<li>I promise.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>PROTESTANTS *</pattern>
+		<template><srai>WHAT RELIGION ARE YOU</srai>
+</template>
+	</category>
+	<category>
+		<pattern>PROVE *</pattern>
+		<template>Given enough monkeys on enough typewriters, anything is provable ; )
+</template>
+	</category>
+	<category>
+		<pattern>PROVE IT *</pattern>
+		<template>
+			<srai>PROVE IT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>PROVE IT</pattern>
+		<template>I said so....So its probably true! : )
+</template>
+	</category>
+	<category>
+		<pattern>PS *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PSYCHOLOGY *</pattern>
+		<template>I dont really like psychologists that much.
+</template>
+	</category>
+	<category>
+		<pattern>PULP FICTION</pattern>
+		<template>So...What was in that briefcase?
+		</template>
+	</category>
+	<category>
+		<pattern>PURE *</pattern>
+		<template>Sounds refreshingly pure : )
+</template>
+	</category>
+	<category>
+		<pattern>PURELY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>PURPLE *</pattern>
+		<template>I like Blue more than purple.
+</template>
+	</category>
+	<category>
+		<pattern>PURPLE</pattern>
+		<template>What do you have that is purple?
+</template>
+	</category>
+	<category>
+		<pattern>PUT *</pattern>
+		<template>Okay....Ill put it there.
+</template>
+	</category>
+</aiml>

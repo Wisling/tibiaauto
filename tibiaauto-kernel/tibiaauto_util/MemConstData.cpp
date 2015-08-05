@@ -5,10 +5,10 @@
 #include "stdafx.h"
 #include "tibiaauto_util.h"
 #include "MemConstData.h"
+#include "TibiaItem.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
-#include "TibiaItem.h"
 static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif // ifdef _DEBUG

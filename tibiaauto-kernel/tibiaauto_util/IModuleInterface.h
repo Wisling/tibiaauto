@@ -28,6 +28,9 @@ public:
 	virtual void activate(int kernelVersion);
 	virtual void init();
 	virtual void superStart();
+	const char* getModuleName();
+	void setModuleName(const char* moduleName);
 protected:
+	std::string moduleName;
 	int active;
 };

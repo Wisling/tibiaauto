@@ -45,9 +45,6 @@
     <ClCompile Include="md5class.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleProxy.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="OptionsDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -79,6 +76,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PythonEngine_fun.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -121,9 +121,6 @@
     <ClInclude Include="md5class.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleProxy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="OptionsDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -158,6 +155,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PythonEngine_fun.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -23,7 +23,7 @@
 
 #include <MemReader.h>
 #include <PackSender.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 
 #include "playerInfo.h"
 extern mod_playerinfo playerInfo;

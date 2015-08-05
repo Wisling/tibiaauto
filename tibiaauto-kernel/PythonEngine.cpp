@@ -11,7 +11,7 @@
 #include <IPCBackPipe.h>
 #include "TibiaMiniMapPoint.h"
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "PythonEngine_fun.h"
 
 

@@ -29,7 +29,7 @@ string AimlWriter::prettyAiml(PElement element)
 	if (element == NULL)
 		return "";
 	string s = "<aiml>\n\n";
-	if (element->getTagname() != "aiml")
+	if (element->getTagname() !=	"aiml")
 	{
 		cerr << "Error: Document root is not 'aiml'" << endl;
 		return "";

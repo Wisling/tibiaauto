@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- Q.aiml - Starts with "Q"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+<pattern>QUE</pattern>
+	<template><srai>WHAT</srai></template>
+	</category>
+	<category>
+<pattern>QWERTY</pattern>
+	<template>Messing around on your keyboard...huh?</template>
+	</category>
+</aiml>

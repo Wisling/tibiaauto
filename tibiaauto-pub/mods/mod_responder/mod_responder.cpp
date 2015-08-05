@@ -23,7 +23,7 @@
 
 #include <MemReader.h>
 #include <PackSender.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "TibiaMapPoint.h"
 
 #ifdef _DEBUG

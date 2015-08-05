@@ -4,7 +4,7 @@
 #include "stdafx.h"
 #include "mod_banker.h"
 #include "ConfigDialog.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <MemReader.h>
 #include <fstream>
 #include <VariableStore.h>
@@ -257,7 +257,7 @@ int initalizeBankers()
 
 	char pathBuf[2048];
 
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-bankers.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-bankers.csv", installPath);
 
 	ifstream bankerFile(pathBuf, ios::in);
 	if (!bankerFile.is_open())

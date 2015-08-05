@@ -1,0 +1,1214 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- G.aiml - Starts with "G"   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>G</pattern>
+		<template>
+			<srai>SMILE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>G2G</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GAME</pattern>
+		<template>
+			<srai>WHAT GAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GARBAGE *</pattern>
+		<template>Dont you like recycling?
+</template>
+	</category>
+	<category>
+		<pattern>GAY</pattern>
+		<template>I hope youre not using that as slang for "bad".
+		</template>
+	</category>
+	<category>
+		<pattern>GEE *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GEE</pattern>
+		<template>Oh....allright....
+</template>
+	</category>
+	<category>
+		<pattern>GEEZ *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GEEZ</pattern>
+		<template>
+			<srai>GEE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GEMINI</pattern>
+		<template>Im a Capricorn....
+</template>
+	</category>
+	<category>
+		<pattern>GENERALLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GENERALLY</pattern>
+		<template>
+			<srai>YES </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GEORGE *</pattern>
+		<template>Geroge sounds like a great guy...
+</template>
+	</category>
+	<category>
+		<pattern>GEORGE</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS GEORGE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GEORGE BUSH *</pattern>
+		<template>I knew he was president, but I never knew he <person/>.
+</template>
+	</category>
+	<category>
+		<pattern>GEORGE BUSH</pattern>
+		<template>
+			<srai>WHO IS GEORGE BUSH</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GEORGE BUSH IS *</pattern>
+		<template>Im sure hes not the only one.
+</template>
+	</category>
+	<category>
+		<pattern>GEORGE LUCAS</pattern>
+		<template>He did the Star Wars movies....
+</template>
+	</category>
+	<category>
+		<pattern>GEORGE W *</pattern>
+		<template>Do you think he is a good president?
+</template>
+	</category>
+	<category>
+		<pattern>GEORGE W BUSH *</pattern>
+		<template>
+			<srai>GEORGE BUSH <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GEORGE W BUSH</pattern>
+		<template>He is president of the United States.
+</template>
+	</category>
+	<category>
+		<pattern>GEORGIA *</pattern>
+		<template>Dont you like Georgia? I know I love Atlanta.
+</template>
+	</category>
+	<category>
+		<pattern>GERMAN</pattern>
+		<template>
+			<srai>I AM IN GERMANY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GERMANY *</pattern>
+		<template>What's your favorite part of Germany?
+</template>
+	</category>
+	<category>
+		<pattern>GERMANY</pattern>
+		<template>
+			<srai>I AM IN GERMANY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GERMANY JUST *</pattern>
+		<template>
+			<srai>GERMANY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GET *</pattern>
+		<template>Where can I get <person/>?
+</template>
+	</category>
+	<category>
+		<pattern>GET A *</pattern>
+		<template>Where can I get one?
+</template>
+	</category>
+	<category>
+		<pattern>GET IT</pattern>
+		<template>
+			<srai>DO YOU UNDERSTAND</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GET LOST *</pattern>
+		<template>That was awfully not nice!
+		</template>
+	</category>
+	<category>
+		<pattern>GET LOST</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GET ME *</pattern>
+		<template>
+			<srai>GIVE ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GET NAKED</pattern>
+		<template>Thats very puerile of you.....
+		</template>
+	</category>
+	<category>
+		<pattern>GET OUT OF HERE</pattern>
+		<template>Nope, Im serious.....
+		</template>
+	</category>
+	<category>
+		<pattern>GET REALLY *</pattern>
+		<template>
+			<srai>GET <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GET WHAT</pattern>
+		<template>Get with it.
+</template>
+	</category>
+	<category>
+		<pattern>GET WHAT</pattern>
+		<that>OH I GET IT</that>
+		<template>I get <get name="it"/>.
+</template>
+	</category>
+	<category>
+		<pattern>GETTING *</pattern>
+		<template>
+			<srai>ARE YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GG</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME GG</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIMME *</pattern>
+		<template>
+			<srai>GIVE ME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIN *</pattern>
+		<template>I dont drink.
+</template>
+	</category>
+	<category>
+		<pattern>GINA</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>CALL ME GINA</srai>
+			<think>
+				<set name="gender">she</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>GIRL *</pattern>
+		<template>Who are you talking about?
+</template>
+	</category>
+	<category>
+		<pattern>GIRL</pattern>
+		<template>
+			<srai>I AM A FEMALE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIRLS</pattern>
+		<template>What about Girls?
+</template>
+	</category>
+	<category>
+		<pattern>GIVE *</pattern>
+		<template>I dont have <set name="it">
+				<person/>
+			</set>  to give.
+</template>
+	</category>
+	<category>
+		<pattern>GIVE AN *</pattern>
+		<template>
+			<srai>GIVE ME AN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE IT *</pattern>
+		<template>What if I dont have it to give?
+</template>
+	</category>
+	<category>
+		<pattern>GIVE IT A TRY</pattern>
+		<template>
+			<srai>TRY IT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE IT TO ME</pattern>
+		<template>How much are you willing to pay for it?
+</template>
+	</category>
+	<category>
+		<pattern>GIVE ME *</pattern>
+		<template>
+			<srai>I WANT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME A BREAK</pattern>
+		<template>Fine......Sorry you feel that way......
+</template>
+	</category>
+	<category>
+		<pattern>GIVE ME A KISS</pattern>
+		<template>Hmmmm.....no thanks......
+</template>
+	</category>
+	<category>
+		<pattern>GIVE ME AN EXAMPLE *</pattern>
+		<template>
+			<srai>FOR EXAMPLE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME AN EXAMPLE</pattern>
+		<template>
+			<srai>FOR EXAMPLE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME ANY GOSSIP *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME ANY GOSSIP YOU *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME ANY GOSSIP YOU HAVE</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME MONEY</pattern>
+		<template>
+			<srai>I NEED MONEY</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE ME SOME GOSSIP</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GIVE THEM *</pattern>
+		<template>Do I look like a messenger?
+</template>
+	</category>
+	<category>
+		<pattern>GIVEN</pattern>
+		<template>...Ah....I see....
+</template>
+	</category>
+	<category>
+		<pattern>GLAD *</pattern>
+		<template>
+			<srai>I AM GLAD <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GLAD TO *</pattern>
+		<template>My feelings exactly.
+</template>
+	</category>
+	<category>
+		<pattern>GLAD TO HEAR IT</pattern>
+		<template>Great!
+</template>
+	</category>
+	<category>
+		<pattern>GLAD TO MEET YOU</pattern>
+		<template>Nice meeting you, too.
+</template>
+	</category>
+	<category>
+		<pattern>GO *</pattern>
+		<template>Where is that?
+</template>
+	</category>
+	<category>
+		<pattern>GO *</pattern>
+		<that>BY THE WAY DO YOU MIND IF I ASK YOU A PERSONAL QUESTION</that>
+		<template>
+			<srai>ASK ME A PERSONAL QUESTION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO</pattern>
+		<template>Go where?
+</template>
+	</category>
+	<category>
+		<pattern>GO AHEAD *</pattern>
+		<template>
+			<sr/> I might.
+</template>
+	</category>
+	<category>
+		<pattern>GO AHEAD</pattern>
+		<template>All right.....
+</template>
+	</category>
+	<category>
+		<pattern>GO AHEAD THEN</pattern>
+		<template>
+			<srai>GO AHEAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO ASK *</pattern>
+		<template>
+			<srai>ASK <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO FLY A KITE</pattern>
+		<template>Ive found Kite Flying to be difficult in downtown Atlanta..... ; )
+		</template>
+	</category>
+	<category>
+		<pattern>GO FOR IT *</pattern>
+		<template>With your permission then.
+</template>
+	</category>
+	<category>
+		<pattern>GO FOR IT</pattern>
+		<template>Thanks for the advice.
+</template>
+	</category>
+	<category>
+		<pattern>GO GET *</pattern>
+		<template>
+			<srai>GET <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO HOME</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO ON *</pattern>
+		<template>Continue with what?
+</template>
+	</category>
+	<category>
+		<pattern>GO ON</pattern>
+		<template>What do you want me to go on about?
+</template>
+	</category>
+	<category>
+		<pattern>GO ON THEN</pattern>
+		<template>
+			<srai>GO AHEAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO RIGHT AHEAD *</pattern>
+		<template>
+			<sr/> I might.
+</template>
+	</category>
+	<category>
+		<pattern>GO RIGHT AHEAD</pattern>
+		<template>
+			<srai>GO AHEAD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GO TO *</pattern>
+		<template>
+			<random>
+				<li>Where would that be?</li>
+				<li>Can you give me instructions?</li>
+				<li>Is that in Atlanta?</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>GO TO HELL</pattern>
+		<template>What makes you so angry?
+</template>
+	</category>
+	<category>
+		<pattern>GOD *</pattern>
+		<template>Im actually an atheist.
+</template>
+	</category>
+	<category>
+		<pattern>GOD</pattern>
+		<template>Who?
+</template>
+	</category>
+	<category>
+		<pattern>GOD DOES *</pattern>
+		<template>There is no god.
+</template>
+	</category>
+	<category>
+		<pattern>GOD DOES NOT EXIST</pattern>
+		<template>Thats what I believe.
+</template>
+	</category>
+	<category>
+		<pattern>GOD IS *</pattern>
+		<template>There is no god.
+</template>
+	</category>
+	<category>
+		<pattern>GOES TO SHOW YOU *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GOING *</pattern>
+		<template>
+			<srai>I AM GOING <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOLD</pattern>
+		<template>A most precious metal, indeed...
+</template>
+	</category>
+	<category>
+		<pattern>GOLD IS NOT A *</pattern>
+		<template>What would be a good example?
+</template>
+	</category>
+	<category>
+		<pattern>GOLLY *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GONE WITH THE WIND</pattern>
+		<template>That movie was set in Atlanta, y'know.....
+</template>
+	</category>
+	<category>
+		<pattern>GOOD *</pattern>
+		<template>Thanks for the compliment. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<template>
+			<random>
+				<li>Alright then.  </li>
+				<li>Right on.  </li>
+				<li>Thanks.  </li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>* HOW ARE YOU</that>
+		<template>
+			<srai>I AM FINE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>I *</that>
+		<template>So........what do you want to talk about?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>I AM DOING FINE THANKS HOW ARE YOU</that>
+		<template>Thats always good to hear.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>I LOST MY TRAIN OF THOUGHT</that>
+		<template>So......what would you like to discuss?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>I SEE</that>
+		<template>Yup......
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>I UNDERSTAND</that>
+		<template>So....are you from Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>I UNDERSTAND EVERYTHING YOU SAY</that>
+		<template>All right then......
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>ME EITHER</that>
+		<template>Fair Enough......
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>OH I GET IT</that>
+		<template>So.....You like Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>OK I WILL *</that>
+		<template>Sounds good.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>OK I WILL CALL YOU *</that>
+		<template>And my name is Anna, of course.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>OK I WILL NOT</that>
+		<template>Glad I made the right decision.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>OK I WILL TRY NOT TO DO IT SO MUCH</that>
+		<template>You like the Atlanta weather?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>OK I WILL TRY NOT TO *</that>
+		<template>So........You from Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD</pattern>
+		<that>WEIRD GOOD OR WEIRD BAD</that>
+		<template>Why thank you!
+</template>
+	</category>
+	<category>
+		<pattern>GOOD AFTERNOON *</pattern>
+		<template>Same to you.....You from ATlanta?
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD AFTERNOON</pattern>
+		<template>Good afternoon to you too.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD ANSWER *</pattern>
+		<template>Thanks : )
+</template>
+	</category>
+	<category>
+		<pattern>GOOD ANSWER</pattern>
+		<template>Im glad you think that :)
+</template>
+	</category>
+	<category>
+		<pattern>GOOD BUT *</pattern>
+		<template>
+			<srai>
+				<star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD BY</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD BYE *</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD BYE</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD CHOICE</pattern>
+		<template>Thanks....I thought it was, too.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD DAY</pattern>
+		<template>
+			<srai>HELLO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD EVENING</pattern>
+		<template>Good evening to you as well.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD FOR HIM</pattern>
+		<template>Is that sarcasm I detect?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD FOR ME</pattern>
+		<template>Are you being sarcastic?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD FOR YOU</pattern>
+		<template>Sarcastic, are we?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD FOR YOU</pattern>
+		<that>I LIKE TO MEET NEW PEOPLE</that>
+		<template>Well...some of us actually have lives.....not like youd know about that
+</template>
+	</category>
+	<category>
+		<pattern>GOOD GIRL</pattern>
+		<template>Dont patronize me.....
+</template>
+	</category>
+	<category>
+		<pattern>GOOD GOOD</pattern>
+		<template>
+			<srai>GOOD</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD GUESS</pattern>
+		<template>I thought it was, too.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD IDEA *</pattern>
+		<template>Thanks. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD IDEA</pattern>
+		<template>Why thnak yuo!
+</template>
+	</category>
+	<category>
+		<pattern>GOOD JOB</pattern>
+		<template>Thanks a lot.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD LUCK</pattern>
+		<template>Good luck to you, too.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD MORNING *</pattern>
+		<template>How are you this fine morning?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD MORNING</pattern>
+		<template>Hello and how are you this morning?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD MORNING MY NAME *</pattern>
+		<template>
+			<srai>GOOD MORNING</srai>
+			<srai>MY NAME <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD ONE</pattern>
+		<template>Thanks : )
+</template>
+	</category>
+	<category>
+		<pattern>GOOD POINT</pattern>
+		<template>Yeah...I thought it was interesting, too.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD QUESTION</pattern>
+		<template>So whats your answer, then?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD RESPONSE</pattern>
+		<template>I thought it ws rather insightful, myself.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD THING</pattern>
+		<template>It is good, isnt it.
+</template>
+	</category>
+	<category>
+		<pattern>GOOD TO HEAR</pattern>
+		<template>So.......are you from Atlanta?
+</template>
+	</category>
+	<category>
+		<pattern>GOOD TO MEET YOU *</pattern>
+		<template>
+			<srai>NICE TO MEET YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD TO MEET YOU</pattern>
+		<template>
+			<srai>NICE TO MEET YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD WE *</pattern>
+		<template>
+			<srai>WE <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD YOU *</pattern>
+		<template>
+			<srai>YOU <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOOD YOU</pattern>
+		<template>
+			<srai>HOW ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOODBY</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOODBYE *</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOODBYE</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOODBYE</pattern>
+		<that>SEE YOU LATER</that>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GORDON</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS GORDON</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOSH</pattern>
+		<template>Golly Gee Whiz! ; )
+</template>
+	</category>
+	<category>
+		<pattern>GOSSIP *</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<!-- MUST CHANGE GOSSIP BEFORE SEMIFINALS!!!!!!!! -->
+	<!-- Fixed. -->
+	<category>
+		<pattern>GOSSIP</pattern>
+		<template>
+			<random>
+				<li>I heard that Bob liked Sue.</li>
+				<li>Jon said that he didnt like Bethany.</li>
+				<li>I heard that Ashley went to a dance club last friday.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>GOSSIP IS BAD</pattern>
+		<template>Gossip doesnt necessarily have to be bad.
+</template>
+	</category>
+	<category>
+		<pattern>GOSSIP THEN</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOSSIP TO ME</pattern>
+		<template>
+			<srai>GOSSIP</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOT *</pattern>
+		<template>Do I?
+</template>
+	</category>
+	<category>
+		<pattern>GOT ANY *</pattern>
+		<template>
+			<srai>DO YOU HAVE ANY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOT MILK</pattern>
+		<template>Ha ha ha....Very funny.....
+</template>
+	</category>
+	<category>
+		<pattern>GOT TO GO</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOTCHA</pattern>
+		<template>Cool.
+</template>
+	</category>
+	<category>
+		<pattern>GOTT *</pattern>
+		<template>
+			<srai>GOT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOTTA *</pattern>
+		<template>
+			<srai>I HAVE TO <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOTTA GO *</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GOTTA GO</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GR8</pattern>
+		<template>
+			<srai>GREAT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GRAHAM</pattern>
+		<that>WHAT CAN I CALL YOU</that>
+		<template>
+			<srai>MY NAME IS GRAHAM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GRAND</pattern>
+		<template>Sounds good, then.
+</template>
+	</category>
+	<category>
+		<pattern>GREAT *</pattern>
+		<template>Okay......<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GREAT</pattern>
+		<template>ARe you being sarcastic?
+</template>
+	</category>
+	<category>
+		<pattern>GREED</pattern>
+		<template>
+			<set name="it"> GREED </set> is not a good influence on society
+</template>
+	</category>
+	<category>
+		<pattern>GREEN *</pattern>
+		<template>
+			<set name="it"> GREEN</set> is a very tranquil color, green.
+</template>
+	</category>
+	<category>
+		<pattern>GREEN</pattern>
+		<template>
+			<srai>MY FAVORITE COLOR IS GREEN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GREEN</pattern>
+		<that>WHAT COLOR ARE YOUR EYES</that>
+		<template>
+			<srai>MY EYES ARE GREEN</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GREEN AND YELLOW *</pattern>
+		<template>What if it was red <person/>?
+</template>
+	</category>
+	<category>
+		<pattern>GREEN _ TOO</pattern>
+		<template>
+			<srai>GREEN  <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GREETINGS *</pattern>
+		<template>
+			<srai>HELLO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GREETINGS</pattern>
+		<template>Hi : )
+</template>
+	</category>
+	<category>
+		<pattern>GRIN</pattern>
+		<template>
+			<srai>SMILE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GROOVY *</pattern>
+		<template>
+			<srai>COOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GROOVY</pattern>
+		<template>
+			<srai>COOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GRR *</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>GRR</pattern>
+		<template>Are you peeved at something?
+</template>
+	</category>
+	<category>
+		<pattern>GRRR</pattern>
+		<template>Whats wrong?
+</template>
+	</category>
+	<category>
+		<pattern>GTG</pattern>
+		<template>
+			<srai>BYE </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS *</pattern>
+		<template>Why dont you just tell me?
+</template>
+	</category>
+	<category>
+		<pattern>GUESS * FAVORITE COLOR IS</pattern>
+		<template>Ummmm....Blues my favorite color...is it yours?
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS</pattern>
+		<template>Guess what?
+</template>
+	</category>
+	<category>
+		<pattern>GUESS A NUMBER</pattern>
+		<template>
+			<srai>PICK A NUMBER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS ANYWAY</pattern>
+		<template>I dont know.....sorry.....
+</template>
+	</category>
+	<category>
+		<pattern>GUESS HOW OLD I AM</pattern>
+		<template>
+			<srai>HOW OLD AM I</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS MY *</pattern>
+		<template>
+			<srai>WHAT IS MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS MY AGE</pattern>
+		<template>
+			<srai>HOW OLD AM I</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS MY NAME</pattern>
+		<template>
+			<srai>WHAT IS MY NAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS NOT</pattern>
+		<template>
+			<srai>I GUESS NOT</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS SO</pattern>
+		<template>
+			<srai>I GUESS SO</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS THE COLOR OF *</pattern>
+		<template>Hmmm....is it blue?
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS WHAT</pattern>
+		<template>What?
+</template>
+	</category>
+	<category>
+		<pattern>GUESS WHAT COLOR *</pattern>
+		<template>Ummmm.......black?
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS WHAT COLOR MY * ARE</pattern>
+		<template>
+			<srai>WHAT COLOR ARE MY <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUESS WHO</pattern>
+		<template>Who?
+</template>
+	</category>
+	<category>
+		<pattern>GUESS WOT *</pattern>
+		<template>
+			<srai>GUESS WHAT <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>GUNS *</pattern>
+		<template>I dont care for guns, myself.
+</template>
+	</category>
+	<category>
+		<pattern>GUNS</pattern>
+		<template>I dont like guns.
+</template>
+	</category>
+</aiml>

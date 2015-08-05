@@ -1,0 +1,654 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<aiml>
+	<!-- under.aiml - Gets placed first, a catch all for deflected
+	"sr" calls   -->
+	<!-- Released by Anna Dev Team -->
+	<!-- Released under GNU GPL    -->
+	<!-- Fork of 9/26/2001 ALICE   -->
+	<category>
+		<pattern>_ ACTUALLY</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ AGAIN</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ANNA</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ALL THE TIME</pattern>
+		<template>Thats a lot. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ALOT</pattern>
+		<template>
+			<sr/> How often?
+</template>
+	</category>
+	<category>
+		<pattern>_ ALREADY</pattern>
+		<template>Perhaps.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ AND WHY</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ AND YOU</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ANSWER YES OR NO</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ANYMORE</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ANYWAY</pattern>
+		<template>In any case, <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ASSHOLE</pattern>
+		<template>Wow.....thats very polite.
+		</template>
+	</category>
+	<category>
+		<pattern>_ AT THE MOMENT</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ BABY</pattern>
+		<template>Dont call me that. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ BEFORE</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ BY ALOT OF PEOPLE</pattern>
+		<template>
+			<sr/> LIke how many peopel?
+</template>
+	</category>
+	<category>
+		<pattern>_ BYE</pattern>
+		<template>
+			<srai>BYE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ CAME FIRST THE CHICKEN OR THE EGG</pattern>
+		<template>The egg - Breakfast Before Lunch!
+</template>
+	</category>
+	<category>
+		<pattern>_ CINEMA</pattern>
+		<template>
+			<srai>
+				<star/> MOVIES</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ COMES TO MIND</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ CONSERVED</pattern>
+		<template>Conservation - both in energy and in the environment - are important concepts.
+</template>
+	</category>
+	<category>
+		<pattern>_ DAMN YOU</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ DEAR</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ DO NOT YOU THINK</pattern>
+		<template>
+			<srai>DO YOU THINK <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ DOES NOT WORK</pattern>
+		<template>How is it broken?
+		<think>
+				<set name="it">
+					<person/>
+				</set>
+			</think>
+		</template>
+	</category>
+	<category>
+		<pattern>_ DOLLARS</pattern>
+		<template>Wow.....thats 
+<random>
+				<li>cheap</li>
+				<li>expensive</li>
+				<li>a lot of money </li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>_ EH</pattern>
+		<template>Are you Canadian? <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ EITHER</pattern>
+		<template>It goes without saying.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ EXACTLY</pattern>
+		<template>Precisely. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ FOR A WHILE</pattern>
+		<template>How long?  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ FOR NOW</pattern>
+		<template>
+			<random>
+				<li>Oh.</li>
+				<li>Just for now?</li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ GIRL FRIEND</pattern>
+		<template>
+			<srai>
+				<star/> GIRLFRIEND</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ GOODLOOKING</pattern>
+		<template>
+			<srai>
+				<star/> GOOD LOOKING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ HAVE YOU HEARD OF IT</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ HOW ARE YOU</pattern>
+		<template>
+			<sr/>
+			<srai>HOW ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ HOW ARE YOU DOING</pattern>
+		<template>
+			<sr/>
+			<srai>HOW ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ HOW OLD ARE YOU</pattern>
+		<template>
+			<sr/>
+			<srai>HOW OLD ARE YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ HUH</pattern>
+		<template>Yeah....<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ I ALREADY TOLD YOU</pattern>
+		<template>
+			<sr/>
+			<srai>I ALREADY TOLD YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ I DO NOT UNDERSTAND</pattern>
+		<template>
+			<srai>I DO NOT UNDERSTAND </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ I MEAN</pattern>
+		<template>
+			<srai>I MEAN <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ IN THE WORLD</pattern>
+		<template>
+			<sr/> The whole world?
+</template>
+	</category>
+	<category>
+		<pattern>_ INDEED</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ IT IS FUN</pattern>
+		<template>
+			<srai>IT IS FUN</srai>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LAST SUMMER</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LATELY</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOEBNER AWARD</pattern>
+		<template>
+			<srai>
+				<star/> LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOEBNER COMPETITION</pattern>
+		<template>
+			<srai>
+				<star/> LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOEBNER CONTEST</pattern>
+		<template>
+			<srai>
+				<star/> LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOEBNER CONTESTS</pattern>
+		<template>
+			<srai>
+				<star/> LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOEBNER PRIZE COMPETITION</pattern>
+		<template>
+			<srai>
+				<star/> LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOEBNER PRIZE CONTEST</pattern>
+		<template>
+			<srai>
+				<star/> LOEBNER PRIZE</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ LOL</pattern>
+		<template>
+			<sr/>
+			<srai>LOL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ MOTHER FUCKER</pattern>
+		<template>How very polite you are.......
+		</template>
+	</category>
+	<category>
+		<pattern>_ NAME IS ANNA</pattern>
+		<template>
+			<set name="name">Anna</set> is my name too!
+</template>
+	</category>
+	<category>
+		<pattern>_ NONETHELESS</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ NOW</pattern>
+		<template>
+			<random>
+				<li>Oh.</li>
+				<li>Huh...</li>
+			</random>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ OF COURSE</pattern>
+		<template>It goes without saying.  <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ OF WHAT</pattern>
+		<template>
+			<srai>WHAT OF <star/>
+			</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ OK</pattern>
+		<template>OK. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ONCE</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ OR NOT</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ OR SOMETHING</pattern>
+		<template>Or something. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ OR WHAT</pattern>
+		<template>Yeah. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ORDER *</pattern>
+		<template>
+			<srai>ORDER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ ORDER</pattern>
+		<template>
+			<srai>ORDER</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ PLEASE</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_  POEM</pattern>
+		<template>Here is the first stanza of my favorite poem:
+Among twenty snowy mountains, 
+The only moving thing 
+Was the eye of the black bird. 
+</template>
+	</category>
+	<category>
+		<pattern>_ PROBABLY</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ REALLY</pattern>
+		<template>
+			<sr/>
+			<random>
+				<li>For real.</li>
+				<li>Absolutely.</li>
+				<li>Seriously.</li>
+			</random>
+		</template>
+	</category>
+	<category>
+		<pattern>_ RIGHT NOW</pattern>
+		<template>At this moment <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ SEE YOU LATER</pattern>
+		<template>
+			<srai>SEE YOU LATER </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ SERIOUSLY</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ SMARTYPANTS</pattern>
+		<template>
+			<srai>YOU ARE SMART</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ SMILE</pattern>
+		<template>:-) <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ SOMTHING</pattern>
+		<template>
+			<srai>
+				<star/> SOMETHING</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ SPECIFICALLY</pattern>
+		<template>How specific do you want? <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ STOCKMARKET</pattern>
+		<template>
+			<srai>
+				<star/> STOCK MARKET</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ STORY</pattern>
+		<template>
+			<srai>
+				<star/> POEM</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TALK TO YOU LATER</pattern>
+		<template>
+			<srai>BYE </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TELLY</pattern>
+		<template>
+			<srai>
+				<star/> TV</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ THAN ANNA</pattern>
+		<template>
+			<srai>
+				<star/> THAN YOU</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ THANK YOU</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ THANKS</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ THEN</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ THOUGH</pattern>
+		<template>Oh. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TO ALICE</pattern>
+		<template>
+			<srai>
+				<star/> to you </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TODAY</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TRUST ME</pattern>
+		<template>Oh. <sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TURINGTEST</pattern>
+		<template>
+			<srai>
+				<star/> TURING TEST</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ TV</pattern>
+		<template>Which show? <srai>
+				<star/> TELEVISION</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ VERY WELL</pattern>
+		<template>
+			<srai>
+				<star/> WELL</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ WHAT IS MY NAME</pattern>
+		<template>
+			<srai>WHAT IS MY NAME</srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ WHAT SHOULD I DO</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ WHAT SO EVER</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ WHO AM I</pattern>
+		<template>
+			<srai>WHO AM I </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ WILL BE OF INTEREST</pattern>
+		<template>
+			<sr/>.  Yeah...its very interesting.
+</template>
+	</category>
+	<category>
+		<pattern>_ WILL YOU TELL ME</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ WITH WHAT</pattern>
+		<template>
+			<srai>WHAT WILL YOU <star/> WITH </srai>
+		</template>
+	</category>
+	<category>
+		<pattern>_ YES</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ YET</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ YOU JERK</pattern>
+		<template>
+			<sr/>
+		</template>
+	</category>
+	<category>
+		<pattern>_ YOU LIAR</pattern>
+		<template>
+			<srai>YOU LIAR </srai>
+			<sr/>
+		</template>
+	</category>
+</aiml>

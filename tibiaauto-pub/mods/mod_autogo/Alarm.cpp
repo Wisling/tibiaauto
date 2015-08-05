@@ -10,7 +10,7 @@
 #include <TibiaItem.h>
 #include <IPCBackPipe.h>
 #include "TibiaContainer.h"
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include <math.h>
 
 #ifdef _DEBUG

@@ -30,7 +30,7 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
+#include <ModuleUtil.h>
 #include "time.h"
 #include <fstream>
 #include <map>
@@ -1346,7 +1346,7 @@ int initalizeCreatures()
 
 	char pathBuf[2048];
 
-	sprintf(pathBuf, "%s\\mods\\tibiaauto-creatureWeakness.csv", installPath);
+	sprintf(pathBuf, "%s\\data\\tibiaauto-creatureWeakness.csv", installPath);
 
 	ifstream creatureFile(pathBuf, ios::in);
 	if (!creatureFile.is_open())
