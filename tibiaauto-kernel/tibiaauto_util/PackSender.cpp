@@ -6,6 +6,7 @@
 #include "PackSender.h"
 #include "MemReader.h"
 #include "MemUtil.h"
+#include "IpcMessage.h"
 #include "Util.h"
 #include "time.h"
 #include <stdio.h>
@@ -17,32 +18,6 @@ static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
 //////////////////////////////////////////////////////////////////////
-HANDLE hPipe = INVALID_HANDLE_VALUE;
-struct ipcMessage
-{
-	int messageType;
-	char payload[1024];
-	time_t tm;
-public:
-	ipcMessage()
-	{
-		messageType = 0;
-		memset(payload, 0, 1024);
-		tm = 0;
-	}
-
-	void send()
-	{
-		this->tm = time(NULL);
-		DWORD cbWritten;
-		BOOL fSuccess = WriteFile(
-		        hPipe,
-		        this,
-		        sizeof(struct ipcMessage),
-		        &cbWritten,
-		        NULL);
-	}
-};
 
 void CPackSender::sendPacket(char *buf)
 {
@@ -60,7 +35,7 @@ void CPackSender::sendPacket(char *buf, int method)
 		hiB += 256;
 	int len = lowB + hiB * 256 + 2;
 
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	mess.messageType = method;
 	memcpy(mess.payload, buf, len);
@@ -605,7 +580,7 @@ void CPackSender::revealFish(int enable)
 
 void CPackSender::sendTAMessage(char *msg)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	mess.messageType = 3;
 	strcpy(mess.payload, msg);
@@ -929,7 +904,7 @@ void CPackSender::turnDown()
 
 void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 100;
 	memcpy(mess.payload, &attackedCreature, sizeof(int));
 	mess.send();
@@ -937,7 +912,7 @@ void CPackSender::sendAttackedCreatureToAutoAim(int attackedCreature)
 
 void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	if (strlen(info1) > 499)
 		info1[499] = '\0';
@@ -954,7 +929,7 @@ void CPackSender::sendCreatureInfo(char *name, char *info1, char *info2)
 
 void CPackSender::printText(CPoint pos, int red, int green, int blue, char* message)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	int messLen = strlen(message);
 	mess.messageType = 307;
 	memcpy(mess.payload, &pos.x, sizeof(int));
@@ -969,7 +944,7 @@ void CPackSender::printText(CPoint pos, int red, int green, int blue, char* mess
 
 void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	regLen           = min(regLen, 1024 - 12);
 	mess.messageType = 308;
 	int type = 1;
@@ -982,7 +957,7 @@ void CPackSender::registerInpacketRegex(int handle, char* regExp, int regLen)
 
 void CPackSender::unregisterInpacketRegex(int handle)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 308;
 	int type = 2;
 	memcpy(mess.payload, &type, sizeof(int));
@@ -1017,7 +992,7 @@ void CPackSender::look(int x, int y, int z, int objectId)
 void CPackSender::ignoreLook(time_t end)
 {
 	unsigned int truncEnd = (unsigned int)end;
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	mess.messageType = 302;
 	memcpy(mess.payload, &truncEnd, 4);
@@ -1027,7 +1002,7 @@ void CPackSender::ignoreLook(time_t end)
 
 void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayersFromBattle)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 303;
 	memcpy(mess.payload, &active, 4);
 	memcpy(mess.payload + 4, &onlyCreatures, 4);
@@ -1038,7 +1013,7 @@ void CPackSender::sendAutoAimConfig(int active, int onlyCreatures, int aimPlayer
 
 void CPackSender::sendClearCreatureInfo()
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 304;
 	mess.send();
 }

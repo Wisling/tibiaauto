@@ -2,5 +2,7 @@
 
 #include "mod_fisher.h"
 
-CMod_fisherApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_fisherApp();
+}

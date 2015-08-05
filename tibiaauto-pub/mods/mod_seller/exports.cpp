@@ -2,5 +2,7 @@
 
 #include "mod_seller.h"
 
-CMod_SellerApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_SellerApp();
+}

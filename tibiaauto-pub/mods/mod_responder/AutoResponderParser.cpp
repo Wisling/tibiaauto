@@ -10,8 +10,8 @@
 #include <PackSender.h>
 #include <MemReader.h>
 #include "TibiaCharacter.h"
-#include "..\..\alice\alice.h"
 
+__declspec(dllimport) char *kernelRespond(char *text, char *id);
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -68,7 +68,7 @@ void CAutoResponderParser::parseThread(DOMNode *node, CAutoResponderParserContex
 void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: say", context);
-	CPackSenderProxy sender;
+
 	int useAlice      = 0;
 	char *sayText     = CUtil::getNodeAttribute(node, "text");
 	char *channelText = CUtil::getNodeAttribute(node, "channel");
@@ -93,12 +93,12 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 	if (strlen(channelText) == 0 || !strcmp(channelText, "say"))
 	{
 		chanHit = 1;
-		sender.say(sayText);
+		CPackSender::say(sayText);
 		if (context->localEcho)
 		{
 			char *senderBuf = (char *)malloc(MAX_STRING_LEN);
 			sprintf(senderBuf, "[responder] {say} %s", sayText);
-			sender.sendTAMessage(senderBuf);
+			CPackSender::sendTAMessage(senderBuf);
 			free(senderBuf);
 		}
 	}
@@ -107,12 +107,12 @@ void CAutoResponderParser::processNodeSay(DOMNode *node, CAutoResponderParserCon
 		chanHit = 1;
 		char *playerText = CUtil::getNodeAttribute(node, "player");
 		replaceSpecialStrings(playerText, context);
-		sender.tell(sayText, playerText);
+		CPackSender::tell(sayText, playerText);
 		if (context->localEcho)
 		{
 			char *senderBuf = (char *)malloc(MAX_STRING_LEN);
 			sprintf(senderBuf, "[responder] {%s} %s", playerText, sayText);
-			sender.sendTAMessage(senderBuf);
+			CPackSender::sendTAMessage(senderBuf);
 			free(senderBuf);
 		}
 		if (!strlen(playerText))
@@ -304,16 +304,16 @@ void CAutoResponderParser::processNodeSetvariable(DOMNode *node, CAutoResponderP
 void CAutoResponderParser::processNodeDance(DOMNode *node, CAutoResponderParserContext *context)
 {
 	registerDebug("DEBUG: action: dance", context);
-	CPackSenderProxy sender;
+
 	char *countText = CUtil::getNodeAttribute(node, "count");
 	int count       = atoi(countText);
 	free(countText);
 	int i;
 	for (i = 0; i < count; i++)
 	{
-		sender.turnLeft();
+		CPackSender::turnLeft();
 		Sleep(250);
-		sender.turnRight();
+		CPackSender::turnRight();
 		Sleep(250);
 	}
 }

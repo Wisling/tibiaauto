@@ -2,5 +2,7 @@
 
 #include "mod_xray.h"
 
-CMod_xrayApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_xrayApp();
+}

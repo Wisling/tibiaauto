@@ -7,6 +7,7 @@
 #include "ConfigDialog.h"
 #include <MemReader.h>
 #include <TibiaItem.h>
+#include <VariableStore.h>
 #include <fstream>
 #include <stdio.h>
 
@@ -347,7 +348,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateSeller.SetWindowText("Not running");
 			break;
 		case CToolSellerState_halfSleep:
-			sprintf(buf, "Module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "Module sleep by %s:%s", CVariableStore::getVariable("walking_control"), CVariableStore::getVariable("walking_priority"));
 			m_stateSeller.SetWindowText(buf);
 			break;
 		case CToolSellerState_noPathFound:
@@ -365,9 +366,9 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateSeller.SetWindowText("Unknown state");
 			break;
 		}
-		if (atoi(reader.getGlobalVariable("banker_suggestion")))
+		if (atoi(CVariableStore::getVariable("banker_suggestion")))
 		{
-			sprintf(buf, "(%s gold)", reader.getGlobalVariable("banker_suggestion"));
+			sprintf(buf, "(%s gold)", CVariableStore::getVariable("banker_suggestion"));
 			m_bankerSuggestion.SetWindowText(buf);
 		}
 		else

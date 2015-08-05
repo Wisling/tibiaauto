@@ -10,6 +10,7 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
+#include <MemUtil.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
@@ -169,7 +170,7 @@ CString capturePosition(CString name)
 			DWORD pid;
 			DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHwnd, &pid);
 
-			if (pid == reader.getProcessId())
+			if (pid == CMemUtil::getGlobalProcessId())
 				break;
 			tibiaHwnd = FindWindowEx(NULL, tibiaHwnd, "TibiaClient", NULL);
 		}

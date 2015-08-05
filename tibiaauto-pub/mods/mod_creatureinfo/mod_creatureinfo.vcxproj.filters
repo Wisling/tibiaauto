@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sdk\BtnST.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ConfigData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -27,34 +24,19 @@
     <ClCompile Include="exports.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="KnownInfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="mod_creatureinfo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sdk\MyDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="NameChanger.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="proxy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SendStats.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\sdk\Skin.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="StdAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TibiaItem_impl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Util.cpp">
@@ -73,16 +55,10 @@
     <ClInclude Include="ConfigDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\sdk\GroupBoxEx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="KnownInfo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="mod_creatureinfo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\sdk\MyDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="NameChanger.h">

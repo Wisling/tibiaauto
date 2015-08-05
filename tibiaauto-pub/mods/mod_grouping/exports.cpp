@@ -2,6 +2,7 @@
 
 #include "mod_grouping.h"
 
-CMod_groupingApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_groupingApp();
+}

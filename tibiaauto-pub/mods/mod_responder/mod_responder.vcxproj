@@ -145,21 +145,15 @@
   <ItemGroup>
     <ClCompile Include="AutoResponderParser.cpp" />
     <ClCompile Include="AutoResponderParserContext.cpp" />
-    <ClCompile Include="..\..\sdk\BtnST.cpp" />
     <ClCompile Include="ConfigData.cpp" />
     <ClCompile Include="exports.cpp" />
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="mod_responder.cpp" />
-    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TibiaItem_impl.cpp" />
     <ClCompile Include="ToolAutoRespond.cpp" />
     <ClCompile Include="ToolAutoResponderMessage.cpp" />
     <ClCompile Include="ToolAutoResponderThreadConfig.cpp" />
@@ -184,6 +178,9 @@
     <ClInclude Include="ToolAutoResponderThreadConfig.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\alice\alice.vcxproj">
       <Project>{ec3640a4-2b98-4adc-a671-05dd06f60b15}</Project>
     </ProjectReference>

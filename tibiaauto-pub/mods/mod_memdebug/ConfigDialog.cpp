@@ -5,6 +5,7 @@
 #include "mod_memdebug.h"
 #include "ConfigDialog.h"
 #include <MemReader.h>
+#include <MemUtil.h>
 #include <TibiaItem.h>
 #include <PackSender.h>
 #include "ModuleUtil.h"
@@ -78,7 +79,7 @@ void CConfigDialog::OnTest()
 
 	CMemReader& reader = CMemReader::getMemReader();
 
-	reader.setMemIntValue(0x00400000 + m_address, m_val);
+	CMemUtil::SetMemIntValue(0x00400000 + m_address, m_val);
 }
 
 void CConfigDialog::OnTest2()

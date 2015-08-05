@@ -3,7 +3,6 @@
 // Used by tibiaauto_util.rc
 //
 #define IDR_TIBIAAUTO_UTIL              4000
-#define IDR_MEMREADER2                  4001
 
 // Next default values for new objects
 //

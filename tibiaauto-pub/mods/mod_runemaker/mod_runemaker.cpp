@@ -76,12 +76,12 @@ int RandomVariableMana(int &pt, int command, CConfigData *config)
 		command = MAKE;
 	if (command == MAKE)
 	{
-		CPackSenderProxy sender;
+	
 		// within 10% of number with a cutoff at maxMana
 		setMana[&pt] = CModuleUtil::randomFormula(val, (int)(val * 0.1), val, max(self->maxMana, val + 1));
 		char buf[111];
 		sprintf(buf, "%d", setMana[&pt]);
-		sender.sendTAMessage(buf);
+		CPackSender::sendTAMessage(buf);
 	}
 	delete self;
 	return setMana[&pt];
@@ -96,7 +96,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -133,7 +133,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					RandomVariableMana(config->makeNow ? config->mana : (config->manaLimit > config->mana) ? config->manaLimit : config->mana, MAKE, config);
 					// cast spell
-					sender.say((LPCTSTR)config->spell);
+					CPackSender::say((LPCTSTR)config->spell);
 					CModuleUtil::waitForManaDecrease(myself->mana);
 					if (!config->maxUse)
 						break; //even if we have the mana and blank runes/spears do not continue casting

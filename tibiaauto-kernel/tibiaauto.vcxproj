@@ -64,7 +64,7 @@
       <Optimization>MaxSpeed</Optimization>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>C:\Python24\include;$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Python24\include;$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Release\tibiaauto.pch</PrecompiledHeaderOutputFile>
@@ -105,7 +105,7 @@
       <WarningLevel>Level3</WarningLevel>
       <MinimalRebuild>true</MinimalRebuild>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Python24\include;$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Python24\include;$(SolutionDir)tibiaauto-pub\inc\;$(SolutionDir)tibiaauto-kernel\;$(SolutionDir)tibiaauto-kernel\tibiaauto_util\</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;NO_WARN_MBCS_MFC_DEPRECATION;WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BrowseInformation>true</BrowseInformation>
       <PrecompiledHeaderOutputFile>.\Debug\tibiaauto.pch</PrecompiledHeaderOutputFile>
@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\tibiaauto-pub\sdk\BtnST.cpp" />
     <ClCompile Include="CharDialog.cpp" />
     <ClCompile Include="ColorChooser.cpp" />
     <ClCompile Include="ConfigCreatorUtil.cpp" />
@@ -147,22 +146,16 @@
     <ClCompile Include="ConfigDialogStatus.cpp" />
     <ClCompile Include="DonationDialog.cpp" />
     <ClCompile Include="EnterCode.cpp" />
-    <ClCompile Include="..\tibiaauto-pub\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="LoadedModules.cpp" />
     <ClCompile Include="md5c.cpp" />
     <ClCompile Include="md5class.cpp" />
-    <ClCompile Include="MemUtil.cpp" />
     <ClCompile Include="ModuleProxy.cpp" />
-    <ClCompile Include="..\tibiaauto-pub\sdk\MyDialog.cpp" />
     <ClCompile Include="OptionsDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
     <ClCompile Include="PythonEngine.cpp" />
+    <ClCompile Include="PythonEngine_fun.cpp" />
     <ClCompile Include="PythonScript.cpp" />
     <ClCompile Include="PythonScriptsDialog.cpp" />
-    <ClCompile Include="..\tibiaauto-pub\sdk\RepeatButton.cpp" />
     <ClCompile Include="ScriptConfigDialg.cpp" />
-    <ClCompile Include="..\tibiaauto-pub\sdk\Skin.cpp" />
-    <ClCompile Include="..\tibiaauto-pub\sdk\SliderCtrlEx.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -178,7 +171,6 @@
     <ResourceCompile Include="tibiaauto.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\tibiaauto-pub\sdk\BtnST.h" />
     <ClInclude Include="CharDialog.h" />
     <ClInclude Include="ColorChooser.h" />
     <ClInclude Include="ConfigCreatorUtil.h" />
@@ -187,22 +179,17 @@
     <ClInclude Include="DonationDialog.h" />
     <ClInclude Include="EnterCode.h" />
     <ClInclude Include="global.h" />
-    <ClInclude Include="..\tibiaauto-pub\sdk\GroupBoxEx.h" />
     <ClInclude Include="LoadedModules.h" />
     <ClInclude Include="MD5.h" />
     <ClInclude Include="md5class.h" />
-    <ClInclude Include="MemUtil.h" />
     <ClInclude Include="ModuleProxy.h" />
-    <ClInclude Include="..\tibiaauto-pub\sdk\MyDialog.h" />
     <ClInclude Include="OptionsDialog.h" />
     <ClInclude Include="PythonEngine.h" />
+    <ClInclude Include="PythonEngine_fun.h" />
     <ClInclude Include="PythonScript.h" />
     <ClInclude Include="PythonScriptsDialog.h" />
-    <ClInclude Include="..\tibiaauto-pub\sdk\RepeatButton.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ScriptConfigDialg.h" />
-    <ClInclude Include="..\tibiaauto-pub\sdk\Skin.h" />
-    <ClInclude Include="..\tibiaauto-pub\sdk\SliderCtrlEx.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="tibiaauto.h" />
     <ClInclude Include="tibiaautoDlg.h" />
@@ -216,6 +203,14 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\tibiaauto.rc2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\tibiaauto-pub\alice\alice.vcxproj">
+      <Project>{ec3640a4-2b98-4adc-a671-05dd06f60b15}</Project>
+    </ProjectReference>
+    <ProjectReference Include="tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

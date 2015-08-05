@@ -105,7 +105,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	srand((unsigned int)time(NULL));                                //Seed the random number generation
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config = (CConfigData *)lpParam;
@@ -169,7 +169,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//Eat only if the character has less than full health or mana and only if not in a protection zone
 				int flags = reader.getSelfEventFlags();
 				if (!(flags & 0x4000) && (self->mana < self->maxMana || self->hp < self->maxHp))
-					sender.useItemInContainer(foodItem->objectId, 0x40 + foodContainer, foodItem->pos);
+					CPackSender::useItemInContainer(foodItem->objectId, 0x40 + foodContainer, foodItem->pos);
 
 				if (CModuleUtil::waitForCapsChange(self->cap))
 				{

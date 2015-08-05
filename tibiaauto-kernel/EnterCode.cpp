@@ -56,8 +56,6 @@ void CEnterCode::OnOK()
 	{
 		PostQuitMessage(0);
 		CMemUtil::setGlobalProcessId(GetCurrentProcessId());
-		CMemReader& reader = CMemReader::getMemReader();
-		reader.setProcessId(GetCurrentProcessId());
 		PostQuitMessage(0);
 	}
 	else

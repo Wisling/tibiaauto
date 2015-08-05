@@ -2,5 +2,7 @@
 
 #include "mod_team.h"
 
-CMod_teamApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_teamApp();
+}

@@ -7,6 +7,7 @@
 #include "ModuleUtil.h"
 #include <MemReader.h>
 #include <fstream>
+#include <VariableStore.h>
 
 using namespace std;
 
@@ -180,7 +181,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_stateBanker.SetWindowText("Not running");
 			break;
 		case CToolBankerState_halfSleep:
-			sprintf(buf, "Module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "Module sleep by %s:%s", CVariableStore::getVariable("walking_control"), CVariableStore::getVariable("walking_priority"));
 			m_stateBanker.SetWindowText(buf);
 			break;
 		case CToolBankerState_noPathFound:

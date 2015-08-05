@@ -58,7 +58,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -90,7 +90,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						openContNr++;
 						if (cont->itemsInside < cont->size)
 						{
-							sender.moveObjectBetweenContainers(item->objectId, 0x06, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
+							CPackSender::moveObjectBetweenContainers(item->objectId, 0x06, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
 							contNr = reader.m_memMaxContainers;
 						}
 					}
@@ -114,7 +114,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						openContNr++;
 						if (cont->itemsInside < cont->size)
 						{
-							sender.moveObjectBetweenContainers(item->objectId, 0x05, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
+							CPackSender::moveObjectBetweenContainers(item->objectId, 0x05, 0, 0x40 + contNr, 0, item->quantity ? item->quantity : 1);
 							contNr = reader.m_memMaxContainers;
 						}
 					}
@@ -194,7 +194,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			if (randLoopCount > 0)
 			{
 				int tileId = reader.mapGetPointItemId(point(offsetX, offsetY, 0), 0);
-				sender.useWithObjectFromContainerOnFloor(
+				CPackSender::useWithObjectFromContainerOnFloor(
 				        CTibiaItem::getValueForConst("fishingRod"), fishingRodCont, fishingRodPos, tileId, self->x + offsetX, self->y + offsetY, self->z);
 			}
 		}

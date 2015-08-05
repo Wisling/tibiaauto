@@ -16,7 +16,6 @@
 #include "Windows.h"
 #include "regex.h"
 #include "psapi.h"
-#include "ipcm.h"
 #include <ModuleUtil.h>
 #include <MemReader.h>
 #include <MemUtil.h>
@@ -3064,7 +3063,7 @@ void parseRecvActionData(int handle, char* data, int len)
 		AfxMessageBox("parseRecvActionData: length is 0.");
 
 #endif // ifdef _DEBUG
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 1010;
 
 	parcelRecvActionData* p = ((parcelRecvActionData*)mess.payload);
@@ -3100,7 +3099,7 @@ void parseMessageSay(char *sayBuf)
 	CMemReader& reader = CMemReader::getMemReader();
 	
 
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
 	int len = strlen(sayBuf);
 	if (len < 900)
@@ -3332,7 +3331,7 @@ int parseMessageForTibiaAction(char *buf, int len)
 
 void hookCallback(int value)
 {
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	char *message = NULL;
 	if (value == 0x13)
 		message = "%ta pause";
@@ -3841,7 +3840,7 @@ void myInterceptInfoMiddleScreen(int type, char *s)
 			WriteOutDebug("got see '%s'\r\n", s);
 		unsigned long bytesWritten = 0;
 
-		struct ipcMessage mess;
+		CIpcMessage mess;
 		mess.messageType = 1002;
 		int len = strlen(s);
 		if (len < 900)
@@ -4256,7 +4255,7 @@ int myInterceptInfoMessageBox(int v1, int v2, int v3, int v4, int v5, int v6, in
 	int msgLen  = strlen(s);
 	if (nickLen + msgLen < 900)
 	{
-		struct ipcMessage mess;
+		CIpcMessage mess;
 		memcpy(mess.payload, &type, sizeof(int));
 		memcpy(mess.payload + 4, &chantype, sizeof(int));
 		memcpy(mess.payload + 8, &nickLen, sizeof(int));
@@ -4526,7 +4525,7 @@ BOOL APIENTRY DllMain(HINSTANCE hModule,
 	return TRUE;
 }
 
-void ParseIPCMessage(struct ipcMessage mess)
+void ParseIPCMessage(CIpcMessage mess)
 {
 	switch (mess.messageType)
 	{
@@ -4814,14 +4813,14 @@ int ReadFromPipe()
 	do
 	{
 		// Read from the pipe.
-		struct ipcMessage inBuf;
+		CIpcMessage inBuf;
 		DWORD lpBytesRead;
 		inBuf.messageType = 0;
 
 		fSuccess = ReadFile(
 		        hPipe,    // pipe handle
 		        &inBuf,    // buffer to receive reply
-		        sizeof(struct ipcMessage),      // size of buffer
+		        sizeof(CIpcMessage),      // size of buffer
 		        &lpBytesRead,  // number of bytes read
 		        NULL);    // not overlapped
 

@@ -2,5 +2,7 @@
 
 #include "mod_maphack.h"
 
-CMod_maphackApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_maphackApp();
+}

@@ -1,22 +1,23 @@
 #pragma once
 
 #include "tibiaauto_util.h"
+#include "IpcMessage.h"
 
 class TIBIAAUTOUTIL_API CIPCBackPipe
 {
 public:
-	int readFromPipe(struct ipcMessage *mess, int expectedType);
-	CIPCBackPipe();
-	virtual ~CIPCBackPipe();
+	static int readFromPipe(CIpcMessage *mess, int expectedType);
 
 private:
+	CIPCBackPipe() {};
+	~CIPCBackPipe() {};
 	static HANDLE hPipeBack;
 	static int initialised;
-	static struct ipcMessage *pipeBackCache;
+	static CIpcMessage *pipeBackCache;
 	static int pipeBackCacheSize;
 	static int pipeBackCacheCount;
 	static void enlargePipeBackCache();
 public:
-	void InitialiseIPC();
+	static void InitialiseIPC();
 };
 

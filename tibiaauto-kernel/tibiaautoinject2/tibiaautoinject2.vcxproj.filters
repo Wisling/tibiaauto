@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="exports.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IPCPipeBack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -38,9 +35,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\tibiaauto-pub\sdk\ipcm.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IPCPipeBack.h">
       <Filter>Header Files</Filter>
     </ClInclude>

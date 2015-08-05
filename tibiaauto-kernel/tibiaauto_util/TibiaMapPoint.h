@@ -1,7 +1,7 @@
 #pragma once
 #include "tibiaauto_util.h"
 
-struct point
+struct TIBIAAUTOUTIL_API point
 {
 public:
 	int x;

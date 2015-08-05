@@ -29,6 +29,7 @@
 #include <PackSender.h>
 #include <TibiaItem.h>
 #include "ModuleUtil.h"
+#include <MemUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -70,8 +71,8 @@ void SetFPS(double iFps)
 
 	//T4: Fps value can be set to almost 0
 
-	reader.setMemIntValue(addrFps + 88, ifpsVal[0], 0);//this address comes from Tibia itself and need not be shifted
-	reader.setMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::SetMemIntValue(addrFps + 88, ifpsVal[0], 0);//this address comes from Tibia itself and need not be shifted
+	CMemUtil::SetMemIntValue(addrFps + 88 + 4, ifpsVal[1], 0);//this address comes from Tibia itself and need not be shifted
 }
 
 double GetFPS()
@@ -102,7 +103,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 	oldFps = max(GetFPS(), 20);
 	if (!hTibiaWnd)
-		EnumWindows(EnumWindowsProc, reader.getProcessId());
+		EnumWindows(EnumWindowsProc, CMemUtil::getGlobalProcessId());
 
 
 	while (!toolThreadShouldStop)

@@ -30,6 +30,8 @@
 #include "ModuleUtil.h"
 #include "MemConstData.h"
 #include <time.h>
+#include <TibiaTile.h>
+#include <TileReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -86,7 +88,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -129,7 +131,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int nonGroupable = 0;
 				if (itemMoved->objectId == CTibiaItem::getValueForConst("fluid"))
 					nonGroupable = 1;
-				CTibiaTile *tile = reader.getTibiaTile(itemMoved->objectId);
+				CTibiaTile *tile = CTileReader::getTileReader().getTile(itemMoved->objectId);
 				if (tile && !tile->stackable)
 					nonGroupable = 1;
 
@@ -152,7 +154,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							else
 								qtyToMove = 100 - item->quantity;
 							// do the moving
-							sender.moveObjectBetweenContainers(
+							CPackSender::moveObjectBetweenContainers(
 							        item->objectId, 0x40 + contNr, itemNrMoved,
 							        0x40 + contNr, itemNr, qtyToMove);
 							movedSomething = 1;

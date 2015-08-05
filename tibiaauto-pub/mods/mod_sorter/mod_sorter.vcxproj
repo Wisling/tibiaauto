@@ -143,23 +143,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\sdk\BtnST.cpp" />
     <ClCompile Include="ConfigData.cpp" />
     <ClCompile Include="ConfigDialog.cpp" />
     <ClCompile Include="exports.cpp" />
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="mod_sorter.cpp" />
-    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TibiaContainer_impl.cpp" />
-    <ClCompile Include="TibiaItem_impl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mod_sorter.def" />
@@ -171,12 +164,14 @@
   <ItemGroup>
     <ClInclude Include="ConfigData.h" />
     <ClInclude Include="ConfigDialog.h" />
-    <ClInclude Include="..\..\sdk\GroupBoxEx.h" />
     <ClInclude Include="mod_sorter.h" />
-    <ClInclude Include="..\..\sdk\MyDialog.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="..\..\sdk\Skin.h" />
     <ClInclude Include="StdAfx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -2,6 +2,7 @@
 
 #include "mod_trademon.h"
 
-CMod_trademonApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_trademonApp();
+}

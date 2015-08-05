@@ -9,16 +9,15 @@
 #include "TibiaCharacter.h"
 #include "MapButton.h"
 #include "resource.h"
-#include "TibiaMapProxy.h"
 #include "TibiaMapPoint.h"
+#include <TibiaMap.h>
+#include <TileReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
-
-CTibiaMapProxy tibiaMap;
 
 /////////////////////////////////////////////////////////////////////////////
 // CONSTANTS
@@ -166,6 +165,7 @@ BOOL CToolMapShow::OnEraseBkgnd(CDC* pDC)
 void CToolMapShow::refreshVisibleMap()
 {
 	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	int x;
 	int y;
 
@@ -310,6 +310,7 @@ void CToolMapShow::OnTimer(UINT nIDEvent)
 
 void CToolMapShow::OnToolMapshowClear()
 {
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	tibiaMap.clear();
 }
 
@@ -344,6 +345,7 @@ void CToolMapShow::OnToolMapshowExtendedResearch()
 
 void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
 {
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	if (tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= 0)
 	{
 		int prev = tibiaMap.isPointLocked(realX, realY, realZ);
@@ -354,6 +356,7 @@ void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
 void CToolMapShow::MapResearchTick()
 {
 	KillTimer(1002);
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -378,7 +381,8 @@ void CToolMapShow::ExtendedMapResearchTick()
 	KillTimer(1003);
 	CMemReader& reader = CMemReader::getMemReader();
 	// get tile 0 to make sure that the framework is initialised
-	reader.getTibiaTile(0);
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
+	CTileReader::getTileReader().getTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	if (self->x < -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
@@ -421,7 +425,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 					int tileId = reader.mapGetPointItemId(point(x, y, 0), i, relToCell);
 					if (tileId != 99)
 					{
-						CTibiaTile *tileData = reader.getTibiaTile(tileId);
+						CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 						if (tileData->blocking)
 							blocked = 1;
 						if (tileData->blocking && tileData->notMoveable)
@@ -564,8 +568,9 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 	static int prevXTele = 0, prevYTele = 0, prevZTele = 0;
 	KillTimer(1004);
 	CMemReader& reader = CMemReader::getMemReader();
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	// get tile 0 to make sure that the framework is initialised
-	reader.getTibiaTile(0);
+	CTileReader::getTileReader().getTile(0);
 	CTibiaCharacter *self = reader.readSelfCharacter();
 
 	if (self->x == -0x10000000 || self->y < -0x10000000 || self->z < -20 || self->z > 20)
@@ -618,13 +623,13 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 				MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
 				if (type == MAP_POINT_TYPE_TELEPORT)//teleporter
 				{
-					CPackSenderProxy sender;
+				
 					if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
 					{
 						tibiaMap.setDestPoint(prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
 						char buf[128];
 						sprintf(buf, "Assigned Teleporter Dest(%d,%d,%d)->(%d,%d,%d)", prevXTele + x, prevYTele + y, prevZTele, self->x, self->y, self->z);
-						sender.sendTAMessage(buf);
+						CPackSender::sendTAMessage(buf);
 						break;
 					}
 				}
@@ -644,6 +649,7 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 
 void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, int tileVal)
 {
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	if (tileVal >= 0)
 	{
 		// point added/updated
@@ -670,7 +676,7 @@ BOOL CToolMapShow::OnCommand(WPARAM wParam, LPARAM lParam)
 void CToolMapShow::showTileDetails(int x, int y)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CTibiaMapProxy tibiaMap;
+	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 	int outOfRange = 0;
 	char buf[2560];
 

@@ -5,11 +5,17 @@
 #include <iostream>
 #include "mod_cavebot.h"
 #include "ConfigDialog.h"
-#include "TibiaMiniMap.h"
-#include "TibiaMiniMapLabel.h"
-#include "TibiaMiniMapPoint.h"
 #include "LoadWaypointsInfo.h"
 #include "DropLootDialog.h"
+
+#include <TibiaItem.h>
+#include <MemReader.h>
+#include <VariableStore.h>
+#include <TAMiniMap.h>
+#include <TibiaMap.h>
+#include <TibiaMiniMap.h>
+#include <TibiaMiniMapLabel.h>
+#include <TibiaMiniMapPoint.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -708,7 +714,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 				m_waypointList.SetCurSel(currentWaypointNr);
 			break;
 		case CToolAutoAttackStateWalker_halfSleep:
-			sprintf(buf, "State: half module sleep by %s:%s", reader.getGlobalVariable("walking_control"), reader.getGlobalVariable("walking_priority"));
+			sprintf(buf, "State: half module sleep by %s:%s", CVariableStore::getVariable("walking_control"), CVariableStore::getVariable("walking_priority"));
 			m_stateWalker.SetWindowText(buf);
 			break;
 		case CToolAutoAttackStateWalker_fullSleep:
@@ -770,7 +776,7 @@ void CConfigDialog::OnTimer(UINT nIDEvent)
 			m_trainingState.SetWindowText("State: unknown");
 		}
 
-		CTAMiniMapProxy taMiniMap;
+		CTAMiniMap& taMiniMap = CTAMiniMap::getTAMiniMap();
 		if (!taMiniMap.isFindPathStopped())
 		{
 			char buf[128];
@@ -1336,7 +1342,7 @@ void PathfindThread(LPVOID lpParam)
 			{
 				if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 				{
-					CTibiaMiniMapPoint* mp = taMiniMap.getMiniMapPoint(x, y, startZ);
+					CTibiaMiniMapPoint* mp = CTAMiniMap::getTAMiniMap().getMiniMapPoint(x, y, startZ);
 					if (mp->speed != 255 && mp->colour != 0)
 					{
 						tibiaMap.setPointAsAvailable(x, y, startZ);//is not blocking nor unexplored
@@ -1352,7 +1358,7 @@ void PathfindThread(LPVOID lpParam)
 			{
 				if (!tibiaMap.isPointAvailableNoProh(x, y, startZ))
 				{
-					CTibiaMiniMapPoint * mp = taMiniMap.getMiniMapPoint(x, y, startZ);
+					CTibiaMiniMapPoint * mp = CTAMiniMap::getTAMiniMap().getMiniMapPoint(x, y, startZ);
 					if (mp->speed != 255 && mp->colour != 0)
 					{
 						tibiaMap.setPointAsAvailable(x, y, startZ);//is not blocking nor unexplored

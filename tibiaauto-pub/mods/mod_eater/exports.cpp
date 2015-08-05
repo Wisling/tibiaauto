@@ -2,6 +2,7 @@
 
 #include "mod_eater.h"
 
-CMod_eaterApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_eaterApp();
+}

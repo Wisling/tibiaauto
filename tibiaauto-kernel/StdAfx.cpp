@@ -4,15 +4,3 @@
 
 #include "stdafx.h"
 #include "time.h"
-
-void ipcMessage::send(HANDLE pipeHandle)
-{
-	this->tm = time(NULL);
-	DWORD cbWritten;
-	BOOL fSuccess = WriteFile(
-	        pipeHandle,
-	        this,
-	        sizeof(struct ipcMessage),
-	        &cbWritten,
-	        NULL);
-}

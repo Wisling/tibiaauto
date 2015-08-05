@@ -141,7 +141,7 @@ void CKnownInfo::OnEditchangeToolcreaturinfoInfoCombo()
 void CKnownInfo::OnSelendokToolcreaturinfoInfoCombo()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	char buffer[260];
 	int iSel  = m_combo.GetCurSel();

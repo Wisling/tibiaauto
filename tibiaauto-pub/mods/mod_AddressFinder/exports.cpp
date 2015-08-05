@@ -4,6 +4,5 @@
 
 IModuleInterface* initModuleInstance()
 {
-	CMod_addressfinderApp* instance = new CMod_addressfinderApp();
-	return instance;
+	return new CMod_addressfinderApp();
 }

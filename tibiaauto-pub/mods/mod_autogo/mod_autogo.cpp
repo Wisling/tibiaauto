@@ -27,8 +27,8 @@
 
 #include <MemReader.h>
 #include <PackSender.h>
+#include <IPCBackPipe.h>
 #include <TibiaItem.h>
-#include "TibiaMapProxy.h"
 #include "ModuleUtil.h"
 #include <MMSystem.h>
 #include <Tlhelp32.h>
@@ -43,11 +43,12 @@
 #include <jpeglib.h>
 #include <zlib.h>
 #include <png.h>
+#include <MemUtil.h>
+#include <VariableStore.h>
 
 using namespace std;
 
 
-#include <IPCBackPipe.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -115,7 +116,7 @@ void InitTibiaHandle()
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
-		if (pid == reader.getProcessId())
+		if (pid == CMemUtil::getGlobalProcessId())
 			break;
 		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
 	}
@@ -127,7 +128,7 @@ void actionTerminate()
 	CMemReader& reader = CMemReader::getMemReader();
 	HANDLE hTibiaProc;
 
-	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, reader.getProcessId());
+	hTibiaProc = OpenProcess(PROCESS_TERMINATE, true, CMemUtil::getGlobalProcessId());
 
 	TerminateProcess(hTibiaProc, 0);
 
@@ -240,10 +241,9 @@ struct tibiaMessage * triggerMessage()
 {
 	masterDebug("triggerMessage");
 	CMemReader& reader = CMemReader::getMemReader();
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
+	CIpcMessage mess;
 
-	if (backPipe.readFromPipe(&mess, 1003))
+	if (CIPCBackPipe::readFromPipe(&mess, 1003))
 	{
 		int infoType;
 		int chanType;
@@ -858,7 +858,7 @@ int shouldKeepWalking()
 	CMemReader& reader = CMemReader::getMemReader();
 	if (!reader.getAttackedCreature())
 	{
-		const char *var = reader.getGlobalVariable("autolooterTm");
+		const char *var = CVariableStore::getVariable("autolooterTm");
 		if (strcmp(var, "") == 0)
 		{
 			if (time(NULL) - lastAttackTime > 3)
@@ -889,7 +889,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	masterDebug("toolThreadProc");
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	CConfigData *config = (CConfigData *)lpParam;
 	list<Alarm>::iterator alarmItr;
 	CTibiaCharacter *self = reader.readSelfCharacter();
@@ -1086,7 +1086,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					if (self->mana >= alarmItr->getManaCost() && time(NULL) - alarmItr->spellCast >= alarmItr->getSpellDelay())
 					{
-						sender.say(alarmItr->getCastSpell());
+						CPackSender::say(alarmItr->getCastSpell());
 						alarmItr->spellCast = time(NULL);
 					}
 				}// *****************************
@@ -1137,7 +1137,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				// Logout **********************
 				if (alarmItr->getLogout())
 					if (!(reader.getSelfEventFlags() & (1L << LOGOUTBLOCK)) && !(reader.getSelfEventFlags() & (1L << PZBLOCK)) && reader.isLoggedIn())
-						sender.logout();
+						CPackSender::logout();
 				// ****************************
 			}
 
@@ -1239,29 +1239,29 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 
 		// Do not let seperate modules fight for control!!
-		bool control    = strcmp(reader.getGlobalVariable("walking_control"), "autogo") == 0;
-		int modpriority = atoi(reader.getGlobalVariable("walking_priority"));
+		bool control    = strcmp(CVariableStore::getVariable("walking_control"), "autogo") == 0;
+		int modpriority = atoi(CVariableStore::getVariable("walking_priority"));
 		// if wants control
 		if (goPriority || stopWalk)
 		{
 			//if should have control, take it
 			if (!control && atoi(config->modPriorityStr) > modpriority)
 			{
-				reader.setGlobalVariable("walking_control", "autogo");
-				reader.setGlobalVariable("walking_priority", config->modPriorityStr);
+				CVariableStore::setVariable("walking_control", "autogo");
+				CVariableStore::setVariable("walking_priority", config->modPriorityStr);
 			}
 		}
 		else     // if doesn't want control
 		{       //if has control, give it up
 			if (control)
 			{
-				reader.setGlobalVariable("walking_control", "");
-				reader.setGlobalVariable("walking_priority", "0");
+				CVariableStore::setVariable("walking_control", "");
+				CVariableStore::setVariable("walking_priority", "0");
 			}
 		}
 		int keepMaintainPos = 0;
 		doneAttackingAndLooting(); //guarantees it will be run even when it is not needed
-		if (doneAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"), "autogo") == 0)
+		if (doneAttackingAndLooting() && strcmp(CVariableStore::getVariable("walking_control"), "autogo") == 0)
 		{
 			// if stopWalk and not maintainPos then do nothing
 			if (!stopWalk || goPriority == 1)
@@ -1302,7 +1302,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							else if (!sentMessagePathnotfound)
 							{
 								sentMessagePathnotfound = 1;
-								sender.sendTAMessage("Auto go/log: No path found to maintained position");
+								CPackSender::sendTAMessage("Auto go/log: No path found to maintained position");
 							}
 						}
 					}
@@ -1312,7 +1312,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{        // Start position (By definition, the least safe place to be)
 					int pathSize = 0;
 					int path[15];
-					const char* var = reader.getGlobalVariable("autolooterTm");
+					const char* var = CVariableStore::getVariable("autolooterTm");
 
 
 					if (abs(self->x - config->actX) > 1 || abs(self->y - config->actY) > 1 || self->z != config->actZ)
@@ -1332,7 +1332,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							else if (!sentMessagePathnotfound)
 							{
 								sentMessagePathnotfound = 1;
-								sender.sendTAMessage("Auto go/log: No path found to start position");
+								CPackSender::sendTAMessage("Auto go/log: No path found to start position");
 							}
 						}
 					}
@@ -1343,21 +1343,21 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						if (config->actDirection)
 						{
 							if (config->actDirection == DIR_LEFT)
-								sender.turnLeft();
+								CPackSender::turnLeft();
 							else if (config->actDirection == DIR_RIGHT)
-								sender.turnRight();
+								CPackSender::turnRight();
 							else if (config->actDirection == DIR_UP)
-								sender.turnUp();
+								CPackSender::turnUp();
 							else if (config->actDirection == DIR_DOWN)
-								sender.turnDown();
+								CPackSender::turnDown();
 						}
 					}
 					break;
 				}
 				case 3:
-				{        // Runaway Position (By definition, the relatively safe spot chosen by the user)
+				{   
+					// Runaway Position (By definition, the relatively safe spot chosen by the user)
 					int pathSize = 0;
-					CTibiaMapProxy tibiaMap;
 
 					int path[15];
 
@@ -1378,7 +1378,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							else if (!sentMessagePathnotfound)
 							{
 								sentMessagePathnotfound = 1;
-								sender.sendTAMessage("Auto go/log: No path found to Runaway position");
+								CPackSender::sendTAMessage("Auto go/log: No path found to Runaway position");
 							}
 						}
 					}
@@ -1412,7 +1412,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						else if (!sentMessagePathnotfound)
 						{
 							sentMessagePathnotfound = 1;
-							sender.sendTAMessage("Auto go/log: No path found to depot position");
+							CPackSender::sendTAMessage("Auto go/log: No path found to depot position");
 						}
 					}
 					break;
@@ -1499,10 +1499,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	PlaySound(NULL, NULL, NULL);
 
 	//release control
-	if (strcmp(reader.getGlobalVariable("walking_control"), "autogo") == 0)
+	if (strcmp(CVariableStore::getVariable("walking_control"), "autogo") == 0)
 	{
-		reader.setGlobalVariable("walking_control", "");
-		reader.setGlobalVariable("walking_priority", "0");
+		CVariableStore::setVariable("walking_control", "");
+		CVariableStore::setVariable("walking_priority", "0");
 	}
 
 	toolThreadShouldStop = 0;
@@ -1539,10 +1539,9 @@ int CMod_autogoApp::isStarted()
 	if (!m_started)
 	{
 		// if not started then regularly consume 1003 messages from the queue
-		CIPCBackPipeProxy backPipe;
-		struct ipcMessage mess;
+		CIpcMessage mess;
 
-		backPipe.readFromPipe(&mess, 1003);
+		CIPCBackPipe::readFromPipe(&mess, 1003);
 	}
 	return m_started;
 }

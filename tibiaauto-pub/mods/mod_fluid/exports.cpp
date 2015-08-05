@@ -2,5 +2,7 @@
 
 #include "mod_fluid.h"
 
-CMod_fluidApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_fluidApp();
+}

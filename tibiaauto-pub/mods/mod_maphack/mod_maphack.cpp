@@ -28,9 +28,9 @@
 #include "MemConstData.h"
 
 #include <MemReader.h>
-#include "TAMiniMapProxy.h"
 #include <PackSender.h>
 #include <TibiaItem.h>
+#include <TileReader.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -60,16 +60,12 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
-	CTAMiniMapProxy taMiniMap;
-	
-	
 	CConfigData *config        = (CConfigData *)lpParam;
 	int iter                   = 0;
 	time_t mountTm             = 0;
 	int mountStarted           = 0;
 
-	sender.enableCName(1);
+	CPackSender::enableCName(1);
 	while (!toolThreadShouldStop)
 	{
 		iter++;
@@ -126,7 +122,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 				if (mountStarted && time(NULL) >= mountTm)
 				{
-					sender.sendMount();
+					CPackSender::sendMount();
 					mountStarted = 0;
 				}
 			}
@@ -198,7 +194,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									continue;
 								}                                        //reached top of relevant tiles
 
-								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
 								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
@@ -242,7 +238,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									continue;
 								}                                        //reached top of relevant tiles
 
-								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
 								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
@@ -288,7 +284,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									continue;
 								}                                        //reached top of relevant tiles
 
-								CTibiaTile *tileData = reader.getTibiaTile(tileId);
+								CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 								if (tileData->minimapColor && mapColour == -1)
 									mapColour = tileData->minimapColor;
 								if (tileData->speed && tileData->speed < 256 && mapSpeed == -1)
@@ -349,7 +345,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 	}
 
-	sender.enableCName(0);
+	CPackSender::enableCName(0);
 	reader.writeDisableRevealCName();
 	toolThreadShouldStop = 0;
 	return 0;

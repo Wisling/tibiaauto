@@ -582,11 +582,11 @@ void CButtonST::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 
 	CRect captionRect = lpDIS->rcItem;
 
-//	CPackSenderProxy sender;
+//
 //	static int aa=0;
 //	char buf[1111];
 //	sprintf(buf,"hi %d isCheckbox-%d check-%d , %d, %d, %d, bDR%d bSL%d bFC%d SL%d GR%d DB%d CK%d FC%d DFf%d BX%d HL%d IA%d %d",aa++,m_bIsCheckBox,m_nCheck,lpDIS->CtlType,lpDIS->CtlID,lpDIS->itemID,lpDIS->itemAction&1,lpDIS->itemAction&2,lpDIS->itemAction&4,lpDIS->itemState&1,lpDIS->itemState&2,lpDIS->itemState&4,lpDIS->itemState&8,lpDIS->itemState&16,lpDIS->itemState&32,lpDIS->itemState&64,lpDIS->itemState&128,lpDIS->itemState&256,lpDIS->itemState&512);
-//	sender.sendTAMessage(buf);
+//	CPackSender::sendTAMessage(buf);
 
 	// Draw the icon
 	if (m_csIcons[0].hIcon)

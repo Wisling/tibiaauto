@@ -65,9 +65,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int i;
 	char buf[1024];
 
-	CIPCBackPipeProxy backPipe;
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -94,14 +93,14 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					// no connected node -> try to login to the master
 					sprintf(buf, "`TA login %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
-					sender.tell(buf, connectedNodes.getMasterNode());
+					CPackSender::tell(buf, connectedNodes.getMasterNode());
 				}
 				else
 				{
 					if (strlen(connectedNodes.getMasterNode()) && !connectedNodes.isCharConnected(connectedNodes.getMasterNode()))
 						connectedNodes.findNewMasterNode();
 					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
-					sender.tell(buf, connectedNodes.getMasterNode());
+					CPackSender::tell(buf, connectedNodes.getMasterNode());
 				}
 			}
 
@@ -124,17 +123,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					// send our position to all the slaves
 					//sprintf(buf,"`TA ping %d,%d,%d,%d,%d,%d,%d",self->x,self->y,self->z,self->hp,self->maxHp,self->mana,self->maxMana);
-					//sender.tell(buf,connectedNode->charName);
+					//CPackSender::tell(buf,connectedNode->charName);
 
-					sender.tell(buf, connectedNode->charName);
+					CPackSender::tell(buf, connectedNode->charName);
 				}
 			}
-			sender.tell(buf, connectedNodes.getMasterNode());
+			CPackSender::tell(buf, connectedNodes.getMasterNode());
 		}
 
-		struct ipcMessage mess;
+		CIpcMessage mess;
 		// now read messages from the master
-		while (backPipe.readFromPipe(&mess, 1005))
+		while (CIPCBackPipe::readFromPipe(&mess, 1005))
 		{
 			int infoType;
 			int chanType;
@@ -162,7 +161,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					connectedNodes.refreshNodeInfo(nickBuf, hp, mana, maxHp, maxMana, x, y, z, 1, 1);
 
 					sprintf(buf, "`TA ping %d,%d,%d,%d,%d,%d,%d", self->x, self->y, self->z, self->hp, self->maxHp, self->mana, self->maxMana);
-					sender.tell(buf, nickBuf);
+					CPackSender::tell(buf, nickBuf);
 				}
 				if (!strncmp(msgBuf, "`TA ping", strlen("`TA ping")))
 				{

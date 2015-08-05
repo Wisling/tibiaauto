@@ -26,7 +26,6 @@ CToolMonsterShow::CToolMonsterShow(CWnd* pParent /*=NULL*/)
 	// NOTE: the ClassWizard will add member initialization here
 	//}}AFX_DATA_INIT
 	CMemReader& reader = CMemReader::getMemReader();
-	memConstData = reader.getMemConstData();
 }
 
 CToolMonsterShow::~CToolMonsterShow()

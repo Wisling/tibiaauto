@@ -2,5 +2,7 @@
 
 #include "mod_uh.h"
 
-CMod_uhApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_uhApp();
+}

@@ -29,8 +29,8 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
-#include "ModuleUtil.h"
-#include "TibiaMapProxy.h"
+#include <ModuleUtil.h>
+#include <VariableStore.h>
 #include <Tlhelp32.h>
 
 #ifdef _DEBUG
@@ -106,7 +106,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 
 	CConfigData *config       = (CConfigData *)lpParam;
 	int allAtOnce             = 0;
@@ -114,7 +114,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	int persistentShouldGo    = 0;
 	time_t lastPathNotFoundTm = 0;
 	unsigned int modRuns      = 0;
-	reader.setGlobalVariable("banker_suggestion", "");
+	CVariableStore::setVariable("banker_suggestion", "");
 	time_t lastSellerSuccessTm  = 0;
 	int sellerPauseAfterSuccess = 5;
 
@@ -166,10 +166,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			int goldNeeded = sumAllExpenses(config);
 			char buf[128];
 			sprintf(buf, "%d", goldNeeded);
-			reader.setGlobalVariable("banker_suggestion", buf);
+			CVariableStore::setVariable("banker_suggestion", buf);
 		}
 
-		const char* controller = reader.getGlobalVariable("walking_control");
+		const char* controller = CVariableStore::getVariable("walking_control");
 		if (!persistentShouldGo && shouldGo(config))
 			persistentShouldGo = 1;
 		if (!persistentShouldGo
@@ -181,7 +181,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			persistentShouldGo = 0;
 
 		bool control          = strcmp(controller, "seller") == 0;
-		int modpriority       = atoi(reader.getGlobalVariable("walking_priority"));
+		int modpriority       = atoi(CVariableStore::getVariable("walking_priority"));
 		int wantsControl      = 0;
 		int foundPathToSeller = 0;
 		// if wants control
@@ -195,8 +195,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					if (atoi(config->modPriorityStr) > modpriority)
 					{
-						reader.setGlobalVariable("walking_control", "seller");
-						reader.setGlobalVariable("walking_priority", config->modPriorityStr);
+						CVariableStore::setVariable("walking_control", "seller");
+						CVariableStore::setVariable("walking_priority", config->modPriorityStr);
 					}
 					else
 					{
@@ -210,8 +210,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				//if has control, give it up
 				if (control)
 				{
-					reader.setGlobalVariable("walking_control", "");
-					reader.setGlobalVariable("walking_priority", "0");
+					CVariableStore::setVariable("walking_control", "");
+					CVariableStore::setVariable("walking_priority", "0");
 				}
 			}
 		}
@@ -221,12 +221,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			//if has control, give it up
 			if (control)
 			{
-				reader.setGlobalVariable("walking_control", "");
-				reader.setGlobalVariable("walking_priority", "0");
+				CVariableStore::setVariable("walking_control", "");
+				CVariableStore::setVariable("walking_priority", "0");
 			}
 		}
 
-		if (donaAttackingAndLooting() && strcmp(reader.getGlobalVariable("walking_control"), "seller") == 0)
+		if (donaAttackingAndLooting() && strcmp(CVariableStore::getVariable("walking_control"), "seller") == 0)
 		{
 			allAtOnce = 1;
 			for (int i = buyOrSell; i < MAX_SELLERS; i++)
@@ -239,8 +239,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						if (moveToSeller(config, i))
 						{
 							// High Priority Task
-							reader.setGlobalVariable("walking_control", "seller");
-							reader.setGlobalVariable("walking_priority", "9");
+							CVariableStore::setVariable("walking_control", "seller");
+							CVariableStore::setVariable("walking_priority", "9");
 
 							globalSellerState = CToolSellerState_talking;
 							config->targetX   = config->targetY = config->targetZ = 0;
@@ -248,8 +248,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							buyItems(config, i);
 							buyOrSell++;
 
-							reader.setGlobalVariable("walking_control", "seller");
-							reader.setGlobalVariable("walking_priority", config->modPriorityStr);
+							CVariableStore::setVariable("walking_control", "seller");
+							CVariableStore::setVariable("walking_priority", config->modPriorityStr);
 						}
 						else
 						{
@@ -268,12 +268,12 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 	}
-	if (strcmp(reader.getGlobalVariable("walking_control"), "seller") == 0)
+	if (strcmp(CVariableStore::getVariable("walking_control"), "seller") == 0)
 	{
-		reader.setGlobalVariable("walking_control", "");
-		reader.setGlobalVariable("walking_priority", "0");
+		CVariableStore::setVariable("walking_control", "");
+		CVariableStore::setVariable("walking_priority", "0");
 	}
-	reader.setGlobalVariable("banker_suggestion", "");
+	CVariableStore::setVariable("banker_suggestion", "");
 	globalSellerState    = CToolSellerState_notRunning;
 	toolThreadShouldStop = 0;
 	return 0;
@@ -1045,7 +1045,7 @@ int shouldKeepWalking()
 	CMemReader& reader = CMemReader::getMemReader();
 	if (!reader.getAttackedCreature())
 	{
-		const char *var = reader.getGlobalVariable("autolooterTm");
+		const char *var = CVariableStore::getVariable("autolooterTm");
 		if (strcmp(var, "") == 0)
 		{
 			if (lastAttackTime < time(NULL) - 3)
@@ -1132,7 +1132,7 @@ int moveToSeller(CConfigData *config, int traderNum)
 int sellItems(CConfigData *config, int traderNum)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CTibiaContainer *cont;
@@ -1143,10 +1143,10 @@ int sellItems(CConfigData *config, int traderNum)
 		return 1;
 
 	Sleep(RandomTimeSellerSay(strlen("hi")));
-	sender.say("hi");
+	CPackSender::say("hi");
 	Sleep(800); //Give time for NPC window to open
 	Sleep(RandomTimeSellerSay(strlen("trade")));
-	sender.sayNPC("trade");
+	CPackSender::sayNPC("trade");
 	Sleep(RandomTimeSeller());
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
@@ -1169,7 +1169,7 @@ int sellItems(CConfigData *config, int traderNum)
 						while (itemCount > 0)
 						{
 							CTibiaCharacter *self = reader.readSelfCharacter();
-							sender.npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
+							CPackSender::npcSell(objectId, min(itemCount, MAX_BUYSELL_ITEMS));
 							itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 							Sleep(RandomTimeSeller());
 							if (CModuleUtil::waitForCapsChange(self->cap))
@@ -1195,7 +1195,7 @@ int sellItems(CConfigData *config, int traderNum)
 int buyItems(CConfigData *config, int traderNum)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	int itemCount, goldCount;
 	int done = -1;
@@ -1206,10 +1206,10 @@ int buyItems(CConfigData *config, int traderNum)
 	int objectId;
 	//char buf[64];
 	Sleep(RandomTimeSellerSay(strlen("hi")));
-	sender.say("hi");
+	CPackSender::say("hi");
 	Sleep(800); //Give time for NPC window to open
 	Sleep(RandomTimeSellerSay(strlen("trade")));
-	sender.sayNPC("trade");
+	CPackSender::sayNPC("trade");
 	Sleep(RandomTimeSeller());
 	for (int j = 0; j < MAX_SELLER_ITEMS; j++)
 	{
@@ -1231,7 +1231,7 @@ int buyItems(CConfigData *config, int traderNum)
 		while (itemCount > 0)
 		{
 			CTibiaCharacter *self = reader.readSelfCharacter();
-			sender.npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
+			CPackSender::npcBuy(objectId, min(itemCount, MAX_BUYSELL_ITEMS), 0, 0);
 			itemCount -= min(itemCount, MAX_BUYSELL_ITEMS);
 			Sleep(RandomTimeSeller());
 			if (CModuleUtil::waitForCapsChange(self->cap))
@@ -1283,7 +1283,7 @@ int isCavebotOn()
 int isDepositing()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	const char *var = reader.getGlobalVariable("cavebot_depositing");
+	const char *var = CVariableStore::getVariable("cavebot_depositing");
 	return strcmp(var, "true") == 0;
 }
 

@@ -2,5 +2,7 @@
 
 #include "mod_restack.h"
 
-CMod_restackApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_restackApp();
+}

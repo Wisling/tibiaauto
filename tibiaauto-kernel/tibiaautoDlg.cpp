@@ -9,8 +9,6 @@
 #include "ModuleUtil.h"
 #include "CharDialog.h"
 #include <MemReader.h>
-#include "TibiaMapProxy.h"
-#include "TAMiniMapProxy.h"
 #include <TibiaItem.h>
 #include "TibiaCharacter.h"
 #include "ModuleProxy.h"
@@ -30,6 +28,9 @@
 #include "url.h"
 #include <iostream>
 #include <fstream>
+#include <TibiaMap.h>
+#include <TAMiniMap.h>
+#include <TileReader.h>
 
 
 HANDLE hPipe   = INVALID_HANDLE_VALUE;
@@ -41,10 +42,6 @@ extern volatile char *checksum;
 
 int globalProcessId;
 NOTIFYICONDATA currentIconData;
-
-// other externs
-CTibiaMapProxy tibiaMap;
-
 
 // xerces things
 #include <xercesc/util/PlatformUtils.hpp>
@@ -101,7 +98,7 @@ void InitTibiaHandle()
 		DWORD pid;
 		DWORD dwThreadId = ::GetWindowThreadProcessId(tibiaHWND, &pid);
 
-		if (pid == reader.getProcessId())
+		if (pid == CMemUtil::getGlobalProcessId())
 			break;
 		tibiaHWND = FindWindowEx(NULL, tibiaHWND, "TibiaClient", NULL);
 	}
@@ -332,9 +329,7 @@ BOOL CTibiaautoDlg::OnInitDialog()
 	InitialiseIPC();
 
 	CMemReader& reader = CMemReader::getMemReader();
-	reader.setProcessId(m_processId);
-	CPackSenderProxy sender;
-	sender.setPipeHandle(hPipe);
+	CMemUtil::setGlobalProcessId(m_processId);
 
 	// shutdownCounter is anti-hack protection
 	shutdownCounter = rand() % 100;
@@ -596,7 +591,7 @@ void CTibiaautoDlg::OnTimer(UINT nIDEvent)
 			char path[1024];
 			CModuleUtil::getInstallPath(path);
 			char pathBuf[2048];
-			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, reader.getProcessId());
+			sprintf(pathBuf, "%s\\tascripts\\module %d statistics.txt", path, CMemUtil::getGlobalProcessId());
 			std::ofstream fout(pathBuf, std::ios::out | std::ios::app | std::ios::binary);
 			time_t tm = time(NULL);
 			fout.write((char*)&tm, 4);
@@ -727,18 +722,17 @@ void CTibiaautoDlg::InitialiseIPC()
 		return;
 	}
 
-
+	CIpcMessage::hPipe = hPipe;
 	// send my pid to the dll
 	int myProcessId = GetCurrentProcessId();
-	struct ipcMessage mess;
+	CIpcMessage mess;
 	mess.messageType = 4;
 	memcpy(mess.payload, &myProcessId, sizeof(int));
-	mess.send(hPipe);
+	mess.send();
 
 	// wait for incoming IPC connection from the dll
 
-	CIPCBackPipeProxy backPipe;
-	backPipe.InitialiseIPC();
+	CIPCBackPipe::InitialiseIPC();
 
 	// now hook keys
 	HINSTANCE hinstDLL = NULL;
@@ -1318,17 +1312,10 @@ void CTibiaautoDlg::OnExit()
 	DisconnectNamedPipe(hPipe);
 	Shell_NotifyIcon(NIM_DELETE, &currentIconData);
 
-	CTAMiniMapProxy taMiniMap;
-	taMiniMap.unloadMiniMaps();
-
-	CTibiaItemProxy tibiaItem;
-	tibiaItem.cleanup();
-
-	CTibiaMapProxy tibiaMap;
-	tibiaMap.clear();
-
-	CMemReader& reader = CMemReader::getMemReader();
-	reader.cleanupTibiaTiles();
+	CTAMiniMap::getTAMiniMap().unloadMiniMaps();
+	CTibiaItem::cleanup();
+	CTibiaMap::getTibiaMap().clear();
+	CTileReader::getTileReader().cleanup();
 
 	delete m_loadedModules;
 	delete m_pythonScriptsDialog;

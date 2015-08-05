@@ -63,7 +63,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	CConfigData *config = (CConfigData *)lpParam;
 
@@ -89,7 +89,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					randTimeTrade = RandomTimeTrademon(config->channelInterval);
 					channelTime   = time(NULL);
-					sender.sayOnChan(config->message, 7, 5);
+					CPackSender::sayOnChan(config->message, 7, 5);
 				}
 			}
 			if (config->yell)
@@ -99,7 +99,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					randTimeYell = RandomTimeTrademon(config->yellInterval);
 					yellTime     = time(NULL);
-					sender.sayYell(config->message);
+					CPackSender::sayYell(config->message);
 				}
 			}
 
@@ -110,7 +110,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				{
 					randTimeSay = RandomTimeTrademon(config->sayInterval);
 					sayTime     = time(NULL);
-					sender.say(config->message);
+					CPackSender::say(config->message);
 				}
 			}
 		}
@@ -150,7 +150,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						strbuf[1000] = 0;
 					}
 				}
-				sender.sendTAMessage(strbuf);
+				CPackSender::sendTAMessage(strbuf);
 				free(strbuf);
 				free(itemsCount);
 			}

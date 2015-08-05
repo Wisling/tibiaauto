@@ -29,6 +29,7 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
+#include <TileReader.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -60,7 +61,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -111,7 +112,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									int sourcePos    = itemNr;
 									int targetPos    = destCont->size - 1;
 									int moved        = item->quantity ? item->quantity : 1;
-									CTibiaTile *tile = reader.getTibiaTile(item->objectId);
+									CTibiaTile *tile = CTileReader::getTileReader().getTile(item->objectId);
 									CTibiaItem *stackedItem;
 									if (tile->stackable)
 									{
@@ -130,7 +131,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									}
 									//sprintf(buf, "Item: %d  Quantity: %d\nSource Container: %d  Slot: %d\nDestination Container: %d  Slot: %d\n Original item quantity: %d",  sortItem, moved, contNr, sourcePos, i, targetPos, item->quantity);
 									//AfxMessageBox(buf);
-									sender.moveObjectBetweenContainers(sortItem, 0x40 + contNr, sourcePos, 0x40 + i, targetPos, moved);
+									CPackSender::moveObjectBetweenContainers(sortItem, 0x40 + contNr, sourcePos, 0x40 + i, targetPos, moved);
 									if (item->quantity == moved)
 									{
 										CModuleUtil::waitForItemsInsideChange(contNr, sortCont->itemsInside);
@@ -155,7 +156,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 								{
 									int found = 0;
 									int findItem;
-									CTibiaItemProxy proxy;
 									CTibiaContainer *fullCont = reader.readContainer(i);
 									for (int l = 0; l < fullCont->itemsInside; l++)
 									{
@@ -177,7 +177,6 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									//AfxMessageBox(buf);
 									if (!found)
 									{
-										CTibiaItemProxy orphanedItem;
 										sprintf(buf, "No more bags configured for %s sorting!!!\nPlease Close bag %d!\nOpen a new bag and press OK", config->sortBags[i].slotNr[j].itemName, i + 1);
 										AfxMessageBox(buf);
 									}
@@ -450,7 +449,7 @@ int isStackable(int sortItem, int contNr)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 	CTibiaContainer *cont = reader.readContainer(contNr);
-	CTibiaTile *tile      = reader.getTibiaTile(sortItem);
+	CTibiaTile *tile      = CTileReader::getTileReader().getTile(sortItem);
 	if (tile->stackable)
 	{
 		for (int stackedItemPos = 0; stackedItemPos < cont->itemsInside; stackedItemPos++)

@@ -28,9 +28,9 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
+#include <TileReader.h>
 #include "MemConstData.h"
 #include "ModuleUtil.h"
-#include "TibiaTile.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -61,14 +61,14 @@ int getNewPeriod(CConfigData *config)
 void pickupItemFromFloor(int itemId, int x, int y, int z, int contNr, int slotNr, int qty)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	CTibiaCharacter *self = reader.readSelfCharacter();
-	sender.moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
+	CPackSender::moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
 	while (!CModuleUtil::waitForCapsChange(self->cap) && qty > 0)
 	{
 		Sleep(CModuleUtil::randomFormula(100, 50));// +1.5 sec wait for caps change
 		qty = max(qty / 2, 1);
-		sender.moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
+		CPackSender::moveObjectFromFloorToContainer(itemId, x, y, z, contNr, slotNr, qty);
 	}
 	Sleep(CModuleUtil::randomFormula(100, 100));
 }
@@ -79,7 +79,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -134,7 +134,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						{
 							if (itemAccepted->quantity < qtyToRestack)
 								qtyToRestack = itemAccepted->quantity;
-							sender.moveObjectBetweenContainers(ammoItemId, 0x40 + contNr, itemAccepted->pos, 0xa, 0, qtyToRestack ? qtyToRestack : 1);
+							CPackSender::moveObjectBetweenContainers(ammoItemId, 0x40 + contNr, itemAccepted->pos, 0xa, 0, qtyToRestack ? qtyToRestack : 1);
 							Sleep(CModuleUtil::randomFormula(500, 200));
 							delete itemAccepted;
 							delete cont;
@@ -178,9 +178,9 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							if ((itemAccepted->quantity ? itemAccepted->quantity : 1) < qtyToRestack)
 								qtyToRestack = itemAccepted->quantity ? itemAccepted->quantity : 1;
 							if (!config->restackToRight)
-								sender.moveObjectBetweenContainers(throwableItemId, 0x40 + contNr, itemAccepted->pos, 0x6, 0, qtyToRestack ? qtyToRestack : 1);
+								CPackSender::moveObjectBetweenContainers(throwableItemId, 0x40 + contNr, itemAccepted->pos, 0x6, 0, qtyToRestack ? qtyToRestack : 1);
 							else
-								sender.moveObjectBetweenContainers(throwableItemId, 0x40 + contNr, itemAccepted->pos, 0x5, 0, qtyToRestack ? qtyToRestack : 1);
+								CPackSender::moveObjectBetweenContainers(throwableItemId, 0x40 + contNr, itemAccepted->pos, 0x5, 0, qtyToRestack ? qtyToRestack : 1);
 							Sleep(CModuleUtil::randomFormula(400, 150));
 							delete itemAccepted;
 							delete cont;
@@ -250,7 +250,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				CTibiaItem *itemRightHand = reader.readItem(reader.m_memAddressRightHand);
 				if ((itemLeftHand->objectId == throwableItemId || (itemLeftHand->objectId == 0 && itemRightHand->objectId != throwableItemId)) && (offsetX != -2 || offsetY != -2))
 				{
-					CTibiaTile *itemHandTile = reader.getTibiaTile(itemLeftHand->objectId);
+					CTibiaTile *itemHandTile = CTileReader::getTileReader().getTile(itemLeftHand->objectId);
 					if (itemLeftHand->objectId == 0 || itemHandTile->stackable && itemLeftHand->quantity < 100)
 					{
 						// move to left hand
@@ -260,7 +260,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				}
 				if ((itemRightHand->objectId == throwableItemId || (itemRightHand->objectId == 0 && itemLeftHand->objectId != throwableItemId)) && (offsetX != -2 || offsetY != -2))
 				{
-					CTibiaTile *itemHandTile = reader.getTibiaTile(itemRightHand->objectId);
+					CTibiaTile *itemHandTile = CTileReader::getTileReader().getTile(itemRightHand->objectId);
 					if (itemRightHand->objectId == 0 || itemHandTile->stackable && itemLeftHand->quantity < 100)
 					{
 						// move to right hand
@@ -303,7 +303,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				int qty      = reader.itemOnTopQty(offsetX, offsetY);
 				if (offsetX || offsetY)
 				{
-					sender.moveObjectFromFloorToFloor(objectId, self->x + offsetX, self->y + offsetY, self->z, self->x, self->y, self->z, qty ? qty : 1);
+					CPackSender::moveObjectFromFloorToFloor(objectId, self->x + offsetX, self->y + offsetY, self->z, self->x, self->y, self->z, qty ? qty : 1);
 				}
 				else
 				{
@@ -326,7 +326,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					if (config->pickupBR)
 						moveToX = 1, moveToY = 1;
 					if (moveToX != -2 || moveToY != -2)
-						sender.moveObjectFromFloorToFloor(objectId, self->x, self->y, self->z, self->x + moveToX, self->y + moveToY, self->z, qty ? qty : 1);
+						CPackSender::moveObjectFromFloorToFloor(objectId, self->x, self->y, self->z, self->x + moveToX, self->y + moveToY, self->z, qty ? qty : 1);
 				}
 				Sleep(CModuleUtil::randomFormula(400, 200));
 			}

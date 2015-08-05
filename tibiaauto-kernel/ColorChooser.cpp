@@ -8,6 +8,7 @@
 #include "util.h"
 #include "Skin.h"
 #include <MemReader.h>
+#include <tibiaauto_util/SkinLoader.h>
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -1130,7 +1131,6 @@ BOOL CColorChooser::OnEraseBkgnd(CDC* pDC)
 void CColorChooser::OnOK()
 {
 	// TODO: Add extra validation here
-	CMemReader& reader = CMemReader::getMemReader();
 	if (loadedSkin != skin)
 	{
 		char szFilters[] =
@@ -1145,14 +1145,13 @@ void CColorChooser::OnOK()
 	}
 
 	if (skin != originalSkin)
-		reader.saveSkin(pathBuf, skin, loadedSkin != skin);
+		saveSkin(pathBuf, skin, loadedSkin != skin);
 	CDialog::OnOK();
 }
 
 void CColorChooser::OnLoad()
 {
 	// TODO: Add your control notification handler code here
-	CMemReader& reader = CMemReader::getMemReader();
 	char szFilters[] =
 	        "Tibia Auto Skin (*.skin)|*.skin|All Files (*.*)|*.*||";
 
@@ -1160,7 +1159,7 @@ void CColorChooser::OnLoad()
 	if (fd.DoModal() == IDOK)
 	{
 		pathBuf = (LPCSTR)fd.GetPathName();
-		skin    = loadedSkin = reader.loadSkin(pathBuf);
+		skin    = loadedSkin = loadSkin(pathBuf);
 	}
 
 	UpdateDisplay(6, skin.m_ButtonFaceRedValue, skin.m_ButtonFaceGreenValue, skin.m_ButtonFaceBlueValue);
@@ -1176,7 +1175,6 @@ void CColorChooser::OnCancel()
 void CColorChooser::OnSave()
 {
 	// TODO: Add your control notification handler code here
-	CMemReader& reader = CMemReader::getMemReader();
 	char szFilters[] =
 	        "Tibia Auto Skin (*.skin)|*.skin|All Files (*.*)|*.*||";
 
@@ -1187,5 +1185,5 @@ void CColorChooser::OnSave()
 	else
 		return;
 
-	reader.saveSkin(pathBuf, skin, true);
+	saveSkin(pathBuf, skin, true);
 }

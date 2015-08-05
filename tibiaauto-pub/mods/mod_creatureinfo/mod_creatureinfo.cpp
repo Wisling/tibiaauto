@@ -31,13 +31,12 @@
 #include "MemConstData.h"
 #include <IPCBackPipe.h>
 #include "regex.h"
-#include "RegexpProxy.h"
 #include "Util.h"
 #include <map>
-#include "CreaturesReaderProxy.h"
 #include "SendStats.h"
+#include <CreaturesReader.h>
 
-#include "modules\playerinfo.h"
+#include "..\mod_playerinfo\playerinfo.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -792,7 +791,7 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "crstatMostHp"))
 	{
-		CCreaturesReaderProxy cReader;
+		CCreaturesReader cReader;
 		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -826,7 +825,7 @@ void Expression_Tags_Self(char* tagName, char* svalue, CConfigData *config)
 	}
 	else if (!_strcmpi(tagName, "crstatMostExp"))
 	{
-		CCreaturesReaderProxy cReader;
+		CCreaturesReader cReader;
 		CMemReader& reader = CMemReader::getMemReader();
 		CTibiaCharacter *self = reader.readSelfCharacter();
 
@@ -1215,12 +1214,11 @@ void Monster_Register(char *name, int type, int maxHp, int exp, int physical, in
 void ReadPipeInfo()
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
-	
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
 
-	while (backPipe.readFromPipe(&mess, 1002))
+	
+	CIpcMessage mess;
+
+	while (CIPCBackPipe::readFromPipe(&mess, 1002))
 	{
 		int len;
 		char msgBuf[16384];
@@ -1270,7 +1268,7 @@ void ReadPipeInfo()
 				Player_Register(resNick, voc, lvl, resGuildName, resGuildRank, resGuildDescription);
 
 				//sprintf(resNick,"Registered Players: %d",playersCount);
-				//sender.sendTAMessage(resNick);
+				//CPackSender::sendTAMessage(resNick);
 			}
 			else
 			{
@@ -1329,7 +1327,7 @@ void ReadPipeInfo()
 								else
 									Monster_Register(resNick, TYPE_NPC, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, "Auto Added");
 								//sprintf(resNick,"Registered Monsters: %d",monstersCount);
-								//sender.sendTAMessage(resNick);
+								//CPackSender::sendTAMessage(resNick);
 							}
 							regfree(&preg2);
 						}
@@ -1395,7 +1393,7 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	CConfigData *config        = (CConfigData *)lpParam;
 	//T4: Expression structures
@@ -1530,7 +1528,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						Expression_Exec(&selfLineTray, lineTray);
 
 
-						sender.sendCreatureInfo(ch->name, line1, line2);
+						CPackSender::sendCreatureInfo(ch->name, line1, line2);
 						reader.setMainWindowText(lineWindow);
 						reader.setMainTrayText(lineTray);
 					}
@@ -1574,7 +1572,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							Expression_Exec(&playerLine1, line1);
 							Expression_Exec(&playerLine2, line2);
 
-							sender.sendCreatureInfo(ch->name, line1, line2);
+							CPackSender::sendCreatureInfo(ch->name, line1, line2);
 						}
 						else
 						{
@@ -1619,7 +1617,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							Expression_Exec(&monsterLine1, line1);
 							Expression_Exec(&monsterLine2, line2);
 
-							sender.sendCreatureInfo(name, line1, line2);
+							CPackSender::sendCreatureInfo(name, line1, line2);
 						}
 						else
 						{
@@ -1630,22 +1628,22 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				if (!found && lookCount[ch->tibiaId] < 7)
 				{
 					// creature not yet known - send "look" command
-					sender.ignoreLook(time(NULL) + 2);
-					sender.look(ch->x, ch->y, ch->z, 99);
+					CPackSender::ignoreLook(time(NULL) + 2);
+					CPackSender::look(ch->x, ch->y, ch->z, 99);
 					lookCount[ch->tibiaId] = lookCount[ch->tibiaId] + 1;
 					if (config->addRequest && ch->walkSpeed >= 350)
 					{
 						if (ch->lookDirection == 0)
-							sender.look(ch->x, ch->y - 1, ch->z, 99);
+							CPackSender::look(ch->x, ch->y - 1, ch->z, 99);
 
 						else if (ch->lookDirection == 1)
-							sender.look(ch->x + 1, ch->y, ch->z, 99);
+							CPackSender::look(ch->x + 1, ch->y, ch->z, 99);
 
 						else if (ch->lookDirection == 2)
-							sender.look(ch->x, ch->y + 1, ch->z, 99);
+							CPackSender::look(ch->x, ch->y + 1, ch->z, 99);
 
 						else if (ch->lookDirection == 3)
-							sender.look(ch->x - 1, ch->y, ch->z, 99);
+							CPackSender::look(ch->x - 1, ch->y, ch->z, 99);
 					}
 					Sleep(RandomTimeCreatureInfo(self, ch));
 				}
@@ -1659,7 +1657,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 	reader.setMainTrayText("<Running Tibia Auto>"); // back to the default setting
 	delete self;
 	//T4: Tool has been disabled, so clean all mess
-	sender.sendClearCreatureInfo();
+	CPackSender::sendClearCreatureInfo();
 	if (config->uniqueMonsterNames)
 	{
 		int chNr;

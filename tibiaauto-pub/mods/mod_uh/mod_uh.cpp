@@ -28,6 +28,7 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include <TibiaItem.h>
+#include <VariableStore.h>
 #include "ModuleUtil.h"
 
 #ifdef _DEBUG
@@ -85,7 +86,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CConfigData *config = (CConfigData *)lpParam;
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CUIntArray acceptedItems;
@@ -149,17 +150,17 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 			if (uhItem->objectId)
 			{
-				reader.setGlobalVariable("UH_needed", "true");
+				CVariableStore::setVariable("UH_needed", "true");
 				if (self->hp <= config->m_uhBorderline)
 				{
-					sender.useWithObjectFromContainerOnFloor(
+					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
 					        self->x, self->y, self->z);
 					Sleep(config->m_sleepAfter);
 				}
 				if (config->m_hotkeySelf)
 				{
-					sender.useWithObjectFromContainerOnFloor(
+					CPackSender::useWithObjectFromContainerOnFloor(
 					        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
 					        self->x, self->y, self->z, 105);
 				}
@@ -173,7 +174,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		}
 		else
 		{
-			reader.setGlobalVariable("UH_needed", "false");
+			CVariableStore::setVariable("UH_needed", "false");
 		}
 
 
@@ -248,7 +249,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 					if (uhItem->objectId)
 					{
-						sender.useWithObjectFromContainerOnFloor(
+						CPackSender::useWithObjectFromContainerOnFloor(
 						        uhItem->objectId, 0x40 + uhContainer, uhItem->pos, 0x63,
 						        ch->x, ch->y, ch->z);
 						Sleep(config->m_sleepAfter);
@@ -267,7 +268,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		delete self;
 	}
-	reader.setGlobalVariable("UH_needed", "false");
+	CVariableStore::setVariable("UH_needed", "false");
 	toolThreadShouldStop = 0;
 	return 0;
 }

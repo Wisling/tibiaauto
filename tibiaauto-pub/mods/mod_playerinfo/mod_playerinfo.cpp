@@ -26,6 +26,7 @@
 #include "ModuleUtil.h"
 
 #include "playerInfo.h"
+extern mod_playerinfo playerInfo;
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

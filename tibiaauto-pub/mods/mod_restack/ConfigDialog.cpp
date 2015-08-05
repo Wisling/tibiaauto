@@ -6,6 +6,7 @@
 #include "ConfigDialog.h"
 #include <MemReader.h>
 #include <TibiaItem.h>
+#include <TileReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -269,7 +270,7 @@ BOOL CConfigDialog::OnInitDialog()
 	{
 		char* name       = CTibiaItem::getItemNameAtIndex(i);
 		int objectId     = CTibiaItem::getItemIdAtIndex(i);
-		CTibiaTile *tile = reader.getTibiaTile(objectId);
+		CTibiaTile *tile = CTileReader::getTileReader().getTile(objectId);
 		if (tile && tile->stackable)
 		{
 			m_ammoType.AddString(name);

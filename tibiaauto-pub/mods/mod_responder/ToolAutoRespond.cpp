@@ -185,9 +185,8 @@ void CToolAutoRespond::OnTimer(UINT nIDEvent)
 
 void CToolAutoRespond::readInfo()
 {
-	CIPCBackPipeProxy backPipe;
-	struct ipcMessage mess;
-	if (backPipe.readFromPipe(&mess, 1001))
+	CIpcMessage mess;
+	if (CIPCBackPipe::readFromPipe(&mess, 1001))
 	{
 		int infoType;
 		int chanType;

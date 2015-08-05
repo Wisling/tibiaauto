@@ -143,7 +143,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="exports.cpp" />
     <ClCompile Include="IPCPipeBack.cpp" />
     <ClCompile Include="MyMenu.cpp" />
     <ClCompile Include="MyMenuData.cpp" />
@@ -157,7 +156,6 @@
     <ClCompile Include="tibiaautoinject2.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\tibiaauto-pub\sdk\ipcm.h" />
     <ClInclude Include="deelx.h" />
     <ClInclude Include="IPCPipeBack.h" />
     <ClInclude Include="MyMenu.h" />

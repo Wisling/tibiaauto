@@ -144,18 +144,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AOEDialog.cpp" />
-    <ClCompile Include="..\..\sdk\BtnST.cpp" />
     <ClCompile Include="ConfigData.cpp" />
     <ClCompile Include="ConfigDialog.cpp" />
     <ClCompile Include="exports.cpp" />
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="HealList.cpp" />
     <ClCompile Include="LifeDialog.cpp" />
     <ClCompile Include="ManaDialog.cpp" />
     <ClCompile Include="mod_spellcaster.cpp" />
-    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -164,9 +159,7 @@
     </ClCompile>
     <ClCompile Include="StrikeDialog.cpp" />
     <ClCompile Include="SummonDialog.cpp" />
-    <ClCompile Include="TibiaItem_impl.cpp" />
     <ClCompile Include="TimedDialog.cpp" />
-    <ClCompile Include="..\..\sdk\XTabCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mod_spellcaster.def" />
@@ -179,23 +172,24 @@
     <ClInclude Include="AOEDialog.h" />
     <ClInclude Include="ConfigData.h" />
     <ClInclude Include="ConfigDialog.h" />
-    <ClInclude Include="..\..\sdk\GroupBoxEx.h" />
     <ClInclude Include="HealList.h" />
     <ClInclude Include="LifeDialog.h" />
     <ClInclude Include="ManaDialog.h" />
     <ClInclude Include="mod_spellcaster.h" />
-    <ClInclude Include="..\..\sdk\MyDialog.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="..\..\sdk\Skin.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="StrikeDialog.h" />
     <ClInclude Include="SummonDialog.h" />
     <ClInclude Include="TimedDialog.h" />
-    <ClInclude Include="..\..\sdk\XTabCtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="creature.bmp" />
     <Image Include="Icons\Creatures.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

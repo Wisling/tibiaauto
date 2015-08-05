@@ -31,43 +31,7 @@ static char THIS_FILE[] = "C:/temp/testfdkls.txt";
 #endif // ifdef _DEBUG
 
 extern HANDLE hPipe;
-
-
-/////////////////////////////////////////////////////////////////////////////
-// CTibiaauto_utilApp
-
-BEGIN_MESSAGE_MAP(CTibiaauto_utilApp, CWinApp)
-//{{AFX_MSG_MAP(CTibiaauto_utilApp)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//    DO NOT EDIT what you see in these blocks of generated code!
-//}}AFX_MSG_MAP
-END_MESSAGE_MAP()
-
-/////////////////////////////////////////////////////////////////////////////
-// CTibiaauto_utilApp construction
-
-CTibiaauto_utilApp::CTibiaauto_utilApp()
-{
-	;
-}
-
-/////////////////////////////////////////////////////////////////////////////
-// The one and only CTibiaauto_utilApp object
-
-CTibiaauto_utilApp theApp;
 CRITICAL_SECTION ItemsInitCriticalSection;
-
-
-BOOL CTibiaauto_utilApp::InitInstance()
-{
-	InitializeCriticalSection(&ItemsInitCriticalSection);
-	return CWinApp::InitInstance();
-}
-
-int CTibiaauto_utilApp::ExitInstance()
-{
-	return CWinApp::ExitInstance();
-}
 
 void setProcessId(int processId)
 {
@@ -82,11 +46,6 @@ int getProcessId()
 void getBaseAddr()
 {
 	CMemUtil::getGlobalBaseAddr();
-}
-
-void setPipeHandle(HANDLE hPipePar)
-{
-	hPipe = hPipePar;
 }
 
 CMemConstData getMemConstData()
@@ -333,19 +292,6 @@ void tibiaItemSaveItemLists()
 void tibiaItemCleanup()
 {
 	CTibiaItem::cleanup();
-}
-
-
-int ipcBackPipeReadFromPipe(struct ipcMessage *mess, int expectedType)
-{
-	CIPCBackPipe backPipe;
-	return backPipe.readFromPipe(mess, expectedType);
-}
-
-void ipcBackPipeInitialiseIPC()
-{
-	CIPCBackPipe backPipe;
-	backPipe.InitialiseIPC();
 }
 
 int getKernelMainVersion()

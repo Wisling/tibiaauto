@@ -68,7 +68,6 @@ protected:
 private:
 	void refreshVisibleCreatures();
 	CButton * m_monsterButtons[21][17];
-	CMemConstData memConstData;
 };
 
 //{{AFX_INSERT_LOCATION}}

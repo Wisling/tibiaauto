@@ -33,6 +33,8 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
+#include <MemUtil.h>
+#include <VariableStore.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
@@ -58,11 +60,9 @@ HANDLE toolThreadHandle;
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
-	
 	CConfigData *config        = (CConfigData *)lpParam;
 
-	//sender.sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
+	//CPackSender::sendAutoAimConfig(1,config->onlyCreatures,config->aimPlayersFromBattle);
 	
 	CTibiaCharacter *sel = reader.readSelfCharacter();
 	float caps           = sel->cap;
@@ -90,7 +90,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(100);
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
-		const char *var = reader.getGlobalVariable("UH_needed");
+		const char *var = CVariableStore::getVariable("UH_needed");
 		if (strcmp(var, "true"))
 			continue;
 
@@ -100,7 +100,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		//T4: If any creature is attacked
 		if (attackedCreature)
 		{
-			//T4: Get attacked creature stucture
+			//T4: Get attacked creature structure
 			CTibiaCharacter *ch = reader.getCharacterByTibiaId(attackedCreature);
 
 			if (ch)
@@ -128,7 +128,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 							if (runeItem->objectId)
 							{
-								sender.castRuneAgainstCreature(0x40 + contNr, runeItem->pos,
+								CPackSender::castRuneAgainstCreature(0x40 + contNr, runeItem->pos,
 								                               config->RuneType, attackedCreature);
 								delete runeItem;
 								delete cont;
@@ -144,7 +144,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			}
 		}
 	}
-	sender.sendAutoAimConfig(0, 0, 0);
+	CPackSender::sendAutoAimConfig(0, 0, 0);
 	toolThreadShouldStop = 0;
 	return 0;
 }

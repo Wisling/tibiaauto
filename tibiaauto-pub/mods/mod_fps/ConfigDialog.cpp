@@ -6,6 +6,7 @@
 #include "ConfigDialog.h"
 #include <MemReader.h>
 #include <TibiaItem.h>
+#include <MemUtil.h>
 
 
 #ifdef _DEBUG
@@ -211,7 +212,7 @@ BOOL CConfigDialog::OnInitDialog()
 
 	addrFps = CMemUtil::GetMemIntValue(CTibiaItem::getValueForConst("addrFps"));
 
-	EnumWindows(EnumWindowsProc, reader.getProcessId());
+	EnumWindows(EnumWindowsProc, CMemUtil::getGlobalProcessId());
 
 	SetTimer(1000, 500, NULL);
 

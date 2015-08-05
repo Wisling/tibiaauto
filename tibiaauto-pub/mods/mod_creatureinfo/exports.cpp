@@ -2,7 +2,7 @@
 
 #include "mod_creatureinfo.h"
 
-CMod_creatureinfoApp module;
-
-#include <IModuleInterface.cpp>
-#include <CreaturesReaderProxy.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_creatureinfoApp();
+}

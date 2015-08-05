@@ -15,6 +15,8 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
+#include <TibiaTile.h>
+#include <TileReader.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
@@ -390,7 +392,7 @@ void CAlarmDialog::OnSelchangeAlarmType()
 				for (int i = 0; i < count; i++)
 				{
 					int objectId     = CTibiaItem::getTypedItemIdAtIndex(i);
-					CTibiaTile *tile = reader.getTibiaTile(objectId);
+					CTibiaTile *tile = CTileReader::getTileReader().getTile(objectId);
 					if (tile)
 					{
 						text  = CTibiaItem::getTypedItemNameAtIndex(i);

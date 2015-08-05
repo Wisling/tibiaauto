@@ -2,5 +2,7 @@
 
 #include "mod_light.h"
 
-Cmod_lightApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new Cmod_lightApp();
+}

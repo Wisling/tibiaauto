@@ -24,8 +24,8 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include "ModuleUtil.h"
-#include "TibiaMapProxy.h"
 #include "TibiaMapPoint.h"
+#include <TibiaMap.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -162,7 +162,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 {
 	if (!strcmp(paramName, "map/point"))
 	{
-		CTibiaMapProxy tibiaMap;
+		CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 		if (currentPointNr == 0)
 			// first call - reset map
 			tibiaMap.clear();
@@ -205,7 +205,7 @@ char *CMod_showmapApp::saveConfigParam(char *paramName)
 	memset(buf, 0, 1024);
 	if (!strcmp(paramName, "map/point"))
 	{
-		CTibiaMapProxy tibiaMap;
+		CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
 getNextCurrentPoint:
 
 		if (currentPointNr < tibiaMap.size())

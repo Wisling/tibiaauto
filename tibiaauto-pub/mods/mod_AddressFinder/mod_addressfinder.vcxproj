@@ -169,7 +169,6 @@
     <ClInclude Include="ConfigData.h" />
     <ClInclude Include="ConfigDialog.h" />
     <ClInclude Include="mod_addressfinder.h" />
-    <ClInclude Include="..\..\sdk\MyDialog.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StdAfx.h" />
   </ItemGroup>

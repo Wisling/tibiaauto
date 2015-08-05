@@ -33,8 +33,8 @@
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
-#include <tibiaauto_util/MemReader.h>
-#include <tibiaauto_util/MemUtil.h>
+#include <MemReader.h>
+#include <MemUtil.h>
 static char THIS_FILE[] = __FILE__;
 #endif // ifdef _DEBUG
 
@@ -209,7 +209,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 
 		for (; loop < comparison.size(); loop++)
 		{
-			tibiaFile.push_back(CMemUtil::GetMemIntValue(0x401000 + loop));
+			tibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + loop));
 		}
 
 		while (loop < 0x5b0ffe)
@@ -237,7 +237,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 			else
 			{
 				tibiaFile.pop_front();
-				tibiaFile.push_back(CMemUtil::GetMemIntValue(0x401000 + ++loop));
+				tibiaFile.push_back((byte)CMemUtil::GetMemIntValue(0x401000 + ++loop));
 			}
 		}
 		char buf[32];

@@ -214,7 +214,7 @@ long AddressFinder::doComparison()
 		else
 		{
 			TibiaFile.pop_front();
-			TibiaFile.push_back(CMemUtil::GetMemIntValue(++index));
+			TibiaFile.push_back((byte)CMemUtil::GetMemIntValue(++index));
 		}
 	}
 	return foundAddress;

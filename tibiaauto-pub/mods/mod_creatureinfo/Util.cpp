@@ -6,16 +6,12 @@
 #include "PQI.h"
 
 #include "TibiaContainer.h"
-#include "TibiaMapProxy.h"
 #include <PackSender.h>
 #include <MemReader.h>
 #include "TibiaMapPoint.h"
 
 
 #define MAX_STRING_LEN 65536
-
-extern CTibiaMapProxy tibiaMap;
-
 
 #ifdef _DEBUG
 #undef THIS_FILE

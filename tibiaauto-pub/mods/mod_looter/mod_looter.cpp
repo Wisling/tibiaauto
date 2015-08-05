@@ -29,6 +29,7 @@
 #include <PackSender.h>
 #include "ModuleUtil.h"
 #include <TibiaItem.h>
+#include <TileReader.h>
 #include "SendStats.h"
 
 #ifdef _DEBUG
@@ -113,7 +114,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
 	
-	CPackSenderProxy sender;
+
 	CConfigData *config     = (CConfigData *)lpParam;
 	int lastAttackedMonster = 0;
 	Corpse *corpseQueue;
@@ -168,7 +169,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					{
 						if (lastLootContNr[i] != -1)
 						{
-							sender.closeContainer(lastLootContNr[i]);
+							CPackSender::closeContainer(lastLootContNr[i]);
 							CModuleUtil::waitForOpenContainer(lastLootContNr[i], 0);
 							lastLootContNr[i] = -1;
 						}
@@ -191,10 +192,10 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					{
 						CModuleUtil::waitForCreatureDisappear(attackedCh->nr);
 						int corpseId     = reader.itemOnTopCode(attackedCh->x - self->x, attackedCh->y - self->y);
-						CTibiaTile *tile = reader.getTibiaTile(corpseId);
+						CTibiaTile *tile = CTileReader::getTileReader().getTile(corpseId);
 						if (corpseId && tile->isContainer)
 						{
-							sender.openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lastLootContNr[0]);
+							CPackSender::openContainerFromFloor(corpseId, attackedCh->x, attackedCh->y, attackedCh->z, lastLootContNr[0]);
 							CModuleUtil::waitForOpenContainer(lastLootContNr[0], 1);
 							cont[0] = reader.readContainer(lastLootContNr[0]);
 							if (cont[0]->flagOnOff)
@@ -206,7 +207,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 									CTibiaItem *item = (CTibiaItem *)cont[0]->items.GetAt(itemNr);
 									if (item->objectId == CTibiaItem::getValueForConst("bagbrown"))
 									{
-										sender.openContainerFromContainer(item->objectId, 0x40 + lastLootContNr[0], itemNr, lastLootContNr[currentExtraContainerNr]);
+										CPackSender::openContainerFromContainer(item->objectId, 0x40 + lastLootContNr[0], itemNr, lastLootContNr[currentExtraContainerNr]);
 										CModuleUtil::waitForOpenContainer(lastLootContNr[currentExtraContainerNr], 1);
 										cont[currentExtraContainerNr] = reader.readContainer(lastLootContNr[currentExtraContainerNr]);
 										currentExtraContainerNr++;

@@ -118,7 +118,7 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 {
 	
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	int contNr;
 	CUIntArray itemArray;
@@ -129,7 +129,7 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 
 	if (hotkey)
 	{
-		sender.useItemOnCreature(itemId, self->tibiaId);
+		CPackSender::useItemOnCreature(itemId, self->tibiaId);
 		if (CModuleUtil::waitForHpManaIncrease(self->hp, self->mana))//most likely using item succeeded
 		{
 			drank      = 1;
@@ -162,7 +162,7 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 				{
 					if ((self->hp < hpBelow || hpBelow == -1) && (self->mana < manaBelow || manaBelow == -1) && drink)
 					{
-						sender.useItemFromContainerOnCreature(itemId, 0x40 + contNr, item->pos, self->tibiaId);
+						CPackSender::useItemFromContainerOnCreature(itemId, 0x40 + contNr, item->pos, self->tibiaId);
 						drank      = 1;
 						drinkFails = 0;
 					}
@@ -181,7 +181,7 @@ int tryDrinking(int itemId, int itemType, int drink, int hotkey, int hpBelow, in
 DWORD WINAPI toolThreadProc(LPVOID lpParam)
 {
 	CMemReader& reader = CMemReader::getMemReader();
-	CPackSenderProxy sender;
+
 	
 	
 	CConfigData *config        = (CConfigData *)lpParam;
@@ -190,7 +190,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 		Sleep(100);
 		//Send message if at 10 fails
 		if ((drinkFails + 1) % 10 == 0)
-			sender.sendTAMessage("Health or Mana failed to change when using healing item.");
+			CPackSender::sendTAMessage("Health or Mana failed to change when using healing item.");
 		if (!reader.isLoggedIn())
 			continue;                   // do not proceed if not connected
 
@@ -321,7 +321,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemArray);
 					if (item->objectId)
 					{
-						sender.moveObjectFromContainerToFloor(item->objectId, 0x40 + contNr, item->pos, self->x, self->y, self->z, item->quantity ? item->quantity : 1);
+						CPackSender::moveObjectFromContainerToFloor(item->objectId, 0x40 + contNr, item->pos, self->x, self->y, self->z, item->quantity ? item->quantity : 1);
 						Sleep(CModuleUtil::randomFormula(config->sleep, 200, 0));
 						delete item;
 						delete cont;

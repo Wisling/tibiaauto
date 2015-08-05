@@ -2,5 +2,7 @@
 
 #include "mod_cavebot.h"
 
-CMod_cavebotApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_cavebotApp();
+}

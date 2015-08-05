@@ -4,8 +4,8 @@
 #include "stdafx.h"
 #include "mod_showmap.h"
 #include "ConfigWindow.h"
-#include "TibiaTile.h"
-#include "memReaderProxy.h"
+#include <MemReader.h>
+#include <TileReader.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -78,12 +78,11 @@ END_MESSAGE_MAP()
 
 void CMapConfig::OnCommit()
 {
-	CMemReader& reader = CMemReader::getMemReader();
 	saveTile();
 	for (int pos = 0; pos < 10; pos++)
 	{
 		if (tileId[pos])
-			reader.setTibiaTile(tileId[pos], memTilesForConfig[pos]);
+			CTileReader::getTileReader().setTile(tileId[pos], memTilesForConfig[pos]);
 	}
 	this->EndDialog(IDOK);
 }
@@ -109,7 +108,7 @@ void CMapConfig::Mem2Config()
 		for (int pos = 0; pos < count; pos++)
 		{
 			tileId[pos]            = reader.mapGetPointItemId(point(xMem, yMem, 0), pos);
-			memTilesForConfig[pos] = reader.getTibiaTile(tileId[pos]);
+			memTilesForConfig[pos] = CTileReader::getTileReader().getTile(tileId[pos]);
 		}
 	}
 	currentStackPos = 0;

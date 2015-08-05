@@ -2,5 +2,7 @@
 
 #include "mod_looter.h"
 
-CMod_looterApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_looterApp();
+}

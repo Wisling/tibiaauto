@@ -2,6 +2,7 @@
 
 #include "mod_antylogout.h"
 
-CMod_antylogoutApp module;
-
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_antylogoutApp();
+}

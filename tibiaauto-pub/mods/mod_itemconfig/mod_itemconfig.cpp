@@ -25,7 +25,6 @@
 #include <MemReader.h>
 #include <PackSender.h>
 #include "ModuleUtil.h"
-#include "TibiaMapProxy.h"
 #include "TibiaMapPoint.h"
 
 #ifdef _DEBUG

@@ -2,5 +2,7 @@
 
 #include "mod_runemaker.h"
 
-CMod_runemakerApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_runemakerApp();
+}

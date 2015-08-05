@@ -196,16 +196,14 @@ BOOL CConfigDialog::OnInitDialog()
 
 int pressed(unsigned int tm)
 {
-	CPackSenderProxy tasender;
 	char buf[1111];
 	sprintf(buf, "tm %d", GetTickCount() - tm);
-	tasender.sendTAMessage(buf);
+	CPackSender::sendTAMessage(buf);
 	return GetTickCount() - tm < 300;
 }
 
 BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 {
-	CPackSenderProxy tasender;
 	static int shift = 0, ctrl = 0, win = 0;
 	LPARAM lParam    = pMsg->lParam;
 	WPARAM wParam    = pMsg->wParam;
@@ -220,7 +218,7 @@ BOOL CConfigDialog::PreTranslateMessage(MSG* pMsg)
 
 	char buf[1111];
 	sprintf(buf, "rept %d,scan %d, xtend %d, rsvd %d, ctxt %d, keyst %d, transst %d, keyCode=%d", repeatCount, scanCode, extendedKey, reserved, contextCode, keyState, transState, wParam);
-	tasender.sendTAMessage(buf);
+	CPackSender::sendTAMessage(buf);
 	if (wParam == 0x10)
 	{
 		shift = GetTickCount();

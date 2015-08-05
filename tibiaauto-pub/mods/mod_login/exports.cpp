@@ -2,5 +2,7 @@
 
 #include "mod_login.h"
 
-CMod_loginApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_loginApp();
+}

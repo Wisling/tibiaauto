@@ -2,5 +2,7 @@
 
 #include "mod_memdebug.h"
 
-CMod_memdebugApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new CMod_memdebugApp();
+}

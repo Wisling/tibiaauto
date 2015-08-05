@@ -19,18 +19,6 @@ char CVariableStore::variableStore[MAX_VARIABLES][210];
 char CVariableStore::variableStoreValues[MAX_VARIABLES][210];
 int CVariableStore::variableCount = 0;
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
-CVariableStore::CVariableStore()
-{
-}
-
-CVariableStore::~CVariableStore()
-{
-}
-
 void CVariableStore::setVariable(char *name, char *value)
 {
 	if (strlen(name) > 200 || strlen(value) > 200)

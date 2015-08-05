@@ -147,12 +147,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BtnST.cpp" />
+    <ClCompile Include="ComboBoxSuper.cpp" />
     <ClCompile Include="CreaturesReader.cpp" />
     <ClCompile Include="GroupBoxEx.cpp" />
     <ClCompile Include="IModuleInterface.cpp" />
     <ClCompile Include="IPCBackPipe.cpp" />
     <ClCompile Include="..\md5c.cpp" />
     <ClCompile Include="..\md5class.cpp" />
+    <ClCompile Include="IpcMessage.cpp" />
     <ClCompile Include="MemConstData.cpp" />
     <ClCompile Include="MemReader.cpp" />
     <ClCompile Include="MemUtil.cpp" />
@@ -160,8 +162,10 @@
     <ClCompile Include="MyDialog.cpp" />
     <ClCompile Include="PackSender.cpp" />
     <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="RepeatButton.cpp" />
     <ClCompile Include="Skin.cpp" />
     <ClCompile Include="SkinLoader.cpp" />
+    <ClCompile Include="SliderCtrlEx.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
@@ -186,6 +190,7 @@
     <ClCompile Include="TileReader.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="VariableStore.cpp" />
+    <ClCompile Include="XTabCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="res\tibiaauto_util.rc2" />
@@ -198,11 +203,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BtnST.h" />
+    <ClInclude Include="ComboBoxSuper.h" />
     <ClInclude Include="CreaturesReader.h" />
     <ClInclude Include="GroupBoxEx.h" />
     <ClInclude Include="IModuleInterface.h" />
     <ClInclude Include="IPCBackPipe.h" />
-    <ClInclude Include="ipcm.h" />
+    <ClInclude Include="IpcMessage.h" />
     <ClInclude Include="MemConstData.h" />
     <ClInclude Include="MemReader.h" />
     <ClInclude Include="MemUtil.h" />
@@ -210,9 +216,11 @@
     <ClInclude Include="MyDialog.h" />
     <ClInclude Include="PackSender.h" />
     <ClInclude Include="Queue.h" />
+    <ClInclude Include="RepeatButton.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Skin.h" />
     <ClInclude Include="SkinLoader.h" />
+    <ClInclude Include="SliderCtrlEx.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="TAMiniMap.h" />
     <ClInclude Include="tibiaauto_util.h" />
@@ -232,6 +240,7 @@
     <ClInclude Include="TileReader.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="VariableStore.h" />
+    <ClInclude Include="XTabCtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\tibiaauto-pub\tre\win32\tre.vcxproj">

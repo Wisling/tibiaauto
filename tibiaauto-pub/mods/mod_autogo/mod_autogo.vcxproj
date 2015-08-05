@@ -149,30 +149,22 @@
   <ItemGroup>
     <ClCompile Include="Alarm.cpp" />
     <ClCompile Include="alarmdialog.cpp" />
-    <ClCompile Include="..\..\sdk\BtnST.cpp" />
-    <ClCompile Include="..\..\sdk\ComboBoxSuper.cpp" />
     <ClCompile Include="ConfigData.cpp" />
     <ClCompile Include="ConfigDialog.cpp" />
     <ClCompile Include="CustomSpellDialog.cpp" />
     <ClCompile Include="exports.cpp" />
     <ClCompile Include="GeneralConfigDialog.cpp" />
-    <ClCompile Include="..\..\sdk\GroupBoxEx.cpp" />
     <ClCompile Include="ImageButtonWithStyle.cpp" />
     <ClCompile Include="mod_autogo.cpp" />
-    <ClCompile Include="..\..\sdk\MyDialog.cpp" />
-    <ClCompile Include="proxy.cpp" />
-    <ClCompile Include="..\..\sdk\Skin.cpp" />
     <ClCompile Include="StdAfx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">stdafx.h</PrecompiledHeaderFile>
     </ClCompile>
-    <ClCompile Include="TibiaItem_impl.cpp" />
     <ClCompile Include="Trigger.cpp" />
     <ClCompile Include="VisualStylesXP.cpp" />
     <ClCompile Include="WhiteList.cpp" />
-    <ClCompile Include="..\..\sdk\XTabCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="mod_autogo.def" />
@@ -184,7 +176,6 @@
   <ItemGroup>
     <ClInclude Include="Alarm.h" />
     <ClInclude Include="alarmdialog.h" />
-    <ClInclude Include="..\..\sdk\ComboBoxSuper.h" />
     <ClInclude Include="ConfigData.h" />
     <ClInclude Include="ConfigDialog.h" />
     <ClInclude Include="CustomSpellDialog.h" />
@@ -197,7 +188,6 @@
     <ClInclude Include="Trigger.h" />
     <ClInclude Include="VisualStylesXP.h" />
     <ClInclude Include="WhiteList.h" />
-    <ClInclude Include="..\..\sdk\XTabCtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\Attack.bmp" />
@@ -235,6 +225,11 @@
   </ItemGroup>
   <ItemGroup>
     <Media Include="sound\incorrec.wav" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\tibiaauto-kernel\tibiaauto_util\tibiaauto_util.vcxproj">
+      <Project>{585f1e97-1bf0-4d07-a047-cbd5643b7b0a}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

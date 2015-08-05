@@ -2,5 +2,7 @@
 
 #include "mod_fps.h"
 
-Cmod_fpsApp module;
-#include <IModuleInterface.cpp>
+IModuleInterface* initModuleInstance()
+{
+	return new Cmod_fpsApp();
+}

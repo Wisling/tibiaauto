@@ -12,7 +12,6 @@
 
 #include "AutoResponderParserContext.h"
 #include "ToolAutoResponderThreadConfig.h"
-#include "RegexpProxy.h"
 
 #include <xercesc/util/PlatformUtils.hpp>
 
