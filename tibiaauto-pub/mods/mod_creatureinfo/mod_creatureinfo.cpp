@@ -1463,7 +1463,8 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 							int r        = rand();
 							int checksum = (int)(r * 15 + tm + ch->tibiaId * 3 + ch->x * 5 + ch->y * 7 + ch->z * 11 + strlen(statChName) * 13 + ch->walkSpeed * 17);
 							//int checksum=r*15+tm+ch->tibiaId*3+ch->x*5+ch->y*7+ch->z*11+strlen(statChName)*13;
-							fprintf(f, "%d,%d,%d,%d,%d,'%s',%d,%d,%d\n", tm, ch->tibiaId, ch->x, ch->y, ch->z, statChName, ch->walkSpeed, r, checksum);
+							fprintf(f, "%d,%d,%d,%d,%d,", tm, ch->tibiaId, ch->x, ch->y, ch->z);
+							fprintf(f, "'%s',%d,%d,%d\n", statChName, ch->walkSpeed, r, checksum);
 							fclose(f);
 						}
 						crMap[creatureKey(ch->tibiaId)].tibiaId = ch->tibiaId;

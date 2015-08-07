@@ -94,7 +94,8 @@
       <ImportLibrary>
       </ImportLibrary>
       <AdditionalDependencies>ws2_32.lib;detours.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>.\tibiaautoinject2.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -138,7 +139,8 @@
       <ImportLibrary>
       </ImportLibrary>
       <AdditionalDependencies>ws2_32.lib;detours.lib;psapi.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ModuleDefinitionFile>.\tibiaautoinject2.def</ModuleDefinitionFile>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
       <AdditionalLibraryDirectories>$(SolutionDir)tibiaauto-pub/libs/</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -164,9 +166,6 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="StdAfx.h" />
     <ClInclude Include="tibiaautoinject2.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <CustomBuild Include="tibiaautoinject2.def" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="tibiaautoinject2.rc" />
