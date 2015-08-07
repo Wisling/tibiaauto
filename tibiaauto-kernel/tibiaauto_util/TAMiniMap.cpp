@@ -20,6 +20,7 @@
 #include <fstream>
 #include <iterator>
 #include "math.h"
+#include "ModuleUtil.h"
 using namespace std;
 
 //////////////////////////////////////////////////////////////////////
@@ -597,9 +598,9 @@ CUIntArray * CTAMiniMap::findPathOnMiniMap(int startX, int startY, int startZ, i
 					break;
 			}
 			if (dir == 9)
-				dir = 0xD0;
+				dir = STEP_UPSTAIRS;
 			else if (dir == 0)
-				dir = 0xD1;
+				dir = STEP_DOWNSTAIRS;
 			//DebugPrint("dir",dir,dx,dy,dz);
 			path->Add(dir);
 			currNode = parentNode;

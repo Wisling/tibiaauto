@@ -193,10 +193,10 @@ void CToolMapShow::refreshVisibleMap()
 				if (avail)
 				{
 					int locked             = tibiaMap.isPointLocked(x + self->x - 10, y + self->y - 10, self->z);
-					MapPointType updownSel = (MapPointType)tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
+					MapPointType pointType = tibiaMap.getPointType(x + self->x - 10, y + self->y - 10, self->z);
 					int changedToImage     = -1;
 
-					switch (updownSel)
+					switch (pointType)
 					{
 					case MAP_POINT_TYPE_AVAILABLE:
 						changedToImage = locked ? IDB_MAP_SAMEFLOOR_LOCK : IDB_MAP_SAMEFLOOR;
@@ -240,6 +240,13 @@ void CToolMapShow::refreshVisibleMap()
 						else
 							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
 						break;
+					case MAP_POINT_TYPE_USABLE_TELEPORT:
+						// teleporter
+						if (tibiaMap.getDestPoint(x + self->x - 10, y + self->y - 10, self->z).x == 0)
+							changedToImage = locked ? IDB_MAP_UNKTELE_LOCK : IDB_MAP_UNKTELE;
+						else
+							changedToImage = locked ? IDB_MAP_TELE_LOCK : IDB_MAP_TELE;
+						break;
 					case MAP_POINT_TYPE_BLOCK:
 						// permanent block
 						changedToImage = locked ? IDB_MAP_BLOCK_LOCK : IDB_MAP_BLOCK;
@@ -250,7 +257,7 @@ void CToolMapShow::refreshVisibleMap()
 						m_mapButtons[x][y]->LoadBitmaps(changedToImage, changedToImage, changedToImage, changedToImage);
 						m_mapButtons[x][y]->RedrawWindow();
 						m_mapButtonImage[x][y]      = changedToImage;
-						m_mapButtons[x][y]->m_value = updownSel;
+						m_mapButtons[x][y]->m_value = pointType;
 					}
 					m_mapButtons[x][y]->m_locked = locked;
 				}
@@ -346,7 +353,7 @@ void CToolMapShow::OnToolMapshowExtendedResearch()
 void CToolMapShow::mapPointToggleLock(int realX, int realY, int realZ)
 {
 	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
-	if (tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= 0)
+	if (tibiaMap.isPointAvailableNoProh(realX, realY, realZ) && tibiaMap.getPointType(realX, realY, realZ) >= MAP_POINT_TYPE_AVAILABLE)
 	{
 		int prev = tibiaMap.isPointLocked(realX, realY, realZ);
 		tibiaMap.setPointLocked(realX, realY, realZ, !prev);
@@ -366,7 +373,7 @@ void CToolMapShow::MapResearchTick()
 		SetTimer(1002, 25, NULL);
 		return;
 	}
-	if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == 0)
+	if (tibiaMap.getPointTypeNoProh(self->x, self->y, self->z) == MAP_POINT_TYPE_AVAILABLE)
 	{
 		tibiaMap.setPointAsAvailable(self->x, self->y, self->z);
 		tibiaMap.setPointSpeed(self->x, self->y, self->z, 130);//130 default( is >255/2 and <70*2)
@@ -396,7 +403,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 	{
 		int x, y;
 		int tileArrAvail[18][14];
-		int tileArrUpDown[18][14];
+		MapPointType tileArrUpDown[18][14];
 		int tileArrSpd[18][14];
 		int tileArrMvbl[18][14];
 		memset(tileArrAvail, 0, sizeof(int[18][14]));
@@ -500,7 +507,7 @@ void CToolMapShow::ExtendedMapResearchTick()
 				{
 					tileArrSpd[x + 8][y + 6]    = 0;
 					tileArrAvail[x + 8][y + 6]  = 0;
-					tileArrUpDown[x + 8][y + 6] = 0;
+					tileArrUpDown[x + 8][y + 6] = MAP_POINT_TYPE_AVAILABLE;
 				}
 			} // for y
 		} // for x
@@ -620,8 +627,8 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 					y += ySwitch;
 				}
 
-				MapPointType type = (MapPointType)tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
-				if (type == MAP_POINT_TYPE_TELEPORT)//teleporter
+				MapPointType type = tibiaMap.getPointType(prevXTele + x, prevYTele + y, prevZTele);
+				if (type == MAP_POINT_TYPE_TELEPORT || type == MAP_POINT_TYPE_USABLE_TELEPORT)//teleporter
 				{
 				
 					if (tibiaMap.getDestPoint(prevXTele + x, prevYTele + y, prevZTele).x == 0)
@@ -635,7 +642,7 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 				}
 				else if (type > 0)
 				{
-					break;           //other updown is closer and probably used
+					break; //other pointType is closer and probably used
 				}
 			}
 		}
@@ -647,10 +654,10 @@ void CToolMapShow::ExtendedMapResearchTeleportCheckTick()
 	SetTimer(1004, 200, NULL);
 }
 
-void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, int tileVal)
+void CToolMapShow::mapPointClicked(int realX, int realY, int realZ, MapPointType tileVal)
 {
 	CTibiaMap& tibiaMap = CTibiaMap::getTibiaMap();
-	if (tileVal >= 0)
+	if (tileVal >= MAP_POINT_TYPE_AVAILABLE) //not SELF and not CLEAR
 	{
 		// point added/updated
 		tibiaMap.setPointAsAvailable(realX, realY, realZ);

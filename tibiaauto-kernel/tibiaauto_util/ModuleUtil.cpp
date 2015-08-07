@@ -531,14 +531,13 @@ int calcHeur(int startX, int startY, int startZ, int endX, int endY, int endZ)
 	return (abs(startX - endX) + abs(startY - endY) + abs(startZ - endZ)) * 100;
 }
 
-struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15], int radius /*=1*/)
+struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, uint8_t path[15], int radius /*= 1*/)
 {
 #ifdef MAPDEBUG
 	char bufD[2500];
 #endif // ifdef MAPDEBUG
 
-	path[0] = 0;
-	memset(path, 0x00, sizeof(int) * 15);
+	memset(path, 0x00, sizeof(path[0]) * 15);
 	int closerEnd = 0;
 	CTibiaMap &tibiaMap = CTibiaMap::getTibiaMap();
 
@@ -557,7 +556,6 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		return point(startX, startY, startZ);
 
 	prepareProhPointList();
-
 
 	// unable to reach point which is not available (e.g. other creature standing on it)
 	//if (!endSpecialLocation&&!tibiaMap.isPointAvailable(endX,endY,endZ)) return point(0,0,0);
@@ -711,10 +709,10 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		int forcedLevelChange = 0, usedLevelChange = 0; // if set to 1 then going north, south, east, west is forbidden
 		CTibiaQueue<point> pointsToAdd;
 
-		int currentUpDown = tibiaMap.getPointType(x, y, z);
+		MapPointType currentPointType = tibiaMap.getPointType(x, y, z);
 
 		// we directly go up using rope, magic rope, ladder, stairs
-		if (currentUpDown >= 200 && currentUpDown < 300)
+		if (currentPointType >= MAP_POINT_TYPE_OPEN_HOLE && currentPointType < MAP_POINT_TYPE_DEPOT)
 		{
 			if (tibiaMap.isPointAvailableNoProh(x, y, z - 1))
 			{
@@ -731,8 +729,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 					{
 						if (xl ^ yl)
 						{
-							int ud = tibiaMap.getPointType(x + xl, y + yl, z - 1);
-							if (ud >= 100 && ud < 200)
+							int pointType = tibiaMap.getPointType(x + xl, y + yl, z - 1);
+							if (pointType >= MAP_POINT_TYPE_OPEN_HOLE && pointType <= MAP_POINT_TYPE_CRATE)
 							{
 								pointsToAdd.Add(point(x + xl, y + yl, z - 1));
 								xl = yl = 9999;
@@ -747,7 +745,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 		}
 
 		// we go directly down using open hole, closed hole, grate
-		if (currentUpDown >= 100 && currentUpDown < 200)
+		if (currentPointType >= MAP_POINT_TYPE_OPEN_HOLE && currentPointType < MAP_POINT_TYPE_ROPE)
 		{
 			if (tibiaMap.isPointAvailableNoProh(x, y, z + 1))
 			{
@@ -764,8 +762,8 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 					{
 						if (xl ^ yl)
 						{
-							int ud = tibiaMap.getPointType(x + xl, y + yl, z + 1);
-							if (ud >= 200 && ud < 300)
+							int pointType = tibiaMap.getPointType(x + xl, y + yl, z + 1);
+							if (pointType >= MAP_POINT_TYPE_ROPE && pointType < MAP_POINT_TYPE_DEPOT)
 							{
 								pointsToAdd.Add(point(x + xl, y + yl, z + 1));
 								xl = yl = 9999;
@@ -781,7 +779,7 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 
 
 		// we go directly to teleporter position
-		if (currentUpDown == 302)
+		if (currentPointType == MAP_POINT_TYPE_TELEPORT || currentPointType == MAP_POINT_TYPE_USABLE_TELEPORT)
 		{
 			point dest = tibiaMap.getDestPoint(x, y, z);
 			pointsToAdd.Add(point(dest.x, dest.y, dest.z));
@@ -790,8 +788,11 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 #endif // ifdef MAPDEBUG
 		}
 
-		//prevents the adding of squares around current square as possible next points except when standing on it(303 goes nowhere)
-		if ((currentUpDown == 101 || currentUpDown == 204 || currentUpDown == 302 || currentUpDown == 303) && !(startX == x && startY == y && startZ == z))
+		//prevents the adding of squares around current square as possible next points except when standing on it(MAP_POINT_TYPE_BLOCK goes nowhere)
+		if ((currentPointType == MAP_POINT_TYPE_OPEN_HOLE || 
+			currentPointType == MAP_POINT_TYPE_STAIRS ||
+			currentPointType == MAP_POINT_TYPE_TELEPORT ||
+			currentPointType == MAP_POINT_TYPE_BLOCK) && !(startX == x && startY == y && startZ == z))
 			forcedLevelChange = 1;
 
 		if (abs(x - px) > 1 || abs(y - py) > 1 || z != pz)
@@ -821,13 +822,13 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 				if (xShift == 0 && yShift == 0)
 					xShift++;                    //skip middle
 
-				int updown = tibiaMap.getPointTypeNoProh(x + xShift, y + yShift, z);
+				MapPointType pointType = tibiaMap.getPointTypeNoProh(x + xShift, y + yShift, z);
 
 				// special going up if ladder busy
-				if ((updown == 201 || updown == 203) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z - 1))
+				if ((pointType == MAP_POINT_TYPE_ROPE || pointType == MAP_POINT_TYPE_LADDER) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z - 1))
 					pointsToAdd.Add(point(x + xShift, y + yShift, z - 1));
 				// special going down if grate or hole busy
-				if ((updown == 102 || updown == 103) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z + 1))
+				if ((pointType == MAP_POINT_TYPE_CLOSED_HOLE || pointType == MAP_POINT_TYPE_CRATE) && tibiaMap.isPointAvailableNoProh(x + xShift, y + yShift, z + 1))
 					pointsToAdd.Add(point(x + xShift, y + yShift, z + 1));
 			}
 		}
@@ -934,61 +935,65 @@ struct point CModuleUtil::findPathOnMap(int startX, int startY, int startZ, int 
 			sprintf(buf, "X cur=(%d,%d,%d) next=(%d,%d,%d)", curX, curY, curZ, nextX, nextY, nextZ);
 			mapDebug(buf);
 #endif // ifdef MAPDEBUG
-			path[pos] = 0;
+			path[pos] = STEP_NULL;
 			if (curX + 1 == nextX && curY == nextY)
-				path[pos] = 1;                       // right
-			if (curX - 1 == nextX && curY == nextY)
-				path[pos] = 5;                       // left
-			if (curX == nextX && curY + 1 == nextY)
-				path[pos] = 7;                       // down
-			if (curX == nextX && curY - 1 == nextY)
-				path[pos] = 3;                       // up
-
-			if (curX + 1 == nextX && curY + 1 == nextY)
-				path[pos] = 8;                         // down-right
-			if (curX - 1 == nextX && curY + 1 == nextY)
-				path[pos] = 6;                         // down-left
-			if (curX + 1 == nextX && curY - 1 == nextY)
-				path[pos] = 2;                         // up-right
-			if (curX - 1 == nextX && curY - 1 == nextY)
-				path[pos] = 4;                         // up-left
+				path[pos] = STEP_EAST;
+			else if (curX - 1 == nextX && curY == nextY)
+				path[pos] = STEP_WEST;
+			else if(curX == nextX && curY + 1 == nextY)
+				path[pos] = STEP_SOUTH;
+			else if(curX == nextX && curY - 1 == nextY)
+				path[pos] = STEP_NORTH;
+			else if(curX + 1 == nextX && curY + 1 == nextY)
+				path[pos] = STEP_SOUTHEAST; 
+			else if(curX - 1 == nextX && curY + 1 == nextY)
+				path[pos] = STEP_SOUTHWEST;
+			else if(curX + 1 == nextX && curY - 1 == nextY)
+				path[pos] = STEP_NORTHEAST;
+			else if(curX - 1 == nextX && curY - 1 == nextY)
+				path[pos] = STEP_NORTHWEST;
 
 			if (curZ - 1 == nextZ)
 			{
-				// up
 				if (pos == 0)
 				{
-					if (curX == nextX && curY == nextY)
+					path[pos] |= STEP_UPSTAIRS;
+					/*
+					if (curX == nextX && curY == nextY) //no x/y change
 						path[pos] = 0xD0;
 					else
 						path[pos] += 0xE0;
+					*/
 				}
 				else
 				{
-					path[pos] = 0;//undoes direction assignment
+					path[pos] = STEP_NULL; //undoes direction assignment - finishing the path
 				}
 				break;
 			}
-			if (curZ + 1 == nextZ)
+			else if (curZ + 1 == nextZ)
 			{
-				// down
 				if (pos == 0)
 				{
-					if (curX == nextX && curY == nextY)
+					path[pos] |= STEP_DOWNSTAIRS;
+					/*
+					if (curX == nextX && curY == nextY) //no x/y change
 						path[pos] = 0xD1;
 					else
 						path[pos] += 0xF0;
+					*/
 				}
 				else
 				{
-					path[pos] = 0;//undoes direction assignment
+					path[pos] = STEP_NULL; //undoes direction assignment - finishing the path
 				}
 				break;
 			}
 			if (abs(curX - nextX) > 1 || abs(curY - nextY) > 1 || path[pos] == 0 && abs(curZ - nextZ) > 0)
 			{
-				if (pos == 0)
-					path[pos] = 0xD2;
+				//Bigger x/y/z delta than 1 = tp
+				if (pos == 0 || (pos == 1 && tibiaMap.getPointType(curX, curY, curZ) == MAP_POINT_TYPE_USABLE_TELEPORT))
+					path[pos] = STEP_TELEPORT;
 				else
 					path[pos] = 0;//undoes direction assignment
 				break;
@@ -1429,7 +1434,7 @@ int CModuleUtil::calcLootChecksum(time_t tm, int killNr, int nameLen, int itemNr
 
 // In order to 'walk through' other players, this function must be called twice within the walkthrough cutoff time.
 // Todo: Implement 'walking through' other players in this function
-void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
+void CModuleUtil::executeWalk(int startX, int startY, int startZ, uint8_t path[15])
 {
 	static int lastExecuteWalkTm = 0; // indicates when last a "real" walk was executed
 	static int lastStartChangeTm = 0; // indicates when start point was changed for the last time
@@ -1475,286 +1480,58 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 	}
 	mapDebug(buf);
 #endif // ifdef MAPDEBUG
-	if (pathSize == 1 && path[0] >= 0xD0)// || pathSize==2&&path[1]>=0xE0)
+	// Prepare position of targeted single-step position for special routines
+	int modX = self->x;
+	int modY = self->y;
+	bool onSpot = true;
+	if (path[0] & 0x0F)
+	{
+		onSpot = false;
+		switch (path[0] & 0x0F)
+		{
+		case STEP_EAST:
+			modX++;
+			break;
+		case STEP_NORTHEAST:
+			modX++;
+			modY--;
+			break;
+		case STEP_NORTH:
+			modY--;
+			break;
+		case STEP_NORTHWEST:
+			modX--;
+			modY--;
+			break;
+		case STEP_WEST:
+			modX--;
+			break;
+		case STEP_SOUTHWEST:
+			modX--;
+			modY++;
+			break;
+		case STEP_SOUTH:
+			modY++;
+			break;
+		case STEP_SOUTHEAST:
+			modX++;
+			modY++;
+			break;
+		}
+	}
+	// Special floorchanging/teleporting routine
+	if (pathSize == 1 && path[0] & 0xF0)
 	{
 		lastEndX          = lastEndY = lastEndZ = 0;
 		lastExecuteWalkTm = currentTm;
-		switch (path[0])
+		switch (path[0] & 0xF0)
 		{
-		case 0xD0:
+		case STEP_UPSTAIRS:
 		{
-			// // go up standard (201-299 slots)
-			switch (tibiaMap.getPointType(self->x, self->y, self->z))
-			{
-			case 201:
-				// rope
-			{
-				CUIntArray itemsAccepted;
-				int contNr;
-				itemsAccepted.Add(CTibiaItem::getValueForConst("rope"));
-				for (contNr = 0; contNr < memConstData->m_memMaxContainers; contNr++)
-				{
-					CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemsAccepted);
-					if (item->objectId)
-					{
-						int ropeId = CMemReader::getMemReader().mapGetPointItemId(point(0, 0, 0), 0);
-						CPackSender::useWithObjectFromContainerOnFloor(CTibiaItem::getValueForConst("rope"), 0x40 + contNr, item->pos, ropeId, self->x, self->y, self->z);
-						delete item;
-						break;
-					}
-					delete item;
-				}
-				break;
-			}
-			case 202:
-				// go up using 'magic rope' [for pacc only]
-				CPackSender::say("exani tera");
-				break;
-			case 203:
-			{
-				// ladder
-				// fix 02.02.2008: ladder code needs to be evaluated on the fly
-				int count      = CMemReader::getMemReader().mapGetPointItemsCount(point(0, 0, 0));
-				int ladderCode = 0;
-				int i;
-
-				for (i = 0; i < count; i++)
-				{
-					int tileId           = CMemReader::getMemReader().mapGetPointItemId(point(0, 0, 0), i);
-					CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
-					if (tileId != 99 && tileData->goUp && tileData->requireUse)
-					{
-						ladderCode = tileId;
-						break;
-					}
-				}                 // for i
-				if (ladderCode)
-					CPackSender::useItemOnFloor(ladderCode, self->x, self->y, self->z);
-				break;
-			}
-			case 204:
-				// stairs [do nothing]
-				break;
-			}
-			break;
-		}         // case 0xD0
-		case 0xD1:
-		{
-			// go down (101-199 slots)
-			switch (tibiaMap.getPointType(self->x, self->y, self->z))
-			{
-			case 101:
-				// open hole [do nothing]
-				break;
-			case 102:
-				// closed hole - use shovel to open
-			{
-				CTibiaItem *shovel = NULL;
-				CUIntArray itemsAccepted;
-				int contNr;
-				itemsAccepted.Add(CTibiaItem::getValueForConst("shovel"));
-				for (contNr = 0; contNr < memConstData->m_memMaxContainers; contNr++)
-				{
-					CTibiaItem *item = CModuleUtil::lookupItem(contNr, &itemsAccepted);
-					if (item->objectId)
-					{
-						shovel = item;
-						break;
-					}
-					delete item;
-				}
-				if (shovel)
-				{
-					// shovel found, so proceed with opening hole
-					int path[2];
-					int mode = 0;
-					if (tibiaMap.isPointAvailable(self->x - 1, self->y, self->z))
-						mode = 1;
-					if (tibiaMap.isPointAvailable(self->x + 1, self->y, self->z))
-						mode = 2;
-					if (tibiaMap.isPointAvailable(self->x, self->y - 1, self->z))
-						mode = 3;
-					if (tibiaMap.isPointAvailable(self->x, self->y + 1, self->z))
-						mode = 4;
-					path[1] = 0;
-					switch (mode)
-					{
-					case 1:
-						path[0] = 5;
-						break;
-					case 2:
-						path[0] = 1;
-						break;
-					case 3:
-						path[0] = 3;
-						break;
-					case 4:
-						path[0] = 7;
-						break;
-					}
-					CPackSender::stepMulti(path, 1);
-					Sleep(CModuleUtil::randomFormula(1100, 300));
-					CTibiaCharacter *self2 = CMemReader::getMemReader().readSelfCharacter();
-					int count              = CMemReader::getMemReader().mapGetPointItemsCount(point(self->x - self2->x, self->y - self2->y, 0));
-					int holeId             = 0;
-					int i;
-					for (i = 0; i < count; i++)
-					{
-						int tileId = CMemReader::getMemReader().mapGetPointItemId(point(self->x - self2->x, self->y - self2->y, 0), i);
-						//char buf[128];
-						//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
-						//::MessageBox(0,buf,buf,0);
-						if (tileId != 99)
-						{
-							CTibiaTile *tile = CTileReader::getTileReader().getTile(tileId);
-
-							if (tile->requireShovel)
-								holeId = tileId;
-							//remove an item if it is on top of hole
-							if (!tile->notMoveable)
-							{
-								int qty = CMemReader::getMemReader().mapGetPointItemExtraInfo(point(self->x - self2->x, self->y - self2->y, 0), i, 1);
-								CPackSender::moveObjectFromFloorToFloor(tileId, self->x, self->y, self->z, self2->x, self2->y, self2->z, qty ? qty : 1);
-								Sleep(CModuleUtil::randomFormula(400, 200));
-								i--;
-								count--;
-							}
-						}
-					}
-					//did not find tile, open top tile (hopefully this is a hole)
-					if (!holeId && count)
-						holeId = CMemReader::getMemReader().itemOnTopCode(self->x - self2->x, self->y - self2->y);
-
-					if (holeId)
-					{
-						CPackSender::useWithObjectFromContainerOnFloor(CTibiaItem::getValueForConst("shovel"), 0x40 + contNr, shovel->pos, holeId, self->x, self->y, self->z);
-						Sleep(CModuleUtil::randomFormula(900, 300));
-
-						switch (mode)
-						{
-						case 2:
-							path[0] = 5;
-							break;
-						case 1:
-							path[0] = 1;
-							break;
-						case 4:
-							path[0] = 3;
-							break;
-						case 3:
-							path[0] = 7;
-							break;
-						}
-						CPackSender::stepMulti(path, 1);
-						Sleep(CModuleUtil::randomFormula(1100, 300));
-					}
-					delete self2;
-					delete shovel;
-				}
-				break;
-			}
-			case 103:        // crate - use to go down
-				int freeX = 0, freeY = 0;
-				for (int x = -1; x <= 1; x++)
-				{
-					for (int y = -1; y <= 1; y++)
-					{
-						if (x || y)
-						{
-							if (tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z))
-							{
-								freeX = x;
-								freeY = y;
-								x     = 999;  //exit both loops
-								y     = 999;
-							}
-						}
-					}
-				}
-				int count   = CMemReader::getMemReader().mapGetPointItemsCount(point(0, 0, 0));
-				int grateId = 0;
-				int i;
-				for (i = 0; i < count; i++)
-				{
-					int tileId = CMemReader::getMemReader().mapGetPointItemId(point(0, 0, 0), i);
-					//char buf[128];
-					//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
-					//::MessageBox(0,buf,buf,0);
-					if (tileId != 99)
-					{
-						CTibiaTile *tile = CTileReader::getTileReader().getTile(tileId);
-
-						if (tile->requireUse)
-							grateId = tileId;
-						//remove an item if it is on top of grate
-						if (!tile->notMoveable)
-						{
-							int qty = CMemReader::getMemReader().mapGetPointItemExtraInfo(point(0, 0, 0), i, 1);
-							CPackSender::moveObjectFromFloorToFloor(tileId, self->x, self->y, self->z, self->x + freeX, self->y + freeY, self->z, qty ? qty : 1);
-							Sleep(CModuleUtil::randomFormula(400, 200));
-							i--;
-							count--;
-						}
-					}
-				}
-				//did not find tile, use top tile (hopefully this is a grate)
-				if (!grateId && count > 1)
-					grateId = CMemReader::getMemReader().itemOnTopCode(0, 0);
-
-				if (grateId)
-					CPackSender::useItemOnFloor(grateId, self->x, self->y, self->z);
-				break;
-			}         // switch updown
-		}         // case 0xD1
-		case 0xD2:
-		{
-			// teleporter it will have walked onto it
-			break;
-		}         // case 0xD2
-		case 0xE1:
-		case 0xE2:
-		case 0xE3:
-		case 0xE4:
-		case 0xE5:
-		case 0xE6:
-		case 0xE7:
-		case 0xE8:
-		{
-			// go up - but one square away
-			int modX = self->x;
-			int modY = self->y;
-			if (path[0] == 0xE1)
-				modX++;
-			if (path[0] == 0xE2)
-			{
-				modX++;
-				modY--;
-			}
-			if (path[0] == 0xE3)
-				modY--;
-			if (path[0] == 0xE4)
-			{
-				modX--;
-				modY--;
-			}
-			if (path[0] == 0xE5)
-				modX--;
-			if (path[0] == 0xE6)
-			{
-				modX--;
-				modY++;
-			}
-			if (path[0] == 0xE7)
-				modY++;
-			if (path[0] == 0xE8)
-			{
-				modX++;
-				modY++;
-			}
+			// go up
 			switch (tibiaMap.getPointTypeNoProh(modX, modY, self->z))
 			{
-			case 201:
-				// rope
+			case MAP_POINT_TYPE_ROPE:
 			{
 				CUIntArray itemsAccepted;
 				int contNr;
@@ -1765,7 +1542,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 					if (item->objectId)
 					{
 						int ropeId = CMemReader::getMemReader().mapGetPointItemId(point(modX - self->x, modY - self->y, 0), 0);
-						CPackSender::useWithObjectFromContainerOnFloor(CTibiaItem::getValueForConst("rope"), 0x40 + contNr, item->pos, ropeId, modX, modY, self->z);
+						CPackSender::useWithObjectFromContainerOnFloor(CTibiaItem::getValueForConst("rope"), 0x40 + contNr, item->pos, ropeId, self->x, self->y, self->z);
 						delete item;
 						break;
 					}
@@ -1773,20 +1550,19 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				}
 				break;
 			}
-			case 203:
+			case MAP_POINT_TYPE_MAGICROPE:
+				// go up using 'magic rope' [for pacc only]
+				CPackSender::say("exani tera");
+				break;
+			case MAP_POINT_TYPE_LADDER:
 			{
-				//buf[111];
-				//sprintf(buf,"self %d,%d, mod %d %d",self->x,self->y,modX,modY);
-				//CPackSender::sendTAMessage(buf);
-				// ladder
-				// fix 02.02.2008: ladder code needs to be evaluated on the fly
-				int count      = CMemReader::getMemReader().mapGetPointItemsCount(point(modX - self->x, modY - self->y, 0));
+				int count = CMemReader::getMemReader().mapGetPointItemsCount(point(modX - self->x, modY - self->y, 0));
 				int ladderCode = 0;
 				int i;
 
 				for (i = 0; i < count; i++)
 				{
-					int tileId           = CMemReader::getMemReader().mapGetPointItemId(point(modX - self->x, modY - self->y, 0), i);
+					int tileId = CMemReader::getMemReader().mapGetPointItemId(point(modX - self->x, modY - self->y, 0), i);
 					CTibiaTile *tileData = CTileReader::getTileReader().getTile(tileId);
 					if (tileId != 99 && tileData->goUp && tileData->requireUse)
 					{
@@ -1797,57 +1573,24 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				if (ladderCode)
 					CPackSender::useItemOnFloor(ladderCode, modX, modY, self->z);
 				break;
-
-				// ladder
 			}
+			case MAP_POINT_TYPE_STAIRS:
+				// do nothing
+				break;
+			default:
+				break;
 			}
 			break;
-		}         // case 0xE1-E4
-		case 0xF1:
-		case 0xF2:
-		case 0xF3:
-		case 0xF4:
-		case 0xF5:
-		case 0xF6:
-		case 0xF7:
-		case 0xF8:
+		}
+		case STEP_DOWNSTAIRS:
 		{
-			// go down - but one square away
-			int modX = self->x;
-			int modY = self->y;
-			if (path[0] == 0xF1)
-				modX++;
-			if (path[0] == 0xF2)
-			{
-				modX++;
-				modY--;
-			}
-			if (path[0] == 0xF3)
-				modY--;
-			if (path[0] == 0xF4)
-			{
-				modX--;
-				modY--;
-			}
-			if (path[0] == 0xF5)
-				modX--;
-			if (path[0] == 0xF6)
-			{
-				modX--;
-				modY++;
-			}
-			if (path[0] == 0xF7)
-				modY++;
-			if (path[0] == 0xF8)
-			{
-				modX++;
-				modY++;
-			}
-
+			// go down			
 			switch (tibiaMap.getPointTypeNoProh(modX, modY, self->z))
 			{
-			case 102:
-				// closed hole - use shovel to open
+			case MAP_POINT_TYPE_OPEN_HOLE:
+				// do nothing
+				break;
+			case MAP_POINT_TYPE_CLOSED_HOLE:
 			{
 				CTibiaItem *shovel = NULL;
 				CUIntArray itemsAccepted;
@@ -1866,14 +1609,42 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 				if (shovel)
 				{
 					// shovel found, so proceed with opening hole
-					int count = CMemReader::getMemReader().mapGetPointItemsCount(point(modX - self->x, modY - self->y, 0));
-
-					int holeId     = 0;
-					int movePlayer = 0;
+					int mode = 0;
+					if (onSpot)
+					{
+						// Standing on the hole, so pick a tile to step away to
+						if (tibiaMap.isPointAvailable(self->x - 1, self->y, self->z))
+							mode = 1;
+						if (tibiaMap.isPointAvailable(self->x + 1, self->y, self->z))
+							mode = 2;
+						if (tibiaMap.isPointAvailable(self->x, self->y - 1, self->z))
+							mode = 3;
+						if (tibiaMap.isPointAvailable(self->x, self->y + 1, self->z))
+							mode = 4;
+						switch (mode)
+						{
+						case 1:
+							CPackSender::stepLeft();
+							break;
+						case 2:
+							CPackSender::stepRight();
+							break;
+						case 3:
+							CPackSender::stepUp();
+							break;
+						case 4:
+							CPackSender::stepDown();
+							break;
+						}
+						Sleep(CModuleUtil::randomFormula(1100, 300));
+					}
+					CTibiaCharacter *self2 = CMemReader::getMemReader().readSelfCharacter();
+					int count              = CMemReader::getMemReader().mapGetPointItemsCount(point(modX - self2->x, modY - self2->y, 0));
+					int holeId             = 0;
 					int i;
 					for (i = 0; i < count; i++)
 					{
-						int tileId = CMemReader::getMemReader().mapGetPointItemId(point(modX - self->x, modY - self->y, 0), i);
+						int tileId = CMemReader::getMemReader().mapGetPointItemId(point(modX - self2->x, modY - self2->y, 0), i);
 						//char buf[128];
 						//sprintf(buf,"[%d/%d] me (%d,%d,%d) opening (%d,%d,%d) tile %d",i,count,self2->x,self2->y,self2->z,self->x,self->y,self->z,tileId);
 						//::MessageBox(0,buf,buf,0);
@@ -1887,120 +1658,137 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 							if (!tile->notMoveable)
 							{
 								int qty = CMemReader::getMemReader().mapGetPointItemExtraInfo(point(modX - self->x, modY - self->y, 0), i, 1);
-								CPackSender::moveObjectFromFloorToFloor(tileId, modX, modY, self->z, self->x, self->y, self->z, qty ? qty : 1);
+								CPackSender::moveObjectFromFloorToFloor(tileId, modX, modY, self2->z, self2->x, self2->y, self2->z, qty ? qty : 1);
 								Sleep(CModuleUtil::randomFormula(400, 200));
 								i--;
 								count--;
 							}
 						}
-						else
-						{
-							movePlayer = 1;
-						}
 					}
-					if (movePlayer)
-					{
-						int freeX = 0, freeY = 0;
-						for (int x = -1; x <= 1; x++)
-						{
-							for (int y = -1; y <= 1; y++)
-							{
-								if (x || y)
-								{
-									if (tibiaMap.isPointAvailable(modX + x, modY + y, self->z))
-									{
-										freeX = x;
-										freeY = y;
-										x     = 999;          //exit both loops
-										y     = 999;
-									}
-								}
-							}
-						}
-						CPackSender::moveObjectFromFloorToFloor(99, modX, modY, self->z, modX + freeX, modY + freeY, self->z, 1);
-						Sleep(CModuleUtil::randomFormula(1500, 300));
-					}
-					//did not find tile, open last tile in list(hopefully this is a hole)
+					//did not find tile, open top tile (hopefully this is a hole)
 					if (!holeId && count)
 						holeId = CMemReader::getMemReader().itemOnTopCode(modX - self->x, modY - self->y);
-
 					if (holeId)
 					{
 						CPackSender::useWithObjectFromContainerOnFloor(CTibiaItem::getValueForConst("shovel"), 0x40 + contNr, shovel->pos, holeId, modX, modY, self->z);
 						Sleep(CModuleUtil::randomFormula(900, 300));
-
-						int mode = path[0] & 0xF;
-						int path[3];
-						path[1] = 0;
-						int size = 0;
-						if (modX - self->x && modY - self->y)
+						if (onSpot)
 						{
-							if (tibiaMap.isPointAvailable(modX, self->y, self->z))
+							// Step back on hole position
+							switch (mode)
 							{
-								switch (mode)
-								{
-								case 2:
-									path[0] = 1;
-									path[1] = 3;
-									break;
-								case 8:
-									path[0] = 1;
-									path[1] = 7;
-									break;
-								case 4:
-									path[0] = 5;
-									path[1] = 3;
-									break;
-								case 6:
-									path[0] = 5;
-									path[1] = 7;
-									break;
-								}
+							case 1:
+								CPackSender::stepRight();
+								break;
+							case 2:
+								CPackSender::stepLeft();
+								break;
+							case 3:
+								CPackSender::stepDown();
+								break;
+							case 4:
+								CPackSender::stepUp();
+								break;
 							}
-							else if (modY && tibiaMap.isPointAvailable(self->x, modY, self->z))
-							{
-								switch (mode)
-								{
-								case 2:
-									path[0] = 7;
-									path[1] = 5;
-									break;
-								case 8:
-									path[0] = 7;
-									path[1] = 1;
-									break;
-								case 4:
-									path[0] = 3;
-									path[1] = 5;
-									break;
-								case 6:
-									path[0] = 3;
-									path[1] = 1;
-									break;
-								}
-							}
-							path[2] = 0;
-							size    = 2;
 						}
-						if (path[1] == 0)
+						else
 						{
-							path[0] = mode;
-							size    = 1;
+							mode = path[0] & 0xF;
+							uint8_t stepPath[2];
+							stepPath[1] = 0;
+							pathSize = 0;
+							// If diagonal step was planned - try to find a non-diagonal solution
+							// What is it done for? Manual players walk diagonally too.
+							if (modX - self->x && modY - self->y)
+							{
+								// Is the point to the east/west walkable?
+								if (tibiaMap.isPointAvailable(modX, self->y, self->z))
+								{
+									switch (mode)
+									{
+									case STEP_NORTHEAST:
+										stepPath[0] = STEP_EAST;
+										stepPath[1] = STEP_NORTH;
+										break;
+									case STEP_SOUTHEAST:
+										stepPath[0] = STEP_EAST;
+										stepPath[1] = STEP_SOUTH;
+										break;
+									case STEP_NORTHWEST:
+										stepPath[0] = STEP_WEST;
+										stepPath[1] = STEP_NORTH;
+										break;
+									case STEP_SOUTHWEST:
+										stepPath[0] = STEP_WEST;
+										stepPath[1] = STEP_SOUTH;
+										break;
+									}
+								}
+								// Is the point to the north/south walkable?
+								else if (modY && tibiaMap.isPointAvailable(self->x, modY, self->z))
+								{
+									switch (mode)
+									{
+									case STEP_NORTHEAST:
+										stepPath[0] = STEP_SOUTH;
+										stepPath[1] = STEP_WEST;
+										break;
+									case STEP_SOUTHEAST:
+										stepPath[0] = STEP_SOUTH;
+										stepPath[1] = STEP_EAST;
+										break;
+									case STEP_NORTHWEST:
+										stepPath[0] = STEP_NORTH;
+										stepPath[1] = STEP_WEST;
+										break;
+									case STEP_SOUTHWEST:
+										stepPath[0] = STEP_NORTH;
+										stepPath[1] = STEP_EAST;
+										break;
+									}
+								}
+								pathSize = 2;
+							}
+							// Did not find a non-diagonal path, do diagonal step.
+							if (stepPath[1] == 0)
+							{
+								stepPath[0] = mode;
+								pathSize = 1;
+							}
+							CPackSender::stepMulti(stepPath, pathSize);
 						}
-
-						CPackSender::stepMulti(path, size);
 						Sleep(CModuleUtil::randomFormula(1100, 300));
 					}
+					delete self2;
 					delete shovel;
 				}
 				break;
 			}
-			case 103:
-				// crate
+			case MAP_POINT_TYPE_CRATE:
 			{
+				//Find a free spot to untrash, default under self if we're not covering the crate
+				int freeX = 0, freeY = 0;
+				if (onSpot)
+				{
+					for (int x = -1; x <= 1; x++)
+					{
+						for (int y = -1; y <= 1; y++)
+						{
+							if (x != 0 || y != 0)
+							{
+								if (tibiaMap.isPointAvailableNoProh(self->x + x, self->y + y, self->z))
+								{
+									freeX = x;
+									freeY = y;
+									x = 999;  //exit both loops
+									y = 999;
+								}
+							}
+						}
+					}
+				}
 				int count = CMemReader::getMemReader().mapGetPointItemsCount(point(modX - self->x, modY - self->y, 0));
-
-				int grateId = 0;
+				int crateId = 0;
 				int i;
 				for (i = 0; i < count; i++)
 				{
@@ -2013,42 +1801,65 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 						CTibiaTile *tile = CTileReader::getTileReader().getTile(tileId);
 
 						if (tile->requireUse)
-							grateId = tileId;
+							crateId = tileId;
 						//remove an item if it is on top of grate
 						if (!tile->notMoveable)
 						{
 							int qty = CMemReader::getMemReader().mapGetPointItemExtraInfo(point(modX - self->x, modY - self->y, 0), i, 1);
-							CPackSender::moveObjectFromFloorToFloor(tileId, modX, modY, self->z, self->x, self->y, self->z, qty ? qty : 1);
+							CPackSender::moveObjectFromFloorToFloor(tileId, modX, modY, self->z, self->x + freeX, self->y + freeY, self->z, qty ? qty : 1);
 							Sleep(CModuleUtil::randomFormula(400, 200));
 							i--;
 							count--;
 						}
 					}
 				}
-				if (!grateId && count)
-					grateId = CMemReader::getMemReader().itemOnTopCode(modX - self->x, modY - self->y);
-				if (grateId)
-					CPackSender::useItemOnFloor(grateId, modX, modY, self->z);
+				//did not find tile, use top tile (hopefully this is a grate)
+				if (!crateId && count > 1)
+					crateId = CMemReader::getMemReader().itemOnTopCode(modX - self->x, modY - self->y);
+
+				if (crateId)
+					CPackSender::useItemOnFloor(crateId, modX, modY, self->z);
 				break;
 			}
+			default:
+				break;
+			}         // switch pointType
+		}
+		case STEP_TELEPORT:
+			if (!onSpot)
+			{
+				int topItemId = CMemReader::getMemReader().itemOnTopCode(modX - self->x, modY - self->y);
+				if (topItemId)
+					CPackSender::useItemOnFloor(topItemId, modX, modY, self->z);
+				Sleep(CModuleUtil::randomFormula(500, 100));
 			}
 			break;
-		}         // case 0xF1-F4
-		} // switc path[0]
+		} // switch path[0] & 0xF0
 
-		//wait for change of level
-		int iterCount = 60;
-		while (iterCount-- > 0)
+		if (path[0] != STEP_TELEPORT)
 		{
-			CTibiaCharacter* selfTmp = CMemReader::getMemReader().readSelfCharacter();
-			if (selfTmp->z != self->z)
+			//wait for change of level
+			int iterCount = 60;
+			while (iterCount-- > 0)
 			{
+				CTibiaCharacter* selfTmp = CMemReader::getMemReader().readSelfCharacter();
+				if (selfTmp->z != self->z)
+				{
+					delete selfTmp;
+					break;
+				}
+				Sleep(50);
 				delete selfTmp;
-				break;
 			}
-			Sleep(50);
-			delete selfTmp;
 		}
+	}
+	// If trying to enter a tile with teleport step after it, assume it's necessary to use it
+	else if (pathSize == 2 && (path[1] & 0xF0) == STEP_TELEPORT)
+	{
+		int topItemId = CMemReader::getMemReader().itemOnTopCode(modX - self->x, modY - self->y);
+		if (topItemId)
+			CPackSender::useItemOnFloor(topItemId, modX, modY, self->z);
+		Sleep(CModuleUtil::randomFormula(500, 100));
 	}
 	else
 	{
@@ -2056,7 +1867,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 		 * Walk if :
 		 * 1. we found a way AND
 		 * 2. last planned end point equals to the start point now (means: we reach "final" point) OR
-		 * 3. last startX change was > 2.5s ago (means: we are stuck) OR
+		 * 3. last startX change was > 2.5s ago (getmeans: we are stuck) OR
 		 * 4. last walk was over 15s ago (means: walk restart, lag, etc.)
 		 */
 
@@ -2184,7 +1995,7 @@ void CModuleUtil::executeWalk(int startX, int startY, int startZ, int path[15])
 			if (offset >= pathSize || startZ != self->z)
 				return;                                  //failed to find our position on the proposed path
 
-			CPackSender::stepMulti(path + offset * sizeof(int), pathSize - offset);
+			CPackSender::stepMulti(path + offset * sizeof(uint8_t), pathSize - offset);
 
 			//sprintf(buf,"walk: (%d,%d,%d)->(%d,%d,%d) [%d,%d,%d] %d,%d p=%d",startX,startY,startZ,lastEndX,lastEndY,lastEndZ,lastStartX,lastStartY,lastStartZ,currentTm-lastStartChangeTm,currentTm-lastExecuteWalkTm,pathSize);
 			//testDebug(buf);

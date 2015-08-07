@@ -1,6 +1,7 @@
 #pragma once
 
 #include "tibiaauto_util.h"
+#include <cstdint>
 
 class TIBIAAUTOUTIL_API CPackSender
 {
@@ -35,7 +36,7 @@ public:
 	static void closeContainer(int contNr);
 	static void attack(int tibiaCharId);
 	static void follow(int tibiaCharId);
-	static void stepMulti(int *direction, int size);
+	static void stepMulti(uint8_t* direction, int size);
 	static void stepRight();
 	static void stepLeft();
 	static void stepDown();

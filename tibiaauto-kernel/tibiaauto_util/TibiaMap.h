@@ -1,18 +1,33 @@
 #pragma once
 #include "tibiaauto_util.h"
 
-#include <map>
 #include "TibiaMapPoint.h"
-#include "MemReader.h"
 
 using namespace std;
 
+enum MapPointType
+{
+	MAP_POINT_TYPE_SELF = -2,
+	MAP_POINT_TYPE_CLEAR = -1,
+	MAP_POINT_TYPE_AVAILABLE = 0,
+	MAP_POINT_TYPE_OPEN_HOLE = 101,
+	MAP_POINT_TYPE_CLOSED_HOLE = 102,
+	MAP_POINT_TYPE_CRATE = 103,
+	MAP_POINT_TYPE_ROPE = 201,
+	MAP_POINT_TYPE_MAGICROPE = 202,
+	MAP_POINT_TYPE_LADDER = 203,
+	MAP_POINT_TYPE_STAIRS = 204,
+	MAP_POINT_TYPE_DEPOT = 301,
+	MAP_POINT_TYPE_TELEPORT = 302,
+	MAP_POINT_TYPE_BLOCK = 303,
+	MAP_POINT_TYPE_USABLE_TELEPORT = 304,
+};
 
 struct pointData
 {
 public:
 	int available;
-	int updown;
+	MapPointType type;
 	int prevX;
 	int prevY;
 	int prevZ;
@@ -29,7 +44,7 @@ public:
 	void clear()
 	{
 		available = 0;
-		updown    = 0;
+		type      = MAP_POINT_TYPE_AVAILABLE;
 		prevX     = 0;
 		prevY     = 0;
 		prevZ     = 0;
@@ -53,15 +68,15 @@ public:
 		static CTibiaMap singleton;
 		return singleton;
 	}
-	int getPointTypeNoProh(int x, int y, int z);
+	MapPointType getPointTypeNoProh(int x, int y, int z);
 	int isPointAvailableNoProh(int x, int y, int z);
 	struct point getPointByNr(int nr);
 	int size();
 	void removePointAvailable(int x, int y, int z);
 	void prohPointClear();
 	void prohPointAdd(int x, int y, int z);
-	int getPointType(int x, int y, int z);
-	void setPointType(int x, int y, int z, int updown);
+	MapPointType getPointType(int x, int y, int z);
+	void setPointType(int x, int y, int z, MapPointType type);
 	void loadFromDisk(FILE *f);
 	void saveToDisk(FILE *f);
 	int getPrevPointZ(int x, int y, int z);

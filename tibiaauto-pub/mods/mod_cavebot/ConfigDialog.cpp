@@ -16,6 +16,7 @@
 #include <TibiaMiniMap.h>
 #include <TibiaMiniMapLabel.h>
 #include <TibiaMiniMapPoint.h>
+#include <ModuleUtil.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -1299,9 +1300,9 @@ void PathfindThread(LPVOID lpParam)
 	for (i = 0; i < sz; i++)
 	{
 		int dir = path->GetAt(i);
-		if (dir == 0xD0)
+		if (dir == STEP_UPSTAIRS)
 			dir = 9;
-		else if (dir == 0xD1)
+		else if (dir == STEP_DOWNSTAIRS)
 			dir = 0;
 		startX += direction[dir][0];
 		startY += direction[dir][1];
@@ -1324,8 +1325,8 @@ void PathfindThread(LPVOID lpParam)
 					}
 				}
 			}
-			int setPrev = (dir == 0) ? 101 : 204;//hole if went down; stairs if went up
-			int setCur  = (dir == 9) ? 101 : 204;//hole if went up; stairs if went down
+			MapPointType setPrev = (dir == 0) ? MAP_POINT_TYPE_OPEN_HOLE : MAP_POINT_TYPE_STAIRS;//hole if went down; stairs if went up
+			MapPointType setCur = (dir == 9) ? MAP_POINT_TYPE_OPEN_HOLE : MAP_POINT_TYPE_STAIRS;//hole if went up; stairs if went down
 			//add level change point
 			tibiaMap.setPointAsAvailable(startX, startY, startZ - direction[dir][2]);
 			tibiaMap.setPointAsAvailable(startX, startY, startZ);

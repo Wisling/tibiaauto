@@ -1,9 +1,26 @@
 #pragma once
 
 #include "tibiaauto_util.h"
+#include <cstdint>
 class CTibiaItem;
 class CTibiaList;
 template <class T> class CTibiaQueue;
+
+enum StepDirsEnum
+{
+	STEP_NULL = 0,
+	STEP_EAST = 1,
+	STEP_NORTHEAST = 2,
+	STEP_NORTH = 3,
+	STEP_NORTHWEST = 4,
+	STEP_WEST = 5,
+	STEP_SOUTHWEST = 6,
+	STEP_SOUTH = 7,
+	STEP_SOUTHEAST = 8,
+	STEP_UPSTAIRS = 0x10,
+	STEP_DOWNSTAIRS = 0x20,
+	STEP_TELEPORT = 0x40
+};
 
 class TIBIAAUTOUTIL_API CModuleUtil
 {
@@ -21,8 +38,8 @@ public:
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted);
 	static CTibiaItem * lookupItem(int containerNr, CUIntArray *itemsAccepted, int qty);
 	static int findFreeSpace(int &x, int &y, int z, int r = 1);
-	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, int path[15], int radius = 1);
-	static void executeWalk(int startX, int startY, int startZ, int path[15]);
+	static struct point findPathOnMap(int startX, int startY, int startZ, int endX, int endY, int endZ, int endSpecialLocation, uint8_t path[15], int radius = 1);
+	static void executeWalk(int startX, int startY, int startZ, uint8_t path[15]);
 	static void lootItemFromContainer(int conTNr, CUIntArray *acceptedItems, int ignoreCont1 = -1, int ignoreCont2 = -1);
 	static int lootItemFromSpecifiedContainer(int containerNr, CUIntArray *acceptedItems, int containerCarrying);
 	static int lootItemsToSpecifiedContainers(int containerNr, CUIntArray *acceptedItems, int carriedContainers);

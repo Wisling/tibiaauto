@@ -100,7 +100,7 @@ void CTibiaMap::setPointAsAvailable(int x, int y, int z)
 	if (tibiaMap2.Lookup(&p, pd))
 	{
 		pd->available = 1;
-		pd->updown    = 0;
+		pd->type = MAP_POINT_TYPE_AVAILABLE;
 	}
 	else
 	{
@@ -262,9 +262,12 @@ void CTibiaMap::setPointDistance(int x, int y, int z, int dist)
 
 int CTibiaMap::calcDistance(int x, int y, int z, int prevX, int prevY, int prevZ)
 {
-	int currentUpDown     = getPointType(x, y, z);
+	MapPointType currentPointType = getPointType(x, y, z);
 	int forcedLevelChange = 0;
-	if (currentUpDown == 101 || currentUpDown == 204 || currentUpDown == 302 || currentUpDown == 303)
+	if (currentPointType == MAP_POINT_TYPE_OPEN_HOLE || 
+		currentPointType == MAP_POINT_TYPE_STAIRS ||
+		currentPointType == MAP_POINT_TYPE_TELEPORT ||
+		currentPointType == MAP_POINT_TYPE_BLOCK)
 		forcedLevelChange = 1;
 	int spd = getPointSpeed(x, y, z);
 	if (spd == 0)
@@ -357,22 +360,22 @@ void CTibiaMap::loadFromDisk(FILE *f)
 {
 }
 
-void CTibiaMap::setPointType(int x, int y, int z, int updown)
+void CTibiaMap::setPointType(int x, int y, int z, MapPointType type)
 {
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;
 	if (tibiaMap2.Lookup(&p, pd))
-		pd->updown = updown;
+		pd->type = type;
 }
 
-int CTibiaMap::getPointType(int x, int y, int z)
+MapPointType CTibiaMap::getPointType(int x, int y, int z)
 {
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;
 	if (tibiaMap2.Lookup(&p, pd))
 		if (isPointAvailableNoProh(x, y, z))
-			return pd->updown;
-	return 0;
+			return pd->type;
+	return MAP_POINT_TYPE_AVAILABLE;
 }
 
 void CTibiaMap::prohPointAdd(int x, int y, int z)
@@ -443,14 +446,14 @@ int CTibiaMap::isPointAvailableNoProh(int x, int y, int z)
 	return 0;
 }
 
-int CTibiaMap::getPointTypeNoProh(int x, int y, int z)
+MapPointType CTibiaMap::getPointTypeNoProh(int x, int y, int z)
 {
 	struct point p       = point(x, y, z);
 	struct pointData *pd = NULL;
 	if (tibiaMap2.Lookup(&p, pd))
 		if (isPointAvailableNoProh(x, y, z))
-			return pd->updown;
-	return 0;
+			return pd->type;
+	return MAP_POINT_TYPE_AVAILABLE;
 }
 
 point CTibiaMap::getDestPoint(int x, int y, int z)

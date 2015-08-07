@@ -33,6 +33,7 @@
 #include <TibiaContainer.h>
 #include <PackSender.h>
 #include <MemConstData.h>
+#include <MemReader.h>
 #include <MemUtil.h>
 #include <VariableStore.h>
 #include <IPCBackPipe.h>
@@ -483,7 +484,7 @@ void depotCheck(CConfigData *config)
 			 * Ok then - we should do the depositing.
 			 */
 
-			int path[15];
+			uint8_t path[15];
 			struct point nearestDepot = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
 			depotX = nearestDepot.x;
 			depotY = nearestDepot.y;
@@ -529,7 +530,7 @@ void depotCheck(CConfigData *config)
 				registerDebug("Walking to a depot section");
 			CTibiaCharacter *self = reader.readSelfCharacter();
 			// check whether the depot is reachable
-			int path[15];
+			uint8_t path[15];
 			if (config->debug)
 				registerDebug("findPathOnMap: depot walker");
 			CModuleUtil::findPathOnMap(self->x, self->y, self->z, depotX, depotY, depotZ, 301, path);
@@ -576,7 +577,7 @@ void depotCheck(CConfigData *config)
 	{
 		// not depot found - but try finding another one
 		CTibiaCharacter *self = reader.readSelfCharacter();
-		int path[15];
+		uint8_t path[15];
 		struct point nearestDepot = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
 		depotX = nearestDepot.x;
 		depotY = nearestDepot.y;
@@ -991,7 +992,7 @@ void depotDeposit(CConfigData *config)
 			{
 				if (x || y)
 				{
-					if (CTibiaMap::getTibiaMap().getPointType(self->x + x, self->y + y, self->z) == 301)//is depot spot
+					if (CTibiaMap::getTibiaMap().getPointType(self->x + x, self->y + y, self->z) == MAP_POINT_TYPE_DEPOT)//is depot spot
 					{
 						depotContNr = depotDepositOpenChest(self->x + x, self->y + y, self->z);
 						if (depotContNr != -1)
@@ -1650,7 +1651,7 @@ int droppedLootCheck(CConfigData *config, CUIntArray& lootedArr, int radius = 7)
 			//Walk To Square
 			if (abs(x) > 1 || abs(y) > 1 || shouldStandOn && !(x == 0 && y == 0))
 			{
-				int path[15];
+				uint8_t path[15];
 				int pathSize = 0;
 				memset(path, 0x00, sizeof(int) * 15);
 				if (config->debug)
@@ -1989,7 +1990,7 @@ int canGetToPoint(int X, int Y, int Z)
 {
 	/*
 	   CMemReader& reader = CMemReader::getMemReader();
-	   int path[15];
+	   uint8_t path[15];
 	   CTibiaCharacter *self = reader.readSelfCharacter();
 	   CModuleUtil::findPathOnMap(self->x,self->y,self->z,actualTargetX,actualTargetY,actualTargetZ,0,path);
 	   deleteAndNull(self);
@@ -3634,7 +3635,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				case 1:
 				{
 					char buf[256];
-					int path[15];
+					uint8_t path[15];
 
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();
@@ -3719,7 +3720,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					//Let's try something really new!
 					//First: Let's map our path
 					char buf[256];
-					int path[15];
+					uint8_t path[15];
 
 					deleteAndNull(self);
 					self = reader.readSelfCharacter();

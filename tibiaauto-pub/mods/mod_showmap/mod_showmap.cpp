@@ -166,12 +166,13 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 		if (currentPointNr == 0)
 			// first call - reset map
 			tibiaMap.clear();
-		int x, y, z, updown;
+		int x, y, z;
+		MapPointType pointType;
 		int speed, altX, altY, altZ;
 		int locked  = 0;
-		int numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &locked, &altX, &altY, &altZ);
+		int numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &pointType, &speed, &locked, &altX, &altY, &altZ);
 		tibiaMap.setPointAsAvailable(x, y, z);
-		tibiaMap.setPointType(x, y, z, updown);
+		tibiaMap.setPointType(x, y, z, pointType);
 
 		//is new point for 2.0
 		if (numData >= 5)
@@ -183,7 +184,7 @@ void CMod_showmapApp::loadConfigParam(char *paramName, char *paramValue)
 				if (numData == 8)
 				{
 					//has no "locked" property
-					numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &updown, &speed, &altX, &altY, &altZ);
+					numData = sscanf(paramValue, "%d,%d,%d,%d,%d,%d,%d", &x, &y, &z, &pointType, &speed, &altX, &altY, &altZ);
 					locked  = 0;
 				}
 				tibiaMap.setDestPoint(x, y, z, altX, altY, altZ);

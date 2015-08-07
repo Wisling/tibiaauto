@@ -1278,7 +1278,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 						maintainZ = self->z;
 					}
 					int pathSize = 0;
-					int path[15];
+					uint8_t path[15];
 
 					if (abs(self->x - maintainX) > 1 || abs(self->y - maintainY) > 1 || self->z != maintainZ)
 					{
@@ -1311,7 +1311,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				case 2:
 				{        // Start position (By definition, the least safe place to be)
 					int pathSize = 0;
-					int path[15];
+					uint8_t path[15];
 					const char* var = CVariableStore::getVariable("autolooterTm");
 
 
@@ -1359,7 +1359,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 					// Runaway Position (By definition, the relatively safe spot chosen by the user)
 					int pathSize = 0;
 
-					int path[15];
+					uint8_t path[15];
 
 					if (abs(self->x - config->runawayX) > 1 || abs(self->y - config->runawayY) > 1 || self->z != config->runawayZ)
 					{
@@ -1392,7 +1392,7 @@ DWORD WINAPI toolThreadProc(LPVOID lpParam)
 				case 4:
 				{        // Depot (Reasoned as, the safest position [because you are protected from attack])
 					int pathSize = 0;
-					int path[15];
+					uint8_t path[15];
 					struct point p = CModuleUtil::findPathOnMap(self->x, self->y, self->z, 0, 0, 0, 301, path);
 					for (; pathSize < 15 && path[pathSize]; pathSize++)
 						;

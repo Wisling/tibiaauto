@@ -99,19 +99,22 @@ void CMapButton::OnRButtonDown(UINT nFlags, CPoint point)
 		case MAP_POINT_TYPE_TELEPORT:
 			itemNum = 5;
 			break;
-		case MAP_POINT_TYPE_BLOCK:
+		case MAP_POINT_TYPE_USABLE_TELEPORT:
 			itemNum = 6;
+			break;
+		case MAP_POINT_TYPE_BLOCK:
+			itemNum = 7;
 			break;
 		case MAP_POINT_TYPE_ROPE:
 		case MAP_POINT_TYPE_MAGICROPE:
 		case MAP_POINT_TYPE_LADDER:
 		case MAP_POINT_TYPE_STAIRS:
-			itemNum = 8;
+			itemNum = 9;
 			break;
 		case MAP_POINT_TYPE_OPEN_HOLE:
 		case MAP_POINT_TYPE_CLOSED_HOLE:
 		case MAP_POINT_TYPE_CRATE:
-			itemNum = 10;
+			itemNum = 11;
 			break;
 		}
 
@@ -132,80 +135,78 @@ BOOL CMapButton::OnCommand(WPARAM wParam, LPARAM lParam)
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointToggleLock(realX, realY, realZ);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_CLEAR)
+	else if (wParam == ID_SHOWMAPOPTIONS_CLEAR)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CLEAR);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_AVAILABLE)
+	else if(wParam == ID_SHOWMAPOPTIONS_AVAILABLE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_AVAILABLE);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_OPENHOLE)
+	else if(wParam == ID_SHOWMAPOPTIONS_OPENHOLE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_OPEN_HOLE);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_CLOSEDHOLE)
+	else if(wParam == ID_SHOWMAPOPTIONS_CLOSEDHOLE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CLOSED_HOLE);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_CRATE)
+	else if(wParam == ID_SHOWMAPOPTIONS_CRATE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_CRATE);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_ROPE)
+	else if(wParam == ID_SHOWMAPOPTIONS_ROPE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_ROPE);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_MAGICROPE)
+	else if(wParam == ID_SHOWMAPOPTIONS_MAGICROPE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_MAGICROPE);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_LADDER)
+	else if(wParam == ID_SHOWMAPOPTIONS_LADDER)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_LADDER);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_STAIRS)
+	else if(wParam == ID_SHOWMAPOPTIONS_STAIRS)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_STAIRS);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_DEPOT)
+	else if(wParam == ID_SHOWMAPOPTIONS_DEPOT)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_DEPOT);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_TELE)
+	else if(wParam == ID_SHOWMAPOPTIONS_TELE)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_TELEPORT);
 	}
-	if (wParam == ID_SHOWMAPOPTIONS_BLOCK)
+	else if (wParam == ID_SHOWMAPOPTIONS_USETELE)
+	{
+		CToolMapShow *parent = (CToolMapShow *)GetParent();
+		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_USABLE_TELEPORT);
+	}
+	else if(wParam == ID_SHOWMAPOPTIONS_BLOCK)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
 		parent->mapPointClicked(realX, realY, realZ, MAP_POINT_TYPE_BLOCK);
 	}
-	if (wParam == IDD_TOOL_MAPSHOW_CONFIG)
+	else if(wParam == IDD_TOOL_MAPSHOW_CONFIG)
 	{
 		CToolMapShow *parent = (CToolMapShow *)GetParent();
-		if (parent->m_extendedResearch.GetCheck())
-		{
-			if (reader.mapGetPointItemId(point(m_x, m_y, 0), 0))
-				parent->ShowMapConfig(m_x, m_y);
-			else
-				AfxMessageBox("You can only configure tiles that have been researched!");
-		}
+		if (reader.mapGetPointItemId(point(m_x - 10, m_y - 10, 0), 0))
+			parent->ShowMapConfig(m_x, m_y);
 		else
-		{
-			AfxMessageBox("You must enable Extended Research first!");
-		}
+			AfxMessageBox("You can only configure tiles that have been researched!");
 	}
 	CToolMapShow *parent = (CToolMapShow *)GetParent();
 	parent->refreshVisibleMap();

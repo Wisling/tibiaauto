@@ -16,6 +16,7 @@
 static char THIS_FILE[] = __FILE__;
 #define new DEBUG_NEW
 #endif // ifdef _DEBUG
+#include "ModuleUtil.h"
 
 //////////////////////////////////////////////////////////////////////
 
@@ -253,54 +254,54 @@ void CPackSender::useWithObjectSend(int sourceObjectId, int sourceX, int sourceY
 
 void CPackSender::stepRight()
 {
-	int i[1] = {1};
+	uint8_t i[1] = { STEP_EAST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepUpRight()
 {
-	int i[1] = {2};
+	uint8_t i[1] = { STEP_NORTHEAST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepUp()
 {
-	int i[1] = {3};
+	uint8_t i[1] = { STEP_NORTH };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepUpLeft()
 {
-	int i[1] = {4};
+	uint8_t i[1] = { STEP_NORTHWEST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepLeft()
 {
-	int i[1] = {5};
+	uint8_t i[1] = { STEP_WEST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepDownLeft()
 {
-	int i[1] = {6};
+	uint8_t i[1] = { STEP_SOUTHWEST };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepDown()
 {
-	int i[1] = {7};
+	uint8_t i[1] = { STEP_SOUTH };
 	stepMulti(i, 1);
 }
 
 void CPackSender::stepDownRight()
 {
-	int i[1] = {8};
+	uint8_t i[1] = { STEP_SOUTHEAST };
 	stepMulti(i, 1);
 }
 
 // Tibia client sends single steps instead of multisteps of distance 1
-void CPackSender::stepMulti(int *direction, int size)
+void CPackSender::stepMulti(uint8_t* direction, int size)
 {
 	int i;
 
@@ -324,28 +325,28 @@ void CPackSender::stepMulti(int *direction, int size)
 		sendbuf[1] = 0;
 		switch (direction[0])
 		{
-		case 3:
+		case STEP_NORTH:
 			sendbuf[2] = 0x65;
 			break;
-		case 1:
+		case STEP_EAST:
 			sendbuf[2] = 0x66;
 			break;
-		case 7:
+		case STEP_SOUTH:
 			sendbuf[2] = 0x67;
 			break;
-		case 5:
+		case STEP_WEST:
 			sendbuf[2] = 0x68;
 			break;
-		case 2:
+		case STEP_NORTHEAST:
 			sendbuf[2] = 0x6A;
 			break;
-		case 8:
+		case STEP_SOUTHEAST:
 			sendbuf[2] = 0x6B;
 			break;
-		case 6:
+		case STEP_SOUTHWEST:
 			sendbuf[2] = 0x6C;
 			break;
-		case 4:
+		case STEP_NORTHWEST:
 			sendbuf[2] = 0x6D;
 			break;
 		}

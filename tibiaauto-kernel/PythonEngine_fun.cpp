@@ -1221,8 +1221,8 @@ PyObject *tibiaauto_sender_logout(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 {
-		int arg1, arg2, arg3, arg4;
-	int path[10000];
+	int arg1, arg2, arg3, arg4;
+	uint8_t path[15];
 
 	if (!PyArg_ParseTuple(args, "iiii", &arg1, &arg2, &arg3, &arg4))
 	{
@@ -1236,7 +1236,7 @@ PyObject *tibiaauto_sender_walkOnTAMap(PyObject *self, PyObject *args)
 
 	CModuleUtil::findPathOnMap(selfCh->x, selfCh->y, selfCh->z, arg1, arg2, arg3, 0, path, arg4);
 	int pathSize;
-	for (pathSize = 0; pathSize < 10000 && path[pathSize]; pathSize++)
+	for (pathSize = 0; pathSize < 15 && path[pathSize]; pathSize++)
 	{
 	}
 	if (pathSize)
@@ -1260,7 +1260,6 @@ PyObject *tibiaauto_sender_closeContainer(PyObject *self, PyObject *args)
 
 PyObject *tibiaauto_sender_attackMode(PyObject *self, PyObject *args)
 {
-	
 	int arg1, arg2, arg3, arg4;
 	if (!PyArg_ParseTuple(args, "iiii", &arg1, &arg2, &arg3, &arg4))
 	{
@@ -1371,7 +1370,7 @@ PyObject *tibiaauto_sender_stepMulti(PyObject *self, PyObject *args)
 	if (arg1 == 0)
 		size = 0;
 
-	int *path = new int[size];
+	uint8_t *path = new uint8_t[size];
 	if (arg1 != 0)
 		path[0] = arg1;
 	if (arg2 != 0)
@@ -1626,7 +1625,7 @@ PyObject *tibiaauto_map_setPointType(PyObject *self, PyObject *args)
 	int arg1, arg2, arg3, arg4;
 	if (!PyArg_ParseTuple(args, "iiii", &arg1, &arg2, &arg3, &arg4))
 		return NULL;
-	CTibiaMap::getTibiaMap().setPointType(arg1, arg2, arg3, arg4);
+	CTibiaMap::getTibiaMap().setPointType(arg1, arg2, arg3, (MapPointType)arg4);
 	Py_INCREF(Py_None);
 	return Py_None;
 }
